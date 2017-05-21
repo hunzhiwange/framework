@@ -30,6 +30,7 @@ return [
          *
          * 你可以在这里设置你应用程序的自定义命名空间
          * 相关文档请访问 [执行流程.MVC\命名空间与自动载入.Namespace.Autoload]
+         * see https://github.com/hunzhiwange/document/blob/master/execution-flow/namespace-and-autoload.md
          */
         'namespace' => [ ],
         
@@ -69,6 +70,7 @@ return [
          * 每一个服务提供者必须包含一个 register 方法，还可以包含一个 bootstrap 方法
          * 系统所有 register 方法注册后，bootstrap 才开始执行以便于调用其它服务提供者 register 注册的服务
          * 相关文档请访问 [系统架构\应用服务提供者]
+         * see https://github.com/hunzhiwange/document/blob/master/system-architecture/service-provider.md
          */
         'provider' => [ ],
         
