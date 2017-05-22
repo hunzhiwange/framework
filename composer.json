@@ -23,7 +23,8 @@
         "robmorgan/phinx": "^0.8.0"
     },
     "require-dev": {
-        "fzaninotto/faker": "^1.6"
+        "fzaninotto/faker": "^1.6",
+        "phpunit/phpunit": "~4.0"
     },
     "autoload": {
         "psr-4": {
