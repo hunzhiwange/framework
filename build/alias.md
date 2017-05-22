@@ -25,7 +25,7 @@ modify this file ../.git/config add alias,then using git string to commit your s
     i18n = subtree push --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
     image = subtree push --prefix=src/queryyetsimple/image git@github.com:queryyetsimple/image.git master
     iplocate = subtree push --prefix=src/queryyetsimple/iplocate git@github.com:queryyetsimple/iplocate.git master
-    log = subtree push --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
+    logs = subtree push --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
     mail = subtree push --prefix=src/queryyetsimple/mail git@github.com:queryyetsimple/mail.git master
     mvc = subtree push --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mvc.git master
     operating = subtree push --prefix=src/queryyetsimple/operating git@github.com:queryyetsimple/operating.git master
@@ -72,7 +72,7 @@ modify this file ../.git/config add alias,then using git string to commit your s
     i18np = subtree pull --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
     imagep = subtree pull --prefix=src/queryyetsimple/image git@github.com:queryyetsimple/image.git master
     iplocatep = subtree pull --prefix=src/queryyetsimple/iplocate git@github.com:queryyetsimple/iplocate.git master
-    logp = subtree pull --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
+    logsp = subtree pull --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
     mailp = subtree pull --prefix=src/queryyetsimple/mail git@github.com:queryyetsimple/mail.git master
     mvcp = subtree pull --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mvc.git master
     operatingp = subtree pull --prefix=src/queryyetsimple/operating git@github.com:queryyetsimple/operating.git master
