@@ -22,6 +22,9 @@
         "coderkungfu/php-queue": "^0.9.1",
         "robmorgan/phinx": "^0.8.0"
     },
+     "replace": {
+        "queryyetsimple/cookie": "self.version"
+    },
     "require-dev": {
         "fzaninotto/faker": "^1.6",
         "phpunit/phpunit": "~4.0"
