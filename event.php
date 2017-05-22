@@ -23,7 +23,7 @@ use queryyetsimple\mvc\project;
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.04.17
- * @version 4.0
+ * @version 1.0
  */
 class event {
     
@@ -165,23 +165,7 @@ class event {
             }
         }
     }
-    
-    /**
-     * 注册一个事件的订阅
-     *
-     * @param object|string $mixSubscriber            
-     * @return void
-     */
-    public function registerSubscribe($mixSubscriber) {
-        // 注入构造器
-        if (is_string ( $mixSubscriber )) {
-            $mixSubscriber = $this->getObjectByClassAndArgs_ ( $mixSubscriber, [ 
-                    $this->objProject 
-            ] );
-        }
-        $mixSubscriber->subscribe ( $this );
-    }
-    
+
     /**
      * 排序监听器
      *
