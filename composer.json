@@ -27,7 +27,7 @@
     },
     "autoload": {
         "psr-4": {
-            "queryyetsimple\\": "src\queryyetsimple"
+            "queryyetsimple\\": "src\\queryyetsimple"
         }
     } 
 }
