@@ -1,12 +1,12 @@
 {
-    "name": "hunzhiwange/queryphp",
+    "name": "hunzhiwange/framework",
     "description": "The QueryPHP Framework.",
     "keywords": ["framework", "queryphp"],
     "license": "MIT",
     "homepage": "http://www.queryphp.com",
     "support": {
-        "issues": "https://github.com/hunzhiwange/queryphp/issues",
-        "source": "https://github.com/hunzhiwange/queryphp"
+        "issues": "https://github.com/hunzhiwange/framework/issues",
+        "source": "https://github.com/hunzhiwange/framework"
     },
     "authors": [
         {
