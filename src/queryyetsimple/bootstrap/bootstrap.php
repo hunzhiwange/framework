@@ -56,7 +56,7 @@ defined ( 'Q_PHPUNIT_SYSTEM' ) or define ( 'Q_PHPUNIT_SYSTEM', false );
  * QueryPHP 版本 | 2017.03.31
  */
 define ( 'Q_VER', '4.0' );
-
+echo 'x';
 /**
  * QueryPHP 自动载入
  */
