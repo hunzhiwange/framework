@@ -18,7 +18,7 @@ modify this file ../.git/config add alias,then using git string to commit your s
     event = subtree push --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
     exception = subtree push --prefix=src/queryyetsimple/exception git@github.com:queryyetsimple/exception.git master
     filesystem = subtree push --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
-    flow = subtree push --prefix=src/queryyetsimple/flow git@github.com:queryyetsimple/flow.git master
+    flows = subtree push --prefix=src/queryyetsimple/flow git@github.com:queryyetsimple/flow.git master
     ftp = subtree push --prefix=src/queryyetsimple/ftp git@github.com:queryyetsimple/ftp.git master
     helper = subtree push --prefix=src/queryyetsimple/helper git@github.com:queryyetsimple/helper.git master
     http = subtree push --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
@@ -65,7 +65,7 @@ modify this file ../.git/config add alias,then using git string to commit your s
     eventp = subtree pull --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
     exceptionp = subtree pull --prefix=src/queryyetsimple/exception git@github.com:queryyetsimple/exception.git master
     filesystemp = subtree pull --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
-    flowp = subtree pull --prefix=src/queryyetsimple/flow git@github.com:queryyetsimple/flow.git master
+    flowsp = subtree pull --prefix=src/queryyetsimple/flow git@github.com:queryyetsimple/flow.git master
     ftpp = subtree pull --prefix=src/queryyetsimple/ftp git@github.com:queryyetsimple/ftp.git master
     helperp = subtree pull --prefix=src/queryyetsimple/helper git@github.com:queryyetsimple/helper.git master
     httpp = subtree pull --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
