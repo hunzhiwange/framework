@@ -15,7 +15,7 @@ namespace queryyetsimple\filesystem;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\exception\exceptions;
 
 /**

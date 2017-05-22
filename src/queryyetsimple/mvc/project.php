@@ -197,15 +197,6 @@ class project extends container {
     }
     
     /**
-     * 扩展路径（composer 路径）
-     *
-     * @return string
-     */
-    public function pathVendor() {
-        return isset ( $this->arrOption ['path_vendor'] ) ? $this->arrOption ['path_vendor'] : $this->strPath . DIRECTORY_SEPARATOR . 'vendor';
-    }
-    
-    /**
      * public url
      *
      * @return string
@@ -337,8 +328,7 @@ class project extends container {
                 'application',
                 'common',
                 'runtime',
-                'public',
-                'vendor' 
+                'public'
         ] as $sKey => $sPath ) {
             $this->instance ( 'path_' . $sPath, $this->{'path' . ucwords ( $sPath )} () );
         }

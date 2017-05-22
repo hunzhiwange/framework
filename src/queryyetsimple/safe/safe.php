@@ -15,7 +15,7 @@ namespace queryyetsimple\safe;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\http\request;
 use queryyetsimple\cookie\cookie;
@@ -30,7 +30,7 @@ use queryyetsimple\cookie\cookie;
  */
 class safe {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 移除魔术方法转义

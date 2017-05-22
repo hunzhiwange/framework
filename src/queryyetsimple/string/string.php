@@ -15,7 +15,7 @@ namespace queryyetsimple\string;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 字符串
@@ -27,7 +27,7 @@ use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
  */
 class string {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 随机字符串

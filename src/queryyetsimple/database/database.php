@@ -16,7 +16,7 @@ namespace queryyetsimple\database;
 queryphp;
 
 use queryyetsimple\exception\exceptions;
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\option\option;
 use queryyetsimple\helper\helper;
 
@@ -30,14 +30,14 @@ use queryyetsimple\helper\helper;
  */
 class database {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'database\type' => 'mysql',
             'database\schema' => '',
             'database\user' => 'root',
@@ -120,7 +120,7 @@ class database {
         
         // 默认参数
         foreach ( $this->initExpansionInstanceArgs_ () as $sOptionType ) {
-            $arrDefaultOption [$sOptionType] = $this->getExpansionInstanceArgs_ ( $sOptionType );
+            $arrDefaultOption [$sOptionType] = $this->classsFacesOption ( $sOptionType );
         }
         
         // 合并参数

@@ -15,7 +15,7 @@ namespace queryyetsimple\encryption;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\option\option;
 
 /**
@@ -28,7 +28,7 @@ use queryyetsimple\option\option;
  */
 class encryption {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 来自 Discuz 经典 PHP 加密算法

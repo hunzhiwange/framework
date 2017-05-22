@@ -15,7 +15,7 @@ namespace queryyetsimple\log;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\option\option;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\assert\assert;
@@ -32,7 +32,7 @@ use queryyetsimple\filesystem\directory;
  */
 class log {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 当前记录的日志信息
@@ -60,7 +60,7 @@ class log {
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'log\enabled' => false,
             'log\level' => 'error,sql,debug,info',
             'log\error_enabled' => false,
@@ -88,17 +88,17 @@ class log {
      */
     public function run($strMessage, $strLevel = 'info', $intMessageType = 3, $strDestination = '', $strExtraHeaders = '') {
         // 是否开启日志
-        if (! $this->getExpansionInstanceArgs_ ( 'log\enabled' )) {
+        if (! $this->classsFacesOption ( 'log\enabled' )) {
             return;
         }
         
         // 错误日志和 sql 日志
-        if ((! $this->getExpansionInstanceArgs_ ( 'log\error_enabled' ) && $strLevel == 'error') || (! $this->getExpansionInstanceArgs_ ( 'log\sql_enabled' ) && $strLevel == 'sql')) {
+        if ((! $this->classsFacesOption ( 'log\error_enabled' ) && $strLevel == 'error') || (! $this->classsFacesOption ( 'log\sql_enabled' ) && $strLevel == 'sql')) {
             return;
         }
         
         // 只记录系统允许的日志级别
-        if (! in_array ( $strLevel, explode ( ',', $this->getExpansionInstanceArgs_ ( 'log\level' ) ) )) {
+        if (! in_array ( $strLevel, explode ( ',', $this->classsFacesOption ( 'log\level' ) ) )) {
             return;
         }
         
@@ -111,7 +111,7 @@ class log {
         }
         
         // 日志消息
-        $strMessage = date ( $this->getExpansionInstanceArgs_ ( 'log\time_format' ) ) . $strMessage . "\r\n";
+        $strMessage = date ( $this->classsFacesOption ( 'log\time_format' ) ) . $strMessage . "\r\n";
         
         // 保存日志
         $strDestination = $this->getPath_ ( $strLevel, $strDestination );
@@ -201,7 +201,7 @@ class log {
         }
         
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成
-        if (is_file ( $sFilePath ) && floor ( $this->getExpansionInstanceArgs_ ( 'log\file_size' ) ) <= filesize ( $sFilePath )) {
+        if (is_file ( $sFilePath ) && floor ( $this->classsFacesOption ( 'log\file_size' ) ) <= filesize ( $sFilePath )) {
             rename ( $sFilePath, dirname ( $sFilePath ) . '/' . date ( 'Y-m-d H.i.s' ) . '~@' . basename ( $sFilePath ) );
         }
     }
@@ -216,7 +216,7 @@ class log {
     private function getPath_($strLevel, $sFilePath = '') {
         // 不存在路径，则直接使用项目默认路径
         if (empty ( $sFilePath )) {
-            $sFilePath = $this->getExpansionInstanceArgs_ ( 'log\path_default' ) . '/' . $strLevel . '/' . date ( $this->getExpansionInstanceArgs_ ( 'log\file_name' ) ) . ".log";
+            $sFilePath = $this->classsFacesOption ( 'log\path_default' ) . '/' . $strLevel . '/' . date ( $this->classsFacesOption ( 'log\file_name' ) ) . ".log";
         }
         return $sFilePath;
     }

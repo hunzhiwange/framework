@@ -15,7 +15,7 @@ namespace queryyetsimple\cookie;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\assert\assert;
 
 /**
@@ -28,14 +28,14 @@ use queryyetsimple\assert\assert;
  */
 class cookie {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'cookie\prefix' => 'q_',
             'cookie\expire' => 86400,
             'cookie\domain' => '',
@@ -66,7 +66,7 @@ class cookie {
         assert::notNull ( $mixValue );
         assert::scalar ( $mixValue );
         
-        $sName = ($in ['prefix'] === true ? $this->getExpansionInstanceArgs_ ( 'cookie\prefix' ) : '') . $sName;
+        $sName = ($in ['prefix'] === true ? $this->classsFacesOption ( 'cookie\prefix' ) : '') . $sName;
         
         if ($mixValue === null || $in ['life'] < 0) {
             $in ['life'] = - 1;
@@ -76,13 +76,13 @@ class cookie {
         } else {
             $_COOKIE [$sName] = $mixValue;
             if ($in ['life'] !== NULL && $in ['life'] === 0) {
-                $in ['life'] = $this->getExpansionInstanceArgs_ ( 'cookie\expire' );
+                $in ['life'] = $this->classsFacesOption ( 'cookie\expire' );
             }
         }
         
         $in ['life'] = $in ['life'] > 0 ? time () + $in ['life'] : ($in ['life'] < 0 ? time () - 31536000 : null);
-        $in ['cookie\domain'] = $in ['cookie\domain'] !== null ? $in ['cookie\domain'] : $this->getExpansionInstanceArgs_ ( 'cookie\domain' );
-        setcookie ( $sName, $mixValue, $in ['life'], $this->getExpansionInstanceArgs_ ( 'cookie\path' ), $in ['cookie\domain'], $_SERVER ['SERVER_PORT'] == 443 ? 1 : 0, $in ['http_only'] );
+        $in ['cookie\domain'] = $in ['cookie\domain'] !== null ? $in ['cookie\domain'] : $this->classsFacesOption ( 'cookie\domain' );
+        setcookie ( $sName, $mixValue, $in ['life'], $this->classsFacesOption ( 'cookie\path' ), $in ['cookie\domain'], $_SERVER ['SERVER_PORT'] == 443 ? 1 : 0, $in ['http_only'] );
     }
     
     /**
@@ -93,7 +93,7 @@ class cookie {
      * @return mixed
      */
     public function get($sName, $bPrefix = true) {
-        $sName = ($bPrefix ? $this->getExpansionInstanceArgs_ ( 'cookie\prefix' ) : '') . $sName;
+        $sName = ($bPrefix ? $this->classsFacesOption ( 'cookie\prefix' ) : '') . $sName;
         return isset ( $_COOKIE [$sName] ) ? $_COOKIE [$sName] : null;
     }
     
@@ -107,7 +107,7 @@ class cookie {
      */
     public function delete($sName, $sCookieDomain = null, $bPrefix = true) {
         if (is_null ( $sCookieDomain ))
-            $sCookieDomain = $this->getExpansionInstanceArgs_ ( 'cookie\domain' );
+            $sCookieDomain = $this->classsFacesOption ( 'cookie\domain' );
         $this->set ( $sName, null, [ 
                 'life' => - 1,
                 'cookie\domain' => $sCookieDomain,
@@ -124,9 +124,9 @@ class cookie {
      */
     public function clear($bOnlyDeletePrefix = true, $sCookieDomain = null) {
         $nCookie = count ( $_COOKIE );
-        $strCookiePrefix = $this->getExpansionInstanceArgs_ ( 'cookie\prefix' );
+        $strCookiePrefix = $this->classsFacesOption ( 'cookie\prefix' );
         if (is_null ( $sCookieDomain ))
-            $sCookieDomain = $this->getExpansionInstanceArgs_ ( 'cookie\domain' );
+            $sCookieDomain = $this->classsFacesOption ( 'cookie\domain' );
         foreach ( $_COOKIE as $sKey => $Val ) {
             if ($bOnlyDeletePrefix === true && $strCookiePrefix) {
                 if (strpos ( $sKey, $strCookiePrefix ) === 0) {

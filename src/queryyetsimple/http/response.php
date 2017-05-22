@@ -16,11 +16,11 @@ namespace queryyetsimple\http;
 queryphp;
 
 use queryyetsimple\mvc\view;
-use queryyetsimple\traits\flow\control as flow_control;
+use queryyetsimple\flow\control as flow_control;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\cookie\cookie;
 use queryyetsimple\assert\assert;
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\router\router;
 use queryyetsimple\xml\xml;
 use queryyetsimple\filesystem\file;
@@ -36,7 +36,7 @@ use queryyetsimple\filesystem\file;
 class response {
     
     use flow_control;
-    use dynamic_expansion {
+    use classs_faces {
         __call as __callExpansion;
     }
     
@@ -132,7 +132,7 @@ class response {
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'view\action_fail' => 'public+fail',
             'view\action_success' => 'public+success' 
     ];
@@ -629,7 +629,7 @@ class response {
                 'time' => 3 
         ], $in );
         $this->assign ( $in );
-        $this->display ( $this->getExpansionInstanceArgs_ ( 'view\action_fail' ) );
+        $this->display ( $this->classsFacesOption ( 'view\action_fail' ) );
     }
     
     /**
@@ -650,7 +650,7 @@ class response {
                 'time' => 1 
         ], $in );
         $this->assign ( $in );
-        $this->display ( $this->getExpansionInstanceArgs_ ( 'view\action_success' ) );
+        $this->display ( $this->classsFacesOption ( 'view\action_success' ) );
     }
     
     /**

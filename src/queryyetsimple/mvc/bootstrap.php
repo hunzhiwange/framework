@@ -103,9 +103,6 @@ class bootstrap {
                 'force' => Q_DEVELOPMENT === 'development' 
         ] );
         
-        // 尝试导入 Composer
-        psr4::importComposer ( $this->objProject->path_vendor );
-        
         // 载入 project 引导文件
         if (is_file ( ($strBootstrap = $this->objProject->path_common . '/bootstrap.php') )) {
             require $strBootstrap;

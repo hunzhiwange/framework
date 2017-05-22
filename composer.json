@@ -30,6 +30,9 @@
         "phpunit/phpunit": "~4.0"
     },
     "autoload": {
+        "files": [
+            "src/queryyetsimple/helper/function.php"
+        ],
         "psr-4": {
             "queryyetsimple\\": "src\\queryyetsimple"
         }

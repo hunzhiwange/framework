@@ -15,7 +15,7 @@ namespace queryyetsimple\router;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\http\request;
 use queryyetsimple\helper\helper;
 use queryyetsimple\mvc\project;
@@ -32,7 +32,7 @@ use queryyetsimple\filesystem\directory;
  */
 class router {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 注册域名
@@ -116,7 +116,7 @@ class router {
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'default_app' => 'home',
             'default_controller' => 'index',
             'default_action' => 'index',
@@ -214,7 +214,7 @@ class router {
         }
         
         // 如果开启了URL解析，则URL模式为非普通模式
-        if (($this->getExpansionInstanceArgs_ ( 'url\model' ) == 'pathinfo' && $in ['normal'] === false) || $in ['custom'] === true) {
+        if (($this->classsFacesOption ( 'url\model' ) == 'pathinfo' && $in ['normal'] === false) || $in ['custom'] === true) {
             // 非自定义 url
             if ($in ['custom'] === false) {
                 // 额外参数
@@ -225,16 +225,16 @@ class router {
                 $sStr = substr ( $sStr, 0, - 1 );
                 
                 // 分析 url
-                $sUrl = ($GLOBALS ['~@url'] ['url_enter'] !== '/' ? $GLOBALS ['~@url'] ['url_enter'] : '') . ($this->getExpansionInstanceArgs_ ( 'default_app' ) != $in ['app'] ? '/' . $in ['app'] . '/' : '/');
+                $sUrl = ($GLOBALS ['~@url'] ['url_enter'] !== '/' ? $GLOBALS ['~@url'] ['url_enter'] : '') . ($this->classsFacesOption ( 'default_app' ) != $in ['app'] ? '/' . $in ['app'] . '/' : '/');
                 
                 if ($sStr) {
                     $sUrl .= $in ['controller'] . '/' . $in ['action'] . $sStr;
                 } else {
                     $sTemp = '';
-                    if ($this->getExpansionInstanceArgs_ ( 'default_controller' ) != $in ['controller'] || $this->getExpansionInstanceArgs_ ( 'default_action' ) != $in ['action']) {
+                    if ($this->classsFacesOption ( 'default_controller' ) != $in ['controller'] || $this->classsFacesOption ( 'default_action' ) != $in ['action']) {
                         $sTemp .= $in ['controller'];
                     }
-                    if ($this->getExpansionInstanceArgs_ ( 'default_action' ) != $in ['action']) {
+                    if ($this->classsFacesOption ( 'default_action' ) != $in ['action']) {
                         $sTemp .= '/' . $in ['action'];
                     }
                     
@@ -273,7 +273,7 @@ class router {
             }
             
             if ($in ['suffix'] && $sUrl) {
-                $sUrl .= $in ['suffix'] === true ? $this->getExpansionInstanceArgs_ ( 'url\html_suffix' ) : $in ['suffix'];
+                $sUrl .= $in ['suffix'] === true ? $this->classsFacesOption ( 'url\html_suffix' ) : $in ['suffix'];
             }
         }         
 
@@ -286,13 +286,13 @@ class router {
             $sStr = rtrim ( $sStr, '&' );
             
             $sTemp = '';
-            if ($in ['normal'] === true || $this->getExpansionInstanceArgs_ ( 'default_app' ) != $in ['app']) {
+            if ($in ['normal'] === true || $this->classsFacesOption ( 'default_app' ) != $in ['app']) {
                 $sTemp [] = $in ['args_app'] . '=' . $in ['app'];
             }
-            if ($this->getExpansionInstanceArgs_ ( 'default_controller' ) != $in ['controller']) {
+            if ($this->classsFacesOption ( 'default_controller' ) != $in ['controller']) {
                 $sTemp [] = $in ['args_controller'] . '=' . $in ['controller'];
             }
-            if ($this->getExpansionInstanceArgs_ ( 'default_action' ) != $in ['action']) {
+            if ($this->classsFacesOption ( 'default_action' ) != $in ['action']) {
                 $sTemp [] = $in ['args_action'] . '=' . $in ['action'];
             }
             if ($sStr) {
@@ -306,7 +306,7 @@ class router {
         }
         
         // 子域名支持
-        if ($this->getExpansionInstanceArgs_ ( 'url\make_subdomain_on' ) === true) {
+        if ($this->classsFacesOption ( 'url\make_subdomain_on' ) === true) {
             if ($in ['subdomain']) {
                 $sUrl = $this->urlWithDomain_ ( $in ['subdomain'] ) . $sUrl;
             }
@@ -637,7 +637,7 @@ class router {
         $arrNextParse = [ ];
         
         // 解析域名
-        if ($this->getExpansionInstanceArgs_ ( 'url\router_domain_on' ) === true) {
+        if ($this->classsFacesOption ( 'url\router_domain_on' ) === true) {
             if (($arrParseData = $this->parseDomain_ ( $arrNextParse )) !== false) {
                 return $arrParseData;
             }
@@ -661,14 +661,14 @@ class router {
         foreach ( $this->arrDomains as $sKey => $arrDomains ) {
             
             // 直接匹配成功
-            if ($strHost === $sKey || $strHost === $sKey . '.' . $this->getExpansionInstanceArgs_ ( 'url\router_domain_top' )) {
+            if ($strHost === $sKey || $strHost === $sKey . '.' . $this->classsFacesOption ( 'url\router_domain_top' )) {
                 $booFindDomain = true;
             }            
 
             // 域名参数支持
             elseif (strpos ( $sKey, '{' ) !== false) {
-                if (strpos ( $sKey, $this->getExpansionInstanceArgs_ ( 'url\router_domain_top' ) ) === false) {
-                    $sKey = $sKey . '.' . $this->getExpansionInstanceArgs_ ( 'url\router_domain_top' );
+                if (strpos ( $sKey, $this->classsFacesOption ( 'url\router_domain_top' ) ) === false) {
+                    $sKey = $sKey . '.' . $this->classsFacesOption ( 'url\router_domain_top' );
                 }
                 
                 // 解析匹配正则
@@ -744,7 +744,7 @@ class router {
                         $arrRouter ['args'] [] = $arrMatches [1];
                         return '(' . (isset ( $arrRouter ['where'] [$arrMatches [1]] ) ? $arrRouter ['where'] [$arrMatches [1]] : static::DEFAULT_REGEX) . ')';
                     }, $arrRouter ['regex'] );
-                    $arrRouter ['regex'] = '/^\/' . $arrRouter ['regex'] . ((isset ( $arrRouter ['strict'] ) ? $arrRouter ['strict'] : $this->getExpansionInstanceArgs_ ( 'url\router_strict' )) ? '$' : '') . '/';
+                    $arrRouter ['regex'] = '/^\/' . $arrRouter ['regex'] . ((isset ( $arrRouter ['strict'] ) ? $arrRouter ['strict'] : $this->classsFacesOption ( 'url\router_strict' )) ? '$' : '') . '/';
                     
                     // 匹配结果
                     if (preg_match ( $arrRouter ['regex'], $sPathinfo, $arrRes )) {
@@ -827,7 +827,7 @@ class router {
      * @return boolean
      */
     private function checkOpen_() {
-        return $this->getExpansionInstanceArgs_ ( 'url\router_cache' );
+        return $this->classsFacesOption ( 'url\router_cache' );
     }
     
     /**
@@ -1000,7 +1000,7 @@ class router {
         static $sHttpPrefix = '', $sHttpSuffix = '';
         if (! $sHttpPrefix) {
             $sHttpPrefix = request::isSsls () ? 'https://' : 'http://';
-            $sHttpSuffix = $this->getExpansionInstanceArgs_ ( 'url\router_domain_top' );
+            $sHttpSuffix = $this->classsFacesOption ( 'url\router_domain_top' );
         }
         return $sHttpPrefix . ($sDomain && $sDomain != '*' ? $sDomain . '.' : '') . $sHttpSuffix;
     }

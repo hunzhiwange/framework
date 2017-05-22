@@ -32,7 +32,7 @@ ini_set ( 'default_charset', 'utf8' );
 /**
  * QueryPHP 路径定义
  */
-define ( 'Q_PATH', __DIR__ );
+define ( 'Q_PATH', dirname ( __DIR__ ) );
 
 /**
  * QueryPHP 调试
@@ -56,11 +56,11 @@ defined ( 'Q_PHPUNIT_SYSTEM' ) or define ( 'Q_PHPUNIT_SYSTEM', false );
  * QueryPHP 版本 | 2017.03.31
  */
 define ( 'Q_VER', '4.0' );
-echo 'x';
+
 /**
  * QueryPHP 自动载入
  */
-require __DIR__ . '/psr4/psr4.php';
+require Q_PATH . '/psr4/psr4.php';
 spl_autoload_register ( [ 
         'queryyetsimple\psr4\psr4',
         'autoload' 
@@ -69,15 +69,19 @@ spl_autoload_register ( [
 /**
  * QueryPHP 注册框架命名空间
  */
-queryyetsimple\psr4\psr4::import ( [ 
-        'queryyetsimple',
-        'qys' 
-], Q_PATH, [ 
+queryyetsimple\psr4\psr4::import ( 'queryyetsimple', Q_PATH, [ 
         'ignore' => [ 
                 'resource' 
         ],
         'force' => Q_DEVELOPMENT === 'development' 
 ] );
+
+/**
+ * 导入 composer
+ */
+if (! is_file ( ($strComposer = Q_PATH . '/../../../../autoload.php') ))
+    die ( 'We Need Composer' );
+queryyetsimple\psr4\psr4::composer ( require $strComposer );
 
 /**
  * QueryPHP 系统错误处理
@@ -92,55 +96,4 @@ if (PHP_SAPI != 'cli') {
             'queryyetsimple\exception\handle',
             'shutdownHandle' 
     ] );
-}
-
-if (! function_exists ( '__' )) {
-    /**
-     * 语言包
-     *
-     * @param string|null $sValue            
-     * @return mixed
-     */
-    function __($sValue = null /*argvs*/ ){
-        if (func_num_args () > 1) { // 代入参数
-            $sValue = call_user_func_array ( 'sprintf', func_get_args () );
-        }
-        return $sValue;
-    }
-}
-
-if (! function_exists ( 'dump' )) {
-    /**
-     * 调试一个变量
-     *
-     * @param mixed $mixValue            
-     * @return mixed
-     */
-    function dump($mixValue /*argvs*/ ){
-        return call_user_func_array ( [ 
-                'queryyetsimple\debug\dump',
-                'dump' 
-        ], func_get_args () );
-    }
-}
-
-if (! function_exists ( 'project' )) {
-    /**
-     * 返回项目容器
-     *
-     * @param string|null $sInstance            
-     * @return \queryyetsimple\mvc\queryyetsimple\mvc\project
-     */
-    function project($sInstance = null /*argvs*/) {
-        if ($sInstance === null) {
-            return queryyetsimple\mvc\project::bootstrap ();
-        } else {
-            $arrArgs = func_get_args ();
-            $strFacades = array_shift ( $arrArgs );
-            if (($objFacades = queryyetsimple\mvc\project::bootstrap ()->make ( $strFacades, $arrArgs ))) {
-                return $objFacades;
-            }
-            queryyetsimple\exception\exceptions::badMethodCallException ( __ ( '容器中未发现注入的 %s', $sInstance ) );
-        }
-    }
 }

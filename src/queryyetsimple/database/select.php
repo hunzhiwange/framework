@@ -16,7 +16,7 @@ namespace queryyetsimple\database;
 queryphp;
 
 use PDO;
-use queryyetsimple\traits\flow\control as flow_control;
+use queryyetsimple\flow\control as flow_control;
 use queryyetsimple\datastruct\collection\collection;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\assert\assert;

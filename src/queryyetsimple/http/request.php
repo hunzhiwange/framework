@@ -16,7 +16,7 @@ namespace queryyetsimple\http;
 queryphp;
 
 use queryyetsimple\router\router;
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\mvc\project;
 use queryyetsimple\psr4\psr4;
 
@@ -30,7 +30,7 @@ use queryyetsimple\psr4\psr4;
  */
 class request {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 基础 url
@@ -72,7 +72,7 @@ class request {
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             '~apps~' => [ 
                     '~_~',
                     'home' 
@@ -132,7 +132,7 @@ class request {
             return $this->strApp;
         } else {
             $sVar = \queryyetsimple\mvc\project::ARGS_APP;
-            return $this->strApp = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->getExpansionInstanceArgs_ ( 'default_app' ));
+            return $this->strApp = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_app' ));
         }
     }
     
@@ -146,7 +146,7 @@ class request {
             return $this->strController;
         } else {
             $sVar = \queryyetsimple\mvc\project::ARGS_CONTROLLER;
-            return $this->strController = $_GET [$sVar] = ! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->getExpansionInstanceArgs_ ( 'default_controller' );
+            return $this->strController = $_GET [$sVar] = ! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_controller' );
         }
     }
     
@@ -160,7 +160,7 @@ class request {
             return $this->strAction;
         } else {
             $sVar = \queryyetsimple\mvc\project::ARGS_ACTION;
-            return $this->strAction = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->getExpansionInstanceArgs_ ( 'default_action' ));
+            return $this->strAction = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_action' ));
         }
     }
     
@@ -349,12 +349,12 @@ class request {
         $_SERVER ['REQUEST_URI'] = isset ( $_SERVER ['REQUEST_URI'] ) ? $_SERVER ['REQUEST_URI'] : $_SERVER ["HTTP_X_REWRITE_URL"]; // For IIS
                                                                                                                                     
         // 分析 pathinfo
-        if ($this->getExpansionInstanceArgs_ ( 'url\model' ) == 'pathinfo') {
+        if ($this->classsFacesOption ( 'url\model' ) == 'pathinfo') {
             // 分析pathinfo
             $this->filterPathInfo_ ();
             
             // 解析结果
-            $_GET = array_merge ( $_GET, $this->getExpansionInstanceArgs_ ( 'url\router_on' ) === true && ($arrRouter = router::parses ()) ? $arrRouter : $this->parsePathInfo_ () );
+            $_GET = array_merge ( $_GET, $this->classsFacesOption ( 'url\router_on' ) === true && ($arrRouter = router::parses ()) ? $arrRouter : $this->parsePathInfo_ () );
         }
     }
     
@@ -422,7 +422,7 @@ class request {
         if ($arrArgv) {
             
             // app
-            if (in_array ( $arrArgv [0], $this->getExpansionInstanceArgs_ ( '~apps~' ) )) {
+            if (in_array ( $arrArgv [0], $this->classsFacesOption ( '~apps~' ) )) {
                 $_GET [\queryyetsimple\mvc\project::ARGS_APP] = array_shift ( $arrArgv );
             }
             
@@ -458,9 +458,9 @@ class request {
         $arrPathInfo = [ ];
         $sPathInfo = $_SERVER ['PATH_INFO'];
         
-        $arrPaths = explode ( $this->getExpansionInstanceArgs_ ( 'url\pathinfo_depr' ), trim ( $sPathInfo, '/' ) );
+        $arrPaths = explode ( $this->classsFacesOption ( 'url\pathinfo_depr' ), trim ( $sPathInfo, '/' ) );
         
-        if (in_array ( $arrPaths [0], $this->getExpansionInstanceArgs_ ( '~apps~' ) )) {
+        if (in_array ( $arrPaths [0], $this->classsFacesOption ( '~apps~' ) )) {
             $arrPathInfo [\queryyetsimple\mvc\project::ARGS_APP] = array_shift ( $arrPaths );
         }
         
@@ -507,7 +507,7 @@ class request {
             $arrResult ['enter_bak'] = $arrResult ['enter'];
             
             // 如果为重写模式
-            if ($this->getExpansionInstanceArgs_ ( 'url\rewrite' ) === true) {
+            if ($this->classsFacesOption ( 'url\rewrite' ) === true) {
                 $arrResult ['enter'] = dirname ( $arrResult ['enter'] );
                 if ($arrResult ['enter'] == '\\') {
                     $arrResult ['enter'] = '/';
@@ -675,8 +675,8 @@ class request {
      * @return string
      */
     private function clearHtmlSuffix_($sVal) {
-        if ($this->getExpansionInstanceArgs_ ( 'url\html_suffix' ) && ! empty ( $sVal )) {
-            $sSuffix = substr ( $this->getExpansionInstanceArgs_ ( 'url\html_suffix' ), 1 );
+        if ($this->classsFacesOption ( 'url\html_suffix' ) && ! empty ( $sVal )) {
+            $sSuffix = substr ( $this->classsFacesOption ( 'url\html_suffix' ), 1 );
             $sVal = preg_replace ( '/\.' . $sSuffix . '$/', '', $sVal );
         }
         return $sVal;

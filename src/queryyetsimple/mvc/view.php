@@ -20,7 +20,7 @@ use queryyetsimple\database\database;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\filesystem\file;
 use queryyetsimple\http\request;
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\cookie\cookie;
 
 /**
@@ -33,7 +33,7 @@ use queryyetsimple\cookie\cookie;
  */
 class view {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 当前主题目录
@@ -61,7 +61,7 @@ class view {
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'view\cache_children' => false,
             'view\moduleaction_depr' => '_',
             'view\suffix' => '.html',
@@ -130,7 +130,7 @@ class view {
         $sContent = theme::displays ( $sFile, false );
         
         // 过滤编译文件子模板定位注释标签，防止在网页头部出现注释，导致 IE 浏览器不居中
-        if (Q_DEBUG === true && $this->getExpansionInstanceArgs_ ( 'view\cache_children' ) === true) {
+        if (Q_DEBUG === true && $this->classsFacesOption ( 'view\cache_children' ) === true) {
             $sContent = preg_replace ( "/<!--<\#\#\#\#incl\*(.*?)\*ude\#\#\#\#>-->/", '', $sContent );
             $sContent = preg_replace ( "/<!--<\/\#\#\#\#incl\*(.*?)\*ude\#\#\#\#\/>-->/", '', $sContent );
         }
@@ -150,10 +150,10 @@ class view {
      * @return string
      */
     public function parseContext() {
-        if (! $this->getExpansionInstanceArgs_ ('view\switch')) {
-            $sThemeSet = $this->getExpansionInstanceArgs_ ('view\default');
+        if (! $this->classsFacesOption ('view\switch')) {
+            $sThemeSet = $this->classsFacesOption ('view\default');
         } else {
-            if ($this->getExpansionInstanceArgs_ ('view\cookie_app') === true) {
+            if ($this->classsFacesOption ('view\cookie_app') === true) {
                 $sCookieName = static::$objProjectContainer->app_name . '_view';
             } else {
                 $sCookieName = 'view';
@@ -166,7 +166,7 @@ class view {
                 if (cookie::gets ( $sCookieName )) {
                     $sThemeSet = cookie::gets ( $sCookieName );
                 } else {
-                    $sThemeSet = $this->getExpansionInstanceArgs_ ('view\default');
+                    $sThemeSet = $this->classsFacesOption ('view\default');
                 }
             }
         }
@@ -224,7 +224,7 @@ class view {
         } else {
             // 空取默认控制器和方法
             if ($sTpl == '') {
-                $sTpl = static::$objProjectContainer->controller_name . $this->getExpansionInstanceArgs_ ( 'view\moduleaction_depr' ) . static::$objProjectContainer->action_name;
+                $sTpl = static::$objProjectContainer->controller_name . $this->classsFacesOption ( 'view\moduleaction_depr' ) . static::$objProjectContainer->action_name;
             }
             
             if (strpos ( $sTpl, '@' )) { // 分析主题
@@ -237,9 +237,9 @@ class view {
             $sTpl = str_replace ( [ 
                     '+',
                     ':' 
-            ], $this->getExpansionInstanceArgs_ ( 'view\moduleaction_depr' ), $sTpl );
+            ], $this->classsFacesOption ( 'view\moduleaction_depr' ), $sTpl );
             
-            return static::$objProjectContainer->path_app_theme . '/' . (isset ( $sTheme ) ? $sTheme : static::$objProjectContainer->name_app_theme) . '/' . $sTpl . ($sExt ?  : $this->getExpansionInstanceArgs_ ( 'view\suffix' ));
+            return static::$objProjectContainer->path_app_theme . '/' . (isset ( $sTheme ) ? $sTheme : static::$objProjectContainer->name_app_theme) . '/' . $sTpl . ($sExt ?  : $this->classsFacesOption ( 'view\suffix' ));
         }
     }
     

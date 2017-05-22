@@ -17,7 +17,7 @@ queryphp;
 
 use queryyetsimple\mvc\view;
 use queryyetsimple\exception\exceptions;
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\mvc\project;
 use queryyetsimple\helper\helper;
 use queryyetsimple\filesystem\directory;
@@ -32,7 +32,7 @@ use queryyetsimple\filesystem\directory;
  */
 class compilers {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * code 支持的特殊别名映射
@@ -232,7 +232,7 @@ class compilers {
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'theme_cache_children' => false,
             'theme_var_identify' => '',
             'theme_notallows_func' => 'exit,die,return',
@@ -730,7 +730,7 @@ out += '";
         }
         
         // 子模板合并到主模板
-        if ($this->getExpansionInstanceArgs_ ( 'theme_cache_children' )) {
+        if ($this->classsFacesOption ( 'theme_cache_children' )) {
             $sMd5 = md5 ( $arrAttr ['file'] );
             $sCompiled = "<!--<####incl*" . $sMd5 . "*ude####>-->";
             $sCompiled .= '<?' . 'php $this->display( ' . $arrAttr ['file'] . ', true, __FILE__,\'' . $sMd5 . '\'   ); ?' . '>';
@@ -1032,7 +1032,7 @@ out += '";
                 }
                 
                 if ($bIsObject === false) { // 非对象
-                    switch (strtolower ( $this->getExpansionInstanceArgs_ ( 'theme_var_identify' ) )) {
+                    switch (strtolower ( $this->classsFacesOption ( 'theme_var_identify' ) )) {
                         case 'array' : // 识别为数组
                             $sName = '$' . $arrVars [0] . '[\'' . $arrVars [1] . '\']' . ($this->arrayHandler_ ( $arrVars ));
                             break;
@@ -1076,7 +1076,7 @@ out += '";
     private function parseVarFunction_($sName, $arrVar, $bJs = false) {
         $nLen = count ( $arrVar );
         // 取得模板禁止使用函数列表
-        $arrNot = explode ( ',', $this->getExpansionInstanceArgs_ ( 'theme_notallows_func' . ($bJs ? '' : '_js') ) );
+        $arrNot = explode ( ',', $this->classsFacesOption ( 'theme_notallows_func' . ($bJs ? '' : '_js') ) );
         for($nI = 0; $nI < $nLen; $nI ++) {
             if (0 === stripos ( $arrVar [$nI], 'default=' )) {
                 $arrArgs = explode ( '=', $arrVar [$nI], 2 );

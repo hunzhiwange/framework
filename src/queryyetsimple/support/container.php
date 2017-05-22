@@ -20,7 +20,7 @@ use ReflectionFunction;
 use ReflectionMethod;
 use ReflectionClass;
 use ArrayAccess;
-use queryyetsimple\traits\flow\control as flow_control;
+use queryyetsimple\flow\control as flow_control;
 use queryyetsimple\support\interfaces\container as interfaces_container;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\helper\helper;

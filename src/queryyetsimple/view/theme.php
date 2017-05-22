@@ -17,7 +17,7 @@ queryphp;
 
 use queryyetsimple\mvc\view;
 use queryyetsimple\exception\exceptions;
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\filesystem\file;
 use queryyetsimple\mvc\project;
 
@@ -31,7 +31,7 @@ use queryyetsimple\mvc\project;
  */
 class theme {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 变量值
@@ -45,7 +45,7 @@ class theme {
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'theme_cache_lifetime' => - 1 
     ];
     
@@ -181,12 +181,12 @@ class theme {
         }
         
         // 编译过期时间为 -1 表示永不过期
-        if ($this->getExpansionInstanceArgs_ ( 'theme_cache_lifetime' ) === - 1) {
+        if ($this->classsFacesOption ( 'theme_cache_lifetime' ) === - 1) {
             return false;
         }
         
         // 缓存时间到期
-        if (filemtime ( $sCachePath ) + intval ( $this->getExpansionInstanceArgs_ ( 'theme_cache_lifetime' ) ) < time ()) {
+        if (filemtime ( $sCachePath ) + intval ( $this->classsFacesOption ( 'theme_cache_lifetime' ) ) < time ()) {
             return true;
         }
         

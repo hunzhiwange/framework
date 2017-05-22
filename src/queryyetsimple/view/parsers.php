@@ -17,7 +17,7 @@ queryphp;
 
 use queryyetsimple\datastruct\queue\stack;
 use queryyetsimple\exception\exceptions;
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\helper\helper;
 
@@ -31,7 +31,7 @@ use queryyetsimple\helper\helper;
  */
 class parsers {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 分析器
@@ -140,7 +140,7 @@ class parsers {
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'theme_strip_space' => true,
             'theme_tag_note' => false 
     ];
@@ -277,7 +277,7 @@ class parsers {
         }
         
         // 清理模板编译文件空格
-        if ($this->getExpansionInstanceArgs_ ( 'theme_strip_space' ) === true) {
+        if ($this->classsFacesOption ( 'theme_strip_space' ) === true) {
             
             /**
              * 清理 HTML 清除换行符,清除制表符,去掉注释标记
@@ -1097,7 +1097,7 @@ class parsers {
      * @return array
      */
     protected function getTag($sType) {
-        return $this->arrTag [$sType . ($this->getExpansionInstanceArgs_ ( 'theme_tag_note' ) === true ? '_node' : '')];
+        return $this->arrTag [$sType . ($this->classsFacesOption ( 'theme_tag_note' ) === true ? '_node' : '')];
     }
     
     // ######################################################

@@ -15,7 +15,7 @@ namespace queryyetsimple\i18n;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\cookie\cookie;
 
@@ -29,7 +29,7 @@ use queryyetsimple\cookie\cookie;
  */
 class i18n {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 是否开启语言
@@ -78,7 +78,7 @@ class i18n {
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'i18n\switch' => true,
             'i18n\cookie_app' => false,
             'i18n\default' => 'zh-cn',
@@ -148,7 +148,7 @@ class i18n {
      */
     public function addI18n($sI18nName, $arrData = []) {
         if (! $sI18nName || ! is_string ( $sI18nName )) {
-            exceptions::throwException ( 'I18n name not allowed empty!' );
+            exceptions::throwException ( 'I18n name not allowed empty.' );
         }
         
         if (array_key_exists ( $sI18nName, $this->arrText )) {
@@ -164,10 +164,10 @@ class i18n {
      * @return string
      */
     public function parseContext() {
-        if (! $this->getExpansionInstanceArgs_ ( 'i18n\switch' )) {
-            $sI18nSet = $this->getExpansionInstanceArgs_ ( 'i18n\default' );
-        } else {
-            if ($this->getExpansionInstanceArgs_ ( 'i18n\cookie_app' ) === true) {
+        if (! $this->classsFacesOption ( 'i18n\switch' )) {
+            $sI18nSet = $this->classsFacesOption ( 'i18n\default' );
+        } else {var_dump($sI18nSet);
+            if ($this->classsFacesOption ( 'i18n\cookie_app' ) === true) {
                 $sCookieName = static::$objProjectContainer->app_name . '_i18n';
             } else {
                 $sCookieName = 'i18n';
@@ -180,16 +180,16 @@ class i18n {
             } elseif ($sCookieName) {
                 $sI18nSet = cookie::gets ( $sCookieName );
                 if (empty ( $sI18nSet )) {
-                    $sI18nSet = $this->getExpansionInstanceArgs_ ( 'i18n\default' );
+                    $sI18nSet = $this->classsFacesOption ( 'i18n\default' );
                 }
-            } elseif ($this->getExpansionInstanceArgs_ ( 'i18n\auto_accept' ) && isset ( $_SERVER ['HTTP_ACCEPT_LANGUAGE'] )) {
+            } elseif ($this->classsFacesOption ( 'i18n\auto_accept' ) && isset ( $_SERVER ['HTTP_ACCEPT_LANGUAGE'] )) {
                 preg_match ( '/^([a-z\-]+)/i', $_SERVER ['HTTP_ACCEPT_LANGUAGE'], $arrMatches );
                 $sI18nSet = $arrMatches [1];
             } else {
-                $sI18nSet = $this->getExpansionInstanceArgs_ ( 'i18n\default' );
+                $sI18nSet = $this->classsFacesOption ( 'i18n\default' );
             }
         }
-        $this->setDefaultContext ( $this->getExpansionInstanceArgs_ ( 'i18n\default' ) );
+        $this->setDefaultContext ( $this->classsFacesOption ( 'i18n\default' ) );
         $this->setContext ( $sI18nSet );
         
         return $sI18nSet;

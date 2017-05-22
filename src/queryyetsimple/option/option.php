@@ -15,7 +15,7 @@ namespace queryyetsimple\option;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 配置管理类
@@ -27,7 +27,7 @@ use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
  */
 class option {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 配置数据

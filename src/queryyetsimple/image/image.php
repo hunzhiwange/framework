@@ -16,7 +16,7 @@ namespace queryyetsimple\image;
 queryphp;
 
 use queryyetsimple\exception\exceptions;
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\filesystem\directory;
 
 /**
@@ -29,7 +29,7 @@ use queryyetsimple\filesystem\directory;
  */
 class image {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 创建缩略图

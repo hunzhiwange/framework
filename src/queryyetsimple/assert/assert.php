@@ -16,7 +16,7 @@ namespace queryyetsimple\assert;
 queryphp;
 
 use queryyetsimple\exception\exceptions;
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 断言类
@@ -28,7 +28,7 @@ use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
  */
 class assert {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 是否开启断言

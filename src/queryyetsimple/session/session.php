@@ -15,7 +15,7 @@ namespace queryyetsimple\session;
 ##########################################################
 queryphp;
 
-use queryyetsimple\traits\dynamic\expansion as dynamic_expansion;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\assert\assert;
 use queryyetsimple\session\interfaces\session as interfaces_session;
 
@@ -29,14 +29,14 @@ use queryyetsimple\session\interfaces\session as interfaces_session;
  */
 class session implements interfaces_session {
     
-    use dynamic_expansion;
+    use classs_faces;
     
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrInitExpansionInstanceArgs = [ 
+    protected $arrClasssFacesOption = [ 
             'session\prefix' => 'q_',
             'session\id' => null,
             'session\name' => null,
@@ -61,8 +61,8 @@ class session implements interfaces_session {
             ini_set ( 'session.auto_start', 0 );
             
             // 设置 session id
-            if ($this->getExpansionInstanceArgs_ ( 'session\id' )) {
-                session_id ( $this->getExpansionInstanceArgs_ ( 'session\id' ) );
+            if ($this->classsFacesOption ( 'session\id' )) {
+                session_id ( $this->classsFacesOption ( 'session\id' ) );
             } else {
                 if (is_null ( $this->parseSessionId () )) {
                     $this->sessionId ( uniqid ( dechex ( mt_rand () ) ) );
@@ -70,48 +70,48 @@ class session implements interfaces_session {
             }
             
             // cookie domain
-            if ($this->getExpansionInstanceArgs_ ( 'session\cookie_domain' )) {
-                $this->cookieDomain ( $this->getExpansionInstanceArgs_ ( 'session\cookie_domain' ) );
+            if ($this->classsFacesOption ( 'session\cookie_domain' )) {
+                $this->cookieDomain ( $this->classsFacesOption ( 'session\cookie_domain' ) );
             }
             
             // session name
-            if ($this->getExpansionInstanceArgs_ ( 'session\name' )) {
-                $this->sessionName ( $this->getExpansionInstanceArgs_ ( 'session\name' ) );
+            if ($this->classsFacesOption ( 'session\name' )) {
+                $this->sessionName ( $this->classsFacesOption ( 'session\name' ) );
             }
             
             // cache expire
-            if ($this->getExpansionInstanceArgs_ ( 'session\cache_expire' )) {
-                $this->cacheExpire ( $this->getExpansionInstanceArgs_ ( 'session\cache_expire' ) );
+            if ($this->classsFacesOption ( 'session\cache_expire' )) {
+                $this->cacheExpire ( $this->classsFacesOption ( 'session\cache_expire' ) );
             }
             
             // gc maxlifetime
-            if ($this->getExpansionInstanceArgs_ ( 'session\gc_maxlifetime' )) {
-                $this->gcMaxlifetime ( $this->getExpansionInstanceArgs_ ( 'session\gc_maxlifetime' ) );
+            if ($this->classsFacesOption ( 'session\gc_maxlifetime' )) {
+                $this->gcMaxlifetime ( $this->classsFacesOption ( 'session\gc_maxlifetime' ) );
             }
             
             // cookie lifetime
-            if ($this->getExpansionInstanceArgs_ ( 'session\cookie_lifetime' )) {
-                $this->cookieLifetime ( $this->getExpansionInstanceArgs_ ( 'session\cookie_lifetime' ) );
+            if ($this->classsFacesOption ( 'session\cookie_lifetime' )) {
+                $this->cookieLifetime ( $this->classsFacesOption ( 'session\cookie_lifetime' ) );
             }
             
             // cache limiter
-            if ($this->getExpansionInstanceArgs_ ( 'session\cache_limiter' )) {
-                $this->cacheLimiter ( $this->getExpansionInstanceArgs_ ( 'session\cache_limiter' ) );
+            if ($this->classsFacesOption ( 'session\cache_limiter' )) {
+                $this->cacheLimiter ( $this->classsFacesOption ( 'session\cache_limiter' ) );
             }
             
             // save path
-            if ($this->getExpansionInstanceArgs_ ( 'session\save_path' )) {
-                $this->savePath ( $this->getExpansionInstanceArgs_ ( 'session\save_path' ) );
+            if ($this->classsFacesOption ( 'session\save_path' )) {
+                $this->savePath ( $this->classsFacesOption ( 'session\save_path' ) );
             }
             
             // use_trans_sid
-            if ($this->getExpansionInstanceArgs_ ( 'session\use_trans_sid' )) {
-                $this->useTransSid ( $this->getExpansionInstanceArgs_ ( 'session\use_trans_sid' ) );
+            if ($this->classsFacesOption ( 'session\use_trans_sid' )) {
+                $this->useTransSid ( $this->classsFacesOption ( 'session\use_trans_sid' ) );
             }
             
             // gc_probability
-            if ($this->getExpansionInstanceArgs_ ( 'session\gc_probability' )) {
-                $this->gcProbability ( $this->getExpansionInstanceArgs_ ( 'session\gc_probability' ) );
+            if ($this->classsFacesOption ( 'session\gc_probability' )) {
+                $this->gcProbability ( $this->classsFacesOption ( 'session\gc_probability' ) );
             }
             
             // 启动 session
@@ -181,7 +181,7 @@ class session implements interfaces_session {
      */
     public function clear($bOnlyDeletePrefix = true) {
         $nSession = count ( $_SESSION );
-        $strSessionPrefix = $this->getExpansionInstanceArgs_ ( 'session\prefix' );
+        $strSessionPrefix = $this->classsFacesOption ( 'session\prefix' );
         foreach ( $_SESSION as $sKey => $Val ) {
             if ($bOnlyDeletePrefix === true && $strSessionPrefix) {
                 if (strpos ( $sKey, $strSessionPrefix ) === 0) {
@@ -385,6 +385,6 @@ class session implements interfaces_session {
      * @return string
      */
     private function getName_($sName, $bPrefix = true) {
-        return ($bPrefix ? $this->getExpansionInstanceArgs_ ( 'session\prefix' ) : '') . $sName;
+        return ($bPrefix ? $this->classsFacesOption ( 'session\prefix' ) : '') . $sName;
     }
 }

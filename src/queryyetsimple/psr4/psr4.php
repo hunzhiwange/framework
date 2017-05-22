@@ -30,6 +30,13 @@ use queryyetsimple\filesystem\directory;
 class psr4 {
     
     /**
+     * 设置 composer
+     *
+     * @var \Composer\Autoload\ClassLoader
+     */
+    private static $objComposer;
+    
+    /**
      * 是否启用自动载入
      *
      * @var boolean
@@ -56,6 +63,20 @@ class psr4 {
      * @var string
      */
     const NAMESPACE_CACHE = '.namespace';
+    
+    /**
+     * 设置 composer
+     *
+     * @param null|\Composer\Autoload\ClassLoader $mixComposer
+     *            当前的类名
+     * @return void|\Composer\Autoload\ClassLoader
+     */
+    public static function composer($mixComposer) {
+        if (is_null ( $mixComposer ))
+            return static::$objComposer;
+        elseif ($mixComposer)
+            static::$objComposer = $mixComposer;
+    }
     
     /**
      * 自动载入
@@ -113,7 +134,7 @@ class psr4 {
     /**
      * 导入一个目录中命名空间结构
      *
-     * @param string|array $mixNamespace
+     * @param string $sNamespace
      *            命名空间名字
      * @param string $sPackage
      *            命名空间路径
@@ -122,7 +143,7 @@ class psr4 {
      *            force 是否强制更新缓存
      * @return void
      */
-    public static function import($mixNamespace, $sPackage, $in = []) {
+    public static function import($sNamespace, $sPackage, $in = []) {
         $in = array_merge ( [ 
                 'ignore' => [ ],
                 'force' => false 
@@ -135,7 +156,7 @@ class psr4 {
         
         // 包路径
         $sPackagePath = realpath ( $sPackage );
-        $sCache = (static::$sCachePackagePath ?  : $sPackagePath) . '/' . (is_array ( $mixNamespace ) ? reset ( $mixNamespace ) : $mixNamespace) . static::NAMESPACE_CACHE;
+        $sCache = (static::$sCachePackagePath ?  : $sPackagePath) . '/' . $sNamespace . static::NAMESPACE_CACHE;
         $sPackagePath .= '/';
         
         if ($in ['force'] === true || ! is_file ( $sCache )) {
@@ -155,17 +176,9 @@ class psr4 {
             $arrPath = static::readCache_ ( $sCache );
         }
         
-        if (! is_array ( $mixNamespace )) {
-            $mixNamespace = [ 
-                    $mixNamespace 
-            ];
-        }
-        
-        foreach ( $mixNamespace as $sNamespace ) {
-            static::addNamespace ( $sNamespace, $sPackage );
-            foreach ( $arrPath as $sPath ) {
-                static::addNamespace ( $sNamespace . '\\' . $sPath, $sPackage . '/' . $sPath );
-            }
+        static::addNamespace ( $sNamespace, $sPackage );
+        foreach ( $arrPath as $sPath ) {
+            static::addNamespace ( $sNamespace . '\\' . $sPath, $sPackage . '/' . $sPath );
         }
     }
     

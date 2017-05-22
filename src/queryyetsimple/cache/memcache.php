@@ -83,20 +83,20 @@ class memcache extends cache {
         
         // 合并默认配置
         $this->arrOption = array_merge ( $this->arrOption, $this->arrDefaultOption );
-        $this->arrOption ['compressed'] = $this->getExpansionInstanceArgs_ ( 'runtime_memcache_compressed' );
-        $this->arrOption ['persistent'] = $this->getExpansionInstanceArgs_ ( 'runtime_memcache_persistent' );
+        $this->arrOption ['compressed'] = $this->classsFacesOption ( 'runtime_memcache_compressed' );
+        $this->arrOption ['persistent'] = $this->classsFacesOption ( 'runtime_memcache_persistent' );
         
         if (is_array ( $arrOption )) {
             $this->arrOption = array_merge ( $this->arrOption, $arrOption );
         }
         
         if (empty ( $this->arrOption ['servers'] )) {
-            if (! empty ( $this->getExpansionInstanceArgs_ ( 'runtime_memcache_servers' ) )) {
-                $this->arrOption ['servers'] = $this->getExpansionInstanceArgs_ ( 'runtime_memcache_servers' );
+            if (! empty ( $this->classsFacesOption ( 'runtime_memcache_servers' ) )) {
+                $this->arrOption ['servers'] = $this->classsFacesOption ( 'runtime_memcache_servers' );
             } else {
                 $this->arrOption ['servers'] [] = array (
-                        'host' => $this->getExpansionInstanceArgs_ ( 'runtime_memcache_host' ),
-                        'port' => $this->getExpansionInstanceArgs_ ( 'runtime_memcache_port' ) 
+                        'host' => $this->classsFacesOption ( 'runtime_memcache_host' ),
+                        'port' => $this->classsFacesOption ( 'runtime_memcache_port' ) 
                 );
             }
         }

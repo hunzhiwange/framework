@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\traits\dynamic;
+namespace queryyetsimple\classs;
 
 <<<queryphp
 ##########################################################
@@ -23,14 +23,14 @@ use queryyetsimple\option\option;
 use queryyetsimple\mvc\project;
 
 /**
- * 动态扩展复用
+ * 实现类的静态访问门面以及动态扩展类的功能
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.05.04
  * @version 1.0
  */
-trait expansion {
+trait faces {
     
     /**
      * 项目容器
@@ -93,9 +93,11 @@ trait expansion {
         if (static::$objExpansionInstance) {
             return static::$objExpansionInstance;
         }
+        
         if ($booNew === true || ! static::projectContainer ( true ) || ! (static::$objExpansionInstance = static::projectContainer ( true )->make ( get_called_class () ))) {
             static::$objExpansionInstance = new self ();
         }
+        
         if (method_exists ( static::$objExpansionInstance, 'initExpansionInstance_' )) {
             return static::$objExpansionInstance->initExpansionInstance_ ();
         } else {
@@ -119,6 +121,32 @@ trait expansion {
                 get_called_class (),
                 'getExpansionInstance' 
         ], $arrArgs );
+    }
+    
+    /**
+     * 设置或者返回服务容器
+     *
+     * @param \queryyetsimple\mvc\project $objProject            
+     * @return void
+     */
+    public static function projectContainer($objProject = null) {
+        if (is_null ( $objProject )) {
+            return static::$objProjectContainer;
+        } elseif (is_object ( $objProject )) {
+            static::$objProjectContainer = $objProject;
+        } elseif ($objProject === true) {
+            return class_exists ( '\queryyetsimple\mvc\project' ) ? project::bootstrap () : false;
+        }
+    }
+    
+    /**
+     * 返回配置
+     *
+     * @param string $strArgsName            
+     * @return mixed
+     */
+    protected function classsFacesOption($strArgsName) {
+        return isset ( $this->arrExpansionInstanceArgs [$strArgsName] ) ? $this->arrExpansionInstanceArgs [$strArgsName] : null;
     }
     
     /**
@@ -156,7 +184,7 @@ trait expansion {
         if (! $this->checkInitExpansionInstanceArgs_ ()) {
             return [ ];
         }
-        return array_keys ( $this->arrInitExpansionInstanceArgs );
+        return array_keys ( $this->arrClasssFacesOption );
     }
     
     /**
@@ -165,7 +193,7 @@ trait expansion {
      * @return boolean
      */
     protected function checkInitExpansionInstanceArgs_() {
-        return property_exists ( $this, 'arrInitExpansionInstanceArgs' );
+        return property_exists ( $this, 'arrClasssFacesOption' );
     }
     
     /**
@@ -185,32 +213,6 @@ trait expansion {
     }
     
     /**
-     * 设置或者返回服务容器
-     *
-     * @param \queryyetsimple\mvc\project $objProject            
-     * @return void
-     */
-    public static function projectContainer($objProject = null) {
-        if (is_null ( $objProject )) {
-            return static::$objProjectContainer;
-        } elseif (is_object ( $objProject )) {
-            static::$objProjectContainer = $objProject;
-        } elseif ($objProject === true) {
-            return class_exists ( '\queryyetsimple\mvc\project' ) ? project::bootstrap () : false;
-        }
-    }
-    
-    /**
-     * 返回配置
-     *
-     * @param string $strArgsName            
-     * @return mixed
-     */
-    protected function getExpansionInstanceArgs_($strArgsName) {
-        return isset ( $this->arrExpansionInstanceArgs [$strArgsName] ) ? $this->arrExpansionInstanceArgs [$strArgsName] : null;
-    }
-    
-    /**
      * 合并默认配置
      *
      * @return array
@@ -219,7 +221,7 @@ trait expansion {
         if (! $this->checkInitExpansionInstanceArgs_ ()) {
             return;
         }
-        $this->arrExpansionInstanceArgs = array_merge ( $this->arrInitExpansionInstanceArgs, $this->arrExpansionInstanceArgs );
+        $this->arrExpansionInstanceArgs = array_merge ( $this->arrClasssFacesOption, $this->arrExpansionInstanceArgs );
     }
     
     /**
