@@ -25,7 +25,7 @@ return [
         'singleton@database' => [ 
                 'queryyetsimple\database\database',
                 function ($objProject) {
-                    return \queryyetsimple\database\database::getNewInstance ( $objProject );
+                    return \queryyetsimple\database\database::singleton ( $objProject );
                 } 
         ] 
 ];

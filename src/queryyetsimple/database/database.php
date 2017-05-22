@@ -75,7 +75,7 @@ class database {
         
         // 解析数据库配置
         $mixOption = $this->parseOption_ ( $mixOption );
-
+        
         // 连接数据库
         $strConnectClass = '\\queryyetsimple\\database\\' . $mixOption ['database\type'];
         if (class_exists ( $strConnectClass )) {
@@ -95,8 +95,8 @@ class database {
         $arrOption = [ ];
         
         // 配置文件存在链接
-        if (is_string ( $mixOption ) && is_array ( option::gets ( 'database\\'.$mixOption ) )) {
-            $arrOption = option::gets ( 'database\\'.$mixOption );
+        if (is_string ( $mixOption ) && is_array ( option::gets ( 'database\\' . $mixOption ) )) {
+            $arrOption = option::gets ( 'database\\' . $mixOption );
         }        
 
         // 数组类配置
@@ -119,7 +119,7 @@ class database {
         $arrResult = $arrDefaultOption = [ ];
         
         // 默认参数
-        foreach ( $this->initExpansionInstanceArgs_ () as $sOptionType ) {
+        foreach ( $this->classsFacesOptionKey () as $sOptionType ) {
             $arrDefaultOption [$sOptionType] = $this->classsFacesOption ( $sOptionType );
         }
         

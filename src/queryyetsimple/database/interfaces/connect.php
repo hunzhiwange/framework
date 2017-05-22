@@ -21,7 +21,7 @@ queryphp;
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.04.23
- * @version 4.0
+ * @version 1.0
  */
 interface connect {
     

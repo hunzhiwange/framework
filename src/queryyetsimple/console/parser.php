@@ -26,7 +26,7 @@ use queryyetsimple\string\string;
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.04.26
- * @version 4.0
+ * @version 1.0
  */
 class parser {
     

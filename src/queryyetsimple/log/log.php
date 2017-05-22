@@ -226,7 +226,7 @@ class log {
      *
      * @return void
      */
-    protected function initExpansionInstance_() {
-        return $this->initExpansionInstanceDefault_ ()->setExpansionInstanceArgs ( 'log\path_default', project::bootstrap ()->path_cache_log );
+    public function initClasssFacesOption() {
+        return $this->initClasssFacesOptionDefault ()->setClasssFacesOption ( 'log\path_default', project::bootstrap ()->path_cache_log );
     }
 }

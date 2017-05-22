@@ -31,7 +31,7 @@ use queryyetsimple\filesystem\file;
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.04.18
- * @version 4.0
+ * @version 1.0
  */
 class response {
     
@@ -694,7 +694,7 @@ class response {
                 header ( "Location:" . $sUrl );
             } else {
                 header ( "refresh:{$nTime};url={$sUrl}" );
-                include (Q_PATH . '/resource/template/url.php'); // 包含跳转页面模板
+                include (Q_PATH . '/bootstrap/resource/template/url.php'); // 包含跳转页面模板
             }
             exit ();
         } else {
@@ -702,7 +702,7 @@ class response {
             if ($nTime == 0) {
                 $sHeader = '';
             }
-            include (Q_PATH . '/resource/template/url.php'); // 包含跳转页面模板
+            include (Q_PATH . '/bootstrap/resource/template/url.php'); // 包含跳转页面模板
             exit ();
         }
     }

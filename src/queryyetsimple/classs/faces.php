@@ -44,32 +44,32 @@ trait faces {
      *
      * @var object
      */
-    protected static $objExpansionInstance = null;
+    protected static $objFacesInstance = null;
     
     /**
      * 注册的动态扩展
      *
      * @var array
      */
-    protected static $arrExpansion = [ ];
+    protected static $arrFaces = [ ];
     
     /**
-     * 项目中的扩展参数
+     * 类中的扩展参数
      *
      * @var array
      */
-    protected $arrExpansionInstanceArgs = [ ];
+    protected $arrClasssFacesOptionIn = [ ];
     
     /**
      * 注册一个扩展
      *
      * @param string $strName            
-     * @param callable $calExpansion            
+     * @param callable $calFaces            
      * @return void
      */
-    public static function registerExpansion($strName, callable $calExpansion) {
+    public static function registerFaces($strName, callable $calFaces) {
         assert::string ( $strName );
-        static::$arrExpansion [$strName] = $calExpansion;
+        static::$arrFaces [$strName] = $calFaces;
     }
     
     /**
@@ -78,9 +78,9 @@ trait faces {
      * @param string $strName            
      * @return bool
      */
-    public static function hasExpansion($strName) {
+    public static function hasFaces($strName) {
         assert::string ( $strName );
-        return isset ( static::$arrExpansion [$strName] );
+        return isset ( static::$arrFaces [$strName] );
     }
     
     /**
@@ -89,19 +89,19 @@ trait faces {
      * @param boolean $booNew            
      * @return mixed
      */
-    public static function getExpansionInstance($booNew = false /* args */) {
-        if (static::$objExpansionInstance) {
-            return static::$objExpansionInstance;
+    public static function getFacesInstance($booNew = false /* args */) {
+        if (static::$objFacesInstance) {
+            return static::$objFacesInstance;
         }
         
-        if ($booNew === true || ! static::projectContainer ( true ) || ! (static::$objExpansionInstance = static::projectContainer ( true )->make ( get_called_class () ))) {
-            static::$objExpansionInstance = new self ();
+        if ($booNew === true || ! static::projectContainer ( true ) || ! (static::$objFacesInstance = static::projectContainer ( true )->make ( get_called_class () ))) {
+            static::$objFacesInstance = new self ();
         }
         
-        if (method_exists ( static::$objExpansionInstance, 'initExpansionInstance_' )) {
-            return static::$objExpansionInstance->initExpansionInstance_ ();
+        if (method_exists ( static::$objFacesInstance, 'initClasssFacesOption' )) {
+            return static::$objFacesInstance->initClasssFacesOption ();
         } else {
-            return static::$objExpansionInstance->initExpansionInstanceDefault_ ();
+            return static::$objFacesInstance->initClasssFacesOptionDefault ();
         }
     }
     
@@ -111,7 +111,7 @@ trait faces {
      * @param \queryyetsimple\mvc\project $objProject            
      * @return mixed
      */
-    public static function getNewInstance($objProject = null/* args */) {
+    public static function singleton($objProject = null/* args */) {
         if (! is_null ( $objProject ))
             static::projectContainer ( $objProject );
         $arrArgs = func_get_args ();
@@ -119,7 +119,7 @@ trait faces {
         array_unshift ( $arrArgs, true );
         return call_user_func_array ( [ 
                 get_called_class (),
-                'getExpansionInstance' 
+                'getFacesInstance' 
         ], $arrArgs );
     }
     
@@ -145,34 +145,8 @@ trait faces {
      * @param string $strArgsName            
      * @return mixed
      */
-    protected function classsFacesOption($strArgsName) {
-        return isset ( $this->arrExpansionInstanceArgs [$strArgsName] ) ? $this->arrExpansionInstanceArgs [$strArgsName] : null;
-    }
-    
-    /**
-     * 初始化静态入口配置
-     *
-     * @return void
-     */
-    protected function initExpansionInstanceDefault_() {
-        // 不存在初始化参数直接返回
-        if (! $this->checkInitExpansionInstanceArgs_ ()) {
-            return $this;
-        }
-        
-        $this->mergeExpansionInstanceArgs_ ();
-        
-        if (! class_exists ( '\queryyetsimple\option\option' )) {
-            return $this;
-        }
-        
-        $arrArgs = [ ];
-        foreach ( $this->initExpansionInstanceArgs_ () as $sArgs ) {
-            if (is_null ( $mixTemp = option::gets ( $sArgs ) ))
-                continue;
-            $arrArgs [$sArgs] = $mixTemp;
-        }
-        return $this->setExpansionInstanceArgs ( $arrArgs );
+    public function classsFacesOption($strArgsName) {
+        return isset ( $this->arrClasssFacesOptionIn [$strArgsName] ) ? $this->arrClasssFacesOptionIn [$strArgsName] : null;
     }
     
     /**
@@ -180,11 +154,37 @@ trait faces {
      *
      * @return array
      */
-    protected function initExpansionInstanceArgs_() {
-        if (! $this->checkInitExpansionInstanceArgs_ ()) {
+    public function classsFacesOptionKey() {
+        if (! $this->checkClasssFacesOption ()) {
             return [ ];
         }
         return array_keys ( $this->arrClasssFacesOption );
+    }
+    
+    /**
+     * 初始化静态入口配置
+     *
+     * @return void
+     */
+    public function initClasssFacesOptionDefault() {
+        // 不存在初始化参数直接返回
+        if (! $this->checkClasssFacesOption ()) {
+            return $this;
+        }
+        
+        $this->mergeClasssFacesOption ();
+        
+        if (! class_exists ( '\queryyetsimple\option\option' )) {
+            return $this;
+        }
+        
+        $arrArgs = [ ];
+        foreach ( $this->classsFacesOptionKey () as $sArgs ) {
+            if (is_null ( $mixTemp = option::gets ( $sArgs ) ))
+                continue;
+            $arrArgs [$sArgs] = $mixTemp;
+        }
+        return $this->setClasssFacesOption ( $arrArgs );
     }
     
     /**
@@ -192,7 +192,7 @@ trait faces {
      *
      * @return boolean
      */
-    protected function checkInitExpansionInstanceArgs_() {
+    public function checkClasssFacesOption() {
         return property_exists ( $this, 'arrClasssFacesOption' );
     }
     
@@ -203,11 +203,11 @@ trait faces {
      * @param string $strArgsValue            
      * @return void
      */
-    public function setExpansionInstanceArgs($mixArgsName, $strArgsValue = null) {
+    public function setClasssFacesOption($mixArgsName, $strArgsValue = null) {
         if (is_array ( $mixArgsName )) {
-            $this->arrExpansionInstanceArgs = array_merge ( $this->arrExpansionInstanceArgs, $mixArgsName );
+            $this->arrClasssFacesOptionIn = array_merge ( $this->arrClasssFacesOptionIn, $mixArgsName );
         } else {
-            $this->arrExpansionInstanceArgs [$mixArgsName] = $strArgsValue;
+            $this->arrClasssFacesOptionIn [$mixArgsName] = $strArgsValue;
         }
         return $this;
     }
@@ -217,11 +217,11 @@ trait faces {
      *
      * @return array
      */
-    protected function mergeExpansionInstanceArgs_() {
-        if (! $this->checkInitExpansionInstanceArgs_ ()) {
+    public function mergeClasssFacesOption() {
+        if (! $this->checkClasssFacesOption ()) {
             return;
         }
-        $this->arrExpansionInstanceArgs = array_merge ( $this->arrClasssFacesOption, $this->arrExpansionInstanceArgs );
+        $this->arrClasssFacesOptionIn = array_merge ( $this->arrClasssFacesOption, $this->arrClasssFacesOptionIn );
     }
     
     /**
@@ -233,16 +233,16 @@ trait faces {
      */
     public static function __callStatic($sMethod, $arrArgs) {
         // 第一步：判断是否存在已经注册的命名
-        if (static::hasExpansion ( $sMethod )) {
-            if (static::$arrExpansion [$sMethod] instanceof Closure) {
-                return call_user_func_array ( Closure::bind ( static::$arrExpansion [$sMethod], null, get_called_class () ), $arrArgs );
+        if (static::hasFaces ( $sMethod )) {
+            if (static::$arrFaces [$sMethod] instanceof Closure) {
+                return call_user_func_array ( Closure::bind ( static::$arrFaces [$sMethod], null, get_called_class () ), $arrArgs );
             } else {
-                return call_user_func_array ( static::$arrExpansion [$sMethod], $arrArgs );
+                return call_user_func_array ( static::$arrFaces [$sMethod], $arrArgs );
             }
         }
         
         // 第二步：尝试读取注入容器中的类，没有则自身创建为单一实例
-        $objInstance = static::getExpansionInstance ();
+        $objInstance = static::getFacesInstance ();
         if (! $objInstance) {
             exceptions::runtimeException ();
         }
@@ -274,12 +274,12 @@ trait faces {
      * @return mixed
      */
     public function __call($sMethod, $arrArgs) {
-        if (static::hasExpansion ( $sMethod )) {
-            if (static::$arrExpansion [$sMethod] instanceof Closure) {
-                $objReflection = new ReflectionFunction ( static::$arrExpansion [$sMethod] );
-                return call_user_func_array ( Closure::bind ( static::$arrExpansion [$sMethod], $objReflection->getClosureThis () ? $this : NULL, get_class ( $this ) ), $arrArgs );
+        if (static::hasFaces ( $sMethod )) {
+            if (static::$arrFaces [$sMethod] instanceof Closure) {
+                $objReflection = new ReflectionFunction ( static::$arrFaces [$sMethod] );
+                return call_user_func_array ( Closure::bind ( static::$arrFaces [$sMethod], $objReflection->getClosureThis () ? $this : NULL, get_class ( $this ) ), $arrArgs );
             } else {
-                return call_user_func_array ( static::$arrExpansion [$sMethod], $arrArgs );
+                return call_user_func_array ( static::$arrFaces [$sMethod], $arrArgs );
             }
         }
         

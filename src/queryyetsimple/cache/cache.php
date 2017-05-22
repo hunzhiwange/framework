@@ -24,7 +24,7 @@ use queryyetsimple\traits\object\option as object_option;
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.02.15
- * @version 4.0
+ * @version 1.0
  */
 abstract class cache implements interfaces_cache {
     

@@ -25,7 +25,7 @@ return [
         'singleton@i18n' => [ 
                 'queryyetsimple\i18n\i18n',
                 function ($objProject) {
-                    return \queryyetsimple\i18n\i18n::getNewInstance ( $objProject );
+                    return \queryyetsimple\i18n\i18n::singleton ( $objProject );
                 } 
         ] 
 ];

@@ -5,7 +5,6 @@ modify this file ../.git/config add alias,then using git string to commit your s
 [alias]
     assert = subtree push --prefix=src/queryyetsimple/assert git@github.com:queryyetsimple/assert.git master
     auth = subtree push --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
-    bootstrap = subtree push --prefix=src/queryyetsimple/bootstrap git@github.com:queryyetsimple/bootstrap.git master
     cache = subtree push --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
     classs = subtree push --prefix=src/queryyetsimple/classs git@github.com:queryyetsimple/classs.git master
     collection = subtree push --prefix=src/queryyetsimple/collection git@github.com:queryyetsimple/collection.git master
@@ -33,7 +32,6 @@ modify this file ../.git/config add alias,then using git string to commit your s
     page = subtree push --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
     psr4 = subtree push --prefix=src/queryyetsimple/psr4 git@github.com:queryyetsimple/psr4.git master
     queue = subtree push --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
-    resource = subtree push --prefix=src/queryyetsimple/resource git@github.com:queryyetsimple/resource.git master
     router = subtree push --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
     rss = subtree push --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master
     safe = subtree push --prefix=src/queryyetsimple/safe git@github.com:queryyetsimple/safe.git master
@@ -43,7 +41,6 @@ modify this file ../.git/config add alias,then using git string to commit your s
     stack = subtree push --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
     string = subtree push --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     support = subtree push --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
-    testing = subtree push --prefix=src/queryyetsimple/testing git@github.com:queryyetsimple/testing.git master
     upload = subtree push --prefix=src/queryyetsimple/upload git@github.com:queryyetsimple/upload.git master
     validate = subtree push --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
     view = subtree push --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
@@ -52,7 +49,6 @@ modify this file ../.git/config add alias,then using git string to commit your s
 
     assertp = subtree pull --prefix=src/queryyetsimple/assert git@github.com:queryyetsimple/assert.git master
     authp = subtree pull --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
-    bootstrapp = subtree pull --prefix=src/queryyetsimple/bootstrap git@github.com:queryyetsimple/bootstrap.git master
     cachep = subtree pull --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
     classsp = subtree pull --prefix=src/queryyetsimple/classs git@github.com:queryyetsimple/classs.git master
     collectionp = subtree pull --prefix=src/queryyetsimple/collection git@github.com:queryyetsimple/collection.git master
@@ -80,7 +76,6 @@ modify this file ../.git/config add alias,then using git string to commit your s
     pagep = subtree pull --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
     psr4p = subtree pull --prefix=src/queryyetsimple/psr4 git@github.com:queryyetsimple/psr4.git master
     queuep = subtree pull --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
-    resourcep = subtree pull --prefix=src/queryyetsimple/resource git@github.com:queryyetsimple/resource.git master
     routerp = subtree pull --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
     rssp = subtree pull --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master
     safep = subtree pull --prefix=src/queryyetsimple/safe git@github.com:queryyetsimple/safe.git master
@@ -90,7 +85,6 @@ modify this file ../.git/config add alias,then using git string to commit your s
     stackp = subtree pull --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
     stringp = subtree pull --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     supportp = subtree pull --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
-    testingp = subtree pull --prefix=src/queryyetsimple/testing git@github.com:queryyetsimple/testing.git master
     uploadp = subtree pull --prefix=src/queryyetsimple/upload git@github.com:queryyetsimple/upload.git master
     validatep = subtree pull --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
     viewp = subtree pull --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master

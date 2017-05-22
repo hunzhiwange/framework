@@ -273,7 +273,7 @@ class project extends container {
         
         // 注册 view
         $this->singleton ( 'queryyetsimple\mvc\view', function (project $objProject) {
-            return view::getNewInstance ( $objProject );
+            return view::singleton ( $objProject );
         } );
         
         return $this;

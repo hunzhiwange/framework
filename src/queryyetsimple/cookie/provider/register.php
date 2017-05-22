@@ -25,7 +25,7 @@ return [
         'singleton@cookie' => [ 
                 'queryyetsimple\cookie\cookie',
                 function ($objProject) {
-                    return \queryyetsimple\cookie\cookie::getNewInstance ( $objProject );
+                    return \queryyetsimple\cookie\cookie::singleton ( $objProject );
                 } 
         ] 
 ];

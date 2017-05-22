@@ -25,13 +25,13 @@ return [
         'singleton@request' => [ 
                 'queryyetsimple\http\request',
                 function ($objProject) {
-                    return \queryyetsimple\http\request::getNewInstance ( $objProject );
+                    return \queryyetsimple\http\request::singleton ( $objProject );
                 } 
         ],
         'singleton@response' => [ 
                 'queryyetsimple\http\response',
                 function ($objProject) {
-                    return \queryyetsimple\http\response::getNewInstance ( $objProject );
+                    return \queryyetsimple\http\response::singleton ( $objProject );
                 } 
         ] 
 ];

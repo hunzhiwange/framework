@@ -367,7 +367,7 @@ class request {
         // console 命令行
         if (Q_CONSOLE === true) {
             // 注册 console 引导入口
-            define ( 'PATH_APP_BOOTSTRAP', Q_PATH . '/console/bootstrap.php' );
+            define ( 'PATH_APP_BOOTSTRAP', Q_PATH . '/bootstrap/console/bootstrap.php' );
             
             // 注册默认应用程序
             $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@console';
@@ -379,7 +379,7 @@ class request {
         
         if (Q_PHPUNIT === true) {
             // 注册 phpunit 引导入口
-            define ( 'PATH_APP_BOOTSTRAP', Q_PATH . '/testing/bootstrap.php' );
+            define ( 'PATH_APP_BOOTSTRAP', Q_PATH . '/bootstrap/testing/bootstrap.php' );
             
             // 注册默认应用程序
             $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@testing';

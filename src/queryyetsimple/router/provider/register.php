@@ -25,7 +25,7 @@ return [
         'singleton@router' => [ 
                 'queryyetsimple\router\router',
                 function ($objProject) {
-                    return \queryyetsimple\router\router::getNewInstance ( $objProject );
+                    return \queryyetsimple\router\router::singleton ( $objProject );
                 } 
         ] 
 ];

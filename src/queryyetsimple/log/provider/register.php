@@ -25,7 +25,7 @@ return [
         'singleton@log' => [ 
                 'queryyetsimple\log\log',
                 function ($objProject) {
-                    return \queryyetsimple\log\log::getNewInstance ( $objProject );
+                    return \queryyetsimple\log\log::singleton ( $objProject );
                 } 
         ] 
 ];

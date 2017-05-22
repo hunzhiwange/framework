@@ -25,7 +25,7 @@ return [
         'singleton@option' => [ 
                 'queryyetsimple\option\option',
                 function ($objProject) {
-                    return \queryyetsimple\option\option::getNewInstance ( $objProject );
+                    return \queryyetsimple\option\option::singleton ( $objProject );
                 } 
         ] 
 ];

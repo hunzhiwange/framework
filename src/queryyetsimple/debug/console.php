@@ -23,7 +23,7 @@ use queryyetsimple\option\option;
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.04.05
- * @version 4.0
+ * @version 1.0
  */
 class console {
 
@@ -67,6 +67,6 @@ class console {
             return str_replace ( '\\', '/', $sVal );
         }, $arrInclude ) );
         
-        include Q_PATH . '/resource/template/trace.php';
+        include Q_PATH . '/bootstrap/resource/template/trace.php';
     }
 }

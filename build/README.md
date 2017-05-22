@@ -2,7 +2,6 @@
 
 git subtree add --prefix=src/queryyetsimple/assert git@github.com:queryyetsimple/assert.git master
 git subtree add --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
-git subtree add --prefix=src/queryyetsimple/bootstrap git@github.com:queryyetsimple/bootstrap.git master
 git subtree add --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
 git subtree add --prefix=src/queryyetsimple/classs git@github.com:queryyetsimple/classs.git master
 git subtree add --prefix=src/queryyetsimple/collection git@github.com:queryyetsimple/collection.git master
@@ -30,7 +29,6 @@ git subtree add --prefix=src/queryyetsimple/option git@github.com:queryyetsimple
 git subtree add --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
 git subtree add --prefix=src/queryyetsimple/psr4 git@github.com:queryyetsimple/psr4.git master
 git subtree add --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
-git subtree add --prefix=src/queryyetsimple/resource git@github.com:queryyetsimple/resource.git master
 git subtree add --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
 git subtree add --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master
 git subtree add --prefix=src/queryyetsimple/safe git@github.com:queryyetsimple/safe.git master
@@ -40,7 +38,6 @@ git subtree add --prefix=src/queryyetsimple/socket git@github.com:queryyetsimple
 git subtree add --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
 git subtree add --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
 git subtree add --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
-git subtree add --prefix=src/queryyetsimple/testing git@github.com:queryyetsimple/testing.git master
 git subtree add --prefix=src/queryyetsimple/upload git@github.com:queryyetsimple/upload.git master
 git subtree add --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
 git subtree add --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
