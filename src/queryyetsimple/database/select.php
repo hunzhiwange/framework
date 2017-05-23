@@ -17,7 +17,7 @@ queryphp;
 
 use PDO;
 use queryyetsimple\flow\control as flow_control;
-use queryyetsimple\datastruct\collection\collection;
+use queryyetsimple\collection\collection;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\assert\assert;
 use queryyetsimple\helper\helper;
