@@ -21,7 +21,6 @@ queryphp;
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.05.23
- * @see http://php.net/manual/zh/class.splstack.php
  * @version 1.0
  */
 trait base {
