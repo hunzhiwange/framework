@@ -465,7 +465,7 @@ class app {
     private function registerExceptionRun_() {
         if (PHP_SAPI != 'cli') {
             set_exception_handler ( is_callable ( option::gets ( 'debug\exception_handle' ) ) ? option::gets ( 'debug\exception_handle' ) : [ 
-                    'queryyetsimple\exception\handle',
+                    'queryyetsimple\bootstrap\exception\handle',
                     'exceptionHandle' 
             ] );
         }

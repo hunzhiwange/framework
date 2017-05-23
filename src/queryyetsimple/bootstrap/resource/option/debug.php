@@ -29,7 +29,7 @@ return [
         'page_trace' => false, // 显示页面调式信息
         
         'exception_handle' => [
-                'queryyetsimple\exception\handle',
+                'queryyetsimple\bootstrap\exception\handle',
                 'exceptionHandle'
         ], // 异常捕获
         

@@ -88,12 +88,12 @@ queryyetsimple\psr4\psr4::composer ( require $strComposer );
  */
 if (PHP_SAPI != 'cli') {
     set_error_handler ( [ 
-            'queryyetsimple\exception\handle',
+            'queryyetsimple\bootstrap\exception\handle',
             'errorHandle' 
     ] );
     
     register_shutdown_function ( [ 
-            'queryyetsimple\exception\handle',
+            'queryyetsimple\bootstrap\exception\handle',
             'shutdownHandle' 
     ] );
 }
