@@ -14,7 +14,7 @@
 queryphp;
 
 /**
- * cookie 配置文件
+ * cookie 默认配置文件
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
