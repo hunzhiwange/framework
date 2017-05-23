@@ -929,7 +929,7 @@ class parsers {
      */
     protected function findNodeTag(&$sCompiled) {
         // 设置一个栈
-        $this->oNodeStack = new stack ();
+        $this->oNodeStack = new stack ( 'array' );
         
         // 判断是那种编译器
         $sNodeType = $this->bJsNode === true ? 'js' : 'node';
@@ -981,7 +981,7 @@ class parsers {
                 $arrTheme ['position'] = static::getPosition ( $sCompiled, $sTagSource, $nStartPos );
                 $nStartPos = $arrTheme ['position'] ['end'] + 1;
                 $arrTheme = array_merge ( $this->arrThemeStruct, $arrTheme );
-                $this->oNodeStack->push ( $arrTheme ); // 加入到标签栈
+                $this->oNodeStack->in ( $arrTheme ); // 加入到标签栈
             }
         }
     }
@@ -1001,21 +1001,21 @@ class parsers {
             $sCompiler = 'Node';
         }
         
-        $oTailStack = new stack ( ); // 尾标签栈
-        while ( ($arrTag = $this->oNodeStack->pop ()) !== null ) { // 载入节点属性分析器&依次处理所有标签
+        $oTailStack = new stack ( 'array' ); // 尾标签栈
+        while ( ($arrTag = $this->oNodeStack->out ()) !== null ) { // 载入节点属性分析器&依次处理所有标签
             if ($arrTag ['type'] == 'tail') { // 尾标签，加入到尾标签中
-                $oTailStack->push ( $arrTag );
+                $oTailStack->in ( $arrTag );
                 continue;
             }
             
-            $arrTailTag = $oTailStack->pop (); // 从尾标签栈取出一项
+            $arrTailTag = $oTailStack->out (); // 从尾标签栈取出一项
             if (! $arrTailTag or ! $this->findHeadTag ( $arrTag, $arrTailTag )) { // 单标签节点
                 
                 if ($arrNodeTag [$arrTag ['name']] ['single'] !== true) {
                     exceptions::throwException ( __ ( '%s 类型节点 必须成对使用，没有找到对应的尾标签', $arrTag ['name'] ), 'queryyetsimple\view\exception' );
                 }
                 if ($arrTailTag) { // 退回栈中
-                    $oTailStack->push ( $arrTailTag );
+                    $oTailStack->in ( $arrTailTag );
                 }
                 
                 $arrThemeNode = [ 
