@@ -22,7 +22,7 @@ use queryyetsimple\database\interfaces\connect as interfaces_connect;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\log\log;
 use queryyetsimple\assert\assert;
-use queryyetsimple\debug\debug;
+use queryyetsimple\debug\dump;
 
 /**
  * 数据库连接
@@ -718,7 +718,7 @@ abstract class connect implements interfaces_connect {
         
         try {
             $this->setCurrentOption_ ( $arrOption );
-            return $this->arrConnect [$nLinkid] = new \PDO ( $this->parseDsn_ ( $arrOption ), $arrOption ['database\user'], $arrOption ['database\password'], $arrOption ['database\params'] );
+            return $this->arrConnect [$nLinkid] = new PDO ( $this->parseDsn_ ( $arrOption ), $arrOption ['database\user'], $arrOption ['database\password'], $arrOption ['database\params'] );
         } catch ( PDOException $oE ) {
             return false;
         }
@@ -743,7 +743,7 @@ abstract class connect implements interfaces_connect {
             }
             
             if ($this->objPDOStatement->bindValue ( $mixKey, $mixVal, $strParam ) === false) {
-                $this->throwException_ ( __ ( 'sql %s 参数绑定失败: %s', $this->strSql, debug::dump ( $arrBindParams, true ) ) );
+                $this->throwException_ ( __ ( 'sql %s 参数绑定失败: %s', $this->strSql, dump::dump ( $arrBindParams, true ) ) );
             }
         }
     }

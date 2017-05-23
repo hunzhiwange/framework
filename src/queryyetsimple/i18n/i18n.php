@@ -166,7 +166,7 @@ class i18n {
     public function parseContext() {
         if (! $this->classsFacesOption ( 'i18n\switch' )) {
             $sI18nSet = $this->classsFacesOption ( 'i18n\default' );
-        } else {var_dump($sI18nSet);
+        } else {
             if ($this->classsFacesOption ( 'i18n\cookie_app' ) === true) {
                 $sCookieName = static::$objProjectContainer->app_name . '_i18n';
             } else {

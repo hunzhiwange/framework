@@ -38,7 +38,7 @@ class database {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
-            'database\type' => 'mysql',
+            'database\default' => 'mysql',
             'database\schema' => '',
             'database\user' => 'root',
             'database\password' => '',
@@ -77,7 +77,7 @@ class database {
         $mixOption = $this->parseOption_ ( $mixOption );
         
         // 连接数据库
-        $strConnectClass = '\\queryyetsimple\\database\\' . $mixOption ['database\type'];
+        $strConnectClass = 'queryyetsimple\\database\\' . $mixOption ['database\default'];
         if (class_exists ( $strConnectClass )) {
             return $arrConnect [$strUnique] = new $strConnectClass ( $mixOption );
         } else {
@@ -95,8 +95,8 @@ class database {
         $arrOption = [ ];
         
         // 配置文件存在链接
-        if (is_string ( $mixOption ) && is_array ( option::gets ( 'database\\' . $mixOption ) )) {
-            $arrOption = option::gets ( 'database\\' . $mixOption );
+        if (is_string ( $mixOption ) && is_array ( option::gets ( 'database\\connect.' . $mixOption ) )) {
+            $arrOption = option::gets ( 'database\\connect.' . $mixOption );
         }        
 
         // 数组类配置
@@ -139,7 +139,7 @@ class database {
             $arrResult [$strType] = $arrOption [$strType];
             unset ( $arrOption [$strType] );
         }
-        $arrResult ['database\type'] = $arrOption ['database\type'];
+        $arrResult ['database\default'] = $arrOption ['database\default'];
         
         // 纠正数据库服务器参数
         foreach ( [ 
