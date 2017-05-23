@@ -666,7 +666,7 @@ class app {
      */
     private function getI18nDir_($sI18nSet) {
         $arrI18nDir = [ 
-                Q_PATH . '/bootstrap/resource/i18n/' . $sI18nSet,
+                Q_PATH . '/bootstrap/i18n/' . $sI18nSet,
                 $this->objProject->path_common . '/interfaces/i18n/' . $sI18nSet,
                 $this->objProject->path_app_i18n . '/' . $sI18nSet 
         ];
@@ -711,7 +711,7 @@ class app {
      */
     private function getOptionDir_() {
         $arrOptionDir = [ 
-                Q_PATH . '/bootstrap/resource/option' 
+                Q_PATH . '/bootstrap/option' 
         ];
         if (is_dir ( $this->objProject->path_common . '/interfaces/option' ))
             $arrOptionDir [] = $this->objProject->path_common . '/interfaces/option';

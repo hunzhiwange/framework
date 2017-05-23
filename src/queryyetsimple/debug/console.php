@@ -67,6 +67,6 @@ class console {
             return str_replace ( '\\', '/', $sVal );
         }, $arrInclude ) );
         
-        include Q_PATH . '/bootstrap/resource/template/trace.php';
+        include Q_PATH . '/bootstrap/template/trace.php';
     }
 }

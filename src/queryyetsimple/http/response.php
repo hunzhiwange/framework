@@ -694,7 +694,7 @@ class response {
                 header ( "Location:" . $sUrl );
             } else {
                 header ( "refresh:{$nTime};url={$sUrl}" );
-                include (Q_PATH . '/bootstrap/resource/template/url.php'); // 包含跳转页面模板
+                include (Q_PATH . '/bootstrap/template/url.php'); // 包含跳转页面模板
             }
             exit ();
         } else {
@@ -702,7 +702,7 @@ class response {
             if ($nTime == 0) {
                 $sHeader = '';
             }
-            include (Q_PATH . '/bootstrap/resource/template/url.php'); // 包含跳转页面模板
+            include (Q_PATH . '/bootstrap/template/url.php'); // 包含跳转页面模板
             exit ();
         }
     }
