@@ -4,7 +4,7 @@
 
 !defined('Q_PATH') && exit;
 
-class Page{
+class Page333333{
 
 	protected $_nCount;
 	protected $_nSize;
