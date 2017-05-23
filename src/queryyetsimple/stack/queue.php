@@ -16,6 +16,8 @@ namespace queryyetsimple\stack;
 queryphp;
 
 use SplQueue;
+use InvalidArgumentException;
+use queryyetsimple\stack\traits\base;
 
 /**
  * 队列，先进先出
@@ -27,4 +29,36 @@ use SplQueue;
  * @version 1.0
  */
 class queue extends SplQueue {
+    
+    use base;
+    
+    /**
+     * 入对
+     *
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function in($mixValue) {
+        $this->enqueue ( $mixValue );
+    }
+    
+    /**
+     * 出对
+     *
+     * @return mixed
+     */
+    public function out() {
+        return $this->dequeue ();
+    }
+    
+    /**
+     * 验证类型是否正确遇到错误抛出异常
+     *
+     * @param mixed $mixValue            
+     * @return bool
+     */
+    public function checkTypeWithException($mixValue) {
+        if (! $this->checkType ( $mixValue ))
+            throw new InvalidArgumentException ( __ ( '队列元素类型验证失败，允许类型为 %s', implode ( ',', $this->arrType ) ) );
+    }
 }

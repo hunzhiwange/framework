@@ -16,6 +16,7 @@ namespace queryyetsimple\helper;
 queryphp;
 
 use ReflectionClass;
+use InvalidArgumentException;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\mvc\project;
@@ -188,7 +189,7 @@ class helper {
     /**
      * 验证 PHP 各种变量类型
      *
-     * @param 待验证的变量 $mixVar
+     * @param 待验证的变量 $mixVar            
      * @param string $sType
      *            变量类型
      * @return boolean
@@ -197,7 +198,7 @@ class helper {
         $sType = trim ( $sType ); // 整理参数，以支持 array:ini 格式
         $sType = explode ( ':', $sType );
         $sType [0] = strtolower ( $sType [0] );
-    
+        
         switch ($sType [0]) {
             case 'string' : // 字符串
                 return is_string ( $mixVar );
@@ -241,15 +242,15 @@ class helper {
     /**
      * 验证是否为同一回调
      *
-     * @param callback $calA
-     * @param callback $calkB
+     * @param callback $calA            
+     * @param callback $calkB            
      * @return boolean
      */
     public static function isSameCallback($calA, $calB) {
         if (! is_callable ( $calA ) || is_callable ( $calB )) {
             return false;
         }
-    
+        
         if (is_array ( $calA )) {
             if (is_array ( $calB )) {
                 return ($calA [0] === $calB [0]) and (strtolower ( $calA [1] ) === strtolower ( $calB [1] ));
@@ -264,37 +265,37 @@ class helper {
     /**
      * 验证参数是否为指定的类型集合
      *
-     * @param mixed $mixVar
-     * @param mixed $mixTypes
+     * @param mixed $mixVar            
+     * @param mixed $mixTypes            
      * @return boolean
      */
     public static function isThese($mixVar, $mixTypes) {
-        if (! static::varType ( $mixTypes, 'string' ) && ! static::checkArray ( $mixTypes, [
-                'string'
+        if (! static::varType ( $mixTypes, 'string' ) && ! static::checkArray ( $mixTypes, [ 
+                'string' 
         ] )) {
-            \Exceptions::throws ( __ ( '正确格式:参数必须为 string 或 各项元素为 string 的数组' ) );
+            throw new InvalidArgumentException ( __ ( '参数必须为 string 或 各项元素为 string 的数组' ) );
         }
-    
+        
         if (is_string ( $mixTypes )) {
-            $mixTypes = [
-                    $mixTypes
+            $mixTypes = [ 
+                    $mixTypes 
             ];
         }
-    
+        
         foreach ( $mixTypes as $sType ) { // 类型检查
             if (static::varType ( $mixVar, $sType )) {
                 return true;
             }
         }
-    
+        
         return false;
     }
     
     /**
      * 检查一个对象实例或者类名是否继承至接口或者类
      *
-     * @param mixed $mixSubClass
-     * @param string $sBaseClass
+     * @param mixed $mixSubClass            
+     * @param string $sBaseClass            
      * @return boolean
      */
     public static function isKindOf($mixSubClass, $sBaseClass) {
@@ -306,16 +307,16 @@ class helper {
             } elseif (! is_string ( $mixSubClass )) {
                 return false;
             }
-    
+            
             if ($mixSubClass == $sBaseClass) { // 子类名 即为父类名
                 return true;
             }
-    
+            
             $sParClass = get_parent_class ( $mixSubClass ); // 递归检查
             if (! $sParClass) {
                 return false;
             }
-    
+            
             return static::isKindOf ( $sParClass, $sBaseClass );
         }
     }
@@ -323,9 +324,9 @@ class helper {
     /**
      * 检查对象实例或者类名 是否继承至接口
      *
-     * @param mixed $mixClass
-     * @param string $sInterface
-     * @param string $bStrictly
+     * @param mixed $mixClass            
+     * @param string $sInterface            
+     * @param string $bStrictly            
      * @return boolean
      */
     public static function isImplementedTo($mixClass, $sInterface, $bStrictly = false) {
@@ -337,11 +338,11 @@ class helper {
         } elseif (! is_string ( $Class )) {
             return false;
         }
-    
+        
         if (! class_exists ( $mixClass ) || ! interface_exists ( $sInterface )) { // 检查类和接口是否都有效
             return false;
         }
-    
+        
         // 建立反射
         $oReflectionClass = new ReflectionClass ( $sClassName );
         $arrInterfaceRefs = $oReflectionClass->getInterfaces ();
@@ -349,11 +350,11 @@ class helper {
             if ($oInterfaceRef->getName () != $sInterface) {
                 continue;
             }
-    
+            
             if (! $bStrictly) { // 找到 匹配的 接口
                 return true;
             }
-    
+            
             // 依次检查接口中的每个方法是否实现
             $arrInterfaceFuncs = get_class_methods ( $sInterface );
             foreach ( $arrInterfaceFuncs as $sFuncName ) {
@@ -362,10 +363,10 @@ class helper {
                     return false;
                 }
             }
-    
+            
             return true;
         }
-    
+        
         // 递归检查父类
         if (($sParName = get_parent_class ( $sClassName )) !== false) {
             return static::isImplementedTo ( $sParName, $sInterface, $bStrictly );
@@ -377,15 +378,15 @@ class helper {
     /**
      * 验证数组中的每一项格式化是否正确
      *
-     * @param array $arrArray
-     * @param array $arrTypes
+     * @param array $arrArray            
+     * @param array $arrTypes            
      * @return boolean
      */
     public static function checkArray($arrArray, array $arrTypes) {
         if (! is_array ( $arrArray )) { // 不是数组直接返回
             return false;
         }
-    
+        
         // 判断数组内部每一个值是否为给定的类型
         foreach ( $arrArray as &$mixValue ) {
             $bRet = false;
@@ -395,68 +396,68 @@ class helper {
                     break;
                 }
             }
-    
+            
             if (! $bRet) {
                 return false;
             }
         }
-    
+        
         return true;
     }
-
+    
     /**
      * 正则属性转义
      *
-     * @param string $sTxt
-     * @param bool $bEsc
+     * @param string $sTxt            
+     * @param bool $bEsc            
      * @return string
      */
     public static function escapeCharacter($sTxt, $bEsc = true) {
         if ($sTxt == '""') {
             $sTxt = '';
         }
-    
+        
         if ($bEsc) { // 转义
-            $sTxt = str_replace ( [
+            $sTxt = str_replace ( [ 
                     '\\\\',
                     "\\'",
                     '\\"',
                     '\\$',
-                    '\\.'
-            ], [
+                    '\\.' 
+            ], [ 
                     '\\',
                     '~~{#!`!#}~~',
                     '~~{#!``!#}~~',
                     '~~{#!S!#}~~',
-                    '~~{#!dot!#}~~'
+                    '~~{#!dot!#}~~' 
             ], $sTxt );
         } else { // 还原
-            $sTxt = str_replace ( [
+            $sTxt = str_replace ( [ 
                     '.',
                     "~~{#!`!#}~~",
                     '~~{#!``!#}~~',
                     '~~{#!S!#}~~',
-                    '~~{#!dot!#}~~'
-            ], [
+                    '~~{#!dot!#}~~' 
+            ], [ 
                     '->',
                     "'",
                     '"',
                     '$',
-                    '.'
+                    '.' 
             ], $sTxt );
         }
-    
+        
         return $sTxt;
     }
     
     /**
      * 转移正则表达式特殊字符
      *
-     * @param string $sTxt
+     * @param string $sTxt            
      * @return string
      */
     public static function escapeRegexCharacter($sTxt) {
-        $sTxt = str_replace ( [
+        $sTxt = str_replace ( [ 
                 '$',
                 '/',
                 '?',
@@ -472,8 +473,8 @@ class helper {
                 ',',
                 '{',
                 '}',
-                '|'
-        ], [
+                '|' 
+        ], [ 
                 '\$',
                 '\/',
                 '\\?',
@@ -489,7 +490,7 @@ class helper {
                 '\\,',
                 '\\{',
                 '\\}',
-                '\\|'
+                '\\|' 
         ], $sTxt );
         return $sTxt;
     }
