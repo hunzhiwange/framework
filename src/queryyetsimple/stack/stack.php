@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\datastruct\queue;
+namespace queryyetsimple\stack;
 
 <<<queryphp
 ##########################################################
@@ -15,35 +15,16 @@ namespace queryyetsimple\datastruct\queue;
 ##########################################################
 queryphp;
 
+use SplStack;
+
 /**
  * 栈，后进先出
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2016.11.21
+ * @see http://php.net/manual/zh/class.splstack.php
  * @version 1.0
  */
-class stack extends stack_queue {
-    
-    /**
-     * 进栈
-     *
-     * @param mixed $mixItem            
-     * @return void
-     */
-    public function in($Item) {
-        $this->arrElements [] = &$Item;
-    }
-    
-    /**
-     * 出栈
-     *
-     * @return mixed
-     */
-    public function out() {
-        if (! $this->getLength ()) {
-            return null;
-        }
-        return array_pop ( $this->arrElements );
-    }
+class stack extends SplStack {
 }
