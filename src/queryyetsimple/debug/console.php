@@ -37,9 +37,8 @@ class console {
         // ajax 不调试
         if (isset ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' == strtolower ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ))
             return;
-            
-            // 调试信息
-        if (! env ( 'app_debug' ) || option::gets ( 'debug\page_trace', false ))
+        
+        if (! env ( 'app_debug' ))
             return;
         
         $arrTrace = [ ];

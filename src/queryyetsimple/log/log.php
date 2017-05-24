@@ -61,8 +61,13 @@ class log {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
-            'log\enabled' => false,
-            'log\level' => 'error,sql,debug,info',
+            'log\enabled' => true,
+            'log\level' => [ 
+                    'error',
+                    'sql',
+                    'debug',
+                    'info' 
+            ],
             'log\error_enabled' => false,
             'log\sql_enabled' => false,
             'log\time_format' => '[Y-m-d H:i]',
@@ -98,7 +103,7 @@ class log {
         }
         
         // 只记录系统允许的日志级别
-        if (! in_array ( $strLevel, explode ( ',', $this->classsFacesOption ( 'log\level' ) ) )) {
+        if (! in_array ( $strLevel, $this->classsFacesOption ( 'log\level' ) )) {
             return;
         }
         
