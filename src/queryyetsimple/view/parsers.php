@@ -309,7 +309,7 @@ class parsers {
         }
         
         // 返回编译文件
-        $sCache = "<?php !defined('Q_PATH') && exit; /* QueryPHP Cache " . date ( 'Y-m-d H:i:s', time () ) . "  */ ?>" . PHP_EOL . $sCache;
+        $sCache = "<?php /* QueryPHP Cache " . date ( 'Y-m-d H:i:s', time () ) . "  */ ?>" . PHP_EOL . $sCache;
         
         // 解决不同操作系统源代码换行混乱
         $sCache = str_replace ( [ 

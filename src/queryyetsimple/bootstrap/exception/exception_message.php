@@ -74,7 +74,7 @@ class exception_message extends message {
         }
         
         // 否则定向到错误页面
-        if (! request::isClis () && option::gets ( 'show_exception_redirect' ) && Q_DEBUG === false) {
+        if (! request::isClis () && option::gets ( 'show_exception_redirect' ) && ! env ( 'app_debug' )) {
             static::urlRedirect ( router::url ( option::gets ( 'show_exception_redirect' ) ) );
         } else {
             if (! option::gets ( 'show_exception_show_message', true ) && option::gets ( 'show_exception_default_message' )) {
@@ -88,7 +88,7 @@ class exception_message extends message {
                 if (option::gets ( 'show_exception_template' ) && is_file ( option::gets ( 'show_exception_template' ) )) {
                     include option::gets ( 'show_exception_template' );
                 } else {
-                    include Q_PATH . '/bootstrap/template/exception.php';
+                    include dirname ( __DIR__ ) . '/template/exception.php';
                 }
             }
         }
@@ -109,7 +109,7 @@ class exception_message extends message {
         
         // 调试消息
         $sTraceInfo = '';
-        if (Q_DEBUG) {
+        if (env ( 'app_debug' )) {
             foreach ( $arrTrace as $intKey => $arrVal ) {
                 // 参数处理
                 $arrVal ['class'] = isset ( $arrVal ['class'] ) ? $arrVal ['class'] : '';
@@ -144,7 +144,7 @@ class exception_message extends message {
                 unset ( $sArgsInfo, $sArgsInfoDetail );
             }
             $arrError ['trace'] = $sTraceInfo;
-            unset ( $sTraceInfo);
+            unset ( $sTraceInfo );
         }
         
         // 调试消息

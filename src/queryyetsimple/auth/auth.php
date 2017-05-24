@@ -2,8 +2,6 @@
 /* [$WindsForce] (C)WindsForce TEAM Since 2012.03.17.
    登录验证类($$)*/
 
-!defined('Q_PATH') && exit;
-
 class Auth{
 
 	protected static $_sErrorMessage='';

@@ -2,8 +2,6 @@
 /* [$QeePHP] (C)WindsForce TEAM Since 2010.10.04.
    Mail 邮件发送类($$)*/
 
-!defined('Q_PATH') && exit;
-
 class Mail{
 
 	protected $_sServer='';

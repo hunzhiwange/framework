@@ -2,8 +2,6 @@
 /* [$QeePHP] (C)WindsForce TEAM Since 2010.10.04.
    文件上传($$)*/
 
-!defined('Q_PATH') && exit;
-
 class UploadFile{
 
 	const UPLOAD_ERR_OK=0;// 文件成功上传

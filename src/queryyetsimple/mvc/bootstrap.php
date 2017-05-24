@@ -15,7 +15,6 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\psr4\psr4;
 
 /**
@@ -49,6 +48,7 @@ class bootstrap {
      */
     private $arrEvent = [ 
             'check',
+            'registerRuntime',
             'initProject',
             'request',
             'runApp' 
@@ -84,9 +84,31 @@ class bootstrap {
      * @return void
      */
     private function check_() {
-        if (isset ( $_REQUEST ['GLOBALS'] ) or isset ( $_FILES ['GLOBALS'] )) {
-            exceptions::throwException ( 'GLOBALS not allowed!' );
-        }
+        if (version_compare ( PHP_VERSION, '5.5.0', '<' ))
+            die ( 'PHP 5.5.0 OR Higher' );
+        
+        if (env ( 'queryphp_ver' ))
+            return;
+    }
+    
+    /**
+     * QueryPHP 系统错误处理
+     *
+     * @return void
+     */
+    private function registerRuntime_() {
+        if (PHP_SAPI == 'cli')
+            return;
+        
+        set_error_handler ( [ 
+                'queryyetsimple\bootstrap\exception\handle',
+                'errorHandle' 
+        ] );
+        
+        register_shutdown_function ( [ 
+                'queryyetsimple\bootstrap\exception\handle',
+                'shutdownHandle' 
+        ] );
     }
     
     /**
@@ -100,7 +122,7 @@ class bootstrap {
                 'ignore' => [ 
                         'interfaces' 
                 ],
-                'force' => Q_DEVELOPMENT === 'development' 
+                'force' => env ( 'app_development' ) === 'development' 
         ] );
         
         // 载入 project 引导文件

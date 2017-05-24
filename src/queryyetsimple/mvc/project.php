@@ -51,7 +51,7 @@ class project extends container {
      * @var string
      */
     private $strPath;
-
+    
     /**
      * 应用参数名
      *
@@ -92,16 +92,19 @@ class project extends container {
     /**
      * 构造函数
      *
-     * @param string $strPath            
+     * @param \Composer\Autoload\ClassLoader $objComposer            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct($strPath, $arrOption = []) {
+    public function __construct($objComposer, $arrOption = []) {
+        // set composer
+        $this->setComposer_ ( $objComposer )->
+        
         // 项目基础配置
-        $this->setOption_ ( $arrOption )->
+        setOption_ ( $arrOption )->
         
         // 初始化项目路径
-        setPath_ ( $strPath )->
+        setPath_ ()->
         
         // 注册别名
         registerAlias_ ()->
@@ -128,15 +131,15 @@ class project extends container {
     /**
      * 返回项目
      *
-     * @param string $strPath            
+     * @param \Composer\Autoload\ClassLoader $objComposer            
      * @param array $arrOption            
      * @return queryyetsimple\mvc\project
      */
-    public static function bootstrap($strPath = null, $arrOption = []) {
+    public static function bootstrap($objComposer = null, $arrOption = []) {
         if (static::$objProject !== null) {
             return static::$objProject;
         } else {
-            return static::$objProject = new self ( $strPath, $arrOption );
+            return static::$objProject = new self ( $objComposer, $arrOption );
         }
     }
     
@@ -224,6 +227,17 @@ class project extends container {
     }
     
     /**
+     * 设置 Composer
+     *
+     * @param \Composer\Autoload\ClassLoader $objComposer            
+     * @return $this
+     */
+    private function setComposer_($objComposer) {
+        psr4::composer ( $objComposer );
+        return $this;
+    }
+    
+    /**
      * 设置项目基础配置
      *
      * @param array $arrOption            
@@ -298,18 +312,15 @@ class project extends container {
      * @param string $strPath            
      * @return $this
      */
-    private function setPath_($strPath) {
+    private function setPath_() {
         // 基础路径
-        $this->strPath = rtrim ( $strPath, '\\' );
+        $this->strPath = dirname ( dirname ( dirname ( dirname ( dirname ( dirname ( __DIR__ ) ) ) ) ) );
         
         // 注册路径
         $this->registerPath_ ();
         
         // 注册 url
         $this->registerUrl_ ();
-        
-        // 设置命名空间缓存包
-        psr4::cachePackagePath ( $this->path_runtime . '/namespace' );
         
         return $this;
     }
@@ -328,7 +339,7 @@ class project extends container {
                 'application',
                 'common',
                 'runtime',
-                'public'
+                'public' 
         ] as $sKey => $sPath ) {
             $this->instance ( 'path_' . $sPath, $this->{'path' . ucwords ( $sPath )} () );
         }
@@ -380,7 +391,7 @@ class project extends container {
     private function runBaseProvider_($strAction, $strType = null, $arrProvider = null) {
         helper::registerProvider ( $this, $this->path_runtime . '/provider/' . ($strType ?  : 'base') . '.' . $strAction . '.php', array_map ( function ($strPackage) use($strAction) {
             return sprintf ( 'queryyetsimple\%s\provider\%s', $strPackage, $strAction );
-        }, $arrProvider ?  : static::$arrBaseProvider ), Q_DEVELOPMENT === 'development' );
+        }, $arrProvider ?  : static::$arrBaseProvider ), env('app_development') === 'development' );
         return $this;
     }
 }

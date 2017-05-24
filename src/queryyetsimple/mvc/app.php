@@ -156,14 +156,14 @@ class app {
                     'ignore' => [ 
                             'interfaces' 
                     ],
-                    'force' => Q_DEVELOPMENT === 'development' 
+                    'force' => env ( 'app_development' ) === 'development' 
             ] );
         }
         
         foreach ( option::gets ( 'namespace' ) as $strNamespace => $strPath ) {
             psr4::import ( $strNamespace, $strPath, [ 
                     'ignore' => [ ],
-                    'force' => Q_DEVELOPMENT === 'development' 
+                    'force' => env ( 'app_development' ) === 'development' 
             ] );
         }
         
@@ -478,14 +478,20 @@ class app {
      * @return void
      */
     private function initializationRun_() {
-        if (function_exists ( 'date_default_timezone_set' )) {
+        if (env ( 'app_development' ) === 'development')
+            error_reporting ( E_ALL );
+        else
+            error_reporting ( E_ERROR | E_PARSE | E_STRICT );
+        
+        ini_set ( 'default_charset', 'utf8' );
+        
+        if (function_exists ( 'date_default_timezone_set' ))
             date_default_timezone_set ( option::gets ( 'time_zone' ) );
-        }
-        if (function_exists ( 'gz_handler' ) && option::gets ( 'start_gzip' )) {
+        
+        if (function_exists ( 'gz_handler' ) && option::gets ( 'start_gzip' ))
             ob_start ( 'gz_handler' );
-        } else {
+        else
             ob_start ();
-        }
     }
     
     /**
@@ -529,8 +535,8 @@ class app {
         $sCachePath = $this->getI18nCachePath_ ( $sI18nSet );
         $sCacheJsPath = $this->getI18nCacheJsPath_ ( $sI18nSet );
         
-        if (Q_DEVELOPMENT !== 'development' && is_file ( $sCachePath ) && is_file ( $sCacheJsPath )) {
-            i18n::addI18ns ( $sI18nSet, ( array ) (include $sCachePath) );
+        if (env ( 'app_development' ) !== 'development' && is_file ( $sCachePath ) && is_file ( $sCacheJsPath )) {
+            i18n::addI18ns ( $sI18nSet, ( array ) include $sCachePath );
         } else {
             $arrFiles = i18n_tool::findPoFile ( $this->getI18nDir_ ( $sI18nSet ) );
             i18n::addI18ns ( $sI18nSet, i18n_tool::saveToPhp ( $arrFiles ['php'], $sCachePath ) );
@@ -583,41 +589,42 @@ class app {
         $this->setOptionRouterCachePath_ ();
         $sCachePath = $this->getOptionCachePath_ ();
         
-        // 开发模式不用读取缓存
-        if (Q_DEVELOPMENT !== 'development' && is_file ( $sCachePath )) {
-            option::resets ( ( array ) (include $sCachePath) );
-            
-            if ($this->strApp == static::INIT_APP) {
+        if ($this->strApp == static::INIT_APP) {
+            if (is_file ( $sCachePath )) {
+                option::resets ( ( array ) include $sCachePath );
                 $this->setEnvironmentVariables_ ( true );
                 
-                if (! router::checkExpireds ())
-                    return;
-                
-                if (($arrRouter = option::gets ( 'router\\' ))) {
-                    router::importCaches ( $arrRouter );
-                }
-                
-                if (($arrRouterType = option::gets ( '~routers~' ))) {
-                    foreach ( $this->getOptionDir_ () as $sDir ) {
-                        foreach ( $arrRouterType as $sType ) {
-                            if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
-                                continue;
-                            include $strFile;
+                if (env ( 'app_development' ) === 'development') {
+                    $this->setEnvironmentVariables_ ();
+                    $this->cacheOption_ ( $sCachePath );
+                } else {
+                    if (! router::checkExpireds ())
+                        return;
+                    
+                    if (($arrRouter = option::gets ( 'router\\' ))) {
+                        router::importCaches ( $arrRouter );
+                    }
+                    
+                    if (($arrRouterType = option::gets ( '~routers~' ))) {
+                        foreach ( $this->getOptionDir_ () as $sDir ) {
+                            foreach ( $arrRouterType as $sType ) {
+                                if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
+                                    continue;
+                                include $strFile;
+                            }
                         }
                     }
                 }
+            } else {
+                $this->setEnvironmentVariables_ ();
+                $this->cacheOption_ ( $sCachePath );
             }
         } else {
-            if ($this->strApp == static::INIT_APP) {
-                $this->setEnvironmentVariables_ ();
+            if (env ( 'app_development' ) !== 'development' && is_file ( $sCachePath )) {
+                option::resets ( ( array ) include $sCachePath );
+            } else {
+                $this->cacheOption_ ( $sCachePath );
             }
-            
-            option_tool::saveToCache ( $this->getOptionDir_ (), $this->getOptionNamespace_ (), $sCachePath, [ 
-                    'app' => [ 
-                            '~apps~' => directory::lists ( $this->objProject->path_application ) 
-                    ],
-                    'env' => $_ENV 
-            ], $this->strApp == static::INIT_APP );
         }
     }
     
@@ -674,7 +681,7 @@ class app {
      */
     private function getI18nDir_($sI18nSet) {
         $arrI18nDir = [ 
-                Q_PATH . '/bootstrap/i18n/' . $sI18nSet,
+                dirname ( __DIR__ ) . '/bootstrap/i18n/' . $sI18nSet,
                 $this->objProject->path_common . '/interfaces/i18n/' . $sI18nSet,
                 $this->objProject->path_app_i18n . '/' . $sI18nSet 
         ];
@@ -719,7 +726,7 @@ class app {
      */
     private function getOptionDir_() {
         $arrOptionDir = [ 
-                Q_PATH . '/bootstrap/option' 
+                dirname ( __DIR__ ) . '/bootstrap/option' 
         ];
         if (is_dir ( $this->objProject->path_common . '/interfaces/option' ))
             $arrOptionDir [] = $this->objProject->path_common . '/interfaces/option';
@@ -742,7 +749,22 @@ class app {
      * @return array
      */
     private function setOptionRouterCachePath_() {
-        router::cachePaths ( $this->objProject->path_cache_option . '/' . $this->strApp . '.router.php' )->development ( Q_DEVELOPMENT === 'development' )->debug ( Q_DEBUG );
+        router::cachePaths ( $this->objProject->path_cache_option . '/' . $this->strApp . '.router.php' )->development ( env ( 'app_development' ) === 'development' )->debug ( env ( 'app_debug' ) );
+    }
+    
+    /**
+     * 缓存配置
+     *
+     * @param string $sCachePath            
+     * @return void
+     */
+    private function cacheOption_($sCachePath) {
+        option_tool::saveToCache ( $this->getOptionDir_ (), $this->getOptionNamespace_ (), $sCachePath, [ 
+                'app' => [ 
+                        '~apps~' => directory::lists ( $this->objProject->path_application ) 
+                ],
+                'env' => $_ENV 
+        ], $this->strApp == static::INIT_APP );
     }
     
     /**
@@ -758,6 +780,26 @@ class app {
         } else {
             $objDotenv = new Dotenv ( $this->objProject->path () );
             $objDotenv->load ();
+            $this->defaultEnvironment_ ();
+        }
+    }
+    
+    /**
+     * 设置默认环境变量
+     *
+     * @return void
+     */
+    private function defaultEnvironment_() {
+        foreach ( [ 
+                'app_debug' => false,
+                'app_development' => 'production',
+                'queryphp_version' => '4.0',
+                'queryphp_console' => false,
+                'queryphp_phpunit' => false,
+                'queryphp_phpunit_system' => false 
+        ] as $strName => $mixValue ) {
+            if (is_null ( env ( $strName ) ))
+                $this->setEnvironmentVariable_ ( $strName, $mixValue );
         }
     }
     

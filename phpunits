@@ -21,22 +21,15 @@ queryphp;
  * @since 2017.01.07
  * @version 4.0
  */
-define ( 'Q_PHPUNIT_SYSTEM', true );
-define ( 'Q_DEBUG', true );
-define ( 'Q_DEVELOPMENT', 'development' );
+putenv ( 'queryphp_phpunit_system=(true)' );
 
-if (Q_DEVELOPMENT === 'development')
-    error_reporting ( E_ALL );
-else
-    error_reporting ( E_ERROR | E_PARSE | E_STRICT );
- 
 /**
  * 基础路径
  */
-define ( 'PATH', __DIR__ );
+define ( 'PATH', dirname( dirname( dirname( __DIR__ ) ) ) );
 
 /**
  * 执行项目
  */
-require __DIR__ . '/src/queryyetsimple/bootstrap.php';
-\queryyetsimple\mvc\project::bootstrap ( PATH )->run ();
+$objComposer = require PATH. '/vendor/autoload.php';
+queryyetsimple\mvc\project::bootstrap ( $objComposer )->run ();

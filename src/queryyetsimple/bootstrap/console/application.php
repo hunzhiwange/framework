@@ -43,7 +43,7 @@ class application {
      */
     public function __construct() {
         // 创建应用
-        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo_ (), Q_VER );
+        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo_ (), env('queryphp_version') );
         
         // 注册默认命令行
         $this->registerDefaultCommands_ ()->

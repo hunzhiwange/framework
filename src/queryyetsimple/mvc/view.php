@@ -48,7 +48,7 @@ class view {
      * @var string
      */
     private static $sThemeDefault;
-
+    
     /**
      * 主题参数名
      *
@@ -66,13 +66,13 @@ class view {
             'view\moduleaction_depr' => '_',
             'view\suffix' => '.html',
             'view\switch' => true,
-            'view\default'=>'default',
-            'view\cookie_app'=>false
+            'view\default' => 'default',
+            'view\cookie_app' => false 
     ];
     
     /**
      * 创建视图
-     *         
+     *
      * @return void
      */
     public function __construct() {
@@ -130,7 +130,7 @@ class view {
         $sContent = theme::displays ( $sFile, false );
         
         // 过滤编译文件子模板定位注释标签，防止在网页头部出现注释，导致 IE 浏览器不居中
-        if (Q_DEBUG === true && $this->classsFacesOption ( 'view\cache_children' ) === true) {
+        if (env ( 'app_debug' ) && $this->classsFacesOption ( 'view\cache_children' ) === true) {
             $sContent = preg_replace ( "/<!--<\#\#\#\#incl\*(.*?)\*ude\#\#\#\#>-->/", '', $sContent );
             $sContent = preg_replace ( "/<!--<\/\#\#\#\#incl\*(.*?)\*ude\#\#\#\#\/>-->/", '', $sContent );
         }
@@ -150,15 +150,15 @@ class view {
      * @return string
      */
     public function parseContext() {
-        if (! $this->classsFacesOption ('view\switch')) {
-            $sThemeSet = $this->classsFacesOption ('view\default');
+        if (! $this->classsFacesOption ( 'view\switch' )) {
+            $sThemeSet = $this->classsFacesOption ( 'view\default' );
         } else {
-            if ($this->classsFacesOption ('view\cookie_app') === true) {
+            if ($this->classsFacesOption ( 'view\cookie_app' ) === true) {
                 $sCookieName = static::$objProjectContainer->app_name . '_view';
             } else {
                 $sCookieName = 'view';
             }
-    
+            
             if (isset ( $_GET [static::ARGS] )) {
                 $sThemeSet = $_GET [static::ARGS];
                 cookie::sets ( $sCookieName, $sThemeSet );
@@ -166,13 +166,12 @@ class view {
                 if (cookie::gets ( $sCookieName )) {
                     $sThemeSet = cookie::gets ( $sCookieName );
                 } else {
-                    $sThemeSet = $this->classsFacesOption ('view\default');
+                    $sThemeSet = $this->classsFacesOption ( 'view\default' );
                 }
             }
         }
         return $sThemeSet;
     }
-    
     
     /**
      * 设置主题目录

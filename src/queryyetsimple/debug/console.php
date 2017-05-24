@@ -26,7 +26,7 @@ use queryyetsimple\option\option;
  * @version 1.0
  */
 class console {
-
+    
     /**
      * 记录调试信息
      * SQL 记录，加载文件等等
@@ -35,11 +35,11 @@ class console {
      */
     public static function trace() {
         // ajax 不调试
-        if(isset ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' == strtolower ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ))
+        if (isset ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' == strtolower ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ))
             return;
-        
-        // 调试信息
-        if (Q_DEBUG === false || option::gets('debug\page_trace', false))
+            
+            // 调试信息
+        if (! env ( 'app_debug' ) || option::gets ( 'debug\page_trace', false ))
             return;
         
         $arrTrace = [ ];
@@ -67,6 +67,6 @@ class console {
             return str_replace ( '\\', '/', $sVal );
         }, $arrInclude ) );
         
-        include Q_PATH . '/bootstrap/template/trace.php';
+        include dirname ( __DIR__ ) . '/bootstrap/template/trace.php';
     }
 }

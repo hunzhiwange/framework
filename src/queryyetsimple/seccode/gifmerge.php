@@ -2,8 +2,6 @@
 /* [$QeePHP] (C)WindsForce TEAM Since 2010.10.04.
    Gif动画验证码生成类（Modify from Discuz!）($$)*/
 
-!defined('Q_PATH') && exit;
-
 class GifMerge{
 
 	const C_FILE='C_FILE';

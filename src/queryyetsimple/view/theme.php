@@ -171,7 +171,7 @@ class theme {
      */
     private function isCacheExpired_($sFile, $sCachePath) {
         // 开启调试
-        if (Q_DEBUG === true) {
+        if (env ( 'app_debug' )) {
             return true;
         }
         

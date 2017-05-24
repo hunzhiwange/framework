@@ -2,8 +2,6 @@
 /* [$QeePHP] (C)WindsForce TEAM Since 2010.10.04.
    Page分页处理类($$)*/
 
-!defined('Q_PATH') && exit;
-
 class Page333333{
 
 	protected $_nCount;

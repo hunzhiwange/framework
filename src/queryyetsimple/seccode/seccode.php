@@ -2,8 +2,6 @@
 /* [$QeePHP] (C)WindsForce TEAM Since 2010.10.04.
    系统验证码（Modify from Discuz!）($$)*/
 
-!defined('Q_PATH') && exit;
-
 class Seccode{
 	protected $_nCode;
 	protected $_nWidth=0;
@@ -58,8 +56,8 @@ class Seccode{
 	);
 
 	public function __construct($arrOption=null){
-		$this->_arrDefaultOption['seccode_fontpath']=Q_PATH.'/Resource_/Images/Seccode/Fonts';
-		$this->_arrDefaultOption['seccode_datapath']=Q_PATH.'/Resource_/Images/Seccode';
+		$this->_arrDefaultOption['seccode_fontpath']='/Resource_/Images/Seccode/Fonts';
+		$this->_arrDefaultOption['seccode_datapath']='/Resource_/Images/Seccode';
 
 		if(!empty($arrOption)){
 			$arrDefaultOption=array_merge($this->_arrDefaultOption,$arrOption);

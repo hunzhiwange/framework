@@ -19,8 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "queryyetsimple\\stack\\": "",
-            "queryyetsimple\\stack\\traits\\": "traits"
+            "queryyetsimple\\stack\\": ""
         }
     },
     "extra": {

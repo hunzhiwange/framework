@@ -50,7 +50,7 @@ class tool {
             foreach ( $arrOptionType as $sType ) {
                 if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
                     continue;
-                $arrOptionData [$sType] = array_merge ( $arrOptionData [$sType], ( array ) (include $strFile) );
+                $arrOptionData [$sType] = array_merge ( $arrOptionData [$sType], ( array ) include $strFile );
             }
         }
         
@@ -71,7 +71,7 @@ class tool {
                 foreach ( $arrOptionExtend as $sType ) {
                     if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
                         continue;
-                    $arrOptionData [$sType] = array_merge ( $arrOptionData [$sType], ( array ) (include $strFile) );
+                    $arrOptionData [$sType] = array_merge ( $arrOptionData [$sType], ( array ) include $strFile );
                 }
             }
             
@@ -130,7 +130,7 @@ class tool {
                 foreach ( $arrRouterExtend as $sType ) {
                     if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
                         continue;
-                    $arrOptionData ['router'] = array_merge ( $arrOptionData ['router'], ( array ) (include $strFile) );
+                    $arrOptionData ['router'] = array_merge ( $arrOptionData ['router'], ( array ) include $strFile );
                 }
             }
         }

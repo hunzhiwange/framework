@@ -118,7 +118,7 @@ class request {
         
         // 解析项目公共 url 地址
         $this->parsePublicAndRoot_ ();
-
+        
         return $this;
     }
     
@@ -365,9 +365,9 @@ class request {
      */
     private function parseUrlCli_() {
         // console 命令行
-        if (Q_CONSOLE === true) {
+        if (env ( 'queryphp_console' )) {
             // 注册 console 引导入口
-            define ( 'PATH_APP_BOOTSTRAP', Q_PATH . '/bootstrap/console/bootstrap.php' );
+            define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/console/bootstrap.php' );
             
             // 注册默认应用程序
             $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@console';
@@ -377,9 +377,9 @@ class request {
             return;
         }
         
-        if (Q_PHPUNIT === true) {
+        if (env ( 'queryphp_phpunit' )) {
             // 注册 phpunit 引导入口
-            define ( 'PATH_APP_BOOTSTRAP', Q_PATH . '/bootstrap/testing/bootstrap.php' );
+            define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/testing/bootstrap.php' );
             
             // 注册默认应用程序
             $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@testing';
@@ -389,9 +389,9 @@ class request {
             return;
         }
         
-        if (Q_PHPUNIT_SYSTEM === true) {
+        if (env ( 'queryphp_phpunit_system' )) {
             // 注册 phpunit 内部引导入口
-            define ( 'PATH_APP_BOOTSTRAP', Q_PATH . '/../../tests/bootstrap.php' );
+            define ( 'PATH_APP_BOOTSTRAP', dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/tests/bootstrap.php' );
             
             // 注册默认应用程序
             $_GET [\queryyetsimple\mvc\project::ARGS_APP] = 'tests';
@@ -399,7 +399,7 @@ class request {
             $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
             
             // 导入 tests 命名空间
-            psr4::import ( 'tests', Q_PATH . '/../../tests', [ 
+            psr4::import ( 'tests', dirname ( PATH_APP_BOOTSTRAP ) . '/tests', [ 
                     'ignore' => [ 
                             'resource' 
                     ] 
