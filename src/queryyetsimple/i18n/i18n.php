@@ -115,7 +115,8 @@ class i18n {
     /**
      * 获取语言text
      *
-     * @param 当前的语言 $sValue            
+     * @param string $sValue
+     *            当前的语言
      * @return string
      */
     public function getText($sValue/*Argvs*/){
@@ -142,8 +143,10 @@ class i18n {
     /**
      * 添加语言包
      *
-     * @param $sI18nName 语言名字            
-     * @param $arrData 语言包数据            
+     * @param string $sI18nName
+     *            语言名字
+     * @param array $arrData
+     *            语言包数据
      * @return void
      */
     public function addI18n($sI18nName, $arrData = []) {
@@ -198,8 +201,7 @@ class i18n {
     /**
      * 设置当前语言包上下文环境
      *
-     * @param
-     *            $sI18nName
+     * @param string $sI18nName            
      * @return void
      */
     public function setContext($sI18nName) {
@@ -209,8 +211,7 @@ class i18n {
     /**
      * 设置当前语言包默认上下文环境
      *
-     * @param
-     *            $sI18nName
+     * @param string $sI18nName            
      * @return void
      */
     public function setDefaultContext($sI18nName) {
