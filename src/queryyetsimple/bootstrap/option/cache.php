@@ -31,7 +31,7 @@ return [
          * 这里可以可以设置为 filecache、memcache 等
          * 系统为所有缓存提供了统一的接口，在使用上拥有一致性
          */
-        'default' => 'filecache',
+        'default' => env ( 'queue_dirver', 'filecache' ),
         
         /**
          * ---------------------------------------------------------------

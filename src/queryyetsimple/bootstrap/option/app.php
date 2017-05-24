@@ -133,7 +133,7 @@ return [
          * 请妥善保管此安全 key,防止密码被人破解
          * queryyetsimple\encryption:authcode 安全 key
          */
-        'q_auth_key' => 'queryphp-872-028-111-222-sn7i',
+        'app_auth_key' => env ( 'app_auth_key', 'queryphp-872-028-111-222-sn7i' ),
         
         /**
          * ---------------------------------------------------------------

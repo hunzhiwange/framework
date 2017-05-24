@@ -42,7 +42,7 @@ class encryption {
     public static function authcode($string, $operation = true, $key = null, $expiry = 0) {
         $ckey_length = 4;
         
-        $key = md5 ( $key ? $key : option::gets ( 'q_auth_key','queryphp-872-028-111-222-sn7i' ) );
+        $key = md5 ( $key ? $key : option::gets ( 'app_auth_key','queryphp-872-028-111-222-sn7i' ) );
         $keya = md5 ( substr ( $key, 0, 16 ) );
         $keyb = md5 ( substr ( $key, 16, 16 ) );
         $keyc = $ckey_length ? ($operation === true ? substr ( $string, 0, $ckey_length ) : substr ( md5 ( microtime () ), - $ckey_length )) : '';

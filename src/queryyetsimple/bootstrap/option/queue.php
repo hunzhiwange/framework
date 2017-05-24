@@ -23,7 +23,7 @@ queryphp;
  */
 return [ 
         
-        'default' => 'redis',
+        'default' => env ( 'cache_driver', 'redis' ),
         
         'connect' => [ 
                 'redis' => [ 

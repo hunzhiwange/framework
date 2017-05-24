@@ -165,7 +165,7 @@ class app {
     /**
      * 注册应用提供者
      *
-     * @return void
+     * @return \queryyetsimple\mvc\app
      */
     public function registerAppProvider() {
         $this->objProject->registerAppProvider ( option::gets ( 'provider' ), option::gets ( 'provider_with_cache' ) );
@@ -584,9 +584,8 @@ class app {
         if ($this->strApp == static::INIT_APP) {
             if (is_file ( $sCachePath )) {
                 option::resets ( ( array ) include $sCachePath );
-                $this->setEnvironmentVariables_ ( true );
                 
-                if (env ( 'app_development' ) === 'development') {
+                if (option::gets('env\app_development') === 'development') {
                     $this->setEnvironmentVariables_ ();
                     $this->cacheOption_ ( $sCachePath );
                 } else {
