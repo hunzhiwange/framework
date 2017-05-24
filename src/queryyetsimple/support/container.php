@@ -287,7 +287,6 @@ class container implements ArrayAccess, interfaces_container {
     public function call($calClass /* args */) {
         $arrArgs = func_get_args ();
         array_shift ( $arrArgs );
-        
         if (($arrInjection = $this->parseInjection_ ( $calClass, $arrArgs )) && isset ( $arrInjection ['args'] )) {
             $arrArgs = $this->getInjectionArgs_ ( $arrInjection ['args'], $arrArgs, $arrInjection ['class'] );
         }

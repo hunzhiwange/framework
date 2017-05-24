@@ -14,7 +14,7 @@
 queryphp;
 
 /**
- * 消息队列配置文件
+ * 消息队列默认配置文件
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
@@ -23,15 +23,30 @@ queryphp;
  */
 return [ 
         
-        'default' => env ( 'cache_driver', 'redis' ),
+        /**
+         * ---------------------------------------------------------------
+         * 默认消息队列驱动
+         * ---------------------------------------------------------------
+         *
+         * 默认采用 redis 来做消息队列性能比较好
+         */
+        'default' => env ( 'redis_driver', 'redis' ),
         
-        'connect' => [ 
-                'redis' => [ 
-                       // 'driver' => 'redis',
-                        'connection' => 'default',
-                        'queue' => 'default',
-                        'expire' => 60 
+        /**
+         * ---------------------------------------------------------------
+         * 消息队列连接
+         * ---------------------------------------------------------------
+         *
+         * 所有消息队列的连接参数，支持 + 语法合并
+         */
+        '+connect' => [ 
+                '+redis' => [ 
+                        'servers' => [ 
+                                'host' => env ( 'queue_redis_host', '127.0.0.1' ),
+                                'port' => env ( 'queue_redis_port', 6379 ),
+                                'password' => env ( 'queue_redis_password', null ) 
+                        ],
+                        'options' => [ ] 
                 ] 
         ] 
-]
-;
+];

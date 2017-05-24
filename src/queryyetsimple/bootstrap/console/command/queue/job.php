@@ -25,7 +25,7 @@ use queryyetsimple\option\option;
 /**
  * 导入消息队列配置
  */
-require_once __DIR__ . '/../../../queue/config.php';
+require dirname ( dirname ( dirname ( dirname ( __DIR__ ) ) ) ) . '/queue/config.php';
 
 /**
  * 添加新的任务

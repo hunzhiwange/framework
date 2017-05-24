@@ -120,7 +120,7 @@ abstract class queue extends JobQueue {
     /**
      * 添加一个任务
      *
-     * @param array $arrNewJob            
+     * @param array|null $arrNewJob            
      * @return boolean
      */
     public function addJob($arrNewJob = null) {
@@ -135,7 +135,7 @@ abstract class queue extends JobQueue {
     /**
      * 获取一个任务
      *
-     * @param string $strJobId            
+     * @param string|null $strJobId            
      * @return object
      */
     public function getJob($strJobId = null) {
@@ -143,7 +143,7 @@ abstract class queue extends JobQueue {
         if (! class_exists ( $strJob = '\queryyetsimple\queue\jobs\\' . $this->strConnect )) {
             $strJob = '\PHPQueue\Job';
         }
-        $objNextJob = new $strJob ( $arrData, $this->resDataSource->last_job_id,static::$strQueue );
+        $objNextJob = new $strJob ( $arrData, $this->resDataSource->last_job_id, static::$strQueue );
         $this->last_job_id = $this->resDataSource->last_job_id;
         return $objNextJob;
     }
@@ -151,8 +151,8 @@ abstract class queue extends JobQueue {
     /**
      * 更新任务
      *
-     * @param string $strJobId            
-     * @param array $arrResultData            
+     * @param string|null $strJobId            
+     * @param array|null $arrResultData            
      * @return void
      */
     public function updateJob($strJobId = null, $arrResultData = null) {
@@ -164,7 +164,7 @@ abstract class queue extends JobQueue {
     /**
      * 删除任务
      *
-     * @param string $strJobId            
+     * @param string|null $strJobId            
      * @return void
      */
     public function clearJob($strJobId = null) {
@@ -174,7 +174,7 @@ abstract class queue extends JobQueue {
     /**
      * 重新发布任务
      *
-     * @param string $strJobId            
+     * @param string|null $strJobId            
      * @return void
      */
     public function releaseJob($strJobId = null) {

@@ -91,13 +91,19 @@ class helper {
         foreach ( $arrExtend as $strKey => $mixTemp ) {
             if (isset ( $arrOption [$strKey] ) && is_array ( $arrOption [$strKey] ) && is_array ( $mixTemp )) {
                 $arrOption [$strKey] = array_merge ( $arrOption [$strKey], $mixTemp );
-                if ($booRecursion === true) {
-                    $arrOption [$strKey] = static::arrayMergePlus ( $arrOption [$strKey], $booRecursion );
-                }
             } else {
                 $arrOption [$strKey] = $mixTemp;
             }
         }
+        
+        if ($booRecursion === true) {
+            foreach ( $arrOption as $strKey => $mixTemp ) {
+                if (is_array ( $mixTemp )) {
+                    $arrOption [$strKey] = static::arrayMergePlus ( $mixTemp );
+                }
+            }
+        }
+        
         return $arrOption;
     }
     

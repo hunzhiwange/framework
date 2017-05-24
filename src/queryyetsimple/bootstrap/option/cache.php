@@ -81,14 +81,14 @@ return [
          * 这里为所有的缓存的连接参数，每一种不同的驱动拥有不同的配置
          * 虽然有不同的驱动，但是在缓存使用上却有着一致性
          */
-        'connect' => [ 
+        '+connect' => [ 
                 
-                'filecache' => [
+                '+filecache' => [
                         // 文件缓存路径
                         'path' => '' 
                 ],
                 
-                'memcache' => [
+                '+memcache' => [
                         // 多台服务器
                         'servers' => [ ],
                         
