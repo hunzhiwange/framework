@@ -152,19 +152,11 @@ class app {
      */
     public function namespaces() {
         foreach ( option::gets ( '~apps~' ) as $strApp ) {
-            psr4::import ( $strApp, $this->objProject->path_application . '/' . $strApp, [ 
-                    'ignore' => [ 
-                            'interfaces' 
-                    ],
-                    'force' => env ( 'app_development' ) === 'development' 
-            ] );
+            psr4::import ( $strApp, $this->objProject->path_application . '/' . $strApp );
         }
         
         foreach ( option::gets ( 'namespace' ) as $strNamespace => $strPath ) {
-            psr4::import ( $strNamespace, $strPath, [ 
-                    'ignore' => [ ],
-                    'force' => env ( 'app_development' ) === 'development' 
-            ] );
+            psr4::import ( $strNamespace, $strPath );
         }
         
         return $this;

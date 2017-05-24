@@ -87,7 +87,7 @@ class bootstrap {
         if (version_compare ( PHP_VERSION, '5.5.0', '<' ))
             die ( 'PHP 5.5.0 OR Higher' );
         
-        if (env ( 'queryphp_ver' ))
+        if (env ( 'queryphp_version' ))
             return;
     }
     
