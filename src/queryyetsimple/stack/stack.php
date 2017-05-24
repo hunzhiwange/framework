@@ -55,7 +55,7 @@ class stack extends SplStack {
      * 验证类型是否正确遇到错误抛出异常
      *
      * @param mixed $mixValue            
-     * @return bool
+     * @return void
      */
     public function checkTypeWithException($mixValue) {
         if (! $this->checkType ( $mixValue ))
