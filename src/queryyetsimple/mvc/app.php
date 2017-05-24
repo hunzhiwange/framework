@@ -27,6 +27,7 @@ use queryyetsimple\option\tool as option_tool;
 use queryyetsimple\helper\helper;
 use queryyetsimple\i18n\i18n;
 use queryyetsimple\i18n\tool as i18n_tool;
+use Dotenv\Dotenv;
 
 /**
  * 应用程序对象
@@ -587,6 +588,8 @@ class app {
             option::resets ( ( array ) (include $sCachePath) );
             
             if ($this->strApp == static::INIT_APP) {
+                $this->setEnvironmentVariables_ ( true );
+                
                 if (! router::checkExpireds ())
                     return;
                 
@@ -605,10 +608,15 @@ class app {
                 }
             }
         } else {
+            if ($this->strApp == static::INIT_APP) {
+                $this->setEnvironmentVariables_ ();
+            }
+            
             option_tool::saveToCache ( $this->getOptionDir_ (), $this->getOptionNamespace_ (), $sCachePath, [ 
                     'app' => [ 
                             '~apps~' => directory::lists ( $this->objProject->path_application ) 
-                    ] 
+                    ],
+                    'env' => $_ENV 
             ], $this->strApp == static::INIT_APP );
         }
     }
@@ -735,6 +743,41 @@ class app {
      */
     private function setOptionRouterCachePath_() {
         router::cachePaths ( $this->objProject->path_cache_option . '/' . $this->strApp . '.router.php' )->development ( Q_DEVELOPMENT === 'development' )->debug ( Q_DEBUG );
+    }
+    
+    /**
+     * 设置环境变量
+     *
+     * @param boolean $booCache            
+     * @return void
+     */
+    private function setEnvironmentVariables_($booCache = false) {
+        if ($booCache === true) {
+            foreach ( option::gets ( 'env\\' ) as $strName => $strValue )
+                $this->setEnvironmentVariable_ ( $strName, $strValue );
+        } else {
+            $objDotenv = new Dotenv ( $this->objProject->path () );
+            $objDotenv->load ();
+        }
+    }
+    
+    /**
+     * 设置单个环境变量
+     *
+     * @param string $strName            
+     * @param string|null $mixValue            
+     * @return void
+     */
+    private function setEnvironmentVariable_($strName, $mixValue = null) {
+        if (is_bool ( $mixValue )) {
+            putenv ( $strName . '=' . ($mixValue ? '(true)' : '(false)') );
+        } elseif (is_null ( $mixValue )) {
+            putenv ( $strName . '(null)' );
+        } else {
+            putenv ( $strName . '=' . $mixValue );
+        }
+        $_ENV [$strName] = $mixValue;
+        $_SERVER [$strName] = $mixValue;
     }
     
     /**

@@ -85,7 +85,7 @@ class tool {
                 if (isset ( $arrOptionData [$sType] )) {
                     $arrOptionData [$sType] = helper::arrayMergePlus ( array_merge ( $arrOptionData [$sType], $arrTemp ) );
                 } else {
-                    $arrOptionData [sType] = $arrTemp;
+                    $arrOptionData [$sType] = $arrTemp;
                 }
             }
         }
