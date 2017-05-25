@@ -27,6 +27,7 @@ git subtree add --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mv
 git subtree add --prefix=src/queryyetsimple/operating git@github.com:queryyetsimple/operating.git master
 git subtree add --prefix=src/queryyetsimple/option git@github.com:queryyetsimple/option.git master
 git subtree add --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
+git subtree add --prefix=src/queryyetsimple/pipeline git@github.com:queryyetsimple/pipeline.git master
 git subtree add --prefix=src/queryyetsimple/psr4 git@github.com:queryyetsimple/psr4.git master
 git subtree add --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
 git subtree add --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master

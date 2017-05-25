@@ -51,7 +51,7 @@ abstract class worker extends PHPQueueWorker {
             $objJob = $this->getObjectByClassAndArgs_ ( $arrJobData ['~@job'], $arrJobData );
             
             // 注入方法
-            $strMethod = method_exists ( $objJob, 'handle' ) ? 'handle' : 'fire';
+            $strMethod = method_exists ( $objJob, 'handle' ) ? 'handle' : 'run';
             $this->getObjectCallbackResultWithMethodArgs_ ( [ 
                     $objJob,
                     $strMethod 

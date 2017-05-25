@@ -86,7 +86,8 @@ class project extends container {
             'i18n',
             'database',
             'event',
-            'router' 
+            'router',
+            'pipeline' 
     ];
     
     /**

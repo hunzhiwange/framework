@@ -146,10 +146,9 @@ abstract class command extends SymfonyCommand {
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        $strMethod = method_exists ( $this, 'handle' ) ? 'handle' : 'fire';
         return $this->getQueryPHP ()->call ( [ 
                 $this,
-                $strMethod 
+                'handle' 
         ], $input, $output );
     }
     

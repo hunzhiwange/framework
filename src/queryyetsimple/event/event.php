@@ -54,7 +54,7 @@ class event {
      * @param \queryyetsimple\mvc\project $objProject            
      * @return void
      */
-    public function __construct($objProject) {
+    public function __construct(project $objProject) {
         $this->objProject = $objProject;
     }
     
