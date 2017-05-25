@@ -16,7 +16,6 @@ namespace queryyetsimple\pipeline;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\mvc\project;
 
 /**
  * 管道实现类
@@ -31,7 +30,7 @@ class pipeline {
     /**
      * 项目容器
      *
-     * @var \queryyetsimple\mvc\project
+     * @var \queryyetsimple\mvc\project|null
      */
     protected $objProject;
     
@@ -52,10 +51,10 @@ class pipeline {
     /**
      * 创建一个管道
      *
-     * @param \queryyetsimple\mvc\project $objProject            
+     * @param \queryyetsimple\mvc\project|null $objProject            
      * @return void
      */
-    public function __construct(project $objProject) {
+    public function __construct($objProject = null) {
         $this->objProject = $objProject;
     }
     
@@ -80,7 +79,7 @@ class pipeline {
         $mixStages = is_array ( $mixStages ) ? $mixStages : func_get_args ();
         
         foreach ( $mixStages as $mixStage ) {
-            if (is_string ( $mixStage )) {
+            if (is_string ( $mixStage ) && ! is_null ( $this->objProject )) {
                 $mixStage = $this->parse_ ( $mixStage );
                 $mixStage = function ($mixPassed) use($mixStage) {
                     if (strpos ( $mixStage [0], '@' ) !== false) {
@@ -110,6 +109,8 @@ class pipeline {
                             'call' 
                     ], $mixStage );
                 };
+            } elseif (! is_callable ( $mixStage )) {
+                throw new InvalidArgumentException ( sprintf ( 'Stage %s is not valid.', '$mixStage' ) );
             }
             $this->stage ( $mixStage );
         }
