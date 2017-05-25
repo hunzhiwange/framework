@@ -444,7 +444,7 @@ class container implements ArrayAccess, interfaces_container {
         foreach ( $arrParameter as $objParameter ) {
             if (($objParameterClass = $objParameter->getClass ()) && $objParameterClass instanceof ReflectionClass && ($objParameterClass = $objParameterClass->getName ())) {
                 // 接口绑定实现
-                if (($objParameterMake = $this->make ( $objParameterMake )) !== false) {
+                if (($objParameterMake = $this->make ( $objParameterClass )) !== false) {
                     // 实例对象
                     if (is_object ( $objParameterMake )) {
                         $arrResult ['args'] [] = $objParameterMake;
