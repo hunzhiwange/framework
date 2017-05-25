@@ -109,8 +109,6 @@ class pipeline {
                             'call' 
                     ], $mixStage );
                 };
-            } elseif (! is_callable ( $mixStage )) {
-                throw new InvalidArgumentException ( sprintf ( 'Stage %s is not valid.', '$mixStage' ) );
             }
             $this->stage ( $mixStage );
         }
@@ -124,6 +122,9 @@ class pipeline {
      * @return $this
      */
     public function stage(callable $calStage) {
+        if (! is_callable ( $calStage )) {
+            throw new InvalidArgumentException ( sprintf ( 'Stage %s is not valid.', '$calStage' ) );
+        }
         $this->arrStage [] = $calStage;
         return $this;
     }
