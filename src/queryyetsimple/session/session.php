@@ -40,7 +40,7 @@ class session implements interfaces_session {
             'session\prefix' => 'q_',
             'session\id' => null,
             'session\name' => null,
-            'session\cookid_domain' => null,
+            'session\cookie_domain' => null,
             'session\cache_limiter' => null,
             'session\cache_expire' => 86400,
             'session\cookie_lifetime' => null,
