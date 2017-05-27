@@ -30,6 +30,13 @@ use queryyetsimple\mvc\project;
 class application {
     
     /**
+     * 项目容器
+     *
+     * @var \queryyetsimple\mvc\project
+     */
+    protected $objProject;
+    
+    /**
      * symfony application
      *
      * @var object
@@ -39,11 +46,14 @@ class application {
     /**
      * 创建一个命令行应用程序
      *
-     * @return queryyetsimple\console\application
+     * @param \queryyetsimple\mvc\project $objProject            
+     * @return $this
      */
-    public function __construct() {
+    public function __construct(project $objProject) {
+        $this->objProject = $objProject;
+        
         // 创建应用
-        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo (), env('queryphp_version') );
+        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo (), env ( 'queryphp_version' ) );
         
         // 注册默认命令行
         $this->registerDefaultCommands ()->
@@ -87,24 +97,15 @@ class application {
      */
     private function doRegisterCommands($arrCommands) {
         foreach ( $arrCommands as $strCommand ) {
-            $objCommand = $this->getQueryPHP ()->make ( $strCommand );
-            // 基于 Phinx 数据库迁移组件无法设置 setQueryPHP
-            if (method_exists ( $objCommand, 'setQueryPHP' )) {
-                $objCommand->setQueryPHP ( $this->getQueryPHP () );
+            $objCommand = $this->objProject->make ( $strCommand );
+            // 基于 Phinx 数据库迁移组件无法设置 setContainer
+            if (method_exists ( $objCommand, 'project' )) {
+                $objCommand->project ( $this->objProject );
             }
-            $this->getQueryPHP ()->instance ( 'command_' . $objCommand->getName (), $objCommand );
+            $this->objProject->instance ( 'command_' . $objCommand->getName (), $objCommand );
             $this->objSymfonyApplication->add ( $objCommand );
         }
         return $this;
-    }
-    
-    /**
-     * 返回 QueryPHP
-     *
-     * @return \queryyetsimple\mvc\project
-     */
-    private function getQueryPHP() {
-        return project::bootstrap ();
     }
     
     /**

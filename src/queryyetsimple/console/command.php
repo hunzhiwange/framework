@@ -39,11 +39,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 abstract class command extends SymfonyCommand {
     
     /**
-     * QueryPHP 容器
+     * 项目容器
      *
      * @var \queryyetsimple\mvc\project
      */
-    protected $objQueryPHP = null;
+    protected $objProject = null;
     
     /**
      * 命令名字
@@ -146,7 +146,7 @@ abstract class command extends SymfonyCommand {
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
-        return $this->getQueryPHP ()->call ( [ 
+        return $this->objProject->call ( [ 
                 $this,
                 'handle' 
         ], $input, $output );
@@ -161,7 +161,7 @@ abstract class command extends SymfonyCommand {
      */
     public function call($strCommand, array $arrArguments = []) {
         $arrArguments ['command'] = $strCommand;
-        return $this->getQueryPHP ()->make ( 'command_' . $strCommand )->run ( new ArrayInput ( $arrArguments ), $this->objOutput );
+        return $this->objProject->make ( 'command_' . $strCommand )->run ( new ArrayInput ( $arrArguments ), $this->objOutput );
     }
     
     /**
@@ -360,22 +360,18 @@ abstract class command extends SymfonyCommand {
     }
     
     /**
-     * 获取 QueryPHP 对象
+     * 设置或者返回服务容器
      *
-     * @return \queryyetsimple\mvc\project
-     */
-    public function getQueryPHP() {
-        return $this->objQueryPHP;
-    }
-    
-    /**
-     * 设置 QueryPHP 对象
-     *
-     * @param \queryyetsimple\mvc\project $objQueryPHP            
+     * @param \queryyetsimple\mvc\project $objProject            
      * @return void
      */
-    public function setQueryPHP($objQueryPHP) {
-        $this->objQueryPHP = $objQueryPHP;
+    public function project($objProject = null) {
+        if (is_null ( $objProject )) {
+            return $this->objProject;
+        } else {
+            $this->objProject = $objProject;
+            return $this;
+        }
     }
     
     /**
