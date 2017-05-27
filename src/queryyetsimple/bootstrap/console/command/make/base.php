@@ -71,16 +71,16 @@ abstract class base extends command {
      */
     public function handle() {
         // 替换模板变量
-        $this->replaceTemplateSource_ ();
+        $this->replaceTemplateSource ();
         
         // 保存文件
-        if ($this->saveTemplateResult_ () === false) {
+        if ($this->saveTemplateResult () === false) {
             return;
         }
         
         // 保存成功输出消息
-        $this->info ( sprintf ( '%s <%s> created successfully.', $this->getMakeType_ (), $this->argument ( 'name' ) ) );
-        $this->commentFilePath_ ();
+        $this->info ( sprintf ( '%s <%s> created successfully.', $this->getMakeType (), $this->argument ( 'name' ) ) );
+        $this->commentFilePath ();
     }
     
     /**
@@ -88,15 +88,15 @@ abstract class base extends command {
      *
      * @return string
      */
-    protected function replaceTemplateSource_() {
+    protected function replaceTemplateSource() {
         // 解析模板源码
-        $this->parseTemplateSource_ ();
+        $this->parseTemplateSource ();
         
         // 获取替换变量
-        $arrSourceAndReplace = $this->parseSourceAndReplace_ ();
+        $arrSourceAndReplace = $this->parseSourceAndReplace ();
         
         // 执行替换
-        $strTemplateSource = str_replace ( $arrSourceAndReplace [0], $arrSourceAndReplace [1], $this->getTemplateSource_ () ); // 第一替换基本变量
+        $strTemplateSource = str_replace ( $arrSourceAndReplace [0], $arrSourceAndReplace [1], $this->getTemplateSource () ); // 第一替换基本变量
         $this->strTemplateResult = str_replace ( $arrSourceAndReplace [0], $arrSourceAndReplace [1], $strTemplateSource ); // 第一替换基本变量中的变量
     }
     
@@ -105,19 +105,19 @@ abstract class base extends command {
      *
      * @return void
      */
-    protected function saveTemplateResult_() {
-        $strSaveFilePath = $this->getSaveFilePath_ ();
+    protected function saveTemplateResult() {
+        $strSaveFilePath = $this->getSaveFilePath ();
         if (! is_dir ( dirname ( $strSaveFilePath ) )) {
             directory::create ( dirname ( $strSaveFilePath ) );
         }
         if (is_file ( $strSaveFilePath )) {
             $this->error ( 'File is already exits.' );
-            $this->commentFilePath_ ();
+            $this->commentFilePath ();
             return false;
         }
-        if (! file_put_contents ( $strSaveFilePath, $this->getTemplateResult_ () )) {
+        if (! file_put_contents ( $strSaveFilePath, $this->getTemplateResult () )) {
             $this->error ( 'Can not write file.' );
-            $this->commentFilePath_ ();
+            $this->commentFilePath ();
             return false;
         }
     }
@@ -127,7 +127,7 @@ abstract class base extends command {
      *
      * @return string
      */
-    protected function getTemplateResult_() {
+    protected function getTemplateResult() {
         return $this->strTemplateResult;
     }
     
@@ -136,7 +136,7 @@ abstract class base extends command {
      *
      * @return void
      */
-    protected function parseTemplateSource_() {
+    protected function parseTemplateSource() {
         $strTemplateSource = dirname ( __DIR__ ) . '/template/' . str_replace ( ':', '.', $this->getName () );
         if (! is_file ( $strTemplateSource )) {
             $this->error ( 'Template not found.' );
@@ -150,7 +150,7 @@ abstract class base extends command {
      *
      * @return string
      */
-    protected function getTemplateSource_() {
+    protected function getTemplateSource() {
         return $this->strTemplateSource;
     }
     
@@ -159,8 +159,8 @@ abstract class base extends command {
      *
      * @return array
      */
-    protected function parseSourceAndReplace_() {
-        $arrReplaceKeyValue = array_merge ( $this->getDefaultReplaceKeyValue_ (), option::gets ( 'console\template' ) );
+    protected function parseSourceAndReplace() {
+        $arrReplaceKeyValue = array_merge ( $this->getDefaultReplaceKeyValue (), option::gets ( 'console\template' ) );
         $arrSourceKey = array_map ( function ($strItem) {
             return '{{' . $strItem . '}}';
         }, array_keys ( $arrReplaceKeyValue ) );
@@ -176,12 +176,12 @@ abstract class base extends command {
      *
      * @return array
      */
-    protected function getDefaultReplaceKeyValue_() {
+    protected function getDefaultReplaceKeyValue() {
         return array_merge ( [ 
-                'namespace' => $this->getNamespace_ (),
+                'namespace' => $this->getNamespace (),
                 'file_name' => $this->argument ( 'name' ),
                 'date_y' => date ( 'Y' ) 
-        ], $this->getCustomReplaceKeyValue_ () ); // 日期年
+        ], $this->getCustomReplaceKeyValue () ); // 日期年
     }
     
     /**
@@ -190,7 +190,7 @@ abstract class base extends command {
      * @param string $strSaveFilePath            
      * @return void
      */
-    protected function setSaveFilePath_($strSaveFilePath) {
+    protected function setSaveFilePath($strSaveFilePath) {
         $this->strSaveFilePath = $strSaveFilePath;
     }
     
@@ -199,7 +199,7 @@ abstract class base extends command {
      *
      * @return void
      */
-    protected function getSaveFilePath_() {
+    protected function getSaveFilePath() {
         return $this->strSaveFilePath;
     }
     
@@ -208,9 +208,9 @@ abstract class base extends command {
      *
      * @return string
      */
-    protected function getNamespacePath_() {
-        if (! ($strNamespacePath = psr4::getNamespace ( $this->getNamespace_ () ))) {
-            $strNamespacePath = $this->getQueryPHP ()->path_application . '/' . $this->getNamespace_ () . '/';
+    protected function getNamespacePath() {
+        if (! ($strNamespacePath = psr4::getNamespace ( $this->getNamespace () ))) {
+            $strNamespacePath = $this->getQueryPHP ()->path_application . '/' . $this->getNamespace () . '/';
         }
         return $strNamespacePath;
     }
@@ -220,12 +220,12 @@ abstract class base extends command {
      *
      * @return void
      */
-    protected function parseNamespace_() {
+    protected function parseNamespace() {
         $strNamespace = $this->option ( 'namespace' );
         if (empty ( $strNamespace )) {
             $strNamespace = option::gets ( 'default_app' );
         }
-        $this->setNamespace_ ( $strNamespace );
+        $this->setNamespace ( $strNamespace );
     }
     
     /**
@@ -234,7 +234,7 @@ abstract class base extends command {
      * @param string $strNamespace            
      * @return void
      */
-    protected function setNamespace_($strNamespace) {
+    protected function setNamespace($strNamespace) {
         $this->strNamespace = $strNamespace;
     }
     
@@ -243,7 +243,7 @@ abstract class base extends command {
      *
      * @return void
      */
-    protected function getNamespace_() {
+    protected function getNamespace() {
         return $this->strNamespace;
     }
     
@@ -253,7 +253,7 @@ abstract class base extends command {
      * @param string $strMakeType            
      * @return void
      */
-    protected function setMakeType_($strMakeType) {
+    protected function setMakeType($strMakeType) {
         $this->strMakeType = $strMakeType;
     }
     
@@ -262,7 +262,7 @@ abstract class base extends command {
      *
      * @return void
      */
-    protected function getMakeType_() {
+    protected function getMakeType() {
         return $this->strMakeType;
     }
     
@@ -273,7 +273,7 @@ abstract class base extends command {
      * @param string $strValue            
      * @return void
      */
-    protected function setCustomReplaceKeyValue_($mixKey, $strValue) {
+    protected function setCustomReplaceKeyValue($mixKey, $strValue) {
         if (is_array ( $mixKey )) {
             $this->arrCustomReplaceKeyValue = array_merge ( $this->arrCustomReplaceKeyValue, $mixKey );
         } else {
@@ -287,7 +287,7 @@ abstract class base extends command {
      * @param string $strMakeType            
      * @return void
      */
-    protected function getCustomReplaceKeyValue_() {
+    protected function getCustomReplaceKeyValue() {
         return $this->arrCustomReplaceKeyValue;
     }
     
@@ -296,7 +296,7 @@ abstract class base extends command {
      *
      * @return void
      */
-    protected function commentFilePath_() {
-        $this->comment ( directory::tidyPathLinux ( $this->getSaveFilePath_ () ) );
+    protected function commentFilePath() {
+        $this->comment ( directory::tidyPathLinux ( $this->getSaveFilePath () ) );
     }
 }  

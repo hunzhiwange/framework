@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\exception;
+namespace queryyetsimple\bootstrap\runtime;
 
 <<<queryphp
 ##########################################################
@@ -30,7 +30,7 @@ use queryyetsimple\filesystem\directory;
  * @since 2017.05.04
  * @version 1.0
  */
-class exception_message extends message {
+class exception extends message {
     
     /**
      * 异常组件
@@ -56,8 +56,8 @@ class exception_message extends message {
      * @return void
      */
     public function run() {
-        $this->log_ ( $this->strMessage );
-        $this->errorMessage_ ( $this->format_ ( $this->objException ) );
+        $this->log ( $this->strMessage );
+        $this->errorMessage ( $this->format ( $this->objException ) );
     }
     
     /**
@@ -66,11 +66,9 @@ class exception_message extends message {
      * @param mixed $mixError            
      * @return void
      */
-    protected function errorMessage_($mixError) {
+    protected function errorMessage($mixError) {
         if (! is_array ( $mixError )) {
-            $mixError = [ 
-                    'message' => $mixError 
-            ];
+            $mixError = ( array ) $mixError;
         }
         
         // 否则定向到错误页面
@@ -100,7 +98,7 @@ class exception_message extends message {
      * @param object $oException            
      * @return array
      */
-    private function format_($oException) {
+    private function format($oException) {
         // 返回消息
         $arrError = [ ];
         

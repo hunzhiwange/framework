@@ -18,6 +18,8 @@ queryphp;
 use Phinx\Console\Command\Init as PhinxInit;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * 数据库迁移初始化
@@ -45,8 +47,8 @@ class init extends PhinxInit {
      *
      * @param InputInterface $input            
      * @param OutputInterface $output            
-     * @throws \RuntimeException
-     * @throws \InvalidArgumentException
+     * @throws RuntimeException
+     * @throws InvalidArgumentException
      * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output) {
@@ -60,7 +62,7 @@ class init extends PhinxInit {
         $path = realpath ( $path );
         
         if (! is_writable ( $path )) {
-            throw new \InvalidArgumentException ( sprintf ( 'The directory "%s" is not writable', $path ) );
+            throw new InvalidArgumentException ( sprintf ( 'The directory "%s" is not writable', $path ) );
         }
         
         // Compute the file path
@@ -68,7 +70,7 @@ class init extends PhinxInit {
         $filePath = $path . DIRECTORY_SEPARATOR . $fileName;
         
         if (file_exists ( $filePath )) {
-            throw new \InvalidArgumentException ( sprintf ( 'The file "%s" already exists', $filePath ) );
+            throw new InvalidArgumentException ( sprintf ( 'The file "%s" already exists', $filePath ) );
         }
         
         // load the config template
@@ -76,7 +78,7 @@ class init extends PhinxInit {
         $contents = file_get_contents ( __DIR__ . '/migrate.yml' );
         
         if (false === file_put_contents ( $filePath, $contents )) {
-            throw new \RuntimeException ( sprintf ( 'The file "%s" could not be written to', $path ) );
+            throw new RuntimeException ( sprintf ( 'The file "%s" could not be written to', $path ) );
         }
         
         $output->writeln ( '<info>created</info> .' . str_replace ( getcwd (), '', $filePath ) );

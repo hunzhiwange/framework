@@ -43,13 +43,13 @@ class application {
      */
     public function __construct() {
         // 创建应用
-        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo_ (), env('queryphp_version') );
+        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo (), env('queryphp_version') );
         
         // 注册默认命令行
-        $this->registerDefaultCommands_ ()->
+        $this->registerDefaultCommands ()->
         
         // 注册用户自定义命令
-        registerUserCommands_ ();
+        registerUserCommands ();
     }
     
     /**
@@ -66,8 +66,8 @@ class application {
      *
      * @return $this
      */
-    private function registerDefaultCommands_() {
-        return $this->doRegisterCommands_ ( ( array ) require __DIR__ . '/default.php' );
+    private function registerDefaultCommands() {
+        return $this->doRegisterCommands ( ( array ) require __DIR__ . '/default.php' );
     }
     
     /**
@@ -76,7 +76,7 @@ class application {
      * @return $this
      */
     private function registerUserCommands_() {
-        return $this->doRegisterCommands_ ( ( array ) option::gets ( 'console' ) );
+        return $this->doRegisterCommands ( ( array ) option::gets ( 'console' ) );
     }
     
     /**
@@ -87,12 +87,12 @@ class application {
      */
     private function doRegisterCommands_($arrCommands) {
         foreach ( $arrCommands as $strCommand ) {
-            $objCommand = $this->getQueryPHP_ ()->make ( $strCommand );
+            $objCommand = $this->getQueryPHP ()->make ( $strCommand );
             // 基于 Phinx 数据库迁移组件无法设置 setQueryPHP
             if (method_exists ( $objCommand, 'setQueryPHP' )) {
-                $objCommand->setQueryPHP ( $this->getQueryPHP_ () );
+                $objCommand->setQueryPHP ( $this->getQueryPHP () );
             }
-            $this->getQueryPHP_ ()->instance ( 'command_' . $objCommand->getName (), $objCommand );
+            $this->getQueryPHP ()->instance ( 'command_' . $objCommand->getName (), $objCommand );
             $this->objSymfonyApplication->add ( $objCommand );
         }
         return $this;
@@ -103,7 +103,7 @@ class application {
      *
      * @return \queryyetsimple\mvc\project
      */
-    private function getQueryPHP_() {
+    private function getQueryPHP() {
         return project::bootstrap ();
     }
     
@@ -112,7 +112,7 @@ class application {
      *
      * @return string
      */
-    private function getLogo_() {
+    private function getLogo() {
         return <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #

@@ -25,6 +25,6 @@ use queryyetsimple\router\router;
  * @since 2017.05.09
  * @version 1.0
  */
-router::binds ( 'tests://bootstrap/index', function () {
+router::binds ( '~_~@tests://bootstrap/index', function () {
     return (new application ())->run ();
 } );

@@ -55,10 +55,10 @@ class work extends command {
      */
     public function handle() {
         // 注册处理的队列
-        $this->setQueue_ ( $this->argument ( 'connect' ), $this->option ( 'queue' ) );
+        $this->setQueue ( $this->argument ( 'connect' ), $this->option ( 'queue' ) );
         
         // 守候进程
-        $this->runWorker_ ( $this->argument ( 'connect' ), $this->option ( 'queue' ) );
+        $this->runWorker ( $this->argument ( 'connect' ), $this->option ( 'queue' ) );
     }
     
     /**
@@ -68,8 +68,8 @@ class work extends command {
      * @param string $strQueue            
      * @return void
      */
-    protected function setQueue_($strConnect, $strQueue) {
-        $strConnect = '\queryyetsimple\queue\queues\\' . $strConnect;
+    protected function setQueue($strConnect, $strQueue) {
+        $strConnect = 'queryyetsimple\queue\queues\\' . $strConnect;
         if (! class_exists ( $strConnect )) {
             $this->error ( $this->time ( sprintf ( 'connect %s not exits.', $strConnect ) ) );
             return;
@@ -89,9 +89,9 @@ class work extends command {
      * @param string $strQueue            
      * @return void
      */
-    protected function runWorker_($strConnect, $strQueue) {
+    protected function runWorker($strConnect, $strQueue) {
         // 验证运行器是否存在
-        $strRunner = '\queryyetsimple\queue\runners\\' . $strConnect;
+        $strRunner = 'queryyetsimple\queue\runners\\' . $strConnect;
         if (! class_exists ( $strRunner )) {
             $this->error ( $this->time ( sprintf ( 'runner %s not exits.', $strRunner ) ) );
             return;

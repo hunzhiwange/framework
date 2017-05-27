@@ -61,16 +61,16 @@ EOF;
      */
     public function handle() {
         // 处理命名空间路径
-        $this->parseNamespace_ ();
+        $this->parseNamespace ();
         
         // 保存路径
-        $this->setSaveFilePath_ ( $this->getNamespacePath_ () . 'application/controller/' . $this->argument ( 'controller' ) . '/' . $this->argument ( 'name' ) . '.php' );
+        $this->setSaveFilePath ( $this->getNamespacePath () . 'application/controller/' . $this->argument ( 'controller' ) . '/' . $this->argument ( 'name' ) . '.php' );
         
         // 设置类型
-        $this->setMakeType_ ( 'action' );
+        $this->setMakeType ( 'action' );
         
         // 自定替换变量
-        $this->setCustomReplaceKeyValue_ ( 'controller', $this->argument ( 'controller' ) );
+        $this->setCustomReplaceKeyValue ( 'controller', $this->argument ( 'controller' ) );
         
         // 执行
         parent::handle ();

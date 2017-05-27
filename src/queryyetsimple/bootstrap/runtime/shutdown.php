@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\exception;
+namespace queryyetsimple\bootstrap\runtime;
 
 <<<queryphp
 ##########################################################
@@ -16,27 +16,23 @@ namespace queryyetsimple\bootstrap\exception;
 queryphp;
 
 /**
- * 错误消息
+ * 致命错误消息
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.05.04
  * @version 1.0
  */
-class error_message extends message {
+class shutdown extends message {
     
     /**
      * 构造函数
      *
-     * @param int $nErrorNo            
-     * @param string $sErrStr            
-     * @param string $sErrFile            
-     * @param int $nErrLine            
      * @return void
      */
-    public function __construct($nErrorNo, $sErrStr, $sErrFile, $nErrLine) {
-        if ($nErrorNo) {
-            $this->strMessage = "[{$nErrorNo}]: {$sErrStr}<br> File: {$sErrFile}<br> Line: {$nErrLine}";
+    public function __construct() {
+        if (($arrError = error_get_last ()) && ! empty ( $arrError ['type'] )) {
+            $this->strMessage = "[{$arrError['type']}]: {$arrError['message']} <br> File: {$arrError['file']} <br> Line: {$arrError['line']}";
         }
     }
 }

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\exception;
+namespace queryyetsimple\bootstrap\runtime;
 
 <<<queryphp
 ##########################################################
@@ -32,7 +32,7 @@ class handle {
      * @return void
      */
     public static function exceptionHandle($oException) {
-        (new exception_message ( $oException ))->run ();
+        (new exception ( $oException ))->run ();
         exit ();
     }
     
@@ -46,7 +46,7 @@ class handle {
      * @return void
      */
     public static function errorHandle($nErrorNo, $sErrStr, $sErrFile, $nErrLine) {
-        (new error_message ( $nErrorNo, $sErrStr, $sErrFile, $nErrLine ))->run ();
+        (new error ( $nErrorNo, $sErrStr, $sErrFile, $nErrLine ))->run ();
         exit ();
     }
     
@@ -56,7 +56,7 @@ class handle {
      * @return void
      */
     public static function shutdownHandle() {
-        (new shutdown_message ())->run ();
+        (new shutdown ())->run ();
         exit ();
     }
 }

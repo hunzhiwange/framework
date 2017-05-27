@@ -393,7 +393,7 @@ class request {
             define ( 'PATH_APP_BOOTSTRAP', dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/tests/bootstrap.php' );
             
             // 注册默认应用程序
-            $_GET [\queryyetsimple\mvc\project::ARGS_APP] = 'tests';
+            $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@tests';
             $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
             $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
             

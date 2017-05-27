@@ -72,7 +72,7 @@ class job extends command {
             }
             
             // 注册处理的队列
-            $strConnect = '\queryyetsimple\queue\queues\\' . $this->argument ( 'connect' );
+            $strConnect = 'queryyetsimple\queue\queues\\' . $this->argument ( 'connect' );
             if (! class_exists ( $strConnect )) {
                 $this->error ( $this->time ( sprintf ( 'connect %s not exits.', $strConnect ) ) );
                 return;

@@ -31,7 +31,7 @@ return [
          * 接管 PHP 默认的异常回调
          */
         'exception_handle' => [ 
-                'queryyetsimple\bootstrap\exception\handle',
+                'queryyetsimple\bootstrap\runtime\handle',
                 'exceptionHandle' 
         ],
         

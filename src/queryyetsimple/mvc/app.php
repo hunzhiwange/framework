@@ -458,7 +458,7 @@ class app {
     private function registerExceptionRun_() {
         if (PHP_SAPI != 'cli') {
             set_exception_handler ( is_callable ( option::gets ( 'debug\exception_handle' ) ) ? option::gets ( 'debug\exception_handle' ) : [ 
-                    'queryyetsimple\bootstrap\exception\handle',
+                    'queryyetsimple\bootstrap\runtime\handle',
                     'exceptionHandle' 
             ] );
         }
@@ -585,7 +585,7 @@ class app {
             if (is_file ( $sCachePath )) {
                 option::resets ( ( array ) include $sCachePath );
                 
-                if (option::gets('env\app_development') === 'development') {
+                if (option::gets ( 'env\app_development' ) === 'development') {
                     $this->setEnvironmentVariables_ ();
                     $this->cacheOption_ ( $sCachePath );
                 } else {
@@ -740,7 +740,7 @@ class app {
      * @return array
      */
     private function setOptionRouterCachePath_() {
-        router::cachePaths ( $this->objProject->path_cache_option . '/' . $this->strApp . '.router.php' )->development ( env ( 'app_development' ) === 'development' )->debug ( env ( 'app_debug' ) );
+        router::cachePaths ( $this->objProject->path_cache_option . '/' . $this->strApp . '@router.php' )->development ( env ( 'app_development' ) === 'development' )->debug ( env ( 'app_debug' ) );
     }
     
     /**

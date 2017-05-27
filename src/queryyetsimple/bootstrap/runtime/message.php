@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\exception;
+namespace queryyetsimple\bootstrap\runtime;
 
 <<<queryphp
 ##########################################################
@@ -42,8 +42,8 @@ abstract class message {
      */
     public function run() {
         if ($this->strMessage) {
-            $this->log_ ( $this->strMessage );
-            $this->errorMessage_ ( $this->strMessage );
+            $this->log ( $this->strMessage );
+            $this->errorMessage ( $this->strMessage );
         }
     }
     
@@ -53,7 +53,7 @@ abstract class message {
      * @param string $strMessage            
      * @return void
      */
-    protected function log_($strMessage) {
+    protected function log($strMessage) {
         if (option::gets ( 'log_error_enabled', false )) {
             log::runs ( $strMessage, 'error' );
         }
@@ -65,7 +65,7 @@ abstract class message {
      * @param string $sMessage            
      * @return void
      */
-    protected function errorMessage_($sMessage) {
+    protected function errorMessage($sMessage) {
         require_once dirname ( __DIR__ ) . '/template/error.php';
     }
 }

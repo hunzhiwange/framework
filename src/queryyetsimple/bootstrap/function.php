@@ -14,7 +14,6 @@
 queryphp;
 
 use queryyetsimple\mvc\project;
-use queryyetsimple\exception\exceptions;
 
 if (! function_exists ( 'project' )) {
     /**
@@ -32,7 +31,7 @@ if (! function_exists ( 'project' )) {
             if (($objInstance = project::bootstrap ()->make ( $sInstance, $arrArgs ))) {
                 return $objInstance;
             }
-            exceptions::badMethodCallException ( __ ( '容器中未发现注入的 %s', $sInstance ) );
+            throw new BadMethodCallException ( __ ( '容器中未发现注入的 %s', $sInstance ) );
         }
     }
 }
@@ -100,14 +99,6 @@ if (! function_exists ( 'env' )) {
     }
 }
 
-/**
- * 语言包
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.05.22
- * @version 1.0
- */
 if (! function_exists ( '__' )) {
     /**
      * 语言包
@@ -116,7 +107,7 @@ if (! function_exists ( '__' )) {
      * @return mixed
      */
     function __($sValue = null /*argvs*/ ){
-        if (func_num_args () > 1) { // 代入参数
+        if (func_num_args () > 1) {
             $sValue = call_user_func_array ( 'sprintf', func_get_args () );
         }
         return $sValue;
