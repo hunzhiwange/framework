@@ -12,7 +12,6 @@ git subtree add --prefix=src/queryyetsimple/debug git@github.com:queryyetsimple/
 git subtree add --prefix=src/queryyetsimple/demo git@github.com:queryyetsimple/demo.git master
 git subtree add --prefix=src/queryyetsimple/encryption git@github.com:queryyetsimple/encryption.git master
 git subtree add --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
-git subtree add --prefix=src/queryyetsimple/exception git@github.com:queryyetsimple/exception.git master
 git subtree add --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
 git subtree add --prefix=src/queryyetsimple/flow git@github.com:queryyetsimple/flow.git master
 git subtree add --prefix=src/queryyetsimple/ftp git@github.com:queryyetsimple/ftp.git master
