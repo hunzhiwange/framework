@@ -655,7 +655,7 @@ class router {
      * @return void
      */
     private function parseDomain(&$arrNextParse) {
-        if (! $this->arrDomains)
+        if (! $this->arrDomains || ! $this->classsFacesOption ( 'url\router_domain_top' ))
             return;
         $strHost = request::getHosts ();
         
