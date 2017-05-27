@@ -81,7 +81,6 @@ class request {
             'default_controller' => 'index',
             'default_action' => 'index',
             'url\model' => 'pathinfo',
-            'url\router_on' => true,
             'url\rewrite' => false,
             'url\html_suffix' => '.html',
             'url\pathinfo_depr' => '/' 
@@ -354,7 +353,7 @@ class request {
             $this->filterPathInfo_ ();
             
             // 解析结果
-            $_GET = array_merge ( $_GET, $this->classsFacesOption ( 'url\router_on' ) === true && ($arrRouter = router::parses ()) ? $arrRouter : $this->parsePathInfo_ () );
+            $_GET = array_merge ( $_GET, ($arrRouter = router::parses ()) ? $arrRouter : $this->parsePathInfo_ () );
         }
     }
     

@@ -122,10 +122,10 @@ class router {
             'default_action' => 'index',
             'url\router_cache' => true,
             'url\model' => 'pathinfo',
-            'url\router_domain_on' => false,
+            'url\router_domain_on' => true,
             'url\html_suffix' => '.html',
             'url\router_domain_top' => '',
-            'url\make_subdomain_on' => false 
+            'url\make_subdomain_on' => true 
     ];
     
     /**
@@ -655,6 +655,8 @@ class router {
      * @return void
      */
     private function parseDomain_(&$arrNextParse) {
+        if (! $this->arrDomains)
+            return;
         $strHost = request::getHosts ();
         
         $booFindDomain = false;
@@ -722,6 +724,8 @@ class router {
      * @return array
      */
     private function parseRouter_($arrNextParse = []) {
+        if (! $this->arrRouters)
+            return;
         $arrData = [ ];
         $sPathinfo = $_SERVER ['PATH_INFO'];
         
