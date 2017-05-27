@@ -63,7 +63,7 @@ class view {
      */
     protected $arrClasssFacesOption = [ 
             'view\cache_children' => false,
-            'view\moduleaction_depr' => '_',
+            'view\controlleraction_depr' => '_',
             'view\suffix' => '.html',
             'view\switch' => true,
             'view\default' => 'default',
@@ -223,7 +223,7 @@ class view {
         } else {
             // 空取默认控制器和方法
             if ($sTpl == '') {
-                $sTpl = static::$objProjectContainer->controller_name . $this->classsFacesOption ( 'view\moduleaction_depr' ) . static::$objProjectContainer->action_name;
+                $sTpl = static::$objProjectContainer->controller_name . $this->classsFacesOption ( 'view\controlleraction_depr' ) . static::$objProjectContainer->action_name;
             }
             
             if (strpos ( $sTpl, '@' )) { // 分析主题
@@ -236,7 +236,7 @@ class view {
             $sTpl = str_replace ( [ 
                     '+',
                     ':' 
-            ], $this->classsFacesOption ( 'view\moduleaction_depr' ), $sTpl );
+            ], $this->classsFacesOption ( 'view\controlleraction_depr' ), $sTpl );
             
             return static::$objProjectContainer->path_app_theme . '/' . (isset ( $sTheme ) ? $sTheme : static::$objProjectContainer->name_app_theme) . '/' . $sTpl . ($sExt ?  : $this->classsFacesOption ( 'view\suffix' ));
         }

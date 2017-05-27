@@ -235,8 +235,14 @@ class compilers {
     protected $arrClasssFacesOption = [ 
             'theme_cache_children' => false,
             'theme_var_identify' => '',
-            'theme_notallows_func' => 'exit,die,return',
-            'theme_notallows_func_js' => 'alert' 
+            'theme_notallows_func' => [ 
+                    'exit',
+                    'die',
+                    'return' 
+            ],
+            'theme_notallows_func_js' => [ 
+                    'alert' 
+            ] 
     ];
     
     // ######################################################
@@ -1069,14 +1075,14 @@ out += '";
      *
      * @param string $sName            
      * @param array $arrVar            
-     * @param bool $bJs
+     * @param boolean $bJs
      *            是否为 JS 变量解析
      * @return string
      */
     private function parseVarFunction_($sName, $arrVar, $bJs = false) {
         $nLen = count ( $arrVar );
         // 取得模板禁止使用函数列表
-        $arrNot = explode ( ',', $this->classsFacesOption ( 'theme_notallows_func' . ($bJs ? '' : '_js') ) );
+        $arrNot = $this->classsFacesOption ( 'theme_notallows_func' . ($bJs ? '' : '_js') );
         for($nI = 0; $nI < $nLen; $nI ++) {
             if (0 === stripos ( $arrVar [$nI], 'default=' )) {
                 $arrArgs = explode ( '=', $arrVar [$nI], 2 );
