@@ -18,7 +18,6 @@ queryphp;
 use queryyetsimple\option\option;
 use queryyetsimple\log\log;
 use queryyetsimple\debug\dump;
-use queryyetsimple\http\request;
 use queryyetsimple\router\router;
 use queryyetsimple\filesystem\directory;
 
@@ -72,15 +71,15 @@ class exception extends message {
         }
         
         // 否则定向到错误页面
-        if (! request::isClis () && option::gets ( 'show_exception_redirect' ) && ! env ( 'app_debug' )) {
+        if (PHP_SAPI != 'cli' && option::gets ( 'show_exception_redirect' ) && ! env ( 'app_debug' )) {
             static::urlRedirect ( router::url ( option::gets ( 'show_exception_redirect' ) ) );
         } else {
-            if (! option::gets ( 'show_exception_show_message', true ) && option::gets ( 'show_exception_default_message' )) {
+            if (! opation::gets ( 'show_exception_show_message', true ) && option::gets ( 'show_exception_default_message' )) {
                 $mixError ['message'] = option::gets ( 'show_exception_default_message' );
             }
             
             // 包含异常页面模板
-            if (request::isClis ()) {
+            if (PHP_SAPI == 'cli') {
                 echo $mixError ['message'];
             } else {
                 if (option::gets ( 'show_exception_template' ) && is_file ( option::gets ( 'show_exception_template' ) )) {

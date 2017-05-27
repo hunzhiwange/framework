@@ -102,9 +102,9 @@ class request {
     public function run() {
         // 非命令行模式
         if (! $this->isCli ()) {
-            $this->parseUrlWeb ();
+            $this->parseWeb ();
         } else {
-            $this->parseUrlCli ();
+            $this->parseCli ();
         }
         
         // 解析URL
@@ -279,8 +279,8 @@ class request {
      *
      * @return string
      */
-    public function getCurrentUrl() {
-        return (static::isSsl () ? 'https://' : 'http://') . $_SERVER ['HTTP_HOST'] . $_SERVER ['REQUEST_URI'];
+    public function getUrl() {
+        return ($this->isSsl () ? 'https://' : 'http://') . $_SERVER ['HTTP_HOST'] . $_SERVER ['REQUEST_URI'];
     }
     
     /**
@@ -344,7 +344,7 @@ class request {
      *
      * @return void
      */
-    private function parseUrlWeb() {
+    private function parseWeb() {
         $_SERVER ['REQUEST_URI'] = isset ( $_SERVER ['REQUEST_URI'] ) ? $_SERVER ['REQUEST_URI'] : $_SERVER ["HTTP_X_REWRITE_URL"]; // For IIS
                                                                                                                                     
         // 分析 pathinfo
@@ -362,50 +362,79 @@ class request {
      *
      * @return void
      */
-    private function parseUrlCli() {
-        // console 命令行
-        if (env ( 'queryphp_console' )) {
-            // 注册 console 引导入口
-            define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/console/bootstrap.php' );
-            
-            // 注册默认应用程序
-            $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@console';
-            $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
-            $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
-            
-            return;
+    private function parseCli() {
+        switch (true) {
+            // console 命令行
+            case env ( 'queryphp_console' ) :
+                $this->parseCliConsole ();
+                break;
+            // phpunit 命令行
+            case env ( 'queryphp_phpunit' ) :
+                $this->parseCliPhpunit ();
+                break;
+            // phpunit system 命令行
+            case env ( 'queryphp_phpunit_system' ) :
+                $this->parseCliPhpunitSystem ();
+                break;
+            default :
+                $this->parseCliDefault ();
+                break;
         }
+    }
+    
+    /**
+     * 注册 console 引导入口
+     *
+     * @return void
+     */
+    private function parseCliConsole() {
+        define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/console/bootstrap.php' );
         
-        if (env ( 'queryphp_phpunit' )) {
-            // 注册 phpunit 引导入口
-            define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/testing/bootstrap.php' );
-            
-            // 注册默认应用程序
-            $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@testing';
-            $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
-            $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
-            
-            return;
-        }
+        // 注册默认应用程序
+        $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@console';
+        $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
+        $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
+    }
+    
+    /**
+     * 注册 phpunit 引导入口
+     *
+     * @return void
+     */
+    private function parseCliPhpunit() {
+        define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/testing/bootstrap.php' );
         
-        if (env ( 'queryphp_phpunit_system' )) {
-            // 注册 phpunit 内部引导入口
-            define ( 'PATH_APP_BOOTSTRAP', dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/tests/bootstrap.php' );
-            
-            // 注册默认应用程序
-            $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@tests';
-            $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
-            $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
-            
-            // 导入 tests 命名空间
-            psr4::import ( 'tests', dirname ( PATH_APP_BOOTSTRAP ) );
-            
-            return;
-        }
+        // 注册默认应用程序
+        $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@testing';
+        $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
+        $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
+    }
+    
+    /**
+     * 注册 phpunit 内部引导入口
+     *
+     * @return void
+     */
+    private function parseCliPhpunitSystem() {
+        define ( 'PATH_APP_BOOTSTRAP', dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/tests/bootstrap.php' );
         
+        // 注册默认应用程序
+        $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@tests';
+        $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
+        $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
+        
+        // 导入 tests 命名空间
+        psr4::import ( 'tests', dirname ( PATH_APP_BOOTSTRAP ) );
+    }
+    
+    /**
+     * 分析默认 cli 参数
+     *
+     * @return void
+     */
+    private function parseCliDefault() {
         $arrArgv = isset ( $GLOBALS ['argv'] ) ? $GLOBALS ['argv'] : [ ];
         
-        // phpunit 等不存在 $argv
         if (! isset ( $arrArgv ) || empty ( $arrArgv )) {
             return;
         }
