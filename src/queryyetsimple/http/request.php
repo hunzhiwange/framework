@@ -398,7 +398,7 @@ class request {
             $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
             
             // 导入 tests 命名空间
-            psr4::import ( 'tests', dirname ( PATH_APP_BOOTSTRAP ) . '/tests' );
+            psr4::import ( 'tests', dirname ( PATH_APP_BOOTSTRAP ) );
             
             return;
         }
