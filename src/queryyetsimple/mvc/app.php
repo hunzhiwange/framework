@@ -544,8 +544,8 @@ class app {
      */
     private function requestRun() {
         $this->objProject->instance ( 'app_name', $this->strApp );
-        $this->objProject->instance ( 'controller_name', $this->objProject->request->controller () );
-        $this->objProject->instance ( 'action_name', $this->objProject->request->action () );
+        $this->objProject->instance ( 'controller_name', $this->objProject->router->controller () );
+        $this->objProject->instance ( 'action_name', $this->objProject->router->action () );
     }
     
     /**

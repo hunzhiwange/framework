@@ -17,6 +17,8 @@ queryphp;
 
 use Closure;
 use ReflectionFunction;
+use BadMethodCallException;
+use RuntimeException;
 use queryyetsimple\assert\assert;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\option\option;
@@ -244,7 +246,7 @@ trait faces {
         // 第二步：尝试读取注入容器中的类，没有则自身创建为单一实例
         $objInstance = static::getFacesInstance ();
         if (! $objInstance) {
-            exceptions::runtimeException ();
+            throw new RuntimeException ( 'Can not find instance from container.' );
         }
         
         // 移除最后一位方法名字去访问内容，于是可以在方法后面加入 s 或者 _ 来访问类的方法
@@ -255,15 +257,15 @@ trait faces {
         ] )) {
             $sMethod = substr ( $sMethod, 0, - 1 );
         }
-        $sMethod = [ 
+        $calMethod = [ 
                 $objInstance,
                 $sMethod 
         ];
-        if (! is_callable ( $sMethod )) {
-            exceptions::badFunctionCallException ();
+        if (! is_callable ( $calMethod )) {
+            throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
         }
         
-        return call_user_func_array ( $sMethod, $arrArgs );
+        return call_user_func_array ( $calMethod, $arrArgs );
     }
     
     /**
@@ -283,6 +285,6 @@ trait faces {
             }
         }
         
-        exceptions::badMethodCallException ();
+        throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
     }
 }

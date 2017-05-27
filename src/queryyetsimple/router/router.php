@@ -18,9 +18,9 @@ queryphp;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\http\request;
 use queryyetsimple\helper\helper;
-use queryyetsimple\mvc\project;
 use queryyetsimple\exception\exceptions;
 use queryyetsimple\filesystem\directory;
+use queryyetsimple\psr4\psr4;
 
 /**
  * 路由解析
@@ -61,13 +61,6 @@ class router {
      * @var array
      */
     private $arrDomainWheres = [ ];
-    
-    /**
-     * 默认替换参数[字符串]
-     *
-     * @var string
-     */
-    const DEFAULT_REGEX = '\S+';
     
     /**
      * 分组传递参数
@@ -112,11 +105,64 @@ class router {
     private $booDevelopment = false;
     
     /**
+     * 应用名字
+     *
+     * @var string
+     */
+    private $strApp = null;
+    
+    /**
+     * 控制器名字
+     *
+     * @var string
+     */
+    private $strController = null;
+    
+    /**
+     * 方法名字
+     *
+     * @var string
+     */
+    private $strAction = null;
+    
+    /**
+     * 默认替换参数[字符串]
+     *
+     * @var string
+     */
+    const DEFAULT_REGEX = '\S+';
+    
+    /**
+     * 应用参数名
+     *
+     * @var string
+     */
+    const APP = 'app';
+    
+    /**
+     * 控制器参数名
+     *
+     * @var string
+     */
+    const CONTROLLER = 'c';
+    
+    /**
+     * 方法参数名
+     *
+     * @var string
+     */
+    const ACTION = 'a';
+    
+    /**
      * 配置
      *
      * @var array
      */
     protected $arrClasssFacesOption = [ 
+            '~apps~' => [ 
+                    '~_~',
+                    'home' 
+            ],
             'default_app' => 'home',
             'default_controller' => 'index',
             'default_action' => 'index',
@@ -125,8 +171,111 @@ class router {
             'url\router_domain_on' => true,
             'url\html_suffix' => '.html',
             'url\router_domain_top' => '',
-            'url\make_subdomain_on' => true 
+            'url\make_subdomain_on' => true,
+            'url\pathinfo_depr' => '/',
+            'url\rewrite' => false,
+            'url\public' => 'http://public.foo.bar' 
     ];
+    
+    /**
+     * 构造函数
+     *
+     * @return void
+     */
+    public function __construct() {
+    }
+    
+    /**
+     * 执行请求
+     *
+     * @return \queryyetsimple\mvc\request
+     */
+    public function run() {
+        // 非命令行模式
+        if (! request::isClis ()) {
+            $this->parseWeb ();
+        } else {
+            $this->parseCli ();
+        }
+        
+        // 解析URL
+        $this->app ();
+        $this->controller ();
+        $this->action ();
+        
+        // 合并到 REQUEST
+        $_REQUEST = array_merge ( $_POST, $_GET );
+        
+        // 解析项目公共 url 地址
+        $this->parsePublicAndRoot ();
+        
+        return $this;
+    }
+    
+    /**
+     * 匹配路由
+     *
+     * @return void
+     */
+    public function parse() {
+        // 读取缓存
+        $this->readCache ();
+        
+        $arrNextParse = [ ];
+        
+        // 解析域名
+        if ($this->classsFacesOption ( 'url\router_domain_on' ) === true) {
+            if (($arrParseData = $this->parseDomain ( $arrNextParse )) !== false) {
+                return $arrParseData;
+            }
+        }
+        
+        // 解析路由
+        $arrNextParse = $arrNextParse ? array_column ( $arrNextParse, 'url' ) : [ ];
+        return $this->parseRouter ( $arrNextParse );
+    }
+    
+    /**
+     * 取回应用名
+     *
+     * @return string
+     */
+    public function app() {
+        if ($this->strApp) {
+            return $this->strApp;
+        } else {
+            $sVar = static::APP;
+            return $this->strApp = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_app' ));
+        }
+    }
+    
+    /**
+     * 取回控制器名
+     *
+     * @return string
+     */
+    public function controller() {
+        if ($this->strController) {
+            return $this->strController;
+        } else {
+            $sVar = static::CONTROLLER;
+            return $this->strController = $_GET [$sVar] = ! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_controller' );
+        }
+    }
+    
+    /**
+     * 取回方法名
+     *
+     * @return string
+     */
+    public function action() {
+        if ($this->strAction) {
+            return $this->strAction;
+        } else {
+            $sVar = static::ACTION;
+            return $this->strAction = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_action' ));
+        }
+    }
     
     /**
      * 生成路由地址
@@ -146,9 +295,10 @@ class router {
                 'subdomain' => 'www' 
         ], $in );
         
-        $in ['args_app'] = project::ARGS_APP;
-        $in ['args_controller'] = project::ARGS_CONTROLLER;
-        $in ['args_action'] = project::ARGS_ACTION;
+        $in ['args_app'] = static::APP;
+        $in ['args_controller'] = static::CONTROLLER;
+        $in ['args_action'] = static::ACTION;
+        $in ['url_enter'] = static::$objProjectContainer->url_enter;
         
         // 以 “/” 开头的为自定义URL
         $in ['custom'] = false;
@@ -187,7 +337,7 @@ class router {
             if (isset ( $arrArray ['path'] )) {
                 if (! isset ( $in ['controller'] )) {
                     if (! isset ( $arrArray ['host'] )) {
-                        $in ['controller'] = $_GET [project::ARGS_CONTROLLER];
+                        $in ['controller'] = $_GET [static::CONTROLLER];
                     } else {
                         $in ['controller'] = $arrArray ['host'];
                     }
@@ -198,7 +348,7 @@ class router {
                 }
             } else {
                 if (! isset ( $in ['controller'] )) {
-                    $in ['controller'] = $_GET [project::ARGS_CONTROLLER];
+                    $in ['controller'] = $_GET [static::CONTROLLER];
                 }
                 if (! isset ( $in ['action'] )) {
                     $in ['action'] = $arrArray ['host'];
@@ -225,7 +375,7 @@ class router {
                 $sStr = substr ( $sStr, 0, - 1 );
                 
                 // 分析 url
-                $sUrl = ($GLOBALS ['~@url'] ['url_enter'] !== '/' ? $GLOBALS ['~@url'] ['url_enter'] : '') . ($this->classsFacesOption ( 'default_app' ) != $in ['app'] ? '/' . $in ['app'] . '/' : '/');
+                $sUrl = ($in ['url_enter'] !== '/' ? $in ['url_enter'] : '') . ($this->classsFacesOption ( 'default_app' ) != $in ['app'] ? '/' . $in ['app'] . '/' : '/');
                 
                 if ($sStr) {
                     $sUrl .= $in ['controller'] . '/' . $in ['action'] . $sStr;
@@ -301,7 +451,7 @@ class router {
             if (! empty ( $sTemp )) {
                 $sTemp = '?' . implode ( '&', $sTemp );
             }
-            $sUrl = ($in ['normal'] === true || $GLOBALS ['~@url'] ['url_enter'] !== '/' ? $GLOBALS ['~@url'] ['url_enter'] : '') . $sTemp;
+            $sUrl = ($in ['normal'] === true || $in ['url_enter'] !== '/' ? $in ['url_enter'] : '') . $sTemp;
             unset ( $sTemp );
         }
         
@@ -626,26 +776,178 @@ class router {
     }
     
     /**
-     * 匹配路由
+     * web 分析 url 参数
      *
      * @return void
      */
-    public function parse() {
-        // 读取缓存
-        $this->readCache ();
+    private function parseWeb() {
+        // 分析 pathinfo
+        if ($this->classsFacesOption ( 'url\model' ) == 'pathinfo') {
+            // 分析 pathinfo
+            $this->pathInfo ();
+            
+            // 解析结果
+            $_GET = array_merge ( $_GET, ($arrRouter = $this->parse ()) ? $arrRouter : $this->parsePathInfo () );
+        }
+    }
+    
+    /**
+     * pathinfo 解析入口
+     *
+     * @return void
+     */
+    private function pathInfo() {
+        $sPathInfo = $this->clearHtmlSuffix ( request::pathinfos () );
+        $sPathInfo = empty ( $sPathInfo ) ? '/' : $sPathInfo;
+        $_SERVER ['PATH_INFO'] = $sPathInfo;
+    }
+    
+    /**
+     * 分析 cli 参数
+     *
+     * @return void
+     */
+    private function parseCli() {
+        switch (true) {
+            // console 命令行
+            case env ( 'queryphp_console' ) :
+                $this->parseCliConsole ();
+                break;
+            // phpunit 命令行
+            case env ( 'queryphp_phpunit' ) :
+                $this->parseCliPhpunit ();
+                break;
+            // phpunit system 命令行
+            case env ( 'queryphp_phpunit_system' ) :
+                $this->parseCliPhpunitSystem ();
+                break;
+            default :
+                $this->parseCliDefault ();
+                break;
+        }
+    }
+    
+    /**
+     * 注册 console 引导入口
+     *
+     * @return void
+     */
+    private function parseCliConsole() {
+        define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/console/bootstrap.php' );
         
-        $arrNextParse = [ ];
+        // 注册默认应用程序
+        $_GET [static::APP] = '~_~@console';
+        $_GET [static::CONTROLLER] = 'bootstrap';
+        $_GET [static::ACTION] = 'index';
+    }
+    
+    /**
+     * 注册 phpunit 引导入口
+     *
+     * @return void
+     */
+    private function parseCliPhpunit() {
+        define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/testing/bootstrap.php' );
         
-        // 解析域名
-        if ($this->classsFacesOption ( 'url\router_domain_on' ) === true) {
-            if (($arrParseData = $this->parseDomain ( $arrNextParse )) !== false) {
-                return $arrParseData;
+        // 注册默认应用程序
+        $_GET [static::APP] = '~_~@testing';
+        $_GET [static::CONTROLLER] = 'bootstrap';
+        $_GET [static::ACTION] = 'index';
+    }
+    
+    /**
+     * 注册 phpunit 内部引导入口
+     *
+     * @return void
+     */
+    private function parseCliPhpunitSystem() {
+        define ( 'PATH_APP_BOOTSTRAP', dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/tests/bootstrap.php' );
+        
+        // 注册默认应用程序
+        $_GET [static::APP] = '~_~@tests';
+        $_GET [static::CONTROLLER] = 'bootstrap';
+        $_GET [static::ACTION] = 'index';
+        
+        // 导入 tests 命名空间
+        psr4::import ( 'tests', dirname ( PATH_APP_BOOTSTRAP ) );
+    }
+    
+    /**
+     * 分析默认 cli 参数
+     *
+     * @return void
+     */
+    private function parseCliDefault() {
+        $arrArgv = isset ( $GLOBALS ['argv'] ) ? $GLOBALS ['argv'] : [ ];
+        
+        if (! isset ( $arrArgv ) || empty ( $arrArgv )) {
+            return;
+        }
+        
+        // 第一个为脚本自身
+        array_shift ( $arrArgv );
+        
+        // 继续分析
+        if ($arrArgv) {
+            
+            // app
+            if (in_array ( $arrArgv [0], $this->classsFacesOption ( '~apps~' ) )) {
+                $_GET [static::APP] = array_shift ( $arrArgv );
+            }
+            
+            // controller
+            if ($arrArgv) {
+                $_GET [static::CONTROLLER] = array_shift ( $arrArgv );
+            }
+            
+            // 方法
+            if ($arrArgv) {
+                $_GET [static::ACTION] = array_shift ( $arrArgv );
+            }
+            
+            // 剩余参数
+            if ($arrArgv) {
+                for($nI = 0, $nCnt = count ( $arrArgv ); $nI < $nCnt; $nI ++) {
+                    if (isset ( $arrArgv [$nI + 1] )) {
+                        $_GET [$arrArgv [$nI]] = ( string ) $arrArgv [++ $nI];
+                    } elseif ($nI == 0) {
+                        $_GET [$_GET [static::ACTION]] = ( string ) $arrArgv [$nI];
+                    }
+                }
+            }
+        }
+    }
+    
+    /**
+     * 解析 pathinfo 参数
+     *
+     * @return array
+     */
+    private function parsePathInfo() {
+        $arrPathInfo = [ ];
+        $sPathInfo = $_SERVER ['PATH_INFO'];
+        
+        $arrPaths = explode ( $this->classsFacesOption ( 'url\pathinfo_depr' ), trim ( $sPathInfo, '/' ) );
+        
+        if (in_array ( $arrPaths [0], $this->classsFacesOption ( '~apps~' ) )) {
+            $arrPathInfo [static::APP] = array_shift ( $arrPaths );
+        }
+        
+        if (! isset ( $_GET [static::CONTROLLER] )) { // 还没有定义控制器名称
+            $arrPathInfo [static::CONTROLLER] = array_shift ( $arrPaths );
+        }
+        
+        if (! isset ( $_GET [static::ACTION] )) { // 还没有定义方法名称
+            $arrPathInfo [static::ACTION] = array_shift ( $arrPaths );
+        }
+        
+        for($nI = 0, $nCnt = count ( $arrPaths ); $nI < $nCnt; $nI ++) {
+            if (isset ( $arrPaths [$nI + 1] )) {
+                $arrPathInfo [$arrPaths [$nI]] = ( string ) $arrPaths [++ $nI];
             }
         }
         
-        // 解析路由
-        $arrNextParse = $arrNextParse ? array_column ( $arrNextParse, 'url' ) : [ ];
-        return $this->parseRouter ( $arrNextParse );
+        return $arrPathInfo;
     }
     
     /**
@@ -970,15 +1272,15 @@ class router {
         
         // 应用
         if ($sUrl ['scheme'] != 'QueryPHP') {
-            $arrData [project::ARGS_APP] = $sUrl ['scheme'];
+            $arrData [static::APP] = $sUrl ['scheme'];
         }
         
         // 控制器
-        $arrData [project::ARGS_CONTROLLER] = $sUrl ['host'];
+        $arrData [static::CONTROLLER] = $sUrl ['host'];
         
         // 方法
         if (isset ( $sUrl ['path'] ) && $sUrl ['path'] != '/') {
-            $arrData [project::ARGS_ACTION] = ltrim ( $sUrl ['path'], '/' );
+            $arrData [static::ACTION] = ltrim ( $sUrl ['path'], '/' );
         }
         
         // 额外参数
@@ -1007,5 +1309,76 @@ class router {
             $sHttpSuffix = $this->classsFacesOption ( 'url\router_domain_top' );
         }
         return $sHttpPrefix . ($sDomain && $sDomain != '*' ? $sDomain . '.' : '') . $sHttpSuffix;
+    }
+    
+    /**
+     * 解析项目公共和基础路径
+     *
+     * @return void
+     */
+    private function parsePublicAndRoot() {
+        if (request::isClis ()) {
+            return;
+        }
+        $arrResult = [ ];
+        
+        // 分析 php 入口文件路径
+        $arrResult ['enter_bak'] = $arrResult ['enter'] = static::$objProjectContainer->url_enter;
+        if (! $arrResult ['enter']) {
+            // php 文件
+            if (request::isCgis ()) {
+                $arrTemp = explode ( '.php', $_SERVER ["PHP_SELF"] ); // CGI/FASTCGI模式下
+                $arrResult ['enter'] = rtrim ( str_replace ( $_SERVER ["HTTP_HOST"], '', $arrTemp [0] . '.php' ), '/' );
+            } else {
+                $arrResult ['enter'] = rtrim ( $_SERVER ["SCRIPT_NAME"], '/' );
+            }
+            $arrResult ['enter_bak'] = $arrResult ['enter'];
+            
+            // 如果为重写模式
+            if ($this->classsFacesOption ( 'url\rewrite' ) === true) {
+                $arrResult ['enter'] = dirname ( $arrResult ['enter'] );
+                if ($arrResult ['enter'] == '\\') {
+                    $arrResult ['enter'] = '/';
+                }
+            }
+        }
+        
+        // 网站 URL 根目录
+        $arrResult ['root'] = static::$objProjectContainer->url_root;
+        if (! $arrResult ['root']) {
+            $arrResult ['root'] = dirname ( $arrResult ['enter_bak'] );
+            $arrResult ['root'] = ($arrResult ['root'] == '/' || $arrResult ['root'] == '\\') ? '' : $arrResult ['root'];
+        }
+        
+        // 网站公共文件目录
+        $arrResult ['public'] = static::$objProjectContainer->url_public;
+        if (! $arrResult ['public']) {
+            $arrResult ['public'] = $this->classsFacesOption ( 'url\public' );
+        }
+        
+        // 快捷方法供 router::url 方法使用
+        foreach ( [ 
+                'enter',
+                'root',
+                'public' 
+        ] as $sType ) {
+            static::$objProjectContainer->instance ( 'url_' . $sType, $arrResult [$sType] );
+        }
+        
+        unset ( $arrResult, $objProject );
+    }
+    
+    /**
+     * 清理 url 后缀
+     *
+     * @param string $sVal            
+     * @return string
+     */
+    private function clearHtmlSuffix($sVal) {
+        if ($this->classsFacesOption ( 'url\html_suffix' ) && ! empty ( $sVal )) {
+            $sSuffix = substr ( $this->classsFacesOption ( 'url\html_suffix' ), 1 );
+            $sVal = preg_replace ( '/\.' . $sSuffix . '$/', '', $sVal );
+        }
+        return $sVal;
     }
 }

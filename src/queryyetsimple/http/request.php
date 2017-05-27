@@ -17,7 +17,6 @@ queryphp;
 
 use queryyetsimple\router\router;
 use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\mvc\project;
 use queryyetsimple\psr4\psr4;
 
 /**
@@ -47,120 +46,11 @@ class request {
     private static $sRequestUrl;
     
     /**
-     * 应用名字
-     *
-     * @var string
-     */
-    private $strApp = null;
-    
-    /**
-     * 控制器名字
-     *
-     * @var string
-     */
-    private $strController = null;
-    
-    /**
-     * 方法名字
-     *
-     * @var string
-     */
-    private $strAction = null;
-    
-    /**
-     * 配置
-     *
-     * @var array
-     */
-    protected $arrClasssFacesOption = [ 
-            '~apps~' => [ 
-                    '~_~',
-                    'home' 
-            ],
-            'default_app' => 'home',
-            'default_controller' => 'index',
-            'default_action' => 'index',
-            'url\model' => 'pathinfo',
-            'url\rewrite' => false,
-            'url\html_suffix' => '.html',
-            'url\pathinfo_depr' => '/' 
-    ];
-    
-    /**
      * 构造函数
      *
      * @return void
      */
     public function __construct() {
-    }
-    
-    /**
-     * 执行请求
-     *
-     * @return \queryyetsimple\mvc\request
-     */
-    public function run() {
-        // 非命令行模式
-        if (! $this->isCli ()) {
-            $this->parseWeb ();
-        } else {
-            $this->parseCli ();
-        }
-        
-        // 解析URL
-        $this->app ();
-        $this->controller ();
-        $this->action ();
-        
-        // 合并到 REQUEST
-        $_REQUEST = array_merge ( $_POST, $_GET );
-        
-        // 解析项目公共 url 地址
-        $this->parsePublicAndRoot ();
-        
-        return $this;
-    }
-    
-    /**
-     * 取回应用名
-     *
-     * @return string
-     */
-    public function app() {
-        if ($this->strApp) {
-            return $this->strApp;
-        } else {
-            $sVar = \queryyetsimple\mvc\project::ARGS_APP;
-            return $this->strApp = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_app' ));
-        }
-    }
-    
-    /**
-     * 取回控制器名
-     *
-     * @return string
-     */
-    public function controller() {
-        if ($this->strController) {
-            return $this->strController;
-        } else {
-            $sVar = \queryyetsimple\mvc\project::ARGS_CONTROLLER;
-            return $this->strController = $_GET [$sVar] = ! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_controller' );
-        }
-    }
-    
-    /**
-     * 取回方法名
-     *
-     * @return string
-     */
-    public function action() {
-        if ($this->strAction) {
-            return $this->strAction;
-        } else {
-            $sVar = \queryyetsimple\mvc\project::ARGS_ACTION;
-            return $this->strAction = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_action' ));
-        }
     }
     
     /**
@@ -331,262 +221,11 @@ class request {
     }
     
     /**
-     * 返回项目容器
-     *
-     * @return \queryyetsimple\mvc\project
-     */
-    public function project() {
-        return project::bootstrap ();
-    }
-    
-    /**
-     * web 分析 url 参数
-     *
-     * @return void
-     */
-    private function parseWeb() {
-        $_SERVER ['REQUEST_URI'] = isset ( $_SERVER ['REQUEST_URI'] ) ? $_SERVER ['REQUEST_URI'] : $_SERVER ["HTTP_X_REWRITE_URL"]; // For IIS
-                                                                                                                                    
-        // 分析 pathinfo
-        if ($this->classsFacesOption ( 'url\model' ) == 'pathinfo') {
-            // 分析pathinfo
-            $this->filterPathInfo ();
-            
-            // 解析结果
-            $_GET = array_merge ( $_GET, ($arrRouter = router::parses ()) ? $arrRouter : $this->parsePathInfo () );
-        }
-    }
-    
-    /**
-     * 分析 cli 参数
-     *
-     * @return void
-     */
-    private function parseCli() {
-        switch (true) {
-            // console 命令行
-            case env ( 'queryphp_console' ) :
-                $this->parseCliConsole ();
-                break;
-            // phpunit 命令行
-            case env ( 'queryphp_phpunit' ) :
-                $this->parseCliPhpunit ();
-                break;
-            // phpunit system 命令行
-            case env ( 'queryphp_phpunit_system' ) :
-                $this->parseCliPhpunitSystem ();
-                break;
-            default :
-                $this->parseCliDefault ();
-                break;
-        }
-    }
-    
-    /**
-     * 注册 console 引导入口
-     *
-     * @return void
-     */
-    private function parseCliConsole() {
-        define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/console/bootstrap.php' );
-        
-        // 注册默认应用程序
-        $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@console';
-        $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
-        $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
-    }
-    
-    /**
-     * 注册 phpunit 引导入口
-     *
-     * @return void
-     */
-    private function parseCliPhpunit() {
-        define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/testing/bootstrap.php' );
-        
-        // 注册默认应用程序
-        $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@testing';
-        $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
-        $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
-    }
-    
-    /**
-     * 注册 phpunit 内部引导入口
-     *
-     * @return void
-     */
-    private function parseCliPhpunitSystem() {
-        define ( 'PATH_APP_BOOTSTRAP', dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/tests/bootstrap.php' );
-        
-        // 注册默认应用程序
-        $_GET [\queryyetsimple\mvc\project::ARGS_APP] = '~_~@tests';
-        $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = 'bootstrap';
-        $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = 'index';
-        
-        // 导入 tests 命名空间
-        psr4::import ( 'tests', dirname ( PATH_APP_BOOTSTRAP ) );
-    }
-    
-    /**
-     * 分析默认 cli 参数
-     *
-     * @return void
-     */
-    private function parseCliDefault() {
-        $arrArgv = isset ( $GLOBALS ['argv'] ) ? $GLOBALS ['argv'] : [ ];
-        
-        if (! isset ( $arrArgv ) || empty ( $arrArgv )) {
-            return;
-        }
-        
-        // 第一个为脚本自身
-        array_shift ( $arrArgv );
-        
-        // 继续分析
-        if ($arrArgv) {
-            
-            // app
-            if (in_array ( $arrArgv [0], $this->classsFacesOption ( '~apps~' ) )) {
-                $_GET [\queryyetsimple\mvc\project::ARGS_APP] = array_shift ( $arrArgv );
-            }
-            
-            // controller
-            if ($arrArgv) {
-                $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = array_shift ( $arrArgv );
-            }
-            
-            // 方法
-            if ($arrArgv) {
-                $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] = array_shift ( $arrArgv );
-            }
-            
-            // 剩余参数
-            if ($arrArgv) {
-                for($nI = 0, $nCnt = count ( $arrArgv ); $nI < $nCnt; $nI ++) {
-                    if (isset ( $arrArgv [$nI + 1] )) {
-                        $_GET [$arrArgv [$nI]] = ( string ) $arrArgv [++ $nI];
-                    } elseif ($nI == 0) {
-                        $_GET [$_GET [\queryyetsimple\mvc\project::ARGS_ACTION]] = ( string ) $arrArgv [$nI];
-                    }
-                }
-            }
-        }
-    }
-    
-    /**
-     * 解析 pathinfo 参数
-     *
-     * @return array
-     */
-    private function parsePathInfo() {
-        $arrPathInfo = [ ];
-        $sPathInfo = $_SERVER ['PATH_INFO'];
-        
-        $arrPaths = explode ( $this->classsFacesOption ( 'url\pathinfo_depr' ), trim ( $sPathInfo, '/' ) );
-        
-        if (in_array ( $arrPaths [0], $this->classsFacesOption ( '~apps~' ) )) {
-            $arrPathInfo [\queryyetsimple\mvc\project::ARGS_APP] = array_shift ( $arrPaths );
-        }
-        
-        if (! isset ( $_GET [\queryyetsimple\mvc\project::ARGS_CONTROLLER] )) { // 还没有定义控制器名称
-            $arrPathInfo [\queryyetsimple\mvc\project::ARGS_CONTROLLER] = array_shift ( $arrPaths );
-        }
-        
-        if (! isset ( $_GET [\queryyetsimple\mvc\project::ARGS_ACTION] )) { // 还没有定义方法名称
-            $arrPathInfo [\queryyetsimple\mvc\project::ARGS_ACTION] = array_shift ( $arrPaths );
-        }
-        
-        for($nI = 0, $nCnt = count ( $arrPaths ); $nI < $nCnt; $nI ++) {
-            if (isset ( $arrPaths [$nI + 1] )) {
-                $arrPathInfo [$arrPaths [$nI]] = ( string ) $arrPaths [++ $nI];
-            }
-        }
-        
-        return $arrPathInfo;
-    }
-    
-    /**
-     * 解析项目公共和基础路径
-     *
-     * @return void
-     */
-    private function parsePublicAndRoot() {
-        if ($this->isCli ()) {
-            return;
-        }
-        
-        $objProject = $this->project ();
-        $arrResult = [ ];
-        
-        // 分析 php 入口文件路径
-        $arrResult ['enter_bak'] = $arrResult ['enter'] = $objProject->url_enter;
-        if (! $arrResult ['enter']) {
-            // php 文件
-            if ($this->isCgi ()) {
-                $arrTemp = explode ( '.php', $_SERVER ["PHP_SELF"] ); // CGI/FASTCGI模式下
-                $arrResult ['enter'] = rtrim ( str_replace ( $_SERVER ["HTTP_HOST"], '', $arrTemp [0] . '.php' ), '/' );
-            } else {
-                $arrResult ['enter'] = rtrim ( $_SERVER ["SCRIPT_NAME"], '/' );
-            }
-            $arrResult ['enter_bak'] = $arrResult ['enter'];
-            
-            // 如果为重写模式
-            if ($this->classsFacesOption ( 'url\rewrite' ) === true) {
-                $arrResult ['enter'] = dirname ( $arrResult ['enter'] );
-                if ($arrResult ['enter'] == '\\') {
-                    $arrResult ['enter'] = '/';
-                }
-            }
-        }
-        
-        // 网站 URL 根目录
-        $arrResult ['root'] = $objProject->url_root;
-        if (! $arrResult ['root']) {
-            $arrResult ['root'] = dirname ( $arrResult ['enter_bak'] );
-            $arrResult ['root'] = ($arrResult ['root'] == '/' || $arrResult ['root'] == '\\') ? '' : $arrResult ['root'];
-        }
-        
-        // 网站公共文件目录
-        $arrResult ['public'] = $objProject->url_public;
-        if (! $arrResult ['public']) {
-            $arrResult ['public'] = $arrResult ['root'] . '/public';
-        }
-        
-        // 快捷方法供 router::url 方法使用
-        foreach ( [ 
-                'enter',
-                'root',
-                'public' 
-        ] as $sType ) {
-            $GLOBALS ['~@url'] ['url_' . $sType] = $arrResult [$sType];
-            $objProject->instance ( 'url_' . $sType, $arrResult [$sType] );
-        }
-        
-        unset ( $arrResult, $objProject );
-    }
-    
-    // ######################################################
-    // ----------------- pathinfo 分析 start -----------------
-    // ######################################################
-    
-    /**
-     * pathinfo 解析入口
-     *
-     * @return void
-     */
-    private function filterPathInfo() {
-        $sPathInfo = $this->pathinfo ();
-        $sPathInfo = $this->clearHtmlSuffix ( $sPathInfo );
-        $sPathInfo = empty ( $sPathInfo ) ? '/' : $sPathInfo;
-        $_SERVER ['PATH_INFO'] = $sPathInfo;
-    }
-    
-    /**
      * pathinfo 兼容性分析
      *
      * @return string
      */
-    private function pathinfo() {
+    public function pathinfo() {
         if (! empty ( $_SERVER ['PATH_INFO'] )) {
             return $_SERVER ['PATH_INFO'];
         }
@@ -617,7 +256,7 @@ class request {
      *
      * @return string
      */
-    private function baseUrl() {
+    public function baseUrl() {
         // 存在返回
         if (static::$sBaseUrl) {
             return static::$sBaseUrl;
@@ -671,10 +310,13 @@ class request {
      *
      * @return string
      */
-    private function requestUrl() {
+    public function requestUrl() {
         if (static::$sRequestUrl) {
             return static::$sRequestUrl;
         }
+        
+        // For IIS
+        $_SERVER ['REQUEST_URI'] = isset ( $_SERVER ['REQUEST_URI'] ) ? $_SERVER ['REQUEST_URI'] : $_SERVER ["HTTP_X_REWRITE_URL"];
         
         if (isset ( $_SERVER ['HTTP_X_REWRITE_URL'] )) {
             $sUrl = $_SERVER ['HTTP_X_REWRITE_URL'];
@@ -691,22 +333,4 @@ class request {
         
         return static::$sRequestUrl = $sUrl;
     }
-    
-    /**
-     * 清理 url 后缀
-     *
-     * @param string $sVal            
-     * @return string
-     */
-    private function clearHtmlSuffix($sVal) {
-        if ($this->classsFacesOption ( 'url\html_suffix' ) && ! empty ( $sVal )) {
-            $sSuffix = substr ( $this->classsFacesOption ( 'url\html_suffix' ), 1 );
-            $sVal = preg_replace ( '/\.' . $sSuffix . '$/', '', $sVal );
-        }
-        return $sVal;
-    }
-    
-    // ######################################################
-    // ------------------ pathinfo 分析 end ------------------
-    // ######################################################
 }

@@ -53,27 +53,6 @@ class project extends container {
     private $strPath;
     
     /**
-     * 应用参数名
-     *
-     * @var string
-     */
-    const ARGS_APP = 'app';
-    
-    /**
-     * 控制器参数名
-     *
-     * @var string
-     */
-    const ARGS_CONTROLLER = 'c';
-    
-    /**
-     * 方法参数名
-     *
-     * @var string
-     */
-    const ARGS_ACTION = 'a';
-    
-    /**
      * 基础服务提供者
      *
      * @var array

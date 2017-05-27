@@ -50,7 +50,7 @@ class bootstrap {
             'check',
             'registerRuntime',
             'initProject',
-            'request',
+            'router',
             'runApp' 
     ];
     
@@ -131,16 +131,16 @@ class bootstrap {
     }
     
     /**
-     * 执行请求
+     * 执行路由请求
      *
      * @return void
      */
-    private function request() {
+    private function router() {
         // 运行笑脸初始化应用
         $this->objProject->make ( app::class, app::INIT_APP, $this->arrOption )->bootstrap ()->namespaces ();
         
-        // 完成请求
-        $this->objProject->request->run ();
+        // 完成路由请求
+        $this->objProject->router->run ();
     }
     
     /**
@@ -150,7 +150,7 @@ class bootstrap {
      */
     private function runApp() {
         // 创建 & 注册
-        $this->objProject->instance ( 'app', ($objApp = $this->objProject->make ( app::class )->bootstrap ( $this->objProject->request->app () )->registerAppProvider ()) );
+        $this->objProject->instance ( 'app', ($objApp = $this->objProject->make ( app::class )->bootstrap ( $this->objProject->router->app () )->registerAppProvider ()) );
         
         // 运行应用
         $objApp->run ();

@@ -74,7 +74,7 @@ class exception extends message {
         if (PHP_SAPI != 'cli' && option::gets ( 'show_exception_redirect' ) && ! env ( 'app_debug' )) {
             static::urlRedirect ( router::url ( option::gets ( 'show_exception_redirect' ) ) );
         } else {
-            if (! opation::gets ( 'show_exception_show_message', true ) && option::gets ( 'show_exception_default_message' )) {
+            if (! option::gets ( 'show_exception_show_message', true ) && option::gets ( 'show_exception_default_message' )) {
                 $mixError ['message'] = option::gets ( 'show_exception_default_message' );
             }
             

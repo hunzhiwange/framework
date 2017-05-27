@@ -102,5 +102,14 @@ return [
          *
          * 开启 url 子域名功能，用于 \queryyetsimple\router\router::url 生成
          */
-        'make_subdomain_on' => false 
+        'make_subdomain_on' => false,
+        
+        /**
+         * ---------------------------------------------------------------
+         * public　资源地址
+         * ---------------------------------------------------------------
+         *
+         * 设置公共资源 url 地址
+         */
+        'public' => env ( 'url_public', 'http://public.foo.bar' ) 
 ]; 
