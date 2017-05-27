@@ -114,9 +114,9 @@ class meta {
         $this->strTable = $strTable;
         $this->strConnect = $strConnect;
         
-        $this->init_ ( $strTable );
+        $this->init ( $strTable );
         // }else{
-        // $this->initSimple_($sClass);
+        // $this->initSimple($sClass);
         // }
     }
     
@@ -168,7 +168,7 @@ class meta {
             return static::$arrInstances [$sModelClass];
         }
     }
-    private function initConnect_() {
+    private function initConnect() {
         // $objConnect
         // if(is_null($this->objConnect)){
         $this->objConnect = database::connects ( $this->strConnect );
@@ -197,9 +197,9 @@ class meta {
         // echo 'yyyyyyyyy';
         print_r ( $this->objConnect->table ( $this->strTable )->where ( $arrCondition )->update ( $arrSaveData ) );
     }
-    private function init_($sModelClass) {
+    private function init($sModelClass) {
         // echo $sModelClass;
-        $this->initConnect_ ();
+        $this->initConnect ();
         
         $arrColumnInfo = $this->objConnect->getTableColumns ( $sModelClass );
         $this->arrFields = $arrColumnInfo ['list'];
@@ -221,7 +221,7 @@ class meta {
         // $arrRef=(array)call_user_func(array($sClass,'init__'));
         
         // $arrTableConfig=!empty($arrRef['table_config'])?(array)$arrRef['table_config']:array();// 设置表数据入口对象
-        // $this->_oTable=$this->tableByName_($arrRef['table_name'],$arrTableConfig);
+        // $this->_oTable=$this->tableByName($arrRef['table_name'],$arrTableConfig);
         // $this->_arrTableMeta=$this->_oTable->columns();
         
         // if(!empty($arrRef['autofill']) && is_array($arrRef['autofill'])){
@@ -232,7 +232,7 @@ class meta {
         // if(empty($arrRef['check']) || ! is_array($arrRef['check'])){
         // $arrRef['check']=array();
         // }
-        // $this->_arrCheck=$this->prepareCheckRules_($arrRef['check']);
+        // $this->_arrCheck=$this->prepareCheckRules($arrRef['check']);
     }
     public function getPrimaryKey() {
         return $this->arrPrimaryKey;

@@ -241,7 +241,7 @@ class container implements ArrayAccess, interfaces_container {
         if (! isset ( $this->arrFactorys [$strFactoryName] )) {
             return call_user_func_array ( [ 
                     $this,
-                    'getInjectionObject_' 
+                    'getInjectionObject' 
             ], $arrArgs );
         }
         
@@ -287,8 +287,8 @@ class container implements ArrayAccess, interfaces_container {
     public function call($calClass /* args */) {
         $arrArgs = func_get_args ();
         array_shift ( $arrArgs );
-        if (($arrInjection = $this->parseInjection_ ( $calClass, $arrArgs )) && isset ( $arrInjection ['args'] )) {
-            $arrArgs = $this->getInjectionArgs_ ( $arrInjection ['args'], $arrArgs, $arrInjection ['class'] );
+        if (($arrInjection = $this->parseInjection ( $calClass, $arrArgs )) && isset ( $arrInjection ['args'] )) {
+            $arrArgs = $this->getInjectionArgs ( $arrInjection ['args'], $arrArgs, $arrInjection ['class'] );
         }
         return call_user_func_array ( $calClass, $arrArgs );
     }
@@ -311,7 +311,7 @@ class container implements ArrayAccess, interfaces_container {
      * @return bool
      */
     public function offsetExists($strFactoryName) {
-        return isset ( $this->arrFactorys [$this->normalize_ ( $strFactoryName )] );
+        return isset ( $this->arrFactorys [$this->normalize ( $strFactoryName )] );
     }
     
     /**
@@ -342,7 +342,7 @@ class container implements ArrayAccess, interfaces_container {
      * @return void
      */
     public function offsetUnset($strFactoryName) {
-        $strFactoryName = $this->normalize_ ( $strFactoryName );
+        $strFactoryName = $this->normalize ( $strFactoryName );
         foreach ( [ 
                 'Factorys',
                 'Instances',
@@ -385,7 +385,7 @@ class container implements ArrayAccess, interfaces_container {
      * @param string $strFactoryName            
      * @return mixed
      */
-    protected function normalize_($strFactoryName) {
+    protected function normalize($strFactoryName) {
         return ltrim ( $strFactoryName, '\\' );
     }
     
@@ -395,7 +395,7 @@ class container implements ArrayAccess, interfaces_container {
      * @param string $strClassName            
      * @return object
      */
-    protected function getInjectionObject_($strClassName /* args */) {
+    protected function getInjectionObject($strClassName /* args */) {
         if (! class_exists ( $strClassName )) {
             return false;
         }
@@ -404,8 +404,8 @@ class container implements ArrayAccess, interfaces_container {
         array_shift ( $arrArgs );
         
         // 注入构造器
-        if (($arrInjection = $this->parseInjection_ ( $strClassName )) && isset ( $arrInjection ['args'] )) {
-            return $this->newInstanceArgs ( $strClassName, $this->getInjectionArgs_ ( $arrInjection ['args'], $arrArgs, $arrInjection ['class'] ) );
+        if (($arrInjection = $this->parseInjection ( $strClassName )) && isset ( $arrInjection ['args'] )) {
+            return $this->newInstanceArgs ( $strClassName, $this->getInjectionArgs ( $arrInjection ['args'], $arrArgs, $arrInjection ['class'] ) );
         } else {
             return $this->newInstanceArgs ( $strClassName, $arrArgs );
         }
@@ -417,7 +417,7 @@ class container implements ArrayAccess, interfaces_container {
      * @param mixed $mixClassOrCallback            
      * @return array
      */
-    protected function parseInjection_($mixClassOrCallback) {
+    protected function parseInjection($mixClassOrCallback) {
         $arrResult = $arrParameter = [ ];
         $booFind = $booFindClass = false;
         
@@ -487,7 +487,7 @@ class container implements ArrayAccess, interfaces_container {
      * @param boolean $booFindClass            
      * @return array
      */
-    protected function getInjectionArgs_(array $arrArgs, array $arrExtends = [], $booFindClass = false) {
+    protected function getInjectionArgs(array $arrArgs, array $arrExtends = [], $booFindClass = false) {
         foreach ( $arrExtends as $intKey => $mixExtend ) {
             if ($booFindClass === true) {
                 $arrArgs [] = $mixExtend;

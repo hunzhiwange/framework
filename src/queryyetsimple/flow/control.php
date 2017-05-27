@@ -46,7 +46,7 @@ trait control {
      * @return $this
      */
     protected function ifs($booValue = false) {
-        return $this->setFlowControl_ ( true, $booValue );
+        return $this->setFlowControl ( true, $booValue );
     }
     
     /**
@@ -56,7 +56,7 @@ trait control {
      * @return $this
      */
     protected function elseIfs($booValue = false) {
-        return $this->setFlowControl_ ( true, $booValue );
+        return $this->setFlowControl ( true, $booValue );
     }
     
     /**
@@ -65,7 +65,7 @@ trait control {
      * @return $this
      */
     protected function elses() {
-        return $this->setFlowControl_ ( true, ! $this->getFlowControl_ ()[1] );
+        return $this->setFlowControl ( true, ! $this->getFlowControl ()[1] );
     }
     
     /**
@@ -74,7 +74,7 @@ trait control {
      * @return $this
      */
     protected function endIfs() {
-        return $this->setFlowControl_ ( false, false );
+        return $this->setFlowControl ( false, false );
     }
     
     /**
@@ -84,7 +84,7 @@ trait control {
      * @param boolean $booFlowControlIsTrue            
      * @return void
      */
-    protected function setFlowControl_($booInFlowControl, $booFlowControlIsTrue) {
+    protected function setFlowControl($booInFlowControl, $booFlowControlIsTrue) {
         $this->booInFlowControl = $booInFlowControl;
         $this->booFlowControlIsTrue = $booFlowControlIsTrue;
         return $this;
@@ -95,7 +95,7 @@ trait control {
      *
      * @return array
      */
-    protected function getFlowControl_() {
+    protected function getFlowControl() {
         return [ 
                 $this->booInFlowControl,
                 $this->booFlowControlIsTrue 
@@ -107,7 +107,7 @@ trait control {
      *
      * @return boolean
      */
-    protected function checkFlowControl_() {
+    protected function checkFlowControl() {
         return $this->booInFlowControl && ! $this->booFlowControlIsTrue;
     }
 }

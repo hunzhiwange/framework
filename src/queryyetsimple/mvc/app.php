@@ -124,7 +124,7 @@ class app {
      */
     public function run() {
         foreach ( $this->arrEvent as $strEvent ) {
-            $strEvent = $strEvent . 'Run_';
+            $strEvent = $strEvent . 'Run';
             $this->{$strEvent} ();
         }
         
@@ -140,8 +140,8 @@ class app {
     public function bootstrap($sApp = null) {
         if (! is_null ( $sApp ))
             $this->strApp = $sApp;
-        $this->setPath_ ();
-        $this->loadOption_ ();
+        $this->setPath ();
+        $this->loadOption ();
         return $this;
     }
     
@@ -359,7 +359,7 @@ class app {
      * @return 注册的控制器
      */
     public function getController($sControllerName) {
-        $mixController = router::getBinds ( $this->packControllerAndAction_ ( $sControllerName ) );
+        $mixController = router::getBinds ( $this->packControllerAndAction ( $sControllerName ) );
         if ($mixController !== null) {
             return $mixController;
         }
@@ -373,7 +373,7 @@ class app {
      * @return boolean
      */
     public function hasController($sControllerName) {
-        $booHasController = router::hasBinds ( $this->packControllerAndAction_ ( $sControllerName ) );
+        $booHasController = router::hasBinds ( $this->packControllerAndAction ( $sControllerName ) );
         if ($booHasController === false) {
             $booHasController = router::hasBinds ( $sControllerName );
         }
@@ -388,7 +388,7 @@ class app {
      * @return 注册的控制器
      */
     public function registerController($sControllerName, $mixController) {
-        router::binds ( $this->packControllerAndAction_ ( $sControllerName ), $mixController );
+        router::binds ( $this->packControllerAndAction ( $sControllerName ), $mixController );
     }
     
     /**
@@ -398,7 +398,7 @@ class app {
      * @return 注册的方法
      */
     public function getAction($sControllerName, $sActionName) {
-        $mixAction = router::getBinds ( $this->packControllerAndAction_ ( $sControllerName, $sActionName ) );
+        $mixAction = router::getBinds ( $this->packControllerAndAction ( $sControllerName, $sActionName ) );
         if ($mixAction !== null) {
             return $mixAction;
         }
@@ -415,7 +415,7 @@ class app {
      * @return boolean
      */
     public function hasAction($sControllerName, $sActionName) {
-        $booHasAction = router::hasBinds ( $this->packControllerAndAction_ ( $sControllerName, $sActionName ) );
+        $booHasAction = router::hasBinds ( $this->packControllerAndAction ( $sControllerName, $sActionName ) );
         if ($booHasAction === false) {
             $booHasAction = router::hasBinds ( $sControllerName . '/' . $sActionName );
         }
@@ -435,7 +435,7 @@ class app {
      * @return 注册的方法
      */
     public function registerAction($sControllerName, $sActionName, $mixAction) {
-        return router::binds ( $this->packControllerAndAction_ ( $sControllerName, $sActionName ), $mixAction );
+        return router::binds ( $this->packControllerAndAction ( $sControllerName, $sActionName ), $mixAction );
     }
     
     /**
@@ -455,7 +455,7 @@ class app {
      *
      * @return void
      */
-    private function registerExceptionRun_() {
+    private function registerExceptionRun() {
         if (PHP_SAPI != 'cli') {
             set_exception_handler ( is_callable ( option::gets ( 'debug\exception_handle' ) ) ? option::gets ( 'debug\exception_handle' ) : [ 
                     'queryyetsimple\bootstrap\runtime\handle',
@@ -469,7 +469,7 @@ class app {
      *
      * @return void
      */
-    private function initializationRun_() {
+    private function initializationRun() {
         if (env ( 'app_development' ) === 'development')
             error_reporting ( E_ALL );
         else
@@ -491,7 +491,7 @@ class app {
      *
      * @return void
      */
-    private function loadBootstrapRun_() {
+    private function loadBootstrapRun() {
         if (is_file ( ($strBootstrap = (defined ( 'PATH_APP_BOOTSTRAP' ) ? PATH_APP_BOOTSTRAP : $this->objProject->path_application . '/' . $this->strApp . '/bootstrap.php')) )) {
             require $strBootstrap;
         }
@@ -502,7 +502,7 @@ class app {
      *
      * @return void
      */
-    private function viewRun_() {
+    private function viewRun() {
         // 设置应用主题名字
         $this->objProject->instance ( 'name_app_theme', $sThemeSet = view::parseContexts () );
         view::setThemeDir ( $this->objProject->path_app_theme . '/' . $sThemeSet );
@@ -516,7 +516,7 @@ class app {
      *
      * @return void
      */
-    private function i18nRun_() {
+    private function i18nRun() {
         if (! option::gets ( 'i18n\on' ))
             return;
         
@@ -524,13 +524,13 @@ class app {
         if (option::gets ( 'i18n\develop' ) == $sI18nSet)
             return;
         
-        $sCachePath = $this->getI18nCachePath_ ( $sI18nSet );
-        $sCacheJsPath = $this->getI18nCacheJsPath_ ( $sI18nSet );
+        $sCachePath = $this->getI18nCachePath ( $sI18nSet );
+        $sCacheJsPath = $this->getI18nCacheJsPath ( $sI18nSet );
         
         if (env ( 'app_development' ) !== 'development' && is_file ( $sCachePath ) && is_file ( $sCacheJsPath )) {
             i18n::addI18ns ( $sI18nSet, ( array ) include $sCachePath );
         } else {
-            $arrFiles = i18n_tool::findPoFile ( $this->getI18nDir_ ( $sI18nSet ) );
+            $arrFiles = i18n_tool::findPoFile ( $this->getI18nDir ( $sI18nSet ) );
             i18n::addI18ns ( $sI18nSet, i18n_tool::saveToPhp ( $arrFiles ['php'], $sCachePath ) );
             i18n_tool::saveToJs ( $arrFiles ['js'], $sCacheJsPath, $sI18nSet );
             unset ( $sI18nSet, $arrFiles, $sCachePath, $sCacheJsPath );
@@ -542,7 +542,7 @@ class app {
      *
      * @return void
      */
-    private function requestRun_() {
+    private function requestRun() {
         $this->objProject->instance ( 'app_name', $this->strApp );
         $this->objProject->instance ( 'controller_name', $this->objProject->request->controller () );
         $this->objProject->instance ( 'action_name', $this->objProject->request->action () );
@@ -553,7 +553,7 @@ class app {
      *
      * @return void
      */
-    private function responseRun_() {
+    private function responseRun() {
         $mixResponse = $this->controller ();
         if (! ($mixResponse instanceof response)) {
             $mixResponse = response::makes ( $mixResponse );
@@ -568,7 +568,7 @@ class app {
      * @param string $strAction            
      * @return string
      */
-    private function packControllerAndAction_($strController, $strAction = '') {
+    private function packControllerAndAction($strController, $strAction = '') {
         return $this->strApp . '://' . $strController . ($strAction ? '/' . $strAction : '');
     }
     
@@ -577,17 +577,17 @@ class app {
      *
      * @return void
      */
-    private function loadOption_() {
-        $this->setOptionRouterCachePath_ ();
-        $sCachePath = $this->getOptionCachePath_ ();
+    private function loadOption() {
+        $this->setOptionRouterCachePath ();
+        $sCachePath = $this->getOptionCachePath ();
         
         if ($this->strApp == static::INIT_APP) {
             if (is_file ( $sCachePath )) {
                 option::resets ( ( array ) include $sCachePath );
                 
                 if (option::gets ( 'env\app_development' ) === 'development') {
-                    $this->setEnvironmentVariables_ ();
-                    $this->cacheOption_ ( $sCachePath );
+                    $this->setEnvironmentVariables ();
+                    $this->cacheOption ( $sCachePath );
                 } else {
                     if (! router::checkExpireds ())
                         return;
@@ -597,7 +597,7 @@ class app {
                     }
                     
                     if (($arrRouterType = option::gets ( '~routers~' ))) {
-                        foreach ( $this->getOptionDir_ () as $sDir ) {
+                        foreach ( $this->getOptionDir () as $sDir ) {
                             foreach ( $arrRouterType as $sType ) {
                                 if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
                                     continue;
@@ -607,14 +607,14 @@ class app {
                     }
                 }
             } else {
-                $this->setEnvironmentVariables_ ();
-                $this->cacheOption_ ( $sCachePath );
+                $this->setEnvironmentVariables ();
+                $this->cacheOption ( $sCachePath );
             }
         } else {
             if (env ( 'app_development' ) !== 'development' && is_file ( $sCachePath )) {
                 option::resets ( ( array ) include $sCachePath );
             } else {
-                $this->cacheOption_ ( $sCachePath );
+                $this->cacheOption ( $sCachePath );
             }
         }
     }
@@ -624,7 +624,7 @@ class app {
      *
      * @return void
      */
-    private function setPath_() {
+    private function setPath() {
         $sAppName = $this->strApp;
         $sAppPath = $this->objProject->path_application . '/' . $sAppName;
         $sRuntime = $this->objProject->path_runtime;
@@ -660,7 +660,7 @@ class app {
      *
      * @return array
      */
-    private function getOptionNamespace_() {
+    private function getOptionNamespace() {
         return $this->arrOptionNamespace;
     }
     
@@ -670,7 +670,7 @@ class app {
      * @param string $sI18nSet            
      * @return array
      */
-    private function getI18nDir_($sI18nSet) {
+    private function getI18nDir($sI18nSet) {
         $arrI18nDir = [ 
                 dirname ( __DIR__ ) . '/bootstrap/i18n/' . $sI18nSet,
                 $this->objProject->path_common . '/interfaces/i18n/' . $sI18nSet,
@@ -696,7 +696,7 @@ class app {
      * @param string $sI18nSet            
      * @return array
      */
-    private function getI18nCachePath_($sI18nSet) {
+    private function getI18nCachePath($sI18nSet) {
         return $this->objProject->path_cache_i18n . '/' . $sI18nSet . '/default.php';
     }
     
@@ -706,7 +706,7 @@ class app {
      * @param string $sI18nSet            
      * @return array
      */
-    private function getI18nCacheJsPath_($sI18nSet) {
+    private function getI18nCacheJsPath($sI18nSet) {
         return $this->objProject->path_cache_i18n_js . '/' . $sI18nSet . '/default.js';
     }
     
@@ -715,7 +715,7 @@ class app {
      *
      * @return array
      */
-    private function getOptionDir_() {
+    private function getOptionDir() {
         $arrOptionDir = [ 
                 dirname ( __DIR__ ) . '/bootstrap/option' 
         ];
@@ -730,7 +730,7 @@ class app {
      *
      * @return array
      */
-    private function getOptionCachePath_() {
+    private function getOptionCachePath() {
         return $this->objProject->path_cache_option . '/' . $this->strApp . '.php';
     }
     
@@ -739,7 +739,7 @@ class app {
      *
      * @return array
      */
-    private function setOptionRouterCachePath_() {
+    private function setOptionRouterCachePath() {
         router::cachePaths ( $this->objProject->path_cache_option . '/' . $this->strApp . '@router.php' )->development ( env ( 'app_development' ) === 'development' )->debug ( env ( 'app_debug' ) );
     }
     
@@ -749,8 +749,8 @@ class app {
      * @param string $sCachePath            
      * @return void
      */
-    private function cacheOption_($sCachePath) {
-        option_tool::saveToCache ( $this->getOptionDir_ (), $this->getOptionNamespace_ (), $sCachePath, [ 
+    private function cacheOption($sCachePath) {
+        option_tool::saveToCache ( $this->getOptionDir (), $this->getOptionNamespace (), $sCachePath, [ 
                 'app' => [ 
                         '~apps~' => directory::lists ( $this->objProject->path_application ) 
                 ],
@@ -764,14 +764,14 @@ class app {
      * @param boolean $booCache            
      * @return void
      */
-    private function setEnvironmentVariables_($booCache = false) {
+    private function setEnvironmentVariables($booCache = false) {
         if ($booCache === true) {
             foreach ( option::gets ( 'env\\' ) as $strName => $strValue )
-                $this->setEnvironmentVariable_ ( $strName, $strValue );
+                $this->setEnvironmentVariable ( $strName, $strValue );
         } else {
             $objDotenv = new Dotenv ( $this->objProject->path () );
             $objDotenv->load ();
-            $this->defaultEnvironment_ ();
+            $this->defaultEnvironment ();
         }
     }
     
@@ -780,7 +780,7 @@ class app {
      *
      * @return void
      */
-    private function defaultEnvironment_() {
+    private function defaultEnvironment() {
         foreach ( [ 
                 'app_debug' => false,
                 'app_development' => 'production',
@@ -790,7 +790,7 @@ class app {
                 'queryphp_phpunit_system' => false 
         ] as $strName => $mixValue ) {
             if (is_null ( env ( $strName ) ))
-                $this->setEnvironmentVariable_ ( $strName, $mixValue );
+                $this->setEnvironmentVariable ( $strName, $mixValue );
         }
     }
     
@@ -801,7 +801,7 @@ class app {
      * @param string|null $mixValue            
      * @return void
      */
-    private function setEnvironmentVariable_($strName, $mixValue = null) {
+    private function setEnvironmentVariable($strName, $mixValue = null) {
         if (is_bool ( $mixValue )) {
             putenv ( $strName . '=' . ($mixValue ? '(true)' : '(false)') );
         } elseif (is_null ( $mixValue )) {

@@ -109,7 +109,7 @@ class event {
      */
     public function getListener($strEvent) {
         if (! isset ( $this->arrSorted [$strEvent] )) {
-            $this->sortListener_ ( $strEvent );
+            $this->sortListener ( $strEvent );
         }
         
         return $this->arrSorted [$strEvent];
@@ -172,7 +172,7 @@ class event {
      * @param string $strEvent            
      * @return array
      */
-    protected function sortListener_($strEvent) {
+    protected function sortListener($strEvent) {
         $this->arrSorted [$strEvent] = [ ];
         if (isset ( $this->arrListener [$strEvent] )) {
             krsort ( $this->arrListener [$strEvent] );

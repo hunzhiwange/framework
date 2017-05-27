@@ -153,12 +153,12 @@ class xml {
      * @param array $arrAttributes            
      * @return void
      */
-    private function open_(&$resParser, $sTag, $arrAttributes) {
+    private function open(&$resParser, $sTag, $arrAttributes) {
         $this->sData = '';
         $this->sLastOpenedTag = $sTag;
         if (is_array ( $this->arrParent ) and array_key_exists ( $sTag, $this->arrParent )) {
             if (is_array ( $this->arrParent [$sTag] ) and array_key_exists ( 0, $this->arrParent [$sTag] )) {
-                $nKey = $tthis->countNumericItems_ ( $this->arrParent [$sTag] );
+                $nKey = $tthis->countNumericItems ( $this->arrParent [$sTag] );
             } else {
                 if (array_key_exists ( "$sTag attr", $this->arrParent )) {
                     $arrValue = [ 
@@ -195,7 +195,7 @@ class xml {
      * @param string $sTag            
      * @return void
      */
-    private function close_(&$resParser, $sTag) {
+    private function close(&$resParser, $sTag) {
         if ($this->sLastOpenedTag == $sTag) {
             $this->arrParent = $this->sData;
             $this->sLastOpenedTag = NULL;
@@ -214,7 +214,7 @@ class xml {
      * @param string $sTag            
      * @return void
      */
-    private function data_(&$oParser, $sData) {
+    private function data(&$oParser, $sData) {
         if ($this->sLastOpenedTag != NULL) {
             $this->sData .= $sData;
         }
@@ -226,7 +226,7 @@ class xml {
      * @param array $array            
      * @return number
      */
-    private function countNumericItems_(&$array) {
+    private function countNumericItems(&$array) {
         return is_array ( $array ) ? count ( array_filter ( array_keys ( $array ), 'is_numeric' ) ) : 0;
     }
     

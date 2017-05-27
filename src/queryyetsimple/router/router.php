@@ -308,7 +308,7 @@ class router {
         // 子域名支持
         if ($this->classsFacesOption ( 'url\make_subdomain_on' ) === true) {
             if ($in ['subdomain']) {
-                $sUrl = $this->urlWithDomain_ ( $in ['subdomain'] ) . $sUrl;
+                $sUrl = $this->urlWithDomain ( $in ['subdomain'] ) . $sUrl;
             }
         }
         
@@ -334,13 +334,13 @@ class router {
             return;
             
             // 默认参数
-        $in = $this->mergeIn_ ( [ 
+        $in = $this->mergeIn ( [ 
                 'prepend' => false,
                 'where' => [ ],
                 'params' => [ ],
                 'domain' => '',
                 'prefix' => '' 
-        ], $this->mergeIn_ ( $this->arrGroupArgs, $in ) );
+        ], $this->mergeIn ( $this->arrGroupArgs, $in ) );
         
         // 支持数组传入
         if (! is_array ( $mixRouter ) || count ( $mixRouter ) == count ( $mixRouter, 1 )) {
@@ -372,7 +372,7 @@ class router {
                 if (! $arrRouter [1]) {
                     $arrRouter [1] = $strUrl;
                 }
-                $arrRouter [2] = $this->mergeIn_ ( $in, $arrRouter [2] );
+                $arrRouter [2] = $this->mergeIn ( $in, $arrRouter [2] );
                 $mixRouter [$intKey] = $arrRouter;
             }
         }
@@ -395,7 +395,7 @@ class router {
             
             // 合并参数正则
             if (! empty ( $arrArgs [2] ['where'] ) && is_array ( $arrArgs [2] ['where'] )) {
-                $arrRouter ['where'] = $this->mergeWhere_ ( $arrRouter ['where'], $arrArgs [2] ['where'] );
+                $arrRouter ['where'] = $this->mergeWhere ( $arrRouter ['where'], $arrArgs [2] ['where'] );
             }
             
             if (! isset ( $this->arrRouters [$arrArgs [0]] )) {
@@ -431,7 +431,7 @@ class router {
         if (is_string ( $mixRegex )) {
             $this->arrWheres [$mixRegex] = $strValue;
         } else {
-            $this->arrWheres = $this->mergeWhere_ ( $this->arrWheres, $mixRegex );
+            $this->arrWheres = $this->mergeWhere ( $this->arrWheres, $mixRegex );
         }
     }
     
@@ -449,7 +449,7 @@ class router {
         if (is_string ( $mixRegex )) {
             $this->arrDomainWheres [$mixRegex] = $strValue;
         } else {
-            $this->arrDomainWheres = $this->mergeWhere_ ( $this->arrDomainWheres, $mixRegex );
+            $this->arrDomainWheres = $this->mergeWhere ( $this->arrDomainWheres, $mixRegex );
         }
     }
     
@@ -469,7 +469,7 @@ class router {
         if (! $this->checkExpired ())
             return;
         
-        $in = $this->mergeIn_ ( [ 
+        $in = $this->mergeIn ( [ 
                 'prepend' => false,
                 'params' => [ ],
                 'domain_where' => [ ],
@@ -493,7 +493,7 @@ class router {
             // 合并参数正则
             $arrDomainWheres = $this->arrDomainWheres;
             if (! empty ( $in ['domain_where'] ) && is_array ( $in ['domain_where'] )) {
-                $arrDomainWheres = $this->mergeWhere_ ( $in ['domain_where'], $arrDomainWheres );
+                $arrDomainWheres = $this->mergeWhere ( $in ['domain_where'], $arrDomainWheres );
             }
             
             // 主域名只有一个，路由可以有多个
@@ -538,7 +538,7 @@ class router {
             return;
             
             // 分组参数叠加
-        $this->arrGroupArgs = $in = $this->mergeIn_ ( $this->arrGroupArgs, $in );
+        $this->arrGroupArgs = $in = $this->mergeIn ( $this->arrGroupArgs, $in );
         
         if ($mixRouter instanceof \Closure) {
             call_user_func_array ( $mixRouter, [ ] );
@@ -559,7 +559,7 @@ class router {
                 
                 $strPrefix = ! empty ( $arrArgs [2] ['prefix'] ) ? $arrArgs [2] ['prefix'] : (! empty ( $this->arrGroupArgs ['prefix'] ) ? $this->arrGroupArgs ['prefix'] : '');
                 
-                $this->import ( $strPrefix . $arrVal [0], $arrVal [1], $this->mergeIn_ ( $in, $arrVal [2] ) );
+                $this->import ( $strPrefix . $arrVal [0], $arrVal [1], $this->mergeIn ( $in, $arrVal [2] ) );
             }
         }
         
@@ -632,20 +632,20 @@ class router {
      */
     public function parse() {
         // 读取缓存
-        $this->readCache_ ();
+        $this->readCache ();
         
         $arrNextParse = [ ];
         
         // 解析域名
         if ($this->classsFacesOption ( 'url\router_domain_on' ) === true) {
-            if (($arrParseData = $this->parseDomain_ ( $arrNextParse )) !== false) {
+            if (($arrParseData = $this->parseDomain ( $arrNextParse )) !== false) {
                 return $arrParseData;
             }
         }
         
         // 解析路由
         $arrNextParse = $arrNextParse ? array_column ( $arrNextParse, 'url' ) : [ ];
-        return $this->parseRouter_ ( $arrNextParse );
+        return $this->parseRouter ( $arrNextParse );
     }
     
     /**
@@ -654,7 +654,7 @@ class router {
      * @param array $arrNextParse            
      * @return void
      */
-    private function parseDomain_(&$arrNextParse) {
+    private function parseDomain(&$arrNextParse) {
         if (! $this->arrDomains)
             return;
         $strHost = request::getHosts ();
@@ -674,7 +674,7 @@ class router {
                 }
                 
                 // 解析匹配正则
-                $sKey = $this->formatRegex_ ( $sKey );
+                $sKey = $this->formatRegex ( $sKey );
                 $sKey = preg_replace_callback ( "/{(.+?)}/", function ($arrMatches) use(&$arrDomains) {
                     $arrDomains ['args'] [] = $arrMatches [1];
                     return '(' . (isset ( $arrDomains ['domain_where'] [$arrMatches [1]] ) ? $arrDomains ['domain_where'] [$arrMatches [1]] : static::DEFAULT_REGEX) . ')';
@@ -701,7 +701,7 @@ class router {
                     $arrNextParse = $arrDomains ['rule'];
                     return false;
                 } else {
-                    $arrData = $this->parseNodeUrl_ ( $arrDomains ['main'] ['url'] );
+                    $arrData = $this->parseNodeUrl ( $arrDomains ['main'] ['url'] );
                     
                     // 额外参数[放入 GET]
                     if (is_array ( $arrDomains ['main'] ['params'] ) && $arrDomains ['main'] ['params']) {
@@ -723,7 +723,7 @@ class router {
      * @param array $arrNextParse            
      * @return array
      */
-    private function parseRouter_($arrNextParse = []) {
+    private function parseRouter($arrNextParse = []) {
         if (! $this->arrRouters)
             return;
         $arrData = [ ];
@@ -743,7 +743,7 @@ class router {
                     $booFindFouter = true;
                 } else {
                     // 解析匹配正则
-                    $arrRouter ['regex'] = $this->formatRegex_ ( $arrRouter ['regex'] );
+                    $arrRouter ['regex'] = $this->formatRegex ( $arrRouter ['regex'] );
                     $arrRouter ['regex'] = preg_replace_callback ( "/{(.+?)}/", function ($arrMatches) use(&$arrRouter) {
                         $arrRouter ['args'] [] = $arrMatches [1];
                         return '(' . (isset ( $arrRouter ['where'] [$arrMatches [1]] ) ? $arrRouter ['where'] [$arrMatches [1]] : static::DEFAULT_REGEX) . ')';
@@ -758,7 +758,7 @@ class router {
                 
                 // 分析结果
                 if ($booFindFouter === true) {
-                    $arrData = $this->parseNodeUrl_ ( $arrRouter ['url'] );
+                    $arrData = $this->parseNodeUrl ( $arrRouter ['url'] );
                     
                     // 额外参数
                     if (is_array ( $arrRouter ['params'] ) && $arrRouter ['params']) {
@@ -822,7 +822,7 @@ class router {
      * @return boolean
      */
     public function checkExpired() {
-        return $this->booDevelopment === true || ! $this->checkOpen_ () || ! is_file ( $this->strCachePath );
+        return $this->booDevelopment === true || ! $this->checkOpen () || ! is_file ( $this->strCachePath );
     }
     
     /**
@@ -830,7 +830,7 @@ class router {
      *
      * @return boolean
      */
-    private function checkOpen_() {
+    private function checkOpen() {
         return $this->classsFacesOption ( 'url\router_cache' );
     }
     
@@ -839,8 +839,8 @@ class router {
      *
      * @return void
      */
-    private function readCache_() {
-        if (! $this->checkOpen_ ())
+    private function readCache() {
+        if (! $this->checkOpen ())
             return;
         
         if ($this->booDevelopment === false && is_file ( $this->strCachePath )) {
@@ -881,7 +881,7 @@ class router {
      * @param string $sRegex            
      * @return string
      */
-    private function formatRegex_($sRegex) {
+    private function formatRegex($sRegex) {
         $sRegex = helper::escapeRegexCharacter ( $sRegex );
         
         // 还原变量特殊标记
@@ -901,7 +901,7 @@ class router {
      * @param array $arrExtend            
      * @return array
      */
-    private function mergeIn_(array $in, array $arrExtend) {
+    private function mergeIn(array $in, array $arrExtend) {
         // 合并特殊参数
         foreach ( [ 
                 'params',
@@ -912,7 +912,7 @@ class router {
                 if (! isset ( $in [$strType] )) {
                     $in [$strType] = [ ];
                 }
-                $in [$strType] = $this->mergeWhere_ ( $in [$strType], $arrExtend [$strType] );
+                $in [$strType] = $this->mergeWhere ( $in [$strType], $arrExtend [$strType] );
             }
         }
         
@@ -939,7 +939,7 @@ class router {
      * @param array $arrExtend            
      * @return array
      */
-    private function mergeWhere_(array $arrWhere, array $arrExtend) {
+    private function mergeWhere(array $arrWhere, array $arrExtend) {
         // 合并参数正则
         if (! empty ( $arrExtend ) && is_array ( $arrExtend )) {
             if (is_string ( key ( $arrExtend ) )) {
@@ -959,7 +959,7 @@ class router {
      * @param string $sUrl            
      * @return array
      */
-    private function parseNodeUrl_($sUrl) {
+    private function parseNodeUrl($sUrl) {
         $arrData = [ ];
         
         // 解析 url
@@ -1000,7 +1000,7 @@ class router {
      * @param string $sHttpSuffix            
      * @return string
      */
-    private function urlWithDomain_($sDomain = '', $sHttpPrefix = '', $sHttpSuffix = '') {
+    private function urlWithDomain($sDomain = '', $sHttpPrefix = '', $sHttpSuffix = '') {
         static $sHttpPrefix = '', $sHttpSuffix = '';
         if (! $sHttpPrefix) {
             $sHttpPrefix = request::isSsls () ? 'https://' : 'http://';

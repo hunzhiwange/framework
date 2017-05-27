@@ -24,7 +24,7 @@ class Auth{
 			return false;
 		}
 
-		if(!self::checkPassword_($sPassword,$oMember->user_password,$oMember->user_random)){// 验证密码
+		if(!self::checkPassword($sPassword,$oMember->user_password,$oMember->user_random)){// 验证密码
 			self::$_sErrorMessage=Q::L('用户%s的密码错误','__QEEPHP__@Q',null,$sUsername);
 			return false;
 		}
@@ -74,13 +74,13 @@ class Auth{
 		}
 		
 		if(!$bIgnoreOldPassword){
-			if(!self::checkPassword_($sOldPassword,$oMember['user_password'],$oMember['user_random'])){
+			if(!self::checkPassword($sOldPassword,$oMember['user_password'],$oMember['user_random'])){
 				self::$_sErrorMessage=Q::L('用户输入的旧密码错误','__QEEPHP__@Q');
 				return false;
 			}
 		}
 
-		$oMember->changeProp('user_password',self::encodePassword_($sNewPassword,$oMember['user_random']));
+		$oMember->changeProp('user_password',self::encodePassword($sNewPassword,$oMember['user_random']));
 		$oMember->save('update');
 		if($oMember->isError()){
 			self::$_sErrorMessage=$oMember->getErrorMessage();
@@ -106,11 +106,11 @@ class Auth{
 		);
 	}
 
-	private static function checkPassword_($sCleartext,$sCryptograph,$sRanDom=''){
+	private static function checkPassword($sCleartext,$sCryptograph,$sRanDom=''){
 		return md5(md5($sCleartext).$sRanDom)==$sCryptograph;
 	}
 
-	private static function encodePassword_($sCleartext,$sRandom){
+	private static function encodePassword($sCleartext,$sRandom){
 		return md5(md5($sCleartext).$sRandom);
 	}
 

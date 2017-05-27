@@ -95,7 +95,7 @@ class tool {
         ];
         
         if ($booInitApp) {
-            self::router_ ( $arrOptionData, $arrOptionDir, $arrOptionTypeAll );
+            self::router ( $arrOptionData, $arrOptionDir, $arrOptionTypeAll );
         }
         
         if (! is_dir ( dirname ( $sOptionCache ) )) {
@@ -118,7 +118,7 @@ class tool {
      * @param array $arrOptionTypeAll            
      * @return void
      */
-    private static function router_(&$arrOptionData, $arrOptionDir, $arrOptionTypeAll) {
+    private static function router(&$arrOptionData, $arrOptionDir, $arrOptionTypeAll) {
         if (! empty ( $arrOptionData ['app'] ['router_extend'] )) {
             $arrRouterExtend = array_diff ( array_map ( function ($strItem) {
                 return 'router_' . $strItem;

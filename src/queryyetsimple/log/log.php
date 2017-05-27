@@ -119,9 +119,9 @@ class log {
         $strMessage = date ( $this->classsFacesOption ( 'log\time_format' ) ) . $strMessage . "\r\n";
         
         // 保存日志
-        $strDestination = $this->getPath_ ( $strLevel, $strDestination );
+        $strDestination = $this->getPath ( $strLevel, $strDestination );
         if ($intMessageType == 3) {
-            $this->checkSize_ ( $strDestination );
+            $this->checkSize ( $strDestination );
         }
         
         // 记录到系统
@@ -199,7 +199,7 @@ class log {
      * @param string $sFilePath            
      * @return void
      */
-    private function checkSize_($sFilePath) {
+    private function checkSize($sFilePath) {
         // 如果不是文件，则创建
         if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! directory::create ( dirname ( $sFilePath ) )) {
             exceptions::throwException ( __ ( '无法创建日志文件：“%s”', $sFilePath ), 'queryyetsimple\log\exception' );
@@ -218,7 +218,7 @@ class log {
      * @param string $sFilePath            
      * @return string
      */
-    private function getPath_($strLevel, $sFilePath = '') {
+    private function getPath($strLevel, $sFilePath = '') {
         // 不存在路径，则直接使用项目默认路径
         if (empty ( $sFilePath )) {
             $sFilePath = $this->classsFacesOption ( 'log\path_default' ) . '/' . $strLevel . '/' . date ( $this->classsFacesOption ( 'log\file_name' ) ) . ".log";

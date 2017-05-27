@@ -127,14 +127,14 @@ abstract class connect implements interfaces_connect {
             $this->arrOption = $arrOption;
             
             // 尝试连接主服务器
-            if (! $this->writeConnect_ ()) {
-                $this->throwException_ ();
+            if (! $this->writeConnect ()) {
+                $this->throwException ();
             }
             
             // 连接分布式服务器
             if ($arrOption ['database\distributed'] === true) {
-                if (! $this->readConnect_ ()) {
-                    $this->throwException_ ();
+                if (! $this->readConnect ()) {
+                    $this->throwException ();
                 }
             }
         }
@@ -149,7 +149,7 @@ abstract class connect implements interfaces_connect {
      */
     public function __call($sMethod, $arrArgs) {
         // 查询组件
-        $this->initSelect_ ();
+        $this->initSelect ();
         
         // 调用事件
         return call_user_func_array ( [ 
@@ -169,9 +169,9 @@ abstract class connect implements interfaces_connect {
     public function getPdo($mixMaster = false) {
         if (is_bool ( $mixMaster )) {
             if ($mixMaster === false) {
-                return $this->readConnect_ ();
+                return $this->readConnect ();
             } else {
-                return $this->writeConnect_ ();
+                return $this->writeConnect ();
             }
         } else {
             return isset ( $this->arrConnect [$mixMaster] ) ? $this->arrConnect [$mixMaster] : null;
@@ -193,38 +193,38 @@ abstract class connect implements interfaces_connect {
      */
     public function query($strSql, $arrBindParams = [], $mixMaster = false, $intFetchType = PDO::FETCH_OBJ, $mixFetchArgument = null, $arrCtorArgs = []) {
         // 查询组件
-        $this->initSelect_ ();
+        $this->initSelect ();
         
         // 记录 sql 参数
-        $this->setSqlBindParams_ ( $strSql, $arrBindParams );
+        $this->setSqlBindParams ( $strSql, $arrBindParams );
         
         // 验证 sql 类型PROCEDURE
         if (! in_array ( ($strSqlType = $this->getSqlType ( $strSql )), [ 
                 'select',
                 'procedure' 
         ] )) {
-            $this->throwException_ ( __ ( 'query 方法只允许运行 select sql 语句' ) );
+            $this->throwException ( __ ( 'query 方法只允许运行 select sql 语句' ) );
         }
         
         // 预处理
         $this->objPDOStatement = $this->getPdo ( $mixMaster )->prepare ( $strSql );
         
         // 参数绑定
-        $this->bindParams_ ( $arrBindParams );
+        $this->bindParams ( $arrBindParams );
         
         // 执行 sql
         if ($this->objPDOStatement->execute () === false) {
-            $this->throwException_ ();
+            $this->throwException ();
         }
         
         // 记录 SQL 日志
-        $this->recordSqlLog_ ();
+        $this->recordSqlLog ();
         
         // 返回影响函数
         $this->intNumRows = $this->objPDOStatement->rowCount ();
         
         // 返回结果
-        return $this->fetchResult_ ( $intFetchType, $mixFetchArgument, $arrCtorArgs, $strSqlType == 'procedure' );
+        return $this->fetchResult ( $intFetchType, $mixFetchArgument, $arrCtorArgs, $strSqlType == 'procedure' );
     }
     
     /**
@@ -238,29 +238,29 @@ abstract class connect implements interfaces_connect {
      */
     public function execute($strSql, $arrBindParams = []) {
         // 查询组件
-        $this->initSelect_ ();
+        $this->initSelect ();
         
         // 记录 sql 参数
-        $this->setSqlBindParams_ ( $strSql, $arrBindParams );
+        $this->setSqlBindParams ( $strSql, $arrBindParams );
         
         // 验证 sql 类型
         if (($strSqlType = $this->getSqlType ( $strSql )) == 'select') {
-            $this->throwException_ ( __ ( 'execute 方法不允许运行 select sql 语句' ) );
+            $this->throwException ( __ ( 'execute 方法不允许运行 select sql 语句' ) );
         }
         
         // 预处理
         $this->objPDOStatement = $this->getPdo ( true )->prepare ( $strSql );
         
         // 参数绑定
-        $this->bindParams_ ( $arrBindParams );
+        $this->bindParams ( $arrBindParams );
         
         // 执行 sql
         if ($this->objPDOStatement->execute () === false) {
-            $this->throwException_ ();
+            $this->throwException ();
         }
         
         // 记录 SQL 日志
-        $this->recordSqlLog_ ();
+        $this->recordSqlLog ();
         
         // 返回影响函数
         $this->intNumRows = $this->objPDOStatement->rowCount ();
@@ -645,14 +645,14 @@ abstract class connect implements interfaces_connect {
      *
      * @return Pdo
      */
-    protected function writeConnect_() {
+    protected function writeConnect() {
         // 判断是否已经连接
         if (! empty ( $this->arrConnect [0] )) {
             return $this->objConnect = $this->arrConnect [0];
         }
         
         // 没有连接开始请求连接
-        if (! ($objPdo = $this->commonConnect_ ( $this->arrOption ['database\master'], 0 ))) {
+        if (! ($objPdo = $this->commonConnect ( $this->arrOption ['database\master'], 0 ))) {
             return false;
         }
         
@@ -665,21 +665,21 @@ abstract class connect implements interfaces_connect {
      *
      * @return Pdo
      */
-    protected function readConnect_() {
+    protected function readConnect() {
         // 未开启分布式服务器连接或则没有读服务器，直接连接写服务器
         if ($this->arrOption ['database\distributed'] === false || empty ( $this->arrOption ['database\slave'] )) {
-            return $this->writeConnect_ ();
+            return $this->writeConnect ();
         }
         
         // 只有主服务器,主服务器必须先连接,未连接过附属服务器
         if (count ( $this->arrConnect ) == 1) {
             foreach ( $this->arrOption ['slave'] as $arrRead ) {
-                $this->commonConnect_ ( $arrRead, null );
+                $this->commonConnect ( $arrRead, null );
             }
             
             // 没有连接成功的读服务器
             if (count ( $this->arrConnect ) < 2) {
-                return $this->writeConnect_ ();
+                return $this->writeConnect ();
             }
         }
         
@@ -700,7 +700,7 @@ abstract class connect implements interfaces_connect {
      * @param string $nLinkid            
      * @return mixed
      */
-    protected function commonConnect_($arrOption = '', $nLinkid = null) {
+    protected function commonConnect($arrOption = '', $nLinkid = null) {
         // 数据库连接 ID
         if ($nLinkid === null) {
             $nLinkid = count ( $this->arrConnect );
@@ -717,8 +717,8 @@ abstract class connect implements interfaces_connect {
         }
         
         try {
-            $this->setCurrentOption_ ( $arrOption );
-            return $this->arrConnect [$nLinkid] = new PDO ( $this->parseDsn_ ( $arrOption ), $arrOption ['database\user'], $arrOption ['database\password'], $arrOption ['database\params'] );
+            $this->setCurrentOption ( $arrOption );
+            return $this->arrConnect [$nLinkid] = new PDO ( $this->parseDsn ( $arrOption ), $arrOption ['database\user'], $arrOption ['database\password'], $arrOption ['database\params'] );
         } catch ( PDOException $oE ) {
             return false;
         }
@@ -731,7 +731,7 @@ abstract class connect implements interfaces_connect {
      *            绑定参数
      * @return void
      */
-    protected function bindParams_(array $arrBindParams = []) {
+    protected function bindParams(array $arrBindParams = []) {
         foreach ( $arrBindParams as $mixKey => $mixVal ) {
             // 占位符
             $mixKey = is_numeric ( $mixKey ) ? $mixKey + 1 : ':' . $mixKey;
@@ -743,7 +743,7 @@ abstract class connect implements interfaces_connect {
             }
             
             if ($this->objPDOStatement->bindValue ( $mixKey, $mixVal, $strParam ) === false) {
-                $this->throwException_ ( __ ( 'sql %s 参数绑定失败: %s', $this->strSql, dump::dump ( $arrBindParams, true ) ) );
+                $this->throwException ( __ ( 'sql %s 参数绑定失败: %s', $this->strSql, dump::dump ( $arrBindParams, true ) ) );
             }
         }
     }
@@ -757,10 +757,10 @@ abstract class connect implements interfaces_connect {
      * @param boolean $booProcedure            
      * @return array
      */
-    protected function fetchResult_($intFetchType = PDO::FETCH_OBJ, $mixFetchArgument = null, $arrCtorArgs = [], $booProcedure = false) {
+    protected function fetchResult($intFetchType = PDO::FETCH_OBJ, $mixFetchArgument = null, $arrCtorArgs = [], $booProcedure = false) {
         // 存储过程支持多个结果
         if ($booProcedure) {
-            return $this->fetchProcedureResult_ ( $intFetchType, $mixFetchArgument, $arrCtorArgs );
+            return $this->fetchProcedureResult ( $intFetchType, $mixFetchArgument, $arrCtorArgs );
         }
         
         $arrArgs = [ 
@@ -786,10 +786,10 @@ abstract class connect implements interfaces_connect {
      * @param array $arrCtorArgs            
      * @return array
      */
-    protected function fetchProcedureResult_($intFetchType = PDO::FETCH_OBJ, $mixFetchArgument = null, $arrCtorArgs = []) {
+    protected function fetchProcedureResult($intFetchType = PDO::FETCH_OBJ, $mixFetchArgument = null, $arrCtorArgs = []) {
         $arrResult = [ ];
         do {
-            if (($mixResult = $this->fetchResult_ ( $intFetchType, $mixFetchArgument, $arrCtorArgs ))) {
+            if (($mixResult = $this->fetchResult ( $intFetchType, $mixFetchArgument, $arrCtorArgs ))) {
                 $arrResult [] = $mixResult;
             }
         } while ( $this->objPDOStatement->nextRowset () );
@@ -801,7 +801,7 @@ abstract class connect implements interfaces_connect {
      *
      * @return void
      */
-    protected function setSqlBindParams_($strSql, $arrBindParams = []) {
+    protected function setSqlBindParams($strSql, $arrBindParams = []) {
         $this->strSql = $strSql;
         $this->arrBindParams = $arrBindParams;
     }
@@ -812,7 +812,7 @@ abstract class connect implements interfaces_connect {
      * @param array $arrOption            
      * @return void
      */
-    protected function setCurrentOption_($arrOption) {
+    protected function setCurrentOption($arrOption) {
         $this->arrCurrentOption = $arrOption;
     }
     
@@ -821,7 +821,7 @@ abstract class connect implements interfaces_connect {
      *
      * @return void
      */
-    protected function recordSqlLog_() {
+    protected function recordSqlLog() {
         // SQL 监视器
         if (static::$calSqlListen !== null) {
             call_user_func_array ( static::$calSqlListen, [ 
@@ -841,7 +841,7 @@ abstract class connect implements interfaces_connect {
      *            错误信息
      * @return string
      */
-    protected function throwException_($strError = '') {
+    protected function throwException($strError = '') {
         if ($this->objPDOStatement) {
             $arrTemp = $this->objPDOStatement->errorInfo ();
             $strError = '(' . $arrTemp [1] . ')' . $arrTemp [2] . "\r\n" . $strError;
@@ -854,7 +854,7 @@ abstract class connect implements interfaces_connect {
      *
      * @return void
      */
-    protected function initSelect_() {
+    protected function initSelect() {
         $this->objSelect = new select ( $this );
     }
     

@@ -108,7 +108,7 @@ class work extends command {
      *
      * @return \queryyetsimple\mvc\project
      */
-    private function getQueryPHP_() {
+    private function getQueryPHP() {
         return project::bootstrap ();
     }
     

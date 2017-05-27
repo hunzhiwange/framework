@@ -99,7 +99,7 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @return mixed
      */
     public function __set($sKey, $mixVal) {
-        $this->checkType_ ( $mixVal );
+        $this->checkType ( $mixVal );
         $mixOld = $this->__get ( $sKey );
         $this->arrObject [$sKey] = $mixVal;
         return $mixOld;
@@ -194,7 +194,7 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @return mixed
      */
     public function offsetSet($strKey, $mixValue) {
-        $this->checkType_ ( $mixValue );
+        $this->checkType ( $mixValue );
         $mixOld = $this->offsetGet ( $strKey );
         $this->arrObject [$strKey] = $mixValue;
         return $mixOld;
@@ -526,7 +526,7 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @param mixed $mixObject            
      * @return void
      */
-    private function checkType_($mixObject) {
+    private function checkType($mixObject) {
         if (is_object ( $mixObject )) {
             if ($mixObject instanceof $this->sType) {
                 return;

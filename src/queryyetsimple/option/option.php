@@ -57,7 +57,7 @@ class option {
             return $this->arrOption;
         }
         
-        $sName = $this->parseNamespace_ ( $sName );
+        $sName = $this->parseNamespace ( $sName );
         $strNamespace = $sName [0];
         $sName = $sName [1];
         
@@ -96,7 +96,7 @@ class option {
             }
         } else {
             
-            $mixName = $this->parseNamespace_ ( $mixName );
+            $mixName = $this->parseNamespace ( $mixName );
             $strNamespace = $mixName [0];
             $mixName = $mixName [1];
             
@@ -134,7 +134,7 @@ class option {
      * @return string
      */
     public function delete($mixName) {
-        $mixName = $this->parseNamespace_ ( $mixName );
+        $mixName = $this->parseNamespace ( $mixName );
         $strNamespace = $mixName [0];
         $mixName = $mixName [1];
         
@@ -190,7 +190,7 @@ class option {
      * @param string $strName            
      * @return array
      */
-    private function parseNamespace_($strName) {
+    private function parseNamespace($strName) {
         if (strpos ( $strName, '\\' )) {
             $strNamespace = explode ( '\\', $strName );
             if (empty ( $strNamespace [1] )) {

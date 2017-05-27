@@ -109,7 +109,7 @@ class exceptions {
      * @return void
      */
     public static function throwException($sType = 'Exception', $sMsg=null, $nCode = 0) {
-        throw new $sType ( static::defaultMessage_ ( 'ThrowException', $sMsg ), $nCode );
+        throw new $sType ( static::defaultMessage ( 'ThrowException', $sMsg ), $nCode );
     }
     
     /**
@@ -121,7 +121,7 @@ class exceptions {
      * @return void
      */
     public static function exception($sMsg = null, $nCode = 0) {
-        throw new Exception ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new Exception ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -133,7 +133,7 @@ class exceptions {
      * @return void
      */
     public static function logicException($sMsg = null, $nCode = 0) {
-        throw new LogicException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new LogicException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -146,7 +146,7 @@ class exceptions {
      * @return void
      */
     public static function badFunctionCallException($sMsg = null, $nCode = 0) {
-        throw new BadFunctionCallException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new BadFunctionCallException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -159,7 +159,7 @@ class exceptions {
      * @return void
      */
     public static function badMethodCallException($sMsg = null, $nCode = 0) {
-        throw new BadMethodCallException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new BadMethodCallException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -171,7 +171,7 @@ class exceptions {
      * @return void
      */
     public static function domainException($sMsg = null, $nCode = 0) {
-        throw new DomainException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new DomainException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -183,7 +183,7 @@ class exceptions {
      * @return void
      */
     public static function invalidArgumentException($sMsg = null, $nCode = 0) {
-        throw new InvalidArgumentException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new InvalidArgumentException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -195,7 +195,7 @@ class exceptions {
      * @return void
      */
     public static function lengthException($sMsg = null, $nCode = 0) {
-        throw new LengthException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new LengthException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -207,7 +207,7 @@ class exceptions {
      * @return void
      */
     public static function outOfRangeException($sMsg = null, $nCode = 0) {
-        throw new OutOfRangeException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new OutOfRangeException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -219,7 +219,7 @@ class exceptions {
      * @return void
      */
     public static function runtimeException($sMsg = null, $nCode = 0) {
-        throw new RuntimeException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new RuntimeException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -232,7 +232,7 @@ class exceptions {
      * @return void
      */
     public static function outOfBoundsException($sMsg = null, $nCode = 0) {
-        throw new OutOfBoundsException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new OutOfBoundsException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -244,7 +244,7 @@ class exceptions {
      * @return void
      */
     public static function overflowException($sMsg = null, $nCode = 0) {
-        throw new OverflowException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new OverflowException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -256,7 +256,7 @@ class exceptions {
      * @return void
      */
     public static function rangeException($sMsg = null, $nCode = 0) {
-        throw new RangeException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new RangeException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -268,7 +268,7 @@ class exceptions {
      * @return void
      */
     public static function underflowException($sMsg = null, $nCode = 0) {
-        throw new UnderflowException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new UnderflowException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -280,7 +280,7 @@ class exceptions {
      * @return void
      */
     public static function unexpectedValueException($sMsg = null, $nCode = 0) {
-        throw new UnexpectedValueException ( static::defaultMessage_ ( 'UnexpectedValueException', $sMsg ), $nCode );
+        throw new UnexpectedValueException ( static::defaultMessage ( 'UnexpectedValueException', $sMsg ), $nCode );
     }
     
     /**
@@ -291,7 +291,7 @@ class exceptions {
      *
      * @return void
      */
-    protected static function defaultMessage_($sType, $sMsg = null) {
+    protected static function defaultMessage($sType, $sMsg = null) {
         return $sMsg ?  : static::$arrType [$sType];
     }
     

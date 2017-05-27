@@ -130,7 +130,7 @@ class rss {
     public function getOption($sKey) {
         return isset ( $this->getOption ( $sKey ) ) ? $this->getOption ( $sKey ) : null;
     }
-    private function fetch_() {
+    private function fetch() {
         $sRss = $this->rssHeader ();
         $sRss .= $this->getRssBody ();
         $sRss .= $this->rssFooter ();
@@ -142,7 +142,7 @@ class rss {
      *
      * @return string
      */
-    private function header_() {
+    private function header() {
         $arrRss = [ ];
         $arrRss [] = '<?xml version="1.0" encoding="UTF-8"?>';
         $arrRss [] = '<rss version="2.0" ';
@@ -189,7 +189,7 @@ class rss {
      *
      * @return string
      */
-    private function body_() {
+    private function body() {
         $arrResult = [ ];
         
         foreach ( $this->arrItems as $arrItem ) {

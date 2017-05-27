@@ -87,7 +87,7 @@ abstract class queue extends JobQueue {
         parent::__construct ();
         
         // 存储队列
-        $this->arrSourceConfig ['queue'] = $this->makeSourceKey_ ();
+        $this->arrSourceConfig ['queue'] = $this->makeSourceKey ();
         
         // 记录日志
         if (self::$strLogPath) {
@@ -187,7 +187,7 @@ abstract class queue extends JobQueue {
      *
      * @return string
      */
-    protected function makeSourceKey_() {
+    protected function makeSourceKey() {
         return $this->strConnect . ':' . static::$strQueue;
     }
 }

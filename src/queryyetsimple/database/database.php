@@ -74,7 +74,7 @@ class database {
         }
         
         // 解析数据库配置
-        $mixOption = $this->parseOption_ ( $mixOption );
+        $mixOption = $this->parseOption ( $mixOption );
         
         // 连接数据库
         $strConnectClass = 'queryyetsimple\\database\\' . $mixOption ['database\default'];
@@ -91,7 +91,7 @@ class database {
      * @param string $mixOption            
      * @return array
      */
-    private function parseOption_($mixOption = null) {
+    private function parseOption($mixOption = null) {
         $arrOption = [ ];
         
         // 配置文件存在链接
@@ -105,7 +105,7 @@ class database {
         }
         
         // 补全结果
-        return $this->fillOption_ ( $arrOption );
+        return $this->fillOption ( $arrOption );
     }
     
     /**
@@ -114,7 +114,7 @@ class database {
      * @param array $arrOption            
      * @return array
      */
-    private function fillOption_($arrOption = []) {
+    private function fillOption($arrOption = []) {
         // 返回结果
         $arrResult = $arrDefaultOption = [ ];
         
@@ -128,7 +128,7 @@ class database {
         
         // 如果 DSN 字符串则进行解析
         if (! empty ( $arrOption ['database\dsn'] )) {
-            $arrOption = array_merge ( $arrOption, $this->parseDsn_ ( $arrOption ['database\dsn'] ) );
+            $arrOption = array_merge ( $arrOption, $this->parseDsn ( $arrOption ['database\dsn'] ) );
         }
         
         // 剥离公共配置参数
@@ -185,7 +185,7 @@ class database {
      * @param string $strDsn            
      * @return array
      */
-    private function parseDsn_($strDsn) {
+    private function parseDsn($strDsn) {
         $strDsn = trim ( $strDsn );
         
         // dsn 为空，直接返回

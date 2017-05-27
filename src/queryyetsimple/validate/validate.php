@@ -162,14 +162,14 @@ class validate {
         
         return $bResult;
     }
-    public function between_($Data, $Min, $Max, $bInclusive = true) {
+    public function between($Data, $Min, $Max, $bInclusive = true) {
         if ($bInclusive) {
             return $Data >= $Min && $Data <= $Max;
         } else {
             return $Data > $Min && $Data < $Max;
         }
     }
-    public function date_($Data) {
+    public function date($Data) {
         if (strpos ( $Data, '-' ) !== false) { // 分析数据中关键符号
             $sP = '-';
         } elseif (strpos ( $Data, '/' ) !== false) {
@@ -190,7 +190,7 @@ class validate {
         
         return false;
     }
-    public function datetime_($Data) {
+    public function datetime($Data) {
         $test = @strtotime ( $Data );
         if ($test !== false && $test !== - 1) {
             return true;
@@ -198,25 +198,25 @@ class validate {
         
         return false;
     }
-    public function digit_($Data) {
+    public function digit($Data) {
         return ctype_digit ( $Data );
     }
-    public function double_($Data) {
+    public function double($Data) {
         return preg_match ( '/^[-\+]?\d+(\.\d+)?$/', $Data );
     }
-    public function email_($Data) {
+    public function email($Data) {
         return preg_match ( '/([a-z0-9]*[-_\.]?[a-z0-9]+)*@([a-z0-9]*[-_]?[a-z0-9]+)+[\.][a-z]{2,3}([\.][a-z]{2})?/i', $Data );
     }
-    public function english_($Data) {
+    public function english($Data) {
         return preg_match ( '/^[A-Za-z]+$/', $Data );
     }
-    public function equal_($Data, $Test) {
+    public function equal($Data, $Test) {
         return $Data == $Test;
     }
-    public function eq_($Data, $Test) {
-        return static::equal_ ( $Data, $Test );
+    public function eq($Data, $Test) {
+        return static::equal ( $Data, $Test );
     }
-    public function float_($Data) {
+    public function float($Data) {
         $arrLocale = null;
         
         if (is_null ( $arrLocale )) {
@@ -231,32 +231,32 @@ class validate {
         
         return false;
     }
-    public function greater_or_equal_($Data, $Test, $bInclusive = true) {
+    public function greater_or_equal($Data, $Test, $bInclusive = true) {
         if ($bInclusive) {
             return $Data >= $Test;
         } else {
             return $Data > $Test;
         }
     }
-    public function egt_($Data, $Test, $bInclusive = true) {
-        return static::greater_or_equal_ ( $Data, $Test, $bInclusive );
+    public function egt($Data, $Test, $bInclusive = true) {
+        return static::greater_or_equal ( $Data, $Test, $bInclusive );
     }
-    public function gt_($Data, $Test) {
-        return static::greater_or_equal_ ( $Data, $Test, false );
+    public function gt($Data, $Test) {
+        return static::greater_or_equal ( $Data, $Test, false );
     }
-    public function in_($Data, $arrIn) {
+    public function in($Data, $arrIn) {
         return is_array ( $arrIn ) and in_array ( $Data, $arrIn );
     }
-    public function integer_($Data) {
+    public function integer($Data) {
         return preg_match ( '/^[-\+]?\d+$/', $Data );
     }
-    public function int_($Data, $Test) {
-        return static::integer_ ( $Data );
+    public function int($Data, $Test) {
+        return static::integer ( $Data );
     }
-    public function ip_($Data) {
+    public function ip($Data) {
         return preg_match ( '/^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$/', $Data );
     }
-    public function ipv4_($Data) {
+    public function ipv4($Data) {
         $test = @ip2long ( $Data );
         if ($test !== - 1 and $test !== false) {
             return true;
@@ -264,62 +264,62 @@ class validate {
         
         return false;
     }
-    public function less_or_equal_($Data, $Test, $bInclusive = true) {
+    public function less_or_equal($Data, $Test, $bInclusive = true) {
         if ($bInclusive) {
             return $Data <= $Test;
         } else {
             return $Data < $Test;
         }
     }
-    public function elt_($Data, $Test, $bInclusive = true) {
-        return static::less_or_equal_ ( $Data, $Test, $bInclusive );
+    public function elt($Data, $Test, $bInclusive = true) {
+        return static::less_or_equal ( $Data, $Test, $bInclusive );
     }
-    public function less_than_($Data, $Test) {
-        return static::less_or_equal_ ( $Data, $Test, false );
+    public function less_than($Data, $Test) {
+        return static::less_or_equal ( $Data, $Test, false );
     }
-    public function lt_($Data, $Test) {
-        return static::less_or_equal_ ( $Data, $Test, false );
+    public function lt($Data, $Test) {
+        return static::less_or_equal ( $Data, $Test, false );
     }
-    public function lower_($Data) {
+    public function lower($Data) {
         return ctype_lower ( $Data );
     }
-    public function max_($Data, $Test) {
+    public function max($Data, $Test) {
         return $Data <= $Test;
     }
-    public function min_($Data, $Test) {
+    public function min($Data, $Test) {
         return $Data >= $Test;
     }
-    public function mobile_($Data) {
+    public function mobile($Data) {
         return preg_match ( "/1[3458]{1}\d{9}$/", $Data );
     }
-    public function not_empty_($Data) {
+    public function not_empty($Data) {
         return ! empty ( $Data );
     }
-    public function not_equal_($Data, $Test) {
+    public function not_equal($Data, $Test) {
         return $Data != $Test;
     }
-    public function neq_($Data, $Test) {
-        return static::not_equal_ ( $Data, $Test );
+    public function neq($Data, $Test) {
+        return static::not_equal ( $Data, $Test );
     }
-    public function not_null_($Data) {
+    public function not_null($Data) {
         return ! is_null ( $Data );
     }
-    public function not_same_($Data, $Test) {
+    public function not_same($Data, $Test) {
         return $Data !== $Test;
     }
-    public function num_($Data) {
+    public function num($Data) {
         return ($Data && preg_match ( '/\d+$/', $Data )) || ! preg_match ( "/[^\d-.,]/", $Data ) || $Data == 0;
     }
-    public function number_($Data) {
-        return static::num_ ( $Data );
+    public function number($Data) {
+        return static::num ( $Data );
     }
-    public function number_underline_english_($Data) {
+    public function number_underline_english($Data) {
         return preg_match ( '/^[a-z0-9\-\_]*[a-z\-_]+[a-z0-9\-\_]*$/i', $Data );
     }
-    public function regex_($Data, $sRegex) {
+    public function regex($Data, $sRegex) {
         return preg_match ( $sRegex, $Data ) > 0;
     }
-    public function require_($Data) {
+    public function require($Data) {
         return preg_match ( '/.+/', $Data );
     }
     
@@ -335,10 +335,10 @@ class validate {
     }
     
     
-//     public function empty_($Data) {
+//     public function empty($Data) {
 //         return (strlen ( $Data ) == 0) ? static::SKIP_OTHERS : true;
 //     }
-//     public function error_($Data) {
+//     public function error($Data) {
 //         return static::SKIP_ON_FAILED;
 //     }
 //     public function isNull($strData) {
@@ -357,7 +357,7 @@ class validate {
     }
     
     
-//     public function time_($Data) {
+//     public function time($Data) {
 //         $arrParts = explode ( ':', $Data );
 //         $nCount = count ( $arrParts );
 //         if ($nCount == 2 || $nCount == 3) {

@@ -47,7 +47,7 @@ class tool {
         if (is_string ( $Files )) {
             $Files [] = $Files;
         }
-        $arrTexts = static::parsePoData_ ( $Files );
+        $arrTexts = static::parsePoData ( $Files );
         
         $sDir = dirname ( $sCacheFile );
         if (! is_dir ( $sDir )) {
@@ -78,7 +78,7 @@ class tool {
         if (is_string ( $Files )) {
             $Files [] = $Files;
         }
-        $arrTexts = static::parsePoData_ ( $Files );
+        $arrTexts = static::parsePoData ( $Files );
         
         $sDir = dirname ( $sCacheFile );
         if (! is_dir ( $sDir )) {
@@ -145,7 +145,7 @@ class tool {
      * @since 2016.11.25
      * @return array
      */
-    private static function parsePoData_($I18nFile) {
+    private static function parsePoData($I18nFile) {
         if (is_string ( $I18nFile )) {
             $I18nFile = [ 
                     $I18nFile 

@@ -77,7 +77,7 @@ class theme {
         }
         
         $sCachePath = $this->getCachePath ( $sFile ); // 编译文件路径
-        if ($this->isCacheExpired_ ( $sFile, $sCachePath )) { // 重新编译
+        if ($this->isCacheExpired ( $sFile, $sCachePath )) { // 重新编译
             parsers::doCombiles ( $sFile, $sCachePath );
         }
         
@@ -169,7 +169,7 @@ class theme {
      * @param string $sCachePath            
      * @return boolean
      */
-    private function isCacheExpired_($sFile, $sCachePath) {
+    private function isCacheExpired($sFile, $sCachePath) {
         // 开启调试
         if (env ( 'app_debug' )) {
             return true;

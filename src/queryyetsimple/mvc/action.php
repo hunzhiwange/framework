@@ -48,7 +48,7 @@ abstract class action {
      * @return queryyetsimple\mvc\controller
      */
     public function controller() {
-        $this->initController_ ();
+        $this->initController ();
         return $this->objController;
     }
     
@@ -73,7 +73,7 @@ abstract class action {
             exceptions::throwException ( __ ( '方法对象不允许通过 __call 方法执行  run 入口' ), 'queryyetsimple\mvc\exception' );
         }
         
-        $this->initController_ ();
+        $this->initController ();
         return call_user_func_array ( [ 
                 $this->objController,
                 $sMethod 
@@ -85,7 +85,7 @@ abstract class action {
      *
      * @return void
      */
-    protected function initController_() {
+    protected function initController() {
         if (is_null ( $this->objController )) {
             return;
         }

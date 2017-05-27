@@ -33,7 +33,7 @@ class mysql extends connect {
      * @param array $arrOption            
      * @return string
      */
-    protected function parseDsn_($arrOption) {
+    protected function parseDsn($arrOption) {
         $strDsn = 'mysql:dbname=' . $arrOption ['database\name'] . ';host=' . $arrOption ['database\host'];
         if (! empty ( $arrOption ['database\port'] )) {
             $strDsn .= ';port=' . $arrOption ['database\port'];

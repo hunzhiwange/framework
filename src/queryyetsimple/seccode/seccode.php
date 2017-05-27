@@ -239,11 +239,11 @@ class Seccode{
 				}
 
 				if($this->_bNorise){// 添加背景干扰
-					$this->writeNoise_();
+					$this->writeNoise();
 				}
 
 				if($this->_bCurve){// 添加曲线干扰
-					$this->writeCurve_();
+					$this->writeCurve();
 				}
 
 				ob_start();
@@ -262,11 +262,11 @@ class Seccode{
 			$this->_bTtf and function_exists('imagettftext')?$this->ttfFont():$this->textFont(); // 是否启用字体
 
 			if($this->_bNorise){// 添加背景干扰
-				$this->writeNoise_();
+				$this->writeNoise();
 			}
 
 			if($this->_bCurve){// 添加曲线干扰
-				$this->writeCurve_();
+				$this->writeCurve();
 			}
 
 			if(function_exists('imagepng')){// 优先创建png图像，如果不行路过继续
@@ -281,7 +281,7 @@ class Seccode{
 		}
 	}
 
-	protected function writeCurve_(){
+	protected function writeCurve(){
 		$nPx=$nPy=0;
 
 		// 曲线前部分
@@ -327,7 +327,7 @@ class Seccode{
 		}
 	}
 
-	protected function writeNoise_(){
+	protected function writeNoise(){
 		for($nI=0;$nI<10;$nI++){
 			$noiseColor=imagecolorallocate($this->_oIm,mt_rand(150,225),mt_rand(150,225),mt_rand(150,225));// 杂点颜色
 			for($nJ=0;$nJ<5;$nJ++){

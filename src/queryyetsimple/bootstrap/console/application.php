@@ -75,7 +75,7 @@ class application {
      *
      * @return $this
      */
-    private function registerUserCommands_() {
+    private function registerUserCommands() {
         return $this->doRegisterCommands ( ( array ) option::gets ( 'console' ) );
     }
     
@@ -85,7 +85,7 @@ class application {
      * @param array $arrCommands            
      * @return $this
      */
-    private function doRegisterCommands_($arrCommands) {
+    private function doRegisterCommands($arrCommands) {
         foreach ( $arrCommands as $strCommand ) {
             $objCommand = $this->getQueryPHP ()->make ( $strCommand );
             // 基于 Phinx 数据库迁移组件无法设置 setQueryPHP

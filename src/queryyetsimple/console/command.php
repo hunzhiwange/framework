@@ -114,14 +114,14 @@ abstract class command extends SymfonyCommand {
      */
     public function __construct() {
         if (! empty ( $this->strSignature )) {
-            $this->fromSignature_ ();
+            $this->fromSignature ();
         } else {
-            parent::__construct ( $this->getName_ () );
+            parent::__construct ( $this->getName () );
         }
-        $this->setDescription ( $this->getDescription_ () );
-        $this->setHelp ( $this->getHelp_ () );
+        $this->setDescription ( $this->getDescription () );
+        $this->setHelp ( $this->getHelp () );
         if (empty ( $this->strSignature )) {
-            $this->specifyParameters_ ();
+            $this->specifyParameters ();
         }
     }
     
@@ -347,7 +347,7 @@ abstract class command extends SymfonyCommand {
      */
     public function line($strMessage, $strStyle = null, $intVerbosity = null) {
         $strMessage = $strStyle ? "<{$strStyle}>{$strMessage}</{$strStyle}>" : $strMessage;
-        $this->objOutput->writeln ( $strMessage, $this->parseVerbosity_ ( $intVerbosity ) );
+        $this->objOutput->writeln ( $strMessage, $this->parseVerbosity ( $intVerbosity ) );
     }
     
     /**
@@ -403,7 +403,7 @@ abstract class command extends SymfonyCommand {
      * @return void
      */
     protected function setVerbosity($mixLevel) {
-        $this->intVerbosity = $this->parseVerbosity_ ( $mixLevel );
+        $this->intVerbosity = $this->parseVerbosity ( $mixLevel );
     }
     
     /**
@@ -411,7 +411,7 @@ abstract class command extends SymfonyCommand {
      *
      * @return void
      */
-    protected function fromSignature_() {
+    protected function fromSignature() {
         list ( $strName, $arrArguments, $arrOptions ) = parser::parse ( $this->strSignature );
         parent::__construct ( $strName );
         foreach ( $arrArguments as $objArgument ) {
@@ -427,7 +427,7 @@ abstract class command extends SymfonyCommand {
      *
      * @return void
      */
-    protected function specifyParameters_() {
+    protected function specifyParameters() {
         foreach ( $this->getArguments () as $objArguments ) {
             call_user_func_array ( [ 
                     $this,
@@ -449,7 +449,7 @@ abstract class command extends SymfonyCommand {
      * @param string|int $mixLevel            
      * @return int
      */
-    protected function parseVerbosity_($mixLevel = null) {
+    protected function parseVerbosity($mixLevel = null) {
         if (isset ( static::$arrVerbosityMap [$mixLevel] )) {
             $mixLevel = static::$arrVerbosityMap [$mixLevel];
         } elseif (! is_int ( $mixLevel )) {
@@ -463,7 +463,7 @@ abstract class command extends SymfonyCommand {
      *
      * @return string
      */
-    protected function getName_() {
+    protected function getName() {
         return $this->strName;
     }
     
@@ -472,7 +472,7 @@ abstract class command extends SymfonyCommand {
      *
      * @return string
      */
-    protected function getDescription_() {
+    protected function getDescription() {
         return $this->strDescription;
     }
     
@@ -481,7 +481,7 @@ abstract class command extends SymfonyCommand {
      *
      * @return string
      */
-    protected function getHelp_() {
+    protected function getHelp() {
         return $this->strHelp;
     }
 }

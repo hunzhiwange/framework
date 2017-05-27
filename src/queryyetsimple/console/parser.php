@@ -56,7 +56,7 @@ class parser {
         if (count ( $arrTokens )) {
             return array_merge ( [ 
                     $strName 
-            ], static::parameters_ ( $arrTokens ) );
+            ], static::parameters ( $arrTokens ) );
         }
         
         return [ 
@@ -72,14 +72,14 @@ class parser {
      * @param array $arrTokens            
      * @return array
      */
-    private static function parameters_(array $arrTokens) {
+    private static function parameters(array $arrTokens) {
         $arrArguments = $arrOptions = [ ];
         
         foreach ( $arrTokens as $strToken ) {
             if (! string::startsWith ( $strToken, '--' )) {
-                $arrArguments [] = static::parseArgument_ ( $strToken );
+                $arrArguments [] = static::parseArgument ( $strToken );
             } else {
-                $arrOptions [] = static::parseOption_ ( ltrim ( $strToken, '-' ) );
+                $arrOptions [] = static::parseOption ( ltrim ( $strToken, '-' ) );
             }
         }
         
@@ -95,7 +95,7 @@ class parser {
      * @param string $strToken            
      * @return \Symfony\Component\Console\Input\InputArgument
      */
-    private static function parseArgument_($strToken) {
+    private static function parseArgument($strToken) {
         $strDescription = null;
         
         if (string::contains ( $strToken, ' : ' )) {
@@ -128,7 +128,7 @@ class parser {
      * @param string $strToken            
      * @return \Symfony\Component\Console\Input\InputOption
      */
-    private static function parseOption_($strToken) {
+    private static function parseOption($strToken) {
         $strDescription = null;
         
         if (string::contains ( $strToken, ' : ' )) {

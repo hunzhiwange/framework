@@ -73,7 +73,6 @@ class bootstrap {
      */
     public function run() {
         foreach ( $this->arrEvent as $strEvent ) {
-            $strEvent = $strEvent . '_';
             $this->{$strEvent} ();
         }
     }
@@ -83,7 +82,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function check_() {
+    private function check() {
         if (version_compare ( PHP_VERSION, '5.5.0', '<' ))
             die ( 'PHP 5.5.0 OR Higher' );
         
@@ -96,7 +95,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function registerRuntime_() {
+    private function registerRuntime() {
         if (PHP_SAPI == 'cli')
             return;
         
@@ -116,7 +115,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function initProject_() {
+    private function initProject() {
         // 注册公共组件命名空间
         psr4::import ( 'common', $this->objProject->path_common, [ 
                 'ignore' => [ 
@@ -136,7 +135,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function request_() {
+    private function request() {
         // 运行笑脸初始化应用
         $this->objProject->make ( app::class, app::INIT_APP, $this->arrOption )->bootstrap ()->namespaces ();
         
@@ -149,7 +148,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function runApp_() {
+    private function runApp() {
         // 创建 & 注册
         $this->objProject->instance ( 'app', ($objApp = $this->objProject->make ( app::class )->bootstrap ( $this->objProject->request->app () )->registerAppProvider ()) );
         

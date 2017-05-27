@@ -79,7 +79,7 @@ class memcache extends cache {
             exceptions::throwException ( 'memcache extension must be loaded before use.', 'queryyetsimple\cache\exception' );
         }
         
-        $this->mergeObjectOption_ ();
+        $this->mergeObjectOption ();
         
         // 合并默认配置
         $this->arrOption = array_merge ( $this->arrOption, $this->arrDefaultOption );
@@ -121,7 +121,7 @@ class memcache extends cache {
      */
     public function get($sCacheName, array $arrOption = []) {
         $arrOption = $this->option ( $arrOption, null, false );
-        return $this->hHandel->get ( $this->getCacheName_ ( $sCacheName, $arrOption ) );
+        return $this->hHandel->get ( $this->getCacheName ( $sCacheName, $arrOption ) );
     }
     
     /**
@@ -136,7 +136,7 @@ class memcache extends cache {
      */
     public function set($sCacheName, $mixData, array $arrOption = []) {
         $arrOption = $this->option ( $arrOption, null, false );
-        $this->hHandel->set ( $this->getCacheName_ ( $sCacheName, $arrOption ), $mixData, $arrOption ['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption ['cache_time'] === - 1 ? 0 : ( int ) $arrOption ['cache_time'] );
+        $this->hHandel->set ( $this->getCacheName ( $sCacheName, $arrOption ), $mixData, $arrOption ['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption ['cache_time'] === - 1 ? 0 : ( int ) $arrOption ['cache_time'] );
     }
     
     /**
@@ -148,6 +148,6 @@ class memcache extends cache {
      */
     public function delele($sCacheName, array $arrOption = []) {
         $arrOption = $this->option ( $arrOption, null, false );
-        return $this->hHandel->delete ( $this->getCacheName_ ( $sCacheName, $arrOption ) );
+        return $this->hHandel->delete ( $this->getCacheName ( $sCacheName, $arrOption ) );
     }
 }

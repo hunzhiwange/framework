@@ -68,7 +68,7 @@ class filecache extends cache {
      * @return void
      */
     public function __construct(array $arrOption = []) {
-        $this->mergeObjectOption_ ();
+        $this->mergeObjectOption ();
         
         // 合并默认配置
         $this->arrOption = array_merge ( $this->arrOption, $this->arrDefaultOption );
@@ -93,7 +93,7 @@ class filecache extends cache {
      */
     public function get($sCacheName, array $arrOption = []) {
         $arrOption = $this->option ( $arrOption, null, false );
-        $sCachePath = $this->getCachePath_ ( $sCacheName, $arrOption );
+        $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
         
         // 清理文件状态缓存 http://www.w3school.com.cn/php/func_filesystem_clearstatcache.asp
         clearstatcache ();
@@ -115,7 +115,7 @@ class filecache extends cache {
         
         do {
             // 检查缓存是否已经过期
-            if ($this->isExpired_ ( $sCacheName, $arrOption )) {
+            if ($this->isExpired ( $sCacheName, $arrOption )) {
                 $strData = false;
                 break;
             }
@@ -157,8 +157,8 @@ class filecache extends cache {
         }
         $mixData = static::HEADER . $mixData;
         
-        $sCachePath = $this->getCachePath_ ( $sCacheName, $arrOption );
-        $this->writeData_ ( $sCachePath, $mixData );
+        $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
+        $this->writeData ( $sCachePath, $mixData );
     }
     
     /**
@@ -170,8 +170,8 @@ class filecache extends cache {
      */
     public function delele($sCacheName, array $arrOption = []) {
         $arrOption = $this->option ( $arrOption, null, false );
-        $sCachePath = $this->getCachePath_ ( $sCacheName, $arrOption );
-        if ($this->exist_ ( $sCacheName, $arrOption )) {
+        $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
+        if ($this->exist ( $sCacheName, $arrOption )) {
             @unlink ( $sCachePath );
         }
     }
@@ -183,8 +183,8 @@ class filecache extends cache {
      * @param array $arrOption            
      * @return boolean
      */
-    private function isExpired_($sCacheName, $arrOption) {
-        $sFilePath = $this->getCachePath_ ( $sCacheName, $arrOption );
+    private function isExpired($sCacheName, $arrOption) {
+        $sFilePath = $this->getCachePath ( $sCacheName, $arrOption );
         if (! is_file ( $sFilePath )) {
             return true;
         }
@@ -199,11 +199,11 @@ class filecache extends cache {
      * @param array $arrOption            
      * @return string
      */
-    private function getCachePath_($sCacheName, $arrOption) {
+    private function getCachePath($sCacheName, $arrOption) {
         if (! is_dir ( $arrOption ['cache_path'] )) {
             directory::create ( $arrOption ['cache_path'] );
         }
-        return $arrOption ['cache_path'] . '/' . $this->getCacheName_ ( $sCacheName, $arrOption ) . '.php';
+        return $arrOption ['cache_path'] . '/' . $this->getCacheName ( $sCacheName, $arrOption ) . '.php';
     }
     
     /**
@@ -213,7 +213,7 @@ class filecache extends cache {
      * @param string $sData            
      * @return boolean
      */
-    private function writeData_($sFileName, $sData) {
+    private function writeData($sFileName, $sData) {
         ! is_dir ( dirname ( $sFileName ) ) && directory::create ( dirname ( $sFileName ) );
         return file_put_contents ( $sFileName, $sData, LOCK_EX );
     }
@@ -225,8 +225,8 @@ class filecache extends cache {
      * @param array $arrOption            
      * @return boolean
      */
-    private function exist_($sCacheName, $arrOption) {
-        $sCachePath = $this->getCachePath_ ( $sCacheName, $arrOption );
+    private function exist($sCacheName, $arrOption) {
+        $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
         return is_file ( $sCachePath );
     }
 }

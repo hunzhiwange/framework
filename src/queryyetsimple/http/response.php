@@ -175,7 +175,7 @@ class response {
      */
     public function output() {
         // 组装编码
-        $this->contentTypeAndCharset_ ( $this->getContentType (), $this->getrCharset () );
+        $this->contentTypeAndCharset ( $this->getContentType (), $this->getrCharset () );
         
         // 发送头部 header
         if (! headers_sent () && ! empty ( $this->arrHeader )) {
@@ -202,7 +202,7 @@ class response {
      * @return $this
      */
     public function header($mixName, $strValue = null) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         if (is_array ( $mixName )) {
             $this->arrHeader = array_merge ( $this->arrHeader, $mixName );
@@ -234,7 +234,7 @@ class response {
      * @return $this
      */
     public function option($mixName, $strValue = null) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         if (is_array ( $mixName )) {
             $this->arrOption = array_merge ( $this->arrOption, $mixName );
@@ -272,7 +272,7 @@ class response {
      * @return $this
      */
     public function cookie($sName, $mixValue = '', array $in = []) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         cookie::sets ( $sName, $mixValue, $in );
         return $this;
@@ -285,7 +285,7 @@ class response {
      * @return $this
      */
     public function data($mixData) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         $this->mixData = $mixData;
         return $this;
@@ -307,7 +307,7 @@ class response {
      * @return $this
      */
     public function code($intCode) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         $this->intCode = intval ( $intCode );
         return $this;
@@ -329,7 +329,7 @@ class response {
      * @return $this
      */
     public function contentType($strContentType) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         $this->strContentType = $strContentType;
         return $this;
@@ -351,7 +351,7 @@ class response {
      * @return \queryyetsimple\http\response
      */
     public function charset($strCharset) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         $this->strCharset = $strCharset;
         return $this;
@@ -373,7 +373,7 @@ class response {
      * @return $this
      */
     public function content($strContent) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         $this->strContent = $strContent;
         return $this;
@@ -441,7 +441,7 @@ class response {
      * @return $this
      */
     public function responseType($strResponseType) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         $this->strResponseType = $strResponseType;
         return $this;
@@ -465,7 +465,7 @@ class response {
      * @return $this
      */
     public function json($arrData = null, $intOptions = JSON_UNESCAPED_UNICODE, $strCharset = 'utf-8') {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         if (is_array ( $arrData )) {
             $this->data ( $arrData );
@@ -481,7 +481,7 @@ class response {
      * @return $this
      */
     public function jsonCallback($strJsonCallback) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         return $this->option ( 'json_callback', $strJsonCallback );
     }
@@ -496,7 +496,7 @@ class response {
      * @return $this
      */
     public function jsonp($strJsonCallback, $arrData = null, $intOptions = JSON_UNESCAPED_UNICODE, $strCharset = 'utf-8') {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         return $this->jsonCallback ( $strJsonCallback )->json ( $arrData, $intOptions, $strCharset );
     }
@@ -512,7 +512,7 @@ class response {
      * @return void|string
      */
     public function view($sFile = '', $in = []) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         if (! static::$objView) {
             static::$objView = view::run ();
@@ -537,7 +537,7 @@ class response {
      * @return $this
      */
     public function assign($mixName, $mixValue = null) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         if (! static::$objView) {
             static::$objView = view::run ();
@@ -557,7 +557,7 @@ class response {
      * @return void
      */
     public function redirect($sUrl, $in = []) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         assert::string ( $sUrl );
         return $this->responseType ( 'redirect' )->code ( 301 )->option ( 'redirect_url', $sUrl )->option ( 'in', $in );
@@ -571,7 +571,7 @@ class response {
      * @return $this
      */
     public function xml($arrData = null, $strCharset = 'utf-8') {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         if (is_array ( $arrData )) {
             $this->data ( $arrData );
@@ -588,14 +588,14 @@ class response {
      * @return $this
      */
     public function download($sFileName, $sDownName = '', array $arrHeader = []) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
         if (! $sDownName) {
             $sDownName = basename ( $sFileName );
         } else {
             $sDownName = $sDownName . '.' . file::getExtName ( $sFileName );
         }
-        return $this->downloadAndFile_ ( $sFileName, $arrHeader )->header ( 'Content-Disposition', 'attachment;filename=' . $sDownName );
+        return $this->downloadAndFile ( $sFileName, $arrHeader )->header ( 'Content-Disposition', 'attachment;filename=' . $sDownName );
     }
     
     /**
@@ -606,9 +606,9 @@ class response {
      * @return $this
      */
     public function file($sFileName, array $arrHeader = []) {
-        if ($this->checkFlowControl_ ())
+        if ($this->checkFlowControl ())
             return $this;
-        return $this->downloadAndFile_ ( $sFileName, $arrHeader )->header ( 'Content-Disposition', 'inline;filename=' . basename ( $sFileName ) );
+        return $this->downloadAndFile ( $sFileName, $arrHeader )->header ( 'Content-Disposition', 'inline;filename=' . basename ( $sFileName ) );
     }
     
     /**
@@ -734,7 +734,7 @@ class response {
      * @param string $strCharset            
      * @return $this
      */
-    private function contentTypeAndCharset_($strContentType, $strCharset = 'utf-8') {
+    private function contentTypeAndCharset($strContentType, $strCharset = 'utf-8') {
         return $this->header ( 'Content-Type', $strContentType . '; charset=' . $strCharset );
     }
     
@@ -745,7 +745,7 @@ class response {
      * @param array $arrHeader            
      * @return $this
      */
-    private function downloadAndFile_($sFileName, array $arrHeader = []) {
+    private function downloadAndFile($sFileName, array $arrHeader = []) {
         if (! is_file ( $sFileName )) {
             exceptions::throwException ( __ ( '读取的文件不存在' ), 'queryyetsimple\http\exception' );
         }

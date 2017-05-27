@@ -40,29 +40,29 @@ abstract class worker extends PHPQueueWorker {
         $arrJobData = $objJob->data;
         
         if (empty ( $arrJobData ['~@job'] )) {
-            $this->formatMessage_ ( 'Job name is not defined.' );
+            $this->formatMessage ( 'Job name is not defined.' );
             return $this->result_data = [ ];
         }
         
-        $this->formatMessage_ ( sprintf ( 'Trying do run job %s.', $arrJobData ['~@job'] ) );
+        $this->formatMessage ( sprintf ( 'Trying do run job %s.', $arrJobData ['~@job'] ) );
         
         try {
             // 注入构造器
-            $objJob = $this->getObjectByClassAndArgs_ ( $arrJobData ['~@job'], $arrJobData );
+            $objJob = $this->getObjectByClassAndArgs ( $arrJobData ['~@job'], $arrJobData );
             
             // 注入方法
             $strMethod = method_exists ( $objJob, 'handle' ) ? 'handle' : 'run';
-            $this->getObjectCallbackResultWithMethodArgs_ ( [ 
+            $this->getObjectCallbackResultWithMethodArgs ( [ 
                     $objJob,
                     $strMethod 
             ], $arrJobData );
         } catch ( \Exception $oE ) {
-            $this->formatMessage_ ( $oE->getMessage () );
+            $this->formatMessage ( $oE->getMessage () );
             return $this->result_data = [ ];
         }
         
-        $this->formatMessage_ ( sprintf ( 'Job %s is done.' . "", $arrJobData ['~@job'] ) );
-        $this->formatMessage_ ( 'Starting the next. ' );
+        $this->formatMessage ( sprintf ( 'Job %s is done.' . "", $arrJobData ['~@job'] ) );
+        $this->formatMessage ( 'Starting the next. ' );
         
         $this->result_data = $arrJobData;
     }
@@ -73,7 +73,7 @@ abstract class worker extends PHPQueueWorker {
      * @param string $strMessage            
      * @return string
      */
-    protected function formatMessage_($strMessage) {
+    protected function formatMessage($strMessage) {
         Console::stdout ( sprintf ( '[%s]', date ( 'H:i:s' ) ) . $strMessage . PHP_EOL );
     }
 }

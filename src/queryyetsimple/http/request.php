@@ -102,9 +102,9 @@ class request {
     public function run() {
         // 非命令行模式
         if (! $this->isCli ()) {
-            $this->parseUrlWeb_ ();
+            $this->parseUrlWeb ();
         } else {
-            $this->parseUrlCli_ ();
+            $this->parseUrlCli ();
         }
         
         // 解析URL
@@ -116,7 +116,7 @@ class request {
         $_REQUEST = array_merge ( $_POST, $_GET );
         
         // 解析项目公共 url 地址
-        $this->parsePublicAndRoot_ ();
+        $this->parsePublicAndRoot ();
         
         return $this;
     }
@@ -344,16 +344,16 @@ class request {
      *
      * @return void
      */
-    private function parseUrlWeb_() {
+    private function parseUrlWeb() {
         $_SERVER ['REQUEST_URI'] = isset ( $_SERVER ['REQUEST_URI'] ) ? $_SERVER ['REQUEST_URI'] : $_SERVER ["HTTP_X_REWRITE_URL"]; // For IIS
                                                                                                                                     
         // 分析 pathinfo
         if ($this->classsFacesOption ( 'url\model' ) == 'pathinfo') {
             // 分析pathinfo
-            $this->filterPathInfo_ ();
+            $this->filterPathInfo ();
             
             // 解析结果
-            $_GET = array_merge ( $_GET, ($arrRouter = router::parses ()) ? $arrRouter : $this->parsePathInfo_ () );
+            $_GET = array_merge ( $_GET, ($arrRouter = router::parses ()) ? $arrRouter : $this->parsePathInfo () );
         }
     }
     
@@ -362,7 +362,7 @@ class request {
      *
      * @return void
      */
-    private function parseUrlCli_() {
+    private function parseUrlCli() {
         // console 命令行
         if (env ( 'queryphp_console' )) {
             // 注册 console 引导入口
@@ -449,7 +449,7 @@ class request {
      *
      * @return array
      */
-    private function parsePathInfo_() {
+    private function parsePathInfo() {
         $arrPathInfo = [ ];
         $sPathInfo = $_SERVER ['PATH_INFO'];
         
@@ -481,7 +481,7 @@ class request {
      *
      * @return void
      */
-    private function parsePublicAndRoot_() {
+    private function parsePublicAndRoot() {
         if ($this->isCli ()) {
             return;
         }
@@ -545,9 +545,9 @@ class request {
      *
      * @return void
      */
-    private function filterPathInfo_() {
-        $sPathInfo = $this->pathinfo_ ();
-        $sPathInfo = $this->clearHtmlSuffix_ ( $sPathInfo );
+    private function filterPathInfo() {
+        $sPathInfo = $this->pathinfo ();
+        $sPathInfo = $this->clearHtmlSuffix ( $sPathInfo );
         $sPathInfo = empty ( $sPathInfo ) ? '/' : $sPathInfo;
         $_SERVER ['PATH_INFO'] = $sPathInfo;
     }
@@ -557,16 +557,16 @@ class request {
      *
      * @return string
      */
-    private function pathinfo_() {
+    private function pathinfo() {
         if (! empty ( $_SERVER ['PATH_INFO'] )) {
             return $_SERVER ['PATH_INFO'];
         }
         
         // 分析基础 url
-        $sBaseUrl = $this->baseUrl_ ();
+        $sBaseUrl = $this->baseUrl ();
         
         // 分析请求参数
-        if (null === ($sRequestUrl = $this->requestUrl_ ())) {
+        if (null === ($sRequestUrl = $this->requestUrl ())) {
             return '';
         }
         
@@ -588,7 +588,7 @@ class request {
      *
      * @return string
      */
-    private function baseUrl_() {
+    private function baseUrl() {
         // 存在返回
         if (static::$sBaseUrl) {
             return static::$sBaseUrl;
@@ -617,7 +617,7 @@ class request {
         }
         
         // 比对请求
-        $sRequestUrl = $this->requestUrl_ ();
+        $sRequestUrl = $this->requestUrl ();
         if (0 === strpos ( $sRequestUrl, $sUrl )) {
             return static::$sBaseUrl = $sUrl;
         }
@@ -642,7 +642,7 @@ class request {
      *
      * @return string
      */
-    private function requestUrl_() {
+    private function requestUrl() {
         if (static::$sRequestUrl) {
             return static::$sRequestUrl;
         }
@@ -669,7 +669,7 @@ class request {
      * @param string $sVal            
      * @return string
      */
-    private function clearHtmlSuffix_($sVal) {
+    private function clearHtmlSuffix($sVal) {
         if ($this->classsFacesOption ( 'url\html_suffix' ) && ! empty ( $sVal )) {
             $sSuffix = substr ( $this->classsFacesOption ( 'url\html_suffix' ), 1 );
             $sVal = preg_replace ( '/\.' . $sSuffix . '$/', '', $sVal );

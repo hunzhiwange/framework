@@ -99,25 +99,25 @@ class project extends container {
      */
     public function __construct($objComposer, $arrOption = []) {
         // set composer
-        $this->setComposer_ ( $objComposer )->
+        $this->setComposer ( $objComposer )->
         
         // 项目基础配置
-        setOption_ ( $arrOption )->
+        setOption ( $arrOption )->
         
         // 初始化项目路径
-        setPath_ ()->
+        setPath ()->
         
         // 注册别名
-        registerAlias_ ()->
+        registerAlias ()->
         
         // 注册基础提供者 register
-        registerBaseProvider_ ()->
+        registerBaseProvider ()->
         
         // 注册框架核心提供者
-        registerMvcProvider_ ()->
+        registerMvcProvider ()->
         
         // 注册基础提供者 bootstrap
-        registerBaseProviderBootstrap_ ();
+        registerBaseProviderBootstrap ();
     }
     
     /**
@@ -152,7 +152,7 @@ class project extends container {
      * @return $this
      */
     public function registerAppProvider($arrProvider, $arrProviderCache) {
-        return $this->runProvider_ ( $arrProvider, 'register' )->runProvider_ ( $arrProvider, 'bootstrap' )->runBaseProvider_ ( 'register', 'app', $arrProviderCache )->runBaseProvider_ ( 'bootstrap', 'app', $arrProviderCache );
+        return $this->runProvider ( $arrProvider, 'register' )->runProvider ( $arrProvider, 'bootstrap' )->runBaseProvider ( 'register', 'app', $arrProviderCache )->runBaseProvider ( 'bootstrap', 'app', $arrProviderCache );
     }
     
     /**
@@ -233,7 +233,7 @@ class project extends container {
      * @param \Composer\Autoload\ClassLoader $objComposer            
      * @return $this
      */
-    private function setComposer_($objComposer) {
+    private function setComposer($objComposer) {
         psr4::composer ( $objComposer );
         return $this;
     }
@@ -244,7 +244,7 @@ class project extends container {
      * @param array $arrOption            
      * @return $this
      */
-    private function setOption_($arrOption) {
+    private function setOption($arrOption) {
         $this->arrOption = $arrOption;
         return $this;
     }
@@ -254,8 +254,8 @@ class project extends container {
      *
      * @return $this
      */
-    private function registerBaseProvider_() {
-        return $this->runBaseProvider_ ( 'register' );
+    private function registerBaseProvider() {
+        return $this->runBaseProvider ( 'register' );
     }
     
     /**
@@ -263,8 +263,8 @@ class project extends container {
      *
      * @return $this
      */
-    private function registerBaseProviderBootstrap_() {
-        return $this->runBaseProvider_ ( 'bootstrap' );
+    private function registerBaseProviderBootstrap() {
+        return $this->runBaseProvider ( 'bootstrap' );
     }
     
     /**
@@ -272,7 +272,7 @@ class project extends container {
      *
      * @return $this
      */
-    private function registerMvcProvider_() {
+    private function registerMvcProvider() {
         // 注册启动程序
         $this->register ( new bootstrap ( $this, $this->arrOption ) );
         
@@ -299,7 +299,7 @@ class project extends container {
      *
      * @return void
      */
-    private function registerAlias_() {
+    private function registerAlias() {
         $this->alias ( [ 
                 'view' => 'queryyetsimple\mvc\view',
                 'controller' => 'queryyetsimple\mvc\controller' 
@@ -313,15 +313,15 @@ class project extends container {
      * @param string $strPath            
      * @return $this
      */
-    private function setPath_() {
+    private function setPath() {
         // 基础路径
         $this->strPath = dirname ( dirname ( dirname ( dirname ( dirname ( dirname ( __DIR__ ) ) ) ) ) );
         
         // 注册路径
-        $this->registerPath_ ();
+        $this->registerPath ();
         
         // 注册 url
-        $this->registerUrl_ ();
+        $this->registerUrl ();
         
         return $this;
     }
@@ -331,7 +331,7 @@ class project extends container {
      *
      * @return void
      */
-    private function registerPath_() {
+    private function registerPath() {
         // 基础路径
         $this->instance ( 'path', $this->path () );
         
@@ -351,7 +351,7 @@ class project extends container {
      *
      * @return void
      */
-    private function registerUrl_() {
+    private function registerUrl() {
         foreach ( [ 
                 'enter',
                 'root',
@@ -369,7 +369,7 @@ class project extends container {
      * @param string $strType            
      * @return void
      */
-    private function runProvider_($arrProvider, $strType) {
+    private function runProvider($arrProvider, $strType) {
         foreach ( $arrProvider as $strProvider ) {
             $objProvider = $this->make ( $strProvider, $this );
             if (method_exists ( $objProvider, $strType )) {
@@ -389,7 +389,7 @@ class project extends container {
      * @param string $strType            
      * @return $this
      */
-    private function runBaseProvider_($strAction, $strType = null, $arrProvider = null) {
+    private function runBaseProvider($strAction, $strType = null, $arrProvider = null) {
         helper::registerProvider ( $this, $this->path_runtime . '/provider/' . ($strType ?  : 'base') . '.' . $strAction . '.php', array_map ( function ($strPackage) use($strAction) {
             return sprintf ( 'queryyetsimple\%s\provider\%s', $strPackage, $strAction );
         }, $arrProvider ?  : static::$arrBaseProvider ), env('app_development') === 'development' );

@@ -87,7 +87,7 @@ abstract class cache implements interfaces_cache {
             $arrOption = [ ];
         }
         $arrOption = array_merge ( [ 
-                'cache_time' => static::cacheTime_ ( $sId,  ['runtime_cache_time'] ),
+                'cache_time' => static::cacheTime ( $sId,  ['runtime_cache_time'] ),
                 'cache_prefix' => ['runtime_cache_prefix'],
                 'cache_backend' => ! is_null ( $sBackendClass ) ? $sBackendClass :  ['runtime_cache_backend'] 
         ], $arrOption );
@@ -129,7 +129,7 @@ abstract class cache implements interfaces_cache {
      * @param int $intDefaultTime
      * @return number
      */
-    private static function cacheTime_($sId, $intDefaultTime = 0) {
+    private static function cacheTime($sId, $intDefaultTime = 0) {
         if (isset (  ['runtime_cache_times'] [$sId] )) {
             return  ['runtime_cache_times'] [$sId];
         }
@@ -152,7 +152,7 @@ abstract class cache implements interfaces_cache {
      * @param array $arrOption            
      * @return string
      */
-    protected function getCacheName_($sCacheName, $arrOption) {
+    protected function getCacheName($sCacheName, $arrOption) {
         return $arrOption ['cache_prefix'] . $sCacheName;
     }
 }

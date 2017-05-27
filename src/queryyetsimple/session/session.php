@@ -131,7 +131,7 @@ class session implements interfaces_session {
      */
     public function set($sName, $mixValue, $bPrefix = true) {
         assert::string ( $sName );
-        $sName = $this->getName_ ( $sName, $bPrefix );
+        $sName = $this->getName ( $sName, $bPrefix );
         $_SESSION [$sName] = $mixValue;
     }
     
@@ -144,7 +144,7 @@ class session implements interfaces_session {
      */
     public function get($sName, $bPrefix = true) {
         assert::string ( $sName );
-        $sName = $this->getName_ ( $sName, $bPrefix );
+        $sName = $this->getName ( $sName, $bPrefix );
         return isset ( $_SESSION [$sName] ) ? $_SESSION [$sName] : null;
     }
     
@@ -157,7 +157,7 @@ class session implements interfaces_session {
      */
     public function delete($sName, $bPrefix = true) {
         assert::string ( $sName );
-        $sName = $this->getName_ ( $sName, $bPrefix );
+        $sName = $this->getName ( $sName, $bPrefix );
         return session_unregister ( $sName );
     }
     
@@ -169,7 +169,7 @@ class session implements interfaces_session {
      */
     public function has($sName, $bPrefix = true) {
         assert::string ( $sName );
-        $sName = $this->getName_ ( $sName, $bPrefix );
+        $sName = $this->getName ( $sName, $bPrefix );
         return isset ( $_SESSION [$sName] );
     }
     
@@ -384,7 +384,7 @@ class session implements interfaces_session {
      * @param boolean $bPrefix            
      * @return string
      */
-    private function getName_($sName, $bPrefix = true) {
+    private function getName($sName, $bPrefix = true) {
         return ($bPrefix ? $this->classsFacesOption ( 'session\prefix' ) : '') . $sName;
     }
 }

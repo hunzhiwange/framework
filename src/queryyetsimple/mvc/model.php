@@ -262,20 +262,20 @@ class model implements ArrayAccess {
         }
         
         // 表单自动填充
-        $this->autoPost_ ();
+        $this->autoPost ();
         
-        // $this->beforeSave_();
+        // $this->beforeSave();
         
         // 程序通过内置方法统一实现
         switch (strtolower ( $sSaveMethod )) {
             case 'create' :
-                $this->create_ ();
+                $this->create ();
                 break;
             case 'update' :
-                $this->update_ ();
+                $this->update ();
                 break;
             case 'replace' :
-                $this->replace_ ();
+                $this->replace ();
                 break;
             case 'save' :
             default :
@@ -283,21 +283,21 @@ class model implements ArrayAccess {
                 
                 // 复合主键的情况下，则使用 replace 方式
                 if (is_array ( $arrPrimaryData )) {
-                    $this->replace_ ();
+                    $this->replace ();
                 }                 
 
                 // 单一主键
                 else {
                     if (empty ( $arrPrimaryData )) {
-                        $this->create_ ();
+                        $this->create ();
                     } else {
-                        $this->update_ ();
+                        $this->update ();
                     }
                 }
                 break;
         }
         
-        // $this->afterSave_();
+        // $this->afterSave();
         return $this;
     }
     
@@ -356,7 +356,7 @@ class model implements ArrayAccess {
             ];
         }
         
-        $booInChangePropForce = $this->getInChangePropForce_ ();
+        $booInChangePropForce = $this->getInChangePropForce ();
         $mixProp = $this->meta ()->fieldsProps ( $mixProp );
         foreach ( $mixProp as $sName => $mixValue ) {
             $this->arrProp [$sName] = $mixValue;
@@ -376,12 +376,12 @@ class model implements ArrayAccess {
      * @return $this
      */
     public function changePropForce($mixPropName, $mixValue = null) {
-        $this->setInChangePropForce_ ( true );
+        $this->setInChangePropForce ( true );
         call_user_func_array ( [ 
                 $this,
                 'changeProp' 
         ], func_get_args () );
-        $this->setInChangePropForce_ ( false );
+        $this->setInChangePropForce ( false );
         return $this;
     }
     
@@ -497,12 +497,12 @@ class model implements ArrayAccess {
      *
      * @return void
      */
-    private function create_() {
+    private function create() {
         // $oMeta=static::$_arrMeta[$this->_sClassName];
         
         // // 自动填充
         // if($this->_bAutofill===true){
-        // $this->autofill_('create');
+        // $this->autofill('create');
         // }
         // foreach($oMeta->_arrTableMeta['default'] as $sPropName=>$defaultVal){
         // if(!isset($this->_arrProp[$sPropName]) || $this->_arrProp[$sPropName]===null){
@@ -510,8 +510,8 @@ class model implements ArrayAccess {
         // }
         // }
         
-        // $this->beforeCreate_();
-        // if($this->check_('create',true)===false){// 进行create验证
+        // $this->beforeCreate();
+        // if($this->check('create',true)===false){// 进行create验证
         // return false;
         // }
         
@@ -535,7 +535,7 @@ class model implements ArrayAccess {
             $this->arrProp [$sField] = $mixValue;
         }
         
-        // $this->afterCreate_();
+        // $this->afterCreate();
         
         // 清除所有属性改变
         $this->clearChanged ();
@@ -546,14 +546,14 @@ class model implements ArrayAccess {
      *
      * @return void
      */
-    private function update_() {
+    private function update() {
         // $oMeta=static::$_arrMeta[$this->_sClassName];
         // if($this->_bAutofill===true){// 这里允许update和all
-        // $this->autofill_('update');
+        // $this->autofill('update');
         // }
         
-        // $this->beforeUpdate_();
-        // if($this->check_('update',true)===false){// 进行update验证
+        // $this->beforeUpdate();
+        // if($this->check('update',true)===false){// 进行update验证
         // return false;
         // }
         $arrSaveData = [ ];
@@ -599,7 +599,7 @@ class model implements ArrayAccess {
             }
         }
         
-        // $this->afterUpdate_();
+        // $this->afterUpdate();
         
         // 清除所有属性改变
         $this->clearChanged ();
@@ -610,11 +610,11 @@ class model implements ArrayAccess {
      *
      * @return void
      */
-    private function replace_() {
+    private function replace() {
         try {
-            $this->create_ ();
+            $this->create ();
         } catch ( \Exception $e ) {
-            $this->update_ ();
+            $this->update ();
         }
     }
     
@@ -623,7 +623,7 @@ class model implements ArrayAccess {
      *
      * @return void
      */
-    private function autoPost_() {
+    private function autoPost() {
         if ($this->booAutoPost === false) {
             return;
         }
@@ -646,7 +646,7 @@ class model implements ArrayAccess {
      *
      * @return boolean
      */
-    private function setInChangePropForce_($booInChangePropForce = true) {
+    private function setInChangePropForce($booInChangePropForce = true) {
         $this->booInChangePropForce = $booInChangePropForce;
     }
     
@@ -655,7 +655,7 @@ class model implements ArrayAccess {
      *
      * @return boolean
      */
-    private function getInChangePropForce_() {
+    private function getInChangePropForce() {
         return $this->booInChangePropForce;
     }
 }
