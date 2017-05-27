@@ -80,7 +80,7 @@ class pipeline {
         
         foreach ( $mixStages as $mixStage ) {
             if (is_string ( $mixStage ) && ! is_null ( $this->objProject )) {
-                $mixStage = $this->parse_ ( $mixStage );
+                $mixStage = $this->parse ( $mixStage );
                 $mixStage = function ($mixPassed) use($mixStage) {
                     if (strpos ( $mixStage [0], '@' ) !== false) {
                         $arrStage = explode ( '@', $mixStage [0] );
@@ -159,7 +159,7 @@ class pipeline {
      * @param string $strStage            
      * @return array
      */
-    protected function parse_($strStage) {
+    protected function parse($strStage) {
         list ( $strName, $arrArgs ) = array_pad ( explode ( ':', $strStage, 2 ), 2, [ ] );
         if (is_string ( $arrArgs ))
             $arrArgs = explode ( ',', $arrArgs );
