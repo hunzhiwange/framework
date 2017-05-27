@@ -22,14 +22,5 @@ queryphp;
  * @version 4.0
  */
 putenv ( 'queryphp_phpunit_system=(true)' );
-
-/**
- * 基础路径
- */
-define ( 'PATH', dirname( dirname( dirname( __DIR__ ) ) ) );
-
-/**
- * 执行项目
- */
-$objComposer = require PATH. '/vendor/autoload.php';
+$objComposer = require dirname( dirname( dirname( __DIR__ ) ) ) . '/vendor/autoload.php';
 queryyetsimple\mvc\project::bootstrap ( $objComposer )->run ();
