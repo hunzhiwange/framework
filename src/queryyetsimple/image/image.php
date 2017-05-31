@@ -15,7 +15,7 @@ namespace queryyetsimple\image;
 ##########################################################
 queryphp;
 
-use queryyetsimple\exception\exceptions;
+use RuntimeException;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\filesystem\directory;
 
@@ -212,10 +212,10 @@ class image {
                     $oBackgroundIm = @imagecreatefrompng ( $sBackgroundPath );
                     break;
                 default :
-                    exceptions::throwException ( __ ( '错误的图像格式' ), 'queryyetsimple\image\exception' );
+                    throw new RuntimeException ( __ ( '错误的图像格式' ) );
             }
         } else {
-            exceptions::throwException ( __ ( '图像 %s 为空或者不存在', $sBackgroundPath ), 'queryyetsimple\image\exception' );
+            throw new RuntimeException ( __ ( '图像 %s 为空或者不存在', $sBackgroundPath ) );
         }
         
         @imagealphablending ( $oBackgroundIm, true ); // 设定图像的混色模式
@@ -243,13 +243,13 @@ class image {
                         $oWaterIm = @imagecreatefrompng ( $arrWaterArgs ['path'] );
                         break;
                     default :
-                        exceptions::throwException ( __ ( '错误的图像格式' ), 'queryyetsimple\image\exception' );
+                        throw new RuntimeException ( __ ( '错误的图像格式' ) );
                 }
             } elseif ($arrWaterArgs ['type'] === 'text' && $arrWaterArgs ['content'] != '') {
                 $sFontfileTemp = $sFontfile = isset ( $arrWaterArgs ['textFile'] ) && ! empty ( $arrWaterArgs ['textFile'] ) ? $arrWaterArgs ['textFile'] : 'Microsoft YaHei.ttf';
                 $sFontfile = (! empty ( $arrWaterArgs ['textPath'] ) ? directory::tidyPath ( $arrWaterArgs ['textPath'] ) : 'C:\WINDOWS\Fonts') . '/' . $sFontfile;
                 if (! is_file ( $sFontfile )) {
-                    exceptions::throwException ( __ ( '字体文件 %s 无法找到', $sFontfile ), 'queryyetsimple\image\exception' );
+                    throw new RuntimeException ( __ ( '字体文件 %s 无法找到', $sFontfile ) );
                 }
                 
                 $sWaterText = $arrWaterArgs ['content'];
@@ -262,10 +262,10 @@ class image {
                 $nWaterHeight = $arrTemp [3] - $arrTemp [7];
                 unset ( $arrTemp );
             } else {
-                exceptions::throwException ( __ ( '水印参数 type 不为 img 和 text' ), 'queryyetsimple\image\exception' );
+                throw new RuntimeException ( __ ( '水印参数 type 不为 img 和 text' ) );
             }
         } else {
-            exceptions::throwException ( __ ( '水印参数必须为一个数组' ), 'queryyetsimple\image\exception' );
+            throw new RuntimeException ( __ ( '水印参数必须为一个数组' ) );
         }
         
         if (($nGroundWidth < ($nWaterWidth * 2)) || ($nGroundHeight < ($nWaterHeight * 2))) { // 如果水印占了原图一半就不搞水印了.影响浏览.抵制影响正常浏览的广告
@@ -273,35 +273,35 @@ class image {
         }
         
         switch ($nWaterPos) {
-            case 1 : // 1为顶端居左
+            case 1 : // 1 为顶端居左
                 $nPosX = $nOffset * $nSet;
                 $nPosY = ($nWaterHeight + $nOffset) * $nSet;
                 break;
-            case 2 : // 2为顶端居中
+            case 2 : // 2 为顶端居中
                 $nPosX = ($nGroundWidth - $nWaterWidth) / 2;
                 $nPosY = ($nWaterHeight + $nOffset) * $nSet;
                 break;
-            case 3 : // 3为顶端居右
+            case 3 : // 3 为顶端居右
                 $nPosX = $nGroundWidth - $nWaterWidth - $nOffset * $nSet;
                 $nPosY = ($nWaterHeight + $nOffset) * $nSet;
                 break;
-            case 4 : // 4为中部居左
+            case 4 : // 4 为中部居左
                 $nPosX = $nOffset * $nSet;
                 $nPosY = ($nGroundHeight - $nWaterHeight) / 2;
                 break;
-            case 5 : // 5为中部居中
+            case 5 : // 5 为中部居中
                 $nPosX = ($nGroundWidth - $nWaterWidth) / 2;
                 $nPosY = ($nGroundHeight - $nWaterHeight) / 2;
                 break;
-            case 6 : // 6为中部居右
+            case 6 : // 6 为中部居右
                 $nPosX = $nGroundWidth - $nWaterWidth - $nOffset * $nSet;
                 $nPosY = ($nGroundHeight - $nWaterHeight) / 2;
                 break;
-            case 7 : // 7为底端居左
+            case 7 : // 7 为底端居左
                 $nPosX = $nOffset * $nSet;
                 $nPosY = $nGroundHeight - $nWaterHeight;
                 break;
-            case 8 : // 8为底端居中
+            case 8 : // 8 为底端居中
                 $nPosX = ($nGroundWidth - $nWaterWidth) / 2;
                 $nPosY = $nGroundHeight - $nWaterHeight;
                 break;
@@ -325,7 +325,7 @@ class image {
                 $G = hexdec ( substr ( $sTextColor, 3, 2 ) );
                 $B = hexdec ( substr ( $sTextColor, 5 ) );
             } else {
-                exceptions::throwException ( __ ( '水印文字颜色错误' ), 'queryyetsimple\image\exception' );
+                throw new RuntimeException ( __ ( '水印文字颜色错误' ) );
             }
             @imagettftext ( $oBackgroundIm, $nTextFont, 0, $nPosX, $nPosY, @imagecolorallocate ( $oBackgroundIm, $R, $G, $B ), $sFontfile, $sWaterText );
         }
@@ -345,7 +345,7 @@ class image {
                 @imagepng ( $oBackgroundIm, $sBackgroundPath );
                 break;
             default :
-                exceptions::throwException ( __ ( '错误的图像格式' ), 'queryyetsimple\image\exception' );
+                throw new RuntimeException ( __ ( '错误的图像格式' ) );
         }
         
         if (isset ( $oWaterIm )) {

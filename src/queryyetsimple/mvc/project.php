@@ -17,7 +17,6 @@ queryphp;
 
 use queryyetsimple\support\container;
 use queryyetsimple\mvc\view;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\helper\helper;
 use queryyetsimple\psr4\psr4;
 

@@ -15,7 +15,7 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
-use queryyetsimple\exception\exceptions;
+use RuntimeException;
 use queryyetsimple\helper\helper;
 use queryyetsimple\http\request;
 use queryyetsimple\http\response;
@@ -91,7 +91,7 @@ class controller {
             // 运行方法器
             return $this->project ()->make ( 'app' )->action ( $this->project ()->controller_name, $sActionName );
         } else {
-            exceptions::throwException ( __ ( '控制器 %s 的方法 %s 不存在', get_class ( $this ), $sActionName ), 'queryyetsimple\mvc\exception' );
+            throw new RuntimeException ( __ ( '控制器 %s 的方法 %s 不存在', get_class ( $this ), $sActionName ) );
         }
     }
     
@@ -151,7 +151,7 @@ class controller {
     protected function getAssign($sName) {
         return $this->project ()->make ( 'view' )->getVar ( $sName );
     }
-
+    
     /**
      * 实现 isPost,isGet等
      *
@@ -169,10 +169,10 @@ class controller {
                 if (! empty ( $arrArgs [0] )) {
                     return request::ins ( $arrArgs [0], isset ( $arrArgs [1] ) ? $arrArgs [1] : 'R' );
                 } else {
-                    exceptions::throwException ( 'Can not find method.', 'queryyetsimple\mvc\exception' );
+                    throw new RuntimeException ( 'Can not find method.' );
                 }
             default :
-                exceptions::throwException ( __ ( '控制器 %s 的方法 %s 不存在', get_class ( $this ), $sMethod ), 'queryyetsimple\mvc\exception' );
+                throw new RuntimeException ( __ ( '控制器 %s 的方法 %s 不存在', get_class ( $this ), $sMethod ) );
         }
     }
 }

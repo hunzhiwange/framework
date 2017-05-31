@@ -136,7 +136,7 @@ trait faces {
         } elseif (is_object ( $objProject )) {
             static::$objProjectContainer = $objProject;
         } elseif ($objProject === true) {
-            return class_exists ( '\queryyetsimple\mvc\project' ) ? project::bootstrap () : false;
+            return class_exists ( 'queryyetsimple\mvc\project' ) ? project::bootstrap () : false;
         }
     }
     

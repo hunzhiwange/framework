@@ -15,7 +15,7 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
-use queryyetsimple\exception\exceptions;
+use BadFunctionCallException;
 
 /**
  * 基类方法器
@@ -70,7 +70,7 @@ abstract class action {
      */
     public function __call($sMethod, $arrArgs) {
         if ($sMethod == 'run') {
-            exceptions::throwException ( __ ( '方法对象不允许通过 __call 方法执行  run 入口' ), 'queryyetsimple\mvc\exception' );
+            throw new BadFunctionCallException ( __ ( '方法对象不允许通过 __call 方法执行  run 入口' ) );
         }
         
         $this->initController ();

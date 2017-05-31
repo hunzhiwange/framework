@@ -15,7 +15,7 @@ namespace queryyetsimple\i18n;
 ##########################################################
 queryphp;
 
-use queryyetsimple\exception\exceptions;
+use RuntimeException;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\helper\helper;
 
@@ -56,7 +56,7 @@ class tool {
         // 防止空数据无法写入
         $arrTexts ['Query Yet Simple'] = 'Query Yet Simple';
         if (! file_put_contents ( $sCacheFile, "/* I18n Cache */\n;$(function(){\n    $.fn.queryphp('i18nPackage',\''.$sI18nSet.'\'," . json_encode ( $arrTexts, 256 ) . "); \n});" )) {
-            exceptions::throwException ( sprintf ( 'Dir %s do not have permission.', $sCacheDir ) );
+            throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $sCacheDir ) );
         }
         
         return $arrTexts;
@@ -87,7 +87,7 @@ class tool {
         // 防止空数据无法写入
         $arrTexts ['Query Yet Simple'] = 'Query Yet Simple';
         if (! file_put_contents ( $sCacheFile, "<?php\n /* I18n Cache */ \n return " . var_export ( $arrTexts, true ) . "\n?>" )) {
-            exceptions::throwException ( sprintf ( 'Dir %s do not have permission.', $sDir ) );
+            throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $sDir ) );
         }
         
         return $arrTexts;
@@ -154,7 +154,7 @@ class tool {
         $sContent = '';
         foreach ( $I18nFile as $sFile ) {
             if (! is_file ( $sFile )) {
-                exceptions::throwException ( sprintf ( 'The i18n file < %s > is not exists!', $sFile ), 'queryyetsimple\event\exception' );
+                throw new RuntimeException ( sprintf ( 'The i18n file < %s > is not exists!', $sFile ), 'queryyetsimple\event\exception' );
             }
             $sContent .= helper::escapeCharacter ( file_get_contents ( $sFile ) );
         }

@@ -15,8 +15,8 @@ namespace queryyetsimple\i18n;
 ##########################################################
 queryphp;
 
+use InvalidArgumentException;
 use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\cookie\cookie;
 
 /**
@@ -151,7 +151,7 @@ class i18n {
      */
     public function addI18n($sI18nName, $arrData = []) {
         if (! $sI18nName || ! is_string ( $sI18nName )) {
-            exceptions::throwException ( 'I18n name not allowed empty.' );
+            throw new InvalidArgumentException ( 'I18n name not allowed empty.' );
         }
         
         if (array_key_exists ( $sI18nName, $this->arrText )) {

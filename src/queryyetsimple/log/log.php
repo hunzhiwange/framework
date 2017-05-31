@@ -15,9 +15,9 @@ namespace queryyetsimple\log;
 ##########################################################
 queryphp;
 
+use RuntimeException;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\option\option;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\assert\assert;
 use queryyetsimple\mvc\project;
 use queryyetsimple\filesystem\directory;
@@ -202,7 +202,7 @@ class log {
     private function checkSize($sFilePath) {
         // 如果不是文件，则创建
         if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! directory::create ( dirname ( $sFilePath ) )) {
-            exceptions::throwException ( __ ( '无法创建日志文件：“%s”', $sFilePath ), 'queryyetsimple\log\exception' );
+            throw new RuntimeException ( __ ( '无法创建日志文件：“%s”', $sFilePath ) );
         }
         
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成

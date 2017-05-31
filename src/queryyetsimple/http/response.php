@@ -15,9 +15,9 @@ namespace queryyetsimple\http;
 ##########################################################
 queryphp;
 
+use InvalidArgumentException;
 use queryyetsimple\mvc\view;
 use queryyetsimple\flow\control as flow_control;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\cookie\cookie;
 use queryyetsimple\assert\assert;
 use queryyetsimple\classs\faces as classs_faces;
@@ -747,7 +747,7 @@ class response {
      */
     private function downloadAndFile($sFileName, array $arrHeader = []) {
         if (! is_file ( $sFileName )) {
-            exceptions::throwException ( __ ( '读取的文件不存在' ), 'queryyetsimple\http\exception' );
+            throw new InvalidArgumentException ( __ ( '读取的文件不存在' ) );
         }
         $sFileName = realpath ( $sFileName );
         

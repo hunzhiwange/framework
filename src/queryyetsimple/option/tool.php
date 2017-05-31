@@ -15,7 +15,7 @@ namespace queryyetsimple\option;
 ##########################################################
 queryphp;
 
-use queryyetsimple\exception\exceptions;
+use RuntimeException;
 use queryyetsimple\helper\helper;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\router\router;
@@ -103,7 +103,7 @@ class tool {
         }
         
         if (! file_put_contents ( $sOptionCache, "<?php\n /* option cache */ \n return " . var_export ( $arrOptionData, true ) . "\n?>" )) {
-            exceptions::throwException ( sprintf ( 'dir %s Do not have permission.', $this->optioncache_path ) );
+            throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $this->optioncache_path ) );
         }
         
         option::resets ( $arrOptionData );

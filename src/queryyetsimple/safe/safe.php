@@ -15,8 +15,8 @@ namespace queryyetsimple\safe;
 ##########################################################
 queryphp;
 
+use RuntimeException;
 use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\http\request;
 use queryyetsimple\cookie\cookie;
 
@@ -330,7 +330,7 @@ class safe {
         }
         
         if (time () >= $nLimitMinTime && time () <= $nLimitMaxTime) {
-            exceptions::runtimeException ( sprintf ( 'You can only before %s or after %s to access this.', date ( 'Y-m-d H:i:s', $nLimitMinTime ), date ( 'Y-m-d H:i:s', $nLimitMaxTime ) ) );
+            throw new RuntimeException ( sprintf ( 'You can only before %s or after %s to access this.', date ( 'Y-m-d H:i:s', $nLimitMinTime ), date ( 'Y-m-d H:i:s', $nLimitMaxTime ) ) );
         }
     }
     
@@ -352,7 +352,7 @@ class safe {
             
             foreach ( $mixLimitIp as $sIp ) {
                 if (preg_match ( "/{$sIp}/", $sVisitorIp )) {
-                    exceptions::runtimeException ( sprintf ( 'You IP %s are banned,you can not access this.', $sVisitorIp ) );
+                    throw new RuntimeException ( sprintf ( 'You IP %s are banned,you can not access this.', $sVisitorIp ) );
                 }
             }
         }
@@ -427,7 +427,7 @@ class safe {
         }
         
         if ($booLimit === true && $booException === true) {
-            exceptions::runtimeException ( 'Too Many Attempts.<br/>' . json_encode ( $arrHeader ) );
+            throw new RuntimeException ( 'Too Many Attempts.<br/>' . json_encode ( $arrHeader ) );
         } else {
             return [ 
                     'status' => $booLimit === false ? 'success' : 'fail',
@@ -443,7 +443,7 @@ class safe {
      */
     public static function limitAgent() {
         if ($_SERVER ['HTTP_X_FORWARDED_FOR'] || $_SERVER ['HTTP_VIA'] || $_SERVER ['HTTP_PROXY_CONNECTION'] || $_SERVER ['HTTP_USER_AGENT_VIA']) {
-            exceptions::runtimeException ( 'Proxy Connection Denied.Your request was forbidden due to the administrator has set to deny all proxy connection.' );
+            throw new RuntimeException ( 'Proxy Connection denied.Your request was forbidden due to the administrator has set to deny all proxy connection.' );
         }
     }
     

@@ -15,6 +15,7 @@ namespace queryyetsimple\support;
 ##########################################################
 queryphp;
 
+use InvalidArgumentException;
 use Closure;
 use ReflectionFunction;
 use ReflectionMethod;
@@ -22,7 +23,6 @@ use ReflectionClass;
 use ArrayAccess;
 use queryyetsimple\flow\control as flow_control;
 use queryyetsimple\support\interfaces\container as interfaces_container;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\helper\helper;
 
 /**
@@ -128,7 +128,7 @@ class container implements ArrayAccess, interfaces_container {
                 'scalar',
                 'array' 
         ] )) {
-            exceptions::throwException ( __ ( 'instance 第一个参数只能为 scalar 或者 array' ), 'queryyetsimple\support\exception' );
+            throw new InvalidArgumentException ( __ ( 'instance 第一个参数只能为 scalar 或者 array' ) );
         }
         
         if (is_array ( $mixFactoryName )) {
@@ -154,7 +154,7 @@ class container implements ArrayAccess, interfaces_container {
                 'scalar',
                 'array' 
         ] )) {
-            exceptions::throwException ( __ ( 'singleton 第一个参数只能为 scalar 或者 array' ), 'queryyetsimple\support\exception' );
+            throw new InvalidArgumentException ( __ ( 'singleton 第一个参数只能为 scalar 或者 array' ) );
         }
         
         if (is_array ( $mixFactoryName )) {
@@ -269,7 +269,7 @@ class container implements ArrayAccess, interfaces_container {
      */
     public function makeWithArgs($strFactoryName, array $arrArgs = []) {
         if (! is_array ( $arrArgs )) {
-            exceptions::throwException ( __ ( 'makeWithArgs 第二个参数只能为 array' ), 'Q\support\exception' );
+            throw new InvalidArgumentException ( __ ( 'makeWithArgs 第二个参数只能为 array' ) );
         }
         array_unshift ( $arrArgs, $strFactoryName );
         return call_user_func_array ( [ 
@@ -434,7 +434,7 @@ class container implements ArrayAccess, interfaces_container {
         } elseif (is_string ( $mixClassOrCallback )) {
             $objReflection = new ReflectionClass ( $mixClassOrCallback );
             if (! $objReflection->isInstantiable ()) {
-                exceptions::invalidArgumentException ( sprintf ( 'Class %s is not instantiable.', $mixClassOrCallback ) );
+                throw new InvalidArgumentException ( sprintf ( 'Class %s is not instantiable.', $mixClassOrCallback ) );
             }
             if (($objConstructor = $objReflection->getConstructor ()) && ($arrTemp = $objConstructor->getParameters ())) {
                 $arrParameter = $arrTemp;

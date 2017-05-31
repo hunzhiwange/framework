@@ -15,10 +15,10 @@ namespace queryyetsimple\router;
 ##########################################################
 queryphp;
 
+use RuntimeException;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\http\request;
 use queryyetsimple\helper\helper;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\psr4\psr4;
 
@@ -1167,11 +1167,11 @@ class router {
         }
         
         if (! file_put_contents ( $this->strCachePath, "<?php\n /* router cache */ \n return " . var_export ( $arrCacheData, true ) . "\n?>" )) {
-            exceptions::throwException ( sprintf ( 'Dir %s do not have permission.', $this->strCachePath ) );
+            throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $this->strCachePath ) );
         }
         
         if ($this->booDebug === false && ! file_put_contents ( $this->strCachePath, php_strip_whitespace ( $this->strCachePath ) )) {
-            exceptions::throwException ( sprintf ( 'Dir %s do not have permission.', $this->strCachePath ) );
+            throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $this->strCachePath ) );
         }
         
         unset ( $arrCacheData );

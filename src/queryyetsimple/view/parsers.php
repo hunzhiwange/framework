@@ -15,8 +15,8 @@ namespace queryyetsimple\view;
 ##########################################################
 queryphp;
 
+use InvalidArgumentException;
 use queryyetsimple\stack\stack;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\helper\helper;
@@ -249,7 +249,7 @@ class parsers {
      */
     public function doCombile($sFile, $sCachePath, $bReturn = false) {
         if (! is_file ( $sFile )) {
-            exceptions::throwException ( printf ( 'file %s is not exits', $sFile ), 'queryyetsimple\view\exception' );
+            throw new InvalidArgumentException ( printf ( 'file %s is not exits', $sFile ) );
         }
         
         // 源码
@@ -752,7 +752,7 @@ class parsers {
         /**
          * 交叉（两个时间段相互关系）
          */
-        exceptions::throwException ( __ ( '标签库不支持交叉' ), 'queryyetsimple\view\exception' );
+        throw new InvalidArgumentException ( __ ( '标签库不支持交叉' ) );
     }
     
     /**
@@ -1012,7 +1012,7 @@ class parsers {
             if (! $arrTailTag or ! $this->findHeadTag ( $arrTag, $arrTailTag )) { // 单标签节点
                 
                 if ($arrNodeTag [$arrTag ['name']] ['single'] !== true) {
-                    exceptions::throwException ( __ ( '%s 类型节点 必须成对使用，没有找到对应的尾标签', $arrTag ['name'] ), 'queryyetsimple\view\exception' );
+                    throw new InvalidArgumentException ( __ ( '%s 类型节点 必须成对使用，没有找到对应的尾标签', $arrTag ['name'] ) );
                 }
                 if ($arrTailTag) { // 退回栈中
                     $oTailStack->in ( $arrTailTag );
@@ -1085,7 +1085,7 @@ class parsers {
      */
     protected function findHeadTag($arrTag, $arrTailTag) {
         if ($arrTailTag ['type'] != 'tail') {
-            exceptions::throwException ( __ ( '参数必须是一个尾标签' ), 'queryyetsimple\view\exception' );
+            throw new InvalidArgumentException ( __ ( '参数必须是一个尾标签' ) );
         }
         return preg_match ( "/^{$arrTailTag['name']}/i", $arrTag ['name'] );
     }

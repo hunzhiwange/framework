@@ -17,8 +17,8 @@ queryphp;
 
 use ReflectionException;
 use ReflectionMethod;
+use InvalidArgumentException;
 use queryyetsimple\http\response;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\router\router;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\psr4\psr4;
@@ -221,7 +221,7 @@ class app {
                         if (isset ( $mixModule [$sAction] )) {
                             $this->registerAction ( $sController, $sAction, $mixModule [$sAction] );
                         } else {
-                            exceptions::throwException ( __ ( '数组控制器不存在 %s 方法键值', $sAction ), 'queryyetsimple\mvc\exception' );
+                            throw new InvalidArgumentException ( __ ( '数组控制器不存在 %s 方法键值', $sAction ) );
                         }
                         break;
                     
@@ -231,7 +231,7 @@ class app {
                         break;
                     
                     default :
-                        exceptions::throwException ( __ ( '注册的控制器类型 %s 不受支持', $sController ), 'queryyetsimple\mvc\exception' );
+                        throw new InvalidArgumentException ( __ ( '注册的控制器类型 %s 不受支持', $sController ) );
                         break;
                 }
             } else {
@@ -268,7 +268,7 @@ class app {
                                     'run' 
                             ] );
                         } else {
-                            exceptions::throwException ( __ ( '方法 %s 必须为  queryyetsimple\mvc\action 实例', $sAction ), 'queryyetsimple\mvc\exception' );
+                            throw new InvalidArgumentException ( __ ( '方法 %s 必须为  queryyetsimple\mvc\action 实例', $sAction ) );
                         }
                     }
                 }
@@ -300,7 +300,7 @@ class app {
                         if ($objClass->isPublic () && ! $objClass->isStatic ()) {
                             return $this->objProject->call ( $mixAction );
                         } else {
-                            exceptions::throwException ( __ ( '控制器 %s 的方法 %s 不存在', $sController, $sAction ), 'queryyetsimple\mvc\exception' );
+                            throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 不存在', $sController, $sAction ) );
                         }
                     } catch ( ReflectionException $oE ) {
                         // 请求默认子方法器
@@ -329,7 +329,7 @@ class app {
                         ] );
                         return $this->action ( $sController, $sAction );
                     } else {
-                        exceptions::throwException ( __ ( '方法对象不存在执行入口  run' ), 'queryyetsimple\mvc\exception' );
+                        throw new InvalidArgumentException ( __ ( '方法对象不存在执行入口  run' ) );
                     }
                     break;
                 
@@ -344,11 +344,11 @@ class app {
                     break;
                 
                 default :
-                    exceptions::throwException ( __ ( '注册的方法类型 %s 不受支持', $sAction ), 'queryyetsimple\mvc\exception' );
+                    throw new InvalidArgumentException ( __ ( '注册的方法类型 %s 不受支持', $sAction ) );
                     break;
             }
         } else {
-            exceptions::throwException ( __ ( '控制器 %s 的方法 %s 未注册', $sController, $sAction ), 'queryyetsimple\mvc\exception' );
+            throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 未注册', $sController, $sAction ) );
         }
     }
     

@@ -3,8 +3,6 @@
 // ©2010-2017 http://queryphp.com All rights reserved.
 namespace queryyetsimple\view;
 
-use Psr\Log\InvalidArgumentException;
-
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -1201,19 +1199,19 @@ out += '";
         
         // 验证标签的属性值
         if ($arrAttribute ['is_attribute'] !== true) {
-            throw new InvalidArgumentException( __ ( '标签属性类型验证失败' ) );
+            throw new InvalidArgumentException ( __ ( '标签属性类型验证失败' ) );
         }
         
         // 验证必要属性
         $arrTag = $bJsNode === true ? $this->arrJsTag : $this->arrNodeTag;
         if (! isset ( $arrTag [$arrTheme ['name']] )) {
-            exceptions::throwException ( __ ( '标签 %s 未定义', $arrTheme ['name'] ), 'queryyetsimple\view\exception' );
+            throw new InvalidArgumentException ( __ ( '标签 %s 未定义', $arrTheme ['name'] ) );
         }
         
         foreach ( $arrTag [$arrTheme ['name']] ['required'] as $sName ) {
             $sName = strtolower ( $sName );
             if (! isset ( $arrAttribute ['attribute_list'] [$sName] )) {
-                exceptions::throwException ( __ ( '节点 “%s” 缺少必须的属性：“%s”', $arrTheme ['name'], $sName ), 'queryyetsimple\view\exception' );
+                throw new InvalidArgumentException ( __ ( '节点 “%s” 缺少必须的属性：“%s”', $arrTheme ['name'], $sName ) );
             }
         }
         

@@ -15,8 +15,8 @@ namespace queryyetsimple\view;
 ##########################################################
 queryphp;
 
+use InvalidArgumentException;
 use queryyetsimple\mvc\view;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\filesystem\file;
 use queryyetsimple\mvc\project;
@@ -68,7 +68,7 @@ class theme {
             $sFile = view::parseDefaultFiles ( $sFile );
         }
         if (! is_file ( $sFile )) {
-            exceptions::throwException ( __ ( '模板文件 %s 不存在', $sFile ), 'queryyetsimple\view\exception' );
+            throw new InvalidArgumentException ( __ ( '模板文件 %s 不存在', $sFile ) );
         }
         
         // 变量赋值
@@ -94,7 +94,7 @@ class theme {
                 
                 unset ( $sChildCache, $sTargetContent );
             } else {
-                exceptions::throwException ( sprintf ( 'source %s and target cache %s is not a valid path', $sFile, $sTargetCache ), 'queryyetsimple\view\exception' );
+                throw new InvalidArgumentException ( sprintf ( 'source %s and target cache %s is not a valid path', $sFile, $sTargetCache ) );
             }
         }
         

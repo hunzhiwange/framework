@@ -15,8 +15,9 @@ namespace queryyetsimple\filesystem;
 ##########################################################
 queryphp;
 
+use InvalidArgumentException;
+use RuntimeException;
 use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\exception\exceptions;
 
 /**
  * 文件
@@ -39,18 +40,18 @@ class file {
         $sDir = dirname ( $sPath );
         
         if (is_file ( $sDir )) {
-            exceptions::invalidArgumentException ();
+            throw new InvalidArgumentException ( 'Dir cannot be a file.' );
         }
         
         if (! file_exists ( $sDir ) && directory::create ( $sDir )) {
-            exceptions::runtimeException ();
+            throw new RuntimeException ( sprint ( 'Create dir %s failed.', $sDir ) );
         }
         
         if ($hFile = fopen ( $sPath, 'a' )) {
             chmod ( $sPath, $nMode );
             return fclose ( $hFile );
         } else {
-            exceptions::runtimeException ();
+            throw new RuntimeException ( sprint ( 'Create file %s failed.', $sPath ) );
         }
     }
     
