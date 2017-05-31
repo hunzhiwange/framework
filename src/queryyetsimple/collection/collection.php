@@ -18,7 +18,8 @@ queryphp;
 use Iterator;
 use ArrayAccess;
 use Countable;
-use queryyetsimple\exception\exceptions;
+use BadMethodCallException;
+use InvalidArgumentException;
 use queryyetsimple\assert\assert;
 
 /**
@@ -74,7 +75,7 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @return void
      */
     public function __call($sMethod, $arrArgs) {
-        exceptions::badMethodCallException ();
+        throw new BadMethodCallException ( sprintf ( 'Collection method %s is not defined.', $sMethod ) );
     }
     
     /**
@@ -536,6 +537,6 @@ class collection implements Iterator, ArrayAccess, Countable {
             $sType = gettype ( $mixObject );
         }
         
-        exceptions::invalidArgumentException ();
+        throw new InvalidArgumentException ( 'Collection type validation failed.' );
     }
 }

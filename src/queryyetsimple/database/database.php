@@ -15,7 +15,7 @@ namespace queryyetsimple\database;
 ##########################################################
 queryphp;
 
-use queryyetsimple\exception\exceptions;
+use Exception;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\option\option;
 use queryyetsimple\helper\helper;
@@ -81,7 +81,7 @@ class database {
         if (class_exists ( $strConnectClass )) {
             return $arrConnect [$strUnique] = new $strConnectClass ( $mixOption );
         } else {
-            exceptions::throwException ( __ ( '数据库驱动 %s 不存在！', $mixOption ['db_type'] ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( '数据库驱动 %s 不存在！', $mixOption ['db_type'] ) );
         }
     }
     

@@ -15,7 +15,7 @@ namespace queryyetsimple\cache;
 ##########################################################
 queryphp;
 
-use queryyetsimple\exception\exceptions;
+use RuntimeException;
 
 /**
  * memcache 扩展缓存
@@ -76,7 +76,7 @@ class memcache extends cache {
      */
     public function __construct(array $arrOption = []) {
         if (! extension_loaded ( 'memcache' )) {
-            exceptions::throwException ( 'memcache extension must be loaded before use.', 'queryyetsimple\cache\exception' );
+            throw new RuntimeException ( 'memcache extension must be loaded before use.' );
         }
         
         $this->mergeObjectOption ();
@@ -107,7 +107,7 @@ class memcache extends cache {
         foreach ( $this->arrOption ['servers'] as $arrServer ) {
             $bResult = $this->hHandel->addServer ( $arrServer ['host'], $arrServer ['port'], $this->arrOption ['persistent'] );
             if (! $bResult) {
-                exceptions::throwException ( sprintf ( 'Unable to connect the memcached server [%s:%s] failed.', $arrServer ['host'], $arrServer ['port'] ), 'queryyetsimple\cache\exception' );
+                throw new RuntimeException ( sprintf ( 'Unable to connect the memcached server [%s:%s] failed.', $arrServer ['host'], $arrServer ['port'] ) );
             }
         }
     }

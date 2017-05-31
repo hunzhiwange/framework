@@ -3,6 +3,8 @@
 // ©2010-2017 http://queryphp.com All rights reserved.
 namespace queryyetsimple\view;
 
+use Psr\Log\InvalidArgumentException;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -15,8 +17,8 @@ namespace queryyetsimple\view;
 ##########################################################
 queryphp;
 
+use InvalidArgumentException;
 use queryyetsimple\mvc\view;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\mvc\project;
 use queryyetsimple\helper\helper;
@@ -352,7 +354,7 @@ class compilers {
                 } elseif ($nNum == 3) {
                     $sResult = "\${$arrArray[1]} => \${$arrArray[2]}";
                 } else {
-                    exceptions::throwException ( __ ( '参数错误' ), 'queryyetsimple\view\exception' );
+                    throw new InvalidArgumentException ( __ ( 'code.foreach 参数最多只能为 3 个' ) );
                 }
                 
                 return "if (is_array ( \${$arrArray[0]} ) ) : foreach( \${$arrArray[0]} as $sResult )";
@@ -1199,7 +1201,7 @@ out += '";
         
         // 验证标签的属性值
         if ($arrAttribute ['is_attribute'] !== true) {
-            exceptions::throwException ( __ ( '标签属性类型验证失败' ), 'queryyetsimple\view\exception' );
+            throw new InvalidArgumentException( __ ( '标签属性类型验证失败' ) );
         }
         
         // 验证必要属性

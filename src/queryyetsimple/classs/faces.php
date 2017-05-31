@@ -20,7 +20,6 @@ use ReflectionFunction;
 use BadMethodCallException;
 use RuntimeException;
 use queryyetsimple\assert\assert;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\option\option;
 use queryyetsimple\mvc\project;
 

@@ -15,9 +15,10 @@ namespace queryyetsimple\console;
 ##########################################################
 queryphp;
 
+use RuntimeException;
+use InvalidArgumentException;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\string\string;
 
 /**
@@ -38,7 +39,7 @@ class parser {
      */
     public static function parse($strExpression) {
         if (trim ( $strExpression ) === '') {
-            exceptions::invalidArgumentException ();
+            throw new InvalidArgumentException ( 'Expression cannot be empty.' );
         }
         
         preg_match ( '/[^\s]+/', $strExpression, $arrMatches );
@@ -46,7 +47,7 @@ class parser {
         if (isset ( $arrMatches [0] )) {
             $strName = $arrMatches [0];
         } else {
-            exceptions::runtimeException ();
+            throw new RuntimeException ( 'Expression argument does not match.' );
         }
         
         preg_match_all ( '/\{\s*(.*?)\s*\}/', $strExpression, $arrMatches );
@@ -159,5 +160,4 @@ class parser {
                 return new InputOption ( $strToken, $strShortcut, InputOption::VALUE_NONE, $strDescription );
         }
     }
-   
 }

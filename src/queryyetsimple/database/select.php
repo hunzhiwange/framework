@@ -16,9 +16,9 @@ namespace queryyetsimple\database;
 queryphp;
 
 use PDO;
+use Exception;
 use queryyetsimple\flow\control as flow_control;
 use queryyetsimple\collection\collection;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\assert\assert;
 use queryyetsimple\helper\helper;
 
@@ -281,21 +281,21 @@ class select {
                 $sMethod = substr ( $sMethod, 2 );
                 $arrKeys = explode ( 'And', $sMethod );
                 if (count ( $arrKeys ) != count ( $arrArgs )) {
-                    exceptions::throwException ( __ ( 'getBy 参数数量不对应' ), 'queryyetsimple\database\exception' );
+                    throw new Exception ( __ ( 'getBy 参数数量不对应' ) );
                 }
                 return $this->where ( array_combine ( $arrKeys, $arrArgs ) )->getOne ();
             } elseif (strncasecmp ( $sMethod, 'AllBy', 5 ) === 0) { // support getAllByNameAndSex etc.
                 $sMethod = substr ( $sMethod, 5 );
                 $arrKeys = explode ( 'And', $sMethod );
                 if (count ( $arrKeys ) != count ( $arrArgs )) {
-                    exceptions::throwException ( __ ( 'getAllBy 参数数量不对应' ), 'queryyetsimple\database\exception' );
+                    throw new Exception ( __ ( 'getAllBy 参数数量不对应' ) );
                 }
                 return $this->where ( array_combine ( $arrKeys, $arrArgs ) )->getAll ();
             }
             return $this->top ( intval ( substr ( $sMethod, 3 ) ) );
         }
         
-        exceptions::throwException ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ), 'queryyetsimple\database\exception' );
+        throw new Exception ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ) );
     }
     
     // ######################################################
@@ -317,7 +317,7 @@ class select {
                 'null',
                 'callback' 
         ] ) && ! $mixData instanceof select) {
-            exceptions::throwException ( __ ( 'select 查询数据第一个参数只能为 null、callback、select 或者 string' ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( 'select 查询数据第一个参数只能为 null、callback、select 或者 string' ) );
         }
         
         // 查询对象直接查询
@@ -363,7 +363,7 @@ class select {
                 'string',
                 'array' 
         ] )) {
-            exceptions::throwException ( __ ( 'insert 插入数据第一个参数只能为 string 或者 array' ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( 'insert 插入数据第一个参数只能为 string 或者 array' ) );
         }
         
         // 绑定参数
@@ -418,7 +418,7 @@ class select {
      */
     public function insertAll($arrData, $arrBind = [], $booReplace = false, $bFlag = false) {
         if (! is_array ( $arrData )) {
-            exceptions::throwException ( __ ( 'insertAll 批量插入数据第一个参数必须为数组' ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( 'insertAll 批量插入数据第一个参数必须为数组' ) );
         }
         
         // 绑定参数
@@ -485,7 +485,7 @@ class select {
                 'string',
                 'array' 
         ] )) {
-            exceptions::throwException ( __ ( 'update 更新数据第一个参数只能为 string 或者 array' ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( 'update 更新数据第一个参数只能为 string 或者 array' ) );
         }
         
         // 绑定参数
@@ -544,7 +544,7 @@ class select {
      */
     public function updateColumn($strColumn, $mixValue, $arrBind = [], $bFlag = false) {
         if (! is_string ( $strColumn )) {
-            exceptions::throwException ( __ ( 'updateColumn 第一个参数必须为字符串' ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( 'updateColumn 第一个参数必须为字符串' ) );
         }
         
         return $this->sql ( $bFlag )->update ( [ 
@@ -594,7 +594,7 @@ class select {
                 'string',
                 'null' 
         ] )) {
-            exceptions::throwException ( __ ( 'delete 删除数据第一个参数只能为 null 或者 string' ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( 'delete 删除数据第一个参数只能为 null 或者 string' ) );
         }
         
         // 构造数据删除
@@ -1478,7 +1478,7 @@ class select {
         if ($this->checkFlowControl ())
             return $this;
         if (! isset ( static::$arrIndexTypes [$sType] )) {
-            exceptions::throwException ( __ ( '无效的 Index 类型 %s', $sType ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( '无效的 Index 类型 %s', $sType ) );
         }
         $sType = strtoupper ( $sType );
         $mixIndex = helper::arrays ( $mixIndex );
@@ -1673,7 +1673,7 @@ class select {
         if ($this->checkFlowControl ())
             return $this;
         if (! isset ( static::$arrUnionTypes [$sType] )) {
-            exceptions::throwException ( __ ( '无效的 UNION 类型 %s', $sType ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( '无效的 UNION 类型 %s', $sType ) );
         }
         
         if (! is_array ( $mixSelect )) {
@@ -2703,7 +2703,7 @@ class select {
                         }
                     }
                     if ($strFindTime === null) {
-                        exceptions::throwException ( __ ( '你正在尝试一个不受支持的时间处理语法' ), 'queryyetsimple\database\exception' );
+                        throw new Exception ( __ ( '你正在尝试一个不受支持的时间处理语法' ) );
                     }
                 }
                 
@@ -2774,7 +2774,7 @@ class select {
                         'not between' 
                 ] )) {
                     if (! is_array ( $mixCond [2] ) || count ( $mixCond [2] ) < 2) {
-                        exceptions::throwException ( __ ( '[not] between 参数值必须是一个数组，不能少于 2 个元素' ), 'queryyetsimple\database\exception' );
+                        throw new Exception ( __ ( '[not] between 参数值必须是一个数组，不能少于 2 个元素' ) );
                     }
                     $arrSqlCond [] = $mixCond [0] . ' ' . strtoupper ( $mixCond [1] ) . ' ' . $mixCond [2] [0] . ' AND ' . $mixCond [2] [1];
                 } elseif (is_scalar ( $mixCond [2] )) {
@@ -2882,7 +2882,7 @@ class select {
             if (is_string ( $strKey ) && $strKey == 'string__') {
                 // 不符合规则抛出异常
                 if (! is_string ( $arrTemp )) {
-                    exceptions::throwException ( __ ( 'string__ 只支持字符串' ), 'queryyetsimple\database\exception' );
+                    throw new Exception ( __ ( 'string__ 只支持字符串' ) );
                 }
                 
                 // 表达式支持
@@ -2933,7 +2933,7 @@ class select {
             ] )) {
                 // having 不支持 [not] exists
                 if ($this->getTypeAndLogic ()[0] == 'having') {
-                    exceptions::throwException ( __ ( 'having 不支持 [not] exists  写法' ), 'queryyetsimple\database\exception' );
+                    throw new Exception ( __ ( 'having 不支持 [not] exists  写法' ) );
                 }
                 
                 if ($arrTemp instanceof select) {
@@ -3111,12 +3111,12 @@ class select {
     private function join($sJoinType, $mixName, $mixCols, $mixCond = null/* args */) {
         // 验证 join 类型
         if (! isset ( static::$arrJoinTypes [$sJoinType] )) {
-            exceptions::throwException ( __ ( '无效的 JOIN 类型 %s', $sJoinType ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( '无效的 JOIN 类型 %s', $sJoinType ) );
         }
         
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count ( $this->arrOption ['union'] )) {
-            exceptions::throwException ( __ ( '不能在使用 UNION 查询的同时使用 JOIN 查询' ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( '不能在使用 UNION 查询的同时使用 JOIN 查询' ) );
         }
         
         // 是否分析 schema，子表达式不支持
@@ -3492,7 +3492,7 @@ class select {
                 $strSqlType = 'select';
             }
             if ($strSqlType != $strNativeSql) {
-                exceptions::throwException ( __ ( '%s 方法只允许运行 %s sql 语句', $strNativeSql, $strNativeSql ), 'queryyetsimple\database\exception' );
+                throw new Exception ( __ ( '%s 方法只允许运行 %s sql 语句', $strNativeSql, $strNativeSql ) );
             }
             
             $arrArgs = func_get_args ();
@@ -3507,7 +3507,7 @@ class select {
                     $strNativeSql == 'select' ? 'query' : 'execute' 
             ], $arrArgs );
         } else {
-            exceptions::throwException ( __ ( '%s 方法第一个参数只允许是 null 或者字符串', $strNativeSql ), 'queryyetsimple\database\exception' );
+            throw new Exception ( __ ( '%s 方法第一个参数只允许是 null 或者字符串', $strNativeSql ) );
         }
     }
     
@@ -3713,11 +3713,11 @@ class select {
             case 'date' :
                 $mixValue = strtotime ( $mixValue );
                 if ($mixValue === false) {
-                    exceptions::throwException ( __ ( '请输入一个支持 strtotime 正确的时间' ), 'queryyetsimple\database\exception' );
+                    throw new Exception ( __ ( '请输入一个支持 strtotime 正确的时间' ) );
                 }
                 break;
             default :
-                exceptions::throwException ( __ ( '不受支持的时间格式化类型 %s', $strType ), 'queryyetsimple\database\exception' );
+                throw new Exception ( __ ( '不受支持的时间格式化类型 %s', $strType ) );
                 break;
         }
         

@@ -16,10 +16,9 @@ namespace queryyetsimple\database;
 queryphp;
 
 use PDO;
+use Exception;
 use PDOException;
-use Exception as PHPException;
 use queryyetsimple\database\interfaces\connect as interfaces_connect;
-use queryyetsimple\exception\exceptions;
 use queryyetsimple\log\log;
 use queryyetsimple\assert\assert;
 use queryyetsimple\debug\dump;
@@ -294,7 +293,7 @@ abstract class connect implements interfaces_connect {
             ] );
             $this->commit ();
             return $mixResult;
-        } catch ( PHPException $oE ) {
+        } catch ( Exception $oE ) {
             $this->rollBack ();
             throw $oE;
         }
@@ -845,8 +844,10 @@ abstract class connect implements interfaces_connect {
         if ($this->objPDOStatement) {
             $arrTemp = $this->objPDOStatement->errorInfo ();
             $strError = '(' . $arrTemp [1] . ')' . $arrTemp [2] . "\r\n" . $strError;
+            throw new PDOException ( $strError );
+        } else {
+            throw new Exception ( $strError );
         }
-        exceptions::throwException ( $strError, 'queryyetsimple\database\exception' );
     }
     
     /**
