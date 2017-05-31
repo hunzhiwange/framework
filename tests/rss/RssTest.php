@@ -89,6 +89,7 @@ class Rss_test extends testcase {
         $this->objRss->addItem ( $this->arrItems );
         $strXml = $this->objRss->run ( false );
         $this->assertStringStartsWith ( '<?xml version="1.0" encoding="UTF-8"?>', $strXml );
+        $this->assertContains ( '<comments>苹果是一种水果，也是现在最流行的手机提供商.</comments>', $strXml );
         $this->assertStringEndsWith ( '</rss>', $strXml );
     }
 }
