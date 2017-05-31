@@ -15,9 +15,7 @@ namespace queryyetsimple\http;
 ##########################################################
 queryphp;
 
-use queryyetsimple\router\router;
 use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\psr4\psr4;
 
 /**
  * 启动程序

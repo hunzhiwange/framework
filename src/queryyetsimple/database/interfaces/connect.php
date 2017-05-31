@@ -26,6 +26,32 @@ queryphp;
 interface connect {
     
     /**
+     * dsn 解析
+     *
+     * @param array $arrOption            
+     * @return string
+     */
+    protected function parseDsn($arrOption);
+    
+    /**
+     * 取得数据库表名列表
+     *
+     * @param string $sDbName            
+     * @param mixed $mixMaster            
+     * @return array
+     */
+    public function getTableNames($sDbName = null, $mixMaster = false);
+    
+    /**
+     * 取得数据库表字段信息
+     *
+     * @param string $sTableName            
+     * @param mixed $mixMaster            
+     * @return array
+     */
+    public function getTableColumns($sTableName, $mixMaster = false);
+    
+    /**
      * sql 字段格式化
      *
      * @return string

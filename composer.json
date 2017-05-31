@@ -36,7 +36,6 @@
         "queryyetsimple/demo": "self.version",
         "queryyetsimple/encryption": "self.version",
         "queryyetsimple/event": "self.version",
-        "queryyetsimple/exception": "self.version",
         "queryyetsimple/filesystem": "self.version",
         "queryyetsimple/flow": "self.version",
         "queryyetsimple/ftp": "self.version",
