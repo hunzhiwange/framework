@@ -38,7 +38,7 @@ class rss {
             'language' => 'zh-cn',
             'pub_date' => '',
             'last_build_date' => '',
-            'generator' => 'QueryPHP',
+            'generator' => 'rss 2.0',
             'img_url' => '' 
     ];
     
@@ -47,7 +47,7 @@ class rss {
      *
      * @var array
      */
-    private $arrItem = [ ];
+    private $arrItems = [ ];
     
     /**
      * 构造函数
@@ -56,49 +56,58 @@ class rss {
      * @return void
      */
     public function __construct($arrOption = []) {
-        // 设置配置
-        $this->setOption ( $arrOption );
-        
-        // 默认时间
+        if ($arrOption)
+            $this->setOption ( $arrOption );
         if (! $this->getOption ( 'pub_date' )) {
-            $this->setOption ( 'pub_date', date ( 'Y-m-d H:i:s', time () ) );
+            $this->setOption ( 'pub_date', date ( 'Y-m-d H:i:s' ) );
         }
         if (! $this->getOption ( 'last_build_date' )) {
-            $this->setOption ( 'last_build_date', date ( 'Y-m-d H:i:s', time () ) );
+            $this->setOption ( 'last_build_date', date ( 'Y-m-d H:i:s' ) );
         }
     }
     
     /**
+     * 生成 rss
      *
-     * @param string $sRssBody            
+     * @return void
      */
-    public function run($sRssBody = '') {
+    public function run($booDisplay = true) {
         header ( "Content-Type: text/xml; charset=utf-8" );
-        echo $this->fetch ( $sRssBody );
-        exit ();
+        $sRss = $this->header ();
+        $sRss .= $this->body ();
+        $sRss .= $this->footer ();
+        if ($booDisplay === true) {
+            exit ( $sRss );
+        } else {
+            return $sRss;
+        }
     }
     
     /**
-     * 添加一个项
+     * 添加一个 rss 项数据
      *
      * @param array $arrItem            
      * @return void
      */
-    public function addItem($arrItem = []) {
-        $arrItem = array_merge ( [ 
-                'title' => '',
-                'link' => '',
-                'comments' => '',
-                'pubdata' => '',
-                'creator' => '',
-                'category' => '',
-                'guid' => '',
-                'description' => '',
-                'content_encoded' => '',
-                'comment_rss' => '',
-                'comment_num' => '' 
-        ], $arrItem );
-        $this->arrItems [] = $arrItem;
+    public function addItem($arrItem) {
+        if (count ( $arrItem ) != count ( $arrItem, COUNT_RECURSIVE )) {
+            foreach ( $arrItem as $arrTemp )
+                $this->addItem ( $arrTemp );
+        } else {
+            $this->arrItems [] = array_merge ( [ 
+                    'title' => '',
+                    'link' => '',
+                    'comments' => '',
+                    'pubdata' => '',
+                    'creator' => '',
+                    'category' => '',
+                    'guid' => '',
+                    'description' => '',
+                    'content_encoded' => '',
+                    'comment_rss' => '',
+                    'comment_num' => '' 
+            ], $arrItem );
+        }
     }
     
     /**
@@ -121,20 +130,31 @@ class rss {
     public function __set($sKey, $sValue) {
         $this->setOption ( $sKey, $sValue );
     }
-    public function setOption($sKey, $sValue) {
-        $oldValue = $this->{$sKey};
-        $this->{$sKey} = $sValue;
-        
-        return $oldValue;
+    
+    /**
+     * 更改配置
+     *
+     * @param string|array $mixKey            
+     * @param string|null $sValue            
+     * @return void
+     */
+    public function setOption($mixKey, $sValue = null) {
+        if (is_array ( $mixKey )) {
+            foreach ( $mixKey as $strKey => $mixValue )
+                $this->setOption ( $strKey, $mixValue );
+        } else {
+            $this->arrOption [$mixKey] = $sValue;
+        }
     }
+    
+    /**
+     * 返回配置
+     *
+     * @param string $sKey            
+     * @return string
+     */
     public function getOption($sKey) {
-        return isset ( $this->getOption ( $sKey ) ) ? $this->getOption ( $sKey ) : null;
-    }
-    private function fetch() {
-        $sRss = $this->rssHeader ();
-        $sRss .= $this->getRssBody ();
-        $sRss .= $this->rssFooter ();
-        return $sRss;
+        return isset ( $this->arrOption [$sKey] ) ? $this->arrOption [$sKey] : null;
     }
     
     /**
@@ -153,31 +173,24 @@ class rss {
         $arrRss [] = 'xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"';
         $arrRss [] = 'xmlns:slash="http://purl.org/rss/1.0/modules/slash/">';
         $arrRss [] = '<channel>';
-        $arrRss [] = '<title><![CDATA[' . $this->sChannelTitle . ']]></title>';
-        $arrRss [] = '<atom:link href="' . $this->sAtomLink . '" rel="self" type="application/rss+xml" />';
-        $arrRss [] = '<link>' . $this->sChannelLink . '</link>';
-        $arrRss [] = '<description><![CDATA[' . $this->sChannelDescription . ']]></description>';
+        $arrRss [] = '<title><![CDATA[' . $this->getOption ( 'title' ) . ']]></title>';
+        $arrRss [] = '<atom:link href="' . $this->getOption ( 'atom_link' ) . '" rel="self" type="application/rss+xml" />';
+        $arrRss [] = '<link>' . $this->getOption ( 'link' ) . '</link>';
+        $arrRss [] = '<description><![CDATA[' . $this->getOption ( 'description' ) . ']]></description>';
         $arrRss [] = '<sy:updatePeriod>hourly</sy:updatePeriod>';
         $arrRss [] = '<sy:updateFrequency>1</sy:updateFrequency>';
-        $arrRss [] = '<language>' . $this->sLanguage . '</language>';
+        $arrRss [] = '<language>' . $this->getOption ( 'language' ) . '</language>';
+        $arrRss [] = '<pubDate>' . $this->getOption ( 'pub_date' ) . '</pubDate>';
+        $arrRss [] = '<lastBuildDate>' . $this->getOption ( 'last_build_date' ) . '</lastBuildDate>';
         
-        if (! empty ( $this->sPubDate )) {
-            $arrRss [] = '<pubDate>' . $this->sPubDate . '</pubDate>';
+        if (! empty ( $this->getOption ( 'generator' ) )) {
+            $arrRss [] = '<generator>' . $this->getOption ( 'generator' ) . '</generator>';
         }
-        
-        if (! empty ( $this->sLastBuildDate )) {
-            $arrRss [] = '<lastBuildDate>' . $this->sLastBuildDate . '</lastBuildDate>';
-        }
-        
-        if (! empty ( $this->_sGenerator )) {
-            $arrRss [] = '<generator>' . $this->sGenerator . '</generator>';
-        }
-        
-        if (! empty ( $this->sChannelImgurl )) {
+        if ($this->getOption ( 'img_url' )) {
             $arrRss [] = '<image>';
-            $arrRss [] = '<title><![CDATA[' . $this->sChannelTitle . ']]></title>';
-            $arrRss [] = '<link>' . $this->sChannelLink . '</link>';
-            $arrRss [] = '<url>' . $this->sChannelImgurl . '</url>';
+            $arrRss [] = '<title><![CDATA[' . $this->getOption ( 'title' ) . ']]></title>';
+            $arrRss [] = '<link>' . $this->getOption ( 'link' ) . '</link>';
+            $arrRss [] = '<url>' . $this->getOption ( 'img_url' ) . '</url>';
             $arrRss [] = '</image>';
         }
         
@@ -207,9 +220,18 @@ class rss {
             $arrTemp [] = '<wfw:commentRss>' . $arrItem ['comment_rss'] . '</wfw:commentRss>';
             $arrTemp [] = '<slash:comments>' . $arrItem ['comment_num'] . '</slash:comments>';
             $arrTemp [] = '</item>';
-            $arrResult [] = implode ( $strNewLine, $arrTemp );
+            $arrResult [] = implode ( PHP_EOL, $arrTemp );
         }
         
         return implode ( PHP_EOL, $arrResult );
+    }
+    
+    /**
+     * rss 底部
+     *
+     * @return string
+     */
+    private function footer() {
+        return '</channel>' . PHP_EOL . '</rss>';
     }
 }
