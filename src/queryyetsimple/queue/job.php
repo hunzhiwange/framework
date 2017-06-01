@@ -74,7 +74,7 @@ abstract class job extends PHPQueueJob {
          *
          * @return void
          */
-        abstract public function handle();
+       // abstract public function handle();
     
         /**
          * 从队列中删除任务

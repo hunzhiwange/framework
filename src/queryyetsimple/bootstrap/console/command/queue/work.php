@@ -22,7 +22,6 @@ use PHPQueue\Runner;
 use PHPQueue\Base;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\option\option;
-use queryyetsimple\mvc\project;
 
 /**
  * 运行任务
@@ -101,15 +100,6 @@ class work extends command {
         
         // 守候进程
         (new $strRunner ())->run ();
-    }
-    
-    /**
-     * 返回 QueryPHP
-     *
-     * @return \queryyetsimple\mvc\project
-     */
-    private function getQueryPHP() {
-        return project::bootstrap ();
     }
     
     /**

@@ -413,6 +413,7 @@ abstract class command extends SymfonyCommand {
         foreach ( $arrArguments as $objArgument ) {
             $this->getDefinition ()->addArgument ( $objArgument );
         }
+
         foreach ( $arrOptions as $objOption ) {
             $this->getDefinition ()->addOption ( $objOption );
         }
@@ -424,18 +425,18 @@ abstract class command extends SymfonyCommand {
      * @return void
      */
     protected function specifyParameters() {
-        foreach ( $this->getArguments () as $objArguments ) {
+        foreach ( $this->getArguments () as $arrArgument ) {
             call_user_func_array ( [ 
                     $this,
                     'addArgument' 
-            ], $objArguments );
+            ], $arrArgument );
         }
         
-        foreach ( $this->getOptions () as $objOptions ) {
+        foreach ( $this->getOptions () as $arrOption ) {
             call_user_func_array ( [ 
                     $this,
                     'addOption' 
-            ], $objOptions );
+            ], $arrOption );
         }
     }
     

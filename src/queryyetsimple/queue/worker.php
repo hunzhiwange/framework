@@ -15,6 +15,7 @@ namespace queryyetsimple\queue;
 ##########################################################
 queryphp;
 
+use Exception;
 use Clio\Console;
 use PHPQueue\Worker as PHPQueueWorker;
 
@@ -48,15 +49,21 @@ abstract class worker extends PHPQueueWorker {
         
         try {
             // 注入构造器
-            $objJob = $this->getObjectByClassAndArgs ( $arrJobData ['~@job'], $arrJobData );
+            $objJob = project ()->make ( $arrJobData ['~@job'] );
             
             // 注入方法
             $strMethod = method_exists ( $objJob, 'handle' ) ? 'handle' : 'run';
-            $this->getObjectCallbackResultWithMethodArgs ( [ 
-                    $objJob,
-                    $strMethod 
-            ], $arrJobData );
-        } catch ( \Exception $oE ) {
+            call_user_func_array ( [ 
+                    project (),
+                    'call' 
+            ], [ 
+                    [ 
+                            $objJob,
+                            $strMethod 
+                    ],
+                    $arrJobData ['data'] 
+            ] );
+        } catch ( Exception $oE ) {
             $this->formatMessage ( $oE->getMessage () );
             return $this->result_data = [ ];
         }

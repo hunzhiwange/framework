@@ -210,7 +210,7 @@ abstract class base extends command {
      */
     protected function getNamespacePath() {
         if (! ($strNamespacePath = psr4::getNamespace ( $this->getNamespace () ))) {
-            $strNamespacePath = $this->getQueryPHP ()->path_application . '/' . $this->getNamespace () . '/';
+            $strNamespacePath = $this->project ()->path_application . '/' . $this->getNamespace () . '/';
         }
         return $strNamespacePath;
     }

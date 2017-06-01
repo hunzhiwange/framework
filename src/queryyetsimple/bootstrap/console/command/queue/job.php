@@ -21,6 +21,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use PHPQueue\Base;
 use Exception;
 use queryyetsimple\option\option;
+use queryyetsimple\console\parser;
 
 /**
  * 导入消息队列配置
@@ -67,9 +68,7 @@ class job extends command {
             ];
             
             // 附加参数
-            if ($this->option ( 'data' ) && ($arrJsonData = json_decode ( $this->option ( 'data' ), true ))) {
-                $arrPayload = array_merge ( $arrPayload, $arrJsonData );
-            }
+            $arrPayload ['data'] = $this->option ( 'data' ) ?  : [ ];
             
             // 注册处理的队列
             $strConnect = 'queryyetsimple\queue\queues\\' . $this->argument ( 'connect' );
@@ -138,9 +137,8 @@ class job extends command {
                 [ 
                         'data',
                         'd',
-                        InputOption::VALUE_OPTIONAL,
-                        'The job json args.',
-                        '' 
+                        InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                        'The job json args.' 
                 ] 
         ];
     }
