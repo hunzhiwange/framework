@@ -66,21 +66,21 @@ class parsers {
      *
      * @var array
      */
-    public static $arrCompilers;
+    private static $arrCompilers;
     
     /**
      * 分析器
      *
      * @var array
      */
-    public static $arrParses = [ ];
+    private static $arrParses = [ ];
     
     /**
      * 分析器定界符
      *
      * @var array
      */
-    protected $arrTag = [ 
+    private $arrTag = [ 
             'global' => [ 
                     'left' => '[<\{]',
                     'right' => '[\}>]',
@@ -120,14 +120,14 @@ class parsers {
      *
      * @var array
      */
-    protected $arrThemeTree = [ ];
+    private $arrThemeTree = [ ];
     
     /**
      * 模板项结构
      *
      * @var array
      */
-    protected $arrThemeStruct = [ 
+    private $arrThemeStruct = [ 
             'source' => '', // 原模板
             'content' => '', //
             'compiler' => null, // 编译器
@@ -140,7 +140,7 @@ class parsers {
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
+    private $arrClasssFacesOption = [ 
             'theme_strip_space' => true,
             'theme_tag_note' => false 
     ];
@@ -155,36 +155,35 @@ class parsers {
     public function __construct() {
         // 注册编译器
         $arrMethods = get_class_methods ( __NAMESPACE__ . '\compilers' );
-        
+        print_r ( $arrMethods );
         // 编译器别名
         $arrCodeMap = compilers::getCodeMapHelps ();
         $arrNodeMap = compilers::getNodeMapHelps ();
         $arrJsMap = compilers::getJsMapHelps ();
         
         foreach ( $arrMethods as $sMethod ) {
-            // 按照命名习惯排除的辅助方法和非public的方法
-            if (substr ( $sMethod, - 4 ) != 'Help' && substr ( $sMethod, - 1 ) != '_') {
-                $sMethod = substr ( $sMethod, 0, - 8 );
-                // 排除掉几个全局的方法
-                if (! in_array ( $sMethod, [ 
-                        'global',
-                        'jsvar',
-                        'globalrevert',
-                        'revert' 
-                ] )) {
-                    $sType = strtolower ( substr ( $sMethod, - 4 ) );
-                    $sTag = substr ( $sMethod, 0, - 4 );
-                    if ($sType == 'code') {
-                        $name = isset ( $arrCodeMap [$sTag] ) ? $arrCodeMap [$sTag] : $sTag;
-                    } elseif ($sType == 'node') {
-                        $name = isset ( $arrNodeMap [$sTag] ) ? $arrNodeMap [$sTag] : $sTag;
-                    } else {
-                        $sType = strtolower ( substr ( $sMethod, - 2 ) );
-                        $sTag = substr ( $sMethod, 0, - 2 );
-                        $name = isset ( $arrJsMap [$sTag] ) ? $arrJsMap [$sTag] : $sTag;
-                    }
-                    static::regCompilers ( $sType, $name, $sTag );
+            if (substr ( $sMethod, - 8 ) != 'Compiler')
+                continue;
+            
+            $sMethod = substr ( $sMethod, 0, - 8 );
+            if (! in_array ( $sMethod, [ 
+                    'global',
+                    'jsvar',
+                    'globalrevert',
+                    'revert' 
+            ] )) {
+                $sType = strtolower ( substr ( $sMethod, - 4 ) );
+                $sTag = substr ( $sMethod, 0, - 4 );
+                if ($sType == 'code') {
+                    $name = isset ( $arrCodeMap [$sTag] ) ? $arrCodeMap [$sTag] : $sTag;
+                } elseif ($sType == 'node') {
+                    $name = isset ( $arrNodeMap [$sTag] ) ? $arrNodeMap [$sTag] : $sTag;
+                } else {
+                    $sType = strtolower ( substr ( $sMethod, - 2 ) );
+                    $sTag = substr ( $sMethod, 0, - 2 );
+                    $name = isset ( $arrJsMap [$sTag] ) ? $arrJsMap [$sTag] : $sTag;
                 }
+                static::regCompilers ( $sType, $name, $sTag );
             }
         }
         
@@ -214,7 +213,7 @@ class parsers {
      *
      * @return void
      */
-    protected function clearThemeTree() {
+    private function clearThemeTree() {
         $this->arrThemeTree = [ ];
     }
     
@@ -224,7 +223,7 @@ class parsers {
      * @param array $arrTheme            
      * @return void
      */
-    protected function topTheme($arrTheme) {
+    private function topTheme($arrTheme) {
         $this->arrThemeTree [] = $arrTheme;
     }
     
@@ -899,7 +898,7 @@ class parsers {
      *
      * @return string
      */
-    protected function compileThemeTree() {
+    private function compileThemeTree() {
         // 逐个编译
         $sCache = '';
         foreach ( $this->arrThemeTree as $arrTheme ) {
@@ -916,7 +915,7 @@ class parsers {
      * @param string $sCompiled            
      * @return void
      */
-    protected function makeCacheFile($sCachePath, &$sCompiled) {
+    private function makeCacheFile($sCachePath, &$sCompiled) {
         ! is_file ( $sCachePath ) && ! is_dir ( dirname ( $sCachePath ) ) && directory::create ( dirname ( $sCachePath ) );
         file_put_contents ( $sCachePath, $sCompiled );
     }
@@ -927,7 +926,7 @@ class parsers {
      * @param string $sCompiled            
      * @return void
      */
-    protected function findNodeTag(&$sCompiled) {
+    private function findNodeTag(&$sCompiled) {
         // 设置一个栈
         $this->oNodeStack = new stack ( 'array' );
         
@@ -992,7 +991,7 @@ class parsers {
      * @param string $sCompiled            
      * @return void
      */
-    protected function packNode(&$sCompiled) {
+    private function packNode(&$sCompiled) {
         if ($this->bJsNode === true) {
             $arrNodeTag = compilers::getJsTagHelps ();
             $sCompiler = 'Js';
@@ -1083,7 +1082,7 @@ class parsers {
      * @param array $arrTailTag            
      * @return boolean
      */
-    protected function findHeadTag($arrTag, $arrTailTag) {
+    private function findHeadTag($arrTag, $arrTailTag) {
         if ($arrTailTag ['type'] != 'tail') {
             throw new InvalidArgumentException ( __ ( '参数必须是一个尾标签' ) );
         }
@@ -1096,7 +1095,7 @@ class parsers {
      * @param string $sType            
      * @return array
      */
-    protected function getTag($sType) {
+    private function getTag($sType) {
         return $this->arrTag [$sType . ($this->classsFacesOption ( 'theme_tag_note' ) === true ? '_node' : '')];
     }
     
