@@ -36,7 +36,7 @@ class Rss_test extends testcase {
     private $objRss;
     
     /**
-     * xml 配置项
+     * rss 配置项
      *
      * @var array
      */
@@ -46,7 +46,7 @@ class Rss_test extends testcase {
     ];
     
     /**
-     * xml 数据项
+     * rss 数据项
      *
      * @var array
      */
@@ -81,15 +81,15 @@ class Rss_test extends testcase {
     }
     
     /**
-     * 生成 xml
+     * 生成 rss
      *
      * @return void
      */
     public function test() {
         $this->objRss->addItem ( $this->arrItems );
-        $strXml = $this->objRss->run ( false );
-        $this->assertStringStartsWith ( '<?xml version="1.0" encoding="UTF-8"?>', $strXml );
-        $this->assertContains ( '<comments>苹果是一种水果，也是现在最流行的手机提供商.</comments>', $strXml );
-        $this->assertStringEndsWith ( '</rss>', $strXml );
+        $strRss = $this->objRss->run ( false );
+        $this->assertStringStartsWith ( '<?xml version="1.0" encoding="UTF-8"?>', $strRss );
+        $this->assertContains ( '<comments>苹果是一种水果，也是现在最流行的手机提供商.</comments>', $strRss );
+        $this->assertStringEndsWith ( '</rss>', $strRss );
     }
 }

@@ -15,7 +15,7 @@ namespace queryyetsimple\filesystem;
 ##########################################################
 queryphp;
 
-use queryyetsimple\operating\system;
+use DirectoryIterator;
 
 /**
  * 文件夹
@@ -32,18 +32,18 @@ class directory {
      *
      * @param string $sDir            
      * @param number $nMode            
-     * @return boolean
+     * @return void
      */
     public static function create($sDir, $nMode = 0777) {
         if (is_dir ( $sDir )) {
-            return true;
+            return;
         }
         
         if (is_string ( $sDir )) {
             $sDir = explode ( '/', str_replace ( '\\', '/', trim ( $sDir, '/' ) ) );
         }
         
-        $sCurDir = system::isWindows () ? '' : '/';
+        $sCurDir = DIRECTORY_SEPARATOR == '\\' ? '' : '/';
         
         foreach ( $sDir as $nKey => $sTemp ) {
             $sCurDir .= $sTemp . '/';
@@ -54,8 +54,6 @@ class directory {
                 @mkdir ( $sCurDir, $nMode );
             }
         }
-        
-        return true;
     }
     
     /**
@@ -63,33 +61,30 @@ class directory {
      *
      * @param string $sDir            
      * @param boolean $bRecursive            
-     * @return bool
+     * @return void
      */
     public static function delete($sDir, $bRecursive = false) {
         if (! file_exists ( $sDir ) || ! is_dir ( $sDir ))
-            return true;
+            return;
         
         if (! $bRecursive) {
-            return rmdir ( $sDir );
+            rmdir ( $sDir );
         } else {
-            $hDir = opendir ( $sDir );
-            while ( ($sFile = readdir ( $hDir )) !== false ) {
-                if (in_array ( $sFile, [ 
-                        '.',
-                        '..' 
-                ] )) {
+            $objDir = new DirectoryIterator ( $sDir );
+            foreach ( $objDir as $objFile ) {
+                if ($objFile->isDot ())
                     continue;
-                }
-                $sFile = $sDir . '/' . $sFile;
-                if (is_file ( $sFile )) {
-                    if (! unlink ( $sFile ))
-                        return false;
-                } elseif (is_dir ( $sFile )) {
-                    return static::delete ( $sFile, $bRecursive );
+                
+                if ($objFile->isFile ()) {
+                    if (! unlink ( $objFile->getRealPath () ))
+                        return;
+                } 
+
+                elseif ($objFile->isDir ()) {
+                    static::delete ( $objFile->getRealPath (), $bRecursive );
                 }
             }
-            closedir ( $hDir );
-            return rmdir ( $sDir );
+            rmdir ( $sDir );
         }
     }
     
@@ -98,12 +93,11 @@ class directory {
      *
      * @param string $sSourcePath            
      * @param string $sTargetPath            
-     * @return bool
+     * @param array $arrFilter            
+     * @return void
      */
     public static function copy($sSourcePath, $sTargetPath, $arrFilter = []) {
         $arrFilter = array_merge ( [ 
-                '.',
-                '..',
                 '.svn',
                 '.git',
                 'node_modules',
@@ -111,93 +105,85 @@ class directory {
         ], $arrFilter );
         
         if (! is_dir ( $sSourcePath )) {
-            return false;
+            return;
         }
         if (file_exists ( $sTargetPath )) {
-            return false;
+            return;
         }
         
-        $hDir = opendir ( $sSourcePath );
-        while ( ($sFile = readdir ( $hDir )) !== false ) {
-            if (in_array ( $sFile, $arrFilter )) {
+        $objDir = new DirectoryIterator ( $sSourcePath );
+        foreach ( $objDir as $objFile ) {
+            if ($objFile->isDot () || in_array ( $objFile->getFilename (), $arrFilter ))
                 continue;
-            }
             
-            $sFile = $sSourcePath . '/' . $sFile;
-            $sNewPath = $sTargetPath . '/' . $sFile;
+            $sNewPath = $sTargetPath . '/' . $objFile->getFilename ();
             
-            if (is_file ( $sFile )) {
+            if ($objFile->isFile ()) {
                 if (! is_dir ( $sNewPath )) {
                     static::create ( dirname ( $sNewPath ) );
                 }
-                if (! copy ( $sFile, $sNewPath )) {
-                    return false;
+                if (! copy ( $objFile->getRealPath (), $sNewPath )) {
+                    return;
                 }
             } 
 
-            elseif (is_dir ( $sFile )) {
-                if (! static::copy ( $sFile, $sNewPath )) {
-                    return false;
+            elseif ($objFile->isDir ()) {
+                if (! static::copy ( $objFile->getRealPath (), $sNewPath )) {
+                    return;
                 }
             }
         }
-        closedir ( $hDir );
-        
-        return true;
     }
     
     /**
      * 只读取一级目录
      *
-     * @param 目录 $sDir            
-     * @param array $arrIn
-     *            fullpath 是否返回全部路径
-     *            returndir 返回目录
+     * @param string $sDir            
+     * @param
+     *            string strReturnType
+     * @param boolean $booFullpath            
+     * @param array $arrFilter            
      * @return array
      */
-    public static function lists($sDir, $arrIn = []) {
-        $arrIn = array_merge ( [ 
-                'fullpath' => false,
-                'return' => 'dir', // file dir both
-                'filterdir' => [ 
-                        '.',
-                        '..',
-                        '.svn',
-                        '.git',
-                        'node_modules',
-                        '.gitkeep' 
-                ],
-                'filterext' => [ ] 
-        ], $arrIn );
+    public static function lists($sDir, $strReturnType = 'dir', $booFullpath = false, $arrFilter = [], $arrFilterExt = []) {
+        $arrFilter = array_merge ( [ 
+                '.svn',
+                '.git',
+                'node_modules',
+                '.gitkeep' 
+        ], $arrFilter );
+        
         $arrReturnData = [ 
                 'file' => [ ],
                 'dir' => [ ] 
         ];
+        
         if (is_dir ( $sDir )) {
             $arrFiles = [ ];
-            $hDir = opendir ( $sDir );
-            while ( ($sFile = readdir ( $hDir )) !== false ) {
-                if (in_array ( $sFile, $arrIn ['filterdir'] )) {
+            
+            $objDir = new DirectoryIterator ( $sDir );
+            foreach ( $objDir as $objFile ) {
+                if ($objFile->isDot () || in_array ( $objFile->getFilename (), $arrFilter ))
                     continue;
-                }
-                if (is_dir ( $sDir . "/" . $sFile ) && in_array ( $arrIn ['return'], [ 
+                
+                if ($objFile->isDir () && in_array ( $strReturnType, [ 
                         'dir',
                         'both' 
                 ] )) {
-                    $arrReturnData ['dir'] [] = ($arrIn ['fullpath'] ? $sDir . "/" : '') . $sFile;
+                    $arrReturnData ['dir'] [] = $booFullpath ? $objFile->getRealPath () : $objFile->getFilename ();
                 }
-                if (is_file ( $sDir . "/" . $sFile ) && in_array ( $arrIn ['return'], [ 
+                
+                if ($objFile->isFile () && in_array ( $strReturnType, [ 
                         'file',
                         'both' 
-                ] ) && (! $arrIn ['filterext'] ? true : (in_array ( file::getExtName ( $sFile, 2 ), $arrIn ['filterext'] ) ? false : true))) {
-                    $arrReturnData ['file'] [] = ($arrIn ['fullpath'] ? $sDir . "/" : '') . $sFile;
+                ] ) && (! $arrFilterExt || ! in_array ( file::getExtName ( $objFile->getFilename (), 2 ), $arrFilterExt ))) {
+                    $arrReturnData ['file'] [] = $booFullpath ? $objFile->getRealPath () : $objFile->getFilename ();
                 }
             }
-            closedir ( $hDir );
             
-            if ($arrIn ['return'] == 'file') {
+            if ($strReturnType == 'file') {
                 return $arrReturnData ['file'];
-            } elseif ($arrIn ['return'] == 'dir') {
+            } elseif ($strReturnType == 'dir') {
                 return $arrReturnData ['dir'];
             } else {
                 return $arrReturnData;
@@ -290,15 +276,10 @@ class directory {
      */
     public static function distributed($intDataId) {
         $intDataId = abs ( intval ( $intDataId ) );
-        $intDataId = sprintf ( "%09d", $intDataId );
-        
-        exit ();
-        $nDir1 = substr ( $nUid, 0, 3 );
-        $nDir2 = substr ( $nUid, 3, 2 );
-        $nDir3 = substr ( $nUid, 5, 2 );
+        $intDataId = sprintf ( "%09d", $intDataId ); // 格式化为 9 位数，前面不够填充 0
         return [ 
-                $nDir1 . '/' . $nDir2 . '/' . $nDir3 . '/',
-                substr ( $nUid, - 2 ) 
+                substr ( $intDataId, 0, 3 ) . '/' . substr ( $intDataId, 3, 2 ) . '/' . substr ( $intDataId, 5, 2 ) . '/',
+                substr ( $intDataId, - 2 ) 
         ];
     }
 }

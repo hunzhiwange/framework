@@ -114,22 +114,19 @@ class tool {
                 'js' => [ ],
                 'php' => [ ] 
         ];
-        $arrParams = [ 
-                'return' => 'file',
-                'filterext' => [ 
-                        'mo' 
-                ],
-                'fullpath' => true 
-        ];
         foreach ( $I18nDir as $sDir ) {
             if (! is_dir ( $sDir )) {
                 continue;
             }
             if (is_dir ( $sDir . '/js' )) {
-                $arrFiles ['js'] = array_merge ( $arrFiles ['js'], directory::lists ( $sDir . '/js', $arrParams ) );
+                $arrFiles ['js'] = array_merge ( $arrFiles ['js'], directory::lists ( $sDir . '/js', 'file', true, [ ], [ 
+                        'mo' 
+                ] ) );
             }
             if (is_dir ( $sDir . '/php' )) {
-                $arrFiles ['php'] = array_merge ( $arrFiles ['php'], directory::lists ( $sDir . '/php', $arrParams ) );
+                $arrFiles ['php'] = array_merge ( $arrFiles ['php'], directory::lists ( $sDir . '/php', 'file', true, [ ], [ 
+                        'mo' 
+                ] ) );
             }
         }
         

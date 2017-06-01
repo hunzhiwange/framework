@@ -155,7 +155,7 @@ class parsers {
     public function __construct() {
         // 注册编译器
         $arrMethods = get_class_methods ( __NAMESPACE__ . '\compilers' );
-        print_r ( $arrMethods );
+        
         // 编译器别名
         $arrCodeMap = compilers::getCodeMapHelps ();
         $arrNodeMap = compilers::getNodeMapHelps ();
