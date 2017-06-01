@@ -106,7 +106,7 @@ class app {
     /**
      * 构造函数
      *
-     * @param queryyetsimple\mvc\project $objProject            
+     * @param \queryyetsimple\mvc\project $objProject            
      * @param string $sApp            
      * @param array $arrOption            
      * @return app
@@ -135,7 +135,7 @@ class app {
      * 初始化应用
      *
      * @param string $sApp            
-     * @return \queryyetsimple\mvc\app
+     * @return $this
      */
     public function bootstrap($sApp = null) {
         if (! is_null ( $sApp ))
@@ -148,7 +148,7 @@ class app {
     /**
      * 注册命名空间
      *
-     * @return \queryyetsimple\mvc\app
+     * @return $this
      */
     public function namespaces() {
         foreach ( option::gets ( '~apps~' ) as $strApp ) {
@@ -165,7 +165,7 @@ class app {
     /**
      * 注册应用提供者
      *
-     * @return \queryyetsimple\mvc\app
+     * @return $this
      */
     public function registerAppProvider() {
         $this->objProject->registerAppProvider ( option::gets ( 'provider' ), option::gets ( 'provider_with_cache' ) );
@@ -492,7 +492,7 @@ class app {
      * @return void
      */
     private function loadBootstrapRun() {
-        if (is_file ( ($strBootstrap = (defined ( 'PATH_APP_BOOTSTRAP' ) ? PATH_APP_BOOTSTRAP : $this->objProject->path_application . '/' . $this->strApp . '/bootstrap.php')) )) {
+        if (is_file ( ($strBootstrap = $this->objProject->path_app_bootstrap ?  : $this->objProject->path_application . '/' . $this->strApp . '/bootstrap.php') )) {
             require $strBootstrap;
         }
     }

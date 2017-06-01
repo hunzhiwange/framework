@@ -833,7 +833,7 @@ class router {
      * @return void
      */
     private function parseCliConsole() {
-        define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/console/bootstrap.php' );
+        static::projectContainer ()->instance ( 'path_app_bootstrap', dirname ( __DIR__ ) . '/bootstrap/console/bootstrap.php' );
         
         // 注册默认应用程序
         $_GET [static::APP] = '~_~@console';
@@ -847,7 +847,7 @@ class router {
      * @return void
      */
     private function parseCliPhpunit() {
-        define ( 'PATH_APP_BOOTSTRAP', dirname ( __DIR__ ) . '/bootstrap/testing/bootstrap.php' );
+        static::projectContainer ()->instance ( 'path_app_bootstrap', dirname ( __DIR__ ) . '/bootstrap/testing/bootstrap.php' );
         
         // 注册默认应用程序
         $_GET [static::APP] = '~_~@testing';
@@ -861,7 +861,7 @@ class router {
      * @return void
      */
     private function parseCliPhpunitSystem() {
-        define ( 'PATH_APP_BOOTSTRAP', dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/tests/bootstrap.php' );
+        static::projectContainer ()->instance ( 'path_app_bootstrap', dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/tests/bootstrap.php' );
         
         // 注册默认应用程序
         $_GET [static::APP] = '~_~@tests';
@@ -869,7 +869,7 @@ class router {
         $_GET [static::ACTION] = 'index';
         
         // 导入 tests 命名空间
-        psr4::import ( 'tests', dirname ( PATH_APP_BOOTSTRAP ) );
+        psr4::import ( 'tests', dirname ( static::projectContainer ()->path_app_bootstrap ) );
     }
     
     /**
