@@ -15,8 +15,6 @@ namespace queryyetsimple\debug;
 ##########################################################
 queryphp;
 
-use queryyetsimple\option\option;
-
 /**
  * 调试
  *

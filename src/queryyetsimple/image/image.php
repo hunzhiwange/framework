@@ -16,7 +16,6 @@ namespace queryyetsimple\image;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\filesystem\directory;
 
 /**
@@ -28,9 +27,7 @@ use queryyetsimple\filesystem\directory;
  * @version 1.0
  */
 class image {
-    
-    use classs_faces;
-    
+
     /**
      * 创建缩略图
      *

@@ -16,7 +16,6 @@ namespace queryyetsimple\assert;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 断言类
@@ -27,9 +26,7 @@ use queryyetsimple\classs\faces as classs_faces;
  * @version 1.0
  */
 class assert {
-    
-    use classs_faces;
-    
+
     /**
      * 是否开启断言
      *

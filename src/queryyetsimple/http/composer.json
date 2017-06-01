@@ -14,7 +14,15 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0"
+        "php": ">=5.5.0",
+        "queryyetsimple/mvc": "1.0.*",
+        "queryyetsimple/classs": "1.0.*",
+        "queryyetsimple/flow": "1.0.*",
+        "queryyetsimple/cookie": "1.0.*",
+        "queryyetsimple/assert": "1.0.*",
+        "queryyetsimple/router": "1.0.*",
+        "queryyetsimple/xml": "1.0.*",
+        "queryyetsimple/filesystem": "1.0.*"
     },
     "autoload": {
         "psr-4": {

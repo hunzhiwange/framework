@@ -16,7 +16,6 @@ namespace queryyetsimple\safe;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\http\request;
 use queryyetsimple\cookie\cookie;
 
@@ -29,9 +28,7 @@ use queryyetsimple\cookie\cookie;
  * @version 1.0
  */
 class safe {
-    
-    use classs_faces;
-    
+
     /**
      * 移除魔术方法转义
      *

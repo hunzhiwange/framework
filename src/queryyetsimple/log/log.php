@@ -19,7 +19,6 @@ use RuntimeException;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\option\option;
 use queryyetsimple\assert\assert;
-use queryyetsimple\mvc\project;
 use queryyetsimple\filesystem\directory;
 
 /**
@@ -232,6 +231,6 @@ class log {
      * @return void
      */
     public function initClasssFacesOption() {
-        return $this->initClasssFacesOptionDefault ()->setClasssFacesOption ( 'log\path_default', project::bootstrap ()->path_cache_log );
+        return $this->initClasssFacesOptionDefault ()->setClasssFacesOption ( 'log\path_default', static::projectContainer ()->path_cache_log );
     }
 }

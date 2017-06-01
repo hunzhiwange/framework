@@ -14,7 +14,10 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0"
+        "php": ">=5.5.0",
+        "coderkungfu/php-queue": "^0.9.1",
+        "queryyetsimple/option": "1.0.*",
+        "clio/clio": "@stable"
     },
     "autoload": {
         "psr-4": {

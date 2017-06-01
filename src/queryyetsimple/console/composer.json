@@ -14,7 +14,9 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0"
+        "php": ">=5.5.0",
+        "queryyetsimple/string": "1.0.*",
+        "symfony/console": "3.0.*"
     },
     "autoload": {
         "psr-4": {

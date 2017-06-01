@@ -72,7 +72,7 @@
     },
     "autoload": {
         "files": [
-            "src\\queryyetsimple\\bootstrap\\function.php"
+            "src\\queryyetsimple\\helper\\function.php"
         ],
         "psr-4": {
             "queryyetsimple\\": "src\\queryyetsimple"

@@ -19,7 +19,6 @@ use Closure;
 use ReflectionFunction;
 use BadMethodCallException;
 use RuntimeException;
-use queryyetsimple\assert\assert;
 use queryyetsimple\option\option;
 use queryyetsimple\mvc\project;
 
@@ -69,7 +68,6 @@ trait faces {
      * @return void
      */
     public static function registerFaces($strName, callable $calFaces) {
-        assert::string ( $strName );
         static::$arrFaces [$strName] = $calFaces;
     }
     
@@ -80,7 +78,6 @@ trait faces {
      * @return bool
      */
     public static function hasFaces($strName) {
-        assert::string ( $strName );
         return isset ( static::$arrFaces [$strName] );
     }
     
@@ -175,7 +172,7 @@ trait faces {
         
         $this->mergeClasssFacesOption ();
         
-        if (! class_exists ( '\queryyetsimple\option\option' )) {
+        if (! class_exists ( 'queryyetsimple\option\option' )) {
             return $this;
         }
         

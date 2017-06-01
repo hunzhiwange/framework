@@ -19,7 +19,6 @@ use ReflectionClass;
 use InvalidArgumentException;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\mvc\project;
 
 /**
  * 辅助函数

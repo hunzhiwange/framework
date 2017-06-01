@@ -17,7 +17,6 @@ queryphp;
 
 use InvalidArgumentException;
 use RuntimeException;
-use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 文件

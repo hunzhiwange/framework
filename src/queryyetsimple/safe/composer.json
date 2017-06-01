@@ -14,7 +14,9 @@
         }
     ],
     "require": {
-        "php": ">=5.5.0"
+        "php": ">=5.5.0",
+        "queryyetsimple/cookie": "1.0.*",
+        "queryyetsimple/request": "1.0.*"
     },
     "autoload": {
         "psr-4": {

@@ -15,7 +15,6 @@ namespace queryyetsimple\encryption;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\option\option;
 
 /**
@@ -27,8 +26,6 @@ use queryyetsimple\option\option;
  * @version 1.0
  */
 class encryption {
-    
-    use classs_faces;
     
     /**
      * 来自 Discuz 经典 PHP 加密算法

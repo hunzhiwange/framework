@@ -15,7 +15,7 @@ namespace queryyetsimple\event;
 ##########################################################
 queryphp;
 
-use queryyetsimple\mvc\project;
+use queryyetsimple\support\interfaces\container;
 
 /**
  * 事件
@@ -30,7 +30,7 @@ class event {
     /**
      * 项目容器
      *
-     * @var \queryyetsimple\mvc\project
+     * @var \queryyetsimple\support\interfaces\container
      */
     protected $objProject;
     
@@ -51,10 +51,10 @@ class event {
     /**
      * 创建一个事件解析器
      *
-     * @param \queryyetsimple\mvc\project $objProject            
+     * @param \queryyetsimple\support\interfaces\container $objProject            
      * @return void
      */
-    public function __construct(project $objProject) {
+    public function __construct(container $objProject) {
         $this->objProject = $objProject;
     }
     
