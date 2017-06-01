@@ -116,10 +116,10 @@ abstract class command extends SymfonyCommand {
         if (! empty ( $this->strSignature )) {
             $this->fromSignature ();
         } else {
-            parent::__construct ( $this->getName () );
+            parent::__construct ( $this->getNames () );
         }
-        $this->setDescription ( $this->getDescription () );
-        $this->setHelp ( $this->getHelp () );
+        $this->setDescription ( $this->getDescriptions () );
+        $this->setHelp ( $this->getHelps () );
         if (empty ( $this->strSignature )) {
             $this->specifyParameters ();
         }
@@ -459,7 +459,7 @@ abstract class command extends SymfonyCommand {
      *
      * @return string
      */
-    protected function getName() {
+    protected function getNames() {
         return $this->strName;
     }
     
@@ -468,7 +468,7 @@ abstract class command extends SymfonyCommand {
      *
      * @return string
      */
-    protected function getDescription() {
+    protected function getDescriptions() {
         return $this->strDescription;
     }
     
@@ -477,7 +477,7 @@ abstract class command extends SymfonyCommand {
      *
      * @return string
      */
-    protected function getHelp() {
+    protected function getHelps() {
         return $this->strHelp;
     }
 }

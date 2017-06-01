@@ -38,13 +38,14 @@ return [
          * ---------------------------------------------------------------
          *
          * 所有消息队列的连接参数，支持 + 语法合并
+         * 如果 redis 设置了认证密码，请加上 password 参数
          */
         '+connect' => [ 
                 '+redis' => [ 
                         'servers' => [ 
                                 'host' => env ( 'queue_redis_host', '127.0.0.1' ),
-                                'port' => env ( 'queue_redis_port', 6379 ),
-                                'password' => env ( 'queue_redis_password', null ) 
+                                'port' => env ( 'queue_redis_port', 6379 )
+                                /* 'password' => env ( 'queue_redis_password', false ) */
                         ],
                         'options' => [ ] 
                 ] 
