@@ -31,7 +31,7 @@ class system {
      * @return boolean
      */
     public static function isWindows() {
-        return DIRECTORY_SEPARATOR == '\\' ? true : false;
+        return DIRECTORY_SEPARATOR === '\\';
     }
     
     /**
@@ -49,7 +49,7 @@ class system {
      * @return boolean
      */
     public static function isMac() {
-        return strstr ( PHP_OS, 'Darwin' ) ? true : false;
+        return strstr ( PHP_OS, 'Darwin' );
     }
     
     /**
