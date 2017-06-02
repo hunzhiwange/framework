@@ -22,5 +22,8 @@ queryphp;
  * @version 4.0
  */
 putenv ( 'queryphp_phpunit_system=(true)' );
-$objComposer = require dirname( dirname( dirname( __DIR__ ) ) ) . '/vendor/autoload.php';
-queryyetsimple\mvc\project::bootstrap ( $objComposer )->run ();
+putenv ( 'app_name=~_~@tests' );
+putenv ( 'controller_name=bootstrap' );
+putenv ( 'action_name=index' );
+putenv ( 'app_bootstrap=' . __DIR__ . '/tests/bootstrap.php' );
+require dirname( dirname( dirname( __DIR__ ) ) ) . '/www/index.php';

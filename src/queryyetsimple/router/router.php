@@ -188,7 +188,7 @@ class router {
     /**
      * 执行请求
      *
-     * @return \queryyetsimple\mvc\request
+     * @return $this
      */
     public function run() {
         // 非命令行模式
@@ -244,6 +244,8 @@ class router {
         if ($this->strApp) {
             return $this->strApp;
         } else {
+            if (($this->strApp = env ( 'app_name' )))
+                return $this->strApp;
             $sVar = static::APP;
             return $this->strApp = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_app' ));
         }
@@ -258,6 +260,8 @@ class router {
         if ($this->strController) {
             return $this->strController;
         } else {
+            if (($this->strController = env ( 'controller_name' )))
+                return $this->strController;
             $sVar = static::CONTROLLER;
             return $this->strController = $_GET [$sVar] = ! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_controller' );
         }
@@ -272,6 +276,8 @@ class router {
         if ($this->strAction) {
             return $this->strAction;
         } else {
+            if (($this->strAction = env ( 'action_name' )))
+                return $this->strAction;
             $sVar = static::ACTION;
             return $this->strAction = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_action' ));
         }
@@ -811,65 +817,17 @@ class router {
         switch (true) {
             // console 命令行
             case env ( 'queryphp_console' ) :
-                $this->parseCliConsole ();
                 break;
             // phpunit 命令行
             case env ( 'queryphp_phpunit' ) :
-                $this->parseCliPhpunit ();
                 break;
             // phpunit system 命令行
             case env ( 'queryphp_phpunit_system' ) :
-                $this->parseCliPhpunitSystem ();
                 break;
             default :
                 $this->parseCliDefault ();
                 break;
         }
-    }
-    
-    /**
-     * 注册 console 引导入口
-     *
-     * @return void
-     */
-    private function parseCliConsole() {
-        static::projectContainer ()->instance ( 'path_app_bootstrap', dirname ( __DIR__ ) . '/bootstrap/console/bootstrap.php' );
-        
-        // 注册默认应用程序
-        $_GET [static::APP] = '~_~@console';
-        $_GET [static::CONTROLLER] = 'bootstrap';
-        $_GET [static::ACTION] = 'index';
-    }
-    
-    /**
-     * 注册 phpunit 引导入口
-     *
-     * @return void
-     */
-    private function parseCliPhpunit() {
-        static::projectContainer ()->instance ( 'path_app_bootstrap', dirname ( __DIR__ ) . '/bootstrap/testing/bootstrap.php' );
-        
-        // 注册默认应用程序
-        $_GET [static::APP] = '~_~@testing';
-        $_GET [static::CONTROLLER] = 'bootstrap';
-        $_GET [static::ACTION] = 'index';
-    }
-    
-    /**
-     * 注册 phpunit 内部引导入口
-     *
-     * @return void
-     */
-    private function parseCliPhpunitSystem() {
-        static::projectContainer ()->instance ( 'path_app_bootstrap', dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/tests/bootstrap.php' );
-        
-        // 注册默认应用程序
-        $_GET [static::APP] = '~_~@tests';
-        $_GET [static::CONTROLLER] = 'bootstrap';
-        $_GET [static::ACTION] = 'index';
-        
-        // 导入 tests 命名空间
-        psr4::import ( 'tests', dirname ( static::projectContainer ()->path_app_bootstrap ) );
     }
     
     /**

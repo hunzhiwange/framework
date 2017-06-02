@@ -492,7 +492,7 @@ class app {
      * @return void
      */
     private function loadBootstrapRun() {
-        if (is_file ( ($strBootstrap = $this->objProject->path_app_bootstrap ?  : $this->objProject->path_application . '/' . $this->strApp . '/bootstrap.php') )) {
+        if (is_file ( ($strBootstrap = env ( 'app_bootstrap' ) ?  : $this->objProject->path_application . '/' . $this->strApp . '/bootstrap.php') )) {
             require $strBootstrap;
         }
     }
@@ -781,12 +781,35 @@ class app {
      * @return void
      */
     private function defaultEnvironment() {
-        foreach ( [ 
+        foreach ( [
+                // 调试模式
                 'app_debug' => false,
+                
+                // 项目运行环境 production : 生成环境 testing : 测试环境 development : 开发环境
                 'app_development' => 'production',
+                
+                // app 引导文件
+                'app_bootstrap' => '',
+                
+                // 绑定 app_name
+                'app_name' => '',
+                
+                // 绑定 controller_name
+                'controller_name' => '',
+                
+                // 绑定 action_name
+                'action_name' => '',
+                
+                // 程序版本
                 'queryphp_version' => '4.0',
+                
+                // 命令行模式
                 'queryphp_console' => false,
+                
+                // phpunit 测试模式
                 'queryphp_phpunit' => false,
+                
+                // phpunit_system 模式
                 'queryphp_phpunit_system' => false 
         ] as $strName => $mixValue ) {
             if (is_null ( env ( $strName ) ))
