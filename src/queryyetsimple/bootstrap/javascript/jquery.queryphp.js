@@ -2,16 +2,16 @@
 // ©2010-2017 http://queryphp.com All rights reserved.
 
 /*
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-*/
+ ##########################################################
+ #   ____                          ______  _   _ ______   #
+ #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ #       \__   | \___ |_|    \__  || |    | | | || |      #
+ #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ #                          |___ /  Since 2010.10.03      #
+ ##########################################################
+ */
 
 /**
  * QueryPHP Javascript V1.0
@@ -348,6 +348,8 @@
 
         /**
          * 初始化
+         * 
+         * @return void
          */
         __init : function() {
             // 检查语言包
@@ -362,7 +364,7 @@
          * 
          * @param object
          *            objOpt 修改配置
-         * @returns
+         * @return void
          */
         options : function(objOpt) {
             if (typeof objOpt != 'object') {
@@ -383,7 +385,7 @@
          *            strUrl 初始化URL
          * @param object
          *            objParams 附加参数
-         * @returns string
+         * @return string
          */
         url : function(strUrl, objParams) {
             var objUrlData = {
@@ -465,7 +467,7 @@
          * 
          * @param format
          * @param args
-         * @returns string
+         * @return string
          */
         sprintf : function() {
             if (arguments.length == 0) {
@@ -481,7 +483,7 @@
          *            strName 语言名字
          * @param object
          *            objData 语言包数据
-         * @returns
+         * @return  void
          */
         i18nPackage : function(strName, objData) {
             if (typeof strName != 'string' || !strName) {
@@ -506,7 +508,7 @@
          * 
          * @param string
          *            arguments[0] 语句
-         * @returns
+         * @return string
          */
         i18n : function() {
             if (arguments.length == 0) {
@@ -535,7 +537,7 @@
          *            id ID、jquery对象或者DOM
          * @param $object
          *            objData 数据
-         * @returns
+         * @return string
          */
         template : function(mixId, $objData) {
             "use strict";
@@ -580,10 +582,12 @@
     /**
      * 入口文件
      * 
-     * 封装JS语言包和输出URL
+     * 封装 JS 语言包和输出 URL 等
      * 
+     * @param mixed mixOptions
      * @author 小牛
      * @date 2016-12-13
+     * @return mixed
      */
     $.fn.queryphp = function(mixOptions) {
         if (!(this.objInstance instanceof queryphp)) {
