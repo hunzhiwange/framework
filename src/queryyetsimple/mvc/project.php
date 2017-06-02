@@ -369,8 +369,8 @@ class project extends container {
      */
     private function runBaseProvider($strAction, $strType = null, $arrProvider = null) {
         helper::registerProvider ( $this, $this->path_runtime . '/provider/' . ($strType ?  : 'base') . '.' . $strAction . '.php', array_map ( function ($strPackage) use($strAction) {
-            return sprintf ( 'queryyetsimple\%s\provider\%s', $strPackage, $strAction );
-        }, $arrProvider ?  : static::$arrBaseProvider ), env('app_development') === 'development' );
+            return (strpos ( $strPackage, '\\' ) === false ? 'queryyetsimple\\' : '') . sprintf ( '%s\provider\%s', $strPackage, $strAction );
+        }, $arrProvider ?  : static::$arrBaseProvider ), env ( 'app_development' ) === 'development' );
         return $this;
     }
 }

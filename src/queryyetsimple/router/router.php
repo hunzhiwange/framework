@@ -814,28 +814,6 @@ class router {
      * @return void
      */
     private function parseCli() {
-        switch (true) {
-            // console 命令行
-            case env ( 'queryphp_console' ) :
-                break;
-            // phpunit 命令行
-            case env ( 'queryphp_phpunit' ) :
-                break;
-            // phpunit system 命令行
-            case env ( 'queryphp_phpunit_system' ) :
-                break;
-            default :
-                $this->parseCliDefault ();
-                break;
-        }
-    }
-    
-    /**
-     * 分析默认 cli 参数
-     *
-     * @return void
-     */
-    private function parseCliDefault() {
         $arrArgv = isset ( $GLOBALS ['argv'] ) ? $GLOBALS ['argv'] : [ ];
         
         if (! isset ( $arrArgv ) || empty ( $arrArgv )) {

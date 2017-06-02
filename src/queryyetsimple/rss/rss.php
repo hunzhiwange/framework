@@ -72,7 +72,8 @@ class rss {
      * @return void
      */
     public function run($booDisplay = true) {
-        header ( "Content-Type: text/xml; charset=utf-8" );
+        if (! headers_sent ())
+            header ( "Content-Type: text/xml; charset=utf-8" );
         $sRss = $this->header ();
         $sRss .= $this->body ();
         $sRss .= $this->footer ();
