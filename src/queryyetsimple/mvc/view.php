@@ -92,10 +92,10 @@ class view {
     /**
      * 获取变量赋值
      *
-     * @param string $sName            
+     * @param string|null $sName            
      * @return mixed
      */
-    public function getAssign($sName) {
+    public function getAssign($sName = null) {
         return theme::getVars ( $sName );
     }
     

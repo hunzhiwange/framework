@@ -128,10 +128,12 @@ class theme {
     /**
      * 获取变量值
      *
-     * @param string $sName            
+     * @param string|null $sName            
      * @return mixed
      */
-    public function getVar($sName) {
+    public function getVar($sName = null) {
+        if (is_null ( $sName ))
+            return $this->arrVar;
         return isset ( $this->arrVar [$sName] ) ? $this->_arrVar [$sName] : null;
     }
     

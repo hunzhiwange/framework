@@ -462,13 +462,68 @@ class router {
         }
         
         // 子域名支持
-        if ($this->classsFacesOption ( 'url\make_subdomain_on' ) === true) {
+        if ($this->classsFacesOption ( 'url\make_subdomain_on' ) === true && $this->classsFacesOption ( 'url\router_domain_top' )) {
             if ($in ['subdomain']) {
                 $sUrl = $this->urlWithDomain ( $in ['subdomain'] ) . $sUrl;
             }
         }
         
         return $sUrl;
+    }
+    
+    /**
+     * 路由 URL 跳转
+     *
+     * @param string $sUrl            
+     * @param 额外参数 $in
+     *            params url 额外参数
+     *            message 消息
+     *            time 停留时间，0表示不停留
+     * @return void
+     */
+    public function redirect($sUrl, $in = []) {
+        $in = array_merge ( [ 
+                'params' => [ ],
+                'message' => '',
+                'time' => 0 
+        ], $in );
+        
+        $this->urlRedirect ( $this->url ( $sUrl, $in ['params'] ), $in ['time'], $in ['message'] );
+    }
+    
+    /**
+     * URL 重定向
+     *
+     * @param string $sUrl            
+     * @param number $nTime            
+     * @param string $sMsg            
+     * @return void
+     */
+    public function urlRedirect($sUrl, $nTime = 0, $sMsg = '') {
+        $sUrl = str_replace ( [ 
+                "\n",
+                "\r" 
+        ], '', $sUrl ); // 多行URL地址支持
+        if (empty ( $sMsg )) {
+            $sMsg = 'Please wait for a while...';
+        }
+        
+        if (! headers_sent ()) {
+            if (0 == $nTime) {
+                header ( "Location:" . $sUrl );
+            } else {
+                header ( "refresh:{$nTime};url={$sUrl}" );
+                include dirname ( __DIR__ ) . '/bootstrap/template/url.php'; // 包含跳转页面模板
+            }
+            exit ();
+        } else {
+            $sHeader = "<meta http-equiv='Refresh' content='{$nTime};URL={$sUrl}'>";
+            if ($nTime == 0) {
+                $sHeader = '';
+            }
+            include dirname ( __DIR__ ) . '/bootstrap/template/url.php'; // 包含跳转页面模板
+            exit ();
+        }
     }
     
     /**

@@ -69,6 +69,13 @@ class response {
     private $intCode = 200;
     
     /**
+     * 消息内容
+     *
+     * @var int
+     */
+    private $strMessage = '';
+    
+    /**
      * 响应头
      *
      * @var array
@@ -114,13 +121,6 @@ class response {
     ];
     
     /**
-     * 视图实例
-     *
-     * @var queryyetsimple\mvc\view
-     */
-    private static $objView = null;
-    
-    /**
      * 自定义响应方法
      *
      * @var array
@@ -134,20 +134,30 @@ class response {
      */
     protected $arrClasssFacesOption = [ 
             'view\action_fail' => 'public+fail',
-            'view\action_success' => 'public+success' 
+            'view\action_success' => 'public+success',
+            'default_response' => 'default' 
     ];
+    
+    /**
+     * 构造函数
+     *
+     * @return void
+     */
+    public function __construct() {
+    }
     
     /**
      * 创建一个响应
      *
      * @param mixed $mixData            
      * @param int $intCode            
+     * @param string $strMessage            
      * @param array $arrHeader            
      * @param array $arrOption            
      * @return $this
      */
-    public function make($mixData = '', $intCode = 200, array $arrHeader = [], $arrOption = []) {
-        return $this->data ( $mixData )->code ( intval ( $intCode ) )->header ( $arrHeader )->option ( $arrOption );
+    public function make($mixData = '', $intCode = 200, $strMessage = '', array $arrHeader = [], $arrOption = []) {
+        return $this->data ( $mixData )->code ( intval ( $intCode ) )->message ( $strMessage )->header ( $arrHeader )->option ( $arrOption );
     }
     
     /**
@@ -323,6 +333,28 @@ class response {
     }
     
     /**
+     * 消息内容
+     *
+     * @param string $strMessage            
+     * @return $this
+     */
+    public function message($strMessage) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->strMessage = $strMessage;
+        return $this;
+    }
+    
+    /**
+     * 返回消息内容
+     *
+     * @return string
+     */
+    public function getMessage() {
+        return $this->strMessage;
+    }
+    
+    /**
      * contentType
      *
      * @param string $strContentType            
@@ -348,7 +380,7 @@ class response {
      * 编码设置
      *
      * @param string $strCharset            
-     * @return \queryyetsimple\http\response
+     * @return $this
      */
     public function charset($strCharset) {
         if ($this->checkFlowControl ())
@@ -376,6 +408,7 @@ class response {
         if ($this->checkFlowControl ())
             return $this;
         $this->strContent = $strContent;
+        $this->booParseContent = true;
         return $this;
     }
     
@@ -389,10 +422,12 @@ class response {
             $mixContent = $this->getData ();
             switch ($this->getResponseType ()) {
                 case 'json' :
-                    $arrOption = array_merge ( static::$arrJsonOption, $this->getOption () );
-                    $mixContent = json_encode ( $mixContent, $arrOption ['json_options'] );
-                    if ($arrOption ['json_callback']) {
-                        $mixContent = $arrOption ['json_callback'] . '(' . $mixContent . ');';
+                    if ($this->isApi ())
+                        $mixContent = $this->api ( $mixContent, null, null, true );
+                    else
+                        $mixContent = json_encode ( $mixContent, $this->getJsonOption ()['json_options'] );
+                    if ($this->getJsonOption ()['json_callback']) {
+                        $mixContent = $this->getJsonOption ()['json_callback'] . '(' . $mixContent . ');';
                     }
                     break;
                 case 'xml' :
@@ -405,10 +440,13 @@ class response {
                     fclose ( $resFp );
                     break;
                 case 'redirect' :
-                    static::redirects ( $this->getOption ( 'redirect_url' ), $this->getOption ( 'in' ) );
+                    router::redirects ( $this->getOption ( 'redirect_url' ), $this->getOption ( 'in' ) );
                     break;
                 case 'view' :
-                    $mixContent = static::$objView->display ( $this->getOption ( 'file' ), $this->getOption ( 'in' ) );
+                    if ($this->isApi ())
+                        $mixContent = $this->api ( static::projectContainer ()->view->getAssign (), null, null, true );
+                    else
+                        $mixContent = static::projectContainer ()->view->display ( $this->getOption ( 'file' ), $this->getOption ( 'in' ) );
                     break;
                 default :
                     if (is_callable ( $mixContent )) {
@@ -418,13 +456,13 @@ class response {
                         }
                         unset ( $mixTemp );
                     } elseif (is_array ( $mixContent )) {
-                        $mixContent = json_encode ( $mixContent, JSON_UNESCAPED_UNICODE );
+                        if (! $this->isApi ()) {
+                            $mixContent = json_encode ( $mixContent, $this->getJsonOption ()['json_options'] );
+                        }
                     }
-                    if (! is_scalar ( $mixContent )) {
-                        ob_start ();
-                        print_r ( $mixContent );
-                        $mixContent = ob_get_contents ();
-                        ob_end_clean ();
+                    $mixContent = $this->varString ( $mixContent );
+                    if ($this->isApi ()) {
+                        $mixContent = $this->api ( $mixContent, null, null, true );
                     }
                     break;
             }
@@ -432,6 +470,66 @@ class response {
             unset ( $mixContent );
         }
         return $this->strContent;
+    }
+    
+    /**
+     * api 接口形式
+     *
+     * @param mixed $mixContent            
+     * @param int|null $intCode            
+     * @param string|null $strMessage            
+     * @param boolean $booReturn            
+     * @return json string
+     */
+    public function api($mixContent, $intCode = null, $strMessage = null, $booReturn = false) {
+        $mixContent = $this->varString ( $mixContent );
+        
+        if (! is_null ( $intCode ))
+            $this->code ( intval ( $intCode ) );
+        
+        if (! is_null ( $strMessage ))
+            $this->message ( $strMessage );
+        
+        $strReturn = json_encode ( [
+                // 反码状态
+                'code' => $this->getCode (),
+                
+                // 描述信息
+                'message' => $this->getMessage (),
+                
+                // 响应时间
+                'time' => time (),
+                
+                // 数据
+                'data' => is_array ( $mixContent ) ? $mixContent : [ 
+                        'content' => $mixContent 
+                ] 
+        ], $this->getJsonOption ()['json_options'] );
+        
+        if ($booReturn === true) {
+            return $strReturn;
+        } else {
+            $this->content ( $strReturn );
+            unset ( $strReturn );
+        }
+    }
+    
+    /**
+     * 判断是否 api 模式
+     *
+     * @return boolean
+     */
+    public function isApi() {
+        return $this->classsFacesOption ( 'default_response' ) == 'api';
+    }
+    
+    /**
+     * 返回 JSON 配置
+     *
+     * @return array
+     */
+    public function getJsonOption() {
+        return array_merge ( static::$arrJsonOption, $this->getOption () );
     }
     
     /**
@@ -514,9 +612,6 @@ class response {
     public function view($sFile = '', $in = []) {
         if ($this->checkFlowControl ())
             return $this;
-        if (! static::$objView) {
-            static::$objView = view::run ();
-        }
         if (! isset ( $in ['return'] )) {
             $in ['return'] = true;
         }
@@ -526,7 +621,7 @@ class response {
         if (! empty ( $in ['content_type'] )) {
             $this->contentType ( $in ['content_type'] );
         }
-        return $this->responseType ( 'view' )->option ( 'file', $sFile )->option ( 'in', $in )->header ( 'Cache-control', 'private' );
+        return $this->responseType ( 'view' )->option ( 'file', $sFile )->option ( 'in', $in )->assign ( $in )->message ( isset ( $in ['message'] ) ? $in ['message'] : '' )->header ( 'Cache-control', 'private' );
     }
     
     /**
@@ -539,11 +634,58 @@ class response {
     public function assign($mixName, $mixValue = null) {
         if ($this->checkFlowControl ())
             return $this;
-        if (! static::$objView) {
-            static::$objView = view::run ();
-        }
-        static::$objView->assign ( $mixName, $mixValue );
+        static::projectContainer ()->view->assign ( $mixName, $mixValue );
         return $this;
+    }
+    
+    /**
+     * 正确返回消息
+     *
+     * @param string $sMessage
+     *            消息
+     * @param array $in
+     *            charset 编码
+     *            content_type 内容类型
+     *            return 是否返回
+     *            url 跳转 url 地址
+     *            time 停留时间
+     * @return json
+     */
+    public function success($sMessage = '', $in = []) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $in = array_merge ( [ 
+                'message' => $sMessage ?  : __ ( '操作成功' ),
+                'url' => '',
+                'time' => 1 
+        ], $in );
+        
+        return $this->view ( $this->classsFacesOption ( 'view\action_success' ), $in );
+    }
+    
+    /**
+     * 错误返回消息
+     *
+     * @param string $sMessage
+     *            消息
+     * @param array $in
+     *            charset 编码
+     *            content_type 内容类型
+     *            return 是否返回
+     *            url 跳转 url 地址
+     *            time 停留时间
+     * @return json
+     */
+    public function error($sMessage = '', $in = []) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $in = array_merge ( [ 
+                'message' => $sMessage ?  : __ ( '操作失败' ),
+                'url' => '',
+                'time' => 3 
+        ], $in );
+        
+        return $this->view ( $this->classsFacesOption ( 'view\action_fail' ), $in );
     }
     
     /**
@@ -560,7 +702,7 @@ class response {
         if ($this->checkFlowControl ())
             return $this;
         assert::string ( $sUrl );
-        return $this->responseType ( 'redirect' )->code ( 301 )->option ( 'redirect_url', $sUrl )->option ( 'in', $in );
+        return $this->responseType ( 'redirect' )/*->code ( 301 )*/->option ( 'redirect_url', $sUrl )->option ( 'in', $in );
     }
     
     /**
@@ -612,122 +754,6 @@ class response {
     }
     
     /**
-     * 错误返回消息
-     *
-     * @param $sMessage 消息            
-     * @param $in message
-     *            消息内容
-     *            url 跳转 url 地址
-     *            time 停留时间
-     *            
-     * @return json
-     */
-    protected function error($sMessage = '', $in = []) {
-        $in = array_merge ( [ 
-                'message' => $sMessage ?  : __ ( '操作失败' ),
-                'url' => '',
-                'time' => 3 
-        ], $in );
-        $this->assign ( $in );
-        $this->display ( $this->classsFacesOption ( 'view\action_fail' ) );
-    }
-    
-    /**
-     * 正确返回消息
-     *
-     * @param $sMessage 消息            
-     * @param $in message
-     *            消息内容
-     *            url 跳转 url 地址
-     *            time 停留时间
-     *            
-     * @return json
-     */
-    protected function success($sMessage = '', $in = []) {
-        $in = array_merge ( [ 
-                'message' => $sMessage ?  : __ ( '操作成功' ),
-                'url' => '',
-                'time' => 1 
-        ], $in );
-        $this->assign ( $in );
-        $this->display ( $this->classsFacesOption ( 'view\action_success' ) );
-    }
-    
-    /**
-     * json 格式化
-     *
-     * @param $sMessage 消息            
-     * @param $in status
-     *            状态 fail = 失败，success = 成功
-     *            message 消息内容
-     *            
-     * @return json
-     */
-    protected function json2($sMessage = '', $in = []) {
-        $in = array_merge ( [ 
-                'status' => 'success',
-                'message' => $sMessage 
-        ], $in );
-        header ( "Content-Type:text/html; charset=utf-8" );
-        exit ( json_encode ( $in, JSON_UNESCAPED_UNICODE ) );
-    }
-    
-    /**
-     * URL 重定向
-     *
-     * @param string $sUrl            
-     * @param number $nTime            
-     * @param string $sMsg            
-     * @return void
-     */
-    public static function urlRedirect($sUrl, $nTime = 0, $sMsg = '') {
-        $sUrl = str_replace ( [ 
-                "\n",
-                "\r" 
-        ], '', $sUrl ); // 多行URL地址支持
-        if (empty ( $sMsg )) {
-            $sMsg = 'Please wait for a while...';
-        }
-        
-        if (! headers_sent ()) {
-            if (0 == $nTime) {
-                header ( "Location:" . $sUrl );
-            } else {
-                header ( "refresh:{$nTime};url={$sUrl}" );
-                include dirname ( __DIR__ ) . '/bootstrap/template/url.php'; // 包含跳转页面模板
-            }
-            exit ();
-        } else {
-            $sHeader = "<meta http-equiv='Refresh' content='{$nTime};URL={$sUrl}'>";
-            if ($nTime == 0) {
-                $sHeader = '';
-            }
-            include dirname ( __DIR__ ) . '/bootstrap/template/url.php'; // 包含跳转页面模板
-            exit ();
-        }
-    }
-    
-    /**
-     * 路由 URL 跳转
-     *
-     * @param string $sUrl            
-     * @param 额外参数 $in
-     *            params url 额外参数
-     *            message 消息
-     *            time 停留时间，0表示不停留
-     * @return void
-     */
-    public static function redirects($sUrl, $in = []) {
-        $in = array_merge ( [ 
-                'params' => [ ],
-                'message' => '',
-                'time' => 0 
-        ], $in );
-        
-        static::urlRedirect ( router::url ( $sUrl, $in ['params'] ), $in ['time'], $in ['message'] );
-    }
-    
-    /**
      * 页面输出类型
      *
      * @param string $strContentType            
@@ -765,5 +791,21 @@ class response {
         $this->responseType ( 'file' )->header ( $arrHeader )->option ( 'file_name', $sFileName );
         
         return $this;
+    }
+    
+    /**
+     * PHP 变量转为字符串
+     *
+     * @param mixed $mixVar            
+     * @return string
+     */
+    private function varString($mixVar) {
+        if (! is_scalar ( $mixVar ) && ! is_array ( $mixVar )) {
+            ob_start ();
+            print_r ( $mixVar );
+            $mixVar = ob_get_contents ();
+            ob_end_clean ();
+        }
+        return $mixVar;
     }
 }
