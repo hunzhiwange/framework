@@ -129,7 +129,7 @@ trait faces {
      */
     public static function projectContainer($objProject = null) {
         if (is_null ( $objProject )) {
-            return static::$objProjectContainer;
+            return static::$objProjectContainer ?  : (class_exists ( 'queryyetsimple\mvc\project' ) ? project::bootstrap () : false);
         } elseif (is_object ( $objProject )) {
             static::$objProjectContainer = $objProject;
         } elseif ($objProject === true) {
@@ -165,7 +165,6 @@ trait faces {
      * @return void
      */
     public function initClasssFacesOptionDefault() {
-        // 不存在初始化参数直接返回
         if (! $this->checkClasssFacesOption ()) {
             return $this;
         }

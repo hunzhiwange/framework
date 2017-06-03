@@ -15,7 +15,10 @@ namespace queryyetsimple\cache;
 ##########################################################
 queryphp;
 
+use InvalidArgumentException;
 use queryyetsimple\filesystem\directory;
+use queryyetsimple\cache\abstracts\cache as abstracts_cache;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 文件缓存
@@ -25,7 +28,9 @@ use queryyetsimple\filesystem\directory;
  * @since 2017.02.15
  * @version 1.0
  */
-class filecache extends cache {
+class filecache extends abstracts_cache {
+    
+    use classs_faces;
     
     /**
      * 缓存惯性配置
@@ -56,9 +61,8 @@ class filecache extends cache {
      *
      * @var array
      */
-    protected $arrDefaultObjectOption = [ 
-            'runtime_file_path' => '',
-            'path_cache_file' => '' 
+    protected $arrClasssFacesOption = [ 
+            'cache\connect.filecache.path' => '' 
     ];
     
     /**
@@ -68,19 +72,9 @@ class filecache extends cache {
      * @return void
      */
     public function __construct(array $arrOption = []) {
-        $this->mergeObjectOption ();
-        
-        // 合并默认配置
         $this->arrOption = array_merge ( $this->arrOption, $this->arrDefaultOption );
         if (! empty ( $arrOption )) {
             $this->arrOption = array_merge ( $this->arrOption, $arrOption );
-        }
-        if (empty ( $this->_arrOption ['cache_path'] )) {
-            if ($this->classsFacesOption ( 'runtime_file_path' )) {
-                $this->arrOption ['cache_path'] = $this->classsFacesOption ( 'runtime_file_path' );
-            } else {
-                $this->arrOption ['cache_path'] = $this->classsFacesOption ( 'path_cache_file' );
-            }
         }
     }
     
@@ -95,7 +89,7 @@ class filecache extends cache {
         $arrOption = $this->option ( $arrOption, null, false );
         $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
         
-        // 清理文件状态缓存 http://www.w3school.com.cn/php/func_filesystem_clearstatcache.asp
+        // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php
         clearstatcache ();
         
         if (! is_file ( $sCachePath )) {
@@ -108,7 +102,7 @@ class filecache extends cache {
         }
         flock ( $hFp, LOCK_SH );
         
-        // 头部的16个字节存储了安全代码
+        // 头部的 15 个字节存储了安全代码
         $nLen = filesize ( $sCachePath );
         $sHead = fread ( $hFp, static::HEADER_LENGTH );
         $nLen -= static::HEADER_LENGTH;
@@ -200,6 +194,10 @@ class filecache extends cache {
      * @return string
      */
     private function getCachePath($sCacheName, $arrOption) {
+        ! $arrOption ['cache_path'] && $arrOption ['cache_path'] = $this->classsFacesOption ( 'cache\connect.filecache.path' );
+        if (! $arrOption ['cache_path'])
+            throw new InvalidArgumentException ( 'Cache path is not allowed empty.' );
+        
         if (! is_dir ( $arrOption ['cache_path'] )) {
             directory::create ( $arrOption ['cache_path'] );
         }
@@ -211,11 +209,11 @@ class filecache extends cache {
      *
      * @param string $sFileName            
      * @param string $sData            
-     * @return boolean
+     * @return void
      */
     private function writeData($sFileName, $sData) {
         ! is_dir ( dirname ( $sFileName ) ) && directory::create ( dirname ( $sFileName ) );
-        return file_put_contents ( $sFileName, $sData, LOCK_EX );
+        file_put_contents ( $sFileName, $sData, LOCK_EX );
     }
     
     /**

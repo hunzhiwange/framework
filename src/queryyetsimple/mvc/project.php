@@ -65,7 +65,8 @@ class project extends container {
             'database',
             'event',
             'router',
-            'pipeline' 
+            'pipeline',
+            'cache' 
     ];
     
     /**

@@ -586,7 +586,7 @@ class model implements ArrayAccess {
             // print_r($arrSaveData);
             // print_r($arrSaveData);
             if (! empty ( $arrSaveData ) && ! empty ( $arrConditions )) {
-                print_r ( $this->meta ()->update ( $arrConditions, $arrSaveData ) );
+               // print_r ( $this->meta ()->update ( $arrConditions, $arrSaveData ) );
                 // database::table( 'test')
                 // ->where('id',503)
                 // ->update(['name' => '小猪'])

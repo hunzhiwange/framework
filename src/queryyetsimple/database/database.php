@@ -60,7 +60,7 @@ class database {
      * 连接数据库并返回连接对象
      *
      * @param mixed $mixOption            
-     * @return \queryyetsimple\connect
+     * @return \queryyetsimple\database\abstracts\connect
      */
     public function connect($mixOption = null) {
         static $arrConnect;

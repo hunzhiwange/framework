@@ -31,7 +31,7 @@ return [
          * 这里可以可以设置为 filecache、memcache 等
          * 系统为所有缓存提供了统一的接口，在使用上拥有一致性
          */
-        'default' => env ( 'queue_dirver', 'filecache' ),
+        'default' => env ( 'cache_driver', 'filecache' ),
         
         /**
          * ---------------------------------------------------------------
@@ -85,7 +85,7 @@ return [
                 
                 '+filecache' => [
                         // 文件缓存路径
-                        'path' => '' 
+                        'path' => project ()->path_cache_file 
                 ],
                 
                 '+memcache' => [

@@ -190,12 +190,12 @@ class meta {
         // database::table( 'test')
         // ->where('id',503)
         // ->update(['name' => '小猪'])
-        print_r ( $arrCondition );
-        print_r ( $arrSaveData );
+        //print_r ( $arrCondition );
+        //print_r ( $arrSaveData );
         
         // exit();
         // echo 'yyyyyyyyy';
-        print_r ( $this->objConnect->table ( $this->strTable )->where ( $arrCondition )->update ( $arrSaveData ) );
+        //print_r ( $this->objConnect->table ( $this->strTable )->where ( $arrCondition )->update ( $arrSaveData ) );
     }
     private function init($sModelClass) {
         // echo $sModelClass;

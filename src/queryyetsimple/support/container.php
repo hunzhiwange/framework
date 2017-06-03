@@ -238,11 +238,13 @@ class container implements ArrayAccess, interfaces_container {
         
         // 生成实例
         $arrArgs = func_get_args ();
+        
         if (! isset ( $this->arrFactorys [$strFactoryName] )) {
             return call_user_func_array ( [ 
                     $this,
                     'getInjectionObject' 
             ], $arrArgs );
+            return false;
         }
         
         array_shift ( $arrArgs );

@@ -15,144 +15,73 @@ namespace queryyetsimple\cache;
 ##########################################################
 queryphp;
 
-use queryyetsimple\cache\interfaces\cache as interfaces_cache;
-use queryyetsimple\traits\object\option as object_option;
+use Exception;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
- * 缓存抽象类
+ * 缓存入口
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.02.15
  * @version 1.0
  */
-abstract class cache implements interfaces_cache {
+class cache {
     
-    use object_option;
+    use classs_faces;
     
     /**
-     * 缓存惯性配置
+     * 缓存连接对象
+     *
+     * @var \queryyetsimple\abstracts\cache
+     */
+    protected static $arrConnect;
+    
+    /**
+     * 配置
      *
      * @var array
      */
-    protected $arrOption = [ 
-            'cache_time' => 86400,
-            'cache_prefix' => '~@' 
+    protected $arrClasssFacesOption = [ 
+            'cache\default' => 'filecache' 
     ];
     
     /**
-     * 修改配置
+     * 连接缓存并返回连接对象
      *
-     * @param mixed $mixName            
-     * @param mixed $mixValue            
-     * @param boolean $booMerge            
-     * @return array
-     */
-    public function option($mixName = '', $mixValue = null, $booMerge = true) {
-        $arrOption = $this->arrOption;
-        if (! empty ( $mixName )) {
-            if (is_array ( $mixName )) {
-                $arrOption = array_merge ( $arrOption, $mixName );
-            } else {
-                if (is_null ( $mixValue )) {
-                    if (isset ( $arrOption [$mixName] )) {
-                        unset ( $arrOption [$mixName] );
-                    }
-                } else {
-                    $arrOption [$mixName] = $mixValue;
-                }
-            }
-            
-            if ($booMerge === true) {
-                $this->arrOption = $arrOption;
-            }
-        }
-        
-        return $arrOption;
-    }
-    
-    /**
-     * 缓存统一入口
-     *
-     * @param string $sId            
-     * @param string $mixData            
      * @param array $arrOption            
-     * @param string $sBackendClass            
-     * @return boolean
+     * @return \queryyetsimple\abstracts\cache
      */
-    public static function run($sId, $mixData = '', $arrOption = null, $sBackendClass = null) {
-        static $arrCache;
+    public function connect($arrOption = []) {
+        // 连接唯一标识
+        $strDriver = ! empty ( $arrOption ['driver'] ) ? $arrOption ['driver'] : $this->classsFacesOption ( 'cache\default' );
+        $strUnique = md5 ( is_array ( $arrOption ) ? json_encode ( $arrOption ) : $arrOption );
         
-        if (! is_array ( $arrOption )) {
-            $arrOption = [ ];
-        }
-        $arrOption = array_merge ( [ 
-                'cache_time' => static::cacheTime ( $sId,  ['runtime_cache_time'] ),
-                'cache_prefix' => ['runtime_cache_prefix'],
-                'cache_backend' => ! is_null ( $sBackendClass ) ? $sBackendClass :  ['runtime_cache_backend'] 
-        ], $arrOption );
-        
-        if (empty ( $arrCache [$arrOption ['cache_backend']] )) {
-            $arrObjectOption = [ ];
-            foreach ( [ 
-                    'runtime_file_path',
-                    'runtime_memcache_compressed',
-                    'runtime_memcache_persistent',
-                    'runtime_memcache_servers',
-                    'runtime_memcache_host',
-                    'runtime_memcache_port' 
-            ] as $sObjectOption ) {
-                $arrObjectOption [$sObjectOption] =  [$sObjectOption];
-            }
-            $arrObjectOption ['path_cache_file'] = static::project ()->path_cache_file;
-            $arrCache [$arrOption ['cache_backend']] = static::project ()->make ( $arrOption ['cache_backend'], $arrOption )->setObjectOption ( $arrObjectOption );
+        // 已经存在直接返回
+        if (isset ( static::$arrConnect [$strUnique] )) {
+            return static::$arrConnect [$strUnique];
         }
         
-        if ($mixData === '') {
-            // 强制刷新页面数据
-            if (static::in ( ['runtime_cache_force_name'] ) == 1) {
-                return false;
-            }
-            return $arrCache [$arrOption ['cache_backend']]->get ( $sId, $arrOption );
+        // 连接缓存
+        $strConnectClass = 'queryyetsimple\\cache\\' . $strDriver;
+        if (class_exists ( $strConnectClass )) {
+            return static::$arrConnect [$strUnique] = (new $strConnectClass ( $arrOption ))->initClasssFacesOptionDefault ();
+        } else {
+            throw new Exception ( __ ( '缓存驱动 %s 不存在！', $strDriver ) );
         }
-        if ($mixData === null) {
-            return $arrCache [$arrOption ['cache_backend']]->delele ( $sId, $arrOption );
-        }
-        return $arrCache [$arrOption ['cache_backend']]->set ( $sId, $mixData, $arrOption );
     }
     
-
     /**
-     * 读取缓存时间配置
+     * 拦截匿名注册控制器方法
      *
-     * @param string $sId
-     * @param int $intDefaultTime
-     * @return number
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
      */
-    private static function cacheTime($sId, $intDefaultTime = 0) {
-        if (isset (  ['runtime_cache_times'] [$sId] )) {
-            return  ['runtime_cache_times'] [$sId];
-        }
-    
-        foreach ( ['runtime_cache_times'] as $sKey => $nValue ) {
-            $sKeyCache = '/^' . str_replace ( '*', '(\S+)', $sKey ) . '$/';
-            if (preg_match ( $sKeyCache, $sId, $arrRes )) {
-                return ['runtime_cache_times'] [$sKey];
-            }
-        }
-    
-        return $intDefaultTime;
-    }
-    
-    
-    /**
-     * 获取缓存名字
-     *
-     * @param string $sCacheName            
-     * @param array $arrOption            
-     * @return string
-     */
-    protected function getCacheName($sCacheName, $arrOption) {
-        return $arrOption ['cache_prefix'] . $sCacheName;
+    public function __call($sMethod, $arrArgs) {
+        return call_user_func_array ( [ 
+                $this->connect (),
+                $sMethod 
+        ], $arrArgs );
     }
 }
