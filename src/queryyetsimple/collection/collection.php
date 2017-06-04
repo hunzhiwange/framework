@@ -298,7 +298,7 @@ class collection implements Iterator, ArrayAccess, Countable {
         $arrSiblings = [ ];
         $mixCurrentKey === NULL && $mixCurrentKey = $this->key ();
         if (! is_array ( $mixCurrentKey )) {
-            $mixCurrentKey [] = $mixCurrentKey;
+            $mixCurrentKey = ( array ) $mixCurrentKey;
         }
         $arrObject = $this->arrObject;
         foreach ( $arrObject as $sKey => $mixVal ) {

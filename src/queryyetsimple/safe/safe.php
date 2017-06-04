@@ -28,7 +28,7 @@ use queryyetsimple\cookie\cookie;
  * @version 1.0
  */
 class safe {
-
+    
     /**
      * 移除魔术方法转义
      *
@@ -342,9 +342,7 @@ class safe {
             $sVisitorIp = request::getIps ();
             
             if (is_string ( $mixLimitIp )) {
-                $mixLimitIp = [ 
-                        $mixLimitIp 
-                ];
+                $mixLimitIp = ( array ) $mixLimitIp;
             }
             
             foreach ( $mixLimitIp as $sIp ) {
@@ -550,9 +548,7 @@ class safe {
      */
     static public function htmlspecialchars($mixString) {
         if (! is_array ( $mixString )) {
-            $mixString = [ 
-                    $mixString 
-            ];
+            $mixString = ( array ) $mixString;
         }
         
         $mixString = array_map ( function ($sStr) {
@@ -576,9 +572,7 @@ class safe {
      */
     static public function unHtmlSpecialchars($mixString) {
         if (! is_array ( $mixString )) {
-            $mixString = [ 
-                    $mixString 
-            ];
+            $mixString = ( array ) $mixString;
         }
         
         $mixString = array_map ( function ($sStr) {

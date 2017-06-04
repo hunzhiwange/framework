@@ -1677,9 +1677,7 @@ class select {
         }
         
         if (! is_array ( $mixSelect )) {
-            $mixSelect = [ 
-                    $mixSelect 
-            ];
+            $mixSelect = ( array ) $mixSelect;
         }
         
         foreach ( $mixSelect as $mixTemp ) {
@@ -2711,9 +2709,7 @@ class select {
                 if (isset ( $mixCond [2] )) {
                     $booIsArray = true;
                     if (! is_array ( $mixCond [2] )) {
-                        $mixCond [2] = [ 
-                                $mixCond [2] 
-                        ];
+                        $mixCond [2] = ( array ) $mixCond [2];
                         $booIsArray = false;
                     }
                     
@@ -2853,9 +2849,7 @@ class select {
         
         // 整理多个参数到二维数组
         if (! is_array ( $arrArgs [0] )) {
-            $arrArgs [0] = [ 
-                    $arrArgs [0] 
-            ];
+            $arrArgs [0] = ( array ) $arrArgs [0];
         } else {
             // 一维数组统一成二维数组格式
             $booOneImension = false;
@@ -2959,9 +2953,7 @@ class select {
             else {
                 // 处理字符串 "null"
                 if (is_string ( $arrTemp )) {
-                    $arrTemp = [ 
-                            $arrTemp 
-                    ];
+                    $arrTemp = ( array ) $arrTemp;
                 }
                 
                 // 合并字段到数组

@@ -282,9 +282,7 @@ class helper {
         }
         
         if (is_string ( $mixTypes )) {
-            $mixTypes = [ 
-                    $mixTypes 
-            ];
+            $mixTypes = ( array ) $mixTypes;
         }
         
         foreach ( $mixTypes as $sType ) { // 类型检查

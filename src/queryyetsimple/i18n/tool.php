@@ -32,9 +32,9 @@ class tool {
     /**
      * 保存数据到 JS 的缓存文件
      *
-     * @param string|array $Files
+     * @param string|array $mixFiles
      *            文件地址
-     * @param string $CacheFile
+     * @param string $sCacheFile
      *            缓存目录
      * @param string $sI18nSet
      *            语言上下文环境
@@ -42,12 +42,12 @@ class tool {
      * @since 2016.11.27
      * @return array
      */
-    public static function saveToJs($Files, $sCacheFile, $sI18nSet) {
+    public static function saveToJs($mixFiles, $sCacheFile, $sI18nSet) {
         // 读取语言包数据
-        if (is_string ( $Files )) {
-            $Files [] = $Files;
+        if (is_string ( $mixFiles )) {
+            $mixFiles = ( array ) $mixFiles;
         }
-        $arrTexts = static::parsePoData ( $Files );
+        $arrTexts = static::parsePoData ( $mixFiles );
         
         $sDir = dirname ( $sCacheFile );
         if (! is_dir ( $sDir )) {
@@ -65,7 +65,7 @@ class tool {
     /**
      * 保存数据到 PHP 的缓存文件
      *
-     * @param string|array $Files
+     * @param string|array $mixFiles
      *            文件地址
      * @param string $CacheFile
      *            缓存目录
@@ -73,12 +73,12 @@ class tool {
      * @since 2016.11.27
      * @return array
      */
-    public static function saveToPhp($Files, $sCacheFile) {
+    public static function saveToPhp($mixFiles, $sCacheFile) {
         // 读取语言包数据
-        if (is_string ( $Files )) {
-            $Files [] = $Files;
+        if (is_string ( $mixFiles )) {
+            $mixFiles = ( array ) $mixFiles;
         }
-        $arrTexts = static::parsePoData ( $Files );
+        $arrTexts = static::parsePoData ( $mixFiles );
         
         $sDir = dirname ( $sCacheFile );
         if (! is_dir ( $sDir )) {
@@ -96,17 +96,15 @@ class tool {
     /**
      * 分析目录中的 PHP 和 JS 语言包包含的文件
      *
-     * @param string|array $I18nDir
+     * @param string|array $mixI18nDir
      *            文件地址
      * @author 小牛
      * @since 2016.11.27
      * @return array
      */
-    public static function findPoFile($I18nDir) {
-        if (is_string ( $I18nDir )) {
-            $I18nDir = [ 
-                    $I18nDir 
-            ];
+    public static function findPoFile($mixI18nDir) {
+        if (is_string ( $mixI18nDir )) {
+            $mixI18nDir = ( array ) $mixI18nDir;
         }
         
         // 返回结果 PHP 和 JS 分别返回
@@ -114,7 +112,7 @@ class tool {
                 'js' => [ ],
                 'php' => [ ] 
         ];
-        foreach ( $I18nDir as $sDir ) {
+        foreach ( $mixI18nDir as $sDir ) {
             if (! is_dir ( $sDir )) {
                 continue;
             }
@@ -136,22 +134,20 @@ class tool {
     /**
      * 分析 PO 文件语言包数据
      *
-     * @param string|array $I18nFile
+     * @param string|array $mixI18nFile
      *            文件地址
      * @author 小牛
      * @since 2016.11.25
      * @return array
      */
-    private static function parsePoData($I18nFile) {
-        if (is_string ( $I18nFile )) {
-            $I18nFile = [ 
-                    $I18nFile 
-            ];
+    private static function parsePoData($mixI18nFile) {
+        if (is_string ( $mixI18nFile )) {
+            $mixI18nFile = ( array ) $mixI18nFile;
         }
         $sContent = '';
-        foreach ( $I18nFile as $sFile ) {
+        foreach ( $mixI18nFile as $sFile ) {
             if (! is_file ( $sFile )) {
-                throw new RuntimeException ( sprintf ( 'The i18n file < %s > is not exists!', $sFile ), 'queryyetsimple\event\exception' );
+                throw new RuntimeException ( sprintf ( 'The i18n file < %s > is not exists!', $sFile ) );
             }
             $sContent .= helper::escapeCharacter ( file_get_contents ( $sFile ) );
         }

@@ -802,7 +802,7 @@ class response {
     private function varString($mixVar) {
         if (! is_scalar ( $mixVar ) && ! is_array ( $mixVar )) {
             ob_start ();
-            // print_r ( $mixVar );
+            print_r ( $mixVar );
             $mixVar = ob_get_contents ();
             ob_end_clean ();
         }

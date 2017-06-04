@@ -547,9 +547,7 @@ class parsers {
      */
     public static function regCompilers($sType, $Name, $sTag) {
         if (! is_array ( $Name )) {
-            $Name = [ 
-                    $Name 
-            ];
+            $Name = ( array ) $Name;
         }
         foreach ( $Name as $sTemp ) {
             static::$arrCompilers [$sType] [$sTemp] = $sTag;
