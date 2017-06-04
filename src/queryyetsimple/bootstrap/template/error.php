@@ -58,7 +58,8 @@ queryphp;
     -webkit-border-radius: 10px;
     background: red;
     font-size: 20px;
-    color: #FFF
+    color: #FFF;
+    word-wrap: break-word
 }
 </style>
 </head>

@@ -45,7 +45,6 @@ class database {
             'database\host' => 'localhost',
             'database\port' => 3306,
             'database\name' => '',
-            'database\prefix' => '',
             'database\dsn' => '',
             'database\params' => [ ],
             'database\char' => 'utf8',

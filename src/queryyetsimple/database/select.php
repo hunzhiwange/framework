@@ -1036,7 +1036,7 @@ class select {
         if ($this->checkFlowControl ())
             return $this;
         $this->setIsTable ( true );
-        $this->join ( 'inner join', $mixTable, $mixCols );
+        $this->addJoin ( 'inner join', $mixTable, $mixCols );
         $this->setIsTable ( false );
         return $this;
     }
@@ -1526,7 +1526,7 @@ class select {
         array_unshift ( $arrArgs, 'inner join' );
         return call_user_func_array ( [ 
                 $this,
-                'join' 
+                'addJoin' 
         ], $arrArgs );
     }
     
@@ -1548,7 +1548,7 @@ class select {
         array_unshift ( $arrArgs, 'inner join' );
         return call_user_func_array ( [ 
                 $this,
-                'join' 
+                'addJoin' 
         ], $arrArgs );
     }
     
@@ -1570,7 +1570,7 @@ class select {
         array_unshift ( $arrArgs, 'left join' );
         return call_user_func_array ( [ 
                 $this,
-                'join' 
+                'addJoin' 
         ], $arrArgs );
     }
     
@@ -1592,7 +1592,7 @@ class select {
         array_unshift ( $arrArgs, 'right join' );
         return call_user_func_array ( [ 
                 $this,
-                'join' 
+                'addJoin' 
         ], $arrArgs );
     }
     
@@ -1614,7 +1614,7 @@ class select {
         array_unshift ( $arrArgs, 'full join' );
         return call_user_func_array ( [ 
                 $this,
-                'join' 
+                'addJoin' 
         ], $arrArgs );
     }
     
@@ -1636,7 +1636,7 @@ class select {
         array_unshift ( $arrArgs, 'cross join' );
         return call_user_func_array ( [ 
                 $this,
-                'join' 
+                'addJoin' 
         ], $arrArgs );
     }
     
@@ -1658,7 +1658,7 @@ class select {
         array_unshift ( $arrArgs, 'natural join' );
         return call_user_func_array ( [ 
                 $this,
-                'join' 
+                'addJoin' 
         ], $arrArgs );
     }
     
@@ -2293,12 +2293,12 @@ class select {
         }
         
         $arrSql [] = $this->parseUnion ();
-        $this->_sLastSql = implode ( ' ', $arrSql );
+        $sLastSql = trim ( implode ( ' ', $arrSql ) );
         
         if ($booWithLogicGroup === true) {
-            return static::LOGIC_GROUP_LEFT . $this->_sLastSql . static::LOGIC_GROUP_RIGHT;
+            return static::LOGIC_GROUP_LEFT . $sLastSql . static::LOGIC_GROUP_RIGHT;
         } else {
-            return $this->_sLastSql;
+            return $sLastSql;
         }
     }
     
@@ -2979,6 +2979,7 @@ class select {
                 }
                 
                 // 字段
+                throw new \Exception ( '2982' );
                 $arrTemp [1] = trim ( $arrTemp [1] );
                 
                 // 特殊类型
@@ -3108,7 +3109,7 @@ class select {
      * @param array|null $arrCondArgs            
      * @return $this
      */
-    private function join($sJoinType, $mixName, $mixCols, $mixCond = null/* args */) {
+    private function addJoin($sJoinType, $mixName, $mixCols, $mixCond = null/* args */) {
         // 验证 join 类型
         if (! isset ( static::$arrJoinTypes [$sJoinType] )) {
             throw new Exception ( __ ( '无效的 JOIN 类型 %s', $sJoinType ) );

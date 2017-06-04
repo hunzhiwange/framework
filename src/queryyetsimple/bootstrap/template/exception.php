@@ -59,7 +59,8 @@ queryphp;
     -webkit-border-radius: 10px;
     background: #fcf8e3;
     font-size: 20px;
-    color: #8a6d3b
+    color: #8a6d3b;
+    word-wrap: break-word
 }
 
 .queryphp-message-container .queryphp-message-detailtitle {
@@ -67,12 +68,14 @@ queryphp;
     color: #484848;
     text-decoration: none;
     font-size: 1.5em;
-    font-weight: bold
+    font-weight: bold;
+    word-wrap: break-word
 }
 
 .queryphp-message-container .queryphp-message-detailcontent {
     margin: 0px 0 0px 20px;
-    color: #999
+    color: #999;
+    word-wrap: break-word
 }
 
 .queryphp-message-container .queryphp-message-detailcontent ol {
@@ -102,7 +105,8 @@ queryphp;
 
 .queryphp-message-container .queryphp-message-argstitle {
     margin: 10px 0 10px 0px;
-    color: #FFD700
+    color: #FFD700;
+    word-wrap: break-word
 }
 
 .queryphp-message-container .queryphp-message-args {
@@ -112,7 +116,8 @@ queryphp;
     border-radius: 3px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
     background: rgba(238, 238, 238, 0.35);
-    color: #999
+    color: #999;
+    word-wrap: break-word
 }
 </style>
 </head>

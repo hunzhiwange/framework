@@ -16,6 +16,7 @@ namespace queryyetsimple\database;
 queryphp;
 
 use PDO;
+use queryyetsimple\database\abstracts\connect;
 
 /**
  * 数据库连接
@@ -33,7 +34,7 @@ class mysql extends connect {
      * @param array $arrOption            
      * @return string
      */
-    protected function parseDsn($arrOption) {
+    public function parseDsn($arrOption) {
         $strDsn = 'mysql:dbname=' . $arrOption ['database\name'] . ';host=' . $arrOption ['database\host'];
         if (! empty ( $arrOption ['database\port'] )) {
             $strDsn .= ';port=' . $arrOption ['database\port'];
@@ -75,7 +76,7 @@ class mysql extends connect {
         unset ( $arrTables, $strSql );
         return $arrResult;
     }
-
+    
     /**
      * 取得数据库表字段信息
      *

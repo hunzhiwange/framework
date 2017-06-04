@@ -31,7 +31,7 @@ interface connect {
      * @param array $arrOption            
      * @return string
      */
-    protected function parseDsn($arrOption);
+    public function parseDsn($arrOption);
     
     /**
      * 取得数据库表名列表

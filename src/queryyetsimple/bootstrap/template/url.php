@@ -46,7 +46,8 @@ queryphp;
     margin: 10px 0 20px 18px;
     font-size: 25px;
     font-weight: bold;
-    color: #dce2ec
+    color: #dce2ec;
+    word-wrap: break-word
 }
 </style>
 <script type="text/javascript">

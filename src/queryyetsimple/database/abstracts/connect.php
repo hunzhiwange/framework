@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\database;
+namespace queryyetsimple\database\abstracts;
 
 <<<queryphp
 ##########################################################
@@ -18,6 +18,7 @@ queryphp;
 use PDO;
 use Exception;
 use PDOException;
+use queryyetsimple\database\select;
 use queryyetsimple\database\interfaces\connect as interfaces_connect;
 use queryyetsimple\log\log;
 use queryyetsimple\assert\assert;
