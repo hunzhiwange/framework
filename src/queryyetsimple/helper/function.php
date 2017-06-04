@@ -107,10 +107,10 @@ if (! function_exists ( '__' )) {
      * @return mixed
      */
     function __($sValue = null /*argvs*/ ){
-        if (func_num_args () > 1) {
-            $sValue = call_user_func_array ( 'sprintf', func_get_args () );
-        }
-        return $sValue;
+        return call_user_func_array ( [ 
+                'queryyetsimple\i18n\i18n',
+                'getTexts' 
+        ], func_get_args () );
     }
 }
 

@@ -32,13 +32,6 @@ class i18n {
     use classs_faces;
     
     /**
-     * 是否开启语言
-     *
-     * @var boolean
-     */
-    private static $booOpen = true;
-    
-    /**
      * 当前语言上下文
      *
      * @var string
@@ -79,6 +72,7 @@ class i18n {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
+            'i18n\on' => true,
             'i18n\switch' => true,
             'i18n\cookie_app' => false,
             'i18n\default' => 'zh-cn',
@@ -94,25 +88,6 @@ class i18n {
     }
     
     /**
-     * 语言包状态设置
-     *
-     * @param boolean $booOpen            
-     * @return void
-     */
-    public static function open($booOpen = true) {
-        static::$booOpen = $booOpen;
-    }
-    
-    /**
-     * 返回语言包状态
-     *
-     * @return boolean
-     */
-    public static function getOpen() {
-        return static::$booOpen;
-    }
-    
-    /**
      * 获取语言text
      *
      * @param string $sValue
@@ -121,7 +96,7 @@ class i18n {
      */
     public function getText($sValue/*Argvs*/){
         // 未开启直接返回
-        if (! static::$booOpen) {
+        if (! $this->classsFacesOption ( 'i18n\on' )) {
             if (func_num_args () > 1) { // 代入参数
                 $sValue = call_user_func_array ( 'sprintf', func_get_args () );
             }
