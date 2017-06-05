@@ -1,6 +1,6 @@
 # QueryPHP Framework Alias
 
-modify this file ../.git/config add alias,then using git string to commit your subtree repository
+modify this file ../.git/config add alias,then using git foobar to commit your subtree repository
 
 [alias]
     assert = subtree push --prefix=src/queryyetsimple/assert git@github.com:queryyetsimple/assert.git master
