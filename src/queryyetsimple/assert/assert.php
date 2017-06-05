@@ -32,7 +32,7 @@ class assert {
      *
      * @var boolean
      */
-    private static $booOpen = true;
+    private static $booOpen = false;
     
     /**
      * 默认断言消息

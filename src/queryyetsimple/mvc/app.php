@@ -28,6 +28,7 @@ use queryyetsimple\helper\helper;
 use queryyetsimple\i18n\i18n;
 use queryyetsimple\i18n\tool as i18n_tool;
 use Dotenv\Dotenv;
+use queryyetsimple\assert\assert;
 
 /**
  * 应用程序对象
@@ -484,6 +485,9 @@ class app {
             ob_start ( 'gz_handler' );
         else
             ob_start ();
+        
+        if (env ( 'app_development' ) === 'development')
+            assert::open ( true );
     }
     
     /**
