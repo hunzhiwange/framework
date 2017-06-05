@@ -805,16 +805,7 @@ class app {
                 'action_name' => '',
                 
                 // 程序版本
-                'queryphp_version' => '4.0',
-                
-                // 命令行模式
-                'queryphp_console' => false,
-                
-                // phpunit 测试模式
-                'queryphp_phpunit' => false,
-                
-                // phpunit_system 模式
-                'queryphp_phpunit_system' => false 
+                'queryphp_version' => '4.0' 
         ] as $strName => $mixValue ) {
             if (is_null ( env ( $strName ) ))
                 $this->setEnvironmentVariable ( $strName, $mixValue );
