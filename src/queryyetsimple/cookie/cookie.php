@@ -43,6 +43,14 @@ class cookie {
     ];
     
     /**
+     * 构造函数
+     *
+     * @return void
+     */
+    public function __construct() {
+    }
+    
+    /**
      * 设置 COOKIE
      *
      * @param string $sName            

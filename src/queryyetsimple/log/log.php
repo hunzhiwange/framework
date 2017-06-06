@@ -76,6 +76,14 @@ class log {
     ];
     
     /**
+     * 构造函数
+     *
+     * @return void
+     */
+    public function __construct() {
+    }
+    
+    /**
      * 记录错误消息
      *
      * @param string $strMessage

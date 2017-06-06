@@ -61,6 +61,13 @@ trait faces {
     protected $arrClasssFacesOptionIn = [ ];
     
     /**
+     * 是否已经初始化配置
+     *
+     * @var boolean
+     */
+    protected $booClasssFacesOptionInit = false;
+    
+    /**
      * 注册一个扩展
      *
      * @param string $strName            
@@ -140,11 +147,14 @@ trait faces {
     /**
      * 返回配置
      *
-     * @param string $strArgsName            
+     * @param string|null $strArgsName            
      * @return mixed
      */
-    public function classsFacesOption($strArgsName) {
-        return isset ( $this->arrClasssFacesOptionIn [$strArgsName] ) ? $this->arrClasssFacesOptionIn [$strArgsName] : null;
+    public function classsFacesOption($strArgsName = null) {
+        if (is_null ( $strArgsName ))
+            return $this->arrClasssFacesOptionIn;
+        else
+            return isset ( $this->arrClasssFacesOptionIn [$strArgsName] ) ? $this->arrClasssFacesOptionIn [$strArgsName] : null;
     }
     
     /**
@@ -165,6 +175,11 @@ trait faces {
      * @return void
      */
     public function initClasssFacesOptionDefault() {
+        if ($this->checkClasssFacesOptionInit ())
+            return $this;
+        
+        $this->booClasssFacesOptionInit = true;
+        
         if (! $this->checkClasssFacesOption ()) {
             return $this;
         }
@@ -182,6 +197,15 @@ trait faces {
             $arrArgs [$sArgs] = $mixTemp;
         }
         return $this->setClasssFacesOption ( $arrArgs );
+    }
+    
+    /**
+     * 是否已经初始化参数
+     *
+     * @return boolean
+     */
+    public function checkClasssFacesOptionInit() {
+        return $this->booClasssFacesOptionInit;
     }
     
     /**

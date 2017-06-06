@@ -29,10 +29,11 @@ interface cache {
      * 获取缓存
      *
      * @param string $sCacheName            
+     * @param mixed $mixDefault            
      * @param array $arrOption            
      * @return mixed
      */
-    public function get($sCacheName, array $arrOption = []);
+    public function get($sCacheName, $mixDefault = false, array $arrOption = []);
     
     /**
      * 设置缓存

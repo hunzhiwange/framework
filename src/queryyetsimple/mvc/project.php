@@ -60,6 +60,7 @@ class project extends container {
             'http',
             'log',
             'provider',
+            'session',
             'cookie',
             'i18n',
             'database',

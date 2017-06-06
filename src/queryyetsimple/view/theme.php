@@ -50,6 +50,14 @@ class theme {
     ];
     
     /**
+     * 构造函数
+     *
+     * @return void
+     */
+    public function __construct() {
+    }
+    
+    /**
      * 加载视图文件
      *
      * @param string $sFile

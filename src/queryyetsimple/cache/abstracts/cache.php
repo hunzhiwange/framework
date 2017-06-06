@@ -26,16 +26,13 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
  * @version 1.0
  */
 abstract class cache implements interfaces_cache {
-
+    
     /**
-     * 缓存惯性配置
+     * 缓存服务句柄
      *
-     * @var array
+     * @var handle
      */
-    protected $arrOption = [ 
-            'cache_time' => 86400,
-            'cache_prefix' => '~@' 
-    ];
+    protected $hHandle = null;
     
     /**
      * 修改配置
@@ -69,6 +66,15 @@ abstract class cache implements interfaces_cache {
     }
     
     /**
+     * 返回缓存句柄
+     *
+     * @return mixed
+     */
+    public function handle() {
+        return $this->hHandle;
+    }
+    
+    /**
      * 获取缓存名字
      *
      * @param string $sCacheName            
@@ -76,6 +82,29 @@ abstract class cache implements interfaces_cache {
      * @return string
      */
     protected function getCacheName($sCacheName, $arrOption) {
-        return $arrOption ['cache_prefix'] . $sCacheName;
+        return $arrOption ['prefix'] . $sCacheName;
+    }
+    
+    /**
+     * 初始化缓存配置
+     *
+     * @param array $arrOption            
+     * @return void
+     */
+    protected function initialization($arrOption) {
+        $this->initClasssFacesOptionDefault ();
+        
+        foreach ( array_keys ( $this->arrClasssFacesOption ) as $strOption ) {
+            $arrTemp = explode ( '.', $strOption );
+            $arrTemp = array_pop ( $arrTemp );
+            $this->arrOption [$arrTemp] = $this->classsFacesOption ( $strOption );
+        }
+        $this->arrOption ['prefix'] = $this->arrOption ['cache\global_prefix'];
+        $this->arrOption ['expire'] = $this->arrOption ['cache\global_expire'];
+        unset ( $this->arrOption ['cache\global_prefix'], $this->arrOption ['cache\global_expire'] );
+        
+        if (is_array ( $arrOption )) {
+            $this->arrOption = array_merge ( $this->arrOption, $arrOption );
+        }
     }
 }

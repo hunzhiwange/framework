@@ -56,6 +56,14 @@ class database {
     ];
     
     /**
+     * 构造函数
+     *
+     * @return void
+     */
+    public function __construct() {
+    }
+    
+    /**
      * 连接数据库并返回连接对象
      *
      * @param mixed $mixOption            
@@ -80,7 +88,7 @@ class database {
         if (class_exists ( $strConnectClass )) {
             return $arrConnect [$strUnique] = new $strConnectClass ( $mixOption );
         } else {
-            throw new Exception ( __ ( '数据库驱动 %s 不存在！', $mixOption ['db_type'] ) );
+            throw new Exception ( __ ( '数据库驱动 %s 不存在', $mixOption ['db_type'] ) );
         }
     }
     

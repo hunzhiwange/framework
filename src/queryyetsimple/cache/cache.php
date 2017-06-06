@@ -43,8 +43,16 @@ class cache {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
-            'cache\default' => 'filecache' 
+            'cache\default' => 'file' 
     ];
+    
+    /**
+     * 构造函数
+     *
+     * @return void
+     */
+    public function __construct() {
+    }
     
     /**
      * 连接缓存并返回连接对象
@@ -67,7 +75,7 @@ class cache {
         if (class_exists ( $strConnectClass )) {
             return static::$arrConnect [$strUnique] = (new $strConnectClass ( $arrOption ))->initClasssFacesOptionDefault ();
         } else {
-            throw new Exception ( __ ( '缓存驱动 %s 不存在！', $strDriver ) );
+            throw new Exception ( __ ( '缓存驱动 %s 不存在', $strDriver ) );
         }
     }
     

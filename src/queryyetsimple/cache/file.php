@@ -28,19 +28,9 @@ use queryyetsimple\classs\faces as classs_faces;
  * @since 2017.02.15
  * @version 1.0
  */
-class filecache extends abstracts_cache {
+class file extends abstracts_cache {
     
     use classs_faces;
-    
-    /**
-     * 缓存惯性配置
-     *
-     * @var array
-     */
-    private $arrDefaultOption = [ 
-            'json' => true,
-            'cache_path' => '' 
-    ];
     
     /**
      * 缓存文件头部
@@ -62,7 +52,12 @@ class filecache extends abstracts_cache {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
-            'cache\connect.filecache.path' => '' 
+            'cache\global_prefix' => '~@',
+            'cache\global_expire' => 86400,
+            'cache\connect.file.path' => '',
+            'cache\connect.file.serialize' => true,
+            'cache\connect.redis.prefix' => null,
+            'cache\connect.redis.expire' => null 
     ];
     
     /**
@@ -72,20 +67,18 @@ class filecache extends abstracts_cache {
      * @return void
      */
     public function __construct(array $arrOption = []) {
-        $this->arrOption = array_merge ( $this->arrOption, $this->arrDefaultOption );
-        if (! empty ( $arrOption )) {
-            $this->arrOption = array_merge ( $this->arrOption, $arrOption );
-        }
+        $this->initialization ( $arrOption );
     }
     
     /**
      * 获取缓存
      *
      * @param string $sCacheName            
+     * @param mixed $mixDefault            
      * @param array $arrOption            
      * @return mixed
      */
-    public function get($sCacheName, array $arrOption = []) {
+    public function get($sCacheName, $mixDefault = false, array $arrOption = []) {
         $arrOption = $this->option ( $arrOption, null, false );
         $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
         
@@ -129,8 +122,8 @@ class filecache extends abstracts_cache {
         }
         
         // 解码
-        if ($arrOption ['json']) {
-            $strData = json_decode ( $strData, true );
+        if ($arrOption ['serialize']) {
+            $strData = unserialize ( $strData );
         }
         
         return $strData;
@@ -146,8 +139,8 @@ class filecache extends abstracts_cache {
      */
     public function set($sCacheName, $mixData, array $arrOption = []) {
         $arrOption = $this->option ( $arrOption, null, false );
-        if ($arrOption ['json']) {
-            $mixData = json_encode ( $mixData );
+        if ($arrOption ['serialize']) {
+            $mixData = serialize ( $mixData );
         }
         $mixData = static::HEADER . $mixData;
         
@@ -182,8 +175,7 @@ class filecache extends abstracts_cache {
         if (! is_file ( $sFilePath )) {
             return true;
         }
-        ! isset ( $arrOption ['cache_time'] ) && $arrOption ['cache_time'] = - 1;
-        return ( int ) $arrOption ['cache_time'] !== - 1 && filemtime ( $sFilePath ) + ( int ) $arrOption ['cache_time'] < time ();
+        return ( int ) $arrOption ['expire'] > 0 && filemtime ( $sFilePath ) + ( int ) $arrOption ['expire'] < time ();
     }
     
     /**
@@ -194,14 +186,13 @@ class filecache extends abstracts_cache {
      * @return string
      */
     private function getCachePath($sCacheName, $arrOption) {
-        ! $arrOption ['cache_path'] && $arrOption ['cache_path'] = $this->classsFacesOption ( 'cache\connect.filecache.path' );
-        if (! $arrOption ['cache_path'])
+        if (! $arrOption ['path'])
             throw new InvalidArgumentException ( 'Cache path is not allowed empty.' );
         
-        if (! is_dir ( $arrOption ['cache_path'] )) {
-            directory::create ( $arrOption ['cache_path'] );
+        if (! is_dir ( $arrOption ['path'] )) {
+            directory::create ( $arrOption ['path'] );
         }
-        return $arrOption ['cache_path'] . '/' . $this->getCacheName ( $sCacheName, $arrOption ) . '.php';
+        return $arrOption ['path'] . '/' . $this->getCacheName ( $sCacheName, $arrOption ) . '.php';
     }
     
     /**
@@ -224,7 +215,6 @@ class filecache extends abstracts_cache {
      * @return boolean
      */
     private function exist($sCacheName, $arrOption) {
-        $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
-        return is_file ( $sCachePath );
+        return is_file ( $this->getCachePath ( $sCacheName, $arrOption ) );
     }
 }

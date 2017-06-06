@@ -15,6 +15,7 @@ namespace queryyetsimple\session;
 ##########################################################
 queryphp;
 
+use RuntimeException;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\assert\assert;
 use queryyetsimple\session\interfaces\session as interfaces_session;
@@ -37,6 +38,7 @@ class session implements interfaces_session {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
+            'session\default' => null,
             'session\prefix' => 'q_',
             'session\id' => null,
             'session\name' => null,
@@ -56,68 +58,84 @@ class session implements interfaces_session {
      * @return void
      */
     public function __construct() {
-        if (! isset ( $_SESSION )) {
-            // 设置 session 不自动启动
-            ini_set ( 'session.auto_start', 0 );
-            
-            // 设置 session id
-            if ($this->classsFacesOption ( 'session\id' )) {
-                session_id ( $this->classsFacesOption ( 'session\id' ) );
+        if (isset ( $_SESSION )) {
+            return;
+        }
+        
+        // 合并参数
+        $this->initClasssFacesOptionDefault ();
+        
+        // 设置 session 不自动启动
+        ini_set ( 'session.auto_start', 0 );
+        
+        // 设置 session id
+        if ($this->classsFacesOption ( 'session\id' )) {
+            session_id ( $this->classsFacesOption ( 'session\id' ) );
+        } else {
+            if (is_null ( $this->parseSessionId () )) {
+                $this->sessionId ( uniqid ( dechex ( mt_rand () ) ) );
+            }
+        }
+        
+        // cookie domain
+        if ($this->classsFacesOption ( 'session\cookie_domain' )) {
+            $this->cookieDomain ( $this->classsFacesOption ( 'session\cookie_domain' ) );
+        }
+        
+        // session name
+        if ($this->classsFacesOption ( 'session\name' )) {
+            $this->sessionName ( $this->classsFacesOption ( 'session\name' ) );
+        }
+        
+        // cache expire
+        if ($this->classsFacesOption ( 'session\cache_expire' )) {
+            $this->cacheExpire ( $this->classsFacesOption ( 'session\cache_expire' ) );
+        }
+        
+        // gc maxlifetime
+        if ($this->classsFacesOption ( 'session\gc_maxlifetime' )) {
+            $this->gcMaxlifetime ( $this->classsFacesOption ( 'session\gc_maxlifetime' ) );
+        }
+        
+        // cookie lifetime
+        if ($this->classsFacesOption ( 'session\cookie_lifetime' )) {
+            $this->cookieLifetime ( $this->classsFacesOption ( 'session\cookie_lifetime' ) );
+        }
+        
+        // cache limiter
+        if ($this->classsFacesOption ( 'session\cache_limiter' )) {
+            $this->cacheLimiter ( $this->classsFacesOption ( 'session\cache_limiter' ) );
+        }
+        
+        // save path
+        if ($this->classsFacesOption ( 'session\save_path' )) {
+            $this->savePath ( $this->classsFacesOption ( 'session\save_path' ) );
+        }
+        
+        // use_trans_sid
+        if ($this->classsFacesOption ( 'session\use_trans_sid' )) {
+            $this->useTransSid ( $this->classsFacesOption ( 'session\use_trans_sid' ) );
+        }
+        
+        // gc_probability
+        if ($this->classsFacesOption ( 'session\gc_probability' )) {
+            $this->gcProbability ( $this->classsFacesOption ( 'session\gc_probability' ) );
+        }
+        
+        // 驱动
+        if ($this->classsFacesOption ( 'session\default' )) {
+            $strConnectClass = 'queryyetsimple\\session\\' . $this->classsFacesOption ( 'session\default' );
+            if (class_exists ( $strConnectClass )) {
+                if (! session_set_save_handler ( new $strConnectClass ( $this->classsFacesOption () ) ))
+                    throw new RuntimeException ( __ ( 'session 驱动 %s 设置失败', $this->classsFacesOption ( 'session\default' ) ) );
             } else {
-                if (is_null ( $this->parseSessionId () )) {
-                    $this->sessionId ( uniqid ( dechex ( mt_rand () ) ) );
-                }
+                throw new RuntimeException ( __ ( 'session 驱动 %s 不存在', $this->classsFacesOption ( 'session\default' ) ) );
             }
-            
-            // cookie domain
-            if ($this->classsFacesOption ( 'session\cookie_domain' )) {
-                $this->cookieDomain ( $this->classsFacesOption ( 'session\cookie_domain' ) );
-            }
-            
-            // session name
-            if ($this->classsFacesOption ( 'session\name' )) {
-                $this->sessionName ( $this->classsFacesOption ( 'session\name' ) );
-            }
-            
-            // cache expire
-            if ($this->classsFacesOption ( 'session\cache_expire' )) {
-                $this->cacheExpire ( $this->classsFacesOption ( 'session\cache_expire' ) );
-            }
-            
-            // gc maxlifetime
-            if ($this->classsFacesOption ( 'session\gc_maxlifetime' )) {
-                $this->gcMaxlifetime ( $this->classsFacesOption ( 'session\gc_maxlifetime' ) );
-            }
-            
-            // cookie lifetime
-            if ($this->classsFacesOption ( 'session\cookie_lifetime' )) {
-                $this->cookieLifetime ( $this->classsFacesOption ( 'session\cookie_lifetime' ) );
-            }
-            
-            // cache limiter
-            if ($this->classsFacesOption ( 'session\cache_limiter' )) {
-                $this->cacheLimiter ( $this->classsFacesOption ( 'session\cache_limiter' ) );
-            }
-            
-            // save path
-            if ($this->classsFacesOption ( 'session\save_path' )) {
-                $this->savePath ( $this->classsFacesOption ( 'session\save_path' ) );
-            }
-            
-            // use_trans_sid
-            if ($this->classsFacesOption ( 'session\use_trans_sid' )) {
-                $this->useTransSid ( $this->classsFacesOption ( 'session\use_trans_sid' ) );
-            }
-            
-            // gc_probability
-            if ($this->classsFacesOption ( 'session\gc_probability' )) {
-                $this->gcProbability ( $this->classsFacesOption ( 'session\gc_probability' ) );
-            }
-            
-            // 启动 session
-            if (! session_start ()) {
-                return null;
-            }
+        }
+        
+        // 启动 session
+        if (! session_start ()) {
+            return null;
         }
     }
     

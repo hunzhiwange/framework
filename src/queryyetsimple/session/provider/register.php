@@ -14,15 +14,18 @@
 queryphp;
 
 /**
- * 单元测试引导文件
+ * session.register 服务提供者
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.01.07
+ * @since 2017.06.05
  * @version 1.0
  */
-putenv ( 'app_name=~_~@tests' );
-putenv ( 'controller_name=bootstrap' );
-putenv ( 'action_name=index' );
-putenv ( 'app_bootstrap=' . __DIR__ . '/tests/bootstrap.php' );
-require dirname( dirname( dirname( __DIR__ ) ) ) . '/www/index.php';
+return [ 
+        'singleton@session' => [ 
+                'queryyetsimple\session\session',
+                function ($objProject) {
+                    return queryyetsimple\session\session::singleton ( $objProject );
+                } 
+        ] 
+];

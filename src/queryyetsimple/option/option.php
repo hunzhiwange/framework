@@ -44,6 +44,14 @@ class option {
     const DEFAUTL_NAMESPACE = 'app';
     
     /**
+     * 构造函数
+     *
+     * @return void
+     */
+    public function __construct() {
+    }
+    
+    /**
      * 获取配置
      *
      * @param string $sName

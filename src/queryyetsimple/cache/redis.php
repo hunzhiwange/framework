@@ -16,19 +16,19 @@ namespace queryyetsimple\cache;
 queryphp;
 
 use RuntimeException;
-use Memcache as Memcaches;
+use Redis as Rediss;
 use queryyetsimple\cache\abstracts\cache as abstracts_cache;
 use queryyetsimple\classs\faces as classs_faces;
 
 /**
- * memcache 扩展缓存
+ * redis 扩展缓存
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.02.15
+ * @since 2017.06.05
  * @version 1.0
  */
-class memcache extends abstracts_cache {
+class redis extends abstracts_cache {
     
     use classs_faces;
     
@@ -40,13 +40,15 @@ class memcache extends abstracts_cache {
     protected $arrClasssFacesOption = [ 
             'cache\global_prefix' => '~@',
             'cache\global_expire' => 86400,
-            'cache\connect.memcache.servers' => [ ],
-            'cache\connect.memcache.host' => '127.0.0.1',
-            'cache\connect.memcache.port' => 11211,
-            'cache\connect.memcache.compressed' => false,
-            'cache\connect.memcache.persistent' => false,
-            'cache\connect.memcache.prefix' => null,
-            'cache\connect.memcache.expire' => null 
+            'cache\connect.redis.host' => '127.0.0.1',
+            'cache\connect.redis.port' => 6379,
+            'cache\connect.redis.password' => '',
+            'cache\connect.redis.select' => 0,
+            'cache\connect.redis.timeout' => 0,
+            'cache\connect.redis.persistent' => false,
+            'cache\connect.redis.serialize' => true,
+            'cache\connect.redis.prefix' => null,
+            'cache\connect.redis.expire' => null 
     ];
     
     /**
@@ -56,27 +58,21 @@ class memcache extends abstracts_cache {
      * @return void
      */
     public function __construct(array $arrOption = []) {
-        if (! extension_loaded ( 'memcache' )) {
-            throw new RuntimeException ( 'Memcache extension must be loaded before use.' );
+        if (! extension_loaded ( 'redis' )) {
+            throw new RuntimeException ( 'redis extension must be loaded before use.' );
         }
         
         $this->initialization ( $arrOption );
         
-        if (empty ( $this->arrOption ['servers'] )) {
-            $this->arrOption ['servers'] [] = [ 
-                    'host' => $this->classsFacesOption ( 'cache\connect.memcache.host' ),
-                    'port' => $this->classsFacesOption ( 'cache\connect.memcache.port' ) 
-            ];
+        $this->hHandle = $this->getRedis ();
+        $this->hHandle->{$this->arrOption ['persistent'] ? 'pconnect' : 'connect'} ( $this->arrOption ['host'], $this->arrOption ['port'], $this->arrOption ['timeout'] );
+        
+        if ($this->arrOption ['password']) {
+            $this->hHandle->auth ( $this->arrOption ['password'] );
         }
         
-        // 连接缓存服务器
-        $this->hHandle = $this->getMemcache ();
-        
-        foreach ( $this->arrOption ['servers'] as $arrServer ) {
-            $bResult = $this->hHandle->addServer ( $arrServer ['host'], $arrServer ['port'], $this->arrOption ['persistent'] );
-            if (! $bResult) {
-                throw new RuntimeException ( sprintf ( 'Unable to connect the memcached server [%s:%s] failed.', $arrServer ['host'], $arrServer ['port'] ) );
-            }
+        if ($this->arrOption ['select']) {
+            $this->hHandle->select ( $this->arrOption ['select'] );
         }
     }
     
@@ -89,14 +85,19 @@ class memcache extends abstracts_cache {
      * @return mixed
      */
     public function get($sCacheName, $mixDefault = false, array $arrOption = []) {
-        $mixData = $this->hHandle->get ( $this->getCacheName ( $sCacheName, $this->option ( $arrOption, null, false ) ) );
-        return $mixData === false ? $mixDefault : $mixData;
+        $arrOption = $this->option ( $arrOption, null, false );
+        $mixData = $this->hHandle->get ( $this->getCacheName ( $sCacheName, $arrOption ) );
+        if (is_null ( $mixData )) {
+            return $mixDefault;
+        }
+        if ($arrOption ['serialize']) {
+            $mixData = unserialize ( $mixData );
+        }
+        return $mixData;
     }
     
     /**
      * 设置缓存
-     *
-     * memcache 0 表示永不过期
      *
      * @param string $sCacheName            
      * @param mixed $mixData            
@@ -105,7 +106,14 @@ class memcache extends abstracts_cache {
      */
     public function set($sCacheName, $mixData, array $arrOption = []) {
         $arrOption = $this->option ( $arrOption, null, false );
-        $this->hHandle->set ( $this->getCacheName ( $sCacheName, $arrOption ), $mixData, $arrOption ['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption ['expire'] <= 0 ? 0 : ( int ) $arrOption ['expire'] );
+        if ($arrOption ['serialize']) {
+            $mixData = serialize ( $mixData );
+        }
+        
+        if (( int ) $arrOption ['expire'])
+            $this->hHandle->setex ( $this->getCacheName ( $sCacheName, $arrOption ), ( int ) $arrOption ['expire'], $mixData );
+        else
+            $this->hHandle->set ( $this->getCacheName ( $sCacheName, $arrOption ), $mixData );
     }
     
     /**
@@ -120,11 +128,11 @@ class memcache extends abstracts_cache {
     }
     
     /**
-     * 返回 memcache 对象
+     * 返回 redis 对象
      *
-     * @return \Memcache
+     * @return \Redis
      */
-    protected function getMemcache() {
-        return new Memcaches ();
+    protected function getRedis() {
+        return new Rediss ();
     }
 }
