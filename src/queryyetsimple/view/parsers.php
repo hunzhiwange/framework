@@ -209,25 +209,6 @@ class parsers {
     }
     
     /**
-     * 清理模板树对象
-     *
-     * @return void
-     */
-    private function clearThemeTree() {
-        $this->arrThemeTree = [ ];
-    }
-    
-    /**
-     * 添加顶层树对象
-     *
-     * @param array $arrTheme            
-     * @return void
-     */
-    private function topTheme($arrTheme) {
-        $this->arrThemeTree [] = $arrTheme;
-    }
-    
-    /**
      * 将模板结构加入树结构中去
      *
      * @param array $arrTheme            
@@ -610,8 +591,8 @@ class parsers {
         $nEnd = $nStart + strlen ( $sFind ) - 1;
         
         // 起止行数
-        $nStartLine = ($nStart <= 0) ? 0 : substr_count ( $sContent, "\n", 0, $nStart );
-        $nEndLine = ($nEnd <= 0) ? 0 : substr_count ( $sContent, "\n", 0, $nEnd );
+        $nStartLine = $nStart <= 0 ? 0 : substr_count ( $sContent, "\n", 0, $nStart );
+        $nEndLine = $nEnd <= 0 ? 0 : substr_count ( $sContent, "\n", 0, $nEnd );
         
         /**
          * 匹配模块范围圈（在这个字节里面的都是它的子模快）
@@ -999,8 +980,10 @@ class parsers {
         }
         
         $oTailStack = new stack ( 'array' ); // 尾标签栈
-        while ( ($arrTag = $this->oNodeStack->out ()) !== null ) { // 载入节点属性分析器&依次处理所有标签
-            if ($arrTag ['type'] == 'tail') { // 尾标签，加入到尾标签中
+        while ( ($arrTag = $this->oNodeStack->out ()) !== null ) { // 载入节点属性分析器 & 依次处理所有标签
+                                                                   
+            // 尾标签，加入到尾标签中
+            if ($arrTag ['type'] == 'tail') {
                 $oTailStack->in ( $arrTag );
                 continue;
             }
@@ -1023,8 +1006,11 @@ class parsers {
                 ];
                 $arrThemeNode ['position'] = $arrTag ['position'];
                 $arrThemeNode = array_merge ( $this->arrThemeStruct, $arrThemeNode );
-            } else { // 成对标签
-                     // 头尾标签中间为整个标签内容
+            }             
+
+            // 成对标签
+            else {
+                // 头尾标签中间为整个标签内容
                 $nStart = $arrTag ['position'] ['start'];
                 $nLen = $arrTailTag ['position'] ['end'] - $nStart + 1;
                 $sSource = substr ( $sCompiled, $nStart, $nLen );
@@ -1095,6 +1081,25 @@ class parsers {
      */
     private function getTag($sType) {
         return $this->arrTag [$sType . ($this->classsFacesOption ( 'theme_tag_note' ) === true ? '_node' : '')];
+    }
+    
+    /**
+     * 清理模板树对象
+     *
+     * @return void
+     */
+    private function clearThemeTree() {
+        $this->arrThemeTree = [ ];
+    }
+    
+    /**
+     * 添加顶层树对象
+     *
+     * @param array $arrTheme            
+     * @return void
+     */
+    private function topTheme($arrTheme) {
+        $this->arrThemeTree [] = $arrTheme;
     }
     
     // ######################################################
