@@ -40,7 +40,10 @@ return [
          * 所有消息队列的连接参数，支持 + 语法合并
          * 如果 redis 设置了认证密码，请加上 password 参数
          */
-        '+connect' => [ 
+        '+connect' => [
+                
+                // redis 驱动采用 https://github.com/nrk/predis(访问查看详情文档) 作为底层
+                // 分别对应 new \Predis\Client($arrServers, $arrOptions) 构造器两个参数
                 '+redis' => [ 
                         'servers' => [ 
                                 'host' => env ( 'queue_redis_host', '127.0.0.1' ),
