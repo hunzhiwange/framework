@@ -32,7 +32,7 @@ class directory {
      *
      * @param string $sDir            
      * @param number $nMode            
-     * @return void
+     * @return void|true
      */
     public static function create($sDir, $nMode = 0777) {
         if (is_dir ( $sDir )) {
@@ -54,6 +54,8 @@ class directory {
                 @mkdir ( $sCurDir, $nMode );
             }
         }
+        
+        return true;
     }
     
     /**

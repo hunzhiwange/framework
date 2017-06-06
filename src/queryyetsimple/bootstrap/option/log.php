@@ -98,5 +98,5 @@ return [
          *
          * 默认的日志路径，如果没有则设置为 \queryyetsimple\mvc\project::bootstrap ()->path_cache_log
          */
-        'path_default' => '' 
+        'path_default' => project ( 'path_cache_log' ) 
 ];

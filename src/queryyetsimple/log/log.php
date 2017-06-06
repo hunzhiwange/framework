@@ -232,13 +232,4 @@ class log {
         }
         return $sFilePath;
     }
-    
-    /**
-     * 初始化动态扩展参数
-     *
-     * @return void
-     */
-    public function initClasssFacesOption() {
-        return $this->initClasssFacesOptionDefault ()->setClasssFacesOption ( 'log\path_default', static::projectContainer ()->path_cache_log );
-    }
 }
