@@ -38,6 +38,8 @@ class memcache extends abstracts_cache {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
+            'cache\nocache_force' => '~@nocache_force',
+            'cache\time_preset' => [ ],
             'cache\global_prefix' => '~@',
             'cache\global_expire' => 86400,
             'cache\connect.memcache.servers' => [ ],
@@ -89,6 +91,9 @@ class memcache extends abstracts_cache {
      * @return mixed
      */
     public function get($sCacheName, $mixDefault = false, array $arrOption = []) {
+        if ($this->checkForce ())
+            return $mixDefault;
+        
         $mixData = $this->hHandle->get ( $this->getCacheName ( $sCacheName, $this->option ( $arrOption, null, false ) ) );
         return $mixData === false ? $mixDefault : $mixData;
     }
@@ -105,6 +110,7 @@ class memcache extends abstracts_cache {
      */
     public function set($sCacheName, $mixData, array $arrOption = []) {
         $arrOption = $this->option ( $arrOption, null, false );
+        $arrOption ['expire'] = $this->cacheTime ( $sCacheName, $arrOption ['expire'] );
         $this->hHandle->set ( $this->getCacheName ( $sCacheName, $arrOption ), $mixData, $arrOption ['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption ['expire'] <= 0 ? 0 : ( int ) $arrOption ['expire'] );
     }
     

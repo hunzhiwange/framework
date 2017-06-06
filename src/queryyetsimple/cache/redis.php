@@ -38,6 +38,8 @@ class redis extends abstracts_cache {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
+            'cache\nocache_force' => '~@nocache_force',
+            'cache\time_preset' => [ ],
             'cache\global_prefix' => '~@',
             'cache\global_expire' => 86400,
             'cache\connect.redis.host' => '127.0.0.1',
@@ -85,6 +87,9 @@ class redis extends abstracts_cache {
      * @return mixed
      */
     public function get($sCacheName, $mixDefault = false, array $arrOption = []) {
+        if ($this->checkForce ())
+            return $mixDefault;
+        
         $arrOption = $this->option ( $arrOption, null, false );
         $mixData = $this->hHandle->get ( $this->getCacheName ( $sCacheName, $arrOption ) );
         if (is_null ( $mixData )) {
@@ -109,6 +114,8 @@ class redis extends abstracts_cache {
         if ($arrOption ['serialize']) {
             $mixData = serialize ( $mixData );
         }
+        
+        $arrOption ['expire'] = $this->cacheTime ( $sCacheName, $arrOption ['expire'] );
         
         if (( int ) $arrOption ['expire'])
             $this->hHandle->setex ( $this->getCacheName ( $sCacheName, $arrOption ), ( int ) $arrOption ['expire'], $mixData );

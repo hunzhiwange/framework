@@ -107,4 +107,40 @@ abstract class cache implements interfaces_cache {
             $this->arrOption = array_merge ( $this->arrOption, $arrOption );
         }
     }
+    
+    /**
+     * 读取缓存时间配置
+     *
+     * @param string $sId            
+     * @param int $intDefaultTime            
+     * @return number
+     */
+    protected function cacheTime($sId, $intDefaultTime = 0) {
+        if (! $this->arrOption ['cache\time_preset'])
+            return $intDefaultTime;
+        
+        if (isset ( $this->arrOption ['cache\time_preset'] [$sId] )) {
+            return $this->arrOption ['cache\time_preset'] [$sId];
+        }
+        
+        foreach ( $this->arrOption ['cache\time_preset'] as $sKey => $nValue ) {
+            $sKeyCache = '/^' . str_replace ( '*', '(\S+)', $sKey ) . '$/';
+            if (preg_match ( $sKeyCache, $sId, $arrRes )) {
+                return $this->arrOption ['cache\time_preset'] [$sKey];
+            }
+        }
+        
+        return $intDefaultTime;
+    }
+    
+    /**
+     * 强制不启用缓存
+     *
+     * @return boolean
+     */
+    protected function checkForce() {
+        if (! empty ( $_REQUEST [$this->classsFacesOption ( 'cache\nocache_force' )] ))
+            return true;
+        return false;
+    }
 }

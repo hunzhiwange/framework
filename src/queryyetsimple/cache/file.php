@@ -52,6 +52,8 @@ class file extends abstracts_cache {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
+            'cache\nocache_force' => '~@nocache_force',
+            'cache\time_preset' => [ ],
             'cache\global_prefix' => '~@',
             'cache\global_expire' => 86400,
             'cache\connect.file.path' => '',
@@ -79,6 +81,9 @@ class file extends abstracts_cache {
      * @return mixed
      */
     public function get($sCacheName, $mixDefault = false, array $arrOption = []) {
+        if ($this->checkForce ())
+            return $mixDefault;
+        
         $arrOption = $this->option ( $arrOption, null, false );
         $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
         
@@ -175,6 +180,7 @@ class file extends abstracts_cache {
         if (! is_file ( $sFilePath )) {
             return true;
         }
+        $arrOption ['expire'] = $this->cacheTime ( $sCacheName, $arrOption ['expire'] );
         return ( int ) $arrOption ['expire'] > 0 && filemtime ( $sFilePath ) + ( int ) $arrOption ['expire'] < time ();
     }
     
