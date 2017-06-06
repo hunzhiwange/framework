@@ -126,7 +126,10 @@ class session implements interfaces_session {
         if ($this->classsFacesOption ( 'session\default' )) {
             $strConnectClass = 'queryyetsimple\\session\\' . $this->classsFacesOption ( 'session\default' );
             if (class_exists ( $strConnectClass )) {
-                if (! session_set_save_handler ( new $strConnectClass ( $this->classsFacesOption () ) ))
+                if (! session_set_save_handler ( new $strConnectClass ( [ 
+                        'prefix' => $this->classsFacesOption ( 'session\prefix' ),
+                        'expire' => $this->classsFacesOption ( 'session\cache_expire' ) 
+                ] ) ))
                     throw new RuntimeException ( __ ( 'session 驱动 %s 设置失败', $this->classsFacesOption ( 'session\default' ) ) );
             } else {
                 throw new RuntimeException ( __ ( 'session 驱动 %s 不存在', $this->classsFacesOption ( 'session\default' ) ) );

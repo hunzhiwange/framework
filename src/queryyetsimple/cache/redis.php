@@ -40,8 +40,8 @@ class redis extends abstracts_cache {
     protected $arrClasssFacesOption = [ 
             'cache\nocache_force' => '~@nocache_force',
             'cache\time_preset' => [ ],
-            'cache\global_prefix' => '~@',
-            'cache\global_expire' => 86400,
+            'cache\prefix' => '~@',
+            'cache\expire' => 86400,
             'cache\connect.redis.host' => '127.0.0.1',
             'cache\connect.redis.port' => 6379,
             'cache\connect.redis.password' => '',
@@ -132,6 +132,16 @@ class redis extends abstracts_cache {
      */
     public function delele($sCacheName, array $arrOption = []) {
         $this->hHandle->delete ( $this->getCacheName ( $sCacheName, $this->option ( $arrOption, null, false ) ) );
+    }
+    
+    /**
+     * 关闭 redis
+     *
+     * @return void
+     */
+    public function close() {
+        $this->hHandle->close ();
+        $this->hHandle = null;
     }
     
     /**

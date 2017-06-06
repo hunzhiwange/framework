@@ -16,7 +16,8 @@
     "require": {
         "php": ">=5.5.0",
         "queryyetsimple/classs": "1.0.*",
-        "queryyetsimple/assert": "1.0.*"
+        "queryyetsimple/assert": "1.0.*", 
+        "queryyetsimple/cache": "1.0.*"
     },
     "autoload": {
         "psr-4": {

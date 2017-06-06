@@ -54,8 +54,8 @@ class file extends abstracts_cache {
     protected $arrClasssFacesOption = [ 
             'cache\nocache_force' => '~@nocache_force',
             'cache\time_preset' => [ ],
-            'cache\global_prefix' => '~@',
-            'cache\global_expire' => 86400,
+            'cache\prefix' => '~@',
+            'cache\expire' => 86400,
             'cache\connect.file.path' => '',
             'cache\connect.file.serialize' => true,
             'cache\connect.redis.prefix' => null,

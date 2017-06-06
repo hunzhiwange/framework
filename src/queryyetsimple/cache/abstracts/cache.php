@@ -99,9 +99,9 @@ abstract class cache implements interfaces_cache {
             $arrTemp = array_pop ( $arrTemp );
             $this->arrOption [$arrTemp] = $this->classsFacesOption ( $strOption );
         }
-        $this->arrOption ['prefix'] = $this->arrOption ['cache\global_prefix'];
-        $this->arrOption ['expire'] = $this->arrOption ['cache\global_expire'];
-        unset ( $this->arrOption ['cache\global_prefix'], $this->arrOption ['cache\global_expire'] );
+        $this->arrOption ['prefix'] = $this->arrOption ['cache\prefix'];
+        $this->arrOption ['expire'] = $this->arrOption ['cache\expire'];
+        unset ( $this->arrOption ['cache\prefix'], $this->arrOption ['cache\expire'] );
         
         if (is_array ( $arrOption )) {
             $this->arrOption = array_merge ( $this->arrOption, $arrOption );
