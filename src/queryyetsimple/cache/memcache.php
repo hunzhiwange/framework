@@ -126,6 +126,16 @@ class memcache extends abstracts_cache {
     }
     
     /**
+     * 关闭 memcache
+     *
+     * @return void
+     */
+    public function close() {
+        $this->hHandle->close ();
+        $this->hHandle = null;
+    }
+    
+    /**
      * 返回 memcache 对象
      *
      * @return \Memcache

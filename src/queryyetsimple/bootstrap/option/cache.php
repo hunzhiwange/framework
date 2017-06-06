@@ -102,10 +102,10 @@ return [
                         'servers' => [ ],
                         
                         // 默认缓存服务器
-                        'host' => '127.0.0.1',
+                        'host' => env ( 'session_memcache_host', '127.0.0.1' ),
                         
                         // 默认缓存服务器端口
-                        'port' => 11211,
+                        'port' => env ( 'session_memcache_port', 11211 ),
                         
                         // 是否压缩缓存数据
                         'compressed' => false,
@@ -122,13 +122,13 @@ return [
                 
                 '+redis' => [
                         // 默认缓存服务器
-                        'host' => '127.0.0.1',
+                        'host' => env ( 'session_redis_host', '127.0.0.1' ),
                         
                         // 默认缓存服务器端口
-                        'port' => 6379,
+                        'port' => env ( 'session_redis_port', 6379 ),
                         
                         // 认证密码
-                        'password' => '',
+                        'password' => env ( 'session_redis_password', '' ),
                         
                         // redis 数据库索引
                         'select' => 0,

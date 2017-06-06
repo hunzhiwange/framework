@@ -16,18 +16,18 @@ namespace queryyetsimple\session;
 queryphp;
 
 use queryyetsimple\session\abstracts\session as abstracts_session;
-use queryyetsimple\cache\redis as cache_redis;
+use queryyetsimple\cache\memcache as cache_memcache;
 use queryyetsimple\classs\faces as classs_faces;
 
 /**
- * session.redis
+ * session.memcache
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.06.05
  * @version 1.0
  */
-class redis extends abstracts_session {
+class memcache extends abstracts_session {
     
     use classs_faces;
     
@@ -37,15 +37,13 @@ class redis extends abstracts_session {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
-            'session\connect.redis.host' => '127.0.0.1',
-            'session\connect.redis.port' => 6379,
-            'session\connect.redis.password' => '',
-            'session\connect.redis.select' => 0,
-            'session\connect.redis.timeout' => 0,
-            'session\connect.redis.persistent' => false,
-            'session\connect.redis.serialize' => true,
-            'session\connect.redis.prefix' => null,
-            'session\connect.redis.expire' => null 
+            'session\connect.memcache.servers' => [ ],
+            'session\connect.memcache.host' => '127.0.0.1',
+            'session\connect.memcache.port' => 11211,
+            'session\connect.memcache.compressed' => false,
+            'session\connect.memcache.persistent' => false,
+            'session\connect.memcache.prefix' => null,
+            'session\connect.memcache.expire' => null 
     ];
     
     /**
@@ -54,7 +52,9 @@ class redis extends abstracts_session {
      * @see SessionHandler::open()
      */
     public function open($strSavePath, $strName) {
-        $this->objCache = (new cache_redis ( $this->arrOption ))->initClasssFacesOptionDefault ();
+        $this->objCache = (new cache_memcache ( $this->arrOption ))->initClasssFacesOptionDefault ();
         return true;
     }
+    
+
 }

@@ -42,6 +42,63 @@ abstract class session extends SessionHandler {
     protected $arrOption = [ ];
     
     /**
+     * 构造函数
+     *
+     * @param array $arrOption            
+     * @return void
+     */
+    public function __construct($arrOption = []) {
+        $this->initialization ( $arrOption );
+    }
+    
+    /**
+     * (non-PHPdoc)
+     *
+     * @see SessionHandler::close()
+     */
+    public function close() {
+        $this->gc ( ini_get ( 'session.gc_maxlifetime' ) );
+        $this->objCache->close ();
+        return true;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     *
+     * @see SessionHandler::read()
+     */
+    public function read($strSessID) {
+        return $this->objCache->get ( $this->getSessionName ( $strSessID ) );
+    }
+    
+    /**
+     * (non-PHPdoc)
+     *
+     * @see SessionHandler::write()
+     */
+    public function write($strSessID, $mixSessData) {
+        $this->objCache->set ( $this->getSessionName ( $strSessID ), $mixSessData );
+    }
+    
+    /**
+     * (non-PHPdoc)
+     *
+     * @see SessionHandler::destroy()
+     */
+    public function destroy($strSessID) {
+        $this->objCache->delele ( $this->getSessionName ( $strSessID ) );
+    }
+    
+    /**
+     * (non-PHPdoc)
+     *
+     * @see SessionHandler::gc()
+     */
+    public function gc($intMaxlifetime) {
+        return true;
+    }
+    
+    /**
      * 初始化缓存配置
      *
      * @param array $arrOption            

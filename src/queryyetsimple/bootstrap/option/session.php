@@ -139,44 +139,30 @@ return [
          * 这里为所有的 session 驱动的连接参数，每一种不同的驱动拥有不同的配置
          * 虽然有不同的驱动，但是在使用上却有着一致性
          */
-        '+connect' => [
+        '+connect' => [ 
                 
-                // '+file' => [
-                // // 文件缓存路径
-                // 'path' => project ( 'path_cache_file' ),
-                
-                // // 是否 serialize 格式化
-                // 'serialize' => true,
-                
-                // // 前缀
-                // 'prefix' => null,
-                
-                // // 默认过期时间
-                // 'expire' => null
-                // ],
-                
-                // '+memcache' => [
-                // // 多台服务器
-                // 'servers' => [ ],
-                
-                // // 默认缓存服务器
-                // 'host' => '127.0.0.1',
-                
-                // // 默认缓存服务器端口
-                // 'port' => 11211,
-                
-                // // 是否压缩缓存数据
-                // 'compressed' => false,
-                
-                // // 是否使用持久连接
-                // 'persistent' => true,
-                
-                // // 前缀
-                // 'prefix' => null,
-                
-                // // 默认过期时间
-                // 'expire' => null
-                // ],
+                '+memcache' => [
+                        // 多台服务器
+                        'servers' => [ ],
+                        
+                        // 默认缓存服务器
+                        'host' => env ( 'session_memcache_host', '127.0.0.1' ),
+                        
+                        // 默认缓存服务器端口
+                        'port' => env ( 'session_memcache_port', 11211 ),
+                        
+                        // 是否压缩缓存数据
+                        'compressed' => false,
+                        
+                        // 是否使用持久连接
+                        'persistent' => true,
+                        
+                        // 前缀
+                        'prefix' => null,
+                        
+                        // 默认过期时间
+                        'expire' => null 
+                ],
                 
                 '+redis' => [
                         // 默认缓存服务器
@@ -186,7 +172,7 @@ return [
                         'port' => env ( 'session_redis_port', 6379 ),
                         
                         // 认证密码
-                        'password' => env ( 'session_redis_port', '' ),
+                        'password' => env ( 'session_redis_password', '' ),
                         
                         // redis 数据库索引
                         'select' => 0,
