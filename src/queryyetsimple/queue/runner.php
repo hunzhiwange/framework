@@ -16,6 +16,7 @@ namespace queryyetsimple\queue;
 queryphp;
 
 use PHPQueue\Runner as PHPQueueRunner;
+use queryyetsimple\queue\interfaces\runner as interfaces_runner;
 
 /**
  * 基类 runner
@@ -25,5 +26,5 @@ use PHPQueue\Runner as PHPQueueRunner;
  * @since 2017.05.12
  * @version 1.0
  */
-abstract class runner extends PHPQueueRunner {
+abstract class runner extends PHPQueueRunner implements interfaces_runner {
 }

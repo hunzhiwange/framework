@@ -18,6 +18,7 @@ queryphp;
 use PHPQueue\JobQueue;
 use PHPQueue\Logger;
 use queryyetsimple\filesystem\directory;
+use queryyetsimple\queue\interfaces\queue as interfaces_queue;
 
 /**
  * base 消息队列
@@ -27,7 +28,7 @@ use queryyetsimple\filesystem\directory;
  * @since 2017.05.11
  * @version 1.0
  */
-abstract class queue extends JobQueue {
+abstract class queue extends JobQueue implements interfaces_queue {
     
     /**
      * 队列连接
@@ -187,7 +188,7 @@ abstract class queue extends JobQueue {
      *
      * @return string
      */
-    protected function makeSourceKey() {
+    public function makeSourceKey() {
         return $this->strConnect . ':' . static::$strQueue;
     }
 }

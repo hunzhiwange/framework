@@ -61,7 +61,7 @@ class redis extends abstracts_cache {
      */
     public function __construct(array $arrOption = []) {
         if (! extension_loaded ( 'redis' )) {
-            throw new RuntimeException ( 'redis extension must be loaded before use.' );
+            throw new RuntimeException ( 'Redis extension must be loaded before use.' );
         }
         
         $this->initialization ( $arrOption );

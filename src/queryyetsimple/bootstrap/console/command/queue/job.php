@@ -64,7 +64,7 @@ class job extends command {
         try {
             // 任务名字特殊命名
             $arrPayload = [ 
-                    '~@job' => $this->argument ( 'job' ) 
+                    'job' => $this->argument ( 'job' ) 
             ];
             
             // 附加参数

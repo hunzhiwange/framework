@@ -15,9 +15,9 @@ namespace queryyetsimple\queue;
 ##########################################################
 queryphp;
 
-use Exception;
 use Clio\Console;
 use PHPQueue\Worker as PHPQueueWorker;
+use queryyetsimple\queue\interfaces\worker as interfaces_worker;
 
 /**
  * 基类 worker
@@ -27,7 +27,7 @@ use PHPQueue\Worker as PHPQueueWorker;
  * @since 2017.05.11
  * @version 1.0
  */
-abstract class worker extends PHPQueueWorker {
+abstract class worker extends PHPQueueWorker implements interfaces_worker {
     
     /**
      * 运行任务
@@ -38,40 +38,14 @@ abstract class worker extends PHPQueueWorker {
     public function runJob($objJob) {
         parent::runJob ( $objJob );
         
-        $arrJobData = $objJob->data;
+        $this->formatMessage ( sprintf ( 'Trying do run job %s.', $objJob->getName () ) );
         
-        if (empty ( $arrJobData ['~@job'] )) {
-            $this->formatMessage ( 'Job name is not defined.' );
-            return $this->result_data = [ ];
-        }
+        $objJob->handle ();
         
-        $this->formatMessage ( sprintf ( 'Trying do run job %s.', $arrJobData ['~@job'] ) );
-        
-        try {
-            // 注入构造器
-            $objJob = project ()->make ( $arrJobData ['~@job'] );
-            
-            // 注入方法
-            $strMethod = method_exists ( $objJob, 'handle' ) ? 'handle' : 'run';
-            call_user_func_array ( [ 
-                    project (),
-                    'call' 
-            ], [ 
-                    [ 
-                            $objJob,
-                            $strMethod 
-                    ],
-                    $arrJobData ['data'] 
-            ] );
-        } catch ( Exception $oE ) {
-            $this->formatMessage ( $oE->getMessage () );
-            return $this->result_data = [ ];
-        }
-        
-        $this->formatMessage ( sprintf ( 'Job %s is done.' . "", $arrJobData ['~@job'] ) );
+        $this->formatMessage ( sprintf ( 'Job %s is done.' . "", $objJob->getName () ) );
         $this->formatMessage ( 'Starting the next. ' );
         
-        $this->result_data = $arrJobData;
+        $this->result_data = $objJob->data;
     }
     
     /**
