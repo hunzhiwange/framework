@@ -27,4 +27,32 @@ use queryyetsimple\queue\interfaces\runner as interfaces_runner;
  * @version 1.0
  */
 abstract class runner extends PHPQueueRunner implements interfaces_runner {
+    
+    /**
+     * work 命令
+     *
+     * @var \queryyetsimple\bootstrap\console\command\queue\work
+     */
+    protected $objWork = null;
+    
+    /**
+     * work 命名
+     *
+     * @param \queryyetsimple\bootstrap\console\command\queue\work $objWork            
+     * @return void
+     */
+    public function workCommand($objWork) {
+        $this->objWork = $objWork;
+        return $this;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \PHPQueue\Runner::workJob()
+     */
+    public function workJob() {
+        parent::workJob ();
+        $this->objWork->checkRestart ();
+    }
 }

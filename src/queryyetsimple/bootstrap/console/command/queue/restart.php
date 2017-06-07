@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\interfaces;
+namespace queryyetsimple\bootstrap\console\command\queue;
 
 <<<queryphp
 ##########################################################
@@ -15,28 +15,40 @@ namespace queryyetsimple\queue\interfaces;
 ##########################################################
 queryphp;
 
+use queryyetsimple\cache\cache;
+use queryyetsimple\console\command;
+
 /**
- * runner 接口
+ * 重启任务
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.06.06
+ * @since 2017.06.07
  * @version 1.0
  */
-interface runner {
+class restart extends command {
     
     /**
-     * work 命名
+     * 命令名字
      *
-     * @param \queryyetsimple\bootstrap\console\command\queue\work $objWork            
+     * @var string
+     */
+    protected $strName = 'queue:restart';
+    
+    /**
+     * 命令行描述
+     *
+     * @var string
+     */
+    protected $strDescription = 'Restart queue work after done it current job.';
+    
+    /**
+     * 响应命令
+     *
      * @return void
      */
-    public function workCommand($objWork);
-    
-    /**
-     * (non-PHPdoc)
-     *
-     * @see \PHPQueue\Runner::workJob()
-     */
-    public function workJob();
+    public function handle() {
+        cache::sets ( 'queryphp.queue.restart', time () );
+        $this->info ( 'Send queue restart signal.' );
+    }
 }

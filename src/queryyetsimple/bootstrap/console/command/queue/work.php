@@ -22,6 +22,7 @@ use PHPQueue\Runner;
 use PHPQueue\Base;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\option\option;
+use queryyetsimple\cache\cache;
 
 /**
  * 运行任务
@@ -48,6 +49,13 @@ class work extends command {
     protected $strDescription = 'Process the next job on a queue';
     
     /**
+     * 当前进程启动时间
+     *
+     * @var int|false
+     */
+    protected $mixRestart;
+    
+    /**
      * 响应命令
      *
      * @return void
@@ -58,6 +66,27 @@ class work extends command {
         
         // 守候进程
         $this->runWorker ( $this->argument ( 'connect' ), $this->option ( 'queue' ) );
+    }
+    
+    /**
+     * runner 执行完毕当前任务检测是否需要重启
+     *
+     * @return void
+     */
+    public function checkRestart() {
+        if ($this->shouleRestart ( $this->mixRestart )) {
+            $this->stop ();
+        }
+    }
+    
+    /**
+     * 停止守候进程
+     *
+     * @return void
+     */
+    public function stop() {
+        $this->error ( $this->time ( sprintf ( '%s has stoped.', $this->argument ( 'connect' ) . ':' . $this->option ( 'queue' ) ) ) );
+        die ();
     }
     
     /**
@@ -98,8 +127,29 @@ class work extends command {
         
         $this->info ( $this->time ( sprintf ( '%s is on working.', $strConnect . ':' . $strQueue ) ) );
         
+        $this->mixRestart = $this->getRestart ();
+        
         // 守候进程
-        (new $strRunner ())->run ();
+        (new $strRunner ())->workCommand ( $this )->run ();
+    }
+    
+    /**
+     * 获取上次重启时间
+     *
+     * @return int|false
+     */
+    protected function getRestart() {
+        return cache::gets ( 'queryphp.queue.restart' );
+    }
+    
+    /**
+     * 检查是否要重启守候进程
+     *
+     * @param int|false $mixRestart            
+     * @return bool
+     */
+    protected function shouleRestart($mixRestart) {
+        return $this->getRestart () != $mixRestart;
     }
     
     /**

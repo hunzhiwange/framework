@@ -36,5 +36,6 @@ return [
         'queryyetsimple\bootstrap\console\command\migrate\status',
         'queryyetsimple\bootstrap\console\command\migrate\test',
         'queryyetsimple\bootstrap\console\command\queue\job',
-        'queryyetsimple\bootstrap\console\command\queue\work' 
+        'queryyetsimple\bootstrap\console\command\queue\work',
+        'queryyetsimple\bootstrap\console\command\queue\restart' 
 ];
