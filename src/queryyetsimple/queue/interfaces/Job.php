@@ -54,6 +54,13 @@ interface job {
     public function getData();
     
     /**
+     * 返回任务执行次数
+     *
+     * @return int
+     */
+    public function getAttempts();
+    
+    /**
      * 获取任务所属的消息队列
      *
      * @return string

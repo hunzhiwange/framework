@@ -15,14 +15,14 @@ namespace queryyetsimple\bootstrap\console\command\queue;
 ##########################################################
 queryphp;
 
+use PHPQueue\Base;
+use PHPQueue\Runner;
+use queryyetsimple\psr4\psr4;
+use queryyetsimple\cache\cache;
+use queryyetsimple\option\option;
 use queryyetsimple\console\command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use PHPQueue\Runner;
-use PHPQueue\Base;
-use queryyetsimple\psr4\psr4;
-use queryyetsimple\option\option;
-use queryyetsimple\cache\cache;
 
 /**
  * 运行任务
@@ -88,10 +88,15 @@ class work extends command {
     
     /**
      * runner 执行完毕当前任务检测是否需要重启
+     * 内存不够也需要重启
      *
      * @return void
      */
     public function checkRestart() {
+        if ($this->memory ()) {
+            $this->stop ();
+        }
+        
         if ($this->shouleRestart ( $this->mixRestart )) {
             $this->stop ();
         }
@@ -171,6 +176,15 @@ class work extends command {
     }
     
     /**
+     * 检查内存是否超出
+     *
+     * @return boolean
+     */
+    protected function memory() {
+        return memory_get_usage () / 1024 / 1024 >= $this->option ( 'memory' );
+    }
+    
+    /**
      * 命令参数
      *
      * @return array
@@ -199,6 +213,13 @@ class work extends command {
                         InputOption::VALUE_OPTIONAL,
                         'The queue to listen on',
                         'default' 
+                ],
+                [ 
+                        'memory',
+                        null,
+                        InputOption::VALUE_OPTIONAL,
+                        'The memory limit in megabytes',
+                        128 
                 ],
                 [ 
                         'sleep',
