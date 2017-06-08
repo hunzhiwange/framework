@@ -73,6 +73,7 @@ interface queue {
      * @return void
      */
     public function clearJob($strJobId = null);
+    
     /**
      * 重新发布任务
      *

@@ -18,6 +18,7 @@ queryphp;
 use queryyetsimple\queue\queue;
 use PHPQueue\Base;
 use queryyetsimple\option\option;
+use queryyetsimple\queue\backend\redis as backend_redis;
 
 /**
  * redis 消息队列
@@ -65,7 +66,7 @@ class redis extends queue {
         parent::__construct ();
         $this->arrSourceConfig ['servers'] = option::gets ( 'queue\connect.redis.servers', $this->arrSourceConfig ['servers'] );
         $this->arrSourceConfig ['redis_options'] = option::gets ( 'queue\connect.redis.options', [ ] );
-        $this->resDataSource = Base::backendFactory ( 'Predis', $this->arrSourceConfig );
+        $this->resDataSource = new backend_redis ( $this->arrSourceConfig );
     }
     
     /**

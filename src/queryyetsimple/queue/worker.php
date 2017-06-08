@@ -32,7 +32,8 @@ abstract class worker extends PHPQueueWorker implements interfaces_worker {
     /**
      * 运行任务
      *
-     * @param \PHPQueue\Job $objJob            
+     * @param \queryyetsimple\queue\interfaces\job $objJob
+     *            $objJob
      * @return void
      */
     public function runJob($objJob) {

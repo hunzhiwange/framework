@@ -169,7 +169,7 @@ abstract class queue extends JobQueue implements interfaces_queue {
      * @return void
      */
     public function clearJob($strJobId = null) {
-        $this->resDataSource->clear ( $strJobId );
+        //$this->resDataSource->clear ( $strJobId );
     }
     
     /**

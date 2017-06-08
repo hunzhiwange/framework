@@ -69,6 +69,24 @@ class work extends command {
     }
     
     /**
+     * 任务不可用等待时间
+     *
+     * @return int
+     */
+    public function sleep() {
+        return ( int ) $this->option ( 'sleep' );
+    }
+    
+    /**
+     * 任务最大尝试次数
+     *
+     * @return int
+     */
+    public function tries() {
+        return ( int ) $this->option ( 'tries' );
+    }
+    
+    /**
      * runner 执行完毕当前任务检测是否需要重启
      *
      * @return void
@@ -181,6 +199,20 @@ class work extends command {
                         InputOption::VALUE_OPTIONAL,
                         'The queue to listen on',
                         'default' 
+                ],
+                [ 
+                        'sleep',
+                        null,
+                        InputOption::VALUE_OPTIONAL,
+                        'Number of seconds to sleep when no job is available',
+                        5 
+                ],
+                [ 
+                        'tries',
+                        null,
+                        InputOption::VALUE_OPTIONAL,
+                        'Number of times to attempt a job before logging it failed',
+                        0 
                 ] 
         ];
     }

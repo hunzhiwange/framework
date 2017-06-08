@@ -15,13 +15,13 @@ namespace queryyetsimple\bootstrap\console\command\queue;
 ##########################################################
 queryphp;
 
+use Exception;
+use PHPQueue\Base;
+use queryyetsimple\option\option;
+use queryyetsimple\console\parser;
 use queryyetsimple\console\command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use PHPQueue\Base;
-use Exception;
-use queryyetsimple\option\option;
-use queryyetsimple\console\parser;
 
 /**
  * 导入消息队列配置
@@ -69,6 +69,7 @@ class job extends command {
             
             // 附加参数
             $arrPayload ['data'] = $this->option ( 'data' ) ?  : [ ];
+            $arrPayload ['attempts'] = 1;
             
             // 注册处理的队列
             $strConnect = 'queryyetsimple\queue\queues\\' . $this->argument ( 'connect' );
@@ -136,7 +137,7 @@ class job extends command {
                 ],
                 [ 
                         'data',
-                        'd',
+                        null,
                         InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
                         'The job json args.' 
                 ] 

@@ -43,6 +43,13 @@ abstract class job extends PHPQueueJob implements interfaces_job {
     protected $strQueue;
     
     /**
+     * 任务是否被删除
+     *
+     * @var boolean
+     */
+    protected $booDeleted = false;
+    
+    /**
      * 构造函数
      *
      * @param array $arrData            
@@ -53,6 +60,7 @@ abstract class job extends PHPQueueJob implements interfaces_job {
     public function __construct($arrData = null, $strJobId = null, $strQueue = 'default') {
         parent::__construct ( $arrData, $strJobId );
         $this->strQueue = $strQueue;
+        $this->initialization ();
     }
     
     /**
@@ -81,6 +89,24 @@ abstract class job extends PHPQueueJob implements interfaces_job {
     }
     
     /**
+     * 标识任务删除
+     *
+     * @return void
+     */
+    public function delete() {
+        $this->booDeleted = true;
+    }
+    
+    /**
+     * 任务是否被删除
+     *
+     * @return boolean
+     */
+    public function isDeleted() {
+        return $this->booDeleted;
+    }
+    
+    /**
      * 取得 job 实例
      *
      * @return object
@@ -105,6 +131,15 @@ abstract class job extends PHPQueueJob implements interfaces_job {
      */
     public function getData() {
         return $this->data ['data'];
+    }
+    
+    /**
+     * 返回任务执行次数
+     *
+     * @return int
+     */
+    public function getAttempts() {
+        return $this->data ['attempts'];
     }
     
     /**
@@ -156,5 +191,18 @@ abstract class job extends PHPQueueJob implements interfaces_job {
      */
     protected function getJob($strJob) {
         return project ()->make ( $strJob );
+    }
+    
+    /**
+     * 初始化
+     *
+     * @return void
+     */
+    protected function initialization() {
+        if (! isset ( $this->data ['data'] ))
+            $this->data ['data'] = [ ];
+        
+        if (! isset ( $this->data ['attempts'] ))
+            $this->data ['attempts'] = 1;
     }
 }
