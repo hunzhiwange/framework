@@ -18,11 +18,11 @@ queryphp;
 use PHPQueue\Backend\Predis;
 
 /**
- * 基类 job
+ * redis 存储
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2017.06.08
  * @version 1.0
  */
 class redis extends Predis {
@@ -37,20 +37,20 @@ class redis extends Predis {
         if (! $this->hasQueue ()) {
             throw new BackendException ( "No queue specified." );
         }
-        $job_data = $this->open_items [$jobId];
+        $strJobData = $this->open_items [$jobId];
         
         // 加入执行次数
-        $job_data = json_decode ( $job_data, true );
-        if ($job_data) {
-            if (empty ( $job_data ['data'] ['attempts'] ))
-                $job_data ['data'] ['attempts'] = 1;
+        $strJobData = json_decode ( $strJobData, true );
+        if ($strJobData) {
+            if (empty ( $strJobData ['data'] ['attempts'] ))
+                $strJobData ['data'] ['attempts'] = 1;
             else
-                $job_data ['data'] ['attempts'] ++;
-            $job_data = json_encode ( $job_data );
+                $strJobData ['data'] ['attempts'] ++;
+            $strJobData = json_encode ( $strJobData );
         }
         
-        $status = $this->getConnection ()->rpush ( $this->queue_name, $job_data );
-        if (! $status) {
+        $booStatus = $this->getConnection ()->rpush ( $this->queue_name, $strJobData );
+        if (! $booStatus) {
             throw new BackendException ( "Unable to save data." );
         }
         $this->last_job_id = $jobId;
