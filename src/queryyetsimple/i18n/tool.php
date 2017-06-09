@@ -55,7 +55,7 @@ class tool {
         }
         // 防止空数据无法写入
         $arrTexts ['Query Yet Simple'] = 'Query Yet Simple';
-        if (! file_put_contents ( $sCacheFile, "/* I18n Cache */\n;$(function(){\n    $.fn.queryphp('i18nPackage',\''.$sI18nSet.'\'," . json_encode ( $arrTexts, 256 ) . "); \n});" )) {
+        if (! file_put_contents ( $sCacheFile, '/* ' . date ( 'Y-m-d H:i:s' ) . ' */;$(function(){$.fn.queryphp(\'i18nPackage\',\'' . $sI18nSet . '\',' . json_encode ( $arrTexts, 256 ) . ');});' )) {
             throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $sCacheDir ) );
         }
         
