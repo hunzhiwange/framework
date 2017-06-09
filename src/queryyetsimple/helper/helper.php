@@ -123,7 +123,7 @@ class helper {
             directory::create ( dirname ( $strCachePath ) );
         }
         
-        file_put_contents ( $strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . '  */' . PHP_EOL . 'return [ ' . implode ( ', ', $arrResult ) . ' ]; ?>' );
+        file_put_contents ( $strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */' . PHP_EOL . 'return [ ' . implode ( ', ', $arrResult ) . ' ]; ?>' );
         unset ( $strContent, $arrResult );
         
         return require $strCachePath;

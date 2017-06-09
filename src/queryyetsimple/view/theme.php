@@ -46,7 +46,7 @@ class theme {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
-            'theme_cache_lifetime' => - 1 
+            'view\cache_lifetime' => - 1 
     ];
     
     /**
@@ -97,7 +97,7 @@ class theme {
                 $sChildCache = file_get_contents ( $sCachePath );
                 
                 // 替换
-                $sTargetContent = preg_replace ( "/<!--<\#\#\#\#incl\*" . $sMd5 . "\*ude\#\#\#\#>-->(.*?)<!--<\/\#\#\#\#incl\*" . $sMd5 . "\*ude\#\#\#\#\/>-->/s", substr ( $sChildCache, strpos ( $sChildCache, PHP_EOL ) - 1 ), $sTargetContent );
+                $sTargetContent = preg_replace ( "/<!--<\#\#\#\#incl\*" . $sMd5 . "\*ude\#\#\#\#>-->(.*?)<!--<\/\#\#\#\#incl\*" . $sMd5 . "\*ude\#\#\#\#\/>-->/s", substr ( $sChildCache, strpos ( $sChildCache, PHP_EOL ) ), $sTargetContent );
                 file_put_contents ( $sTargetCache, $sTargetContent );
                 
                 unset ( $sChildCache, $sTargetContent );
@@ -191,12 +191,12 @@ class theme {
         }
         
         // 编译过期时间为 -1 表示永不过期
-        if ($this->classsFacesOption ( 'theme_cache_lifetime' ) === - 1) {
+        if ($this->classsFacesOption ( 'view\cache_lifetime' ) === - 1) {
             return false;
         }
         
         // 缓存时间到期
-        if (filemtime ( $sCachePath ) + intval ( $this->classsFacesOption ( 'theme_cache_lifetime' ) ) < time ()) {
+        if (filemtime ( $sCachePath ) + intval ( $this->classsFacesOption ( 'view\cache_lifetime' ) ) < time ()) {
             return true;
         }
         

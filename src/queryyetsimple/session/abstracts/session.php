@@ -105,8 +105,6 @@ abstract class session extends SessionHandler {
      * @return void
      */
     protected function initialization($arrOption) {
-        $this->initClasssFacesOptionDefault ();
-        
         foreach ( array_keys ( $this->arrClasssFacesOption ) as $strOption ) {
             $arrTemp = explode ( '.', $strOption );
             $arrTemp = array_pop ( $arrTemp );

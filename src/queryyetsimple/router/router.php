@@ -1142,7 +1142,7 @@ class router {
         if (! file_put_contents ( $this->strCachePath, '<?php return ' . var_export ( $arrCacheData, true ) . '; ?>' )) {
             throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $this->strCachePath ) );
         }
-        ! file_put_contents ( $this->strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . '  */ ?>' . PHP_EOL . php_strip_whitespace ( $this->strCachePath ) );
+        ! file_put_contents ( $this->strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */ ?>' . PHP_EOL . php_strip_whitespace ( $this->strCachePath ) );
         
         unset ( $arrCacheData );
     }

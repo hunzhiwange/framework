@@ -89,7 +89,7 @@ class tool {
         if (! file_put_contents ( $sCacheFile, '<?php return ' . var_export ( $arrTexts, true ) . '; ?>' )) {
             throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $sDir ) );
         }
-        file_put_contents ( $sCacheFile, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . '  */ ?>' . PHP_EOL . php_strip_whitespace ( $sCacheFile ) );
+        file_put_contents ( $sCacheFile, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */ ?>' . PHP_EOL . php_strip_whitespace ( $sCacheFile ) );
         
         return $arrTexts;
     }

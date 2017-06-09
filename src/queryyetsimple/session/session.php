@@ -62,9 +62,6 @@ class session implements interfaces_session {
             return;
         }
         
-        // 合并参数
-        $this->initClasssFacesOptionDefault ();
-        
         // 设置 session 不自动启动
         ini_set ( 'session.auto_start', 0 );
         

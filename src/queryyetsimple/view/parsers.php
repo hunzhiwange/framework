@@ -852,7 +852,7 @@ class parsers {
     private function makeCacheFile($sCachePath, &$sCompiled) {
         ! is_file ( $sCachePath ) && ! is_dir ( dirname ( $sCachePath ) ) && directory::create ( dirname ( $sCachePath ) );
         file_put_contents ( $sCachePath, $sCompiled );
-        file_put_contents ( $sCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . '  */ ?>' . PHP_EOL . php_strip_whitespace ( $sCachePath ) );
+        file_put_contents ( $sCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */ ?>' . PHP_EOL . php_strip_whitespace ( $sCachePath ) );
     }
     
     /**

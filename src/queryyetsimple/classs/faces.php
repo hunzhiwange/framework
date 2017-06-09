@@ -151,6 +151,8 @@ trait faces {
      * @return mixed
      */
     public function classsFacesOption($strArgsName = null) {
+        if (! $this->checkClasssFacesOptionInit ())
+            $this->initClasssFacesOptionDefault ();
         if (is_null ( $strArgsName ))
             return $this->arrClasssFacesOptionIn;
         else
