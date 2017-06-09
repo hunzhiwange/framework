@@ -101,6 +101,9 @@ class helper {
      * @return array
      */
     public static function arrayMergeSource($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
+        if (! $arrFile)
+            return [ ];
+        
         if (is_file ( $strCachePath ) && $booForce === false) {
             return require $strCachePath;
         }

@@ -132,7 +132,7 @@ class project extends container {
      * @return $this
      */
     public function registerAppProvider($arrProvider, $arrProviderCache) {
-        return $this->runProvider ( $arrProvider, 'register' )->runProvider ( $arrProvider, 'bootstrap' )->runBaseProvider ( 'register', 'app', $arrProviderCache )->runBaseProvider ( 'bootstrap', 'app', $arrProviderCache );
+        return $this->runProvider ( $arrProvider, 'register' )->runProvider ( $arrProvider, 'bootstrap' )->runBaseProvider ( 'register', 'app', $arrProviderCache, false )->runBaseProvider ( 'bootstrap', 'app', $arrProviderCache, false );
     }
     
     /**
@@ -367,12 +367,14 @@ class project extends container {
      *
      * @param string $strAction            
      * @param string $strType            
+     * @param array $arrProvider            
+     * @param boolean $booSystem            
      * @return $this
      */
-    private function runBaseProvider($strAction, $strType = null, $arrProvider = null) {
-        return $this->registerProvider ( $this->path_runtime . '/provider/' . ($strType ?  : 'base') . '.' . $strAction . '.php', array_map ( function ($strPackage) use($strAction) {
-            return (strpos ( $strPackage, '\\' ) === false ? 'queryyetsimple\\' : '') . sprintf ( '%s\provider\%s', $strPackage, $strAction );
-        }, $arrProvider ?  : static::$arrBaseProvider ), env ( 'app_development' ) === 'development' );
+    private function runBaseProvider($strAction, $strType = 'base', $arrProvider = [], $booSystem = true) {
+        return $this->registerProvider ( $this->providerCathPath ( $strType, $strAction ), array_map ( function ($strPackage) use($strAction, $booSystem) {
+            return ($booSystem ? 'queryyetsimple\\' : '') . sprintf ( '%s\provider\%s', $strPackage, $strAction );
+        }, $booSystem ? static::$arrBaseProvider : $arrProvider ), env ( 'app_development' ) === 'development' );
     }
     
     /**
@@ -419,5 +421,16 @@ class project extends container {
             }
         }
         return $this;
+    }
+    
+    /**
+     * 返回服务提供者路径
+     *
+     * @param string $strType            
+     * @param string $strAction            
+     * @return string
+     */
+    private function providerCathPath($strType, $strAction) {
+        return $this->path_runtime . '/provider/' . $strType . '.' . $strAction . '.php';
     }
 }
