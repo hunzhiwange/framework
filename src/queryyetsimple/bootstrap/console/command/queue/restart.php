@@ -48,7 +48,9 @@ class restart extends command {
      * @return void
      */
     public function handle() {
-        cache::sets ( 'queryphp.queue.restart', time () );
+        cache::sets ( 'queryphp.queue.restart', time (), [ 
+                'expire' => 0 
+        ] );
         $this->info ( 'Send queue restart signal.' );
     }
 }
