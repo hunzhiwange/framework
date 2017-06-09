@@ -19,6 +19,7 @@ use Redis as Rediss;
 use RuntimeException;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\cache\abstracts\cache as abstracts_cache;
+use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
 /**
  * redis 扩展缓存
@@ -28,7 +29,7 @@ use queryyetsimple\cache\abstracts\cache as abstracts_cache;
  * @since 2017.06.05
  * @version 1.0
  */
-class redis extends abstracts_cache {
+class redis extends abstracts_cache implements interfaces_cache {
     
     use classs_faces;
     

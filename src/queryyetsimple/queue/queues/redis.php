@@ -19,6 +19,7 @@ use PHPQueue\Base;
 use queryyetsimple\queue\queue;
 use queryyetsimple\option\option;
 use queryyetsimple\queue\backend\redis as backend_redis;
+use queryyetsimple\queue\interfaces\queue as interfaces_queue;
 
 /**
  * redis 消息队列
@@ -28,7 +29,7 @@ use queryyetsimple\queue\backend\redis as backend_redis;
  * @since 2017.05.11
  * @version 1.0
  */
-class redis extends queue {
+class redis extends queue implements interfaces_queue {
     
     /**
      * 队列连接

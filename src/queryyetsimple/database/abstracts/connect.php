@@ -22,7 +22,6 @@ use queryyetsimple\log\log;
 use queryyetsimple\debug\dump;
 use queryyetsimple\assert\assert;
 use queryyetsimple\database\select;
-use queryyetsimple\database\interfaces\connect as interfaces_connect;
 
 /**
  * 数据库连接
@@ -32,7 +31,7 @@ use queryyetsimple\database\interfaces\connect as interfaces_connect;
  * @since 2017.03.09
  * @version 1.0
  */
-abstract class connect implements interfaces_connect {
+abstract class connect {
     
     /**
      * 数据库是否已经初始化连接

@@ -16,7 +16,6 @@ namespace queryyetsimple\queue;
 queryphp;
 
 use PHPQueue\Job as PHPQueueJob;
-use queryyetsimple\queue\interfaces\job as interfaces_job;
 
 /**
  * 基类 job
@@ -26,7 +25,7 @@ use queryyetsimple\queue\interfaces\job as interfaces_job;
  * @since 2017.05.12
  * @version 1.0
  */
-abstract class job extends PHPQueueJob implements interfaces_job {
+abstract class job extends PHPQueueJob {
     
     /**
      * 任务所属的消息队列

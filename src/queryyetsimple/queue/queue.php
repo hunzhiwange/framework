@@ -18,7 +18,6 @@ queryphp;
 use PHPQueue\Logger;
 use PHPQueue\JobQueue;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\queue\interfaces\queue as interfaces_queue;
 
 /**
  * base 消息队列
@@ -28,7 +27,7 @@ use queryyetsimple\queue\interfaces\queue as interfaces_queue;
  * @since 2017.05.11
  * @version 1.0
  */
-abstract class queue extends JobQueue implements interfaces_queue {
+abstract class queue extends JobQueue {
     
     /**
      * 队列连接

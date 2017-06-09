@@ -17,7 +17,6 @@ queryphp;
 
 use Clio\Console;
 use PHPQueue\Worker as PHPQueueWorker;
-use queryyetsimple\queue\interfaces\worker as interfaces_worker;
 
 /**
  * 基类 worker
@@ -27,7 +26,7 @@ use queryyetsimple\queue\interfaces\worker as interfaces_worker;
  * @since 2017.05.11
  * @version 1.0
  */
-abstract class worker extends PHPQueueWorker implements interfaces_worker {
+abstract class worker extends PHPQueueWorker {
     
     /**
      * 运行任务

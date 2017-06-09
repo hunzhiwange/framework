@@ -19,6 +19,7 @@ use InvalidArgumentException;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\cache\abstracts\cache as abstracts_cache;
+use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
 /**
  * 文件缓存
@@ -28,7 +29,7 @@ use queryyetsimple\cache\abstracts\cache as abstracts_cache;
  * @since 2017.02.15
  * @version 1.0
  */
-class file extends abstracts_cache {
+class file extends abstracts_cache implements interfaces_cache {
     
     use classs_faces;
     

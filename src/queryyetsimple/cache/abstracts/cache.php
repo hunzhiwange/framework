@@ -15,8 +15,6 @@ namespace queryyetsimple\cache\abstracts;
 ##########################################################
 queryphp;
 
-use queryyetsimple\cache\interfaces\cache as interfaces_cache;
-
 /**
  * 缓存抽象类
  *
@@ -25,7 +23,7 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
  * @since 2017.02.15
  * @version 1.0
  */
-abstract class cache implements interfaces_cache {
+abstract class cache {
     
     /**
      * 缓存服务句柄

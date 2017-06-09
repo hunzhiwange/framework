@@ -16,6 +16,7 @@ namespace queryyetsimple\queue\workers;
 queryphp;
 
 use queryyetsimple\queue\worker;
+use queryyetsimple\queue\interfaces\worker as interfaces_worker;
 
 /**
  * redis worker
@@ -25,5 +26,5 @@ use queryyetsimple\queue\worker;
  * @since 2017.05.11
  * @version 1.0
  */
-class redis extends worker {
+class redis extends worker implements interfaces_worker {
 }

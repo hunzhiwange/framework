@@ -17,6 +17,7 @@ queryphp;
 
 use PDO;
 use queryyetsimple\database\abstracts\connect;
+use queryyetsimple\database\interfaces\connect as interfaces_connect;
 
 /**
  * 数据库连接
@@ -26,7 +27,7 @@ use queryyetsimple\database\abstracts\connect;
  * @since 2017.03.09
  * @version 1.0
  */
-class mysql extends connect {
+class mysql extends connect implements interfaces_connect {
     
     /**
      * dsn 解析
