@@ -33,11 +33,11 @@ interface job {
     public function handle();
     
     /**
-     * 取得 job 实例
+     * 调用任务的失败方法
      *
-     * @return object
+     * @return void
      */
-    public function getInstance();
+    public function failed();
     
     /**
      * 取得 job 名字

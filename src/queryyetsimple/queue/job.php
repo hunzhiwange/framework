@@ -17,6 +17,7 @@ queryphp;
 
 use PHPQueue\Job as PHPQueueJob;
 use queryyetsimple\queue\interfaces\job as interfaces_job;
+use phpDocumentor\Reflection\Types\Callable_;
 
 /**
  * 基类 job
@@ -27,13 +28,6 @@ use queryyetsimple\queue\interfaces\job as interfaces_job;
  * @version 1.0
  */
 abstract class job extends PHPQueueJob implements interfaces_job {
-    
-    /**
-     * 任务实例
-     *
-     * @var object
-     */
-    protected $objInstance;
     
     /**
      * 任务所属的消息队列
@@ -70,22 +64,31 @@ abstract class job extends PHPQueueJob implements interfaces_job {
      */
     public function handle() {
         list ( $strJob, $strMethod ) = $this->parseString ( $this->getName () );
-        $this->objInstance = $this->getJob ( $strJob );
+        $objJob = $this->getJob ( $strJob );
         
-        $strMethod = method_exists ( $this->objInstance, $strMethod ) ? $strMethod : ($strMethod != 'handle' && method_exists ( $this->objInstance, 'handle' ) ? 'handle' : 'run');
+        $strMethod = method_exists ( $objJob, $strMethod ) ? $strMethod : ($strMethod != 'handle' && method_exists ( $objJob, 'handle' ) ? 'handle' : 'run');
         
-        $arrArgs = $this->getData ();
-        array_unshift ( $arrArgs, $this );
-        call_user_func_array ( [ 
-                project (),
-                'call' 
-        ], [ 
-                [ 
-                        $this->objInstance,
-                        $strMethod 
-                ],
-                $arrArgs 
+        $this->dispatch ( [ 
+                $objJob,
+                $strMethod 
         ] );
+    }
+    
+    /**
+     * 调用任务的失败方法
+     *
+     * @return void
+     */
+    public function failed() {
+        list ( $strJob, $strMethod ) = $this->parseString ( $this->getName () );
+        $objJob = $this->getJob ( $strJob );
+        
+        if ($objJob && method_exists ( $objJob, 'failed' )) {
+            $this->dispatch ( [ 
+                    $objJob,
+                    'failed' 
+            ] );
+        }
     }
     
     /**
@@ -104,15 +107,6 @@ abstract class job extends PHPQueueJob implements interfaces_job {
      */
     public function isDeleted() {
         return $this->booDeleted;
-    }
-    
-    /**
-     * 取得 job 实例
-     *
-     * @return object
-     */
-    public function getInstance() {
-        return $this->objInstance;
     }
     
     /**
@@ -190,7 +184,43 @@ abstract class job extends PHPQueueJob implements interfaces_job {
      * @return object
      */
     protected function getJob($strJob) {
-        return project ()->make ( $strJob );
+        return $this->container ()->make ( $strJob );
+    }
+    
+    /**
+     * 调度回调方法
+     *
+     * @param callable $calFunc            
+     * @return void
+     */
+    protected function dispatch($calFunc) {
+        call_user_func_array ( [ 
+                $this->container (),
+                'call' 
+        ], [ 
+                $calFunc,
+                $this->args () 
+        ] );
+    }
+    
+    /**
+     * 返回服务容器
+     *
+     * @return \queryyetsimple\support\interfaces\container
+     */
+    protected function container() {
+        return project ();
+    }
+    
+    /**
+     * 获取任务调度参数
+     *
+     * @return array
+     */
+    protected function args() {
+        $arrArgs = $this->getData ();
+        array_unshift ( $arrArgs, $this );
+        return $arrArgs;
     }
     
     /**

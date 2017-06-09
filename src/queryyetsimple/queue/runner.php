@@ -123,11 +123,14 @@ abstract class runner extends PHPQueueRunner implements interfaces_runner {
                     $this->objQueue->releaseJob ( $obJNewJob->job_id );
                 }
                 
-                $nSleepTime = self::RUN_USLEEP * 5;
+                $nSleepTime = self::RUN_USLEEP * 1;
             }
         }
-        $this->logger->addInfo ( 'Sleeping ' . ceil ( $nSleepTime / 1000000 ) . ' seconds.' );
-        usleep ( $nSleepTime );
+        
+        if ($nSleepTime) {
+            $this->logger->addInfo ( 'Sleeping ' . ceil ( $nSleepTime / 1000000 ) . ' seconds.' );
+            usleep ( $nSleepTime );
+        }
         
         // 验证是否需要重启
         $this->checkRestart ();
@@ -157,6 +160,7 @@ abstract class runner extends PHPQueueRunner implements interfaces_runner {
         if (! $objJob->isDeleted ()) {
             try {
                 $objJob->delete ();
+                $objJob->failed ();
                 $objJob->onError ();
                 $this->objQueue->beforeUpdate ();
                 $this->objQueue->updateJob ( $objJob->job_id, $objJob->data );
