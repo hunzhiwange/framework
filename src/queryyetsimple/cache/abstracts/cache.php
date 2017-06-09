@@ -96,7 +96,7 @@ abstract class cache {
      * @param array $arrOption            
      * @return void
      */
-    protected function initialization($arrOption) {
+    protected function initialization($arrOption = []) {
         foreach ( array_keys ( $this->arrClasssFacesOption ) as $strOption ) {
             $arrTemp = explode ( '.', $strOption );
             $arrTemp = array_pop ( $arrTemp );
@@ -106,7 +106,7 @@ abstract class cache {
         $this->arrOption ['expire'] = $this->arrOption ['cache\expire'];
         unset ( $this->arrOption ['cache\prefix'], $this->arrOption ['cache\expire'] );
         
-        if (is_array ( $arrOption )) {
+        if ($arrOption) {
             $this->arrOption = array_merge ( $this->arrOption, $arrOption );
         }
     }

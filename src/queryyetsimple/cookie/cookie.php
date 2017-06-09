@@ -39,15 +39,32 @@ class cookie {
             'cookie\prefix' => 'q_',
             'cookie\expire' => 86400,
             'cookie\domain' => '',
-            'cookie\path' => '/' 
+            'cookie\path' => '/',
+            'cookie\httponly' => false 
     ];
+    
+    /**
+     * 缓存配置
+     *
+     * @var array
+     */
+    protected $arrOption = [ ];
     
     /**
      * 构造函数
      *
+     * @param array $arrOption            
      * @return void
      */
-    public function __construct() {
+    public function __construct(array $arrOption = []) {
+        foreach ( array_keys ( $this->arrClasssFacesOption ) as $strOption ) {
+            $arrTemp = explode ( '\\', $strOption );
+            $arrTemp = array_pop ( $arrTemp );
+            $this->arrOption [$arrTemp] = $this->classsFacesOption ( $strOption );
+        }
+        if ($arrOption) {
+            $this->arrOption = array_merge ( $this->arrOption, $arrOption );
+        }
     }
     
     /**
@@ -55,95 +72,104 @@ class cookie {
      *
      * @param string $sName            
      * @param string $mixValue            
-     * @param array $in
-     *            life 过期时间
-     *            cookie_domain 是否启用域名
-     *            prefix 是否开启前缀
-     *            http_only
+     * @param array $arrOption            
      * @return void
      */
-    public function set($sName, $mixValue = '', array $in = []) {
-        $in = array_merge ( [ 
-                'life' => 0,
-                'cookie\domain' => null,
-                'prefix' => true,
-                'http_only' => false 
-        ], $in );
+    public function set($sName, $mixValue = '', array $arrOption = []) {
+        $arrOption = $this->option ( $arrOption, null, false );
         
         // 验证 cookie 值是不是一个标量
         assert::notNull ( $mixValue );
         assert::scalar ( $mixValue );
         
-        $sName = ($in ['prefix'] === true ? $this->classsFacesOption ( 'cookie\prefix' ) : '') . $sName;
+        $sName = $arrOption ['prefix'] . $sName;
         
-        if ($mixValue === null || $in ['life'] < 0) {
-            $in ['life'] = - 1;
-            if (isset ( $_COOKIE [$sName] )) {
+        if ($mixValue === null || $arrOption ['expire'] < 0) {
+            if (isset ( $_COOKIE [$sName] ))
                 unset ( $_COOKIE [$sName] );
-            }
         } else {
             $_COOKIE [$sName] = $mixValue;
-            if ($in ['life'] !== NULL && $in ['life'] === 0) {
-                $in ['life'] = $this->classsFacesOption ( 'cookie\expire' );
-            }
         }
         
-        $in ['life'] = $in ['life'] > 0 ? time () + $in ['life'] : ($in ['life'] < 0 ? time () - 31536000 : null);
-        $in ['cookie\domain'] = $in ['cookie\domain'] !== null ? $in ['cookie\domain'] : $this->classsFacesOption ( 'cookie\domain' );
-        setcookie ( $sName, $mixValue, $in ['life'], $this->classsFacesOption ( 'cookie\path' ), $in ['cookie\domain'], $_SERVER ['SERVER_PORT'] == 443 ? 1 : 0, $in ['http_only'] );
+        $arrOption ['expire'] = $arrOption ['expire'] > 0 ? time () + $arrOption ['expire'] : ($arrOption ['expire'] < 0 ? time () - 31536000 : 0);
+        setcookie ( $sName, $mixValue, $arrOption ['expire'], $arrOption ['path'], $arrOption ['domain'], ! empty ( $_SERVER ['HTTPS'] ) && strtoupper ( $_SERVER ['HTTPS'] ) == 'ON', $arrOption ['httponly'] );
     }
     
     /**
      * 获取 cookie
      *
      * @param string $sName            
-     * @param string $bPrefix            
+     * @param mixed $mixDefault            
+     * @param array $arrOption            
      * @return mixed
      */
-    public function get($sName, $bPrefix = true) {
-        $sName = ($bPrefix ? $this->classsFacesOption ( 'cookie\prefix' ) : '') . $sName;
-        return isset ( $_COOKIE [$sName] ) ? $_COOKIE [$sName] : null;
+    public function get($sName, $mixDefault = null, array $arrOption = []) {
+        $arrOption = $this->option ( $arrOption, null, false );
+        $sName = $arrOption ['prefix'] . $sName;
+        return isset ( $_COOKIE [$sName] ) ? $_COOKIE [$sName] : $mixDefault;
     }
     
     /**
      * 删除 cookie
      *
      * @param string $sName            
-     * @param string $sCookieDomain            
-     * @param boolean $bPrefix            
+     * @param array $arrOption            
      * @return void
      */
-    public function delete($sName, $sCookieDomain = null, $bPrefix = true) {
-        if (is_null ( $sCookieDomain ))
-            $sCookieDomain = $this->classsFacesOption ( 'cookie\domain' );
-        $this->set ( $sName, null, [ 
-                'life' => - 1,
-                'cookie\domain' => $sCookieDomain,
-                'prefix' => $bPrefix 
-        ] );
+    public function delete($sName, array $arrOption = []) {
+        $this->set ( $sName, null, $arrOption );
     }
     
     /**
      * 清空 cookie
      *
-     * @param boolean $bOnlyDeletePrefix            
-     * @param string $sCookieDomain            
-     * @return cookie 顶层数量
+     * @param boolean $bOnlyPrefix            
+     * @param array $arrOption            
+     * @return void
      */
-    public function clear($bOnlyDeletePrefix = true, $sCookieDomain = null) {
-        $nCookie = count ( $_COOKIE );
-        $strCookiePrefix = $this->classsFacesOption ( 'cookie\prefix' );
-        if (is_null ( $sCookieDomain ))
-            $sCookieDomain = $this->classsFacesOption ( 'cookie\domain' );
-        foreach ( $_COOKIE as $sKey => $Val ) {
-            if ($bOnlyDeletePrefix === true && $strCookiePrefix) {
-                if (strpos ( $sKey, $strCookiePrefix ) === 0) {
-                    $this->delete ( $sKey, $sCookieDomain, false );
+    public function clear($bOnlyPrefix = true, array $arrOption = []) {
+        $arrOption = $this->option ( $arrOption, null, false );
+        $strPrefix = $arrOption ['prefix'];
+        foreach ( $_COOKIE as $sKey => $mixVal ) {
+            if ($bOnlyPrefix === true && $strPrefix) {
+                if (strpos ( $sKey, $strPrefix ) === 0) {
+                    $this->delete ( $sKey, $arrOption );
                 }
             } else {
-                $this->delete ( $sKey, $sCookieDomain, false );
+                $arrOption ['prefix'] = '';
+                $this->delete ( $sKey, $arrOption );
             }
         }
-        return $nCookie;
+    }
+    
+    /**
+     * 修改配置
+     *
+     * @param mixed $mixName            
+     * @param mixed $mixValue            
+     * @param boolean $booMerge            
+     * @return array
+     */
+    public function option($mixName = '', $mixValue = null, $booMerge = true) {
+        $arrOption = $this->arrOption;
+        if (! empty ( $mixName )) {
+            if (is_array ( $mixName )) {
+                $arrOption = array_merge ( $arrOption, $mixName );
+            } else {
+                if (is_null ( $mixValue )) {
+                    if (isset ( $arrOption [$mixName] )) {
+                        unset ( $arrOption [$mixName] );
+                    }
+                } else {
+                    $arrOption [$mixName] = $mixValue;
+                }
+            }
+            
+            if ($booMerge === true) {
+                $this->arrOption = $arrOption;
+            }
+        }
+        
+        return $arrOption;
     }
 }

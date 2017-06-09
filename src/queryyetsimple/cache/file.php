@@ -101,7 +101,7 @@ class file extends abstracts_cache implements interfaces_cache {
         }
         flock ( $hFp, LOCK_SH );
         
-        // 头部的 15 个字节存储了安全代码
+        // 头部的 42 个字节存储了安全代码
         $nLen = filesize ( $sCachePath );
         fread ( $hFp, static::HEADER_LENGTH );
         $nLen -= static::HEADER_LENGTH;

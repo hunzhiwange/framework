@@ -66,5 +66,17 @@ return [
          * 这里的过期时间为我们在当前时间上加上了过期的秒数量即为过期时间
          * 相关技术文档：http://php.net/manual/zh/function.setcookie.php
          */
-        'expire' => 86400 
+        'expire' => 86400,
+        
+        /**
+         * ---------------------------------------------------------------
+         * cookie 仅 HTTP 协议访问
+         * ---------------------------------------------------------------
+         *
+         * 设置成 TRUE，Cookie 仅可通过 HTTP 协议访问。 这意思就是 Cookie 无法通过类似 JavaScript 这样的脚本语言访问。
+         * 要有效减少 XSS 攻击时的身份窃取行为，可建议用此设置（虽然不是所有浏览器都支持），不过这个说法经常有争议。 PHP 5.2.0 中添加。
+         * TRUE 或 FALSE
+         * 相关技术文档：http://php.net/manual/zh/function.setcookie.php
+         */
+        'httponly' => false 
 ]; 
