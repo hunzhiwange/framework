@@ -16,10 +16,10 @@ namespace queryyetsimple\log;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\option\option;
 use queryyetsimple\assert\assert;
 use queryyetsimple\filesystem\directory;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 日志

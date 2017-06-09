@@ -15,10 +15,10 @@ namespace queryyetsimple\bootstrap\console\command\make;
 ##########################################################
 queryphp;
 
+use queryyetsimple\psr4\psr4;
+use queryyetsimple\option\option;
 use queryyetsimple\console\command;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\option\option;
-use queryyetsimple\psr4\psr4;
 
 /**
  * 生成器基类

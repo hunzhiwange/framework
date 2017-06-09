@@ -16,8 +16,8 @@ namespace queryyetsimple\collection;
 queryphp;
 
 use Iterator;
-use ArrayAccess;
 use Countable;
+use ArrayAccess;
 use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\assert\assert;

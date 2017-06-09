@@ -16,9 +16,9 @@ namespace queryyetsimple\database;
 queryphp;
 
 use Exception;
-use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\option\option;
 use queryyetsimple\helper\helper;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 数据库入口

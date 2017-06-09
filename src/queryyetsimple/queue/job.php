@@ -17,7 +17,6 @@ queryphp;
 
 use PHPQueue\Job as PHPQueueJob;
 use queryyetsimple\queue\interfaces\job as interfaces_job;
-use phpDocumentor\Reflection\Types\Callable_;
 
 /**
  * 基类 job

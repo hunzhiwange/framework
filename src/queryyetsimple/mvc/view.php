@@ -16,12 +16,12 @@ namespace queryyetsimple\mvc;
 queryphp;
 
 use queryyetsimple\view\theme;
+use queryyetsimple\http\request;
+use queryyetsimple\cookie\cookie;
+use queryyetsimple\filesystem\file;
 use queryyetsimple\database\database;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\filesystem\file;
-use queryyetsimple\http\request;
 use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\cookie\cookie;
 
 /**
  * 视图

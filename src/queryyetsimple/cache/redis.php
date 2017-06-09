@@ -15,10 +15,10 @@ namespace queryyetsimple\cache;
 ##########################################################
 queryphp;
 
-use RuntimeException;
 use Redis as Rediss;
-use queryyetsimple\cache\abstracts\cache as abstracts_cache;
+use RuntimeException;
 use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\cache\abstracts\cache as abstracts_cache;
 
 /**
  * redis 扩展缓存

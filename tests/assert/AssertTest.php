@@ -3,7 +3,6 @@
 // ©2010-2017 http://queryphp.com All rights reserved.
 namespace tests\assert;
 
-use queryyetsimple;
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -16,8 +15,8 @@ use queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\assert\assert;
 use tests\testcase;
+use queryyetsimple\assert\assert;
 
 /**
  * assert 组件测试

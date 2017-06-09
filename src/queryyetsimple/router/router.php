@@ -16,11 +16,11 @@ namespace queryyetsimple\router;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\psr4\psr4;
 use queryyetsimple\http\request;
 use queryyetsimple\helper\helper;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\psr4\psr4;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 路由解析

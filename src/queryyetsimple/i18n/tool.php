@@ -16,8 +16,8 @@ namespace queryyetsimple\i18n;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\filesystem\directory;
 use queryyetsimple\helper\helper;
+use queryyetsimple\filesystem\directory;
 
 /**
  * 语言包工具类

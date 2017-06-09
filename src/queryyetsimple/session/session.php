@@ -16,8 +16,8 @@ namespace queryyetsimple\session;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\assert\assert;
+use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\session\interfaces\session as interfaces_session;
 
 /**

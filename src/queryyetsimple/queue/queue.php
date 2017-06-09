@@ -15,8 +15,8 @@ namespace queryyetsimple\queue;
 ##########################################################
 queryphp;
 
-use PHPQueue\JobQueue;
 use PHPQueue\Logger;
+use PHPQueue\JobQueue;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\queue\interfaces\queue as interfaces_queue;
 

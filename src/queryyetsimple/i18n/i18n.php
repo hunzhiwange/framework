@@ -16,8 +16,8 @@ namespace queryyetsimple\i18n;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\cookie\cookie;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 语言管理类

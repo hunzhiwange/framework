@@ -17,9 +17,9 @@ queryphp;
 
 use InvalidArgumentException;
 use queryyetsimple\stack\stack;
-use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\filesystem\directory;
 use queryyetsimple\helper\helper;
+use queryyetsimple\filesystem\directory;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 分析模板

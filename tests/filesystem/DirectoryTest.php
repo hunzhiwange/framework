@@ -15,9 +15,9 @@ namespace tests\filesystem;
 ##########################################################
 queryphp;
 
-use queryyetsimple\filesystem\directory;
-use queryyetsimple\filesystem\file;
 use tests\testcase;
+use queryyetsimple\filesystem\file;
+use queryyetsimple\filesystem\directory;
 
 /**
  * filesystem.directory 组件测试

@@ -15,8 +15,8 @@ namespace queryyetsimple\queue\queues;
 ##########################################################
 queryphp;
 
-use queryyetsimple\queue\queue;
 use PHPQueue\Base;
+use queryyetsimple\queue\queue;
 use queryyetsimple\option\option;
 use queryyetsimple\queue\backend\redis as backend_redis;
 

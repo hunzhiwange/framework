@@ -17,8 +17,8 @@ queryphp;
 
 use InvalidArgumentException;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\cache\abstracts\cache as abstracts_cache;
 use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\cache\abstracts\cache as abstracts_cache;
 
 /**
  * 文件缓存

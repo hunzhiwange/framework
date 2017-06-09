@@ -15,8 +15,8 @@ namespace queryyetsimple\bootstrap\runtime;
 ##########################################################
 queryphp;
 
-use queryyetsimple\option\option;
 use queryyetsimple\log\log;
+use queryyetsimple\option\option;
 
 /**
  * 消息基类

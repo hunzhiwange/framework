@@ -16,8 +16,8 @@ namespace queryyetsimple\mvc;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\helper\helper;
 use queryyetsimple\http\request;
+use queryyetsimple\helper\helper;
 use queryyetsimple\http\response;
 
 /**

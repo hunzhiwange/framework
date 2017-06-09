@@ -18,11 +18,11 @@ queryphp;
 use PDO;
 use Exception;
 use PDOException;
+use queryyetsimple\log\log;
+use queryyetsimple\debug\dump;
+use queryyetsimple\assert\assert;
 use queryyetsimple\database\select;
 use queryyetsimple\database\interfaces\connect as interfaces_connect;
-use queryyetsimple\log\log;
-use queryyetsimple\assert\assert;
-use queryyetsimple\debug\dump;
 
 /**
  * 数据库连接

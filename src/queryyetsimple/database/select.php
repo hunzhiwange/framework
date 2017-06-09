@@ -17,10 +17,10 @@ queryphp;
 
 use PDO;
 use Exception;
-use queryyetsimple\flow\control as flow_control;
-use queryyetsimple\collection\collection;
 use queryyetsimple\assert\assert;
 use queryyetsimple\helper\helper;
+use queryyetsimple\collection\collection;
+use queryyetsimple\flow\control as flow_control;
 
 /**
  * 数据库查询器

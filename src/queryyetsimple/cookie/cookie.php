@@ -15,8 +15,8 @@ namespace queryyetsimple\cookie;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\assert\assert;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * cookie 封装

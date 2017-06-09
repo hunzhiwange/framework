@@ -15,9 +15,9 @@ namespace queryyetsimple\session;
 ##########################################################
 queryphp;
 
-use queryyetsimple\session\abstracts\session as abstracts_session;
 use queryyetsimple\cache\redis as cache_redis;
 use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\session\abstracts\session as abstracts_session;
 
 /**
  * session.redis

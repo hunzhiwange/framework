@@ -15,11 +15,11 @@ namespace queryyetsimple\view;
 ##########################################################
 queryphp;
 
-use InvalidArgumentException;
 use queryyetsimple\mvc\view;
-use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\filesystem\file;
+use InvalidArgumentException;
 use queryyetsimple\mvc\project;
+use queryyetsimple\filesystem\file;
+use queryyetsimple\classs\faces as classs_faces;
 
 /**
  * 模板处理类

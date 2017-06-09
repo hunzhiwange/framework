@@ -15,8 +15,8 @@ namespace tests\database;
 ##########################################################
 queryphp;
 
-use queryyetsimple\database\database;
 use tests\testcase;
+use queryyetsimple\database\database;
 
 /**
  * database.select 组件测试

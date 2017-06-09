@@ -15,9 +15,9 @@ namespace queryyetsimple\bootstrap\console;
 ##########################################################
 queryphp;
 
-use Symfony\Component\Console\Application as SymfonyApplication;
-use queryyetsimple\option\option;
 use queryyetsimple\mvc\project;
+use queryyetsimple\option\option;
+use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**
  * 命令行应用程序

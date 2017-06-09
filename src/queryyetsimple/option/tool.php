@@ -17,8 +17,8 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\helper\helper;
-use queryyetsimple\filesystem\directory;
 use queryyetsimple\router\router;
+use queryyetsimple\filesystem\directory;
 
 /**
  * 配置工具类

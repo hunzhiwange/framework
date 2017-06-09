@@ -15,9 +15,9 @@ namespace tests\pipeline;
 ##########################################################
 queryphp;
 
-use queryyetsimple\pipeline\pipeline;
 use tests\testcase;
 use queryyetsimple\mvc\project;
+use queryyetsimple\pipeline\pipeline;
 
 /**
  * pipeline 组件测试

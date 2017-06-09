@@ -15,18 +15,18 @@ namespace queryyetsimple\console;
 ##########################################################
 queryphp;
 
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\DescriptorHelper;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Helper\DescriptorHelper;
+use Symfony\Component\Console\Question\ChoiceQuestion;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * 命令抽象类 <from lavarel>
@@ -413,7 +413,7 @@ abstract class command extends SymfonyCommand {
         foreach ( $arrArguments as $objArgument ) {
             $this->getDefinition ()->addArgument ( $objArgument );
         }
-
+        
         foreach ( $arrOptions as $objOption ) {
             $this->getDefinition ()->addOption ( $objOption );
         }

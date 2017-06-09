@@ -15,8 +15,8 @@ namespace queryyetsimple\filesystem;
 ##########################################################
 queryphp;
 
-use InvalidArgumentException;
 use RuntimeException;
+use InvalidArgumentException;
 
 /**
  * 文件

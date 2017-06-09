@@ -16,11 +16,11 @@ namespace queryyetsimple\classs;
 queryphp;
 
 use Closure;
+use RuntimeException;
 use ReflectionFunction;
 use BadMethodCallException;
-use RuntimeException;
-use queryyetsimple\option\option;
 use queryyetsimple\mvc\project;
+use queryyetsimple\option\option;
 
 /**
  * 实现类的静态访问门面以及动态扩展类的功能

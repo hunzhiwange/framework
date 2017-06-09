@@ -15,8 +15,8 @@ namespace tests\option;
 ##########################################################
 queryphp;
 
-use queryyetsimple\option\option;
 use tests\testcase;
+use queryyetsimple\option\option;
 
 /**
  * option 组件测试

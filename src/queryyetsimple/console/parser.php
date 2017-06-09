@@ -17,9 +17,9 @@ queryphp;
 
 use RuntimeException;
 use InvalidArgumentException;
+use queryyetsimple\string\string;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use queryyetsimple\string\string;
 
 /**
  * 命令行参数解析 <from lavarel>

@@ -15,9 +15,9 @@ namespace queryyetsimple\session;
 ##########################################################
 queryphp;
 
-use queryyetsimple\session\abstracts\session as abstracts_session;
-use queryyetsimple\cache\memcache as cache_memcache;
 use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\cache\memcache as cache_memcache;
+use queryyetsimple\session\abstracts\session as abstracts_session;
 
 /**
  * session.memcache
@@ -55,6 +55,4 @@ class memcache extends abstracts_session {
         $this->objCache = (new cache_memcache ( $this->arrOption ))->initClasssFacesOptionDefault ();
         return true;
     }
-    
-
 }

@@ -15,11 +15,11 @@ namespace queryyetsimple\bootstrap\console\command\migrate;
 ##########################################################
 queryphp;
 
+use RuntimeException;
+use InvalidArgumentException;
 use Phinx\Console\Command\Init as PhinxInit;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use InvalidArgumentException;
-use RuntimeException;
 
 /**
  * 数据库迁移初始化
