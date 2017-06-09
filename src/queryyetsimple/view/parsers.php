@@ -141,8 +141,7 @@ class parsers {
      * @var array
      */
     private $arrClasssFacesOption = [ 
-            'theme_strip_space' => true,
-            'theme_tag_note' => false 
+            'view\tag_note' => false 
     ];
     
     /**
@@ -255,50 +254,6 @@ class parsers {
             // 编译模板树
             $sCache = $this->compileThemeTree ();
         }
-        
-        // 清理模板编译文件空格
-        if ($this->classsFacesOption ( 'theme_strip_space' ) === true) {
-            
-            /**
-             * 清理 HTML 清除换行符,清除制表符,去掉注释标记
-             * js 中的 “//” 注释将会造成错误，请避免这种写法
-             *
-             * @param string $sHtml            
-             * @return string
-             */
-            $calCompress = function ($sHtml) {
-                $arrPieces = preg_split ( '/(<pre.*?\/pre>)/ms', $sHtml, - 1, PREG_SPLIT_DELIM_CAPTURE );
-                $sHtml = '';
-                foreach ( $arrPieces as $sPiece ) {
-                    if (strpos ( $sPiece, '<pre' ) !== 0) {
-                        // 删除换行和制表符
-                        $sPiece = preg_replace ( '/[\\n\\r\\t]+/', ' ', $sPiece );
-                        // 移除掉多余空白，多个空白字符等价为一个空白字符
-                        $sPiece = preg_replace ( '/\\s{2,}/', ' ', $sPiece );
-                        // 移除成对标签内部的空白
-                        $sPiece = preg_replace ( '/>\\s</', '><', $sPiece );
-                        // 移除 CSS & JS 注释
-                        $sPiece = preg_replace ( '/\\/\\*.*?\\*\\//i', '', $sPiece );
-                    }
-                    $sHtml .= $sPiece;
-                }
-                return $sHtml;
-            };
-            
-            $sCache = $calCompress ( $sCache );
-        }
-        
-        // 返回编译文件
-        $sCache = "<?php /* QueryPHP Cache " . date ( 'Y-m-d H:i:s', time () ) . "  */ ?>" . PHP_EOL . $sCache;
-        
-        // 解决不同操作系统源代码换行混乱
-        $sCache = str_replace ( [ 
-                "\r",
-                "\n" 
-        ], '~^^!queryphp_newline!^^~', $sCache );
-        
-        $sCache = preg_replace ( "/(~^^!queryphp_newline!^^~)+/i", '~^^!queryphp_newline!^^~', $sCache );
-        $sCache = str_replace ( '~^^!queryphp_newline!^^~', PHP_EOL, $sCache );
         
         // 生成编译文件
         if ($bReturn === false) {
@@ -897,6 +852,7 @@ class parsers {
     private function makeCacheFile($sCachePath, &$sCompiled) {
         ! is_file ( $sCachePath ) && ! is_dir ( dirname ( $sCachePath ) ) && directory::create ( dirname ( $sCachePath ) );
         file_put_contents ( $sCachePath, $sCompiled );
+        file_put_contents ( $sCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . '  */ ?>' . PHP_EOL . php_strip_whitespace ( $sCachePath ) );
     }
     
     /**
@@ -1080,7 +1036,7 @@ class parsers {
      * @return array
      */
     private function getTag($sType) {
-        return $this->arrTag [$sType . ($this->classsFacesOption ( 'theme_tag_note' ) === true ? '_node' : '')];
+        return $this->arrTag [$sType . ($this->classsFacesOption ( 'view\tag_note' ) === true ? '_node' : '')];
     }
     
     /**

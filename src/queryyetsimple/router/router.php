@@ -91,13 +91,6 @@ class router {
     private $strCachePath;
     
     /**
-     * 路由 debug
-     *
-     * @var boolean
-     */
-    private $booDebug = false;
-    
-    /**
      * 路由 development
      *
      * @var boolean
@@ -1088,17 +1081,6 @@ class router {
     }
     
     /**
-     * 设置 debug
-     *
-     * @param boolean $booDebug            
-     * @return $this
-     */
-    public function debug($booDebug) {
-        $this->booDebug = $booDebug;
-        return $this;
-    }
-    
-    /**
      * 设置 development
      *
      * @param boolean $booDevelopment            
@@ -1157,13 +1139,10 @@ class router {
             directory::create ( dirname ( $this->strCachePath ) );
         }
         
-        if (! file_put_contents ( $this->strCachePath, "<?php\n /* router cache */ \n return " . var_export ( $arrCacheData, true ) . "\n?>" )) {
+        if (! file_put_contents ( $this->strCachePath, '<?php return ' . var_export ( $arrCacheData, true ) . '; ?>' )) {
             throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $this->strCachePath ) );
         }
-        
-        if ($this->booDebug === false && ! file_put_contents ( $this->strCachePath, php_strip_whitespace ( $this->strCachePath ) )) {
-            throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $this->strCachePath ) );
-        }
+        ! file_put_contents ( $this->strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . '  */ ?>' . PHP_EOL . php_strip_whitespace ( $this->strCachePath ) );
         
         unset ( $arrCacheData );
     }

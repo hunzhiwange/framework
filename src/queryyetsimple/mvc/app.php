@@ -744,7 +744,7 @@ class app {
      * @return array
      */
     private function setOptionRouterCachePath() {
-        router::cachePaths ( $this->objProject->path_cache_option . '/' . $this->strApp . '@router.php' )->development ( env ( 'app_development' ) === 'development' )->debug ( env ( 'app_debug' ) );
+        router::cachePaths ( $this->objProject->path_cache_option . '/' . $this->strApp . '@router.php' )->development ( env ( 'app_development' ) === 'development' );
     }
     
     /**

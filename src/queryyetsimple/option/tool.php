@@ -102,9 +102,10 @@ class tool {
             directory::create ( dirname ( $sOptionCache ) );
         }
         
-        if (! file_put_contents ( $sOptionCache, "<?php\n /* option cache */ \n return " . var_export ( $arrOptionData, true ) . "\n?>" )) {
+        if (! file_put_contents ( $sOptionCache, '<?php return ' . var_export ( $arrOptionData, true ) . '; ?>' )) {
             throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $this->optioncache_path ) );
         }
+        file_put_contents ( $sOptionCache, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . '  */ ?>' . PHP_EOL . php_strip_whitespace ( $sOptionCache ) );
         
         option::resets ( $arrOptionData );
         unset ( $arrOptionData );

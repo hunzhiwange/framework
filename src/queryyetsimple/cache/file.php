@@ -38,14 +38,14 @@ class file extends abstracts_cache implements interfaces_cache {
      *
      * @var string
      */
-    const HEADER = '<?php die(); ?>';
+    const HEADER = '<?php die( %s ); ?>';
     
     /**
      * 缓存文件头部长度
      *
      * @var int
      */
-    const HEADER_LENGTH = 15;
+    const HEADER_LENGTH = 42;
     
     /**
      * 配置
@@ -103,7 +103,7 @@ class file extends abstracts_cache implements interfaces_cache {
         
         // 头部的 15 个字节存储了安全代码
         $nLen = filesize ( $sCachePath );
-        $sHead = fread ( $hFp, static::HEADER_LENGTH );
+        fread ( $hFp, static::HEADER_LENGTH );
         $nLen -= static::HEADER_LENGTH;
         
         do {
@@ -148,7 +148,7 @@ class file extends abstracts_cache implements interfaces_cache {
         if ($arrOption ['serialize']) {
             $mixData = serialize ( $mixData );
         }
-        $mixData = static::HEADER . $mixData;
+        $mixData = sprintf ( static::HEADER, '/* ' . date ( 'Y-m-d H:i:s' ) . '  */' ) . $mixData;
         
         $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
         $this->writeData ( $sCachePath, $mixData );

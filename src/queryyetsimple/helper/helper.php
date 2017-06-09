@@ -31,22 +31,6 @@ use queryyetsimple\filesystem\directory;
 class helper {
     
     /**
-     * 动态创建实例对象
-     *
-     * @param string $strClass            
-     * @param array $arrArgs            
-     * @return mixed
-     */
-    public static function newInstanceArgs($strClass, $arrArgs) {
-        $objClass = new ReflectionClass ( $strClass );
-        if ($objClass->getConstructor ()) {
-            return $objClass->newInstanceArgs ( $arrArgs );
-        } else {
-            return $objClass->newInstanceWithoutConstructor ();
-        }
-    }
-    
-    /**
      * 数组数据格式化
      *
      * @param mixed $mixInput            
@@ -139,56 +123,10 @@ class helper {
             directory::create ( dirname ( $strCachePath ) );
         }
         
-        file_put_contents ( $strCachePath, '<?php return [ ' . implode ( ', ', $arrResult ) . ' ];' );
+        file_put_contents ( $strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . '  */' . PHP_EOL . 'return [ ' . implode ( ', ', $arrResult ) . ' ]; ?>' );
         unset ( $strContent, $arrResult );
         
         return require $strCachePath;
-    }
-    
-    /**
-     * 注册缓存式服务提供者
-     *
-     * @param \queryyetsimple\mvc\project $objProject            
-     * @param string $strCachePath            
-     * @param array $arrFile            
-     * @param boolean $booParseNamespace            
-     * @param boolean $booForce            
-     * @return array
-     */
-    public static function registerProvider($objProject, $strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
-        foreach ( static::arrayMergeSource ( $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
-            if (is_string ( $strType ) && $strType) {
-                if (strpos ( $strType, '@' ) !== false) {
-                    $arrRegisterArgs = explode ( '@', $strType );
-                } else {
-                    $arrRegisterArgs = [ 
-                            $strType,
-                            '' 
-                    ];
-                }
-            } else {
-                $arrRegisterArgs = [ 
-                        'register',
-                        '' 
-                ];
-            }
-            
-            switch ($arrRegisterArgs [0]) {
-                case 'singleton' :
-                    $objProject->singleton ( $mixProvider [0], $mixProvider [1] );
-                    break;
-                case 'instance' :
-                    $objProject->instance ( $mixProvider [0], $mixProvider [1] );
-                    break;
-                case 'register' :
-                    $objProject->register ( $mixProvider [0], $mixProvider [1] );
-                    break;
-            }
-            
-            if ($arrRegisterArgs [1]) {
-                $objProject->alias ( $arrRegisterArgs [1], $mixProvider [0] );
-            }
-        }
     }
     
     /**

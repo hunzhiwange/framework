@@ -370,9 +370,54 @@ class project extends container {
      * @return $this
      */
     private function runBaseProvider($strAction, $strType = null, $arrProvider = null) {
-        helper::registerProvider ( $this, $this->path_runtime . '/provider/' . ($strType ?  : 'base') . '.' . $strAction . '.php', array_map ( function ($strPackage) use($strAction) {
+        return $this->registerProvider ( $this->path_runtime . '/provider/' . ($strType ?  : 'base') . '.' . $strAction . '.php', array_map ( function ($strPackage) use($strAction) {
             return (strpos ( $strPackage, '\\' ) === false ? 'queryyetsimple\\' : '') . sprintf ( '%s\provider\%s', $strPackage, $strAction );
         }, $arrProvider ?  : static::$arrBaseProvider ), env ( 'app_development' ) === 'development' );
+    }
+    
+    /**
+     * 注册缓存式服务提供者
+     *
+     * @param string $strCachePath            
+     * @param array $arrFile            
+     * @param boolean $booParseNamespace            
+     * @param boolean $booForce            
+     * @return array
+     */
+    private function registerProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
+        foreach ( helper::arrayMergeSource ( $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
+            if (is_string ( $strType ) && $strType) {
+                if (strpos ( $strType, '@' ) !== false) {
+                    $arrRegisterArgs = explode ( '@', $strType );
+                } else {
+                    $arrRegisterArgs = [ 
+                            $strType,
+                            '' 
+                    ];
+                }
+            } else {
+                $arrRegisterArgs = [ 
+                        'register',
+                        '' 
+                ];
+            }
+            
+            switch ($arrRegisterArgs [0]) {
+                case 'singleton' :
+                    $this->singleton ( $mixProvider [0], $mixProvider [1] );
+                    break;
+                case 'instance' :
+                    $this->instance ( $mixProvider [0], $mixProvider [1] );
+                    break;
+                case 'register' :
+                    $this->register ( $mixProvider [0], $mixProvider [1] );
+                    break;
+            }
+            
+            if ($arrRegisterArgs [1]) {
+                $this->alias ( $arrRegisterArgs [1], $mixProvider [0] );
+            }
+        }
         return $this;
     }
 }

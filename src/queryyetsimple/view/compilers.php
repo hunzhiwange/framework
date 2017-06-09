@@ -233,14 +233,14 @@ class compilers {
      * @var array
      */
     protected $arrClasssFacesOption = [ 
-            'theme_cache_children' => false,
-            'theme_var_identify' => '',
-            'theme_notallows_func' => [ 
+            'view\cache_children' => false,
+            'view\var_identify' => '',
+            'view\notallows_func' => [ 
                     'exit',
                     'die',
                     'return' 
             ],
-            'theme_notallows_func_js' => [ 
+            'view\notallows_func_js' => [ 
                     'alert' 
             ] 
     ];
@@ -736,15 +736,13 @@ out += '";
         $this->checkNode ( $arrTheme );
         $arrAttr = $this->getNodeAttribute ( $arrTheme );
         
-        // 替换一下，防止迁移的时候由于物理路径的原因，需要重新生成编译文件
         $arrAttr ['file'] = view::parseFiles ( $arrAttr ['file'], $arrAttr ['ext'] );
         if (strpos ( $arrAttr ['file'], '$' ) !== 0 && strpos ( $arrAttr ['file'], '(' ) === false) {
-            $arrAttr ['file'] = str_replace ( directory::tidyPath ( $this->project ()->path_app_theme . '/' . $this->project ()->name_app_theme ), '$PROJECT->path_app_theme.\'/\'.$PROJECT->name_app_theme.\'', directory::tidyPath ( $arrAttr ['file'] ) );
             $arrAttr ['file'] = (strpos ( $arrAttr ['file'], '$' ) === 0 ? '' : '\'') . $arrAttr ['file'] . '\'';
         }
         
         // 子模板合并到主模板
-        if ($this->classsFacesOption ( 'theme_cache_children' )) {
+        if ($this->classsFacesOption ( 'view\cache_children' )) {
             $sMd5 = md5 ( $arrAttr ['file'] );
             $sCompiled = "<!--<####incl*" . $sMd5 . "*ude####>-->";
             $sCompiled .= '<?' . 'php $this->display( ' . $arrAttr ['file'] . ', true, __FILE__,\'' . $sMd5 . '\'   ); ?' . '>';
@@ -1046,7 +1044,7 @@ out += '";
                 }
                 
                 if ($bIsObject === false) { // 非对象
-                    switch (strtolower ( $this->classsFacesOption ( 'theme_var_identify' ) )) {
+                    switch (strtolower ( $this->classsFacesOption ( 'view\var_identify' ) )) {
                         case 'array' : // 识别为数组
                             $sName = '$' . $arrVars [0] . '[\'' . $arrVars [1] . '\']' . ($this->arrayHandler ( $arrVars ));
                             break;
@@ -1090,7 +1088,7 @@ out += '";
     private function parseVarFunction($sName, $arrVar, $bJs = false) {
         $nLen = count ( $arrVar );
         // 取得模板禁止使用函数列表
-        $arrNot = $this->classsFacesOption ( 'theme_notallows_func' . ($bJs ? '' : '_js') );
+        $arrNot = $this->classsFacesOption ( 'view\notallows_func' . ($bJs ? '' : '_js') );
         for($nI = 0; $nI < $nLen; $nI ++) {
             if (0 === stripos ( $arrVar [$nI], 'default=' )) {
                 $arrArgs = explode ( '=', $arrVar [$nI], 2 );
