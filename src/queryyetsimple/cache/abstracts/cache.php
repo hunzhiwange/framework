@@ -26,6 +26,13 @@ queryphp;
 abstract class cache {
     
     /**
+     * 缓存配置
+     *
+     * @var array
+     */
+    protected $arrOption = [ ];
+    
+    /**
      * 缓存服务句柄
      *
      * @var handle
