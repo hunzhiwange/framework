@@ -16,7 +16,7 @@ namespace queryyetsimple\cookie;
 queryphp;
 
 use queryyetsimple\assert\assert;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\classs\option as classs_option;
 
 /**
  * cookie 封装
@@ -28,27 +28,20 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class cookie {
     
-    use classs_faces;
+    use classs_option;
     
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'cookie\prefix' => 'q_',
-            'cookie\expire' => 86400,
-            'cookie\domain' => '',
-            'cookie\path' => '/',
-            'cookie\httponly' => false 
+    protected $arrOption = [ 
+            'prefix' => 'q_',
+            'expire' => 86400,
+            'domain' => '',
+            'path' => '/',
+            'httponly' => false 
     ];
-    
-    /**
-     * 缓存配置
-     *
-     * @var array
-     */
-    protected $arrOption = [ ];
     
     /**
      * 构造函数
@@ -57,14 +50,7 @@ class cookie {
      * @return void
      */
     public function __construct(array $arrOption = []) {
-        foreach ( array_keys ( $this->arrClasssFacesOption ) as $strOption ) {
-            $arrTemp = explode ( '\\', $strOption );
-            $arrTemp = array_pop ( $arrTemp );
-            $this->arrOption [$arrTemp] = $this->classsFacesOption ( $strOption );
-        }
-        if ($arrOption) {
-            $this->arrOption = array_merge ( $this->arrOption, $arrOption );
-        }
+        $this->options ( $arrOption );
     }
     
     /**
@@ -76,7 +62,7 @@ class cookie {
      * @return void
      */
     public function set($sName, $mixValue = '', array $arrOption = []) {
-        $arrOption = $this->option ( $arrOption, null, false );
+        $arrOption = $this->getOptions ( $arrOption );
         
         // 验证 cookie 值是不是一个标量
         assert::notNull ( $mixValue );
@@ -104,7 +90,7 @@ class cookie {
      * @return mixed
      */
     public function get($sName, $mixDefault = null, array $arrOption = []) {
-        $arrOption = $this->option ( $arrOption, null, false );
+        $arrOption = $this->getOptions ( $arrOption );
         $sName = $arrOption ['prefix'] . $sName;
         return isset ( $_COOKIE [$sName] ) ? $_COOKIE [$sName] : $mixDefault;
     }
@@ -128,7 +114,7 @@ class cookie {
      * @return void
      */
     public function clear($bOnlyPrefix = true, array $arrOption = []) {
-        $arrOption = $this->option ( $arrOption, null, false );
+        $arrOption = $this->getOptions ( $arrOption );
         $strPrefix = $arrOption ['prefix'];
         foreach ( $_COOKIE as $sKey => $mixVal ) {
             if ($bOnlyPrefix === true && $strPrefix) {
@@ -140,36 +126,5 @@ class cookie {
                 $this->delete ( $sKey, $arrOption );
             }
         }
-    }
-    
-    /**
-     * 修改配置
-     *
-     * @param mixed $mixName            
-     * @param mixed $mixValue            
-     * @param boolean $booMerge            
-     * @return array
-     */
-    public function option($mixName = '', $mixValue = null, $booMerge = true) {
-        $arrOption = $this->arrOption;
-        if (! empty ( $mixName )) {
-            if (is_array ( $mixName )) {
-                $arrOption = array_merge ( $arrOption, $mixName );
-            } else {
-                if (is_null ( $mixValue )) {
-                    if (isset ( $arrOption [$mixName] )) {
-                        unset ( $arrOption [$mixName] );
-                    }
-                } else {
-                    $arrOption [$mixName] = $mixValue;
-                }
-            }
-            
-            if ($booMerge === true) {
-                $this->arrOption = $arrOption;
-            }
-        }
-        
-        return $arrOption;
     }
 }

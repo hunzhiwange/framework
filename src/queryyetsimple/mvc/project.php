@@ -15,7 +15,6 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
-use queryyetsimple\mvc\view;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\helper\helper;
 use queryyetsimple\support\container;
@@ -57,6 +56,7 @@ class project extends container {
      * @var array
      */
     private static $arrBaseProvider = [ 
+            'option',
             'http',
             'log',
             'provider',
@@ -67,7 +67,8 @@ class project extends container {
             'event',
             'router',
             'pipeline',
-            'cache' 
+            'cache',
+            'view' 
     ];
     
     /**
@@ -215,6 +216,11 @@ class project extends container {
      */
     private function setComposer($objComposer) {
         psr4::composer ( $objComposer );
+        psr4::faces ( $this );
+        spl_autoload_register ( [ 
+                'queryyetsimple\psr4\psr4',
+                'autoload' 
+        ] );
         return $this;
     }
     
@@ -267,8 +273,20 @@ class project extends container {
         } );
         
         // 注册 view
-        $this->singleton ( 'queryyetsimple\mvc\view', function (project $objProject) {
-            return view::singleton ( $objProject );
+        $this->singleton ( 'queryyetsimple\mvc\view', function (project $oProject) {
+            $arrOption = [ ];
+            foreach ( [ 
+                    'cache_children',
+                    'controlleraction_depr',
+                    'suffix',
+                    'switch',
+                    'default',
+                    'cookie_app' 
+            ] as $strOption ) {
+                $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
+            }
+            $oView = new view ( $oProject, $arrOption );
+            return $oView;
         } );
         
         return $this;
@@ -387,6 +405,7 @@ class project extends container {
      * @return array
      */
     private function registerProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
+        $booForce = true;
         foreach ( helper::arrayMergeSource ( $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
             if (is_string ( $strType ) && $strType) {
                 if (strpos ( $strType, '@' ) !== false) {

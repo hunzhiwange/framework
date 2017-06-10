@@ -24,8 +24,20 @@ queryphp;
 return [ 
         'singleton@i18n' => [ 
                 'queryyetsimple\i18n\i18n',
-                function ($objProject) {
-                    return \queryyetsimple\i18n\i18n::singleton ( $objProject );
+                function ($oProject) {
+                    $arrOption = [ ];
+                    foreach ( [ 
+                            
+                            'on',
+                            'switch',
+                            'cookie_app',
+                            'default',
+                            'auto_accept' 
+                    ] as $strOption ) {
+                        $arrOption [$strOption] = $oProject ['option']->get ( 'i18n\\' . $strOption );
+                    }
+                    
+                    return new queryyetsimple\i18n\i18n ( $oProject, $arrOption );
                 } 
         ] 
 ];

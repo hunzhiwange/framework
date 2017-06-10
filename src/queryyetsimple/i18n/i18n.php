@@ -16,8 +16,8 @@ namespace queryyetsimple\i18n;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\cookie\cookie;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\support\interfaces\container;
+use queryyetsimple\classs\option as classs_option;
 
 /**
  * 语言管理类
@@ -29,35 +29,42 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class i18n {
     
-    use classs_faces;
+    use classs_option;
+    
+    /**
+     * 项目容器
+     *
+     * @var \queryyetsimple\support\interfaces\container
+     */
+    protected $objProject;
     
     /**
      * 当前语言上下文
      *
      * @var string
      */
-    private $sI18nName = NULL;
+    protected $sI18nName = NULL;
     
     /**
      * 默认语言上下文
      *
      * @var string
      */
-    private $sDefaultI18nName = 'zh-cn';
+    protected $sDefaultI18nName = 'zh-cn';
     
     /**
      * 语言数据
      *
      * @var array
      */
-    private $arrText = [ ];
+    protected $arrText = [ ];
     
     /**
      * 语言 cookie
      *
      * @var string
      */
-    private $sCookieName = 'i18n';
+    protected $sCookieName = 'i18n';
     
     /**
      * 国际化参数名
@@ -71,20 +78,24 @@ class i18n {
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'i18n\on' => true,
-            'i18n\switch' => true,
-            'i18n\cookie_app' => false,
-            'i18n\default' => 'zh-cn',
-            'i18n\auto_accept' => true 
+    protected $arrOption = [ 
+            'on' => true,
+            'switch' => true,
+            'cookie_app' => false,
+            'default' => 'zh-cn',
+            'auto_accept' => true 
     ];
     
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\support\interfaces\container $objProject            
+     * @param array $arrOption            
      * @return void
      */
-    public function __construct() {
+    public function __construct(container $objProject, array $arrOption = []) {
+        $this->objProject = $objProject;
+        $this->options ( $arrOption );
     }
     
     /**
@@ -96,7 +107,7 @@ class i18n {
      */
     public function getText($sValue/*Argvs*/){
         // 未开启直接返回
-        if (! $this->classsFacesOption ( 'i18n\on' )) {
+        if (! $this->getOption ( 'on' )) {
             if (func_num_args () > 1) { // 代入参数
                 $sValue = call_user_func_array ( 'sprintf', func_get_args () );
             }
@@ -142,11 +153,11 @@ class i18n {
      * @return string
      */
     public function parseContext() {
-        if (! $this->classsFacesOption ( 'i18n\switch' )) {
-            $sI18nSet = $this->classsFacesOption ( 'i18n\default' );
+        if (! $this->getOption ( 'switch' )) {
+            $sI18nSet = $this->getOption ( 'default' );
         } else {
-            if ($this->classsFacesOption ( 'i18n\cookie_app' ) === true) {
-                $sCookieName = static::$objProjectContainer->app_name . '_i18n';
+            if ($this->getOption ( 'cookie_app' ) === true) {
+                $sCookieName = $this->objProject ['app_name'] . '_i18n';
             } else {
                 $sCookieName = 'i18n';
             }
@@ -154,20 +165,20 @@ class i18n {
             
             if (isset ( $_GET [static::ARGS] )) {
                 $sI18nSet = $_GET [static::ARGS];
-                cookie::sets ( $sCookieName, $sI18nSet );
+                $this->objProject ['cookie']->set ( $sCookieName, $sI18nSet );
             } elseif ($sCookieName) {
-                $sI18nSet = cookie::gets ( $sCookieName );
+                $sI18nSet = $this->objProject ['cookie']->get ( $sCookieName );
                 if (empty ( $sI18nSet )) {
-                    $sI18nSet = $this->classsFacesOption ( 'i18n\default' );
+                    $sI18nSet = $this->getOption ( 'default' );
                 }
-            } elseif ($this->classsFacesOption ( 'i18n\auto_accept' ) && isset ( $_SERVER ['HTTP_ACCEPT_LANGUAGE'] )) {
+            } elseif ($this->getOption ( 'auto_accept' ) && isset ( $_SERVER ['HTTP_ACCEPT_LANGUAGE'] )) {
                 preg_match ( '/^([a-z\-]+)/i', $_SERVER ['HTTP_ACCEPT_LANGUAGE'], $arrMatches );
                 $sI18nSet = $arrMatches [1];
             } else {
-                $sI18nSet = $this->classsFacesOption ( 'i18n\default' );
+                $sI18nSet = $this->getOption ( 'default' );
             }
         }
-        $this->setDefaultContext ( $this->classsFacesOption ( 'i18n\default' ) );
+        $this->setDefaultContext ( $this->getOption ( 'default' ) );
         $this->setContext ( $sI18nSet );
         
         return $sI18nSet;

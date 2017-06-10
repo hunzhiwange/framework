@@ -15,12 +15,11 @@ namespace queryyetsimple\view;
 ##########################################################
 queryphp;
 
-use queryyetsimple\mvc\view;
 use InvalidArgumentException;
-use queryyetsimple\mvc\project;
 use queryyetsimple\helper\helper;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\support\interfaces\container;
+use queryyetsimple\classs\option as classs_option;
 
 /**
  * 编译器列表
@@ -32,7 +31,14 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class compilers {
     
-    use classs_faces;
+    use classs_option;
+    
+    /**
+     * 项目容器
+     *
+     * @var \queryyetsimple\support\interfaces\container
+     */
+    protected $objProject;
     
     /**
      * code 支持的特殊别名映射
@@ -232,15 +238,15 @@ class compilers {
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'view\cache_children' => false,
-            'view\var_identify' => '',
-            'view\notallows_func' => [ 
+    protected $arrOption = [ 
+            'cache_children' => false,
+            'var_identify' => '',
+            'notallows_func' => [ 
                     'exit',
                     'die',
                     'return' 
             ],
-            'view\notallows_func_js' => [ 
+            'notallows_func_js' => [ 
                     'alert' 
             ] 
     ];
@@ -248,9 +254,13 @@ class compilers {
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\support\interfaces\container $objProject            
+     * @param array $arrOption            
      * @return void
      */
-    public function __construct() {
+    public function __construct(container $objProject, array $arrOption = []) {
+        $this->objProject = $objProject;
+        $this->options ( $arrOption );
     }
     
     // ######################################################
@@ -736,13 +746,13 @@ out += '";
         $this->checkNode ( $arrTheme );
         $arrAttr = $this->getNodeAttribute ( $arrTheme );
         
-        $arrAttr ['file'] = view::parseFiles ( $arrAttr ['file'], $arrAttr ['ext'] );
+        $arrAttr ['file'] = $this->objProject ['view']->parseFile ( $arrAttr ['file'], $arrAttr ['ext'] );
         if (strpos ( $arrAttr ['file'], '$' ) !== 0 && strpos ( $arrAttr ['file'], '(' ) === false) {
             $arrAttr ['file'] = (strpos ( $arrAttr ['file'], '$' ) === 0 ? '' : '\'') . $arrAttr ['file'] . '\'';
         }
         
         // 子模板合并到主模板
-        if ($this->classsFacesOption ( 'view\cache_children' )) {
+        if ($this->getOption ( 'cache_children' )) {
             $sMd5 = md5 ( $arrAttr ['file'] );
             $sCompiled = "<!--<####incl*" . $sMd5 . "*ude####>-->";
             $sCompiled .= '<?' . 'php $this->display( ' . $arrAttr ['file'] . ', true, __FILE__,\'' . $sMd5 . '\'   ); ?' . '>';
@@ -944,15 +954,6 @@ out += '";
     // ------------------- 返回编译器映射 end -------------------
     // ######################################################
     
-    /**
-     * 返回项目容器
-     *
-     * @return \queryyetsimple\mvc\project
-     */
-    public function project() {
-        return project::bootstrap ();
-    }
-    
     // ######################################################
     // --------------------- 私有函数 start --------------------
     // ######################################################
@@ -1044,7 +1045,7 @@ out += '";
                 }
                 
                 if ($bIsObject === false) { // 非对象
-                    switch (strtolower ( $this->classsFacesOption ( 'view\var_identify' ) )) {
+                    switch (strtolower ( $this->getOption ( 'var_identify' ) )) {
                         case 'array' : // 识别为数组
                             $sName = '$' . $arrVars [0] . '[\'' . $arrVars [1] . '\']' . ($this->arrayHandler ( $arrVars ));
                             break;
@@ -1088,7 +1089,7 @@ out += '";
     private function parseVarFunction($sName, $arrVar, $bJs = false) {
         $nLen = count ( $arrVar );
         // 取得模板禁止使用函数列表
-        $arrNot = $this->classsFacesOption ( 'view\notallows_func' . ($bJs ? '' : '_js') );
+        $arrNot = $this->getOption ( 'notallows_func' . ($bJs ? '' : '_js') );
         for($nI = 0; $nI < $nLen; $nI ++) {
             if (0 === stripos ( $arrVar [$nI], 'default=' )) {
                 $arrArgs = explode ( '=', $arrVar [$nI], 2 );

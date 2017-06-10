@@ -3,6 +3,11 @@
 // ©2010-2017 http://queryphp.com All rights reserved.
 namespace queryyetsimple\psr4;
 
+use RuntimeException;
+use queryyetsimple\classs\faces2;
+use Composer\Autoload\ClassLoader;
+use queryyetsimple\support\interfaces\container;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -35,15 +40,20 @@ class psr4 {
     /**
      * 设置 composer
      *
-     * @param null|\Composer\Autoload\ClassLoader $mixComposer
-     *            当前的类名
-     * @return void|\Composer\Autoload\ClassLoader
+     * @param \Composer\Autoload\ClassLoader $objComposer            
+     * @return void
      */
-    public static function composer($mixComposer = null) {
-        if (is_null ( $mixComposer ))
-            return static::$objComposer;
-        elseif ($mixComposer)
-            static::$objComposer = $mixComposer;
+    public static function composer(ClassLoader $objComposer) {
+        static::$objComposer = $objComposer;
+    }
+    
+    /**
+     * 获取 composer
+     *
+     * @return \Composer\Autoload\ClassLoader
+     */
+    public static function getComposer() {
+        return static::$objComposer;
     }
     
     /**
@@ -60,7 +70,7 @@ class psr4 {
             return;
         }
         $sPackagePath = realpath ( $sPackage );
-        static::composer ()->setPsr4 ( $sNamespace . '\\', $sPackagePath );
+        static::getComposer ()->setPsr4 ( $sNamespace . '\\', $sPackagePath );
     }
     
     /**
@@ -71,7 +81,7 @@ class psr4 {
      */
     public static function getNamespace($sNamespace) {
         $arrNamespace = explode ( '\\', $sNamespace );
-        $arrPrefix = static::composer ()->getPrefixesPsr4 ();
+        $arrPrefix = static::getComposer ()->getPrefixesPsr4 ();
         if (! isset ( $arrPrefix [$arrNamespace [0] . '\\'] ))
             return null;
         $arrNamespace [0] = $arrPrefix [$arrNamespace [0] . '\\'] [0];
@@ -90,5 +100,33 @@ class psr4 {
         } else {
             return $strFile . '.php';
         }
+    }
+    
+    /**
+     * 框架自动载入
+     *
+     * @param string $strClass            
+     * @return void
+     */
+    public static function autoload($strClass) {
+        // 实现沙盒
+        if (strpos ( $strClass, 'queryyetsimple\\' ) !== false) {
+            $strSandbox = dirname ( __DIR__ ) . '/bootstrap/sandbox/' . ltrim ( $strClass, 'queryyetsimple\\' ) . '.php';
+            if (is_file ( $strSandbox )) {
+                require $strSandbox;
+            } else {
+                throw new RuntimeException ( sprintf ( 'Sandbox class %s cannot find.', $strSandbox ) );
+            }
+        }
+    }
+    
+    /**
+     * 容器注入门面
+     *
+     * @param \queryyetsimple\support\interfaces\container $objProject            
+     * @return void
+     */
+    public static function faces(container $objProject) {
+        faces2::setProjectContainer ( $objProject );
     }
 }

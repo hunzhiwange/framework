@@ -15,13 +15,10 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
-use queryyetsimple\view\theme;
-use queryyetsimple\http\request;
-use queryyetsimple\cookie\cookie;
 use queryyetsimple\filesystem\file;
-use queryyetsimple\database\database;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\support\interfaces\container;
+use queryyetsimple\classs\option as classs_option;
 
 /**
  * 视图
@@ -33,21 +30,28 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class view {
     
-    use classs_faces;
+    use classs_option;
     
     /**
      * 当前主题目录
      *
      * @var string
      */
-    private static $sTheme;
+    protected static $sTheme;
     
     /**
      * 模板主题目录
      *
      * @var string
      */
-    private static $sThemeDefault;
+    protected static $sThemeDefault;
+    
+    /**
+     * 项目容器
+     *
+     * @var \queryyetsimple\support\interfaces\container
+     */
+    protected $objProject;
     
     /**
      * 主题参数名
@@ -61,21 +65,25 @@ class view {
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'view\cache_children' => false,
-            'view\controlleraction_depr' => '_',
-            'view\suffix' => '.html',
-            'view\switch' => true,
-            'view\default' => 'default',
-            'view\cookie_app' => false 
+    protected $arrOption = [ 
+            'cache_children' => false,
+            'controlleraction_depr' => '_',
+            'suffix' => '.html',
+            'switch' => true,
+            'default' => 'default',
+            'cookie_app' => false 
     ];
     
     /**
-     * 创建视图
+     * 构造函数
      *
+     * @param \queryyetsimple\support\interfaces\container $objProject            
+     * @param array $arrOption            
      * @return void
      */
-    public function __construct() {
+    public function __construct(container $objProject, array $arrOption = []) {
+        $this->objProject = $objProject;
+        $this->options ( $arrOption );
     }
     
     /**
@@ -86,7 +94,7 @@ class view {
      * @return mixed
      */
     public function assign($mixName, $mixValue = null) {
-        return theme::setVars ( $mixName, $mixValue );
+        return $this->objProject ['view.theme']->setVar ( $mixName, $mixValue );
     }
     
     /**
@@ -96,7 +104,7 @@ class view {
      * @return mixed
      */
     public function getAssign($sName = null) {
-        return theme::getVars ( $sName );
+        return $this->objProject ['view.theme']->getVar ( $sName );
     }
     
     /**
@@ -127,10 +135,10 @@ class view {
             $sFile = static::parseFile ( $sFile );
         }
         
-        $sContent = theme::displays ( $sFile, false );
+        $sContent = $this->objProject ['view.theme']->display ( $sFile, false );
         
         // 过滤编译文件子模板定位注释标签，防止在网页头部出现注释，导致 IE 浏览器不居中
-        if (env ( 'app_debug' ) && $this->classsFacesOption ( 'view\cache_children' ) === true) {
+        if (env ( 'app_debug' ) && $this->getOption ( 'cache_children' ) === true) {
             $sContent = preg_replace ( "/<!--<\#\#\#\#incl\*(.*?)\*ude\#\#\#\#>-->/", '', $sContent );
             $sContent = preg_replace ( "/<!--<\/\#\#\#\#incl\*(.*?)\*ude\#\#\#\#\/>-->/", '', $sContent );
         }
@@ -150,23 +158,23 @@ class view {
      * @return string
      */
     public function parseContext() {
-        if (! $this->classsFacesOption ( 'view\switch' )) {
-            $sThemeSet = $this->classsFacesOption ( 'view\default' );
+        if (! $this->getOption ( 'switch' )) {
+            $sThemeSet = $this->getOption ( 'default' );
         } else {
-            if ($this->classsFacesOption ( 'view\cookie_app' ) === true) {
-                $sCookieName = static::$objProjectContainer->app_name . '_view';
+            if ($this->getOption ( 'cookie_app' ) === true) {
+                $sCookieName = $this->objProject ['app_name'] . '_view';
             } else {
                 $sCookieName = 'view';
             }
             
             if (isset ( $_GET [static::ARGS] )) {
                 $sThemeSet = $_GET [static::ARGS];
-                cookie::sets ( $sCookieName, $sThemeSet );
+                $this->objProject ['cookie']->set ( $sCookieName, $sThemeSet );
             } else {
-                if (cookie::gets ( $sCookieName )) {
-                    $sThemeSet = cookie::gets ( $sCookieName );
+                if ($this->objProject ['cookie']->get ( $sCookieName )) {
+                    $sThemeSet = $this->objProject ['cookie']->get ( $sCookieName );
                 } else {
-                    $sThemeSet = $this->classsFacesOption ( 'view\default' );
+                    $sThemeSet = $this->getOption ( 'default' );
                 }
             }
         }
@@ -223,7 +231,7 @@ class view {
         } else {
             // 空取默认控制器和方法
             if ($sTpl == '') {
-                $sTpl = static::$objProjectContainer->controller_name . $this->classsFacesOption ( 'view\controlleraction_depr' ) . static::$objProjectContainer->action_name;
+                $sTpl = $this->objProject ['controller_name'] . $this->getOption ( 'controlleraction_depr' ) . $this->objProject ['action_name'];
             }
             
             if (strpos ( $sTpl, '@' )) { // 分析主题
@@ -236,9 +244,9 @@ class view {
             $sTpl = str_replace ( [ 
                     '+',
                     ':' 
-            ], $this->classsFacesOption ( 'view\controlleraction_depr' ), $sTpl );
+            ], $this->getOption ( 'controlleraction_depr' ), $sTpl );
             
-            return static::$objProjectContainer->path_app_theme . '/' . (isset ( $sTheme ) ? $sTheme : static::$objProjectContainer->name_app_theme) . '/' . $sTpl . ($sExt ?  : $this->classsFacesOption ( 'view\suffix' ));
+            return $this->objProject ['path_app_theme'] . '/' . (isset ( $sTheme ) ? $sTheme : $this->objProject ['name_app_theme']) . '/' . $sTpl . ($sExt ?  : $this->getOption ( 'suffix' ));
         }
     }
     
@@ -258,7 +266,7 @@ class view {
         
         // 物理路径
         if (strpos ( $sTpl, ':' ) !== false || strpos ( $sTpl, '/' ) === 0 || strpos ( $sTpl, '\\' ) === 0) {
-            $sTpl = str_replace ( directory::tidypath ( static::$objProjectContainer->path_app_theme . '/' . static::$objProjectContainer->name_app_theme . '/' ), '', directory::tidypath ( $sTpl ) );
+            $sTpl = str_replace ( directory::tidypath ( $this->objProject ['path_app_theme'] . '/' . $this->objProject ['name_app_theme'] . '/' ), '', directory::tidypath ( $sTpl ) );
         }
         
         // 当前主题
@@ -272,8 +280,8 @@ class view {
         }
         
         // default 主题
-        if (static::$objProjectContainer->name_app_theme != 'default' && is_file ( static::$objProjectContainer->path_app_theme . '/default/' . $sTpl )) {
-            return static::$objProjectContainer->path_app_theme . '/default/' . $sTpl;
+        if ($this->objProject ['name_app_theme'] != 'default' && is_file ( $this->objProject ['path_app_theme'] . '/default/' . $sTpl )) {
+            return $this->objProject ['path_app_theme'] . '/default/' . $sTpl;
         }
         
         return $sBakTpl;

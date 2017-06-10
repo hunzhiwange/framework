@@ -108,8 +108,8 @@ if (! function_exists ( '__' )) {
      */
     function __($sValue = null /*argvs*/ ){
         return call_user_func_array ( [ 
-                'queryyetsimple\i18n\i18n',
-                'getTexts' 
+                project ( 'i18n' ),
+                'getText' 
         ], func_get_args () );
     }
 }

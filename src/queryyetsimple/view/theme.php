@@ -15,11 +15,10 @@ namespace queryyetsimple\view;
 ##########################################################
 queryphp;
 
-use queryyetsimple\mvc\view;
 use InvalidArgumentException;
-use queryyetsimple\mvc\project;
 use queryyetsimple\filesystem\file;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\support\interfaces\container;
+use queryyetsimple\classs\option as classs_option;
 
 /**
  * 模板处理类
@@ -31,7 +30,14 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class theme {
     
-    use classs_faces;
+    use classs_option;
+    
+    /**
+     * 项目容器
+     *
+     * @var \queryyetsimple\support\interfaces\container
+     */
+    protected $objProject;
     
     /**
      * 变量值
@@ -41,20 +47,22 @@ class theme {
     private $arrVar = [ ];
     
     /**
-     * 配置
+     * 模板缓存时间
      *
-     * @var array
+     * @var int
      */
-    protected $arrClasssFacesOption = [ 
-            'view\cache_lifetime' => - 1 
-    ];
+    protected $intCacheLifetime = 0;
     
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\support\interfaces\container $objProject            
+     * @param int $intCacheLifetime            
      * @return void
      */
-    public function __construct() {
+    public function __construct(container $objProject, $intCacheLifetime = 0) {
+        $this->objProject = $objProject;
+        $this->intCacheLifetime = $intCacheLifetime;
     }
     
     /**
@@ -73,7 +81,7 @@ class theme {
     public function display($sFile, $bDisplay = true, $sTargetCache = '', $sMd5 = '') {
         // 分析模板文件
         if (! is_file ( $sFile )) {
-            $sFile = view::parseDefaultFiles ( $sFile );
+            $sFile = $this->objProject ['view']->parseDefaultFile ( $sFile );
         }
         if (! is_file ( $sFile )) {
             throw new InvalidArgumentException ( __ ( '模板文件 %s 不存在', $sFile ) );
@@ -86,7 +94,7 @@ class theme {
         
         $sCachePath = $this->getCachePath ( $sFile ); // 编译文件路径
         if ($this->isCacheExpired ( $sFile, $sCachePath )) { // 重新编译
-            parsers::doCombiles ( $sFile, $sCachePath );
+            $this->objProject ['view.parsers']->doCombile ( $sFile, $sCachePath );
         }
         
         // 逐步将子模板缓存写入父模板至到最后
@@ -160,16 +168,7 @@ class theme {
         $sFile = basename ( $sFile, '.' . file::getExtName ( $sFile ) ) . '.' . md5 ( $sFile ) . '.php';
         
         // 返回真实路径
-        return $this->project ()->path_cache_theme . '/' . $sFile;
-    }
-    
-    /**
-     * 返回项目容器
-     *
-     * @return \queryyetsimple\mvc\project
-     */
-    public function project() {
-        return project::bootstrap ();
+        return $this->objProject ['path_cache_theme'] . '/' . $sFile;
     }
     
     /**
@@ -190,13 +189,13 @@ class theme {
             return true;
         }
         
-        // 编译过期时间为 -1 表示永不过期
-        if ($this->classsFacesOption ( 'view\cache_lifetime' ) === - 1) {
+        // 编译过期时间为 <= 0 表示永不过期
+        if ($this->intCacheLifetime <= 0) {
             return false;
         }
         
         // 缓存时间到期
-        if (filemtime ( $sCachePath ) + intval ( $this->classsFacesOption ( 'view\cache_lifetime' ) ) < time ()) {
+        if (filemtime ( $sCachePath ) + intval ( $this->intCacheLifetime ) < time ()) {
             return true;
         }
         

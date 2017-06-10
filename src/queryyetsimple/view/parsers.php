@@ -19,7 +19,8 @@ use InvalidArgumentException;
 use queryyetsimple\stack\stack;
 use queryyetsimple\helper\helper;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\support\interfaces\container;
+use queryyetsimple\classs\option as classs_option;
 
 /**
  * 分析模板
@@ -31,7 +32,14 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class parsers {
     
-    use classs_faces;
+    use classs_option;
+    
+    /**
+     * 项目容器
+     *
+     * @var \queryyetsimple\support\interfaces\container
+     */
+    protected $objProject;
     
     /**
      * 分析器
@@ -39,13 +47,6 @@ class parsers {
      * @var queryyetsimple\view\parsers
      */
     private static $objParsers = null;
-    
-    /**
-     * 编译器
-     *
-     * @var queryyetsimple\view\compilers
-     */
-    private static $objCompilers = null;
     
     /**
      * 成对节点栈
@@ -80,40 +81,54 @@ class parsers {
      *
      * @var array
      */
-    private $arrTag = [ 
+    private $arrTag = [
+            
+            // 全局
             'global' => [ 
                     'left' => '[<\{]',
                     'right' => '[\}>]',
                     'left_node' => '(?:<\!--<|<\!--\{)',
                     'right_node' => '(?:\}-->|>-->)' 
-            ], // 全局
+            ],
+            
+            // js代码
             'js' => [ 
                     'left' => '{{',
                     'right' => '}}',
                     'left_node' => '<!--{{',
                     'right_node' => '}}-->' 
-            ], // js代码
+            ],
+            
+            // js 变量代码
             'jsvar' => [ 
                     'left' => '{{',
                     'right' => '}}',
                     'left_node' => '<!--{{',
                     'right_node' => '}}-->' 
-            ], // js 变量代码
+            ],
+            
+            // 代码
             'code' => [ 
                     'left' => '{',
                     'right' => '}',
                     'left_node' => '<!--{',
                     'right_node' => '}-->' 
-            ], // 代码
+            ],
+            
+            // 节点
             'node' => [ 
                     'left' => '<',
                     'right' => '>',
                     'left_node' => '<\!--<',
                     'right_node' => '>-->' 
-            ], // 节点
-            'revert' => [ ], // 反向
+            ],
+            
+            // 反向
+            'revert' => [ ],
+            
+            // 全局反向
             'globalrevert' => [ ] 
-    ]; // 全局反向
+    ];
     
     /**
      * 模板树结构
@@ -140,25 +155,28 @@ class parsers {
      *
      * @var array
      */
-    private $arrClasssFacesOption = [ 
-            'view\tag_note' => false 
-    ];
+    private $booTagNote = false;
     
     /**
      * 构造函数
      *
      * 注册分析其和编译器
      *
+     * @param \queryyetsimple\support\interfaces\container $objProject            
+     * @param boolean $booTagNote            
      * @return void
      */
-    public function __construct() {
+    public function __construct(container $objProject, $booTagNote = false) {
+        $this->objProject = $objProject;
+        $this->booTagNote = $booTagNote;
+        
         // 注册编译器
         $arrMethods = get_class_methods ( __NAMESPACE__ . '\compilers' );
         
         // 编译器别名
-        $arrCodeMap = compilers::getCodeMapHelps ();
-        $arrNodeMap = compilers::getNodeMapHelps ();
-        $arrJsMap = compilers::getJsMapHelps ();
+        $arrCodeMap = $this->objProject ['view.compilers']->getCodeMapHelp ();
+        $arrNodeMap = $this->objProject ['view.compilers']->getNodeMapHelp ();
+        $arrJsMap = $this->objProject ['view.compilers']->getJsMapHelp ();
         
         foreach ( $arrMethods as $sMethod ) {
             if (substr ( $sMethod, - 8 ) != 'Compiler')
@@ -191,20 +209,7 @@ class parsers {
             static::regParser ( $sKey );
         }
         
-        // 创建编译器
-        static::$objCompilers = new compilers ();
-    }
-    
-    /**
-     * 返回编译实例
-     *
-     * @var queryyetsimple\theme\parsers
-     */
-    public static function run() {
-        if (! static::$objParsers) {
-            static::$objParsers = new self ();
-        }
-        return static::$objParsers;
+        unset ( $arrMethods, $arrCodeMap, $arrNodeMap, $arrJsMap );
     }
     
     /**
@@ -762,11 +767,11 @@ class parsers {
      *            待编译的模板
      * @return string 返回编译后的模板
      */
-    public static function compileTheme(&$arrTheme) {
+    public function compileTheme(&$arrTheme) {
         foreach ( $arrTheme ['children'] as $intKey => $arrOne ) {
             $strSource = $arrOne ['source'];
             
-            static::compileTheme ( $arrOne ); // 编译子对象
+            $this->compileTheme ( $arrOne ); // 编译子对象
             $arrTheme ['children'] [$intKey] = $arrOne;
             
             // 置换对象
@@ -778,7 +783,7 @@ class parsers {
         // 编译自身
         if ($arrTheme ['compiler']) {
             $strCompilers = $arrTheme ['compiler'] . 'Compiler';
-            static::$objCompilers->{$strCompilers} ( $arrTheme );
+            $this->objProject ['view.compilers']->{$strCompilers} ( $arrTheme );
         }
     }
     
@@ -836,7 +841,7 @@ class parsers {
         // 逐个编译
         $sCache = '';
         foreach ( $this->arrThemeTree as $arrTheme ) {
-            static::compileTheme ( $arrTheme );
+            $this->compileTheme ( $arrTheme );
             $sCache .= $arrTheme ['content'];
         }
         return $sCache;
@@ -928,10 +933,10 @@ class parsers {
      */
     private function packNode(&$sCompiled) {
         if ($this->bJsNode === true) {
-            $arrNodeTag = compilers::getJsTagHelps ();
+            $arrNodeTag = $this->objProject ['view.compilers']->getJsTagHelp ();
             $sCompiler = 'Js';
         } else {
-            $arrNodeTag = compilers::getNodeTagHelps ();
+            $arrNodeTag = $this->objProject ['view.compilers']->getNodeTagHelp ();
             $sCompiler = 'Node';
         }
         
@@ -1036,7 +1041,7 @@ class parsers {
      * @return array
      */
     private function getTag($sType) {
-        return $this->arrTag [$sType . ($this->classsFacesOption ( 'view\tag_note' ) === true ? '_node' : '')];
+        return $this->arrTag [$sType . ($this->booTagNote === true ? '_node' : '')];
     }
     
     /**

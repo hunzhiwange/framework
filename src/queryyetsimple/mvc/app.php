@@ -18,7 +18,6 @@ queryphp;
 use Dotenv\Dotenv;
 use ReflectionMethod;
 use ReflectionException;
-use queryyetsimple\i18n\i18n;
 use queryyetsimple\psr4\psr4;
 use InvalidArgumentException;
 use queryyetsimple\helper\helper;
@@ -508,7 +507,7 @@ class app {
      */
     private function viewRun() {
         // 设置应用主题名字
-        $this->objProject->instance ( 'name_app_theme', $sThemeSet = view::parseContexts () );
+        $this->objProject->instance ( 'name_app_theme', $sThemeSet = $this->objProject->view->parseContext () );
         view::setThemeDir ( $this->objProject->path_app_theme . '/' . $sThemeSet );
         if ($this->objProject->path_app_theme_extend) {
             view::setThemeDefault ( $this->objProject->path_app_theme_extend . '/' . $sThemeSet );
@@ -524,7 +523,7 @@ class app {
         if (! option::gets ( 'i18n\on' ))
             return;
         
-        $sI18nSet = i18n::parseContexts ();
+        $sI18nSet = $this->objProject ['i18n']->parseContext ();
         if (option::gets ( 'i18n\develop' ) == $sI18nSet)
             return;
         
@@ -535,7 +534,7 @@ class app {
             i18n::addI18ns ( $sI18nSet, ( array ) include $sCachePath );
         } else {
             $arrFiles = i18n_tool::findPoFile ( $this->getI18nDir ( $sI18nSet ) );
-            i18n::addI18ns ( $sI18nSet, i18n_tool::saveToPhp ( $arrFiles ['php'], $sCachePath ) );
+            $this->objProject ['i18n']->addI18n ( $sI18nSet, i18n_tool::saveToPhp ( $arrFiles ['php'], $sCachePath ) );
             i18n_tool::saveToJs ( $arrFiles ['js'], $sCacheJsPath, $sI18nSet );
             unset ( $sI18nSet, $arrFiles, $sCachePath, $sCacheJsPath );
         }
