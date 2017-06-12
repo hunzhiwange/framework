@@ -19,6 +19,7 @@ use queryyetsimple\psr4\psr4;
 use queryyetsimple\helper\helper;
 use Composer\Autoload\ClassLoader;
 use queryyetsimple\support\container;
+use queryyetsimple\mvc\interfaces\project as interfaces_project;
 
 /**
  * 项目管理
@@ -28,7 +29,7 @@ use queryyetsimple\support\container;
  * @since 2017.01.14
  * @version 1.0
  */
-class project extends container {
+class project extends container implements interfaces_project {
     
     /**
      * QueryPHP 版本
@@ -42,28 +43,28 @@ class project extends container {
      *
      * @var queryyetsimple\mvc\project
      */
-    private static $objProject = null;
+    protected static $objProject = null;
     
     /**
      * 项目配置
      *
      * @var array
      */
-    private $arrOption = [ ];
+    protected $arrOption = [ ];
     
     /**
      * 项目基础路径
      *
      * @var string
      */
-    private $strPath;
+    protected $strPath;
     
     /**
      * 基础服务提供者
      *
      * @var array
      */
-    private static $arrBaseProvider = [ 
+    protected static $arrBaseProvider = [ 
             'queryyetsimple\option',
             'queryyetsimple\http',
             'queryyetsimple\log',
@@ -230,7 +231,7 @@ class project extends container {
      * @param \Composer\Autoload\ClassLoader $objComposer            
      * @return $this
      */
-    private function setComposer($objComposer) {
+    protected function setComposer($objComposer) {
         psr4::composer ( $objComposer );
         psr4::faces ( $this );
         psr4::sandboxPath ( dirname ( __DIR__ ) . '/bootstrap/sandbox' );
@@ -247,7 +248,7 @@ class project extends container {
      * @param array $arrOption            
      * @return $this
      */
-    private function setOption($arrOption) {
+    protected function setOption($arrOption) {
         $this->arrOption = $arrOption;
         return $this;
     }
@@ -257,7 +258,7 @@ class project extends container {
      *
      * @return $this
      */
-    private function registerBaseProvider() {
+    protected function registerBaseProvider() {
         return $this->runBaseProvider ( 'register' );
     }
     
@@ -266,7 +267,7 @@ class project extends container {
      *
      * @return $this
      */
-    private function registerBaseProviderBootstrap() {
+    protected function registerBaseProviderBootstrap() {
         return $this->runBaseProvider ( 'bootstrap' );
     }
     
@@ -275,7 +276,7 @@ class project extends container {
      *
      * @return $this
      */
-    private function registerMvcProvider() {
+    protected function registerMvcProvider() {
         // 注册启动程序
         $this->register ( new bootstrap ( $this, $this->arrOption ) );
         
@@ -302,7 +303,7 @@ class project extends container {
      *
      * @return void
      */
-    private function registerAlias() {
+    protected function registerAlias() {
         $this->alias ( [ 
                 'view' => 'queryyetsimple\mvc\view',
                 'controller' => 'queryyetsimple\mvc\controller' 
@@ -316,7 +317,7 @@ class project extends container {
      * @param string $strPath            
      * @return $this
      */
-    private function setPath() {
+    protected function setPath() {
         // 基础路径
         $this->strPath = dirname ( dirname ( dirname ( dirname ( dirname ( dirname ( __DIR__ ) ) ) ) ) );
         
@@ -334,7 +335,7 @@ class project extends container {
      *
      * @return void
      */
-    private function registerPath() {
+    protected function registerPath() {
         // 基础路径
         $this->instance ( 'path', $this->path () );
         
@@ -354,7 +355,7 @@ class project extends container {
      *
      * @return void
      */
-    private function registerUrl() {
+    protected function registerUrl() {
         foreach ( [ 
                 'enter',
                 'root',
@@ -372,7 +373,7 @@ class project extends container {
      * @param string $strType            
      * @return void
      */
-    private function runProvider($arrProvider, $strType) {
+    protected function runProvider($arrProvider, $strType) {
         foreach ( $arrProvider as $strProvider ) {
             $objProvider = $this->make ( $strProvider, $this );
             if (method_exists ( $objProvider, $strType )) {
@@ -394,7 +395,7 @@ class project extends container {
      * @param boolean $booSystem            
      * @return $this
      */
-    private function runBaseProvider($strAction, $strType = 'base', $arrProvider = [], $booSystem = true) {
+    protected function runBaseProvider($strAction, $strType = 'base', $arrProvider = [], $booSystem = true) {
         return $this->registerProvider ( $this->providerCathPath ( $strType, $strAction ), array_map ( function ($strPackage) use($strAction) {
             return sprintf ( '%s\provider\%s', $strPackage, $strAction );
         }, $booSystem ? static::$arrBaseProvider : $arrProvider ), env ( 'app_development' ) === 'development' );
@@ -409,7 +410,7 @@ class project extends container {
      * @param boolean $booForce            
      * @return array
      */
-    private function registerProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
+    protected function registerProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
         $booForce = true;
         foreach ( helper::arrayMergeSource ( $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
             if (is_string ( $strType ) && $strType) {
@@ -454,7 +455,7 @@ class project extends container {
      * @param string $strAction            
      * @return string
      */
-    private function providerCathPath($strType, $strAction) {
+    protected function providerCathPath($strType, $strAction) {
         return $this->path_runtime . '/provider/' . $strType . '.' . $strAction . '.php';
     }
 }
