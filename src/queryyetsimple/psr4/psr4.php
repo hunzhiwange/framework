@@ -38,6 +38,13 @@ class psr4 {
     private static $objComposer;
     
     /**
+     * 沙盒路径
+     *
+     * @var string
+     */
+    private static $strSandboxPath;
+    
+    /**
      * 设置 composer
      *
      * @param \Composer\Autoload\ClassLoader $objComposer            
@@ -111,13 +118,19 @@ class psr4 {
     public static function autoload($strClass) {
         // 实现沙盒
         if (strpos ( $strClass, 'queryyetsimple\\' ) !== false) {
-            $strSandbox = dirname ( __DIR__ ) . '/bootstrap/sandbox/' . ltrim ( $strClass, 'queryyetsimple\\' ) . '.php';
-            if (is_file ( $strSandbox )) {
+            if (is_file ( ($strSandbox = static::$strSandboxPath . '/' . ltrim ( $strClass, 'queryyetsimple\\' ) . '.php') ))
                 require $strSandbox;
-            } else {
-                throw new RuntimeException ( sprintf ( 'Sandbox class %s cannot find.', $strSandbox ) );
-            }
         }
+    }
+    
+    /**
+     * 沙盒路径
+     *
+     * @param string $strSandboxPath            
+     * @return void
+     */
+    public static function sandboxPath($strSandboxPath) {
+        static::$strSandboxPath = $strSandboxPath;
     }
     
     /**

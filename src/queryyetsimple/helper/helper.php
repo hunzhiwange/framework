@@ -266,7 +266,7 @@ class helper {
     }
     
     /**
-     * 检查对象实例或者类名 是否继承至接口
+     * 检查对象实例或者类名是否继承至接口
      *
      * @param mixed $mixClass            
      * @param string $sInterface            
@@ -279,7 +279,7 @@ class helper {
             if (! is_string ( $mixClass )) { // 类型检查
                 return false;
             }
-        } elseif (! is_string ( $Class )) {
+        } elseif (! is_string ( $mixClass )) {
             return false;
         }
         
@@ -288,7 +288,7 @@ class helper {
         }
         
         // 建立反射
-        $oReflectionClass = new ReflectionClass ( $sClassName );
+        $oReflectionClass = new ReflectionClass ( $mixClass );
         $arrInterfaceRefs = $oReflectionClass->getInterfaces ();
         foreach ( $arrInterfaceRefs as $oInterfaceRef ) {
             if ($oInterfaceRef->getName () != $sInterface) {
@@ -312,7 +312,7 @@ class helper {
         }
         
         // 递归检查父类
-        if (($sParName = get_parent_class ( $sClassName )) !== false) {
+        if (($sParName = get_parent_class ( $mixClass )) !== false) {
             return static::isImplementedTo ( $sParName, $sInterface, $bStrictly );
         } else {
             return false;

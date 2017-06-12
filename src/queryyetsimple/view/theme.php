@@ -17,8 +17,10 @@ queryphp;
 
 use InvalidArgumentException;
 use queryyetsimple\filesystem\file;
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\filesystem\directory;
+use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\classs\option as classs_option;
+use queryyetsimple\view\interfaces\theme as interfaces_theme;
 
 /**
  * 模板处理类
@@ -28,41 +30,90 @@ use queryyetsimple\classs\option as classs_option;
  * @since 2016.11.18
  * @version 1.0
  */
-class theme {
+class theme implements interfaces_theme {
     
     use classs_option;
     
     /**
      * 项目容器
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\view\parser
      */
-    protected $objProject;
+    protected $objParse;
+    
+    /**
+     * cookie 处理
+     *
+     * @var \queryyetsimple\cookie\interfaces\cookie
+     */
+    protected $objCookie;
+    
+    /**
+     * 主题参数名
+     *
+     * @var string
+     */
+    const ARGS = '~@theme';
     
     /**
      * 变量值
      *
      * @var array
      */
-    private $arrVar = [ ];
+    protected $arrVar = [ ];
     
     /**
-     * 模板缓存时间
+     * 配置
      *
-     * @var int
+     * @var array
      */
-    protected $intCacheLifetime = 0;
+    protected $arrOption = [ 
+            'app_debug' => true,
+            'app_name' => 'home',
+            'controller_name' => 'index',
+            'action_name' => 'index',
+            'controlleraction_depr' => '_',
+            'theme_name' => '',
+            'theme_path' => '',
+            'theme_path_default' => '',
+            'suffix' => '.html',
+            'theme_cache_path' => '',
+            'cache_children' => false,
+            'switch' => true,
+            'default' => 'default',
+            'cookie_app' => false 
+    ];
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\interfaces\container $objProject            
-     * @param int $intCacheLifetime            
+     * @param array $arrOption            
      * @return void
      */
-    public function __construct(container $objProject, $intCacheLifetime = 0) {
-        $this->objProject = $objProject;
-        $this->intCacheLifetime = $intCacheLifetime;
+    public function __construct(array $arrOption = []) {
+        $this->options ( $arrOption );
+    }
+    
+    /**
+     * 视图分析器
+     *
+     * @param \queryyetsimple\view\parser $objParse            
+     * @return $this
+     */
+    public function registerParser(parser $objParse) {
+        $this->objParse = $objParse;
+        return $this;
+    }
+    
+    /**
+     * 注册 cookie
+     *
+     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
+     * @return $this
+     */
+    public function registerCookie(cookie $objCookie) {
+        $this->objCookie = $objCookie;
+        return $this;
     }
     
     /**
@@ -72,17 +123,25 @@ class theme {
      *            视图文件地址
      * @param boolean $bDisplay
      *            是否显示
+     * @param string $strExt
+     *            后缀
      * @param string $sTargetCache
      *            主模板缓存路径
      * @param string $sMd5
      *            源文件地址 md5 标记
      * @return string
      */
-    public function display($sFile, $bDisplay = true, $sTargetCache = '', $sMd5 = '') {
-        // 分析模板文件
+    public function display($sFile, $bDisplay = true, $strExt = '', $sTargetCache = '', $sMd5 = '') {
+        // 加载视图文件
         if (! is_file ( $sFile )) {
-            $sFile = $this->objProject ['view']->parseDefaultFile ( $sFile );
+            $sFile = $this->parseFile ( $sFile, $strExt );
         }
+        
+        // 分析默认视图文件
+        if (! is_file ( $sFile )) {
+            $sFile = $this->parseDefaultFile ( $sFile );
+        }
+        
         if (! is_file ( $sFile )) {
             throw new InvalidArgumentException ( __ ( '模板文件 %s 不存在', $sFile ) );
         }
@@ -94,7 +153,7 @@ class theme {
         
         $sCachePath = $this->getCachePath ( $sFile ); // 编译文件路径
         if ($this->isCacheExpired ( $sFile, $sCachePath )) { // 重新编译
-            $this->objProject ['view.parsers']->doCombile ( $sFile, $sCachePath );
+            $this->objParse->doCombile ( $sFile, $sCachePath );
         }
         
         // 逐步将子模板缓存写入父模板至到最后
@@ -110,7 +169,7 @@ class theme {
                 
                 unset ( $sChildCache, $sTargetContent );
             } else {
-                throw new InvalidArgumentException ( sprintf ( 'source %s and target cache %s is not a valid path', $sFile, $sTargetCache ) );
+                throw new InvalidArgumentException ( sprintf ( 'Source %s and target cache %s is not a valid path', $sFile, $sTargetCache ) );
             }
         }
         
@@ -120,8 +179,9 @@ class theme {
             include $sCachePath;
             $sReturn = ob_get_contents ();
             ob_end_clean ();
+            $this->fixIe ( $sReturn );
             return $sReturn;
-        } else { // 不需要返回
+        } else {
             include $sCachePath;
         }
     }
@@ -168,7 +228,128 @@ class theme {
         $sFile = basename ( $sFile, '.' . file::getExtName ( $sFile ) ) . '.' . md5 ( $sFile ) . '.php';
         
         // 返回真实路径
-        return $this->objProject ['path_cache_theme'] . '/' . $sFile;
+        return $this->getOption ( 'theme_cache_path' ) . '/' . $sFile;
+    }
+    
+    /**
+     * 自动分析视图上下文环境
+     *
+     * @param string $strThemePath            
+     * @return void
+     */
+    public function parseContext($strThemePath) {
+        if ($this->arrOption ['theme_name']) {
+            return $this;
+        }
+        
+        if (! $this->getOption ( 'switch' )) {
+            $sThemeSet = $this->getOption ( 'default' );
+        } else {
+            if ($this->getOption ( 'cookie_app' ) === true) {
+                $sCookieName = $this->getOption ( 'app_name' ) . '_view';
+            } else {
+                $sCookieName = 'view';
+            }
+            
+            if (isset ( $_GET [static::ARGS] )) {
+                $sThemeSet = $_GET [static::ARGS];
+                $this->objCookie->set ( $sCookieName, $sThemeSet );
+            } else {
+                if ($this->objCookie->get ( $sCookieName )) {
+                    $sThemeSet = $this->objCookie->get ( $sCookieName );
+                } else {
+                    $sThemeSet = $this->getOption ( 'default' );
+                }
+            }
+        }
+        $this->arrOption ['theme_name'] = $sThemeSet;
+        $this->arrOption ['theme_path'] = $strThemePath . '/' . $sThemeSet;
+        return $this;
+    }
+    
+    /**
+     * 分析模板真实路径
+     *
+     * @param string $sTpl
+     *            文件地址
+     * @param string $sExt
+     *            扩展名
+     * @return string
+     */
+    protected function parseFile($sTpl, $sExt = '') {
+        $calHelp = function ($sContent) {
+            return str_replace ( [ 
+                    ':',
+                    '+' 
+            ], [ 
+                    '->',
+                    '::' 
+            ], $sContent );
+        };
+        
+        $sTpl = trim ( str_replace ( '->', '.', $sTpl ) );
+        
+        // 完整路径 或者变量
+        if (file::getExtName ( $sTpl ) || strpos ( $sTpl, '$' ) === 0) {
+            return $calHelp ( $sTpl );
+        } elseif (strpos ( $sTpl, '(' ) !== false) { // 存在表达式
+            return $calHelp ( $sTpl );
+        } else {
+            // 空取默认控制器和方法
+            if ($sTpl == '') {
+                $sTpl = $this->getOption ( 'controller_name' ) . $this->getOption ( 'controlleraction_depr' ) . $this->getOption ( 'action_name' );
+            }
+            
+            if (strpos ( $sTpl, '@' )) { // 分析主题
+                $arrArray = explode ( '@', $sTpl );
+                $sTheme = array_shift ( $arrArray );
+                $sTpl = array_shift ( $arrArray );
+                unset ( $arrArray );
+            }
+            
+            $sTpl = str_replace ( [ 
+                    '+',
+                    ':' 
+            ], $this->getOption ( 'controlleraction_depr' ), $sTpl );
+            return dirname ( $this->getOption ( 'theme_path' ) ) . '/' . (isset ( $sTheme ) ? $sTheme : $this->getOption ( 'theme_name' )) . '/' . $sTpl . ($sExt ?  : $this->getOption ( 'suffix' ));
+        }
+    }
+    
+    /**
+     * 匹配默认地址（文件不存在）
+     *
+     * @param string $sTpl
+     *            文件地址
+     * @return string
+     */
+    protected function parseDefaultFile($sTpl) {
+        if (is_file ( $sTpl )) {
+            return $sTpl;
+        }
+        
+        $sBakTpl = $sTpl;
+        
+        // 物理路径
+        if (strpos ( $sTpl, ':' ) !== false || strpos ( $sTpl, '/' ) === 0 || strpos ( $sTpl, '\\' ) === 0) {
+            $sTpl = str_replace ( directory::tidypath ( $this->getOption ( 'theme_path' ) . '/' ), '', directory::tidypath ( $sTpl ) );
+        }
+        
+        // 当前主题
+        if (is_file ( ($sTpl = $this->getOption ( 'theme_path' ) . '/' . $sTpl) )) {
+            return $sTpl;
+        }
+        
+        // 备用地址
+        if ($this->getOption ( 'theme_path_default' ) && is_file ( ($sTpl = $this->getOption ( 'theme_path_default' ) . '/' . $sTpl) )) {
+            return $sTpl;
+        }
+        
+        // default 主题
+        if ($this->getOption ( 'theme_name' ) != 'default' && is_file ( ($sTpl = dirname ( $this->getOption ( 'theme_path' ) ) . '/default/' . $sTpl) )) {
+            return $sTpl;
+        }
+        
+        return $sBakTpl;
     }
     
     /**
@@ -178,9 +359,9 @@ class theme {
      * @param string $sCachePath            
      * @return boolean
      */
-    private function isCacheExpired($sFile, $sCachePath) {
+    protected function isCacheExpired($sFile, $sCachePath) {
         // 开启调试
-        if (env ( 'app_debug' )) {
+        if ($this->getOption ( 'app_debug' )) {
             return true;
         }
         
@@ -190,12 +371,12 @@ class theme {
         }
         
         // 编译过期时间为 <= 0 表示永不过期
-        if ($this->intCacheLifetime <= 0) {
+        if ($this->getOption ( 'cache_lifetime' ) <= 0) {
             return false;
         }
         
         // 缓存时间到期
-        if (filemtime ( $sCachePath ) + intval ( $this->intCacheLifetime ) < time ()) {
+        if (filemtime ( $sCachePath ) + intval ( $this->getOption ( 'cache_lifetime' ) ) < time ()) {
             return true;
         }
         
@@ -205,5 +386,20 @@ class theme {
         }
         
         return false;
+    }
+    
+    /**
+     * 修复 ie 显示问题
+     * 过滤编译文件子模板定位注释标签，防止在网页头部出现注释，导致 IE 浏览器不居中
+     *
+     * @param string $sContent            
+     * @return string
+     */
+    protected function fixIe($sContent) {
+        if ($this->getOption ( 'cache_children' ) === true) {
+            $sContent = preg_replace ( "/<!--<\#\#\#\#incl\*(.*?)\*ude\#\#\#\#>-->/", '', $sContent );
+            $sContent = preg_replace ( "/<!--<\/\#\#\#\#incl\*(.*?)\*ude\#\#\#\#\/>-->/", '', $sContent );
+        }
+        return $sContent;
     }
 }

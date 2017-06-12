@@ -191,13 +191,8 @@ class router {
             $this->parseCli ();
         }
         
-        // 解析URL
-        $this->app ();
-        $this->controller ();
-        $this->action ();
-        
-        // 合并到 REQUEST
-        $_REQUEST = array_merge ( $_POST, $_GET );
+        // 完成请求
+        $this->completeRequest ();
         
         // 解析项目公共 url 地址
         $this->parsePublicAndRoot ();
@@ -1279,6 +1274,22 @@ class router {
             $sHttpSuffix = $this->classsFacesOption ( 'url\router_domain_top' );
         }
         return $sHttpPrefix . ($sDomain && $sDomain != '*' ? $sDomain . '.' : '') . $sHttpSuffix;
+    }
+    
+    /**
+     * 完成请求
+     *
+     * @return void
+     */
+    private function completeRequest() {
+        foreach ( [ 
+                'app',
+                'controller',
+                'action' 
+        ] as $strType ) {
+            static::$objProjectContainer->instance ( $strType . '_name', $this->{$strType} () );
+        }
+        $_REQUEST = array_merge ( $_POST, $_GET );
     }
     
     /**

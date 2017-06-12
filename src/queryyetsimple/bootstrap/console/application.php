@@ -53,7 +53,7 @@ class application {
         $this->objProject = $objProject;
         
         // 创建应用
-        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo (), env ( 'queryphp_version' ) );
+        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo (), $this->objProject->version () );
         
         // 注册默认命令行
         $this->registerDefaultCommands ()->

@@ -89,18 +89,20 @@ return [
          * 具有缓存功能的应用服务提供者
          * ---------------------------------------------------------------
          *
-         * 这里的服务提供者严格意义上是服务提供者包，例如 log,http，系统会自动合并 queryyetsimple/log/provider 目录下面的 ['register.php', 'bootstrap.php']
+         * 这里的服务提供者严格意义上是服务提供者包，例如 queryyetsimple\log,queryyetsimple\http，系统会自动合并 queryyetsimple/log/provider 目录下面的 ['register.php', 'bootstrap.php']
          * register 为预先注册服务提供者，bootstrap 为系统注册完毕所有服务提供者后再注册其它服务
          * 正如其名具有缓存功能的服务提供者，他们会被自动缓存到 {缓存目录}/provider 下面,并且有两组一组是应用服务提供者，一组为系统服务提供者
          */
-        'provider_with_cache' => [ ],
+        '+provider_with_cache' => [ 
+                'queryyetsimple\view' 
+        ],
         
         /**
          * ---------------------------------------------------------------
          * 默认配置扩展文件
          * ---------------------------------------------------------------
          *
-         * 系统默认包含app,cache,console,cookie,database,debug,i18n,log,queue,session,url,view,router，你也可以扩展自己的应用的配置
+         * 系统默认包含 app,cache,console,cookie,database,debug,i18n,log,queue,session,url,view,router，你也可以扩展自己的应用的配置
          * 注意：配置扩展文件不会覆盖系统默认配置文件
          */
         'option_extend' => [ ],

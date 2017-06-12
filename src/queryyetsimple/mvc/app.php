@@ -97,9 +97,7 @@ class app {
             'registerException',
             'initialization',
             'loadBootstrap',
-            'view',
             'i18n',
-            'request',
             'response' 
     ];
     
@@ -501,20 +499,6 @@ class app {
     }
     
     /**
-     * 初始化视图
-     *
-     * @return void
-     */
-    private function viewRun() {
-        // 设置应用主题名字
-        $this->objProject->instance ( 'name_app_theme', $sThemeSet = $this->objProject->view->parseContext () );
-        view::setThemeDir ( $this->objProject->path_app_theme . '/' . $sThemeSet );
-        if ($this->objProject->path_app_theme_extend) {
-            view::setThemeDefault ( $this->objProject->path_app_theme_extend . '/' . $sThemeSet );
-        }
-    }
-    
-    /**
      * 初始化国际语言包设置
      *
      * @return void
@@ -531,24 +515,13 @@ class app {
         $sCacheJsPath = $this->getI18nCacheJsPath ( $sI18nSet );
         
         if (env ( 'app_development' ) !== 'development' && is_file ( $sCachePath ) && is_file ( $sCacheJsPath )) {
-            i18n::addI18ns ( $sI18nSet, ( array ) include $sCachePath );
+            $this->objProject ['i18n']->addI18n ( $sI18nSet, ( array ) include $sCachePath );
         } else {
             $arrFiles = i18n_tool::findPoFile ( $this->getI18nDir ( $sI18nSet ) );
             $this->objProject ['i18n']->addI18n ( $sI18nSet, i18n_tool::saveToPhp ( $arrFiles ['php'], $sCachePath ) );
             i18n_tool::saveToJs ( $arrFiles ['js'], $sCacheJsPath, $sI18nSet );
             unset ( $sI18nSet, $arrFiles, $sCachePath, $sCacheJsPath );
         }
-    }
-    
-    /**
-     * 请求结果初始化
-     *
-     * @return void
-     */
-    private function requestRun() {
-        $this->objProject->instance ( 'app_name', $this->strApp );
-        $this->objProject->instance ( 'controller_name', $this->objProject->router->controller () );
-        $this->objProject->instance ( 'action_name', $this->objProject->router->action () );
     }
     
     /**
@@ -801,10 +774,7 @@ class app {
                 'controller_name' => '',
                 
                 // 绑定 action_name
-                'action_name' => '',
-                
-                // 程序版本
-                'queryphp_version' => '4.0' 
+                'action_name' => '' 
         ] as $strName => $mixValue ) {
             if (is_null ( env ( $strName ) ))
                 $this->setEnvironmentVariable ( $strName, $mixValue );

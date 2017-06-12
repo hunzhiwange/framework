@@ -29,7 +29,7 @@ use queryyetsimple\classs\option as classs_option;
  * @since 2016.11.18
  * @version 1.0
  */
-class compilers {
+class compiler {
     
     use classs_option;
     
@@ -358,7 +358,7 @@ class compilers {
      * @return void
      */
     public function foreachCodeCompiler(&$arrTheme) {
-        // 分析foreach
+        // 分析 foreach
         $calHelp = function ($sContent) {
             preg_match_all ( '/\\$([\S]+)/', $sContent, $arrArray );
             
@@ -622,7 +622,7 @@ out += '";
     }
     
     /**
-     * 流程if
+     * if
      *
      * @param array $arrTheme            
      * @return void
@@ -746,7 +746,6 @@ out += '";
         $this->checkNode ( $arrTheme );
         $arrAttr = $this->getNodeAttribute ( $arrTheme );
         
-        $arrAttr ['file'] = $this->objProject ['view']->parseFile ( $arrAttr ['file'], $arrAttr ['ext'] );
         if (strpos ( $arrAttr ['file'], '$' ) !== 0 && strpos ( $arrAttr ['file'], '(' ) === false) {
             $arrAttr ['file'] = (strpos ( $arrAttr ['file'], '$' ) === 0 ? '' : '\'') . $arrAttr ['file'] . '\'';
         }
@@ -755,10 +754,10 @@ out += '";
         if ($this->getOption ( 'cache_children' )) {
             $sMd5 = md5 ( $arrAttr ['file'] );
             $sCompiled = "<!--<####incl*" . $sMd5 . "*ude####>-->";
-            $sCompiled .= '<?' . 'php $this->display( ' . $arrAttr ['file'] . ', true, __FILE__,\'' . $sMd5 . '\'   ); ?' . '>';
+            $sCompiled .= '<?' . 'php $this->display( ' . $arrAttr ['file'] . ', true, \'' . ($arrAttr ['ext'] ?  : '') . '\', __FILE__,\'' . $sMd5 . '\'   ); ?' . '>';
             $sCompiled .= "<!--</####incl*" . $sMd5 . "*ude####/>-->";
         } else {
-            $sCompiled = '<?' . 'php $this->display( ' . $arrAttr ['file'] . ' ); ?' . '>';
+            $sCompiled = '<?' . 'php $this->display( ' . $arrAttr ['file'] . ', true, \'' . ($arrAttr ['ext'] ?  : '') . '\' ); ?' . '>';
         }
         
         $arrTheme ['content'] = $sCompiled;

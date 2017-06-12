@@ -17,6 +17,7 @@ queryphp;
 
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\helper\helper;
+use Composer\Autoload\ClassLoader;
 use queryyetsimple\support\container;
 
 /**
@@ -28,6 +29,13 @@ use queryyetsimple\support\container;
  * @version 1.0
  */
 class project extends container {
+    
+    /**
+     * QueryPHP 版本
+     *
+     * @var string
+     */
+    const VERSION = '4.0.0';
     
     /**
      * 当前项目实例
@@ -56,19 +64,18 @@ class project extends container {
      * @var array
      */
     private static $arrBaseProvider = [ 
-            'option',
-            'http',
-            'log',
-            'provider',
-            'session',
-            'cookie',
-            'i18n',
-            'database',
-            'event',
-            'router',
-            'pipeline',
-            'cache',
-            'view' 
+            'queryyetsimple\option',
+            'queryyetsimple\http',
+            'queryyetsimple\log',
+            'queryyetsimple\provider',
+            'queryyetsimple\session',
+            'queryyetsimple\cookie',
+            'queryyetsimple\i18n',
+            'queryyetsimple\database',
+            'queryyetsimple\event',
+            'queryyetsimple\router',
+            'queryyetsimple\pipeline',
+            'queryyetsimple\cache' 
     ];
     
     /**
@@ -115,14 +122,23 @@ class project extends container {
      *
      * @param \Composer\Autoload\ClassLoader $objComposer            
      * @param array $arrOption            
-     * @return queryyetsimple\mvc\project
+     * @return $this
      */
-    public static function bootstrap($objComposer = null, $arrOption = []) {
+    public static function bootstrap(ClassLoader $objComposer = null, $arrOption = []) {
         if (static::$objProject !== null) {
             return static::$objProject;
         } else {
             return static::$objProject = new self ( $objComposer, $arrOption );
         }
+    }
+    
+    /**
+     * 程序版本
+     *
+     * @return number
+     */
+    public function version() {
+        return static::VERSION;
     }
     
     /**
@@ -217,6 +233,7 @@ class project extends container {
     private function setComposer($objComposer) {
         psr4::composer ( $objComposer );
         psr4::faces ( $this );
+        psr4::sandboxPath ( dirname ( __DIR__ ) . '/bootstrap/sandbox' );
         spl_autoload_register ( [ 
                 'queryyetsimple\psr4\psr4',
                 'autoload' 
@@ -274,19 +291,7 @@ class project extends container {
         
         // 注册 view
         $this->singleton ( 'queryyetsimple\mvc\view', function (project $oProject) {
-            $arrOption = [ ];
-            foreach ( [ 
-                    'cache_children',
-                    'controlleraction_depr',
-                    'suffix',
-                    'switch',
-                    'default',
-                    'cookie_app' 
-            ] as $strOption ) {
-                $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
-            }
-            $oView = new view ( $oProject, $arrOption );
-            return $oView;
+            return (new view ())->registerTheme ( $oProject ['view.theme'] );
         } );
         
         return $this;
@@ -390,8 +395,8 @@ class project extends container {
      * @return $this
      */
     private function runBaseProvider($strAction, $strType = 'base', $arrProvider = [], $booSystem = true) {
-        return $this->registerProvider ( $this->providerCathPath ( $strType, $strAction ), array_map ( function ($strPackage) use($strAction, $booSystem) {
-            return ($booSystem ? 'queryyetsimple\\' : '') . sprintf ( '%s\provider\%s', $strPackage, $strAction );
+        return $this->registerProvider ( $this->providerCathPath ( $strType, $strAction ), array_map ( function ($strPackage) use($strAction) {
+            return sprintf ( '%s\provider\%s', $strPackage, $strAction );
         }, $booSystem ? static::$arrBaseProvider : $arrProvider ), env ( 'app_development' ) === 'development' );
     }
     

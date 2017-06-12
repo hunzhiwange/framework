@@ -22,8 +22,8 @@ queryphp;
  * @version 1.0
  */
 return [ 
-        'singleton@view.compilers' => [ 
-                'queryyetsimple\view\compilers',
+        'singleton@view.compiler' => [ 
+                'queryyetsimple\view\compiler',
                 function ($oProject) {
                     $arrOption = [ ];
                     foreach ( [ 
@@ -35,19 +35,39 @@ return [
                         $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
                     }
                     
-                    return new queryyetsimple\view\compilers ( $oProject, $arrOption );
+                    return new queryyetsimple\view\compiler ( $oProject, $arrOption );
                 } 
         ],
-        'singleton@view.parsers' => [ 
-                'queryyetsimple\view\parsers',
+        'singleton@view.parser' => [ 
+                'queryyetsimple\view\parser',
                 function ($oProject) {
-                    return new queryyetsimple\view\parsers ( $oProject, $oProject ['option']->get ( 'view\\tag_note' ) );
+                    return new queryyetsimple\view\parser ( $oProject, $oProject ['option']->get ( 'view\\tag_note' ) );
                 } 
         ],
         'singleton@view.theme' => [ 
                 'queryyetsimple\view\theme',
                 function ($oProject) {
-                    return new queryyetsimple\view\theme ( $oProject, $oProject ['option']->get ( 'view\\cache_lifetime' ) );
+                    $arrOption = [ ];
+                    foreach ( [ 
+                            'cache_lifetime',
+                            'suffix',
+                            'controlleraction_depr',
+                            'cache_children',
+                            'switch',
+                            'default',
+                            'cookie_app' 
+                    ] as $strOption ) {
+                        $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
+                    }
+                    
+                    $arrOption ['app_debug'] = env ( 'app_debug' );
+                    $arrOption ['app_name'] = $oProject ['app_name'];
+                    $arrOption ['controller_name'] = $oProject ['controller_name'];
+                    $arrOption ['action_name'] = $oProject ['action_name'];
+                    $arrOption ['theme_path_default'] = $oProject ['path_app_theme_extend'];
+                    $arrOption ['theme_cache_path'] = $oProject ['path_cache_theme'];
+                    
+                    return (new queryyetsimple\view\theme ( $arrOption ))->registerParser ( $oProject ['view.parser'] )->registerCookie ( $oProject ['cookie'] )->parseContext ( $oProject ['path_app_theme'] );
                 } 
         ] 
 ];

@@ -17,6 +17,7 @@ queryphp;
 
 use queryyetsimple\assert\assert;
 use queryyetsimple\classs\option as classs_option;
+use queryyetsimple\cookie\interfaces\cookie as interfaces_cookie;
 
 /**
  * cookie 封装
@@ -26,7 +27,7 @@ use queryyetsimple\classs\option as classs_option;
  * @since 2016.11.19
  * @version 1.0
  */
-class cookie {
+class cookie implements interfaces_cookie {
     
     use classs_option;
     

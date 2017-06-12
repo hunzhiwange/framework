@@ -30,7 +30,7 @@ use queryyetsimple\classs\option as classs_option;
  * @since 2016.11.19
  * @version 1.0
  */
-class parsers {
+class parser {
     
     use classs_option;
     
@@ -40,13 +40,6 @@ class parsers {
      * @var \queryyetsimple\support\interfaces\container
      */
     protected $objProject;
-    
-    /**
-     * 分析器
-     *
-     * @var queryyetsimple\view\parsers
-     */
-    private static $objParsers = null;
     
     /**
      * 成对节点栈
@@ -171,12 +164,12 @@ class parsers {
         $this->booTagNote = $booTagNote;
         
         // 注册编译器
-        $arrMethods = get_class_methods ( __NAMESPACE__ . '\compilers' );
+        $arrMethods = get_class_methods ( __NAMESPACE__ . '\compiler' );
         
         // 编译器别名
-        $arrCodeMap = $this->objProject ['view.compilers']->getCodeMapHelp ();
-        $arrNodeMap = $this->objProject ['view.compilers']->getNodeMapHelp ();
-        $arrJsMap = $this->objProject ['view.compilers']->getJsMapHelp ();
+        $arrCodeMap = $this->objProject ['view.compiler']->getCodeMapHelp ();
+        $arrNodeMap = $this->objProject ['view.compiler']->getNodeMapHelp ();
+        $arrJsMap = $this->objProject ['view.compiler']->getJsMapHelp ();
         
         foreach ( $arrMethods as $sMethod ) {
             if (substr ( $sMethod, - 8 ) != 'Compiler')
@@ -783,7 +776,7 @@ class parsers {
         // 编译自身
         if ($arrTheme ['compiler']) {
             $strCompilers = $arrTheme ['compiler'] . 'Compiler';
-            $this->objProject ['view.compilers']->{$strCompilers} ( $arrTheme );
+            $this->objProject ['view.compiler']->{$strCompilers} ( $arrTheme );
         }
     }
     
@@ -933,10 +926,10 @@ class parsers {
      */
     private function packNode(&$sCompiled) {
         if ($this->bJsNode === true) {
-            $arrNodeTag = $this->objProject ['view.compilers']->getJsTagHelp ();
+            $arrNodeTag = $this->objProject ['view.compiler']->getJsTagHelp ();
             $sCompiler = 'Js';
         } else {
-            $arrNodeTag = $this->objProject ['view.compilers']->getNodeTagHelp ();
+            $arrNodeTag = $this->objProject ['view.compiler']->getNodeTagHelp ();
             $sCompiler = 'Node';
         }
         
