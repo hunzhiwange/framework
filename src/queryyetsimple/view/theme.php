@@ -18,6 +18,7 @@ queryphp;
 use InvalidArgumentException;
 use queryyetsimple\filesystem\file;
 use queryyetsimple\filesystem\directory;
+use queryyetsimple\view\interfaces\parser;
 use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\classs\option as classs_option;
 use queryyetsimple\view\interfaces\theme as interfaces_theme;
@@ -65,6 +66,7 @@ class theme implements interfaces_theme {
     /**
      * 配置
      *
+     * @todo 验证缓存模板路径是否存在
      * @var array
      */
     protected $arrOption = [ 

@@ -15,7 +15,7 @@ namespace queryyetsimple\view\interfaces;
 ##########################################################
 queryphp;
 
-use queryyetsimple\view\parser;
+use queryyetsimple\view\interfaces\parser;
 use queryyetsimple\cookie\interfaces\cookie;
 
 /**

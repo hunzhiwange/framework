@@ -263,6 +263,49 @@ class compiler {
         $this->options ( $arrOption );
     }
     
+    /**
+     * 获取编译器
+     *
+     * @return array
+     */
+    public function getCompilers() {
+        $arrMethods = get_class_methods ( $this );
+        
+        $arrCompilers = [ ];
+        foreach ( $arrMethods as $sMethod ) {
+            if (substr ( $sMethod, - 8 ) != 'Compiler')
+                continue;
+            
+            $sMethod = substr ( $sMethod, 0, - 8 );
+            if (! in_array ( $sMethod, [ 
+                    'global',
+                    'jsvar',
+                    'globalrevert',
+                    'revert' 
+            ] )) {
+                $sType = strtolower ( substr ( $sMethod, - 4 ) );
+                $sTag = substr ( $sMethod, 0, - 4 );
+                if ($sType == 'code') {
+                    $mixName = isset ( $this->arrCodeMap [$sTag] ) ? $this->arrCodeMap [$sTag] : $sTag;
+                } elseif ($sType == 'node') {
+                    $mixName = isset ( $this->arrNodeMap [$sTag] ) ? $this->arrNodeMap [$sTag] : $sTag;
+                } else {
+                    $sType = strtolower ( substr ( $sMethod, - 2 ) );
+                    $sTag = substr ( $sMethod, 0, - 2 );
+                    $mixName = isset ( $this->arrJsMap [$sTag] ) ? $this->arrJsMap [$sTag] : $sTag;
+                }
+                $arrCompilers [] = [ 
+                        $sType,
+                        $mixName,
+                        $sTag 
+                ];
+            }
+        }
+        
+        unset ( $arrMethods );
+        return $arrCompilers;
+    }
+    
     // ######################################################
     // ------------------- 全局编译器 start -------------------
     // ######################################################
@@ -905,33 +948,6 @@ out += '";
     // ######################################################
     
     /**
-     * code
-     *
-     * @return array
-     */
-    public function getCodeMapHelp() {
-        return $this->arrCodeMap;
-    }
-    
-    /**
-     * node
-     *
-     * @return array
-     */
-    public function getNodeMapHelp() {
-        return $this->arrNodeMap;
-    }
-    
-    /**
-     * js
-     *
-     * @return array
-     */
-    public function getJsMapHelp() {
-        return $this->arrJsMap;
-    }
-    
-    /**
      * node.tag
      *
      * @return array
@@ -1182,14 +1198,14 @@ out += '";
      */
     private function encodeContent($sContent, $sType = '') {
         if ($sType == 'global') {
-            $sContent = parsers::globalEncode ( $sContent );
+            $sContent = parser::globalEncode ( $sContent );
         } else if (in_array ( $sType, [ 
                 'revert',
                 'include' 
         ] )) {
             $sContent = base64_decode ( $sContent );
         } else {
-            $sContent = parsers::revertEncode ( $sContent );
+            $sContent = parser::revertEncode ( $sContent );
         }
         return $sContent;
     }

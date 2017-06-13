@@ -41,7 +41,9 @@ return [
         'singleton@view.parser' => [ 
                 'queryyetsimple\view\parser',
                 function ($oProject) {
-                    return new queryyetsimple\view\parser ( $oProject, $oProject ['option']->get ( 'view\\tag_note' ) );
+                    return (new queryyetsimple\view\parser ( [ 
+                            'tag_note' => $oProject ['option']->get ( 'view\\tag_note' ) 
+                    ] ))->registerCompilers ( $oProject ['view.compiler'] )->registerParsers ();
                 } 
         ],
         'singleton@view.theme' => [ 
