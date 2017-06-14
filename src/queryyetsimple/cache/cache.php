@@ -57,21 +57,23 @@ class cache implements interfaces_cache {
     /**
      * 连接缓存并返回连接对象
      *
-     * @param array $arrOption            
+     * @param array|string $arrOption            
      * @return \queryyetsimple\abstracts\cache
      */
     public function connect($arrOption = []) {
-        // 连接唯一标识
-        $strDriver = ! empty ( $arrOption ['driver'] ) ? $arrOption ['driver'] : $this->getDefaultConnect ();
-        $strUnique = md5 ( is_array ( $arrOption ) ? json_encode ( $arrOption ) : $arrOption );
+        if (is_string ( $arrOption ))
+            $arrOption = [ 
+                    'connect' => $arrOption 
+            ];
         
-        // 已经存在直接返回
+        $strConnect = ! empty ( $arrOption ['connect'] ) ? $arrOption ['connect'] : $this->getDefaultConnect ();
+        $strUnique = $this->getUnique ( $arrOption );
+        
         if (isset ( static::$arrConnect [$strUnique] )) {
             return static::$arrConnect [$strUnique];
         }
         
-        // 连接缓存
-        return static::$arrConnect [$strUnique] = $this->makeConnect ( $strDriver, $arrOption );
+        return static::$arrConnect [$strUnique] = $this->makeConnect ( $strConnect, $arrOption );
     }
     
     /**
@@ -106,14 +108,14 @@ class cache implements interfaces_cache {
     /**
      * 创建连接
      *
-     * @param string $strDriver            
+     * @param string $strConnect            
      * @param array $arrOption            
      * @return \queryyetsimple\cache\repository
      */
-    protected function makeConnect($strDriver, $arrOption = []) {
-        if (is_null ( $this->objProject ['option'] ['cache\connect.' . $strDriver] ))
-            throw new Exception ( __ ( '缓存驱动 %s 不存在', $strDriver ) );
-        return $this->{'makeConnect' . ucfirst ( $strDriver )} ( $arrOption );
+    protected function makeConnect($strConnect, $arrOption = []) {
+        if (is_null ( $this->objProject ['option'] ['cache\connect.' . $strConnect] ))
+            throw new Exception ( __ ( '缓存驱动 %s 不存在', $strConnect ) );
+        return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
     
     /**
@@ -144,6 +146,16 @@ class cache implements interfaces_cache {
      */
     protected function makeConnectRedis($arrOption = []) {
         return $this->repository ( new redis ( array_merge ( $this->getOption ( 'redis' ), $arrOption ) ) );
+    }
+    
+    /**
+     * 取得唯一值
+     *
+     * @param array $arrOption            
+     * @return string
+     */
+    protected function getUnique($arrOption) {
+        return md5 ( is_array ( $arrOption ) ? json_encode ( $arrOption ) : $arrOption );
     }
     
     /**
