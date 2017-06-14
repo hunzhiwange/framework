@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace tests\assert;
+namespace queryyetsimple\cache\interfaces;
 
 <<<queryphp
 ##########################################################
@@ -15,36 +15,42 @@ namespace tests\assert;
 ##########################################################
 queryphp;
 
-use tests\testcase;
-use queryyetsimple\assert;
-
 /**
- * assert 组件测试
+ * repository 接口
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.04.23
  * @version 1.0
  */
-class AssertTest extends testcase {
+interface repository {
     
     /**
-     * 开启断言
+     * 获取缓存
      *
-     * @return void
+     * @param string $sCacheName            
+     * @param mixed $mixDefault            
+     * @param array $arrOption            
+     * @return mixed
      */
-    protected function setUp() {
-        assert::open ( true );
-    }
+    public function get($sCacheName, $mixDefault = false, array $arrOption = []);
     
     /**
-     * test
+     * 设置缓存
      *
+     * @param string $sCacheName            
+     * @param mixed $mixData            
+     * @param array $arrOption            
      * @return void
      */
-    public function testFirst() {
-        $this->assertEquals ( true, assert::string ( 'hello' ) );
-        $this->assertEquals ( true, assert::boolean ( true ) );
-        $this->assertEquals ( true, assert::null ( null ) );
-    }
+    public function set($sCacheName, $mixData, array $arrOption = []);
+    
+    /**
+     * 清除缓存
+     *
+     * @param string $sCacheName            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function delele($sCacheName, array $arrOption = []);
 }

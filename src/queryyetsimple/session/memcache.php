@@ -18,6 +18,7 @@ queryphp;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\cache\memcache as cache_memcache;
 use queryyetsimple\session\abstracts\session as abstracts_session;
+use queryyetsimple\session\interfaces\session as interfaces_session;
 
 /**
  * session.memcache
@@ -27,7 +28,7 @@ use queryyetsimple\session\abstracts\session as abstracts_session;
  * @since 2017.06.05
  * @version 1.0
  */
-class memcache extends abstracts_session {
+class memcache extends abstracts_session implements interfaces_session {
     
     use classs_faces;
     

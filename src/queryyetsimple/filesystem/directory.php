@@ -16,6 +16,7 @@ namespace queryyetsimple\filesystem;
 queryphp;
 
 use DirectoryIterator;
+use queryyetsimple\classs\infinity;
 
 /**
  * 文件夹
@@ -26,6 +27,8 @@ use DirectoryIterator;
  * @version 1.0
  */
 class directory {
+
+    use infinity;
     
     /**
      * 创建目录

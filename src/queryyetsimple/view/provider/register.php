@@ -35,7 +35,7 @@ return [
                         $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
                     }
                     
-                    return new queryyetsimple\view\compiler ( $oProject, $arrOption );
+                    return new queryyetsimple\view\compiler ($arrOption );
                 } 
         ],
         'singleton@view.parser' => [ 

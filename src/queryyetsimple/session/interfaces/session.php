@@ -26,60 +26,44 @@ queryphp;
 interface session {
     
     /**
-     * 设置 session
+     * (non-PHPdoc)
      *
-     * @param string $sName            
-     * @param mxied $mixValue            
-     * @param boolean $bPrefix            
-     * @return void
+     * @see SessionHandler::open()
      */
-    public function set($sName, $mixValue, $bPrefix = true);
+    public function open($strSavePath, $strName);
     
     /**
-     * 取回 session
+     * (non-PHPdoc)
      *
-     * @param string $sName            
-     * @param boolean $bPrefix            
-     * @return mxied
+     * @see SessionHandler::close()
      */
-    public function get($sName, $bPrefix = true);
+    public function close();
     
     /**
-     * 删除 session
+     * (non-PHPdoc)
      *
-     * @param string $sName            
-     * @param boolean $bPrefix            
-     * @return bool
+     * @see SessionHandler::read()
      */
-    public function delete($sName, $bPrefix = true);
+    public function read($strSessID);
     
     /**
-     * 是否存在 session
+     * (non-PHPdoc)
      *
-     * @param string $sName            
-     * @param boolean $bPrefix            
+     * @see SessionHandler::write()
      */
-    public function has($sName, $bPrefix = true);
+    public function write($strSessID, $mixSessData);
     
     /**
-     * 删除 session
+     * (non-PHPdoc)
      *
-     * @param boolean $bOnlyDeletePrefix            
-     * @return int
+     * @see SessionHandler::destroy()
      */
-    public function clear($bOnlyDeletePrefix = true);
+    public function destroy($strSessID);
     
     /**
-     * 暂停 session
+     * (non-PHPdoc)
      *
-     * @return void
+     * @see SessionHandler::gc()
      */
-    public function pause();
-    
-    /**
-     * 终止会话
-     *
-     * @return bool
-     */
-    public function destroy();
+    public function gc($intMaxlifetime);
 }

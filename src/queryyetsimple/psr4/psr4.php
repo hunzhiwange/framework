@@ -4,7 +4,7 @@
 namespace queryyetsimple\psr4;
 
 use RuntimeException;
-use queryyetsimple\classs\faces2;
+use queryyetsimple\classs\faces;
 use Composer\Autoload\ClassLoader;
 use queryyetsimple\support\interfaces\container;
 
@@ -35,14 +35,14 @@ class psr4 {
      *
      * @var \Composer\Autoload\ClassLoader
      */
-    private static $objComposer;
+    protected static $objComposer;
     
     /**
      * 沙盒路径
      *
      * @var string
      */
-    private static $strSandboxPath;
+    protected static $strSandboxPath;
     
     /**
      * 设置 composer
@@ -118,7 +118,7 @@ class psr4 {
     public static function autoload($strClass) {
         // 实现沙盒
         if (strpos ( $strClass, 'queryyetsimple\\' ) !== false) {
-            if (is_file ( ($strSandbox = static::$strSandboxPath . '/' . ltrim ( $strClass, 'queryyetsimple\\' ) . '.php') ))
+            if (is_file ( ($strSandbox = static::$strSandboxPath . '/' . substr ( $strClass, 15 ) . '.php') ))
                 require $strSandbox;
         }
     }
@@ -140,6 +140,6 @@ class psr4 {
      * @return void
      */
     public static function faces(container $objProject) {
-        faces2::setProjectContainer ( $objProject );
+        faces::setProjectContainer ( $objProject );
     }
 }

@@ -16,11 +16,12 @@ namespace queryyetsimple\router;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\psr4\psr4;
 use queryyetsimple\http\request;
 use queryyetsimple\helper\helper;
+use queryyetsimple\classs\option;
+use queryyetsimple\classs\infinity;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\support\interfaces\container;
 
 /**
  * 路由解析
@@ -32,91 +33,106 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class router {
     
-    use classs_faces;
+    use infinity;
+    use option;
+    
+    /**
+     * container
+     *
+     * @var \queryyetsimple\support\interfaces\container
+     */
+    protected $objContainer;
+    
+    /**
+     * http 请求
+     *
+     * @var \queryyetsimple\http\request
+     */
+    protected $objRequest;
     
     /**
      * 注册域名
      *
      * @var array
      */
-    private $arrDomains = [ ];
+    protected $arrDomains = [ ];
     
     /**
      * 注册路由
      *
      * @var array
      */
-    private $arrRouters = [ ];
+    protected $arrRouters = [ ];
     
     /**
      * 参数正则
      *
      * @var array
      */
-    private $arrWheres = [ ];
+    protected $arrWheres = [ ];
     
     /**
      * 域名正则
      *
      * @var array
      */
-    private $arrDomainWheres = [ ];
+    protected $arrDomainWheres = [ ];
     
     /**
      * 分组传递参数
      *
      * @var array
      */
-    private $arrGroupArgs = [ ];
+    protected $arrGroupArgs = [ ];
     
     /**
      * 路由绑定资源
      *
      * @var string
      */
-    private $arrBinds = [ ];
+    protected $arrBinds = [ ];
     
     /**
      * 域名匹配数据
      *
      * @var array
      */
-    private $arrDomainData = [ ];
+    protected $arrDomainData = [ ];
     
     /**
      * 路由缓存路径
      *
      * @var string
      */
-    private $strCachePath;
+    protected $strCachePath;
     
     /**
      * 路由 development
      *
      * @var boolean
      */
-    private $booDevelopment = false;
+    protected $booDevelopment = false;
     
     /**
      * 应用名字
      *
      * @var string
      */
-    private $strApp = null;
+    protected $strApp = null;
     
     /**
      * 控制器名字
      *
      * @var string
      */
-    private $strController = null;
+    protected $strController = null;
     
     /**
      * 方法名字
      *
      * @var string
      */
-    private $strAction = null;
+    protected $strAction = null;
     
     /**
      * 默认替换参数[字符串]
@@ -151,7 +167,7 @@ class router {
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
+    protected $arrOption = [ 
             '~apps~' => [ 
                     '~_~',
                     'home' 
@@ -159,23 +175,38 @@ class router {
             'default_app' => 'home',
             'default_controller' => 'index',
             'default_action' => 'index',
-            'url\router_cache' => true,
-            'url\model' => 'pathinfo',
-            'url\router_domain_on' => true,
-            'url\html_suffix' => '.html',
-            'url\router_domain_top' => '',
-            'url\make_subdomain_on' => true,
-            'url\pathinfo_depr' => '/',
-            'url\rewrite' => false,
-            'url\public' => 'http://public.foo.bar' 
+            'router_cache' => true,
+            'model' => 'pathinfo',
+            'router_domain_on' => true,
+            'html_suffix' => '.html',
+            'router_domain_top' => '',
+            'make_subdomain_on' => true,
+            'pathinfo_depr' => '/',
+            'rewrite' => false,
+            'public' => 'http://public.foo.bar' 
     ];
     
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param array $arrOption            
      * @return void
      */
-    public function __construct() {
+    public function __construct(container $objContainer, array $arrOption = []) {
+        $this->objContainer = $objContainer;
+        $this->options ( $arrOption );
+    }
+    
+    /**
+     * http 请求
+     *
+     * @param \queryyetsimple\http\request $objRequest            
+     * @return $this
+     */
+    public function registerRequest(request $objRequest) {
+        $this->objRequest = $objRequest;
+        return $this;
     }
     
     /**
@@ -185,7 +216,7 @@ class router {
      */
     public function run() {
         // 非命令行模式
-        if (! request::isClis ()) {
+        if (! $this->objRequest->isCli ()) {
             $this->parseWeb ();
         } else {
             $this->parseCli ();
@@ -212,7 +243,7 @@ class router {
         $arrNextParse = [ ];
         
         // 解析域名
-        if ($this->classsFacesOption ( 'url\router_domain_on' ) === true) {
+        if ($this->getOption ( 'router_domain_on' ) === true) {
             if (($arrParseData = $this->parseDomain ( $arrNextParse )) !== false) {
                 return $arrParseData;
             }
@@ -235,7 +266,7 @@ class router {
             if (($this->strApp = env ( 'app_name' )))
                 return $this->strApp;
             $sVar = static::APP;
-            return $this->strApp = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_app' ));
+            return $this->strApp = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->getOption ( 'default_app' ));
         }
     }
     
@@ -251,7 +282,7 @@ class router {
             if (($this->strController = env ( 'controller_name' )))
                 return $this->strController;
             $sVar = static::CONTROLLER;
-            return $this->strController = $_GET [$sVar] = ! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_controller' );
+            return $this->strController = $_GET [$sVar] = ! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->getOption ( 'default_controller' );
         }
     }
     
@@ -267,7 +298,7 @@ class router {
             if (($this->strAction = env ( 'action_name' )))
                 return $this->strAction;
             $sVar = static::ACTION;
-            return $this->strAction = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->classsFacesOption ( 'default_action' ));
+            return $this->strAction = $_GET [$sVar] = ! empty ( $_POST [$sVar] ) ? $_POST [$sVar] : (! empty ( $_GET [$sVar] ) ? $_GET [$sVar] : $this->getOption ( 'default_action' ));
         }
     }
     
@@ -292,7 +323,7 @@ class router {
         $in ['args_app'] = static::APP;
         $in ['args_controller'] = static::CONTROLLER;
         $in ['args_action'] = static::ACTION;
-        $in ['url_enter'] = static::$objProjectContainer->url_enter;
+        $in ['url_enter'] = $this->objContainer ['url_enter'];
         
         // 以 “/” 开头的为自定义URL
         $in ['custom'] = false;
@@ -358,7 +389,7 @@ class router {
         }
         
         // 如果开启了URL解析，则URL模式为非普通模式
-        if (($this->classsFacesOption ( 'url\model' ) == 'pathinfo' && $in ['normal'] === false) || $in ['custom'] === true) {
+        if (($this->getOption ( 'model' ) == 'pathinfo' && $in ['normal'] === false) || $in ['custom'] === true) {
             // 非自定义 url
             if ($in ['custom'] === false) {
                 // 额外参数
@@ -369,16 +400,16 @@ class router {
                 $sStr = substr ( $sStr, 0, - 1 );
                 
                 // 分析 url
-                $sUrl = ($in ['url_enter'] !== '/' ? $in ['url_enter'] : '') . ($this->classsFacesOption ( 'default_app' ) != $in ['app'] ? '/' . $in ['app'] . '/' : '/');
+                $sUrl = ($in ['url_enter'] !== '/' ? $in ['url_enter'] : '') . ($this->getOption ( 'default_app' ) != $in ['app'] ? '/' . $in ['app'] . '/' : '/');
                 
                 if ($sStr) {
                     $sUrl .= $in ['controller'] . '/' . $in ['action'] . $sStr;
                 } else {
                     $sTemp = '';
-                    if ($this->classsFacesOption ( 'default_controller' ) != $in ['controller'] || $this->classsFacesOption ( 'default_action' ) != $in ['action']) {
+                    if ($this->getOption ( 'default_controller' ) != $in ['controller'] || $this->getOption ( 'default_action' ) != $in ['action']) {
                         $sTemp .= $in ['controller'];
                     }
-                    if ($this->classsFacesOption ( 'default_action' ) != $in ['action']) {
+                    if ($this->getOption ( 'default_action' ) != $in ['action']) {
                         $sTemp .= '/' . $in ['action'];
                     }
                     
@@ -417,7 +448,7 @@ class router {
             }
             
             if ($in ['suffix'] && $sUrl) {
-                $sUrl .= $in ['suffix'] === true ? $this->classsFacesOption ( 'url\html_suffix' ) : $in ['suffix'];
+                $sUrl .= $in ['suffix'] === true ? $this->getOption ( 'html_suffix' ) : $in ['suffix'];
             }
         }         
 
@@ -430,13 +461,13 @@ class router {
             $sStr = rtrim ( $sStr, '&' );
             
             $sTemp = '';
-            if ($in ['normal'] === true || $this->classsFacesOption ( 'default_app' ) != $in ['app']) {
+            if ($in ['normal'] === true || $this->getOption ( 'default_app' ) != $in ['app']) {
                 $sTemp [] = $in ['args_app'] . '=' . $in ['app'];
             }
-            if ($this->classsFacesOption ( 'default_controller' ) != $in ['controller']) {
+            if ($this->getOption ( 'default_controller' ) != $in ['controller']) {
                 $sTemp [] = $in ['args_controller'] . '=' . $in ['controller'];
             }
-            if ($this->classsFacesOption ( 'default_action' ) != $in ['action']) {
+            if ($this->getOption ( 'default_action' ) != $in ['action']) {
                 $sTemp [] = $in ['args_action'] . '=' . $in ['action'];
             }
             if ($sStr) {
@@ -450,7 +481,7 @@ class router {
         }
         
         // 子域名支持
-        if ($this->classsFacesOption ( 'url\make_subdomain_on' ) === true && $this->classsFacesOption ( 'url\router_domain_top' )) {
+        if ($this->getOption ( 'make_subdomain_on' ) === true && $this->getOption ( 'router_domain_top' )) {
             if ($in ['subdomain']) {
                 $sUrl = $this->urlWithDomain ( $in ['subdomain'] ) . $sUrl;
             }
@@ -488,10 +519,7 @@ class router {
      * @return void
      */
     public function urlRedirect($sUrl, $nTime = 0, $sMsg = '') {
-        $sUrl = str_replace ( [ 
-                "\n",
-                "\r" 
-        ], '', $sUrl ); // 多行URL地址支持
+        $sUrl = str_replace ( PHP_EOL, '', $sUrl ); // 不支持多行 url
         if (empty ( $sMsg )) {
             $sMsg = 'Please wait for a while...';
         }
@@ -531,8 +559,7 @@ class router {
     public function import($mixRouter, $strUrl = '', $in = []) {
         if (! $this->checkExpired ())
             return;
-            
-            // 默认参数
+        
         $in = $this->mergeIn ( [ 
                 'prepend' => false,
                 'where' => [ ],
@@ -813,8 +840,8 @@ class router {
     /**
      * 注册绑定资源
      *
-     * 注册控制器：router::bind( 'group://topic', $mixBind )
-     * 注册方法：router::bind( 'group://topic/index', $mixBind )
+     * 注册控制器：router->bind( 'group://topic', $mixBind )
+     * 注册方法：router->bind( 'group://topic/index', $mixBind )
      *
      * @param string $sBindName            
      * @param mixed $mixBind            
@@ -829,9 +856,9 @@ class router {
      *
      * @return void
      */
-    private function parseWeb() {
+    protected function parseWeb() {
         // 分析 pathinfo
-        if ($this->classsFacesOption ( 'url\model' ) == 'pathinfo') {
+        if ($this->getOption ( 'model' ) == 'pathinfo') {
             // 分析 pathinfo
             $this->pathInfo ();
             
@@ -845,8 +872,8 @@ class router {
      *
      * @return void
      */
-    private function pathInfo() {
-        $sPathInfo = $this->clearHtmlSuffix ( request::pathinfos () );
+    protected function pathInfo() {
+        $sPathInfo = $this->clearHtmlSuffix ( $this->objRequest->pathinfo () );
         $sPathInfo = empty ( $sPathInfo ) ? '/' : $sPathInfo;
         $_SERVER ['PATH_INFO'] = $sPathInfo;
     }
@@ -856,7 +883,7 @@ class router {
      *
      * @return void
      */
-    private function parseCli() {
+    protected function parseCli() {
         $arrArgv = isset ( $GLOBALS ['argv'] ) ? $GLOBALS ['argv'] : [ ];
         
         if (! isset ( $arrArgv ) || empty ( $arrArgv )) {
@@ -870,7 +897,7 @@ class router {
         if ($arrArgv) {
             
             // app
-            if (in_array ( $arrArgv [0], $this->classsFacesOption ( '~apps~' ) )) {
+            if (in_array ( $arrArgv [0], $this->getOption ( '~apps~' ) )) {
                 $_GET [static::APP] = array_shift ( $arrArgv );
             }
             
@@ -902,13 +929,13 @@ class router {
      *
      * @return array
      */
-    private function parsePathInfo() {
+    protected function parsePathInfo() {
         $arrPathInfo = [ ];
         $sPathInfo = $_SERVER ['PATH_INFO'];
         
-        $arrPaths = explode ( $this->classsFacesOption ( 'url\pathinfo_depr' ), trim ( $sPathInfo, '/' ) );
+        $arrPaths = explode ( $this->getOption ( 'pathinfo_depr' ), trim ( $sPathInfo, '/' ) );
         
-        if (in_array ( $arrPaths [0], $this->classsFacesOption ( '~apps~' ) )) {
+        if (in_array ( $arrPaths [0], $this->getOption ( '~apps~' ) )) {
             $arrPathInfo [static::APP] = array_shift ( $arrPaths );
         }
         
@@ -935,23 +962,23 @@ class router {
      * @param array $arrNextParse            
      * @return void
      */
-    private function parseDomain(&$arrNextParse) {
-        if (! $this->arrDomains || ! $this->classsFacesOption ( 'url\router_domain_top' ))
+    protected function parseDomain(&$arrNextParse) {
+        if (! $this->arrDomains || ! $this->getOption ( 'router_domain_top' ))
             return;
-        $strHost = request::getHosts ();
+        $strHost = $this->objRequest->getHost ();
         
         $booFindDomain = false;
         foreach ( $this->arrDomains as $sKey => $arrDomains ) {
             
             // 直接匹配成功
-            if ($strHost === $sKey || $strHost === $sKey . '.' . $this->classsFacesOption ( 'url\router_domain_top' )) {
+            if ($strHost === $sKey || $strHost === $sKey . '.' . $this->getOption ( 'router_domain_top' )) {
                 $booFindDomain = true;
             }            
 
             // 域名参数支持
             elseif (strpos ( $sKey, '{' ) !== false) {
-                if (strpos ( $sKey, $this->classsFacesOption ( 'url\router_domain_top' ) ) === false) {
-                    $sKey = $sKey . '.' . $this->classsFacesOption ( 'url\router_domain_top' );
+                if (strpos ( $sKey, $this->getOption ( 'router_domain_top' ) ) === false) {
+                    $sKey = $sKey . '.' . $this->getOption ( 'router_domain_top' );
                 }
                 
                 // 解析匹配正则
@@ -1004,7 +1031,7 @@ class router {
      * @param array $arrNextParse            
      * @return array
      */
-    private function parseRouter($arrNextParse = []) {
+    protected function parseRouter($arrNextParse = []) {
         if (! $this->arrRouters)
             return;
         $arrData = [ ];
@@ -1029,7 +1056,7 @@ class router {
                         $arrRouter ['args'] [] = $arrMatches [1];
                         return '(' . (isset ( $arrRouter ['where'] [$arrMatches [1]] ) ? $arrRouter ['where'] [$arrMatches [1]] : static::DEFAULT_REGEX) . ')';
                     }, $arrRouter ['regex'] );
-                    $arrRouter ['regex'] = '/^\/' . $arrRouter ['regex'] . ((isset ( $arrRouter ['strict'] ) ? $arrRouter ['strict'] : $this->classsFacesOption ( 'url\router_strict' )) ? '$' : '') . '/';
+                    $arrRouter ['regex'] = '/^\/' . $arrRouter ['regex'] . ((isset ( $arrRouter ['strict'] ) ? $arrRouter ['strict'] : $this->getOption ( 'router_strict' )) ? '$' : '') . '/';
                     
                     // 匹配结果
                     if (preg_match ( $arrRouter ['regex'], $sPathinfo, $arrRes )) {
@@ -1100,8 +1127,8 @@ class router {
      *
      * @return boolean
      */
-    private function checkOpen() {
-        return $this->classsFacesOption ( 'url\router_cache' );
+    protected function checkOpen() {
+        return $this->getOption ( 'router_cache' ) && $this->strCachePath;
     }
     
     /**
@@ -1109,7 +1136,7 @@ class router {
      *
      * @return void
      */
-    private function readCache() {
+    protected function readCache() {
         if (! $this->checkOpen ())
             return;
         
@@ -1148,7 +1175,7 @@ class router {
      * @param string $sRegex            
      * @return string
      */
-    private function formatRegex($sRegex) {
+    protected function formatRegex($sRegex) {
         $sRegex = helper::escapeRegexCharacter ( $sRegex );
         
         // 还原变量特殊标记
@@ -1168,7 +1195,7 @@ class router {
      * @param array $arrExtend            
      * @return array
      */
-    private function mergeIn(array $in, array $arrExtend) {
+    protected function mergeIn(array $in, array $arrExtend) {
         // 合并特殊参数
         foreach ( [ 
                 'params',
@@ -1206,7 +1233,7 @@ class router {
      * @param array $arrExtend            
      * @return array
      */
-    private function mergeWhere(array $arrWhere, array $arrExtend) {
+    protected function mergeWhere(array $arrWhere, array $arrExtend) {
         // 合并参数正则
         if (! empty ( $arrExtend ) && is_array ( $arrExtend )) {
             if (is_string ( key ( $arrExtend ) )) {
@@ -1226,7 +1253,7 @@ class router {
      * @param string $sUrl            
      * @return array
      */
-    private function parseNodeUrl($sUrl) {
+    protected function parseNodeUrl($sUrl) {
         $arrData = [ ];
         
         // 解析 url
@@ -1267,11 +1294,11 @@ class router {
      * @param string $sHttpSuffix            
      * @return string
      */
-    private function urlWithDomain($sDomain = '', $sHttpPrefix = '', $sHttpSuffix = '') {
+    protected function urlWithDomain($sDomain = '', $sHttpPrefix = '', $sHttpSuffix = '') {
         static $sHttpPrefix = '', $sHttpSuffix = '';
         if (! $sHttpPrefix) {
-            $sHttpPrefix = request::isSsls () ? 'https://' : 'http://';
-            $sHttpSuffix = $this->classsFacesOption ( 'url\router_domain_top' );
+            $sHttpPrefix = $this->objRequest->isSsl () ? 'https://' : 'http://';
+            $sHttpSuffix = $this->getOption ( 'router_domain_top' );
         }
         return $sHttpPrefix . ($sDomain && $sDomain != '*' ? $sDomain . '.' : '') . $sHttpSuffix;
     }
@@ -1281,13 +1308,13 @@ class router {
      *
      * @return void
      */
-    private function completeRequest() {
+    protected function completeRequest() {
         foreach ( [ 
                 'app',
                 'controller',
                 'action' 
         ] as $strType ) {
-            static::$objProjectContainer->instance ( $strType . '_name', $this->{$strType} () );
+            $this->objContainer->instance ( $strType . '_name', $this->{$strType} () );
         }
         $_REQUEST = array_merge ( $_POST, $_GET );
     }
@@ -1297,17 +1324,17 @@ class router {
      *
      * @return void
      */
-    private function parsePublicAndRoot() {
-        if (request::isClis ()) {
+    protected function parsePublicAndRoot() {
+        if ($this->objRequest->isCli ()) {
             return;
         }
         $arrResult = [ ];
         
         // 分析 php 入口文件路径
-        $arrResult ['enter_bak'] = $arrResult ['enter'] = static::$objProjectContainer->url_enter;
+        $arrResult ['enter_bak'] = $arrResult ['enter'] = $this->objContainer ['url_enter'];
         if (! $arrResult ['enter']) {
             // php 文件
-            if (request::isCgis ()) {
+            if ($this->objRequest->isCgi ()) {
                 $arrTemp = explode ( '.php', $_SERVER ["PHP_SELF"] ); // CGI/FASTCGI模式下
                 $arrResult ['enter'] = rtrim ( str_replace ( $_SERVER ["HTTP_HOST"], '', $arrTemp [0] . '.php' ), '/' );
             } else {
@@ -1316,7 +1343,7 @@ class router {
             $arrResult ['enter_bak'] = $arrResult ['enter'];
             
             // 如果为重写模式
-            if ($this->classsFacesOption ( 'url\rewrite' ) === true) {
+            if ($this->getOption ( 'rewrite' ) === true) {
                 $arrResult ['enter'] = dirname ( $arrResult ['enter'] );
                 if ($arrResult ['enter'] == '\\') {
                     $arrResult ['enter'] = '/';
@@ -1325,25 +1352,25 @@ class router {
         }
         
         // 网站 URL 根目录
-        $arrResult ['root'] = static::$objProjectContainer->url_root;
+        $arrResult ['root'] = $this->objContainer ['url_root'];
         if (! $arrResult ['root']) {
             $arrResult ['root'] = dirname ( $arrResult ['enter_bak'] );
             $arrResult ['root'] = ($arrResult ['root'] == '/' || $arrResult ['root'] == '\\') ? '' : $arrResult ['root'];
         }
         
         // 网站公共文件目录
-        $arrResult ['public'] = static::$objProjectContainer->url_public;
+        $arrResult ['public'] = $this->objContainer ['url_public'];
         if (! $arrResult ['public']) {
-            $arrResult ['public'] = $this->classsFacesOption ( 'url\public' );
+            $arrResult ['public'] = $this->getOption ( 'public' );
         }
         
-        // 快捷方法供 router::url 方法使用
+        // 快捷方法供 router->url 方法使用
         foreach ( [ 
                 'enter',
                 'root',
                 'public' 
         ] as $sType ) {
-            static::$objProjectContainer->instance ( 'url_' . $sType, $arrResult [$sType] );
+            $this->objContainer->instance ( 'url_' . $sType, $arrResult [$sType] );
         }
         
         unset ( $arrResult, $objProject );
@@ -1355,9 +1382,9 @@ class router {
      * @param string $sVal            
      * @return string
      */
-    private function clearHtmlSuffix($sVal) {
-        if ($this->classsFacesOption ( 'url\html_suffix' ) && ! empty ( $sVal )) {
-            $sSuffix = substr ( $this->classsFacesOption ( 'url\html_suffix' ), 1 );
+    protected function clearHtmlSuffix($sVal) {
+        if ($this->getOption ( 'html_suffix' ) && ! empty ( $sVal )) {
+            $sSuffix = substr ( $this->getOption ( 'html_suffix' ), 1 );
             $sVal = preg_replace ( '/\.' . $sSuffix . '$/', '', $sVal );
         }
         return $sVal;

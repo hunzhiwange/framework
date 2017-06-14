@@ -24,32 +24,8 @@ queryphp;
 return [ 
         'singleton@cache' => [ 
                 'queryyetsimple\cache\cache',
-                function ($objProject) {
-                    return queryyetsimple\cache\cache::singleton ( $objProject );
-                } 
-        ],
-        'register@filecache' => [ 
-                'queryyetsimple\cache\filecache',
-                function ($objProject, $arrOption = []) {
-                    $objCache = new queryyetsimple\cache\filecache ( $arrOption );
-                    $objCache->projectContainer ( $objProject );
-                    return $objCache;
-                } 
-        ],
-        'register@memcache' => [ 
-                'queryyetsimple\cache\memcache',
-                function ($objProject, $arrOption = []) {
-                    $objCache = new queryyetsimple\cache\memcache ( $arrOption );
-                    $objCache->projectContainer ( $objProject );
-                    return $objCache;
-                } 
-        ],
-        'register@redis' => [ 
-                'queryyetsimple\cache\redis',
-                function ($objProject, $arrOption = []) {
-                    $objCache = new queryyetsimple\cache\redis ( $arrOption );
-                    $objCache->projectContainer ( $objProject );
-                    return $objCache;
+                function ($oProject) {
+                    return new queryyetsimple\cache\cache ( $oProject );
                 } 
         ] 
 ];

@@ -6,8 +6,8 @@ namespace queryyetsimple\bootstrap\runtime;
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
-#  /       \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |     (     ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
 #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
 #       \__   | \___ |_|    \__  || |    | | | || |      #
 #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.04.09
  * @version 1.0
  */
-class handle {
+class runtime {
     
     /**
      * 接管 PHP 异常
@@ -32,7 +32,7 @@ class handle {
      * @return void
      */
     public static function exceptionHandle($oException) {
-        (new exception ( $oException ))->run ();
+        (new exception ( static::project (), $oException ))->run ();
         exit ();
     }
     
@@ -46,7 +46,7 @@ class handle {
      * @return void
      */
     public static function errorHandle($nErrorNo, $sErrStr, $sErrFile, $nErrLine) {
-        (new error ( $nErrorNo, $sErrStr, $sErrFile, $nErrLine ))->run ();
+        (new error ( static::project (), $nErrorNo, $sErrStr, $sErrFile, $nErrLine ))->run ();
         exit ();
     }
     
@@ -56,7 +56,16 @@ class handle {
      * @return void
      */
     public static function shutdownHandle() {
-        (new shutdown ())->run ();
+        (new shutdown ( static::project () ))->run ();
         exit ();
+    }
+    
+    /**
+     * 返回项目容器
+     *
+     * @return \queryyetsimple\mvc\project
+     */
+    protected static function project() {
+        return project ();
     }
 }

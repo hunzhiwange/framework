@@ -3,6 +3,8 @@
 // ©2010-2017 http://queryphp.com All rights reserved.
 namespace queryyetsimple\classs;
 
+use InvalidArgumentException;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -30,10 +32,13 @@ trait option {
      *
      * @param string $strName            
      * @param mixed $mixValue            
-     * @return void
+     * @return $this
      */
     public function option($strName, $mixValue) {
+        if(!is_string($strName))
+            throw new InvalidArgumentException('Option set name must be a string.');
         $this->arrOption [$strName] = $mixValue;
+        return $this;
     }
     
     /**
@@ -41,13 +46,14 @@ trait option {
      *
      * @param string $strName            
      * @param mixed $mixValue            
-     * @return array
+     * @return $this
      */
     public function options($arrOption = []) {
         if (! $arrOption)
-            return;
+            return $this;
         foreach ( ( array ) $arrOption as $strName => $mixValue )
             $this->option ( $strName, $mixValue );
+        return $this;
     }
     
     /**

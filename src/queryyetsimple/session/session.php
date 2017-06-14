@@ -18,7 +18,7 @@ queryphp;
 use RuntimeException;
 use queryyetsimple\assert\assert;
 use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\session\interfaces\session as interfaces_session;
+use queryyetsimple\session\interfaces\repository;
 
 /**
  * session 封装
@@ -28,7 +28,7 @@ use queryyetsimple\session\interfaces\session as interfaces_session;
  * @since 2017.04.17
  * @version 1.0
  */
-class session implements interfaces_session {
+class session implements repository {
     
     use classs_faces;
     

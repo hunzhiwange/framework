@@ -16,8 +16,8 @@ namespace queryyetsimple\cache;
 queryphp;
 
 use InvalidArgumentException;
+use queryyetsimple\classs\option;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\cache\abstracts\cache as abstracts_cache;
 use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
@@ -31,7 +31,7 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
  */
 class file extends abstracts_cache implements interfaces_cache {
     
-    use classs_faces;
+    use option;
     
     /**
      * 缓存文件头部
@@ -52,26 +52,14 @@ class file extends abstracts_cache implements interfaces_cache {
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'cache\nocache_force' => '~@nocache_force',
-            'cache\time_preset' => [ ],
-            'cache\prefix' => '~@',
-            'cache\expire' => 86400,
-            'cache\connect.file.path' => '',
-            'cache\connect.file.serialize' => true,
-            'cache\connect.redis.prefix' => null,
-            'cache\connect.redis.expire' => null 
+    protected $arrOption = [ 
+            'nocache_force' => '~@nocache_force',
+            'time_preset' => [ ],
+            'prefix' => '~@',
+            'expire' => 86400,
+            'path' => '',
+            'serialize' => true 
     ];
-    
-    /**
-     * 构造函数
-     *
-     * @param array $arrOption            
-     * @return void
-     */
-    public function __construct(array $arrOption = []) {
-        $this->initialization ( $arrOption );
-    }
     
     /**
      * 获取缓存
@@ -85,7 +73,7 @@ class file extends abstracts_cache implements interfaces_cache {
         if ($this->checkForce ())
             return $mixDefault;
         
-        $arrOption = $this->option ( $arrOption, null, false );
+        $arrOption = $this->getOptions ( $arrOption );
         $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
         
         // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php
@@ -144,7 +132,7 @@ class file extends abstracts_cache implements interfaces_cache {
      * @return void
      */
     public function set($sCacheName, $mixData, array $arrOption = []) {
-        $arrOption = $this->option ( $arrOption, null, false );
+        $arrOption = $this->getOptions ( $arrOption );
         if ($arrOption ['serialize']) {
             $mixData = serialize ( $mixData );
         }
@@ -162,7 +150,7 @@ class file extends abstracts_cache implements interfaces_cache {
      * @return void
      */
     public function delele($sCacheName, array $arrOption = []) {
-        $arrOption = $this->option ( $arrOption, null, false );
+        $arrOption = $this->getOptions ( $arrOption );
         $sCachePath = $this->getCachePath ( $sCacheName, $arrOption );
         if ($this->exist ( $sCacheName, $arrOption )) {
             @unlink ( $sCachePath );
@@ -176,7 +164,7 @@ class file extends abstracts_cache implements interfaces_cache {
      * @param array $arrOption            
      * @return boolean
      */
-    private function isExpired($sCacheName, $arrOption) {
+    protected function isExpired($sCacheName, $arrOption) {
         $sFilePath = $this->getCachePath ( $sCacheName, $arrOption );
         if (! is_file ( $sFilePath )) {
             return true;
@@ -192,14 +180,14 @@ class file extends abstracts_cache implements interfaces_cache {
      * @param array $arrOption            
      * @return string
      */
-    private function getCachePath($sCacheName, $arrOption) {
+    protected function getCachePath($sCacheName, $arrOption) {
         if (! $arrOption ['path'])
             throw new InvalidArgumentException ( 'Cache path is not allowed empty.' );
         
         if (! is_dir ( $arrOption ['path'] )) {
             directory::create ( $arrOption ['path'] );
         }
-        return $arrOption ['path'] . '/' . $this->getCacheName ( $sCacheName, $arrOption ) . '.php';
+        return $arrOption ['path'] . '/' . $this->getCacheName ( $sCacheName, $arrOption ['prefix'] ) . '.php';
     }
     
     /**
@@ -209,7 +197,7 @@ class file extends abstracts_cache implements interfaces_cache {
      * @param string $sData            
      * @return void
      */
-    private function writeData($sFileName, $sData) {
+    protected function writeData($sFileName, $sData) {
         ! is_dir ( dirname ( $sFileName ) ) && directory::create ( dirname ( $sFileName ) );
         file_put_contents ( $sFileName, $sData, LOCK_EX );
     }
@@ -221,7 +209,7 @@ class file extends abstracts_cache implements interfaces_cache {
      * @param array $arrOption            
      * @return boolean
      */
-    private function exist($sCacheName, $arrOption) {
+    protected function exist($sCacheName, $arrOption) {
         return is_file ( $this->getCachePath ( $sCacheName, $arrOption ) );
     }
 }

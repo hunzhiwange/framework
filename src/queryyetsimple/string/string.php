@@ -15,7 +15,7 @@ namespace queryyetsimple\string;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\classs\infinity as infinity;
 
 /**
  * 字符串
@@ -27,7 +27,7 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class string {
     
-    use classs_faces;
+    use infinity;
     
     /**
      * 随机字符串

@@ -24,14 +24,18 @@ queryphp;
 return [ 
         'singleton@request' => [ 
                 'queryyetsimple\http\request',
-                function ($objProject) {
-                    return \queryyetsimple\http\request::singleton ( $objProject );
+                function ($oProject) {
+                    return new queryyetsimple\http\request ();
                 } 
         ],
         'singleton@response' => [ 
                 'queryyetsimple\http\response',
-                function ($objProject) {
-                    return \queryyetsimple\http\response::singleton ( $objProject );
+                function ($oProject) {
+                    return new queryyetsimple\http\response ( [ 
+                            'action_fail' => $oProject ['option'] ['view\action_fail'],
+                            'action_success' => $oProject ['option'] ['view\action_success'],
+                            'default_response' => $oProject ['option'] ['default_response'] 
+                    ] );
                 } 
         ] 
 ];

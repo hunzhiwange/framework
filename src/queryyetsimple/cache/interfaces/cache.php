@@ -26,31 +26,33 @@ queryphp;
 interface cache {
     
     /**
-     * 获取缓存
+     * 连接缓存并返回连接对象
      *
-     * @param string $sCacheName            
-     * @param mixed $mixDefault            
      * @param array $arrOption            
-     * @return mixed
+     * @return \queryyetsimple\abstracts\cache
      */
-    public function get($sCacheName, $mixDefault = false, array $arrOption = []);
+    public function connect($arrOption = []);
     
     /**
-     * 设置缓存
+     * 创建一个缓存仓库
      *
-     * @param string $sCacheName            
-     * @param mixed $mixData            
-     * @param array $arrOption            
-     * @return void
+     * @param \queryyetsimple\cache\interfaces\cache $objCache            
+     * @return \queryyetsimple\cache\repository
      */
-    public function set($sCacheName, $mixData, array $arrOption = []);
+    public function repository(interfaces_cache $objCache);
     
     /**
-     * 清除缓存
+     * 返回默认连接
      *
-     * @param string $sCacheName            
-     * @param array $arrOption            
+     * @return string
+     */
+    public function getDefaultConnect();
+    
+    /**
+     * 设置默认连接
+     *
+     * @param string $strName            
      * @return void
      */
-    public function delele($sCacheName, array $arrOption = []);
+    public function setDefaultConnect($strName);
 }

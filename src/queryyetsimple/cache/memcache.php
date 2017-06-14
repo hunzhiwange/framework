@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use Memcache as Memcaches;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\classs\option;
 use queryyetsimple\cache\abstracts\cache as abstracts_cache;
 use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
@@ -31,25 +31,23 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
  */
 class memcache extends abstracts_cache implements interfaces_cache {
     
-    use classs_faces;
+    use option;
     
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'cache\nocache_force' => '~@nocache_force',
-            'cache\time_preset' => [ ],
-            'cache\prefix' => '~@',
-            'cache\expire' => 86400,
-            'cache\connect.memcache.servers' => [ ],
-            'cache\connect.memcache.host' => '127.0.0.1',
-            'cache\connect.memcache.port' => 11211,
-            'cache\connect.memcache.compressed' => false,
-            'cache\connect.memcache.persistent' => false,
-            'cache\connect.memcache.prefix' => null,
-            'cache\connect.memcache.expire' => null 
+    protected $arrOption = [ 
+            'nocache_force' => '~@nocache_force',
+            'time_preset' => [ ],
+            'prefix' => '~@',
+            'expire' => 86400,
+            'servers' => [ ],
+            'host' => '127.0.0.1',
+            'port' => 11211,
+            'compressed' => false,
+            'persistent' => false 
     ];
     
     /**
@@ -63,12 +61,12 @@ class memcache extends abstracts_cache implements interfaces_cache {
             throw new RuntimeException ( 'Memcache extension must be loaded before use.' );
         }
         
-        $this->initialization ( $arrOption );
+        parent::__construct ( $arrOption );
         
         if (empty ( $this->arrOption ['servers'] )) {
             $this->arrOption ['servers'] [] = [ 
-                    'host' => $this->classsFacesOption ( 'cache\connect.memcache.host' ),
-                    'port' => $this->classsFacesOption ( 'cache\connect.memcache.port' ) 
+                    'host' => $this->getOption ( 'host' ),
+                    'port' => $this->getOption ( 'port' ) 
             ];
         }
         
@@ -95,7 +93,7 @@ class memcache extends abstracts_cache implements interfaces_cache {
         if ($this->checkForce ())
             return $mixDefault;
         
-        $mixData = $this->hHandle->get ( $this->getCacheName ( $sCacheName, $this->option ( $arrOption, null, false ) ) );
+        $mixData = $this->hHandle->get ( $this->getCacheName ( $sCacheName, $this->getOptions ( $arrOption )['prefix'] ) );
         return $mixData === false ? $mixDefault : $mixData;
     }
     
@@ -110,9 +108,9 @@ class memcache extends abstracts_cache implements interfaces_cache {
      * @return void
      */
     public function set($sCacheName, $mixData, array $arrOption = []) {
-        $arrOption = $this->option ( $arrOption, null, false );
+        $arrOption = $this->getOptions ( $arrOption );
         $arrOption ['expire'] = $this->cacheTime ( $sCacheName, $arrOption ['expire'] );
-        $this->hHandle->set ( $this->getCacheName ( $sCacheName, $arrOption ), $mixData, $arrOption ['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption ['expire'] <= 0 ? 0 : ( int ) $arrOption ['expire'] );
+        $this->hHandle->set ( $this->getCacheName ( $sCacheName, $arrOption ['prefix'] ), $mixData, $arrOption ['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption ['expire'] <= 0 ? 0 : ( int ) $arrOption ['expire'] );
     }
     
     /**
@@ -123,7 +121,7 @@ class memcache extends abstracts_cache implements interfaces_cache {
      * @return void
      */
     public function delele($sCacheName, array $arrOption = []) {
-        $this->hHandle->delete ( $this->getCacheName ( $sCacheName, $this->option ( $arrOption, null, false ) ) );
+        $this->hHandle->delete ( $this->getCacheName ( $sCacheName, $this->getOptions ( $arrOption )['prefix'] ) );
     }
     
     /**

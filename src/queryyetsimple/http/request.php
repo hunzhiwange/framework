@@ -15,10 +15,10 @@ namespace queryyetsimple\http;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\classs\infinity;
 
 /**
- * 启动程序
+ * http 请求
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
@@ -27,7 +27,7 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class request {
     
-    use classs_faces;
+    use infinity;
     
     /**
      * 基础 url

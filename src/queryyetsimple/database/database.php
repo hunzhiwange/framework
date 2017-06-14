@@ -56,11 +56,20 @@ class database {
     ];
     
     /**
+     * 缓存连接对象
+     *
+     * @var \queryyetsimple\cache\interfaces\cache
+     */
+    protected $objConnect;
+    
+    /**
      * 构造函数
      *
+     * @param \queryyetsimple\cache\interfaces\cache $objConnect            
      * @return void
      */
-    public function __construct() {
+    public function __construct(interfaces_cache $objConnect) {
+        $this->objConnect = $objConnect;
     }
     
     /**
@@ -98,7 +107,7 @@ class database {
      * @param string $mixOption            
      * @return array
      */
-    private function parseOption($mixOption = null) {
+    protected function parseOption($mixOption = null) {
         $arrOption = [ ];
         
         // 配置文件存在链接
@@ -121,7 +130,7 @@ class database {
      * @param array $arrOption            
      * @return array
      */
-    private function fillOption($arrOption = []) {
+    protected function fillOption($arrOption = []) {
         // 返回结果
         $arrResult = $arrDefaultOption = [ ];
         
@@ -192,7 +201,7 @@ class database {
      * @param string $strDsn            
      * @return array
      */
-    private function parseDsn($strDsn) {
+    protected function parseDsn($strDsn) {
         $strDsn = trim ( $strDsn );
         
         // dsn 为空，直接返回

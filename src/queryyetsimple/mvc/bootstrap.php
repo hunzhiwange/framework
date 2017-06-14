@@ -100,12 +100,12 @@ class bootstrap {
             return;
         
         set_error_handler ( [ 
-                'queryyetsimple\bootstrap\runtime\handle',
+                'queryyetsimple\bootstrap\runtime\runtime',
                 'errorHandle' 
         ] );
         
         register_shutdown_function ( [ 
-                'queryyetsimple\bootstrap\runtime\handle',
+                'queryyetsimple\bootstrap\runtime\runtime',
                 'shutdownHandle' 
         ] );
     }

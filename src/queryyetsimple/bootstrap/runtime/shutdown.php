@@ -28,9 +28,11 @@ class shutdown extends message {
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\mvc\project $oProject            
      * @return void
      */
-    public function __construct() {
+    public function __construct($oProject) {
+        $this->oProject = $oProject;
         if (($arrError = error_get_last ()) && ! empty ( $arrError ['type'] )) {
             $this->strMessage = "[{$arrError['type']}]: {$arrError['message']} <br> File: {$arrError['file']} <br> Line: {$arrError['line']}";
         }

@@ -145,6 +145,7 @@ abstract class base extends command {
         }
         $this->strTemplateSource = file_get_contents ( $strTemplateSource );
     }
+    
     /**
      * 获取模板源码
      *

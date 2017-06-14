@@ -18,6 +18,7 @@ queryphp;
 use queryyetsimple\cache\redis as cache_redis;
 use queryyetsimple\classs\faces as classs_faces;
 use queryyetsimple\session\abstracts\session as abstracts_session;
+use queryyetsimple\session\interfaces\session as interfaces_session;
 
 /**
  * session.redis
@@ -27,7 +28,7 @@ use queryyetsimple\session\abstracts\session as abstracts_session;
  * @since 2017.06.05
  * @version 1.0
  */
-class redis extends abstracts_session {
+class redis extends abstracts_session implements interfaces_session {
     
     use classs_faces;
     

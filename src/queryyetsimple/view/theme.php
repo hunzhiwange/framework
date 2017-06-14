@@ -36,7 +36,7 @@ class theme implements interfaces_theme {
     use classs_option;
     
     /**
-     * 项目容器
+     * 视图分析器
      *
      * @var \queryyetsimple\view\parser
      */

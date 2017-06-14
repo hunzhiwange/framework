@@ -24,8 +24,31 @@ queryphp;
 return [ 
         'singleton@router' => [ 
                 'queryyetsimple\router\router',
-                function ($objProject) {
-                    return \queryyetsimple\router\router::singleton ( $objProject );
+                function ($oProject) {
+                    $arrOption = [ ];
+                    foreach ( [ 
+                            'router_cache',
+                            'model',
+                            'router_domain_on',
+                            'html_suffix',
+                            'router_domain_top',
+                            'make_subdomain_on',
+                            'pathinfo_depr',
+                            'rewrite',
+                            'public' 
+                    ] as $strOption ) {
+                        $arrOption [$strOption] = $oProject ['option']->get ( 'url\\' . $strOption );
+                    }
+                    
+                    foreach ( [ 
+                            '~apps~',
+                            'default_app',
+                            'default_controller',
+                            'default_action' 
+                    ] as $strOption ) {
+                        $arrOption [$strOption] = $oProject ['option']->get ( $strOption );
+                    }
+                    return (new queryyetsimple\router\router ( $oProject, $arrOption ))->registerRequest ( $oProject ['request'] );
                 } 
         ] 
 ];

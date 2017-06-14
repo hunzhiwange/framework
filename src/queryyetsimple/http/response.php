@@ -18,12 +18,13 @@ queryphp;
 use queryyetsimple\xml\xml;
 use queryyetsimple\mvc\view;
 use InvalidArgumentException;
+use queryyetsimple\flow\control;
 use queryyetsimple\cookie\cookie;
 use queryyetsimple\assert\assert;
 use queryyetsimple\router\router;
+use queryyetsimple\classs\option;
 use queryyetsimple\filesystem\file;
-use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\flow\control as flow_control;
+use queryyetsimple\classs\infinity;
 
 /**
  * 响应请求
@@ -35,9 +36,13 @@ use queryyetsimple\flow\control as flow_control;
  */
 class response {
     
-    use flow_control;
-    use classs_faces {
-        __call as __callExpansion;
+    use control;
+    use option{
+        option as infinityOption;
+        options as infinityOptions;
+    }
+    use infinity {
+        __call as infinityCall;
     }
     
     /**
@@ -45,105 +50,93 @@ class response {
      *
      * @var mixed
      */
-    private $mixData;
+    protected $mixData;
     
     /**
      * 设置内容
      *
      * @var string
      */
-    private $strContent;
+    protected $strContent;
     
     /**
      * 是否分析过内容
      *
      * @var boolean
      */
-    private $booParseContent = false;
+    protected $booParseContent = false;
     
     /**
      * 响应状态
      *
      * @var int
      */
-    private $intCode = 200;
+    protected $intCode = 200;
     
     /**
      * 消息内容
      *
      * @var int
      */
-    private $strMessage = '';
+    protected $strMessage = '';
     
     /**
      * 响应头
      *
      * @var array
      */
-    private $arrHeader = [ ];
+    protected $arrHeader = [ ];
     
     /**
      * 响应类型
      *
      * @var string
      */
-    private $strContentType = 'text/html';
+    protected $strContentType = 'text/html';
     
     /**
      * 字符编码
      *
      * @var string
      */
-    private $strCharset = 'utf-8';
-    
-    /**
-     * 参数
-     *
-     * @var array
-     */
-    private $arrOption = [ ];
+    protected $strCharset = 'utf-8';
     
     /**
      * 响应类型
      *
      * @var string
      */
-    private $strResponseType = 'default';
+    protected $strResponseType = 'default';
     
     /**
      * json 配置
      *
      * @var array
      */
-    private static $arrJsonOption = [ 
+    protected static $arrJsonOption = [ 
             'json_callback' => '',
             'json_options' => JSON_UNESCAPED_UNICODE 
     ];
-    
-    /**
-     * 自定义响应方法
-     *
-     * @var array
-     */
-    private static $arrCustomerResponse = [ ];
     
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'view\action_fail' => 'public+fail',
-            'view\action_success' => 'public+success',
+    protected $arrOption = [ 
+            'action_fail' => 'public+fail',
+            'action_success' => 'public+success',
             'default_response' => 'default' 
     ];
     
     /**
      * 构造函数
      *
+     * @param array $arrOption            
      * @return void
      */
-    public function __construct() {
+    public function __construct(array $arrOption = []) {
+        $this->options ( $arrOption );
     }
     
     /**
@@ -157,7 +150,7 @@ class response {
      * @return $this
      */
     public function make($mixData = '', $intCode = 200, $strMessage = '', array $arrHeader = [], $arrOption = []) {
-        return $this->data ( $mixData )->code ( intval ( $intCode ) )->message ( $strMessage )->header ( $arrHeader )->option ( $arrOption );
+        return $this->data ( $mixData )->code ( intval ( $intCode ) )->message ( $strMessage )->header ( $arrHeader )->options ( $arrOption );
     }
     
     /**
@@ -170,7 +163,7 @@ class response {
     public function __call($sMethod, $arrArgs) {
         
         // 调用 trait __call 实现扩展方法
-        $mixData = $this->__callExpansion ( $sMethod, $arrArgs );
+        $mixData = $this->infinityCall ( $sMethod, $arrArgs );
         if ($mixData instanceof response) {
             return $mixData;
         } else {
@@ -237,35 +230,29 @@ class response {
     }
     
     /**
-     * 设置配置参数
+     * 修改单个配置
      *
-     * @param mixed $mixName            
-     * @param string $strValue            
+     * @param string $strName            
+     * @param mixed $mixValue            
      * @return $this
      */
-    public function option($mixName, $strValue = null) {
+    public function option($strName, $mixValue) {
         if ($this->checkFlowControl ())
             return $this;
-        if (is_array ( $mixName )) {
-            $this->arrOption = array_merge ( $this->arrOption, $mixName );
-        } else {
-            $this->arrOption [$mixName] = $strValue;
-        }
-        return $this;
+        return $this->infinityOption ( $strName, $mixValue );
     }
     
     /**
-     * 返回配置参数
+     * 修改多个配置
      *
-     * @param string $strOptionName            
-     * @return mixed
+     * @param string $strName            
+     * @param mixed $mixValue            
+     * @return $this
      */
-    public function getOption($strOptionName = null) {
-        if (is_null ( $strOptionName )) {
-            return $this->arrOption;
-        } else {
-            return isset ( $this->arrOption [$strOptionName] ) ? $this->arrOption [$strOptionName] : null;
-        }
+    public function options($arrOption) {
+        if ($this->checkFlowControl ())
+            return $this;
+        return $this->infinityOptions ( $arrOption );
     }
     
     /**
@@ -520,7 +507,7 @@ class response {
      * @return boolean
      */
     public function isApi() {
-        return $this->classsFacesOption ( 'default_response' ) == 'api';
+        return $this->getOption ( 'default_response' ) == 'api';
     }
     
     /**
@@ -529,7 +516,7 @@ class response {
      * @return array
      */
     public function getJsonOption() {
-        return array_merge ( static::$arrJsonOption, $this->getOption () );
+        return array_merge ( static::$arrJsonOption, $this->getOptions () );
     }
     
     /**
@@ -621,7 +608,7 @@ class response {
         if (! empty ( $in ['content_type'] )) {
             $this->contentType ( $in ['content_type'] );
         }
-        return $this->responseType ( 'view' )->option ( 'file', $sFile )->option ( 'in', $in )->assign ( $in )->message ( isset ( $in ['message'] ) ? $in ['message'] : '' )->header ( 'Cache-control', 'private' );
+        return $this->responseType ( 'view' )->option ( 'file', $sFile )->option ( 'in', $in )->assign ( $in )->message ( isset ( $in ['message'] ) ? $in ['message'] : '' )->header ( 'Cache-control', 'protected' );
     }
     
     /**
@@ -660,7 +647,7 @@ class response {
                 'time' => 1 
         ], $in );
         
-        return $this->view ( $this->classsFacesOption ( 'view\action_success' ), $in );
+        return $this->view ( $this->getOption ( 'action_success' ), $in );
     }
     
     /**
@@ -685,7 +672,7 @@ class response {
                 'time' => 3 
         ], $in );
         
-        return $this->view ( $this->classsFacesOption ( 'view\action_fail' ), $in );
+        return $this->view ( $this->getOption ( 'action_fail' ), $in );
     }
     
     /**
@@ -760,7 +747,7 @@ class response {
      * @param string $strCharset            
      * @return $this
      */
-    private function contentTypeAndCharset($strContentType, $strCharset = 'utf-8') {
+    protected function contentTypeAndCharset($strContentType, $strCharset = 'utf-8') {
         return $this->header ( 'Content-Type', $strContentType . '; charset=' . $strCharset );
     }
     
@@ -771,7 +758,7 @@ class response {
      * @param array $arrHeader            
      * @return $this
      */
-    private function downloadAndFile($sFileName, array $arrHeader = []) {
+    protected function downloadAndFile($sFileName, array $arrHeader = []) {
         if (! is_file ( $sFileName )) {
             throw new InvalidArgumentException ( __ ( '读取的文件不存在' ) );
         }
@@ -799,7 +786,7 @@ class response {
      * @param mixed $mixVar            
      * @return string
      */
-    private function varString($mixVar) {
+    protected function varString($mixVar) {
         if (! is_scalar ( $mixVar ) && ! is_array ( $mixVar )) {
             ob_start ();
             print_r ( $mixVar );

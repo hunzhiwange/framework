@@ -15,7 +15,7 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces2;
+use queryyetsimple\classs\faces;
 
 /**
  * 沙盒 cookie
@@ -25,7 +25,7 @@ use queryyetsimple\classs\faces2;
  * @since 2017.06.10
  * @version 1.0
  */
-class cookie extends faces2 {
+class cookie extends faces {
     
     /**
      * 返回门面名字

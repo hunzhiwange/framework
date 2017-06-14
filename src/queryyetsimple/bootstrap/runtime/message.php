@@ -15,9 +15,6 @@ namespace queryyetsimple\bootstrap\runtime;
 ##########################################################
 queryphp;
 
-use queryyetsimple\log\log;
-use queryyetsimple\option\option;
-
 /**
  * 消息基类
  *
@@ -27,6 +24,13 @@ use queryyetsimple\option\option;
  * @version 1.0
  */
 abstract class message {
+    
+    /**
+     * 返回项目容器
+     *
+     * @var \queryyetsimple\mvc\project
+     */
+    protected $oProject;
     
     /**
      * 错误消息
@@ -54,8 +58,8 @@ abstract class message {
      * @return void
      */
     protected function log($strMessage) {
-        if (option::gets ( 'log_error_enabled', false )) {
-            log::runs ( $strMessage, 'error' );
+        if ($this->oProject ['option']->get ( 'log_error_enabled', false )) {
+            $this->oProject ['log']->run ( $strMessage, 'error' );
         }
     }
     

@@ -15,10 +15,7 @@ namespace queryyetsimple\bootstrap\runtime;
 ##########################################################
 queryphp;
 
-use queryyetsimple\log\log;
 use queryyetsimple\debug\dump;
-use queryyetsimple\router\router;
-use queryyetsimple\option\option;
 use queryyetsimple\filesystem\directory;
 
 /**
@@ -41,10 +38,12 @@ class exception extends message {
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\mvc\project $oProject            
      * @param object $objException            
      * @return void
      */
-    public function __construct($objException) {
+    public function __construct($oProject, $objException) {
+        $this->oProject = $oProject;
         $this->objException = $objException;
         $this->strMessage = "[{$this->objException->getCode ()}] {$this->objException->getMessage ()} " . basename ( $this->objException->getFile () ) . __ ( " 第 %d 行", $this->objException->getLine () );
     }
@@ -71,19 +70,19 @@ class exception extends message {
         }
         
         // 否则定向到错误页面
-        if (PHP_SAPI != 'cli' && option::gets ( 'show_exception_redirect' ) && ! env ( 'app_debug' )) {
-            static::urlRedirect ( router::url ( option::gets ( 'show_exception_redirect' ) ) );
+        if (PHP_SAPI != 'cli' && $this->oProject ['option'] ['show_exception_redirect'] && ! env ( 'app_debug' )) {
+            $this->oProject ['router']->urlRedirect ( $this->oProject ['router']->url ( $this->oProject ['option'] ['show_exception_redirect'] ) );
         } else {
-            if (! option::gets ( 'show_exception_show_message', true ) && option::gets ( 'show_exception_default_message' )) {
-                $mixError ['message'] = option::gets ( 'show_exception_default_message' );
+            if (! $this->oProject ['option']->get ( 'show_exception_show_message', true ) && $this->oProject ['option']->get ( 'show_exception_default_message' )) {
+                $mixError ['message'] = $this->oProject ['option']->get ( 'show_exception_default_message' );
             }
             
             // 包含异常页面模板
             if (PHP_SAPI == 'cli') {
                 echo $mixError ['message'];
             } else {
-                if (option::gets ( 'show_exception_template' ) && is_file ( option::gets ( 'show_exception_template' ) )) {
-                    include option::gets ( 'show_exception_template' );
+                if ($this->oProject ['option']->get ( 'show_exception_template' ) && is_file ( $this->oProject ['option']->get ( 'show_exception_template' ) )) {
+                    include $this->oProject ['option']->get ( 'show_exception_template' );
                 } else {
                     include dirname ( __DIR__ ) . '/template/exception.php';
                 }

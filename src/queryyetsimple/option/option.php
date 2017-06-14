@@ -15,7 +15,7 @@ namespace queryyetsimple\option;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces as classs_faces;
+use ArrayAccess;
 
 /**
  * 配置管理类
@@ -25,16 +25,14 @@ use queryyetsimple\classs\faces as classs_faces;
  * @since 2017.02.13
  * @version 1.0
  */
-class option {
-    
-    use classs_faces;
+class option implements ArrayAccess {
     
     /**
      * 配置数据
      *
      * @var array
      */
-    private $arrOption = [ ];
+    protected $arrOption = [ ];
     
     /**
      * 默认命名空间
@@ -49,6 +47,37 @@ class option {
      * @return void
      */
     public function __construct() {
+    }
+    
+    /**
+     * 是否存在配置
+     *
+     * @param string $sName
+     *            配置键值
+     * @return string
+     */
+    public function has($sName = 'app\\') {
+        $sName = $this->parseNamespace ( $sName );
+        $strNamespace = $sName [0];
+        $sName = $sName [1];
+        
+        if ($sName == '*') {
+            return isset ( $this->arrOption [$strNamespace] );
+        }
+        
+        if (! strpos ( $sName, '.' )) {
+            return array_key_exists ( $sName, $this->arrOption [$strNamespace] );
+        }
+        
+        $arrParts = explode ( '.', $sName );
+        $arrOption = &$this->arrOption [$strNamespace];
+        foreach ( $arrParts as $sPart ) {
+            if (! isset ( $arrOption [$sPart] )) {
+                return false;
+            }
+            $arrOption = &$arrOption [$sPart];
+        }
+        return true;
     }
     
     /**
@@ -193,12 +222,53 @@ class option {
     }
     
     /**
+     * 判断配置是否存在
+     *
+     * @param string $strName            
+     * @return bool
+     */
+    public function offsetExists($strName) {
+        return $this->has ( $strName );
+    }
+    
+    /**
+     * 获取配置
+     *
+     * @param string $strName            
+     * @return mixed
+     */
+    public function offsetGet($strName) {
+        return $this->get ( $strName );
+    }
+    
+    /**
+     * 设置配置
+     *
+     * @param string $strName            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function offsetSet($strName, $mixValue) {
+        return $this->set ( $strName, $mixValue );
+    }
+    
+    /**
+     * 删除配置
+     *
+     * @param string $strName            
+     * @return void
+     */
+    public function offsetUnset($strName) {
+        $this->delete ( $strName );
+    }
+    
+    /**
      * 分析命名空间
      *
      * @param string $strName            
      * @return array
      */
-    private function parseNamespace($strName) {
+    protected function parseNamespace($strName) {
         if (strpos ( $strName, '\\' )) {
             $strNamespace = explode ( '\\', $strName );
             if (empty ( $strNamespace [1] )) {

@@ -18,7 +18,6 @@ queryphp;
 use InvalidArgumentException;
 use queryyetsimple\helper\helper;
 use queryyetsimple\filesystem\directory;
-use queryyetsimple\support\interfaces\container;
 use queryyetsimple\classs\option as classs_option;
 
 /**
@@ -32,13 +31,6 @@ use queryyetsimple\classs\option as classs_option;
 class compiler {
     
     use classs_option;
-    
-    /**
-     * 项目容器
-     *
-     * @var \queryyetsimple\support\interfaces\container
-     */
-    protected $objProject;
     
     /**
      * code 支持的特殊别名映射
@@ -253,13 +245,11 @@ class compiler {
     
     /**
      * 构造函数
-     *
-     * @param \queryyetsimple\support\interfaces\container $objProject            
+     *          
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(container $objProject, array $arrOption = []) {
-        $this->objProject = $objProject;
+    public function __construct(array $arrOption = []) {
         $this->options ( $arrOption );
     }
     

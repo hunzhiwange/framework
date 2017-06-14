@@ -32,14 +32,14 @@ class assert {
      *
      * @var boolean
      */
-    private static $booOpen = false;
+    protected static $booOpen = false;
     
     /**
      * 默认断言消息
      *
      * @var array
      */
-    private static $arrMessage = [ 
+    protected static $arrMessage = [ 
             'trueExpression' => 'Make sure the incoming expression is true.',
             'notTrueExpression' => 'Make sure the incoming expression is false.',
             'true' => 'Make sure that the incoming variable must now be fully equal to true.',
@@ -540,7 +540,7 @@ class assert {
      * @param mixed $mixExpression            
      * @return void
      */
-    private static function checkExpression($mixExpression, $strType, $strDescription = null) {
+    protected static function checkExpression($mixExpression, $strType, $strDescription = null) {
         if (static::$booOpen === false || $mixExpression)
             return true;
         static::throwException ( $strType, $strDescription );
@@ -553,7 +553,7 @@ class assert {
      * @param string $strDescription            
      * @return void
      */
-    private static function throwException($strType, $strDescription = null) {
+    protected static function throwException($strType, $strDescription = null) {
         if (empty ( $strDescription ))
             $strDescription = static::$arrMessage [$strType];
         $strDescription = '[' . $strType . ']' . $strDescription;

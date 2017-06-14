@@ -21,6 +21,7 @@ use ArrayAccess;
 use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\assert\assert;
+use queryyetsimple\classs\infinity;
 
 /**
  * 数组转对象集合
@@ -31,6 +32,8 @@ use queryyetsimple\assert\assert;
  * @version 1.0
  */
 class collection implements Iterator, ArrayAccess, Countable {
+
+    use infinity;
     
     /**
      * 元素合集

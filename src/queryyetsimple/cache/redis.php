@@ -17,7 +17,7 @@ queryphp;
 
 use Redis as Rediss;
 use RuntimeException;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\classs\option;
 use queryyetsimple\cache\abstracts\cache as abstracts_cache;
 use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
@@ -31,27 +31,25 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
  */
 class redis extends abstracts_cache implements interfaces_cache {
     
-    use classs_faces;
+    use option;
     
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'cache\nocache_force' => '~@nocache_force',
-            'cache\time_preset' => [ ],
-            'cache\prefix' => '~@',
-            'cache\expire' => 86400,
-            'cache\connect.redis.host' => '127.0.0.1',
-            'cache\connect.redis.port' => 6379,
-            'cache\connect.redis.password' => '',
-            'cache\connect.redis.select' => 0,
-            'cache\connect.redis.timeout' => 0,
-            'cache\connect.redis.persistent' => false,
-            'cache\connect.redis.serialize' => true,
-            'cache\connect.redis.prefix' => null,
-            'cache\connect.redis.expire' => null 
+    protected $arrOption = [ 
+            'nocache_force' => '~@nocache_force',
+            'time_preset' => [ ],
+            'prefix' => '~@',
+            'expire' => 86400,
+            'host' => '127.0.0.1',
+            'port' => 6379,
+            'password' => '',
+            'select' => 0,
+            'timeout' => 0,
+            'persistent' => false,
+            'serialize' => true 
     ];
     
     /**
@@ -65,7 +63,7 @@ class redis extends abstracts_cache implements interfaces_cache {
             throw new RuntimeException ( 'Redis extension must be loaded before use.' );
         }
         
-        $this->initialization ( $arrOption );
+        parent::__construct ( $arrOption );
         
         $this->hHandle = $this->getRedis ();
         $this->hHandle->{$this->arrOption ['persistent'] ? 'pconnect' : 'connect'} ( $this->arrOption ['host'], $this->arrOption ['port'], $this->arrOption ['timeout'] );
@@ -91,8 +89,8 @@ class redis extends abstracts_cache implements interfaces_cache {
         if ($this->checkForce ())
             return $mixDefault;
         
-        $arrOption = $this->option ( $arrOption, null, false );
-        $mixData = $this->hHandle->get ( $this->getCacheName ( $sCacheName, $arrOption ) );
+        $arrOption = $this->getOptions ( $arrOption );
+        $mixData = $this->hHandle->get ( $this->getCacheName ( $sCacheName, $arrOption ['prefix'] ) );
         if (is_null ( $mixData )) {
             return $mixDefault;
         }
@@ -111,7 +109,7 @@ class redis extends abstracts_cache implements interfaces_cache {
      * @return void
      */
     public function set($sCacheName, $mixData, array $arrOption = []) {
-        $arrOption = $this->option ( $arrOption, null, false );
+        $arrOption = $this->getOptions ( $arrOption );
         if ($arrOption ['serialize']) {
             $mixData = serialize ( $mixData );
         }
@@ -119,9 +117,9 @@ class redis extends abstracts_cache implements interfaces_cache {
         $arrOption ['expire'] = $this->cacheTime ( $sCacheName, $arrOption ['expire'] );
         
         if (( int ) $arrOption ['expire'])
-            $this->hHandle->setex ( $this->getCacheName ( $sCacheName, $arrOption ), ( int ) $arrOption ['expire'], $mixData );
+            $this->hHandle->setex ( $this->getCacheName ( $sCacheName, $arrOption ['prefix'] ), ( int ) $arrOption ['expire'], $mixData );
         else
-            $this->hHandle->set ( $this->getCacheName ( $sCacheName, $arrOption ), $mixData );
+            $this->hHandle->set ( $this->getCacheName ( $sCacheName, $arrOption ['prefix'] ), $mixData );
     }
     
     /**
@@ -132,7 +130,7 @@ class redis extends abstracts_cache implements interfaces_cache {
      * @return void
      */
     public function delele($sCacheName, array $arrOption = []) {
-        $this->hHandle->delete ( $this->getCacheName ( $sCacheName, $this->option ( $arrOption, null, false ) ) );
+        $this->hHandle->delete ( $this->getCacheName ( $sCacheName, $this->getOptions ( $arrOption )['prefix'] ) );
     }
     
     /**

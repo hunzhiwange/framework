@@ -17,6 +17,7 @@ queryphp;
 
 use RuntimeException;
 use InvalidArgumentException;
+use queryyetsimple\classs\infinity;
 
 /**
  * 文件
@@ -27,6 +28,8 @@ use InvalidArgumentException;
  * @version 1.0
  */
 class file {
+
+    use infinity;
     
     /**
      * 新建文件

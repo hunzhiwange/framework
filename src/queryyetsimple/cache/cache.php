@@ -16,7 +16,8 @@ namespace queryyetsimple\cache;
 queryphp;
 
 use Exception;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\mvc\project;
+use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
 /**
  * 缓存入口
@@ -28,7 +29,12 @@ use queryyetsimple\classs\faces as classs_faces;
  */
 class cache {
     
-    use classs_faces;
+    /**
+     * 项目管理
+     *
+     * @var \queryyetsimple\mvc\project
+     */
+    protected $objProject;
     
     /**
      * 缓存连接对象
@@ -38,20 +44,13 @@ class cache {
     protected static $arrConnect;
     
     /**
-     * 配置
-     *
-     * @var array
-     */
-    protected $arrClasssFacesOption = [ 
-            'cache\default' => 'file' 
-    ];
-    
-    /**
      * 构造函数
      *
+     * @param \queryyetsimple\mvc\project $objConnect            
      * @return void
      */
-    public function __construct() {
+    public function __construct(project $objProject) {
+        $this->objProject = $objProject;
     }
     
     /**
@@ -62,7 +61,7 @@ class cache {
      */
     public function connect($arrOption = []) {
         // 连接唯一标识
-        $strDriver = ! empty ( $arrOption ['driver'] ) ? $arrOption ['driver'] : $this->classsFacesOption ( 'cache\default' );
+        $strDriver = ! empty ( $arrOption ['driver'] ) ? $arrOption ['driver'] : $this->getDefaultConnect ();
         $strUnique = md5 ( is_array ( $arrOption ) ? json_encode ( $arrOption ) : $arrOption );
         
         // 已经存在直接返回
@@ -71,12 +70,101 @@ class cache {
         }
         
         // 连接缓存
-        $strConnectClass = 'queryyetsimple\\cache\\' . $strDriver;
-        if (class_exists ( $strConnectClass )) {
-            return static::$arrConnect [$strUnique] = (new $strConnectClass ( $arrOption ))->initClasssFacesOptionDefault ();
-        } else {
+        return static::$arrConnect [$strUnique] = $this->makeConnect ( $strDriver, $arrOption );
+    }
+    
+    /**
+     * 创建一个缓存仓库
+     *
+     * @param \queryyetsimple\cache\interfaces\cache $objCache            
+     * @return \queryyetsimple\cache\repository
+     */
+    public function repository(interfaces_cache $objCache) {
+        return new repository ( $objCache );
+    }
+    
+    /**
+     * 返回默认连接
+     *
+     * @return string
+     */
+    public function getDefaultConnect() {
+        return $this->objProject ['option'] ['cache\default'];
+    }
+    
+    /**
+     * 设置默认连接
+     *
+     * @param string $strName            
+     * @return void
+     */
+    public function setDefaultConnect($strName) {
+        $this->objProject ['option'] ['cache\default'] = $strName;
+    }
+    
+    /**
+     * 创建连接
+     *
+     * @param string $strDriver            
+     * @param array $arrOption            
+     * @return \queryyetsimple\cache\repository
+     */
+    protected function makeConnect($strDriver, $arrOption = []) {
+        if (is_null ( $this->objProject ['option'] ['cache\connect.' . $strDriver] ))
             throw new Exception ( __ ( '缓存驱动 %s 不存在', $strDriver ) );
+        return $this->{'makeConnect' . ucfirst ( $strDriver )} ( $arrOption );
+    }
+    
+    /**
+     * 创建文件缓存
+     *
+     * @param array $arrOption            
+     * @return \queryyetsimple\cache\repository
+     */
+    protected function makeConnectFile($arrOption = []) {
+        return $this->repository ( new file ( array_merge ( $this->getOption ( 'file' ), $arrOption ) ) );
+    }
+    
+    /**
+     * 创建 memcache 缓存
+     *
+     * @param array $arrOption            
+     * @return \queryyetsimple\cache\repository
+     */
+    protected function makeConnectMemcache($arrOption = []) {
+        return $this->repository ( new memcache ( array_merge ( $this->getOption ( 'memcache' ), $arrOption ) ) );
+    }
+    
+    /**
+     * 创建 redis 缓存
+     *
+     * @param array $arrOption            
+     * @return \queryyetsimple\cache\repository
+     */
+    protected function makeConnectRedis($arrOption = []) {
+        return $this->repository ( new redis ( array_merge ( $this->getOption ( 'redis' ), $arrOption ) ) );
+    }
+    
+    /**
+     * 读取默认缓存配置
+     *
+     * @param string $strConnect            
+     * @return array
+     */
+    protected function getOption($strConnect) {
+        $arrOptionDefault = [ ];
+        foreach ( [ 
+                'nocache_force',
+                'time_preset',
+                'prefix',
+                'expire' 
+        ] as $strOption ) {
+            $arrOptionDefault [$strOption] = $this->objProject ['option'] ['cache\\' . $strOption];
         }
+        
+        return array_merge ( array_filter ( $this->objProject ['option'] ['cache\connect.' . $strConnect], function ($mixValue) {
+            return ! is_null ( $mixValue );
+        } ), $arrOptionDefault );
     }
     
     /**
