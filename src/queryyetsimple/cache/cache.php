@@ -17,6 +17,7 @@ queryphp;
 
 use Exception;
 use queryyetsimple\mvc\project;
+use queryyetsimple\cache\interfaces\connect;
 use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
 /**
@@ -27,7 +28,7 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
  * @since 2017.02.15
  * @version 1.0
  */
-class cache {
+class cache implements interfaces_cache {
     
     /**
      * 项目管理
@@ -76,10 +77,10 @@ class cache {
     /**
      * 创建一个缓存仓库
      *
-     * @param \queryyetsimple\cache\interfaces\cache $objCache            
+     * @param \queryyetsimple\cache\interfaces\connect $objCache            
      * @return \queryyetsimple\cache\repository
      */
-    public function repository(interfaces_cache $objCache) {
+    public function repository(connect $objCache) {
         return new repository ( $objCache );
     }
     

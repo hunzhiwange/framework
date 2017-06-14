@@ -17,7 +17,7 @@ queryphp;
 
 use Exception;
 use queryyetsimple\classs\infinity;
-use queryyetsimple\cache\interfaces\cache as interfaces_cache;
+use queryyetsimple\cache\interfaces\connect;
 use queryyetsimple\cache\interfaces\repository as interfaces_repository;
 
 /**
@@ -44,10 +44,10 @@ class repository implements interfaces_repository {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\cache\interfaces\cache $objConnect            
+     * @param \queryyetsimple\cache\interfaces\connect $objConnect            
      * @return void
      */
-    public function __construct(interfaces_cache $objConnect) {
+    public function __construct(connect $objConnect) {
         $this->objConnect = $objConnect;
     }
     
@@ -84,6 +84,24 @@ class repository implements interfaces_repository {
      */
     public function delele($sCacheName, array $arrOption = []) {
         $this->objConnect->delele ( $sCacheName, $arrOption );
+    }
+    
+    /**
+     * 返回缓存句柄
+     *
+     * @return mixed
+     */
+    public function handle() {
+        return $this->objConnect->handle ();
+    }
+    
+    /**
+     * 关闭
+     *
+     * @return void
+     */
+    public function close() {
+        $this->objConnect->close ();
     }
     
     /**

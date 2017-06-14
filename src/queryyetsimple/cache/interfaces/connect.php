@@ -15,46 +15,56 @@ namespace queryyetsimple\cache\interfaces;
 ##########################################################
 queryphp;
 
-use queryyetsimple\cache\interfaces\connect;
-
 /**
- * cache 接口
+ * connect 接口
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.04.23
  * @version 1.0
  */
-interface cache {
+interface connect {
     
     /**
-     * 连接缓存并返回连接对象
+     * 获取缓存
      *
+     * @param string $sCacheName            
+     * @param mixed $mixDefault            
      * @param array $arrOption            
-     * @return \queryyetsimple\abstracts\cache
+     * @return mixed
      */
-    public function connect($arrOption = []);
+    public function get($sCacheName, $mixDefault = false, array $arrOption = []);
     
     /**
-     * 创建一个缓存仓库
+     * 设置缓存
      *
-     * @param \queryyetsimple\cache\interfaces\connect $objCache            
-     * @return \queryyetsimple\cache\repository
-     */
-    public function repository(connect $objCache);
-    
-    /**
-     * 返回默认连接
-     *
-     * @return string
-     */
-    public function getDefaultConnect();
-    
-    /**
-     * 设置默认连接
-     *
-     * @param string $strName            
+     * @param string $sCacheName            
+     * @param mixed $mixData            
+     * @param array $arrOption            
      * @return void
      */
-    public function setDefaultConnect($strName);
+    public function set($sCacheName, $mixData, array $arrOption = []);
+    
+    /**
+     * 清除缓存
+     *
+     * @param string $sCacheName            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function delele($sCacheName, array $arrOption = []);
+    
+    /**
+     * 返回缓存句柄
+     *
+     * @return mixed
+     */
+    public function handle();
+    
+    /**
+     * 关闭
+     *
+     * @return void
+     */
+    public function close();
 }

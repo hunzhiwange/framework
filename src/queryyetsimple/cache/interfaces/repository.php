@@ -53,4 +53,18 @@ interface repository {
      * @return void
      */
     public function delele($sCacheName, array $arrOption = []);
+    
+    /**
+     * 返回缓存句柄
+     *
+     * @return mixed
+     */
+    public function handle();
+    
+    /**
+     * 关闭
+     *
+     * @return void
+     */
+    public function close();
 }

@@ -52,6 +52,14 @@ abstract class cache {
     }
     
     /**
+     * 关闭
+     *
+     * @return void
+     */
+    public function close() {
+    }
+    
+    /**
      * 获取缓存名字
      *
      * @param string $sCacheName            

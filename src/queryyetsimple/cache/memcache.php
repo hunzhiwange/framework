@@ -18,8 +18,8 @@ queryphp;
 use RuntimeException;
 use Memcache as Memcaches;
 use queryyetsimple\classs\option;
+use queryyetsimple\cache\interfaces\connect;
 use queryyetsimple\cache\abstracts\cache as abstracts_cache;
-use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
 /**
  * memcache 扩展缓存
@@ -29,7 +29,7 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
  * @since 2017.02.15
  * @version 1.0
  */
-class memcache extends abstracts_cache implements interfaces_cache {
+class memcache extends abstracts_cache implements connect {
     
     use option;
     
