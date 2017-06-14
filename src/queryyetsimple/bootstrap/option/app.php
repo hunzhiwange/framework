@@ -94,8 +94,9 @@ return [
          * 正如其名具有缓存功能的服务提供者，他们会被自动缓存到 {缓存目录}/provider 下面,并且有两组一组是应用服务提供者，一组为系统服务提供者
          */
         '+provider_with_cache' => [ 
+                'queryyetsimple\collection',
                 'queryyetsimple\router',
-                'queryyetsimple\view' 
+                'queryyetsimple\view'
         ],
         
         /**

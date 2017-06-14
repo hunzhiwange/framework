@@ -16,6 +16,7 @@ namespace queryyetsimple\classs;
 queryphp;
 
 use Closure;
+use Exception;
 use RuntimeException;
 use BadMethodCallException;
 use queryyetsimple\support\interfaces\container;
@@ -47,18 +48,19 @@ abstract class faces {
     /**
      * 获取注册容器的实例
      *
-     * @param boolean $booNew            
      * @return mixed
      */
-    public static function getFacesInstance() {
+    public static function faces( /* args */ ) {
         $strClass = static::name ();
-        if (isset ( static::$arrFacesInstance [$strClass] )) {
-            return static::$arrFacesInstance [$strClass];
+        $strUnique = static::makeFacesKey ( $strClass, $arrArgs = func_get_args () );
+        
+        if (isset ( static::$arrFacesInstance [$strUnique] )) {
+            return static::$arrFacesInstance [$strUnique];
         }
-        if (! (static::$arrFacesInstance [$strClass] = static::projectContainer ()->make ( $strClass ))) {
-            static::$arrFacesInstance [$strClass] = new self ();
+        if (! (static::$arrFacesInstance [$strUnique] = static::projectContainer ()->makeWithArgs ( $strClass, $arrArgs ))) {
+            static::$arrFacesInstance [$strUnique] = new self ( $arrArgs );
         }
-        return static::$arrFacesInstance [$strClass];
+        return static::$arrFacesInstance [$strUnique];
     }
     
     /**
@@ -81,6 +83,28 @@ abstract class faces {
     }
     
     /**
+     * 生成唯一 key
+     *
+     * @param string $strClass            
+     * @param array $arrArgs            
+     * @return string
+     */
+    protected static function makeFacesKey($strClass, $arrArgs = []) {
+        if ($arrArgs) {
+            $strSerialize = '';
+            foreach ( $arrArgs as $mixArg ) {
+                // Serialization of 'Closure' is not allowed
+                try {
+                    $strSerialize .= serialize ( $mixArg );
+                } catch ( Exception $oE ) {
+                }
+            }
+            return $strClass . '.' . md5 ( $strSerialize );
+        } else
+            return $strClass;
+    }
+    
+    /**
      * 缺省静态方法
      *
      * @param 方法名 $sMethod            
@@ -88,7 +112,7 @@ abstract class faces {
      * @return mixed
      */
     public static function __callStatic($sMethod, $arrArgs) {
-        $objInstance = static::getFacesInstance ();
+        $objInstance = static::faces ();
         if (! $objInstance) {
             throw new RuntimeException ( 'Can not find instance from container.' );
         }

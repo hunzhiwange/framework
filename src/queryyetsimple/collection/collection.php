@@ -32,7 +32,7 @@ use queryyetsimple\classs\infinity;
  * @version 1.0
  */
 class collection implements Iterator, ArrayAccess, Countable {
-
+    
     use infinity;
     
     /**
@@ -62,7 +62,7 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @param arra $arrObject            
      * @return void
      */
-    public function __construct($arrObject = [], $sType = '') {
+    public function __construct(array $arrObject = [], $sType = '') {
         $this->sType = $sType;
         foreach ( $arrObject as $offset => $oObject ) {
             $this [$offset] = $oObject;
@@ -531,6 +531,9 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @return void
      */
     private function checkType($mixObject) {
+        if (! $this->sType)
+            return;
+        
         if (is_object ( $mixObject )) {
             if ($mixObject instanceof $this->sType) {
                 return;
@@ -540,6 +543,9 @@ class collection implements Iterator, ArrayAccess, Countable {
             $sType = gettype ( $mixObject );
         }
         
-        throw new InvalidArgumentException ( 'Collection type validation failed.' );
+        if ($sType == $this->sType)
+            return;
+        
+        throw new InvalidArgumentException ( sprintf ( 'Collection type %s validation failed', $sType ) );
     }
 }
