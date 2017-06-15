@@ -63,3 +63,8 @@ interface cookie {
      */
     public function clear($bOnlyPrefix = true, array $arrOption = []);
 }
+
+namespace qys\cookie\interfaces;
+
+interface cookie extends \queryyetsimple\cookie\interfaces\cookie {
+}

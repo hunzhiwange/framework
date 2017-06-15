@@ -129,3 +129,8 @@ class cookie implements interfaces_cookie {
         }
     }
 }
+
+namespace qys\cookie;
+
+class cookie extends \queryyetsimple\cookie\cookie {
+}
