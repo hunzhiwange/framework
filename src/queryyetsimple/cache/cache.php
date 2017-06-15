@@ -57,23 +57,22 @@ class cache implements interfaces_cache {
     /**
      * 连接缓存并返回连接对象
      *
-     * @param array|string $arrOption            
+     * @param array|string $mixOption            
      * @return \queryyetsimple\abstracts\cache
      */
-    public function connect($arrOption = []) {
-        if (is_string ( $arrOption ))
-            $arrOption = [ 
-                    'connect' => $arrOption 
-            ];
+    public function connect($mixOption = []) {
+        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['cache\\connect.' . $mixOption]) )) {
+            $mixOption = [ ];
+        }
         
-        $strConnect = ! empty ( $arrOption ['connect'] ) ? $arrOption ['connect'] : $this->getDefaultConnect ();
-        $strUnique = $this->getUnique ( $arrOption );
+        $strDriver = ! empty ( $mixOption ['driver'] ) ? $mixOption ['driver'] : $this->getDefaultDriver ();
+        $strUnique = $this->getUnique ( $mixOption );
         
         if (isset ( static::$arrConnect [$strUnique] )) {
             return static::$arrConnect [$strUnique];
         }
         
-        return static::$arrConnect [$strUnique] = $this->makeConnect ( $strConnect, $arrOption );
+        return static::$arrConnect [$strUnique] = $this->makeConnect ( $strDriver, $mixOption );
     }
     
     /**
@@ -87,21 +86,21 @@ class cache implements interfaces_cache {
     }
     
     /**
-     * 返回默认连接
+     * 返回默认驱动
      *
      * @return string
      */
-    public function getDefaultConnect() {
+    public function getDefaultDriver() {
         return $this->objProject ['option'] ['cache\default'];
     }
     
     /**
-     * 设置默认连接
+     * 设置默认驱动
      *
      * @param string $strName            
      * @return void
      */
-    public function setDefaultConnect($strName) {
+    public function setDefaultDriver($strName) {
         $this->objProject ['option'] ['cache\default'] = $strName;
     }
     
@@ -155,7 +154,7 @@ class cache implements interfaces_cache {
      * @return string
      */
     protected function getUnique($arrOption) {
-        return md5 ( is_array ( $arrOption ) ? json_encode ( $arrOption ) : $arrOption );
+        return md5 ( serialize ( $arrOption ) );
     }
     
     /**

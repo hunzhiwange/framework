@@ -48,7 +48,7 @@ interface cache {
      *
      * @return string
      */
-    public function getDefaultConnect();
+    public function getDefaultDriver();
     
     /**
      * 设置默认连接
@@ -56,7 +56,7 @@ interface cache {
      * @param string $strName            
      * @return void
      */
-    public function setDefaultConnect($strName);
+    public function setDefaultDriver($strName);
 }
 
 namespace qys\cache\interfaces;

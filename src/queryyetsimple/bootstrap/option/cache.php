@@ -84,6 +84,9 @@ return [
         '+connect' => [ 
                 
                 '+file' => [
+                        // driver
+                        'driver' => 'file',
+                        
                         // 文件缓存路径
                         'path' => project ( 'path_cache_file' ),
                         
@@ -98,6 +101,9 @@ return [
                 ],
                 
                 '+memcache' => [
+                        // driver
+                        'driver' => 'memcache',
+                        
                         // 多台服务器
                         'servers' => [ ],
                         
@@ -121,6 +127,9 @@ return [
                 ],
                 
                 '+redis' => [
+                        // driver
+                        'driver' => 'redis',
+                        
                         // 默认缓存服务器
                         'host' => env ( 'session_redis_host', '127.0.0.1' ),
                         
