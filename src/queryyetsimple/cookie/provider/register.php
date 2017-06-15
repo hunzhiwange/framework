@@ -25,18 +25,7 @@ return [
         'singleton@cookie' => [ 
                 'queryyetsimple\cookie\cookie',
                 function ($oProject) {
-                    $arrOption = [ ];
-                    foreach ( [ 
-                            'prefix',
-                            'expire',
-                            'domain',
-                            'path',
-                            'httponly' 
-                    ] as $strOption ) {
-                        $arrOption [$strOption] = $oProject ['option']->get ( 'cookie\\' . $strOption );
-                    }
-                    
-                    return new queryyetsimple\cookie\cookie ( $arrOption );
+                    return new queryyetsimple\cookie\cookie ( $oProject ['option']->get ( 'cookie\\' ) );
                 } 
         ] 
 ];
