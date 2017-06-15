@@ -143,3 +143,8 @@ class memcache extends abstracts_cache implements connect {
         return new Memcaches ();
     }
 }
+
+namespace qys\cache;
+
+class memcache extends \queryyetsimple\cache\memcache {
+}

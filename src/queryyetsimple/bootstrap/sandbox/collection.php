@@ -36,3 +36,8 @@ class collection extends faces {
         return 'collection';
     }
 }
+
+namespace qys;
+
+class collection extends \queryyetsimple\collection {
+}

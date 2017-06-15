@@ -25,4 +25,10 @@ use queryyetsimple\assert\assert as assert_assert;
  * @since 2017.06.10
  * @version 1.0
  */
-class assert extends assert_assert {}
+class assert extends assert_assert {
+}
+
+namespace qys;
+
+class assert extends \queryyetsimple\assert {
+}

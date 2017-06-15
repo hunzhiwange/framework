@@ -36,3 +36,8 @@ class cookie extends faces {
         return 'cookie';
     }
 }
+
+namespace qys;
+
+class cookie extends \queryyetsimple\cookie {
+}

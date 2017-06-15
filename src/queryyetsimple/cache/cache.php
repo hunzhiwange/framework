@@ -194,3 +194,8 @@ class cache implements interfaces_cache {
         ], $arrArgs );
     }
 }
+
+namespace qys\cache;
+
+class cache extends \queryyetsimple\cache\cache {
+}

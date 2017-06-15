@@ -36,3 +36,8 @@ class router extends faces {
         return 'router';
     }
 }
+
+namespace qys;
+
+class router extends \queryyetsimple\router {
+}

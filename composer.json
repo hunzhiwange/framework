@@ -75,7 +75,8 @@
             "src\\queryyetsimple\\helper\\function.php"
         ],
         "psr-4": {
-            "queryyetsimple\\": "src\\queryyetsimple"
+            "queryyetsimple\\": "src\\queryyetsimple",
+            "qys\\": "src\\queryyetsimple"
         }
     },
     "extra": {

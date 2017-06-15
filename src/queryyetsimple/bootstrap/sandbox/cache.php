@@ -36,3 +36,8 @@ class cache extends faces {
         return 'cache';
     }
 }
+
+namespace qys;
+
+class cache extends \queryyetsimple\cache {
+}

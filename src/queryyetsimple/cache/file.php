@@ -45,7 +45,7 @@ class file extends abstracts_cache implements connect {
      *
      * @var int
      */
-    const HEADER_LENGTH = 42;
+    const HEADER_LENGTH = 43;
     
     /**
      * 配置
@@ -89,7 +89,7 @@ class file extends abstracts_cache implements connect {
         }
         flock ( $hFp, LOCK_SH );
         
-        // 头部的 42 个字节存储了安全代码
+        // 头部的 43 个字节存储了安全代码
         $nLen = filesize ( $sCachePath );
         fread ( $hFp, static::HEADER_LENGTH );
         $nLen -= static::HEADER_LENGTH;
@@ -212,4 +212,9 @@ class file extends abstracts_cache implements connect {
     protected function exist($sCacheName, $arrOption) {
         return is_file ( $this->getCachePath ( $sCacheName, $arrOption ) );
     }
+}
+
+namespace qys\cache;
+
+class file extends \queryyetsimple\cache\file {
 }

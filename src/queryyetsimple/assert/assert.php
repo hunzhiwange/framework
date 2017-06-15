@@ -26,7 +26,7 @@ use InvalidArgumentException;
  * @version 1.0
  */
 class assert {
-
+    
     /**
      * 是否开启断言
      *
@@ -559,4 +559,9 @@ class assert {
         $strDescription = '[' . $strType . ']' . $strDescription;
         throw new InvalidArgumentException ( $strDescription );
     }
+}
+
+namespace qys\assert;
+
+class assert extends \queryyetsimple\assert\assert {
 }

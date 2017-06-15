@@ -117,10 +117,13 @@ class psr4 {
      */
     public static function autoload($strClass) {
         // 实现沙盒
-        if (strpos ( $strClass, 'queryyetsimple\\' ) !== false) {
-            if (is_file ( ($strSandbox = static::$strSandboxPath . '/' . substr ( $strClass, 15 ) . '.php') ))
+        if (strpos ( $strClass, 'queryyetsimple\\' ) !== false || strpos ( $strClass, 'qys\\' ) !== false) {
+            if (is_file ( ($strSandbox = static::$strSandboxPath . '/' . str_replace ( '\\', '/', substr ( $strClass, strpos ( $strClass, 'queryyetsimple\\' ) !== false ? 15 : 4 ) ) . '.php') ))
                 require $strSandbox;
         }
+        
+        if (is_file ( ($strSandbox = static::$strSandboxPath . '/' . str_replace ( '\\', '/', $strClass ) . '.php') ))
+            require $strSandbox;
     }
     
     /**

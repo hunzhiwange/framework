@@ -122,3 +122,8 @@ class repository implements interfaces_repository {
         ], $arrArgs );
     }
 }
+
+namespace qys\cache;
+
+class repository extends \queryyetsimple\cache\repository {
+}

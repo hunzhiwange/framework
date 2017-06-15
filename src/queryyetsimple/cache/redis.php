@@ -152,3 +152,8 @@ class redis extends abstracts_cache implements connect {
         return new Rediss ();
     }
 }
+
+namespace qys\cache;
+
+class redis extends \queryyetsimple\cache\redis {
+}

@@ -106,3 +106,8 @@ abstract class cache {
         return false;
     }
 }
+
+namespace qys\cache\abstracts;
+
+class cache extends \queryyetsimple\cache\abstracts\cache {
+}
