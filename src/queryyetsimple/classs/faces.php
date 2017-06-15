@@ -128,3 +128,8 @@ abstract class faces {
         return call_user_func_array ( $calMethod, $arrArgs );
     }
 }
+
+namespace qys\classs;
+
+abstract class faces extends \queryyetsimple\classs\faces {
+}

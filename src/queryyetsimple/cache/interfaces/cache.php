@@ -58,3 +58,8 @@ interface cache {
      */
     public function setDefaultConnect($strName);
 }
+
+namespace qys\cache\interfaces;
+
+interface cache extends \queryyetsimple\cache\interfaces\cache {
+}

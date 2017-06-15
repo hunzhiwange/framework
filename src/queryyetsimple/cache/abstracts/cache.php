@@ -109,5 +109,5 @@ abstract class cache {
 
 namespace qys\cache\abstracts;
 
-class cache extends \queryyetsimple\cache\abstracts\cache {
+abstract class cache extends \queryyetsimple\cache\abstracts\cache {
 }

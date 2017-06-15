@@ -35,8 +35,8 @@ trait option {
      * @return $this
      */
     public function option($strName, $mixValue) {
-        if(!is_string($strName))
-            throw new InvalidArgumentException('Option set name must be a string.');
+        if (! is_string ( $strName ))
+            throw new InvalidArgumentException ( 'Option set name must be a string.' );
         $this->arrOption [$strName] = $mixValue;
         return $this;
     }
@@ -76,4 +76,10 @@ trait option {
     public function getOptions($arrOption = []) {
         return $arrOption ? array_merge ( $this->arrOption, $arrOption ) : $this->arrOption;
     }
+}
+
+namespace qys\classs;
+
+trait option {
+    use \queryyetsimple\classs\option;
 }

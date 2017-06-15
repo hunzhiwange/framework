@@ -28,14 +28,14 @@ use BadMethodCallException;
  * @version 1.0
  */
 trait infinity {
-
+    
     /**
      * 注册的动态扩展
      *
      * @var array
      */
     protected static $arrInfinity = [ ];
-
+    
     /**
      * 注册一个扩展
      *
@@ -56,7 +56,7 @@ trait infinity {
     public static function hasInfinity($strName) {
         return isset ( static::$arrInfinity [$strName] );
     }
-
+    
     /**
      * 缺省静态方法
      *
@@ -67,13 +67,13 @@ trait infinity {
     public static function __callStatic($sMethod, $arrArgs) {
         // 第一步：判断是否存在已经注册的命名
         if (static::hasInfinity ( $sMethod )) {
-            if (static::$arrInfinity[$sMethod] instanceof Closure) {
+            if (static::$arrInfinity [$sMethod] instanceof Closure) {
                 return call_user_func_array ( Closure::bind ( static::$arrInfinity [$sMethod], null, get_called_class () ), $arrArgs );
             } else {
                 return call_user_func_array ( static::$arrInfinity [$sMethod], $arrArgs );
             }
         }
-
+        
         throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
     }
     
@@ -96,4 +96,10 @@ trait infinity {
         
         throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
     }
+}
+
+namespace qys\classs;
+
+trait infinity {
+    use \queryyetsimple\classs\infinity;
 }

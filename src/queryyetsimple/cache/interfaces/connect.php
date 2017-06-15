@@ -68,3 +68,8 @@ interface connect {
      */
     public function close();
 }
+
+namespace qys\cache\interfaces;
+
+interface connect extends \queryyetsimple\cache\interfaces\connect {
+}

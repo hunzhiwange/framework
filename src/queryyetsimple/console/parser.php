@@ -161,3 +161,8 @@ class parser {
         }
     }
 }
+
+namespace qys\console;
+
+class parser extends \queryyetsimple\console\parser {
+}

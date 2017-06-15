@@ -549,3 +549,8 @@ class collection implements Iterator, ArrayAccess, Countable {
         throw new InvalidArgumentException ( sprintf ( 'Collection type %s validation failed', $sType ) );
     }
 }
+
+namespace qys\collection;
+
+class collection extends \queryyetsimple\collection\collection {
+}

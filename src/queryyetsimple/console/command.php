@@ -482,3 +482,8 @@ abstract class command extends SymfonyCommand {
         return $this->strHelp;
     }
 }
+
+namespace qys\console;
+
+class command extends \queryyetsimple\console\command {
+}

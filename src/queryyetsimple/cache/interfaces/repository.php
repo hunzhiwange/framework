@@ -68,3 +68,8 @@ interface repository {
      */
     public function close();
 }
+
+namespace qys\cache\interfaces;
+
+interface repository extends \queryyetsimple\cache\interfaces\repository {
+}
