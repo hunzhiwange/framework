@@ -39,5 +39,13 @@ class cache extends faces {
 
 namespace qys;
 
+/**
+ * 沙盒 cache
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.10
+ * @version 1.0
+ */
 class cache extends \queryyetsimple\cache {
 }

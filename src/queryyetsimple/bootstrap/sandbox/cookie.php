@@ -39,5 +39,13 @@ class cookie extends faces {
 
 namespace qys;
 
+/**
+ * 沙盒 cookie
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.10
+ * @version 1.0
+ */
 class cookie extends \queryyetsimple\cookie {
 }

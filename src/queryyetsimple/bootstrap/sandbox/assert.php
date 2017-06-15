@@ -30,5 +30,13 @@ class assert extends assert_assert {
 
 namespace qys;
 
+/**
+ * 沙盒 assert
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.10
+ * @version 1.0
+ */
 class assert extends \queryyetsimple\assert {
 }

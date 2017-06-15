@@ -39,5 +39,13 @@ class router extends faces {
 
 namespace qys;
 
+/**
+ * 沙盒 router
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.10
+ * @version 1.0
+ */
 class router extends \queryyetsimple\router {
 }

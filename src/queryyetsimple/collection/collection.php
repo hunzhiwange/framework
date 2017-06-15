@@ -552,5 +552,13 @@ class collection implements Iterator, ArrayAccess, Countable {
 
 namespace qys\collection;
 
+/**
+ * 数组转对象集合
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2016.11.21
+ * @version 1.0
+ */
 class collection extends \queryyetsimple\collection\collection {
 }

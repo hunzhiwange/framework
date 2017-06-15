@@ -164,5 +164,13 @@ class parser {
 
 namespace qys\console;
 
+/**
+ * 命令行参数解析 <from lavarel>
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.04.26
+ * @version 1.0
+ */
 class parser extends \queryyetsimple\console\parser {
 }

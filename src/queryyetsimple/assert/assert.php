@@ -563,5 +563,13 @@ class assert {
 
 namespace qys\assert;
 
+/**
+ * 断言类
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.05.05
+ * @version 1.0
+ */
 class assert extends \queryyetsimple\assert\assert {
 }

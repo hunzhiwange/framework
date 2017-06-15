@@ -30,5 +30,13 @@ abstract class command extends console_command {
 
 namespace qys;
 
+/**
+ * 沙盒 command
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.10
+ * @version 1.0
+ */
 abstract class command extends \queryyetsimple\command {
 }
