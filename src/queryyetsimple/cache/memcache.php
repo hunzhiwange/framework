@@ -146,5 +146,13 @@ class memcache extends abstracts_cache implements connect {
 
 namespace qys\cache;
 
+/**
+ * memcache 扩展缓存
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.02.15
+ * @version 1.0
+ */
 class memcache extends \queryyetsimple\cache\memcache {
 }
