@@ -15,8 +15,8 @@ namespace queryyetsimple\bootstrap\console;
 ##########################################################
 queryphp;
 
-use queryyetsimple\mvc\project;
 use queryyetsimple\option\option;
+use queryyetsimple\bootstrap\project;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**
@@ -32,7 +32,7 @@ class application {
     /**
      * 项目容器
      *
-     * @var \queryyetsimple\mvc\project
+     * @var \queryyetsimple\bootstrap\project
      */
     protected $objProject;
     
@@ -46,7 +46,7 @@ class application {
     /**
      * 创建一个命令行应用程序
      *
-     * @param \queryyetsimple\mvc\project $objProject            
+     * @param \queryyetsimple\bootstrap\project $objProject            
      * @return $this
      */
     public function __construct(project $objProject) {

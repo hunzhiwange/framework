@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc;
+namespace queryyetsimple\bootstrap;
 
 <<<queryphp
 ##########################################################
@@ -15,11 +15,13 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
+use queryyetsimple\mvc\view;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\helper\helper;
+use queryyetsimple\mvc\controller;
 use Composer\Autoload\ClassLoader;
 use queryyetsimple\support\container;
-use queryyetsimple\mvc\interfaces\project as interfaces_project;
+use queryyetsimple\bootstrap\interfaces\project as interfaces_project;
 
 /**
  * 项目管理
@@ -41,7 +43,7 @@ class project extends container implements interfaces_project {
     /**
      * 当前项目实例
      *
-     * @var queryyetsimple\mvc\project
+     * @var queryyetsimple\bootstrap\project
      */
     protected static $objProject = null;
     
@@ -87,6 +89,12 @@ class project extends container implements interfaces_project {
      * @return void
      */
     public function __construct($objComposer, $arrOption = []) {
+        if ($objComposer == '') {
+            echo 'xx';
+            
+            throw new \Exception ( 'xx' );
+        }
+        
         // set composer
         $this->setComposer ( $objComposer )->
         
@@ -231,7 +239,7 @@ class project extends container implements interfaces_project {
      * @param \Composer\Autoload\ClassLoader $objComposer            
      * @return $this
      */
-    protected function setComposer($objComposer) {
+    protected function setComposer(ClassLoader $objComposer) {
         psr4::composer ( $objComposer );
         psr4::faces ( $this );
         psr4::sandboxPath ( dirname ( __DIR__ ) . '/bootstrap/sandbox' );
@@ -277,12 +285,14 @@ class project extends container implements interfaces_project {
      * @return $this
      */
     protected function registerMvcProvider() {
+        $this->instance ( project::class, $this );
+        
         // 注册启动程序
         $this->register ( new bootstrap ( $this, $this->arrOption ) );
         
         // 注册 app
-        $this->singleton ( 'queryyetsimple\mvc\app', function (project $objProject, $sApp, $arrOption = []) {
-            return new app ( $objProject, $sApp, $arrOption );
+        $this->singleton ( 'queryyetsimple\bootstrap\application', function (project $objProject, $sApp, $arrOption = []) {
+            return new application ( $objProject, $sApp, $arrOption );
         } );
         
         // 注册 controller
@@ -305,8 +315,9 @@ class project extends container implements interfaces_project {
      */
     protected function registerAlias() {
         $this->alias ( [ 
-                'view' => 'queryyetsimple\mvc\view',
-                'controller' => 'queryyetsimple\mvc\controller' 
+                'project' => 'queryyetsimple\bootstrap\project',
+                'controller' => 'queryyetsimple\mvc\controller',
+                'view' => 'queryyetsimple\mvc\view' 
         ] );
         return $this;
     }

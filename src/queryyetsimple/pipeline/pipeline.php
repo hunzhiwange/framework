@@ -30,7 +30,7 @@ class pipeline {
     /**
      * 项目容器
      *
-     * @var \queryyetsimple\mvc\project|null
+     * @var \queryyetsimple\bootstrap\project|null
      */
     protected $objProject;
     
@@ -51,7 +51,7 @@ class pipeline {
     /**
      * 创建一个管道
      *
-     * @param \queryyetsimple\mvc\project|null $objProject            
+     * @param \queryyetsimple\bootstrap\project|null $objProject            
      * @return void
      */
     public function __construct($objProject = null) {

@@ -38,7 +38,7 @@ class exception extends message {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\project $oProject            
+     * @param \queryyetsimple\bootstrap\project $oProject            
      * @param object $objException            
      * @return void
      */

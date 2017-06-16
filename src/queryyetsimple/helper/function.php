@@ -13,14 +13,14 @@
 ##########################################################
 queryphp;
 
-use queryyetsimple\mvc\project;
+use queryyetsimple\bootstrap\project;
 
 if (! function_exists ( 'project' )) {
     /**
      * 返回项目容器或者注入
      *
      * @param string|null $sInstance            
-     * @return \queryyetsimple\mvc\project
+     * @return \queryyetsimple\bootstrap\project
      */
     function project($sInstance = null /*argvs*/) {
         if ($sInstance === null) {
@@ -124,6 +124,6 @@ if (! function_exists ( 'value' )) {
     function value($mixValue) {
         $arrArgs = func_get_args ();
         array_shift ( $arrArgs );
-        return is_callable ( $mixValue ) ? call_user_func_array ( $mixValue, $arrArgs ) : $mixValue;
+        return ! is_string ( $mixValue ) && is_callable ( $mixValue ) ? call_user_func_array ( $mixValue, $arrArgs ) : $mixValue;
     }
 }

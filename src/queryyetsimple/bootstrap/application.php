@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc;
+namespace queryyetsimple\bootstrap;
 
 <<<queryphp
 ##########################################################
@@ -37,12 +37,12 @@ use queryyetsimple\option\tool as option_tool;
  * @since 2016.11.18
  * @version 1.0
  */
-class app {
+class application {
     
     /**
      * 当前项目
      *
-     * @var queryyetsimple\mvc\project
+     * @var queryyetsimple\bootstrap\project
      */
     protected $objProject = null;
     
@@ -104,7 +104,7 @@ class app {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\project $objProject            
+     * @param \queryyetsimple\bootstrap\project $objProject            
      * @param string $sApp            
      * @param array $arrOption            
      * @return app

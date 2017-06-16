@@ -33,7 +33,7 @@ class controller {
     /**
      * 项目容器
      *
-     * @var \queryyetsimple\mvc\project
+     * @var \queryyetsimple\bootstrap\project
      */
     protected $objProject = null;
     
@@ -130,7 +130,7 @@ class controller {
     /**
      * 设置或者返回服务容器
      *
-     * @param \queryyetsimple\mvc\project $objProject            
+     * @param \queryyetsimple\bootstrap\project $objProject            
      * @return void
      */
     public function project($objProject = null) {

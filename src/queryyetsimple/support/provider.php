@@ -28,14 +28,14 @@ abstract class provider {
     /**
      * 应用程序实例
      *
-     * @var queryyetsimple\mvc\project
+     * @var queryyetsimple\bootstrap\project
      */
     protected $objProject;
     
     /**
      * 创建一个服务容器提供者实例
      *
-     * @param queryyetsimple\mvc\project $objProject            
+     * @param queryyetsimple\bootstrap\project $objProject            
      * @return void
      */
     public function __construct($objProject) {

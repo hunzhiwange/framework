@@ -63,7 +63,7 @@ class runtime {
     /**
      * 返回项目容器
      *
-     * @return \queryyetsimple\mvc\project
+     * @return \queryyetsimple\bootstrap\project
      */
     protected static function project() {
         return project ();

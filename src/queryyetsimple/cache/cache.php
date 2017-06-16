@@ -16,7 +16,7 @@ namespace queryyetsimple\cache;
 queryphp;
 
 use Exception;
-use queryyetsimple\mvc\project;
+use queryyetsimple\bootstrap\project;
 use queryyetsimple\cache\interfaces\connect;
 use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
@@ -33,7 +33,7 @@ class cache implements interfaces_cache {
     /**
      * 项目管理
      *
-     * @var \queryyetsimple\mvc\project
+     * @var \queryyetsimple\bootstrap\project
      */
     protected $objProject;
     
@@ -47,7 +47,7 @@ class cache implements interfaces_cache {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\project $objConnect            
+     * @param \queryyetsimple\bootstrap\project $objConnect            
      * @return void
      */
     public function __construct(project $objProject) {
@@ -164,19 +164,12 @@ class cache implements interfaces_cache {
      * @return array
      */
     protected function getOption($strConnect) {
-        $arrOptionDefault = [ ];
-        foreach ( [ 
-                'nocache_force',
-                'time_preset',
-                'prefix',
-                'expire' 
-        ] as $strOption ) {
-            $arrOptionDefault [$strOption] = $this->objProject ['option'] ['cache\\' . $strOption];
-        }
+        $arrOption = $this->objProject ['option'] ['cache\\'];
+        unset ( $arrOption ['default'], $arrOption ['connect'] );
         
         return array_merge ( array_filter ( $this->objProject ['option'] ['cache\connect.' . $strConnect], function ($mixValue) {
             return ! is_null ( $mixValue );
-        } ), $arrOptionDefault );
+        } ), $arrOption );
     }
     
     /**

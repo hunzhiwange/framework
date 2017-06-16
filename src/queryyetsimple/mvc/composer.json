@@ -16,16 +16,8 @@
     "require": {
         "php": ">=5.5.0",
         "queryyetsimple/http": "1.0.*",
-        "queryyetsimple/router": "1.0.*",
-        "queryyetsimple/filesystem": "1.0.*",
         "queryyetsimple/psr4": "1.0.*",
-        "queryyetsimple/option": "1.0.*",
-        "queryyetsimple/helper": "1.0.*",
-        "queryyetsimple/database": "1.0.*",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/classs": "1.0.*",
-        "queryyetsimple/cookie": "1.0.*",
-        "vlucas/phpdotenv": "~2.2"
+        "queryyetsimple/helper": "1.0.*"
     },
     "autoload": {
         "psr-4": {

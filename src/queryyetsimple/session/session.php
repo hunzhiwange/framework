@@ -15,394 +15,166 @@ namespace queryyetsimple\session;
 ##########################################################
 queryphp;
 
-use RuntimeException;
-use queryyetsimple\assert\assert;
-use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\session\interfaces\repository;
+use Exception;
+use queryyetsimple\bootstrap\project;
+use queryyetsimple\session\interfaces\session as interfaces_session;
 
 /**
- * session 封装
+ * session 入口
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.04.17
+ * @since 2017.02.15
  * @version 1.0
  */
-class session implements repository {
-    
-    use classs_faces;
+class session implements interfaces_session {
     
     /**
-     * 配置
+     * 项目管理
      *
-     * @var array
+     * @var \queryyetsimple\bootstrap\project
      */
-    protected $arrClasssFacesOption = [ 
-            'session\default' => null,
-            'session\prefix' => 'q_',
-            'session\id' => null,
-            'session\name' => null,
-            'session\cookie_domain' => null,
-            'session\cache_limiter' => null,
-            'session\cache_expire' => 86400,
-            'session\cookie_lifetime' => null,
-            'session\gc_maxlifetime' => null,
-            'session\save_path' => null,
-            'session\use_trans_sid' => null,
-            'session\gc_probability' => null 
-    ];
+    protected $objProject;
+    
+    /**
+     * session 连接对象
+     *
+     * @var \queryyetsimple\abstracts\cache
+     */
+    protected static $arrConnect;
     
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\bootstrap\project $objConnect            
      * @return void
      */
-    public function __construct() {
-        if (isset ( $_SESSION )) {
-            return;
-        }
-        
-        // 设置 session 不自动启动
-        ini_set ( 'session.auto_start', 0 );
-        
-        // 设置 session id
-        if ($this->classsFacesOption ( 'session\id' )) {
-            session_id ( $this->classsFacesOption ( 'session\id' ) );
-        } else {
-            if (is_null ( $this->parseSessionId () )) {
-                $this->sessionId ( uniqid ( dechex ( mt_rand () ) ) );
-            }
-        }
-        
-        // cookie domain
-        if ($this->classsFacesOption ( 'session\cookie_domain' )) {
-            $this->cookieDomain ( $this->classsFacesOption ( 'session\cookie_domain' ) );
-        }
-        
-        // session name
-        if ($this->classsFacesOption ( 'session\name' )) {
-            $this->sessionName ( $this->classsFacesOption ( 'session\name' ) );
-        }
-        
-        // cache expire
-        if ($this->classsFacesOption ( 'session\cache_expire' )) {
-            $this->cacheExpire ( $this->classsFacesOption ( 'session\cache_expire' ) );
-        }
-        
-        // gc maxlifetime
-        if ($this->classsFacesOption ( 'session\gc_maxlifetime' )) {
-            $this->gcMaxlifetime ( $this->classsFacesOption ( 'session\gc_maxlifetime' ) );
-        }
-        
-        // cookie lifetime
-        if ($this->classsFacesOption ( 'session\cookie_lifetime' )) {
-            $this->cookieLifetime ( $this->classsFacesOption ( 'session\cookie_lifetime' ) );
-        }
-        
-        // cache limiter
-        if ($this->classsFacesOption ( 'session\cache_limiter' )) {
-            $this->cacheLimiter ( $this->classsFacesOption ( 'session\cache_limiter' ) );
-        }
-        
-        // save path
-        if ($this->classsFacesOption ( 'session\save_path' )) {
-            $this->savePath ( $this->classsFacesOption ( 'session\save_path' ) );
-        }
-        
-        // use_trans_sid
-        if ($this->classsFacesOption ( 'session\use_trans_sid' )) {
-            $this->useTransSid ( $this->classsFacesOption ( 'session\use_trans_sid' ) );
-        }
-        
-        // gc_probability
-        if ($this->classsFacesOption ( 'session\gc_probability' )) {
-            $this->gcProbability ( $this->classsFacesOption ( 'session\gc_probability' ) );
-        }
-        
-        // 驱动
-        if ($this->classsFacesOption ( 'session\default' )) {
-            $strConnectClass = 'queryyetsimple\\session\\' . $this->classsFacesOption ( 'session\default' );
-            if (class_exists ( $strConnectClass )) {
-                if (! session_set_save_handler ( new $strConnectClass ( [ 
-                        'prefix' => $this->classsFacesOption ( 'session\prefix' ),
-                        'expire' => $this->classsFacesOption ( 'session\cache_expire' ) 
-                ] ) ))
-                    throw new RuntimeException ( __ ( 'session 驱动 %s 设置失败', $this->classsFacesOption ( 'session\default' ) ) );
-            } else {
-                throw new RuntimeException ( __ ( 'session 驱动 %s 不存在', $this->classsFacesOption ( 'session\default' ) ) );
-            }
-        }
-        
-        // 启动 session
-        if (! session_start ()) {
-            return null;
-        }
+    public function __construct(project $objProject) {
+        $this->objProject = $objProject;
     }
     
     /**
-     * 设置 session
+     * 连接 session 并返回连接对象
      *
-     * @param string $sName            
-     * @param mxied $mixValue            
-     * @param boolean $bPrefix            
+     * @param array|string $mixOption            
+     * @return \SessionHandlerInterface
+     */
+    public function connect($mixOption = []) {
+        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['session\\connect.' . $mixOption]) )) {
+            $mixOption = [ ];
+        }
+        
+        $strDriver = ! empty ( $mixOption ['driver'] ) ? $mixOption ['driver'] : $this->getDefaultDriver ();
+        $strUnique = $this->getUnique ( $mixOption );
+        
+        if (isset ( static::$arrConnect [$strUnique] )) {
+            return static::$arrConnect [$strUnique];
+        }
+        
+        return static::$arrConnect [$strUnique] = $this->makeConnect ( $strDriver, $mixOption );
+    }
+    
+    /**
+     * 返回默认驱动
+     *
+     * @return string
+     */
+    public function getDefaultDriver() {
+        return $this->objProject ['option'] ['session\default'];
+    }
+    
+    /**
+     * 设置默认驱动
+     *
+     * @param string $strName            
      * @return void
      */
-    public function set($sName, $mixValue, $bPrefix = true) {
-        assert::string ( $sName );
-        $sName = $this->getName ( $sName, $bPrefix );
-        $_SESSION [$sName] = $mixValue;
+    public function setDefaultDriver($strName) {
+        $this->objProject ['option'] ['session\default'] = $strName;
     }
     
     /**
-     * 取回 session
+     * 创建连接
      *
-     * @param string $sName            
-     * @param boolean $bPrefix            
-     * @return mxied
+     * @param string $strConnect            
+     * @param array $arrOption            
+     * @return \SessionHandlerInterface
      */
-    public function get($sName, $bPrefix = true) {
-        assert::string ( $sName );
-        $sName = $this->getName ( $sName, $bPrefix );
-        return isset ( $_SESSION [$sName] ) ? $_SESSION [$sName] : null;
+    protected function makeConnect($strConnect, $arrOption = []) {
+        if (is_null ( $this->objProject ['option'] ['session\connect.' . $strConnect] ))
+            throw new Exception ( __ ( 'session 驱动 %s 不存在', $strConnect ) );
+        return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
     
     /**
-     * 删除 session
+     * 创建 memcache 缓存
      *
-     * @param string $sName            
-     * @param boolean $bPrefix            
-     * @return bool
+     * @param array $arrOption            
+     * @return \queryyetsimple\session\memcache
      */
-    public function delete($sName, $bPrefix = true) {
-        assert::string ( $sName );
-        $sName = $this->getName ( $sName, $bPrefix );
-        return session_unregister ( $sName );
+    protected function makeConnectMemcache($arrOption = []) {
+        return new memcache ( array_merge ( $this->getOption ( 'memcache' ), $arrOption ) );
     }
     
     /**
-     * 是否存在 session
+     * 创建 redis 缓存
      *
-     * @param string $sName            
-     * @param boolean $bPrefix            
+     * @param array $arrOption            
+     * @return \queryyetsimple\session\redis
      */
-    public function has($sName, $bPrefix = true) {
-        assert::string ( $sName );
-        $sName = $this->getName ( $sName, $bPrefix );
-        return isset ( $_SESSION [$sName] );
+    protected function makeConnectRedis($arrOption = []) {
+        return new redis ( array_merge ( $this->getOption ( 'redis' ), $arrOption ) );
     }
     
     /**
-     * 删除 session
+     * 取得唯一值
      *
-     * @param boolean $bOnlyDeletePrefix            
-     * @return int
+     * @param array $arrOption            
+     * @return string
      */
-    public function clear($bOnlyDeletePrefix = true) {
-        $nSession = count ( $_SESSION );
-        $strSessionPrefix = $this->classsFacesOption ( 'session\prefix' );
-        foreach ( $_SESSION as $sKey => $Val ) {
-            if ($bOnlyDeletePrefix === true && $strSessionPrefix) {
-                if (strpos ( $sKey, $strSessionPrefix ) === 0) {
-                    $this->delete ( $sKey, false );
-                }
-            } else {
-                $this->delete ( $sKey, false );
-            }
-        }
-        return $nSession;
+    protected function getUnique($arrOption) {
+        return md5 ( serialize ( $arrOption ) );
     }
     
     /**
-     * 暂停 session
+     * 读取默认 session 配置
      *
-     * @return void
+     * @param string $strConnect            
+     * @return array
      */
-    public function pause() {
-        session_write_close ();
-    }
-    
-    /**
-     * 终止会话
-     *
-     * @return bool
-     */
-    public function destroy() {
-        $this->clear ( false );
+    protected function getOption($strConnect) {
+        $arrOption = $this->objProject ['option'] ['session\\'];
+        unset ( $arrOption ['default'], $arrOption ['connect'] );
         
-        if (isset ( $_COOKIE [$this->sessionName ()] )) {
-            setcookie ( $this->sessionName (), '', time () - 42000, '/' );
-        }
-        
-        session_destroy ();
+        return array_merge ( array_filter ( $this->objProject ['option'] ['session\connect.' . $strConnect], function ($mixValue) {
+            return ! is_null ( $mixValue );
+        } ), $arrOption );
     }
     
     /**
-     * 获取解析 session_id
+     * 拦截匿名注册控制器方法
      *
-     * @param string $sId            
-     * @return string
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
      */
-    public function parseSessionId() {
-        if (($sId = $this->sessionId ())) {
-            return $sId;
-        }
-        if ($this->useCookies ()) {
-            if (isset ( $_COOKIE [$this->sessionName ()] )) {
-                return $_COOKIE [$this->sessionName ()];
-            }
-        } else {
-            if (isset ( $_GET [$this->sessionName ()] )) {
-                return $_GET [$this->sessionName ()];
-            }
-            if (isset ( $_POST [$this->sessionName ()] )) {
-                return $_POST [$this->sessionName ()];
-            }
-        }
-        return null;
+    public function __call($sMethod, $arrArgs) {
+        return call_user_func_array ( [ 
+                $this->connect (),
+                $sMethod 
+        ], $arrArgs );
     }
-    
-    /**
-     * 设置 save path
-     *
-     * @param string $sSavePath            
-     * @return string
-     */
-    public function savePath($sSavePath = null) {
-        return ! empty ( $sSavePath ) ? session_save_path ( $sSavePath ) : session_save_path ();
-    }
-    
-    /**
-     * 设置 cache limiter
-     *
-     * @param string $strCacheLimiter            
-     * @return string
-     */
-    public function cacheLimiter($strCacheLimiter = null) {
-        return isset ( $strCacheLimiter ) ? session_cache_limiter ( $strCacheLimiter ) : session_cache_limiter ();
-    }
-    
-    /**
-     * 设置 cache expire
-     *
-     * @param int $nExpireSecond            
-     * @return void
-     */
-    public function cacheExpire($nExpireSecond = null) {
-        return isset ( $nExpireSecond ) ? session_cache_expire ( intval ( $nExpireSecond ) ) : session_cache_expire ();
-    }
-    
-    /**
-     * session_name
-     *
-     * @param string $sName            
-     * @return string
-     */
-    public function sessionName($sName = null) {
-        return isset ( $sName ) ? session_name ( $sName ) : session_name ();
-    }
-    
-    /**
-     * session id
-     *
-     * @param string $sId            
-     * @return string
-     */
-    public function sessionId($sId = null) {
-        return isset ( $sId ) ? session_id ( $sId ) : session_id ();
-    }
-    
-    /**
-     * session 的 cookie_domain 设置
-     *
-     * @param string $sSessionDomain            
-     * @return string
-     */
-    public function cookieDomain($sSessionDomain = null) {
-        $sReturn = ini_get ( 'session.cookie_domain' );
-        if (! empty ( $sSessionDomain )) {
-            ini_set ( 'session.cookie_domain', $sSessionDomain ); // 跨域访问 session
-        }
-        return $sReturn;
-    }
-    
-    /**
-     * session 是否使用 cookie
-     *
-     * @param boolean $bUseCookies            
-     * @return boolean
-     */
-    public function useCookies($bUseCookies = null) {
-        $booReturn = ini_get ( 'session.use_cookies' ) ? true : false;
-        if (isset ( $bUseCookies )) {
-            ini_set ( 'session.use_cookies', $bUseCookies ? 1 : 0 );
-        }
-        return $booReturn;
-    }
-    
-    /**
-     * 客户端禁用 cookie 可以开启这个项
-     *
-     * @param string $nUseTransSid            
-     * @return boolean
-     */
-    public function useTransSid($nUseTransSid = null) {
-        $booReturn = ini_get ( 'session.use_trans_sid' ) ? true : false;
-        if (isset ( $nUseTransSid )) {
-            ini_set ( 'session.use_trans_sid', $nUseTransSid ? 1 : 0 );
-        }
-        return $booReturn;
-    }
-    
-    /**
-     * 设置过期 cookie lifetime
-     *
-     * @param int $nCookieLifeTime            
-     * @return int
-     */
-    public function cookieLifetime($nCookieLifeTime) {
-        $nReturn = ini_get ( 'session.cookie_lifetime' );
-        if (isset ( $nCookieLifeTime ) && intval ( $nCookieLifeTime ) >= 1) {
-            ini_set ( 'session.cookie_lifetime', intval ( $nCookieLifeTime ) );
-        }
-        return $nReturn;
-    }
-    
-    /**
-     * gc maxlifetime
-     *
-     * @param int $nGcMaxlifetime            
-     * @return int
-     */
-    public function gcMaxlifetime($nGcMaxlifetime = null) {
-        $nReturn = ini_get ( 'session.gc_maxlifetime' );
-        if (isset ( $nGcMaxlifetime ) && intval ( $nGcMaxlifetime ) >= 1) {
-            ini_set ( 'session.gc_maxlifetime', intval ( $nGcMaxlifetime ) );
-        }
-        return $nReturn;
-    }
-    
-    /**
-     * session 垃圾回收概率分子 (分母为 session.gc_divisor)
-     *
-     * @param int $nGcProbability            
-     * @return int
-     */
-    public function gcProbability($nGcProbability = null) {
-        $nReturn = ini_get ( 'session.gc_probability' );
-        if (isset ( $nGcProbability ) && intval ( $nGcProbability ) >= 1 && intval ( $nGcProbability ) <= 100) {
-            ini_set ( 'session.gc_probability', intval ( $nGcProbability ) );
-        }
-        return $nReturn;
-    }
-    
-    /**
-     * 返回 session 名字
-     *
-     * @param string $sName            
-     * @param boolean $bPrefix            
-     * @return string
-     */
-    private function getName($sName, $bPrefix = true) {
-        return ($bPrefix ? $this->classsFacesOption ( 'session\prefix' ) : '') . $sName;
-    }
+}
+
+namespace qys\session;
+
+/**
+ * session 入口
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.02.15
+ * @version 1.0
+ */
+class session extends \queryyetsimple\session\session {
 }

@@ -15,10 +15,10 @@ namespace queryyetsimple\session;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces as classs_faces;
+use SessionHandler;
+use SessionHandlerInterface;
+use queryyetsimple\session\abstracts\connect;
 use queryyetsimple\cache\memcache as cache_memcache;
-use queryyetsimple\session\abstracts\session as abstracts_session;
-use queryyetsimple\session\interfaces\session as interfaces_session;
 
 /**
  * session.memcache
@@ -28,23 +28,21 @@ use queryyetsimple\session\interfaces\session as interfaces_session;
  * @since 2017.06.05
  * @version 1.0
  */
-class memcache extends abstracts_session implements interfaces_session {
-    
-    use classs_faces;
-    
+class memcache extends connect implements SessionHandlerInterface {
+
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'session\connect.memcache.servers' => [ ],
-            'session\connect.memcache.host' => '127.0.0.1',
-            'session\connect.memcache.port' => 11211,
-            'session\connect.memcache.compressed' => false,
-            'session\connect.memcache.persistent' => false,
-            'session\connect.memcache.prefix' => null,
-            'session\connect.memcache.expire' => null 
+    protected $arrOption = [ 
+            'servers' => [ ],
+            'host' => '127.0.0.1',
+            'port' => 11211,
+            'compressed' => false,
+            'persistent' => false,
+            'prefix' => null,
+            'expire' => null 
     ];
     
     /**
@@ -53,7 +51,7 @@ class memcache extends abstracts_session implements interfaces_session {
      * @see SessionHandler::open()
      */
     public function open($strSavePath, $strName) {
-        $this->objCache = (new cache_memcache ( $this->arrOption ))->initClasssFacesOptionDefault ();
+        $this->objCache = new cache_memcache ( $this->arrOption );
         return true;
     }
 }

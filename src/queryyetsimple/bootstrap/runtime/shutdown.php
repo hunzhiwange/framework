@@ -28,7 +28,7 @@ class shutdown extends message {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\project $oProject            
+     * @param \queryyetsimple\bootstrap\project $oProject            
      * @return void
      */
     public function __construct($oProject) {

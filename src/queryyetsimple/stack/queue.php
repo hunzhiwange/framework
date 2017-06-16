@@ -57,7 +57,7 @@ class queue extends SplQueue {
      * @param mixed $mixValue            
      * @return void
      */
-    public function checkTypeWithException($mixValue) {
+    protected function checkTypeWithException($mixValue) {
         if (! $this->checkType ( $mixValue ))
             throw new InvalidArgumentException ( __ ( '队列元素类型验证失败，允许类型为 %s', implode ( ',', $this->arrType ) ) );
     }

@@ -55,7 +55,7 @@ abstract class action {
     /**
      * 返回项目容器
      *
-     * @return \queryyetsimple\mvc\project
+     * @return \queryyetsimple\bootstrap\project
      */
     public function project() {
         return project::bootstrap ();

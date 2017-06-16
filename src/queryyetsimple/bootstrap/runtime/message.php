@@ -28,7 +28,7 @@ abstract class message {
     /**
      * 返回项目容器
      *
-     * @var \queryyetsimple\mvc\project
+     * @var \queryyetsimple\bootstrap\project
      */
     protected $oProject;
     

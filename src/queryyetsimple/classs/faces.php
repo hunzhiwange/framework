@@ -66,7 +66,7 @@ abstract class faces {
     /**
      * 返回服务容器
      *
-     * @return \queryyetsimple\mvc\project
+     * @return \queryyetsimple\bootstrap\project
      */
     public static function projectContainer() {
         return static::$objProjectContainer;

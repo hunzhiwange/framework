@@ -16,6 +16,7 @@ namespace queryyetsimple\session\abstracts;
 queryphp;
 
 use SessionHandler;
+use queryyetsimple\classs\option;
 
 /**
  * session 驱动抽象类
@@ -25,21 +26,16 @@ use SessionHandler;
  * @since 2017.06.06
  * @version 1.0
  */
-abstract class session extends SessionHandler {
+abstract class connect {
+    
+    use option;
     
     /**
-     * redis
+     * 缓存仓库
      *
-     * @var \queryyetsimple\cache\redis
+     * @var \queryyetsimple\cache\repository
      */
     protected $objCache = null;
-    
-    /**
-     * 配置
-     *
-     * @var array
-     */
-    protected $arrOption = [ ];
     
     /**
      * 构造函数
@@ -47,8 +43,8 @@ abstract class session extends SessionHandler {
      * @param array $arrOption            
      * @return void
      */
-    public function __construct($arrOption = []) {
-        $this->initialization ( $arrOption );
+    public function __construct(array $arrOption = []) {
+        $this->options ( $arrOption );
     }
     
     /**
@@ -96,24 +92,6 @@ abstract class session extends SessionHandler {
      */
     public function gc($intMaxlifetime) {
         return true;
-    }
-    
-    /**
-     * 初始化缓存配置
-     *
-     * @param array $arrOption            
-     * @return void
-     */
-    protected function initialization($arrOption) {
-        foreach ( array_keys ( $this->arrClasssFacesOption ) as $strOption ) {
-            $arrTemp = explode ( '.', $strOption );
-            $arrTemp = array_pop ( $arrTemp );
-            $this->arrOption [$arrTemp] = $this->classsFacesOption ( $strOption );
-        }
-        
-        if (is_array ( $arrOption )) {
-            $this->arrOption = array_merge ( $this->arrOption, $arrOption );
-        }
     }
     
     /**

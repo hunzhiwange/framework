@@ -30,7 +30,7 @@ trait base {
      *
      * @var array
      */
-    private $arrType = [ ];
+    protected $arrType = [ ];
     
     /**
      * 构造函数

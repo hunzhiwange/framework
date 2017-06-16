@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc;
+namespace queryyetsimple\bootstrap;
 
 <<<queryphp
 ##########################################################
@@ -30,7 +30,7 @@ class bootstrap {
     /**
      * 父控制器
      *
-     * @var queryyetsimple\mvc\project
+     * @var queryyetsimple\bootstrap\project
      */
     private $objProject = null;
     
@@ -57,7 +57,7 @@ class bootstrap {
     /**
      * 构造函数
      *
-     * @param queryyetsimple\mvc\project $objProject            
+     * @param queryyetsimple\bootstrap\project $objProject            
      * @param array $arrOption            
      * @return void
      */
@@ -137,7 +137,7 @@ class bootstrap {
      */
     private function router() {
         // 运行笑脸初始化应用
-        $this->objProject->make ( app::class, app::INIT_APP, $this->arrOption )->bootstrap ()->namespaces ();
+        $this->objProject->make ( application::class, application::INIT_APP, $this->arrOption )->bootstrap ()->namespaces ();
         
         // 完成路由请求
         $this->objProject->router->run ();
@@ -150,7 +150,7 @@ class bootstrap {
      */
     private function runApp() {
         // 创建 & 注册
-        $this->objProject->instance ( 'app', ($objApp = $this->objProject->make ( app::class )->bootstrap ( $this->objProject->router->app () )->registerAppProvider ()) );
+        $this->objProject->instance ( 'app', ($objApp = $this->objProject->make ( application::class )->bootstrap ( $this->objProject->router->app () )->registerAppProvider ()) );
         
         // 运行应用
         $objApp->run ();

@@ -124,12 +124,13 @@ return [
         
         /**
          * ---------------------------------------------------------------
-         * cache_expire
+         * expire
          * ---------------------------------------------------------------
          *
-         * session_cache_expire ( cache_expire )
+         * 为了与下面的配置 expire 对应，这里没有设置为 cache_expire
+         * session_cache_expire ( expire )
          */
-        'cache_expire' => 86400,
+        'expire' => 86400,
         
         /**
          * ---------------------------------------------------------------
@@ -142,6 +143,9 @@ return [
         '+connect' => [ 
                 
                 '+memcache' => [
+                        // driver
+                        'driver' => 'memcache',
+                        
                         // 多台服务器
                         'servers' => [ ],
                         
@@ -165,6 +169,9 @@ return [
                 ],
                 
                 '+redis' => [
+                        // driver
+                        'driver' => 'redis',
+                        
                         // 默认缓存服务器
                         'host' => env ( 'session_redis_host', '127.0.0.1' ),
                         

@@ -15,10 +15,10 @@ namespace queryyetsimple\session;
 ##########################################################
 queryphp;
 
+use SessionHandler;
+use SessionHandlerInterface;
+use queryyetsimple\session\abstracts\connect;
 use queryyetsimple\cache\redis as cache_redis;
-use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\session\abstracts\session as abstracts_session;
-use queryyetsimple\session\interfaces\session as interfaces_session;
 
 /**
  * session.redis
@@ -28,25 +28,23 @@ use queryyetsimple\session\interfaces\session as interfaces_session;
  * @since 2017.06.05
  * @version 1.0
  */
-class redis extends abstracts_session implements interfaces_session {
-    
-    use classs_faces;
+class redis extends connect implements SessionHandlerInterface {
     
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'session\connect.redis.host' => '127.0.0.1',
-            'session\connect.redis.port' => 6379,
-            'session\connect.redis.password' => '',
-            'session\connect.redis.select' => 0,
-            'session\connect.redis.timeout' => 0,
-            'session\connect.redis.persistent' => false,
-            'session\connect.redis.serialize' => true,
-            'session\connect.redis.prefix' => null,
-            'session\connect.redis.expire' => null 
+    protected $arrOption = [ 
+            'host' => '127.0.0.1',
+            'port' => 6379,
+            'password' => '',
+            'select' => 0,
+            'timeout' => 0,
+            'persistent' => false,
+            'serialize' => true,
+            'prefix' => null,
+            'expire' => null 
     ];
     
     /**
@@ -55,7 +53,7 @@ class redis extends abstracts_session implements interfaces_session {
      * @see SessionHandler::open()
      */
     public function open($strSavePath, $strName) {
-        $this->objCache = (new cache_redis ( $this->arrOption ))->initClasssFacesOptionDefault ();
+        $this->objCache = new cache_redis ( $this->arrOption );
         return true;
     }
 }
