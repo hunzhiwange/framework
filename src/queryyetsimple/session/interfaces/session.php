@@ -15,6 +15,8 @@ namespace queryyetsimple\session\interfaces;
 ##########################################################
 queryphp;
 
+use SessionHandlerInterface;
+
 /**
  * session 接口
  *
@@ -26,44 +28,46 @@ queryphp;
 interface session {
     
     /**
-     * (non-PHPdoc)
+     * 连接 session 并返回连接对象
      *
-     * @see SessionHandler::open()
+     * @param array|string $mixOption            
+     * @return \SessionHandlerInterface
      */
-    public function open($strSavePath, $strName);
+    public function connect($mixOption = []);
     
     /**
-     * (non-PHPdoc)
+     * 创建 session store
      *
-     * @see SessionHandler::close()
+     * @param \SessionHandlerInterface $oHandler            
+     * @return \queryyetsimple\session\store
      */
-    public function close();
+    public function store(SessionHandlerInterface $oHandler = null);
     
     /**
-     * (non-PHPdoc)
+     * 返回默认驱动
      *
-     * @see SessionHandler::read()
+     * @return string
      */
-    public function read($strSessID);
+    public function getDefaultDriver();
     
     /**
-     * (non-PHPdoc)
+     * 设置默认驱动
      *
-     * @see SessionHandler::write()
+     * @param string $strName            
+     * @return void
      */
-    public function write($strSessID, $mixSessData);
-    
-    /**
-     * (non-PHPdoc)
-     *
-     * @see SessionHandler::destroy()
-     */
-    public function destroy($strSessID);
-    
-    /**
-     * (non-PHPdoc)
-     *
-     * @see SessionHandler::gc()
-     */
-    public function gc($intMaxlifetime);
+    public function setDefaultDriver($strName);
+}
+
+namespace qys\session\interfaces;
+
+/**
+ * session 接口
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.04.11
+ * @version 1.0
+ */
+interface session extends \queryyetsimple\session\interfaces\session {
 }

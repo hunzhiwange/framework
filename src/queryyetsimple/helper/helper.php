@@ -100,7 +100,6 @@ class helper {
      * @param boolean $booForce            
      * @return array
      */
-   protected static $arrLoad = [];
     public static function arrayMergeSource($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
         if (! $arrFile)
             return [ ];
@@ -109,15 +108,8 @@ class helper {
             return require $strCachePath;
         }
         
-        
-        if(in_array($strCachePath,static::$arrLoad)){
-            return [];
-        }
-        static::$arrLoad[] = $strCachePath;
-        
-
         $arrResult = [ ];
-        $strContent;
+        $strContent = '';
         foreach ( $arrFile as $strFile ) {
             if (! is_file ( $strFile ))
                 $booParseNamespace === true && ($strFile = psr4::getFilePath ( $strFile ));
@@ -134,11 +126,9 @@ class helper {
             directory::create ( dirname ( $strCachePath ) );
         }
         
-       // echo $strCachePath."\n";
-        
         file_put_contents ( $strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */' . PHP_EOL . 'return [ ' . implode ( ', ', $arrResult ) . ' ]; ?>' );
         unset ( $strContent, $arrResult );
- 
+        
         return require $strCachePath;
     }
     

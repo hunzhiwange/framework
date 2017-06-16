@@ -15,7 +15,6 @@ namespace queryyetsimple\session;
 ##########################################################
 queryphp;
 
-use SessionHandler;
 use SessionHandlerInterface;
 use queryyetsimple\session\abstracts\connect;
 use queryyetsimple\cache\redis as cache_redis;
@@ -50,10 +49,23 @@ class redis extends connect implements SessionHandlerInterface {
     /**
      * (non-PHPdoc)
      *
-     * @see SessionHandler::open()
+     * @see \SessionHandler::open()
      */
     public function open($strSavePath, $strName) {
         $this->objCache = new cache_redis ( $this->arrOption );
         return true;
     }
+}
+
+namespace qys\session;
+
+/**
+ * session.redis
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.05
+ * @version 1.0
+ */
+class redis extends \queryyetsimple\session\redis {
 }

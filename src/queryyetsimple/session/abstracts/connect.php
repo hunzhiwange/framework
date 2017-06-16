@@ -19,7 +19,7 @@ use SessionHandler;
 use queryyetsimple\classs\option;
 
 /**
- * session 驱动抽象类
+ * connect 驱动抽象类
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
@@ -103,4 +103,17 @@ abstract class connect {
     protected function getSessionName($strSessID) {
         return $this->arrOption ['prefix'] . $strSessID;
     }
+}
+
+namespace qys\session\abstracts;
+
+/**
+ * connect 驱动抽象类
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.06
+ * @version 1.0
+ */
+abstract class connect extends \queryyetsimple\session\abstracts\connect {
 }

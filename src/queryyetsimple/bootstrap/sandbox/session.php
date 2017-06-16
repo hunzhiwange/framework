@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,19 +15,37 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\classs\faces;
+
 /**
- * session.register 服务提供者
+ * 沙盒 session
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.06.05
+ * @since 2017.06.10
  * @version 1.0
  */
-return [ 
-        'singleton@session' => [ 
-                'queryyetsimple\session\session',
-                function ($oProject) {
-                    return new queryyetsimple\session\session ( $oProject );
-                } 
-        ] 
-];
+class session extends faces {
+    
+    /**
+     * 返回门面名字
+     *
+     * @return string
+     */
+    protected static function name() {
+        return 'session';
+    }
+}
+
+namespace qys;
+
+/**
+ * 沙盒 session
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.10
+ * @version 1.0
+ */
+class session extends \queryyetsimple\session {
+}

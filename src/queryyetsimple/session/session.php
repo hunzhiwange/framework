@@ -16,6 +16,7 @@ namespace queryyetsimple\session;
 queryphp;
 
 use Exception;
+use SessionHandlerInterface;
 use queryyetsimple\bootstrap\project;
 use queryyetsimple\session\interfaces\session as interfaces_session;
 
@@ -70,8 +71,19 @@ class session implements interfaces_session {
         if (isset ( static::$arrConnect [$strUnique] )) {
             return static::$arrConnect [$strUnique];
         }
-        
-        return static::$arrConnect [$strUnique] = $this->makeConnect ( $strDriver, $mixOption );
+        return static::$arrConnect [$strUnique] = $this->store ( $this->makeConnect ( $strDriver, $mixOption ) );
+    }
+    
+    /**
+     * 创建 session store
+     *
+     * @param \SessionHandlerInterface $oHandler            
+     * @return \queryyetsimple\session\store
+     */
+    public function store(SessionHandlerInterface $oHandler = null) {
+        $arrOption = $this->objProject ['option'] ['session\\'];
+        unset ( $arrOption ['default'], $arrOption ['connect'] );
+        return new store ( $arrOption, $oHandler );
     }
     
     /**
@@ -98,9 +110,11 @@ class session implements interfaces_session {
      *
      * @param string $strConnect            
      * @param array $arrOption            
-     * @return \SessionHandlerInterface
+     * @return \SessionHandlerInterface|null
      */
-    protected function makeConnect($strConnect, $arrOption = []) {
+    protected function makeConnect($strConnect = null, $arrOption = []) {
+        if (! $strConnect)
+            return null;
         if (is_null ( $this->objProject ['option'] ['session\connect.' . $strConnect] ))
             throw new Exception ( __ ( 'session 驱动 %s 不存在', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );

@@ -15,7 +15,6 @@ namespace queryyetsimple\session;
 ##########################################################
 queryphp;
 
-use SessionHandler;
 use SessionHandlerInterface;
 use queryyetsimple\session\abstracts\connect;
 use queryyetsimple\cache\memcache as cache_memcache;
@@ -29,7 +28,7 @@ use queryyetsimple\cache\memcache as cache_memcache;
  * @version 1.0
  */
 class memcache extends connect implements SessionHandlerInterface {
-
+    
     /**
      * 配置
      *
@@ -48,10 +47,23 @@ class memcache extends connect implements SessionHandlerInterface {
     /**
      * (non-PHPdoc)
      *
-     * @see SessionHandler::open()
+     * @see \SessionHandler::open()
      */
     public function open($strSavePath, $strName) {
         $this->objCache = new cache_memcache ( $this->arrOption );
         return true;
     }
+}
+
+namespace qys\session;
+
+/**
+ * session.memcache
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.05
+ * @version 1.0
+ */
+class memcache extends \queryyetsimple\session\memcache {
 }

@@ -16,48 +16,68 @@ namespace queryyetsimple\session;
 queryphp;
 
 use RuntimeException;
+use SessionHandlerInterface;
+use queryyetsimple\classs\option;
 use queryyetsimple\assert\assert;
-use queryyetsimple\classs\faces as classs_faces;
-use queryyetsimple\session\interfaces\repository;
+use queryyetsimple\session\interfaces\store as interfaces_store;
 
 /**
- * session 封装
+ * session 仓库
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.04.17
  * @version 1.0
  */
-class session implements repository {
+class store implements interfaces_store {
     
-    use classs_faces;
+    use option;
     
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrClasssFacesOption = [ 
-            'session\default' => null,
-            'session\prefix' => 'q_',
-            'session\id' => null,
-            'session\name' => null,
-            'session\cookie_domain' => null,
-            'session\cache_limiter' => null,
-            'session\cache_expire' => 86400,
-            'session\cookie_lifetime' => null,
-            'session\gc_maxlifetime' => null,
-            'session\save_path' => null,
-            'session\use_trans_sid' => null,
-            'session\gc_probability' => null 
+    protected $oHandler;
+    
+    /**
+     * 配置
+     *
+     * @var array
+     */
+    protected $arrOption = [ 
+            'default' => null,
+            'prefix' => 'q_',
+            'id' => null,
+            'name' => null,
+            'cookie_domain' => null,
+            'cache_limiter' => null,
+            'expire' => 86400,
+            'cookie_lifetime' => null,
+            'gc_maxlifetime' => null,
+            'save_path' => null,
+            'use_trans_sid' => null,
+            'gc_probability' => null 
     ];
     
     /**
      * 构造函数
      *
+     * @param array $arrOption            
+     * @param \SessionHandlerInterface|null $oHandler            
      * @return void
      */
-    public function __construct() {
+    public function __construct(array $arrOption = [], SessionHandlerInterface $oHandler = null) {
+        $this->options ( $arrOption );
+        $this->oHandler = $oHandler;
+    }
+    
+    /**
+     * 启动 session
+     *
+     * @return void
+     */
+    public function start() {
         if (isset ( $_SESSION )) {
             return;
         }
@@ -66,8 +86,8 @@ class session implements repository {
         ini_set ( 'session.auto_start', 0 );
         
         // 设置 session id
-        if ($this->classsFacesOption ( 'session\id' )) {
-            session_id ( $this->classsFacesOption ( 'session\id' ) );
+        if ($this->getOption ( 'id' )) {
+            session_id ( $this->getOption ( 'id' ) );
         } else {
             if (is_null ( $this->parseSessionId () )) {
                 $this->sessionId ( uniqid ( dechex ( mt_rand () ) ) );
@@ -75,62 +95,56 @@ class session implements repository {
         }
         
         // cookie domain
-        if ($this->classsFacesOption ( 'session\cookie_domain' )) {
-            $this->cookieDomain ( $this->classsFacesOption ( 'session\cookie_domain' ) );
+        if ($this->getOption ( 'cookie_domain' )) {
+            $this->cookieDomain ( $this->getOption ( 'cookie_domain' ) );
         }
         
         // session name
-        if ($this->classsFacesOption ( 'session\name' )) {
-            $this->sessionName ( $this->classsFacesOption ( 'session\name' ) );
+        if ($this->getOption ( 'name' )) {
+            $this->sessionName ( $this->getOption ( 'name' ) );
         }
         
         // cache expire
-        if ($this->classsFacesOption ( 'session\cache_expire' )) {
-            $this->cacheExpire ( $this->classsFacesOption ( 'session\cache_expire' ) );
+        if ($this->getOption ( 'expire' )) {
+            $this->cacheExpire ( $this->getOption ( 'expire' ) );
         }
         
         // gc maxlifetime
-        if ($this->classsFacesOption ( 'session\gc_maxlifetime' )) {
-            $this->gcMaxlifetime ( $this->classsFacesOption ( 'session\gc_maxlifetime' ) );
+        if ($this->getOption ( 'gc_maxlifetime' )) {
+            $this->gcMaxlifetime ( $this->getOption ( 'gc_maxlifetime' ) );
         }
         
         // cookie lifetime
-        if ($this->classsFacesOption ( 'session\cookie_lifetime' )) {
-            $this->cookieLifetime ( $this->classsFacesOption ( 'session\cookie_lifetime' ) );
+        if ($this->getOption ( 'cookie_lifetime' )) {
+            $this->cookieLifetime ( $this->getOption ( 'cookie_lifetime' ) );
         }
         
         // cache limiter
-        if ($this->classsFacesOption ( 'session\cache_limiter' )) {
-            $this->cacheLimiter ( $this->classsFacesOption ( 'session\cache_limiter' ) );
+        if ($this->getOption ( 'cache_limiter' )) {
+            $this->cacheLimiter ( $this->getOption ( 'cache_limiter' ) );
         }
         
         // save path
-        if ($this->classsFacesOption ( 'session\save_path' )) {
-            $this->savePath ( $this->classsFacesOption ( 'session\save_path' ) );
+        if ($this->getOption ( 'save_path' )) {
+            $this->savePath ( $this->getOption ( 'save_path' ) );
         }
         
         // use_trans_sid
-        if ($this->classsFacesOption ( 'session\use_trans_sid' )) {
-            $this->useTransSid ( $this->classsFacesOption ( 'session\use_trans_sid' ) );
+        if ($this->getOption ( 'use_trans_sid' )) {
+            $this->useTransSid ( $this->getOption ( 'use_trans_sid' ) );
         }
         
         // gc_probability
-        if ($this->classsFacesOption ( 'session\gc_probability' )) {
-            $this->gcProbability ( $this->classsFacesOption ( 'session\gc_probability' ) );
+        if ($this->getOption ( 'gc_probability' )) {
+            $this->gcProbability ( $this->getOption ( 'gc_probability' ) );
         }
-        
+        dump ( 'xx' );
         // 驱动
-        if ($this->classsFacesOption ( 'session\default' )) {
-            $strConnectClass = 'queryyetsimple\\session\\' . $this->classsFacesOption ( 'session\default' );
-            if (class_exists ( $strConnectClass )) {
-                if (! session_set_save_handler ( new $strConnectClass ( [ 
-                        'prefix' => $this->classsFacesOption ( 'session\prefix' ),
-                        'expire' => $this->classsFacesOption ( 'session\cache_expire' ) 
-                ] ) ))
-                    throw new RuntimeException ( __ ( 'session 驱动 %s 设置失败', $this->classsFacesOption ( 'session\default' ) ) );
-            } else {
-                throw new RuntimeException ( __ ( 'session 驱动 %s 不存在', $this->classsFacesOption ( 'session\default' ) ) );
-            }
+        if ($this->oHandler && ! session_set_save_handler ( $this->oHandler )) {
+            echo 'xx';
+            throw new RuntimeException ( __ ( 'session 驱动 %s 设置失败', get_class ( $this->oHandler ) ) );
+        } else {
+            echo 'x';
         }
         
         // 启动 session
@@ -199,7 +213,7 @@ class session implements repository {
      */
     public function clear($bOnlyDeletePrefix = true) {
         $nSession = count ( $_SESSION );
-        $strSessionPrefix = $this->classsFacesOption ( 'session\prefix' );
+        $strSessionPrefix = $this->getOption ( 'prefix' );
         foreach ( $_SESSION as $sKey => $Val ) {
             if ($bOnlyDeletePrefix === true && $strSessionPrefix) {
                 if (strpos ( $sKey, $strSessionPrefix ) === 0) {
@@ -403,6 +417,19 @@ class session implements repository {
      * @return string
      */
     protected function getName($sName, $bPrefix = true) {
-        return ($bPrefix ? $this->classsFacesOption ( 'session\prefix' ) : '') . $sName;
+        return ($bPrefix ? $this->getOption ( 'prefix' ) : '') . $sName;
     }
+}
+
+namespace qys\session;
+
+/**
+ * session 仓库
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.04.17
+ * @version 1.0
+ */
+class store extends \queryyetsimple\session\store {
 }

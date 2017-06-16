@@ -16,14 +16,21 @@ namespace queryyetsimple\session\interfaces;
 queryphp;
 
 /**
- * repository 接口
+ * store 接口
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.04.11
  * @version 1.0
  */
-interface repository {
+interface store {
+    
+    /**
+     * 启动 session
+     *
+     * @return void
+     */
+    public function start();
     
     /**
      * 设置 session
@@ -178,4 +185,17 @@ interface repository {
      * @return int
      */
     public function gcProbability($nGcProbability = null);
+}
+
+namespace qys\session\interfaces;
+
+/**
+ * store 接口
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.04.11
+ * @version 1.0
+ */
+interface store extends \queryyetsimple\session\interfaces\store {
 }
