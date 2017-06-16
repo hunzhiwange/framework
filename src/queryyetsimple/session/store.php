@@ -138,13 +138,10 @@ class store implements interfaces_store {
         if ($this->getOption ( 'gc_probability' )) {
             $this->gcProbability ( $this->getOption ( 'gc_probability' ) );
         }
-        dump ( 'xx' );
+        
         // 驱动
         if ($this->oHandler && ! session_set_save_handler ( $this->oHandler )) {
-            echo 'xx';
             throw new RuntimeException ( __ ( 'session 驱动 %s 设置失败', get_class ( $this->oHandler ) ) );
-        } else {
-            echo 'x';
         }
         
         // 启动 session
