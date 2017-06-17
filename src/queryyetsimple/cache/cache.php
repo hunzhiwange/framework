@@ -40,7 +40,7 @@ class cache implements interfaces_cache {
     /**
      * 缓存连接对象
      *
-     * @var \queryyetsimple\abstracts\cache
+     * @var array(\queryyetsimple\cache\repository)
      */
     protected static $arrConnect;
     
@@ -58,7 +58,7 @@ class cache implements interfaces_cache {
      * 连接缓存并返回连接对象
      *
      * @param array|string $mixOption            
-     * @return \queryyetsimple\abstracts\cache
+     * @return \queryyetsimple\cache\repository
      */
     public function connect($mixOption = []) {
         if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['cache\\connect.' . $mixOption]) )) {

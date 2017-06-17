@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,19 +15,37 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\classs\faces;
+
 /**
- * database.register 服务提供者
+ * 沙盒 database
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2017.06.10
  * @version 1.0
  */
-return [ 
-        'singleton@database' => [ 
-                'queryyetsimple\database\database',
-                function ($oProject) {
-                    return new queryyetsimple\database\database ( $oProject );
-                } 
-        ] 
-];
+class database extends faces {
+    
+    /**
+     * 返回门面名字
+     *
+     * @return string
+     */
+    protected static function name() {
+        return 'database';
+    }
+}
+
+namespace qys;
+
+/**
+ * 沙盒 database
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.10
+ * @version 1.0
+ */
+class database extends \queryyetsimple\database {
+}

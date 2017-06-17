@@ -20,7 +20,7 @@ use queryyetsimple\database\abstracts\connect;
 use queryyetsimple\database\interfaces\connect as interfaces_connect;
 
 /**
- * 数据库连接
+ * mysql 数据库连接
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
@@ -36,9 +36,9 @@ class mysql extends connect implements interfaces_connect {
      * @return string
      */
     public function parseDsn($arrOption) {
-        $strDsn = 'mysql:dbname=' . $arrOption ['database\name'] . ';host=' . $arrOption ['database\host'];
-        if (! empty ( $arrOption ['database\port'] )) {
-            $strDsn .= ';port=' . $arrOption ['database\port'];
+        $strDsn = 'mysql:dbname=' . $arrOption ['name'] . ';host=' . $arrOption ['host'];
+        if (! empty ( $arrOption ['port'] )) {
+            $strDsn .= ';port=' . $arrOption ['port'];
         }        
 
         // http://blogread.cn/it/article/6501
@@ -48,8 +48,8 @@ class mysql extends connect implements interfaces_connect {
         }
         
         // 编码
-        if (! empty ( $arrOption ['database\char'] )) {
-            $strDsn .= ';charset=' . $arrOption ['database\char'];
+        if (! empty ( $arrOption ['charset'] )) {
+            $strDsn .= ';charset=' . $arrOption ['charset'];
         }
         
         return $strDsn;
@@ -65,7 +65,7 @@ class mysql extends connect implements interfaces_connect {
     public function getTableNames($sDbName = null, $mixMaster = false) {
         // 确定数据库
         if ($sDbName === null) {
-            $sDbName = $this->getCurrentOption ( 'database\name' );
+            $sDbName = $this->getCurrentOption ( 'name' );
         }
         $strSql = 'SHOW TABLES FROM ' . $this->qualifyTableOrColumn ( $sDbName );
         $arrResult = [ ];
@@ -135,4 +135,17 @@ class mysql extends connect implements interfaces_connect {
     public function identifierColumn($sName) {
         return $sName != '*' ? "`{$sName}`" : '*';
     }
+}
+
+namespace qys\database;
+
+/**
+ * mysql 数据库连接
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.03.09
+ * @version 1.0
+ */
+class mysql extends \queryyetsimple\database\mysql {
 }

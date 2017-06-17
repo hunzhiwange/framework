@@ -16,224 +16,189 @@ namespace queryyetsimple\database;
 queryphp;
 
 use Exception;
-use queryyetsimple\option\option;
 use queryyetsimple\helper\helper;
-use queryyetsimple\classs\faces as classs_faces;
+use queryyetsimple\bootstrap\project;
+use queryyetsimple\database\interfaces\connect;
+use queryyetsimple\database\interfaces\database as interfaces_database;
 
 /**
  * 数据库入口
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.03.09
+ * @since 2017.02.15
  * @version 1.0
  */
-class database {
-    
-    use classs_faces;
+class database implements interfaces_database {
     
     /**
-     * 配置
+     * 项目管理
      *
-     * @var array
+     * @var \queryyetsimple\bootstrap\project
      */
-    protected $arrClasssFacesOption = [ 
-            'database\default' => 'mysql',
-            'database\schema' => '',
-            'database\user' => 'root',
-            'database\password' => '',
-            'database\host' => 'localhost',
-            'database\port' => 3306,
-            'database\name' => '',
-            'database\dsn' => '',
-            'database\params' => [ ],
-            'database\char' => 'utf8',
-            'database\persistent' => false,
-            'database\distributed' => false,
-            'database\rw_separate' => false,
-            'database\master' => [ ],
-            'database\slave' => [ ] 
-    ];
+    protected $objProject;
     
     /**
-     * 缓存连接对象
+     * 数据库连接对象
      *
-     * @var \queryyetsimple\cache\interfaces\cache
+     * @var array(\queryyetsimple\database\interfaces\connect)
      */
-    protected $objConnect;
+    protected static $arrConnect;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\cache\interfaces\cache $objConnect            
+     * @param \queryyetsimple\bootstrap\project $objConnect            
      * @return void
      */
-    public function __construct(interfaces_cache $objConnect) {
-        $this->objConnect = $objConnect;
+    public function __construct(project $objProject) {
+        $this->objProject = $objProject;
     }
     
     /**
      * 连接数据库并返回连接对象
      *
-     * @param mixed $mixOption            
-     * @return \queryyetsimple\database\abstracts\connect
+     * @param array|string $mixOption            
+     * @return \queryyetsimple\database\interfaces\connect
      */
-    public function connect($mixOption = null) {
-        static $arrConnect;
-        
-        // 连接唯一标识
-        $strUnique = md5 ( is_array ( $mixOption ) ? json_encode ( $mixOption ) : $mixOption );
-        
-        // 已经存在直接返回
-        if (isset ( $arrConnect [$strUnique] )) {
-            return $arrConnect [$strUnique];
+    public function connect($mixOption = []) {
+        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['database\\connect.' . $mixOption]) )) {
+            $mixOption = [ ];
         }
         
-        // 解析数据库配置
-        $mixOption = $this->parseOption ( $mixOption );
+        $strDriver = ! empty ( $mixOption ['driver'] ) ? $mixOption ['driver'] : $this->getDefaultDriver ();
+        $strUnique = $this->getUnique ( $mixOption );
         
-        // 连接数据库
-        $strConnectClass = 'queryyetsimple\\database\\' . $mixOption ['database\default'];
-        if (class_exists ( $strConnectClass )) {
-            return $arrConnect [$strUnique] = new $strConnectClass ( $mixOption );
-        } else {
-            throw new Exception ( __ ( '数据库驱动 %s 不存在', $mixOption ['db_type'] ) );
+        if (isset ( static::$arrConnect [$strUnique] )) {
+            return static::$arrConnect [$strUnique];
         }
+        
+        return static::$arrConnect [$strUnique] = $this->makeConnect ( $strDriver, $mixOption );
     }
     
     /**
-     * 解析数据库连接参数
+     * 返回默认驱动
      *
-     * @param string $mixOption            
+     * @return string
+     */
+    public function getDefaultDriver() {
+        return $this->objProject ['option'] ['database\default'];
+    }
+    
+    /**
+     * 设置默认驱动
+     *
+     * @param string $strName            
+     * @return void
+     */
+    public function setDefaultDriver($strName) {
+        $this->objProject ['option'] ['database\default'] = $strName;
+    }
+    
+    /**
+     * 创建连接
+     *
+     * @param string $strConnect            
+     * @param array $arrOption            
+     * @return \queryyetsimple\database\interfaces\connect
+     */
+    protected function makeConnect($strConnect, $arrOption = []) {
+        if (is_null ( $this->objProject ['option'] ['database\connect.' . $strConnect] ))
+            throw new Exception ( __ ( '数据库驱动 %s 不存在', $strConnect ) );
+        return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
+    }
+    
+    /**
+     * 创建 mysql 连接
+     *
+     * @param array $arrOption            
+     * @return \queryyetsimple\database\mysql
+     */
+    protected function makeConnectMysql($arrOption = []) {
+        return new mysql ( array_merge ( $this->getOption ( 'mysql' ), $arrOption ) );
+    }
+    
+    /**
+     * 取得唯一值
+     *
+     * @param array $arrOption            
+     * @return string
+     */
+    protected function getUnique($arrOption) {
+        return md5 ( serialize ( $arrOption ) );
+    }
+    
+    /**
+     * 读取默认数据库配置
+     *
+     * @param string $strConnect            
      * @return array
      */
-    protected function parseOption($mixOption = null) {
-        $arrOption = [ ];
+    protected function getOption($strConnect) {
+        $arrOption = $this->objProject ['option'] ['database\\'];
+        unset ( $arrOption ['default'], $arrOption ['connect'] );
         
-        // 配置文件存在链接
-        if (is_string ( $mixOption ) && is_array ( option::gets ( 'database\\connect.' . $mixOption ) )) {
-            $arrOption = option::gets ( 'database\\connect.' . $mixOption );
-        }        
-
-        // 数组类配置
-        elseif (is_array ( $mixOption )) {
-            $arrOption = $mixOption;
-        }
-        
-        // 补全结果
-        return $this->fillOption ( $arrOption );
+        return $this->parseOption ( array_merge ( $this->objProject ['option'] ['database\connect.' . $strConnect], $arrOption ) );
     }
     
     /**
-     * 填充数据库配置参数
+     * 分析数据库配置参数
      *
      * @param array $arrOption            
      * @return array
      */
-    protected function fillOption($arrOption = []) {
-        // 返回结果
-        $arrResult = $arrDefaultOption = [ ];
+    protected function parseOption($arrOption) {
+        $arrTemp = $arrOption;
         
-        // 默认参数
-        foreach ( $this->classsFacesOptionKey () as $sOptionType ) {
-            $arrDefaultOption [$sOptionType] = $this->classsFacesOption ( $sOptionType );
+        foreach ( array_keys ( $arrOption ) as $strType ) {
+            if (in_array ( $strType, [ 
+                    'distributed',
+                    'readwrite_separate',
+                    'driver',
+                    'master',
+                    'slave',
+                    'fetch' 
+            ] )) {
+                if (isset ( $arrTemp [$strType] ))
+                    unset ( $arrTemp [$strType] );
+            } else {
+                if (isset ( $arrOption [$strType] ))
+                    unset ( $arrOption [$strType] );
+            }
         }
-        
-        // 合并参数
-        $arrOption = array_merge ( $arrOption, $arrDefaultOption );
-        
-        // 如果 DSN 字符串则进行解析
-        if (! empty ( $arrOption ['database\dsn'] )) {
-            $arrOption = array_merge ( $arrOption, $this->parseDsn ( $arrOption ['database\dsn'] ) );
-        }
-        
-        // 剥离公共配置参数
-        foreach ( [ 
-                'database\distributed',
-                'database\rw_separate' 
-        ] as $strType ) {
-            $arrResult [$strType] = $arrOption [$strType];
-            unset ( $arrOption [$strType] );
-        }
-        $arrResult ['database\default'] = $arrOption ['database\default'];
         
         // 纠正数据库服务器参数
         foreach ( [ 
-                'database\master',
-                'database\slave' 
+                'master',
+                'slave' 
         ] as $strType ) {
-            if (! is_array ( $arrOption [$strType] )) {
+            if (! is_array ( $arrOption [$strType] ))
                 $arrOption [$strType] = [ ];
-            }
-            $arrResult [$strType] = $arrOption [$strType];
-            unset ( $arrOption [$strType] );
-        }
-        
-        // 是否采用分布式服务器，非分布式关闭附属服务器
-        if ($arrResult ['database\distributed'] !== true) {
-            $arrResult ['database\slave'] = [ ];
         }
         
         // 填充数据库服务器参数
-        $arrResult ['database\master'] = array_merge ( $arrResult ['database\master'], $arrOption );
-        if ($arrResult ['database\slave']) {
-            if (count ( $arrResult ['database\slave'] ) == count ( $arrResult ['database\slave'], 1 )) {
-                $arrResult ['database\slave'] = [ 
-                        $arrResult ['database\slave'] 
+        $arrOption ['master'] = array_merge ( $arrOption ['master'], $arrTemp );
+        
+        // 是否采用分布式服务器，非分布式关闭附属服务器
+        if (! $arrOption ['distributed']) {
+            $arrOption ['slave'] = [ ];
+        } elseif ($arrOption ['slave']) {
+            if (count ( $arrOption ['slave'] ) == count ( $arrOption ['slave'], COUNT_RECURSIVE )) {
+                $arrOption ['slave'] = [ 
+                        $arrOption ['slave'] 
                 ];
             }
-            foreach ( $arrResult ['database\slave'] as &$arrSlave ) {
-                $arrSlave = array_merge ( $arrSlave, $arrOption );
+            foreach ( $arrOption ['slave'] as &$arrSlave ) {
+                $arrSlave = array_merge ( $arrSlave, $arrTemp );
             }
         }
         
         // + 合并支持
-        $arrResult = helper::arrayMergePlus ( $arrResult );
+        $arrOption = helper::arrayMergePlus ( $arrOption );
         
         // 返回结果
-        unset ( $arrOption, $arrDefaultOption );
-        return $arrResult;
-    }
-    
-    /**
-     * 解析数据库连接数据源
-     *
-     * @param string $strDsn            
-     * @return array
-     */
-    protected function parseDsn($strDsn) {
-        $strDsn = trim ( $strDsn );
-        
-        // dsn 为空，直接返回
-        if (empty ( $strDsn )) {
-            return [ ];
-        }
-        
-        // 分析dsn参数
-        $arrDsn = parse_url ( $strDsn );
-        if ($arrDsn ['scheme']) {
-            return [ 
-                    'db_type' => $arrDsn ['scheme'],
-                    'db_schema' => $arrDsn ['scheme'],
-                    'db_user' => isset ( $arrDsn ['user'] ) ? $arrDsn ['user'] : '',
-                    'db_password' => isset ( $arrDsn ['pass'] ) ? $arrDsn ['pass'] : '',
-                    'db_host' => isset ( $arrDsn ['host'] ) ? $arrDsn ['host'] : '',
-                    'db_port' => isset ( $arrDsn ['port'] ) ? $arrDsn ['port'] : '',
-                    'db_name' => isset ( $arrDsn ['path'] ) ? substr ( $arrDsn ['path'], 1 ) : '' 
-            ];
-        } else {
-            if (preg_match ( '/^(.*?)\:\/\/(.*?)\:(.*?)\@(.*?)\:([0-9]{1,6})\/(.*?)$/', $strDsn, $arrMat )) {
-                return [ 
-                        'db_type' => $arrMat [1],
-                        'db_schema' => $arrMat [1],
-                        'db_user' => $arrMat [2],
-                        'db_password' => $arrMat [3],
-                        'db_host' => $arrMat [4],
-                        'db_port' => $arrMat [5],
-                        'db_name' => $arrMat [6] 
-                ];
-            }
-        }
+        unset ( $arrTemp );
+        return $arrOption;
     }
     
     /**
@@ -249,4 +214,17 @@ class database {
                 $sMethod 
         ], $arrArgs );
     }
+}
+
+namespace qys\database;
+
+/**
+ * 数据库入口
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.02.15
+ * @version 1.0
+ */
+class database extends \queryyetsimple\database\database {
 }

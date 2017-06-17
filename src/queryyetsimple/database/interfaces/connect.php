@@ -97,6 +97,7 @@ interface connect {
      * @return void
      */
     public function rollBack();
+    
     /**
      * 获取最后插入 ID 或者列
      *
@@ -121,6 +122,7 @@ interface connect {
      * @return array
      */
     public function getBindParams();
+    
     /**
      * 返回影响记录
      *
@@ -142,12 +144,14 @@ interface connect {
      * @return void
      */
     public function freePDOStatement();
+    
     /**
      * 关闭数据库连接
      *
      * @return void
      */
     public function closeDatabase();
+    
     /**
      * sql 表达式格式化
      *
@@ -242,4 +246,17 @@ interface connect {
      * @return string
      */
     public function identifierColumn($sName);
+}
+
+namespace qys\database\interfaces;
+
+/**
+ * connect 接口
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.04.23
+ * @version 1.0
+ */
+interface connect extends \queryyetsimple\database\interfaces\connect {
 }

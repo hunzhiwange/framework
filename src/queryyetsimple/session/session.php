@@ -40,7 +40,7 @@ class session implements interfaces_session {
     /**
      * session 连接对象
      *
-     * @var \queryyetsimple\abstracts\cache
+     * @var array(\queryyetsimple\session\store)
      */
     protected static $arrConnect;
     
@@ -58,7 +58,7 @@ class session implements interfaces_session {
      * 连接 session 并返回连接对象
      *
      * @param array|string $mixOption            
-     * @return \SessionHandlerInterface
+     * @return \queryyetsimple\session\store
      */
     public function connect($mixOption = []) {
         if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['session\\connect.' . $mixOption]) )) {

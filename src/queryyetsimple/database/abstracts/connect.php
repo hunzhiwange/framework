@@ -24,7 +24,7 @@ use queryyetsimple\assert\assert;
 use queryyetsimple\database\select;
 
 /**
- * 数据库连接
+ * 数据库连接抽象层
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
@@ -32,13 +32,6 @@ use queryyetsimple\database\select;
  * @version 1.0
  */
 abstract class connect {
-    
-    /**
-     * 数据库是否已经初始化连接
-     *
-     * @var bool
-     */
-    protected $booInitConnect = false;
     
     /**
      * 所有数据库连接
@@ -117,24 +110,16 @@ abstract class connect {
      * @return void
      */
     public function __construct($arrOption) {
-        // 初始化连接
-        if (! $this->booInitConnect) {
-            // 标识连接
-            $this->booInitConnect = true;
-            
-            // 记录连接参数
-            $this->arrOption = $arrOption;
-            
-            // 尝试连接主服务器
-            if (! $this->writeConnect ()) {
+        // 记录连接参数
+        $this->arrOption = $arrOption;
+        
+        // 尝试连接主服务器
+        $this->writeConnect ();
+        
+        // 连接分布式服务器
+        if ($arrOption ['distributed'] === true) {
+            if (! $this->readConnect ()) {
                 $this->throwException ();
-            }
-            
-            // 连接分布式服务器
-            if ($arrOption ['database\distributed'] === true) {
-                if (! $this->readConnect ()) {
-                    $this->throwException ();
-                }
             }
         }
     }
@@ -190,7 +175,7 @@ abstract class connect {
      * @param array $arrCtorArgs            
      * @return mixed
      */
-    public function query($strSql, $arrBindParams = [], $mixMaster = false, $intFetchType = PDO::FETCH_OBJ, $mixFetchArgument = null, $arrCtorArgs = []) {
+    public function query($strSql, $arrBindParams = [], $mixMaster = false, $intFetchType = null, $mixFetchArgument = null, $arrCtorArgs = []) {
         // 查询组件
         $this->initSelect ();
         
@@ -651,9 +636,7 @@ abstract class connect {
         }
         
         // 没有连接开始请求连接
-        if (! ($objPdo = $this->commonConnect ( $this->arrOption ['database\master'], 0 ))) {
-            return false;
-        }
+        $objPdo = $this->commonConnect ( $this->arrOption ['master'], 0, true );
         
         // 当前连接
         return $this->objConnect = $objPdo;
@@ -666,7 +649,7 @@ abstract class connect {
      */
     protected function readConnect() {
         // 未开启分布式服务器连接或则没有读服务器，直接连接写服务器
-        if ($this->arrOption ['database\distributed'] === false || empty ( $this->arrOption ['database\slave'] )) {
+        if ($this->arrOption ['distributed'] === false || empty ( $this->arrOption ['slave'] )) {
             return $this->writeConnect ();
         }
         
@@ -676,7 +659,7 @@ abstract class connect {
                 $this->commonConnect ( $arrRead, null );
             }
             
-            // 没有连接成功的读服务器
+            // 没有连接成功的读服务器则还是连接写服务器
             if (count ( $this->arrConnect ) < 2) {
                 return $this->writeConnect ();
             }
@@ -684,11 +667,11 @@ abstract class connect {
         
         // 如果为读写分离,去掉主服务器
         $arrConnect = $this->arrConnect;
-        if ($this->arrOption ['database\rw_separate'] === true) {
+        if ($this->arrOption ['readwrite_separate'] === true) {
             unset ( $arrConnect [0] );
         }
         
-        // 随机在已连接的 Slave 机中选择一台
+        // 随机在已连接的 slave 服务器中选择一台
         return $this->objConnect = $arrConnect [floor ( mt_rand ( 0, count ( $arrConnect ) - 1 ) )];
     }
     
@@ -697,9 +680,10 @@ abstract class connect {
      *
      * @param array $arrOption            
      * @param string $nLinkid            
+     * @param boolean $booThrowException            
      * @return mixed
      */
-    protected function commonConnect($arrOption = '', $nLinkid = null) {
+    protected function commonConnect($arrOption = '', $nLinkid = null, $booThrowException = false) {
         // 数据库连接 ID
         if ($nLinkid === null) {
             $nLinkid = count ( $this->arrConnect );
@@ -710,16 +694,14 @@ abstract class connect {
             return $this->arrConnect [$nLinkid];
         }
         
-        // 数据库长连接
-        if ($arrOption ['database\persistent']) {
-            $arrOption [PDO::ATTR_PERSISTENT] = true;
-        }
-        
         try {
             $this->setCurrentOption ( $arrOption );
-            return $this->arrConnect [$nLinkid] = new PDO ( $this->parseDsn ( $arrOption ), $arrOption ['database\user'], $arrOption ['database\password'], $arrOption ['database\params'] );
+            return $this->arrConnect [$nLinkid] = new PDO ( $this->parseDsn ( $arrOption ), $arrOption ['user'], $arrOption ['password'], $arrOption ['options'] );
         } catch ( PDOException $oE ) {
-            return false;
+            if ($booThrowException === false)
+                return false;
+            else
+                throw $oE;
         }
     }
     
@@ -756,14 +738,14 @@ abstract class connect {
      * @param boolean $booProcedure            
      * @return array
      */
-    protected function fetchResult($intFetchType = PDO::FETCH_OBJ, $mixFetchArgument = null, $arrCtorArgs = [], $booProcedure = false) {
+    protected function fetchResult($intFetchType = null, $mixFetchArgument = null, $arrCtorArgs = [], $booProcedure = false) {
         // 存储过程支持多个结果
         if ($booProcedure) {
             return $this->fetchProcedureResult ( $intFetchType, $mixFetchArgument, $arrCtorArgs );
         }
         
         $arrArgs = [ 
-                $intFetchType 
+                $intFetchType !== null ? $intFetchType : $this->arrOption ['fetch'] 
         ];
         if ($mixFetchArgument) {
             $arrArgs [] = $mixFetchArgument;
@@ -785,7 +767,7 @@ abstract class connect {
      * @param array $arrCtorArgs            
      * @return array
      */
-    protected function fetchProcedureResult($intFetchType = PDO::FETCH_OBJ, $mixFetchArgument = null, $arrCtorArgs = []) {
+    protected function fetchProcedureResult($intFetchType = null, $mixFetchArgument = null, $arrCtorArgs = []) {
         $arrResult = [ ];
         do {
             if (($mixResult = $this->fetchResult ( $intFetchType, $mixFetchArgument, $arrCtorArgs ))) {
@@ -830,7 +812,7 @@ abstract class connect {
         
         // 记录 SQL 日志
         $arrLastSql = $this->getLastSql ( true );
-        log::runs ( $arrLastSql [0] . (! empty ( $arrLastSql [1] ) ? ' @ ' . json_encode ( $arrLastSql [1], JSON_UNESCAPED_UNICODE ) : ''), 'sql' );
+        //log::runs ( $arrLastSql [0] . (! empty ( $arrLastSql [1] ) ? ' @ ' . json_encode ( $arrLastSql [1], JSON_UNESCAPED_UNICODE ) : ''), 'sql' );
     }
     
     /**
@@ -875,4 +857,17 @@ abstract class connect {
         // 关闭数据库连接
         $this->closeDatabase ();
     }
+}
+
+namespace qys\database\abstracts;
+
+/**
+ * 数据库连接抽象层
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.03.09
+ * @version 1.0
+ */
+abstract class connect extends \queryyetsimple\database\abstracts\connect {
 }
