@@ -36,9 +36,6 @@ class console {
         if (isset ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ) && 'xmlhttprequest' == strtolower ( $_SERVER ['HTTP_X_REQUESTED_WITH'] ))
             return;
         
-        if (! env ( 'app_debug' ))
-            return;
-        
         $arrTrace = [ ];
         
         // SQL 记录

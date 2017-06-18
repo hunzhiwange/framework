@@ -152,16 +152,3 @@ class redis extends abstracts_cache implements connect {
         return new Rediss ();
     }
 }
-
-namespace qys\cache;
-
-/**
- * redis 扩展缓存
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.06.05
- * @version 1.0
- */
-class redis extends \queryyetsimple\cache\redis {
-}

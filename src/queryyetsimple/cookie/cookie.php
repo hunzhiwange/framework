@@ -129,16 +129,3 @@ class cookie implements interfaces_cookie {
         }
     }
 }
-
-namespace qys\cookie;
-
-/**
- * cookie 封装
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2016.11.19
- * @version 1.0
- */
-class cookie extends \queryyetsimple\cookie\cookie {
-}

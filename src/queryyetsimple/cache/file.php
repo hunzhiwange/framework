@@ -213,16 +213,3 @@ class file extends abstracts_cache implements connect {
         return is_file ( $this->getCachePath ( $sCacheName, $arrOption ) );
     }
 }
-
-namespace qys\cache;
-
-/**
- * 文件缓存
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.02.15
- * @version 1.0
- */
-class file extends \queryyetsimple\cache\file {
-}

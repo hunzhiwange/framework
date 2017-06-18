@@ -128,16 +128,3 @@ abstract class faces {
         return call_user_func_array ( $calMethod, $arrArgs );
     }
 }
-
-namespace qys\classs;
-
-/**
- * 实现类的静态访问门面
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.05.04
- * @version 1.0
- */
-abstract class faces extends \queryyetsimple\classs\faces {
-}

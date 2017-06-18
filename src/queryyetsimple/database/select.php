@@ -3791,16 +3791,3 @@ class select {
     // -------------------- 私有方法 end ---------------------
     // ######################################################
 }
-
-namespace qys\database;
-
-/**
- * 数据库查询器
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.03.09
- * @version 1.0
- */
-class select extends \queryyetsimple\database\select {
-}

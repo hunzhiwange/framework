@@ -122,16 +122,3 @@ class repository implements interfaces_repository {
         ], $arrArgs );
     }
 }
-
-namespace qys\cache;
-
-/**
- * 缓存入口
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.02.15
- * @version 1.0
- */
-class repository extends \queryyetsimple\cache\repository {
-}

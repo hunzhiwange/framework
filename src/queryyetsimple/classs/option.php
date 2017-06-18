@@ -77,17 +77,3 @@ trait option {
         return $arrOption ? array_merge ( $this->arrOption, $arrOption ) : $this->arrOption;
     }
 }
-
-namespace qys\classs;
-
-/**
- * 类配置复用
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.04.13
- * @version 1.0
- */
-trait option {
-    use \queryyetsimple\classs\option;
-}

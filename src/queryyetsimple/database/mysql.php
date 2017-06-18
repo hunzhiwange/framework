@@ -136,16 +136,3 @@ class mysql extends connect implements interfaces_connect {
         return $sName != '*' ? "`{$sName}`" : '*';
     }
 }
-
-namespace qys\database;
-
-/**
- * mysql 数据库连接
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.03.09
- * @version 1.0
- */
-class mysql extends \queryyetsimple\database\mysql {
-}

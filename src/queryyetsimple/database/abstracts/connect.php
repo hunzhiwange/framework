@@ -858,16 +858,3 @@ abstract class connect {
         $this->closeDatabase ();
     }
 }
-
-namespace qys\database\abstracts;
-
-/**
- * 数据库连接抽象层
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.03.09
- * @version 1.0
- */
-abstract class connect extends \queryyetsimple\database\abstracts\connect {
-}

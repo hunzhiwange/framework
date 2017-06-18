@@ -215,16 +215,3 @@ class database implements interfaces_database {
         ], $arrArgs );
     }
 }
-
-namespace qys\database;
-
-/**
- * 数据库入口
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.02.15
- * @version 1.0
- */
-class database extends \queryyetsimple\database\database {
-}
