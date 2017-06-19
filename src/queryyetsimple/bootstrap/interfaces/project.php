@@ -42,7 +42,7 @@ interface project extends container {
      * @param array $arrOption            
      * @return $this
      */
-    public static function bootstrap(ClassLoader $objComposer = null, $arrOption = []);
+    public static function singletons(ClassLoader $objComposer = null, $arrOption = []);
     
     /**
      * 程序版本

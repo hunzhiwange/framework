@@ -15,6 +15,7 @@ namespace queryyetsimple\bootstrap;
 ##########################################################
 queryphp;
 
+use RuntimeException;
 use queryyetsimple\mvc\view;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\helper\helper;
@@ -83,18 +84,13 @@ class project extends container implements interfaces_project {
     
     /**
      * 构造函数
+     * 受保护的禁止外部通过 new 实例化，只能通过 singletons 生成单一实例
      *
      * @param \Composer\Autoload\ClassLoader $objComposer            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct($objComposer, $arrOption = []) {
-        if ($objComposer == '') {
-            echo 'xx';
-            
-            throw new \Exception ( 'xx' );
-        }
-        
+    protected function __construct($objComposer, $arrOption = []) {
         // set composer
         $this->setComposer ( $objComposer )->
         
@@ -118,12 +114,21 @@ class project extends container implements interfaces_project {
     }
     
     /**
+     * 禁止克隆
+     *
+     * @return void
+     */
+    protected function __clone() {
+        throw new RuntimeException ( 'Project disallowed clone' );
+    }
+    
+    /**
      * 执行项目
      *
      * @return void
      */
     public function run() {
-        $this->make ( bootstrap::class )->run ();
+        (new bootstrap ( $this ))->run ();
     }
     
     /**
@@ -133,7 +138,7 @@ class project extends container implements interfaces_project {
      * @param array $arrOption            
      * @return $this
      */
-    public static function bootstrap(ClassLoader $objComposer = null, $arrOption = []) {
+    public static function singletons(ClassLoader $objComposer = null, $arrOption = []) {
         if (static::$objProject !== null) {
             return static::$objProject;
         } else {
@@ -286,9 +291,6 @@ class project extends container implements interfaces_project {
      */
     protected function registerMvcProvider() {
         $this->instance ( project::class, $this );
-        
-        // 注册启动程序
-        $this->register ( new bootstrap ( $this, $this->arrOption ) );
         
         // 注册 app
         $this->singleton ( 'queryyetsimple\bootstrap\application', function (project $objProject, $sApp, $arrOption = []) {

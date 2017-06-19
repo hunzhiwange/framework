@@ -24,11 +24,11 @@ if (! function_exists ( 'project' )) {
      */
     function project($sInstance = null /*argvs*/) {
         if ($sInstance === null) {
-            return project::bootstrap ();
+            return project::singletons ();
         } else {
             $arrArgs = func_get_args ();
             array_shift ( $arrArgs );
-            if (($objInstance = project::bootstrap ()->make ( $sInstance, $arrArgs ))) {
+            if (($objInstance = project::singletons ()->make ( $sInstance, $arrArgs ))) {
                 return $objInstance;
             }
             throw new BadMethodCallException ( __ ( '容器中未发现注入的 %s', $sInstance ) );
