@@ -17,7 +17,6 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\helper\helper;
-use queryyetsimple\router\router;
 use queryyetsimple\filesystem\directory;
 
 /**
@@ -136,36 +135,6 @@ class tool {
         }
         if ($arrOptionData ['router']) {
             $arrOptionData ['router'] = helper::arrayMergePlus ( $arrOptionData ['router'] );
-        }
-    }
-    
-    /**
-     * 路由配置
-     *
-     * @param array $arrOptionData            
-     * @param array $arrOptionDir            
-     * @param array $arrOptionTypeAll            
-     * @return void
-     */
-    private static function router2(&$arrOptionData, $arrOptionDir, $arrOptionTypeAll) {
-        if (! empty ( $arrOptionData ['app'] ['router_extend'] )) {
-            $arrRouterExtend = array_diff ( array_map ( function ($strItem) {
-                return 'router_' . $strItem;
-            }, helper::arrays ( $arrOptionData ['app'] ['router_extend'] ) ), $arrOptionTypeAll );
-            
-            $arrOptionData ['app'] ['~routers~'] = array_merge ( $arrOptionData ['app'] ['~routers~'], $arrRouterExtend );
-            
-            foreach ( $arrOptionDir as $sDir ) {
-                foreach ( $arrRouterExtend as $sType ) {
-                    if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
-                        continue;
-                    $arrOptionData ['router'] = array_merge ( $arrOptionData ['router'], ( array ) include $strFile );
-                }
-            }
-        }
-        if ($arrOptionData ['router']) {
-            $arrOptionData ['router'] = helper::arrayMergePlus ( $arrOptionData ['router'] );
-            router::importCaches ( $arrOptionData ['router'] );
         }
     }
 }
