@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\helper\helper;
-use queryyetsimple\filesystem\directory;
+use queryyetsimple\filesystem\filesystem;
 
 /**
  * 语言包工具类
@@ -51,7 +51,7 @@ class tool {
         
         $sDir = dirname ( $sCacheFile );
         if (! is_dir ( $sDir )) {
-            directory::create ( $sDir );
+            filesystem::createDirectory ( $sDir );
         }
         // 防止空数据无法写入
         $arrTexts ['Query Yet Simple'] = 'Query Yet Simple';
@@ -82,7 +82,7 @@ class tool {
         
         $sDir = dirname ( $sCacheFile );
         if (! is_dir ( $sDir )) {
-            directory::create ( $sDir );
+            filesystem::createDirectory ( $sDir );
         }
         // 防止空数据无法写入
         $arrTexts ['Query Yet Simple'] = 'Query Yet Simple';
@@ -118,12 +118,12 @@ class tool {
                 continue;
             }
             if (is_dir ( $sDir . '/js' )) {
-                $arrFiles ['js'] = array_merge ( $arrFiles ['js'], directory::lists ( $sDir . '/js', 'file', true, [ ], [ 
+                $arrFiles ['js'] = array_merge ( $arrFiles ['js'], filesystem::lists ( $sDir . '/js', 'file', true, [ ], [ 
                         'mo' 
                 ] ) );
             }
             if (is_dir ( $sDir . '/php' )) {
-                $arrFiles ['php'] = array_merge ( $arrFiles ['php'], directory::lists ( $sDir . '/php', 'file', true, [ ], [ 
+                $arrFiles ['php'] = array_merge ( $arrFiles ['php'], filesystem::lists ( $sDir . '/php', 'file', true, [ ], [ 
                         'mo' 
                 ] ) );
             }

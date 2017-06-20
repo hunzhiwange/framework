@@ -20,7 +20,7 @@ use queryyetsimple\http\request;
 use queryyetsimple\helper\helper;
 use queryyetsimple\classs\option;
 use queryyetsimple\classs\infinity;
-use queryyetsimple\filesystem\directory;
+use queryyetsimple\filesystem\filesystem;
 use queryyetsimple\support\interfaces\container;
 
 /**
@@ -1158,7 +1158,7 @@ class router {
         ];
         
         if (! is_dir ( dirname ( $this->strCachePath ) )) {
-            directory::create ( dirname ( $this->strCachePath ) );
+            filesystem::createDirectory ( dirname ( $this->strCachePath ) );
         }
         
         if (! file_put_contents ( $this->strCachePath, '<?php return ' . var_export ( $arrCacheData, true ) . '; ?>' )) {

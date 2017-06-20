@@ -18,7 +18,7 @@ queryphp;
 use ReflectionClass;
 use InvalidArgumentException;
 use queryyetsimple\psr4\psr4;
-use queryyetsimple\filesystem\directory;
+use queryyetsimple\filesystem\filesystem;
 
 /**
  * 辅助函数
@@ -123,7 +123,7 @@ class helper {
         }
         
         if (! is_dir ( dirname ( $strCachePath ) )) {
-            directory::create ( dirname ( $strCachePath ) );
+            filesystem::createDirectory ( dirname ( $strCachePath ) );
         }
         
         file_put_contents ( $strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */' . PHP_EOL . 'return [ ' . implode ( ', ', $arrResult ) . ' ]; ?>' );

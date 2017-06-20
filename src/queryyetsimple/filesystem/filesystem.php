@@ -19,15 +19,15 @@ use DirectoryIterator;
 use queryyetsimple\classs\infinity;
 
 /**
- * 文件夹
+ * IO 管理
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.04.05
  * @version 1.0
  */
-class directory {
-
+class filesystem {
+    
     use infinity;
     
     /**
@@ -37,7 +37,7 @@ class directory {
      * @param number $nMode            
      * @return void|true
      */
-    public static function create($sDir, $nMode = 0777) {
+    public static function createDirectory($sDir, $nMode = 0777) {
         if (is_dir ( $sDir )) {
             return;
         }
@@ -68,7 +68,7 @@ class directory {
      * @param boolean $bRecursive            
      * @return void
      */
-    public static function delete($sDir, $bRecursive = false) {
+    public static function deleteDirectory($sDir, $bRecursive = false) {
         if (! file_exists ( $sDir ) || ! is_dir ( $sDir ))
             return;
         
@@ -86,7 +86,7 @@ class directory {
                 } 
 
                 elseif ($objFile->isDir ()) {
-                    static::delete ( $objFile->getRealPath (), $bRecursive );
+                    static::deleteDirectory ( $objFile->getRealPath (), $bRecursive );
                 }
             }
             rmdir ( $sDir );
@@ -101,7 +101,7 @@ class directory {
      * @param array $arrFilter            
      * @return void
      */
-    public static function copy($sSourcePath, $sTargetPath, $arrFilter = []) {
+    public static function copyDirectory($sSourcePath, $sTargetPath, $arrFilter = []) {
         $arrFilter = array_merge ( [ 
                 '.svn',
                 '.git',
@@ -125,7 +125,7 @@ class directory {
             
             if ($objFile->isFile ()) {
                 if (! is_dir ( $sNewPath )) {
-                    static::create ( dirname ( $sNewPath ) );
+                    static::createDirectory ( dirname ( $sNewPath ) );
                 }
                 if (! copy ( $objFile->getRealPath (), $sNewPath )) {
                     return;
@@ -133,7 +133,7 @@ class directory {
             } 
 
             elseif ($objFile->isDir ()) {
-                if (! static::copy ( $objFile->getRealPath (), $sNewPath )) {
+                if (! static::copyDirectory ( $objFile->getRealPath (), $sNewPath )) {
                     return;
                 }
             }
@@ -144,8 +144,7 @@ class directory {
      * 只读取一级目录
      *
      * @param string $sDir            
-     * @param
-     *            string strReturnType
+     * @param string $strReturnType            
      * @param boolean $booFullpath            
      * @param array $arrFilter            
      * @return array
@@ -181,7 +180,7 @@ class directory {
                 if ($objFile->isFile () && in_array ( $strReturnType, [ 
                         'file',
                         'both' 
-                ] ) && (! $arrFilterExt || ! in_array ( file::getExtName ( $objFile->getFilename (), 2 ), $arrFilterExt ))) {
+                ] ) && (! $arrFilterExt || ! in_array ( static::getExtension ( $objFile->getFilename (), 2 ), $arrFilterExt ))) {
                     $arrReturnData ['file'] [] = $booFullpath ? $objFile->getRealPath () : $objFile->getFilename ();
                 }
             }
@@ -206,55 +205,13 @@ class directory {
      * @return string
      */
     public static function tidyPath($sPath, $bUnix = true) {
-        $sRetPath = str_replace ( '\\', '/', $sPath ); // 统一 斜线方向
-        $sRetPath = preg_replace ( '|/+|', '/', $sRetPath ); // 归并连续斜线
-        
-        $arrDirs = explode ( '/', $sRetPath ); // 削除 .. 和 .
-        $arrDirsTemp = [ ];
-        while ( ($sDirName = array_shift ( $arrDirs )) !== null ) {
-            if ($sDirName == '.') {
-                continue;
-            }
-            
-            if ($sDirName == '..') {
-                if (count ( $arrDirsTemp )) {
-                    array_pop ( $arrDirsTemp );
-                    continue;
-                }
-            }
-            
-            array_push ( $arrDirsTemp, $sDirName );
+        $sPath = str_replace ( '\\', '/', $sPath );
+        $sPath = preg_replace ( '|/+|', '/', $sPath );
+        $sPath = str_replace ( ':/', ':\\', $sPath );
+        if (! $bUnix) {
+            $sPath = str_replace ( '/', '\\', $sPath );
         }
-        
-        $sRetPath = implode ( '/', $arrDirsTemp ); // 目录 以 '/' 结尾
-        if (@is_dir ( $sRetPath )) { // 存在的目录
-            if (! preg_match ( '|/$|', $sRetPath )) {
-                $sRetPath .= '/';
-            }
-        } else if (preg_match ( "|\.$|", $sPath )) { // 不存在，但是符合目录的格式
-            if (! preg_match ( '|/$|', $sRetPath )) {
-                $sRetPath .= '/';
-            }
-        }
-        
-        $sRetPath = str_replace ( ':/', ':\\', $sRetPath ); // 还原 驱动器符号
-        if (! $bUnix) { // 转换到 Windows 斜线风格
-            $sRetPath = str_replace ( '/', '\\', $sRetPath );
-        }
-        
-        $sRetPath = rtrim ( $sRetPath, '\\/' ); // 删除结尾的“/”或者“\”
-        
-        return $sRetPath;
-    }
-    
-    /**
-     * 判断是否为绝对路径
-     *
-     * @param string $sPath            
-     * @return boolean
-     */
-    public static function isAbsolute($sPath) {
-        return preg_match ( '/^(\/|[a-z]:)/i', $sPath );
+        return rtrim ( $sRetPath, '\\/' );
     }
     
     /**
@@ -274,6 +231,16 @@ class directory {
     }
     
     /**
+     * 判断是否为绝对路径
+     *
+     * @param string $sPath            
+     * @return boolean
+     */
+    public static function isAbsolute($sPath) {
+        return preg_match ( '/^(\/|[a-z]:)/i', $sPath );
+    }
+    
+    /**
      * 根据 ID 获取打散目录
      *
      * @param int $intDataId            
@@ -286,5 +253,61 @@ class directory {
                 substr ( $intDataId, 0, 3 ) . '/' . substr ( $intDataId, 3, 2 ) . '/' . substr ( $intDataId, 5, 2 ) . '/',
                 substr ( $intDataId, - 2 ) 
         ];
+    }
+    
+    /**
+     * 新建文件
+     *
+     * @param $sPath string            
+     * @param $nMode=0766 int            
+     * @return bool
+     */
+    static public function createFile($sPath, $nMode = 0766) {
+        $sDir = dirname ( $sPath );
+        
+        if (is_file ( $sDir )) {
+            throw new InvalidArgumentException ( 'Dir cannot be a file.' );
+        }
+        
+        if (! file_exists ( $sDir ) && static::createDirectory ( $sDir )) {
+            throw new RuntimeException ( sprint ( 'Create dir %s failed.', $sDir ) );
+        }
+        
+        if ($hFile = fopen ( $sPath, 'a' )) {
+            chmod ( $sPath, $nMode );
+            return fclose ( $hFile );
+        } else {
+            throw new RuntimeException ( sprint ( 'Create file %s failed.', $sPath ) );
+        }
+    }
+    
+    /**
+     * 获取上传文件扩展名
+     *
+     * @param string $sFileName
+     *            文件名
+     * @param int $nCase
+     *            格式化参数 0 默认，1 转为大小 ，转为大小
+     * @return string
+     */
+    public static function getExtension($sFileName, $nCase = 0) {
+        $sFileName = pathinfo ( $sFileName, PATHINFO_EXTENSION );
+        if ($nCase == 1) {
+            return strtoupper ( $sFileName );
+        } elseif ($nCase == 2) {
+            return strtolower ( $sFileName );
+        } else {
+            return $sFileName;
+        }
+    }
+    
+    /**
+     * 获取文件名字
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    public static function getName($strPath) {
+        return pathinfo ( $strPath, PATHINFO_FILENAME );
     }
 }

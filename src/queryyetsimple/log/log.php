@@ -18,7 +18,7 @@ queryphp;
 use RuntimeException;
 use queryyetsimple\option\option;
 use queryyetsimple\assert\assert;
-use queryyetsimple\filesystem\directory;
+use queryyetsimple\filesystem\filesystem;
 use queryyetsimple\classs\faces as classs_faces;
 
 /**
@@ -208,7 +208,7 @@ class log {
      */
     private function checkSize($sFilePath) {
         // 如果不是文件，则创建
-        if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! directory::create ( dirname ( $sFilePath ) )) {
+        if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! filesystem::createDirectory ( dirname ( $sFilePath ) )) {
             throw new RuntimeException ( __ ( '无法创建日志文件：“%s”', $sFilePath ) );
         }
         

@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\helper\helper;
-use queryyetsimple\filesystem\directory;
+use queryyetsimple\filesystem\filesystem;
 
 /**
  * 配置工具类
@@ -98,7 +98,7 @@ class tool {
         }
         
         if (! is_dir ( dirname ( $sOptionCache ) )) {
-            directory::create ( dirname ( $sOptionCache ) );
+            filesystem::createDirectory ( dirname ( $sOptionCache ) );
         }
         
         if (! file_put_contents ( $sOptionCache, '<?php return ' . var_export ( $arrOptionData, true ) . '; ?>' )) {

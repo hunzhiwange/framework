@@ -16,18 +16,17 @@ namespace tests\filesystem;
 queryphp;
 
 use tests\testcase;
-use queryyetsimple\filesystem\file;
-use queryyetsimple\filesystem\directory;
+use queryyetsimple\filesystem\filesystem;
 
 /**
- * filesystem.directory 组件测试
+ * filesystem 组件测试
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.06.01
  * @version 1.0
  */
-class Directory_test extends testcase {
+class Filesystem_test extends testcase {
     
     /**
      * 目录
@@ -51,11 +50,11 @@ class Directory_test extends testcase {
      * @return void
      */
     public function testDistributed() {
-        $this->assertTrue ( directory::distributed ( 1 ) === [ 
+        $this->assertTrue ( filesystem::distributed ( 1 ) === [ 
                 '000/00/00/',
                 '01' 
         ] );
-        $this->assertTrue ( directory::distributed ( 1000 ) === [ 
+        $this->assertTrue ( filesystem::distributed ( 1000 ) === [ 
                 '000/00/10/',
                 '00' 
         ] );
@@ -67,11 +66,11 @@ class Directory_test extends testcase {
      * @return void
      */
     public function testCreate() {
-        directory::create ( $this->strDir );
-        directory::create ( $this->strDir . '/test' );
+        filesystem::createDirectory ( $this->strDir );
+        filesystem::createDirectory ( $this->strDir . '/test' );
         
-        file::create ( $this->strDir . '/test.txt' );
-        file::create ( $this->strDir . '/test/test.txt' );
+        filesystem::createFile ( $this->strDir . '/test.txt' );
+        filesystem::createFile ( $this->strDir . '/test/test.txt' );
         
         $this->assertEquals ( true, is_dir ( $this->strDir ) );
         $this->assertEquals ( true, is_dir ( $this->strDir . '/test' ) );
@@ -86,7 +85,7 @@ class Directory_test extends testcase {
      * @return void
      */
     public function testCopy() {
-        directory::copy ( $this->strDir, dirname ( $this->strDir ) . '/test_copy2' );
+        filesystem::copyDirectory ( $this->strDir, dirname ( $this->strDir ) . '/test_copy2' );
         $this->assertEquals ( true, is_file ( dirname ( $this->strDir ) . '/test_copy2/test/test.txt' ) );
     }
     
@@ -103,7 +102,7 @@ class Directory_test extends testcase {
                 'dir' => [ 
                         'test' 
                 ] 
-        ], directory::lists ( dirname ( $this->strDir ) . '/test_copy2', 'both' ) );
+        ], filesystem::lists ( dirname ( $this->strDir ) . '/test_copy2', 'both' ) );
     }
     
     /**
@@ -113,7 +112,7 @@ class Directory_test extends testcase {
      */
     public function testDelete() {
         $this->assertEquals ( true, is_dir ( dirname ( $this->strDir ) . '/test_copy2' ) );
-        directory::delete ( dirname ( $this->strDir ) . '/test_copy2', true );
+        filesystem::deleteDirectory ( dirname ( $this->strDir ) . '/test_copy2', true );
         $this->assertEquals ( true, ! is_dir ( dirname ( $this->strDir ) . '/test_copy2' ) );
     }
 }

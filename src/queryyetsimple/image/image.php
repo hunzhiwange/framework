@@ -16,7 +16,7 @@ namespace queryyetsimple\image;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\filesystem\directory;
+use queryyetsimple\filesystem\filesystem;
 
 /**
  * 图像处理
@@ -27,7 +27,7 @@ use queryyetsimple\filesystem\directory;
  * @version 1.0
  */
 class image {
-
+    
     /**
      * 创建缩略图
      *
@@ -244,7 +244,7 @@ class image {
                 }
             } elseif ($arrWaterArgs ['type'] === 'text' && $arrWaterArgs ['content'] != '') {
                 $sFontfileTemp = $sFontfile = isset ( $arrWaterArgs ['textFile'] ) && ! empty ( $arrWaterArgs ['textFile'] ) ? $arrWaterArgs ['textFile'] : 'Microsoft YaHei.ttf';
-                $sFontfile = (! empty ( $arrWaterArgs ['textPath'] ) ? directory::tidyPath ( $arrWaterArgs ['textPath'] ) : 'C:\WINDOWS\Fonts') . '/' . $sFontfile;
+                $sFontfile = (! empty ( $arrWaterArgs ['textPath'] ) ? str_replace ( '\\', '/', $arrWaterArgs ['textPath'] ) : 'C:\WINDOWS\Fonts') . '/' . $sFontfile;
                 if (! is_file ( $sFontfile )) {
                     throw new RuntimeException ( __ ( '字体文件 %s 无法找到', $sFontfile ) );
                 }
@@ -388,7 +388,7 @@ class image {
         
         // 创建文件
         if (! is_dir ( dirname ( $sFilename ) )) {
-            directory::create ( dirname ( $sFilename ) );
+            filesystem::createDirectory ( dirname ( $sFilename ) );
         }
         
         // 写入文件

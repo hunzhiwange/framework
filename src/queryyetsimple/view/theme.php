@@ -16,8 +16,6 @@ namespace queryyetsimple\view;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\filesystem\file;
-use queryyetsimple\filesystem\directory;
 use queryyetsimple\view\interfaces\parser;
 use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\classs\option as classs_option;
@@ -227,7 +225,7 @@ class theme implements interfaces_theme {
         $sFile = str_replace ( '//', '/', $sFile );
         
         // 统一缓存文件
-        $sFile = basename ( $sFile, '.' . file::getExtName ( $sFile ) ) . '.' . md5 ( $sFile ) . '.php';
+        $sFile = basename ( $sFile, '.' . pathinfo ( $sFile, PATHINFO_EXTENSION ) ) . '.' . md5 ( $sFile ) . '.php';
         
         // 返回真实路径
         return $this->getOption ( 'theme_cache_path' ) . '/' . $sFile;
@@ -292,7 +290,7 @@ class theme implements interfaces_theme {
         $sTpl = trim ( str_replace ( '->', '.', $sTpl ) );
         
         // 完整路径 或者变量
-        if (file::getExtName ( $sTpl ) || strpos ( $sTpl, '$' ) === 0) {
+        if (pathinfo ( $sTpl, PATHINFO_EXTENSION ) || strpos ( $sTpl, '$' ) === 0) {
             return $calHelp ( $sTpl );
         } elseif (strpos ( $sTpl, '(' ) !== false) { // 存在表达式
             return $calHelp ( $sTpl );
@@ -333,7 +331,7 @@ class theme implements interfaces_theme {
         
         // 物理路径
         if (strpos ( $sTpl, ':' ) !== false || strpos ( $sTpl, '/' ) === 0 || strpos ( $sTpl, '\\' ) === 0) {
-            $sTpl = str_replace ( directory::tidypath ( $this->getOption ( 'theme_path' ) . '/' ), '', directory::tidypath ( $sTpl ) );
+            $sTpl = str_replace ( str_replace ( '\\', '/', $this->getOption ( 'theme_path' ) . '/' ), '', str_replace ( '\\', '/', ($sTpl) ) );
         }
         
         // 当前主题

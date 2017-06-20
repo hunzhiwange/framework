@@ -339,7 +339,7 @@ class UploadFile{
 			if(is_array($sRule) && is_callable($sRule)){
 				$sSaveName=call_user_func_array($sRule,$arrFile);
 			}elseif(is_string($sRule) && function_exists($sRule)){// 使用函数生成一个唯一文件标识号
-				$sSaveName=$sRule().C::getExtName($arrFile['name'],2);
+				$sSaveName=$sRule().C::getExtension($arrFile['name'],2);
 			}else{// 使用给定的文件名作为标识号
 				$sSaveName=$sRule.'-'.md5($arrFile['name']).C::getExtName($arrFile['name'],2);
 			}

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace tests\assert;
+namespace queryyetsimple;
 
 <<<queryphp
 ##########################################################
@@ -15,36 +15,28 @@ namespace tests\assert;
 ##########################################################
 queryphp;
 
-use tests\testcase;
-use queryyetsimple\assert\assert;
+use queryyetsimple\filesystem\filesystem as filesystem_filesystem;
 
 /**
- * assert 组件测试
+ * 沙盒 filesystem
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.06.10
  * @version 1.0
  */
-class AssertTest extends testcase {
-    
-    /**
-     * 开启断言
-     *
-     * @return void
-     */
-    protected function setUp() {
-        assert::open ( true );
-    }
-    
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testFirst() {
-        $this->assertEquals ( true, assert::string ( 'hello' ) );
-        $this->assertEquals ( true, assert::boolean ( true ) );
-        $this->assertEquals ( true, assert::null ( null ) );
-    }
+class filesystem extends filesystem_filesystem {
+}
+
+namespace qys;
+
+/**
+ * 沙盒 filesystem
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.10
+ * @version 1.0
+ */
+class filesystem extends \queryyetsimple\filesystem {
 }

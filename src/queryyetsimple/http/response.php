@@ -722,7 +722,7 @@ class response {
         if (! $sDownName) {
             $sDownName = basename ( $sFileName );
         } else {
-            $sDownName = $sDownName . '.' . file::getExtName ( $sFileName );
+            $sDownName = $sDownName . '.' . filesystem::getExtension ( $sFileName );
         }
         return $this->downloadAndFile ( $sFileName, $arrHeader )->header ( 'Content-Disposition', 'attachment;filename=' . $sDownName );
     }

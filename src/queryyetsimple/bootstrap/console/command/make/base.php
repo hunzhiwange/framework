@@ -108,7 +108,7 @@ abstract class base extends command {
     protected function saveTemplateResult() {
         $strSaveFilePath = $this->getSaveFilePath ();
         if (! is_dir ( dirname ( $strSaveFilePath ) )) {
-            directory::create ( dirname ( $strSaveFilePath ) );
+            filesystem::createDirectory ( dirname ( $strSaveFilePath ) );
         }
         if (is_file ( $strSaveFilePath )) {
             $this->error ( 'File is already exits.' );
@@ -298,6 +298,6 @@ abstract class base extends command {
      * @return void
      */
     protected function commentFilePath() {
-        $this->comment ( directory::tidyPathLinux ( $this->getSaveFilePath () ) );
+        $this->comment ( filesystem::tidyPathLinux ( $this->getSaveFilePath () ) );
     }
 }  
