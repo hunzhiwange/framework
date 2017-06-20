@@ -15,7 +15,8 @@ namespace queryyetsimple\encryption;
 ##########################################################
 queryphp;
 
-use queryyetsimple\option\option;
+use queryyetsimple\encryption\abstracts\encryption as abstracts_encryption;
+use queryyetsimple\encryption\interfaces\encryption as interfaces_encryption;
 
 /**
  * 加密组件
@@ -25,7 +26,39 @@ use queryyetsimple\option\option;
  * @since 2017.04.05
  * @version 1.0
  */
-class encryption {
+class encryption extends abstracts_encryption implements interfaces_encryption {
+    
+    /**
+     * 创建一个加密应用
+     *
+     * @param string $strKey            
+     * @param int $intExpiry            
+     * @return void
+     */
+    public function __construct($strKey, $intExpiry = 0) {
+        $this->strKey = ( string ) $strKey;
+        $this->intExpiry = ( int ) $intExpiry;
+    }
+    
+    /**
+     * 加密
+     *
+     * @param string $strValue            
+     * @return string
+     */
+    public function encrypt($strValue, $intExpiry = null) {
+        return $this->authcode ( $strValue, false, $this->strKey, $intExpiry !== null ? $intExpiry : $this->intExpiry );
+    }
+    
+    /**
+     * 解密
+     *
+     * @param string $strValue            
+     * @return string
+     */
+    public function decrypt($strValue) {
+        return $this->authcode ( $strValue, true, $this->strKey );
+    }
     
     /**
      * 来自 Discuz 经典 PHP 加密算法
@@ -36,10 +69,10 @@ class encryption {
      * @param number $expiry            
      * @return string
      */
-    public static function authcode($string, $operation = true, $key = null, $expiry = 0) {
+    protected function authcode($string, $operation = true, $key = null, $expiry = 0) {
         $ckey_length = 4;
         
-        $key = md5 ( $key ? $key : option::gets ( 'app_auth_key', '7becb888f518b20224a988906df51e05' ) );
+        $key = md5 ( $key );
         $keya = md5 ( substr ( $key, 0, 16 ) );
         $keyb = md5 ( substr ( $key, 16, 16 ) );
         $keyc = $ckey_length ? ($operation === true ? substr ( $string, 0, $ckey_length ) : substr ( md5 ( microtime () ), - $ckey_length )) : '';

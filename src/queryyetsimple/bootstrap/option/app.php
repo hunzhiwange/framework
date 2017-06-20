@@ -96,7 +96,8 @@ return [
         '+provider_with_cache' => [ 
                 'queryyetsimple\collection',
                 'queryyetsimple\router',
-                'queryyetsimple\view'
+                'queryyetsimple\view',
+                'queryyetsimple\encryption' 
         ],
         
         /**
@@ -145,9 +146,19 @@ return [
          * ---------------------------------------------------------------
          *
          * 请妥善保管此安全 key,防止密码被人破解
-         * queryyetsimple\encryption\encryption:authcode 安全 key
+         * queryyetsimple\encryption\encryption 安全 key
          */
         'app_auth_key' => env ( 'app_auth_key', '7becb888f518b20224a988906df51e05' ),
+        
+        /**
+         * ---------------------------------------------------------------
+         * 安全过期时间
+         * ---------------------------------------------------------------
+         *
+         * 0 表示永不过期
+         * queryyetsimple\encryption\encryption 安全过期时间
+         */
+        'app_auth_expiry' => 0,
         
         /**
          * ---------------------------------------------------------------
