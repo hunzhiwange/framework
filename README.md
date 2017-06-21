@@ -1,6 +1,6 @@
 # QueryPHP Framework
 
-QueryPHP is a powerful PHP framework with a simple syntax. The real world is full of complexity, we believe that simplicity can create fun.<Query Yet Simple>
+QueryPHP is a powerful PHP framework for simple as free as wind. <Query Yet Simple>
 
 QueryPHP was founded in 2010 and released the first version on 2010.10.03.
 
