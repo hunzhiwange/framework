@@ -208,3 +208,43 @@ if (! function_exists ( 'exception' )) {
         throw new $strException ( $strMessage, $intCode );
     }
 }
+
+if (! function_exists ( 'log' )) {
+    /**
+     * 记录错误消息
+     *
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param string $strLevel
+     *            日志类型
+     * @param boolean $booWrite            
+     * @return void
+     */
+    function log($strMessage, $strLevel = 'info', $booWrite = false) {
+        if ($booWrite)
+            project ( 'log' )->write ( $strMessage, $strLevel );
+        else
+            project ( 'log' )->record ( $strMessage, $strLevel );
+    }
+}
+
+if (! function_exists ( 'option' )) {
+    /**
+     * 设置或者获取 option 值
+     *
+     * @param array|string $mixKey            
+     * @param mixed $mixDefault            
+     * @return mixed
+     */
+    function option($mixKey = null, $mixDefault = null) {
+        if (is_null ( $mixKey )) {
+            return project ( 'option' );
+        }
+        
+        if (is_array ( $mixKey )) {
+            return project ( 'option' )->set ( $mixKey );
+        }
+        
+        return project ( 'option' )->get ( $mixKey, $mixDefault );
+    }
+}

@@ -16,6 +16,7 @@ namespace queryyetsimple\option;
 queryphp;
 
 use ArrayAccess;
+use queryyetsimple\option\interfaces\option as interfaces_option;
 
 /**
  * 配置管理类
@@ -25,7 +26,7 @@ use ArrayAccess;
  * @since 2017.02.13
  * @version 1.0
  */
-class option implements ArrayAccess {
+class option implements ArrayAccess, interfaces_option {
     
     /**
      * 配置数据
@@ -90,10 +91,6 @@ class option implements ArrayAccess {
      * @return string
      */
     public function get($sName = 'app\\', $mixDefault = null) {
-        if ($sName === true) {
-            return $this->arrOption;
-        }
-        
         $sName = $this->parseNamespace ( $sName );
         $strNamespace = $sName [0];
         $sName = $sName [1];
@@ -118,6 +115,15 @@ class option implements ArrayAccess {
     }
     
     /**
+     * 返回所有配置
+     *
+     * @return array
+     */
+    public function all() {
+        return $this->arrOption;
+    }
+    
+    /**
      * 设置配置
      *
      * @param mixed $mixName
@@ -132,7 +138,6 @@ class option implements ArrayAccess {
                 $this->set ( $sKey, $mixValue );
             }
         } else {
-            
             $mixName = $this->parseNamespace ( $mixName );
             $strNamespace = $mixName [0];
             $mixName = $mixName [1];
