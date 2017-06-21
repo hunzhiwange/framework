@@ -22,7 +22,7 @@ use queryyetsimple\assert\assert;
 use queryyetsimple\session\interfaces\store as interfaces_store;
 
 /**
- * session 仓库
+ * session 存储
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
@@ -462,17 +462,4 @@ class store implements interfaces_store {
             throw new RuntimeException ( 'Session is not start yet' );
         }
     }
-}
-
-namespace qys\session;
-
-/**
- * session 仓库
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.04.17
- * @version 1.0
- */
-class store extends \queryyetsimple\session\store {
 }

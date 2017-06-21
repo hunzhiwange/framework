@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\log\interfaces;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -14,18 +16,12 @@
 queryphp;
 
 /**
- * log 服务提供者
+ * connect 接口
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2017.04.23
  * @version 1.0
  */
-return [ 
-        'singleton@log' => [ 
-                'queryyetsimple\log\log',
-                function ($oProject) {
-                    return new queryyetsimple\log\log ( $oProject );
-                } 
-        ] 
-];
+interface connect {
+}

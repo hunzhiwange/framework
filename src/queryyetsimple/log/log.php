@@ -15,221 +15,153 @@ namespace queryyetsimple\log;
 ##########################################################
 queryphp;
 
-use RuntimeException;
-use queryyetsimple\option\option;
-use queryyetsimple\assert\assert;
-use queryyetsimple\filesystem\filesystem;
-use queryyetsimple\classs\faces as classs_faces;
+use Exception;
+use queryyetsimple\bootstrap\project;
+use queryyetsimple\log\interfaces\connect;
+use queryyetsimple\log\interfaces\log as interfaces_log;
 
 /**
- * 日志
+ * log 入口
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.03.03
+ * @since 2017.02.15
  * @version 1.0
  */
-class log {
-    
-    use classs_faces;
+class log implements interfaces_log {
     
     /**
-     * 当前记录的日志信息
+     * 项目管理
      *
-     * @var array
+     * @var \queryyetsimple\bootstrap\project
      */
-    private $arrLog = [ ];
+    protected $objProject;
     
     /**
-     * 日志过滤器
+     * log 连接对象
      *
-     * @var callable
+     * @var array(\queryyetsimple\log\store)
      */
-    private $calFilter = null;
-    
-    /**
-     * 日志处理器
-     *
-     * @var callable
-     */
-    private $calProcessor = null;
-    
-    /**
-     * 配置
-     *
-     * @var array
-     */
-    protected $arrClasssFacesOption = [ 
-            'log\enabled' => true,
-            'log\level' => [ 
-                    'error',
-                    'sql',
-                    'debug',
-                    'info' 
-            ],
-            'log\error_enabled' => false,
-            'log\sql_enabled' => false,
-            'log\time_format' => '[Y-m-d H:i]',
-            'log\file_size' => 2097152,
-            'log\file_name' => 'Y-m-d H',
-            'log\path_default' => '' 
-    ];
+    protected static $arrConnect;
     
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\bootstrap\project $objConnect            
      * @return void
      */
-    public function __construct() {
+    public function __construct(project $objProject) {
+        $this->objProject = $objProject;
     }
     
     /**
-     * 记录错误消息
+     * 连接 log 并返回连接对象
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
-     * @param string $strLevel
-     *            日志错误类型，系统日志 error,sql,自定义其它日志 custom
-     * @param int $intMessageType
-     *            参考 error_log 参数 $message_type
-     * @param string $strDestination
-     *            参考 error_log 参数 $destination
-     * @param string $strExtraHeaders
-     *            参考 error_log 参数 $extra_headers
-     * @return void
+     * @param array|string $mixOption            
+     * @return \queryyetsimple\log\store
      */
-    public function run($strMessage, $strLevel = 'info', $intMessageType = 3, $strDestination = '', $strExtraHeaders = '') {
-        // 是否开启日志
-        if (! $this->classsFacesOption ( 'log\enabled' )) {
-            return;
+    public function connect($mixOption = []) {
+        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['log\\connect.' . $mixOption]) )) {
+            $mixOption = [ ];
         }
         
-        // 错误日志和 sql 日志
-        if ((! $this->classsFacesOption ( 'log\error_enabled' ) && $strLevel == 'error') || (! $this->classsFacesOption ( 'log\sql_enabled' ) && $strLevel == 'sql')) {
-            return;
+        $strDriver = ! empty ( $mixOption ['driver'] ) ? $mixOption ['driver'] : $this->getDefaultDriver ();
+        $strUnique = $this->getUnique ( $mixOption );
+        
+        if (isset ( static::$arrConnect [$strUnique] )) {
+            return static::$arrConnect [$strUnique];
         }
-        
-        // 只记录系统允许的日志级别
-        if (! in_array ( $strLevel, $this->classsFacesOption ( 'log\level' ) )) {
-            return;
-        }
-        
-        // 执行过滤器
-        if ($this->calFilter !== null && call_user_func_array ( $this->calFilter, [ 
-                $strMessage,
-                $strLevel 
-        ] ) === false) {
-            return;
-        }
-        
-        // 日志消息
-        $strMessage = date ( $this->classsFacesOption ( 'log\time_format' ) ) . $strMessage . "\r\n";
-        
-        // 保存日志
-        $strDestination = $this->getPath ( $strLevel, $strDestination );
-        if ($intMessageType == 3) {
-            $this->checkSize ( $strDestination );
-        }
-        
-        // 记录到系统
-        error_log ( $strMessage, $intMessageType, $strDestination, $strExtraHeaders );
-        
-        // 记录到内存方便后期调用
-        if (! isset ( $this->arrLog [$strLevel] )) {
-            $this->arrLog [$strLevel] = [ ];
-        }
-        $this->arrLog [$strLevel] [] = $strMessage;
-        
-        // 执行处理器
-        if ($this->calProcessor !== null) {
-            call_user_func_array ( $this->calProcessor, [ 
-                    $strMessage,
-                    $strLevel 
-            ] );
-        }
+        return static::$arrConnect [$strUnique] = $this->store ( $this->makeConnect ( $strDriver, $mixOption ) );
     }
     
     /**
-     * 注册日志过滤器
+     * 创建 log store
      *
-     * @param callable $calFilter            
-     * @return void
+     * @param \queryyetsimple\log\interfaces\connect $oConnect            
+     * @return \queryyetsimple\log\store
      */
-    public function registerFilter($calFilter) {
-        assert::callback ( $calFilter );
-        $this->calFilter = $calFilter;
+    public function store(connect $oConnect) {
+        $arrOption = $this->objProject ['option'] ['log\\'];
+        unset ( $arrOption ['default'], $arrOption ['connect'] );
+        return new store ( $oConnect, $arrOption );
     }
     
     /**
-     * 注册日志处理器
+     * 返回默认驱动
      *
-     * @param callable $calProcessor            
-     * @return void
-     */
-    public function registerProcessor($calProcessor) {
-        assert::callback ( $calProcessor );
-        $this->calProcessor = $calProcessor;
-    }
-    
-    /**
-     * 清理日志记录
-     *
-     * @return number
-     */
-    public function clear() {
-        $nCount = count ( $this->arrLog );
-        $this->arrLog = [ ];
-        return $nCount;
-    }
-    
-    /**
-     * 获取日志记录
-     *
-     * @return array
-     */
-    public function get() {
-        return $this->arrLog;
-    }
-    
-    /**
-     * 获取日志记录数量
-     *
-     * @return number
-     */
-    public function count() {
-        return count ( $this->arrLog );
-    }
-    
-    /**
-     * 验证日志文件大小
-     *
-     * @param string $sFilePath            
-     * @return void
-     */
-    private function checkSize($sFilePath) {
-        // 如果不是文件，则创建
-        if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! filesystem::createDirectory ( dirname ( $sFilePath ) )) {
-            throw new RuntimeException ( __ ( '无法创建日志文件：“%s”', $sFilePath ) );
-        }
-        
-        // 检测日志文件大小，超过配置大小则备份日志文件重新生成
-        if (is_file ( $sFilePath ) && floor ( $this->classsFacesOption ( 'log\file_size' ) ) <= filesize ( $sFilePath )) {
-            rename ( $sFilePath, dirname ( $sFilePath ) . '/' . date ( 'Y-m-d H.i.s' ) . '~@' . basename ( $sFilePath ) );
-        }
-    }
-    
-    /**
-     * 获取日志路径
-     *
-     * @param string $strLevel            
-     * @param string $sFilePath            
      * @return string
      */
-    private function getPath($strLevel, $sFilePath = '') {
-        // 不存在路径，则直接使用项目默认路径
-        if (empty ( $sFilePath )) {
-            $sFilePath = $this->classsFacesOption ( 'log\path_default' ) . '/' . $strLevel . '/' . date ( $this->classsFacesOption ( 'log\file_name' ) ) . ".log";
-        }
-        return $sFilePath;
+    public function getDefaultDriver() {
+        return $this->objProject ['option'] ['log\default'];
+    }
+    
+    /**
+     * 设置默认驱动
+     *
+     * @param string $strName            
+     * @return void
+     */
+    public function setDefaultDriver($strName) {
+        $this->objProject ['option'] ['log\default'] = $strName;
+    }
+    
+    /**
+     * 创建连接
+     *
+     * @param string $strConnect            
+     * @param array $arrOption            
+     * @return \queryyetsimple\log\interfaces\connect
+     */
+    protected function makeConnect($strConnect, $arrOption = []) {
+        if (is_null ( $this->objProject ['option'] ['log\connect.' . $strConnect] ))
+            throw new Exception ( __ ( 'log 驱动 %s 不存在', $strConnect ) );
+        return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
+    }
+    
+    /**
+     * 创建 file 日志驱动
+     *
+     * @param array $arrOption            
+     * @return \queryyetsimple\log\file
+     */
+    protected function makeConnectFile($arrOption = []) {
+        return new file ( array_merge ( $this->getOption ( 'file' ), $arrOption ) );
+    }
+    
+    /**
+     * 取得唯一值
+     *
+     * @param array $arrOption            
+     * @return string
+     */
+    protected function getUnique($arrOption) {
+        return md5 ( serialize ( $arrOption ) );
+    }
+    
+    /**
+     * 读取默认日志配置
+     *
+     * @param string $strConnect            
+     * @return array
+     */
+    protected function getOption($strConnect) {
+        $arrOption = $this->objProject ['option'] ['log\\'];
+        unset ( $arrOption ['default'], $arrOption ['connect'] );
+        
+        return array_merge ( $this->objProject ['option'] ['log\connect.' . $strConnect], $arrOption );
+    }
+    
+    /**
+     * 拦截匿名注册控制器方法
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
+     */
+    public function __call($sMethod, $arrArgs) {
+        return call_user_func_array ( [ 
+                $this->connect (),
+                $sMethod 
+        ], $arrArgs );
     }
 }
