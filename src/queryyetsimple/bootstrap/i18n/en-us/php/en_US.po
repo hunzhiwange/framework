@@ -284,7 +284,7 @@ msgstr ""
 #: view/compilers.php:1208
 #, php-format
 msgid "节点 “%s” 缺少必须的属性：“%s”"
-msgstr "2433333333333%s333333333323444^s4444444444444444"
+msgstr "The node '%s' does not have the required property:'%s'"
 
 #: view/parsers.php:757
 msgid "标签库不支持交叉"

@@ -16,11 +16,11 @@ namespace queryyetsimple\i18n;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\classs\option as classs_option;
 
 /**
- * 语言管理类
+ * 国际化组件
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
@@ -32,11 +32,11 @@ class i18n {
     use classs_option;
     
     /**
-     * 项目容器
+     * cookie
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\cookie\interfaces\cookie
      */
-    protected $objProject;
+    protected $objCookie;
     
     /**
      * 当前语言上下文
@@ -83,18 +83,19 @@ class i18n {
             'switch' => true,
             'cookie_app' => false,
             'default' => 'zh-cn',
-            'auto_accept' => true 
+            'auto_accept' => true,
+            'app_name' => 'home' 
     ];
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\interfaces\container $objProject            
+     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(container $objProject, array $arrOption = []) {
-        $this->objProject = $objProject;
+    public function __construct(cookie $objCookie, array $arrOption = []) {
+        $this->objCookie = $objCookie;
         $this->options ( $arrOption );
     }
     
@@ -157,7 +158,7 @@ class i18n {
             $sI18nSet = $this->getOption ( 'default' );
         } else {
             if ($this->getOption ( 'cookie_app' ) === true) {
-                $sCookieName = $this->objProject ['app_name'] . '_i18n';
+                $sCookieName = $this->getOption ( 'app_name' ) . '_i18n';
             } else {
                 $sCookieName = 'i18n';
             }
@@ -165,9 +166,9 @@ class i18n {
             
             if (isset ( $_GET [static::ARGS] )) {
                 $sI18nSet = $_GET [static::ARGS];
-                $this->objProject ['cookie']->set ( $sCookieName, $sI18nSet );
+                $this->objCookie->set ( $sCookieName, $sI18nSet );
             } elseif ($sCookieName) {
-                $sI18nSet = $this->objProject ['cookie']->get ( $sCookieName );
+                $sI18nSet = $this->objCookie->get ( $sCookieName );
                 if (empty ( $sI18nSet )) {
                     $sI18nSet = $this->getOption ( 'default' );
                 }
