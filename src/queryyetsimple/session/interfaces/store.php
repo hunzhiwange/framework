@@ -193,16 +193,3 @@ interface store {
      */
     public function gcProbability($nGcProbability = null);
 }
-
-namespace qys\session\interfaces;
-
-/**
- * store 接口
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.04.11
- * @version 1.0
- */
-interface store extends \queryyetsimple\session\interfaces\store {
-}

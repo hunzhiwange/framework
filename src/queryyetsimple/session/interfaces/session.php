@@ -58,16 +58,3 @@ interface session {
      */
     public function setDefaultDriver($strName);
 }
-
-namespace qys\session\interfaces;
-
-/**
- * session 接口
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.04.11
- * @version 1.0
- */
-interface session extends \queryyetsimple\session\interfaces\session {
-}

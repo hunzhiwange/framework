@@ -54,16 +54,3 @@ class memcache extends connect implements SessionHandlerInterface {
         return true;
     }
 }
-
-namespace qys\session;
-
-/**
- * session.memcache
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.06.05
- * @version 1.0
- */
-class memcache extends \queryyetsimple\session\memcache {
-}

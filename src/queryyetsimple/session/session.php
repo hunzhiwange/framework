@@ -179,16 +179,3 @@ class session implements interfaces_session {
         ], $arrArgs );
     }
 }
-
-namespace qys\session;
-
-/**
- * session 入口
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.02.15
- * @version 1.0
- */
-class session extends \queryyetsimple\session\session {
-}

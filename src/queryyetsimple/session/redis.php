@@ -56,16 +56,3 @@ class redis extends connect implements SessionHandlerInterface {
         return true;
     }
 }
-
-namespace qys\session;
-
-/**
- * session.redis
- *
- * @author Xiangmin Liu<635750556@qq.com>
- * @package $$
- * @since 2017.06.05
- * @version 1.0
- */
-class redis extends \queryyetsimple\session\redis {
-}
