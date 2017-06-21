@@ -1,5 +1,5 @@
 <?php
-// [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
+// [$QueryPHP] A PHP Framework For Simple As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
 <<<queryphp
 ##########################################################
@@ -22,10 +22,10 @@ queryphp;
  * @version 1.0
  */
 return [ 
-        'pipeline' => [ 
+        'register@pipeline' => [ 
                 'queryyetsimple\pipeline\pipeline',
-                function ($objProject) {
-                    return new \queryyetsimple\pipeline\pipeline ( $objProject );
+                function ($oProject) {
+                    return new queryyetsimple\pipeline\pipeline ( $oProject );
                 } 
         ] 
 ];

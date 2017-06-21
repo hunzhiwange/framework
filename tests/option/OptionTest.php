@@ -62,7 +62,7 @@ class Option_test extends testcase {
      * @return void
      */
     public function testGetsAll() {
-        $this->assertTrue ( option::gets ( true ) === [ 
+        $this->assertTrue ( option::all (  ) === [ 
                 'app' => [ 
                         'hello' => 'world' 
                 ],

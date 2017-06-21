@@ -1,5 +1,5 @@
 <?php
-// [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
+// [$QueryPHP] A PHP Framework For Simple As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
 namespace queryyetsimple\flow;
 

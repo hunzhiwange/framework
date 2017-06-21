@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework For Simple As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\interfaces;
+namespace queryyetsimple\pipeline\interfaces;
 
 <<<queryphp
 ##########################################################
@@ -16,68 +16,51 @@ namespace queryyetsimple\queue\interfaces;
 queryphp;
 
 /**
- * 任务接口
+ * pipeline 接口
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.06.06
+ * @since 2017.04.11
  * @version 1.0
  */
-interface job {
+interface pipeline {
     
     /**
-     * 执行任务
+     * 将传输对象传入管道
      *
-     * @return void
+     * @param mixed $mixPassed            
+     * @return $this
      */
-    public function handle();
+    public function send($mixPassed);
     
     /**
-     * 调用任务的失败方法
+     * 设置管道中的执行工序
      *
-     * @return void
+     * @param dynamic|array $mixStages            
+     * @return $this
      */
-    public function failed();
+    public function through($mixStages /* args */ );
     
     /**
-     * 取得 job 名字
+     * 添加一道工序
      *
-     * @return string
+     * @param callable $calStage            
+     * @return $this
      */
-    public function getName();
+    public function stage(callable $calStage);
     
     /**
-     * 取得 job 数据
+     * 执行管道工序响应结果
      *
-     * @return string
+     * @param callable $calEnd            
+     * @return mixed
      */
-    public function getData();
+    public function then(callable $calEnd);
     
     /**
-     * 返回任务执行次数
+     * 执行管道工序
      *
-     * @return int
+     * @return mixed
      */
-    public function getAttempts();
-    
-    /**
-     * 获取任务所属的消息队列
-     *
-     * @return string
-     */
-    public function getQueue();
-    
-    /**
-     * 取得 worker
-     *
-     * @return string
-     */
-    public function getWorker();
-    
-    /**
-     * 取得 job_id
-     *
-     * @return string
-     */
-    public function getJobId();
+    public function run();
 }

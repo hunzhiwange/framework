@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] A PHP Framework For Simple As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\migrate;
+namespace queryyetsimple;
 
 <<<queryphp
 ##########################################################
@@ -15,25 +15,37 @@ namespace queryyetsimple\bootstrap\console\command\migrate;
 ##########################################################
 queryphp;
 
-use Phinx\Console\Command\Status as PhinxStatus;
+use queryyetsimple\classs\faces;
 
 /**
- * 数据库打印所有迁移脚本和他们的状态
+ * 沙盒 pipeline
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.06.10
  * @version 1.0
  */
-class status extends PhinxStatus {
+class pipeline extends faces {
     
     /**
-     * Configures the current command.
+     * 返回门面名字
      *
-     * @return void
+     * @return string
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:status' );
+    protected static function name() {
+        return 'pipeline';
     }
-}  
+}
+
+namespace qys;
+
+/**
+ * 沙盒 pipeline
+ *
+ * @author Xiangmin Liu<635750556@qq.com>
+ * @package $$
+ * @since 2017.06.10
+ * @version 1.0
+ */
+class pipeline extends \queryyetsimple\pipeline {
+}

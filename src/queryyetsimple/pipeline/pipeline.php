@@ -1,5 +1,5 @@
 <?php
-// [$QueryPHP] A PHP Framework Since 2010.10.03. <Query Yet Simple>
+// [$QueryPHP] A PHP Framework For Simple As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
 namespace queryyetsimple\pipeline;
 
@@ -16,6 +16,8 @@ namespace queryyetsimple\pipeline;
 queryphp;
 
 use InvalidArgumentException;
+use queryyetsimple\support\interfaces\container;
+use queryyetsimple\pipeline\interfaces\pipeline as interfaces_pipeline;
 
 /**
  * 管道实现类
@@ -25,14 +27,14 @@ use InvalidArgumentException;
  * @since 2017.05.25
  * @version 1.0
  */
-class pipeline {
+class pipeline implements interfaces_pipeline {
     
     /**
-     * 项目容器
+     * 容器
      *
-     * @var \queryyetsimple\bootstrap\project|null
+     * @var \queryyetsimple\support\interfaces\container
      */
-    protected $objProject;
+    protected $objContainer;
     
     /**
      * 管道传递的对象
@@ -51,11 +53,11 @@ class pipeline {
     /**
      * 创建一个管道
      *
-     * @param \queryyetsimple\bootstrap\project|null $objProject            
+     * @param \queryyetsimple\support\interfaces\container $objContainer            
      * @return void
      */
-    public function __construct($objProject = null) {
-        $this->objProject = $objProject;
+    public function __construct(container $objContainer) {
+        $this->objContainer = $objContainer;
     }
     
     /**
@@ -79,7 +81,7 @@ class pipeline {
         $mixStages = is_array ( $mixStages ) ? $mixStages : func_get_args ();
         
         foreach ( $mixStages as $mixStage ) {
-            if (is_string ( $mixStage ) && ! is_null ( $this->objProject )) {
+            if (is_string ( $mixStage )) {
                 $mixStage = $this->parse ( $mixStage );
                 $mixStage = function ($mixPassed) use($mixStage) {
                     if (strpos ( $mixStage [0], '@' ) !== false) {
@@ -93,7 +95,7 @@ class pipeline {
                         ];
                     }
                     
-                    if (($objStage = $this->objProject->make ( $arrStage [0] )) === false)
+                    if (($objStage = $this->objContainer->make ( $arrStage [0] )) === false)
                         throw new InvalidArgumentException ( sprintf ( 'Stage %s is not valid.', $arrStage [0] ) );
                     
                     $strMethod = method_exists ( $objStage, $arrStage [1] ) ? $arrStage [1] : ($arrStage [1] != 'handle' && method_exists ( $objStage, 'handle' ) ? 'handle' : 'run');
@@ -105,7 +107,7 @@ class pipeline {
                     ] );
                     
                     return call_user_func_array ( [ 
-                            $this->objProject,
+                            $this->objContainer,
                             'call' 
                     ], $mixStage );
                 };
