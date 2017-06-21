@@ -78,7 +78,7 @@ class store implements interfaces_store {
      * @return void
      */
     public function start() {
-        if (isset ( $_SESSION )) {
+        if ($this->isStart ()) {
             return;
         }
         
@@ -155,38 +155,63 @@ class store implements interfaces_store {
      *
      * @param string $sName            
      * @param mxied $mixValue            
-     * @param boolean $bPrefix            
      * @return void
      */
-    public function set($sName, $mixValue, $bPrefix = true) {
+    public function set($sName, $mixValue) {
+        $this->checkStart ();
+        
         assert::string ( $sName );
-        $sName = $this->getName ( $sName, $bPrefix );
+        $sName = $this->getName ( $sName );
         $_SESSION [$sName] = $mixValue;
+    }
+    
+    /**
+     * 批量插入
+     *
+     * @param string|array $mixKey            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function put($mixKey, $mixValue = null) {
+        $this->checkStart ();
+        
+        if (! is_array ( $mixKey )) {
+            $mixKey = [ 
+                    $mixKey => $mixValue 
+            ];
+        }
+        
+        foreach ( $mixKey as $strKey => $mixValue ) {
+            $this->set ( $strKey, $mixValue );
+        }
     }
     
     /**
      * 取回 session
      *
      * @param string $sName            
-     * @param boolean $bPrefix            
+     * @param mixed $mixValue            
      * @return mxied
      */
-    public function get($sName, $bPrefix = true) {
+    public function get($sName, $mixValue = null) {
+        $this->checkStart ();
+        
         assert::string ( $sName );
-        $sName = $this->getName ( $sName, $bPrefix );
-        return isset ( $_SESSION [$sName] ) ? $_SESSION [$sName] : null;
+        $sName = $this->getName ( $sName );
+        return isset ( $_SESSION [$sName] ) ? $_SESSION [$sName] : $mixValue;
     }
     
     /**
      * 删除 session
      *
      * @param string $sName            
-     * @param boolean $bPrefix            
      * @return bool
      */
-    public function delete($sName, $bPrefix = true) {
+    public function delete($sName) {
+        $this->checkStart ();
+        
         assert::string ( $sName );
-        $sName = $this->getName ( $sName, $bPrefix );
+        $sName = $this->getName ( $sName );
         return session_unregister ( $sName );
     }
     
@@ -194,33 +219,32 @@ class store implements interfaces_store {
      * 是否存在 session
      *
      * @param string $sName            
-     * @param boolean $bPrefix            
+     * @return boolean
      */
-    public function has($sName, $bPrefix = true) {
+    public function has($sName) {
+        $this->checkStart ();
+        
         assert::string ( $sName );
-        $sName = $this->getName ( $sName, $bPrefix );
+        $sName = $this->getName ( $sName );
         return isset ( $_SESSION [$sName] );
     }
     
     /**
      * 删除 session
      *
-     * @param boolean $bOnlyDeletePrefix            
-     * @return int
+     * @param boolean $bPrefix            
+     * @return void
      */
-    public function clear($bOnlyDeletePrefix = true) {
-        $nSession = count ( $_SESSION );
-        $strSessionPrefix = $this->getOption ( 'prefix' );
+    public function clear($bPrefix = true) {
+        $this->checkStart ();
+        
+        $strPrefix = $this->getOption ( 'prefix' );
         foreach ( $_SESSION as $sKey => $Val ) {
-            if ($bOnlyDeletePrefix === true && $strSessionPrefix) {
-                if (strpos ( $sKey, $strSessionPrefix ) === 0) {
-                    $this->delete ( $sKey, false );
-                }
-            } else {
+            if ($bPrefix === true && $strPrefix && strpos ( $sKey, $strPrefix ) === 0)
                 $this->delete ( $sKey, false );
-            }
+            else
+                $this->delete ( $sKey, false );
         }
-        return $nSession;
     }
     
     /**
@@ -229,6 +253,7 @@ class store implements interfaces_store {
      * @return void
      */
     public function pause() {
+        $this->checkStart ();
         session_write_close ();
     }
     
@@ -238,6 +263,8 @@ class store implements interfaces_store {
      * @return bool
      */
     public function destroy() {
+        $this->checkStart ();
+        
         $this->clear ( false );
         
         if (isset ( $_COOKIE [$this->sessionName ()] )) {
@@ -410,11 +437,30 @@ class store implements interfaces_store {
      * 返回 session 名字
      *
      * @param string $sName            
-     * @param boolean $bPrefix            
      * @return string
      */
-    protected function getName($sName, $bPrefix = true) {
-        return ($bPrefix ? $this->getOption ( 'prefix' ) : '') . $sName;
+    protected function getName($sName) {
+        return $this->getOption ( 'prefix' ) . $sName;
+    }
+    
+    /**
+     * session 是否已经启动
+     *
+     * @return boolean
+     */
+    protected function isStart() {
+        return isset ( $_SESSION );
+    }
+    
+    /**
+     * 验证 session 是否开启
+     *
+     * @return void
+     */
+    protected function checkStart() {
+        if (! $this->isStart ()) {
+            throw new RuntimeException ( 'Session is not start yet' );
+        }
     }
 }
 

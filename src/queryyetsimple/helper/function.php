@@ -99,6 +99,72 @@ if (! function_exists ( 'env' )) {
     }
 }
 
+if (! function_exists ( 'encrypt' )) {
+    /**
+     * 加密字符串
+     *
+     * @param string $strValue            
+     * @return string
+     */
+    function encrypt($strValue) {
+        return project ( 'encryption' )->encrypt ( $strValue );
+    }
+}
+
+if (! function_exists ( 'decrypt' )) {
+    /**
+     * 解密字符串
+     *
+     * @param string $strValue            
+     * @return string
+     */
+    function decrypt($strValue) {
+        return project ( 'encryption' )->decrypt ( $strValue );
+    }
+}
+
+if (! function_exists ( 'session' )) {
+    /**
+     * 设置或者获取 session 值
+     *
+     * @param array|string $mixKey            
+     * @param mixed $mixDefault            
+     * @return mixed
+     */
+    function session($mixKey = null, $mixDefault = null) {
+        if (is_null ( $mixKey )) {
+            return project ( 'session' );
+        }
+        
+        if (is_array ( $mixKey )) {
+            return project ( 'session' )->put ( $mixKey );
+        }
+        
+        return project ( 'session' )->get ( $mixKey, $mixDefault );
+    }
+}
+
+if (! function_exists ( 'url' )) {
+    /**
+     * 生成路由地址
+     *
+     * @param string $sUrl            
+     * @param array $arrParams            
+     * @param array $in
+     *            suffix boolean 是否包含后缀
+     *            normal boolean 是否为普通 url
+     *            subdomain string 子域名
+     * @return string
+     */
+    function url($sUrl, $arrParams = [], $in = []) {
+        if (is_null ( $sUrl )) {
+            return project ( 'router' );
+        }
+        
+        return project ( 'router' )->url ( $sUrl, $arrParams, $in );
+    }
+}
+
 if (! function_exists ( '__' )) {
     /**
      * 语言包
@@ -125,5 +191,20 @@ if (! function_exists ( 'value' )) {
         $arrArgs = func_get_args ();
         array_shift ( $arrArgs );
         return ! is_string ( $mixValue ) && is_callable ( $mixValue ) ? call_user_func_array ( $mixValue, $arrArgs ) : $mixValue;
+    }
+}
+
+if (! function_exists ( 'exception' )) {
+    /**
+     * 抛出异常处理
+     *
+     * @param string $strMessage            
+     * @param integer $intCode            
+     * @param string $strException            
+     * @return void
+     */
+    function exception($strMessage, $intCode = 0, $strException = null) {
+        $strException = $strException ?  : 'Exception';
+        throw new $strException ( $strMessage, $intCode );
     }
 }

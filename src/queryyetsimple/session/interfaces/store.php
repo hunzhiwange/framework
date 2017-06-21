@@ -37,44 +37,51 @@ interface store {
      *
      * @param string $sName            
      * @param mxied $mixValue            
-     * @param boolean $bPrefix            
      * @return void
      */
-    public function set($sName, $mixValue, $bPrefix = true);
+    public function set($sName, $mixValue);
+    
+    /**
+     * 批量插入
+     *
+     * @param string|array $mixKey            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function put($mixKey, $mixValue = null);
     
     /**
      * 取回 session
      *
      * @param string $sName            
-     * @param boolean $bPrefix            
+     * @param mixed $mixValue            
      * @return mxied
      */
-    public function get($sName, $bPrefix = true);
+    public function get($sName, $mixValue = null);
     
     /**
      * 删除 session
      *
      * @param string $sName            
-     * @param boolean $bPrefix            
      * @return bool
      */
-    public function delete($sName, $bPrefix = true);
+    public function delete($sName);
     
     /**
      * 是否存在 session
      *
      * @param string $sName            
-     * @param boolean $bPrefix            
+     * @return boolean
      */
-    public function has($sName, $bPrefix = true);
+    public function has($sName);
     
     /**
      * 删除 session
      *
-     * @param boolean $bOnlyDeletePrefix            
-     * @return int
+     * @param boolean $bPrefix            
+     * @return void
      */
-    public function clear($bOnlyDeletePrefix = true);
+    public function clear($bPrefix = true);
     
     /**
      * 暂停 session

@@ -211,7 +211,7 @@ class filesystem {
         if (! $bUnix) {
             $sPath = str_replace ( '/', '\\', $sPath );
         }
-        return rtrim ( $sRetPath, '\\/' );
+        return rtrim ( $sPath, '\\/' );
     }
     
     /**
