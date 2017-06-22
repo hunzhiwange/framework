@@ -151,11 +151,11 @@ class application {
      */
     public function namespaces() {
         foreach ( $this->objProject ['option'] ['~apps~'] as $strApp ) {
-            psr4::import ( $strApp, $this->objProject->path_application . '/' . $strApp );
+            $this->objProject ['psr4']->import ( $strApp, $this->objProject->path_application . '/' . $strApp );
         }
         
         foreach ( $this->objProject ['option'] ['namespace'] as $strNamespace => $strPath ) {
-            psr4::import ( $strNamespace, $strPath );
+            $this->objProject ['psr4']->import ( $strNamespace, $strPath );
         }
         
         return $this;

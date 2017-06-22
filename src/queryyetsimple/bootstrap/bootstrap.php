@@ -117,7 +117,7 @@ class bootstrap {
      */
     private function initProject() {
         // 注册公共组件命名空间
-        psr4::import ( 'common', $this->objProject->path_common, [ 
+        $this->objProject ['psr4']->import ( 'common', $this->objProject->path_common, [ 
                 'ignore' => [ 
                         'interfaces' 
                 ],

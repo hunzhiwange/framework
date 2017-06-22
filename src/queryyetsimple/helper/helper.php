@@ -94,13 +94,14 @@ class helper {
      * 源代码方式合并带有匿名函数的数组
      * 只支持简单格式，复杂的无 fuck 做
      *
+     * @param \queryyetsimple\psr4\psr4 $objPsr4            
      * @param string $strCachePath            
      * @param array $arrFile            
      * @param boolean $booParseNamespace            
      * @param boolean $booForce            
      * @return array
      */
-    public static function arrayMergeSource($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
+    public static function arrayMergeSource(psr4 $objPsr4, $strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
         if (! $arrFile)
             return [ ];
         
@@ -112,7 +113,7 @@ class helper {
         $strContent = '';
         foreach ( $arrFile as $strFile ) {
             if (! is_file ( $strFile ))
-                $booParseNamespace === true && ($strFile = psr4::getFilePath ( $strFile ));
+                $booParseNamespace === true && ($strFile = $objPsr4->file ( $strFile ));
             if (! is_file ( $strFile ) || ! is_array ( include $strFile ))
                 continue;
             

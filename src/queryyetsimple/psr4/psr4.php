@@ -3,11 +3,6 @@
 // ©2010-2017 http://queryphp.com All rights reserved.
 namespace queryyetsimple\psr4;
 
-use RuntimeException;
-use queryyetsimple\classs\faces;
-use Composer\Autoload\ClassLoader;
-use queryyetsimple\support\interfaces\container;
-
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -20,6 +15,12 @@ use queryyetsimple\support\interfaces\container;
 ##########################################################
 queryphp;
 
+use RuntimeException;
+use queryyetsimple\classs\faces;
+use Composer\Autoload\ClassLoader;
+use queryyetsimple\support\interfaces\container;
+use queryyetsimple\psr4\interfaces\psr4 as interfaces_psr4;
+
 /**
  * psr4 自动载入规范
  *
@@ -28,30 +29,34 @@ queryphp;
  * @since 2016.11.17
  * @version 1.0
  */
-class psr4 {
+class psr4 implements interfaces_psr4 {
     
     /**
      * 设置 composer
      *
      * @var \Composer\Autoload\ClassLoader
      */
-    protected static $objComposer;
+    protected $objComposer;
     
     /**
      * 沙盒路径
      *
      * @var string
      */
-    protected static $strSandboxPath;
+    protected $strSandboxPath;
     
     /**
      * 设置 composer
      *
+     * @param \queryyetsimple\support\interfaces\container $objContainer            
      * @param \Composer\Autoload\ClassLoader $objComposer            
+     * @param string $strSandboxPath            
      * @return void
      */
-    public static function composer(ClassLoader $objComposer) {
-        static::$objComposer = $objComposer;
+    public function __construct(container $objContainer, ClassLoader $objComposer, $strSandboxPath = '') {
+        $this->objComposer = $objComposer;
+        $this->strSandboxPath = $strSandboxPath;
+        faces::setProjectContainer ( $objContainer );
     }
     
     /**
@@ -59,8 +64,8 @@ class psr4 {
      *
      * @return \Composer\Autoload\ClassLoader
      */
-    public static function getComposer() {
-        return static::$objComposer;
+    public function composer() {
+        return $this->objComposer;
     }
     
     /**
@@ -72,12 +77,12 @@ class psr4 {
      *            命名空间路径
      * @return void
      */
-    public static function import($sNamespace, $sPackage) {
+    public function import($sNamespace, $sPackage) {
         if (! is_dir ( $sPackage )) {
             return;
         }
         $sPackagePath = realpath ( $sPackage );
-        static::getComposer ()->setPsr4 ( $sNamespace . '\\', $sPackagePath );
+        $this->composer ()->setPsr4 ( $sNamespace . '\\', $sPackagePath );
     }
     
     /**
@@ -86,9 +91,9 @@ class psr4 {
      * @param string $sNamespace            
      * @return string|null
      */
-    public static function getNamespace($sNamespace) {
+    public function namespaces($sNamespace) {
         $arrNamespace = explode ( '\\', $sNamespace );
-        $arrPrefix = static::getComposer ()->getPrefixesPsr4 ();
+        $arrPrefix = $this->composer ()->getPrefixesPsr4 ();
         if (! isset ( $arrPrefix [$arrNamespace [0] . '\\'] ))
             return null;
         $arrNamespace [0] = $arrPrefix [$arrNamespace [0] . '\\'] [0];
@@ -101,8 +106,8 @@ class psr4 {
      * @param string $strFile            
      * @return string
      */
-    public static function getFilePath($strFile) {
-        if (($strNamespace = static::getNamespace ( $strFile ))) {
+    public function file($strFile) {
+        if (($strNamespace = $this->namespaces ( $strFile ))) {
             return $strNamespace . '.php';
         } else {
             return $strFile . '.php';
@@ -115,34 +120,16 @@ class psr4 {
      * @param string $strClass            
      * @return void
      */
-    public static function autoload($strClass) {
-        // 实现沙盒
+    public function autoload($strClass) {
+        if (! $this->strSandboxPath)
+            return;
+        
         if (strpos ( $strClass, 'queryyetsimple\\' ) !== false || strpos ( $strClass, 'qys\\' ) !== false) {
-            if (is_file ( ($strSandbox = static::$strSandboxPath . '/' . str_replace ( '\\', '/', substr ( $strClass, strpos ( $strClass, 'queryyetsimple\\' ) !== false ? 15 : 4 ) ) . '.php') ))
+            if (is_file ( ($strSandbox = $this->strSandboxPath . '/' . str_replace ( '\\', '/', substr ( $strClass, strpos ( $strClass, 'queryyetsimple\\' ) !== false ? 15 : 4 ) ) . '.php') ))
                 require $strSandbox;
         }
         
-        if (is_file ( ($strSandbox = static::$strSandboxPath . '/' . str_replace ( '\\', '/', $strClass ) . '.php') ))
+        if (is_file ( ($strSandbox = $this->strSandboxPath . '/' . str_replace ( '\\', '/', $strClass ) . '.php') ))
             require $strSandbox;
-    }
-    
-    /**
-     * 沙盒路径
-     *
-     * @param string $strSandboxPath            
-     * @return void
-     */
-    public static function sandboxPath($strSandboxPath) {
-        static::$strSandboxPath = $strSandboxPath;
-    }
-    
-    /**
-     * 容器注入门面
-     *
-     * @param \queryyetsimple\support\interfaces\container $objProject            
-     * @return void
-     */
-    public static function faces(container $objProject) {
-        faces::setProjectContainer ( $objProject );
     }
 }

@@ -90,18 +90,18 @@ class project extends container implements interfaces_project {
      * @param array $arrOption            
      * @return void
      */
-    protected function __construct($objComposer, $arrOption = []) {
-        // set composer
-        $this->setComposer ( $objComposer )->
-        
+    protected function __construct(ClassLoader $objComposer, $arrOption = []) {
         // 项目基础配置
-        setOption ( $arrOption )->
+        $this->setOption ( $arrOption )->
         
         // 初始化项目路径
         setPath ()->
         
         // 注册别名
         registerAlias ()->
+        
+        // 注册 psr4
+        registerPsr4 ( $objComposer )->
         
         // 注册基础提供者 register
         registerBaseProvider ()->
@@ -239,23 +239,6 @@ class project extends container implements interfaces_project {
     }
     
     /**
-     * 设置 Composer
-     *
-     * @param \Composer\Autoload\ClassLoader $objComposer            
-     * @return $this
-     */
-    protected function setComposer(ClassLoader $objComposer) {
-        psr4::composer ( $objComposer );
-        psr4::faces ( $this );
-        psr4::sandboxPath ( dirname ( __DIR__ ) . '/bootstrap/sandbox' );
-        spl_autoload_register ( [ 
-                'queryyetsimple\psr4\psr4',
-                'autoload' 
-        ] );
-        return $this;
-    }
-    
-    /**
      * 设置项目基础配置
      *
      * @param array $arrOption            
@@ -263,6 +246,22 @@ class project extends container implements interfaces_project {
      */
     protected function setOption($arrOption) {
         $this->arrOption = $arrOption;
+        return $this;
+    }
+    
+    /**
+     * 注册 psr4
+     *
+     * @param \Composer\Autoload\ClassLoader $objComposer            
+     * @return $this
+     */
+    protected function registerPsr4(ClassLoader $objComposer) {
+        $this->instance ( psr4::class, new psr4 ( $this, $objComposer, dirname ( __DIR__ ) . '/bootstrap/sandbox' ) );
+        $this->alias ( 'psr4', psr4::class );
+        spl_autoload_register ( [ 
+                $this ['psr4'],
+                'autoload' 
+        ] );
         return $this;
     }
     
@@ -290,6 +289,7 @@ class project extends container implements interfaces_project {
      * @return $this
      */
     protected function registerMvcProvider() {
+        // 注册本身
         $this->instance ( project::class, $this );
         
         // 注册 app
@@ -425,7 +425,7 @@ class project extends container implements interfaces_project {
      */
     protected function registerProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
         $booForce = true;
-        foreach ( helper::arrayMergeSource ( $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
+        foreach ( helper::arrayMergeSource ( $this ['psr4'], $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
             if (is_string ( $strType ) && $strType) {
                 if (strpos ( $strType, '@' ) !== false) {
                     $arrRegisterArgs = explode ( '@', $strType );

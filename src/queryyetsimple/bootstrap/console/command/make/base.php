@@ -36,6 +36,7 @@ abstract class base extends command {
      * @var string
      */
     protected $strMakeType;
+    
     /**
      * 文件保存路径
      *
@@ -210,7 +211,7 @@ abstract class base extends command {
      * @return string
      */
     protected function getNamespacePath() {
-        if (! ($strNamespacePath = psr4::getNamespace ( $this->getNamespace () ))) {
+        if (! ($strNamespacePath = $this->project ()->make ( 'psr4' )->namespaces ( $this->getNamespace () ))) {
             $strNamespacePath = $this->project ()->path_application . '/' . $this->getNamespace () . '/';
         }
         return $strNamespacePath;
