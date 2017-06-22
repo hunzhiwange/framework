@@ -36,23 +36,16 @@ class mysql extends connect implements interfaces_connect {
      * @return string
      */
     public function parseDsn($arrOption) {
-        $strDsn = 'mysql:dbname=' . $arrOption ['name'] . ';host=' . $arrOption ['host'];
-        if (! empty ( $arrOption ['port'] )) {
-            $strDsn .= ';port=' . $arrOption ['port'];
-        }        
-
-        // http://blogread.cn/it/article/6501
-        // 用unix socket加速php-fpm、mysql、redis的连接
-        elseif (! empty ( $arrOption ['socket'] )) {
-            $strDsn .= ';unix_socket=' . $arrOption ['socket'];
+        $arrDsn = [ ];
+        foreach ( [ 
+                'Base',
+                'Port',
+                'Socket',
+                'Charset' 
+        ] as $strMethod ) {
+            $arrDsn [] = $this->{'get' . $strMethod} ( $arrOption );
         }
-        
-        // 编码
-        if (! empty ( $arrOption ['charset'] )) {
-            $strDsn .= ';charset=' . $arrOption ['charset'];
-        }
-        
-        return $strDsn;
+        return implode ( '', $arrDsn );
     }
     
     /**
@@ -134,5 +127,48 @@ class mysql extends connect implements interfaces_connect {
      */
     public function identifierColumn($sName) {
         return $sName != '*' ? "`{$sName}`" : '*';
+    }
+    
+    /**
+     * 基本
+     *
+     * @param array $arrOption            
+     * @return string
+     */
+    protected function getBase($arrOption) {
+        return 'mysql:dbname=' . $arrOption ['name'] . ';host=' . $arrOption ['host'];
+    }
+    
+    /**
+     * 端口
+     *
+     * @param array $arrOption            
+     * @return string
+     */
+    protected function getPort($arrOption) {
+        if ($arrOption ['port'])
+            return ';port=' . $arrOption ['port'];
+    }
+    
+    /**
+     * 用 unix socket 加速 php-fpm、mysql、redis 连接
+     *
+     * @param array $arrOption            
+     * @return string
+     */
+    protected function getSocket($arrOption) {
+        if ($arrOption ['socket'])
+            return ';unix_socket=' . $arrOption ['socket'];
+    }
+    
+    /**
+     * 编码
+     *
+     * @param array $arrOption            
+     * @return string
+     */
+    protected function getCharset($arrOption) {
+        if (! empty ( $arrOption ['charset'] ))
+            return ';charset=' . $arrOption ['charset'];
     }
 }
