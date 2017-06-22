@@ -15,6 +15,8 @@ namespace queryyetsimple\rss;
 ##########################################################
 queryphp;
 
+use queryyetsimple\rss\interfaces\rss as interfaces_rss;
+
 /**
  * rss 2.0
  *
@@ -23,14 +25,14 @@ queryphp;
  * @since 2017.05.08
  * @version 1.0
  */
-class rss {
+class rss implements interfaces_rss {
     
     /**
      * 频道信息
      *
      * @var array
      */
-    private $arrOption = [ 
+    protected $arrOption = [ 
             'title' => '',
             'atom_link' => '',
             'link' => '',
@@ -47,7 +49,7 @@ class rss {
      *
      * @var array
      */
-    private $arrItems = [ ];
+    protected $arrItems = [ ];
     
     /**
      * 构造函数
@@ -112,27 +114,6 @@ class rss {
     }
     
     /**
-     * 实现 __get
-     *
-     * @param string $sKey            
-     * @return string
-     */
-    public function __get($sKey) {
-        return $this->getOption ( $sKey );
-    }
-    
-    /**
-     * 实现 __set
-     *
-     * @param string $sKey            
-     * @param string $sValue            
-     * @return void
-     */
-    public function __set($sKey, $sValue) {
-        $this->setOption ( $sKey, $sValue );
-    }
-    
-    /**
      * 更改配置
      *
      * @param string|array $mixKey            
@@ -163,7 +144,7 @@ class rss {
      *
      * @return string
      */
-    private function header() {
+    protected function header() {
         $arrRss = [ ];
         $arrRss [] = '<?xml version="1.0" encoding="UTF-8"?>';
         $arrRss [] = '<rss version="2.0" ';
@@ -203,7 +184,7 @@ class rss {
      *
      * @return string
      */
-    private function body() {
+    protected function body() {
         $arrResult = [ ];
         
         foreach ( $this->arrItems as $arrItem ) {
@@ -232,7 +213,7 @@ class rss {
      *
      * @return string
      */
-    private function footer() {
+    protected function footer() {
         return '</channel>' . PHP_EOL . '</rss>';
     }
 }

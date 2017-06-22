@@ -97,7 +97,8 @@ return [
                 'queryyetsimple\collection',
                 'queryyetsimple\router',
                 'queryyetsimple\view',
-                'queryyetsimple\encryption' 
+                'queryyetsimple\encryption',
+                'queryyetsimple\rss' 
         ],
         
         /**
