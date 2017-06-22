@@ -190,23 +190,14 @@ class router {
      * 构造函数
      *
      * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\http\request $objRequest            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(container $objContainer, array $arrOption = []) {
+    public function __construct(container $objContainer, request $objRequest, array $arrOption = []) {
         $this->objContainer = $objContainer;
-        $this->options ( $arrOption );
-    }
-    
-    /**
-     * http 请求
-     *
-     * @param \queryyetsimple\http\request $objRequest            
-     * @return $this
-     */
-    public function registerRequest(request $objRequest) {
         $this->objRequest = $objRequest;
-        return $this;
+        $this->options ( $arrOption );
     }
     
     /**

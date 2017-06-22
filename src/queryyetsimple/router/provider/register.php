@@ -25,21 +25,7 @@ return [
         'singleton@router' => [ 
                 'queryyetsimple\router\router',
                 function ($oProject) {
-                    $arrOption = [ ];
-                    foreach ( [ 
-                            'router_cache',
-                            'model',
-                            'router_domain_on',
-                            'html_suffix',
-                            'router_domain_top',
-                            'make_subdomain_on',
-                            'pathinfo_depr',
-                            'rewrite',
-                            'public' 
-                    ] as $strOption ) {
-                        $arrOption [$strOption] = $oProject ['option']->get ( 'url\\' . $strOption );
-                    }
-                    
+                    $arrOption = $oProject ['option']->get ( 'url\\' );
                     foreach ( [ 
                             '~apps~',
                             'default_app',
@@ -48,7 +34,7 @@ return [
                     ] as $strOption ) {
                         $arrOption [$strOption] = $oProject ['option']->get ( $strOption );
                     }
-                    return (new queryyetsimple\router\router ( $oProject, $arrOption ))->registerRequest ( $oProject ['request'] );
+                    return new queryyetsimple\router\router ( $oProject, $oProject ['request'], $arrOption );
                 } 
         ] 
 ];
