@@ -67,13 +67,6 @@ abstract class command extends SymfonyCommand {
     protected $strHelp = '';
     
     /**
-     * 注册命令
-     *
-     * @var string
-     */
-    protected $strSignature = '';
-    
-    /**
      * 输出映射
      *
      * @var array
@@ -113,16 +106,10 @@ abstract class command extends SymfonyCommand {
      * @return void
      */
     public function __construct() {
-        if (! empty ( $this->strSignature )) {
-            $this->fromSignature ();
-        } else {
-            parent::__construct ( $this->getNames () );
-        }
+        parent::__construct ( $this->getNames () );
         $this->setDescription ( $this->getDescriptions () );
         $this->setHelp ( $this->getHelps () );
-        if (empty ( $this->strSignature )) {
-            $this->specifyParameters ();
-        }
+        $this->specifyParameters ();
     }
     
     /**
@@ -400,23 +387,6 @@ abstract class command extends SymfonyCommand {
      */
     protected function setVerbosity($mixLevel) {
         $this->intVerbosity = $this->parseVerbosity ( $mixLevel );
-    }
-    
-    /**
-     * 从配置分析
-     *
-     * @return void
-     */
-    protected function fromSignature() {
-        list ( $strName, $arrArguments, $arrOptions ) = parser::parse ( $this->strSignature );
-        parent::__construct ( $strName );
-        foreach ( $arrArguments as $objArgument ) {
-            $this->getDefinition ()->addArgument ( $objArgument );
-        }
-        
-        foreach ( $arrOptions as $objOption ) {
-            $this->getDefinition ()->addOption ( $objOption );
-        }
     }
     
     /**

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\workers;
+namespace queryyetsimple\console;
 
 <<<queryphp
 ##########################################################
@@ -15,16 +15,15 @@ namespace queryyetsimple\queue\workers;
 ##########################################################
 queryphp;
 
-use queryyetsimple\queue\abstracts\worker;
-use queryyetsimple\queue\interfaces\worker as interfaces_worker;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
- * redis worker
+ * 命令行配置
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.05.11
+ * @since 2017.05.09
  * @version 1.0
  */
-class redis extends worker implements interfaces_worker {
-}
+class option extends InputOption {
+}  

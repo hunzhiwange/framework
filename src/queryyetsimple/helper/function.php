@@ -14,6 +14,7 @@
 queryphp;
 
 use queryyetsimple\bootstrap\project;
+use queryyetsimple\log\store as log_store;
 
 if (! function_exists ( 'project' )) {
     /**
@@ -228,6 +229,118 @@ if (! function_exists ( 'log' )) {
     }
 }
 
+if (! function_exists ( 'debug' )) {
+    /**
+     * 记录错误消息 debug
+     *
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param boolean $booWrite            
+     * @return void
+     */
+    function debug($strMessage, $booWrite = false) {
+        log ( $strMessage, log_store::DEBUG, $booWrite );
+    }
+}
+
+if (! function_exists ( 'info' )) {
+    /**
+     * 记录错误消息 info
+     *
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param boolean $booWrite            
+     * @return void
+     */
+    function info($strMessage, $booWrite = false) {
+        log ( $strMessage, log_store::INFO, $booWrite );
+    }
+}
+
+if (! function_exists ( 'notice' )) {
+    /**
+     * 记录错误消息 notice
+     *
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param boolean $booWrite            
+     * @return void
+     */
+    function notice($strMessage, $booWrite = false) {
+        log ( $strMessage, log_store::NOTICE, $booWrite );
+    }
+}
+
+if (! function_exists ( 'warning' )) {
+    /**
+     * 记录错误消息 warning
+     *
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param boolean $booWrite            
+     * @return void
+     */
+    function warning($strMessage, $booWrite = false) {
+        log ( $strMessage, log_store::WARNING, $booWrite );
+    }
+}
+
+if (! function_exists ( 'error' )) {
+    /**
+     * 记录错误消息 error
+     *
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param boolean $booWrite            
+     * @return void
+     */
+    function error($strMessage, $booWrite = false) {
+        log ( $strMessage, log_store::ERROR, $booWrite );
+    }
+}
+
+if (! function_exists ( 'critical' )) {
+    /**
+     * 记录错误消息 critical
+     *
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param boolean $booWrite            
+     * @return void
+     */
+    function critical($strMessage, $booWrite = false) {
+        log ( $strMessage, log_store::CRITICAL, $booWrite );
+    }
+}
+
+if (! function_exists ( 'alert' )) {
+    /**
+     * 记录错误消息 alert
+     *
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param boolean $booWrite            
+     * @return void
+     */
+    function alert($strMessage, $booWrite = false) {
+        log ( $strMessage, log_store::ALERT, $booWrite );
+    }
+}
+
+if (! function_exists ( 'emergency' )) {
+    /**
+     * 记录错误消息 emergency
+     *
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param boolean $booWrite            
+     * @return void
+     */
+    function emergency($strMessage, $booWrite = false) {
+        log ( $strMessage, log_store::EMERGENCY, $booWrite );
+    }
+}
+
 if (! function_exists ( 'option' )) {
     /**
      * 设置或者获取 option 值
@@ -246,5 +359,26 @@ if (! function_exists ( 'option' )) {
         }
         
         return project ( 'option' )->get ( $mixKey, $mixDefault );
+    }
+}
+
+if (! function_exists ( 'cache' )) {
+    /**
+     * 设置或者获取 cache 值
+     *
+     * @param array|string $mixKey            
+     * @param mixed $mixDefault            
+     * @return mixed
+     */
+    function cache($mixKey = null, $mixDefault = null) {
+        if (is_null ( $mixKey )) {
+            return project ( 'cache' );
+        }
+        
+        if (is_array ( $mixKey )) {
+            return project ( 'cache' )->put ( $mixKey );
+        }
+        
+        return project ( 'cache' )->get ( $mixKey, $mixDefault );
     }
 }

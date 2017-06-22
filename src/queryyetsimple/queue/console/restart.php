@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\migrate;
+namespace queryyetsimple\queue\console;
 
 <<<queryphp
 ##########################################################
@@ -15,25 +15,41 @@ namespace queryyetsimple\bootstrap\console\command\migrate;
 ##########################################################
 queryphp;
 
-use Phinx\Console\Command\Test as PhinxTest;
+use queryyetsimple\console\command;
 
 /**
- * 数据库测试环境是否正常
+ * 重启任务
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.06.07
  * @version 1.0
  */
-class test extends PhinxTest {
+class restart extends command {
     
     /**
-     * Configures the current command.
+     * 命令名字
+     *
+     * @var string
+     */
+    protected $strName = 'queue:restart';
+    
+    /**
+     * 命令行描述
+     *
+     * @var string
+     */
+    protected $strDescription = 'Restart queue work after done it current job.';
+    
+    /**
+     * 响应命令
      *
      * @return void
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:test' );
+    public function handle() {
+        cache ()->set ( 'queryphp.queue.restart', time (), [ 
+                'expire' => 0 
+        ] );
+        $this->info ( 'Send queue restart signal.' );
     }
-}  
+}

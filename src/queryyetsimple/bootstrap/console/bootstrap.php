@@ -15,7 +15,7 @@ namespace queryyetsimple\bootstrap\console;
 ##########################################################
 queryphp;
 
-use queryyetsimple\router\router;
+use queryyetsimple\router;
 
 /**
  * 命令行启动文件
@@ -25,6 +25,6 @@ use queryyetsimple\router\router;
  * @since 2017.04.17
  * @version 1.0
  */
-router::binds ( '~_~@console://bootstrap/index', function () {
+router::bind ( '~_~@console://bootstrap/index', function () {
     return (new application ( project () ))->run ();
 } );

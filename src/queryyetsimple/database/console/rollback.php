@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\migrate;
+namespace queryyetsimple\database\console;
 
 <<<queryphp
 ##########################################################
@@ -15,17 +15,17 @@ namespace queryyetsimple\bootstrap\console\command\migrate;
 ##########################################################
 queryphp;
 
-use Phinx\Console\Command\Status as PhinxStatus;
+use Phinx\Console\Command\Rollback as PhinxRollback;
 
 /**
- * 数据库打印所有迁移脚本和他们的状态
+ * 数据库迁移回滚数据库脚本
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0
  */
-class status extends PhinxStatus {
+class rollback extends PhinxRollback {
     
     /**
      * Configures the current command.
@@ -34,6 +34,6 @@ class status extends PhinxStatus {
      */
     protected function configure() {
         parent::configure ();
-        $this->setName ( 'migrate:status' );
+        $this->setName ( 'migrate:rollback' );
     }
 }  

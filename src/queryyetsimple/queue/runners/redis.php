@@ -15,7 +15,7 @@ namespace queryyetsimple\queue\runners;
 ##########################################################
 queryphp;
 
-use queryyetsimple\queue\runner;
+use queryyetsimple\queue\abstracts\runner;
 use queryyetsimple\queue\interfaces\runner as interfaces_runner;
 
 /**

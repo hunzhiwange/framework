@@ -19,7 +19,7 @@ use Redis as Rediss;
 use RuntimeException;
 use queryyetsimple\classs\option;
 use queryyetsimple\cache\interfaces\connect;
-use queryyetsimple\cache\abstracts\cache as abstracts_cache;
+use queryyetsimple\cache\abstracts\cache as abstracts_connect;
 
 /**
  * redis 扩展缓存
@@ -29,7 +29,7 @@ use queryyetsimple\cache\abstracts\cache as abstracts_cache;
  * @since 2017.06.05
  * @version 1.0
  */
-class redis extends abstracts_cache implements connect {
+class redis extends abstracts_connect implements connect {
     
     use option;
     

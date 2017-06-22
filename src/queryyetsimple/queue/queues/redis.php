@@ -16,8 +16,7 @@ namespace queryyetsimple\queue\queues;
 queryphp;
 
 use PHPQueue\Base;
-use queryyetsimple\queue\queue;
-use queryyetsimple\option\option;
+use queryyetsimple\queue\abstracts\queue;
 use queryyetsimple\queue\backend\redis as backend_redis;
 use queryyetsimple\queue\interfaces\queue as interfaces_queue;
 
@@ -65,8 +64,8 @@ class redis extends queue implements interfaces_queue {
      */
     public function __construct() {
         parent::__construct ();
-        $this->arrSourceConfig ['servers'] = option::gets ( 'queue\connect.redis.servers', $this->arrSourceConfig ['servers'] );
-        $this->arrSourceConfig ['redis_options'] = option::gets ( 'queue\connect.redis.options', [ ] );
+        $this->arrSourceConfig ['servers'] = $this->getServers();
+        $this->arrSourceConfig ['redis_options'] = $this->getOptions();
         $this->resDataSource = new backend_redis ( $this->arrSourceConfig );
     }
     
@@ -77,4 +76,27 @@ class redis extends queue implements interfaces_queue {
      */
     public function getQueueSize() {
     }
+
+    /**
+     * 获取 redis 服务器主机
+     *
+     * @return array
+     */
+    protected function getServers() {
+        $arrServers = option ( 'queue\connect.redis.servers', $this->arrSourceConfig ['servers'] );
+        if(array_key_exists('password', $arrServers) && is_null($arrServers['password'])){
+            unset($arrServers['password']);
+        }
+        return $arrServers;
+    }
+        
+    /**
+     * 获取 redis 服务器参数
+     *
+     * @return array
+     */
+    protected function getOptions() {
+        return option ( 'queue\connect.redis.options', [ ] );
+    }
+
 }

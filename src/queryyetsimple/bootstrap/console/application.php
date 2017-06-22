@@ -15,7 +15,7 @@ namespace queryyetsimple\bootstrap\console;
 ##########################################################
 queryphp;
 
-use queryyetsimple\option\option;
+use queryyetsimple\option;
 use queryyetsimple\bootstrap\project;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
@@ -53,7 +53,7 @@ class application {
         $this->objProject = $objProject;
         
         // 创建应用
-        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo (), $this->objProject->version () );
+        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo ().PHP_EOL, $this->objProject->version () );
         
         // 注册默认命令行
         $this->registerDefaultCommands ()->
@@ -86,7 +86,7 @@ class application {
      * @return $this
      */
     private function registerUserCommands() {
-        return $this->doRegisterCommands ( ( array ) option::gets ( 'console' ) );
+        return $this->doRegisterCommands ( ( array ) option::get ( 'console' ) );
     }
     
     /**

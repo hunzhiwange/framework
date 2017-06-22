@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\workers;
+namespace queryyetsimple\database\console;
 
 <<<queryphp
 ##########################################################
@@ -15,16 +15,25 @@ namespace queryyetsimple\queue\workers;
 ##########################################################
 queryphp;
 
-use queryyetsimple\queue\abstracts\worker;
-use queryyetsimple\queue\interfaces\worker as interfaces_worker;
+use Phinx\Console\Command\Migrate as PhinxMigrate;
 
 /**
- * redis worker
+ * 数据库迁移运行数据库脚本
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.05.11
+ * @since 2017.05.09
  * @version 1.0
  */
-class redis extends worker implements interfaces_worker {
-}
+class migrate extends PhinxMigrate {
+    
+    /**
+     * Configures the current command.
+     *
+     * @return void
+     */
+    protected function configure() {
+        parent::configure ();
+        $this->setName ( 'migrate:migrate' );
+    }
+}  

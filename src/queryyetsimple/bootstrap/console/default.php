@@ -22,20 +22,19 @@ queryphp;
  * @version 1.0
  */
 return [ 
-        'queryyetsimple\bootstrap\console\command\demo',
-        'queryyetsimple\bootstrap\console\command\make\model',
-        'queryyetsimple\bootstrap\console\command\make\controller',
-        'queryyetsimple\bootstrap\console\command\make\action',
-        'queryyetsimple\bootstrap\console\command\migrate\init',
-        'queryyetsimple\bootstrap\console\command\migrate\create',
-        'queryyetsimple\bootstrap\console\command\migrate\breakpoint',
-        'queryyetsimple\bootstrap\console\command\migrate\migrate',
-        'queryyetsimple\bootstrap\console\command\migrate\rollback',
-        'queryyetsimple\bootstrap\console\command\migrate\seedcreate',
-        'queryyetsimple\bootstrap\console\command\migrate\seedrun',
-        'queryyetsimple\bootstrap\console\command\migrate\status',
-        'queryyetsimple\bootstrap\console\command\migrate\test',
-        'queryyetsimple\bootstrap\console\command\queue\job',
-        'queryyetsimple\bootstrap\console\command\queue\work',
-        'queryyetsimple\bootstrap\console\command\queue\restart' 
+        'queryyetsimple\mvc\console\model',
+        'queryyetsimple\mvc\console\controller',
+        'queryyetsimple\mvc\console\action',
+        'queryyetsimple\database\console\init',
+        'queryyetsimple\database\console\create',
+        'queryyetsimple\database\console\breakpoint',
+        'queryyetsimple\database\console\migrate',
+        'queryyetsimple\database\console\rollback',
+        'queryyetsimple\database\console\seedcreate',
+        'queryyetsimple\database\console\seedrun',
+        'queryyetsimple\database\console\status',
+        'queryyetsimple\database\console\test',
+        'queryyetsimple\queue\console\job',
+        'queryyetsimple\queue\console\work',
+        'queryyetsimple\queue\console\restart' 
 ];

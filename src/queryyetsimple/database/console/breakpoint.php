@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\migrate;
+namespace queryyetsimple\database\console;
 
 <<<queryphp
 ##########################################################
@@ -36,4 +36,4 @@ class breakpoint extends PhinxBreakpoint {
         parent::configure ();
         $this->setName ( 'migrate:breakpoint' );
     }
-}  
+}

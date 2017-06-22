@@ -15,8 +15,8 @@ namespace tests;
 ##########################################################
 queryphp;
 
-use queryyetsimple\psr4\psr4;
-use queryyetsimple\router\router;
+use queryyetsimple\psr4;
+use queryyetsimple\router;
 
 /**
  * phpunit 内部启动文件
@@ -27,6 +27,6 @@ use queryyetsimple\router\router;
  * @version 1.0
  */
 psr4::import ( 'tests', dirname ( env ( 'app_bootstrap' ) ) );
-router::binds ( '~_~@tests://bootstrap/index', function () {
+router::bind ( '~_~@tests://bootstrap/index', function () {
     return (new application ())->run ();
 } );

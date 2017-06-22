@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\migrate;
+namespace queryyetsimple\database\console;
 
 <<<queryphp
 ##########################################################
@@ -15,17 +15,17 @@ namespace queryyetsimple\bootstrap\console\command\migrate;
 ##########################################################
 queryphp;
 
-use Phinx\Console\Command\SeedRun as PhinxSeedRun;
+use Phinx\Console\Command\Test as PhinxTest;
 
 /**
- * 数据库执行测试数据
+ * 数据库测试环境是否正常
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0
  */
-class seedrun extends PhinxSeedRun {
+class test extends PhinxTest {
     
     /**
      * Configures the current command.
@@ -34,6 +34,6 @@ class seedrun extends PhinxSeedRun {
      */
     protected function configure() {
         parent::configure ();
-        $this->setName ( 'migrate:seedrun' );
+        $this->setName ( 'migrate:test' );
     }
 }  

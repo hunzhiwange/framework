@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\make;
+namespace queryyetsimple\console;
 
 <<<queryphp
 ##########################################################
@@ -15,10 +15,9 @@ namespace queryyetsimple\bootstrap\console\command\make;
 ##########################################################
 queryphp;
 
-use queryyetsimple\psr4\psr4;
-use queryyetsimple\option\option;
+use RuntimeException;
 use queryyetsimple\console\command;
-use queryyetsimple\filesystem\directory;
+use queryyetsimple\filesystem\filesystem;
 
 /**
  * 生成器基类
@@ -28,7 +27,7 @@ use queryyetsimple\filesystem\directory;
  * @since 2017.05.02
  * @version 1.0
  */
-abstract class base extends command {
+abstract class make extends command {
     
     /**
      * 创建类型
@@ -43,6 +42,13 @@ abstract class base extends command {
      * @var string
      */
     protected $strSaveFilePath;
+    
+    /**
+     * 模板路径
+     *
+     * @var string
+     */
+    protected $strTemplatePath;
     
     /**
      * 模板源码
@@ -75,13 +81,11 @@ abstract class base extends command {
         $this->replaceTemplateSource ();
         
         // 保存文件
-        if ($this->saveTemplateResult () === false) {
-            return;
-        }
+        $this->saveTemplateResult ();
         
         // 保存成功输出消息
         $this->info ( sprintf ( '%s <%s> created successfully.', $this->getMakeType (), $this->argument ( 'name' ) ) );
-        $this->commentFilePath ();
+        $this->comment ( $this->formatFile ( $this->getSaveFilePath () ) );
     }
     
     /**
@@ -112,14 +116,10 @@ abstract class base extends command {
             filesystem::createDirectory ( dirname ( $strSaveFilePath ) );
         }
         if (is_file ( $strSaveFilePath )) {
-            $this->error ( 'File is already exits.' );
-            $this->commentFilePath ();
-            return false;
+            throw new RuntimeException ( 'File is already exits.' . PHP_EOL . $this->formatFile ( $this->getSaveFilePath () ) );
         }
         if (! file_put_contents ( $strSaveFilePath, $this->getTemplateResult () )) {
-            $this->error ( 'Can not write file.' );
-            $this->commentFilePath ();
-            return false;
+            throw new RuntimeException ( 'Can not write file.' . PHP_EOL . $this->formatFile ( $this->getSaveFilePath () ) );
         }
     }
     
@@ -138,11 +138,9 @@ abstract class base extends command {
      * @return void
      */
     protected function parseTemplateSource() {
-        $strTemplateSource = dirname ( __DIR__ ) . '/template/' . str_replace ( ':', '.', $this->getName () );
+        $strTemplateSource = $this->getTemplatePath () . '/' . pathinfo ( str_replace ( ':', '.', $this->getName () ), PATHINFO_EXTENSION );
         if (! is_file ( $strTemplateSource )) {
-            $this->error ( 'Template not found.' );
-            $this->comment ( $strTemplateSource );
-            return;
+            throw new RuntimeException ( 'Template not found.' . PHP_EOL . $this->formatFile ( $strTemplateSource ) );
         }
         $this->strTemplateSource = file_get_contents ( $strTemplateSource );
     }
@@ -162,7 +160,7 @@ abstract class base extends command {
      * @return array
      */
     protected function parseSourceAndReplace() {
-        $arrReplaceKeyValue = array_merge ( $this->getDefaultReplaceKeyValue (), option::gets ( 'console\template' ) );
+        $arrReplaceKeyValue = array_merge ( $this->getDefaultReplaceKeyValue (), option ( 'console\template' ) );
         $arrSourceKey = array_map ( function ($strItem) {
             return '{{' . $strItem . '}}';
         }, array_keys ( $arrReplaceKeyValue ) );
@@ -199,7 +197,7 @@ abstract class base extends command {
     /**
      * 读取文件保存路径
      *
-     * @return void
+     * @return string
      */
     protected function getSaveFilePath() {
         return $this->strSaveFilePath;
@@ -211,7 +209,7 @@ abstract class base extends command {
      * @return string
      */
     protected function getNamespacePath() {
-        if (! ($strNamespacePath = $this->project ()->make ( 'psr4' )->namespaces ( $this->getNamespace () ))) {
+        if (($strNamespacePath = $this->project ()->make ( 'psr4' )->namespaces ( $this->getNamespace () ) . '/') != '/') {
             $strNamespacePath = $this->project ()->path_application . '/' . $this->getNamespace () . '/';
         }
         return $strNamespacePath;
@@ -225,7 +223,7 @@ abstract class base extends command {
     protected function parseNamespace() {
         $strNamespace = $this->option ( 'namespace' );
         if (empty ( $strNamespace )) {
-            $strNamespace = option::gets ( 'default_app' );
+            $strNamespace = option ( 'default_app' );
         }
         $this->setNamespace ( $strNamespace );
     }
@@ -243,7 +241,7 @@ abstract class base extends command {
     /**
      * 读取命名空间
      *
-     * @return void
+     * @return string
      */
     protected function getNamespace() {
         return $this->strNamespace;
@@ -262,10 +260,29 @@ abstract class base extends command {
     /**
      * 读取创建类型
      *
-     * @return void
+     * @return string
      */
     protected function getMakeType() {
         return $this->strMakeType;
+    }
+    
+    /**
+     * 设置模板文件路径
+     *
+     * @param string $strTemplatePath            
+     * @return void
+     */
+    protected function setTemplatePath($strTemplatePath) {
+        $this->strTemplatePath = $strTemplatePath;
+    }
+    
+    /**
+     * 读取模板文件路径
+     *
+     * @return string
+     */
+    protected function getTemplatePath() {
+        return $this->strTemplatePath;
     }
     
     /**
@@ -287,18 +304,19 @@ abstract class base extends command {
      * 读取自定义变量替换
      *
      * @param string $strMakeType            
-     * @return void
+     * @return array
      */
     protected function getCustomReplaceKeyValue() {
         return $this->arrCustomReplaceKeyValue;
     }
     
     /**
-     * 输入保存文件路径信息
+     * 格式化文件路径
      *
-     * @return void
+     * @param string $strFile            
+     * @return array
      */
-    protected function commentFilePath() {
-        $this->comment ( filesystem::tidyPathLinux ( $this->getSaveFilePath () ) );
+    protected function formatFile($strFile) {
+        return filesystem::tidyPathLinux ( $strFile );
     }
 }  

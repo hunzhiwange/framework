@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\queue;
+namespace queryyetsimple\database\console;
 
 <<<queryphp
 ##########################################################
@@ -15,42 +15,25 @@ namespace queryyetsimple\bootstrap\console\command\queue;
 ##########################################################
 queryphp;
 
-use queryyetsimple\cache\cache;
-use queryyetsimple\console\command;
+use Phinx\Console\Command\Create as PhinxCreate;
 
 /**
- * 重启任务
+ * 数据库迁移创建一个脚本
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
- * @since 2017.06.07
+ * @since 2017.05.09
  * @version 1.0
  */
-class restart extends command {
+class create extends PhinxCreate {
     
     /**
-     * 命令名字
-     *
-     * @var string
-     */
-    protected $strName = 'queue:restart';
-    
-    /**
-     * 命令行描述
-     *
-     * @var string
-     */
-    protected $strDescription = 'Restart queue work after done it current job.';
-    
-    /**
-     * 响应命令
+     * Configures the current command.
      *
      * @return void
      */
-    public function handle() {
-        cache::sets ( 'queryphp.queue.restart', time (), [ 
-                'expire' => 0 
-        ] );
-        $this->info ( 'Send queue restart signal.' );
+    protected function configure() {
+        parent::configure ();
+        $this->setName ( 'migrate:create' );
     }
-}
+}  

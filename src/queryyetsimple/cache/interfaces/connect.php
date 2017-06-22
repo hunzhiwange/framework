@@ -53,6 +53,15 @@ interface connect {
      * @return void
      */
     public function delele($sCacheName, array $arrOption = []);
+
+    /**
+     * 批量插入
+     *
+     * @param string|array $mixKey            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function put($mixKey, $mixValue = null);
     
     /**
      * 返回缓存句柄

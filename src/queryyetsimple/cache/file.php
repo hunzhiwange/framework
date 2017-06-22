@@ -19,7 +19,7 @@ use InvalidArgumentException;
 use queryyetsimple\classs\option;
 use queryyetsimple\filesystem\filesystem;
 use queryyetsimple\cache\interfaces\connect;
-use queryyetsimple\cache\abstracts\cache as abstracts_cache;
+use queryyetsimple\cache\abstracts\cache as abstracts_connect;
 
 /**
  * 文件缓存
@@ -29,7 +29,7 @@ use queryyetsimple\cache\abstracts\cache as abstracts_cache;
  * @since 2017.02.15
  * @version 1.0
  */
-class file extends abstracts_cache implements connect {
+class file extends abstracts_connect implements connect {
     
     use option;
     

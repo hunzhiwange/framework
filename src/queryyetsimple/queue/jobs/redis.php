@@ -15,7 +15,7 @@ namespace queryyetsimple\queue\jobs;
 ##########################################################
 queryphp;
 
-use queryyetsimple\queue\job;
+use queryyetsimple\queue\abstracts\job;
 use queryyetsimple\queue\interfaces\job as interfaces_job;
 
 /**

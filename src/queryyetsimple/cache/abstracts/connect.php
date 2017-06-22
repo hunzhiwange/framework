@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.02.15
  * @version 1.0
  */
-abstract class cache {
+abstract class connect {
     
     /**
      * 缓存服务句柄
@@ -41,7 +41,7 @@ abstract class cache {
     public function __construct(array $arrOption = []) {
         $this->options ( $arrOption );
     }
-    
+
     /**
      * 批量插入
      *

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\migrate;
+namespace queryyetsimple\console;
 
 <<<queryphp
 ##########################################################
@@ -15,25 +15,15 @@ namespace queryyetsimple\bootstrap\console\command\migrate;
 ##########################################################
 queryphp;
 
-use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * 数据库测试数据
+ * 命令行参数
  *
  * @author Xiangmin Liu<635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0
  */
-class seedcreate extends PhinxSeedCreate {
-    
-    /**
-     * Configures the current command.
-     *
-     * @return void
-     */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:seedcreate' );
-    }
+class argument extends InputArgument {
 }  

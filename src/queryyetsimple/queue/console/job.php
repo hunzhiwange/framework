@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\queue;
+namespace queryyetsimple\queue\console;
 
 <<<queryphp
 ##########################################################
@@ -17,16 +17,14 @@ queryphp;
 
 use Exception;
 use PHPQueue\Base;
-use queryyetsimple\option\option;
-use queryyetsimple\console\parser;
+use queryyetsimple\console\option;
 use queryyetsimple\console\command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
+use queryyetsimple\console\argument;
 
 /**
  * 导入消息队列配置
  */
-require dirname ( dirname ( dirname ( dirname ( __DIR__ ) ) ) ) . '/queue/config.php';
+require dirname ( __DIR__ ) . '/config.php';
 
 /**
  * 添加新的任务
@@ -108,15 +106,15 @@ class job extends command {
         return [ 
                 [ 
                         'job',
-                        InputArgument::REQUIRED,
+                        argument::REQUIRED,
                         'The job name to add.',
                         null 
                 ],
                 [ 
                         'connect',
-                        InputArgument::OPTIONAL,
+                        argument::OPTIONAL,
                         'The name of connect. ',
-                        option::gets ( 'quque\default', 'redis' ) 
+                        option ( 'quque\default', 'redis' ) 
                 ] 
         ];
     }
@@ -131,14 +129,14 @@ class job extends command {
                 [ 
                         'queue',
                         null,
-                        InputOption::VALUE_OPTIONAL,
+                        option::VALUE_OPTIONAL,
                         'The queue to listen on.',
                         'default' 
                 ],
                 [ 
                         'data',
                         null,
-                        InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY,
+                        option::VALUE_OPTIONAL | option::VALUE_IS_ARRAY,
                         'The job json args.' 
                 ] 
         ];

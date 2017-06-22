@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console\command\queue;
+namespace queryyetsimple\queue\console;
 
 <<<queryphp
 ##########################################################
@@ -17,12 +17,9 @@ queryphp;
 
 use PHPQueue\Base;
 use PHPQueue\Runner;
-use queryyetsimple\psr4\psr4;
-use queryyetsimple\cache\cache;
-use queryyetsimple\option\option;
+use queryyetsimple\console\option;
 use queryyetsimple\console\command;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputArgument;
+use queryyetsimple\console\argument;
 
 /**
  * 运行任务
@@ -162,7 +159,7 @@ class work extends command {
      * @return int|false
      */
     protected function getRestart() {
-        return cache::gets ( 'queryphp.queue.restart' );
+        return cache ( 'queryphp.queue.restart' );
     }
     
     /**
@@ -193,9 +190,9 @@ class work extends command {
         return [ 
                 [ 
                         'connect',
-                        InputArgument::OPTIONAL,
+                        argument::OPTIONAL,
                         'The name of connection.',
-                        option::gets ( 'quque\default', 'redis' ) 
+                        option ( 'quque\default', 'redis' ) 
                 ] 
         ];
     }
@@ -210,28 +207,28 @@ class work extends command {
                 [ 
                         'queue',
                         null,
-                        InputOption::VALUE_OPTIONAL,
+                        option::VALUE_OPTIONAL,
                         'The queue to listen on',
                         'default' 
                 ],
                 [ 
                         'memory',
                         null,
-                        InputOption::VALUE_OPTIONAL,
+                        option::VALUE_OPTIONAL,
                         'The memory limit in megabytes',
                         128 
                 ],
                 [ 
                         'sleep',
                         null,
-                        InputOption::VALUE_OPTIONAL,
+                        option::VALUE_OPTIONAL,
                         'Number of seconds to sleep when no job is available',
                         5 
                 ],
                 [ 
                         'tries',
                         null,
-                        InputOption::VALUE_OPTIONAL,
+                        option::VALUE_OPTIONAL,
                         'Number of times to attempt a job before logging it failed',
                         0 
                 ] 
