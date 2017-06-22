@@ -25,7 +25,7 @@ use queryyetsimple\view\interfaces\parser as interfaces_parser;
 /**
  * 分析模板
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.19
  * @version 1.0

@@ -16,7 +16,7 @@ queryphp;
 /**
  * view.register 服务提供者
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.12
  * @version 1.0

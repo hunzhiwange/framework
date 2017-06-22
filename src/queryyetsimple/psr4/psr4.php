@@ -24,7 +24,7 @@ use queryyetsimple\psr4\interfaces\psr4 as interfaces_psr4;
 /**
  * psr4 自动载入规范
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.17
  * @version 1.0

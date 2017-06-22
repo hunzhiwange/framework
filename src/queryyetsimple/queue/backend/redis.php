@@ -20,7 +20,7 @@ use PHPQueue\Backend\Predis;
 /**
  * redis 存储
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.08
  * @version 1.0

@@ -22,7 +22,7 @@ use queryyetsimple\filesystem\filesystem;
 /**
  * 生成器基类
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.02
  * @version 1.0

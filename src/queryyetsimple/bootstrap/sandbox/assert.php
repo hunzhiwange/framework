@@ -20,7 +20,7 @@ use queryyetsimple\assert\assert as assert_assert;
 /**
  * 沙盒 assert
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
@@ -33,7 +33,7 @@ namespace qys;
 /**
  * 沙盒 assert
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0

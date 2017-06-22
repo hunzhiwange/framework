@@ -23,7 +23,7 @@ use queryyetsimple\http\response;
 /**
  * 基类控制器
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.19
  * @version 1.0

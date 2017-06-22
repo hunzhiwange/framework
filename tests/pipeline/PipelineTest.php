@@ -22,7 +22,7 @@ use queryyetsimple\pipeline\pipeline;
 /**
  * pipeline 组件测试
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.27
  * @version 1.0

@@ -20,7 +20,7 @@ use queryyetsimple\classs\faces;
 /**
  * 沙盒 router
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
@@ -42,7 +42,7 @@ namespace qys;
 /**
  * 沙盒 router
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0

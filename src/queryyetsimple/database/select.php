@@ -25,7 +25,7 @@ use queryyetsimple\flow\control as flow_control;
 /**
  * 数据库查询器
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.03.09
  * @version 1.0

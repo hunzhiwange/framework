@@ -22,7 +22,7 @@ use queryyetsimple\database\interfaces\connect as interfaces_connect;
 /**
  * mysql 数据库连接
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.03.09
  * @version 1.0

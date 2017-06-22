@@ -15,22 +15,19 @@ namespace queryyetsimple\stack;
 ##########################################################
 queryphp;
 
-use SplStack;
 use InvalidArgumentException;
-use queryyetsimple\stack\traits\base;
+use queryyetsimple\stack\interfaces\stack as interfaces_stack;
 
 /**
  * 栈，后进先出
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.21
  * @see http://php.net/manual/zh/class.splstack.php
  * @version 1.0
  */
-class stack extends SplStack {
-    
-    use base;
+class stack extends linkedlist implements interfaces_stack {
     
     /**
      * 入栈
@@ -52,12 +49,11 @@ class stack extends SplStack {
     }
     
     /**
-     * 验证类型是否正确遇到错误抛出异常
+     * (non-PHPdoc)
      *
-     * @param mixed $mixValue            
-     * @return void
+     * @see \queryyetsimple\stack\linkedlist::validate()
      */
-    protected function checkTypeWithException($mixValue) {
+    public function validate($mixValue) {
         if (! $this->checkType ( $mixValue ))
             throw new InvalidArgumentException ( __ ( '栈元素类型验证失败，允许类型为 %s', implode ( ',', $this->arrType ) ) );
     }

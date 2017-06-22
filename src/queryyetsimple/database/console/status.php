@@ -20,7 +20,7 @@ use Phinx\Console\Command\Status as PhinxStatus;
 /**
  * 数据库打印所有迁移脚本和他们的状态
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0

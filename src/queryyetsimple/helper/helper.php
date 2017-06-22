@@ -23,7 +23,7 @@ use queryyetsimple\filesystem\filesystem;
 /**
  * 辅助函数
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.05
  * @version 1.0

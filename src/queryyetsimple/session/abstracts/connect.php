@@ -21,7 +21,7 @@ use queryyetsimple\classs\option;
 /**
  * connect 驱动抽象类
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.06
  * @version 1.0

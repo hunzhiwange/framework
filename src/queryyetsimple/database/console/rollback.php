@@ -20,7 +20,7 @@ use Phinx\Console\Command\Rollback as PhinxRollback;
 /**
  * 数据库迁移回滚数据库脚本
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0

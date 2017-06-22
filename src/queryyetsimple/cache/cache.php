@@ -23,7 +23,7 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 /**
  * 缓存入口
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.02.15
  * @version 1.0

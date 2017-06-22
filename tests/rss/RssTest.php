@@ -21,7 +21,7 @@ use tests\testcase;
 /**
  * rss 组件测试
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.31
  * @version 1.0

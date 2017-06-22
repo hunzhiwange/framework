@@ -15,22 +15,19 @@ namespace queryyetsimple\stack;
 ##########################################################
 queryphp;
 
-use SplQueue;
 use InvalidArgumentException;
-use queryyetsimple\stack\traits\base;
+use queryyetsimple\stack\interfaces\stack as interfaces_stack;
 
 /**
  * 队列，先进先出
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.21
  * @see http://php.net/manual/zh/class.splqueue.php
  * @version 1.0
  */
-class queue extends SplQueue {
-    
-    use base;
+class queue extends linkedlist implements interfaces_stack {
     
     /**
      * 入对
@@ -39,7 +36,7 @@ class queue extends SplQueue {
      * @return void
      */
     public function in($mixValue) {
-        $this->enqueue ( $mixValue );
+        $this->push ( $mixValue );
     }
     
     /**
@@ -48,16 +45,15 @@ class queue extends SplQueue {
      * @return mixed
      */
     public function out() {
-        return $this->dequeue ();
+        return $this->shift ();
     }
     
     /**
-     * 验证类型是否正确遇到错误抛出异常
+     * (non-PHPdoc)
      *
-     * @param mixed $mixValue            
-     * @return void
+     * @see \queryyetsimple\stack\linkedlist::validate()
      */
-    protected function checkTypeWithException($mixValue) {
+    public function validate($mixValue) {
         if (! $this->checkType ( $mixValue ))
             throw new InvalidArgumentException ( __ ( '队列元素类型验证失败，允许类型为 %s', implode ( ',', $this->arrType ) ) );
     }

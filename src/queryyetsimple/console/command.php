@@ -31,7 +31,7 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
 /**
  * 命令抽象类 <from lavarel>
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.28
  * @version 1.0

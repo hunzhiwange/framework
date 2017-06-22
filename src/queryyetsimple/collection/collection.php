@@ -26,7 +26,7 @@ use queryyetsimple\classs\infinity;
 /**
  * 数组转对象集合
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.21
  * @version 1.0

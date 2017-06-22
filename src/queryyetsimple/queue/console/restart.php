@@ -20,7 +20,7 @@ use queryyetsimple\console\command;
 /**
  * 重启任务
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.07
  * @version 1.0

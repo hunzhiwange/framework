@@ -16,7 +16,7 @@
 /**
  * QueryPHP Javascript V1.0
  * 
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @version $$
  * @date 2016.11.23
  * @since 1.0

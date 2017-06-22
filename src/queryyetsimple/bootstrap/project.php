@@ -27,7 +27,7 @@ use queryyetsimple\bootstrap\interfaces\project as interfaces_project;
 /**
  * 项目管理
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.01.14
  * @version 1.0

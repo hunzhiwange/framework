@@ -22,7 +22,7 @@ use queryyetsimple\classs\option as classs_option;
 /**
  * 国际化组件
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.18
  * @version 1.0

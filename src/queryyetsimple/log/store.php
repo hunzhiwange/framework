@@ -24,7 +24,7 @@ use queryyetsimple\log\interfaces\store as interfaces_store;
 /**
  * 日志存储
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.03.03
  * @version 1.0

@@ -20,7 +20,7 @@ use Phinx\Console\Command\Create as PhinxCreate;
 /**
  * 数据库迁移创建一个脚本
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0

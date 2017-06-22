@@ -22,7 +22,7 @@ use queryyetsimple\cache\memcache as cache_memcache;
 /**
  * session.memcache
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.05
  * @version 1.0

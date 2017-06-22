@@ -22,7 +22,7 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 /**
  * 调试一个变量
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.05
  * @version 1.0

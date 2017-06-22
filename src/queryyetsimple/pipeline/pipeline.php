@@ -22,7 +22,7 @@ use queryyetsimple\pipeline\interfaces\pipeline as interfaces_pipeline;
 /**
  * 管道实现类
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.25
  * @version 1.0

@@ -21,7 +21,7 @@ use queryyetsimple\option\interfaces\option as interfaces_option;
 /**
  * 配置管理类
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.02.13
  * @version 1.0

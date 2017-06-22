@@ -16,7 +16,7 @@ queryphp;
 /**
  * 系统调试模版
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.12.18
  * @version 1.0

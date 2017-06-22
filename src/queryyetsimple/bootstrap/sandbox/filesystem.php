@@ -20,7 +20,7 @@ use queryyetsimple\filesystem\filesystem as filesystem_filesystem;
 /**
  * 沙盒 filesystem
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
@@ -33,7 +33,7 @@ namespace qys;
 /**
  * 沙盒 filesystem
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0

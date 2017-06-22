@@ -20,7 +20,7 @@ use PHPUnit_Framework_TestCase;
 /**
  * phpunit 测试用例
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0

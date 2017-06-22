@@ -18,7 +18,7 @@ queryphp;
 /**
  * 消息基类
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.04
  * @version 1.0

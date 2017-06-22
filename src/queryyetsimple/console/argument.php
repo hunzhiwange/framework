@@ -20,7 +20,7 @@ use Symfony\Component\Console\Input\InputArgument;
 /**
  * 命令行参数
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0

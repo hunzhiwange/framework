@@ -20,7 +20,7 @@ use ArrayAccess;
 /**
  * 模型 orm
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.27
  * @version 1.0

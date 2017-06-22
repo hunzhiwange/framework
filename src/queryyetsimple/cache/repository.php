@@ -23,7 +23,7 @@ use queryyetsimple\cache\interfaces\repository as interfaces_repository;
 /**
  * 缓存入口
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.02.15
  * @version 1.0

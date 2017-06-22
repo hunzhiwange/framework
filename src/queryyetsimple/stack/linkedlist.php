@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\stack\traits;
+namespace queryyetsimple\stack;
 
 <<<queryphp
 ##########################################################
@@ -15,15 +15,21 @@ namespace queryyetsimple\stack\traits;
 ##########################################################
 queryphp;
 
+use SplDoublyLinkedList;
+use InvalidArgumentException;
+
 /**
- * 栈和队列基础 trait
+ * 双向链表
+ * 在 PHP 双向链表的基础上加上数据类型验证功能，不少业务场景中保证链表中数据一致性
+ * 以及链表返回空数据时阻止抛出异常的默认行为
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.23
+ * @since 2016.11.21
+ * @see http://php.net/manual/zh/class.spldoublylinkedlist.php
  * @version 1.0
  */
-trait base {
+class linkedlist extends SplDoublyLinkedList {
     
     /**
      * 允许的类型
@@ -39,13 +45,13 @@ trait base {
      */
     public function __construct(/* args */){
         $this->arrType = func_get_args ();
+        parent::__construct ();
     }
     
     /**
-     * 如果一个空的结构出元素会抛出 RuntimeException 异常
+     * (non-PHPdoc)
      *
-     * @see \SplDoublyLinkedList::pop()
-     * @return void
+     * @see SplDoublyLinkedList::pop()
      */
     public function pop() {
         if ($this->isEmpty ())
@@ -54,77 +60,54 @@ trait base {
     }
     
     /**
-     * 如果一个空的 queue 弹出元素会抛出 RuntimeException 异常
+     * (non-PHPdoc)
      *
-     * @see \SplQueue::dequeue()
-     * @return mixed
-     */
-    public function dequeue() {
-        if ($this->isEmpty ())
-            return null;
-        return parent::dequeue ();
-    }
-    
-    /**
-     * Adds an element to the queue.
-     *
-     * @param mixed $mixValue            
-     * @see \SplQueue::enqueue()
-     * @return void
-     */
-    public function enqueue($mixValue) {
-        $this->checkTypeWithException ( $mixValue );
-        parent::enqueue ( $mixValue );
-    }
-    
-    /**
-     * Add/insert a new value at the specified index
-     *
-     * @param mixed $mixValue            
-     * @param mixed $mixNewval            
-     * @see \SplDoublyLinkedList::pop()
-     * @return void
+     * @see SplDoublyLinkedList::add()
      */
     public function add($mixIndex, $mixNewval) {
-        $this->checkTypeWithException ( $mixNewval );
+        $this->validate ( $mixNewval );
         parent::add ( $mixIndex, $mixNewval );
     }
     
     /**
-     * Sets the value at the specified $mixIndex to $mixNewval
+     * (non-PHPdoc)
      *
-     * @param mixed $mixValue            
-     * @param mixed $mixNewval            
-     * @see \SplDoublyLinkedList::offsetSet()
-     * @return void
+     * @see SplDoublyLinkedList::offsetSet()
      */
     public function offsetSet($mixIndex, $mixNewval) {
-        $this->checkTypeWithException ( $mixNewval );
+        $this->validate ( $mixNewval );
         parent::offsetSet ( $mixIndex, $mixNewval );
     }
     
     /**
-     * Pushes an element at the end of the doubly linked list
+     * (non-PHPdoc)
      *
-     * @param mixed $mixValue            
-     * @see \SplDoublyLinkedList::push()
-     * @return void
+     * @see SplDoublyLinkedList::push()
      */
     public function push($mixValue) {
-        $this->checkTypeWithException ( $mixValue );
+        $this->validate ( $mixValue );
         parent::push ( $mixValue );
     }
     
     /**
-     * Prepends the doubly linked list with an element
+     * (non-PHPdoc)
      *
-     * @param mixed $mixValue            
-     * @see \SplDoublyLinkedList::unshift()
-     * @return void
+     * @see SplDoublyLinkedList::unshift()
      */
     public function unshift($mixValue) {
-        $this->checkTypeWithException ( $mixValue );
+        $this->validate ( $mixValue );
         parent::unshift ( $mixValue );
+    }
+    
+    /**
+     * 验证类型是否正确遇到错误抛出异常
+     *
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function validate($mixValue) {
+        if (! $this->checkType ( $mixValue ))
+            throw new InvalidArgumentException ( __ ( '链表元素类型验证失败，允许类型为 %s', implode ( ',', $this->arrType ) ) );
     }
     
     /**
@@ -133,7 +116,7 @@ trait base {
      * @param mixed $mixValue            
      * @return bool
      */
-    public function checkType($mixValue) {
+    protected function checkType($mixValue) {
         if (! count ( $this->arrType ))
             return true;
         return call_user_func_array ( [ 

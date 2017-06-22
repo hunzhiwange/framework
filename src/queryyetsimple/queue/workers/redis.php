@@ -21,7 +21,7 @@ use queryyetsimple\queue\interfaces\worker as interfaces_worker;
 /**
  * redis worker
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.11
  * @version 1.0

@@ -22,7 +22,7 @@ use queryyetsimple\cookie\cookie;
 /**
  * 安全函数
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.05
  * @version 1.0

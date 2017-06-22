@@ -20,7 +20,7 @@ use Phinx\Console\Command\Test as PhinxTest;
 /**
  * 数据库测试环境是否正常
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0

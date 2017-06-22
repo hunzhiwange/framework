@@ -20,7 +20,7 @@ use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
 /**
  * 数据库迁移设置断点
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0

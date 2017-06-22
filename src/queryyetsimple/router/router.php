@@ -26,7 +26,7 @@ use queryyetsimple\support\interfaces\container;
 /**
  * 路由解析
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.01.10
  * @version 1.0

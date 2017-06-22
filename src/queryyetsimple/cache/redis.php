@@ -24,7 +24,7 @@ use queryyetsimple\cache\abstracts\cache as abstracts_connect;
 /**
  * redis 扩展缓存
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.05
  * @version 1.0

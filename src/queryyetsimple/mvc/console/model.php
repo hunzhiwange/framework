@@ -22,7 +22,7 @@ use queryyetsimple\console\argument;
 /**
  * 生成模型
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.02
  * @version 1.0

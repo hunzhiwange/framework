@@ -24,7 +24,7 @@ use queryyetsimple\support\interfaces\container;
 /**
  * 实现类的静态访问门面
  *
- * @author Xiangmin Liu<635750556@qq.com>
+ * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.04
  * @version 1.0
@@ -95,7 +95,12 @@ abstract class faces {
             foreach ( $arrArgs as $mixArg ) {
                 // Serialization of 'Closure' is not allowed
                 try {
-                    $strSerialize .= serialize ( $mixArg );
+                    // 返回指定对象的 hash id
+                    // http://php.net/manual/zh/function.spl-object-hash.php
+                    if (is_object ( $mixArg ))
+                        $strSerialize .= spl_object_hash ( $mixArg );
+                    else
+                        $strSerialize .= serialize ( $mixArg );
                 } catch ( Exception $oE ) {
                 }
             }
