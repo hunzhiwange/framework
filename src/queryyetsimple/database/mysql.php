@@ -130,6 +130,28 @@ class mysql extends connect implements interfaces_connect {
     }
     
     /**
+     * 分析 limit
+     *
+     * @param mixed $mixLimitcount            
+     * @param mixed $mixLimitoffset            
+     * @return string
+     */
+    public function parseLimitcount($mixLimitcount = null, $mixLimitoffset = null) {
+        if (! is_null ( $mixLimitoffset )) {
+            $sSql = 'LIMIT ' . ( int ) $mixLimitoffset;
+            if (! is_null ( $mixLimitcount )) {
+                $sSql .= ',' . ( int ) $mixLimitcount;
+            } else {
+                $sSql .= ',999999999999';
+            }
+            
+            return $sSql;
+        } elseif (! is_null ( $mixLimitcount )) {
+            return 'LIMIT ' . ( int ) $mixLimitcount;
+        }
+    }
+    
+    /**
      * 基本
      *
      * @param array $arrOption            
@@ -146,7 +168,7 @@ class mysql extends connect implements interfaces_connect {
      * @return string
      */
     protected function getPort($arrOption) {
-        if ($arrOption ['port'])
+        if (! empty ( $arrOption ['port'] ))
             return ';port=' . $arrOption ['port'];
     }
     
@@ -157,7 +179,7 @@ class mysql extends connect implements interfaces_connect {
      * @return string
      */
     protected function getSocket($arrOption) {
-        if ($arrOption ['socket'])
+        if (! empty ( $arrOption ['socket'] ))
             return ';unix_socket=' . $arrOption ['socket'];
     }
     
@@ -171,4 +193,5 @@ class mysql extends connect implements interfaces_connect {
         if (! empty ( $arrOption ['charset'] ))
             return ';charset=' . $arrOption ['charset'];
     }
+
 }

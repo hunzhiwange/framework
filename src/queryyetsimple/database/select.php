@@ -17,6 +17,7 @@ queryphp;
 
 use PDO;
 use Exception;
+use BadMethodCallException;
 use queryyetsimple\assert\assert;
 use queryyetsimple\helper\helper;
 use queryyetsimple\collection\collection;
@@ -2607,18 +2608,17 @@ class select {
             return '';
         }
         
-        if (! is_null ( $this->arrOption ['limitoffset'] )) {
-            $sSql = 'LIMIT ' . ( int ) $this->arrOption ['limitoffset'];
-            if (! is_null ( $this->arrOption ['limitcount'] )) {
-                $sSql .= ',' . ( int ) $this->arrOption ['limitcount'];
-            } else {
-                $sSql .= ',999999999999';
-            }
-            
-            return $sSql;
-        } elseif (! is_null ( $this->arrOption ['limitcount'] )) {
-            return 'LIMIT ' . ( int ) $this->arrOption ['limitcount'];
+        if (method_exists ( $this->objConnect, 'parseLimitcount' )) {
+            return call_user_func_array ( [ 
+                    $this->objConnect,
+                    'parseLimitcount' 
+            ], [ 
+                    $this->arrOption ['limitcount'],
+                    $this->arrOption ['limitoffset'] 
+            ] );
         }
+        
+        throw new BadMethodCallException ( sprintf ( 'Connect method %s is not exits', 'parseLimitcount' ) );
     }
     
     /**

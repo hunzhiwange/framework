@@ -246,4 +246,13 @@ interface connect {
      * @return string
      */
     public function identifierColumn($sName);
+    
+    /**
+     * 分析 limit
+     *
+     * @param mixed $mixLimitcount            
+     * @param mixed $mixLimitoffset            
+     * @return string
+     */
+    public function parseLimitcount($mixLimitcount = null, $mixLimitoffset = null);
 }
