@@ -45,7 +45,6 @@ class linkedlist extends SplDoublyLinkedList {
      */
     public function __construct(/* args */){
         $this->arrType = func_get_args ();
-        parent::__construct ();
     }
     
     /**
