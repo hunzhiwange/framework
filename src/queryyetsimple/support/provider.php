@@ -28,18 +28,18 @@ abstract class provider {
     /**
      * 应用程序实例
      *
-     * @var queryyetsimple\bootstrap\project
+     * @var \queryyetsimple\support\interfaces\container
      */
-    protected $objProject;
+    protected $objContainer;
     
     /**
      * 创建一个服务容器提供者实例
      *
-     * @param queryyetsimple\bootstrap\project $objProject            
+     * @param \queryyetsimple\support\interfaces\container $objContainer            
      * @return void
      */
-    public function __construct($objProject) {
-        $this->objProject = $objProject;
+    public function __construct(container $objProject) {
+        $this->objContainer = $objContainer;
     }
     
     /**
