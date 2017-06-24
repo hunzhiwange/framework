@@ -15,9 +15,6 @@ namespace queryyetsimple\view\interfaces;
 ##########################################################
 queryphp;
 
-use queryyetsimple\view\interfaces\parser;
-use queryyetsimple\cookie\interfaces\cookie;
-
 /**
  * theme 接口
  *
@@ -27,22 +24,6 @@ use queryyetsimple\cookie\interfaces\cookie;
  * @version 1.0
  */
 interface theme {
-    
-    /**
-     * 视图分析器
-     *
-     * @param \queryyetsimple\view\parser $objParse            
-     * @return $this
-     */
-    public function registerParser(parser $objParse);
-    
-    /**
-     * 注册 cookie
-     *
-     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
-     * @return $this
-     */
-    public function registerCookie(cookie $objCookie);
     
     /**
      * 加载视图文件

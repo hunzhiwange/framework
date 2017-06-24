@@ -19,6 +19,7 @@ use InvalidArgumentException;
 use queryyetsimple\helper\helper;
 use queryyetsimple\filesystem\directory;
 use queryyetsimple\classs\option as classs_option;
+use queryyetsimple\view\interfaces\compiler as interfaces_compiler;
 
 /**
  * 编译器列表
@@ -28,7 +29,7 @@ use queryyetsimple\classs\option as classs_option;
  * @since 2016.11.18
  * @version 1.0
  */
-class compiler {
+class compiler implements interfaces_compiler {
     
     use classs_option;
     
@@ -245,7 +246,7 @@ class compiler {
     
     /**
      * 构造函数
-     *          
+     *
      * @param array $arrOption            
      * @return void
      */
@@ -294,6 +295,24 @@ class compiler {
         
         unset ( $arrMethods );
         return $arrCompilers;
+    }
+    
+    /**
+     * node.tag
+     *
+     * @return array
+     */
+    public function getNodeTagHelp() {
+        return $this->arrNodeTag;
+    }
+    
+    /**
+     * js.tag
+     *
+     * @return array
+     */
+    public function getJsTagHelp() {
+        return $this->arrJsTag;
     }
     
     // ######################################################
@@ -931,32 +950,6 @@ out += '";
     
     // ######################################################
     // ------------------- node 编译器 end -------------------
-    // ######################################################
-    
-    // ######################################################
-    // ------------------ 返回编译器映射 start ------------------
-    // ######################################################
-    
-    /**
-     * node.tag
-     *
-     * @return array
-     */
-    public function getNodeTagHelp() {
-        return $this->arrNodeTag;
-    }
-    
-    /**
-     * js.tag
-     *
-     * @return array
-     */
-    public function getJsTagHelp() {
-        return $this->arrJsTag;
-    }
-    
-    // ######################################################
-    // ------------------- 返回编译器映射 end -------------------
     // ######################################################
     
     // ######################################################

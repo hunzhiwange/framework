@@ -35,15 +35,15 @@ return [
                         $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
                     }
                     
-                    return new queryyetsimple\view\compiler ($arrOption );
+                    return new queryyetsimple\view\compiler ( $arrOption );
                 } 
         ],
         'singleton@view.parser' => [ 
                 'queryyetsimple\view\parser',
                 function ($oProject) {
-                    return (new queryyetsimple\view\parser ( [ 
+                    return (new queryyetsimple\view\parser ( $oProject ['view.compiler'], [ 
                             'tag_note' => $oProject ['option']->get ( 'view\\tag_note' ) 
-                    ] ))->registerCompilers ( $oProject ['view.compiler'] )->registerParsers ();
+                    ] ))->registerCompilers ()->registerParsers ();
                 } 
         ],
         'singleton@view.theme' => [ 
@@ -69,7 +69,7 @@ return [
                     $arrOption ['theme_path_default'] = $oProject ['path_app_theme_extend'];
                     $arrOption ['theme_cache_path'] = $oProject ['path_cache_theme'];
                     
-                    return (new queryyetsimple\view\theme ( $arrOption ))->registerParser ( $oProject ['view.parser'] )->registerCookie ( $oProject ['cookie'] )->parseContext ( $oProject ['path_app_theme'] );
+                    return (new queryyetsimple\view\theme ( $oProject ['view.parser'], $oProject ['cookie'], $arrOption ))->parseContext ( $oProject ['path_app_theme'] );
                 } 
         ] 
 ];

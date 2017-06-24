@@ -16,7 +16,6 @@
     "require": {
         "php": ">=5.5.0",
         "queryyetsimple/classs": "1.0.*",
-        "queryyetsimple/mvc": "1.0.*",
         "queryyetsimple/helper": "1.0.*",
         "queryyetsimple/stack": "1.0.*",
         "queryyetsimple/support": "1.0.*"

@@ -155,21 +155,21 @@ class parser implements interfaces_parser {
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\view\compiler $objParse            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(array $arrOption = []) {
+    public function __construct(compiler $objCompiler, array $arrOption = []) {
+        $this->objCompiler = $objCompiler;
         $this->options ( $arrOption );
     }
     
     /**
      * 注册视图编译器
      *
-     * @param \queryyetsimple\view\compiler $objParse            
      * @return $this
      */
-    public function registerCompilers(compiler $objCompiler) {
-        $this->objCompiler = $objCompiler;
+    public function registerCompilers() {
         foreach ( $this->objCompiler->getCompilers () as $arrCompiler ) {
             $this->registerCompiler ( $arrCompiler [0], $arrCompiler [1], $arrCompiler [2] );
         }

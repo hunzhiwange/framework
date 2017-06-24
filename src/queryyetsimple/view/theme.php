@@ -86,36 +86,18 @@ class theme implements interfaces_theme {
     
     /**
      * 构造函数
-     *
-     * @param array $arrOption            
+     * 
+     * @param \queryyetsimple\view\parser $objParse   
+     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie  
+     * @param array $arrOption        
      * @return void
      */
-    public function __construct(array $arrOption = []) {
+    public function __construct(parser $objParse,cookie $objCookie,array $arrOption = []) {
+        $this->objParse = $objParse;
+        $this->objCookie = $objCookie;
         $this->options ( $arrOption );
     }
-    
-    /**
-     * 视图分析器
-     *
-     * @param \queryyetsimple\view\parser $objParse            
-     * @return $this
-     */
-    public function registerParser(parser $objParse) {
-        $this->objParse = $objParse;
-        return $this;
-    }
-    
-    /**
-     * 注册 cookie
-     *
-     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
-     * @return $this
-     */
-    public function registerCookie(cookie $objCookie) {
-        $this->objCookie = $objCookie;
-        return $this;
-    }
-    
+
     /**
      * 加载视图文件
      *
