@@ -43,13 +43,17 @@ return [
         'template' => [
                 
                 // 头部注释
-                'header_comment' => '// console_template.header_comment
-// [{{product_name}}] {{product_description}} <{{product_slogan}}>
-// ©{{date_y}}-2099 {{product_homepage}} All rights reserved.',
+                'header_comment' => '/*
+ * This file is part of {{product_name}}.
+ *
+ * (c) {{date_y}}-2099 {{product_homepage}} All rights reserved.
+ *
+ * {{product_description}} 
+ * <{{product_slogan}}>
+ */',
                 
                 // 文件头部注释
-                'file_comment' => '// console_template.file_comment
-/**
+                'file_comment' => '/**
  * {{file_name}}
  *
  * @author {{file_author}}
@@ -69,6 +73,6 @@ return [
                 'file_since' => date ( 'Y.m.d' ),
                 'file_version' => '1.0',
                 'file_package' => '$$',
-                'file_author' => 'your.name<your.email>' 
+                'file_author' => 'your.name <your.email>' 
         ] 
 ]; 

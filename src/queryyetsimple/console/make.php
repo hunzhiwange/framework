@@ -160,7 +160,7 @@ abstract class make extends command {
      * @return array
      */
     protected function parseSourceAndReplace() {
-        $arrReplaceKeyValue = array_merge ( $this->getDefaultReplaceKeyValue (), option ( 'console\template' ) );
+        $arrReplaceKeyValue = array_merge ( option ( 'console\template' ), $this->getDefaultReplaceKeyValue () );
         $arrSourceKey = array_map ( function ($strItem) {
             return '{{' . $strItem . '}}';
         }, array_keys ( $arrReplaceKeyValue ) );
