@@ -33,7 +33,7 @@ class exception extends message {
      *
      * @var object
      */
-    private $objException;
+    protected $objException;
     
     /**
      * 构造函数
@@ -96,7 +96,7 @@ class exception extends message {
      * @param object $oException            
      * @return array
      */
-    private function format($oException) {
+    protected function format($oException) {
         // 返回消息
         $arrError = [ ];
         

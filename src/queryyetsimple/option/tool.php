@@ -117,7 +117,7 @@ class tool {
      * @param array $arrOptionTypeAll            
      * @return void
      */
-    private static function router(&$arrOptionData, $arrOptionDir, $arrOptionTypeAll) {
+    protected static function router(&$arrOptionData, $arrOptionDir, $arrOptionTypeAll) {
         if (! empty ( $arrOptionData ['app'] ['router_extend'] )) {
             $arrRouterExtend = array_diff ( array_map ( function ($strItem) {
                 return 'router_' . $strItem;

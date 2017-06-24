@@ -94,7 +94,7 @@ class Auth{
 		Q::cookie($GLOBALS['_commonConfig_']['RBAC_DATA_PREFIX'].'auth',null,-1);
 	}
 
-	private static function sendCookie($arrCookie,$nLoginTime=null){
+	protected static function sendCookie($arrCookie,$nLoginTime=null){
 		Q::cookie($GLOBALS['_commonConfig_']['RBAC_DATA_PREFIX'].'auth',
 			C::authcode(
 				$arrCookie['user_id']."\t".
@@ -106,11 +106,11 @@ class Auth{
 		);
 	}
 
-	private static function checkPassword($sCleartext,$sCryptograph,$sRanDom=''){
+	protected static function checkPassword($sCleartext,$sCryptograph,$sRanDom=''){
 		return md5(md5($sCleartext).$sRanDom)==$sCryptograph;
 	}
 
-	private static function encodePassword($sCleartext,$sRandom){
+	protected static function encodePassword($sCleartext,$sRandom){
 		return md5(md5($sCleartext).$sRandom);
 	}
 

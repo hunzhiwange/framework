@@ -41,7 +41,7 @@ class application {
      *
      * @var object
      */
-    private $objSymfonyApplication = null;
+    protected $objSymfonyApplication = null;
     
     /**
      * 创建一个命令行应用程序
@@ -76,7 +76,7 @@ class application {
      *
      * @return $this
      */
-    private function registerDefaultCommands() {
+    protected function registerDefaultCommands() {
         return $this->doRegisterCommands ( ( array ) require __DIR__ . '/default.php' );
     }
     
@@ -85,7 +85,7 @@ class application {
      *
      * @return $this
      */
-    private function registerUserCommands() {
+    protected function registerUserCommands() {
         return $this->doRegisterCommands ( ( array ) option::get ( 'console' ) );
     }
     
@@ -95,7 +95,7 @@ class application {
      * @param array $arrCommands            
      * @return $this
      */
-    private function doRegisterCommands($arrCommands) {
+    protected function doRegisterCommands($arrCommands) {
         foreach ( $arrCommands as $strCommand ) {
             $objCommand = $this->objProject->make ( $strCommand );
             // 基于 Phinx 数据库迁移组件无法设置 setContainer
@@ -113,7 +113,7 @@ class application {
      *
      * @return string
      */
-    private function getLogo() {
+    protected function getLogo() {
         return <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #

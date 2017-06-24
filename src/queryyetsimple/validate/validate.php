@@ -32,7 +32,7 @@ class validate {
     const CHECK_ALL = true;
     protected $_sErrorMessage;
     protected $_oDefaultDbIns = null;
-    private function __construct() {
+    protected function __construct() {
     }
     public function make() {
     }

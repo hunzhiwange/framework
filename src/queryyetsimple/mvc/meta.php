@@ -32,8 +32,8 @@ class meta {
      *
      * @var array
      */
-    private static $arrInstances = array ();
-    private $objConnect = null;
+    protected static $arrInstances = array ();
+    protected $objConnect = null;
     
     /**
      * 数据库查询的原生字段
@@ -82,7 +82,7 @@ class meta {
      *
      * @var array
      */
-    private static $arrFieldType = [ 
+    protected static $arrFieldType = [ 
             'int' => [ 
                     'int',
                     'integer',
@@ -98,8 +98,8 @@ class meta {
                     'boolean' 
             ] 
     ];
-    private $strTable;
-    private $strConnect;
+    protected $strTable;
+    protected $strConnect;
     
     /**
      * 构造函数
@@ -168,7 +168,7 @@ class meta {
             return static::$arrInstances [$sModelClass];
         }
     }
-    private function initConnect() {
+    protected function initConnect() {
         // $objConnect
         // if(is_null($this->objConnect)){
         $this->objConnect = database::connects ( $this->strConnect );
@@ -197,7 +197,7 @@ class meta {
         // echo 'yyyyyyyyy';
         //print_r ( $this->objConnect->table ( $this->strTable )->where ( $arrCondition )->update ( $arrSaveData ) );
     }
-    private function init($sModelClass) {
+    protected function init($sModelClass) {
         // echo $sModelClass;
         $this->initConnect ();
         

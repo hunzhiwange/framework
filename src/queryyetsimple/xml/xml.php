@@ -30,42 +30,42 @@ class xml {
      *
      * @var resource
      */
-    private $resParser = NULL;
+    protected $resParser = NULL;
     
     /**
      * Document
      *
      * @var array
      */
-    private $arrDocument;
+    protected $arrDocument;
     
     /**
      * Parent
      *
      * @var array
      */
-    private $arrParent;
+    protected $arrParent;
     
     /**
      * Stack
      *
      * @var array
      */
-    private $arrStack;
+    protected $arrStack;
     
     /**
      * LastOpenedTag
      *
      * @var array
      */
-    private $sLastOpenedTag;
+    protected $sLastOpenedTag;
     
     /**
      * Data
      *
      * @var string
      */
-    private $sData;
+    protected $sData;
     
     /**
      * xml 反序列化
@@ -153,7 +153,7 @@ class xml {
      * @param array $arrAttributes            
      * @return void
      */
-    private function open(&$resParser, $sTag, $arrAttributes) {
+    protected function open(&$resParser, $sTag, $arrAttributes) {
         $this->sData = '';
         $this->sLastOpenedTag = $sTag;
         if (is_array ( $this->arrParent ) and array_key_exists ( $sTag, $this->arrParent )) {
@@ -195,7 +195,7 @@ class xml {
      * @param string $sTag            
      * @return void
      */
-    private function close(&$resParser, $sTag) {
+    protected function close(&$resParser, $sTag) {
         if ($this->sLastOpenedTag == $sTag) {
             $this->arrParent = $this->sData;
             $this->sLastOpenedTag = NULL;
@@ -214,7 +214,7 @@ class xml {
      * @param string $sTag            
      * @return void
      */
-    private function data(&$oParser, $sData) {
+    protected function data(&$oParser, $sData) {
         if ($this->sLastOpenedTag != NULL) {
             $this->sData .= $sData;
         }
@@ -226,7 +226,7 @@ class xml {
      * @param array $array            
      * @return number
      */
-    private function countNumericItems(&$array) {
+    protected function countNumericItems(&$array) {
         return is_array ( $array ) ? count ( array_filter ( array_keys ( $array ), 'is_numeric' ) ) : 0;
     }
     

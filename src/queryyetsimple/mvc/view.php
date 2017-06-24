@@ -96,7 +96,7 @@ class view {
             header ( "Content-Type:" . $in ['content_type'] . "; charset=" . $in ['charset'] );
             
             // 支持页面回跳
-            header ( "Cache-control: private" );
+            header ( "Cache-control: protected" );
         }
         
         $sContent = $this->objTheme->display ( $sFile, false );

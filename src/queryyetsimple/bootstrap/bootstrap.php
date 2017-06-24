@@ -32,21 +32,21 @@ class bootstrap {
      *
      * @var queryyetsimple\bootstrap\project
      */
-    private $objProject = null;
+    protected $objProject = null;
     
     /**
      * 项目配置
      *
      * @var array
      */
-    private $arrOption = [ ];
+    protected $arrOption = [ ];
     
     /**
      * 执行事件流程
      *
      * @var array
      */
-    private $arrEvent = [ 
+    protected $arrEvent = [ 
             'check',
             'registerRuntime',
             'initProject',
@@ -82,7 +82,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function check() {
+    protected function check() {
         if (version_compare ( PHP_VERSION, '5.5.0', '<' ))
             die ( 'PHP 5.5.0 OR Higher' );
         
@@ -95,7 +95,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function registerRuntime() {
+    protected function registerRuntime() {
         if (PHP_SAPI == 'cli')
             return;
         
@@ -115,7 +115,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function initProject() {
+    protected function initProject() {
         // 注册公共组件命名空间
         $this->objProject ['psr4']->import ( 'common', $this->objProject->path_common, [ 
                 'ignore' => [ 
@@ -135,7 +135,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function router() {
+    protected function router() {
         // 运行笑脸初始化应用
         $this->objProject->make ( application::class, application::INIT_APP, $this->arrOption )->bootstrap ()->namespaces ();
         
@@ -148,7 +148,7 @@ class bootstrap {
      *
      * @return void
      */
-    private function runApp() {
+    protected function runApp() {
         // 创建 & 注册
         $this->objProject->instance ( 'app', ($objApp = $this->objProject->make ( application::class )->bootstrap ( $this->objProject->router->app () )->registerAppProvider ()) );
         

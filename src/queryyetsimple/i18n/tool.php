@@ -141,7 +141,7 @@ class tool {
      * @since 2016.11.25
      * @return array
      */
-    private static function parsePoData($mixI18nFile) {
+    protected static function parsePoData($mixI18nFile) {
         if (is_string ( $mixI18nFile )) {
             $mixI18nFile = ( array ) $mixI18nFile;
         }

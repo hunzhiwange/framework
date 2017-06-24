@@ -34,14 +34,14 @@ class request {
      *
      * @var string
      */
-    private static $sBaseUrl;
+    protected static $sBaseUrl;
     
     /**
      * 请求 url
      *
      * @var string
      */
-    private static $sRequestUrl;
+    protected static $sRequestUrl;
     
     /**
      * 构造函数

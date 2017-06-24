@@ -6,13 +6,13 @@
  */
 class Ftp {
 
-    private $hostname = '';
-    private $username = '';
-    private $password = '';
-    private $port = 21;
-    private $passive = true;
-    private $conn_id = false;
-    private $error = '';
+    protected $hostname = '';
+    protected $username = '';
+    protected $password = '';
+    protected $port = 21;
+    protected $passive = true;
+    protected $conn_id = false;
+    protected $error = '';
 
     /**
      * 构造函数
@@ -350,11 +350,11 @@ class Ftp {
     /**
      * FTP成员变量初始化
      *
-     * @access	private
+     * @access	protected
      * @param	array	配置数组	 
      * @return	void
      */
-    private function _init($config = array()) {
+    protected function _init($config = array()) {
         foreach ($config as $key => $val) {
             if (isset($this->$key)) {
                 $this->$key = $val;
@@ -368,20 +368,20 @@ class Ftp {
     /**
      * FTP登陆
      *
-     * @access 	private
+     * @access 	protected
      * @return	boolean
      */
-    private function _login() {
+    protected function _login() {
         return ftp_login($this->conn_id, $this->username, $this->password);
     }
 
     /**
      * 判断con_id
      *
-     * @access 	private
+     * @access 	protected
      * @return	boolean
      */
-    private function _isconn() {
+    protected function _isconn() {
         if (!is_resource($this->conn_id)) {
             $this->setError("ftp_no_connection");
             return false;
@@ -392,11 +392,11 @@ class Ftp {
     /**
      * 从文件名中获取后缀扩展
      *
-     * @access 	private
+     * @access 	protected
      * @param 	string 	目录标识
      * @return	string
      */
-    private function _getext($filename) {
+    protected function _getext($filename) {
         if (false === strpos($filename, '.')) {
             return 'txt';
         }
@@ -408,11 +408,11 @@ class Ftp {
     /**
      * 从后缀扩展定义FTP传输模式  ascii 或 binary
      *
-     * @access 	private
+     * @access 	protected
      * @param 	string 	后缀扩展
      * @return	string
      */
-    private function _settype($ext) {
+    protected function _settype($ext) {
         $text_type = array(
             'txt',
             'text',

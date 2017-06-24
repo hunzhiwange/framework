@@ -40,21 +40,21 @@ class collection implements Iterator, ArrayAccess, Countable {
      *
      * @var array
      */
-    private $arrObject = [ ];
+    protected $arrObject = [ ];
     
     /**
      * 验证
      *
      * @var boolean
      */
-    private $booValid = true;
+    protected $booValid = true;
     
     /**
      * 类型
      *
      * @var string
      */
-    private $sType = '';
+    protected $sType = '';
     
     /**
      * 构造函数
@@ -530,7 +530,7 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @param mixed $mixObject            
      * @return void
      */
-    private function checkType($mixObject) {
+    protected function checkType($mixObject) {
         if (! $this->sType)
             return;
         

@@ -143,7 +143,7 @@ class model implements ArrayAccess {
      *
      * @var boolean
      */
-    private $booInChangePropForce = false;
+    protected $booInChangePropForce = false;
     
     /**
      * 构造函数
@@ -497,7 +497,7 @@ class model implements ArrayAccess {
      *
      * @return void
      */
-    private function create() {
+    protected function create() {
         // $oMeta=static::$_arrMeta[$this->_sClassName];
         
         // // 自动填充
@@ -546,7 +546,7 @@ class model implements ArrayAccess {
      *
      * @return void
      */
-    private function update() {
+    protected function update() {
         // $oMeta=static::$_arrMeta[$this->_sClassName];
         // if($this->_bAutofill===true){// 这里允许update和all
         // $this->autofill('update');
@@ -610,7 +610,7 @@ class model implements ArrayAccess {
      *
      * @return void
      */
-    private function replace() {
+    protected function replace() {
         try {
             $this->create ();
         } catch ( \Exception $e ) {
@@ -623,7 +623,7 @@ class model implements ArrayAccess {
      *
      * @return void
      */
-    private function autoPost() {
+    protected function autoPost() {
         if ($this->booAutoPost === false) {
             return;
         }
@@ -646,7 +646,7 @@ class model implements ArrayAccess {
      *
      * @return boolean
      */
-    private function setInChangePropForce($booInChangePropForce = true) {
+    protected function setInChangePropForce($booInChangePropForce = true) {
         $this->booInChangePropForce = $booInChangePropForce;
     }
     
@@ -655,7 +655,7 @@ class model implements ArrayAccess {
      *
      * @return boolean
      */
-    private function getInChangePropForce() {
+    protected function getInChangePropForce() {
         return $this->booInChangePropForce;
     }
 }

@@ -37,7 +37,7 @@ class compiler {
      *
      * @var array
      */
-    private $arrCodeMap = [ 
+    protected $arrCodeMap = [ 
             'php' => '~',
             'note' => '#',
             'variable' => '$',
@@ -58,21 +58,21 @@ class compiler {
      *
      * @var array
      */
-    private $arrNodeMap = [ ];
+    protected $arrNodeMap = [ ];
     
     /**
      * javascript 支持的特殊别名映射
      *
      * @var array
      */
-    private $arrJsMap = [ ];
+    protected $arrJsMap = [ ];
     
     /**
      * javascript 标签
      *
      * @var array
      */
-    private $arrJsTag = [
+    protected $arrJsTag = [
             // required 属性不能为空，single 单标签
             'if' => [ 
                     'attr' => [ 
@@ -115,7 +115,7 @@ class compiler {
      *
      * @var array
      */
-    private $arrNodeTag = [
+    protected $arrNodeTag = [
             // required 属性不能为空，single 单标签
             'assign' => [ 
                     'attr' => [ 
@@ -970,7 +970,7 @@ out += '";
      * @param string $sType            
      * @return string
      */
-    private function parseContentIf($sContent, $sType = '') {
+    protected function parseContentIf($sContent, $sType = '') {
         $arrArray = explode ( ' ', $sContent );
         $bObj = false;
         $arrParam = [ ];
@@ -1004,7 +1004,7 @@ out += '";
      * @param string $sContent            
      * @return string
      */
-    private function parseJsContent($sContent) {
+    protected function parseJsContent($sContent) {
         $arrVar = explode ( '|', $sContent );
         $sContent = array_shift ( $arrVar );
         
@@ -1022,7 +1022,7 @@ out += '";
      * @param array $arrVar            
      * @return string
      */
-    private function parseJsFunction($sName, $arrVar) {
+    protected function parseJsFunction($sName, $arrVar) {
         return $this->parseVarFunction ( $sName, $arrVar, true );
     }
     
@@ -1034,7 +1034,7 @@ out += '";
      *            是否允许解析函数
      * @return string
      */
-    private function parseContent($sContent, $booFunc = true) {
+    protected function parseContent($sContent, $booFunc = true) {
         $sContent = str_replace ( ':', '->', $sContent ); // 以|分割字符串,数组第一位是变量名字符串,之后的都是函数参数&&函数{$hello|md5}
         
         $arrVar = explode ( '|', $sContent );
@@ -1091,7 +1091,7 @@ out += '";
      *            是否为 JS 变量解析
      * @return string
      */
-    private function parseVarFunction($sName, $arrVar, $bJs = false) {
+    protected function parseVarFunction($sName, $arrVar, $bJs = false) {
         $nLen = count ( $arrVar );
         // 取得模板禁止使用函数列表
         $arrNot = $this->getOption ( 'notallows_func' . ($bJs ? '' : '_js') );
@@ -1140,7 +1140,7 @@ out += '";
      * @param string $sContent            
      * @return string
      */
-    private function parseConditionHelp($sContent) {
+    protected function parseConditionHelp($sContent) {
         return str_replace ( [ 
                 ':',
                 '+' 
@@ -1158,7 +1158,7 @@ out += '";
      * @param number $nGo            
      * @return string
      */
-    private function arrayHandler(&$arrVars, $nType = 1, $nGo = 2) {
+    protected function arrayHandler(&$arrVars, $nType = 1, $nGo = 2) {
         $nLen = count ( $arrVars );
         
         $sParam = '';
@@ -1186,7 +1186,7 @@ out += '";
      * @param string $sContent            
      * @return string
      */
-    private function encodeContent($sContent, $sType = '') {
+    protected function encodeContent($sContent, $sType = '') {
         if ($sType == 'global') {
             $sContent = parser::globalEncode ( $sContent );
         } else if (in_array ( $sType, [ 
@@ -1206,7 +1206,7 @@ out += '";
      * @param array $arrTheme            
      * @return boolean
      */
-    private function checkNode($arrTheme, $bJsNode = false) {
+    protected function checkNode($arrTheme, $bJsNode = false) {
         $arrAttribute = $arrTheme ['children'] [0];
         
         // 验证标签的属性值
@@ -1237,7 +1237,7 @@ out += '";
      *            节点
      * @return array
      */
-    private function getNodeAttribute($arrTheme) {
+    protected function getNodeAttribute($arrTheme) {
         foreach ( $arrTheme ['children'] as $arrChild ) {
             if (isset ( $arrChild ['is_attribute'] ) && $arrChild ['is_attribute'] == 1) {
                 return $arrChild ['attribute_list'];
@@ -1253,7 +1253,7 @@ out += '";
      *            节点
      * @return array
      */
-    private function getNodeBody($arrTheme) {
+    protected function getNodeBody($arrTheme) {
         foreach ( $arrTheme ['children'] as $arrChild ) {
             if (isset ( $arrChild ['is_body'] ) && $arrChild ['is_body'] == 1) {
                 return $arrChild ['content'];
@@ -1269,7 +1269,7 @@ out += '";
      * @param bool $bEsc            
      * @return string
      */
-    private function escapeCharacter(&$sTxt, $bEsc = true) {
+    protected function escapeCharacter(&$sTxt, $bEsc = true) {
         $sTxt = helper::escapeCharacter ( $sTxt, $bEsc );
         if (! $bEsc) {
             $sTxt = str_replace ( [ 
