@@ -418,7 +418,7 @@ class response {
                     }
                     break;
                 case 'xml' :
-                    $mixContent = xml::xmlSerialize ( $mixContent );
+                    $mixContent = xml::serialize ( $mixContent );
                     break;
                 case 'file' :
                     ob_end_clean ();

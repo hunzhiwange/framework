@@ -15,6 +15,8 @@ namespace queryyetsimple\xml;
 ##########################################################
 queryphp;
 
+use RuntimeException;
+
 /**
  * xml 解析类
  *
@@ -68,17 +70,20 @@ class xml {
     protected $sData;
     
     /**
-     * xml 反序列化
+     * 构造函数
      *
-     * @param string $sXml            
-     * @return resource
+     * @return void
      */
-    public static function xmlUnSerialize($sXml) {
-        $objXml = new self ();
-        $objXml->initParser ();
-        $arrData = $objXml->parse ( $sXml );
-        $objXml->destroyParser ();
-        return $arrData;
+    protected function __construct() {
+    }
+    
+    /**
+     * 禁止克隆
+     *
+     * @return void
+     */
+    protected function __clone() {
+        throw new RuntimeException ( 'Xml disallowed clone' );
     }
     
     /**
@@ -91,10 +96,10 @@ class xml {
      * @param string $sCharset            
      * @return string
      */
-    public static function xmlSerialize(&$arrData, $bHtmlOn = true, $nLevel = 0, $sPriorKey = NULL, $sCharset = 'UTF-8') {
+    public static function serialize($arrData, $bHtmlOn = true, $nLevel = 0, $sPriorKey = NULL, $sCharset = 'UTF-8') {
         if ($nLevel == 0) {
             ob_start ();
-            echo '<?xml version="1.0" encoding="' . $sCharset . '"?>' . "\n" . '<root>' . "\n";
+            echo '<?xml version="1.0" encoding="' . $sCharset . '"?>' . PHP_EOL . '<root>' . PHP_EOL;
         }
         
         while ( (list ( $sKey, $sValue ) = each ( $arrData )) !== false ) {
@@ -106,17 +111,17 @@ class xml {
                     echo str_repeat ( "\t", $nLevel ), '<', $sTag;
                     if (array_key_exists ( "$sKey attr", $arrData )) {
                         while ( (list ( $sAttrName, $sAttrValue ) = each ( $arrData ["$sKey attr"] )) != '' ) {
-                            echo ' ', $sAttrName, '="', ($bHtmlOn ? '<![CDATA[' : '') . $sAttrValue . ($bHtmlOn ? ']]>' : ''), '"';
+                            echo ' ', $sAttrName, '="', static::formatNode ( $sAttrValue, $bHtmlOn ), '"';
                         }
                         reset ( $arrData ["$sKey attr"] );
                     }
                     
                     if (is_null ( $sValue )) {
-                        echo " />\n";
+                        echo ' />' . PHP_EOL;
                     } elseif (! is_array ( $sValue )) {
-                        echo '>', ($bHtmlOn ? '<![CDATA[' : '') . $sValue . ($bHtmlOn ? ']]>' : ''), "</$sTag>\n";
+                        echo '>', static::formatNode ( $sValue, $bHtmlOn ), "</{$sTag}>" . PHP_EOL;
                     } else {
-                        echo ">\n", static::xmlSerialize ( $sValue, $bHtmlOn, $nLevel + 1, null, $sCharset ), str_repeat ( "\t", $nLevel ), "</$sTag>\n";
+                        echo '>' . PHP_EOL, static::xmlSerialize ( $sValue, $bHtmlOn, $nLevel + 1, null, $sCharset ), str_repeat ( "\t", $nLevel ), "</{$sTag}>" . PHP_EOL;
                     }
                 }
             }
@@ -133,6 +138,23 @@ class xml {
     }
     
     /**
+     * xml 反序列化
+     *
+     * @param string $sXml            
+     * @param boolean $booWithRoot            
+     * @return resource
+     */
+    public static function unSerialize($sXml, $booWithRoot = false) {
+        $objXml = new self ();
+        $objXml->initParser ();
+        $arrData = $objXml->parse ( $sXml );
+        $objXml->destroyParser ();
+        if (! $booWithRoot && isset ( $arrData ['root'] ))
+            $arrData = $arrData ['root'];
+        return $arrData;
+    }
+    
+    /**
      * 分析 xml 数据
      *
      * @param string $sData            
@@ -143,6 +165,28 @@ class xml {
         $this->arrStack = [ ];
         $this->arrParent = &$this->arrDocument;
         return xml_parse ( $this->resParser, $sData, true ) ? $this->arrDocument : NULL;
+    }
+    
+    /**
+     * 初始化 xml 分析器句柄
+     *
+     * @return void
+     */
+    public function initParser() {
+        $this->resParser = xml_parser_create ();
+        xml_parser_set_option ( $this->resParser, XML_OPTION_CASE_FOLDING, false );
+        xml_set_object ( $this->resParser, $this );
+        xml_set_element_handler ( $this->resParser, 'open', 'close' );
+        xml_set_character_data_handler ( $this->resParser, 'data' );
+    }
+    
+    /**
+     * 关闭 xml 分析器句柄
+     *
+     * @return void
+     */
+    public function destroyParser() {
+        xml_parser_free ( $this->resParser );
     }
     
     /**
@@ -231,24 +275,16 @@ class xml {
     }
     
     /**
-     * 初始化 xml 分析器句柄
+     * 格式化节点
      *
-     * @return void
+     * @param string $sValue            
+     * @param boolean $bHtmlOn            
+     * @return string
      */
-    public function initParser() {
-        $this->resParser = xml_parser_create ();
-        xml_parser_set_option ( $this->resParser, XML_OPTION_CASE_FOLDING, false );
-        xml_set_object ( $this->resParser, $this );
-        xml_set_element_handler ( $this->resParser, 'open_', 'close_' );
-        xml_set_character_data_handler ( $this->resParser, 'data_' );
-    }
-    
-    /**
-     * 关闭 xml 分析器句柄
-     *
-     * @return void
-     */
-    public function destroyParser() {
-        xml_parser_free ( $this->resParser );
+    protected static function formatNode($sValue, $bHtmlOn = true) {
+        if ($bHtmlOn)
+            return sprintf ( '<![CDATA[%s]]>', $sValue );
+        else
+            return $sValue;
     }
 }
