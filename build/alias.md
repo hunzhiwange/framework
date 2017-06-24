@@ -25,6 +25,7 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     logs = subtree push --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
     mail = subtree push --prefix=src/queryyetsimple/mail git@github.com:queryyetsimple/mail.git master
     mvc = subtree push --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mvc.git master
+    observer = subtree push --prefix=src/queryyetsimple/observer git@github.com:queryyetsimple/observer.git master
     operating = subtree push --prefix=src/queryyetsimple/operating git@github.com:queryyetsimple/operating.git master
     option = subtree push --prefix=src/queryyetsimple/option git@github.com:queryyetsimple/option.git master
     page = subtree push --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
@@ -68,6 +69,7 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     logsp = subtree pull --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
     mailp = subtree pull --prefix=src/queryyetsimple/mail git@github.com:queryyetsimple/mail.git master
     mvcp = subtree pull --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mvc.git master
+    observerp = subtree pull --prefix=src/queryyetsimple/observer git@github.com:queryyetsimple/observer.git master
     operatingp = subtree pull --prefix=src/queryyetsimple/operating git@github.com:queryyetsimple/operating.git master
     optionp = subtree pull --prefix=src/queryyetsimple/option git@github.com:queryyetsimple/option.git master
     pagep = subtree pull --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master

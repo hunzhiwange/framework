@@ -22,6 +22,7 @@ git subtree add --prefix=src/queryyetsimple/image git@github.com:queryyetsimple/
 git subtree add --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
 git subtree add --prefix=src/queryyetsimple/mail git@github.com:queryyetsimple/mail.git master
 git subtree add --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mvc.git master
+git subtree add --prefix=src/queryyetsimple/observer git@github.com:queryyetsimple/observer.git master
 git subtree add --prefix=src/queryyetsimple/operating git@github.com:queryyetsimple/operating.git master
 git subtree add --prefix=src/queryyetsimple/option git@github.com:queryyetsimple/option.git master
 git subtree add --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
