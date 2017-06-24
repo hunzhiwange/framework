@@ -15,28 +15,37 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\debug\dump as debug_dump;
+use queryyetsimple\classs\faces;
 
 /**
- * 沙盒 dump
+ * 沙盒 stack
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
  */
-class dump extends debug_dump {
+class stack extends faces {
+    
+    /**
+     * 返回门面名字
+     *
+     * @return string
+     */
+    protected static function name() {
+        return 'stack';
+    }
 }
 
 namespace qys;
 
 /**
- * 沙盒 dump
+ * 沙盒 stack
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
  */
-class dump extends \queryyetsimple\dump {
+class stack extends \queryyetsimple\stack {
 }

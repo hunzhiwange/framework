@@ -14,7 +14,7 @@
 queryphp;
 
 /**
- * pipeline 服务提供者
+ * stack 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -22,10 +22,28 @@ queryphp;
  * @version 1.0
  */
 return [ 
-        'register@pipeline' => [ 
-                'queryyetsimple\pipeline\pipeline',
+        'register@linkedlist' => [ 
+                'queryyetsimple\stack\linkedlist',
                 function ($oProject) {
-                    return new queryyetsimple\pipeline\pipeline ( $oProject );
+                    $arrArgs = func_get_args ();
+                    array_shift ( $arrArgs );
+                    return new queryyetsimple\stack\linkedlist ( $arrArgs );
+                } 
+        ],
+        'register@stack' => [ 
+                'queryyetsimple\stack\stack',
+                function ($oProject) {
+                    $arrArgs = func_get_args ();
+                    array_shift ( $arrArgs );
+                    return new queryyetsimple\stack\stack ( $arrArgs );
+                } 
+        ],
+        'register@queues' => [ 
+                'queryyetsimple\stack\queue',
+                function ($oProject) {
+                    $arrArgs = func_get_args ();
+                    array_shift ( $arrArgs );
+                    return new queryyetsimple\stack\queue ( $arrArgs );
                 } 
         ] 
 ];

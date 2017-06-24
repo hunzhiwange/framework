@@ -15,28 +15,37 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\console\command as console_command;
+use queryyetsimple\classs\faces;
 
 /**
- * 沙盒 command
+ * 沙盒 queues
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
  */
-abstract class command extends console_command {
+class queues extends faces {
+    
+    /**
+     * 返回门面名字
+     *
+     * @return string
+     */
+    protected static function name() {
+        return 'queues';
+    }
 }
 
 namespace qys;
 
 /**
- * 沙盒 command
+ * 沙盒 queues
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
  */
-abstract class command extends \queryyetsimple\command {
+class queues extends \queryyetsimple\queues {
 }

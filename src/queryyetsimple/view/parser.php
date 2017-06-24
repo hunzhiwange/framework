@@ -370,8 +370,8 @@ class parser implements interfaces_parser {
      */
     protected function jsParse(&$sCompiled) {
         $this->bJsNode = true;
-        $this->findNodeTag ( $sCompiled ); // 查找分析Node的标签
-        $this->packNode ( $sCompiled ); // 用标签组装Node
+        $this->findNodeTag ( $sCompiled ); // 查找分析 Node 的标签
+        $this->packNode ( $sCompiled ); // 用标签组装 Node
     }
     
     /**
@@ -382,8 +382,8 @@ class parser implements interfaces_parser {
      */
     protected function nodeParse(&$sCompiled) {
         $this->bJsNode = false;
-        $this->findNodeTag ( $sCompiled ); // 查找分析Node的标签
-        $this->packNode ( $sCompiled ); // 用标签组装Node
+        $this->findNodeTag ( $sCompiled ); // 查找分析 Node 的标签
+        $this->packNode ( $sCompiled ); // 用标签组装 Node
     }
     
     /**
@@ -925,7 +925,6 @@ class parser implements interfaces_parser {
          * 条件：第一个结束字节位置 <= 第二个开始位置
          */
         /*
-         *
          * ======= start =======
          *
          * {if}
@@ -948,7 +947,6 @@ class parser implements interfaces_parser {
          */
         
         /*
-         *
          * ======= start =======
          *
          * {for}
@@ -971,7 +969,6 @@ class parser implements interfaces_parser {
          */
         
         /*
-         *
          * ======= start =======
          *
          * {for}
@@ -995,7 +992,6 @@ class parser implements interfaces_parser {
          */
         
         /*
-         *
          * ======= start =======
          *
          * {if}

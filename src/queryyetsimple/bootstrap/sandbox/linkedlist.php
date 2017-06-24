@@ -15,28 +15,37 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\debug\console as debug_console;
+use queryyetsimple\classs\faces;
 
 /**
- * 沙盒 console
+ * 沙盒 linkedlist
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
  */
-class console extends debug_console {
+class linkedlist extends faces {
+    
+    /**
+     * 返回门面名字
+     *
+     * @return string
+     */
+    protected static function name() {
+        return 'linkedlist';
+    }
 }
 
 namespace qys;
 
 /**
- * 沙盒 console
+ * 沙盒 linkedlist
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
  */
-class console extends \queryyetsimple\console {
+class linkedlist extends \queryyetsimple\linkedlist {
 }
