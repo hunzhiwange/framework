@@ -90,7 +90,7 @@ class Ftp {
      * @param	int  	文件权限列表	
      * @return	boolean
      */
-    public function mkdir($path = '', $permissions = NULL) {
+    public function mkdir($path = '', $permissions = null) {
         if ($path == '' OR !$this->_isconn()) {
             return false;
         }
@@ -129,7 +129,7 @@ class Ftp {
      * @param	int		上传后的文件权限列表	
      * @return	boolean
      */
-    public function upload($localpath, $remotepath, $mode = 'auto', $permissions = NULL) {
+    public function upload($localpath, $remotepath, $mode = 'auto', $permissions = null) {
         if (!file_exists($localpath)) {
             $this->setError("ftp_no_source_file:" . $localpath);
             return false;

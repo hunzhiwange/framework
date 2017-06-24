@@ -89,7 +89,7 @@ class request {
                 break;
         }
         
-        return isset ( $sVar [$sKey] ) ? $sVar [$sKey] : NULL;
+        return isset ( $sVar [$sKey] ) ? $sVar [$sKey] : null;
     }
     
     /**
@@ -177,9 +177,9 @@ class request {
      * @return string
      */
     public function getIp() {
-        static $sRealip = NULL;
+        static $sRealip = null;
         
-        if ($sRealip !== NULL) {
+        if ($sRealip !== null) {
             return $sRealip;
         }
         

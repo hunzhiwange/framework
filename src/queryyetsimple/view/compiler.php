@@ -345,8 +345,8 @@ class compiler {
      * @return void
      */
     public function variableCodeCompiler(&$arrTheme) {
-        $arrTheme ['content'] = ! empty ( $arrTheme ['content'] ) ? $this->parseContent ( $arrTheme ['content'] ) : NULL;
-        if ($arrTheme ['content'] !== NULL) {
+        $arrTheme ['content'] = ! empty ( $arrTheme ['content'] ) ? $this->parseContent ( $arrTheme ['content'] ) : null;
+        if ($arrTheme ['content'] !== null) {
             $arrTheme ['content'] = '<' . '?php echo ' . $arrTheme ['content'] . '; ?' . '>';
         }
         $arrTheme ['content'] = $this->encodeContent ( $arrTheme ['content'] );
@@ -739,16 +739,16 @@ out += '";
         $this->checkNode ( $arrTheme );
         $arrAttr = $this->getNodeAttribute ( $arrTheme );
         
-        $arrAttr ['index'] === NULL && $arrAttr ['index'] = 'index';
-        $arrAttr ['key'] === NULL && $arrAttr ['key'] = 'key';
-        $arrAttr ['id'] === NULL && $arrAttr ['id'] = 'id';
-        $arrAttr ['mod'] === NULL && $arrAttr ['mod'] = 2;
+        $arrAttr ['index'] === null && $arrAttr ['index'] = 'index';
+        $arrAttr ['key'] === null && $arrAttr ['key'] = 'key';
+        $arrAttr ['id'] === null && $arrAttr ['id'] = 'id';
+        $arrAttr ['mod'] === null && $arrAttr ['mod'] = 2;
         if (preg_match ( "/[^\d-.,]/", $arrAttr ['mod'] )) {
             $arrAttr ['mod'] = '$' . $arrAttr ['mod'];
         }
-        $arrAttr ['empty'] === NULL && $arrAttr ['empty'] = '';
-        $arrAttr ['length'] === NULL && $arrAttr ['length'] = '';
-        $arrAttr ['offset'] === NULL && $arrAttr ['offset'] = '';
+        $arrAttr ['empty'] === null && $arrAttr ['empty'] = '';
+        $arrAttr ['length'] === null && $arrAttr ['length'] = '';
+        $arrAttr ['offset'] === null && $arrAttr ['offset'] = '';
         $arrAttr ['name'] = $this->parseContent ( $arrAttr ['name'] );
         
         $sCompiled = '<' . '?php if( is_array ( ' . $arrAttr ['name'] . ' ) ) : $' . $arrAttr ['index'] . ' = 0; ';
@@ -806,10 +806,10 @@ out += '";
         $this->checkNode ( $arrTheme );
         $arrAttr = $this->getNodeAttribute ( $arrTheme );
         
-        $arrAttr ['step'] === NULL && $arrAttr ['step'] = '1';
-        $arrAttr ['start'] === NULL && $arrAttr ['start'] = '0';
-        $arrAttr ['end'] === NULL && $arrAttr ['end'] = '0';
-        $arrAttr ['var'] === NULL && $arrAttr ['var'] = 'var';
+        $arrAttr ['step'] === null && $arrAttr ['step'] = '1';
+        $arrAttr ['start'] === null && $arrAttr ['start'] = '0';
+        $arrAttr ['end'] === null && $arrAttr ['end'] = '0';
+        $arrAttr ['var'] === null && $arrAttr ['var'] = 'var';
         $arrAttr ['var'] = '$' . $arrAttr ['var'];
         if ($arrAttr ['type'] == '-') {
             $sComparison = ' >= ';
@@ -923,7 +923,7 @@ out += '";
         // 补全节点其余参数
         foreach ( $arrAllowedAttr as $str ) {
             if (! isset ( $arrTheme ['attribute_list'] [$str] )) {
-                $arrTheme ['attribute_list'] [$str] = NULL;
+                $arrTheme ['attribute_list'] [$str] = null;
             }
         }
         $arrTheme ['content'] = $sSource;

@@ -100,7 +100,7 @@ class Auth{
 				$arrCookie['user_id']."\t".
 				$arrCookie['is_admin']."\t".
 				$arrCookie['user_password'],
-				false,NULL,0
+				false,null,0
 			),
 			$nLoginTime
 		);

@@ -88,7 +88,7 @@ trait infinity {
         if (static::hasInfinity ( $sMethod )) {
             if (static::$arrInfinity [$sMethod] instanceof Closure) {
                 $objReflection = new ReflectionFunction ( static::$arrInfinity [$sMethod] );
-                return call_user_func_array ( Closure::bind ( static::$arrInfinity [$sMethod], $objReflection->getClosureThis () ? $this : NULL, get_class ( $this ) ), $arrArgs );
+                return call_user_func_array ( Closure::bind ( static::$arrInfinity [$sMethod], $objReflection->getClosureThis () ? $this : null, get_class ( $this ) ), $arrArgs );
             } else {
                 return call_user_func_array ( static::$arrInfinity [$sMethod], $arrArgs );
             }

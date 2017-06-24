@@ -32,7 +32,7 @@ class xml {
      *
      * @var resource
      */
-    protected $resParser = NULL;
+    protected $resParser = null;
     
     /**
      * Document
@@ -96,7 +96,7 @@ class xml {
      * @param string $sCharset            
      * @return string
      */
-    public static function serialize($arrData, $bHtmlOn = true, $nLevel = 0, $sPriorKey = NULL, $sCharset = 'UTF-8') {
+    public static function serialize($arrData, $bHtmlOn = true, $nLevel = 0, $sPriorKey = null, $sCharset = 'UTF-8') {
         if ($nLevel == 0) {
             ob_start ();
             echo '<?xml version="1.0" encoding="' . $sCharset . '"?>' . PHP_EOL . '<root>' . PHP_EOL;
@@ -164,7 +164,7 @@ class xml {
         $this->arrDocument = [ ];
         $this->arrStack = [ ];
         $this->arrParent = &$this->arrDocument;
-        return xml_parse ( $this->resParser, $sData, true ) ? $this->arrDocument : NULL;
+        return xml_parse ( $this->resParser, $sData, true ) ? $this->arrDocument : null;
     }
     
     /**
@@ -242,7 +242,7 @@ class xml {
     protected function close(&$resParser, $sTag) {
         if ($this->sLastOpenedTag == $sTag) {
             $this->arrParent = $this->sData;
-            $this->sLastOpenedTag = NULL;
+            $this->sLastOpenedTag = null;
         }
         
         array_pop ( $this->arrStack );
@@ -259,7 +259,7 @@ class xml {
      * @return void
      */
     protected function data(&$oParser, $sData) {
-        if ($this->sLastOpenedTag != NULL) {
+        if ($this->sLastOpenedTag != null) {
             $this->sData .= $sData;
         }
     }

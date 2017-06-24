@@ -525,7 +525,7 @@ abstract class connect {
         if (is_bool ( $mixValue )) {
             return $mixValue ? true : false;
         }
-        if (is_null ( $mixValue )) { // Null值
+        if (is_null ( $mixValue )) {
             return null;
         }
         
@@ -812,7 +812,7 @@ abstract class connect {
         
         // 记录 SQL 日志
         $arrLastSql = $this->getLastSql ( true );
-        //log::runs ( $arrLastSql [0] . (! empty ( $arrLastSql [1] ) ? ' @ ' . json_encode ( $arrLastSql [1], JSON_UNESCAPED_UNICODE ) : ''), 'sql' );
+        // log::runs ( $arrLastSql [0] . (! empty ( $arrLastSql [1] ) ? ' @ ' . json_encode ( $arrLastSql [1], JSON_UNESCAPED_UNICODE ) : ''), 'sql' );
     }
     
     /**

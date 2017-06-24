@@ -305,7 +305,7 @@ class model implements ArrayAccess {
      * 获取主键
      *
      * @param string $booUpdateChange            
-     * @return NULL|array
+     * @return null|array
      */
     public function primaryKey($booUpdateChange = false) {
         $arrPrimaryData = [ ];

@@ -91,7 +91,7 @@ class collection implements Iterator, ArrayAccess, Countable {
         if (array_key_exists ( $strKey, $this->arrObject )) {
             return $this->arrObject [$strKey];
         } else {
-            return NULL;
+            return null;
         }
     }
     
@@ -187,7 +187,7 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @return mixed
      */
     public function offsetGet($strKey) {
-        return isset ( $this->arrObject [$strKey] ) ? $this->arrObject [$strKey] : NULL;
+        return isset ( $this->arrObject [$strKey] ) ? $this->arrObject [$strKey] : null;
     }
     
     /**
@@ -297,9 +297,9 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @param mixed $mixCurrentKey            
      * @return array
      */
-    public function siblings($mixCurrentKey = NULL) {
+    public function siblings($mixCurrentKey = null) {
         $arrSiblings = [ ];
-        $mixCurrentKey === NULL && $mixCurrentKey = $this->key ();
+        $mixCurrentKey === null && $mixCurrentKey = $this->key ();
         if (! is_array ( $mixCurrentKey )) {
             $mixCurrentKey = ( array ) $mixCurrentKey;
         }
@@ -320,9 +320,9 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @param mixed $mixCurrentKey            
      * @return array
      */
-    public function nextAll($mixCurrentKey = NULL) {
+    public function nextAll($mixCurrentKey = null) {
         $arrNexts = [ ];
-        $mixCurrentKey === NULL && $mixCurrentKey = $this->key ();
+        $mixCurrentKey === null && $mixCurrentKey = $this->key ();
         $arrObject = $this->arrObject;
         $booCurrent = false;
         foreach ( $arrObject as $sKey => $mixVal ) {
@@ -344,9 +344,9 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @param mixed $mixCurrentKey            
      * @return array
      */
-    public function prevAll($mixCurrentKey = NULL) {
+    public function prevAll($mixCurrentKey = null) {
         $arrPrevs = [ ];
-        $mixCurrentKey === NULL && $mixCurrentKey = $this->key ();
+        $mixCurrentKey === null && $mixCurrentKey = $this->key ();
         $arrObject = $this->arrObject;
         $booCurrent = false;
         foreach ( $arrObject as $sKey => $mixVal ) {
@@ -457,8 +457,8 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @param string $nEnd            
      * @return array
      */
-    public function slice($nSelector, $nEnd = NULL) {
-        if ($nEnd === NULL) {
+    public function slice($nSelector, $nEnd = null) {
+        if ($nEnd === null) {
             return array_slice ( $this->arrObject, $nSelector );
         } else {
             return array_slice ( $this->arrObject, $nSelector, $nEnd );
@@ -511,7 +511,7 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @return array
      */
     public function map($sKeyName, $mixValueName = null) {
-        if ($mixValueName === NULL) {
+        if ($mixValueName === null) {
             return array_column ( $this->arrObject, null, $sKeyName );
         } elseif ($mixValueName === true) {
             return array_column ( $this->arrObject, $sKeyName );

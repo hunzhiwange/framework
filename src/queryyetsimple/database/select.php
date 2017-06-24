@@ -1121,13 +1121,13 @@ class select {
     }
     
     /**
-     * 设置一个或多个字段的映射名，如果 $sMappingTo 为 NULL，则取消对指定字段的映射
+     * 设置一个或多个字段的映射名，如果 $sMappingTo 为 null，则取消对指定字段的映射
      *
      * @param array|string $mixName            
      * @param string|null $sMappingTo            
      * @return $this
      */
-    public function columnsMapping($mixName, $sMappingTo = NULL) {
+    public function columnsMapping($mixName, $sMappingTo = null) {
         if ($this->checkFlowControl ())
             return $this;
         if (is_array ( $mixName )) {
@@ -3036,7 +3036,7 @@ class select {
      * @param string $strLogic            
      * @return void
      */
-    protected function setTypeAndLogic($strType = NULL, $strLogic = NULL) {
+    protected function setTypeAndLogic($strType = null, $strLogic = null) {
         if (! is_null ( $strType )) {
             $this->strConditionType = $strType;
         }
