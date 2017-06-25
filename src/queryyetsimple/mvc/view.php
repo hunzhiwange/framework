@@ -16,6 +16,7 @@ namespace queryyetsimple\mvc;
 queryphp;
 
 use queryyetsimple\view\interfaces\theme;
+use queryyetsimple\mvc\interfaces\view as interfaces_view;
 
 /**
  * 视图
@@ -25,7 +26,7 @@ use queryyetsimple\view\interfaces\theme;
  * @since 2016.11.19
  * @version 1.0
  */
-class view {
+class view implements interfaces_view {
     
     /**
      * 视图模板
@@ -37,20 +38,11 @@ class view {
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\view\interfaces\theme $objTheme            
      * @return void
      */
-    public function __construct() {
-    }
-    
-    /**
-     * 注册视图模板
-     *
-     * @param \queryyetsimple\view\interfaces\theme $objTheme            
-     * @return $this
-     */
-    public function registerTheme(theme $objTheme) {
+    public function __construct(theme $objTheme) {
         $this->objTheme = $objTheme;
-        return $this;
     }
     
     /**

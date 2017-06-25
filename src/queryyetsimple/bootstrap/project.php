@@ -304,7 +304,7 @@ class project extends container implements interfaces_project {
         
         // 注册 view
         $this->singleton ( 'queryyetsimple\mvc\view', function (project $oProject) {
-            return (new view ())->registerTheme ( $oProject ['view.theme'] );
+            return new view ( $oProject ['view.theme'] );
         } );
         
         return $this;
