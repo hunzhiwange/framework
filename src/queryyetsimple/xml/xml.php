@@ -16,6 +16,7 @@ namespace queryyetsimple\xml;
 queryphp;
 
 use RuntimeException;
+use InvalidArgumentException;
 
 /**
  * xml 解析类
@@ -96,7 +97,10 @@ class xml {
      * @param string $sCharset            
      * @return string
      */
-    public static function serialize($arrData, $bHtmlOn = true, $nLevel = 0, $sPriorKey = null, $sCharset = 'UTF-8') {
+    public static function serialize(array $arrData, $bHtmlOn = true, $nLevel = 0, $sPriorKey = null, $sCharset = 'UTF-8') {
+        if (! is_array ( $arrData ))
+            throw new InvalidArgumentException ( 'The first argument variable is not an array' );
+        
         if ($nLevel == 0) {
             ob_start ();
             echo '<?xml version="1.0" encoding="' . $sCharset . '"?>' . PHP_EOL . '<root>' . PHP_EOL;
