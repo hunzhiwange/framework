@@ -50,10 +50,11 @@ class view implements interfaces_view {
      *
      * @param mixed $mixName            
      * @param mixed $mixValue            
-     * @return mixed
+     * @return $this
      */
     public function assign($mixName, $mixValue = null) {
-        return $this->objTheme->setVar ( $mixName, $mixValue );
+        $this->objTheme->setVar ( $mixName, $mixValue );
+        return $this;
     }
     
     /**
