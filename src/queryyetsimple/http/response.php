@@ -16,7 +16,6 @@ namespace queryyetsimple\http;
 queryphp;
 
 use queryyetsimple\xml\xml;
-use queryyetsimple\mvc\view;
 use InvalidArgumentException;
 use queryyetsimple\flow\control;
 use queryyetsimple\cookie\cookie;
@@ -25,6 +24,7 @@ use queryyetsimple\router\router;
 use queryyetsimple\classs\option;
 use queryyetsimple\filesystem\file;
 use queryyetsimple\classs\infinity;
+use queryyetsimple\mvc\interfaces\view;
 
 /**
  * 响应请求
@@ -44,6 +44,27 @@ class response {
     use infinity {
         __call as infinityCall;
     }
+    
+    /**
+     * view
+     *
+     * @var \queryyetsimple\mvc\interfaces\view
+     */
+    protected $objView;
+    
+    /**
+     * cookie 处理
+     *
+     * @var \queryyetsimple\cookie\interfaces\cookie
+     */
+    protected $objCookie;
+    
+    /**
+     * router
+     *
+     * @var \queryyetsimple\router\router
+     */
+    protected $objRouter;
     
     /**
      * 响应数据
@@ -132,10 +153,16 @@ class response {
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\router\router $objRouter            
+     * @param \queryyetsimple\mvc\interfaces\view $objView            
+     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(array $arrOption = []) {
+    public function __construct(router $objRouter, view $objView, cookie $objCookie, array $arrOption = []) {
+        $this->objRouter = $objRouter;
+        $this->objView = $objView;
+        $this->objCookie = $objCookie;
         $this->options ( $arrOption );
     }
     
@@ -161,7 +188,6 @@ class response {
      * @return boolean
      */
     public function __call($sMethod, $arrArgs) {
-        
         // 调用 trait __call 实现扩展方法
         $mixData = $this->infinityCall ( $sMethod, $arrArgs );
         if ($mixData instanceof response) {
@@ -260,18 +286,13 @@ class response {
      *
      * @param string $sName            
      * @param mixed $mixValue            
-     * @param array $in
-     *            life 过期时间
-     *            cookie_domain 是否启用域名
-     *            prefix 是否开启前缀
-     *            http_only
-     *            only_delete_prefix
+     * @param array $in            
      * @return $this
      */
     public function cookie($sName, $mixValue = '', array $in = []) {
         if ($this->checkFlowControl ())
             return $this;
-        cookie::sets ( $sName, $mixValue, $in );
+        $this->objCookie->set ( $sName, $mixValue, $in );
         return $this;
     }
     
@@ -427,13 +448,13 @@ class response {
                     fclose ( $resFp );
                     break;
                 case 'redirect' :
-                    router::redirects ( $this->getOption ( 'redirect_url' ), $this->getOption ( 'in' ) );
+                    $this->objRouter->redirect ( $this->getOption ( 'redirect_url' ), $this->getOption ( 'in' ) );
                     break;
                 case 'view' :
                     if ($this->isApi ())
-                        $mixContent = $this->api ( static::projectContainer ()->view->getAssign (), null, null, true );
+                        $mixContent = $this->api ( $this->objView->getAssign (), null, null, true );
                     else
-                        $mixContent = static::projectContainer ()->view->display ( $this->getOption ( 'file' ), $this->getOption ( 'in' ) );
+                        $mixContent = $this->objView->display ( $this->getOption ( 'file' ), $this->getOption ( 'in' ) );
                     break;
                 default :
                     if (is_callable ( $mixContent )) {
@@ -621,7 +642,7 @@ class response {
     public function assign($mixName, $mixValue = null) {
         if ($this->checkFlowControl ())
             return $this;
-        static::projectContainer ()->view->assign ( $mixName, $mixValue );
+        $this->objView->assign ( $mixName, $mixValue );
         return $this;
     }
     
@@ -689,7 +710,7 @@ class response {
         if ($this->checkFlowControl ())
             return $this;
         assert::string ( $sUrl );
-        return $this->responseType ( 'redirect' )/*->code ( 301 )*/->option ( 'redirect_url', $sUrl )->option ( 'in', $in );
+        return $this->responseType ( 'redirect' )->option ( 'redirect_url', $sUrl )->option ( 'in', $in );
     }
     
     /**
