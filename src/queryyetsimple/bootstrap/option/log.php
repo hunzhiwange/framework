@@ -43,10 +43,20 @@ return [
         
         /**
          * ---------------------------------------------------------------
+         * 记录系统运行异常
+         * ---------------------------------------------------------------
+         *
+         * 系统异常错误等日志是否记录
+         * 系统运行过程 queryyetsimple\bootstrap\runtime
+         */
+        'runtime_enabled' => true,
+        
+        /**
+         * ---------------------------------------------------------------
          * 允许记录的日志级别
          * ---------------------------------------------------------------
          *
-         * 随意自定义,其中 debug、info、notice、warning、error、critical、alert 和 emergency 为系统内部使用
+         * 随意自定义,其中 debug、info、notice、warning、error、critical、alert、emergency 和 sql 为系统内部使用
          */
         '+level' => [ 
                 'debug',
@@ -56,7 +66,8 @@ return [
                 'error',
                 'critical',
                 'alert',
-                'emergency' 
+                'emergency',
+                'sql' 
         ],
         
         /**

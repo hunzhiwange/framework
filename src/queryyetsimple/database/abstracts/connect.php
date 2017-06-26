@@ -18,10 +18,11 @@ queryphp;
 use PDO;
 use Exception;
 use PDOException;
-use queryyetsimple\log\log;
+use queryyetsimple\log\store;
 use queryyetsimple\debug\dump;
 use queryyetsimple\assert\assert;
 use queryyetsimple\database\select;
+use queryyetsimple\log\interfaces\store as interfaces_store;
 
 /**
  * 数据库连接抽象层
@@ -60,6 +61,13 @@ abstract class connect {
      * @var \queryyetsimple\database\select
      */
     protected $objSelect = null;
+    
+    /**
+     * 日志存储
+     *
+     * @var \queryyetsimple\log\interfaces\store
+     */
+    protected $objLogStore = null;
     
     /**
      * 数据库连接参数
@@ -106,10 +114,14 @@ abstract class connect {
     /**
      * 构造函数
      *
+     * @param \queryyetsimple\log\interfaces\store $objLogStore            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct($arrOption) {
+    public function __construct(interfaces_store $objLogStore, $arrOption) {
+        // 日志
+        $this->objLogStore = $objLogStore;
+        
         // 记录连接参数
         $this->arrOption = $arrOption;
         
@@ -812,7 +824,8 @@ abstract class connect {
         
         // 记录 SQL 日志
         $arrLastSql = $this->getLastSql ( true );
-        // log::runs ( $arrLastSql [0] . (! empty ( $arrLastSql [1] ) ? ' @ ' . json_encode ( $arrLastSql [1], JSON_UNESCAPED_UNICODE ) : ''), 'sql' );
+        if ($this->arrOption ['log'])
+            $this->objLogStore->record ( $arrLastSql [0] . (! empty ( $arrLastSql [1] ) ? ' @ ' . json_encode ( $arrLastSql [1], JSON_UNESCAPED_UNICODE ) : ''), store::SQL );
     }
     
     /**

@@ -115,7 +115,7 @@ class database implements interfaces_database {
      * @return \queryyetsimple\database\mysql
      */
     protected function makeConnectMysql($arrOption = []) {
-        return new mysql ( array_merge ( $this->getOption ( 'mysql' ), $arrOption ) );
+        return new mysql ( $this->objProject ['log']->connect (), array_merge ( $this->getOption ( 'mysql' ), $arrOption ) );
     }
     
     /**
@@ -157,7 +157,8 @@ class database implements interfaces_database {
                     'driver',
                     'master',
                     'slave',
-                    'fetch' 
+                    'fetch',
+                    'log' 
             ] )) {
                 if (isset ( $arrTemp [$strType] ))
                     unset ( $arrTemp [$strType] );

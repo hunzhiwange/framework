@@ -98,7 +98,8 @@ class application {
             'initialization',
             'loadBootstrap',
             'i18n',
-            'response' 
+            'response',
+            'end' 
     ];
     
     /**
@@ -536,6 +537,17 @@ class application {
             $mixResponse = $this->objProject ['response']->make ( $mixResponse );
         }
         $mixResponse->output ();
+    }
+    
+    /**
+     * 结束处理
+     *
+     * @return void
+     */
+    protected function endRun() {
+        // 记录日志
+        if (! $this->objProject ['option'] ['log\enabled'])
+            $this->objProject ['log']->save ();
     }
     
     /**

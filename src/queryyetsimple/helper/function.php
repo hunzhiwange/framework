@@ -221,7 +221,7 @@ if (! function_exists ( 'log' )) {
      * @param boolean $booWrite            
      * @return void
      */
-    function log($strMessage, $strLevel = 'info', $booWrite = false) {
+    function log($strMessage, $strLevel = log_store::INFO, $booWrite = false) {
         if ($booWrite)
             project ( 'log' )->write ( $strMessage, $strLevel );
         else

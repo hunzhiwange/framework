@@ -97,6 +97,13 @@ class store implements interfaces_store {
     const EMERGENCY = 'emergency';
     
     /**
+     * sql
+     *
+     * @var string
+     */
+    const SQL = 'sql';
+    
+    /**
      * 当前记录的日志信息
      *
      * @var array
@@ -132,7 +139,8 @@ class store implements interfaces_store {
                     self::ERROR,
                     self::CRITICAL,
                     self::ALERT,
-                    self::EMERGENCY 
+                    self::EMERGENCY,
+                    self::SQL 
             ],
             'time_format' => '[Y-m-d H:i]' 
     ];

@@ -15,6 +15,8 @@ namespace queryyetsimple\bootstrap\runtime;
 ##########################################################
 queryphp;
 
+use queryyetsimple\log\store;
+
 /**
  * 消息基类
  *
@@ -58,8 +60,8 @@ abstract class message {
      * @return void
      */
     protected function log($strMessage) {
-        if ($this->oProject ['option']->get ( 'log_error_enabled', false )) {
-            $this->oProject ['log']->run ( $strMessage, 'error' );
+        if ($this->oProject ['option']->get ( 'log\runtime_enabled', false )) {
+            $this->oProject ['log']->write ( $strMessage, store::ERROR );
         }
     }
     
