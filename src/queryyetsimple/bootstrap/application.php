@@ -546,7 +546,7 @@ class application {
      */
     protected function endRun() {
         // 记录日志
-        if (! $this->objProject ['option'] ['log\enabled'])
+        if ($this->objProject ['option'] ['log\enabled'])
             $this->objProject ['log']->save ();
     }
     
