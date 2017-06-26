@@ -86,18 +86,18 @@ class theme implements interfaces_theme {
     
     /**
      * 构造函数
-     * 
-     * @param \queryyetsimple\view\parser $objParse   
-     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie  
-     * @param array $arrOption        
+     *
+     * @param \queryyetsimple\view\parser $objParse            
+     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
+     * @param array $arrOption            
      * @return void
      */
-    public function __construct(parser $objParse,cookie $objCookie,array $arrOption = []) {
+    public function __construct(parser $objParse, cookie $objCookie, array $arrOption = []) {
         $this->objParse = $objParse;
         $this->objCookie = $objCookie;
         $this->options ( $arrOption );
     }
-
+    
     /**
      * 加载视图文件
      *
@@ -203,8 +203,7 @@ class theme implements interfaces_theme {
      */
     public function getCachePath($sFile) {
         // 统一斜线
-        $sFile = str_replace ( '\\', '/', $sFile );
-        $sFile = str_replace ( '//', '/', $sFile );
+        $sFile = str_replace ( '//', '/', str_replace ( '\\', '/', $sFile ) );
         
         // 统一缓存文件
         $sFile = basename ( $sFile, '.' . pathinfo ( $sFile, PATHINFO_EXTENSION ) ) . '.' . md5 ( $sFile ) . '.php';
