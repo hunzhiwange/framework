@@ -15,6 +15,7 @@ namespace queryyetsimple\view;
 ##########################################################
 queryphp;
 
+use RuntimeException;
 use InvalidArgumentException;
 use queryyetsimple\view\interfaces\parser;
 use queryyetsimple\cookie\interfaces\cookie;
@@ -64,7 +65,6 @@ class theme implements interfaces_theme {
     /**
      * 配置
      *
-     * @todo 验证缓存模板路径是否存在
      * @var array
      */
     protected $arrOption = [ 
@@ -202,7 +202,10 @@ class theme implements interfaces_theme {
      * @return string
      */
     public function getCachePath($sFile) {
-        // 统一斜线
+        if (! $this->getOption ( 'theme_cache_path' ))
+            throw new RuntimeException ( 'Theme cache path must be set' );
+            
+            // 统一斜线
         $sFile = str_replace ( '//', '/', str_replace ( '\\', '/', $sFile ) );
         
         // 统一缓存文件
@@ -219,9 +222,8 @@ class theme implements interfaces_theme {
      * @return void
      */
     public function parseContext($strThemePath) {
-        if ($this->arrOption ['theme_name']) {
-            return $this;
-        }
+        if (! $strThemePath)
+            throw new RuntimeException ( 'Theme path must be set' );
         
         if (! $this->getOption ( 'switch' )) {
             $sThemeSet = $this->getOption ( 'default' );
@@ -276,7 +278,10 @@ class theme implements interfaces_theme {
         } elseif (strpos ( $sTpl, '(' ) !== false) { // 存在表达式
             return $calHelp ( $sTpl );
         } else {
-            // 空取默认控制器和方法
+            if (! $this->getOption ( 'theme_path' ))
+                throw new RuntimeException ( 'Theme path must be set' );
+                
+                // 空取默认控制器和方法
             if ($sTpl == '') {
                 $sTpl = $this->getOption ( 'controller_name' ) . $this->getOption ( 'controlleraction_depr' ) . $this->getOption ( 'action_name' );
             }
@@ -307,6 +312,9 @@ class theme implements interfaces_theme {
         if (is_file ( $sTpl )) {
             return $sTpl;
         }
+        
+        if (! $this->getOption ( 'theme_path' ))
+            throw new RuntimeException ( 'Theme path must be set' );
         
         $sBakTpl = $sTpl;
         
