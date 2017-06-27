@@ -149,7 +149,7 @@ class xml {
      * @return resource
      */
     public static function unSerialize($sXml, $booWithRoot = false) {
-        $objXml = new self ();
+        $objXml = new static ();
         $objXml->initParser ();
         $arrData = $objXml->parse ( $sXml );
         $objXml->destroyParser ();
@@ -288,7 +288,11 @@ class xml {
     protected static function formatNode($sValue, $bHtmlOn = true) {
         if ($bHtmlOn)
             return sprintf ( '<![CDATA[%s]]>', $sValue );
-        else
-            return $sValue;
+        elseelse
+            
+        
+        
+        
+        return $sValue;
     }
 }
