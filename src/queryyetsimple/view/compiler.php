@@ -1106,7 +1106,7 @@ out += '";
             
             switch (strtolower ( $arrArgs [0] )) {
                 case 'default' : // 特殊模板函数
-                    $sName = '( ' . $sName . ' ) ? ( ' . $sName . ' ) : ' . $arrArgs [1];
+                    $sName = $sName . ' ?  : ' . $arrArgs [1];
                     break;
                 default : // 通用模板函数
                     if (! in_array ( $arrArgs [0], $arrNot )) {
@@ -1115,7 +1115,7 @@ out += '";
                                 $arrArgs [1] = str_replace ( '**', $sName, $arrArgs [1] );
                                 $sName = "$arrArgs[0] ( $arrArgs[1] )";
                             } else {
-                                $sName = "$arrArgs[0] ( $sName,$arrArgs[1] )";
+                                $sName = "$arrArgs[0] ( $sName, $arrArgs[1] )";
                             }
                         } elseif (! empty ( $arrArgs [0] )) {
                             $sName = "$arrArgs[0] ( $sName )";
