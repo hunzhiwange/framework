@@ -536,7 +536,14 @@ class application {
         if (! ($mixResponse instanceof response)) {
             $mixResponse = $this->objProject ['response']->make ( $mixResponse );
         }
+        
+        // 穿越中间件
+        if (($objResponse = $this->objProject ['router']->throughMidleware ( $mixResponse )) instanceof response)
+            $this->objContainer [response::class] = $objResponse;
+            
+            // 输出响应
         $mixResponse->output ();
+        unset ( $mixResponse, $objResponse );
     }
     
     /**

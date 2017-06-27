@@ -125,10 +125,11 @@ class project extends container implements interfaces_project {
     /**
      * 执行项目
      *
-     * @return void
+     * @return $this
      */
     public function run() {
         (new bootstrap ( $this ))->run ();
+        return $this;
     }
     
     /**
@@ -136,13 +137,17 @@ class project extends container implements interfaces_project {
      *
      * @param \Composer\Autoload\ClassLoader $objComposer            
      * @param array $arrOption            
+     * @param boolean $booRun            
      * @return $this
      */
-    public static function singletons(ClassLoader $objComposer = null, $arrOption = []) {
+    public static function singletons(ClassLoader $objComposer = null, $arrOption = [], $booRun = true) {
         if (static::$objProject !== null) {
             return static::$objProject;
         } else {
-            return static::$objProject = new self ( $objComposer, $arrOption );
+            static::$objProject = new static ( $objComposer, $arrOption );
+            if ($booRun === true)
+                static::$objProject->run ();
+            return static::$objProject;
         }
     }
     
