@@ -2721,7 +2721,7 @@ class select {
 
                         // 回调方法子表达式支持
                         elseif (is_callable ( $strTemp )) {
-                            $objSelect = new self ( $this->objConnect );
+                            $objSelect = new static ( $this->objConnect );
                             $objSelect->setCurrentTable ( $this->getCurrentTable () );
                             $mixResultCallback = call_user_func_array ( $strTemp, [ 
                                     &$objSelect 
@@ -2814,7 +2814,7 @@ class select {
     protected function aliasTypeAndLogic($strType, $strLogic, $mixCond /* args */){
         $this->setTypeAndLogic ( $strType, $strLogic );
         if (is_callable ( $mixCond )) {
-            $objSelect = new self ( $this->objConnect );
+            $objSelect = new static ( $this->objConnect );
             $objSelect->setCurrentTable ( $this->getCurrentTable () );
             $mixResultCallback = call_user_func_array ( $mixCond, [ 
                     &$objSelect 
@@ -2893,7 +2893,7 @@ class select {
             ] )) {
                 $arrTypeAndLogic = $this->getTypeAndLogic ();
                 
-                $objSelect = new self ( $this->objConnect );
+                $objSelect = new static ( $this->objConnect );
                 $objSelect->setCurrentTable ( $this->getCurrentTable () );
                 $objSelect->setTypeAndLogic ( $arrTypeAndLogic [0] );
                 
@@ -3139,7 +3139,7 @@ class select {
 
                 // 回调方法子表达式
                 elseif (is_callable ( $sTable )) {
-                    $objSelect = new self ( $this->objConnect );
+                    $objSelect = new static ( $this->objConnect );
                     $objSelect->setCurrentTable ( $this->getCurrentTable () );
                     $mixResultCallback = call_user_func_array ( $sTable, [ 
                             &$objSelect 
@@ -3167,7 +3167,7 @@ class select {
 
         // 回调方法
         elseif (is_callable ( $mixName )) {
-            $objSelect = new self ( $this->objConnect );
+            $objSelect = new static ( $this->objConnect );
             $objSelect->setCurrentTable ( $this->getCurrentTable () );
             $mixResultCallback = call_user_func_array ( $mixName, [ 
                     &$objSelect 
@@ -3231,7 +3231,7 @@ class select {
             for($nI = 0; $nI <= 2; $nI ++) {
                 array_shift ( $arrArgs );
             }
-            $objSelect = new self ( $this->objConnect );
+            $objSelect = new static ( $this->objConnect );
             $objSelect->setCurrentTable ( $sAlias );
             call_user_func_array ( [ 
                     $objSelect,
