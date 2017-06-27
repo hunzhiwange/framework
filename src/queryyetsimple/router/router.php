@@ -17,10 +17,12 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\http\request;
+use queryyetsimple\http\response;
 use queryyetsimple\helper\helper;
 use queryyetsimple\classs\option;
 use queryyetsimple\classs\infinity;
 use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\pipeline\interfaces\pipeline;
 use queryyetsimple\support\interfaces\container;
 
 /**
@@ -42,6 +44,13 @@ class router {
      * @var \queryyetsimple\support\interfaces\container
      */
     protected $objContainer;
+
+    /**
+     * pipeline
+     *
+     * @var \queryyetsimple\pipeline\interfaces\pipeline
+     */
+    protected $objPipeline;
     
     /**
      * http 请求
@@ -49,7 +58,7 @@ class router {
      * @var \queryyetsimple\http\request
      */
     protected $objRequest;
-    
+
     /**
      * 注册域名
      *
@@ -91,7 +100,7 @@ class router {
      * @var string
      */
     protected $arrBinds = [ ];
-    
+
     /**
      * 域名匹配数据
      *
@@ -133,6 +142,20 @@ class router {
      * @var string
      */
     protected $strAction = null;
+
+        /**
+     * 路由绑定中间件
+     *
+     * @var array
+     */
+    protected $arrMiddlewares  =[];
+
+        /**
+     * 当前的中间件
+     *
+     * @var array
+     */
+    protected $arrCurrentMiddleware = null;
     
     /**
      * 默认替换参数[字符串]
@@ -189,13 +212,15 @@ class router {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
-     * @param \queryyetsimple\http\request $objRequest            
+     * @param \queryyetsimple\support\interfaces\container $objContainer     
+     * @param \queryyetsimple\support\interfaces\container $objPipeline     
+     * @param \queryyetsimple\http\request $objRequest    
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(container $objContainer, request $objRequest, array $arrOption = []) {
+    public function __construct(container $objContainer, pipeline $objPipeline, request $objRequest,  array $arrOption = []) {
         $this->objContainer = $objContainer;
+        $this->objPipeline = $objPipeline;
         $this->objRequest = $objRequest;
         $this->options ( $arrOption );
     }
@@ -215,7 +240,12 @@ class router {
         
         // 完成请求
         $this->completeRequest ();
-        
+
+        // 穿越中间件
+        if(($objRequest = $this->throughMidleware ()) instanceof request)
+            $this->objContainer[request::class] = $objRequest;
+        unset($objRequest);
+
         // 解析项目公共 url 地址
         $this->parsePublicAndRoot ();
         
@@ -532,6 +562,28 @@ class router {
             exit ();
         }
     }
+
+        /**
+     * 穿越中间件
+     * 
+     * @param  \queryyetsimple\http\response|null $objPassed
+     * @return void 
+     */
+    public function throughMidleware(response $objPassed=null){
+       if(is_null($this->arrCurrentMiddleware))
+            $this->arrCurrentMiddleware = $this->getMiddleware($this->packageNode());
+
+       if($this->arrCurrentMiddleware){
+            if(!is_null($objPassed)){
+                $this->arrCurrentMiddleware = array_map(function($strItem){
+                    return $strItem.'@terminate';
+                },$this->arrCurrentMiddleware);
+            }
+            return $this->objPipeline->send ( $objPassed ? : $this->objRequest )->through ( $this->arrCurrentMiddleware )->then ( function ($objPassed) {
+                return $objPassed;
+            } );
+       }
+    }
     
     /**
      * 导入路由规则
@@ -825,7 +877,7 @@ class router {
      * @return boolean
      */
     public function hasBind($sBindName) {
-        return isset ( $this->arrBinds [$sBindName] ) ? true : false;
+        return isset ( $this->arrBinds [$sBindName] );
     }
     
     /**
@@ -840,6 +892,41 @@ class router {
      */
     public function bind($sBindName, $mixBind) {
         $this->arrBinds [$sBindName] = $mixBind;
+    }
+
+        /**
+     * 获取绑定的中间件
+     *
+     * @param string $sNode            
+     * @return mixed
+     */
+    public function getMiddleware($sNode) {
+        $arrMiddleware = [];
+         foreach ( $this->arrMiddlewares as $sKey => $arrValue ) {
+            $sKey = '/^' . str_replace ( '6084fef57e91a6ecb13fff498f9275a7', '(\S+)',helper::escapeRegexCharacter(str_replace ( '*', '6084fef57e91a6ecb13fff498f9275a7',$sKey )) ) . '$/';
+            if (preg_match ( $sKey, $sNode, $arrRes )) {
+                $arrMiddleware = array_merge($arrMiddleware,$arrValue );
+            }
+        }
+        return $arrMiddleware;
+    }
+    
+
+    /**
+     * 注册绑定中间件
+     *
+     * @param string $sMiddlewareName            
+     * @param string|array $mixMiddleware            
+     * @return void
+     */
+    public function middleware($sMiddlewareName, $mixMiddleware) {
+        if(!isset($this->arrMiddlewares [$sMiddlewareName]))
+            $this->arrMiddlewares [$sMiddlewareName]=[];
+
+        if(is_array($mixMiddleware))
+            $this->arrMiddlewares [$sMiddlewareName] = array_merge($this->arrMiddlewares [$sMiddlewareName], $mixMiddleware);
+        else
+            $this->arrMiddlewares [$sMiddlewareName][] = $mixMiddleware;
     }
     
     /**
@@ -956,7 +1043,7 @@ class router {
     protected function parseDomain(&$arrNextParse) {
         if (! $this->arrDomains || ! $this->getOption ( 'router_domain_top' ))
             return;
-        $strHost = $this->objRequest->getHost ();
+        $strHost = $this->objRequest->host ();
         
         $booFindDomain = false;
         foreach ( $this->arrDomains as $sKey => $arrDomains ) {
@@ -1306,6 +1393,7 @@ class router {
                 'action' 
         ] as $strType ) {
             $this->objContainer->instance ( $strType . '_name', $this->{$strType} () );
+            $this->objRequest->{'set'.ucfirst($strType)}($this->{$strType} ());
         }
         $_REQUEST = array_merge ( $_POST, $_GET );
     }
@@ -1380,4 +1468,13 @@ class router {
         }
         return $sVal;
     }
+
+    /**
+     * 取得打包节点
+     * 
+     * @return string 
+     */
+    protected function packageNode(){
+       return $_REQUEST['app'].'://'.$_REQUEST['c'].'/'.$_REQUEST['a'];
+   }
 }
