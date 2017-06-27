@@ -41,7 +41,7 @@ class validate {
             return static::$_oDefaultDbIns;
         }
         
-        $oCheck = new self ();
+        $oCheck = new static ();
         if ($bDefaultIns) {
             static::$_oDefaultDbIns = $oCheck;
         }
@@ -319,9 +319,10 @@ class validate {
     public function regex($Data, $sRegex) {
         return preg_match ( $sRegex, $Data ) > 0;
     }
-    public function require($Data) {
-        return preg_match ( '/.+/', $Data );
-    }
+    public function require($Data) 
+{
+    return preg_match ( '/.+/', $Data );
+}
     
     /**
      * 两个值是否完全相同
