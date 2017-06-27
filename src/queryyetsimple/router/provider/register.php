@@ -34,7 +34,7 @@ return [
                     ] as $strOption ) {
                         $arrOption [$strOption] = $oProject ['option']->get ( $strOption );
                     }
-                    return new queryyetsimple\router\router ( $oProject, $oProject ['request'], $arrOption );
+                    return new queryyetsimple\router\router ( $oProject, $oProject ['pipeline'], $oProject ['request'], $arrOption );
                 } 
         ] 
 ];
