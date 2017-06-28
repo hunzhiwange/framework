@@ -1464,7 +1464,7 @@ class request implements arrayable, ArrayAccess {
      */
     public function url() {
         if (is_null ( $this->strUrl )) {
-            $this->strUrl = $this->strDomain () . $this->requestUri ();
+            $this->strUrl = $this->domain () . $this->requestUri ();
         }
         return $this->strUrl;
     }
