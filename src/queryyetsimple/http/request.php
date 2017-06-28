@@ -2312,7 +2312,6 @@ class request implements arrayable, ArrayAccess {
     protected function filterValue(&$mixValue, $arrFilter, $mixDefault = null) {
         foreach ( $arrFilter as $mixFilter ) {
             if (strpos ( $mixFilter, '=' ) !== false) {
-                
                 list ( $mixFilter, $strExtend ) = explode ( '=', $mixFilter );
                 
                 if ($mixFilter == 'default') {
@@ -2366,9 +2365,7 @@ class request implements arrayable, ArrayAccess {
     protected function parseVar(&$mixFilter = null, &$sType = 'request') {
         if (is_null ( $sType ))
             $sType = strtolower ( $this->method () );
-        
         $this->parseFilter ( $mixFilter );
-        
         return $this->{'global' . ucfirst ( $sType )} ();
     }
     
