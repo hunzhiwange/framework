@@ -44,7 +44,7 @@ class router {
      * @var \queryyetsimple\support\interfaces\container
      */
     protected $objContainer;
-
+    
     /**
      * pipeline
      *
@@ -58,7 +58,7 @@ class router {
      * @var \queryyetsimple\http\request
      */
     protected $objRequest;
-
+    
     /**
      * 注册域名
      *
@@ -100,7 +100,7 @@ class router {
      * @var string
      */
     protected $arrBinds = [ ];
-
+    
     /**
      * 域名匹配数据
      *
@@ -142,15 +142,15 @@ class router {
      * @var string
      */
     protected $strAction = null;
-
-        /**
+    
+    /**
      * 路由绑定中间件
      *
      * @var array
      */
-    protected $arrMiddlewares  =[];
-
-        /**
+    protected $arrMiddlewares = [ ];
+    
+    /**
      * 当前的中间件
      *
      * @var array
@@ -212,13 +212,13 @@ class router {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer     
-     * @param \queryyetsimple\support\interfaces\container $objPipeline     
-     * @param \queryyetsimple\http\request $objRequest    
+     * @param \queryyetsimple\pipeline\interfaces\pipeline $objPipeline            
+     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\http\request $objRequest            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(container $objContainer, pipeline $objPipeline, request $objRequest,  array $arrOption = []) {
+    public function __construct(container $objContainer, pipeline $objPipeline, request $objRequest, array $arrOption = []) {
         $this->objContainer = $objContainer;
         $this->objPipeline = $objPipeline;
         $this->objRequest = $objRequest;
@@ -240,12 +240,13 @@ class router {
         
         // 完成请求
         $this->completeRequest ();
-
+        
         // 穿越中间件
-        if(($objRequest = $this->throughMidleware ()) instanceof request)
-            $this->objContainer[request::class] = $objRequest;
-        unset($objRequest);
-
+        if (($objRequest = $this->throughMidleware ( $this->objPipeline )) instanceof request) {
+            $this->objRequest = $objRequest;
+        }
+        unset ( $objRequest );
+        
         // 解析项目公共 url 地址
         $this->parsePublicAndRoot ();
         
@@ -562,27 +563,30 @@ class router {
             exit ();
         }
     }
-
-        /**
+    
+    /**
      * 穿越中间件
-     * 
-     * @param  \queryyetsimple\http\response|null $objPassed
-     * @return void 
+     *
+     * @param \queryyetsimple\pipeline\interfaces\pipeline $objPipeline            
+     * @param \queryyetsimple\http\response|null $objPassed            
+     * @return void
      */
-    public function throughMidleware(response $objPassed=null){
-       if(is_null($this->arrCurrentMiddleware))
-            $this->arrCurrentMiddleware = $this->getMiddleware($this->packageNode());
-
-       if($this->arrCurrentMiddleware){
-            if(!is_null($objPassed)){
-                $this->arrCurrentMiddleware = array_map(function($strItem){
-                    return $strItem.'@terminate';
-                },$this->arrCurrentMiddleware);
+    public function throughMidleware(pipeline $objPipeline, response $objPassed = null) {
+        if (is_null ( $this->arrCurrentMiddleware ))
+            $this->arrCurrentMiddleware = $this->getMiddleware ( $this->packageNode () );
+        
+        if ($this->arrCurrentMiddleware) {
+            $arrCurrentMiddleware = $this->arrCurrentMiddleware;
+            if (! is_null ( $objPassed )) {
+                $arrCurrentMiddleware = array_map ( function ($strItem) {
+                    return $strItem . '@terminate';
+                }, $arrCurrentMiddleware );
             }
-            return $this->objPipeline->send ( $objPassed ? : $this->objRequest )->through ( $this->arrCurrentMiddleware )->then ( function ($objPassed) {
+            
+            return $objPipeline->send ( $objPassed ?  : $this->objRequest )->through ( $arrCurrentMiddleware )->then ( function ($objPassed) {
                 return $objPassed;
             } );
-       }
+        }
     }
     
     /**
@@ -893,25 +897,24 @@ class router {
     public function bind($sBindName, $mixBind) {
         $this->arrBinds [$sBindName] = $mixBind;
     }
-
-        /**
+    
+    /**
      * 获取绑定的中间件
      *
      * @param string $sNode            
      * @return mixed
      */
     public function getMiddleware($sNode) {
-        $arrMiddleware = [];
-         foreach ( $this->arrMiddlewares as $sKey => $arrValue ) {
-            $sKey = '/^' . str_replace ( '6084fef57e91a6ecb13fff498f9275a7', '(\S+)',helper::escapeRegexCharacter(str_replace ( '*', '6084fef57e91a6ecb13fff498f9275a7',$sKey )) ) . '$/';
+        $arrMiddleware = [ ];
+        foreach ( $this->arrMiddlewares as $sKey => $arrValue ) {
+            $sKey = '/^' . str_replace ( '6084fef57e91a6ecb13fff498f9275a7', '(\S+)', helper::escapeRegexCharacter ( str_replace ( '*', '6084fef57e91a6ecb13fff498f9275a7', $sKey ) ) ) . '$/';
             if (preg_match ( $sKey, $sNode, $arrRes )) {
-                $arrMiddleware = array_merge($arrMiddleware,$arrValue );
+                $arrMiddleware = array_merge ( $arrMiddleware, $arrValue );
             }
         }
         return $arrMiddleware;
     }
     
-
     /**
      * 注册绑定中间件
      *
@@ -920,13 +923,13 @@ class router {
      * @return void
      */
     public function middleware($sMiddlewareName, $mixMiddleware) {
-        if(!isset($this->arrMiddlewares [$sMiddlewareName]))
-            $this->arrMiddlewares [$sMiddlewareName]=[];
-
-        if(is_array($mixMiddleware))
-            $this->arrMiddlewares [$sMiddlewareName] = array_merge($this->arrMiddlewares [$sMiddlewareName], $mixMiddleware);
+        if (! isset ( $this->arrMiddlewares [$sMiddlewareName] ))
+            $this->arrMiddlewares [$sMiddlewareName] = [ ];
+        
+        if (is_array ( $mixMiddleware ))
+            $this->arrMiddlewares [$sMiddlewareName] = array_merge ( $this->arrMiddlewares [$sMiddlewareName], $mixMiddleware );
         else
-            $this->arrMiddlewares [$sMiddlewareName][] = $mixMiddleware;
+            $this->arrMiddlewares [$sMiddlewareName] [] = $mixMiddleware;
     }
     
     /**
@@ -1393,7 +1396,7 @@ class router {
                 'action' 
         ] as $strType ) {
             $this->objContainer->instance ( $strType . '_name', $this->{$strType} () );
-            $this->objRequest->{'set'.ucfirst($strType)}($this->{$strType} ());
+            $this->objRequest->{'set' . ucfirst ( $strType )} ( $this->{$strType} () );
         }
         $_REQUEST = array_merge ( $_POST, $_GET );
     }
@@ -1407,52 +1410,25 @@ class router {
         if ($this->objRequest->isCli ()) {
             return;
         }
-        $arrResult = [ ];
         
-        // 分析 php 入口文件路径
-        $arrResult ['enter_bak'] = $arrResult ['enter'] = $this->objContainer ['url_enter'];
-        if (! $arrResult ['enter']) {
-            // php 文件
-            if ($this->objRequest->isCgi ()) {
-                $arrTemp = explode ( '.php', $_SERVER ["PHP_SELF"] ); // CGI/FASTCGI模式下
-                $arrResult ['enter'] = rtrim ( str_replace ( $_SERVER ["HTTP_HOST"], '', $arrTemp [0] . '.php' ), '/' );
-            } else {
-                $arrResult ['enter'] = rtrim ( $_SERVER ["SCRIPT_NAME"], '/' );
-            }
-            $arrResult ['enter_bak'] = $arrResult ['enter'];
-            
-            // 如果为重写模式
-            if ($this->getOption ( 'rewrite' ) === true) {
-                $arrResult ['enter'] = dirname ( $arrResult ['enter'] );
-                if ($arrResult ['enter'] == '\\') {
-                    $arrResult ['enter'] = '/';
-                }
-            }
+        if (! $this->objContainer ['url_enter']) {
+            $this->objContainer->instance ( 'url_enter', $this->getOption ( 'rewrite' ) === true ? $this->objRequest->enterRewrite () : $this->objRequest->enter () );
+        } else {
+            $this->objRequest->setEnter ( $this->objContainer ['url_enter'] );
         }
         
-        // 网站 URL 根目录
-        $arrResult ['root'] = $this->objContainer ['url_root'];
-        if (! $arrResult ['root']) {
-            $arrResult ['root'] = dirname ( $arrResult ['enter_bak'] );
-            $arrResult ['root'] = ($arrResult ['root'] == '/' || $arrResult ['root'] == '\\') ? '' : $arrResult ['root'];
+        if (! $this->objContainer ['url_root']) {
+            $this->objContainer->instance ( 'url_root', $this->objRequest->root () );
+        } else {
+            $this->objRequest->setRoot ( $this->objContainer ['url_root'] );
         }
         
-        // 网站公共文件目录
-        $arrResult ['public'] = $this->objContainer ['url_public'];
-        if (! $arrResult ['public']) {
-            $arrResult ['public'] = $this->getOption ( 'public' );
+        if (! $this->objContainer ['url_public']) {
+            $this->objRequest->setPublics ( $this->getOption ( 'public' ) );
+            $this->objContainer->instance ( 'url_public', $this->objRequest->publics () );
+        } else {
+            $this->objRequest->setPublics ( $this->objContainer ['url_public'] );
         }
-        
-        // 快捷方法供 router->url 方法使用
-        foreach ( [ 
-                'enter',
-                'root',
-                'public' 
-        ] as $sType ) {
-            $this->objContainer->instance ( 'url_' . $sType, $arrResult [$sType] );
-        }
-        
-        unset ( $arrResult, $objProject );
     }
     
     /**
@@ -1468,13 +1444,13 @@ class router {
         }
         return $sVal;
     }
-
+    
     /**
      * 取得打包节点
-     * 
-     * @return string 
+     *
+     * @return string
      */
-    protected function packageNode(){
-       return $_REQUEST['app'].'://'.$_REQUEST['c'].'/'.$_REQUEST['a'];
-   }
+    protected function packageNode() {
+        return $_REQUEST ['app'] . '://' . $_REQUEST ['c'] . '/' . $_REQUEST ['a'];
+    }
 }

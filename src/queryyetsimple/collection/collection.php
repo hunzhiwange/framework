@@ -195,13 +195,11 @@ class collection implements Iterator, ArrayAccess, Countable {
      *
      * @param string $strKey            
      * @param mixed $mixValue            
-     * @return mixed
+     * @return void
      */
     public function offsetSet($strKey, $mixValue) {
         $this->checkType ( $mixValue );
-        $mixOld = $this->offsetGet ( $strKey );
         $this->arrObject [$strKey] = $mixValue;
-        return $mixOld;
     }
     
     /**

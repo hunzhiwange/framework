@@ -25,7 +25,11 @@ return [
         'singleton@request' => [ 
                 'queryyetsimple\http\request',
                 function ($oProject) {
-                    return new queryyetsimple\http\request ();
+                    return new queryyetsimple\http\request ( $oProject ['session']->connect (), $oProject ['cookie'], [ 
+                            'var_method' => $oProject ['option'] ['var_method'],
+                            'var_ajax' => $oProject ['option'] ['var_ajax'],
+                            'var_pjax' => $oProject ['option'] ['var_pjax'] 
+                    ] );
                 } 
         ],
         'singleton@response' => [ 

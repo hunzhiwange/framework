@@ -510,6 +510,7 @@ class application {
             return;
         
         $sI18nSet = $this->objProject ['i18n']->parseContext ();
+        $this->objProject ['request']->setLangset ( $sI18nSet );
         if ($this->objProject ['option'] ['i18n\develop'] == $sI18nSet)
             return;
         
@@ -538,10 +539,11 @@ class application {
         }
         
         // 穿越中间件
-        if (($objResponse = $this->objProject ['router']->throughMidleware ( $mixResponse )) instanceof response)
+        if (($objResponse = $this->objProject ['router']->throughMidleware ( $this->objProject ['pipeline'], $mixResponse )) instanceof response) {
             $this->objContainer [response::class] = $objResponse;
-            
-            // 输出响应
+        }
+        
+        // 输出响应
         $mixResponse->output ();
         unset ( $mixResponse, $objResponse );
     }
