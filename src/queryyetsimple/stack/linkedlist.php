@@ -41,10 +41,11 @@ class linkedlist extends SplDoublyLinkedList {
     /**
      * 构造函数
      *
+     * @param mixed $mixArgs            
      * @return void
      */
-    public function __construct(/* args */){
-        $this->arrType = func_get_args ();
+    public function __construct($mixArgs = null /* args */ ){
+        $this->arrType = is_array ( $mixArgs ) ? $mixArgs : func_get_args ();
     }
     
     /**
