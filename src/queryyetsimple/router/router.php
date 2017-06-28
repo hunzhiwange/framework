@@ -626,7 +626,7 @@ class router {
                         $in 
                 ];
             } else {
-                if ($strUrl || $strTemp [1]) {
+                if ($strUrl || ! empty ( $strTemp [1] )) {
                     $mixRouter [] = [ 
                             $strTemp [0],
                             (! empty ( $strTemp [1] ) ? $strTemp [1] : $strUrl),
@@ -1045,7 +1045,8 @@ class router {
      */
     protected function parseDomain(&$arrNextParse) {
         if (! $this->arrDomains || ! $this->getOption ( 'router_domain_top' ))
-            return;
+            return false;
+        
         $strHost = $this->objRequest->host ();
         
         $booFindDomain = false;
@@ -1115,6 +1116,7 @@ class router {
     protected function parseRouter($arrNextParse = []) {
         if (! $this->arrRouters)
             return;
+        
         $arrData = [ ];
         $sPathinfo = $_SERVER ['PATH_INFO'];
         
