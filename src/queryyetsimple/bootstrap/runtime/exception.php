@@ -124,7 +124,7 @@ class exception extends message {
                         
                         // 详细参数值
                         ob_start ();
-                        dump::dump ( $mixArgsVal );
+                        dump::varDump ( $mixArgsVal );
                         $sArgsInfoDetail .= '<div class="queryphp-message-argstitle">Args ' . ($intArgsKey + 1) . '</div><div class="queryphp-message-args">' . ob_get_contents () . '</div>';
                         ob_end_clean ();
                     }
