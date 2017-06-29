@@ -256,16 +256,4 @@ class string {
         }
         return false;
     }
-    
-    /**
-     * 判断字符串是否为数字
-     *
-     * @param string $strSearch            
-     * @since bool
-     */
-    public static function stringInt($mixValue) {
-        if (is_int ( $mixValue ))
-            return true;
-        return ! preg_match ( "/[^\d-.,]/", trim ( $mixValue, '\'' ) );
-    }
 }

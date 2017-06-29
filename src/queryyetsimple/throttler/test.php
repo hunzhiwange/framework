@@ -42,6 +42,7 @@ class test{
         $intXRateLimitRemaining = $intXRateLimitLimit - $intCount;
         
         $arrHeader = [ 
+                //X-RateLimit-Reset: 1350085394
                 'X-RateLimit-Time' => $intXRateLimitTime, // 指定时间长度
                 'X-RateLimit-Limit' => $intXRateLimitLimit, // 指定时间内允许的最大请求次数
                 'X-RateLimit-Remaining' => $intXRateLimitRemaining >= 0 ? $intXRateLimitRemaining : 0, // 指定时间内剩余请求次数

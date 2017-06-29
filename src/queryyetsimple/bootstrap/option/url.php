@@ -111,5 +111,50 @@ return [
          *
          * 设置公共资源 url 地址
          */
-        'public' => env ( 'url_public', 'http://public.foo.bar' ) 
+        'public' => env ( 'url_public', 'http://public.foo.bar' ),
+        
+        /**
+         * ---------------------------------------------------------------
+         * pathinfo 是否自动 restinfo 解析
+         * ---------------------------------------------------------------
+         *
+         * 当系统路由匹配失败后将会进行 pathinfo 解析
+         * 系统可以为 restful 提供智能解析
+         *
+         * @see \queryyetsimple\router\router:pathinfoRestful
+         */
+        'pathinfo_restful' => true,
+        
+        /**
+         * ---------------------------------------------------------------
+         * pathinfo 是否自动 restinfo 解析
+         * ---------------------------------------------------------------
+         *
+         * 系统进行 pathinfo 解析时将存在这个数组中的值放入参数
+         * 其中如果是数字系统默认也会放进去
+         * see \queryyetsimple\router\router:parsePathInfo
+         */
+        'args_protected' => [ ],
+        
+        /**
+         * ---------------------------------------------------------------
+         * args 匹配正则
+         * ---------------------------------------------------------------
+         *
+         * 系统进行 pathinfo 解析时将匹配数据放入参数
+         * regex 是对 args_protected 的一种补充
+         * 例如:['[0-9]+', '[a-z]+']
+         * see \queryyetsimple\router\router:parsePathInfo
+         */
+        'args_regex' => [ ],
+        
+        /**
+         * ---------------------------------------------------------------
+         * 严格 args 匹配模式
+         * ---------------------------------------------------------------
+         *
+         * 是否启用严格 args 匹配模式,使用启用严格匹配，参数匹配正则结尾会加入 $ 标志
+         * see \queryyetsimple\router\router:parsePathInfo
+         */
+        'args_strict' => false 
 ]; 

@@ -1926,10 +1926,10 @@ class request implements arrayable, ArrayAccess {
      * @param string $strSearch            
      * @since bool
      */
-    protected function stringInt($mixValue) {
+    protected function isInteger($mixValue) {
         if (is_int ( $mixValue ))
             return true;
-        return ! preg_match ( "/[^\d-.,]/", trim ( $mixValue, '\'' ) );
+        return ctype_digit ( strval ( $mixValue ) );
     }
     
     /**
@@ -2328,7 +2328,7 @@ class request implements arrayable, ArrayAccess {
             } elseif (is_callable ( $mixFilter )) {
                 $mixValue = call_user_func ( $mixFilter, $mixValue );
             } elseif (is_scalar ( $mixValue ) && ! empty ( $mixFilter )) {
-                $mixValue = filter_var ( $mixValue, $this->stringInt ( $mixFilter ) ? $mixFilter : filter_id ( $mixFilter ) );
+                $mixValue = filter_var ( $mixValue, $this->isInteger ( $mixFilter ) ? $mixFilter : filter_id ( $mixFilter ) );
                 if (false === $mixValue) {
                     $mixValue = $mixDefault;
                     break;

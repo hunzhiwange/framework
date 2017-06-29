@@ -15,6 +15,7 @@ namespace queryyetsimple\router;
 ##########################################################
 queryphp;
 
+use Closure;
 use RuntimeException;
 use queryyetsimple\http\request;
 use queryyetsimple\http\response;
@@ -186,6 +187,13 @@ class router {
     const ACTION = 'a';
     
     /**
+     * 数字参数名
+     *
+     * @var string
+     */
+    const ARGS = 'args';
+    
+    /**
      * 配置
      *
      * @var array
@@ -206,7 +214,11 @@ class router {
             'make_subdomain_on' => true,
             'pathinfo_depr' => '/',
             'rewrite' => false,
-            'public' => 'http://public.foo.bar' 
+            'public' => 'http://public.foo.bar',
+            'pathinfo_restful' => true,
+            'args_protected' => [ ],
+            'args_regex' => [ ],
+            'args_strict' => false 
     ];
     
     /**
@@ -750,7 +762,7 @@ class router {
         ], $in );
         
         // 闭包直接转接到分组
-        if ($mixUrl instanceof \Closure) {
+        if ($mixUrl instanceof Closure) {
             $in ['domain'] = $strDomain;
             $this->group ( $in, $mixUrl );
         }         
@@ -813,7 +825,7 @@ class router {
             // 分组参数叠加
         $this->arrGroupArgs = $in = $this->mergeIn ( $this->arrGroupArgs, $in );
         
-        if ($mixRouter instanceof \Closure) {
+        if ($mixRouter instanceof Closure) {
             call_user_func_array ( $mixRouter, [ ] );
         } else {
             if (! is_array ( current ( $mixRouter ) )) {
@@ -1011,30 +1023,67 @@ class router {
      * @return array
      */
     protected function parsePathInfo() {
-        $arrPathInfo = [ ];
-        $sPathInfo = $_SERVER ['PATH_INFO'];
+        $arrPathInfo = [ 
+                static::ARGS => [ ] 
+        ];
         
+        $sPathInfo = $_SERVER ['PATH_INFO'];
         $arrPaths = explode ( $this->getOption ( 'pathinfo_depr' ), trim ( $sPathInfo, '/' ) );
         
         if (in_array ( $arrPaths [0], $this->getOption ( '~apps~' ) )) {
             $arrPathInfo [static::APP] = array_shift ( $arrPaths );
         }
         
-        if (! isset ( $_GET [static::CONTROLLER] )) { // 还没有定义控制器名称
-            $arrPathInfo [static::CONTROLLER] = array_shift ( $arrPaths );
+        // 控制器名称
+        if (isset ( $_GET [static::CONTROLLER] )) {
+            $arrPathInfo [static::CONTROLLER] = $_GET [static::CONTROLLER];
         }
         
-        if (! isset ( $_GET [static::ACTION] )) { // 还没有定义方法名称
-            $arrPathInfo [static::ACTION] = array_shift ( $arrPaths );
+        // 方法名称
+        if (isset ( $_GET [static::ACTION] )) {
+            $arrPathInfo [static::ACTION] = $_GET [static::ACTION];
         }
         
         for($nI = 0, $nCnt = count ( $arrPaths ); $nI < $nCnt; $nI ++) {
-            if (isset ( $arrPaths [$nI + 1] )) {
-                $arrPathInfo [$arrPaths [$nI]] = ( string ) $arrPaths [++ $nI];
+            if (is_numeric ( $arrPaths [$nI] ) || in_array ( $arrPaths [$nI], $this->getOption ( 'args_protected' ) ) || $this->matchArgs ( $arrPaths [$nI], $this->getOption ( 'args_regex' ) )) {
+                $arrPathInfo [static::ARGS] [] = $arrPaths [$nI];
+            } else {
+                if (! isset ( $arrPathInfo [static::CONTROLLER] )) {
+                    $arrPathInfo [static::CONTROLLER] = $arrPaths [$nI];
+                } elseif (! isset ( $arrPathInfo [static::ACTION] )) {
+                    $arrPathInfo [static::ACTION] = $arrPaths [$nI];
+                } else {
+                    
+                    if (isset ( $arrPaths [$nI + 1] )) {
+                        $arrPathInfo [$arrPaths [$nI]] = ( string ) $arrPaths [++ $nI];
+                    } else {
+                        $arrPathInfo [static::ARGS] [] = $arrPaths [$nI];
+                    }
+                }
             }
         }
         
         return $arrPathInfo;
+    }
+    
+    /**
+     * 是否匹配参数正则
+     *
+     * @param array $strValue            
+     * @param array $arrRegex            
+     * @return boolean
+     */
+    protected function matchArgs($strValue, array $arrRegex = []) {
+        if (! $arrRegex)
+            return false;
+        
+        foreach ( $arrRegex as $strRegex ) {
+            $strRegex = sprintf ( '/^(%s)%s/', $strRegex, $this->getOption ( 'args_strict' ) ? '$' : '' );
+            if (preg_match ( $strRegex, $strValue, $arrRes ))
+                return true;
+        }
+        
+        return false;
     }
     
     /**
@@ -1392,6 +1441,9 @@ class router {
      * @return void
      */
     protected function completeRequest() {
+        if ($this->getOption ( 'pathinfo_restful' ))
+            $this->pathinfoRestful ();
+        
         foreach ( [ 
                 'app',
                 'controller',
@@ -1401,6 +1453,38 @@ class router {
             $this->objRequest->{'set' . ucfirst ( $strType )} ( $this->{$strType} () );
         }
         $_REQUEST = array_merge ( $_POST, $_GET );
+    }
+    
+    /**
+     * 智能 restful 解析
+     * 路由匹配失败后尝试智能化解析
+     *
+     * @return void
+     */
+    protected function pathinfoRestful() {
+        switch ($this->objRequest->method ()) {
+            case 'GET' :
+                if (empty ( $_GET [static::ACTION] )) {
+                    $_GET [static::ACTION] = ! empty ( $_GET ['args'] ) ? 'show' : '';
+                }
+                
+                break;
+            case 'POST' :
+                if (empty ( $_GET [static::ACTION] )) {
+                    $_GET [static::ACTION] = 'store';
+                }
+                break;
+            case 'PUT' :
+                if (empty ( $_GET [static::ACTION] )) {
+                    $_GET [static::ACTION] = 'update';
+                }
+                break;
+            case 'DELETE' :
+                if (empty ( $_GET [static::ACTION] )) {
+                    $_GET [static::ACTION] = 'destroy';
+                }
+                break;
+        }
     }
     
     /**

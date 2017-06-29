@@ -134,6 +134,30 @@ class helper {
     }
     
     /**
+     * 判断字符串是否为数字
+     *
+     * @param string $strSearch            
+     * @since bool
+     */
+    public static function stringNumber($mixValue) {
+        if (is_numeric ( $mixValue ))
+            return true;
+        return ! preg_match ( "/[^\d-.,]/", trim ( $mixValue, '\'' ) );
+    }
+    
+    /**
+     * 判断字符串是否为整数
+     *
+     * @param string $strSearch            
+     * @since bool
+     */
+    public static function isInteger($mixValue) {
+        if (is_int ( $mixValue ))
+            return true;
+        return ctype_digit ( strval ( $mixValue ) );
+    }
+    
+    /**
      * 验证 PHP 各种变量类型
      *
      * @param 待验证的变量 $mixVar            
