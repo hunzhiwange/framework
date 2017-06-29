@@ -17,6 +17,7 @@ queryphp;
 
 use Closure;
 use RuntimeException;
+use InvalidArgumentException;
 use queryyetsimple\http\request;
 use queryyetsimple\http\response;
 use queryyetsimple\helper\helper;
@@ -159,6 +160,13 @@ class router {
     protected $arrCurrentMiddleware = null;
     
     /**
+     * HTTP 方法
+     *
+     * @var array
+     */
+    protected $arrMethods = [ ];
+    
+    /**
      * 默认替换参数[字符串]
      *
      * @var string
@@ -218,7 +226,9 @@ class router {
             'pathinfo_restful' => true,
             'args_protected' => [ ],
             'args_regex' => [ ],
-            'args_strict' => false 
+            'args_strict' => false,
+            'middleware_strict' => false,
+            'method_strict' => false 
     ];
     
     /**
@@ -252,6 +262,9 @@ class router {
         
         // 完成请求
         $this->completeRequest ();
+        
+        // 验证 HTTP 方法
+        $this->validateMethod ();
         
         // 穿越中间件
         if (($objRequest = $this->throughMidleware ( $this->objPipeline )) instanceof request) {
@@ -919,7 +932,7 @@ class router {
     public function getMiddleware($sNode) {
         $arrMiddleware = [ ];
         foreach ( $this->arrMiddlewares as $sKey => $arrValue ) {
-            $sKey = '/^' . str_replace ( '6084fef57e91a6ecb13fff498f9275a7', '(\S+)', helper::escapeRegexCharacter ( str_replace ( '*', '6084fef57e91a6ecb13fff498f9275a7', $sKey ) ) ) . '$/';
+            $sKey = '/^' . str_replace ( '6084fef57e91a6ecb13fff498f9275a7', '(\S+)', helper::escapeRegexCharacter ( str_replace ( '*', '6084fef57e91a6ecb13fff498f9275a7', $sKey ) ) ) . ($this->getOption ( 'middleware_strict' ) ? '$' : '') . '/';
             if (preg_match ( $sKey, $sNode, $arrRes )) {
                 $arrMiddleware = array_merge ( $arrMiddleware, $arrValue );
             }
@@ -935,13 +948,89 @@ class router {
      * @return void
      */
     public function middleware($sMiddlewareName, $mixMiddleware) {
+        if (! $mixMiddleware)
+            throw new InvalidArgumentException ( sprintf ( 'Middleware %s disallowed empty', $sMiddlewareName ) );
+        
         if (! isset ( $this->arrMiddlewares [$sMiddlewareName] ))
             $this->arrMiddlewares [$sMiddlewareName] = [ ];
+        
+        $mixMiddleware = ( array ) $mixMiddleware;
         
         if (is_array ( $mixMiddleware ))
             $this->arrMiddlewares [$sMiddlewareName] = array_merge ( $this->arrMiddlewares [$sMiddlewareName], $mixMiddleware );
         else
             $this->arrMiddlewares [$sMiddlewareName] [] = $mixMiddleware;
+    }
+    
+    /**
+     * 批量注册绑定中间件
+     *
+     * @param array $arrMiddleware            
+     * @return void
+     */
+    public function middlewares($arrMiddleware) {
+        foreach ( $arrMiddleware as $sMiddlewareName => $mixMiddleware )
+            $this->middleware ( $sMiddlewareName, $mixMiddleware );
+    }
+    
+    /**
+     * 获取绑定的 HTTP 方法
+     *
+     * @param string $sNode            
+     * @return mixed
+     */
+    public function getMethod($sNode) {
+        if (array_key_exists ( $sNode, $this->arrMethods ))
+            return $this->arrMethods [$sNode];
+        
+        $arrMethod = [ ];
+        foreach ( $this->arrMethods as $sKey => $arrValue ) {
+            $sKey = '/^' . str_replace ( '6084fef57e91a6ecb13fff498f9275a7', '(\S+)', helper::escapeRegexCharacter ( str_replace ( '*', '6084fef57e91a6ecb13fff498f9275a7', $sKey ) ) ) . ($this->getOption ( 'method_strict' ) ? '$' : '') . '/';
+            if (preg_match ( $sKey, $sNode, $arrRes )) {
+                if ($arrMethod)
+                    $arrMethod = array_intersect ( $arrMethod, $arrValue );
+                else
+                    $arrMethod = $arrValue;
+            }
+        }
+        return $arrMethod;
+    }
+    
+    /**
+     * 注册绑定 HTTP 方法
+     *
+     * @param string $sMethodName            
+     * @param string|array $mixMethod            
+     * @return void
+     */
+    public function method($sMethodName, $mixMethod) {
+        if (! $mixMethod)
+            throw new InvalidArgumentException ( sprintf ( 'Method %s disallowed empty', $sMethodName ) );
+        
+        if (! isset ( $this->arrMethods [$sMethodName] ))
+            $this->arrMethods [$sMethodName] = [ ];
+        
+        $mixMethod = ( array ) $mixMethod;
+        
+        $mixMethod = array_map ( function ($strItem) {
+            return strtoupper ( $strItem );
+        }, $mixMethod );
+        
+        if (is_array ( $mixMethod ))
+            $this->arrMethods [$sMethodName] = array_merge ( $this->arrMethods [$sMethodName], $mixMethod );
+        else
+            $this->arrMethods [$sMethodName] [] = $mixMethod;
+    }
+    
+    /**
+     * 批量注册绑定 HTTP 方法
+     *
+     * @param array $arrMethod            
+     * @return void
+     */
+    public function methods($arrMethod) {
+        foreach ( $arrMethod as $sMethod => $mixMethod )
+            $this->method ( $sMethod, $mixMethod );
     }
     
     /**
@@ -957,6 +1046,18 @@ class router {
             
             // 解析结果
             $_GET = array_merge ( $_GET, ($arrRouter = $this->parse ()) ? $arrRouter : $this->parsePathInfo () );
+        }
+    }
+    
+    /**
+     * 验证 HTTP 方法
+     *
+     * @return void
+     */
+    protected function validateMethod() {
+        $arrMethod = $this->getMethod ( $this->packageNode () );
+        if ($arrMethod && ! in_array ( $this->objRequest->method (), $arrMethod )) {
+            throw new RuntimeException ( sprintf ( 'The node is allowed http method %s,but your current http method is %s', implode ( ',', $arrMethod ), $this->objRequest->method () ) );
         }
     }
     

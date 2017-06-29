@@ -121,7 +121,7 @@ return [
          * 当系统路由匹配失败后将会进行 pathinfo 解析
          * 系统可以为 restful 提供智能解析
          *
-         * @see \queryyetsimple\router\router:pathinfoRestful
+         * @see \queryyetsimple\router\router::pathinfoRestful
          */
         'pathinfo_restful' => true,
         
@@ -144,7 +144,7 @@ return [
          * 系统进行 pathinfo 解析时将匹配数据放入参数
          * regex 是对 args_protected 的一种补充
          * 例如:['[0-9]+', '[a-z]+']
-         * see \queryyetsimple\router\router:parsePathInfo
+         * see \queryyetsimple\router\router::parsePathInfo
          */
         'args_regex' => [ ],
         
@@ -154,7 +154,27 @@ return [
          * ---------------------------------------------------------------
          *
          * 是否启用严格 args 匹配模式,使用启用严格匹配，参数匹配正则结尾会加入 $ 标志
-         * see \queryyetsimple\router\router:parsePathInfo
+         * see \queryyetsimple\router\router::parsePathInfo
          */
-        'args_strict' => false 
+        'args_strict' => false,
+        
+        /**
+         * ---------------------------------------------------------------
+         * 严格中间件匹配模式
+         * ---------------------------------------------------------------
+         *
+         * 是否启用严格中间件匹配模式,使用启用严格匹配，参数匹配正则结尾会加入 $ 标志
+         * see \queryyetsimple\router\router::getMiddleware
+         */
+        'middleware_strict' => false,
+        
+        /**
+         * ---------------------------------------------------------------
+         * 严格 HTTP 方法匹配模式
+         * ---------------------------------------------------------------
+         *
+         * 是否启用严格 HTTP 方法匹配模式,使用启用严格匹配，参数匹配正则结尾会加入 $ 标志
+         * see \queryyetsimple\router\router::getMethod
+         */
+        'method_strict' => false 
 ]; 
