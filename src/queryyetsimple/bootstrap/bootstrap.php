@@ -137,7 +137,10 @@ class bootstrap {
      */
     protected function router() {
         // 运行笑脸初始化应用
-        $this->objProject->make ( application::class, application::INIT_APP, $this->arrOption )->bootstrap ()->namespaces ();
+        $this->objProject->make ( application::class, [ 
+                application::INIT_APP,
+                $this->arrOption 
+        ] )->bootstrap ()->namespaces ();
         
         // 完成路由请求
         $this->objProject->router->run ();

@@ -1228,6 +1228,7 @@ class router {
                         array_shift ( $arrRes );
                         foreach ( $arrDomains ['args'] as $intArgsKey => $strArgs ) {
                             $this->arrDomainData [$strArgs] = $arrRes [$intArgsKey];
+                            $this->objRequest->setRouter($strArgs,$arrRes [$intArgsKey]);
                         }
                     }
                     
@@ -1311,6 +1312,7 @@ class router {
                         array_shift ( $arrRes );
                         foreach ( $arrRouter ['args'] as $intArgsKey => $strArgs ) {
                             $arrData [$strArgs] = $arrRes [$intArgsKey];
+                            $this->objRequest->setRouter($strArgs,$arrRes [$intArgsKey]);
                         }
                     }
                     break 2;

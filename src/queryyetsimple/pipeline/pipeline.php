@@ -101,14 +101,10 @@ class pipeline implements interfaces_pipeline {
                     $strMethod = method_exists ( $objStage, $arrStage [1] ) ? $arrStage [1] : ($arrStage [1] != 'handle' && method_exists ( $objStage, 'handle' ) ? 'handle' : 'run');
                     $mixStage = $mixStage [1];
                     array_unshift ( $mixStage, $mixPassed );
-                    array_unshift ( $mixStage, [ 
+                    
+                    return $this->objContainer->call ( [ 
                             $objStage,
                             $strMethod 
-                    ] );
-                    
-                    return call_user_func_array ( [ 
-                            $this->objContainer,
-                            'call' 
                     ], $mixStage );
                 };
             }

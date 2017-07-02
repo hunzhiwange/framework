@@ -54,15 +54,11 @@ abstract class observer implements SplObserver {
         $arrArgs = func_get_args ();
         array_shift ( $arrArgs );
         
-        call_user_func_array ( [ 
-                $objSubject->container (),
-                'call' 
-        ], array_merge ( [ 
-                [ 
-                        $this,
-                        $strMethod 
-                ] 
-        ], $arrArgs ) );
+        $objSubject->container ()->call ( [ 
+                $this,
+                $strMethod 
+        ], $arrArgs );
+        
         unset ( $arrArgs );
     }
 }

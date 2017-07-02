@@ -393,7 +393,9 @@ class project extends container implements interfaces_project {
      */
     protected function runProvider($arrProvider, $strType) {
         foreach ( $arrProvider as $strProvider ) {
-            $objProvider = $this->make ( $strProvider, $this );
+            $objProvider = $this->make ( $strProvider, [ 
+                    $this 
+            ] );
             if (method_exists ( $objProvider, $strType )) {
                 $this->call ( [ 
                         $objProvider,

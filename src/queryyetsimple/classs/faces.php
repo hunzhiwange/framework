@@ -57,7 +57,7 @@ abstract class faces {
         if (isset ( static::$arrFacesInstance [$strUnique] )) {
             return static::$arrFacesInstance [$strUnique];
         }
-        if (! (static::$arrFacesInstance [$strUnique] = static::projectContainer ()->makeWithArgs ( $strClass, $arrArgs ))) {
+        if (! (static::$arrFacesInstance [$strUnique] = static::projectContainer ()->make ( $strClass, $arrArgs ))) {
             throw new RuntimeException ( __ ( '容器中未发现注入的 %s', $strClass ) );
         }
         return static::$arrFacesInstance [$strUnique];

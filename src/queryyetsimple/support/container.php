@@ -26,7 +26,7 @@ use queryyetsimple\flow\control as flow_control;
 use queryyetsimple\support\interfaces\container as interfaces_container;
 
 /**
- * 工厂容器
+ * IOC 容器
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -73,7 +73,7 @@ class container implements ArrayAccess, interfaces_container {
     protected $arrGroups = [ ];
     
     /**
-     * 注册工厂
+     * 注册到容器
      *
      * @param mixed $mixFactoryName            
      * @param mixed $mixFactory            
@@ -200,32 +200,33 @@ class container implements ArrayAccess, interfaces_container {
      * 分组制造
      *
      * @param string $strGroupName            
+     * @param array $arrArgs            
      * @return array
      */
-    public function groupMake($strGroupName) {
+    public function groupMake($strGroupName, array $arrArgs = []) {
         if (! isset ( $this->arrGroups [$strGroupName] )) {
             return [ ];
         }
         
         $arrResult = [ ];
-        $arrArgs = func_get_args ();
-        array_shift ( $arrArgs );
-        foreach ( $this->arrGroups [$strGroupName] as $strGroupInstance ) {
-            $arrResult [$strGroupInstance] = call_user_func_array ( [ 
-                    $this,
-                    'make' 
-            ], $arrArgs );
+        foreach ( ( array ) $this->arrGroups [$strGroupName] as $strGroupInstance ) {
+            $arrResult [$strGroupInstance] = $this->make ( $strGroupInstance, $arrArgs );
         }
         return $arrResult;
     }
     
     /**
-     * 生产产品 (动态参数)
+     * 生产产品
      *
      * @param string $strFactoryName            
-     * @return object
+     * @param array $arrArgs            
+     * @return object|false
      */
-    public function make($strFactoryName /* args */) {
+    public function make($strFactoryName, array $arrArgs = []) {
+        if (! is_array ( $arrArgs )) {
+            throw new InvalidArgumentException ( __ ( 'makeWithArgs 第二个参数只能为 array' ) );
+        }
+        
         // 别名
         if (isset ( $this->arrAlias [$strFactoryName] )) {
             $strFactoryName = $this->arrAlias [$strFactoryName];
@@ -237,17 +238,10 @@ class container implements ArrayAccess, interfaces_container {
         }
         
         // 生成实例
-        $arrArgs = func_get_args ();
-        
         if (! isset ( $this->arrFactorys [$strFactoryName] )) {
-            return call_user_func_array ( [ 
-                    $this,
-                    'getInjectionObject' 
-            ], $arrArgs );
-            return false;
+            return $this->getInjectionObject ( $strFactoryName, $arrArgs );
         }
         
-        array_shift ( $arrArgs );
         array_unshift ( $arrArgs, $this );
         $mixInstances = call_user_func_array ( $this->arrFactorys [$strFactoryName], $arrArgs );
         
@@ -263,47 +257,22 @@ class container implements ArrayAccess, interfaces_container {
     }
     
     /**
-     * 生产产品 (数组参数)
-     *
-     * @param string $strFactoryName            
-     * @param array $arrArgs            
-     * @return object
-     */
-    public function makeWithArgs($strFactoryName, array $arrArgs = []) {
-        if (! is_array ( $arrArgs )) {
-            throw new InvalidArgumentException ( __ ( 'makeWithArgs 第二个参数只能为 array' ) );
-        }
-        array_unshift ( $arrArgs, $strFactoryName );
-        return call_user_func_array ( [ 
-                $this,
-                'make' 
-        ], $arrArgs );
-    }
-    
-    /**
      * 实例回调自动注入并返回结果
      *
      * @param callable $calClass            
-     * @return mixed
-     */
-    public function call($calClass /* args */) {
-        $arrArgs = func_get_args ();
-        array_shift ( $arrArgs );
-        if (($arrInjection = $this->parseInjection ( $calClass, $arrArgs )) && isset ( $arrInjection ['args'] )) {
-            $arrArgs = $this->getInjectionArgs ( $arrInjection ['args'], $arrArgs, $arrInjection ['class'] );
-        }
-        return call_user_func_array ( $calClass, $arrArgs );
-    }
-    
-    /**
-     * 动态创建实例对象
-     *
-     * @param string $strClass            
      * @param array $arrArgs            
      * @return mixed
      */
-    public function newInstanceArgs($strClass, $arrArgs) {
-        return (new ReflectionClass ( $strClass ))->newInstanceArgs ( $arrArgs );
+    public function call($calClass, array $arrArgs = []) {
+        if (! is_array ( $arrArgs )) {
+            throw new InvalidArgumentException ( __ ( 'callWithArgs 第二个参数只能为 array' ) );
+        }
+        
+        if (($arrInjection = $this->parseInjection ( $calClass, $arrArgs )) && isset ( $arrInjection ['args'] )) {
+            $arrArgs = $this->getInjectionArgs ( $arrInjection ['args'], $arrArgs, $arrInjection ['class'] );
+        }
+        
+        return call_user_func_array ( $calClass, $arrArgs );
     }
     
     /**
@@ -395,15 +364,13 @@ class container implements ArrayAccess, interfaces_container {
      * 根据 class 名字创建实例
      *
      * @param string $strClassName            
+     * @param array $arrArgs            
      * @return object
      */
-    protected function getInjectionObject($strClassName /* args */) {
+    protected function getInjectionObject($strClassName, array $arrArgs = []) {
         if (! class_exists ( $strClassName )) {
             return false;
         }
-        
-        $arrArgs = func_get_args ();
-        array_shift ( $arrArgs );
         
         // 注入构造器
         if (($arrInjection = $this->parseInjection ( $strClassName )) && isset ( $arrInjection ['args'] )) {
@@ -444,39 +411,35 @@ class container implements ArrayAccess, interfaces_container {
         }
         
         foreach ( $arrParameter as $objParameter ) {
+            $strName = $objParameter->name;
             if (($objParameterClass = $objParameter->getClass ()) && $objParameterClass instanceof ReflectionClass && ($objParameterClass = $objParameterClass->getName ())) {
                 // 接口绑定实现
                 if (($objParameterMake = $this->make ( $objParameterClass )) !== false) {
                     // 实例对象
                     if (is_object ( $objParameterMake )) {
-                        $arrResult ['args'] [] = $objParameterMake;
-                        $booFind = $booFindClass = true;
+                        $arrResult ['args'] [$strName] = $objParameterMake;
+                        $booFindClass = true;
                     }                    
 
                     // 接口绑定实现
                     elseif (class_exists ( $objParameterMake )) {
-                        $arrResult ['args'] [] = $this->make ( $objParameterMake );
-                        $booFind = $booFindClass = true;
+                        $arrResult ['args'] [$strName] = $this->make ( $objParameterMake );
+                        $booFindClass = true;
                     }
                 } elseif (class_exists ( $objParameterClass )) {
-                    $arrResult ['args'] [] = $this->make ( $objParameterClass );
-                    $booFind = $booFindClass = true;
+                    $arrResult ['args'] [$strName] = $this->make ( $objParameterClass );
+                    $booFindClass = true;
                 } else {
-                    $arrResult ['args'] [] = '';
+                    throw new InvalidArgumentException ( 'Class is not defined' );
                 }
             } elseif ($objParameter->isDefaultValueAvailable ()) {
-                $arrResult ['args'] [] = $objParameter->getDefaultValue ();
-                $booFind = true;
+                $arrResult ['args'] [$strName] = $objParameter->getDefaultValue ();
             } else {
-                $arrResult ['args'] [] = '';
+                $arrResult ['args'] [$strName] = '';
             }
         }
         
-        if ($booFind === false && isset ( $arrResult ['args'] )) {
-            unset ( $arrResult ['args'] );
-        }
-        
-        $arrResult ['class'] = $booFindClass === true;
+        $arrResult ['class'] = $booFindClass;
         
         return $arrResult;
     }
@@ -491,12 +454,23 @@ class container implements ArrayAccess, interfaces_container {
      */
     protected function getInjectionArgs(array $arrArgs, array $arrExtends = [], $booFindClass = false) {
         foreach ( $arrExtends as $intKey => $mixExtend ) {
-            if ($booFindClass === true) {
-                $arrArgs [] = $mixExtend;
-            } else {
+            if (isset ( $arrArgs [$intKey] ) || $booFindClass === false) {
                 $arrArgs [$intKey] = $mixExtend;
+            } else {
+                $arrArgs [] = $mixExtend;
             }
         }
         return $arrArgs;
+    }
+    
+    /**
+     * 动态创建实例对象
+     *
+     * @param string $strClass            
+     * @param array $arrArgs            
+     * @return mixed
+     */
+    protected function newInstanceArgs($strClass, $arrArgs) {
+        return (new ReflectionClass ( $strClass ))->newInstanceArgs ( $arrArgs );
     }
 }

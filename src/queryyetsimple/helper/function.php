@@ -21,14 +21,13 @@ if (! function_exists ( 'project' )) {
      * 返回项目容器或者注入
      *
      * @param string|null $sInstance            
+     * @param array $arrArgs            
      * @return \queryyetsimple\bootstrap\project
      */
-    function project($sInstance = null /*argvs*/) {
+    function project($sInstance = null, $arrArgs = []) {
         if ($sInstance === null) {
             return project::singletons ();
         } else {
-            $arrArgs = func_get_args ();
-            array_shift ( $arrArgs );
             if (($objInstance = project::singletons ()->make ( $sInstance, $arrArgs ))) {
                 return $objInstance;
             }

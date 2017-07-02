@@ -226,6 +226,13 @@ class request implements arrayable, ArrayAccess {
      * @var string
      */
     protected $sLangset = null;
+
+    /**
+     * 路由额外参数
+     *
+     * @var array
+     */
+    protected $arrRouter = null;
     
     /**
      * 配置
@@ -989,6 +996,64 @@ class request implements arrayable, ArrayAccess {
      */
     public function setDeletes(array $arrValue, $mixValue) {
         return $this->setInputs ( $arrValue, 'delete' );
+    }
+
+    /**
+     * router 参数
+     *
+     * @param string $sKey            
+     * @param mixed $mixDefault            
+     * @param string|array $mixFilter            
+     * @return mixed
+     */
+    public function router($sKey, $mixDefault = null, $mixFilter = null) {
+        return $this->input ( $sKey, $mixDefault, $mixFilter, 'router' );
+    }
+    
+    /**
+     * 批量 router 参数
+     *
+     * @param string $sKey            
+     * @param mixed $mixDefault            
+     * @param string|array $mixFilter            
+     * @return array
+     */
+    public function routers(array $arrKey, $mixDefault = null, $mixFilter = null) {
+        return $this->inputs ( $arrKey, $mixDefault, $mixFilter, 'router' );
+    }
+    
+    /**
+     * 全部 router 参数
+     *
+     * @param mixed $mixDefault            
+     * @param string|array $mixFilter            
+     * @return array
+     */
+    public function routerAll($mixDefault = null, $mixFilter = null) {
+        return $this->inputAll ( $mixDefault, $mixFilter, 'router' );
+    }
+    
+    /**
+     * 设置 router 参数
+     *
+     * @param string $sKey            
+     * @param mixed $mixValue            
+     * @param string $sType            
+     * @return $this
+     */
+    public function setRouter($sKey, $mixValue) {
+        return $this->setInput ( $sKey, $mixValue, 'router' );
+    }
+    
+    /**
+     * 批量设置 router 参数
+     *
+     * @param array $arrValue            
+     * @param string $sType            
+     * @return $this
+     */
+    public function setRouters(array $arrValue, $mixValue) {
+        return $this->setInputs ( $arrValue, 'router' );
     }
     
     /**
@@ -2280,6 +2345,39 @@ class request implements arrayable, ArrayAccess {
             $this->arrAll = array_merge ( $this->requestAll (), $this->putAll () );
         }
         return $booFile ? array_merge ( $this->arrAll, $this->fileAll () ) : $this->arrAll;
+    }
+
+    /**
+     * 返回路由
+     *
+     * @return array
+     */
+    protected function globalRouter() {
+        $this->initGlobalRouter ();
+        return $this->arrRouter;
+    }
+    
+    /**
+     * 设置路由
+     *
+     * @param string $sKey            
+     * @param mixed $mixValue            
+     * @return $this
+     */
+    protected function setGlobalRouter($sKey, $mixValue) {
+        $this->initGlobalRouter ();
+        $this->arrRouter [$sKey] = $mixValue;
+        return $this;
+    }
+    
+    /**
+     * 初始化路由
+     *
+     * @return void
+     */
+    protected function initGlobalRouter() {
+        if (is_null ( $this->arrRouter ))
+            $this->arrRouter = [];
     }
     
     /**

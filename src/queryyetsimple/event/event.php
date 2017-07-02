@@ -138,7 +138,7 @@ class event {
                 $mixListener = explode ( '@', $mixListener );
                 
                 // 注入构造器
-                $mixListener [0] = $this->objProject->makeWithArgs ( $mixListener [0], $arrArgs );
+                $mixListener [0] = $this->objProject->make ( $mixListener [0], $arrArgs );
                 
                 // 注入方法
                 $mixListener [1] = ! empty ( $mixListener [1] ) ? $mixListener [1] : 'run';

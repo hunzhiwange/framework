@@ -192,13 +192,7 @@ abstract class job extends PHPQueueJob {
      * @return void
      */
     protected function dispatch($calFunc) {
-        call_user_func_array ( [ 
-                $this->container (),
-                'call' 
-        ], [ 
-                $calFunc,
-                $this->args () 
-        ] );
+        $this->container ()->call ( $calFunc, $this->args () );
     }
     
     /**

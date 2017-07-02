@@ -136,7 +136,7 @@ abstract class command extends SymfonyCommand {
         return $this->objProject->call ( [ 
                 $this,
                 'handle' 
-        ], $input, $output );
+        ] );
     }
     
     /**

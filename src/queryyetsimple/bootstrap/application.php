@@ -298,7 +298,7 @@ class application {
                     try {
                         $objClass = new ReflectionMethod ( $mixAction [0], $mixAction [1] );
                         if ($objClass->isPublic () && ! $objClass->isStatic ()) {
-                            return $this->objProject->call ( $mixAction );
+                            return $this->objProject->call ( $mixAction, $this->objProject ['request']->routerAll () );
                         } else {
                             throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 不存在', $sController, $sAction ) );
                         }
@@ -315,7 +315,7 @@ class application {
                 
                 // 判断是否为回调
                 case is_callable ( $mixAction ) :
-                    return $this->objProject->call ( $mixAction );
+                    return $this->objProject->call ( $mixAction, $this->objProject ['request']->routerAll () );
                     break;
                 
                 // 如果为方法则注册为方法

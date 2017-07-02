@@ -26,7 +26,7 @@ queryphp;
 interface container {
     
     /**
-     * 注册工厂
+     * 注册到容器
      *
      * @param mixed $mixFactoryName            
      * @param mixed $mixFactory            
@@ -74,24 +74,26 @@ interface container {
      * 分组制造
      *
      * @param string $strGroupName            
+     * @param array $arrArgs            
      * @return array
      */
-    public function groupMake($strGroupName);
+    public function groupMake($strGroupName, array $arrArgs = []);
     
     /**
-     * 生产产品 (动态参数)
-     *
-     * @param string $strFactoryName            
-     * @return object
-     */
-    public function make($strFactoryName /* args */);
-    
-    /**
-     * 生产产品 (数组参数)
+     * 生产产品
      *
      * @param string $strFactoryName            
      * @param array $arrArgs            
-     * @return object
+     * @return object|false
      */
-    public function makeWithArgs($strFactoryName, array $arrArgs = []);
+    public function make($strFactoryName, array $arrArgs = []);
+    
+    /**
+     * 实例回调自动注入并返回结果 (数组参数)
+     *
+     * @param callable $calClass            
+     * @param array $arrArgs            
+     * @return mixed
+     */
+    public function call($calClass, array $arrArgs = []);
 }
