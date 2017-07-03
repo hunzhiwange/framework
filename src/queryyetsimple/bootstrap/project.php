@@ -302,16 +302,10 @@ class project extends container implements interfaces_project {
             return new application ( $objProject, $sApp, $arrOption );
         } );
         
-        // 注册 controller
-        $this->singleton ( 'queryyetsimple\mvc\controller', function (project $objProject) {
-            return (new controller ())->project ( $objProject );
-        } );
-        
         // 注册 view
         $this->singleton ( 'queryyetsimple\mvc\view', function (project $oProject) {
             return new view ( $oProject ['view.theme'] );
         } );
-        $this->instance ( 'queryyetsimple\mvc\interfaces\view', 'queryyetsimple\mvc\view' );
         
         return $this;
     }

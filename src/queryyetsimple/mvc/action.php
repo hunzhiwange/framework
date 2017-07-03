@@ -15,7 +15,9 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
+use RuntimeException;
 use BadFunctionCallException;
+use queryyetsimple\mvc\interfaces\action as interfaces_action;
 
 /**
  * 基类方法器
@@ -25,12 +27,12 @@ use BadFunctionCallException;
  * @since 2016.11.19
  * @version 1.0
  */
-abstract class action {
+abstract class action implements interfaces_action {
     
     /**
      * 父控制器
      *
-     * @var queryyetsimple\mvc\controller
+     * @var \queryyetsimple\mvc\interfaces\controller
      */
     protected $objController = null;
     
@@ -43,26 +45,28 @@ abstract class action {
     }
     
     /**
-     * 返回父控制器
+     * 设置父控制器
      *
-     * @return queryyetsimple\mvc\controller
+     * @param \queryyetsimple\mvc\interfaces\controller $objController            
+     * @return $this
      */
-    public function controller() {
-        $this->initController ();
-        return $this->objController;
+    public function setController($objController) {
+        $this->objController = $objController;
+        return $this;
     }
     
     /**
-     * 返回项目容器
+     * 验证 controller
      *
-     * @return \queryyetsimple\bootstrap\project
+     * @return void
      */
-    public function project() {
-        return project::bootstrap ();
+    protected function checkController() {
+        if (! $this->objController)
+            throw new RuntimeException ( 'Controller is not set in action' );
     }
     
     /**
-     * 实现 isPost,isGet等
+     * 访问父控制器
      *
      * @param string $sMethod            
      * @param array $arrArgs            
@@ -72,26 +76,10 @@ abstract class action {
         if ($sMethod == 'run') {
             throw new BadFunctionCallException ( __ ( '方法对象不允许通过 __call 方法执行  run 入口' ) );
         }
-        
-        $this->initController ();
+        $this->checkController ();
         return call_user_func_array ( [ 
                 $this->objController,
                 $sMethod 
         ], $arrArgs );
-    }
-    
-    /**
-     * 初始化控制器
-     *
-     * @return void
-     */
-    protected function initController() {
-        if (is_null ( $this->objController )) {
-            return;
-        }
-        
-        if (! ($this->objController = $this->project ()->make ( 'app' )->getController ( $this->project ()->controller_name ))) {
-            $this->objController = $this->project ()->make ( 'app' )->controllerDefault ();
-        }
     }
 }

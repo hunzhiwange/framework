@@ -17,9 +17,9 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\http\request;
-use queryyetsimple\helper\helper;
 use queryyetsimple\http\response;
-use queryyetsimple\mvc\interfaces\view;
+use queryyetsimple\helper\helper;
+use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
 
 /**
  * 基类控制器
@@ -29,14 +29,7 @@ use queryyetsimple\mvc\interfaces\view;
  * @since 2016.11.19
  * @version 1.0
  */
-class controller {
-    
-    /**
-     * 项目容器
-     *
-     * @var \queryyetsimple\bootstrap\project
-     */
-    protected $objProject = null;
+abstract class controller implements interfaces_controller {
     
     /**
      * 视图
@@ -46,13 +39,40 @@ class controller {
     protected $objView = null;
     
     /**
+     * 视图
+     *
+     * @var \queryyetsimple\router\router
+     */
+    protected $objRouter = null;
+    
+    /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\interfaces\view $objView            
      * @return void
      */
-    public function __construct(view $objView) {
+    public function __construct() {
+    }
+    
+    /**
+     * 设置视图
+     *
+     * @param \queryyetsimple\mvc\interfaces\view $objView            
+     * @return $this
+     */
+    public function setView($objView) {
         $this->objView = $objView;
+        return $this;
+    }
+    
+    /**
+     * 设置路由
+     *
+     * @param \queryyetsimple\router\router $objRouter            
+     * @return $this
+     */
+    public function setRouter($objRouter) {
+        $this->objRouter = $objRouter;
+        return $this;
     }
     
     /**
@@ -63,43 +83,31 @@ class controller {
      * @return void
      */
     public function action($sActionName) {
-        // 判断是否已经注册过
-        // if (($objAction = $this->project ()->make ( 'app' )->getAction ( $this->project ()->controller_name, $sActionName )) && ! (is_array ( $objAction ) && isset ( $objAction [1] ) && helper::isKindOf ( $objAction [0], 'queryyetsimple\mvc\controller' ))) {
-        // return $this->project ()->make ( 'app' )->action ( $this->project ()->controller_name, $sActionName );
-        // }
-        //
-        //
-        // echo 'sdfsdf';
-        // exit();
-        
-        // 读取默认方法器
-        $sActionName = get_class ( $this ) . '\\' . $sActionName;
-        var_dump ( $sActionName );
-        
-        if (class_exists ( $sActionName )) {
-            // 注册方法器
-            // $this->project ()->make ( 'app' )->registerAction ( $this->project ()->controller_name, $sActionName, [
-            // $sActionName,
-            // 'run'
-            // ] );
-            
-            // dump($xx);
-            
-            // 运行方法器
-            // return $this->project ()->make ( 'app' )->action ( $this->project ()->controller_name, $sActionName );
-        } else {
-            throw new RuntimeException ( __ ( '控制器 %s 的方法 %s 不存在', get_class ( $this ), $sActionName ) );
+        // 判断是否存在方法
+        if (method_exists ( $this, $sActionName )) {
+            $arrArgs = func_get_args ();
+            array_shift ( $arrArgs );
+            return call_user_func_array ( [ 
+                    $this,
+                    $sActionName 
+            ], $arrArgs );
         }
+        
+        // 执行默认方法器
+        if (! $this->objRouter)
+            throw new RuntimeException ( 'Router is not set in controller' );
+        return $this->objRouter->doBind ( null, $sActionName );
     }
     
     /**
      * 赋值
      *
      * @param 变量或变量数组集合 $Name            
-     * @param string $Value            
+     * @param mixed $mixValue            
      * @return $this
      */
-    public function assign($Name, $Value = '') {
+    public function assign($Name, $mixValue = null) {
+        $this->checkView ();
         $this->objView->assign ( $Name, $Value );
         return $this;
     }
@@ -111,6 +119,7 @@ class controller {
      * @return mixed
      */
     public function getAssign($sName) {
+        $this->checkView ();
         return $this->objView->getVar ( $sName );
     }
     
@@ -125,6 +134,7 @@ class controller {
      * @return mixed
      */
     public function display($sThemeFile = '', $arrOption = []) {
+        $this->checkView ();
         $arrOption = array_merge ( [ 
                 'charset' => 'utf-8',
                 'content_type' => 'text/html',
@@ -135,18 +145,13 @@ class controller {
     }
     
     /**
-     * 设置或者返回服务容器
+     * 验证 view
      *
-     * @param \queryyetsimple\bootstrap\project $objProject            
      * @return void
      */
-    public function project($objProject = null) {
-        if (is_null ( $objProject )) {
-            return $this->objProject;
-        } else {
-            $this->objProject = $objProject;
-            return $this;
-        }
+    protected function checkView() {
+        if (! $this->objView)
+            throw new RuntimeException ( 'View is not set in controller' );
     }
     
     /**
@@ -168,30 +173,5 @@ class controller {
      */
     public function __get($sName) {
         return $this->getAssign ( $sName );
-    }
-    
-    /**
-     * 实现 isPost,isGet等
-     *
-     * @param 方法名 $sMethod            
-     * @param 参数 $arrArgs            
-     * @return boolean
-     */
-    public function __call($sMethod = '', $arrArgs = []) {
-        echo $sMethod;
-        switch ($sMethod) {
-            case 'isPost' :
-                return request::isPosts ();
-            case 'isGet' :
-                return request::isGets ();
-            case 'in' :
-                if (! empty ( $arrArgs [0] )) {
-                    return request::ins ( $arrArgs [0], isset ( $arrArgs [1] ) ? $arrArgs [1] : 'R' );
-                } else {
-                    throw new RuntimeException ( 'Can not find method.' );
-                }
-            default :
-                throw new RuntimeException ( __ ( '控制器 %s 的方法 %s 不存在', get_class ( $this ), $sMethod ) );
-        }
     }
 }
