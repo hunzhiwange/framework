@@ -180,8 +180,8 @@ class application {
      * @return void
      */
     public function controller($sController = '', $sAction = '') {
-        ! $sController && $sController = $this->objProject->controller_name;
-        ! $sAction && $sAction = $this->objProject->action_name;
+        $sController = $this->getControllerName ( $sController );
+        $sAction = $this->getActionName ( $sAction );
         
         // 是否已经注册过 action
         if (! $this->hasAction ( $sController, $sAction )) {
@@ -287,8 +287,8 @@ class application {
      * @return void
      */
     public function action($sController = '', $sAction = '') {
-        ! $sController && $sController = $this->objProject->controller_name;
-        ! $sAction && $sAction = $this->objProject->action_name;
+        $sController = $this->getControllerName ( $sController );
+        $sAction = $this->getActionName ( $sAction );
         
         $mixAction = $this->getAction ( $sController, $sAction );
         if ($mixAction !== null) {
@@ -848,6 +848,34 @@ class application {
         }
         $_ENV [$strName] = $mixValue;
         $_SERVER [$strName] = $mixValue;
+    }
+    
+    /**
+     * 返回控制器名字
+     *
+     * @param string $sController            
+     * @return string
+     */
+    protected function getControllerName($sController = '') {
+        if (! $sController)
+            $sController = $this->objProject ['controller_name'];
+        
+        if ($sController == 'controller_name')
+            die ( 'Please refresh for load option' );
+        
+        return $sController;
+    }
+    
+    /**
+     * 返回方法名字
+     *
+     * @param string $sAction            
+     * @return string
+     */
+    protected function getActionName($sAction = '') {
+        if (! $sAction)
+            $sAction = $this->objProject ['action_name'];
+        return $sAction;
     }
     
     /**

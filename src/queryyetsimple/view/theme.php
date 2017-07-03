@@ -278,10 +278,11 @@ class theme implements interfaces_theme {
         } elseif (strpos ( $sTpl, '(' ) !== false) { // 存在表达式
             return $calHelp ( $sTpl );
         } else {
-            if (! $this->getOption ( 'theme_path' ))
+            if (! $this->getOption ( 'theme_path' )) {
                 throw new RuntimeException ( 'Theme path must be set' );
-                
-                // 空取默认控制器和方法
+            }
+            
+            // 空取默认控制器和方法
             if ($sTpl == '') {
                 $sTpl = $this->getOption ( 'controller_name' ) . $this->getOption ( 'controlleraction_depr' ) . $this->getOption ( 'action_name' );
             }
