@@ -834,8 +834,7 @@ class router {
     public function group(array $arrOption, $mixRouter) {
         if (! $this->checkExpired ())
             return;
-            
-            // 分组参数叠加
+        
         $this->arrGroupArgs = $arrOption = $this->mergeOption ( $this->arrGroupArgs, $arrOption );
         
         if ($mixRouter instanceof Closure) {
@@ -948,6 +947,9 @@ class router {
      * @return void
      */
     public function middleware($sMiddlewareName, $mixMiddleware) {
+        if (! $this->checkExpired ())
+            return;
+        
         if (! $mixMiddleware)
             throw new InvalidArgumentException ( sprintf ( 'Middleware %s disallowed empty', $sMiddlewareName ) );
         
@@ -955,6 +957,11 @@ class router {
             $this->arrMiddlewares [$sMiddlewareName] = [ ];
         
         $mixMiddleware = ( array ) $mixMiddleware;
+        
+        foreach ( $mixMiddleware as $strTemp ) {
+            if (! is_string ( $strTemp ))
+                throw new InvalidArgumentException ( 'Middleware only allowed string' );
+        }
         
         if (is_array ( $mixMiddleware ))
             $this->arrMiddlewares [$sMiddlewareName] = array_merge ( $this->arrMiddlewares [$sMiddlewareName], $mixMiddleware );
@@ -969,6 +976,9 @@ class router {
      * @return void
      */
     public function middlewares($arrMiddleware) {
+        if (! $this->checkExpired ())
+            return;
+        
         foreach ( $arrMiddleware as $sMiddlewareName => $mixMiddleware )
             $this->middleware ( $sMiddlewareName, $mixMiddleware );
     }
@@ -1004,6 +1014,9 @@ class router {
      * @return void
      */
     public function method($sMethodName, $mixMethod) {
+        if (! $this->checkExpired ())
+            return;
+        
         if (! $mixMethod)
             throw new InvalidArgumentException ( sprintf ( 'Method %s disallowed empty', $sMethodName ) );
         
@@ -1029,6 +1042,9 @@ class router {
      * @return void
      */
     public function methods($arrMethod) {
+        if (! $this->checkExpired ())
+            return;
+        
         foreach ( $arrMethod as $sMethod => $mixMethod )
             $this->method ( $sMethod, $mixMethod );
     }
@@ -1091,7 +1107,7 @@ class router {
         if ($arrArgv) {
             
             // app
-            if (in_array ( $arrArgv [0], $this->getOption ( '~apps~' ) )) {
+            if (is_array ( $this->getOption ( '~apps~' ) ) && in_array ( $arrArgv [0], $this->getOption ( '~apps~' ) )) {
                 $_GET [static::APP] = array_shift ( $arrArgv );
             }
             
@@ -1131,7 +1147,7 @@ class router {
         $sPathInfo = $_SERVER ['PATH_INFO'];
         $arrPaths = explode ( $this->getOption ( 'pathinfo_depr' ), trim ( $sPathInfo, '/' ) );
         
-        if (in_array ( $arrPaths [0], $this->getOption ( '~apps~' ) )) {
+        if (is_array ( $this->getOption ( '~apps~' ) ) && in_array ( $arrPaths [0], $this->getOption ( '~apps~' ) )) {
             $arrPathInfo [static::APP] = array_shift ( $arrPaths );
         }
         
@@ -1381,6 +1397,8 @@ class router {
             $this->arrRouters = $arrCacheData ['routers'];
             $this->arrDomainWheres = $arrCacheData ['domain_wheres'];
             $this->arrWheres = $arrCacheData ['wheres'];
+            $this->arrMiddlewares = $arrCacheData ['middlewares'];
+            $this->arrMethods = $arrCacheData ['methods'];
             unset ( $arrCacheData );
             return;
         }
@@ -1389,7 +1407,9 @@ class router {
                 'domains' => $this->arrDomains,
                 'routers' => $this->arrRouters,
                 'domain_wheres' => $this->arrDomainWheres,
-                'wheres' => $this->arrWheres 
+                'wheres' => $this->arrWheres,
+                'middlewares' => $this->arrMiddlewares,
+                'methods' => $this->arrMethods 
         ];
         
         if (! is_dir ( dirname ( $this->strCachePath ) )) {
