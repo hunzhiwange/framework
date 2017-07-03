@@ -71,29 +71,29 @@ class view implements interfaces_view {
      * 加载视图文件
      *
      * @param string $sFile            
-     * @param array $in
+     * @param array $arrOption
      *            charset 编码
      *            content_type 内容类型
      *            return 是否返回
      * @return void|string
      */
-    public function display($sFile = '', $in = []) {
-        $in = array_merge ( [ 
+    public function display($sFile = '', $arrOption = []) {
+        $arrOption = array_merge ( [ 
                 'charset' => 'utf-8',
                 'content_type' => 'text/html',
                 'return' => false 
-        ], $in );
+        ], $arrOption );
         
         // 设置 header
         if (! headers_sent ()) {
-            header ( "Content-Type:" . $in ['content_type'] . "; charset=" . $in ['charset'] );
+            header ( "Content-Type:" . $arrOption ['content_type'] . "; charset=" . $arrOption ['charset'] );
             
             // 支持页面回跳
             header ( "Cache-control: protected" );
         }
         
         $sContent = $this->objTheme->display ( $sFile, false );
-        if ($in ['return'] === true) {
+        if ($arrOption ['return'] === true) {
             return $sContent;
         } else {
             echo $sContent;

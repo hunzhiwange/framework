@@ -354,35 +354,35 @@ class router {
      *
      * @param string $sUrl            
      * @param array $arrParams            
-     * @param array $in
+     * @param array $arrOption
      *            suffix boolean 是否包含后缀
      *            normal boolean 是否为普通 url
      *            subdomain string 子域名
      * @return string
      */
-    public function url($sUrl, $arrParams = [], $in = []) {
-        $in = array_merge ( [ 
+    public function url($sUrl, $arrParams = [], $arrOption = []) {
+        $arrOption = array_merge ( [ 
                 'suffix' => true,
                 'normal' => false,
                 'subdomain' => 'www' 
-        ], $in );
+        ], $arrOption );
         
-        $in ['args_app'] = static::APP;
-        $in ['args_controller'] = static::CONTROLLER;
-        $in ['args_action'] = static::ACTION;
-        $in ['url_enter'] = $this->objContainer ['url_enter'];
+        $arrOption ['args_app'] = static::APP;
+        $arrOption ['args_controller'] = static::CONTROLLER;
+        $arrOption ['args_action'] = static::ACTION;
+        $arrOption ['url_enter'] = $this->objContainer ['url_enter'];
         
         // 以 “/” 开头的为自定义URL
-        $in ['custom'] = false;
+        $arrOption ['custom'] = false;
         if (0 === strpos ( $sUrl, '/' )) {
-            $in ['custom'] = true;
+            $arrOption ['custom'] = true;
         }         
 
         // 普通 url
         else {
             if ($sUrl != '') {
                 if (! strpos ( $sUrl, '://' )) {
-                    $sUrl = $_GET [$in ['args_app']] . '://' . $sUrl;
+                    $sUrl = $_GET [$arrOption ['args_app']] . '://' . $sUrl;
                 }
                 
                 // 解析 url
@@ -391,39 +391,39 @@ class router {
                 $arrArray = [ ];
             }
             
-            $in ['app'] = isset ( $arrArray ['scheme'] ) ? $arrArray ['scheme'] : $_GET [$in ['args_app']]; // APP
-                                                                                                            
+            $arrOption ['app'] = isset ( $arrArray ['scheme'] ) ? $arrArray ['scheme'] : $_GET [$arrOption ['args_app']]; // APP
+                                                                                                                          
             // 分析获取模块和操作(应用)
-            if (! empty ( $arrParams [$in ['args_app']] )) {
-                $in ['app'] = $arrParams [$in ['args_app']];
-                unset ( $arrParams [$in ['args_app']] );
+            if (! empty ( $arrParams [$arrOption ['args_app']] )) {
+                $arrOption ['app'] = $arrParams [$arrOption ['args_app']];
+                unset ( $arrParams [$arrOption ['args_app']] );
             }
-            if (! empty ( $arrParams [$in ['args_controller']] )) {
-                $in ['controller'] = $arrParams [$in ['args_controller']];
-                unset ( $arrParams [$in ['args_controller']] );
+            if (! empty ( $arrParams [$arrOption ['args_controller']] )) {
+                $arrOption ['controller'] = $arrParams [$arrOption ['args_controller']];
+                unset ( $arrParams [$arrOption ['args_controller']] );
             }
-            if (! empty ( $arrParams [$in ['args_action']] )) {
-                $in ['action'] = $arrParams [$in ['args_action']];
-                unset ( $arrParams [$in ['args_action']] );
+            if (! empty ( $arrParams [$arrOption ['args_action']] )) {
+                $arrOption ['action'] = $arrParams [$arrOption ['args_action']];
+                unset ( $arrParams [$arrOption ['args_action']] );
             }
             if (isset ( $arrArray ['path'] )) {
-                if (! isset ( $in ['controller'] )) {
+                if (! isset ( $arrOption ['controller'] )) {
                     if (! isset ( $arrArray ['host'] )) {
-                        $in ['controller'] = $_GET [static::CONTROLLER];
+                        $arrOption ['controller'] = $_GET [static::CONTROLLER];
                     } else {
-                        $in ['controller'] = $arrArray ['host'];
+                        $arrOption ['controller'] = $arrArray ['host'];
                     }
                 }
                 
-                if (! isset ( $in ['action'] )) {
-                    $in ['action'] = substr ( $arrArray ['path'], 1 );
+                if (! isset ( $arrOption ['action'] )) {
+                    $arrOption ['action'] = substr ( $arrArray ['path'], 1 );
                 }
             } else {
-                if (! isset ( $in ['controller'] )) {
-                    $in ['controller'] = $_GET [static::CONTROLLER];
+                if (! isset ( $arrOption ['controller'] )) {
+                    $arrOption ['controller'] = $_GET [static::CONTROLLER];
                 }
-                if (! isset ( $in ['action'] )) {
-                    $in ['action'] = $arrArray ['host'];
+                if (! isset ( $arrOption ['action'] )) {
+                    $arrOption ['action'] = $arrArray ['host'];
                 }
             }
             
@@ -436,9 +436,9 @@ class router {
         }
         
         // 如果开启了URL解析，则URL模式为非普通模式
-        if (($this->getOption ( 'model' ) == 'pathinfo' && $in ['normal'] === false) || $in ['custom'] === true) {
+        if (($this->getOption ( 'model' ) == 'pathinfo' && $arrOption ['normal'] === false) || $arrOption ['custom'] === true) {
             // 非自定义 url
-            if ($in ['custom'] === false) {
+            if ($arrOption ['custom'] === false) {
                 // 额外参数
                 $sStr = '/';
                 foreach ( $arrParams as $sVar => $sVal ) {
@@ -447,17 +447,17 @@ class router {
                 $sStr = substr ( $sStr, 0, - 1 );
                 
                 // 分析 url
-                $sUrl = ($in ['url_enter'] !== '/' ? $in ['url_enter'] : '') . ($this->getOption ( 'default_app' ) != $in ['app'] ? '/' . $in ['app'] . '/' : '/');
+                $sUrl = ($arrOption ['url_enter'] !== '/' ? $arrOption ['url_enter'] : '') . ($this->getOption ( 'default_app' ) != $arrOption ['app'] ? '/' . $arrOption ['app'] . '/' : '/');
                 
                 if ($sStr) {
-                    $sUrl .= $in ['controller'] . '/' . $in ['action'] . $sStr;
+                    $sUrl .= $arrOption ['controller'] . '/' . $arrOption ['action'] . $sStr;
                 } else {
                     $sTemp = '';
-                    if ($this->getOption ( 'default_controller' ) != $in ['controller'] || $this->getOption ( 'default_action' ) != $in ['action']) {
-                        $sTemp .= $in ['controller'];
+                    if ($this->getOption ( 'default_controller' ) != $arrOption ['controller'] || $this->getOption ( 'default_action' ) != $arrOption ['action']) {
+                        $sTemp .= $arrOption ['controller'];
                     }
-                    if ($this->getOption ( 'default_action' ) != $in ['action']) {
-                        $sTemp .= '/' . $in ['action'];
+                    if ($this->getOption ( 'default_action' ) != $arrOption ['action']) {
+                        $sTemp .= '/' . $arrOption ['action'];
                     }
                     
                     if ($sTemp == '') {
@@ -494,8 +494,8 @@ class router {
                 $sUrl .= $sStr;
             }
             
-            if ($in ['suffix'] && $sUrl) {
-                $sUrl .= $in ['suffix'] === true ? $this->getOption ( 'html_suffix' ) : $in ['suffix'];
+            if ($arrOption ['suffix'] && $sUrl) {
+                $sUrl .= $arrOption ['suffix'] === true ? $this->getOption ( 'html_suffix' ) : $arrOption ['suffix'];
             }
         }         
 
@@ -508,14 +508,14 @@ class router {
             $sStr = rtrim ( $sStr, '&' );
             
             $sTemp = '';
-            if ($in ['normal'] === true || $this->getOption ( 'default_app' ) != $in ['app']) {
-                $sTemp [] = $in ['args_app'] . '=' . $in ['app'];
+            if ($arrOption ['normal'] === true || $this->getOption ( 'default_app' ) != $arrOption ['app']) {
+                $sTemp [] = $arrOption ['args_app'] . '=' . $arrOption ['app'];
             }
-            if ($this->getOption ( 'default_controller' ) != $in ['controller']) {
-                $sTemp [] = $in ['args_controller'] . '=' . $in ['controller'];
+            if ($this->getOption ( 'default_controller' ) != $arrOption ['controller']) {
+                $sTemp [] = $arrOption ['args_controller'] . '=' . $arrOption ['controller'];
             }
-            if ($this->getOption ( 'default_action' ) != $in ['action']) {
-                $sTemp [] = $in ['args_action'] . '=' . $in ['action'];
+            if ($this->getOption ( 'default_action' ) != $arrOption ['action']) {
+                $sTemp [] = $arrOption ['args_action'] . '=' . $arrOption ['action'];
             }
             if ($sStr) {
                 $sTemp [] = $sStr;
@@ -523,14 +523,14 @@ class router {
             if (! empty ( $sTemp )) {
                 $sTemp = '?' . implode ( '&', $sTemp );
             }
-            $sUrl = ($in ['normal'] === true || $in ['url_enter'] !== '/' ? $in ['url_enter'] : '') . $sTemp;
+            $sUrl = ($arrOption ['normal'] === true || $arrOption ['url_enter'] !== '/' ? $arrOption ['url_enter'] : '') . $sTemp;
             unset ( $sTemp );
         }
         
         // 子域名支持
         if ($this->getOption ( 'make_subdomain_on' ) === true && $this->getOption ( 'router_domain_top' )) {
-            if ($in ['subdomain']) {
-                $sUrl = $this->urlWithDomain ( $in ['subdomain'] ) . $sUrl;
+            if ($arrOption ['subdomain']) {
+                $sUrl = $this->urlWithDomain ( $arrOption ['subdomain'] ) . $sUrl;
             }
         }
         
@@ -541,20 +541,20 @@ class router {
      * 路由 URL 跳转
      *
      * @param string $sUrl            
-     * @param 额外参数 $in
+     * @param 额外参数 $arrOption
      *            params url 额外参数
      *            message 消息
      *            time 停留时间，0表示不停留
      * @return void
      */
-    public function redirect($sUrl, $in = []) {
-        $in = array_merge ( [ 
+    public function redirect($sUrl, $arrOption = []) {
+        $arrOption = array_merge ( [ 
                 'params' => [ ],
                 'message' => '',
                 'time' => 0 
-        ], $in );
+        ], $arrOption );
         
-        $this->urlRedirect ( $this->url ( $sUrl, $in ['params'] ), $in ['time'], $in ['message'] );
+        $this->urlRedirect ( $this->url ( $sUrl, $arrOption ['params'] ), $arrOption ['time'], $arrOption ['message'] );
     }
     
     /**
@@ -619,7 +619,7 @@ class router {
      *
      * @param mixed $mixRouter            
      * @param string $strUrl            
-     * @param arra $in
+     * @param arra $arrOption
      *            domain 域名
      *            params 参数
      *            where 参数正则
@@ -628,17 +628,17 @@ class router {
      *            prefix 前缀
      * @return void
      */
-    public function import($mixRouter, $strUrl = '', $in = []) {
+    public function import($mixRouter, $strUrl = '', $arrOption = []) {
         if (! $this->checkExpired ())
             return;
         
-        $in = $this->mergeIn ( [ 
+        $arrOption = $this->mergeOption ( [ 
                 'prepend' => false,
                 'where' => [ ],
                 'params' => [ ],
                 'domain' => '',
                 'prefix' => '' 
-        ], $this->mergeIn ( $this->arrGroupArgs, $in ) );
+        ], $this->mergeOption ( $this->arrGroupArgs, $arrOption ) );
         
         // 支持数组传入
         if (! is_array ( $mixRouter ) || count ( $mixRouter ) == count ( $mixRouter, 1 )) {
@@ -648,14 +648,14 @@ class router {
                 $mixRouter [] = [ 
                         $strTemp,
                         $strUrl,
-                        $in 
+                        $arrOption 
                 ];
             } else {
                 if ($strUrl || ! empty ( $strTemp [1] )) {
                     $mixRouter [] = [ 
                             $strTemp [0],
                             (! empty ( $strTemp [1] ) ? $strTemp [1] : $strUrl),
-                            $in 
+                            $arrOption 
                     ];
                 }
             }
@@ -670,7 +670,7 @@ class router {
                 if (! $arrRouter [1]) {
                     $arrRouter [1] = $strUrl;
                 }
-                $arrRouter [2] = $this->mergeIn ( $in, $arrRouter [2] );
+                $arrRouter [2] = $this->mergeOption ( $arrOption, $arrRouter [2] );
                 $mixRouter [$intKey] = $arrRouter;
             }
         }
@@ -709,8 +709,8 @@ class router {
             
             // 域名支持
             if (! empty ( $arrRouter ['domain'] )) {
-                $in ['router'] = true;
-                $this->domain ( $arrRouter ['domain'], $arrArgs [0], $in );
+                $arrOption ['router'] = true;
+                $this->domain ( $arrRouter ['domain'], $arrArgs [0], $arrOption );
             }
         }
     }
@@ -756,42 +756,42 @@ class router {
      *
      * @param string $strDomain            
      * @param mixed $mixUrl            
-     * @param array $in
+     * @param array $arrOption
      *            params 扩展参数
      *            domain_where 域名参数
      *            prepend 插入顺序
      *            router 对应路由规则
      * @return void
      */
-    public function domain($strDomain, $mixUrl, $in = []) {
+    public function domain($strDomain, $mixUrl, $arrOption = []) {
         if (! $this->checkExpired ())
             return;
         
-        $in = $this->mergeIn ( [ 
+        $arrOption = $this->mergeOption ( [ 
                 'prepend' => false,
                 'params' => [ ],
                 'domain_where' => [ ],
                 'router' => false 
-        ], $in );
+        ], $arrOption );
         
         // 闭包直接转接到分组
         if ($mixUrl instanceof Closure) {
-            $in ['domain'] = $strDomain;
-            $this->group ( $in, $mixUrl );
+            $arrOption ['domain'] = $strDomain;
+            $this->group ( $arrOption, $mixUrl );
         }         
 
         // 注册域名
         else {
             $arrDomain = [ 
                     'url' => $mixUrl,
-                    'params' => $in ['params'],
-                    'router' => $in ['router'] 
+                    'params' => $arrOption ['params'],
+                    'router' => $arrOption ['router'] 
             ];
             
             // 合并参数正则
             $arrDomainWheres = $this->arrDomainWheres;
-            if (! empty ( $in ['domain_where'] ) && is_array ( $in ['domain_where'] )) {
-                $arrDomainWheres = $this->mergeWhere ( $in ['domain_where'], $arrDomainWheres );
+            if (! empty ( $arrOption ['domain_where'] ) && is_array ( $arrOption ['domain_where'] )) {
+                $arrDomainWheres = $this->mergeWhere ( $arrOption ['domain_where'], $arrDomainWheres );
             }
             
             // 主域名只有一个，路由可以有多个
@@ -809,7 +809,7 @@ class router {
                 $this->arrDomains [$strDomain] [$strDomainBox] = $arrDomain;
             } else {
                 // 优先插入
-                if ($in ['prepend'] === true) {
+                if ($arrOption ['prepend'] === true) {
                     array_unshift ( $this->arrDomains [$strDomain] [$strDomainBox], $arrDomain );
                 } else {
                     array_push ( $this->arrDomains [$strDomain] [$strDomainBox], $arrDomain );
@@ -821,7 +821,7 @@ class router {
     /**
      * 注册分组路由
      *
-     * @param array $in
+     * @param array $arrOption
      *            prefix 前缀
      *            domain 域名
      *            params 参数
@@ -831,12 +831,12 @@ class router {
      * @param mixed $mixRouter            
      * @return void
      */
-    public function group(array $in, $mixRouter) {
+    public function group(array $arrOption, $mixRouter) {
         if (! $this->checkExpired ())
             return;
             
             // 分组参数叠加
-        $this->arrGroupArgs = $in = $this->mergeIn ( $this->arrGroupArgs, $in );
+        $this->arrGroupArgs = $arrOption = $this->mergeOption ( $this->arrGroupArgs, $arrOption );
         
         if ($mixRouter instanceof Closure) {
             call_user_func_array ( $mixRouter, [ ] );
@@ -857,7 +857,7 @@ class router {
                 
                 $strPrefix = ! empty ( $arrArgs [2] ['prefix'] ) ? $arrArgs [2] ['prefix'] : (! empty ( $this->arrGroupArgs ['prefix'] ) ? $this->arrGroupArgs ['prefix'] : '');
                 
-                $this->import ( $strPrefix . $arrVal [0], $arrVal [1], $this->mergeIn ( $in, $arrVal [2] ) );
+                $this->import ( $strPrefix . $arrVal [0], $arrVal [1], $this->mergeOption ( $arrOption, $arrVal [2] ) );
             }
         }
         
@@ -1228,7 +1228,7 @@ class router {
                         array_shift ( $arrRes );
                         foreach ( $arrDomains ['args'] as $intArgsKey => $strArgs ) {
                             $this->arrDomainData [$strArgs] = $arrRes [$intArgsKey];
-                            $this->objRequest->setRouter($strArgs,$arrRes [$intArgsKey]);
+                            $this->objRequest->setRouter ( $strArgs, $arrRes [$intArgsKey] );
                         }
                     }
                     
@@ -1312,7 +1312,7 @@ class router {
                         array_shift ( $arrRes );
                         foreach ( $arrRouter ['args'] as $intArgsKey => $strArgs ) {
                             $arrData [$strArgs] = $arrRes [$intArgsKey];
-                            $this->objRequest->setRouter($strArgs,$arrRes [$intArgsKey]);
+                            $this->objRequest->setRouter ( $strArgs, $arrRes [$intArgsKey] );
                         }
                     }
                     break 2;
@@ -1424,13 +1424,13 @@ class router {
     }
     
     /**
-     * 合并 in 参数
+     * 合并 option 参数
      *
-     * @param array $in            
+     * @param array $arrOption            
      * @param array $arrExtend            
      * @return array
      */
-    protected function mergeIn(array $in, array $arrExtend) {
+    protected function mergeOption(array $arrOption, array $arrExtend) {
         // 合并特殊参数
         foreach ( [ 
                 'params',
@@ -1438,10 +1438,10 @@ class router {
                 'domain_where' 
         ] as $strType ) {
             if (! empty ( $arrExtend [$strType] ) && is_array ( $arrExtend [$strType] )) {
-                if (! isset ( $in [$strType] )) {
-                    $in [$strType] = [ ];
+                if (! isset ( $arrOption [$strType] )) {
+                    $arrOption [$strType] = [ ];
                 }
-                $in [$strType] = $this->mergeWhere ( $in [$strType], $arrExtend [$strType] );
+                $arrOption [$strType] = $this->mergeWhere ( $arrOption [$strType], $arrExtend [$strType] );
             }
         }
         
@@ -1454,11 +1454,11 @@ class router {
                 'router' 
         ] as $strType ) {
             if (isset ( $arrExtend [$strType] )) {
-                $in [$strType] = $arrExtend [$strType];
+                $arrOption [$strType] = $arrExtend [$strType];
             }
         }
         
-        return $in;
+        return $arrOption;
     }
     
     /**

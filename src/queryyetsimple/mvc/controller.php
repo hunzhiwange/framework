@@ -117,14 +117,14 @@ class controller {
      *            return 是否返回 html 返回而不直接输出
      * @return mixed
      */
-    public function display($sThemeFile = '', $in = []) {
-        $in = array_merge ( [ 
+    public function display($sThemeFile = '', $arrOption = []) {
+        $arrOption = array_merge ( [ 
                 'charset' => 'utf-8',
                 'content_type' => 'text/html',
                 'return' => false 
-        ], $in );
+        ], $arrOption );
         
-        return $this->project ()->make ( 'view' )->display ( $sThemeFile, $in );
+        return $this->project ()->make ( 'view' )->display ( $sThemeFile, $arrOption );
     }
     
     /**

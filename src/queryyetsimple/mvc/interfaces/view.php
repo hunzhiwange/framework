@@ -46,11 +46,11 @@ interface view {
      * 加载视图文件
      *
      * @param string $sFile            
-     * @param array $in
+     * @param array $arrOption
      *            charset 编码
      *            content_type 内容类型
      *            return 是否返回
      * @return void|string
      */
-    public function display($sFile = '', $in = []);
+    public function display($sFile = '', $arrOption = []);
 }

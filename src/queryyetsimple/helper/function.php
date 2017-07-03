@@ -150,18 +150,18 @@ if (! function_exists ( 'url' )) {
      *
      * @param string $sUrl            
      * @param array $arrParams            
-     * @param array $in
+     * @param array $arrOption
      *            suffix boolean 是否包含后缀
      *            normal boolean 是否为普通 url
      *            subdomain string 子域名
      * @return string
      */
-    function url($sUrl, $arrParams = [], $in = []) {
+    function url($sUrl, $arrParams = [], $arrOption = []) {
         if (is_null ( $sUrl )) {
             return project ( 'router' );
         }
         
-        return project ( 'router' )->url ( $sUrl, $arrParams, $in );
+        return project ( 'router' )->url ( $sUrl, $arrParams, $arrOption );
     }
 }
 
