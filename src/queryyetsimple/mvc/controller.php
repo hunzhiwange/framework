@@ -19,6 +19,7 @@ use RuntimeException;
 use queryyetsimple\http\request;
 use queryyetsimple\helper\helper;
 use queryyetsimple\http\response;
+use queryyetsimple\mvc\interfaces\view;
 
 /**
  * 基类控制器
@@ -38,11 +39,114 @@ class controller {
     protected $objProject = null;
     
     /**
+     * 视图
+     *
+     * @var \queryyetsimple\mvc\interfaces\view
+     */
+    protected $objView = null;
+    
+    /**
      * 构造函数
      *
+     * @param \queryyetsimple\mvc\interfaces\view $objView            
      * @return void
      */
-    public function __construct() {
+    public function __construct(view $objView) {
+        $this->objView = $objView;
+    }
+    
+    /**
+     * 执行子方法器
+     *
+     * @param string $sActionName
+     *            方法名
+     * @return void
+     */
+    public function action($sActionName) {
+        // 判断是否已经注册过
+        // if (($objAction = $this->project ()->make ( 'app' )->getAction ( $this->project ()->controller_name, $sActionName )) && ! (is_array ( $objAction ) && isset ( $objAction [1] ) && helper::isKindOf ( $objAction [0], 'queryyetsimple\mvc\controller' ))) {
+        // return $this->project ()->make ( 'app' )->action ( $this->project ()->controller_name, $sActionName );
+        // }
+        //
+        //
+        // echo 'sdfsdf';
+        // exit();
+        
+        // 读取默认方法器
+        $sActionName = get_class ( $this ) . '\\' . $sActionName;
+        var_dump ( $sActionName );
+        
+        if (class_exists ( $sActionName )) {
+            // 注册方法器
+            // $this->project ()->make ( 'app' )->registerAction ( $this->project ()->controller_name, $sActionName, [
+            // $sActionName,
+            // 'run'
+            // ] );
+            
+            // dump($xx);
+            
+            // 运行方法器
+            // return $this->project ()->make ( 'app' )->action ( $this->project ()->controller_name, $sActionName );
+        } else {
+            throw new RuntimeException ( __ ( '控制器 %s 的方法 %s 不存在', get_class ( $this ), $sActionName ) );
+        }
+    }
+    
+    /**
+     * 赋值
+     *
+     * @param 变量或变量数组集合 $Name            
+     * @param string $Value            
+     * @return $this
+     */
+    public function assign($Name, $Value = '') {
+        $this->objView->assign ( $Name, $Value );
+        return $this;
+    }
+    
+    /**
+     * 取回赋值
+     *
+     * @param 变量名字 $sName            
+     * @return mixed
+     */
+    public function getAssign($sName) {
+        return $this->objView->getVar ( $sName );
+    }
+    
+    /**
+     * 加载视图文件
+     *
+     * @param string $sThemeFile            
+     * @param array $in
+     *            charset 编码
+     *            content_type 类型
+     *            return 是否返回 html 返回而不直接输出
+     * @return mixed
+     */
+    public function display($sThemeFile = '', $arrOption = []) {
+        $arrOption = array_merge ( [ 
+                'charset' => 'utf-8',
+                'content_type' => 'text/html',
+                'return' => false 
+        ], $arrOption );
+        
+        return $this->objView->display ( $sThemeFile, $arrOption );
+    }
+    
+    /**
+     * 设置或者返回服务容器
+     *
+     * @param \queryyetsimple\bootstrap\project $objProject            
+     * @return void
+     */
+    public function project($objProject = null) {
+        if (is_null ( $objProject )) {
+            return $this->objProject;
+        } else {
+            $this->objProject = $objProject;
+            return $this;
+        }
     }
     
     /**
@@ -67,92 +171,6 @@ class controller {
     }
     
     /**
-     * 执行子方法器
-     *
-     * @param string $sActionName
-     *            方法名
-     * @return void
-     */
-    public function action($sActionName) {
-        // 判断是否已经注册过
-        if (($objAction = $this->project ()->make ( 'app' )->getAction ( $this->project ()->controller_name, $sActionName )) && ! (is_array ( $objAction ) && isset ( $objAction [1] ) && helper::isKindOf ( $objAction [0], 'queryyetsimple\mvc\controller' ))) {
-            return $this->project ()->make ( 'app' )->action ( $this->project ()->controller_name, $sActionName );
-        }
-        
-        // 读取默认方法器
-        $sActionName = get_class ( $this ) . '\\' . $sActionName;
-        if (class_exists ( $sActionName )) {
-            // 注册方法器
-            $this->project ()->make ( 'app' )->registerAction ( $this->project ()->controller_name, $sActionName, [ 
-                    $sActionName,
-                    'run' 
-            ] );
-            
-            // 运行方法器
-            return $this->project ()->make ( 'app' )->action ( $this->project ()->controller_name, $sActionName );
-        } else {
-            throw new RuntimeException ( __ ( '控制器 %s 的方法 %s 不存在', get_class ( $this ), $sActionName ) );
-        }
-    }
-    
-    /**
-     * 赋值
-     *
-     * @param 变量或变量数组集合 $Name            
-     * @param string $Value            
-     * @return this
-     */
-    public function assign($Name, $Value = '') {
-        $this->project ()->make ( 'view' )->assign ( $Name, $Value );
-        return $this;
-    }
-    
-    /**
-     * 加载视图文件
-     *
-     * @param string $sThemeFile            
-     * @param array $in
-     *            charset 编码
-     *            content_type 类型
-     *            return 是否返回 html 返回而不直接输出
-     * @return mixed
-     */
-    public function display($sThemeFile = '', $arrOption = []) {
-        $arrOption = array_merge ( [ 
-                'charset' => 'utf-8',
-                'content_type' => 'text/html',
-                'return' => false 
-        ], $arrOption );
-        
-        return $this->project ()->make ( 'view' )->display ( $sThemeFile, $arrOption );
-    }
-    
-    /**
-     * 设置或者返回服务容器
-     *
-     * @param \queryyetsimple\bootstrap\project $objProject            
-     * @return void
-     */
-    public function project($objProject = null) {
-        if (is_null ( $objProject )) {
-            return $this->objProject;
-        } else {
-            $this->objProject = $objProject;
-            return $this;
-        }
-    }
-    
-    /**
-     * 取回赋值
-     *
-     * @param 变量名字 $sName            
-     * @return mixed
-     */
-    protected function getAssign($sName) {
-        return $this->project ()->make ( 'view' )->getVar ( $sName );
-    }
-    
-    /**
      * 实现 isPost,isGet等
      *
      * @param 方法名 $sMethod            
@@ -160,6 +178,7 @@ class controller {
      * @return boolean
      */
     public function __call($sMethod = '', $arrArgs = []) {
+        echo $sMethod;
         switch ($sMethod) {
             case 'isPost' :
                 return request::isPosts ();

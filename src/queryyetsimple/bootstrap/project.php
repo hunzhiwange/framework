@@ -311,6 +311,7 @@ class project extends container implements interfaces_project {
         $this->singleton ( 'queryyetsimple\mvc\view', function (project $oProject) {
             return new view ( $oProject ['view.theme'] );
         } );
+        $this->instance ( 'queryyetsimple\mvc\interfaces\view', 'queryyetsimple\mvc\view' );
         
         return $this;
     }

@@ -430,7 +430,7 @@ class container implements ArrayAccess, interfaces_container {
                     $arrResult ['args'] [$strName] = $this->make ( $objParameterClass );
                     $booFindClass = true;
                 } else {
-                    throw new InvalidArgumentException ( 'Class is not defined' );
+                    throw new InvalidArgumentException ( sprintf ( 'Class or interface %s is not register in container', $objParameterClass ) );
                 }
             } elseif ($objParameter->isDefaultValueAvailable ()) {
                 $arrResult ['args'] [$strName] = $objParameter->getDefaultValue ();

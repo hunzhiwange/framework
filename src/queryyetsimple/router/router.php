@@ -17,6 +17,8 @@ queryphp;
 
 use Closure;
 use RuntimeException;
+use ReflectionMethod;
+use ReflectionException;
 use InvalidArgumentException;
 use queryyetsimple\http\request;
 use queryyetsimple\http\response;
@@ -165,6 +167,13 @@ class router {
      * @var array
      */
     protected $arrMethods = [ ];
+    
+    /**
+     * 路由匹配变量
+     *
+     * @var array
+     */
+    protected $arrVariable = [ ];
     
     /**
      * 默认替换参数[字符串]
@@ -911,15 +920,152 @@ class router {
     /**
      * 注册绑定资源
      *
-     * 注册控制器：router->bind( 'group://topic', $mixBind )
-     * 注册方法：router->bind( 'group://topic/index', $mixBind )
-     *
-     * @param string $sBindName            
      * @param mixed $mixBind            
-     * @return void
+     * @param boolean $booAction            
+     * @param mixed $sBindName            
+     * @return mixed|void
      */
-    public function bind($sBindName, $mixBind) {
-        $this->arrBinds [$sBindName] = $mixBind;
+    public function bind($mixBind = null, $sController = null, $sAction = null, $sApp = null) {
+        $sBindName = $this->packControllerAndAction ( $sController, $sAction, $sApp );
+        
+        if (is_null ( $mixBind )) {
+            return $this->arrBinds [$sBindName] = $this->parseDefaultBind ();
+        }
+        
+        ! $sAction = $sAction = $this->action ();
+        
+        if (! is_null ( $sAction )) {
+            return $this->arrBinds [$sBindName] = $mixBind;
+        } else {
+            switch (true) {
+                // 判断是否为回调
+                case is_callable ( $mixBind ) :
+                    return $this->arrBinds [$sBindName] = $mixBind;
+                    break;
+                
+                // 如果为方法则注册为方法
+                case is_object ( $mixBind ) && (method_exists ( $mixBind, 'run' ) || helper::isKindOf ( $mixBind, 'queryyetsimple\mvc\action' )) :
+                    return $this->arrBinds [$sBindName] = [ 
+                            $mixBind,
+                            'run' 
+                    ];
+                    break;
+                
+                // 如果为控制器实例，注册为回调
+                case helper::isKindOf ( $mixBind, 'queryyetsimple\mvc\controller' ) :
+                // 实例回调
+                case is_object ( $mixBind ) :
+                // 静态类回调
+                case is_string ( $mixBind ) && is_callable ( [ 
+                        $mixBind,
+                        $sAction 
+                ] ) :
+                    
+                    return $this->arrBinds [$sBindName] = [ 
+                            $mixBind,
+                            $sAction 
+                    ];
+                    break;
+                
+                // 数组支持,方法名即数组的键值,注册方法
+                case is_array ( $mixBind ) :
+                    if (isset ( $mixBind [$sAction] )) {
+                        return $this->arrBinds [$sBindName] = $mixBind [$sAction];
+                    } else {
+                        throw new InvalidArgumentException ( __ ( '数组控制器不存在 %s 方法键值', $sAction ) );
+                    }
+                    break;
+                
+                // 简单数据直接输出
+                case is_scalar ( $mixBind ) :
+                    return $this->arrBinds [$sBindName] = $mixBind;
+                    
+                    break;
+                
+                default :
+                    throw new InvalidArgumentException ( __ ( '注册的控制器类型不受支持' ) );
+                    break;
+            }
+        }
+    }
+    
+    /**
+     * 执行绑定
+     *
+     * @param string $sController            
+     * @param string $sAction            
+     * @param string $sApp            
+     * @return mixed|void
+     */
+    public function doBind($sController = null, $sAction = null, $sApp = null) {
+        if (is_null ( $sController ))
+            $sController = $this->controller ();
+        
+        if (is_null ( $sAction ))
+            $sAction = $this->action ();
+        
+        if (is_null ( $sApp ))
+            $sApp = $this->app ();
+        
+        if (! ($mixAction = $this->getAction ( $sController, $sAction, $sApp )) && ! ($mixAction = $this->bind ())) {
+            throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 未注册', $sController, $sAction ) );
+        }
+        
+        switch (true) {
+            // 判断是否为控制器回调
+            case is_array ( $mixAction ) && isset ( $mixAction [1] ) && helper::isKindOf ( $mixAction [0], 'queryyetsimple\mvc\controller' ) :
+                try {
+                    $objClass = new ReflectionMethod ( $mixAction [0], $mixAction [1] );
+                    if ($objClass->isPublic () && ! $objClass->isStatic ()) {
+                        return $this->objContainer->call ( $mixAction, $this->arrVariable );
+                    } else {
+                        throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 不存在', $sController, $sAction ) );
+                    }
+                } catch ( ReflectionException $oE ) {
+                    // 请求默认子方法器
+                    return call_user_func_array ( [ 
+                            $mixAction [0],
+                            'action' 
+                    ], [ 
+                            $mixAction [1] 
+                    ] );
+                }
+                break;
+            
+            // 判断是否为回调
+            case is_callable ( $mixAction ) :
+                return $this->objContainer->call ( $mixAction, $this->arrVariable );
+                break;
+            
+            // 如果为方法则注册为方法
+            case helper::isKindOf ( $mixAction, 'queryyetsimple\mvc\action' ) :
+            case is_object ( $mixAction ) :
+                if (method_exists ( $mixAction, 'run' )) {
+                    // 注册方法
+                    $this->bind ( [ 
+                            $mixAction,
+                            'run' 
+                    ], $sController, $sAction, $sApp );
+                    return $this->doBind ( $sController, $sAction, $sApp );
+                } else {
+                    throw new InvalidArgumentException ( __ ( '方法对象不存在执行入口  run' ) );
+                }
+                break;
+            
+            // 数组支持,方法名即数组的键值,注册方法
+            case is_array ( $mixAction ) :
+                return $mixAction;
+                break;
+            
+            // 简单数据直接输出
+            case is_scalar ( $mixAction ) :
+                return $mixAction;
+                break;
+            
+            default :
+                throw new InvalidArgumentException ( __ ( '注册的方法类型 %s 不受支持', $sAction ) );
+                break;
+        }
     }
     
     /**
@@ -1245,6 +1391,7 @@ class router {
                         foreach ( $arrDomains ['args'] as $intArgsKey => $strArgs ) {
                             $this->arrDomainData [$strArgs] = $arrRes [$intArgsKey];
                             $this->objRequest->setRouter ( $strArgs, $arrRes [$intArgsKey] );
+                            $this->arrVariable [$strArgs] = $arrRes [$intArgsKey];
                         }
                     }
                     
@@ -1329,6 +1476,7 @@ class router {
                         foreach ( $arrRouter ['args'] as $intArgsKey => $strArgs ) {
                             $arrData [$strArgs] = $arrRes [$intArgsKey];
                             $this->objRequest->setRouter ( $strArgs, $arrRes [$intArgsKey] );
+                            $this->arrVariable [$strArgs] = $arrRes [$intArgsKey];
                         }
                     }
                     break 2;
@@ -1655,11 +1803,66 @@ class router {
     }
     
     /**
+     * 分析默认绑定
+     *
+     * @return false|callable
+     */
+    protected function parseDefaultBind() {
+        // 尝试读取默认控制器
+        $sController = '\\' . $this->app () . '\\application\\controller\\' . $this->controller ();
+        if (class_exists ( $sController )) {
+            return [ 
+                    $this->objContainer->make ( $sController, $this->arrVariable ),
+                    $this->action () 
+            ];
+        }         
+
+        // 默认控制器不存在，尝试直接读取方法类
+        else {
+            $sAction = '\\' . $this->app () . '\\application\\controller\\' . $this->controller () . '\\' . $this->action ();
+            if (class_exists ( $sAction )) {
+                return [ 
+                        $this->objContainer->make ( $sAction, $this->arrVariable ),
+                        'run' 
+                ];
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
      * 取得打包节点
      *
      * @return string
      */
     protected function packageNode() {
         return $_REQUEST ['app'] . '://' . $_REQUEST ['c'] . '/' . $_REQUEST ['a'];
+    }
+    
+    /**
+     * 获取方法
+     *
+     * @param string $sActionName            
+     * @return mixed
+     */
+    protected function getAction($sControllerName, $sActionName, $strApp = null) {
+        $mixAction = $this->getBind ( $this->packControllerAndAction ( $sControllerName, $sActionName, $strApp ) );
+        if ($mixAction !== null) {
+            return $mixAction;
+        }
+        return $this->getBind ( $sControllerName . '/' . $sActionName );
+    }
+    
+    /**
+     * 装配注册节点
+     *
+     * @param string $strApp            
+     * @param string $strController            
+     * @param string $strAction            
+     * @return string
+     */
+    protected function packControllerAndAction($strController, $strAction = null, $strApp = null) {
+        return ($strApp ?  : $this->app ()) . '://' . $strController . ($strAction ? '/' . $strAction : '');
     }
 }
