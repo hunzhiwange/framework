@@ -921,15 +921,16 @@ class router {
      * 注册绑定资源
      *
      * @param mixed $mixBind            
-     * @param boolean $booAction            
-     * @param mixed $sBindName            
+     * @param string $sController            
+     * @param string $sAction            
+     * @param string $sApp            
      * @return mixed|void
      */
     public function bind($mixBind = null, $sController = null, $sAction = null, $sApp = null) {
         $sBindName = $this->packControllerAndAction ( $sController, $sAction, $sApp );
         
         if (is_null ( $mixBind )) {
-            return $this->arrBinds [$sBindName] = $this->parseDefaultBind ();
+            return $this->arrBinds [$sBindName] = $this->parseDefaultBind ( $sController, $sAction, $sApp );
         }
         
         ! $sAction = $sAction = $this->action ();
@@ -940,11 +941,13 @@ class router {
             switch (true) {
                 // 判断是否为回调
                 case is_callable ( $mixBind ) :
+                    
                     return $this->arrBinds [$sBindName] = $mixBind;
                     break;
                 
                 // 如果为方法则注册为方法
                 case is_object ( $mixBind ) && (method_exists ( $mixBind, 'run' ) || helper::isKindOf ( $mixBind, 'queryyetsimple\mvc\action' )) :
+                    
                     return $this->arrBinds [$sBindName] = [ 
                             $mixBind,
                             'run' 
@@ -969,6 +972,7 @@ class router {
                 
                 // 数组支持,方法名即数组的键值,注册方法
                 case is_array ( $mixBind ) :
+                    
                     if (isset ( $mixBind [$sAction] )) {
                         return $this->arrBinds [$sBindName] = $mixBind [$sAction];
                     } else {
@@ -978,6 +982,7 @@ class router {
                 
                 // 简单数据直接输出
                 case is_scalar ( $mixBind ) :
+                    
                     return $this->arrBinds [$sBindName] = $mixBind;
                     
                     break;
@@ -1007,7 +1012,7 @@ class router {
         if (is_null ( $sApp ))
             $sApp = $this->app ();
         
-        if (! ($mixAction = $this->getAction ( $sController, $sAction, $sApp )) && ! ($mixAction = $this->bind ())) {
+        if (! ($mixAction = $this->getAction ( $sController, $sAction, $sApp )) && ! ($mixAction = $this->bind ( null, $sController, $sAction, $sApp ))) {
             throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 未注册', $sController, $sAction ) );
         }
         
@@ -1805,27 +1810,41 @@ class router {
     /**
      * 分析默认绑定
      *
+     * @param string $sController            
+     * @param string $sAction            
+     * @param string $sApp            
      * @return false|callable
      */
-    protected function parseDefaultBind() {
+    protected function parseDefaultBind($sController = null, $sAction = null, $sApp = null) {
+        if (is_null ( $sController ))
+            $sController = $this->controller ();
+        
+        if (is_null ( $sAction ))
+            $sAction = $this->action ();
+        
+        if (is_null ( $sApp )) {
+            $sApp = $this->app ();
+        }
+        
         // 尝试读取默认控制器
-        $sController = '\\' . $this->app () . '\\application\\controller\\' . $this->controller ();
-        if (class_exists ( $sController )) {
+        $sControllerClass = '\\' . $sApp . '\\application\\controller\\' . $sController;
+        $booFindController = false;
+        if (class_exists ( $sControllerClass )) {
+            $booFindController = true;
+        }
+        
+        // 尝试直接读取方法类
+        $sActionClass = '\\' . $sApp . '\\application\\controller\\' . $sController . '\\' . $sAction;
+        if (class_exists ( $sActionClass )) {
             return [ 
-                    $this->objContainer->make ( $sController, $this->arrVariable ),
-                    $this->action () 
+                    $this->objContainer->make ( $sActionClass, $this->arrVariable )->setController ( $this->objContainer->make ( $sControllerClass, $this->arrVariable )->setView ( $this->objContainer ['view'] )->setRouter ( $this ) ),
+                    'run' 
             ];
-        }         
-
-        // 默认控制器不存在，尝试直接读取方法类
-        else {
-            $sAction = '\\' . $this->app () . '\\application\\controller\\' . $this->controller () . '\\' . $this->action ();
-            if (class_exists ( $sAction )) {
-                return [ 
-                        $this->objContainer->make ( $sAction, $this->arrVariable ),
-                        'run' 
-                ];
-            }
+        } elseif ($booFindController === true) {
+            return [ 
+                    $this->objContainer->make ( $sControllerClass, $this->arrVariable )->setView ( $this->objContainer ['view'] )->setRouter ( $this ),
+                    $sAction 
+            ];
         }
         
         return false;
