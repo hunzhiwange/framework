@@ -15,6 +15,7 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
+use RuntimeException;
 use queryyetsimple\view\interfaces\theme;
 use queryyetsimple\mvc\interfaces\view as interfaces_view;
 
@@ -53,6 +54,7 @@ class view implements interfaces_view {
      * @return $this
      */
     public function assign($mixName, $mixValue = null) {
+        $this->checkTheme ();
         $this->objTheme->setVar ( $mixName, $mixValue );
         return $this;
     }
@@ -64,6 +66,7 @@ class view implements interfaces_view {
      * @return mixed
      */
     public function getAssign($sName = null) {
+        $this->checkTheme ();
         return $this->objTheme->getVar ( $sName );
     }
     
@@ -78,6 +81,7 @@ class view implements interfaces_view {
      * @return void|string
      */
     public function display($sFile = '', $arrOption = []) {
+        $this->checkTheme ();
         $arrOption = array_merge ( [ 
                 'charset' => 'utf-8',
                 'content_type' => 'text/html',
@@ -87,8 +91,6 @@ class view implements interfaces_view {
         // 设置 header
         if (! headers_sent ()) {
             header ( "Content-Type:" . $arrOption ['content_type'] . "; charset=" . $arrOption ['charset'] );
-            
-            // 支持页面回跳
             header ( "Cache-control: protected" );
         }
         
@@ -99,5 +101,15 @@ class view implements interfaces_view {
             echo $sContent;
             unset ( $sContent );
         }
+    }
+    
+    /**
+     * 验证 theme
+     *
+     * @return void
+     */
+    protected function checkTheme() {
+        if (! $this->objTheme)
+            throw new RuntimeException ( 'Theme is not set in view' );
     }
 }

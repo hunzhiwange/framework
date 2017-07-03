@@ -30,7 +30,7 @@ interface view {
      *
      * @param mixed $mixName            
      * @param mixed $mixValue            
-     * @return mixed
+     * @return $this
      */
     public function assign($mixName, $mixValue = null);
     
