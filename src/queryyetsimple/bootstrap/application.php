@@ -240,7 +240,7 @@ class application {
                 if (class_exists ( $sModuleClass )) {
                     
                     // 自动注入
-                    $oModule = $this->objProject->make ( $sModuleClass );
+                    $oModule = $this->objProject->make ( $sModuleClass, $this->objProject ['request']->routerAll () );
                     $oModule->project ( $this->objProject );
                     
                     // 注册控制器
@@ -259,7 +259,7 @@ class application {
                         $this->registerController ( $sController, $this->controllerDefault () );
                         
                         // 自动注入
-                        $oAction = $this->objProject->make ( $sActionClass );
+                        $oAction = $this->objProject->make ( $sActionClass, $this->objProject ['request']->routerAll () );
                         
                         if (helper::isKindOf ( $oAction, 'queryyetsimple\mvc\action' )) {
                             // 注册方法
@@ -445,7 +445,7 @@ class application {
      */
     public function controllerDefault() {
         if (! $this->hasController ( 'query_default' )) {
-            $this->registerController ( 'query_default', $this->objProject->make ( 'controller' ) );
+            $this->registerController ( 'query_default', $this->objProject->make ( 'controller', $this->objProject ['request']->routerAll () ) );
         }
         return $this->getController ( 'query_default' );
     }
