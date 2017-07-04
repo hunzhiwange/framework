@@ -927,7 +927,7 @@ class router {
      * @return mixed|void
      */
     public function bind($mixBind = null, $sController = null, $sAction = null, $sApp = null) {
-        $sBindName = $this->packControllerAndAction ( $sController, $sAction, $sApp );
+        $sBindName = $this->packageNode ( $sController, $sAction, $sApp );
         
         if (is_null ( $mixBind )) {
             return $this->arrBinds [$sBindName] = $this->parseDefaultBind ( $sController, $sAction, $sApp );
@@ -941,13 +941,11 @@ class router {
             switch (true) {
                 // 判断是否为回调
                 case is_callable ( $mixBind ) :
-                    
                     return $this->arrBinds [$sBindName] = $mixBind;
                     break;
                 
                 // 如果为方法则注册为方法
                 case is_object ( $mixBind ) && (method_exists ( $mixBind, 'run' ) || helper::isKindOf ( $mixBind, 'queryyetsimple\mvc\action' )) :
-                    
                     return $this->arrBinds [$sBindName] = [ 
                             $mixBind,
                             'run' 
@@ -963,7 +961,6 @@ class router {
                         $mixBind,
                         $sAction 
                 ] ) :
-                    
                     return $this->arrBinds [$sBindName] = [ 
                             $mixBind,
                             $sAction 
@@ -972,7 +969,6 @@ class router {
                 
                 // 数组支持,方法名即数组的键值,注册方法
                 case is_array ( $mixBind ) :
-                    
                     if (isset ( $mixBind [$sAction] )) {
                         return $this->arrBinds [$sBindName] = $mixBind [$sAction];
                     } else {
@@ -982,9 +978,7 @@ class router {
                 
                 // 简单数据直接输出
                 case is_scalar ( $mixBind ) :
-                    
                     return $this->arrBinds [$sBindName] = $mixBind;
-                    
                     break;
                 
                 default :
@@ -1012,7 +1006,7 @@ class router {
         if (is_null ( $sApp ))
             $sApp = $this->app ();
         
-        if (! ($mixAction = $this->getAction ( $sController, $sAction, $sApp )) && ! ($mixAction = $this->bind ( null, $sController, $sAction, $sApp ))) {
+        if (! ($mixAction = $this->getBind ( $this->packageNode ( $sController, $sAction, $sApp ) )) && ! ($mixAction = $this->bind ( null, $sController, $sAction, $sApp ))) {
             throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 未注册', $sController, $sAction ) );
         }
         
@@ -1853,35 +1847,12 @@ class router {
     /**
      * 取得打包节点
      *
-     * @return string
-     */
-    protected function packageNode() {
-        return $this->app () . '://' . $this->controller () . '/' . $this->action ();
-    }
-    
-    /**
-     * 获取方法
-     *
-     * @param string $sActionName            
-     * @return mixed
-     */
-    protected function getAction($sControllerName, $sActionName, $strApp = null) {
-        $mixAction = $this->getBind ( $this->packControllerAndAction ( $sControllerName, $sActionName, $strApp ) );
-        if ($mixAction !== null) {
-            return $mixAction;
-        }
-        return $this->getBind ( $sControllerName . '/' . $sActionName );
-    }
-    
-    /**
-     * 装配注册节点
-     *
      * @param string $strApp            
      * @param string $strController            
      * @param string $strAction            
      * @return string
      */
-    protected function packControllerAndAction($strController, $strAction = null, $strApp = null) {
-        return ($strApp ?  : $this->app ()) . '://' . $strController . ($strAction ? '/' . $strAction : '');
+    protected function packageNode($strController = null, $strAction = null, $strApp = null) {
+        return ($strApp ?  : $this->app ()) . '://' . ($strController ?  : $this->controller ()) . '/' . ($strAction ?  : $this->action ());
     }
 }
