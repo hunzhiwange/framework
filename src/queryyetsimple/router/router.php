@@ -1856,7 +1856,7 @@ class router {
      * @return string
      */
     protected function packageNode() {
-        return $_REQUEST ['app'] . '://' . $_REQUEST ['c'] . '/' . $_REQUEST ['a'];
+        return $this->app () . '://' . $this->controller () . '/' . $this->action ();
     }
     
     /**
