@@ -1,8 +1,6 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\bootstrap\console;
-
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -15,16 +13,15 @@ namespace queryyetsimple\bootstrap\console;
 ##########################################################
 queryphp;
 
-use queryyetsimple\router;
-
 /**
- * 命令行启动文件
+ * qys 环境变量设置
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.17
+ * @since 2017.04.28
  * @version 1.0
  */
-router::bind ( function () {
-    return (new application ( project () ))->run ();
-}, 'bootstrap', 'index', '~_~@console' );
+putenv ( 'app_name=~_~@console' );
+putenv ( 'controller_name=bootstrap' );
+putenv ( 'action_name=index' );
+putenv ( 'app_bootstrap=' . __DIR__ . '/bootstrap.php' );
