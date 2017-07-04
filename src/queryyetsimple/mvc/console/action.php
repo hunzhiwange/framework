@@ -28,7 +28,7 @@ use queryyetsimple\console\argument;
  * @version 1.0
  */
 class action extends make {
-
+    
     /**
      * 命令名字
      *
@@ -57,7 +57,7 @@ You can also by using the <comment>--namespace</comment> option:
 
   <info>php %command.full_name% controller name --namespace=common</info>
 EOF;
-
+    
     /**
      * 响应命令
      *
@@ -66,9 +66,9 @@ EOF;
     public function handle() {
         // 处理命名空间路径
         $this->parseNamespace ();
-
+        
         // 设置模板路径
-        $this->setTemplatePath( __DIR__ . '/template');
+        $this->setTemplatePath ( __DIR__ . '/template' );
         
         // 保存路径
         $this->setSaveFilePath ( $this->getNamespacePath () . 'application/controller/' . $this->argument ( 'controller' ) . '/' . $this->argument ( 'name' ) . '.php' );
@@ -82,7 +82,7 @@ EOF;
         // 执行
         parent::handle ();
     }
-
+    
     /**
      * 命令参数
      *
@@ -93,12 +93,12 @@ EOF;
                 [ 
                         'controller',
                         argument::OPTIONAL,
-                        'This is the parent controller name.'
-                ] ,
+                        'This is the parent controller name.' 
+                ],
                 [ 
                         'name',
                         argument::OPTIONAL,
-                        'This is the action name.'
+                        'This is the action name.' 
                 ] 
         ];
     }
@@ -116,7 +116,7 @@ EOF;
                         option::VALUE_OPTIONAL,
                         'Namespace registered to system,default namespace is these (common,home,~_~)',
                         'home' 
-                ]
+                ] 
         ];
     }
 }  

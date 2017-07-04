@@ -28,7 +28,7 @@ use queryyetsimple\console\argument;
  * @version 1.0
  */
 class controller extends make {
-
+    
     /**
      * 命令名字
      *
@@ -57,7 +57,7 @@ You can also by using the <comment>--namespace</comment> option:
 
   <info>php %command.full_name% name --namespace=common</info>
 EOF;
-
+    
     /**
      * 响应命令
      *
@@ -66,9 +66,9 @@ EOF;
     public function handle() {
         // 处理命名空间路径
         $this->parseNamespace ();
-
-                // 设置模板路径
-        $this->setTemplatePath( __DIR__ . '/template');
+        
+        // 设置模板路径
+        $this->setTemplatePath ( __DIR__ . '/template' );
         
         // 保存路径
         $this->setSaveFilePath ( $this->getNamespacePath () . 'application/controller/' . $this->argument ( 'name' ) . '.php' );
@@ -79,8 +79,8 @@ EOF;
         // 执行
         parent::handle ();
     }
-
-        /**
+    
+    /**
      * 命令参数
      *
      * @return array
@@ -90,7 +90,7 @@ EOF;
                 [ 
                         'name',
                         argument::OPTIONAL,
-                        'This is the controller name.'
+                        'This is the controller name.' 
                 ] 
         ];
     }
