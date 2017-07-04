@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.04.23
  * @version 1.0
  */
-interface controller {
+interface controller extends view {
     
     /**
      * 返回父控制器
@@ -49,33 +49,4 @@ interface controller {
      * @return void
      */
     public function action($sActionName);
-    
-    /**
-     * 赋值
-     *
-     * @param 变量或变量数组集合 $Name            
-     * @param mixed $mixValue            
-     * @return $this
-     */
-    public function assign($Name, $mixValue = null);
-    
-    /**
-     * 取回赋值
-     *
-     * @param 变量名字 $sName            
-     * @return mixed
-     */
-    public function getAssign($sName);
-    
-    /**
-     * 加载视图文件
-     *
-     * @param string $sThemeFile            
-     * @param array $in
-     *            charset 编码
-     *            content_type 类型
-     *            return 是否返回 html 返回而不直接输出
-     * @return mixed
-     */
-    public function display($sThemeFile = '', $arrOption = []);
 }

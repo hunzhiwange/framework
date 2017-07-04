@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.04.23
  * @version 1.0
  */
-interface action {
+interface action extends controller {
     
     /**
      * 设置父控制器

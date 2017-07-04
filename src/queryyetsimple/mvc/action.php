@@ -55,6 +55,94 @@ abstract class action implements interfaces_action {
         return $this;
     }
     
+    // ######################################################
+    // ------------- 实现 controller 接口 start -------------
+    // ######################################################
+    
+    /**
+     * 设置视图
+     *
+     * @param \queryyetsimple\mvc\interfaces\view $objView            
+     * @return $this
+     */
+    public function setView($objView) {
+        $this->checkController ();
+        return $this->objController->setView ( $objView );
+    }
+    
+    /**
+     * 设置路由
+     *
+     * @param \queryyetsimple\router\router $objRouter            
+     * @return $this
+     */
+    public function setRouter($objRouter) {
+        $this->checkController ();
+        return $this->objController->setRouter ( $objRouter );
+    }
+    
+    /**
+     * 执行子方法器
+     *
+     * @param string $sActionName
+     *            方法名
+     * @return void
+     */
+    public function action($sActionName) {
+        $this->checkController ();
+        return $this->objController->action ( $sActionName );
+    }
+    
+    // ######################################################
+    // -------------- 实现 controller 接口 end --------------
+    // ######################################################
+    
+    // ######################################################
+    // ---------------- 实现 view 接口 start ----------------
+    // ######################################################
+    
+    /**
+     * 变量赋值
+     *
+     * @param mixed $mixName            
+     * @param mixed $mixValue            
+     * @return $this
+     */
+    public function assign($mixName, $mixValue = null) {
+        $this->checkController ();
+        return $this->objController->assign ( $mixName, $mixValue );
+    }
+    
+    /**
+     * 获取变量赋值
+     *
+     * @param string|null $sName            
+     * @return mixed
+     */
+    public function getAssign($sName = null) {
+        $this->checkController ();
+        return $this->objController->getAssign ( $sName );
+    }
+    
+    /**
+     * 加载视图文件
+     *
+     * @param string $sThemeFile            
+     * @param array $arrOption
+     *            charset 编码
+     *            content_type 类型
+     *            return 是否返回 html 返回而不直接输出
+     * @return mixed
+     */
+    public function display($sThemeFile = '', $arrOption = []) {
+        $this->checkController ();
+        return $this->objController->display ( $sThemeFile, $arrOption );
+    }
+    
+    // ######################################################
+    // ---------------- 实现 view 接口 end ----------------
+    // ######################################################
+    
     /**
      * 验证 controller
      *
@@ -76,10 +164,6 @@ abstract class action implements interfaces_action {
         if ($sMethod == 'run') {
             throw new BadFunctionCallException ( __ ( '方法对象不允许通过 __call 方法执行  run 入口' ) );
         }
-        $this->checkController ();
-        return call_user_func_array ( [ 
-                $this->objController,
-                $sMethod 
-        ], $arrArgs );
+        throw new BadFunctionCallException ( 'Method %s is not defined' );
     }
 }

@@ -99,26 +99,30 @@ abstract class controller implements interfaces_controller {
         return $this->objRouter->doBind ( null, $sActionName );
     }
     
+    // ######################################################
+    // ---------------- 实现 view 接口 start ----------------
+    // ######################################################
+    
     /**
-     * 赋值
+     * 变量赋值
      *
-     * @param 变量或变量数组集合 $Name            
+     * @param mixed $mixName            
      * @param mixed $mixValue            
      * @return $this
      */
-    public function assign($Name, $mixValue = null) {
+    public function assign($mixName, $mixValue = null) {
         $this->checkView ();
-        $this->objView->assign ( $Name, $Value );
+        $this->objView->assign ( $mixName, $Value );
         return $this;
     }
     
     /**
-     * 取回赋值
+     * 获取变量赋值
      *
-     * @param 变量名字 $sName            
+     * @param string|null $sName            
      * @return mixed
      */
-    public function getAssign($sName) {
+    public function getAssign($sName = null) {
         $this->checkView ();
         return $this->objView->getVar ( $sName );
     }
@@ -143,6 +147,10 @@ abstract class controller implements interfaces_controller {
         
         return $this->objView->display ( $sThemeFile, $arrOption );
     }
+    
+    // ######################################################
+    // ---------------- 实现 view 接口 end ----------------
+    // ######################################################
     
     /**
      * 验证 view
