@@ -16,7 +16,7 @@ namespace tests\database;
 queryphp;
 
 use tests\testcase;
-use queryyetsimple\database\database;
+use queryyetsimple\database;
 
 /**
  * database.select 组件测试
@@ -50,7 +50,7 @@ class Select_test extends testcase {
      * @return void
      */
     public function testTable() {
-        $this->assertEquals ( database::tables ( 'test' )->limit ( 2 )->getAll ( true ), [ 
+        $this->assertEquals ( database::table ( 'test' )->limit ( 2 )->getAll ( true ), [ 
                 'SELECT `test`.* FROM `test` LIMIT 0,2',
                 [ ],
                 false,
@@ -59,7 +59,7 @@ class Select_test extends testcase {
                 [ ] 
         ] );
         
-        $this->assertEquals ( database::tables ( 'test as t' )->limit ( 2 )->getAll ( true ), [ 
+        $this->assertEquals ( database::table ( 'test as t' )->limit ( 2 )->getAll ( true ), [ 
                 'SELECT `t`.* FROM `test`  `t` LIMIT 0,2',
                 [ ],
                 false,
@@ -68,7 +68,7 @@ class Select_test extends testcase {
                 [ ] 
         ] );
         
-        $this->assertEquals ( database::tables ( [ 
+        $this->assertEquals ( database::table ( [ 
                 't2' => 'test' 
         ] )->limit ( 2 )->getAll ( true ), [ 
                 'SELECT `t2`.* FROM `test`  `t2` LIMIT 0,2',

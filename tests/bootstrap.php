@@ -27,6 +27,6 @@ use queryyetsimple\router;
  * @version 1.0
  */
 psr4::import ( 'tests', dirname ( env ( 'app_bootstrap' ) ) );
-router::bind ( '~_~@tests://bootstrap/index', function () {
+router::bind ( 'phpunittests://bootstrap/index', function () {
     return (new application ())->run ();
 } );

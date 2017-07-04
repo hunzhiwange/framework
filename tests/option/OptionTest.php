@@ -16,7 +16,7 @@ namespace tests\option;
 queryphp;
 
 use tests\testcase;
-use queryyetsimple\option\option;
+use queryyetsimple\option;
 
 /**
  * option 组件测试
@@ -52,8 +52,8 @@ class Option_test extends testcase {
      * @return void
      */
     protected function setUp() {
-        option::resets ();
-        option::sets ( self::$arrTest );
+        option::reset ();
+        option::set ( self::$arrTest );
     }
     
     /**
@@ -62,7 +62,7 @@ class Option_test extends testcase {
      * @return void
      */
     public function testGetsAll() {
-        $this->assertTrue ( option::all (  ) === [ 
+        $this->assertTrue ( option::all () === [ 
                 'app' => [ 
                         'hello' => 'world' 
                 ],
@@ -88,7 +88,7 @@ class Option_test extends testcase {
      * @return void
      */
     public function testGetsOneNamespace() {
-        $this->assertTrue ( option::gets ( 'router\\' ) === [ 
+        $this->assertTrue ( option::get ( 'router\\' ) === [ 
                 'name' => '小牛仔' 
         ] );
     }
@@ -99,9 +99,9 @@ class Option_test extends testcase {
      * @return void
      */
     public function testGets() {
-        $this->assertEquals ( '小牛仔', option::gets ( 'router\name' ) );
-        $this->assertEquals ( 'new', option::gets ( 'test\child.goods.world' ) );
-        $this->assertEquals ( 'default value', option::gets ( 'not_found', 'default value' ) );
+        $this->assertEquals ( '小牛仔', option::get ( 'router\name' ) );
+        $this->assertEquals ( 'new', option::get ( 'test\child.goods.world' ) );
+        $this->assertEquals ( 'default value', option::get ( 'not_found', 'default value' ) );
     }
     
     /**
@@ -110,9 +110,9 @@ class Option_test extends testcase {
      * @return void
      */
     public function testSets() {
-        option::sets ( 'hello', '技术成就未来' );
-        $this->assertEquals ( '技术成就未来', option::gets ( 'hello' ) );
-        option::sets ( 'router\child.sub2', '卧槽' );
-        $this->assertEquals ( '卧槽', option::gets ( 'router\child.sub2' ) );
+        option::set ( 'hello', '技术成就未来' );
+        $this->assertEquals ( '技术成就未来', option::get ( 'hello' ) );
+        option::set ( 'router\child.sub2', '卧槽' );
+        $this->assertEquals ( '卧槽', option::get ( 'router\child.sub2' ) );
     }
 }
