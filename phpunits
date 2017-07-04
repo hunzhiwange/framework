@@ -21,8 +21,5 @@ queryphp;
  * @since 2017.01.07
  * @version 1.0
  */
-putenv ( 'app_name=~_~@tests' );
-putenv ( 'controller_name=bootstrap' );
-putenv ( 'action_name=index' );
-putenv ( 'app_bootstrap=' . __DIR__ . '/tests/bootstrap.php' );
-require dirname( dirname( dirname( __DIR__ ) ) ) . '/www/index.php';
+require __DIR__ . '/tests/env.php';
+require dirname ( dirname ( dirname ( __DIR__ ) ) ) . '/www/index.php';

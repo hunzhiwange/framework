@@ -25,6 +25,6 @@ use queryyetsimple\router;
  * @since 2017.04.17
  * @version 1.0
  */
-router::bind ( function () {
+router::bind ( 'frameworkconsole://bootstrap/index', function () {
     return (new application ( project () ))->run ();
-}, 'bootstrap', 'index', '~_~@console' );
+} );

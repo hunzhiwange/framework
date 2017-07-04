@@ -926,18 +926,22 @@ class router {
      * @param string $sApp            
      * @return mixed|void
      */
-    public function bind($mixBind = null, $sController = null, $sAction = null, $sApp = null) {
+    public function bind($mixBindName = null, $mixBind = null) {
+        $sController = $sAction = $sApp = null;
+        if ($mixBindName) {
+            list ( $sController, $sAction, $sApp ) = $this->parseNode ( $mixBindName );
+        }
         $sBindName = $this->packageNode ( $sController, $sAction, $sApp );
         
         if (is_null ( $mixBind )) {
             return $this->arrBinds [$sBindName] = $this->parseDefaultBind ( $sController, $sAction, $sApp );
         }
         
-        ! $sAction = $sAction = $this->action ();
-        
         if (! is_null ( $sAction )) {
             return $this->arrBinds [$sBindName] = $mixBind;
         } else {
+            ! $sAction = $sAction = $this->action ();
+            
             switch (true) {
                 // 判断是否为回调
                 case is_callable ( $mixBind ) :
@@ -1006,7 +1010,7 @@ class router {
         if (is_null ( $sApp ))
             $sApp = $this->app ();
         
-        if (! ($mixAction = $this->getBind ( $this->packageNode ( $sController, $sAction, $sApp ) )) && ! ($mixAction = $this->bind ( null, $sController, $sAction, $sApp ))) {
+        if (! ($mixAction = $this->getBind ( $this->packageNode ( $sController, $sAction, $sApp ) )) && ! ($mixAction = $this->bind ( $this->packageNode ( $sController, $sAction, $sApp ) ))) {
             throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 未注册', $sController, $sAction ) );
         }
         
@@ -1041,10 +1045,10 @@ class router {
             case is_object ( $mixAction ) :
                 if (method_exists ( $mixAction, 'run' )) {
                     // 注册方法
-                    $this->bind ( [ 
+                    $this->bind ( $this->packageNode ( $sController, $sAction, $sApp ), [ 
                             $mixAction,
                             'run' 
-                    ], $sController, $sAction, $sApp );
+                    ] );
                     return $this->doBind ( $sController, $sAction, $sApp );
                 } else {
                     throw new InvalidArgumentException ( __ ( '方法对象不存在执行入口  run' ) );
@@ -1854,5 +1858,31 @@ class router {
      */
     protected function packageNode($strController = null, $strAction = null, $strApp = null) {
         return ($strApp ?  : $this->app ()) . '://' . ($strController ?  : $this->controller ()) . '/' . ($strAction ?  : $this->action ());
+    }
+    
+    /**
+     * 分析节点
+     *
+     * @param string $strApp            
+     * @return arrat
+     */
+    protected function parseNode($strNode) {
+        $sController = $sAction = $sApp = null;
+        $arrTemp = $this->parseNodeUrl ( $strNode );
+        
+        if (! empty ( $arrTemp [static::APP] ) && $arrTemp [static::APP] != '*')
+            $sApp = $arrTemp [static::APP];
+        if (! empty ( $arrTemp [static::CONTROLLER] ) && $arrTemp [static::CONTROLLER] != '*')
+            $sController = $arrTemp [static::CONTROLLER];
+        if (! empty ( $arrTemp [static::ACTION] ) && $arrTemp [static::ACTION] != '*')
+            $sAction = $arrTemp [static::ACTION];
+        
+        unset ( $arrTemp );
+        
+        return [ 
+                $sController ?  : $this->controller (),
+                $sAction ?  : $this->action (),
+                $sApp ?  : $this->app () 
+        ];
     }
 }

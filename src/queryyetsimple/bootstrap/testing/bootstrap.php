@@ -15,7 +15,7 @@ namespace queryyetsimple\bootstrap\testing;
 ##########################################################
 queryphp;
 
-use queryyetsimple\router\router;
+use queryyetsimple\router;
 
 /**
  * phpunit 启动文件
@@ -25,6 +25,6 @@ use queryyetsimple\router\router;
  * @since 2017.05.08
  * @version 1.0
  */
-router::binds ( '~_~@testing://bootstrap/index', function () {
+router::bind ( 'phpunittesting://bootstrap/index', function () {
     return (new application ())->run ();
 } );

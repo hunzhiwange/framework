@@ -14,14 +14,14 @@
 queryphp;
 
 /**
- * qys 环境变量设置
+ * phpunit 环境变量设置
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.28
  * @version 1.0
  */
-putenv ( 'app_name=frameworkconsole' );
+putenv ( 'app_name=phpunittesting' );
 putenv ( 'controller_name=bootstrap' );
 putenv ( 'action_name=index' );
 putenv ( 'app_bootstrap=' . __DIR__ . '/bootstrap.php' );
