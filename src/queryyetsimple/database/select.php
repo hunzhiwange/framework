@@ -2849,7 +2849,9 @@ class select {
         
         // 整理多个参数到二维数组
         if (! is_array ( $arrArgs [0] )) {
-            $arrArgs [0] = ( array ) $arrArgs [0];
+            $arrArgs [0] = [ 
+                    $arrArgs 
+            ];
         } else {
             // 一维数组统一成二维数组格式
             $booOneImension = false;
@@ -2951,6 +2953,7 @@ class select {
 
             // 其它
             else {
+                
                 // 处理字符串 "null"
                 if (is_string ( $arrTemp )) {
                     $arrTemp = ( array ) $arrTemp;
@@ -2961,7 +2964,7 @@ class select {
                     array_unshift ( $arrTemp, $strKey );
                 }
                 
-                // 处理默认 “=”的类型
+                // 处理默认 “=” 的类型
                 if (count ( $arrTemp ) === 2 && ! in_array ( $arrTemp [1], [ 
                         'null',
                         'not null' 
@@ -2971,7 +2974,6 @@ class select {
                 }
                 
                 // 字段
-                throw new \Exception ( '2982' );
                 $arrTemp [1] = trim ( $arrTemp [1] );
                 
                 // 特殊类型
