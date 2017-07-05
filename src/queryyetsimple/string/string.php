@@ -230,6 +230,29 @@ class string {
     }
     
     /**
+     * 下划线转驼峰
+     *
+     * @param string $strValue            
+     * @param string $strSeparator            
+     * @return string
+     */
+    public static function camelize($strValue, $strSeparator = '_') {
+        $strValue = $strSeparator . str_replace ( $strSeparator, " ", strtolower ( $strValue ) );
+        return ltrim ( str_replace ( " ", "", ucwords ( $strValue ) ), $strSeparator );
+    }
+    
+    /**
+     * 驼峰转下划线
+     *
+     * @param string $strValue            
+     * @param string $strSeparator            
+     * @return string
+     */
+    public static function unCamelize($strValue, $strSeparator = '_') {
+        return strtolower ( preg_replace ( '/([a-z])([A-Z])/', "$1" . $strSeparator . "$2", $strValue ) );
+    }
+    
+    /**
      * 判断字符串中是否包含给定的字符结尾
      *
      * @param string $strToSearched            
