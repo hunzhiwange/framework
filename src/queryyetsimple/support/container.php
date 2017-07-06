@@ -20,6 +20,7 @@ use ArrayAccess;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionFunction;
+use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\helper\helper;
 use queryyetsimple\flow\control as flow_control;
@@ -481,9 +482,10 @@ class container implements ArrayAccess, interfaces_container {
      * @param 参数 $arrArgs            
      * @return mixed
      */
-    public static function __call($sMethod, $arrArgs) {
-        if ($this->placeholderFlowControl ( $sMethod ))
+    public function __call($sMethod, $arrArgs) {
+        if ($this->placeholderFlowControl ( $sMethod )) {
             return $this;
+        }
         
         throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
     }

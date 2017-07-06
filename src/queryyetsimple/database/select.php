@@ -270,10 +270,11 @@ class select {
      * @return boolean
      */
     public function __call($sMethod, $arrArgs) {
-        if ($this->placeholderFlowControl ( $sMethod ))
+        if ($this->placeholderFlowControl ( $sMethod )) {
             return $this;
-            
-            // 动态查询支持
+        }
+        
+        // 动态查询支持
         if (strncasecmp ( $sMethod, 'get', 3 ) === 0) {
             $sMethod = substr ( $sMethod, 3 );
             if (strpos ( strtolower ( $sMethod ), 'start' ) !== false) { // support get10start3 etc.

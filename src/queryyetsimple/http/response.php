@@ -188,10 +188,11 @@ class response {
      * @return boolean
      */
     public function __call($sMethod, $arrArgs) {
-        if ($this->placeholderFlowControl ( $sMethod ))
+        if ($this->placeholderFlowControl ( $sMethod )) {
             return $this;
-            
-            // 调用 trait __call 实现扩展方法
+        }
+        
+        // 调用 trait __call 实现扩展方法
         $mixData = $this->infinityCall ( $sMethod, $arrArgs );
         if ($mixData instanceof response) {
             return $mixData;

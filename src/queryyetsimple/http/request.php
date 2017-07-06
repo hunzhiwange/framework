@@ -36,7 +36,9 @@ class request implements arrayable, ArrayAccess {
     
     use control;
     use option;
-    use infinity;
+    use infinity {
+        __call as infinityCall;
+    }
     
     /**
      * cookie 存储
@@ -2560,10 +2562,12 @@ class request implements arrayable, ArrayAccess {
      * @param 参数 $arrArgs            
      * @return mixed
      */
-    public static function __call($sMethod, $arrArgs) {
-        if ($this->placeholderFlowControl ( $sMethod ))
+    public function __call($sMethod, $arrArgs) {
+        if ($this->placeholderFlowControl ( $sMethod )) {
             return $this;
+        }
         
-        throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
+        // 调用 trait __call 实现扩展方法
+        return $this->infinityCall ( $sMethod, $arrArgs );
     }
 }
