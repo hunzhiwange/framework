@@ -226,7 +226,7 @@ class request implements arrayable, ArrayAccess {
      * @var string
      */
     protected $sLangset = null;
-
+    
     /**
      * 路由额外参数
      *
@@ -997,7 +997,7 @@ class request implements arrayable, ArrayAccess {
     public function setDeletes(array $arrValue, $mixValue) {
         return $this->setInputs ( $arrValue, 'delete' );
     }
-
+    
     /**
      * router 参数
      *
@@ -2346,7 +2346,7 @@ class request implements arrayable, ArrayAccess {
         }
         return $booFile ? array_merge ( $this->arrAll, $this->fileAll () ) : $this->arrAll;
     }
-
+    
     /**
      * 返回路由
      *
@@ -2377,7 +2377,7 @@ class request implements arrayable, ArrayAccess {
      */
     protected function initGlobalRouter() {
         if (is_null ( $this->arrRouter ))
-            $this->arrRouter = [];
+            $this->arrRouter = [ ];
     }
     
     /**
@@ -2551,5 +2551,19 @@ class request implements arrayable, ArrayAccess {
     public function __get($strKey) {
         $arrAll = $this->allAll ();
         return isset ( $arrAll [$strKey] ) ? $arrAll [$strKey] : null;
+    }
+    
+    /**
+     * 缺省方法
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
+     */
+    public static function __call($sMethod, $arrArgs) {
+        if ($this->placeholderFlowControl ( $sMethod ))
+            return $this;
+        
+        throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
     }
 }

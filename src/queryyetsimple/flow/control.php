@@ -110,4 +110,17 @@ trait control {
     protected function checkFlowControl() {
         return $this->booInFlowControl && ! $this->booFlowControlIsTrue;
     }
+    
+    /**
+     * 占位符
+     *
+     * @param string $strMethod            
+     * @return boolean
+     */
+    protected function placeholderFlowControl($strMethod) {
+        return in_array ( $strMethod, [ 
+                'placeholder',
+                'foobar' 
+        ] );
+    }
 }

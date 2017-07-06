@@ -270,7 +270,10 @@ class select {
      * @return boolean
      */
     public function __call($sMethod, $arrArgs) {
-        // 动态查询支持
+        if ($this->placeholderFlowControl ( $sMethod ))
+            return $this;
+            
+            // 动态查询支持
         if (strncasecmp ( $sMethod, 'get', 3 ) === 0) {
             $sMethod = substr ( $sMethod, 3 );
             if (strpos ( strtolower ( $sMethod ), 'start' ) !== false) { // support get10start3 etc.
@@ -983,6 +986,7 @@ class select {
         if ($this->checkFlowControl ())
             return $this;
         $this->arrQueryParams ['as_collection'] = $bAsCollection;
+        $this->arrQueryParams ['as_default'] = false;
         return $this;
     }
     
@@ -3450,8 +3454,9 @@ class select {
         
         // 模型类不存在，直接以数组结果返回
         $sClassName = $this->arrQueryParams ['as_class'];
-        if (! class_exists ( $sClassName )) {
+        if ($sClassName && ! class_exists ( $sClassName )) {
             $this->queryDefault ( $arrData );
+            return;
         }
         
         foreach ( $arrData as &$mixTemp ) {

@@ -473,4 +473,18 @@ class container implements ArrayAccess, interfaces_container {
     protected function newInstanceArgs($strClass, $arrArgs) {
         return (new ReflectionClass ( $strClass ))->newInstanceArgs ( $arrArgs );
     }
+    
+    /**
+     * 缺省方法
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
+     */
+    public static function __call($sMethod, $arrArgs) {
+        if ($this->placeholderFlowControl ( $sMethod ))
+            return $this;
+        
+        throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
+    }
 }
