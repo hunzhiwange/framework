@@ -115,7 +115,7 @@ class database implements interfaces_database {
      * @return \queryyetsimple\database\mysql
      */
     protected function makeConnectMysql($arrOption = []) {
-        return new mysql ( $this->objProject ['log']->connect (), array_merge ( $this->getOption ( 'mysql' ), $arrOption ) );
+        return new mysql ( $this->objProject ['log']->connect (), array_merge ( $this->getOption ( 'mysql' ), is_array ( $arrOption ) ? $arrOption : [ ] ) );
     }
     
     /**
