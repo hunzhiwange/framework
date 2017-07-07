@@ -15,7 +15,7 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
-use queryyetsimple\database\database;
+use queryyetsimple\database;
 
 /**
  * 数据库元对象
@@ -32,7 +32,13 @@ class meta {
      *
      * @var array
      */
-    protected static $arrInstances = array ();
+    protected static $arrInstances = [ ];
+    
+    /**
+     * 数据库连接
+     *
+     * @var \queryyetsimple\database\interfaces\connect
+     */
     protected $objConnect = null;
     
     /**
@@ -40,42 +46,42 @@ class meta {
      *
      * @var array
      */
-    public $arrFields = [ ];
+    protected $arrFields = [ ];
     
     /**
      * 主键
      *
      * @var array
      */
-    public $arrPrimaryKey = [ ];
+    protected $arrPrimaryKey = [ ];
     
     /**
      * 自动增加 ID
      *
      * @var string
      */
-    public $strAutoIncrement = null;
+    protected $strAutoIncrement = null;
     
     /**
      * 属性映射字段
      *
      * @var array
      */
-    public $arrPropsFields = [ ];
+    protected $arrPropsFields = [ ];
     
     /**
      * 字段映射属性
      *
      * @var array
      */
-    public $arrFieldsProps = [ ];
+    protected $arrFieldsProps = [ ];
     
     /**
      * 是否使用复合主键
      *
      * @var bool
      */
-    public $booCompositeId = false;
+    protected $booCompositeId = false;
     
     /**
      * 字段格式化类型
@@ -98,26 +104,48 @@ class meta {
                     'boolean' 
             ] 
     ];
+    
+    /**
+     * 元对象表
+     *
+     * @var string
+     */
     protected $strTable;
-    protected $strConnect;
+    
+    /**
+     * 表连接
+     *
+     * @var mixed
+     */
+    protected $mixConnect;
     
     /**
      * 构造函数
+     * 禁止直接访问构造函数，只能通过 instance 生成对象
      *
+     * @param string $strTabe            
+     * @param mixed $mixConnect            
      * @return void
      */
-    public function __construct($strTable, $strConnect = '') {
-        // $this->_bInitClass=$bInitClass;
-        // if($bInitClass===false){
-        // $sModelClass = explode ( '\\', $sModelClass );
-        // $sModelClass = array_pop ( $sModelClass );
+    protected function __construct($strTable, $mixConnect = null) {
         $this->strTable = $strTable;
-        $this->strConnect = $strConnect;
-        
-        $this->init ( $strTable );
-        // }else{
-        // $this->initSimple($sClass);
-        // }
+        $this->mixConnect = $mixConnect;
+        $this->initialization ( $strTable );
+    }
+    
+    /**
+     * 返回数据库元对象
+     *
+     * @param string $strTable            
+     * @param mixed $mixConnect            
+     * @return $this
+     */
+    public static function instance($strTable, $mixConnect = null) {
+        if (! isset ( static::$arrInstances [$strTable] )) {
+            return static::$arrInstances [$strTable] = new self ( $strTable );
+        } else {
+            return static::$arrInstances [$strTable];
+        }
     }
     
     /**
@@ -148,7 +176,10 @@ class meta {
                     break;
                 
                 default :
-                    $mixValue = ( string ) $mixValue;
+                    if (is_array ( $mixValue ))
+                        $mixValue = json_encode ( $mixValue );
+                    elseif (! is_null ( $mixValue ))
+                        $mixValue = ( string ) $mixValue;
             }
             $arrResult [$strField] = $mixValue;
         }
@@ -156,52 +187,84 @@ class meta {
     }
     
     /**
-     * 返回数据库元对象
-     *
-     * @param string $sModelClass            
-     * @return $this
-     */
-    public static function instance($sModelClass) {
-        if (! isset ( static::$arrInstances [$sModelClass] )) {
-            return static::$arrInstances [$sModelClass] = new self ( $sModelClass );
-        } else {
-            return static::$arrInstances [$sModelClass];
-        }
-    }
-    protected function initConnect() {
-        // $objConnect
-        // if(is_null($this->objConnect)){
-        $this->objConnect = database::connects ( $this->strConnect );
-        // }
-    }
-    
-    /**
-     * 新增返回数据
+     * 新增并返回数据
      *
      * @param array $arrSaveData            
      * @return array
      */
-    public function insert($arrSaveData) {
+    public function insert(array $arrSaveData) {
         return [ 
-                reset ( $this->arrPropsFields ) => $this->objConnect->table ( $this->strTable )->insert ( $arrSaveData ) 
+                $this->getAutoIncrement () => $this->objConnect->table ( $this->strTable )->insert ( $arrSaveData ) 
         ];
     }
-    public function update($arrCondition, $arrSaveData) {
-        // database::table( 'test')
-        // ->where('id',503)
-        // ->update(['name' => '小猪'])
-        //print_r ( $arrCondition );
-        //print_r ( $arrSaveData );
-        
-        // exit();
-        // echo 'yyyyyyyyy';
-        //print_r ( $this->objConnect->table ( $this->strTable )->where ( $arrCondition )->update ( $arrSaveData ) );
+    
+    /**
+     * 更新并返回数据
+     *
+     * @param array $arrCondition            
+     * @param array $arrSaveData            
+     * @return int
+     */
+    public function update(array $arrCondition, array $arrSaveData) {
+        return $this->objConnect->table ( $this->strTable )->where ( $arrCondition )->update ( $arrSaveData );
     }
-    protected function init($sModelClass) {
-        // echo $sModelClass;
+    
+    /**
+     * 返回主键
+     * 
+     * @return array
+     */
+    public function getPrimaryKey() {
+        return $this->arrPrimaryKey;
+    }
+    
+    /**
+     * 是否为符合主键
+     * 
+     * @return boolean
+     */
+    public function getCompositeId() {
+        return $this->booCompositeId;
+    }
+    
+    /**
+     * 返回自增 ID
+     * 
+     * @return string|null
+     */
+    public function getAutoIncrement() {
+        return $this->strAutoIncrement;
+    }
+    
+    /**
+     * 返回连接
+     *
+     * @return \queryyetsimple\database\interfaces\connect
+     */
+    public function getConnect() {
+        return $this->objConnect;
+    }
+    
+    /**
+     * 返回查询
+     *
+     * @var \queryyetsimple\database\interfaces\connect
+     */
+    public function getSelect() {
+        return $this->objConnect->table ( $this->strTable );
+    }
+    
+    /**
+     * 初始化元对象
+     *
+     * @param string $strTable            
+     * @return
+     *
+     */
+    protected function initialization($strTable) {
         $this->initConnect ();
         
-        $arrColumnInfo = $this->objConnect->getTableColumns ( $sModelClass );
+        $arrColumnInfo = $this->objConnect->getTableColumns ( $strTable );
         $this->arrFields = $arrColumnInfo ['list'];
         $this->arrPrimaryKey = $arrColumnInfo ['primary_key'];
         $this->strAutoIncrement = $arrColumnInfo ['auto_increment'];
@@ -215,30 +278,15 @@ class meta {
             $this->arrFieldsProps [$strField] = $strField;
         }
         
-        // print_r($arrColumnInfo) ;
-        // print_r($this->arrFields);
-        // $this->_sClassName=$sClass;
-        // $arrRef=(array)call_user_func(array($sClass,'init__'));
-        
-        // $arrTableConfig=!empty($arrRef['table_config'])?(array)$arrRef['table_config']:array();// 设置表数据入口对象
-        // $this->_oTable=$this->tableByName($arrRef['table_name'],$arrTableConfig);
-        // $this->_arrTableMeta=$this->_oTable->columns();
-        
-        // if(!empty($arrRef['autofill']) && is_array($arrRef['autofill'])){
-        // $this->_arrAutofill=$arrRef['autofill'];
-        // }
-        
-        // 准备验证规则
-        // if(empty($arrRef['check']) || ! is_array($arrRef['check'])){
-        // $arrRef['check']=array();
-        // }
-        // $this->_arrCheck=$this->prepareCheckRules($arrRef['check']);
-    }
-    public function getPrimaryKey() {
-        return $this->arrPrimaryKey;
+        unset ( $arrColumnInfo );
     }
     
-    public function get(){
-        
+    /**
+     * 连接数据库
+     *
+     * @return \queryyetsimple\database\interfaces\connect
+     */
+    protected function initConnect() {
+        $this->objConnect = database::connect ( $this->mixConnect );
     }
 }
