@@ -151,37 +151,47 @@ class meta {
     /**
      * 字段转属性
      *
+     * @param string $strField            
+     * @param mixed $mixValue            
+     * @return array
+     */
+    public function fieldsProp($strField, $mixValue) {
+        if (! isset ( $this->arrFieldsProps [$strField] ))
+            return null;
+        $strField = $this->arrFieldsProps [$strField];
+        
+        switch (true) {
+            case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['int'] ) :
+                $mixValue = intval ( $mixValue );
+                break;
+            
+            case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['float'] ) :
+                $mixValue = floatval ( $mixValue );
+                break;
+            
+            case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['boolean'] ) :
+                $mixValue = $mixValue ? true : false;
+                break;
+            
+            default :
+                if (! is_null ( $mixValue ) && is_scalar ( $mixValue ))
+                    $mixValue = ( string ) $mixValue;
+        }
+        return $mixValue;
+    }
+    
+    /**
+     * 批量字段转属性
+     *
      * @param array $arrData            
      * @return array
      */
     public function fieldsProps(array $arrData) {
         $arrResult = [ ];
-        
         foreach ( $arrData as $strField => $mixValue ) {
-            if (! isset ( $this->arrFieldsProps [$strField] ))
-                continue;
-            $strField = $this->arrFieldsProps [$strField];
-            
-            switch (true) {
-                case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['int'] ) :
-                    $mixValue = intval ( $mixValue );
-                    break;
-                
-                case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['float'] ) :
-                    $mixValue = floatval ( $mixValue );
-                    break;
-                
-                case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['boolean'] ) :
-                    $mixValue = $mixValue ? true : false;
-                    break;
-                
-                default :
-                    if (is_array ( $mixValue ))
-                        $mixValue = json_encode ( $mixValue );
-                    elseif (! is_null ( $mixValue ))
-                        $mixValue = ( string ) $mixValue;
+            if (! is_null ( ($mixValue = $this->fieldsProp ( $strField, $mixValue )) )) {
+                $arrResult [$strField] = $mixValue;
             }
-            $arrResult [$strField] = $mixValue;
         }
         return $arrResult;
     }
@@ -211,7 +221,7 @@ class meta {
     
     /**
      * 返回主键
-     * 
+     *
      * @return array
      */
     public function getPrimaryKey() {
@@ -220,7 +230,7 @@ class meta {
     
     /**
      * 是否为符合主键
-     * 
+     *
      * @return boolean
      */
     public function getCompositeId() {
@@ -229,7 +239,7 @@ class meta {
     
     /**
      * 返回自增 ID
-     * 
+     *
      * @return string|null
      */
     public function getAutoIncrement() {

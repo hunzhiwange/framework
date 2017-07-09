@@ -17,7 +17,9 @@ queryphp;
 
 use Exception;
 use ArrayAccess;
+use Carbon\Carbon;
 use JsonSerializable;
+use DateTimeInterface;
 use queryyetsimple\flow\control;
 use queryyetsimple\string\string;
 use queryyetsimple\classs\serialize;
@@ -42,14 +44,14 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      *
      * @var string
      */
-    protected $strTable = '';
+    protected $strTable;
     
     /**
      * 此模型的连接名称
      *
      * @var mixed
      */
-    protected $mixConnect = '';
+    protected $mixConnect;
     
     /**
      * 模型属性
@@ -140,7 +142,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      *
      * @var boolean
      */
-    protected $booInChangePropForce = false;
+    protected $booPropForce = false;
     
     /**
      * 是否自动填充
@@ -177,19 +179,61 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      */
     protected $arrConversion = [ ];
     
-    // protected $arrPostField = [ ];
-    
-    // protected $booIncrementing = false;
-    
-    // protected $arrTimestamps = false;
-    // protected $_sClassName;
+    /**
+     * 转换隐藏的属性
+     *
+     * @var array
+     */
+    protected $arrHidden = [ ];
     
     /**
-     * 模型的日期字段保存格式。
+     * 转换显示的属性
+     *
+     * @var array
+     */
+    protected $arrVisible = [ ];
+    
+    /**
+     * 追加
+     *
+     * @var array
+     */
+    protected $arrAppend = [ ];
+    
+    /**
+     * 模型的日期字段保存格式
      *
      * @var string
      */
-    // protected $dateFormat = 'U';
+    protected $strDateFormat = 'Y-m-d H:i:s';
+    
+    /**
+     * 应被转换为日期的属性
+     *
+     * @var array
+     */
+    protected $arrDate = [ ];
+    
+    /**
+     * 开启默认时间属性转换
+     *
+     * @var array
+     */
+    protected $booTimestamp = true;
+    
+    /**
+     * 新建时间字段
+     *
+     * @var string
+     */
+    const CREATED_AT = 'created_at';
+    
+    /**
+     * 更新时间字段
+     *
+     * @var string
+     */
+    const UPDATED_AT = 'updated_at';
     
     /**
      * 构造函数
@@ -209,7 +253,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
                 }
             }
             if ($arrData) {
-                $this->changeProp ( $arrData );
+                $this->prop ( $arrData );
             }
         }
         
@@ -270,9 +314,11 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function saves($sSaveMethod = 'save', $arrData = null) {
-        // 强制更新数据
+        if ($this->checkFlowControl ())
+            return $this;
+        
         if (is_array ( $arrData ) && $arrData) {
-            $this->changePropForce ( $arrData );
+            $this->propForces ( $arrData );
         }
         
         // 表单自动填充
@@ -354,52 +400,97 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     /**
      * 改变属性
      *
-     * < update 调用无效，请换用 changePropForce >
+     * < update 调用无效，请换用 propForce >
      *
      * @param mixed $mixProp            
      * @param mixed $mixValue            
      * @return $this
      */
-    public function changeProp($mixProp, $mixValue = null) {
-        if (! is_array ( $mixProp )) {
-            $mixProp = [ 
-                    $mixProp => $mixValue 
-            ];
+    public function prop($strProp, $mixValue) {
+        if ($this->checkFlowControl ())
+            return $this;
+        
+        $mixValue = $this->meta ()->fieldsProp ( $strProp, $mixValue );
+        
+        if (is_null ( $mixValue ) && ($strCamelize = 'set' . ucwords ( string::camelize ( $strProp ) ) . 'Prop') && method_exists ( $this, $strCamelize )) {
+            if (is_null ( ($mixValue = $this->$strCamelize ( $this->getProp ( $strProp ) )) ))
+                $mixValue = $this->getProp ( $strProp );
+        } 
+
+        elseif ($mixValue && (in_array ( $strProp, $this->getDate () ) || $this->isDateConversion ( $strProp ))) {
+            $mixValue = $this->fromDateTime ( $mixValue );
+        } 
+
+        elseif ($this->isJsonConversion ( $strProp ) && ! is_null ( $mixValue )) {
+            $mixValue = $this->asJson ( $mixValue );
         }
         
-        $booInChangePropForce = $this->getInChangePropForce ();
-        $mixProp = $this->meta ()->fieldsProps ( $mixProp );
-        
-        foreach ( $mixProp as $sName => $mixValue ) {
-            
-            if (is_null ( $mixValue ) && ($strCamelize = 'set' . ucwords ( string::camelize ( $sName ) ) . 'Prop') && method_exists ( $this, $strCamelize )) {
-                $this->$strCamelize ( $this->getProp ( $sName ), $sName );
-                $mixValue = $this->getProp ( $sName );
-            }
-            
-            $this->arrProp [$sName] = $mixValue;
-            if ($booInChangePropForce === true && ! in_array ( $sName, $this->arrReadonly ) && ! in_array ( $sName, $this->arrChangeProp )) {
-                $this->arrChangeProp [] = $sName;
-            }
+        $this->arrProp [$strProp] = $mixValue;
+        if ($this->getPropForce () && ! in_array ( $strProp, $this->arrReadonly ) && ! in_array ( $strProp, $this->arrChangeProp )) {
+            $this->arrChangeProp [] = $strProp;
         }
         
         return $this;
     }
     
     /**
+     * 批量强制改变属性
+     *
+     * < update 调用无效，请换用 propForces >
+     *
+     * @param array $arrProp            
+     * @return $this
+     */
+    public function props(array $arrProp) {
+        if ($this->checkFlowControl ())
+            return $this;
+        foreach ( $arrProp as $strProp => $mixValue ) {
+            $this->prop ( $strProp, $mixValue );
+        }
+        return $this;
+    }
+    
+    /**
      * 强制改变属性
      *
-     * @param mixed $mixPropName            
+     * @param mixed $strPropName            
      * @param mixed $mixValue            
      * @return $this
      */
-    public function changePropForce($mixPropName, $mixValue = null) {
-        $this->setInChangePropForce ( true );
+    public function propForce($strPropName, $mixValue) {
+        if ($this->checkFlowControl ())
+            return $this;
+        
+        $this->setPropForce ( true );
         call_user_func_array ( [ 
                 $this,
-                'changeProp' 
-        ], func_get_args () );
-        $this->setInChangePropForce ( false );
+                'prop' 
+        ], [ 
+                $strPropName,
+                $mixValue 
+        ] );
+        $this->setPropForce ( false );
+        return $this;
+    }
+    
+    /**
+     * 批量强制改变属性
+     *
+     * @param array $arrProp            
+     * @return $this
+     */
+    public function propForces(array $arrProp) {
+        if ($this->checkFlowControl ())
+            return $this;
+        
+        $this->setPropForce ( true );
+        call_user_func_array ( [ 
+                $this,
+                'props' 
+        ], [ 
+                $arrProp 
+        ] );
+        $this->setPropForce ( false );
         return $this;
     }
     
@@ -411,9 +502,10 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      */
     public function getProp($strPropName) {
         if (! isset ( $this->arrProp [$strPropName] ))
-            return null;
+            $mixValue = null;
+        else
+            $mixValue = $this->arrProp [$strPropName];
         
-        $mixValue = $this->arrProp [$strPropName];
         if (($strCamelize = 'get' . ucwords ( string::camelize ( $strPropName ) ) . 'Prop') && method_exists ( $this, $strCamelize )) {
             $mixValue = $this->$strCamelize ( $mixValue );
         }
@@ -441,6 +533,8 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function deleteProp($sPropName) {
+        if ($this->checkFlowControl ())
+            return $this;
         if (! isset ( $this->arrProp [$sPropName] )) {
             unset ( $this->arrProp [$sPropName] );
         }
@@ -483,6 +577,8 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function clearChanged($mixProp = null) {
+        if ($this->checkFlowControl ())
+            return $this;
         if (is_null ( $mixProp )) {
             $this->arrChangedProp = [ ];
         } else {
@@ -502,6 +598,8 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function table($strTable) {
+        if ($this->checkFlowControl ())
+            return $this;
         $this->strTable = $strTable;
         return $this;
     }
@@ -522,6 +620,8 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function connect($mixConnect) {
+        if ($this->checkFlowControl ())
+            return $this;
         $this->mixConnect = $mixConnect;
         return $this;
     }
@@ -542,6 +642,8 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function autoPost($booAutoPost = true) {
+        if ($this->checkFlowControl ())
+            return $this;
         $this->booAutoPost = $booAutoPost;
         return $this;
     }
@@ -556,12 +658,135 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     }
     
     /**
+     * 设置转换隐藏属性
+     *
+     * @param array $arrHidden            
+     * @return $this
+     */
+    public function hidden(array $arrHidden) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->arrHidden = $arrHidden;
+        return $this;
+    }
+    
+    /**
+     * 获取转换隐藏属性
+     *
+     * @return array
+     */
+    public function getHidden() {
+        return $this->arrHidden;
+    }
+    
+    /**
+     * 添加转换隐藏属性
+     *
+     * @param array|string|null $mixProp            
+     * @return $this
+     */
+    public function addHidden($mixProp = null) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $mixProp = is_array ( $mixProp ) ? $mixProp : func_get_args ();
+        $this->arrHidden = array_merge ( $this->arrHidden, $mixProp );
+        return $this;
+    }
+    
+    /**
+     * 设置转换显示属性
+     *
+     * @param array $arrVisible            
+     * @return $this
+     */
+    public function visible(array $arrVisible) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->arrVisible = $arrVisible;
+        return $this;
+    }
+    
+    /**
+     * 获取转换显示属性
+     *
+     * @return array
+     */
+    public function getVisible() {
+        return $this->arrVisible;
+    }
+    
+    /**
+     * 设置转换显示属性
+     *
+     * @param array $arrVisible            
+     * @return $this
+     */
+    public function setVisible(array $arrVisible) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->arrVisible = $arrVisible;
+        return $this;
+    }
+    
+    /**
+     * 添加转换显示属性
+     *
+     * @param array|string|null $mixProp            
+     * @return $this
+     */
+    public function addVisible($mixProp = null) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $mixProp = is_array ( $mixProp ) ? $mixProp : func_get_args ();
+        $this->arrVisible = array_merge ( $this->arrVisible, $mixProp );
+        return $this;
+    }
+    
+    /**
+     * 设置转换追加属性
+     *
+     * @param array $arrAppend            
+     * @return $this
+     */
+    public function append(array $arrAppend) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->arrAppend = $arrAppend;
+        return $this;
+    }
+    
+    /**
+     * 获取转换追加属性
+     *
+     * @return array
+     */
+    public function getAppend() {
+        return $this->arrAppend;
+    }
+    
+    /**
+     * 添加转换追加属性
+     *
+     * @param array|string|null $mixProp            
+     * @return $this
+     */
+    public function addAppend($mixProp = null) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $mixProp = is_array ( $mixProp ) ? $mixProp : func_get_args ();
+        $this->arrAppend = array_merge ( $this->arrAppend, $mixProp );
+        return $this;
+    }
+    
+    /**
      * 是否自动填充数据
      *
      * @param boolean $booAutoFill            
      * @return $this
      */
     public function autoFill($booAutoFill = true) {
+        if ($this->checkFlowControl ())
+            return $this;
         $this->booAutoFill = $booAutoFill;
         return $this;
     }
@@ -576,12 +801,86 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     }
     
     /**
+     * 设置模型时间格式化
+     *
+     * @param string $strDateFormat            
+     * @return $this
+     */
+    public function setDateFormat($strDateFormat) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->strDateFormat = $strDateFormat;
+        return $this;
+    }
+    
+    /**
      * 对象转数组
      *
      * @return array
      */
     public function toArray() {
-        return $this->arrProp;
+        if (! empty ( $this->arrHidden )) {
+            $arrProp = array_intersect_key ( $this->arrProp, array_flip ( $this->arrVisible ) );
+        } elseif (! empty ( $this->arrHidden )) {
+            $arrProp = array_diff_key ( $this->arrProp, array_flip ( $this->arrHidden ) );
+        } else {
+            $arrProp = $this->arrProp;
+        }
+        
+        $arrProp = array_merge ( $arrProp, $this->arrAppend ? array_flip ( $this->arrAppend ) : [ ] );
+        foreach ( $arrProp as $strProp => &$mixValue ) {
+            $mixValue = $this->getProp ( $strProp );
+        }
+        
+        return $arrProp;
+    }
+    
+    /**
+     * 创建一个 Carbon 时间对象
+     *
+     * @return \Carbon\Carbon
+     */
+    public function carbon() {
+        return new Carbon ();
+    }
+    
+    /**
+     * 取得新建时间字段
+     *
+     * @return string
+     */
+    public function getCreatedAtColumn() {
+        return static::CREATED_AT;
+    }
+    
+    /**
+     * 取得更新时间字段
+     *
+     * @return string
+     */
+    public function getUpdatedAtColumn() {
+        return static::UPDATED_AT;
+    }
+    
+    /**
+     * 获取需要转换为时间的属性
+     *
+     * @return array
+     */
+    public function getDate() {
+        return $this->booTimestamp ? array_merge ( $this->arrDate, [ 
+                static::CREATED_AT,
+                static::UPDATED_AT 
+        ] ) : $this->arrDate;
+    }
+    
+    /**
+     * 是否使用默认时间
+     *
+     * @return bool
+     */
+    public function getTimestamp() {
+        return $this->booTimestamp;
     }
     
     /**
@@ -635,7 +934,6 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
         if (array_key_exists ( $strKey, $this->getConversion () )) {
             return $mixType ? in_array ( $this->getConversionType ( $strKey ), ( array ) $mixType, true ) : true;
         }
-        
         return false;
     }
     
@@ -683,6 +981,10 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
             }
             $arrSaveData [$sPropName] = $mixValue;
         }
+        
+        print_r ( $arrSaveData );
+        
+        exit ();
         
         if ($arrSaveData) {
             $arrLastInsertId = $this->meta ()->insert ( $arrSaveData );
@@ -793,7 +1095,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
                 $mixKey = $mixValue;
                 $mixValue = null;
             }
-            $this->changePropForce ( $mixKey, $mixValue );
+            $this->propForce ( $mixKey, $mixValue );
         }
     }
     
@@ -805,6 +1107,44 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      */
     protected function getConversionType($strKey) {
         return trim ( strtolower ( $this->getConversion ()[$strKey] ) );
+    }
+    
+    /**
+     * 属性是否可以被转换为属性
+     *
+     * @param string $strProp            
+     * @return bool
+     */
+    protected function isDateConversion($strProp) {
+        return $this->hasConversion ( $strProp, [ 
+                'date',
+                'datetime' 
+        ] );
+    }
+    
+    /**
+     * 属性是否可以转换为 JSON
+     *
+     * @param string $strProp            
+     * @return bool
+     */
+    protected function isJsonConversion($strProp) {
+        return $this->hasConversion ( $strProp, [ 
+                'array',
+                'json',
+                'object',
+                'collection' 
+        ] );
+    }
+    
+    /**
+     * 将变量转为 JSON
+     *
+     * @param mixed $mixValue            
+     * @return string
+     */
+    protected function asJson($mixValue) {
+        return json_encode ( $mixValue );
     }
     
     /**
@@ -839,6 +1179,11 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
                 return $this->fromJson ( $mixValue );
             case 'collection' :
                 return new collection ( $this->fromJson ( $mixValue ) );
+            case 'date' :
+            case 'datetime' :
+                return $this->asDateTime ( $mixValue );
+            case 'timestamp' :
+                return $this->asTimeStamp ( $mixValue );
             default :
                 return $mixValue;
         }
@@ -847,10 +1192,11 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     /**
      * 设置是否处于强制更新属性的
      *
+     * @param boolean $booProForce            
      * @return boolean
      */
-    protected function setInChangePropForce($booInChangePropForce = true) {
-        $this->booInChangePropForce = $booInChangePropForce;
+    protected function setPropForce($booPropForce = true) {
+        $this->booPropForce = $booPropForce;
     }
     
     /**
@@ -858,8 +1204,72 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      *
      * @return boolean
      */
-    protected function getInChangePropForce() {
-        return $this->booInChangePropForce;
+    protected function getPropForce() {
+        return $this->booPropForce;
+    }
+    
+    /**
+     * 返回数据库查询对象
+     *
+     * @return \queryyetsimple\database\interfaces\connect
+     */
+    protected function getClassCollectionQuery() {
+        return $this->meta ()->getSelect ()->asClass ( get_called_class () )->asCollection ();
+    }
+    
+    /**
+     * 将时间转化为数据库存储的值
+     *
+     * @param \DateTime|int $mixValue            
+     * @return string
+     */
+    public function fromDateTime($mixValue) {
+        return $this->asDateTime ( $mixValue )->format ( $this->getDateFormat () );
+    }
+    
+    /**
+     * 转换为时间对象
+     *
+     * @param mixed $mixValue            
+     * @return \Carbon\Carbon
+     */
+    protected function asDateTime($mixValue) {
+        if ($mixValue instanceof Carbon) {
+            return $mixValue;
+        }
+        
+        if ($mixValue instanceof DateTimeInterface) {
+            return new Carbon ( $mixValue->format ( 'Y-m-d H:i:s.u' ), $mixValue->getTimeZone () );
+        }
+        
+        if (is_numeric ( $mixValue )) {
+            return Carbon::createFromTimestamp ( $mixValue );
+        }
+        
+        if (preg_match ( '/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $mixValue )) {
+            return Carbon::createFromFormat ( 'Y-m-d', $mixValue )->startOfDay ();
+        }
+        
+        return Carbon::createFromFormat ( $this->getDateFormat (), $mixValue );
+    }
+    
+    /**
+     * 转为 unix 时间风格
+     *
+     * @param mixed $mixValue            
+     * @return int
+     */
+    protected function asTimeStamp($mixValue) {
+        return $this->asDateTime ( $mixValue )->getTimestamp ();
+    }
+    
+    /**
+     * 返回属性时间格式化
+     *
+     * @return string
+     */
+    protected function getDateFormat() {
+        return $this->strDateFormat ?  : 'Y-m-d H:i:s';
     }
     
     /**
@@ -880,7 +1290,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function __set($sPropName, $mixValue) {
-        return $this->changePropForce ( $sPropName, $mixValue );
+        return $this->propForce ( $sPropName, $mixValue );
     }
     
     /**
@@ -911,7 +1321,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function offsetSet($sPropName, $mixValue) {
-        return $this->changePropForce ( $sPropName, $mixValue );
+        return $this->propForce ( $sPropName, $mixValue );
     }
     
     /**
@@ -928,10 +1338,10 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * 实现 ArrayAccess::offsetUnset
      *
      * @param string $sPropName            
-     * @return mixed
+     * @return $this
      */
     public function offsetUnset($sPropName) {
-        $this->deleteProp ( $sPropName );
+        return $this->deleteProp ( $sPropName );
     }
     
     /**
@@ -947,7 +1357,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
         }
         
         return call_user_func_array ( [ 
-                $this->meta ()->getSelect ()->asClass ( get_called_class () )->asCollection (),
+                $this->getClassCollectionQuery (),
                 $sMethod 
         ], $arrArgs );
     }
