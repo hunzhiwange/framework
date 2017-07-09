@@ -982,10 +982,6 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
             $arrSaveData [$sPropName] = $mixValue;
         }
         
-        print_r ( $arrSaveData );
-        
-        exit ();
-        
         if ($arrSaveData) {
             $arrLastInsertId = $this->meta ()->insert ( $arrSaveData );
             $this->arrProp = array_merge ( $this->arrProp, $arrLastInsertId );
