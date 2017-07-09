@@ -119,13 +119,44 @@ queryphp;
     color: #999;
     word-wrap: break-word
 }
+
+.queryphp-message-container pre, .queryphp-message-container code {
+    font-size: 0.93em
+}
+
+.queryphp-message-container pre {
+    padding: 1em;
+    border: none;
+    overflow: auto;
+    line-height: 1.45;
+    max-height: 35em;
+    position: relative;
+    background: #FFFFFF;
+    -moz-background-size: 30px, 30px;
+    -o-background-size: 30px, 30px;
+    -webkit-background-size: 30px, 30px;
+    background-size: 30px, 30px
+}
+
+.queryphp-message-container pre code {
+    background: none;
+    font-size: 1em;
+    overflow-wrap: normal;
+    white-space: inherit
+}
+
+.queryphp-message-container pre code .key {
+    width: 100%;
+    background: red;
+    color: #fff
+}
 </style>
 </head>
 <body>
     <div class="queryphp-message-container">
         <div class="queryphp-message-title"><?php echo isset( $mixError[ 'excetion_type' ] ) ? $mixError[ 'excetion_type' ] : 'Exception' ; ?></div>
         <div class="queryphp-message-subtitle">You can replace this with
-            show_exception_template.</div>
+            debug\exception_template option.</div>
         <div class="queryphp-message-content">
             <?php echo $mixError[ 'message' ]; ?>
         </div>

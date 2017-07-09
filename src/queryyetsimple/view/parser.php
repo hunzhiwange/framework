@@ -144,6 +144,20 @@ class parser implements interfaces_parser {
     ];
     
     /**
+     * 当前编译源文件
+     *
+     * @var string
+     */
+    protected $strSourceFile;
+    
+    /**
+     * 当前编译缓存文件
+     *
+     * @var array
+     */
+    protected $stringCachePath;
+    
+    /**
      * 配置
      *
      * @var array
@@ -200,6 +214,9 @@ class parser implements interfaces_parser {
         if (! is_file ( $sFile )) {
             throw new InvalidArgumentException ( printf ( 'file %s is not exits', $sFile ) );
         }
+        
+        $this->strSourceFile = $sFile;
+        $this->strCachePath = $sCachePath;
         
         // 源码
         $sCache = file_get_contents ( $sFile );
@@ -460,7 +477,7 @@ class parser implements interfaces_parser {
         foreach ( $this->arrCompilers [$sNodeType] as $sCompilers => $sTag ) { // 所有一级节点名称
             $arrNames [] = $this->escapeCharacter ( $sCompilers ); // 处理一些正则表达式中有特殊意义的符号
         }
-        if (! count ( $arrNames )) { // 没有 任何编译器
+        if (! count ( $arrNames )) { // 没有任何编译器
             return;
         }
         // 正则分析
@@ -537,7 +554,7 @@ class parser implements interfaces_parser {
             if (! $arrTailTag or ! $this->findHeadTag ( $arrTag, $arrTailTag )) { // 单标签节点
                 
                 if ($arrNodeTag [$arrTag ['name']] ['single'] !== true) {
-                    throw new InvalidArgumentException ( __ ( '%s 类型节点 必须成对使用，没有找到对应的尾标签', $arrTag ['name'] ) );
+                    throw new InvalidArgumentException ( __ ( '%s 类型节点必须成对使用，没有找到对应的尾标签', $arrTag ['name'] ) . '<br />' . $this->getLocation ( $arrTag ['position'] ) );
                 }
                 if ($arrTailTag) { // 退回栈中
                     $oTailStack->in ( $arrTailTag );
@@ -1032,6 +1049,28 @@ class parser implements interfaces_parser {
      */
     protected function escapeCharacter($sTxt) {
         return helper::escapeRegexCharacter ( $sTxt );
+    }
+    
+    /**
+     * 取得模板位置
+     *
+     * @param array $arrPosition            
+     * @return string
+     */
+    protected function getLocation($arrPosition) {
+        return __ ( '行: %s; 列: %s; 文件: %s', $arrPosition ['start_line'], $arrPosition ['start_in'], $this->strSourceFile ) . $this->getLocationSource ( $arrPosition );
+    }
+    
+    /**
+     * 取得模板位置源码
+     *
+     * @param array $arrPosition            
+     * @return string
+     */
+    protected function getLocationSource($arrPosition) {
+        $arrLine = explode ( PHP_EOL, htmlentities ( substr ( file_get_contents ( $this->strSourceFile ), $arrPosition ['start'], $arrPosition ['end'] ) ) );
+        $arrLine [] = '<div class="key">' . array_pop ( $arrLine ) . '</div>';
+        return '<pre><code>' . implode ( PHP_EOL, $arrLine ) . '</code></pre>';
     }
     
     // ######################################################
