@@ -1,0 +1,202 @@
+<?php
+// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+// ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\mvc;
+
+<<<queryphp
+##########################################################
+#   ____                          ______  _   _ ______   #
+#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+#       \__   | \___ |_|    \__  || |    | | | || |      #
+#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+#                          |___ /  Since 2010.10.03      #
+##########################################################
+queryphp;
+
+use Exception;
+use queryyetsimple\mvc\exceptions\model_not_found;
+use queryyetsimple\database\select as database_select;
+
+/**
+ * 模型查询
+ *
+ * @author Xiangmin Liu <635750556@qq.com>
+ * @package $$
+ * @since 2017.07.10
+ * @version 1.0
+ */
+class select {
+    
+    /**
+     * 模型
+     *
+     * @var \queryyetsimple\mvc\interfaces\model
+     */
+    protected $objModel;
+    
+    /**
+     * 查询
+     *
+     * @var \queryyetsimple\database\select
+     */
+    protected $objSelect;
+    
+    /**
+     * 构造函数
+     *
+     * @param \queryyetsimple\mvc\interfaces\model $objModel            
+     * @return void
+     */
+    public function __construct($objModel) {
+        $this->objModel = $objModel;
+    }
+    
+    /**
+     * 注册查询
+     *
+     * @param \queryyetsimple\database\select $objSelect            
+     * @return void
+     */
+    public function registerSelect(database_select $objSelect) {
+        $this->objSelect = $objSelect;
+        return $this;
+    }
+    
+    /**
+     * 拦截一些别名和快捷方式
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return boolean
+     */
+    public function __call($sMethod, $arrArgs) {
+        throw new Exception ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ) );
+    }
+    
+    /**
+     * 通过主键查找模型
+     *
+     * @param mixed $mixId            
+     * @param array $arrColumn            
+     * @return \queryyetsimple\mvc\interfaces\model|\queryyetsimple\collection\collection|null
+     */
+    public function find($mixId, $arrColumn = ['*']) {
+        if (is_array ( $mixId )) {
+            return $this->findMany ( $mixId, $arrColumn );
+        }
+        
+        return $this->objSelect->where ( $this->objModel->getPrimaryKeyNameForQuery (), '=', $mixId )->setColumns ( $arrColumn )->getOne ();
+    }
+    
+    /**
+     * 根据主键查找模型
+     *
+     * @param array $arrId            
+     * @param array $arrColumn            
+     * @return \queryyetsimple\collection\collection
+     */
+    public function findMany($arrId, $arrColumn = ['*']) {
+        if (empty ( $arrId )) {
+            return $this->objModel->collection ();
+        }
+        
+        return $this->objSelect->whereIn ( $this->objModel->getPrimaryKeyNameForQuery (), $arrId )->setColumns ( $arrColumn )->getAll ();
+    }
+    
+    /**
+     * 通过主键查找模型，未找到则抛出异常
+     *
+     * @param mixed $mixId            
+     * @param array $arrColumn            
+     * @return \queryyetsimple\mvc\interfaces\model|\queryyetsimple\collection\collection
+     */
+    public function findOrFail($mixId, $arrColumn = ['*']) {
+        $mixResult = $this->find ( $mixId, $arrColumn );
+        
+        if (is_array ( $mixId )) {
+            if (count ( $mixResult ) == count ( array_unique ( $mixId ) )) {
+                return $mixResult;
+            }
+        } elseif (! is_null ( $mixResult )) {
+            return $mixResult;
+        }
+        
+        throw (new model_not_found ())->model ( get_class ( $this->objModel ) );
+    }
+    
+    /**
+     * 通过主键查找模型，未找到初始化一个新的模型
+     *
+     * @param mixed $mixId            
+     * @param array $arrColumn            
+     * @return \queryyetsimple\mvc\interfaces\model
+     */
+    public function findOrNew($mixId, $arrColumn = ['*']) {
+        if (! is_null ( $objModel = $this->find ( $mixId, $arrColumn ) )) {
+            return $objModel;
+        }
+        return $this->objModel->newInstance ();
+    }
+    
+    /**
+     * 查找第一个结果
+     *
+     * @param array $columns            
+     * @return \queryyetsimple\mvc\interfaces\model|static|null
+     */
+    public function first($arrColumn = ['*']) {
+        return $this->objSelect->setColumns ( $arrColumn )->getOne ();
+    }
+    
+    /**
+     * 查找第一个结果，未找到则抛出异常
+     *
+     * @param array $arrColumn            
+     * @return \queryyetsimple\mvc\interfaces\model|static
+     */
+    public function firstOrFail($arrColumn = ['*']) {
+        if (! is_null ( ($objModel = $this->first ( $arrColumn )) )) {
+            return $objModel;
+        }
+        throw (new model_not_found ())->model ( get_class ( $this->objModel ) );
+    }
+    
+    /**
+     * 查找第一个结果，未找到则初始化一个新的模型
+     *
+     * @param array $arrProp            
+     * @return \queryyetsimple\mvc\interfaces\model
+     */
+    public function firstOrNew(array $arrProp) {
+        if (! is_null ( $objModel = $this->objSelect->where ( $arrProp )->getOne () )) {
+            return $objModel;
+        }
+        return $this->objModel->newInstance ( $arrProp );
+    }
+    
+    /**
+     * 尝试根据属性查找一个模型，未找到则新建一个模型
+     *
+     * @param array $arrProp            
+     * @return \queryyetsimple\mvc\interfaces\model
+     */
+    public function firstOrCreate(array $arrProp) {
+        if (! is_null ( $objModel = $this->objSelect->where ( $arrProp )->getOne () )) {
+            return $objModel;
+        }
+        return $this->objModel->newInstance ( $arrProp )->save ();
+    }
+    
+    /**
+     * 尝试根据属性查找一个模型，未找到则新建或者更新一个模型
+     *
+     * @param array $arrProp            
+     * @param array $arrData            
+     * @return \queryyetsimple\mvc\interfaces\model
+     */
+    public function updateOrCreate(array $arrProp, array $arrData = []) {
+        return $this->firstOrNew ( $arrProp )->forceProp ( $arrData )->save ();
+    }
+}

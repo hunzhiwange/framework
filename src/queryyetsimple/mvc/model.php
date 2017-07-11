@@ -25,6 +25,7 @@ use queryyetsimple\string\string;
 use queryyetsimple\classs\serialize;
 use queryyetsimple\collection\collection;
 use queryyetsimple\support\interfaces\arrayable;
+use queryyetsimple\mvc\interfaces\model as interfaces_model;
 
 /**
  * 模型 Object Relational Mapping
@@ -34,7 +35,7 @@ use queryyetsimple\support\interfaces\arrayable;
  * @since 2017.04.27
  * @version 1.0
  */
-class model implements JsonSerializable, ArrayAccess, arrayable {
+class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayable {
     
     use control;
     use serialize;
@@ -142,7 +143,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      *
      * @var boolean
      */
-    protected $booPropForce = false;
+    protected $booForceProp = false;
     
     /**
      * 是否自动填充
@@ -222,20 +223,6 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     protected $booTimestamp = true;
     
     /**
-     * 新建时间字段
-     *
-     * @var string
-     */
-    const CREATED_AT = 'created_at';
-    
-    /**
-     * 更新时间字段
-     *
-     * @var string
-     */
-    const UPDATED_AT = 'updated_at';
-    
-    /**
      * 构造函数
      *
      * @param array|null $arrData            
@@ -253,7 +240,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
                 }
             }
             if ($arrData) {
-                $this->prop ( $arrData );
+                $this->props ( $arrData );
             }
         }
         
@@ -283,7 +270,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function create($arrData = null) {
-        return $this->saves ( 'update', $arrData );
+        return $this->saves ( 'create', $arrData );
     }
     
     /**
@@ -359,6 +346,36 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     }
     
     /**
+     * Destroy the models for the given IDs.
+     *
+     * @param array|int $ids            
+     * @return int
+     */
+    public static function destroy($mixId) {
+        $intCount = 0;
+        $mixId = ( array ) $mixId;
+        $objInstance = new static ();
+        foreach ( $objInstance->whereIn ( $objInstance->getPrimaryKeyNameForQuery (), $mixId )->getAll () as $objModel ) {
+            if ($objModel->delete ()) {
+                $intCount ++;
+            }
+        }
+        return $intCount;
+    }
+    
+    /**
+     * 删除模型
+     *
+     * @return bool|null
+     */
+    public function delete() {
+        if (is_null ( $this->getPrimaryKeyName () )) {
+            throw new Exception ( sprintf ( 'Model %s has no primary key', $this->getCalledClass () ) );
+        }
+        return $this->deleteModelByKey ();
+    }
+    
+    /**
      * 获取主键
      *
      * @param boolean $booUpdateChange            
@@ -400,7 +417,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     /**
      * 改变属性
      *
-     * < update 调用无效，请换用 propForce >
+     * < update 调用无效，请换用 forceProp >
      *
      * @param mixed $mixProp            
      * @param mixed $mixValue            
@@ -457,11 +474,11 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @param mixed $mixValue            
      * @return $this
      */
-    public function propForce($strPropName, $mixValue) {
+    public function forceProp($strPropName, $mixValue) {
         if ($this->checkFlowControl ())
             return $this;
         
-        $this->setPropForce ( true );
+        $this->setForceProp ( true );
         call_user_func_array ( [ 
                 $this,
                 'prop' 
@@ -469,7 +486,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
                 $strPropName,
                 $mixValue 
         ] );
-        $this->setPropForce ( false );
+        $this->setForceProp ( false );
         return $this;
     }
     
@@ -479,18 +496,18 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @param array $arrProp            
      * @return $this
      */
-    public function propForces(array $arrProp) {
+    public function forceProps(array $arrProp) {
         if ($this->checkFlowControl ())
             return $this;
         
-        $this->setPropForce ( true );
+        $this->setForceProp ( true );
         call_user_func_array ( [ 
                 $this,
                 'props' 
         ], [ 
                 $arrProp 
         ] );
-        $this->setPropForce ( false );
+        $this->setForceProp ( false );
         return $this;
     }
     
@@ -589,6 +606,29 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
             }
         }
         return $this;
+    }
+    
+    /**
+     * 返回主键字段
+     *
+     * @return array|string|null
+     */
+    public function getPrimaryKeyName() {
+        $arrKey = $this->meta ()->getPrimaryKey ();
+        return count ( $arrKey ) == 1 ? reset ( $arrKey ) : $arrKey;
+    }
+    
+    /**
+     * 返回供查询的主键字段
+     * 复合主键或者没有主键直接抛出异常
+     *
+     * @return string|void
+     */
+    public function getPrimaryKeyNameForQuery() {
+        $mixKey = $this->getPrimaryKeyName ();
+        if (! is_string ( $mixKey ))
+            throw new Exception ( sprintf ( 'Model %s do not have primary key or composite id not supported', $this->getCalledClass () ) );
+        return $mixKey;
     }
     
     /**
@@ -947,13 +987,33 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     }
     
     /**
+     * 创建一个模型集合
+     *
+     * @param array $arrProp            
+     * @return \queryyetsimple\collection\collection
+     */
+    public function collection(array $arrProp = []) {
+        return new collection ( $arrProp );
+    }
+    
+    /**
+     * 创建新的应用程序
+     *
+     * @param array $arrProp            
+     * @return static
+     */
+    public function newInstance($arrProp = []) {
+        return new static ( ( array ) $arrProp );
+    }
+    
+    /**
      * 返回模型类的 meta 对象
      *
      * @return Meta
      */
     public function meta() {
         if (! $this->strTable) {
-            $strTable = get_called_class ();
+            $strTable = $this->getCalledClass ();
             $strTable = explode ( '\\', $strTable );
             $this->strTable = array_pop ( $strTable );
         }
@@ -1091,7 +1151,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
                 $mixKey = $mixValue;
                 $mixValue = null;
             }
-            $this->propForce ( $mixKey, $mixValue );
+            $this->forceProp ( $mixKey, $mixValue );
         }
     }
     
@@ -1188,11 +1248,11 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     /**
      * 设置是否处于强制更新属性的
      *
-     * @param boolean $booProForce            
+     * @param boolean $booForceProp            
      * @return boolean
      */
-    protected function setPropForce($booPropForce = true) {
-        $this->booPropForce = $booPropForce;
+    protected function setForceProp($booForceProp = true) {
+        $this->booForceProp = $booForceProp;
     }
     
     /**
@@ -1200,8 +1260,17 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      *
      * @return boolean
      */
-    protected function getPropForce() {
-        return $this->booPropForce;
+    protected function getForceProp() {
+        return $this->booForceProp;
+    }
+    
+    /**
+     * 返回数据库查询集合对象
+     *
+     * @return \queryyetsimple\database\interfaces\connect
+     */
+    protected function getClassCollectionQuery() {
+        return $this->getQuery ()->asClass ( $this->getCalledClass () )->asCollection ()->registerCallSelect ( new select ( $this ) );
     }
     
     /**
@@ -1209,8 +1278,8 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      *
      * @return \queryyetsimple\database\interfaces\connect
      */
-    protected function getClassCollectionQuery() {
-        return $this->meta ()->getSelect ()->asClass ( get_called_class () )->asCollection ();
+    protected function getQuery() {
+        return $this->meta ()->getSelect ();
     }
     
     /**
@@ -1269,6 +1338,43 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
     }
     
     /**
+     * 删除模型
+     *
+     * @return int
+     */
+    protected function deleteModelByKey() {
+        return $this->getQuery ()->where ( $this->getKeyWhere () )->delete ();
+    }
+    
+    /**
+     * 获取查询键值
+     *
+     * @return array|void
+     */
+    protected function getKeyWhere() {
+        if (is_null ( ($arrPrimaryData = $this->primaryKey ()) )) {
+            throw new Exception ( sprintf ( 'Model %s has no primary key data', $this->getCalledClass () ) );
+        }
+        
+        if (! is_array ( $arrPrimaryData )) {
+            $arrPrimaryData = [ 
+                    $this->getPrimaryKeyNameForQuery () => $arrPrimaryData 
+            ];
+        }
+        
+        return $arrPrimaryData;
+    }
+    
+    /**
+     * 获取调用 class
+     *
+     * @return string
+     */
+    protected function getCalledClass() {
+        return get_called_class ();
+    }
+    
+    /**
      * 魔术方法获取
      *
      * @param string $sPropName            
@@ -1286,7 +1392,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function __set($sPropName, $mixValue) {
-        return $this->propForce ( $sPropName, $mixValue );
+        return $this->forceProp ( $sPropName, $mixValue );
     }
     
     /**
@@ -1317,7 +1423,7 @@ class model implements JsonSerializable, ArrayAccess, arrayable {
      * @return $this
      */
     public function offsetSet($sPropName, $mixValue) {
-        return $this->propForce ( $sPropName, $mixValue );
+        return $this->forceProp ( $sPropName, $mixValue );
     }
     
     /**

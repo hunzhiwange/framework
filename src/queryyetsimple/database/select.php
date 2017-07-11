@@ -308,13 +308,13 @@ class select {
         }
         
         // 查询组件
-        if (! $this->objCallProcessor) {
+        if (! $this->objCallSelect) {
             throw new Exception ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ) );
         }
         
         // 调用事件
         return call_user_func_array ( [ 
-                $this->objCallProcessor,
+                $this->objCallSelect,
                 $sMethod 
         ], $arrArgs );
     }
