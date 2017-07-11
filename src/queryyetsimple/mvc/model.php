@@ -224,6 +224,13 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     protected $booTimestamp = true;
     
     /**
+     * 查询 select
+     *
+     * @var \queryyetsimple\database\select
+     */
+    protected $objSelectForQuery;
+    
+    /**
      * 构造函数
      *
      * @param array|null $arrData            
@@ -1095,6 +1102,28 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     }
     
     /**
+     * 设置查询 select
+     *
+     * @return $this
+     */
+    public function setSelectForQuery($objSelectForQuery) {
+        if ($this->checkFlowControl ())
+            return $this;
+        
+        $this->objSelectForQuery = $objSelectForQuery;
+        return $this;
+    }
+    
+    /**
+     * 查询 select
+     *
+     * @return \queryyetsimple\database\select
+     */
+    public function getSelectForQuery() {
+        return $this->objSelectForQuery;
+    }
+    
+    /**
      * 返回模型类的 meta 对象
      *
      * @return Meta
@@ -1365,8 +1394,17 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      *
      * @return \queryyetsimple\database\interfaces\connect
      */
-    protected function getClassCollectionQuery() {
+    public function getClassCollectionQuerySource() {
         return $this->getQuery ()->asClass ( $this->getCalledClass () )->asCollection ()->registerCallSelect ( new select ( $this ) );
+    }
+    
+    /**
+     * 返回数据库查询集合对象
+     *
+     * @return \queryyetsimple\database\interfaces\connect
+     */
+    public function getClassCollectionQuery() {
+        return $this->getSelectForQuery () ?  : $this->getClassCollectionQuerySource ();
     }
     
     /**
@@ -1374,7 +1412,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      *
      * @return \queryyetsimple\database\interfaces\connect
      */
-    protected function getQuery() {
+    public function getQuery() {
         return $this->meta ()->getSelect ();
     }
     

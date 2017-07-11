@@ -15,7 +15,9 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
+use Closure;
 use Exception;
+use queryyetsimple\helper\helper;
 use queryyetsimple\mvc\exceptions\model_not_found;
 use queryyetsimple\database\select as database_select;
 
@@ -302,5 +304,44 @@ class select {
      */
     public function getFullDeletedAtColumn() {
         return $this->objModel->getTable () . '.' . $this->getDeletedAtColumn ();
+    }
+    
+    /**
+     * 查询范围
+     *
+     * @param mixed $mixScope            
+     * @return \queryyetsimple\mvc\interfaces\model
+     */
+    public function scope($mixScope) {
+        if ($mixScope instanceof database_select) {
+            return $mixScope;
+        }
+        
+        $objSelect = $this->objSelect;
+        
+        if ($mixScope instanceof Closure) {
+            $mixResultCallback = call_user_func_array ( $mixScope, [ 
+                    $objSelect 
+            ] );
+            if ($mixResultCallback instanceof database_select) {
+                $objSelect = $mixResultCallback;
+                unset ( $mixResultCallback );
+            }
+            $this->objModel->setSelectForQuery ( $objSelect );
+        } else {
+            foreach ( helper::arrays ( $mixScope ) as $strScope ) {
+                $strScope = 'scope' . ucwords ( $strScope );
+                if (method_exists ( $this->objModel, $strScope )) {
+                    $mixResultCallback = $this->objModel->$strScope ( $objSelect );
+                    if ($mixResultCallback instanceof database_select) {
+                        $objSelect = $mixResultCallback;
+                        unset ( $mixResultCallback );
+                    }
+                    $this->objModel->setSelectForQuery ( $objSelect );
+                }
+            }
+        }
+        
+        return $this->objModel;
     }
 }
