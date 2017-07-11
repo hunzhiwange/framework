@@ -15,6 +15,7 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
+use DateTime;
 use Exception;
 use ArrayAccess;
 use Carbon\Carbon;
@@ -896,6 +897,13 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             $mixValue = $this->getProp ( $strProp );
         }
         
+        foreach ( $this->getDate () as $strProp ) {
+            if (! isset ( $arrProp [$strProp] )) {
+                continue;
+            }
+            $arrProp [$strProp] = $this->serializeDate ( $this->asDateTime ( $arrProp [$strProp] ) );
+        }
+        
         return $arrProp;
     }
     
@@ -1404,6 +1412,16 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      */
     protected function asTimeStamp($mixValue) {
         return $this->asDateTime ( $mixValue )->getTimestamp ();
+    }
+    
+    /**
+     * 序列化时间
+     *
+     * @param \DateTime $objDate            
+     * @return string
+     */
+    protected function serializeDate(DateTime $objDate) {
+        return $objDate->format ( $this->getDateFormat () );
     }
     
     /**
