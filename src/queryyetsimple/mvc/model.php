@@ -1124,6 +1124,33 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     }
     
     /**
+     * 返回数据库查询集合对象
+     *
+     * @return \queryyetsimple\database\interfaces\connect
+     */
+    public function getClassCollectionQuerySource() {
+        return $this->getQuery ()->asClass ( $this->getCalledClass () )->asCollection ()->registerCallSelect ( new select ( $this ) );
+    }
+    
+    /**
+     * 返回数据库查询集合对象
+     *
+     * @return \queryyetsimple\database\interfaces\connect
+     */
+    public function getClassCollectionQuery() {
+        return $this->getSelectForQuery () ?  : $this->getClassCollectionQuerySource ();
+    }
+    
+    /**
+     * 返回数据库查询对象
+     *
+     * @return \queryyetsimple\database\interfaces\connect
+     */
+    public function getQuery() {
+        return $this->meta ()->getSelect ();
+    }
+    
+    /**
      * 返回模型类的 meta 对象
      *
      * @return Meta
@@ -1387,33 +1414,6 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      */
     protected function getForceProp() {
         return $this->booForceProp;
-    }
-    
-    /**
-     * 返回数据库查询集合对象
-     *
-     * @return \queryyetsimple\database\interfaces\connect
-     */
-    public function getClassCollectionQuerySource() {
-        return $this->getQuery ()->asClass ( $this->getCalledClass () )->asCollection ()->registerCallSelect ( new select ( $this ) );
-    }
-    
-    /**
-     * 返回数据库查询集合对象
-     *
-     * @return \queryyetsimple\database\interfaces\connect
-     */
-    public function getClassCollectionQuery() {
-        return $this->getSelectForQuery () ?  : $this->getClassCollectionQuerySource ();
-    }
-    
-    /**
-     * 返回数据库查询对象
-     *
-     * @return \queryyetsimple\database\interfaces\connect
-     */
-    public function getQuery() {
-        return $this->meta ()->getSelect ();
     }
     
     /**
