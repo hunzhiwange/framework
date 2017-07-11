@@ -195,7 +195,17 @@ class select {
      * @return \queryyetsimple\mvc\interfaces\model
      */
     public function updateOrCreate(array $arrProp, array $arrData = []) {
-        return $this->firstOrNew ( $arrProp )->forceProp ( $arrData )->save ();
+        return $this->firstOrNew ( $arrProp )->forceProps ( $arrData )->save ();
+    }
+    
+    /**
+     * 新建一个模型
+     *
+     * @param array $arrProp            
+     * @return \queryyetsimple\mvc\interfaces\model
+     */
+    public function onlyCreate(array $arrProp = []) {
+        return $this->objModel->newInstance ( $arrProp )->save ();
     }
     
     /**

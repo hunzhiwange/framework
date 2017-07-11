@@ -3609,10 +3609,6 @@ class select {
         $strTableName = $this->getCurrentTable ();
         
         foreach ( $arrData as $sKey => $mixValue ) {
-            if (is_null ( $mixValue )) {
-                // continue;
-            }
-            
             // 表达式支持
             $arrRes = null;
             if (strpos ( $mixValue, '{' ) !== false && preg_match ( '/^{(.+?)}$/', $mixValue, $arrRes )) {

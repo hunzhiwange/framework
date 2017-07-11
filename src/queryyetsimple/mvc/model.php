@@ -443,7 +443,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
         }
         
         $this->arrProp [$strProp] = $mixValue;
-        if ($this->getForceProp() && ! in_array ( $strProp, $this->arrReadonly ) && ! in_array ( $strProp, $this->arrChangedProp )) {
+        if ($this->getForceProp () && ! in_array ( $strProp, $this->arrReadonly ) && ! in_array ( $strProp, $this->arrChangedProp )) {
             $this->arrChangedProp [] = $strProp;
         }
         
@@ -614,17 +614,26 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      * @return array|string|null
      */
     public function getPrimaryKeyName() {
-        $arrKey = $this->meta ()->getPrimaryKey ();
+        $arrKey = $this->getPrimaryKeyNameSource ();
         return count ( $arrKey ) == 1 ? reset ( $arrKey ) : $arrKey;
     }
-
+    
+    /**
+     * 返回主键字段
+     *
+     * @return array|null
+     */
+    public function getPrimaryKeyNameSource() {
+        return $this->meta ()->getPrimaryKey ();
+    }
+    
     /**
      * 返回属性映射字段
      *
      * @return array
      */
     public function getPropField() {
-        return $this->meta ()->getPropField();
+        return $this->meta ()->getPropField ();
     }
     
     /**
@@ -633,18 +642,18 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      * @return array
      */
     public function getFieldProp() {
-        return $this->meta ()->getFieldProp();
+        return $this->meta ()->getFieldProp ();
     }
-
+    
     /**
      * 是否存在字段
      *
-     * @param  string $strFiled 
+     * @param string $strFiled            
      * @return array
      */
     public function hasField($strField) {
-        return in_array($strField,$this->getPropField());
-    } 
+        return in_array ( $strField, $this->getPropField () );
+    }
     
     /**
      * 返回供查询的主键字段
@@ -928,7 +937,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
                 static::UPDATED_AT 
         ] ) : $this->arrDate;
     }
-
+    
     /**
      * 设置需要转换时间的属性
      *
@@ -941,7 +950,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
         $this->arrDate = $arrDate;
         return $this;
     }
-
+    
     /**
      * 添加需要转换时间的属性
      *
@@ -1047,7 +1056,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     public function newInstance($arrProp = []) {
         return new static ( ( array ) $arrProp );
     }
-
+    
     /**
      * 将时间转化为数据库存储的值
      *
@@ -1057,7 +1066,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     public function fromDateTime($mixValue) {
         return $this->asDateTime ( $mixValue )->format ( $this->getDateFormat () );
     }
-
+    
     /**
      * 获取查询键值
      *
@@ -1113,10 +1122,17 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             $arrSaveData [$sPropName] = $mixValue;
         }
         
-        if ($arrSaveData) {
-            $arrLastInsertId = $this->meta ()->insert ( $arrSaveData );
-            $this->arrProp = array_merge ( $this->arrProp, $arrLastInsertId );
+        if (! $arrSaveData) {
+            if (is_null ( ($arrPrimaryKey = $this->getPrimaryKeyNameSource ()) ))
+                throw new Exception ( sprintf ( 'Model %s has no primary key', $this->getCalledClass () ) );
+            
+            foreach ( $arrPrimaryKey as $strPrimaryKey ) {
+                $arrSaveData [$strPrimaryKey] = null;
+            }
         }
+        
+        $arrLastInsertId = $this->meta ()->insert ( $arrSaveData );
+        $this->arrProp = array_merge ( $this->arrProp, $arrLastInsertId );
         
         $this->clearChanged ();
         
@@ -1130,7 +1146,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      */
     protected function updateReal() {
         $this->parseAutoFill ( 'update' );
-
+        
         $arrSaveData = [ ];
         foreach ( $this->arrProp as $sPropName => $mixValue ) {
             if (! in_array ( $sPropName, $this->arrChangedProp )) {
@@ -1144,26 +1160,26 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             }
             $arrSaveData [$sPropName] = $mixValue;
         }
-
+        
         if ($arrSaveData) {
-            $arrConditions = array ();
-            foreach ( $this->meta ()->getPrimaryKey () as $sFieldName ) {
+            $arrCondition = [ ];
+            foreach ( $this->getPrimaryKeyNameSource () as $sFieldName ) {
                 if (isset ( $arrSaveData [$sFieldName] )) {
                     unset ( $arrSaveData [$sFieldName] );
                 }
                 if (! empty ( $this->arrProp [$sFieldName] )) {
-                    $arrConditions [$sFieldName] = $this->arrProp [$sFieldName];
+                    $arrCondition [$sFieldName] = $this->arrProp [$sFieldName];
                 }
             }
-
-            if (! empty ( $arrSaveData ) && ! empty ( $arrConditions )) {
-                $intNum = $this->meta ()->update ( $arrConditions, $arrSaveData );
+            
+            if (! empty ( $arrSaveData ) && ! empty ( $arrCondition )) {
+                $intNum = $this->meta ()->update ( $arrCondition, $arrSaveData );
             }
         }
         
         $this->clearChanged ();
         
-        return isset ( $intNum ) ? $intNum : null;
+        return isset ( $intNum ) ? $intNum : 0;
     }
     
     /**
@@ -1353,7 +1369,6 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     protected function getQuery() {
         return $this->meta ()->getSelect ();
     }
-
     
     /**
      * 转换为时间对象
