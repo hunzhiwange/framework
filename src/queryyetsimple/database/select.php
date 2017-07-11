@@ -3481,8 +3481,12 @@ class select {
      */
     protected function queryClass(&$arrData) {
         if (empty ( $arrData )) {
-            if (! $this->arrOption ['limitquery'])
+            if (! $this->arrOption ['limitquery']) {
                 $arrData = null;
+            } else {
+                if ($this->arrQueryParams ['as_collection'])
+                    $arrData = new collection ();
+            }
             return;
         }
         

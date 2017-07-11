@@ -86,7 +86,6 @@ class select {
         if (is_array ( $mixId )) {
             return $this->findMany ( $mixId, $arrColumn );
         }
-        
         return $this->objSelect->where ( $this->objModel->getPrimaryKeyNameForQuery (), '=', $mixId )->setColumns ( $arrColumn )->getOne ();
     }
     
@@ -101,7 +100,6 @@ class select {
         if (empty ( $arrId )) {
             return $this->objModel->collection ();
         }
-        
         return $this->objSelect->whereIn ( $this->objModel->getPrimaryKeyNameForQuery (), $arrId )->setColumns ( $arrColumn )->getAll ();
     }
     
