@@ -346,7 +346,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     }
     
     /**
-     * Destroy the models for the given IDs.
+     * 根据主键 ID 删除模型
      *
      * @param array|int $ids            
      * @return int
