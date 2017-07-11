@@ -15,6 +15,7 @@ namespace queryyetsimple\helper;
 ##########################################################
 queryphp;
 
+use Closure;
 use ReflectionClass;
 use InvalidArgumentException;
 use queryyetsimple\psr4\psr4;
@@ -190,6 +191,8 @@ class helper {
             case 'handle' : // 外部资源
             case 'resource' :
                 return is_resource ( $mixVar );
+            case 'closure' : // 闭包
+                return $mixVar instanceof Closure;
             case 'array' :
                 { // 数组
                     if (! empty ( $sType [1] )) {
