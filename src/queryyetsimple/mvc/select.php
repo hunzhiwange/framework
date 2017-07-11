@@ -197,4 +197,100 @@ class select {
     public function updateOrCreate(array $arrProp, array $arrData = []) {
         return $this->firstOrNew ( $arrProp )->forceProp ( $arrData )->save ();
     }
+    
+    /**
+     * 从模型中软删除数据
+     *
+     * @return int
+     */
+    public function softDelete() {
+        $objSelect = $this->objSelect->where ( $this->objModel->getKeyConditionForQuery () );
+        $this->objModel->{$this->getDeletedAtColumn ()} = $objTime = $this->objModel->carbon ();
+        $this->objModel->addDate ( $this->getDeletedAtColumn () );
+        return $objSelect->update ( [ 
+                $this->getDeletedAtColumn () => $this->objModel->fromDateTime ( $objTime ) 
+        ] );
+    }
+    
+    /**
+     * 根据主键 ID 删除模型
+     *
+     * @param array|int $ids            
+     * @return int
+     */
+    public function softDestroy($mixId) {
+        $intCount = 0;
+        $mixId = ( array ) $mixId;
+        $objInstance = $this->objModel->newInstance ();
+        foreach ( $objInstance->whereIn ( $objInstance->getPrimaryKeyNameForQuery (), $mixId )->getAll () as $objModel ) {
+            if ($objModel->softDelete ()) {
+                $intCount ++;
+            }
+        }
+        return $intCount;
+    }
+    
+    /**
+     * 恢复软删除的模型
+     *
+     * @return bool|null
+     */
+    public function softRestore() {
+        $this->objModel->{$this->getDeletedAtColumn ()} = null;
+        return $this->objModel->update ();
+    }
+    
+    /**
+     * 获取不包含软删除的数据
+     *
+     * @return \queryyetsimple\database\select
+     */
+    public function withoutSoftDeleted() {
+        return $this->objSelect->whereNull ( $this->getDeletedAtColumn () );
+    }
+    
+    /**
+     * 获取只包含软删除的数据
+     *
+     * @return \queryyetsimple\database\select
+     */
+    public function onlySoftDeleted() {
+        return $this->objSelect->whereNotNull ( $this->getDeletedAtColumn () );
+    }
+    
+    /**
+     * 检查模型是否已经被软删除了
+     *
+     * @return bool
+     */
+    public function softDeleted() {
+        return ! is_null ( $this->objModel->{$this->getDeletedAtColumn ()} );
+    }
+    
+    /**
+     * 获取软删除字段
+     *
+     * @return string
+     */
+    public function getDeletedAtColumn() {
+        if (defined ( get_class ( $this->objModel ) . '::DELETED_AT' )) {
+            eval ( '$strDeleteAt = ' . get_class ( $this->objModel ) . '::DELETED_AT;' );
+        } else {
+            $strDeleteAt = 'deleted_at';
+        }
+        
+        if (! $this->objModel->hasField ( $strDeleteAt ))
+            throw new Exception ( sprintf ( 'Model %s do not have soft delete field [%s]', get_class ( $this->objModel ), $strDeleteAt ) );
+        
+        return $strDeleteAt;
+    }
+    
+    /**
+     * 获取删除表加字段
+     *
+     * @return string
+     */
+    public function getFullDeletedAtColumn() {
+        return $this->objModel->getTable () . '.' . $this->getDeletedAtColumn ();
+    }
 }

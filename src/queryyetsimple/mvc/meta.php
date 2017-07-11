@@ -67,14 +67,14 @@ class meta {
      *
      * @var array
      */
-    protected $arrPropsFields = [ ];
+    protected $arrPropField = [ ];
     
     /**
      * 字段映射属性
      *
      * @var array
      */
-    protected $arrFieldsProps = [ ];
+    protected $arrFieldProp = [ ];
     
     /**
      * 是否使用复合主键
@@ -156,9 +156,9 @@ class meta {
      * @return array
      */
     public function fieldsProp($strField, $mixValue) {
-        if (! isset ( $this->arrFieldsProps [$strField] ))
+        if (! isset ( $this->arrFieldProp [$strField] ))
             return null;
-        $strField = $this->arrFieldsProps [$strField];
+        $strField = $this->arrFieldProp [$strField];
         
         switch (true) {
             case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['int'] ) :
@@ -245,7 +245,34 @@ class meta {
     public function getAutoIncrement() {
         return $this->strAutoIncrement;
     }
+
+     /**
+     * 返回数据库查询的原生字段
+     *
+     * @return array
+     */
+    public function getFields() {
+        return $this->arrFields;
+    }
+
+    /**
+     * 返回属性映射字段
+     *
+     * @return array
+     */
+    public function getPropField() {
+        return $this->arrPropField;
+    }
     
+    /**
+     * 返回字段映射属性
+     *
+     * @return array
+     */
+    public function getFieldProp() {
+        return $this->arrFieldProp;
+    }
+
     /**
      * 返回连接
      *
@@ -284,8 +311,8 @@ class meta {
         }
         
         foreach ( $arrColumnInfo ['list'] as $strField => $arrField ) {
-            $this->arrPropsFields [$strField] = $strField;
-            $this->arrFieldsProps [$strField] = $strField;
+            $this->arrPropField [$strField] = $strField;
+            $this->arrFieldProp [$strField] = $strField;
         }
         
         unset ( $arrColumnInfo );

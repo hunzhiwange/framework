@@ -610,6 +610,7 @@ abstract class connect {
     /**
      * 分析绑定参数类型数据
      *
+     * @see http://php.net/manual/en/pdo.constants.php
      * @param mixed $mixValue            
      * @return string
      */
@@ -622,8 +623,14 @@ abstract class connect {
             case is_bool ( $mixValue ) :
                 return PDO::PARAM_BOOL;
                 break;
-            default :
+            case is_null ( $mixValue ) :
+                return PDO::PARAM_NULL;
+                break;
+            case is_string ( $mixValue ) :
                 return PDO::PARAM_STR;
+                break;
+            default :
+                return PDO::PARAM_STMT;
                 break;
         }
     }
@@ -726,8 +733,8 @@ abstract class connect {
      */
     protected function bindParams(array $arrBindParams = []) {
         foreach ( $arrBindParams as $mixKey => $mixVal ) {
-            // 占位符
             $mixKey = is_numeric ( $mixKey ) ? $mixKey + 1 : ':' . $mixKey;
+            
             if (is_array ( $mixVal )) {
                 $strParam = $mixVal [1];
                 $mixVal = $mixVal [0];

@@ -1468,7 +1468,7 @@ class select {
      * @param int $intType            
      * @return $this
      */
-    public function bind($mixName, $mixValue = null, $intType = PDO::PARAM_STR) {
+    public function bind($mixName, $mixValue, $intType = PDO::PARAM_STR) {
         if ($this->checkFlowControl ())
             return $this;
         if (is_array ( $mixName )) {
@@ -1482,22 +1482,13 @@ class select {
                 $this->arrBindParams [$mixKey] = $mixValue;
             }
         } else {
-            if (is_null ( $mixValue )) {
+            if (! is_array ( $mixValue )) {
                 $mixValue = [ 
-                        $mixName,
+                        $mixValue,
                         $intType 
                 ];
-                $this->arrBindParams [] = $mixValue;
-            } else {
-                if (! is_array ( $mixValue )) {
-                    $mixValue = [ 
-                            $mixValue,
-                            $intType 
-                    ];
-                }
-                
-                $this->arrBindParams [$mixName] = $mixValue;
             }
+            $this->arrBindParams [$mixName] = $mixValue;
         }
         return $this;
     }
@@ -3616,9 +3607,10 @@ class select {
     protected function getBindData($arrData, &$arrBind = [], &$intQuestionMark = 0, $intIndex = 0) {
         $arrField = $arrValue = [ ];
         $strTableName = $this->getCurrentTable ();
+        
         foreach ( $arrData as $sKey => $mixValue ) {
             if (is_null ( $mixValue )) {
-                continue;
+                // continue;
             }
             
             // 表达式支持
@@ -3650,6 +3642,7 @@ class select {
                     $sKey = $sKey . '_' . $intIndex;
                 }
                 $arrValue [] = ':' . $sKey;
+                
                 $this->bind ( $sKey, $mixValue, $this->objConnect->getBindParamType ( $mixValue ) );
             }
         }
