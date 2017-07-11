@@ -82,7 +82,7 @@ class mysql extends connect implements interfaces_connect {
         $strSql = 'SHOW FULL COLUMNS FROM ' . $this->qualifyTableOrColumn ( $sTableName );
         $arrResult = [ 
                 'list' => [ ],
-                'primary_key' => [ ],
+                'primary_key' => null,
                 'auto_increment' => null 
         ];
         
@@ -112,6 +112,8 @@ class mysql extends connect implements interfaces_connect {
                     $arrResult ['auto_increment'] = $arrTemp ['name'];
                 }
                 if ($arrTemp ['primary_key']) {
+                    if (! is_array ( $arrResult ['primary_key'] ))
+                        $arrResult ['primary_key'] = [ ];
                     $arrResult ['primary_key'] [] = $arrTemp ['name'];
                 }
             }
@@ -193,5 +195,4 @@ class mysql extends connect implements interfaces_connect {
         if (! empty ( $arrOption ['charset'] ))
             return ';charset=' . $arrOption ['charset'];
     }
-
 }
