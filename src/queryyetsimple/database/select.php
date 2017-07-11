@@ -252,6 +252,13 @@ class select {
     protected $strInTimeCondition = null;
     
     /**
+     * 额外的查询扩展
+     *
+     * @var object
+     */
+    protected $objCallSelect;
+    
+    /**
      * 构造函数
      *
      * @param queryyetsimple\database\connect $objConnect            
@@ -300,7 +307,29 @@ class select {
             return $this->top ( intval ( substr ( $sMethod, 3 ) ) );
         }
         
-        throw new Exception ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ) );
+        // 查询组件
+        if (! $this->objCallProcessor) {
+            throw new Exception ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ) );
+        }
+        
+        // 调用事件
+        return call_user_func_array ( [ 
+                $this->objCallProcessor,
+                $sMethod 
+        ], $arrArgs );
+    }
+    
+    /**
+     * 注册额外的查询扩展
+     *
+     * @param object $objCallSelect            
+     * @return $this
+     */
+    public function registerCallSelect($objCallSelect) {
+        $this->objCallSelect = $objCallSelect;
+        if (method_exists ( $this->objCallSelect, 'registerSelect' ))
+            $this->objCallSelect->registerSelect ( $this );
+        return $this;
     }
     
     // ######################################################
@@ -3433,12 +3462,14 @@ class select {
      */
     protected function queryDefault(&$arrData) {
         if (empty ( $arrData )) {
+            if (! $this->arrOption ['limitquery'])
+                $arrData = null;
             return;
         }
         
         // 返回一条记录
         if (! $this->arrOption ['limitquery']) {
-            $arrData = reset ( $arrData );
+            $arrData = reset ( $arrData ) ?  : null;
         }
     }
     
@@ -3450,6 +3481,8 @@ class select {
      */
     protected function queryClass(&$arrData) {
         if (empty ( $arrData )) {
+            if (! $this->arrOption ['limitquery'])
+                $arrData = null;
             return;
         }
         
@@ -3466,7 +3499,7 @@ class select {
         
         // 创建一个单独的对象
         if (! $this->arrOption ['limitquery']) {
-            $arrData = reset ( $arrData );
+            $arrData = reset ( $arrData ) ?  : null;
         } else {
             if ($this->arrQueryParams ['as_collection']) {
                 $arrData = new collection ( $arrData, $sClassName );
