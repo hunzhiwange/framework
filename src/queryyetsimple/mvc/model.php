@@ -1581,7 +1581,12 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
         
         // 作用域
         if (method_exists ( $this, 'scope' . ucwords ( $sMethod ) )) {
-            return $this->scope ( $sMethod );
+            array_unshift ( $arrArgs, $sMethod );
+            
+            return call_user_func_array ( [ 
+                    $this,
+                    'scope' 
+            ], $arrArgs );
         }
         
         try {

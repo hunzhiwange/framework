@@ -312,36 +312,42 @@ class select {
      * @param mixed $mixScope            
      * @return \queryyetsimple\mvc\interfaces\model
      */
-    public function scope($mixScope) {
+    public function scope($mixScope /* args */) {
         if ($mixScope instanceof database_select) {
             return $mixScope;
         }
         
         $objSelect = $this->objSelect;
         
+        $arrArgs = func_get_args ();
+        array_shift ( $arrArgs );
+        array_unshift ( $arrArgs, $objSelect );
+        
         if ($mixScope instanceof Closure) {
-            $mixResultCallback = call_user_func_array ( $mixScope, [ 
-                    $objSelect 
-            ] );
+            $mixResultCallback = call_user_func_array ( $mixScope, $arrArgs );
             if ($mixResultCallback instanceof database_select) {
                 $objSelect = $mixResultCallback;
-                unset ( $mixResultCallback );
             }
+            unset ( $mixResultCallback );
             $this->objModel->setSelectForQuery ( $objSelect );
         } else {
             foreach ( helper::arrays ( $mixScope ) as $strScope ) {
                 $strScope = 'scope' . ucwords ( $strScope );
                 if (method_exists ( $this->objModel, $strScope )) {
-                    $mixResultCallback = $this->objModel->$strScope ( $objSelect );
+                    $mixResultCallback = call_user_func_array ( [ 
+                            $this->objModel,
+                            $strScope 
+                    ], $arrArgs );
                     if ($mixResultCallback instanceof database_select) {
                         $objSelect = $mixResultCallback;
-                        unset ( $mixResultCallback );
                     }
+                    unset ( $mixResultCallback );
                     $this->objModel->setSelectForQuery ( $objSelect );
                 }
             }
         }
         
+        unset ( $objSelect, $arrArgs, $mixScope );
         return $this->objModel;
     }
 }
