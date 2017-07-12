@@ -1579,6 +1579,11 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             return $this;
         }
         
+        // 作用域
+        if (method_exists ( $this, 'scope' . ucwords ( $sMethod ) )) {
+            return $this->scope ( $sMethod );
+        }
+        
         try {
             // 调用 trait __call 实现扩展方法
             return $this->infinityCall ( $sMethod, $arrArgs );
