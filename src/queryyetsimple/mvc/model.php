@@ -21,8 +21,10 @@ use ArrayAccess;
 use Carbon\Carbon;
 use JsonSerializable;
 use DateTimeInterface;
+use BadMethodCallException;
 use queryyetsimple\flow\control;
 use queryyetsimple\string\string;
+use queryyetsimple\classs\infinity;
 use queryyetsimple\classs\serialize;
 use queryyetsimple\collection\collection;
 use queryyetsimple\support\interfaces\arrayable;
@@ -40,6 +42,10 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     
     use control;
     use serialize;
+    use infinity {
+        __callStatic as infinityCallStatic;
+        __call as infinityCall;
+    }
     
     /**
      * 与模型关联的数据表
@@ -1573,10 +1579,15 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             return $this;
         }
         
-        return call_user_func_array ( [ 
-                $this->getClassCollectionQuery (),
-                $sMethod 
-        ], $arrArgs );
+        try {
+            // 调用 trait __call 实现扩展方法
+            return $this->infinityCall ( $sMethod, $arrArgs );
+        } catch ( BadMethodCallException $oE ) {
+            return call_user_func_array ( [ 
+                    $this->getClassCollectionQuery (),
+                    $sMethod 
+            ], $arrArgs );
+        }
     }
     
     /**
