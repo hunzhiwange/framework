@@ -17,6 +17,7 @@ queryphp;
 
 use SplSubject;
 use SplObserver;
+use RuntimeException;
 
 /**
  * 观察者角色 observer
@@ -53,6 +54,13 @@ abstract class observer implements SplObserver {
         
         $arrArgs = func_get_args ();
         array_shift ( $arrArgs );
+        
+        if (! is_callable ( [ 
+                $this,
+                $strMethod 
+        ] )) {
+            throw new RuntimeException ( sprintf ( 'Observer %s must has run method', get_class ( $this ) ) );
+        }
         
         $objSubject->container ()->call ( [ 
                 $this,

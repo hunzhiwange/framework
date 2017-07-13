@@ -102,6 +102,7 @@ abstract class subject implements SplSubject, interfaces_subject {
     public function attachs($mixObserver) {
         if (is_string ( $mixObserver )) {
             $strObserver = $mixObserver;
+            
             if (($mixObserver = $this->objContainer->make ( $mixObserver )) === false)
                 throw new InvalidArgumentException ( sprintf ( 'Observer %s is not valid.', $strObserver ) );
         }
