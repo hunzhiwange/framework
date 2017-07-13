@@ -38,7 +38,7 @@ abstract class provider {
      * @param \queryyetsimple\support\interfaces\container $objContainer            
      * @return void
      */
-    public function __construct(container $objProject) {
+    public function __construct(container $objContainer) {
         $this->objContainer = $objContainer;
     }
     

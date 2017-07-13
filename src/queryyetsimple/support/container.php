@@ -170,14 +170,18 @@ class container implements ArrayAccess, interfaces_container {
      * 设置别名
      *
      * @param array|string $mixAlias            
-     * @param string $strValue            
+     * @param string|null|array $mixValue            
      * @return void
      */
-    public function alias($mixAlias, $strValue = null) {
+    public function alias($mixAlias, $mixValue = null) {
         if (is_array ( $mixAlias )) {
-            $this->arrAlias = array_merge ( $this->arrAlias, $mixAlias );
+            foreach ( $mixAlias as $strKey => $mixValue ) {
+                $this->alias ( $strKey, $mixValue );
+            }
         } else {
-            $this->arrAlias [$mixAlias] = $strValue;
+            foreach ( ( array ) $mixValue as $strValue ) {
+                $this->arrAlias [$strValue] = $mixAlias;
+            }
         }
         return $this;
     }
@@ -431,6 +435,8 @@ class container implements ArrayAccess, interfaces_container {
                     $arrResult ['args'] [$strName] = $this->make ( $objParameterClass );
                     $booFindClass = true;
                 } else {
+                    print_r ( $this->arrAlias );
+                    
                     throw new InvalidArgumentException ( sprintf ( 'Class or interface %s is not register in container', $objParameterClass ) );
                 }
             } elseif ($objParameter->isDefaultValueAvailable ()) {

@@ -56,10 +56,10 @@ interface container {
      * 设置别名
      *
      * @param array|string $mixAlias            
-     * @param string $strValue            
+     * @param string|null|array $mixValue            
      * @return void
      */
-    public function alias($mixAlias, $strValue = null);
+    public function alias($mixAlias, $mixValue = null);
     
     /**
      * 分组注册
