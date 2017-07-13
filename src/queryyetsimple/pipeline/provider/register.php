@@ -23,7 +23,10 @@ queryphp;
  */
 return [ 
         'register@pipeline' => [ 
-                'queryyetsimple\pipeline\pipeline',
+                [ 
+                        'queryyetsimple\pipeline\pipeline',
+                        'queryyetsimple\pipeline\interfaces\pipeline' 
+                ],
                 function ($oProject) {
                     return new queryyetsimple\pipeline\pipeline ( $oProject );
                 } 
