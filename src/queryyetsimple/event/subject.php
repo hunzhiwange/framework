@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\event;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,22 +15,15 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\observer\subject as observer_subject;
+
 /**
- * event.register 服务提供者
+ * 事件观察者目标角色 subject
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2017.07.12
  * @version 1.0
  */
-return [ 
-        'singleton@event' => [ 
-                [ 
-                        'queryyetsimple\event\dispatch',
-                        'queryyetsimple\event\interfaces\dispatch' 
-                ],
-                function ($oProject) {
-                    return new queryyetsimple\event\dispatch ( $oProject );
-                } 
-        ] 
-];
+class subject extends observer_subject {
+}
