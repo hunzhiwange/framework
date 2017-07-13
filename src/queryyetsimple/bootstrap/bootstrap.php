@@ -153,7 +153,7 @@ class bootstrap {
      */
     protected function runApp() {
         // 创建 & 注册
-        $this->objProject->instance ( 'app', ($objApp = $this->objProject->make ( application::class )->bootstrap ( $this->objProject->router->app () )->registerAppProvider ()) );
+        $objApp = $this->objProject->make ( application::class )->bootstrap ( $this->objProject->router->app () )->registerAppProvider ();
         
         // 运行应用
         $objApp->run ();

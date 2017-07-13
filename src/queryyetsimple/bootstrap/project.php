@@ -68,6 +68,7 @@ class project extends container implements interfaces_project {
      * @var array
      */
     protected static $arrBaseProvider = [ 
+            'queryyetsimple\mvc',
             'queryyetsimple\option',
             'queryyetsimple\http',
             'queryyetsimple\log',
@@ -261,8 +262,9 @@ class project extends container implements interfaces_project {
      * @return $this
      */
     protected function registerPsr4(ClassLoader $objComposer) {
-        $this->instance ( psr4::class, new psr4 ( $this, $objComposer, dirname ( __DIR__ ) . '/bootstrap/sandbox' ) );
+        $this->instance ( 'psr4', new psr4 ( $this, $objComposer, dirname ( __DIR__ ) . '/bootstrap/sandbox' ) );
         $this->alias ( 'psr4', psr4::class );
+        
         spl_autoload_register ( [ 
                 $this ['psr4'],
                 'autoload' 
@@ -295,16 +297,11 @@ class project extends container implements interfaces_project {
      */
     protected function registerMvcProvider() {
         // 注册本身
-        $this->instance ( project::class, $this );
+        $this->instance ( 'project', $this );
         
         // 注册 app
-        $this->singleton ( 'queryyetsimple\bootstrap\application', function (project $objProject, $sApp, $arrOption = []) {
+        $this->singleton ( application::class, function (project $objProject, $sApp, $arrOption = []) {
             return new application ( $objProject, $sApp, $arrOption );
-        } );
-        
-        // 注册 view
-        $this->singleton ( 'queryyetsimple\mvc\view', function (project $oProject) {
-            return new view ( $oProject ['view.theme'] );
         } );
         
         return $this;
@@ -317,9 +314,12 @@ class project extends container implements interfaces_project {
      */
     protected function registerAlias() {
         $this->alias ( [ 
-                'project' => 'queryyetsimple\bootstrap\project',
-                'controller' => 'queryyetsimple\mvc\controller',
-                'view' => 'queryyetsimple\mvc\view' 
+                'project' => [ 
+                        'queryyetsimple\bootstrap\project',
+                        'queryyetsimple\support\interfaces\container',
+                        'queryyetsimple\bootstrap\interfaces\project',
+                        'app' 
+                ] 
         ] );
         return $this;
     }
@@ -427,37 +427,27 @@ class project extends container implements interfaces_project {
      */
     protected function registerProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
         $booForce = true;
-        foreach ( helper::arrayMergeSource ( $this ['psr4'], $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
-            if (is_string ( $strType ) && $strType) {
-                if (strpos ( $strType, '@' ) !== false) {
-                    $arrRegisterArgs = explode ( '@', $strType );
-                } else {
-                    $arrRegisterArgs = [ 
-                            $strType,
-                            '' 
-                    ];
-                }
+        foreach ( helper::arrayMergeSource ( $this ['psr4'], $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $arrProvider ) {
+            
+            if (strpos ( $strType, '@' ) !== false) {
+                $arrRegisterArgs = explode ( '@', $strType );
             } else {
                 $arrRegisterArgs = [ 
                         'register',
-                        '' 
+                        $strType 
                 ];
             }
             
             switch ($arrRegisterArgs [0]) {
                 case 'singleton' :
-                    $this->singleton ( $mixProvider [0], $mixProvider [1] );
-                    break;
                 case 'instance' :
-                    $this->instance ( $mixProvider [0], $mixProvider [1] );
-                    break;
                 case 'register' :
-                    $this->register ( $mixProvider [0], $mixProvider [1] );
+                    $this->{$arrRegisterArgs [0]} ( $arrRegisterArgs [1], $arrProvider [1] );
                     break;
             }
             
-            if ($arrRegisterArgs [1]) {
-                $this->alias ( $arrRegisterArgs [1], $mixProvider [0] );
+            if ($arrProvider [0]) {
+                $this->alias ( $arrRegisterArgs [1], $arrProvider [0] );
             }
         }
         return $this;
