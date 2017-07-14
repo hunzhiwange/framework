@@ -132,13 +132,16 @@ class select {
      *
      * @param mixed $mixId            
      * @param array $arrColumn            
+     * @param array $arrData            
+     * @param mixed $mixConnect            
+     * @param string $strTable            
      * @return \queryyetsimple\mvc\interfaces\model
      */
-    public function findOrNew($mixId, $arrColumn = ['*']) {
+    public function findOrNew($mixId, $arrColumn = ['*'], $arrData = null, $mixConnect = null, $strTable = null) {
         if (! is_null ( $objModel = $this->find ( $mixId, $arrColumn ) )) {
             return $objModel;
         }
-        return $this->objModel->newInstance ();
+        return $this->objModel->newInstance ( $arrData, $mixConnect ?  : $this->objModel->getConnect (), $strTable ?  : $this->objModel->getTable () );
     }
     
     /**
@@ -168,26 +171,30 @@ class select {
      * 查找第一个结果，未找到则初始化一个新的模型
      *
      * @param array $arrProp            
+     * @param mixed $mixConnect            
+     * @param string $strTable            
      * @return \queryyetsimple\mvc\interfaces\model
      */
-    public function firstOrNew(array $arrProp) {
+    public function firstOrNew(array $arrProp, $mixConnect = null, $strTable = null) {
         if (! is_null ( ($objModel = $this->getFirstByProp ( $arrProp )) )) {
             return $objModel;
         }
-        return $this->objModel->newInstance ( $arrProp );
+        return $this->objModel->newInstance ( $arrProp, $mixConnect ?  : $this->objModel->getConnect (), $strTable ?  : $this->objModel->getTable () );
     }
     
     /**
      * 尝试根据属性查找一个模型，未找到则新建一个模型
      *
      * @param array $arrProp            
+     * @param mixed $mixConnect            
+     * @param string $strTable            
      * @return \queryyetsimple\mvc\interfaces\model
      */
-    public function firstOrCreate(array $arrProp) {
+    public function firstOrCreate(array $arrProp, $mixConnect = null, $strTable = null) {
         if (! is_null ( ($objModel = $this->getFirstByProp ( $arrProp )) )) {
             return $objModel;
         }
-        return $this->objModel->newInstance ( $arrProp )->save ();
+        return $this->objModel->newInstance ( $arrProp, $mixConnect ?  : $this->objModel->getConnect (), $strTable ?  : $this->objModel->getTable () )->create ();
     }
     
     /**
@@ -195,20 +202,24 @@ class select {
      *
      * @param array $arrProp            
      * @param array $arrData            
+     * @param mixed $mixConnect            
+     * @param string $strTable            
      * @return \queryyetsimple\mvc\interfaces\model
      */
-    public function updateOrCreate(array $arrProp, array $arrData = []) {
-        return $this->firstOrNew ( $arrProp )->forceProps ( $arrData )->save ();
+    public function updateOrCreate(array $arrProp, array $arrData = [], $mixConnect = null, $strTable = null) {
+        return $this->firstOrNew ( $arrProp, $mixConnect, $strTable )->forceProps ( $arrData )->save ();
     }
     
     /**
      * 新建一个模型
      *
      * @param array $arrProp            
+     * @param mixed $mixConnect            
+     * @param string $strTable            
      * @return \queryyetsimple\mvc\interfaces\model
      */
-    public function onlyCreate(array $arrProp = []) {
-        return $this->objModel->newInstance ( $arrProp )->save ();
+    public function onlyCreate(array $arrProp = [], $mixConnect = null, $strTable = null) {
+        return $this->objModel->newInstance ( $arrProp, $mixConnect ?  : $this->objModel->getConnect (), $strTable ?  : $this->objModel->getTable () )->save ();
     }
     
     /**

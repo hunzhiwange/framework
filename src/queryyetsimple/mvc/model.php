@@ -248,11 +248,11 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      * 构造函数
      *
      * @param array|null $arrData            
-     * @param string $strTable            
      * @param mixed $mixConnect            
+     * @param string $strTable            
      * @return void
      */
-    public function __construct($arrData = null, $strTable = null, $mixConnect = null) {
+    public function __construct($arrData = null, $mixConnect = null, $strTable = null) {
         if (is_array ( $arrData ) && $arrData) {
             if ($this->arrConstructBlack) {
                 foreach ( $arrData as $strField => $mixValue ) {
@@ -266,12 +266,12 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             }
         }
         
-        if (! is_null ( $strTable )) {
-            $this->strTable = $strTable;
-        }
-        
         if (! is_null ( $mixConnect )) {
             $this->mixConnect = $mixConnect;
+        }
+        
+        if (! is_null ( $strTable )) {
+            $this->strTable = $strTable;
         }
     }
     
@@ -1360,10 +1360,12 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      * 创建新的应用程序
      *
      * @param array $arrProp            
+     * @param mixed $mixConnect            
+     * @param string $strTable            
      * @return static
      */
-    public function newInstance($arrProp = []) {
-        return new static ( ( array ) $arrProp );
+    public function newInstance($arrProp = [], $mixConnect = null, $strTable = null) {
+        return new static ( ( array ) $arrProp, $mixConnect, $strTable );
     }
     
     /**

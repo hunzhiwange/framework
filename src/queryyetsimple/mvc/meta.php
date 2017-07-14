@@ -143,7 +143,7 @@ class meta {
     public static function instance($strTable, $mixConnect = null) {
         $strUnique = static::getUnique ( $strTable, $mixConnect );
         if (! isset ( static::$arrInstances [$strUnique] )) {
-            return static::$arrInstances [$strUnique] = new self ( $strTable, $mixConnect );
+            return static::$arrInstances [$strUnique] = new static ( $strTable, $mixConnect );
         } else {
             return static::$arrInstances [$strUnique];
         }
