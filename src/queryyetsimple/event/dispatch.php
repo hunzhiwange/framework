@@ -15,7 +15,6 @@ namespace queryyetsimple\event;
 ##########################################################
 queryphp;
 
-use RuntimeException;
 use queryyetsimple\support\interfaces\container;
 use queryyetsimple\event\interfaces\dispatch as interfaces_dispatch;
 
@@ -69,10 +68,11 @@ class dispatch implements interfaces_dispatch {
         
         $arrArgs = func_get_args ();
         array_shift ( $arrArgs );
-        array_unshift ( $arrArgs, $objEvent );
+        if (is_object ( $objEvent ))
+            array_unshift ( $arrArgs, $objEvent );
         
         if (! $this->hasListener ( $mixEvent )) {
-            throw new RuntimeException ( sprintf ( 'Event %s do not have listener', $mixEvent ) );
+            return;
         }
         
         call_user_func_array ( [ 
