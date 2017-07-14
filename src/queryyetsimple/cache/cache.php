@@ -124,7 +124,7 @@ class cache implements interfaces_cache {
      * @return \queryyetsimple\cache\repository
      */
     protected function makeConnectFile($arrOption = []) {
-        return $this->repository ( new file ( array_merge ( $this->getOption ( 'file' ), $arrOption ) ) );
+        return $this->repository ( new file ( array_merge ( $this->getOption ( 'file' , $arrOption) ) ) );
     }
     
     /**
@@ -134,7 +134,7 @@ class cache implements interfaces_cache {
      * @return \queryyetsimple\cache\repository
      */
     protected function makeConnectMemcache($arrOption = []) {
-        return $this->repository ( new memcache ( array_merge ( $this->getOption ( 'memcache' ), $arrOption ) ) );
+        return $this->repository ( new memcache ( array_merge ( $this->getOption ( 'memcache', $arrOption ) ) ) );
     }
     
     /**
@@ -144,7 +144,7 @@ class cache implements interfaces_cache {
      * @return \queryyetsimple\cache\repository
      */
     protected function makeConnectRedis($arrOption = []) {
-        return $this->repository ( new redis ( array_merge ( $this->getOption ( 'redis' ), $arrOption ) ) );
+        return $this->repository ( new redis ( array_merge ( $this->getOption ( 'redis', $arrOption ) ) ) );
     }
     
     /**
@@ -160,16 +160,17 @@ class cache implements interfaces_cache {
     /**
      * 读取默认缓存配置
      *
-     * @param string $strConnect            
+     * @param string $strConnect  
+     * @param array $arrExtendOption    
      * @return array
      */
-    protected function getOption($strConnect) {
+    protected function getOption($strConnect, array $arrExtendOption = []) {
         $arrOption = $this->objProject ['option'] ['cache\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         
         return array_merge ( array_filter ( $this->objProject ['option'] ['cache\connect.' . $strConnect], function ($mixValue) {
             return ! is_null ( $mixValue );
-        } ), $arrOption );
+        } ), $arrOption, $arrExtendOption );
     }
     
     /**

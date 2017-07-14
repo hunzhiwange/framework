@@ -135,7 +135,7 @@ class database implements interfaces_database {
      * @param array $arrExtendOption            
      * @return array
      */
-    protected function getOption($strConnect, $arrExtendOption = []) {
+    protected function getOption($strConnect, array $arrExtendOption = []) {
         $arrOption = $this->objProject ['option'] ['database\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         

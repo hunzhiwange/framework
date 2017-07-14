@@ -127,7 +127,7 @@ class session implements interfaces_session {
      * @return \queryyetsimple\session\memcache
      */
     protected function makeConnectMemcache($arrOption = []) {
-        return new memcache ( array_merge ( $this->getOption ( 'memcache' ), $arrOption ) );
+        return new memcache ( array_merge ( $this->getOption ( 'memcache', $arrOption ) ) );
     }
     
     /**
@@ -137,7 +137,7 @@ class session implements interfaces_session {
      * @return \queryyetsimple\session\redis
      */
     protected function makeConnectRedis($arrOption = []) {
-        return new redis ( array_merge ( $this->getOption ( 'redis' ), $arrOption ) );
+        return new redis ( array_merge ( $this->getOption ( 'redis', $arrOption ) ) );
     }
     
     /**
@@ -154,15 +154,16 @@ class session implements interfaces_session {
      * 读取默认 session 配置
      *
      * @param string $strConnect            
+     * @param array $arrExtendOption            
      * @return array
      */
-    protected function getOption($strConnect) {
+    protected function getOption($strConnect, array $arrExtendOption = []) {
         $arrOption = $this->objProject ['option'] ['session\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         
         return array_merge ( array_filter ( $this->objProject ['option'] ['session\connect.' . $strConnect], function ($mixValue) {
             return ! is_null ( $mixValue );
-        } ), $arrOption );
+        } ), $arrOption, $arrExtendOption );
     }
     
     /**

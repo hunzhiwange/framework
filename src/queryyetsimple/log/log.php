@@ -125,7 +125,7 @@ class log implements interfaces_log {
      * @return \queryyetsimple\log\file
      */
     protected function makeConnectFile($arrOption = []) {
-        return new file ( array_merge ( $this->getOption ( 'file' ), $arrOption ) );
+        return new file ( array_merge ( $this->getOption ( 'file', $arrOption ) ) );
     }
     
     /**
@@ -141,14 +141,15 @@ class log implements interfaces_log {
     /**
      * 读取默认日志配置
      *
-     * @param string $strConnect            
+     * @param string $strConnect    
+     * @param array $arrExtendOption     
      * @return array
      */
-    protected function getOption($strConnect) {
+    protected function getOption($strConnect, array $arrExtendOption = []) {
         $arrOption = $this->objProject ['option'] ['log\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         
-        return array_merge ( $this->objProject ['option'] ['log\connect.' . $strConnect], $arrOption );
+        return array_merge ( $this->objProject ['option'] ['log\connect.' . $strConnect], $arrOption, $arrExtendOption );
     }
     
     /**
