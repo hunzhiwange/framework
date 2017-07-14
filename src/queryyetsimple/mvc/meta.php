@@ -141,10 +141,11 @@ class meta {
      * @return $this
      */
     public static function instance($strTable, $mixConnect = null) {
-        if (! isset ( static::$arrInstances [$strTable] )) {
-            return static::$arrInstances [$strTable] = new self ( $strTable );
+        $strUnique = static::getUnique ( $strTable, $mixConnect );
+        if (! isset ( static::$arrInstances [$strUnique] )) {
+            return static::$arrInstances [$strUnique] = new self ( $strTable, $mixConnect );
         } else {
-            return static::$arrInstances [$strTable];
+            return static::$arrInstances [$strUnique];
         }
     }
     
@@ -245,8 +246,8 @@ class meta {
     public function getAutoIncrement() {
         return $this->strAutoIncrement;
     }
-
-     /**
+    
+    /**
      * 返回数据库查询的原生字段
      *
      * @return array
@@ -254,7 +255,7 @@ class meta {
     public function getFields() {
         return $this->arrFields;
     }
-
+    
     /**
      * 返回属性映射字段
      *
@@ -272,7 +273,7 @@ class meta {
     public function getFieldProp() {
         return $this->arrFieldProp;
     }
-
+    
     /**
      * 返回连接
      *
@@ -325,5 +326,16 @@ class meta {
      */
     protected function initConnect() {
         $this->objConnect = database::connect ( $this->mixConnect );
+    }
+    
+    /**
+     * 取得唯一值
+     *
+     * @param string $strTabe            
+     * @param mixed $mixConnect            
+     * @return string
+     */
+    protected static function getUnique($strTable, $mixConnect = null) {
+        return $strTable . '.' . md5 ( serialize ( $mixConnect ) );
     }
 }
