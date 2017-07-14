@@ -115,7 +115,7 @@ class database implements interfaces_database {
      * @return \queryyetsimple\database\mysql
      */
     protected function makeConnectMysql($arrOption = []) {
-        return new mysql ( $this->objProject ['log']->connect (), array_merge ( $this->getOption ( 'mysql' ), is_array ( $arrOption ) ? $arrOption : [ ] ) );
+        return new mysql ( $this->objProject ['log']->connect (), $this->getOption ( 'mysql', is_array ( $arrOption ) ? $arrOption : [ ] ) );
     }
     
     /**
@@ -132,13 +132,14 @@ class database implements interfaces_database {
      * 读取默认数据库配置
      *
      * @param string $strConnect            
+     * @param array $arrExtendOption            
      * @return array
      */
-    protected function getOption($strConnect) {
+    protected function getOption($strConnect, $arrExtendOption = []) {
         $arrOption = $this->objProject ['option'] ['database\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         
-        return $this->parseOption ( array_merge ( $this->objProject ['option'] ['database\connect.' . $strConnect], $arrOption ) );
+        return $this->parseOption ( array_merge ( $this->objProject ['option'] ['database\connect.' . $strConnect], $arrOption, $arrExtendOption ) );
     }
     
     /**
