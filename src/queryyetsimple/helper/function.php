@@ -36,6 +36,20 @@ if (! function_exists ( 'project' )) {
     }
 }
 
+if (! function_exists ( 'app' )) {
+    /**
+     * 返回项目容器或者注入
+     * project 别名函数
+     *
+     * @param string|null $sInstance            
+     * @param array $arrArgs            
+     * @return \queryyetsimple\bootstrap\project
+     */
+    function app($sInstance = null, $arrArgs = []) {
+        project ( $sInstance, $arrArgs );
+    }
+}
+
 if (! function_exists ( 'dump' )) {
     /**
      * 调试一个变量

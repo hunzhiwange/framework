@@ -264,6 +264,8 @@ class project extends container implements interfaces_project {
     protected function registerPsr4(ClassLoader $objComposer) {
         $this->instance ( 'psr4', new psr4 ( $this, $objComposer, dirname ( __DIR__ ) . '/bootstrap/sandbox' ) );
         $this->alias ( 'psr4', psr4::class );
+        $this->instance ( 'composer', $objComposer );
+        $this->alias ( 'composer', ClassLoader::class );
         
         spl_autoload_register ( [ 
                 $this ['psr4'],
@@ -427,27 +429,44 @@ class project extends container implements interfaces_project {
      */
     protected function registerProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
         $booForce = true;
-        foreach ( helper::arrayMergeSource ( $this ['psr4'], $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $arrProvider ) {
+        foreach ( helper::arrayMergeSource ( $this ['psr4'], $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
             
             if (strpos ( $strType, '@' ) !== false) {
                 $arrRegisterArgs = explode ( '@', $strType );
             } else {
-                $arrRegisterArgs = [ 
-                        'register',
-                        $strType 
-                ];
+                if ($strType == 'bootstrap') {
+                    $arrRegisterArgs = [ 
+                            $strType 
+                    ];
+                } else {
+                    $arrRegisterArgs = [ 
+                            'register',
+                            $strType 
+                    ];
+                }
             }
             
             switch ($arrRegisterArgs [0]) {
                 case 'singleton' :
                 case 'instance' :
                 case 'register' :
-                    $this->{$arrRegisterArgs [0]} ( $arrRegisterArgs [1], $arrProvider [1] );
+                    $this->{$arrRegisterArgs [0]} ( $arrRegisterArgs [1], $mixProvider [1] );
+                    if ($mixProvider [0]) {
+                        $this->alias ( $arrRegisterArgs [1], $mixProvider [0] );
+                    }
                     break;
-            }
-            
-            if ($arrProvider [0]) {
-                $this->alias ( $arrRegisterArgs [1], $arrProvider [0] );
+                case 'bootstrap' :
+                    if (! is_array ( $mixProvider )) {
+                        $mixProvider = [ 
+                                $mixProvider 
+                        ];
+                    }
+                    foreach ( $mixProvider as $calVal ) {
+                        call_user_func_array ( $calVal, [ 
+                                $this 
+                        ] );
+                    }
+                    break;
             }
         }
         return $this;
