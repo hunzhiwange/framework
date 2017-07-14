@@ -18,7 +18,7 @@ queryphp;
 use Closure;
 use Exception;
 use queryyetsimple\helper\helper;
-use queryyetsimple\mvc\exceptions\model_not_found;
+use queryyetsimple\mvc\exception\model_not_found;
 use queryyetsimple\database\select as database_select;
 
 /**
@@ -88,6 +88,7 @@ class select {
         if (is_array ( $mixId )) {
             return $this->findMany ( $mixId, $arrColumn );
         }
+        
         return $this->objSelect->where ( $this->objModel->getPrimaryKeyNameForQuery (), '=', $mixId )->setColumns ( $arrColumn )->getOne ();
     }
     
@@ -170,7 +171,7 @@ class select {
      * @return \queryyetsimple\mvc\interfaces\model
      */
     public function firstOrNew(array $arrProp) {
-        if (! is_null ( $objModel = $this->objSelect->where ( $arrProp )->getOne () )) {
+        if (! is_null ( ($objModel = $this->getFirstByProp ( $arrProp )) )) {
             return $objModel;
         }
         return $this->objModel->newInstance ( $arrProp );
@@ -183,7 +184,7 @@ class select {
      * @return \queryyetsimple\mvc\interfaces\model
      */
     public function firstOrCreate(array $arrProp) {
-        if (! is_null ( $objModel = $this->objSelect->where ( $arrProp )->getOne () )) {
+        if (! is_null ( ($objModel = $this->getFirstByProp ( $arrProp )) )) {
             return $objModel;
         }
         return $this->objModel->newInstance ( $arrProp )->save ();
@@ -219,9 +220,16 @@ class select {
         $objSelect = $this->objSelect->where ( $this->objModel->getKeyConditionForQuery () );
         $this->objModel->{$this->getDeletedAtColumn ()} = $objTime = $this->objModel->carbon ();
         $this->objModel->addDate ( $this->getDeletedAtColumn () );
-        return $objSelect->update ( [ 
+        
+        $this->objModel->runEvent ( model::BEFORE_SOFT_DELETE_EVENT );
+        
+        $intNum = $objSelect->update ( [ 
                 $this->getDeletedAtColumn () => $this->objModel->fromDateTime ( $objTime ) 
         ] );
+        
+        $this->objModel->runEvent ( model::AFTER_SOFT_DELETE_EVENT );
+        
+        return $intNum;
     }
     
     /**
@@ -248,8 +256,14 @@ class select {
      * @return bool|null
      */
     public function softRestore() {
+        $this->objModel->runEvent ( model::BEFORE_SOFT_RESTORE_EVENT );
+        
         $this->objModel->{$this->getDeletedAtColumn ()} = null;
-        return $this->objModel->update ();
+        $intNum = $this->objModel->update ();
+        
+        $this->objModel->runEvent ( model::AFTER_SOFT_RESTORE_EVENT );
+        
+        return $intNum;
     }
     
     /**
@@ -349,5 +363,18 @@ class select {
         
         unset ( $objSelect, $arrArgs, $mixScope );
         return $this->objModel;
+    }
+    
+    /**
+     * 尝试根据属性查找一个模型
+     *
+     * @param array $arrProp            
+     * @return \queryyetsimple\mvc\interfaces\model|null
+     */
+    protected function getFirstByProp(array $arrProp) {
+        if (! is_null ( $objModel = $this->objSelect->where ( $arrProp )->getOne () )) {
+            return $objModel;
+        }
+        return null;
     }
 }

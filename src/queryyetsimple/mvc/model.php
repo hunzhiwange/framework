@@ -27,6 +27,7 @@ use queryyetsimple\string\string;
 use queryyetsimple\classs\infinity;
 use queryyetsimple\classs\serialize;
 use queryyetsimple\collection\collection;
+use queryyetsimple\event\interfaces\dispatch;
 use queryyetsimple\support\interfaces\arrayable;
 use queryyetsimple\mvc\interfaces\model as interfaces_model;
 
@@ -237,6 +238,13 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     protected $objSelectForQuery;
     
     /**
+     * 模型事件处理器
+     *
+     * @var \queryyetsimple\event\interfaces\dispatch
+     */
+    protected static $objDispatch;
+    
+    /**
      * 构造函数
      *
      * @param array|null $arrData            
@@ -325,6 +333,8 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
         // 表单自动填充
         $this->parseAutoPost ();
         
+        $this->runEvent ( static::BEFORE_SAVE_EVENT );
+        
         // 程序通过内置方法统一实现
         switch (strtolower ( $sSaveMethod )) {
             case 'create' :
@@ -356,6 +366,8 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
                 break;
         }
         
+        $this->runEvent ( static::AFTER_SAVE_EVENT );
+        
         return $this;
     }
     
@@ -386,7 +398,14 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
         if (is_null ( $this->getPrimaryKeyName () )) {
             throw new Exception ( sprintf ( 'Model %s has no primary key', $this->getCalledClass () ) );
         }
-        return $this->deleteModelByKey ();
+        
+        $this->runEvent ( static::BEFORE_DELETE_EVENT );
+        
+        $intNum = $this->deleteModelByKey ();
+        
+        $this->runEvent ( static::AFTER_DELETE_EVENT );
+        
+        return $intNum;
     }
     
     /**
@@ -570,6 +589,275 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             unset ( $this->arrProp [$sPropName] );
         }
         return $this;
+    }
+    
+    /**
+     * 注册模型事件 selecting
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function selecting($mixListener) {
+        static::registerEvent ( static::BEFORE_SELECT_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 selected
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function selected($mixListener) {
+        static::registerEvent ( static::AFTER_SELECT_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 finding
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function finding($mixListener) {
+        static::registerEvent ( static::BEFORE_FIND_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 finded
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function finded($mixListener) {
+        static::registerEvent ( static::AFTER_FIND_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 saveing
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function saveing($mixListener) {
+        static::registerEvent ( static::BEFORE_SAVE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 saved
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function saved($mixListener) {
+        static::registerEvent ( static::AFTER_SAVE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 creating
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function creating($mixListener) {
+        static::registerEvent ( static::BEFORE_CREATE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 created
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function created($mixListener) {
+        static::registerEvent ( static::AFTER_CREATE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 updating
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function updating($mixListener) {
+        static::registerEvent ( static::BEFORE_UPDATE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 updated
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function updated($mixListener) {
+        static::registerEvent ( static::AFTER_UPDATE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 deleting
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function deleting($mixListener) {
+        static::registerEvent ( static::BEFORE_DELETE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 deleted
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function deleted($mixListener) {
+        static::registerEvent ( static::AFTER_DELETE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 softDeleting
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function softDeleting($mixListener) {
+        static::registerEvent ( static::BEFORE_SOFT_DELETE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 softDeleted
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function softDeleted($mixListener) {
+        static::registerEvent ( static::AFTER_SOFT_DELETE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 softRestoring
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function softRestoring($mixListener) {
+        static::registerEvent ( static::BEFORE_SOFT_RESTORE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 注册模型事件 softRestored
+     *
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function softRestored($mixListener) {
+        static::registerEvent ( static::AFTER_SOFT_RESTORE_EVENT, $mixListener );
+    }
+    
+    /**
+     * 返回模型事件处理器
+     *
+     * @return \queryyetsimple\event\interfaces\dispatch
+     */
+    public static function getEventDispatch() {
+        return static::$objDispatch;
+    }
+    
+    /**
+     * 设置模型事件处理器
+     *
+     * @param \queryyetsimple\event\interfaces\dispatch $objDispatch            
+     * @return void
+     */
+    public static function setEventDispatch(dispatch $objDispatch) {
+        static::$objDispatch = $objDispatch;
+    }
+    
+    /**
+     * 注销模型事件
+     *
+     * @return void
+     */
+    public static function unsetEventDispatch() {
+        static::$objDispatch = null;
+    }
+    
+    /**
+     * 注册模型事件
+     *
+     * @param string $strEvent            
+     * @param \queryyetsimple\event\observer|string $mixListener            
+     * @return void
+     */
+    public static function registerEvent($strEvent, $mixListener) {
+        if (isset ( static::$objDispatch )) {
+            static::isSupportEvent ( $strEvent );
+            static::$objDispatch->listener ( "model.{$strEvent}:" . get_called_class (), $mixListener );
+        }
+    }
+    
+    /**
+     * 执行模型事件
+     *
+     * @param string $strEvent            
+     * @return mixed
+     */
+    public function runEvent($strEvent /* args */){
+        if (! isset ( static::$objDispatch )) {
+            return true;
+        }
+        
+        $this->isSupportEvent ( $strEvent );
+        
+        $arrArgs = func_get_args ();
+        array_shift ( $arrArgs );
+        array_unshift ( $arrArgs, "model.{$strEvent}:" . get_class ( $this ) );
+        array_unshift ( $arrArgs, $this );
+        
+        call_user_func_array ( [ 
+                $this,
+                'runEvent' . ucwords ( $strEvent ) 
+        ], $arrArgs );
+        
+        call_user_func_array ( [ 
+                static::$objDispatch,
+                'run' 
+        ], $arrArgs );
+        unset ( $arrArgs );
+    }
+    
+    /**
+     * 验证事件是否受支持
+     *
+     * @param string $event            
+     * @return boolean
+     */
+    public static function isSupportEvent($strEvent) {
+        if (! in_array ( $strEvent, static::getSupportEvent () ))
+            throw new Exception ( sprintf ( 'Event %s do not support' ) );
+    }
+    
+    /**
+     * 返回受支持的事件
+     *
+     * @return array
+     */
+    public static function getSupportEvent() {
+        return [ 
+                static::BEFORE_SELECT_EVENT,
+                static::AFTER_SELECT_EVENT,
+                static::BEFORE_FIND_EVENT,
+                static::AFTER_FIND_EVENT,
+                static::BEFORE_SAVE_EVENT,
+                static::AFTER_SAVE_EVENT,
+                static::BEFORE_CREATE_EVENT,
+                static::AFTER_CREATE_EVENT,
+                static::BEFORE_UPDATE_EVENT,
+                static::AFTER_UPDATE_EVENT,
+                static::BEFORE_DELETE_EVENT,
+                static::AFTER_DELETE_EVENT,
+                static::BEFORE_SOFT_DELETE_EVENT,
+                static::AFTER_SOFT_DELETE_EVENT,
+                static::BEFORE_SOFT_RESTORE_EVENT,
+                static::AFTER_SOFT_RESTORE_EVENT 
+        ];
     }
     
     /**
@@ -1201,10 +1489,13 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             }
         }
         
+        $this->runEvent ( static::BEFORE_CREATE_EVENT, $arrSaveData );
+        
         $arrLastInsertId = $this->meta ()->insert ( $arrSaveData );
         $this->arrProp = array_merge ( $this->arrProp, $arrLastInsertId );
-        
         $this->clearChanged ();
+        
+        $this->runEvent ( static::AFTER_CREATE_EVENT, $arrSaveData );
         
         return reset ( $arrLastInsertId );
     }
@@ -1231,6 +1522,8 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             $arrSaveData [$sPropName] = $mixValue;
         }
         
+        $booChange = false;
+        
         if ($arrSaveData) {
             $arrCondition = [ ];
             foreach ( $this->getPrimaryKeyNameSource () as $sFieldName ) {
@@ -1243,11 +1536,19 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             }
             
             if (! empty ( $arrSaveData ) && ! empty ( $arrCondition )) {
+                $this->runEvent ( static::BEFORE_UPDATE_EVENT, $arrSaveData, $arrCondition );
                 $intNum = $this->meta ()->update ( $arrCondition, $arrSaveData );
+                $booChange = true;
             }
         }
         
+        if (! $booChange) {
+            $this->runEvent ( static::BEFORE_UPDATE_EVENT, null, null );
+        }
+        
         $this->clearChanged ();
+        
+        $this->runEvent ( static::AFTER_UPDATE_EVENT );
         
         return isset ( $intNum ) ? $intNum : 0;
     }
@@ -1311,6 +1612,134 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             }
             $this->forceProp ( $mixKey, $mixValue );
         }
+    }
+    
+    /**
+     * 模型快捷事件 selecting
+     *
+     * @return void
+     */
+    protected function runEventSelecting(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 selected
+     *
+     * @return void
+     */
+    protected function runEventSelected(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 finding
+     *
+     * @return void
+     */
+    protected function runEventFinding(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 finded
+     *
+     * @return void
+     */
+    protected function runEventFinded(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 saveing
+     *
+     * @return void
+     */
+    protected function runEventSaveing(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 saved
+     *
+     * @return void
+     */
+    protected function runEventSaved(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 creating
+     *
+     * @return void
+     */
+    protected function runEventCreating(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 created
+     *
+     * @return void
+     */
+    protected function runEventCreated(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 updating
+     *
+     * @return void
+     */
+    protected function runEventUpdating(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 updated
+     *
+     * @return void
+     */
+    protected function runEventUpdated(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 deleting
+     *
+     * @return void
+     */
+    protected function runEventDeleting(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 deleted
+     *
+     * @return void
+     */
+    protected function runEventDeleted(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 softDeleting
+     *
+     * @return void
+     */
+    protected function runEventSoftDeleting(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 softDeleted
+     *
+     * @return void
+     */
+    protected function runEventSoftDeleted(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 softRestoring
+     *
+     * @return void
+     */
+    protected function runEventSoftRestoring(/* args */){
+    }
+    
+    /**
+     * 模型快捷事件 softRestored
+     *
+     * @return void
+     */
+    protected function runEventSoftRestored(/* args */){
     }
     
     /**
@@ -1593,10 +2022,21 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             // 调用 trait __call 实现扩展方法
             return $this->infinityCall ( $sMethod, $arrArgs );
         } catch ( BadMethodCallException $oE ) {
-            return call_user_func_array ( [ 
+            $this->runEvent ( static::BEFORE_FIND_EVENT );
+            $this->runEvent ( static::BEFORE_SELECT_EVENT );
+            
+            $mixData = call_user_func_array ( [ 
                     $this->getClassCollectionQuery (),
                     $sMethod 
             ], $arrArgs );
+            
+            if ($mixData instanceof collection) {
+                $this->runEvent ( static::AFTER_SELECT_EVENT, $mixData );
+            } else {
+                $this->runEvent ( static::AFTER_FIND_EVENT, $mixData );
+            }
+            
+            return $mixData;
         }
     }
     
