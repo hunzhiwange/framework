@@ -42,6 +42,17 @@ trait option {
     }
     
     /**
+     * 修改单个数组性配置
+     *
+     * @param string $strName            
+     * @param array $arrValue            
+     * @return $this
+     */
+    public function optionArray($strName, array $arrValue) {
+        return $this->option ( $strName, array_merge ( $this->getOption ( $strName ), $arrValue ) );
+    }
+    
+    /**
      * 修改多个配置
      *
      * @param string $strName            
