@@ -18,10 +18,13 @@ queryphp;
 use Iterator;
 use Countable;
 use ArrayAccess;
+use JsonSerializable;
 use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\assert\assert;
 use queryyetsimple\classs\infinity;
+use queryyetsimple\support\interfaces\jsonable;
+use queryyetsimple\support\interfaces\arrayable;
 
 /**
  * 数组转对象集合
@@ -31,7 +34,7 @@ use queryyetsimple\classs\infinity;
  * @since 2016.11.21
  * @version 1.0
  */
-class collection implements Iterator, ArrayAccess, Countable {
+class collection implements Iterator, ArrayAccess, Countable, arrayable, jsonable, JsonSerializable {
     
     use infinity;
     
@@ -239,6 +242,46 @@ class collection implements Iterator, ArrayAccess, Countable {
     // ######################################################
     
     /**
+     * 对象转数组
+     *
+     * @return array
+     */
+    public function toArray() {
+        return array_map ( function ($mixValue) {
+            return $mixValue instanceof arrayable ? $mixValue->toArray () : $mixValue;
+        }, $this->arrObject );
+    }
+    
+    /**
+     * 实现 JsonSerializable::jsonSerialize
+     *
+     * @return array
+     */
+    public function jsonSerialize() {
+        return array_map ( function ($mixValue) {
+            if ($mixValue instanceof JsonSerializable) {
+                return $mixValue->jsonSerialize ();
+            } elseif ($mixValue instanceof jsonable) {
+                return json_decode ( $mixValue->toJson (), true );
+            } elseif ($mixValue instanceof arrayable) {
+                return $mixValue->toArray ();
+            } else {
+                return $mixValue;
+            }
+        }, $this->arrObject );
+    }
+    
+    /**
+     * 对象转 JSON
+     *
+     * @param integer $intOption            
+     * @return string
+     */
+    public function toJson($intOption = JSON_UNESCAPED_UNICODE) {
+        return json_encode ( $this->jsonSerialize (), $intOption );
+    }
+    
+    /**
      * jquery.each
      *
      * @return void
@@ -263,7 +306,7 @@ class collection implements Iterator, ArrayAccess, Countable {
                         'value' => $val 
                 ];
             }
-            $arrArgs [0] ( new self ( $arrData ) );
+            $arrArgs [0] ( new static ( $arrData ) );
         }
     }
     
@@ -273,9 +316,9 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @return mixed
      */
     public function prev() {
-        $prev = prev ( $this->arrObject );
-        $this->booValid = $prev !== false;
-        return $prev;
+        $mixPrev = prev ( $this->arrObject );
+        $this->booValid = $mixPrev !== false;
+        return $mixPrev;
     }
     
     /**
@@ -284,9 +327,9 @@ class collection implements Iterator, ArrayAccess, Countable {
      * @return mixed
      */
     public function end() {
-        $end = end ( $this->arrObject );
-        $this->booValid = $end !== false;
-        return $end;
+        $mixEnd = end ( $this->arrObject );
+        $this->booValid = $mixEnd !== false;
+        return $mixEnd;
     }
     
     /**
