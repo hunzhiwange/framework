@@ -128,7 +128,8 @@ return [
                 'queryyetsimple\view',
                 'queryyetsimple\encryption',
                 'queryyetsimple\rss',
-                'queryyetsimple\stack' 
+                'queryyetsimple\stack',
+                'queryyetsimple\page' 
         ],
         
         /**
