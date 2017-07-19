@@ -418,7 +418,7 @@ class router {
             if (isset ( $arrArray ['path'] )) {
                 if (! isset ( $arrOption ['controller'] )) {
                     if (! isset ( $arrArray ['host'] )) {
-                        $arrOption ['controller'] = $_GET [static::CONTROLLER];
+                        $arrOption ['controller'] = $_GET [$arrOption ['args_controller']];
                     } else {
                         $arrOption ['controller'] = $arrArray ['host'];
                     }
@@ -429,10 +429,15 @@ class router {
                 }
             } else {
                 if (! isset ( $arrOption ['controller'] )) {
-                    $arrOption ['controller'] = $_GET [static::CONTROLLER];
+                    $arrOption ['controller'] = $_GET [$arrOption ['args_controller']];
                 }
+                
                 if (! isset ( $arrOption ['action'] )) {
-                    $arrOption ['action'] = $arrArray ['host'];
+                    if (! isset ( $arrArray ['host'] )) {
+                        $arrOption ['action'] = $_GET [$arrOption ['args_action']];
+                    } else {
+                        $arrOption ['action'] = $arrArray ['host'];
+                    }
                 }
             }
             
@@ -451,6 +456,12 @@ class router {
                 // 额外参数
                 $sStr = '/';
                 foreach ( $arrParams as $sVar => $sVal ) {
+                    if (! is_scalar ( $sVal )) {
+                        if (is_array ( $sVal ) && $sVal) {
+                            $sStr .= implode ( '/', $sVal ) . '/';
+                        }
+                        continue;
+                    }
                     $sStr .= $sVar . '/' . urlencode ( $sVal ) . '/';
                 }
                 $sStr = substr ( $sStr, 0, - 1 );
@@ -487,7 +498,7 @@ class router {
                             $sReturn = $arrParams [$arrMatches [1]];
                             unset ( $arrParams [$arrMatches [1]] );
                         } else {
-                            $sReturn = $arrMatches [1];
+                            $sReturn = $arrMatches [0];
                         }
                         return $sReturn;
                     }, $sUrl );
@@ -496,6 +507,12 @@ class router {
                 // 额外参数
                 $sStr = '/';
                 foreach ( $arrParams as $sVar => $sVal ) {
+                    if (! is_scalar ( $sVal )) {
+                        if (is_array ( $sVal ) && $sVal) {
+                            $sStr .= implode ( '/', $sVal ) . '/';
+                        }
+                        continue;
+                    }
                     $sStr .= $sVar . '/' . urlencode ( $sVal ) . '/';
                 }
                 $sStr = substr ( $sStr, 0, - 1 );
@@ -512,6 +529,12 @@ class router {
         else {
             $sStr = '';
             foreach ( $arrParams as $sVar => $sVal ) {
+                if (! is_scalar ( $sVal )) {
+                    if (is_array ( $sVal ) && $sVal) {
+                        $sStr .= implode ( '/', $sVal ) . '/';
+                    }
+                    continue;
+                }
                 $sStr .= $sVar . '=' . urlencode ( $sVal ) . '&';
             }
             $sStr = rtrim ( $sStr, '&' );
