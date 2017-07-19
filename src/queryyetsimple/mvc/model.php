@@ -28,6 +28,7 @@ use queryyetsimple\classs\infinity;
 use queryyetsimple\classs\serialize;
 use queryyetsimple\collection\collection;
 use queryyetsimple\event\interfaces\dispatch;
+use queryyetsimple\support\interfaces\jsonable;
 use queryyetsimple\support\interfaces\arrayable;
 use queryyetsimple\mvc\interfaces\model as interfaces_model;
 
@@ -39,7 +40,7 @@ use queryyetsimple\mvc\interfaces\model as interfaces_model;
  * @since 2017.04.27
  * @version 1.0
  */
-class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayable {
+class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayable, jsonable {
     
     use control;
     use serialize;
