@@ -52,7 +52,7 @@ class defaults implements render {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\page\page $objPage            
+     * @param \queryyetsimple\page\interfaces\page $objPage            
      * @param array $arrOption            
      * @return void
      */
