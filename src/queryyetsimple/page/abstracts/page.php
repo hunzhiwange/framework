@@ -180,7 +180,6 @@ abstract class page implements htmlable {
      */
     public function parameter(array $arrParameter) {
         return $this->option ( 'parameter', $arrParameter );
-        ;
     }
     
     /**
@@ -225,14 +224,14 @@ abstract class page implements htmlable {
         }
         return $this;
     }
-
+    
     /**
      * 是否启用 CSS
      *
-     * @param boolean $booOn                      
+     * @param boolean $booOn            
      * @return $this
      */
-    public function css($booOn=true) {
+    public function css($booOn = true) {
         return $this->renderOption ( 'css', $booOn );
     }
     
