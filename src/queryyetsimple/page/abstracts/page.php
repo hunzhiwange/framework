@@ -225,6 +225,16 @@ abstract class page implements htmlable {
         }
         return $this;
     }
+
+    /**
+     * 是否启用 CSS
+     *
+     * @param boolean $booOn                      
+     * @return $this
+     */
+    public function css($booOn=true) {
+        return $this->renderOption ( 'css', $booOn );
+    }
     
     /**
      * 获取渲染参数
@@ -594,7 +604,7 @@ abstract class page implements htmlable {
      * foo@ 表示具有子域名 subdomain@blog://list/{page},subdomain@blog://list/index
      * @/ 表示自定义域名格式 @/list-{page},@/list/index,subdomain@/list-{page}
      * 不带有 @ 表示不使用 url 进行二次解析
-     * 空表示基于 get 分析 url
+     * 空表示基于 $_GET 分析 url
      *
      * @return string
      */

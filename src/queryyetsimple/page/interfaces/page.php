@@ -78,6 +78,14 @@ interface page {
     public function renderOptions(array $arrOption);
     
     /**
+     * 是否启用 CSS
+     *
+     * @param boolean $booOn            
+     * @return $this
+     */
+    public function css($booOn = true);
+    
+    /**
      * 获取渲染参数
      *
      * @return $this
