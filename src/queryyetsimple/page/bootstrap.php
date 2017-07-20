@@ -17,6 +17,7 @@ queryphp;
 
 use queryyetsimple\classs\option;
 use queryyetsimple\page\interfaces\render;
+use queryyetsimple\page\interfaces\page as interfaces_page;
 
 /**
  * bootstrap 分页渲染
@@ -33,7 +34,7 @@ class bootstrap implements render {
     /**
      * 分页
      *
-     * @var \queryyetsimple\page\page $objPage
+     * @var \queryyetsimple\page\interfaces\page $objPage
      */
     protected $objPage;
     
@@ -56,7 +57,7 @@ class bootstrap implements render {
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(page $objPage, array $arrOption = []) {
+    public function __construct(interfaces_page $objPage, array $arrOption = []) {
         $this->objPage = $objPage;
         $this->options ( $arrOption );
         if ($this->objPage->getRenderOption ()) {
