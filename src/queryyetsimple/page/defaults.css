@@ -64,8 +64,7 @@
     transition: border .3s;
 }
 
-.pagination .pagination-editor::-webkit-inner-spin-button, .pagination .pagination-editor::-webkit-outer-spin-button
-    {
+.pagination .pagination-editor::-webkit-inner-spin-button, .pagination .pagination-editor::-webkit-outer-spin-button {
     margin: 0;
     -webkit-appearance: none;
 }
@@ -113,14 +112,12 @@
     border-right: 1px solid #d1dbe5;
 }
 
-.pagination .pager li.btn-quicknext, .pagination .pager li.btn-quickprev
-    {
+.pagination .pager li.btn-quicknext, .pagination .pager li.btn-quickprev {
     line-height: 20px;
     color: #97a8be;
 }
 
-.pagination .pager li.btn-quicknext:hover, .pagination .pager li.btn-quickprev:hover
-    {
+.pagination .pager li.btn-quicknext:hover, .pagination .pager li.btn-quickprev:hover {
     line-height: 25px;
     cursor: pointer;
 }
