@@ -77,7 +77,7 @@ class bootstrap_simple extends bootstrap {
         if ($this->objPage->canNextRender ()) {
             return sprintf ( '<li class="%s"><a aria-label="Next" href="%s"><span aria-hidden="true">%s</span></a></li>', $this->getOption ( 'align' ) == 'justify' ? 'next' : '', $this->replace ( $this->objPage->getCurrentPage () + 1 ), __ ( '下一页' ) );
         } else {
-            return sprintf ( '<li class="disabled%s"><a aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>', $this->getOption ( 'align' ) == 'justify' ? ' next' : '', __ ( '下一页' ) );
+            return sprintf ( '<li class="disabled%s"><a aria-label="Next"><span aria-hidden="true">%s</span></a></li>', $this->getOption ( 'align' ) == 'justify' ? ' next' : '', __ ( '下一页' ) );
         }
     }
     
