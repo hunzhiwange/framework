@@ -3365,7 +3365,7 @@ class select {
      *            字段
      * @param string $sAlias
      *            别名
-     * @return DbRecordSet
+     * @return $this
      */
     protected function addAggregate($sType, $strField, $sAlias) {
         $this->arrOption ['columns'] = [ ];
