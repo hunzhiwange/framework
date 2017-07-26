@@ -45,196 +45,196 @@ class request implements arrayable, ArrayAccess {
      *
      * @var \queryyetsimple\cookie\interfaces\cookie
      */
-    protected $objCookie = null;
+    protected $objCookie;
     
     /**
      * session 存储
      *
      * @var \queryyetsimple\session\interfaces\store
      */
-    protected $objSession = null;
+    protected $objSession;
     
     /**
      * 当前 url
      *
      * @var string
      */
-    protected $strUrl = null;
+    protected $strUrl;
     
     /**
      * 基础 url
      *
      * @var string
      */
-    protected $sBaseUrl = null;
+    protected $sBaseUrl;
     
     /**
      * 请求 url
      *
      * @var string
      */
-    protected $sRequestUrl = null;
+    protected $sRequestUrl;
     
     /**
      * 请求类型
      *
      * @var string
      */
-    protected $strMethod = null;
+    protected $strMethod;
     
     /**
      * 实际请求类型
      *
      * @var string
      */
-    protected $strMethodReal = null;
+    protected $strMethodReal;
     
     /**
      * 域名
      *
      * @var string
      */
-    protected $strDomain = null;
+    protected $strDomain;
     
     /**
      * HOST
      *
      * @var string
      */
-    protected $strHost = null;
+    protected $strHost;
     
     /**
      * 入口文件
      *
      * @var string
      */
-    protected $strEnter = null;
+    protected $strEnter;
     
     /**
      * root
      *
      * @var string
      */
-    protected $strRoot = null;
+    protected $strRoot;
     
     /**
      * public
      *
      * @var string
      */
-    protected $strPublic = null;
+    protected $strPublic;
     
     /**
      * 应用名字
      *
      * @var string
      */
-    protected $strApp = null;
+    protected $strApp;
     
     /**
      * 控制器名字
      *
      * @var string
      */
-    protected $strController = null;
+    protected $strController;
     
     /**
      * 方法名字
      *
      * @var string
      */
-    protected $strAction = null;
+    protected $strAction;
     
     /**
      * ALL
      *
      * @var array
      */
-    protected $arrAll = null;
+    protected $arrAll;
     
     /**
      * GET
      *
      * @var array
      */
-    protected $arrGet = null;
+    protected $arrGet;
     
     /**
      * POST
      *
      * @var array
      */
-    protected $arrPost = null;
+    protected $arrPost;
     
     /**
      * REQUEST
      *
      * @var array
      */
-    protected $arrRequest = null;
+    protected $arrRequest;
     
     /**
      * COOKIE
      *
      * @var array
      */
-    protected $arrCookie = null;
+    protected $arrCookie;
     
     /**
      * SESSION
      *
      * @var array
      */
-    protected $arrSession = null;
+    protected $arrSession;
     
     /**
      * SERVER
      *
      * @var array
      */
-    protected $arrServer = null;
+    protected $arrServer;
     
     /**
      * ENV
      *
      * @var array
      */
-    protected $arrEnv = null;
+    protected $arrEnv;
     
     /**
      * PUT
      *
      * @var array
      */
-    protected $arrPut = null;
+    protected $arrPut;
     
     /**
      * FILES
      *
      * @var array
      */
-    protected $arrFiles = null;
+    protected $arrFiles;
     
     /**
      * HEADER
      *
      * @var array
      */
-    protected $arrHeader = null;
+    protected $arrHeader;
     
     /**
      * 当前语言
      *
      * @var string
      */
-    protected $sLangset = null;
+    protected $sLangset;
     
     /**
      * 路由额外参数
      *
      * @var array
      */
-    protected $arrRouter = null;
+    protected $arrRouter;
     
     /**
      * 配置
