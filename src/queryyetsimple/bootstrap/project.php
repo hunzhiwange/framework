@@ -80,7 +80,8 @@ class project extends container implements interfaces_project {
             'queryyetsimple\event',
             'queryyetsimple\router',
             'queryyetsimple\pipeline',
-            'queryyetsimple\cache' 
+            'queryyetsimple\cache',
+            'queryyetsimple\validate' 
     ];
     
     /**
