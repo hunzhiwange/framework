@@ -466,4 +466,15 @@ class helper {
         ], $sTxt );
         return $sTxt;
     }
+    
+    /**
+     * 通配符正则
+     *
+     * @param string $strFoo            
+     * @param bool $booStrict            
+     * @return string
+     */
+    public static function prepareRegexForWildcard($strRegex, $booStrict = true) {
+        return '/^' . str_replace ( '6084fef57e91a6ecb13fff498f9275a7', '(\S+)', static::escapeRegexCharacter ( str_replace ( '*', '6084fef57e91a6ecb13fff498f9275a7', $strRegex ) ) ) . ($booStrict ? '$' : '') . '/';
+    }
 }
