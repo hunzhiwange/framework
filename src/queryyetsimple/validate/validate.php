@@ -2173,6 +2173,29 @@ class validate implements interfaces_validate {
             return $this->callExtend ( $sExtend, $arrArgs );
         }
         
+        if (count ( $arrArgs ) > 0) {
+            $sExtend = 'validate' . ucwords ( $sMethod );
+            
+            $arrParameter = [ 
+                    'foobar' 
+            ];
+            $arrParameter [] = array_shift ( $arrArgs );
+            $arrParameter [] = $arrArgs;
+            unset ( $arrArgs );
+            
+            if (method_exists ( $this, $sExtend )) {
+                return call_user_func_array ( [ 
+                        $this,
+                        $sExtend 
+                ], $arrParameter );
+            }
+            
+            $sExtend = string::unCamelize ( $sMethod );
+            if (isset ( $this->arrExtend [$sExtend] )) {
+                return $this->callExtend ( $sExtend, $arrParameter );
+            }
+        }
+        
         throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
     }
 }

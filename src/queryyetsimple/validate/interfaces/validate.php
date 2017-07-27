@@ -15,6 +15,8 @@ namespace queryyetsimple\validate\interfaces;
 ##########################################################
 queryphp;
 
+use queryyetsimple\support\interfaces\container;
+
 /**
  * validate 接口
  *
