@@ -1103,7 +1103,7 @@ class router {
     public function getMiddleware($sNode) {
         $arrMiddleware = [ ];
         foreach ( $this->arrMiddlewares as $sKey => $arrValue ) {
-            $sKey = '/^' . str_replace ( '6084fef57e91a6ecb13fff498f9275a7', '(\S+)', helper::escapeRegexCharacter ( str_replace ( '*', '6084fef57e91a6ecb13fff498f9275a7', $sKey ) ) ) . ($this->getOption ( 'middleware_strict' ) ? '$' : '') . '/';
+            $sKey = helper::prepareRegexForWildcard ( $sKey, $this->getOption ( 'middleware_strict' ) );
             if (preg_match ( $sKey, $sNode, $arrRes )) {
                 $arrMiddleware = array_merge ( $arrMiddleware, $arrValue );
             }
@@ -1167,7 +1167,7 @@ class router {
         
         $arrMethod = [ ];
         foreach ( $this->arrMethods as $sKey => $arrValue ) {
-            $sKey = '/^' . str_replace ( '6084fef57e91a6ecb13fff498f9275a7', '(\S+)', helper::escapeRegexCharacter ( str_replace ( '*', '6084fef57e91a6ecb13fff498f9275a7', $sKey ) ) ) . ($this->getOption ( 'method_strict' ) ? '$' : '') . '/';
+            $sKey = helper::prepareRegexForWildcard ( $sKey, $this->getOption ( 'method_strict' ) );
             if (preg_match ( $sKey, $sNode, $arrRes )) {
                 if ($arrMethod)
                     $arrMethod = array_intersect ( $arrMethod, $arrValue );
