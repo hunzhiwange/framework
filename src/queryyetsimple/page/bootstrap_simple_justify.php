@@ -15,6 +15,8 @@ namespace queryyetsimple\page;
 ##########################################################
 queryphp;
 
+use queryyetsimple\page\interfaces\page as interfaces_page;
+
 /**
  * bootstrap_simple.justify 分页渲染
  *
@@ -28,11 +30,11 @@ class bootstrap_simple_justify extends bootstrap_simple {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\page\page $objPage            
+     * @param \queryyetsimple\page\interfaces\page $objPage            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(page $objPage, array $arrOption = []) {
+    public function __construct(interfaces_page $objPage, array $arrOption = []) {
         parent::__construct ( $objPage, $arrOption );
         $this->option ( 'align', 'justify' );
     }
