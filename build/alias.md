@@ -12,7 +12,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     cookie = subtree push --prefix=src/queryyetsimple/cookie git@github.com:queryyetsimple/cookie.git master
     database = subtree push --prefix=src/queryyetsimple/database git@github.com:queryyetsimple/database.git master
     debug = subtree push --prefix=src/queryyetsimple/debug git@github.com:queryyetsimple/debug.git master
-    demo = subtree push --prefix=src/queryyetsimple/demo git@github.com:queryyetsimple/demo.git master
     encryption = subtree push --prefix=src/queryyetsimple/encryption git@github.com:queryyetsimple/encryption.git master
     event = subtree push --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
     filesystem = subtree push --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
@@ -56,7 +55,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     cookiep = subtree pull --prefix=src/queryyetsimple/cookie git@github.com:queryyetsimple/cookie.git master
     databasep = subtree pull --prefix=src/queryyetsimple/database git@github.com:queryyetsimple/database.git master
     debugp = subtree pull --prefix=src/queryyetsimple/debug git@github.com:queryyetsimple/debug.git master
-    demop = subtree pull --prefix=src/queryyetsimple/demo git@github.com:queryyetsimple/demo.git master
     encryptionp = subtree pull --prefix=src/queryyetsimple/encryption git@github.com:queryyetsimple/encryption.git master
     eventp = subtree pull --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
     filesystemp = subtree pull --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
