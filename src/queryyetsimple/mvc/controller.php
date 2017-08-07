@@ -112,7 +112,7 @@ abstract class controller implements interfaces_controller {
      */
     public function assign($mixName, $mixValue = null) {
         $this->checkView ();
-        $this->objView->assign ( $mixName, $Value );
+        $this->objView->assign ( $mixName, $mixValue );
         return $this;
     }
     
