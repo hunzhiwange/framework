@@ -18,6 +18,7 @@ queryphp;
 use InvalidArgumentException;
 use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\classs\option as classs_option;
+use queryyetsimple\i18n\interfaces\i18n as interfaces_i18n;
 
 /**
  * 国际化组件
@@ -27,7 +28,7 @@ use queryyetsimple\classs\option as classs_option;
  * @since 2016.11.18
  * @version 1.0
  */
-class i18n {
+class i18n implements interfaces_i18n {
     
     use classs_option;
     
@@ -125,6 +126,20 @@ class i18n {
             unset ( $arrArgs );
         }
         return $sValue;
+    }
+    
+    /**
+     * 获取语言text
+     *
+     * @param string $sValue
+     *            当前的语言
+     * @return string
+     */
+    public function __($sValue/*Argvs*/){
+        return call_user_func_array ( [ 
+                $this,
+                'getText' 
+        ], func_get_args () );
     }
     
     /**

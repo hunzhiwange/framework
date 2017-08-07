@@ -194,6 +194,18 @@ if (! function_exists ( '__' )) {
     }
 }
 
+if (! function_exists ( 'gettext' )) {
+    /**
+     * 语言包
+     *
+     * @param string|null $sValue            
+     * @return mixed
+     */
+    function gettext($sValue = null /*argvs*/ ){
+        return call_user_func_array ( __, func_get_args () );
+    }
+}
+
 if (! function_exists ( 'value' )) {
     /**
      * 返回默认值
