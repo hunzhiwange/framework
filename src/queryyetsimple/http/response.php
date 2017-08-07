@@ -176,7 +176,7 @@ class response {
      * @param array $arrOption            
      * @return $this
      */
-    public static function make($mixData = '', $intCode = 200, $strMessage = '', array $arrHeader = [], $arrOption = []) {
+    public function make($mixData = '', $intCode = 200, $strMessage = '', array $arrHeader = [], $arrOption = []) {
         return $this->data ( $mixData )->code ( intval ( $intCode ) )->message ( $strMessage )->header ( $arrHeader )->options ( $arrOption );
     }
     
