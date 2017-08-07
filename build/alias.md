@@ -36,7 +36,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     safe = subtree push --prefix=src/queryyetsimple/safe git@github.com:queryyetsimple/safe.git master
     seccode = subtree push --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
     session = subtree push --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
-    socket = subtree push --prefix=src/queryyetsimple/socket git@github.com:queryyetsimple/socket.git master
     stack = subtree push --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
     string = subtree push --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     support = subtree push --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
@@ -79,7 +78,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     safep = subtree pull --prefix=src/queryyetsimple/safe git@github.com:queryyetsimple/safe.git master
     seccodep = subtree pull --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
     sessionp = subtree pull --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
-    socketp = subtree pull --prefix=src/queryyetsimple/socket git@github.com:queryyetsimple/socket.git master
     stackp = subtree pull --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
     stringp = subtree pull --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     supportp = subtree pull --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
