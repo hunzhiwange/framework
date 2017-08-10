@@ -36,6 +36,7 @@ git subtree add --prefix=src/queryyetsimple/session git@github.com:queryyetsimpl
 git subtree add --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
 git subtree add --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
 git subtree add --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
+git subtree add --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
 git subtree add --prefix=src/queryyetsimple/upload git@github.com:queryyetsimple/upload.git master
 git subtree add --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
 git subtree add --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
