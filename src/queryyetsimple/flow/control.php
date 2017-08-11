@@ -45,7 +45,7 @@ trait control {
      * @param boolean $booValue            
      * @return $this
      */
-    protected function ifs($booValue = false) {
+    public function ifs($booValue = false) {
         return $this->setFlowControl ( true, $booValue );
     }
     
@@ -55,7 +55,7 @@ trait control {
      * @param boolean $booValue            
      * @return $this
      */
-    protected function elseIfs($booValue = false) {
+    public function elseIfs($booValue = false) {
         return $this->setFlowControl ( true, $booValue );
     }
     
@@ -64,7 +64,7 @@ trait control {
      *
      * @return $this
      */
-    protected function elses() {
+    public function elses() {
         return $this->setFlowControl ( true, ! $this->getFlowControl ()[1] );
     }
     
@@ -73,7 +73,7 @@ trait control {
      *
      * @return $this
      */
-    protected function endIfs() {
+    public function endIfs() {
         return $this->setFlowControl ( false, false );
     }
     
