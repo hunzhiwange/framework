@@ -15,8 +15,6 @@ namespace queryyetsimple\bootstrap;
 ##########################################################
 queryphp;
 
-use queryyetsimple\psr4\psr4;
-
 /**
  * 启动程序
  *
@@ -107,6 +105,11 @@ class bootstrap {
         register_shutdown_function ( [ 
                 'queryyetsimple\bootstrap\runtime\runtime',
                 'shutdownHandle' 
+        ] );
+        
+        set_exception_handler ( [ 
+                'queryyetsimple\bootstrap\runtime\runtime',
+                'exceptionHandle' 
         ] );
     }
     
