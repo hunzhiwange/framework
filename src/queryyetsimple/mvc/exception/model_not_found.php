@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc\exceptions;
+namespace queryyetsimple\mvc\exception;
 
 <<<queryphp
 ##########################################################
@@ -22,7 +22,7 @@ use RuntimeException;
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.10.10
+ * @since 2017.07.10
  * @version 1.0
  */
 class model_not_found extends RuntimeException {
