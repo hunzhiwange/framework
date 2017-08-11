@@ -81,7 +81,8 @@ class application {
             'session',
             'url',
             'view',
-            'router' 
+            'router',
+            'throttler' 
     ];
     
     /**
@@ -90,7 +91,6 @@ class application {
      * @var array
      */
     protected $arrEvent = [ 
-            'registerException',
             'initialization',
             'loadBootstrap',
             'i18n',
@@ -166,20 +166,6 @@ class application {
     public function registerAppProvider() {
         $this->objProject->registerAppProvider ( $this->objProject ['option'] ['provider'], $this->objProject ['option'] ['provider_with_cache'] );
         return $this;
-    }
-    
-    /**
-     * 接管 PHP 异常处理
-     *
-     * @return void
-     */
-    protected function registerExceptionRun() {
-        if (PHP_SAPI != 'cli') {
-            set_exception_handler ( is_callable ( $this->objProject ['option'] ['debug\exception_handle'] ) ? $this->objProject ['option'] ['debug\exception_handle'] : [ 
-                    'queryyetsimple\bootstrap\runtime\runtime',
-                    'exceptionHandle' 
-            ] );
-        }
     }
     
     /**
