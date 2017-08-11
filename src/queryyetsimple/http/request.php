@@ -1723,6 +1723,15 @@ class request implements arrayable, ArrayAccess {
     }
     
     /**
+     * 取得路由节点
+     *
+     * @return string
+     */
+    public function routerNode() {
+        return $this->app () . '://' . $this->controller () . '/' . $this->action ();
+    }
+    
+    /**
      * 设置应用名
      *
      * @param string $strApp            
