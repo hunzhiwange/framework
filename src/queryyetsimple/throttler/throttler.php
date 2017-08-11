@@ -17,7 +17,6 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\http\request;
-use queryyetsimple\http\response;
 use queryyetsimple\cache\interfaces\repository;
 use queryyetsimple\throttler\interfaces\throttler as interfaces_throttler;
 
