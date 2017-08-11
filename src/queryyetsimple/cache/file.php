@@ -212,4 +212,26 @@ class file extends abstracts_connect implements connect {
     protected function exist($sCacheName, $arrOption) {
         return is_file ( $this->getCachePath ( $sCacheName, $arrOption ) );
     }
+    
+    /**
+     * 获取缓存名字
+     * 去掉特殊缓存名字字符
+     *
+     * @param string $sCacheName            
+     * @param string $strPrefix            
+     * @return string
+     */
+    protected function getCacheName($sCacheName, $strPrefix = '') {
+        return str_replace ( [ 
+                '?',
+                '*',
+                ':',
+                '"',
+                '<',
+                '>',
+                '\\',
+                '/',
+                '|' 
+        ], '.', parent::getCacheName ( $sCacheName, $strPrefix ) );
+    }
 }
