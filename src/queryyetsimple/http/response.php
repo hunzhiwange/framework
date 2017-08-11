@@ -177,7 +177,7 @@ class response {
      * @return $this
      */
     public function make($mixData = '', $intCode = 200, $strMessage = '', array $arrHeader = [], $arrOption = []) {
-        return $this->data ( $mixData )->code ( intval ( $intCode ) )->message ( $strMessage )->header ( $arrHeader )->options ( $arrOption );
+        return $this->data ( $mixData )->code ( intval ( $intCode ) )->message ( $strMessage )->headers ( $arrHeader )->options ( $arrOption );
     }
     
     /**
@@ -230,18 +230,27 @@ class response {
     /**
      * 设置头部参数
      *
-     * @param string|array $mixName            
+     * @param string $strName            
      * @param string $strValue            
      * @return $this
      */
-    public function header($mixName, $strValue = null) {
+    public function header($strName, $strValue) {
         if ($this->checkFlowControl ())
             return $this;
-        if (is_array ( $mixName )) {
-            $this->arrHeader = array_merge ( $this->arrHeader, $mixName );
-        } else {
-            $this->arrHeader [$mixName] = $strValue;
-        }
+        $this->arrHeader [$strName] = $strValue;
+        return $this;
+    }
+    
+    /**
+     * 批量设置头部参数
+     *
+     * @param array $arrHeader            
+     * @return $this
+     */
+    public function headers($arrHeader) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->arrHeader = array_merge ( $this->arrHeader, $arrHeader );
         return $this;
     }
     
@@ -800,7 +809,7 @@ class response {
                 'Content-type' => $strMimeType,
                 'Content-Length' => filesize ( $sFileName ) 
         ], $arrHeader );
-        $this->responseType ( 'file' )->header ( $arrHeader )->option ( 'file_name', $sFileName );
+        $this->responseType ( 'file' )->headers ( $arrHeader )->option ( 'file_name', $sFileName );
         
         return $this;
     }
