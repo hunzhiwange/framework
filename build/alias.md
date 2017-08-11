@@ -39,6 +39,7 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     stack = subtree push --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
     string = subtree push --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     support = subtree push --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
+    throttler = subtree push --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
     upload = subtree push --prefix=src/queryyetsimple/upload git@github.com:queryyetsimple/upload.git master
     validate = subtree push --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
     view = subtree push --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
@@ -81,6 +82,7 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     stackp = subtree pull --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
     stringp = subtree pull --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     supportp = subtree pull --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
+    throttlerp = subtree pull --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
     uploadp = subtree pull --prefix=src/queryyetsimple/upload git@github.com:queryyetsimple/upload.git master
     validatep = subtree pull --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
     viewp = subtree pull --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
