@@ -435,8 +435,6 @@ class container implements ArrayAccess, interfaces_container {
                     $arrResult ['args'] [$strName] = $this->make ( $objParameterClass );
                     $booFindClass = true;
                 } else {
-                    print_r ( $this->arrAlias );
-                    
                     throw new InvalidArgumentException ( sprintf ( 'Class or interface %s is not register in container', $objParameterClass ) );
                 }
             } elseif ($objParameter->isDefaultValueAvailable ()) {
@@ -460,14 +458,23 @@ class container implements ArrayAccess, interfaces_container {
      * @return array
      */
     protected function getInjectionArgs(array $arrArgs, array $arrExtends = [], $booFindClass = false) {
-        foreach ( $arrExtends as $intKey => $mixExtend ) {
-            if (isset ( $arrArgs [$intKey] ) || $booFindClass === false) {
-                $arrArgs [$intKey] = $mixExtend;
-            } else {
-                $arrArgs [] = $mixExtend;
+        $arrParse = [ ];
+        
+        foreach ( $arrExtends as $mixKey => $mixExtend ) {
+            if (isset ( $arrArgs [$mixKey] )) {
+                unset ( $arrArgs [$mixKey] );
+            } elseif ($booFindClass === false) {
+                array_shift ( $arrArgs );
             }
+            $arrParse [] = $mixExtend;
         }
-        return $arrArgs;
+        
+        foreach ( $arrArgs as $mixArg ) {
+            $arrParse [] = $mixArg;
+        }
+        
+        unset ( $arrArgs, $arrExtends );
+        return $arrParse;
     }
     
     /**
