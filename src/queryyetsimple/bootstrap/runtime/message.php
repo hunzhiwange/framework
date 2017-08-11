@@ -49,7 +49,7 @@ abstract class message {
     public function run() {
         if ($this->strMessage) {
             $this->log ( $this->strMessage );
-            $this->errorMessage ( $this->strMessage );
+            $this->toResponse ( $this->strMessage );
         }
     }
     
@@ -73,5 +73,34 @@ abstract class message {
      */
     protected function errorMessage($sMessage) {
         require_once dirname ( __DIR__ ) . '/template/error.php';
+    }
+    
+    /**
+     * 格式为 response
+     *
+     * @param string $sMessage            
+     * @return void
+     */
+    protected function toResponse($sMessage) {
+        $intLevel = ob_get_level ();
+        ob_start ();
+        
+        try {
+            $this->errorMessage ( $sMessage );
+        } 
+
+        catch ( Exceptions $oE ) {
+            while ( ob_get_level () > $intLevel ) {
+                ob_end_clean ();
+            }
+            
+            throw $oE;
+        }
+        
+        $strContent = ob_get_clean ();
+        
+        $booStatusCode = property_exists ( $this, 'objException' ) && method_exists ( $this->objException, 'statusCode' );
+        
+        $this->oProject ['response']->data ( $strContent )->ifs ( $booStatusCode )->code ( $booStatusCode ? $this->objException->statusCode () : null )->endIfs ()->output ();
     }
 }

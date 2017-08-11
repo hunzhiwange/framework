@@ -15,6 +15,7 @@ namespace queryyetsimple\bootstrap\runtime;
 ##########################################################
 queryphp;
 
+use Exception as Exceptions;
 use queryyetsimple\debug\dump;
 use queryyetsimple\filesystem\filesystem;
 
@@ -55,7 +56,7 @@ class exception extends message {
      */
     public function run() {
         $this->log ( $this->strMessage );
-        $this->errorMessage ( $this->format ( $this->objException ) );
+        $this->toResponse ( $this->format ( $this->objException ) );
     }
     
     /**
