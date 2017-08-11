@@ -636,7 +636,11 @@ class router {
             $arrCurrentMiddleware = $this->arrCurrentMiddleware;
             if (! is_null ( $objPassed )) {
                 $arrCurrentMiddleware = array_map ( function ($strItem) {
-                    return $strItem . '@terminate';
+                    if (strpos ( $strItem, ':' ) === false) {
+                        return $strItem . '@terminate';
+                    } else {
+                        return str_replace ( ':', '@terminate:', $strItem );
+                    }
                 }, $arrCurrentMiddleware );
             }
             
@@ -1764,7 +1768,6 @@ class router {
                 if (empty ( $_GET [static::ACTION] )) {
                     $_GET [static::ACTION] = ! empty ( $_GET ['args'] ) ? 'show' : '';
                 }
-                
                 break;
             case 'POST' :
                 if (empty ( $_GET [static::ACTION] )) {
