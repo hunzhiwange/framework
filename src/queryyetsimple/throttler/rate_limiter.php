@@ -17,7 +17,6 @@ queryphp;
 
 use Countable;
 use RuntimeException;
-use queryyetsimple\http\response;
 use queryyetsimple\cache\interfaces\repository;
 use queryyetsimple\support\interfaces\arrayable;
 use queryyetsimple\throttler\interfaces\rate_limiter as interfaces_rate_limiter;
