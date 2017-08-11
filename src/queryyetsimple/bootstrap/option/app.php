@@ -125,11 +125,11 @@ return [
         '+provider_with_cache' => [ 
                 'queryyetsimple\collection',
                 'queryyetsimple\router',
-                'queryyetsimple\view',
                 'queryyetsimple\encryption',
                 'queryyetsimple\rss',
                 'queryyetsimple\stack',
-                'queryyetsimple\page' 
+                'queryyetsimple\page',
+                'queryyetsimple\view' 
         ],
         
         /**
@@ -137,7 +137,7 @@ return [
          * 默认配置扩展文件
          * ---------------------------------------------------------------
          *
-         * 系统默认包含 app,cache,console,cookie,database,debug,i18n,log,queue,session,url,view,router，你也可以扩展自己的应用的配置
+         * 系统默认包含 app,cache,console,cookie,database,debug,i18n,log,queue,session,url,view,router,throttler，你也可以扩展自己的应用的配置
          * 注意：配置扩展文件不会覆盖系统默认配置文件
          */
         'option_extend' => [ ],
