@@ -329,7 +329,7 @@ class project extends container implements interfaces_project {
      * @return $this
      */
     protected function loadApp() {
-        if (($strCache = $this->pathRuntime () . '/option/' . application::INIT_APP . '.php') && is_file ( $strCache )) {
+        if (($strCache = $this->pathApplicationCache ( 'option' ) . '/' . application::INIT_APP . '.php') && is_file ( $strCache )) {
             if ($this->checkEnv ( $strCache )) {
                 filesystem::deleteDirectory ( dirname ( $strCache ) );
                 $this->loadAppOption ();
