@@ -627,7 +627,7 @@ abstract class page implements htmlable {
         // 当前URL分析
         if (! empty ( $this->getOption ( 'url' ) )) {
             if ($booWithUrl) {
-                $this->strResolveUrl = $this->resolverUrl ( $this->getOption ( 'url' ), $this->getParseParameter ( false === strpos ( $this->getOption ( 'url' ), '{page}' ) ), [ 
+                $this->strResolveUrl = $this->resolverUrl ( $this->getOption ( 'url' ), $this->getDefaultPageParameter ( false === strpos ( $this->getOption ( 'url' ), '{page}' ) ), [ 
                         'subdomain' => $strSubdomain 
                 ] );
             } else {
@@ -654,18 +654,19 @@ abstract class page implements htmlable {
      * @return array
      */
     protected function getParseParameter($booWithDefault = true) {
-        return $this->getParameter ( $booWithDefault ? $this->getDefaultPageParameter () : [ ] );
+        return $this->getParameter ( $this->getDefaultPageParameter ( $booWithDefault ) );
     }
     
     /**
      * 默认分页参数
      *
+     * @param boolean $booWithDefault            
      * @return array
      */
-    protected function getDefaultPageParameter() {
-        return [ 
+    protected function getDefaultPageParameter($booWithDefault = true) {
+        return $booWithDefault ? [ 
                 $this->getOption ( 'page' ) => '{page}' 
-        ];
+        ] : [ ];
     }
     
     /**

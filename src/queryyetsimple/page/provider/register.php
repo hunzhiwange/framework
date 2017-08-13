@@ -24,10 +24,12 @@ queryphp;
 return [ 
         'bootstrap' => [ 
                 function ($oProject) {
-                    queryyetsimple\page\page::setUrlResolver ( [ 
-                            $oProject ['router'],
-                            'url' 
-                    ] );
+                    queryyetsimple\page\page::setUrlResolver ( function () use($oProject) {
+                        return call_user_func_array ( [ 
+                                $oProject ['router'],
+                                'url' 
+                        ], func_get_args () );
+                    } );
                 } 
         ] 
 ];
