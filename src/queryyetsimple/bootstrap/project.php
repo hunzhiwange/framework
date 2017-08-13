@@ -15,13 +15,14 @@ namespace queryyetsimple\bootstrap;
 ##########################################################
 queryphp;
 
+use Exception;
+use Dotenv\Dotenv;
 use RuntimeException;
-use queryyetsimple\mvc\view;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\helper\helper;
-use queryyetsimple\mvc\controller;
 use Composer\Autoload\ClassLoader;
 use queryyetsimple\support\container;
+use queryyetsimple\filesystem\filesystem;
 use queryyetsimple\bootstrap\interfaces\project as interfaces_project;
 
 /**
@@ -33,13 +34,6 @@ use queryyetsimple\bootstrap\interfaces\project as interfaces_project;
  * @version 1.0
  */
 class project extends container implements interfaces_project {
-    
-    /**
-     * QueryPHP 版本
-     *
-     * @var string
-     */
-    const VERSION = '4.0.0';
     
     /**
      * 当前项目实例
@@ -63,27 +57,11 @@ class project extends container implements interfaces_project {
     protected $strPath;
     
     /**
-     * 基础服务提供者
+     * 项目 APP 基本配置
      *
-     * @var array
+     * @var string
      */
-    protected static $arrBaseProvider = [ 
-            'queryyetsimple\mvc',
-            'queryyetsimple\option',
-            'queryyetsimple\http',
-            'queryyetsimple\log',
-            'queryyetsimple\provider',
-            'queryyetsimple\session',
-            'queryyetsimple\cookie',
-            'queryyetsimple\i18n',
-            'queryyetsimple\database',
-            'queryyetsimple\event',
-            'queryyetsimple\router',
-            'queryyetsimple\pipeline',
-            'queryyetsimple\cache',
-            'queryyetsimple\validate',
-            'queryyetsimple\throttler' 
-    ];
+    protected $arrAppOption = [ ];
     
     /**
      * 构造函数
@@ -105,6 +83,9 @@ class project extends container implements interfaces_project {
         
         // 注册 psr4
         registerPsr4 ( $objComposer )->
+        
+        // 载入 app 配置
+        loadApp ()->
         
         // 注册基础提供者 register
         registerBaseProvider ()->
@@ -138,12 +119,12 @@ class project extends container implements interfaces_project {
     /**
      * 返回项目
      *
-     * @param \Composer\Autoload\ClassLoader $objComposer            
+     * @param \Composer\Autoload\ClassLoader|null $objComposer            
      * @param array $arrOption            
      * @param boolean $booRun            
      * @return $this
      */
-    public static function singletons(ClassLoader $objComposer = null, $arrOption = [], $booRun = true) {
+    public static function singletons($objComposer = null, $arrOption = [], $booRun = true) {
         if (static::$objProject !== null) {
             return static::$objProject;
         } else {
@@ -161,17 +142,6 @@ class project extends container implements interfaces_project {
      */
     public function version() {
         return static::VERSION;
-    }
-    
-    /**
-     * 注册应用提供者
-     *
-     * @param array $arrProvider            
-     * @param array $arrProviderCache            
-     * @return $this
-     */
-    public function registerAppProvider($arrProvider, $arrProviderCache) {
-        return $this->runProvider ( $arrProvider, 'register' )->runProvider ( $arrProvider, 'bootstrap' )->runBaseProvider ( 'register', 'app', $arrProviderCache, false )->runBaseProvider ( 'bootstrap', 'app', $arrProviderCache, false );
     }
     
     /**
@@ -217,6 +187,83 @@ class project extends container implements interfaces_project {
      */
     public function pathPublic() {
         return isset ( $this->arrOption ['path_public'] ) ? $this->arrOption ['path_public'] : $this->strPath . DIRECTORY_SEPARATOR . 'public';
+    }
+    
+    /**
+     * 应用路径
+     *
+     * @return string
+     */
+    public function pathApplicationCurrent() {
+        return $this->pathApplication () . '/' . $this ['app_name'];
+    }
+    
+    /**
+     * 取得应用缓存目录
+     *
+     * @param string $strType            
+     * @return string
+     */
+    public function pathApplicationCache($strType) {
+        $arrType = [ 
+                'file',
+                'log',
+                'table',
+                'theme',
+                'option',
+                'i18n',
+                'i18n_js',
+                'router' 
+        ];
+        if (! in_array ( $strType, $arrType )) {
+            throw new Exception ( sprintf ( 'Application cache type %s not support', $strType ) );
+        }
+        return $strType != 'i18n_js' ? $this->pathRuntime () . '/' . $strType : $this->pathPublic () . '/js/i18n';
+    }
+    
+    /**
+     * 取得应用目录
+     *
+     * @param string $strType            
+     * @return string
+     */
+    public function pathApplicationDir($strType) {
+        $arrType = [ 
+                'option',
+                'theme',
+                'i18n' 
+        ];
+        if (! in_array ( $strType, $arrType )) {
+            throw new Exception ( sprintf ( 'Application dir type %s not support', $strType ) );
+        }
+        return $this->pathApplicationCurrent () . '/interfaces/' . $strType;
+    }
+    
+    /**
+     * 是否开启 debug
+     *
+     * @return boolean
+     */
+    public function debug() {
+        return $this->arrAppOption ['app_debug'];
+    }
+    
+    /**
+     * 是否为开发环境
+     *
+     * @return string
+     */
+    public function development() {
+        return $this->arrAppOption ['app_environment'] == 'development';
+    }
+    
+    /**
+     * 运行环境
+     *
+     * @return boolean
+     */
+    public function environment() {
+        return $this->arrAppOption ['app_environment'];
     }
     
     /**
@@ -277,12 +324,31 @@ class project extends container implements interfaces_project {
     }
     
     /**
+     * 载入 APP 配置
+     *
+     * @return $this
+     */
+    protected function loadApp() {
+        if (($strCache = $this->pathRuntime () . '/option/' . application::INIT_APP . '.php') && is_file ( $strCache )) {
+            if ($this->checkEnv ( $strCache )) {
+                filesystem::deleteDirectory ( dirname ( $strCache ) );
+                $this->loadAppOption ();
+            } else {
+                $this->loadAppOption ( $strCache );
+            }
+        } else {
+            $this->loadAppOption ();
+        }
+        return $this;
+    }
+    
+    /**
      * 框架基础提供者 register
      *
      * @return $this
      */
     protected function registerBaseProvider() {
-        return $this->runBaseProvider ( 'register' );
+        return $this->runCacheProvider ( 'register' )->runProvider ( 'register' );
     }
     
     /**
@@ -291,7 +357,7 @@ class project extends container implements interfaces_project {
      * @return $this
      */
     protected function registerBaseProviderBootstrap() {
-        return $this->runBaseProvider ( 'bootstrap' );
+        return $this->runCacheProvider ( 'bootstrap' )->runProvider ( 'bootstrap' );
     }
     
     /**
@@ -386,12 +452,14 @@ class project extends container implements interfaces_project {
     /**
      * 运行服务提供者
      *
-     * @param array $arrProvider            
      * @param string $strType            
      * @return void
      */
-    protected function runProvider($arrProvider, $strType) {
-        foreach ( $arrProvider as $strProvider ) {
+    protected function runProvider($strType) {
+        if (empty ( $this->arrAppOption ['provider'] ))
+            return $this;
+        
+        foreach ( $this->arrAppOption ['provider'] as $strProvider ) {
             $objProvider = $this->make ( $strProvider, [ 
                     $this 
             ] );
@@ -414,10 +482,10 @@ class project extends container implements interfaces_project {
      * @param boolean $booSystem            
      * @return $this
      */
-    protected function runBaseProvider($strAction, $strType = 'base', $arrProvider = [], $booSystem = true) {
-        return $this->registerProvider ( $this->providerCathPath ( $strType, $strAction ), array_map ( function ($strPackage) use($strAction) {
+    protected function runCacheProvider($strAction, $arrProvider = [], $booSystem = true) {
+        return $this->registerCacheProvider ( $this->providerCachePath ( $strAction ), array_map ( function ($strPackage) use($strAction) {
             return sprintf ( '%s\provider\%s', $strPackage, $strAction );
-        }, $booSystem ? static::$arrBaseProvider : $arrProvider ), env ( 'app_development' ) === 'development' );
+        }, $this->arrAppOption ['provider_with_cache'] ), $this->development () );
     }
     
     /**
@@ -429,7 +497,7 @@ class project extends container implements interfaces_project {
      * @param boolean $booForce            
      * @return array
      */
-    protected function registerProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
+    protected function registerCacheProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
         $booForce = true;
         foreach ( helper::arrayMergeSource ( $this ['psr4'], $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
             
@@ -477,11 +545,72 @@ class project extends container implements interfaces_project {
     /**
      * 返回服务提供者路径
      *
-     * @param string $strType            
      * @param string $strAction            
      * @return string
      */
-    protected function providerCathPath($strType, $strAction) {
-        return $this->path_runtime . '/provider/' . $strType . '.' . $strAction . '.php';
+    protected function providerCachePath($strAction) {
+        return $this->pathRuntime () . '/provider/' . $strAction . '.php';
+    }
+    
+    /**
+     * 载入 APP 配置
+     *
+     * @param string $strCache            
+     * @return void
+     */
+    protected function loadAppOption($strCache = null) {
+        if ($strCache) {
+            $arrOption = ( array ) include $strCache;
+            $this->arrAppOption = $arrOption ['app'];
+            $this->setEnvironmentVariables ( $arrOption ['env'] );
+        } else {
+            $this->setEnvironmentVariables ();
+            $this->arrAppOption = ( array ) include $this->pathCommon () . '/interfaces/option/app.php';
+        }
+    }
+    
+    /**
+     * 验证环境变量是否变动
+     *
+     * @param string $strCache            
+     * @return void
+     */
+    protected function checkEnv($strCache) {
+        return filemtime ( $this->path () . '/.env' ) > filemtime ( $strCache );
+    }
+    
+    /**
+     * 设置环境变量
+     *
+     * @param array $arrEnv            
+     * @return void
+     */
+    protected function setEnvironmentVariables($arrEnv = []) {
+        if ($arrEnv) {
+            foreach ( $arrEnv as $strName => $strValue )
+                $this->setEnvironmentVariable ( $strName, $strValue );
+        } else {
+            $objDotenv = new Dotenv ( $this->path () );
+            $objDotenv->load ();
+        }
+    }
+    
+    /**
+     * 设置单个环境变量
+     *
+     * @param string $strName            
+     * @param string|null $mixValue            
+     * @return void
+     */
+    protected function setEnvironmentVariable($strName, $mixValue = null) {
+        if (is_bool ( $mixValue )) {
+            putenv ( $strName . '=' . ($mixValue ? '(true)' : '(false)') );
+        } elseif (is_null ( $mixValue )) {
+            putenv ( $strName . '(null)' );
+        } else {
+            putenv ( $strName . '=' . $mixValue );
+        }
+        $_ENV [$strName] = $mixValue;
+        $_SERVER [$strName] = $mixValue;
     }
 }

@@ -99,8 +99,8 @@ return [
                         // 日志文件大小限制,单位为字节 byte
                         'size' => 2097152,
                         
-                        // 默认的日志路径，如果没有则设置为 \queryyetsimple\bootstrap\project::bootstrap ()->path_cache_log
-                        'path' => project ( 'path_cache_log' ) 
+                        // 默认的日志路径
+                        'path' => project ()->pathApplicationCache ( 'log' ) 
                 ] 
         ] 
 ];

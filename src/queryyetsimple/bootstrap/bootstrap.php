@@ -120,15 +120,10 @@ class bootstrap {
      */
     protected function initProject() {
         // 注册公共组件命名空间
-        $this->objProject ['psr4']->import ( 'common', $this->objProject->path_common, [ 
-                'ignore' => [ 
-                        'interfaces' 
-                ],
-                'force' => env ( 'app_development' ) === 'development' 
-        ] );
+        $this->objProject ['psr4']->import ( 'common', $this->objProject->pathCommon () );
         
         // 载入 project 引导文件
-        if (is_file ( ($strBootstrap = $this->objProject->path_common . '/bootstrap.php') )) {
+        if (is_file ( ($strBootstrap = $this->objProject->pathCommon () . '/bootstrap.php') )) {
             require $strBootstrap;
         }
     }
@@ -156,7 +151,7 @@ class bootstrap {
      */
     protected function runApp() {
         // 创建 & 注册
-        $objApp = $this->objProject->make ( application::class )->bootstrap ( $this->objProject->router->app () )->registerAppProvider ();
+        $objApp = $this->objProject->make ( application::class )->bootstrap ( $this->objProject->router->app () );
         
         // 运行应用
         $objApp->run ();

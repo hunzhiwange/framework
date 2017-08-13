@@ -15,7 +15,6 @@ namespace queryyetsimple\bootstrap\interfaces;
 ##########################################################
 queryphp;
 
-use Composer\Autoload\ClassLoader;
 use queryyetsimple\support\interfaces\container;
 
 /**
@@ -27,6 +26,13 @@ use queryyetsimple\support\interfaces\container;
  * @version 1.0
  */
 interface project extends container {
+    
+    /**
+     * QueryPHP 版本
+     *
+     * @var string
+     */
+    const VERSION = '4.0.0';
     
     /**
      * 执行项目
@@ -42,7 +48,7 @@ interface project extends container {
      * @param array $arrOption            
      * @return $this
      */
-    public static function singletons(ClassLoader $objComposer = null, $arrOption = []);
+    public static function singletons($objComposer = null, $arrOption = []);
     
     /**
      * 程序版本
@@ -50,15 +56,6 @@ interface project extends container {
      * @return number
      */
     public function version();
-    
-    /**
-     * 注册应用提供者
-     *
-     * @param array $arrProvider            
-     * @param array $arrProviderCache            
-     * @return $this
-     */
-    public function registerAppProvider($arrProvider, $arrProviderCache);
     
     /**
      * 基础路径
@@ -94,6 +91,50 @@ interface project extends container {
      * @return string
      */
     public function pathPublic();
+    
+    /**
+     * 应用路径
+     *
+     * @return string
+     */
+    public function pathApplicationCurrent();
+    
+    /**
+     * 取得应用缓存目录
+     *
+     * @param string $strType            
+     * @return string
+     */
+    public function pathApplicationCache($strType);
+    
+    /**
+     * 取得应用目录
+     *
+     * @param string $strType            
+     * @return string
+     */
+    public function pathApplicationDir($strType);
+    
+    /**
+     * 是否开启 debug
+     *
+     * @return boolean
+     */
+    public function debug();
+    
+    /**
+     * 是否为开发环境
+     *
+     * @return string
+     */
+    public function development();
+    
+    /**
+     * 运行环境
+     *
+     * @return boolean
+     */
+    public function environment();
     
     /**
      * public url

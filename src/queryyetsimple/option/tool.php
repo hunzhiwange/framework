@@ -33,108 +33,81 @@ class tool {
      * 合并配置文件数据
      *
      * @param array $arrOptionDir            
-     * @param array $arrOptionType            
      * @param string $sOptionCache            
      * @param array $arrExtendData            
      * @param boolean $booInitApp            
      * @return array
      */
-    public static function saveToCache($arrOptionDir, $arrOptionType, $sOptionCache, $arrExtendData = [], $booInitApp = false) {
-        $arrOptionData = [ ];
-        foreach ( $arrOptionType as $sType ) {
-            $arrOptionData [$sType] = [ ];
-        }
+    public static function saveToCache($arrOptionDir, $sOptionCache, $arrExtendData = [], $booInitApp = false) {
+        $arrData = $arrType = [ ];
         
         foreach ( $arrOptionDir as $sDir ) {
-            foreach ( $arrOptionType as $sType ) {
-                if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
-                    continue;
-                $arrOptionData [$sType] = array_merge ( $arrOptionData [$sType], ( array ) include $strFile );
-            }
-        }
-        
-        foreach ( $arrOptionType as $sType ) {
-            $arrOptionData [$sType] = helper::arrayMergePlus ( $arrOptionData [$sType] );
-        }
-        
-        $arrOptionTypeAll = $arrOptionType;
-        
-        if (! empty ( $arrOptionData ['app'] ['option_extend'] )) {
-            $arrOptionExtend = array_diff ( helper::arrays ( $arrOptionData ['app'] ['option_extend'] ), $arrOptionType );
-            $arrOptionTypeAll = array_merge ( $arrOptionTypeAll, $arrOptionExtend );
-            foreach ( $arrOptionExtend as $sType ) {
-                $arrOptionData [$sType] = [ ];
-            }
-            
-            foreach ( $arrOptionDir as $sDir ) {
-                foreach ( $arrOptionExtend as $sType ) {
-                    if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
-                        continue;
-                    $arrOptionData [$sType] = array_merge ( $arrOptionData [$sType], ( array ) include $strFile );
+            if (is_dir ( $sDir ) && ($arrFile = filesystem::lists ( $sDir, 'file' ))) {
+                foreach ( $arrFile as $strFile ) {
+                    if (filesystem::getExtension ( $strFile, 2 ) == 'php') {
+                        $strType = substr ( $strFile, 0, - 4 );
+                        $arrType [] = $strType;
+                        
+                        if (! isset ( $arrData [$strType] )) {
+                            $arrData [$strType] = [ ];
+                        }
+                        if (is_array ( $arrFoo = include $sDir . '/' . $strFile )) {
+                            $arrData [$strType] = array_merge ( $arrData [$strType], $arrFoo );
+                        }
+                    }
                 }
             }
-            
-            foreach ( $arrOptionExtend as $sType ) {
-                $arrOptionData [$sType] = helper::arrayMergePlus ( $arrOptionData [$sType] );
-            }
+        }
+        
+        foreach ( $arrType as $sType ) {
+            $arrData [$sType] = helper::arrayMergePlus ( $arrData [$sType] );
         }
         
         if ($arrExtendData) {
             foreach ( $arrExtendData as $sType => $arrTemp ) {
-                if (isset ( $arrOptionData [$sType] )) {
-                    $arrOptionData [$sType] = helper::arrayMergePlus ( array_merge ( $arrOptionData [$sType], $arrTemp ) );
+                if (isset ( $arrData [$sType] )) {
+                    $arrData [$sType] = helper::arrayMergePlus ( array_merge ( $arrData [$sType], $arrTemp ) );
                 } else {
-                    $arrOptionData [$sType] = $arrTemp;
+                    $arrData [$sType] = $arrTemp;
                 }
             }
         }
         
-        $arrOptionData ['app'] ['~routers~'] = [ 
-                'router' 
-        ];
-        
         if ($booInitApp) {
-            self::router ( $arrOptionData, $arrOptionDir, $arrOptionTypeAll );
+            self::router ( $arrData, $arrOptionDir );
         }
         
         if (! is_dir ( dirname ( $sOptionCache ) )) {
             filesystem::createDirectory ( dirname ( $sOptionCache ) );
         }
         
-        if (! file_put_contents ( $sOptionCache, '<?php return ' . var_export ( $arrOptionData, true ) . '; ?>' )) {
+        if (! file_put_contents ( $sOptionCache, '<?php return ' . var_export ( $arrData, true ) . '; ?>' )) {
             throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $this->optioncache_path ) );
         }
         file_put_contents ( $sOptionCache, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */ ?>' . PHP_EOL . php_strip_whitespace ( $sOptionCache ) );
         
-        return $arrOptionData;
+        return $arrData;
     }
     
     /**
      * 路由配置
      *
-     * @param array $arrOptionData            
+     * @param array $arrData            
      * @param array $arrOptionDir            
-     * @param array $arrOptionTypeAll            
      * @return void
      */
-    protected static function router(&$arrOptionData, $arrOptionDir, $arrOptionTypeAll) {
-        if (! empty ( $arrOptionData ['app'] ['router_extend'] )) {
-            $arrRouterExtend = array_diff ( array_map ( function ($strItem) {
-                return 'router_' . $strItem;
-            }, helper::arrays ( $arrOptionData ['app'] ['router_extend'] ) ), $arrOptionTypeAll );
-            
-            $arrOptionData ['app'] ['~routers~'] = array_merge ( $arrOptionData ['app'] ['~routers~'], $arrRouterExtend );
-            
-            foreach ( $arrOptionDir as $sDir ) {
-                foreach ( $arrRouterExtend as $sType ) {
-                    if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
-                        continue;
-                    $arrOptionData ['router'] = array_merge ( $arrOptionData ['router'], ( array ) include $strFile );
+    protected static function router(&$arrData, $arrOptionDir) {
+        $arrData ['app'] ['~routers~'] = [ ];
+        
+        foreach ( $arrOptionDir as $sDir ) {
+            $sDir = dirname ( $sDir ) . '/router';
+            if (is_dir ( $sDir ) && ($arrFile = filesystem::lists ( $sDir, 'file' ))) {
+                foreach ( $arrFile as $strFile ) {
+                    if (filesystem::getExtension ( $strFile, 2 ) == 'php') {
+                        $arrData ['app'] ['~routers~'] [] = $sDir . '/' . $strFile;
+                    }
                 }
             }
-        }
-        if ($arrOptionData ['router']) {
-            $arrOptionData ['router'] = helper::arrayMergePlus ( $arrOptionData ['router'] );
         }
     }
 }

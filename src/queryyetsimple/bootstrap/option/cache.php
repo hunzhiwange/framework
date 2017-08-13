@@ -88,7 +88,7 @@ return [
                         'driver' => 'file',
                         
                         // 文件缓存路径
-                        'path' => project ( 'path_cache_file' ),
+                        'path' => project ()->pathApplicationCache ( 'file' ),
                         
                         // 是否 serialize 格式化
                         'serialize' => true,

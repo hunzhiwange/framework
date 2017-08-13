@@ -71,7 +71,7 @@ class exception extends message {
         }
         
         // 否则定向到错误页面
-        if (PHP_SAPI != 'cli' && $this->oProject ['option'] ['show_exception_redirect'] && ! env ( 'app_debug' )) {
+        if (PHP_SAPI != 'cli' && $this->oProject ['option'] ['show_exception_redirect'] && ! $this->oProject ['option'] ['app_debug']) {
             $this->oProject ['router']->urlRedirect ( $this->oProject ['router']->url ( $this->oProject ['option'] ['show_exception_redirect'] ) );
         } else {
             if (! $this->oProject ['option']->get ( 'show_exception_show_message', true ) && $this->oProject ['option']->get ( 'show_exception_default_message' )) {
@@ -106,7 +106,7 @@ class exception extends message {
         
         // 调试消息
         $sTraceInfo = '';
-        if (env ( 'app_debug' )) {
+        if ($this->oProject ['option'] ['app_debug']) {
             foreach ( $arrTrace as $intKey => $arrVal ) {
                 // 参数处理
                 $arrVal ['class'] = isset ( $arrVal ['class'] ) ? $arrVal ['class'] : '';

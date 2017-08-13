@@ -25,6 +25,25 @@ return [
         
         /**
          * ---------------------------------------------------------------
+         * 运行环境
+         * ---------------------------------------------------------------
+         *
+         * 根据不同的阶段设置不同的开发环境
+         * 可以为 production : 生产环境 testing : 测试环境 development : 开发环境
+         */
+        'app_environment' => env ( 'app_development', 'development' ),
+        
+        /**
+         * ---------------------------------------------------------------
+         * 是否打开调试模式
+         * ---------------------------------------------------------------
+         *
+         * 打开调试模式可以显示更多精确的错误信息
+         */
+        'app_debug' => env ( 'app_debug', false ),
+        
+        /**
+         * ---------------------------------------------------------------
          * 自定义命名空间 （ 名字 = 入口路径）
          * ---------------------------------------------------------------
          *
@@ -122,7 +141,21 @@ return [
          * register 为预先注册服务提供者，bootstrap 为系统注册完毕所有服务提供者后再注册其它服务
          * 正如其名具有缓存功能的服务提供者，他们会被自动缓存到 {缓存目录}/provider 下面,并且有两组一组是应用服务提供者，一组为系统服务提供者
          */
-        '+provider_with_cache' => [ 
+        'provider_with_cache' => [ 
+                'queryyetsimple\mvc',
+                'queryyetsimple\option',
+                'queryyetsimple\http',
+                'queryyetsimple\log',
+                'queryyetsimple\session',
+                'queryyetsimple\cookie',
+                'queryyetsimple\i18n',
+                'queryyetsimple\database',
+                'queryyetsimple\event',
+                'queryyetsimple\router',
+                'queryyetsimple\pipeline',
+                'queryyetsimple\cache',
+                'queryyetsimple\validate',
+                'queryyetsimple\throttler',
                 'queryyetsimple\collection',
                 'queryyetsimple\router',
                 'queryyetsimple\encryption',

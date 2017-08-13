@@ -15,10 +15,7 @@ namespace queryyetsimple\bootstrap;
 ##########################################################
 queryphp;
 
-use Dotenv\Dotenv;
 use queryyetsimple\psr4\psr4;
-use queryyetsimple\helper\helper;
-use queryyetsimple\option\option;
 use queryyetsimple\http\response;
 use queryyetsimple\assert\assert;
 use queryyetsimple\filesystem\filesystem;
@@ -62,28 +59,6 @@ class application {
      * @var array
      */
     protected $strApp;
-    
-    /**
-     * 配置命名空间
-     *
-     * @var array
-     */
-    protected $arrOptionNamespace = [ 
-            'app',
-            'cache',
-            'console',
-            'cookie',
-            'database',
-            'debug',
-            'i18n',
-            'log',
-            'queue',
-            'session',
-            'url',
-            'view',
-            'router',
-            'throttler' 
-    ];
     
     /**
      * 执行事件流程
@@ -135,7 +110,6 @@ class application {
     public function bootstrap($sApp = null) {
         if (! is_null ( $sApp ))
             $this->strApp = $sApp;
-        $this->setPath ();
         $this->loadOption ();
         $this->loadRouter ();
         return $this;
@@ -148,7 +122,7 @@ class application {
      */
     public function namespaces() {
         foreach ( $this->objProject ['option'] ['~apps~'] as $strApp ) {
-            $this->objProject ['psr4']->import ( $strApp, $this->objProject->path_application . '/' . $strApp );
+            $this->objProject ['psr4']->import ( $strApp, $this->objProject->pathApplication () . '/' . $strApp );
         }
         
         foreach ( $this->objProject ['option'] ['namespace'] as $strNamespace => $strPath ) {
@@ -159,22 +133,12 @@ class application {
     }
     
     /**
-     * 注册应用提供者
-     *
-     * @return $this
-     */
-    public function registerAppProvider() {
-        $this->objProject->registerAppProvider ( $this->objProject ['option'] ['provider'], $this->objProject ['option'] ['provider_with_cache'] );
-        return $this;
-    }
-    
-    /**
      * 初始化处理
      *
      * @return void
      */
     protected function initializationRun() {
-        if (env ( 'app_development' ) === 'development')
+        if ($this->objProject->development ())
             error_reporting ( E_ALL );
         else
             error_reporting ( E_ERROR | E_PARSE | E_STRICT );
@@ -189,7 +153,7 @@ class application {
         else
             ob_start ();
         
-        if (env ( 'app_development' ) === 'development')
+        if ($this->objProject->development ())
             assert::open ( true );
     }
     
@@ -199,7 +163,7 @@ class application {
      * @return void
      */
     protected function loadBootstrapRun() {
-        if (is_file ( ($strBootstrap = env ( 'app_bootstrap' ) ?  : $this->objProject->path_application . '/' . $this->strApp . '/bootstrap.php') )) {
+        if (is_file ( ($strBootstrap = env ( 'app_bootstrap' ) ?  : $this->objProject->pathApplication () . '/' . $this->strApp . '/bootstrap.php') )) {
             require $strBootstrap;
         }
     }
@@ -221,7 +185,7 @@ class application {
         $sCachePath = $this->getI18nCachePath ( $sI18nSet );
         $sCacheJsPath = $this->getI18nCacheJsPath ( $sI18nSet );
         
-        if (env ( 'app_development' ) !== 'development' && is_file ( $sCachePath ) && is_file ( $sCacheJsPath )) {
+        if (! $this->objProject->development () && is_file ( $sCachePath ) && is_file ( $sCacheJsPath )) {
             $this->objProject ['i18n']->addI18n ( $sI18nSet, ( array ) include $sCachePath );
         } else {
             $arrFiles = i18n_tool::findPoFile ( $this->getI18nDir ( $sI18nSet ) );
@@ -264,17 +228,6 @@ class application {
     }
     
     /**
-     * 装配注册节点
-     *
-     * @param string $strController            
-     * @param string $strAction            
-     * @return string
-     */
-    protected function packControllerAndAction($strController, $strAction = '') {
-        return $this->strApp . '://' . $strController . ($strAction ? '/' . $strAction : '');
-    }
-    
-    /**
      * 分析配置文件
      *
      * @return void
@@ -283,12 +236,11 @@ class application {
         $sCachePath = $this->getOptionCachePath ();
         
         if ($this->strApp == static::INIT_APP) {
-            if (! is_file ( $sCachePath ) || ! is_null ( $this->objProject ['option']->reset ( ( array ) include $sCachePath ) ) || $this->objProject ['option'] ['env\app_development'] === 'development') {
-                $this->setEnvironmentVariables ();
+            if (! is_file ( $sCachePath ) || ! is_null ( $this->objProject ['option']->reset ( ( array ) include $sCachePath ) ) || $this->objProject->development ()) {
                 $this->cacheOption ( $sCachePath );
             }
         } else {
-            if (env ( 'app_development' ) !== 'development' && is_file ( $sCachePath )) {
+            if (! $this->objProject->development () && is_file ( $sCachePath )) {
                 $this->objProject ['option']->reset ( ( array ) include $sCachePath );
             } else {
                 $this->cacheOption ( $sCachePath );
@@ -302,62 +254,19 @@ class application {
      * @return void
      */
     protected function loadRouter() {
-        $this->setOptionRouterCachePath ();
+        if ($this->strApp != static::INIT_APP)
+            return;
         
-        if ($this->strApp == static::INIT_APP) {
-            if (is_file ( $this->getOptionCachePath () ) && $this->objProject ['option'] ['env\app_development'] !== 'development') {
-                $this->cacheRouter ();
-            } else {
-                $this->importRouter ();
+        $this->setRouterCachePath ();
+        
+        if (! $this->objProject ['router']->checkExpired ())
+            return;
+        
+        foreach ( $this->objProject ['option'] ['app\~routers~'] as $strRouter ) {
+            if (is_array ( $arrFoo = include $strRouter )) {
+                $this->objProject ['router']->importCache ( $arrFoo );
             }
-        } elseif (env ( 'app_development' ) === 'development' || ! is_file ( $this->getOptionCachePath () )) {
-            $this->importRouter ();
         }
-    }
-    
-    /**
-     * 设置应用路径
-     *
-     * @return void
-     */
-    protected function setPath() {
-        $sAppName = $this->strApp;
-        $sAppPath = $this->objProject->path_application . '/' . $sAppName;
-        $sRuntime = $this->objProject->path_runtime;
-        
-        // 各种缓存组件路径
-        foreach ( [ 
-                'file',
-                'log',
-                'table',
-                'theme',
-                'option',
-                'i18n' 
-        ] as $sPath ) {
-            $sPathName = 'path_cache_' . $sPath;
-            $this->objProject->instance ( $sPathName, isset ( $this->arrOption [$sPathName] ) ? $this->arrOption [$sPathName] : $sRuntime . '/' . $sPath );
-        }
-        $this->objProject->instance ( 'path_cache_i18n_js', isset ( $this->arrOption ['path_cache_i18n_js'] ) ? $this->arrOption ['path_cache_i18n_js'] : $this->objProject->path_public . '/js/i18n/' . $sAppName ); // 默认 JS 语言包缓存目录
-                                                                                                                                                                                                                      
-        // 应用组件
-        foreach ( [ 
-                'option',
-                'theme',
-                'i18n' 
-        ] as $sPath ) {
-            $sPathName = 'path_app_' . $sPath;
-            $this->objProject->instance ( $sPathName, isset ( $this->arrOption [$sPathName] ) ? $this->arrOption [$sPathName] : $sAppPath . '/interfaces/' . $sPath );
-        }
-        $this->objProject->instance ( 'path_app_theme_extend', isset ( $this->arrOption ['path_app_theme_extend'] ) ? $this->arrOption ['path_app_theme_extend'] : '' );
-    }
-    
-    /**
-     * 返回配置命名空间
-     *
-     * @return array
-     */
-    protected function getOptionNamespace() {
-        return $this->arrOptionNamespace;
     }
     
     /**
@@ -367,23 +276,23 @@ class application {
      * @return array
      */
     protected function getI18nDir($sI18nSet) {
-        $arrI18nDir = [ 
+        $arrDir = [ 
                 dirname ( __DIR__ ) . '/bootstrap/i18n/' . $sI18nSet,
-                $this->objProject->path_common . '/interfaces/i18n/' . $sI18nSet,
-                $this->objProject->path_app_i18n . '/' . $sI18nSet 
+                $this->objProject->pathCommon . '/interfaces/i18n/' . $sI18nSet,
+                $this->objProject->pathApplicationDir ( 'i18n' ) . '/' . $sI18nSet 
         ];
         
-        if ($this->objProject->path_app_i18n_extend) {
-            if (is_array ( $this->objProject->path_app_i18n_extend )) {
-                $arrI18nDir = array_merge ( $arrI18nDir, array_map ( function ($strDir) use($sI18nSet) {
+        if ($this->objProject ['option'] ['i18n\extend']) {
+            if (is_array ( $this->objProject ['option'] ['i18n\extend'] )) {
+                $arrDir = array_merge ( $arrDir, array_map ( function ($strDir) use($sI18nSet) {
                     return $strDir . '/' . $sI18nSet;
-                }, $this->objProject->path_app_i18n_extend ) );
+                }, $this->objProject ['option'] ['i18n\extend'] ) );
             } else {
-                $arrI18nDir [] = $this->objProject->path_app_i18n_extend . '/' . $sI18nSet;
+                $arrDir [] = $this->objProject ['option'] ['i18n\extend'] . '/' . $sI18nSet;
             }
         }
         
-        return $arrI18nDir;
+        return $arrDir;
     }
     
     /**
@@ -393,7 +302,7 @@ class application {
      * @return array
      */
     protected function getI18nCachePath($sI18nSet) {
-        return $this->objProject ['path_cache_i18n'] . '/' . $sI18nSet . '/default.php';
+        return $this->objProject->pathApplicationCache ( 'i18n' ) . '/' . $sI18nSet . '/default.php';
     }
     
     /**
@@ -403,7 +312,7 @@ class application {
      * @return array
      */
     protected function getI18nCacheJsPath($sI18nSet) {
-        return $this->objProject ['path_cache_i18n_js'] . '/' . $sI18nSet . '/default.js';
+        return $this->objProject->pathApplicationCache ( 'i18n_js' ) . '/' . $sI18nSet . '/default.js';
     }
     
     /**
@@ -412,13 +321,13 @@ class application {
      * @return array
      */
     protected function getOptionDir() {
-        $arrOptionDir = [ 
+        $arrDir = [ 
                 dirname ( __DIR__ ) . '/bootstrap/option' 
         ];
-        if (is_dir ( $this->objProject->path_common . '/interfaces/option' ))
-            $arrOptionDir [] = $this->objProject->path_common . '/interfaces/option';
-        $arrOptionDir [] = $this->objProject->path_app_option;
-        return $arrOptionDir;
+        if (is_dir ( $this->objProject->pathCommon () . '/interfaces/option' ))
+            $arrDir [] = $this->objProject->pathCommon () . '/interfaces/option';
+        $arrDir [] = $this->objProject->pathApplicationDir ( 'option' );
+        return $arrDir;
     }
     
     /**
@@ -427,7 +336,7 @@ class application {
      * @return array
      */
     protected function getOptionCachePath() {
-        return $this->objProject->path_cache_option . '/' . $this->strApp . '.php';
+        return $this->objProject->pathApplicationCache ( 'option' ) . '/' . $this->strApp . '.php';
     }
     
     /**
@@ -435,8 +344,8 @@ class application {
      *
      * @return array
      */
-    protected function setOptionRouterCachePath() {
-        $this->objProject ['router']->cachePath ( $this->objProject->path_cache_option . '/' . $this->strApp . '@router.php' )->development ( env ( 'app_development' ) === 'development' );
+    protected function setRouterCachePath() {
+        $this->objProject ['router']->cachePath ( $this->objProject->pathApplicationCache ( 'router' ) . '/router.php' )->development ( $this->objProject->development () );
     }
     
     /**
@@ -446,111 +355,11 @@ class application {
      * @return void
      */
     protected function cacheOption($sCachePath) {
-        $this->objProject ['option']->reset ( option_tool::saveToCache ( $this->getOptionDir (), $this->getOptionNamespace (), $sCachePath, [ 
+        $this->objProject ['option']->reset ( option_tool::saveToCache ( $this->getOptionDir (), $sCachePath, [ 
                 'app' => [ 
-                        '~apps~' => filesystem::lists ( $this->objProject->path_application ) 
+                        '~apps~' => filesystem::lists ( $this->objProject->pathApplication () ) 
                 ],
                 'env' => $_ENV 
         ], $this->strApp == static::INIT_APP ) );
-    }
-    
-    /**
-     * 路由缓存
-     *
-     * @return void
-     */
-    protected function cacheRouter() {
-        if (! $this->objProject ['router']->checkExpired ())
-            return;
-        
-        if (($arrRouter = $this->objProject ['option'] ['router\\'])) {
-            $this->objProject ['router']->importCache ( $arrRouter );
-        }
-        
-        if (($arrRouterType = $this->objProject ['option'] ['~routers~'])) {
-            foreach ( $this->getOptionDir () as $sDir ) {
-                foreach ( $arrRouterType as $sType ) {
-                    if (! is_file ( $strFile = $sDir . '/' . $sType . '.php' ))
-                        continue;
-                    include $strFile;
-                }
-            }
-        }
-    }
-    
-    /**
-     * 导入路由
-     *
-     * @return void
-     */
-    protected function importRouter() {
-        if ($this->objProject ['option']->get ( 'router\\' ))
-            $this->objProject ['router']->importCache ( $this->objProject ['option']->get ( 'router\\' ) );
-    }
-    
-    /**
-     * 设置环境变量
-     *
-     * @param boolean $booCache            
-     * @return void
-     */
-    protected function setEnvironmentVariables($booCache = false) {
-        if ($booCache === true) {
-            foreach ( $this->objProject ['option'] ['env\\'] as $strName => $strValue )
-                $this->setEnvironmentVariable ( $strName, $strValue );
-        } else {
-            $objDotenv = new Dotenv ( $this->objProject->path () );
-            $objDotenv->load ();
-            $this->defaultEnvironment ();
-        }
-    }
-    
-    /**
-     * 设置默认环境变量
-     *
-     * @return void
-     */
-    protected function defaultEnvironment() {
-        foreach ( [
-                // 调试模式
-                'app_debug' => false,
-                
-                // 项目运行环境 production : 生成环境 testing : 测试环境 development : 开发环境
-                'app_development' => 'production',
-                
-                // app 引导文件
-                'app_bootstrap' => '',
-                
-                // 绑定 app_name
-                'app_name' => '',
-                
-                // 绑定 controller_name
-                'controller_name' => '',
-                
-                // 绑定 action_name
-                'action_name' => '' 
-        ] as $strName => $mixValue ) {
-            if (is_null ( env ( $strName ) ))
-                $this->setEnvironmentVariable ( $strName, $mixValue );
-        }
-    }
-    
-    /**
-     * 设置单个环境变量
-     *
-     * @param string $strName            
-     * @param string|null $mixValue            
-     * @return void
-     */
-    protected function setEnvironmentVariable($strName, $mixValue = null) {
-        if (is_bool ( $mixValue )) {
-            putenv ( $strName . '=' . ($mixValue ? '(true)' : '(false)') );
-        } elseif (is_null ( $mixValue )) {
-            putenv ( $strName . '(null)' );
-        } else {
-            putenv ( $strName . '=' . $mixValue );
-        }
-        $_ENV [$strName] = $mixValue;
-        $_SERVER [$strName] = $mixValue;
     }
 }

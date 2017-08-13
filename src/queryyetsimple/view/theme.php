@@ -68,7 +68,7 @@ class theme implements interfaces_theme {
      * @var array
      */
     protected $arrOption = [ 
-            'app_debug' => true,
+            'app_environment' => false,
             'app_name' => 'home',
             'controller_name' => 'index',
             'action_name' => 'index',
@@ -202,10 +202,11 @@ class theme implements interfaces_theme {
      * @return string
      */
     public function getCachePath($sFile) {
-        if (! $this->getOption ( 'theme_cache_path' ))
+        if (! $this->getOption ( 'theme_cache_path' )) {
             throw new RuntimeException ( 'Theme cache path must be set' );
-            
-            // 统一斜线
+        }
+        
+        // 统一斜线
         $sFile = str_replace ( '//', '/', str_replace ( '\\', '/', $sFile ) );
         
         // 统一缓存文件
@@ -245,6 +246,7 @@ class theme implements interfaces_theme {
                 }
             }
         }
+        
         $this->arrOption ['theme_name'] = $sThemeSet;
         $this->arrOption ['theme_path'] = $strThemePath . '/' . $sThemeSet;
         return $this;
@@ -351,7 +353,7 @@ class theme implements interfaces_theme {
      */
     protected function isCacheExpired($sFile, $sCachePath) {
         // 开启调试
-        if ($this->getOption ( 'app_debug' )) {
+        if ($this->getOption ( 'app_environment' )) {
             return true;
         }
         
