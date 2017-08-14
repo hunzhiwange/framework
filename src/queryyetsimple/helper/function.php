@@ -407,3 +407,147 @@ if (! function_exists ( 'cache' )) {
         return project ( 'cache' )->get ( $mixKey, $mixDefault );
     }
 }
+
+if (! function_exists ( 'path' )) {
+    /**
+     * 取得项目路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path($strPath = '') {
+        return project ()->path () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_applications' )) {
+    /**
+     * 取得项目应用路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_applications($strPath = '') {
+        return project ()->pathApplication () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_common' )) {
+    /**
+     * 取得项目公共路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_common($strPath = '') {
+        return project ()->pathCommon () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_runtime' )) {
+    /**
+     * 取得项目缓存路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_runtime($strPath = '') {
+        return project ()->pathRuntime () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_public' )) {
+    /**
+     * 取得项目资源路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_public($strPath = '') {
+        return project ()->pathPublic () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_application' )) {
+    /**
+     * 取得项目当前应用路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_application($strPath = '') {
+        return project ()->pathApplicationCurrent () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_option' )) {
+    /**
+     * 取得项目当前应用配置路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_option($strPath = '') {
+        return project ()->pathApplicationDir ( 'option' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_theme' )) {
+    /**
+     * 取得项目当前应用主题路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_theme($strPath = '') {
+        return project ()->pathApplicationDir ( 'theme' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_i18n' )) {
+    /**
+     * 取得项目当前应用国际化路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_i18n($strPath = '') {
+        return project ()->pathApplicationDir ( 'i18n' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_file_cache' )) {
+    /**
+     * 取得项目当前应用文件缓存路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_file_cache($strPath = '') {
+        return project ()->pathApplicationCache ( 'file' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_log_cache' )) {
+    /**
+     * 取得项目当前应用日志缓存路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_log_cache($strPath = '') {
+        return project ()->pathApplicationCache ( 'log' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists ( 'path_table_cache' )) {
+    /**
+     * 取得项目当前应用数据表缓存路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_table_cache($strPath = '') {
+        return project ()->pathApplicationCache ( 'table' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
