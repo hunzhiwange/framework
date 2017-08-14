@@ -199,7 +199,6 @@ class seccode implements interfaces_seccode {
             $this->option ( 'width', static::MIN_WIDTH );
         } elseif ($this->getOption ( 'width' ) > static::MAX_WIDTH) {
             $this->option ( 'width', static::MAX_WIDTH );
-            echo 'xxx';
         }
         
         return $this->intResolvedWidth = $this->getOption ( 'width' );
