@@ -51,6 +51,52 @@ interface store {
     public function put($mixKey, $mixValue = null);
     
     /**
+     * 数组插入数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function push($strKey, $mixValue);
+    
+    /**
+     * 合并元素
+     *
+     * @param string $strKey            
+     * @param array $arrValue            
+     * @return void
+     */
+    public function merge($strKey, array $arrValue);
+    
+    /**
+     * 弹出元素
+     *
+     * @param string $strKey            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function pop($strKey, array $arrValue);
+    
+    /**
+     * 数组插入键值对数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixKey            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function arrays($strKey, $mixKey, $mixValue = null);
+    
+    /**
+     * 数组键值删除数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixKey            
+     * @return void
+     */
+    public function arraysDelete($strKey, $mixKey);
+    
+    /**
      * 取回 session
      *
      * @param string $sName            
@@ -63,9 +109,10 @@ interface store {
      * 删除 session
      *
      * @param string $sName            
+     * @param boolean $bPrefix            
      * @return bool
      */
-    public function delete($sName);
+    public function delete($sName, $bPrefix = true);
     
     /**
      * 是否存在 session
@@ -82,6 +129,78 @@ interface store {
      * @return void
      */
     public function clear($bPrefix = true);
+    
+    /**
+     * 闪存一个数据，当前请求和下一个请求可用
+     *
+     * @param string $strKey            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function flash($strKey, $mixValue = null);
+    
+    /**
+     * 批量闪存一个数据，当前请求和下一个请求可用
+     *
+     * @param array $arrFlash            
+     * @return void
+     */
+    public function flashs(array $arrFlash);
+    
+    /**
+     * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取
+     *
+     * @param string $strKey            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function nowFlash($strKey, $mixValue);
+    
+    /**
+     * 保持所有闪存数据
+     *
+     * @return void
+     */
+    public function rebuildFlash();
+    
+    /**
+     * 保持闪存数据
+     *
+     * @param mixed $mixKey            
+     * @return void
+     */
+    public function keepFlash($mixKey);
+    
+    /**
+     * 返回闪存数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixDefault            
+     * @return void
+     */
+    public function getFlash($strKey, $mixDefault = null);
+    
+    /**
+     * 删除闪存数据
+     *
+     * @param mixed $mixKey            
+     * @return void
+     */
+    public function deleteFlash($mixKey);
+    
+    /**
+     * 清理所有闪存数据
+     *
+     * @return void
+     */
+    public function clearFlash();
+    
+    /**
+     * 程序执行结束清理 flash
+     *
+     * @return void
+     */
+    public function unregisterFlash();
     
     /**
      * 暂停 session

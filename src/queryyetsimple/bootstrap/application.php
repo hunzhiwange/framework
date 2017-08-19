@@ -225,6 +225,9 @@ class application {
         // 记录日志
         if ($this->objProject ['option'] ['log\enabled'])
             $this->objProject ['log']->save ();
+            
+            // 清理闪存
+        $this->objProject ['session']->unregisterFlash ();
     }
     
     /**
