@@ -203,6 +203,21 @@ interface store {
     public function unregisterFlash();
     
     /**
+     * 获取前一个请求地址
+     *
+     * @return string|null
+     */
+    public function prevUrl();
+    
+    /**
+     * 设置前一个请求地址
+     *
+     * @param string $strUrl            
+     * @return void
+     */
+    public function setPrevUrl($strUrl);
+    
+    /**
      * 暂停 session
      *
      * @return void

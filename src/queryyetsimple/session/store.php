@@ -460,6 +460,25 @@ class store implements interfaces_store {
     }
     
     /**
+     * 获取前一个请求地址
+     *
+     * @return string|null
+     */
+    public function prevUrl() {
+        return $this->get ( $this->prevUrlKey () );
+    }
+    
+    /**
+     * 设置前一个请求地址
+     *
+     * @param string $strUrl            
+     * @return void
+     */
+    public function setPrevUrl($strUrl) {
+        return $this->set ( $this->prevUrlKey (), $strUrl );
+    }
+    
+    /**
      * 暂停 session
      *
      * @return void
@@ -741,5 +760,14 @@ class store implements interfaces_store {
      */
     protected function flashOldKey() {
         return 'flash.old.key';
+    }
+    
+    /**
+     * 前一个页面 KEY
+     *
+     * @return string
+     */
+    protected function prevUrlKey() {
+        return 'prev.url.key';
     }
 }
