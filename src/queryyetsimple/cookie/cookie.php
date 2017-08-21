@@ -65,7 +65,10 @@ class cookie implements interfaces_cookie {
     public function set($sName, $mixValue = '', array $arrOption = []) {
         $arrOption = $this->getOptions ( $arrOption );
         
-        // 验证 cookie 值是不是一个标量
+        if (is_array ( $mixValue )) {
+            $mixValue = json_encode ( $mixValue );
+        }
+        
         assert::notNull ( $mixValue );
         assert::scalar ( $mixValue );
         
@@ -83,6 +86,104 @@ class cookie implements interfaces_cookie {
     }
     
     /**
+     * 批量插入
+     *
+     * @param string|array $mixKey            
+     * @param mixed $mixValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function put($mixKey, $mixValue = null, array $arrOption = []) {
+        if (! is_array ( $mixKey )) {
+            $mixKey = [ 
+                    $mixKey => $mixValue 
+            ];
+        }
+        
+        foreach ( $mixKey as $strKey => $mixValue ) {
+            $this->set ( $strKey, $mixValue, $arrOption );
+        }
+    }
+    
+    /**
+     * 数组插入数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function push($strKey, $mixValue, array $arrOption = []) {
+        $arr = $this->get ( $strKey, [ ] );
+        $arr [] = $mixValue;
+        $this->set ( $strKey, $arr, $arrOption );
+    }
+    
+    /**
+     * 合并元素
+     *
+     * @param string $strKey            
+     * @param array $arrValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function merge($strKey, array $arrValue, array $arrOption = []) {
+        $this->set ( $strKey, array_unique ( array_merge ( $this->get ( $strKey, [ ] ), $arrValue ) ), $arrOption );
+    }
+    
+    /**
+     * 弹出元素
+     *
+     * @param string $strKey            
+     * @param mixed $mixValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function pop($strKey, array $arrValue, array $arrOption = []) {
+        $this->set ( $strKey, array_diff ( $this->get ( $strKey, [ ] ), $arrValue ), $arrOption );
+    }
+    
+    /**
+     * 数组插入键值对数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixKey            
+     * @param mixed $mixValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function arrays($strKey, $mixKey, $mixValue = null, array $arrOption = []) {
+        $arr = $this->get ( $strKey, [ ] );
+        if (is_string ( $mixKey )) {
+            $arr [$mixKey] = $mixValue;
+        } elseif (is_array ( $mixKey )) {
+            $arr = array_merge ( $arr, $mixKey );
+        }
+        $this->set ( $strKey, $arr, $arrOption );
+    }
+    
+    /**
+     * 数组键值删除数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixKey            
+     * @return void
+     */
+    public function arraysDelete($strKey, $mixKey, array $arrOption = []) {
+        $arr = $this->get ( $strKey, [ ] );
+        if (! is_array ( $mixKey )) {
+            $mixKey = [ 
+                    $mixKey 
+            ];
+        }
+        foreach ( $mixKey as $strFoo ) {
+            if (isset ( $arr [$strFoo] ))
+                unset ( $arr [$strFoo] );
+        }
+        $this->set ( $strKey, $arr, $arrOption );
+    }
+    
+    /**
      * 获取 cookie
      *
      * @param string $sName            
@@ -93,7 +194,15 @@ class cookie implements interfaces_cookie {
     public function get($sName, $mixDefault = null, array $arrOption = []) {
         $arrOption = $this->getOptions ( $arrOption );
         $sName = $arrOption ['prefix'] . $sName;
-        return isset ( $_COOKIE [$sName] ) ? $_COOKIE [$sName] : $mixDefault;
+        
+        if (isset ( $_COOKIE [$sName] )) {
+            if ($this->isJson ( $_COOKIE [$sName] )) {
+                return json_decode ( $_COOKIE [$sName], true );
+            }
+            return $_COOKIE [$sName];
+        } else {
+            return $mixDefault;
+        }
     }
     
     /**
@@ -127,5 +236,21 @@ class cookie implements interfaces_cookie {
                 $this->delete ( $sKey, $arrOption );
             }
         }
+    }
+    
+    /**
+     * 验证是否为正常的 JSON 字符串
+     *
+     * @param mixed $mixData            
+     * @return boolean
+     */
+    protected function isJson($mixData) {
+        if (! is_scalar ( $mixData ) && ! method_exists ( $mixData, '__toString' )) {
+            return false;
+        }
+        
+        json_decode ( $mixData );
+        
+        return json_last_error () === JSON_ERROR_NONE;
     }
 }

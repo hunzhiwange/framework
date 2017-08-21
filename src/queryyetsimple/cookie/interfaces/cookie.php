@@ -36,6 +36,66 @@ interface cookie {
     public function set($sName, $mixValue = '', array $arrOption = []);
     
     /**
+     * 批量插入
+     *
+     * @param string|array $mixKey            
+     * @param mixed $mixValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function put($mixKey, $mixValue = null, array $arrOption = []);
+    
+    /**
+     * 数组插入数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function push($strKey, $mixValue, array $arrOption = []);
+    
+    /**
+     * 合并元素
+     *
+     * @param string $strKey            
+     * @param array $arrValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function merge($strKey, array $arrValue, array $arrOption = []);
+    
+    /**
+     * 弹出元素
+     *
+     * @param string $strKey            
+     * @param mixed $mixValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function pop($strKey, array $arrValue, array $arrOption = []);
+    
+    /**
+     * 数组插入键值对数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixKey            
+     * @param mixed $mixValue            
+     * @param array $arrOption            
+     * @return void
+     */
+    public function arrays($strKey, $mixKey, $mixValue = null, array $arrOption = []);
+    
+    /**
+     * 数组键值删除数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixKey            
+     * @return void
+     */
+    public function arraysDelete($strKey, $mixKey, array $arrOption = []);
+    
+    /**
      * 获取 cookie
      *
      * @param string $sName            
