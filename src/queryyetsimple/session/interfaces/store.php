@@ -140,7 +140,7 @@ interface store {
     public function flash($strKey, $mixValue = null);
     
     /**
-     * 批量闪存一个数据，当前请求和下一个请求可用
+     * 批量闪存数据，当前请求和下一个请求可用
      *
      * @param array $arrFlash            
      * @return void
