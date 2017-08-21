@@ -1485,6 +1485,9 @@ class validate implements interfaces_validate {
         if (! is_scalar ( $mixData ) && ! method_exists ( $mixData, '__toString' )) {
             return false;
         }
+        
+        json_decode ( $mixData );
+        
         return json_last_error () === JSON_ERROR_NONE;
     }
     
