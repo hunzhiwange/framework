@@ -114,7 +114,7 @@ class cookie implements interfaces_cookie {
      * @return void
      */
     public function push($strKey, $mixValue, array $arrOption = []) {
-        $arr = $this->get ( $strKey, [ ] );
+        $arr = $this->get ( $strKey, [ ], $arrOption );
         $arr [] = $mixValue;
         $this->set ( $strKey, $arr, $arrOption );
     }
@@ -128,7 +128,7 @@ class cookie implements interfaces_cookie {
      * @return void
      */
     public function merge($strKey, array $arrValue, array $arrOption = []) {
-        $this->set ( $strKey, array_unique ( array_merge ( $this->get ( $strKey, [ ] ), $arrValue ) ), $arrOption );
+        $this->set ( $strKey, array_unique ( array_merge ( $this->get ( $strKey, [ ], $arrOption ), $arrValue ) ), $arrOption );
     }
     
     /**
@@ -140,7 +140,7 @@ class cookie implements interfaces_cookie {
      * @return void
      */
     public function pop($strKey, array $arrValue, array $arrOption = []) {
-        $this->set ( $strKey, array_diff ( $this->get ( $strKey, [ ] ), $arrValue ), $arrOption );
+        $this->set ( $strKey, array_diff ( $this->get ( $strKey, [ ], $arrOption ), $arrValue ), $arrOption );
     }
     
     /**
@@ -153,7 +153,7 @@ class cookie implements interfaces_cookie {
      * @return void
      */
     public function arrays($strKey, $mixKey, $mixValue = null, array $arrOption = []) {
-        $arr = $this->get ( $strKey, [ ] );
+        $arr = $this->get ( $strKey, [ ], $arrOption );
         if (is_string ( $mixKey )) {
             $arr [$mixKey] = $mixValue;
         } elseif (is_array ( $mixKey )) {
@@ -170,7 +170,7 @@ class cookie implements interfaces_cookie {
      * @return void
      */
     public function arraysDelete($strKey, $mixKey, array $arrOption = []) {
-        $arr = $this->get ( $strKey, [ ] );
+        $arr = $this->get ( $strKey, [ ], $arrOption );
         if (! is_array ( $mixKey )) {
             $mixKey = [ 
                     $mixKey 
