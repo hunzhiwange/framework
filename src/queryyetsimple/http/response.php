@@ -18,13 +18,14 @@ queryphp;
 use queryyetsimple\xml\xml;
 use InvalidArgumentException;
 use queryyetsimple\flow\control;
-use queryyetsimple\cookie\cookie;
 use queryyetsimple\assert\assert;
 use queryyetsimple\router\router;
 use queryyetsimple\classs\option;
 use queryyetsimple\filesystem\file;
 use queryyetsimple\classs\infinity;
 use queryyetsimple\mvc\interfaces\view;
+use queryyetsimple\cookie\interfaces\cookie;
+use queryyetsimple\session\interfaces\session;
 
 /**
  * 响应请求
@@ -51,6 +52,13 @@ class response {
      * @var \queryyetsimple\mvc\interfaces\view
      */
     protected $objView;
+    
+    /**
+     * session 处理
+     *
+     * @var \queryyetsimple\session\interfaces\session
+     */
+    protected $objSession;
     
     /**
      * cookie 处理
@@ -155,13 +163,15 @@ class response {
      *
      * @param \queryyetsimple\router\router $objRouter            
      * @param \queryyetsimple\mvc\interfaces\view $objView            
+     * @param \queryyetsimple\session\interfaces\session $objSession            
      * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(router $objRouter, view $objView, cookie $objCookie, array $arrOption = []) {
+    public function __construct(router $objRouter, view $objView, session $objSession, cookie $objCookie, array $arrOption = []) {
         $this->objRouter = $objRouter;
         $this->objView = $objView;
+        $this->objSession = $objSession;
         $this->objCookie = $objCookie;
         $this->options ( $arrOption );
     }
@@ -302,10 +312,51 @@ class response {
      * @param array $arrOption            
      * @return $this
      */
-    public function cookie($sName, $mixValue = '', array $arrOption = []) {
+    public function withCookie($sName, $mixValue = '', array $arrOption = []) {
         if ($this->checkFlowControl ())
             return $this;
         $this->objCookie->set ( $sName, $mixValue, $arrOption );
+        return $this;
+    }
+    
+    /**
+     * 批量设置响应 cookie
+     *
+     * @param array $arrCookie            
+     * @param array $arrOption            
+     * @return $this
+     */
+    public function withCookies(array $arrCookie, array $arrOption = []) {
+        if ($this->checkFlowControl ())
+            return $this;
+        foreach ( $arrCookie as $sName => $mixValue )
+            $this->objCookie->set ( $sName, $mixValue, $arrOption );
+        return $this;
+    }
+    
+    /**
+     * 闪存错误信息
+     *
+     * @param array $arrErrors            
+     * @return $this
+     */
+    public function withErrors(array $arrErrors) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->objSession->flash ( 'errors', array_merge ( $this->objSession->getFlash ( 'errors', [ ] ), $arrErrors ) );
+        return $this;
+    }
+    
+    /**
+     * 闪存输入信息
+     *
+     * @param array $arrInputs            
+     * @return $this
+     */
+    public function withInputs(array $arrInputs) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->objSession->flash ( 'inputs', array_merge ( $this->objSession->getFlash ( 'inputs', [ ] ), $arrInputs ) );
         return $this;
     }
     
@@ -500,7 +551,7 @@ class response {
      * @param int|null $intCode            
      * @param string|null $strMessage            
      * @param boolean $booReturn            
-     * @return json string
+     * @return json|$this mixed
      */
     public function api($mixContent, $intCode = null, $strMessage = null, $booReturn = false) {
         $mixContent = $this->varString ( $mixContent );
@@ -532,6 +583,7 @@ class response {
         } else {
             $this->content ( $strReturn );
             unset ( $strReturn );
+            return $this;
         }
     }
     
@@ -714,6 +766,7 @@ class response {
      *
      * @param string $sUrl            
      * @param array $arrOption
+     *            make 是否使用 url 生成地址
      *            params url 额外参数
      *            message 消息
      *            time 停留时间，0表示不停留

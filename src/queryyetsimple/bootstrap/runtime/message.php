@@ -82,6 +82,10 @@ abstract class message {
      * @return void
      */
     protected function toResponse($sMessage) {
+        if (property_exists ( $this, 'objException' ) && method_exists ( $this->objException, 'objResponse' )) {
+            return $this->objException->objResponse->output ();
+        }
+        
         $intLevel = ob_get_level ();
         ob_start ();
         

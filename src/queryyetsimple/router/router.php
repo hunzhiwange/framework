@@ -574,6 +574,7 @@ class router {
      *
      * @param string $sUrl            
      * @param 额外参数 $arrOption
+     *            make 是否使用 url 生成地址
      *            params url 额外参数
      *            message 消息
      *            time 停留时间，0表示不停留
@@ -581,12 +582,13 @@ class router {
      */
     public function redirect($sUrl, $arrOption = []) {
         $arrOption = array_merge ( [ 
+                'make' => true,
                 'params' => [ ],
                 'message' => '',
                 'time' => 0 
         ], $arrOption );
         
-        $this->urlRedirect ( $this->url ( $sUrl, $arrOption ['params'] ), $arrOption ['time'], $arrOption ['message'] );
+        $this->urlRedirect ( $arrOption ['make'] ? $this->url ( $sUrl, $arrOption ['params'] ) : $sUrl, $arrOption ['time'], $arrOption ['message'] );
     }
     
     /**

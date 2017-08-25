@@ -35,7 +35,7 @@ return [
         'singleton@response' => [ 
                 'queryyetsimple\http\response',
                 function ($oProject) {
-                    return new queryyetsimple\http\response ( $oProject ['router'], $oProject ['view'], $oProject ['cookie'], [ 
+                    return new queryyetsimple\http\response ( $oProject ['router'], $oProject ['view'], $oProject ['session'], $oProject ['cookie'], [ 
                             'action_fail' => $oProject ['option'] ['view\action_fail'],
                             'action_success' => $oProject ['option'] ['view\action_success'],
                             'default_response' => $oProject ['option'] ['default_response'] 

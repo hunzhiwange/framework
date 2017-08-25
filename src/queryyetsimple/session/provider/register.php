@@ -23,7 +23,10 @@ queryphp;
  */
 return [ 
         'singleton@session' => [ 
-                'queryyetsimple\session\session',
+                [ 
+                        'queryyetsimple\session\session',
+                        'queryyetsimple\session\interfaces\session' 
+                ],
                 function ($oProject) {
                     return new queryyetsimple\session\session ( $oProject );
                 } 
