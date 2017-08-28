@@ -1,372 +1,177 @@
 <?php
-/* [$QeePHP] (C)WindsForce TEAM Since 2010.10.04.
-   Mail 邮件发送类($$)*/
-
-class Mail{
-
-	protected $_sServer='';
-	protected $_nPort=25;
-	protected $_bAuth=true;
-	protected $_sAuthUsername='';
-	protected $_sAuthPassword='';
-	protected $_sEmailFrom='';
-	protected $_sEmailTo='';
-	protected $_nEmailLimiter=1;
-	protected $_sEmailSubject='';
-	protected $_sEmailMessage='';
-	protected $_bEmailUsername=true;
-	protected $_sCharset='UTF-8';
-	protected $_sSiteName='QeePHP Mail';
-	protected $_bIsHtml=true;
-	protected $_sContentType='text/plain';
-	protected $_sErrorMessage;
-	protected $_bIsError;
-	CONST PHP_MAIL='mail';
-	CONST SOCKET_SMTP ='socket_smtp';
-	CONST PHP_SMTP='php_smtp';
-	protected $_sEmailSendType=self::SOCKET_SMTP;
-
-	public function __construct($sServer='',$sAuthUsername='',$sAuthPassword='',$nPort=25,$sEmailSendType=self::SOCKET_SMTP){
-		$this->_sServer=$sServer;
-		$this->_sAuthUsername=$sAuthUsername;
-		$this->_sAuthPassword=$sAuthPassword;
-		$this->_nPort=$nPort;
-		$this->_sEmailSendType=$sEmailSendType;
-	}
-
-	public function send(){
-		// 邮件头部分隔符
-		$sEmailLimiter=$this->_nEmailLimiter==1?"\r\n":($this->_nEmailLimiter==2?"\r":"\n");
-
-		// 邮件SMTP 用户名
-		$bEmailUsername=isset($this->_bEmailUsername)?$this->_bEmailUsername:true;
-
-		// 邮件主题
-		$sEmailSubject='=?'.$this->_sCharset.'?B?'.base64_encode(str_replace("\r",'',str_replace("\n",'','['.$this->_sSiteName.'] '.$this->_sEmailSubject))).'?=';
-
-		// 邮件内容
-		$sEmailMessage=chunk_split(base64_encode(str_replace("\r\n."," \r\n..",str_replace("\n","\r\n",str_replace("\r","\n",str_replace("\r\n","\n",str_replace("\n\r","\r",$this->_sEmailMessage)))))));
-
-		// 邮件发送人
-		$arrFrom=array();
-		$sEmailFrom=(preg_match('/^(.+?) \<(.+?)\>$/',$this->_sEmailFrom,$arrFrom)?'=?'.$this->_sCharset.'?B?'.base64_encode($arrFrom[1])."?= <$arrFrom[2]>":$this->_sEmailFrom);
-
-		// 邮件接收人
-		$arrEmailTo=explode(',',$this->_sEmailTo);
-		$arrToUsers=array();
-		foreach($arrEmailTo as $sToUser){
-			$arrTo=array();
-			$arrToUsers[]=preg_match('/^(.+?) \<(.+?)\>$/',$sToUser,$sTo)?($this->_bEmailUsername?'=?'.$this->_sCharset.'?B?'.base64_encode($arrTo[1])."?= <$arrTo[2]>":$arrTo[2]):$sToUser;
-		}
-
-		$sEmailTo=implode(',',$arrToUsers);
-
-		// 是否允许HTML 代码
-		if($this->_bIsHtml===true){
-			$this->_sContentType='text/html';
-		}
-
-		// 邮件头部
-		$sHeaders="From:{$sEmailFrom}{$sEmailLimiter}X-Priority: 3{$sEmailLimiter}X-Mailer: QeePHP!{$sEmailLimiter}MIME-Version: 1.0{$sEmailLimiter}Content-type: $this->_sContentType; charset={$this->_sCharset}{$sEmailLimiter}Content-Transfer-Encoding: base64{$sEmailLimiter}";
-		
-		$this->_nPort=$this->_nPort?$this->_nPort:25;// 端口
-		if(strtolower($this->_sEmailSendType)==self::PHP_MAIL && function_exists('mail')){
-			@mail($sEmailTo,$sEmailSubject,$sEmailMessage,$sHeaders);
-		}else if(strtolower($this->_sEmailSendType)==self::PHP_SMTP){
-			ini_set('SMTP',$this->_sServer);
-			ini_set('smtp_port',$this->_nPort);
-			ini_set('sendmail_from',$sEmailFrom);
-			@mail($sEmailTo,$sEmailSubject,$sEmailMessage,$sHeaders);
-		}else if(strtolower($this->_sEmailSendType)==self::SOCKET_SMTP){
-			$nErrNo=0;// 发送
-			$nErrStr='';
-			if(!($hFp=fsockopen($this->_sServer,$this->_nPort,$nErrNo,$nErrStr,30))){
-				$this->setErrorMessage(sprintf("%s:%d CONNECT - can not connect to the SMTP server",$this->_sServer,$this->_nPort));
-				return false;
-			}
-			stream_set_blocking($hFp,true);
-			$sLastMessage=fgets($hFp,512);
-
-			if(substr($sLastMessage,0,3)!='220'){
-				$this->setErrorMessage(sprintf("%s:%d CONNECT - %s",$this->_sServer,$this->_nPort,$sLastMessage));
-				return false;
-			}
-
-			fputs($hFp,($this->_bAuth?'EHLO':'HELO')." QeePHP\r\n");
-			$sLastMessage=fgets($hFp,512);
-			if(substr($sLastMessage,0,3)!=220 && substr($sLastMessage,0,3)!=250){
-				$this->setErrorMessage(sprintf("%s:%d HELO/EHLO - %s",$this->_sServer,$this->_nPort,$sLastMessage));
-				return false;
-			}
-
-			while(1){
-				if(substr($sLastMessage,3,1)!='-' || empty($sLastMessage)){
-					break;
-				}
-				$sLastMessage=fgets($hFp,512);
-			}
-
-			if($this->_bAuth){
-				fputs($hFp,"AUTH LOGIN\r\n");
-				$sLastMessage=fgets($hFp,512);
-				if(substr($sLastMessage,0,3)!=334){
-					$this->setErrorMessage(sprintf("%s:%d AUTH LOGIN - %s",$this->_sServer,$this->_nPort,$sLastMessage));
-					return false;
-				}
-
-				fputs($hFp,base64_encode($this->_sAuthUsername)."\r\n");
-				$sLastMessage=fgets($hFp,512);
-				if(substr($sLastMessage,0,3)!=334){
-					$this->setErrorMessage(sprintf("%s:%d USERNAME - %s",$this->_sServer,$this->_nPort,$sLastMessage));
-					return false;
-				}
-
-				fputs($hFp,base64_encode($this->_sAuthPassword)."\r\n");
-				$sLastMessage=fgets($hFp,512);
-				if(substr($sLastMessage,0,3)!=235){
-					$this->setErrorMessage(sprintf("%s:%d PASSWORD - %s",$this->_sServer,$this->_nPort,$sLastMessage));
-					return false;
-				}
-			}
-
-			fputs($hFp,"MAIL FROM: <".preg_replace_callback("/.*\<(.+?)\>.*/",function($arrMatches){ return $arrMatches[1]; },$this->_sEmailFrom).">\r\n");
-			$sLastMessage=fgets($hFp,512);
-
-			if(substr($sLastMessage,0,3)!=250){
-				fputs($hFp,"MAIL FROM: <".preg_replace_callback("/.*\<(.+?)\>.*/",function($arrMatches){ return $arrMatches[1]; },$this->_sEmailFrom).">\r\n");
-				$sLastMessage=fgets($hFp,512);
-				if(substr($sLastMessage,0,3)!=250){
-					$this->setErrorMessage(sprintf("%s:%d MAIL FROM - %s",$this->_sServer,$this->_nPort,$sLastMessage));
-					return false;
-				}
-			}
-
-			$arrEmailTo=explode(',',$sEmailTo);
-			foreach($arrEmailTo as $sToUser){
-				$sToUser=trim($sToUser);
-				if($sToUser){
-					fputs($hFp,"RCPT TO: <".preg_replace_callback("/.*\<(.+?)\>.*/",function($arrMatches){ return $arrMatches[1]; },$sToUser).">\r\n");
-					$sLastMessage=fgets($hFp,512);
-					if(substr($sLastMessage,0,3)!=250){
-						fputs($hFp,"RCPT TO: <".preg_replace_callback("/.*\<(.+?)\>.*/",function($arrMatches){ return $arrMatches[1]; },$sToUser).">\r\n");
-						$sLastMessage=fgets($hFp,512);
-						$this->setErrorMessage(sprintf("%s:%d RCPT TO - %s",$this->_sServer,$this->_nPort,$sLastMessage));
-						return false;
-					}
-				}
-			}
-
-			fputs($hFp,"DATA\r\n");
-			$sLastMessage=fgets($hFp,512);
-
-			if(substr($sLastMessage,0,3)!=354){
-				$this->setErrorMessage(sprintf("%s:%d DATA - %s",$this->_sServer,$this->_nPort,$sLastMessage));
-				return false;
-			}
-
-			$sHeaders.='Message-ID: <'.gmdate('YmdHs').'.'.substr(md5($sEmailMessage.microtime()),0,6).rand(100000,999999).'@'.$_SERVER['HTTP_HOST'].">{$sEmailLimiter}";
-			fputs($hFp,"Date: ".gmdate('r')."\r\n");
-			fputs($hFp,"To:{$sEmailTo}\r\n");
-			fputs($hFp,"Subject:{$sEmailSubject}\r\n");
-			fputs($hFp,$sHeaders."\r\n");
-			fputs($hFp,"\r\n\r\n");
-			fputs($hFp,"{$sEmailMessage}\r\n.\r\n");
-			$sLastMessage=fgets($hFp,512);
-
-			if(substr($sLastMessage,0,3)!=250){
-				$this->setErrorMessage(sprintf("%s:%d DATA - %s",$this->_sServer,$this->_nPort,$sLastMessage));
-				return false;
-			}
-
-			fputs($hFp,"QUIT\r\n");
-		}else{
-			$this->setErrorMessage("The wrong way to send e-mail");
-			return false;
-		}
-
-		return true;
-	}
-
-	public function setServer($sServer=''){
-		if(empty($sServer)){
-			return;
-		}
-
-		$sOldValue=$this->_sServer;
-		$this->_sServer=$sServer;
-		return $sOldValue;
-	}
-
-	public function setPort($nPort=25){
-		if(empty($nPort)){
-			return;
-		}
-		$nOldValue=$this->_nPort;
-		$this->_nPort=$nPort;
-		return $nOldValue;
-	}
-
-	public function setAuth($bAuth=true){
-		$bOldValue=$this->_bAuth;
-		$this->_bAuth=$bAuth;
-		return $bOldValue;
-	}
-
-	public function setAuthUsername($sAuthUsername=''){
-		$sOldValue=$this->_sAuthUsername;
-		$this->_sAuthUsername=$sAuthUsername;
-		return $sOldValue;
-	}
-
-	public function setAuthPassword($sAuthPassword=''){
-		$sOldValue=$this->_sAuthPassword;
-		$this->_sAuthPassword=$sAuthPassword;
-		return $sOldValue;
-	}
-
-	public function setEmailFrom($sEmailFrom=''){
-		$sOldValue=$this->_sEmailFrom;
-		$this->_sEmailFrom=$sEmailFrom;
-		return $sOldValue;
-	}
-
-	public function setEmailTo($sEmailTo=''){
-		$sOldValue=$this->_sEmailTo;
-		$this->_sEmailTo=$sEmailTo;
-		return $sOldValue;
-	}
-
-	public function setEmailLimiter($nEmailLimiter=1){
-		if(!in_array($nEmailLimiter,array(1,2,3))){
-			return;
-		}
-
-		$nOldValue=$this->_nEmailLimiter;
-		$this->_nEmailLimiter=$nEmailLimiter;
-		return $nOldValue;
-	}
-
-	public function setEmailSubject($sEmailSubject=''){
-		$sOldValue=$this->_sEmailSubject;
-		$this->_sEmailSubject=$sEmailSubject;
-		return $sOldValue;
-	}
-
-	public function setEmailMessage($sEmailMessage=''){
-		$sOldValue=$this->_sEmailMessage;
-		$this->_sEmailMessage=$sEmailMessage;
-		return $sOldValue;
-	}
-
-	public function setEmailUsername($bEmailUsername=true){
-		$bOldValue=$this->_bEmailUsername;
-		$this->_bEmailUsername=$bEmailUsername;
-		return $bOldValue;
-	}
-
-	public function setCharset($sCharset='UTF-8'){
-		$sOldValue=$this->_sCharset;
-		$this->_sCharset=$sCharset;
-		return $sOldValue;
-	}
-
-	public function setSiteName($sSiteName=''){
-		$sOldValue=$this->_sSiteName;
-		$this->_sSiteName=$sSiteName;
-		return $sOldValue;
-	}
-
-	public function setIsHtml($bIsHtml=true){
-		$bOldValue=$this->_bIsHtml;
-		$this->_bIsHtml=$bIsHtml;
-		return $bOldValue;
-	}
-
-	public function setContentType($sContentType='text/plain'){
-		$sOldValue=$this->_sContentType;
-		$this->_sContentType=$sContentType;
-		return $sOldValue;
-	}
-
-	public function getServer(){
-		return $this->_sServer;
-	}
-
-	public function getPort(){
-		return $this->_nPort;
-	}
-
-	public function getAuth(){
-		return $this->_bAuth;
-	}
-
-	public function getAuthUsername(){
-		return $this->_sAuthUsername;
-	}
-
-	public function getAuthPassword(){
-		return $this->_sAuthPassword;
-	}
-
-	public function getEmailFrom(){
-		return $this->_sEmailFrom;
-	}
-
-	public function getEmailTo(){
-		return $this->_sEmailTo;
-	}
-
-	public function getEmailLimiter(){
-		return $this->_nEmailLimiter;
-	}
-
-	public function getEmailSubject(){
-		return $this->_sEmailSubject;
-	}
-
-	public function getEmailMessage(){
-		return $this->_sEmailMessage;
-	}
-
-	public function getEmailUsername(){
-		return $this->_bEmailUsername;
-	}
-
-	public function getCharset(){
-		return $this->_sCharset;
-	}
-
-	public function getSiteName(){
-		return $this->_sSiteName;
-	}
-
-	public function getIsHtml(){
-		return $this->_bIsHtml;
-	}
-
-	public function getContentType(){
-		return $this->_sContentType;
-	}
-
-	protected function setIsError($bIsError=false){
-		$bOldValue=$this->_bIsError;
-		$this->_bIsError=$bIsError;
-		return $bOldValue;
-	}
-
-	protected function setErrorMessage($sErrorMessage=''){
-		$this->setIsError(true);
-		$sOldValue=$this->_sErrorMessage;
-		$this->_sErrorMessage=$sErrorMessage;
-		return $sOldValue;
-	}
-
-	public function isError(){
-		return $this->_bIsError;
-	}
-
-	public  function getErrorMessage(){
-		return $this->_sErrorMessage;
-	}
-
+// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+// ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\mail;
+
+<<<queryphp
+##########################################################
+#   ____                          ______  _   _ ______   #
+#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+#       \__   | \___ |_|    \__  || |    | | | || |      #
+#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+#                          |___ /  Since 2010.10.03      #
+##########################################################
+queryphp;
+
+use Swift_Mailer;
+use InvalidArgumentException;
+use queryyetsimple\support\interfaces\container;
+use queryyetsimple\mail\interfaces\mail as interfaces_mail;
+
+/**
+ * mail 入口
+ *
+ * @author Xiangmin Liu <635750556@qq.com>
+ * @package $$
+ * @since 2017.08.26
+ * @version 1.0
+ */
+class mail implements interfaces_mail {
+    
+    /**
+     * 项目管理
+     *
+     * @var \queryyetsimple\support\interfaces\container
+     */
+    protected $objContainer;
+    
+    /**
+     * mail 连接对象
+     *
+     * @var \queryyetsimple\mail\store[]
+     */
+    protected static $arrConnect;
+    
+    /**
+     * 构造函数
+     *
+     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @return void
+     */
+    public function __construct(container $objContainer) {
+        $this->objContainer = $objContainer;
+    }
+    
+    /**
+     * 连接 mail 并返回连接对象
+     *
+     * @param array|string $mixOption            
+     * @return \queryyetsimple\mail\store
+     */
+    public function connect($mixOption = []) {
+        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objContainer ['option'] ['mail\\connect.' . $mixOption]) )) {
+            $mixOption = [ ];
+        }
+        
+        $strDriver = ! empty ( $mixOption ['driver'] ) ? $mixOption ['driver'] : $this->getDefaultDriver ();
+        $strUnique = $this->getUnique ( $mixOption );
+        
+        if (isset ( static::$arrConnect [$strUnique] )) {
+            return static::$arrConnect [$strUnique];
+        }
+        return static::$arrConnect [$strUnique] = $this->store ( $this->makeConnect ( $strDriver, $mixOption ) );
+    }
+    
+    /**
+     * 创建 mail store
+     *
+     * @param \queryyetsimple\mail\interfaces\connect $oConnect            
+     * @return \queryyetsimple\mail\store
+     */
+    public function store($oConnect) {
+        $arrOption = $this->objContainer ['option'] ['mail\\'];
+        unset ( $arrOption ['default'], $arrOption ['connect'] );
+        return new store ( $arrOption, $oConnect, $this->objContainer ['view'], $this->objContainer ['event'] );
+    }
+    
+    /**
+     * 返回默认驱动
+     *
+     * @return string
+     */
+    public function getDefaultDriver() {
+        return $this->objContainer ['option'] ['mail\default'];
+    }
+    
+    /**
+     * 设置默认驱动
+     *
+     * @param string $strName            
+     * @return void
+     */
+    public function setDefaultDriver($strName) {
+        $this->objContainer ['option'] ['mail\default'] = $strName;
+    }
+    
+    /**
+     * 创建连接
+     *
+     * @param string $strConnect            
+     * @param array $arrOption            
+     * @return \queryyetsimple\mail\interfaces\connect
+     */
+    protected function makeConnect($strConnect, $arrOption = []) {
+        if (is_null ( $this->objContainer ['option'] ['mail\connect.' . $strConnect] ))
+            throw new Exception ( sprintf ( 'Mail driver %s not exits', $strConnect ) );
+        return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
+    }
+    
+    /**
+     * 创建 smtp 连接
+     *
+     * @param array $arrOption            
+     * @return \queryyetsimple\mail\smtp
+     */
+    protected function makeConnectSmtp($arrOption = []) {
+        return new smtp ( array_merge ( $this->getOption ( 'smtp', $arrOption ) ) );
+    }
+    
+    /**
+     * 创建 sendmail 连接
+     *
+     * @param array $arrOption            
+     * @return \queryyetsimple\mail\sendmail
+     */
+    protected function makeConnectSendmail($arrOption = []) {
+        return new sendmail ( array_merge ( $this->getOption ( 'sendmail', $arrOption ) ) );
+    }
+    
+    /**
+     * 取得唯一值
+     *
+     * @param array $arrOption            
+     * @return string
+     */
+    protected function getUnique($arrOption) {
+        return md5 ( serialize ( $arrOption ) );
+    }
+    
+    /**
+     * 读取默认 mail 配置
+     *
+     * @param string $strConnect            
+     * @param array $arrExtendOption            
+     * @return array
+     */
+    protected function getOption($strConnect, array $arrExtendOption = []) {
+        $arrOption = $this->objContainer ['option'] ['mail\\'];
+        unset ( $arrOption ['default'], $arrOption ['from'], $arrOption ['to'], $arrOption ['connect'] );
+        return array_merge ( $this->objContainer ['option'] ['mail\connect.' . $strConnect], $arrOption, $arrExtendOption );
+    }
+    
+    /**
+     * 拦截匿名注册控制器方法
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
+     */
+    public function __call($sMethod, $arrArgs) {
+        return call_user_func_array ( [ 
+                $this->connect (),
+                $sMethod 
+        ], $arrArgs );
+    }
 }
