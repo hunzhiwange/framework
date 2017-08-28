@@ -679,15 +679,12 @@ class response {
      * @param array $arrOption
      *            charset 编码
      *            content_type 内容类型
-     *            return 是否返回
      * @return void|string
      */
     public function view($sFile = '', $arrOption = []) {
         if ($this->checkFlowControl ())
             return $this;
-        if (! isset ( $arrOption ['return'] )) {
-            $arrOption ['return'] = true;
-        }
+        $arrOption ['return'] = true;
         if (! empty ( $arrOption ['charset'] )) {
             $this->charset ( $arrOption ['charset'] );
         }
