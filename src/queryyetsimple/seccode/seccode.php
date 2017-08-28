@@ -571,10 +571,8 @@ class seccode implements interfaces_seccode {
     /**
      * 生成随机数
      *
-     * @param
-     *            $numFoo
-     * @param
-     *            $numBar
+     * @param int $numFoo            
+     * @param int $numBar            
      * @return number
      */
     protected function mtRand($numFoo, $numBar) {
