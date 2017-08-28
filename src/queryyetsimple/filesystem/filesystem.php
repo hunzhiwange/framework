@@ -15,6 +15,7 @@ namespace queryyetsimple\filesystem;
 ##########################################################
 queryphp;
 
+use RuntimeException;
 use DirectoryIterator;
 use queryyetsimple\classs\infinity;
 
@@ -29,6 +30,20 @@ use queryyetsimple\classs\infinity;
 class filesystem {
     
     use infinity;
+    
+    /**
+     * 取得文件内容
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    public function fileContents($strPath) {
+        if (static::isFile ( $strPath )) {
+            return file_get_contents ( $strPath );
+        }
+        
+        throw new RuntimeException ( sprintf ( 'File %s does not exist', $strPath ) );
+    }
     
     /**
      * 创建目录
@@ -309,5 +324,35 @@ class filesystem {
      */
     public static function getName($strPath) {
         return pathinfo ( $strPath, PATHINFO_FILENAME );
+    }
+    
+    /**
+     * 是否为目录
+     *
+     * @param string $strDirectory            
+     * @return bool
+     */
+    public function isDirectory($strDirectory) {
+        return is_dir ( $strDirectory );
+    }
+    
+    /**
+     * 是否可写
+     *
+     * @param string $strPath            
+     * @return bool
+     */
+    public function isWritable($strPath) {
+        return is_writable ( $strPath );
+    }
+    
+    /**
+     * 是否为文件
+     *
+     * @param string $strFile            
+     * @return bool
+     */
+    public function isFile($strFile) {
+        return is_file ( $strFile );
     }
 }
