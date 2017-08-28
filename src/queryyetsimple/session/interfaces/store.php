@@ -176,7 +176,7 @@ interface store {
      *
      * @param string $strKey            
      * @param mixed $mixDefault            
-     * @return void
+     * @return mixed
      */
     public function getFlash($strKey, $mixDefault = null);
     

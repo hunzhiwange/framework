@@ -404,7 +404,7 @@ class store implements interfaces_store {
      *
      * @param string $strKey            
      * @param mixed $mixDefault            
-     * @return void
+     * @return mixed
      */
     public function getFlash($strKey, $mixDefault = null) {
         return $this->get ( $this->flashDataKey ( $strKey ), $mixDefault );
