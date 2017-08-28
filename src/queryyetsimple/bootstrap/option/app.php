@@ -162,7 +162,8 @@ return [
                 'queryyetsimple\rss',
                 'queryyetsimple\stack',
                 'queryyetsimple\page',
-                'queryyetsimple\view' 
+                'queryyetsimple\view',
+                'queryyetsimple\mail' 
         ],
         
         /**
