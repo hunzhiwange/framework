@@ -128,6 +128,33 @@ abstract class controller implements interfaces_controller {
     }
     
     /**
+     * 删除变量值
+     *
+     * @param mixed $mixName            
+     * @return $this
+     */
+    public function deleteAssign($mixName) {
+        $this->checkView ();
+        call_user_func_array ( [ 
+                $this->objView,
+                'deleteAssign' 
+        ], func_get_args () );
+        return $this;
+    }
+    
+    /**
+     * 清空变量值
+     *
+     * @param string|null $sName            
+     * @return $this
+     */
+    public function clearAssign() {
+        $this->checkView ();
+        $this->objView->clearAssign ();
+        return $this;
+    }
+    
+    /**
      * 加载视图文件
      *
      * @param string $sThemeFile            

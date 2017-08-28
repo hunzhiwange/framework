@@ -60,6 +60,22 @@ interface theme {
     public function getVar($sName = null);
     
     /**
+     * 删除变量值
+     *
+     * @param mixed $mixName            
+     * @return $this
+     */
+    public function deleteVar($mixName);
+    
+    /**
+     * 清空变量值
+     *
+     * @param string|null $sName            
+     * @return $this
+     */
+    public function clearVar();
+    
+    /**
      * 获取编译路径
      *
      * @param string $sFile            

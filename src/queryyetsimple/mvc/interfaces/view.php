@@ -43,6 +43,22 @@ interface view {
     public function getAssign($sName = null);
     
     /**
+     * 删除变量值
+     *
+     * @param mixed $mixName            
+     * @return $this
+     */
+    public function deleteAssign($mixName);
+    
+    /**
+     * 清空变量值
+     *
+     * @param string|null $sName            
+     * @return $this
+     */
+    public function clearAssign();
+    
+    /**
      * 加载视图文件
      *
      * @param string $sFile            

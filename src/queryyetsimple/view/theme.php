@@ -196,6 +196,32 @@ class theme implements interfaces_theme {
     }
     
     /**
+     * 删除变量值
+     *
+     * @param mixed $mixName            
+     * @return $this
+     */
+    public function deleteVar($mixName) {
+        $mixName = is_array ( $mixName ) ? $mixName : func_get_args ();
+        foreach ( $mixName as $strName ) {
+            if (isset ( $this->arrVar [$strName] ))
+                unset ( $this->arrVar [$strName] );
+        }
+        return $this;
+    }
+    
+    /**
+     * 清空变量值
+     *
+     * @param string|null $sName            
+     * @return $this
+     */
+    public function clearVar() {
+        $this->arrVar = [ ];
+        return $this;
+    }
+    
+    /**
      * 获取编译路径
      *
      * @param string $sFile            

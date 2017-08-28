@@ -71,6 +71,33 @@ class view implements interfaces_view {
     }
     
     /**
+     * 删除变量值
+     *
+     * @param mixed $mixName            
+     * @return $this
+     */
+    public function deleteAssign($mixName) {
+        $this->checkTheme ();
+        call_user_func_array ( [ 
+                $this->objTheme,
+                'deleteVar' 
+        ], func_get_args () );
+        return $this;
+    }
+    
+    /**
+     * 清空变量值
+     *
+     * @param string|null $sName            
+     * @return $this
+     */
+    public function clearAssign() {
+        $this->checkTheme ();
+        $this->objTheme->clearVar ();
+        return $this;
+    }
+    
+    /**
      * 加载视图文件
      *
      * @param string $sFile            
