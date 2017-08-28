@@ -158,6 +158,19 @@ if (! function_exists ( 'session' )) {
     }
 }
 
+if (! function_exists ( 'flash' )) {
+    /**
+     * 返回 flash
+     *
+     * @param string $strKey            
+     * @param mixed $mixDefault            
+     * @return mixed
+     */
+    function flash($strKey, $mixDefault = null) {
+        return project ( 'session' )->getFlash ( $strKey, $mixDefault );
+    }
+}
+
 if (! function_exists ( 'url' )) {
     /**
      * 生成路由地址
