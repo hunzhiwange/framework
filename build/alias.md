@@ -16,7 +16,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     event = subtree push --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
     filesystem = subtree push --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
     flows = subtree push --prefix=src/queryyetsimple/flow git@github.com:queryyetsimple/flow.git master
-    ftp = subtree push --prefix=src/queryyetsimple/ftp git@github.com:queryyetsimple/ftp.git master
     helper = subtree push --prefix=src/queryyetsimple/helper git@github.com:queryyetsimple/helper.git master
     http = subtree push --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
     i18n = subtree push --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
@@ -40,7 +39,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     string = subtree push --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     support = subtree push --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
     throttler = subtree push --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
-    upload = subtree push --prefix=src/queryyetsimple/upload git@github.com:queryyetsimple/upload.git master
     validate = subtree push --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
     view = subtree push --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
     xml = subtree push --prefix=src/queryyetsimple/xml git@github.com:queryyetsimple/xml.git master
@@ -59,7 +57,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     eventp = subtree pull --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
     filesystemp = subtree pull --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
     flowsp = subtree pull --prefix=src/queryyetsimple/flow git@github.com:queryyetsimple/flow.git master
-    ftpp = subtree pull --prefix=src/queryyetsimple/ftp git@github.com:queryyetsimple/ftp.git master
     helperp = subtree pull --prefix=src/queryyetsimple/helper git@github.com:queryyetsimple/helper.git master
     httpp = subtree pull --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
     i18np = subtree pull --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
@@ -83,7 +80,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     stringp = subtree pull --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     supportp = subtree pull --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
     throttlerp = subtree pull --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
-    uploadp = subtree pull --prefix=src/queryyetsimple/upload git@github.com:queryyetsimple/upload.git master
     validatep = subtree pull --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
     viewp = subtree pull --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
     xmlp = subtree pull --prefix=src/queryyetsimple/xml git@github.com:queryyetsimple/xml.git master
