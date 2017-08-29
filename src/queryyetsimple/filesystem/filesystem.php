@@ -37,7 +37,7 @@ class filesystem {
      * @param string $strPath            
      * @return string
      */
-    public function fileContents($strPath) {
+    public static function fileContents($strPath) {
         if (static::isFile ( $strPath )) {
             return file_get_contents ( $strPath );
         }
@@ -332,7 +332,7 @@ class filesystem {
      * @param string $strDirectory            
      * @return bool
      */
-    public function isDirectory($strDirectory) {
+    public static function isDirectory($strDirectory) {
         return is_dir ( $strDirectory );
     }
     
@@ -342,7 +342,7 @@ class filesystem {
      * @param string $strPath            
      * @return bool
      */
-    public function isWritable($strPath) {
+    public static function isWritable($strPath) {
         return is_writable ( $strPath );
     }
     
@@ -352,7 +352,7 @@ class filesystem {
      * @param string $strFile            
      * @return bool
      */
-    public function isFile($strFile) {
+    public static function isFile($strFile) {
         return is_file ( $strFile );
     }
 }
