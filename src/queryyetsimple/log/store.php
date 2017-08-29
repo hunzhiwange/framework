@@ -41,69 +41,6 @@ class store implements interfaces_store {
     protected $oConnect;
     
     /**
-     * debug
-     *
-     * @var string
-     */
-    const DEBUG = 'debug';
-    
-    /**
-     * info
-     *
-     * @var string
-     */
-    const INFO = 'info';
-    
-    /**
-     * notice
-     *
-     * @var string
-     */
-    const NOTICE = 'notice';
-    
-    /**
-     * warning
-     *
-     * @var string
-     */
-    const WARNING = 'warning';
-    
-    /**
-     * error
-     *
-     * @var string
-     */
-    const ERROR = 'error';
-    
-    /**
-     * critical
-     *
-     * @var string
-     */
-    const CRITICAL = 'critical';
-    
-    /**
-     * alert
-     *
-     * @var string
-     */
-    const ALERT = 'alert';
-    
-    /**
-     * emergency
-     *
-     * @var string
-     */
-    const EMERGENCY = 'emergency';
-    
-    /**
-     * sql
-     *
-     * @var string
-     */
-    const SQL = 'sql';
-    
-    /**
      * 当前记录的日志信息
      *
      * @var array
@@ -301,5 +238,19 @@ class store implements interfaces_store {
         }
         
         $this->oConnect->save ( $arrData );
+    }
+    
+    /**
+     * 缺省方法
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
+     */
+    public function __call($sMethod, $arrArgs) {
+        return call_user_func_array ( [ 
+                $this->oConnect,
+                $sMethod 
+        ], $arrArgs );
     }
 }

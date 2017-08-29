@@ -16,6 +16,7 @@ namespace queryyetsimple\session;
 queryphp;
 
 use RuntimeException;
+use BadMethodCallException;
 use SessionHandlerInterface;
 use queryyetsimple\classs\option;
 use queryyetsimple\assert\assert;
@@ -769,5 +770,22 @@ class store implements interfaces_store {
      */
     protected function prevUrlKey() {
         return 'prev.url.key';
+    }
+    
+    /**
+     * 缺省方法
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
+     */
+    public function __call($sMethod, $arrArgs) {
+        if (is_null ( $this->oHandler ))
+            throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
+        
+        return call_user_func_array ( [ 
+                $this->oHandler,
+                $sMethod 
+        ], $arrArgs );
     }
 }

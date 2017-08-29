@@ -26,6 +26,69 @@ queryphp;
 interface store {
     
     /**
+     * debug
+     *
+     * @var string
+     */
+    const DEBUG = 'debug';
+    
+    /**
+     * info
+     *
+     * @var string
+     */
+    const INFO = 'info';
+    
+    /**
+     * notice
+     *
+     * @var string
+     */
+    const NOTICE = 'notice';
+    
+    /**
+     * warning
+     *
+     * @var string
+     */
+    const WARNING = 'warning';
+    
+    /**
+     * error
+     *
+     * @var string
+     */
+    const ERROR = 'error';
+    
+    /**
+     * critical
+     *
+     * @var string
+     */
+    const CRITICAL = 'critical';
+    
+    /**
+     * alert
+     *
+     * @var string
+     */
+    const ALERT = 'alert';
+    
+    /**
+     * emergency
+     *
+     * @var string
+     */
+    const EMERGENCY = 'emergency';
+    
+    /**
+     * sql
+     *
+     * @var string
+     */
+    const SQL = 'sql';
+    
+    /**
      * 记录错误消息
      *
      * @param string $strMessage
