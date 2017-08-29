@@ -18,7 +18,7 @@ queryphp;
 use Exception;
 use queryyetsimple\classs\option;
 use queryyetsimple\string\string;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 use queryyetsimple\seccode\interfaces\seccode as interfaces_seccode;
 
 /**
@@ -415,7 +415,7 @@ class seccode implements interfaces_seccode {
                 throw new Exception ( sprintf ( 'Background path %s is not exists.', $this->getBackgroundPath () ) );
             }
             
-            $arrBackground = filesystem::lists ( $this->getBackgroundPath (), 'file', true );
+            $arrBackground = fso::lists ( $this->getBackgroundPath (), 'file', true );
             
             if ($arrBackground) {
                 $resBackground = imagecreatefromjpeg ( $arrBackground [array_rand ( $arrBackground )] );
@@ -479,7 +479,7 @@ class seccode implements interfaces_seccode {
             throw new Exception ( sprintf ( 'Font path %s is not exits', $strFontPath ) );
         }
         
-        $arrTtf = filesystem::lists ( $strFontPath, 'file', true );
+        $arrTtf = fso::lists ( $strFontPath, 'file', true );
         if (empty ( $arrTtf )) {
             throw new Exception ( 'Font not found' );
         }

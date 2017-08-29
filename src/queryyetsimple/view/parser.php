@@ -18,7 +18,7 @@ queryphp;
 use InvalidArgumentException;
 use queryyetsimple\stack\stack;
 use queryyetsimple\helper\helper;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 use queryyetsimple\classs\option as classs_option;
 use queryyetsimple\view\interfaces\parser as interfaces_parser;
 
@@ -726,7 +726,7 @@ class parser implements interfaces_parser {
      * @return void
      */
     protected function makeCacheFile($sCachePath, &$sCompiled) {
-        ! is_file ( $sCachePath ) && ! is_dir ( dirname ( $sCachePath ) ) && filesystem::createDirectory ( dirname ( $sCachePath ) );
+        ! is_file ( $sCachePath ) && ! is_dir ( dirname ( $sCachePath ) ) && fso::createDirectory ( dirname ( $sCachePath ) );
         file_put_contents ( $sCachePath, $sCompiled );
         file_put_contents ( $sCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */ ?>' . PHP_EOL . php_strip_whitespace ( $sCachePath ) );
     }

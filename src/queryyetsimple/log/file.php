@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\classs\option;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 use queryyetsimple\log\interfaces\connect;
 
 /**
@@ -80,7 +80,7 @@ class file implements connect {
      */
     protected function checkSize($sFilePath) {
         // 如果不是文件，则创建
-        if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! filesystem::createDirectory ( dirname ( $sFilePath ) )) {
+        if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! fso::createDirectory ( dirname ( $sFilePath ) )) {
             throw new RuntimeException ( __ ( '无法创建日志文件：%s', $sFilePath ) );
         }
         

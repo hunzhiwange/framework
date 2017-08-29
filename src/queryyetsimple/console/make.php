@@ -16,8 +16,8 @@ namespace queryyetsimple\console;
 queryphp;
 
 use RuntimeException;
+use queryyetsimple\filesystem\fso;
 use queryyetsimple\console\command;
-use queryyetsimple\filesystem\filesystem;
 
 /**
  * 生成器基类
@@ -113,7 +113,7 @@ abstract class make extends command {
     protected function saveTemplateResult() {
         $strSaveFilePath = $this->getSaveFilePath ();
         if (! is_dir ( dirname ( $strSaveFilePath ) )) {
-            filesystem::createDirectory ( dirname ( $strSaveFilePath ) );
+            fso::createDirectory ( dirname ( $strSaveFilePath ) );
         }
         if (is_file ( $strSaveFilePath )) {
             throw new RuntimeException ( 'File is already exits.' . PHP_EOL . $this->formatFile ( $this->getSaveFilePath () ) );
@@ -317,6 +317,6 @@ abstract class make extends command {
      * @return array
      */
     protected function formatFile($strFile) {
-        return filesystem::tidyPathLinux ( $strFile );
+        return fso::tidyPathLinux ( $strFile );
     }
 }  

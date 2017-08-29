@@ -16,7 +16,7 @@ namespace queryyetsimple\image;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 
 /**
  * 图像处理
@@ -388,7 +388,7 @@ class image {
         
         // 创建文件
         if (! is_dir ( dirname ( $sFilename ) )) {
-            filesystem::createDirectory ( dirname ( $sFilename ) );
+            fso::createDirectory ( dirname ( $sFilename ) );
         }
         
         // 写入文件

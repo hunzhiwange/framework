@@ -17,7 +17,7 @@ queryphp;
 
 use Exception as Exceptions;
 use queryyetsimple\debug\dump;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 
 /**
  * 异常消息
@@ -112,7 +112,7 @@ class exception extends message {
                 $arrVal ['class'] = isset ( $arrVal ['class'] ) ? $arrVal ['class'] : '';
                 $arrVal ['type'] = isset ( $arrVal ['type'] ) ? $arrVal ['type'] : '';
                 $arrVal ['function'] = isset ( $arrVal ['function'] ) ? $arrVal ['function'] : '';
-                $arrVal ['file'] = isset ( $arrVal ['file'] ) ? filesystem::tidyPathLinux ( $arrVal ['file'] ) : '';
+                $arrVal ['file'] = isset ( $arrVal ['file'] ) ? fso::tidyPathLinux ( $arrVal ['file'] ) : '';
                 $arrVal ['line'] = isset ( $arrVal ['line'] ) ? $arrVal ['line'] : '';
                 $arrVal ['args'] = isset ( $arrVal ['args'] ) ? $arrVal ['args'] : '';
                 

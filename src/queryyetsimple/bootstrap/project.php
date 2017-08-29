@@ -21,8 +21,8 @@ use RuntimeException;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\helper\helper;
 use Composer\Autoload\ClassLoader;
+use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\container;
-use queryyetsimple\filesystem\filesystem;
 use queryyetsimple\bootstrap\interfaces\project as interfaces_project;
 
 /**
@@ -331,7 +331,7 @@ class project extends container implements interfaces_project {
     protected function loadApp() {
         if (($strCache = $this->pathApplicationCache ( 'option' ) . '/' . application::INIT_APP . '.php') && is_file ( $strCache )) {
             if ($this->checkEnv ( $strCache )) {
-                filesystem::deleteDirectory ( dirname ( $strCache ) );
+                fso::deleteDirectory ( dirname ( $strCache ) );
                 $this->loadAppOption ();
             } else {
                 $this->loadAppOption ( $strCache );

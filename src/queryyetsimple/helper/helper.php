@@ -19,7 +19,7 @@ use Closure;
 use ReflectionClass;
 use InvalidArgumentException;
 use queryyetsimple\psr4\psr4;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 
 /**
  * 辅助函数
@@ -125,7 +125,7 @@ class helper {
         }
         
         if (! is_dir ( dirname ( $strCachePath ) )) {
-            filesystem::createDirectory ( dirname ( $strCachePath ) );
+            fso::createDirectory ( dirname ( $strCachePath ) );
         }
         
         file_put_contents ( $strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */' . PHP_EOL . 'return [ ' . implode ( ', ', $arrResult ) . ' ]; ?>' );

@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\helper\helper;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 
 /**
  * 配置工具类
@@ -42,9 +42,9 @@ class tool {
         $arrData = $arrType = [ ];
         
         foreach ( $arrOptionDir as $sDir ) {
-            if (is_dir ( $sDir ) && ($arrFile = filesystem::lists ( $sDir, 'file' ))) {
+            if (is_dir ( $sDir ) && ($arrFile = fso::lists ( $sDir, 'file' ))) {
                 foreach ( $arrFile as $strFile ) {
-                    if (filesystem::getExtension ( $strFile, 2 ) == 'php') {
+                    if (fso::getExtension ( $strFile, 2 ) == 'php') {
                         $strType = substr ( $strFile, 0, - 4 );
                         $arrType [] = $strType;
                         
@@ -78,7 +78,7 @@ class tool {
         }
         
         if (! is_dir ( dirname ( $sOptionCache ) )) {
-            filesystem::createDirectory ( dirname ( $sOptionCache ) );
+            fso::createDirectory ( dirname ( $sOptionCache ) );
         }
         
         if (! file_put_contents ( $sOptionCache, '<?php return ' . var_export ( $arrData, true ) . '; ?>' )) {
@@ -101,9 +101,9 @@ class tool {
         
         foreach ( $arrOptionDir as $sDir ) {
             $sDir = dirname ( $sDir ) . '/router';
-            if (is_dir ( $sDir ) && ($arrFile = filesystem::lists ( $sDir, 'file' ))) {
+            if (is_dir ( $sDir ) && ($arrFile = fso::lists ( $sDir, 'file' ))) {
                 foreach ( $arrFile as $strFile ) {
-                    if (filesystem::getExtension ( $strFile, 2 ) == 'php') {
+                    if (fso::getExtension ( $strFile, 2 ) == 'php') {
                         $arrData ['app'] ['~routers~'] [] = $sDir . '/' . $strFile;
                     }
                 }

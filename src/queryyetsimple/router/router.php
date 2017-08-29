@@ -24,8 +24,8 @@ use queryyetsimple\http\request;
 use queryyetsimple\http\response;
 use queryyetsimple\helper\helper;
 use queryyetsimple\classs\option;
+use queryyetsimple\filesystem\fso;
 use queryyetsimple\classs\infinity;
-use queryyetsimple\filesystem\filesystem;
 use queryyetsimple\pipeline\interfaces\pipeline;
 use queryyetsimple\support\interfaces\container;
 
@@ -1593,7 +1593,7 @@ class router {
         ];
         
         if (! is_dir ( dirname ( $this->strCachePath ) )) {
-            filesystem::createDirectory ( dirname ( $this->strCachePath ) );
+            fso::createDirectory ( dirname ( $this->strCachePath ) );
         }
         
         if (! file_put_contents ( $this->strCachePath, '<?php return ' . var_export ( $arrCacheData, true ) . '; ?>' )) {

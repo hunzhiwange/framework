@@ -18,7 +18,7 @@ queryphp;
 use queryyetsimple\psr4\psr4;
 use queryyetsimple\http\response;
 use queryyetsimple\assert\assert;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 use queryyetsimple\i18n\tool as i18n_tool;
 use queryyetsimple\option\tool as option_tool;
 
@@ -360,7 +360,7 @@ class application {
     protected function cacheOption($sCachePath) {
         $this->objProject ['option']->reset ( option_tool::saveToCache ( $this->getOptionDir (), $sCachePath, [ 
                 'app' => [ 
-                        '~apps~' => filesystem::lists ( $this->objProject->pathApplication () ) 
+                        '~apps~' => fso::lists ( $this->objProject->pathApplication () ) 
                 ],
                 'env' => $_ENV 
         ], $this->strApp == static::INIT_APP ) );

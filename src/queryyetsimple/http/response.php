@@ -21,7 +21,7 @@ use queryyetsimple\flow\control;
 use queryyetsimple\assert\assert;
 use queryyetsimple\router\router;
 use queryyetsimple\classs\option;
-use queryyetsimple\filesystem\file;
+use queryyetsimple\filesystem\fso;
 use queryyetsimple\classs\infinity;
 use queryyetsimple\mvc\interfaces\view;
 use queryyetsimple\cookie\interfaces\cookie;
@@ -806,7 +806,7 @@ class response {
         if (! $sDownName) {
             $sDownName = basename ( $sFileName );
         } else {
-            $sDownName = $sDownName . '.' . filesystem::getExtension ( $sFileName );
+            $sDownName = $sDownName . '.' . fso::getExtension ( $sFileName );
         }
         return $this->downloadAndFile ( $sFileName, $arrHeader )->header ( 'Content-Disposition', 'attachment;filename=' . $sDownName );
     }

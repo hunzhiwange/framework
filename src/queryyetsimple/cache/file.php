@@ -17,7 +17,7 @@ queryphp;
 
 use InvalidArgumentException;
 use queryyetsimple\classs\option;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 use queryyetsimple\cache\interfaces\connect;
 use queryyetsimple\cache\abstracts\cache as abstracts_connect;
 
@@ -185,7 +185,7 @@ class file extends abstracts_connect implements connect {
             throw new InvalidArgumentException ( 'Cache path is not allowed empty.' );
         
         if (! is_dir ( $arrOption ['path'] )) {
-            filesystem::createDirectory ( $arrOption ['path'] );
+            fso::createDirectory ( $arrOption ['path'] );
         }
         return $arrOption ['path'] . '/' . $this->getCacheName ( $sCacheName, $arrOption ['prefix'] ) . '.php';
     }
@@ -198,7 +198,7 @@ class file extends abstracts_connect implements connect {
      * @return void
      */
     protected function writeData($sFileName, $sData) {
-        ! is_dir ( dirname ( $sFileName ) ) && filesystem::createDirectory ( dirname ( $sFileName ) );
+        ! is_dir ( dirname ( $sFileName ) ) && fso::createDirectory ( dirname ( $sFileName ) );
         file_put_contents ( $sFileName, $sData, LOCK_EX );
     }
     

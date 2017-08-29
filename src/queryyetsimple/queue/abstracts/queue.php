@@ -17,7 +17,7 @@ queryphp;
 
 use PHPQueue\Logger;
 use PHPQueue\JobQueue;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\fso;
 
 /**
  * base 消息队列
@@ -92,7 +92,7 @@ abstract class queue extends JobQueue {
         // 记录日志
         if (self::$strLogPath) {
             if (! is_dir ( self::$strLogPath ))
-                filesystem::createDirectory ( self::$strLogPath );
+                fso::createDirectory ( self::$strLogPath );
             $this->objResultLog = Logger::createLogger ( $this->strConnect, Logger::INFO, self::$strLogPath . '/' . $this->strConnect . '.log' );
         }
     }
