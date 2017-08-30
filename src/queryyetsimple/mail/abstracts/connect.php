@@ -34,7 +34,7 @@ abstract class connect implements Swift_Transport {
     use option;
     
     /**
-     * 返回 swift mailer
+     * swift mailer
      *
      * @var \Swift_Mailer
      */

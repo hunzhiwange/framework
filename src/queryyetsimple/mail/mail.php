@@ -15,7 +15,6 @@ namespace queryyetsimple\mail;
 ##########################################################
 queryphp;
 
-use Swift_Mailer;
 use InvalidArgumentException;
 use queryyetsimple\support\interfaces\container;
 use queryyetsimple\mail\interfaces\mail as interfaces_mail;
