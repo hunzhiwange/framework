@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\operating;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.05.05
  * @version 1.0
  */
-class system {
+class os {
     
     /**
      * 是否为 window 平台

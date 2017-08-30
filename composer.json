@@ -46,7 +46,6 @@
         "queryyetsimple/mail": "self.version",
         "queryyetsimple/mvc": "self.version",
         "queryyetsimple/observer": "self.version",
-        "queryyetsimple/operating": "self.version",
         "queryyetsimple/option": "self.version",
         "queryyetsimple/page": "self.version",
         "queryyetsimple/pipeline": "self.version",

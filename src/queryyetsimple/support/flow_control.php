@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\flow;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.04.13
  * @version 1.0
  */
-trait control {
+trait flow_control {
     
     /**
      * 逻辑代码是否处于条件表达式中
