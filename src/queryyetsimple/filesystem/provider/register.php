@@ -1,8 +1,6 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple;
-
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -15,37 +13,22 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces;
-
 /**
- * 沙盒 filesystem
+ * filesystem.register 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.08.29
+ * @since 2017.08.26
  * @version 1.0
  */
-class filesystem extends faces {
-    
-    /**
-     * 返回门面名字
-     *
-     * @return string
-     */
-    protected static function name() {
-        return 'filesystem';
-    }
-}
-
-namespace qys;
-
-/**
- * 沙盒 filesystem
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.08.29
- * @version 1.0
- */
-class filesystem extends \queryyetsimple\filesystem {
-}
+return [ 
+        'singleton@filesystem' => [ 
+                [ 
+                        'queryyetsimple\filesystem\filesystem',
+                        'queryyetsimple\filesystem\interfaces\filesystem' 
+                ],
+                function ($oProject) {
+                    return new queryyetsimple\filesystem\filesystem ( $oProject );
+                } 
+        ] 
+];

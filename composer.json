@@ -16,13 +16,16 @@
     ],
     "require": {
         "php": ">=5.5.0",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
         "symfony/console": "3.0.*",
         "symfony/var-dumper": "2.8.*|3.0.*",
         "predis/predis": "^1.1",
         "coderkungfu/php-queue": "^0.9.1",
         "robmorgan/phinx": "^0.8.0",
         "vlucas/phpdotenv": "~2.2",
-        "nesbot/carbon": "~1.20"
+        "nesbot/carbon": "~1.20",
+        "league/flysystem": "^1.0"
     },
      "replace": {
         "queryyetsimple/assert": "self.version",
@@ -34,20 +37,18 @@
         "queryyetsimple/cookie": "self.version",
         "queryyetsimple/database": "self.version",
         "queryyetsimple/debug": "self.version",
-        "queryyetsimple/demo": "self.version",
         "queryyetsimple/encryption": "self.version",
         "queryyetsimple/event": "self.version",
         "queryyetsimple/filesystem": "self.version",
         "queryyetsimple/flow": "self.version",
-        "queryyetsimple/ftp": "self.version",
         "queryyetsimple/helper": "self.version",
         "queryyetsimple/http": "self.version",
         "queryyetsimple/i18n": "self.version",
         "queryyetsimple/image": "self.version",
-        "queryyetsimple/iplocate": "self.version",
         "queryyetsimple/log": "self.version",
         "queryyetsimple/mail": "self.version",
         "queryyetsimple/mvc": "self.version",
+        "queryyetsimple/observer": "self.version",
         "queryyetsimple/operating": "self.version",
         "queryyetsimple/option": "self.version",
         "queryyetsimple/page": "self.version",
@@ -59,10 +60,10 @@
         "queryyetsimple/safe": "self.version",
         "queryyetsimple/seccode": "self.version",
         "queryyetsimple/session": "self.version",
-        "queryyetsimple/socket": "self.version",
+        "queryyetsimple/stack": "self.version",
         "queryyetsimple/string": "self.version",
         "queryyetsimple/support": "self.version",
-        "queryyetsimple/upload": "self.version",
+        "queryyetsimple/throttler": "self.version",
         "queryyetsimple/validate": "self.version",
         "queryyetsimple/view": "self.version",
         "queryyetsimple/xml": "self.version"
@@ -70,6 +71,10 @@
     "require-dev": {
         "fzaninotto/faker": "^1.6",
         "phpunit/phpunit": "~4.0"
+    },
+    "suggest": {
+        "league/flysystem-sftp": "Sftp adapter support.",
+        "league/flysystem-ziparchive": "ZipArchive adapter support."
     },
     "autoload": {
         "files": [

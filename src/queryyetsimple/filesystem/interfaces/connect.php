@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple;
+namespace queryyetsimple\filesystem\interfaces;
 
 <<<queryphp
 ##########################################################
@@ -15,37 +15,20 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces;
-
 /**
- * 沙盒 filesystem
+ * connect 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.29
  * @version 1.0
  */
-class filesystem extends faces {
+interface connect {
     
     /**
-     * 返回门面名字
+     * 创建连接
      *
-     * @return string
+     * @return \League\Flysystem\AdapterInterface
      */
-    protected static function name() {
-        return 'filesystem';
-    }
-}
-
-namespace qys;
-
-/**
- * 沙盒 filesystem
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.08.29
- * @version 1.0
- */
-class filesystem extends \queryyetsimple\filesystem {
+    public function makeConnect();
 }
