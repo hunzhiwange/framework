@@ -17,7 +17,7 @@ queryphp;
 
 use Exception;
 use queryyetsimple\classs\option;
-use queryyetsimple\string\string;
+use queryyetsimple\support\string;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\seccode\interfaces\seccode as interfaces_seccode;
 

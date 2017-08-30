@@ -21,7 +21,7 @@ use DateTimeZone;
 use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\flow\control;
-use queryyetsimple\string\string;
+use queryyetsimple\support\string;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\interfaces\container;
 use queryyetsimple\validate\interfaces\validate as interfaces_validate;

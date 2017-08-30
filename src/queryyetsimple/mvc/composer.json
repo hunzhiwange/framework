@@ -19,8 +19,8 @@
         "queryyetsimple/psr4": "1.0.*",
         "queryyetsimple/support": "1.0.*",
         "queryyetsimple/view": "1.0.*",
-        "nesbot/carbon": "~1.20",
-        "queryyetsimple/database": "1.0.*"
+        "queryyetsimple/database": "1.0.*",
+        "nesbot/carbon": "~1.20"
     },
     "autoload": {
         "psr-4": {

@@ -34,7 +34,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     seccode = subtree push --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
     session = subtree push --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
     stack = subtree push --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
-    string = subtree push --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     support = subtree push --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
     throttler = subtree push --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
     validate = subtree push --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
@@ -73,7 +72,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     seccodep = subtree pull --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
     sessionp = subtree pull --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
     stackp = subtree pull --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
-    stringp = subtree pull --prefix=src/queryyetsimple/string git@github.com:queryyetsimple/string.git master
     supportp = subtree pull --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
     throttlerp = subtree pull --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
     validatep = subtree pull --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master

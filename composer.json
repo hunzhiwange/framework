@@ -59,7 +59,6 @@
         "queryyetsimple/seccode": "self.version",
         "queryyetsimple/session": "self.version",
         "queryyetsimple/stack": "self.version",
-        "queryyetsimple/string": "self.version",
         "queryyetsimple/support": "self.version",
         "queryyetsimple/throttler": "self.version",
         "queryyetsimple/validate": "self.version",
