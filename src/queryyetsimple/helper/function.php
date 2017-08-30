@@ -481,6 +481,18 @@ if (! function_exists ( 'path_public' )) {
     }
 }
 
+if (! function_exists ( 'path_storage' )) {
+    /**
+     * 取得项目附件路径
+     *
+     * @param string $strPath            
+     * @return string
+     */
+    function path_storage($strPath = '') {
+        return project ()->pathStorage () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
 if (! function_exists ( 'path_application' )) {
     /**
      * 取得项目当前应用路径

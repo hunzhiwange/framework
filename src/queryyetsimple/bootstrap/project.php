@@ -190,6 +190,15 @@ class project extends container implements interfaces_project {
     }
     
     /**
+     * 附件路径
+     *
+     * @return string
+     */
+    public function pathStorage() {
+        return isset ( $this->arrOption ['path_storage'] ) ? $this->arrOption ['path_storage'] : $this->strPath . DIRECTORY_SEPARATOR . 'storage';
+    }
+    
+    /**
      * 应用路径
      *
      * @return string
