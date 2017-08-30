@@ -15,6 +15,7 @@ namespace queryyetsimple\mail;
 ##########################################################
 queryphp;
 
+use Exception;
 use InvalidArgumentException;
 use queryyetsimple\support\interfaces\container;
 use queryyetsimple\mail\interfaces\mail as interfaces_mail;

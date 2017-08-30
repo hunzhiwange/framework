@@ -43,18 +43,6 @@ class smtp extends connect implements interfaces_connect {
     ];
     
     /**
-     * 构造函数
-     *
-     * @param array $arrOption            
-     * @return void
-     */
-    public function __construct(array $arrOption = []) {
-        parent::__construct ( $arrOption );
-        
-        $this->swiftMailer ();
-    }
-    
-    /**
      * 创建 transport
      *
      * @return mixed

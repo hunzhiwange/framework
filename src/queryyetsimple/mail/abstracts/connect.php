@@ -48,6 +48,7 @@ abstract class connect implements Swift_Transport {
      */
     public function __construct(array $arrOption = []) {
         $this->options ( $arrOption );
+        $this->swiftMailer ();
     }
     
     /**
