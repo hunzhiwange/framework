@@ -44,7 +44,6 @@
         "queryyetsimple/helper": "self.version",
         "queryyetsimple/http": "self.version",
         "queryyetsimple/i18n": "self.version",
-        "queryyetsimple/image": "self.version",
         "queryyetsimple/log": "self.version",
         "queryyetsimple/mail": "self.version",
         "queryyetsimple/mvc": "self.version",

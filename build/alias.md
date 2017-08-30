@@ -19,7 +19,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     helper = subtree push --prefix=src/queryyetsimple/helper git@github.com:queryyetsimple/helper.git master
     http = subtree push --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
     i18n = subtree push --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
-    image = subtree push --prefix=src/queryyetsimple/image git@github.com:queryyetsimple/image.git master
     logs = subtree push --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
     mail = subtree push --prefix=src/queryyetsimple/mail git@github.com:queryyetsimple/mail.git master
     mvc = subtree push --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mvc.git master
@@ -60,7 +59,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     helperp = subtree pull --prefix=src/queryyetsimple/helper git@github.com:queryyetsimple/helper.git master
     httpp = subtree pull --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
     i18np = subtree pull --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
-    imagep = subtree pull --prefix=src/queryyetsimple/image git@github.com:queryyetsimple/image.git master
     logsp = subtree pull --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
     mailp = subtree pull --prefix=src/queryyetsimple/mail git@github.com:queryyetsimple/mail.git master
     mvcp = subtree pull --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mvc.git master
