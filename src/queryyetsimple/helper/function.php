@@ -14,7 +14,7 @@
 queryphp;
 
 use queryyetsimple\bootstrap\project;
-use queryyetsimple\log\store as log_store;
+use queryyetsimple\log\interfaces\store as log_store;
 
 if (! function_exists ( 'project' )) {
     /**
