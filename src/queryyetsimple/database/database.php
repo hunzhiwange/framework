@@ -16,7 +16,7 @@ namespace queryyetsimple\database;
 queryphp;
 
 use Exception;
-use queryyetsimple\helper\helper;
+use queryyetsimple\support\helper;
 use queryyetsimple\bootstrap\project;
 use queryyetsimple\database\interfaces\connect;
 use queryyetsimple\database\interfaces\database as interfaces_database;

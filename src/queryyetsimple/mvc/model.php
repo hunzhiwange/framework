@@ -24,6 +24,7 @@ use DateTimeInterface;
 use BadMethodCallException;
 use queryyetsimple\flow\control;
 use queryyetsimple\string\string;
+use queryyetsimple\support\helper;
 use queryyetsimple\classs\infinity;
 use queryyetsimple\classs\serialize;
 use queryyetsimple\collection\collection;

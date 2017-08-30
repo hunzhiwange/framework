@@ -41,7 +41,6 @@
         "queryyetsimple/event": "self.version",
         "queryyetsimple/filesystem": "self.version",
         "queryyetsimple/flow": "self.version",
-        "queryyetsimple/helper": "self.version",
         "queryyetsimple/http": "self.version",
         "queryyetsimple/i18n": "self.version",
         "queryyetsimple/log": "self.version",
@@ -77,7 +76,7 @@
     },
     "autoload": {
         "files": [
-            "src\\queryyetsimple\\helper\\function.php"
+            "src\\queryyetsimple\\bootstrap\\function.php"
         ],
         "psr-4": {
             "queryyetsimple\\": "src\\queryyetsimple"

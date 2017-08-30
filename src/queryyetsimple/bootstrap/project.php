@@ -19,7 +19,7 @@ use Exception;
 use Dotenv\Dotenv;
 use RuntimeException;
 use queryyetsimple\psr4\psr4;
-use queryyetsimple\helper\helper;
+use queryyetsimple\support\helper;
 use Composer\Autoload\ClassLoader;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\container;

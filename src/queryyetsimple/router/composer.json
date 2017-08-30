@@ -17,7 +17,6 @@
         "php": ">=5.5.0",
         "queryyetsimple/classs": "1.0.*",
         "queryyetsimple/http": "1.0.*",
-        "queryyetsimple/helper": "1.0.*",
         "queryyetsimple/filesystem": "1.0.*",
         "queryyetsimple/psr4": "1.0.*",
         "queryyetsimple/classs": "1.0.*",

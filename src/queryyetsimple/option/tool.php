@@ -16,7 +16,7 @@ namespace queryyetsimple\option;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\helper\helper;
+use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
 
 /**

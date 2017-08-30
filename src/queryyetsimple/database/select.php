@@ -19,7 +19,7 @@ use PDO;
 use Exception;
 use BadMethodCallException;
 use queryyetsimple\assert\assert;
-use queryyetsimple\helper\helper;
+use queryyetsimple\support\helper;
 use queryyetsimple\collection\collection;
 use queryyetsimple\flow\control as flow_control;
 

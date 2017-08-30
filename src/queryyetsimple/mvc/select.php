@@ -17,7 +17,7 @@ queryphp;
 
 use Closure;
 use Exception;
-use queryyetsimple\helper\helper;
+use queryyetsimple\support\helper;
 use queryyetsimple\mvc\exception\model_not_found;
 use queryyetsimple\database\select as database_select;
 
