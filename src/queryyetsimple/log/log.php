@@ -16,8 +16,8 @@ namespace queryyetsimple\log;
 queryphp;
 
 use Exception;
-use queryyetsimple\bootstrap\project;
 use queryyetsimple\log\interfaces\connect;
+use queryyetsimple\support\interfaces\container;
 use queryyetsimple\log\interfaces\log as interfaces_log;
 
 /**
@@ -33,25 +33,25 @@ class log implements interfaces_log {
     /**
      * 项目管理
      *
-     * @var \queryyetsimple\bootstrap\project
+     * @var \queryyetsimple\support\interfaces\container
      */
-    protected $objProject;
+    protected $objContainer;
     
     /**
      * log 连接对象
      *
-     * @var array(\queryyetsimple\log\store)
+     * @var \queryyetsimple\log\store[]
      */
     protected static $arrConnect;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\bootstrap\project $objConnect            
+     * @param \queryyetsimple\support\interfaces\container $objConnect            
      * @return void
      */
-    public function __construct(project $objProject) {
-        $this->objProject = $objProject;
+    public function __construct(container $objContainer) {
+        $this->objContainer = $objContainer;
     }
     
     /**
@@ -61,7 +61,7 @@ class log implements interfaces_log {
      * @return \queryyetsimple\log\store
      */
     public function connect($mixOption = []) {
-        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['log\\connect.' . $mixOption]) )) {
+        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objContainer ['option'] ['log\\connect.' . $mixOption]) )) {
             $mixOption = [ ];
         }
         
@@ -81,7 +81,7 @@ class log implements interfaces_log {
      * @return \queryyetsimple\log\store
      */
     public function store(connect $oConnect) {
-        $arrOption = $this->objProject ['option'] ['log\\'];
+        $arrOption = $this->objContainer ['option'] ['log\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         return new store ( $oConnect, $arrOption );
     }
@@ -92,7 +92,7 @@ class log implements interfaces_log {
      * @return string
      */
     public function getDefaultDriver() {
-        return $this->objProject ['option'] ['log\default'];
+        return $this->objContainer ['option'] ['log\default'];
     }
     
     /**
@@ -102,7 +102,7 @@ class log implements interfaces_log {
      * @return void
      */
     public function setDefaultDriver($strName) {
-        $this->objProject ['option'] ['log\default'] = $strName;
+        $this->objContainer ['option'] ['log\default'] = $strName;
     }
     
     /**
@@ -113,7 +113,7 @@ class log implements interfaces_log {
      * @return \queryyetsimple\log\interfaces\connect
      */
     protected function makeConnect($strConnect, $arrOption = []) {
-        if (is_null ( $this->objProject ['option'] ['log\connect.' . $strConnect] ))
+        if (is_null ( $this->objContainer ['option'] ['log\connect.' . $strConnect] ))
             throw new Exception ( __ ( 'log 驱动 %s 不存在', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
@@ -141,15 +141,15 @@ class log implements interfaces_log {
     /**
      * 读取默认日志配置
      *
-     * @param string $strConnect    
-     * @param array $arrExtendOption     
+     * @param string $strConnect            
+     * @param array $arrExtendOption            
      * @return array
      */
     protected function getOption($strConnect, array $arrExtendOption = []) {
-        $arrOption = $this->objProject ['option'] ['log\\'];
+        $arrOption = $this->objContainer ['option'] ['log\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         
-        return array_merge ( $this->objProject ['option'] ['log\connect.' . $strConnect], $arrOption, $arrExtendOption );
+        return array_merge ( $this->objContainer ['option'] ['log\connect.' . $strConnect], $arrOption, $arrExtendOption );
     }
     
     /**

@@ -16,8 +16,8 @@ namespace queryyetsimple\cache;
 queryphp;
 
 use Exception;
-use queryyetsimple\bootstrap\project;
 use queryyetsimple\cache\interfaces\connect;
+use queryyetsimple\support\interfaces\container;
 use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
 /**
@@ -33,25 +33,25 @@ class cache implements interfaces_cache {
     /**
      * 项目管理
      *
-     * @var \queryyetsimple\bootstrap\project
+     * @var \queryyetsimple\support\interfaces\container
      */
-    protected $objProject;
+    protected $objContainer;
     
     /**
      * 缓存连接对象
      *
-     * @var array(\queryyetsimple\cache\repository)
+     * @var \queryyetsimple\cache\repository[]
      */
     protected static $arrConnect;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\bootstrap\project $objConnect            
+     * @param \queryyetsimple\support\interfaces\container $objConnect            
      * @return void
      */
-    public function __construct(project $objProject) {
-        $this->objProject = $objProject;
+    public function __construct(container $objContainer) {
+        $this->objContainer = $objContainer;
     }
     
     /**
@@ -61,7 +61,7 @@ class cache implements interfaces_cache {
      * @return \queryyetsimple\cache\repository
      */
     public function connect($mixOption = []) {
-        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['cache\\connect.' . $mixOption]) )) {
+        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objContainer ['option'] ['cache\\connect.' . $mixOption]) )) {
             $mixOption = [ ];
         }
         
@@ -91,7 +91,7 @@ class cache implements interfaces_cache {
      * @return string
      */
     public function getDefaultDriver() {
-        return $this->objProject ['option'] ['cache\default'];
+        return $this->objContainer ['option'] ['cache\default'];
     }
     
     /**
@@ -101,7 +101,7 @@ class cache implements interfaces_cache {
      * @return void
      */
     public function setDefaultDriver($strName) {
-        $this->objProject ['option'] ['cache\default'] = $strName;
+        $this->objContainer ['option'] ['cache\default'] = $strName;
     }
     
     /**
@@ -112,7 +112,7 @@ class cache implements interfaces_cache {
      * @return \queryyetsimple\cache\repository
      */
     protected function makeConnect($strConnect, $arrOption = []) {
-        if (is_null ( $this->objProject ['option'] ['cache\connect.' . $strConnect] ))
+        if (is_null ( $this->objContainer ['option'] ['cache\connect.' . $strConnect] ))
             throw new Exception ( __ ( '缓存驱动 %s 不存在', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
@@ -124,7 +124,7 @@ class cache implements interfaces_cache {
      * @return \queryyetsimple\cache\repository
      */
     protected function makeConnectFile($arrOption = []) {
-        return $this->repository ( new file ( array_merge ( $this->getOption ( 'file' , $arrOption) ) ) );
+        return $this->repository ( new file ( array_merge ( $this->getOption ( 'file', $arrOption ) ) ) );
     }
     
     /**
@@ -160,15 +160,15 @@ class cache implements interfaces_cache {
     /**
      * 读取默认缓存配置
      *
-     * @param string $strConnect  
-     * @param array $arrExtendOption    
+     * @param string $strConnect            
+     * @param array $arrExtendOption            
      * @return array
      */
     protected function getOption($strConnect, array $arrExtendOption = []) {
-        $arrOption = $this->objProject ['option'] ['cache\\'];
+        $arrOption = $this->objContainer ['option'] ['cache\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         
-        return array_merge ( array_filter ( $this->objProject ['option'] ['cache\connect.' . $strConnect], function ($mixValue) {
+        return array_merge ( array_filter ( $this->objContainer ['option'] ['cache\connect.' . $strConnect], function ($mixValue) {
             return ! is_null ( $mixValue );
         } ), $arrOption, $arrExtendOption );
     }

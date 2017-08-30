@@ -17,7 +17,7 @@ queryphp;
 
 use Exception;
 use SessionHandlerInterface;
-use queryyetsimple\bootstrap\project;
+use queryyetsimple\support\interfaces\container;
 use queryyetsimple\session\interfaces\session as interfaces_session;
 
 /**
@@ -33,25 +33,25 @@ class session implements interfaces_session {
     /**
      * 项目管理
      *
-     * @var \queryyetsimple\bootstrap\project
+     * @var \queryyetsimple\support\interfaces\container
      */
-    protected $objProject;
+    protected $objContainer;
     
     /**
      * session 连接对象
      *
-     * @var array(\queryyetsimple\session\store)
+     * @var \queryyetsimple\session\store[]
      */
     protected static $arrConnect;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\bootstrap\project $objConnect            
+     * @param \queryyetsimple\support\interfaces\container $objConnect            
      * @return void
      */
-    public function __construct(project $objProject) {
-        $this->objProject = $objProject;
+    public function __construct(container $objContainer) {
+        $this->objContainer = $objContainer;
     }
     
     /**
@@ -61,7 +61,7 @@ class session implements interfaces_session {
      * @return \queryyetsimple\session\store
      */
     public function connect($mixOption = []) {
-        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['session\\connect.' . $mixOption]) )) {
+        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objContainer ['option'] ['session\\connect.' . $mixOption]) )) {
             $mixOption = [ ];
         }
         
@@ -81,7 +81,7 @@ class session implements interfaces_session {
      * @return \queryyetsimple\session\store
      */
     public function store(SessionHandlerInterface $oHandler = null) {
-        $arrOption = $this->objProject ['option'] ['session\\'];
+        $arrOption = $this->objContainer ['option'] ['session\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         return new store ( $arrOption, $oHandler );
     }
@@ -92,7 +92,7 @@ class session implements interfaces_session {
      * @return string
      */
     public function getDefaultDriver() {
-        return $this->objProject ['option'] ['session\default'];
+        return $this->objContainer ['option'] ['session\default'];
     }
     
     /**
@@ -102,7 +102,7 @@ class session implements interfaces_session {
      * @return void
      */
     public function setDefaultDriver($strName) {
-        $this->objProject ['option'] ['session\default'] = $strName;
+        $this->objContainer ['option'] ['session\default'] = $strName;
     }
     
     /**
@@ -115,7 +115,7 @@ class session implements interfaces_session {
     protected function makeConnect($strConnect = null, $arrOption = []) {
         if (! $strConnect)
             return null;
-        if (is_null ( $this->objProject ['option'] ['session\connect.' . $strConnect] ))
+        if (is_null ( $this->objContainer ['option'] ['session\connect.' . $strConnect] ))
             throw new Exception ( __ ( 'session 驱动 %s 不存在', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
@@ -158,10 +158,10 @@ class session implements interfaces_session {
      * @return array
      */
     protected function getOption($strConnect, array $arrExtendOption = []) {
-        $arrOption = $this->objProject ['option'] ['session\\'];
+        $arrOption = $this->objContainer ['option'] ['session\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         
-        return array_merge ( array_filter ( $this->objProject ['option'] ['session\connect.' . $strConnect], function ($mixValue) {
+        return array_merge ( array_filter ( $this->objContainer ['option'] ['session\connect.' . $strConnect], function ($mixValue) {
             return ! is_null ( $mixValue );
         } ), $arrOption, $arrExtendOption );
     }

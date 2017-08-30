@@ -17,8 +17,8 @@ queryphp;
 
 use Exception;
 use queryyetsimple\support\helper;
-use queryyetsimple\bootstrap\project;
 use queryyetsimple\database\interfaces\connect;
+use queryyetsimple\support\interfaces\container;
 use queryyetsimple\database\interfaces\database as interfaces_database;
 
 /**
@@ -34,25 +34,25 @@ class database implements interfaces_database {
     /**
      * 项目管理
      *
-     * @var \queryyetsimple\bootstrap\project
+     * @var \queryyetsimple\support\interfaces\container
      */
-    protected $objProject;
+    protected $objContainer;
     
     /**
      * 数据库连接对象
      *
-     * @var array(\queryyetsimple\database\interfaces\connect)
+     * @var \queryyetsimple\database\interfaces\connect[]
      */
     protected static $arrConnect;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\bootstrap\project $objConnect            
+     * @param \queryyetsimple\support\interfaces\container $objConnect            
      * @return void
      */
-    public function __construct(project $objProject) {
-        $this->objProject = $objProject;
+    public function __construct(container $objContainer) {
+        $this->objContainer = $objContainer;
     }
     
     /**
@@ -62,7 +62,7 @@ class database implements interfaces_database {
      * @return \queryyetsimple\database\interfaces\connect
      */
     public function connect($mixOption = []) {
-        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objProject ['option'] ['database\\connect.' . $mixOption]) )) {
+        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objContainer ['option'] ['database\\connect.' . $mixOption]) )) {
             $mixOption = [ ];
         }
         
@@ -82,7 +82,7 @@ class database implements interfaces_database {
      * @return string
      */
     public function getDefaultDriver() {
-        return $this->objProject ['option'] ['database\default'];
+        return $this->objContainer ['option'] ['database\default'];
     }
     
     /**
@@ -92,7 +92,7 @@ class database implements interfaces_database {
      * @return void
      */
     public function setDefaultDriver($strName) {
-        $this->objProject ['option'] ['database\default'] = $strName;
+        $this->objContainer ['option'] ['database\default'] = $strName;
     }
     
     /**
@@ -103,7 +103,7 @@ class database implements interfaces_database {
      * @return \queryyetsimple\database\interfaces\connect
      */
     protected function makeConnect($strConnect, $arrOption = []) {
-        if (is_null ( $this->objProject ['option'] ['database\connect.' . $strConnect] ))
+        if (is_null ( $this->objContainer ['option'] ['database\connect.' . $strConnect] ))
             throw new Exception ( __ ( '数据库驱动 %s 不存在', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
@@ -115,7 +115,7 @@ class database implements interfaces_database {
      * @return \queryyetsimple\database\mysql
      */
     protected function makeConnectMysql($arrOption = []) {
-        return new mysql ( $this->objProject ['log']->connect (), $this->getOption ( 'mysql', is_array ( $arrOption ) ? $arrOption : [ ] ) );
+        return new mysql ( $this->objContainer ['log']->connect (), $this->getOption ( 'mysql', is_array ( $arrOption ) ? $arrOption : [ ] ) );
     }
     
     /**
@@ -136,10 +136,10 @@ class database implements interfaces_database {
      * @return array
      */
     protected function getOption($strConnect, array $arrExtendOption = []) {
-        $arrOption = $this->objProject ['option'] ['database\\'];
+        $arrOption = $this->objContainer ['option'] ['database\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         
-        return $this->parseOption ( array_merge ( $this->objProject ['option'] ['database\connect.' . $strConnect], $arrOption, $arrExtendOption ) );
+        return $this->parseOption ( array_merge ( $this->objContainer ['option'] ['database\connect.' . $strConnect], $arrOption, $arrExtendOption ) );
     }
     
     /**
