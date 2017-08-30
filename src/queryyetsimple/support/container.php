@@ -22,7 +22,6 @@ use ReflectionMethod;
 use ReflectionFunction;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\flow\control as flow_control;
 use queryyetsimple\support\interfaces\container as interfaces_container;
 
 /**

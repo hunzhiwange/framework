@@ -20,10 +20,10 @@ use Swift_Message;
 use Swift_Attachment;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\flow\control;
 use queryyetsimple\assert\assert;
 use queryyetsimple\classs\option;
 use queryyetsimple\mvc\interfaces\view;
+use queryyetsimple\support\flow_control;
 use queryyetsimple\mail\interfaces\connect;
 use queryyetsimple\mail\interfaces\store as interfaces_store;
 
@@ -37,8 +37,8 @@ use queryyetsimple\mail\interfaces\store as interfaces_store;
  */
 class store implements interfaces_store {
     
-    use control;
     use option;
+    use flow_control;
     
     /**
      * 连接驱动

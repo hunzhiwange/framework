@@ -22,11 +22,11 @@ use Carbon\Carbon;
 use JsonSerializable;
 use DateTimeInterface;
 use BadMethodCallException;
-use queryyetsimple\flow\control;
 use queryyetsimple\support\string;
 use queryyetsimple\support\helper;
 use queryyetsimple\classs\infinity;
 use queryyetsimple\classs\serialize;
+use queryyetsimple\support\flow_control;
 use queryyetsimple\collection\collection;
 use queryyetsimple\event\interfaces\dispatch;
 use queryyetsimple\support\interfaces\jsonable;
@@ -43,12 +43,12 @@ use queryyetsimple\mvc\interfaces\model as interfaces_model;
  */
 class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayable, jsonable {
     
-    use control;
     use serialize;
     use infinity {
         __callStatic as infinityCallStatic;
         __call as infinityCall;
     }
+    use flow_control;
     
     /**
      * 与模型关联的数据表

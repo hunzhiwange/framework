@@ -17,9 +17,9 @@ queryphp;
 
 use ArrayAccess;
 use RuntimeException;
-use queryyetsimple\flow\control;
 use queryyetsimple\classs\option;
 use queryyetsimple\classs\infinity;
+use queryyetsimple\support\flow_control;
 use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\session\interfaces\store;
 use queryyetsimple\support\interfaces\arrayable;
@@ -34,11 +34,11 @@ use queryyetsimple\support\interfaces\arrayable;
  */
 class request implements arrayable, ArrayAccess {
     
-    use control;
     use option;
     use infinity {
         __call as infinityCall;
     }
+    use flow_control;
     
     /**
      * cookie 存储

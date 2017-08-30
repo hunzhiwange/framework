@@ -15,7 +15,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     encryption = subtree push --prefix=src/queryyetsimple/encryption git@github.com:queryyetsimple/encryption.git master
     event = subtree push --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
     filesystem = subtree push --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
-    flows = subtree push --prefix=src/queryyetsimple/flow git@github.com:queryyetsimple/flow.git master
     http = subtree push --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
     i18n = subtree push --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
     logs = subtree push --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
@@ -53,7 +52,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     encryptionp = subtree pull --prefix=src/queryyetsimple/encryption git@github.com:queryyetsimple/encryption.git master
     eventp = subtree pull --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
     filesystemp = subtree pull --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
-    flowsp = subtree pull --prefix=src/queryyetsimple/flow git@github.com:queryyetsimple/flow.git master
     httpp = subtree pull --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
     i18np = subtree pull --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
     logsp = subtree pull --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master

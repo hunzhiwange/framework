@@ -17,13 +17,13 @@ queryphp;
 
 use queryyetsimple\xml\xml;
 use InvalidArgumentException;
-use queryyetsimple\flow\control;
 use queryyetsimple\assert\assert;
 use queryyetsimple\router\router;
 use queryyetsimple\classs\option;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\classs\infinity;
 use queryyetsimple\mvc\interfaces\view;
+use queryyetsimple\support\flow_control;
 use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\session\interfaces\session;
 
@@ -37,7 +37,6 @@ use queryyetsimple\session\interfaces\session;
  */
 class response {
     
-    use control;
     use option{
         option as infinityOption;
         options as infinityOptions;
@@ -45,6 +44,7 @@ class response {
     use infinity {
         __call as infinityCall;
     }
+    use flow_control;
     
     /**
      * view

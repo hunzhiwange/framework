@@ -20,8 +20,8 @@ use Exception;
 use BadMethodCallException;
 use queryyetsimple\assert\assert;
 use queryyetsimple\support\helper;
+use queryyetsimple\support\flow_control;
 use queryyetsimple\collection\collection;
-use queryyetsimple\flow\control as flow_control;
 
 /**
  * 数据库查询器
