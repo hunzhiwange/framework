@@ -18,7 +18,6 @@ queryphp;
 use RuntimeException;
 use queryyetsimple\http\request;
 use queryyetsimple\http\response;
-use queryyetsimple\helper\helper;
 use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
 
 /**
