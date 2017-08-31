@@ -136,21 +136,24 @@ interface store {
     /**
      * 清理日志记录
      *
-     * @return number
+     * @param string $strLevel            
+     * @return int
      */
-    public function clear();
+    public function clear($strLevel = null);
     
     /**
      * 获取日志记录
      *
+     * @param string $strLevel            
      * @return array
      */
-    public function get();
+    public function get($strLevel = null);
     
     /**
      * 获取日志记录数量
      *
-     * @return number
+     * @param string $strLevel            
+     * @return int
      */
-    public function count();
+    public function count($strLevel = null);
 }

@@ -194,30 +194,47 @@ class store implements interfaces_store {
     /**
      * 清理日志记录
      *
-     * @return number
+     * @param string $strLevel            
+     * @return int
      */
-    public function clear() {
-        $nCount = count ( $this->arrLog );
-        $this->arrLog = [ ];
+    public function clear($strLevel = null) {
+        if ($strLevel && isset ( $this->arrLog [$strLevel] )) {
+            $nCount = count ( $this->arrLog [$strLevel] );
+            $this->arrLog [$strLevel] = [ ];
+        } else {
+            $nCount = count ( $this->arrLog );
+            $this->arrLog = [ ];
+        }
+        
         return $nCount;
     }
     
     /**
      * 获取日志记录
      *
+     * @param string $strLevel            
      * @return array
      */
-    public function get() {
-        return $this->arrLog;
+    public function get($strLevel = null) {
+        if ($strLevel && isset ( $this->arrLog [$strLevel] )) {
+            return $this->arrLog [$strLevel];
+        } else {
+            return $this->arrLog;
+        }
     }
     
     /**
      * 获取日志记录数量
      *
-     * @return number
+     * @param string $strLevel            
+     * @return int
      */
-    public function count() {
-        return count ( $this->arrLog );
+    public function count($strLevel = null) {
+        if ($strLevel && isset ( $this->arrLog [$strLevel] )) {
+            return count ( $this->arrLog [$strLevel] );
+        } else {
+            return count ( $this->arrLog );
+        }
     }
     
     /**
