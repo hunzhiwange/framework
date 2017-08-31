@@ -17,9 +17,9 @@ queryphp;
 
 use RuntimeException;
 use InvalidArgumentException;
+use queryyetsimple\support\option;
 use queryyetsimple\view\interfaces\parser;
 use queryyetsimple\cookie\interfaces\cookie;
-use queryyetsimple\classs\option as classs_option;
 use queryyetsimple\view\interfaces\theme as interfaces_theme;
 
 /**
@@ -32,7 +32,7 @@ use queryyetsimple\view\interfaces\theme as interfaces_theme;
  */
 class theme implements interfaces_theme {
     
-    use classs_option;
+    use option;
     
     /**
      * 视图分析器

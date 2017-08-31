@@ -16,7 +16,7 @@ namespace queryyetsimple\session\abstracts;
 queryphp;
 
 use SessionHandler;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 
 /**
  * connect 驱动抽象类

@@ -16,7 +16,7 @@ namespace queryyetsimple\filesystem\abstracts;
 queryphp;
 
 use League\Flysystem\Filesystem;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 
 /**
  * connect 驱动抽象类

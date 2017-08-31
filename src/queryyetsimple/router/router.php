@@ -22,10 +22,10 @@ use ReflectionException;
 use InvalidArgumentException;
 use queryyetsimple\http\request;
 use queryyetsimple\http\response;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
-use queryyetsimple\classs\infinity;
+use queryyetsimple\support\infinity;
 use queryyetsimple\pipeline\interfaces\pipeline;
 use queryyetsimple\support\interfaces\container;
 

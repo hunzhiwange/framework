@@ -17,7 +17,7 @@ queryphp;
 
 use Redis as Rediss;
 use RuntimeException;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 use queryyetsimple\cache\interfaces\connect;
 use queryyetsimple\cache\abstracts\cache as abstracts_connect;
 

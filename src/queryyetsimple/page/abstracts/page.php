@@ -16,7 +16,7 @@ namespace queryyetsimple\page\abstracts;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 use queryyetsimple\assert\assert;
 use queryyetsimple\support\interfaces\htmlable;
 

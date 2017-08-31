@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use DirectoryIterator;
-use queryyetsimple\classs\infinity;
+use queryyetsimple\support\infinity;
 
 /**
  * File System Object 管理

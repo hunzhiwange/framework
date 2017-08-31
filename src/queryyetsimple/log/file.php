@@ -16,7 +16,7 @@ namespace queryyetsimple\log;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\log\interfaces\connect;
 

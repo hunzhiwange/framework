@@ -19,7 +19,7 @@ use Swift_Mailer;
 use Swift_Transport;
 use Swift_Mime_Message;
 use Swift_Events_EventListener;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 
 /**
  * connect 驱动抽象类

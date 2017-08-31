@@ -19,6 +19,7 @@ use Exception;
 use Dotenv\Dotenv;
 use RuntimeException;
 use queryyetsimple\psr4\psr4;
+use queryyetsimple\support\face;
 use queryyetsimple\support\helper;
 use Composer\Autoload\ClassLoader;
 use queryyetsimple\filesystem\fso;
@@ -320,10 +321,12 @@ class project extends container implements interfaces_project {
      * @return $this
      */
     protected function registerPsr4(ClassLoader $objComposer) {
-        $this->instance ( 'psr4', new psr4 ( $this, $objComposer, dirname ( __DIR__ ) . '/bootstrap/sandbox' ) );
+        $this->instance ( 'psr4', new psr4 ( $objComposer, dirname ( __DIR__ ) . '/bootstrap/sandbox' ) );
         $this->alias ( 'psr4', psr4::class );
         $this->instance ( 'composer', $objComposer );
         $this->alias ( 'composer', ClassLoader::class );
+        
+        face::setContainer ( $this );
         
         spl_autoload_register ( [ 
                 $this ['psr4'],

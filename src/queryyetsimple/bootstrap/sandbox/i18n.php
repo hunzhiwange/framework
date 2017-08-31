@@ -15,7 +15,7 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces;
+use queryyetsimple\support\face;
 
 /**
  * 沙盒 i18n
@@ -25,7 +25,7 @@ use queryyetsimple\classs\faces;
  * @since 2017.06.10
  * @version 1.0
  */
-class i18n extends faces {
+class i18n extends face {
     
     /**
      * 返回门面名字

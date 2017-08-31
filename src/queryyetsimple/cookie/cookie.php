@@ -16,7 +16,7 @@ namespace queryyetsimple\cookie;
 queryphp;
 
 use queryyetsimple\assert\assert;
-use queryyetsimple\classs\option as classs_option;
+use queryyetsimple\support\option;
 use queryyetsimple\cookie\interfaces\cookie as interfaces_cookie;
 
 /**
@@ -29,7 +29,7 @@ use queryyetsimple\cookie\interfaces\cookie as interfaces_cookie;
  */
 class cookie implements interfaces_cookie {
     
-    use classs_option;
+    use option;
     
     /**
      * 配置

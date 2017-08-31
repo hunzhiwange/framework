@@ -15,7 +15,7 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces;
+use queryyetsimple\support\face;
 
 /**
  * 沙盒 mail
@@ -25,7 +25,7 @@ use queryyetsimple\classs\faces;
  * @since 2017.08.26
  * @version 1.0
  */
-class mail extends faces {
+class mail extends face {
     
     /**
      * 返回门面名字

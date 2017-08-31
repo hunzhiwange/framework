@@ -31,7 +31,6 @@
         "queryyetsimple/assert": "self.version",
         "queryyetsimple/auth": "self.version",
         "queryyetsimple/cache": "self.version",
-        "queryyetsimple/classs": "self.version",
         "queryyetsimple/collection": "self.version",
         "queryyetsimple/console": "self.version",
         "queryyetsimple/cookie": "self.version",

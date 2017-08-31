@@ -16,7 +16,7 @@ namespace queryyetsimple\seccode;
 queryphp;
 
 use Exception;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 use queryyetsimple\support\string;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\seccode\interfaces\seccode as interfaces_seccode;

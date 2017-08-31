@@ -17,8 +17,8 @@ queryphp;
 
 use ArrayAccess;
 use RuntimeException;
-use queryyetsimple\classs\option;
-use queryyetsimple\classs\infinity;
+use queryyetsimple\support\option;
+use queryyetsimple\support\infinity;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\session\interfaces\store;

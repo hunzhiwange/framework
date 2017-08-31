@@ -19,7 +19,7 @@ use InvalidArgumentException;
 use queryyetsimple\stack\stack;
 use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
-use queryyetsimple\classs\option as classs_option;
+use queryyetsimple\support\option;
 use queryyetsimple\view\interfaces\parser as interfaces_parser;
 
 /**
@@ -32,7 +32,7 @@ use queryyetsimple\view\interfaces\parser as interfaces_parser;
  */
 class parser implements interfaces_parser {
     
-    use classs_option;
+    use option;
     
     /**
      * 项目容器

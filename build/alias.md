@@ -6,7 +6,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     assert = subtree push --prefix=src/queryyetsimple/assert git@github.com:queryyetsimple/assert.git master
     auth = subtree push --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
     cache = subtree push --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
-    classs = subtree push --prefix=src/queryyetsimple/classs git@github.com:queryyetsimple/classs.git master
     collection = subtree push --prefix=src/queryyetsimple/collection git@github.com:queryyetsimple/collection.git master
     console = subtree push --prefix=src/queryyetsimple/console git@github.com:queryyetsimple/console.git master
     cookie = subtree push --prefix=src/queryyetsimple/cookie git@github.com:queryyetsimple/cookie.git master
@@ -42,7 +41,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     assertp = subtree pull --prefix=src/queryyetsimple/assert git@github.com:queryyetsimple/assert.git master
     authp = subtree pull --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
     cachep = subtree pull --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
-    classsp = subtree pull --prefix=src/queryyetsimple/classs git@github.com:queryyetsimple/classs.git master
     collectionp = subtree pull --prefix=src/queryyetsimple/collection git@github.com:queryyetsimple/collection.git master
     consolep = subtree pull --prefix=src/queryyetsimple/console git@github.com:queryyetsimple/console.git master
     cookiep = subtree pull --prefix=src/queryyetsimple/cookie git@github.com:queryyetsimple/cookie.git master

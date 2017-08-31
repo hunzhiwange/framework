@@ -16,8 +16,8 @@ namespace queryyetsimple\i18n;
 queryphp;
 
 use InvalidArgumentException;
+use queryyetsimple\support\option;
 use queryyetsimple\cookie\interfaces\cookie;
-use queryyetsimple\classs\option as classs_option;
 use queryyetsimple\i18n\interfaces\i18n as interfaces_i18n;
 
 /**
@@ -30,7 +30,7 @@ use queryyetsimple\i18n\interfaces\i18n as interfaces_i18n;
  */
 class i18n implements interfaces_i18n {
     
-    use classs_option;
+    use option;
     
     /**
      * cookie

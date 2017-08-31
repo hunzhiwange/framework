@@ -15,7 +15,7 @@ namespace queryyetsimple\page;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 use queryyetsimple\page\interfaces\render;
 use queryyetsimple\page\interfaces\page as interfaces_page;
 

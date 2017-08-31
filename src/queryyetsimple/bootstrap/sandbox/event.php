@@ -15,7 +15,7 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces;
+use queryyetsimple\support\face;
 
 /**
  * 沙盒 event
@@ -25,7 +25,7 @@ use queryyetsimple\classs\faces;
  * @since 2017.07.12
  * @version 1.0
  */
-class event extends faces {
+class event extends face {
     
     /**
      * 返回门面名字

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\classs;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -43,7 +43,7 @@ trait infinity {
      * @param callable $calInfinity            
      * @return void
      */
-    public static function registerInfinity($strName, callable $calInfinity) {
+    public static function infinity($strName, callable $calInfinity) {
         static::$arrInfinity [$strName] = $calInfinity;
     }
     

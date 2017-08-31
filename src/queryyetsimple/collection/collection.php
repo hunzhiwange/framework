@@ -22,7 +22,7 @@ use JsonSerializable;
 use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\assert\assert;
-use queryyetsimple\classs\infinity;
+use queryyetsimple\support\infinity;
 use queryyetsimple\support\interfaces\jsonable;
 use queryyetsimple\support\interfaces\arrayable;
 

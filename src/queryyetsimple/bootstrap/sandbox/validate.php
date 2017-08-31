@@ -15,7 +15,7 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces;
+use queryyetsimple\support\face;
 
 /**
  * 沙盒 validate
@@ -25,7 +25,7 @@ use queryyetsimple\classs\faces;
  * @since 2017.07.26
  * @version 1.0
  */
-class validate extends faces {
+class validate extends face {
     
     /**
      * 返回门面名字

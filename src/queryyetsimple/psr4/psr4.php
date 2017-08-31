@@ -16,9 +16,7 @@ namespace queryyetsimple\psr4;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\classs\faces;
 use Composer\Autoload\ClassLoader;
-use queryyetsimple\support\interfaces\container;
 use queryyetsimple\psr4\interfaces\psr4 as interfaces_psr4;
 
 /**
@@ -48,15 +46,13 @@ class psr4 implements interfaces_psr4 {
     /**
      * 设置 composer
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
      * @param \Composer\Autoload\ClassLoader $objComposer            
      * @param string $strSandboxPath            
      * @return void
      */
-    public function __construct(container $objContainer, ClassLoader $objComposer, $strSandboxPath = '') {
+    public function __construct(ClassLoader $objComposer, $strSandboxPath = '') {
         $this->objComposer = $objComposer;
         $this->strSandboxPath = $strSandboxPath;
-        faces::setProjectContainer ( $objContainer );
     }
     
     /**
@@ -94,8 +90,10 @@ class psr4 implements interfaces_psr4 {
     public function namespaces($sNamespace) {
         $arrNamespace = explode ( '\\', $sNamespace );
         $arrPrefix = $this->composer ()->getPrefixesPsr4 ();
+        
         if (! isset ( $arrPrefix [$arrNamespace [0] . '\\'] ))
             return null;
+        
         $arrNamespace [0] = $arrPrefix [$arrNamespace [0] . '\\'] [0];
         return implode ( '\\', $arrNamespace );
     }

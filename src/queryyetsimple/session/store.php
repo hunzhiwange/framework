@@ -18,7 +18,7 @@ queryphp;
 use RuntimeException;
 use BadMethodCallException;
 use SessionHandlerInterface;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 use queryyetsimple\assert\assert;
 use queryyetsimple\session\interfaces\store as interfaces_store;
 

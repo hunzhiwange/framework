@@ -15,8 +15,6 @@ namespace queryyetsimple\support;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\infinity as infinity;
-
 /**
  * 字符串
  *

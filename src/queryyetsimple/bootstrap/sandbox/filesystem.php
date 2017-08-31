@@ -15,7 +15,7 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\classs\faces;
+use queryyetsimple\support\face;
 
 /**
  * 沙盒 filesystem
@@ -25,7 +25,7 @@ use queryyetsimple\classs\faces;
  * @since 2017.08.29
  * @version 1.0
  */
-class filesystem extends faces {
+class filesystem extends face {
     
     /**
      * 返回门面名字

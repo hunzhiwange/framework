@@ -15,7 +15,7 @@
     ],
     "require": {
         "php": ">=5.5.0",
-        "queryyetsimple/classs": "1.0.*",
+        "queryyetsimple/support": "1.0.*",
         "league/flysystem": "^1.0"
     },
     "require-dev": {

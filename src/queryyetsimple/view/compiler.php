@@ -17,8 +17,7 @@ queryphp;
 
 use InvalidArgumentException;
 use queryyetsimple\support\helper;
-use queryyetsimple\filesystem\directory;
-use queryyetsimple\classs\option as classs_option;
+use queryyetsimple\support\option;
 use queryyetsimple\view\interfaces\compiler as interfaces_compiler;
 
 /**
@@ -31,7 +30,7 @@ use queryyetsimple\view\interfaces\compiler as interfaces_compiler;
  */
 class compiler implements interfaces_compiler {
     
-    use classs_option;
+    use option;
     
     /**
      * code 支持的特殊别名映射

@@ -16,7 +16,7 @@ namespace queryyetsimple\cache;
 queryphp;
 
 use Exception;
-use queryyetsimple\classs\infinity;
+use queryyetsimple\support\infinity;
 use queryyetsimple\cache\interfaces\connect;
 use queryyetsimple\cache\interfaces\repository as interfaces_repository;
 

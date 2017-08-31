@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\assert\assert;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 use queryyetsimple\log\interfaces\connect;
 use queryyetsimple\log\interfaces\store as interfaces_store;
 

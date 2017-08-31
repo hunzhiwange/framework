@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\classs;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -19,7 +19,7 @@ use Closure;
 use Exception;
 use RuntimeException;
 use BadMethodCallException;
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\interfaces\container as interfaces_container;
 
 /**
  * 实现类的静态访问门面
@@ -29,57 +29,57 @@ use queryyetsimple\support\interfaces\container;
  * @since 2017.05.04
  * @version 1.0
  */
-abstract class faces {
+abstract class face {
     
     /**
      * 项目容器
      *
      * @var \queryyetsimple\support\interfaces\container
      */
-    protected static $objProjectContainer = null;
+    protected static $objContainer = null;
     
     /**
      * 注入容器实例
      *
      * @var object
      */
-    protected static $arrFacesInstance = [ ];
+    protected static $arrInstance = [ ];
     
     /**
      * 获取注册容器的实例
      *
      * @return mixed
      */
-    public static function faces( /* args */ ) {
+    public static function face( /* args */ ) {
         $strClass = static::name ();
-        $strUnique = static::makeFacesKey ( $strClass, $arrArgs = func_get_args () );
+        $strUnique = static::makeFaceKey ( $strClass, $arrArgs = func_get_args () );
         
-        if (isset ( static::$arrFacesInstance [$strUnique] )) {
-            return static::$arrFacesInstance [$strUnique];
+        if (isset ( static::$arrInstance [$strUnique] )) {
+            return static::$arrInstance [$strUnique];
         }
-        if (! (static::$arrFacesInstance [$strUnique] = static::projectContainer ()->make ( $strClass, $arrArgs ))) {
+        if (! (static::$arrInstance [$strUnique] = static::container ()->make ( $strClass, $arrArgs ))) {
             throw new RuntimeException ( __ ( '容器中未发现注入的 %s', $strClass ) );
         }
-        return static::$arrFacesInstance [$strUnique];
+        return static::$arrInstance [$strUnique];
     }
     
     /**
      * 返回服务容器
      *
-     * @return \queryyetsimple\bootstrap\project
+     * @return \queryyetsimple\support\interfaces\container
      */
-    public static function projectContainer() {
-        return static::$objProjectContainer;
+    public static function container() {
+        return static::$objContainer;
     }
     
     /**
      * 设置服务容器
      *
-     * @param \queryyetsimple\support\interfaces\container $objProject            
+     * @param \queryyetsimple\support\interfaces\container $objContainer            
      * @return void
      */
-    public static function setProjectContainer(container $objProject) {
-        static::$objProjectContainer = $objProject;
+    public static function setContainer(interfaces_container $objContainer) {
+        static::$objContainer = $objContainer;
     }
     
     /**
@@ -89,7 +89,7 @@ abstract class faces {
      * @param array $arrArgs            
      * @return string
      */
-    protected static function makeFacesKey($strClass, $arrArgs = []) {
+    protected static function makeFaceKey($strClass, $arrArgs = []) {
         if ($arrArgs) {
             $strSerialize = '';
             foreach ( $arrArgs as $mixArg ) {
@@ -117,7 +117,7 @@ abstract class faces {
      * @return mixed
      */
     public static function __callStatic($sMethod, $arrArgs) {
-        $objInstance = static::faces ();
+        $objInstance = static::face ();
         if (! $objInstance) {
             throw new RuntimeException ( 'Can not find instance from container.' );
         }

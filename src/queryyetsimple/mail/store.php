@@ -21,7 +21,7 @@ use Swift_Attachment;
 use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\assert\assert;
-use queryyetsimple\classs\option;
+use queryyetsimple\support\option;
 use queryyetsimple\mvc\interfaces\view;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\mail\interfaces\connect;

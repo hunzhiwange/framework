@@ -50,7 +50,7 @@ class Pipeline_test extends testcase {
      */
     protected function setUp() {
         $this->objPipelineBase = new pipeline ();
-        $this->objPipelineClass = new pipeline ( project::bootstrap () );
+        $this->objPipelineClass = new pipeline ( project::singletons () );
     }
     
     /**
