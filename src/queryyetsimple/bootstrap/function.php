@@ -46,7 +46,7 @@ if (! function_exists ( 'app' )) {
      * @return \queryyetsimple\bootstrap\project
      */
     function app($sInstance = null, $arrArgs = []) {
-        project ( $sInstance, $arrArgs );
+        return project ( $sInstance, $arrArgs );
     }
 }
 
