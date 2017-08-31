@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\psr4;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use Composer\Autoload\ClassLoader;
-use queryyetsimple\psr4\interfaces\psr4 as interfaces_psr4;
+use queryyetsimple\support\interfaces\psr4 as interfaces_psr4;
 
 /**
  * psr4 自动载入规范
@@ -42,17 +42,26 @@ class psr4 implements interfaces_psr4 {
      * @var string
      */
     protected $strSandboxPath;
+
+    /**
+     * namespace
+     *
+     * @var array
+     */
+    protected $arrNamespace=[];
     
     /**
      * 设置 composer
      *
      * @param \Composer\Autoload\ClassLoader $objComposer            
-     * @param string $strSandboxPath            
+     * @param string $strSandboxPath    
+     * @param array $arrNamespace         
      * @return void
      */
-    public function __construct(ClassLoader $objComposer, $strSandboxPath = '') {
+    public function __construct(ClassLoader $objComposer, $strSandboxPath = '',$arrNamespace=[]) {
         $this->objComposer = $objComposer;
         $this->strSandboxPath = $strSandboxPath;
+        $this->arrNamespace = $arrNamespace;
     }
     
     /**
@@ -121,10 +130,13 @@ class psr4 implements interfaces_psr4 {
     public function autoload($strClass) {
         if (! $this->strSandboxPath)
             return;
-        
-        if (strpos ( $strClass, 'queryyetsimple\\' ) !== false || strpos ( $strClass, 'qys\\' ) !== false) {
-            if (is_file ( ($strSandbox = $this->strSandboxPath . '/' . str_replace ( '\\', '/', substr ( $strClass, strpos ( $strClass, 'queryyetsimple\\' ) !== false ? 15 : 4 ) ) . '.php') ))
-                require $strSandbox;
+
+        if($this->arrNamespace){
+            foreach($this->arrNamespace as $strNamespace){
+                if(strpos ( $strClass, $strNamespace.'\\' ) !== false && is_file(($strSandbox = $this->strSandboxPath . '/' . str_replace ( '\\', '/', substr ( $strClass, strlen($strNamespace)+1 ) ) . '.php'))){
+                    require $strSandbox;
+                }
+            }
         }
         
         if (is_file ( ($strSandbox = $this->strSandboxPath . '/' . str_replace ( '\\', '/', $strClass ) . '.php') ))

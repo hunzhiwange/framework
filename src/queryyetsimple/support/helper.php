@@ -18,7 +18,6 @@ queryphp;
 use Closure;
 use ReflectionClass;
 use InvalidArgumentException;
-use queryyetsimple\psr4\psr4;
 use queryyetsimple\filesystem\fso;
 
 /**
@@ -95,7 +94,7 @@ class helper {
      * 源代码方式合并带有匿名函数的数组
      * 只支持简单格式，复杂的无 fuck 做
      *
-     * @param \queryyetsimple\psr4\psr4 $objPsr4            
+     * @param \queryyetsimple\support\psr4 $objPsr4            
      * @param string $strCachePath            
      * @param array $arrFile            
      * @param boolean $booParseNamespace            

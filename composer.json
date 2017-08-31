@@ -48,7 +48,6 @@
         "queryyetsimple/option": "self.version",
         "queryyetsimple/page": "self.version",
         "queryyetsimple/pipeline": "self.version",
-        "queryyetsimple/psr4": "self.version",
         "queryyetsimple/queue": "self.version",
         "queryyetsimple/router": "self.version",
         "queryyetsimple/rss": "self.version",

@@ -23,7 +23,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     option = subtree push --prefix=src/queryyetsimple/option git@github.com:queryyetsimple/option.git master
     page = subtree push --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
     pipeline = subtree push --prefix=src/queryyetsimple/pipeline git@github.com:queryyetsimple/pipeline.git master
-    psr4 = subtree push --prefix=src/queryyetsimple/psr4 git@github.com:queryyetsimple/psr4.git master
     queue = subtree push --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
     router = subtree push --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
     rss = subtree push --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master
@@ -58,7 +57,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     optionp = subtree pull --prefix=src/queryyetsimple/option git@github.com:queryyetsimple/option.git master
     pagep = subtree pull --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
     pipelinep = subtree pull --prefix=src/queryyetsimple/pipeline git@github.com:queryyetsimple/pipeline.git master
-    psr4p = subtree pull --prefix=src/queryyetsimple/psr4 git@github.com:queryyetsimple/psr4.git master
     queuep = subtree pull --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
     routerp = subtree pull --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
     rssp = subtree pull --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master

@@ -15,7 +15,7 @@ namespace queryyetsimple\bootstrap;
 ##########################################################
 queryphp;
 
-use queryyetsimple\psr4\psr4;
+use queryyetsimple\support\psr4;
 use queryyetsimple\http\response;
 use queryyetsimple\assert\assert;
 use queryyetsimple\filesystem\fso;
