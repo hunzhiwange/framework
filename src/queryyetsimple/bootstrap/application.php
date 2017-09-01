@@ -16,6 +16,7 @@ namespace queryyetsimple\bootstrap;
 queryphp;
 
 use queryyetsimple\support\psr4;
+use queryyetsimple\debug\console;
 use queryyetsimple\http\response;
 use queryyetsimple\assert\assert;
 use queryyetsimple\filesystem\fso;
@@ -35,9 +36,9 @@ class application {
     /**
      * 当前项目
      *
-     * @var queryyetsimple\bootstrap\project
+     * @var \queryyetsimple\bootstrap\project
      */
-    protected $objProject = null;
+    protected $objProject;
     
     /**
      * 默认
@@ -211,6 +212,11 @@ class application {
             $this->objContainer [response::class] = $objResponse;
         }
         
+        // 调试
+        if ($this->objProject->debug ()) {
+            $mixResponse->appendContent ( console::trace () );
+        }
+        
         // 输出响应
         $mixResponse->output ();
         unset ( $mixResponse, $objResponse );
@@ -223,10 +229,11 @@ class application {
      */
     protected function endRun() {
         // 记录日志
-        if ($this->objProject ['option'] ['log\enabled'])
+        if ($this->objProject ['option'] ['log\enabled']) {
             $this->objProject ['log']->save ();
-            
-            // 清理闪存
+        }
+        
+        // 清理闪存
         $this->objProject ['session']->unregisterFlash ();
     }
     

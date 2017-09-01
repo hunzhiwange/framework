@@ -15,6 +15,8 @@ namespace queryyetsimple\debug;
 ##########################################################
 queryphp;
 
+use queryyetsimple\filesystem\fso;
+
 /**
  * 调试
  *
@@ -37,30 +39,23 @@ class console {
             return;
         
         $arrTrace = [ ];
-        
-        // SQL 记录
-        // $arrLog = Log::$_arrLog;
-        $arrLog = [ 
-                'SELECT title FROM blog WHERE id = 1;' 
-        ];
-        if ($arrLog) {
-            $arrTrace [__ ( 'SQL记录' ) . ' (' . count ( $arrLog ) . ')'] = implode ( '\n', $arrLog );
+
+        // 日志
+        foreach(project('log')->get() as $strType => $arrTemp){
+            $arrTrace [strtoupper($strType). ' LOG' . ' (' . count ( $arrTemp ) . ')'] = implode ( '\n', $arrTemp );
         }
-        
-        // 其它日志
-        // $arrLog = Log::$_arrLog;
-        $arrLog = [ ];
-        if ($arrLog) {
-            $arrTrace [__ ( '日志记录' ) . ' (' . count ( $arrLog ) . ')'] = '';
-            $arrTrace = array_merge ( $arrTrace, $arrLog );
-        }
-        
+
         // 加载文件
         $arrInclude = get_included_files ();
-        $arrTrace [__ ( '加载文件' ) . ' (' . count ( $arrInclude ) . ')'] = implode ( '\n', array_map ( function ($sVal) {
-            return str_replace ( '\\', '/', $sVal );
+        $arrTrace ['INCLUDE FILE' . ' (' . count ( $arrInclude ) . ')'] = implode ( '\n', array_map ( function ($sVal) {
+            return fso::tidyPathLinux($sVal);
         }, $arrInclude ) );
         
+        ob_start ();
         include dirname ( __DIR__ ) . '/bootstrap/template/trace.php';
+        $sReturn = ob_get_contents ();
+        ob_end_clean ();
+
+        return $sReturn;
     }
 }
