@@ -31,7 +31,7 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 class cache implements interfaces_cache {
     
     /**
-     * 项目管理
+     * IOC Container
      *
      * @var \queryyetsimple\support\interfaces\container
      */

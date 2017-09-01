@@ -31,7 +31,7 @@ use queryyetsimple\session\interfaces\session as interfaces_session;
 class session implements interfaces_session {
     
     /**
-     * 项目管理
+     * IOC Container
      *
      * @var \queryyetsimple\support\interfaces\container
      */

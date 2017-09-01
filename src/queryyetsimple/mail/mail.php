@@ -31,7 +31,7 @@ use queryyetsimple\mail\interfaces\mail as interfaces_mail;
 class mail implements interfaces_mail {
     
     /**
-     * 项目管理
+     * IOC Container
      *
      * @var \queryyetsimple\support\interfaces\container
      */

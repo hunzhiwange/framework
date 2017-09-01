@@ -55,7 +55,7 @@ use queryyetsimple\filesystem\interfaces\filesystem as interfaces_filesystem;
 class filesystem implements interfaces_filesystem {
     
     /**
-     * 项目管理
+     * IOC Container
      *
      * @var \queryyetsimple\support\interfaces\container
      */

@@ -32,7 +32,7 @@ use queryyetsimple\database\interfaces\database as interfaces_database;
 class database implements interfaces_database {
     
     /**
-     * 项目管理
+     * IOC Container
      *
      * @var \queryyetsimple\support\interfaces\container
      */
