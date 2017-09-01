@@ -28,7 +28,9 @@ return [
                         'queryyetsimple\mvc\interfaces\view' 
                 ],
                 function ($oProject) {
-                    return new queryyetsimple\mvc\view ( $oProject ['view.theme'] );
+                    return (new queryyetsimple\mvc\view ( $oProject ['view.theme'] ))->setResponseFactory ( function () use($oProject) {
+                        return $oProject ['response'];
+                    } );
                 } 
         ] 
 ];

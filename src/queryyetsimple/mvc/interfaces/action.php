@@ -15,6 +15,8 @@ namespace queryyetsimple\mvc\interfaces;
 ##########################################################
 queryphp;
 
+use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
+
 /**
  * action 接口
  *
@@ -31,5 +33,5 @@ interface action extends controller {
      * @param \queryyetsimple\mvc\interfaces\controller $objController            
      * @return $this
      */
-    public function setController($objController);
+    public function setController(interfaces_controller $objController);
 }

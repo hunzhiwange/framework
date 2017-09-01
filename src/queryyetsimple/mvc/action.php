@@ -17,7 +17,9 @@ queryphp;
 
 use RuntimeException;
 use BadFunctionCallException;
+use queryyetsimple\mvc\interfaces\view as interfaces_view;
 use queryyetsimple\mvc\interfaces\action as interfaces_action;
+use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
 
 /**
  * 基类方法器
@@ -34,7 +36,7 @@ abstract class action implements interfaces_action {
      *
      * @var \queryyetsimple\mvc\interfaces\controller
      */
-    protected $objController = null;
+    protected $objController;
     
     /**
      * 构造函数
@@ -50,7 +52,7 @@ abstract class action implements interfaces_action {
      * @param \queryyetsimple\mvc\interfaces\controller $objController            
      * @return $this
      */
-    public function setController($objController) {
+    public function setController(interfaces_controller $objController) {
         $this->objController = $objController;
         return $this;
     }
@@ -65,7 +67,7 @@ abstract class action implements interfaces_action {
      * @param \queryyetsimple\mvc\interfaces\view $objView            
      * @return $this
      */
-    public function setView($objView) {
+    public function setView(interfaces_view $objView) {
         $this->checkController ();
         return $this->objController->setView ( $objView );
     }
@@ -76,7 +78,7 @@ abstract class action implements interfaces_action {
      * @param \queryyetsimple\router\router $objRouter            
      * @return $this
      */
-    public function setRouter($objRouter) {
+    public function setRouter(router $objRouter) {
         $this->checkController ();
         return $this->objController->setRouter ( $objRouter );
     }
@@ -158,8 +160,7 @@ abstract class action implements interfaces_action {
      * @param array $arrOption
      *            charset 编码
      *            content_type 类型
-     *            return 是否返回 html 返回而不直接输出
-     * @return mixed
+     * @return string
      */
     public function display($sThemeFile = '', $arrOption = []) {
         $this->checkController ();

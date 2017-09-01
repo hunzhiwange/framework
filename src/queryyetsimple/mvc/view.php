@@ -15,6 +15,7 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
+use Closure;
 use RuntimeException;
 use queryyetsimple\view\interfaces\theme;
 use queryyetsimple\mvc\interfaces\view as interfaces_view;
@@ -37,6 +38,20 @@ class view implements interfaces_view {
     protected $objTheme;
     
     /**
+     * 响应工厂
+     *
+     * @var \Closure
+     */
+    protected $calResponseFactory;
+    
+    /**
+     * 响应
+     *
+     * @var \queryyetsimple\http\response
+     */
+    protected $objResponse;
+    
+    /**
      * 构造函数
      *
      * @param \queryyetsimple\view\interfaces\theme $objTheme            
@@ -44,6 +59,28 @@ class view implements interfaces_view {
      */
     public function __construct(theme $objTheme) {
         $this->objTheme = $objTheme;
+    }
+    
+    /**
+     * 设置响应工厂
+     *
+     * @param \Closure $calResponseFactory            
+     * @return $this;
+     */
+    public function setResponseFactory(Closure $calResponseFactory) {
+        $this->calResponseFactory = $calResponseFactory;
+        return $this;
+    }
+    
+    /**
+     * 获取响应
+     *
+     * @return \queryyetsimple\http\response $objResponse
+     */
+    public function getResponse() {
+        if (! $this->objResponse)
+            $this->objResponse = call_user_func ( $this->calResponseFactory );
+        return $this->objResponse;
     }
     
     /**
@@ -104,30 +141,19 @@ class view implements interfaces_view {
      * @param array $arrOption
      *            charset 编码
      *            content_type 内容类型
-     *            return 是否返回
-     * @return void|string
+     * @return string
      */
     public function display($sFile = '', $arrOption = []) {
         $this->checkTheme ();
+        
         $arrOption = array_merge ( [ 
                 'charset' => 'utf-8',
-                'content_type' => 'text/html',
-                'return' => false 
+                'content_type' => 'text/html' 
         ], $arrOption );
         
-        // 设置 header
-        if (! headers_sent ()) {
-            header ( "Content-Type:" . $arrOption ['content_type'] . "; charset=" . $arrOption ['charset'] );
-            header ( "Cache-control: protected" );
-        }
+        $this->responseHeader ( $arrOption ['content_type'], $arrOption ['charset'] );
         
-        $sContent = $this->objTheme->display ( $sFile, false );
-        if ($arrOption ['return'] === true) {
-            return $sContent;
-        } else {
-            echo $sContent;
-            unset ( $sContent );
-        }
+        return $this->objTheme->display ( $sFile, false );
     }
     
     /**
@@ -138,5 +164,21 @@ class view implements interfaces_view {
     protected function checkTheme() {
         if (! $this->objTheme)
             throw new RuntimeException ( 'Theme is not set in view' );
+    }
+    
+    /**
+     * 发送 header
+     *
+     * @param string $strContentType            
+     * @param string $strCharset            
+     * @return void
+     */
+    protected function responseHeader($strContentType = 'text/html', $strCharset = 'utf-8') {
+        $this->getResponse ();
+        
+        if (! $this->objResponse)
+            throw new RuntimeException ( 'Response is not set in view' );
+        
+        $this->objResponse->contentType ( $strContentType )->charset ( $strCharset );
     }
 }

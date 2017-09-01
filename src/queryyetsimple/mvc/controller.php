@@ -16,8 +16,8 @@ namespace queryyetsimple\mvc;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\http\request;
-use queryyetsimple\http\response;
+use queryyetsimple\http\router;
+use queryyetsimple\mvc\interfaces\view as interfaces_view;
 use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
 
 /**
@@ -35,14 +35,14 @@ abstract class controller implements interfaces_controller {
      *
      * @var \queryyetsimple\mvc\interfaces\view
      */
-    protected $objView = null;
+    protected $objView;
     
     /**
      * 视图
      *
      * @var \queryyetsimple\router\router
      */
-    protected $objRouter = null;
+    protected $objRouter;
     
     /**
      * 构造函数
@@ -58,7 +58,7 @@ abstract class controller implements interfaces_controller {
      * @param \queryyetsimple\mvc\interfaces\view $objView            
      * @return $this
      */
-    public function setView($objView) {
+    public function setView(interfaces_view $objView) {
         $this->objView = $objView;
         return $this;
     }
@@ -69,7 +69,7 @@ abstract class controller implements interfaces_controller {
      * @param \queryyetsimple\router\router $objRouter            
      * @return $this
      */
-    public function setRouter($objRouter) {
+    public function setRouter(router $objRouter) {
         $this->objRouter = $objRouter;
         return $this;
     }
@@ -160,17 +160,10 @@ abstract class controller implements interfaces_controller {
      * @param array $in
      *            charset 编码
      *            content_type 类型
-     *            return 是否返回 html 返回而不直接输出
-     * @return mixed
+     * @return string
      */
     public function display($sThemeFile = '', $arrOption = []) {
         $this->checkView ();
-        $arrOption = array_merge ( [ 
-                'charset' => 'utf-8',
-                'content_type' => 'text/html',
-                'return' => false 
-        ], $arrOption );
-        
         return $this->objView->display ( $sThemeFile, $arrOption );
     }
     

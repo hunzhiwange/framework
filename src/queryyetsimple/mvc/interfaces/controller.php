@@ -15,6 +15,9 @@ namespace queryyetsimple\mvc\interfaces;
 ##########################################################
 queryphp;
 
+use queryyetsimple\http\router;
+use queryyetsimple\mvc\interfaces\view as interfaces_view;
+
 /**
  * controller 接口
  *
@@ -31,7 +34,7 @@ interface controller extends view {
      * @param \queryyetsimple\mvc\interfaces\view $objView            
      * @return $this
      */
-    public function setView($objView);
+    public function setView(interfaces_view $objView);
     
     /**
      * 返回父控制器
@@ -39,7 +42,7 @@ interface controller extends view {
      * @param \queryyetsimple\router\router $objRouter            
      * @return $this
      */
-    public function setRouter($objRouter);
+    public function setRouter(router $objRouter);
     
     /**
      * 执行子方法器
