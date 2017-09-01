@@ -20,7 +20,6 @@
         "queryyetsimple/dump": "1.0.*",
         "queryyetsimple/option": "1.0.*",
         "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/classs": "1.0.*",
         "queryyetsimple/collection": "1.0.*",
         "robmorgan/phinx": "^0.8.0"
     },

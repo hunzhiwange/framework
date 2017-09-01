@@ -19,7 +19,6 @@
         "queryyetsimple/http": "1.0.*",
         "queryyetsimple/filesystem": "1.0.*",
         "queryyetsimple/psr4": "1.0.*",
-        "queryyetsimple/classs": "1.0.*",
         "queryyetsimple/pipeline": "1.0.*"
     },
     "autoload": {
