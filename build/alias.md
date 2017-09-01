@@ -26,7 +26,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     queue = subtree push --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
     router = subtree push --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
     rss = subtree push --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master
-    safe = subtree push --prefix=src/queryyetsimple/safe git@github.com:queryyetsimple/safe.git master
     seccode = subtree push --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
     session = subtree push --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
     stack = subtree push --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master
@@ -60,7 +59,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     queuep = subtree pull --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
     routerp = subtree pull --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
     rssp = subtree pull --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master
-    safep = subtree pull --prefix=src/queryyetsimple/safe git@github.com:queryyetsimple/safe.git master
     seccodep = subtree pull --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
     sessionp = subtree pull --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
     stackp = subtree pull --prefix=src/queryyetsimple/stack git@github.com:queryyetsimple/stack.git master

@@ -51,7 +51,6 @@
         "queryyetsimple/queue": "self.version",
         "queryyetsimple/router": "self.version",
         "queryyetsimple/rss": "self.version",
-        "queryyetsimple/safe": "self.version",
         "queryyetsimple/seccode": "self.version",
         "queryyetsimple/session": "self.version",
         "queryyetsimple/stack": "self.version",
