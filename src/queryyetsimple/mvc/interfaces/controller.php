@@ -15,7 +15,7 @@ namespace queryyetsimple\mvc\interfaces;
 ##########################################################
 queryphp;
 
-use queryyetsimple\http\router;
+use queryyetsimple\router\router;
 use queryyetsimple\mvc\interfaces\view as interfaces_view;
 
 /**

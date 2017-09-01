@@ -16,7 +16,7 @@ namespace queryyetsimple\mvc;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\http\router;
+use queryyetsimple\router\router;
 use queryyetsimple\mvc\interfaces\view as interfaces_view;
 use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
 
