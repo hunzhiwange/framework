@@ -89,11 +89,11 @@ class response {
     protected $strContent;
     
     /**
-     * 是否分析过内容
+     * 追加内容
      *
-     * @var boolean
+     * @var string
      */
-    protected $booParseContent = false;
+    protected $strAppendContent;
     
     /**
      * 响应状态
@@ -229,7 +229,7 @@ class response {
         }
         
         // 输出内容
-        echo $this->getContent ();
+        echo $this->getContent () . (! $this->getContent () || ! $this->isJson ( $this->getContent () ) ? $this->getAppendContent () : '');
         
         // 提高响应速速
         if (function_exists ( 'fastcgi_finish_request' )) {
@@ -480,7 +480,40 @@ class response {
         if ($this->checkFlowControl ())
             return $this;
         $this->strContent = $strContent;
-        $this->booParseContent = true;
+        return $this;
+    }
+    
+    /**
+     * 追加内容
+     *
+     * @param string $strContent            
+     * @return $this
+     */
+    public function appendContent($strContent) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->strAppendContent .= $strContent;
+        return $this;
+    }
+    
+    /**
+     * 返回追加内容
+     *
+     * @return string
+     */
+    public function getAppendContent() {
+        return $this->strAppendContent;
+    }
+    
+    /**
+     * 清理追加内容
+     *
+     * @return $this
+     */
+    public function restAppendContent() {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->strAppendContent = '';
         return $this;
     }
     
@@ -490,57 +523,60 @@ class response {
      * @return string
      */
     public function getContent() {
-        if (! $this->booParseContent) {
-            $mixContent = $this->getData ();
-            switch ($this->getResponseType ()) {
-                case 'json' :
-                    if ($this->isApi ())
-                        $mixContent = $this->api ( $mixContent, null, null, true );
-                    else
-                        $mixContent = json_encode ( $mixContent, $this->getJsonOption ()['json_options'] );
-                    if ($this->getJsonOption ()['json_callback']) {
-                        $mixContent = $this->getJsonOption ()['json_callback'] . '(' . $mixContent . ');';
-                    }
-                    break;
-                case 'xml' :
-                    $mixContent = xml::serialize ( $mixContent );
-                    break;
-                case 'file' :
-                    ob_end_clean ();
-                    $resFp = fopen ( $this->getOption ( 'file_name' ), 'rb' );
-                    fpassthru ( $resFp );
-                    fclose ( $resFp );
-                    break;
-                case 'redirect' :
-                    $this->objRouter->redirect ( $this->getOption ( 'redirect_url' ), $this->getOption ( 'option' ) );
-                    break;
-                case 'view' :
-                    if ($this->isApi ())
-                        $mixContent = $this->api ( $this->objView->getAssign (), null, null, true );
-                    else
-                        $mixContent = $this->objView->display ( $this->getOption ( 'file' ), $this->getOption ( 'option' ) );
-                    break;
-                default :
-                    if (is_callable ( $mixContent )) {
-                        $mixTemp = call_user_func_array ( $mixContent, [ ] );
-                        if ($mixTemp !== null) {
-                            $mixContent = $mixTemp;
-                        }
-                        unset ( $mixTemp );
-                    } elseif (is_array ( $mixContent )) {
-                        if (! $this->isApi ()) {
-                            $mixContent = json_encode ( $mixContent, $this->getJsonOption ()['json_options'] );
-                        }
-                    }
-                    $mixContent = $this->varString ( $mixContent );
-                    if ($this->isApi ()) {
-                        $mixContent = $this->api ( $mixContent, null, null, true );
-                    }
-                    break;
-            }
-            $this->content ( $mixContent );
-            unset ( $mixContent );
+        if (! is_null ( $this->strContent )) {
+            return $this->strContent;
         }
+        
+        $mixContent = $this->getData ();
+        switch ($this->getResponseType ()) {
+            case 'json' :
+                if ($this->isApi ())
+                    $mixContent = $this->api ( $mixContent, null, null, true );
+                else
+                    $mixContent = json_encode ( $mixContent, $this->getJsonOption ()['json_options'] );
+                if ($this->getJsonOption ()['json_callback']) {
+                    $mixContent = $this->getJsonOption ()['json_callback'] . '(' . $mixContent . ');';
+                }
+                break;
+            case 'xml' :
+                $mixContent = xml::serialize ( $mixContent );
+                break;
+            case 'file' :
+                ob_end_clean ();
+                $resFp = fopen ( $this->getOption ( 'file_name' ), 'rb' );
+                fpassthru ( $resFp );
+                fclose ( $resFp );
+                break;
+            case 'redirect' :
+                $this->objRouter->redirect ( $this->getOption ( 'redirect_url' ), $this->getOption ( 'option' ) );
+                break;
+            case 'view' :
+                if ($this->isApi ())
+                    $mixContent = $this->api ( $this->objView->getAssign (), null, null, true );
+                else
+                    $mixContent = $this->objView->display ( $this->getOption ( 'file' ), $this->getOption ( 'option' ) );
+                break;
+            default :
+                if (is_callable ( $mixContent )) {
+                    $mixTemp = call_user_func_array ( $mixContent, [ ] );
+                    if ($mixTemp !== null) {
+                        $mixContent = $mixTemp;
+                    }
+                    unset ( $mixTemp );
+                } elseif (is_array ( $mixContent )) {
+                    if (! $this->isApi ()) {
+                        $mixContent = json_encode ( $mixContent, $this->getJsonOption ()['json_options'] );
+                    }
+                }
+                $mixContent = $this->varString ( $mixContent );
+                if ($this->isApi ()) {
+                    $mixContent = $this->api ( $mixContent, null, null, true );
+                }
+                break;
+        }
+        $this->content ( $mixContent );
+        unset ( $mixContent );
+        
         return $this->strContent;
     }
     
@@ -878,5 +914,21 @@ class response {
             ob_end_clean ();
         }
         return $mixVar;
+    }
+    
+    /**
+     * 验证是否为正常的 JSON 字符串
+     *
+     * @param mixed $mixData            
+     * @return boolean
+     */
+    protected function isJson($mixData) {
+        if (! is_scalar ( $mixData ) && ! method_exists ( $mixData, '__toString' )) {
+            return false;
+        }
+        
+        json_decode ( $mixData );
+        
+        return json_last_error () === JSON_ERROR_NONE;
     }
 }
