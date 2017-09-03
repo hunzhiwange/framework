@@ -29,6 +29,7 @@ use queryyetsimple\collection\collection;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.03.09
+ * @see http://qeephp.com 致经典国产框架
  * @version 1.0
  */
 class select {
@@ -1737,7 +1738,7 @@ class select {
     public function groupBy($mixExpr) {
         if ($this->checkFlowControl ())
             return $this;
-            // 处理条件表达式
+        
         if (is_string ( $mixExpr ) && strpos ( $mixExpr, ',' ) !== false && strpos ( $mixExpr, '{' ) !== false && preg_match_all ( '/{(.+?)}/', $mixExpr, $arrRes )) {
             $mixExpr = str_replace ( $arrRes [1] [0], base64_encode ( $arrRes [1] [0] ), $mixExpr );
         }

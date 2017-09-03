@@ -832,7 +832,7 @@ abstract class connect {
         // 记录 SQL 日志
         $arrLastSql = $this->getLastSql ( true );
         if ($this->arrOption ['log'])
-            $this->objLogStore->record ( $arrLastSql [0] . (! empty ( $arrLastSql [1] ) ? ' @ ' . json_encode ( $arrLastSql [1], JSON_UNESCAPED_UNICODE ) : ''), store::SQL );
+            $this->objLogStore->log ( store::SQL, $arrLastSql [0], $arrLastSql [1] ?  : [ ] );
     }
     
     /**
