@@ -35,6 +35,7 @@ ini_set ( 'auto_detect_line_endings', 1 );
  * @version 1.0
  */
 class po extends gettext {
+    
     /**
      * prop
      *
