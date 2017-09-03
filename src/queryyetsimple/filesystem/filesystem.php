@@ -171,16 +171,6 @@ class filesystem implements interfaces_filesystem {
     }
     
     /**
-     * 创建 null 连接
-     *
-     * @param array $arrOption            
-     * @return \queryyetsimple\filesystem\null
-     */
-    protected function makeConnectNull($arrOption = []) {
-        return new null ( array_merge ( $this->getOption ( 'null', $arrOption ) ) );
-    }
-    
-    /**
      * 创建 zip 连接
      *
      * @param array $arrOption            
