@@ -162,6 +162,7 @@ class fso {
      * @param string $strReturnType            
      * @param boolean $booFullpath            
      * @param array $arrFilter            
+     * @param array $arrFilterExt            
      * @return array
      */
     public static function lists($sDir, $strReturnType = 'dir', $booFullpath = false, $arrFilter = [], $arrFilterExt = []) {
