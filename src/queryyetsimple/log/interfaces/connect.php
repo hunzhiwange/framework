@@ -24,4 +24,12 @@ queryphp;
  * @version 1.0
  */
 interface connect {
+    
+    /**
+     * 日志写入接口
+     *
+     * @param array $arrData            
+     * @return void
+     */
+    public function save(array $arrData);
 }

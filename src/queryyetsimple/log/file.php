@@ -19,6 +19,7 @@ use RuntimeException;
 use queryyetsimple\support\option;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\log\interfaces\connect;
+use queryyetsimple\log\abstracts\connect as abstracts_connect;
 
 /**
  * log.file
@@ -28,7 +29,7 @@ use queryyetsimple\log\interfaces\connect;
  * @since 2017.06.05
  * @version 1.0
  */
-class file implements connect {
+class file extends abstracts_connect implements connect {
     
     use option;
     
@@ -56,55 +57,28 @@ class file implements connect {
     /**
      * 日志写入接口
      *
-     * @param array $arrData
-     *            message 消息
-     *            level 级别
-     *            message_type
-     *            destination
-     *            extraHeaders
+     * @param array $arrData            
      * @return void
      */
     public function save(array $arrData) {
         // 保存日志
-        $this->checkSize ( $strDestination = $this->getPath ( $arrData ['level'] ) );
+        $this->checkSize ( $strDestination = $this->getPath ( $arrData [0] [0] ) );
         
         // 记录到系统
-        error_log ( $arrData ['message'] . PHP_EOL, 3, $strDestination );
-    }
-    
-    /**
-     * 验证日志文件大小
-     *
-     * @param string $sFilePath            
-     * @return void
-     */
-    protected function checkSize($sFilePath) {
-        // 如果不是文件，则创建
-        if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! fso::createDirectory ( dirname ( $sFilePath ) )) {
-            throw new RuntimeException ( __ ( '无法创建日志文件：%s', $sFilePath ) );
-        }
-        
-        // 检测日志文件大小，超过配置大小则备份日志文件重新生成
-        if (is_file ( $sFilePath ) && floor ( $this->getOption ( 'size' ) ) <= filesize ( $sFilePath )) {
-            rename ( $sFilePath, dirname ( $sFilePath ) . '/' . date ( 'Y-m-d H.i.s' ) . '~@' . basename ( $sFilePath ) );
+        foreach ( $arrData as $arrItem ) {
+            error_log ( $this->formatMessage ( $arrItem [1], $arrItem [2] ) . PHP_EOL, 3, $strDestination );
         }
     }
     
     /**
-     * 获取日志路径
+     * 格式化日志信息
      *
-     * @param string $strLevel            
-     * @param string $sFilePath            
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param array $arrContext            
      * @return string
      */
-    protected function getPath($strLevel) {
-        // 不存在路径，则直接使用项目默认路径
-        if (empty ( $sFilePath )) {
-            if (! $this->getOption ( 'path' )) {
-                throw new RuntimeException ( __ ( '未指定日志默认路径' ) );
-            }
-            $sFilePath = $this->getOption ( 'path' ) . '/' . $strLevel . '/' . date ( $this->getOption ( 'name' ) ) . ".log";
-        }
-        return $sFilePath;
+    protected function formatMessage($strMessage, array $arrContext = []) {
+        return $strMessage . ' ' . json_encode ( $arrContext, JSON_UNESCAPED_UNICODE );
     }
 }

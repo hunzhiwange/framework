@@ -233,37 +233,18 @@ if (! function_exists ( 'value' )) {
     }
 }
 
-if (! function_exists ( 'exception' )) {
-    /**
-     * 抛出异常处理
-     *
-     * @param string $strMessage            
-     * @param integer $intCode            
-     * @param string $strException            
-     * @return void
-     */
-    function exception($strMessage, $intCode = 0, $strException = null) {
-        $strException = $strException ?  : 'Exception';
-        throw new $strException ( $strMessage, $intCode );
-    }
-}
-
 if (! function_exists ( 'log' )) {
     /**
      * 记录错误消息
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
-     * @param string $strLevel
-     *            日志类型
+     * @param string $strLevel            
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
      * @param boolean $booWrite            
      * @return void
      */
-    function log($strMessage, $strLevel = log_store::INFO, $booWrite = false) {
-        if ($booWrite)
-            project ( 'log' )->write ( $strMessage, $strLevel );
-        else
-            project ( 'log' )->record ( $strMessage, $strLevel );
+    function log($strLevel, $mixMessage, array $arrContext = [], $booWrite = false) {
+        project ( 'log' )->{$booWrite ? 'write' : 'log'} ( $strLevel, $mixMessage, $arrContext );
     }
 }
 
@@ -271,13 +252,13 @@ if (! function_exists ( 'debug' )) {
     /**
      * 记录错误消息 debug
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
      * @param boolean $booWrite            
      * @return void
      */
-    function debug($strMessage, $booWrite = false) {
-        log ( $strMessage, log_store::DEBUG, $booWrite );
+    function debug($mixMessage, array $arrContext = [], $booWrite = false) {
+        log ( log_store::DEBUG, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -285,13 +266,13 @@ if (! function_exists ( 'info' )) {
     /**
      * 记录错误消息 info
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
      * @param boolean $booWrite            
      * @return void
      */
-    function info($strMessage, $booWrite = false) {
-        log ( $strMessage, log_store::INFO, $booWrite );
+    function info($mixMessage, array $arrContext = [], $booWrite = false) {
+        log ( log_store::INFO, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -299,13 +280,13 @@ if (! function_exists ( 'notice' )) {
     /**
      * 记录错误消息 notice
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
      * @param boolean $booWrite            
      * @return void
      */
-    function notice($strMessage, $booWrite = false) {
-        log ( $strMessage, log_store::NOTICE, $booWrite );
+    function notice($mixMessage, array $arrContext = [], $booWrite = false) {
+        log ( log_store::NOTICE, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -313,13 +294,13 @@ if (! function_exists ( 'warning' )) {
     /**
      * 记录错误消息 warning
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
      * @param boolean $booWrite            
      * @return void
      */
-    function warning($strMessage, $booWrite = false) {
-        log ( $strMessage, log_store::WARNING, $booWrite );
+    function warning($mixMessage, array $arrContext = [], $booWrite = false) {
+        log ( log_store::WARNING, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -327,13 +308,13 @@ if (! function_exists ( 'error' )) {
     /**
      * 记录错误消息 error
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
      * @param boolean $booWrite            
      * @return void
      */
-    function error($strMessage, $booWrite = false) {
-        log ( $strMessage, log_store::ERROR, $booWrite );
+    function error($mixMessage, array $arrContext = [], $booWrite = false) {
+        log ( log_store::ERROR, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -341,13 +322,13 @@ if (! function_exists ( 'critical' )) {
     /**
      * 记录错误消息 critical
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
      * @param boolean $booWrite            
      * @return void
      */
-    function critical($strMessage, $booWrite = false) {
-        log ( $strMessage, log_store::CRITICAL, $booWrite );
+    function critical($mixMessage, array $arrContext = [], $booWrite = false) {
+        log ( log_store::CRITICAL, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -355,13 +336,13 @@ if (! function_exists ( 'alert' )) {
     /**
      * 记录错误消息 alert
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
      * @param boolean $booWrite            
      * @return void
      */
-    function alert($strMessage, $booWrite = false) {
-        log ( $strMessage, log_store::ALERT, $booWrite );
+    function alert($mixMessage, array $arrContext = [], $booWrite = false) {
+        log ( log_store::ALERT, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -369,13 +350,13 @@ if (! function_exists ( 'emergency' )) {
     /**
      * 记录错误消息 emergency
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
      * @param boolean $booWrite            
      * @return void
      */
-    function emergency($strMessage, $booWrite = false) {
-        log ( $strMessage, log_store::EMERGENCY, $booWrite );
+    function emergency($mixMessage, array $arrContext = [], $booWrite = false) {
+        log ( log_store::EMERGENCY, $mixMessage, $arrContext, $booWrite );
     }
 }
 

@@ -17,7 +17,8 @@
         "php": ">=5.5.0",
         "queryyetsimple/option": "1.0.*",
         "queryyetsimple/assert": "1.0.*",
-        "queryyetsimple/filesystem": "1.0.*"
+        "queryyetsimple/filesystem": "1.0.*",
+        "monolog/monolog": "^1.23"
     },
     "autoload": {
         "psr-4": {

@@ -15,6 +15,8 @@ namespace queryyetsimple\log\interfaces;
 ##########################################################
 queryphp;
 
+use Psr\Log\LoggerInterface;
+
 /**
  * store 接口
  *
@@ -23,7 +25,7 @@ queryphp;
  * @since 2017.04.11
  * @version 1.0
  */
-interface store {
+interface store extends LoggerInterface {
     
     /**
      * debug
@@ -89,26 +91,16 @@ interface store {
     const SQL = 'sql';
     
     /**
-     * 记录错误消息
-     *
-     * @param string $strMessage
-     *            应该被记录的错误信息
-     * @param string $strLevel
-     *            日志类型
-     * @return array
-     */
-    public function record($strMessage, $strLevel = 'info');
-    
-    /**
      * 记录错误消息并写入
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
      * @param string $strLevel
      *            日志类型
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param array $arrContext            
      * @return void
      */
-    public function write($strMessage, $strLevel = 'info');
+    public function write($strLevel, $strMessage, array $arrContext = []);
     
     /**
      * 保存日志信息

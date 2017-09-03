@@ -61,7 +61,7 @@ abstract class message {
      */
     protected function log($strMessage) {
         if ($this->oProject ['option']->get ( 'log\runtime_enabled', false )) {
-            $this->oProject ['log']->write ( $strMessage, store::ERROR );
+            $this->oProject ['log']->write ( store::ERROR, $strMessage );
         }
     }
     

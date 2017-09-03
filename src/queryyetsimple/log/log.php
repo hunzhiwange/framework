@@ -129,6 +129,16 @@ class log implements interfaces_log {
     }
     
     /**
+     * 创建 monolog 日志驱动
+     *
+     * @param array $arrOption            
+     * @return \queryyetsimple\log\monolog
+     */
+    protected function makeConnectMonolog($arrOption = []) {
+        return new monolog ( array_merge ( $this->getOption ( 'monolog', $arrOption ) ) );
+    }
+    
+    /**
      * 取得唯一值
      *
      * @param array $arrOption            

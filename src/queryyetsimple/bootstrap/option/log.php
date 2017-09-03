@@ -100,7 +100,30 @@ return [
                         'size' => 2097152,
                         
                         // 默认的日志路径
-                        'path' => project ()->pathApplicationCache ( 'log' ) 
+                        'path' => path_log_cache () 
+                ],
+                
+                '+monolog' => [
+                        // driver
+                        'driver' => 'monolog',
+                        
+                        // 日志类型
+                        // support file、daily_file、syslog、error_log
+                        'type' => [ 
+                                'file' 
+                        ],
+                        
+                        // 频道
+                        'channel' => 'Q',
+                        
+                        // 日志文件名时间格式化
+                        'name' => 'Y-m-d H',
+                        
+                        // 日志文件大小限制,单位为字节 byte
+                        'size' => 2097152,
+                        
+                        // 默认的日志路径
+                        'path' => path_log_cache ( 'monolog' ) 
                 ] 
         ] 
 ];

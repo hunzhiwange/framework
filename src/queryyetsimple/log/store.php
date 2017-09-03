@@ -19,6 +19,8 @@ use RuntimeException;
 use queryyetsimple\assert\assert;
 use queryyetsimple\support\option;
 use queryyetsimple\log\interfaces\connect;
+use queryyetsimple\support\interfaces\jsonable;
+use queryyetsimple\support\interfaces\arrayable;
 use queryyetsimple\log\interfaces\store as interfaces_store;
 
 /**
@@ -94,16 +96,115 @@ class store implements interfaces_store {
         $this->options ( $arrOption );
     }
     
+    // ######################################################
+    // ------ 实现 \Psr\Log\LoggerInterface 接口 start -------
+    // ######################################################
+    
     /**
-     * 记录错误消息
+     * 记录 emergency 日志
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
-     * @param string $strLevel
-     *            日志类型
+     * @param string $mixMessage            
+     * @param array $arrContext            
+     * @param boolean $booWrite            
      * @return array
      */
-    public function record($strMessage, $strLevel = 'info') {
+    public function emergency($mixMessage, array $arrContext = [], $booWrite = false) {
+        return $this->{$booWrite ? 'write' : 'log'} ( static::EMERGENCY, $mixMessage, $arrContext );
+    }
+    
+    /**
+     * 记录 alert 日志
+     *
+     * @param string $mixMessage            
+     * @param array $arrContext            
+     * @param boolean $booWrite            
+     * @return array
+     */
+    public function alert($mixMessage, array $arrContext = [], $booWrite = false) {
+        return $this->{$booWrite ? 'write' : 'log'} ( static::ALERT, $mixMessage, $arrContext );
+    }
+    
+    /**
+     * 记录 critical 日志
+     *
+     * @param string $mixMessage            
+     * @param array $arrContext            
+     * @param boolean $booWrite            
+     * @return array
+     */
+    public function critical($mixMessage, array $arrContext = [], $booWrite = false) {
+        return $this->{$booWrite ? 'write' : 'log'} ( static::CRITICAL, $mixMessage, $arrContext );
+    }
+    
+    /**
+     * 记录 error 日志
+     *
+     * @param string $mixMessage            
+     * @param array $arrContext            
+     * @param boolean $booWrite            
+     * @return array
+     */
+    public function error($mixMessage, array $arrContext = [], $booWrite = false) {
+        return $this->{$booWrite ? 'write' : 'log'} ( static::ERROR, $mixMessage, $arrContext );
+    }
+    
+    /**
+     * 记录 warning 日志
+     *
+     * @param string $mixMessage            
+     * @param array $arrContext            
+     * @param boolean $booWrite            
+     * @return array
+     */
+    public function warning($mixMessage, array $arrContext = [], $booWrite = false) {
+        return $this->{$booWrite ? 'write' : 'log'} ( static::WARNING, $mixMessage, $arrContext );
+    }
+    
+    /**
+     * 记录 notice 日志
+     *
+     * @param string $mixMessage            
+     * @param array $arrContext            
+     * @param boolean $booWrite            
+     * @return array
+     */
+    public function notice($mixMessage, array $arrContext = [], $booWrite = false) {
+        return $this->{$booWrite ? 'write' : 'log'} ( static::NOTICE, $mixMessage, $arrContext );
+    }
+    
+    /**
+     * 记录 info 日志
+     *
+     * @param string $mixMessage            
+     * @param array $arrContext            
+     * @param boolean $booWrite            
+     * @return array
+     */
+    public function info($mixMessage, array $arrContext = [], $booWrite = false) {
+        return $this->{$booWrite ? 'write' : 'log'} ( static::INFO, $mixMessage, $arrContext );
+    }
+    
+    /**
+     * 记录 debug 日志
+     *
+     * @param string $mixMessage            
+     * @param array $arrContext            
+     * @param boolean $booWrite            
+     * @return array
+     */
+    public function debug($mixMessage, array $arrContext = [], $booWrite = false) {
+        return $this->{$booWrite ? 'write' : 'log'} ( static::DEBUG, $mixMessage, $arrContext );
+    }
+    
+    /**
+     * 记录日志
+     *
+     * @param string $strLevel            
+     * @param mixed $mixMessage            
+     * @param array $arrContext            
+     * @return array
+     */
+    public function log($strLevel, $mixMessage, array $arrContext = []) {
         // 是否开启日志
         if (! $this->getOption ( 'enabled' )) {
             return;
@@ -114,40 +215,49 @@ class store implements interfaces_store {
             return;
         }
         
+        $mixMessage = $this->formatMessage ( $mixMessage );
+        
+        $arrData = [ 
+                $strLevel,
+                $mixMessage,
+                $arrContext 
+        ];
+        
         // 执行过滤器
-        if ($this->calFilter !== null && call_user_func_array ( $this->calFilter, [ 
-                $strMessage,
-                $strLevel 
-        ] ) === false) {
+        if ($this->calFilter !== null && call_user_func_array ( $this->calFilter, $arrData ) === false) {
             return;
         }
         
         // 日志消息
-        $strMessage = date ( $this->getOption ( 'time_format' ) ) . $strMessage;
+        $mixMessage = date ( $this->getOption ( 'time_format' ) ) . $mixMessage;
         
         // 记录到内存方便后期调用
         if (! isset ( $this->arrLog [$strLevel] )) {
             $this->arrLog [$strLevel] = [ ];
         }
-        $this->arrLog [$strLevel] [] = $strMessage;
+        $this->arrLog [$strLevel] [] = $arrData;
         
-        return [ 
-                'message' => $strMessage,
-                'level' => $strLevel 
-        ];
+        return $arrData;
     }
+    
+    // ######################################################
+    // ------- 实现 \Psr\Log\LoggerInterface 接口 end --------
+    // ######################################################
     
     /**
      * 记录错误消息并写入
      *
-     * @param string $strMessage
-     *            应该被记录的错误信息
      * @param string $strLevel
      *            日志类型
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param array $arrContext            
      * @return void
      */
-    public function write($strMessage, $strLevel = 'info') {
-        $this->saveStore ( $this->record ( $strMessage, $strLevel ) );
+    public function write($strLevel, $strMessage, array $arrContext = []) {
+        $this->saveStore ( [ 
+                $this->log ( $strLevel, $strMessage, $arrContext ) 
+        ] );
     }
     
     /**
@@ -159,11 +269,8 @@ class store implements interfaces_store {
         if (! $this->arrLog)
             return;
         
-        foreach ( $this->arrLog as $strLevel => $arrData ) {
-            $this->saveStore ( [ 
-                    'level' => $strLevel,
-                    'message' => implode ( PHP_EOL, $arrData ) 
-            ] );
+        foreach ( $this->arrLog as $arrData ) {
+            $this->saveStore ( $arrData );
         }
         
         $this->clear ();
@@ -240,21 +347,35 @@ class store implements interfaces_store {
     /**
      * 存储日志
      *
-     * @param array $arrData
-     *            message 消息
-     *            level 级别
+     * @param array $arrData            
      * @return void
      */
     protected function saveStore($arrData) {
         // 执行处理器
         if ($this->calProcessor !== null) {
-            call_user_func_array ( $this->calProcessor, [ 
-                    $arrData ['message'],
-                    $arrData ['level'] 
-            ] );
+            call_user_func_array ( $this->calProcessor, $arrData );
+        }
+        $this->oConnect->save ( $arrData );
+    }
+    
+    /**
+     * 格式化日志消息
+     *
+     * @param mixed $mixMessage            
+     * @return mixed
+     */
+    protected function formatMessage($mixMessage) {
+        if (is_array ( $mixMessage )) {
+            return var_export ( $mixMessage, true );
+        } elseif ($mixMessage instanceof jsonable) {
+            return $mixMessage->toJson ();
+        } elseif ($mixMessage instanceof arrayable) {
+            return var_export ( $mixMessage->toArray (), true );
+        } elseif (is_scalar ( $mixMessage )) {
+            return $mixMessage;
         }
         
-        $this->oConnect->save ( $arrData );
+        throw new RuntimeException ( 'Message is invalid' );
     }
     
     /**
