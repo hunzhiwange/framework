@@ -27,7 +27,7 @@ use queryyetsimple\support\interfaces\arrayable;
  * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
-class gettext extends translations {
+class gettext extends translations implements arrayable {
     
     /**
      * The gettext implementation of select_plural_form.
