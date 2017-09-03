@@ -47,7 +47,7 @@ class tool {
         if (is_string ( $mixFiles )) {
             $mixFiles = ( array ) $mixFiles;
         }
-        $arrTexts = static::parsePoData ( $mixFiles );
+        $arrTexts = static::parseMoData ( $mixFiles );
         
         $sDir = dirname ( $sCacheFile );
         if (! is_dir ( $sDir )) {
@@ -78,7 +78,7 @@ class tool {
         if (is_string ( $mixFiles )) {
             $mixFiles = ( array ) $mixFiles;
         }
-        $arrTexts = static::parsePoData ( $mixFiles );
+        $arrTexts = static::parseMoData ( $mixFiles );
         
         $sDir = dirname ( $sCacheFile );
         if (! is_dir ( $sDir )) {
@@ -103,7 +103,7 @@ class tool {
      * @since 2016.11.27
      * @return array
      */
-    public static function findPoFile($mixI18nDir) {
+    public static function findMoFile($mixI18nDir) {
         if (is_string ( $mixI18nDir )) {
             $mixI18nDir = ( array ) $mixI18nDir;
         }
@@ -119,12 +119,12 @@ class tool {
             }
             if (is_dir ( $sDir . '/js' )) {
                 $arrFiles ['js'] = array_merge ( $arrFiles ['js'], fso::lists ( $sDir . '/js', 'file', true, [ ], [ 
-                        'mo' 
+                        'po' 
                 ] ) );
             }
             if (is_dir ( $sDir . '/php' )) {
                 $arrFiles ['php'] = array_merge ( $arrFiles ['php'], fso::lists ( $sDir . '/php', 'file', true, [ ], [ 
-                        'mo' 
+                        'po' 
                 ] ) );
             }
         }
@@ -133,7 +133,7 @@ class tool {
     }
     
     /**
-     * 分析 PO 文件语言包数据
+     * 分析 mo 文件语言包数据
      *
      * @param string|array $mixI18nFile
      *            文件地址
@@ -141,38 +141,11 @@ class tool {
      * @since 2016.11.25
      * @return array
      */
-    protected static function parsePoData($mixI18nFile) {
+    protected static function parseMoData($mixI18nFile) {
         if (is_string ( $mixI18nFile )) {
             $mixI18nFile = ( array ) $mixI18nFile;
         }
-        $sContent = '';
-        foreach ( $mixI18nFile as $sFile ) {
-            if (! is_file ( $sFile )) {
-                throw new RuntimeException ( sprintf ( 'The i18n file < %s > is not exists!', $sFile ) );
-            }
-            $sContent .= helper::escapeCharacter ( file_get_contents ( $sFile ) );
-        }
         
-        $arrResult = [ ];
-        if (preg_match_all ( "/msgid \"(.*?)\"/i", $sContent, $arrSource ) && preg_match_all ( "/msgstr \"(.*?)\"/i", $sContent, $arrNew )) {
-            foreach ( $arrSource [1] as $nKey => $sSource ) {
-                $sSource = trim ( $sSource );
-                if ($sSource) {
-                    $sSource = helper::escapeCharacter ( $sSource, true );
-                }
-                
-                if ($sSource) {
-                    $sNew = trim ( $arrNew [1] [$nKey] );
-                    if ($sNew) {
-                        $sNew = helper::escapeCharacter ( $sNew, true );
-                    } else {
-                        $sNew = $sSource;
-                    }
-                    $arrResult [$sSource] = $sNew;
-                }
-            }
-        }
-        
-        return $arrResult;
+        return (new mo ())->readToArray ( $mixI18nFile );
     }
 }

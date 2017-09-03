@@ -189,7 +189,7 @@ class application {
         if (! $this->objProject->development () && is_file ( $sCachePath ) && is_file ( $sCacheJsPath )) {
             $this->objProject ['i18n']->addI18n ( $sI18nSet, ( array ) include $sCachePath );
         } else {
-            $arrFiles = i18n_tool::findPoFile ( $this->getI18nDir ( $sI18nSet ) );
+            $arrFiles = i18n_tool::findMoFile ( $this->getI18nDir ( $sI18nSet ) );
             $this->objProject ['i18n']->addI18n ( $sI18nSet, i18n_tool::saveToPhp ( $arrFiles ['php'], $sCachePath ) );
             i18n_tool::saveToJs ( $arrFiles ['js'], $sCacheJsPath, $sI18nSet );
             unset ( $sI18nSet, $arrFiles, $sCachePath, $sCacheJsPath );
