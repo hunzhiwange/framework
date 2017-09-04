@@ -28,6 +28,7 @@ use queryyetsimple\view\interfaces\parser as interfaces_parser;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.19
+ * @see http://jecat.cn 模板引擎架构
  * @version 1.0
  */
 class parser implements interfaces_parser {
