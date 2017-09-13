@@ -17,6 +17,7 @@ queryphp;
 
 use RuntimeException;
 use BadFunctionCallException;
+use queryyetsimple\router\router;
 use queryyetsimple\mvc\interfaces\view as interfaces_view;
 use queryyetsimple\mvc\interfaces\action as interfaces_action;
 use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
