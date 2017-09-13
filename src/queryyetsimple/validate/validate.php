@@ -36,7 +36,7 @@ use queryyetsimple\validate\interfaces\validate as interfaces_validate;
  */
 class validate implements interfaces_validate {
     
-    use control;
+    use flow_control;
     
     /**
      * 项目容器
@@ -1270,7 +1270,7 @@ class validate implements interfaces_validate {
      * @return boolean
      */
     protected function validatePhone($strField, $mixData, $arrParameter) {
-        return ((strlen ( $mixData ) == 11 && preg_match ( '/^1[34578]{1}\d{9}$/', $mixData )) || preg_match ( '/^\d{3,4}-?\d{7,9}$/', $mixData ));
+        return ((strlen ( $mixData ) == 11 && preg_match ( '/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/', $mixData )) || preg_match ( '/^\d{3,4}-?\d{7,9}$/', $mixData ));
     }
     
     /**
@@ -1282,7 +1282,7 @@ class validate implements interfaces_validate {
      * @return boolean
      */
     protected function validateMobile($strField, $mixData, $arrParameter) {
-        return preg_match ( '/^1[34578]{1}\d{9}$/', $mixData );
+        return preg_match ( '/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/', $mixData );
     }
     
     /**
