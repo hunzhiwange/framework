@@ -192,6 +192,23 @@ if (! function_exists ( 'url' )) {
     }
 }
 
+if (! function_exists ( 'prev_url' )) :
+    
+    /**
+     * 上一次访问 URL 地址
+     *
+     * @return string
+     */
+    function prev_url() {
+        return project ( 'request' )->header ( 'referer' ) ?  : project ( 'session' )->prevUrl ();
+    }
+
+
+
+
+
+endif;
+
 if (! function_exists ( '__' )) {
     /**
      * 语言包
