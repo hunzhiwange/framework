@@ -23,7 +23,10 @@ queryphp;
  */
 return [ 
         'singleton@encryption' => [ 
-                'queryyetsimple\encryption\encryption',
+                [ 
+                        'queryyetsimple\encryption\encryption',
+                        'queryyetsimple\encryption\interfaces\encryption' 
+                ],
                 function ($oProject) {
                     return new queryyetsimple\encryption\encryption ( $oProject ['option'] ['app_auth_key'], $oProject ['option'] ['app_auth_expiry'] );
                 } 
