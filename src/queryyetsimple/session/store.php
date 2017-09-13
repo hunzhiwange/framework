@@ -408,7 +408,11 @@ class store implements interfaces_store {
      * @return mixed
      */
     public function getFlash($strKey, $mixDefault = null) {
-        return $this->get ( $this->flashDataKey ( $strKey ), $mixDefault );
+        if (strpos ( $strKey, '\\' ) !== false) {
+            return $this->getPartData ( $strKey, $mixDefault );
+        } else {
+            return $this->get ( $this->flashDataKey ( $strKey ), $mixDefault );
+        }
     }
     
     /**
@@ -733,6 +737,31 @@ class store implements interfaces_store {
      */
     protected function mergeNewFlash(array $arrKey) {
         $this->merge ( $this->flashNewKey (), $arrKey );
+    }
+    
+    /**
+     * 返回部分闪存数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixDefault            
+     * @return mixed
+     */
+    protected function getPartData($strKey, $mixDefault = null) {
+        list ( $strKey, $strName ) = explode ( '\\', $strKey );
+        $mixValue = $this->get ( $this->flashDataKey ( $strKey ) );
+        
+        if (is_array ( $mixValue )) {
+            $arrParts = explode ( '.', $strName );
+            foreach ( $arrParts as $sPart ) {
+                if (! isset ( $mixValue [$sPart] )) {
+                    return $mixDefault;
+                }
+                $mixValue = &$mixValue [$sPart];
+            }
+            return $mixValue;
+        } else {
+            return $mixDefault;
+        }
     }
     
     /**
