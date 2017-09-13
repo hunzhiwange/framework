@@ -55,6 +55,54 @@ return [
         
         /**
          * ---------------------------------------------------------------
+         * 应用提供者
+         * ---------------------------------------------------------------
+         *
+         * 这里的服务提供者为类的名字，例如 home\infrastructure\provider\test
+         * 每一个服务提供者必须包含一个 register 方法，还可以包含一个 bootstrap 方法
+         * 系统所有 register 方法注册后，bootstrap 才开始执行以便于调用其它服务提供者 register 注册的服务
+         * 相关文档请访问 [系统架构\应用服务提供者]
+         * see https://github.com/hunzhiwange/document/blob/master/system-architecture/service-provider.md
+         */
+        'provider' => [ ],
+        
+        /**
+         * ---------------------------------------------------------------
+         * 具有缓存功能的应用服务提供者
+         * ---------------------------------------------------------------
+         *
+         * 这里的服务提供者严格意义上是服务提供者包，例如 queryyetsimple\log,queryyetsimple\http，系统会自动合并 queryyetsimple/log/provider 目录下面的 ['register.php', 'bootstrap.php']
+         * register 为预先注册服务提供者，bootstrap 为系统注册完毕所有服务提供者后再注册其它服务
+         * 正如其名具有缓存功能的服务提供者，他们会被自动缓存到 {缓存目录}/provider 下面,并且有两组一组是应用服务提供者，一组为系统服务提供者
+         */
+        'provider_with_cache' => [ 
+                'queryyetsimple\mvc',
+                'queryyetsimple\option',
+                'queryyetsimple\http',
+                'queryyetsimple\log',
+                'queryyetsimple\session',
+                'queryyetsimple\cookie',
+                'queryyetsimple\i18n',
+                'queryyetsimple\database',
+                'queryyetsimple\event',
+                'queryyetsimple\router',
+                'queryyetsimple\pipeline',
+                'queryyetsimple\cache',
+                'queryyetsimple\validate',
+                'queryyetsimple\throttler',
+                'queryyetsimple\collection',
+                'queryyetsimple\router',
+                'queryyetsimple\encryption',
+                'queryyetsimple\rss',
+                'queryyetsimple\stack',
+                'queryyetsimple\page',
+                'queryyetsimple\view',
+                'queryyetsimple\mail',
+                'queryyetsimple\auth' 
+        ],
+        
+        /**
+         * ---------------------------------------------------------------
          * 默认应用
          * ---------------------------------------------------------------
          *
@@ -121,74 +169,6 @@ return [
         
         /**
          * ---------------------------------------------------------------
-         * 应用提供者
-         * ---------------------------------------------------------------
-         *
-         * 这里的服务提供者为类的名字，例如 home\infrastructure\provider\test
-         * 每一个服务提供者必须包含一个 register 方法，还可以包含一个 bootstrap 方法
-         * 系统所有 register 方法注册后，bootstrap 才开始执行以便于调用其它服务提供者 register 注册的服务
-         * 相关文档请访问 [系统架构\应用服务提供者]
-         * see https://github.com/hunzhiwange/document/blob/master/system-architecture/service-provider.md
-         */
-        'provider' => [ ],
-        
-        /**
-         * ---------------------------------------------------------------
-         * 具有缓存功能的应用服务提供者
-         * ---------------------------------------------------------------
-         *
-         * 这里的服务提供者严格意义上是服务提供者包，例如 queryyetsimple\log,queryyetsimple\http，系统会自动合并 queryyetsimple/log/provider 目录下面的 ['register.php', 'bootstrap.php']
-         * register 为预先注册服务提供者，bootstrap 为系统注册完毕所有服务提供者后再注册其它服务
-         * 正如其名具有缓存功能的服务提供者，他们会被自动缓存到 {缓存目录}/provider 下面,并且有两组一组是应用服务提供者，一组为系统服务提供者
-         */
-        'provider_with_cache' => [ 
-                'queryyetsimple\mvc',
-                'queryyetsimple\option',
-                'queryyetsimple\http',
-                'queryyetsimple\log',
-                'queryyetsimple\session',
-                'queryyetsimple\cookie',
-                'queryyetsimple\i18n',
-                'queryyetsimple\database',
-                'queryyetsimple\event',
-                'queryyetsimple\router',
-                'queryyetsimple\pipeline',
-                'queryyetsimple\cache',
-                'queryyetsimple\validate',
-                'queryyetsimple\throttler',
-                'queryyetsimple\collection',
-                'queryyetsimple\router',
-                'queryyetsimple\encryption',
-                'queryyetsimple\rss',
-                'queryyetsimple\stack',
-                'queryyetsimple\page',
-                'queryyetsimple\view',
-                'queryyetsimple\mail' 
-        ],
-        
-        /**
-         * ---------------------------------------------------------------
-         * 默认配置扩展文件
-         * ---------------------------------------------------------------
-         *
-         * 系统默认包含 app,cache,console,cookie,database,debug,i18n,log,queue,session,url,view,router,throttler，你也可以扩展自己的应用的配置
-         * 注意：配置扩展文件不会覆盖系统默认配置文件
-         */
-        'option_extend' => [ ],
-        
-        /**
-         * ---------------------------------------------------------------
-         * 路由扩展文件
-         * ---------------------------------------------------------------
-         *
-         * 路由配置文件为一个数组，路由默认有一个文件 router.php
-         * 如果设置为 ['test1', 'test2'],路由文件 router_test1.php,router_test2.php 作为路由文件可以被载入
-         * 注意：路由配置文件不会覆盖系统配置文件及其扩展文件
-         */
-        'router_extend' => [ ],
-        
-        /**
-         * ---------------------------------------------------------------
          * Gzip 压缩
          * ---------------------------------------------------------------
          *
@@ -225,15 +205,6 @@ return [
          * queryyetsimple\encryption\encryption 安全过期时间
          */
         'app_auth_expiry' => 0,
-        
-        /**
-         * ---------------------------------------------------------------
-         * 文件上传保存文件名函数
-         * ---------------------------------------------------------------
-         *
-         * 默认应用非常重要，与路由解析息息相关
-         */
-        'upload_file_rule' => 'time',
         
         /**
          * ---------------------------------------------------------------
