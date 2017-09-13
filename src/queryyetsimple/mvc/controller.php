@@ -95,7 +95,7 @@ abstract class controller implements interfaces_controller {
         // 执行默认方法器
         if (! $this->objRouter)
             throw new RuntimeException ( 'Router is not set in controller' );
-        return $this->objRouter->doBind ( null, $sActionName );
+        return $this->objRouter->doBind ( null, $sActionName, null, true );
     }
     
     // ######################################################
