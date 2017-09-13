@@ -146,7 +146,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      *
      * @var boolean
      */
-    protected $booAutoPost = true;
+    protected $booAutoPost = false;
     
     /**
      * 是否处于强制改变属性中
@@ -1359,7 +1359,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     }
     
     /**
-     * 创建新的应用程序
+     * 创建新的实例
      *
      * @param array $arrProp            
      * @param mixed $mixConnect            
