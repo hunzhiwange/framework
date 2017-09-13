@@ -70,8 +70,7 @@ class application {
             'initialization',
             'loadBootstrap',
             'i18n',
-            'response',
-            'end' 
+            'response' 
     ];
     
     /**
@@ -217,24 +216,30 @@ class application {
             $mixResponse->appendContent ( console::trace () );
         }
         
+        // 响应结束处理
+        $this->afterResponse ();
+        
         // 输出响应
         $mixResponse->output ();
         unset ( $mixResponse, $objResponse );
     }
     
     /**
-     * 结束处理
+     * 响应结束处理
      *
      * @return void
      */
-    protected function endRun() {
+    protected function afterResponse() {
+        // 清理闪存
+        $this->objProject ['session']->unregisterFlash ();
+        
         // 记录日志
         if ($this->objProject ['option'] ['log\enabled']) {
             $this->objProject ['log']->save ();
         }
         
-        // 清理闪存
-        $this->objProject ['session']->unregisterFlash ();
+        // 记录上次访问地址
+        $this->objProject ['session']->start ()->setPrevUrl ( $this->objProject ['request']->url () );
     }
     
     /**
