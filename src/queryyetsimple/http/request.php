@@ -284,8 +284,9 @@ class request implements arrayable, ArrayAccess {
      */
     public function alls(array $arrKey, $mixDefault = null, $mixFilter = null, $booFile = false) {
         $arrValue = [ ];
-        foreach ( $arrKey as $strKey )
-            $arrValue [] = $this->all ( $strKey, $mixDefault, $mixFilter, $booFile );
+        foreach ( $arrKey as $strKey ) {
+            $arrValue [strpos ( $strKey, '|' ) !== false ? explode ( '|', $strKey )[0] : $strKey] = $this->all ( $strKey, $mixDefault, $mixFilter, $booFile );
+        }
         return $arrValue;
     }
     
@@ -1083,13 +1084,22 @@ class request implements arrayable, ArrayAccess {
             unset ( $arrTemp );
         }
         
+        if (strpos ( $sKey, '\\' ) !== false) {
+            $sKeyOld = $sKey;
+            list ( $sKey ) = explode ( '\\', $sKey );
+        }
+        
         if (! isset ( $arrVar [$sKey] ))
             return $mixDefault;
         
         if ($mixFilter)
             $this->filterValue ( $arrVar [$sKey], $mixFilter, $mixDefault );
         
-        return $arrVar [$sKey];
+        if (isset ( $sKeyOld )) {
+            return $this->getPartData ( $sKeyOld, $arrVar [$sKey] );
+        } else {
+            return $arrVar [$sKey];
+        }
     }
     
     /**
@@ -1103,8 +1113,9 @@ class request implements arrayable, ArrayAccess {
      */
     public function inputs(array $arrKey, $mixDefault = null, $mixFilter = null, $sType = 'request') {
         $arrValue = [ ];
-        foreach ( $arrKey as $strKey )
-            $arrValue [] = $this->input ( $strKey, $mixDefault, $mixFilter, $sType );
+        foreach ( $arrKey as $strKey ) {
+            $arrValue [strpos ( $strKey, '|' ) !== false ? explode ( '|', $strKey )[0] : $strKey] = $this->input ( $strKey, $mixDefault, $mixFilter, $sType );
+        }
         return $arrValue;
     }
     
@@ -2445,6 +2456,31 @@ class request implements arrayable, ArrayAccess {
             }
         }
         return $mixValue;
+    }
+    
+    /**
+     * 返回部分数组数据
+     *
+     * @param string $strKey            
+     * @param mixed $mixValue            
+     * @return mixed
+     */
+    protected function getPartData($strKey, $mixValue) {
+        list ( $strKey, $strName ) = explode ( '\\', $strKey );
+        $mixDefault = $mixValue;
+        
+        if (is_array ( $mixValue )) {
+            $arrParts = explode ( '.', $strName );
+            foreach ( $arrParts as $sPart ) {
+                if (! isset ( $mixValue [$sPart] )) {
+                    return $mixDefault;
+                }
+                $mixValue = &$mixValue [$sPart];
+            }
+            return $mixValue;
+        } else {
+            return $mixDefault;
+        }
     }
     
     /**

@@ -335,6 +335,34 @@ class response {
     }
     
     /**
+     * 闪存消息
+     *
+     * @param string $mixFlash            
+     * @param mixed $mixValue            
+     * @return $this
+     */
+    public function with($strFlash, $mixValue) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->objSession->flash ( $strFlash, $mixValue );
+        return $this;
+    }
+    
+    /**
+     * 批量闪存消息
+     *
+     * @param array $$arrFlash            
+     * @param mixed $mixValue            
+     * @return $this
+     */
+    public function withs(array $arrFlash) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->objSession->flashs ( $arrFlash );
+        return $this;
+    }
+    
+    /**
      * 闪存错误信息
      *
      * @param array $arrErrors            
@@ -344,6 +372,18 @@ class response {
         if ($this->checkFlowControl ())
             return $this;
         $this->objSession->flash ( 'errors', array_merge ( $this->objSession->getFlash ( 'errors', [ ] ), $arrErrors ) );
+        return $this;
+    }
+    
+    /**
+     * 清理错误信息
+     *
+     * @return $this
+     */
+    public function clearErrors() {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->objSession->flash ( 'errors', [ ] );
         return $this;
     }
     
@@ -551,10 +591,7 @@ class response {
                 $this->objRouter->redirect ( $this->getOption ( 'redirect_url' ), $this->getOption ( 'option' ) );
                 break;
             case 'view' :
-                if ($this->isApi ())
-                    $mixContent = $this->api ( $this->objView->getAssign (), null, null, true );
-                else
-                    $mixContent = $this->objView->display ( $this->getOption ( 'file' ), $this->getOption ( 'option' ) );
+                $mixContent = $this->objView->display ( $this->getOption ( 'file' ), $this->getOption ( 'option' ) );
                 break;
             default :
                 if (is_callable ( $mixContent )) {
@@ -585,25 +622,45 @@ class response {
      *
      * @param mixed $mixContent            
      * @param int|null $intCode            
-     * @param string|null $strMessage            
+     * @param string|null $mixMessage            
      * @param boolean $booReturn            
      * @return json|$this mixed
      */
-    public function api($mixContent, $intCode = null, $strMessage = null, $booReturn = false) {
+    public function api($mixContent = [], $intCode = null, $mixMessage = null, $booReturn = false) {
         $mixContent = $this->varString ( $mixContent );
         
-        if (! is_null ( $intCode ))
-            $this->code ( intval ( $intCode ) );
+        if (is_null ( $intCode )) {
+            if (is_array ( $mixContent ) && isset ( $mixContent ['code'] )) {
+                $intCode = $mixContent ['code'];
+                unset ( $mixContent ['code'] );
+            } else {
+                $intCode = $this->getCode ();
+            }
+        }
         
-        if (! is_null ( $strMessage ))
-            $this->message ( $strMessage );
+        if (is_null ( $mixMessage )) {
+            if (is_array ( $mixContent ) && isset ( $mixContent ['message'] )) {
+                $mixMessage = $mixContent ['message'];
+                unset ( $mixContent ['message'] );
+            } else {
+                $mixMessage = $this->getMessage ();
+            }
+        }
+        
+        list ( $mixMessage, $strKey ) = is_array ( $mixMessage ) ? $mixMessage : (strpos ( $mixMessage, '\\' ) !== false ? explode ( '\\', $mixMessage ) : [ 
+                $mixMessage,
+                '' 
+        ]);
         
         $strReturn = json_encode ( [
                 // 反码状态
-                'code' => $this->getCode (),
+                'code' => $intCode,
                 
                 // 描述信息
-                'message' => $this->getMessage (),
+                'message' => $mixMessage,
+                
+                // 描述信息英文
+                'message_key' => $strKey,
                 
                 // 响应时间
                 'time' => time (),
@@ -621,6 +678,30 @@ class response {
             unset ( $strReturn );
             return $this;
         }
+    }
+    
+    /**
+     * api error
+     *
+     * @param string|null $mixMessage            
+     * @param mixed $mixContent            
+     * @param int|null $intCode            
+     * @return $this
+     */
+    public function apiError($mixMessage = null, $mixContent = [], $intCode = 400) {
+        return $this->api ( $mixContent, $intCode, $mixMessage, false );
+    }
+    
+    /**
+     * api success
+     *
+     * @param string|null $mixMessage            
+     * @param mixed $mixContent            
+     * @param int|null $intCode            
+     * @return $this
+     */
+    public function apiSuccess($mixMessage = null, $mixContent = [], $intCode = 200) {
+        return $this->api ( $mixContent, $intCode, $mixMessage, false );
     }
     
     /**
@@ -720,13 +801,13 @@ class response {
     public function view($sFile = '', $arrOption = []) {
         if ($this->checkFlowControl ())
             return $this;
-        $arrOption ['return'] = true;
         if (! empty ( $arrOption ['charset'] )) {
             $this->charset ( $arrOption ['charset'] );
         }
         if (! empty ( $arrOption ['content_type'] )) {
             $this->contentType ( $arrOption ['content_type'] );
         }
+        
         return $this->responseType ( 'view' )->option ( 'file', $sFile )->option ( 'option', $arrOption )->assign ( $arrOption )->message ( isset ( $arrOption ['message'] ) ? $arrOption ['message'] : '' )->header ( 'Cache-control', 'protected' );
     }
     
@@ -752,12 +833,11 @@ class response {
      * @param array $arrOption
      *            charset 编码
      *            content_type 内容类型
-     *            return 是否返回
      *            url 跳转 url 地址
      *            time 停留时间
      * @return json
      */
-    public function success($sMessage = '', $arrOption = []) {
+    public function viewSuccess($sMessage = '', $arrOption = []) {
         if ($this->checkFlowControl ())
             return $this;
         $arrOption = array_merge ( [ 
@@ -777,12 +857,11 @@ class response {
      * @param array $arrOption
      *            charset 编码
      *            content_type 内容类型
-     *            return 是否返回
      *            url 跳转 url 地址
      *            time 停留时间
      * @return json
      */
-    public function error($sMessage = '', $arrOption = []) {
+    public function viewError($sMessage = '', $arrOption = []) {
         if ($this->checkFlowControl ())
             return $this;
         $arrOption = array_merge ( [ 
@@ -790,7 +869,6 @@ class response {
                 'url' => '',
                 'time' => 3 
         ], $arrOption );
-        
         return $this->view ( $this->getOption ( 'action_fail' ), $arrOption );
     }
     
