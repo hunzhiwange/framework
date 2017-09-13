@@ -34,7 +34,7 @@ class bootstrap implements render {
     /**
      * 分页
      *
-     * @var \queryyetsimple\page\interfaces\page $objPage
+     * @var \queryyetsimple\page\interfaces\page
      */
     protected $objPage;
     
