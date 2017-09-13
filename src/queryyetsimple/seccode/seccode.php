@@ -136,15 +136,15 @@ class seccode implements interfaces_seccode {
      * 设置验证码
      *
      * @param mixed $mixCode            
-     * @param string $strAutoType            
      * @param boolean $booAutoCode            
+     * @param string $strAutoType            
      * @return $this
      */
-    public function display($mixCode = null, $strAutoType = self::ALPHA_UPPERCASE, $booAutoCode = true) {
+    public function display($mixCode = null, $booAutoCode = true, $strAutoType = self::ALPHA_UPPERCASE) {
         if (is_int ( $mixCode ) && $booAutoCode) {
             $this->autoCode ( $mixCode, $strAutoType );
         } else {
-            $strCode && $this->code ( $strCode );
+            $mixCode && $this->code ( $mixCode );
         }
         
         $resFoo = imagecreatefromstring ( $this->makeBackground () );
