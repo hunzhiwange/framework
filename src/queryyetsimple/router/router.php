@@ -1027,9 +1027,10 @@ class router {
      * @param string $sController            
      * @param string $sAction            
      * @param string $sApp            
+     * @param boolean $booForChild            
      * @return mixed|void
      */
-    public function doBind($sController = null, $sAction = null, $sApp = null) {
+    public function doBind($sController = null, $sAction = null, $sApp = null, $booForChild = false) {
         if (is_null ( $sController ))
             $sController = $this->controller ();
         
@@ -1054,13 +1055,17 @@ class router {
                         throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 不存在', $sController, $sAction ) );
                     }
                 } catch ( ReflectionException $oE ) {
-                    // 请求默认子方法器
-                    return call_user_func_array ( [ 
-                            $mixAction [0],
-                            'action' 
-                    ], [ 
-                            $mixAction [1] 
-                    ] );
+                    if ($booForChild === false) {
+                        // 请求默认子方法器
+                        return call_user_func_array ( [ 
+                                $mixAction [0],
+                                'action' 
+                        ], [ 
+                                $mixAction [1] 
+                        ] );
+                    } else {
+                        throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 不存在', $sController, $sAction ) );
+                    }
                 }
                 break;
             
