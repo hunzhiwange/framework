@@ -815,7 +815,7 @@ class select {
      * @return int
      */
     public function getCount($strField = '*', $sAlias = 'row_count', $bFlag = false) {
-        $arrRow = ( array ) $this->sql ( $bFlag, true )->count ( $strField, $sAlias )->get ();
+        $arrRow = ( array ) $this->sql ( $bFlag, true )->asDefault ()->count ( $strField, $sAlias )->get ();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -832,7 +832,7 @@ class select {
      * @return number
      */
     public function getAvg($strField, $sAlias = 'avg_value', $bFlag = false) {
-        $arrRow = ( array ) $this->sql ( $bFlag, true )->avg ( $strField, $sAlias )->get ();
+        $arrRow = ( array ) $this->sql ( $bFlag, true )->asDefault ()->avg ( $strField, $sAlias )->get ();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -849,7 +849,7 @@ class select {
      * @return number
      */
     public function getMax($strField, $sAlias = 'max_value', $bFlag = false) {
-        $arrRow = ( array ) $this->sql ( $bFlag, true )->max ( $strField, $sAlias )->get ();
+        $arrRow = ( array ) $this->sql ( $bFlag, true )->asDefault ()->max ( $strField, $sAlias )->get ();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -866,7 +866,7 @@ class select {
      * @return number
      */
     public function getMin($strField, $sAlias = 'min_value', $bFlag = false) {
-        $arrRow = ( array ) $this->sql ( $bFlag, true )->min ( $strField, $sAlias )->get ();
+        $arrRow = ( array ) $this->sql ( $bFlag, true )->asDefault ()->min ( $strField, $sAlias )->get ();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -883,7 +883,7 @@ class select {
      * @return number
      */
     public function getSum($strField, $sAlias = 'sum_value', $bFlag = false) {
-        $arrRow = ( array ) $this->sql ( $bFlag, true )->sum ( $strField, $sAlias )->get ();
+        $arrRow = ( array ) $this->sql ( $bFlag, true )->asDefault ()->sum ( $strField, $sAlias )->get ();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -2887,6 +2887,7 @@ class select {
                 }
                 break;
             }
+            
             if ($booOneImension === true) {
                 $arrArgs [0] = [ 
                         $arrArgs [0] 
@@ -2981,7 +2982,7 @@ class select {
             else {
                 
                 // 处理字符串 "null"
-                if (is_string ( $arrTemp )) {
+                if (is_scalar ( $arrTemp )) {
                     $arrTemp = ( array ) $arrTemp;
                 }
                 
