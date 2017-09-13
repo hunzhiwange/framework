@@ -23,7 +23,10 @@ queryphp;
  */
 return [ 
         'singleton@cookie' => [ 
-                'queryyetsimple\cookie\cookie',
+                [ 
+                        'queryyetsimple\cookie\cookie',
+                        'queryyetsimple\cookie\interfaces\cookie' 
+                ],
                 function ($oProject) {
                     return new queryyetsimple\cookie\cookie ( $oProject ['option']->get ( 'cookie\\' ) );
                 } 

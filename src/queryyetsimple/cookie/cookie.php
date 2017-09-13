@@ -15,7 +15,7 @@ namespace queryyetsimple\cookie;
 ##########################################################
 queryphp;
 
-use queryyetsimple\assert\assert;
+use Exception;
 use queryyetsimple\support\option;
 use queryyetsimple\cookie\interfaces\cookie as interfaces_cookie;
 
@@ -69,8 +69,9 @@ class cookie implements interfaces_cookie {
             $mixValue = json_encode ( $mixValue );
         }
         
-        assert::notNull ( $mixValue );
-        assert::scalar ( $mixValue );
+        if (! is_scalar ( $mixValue ) && ! is_null ( $mixValue )) {
+            throw new Exception ( 'Cookie value must be scalar or null' );
+        }
         
         $sName = $arrOption ['prefix'] . $sName;
         
