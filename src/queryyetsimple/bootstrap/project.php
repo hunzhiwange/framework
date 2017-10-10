@@ -246,7 +246,7 @@ class project extends container implements interfaces_project {
         if (! in_array ( $strType, $arrType )) {
             throw new Exception ( sprintf ( 'Application dir type %s not support', $strType ) );
         }
-        return $this->pathApplicationCurrent () . '/interfaces/' . $strType;
+        return $this->pathApplicationCurrent () . '/ui/' . $strType;
     }
     
     /**
@@ -575,13 +575,12 @@ class project extends container implements interfaces_project {
      * @return void
      */
     protected function loadAppOption($strCache = null) {
-        if ($strCache) {
-            $arrOption = ( array ) include $strCache;
+        if ($strCache && is_array ( $arrOption = include $strCache )) {
             $this->arrAppOption = $arrOption ['app'];
             $this->setEnvironmentVariables ( $arrOption ['env'] );
         } else {
             $this->setEnvironmentVariables ();
-            $this->arrAppOption = ( array ) include $this->pathCommon () . '/interfaces/option/app.php';
+            $this->arrAppOption = ( array ) include $this->pathCommon () . '/ui/option/app.php';
         }
     }
     

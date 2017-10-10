@@ -293,7 +293,7 @@ class application {
     protected function getI18nDir($sI18nSet) {
         $arrDir = [ 
                 dirname ( __DIR__ ) . '/bootstrap/i18n/' . $sI18nSet,
-                $this->objProject->pathCommon . '/interfaces/i18n/' . $sI18nSet,
+                $this->objProject->pathCommon . '/ui/i18n/' . $sI18nSet,
                 $this->objProject->pathApplicationDir ( 'i18n' ) . '/' . $sI18nSet 
         ];
         
@@ -339,8 +339,8 @@ class application {
         $arrDir = [ 
                 dirname ( __DIR__ ) . '/bootstrap/option' 
         ];
-        if (is_dir ( $this->objProject->pathCommon () . '/interfaces/option' ))
-            $arrDir [] = $this->objProject->pathCommon () . '/interfaces/option';
+        if (is_dir ( $this->objProject->pathCommon () . '/ui/option' ))
+            $arrDir [] = $this->objProject->pathCommon () . '/ui/option';
         $arrDir [] = $this->objProject->pathApplicationDir ( 'option' );
         return $arrDir;
     }
