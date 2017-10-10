@@ -41,7 +41,7 @@ interface tree {
      * @param int $nId            
      * @return array
      */
-    public function getChildsTree($nId = 0);
+    public function getChildrenTree($nId = 0);
     
     /**
      * 取得给定 ID 一级子树 ID
@@ -57,7 +57,7 @@ interface tree {
      * @param int $nId            
      * @return array
      */
-    public function getChilds($nId = 0);
+    public function getChildren($nId = 0);
     
     /**
      * 取得给定 ID 是否包含子树
@@ -68,29 +68,40 @@ interface tree {
     public function hasChild($nId);
     
     /**
+     * 验证是否存在子菜单
+     *
+     * @param int $intId            
+     * @param array $arrCheckChildren            
+     * @param boolean $booStrict            
+     * @return boolean
+     */
+    public function hasChildren($intId, array $arrCheckChildren = [], $booStrict = true);
+    
+    /**
      * 取得给定 ID 上级父级 ID
      *
      * @param int $nId            
+     * @param boolean $booWithItSelf            
      * @return array
      */
-    public function getParent($nId);
+    public function getParent($nId, $booWithItSelf = false);
     
     /**
      * 取得给定 ID 所有父级 ID
      *
      * @param int $nId            
+     * @param boolean $booWithItSelf            
      * @return array
      */
-    public function getParents($nId);
+    public function getParents($nId, $booWithItSelf = true);
     
     /**
-     * 不同级别附加前缀
+     * 判断级别
      *
      * @param int $nId            
-     * @param string $sPreStr            
      * @return string
      */
-    public function getLayer($nId, $sPreStr = '|-');
+    public function getLevel($nId);
     
     /**
      * 取得节点的值
