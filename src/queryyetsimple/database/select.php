@@ -41,7 +41,7 @@ class select {
      *
      * @var queryyetsimple\database\connect
      */
-    protected $objConnect = null;
+    protected $objConnect;
     
     /**
      * 绑定参数
@@ -250,7 +250,7 @@ class select {
      *
      * @var string
      */
-    protected $strInTimeCondition = null;
+    protected $strInTimeCondition;
     
     /**
      * 额外的查询扩展
@@ -347,7 +347,7 @@ class select {
      * @return mixed
      */
     public function select($mixData = null, $arrBind = [], $bFlag = false) {
-        if (! helper::isThese ( $mixData, [ 
+        if (! helper::varThese ( $mixData, [ 
                 'string',
                 'null',
                 'callback' 
@@ -394,7 +394,7 @@ class select {
      * @return int 最后插入ID
      */
     public function insert($mixData, $arrBind = [], $booReplace = false, $bFlag = false) {
-        if (! helper::isThese ( $mixData, [ 
+        if (! helper::varThese ( $mixData, [ 
                 'string',
                 'array' 
         ] )) {
@@ -516,7 +516,7 @@ class select {
      * @return int 影响记录
      */
     public function update($mixData, $arrBind = [], $bFlag = false) {
-        if (! helper::isThese ( $mixData, [ 
+        if (! helper::varThese ( $mixData, [ 
                 'string',
                 'array' 
         ] )) {
@@ -625,7 +625,7 @@ class select {
      * @return int 影响记录
      */
     public function delete($mixData = null, $arrBind = [], $bFlag = false) {
-        if (! helper::isThese ( $mixData, [ 
+        if (! helper::varThese ( $mixData, [ 
                 'string',
                 'null' 
         ] )) {
@@ -757,7 +757,7 @@ class select {
      * @return mixed
      */
     public function value($strField, $bFlag = false) {
-        $arrRow = ( array ) $this->sql ( $bFlag, true )->setColumns ( $strField )->getOne ();
+        $arrRow = $this->sql ( $bFlag, true )->asDefault ()->setColumns ( $strField )->getOne ();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -784,16 +784,16 @@ class select {
         if (is_string ( $strFieldKey )) {
             $arrField [] = $strFieldKey;
         }
-        
+
         // 解析结果
         $arrResult = [ ];
-        foreach ( ( array ) $this->sql ( $bFlag, true )->setColumns ( $arrField )->getAll () as $arrTemp ) {
+        foreach ( $this->sql ( $bFlag, true )->asDefault ()->setColumns ( $arrField )->getAll () as $arrTemp ) {
             if ($bFlag === true) {
                 $arrResult [] = $arrTemp;
                 continue;
             }
             
-            $arrTemp = ( array ) $arrTemp;
+            $arrTemp = $arrTemp;
             if (count ( $arrTemp ) == 1) {
                 $arrResult [] = reset ( $arrTemp );
             } else {
@@ -2801,6 +2801,8 @@ class select {
                     $arrSqlCond [] = $mixCond [0] . ' ' . strtoupper ( $mixCond [1] ) . ' ' . $mixCond [2] [0] . ' AND ' . $mixCond [2] [1];
                 } elseif (is_scalar ( $mixCond [2] )) {
                     $arrSqlCond [] = $mixCond [0] . ' ' . strtoupper ( $mixCond [1] ) . ' ' . $mixCond [2];
+                }elseif(is_null($mixCond [2])) {
+                    $arrSqlCond [] = $mixCond [0] . ' IS NULL';
                 }
             }
         }
@@ -2962,7 +2964,7 @@ class select {
                 if ($arrTemp instanceof select) {
                     $arrTemp = $arrTemp->makeSql ();
                 } elseif (is_callable ( $arrTemp )) {
-                    $objSelect = new self ( $this->objConnect );
+                    $objSelect = new static ( $this->objConnect );
                     $objSelect->setCurrentTable ( $this->getCurrentTable () );
                     $mixResultCallback = call_user_func_array ( $arrTemp, [ 
                             &$objSelect 
