@@ -121,7 +121,7 @@ class linkedlist extends SplDoublyLinkedList {
             return true;
         return call_user_func_array ( [ 
                 'queryyetsimple\support\helper',
-                'isThese' 
+                'varThese' 
         ], [ 
                 $mixValue,
                 $this->arrType 
