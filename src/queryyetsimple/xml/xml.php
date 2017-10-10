@@ -288,11 +288,7 @@ class xml {
     protected static function formatNode($sValue, $bHtmlOn = true) {
         if ($bHtmlOn)
             return sprintf ( '<![CDATA[%s]]>', $sValue );
-        elseelse
-            
-        
-        
-        
-        return $sValue;
+        else
+            return $sValue;
     }
 }
