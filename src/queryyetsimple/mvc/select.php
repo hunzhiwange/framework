@@ -18,8 +18,11 @@ queryphp;
 use Closure;
 use Exception;
 use queryyetsimple\support\helper;
+use queryyetsimple\support\string;
+use queryyetsimple\collection\collection;
 use queryyetsimple\mvc\exception\model_not_found;
 use queryyetsimple\database\select as database_select;
+use queryyetsimple\mvc\interfaces\model as interfaces_model;
 
 /**
  * 模型查询
@@ -46,6 +49,13 @@ class select {
     protected $objSelect;
     
     /**
+     * 关联预载入
+     *
+     * @var array
+     */
+    protected $arrPreLoad = [ ];
+    
+    /**
      * 构造函数
      *
      * @param \queryyetsimple\mvc\interfaces\model $objModel            
@@ -53,6 +63,46 @@ class select {
      */
     public function __construct($objModel) {
         $this->objModel = $objModel;
+    }
+    
+    /**
+     * 拦截一些别名和快捷方式
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return void|mixed
+     */
+    public function __call($sMethod, $arrArgs) {
+        if (method_exists ( $this->objSelect, $sMethod )) {
+            $mixResult = call_user_func_array ( [ 
+                    $this->objSelect,
+                    $sMethod 
+            ], $arrArgs );
+            
+            $mixResult = $this->preLoadResult ( $mixResult );
+            
+            return $mixResult;
+        }
+        
+        throw new Exception ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ) );
+    }
+    
+    /**
+     * 获取模型
+     *
+     * @return \queryyetsimple\mvc\interfaces\model
+     */
+    public function getModel($objModel) {
+        return $this->objModel;
+    }
+    
+    /**
+     * 占位符返回本对象
+     *
+     * @return $this
+     */
+    public function querySelelct() {
+        return $this;
     }
     
     /**
@@ -67,14 +117,38 @@ class select {
     }
     
     /**
-     * 拦截一些别名和快捷方式
+     * 添加预载入的关联
      *
-     * @param 方法名 $sMethod            
-     * @param 参数 $arrArgs            
-     * @return boolean
+     * @param mixed $mixRelation            
+     * @return $this
      */
-    public function __call($sMethod, $arrArgs) {
-        throw new Exception ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ) );
+    public function with($mixRelation) {
+        if (is_string ( $mixRelation )) {
+            $mixRelation = func_get_args ();
+        }
+        $this->arrPreLoad = array_merge ( $this->arrPreLoad, $this->parseWithRelation ( $mixRelation ) );
+        return $this;
+    }
+    
+    /**
+     * 尝试解析结果预载
+     *
+     * @param mixed $mixResult            
+     * @return mixed
+     */
+    public function preLoadResult($mixResult) {
+        list ( $mixResult, $strType ) = $this->conversionToModels ( $mixResult );
+        
+        if (is_array ( $mixResult )) {
+            $mixResult = $this->preLoadRelation ( $mixResult );
+            if ($strType == 'model') {
+                $mixResult = reset ( $mixResult );
+            } elseif ($strType == 'collection') {
+                $mixResult = new collection ( $mixResult );
+            }
+        }
+        
+        return $mixResult;
     }
     
     /**
@@ -374,6 +448,157 @@ class select {
         
         unset ( $objSelect, $arrArgs, $mixScope );
         return $this->objModel;
+    }
+    
+    /**
+     * 预载入模型
+     *
+     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @return array
+     */
+    protected function preLoadRelation(array $arrModel) {
+        foreach ( $this->arrPreLoad as $strName => $calCondition ) {
+            if (strpos ( $strName, '.' ) === false) {
+                $arrModel = $this->loadRelation ( $arrModel, $strName, $calCondition );
+            }
+        }
+        return $arrModel;
+    }
+    
+    /**
+     * 取得关联模型
+     *
+     * @param string $name            
+     * @return \queryyetsimple\mvc\relation\relation
+     */
+    protected function getRelation($strName) {
+        $objRelation = $this->objModel->$strName ();
+        
+        $arrNested = $this->nestedRelation ( $strName );
+        if (count ( $arrNested ) > 0) {
+            $objRelation->getSelect ()->with ( $arrNested );
+        }
+        
+        return $objRelation;
+    }
+    
+    /**
+     * 尝试取得嵌套关联
+     *
+     * @param string $strRelation            
+     * @return array
+     */
+    protected function nestedRelation($strRelation) {
+        $arrNested = [ ];
+        
+        foreach ( $this->arrPreLoad as $strName => $calCondition ) {
+            if ($this->isNested ( $strName, $strRelation )) {
+                $arrNested [substr ( $strName, strlen ( $strRelation . '.' ) )] = $calCondition;
+            }
+        }
+        
+        return $arrNested;
+    }
+    
+    /**
+     * 判断是否存在嵌套关联
+     *
+     * @param string $strName            
+     * @param string $strRelation            
+     * @return bool
+     */
+    protected function isNested($strName, $strRelation) {
+        return string::contains ( $strName, '.' ) && string::startsWith ( $strName, $strRelation . '.' );
+    }
+    
+    /**
+     * 格式化预载入关联
+     *
+     * @param array $arrRelation            
+     * @return array
+     */
+    protected function parseWithRelation(array $arrRelation) {
+        $arr = [ ];
+        
+        foreach ( $arrRelation as $mixName => $mixCondition ) {
+            if (is_numeric ( $mixName )) {
+                list ( $mixName, $mixCondition ) = [ 
+                        $mixCondition,
+                        function () {
+                        } 
+                ];
+            }
+            
+            $arr = $this->parseNestedWith ( $mixName, $arr );
+            $arr [$mixName] = $mixCondition;
+        }
+        
+        return $arr;
+    }
+    
+    /**
+     * 解析嵌套关联
+     *
+     * @param string $strName            
+     * @param array $arrResult            
+     * @return array
+     */
+    protected function parseNestedWith($strName, array $arrResult) {
+        $arrProgress = [ ];
+        
+        foreach ( explode ( '.', $strName ) as $strSegment ) {
+            $arrProgress [] = $strSegment;
+            if (! isset ( $arrResult [$strLast = implode ( '.', $arrProgress )] )) {
+                $arrResult [$strLast] = function () {
+                };
+            }
+        }
+        
+        return $arrResult;
+    }
+    
+    /**
+     * 转换结果到模型类型
+     *
+     * @param mixed $mixResult            
+     * @return array
+     */
+    protected function conversionToModels($mixResult) {
+        $strType = '';
+        
+        if ($mixResult instanceof collection) {
+            $arr = [ ];
+            foreach ( $mixResult as $objModel ) {
+                $arr [] = $objModel;
+            }
+            $mixResult = $arr;
+            $strType = 'collection';
+        } elseif ($mixResult instanceof interfaces_model) {
+            $mixResult = [ 
+                    $mixResult 
+            ];
+            $strType = 'model';
+        }
+        
+        return [ 
+                $mixResult,
+                $strType 
+        ];
+    }
+    
+    /**
+     * 关联数据设置到模型上
+     *
+     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param string $strName            
+     * @param callable $calCondition            
+     * @return array
+     */
+    protected function loadRelation(array $arrModel, $strName, callable $calCondition) {
+        $objRelation = $this->getRelation ( $strName );
+        $objRelation->preLoadCondition ( $arrModel );
+        call_user_func ( $calCondition, $objRelation );
+        return $objRelation->matchPreLoad ( $arrModel, $objRelation->getPreLoad (), $strName );
     }
     
     /**

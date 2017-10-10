@@ -1,0 +1,219 @@
+<?php
+// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+// ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\mvc\relation;
+
+<<<queryphp
+##########################################################
+#   ____                          ______  _   _ ______   #
+#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+#       \__   | \___ |_|    \__  || |    | | | || |      #
+#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+#                          |___ /  Since 2010.10.03      #
+##########################################################
+queryphp;
+
+use queryyetsimple\mvc\interfaces\model;
+use queryyetsimple\collection\collection;
+
+/**
+ * 关联模型基类
+ *
+ * @author Xiangmin Liu <635750556@qq.com>
+ * @package $$
+ * @since 2017.09.28
+ * @version 1.0
+ */
+abstract class relation {
+    
+    /**
+     * 查询对象
+     *
+     * @var \queryyetsimple\database\select
+     */
+    protected $objSelect;
+    
+    /**
+     * 关联目标模型
+     *
+     * @var \queryyetsimple\mvc\interfaces\model
+     */
+    protected $objTargetModel;
+    
+    /**
+     * 源模型
+     *
+     * @var \queryyetsimple\mvc\interfaces\model
+     */
+    protected $objSourceModel;
+    
+    /**
+     * 目标关联字段
+     *
+     * @var string
+     */
+    protected $strTargetKey;
+    
+    /**
+     * 源关联字段
+     *
+     * @var string
+     */
+    protected $strSourceKey;
+    
+    /**
+     * 是否初始化查询
+     *
+     * @var boolean
+     */
+    protected static $booRelationCondition = true;
+    
+    /**
+     * 构造函数
+     *
+     * @param \queryyetsimple\mvc\interfaces\model $objTargetModel            
+     * @param \queryyetsimple\mvc\interfaces\model $objSourceModel            
+     * @param string $strTargetKey            
+     * @param string $strSourceKey            
+     * @return void
+     */
+    public function __construct(model $objTargetModel, model $objSourceModel, $strTargetKey, $strSourceKey) {
+        $this->objTargetModel = $objTargetModel;
+        $this->objSourceModel = $objSourceModel;
+        $this->strTargetKey = $strTargetKey;
+        $this->strSourceKey = $strSourceKey;
+        
+        $this->getSelectFromModel ();
+        $this->addRelationCondition ();
+    }
+    
+    /**
+     * 返回查询
+     *
+     * @return \queryyetsimple\database\select
+     */
+    public function getSelect() {
+        return $this->objSelect;
+    }
+    
+    /**
+     * 取得预载入关联模型
+     *
+     * @return \queryyetsimple\collection\collection
+     */
+    public function getPreLoad() {
+        return $this->querySelelct ()->preLoadResult ( $this->getAll () );
+    }
+    
+    /**
+     * 取得关联目标模型
+     *
+     * @return \queryyetsimple\mvc\interfaces\model
+     */
+    public function getTargetModel() {
+        return $this->objTargetModel;
+    }
+    
+    /**
+     * 取得源模型
+     *
+     * @return \queryyetsimple\mvc\interfaces\model
+     */
+    public function getSourceModel() {
+        return $this->objSourceModel;
+    }
+    
+    /**
+     * 取得目标字段
+     *
+     * @return string
+     */
+    public function getTargetKey() {
+        return $this->strTargetKey;
+    }
+    
+    /**
+     * 取得源字段
+     *
+     * @return string
+     */
+    public function getSourceKey() {
+        return $this->strSourceKey;
+    }
+    
+    /**
+     * 返回模型的主键
+     *
+     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param string $strKey            
+     * @return array
+     */
+    protected function getModelKey(array $arrModel, $strKey = null) {
+        return array_unique ( array_values ( array_map ( function ($objModel) use($strKey) {
+            return $strKey ? $objModel->getProp ( $strKey ) : $objModel->getPrimaryKeyForQuery ();
+        }, $arrModel ) ) );
+    }
+    
+    /**
+     * 关联基础查询条件
+     *
+     * @return void
+     */
+    abstract public function addRelationCondition();
+    
+    /**
+     * 设置预载入关联查询条件
+     *
+     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @return void
+     */
+    abstract public function preLoadCondition(array $arrModel);
+    
+    /**
+     * 匹配关联查询数据到模型 has_many
+     *
+     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\collection\collection $objResult            
+     * @param string $strRelation            
+     * @return array
+     */
+    abstract public function matchPreLoad(array $arrModel, collection $objResult, $strRelation);
+    
+    /**
+     * 查询关联对象
+     *
+     * @return mixed
+     */
+    abstract public function sourceQuery();
+    
+    /**
+     * 从模型返回查询
+     *
+     * @return \queryyetsimple\database\select
+     */
+    protected function getSelectFromModel() {
+        $this->objSelect = $this->objTargetModel->getClassCollectionQuery ();
+    }
+    
+    /**
+     * 缺省方法
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
+     */
+    public function __call($sMethod, $arrArgs) {
+        $objSelect = call_user_func_array ( [ 
+                $this->objSelect,
+                $sMethod 
+        ], $arrArgs );
+        
+        if ($this->getSelect () === $objSelect) {
+            return $this;
+        }
+        
+        return $objSelect;
+    }
+}

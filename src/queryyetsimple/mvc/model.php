@@ -26,8 +26,13 @@ use queryyetsimple\support\string;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\infinity;
 use queryyetsimple\support\serialize;
+use queryyetsimple\mvc\relation\has_one;
 use queryyetsimple\support\flow_control;
+use queryyetsimple\mvc\relation\relation;
 use queryyetsimple\collection\collection;
+use queryyetsimple\mvc\relation\has_many;
+use queryyetsimple\mvc\relation\many_many;
+use queryyetsimple\mvc\relation\belongs_to;
 use queryyetsimple\event\interfaces\dispatch;
 use queryyetsimple\support\interfaces\jsonable;
 use queryyetsimple\support\interfaces\arrayable;
@@ -41,7 +46,7 @@ use queryyetsimple\mvc\interfaces\model as interfaces_model;
  * @since 2017.04.27
  * @version 1.0
  */
-class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayable, jsonable {
+abstract class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayable, jsonable {
     
     use serialize;
     use infinity {
@@ -247,6 +252,34 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     protected static $objDispatch;
     
     /**
+     * 缓存下划线到驼峰法命名属性
+     *
+     * @var array
+     */
+    protected static $arrCamelizeProp = [ ];
+    
+    /**
+     * 关联数据缓存
+     *
+     * @var array
+     */
+    protected $arrRelationProp = [ ];
+    
+    /**
+     * 模型字段
+     *
+     * @var array
+     */
+    protected $arrField;
+    
+    /**
+     * 模型主键字段
+     *
+     * @var array
+     */
+    protected $arrPrimaryKey;
+    
+    /**
      * 构造函数
      *
      * @param array|null $arrData            
@@ -255,6 +288,18 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      * @return void
      */
     public function __construct($arrData = null, $mixConnect = null, $strTable = null) {
+        if (! is_null ( $mixConnect )) {
+            $this->mixConnect = $mixConnect;
+        }
+        
+        if (! is_null ( $strTable )) {
+            $this->strTable = $strTable;
+        } else {
+            $this->parseTableByClass ();
+        }
+        
+        $this->initField ();
+        
         if (is_array ( $arrData ) && $arrData) {
             if ($this->arrConstructBlack) {
                 foreach ( $arrData as $strField => $mixValue ) {
@@ -266,14 +311,6 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             if ($arrData) {
                 $this->props ( $arrData );
             }
-        }
-        
-        if (! is_null ( $mixConnect )) {
-            $this->mixConnect = $mixConnect;
-        }
-        
-        if (! is_null ( $strTable )) {
-            $this->strTable = $strTable;
         }
     }
     
@@ -329,7 +366,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             return $this;
         
         if (is_array ( $arrData ) && $arrData) {
-            $this->propForces ( $arrData );
+            $this->forceProps ( $arrData );
         }
         
         // 表单自动填充
@@ -419,7 +456,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     public function primaryKey($booUpdateChange = false) {
         $arrPrimaryData = [ ];
         
-        $arrPrimaryKey = $this->meta ()->getPrimaryKey ();
+        $arrPrimaryKey = $this->getPrimaryKeyNameSource ();
         foreach ( $arrPrimaryKey as $sPrimaryKey ) {
             if (! isset ( $this->arrProp [$sPrimaryKey] )) {
                 continue;
@@ -464,7 +501,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
         
         $mixValue = $this->meta ()->fieldsProp ( $strProp, $mixValue );
         
-        if (is_null ( $mixValue ) && ($strCamelize = 'set' . ucwords ( string::camelize ( $strProp ) ) . 'Prop') && method_exists ( $this, $strCamelize )) {
+        if (is_null ( $mixValue ) && ($strCamelize = 'set' . $this->getCamelizeProp ( $strProp ) . 'Prop') && method_exists ( $this, $strCamelize )) {
             if (is_null ( ($mixValue = $this->$strCamelize ( $this->getProp ( $strProp ) )) ))
                 $mixValue = $this->getProp ( $strProp );
         } 
@@ -553,12 +590,20 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      * @return mixed
      */
     public function getProp($strPropName) {
-        if (! isset ( $this->arrProp [$strPropName] ))
-            $mixValue = null;
-        else
+        if (! isset ( $this->arrProp [$strPropName] )) {
+            if (method_exists ( $this, $strPropName )) {
+                return $this->loadRelationProp ( $strPropName );
+            } else {
+                if (! $this->hasField ( $strPropName )) {
+                    throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $this->getCalledClass (), $this->getTable (), $strPropName ) );
+                }
+                $mixValue = null;
+            }
+        } else {
             $mixValue = $this->arrProp [$strPropName];
+        }
         
-        if (($strCamelize = 'get' . ucwords ( string::camelize ( $strPropName ) ) . 'Prop') && method_exists ( $this, $strCamelize )) {
+        if (($strCamelize = 'get' . $this->getCamelizeProp ( $strPropName ) . 'Prop') && method_exists ( $this, $strCamelize )) {
             $mixValue = $this->$strCamelize ( $mixValue );
         }
         
@@ -566,6 +611,19 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             $mixValue = $this->conversionProp ( $strPropName, $mixValue );
         
         return $mixValue;
+    }
+    
+    /**
+     * 返回关联数据
+     *
+     * @param string $strPropName            
+     * @return mixed
+     */
+    public function loadRelationProp($strPropName) {
+        if ($this->hasRelationProp ( $strPropName ))
+            return $this->getRelationProp ( $strPropName );
+        
+        return $this->parseDataFromRelation ( $strPropName );
     }
     
     /**
@@ -591,6 +649,223 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             unset ( $this->arrProp [$sPropName] );
         }
         return $this;
+    }
+    
+    /**
+     * 取得所有关联缓存数据
+     *
+     * @return array
+     */
+    public function getRelationProps() {
+        return $this->arrRelationProp;
+    }
+    
+    /**
+     * 取得模型数据
+     *
+     * @param string $sPropName            
+     * @return mixed
+     */
+    public function getRelationProp($sPropName) {
+        return $this->hasRelationProp ( $sPropName ) ? $this->arrRelationProp [$sPropName] : null;
+    }
+    
+    /**
+     * 关联模型数据是否载入
+     *
+     * @param string $sPropName            
+     * @return bool
+     */
+    public function hasRelationProp($sPropName) {
+        return array_key_exists ( $sPropName, $this->arrRelationProp );
+    }
+    
+    /**
+     * 设置关联数据
+     *
+     * @param string $sPropName            
+     * @param mixed $mixValue            
+     * @return $this
+     */
+    public function setRelationProp($sPropName, $mixValue) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->arrRelationProp [$sPropName] = $mixValue;
+        return $this;
+    }
+    
+    /**
+     * 批量设置关联数据
+     *
+     * @param array $arrRelationProp            
+     * @return $this
+     */
+    public function setRelationProps(array $arrRelationProp) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->arrRelationProp = $arrRelationProp;
+        return $this;
+    }
+    
+    /**
+     * 预加载关联
+     *
+     * @param array|string $mixRelation            
+     * @return \queryyetsimple\mvc\select
+     */
+    public static function with($mixRelation) {
+        if (is_string ( $mixRelation )) {
+            $mixRelation = func_get_args ();
+        }
+        return (new static ())->getClassCollectionQuery ()->with ( $mixRelation );
+    }
+    
+    /**
+     * 一对一关联
+     *
+     * @param string $strRelatedModel            
+     * @param string $strTargetKey            
+     * @param string $strSourceKey            
+     * @return void|\queryyetsimple\mvc\relation\has_one
+     */
+    public function hasOne($strRelatedModel, $strTargetKey = null, $strSourceKey = null) {
+        $objModel = new $strRelatedModel ();
+        $strTargetKey = $strTargetKey ?  : $this->getTargetKey ();
+        $strSourceKey = $strSourceKey ?  : $this->getPrimaryKeyNameForQuery ();
+        
+        if (! $objModel->hasField ( $strTargetKey )) {
+            throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $strRelatedModel, $objModel->getTable (), $strTargetKey ) );
+        }
+        
+        if (! $this->hasField ( $strSourceKey )) {
+            throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $this->getCalledClass (), $this->getTable (), $strSourceKey ) );
+        }
+        
+        return new has_one ( $objModel, $this, $strTargetKey, $strSourceKey );
+    }
+    
+    /**
+     * 定义从属关系
+     *
+     * @param string $strRelatedModel            
+     * @param string $strTargetKey            
+     * @param string $strSourceKey            
+     * @return void|\queryyetsimple\mvc\relation\belongs_to
+     */
+    public function belongsTo($strRelatedModel, $strTargetKey = null, $strSourceKey = null) {
+        $objModel = new $strRelatedModel ();
+        
+        $strTargetKey = $strTargetKey ?  : $objModel->getPrimaryKeyNameForQuery ();
+        $strSourceKey = $strSourceKey ?  : $objModel->getTargetKey ();
+        
+        if (! $objModel->hasField ( $strTargetKey )) {
+            throw new Exception ( sprintf ( 'Model %s has no field %sModel %s database table %s has no field %s', $strRelatedModel, $objModel->getTable (), $strTargetKey ) );
+        }
+        
+        if (! $this->hasField ( $strSourceKey )) {
+            throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $this->getCalledClass (), $this->getTable (), $strSourceKey ) );
+        }
+        
+        return new belongs_to ( $objModel, $this, $strTargetKey, $strSourceKey );
+    }
+    
+    /**
+     * 一对多关联
+     *
+     * @param string $strRelatedModel            
+     * @param string $strTargetKey            
+     * @param string $strSourceKey            
+     * @return void|\queryyetsimple\mvc\relation\has_many
+     */
+    public function hasMany($strRelatedModel, $strTargetKey = null, $strSourceKey = null) {
+        $objModel = new $strRelatedModel ();
+        $strTargetKey = $strTargetKey ?  : $this->getTargetKey ();
+        $strSourceKey = $strSourceKey ?  : $this->getPrimaryKeyNameForQuery ();
+        
+        if (! $objModel->hasField ( $strTargetKey )) {
+            throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $strRelatedModel, $objModel->getTable (), $strTargetKey ) );
+        }
+        
+        if (! $this->hasField ( $strSourceKey )) {
+            throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $this->getCalledClass (), $this->getTable (), $strSourceKey ) );
+        }
+        
+        return new has_many ( $objModel, $this, $strTargetKey, $strSourceKey );
+    }
+    
+    /**
+     * 多对多关联
+     *
+     * @param string $strRelatedModel            
+     * @param string $strMiddleModel            
+     * @param string $strTargetKey            
+     * @param string $strSourceKey            
+     * @param string $strMiddleTargetKey            
+     * @param string $strMiddleSourceKey            
+     * @return void|\queryyetsimple\mvc\relation\has_many
+     */
+    public function manyMany($strRelatedModel, $strMiddleModel = null, $strTargetKey = null, $strSourceKey = null, $strMiddleTargetKey = null, $strMiddleSourceKey = null) {
+        $objModel = new $strRelatedModel ();
+        
+        $strMiddleModel = $strMiddleModel ?  : $this->getMiddleModel ( $objModel );
+        $objMiddleModel = new $strMiddleModel ();
+        
+        $strTargetKey = $strTargetKey ?  : $objModel->getPrimaryKeyNameForQuery ();
+        $strMiddleTargetKey = $strMiddleTargetKey ?  : $objModel->getTargetKey ();
+        
+        $strSourceKey = $strSourceKey ?  : $this->getPrimaryKeyNameForQuery ();
+        $strMiddleSourceKey = $strMiddleSourceKey ?  : $this->getTargetKey ();
+        
+        if (! $objModel->hasField ( $strTargetKey )) {
+            throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $strRelatedModel, $objModel->getTable (), $strTargetKey ) );
+        }
+        
+        if (! $objMiddleModel->hasField ( $strMiddleTargetKey )) {
+            throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $strMiddleModel, $objMiddleModel->getTable (), $strMiddleTargetKey ) );
+        }
+        
+        if (! $this->hasField ( $strSourceKey )) {
+            throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $this->getCalledClass (), $this->getTable (), $strSourceKey ) );
+        }
+        
+        if (! $objMiddleModel->hasField ( $strMiddleSourceKey )) {
+            throw new Exception ( sprintf ( 'Model %s database table %s has no field %s', $strMiddleModel, $objMiddleModel->getTable (), $strMiddleSourceKey ) );
+        }
+        
+        return new many_many ( $objModel, $this, $objMiddleModel, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey );
+    }
+    
+    /**
+     * 中间表带命名空间完整名字
+     *
+     * @param \queryyetsimple\mvc\interfaces\model $objRelatedModel            
+     * @return string
+     */
+    public function getMiddleModel($objRelatedModel) {
+        $arrClass = explode ( '\\', $this->getCalledClass () );
+        array_pop ( $arrClass );
+        $arrClass [] = $this->getMiddleTable ( $objRelatedModel );
+        
+        return implode ( '\\', $arrClass );
+    }
+    
+    /**
+     * 取得中间表名字
+     *
+     * @param \queryyetsimple\mvc\interfaces\model $objRelatedModel            
+     * @return string
+     */
+    public function getMiddleTable($objRelatedModel) {
+        return $this->getTable () . '_' . $objRelatedModel->getTable ();
+    }
+    
+    /**
+     * 返回惯性关联 ID
+     *
+     * @return string
+     */
+    public function getTargetKey() {
+        return $this->getTable () . '_' . $this->getPrimaryKeyNameForQuery ();
     }
     
     /**
@@ -925,10 +1200,12 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     /**
      * 返回主键字段
      *
-     * @return array|null
+     * @return array
      */
     public function getPrimaryKeyNameSource() {
-        return $this->meta ()->getPrimaryKey ();
+        if (! is_null ( $this->arrPrimaryKey ))
+            return $this->arrPrimaryKey;
+        return $this->arrPrimaryKey = $this->meta ()->getPrimaryKey () ?  : [ ];
     }
     
     /**
@@ -936,17 +1213,8 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      *
      * @return array
      */
-    public function getPropField() {
-        return $this->meta ()->getPropField ();
-    }
-    
-    /**
-     * 返回字段映射属性
-     *
-     * @return array
-     */
-    public function getFieldProp() {
-        return $this->meta ()->getFieldProp ();
+    public function getField() {
+        return $this->arrField;
     }
     
     /**
@@ -956,7 +1224,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      * @return array
      */
     public function hasField($strField) {
-        return in_array ( $strField, $this->getPropField () );
+        return in_array ( $strField, $this->getField () );
     }
     
     /**
@@ -970,6 +1238,17 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
         if (! is_string ( $mixKey ))
             throw new Exception ( sprintf ( 'Model %s do not have primary key or composite id not supported', $this->getCalledClass () ) );
         return $mixKey;
+    }
+    
+    /**
+     * 返回供查询的主键字段值
+     * 复合主键或者没有主键直接抛出异常
+     *
+     * @return mixed
+     */
+    public function getPrimaryKeyForQuery() {
+        $this->getPrimaryKeyNameForQuery ();
+        return $this->primaryKey ();
     }
     
     /**
@@ -1187,7 +1466,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      * @return array
      */
     public function toArray() {
-        if (! empty ( $this->arrHidden )) {
+        if (! empty ( $this->arrVisible )) {
             $arrProp = array_intersect_key ( $this->arrProp, array_flip ( $this->arrVisible ) );
         } elseif (! empty ( $this->arrHidden )) {
             $arrProp = array_diff_key ( $this->arrProp, array_flip ( $this->arrHidden ) );
@@ -1454,12 +1733,29 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      * @return Meta
      */
     public function meta() {
+        return meta::instance ( $this->strTable, $this->mixConnect );
+    }
+    
+    /**
+     * 初始化属性映射字段
+     *
+     * @return void
+     */
+    protected function initField() {
+        $this->arrField = $this->meta ()->getPropField ();
+    }
+    
+    /**
+     * 分析默认模型表
+     *
+     * @return string
+     */
+    protected function parseTableByClass() {
         if (! $this->strTable) {
             $strTable = $this->getCalledClass ();
             $strTable = explode ( '\\', $strTable );
             $this->strTable = array_pop ( $strTable );
         }
-        return meta::instance ( $this->strTable, $this->mixConnect );
     }
     
     /**
@@ -1616,6 +1912,20 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
             }
             $this->forceProp ( $mixKey, $mixValue );
         }
+    }
+    
+    /**
+     * 从关联中读取数据
+     *
+     * @param string $strPropName            
+     * @return mixed
+     */
+    protected function parseDataFromRelation($strPropName) {
+        if (! ($oRelation = $this->$strPropName ()) instanceof relation) {
+            throw new Exception ( sprintf ( 'Relation prop must return a type of %s', 'queryyetsimple\mvc\relation\relation' ) );
+        }
+        
+        return $this->arrRelationProp [$strPropName] = $oRelation->sourceQuery ();
     }
     
     /**
@@ -1929,6 +2239,18 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
     }
     
     /**
+     * 返回下划线式命名
+     *
+     * @param string $strProp            
+     * @return string
+     */
+    protected function getCamelizeProp($strProp) {
+        if (isset ( static::$arrCamelizeProp [$strProp] ))
+            return static::$arrCamelizeProp [$strProp];
+        return static::$arrCamelizeProp [$strProp] = ucwords ( string::camelize ( $strProp ) );
+    }
+    
+    /**
      * 魔术方法获取
      *
      * @param string $sPropName            
@@ -2005,7 +2327,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      *
      * @param string $sMethod            
      * @param array $arrArgs            
-     * @return boolean
+     * @return mixed
      */
     public function __call($sMethod, $arrArgs) {
         if ($this->placeholderFlowControl ( $sMethod )) {
@@ -2049,7 +2371,7 @@ class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayabl
      *
      * @param string $sMethod            
      * @param array $arrArgs            
-     * @return boolean
+     * @return mixed
      */
     public static function __callStatic($sMethod, $arrArgs) {
         return call_user_func_array ( [ 
