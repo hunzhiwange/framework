@@ -15,6 +15,9 @@ namespace queryyetsimple\bootstrap\runtime;
 ##########################################################
 queryphp;
 
+use Closure;
+use ReflectionClass;
+use ReflectionMethod;
 use Exception as Exceptions;
 use queryyetsimple\debug\dump;
 use queryyetsimple\filesystem\fso;
@@ -56,7 +59,8 @@ class exception extends message {
      */
     public function run() {
         $this->log ( $this->strMessage );
-        $this->toResponse ( $this->format ( $this->objException ) );
+        
+        $this->toResponse ( $this->oProject ['option'] ['default_response'] == 'api' ? $this->formatForApi ( $this->objException ) : $this->format ( $this->objException ) );
     }
     
     /**
@@ -68,6 +72,10 @@ class exception extends message {
     protected function errorMessage($mixError) {
         if (! is_array ( $mixError )) {
             $mixError = ( array ) $mixError;
+        }
+        
+        if ($this->oProject ['option'] ['default_response'] == 'api') {
+            return $mixError;
         }
         
         // 否则定向到错误页面
@@ -125,7 +133,7 @@ class exception extends message {
                         
                         // 详细参数值
                         ob_start ();
-                        dump::varDump ( $mixArgsVal );
+                        dump::varDump ( $this->formatArgs ( $mixArgsVal ) );
                         $sArgsInfoDetail .= '<div class="queryphp-message-argstitle">Args ' . ($intArgsKey + 1) . '</div><div class="queryphp-message-args">' . ob_get_contents () . '</div>';
                         ob_end_clean ();
                     }
@@ -154,5 +162,142 @@ class exception extends message {
         $arrError ['excetion_type'] = get_class ( $oException );
         
         return $arrError;
+    }
+    
+    /**
+     * 格式化消息 API
+     *
+     * @param object $oException            
+     * @return array
+     */
+    protected function formatForApi($oException) {
+        // 返回消息
+        $arrError = [ ];
+        
+        // 反转一下
+        $arrTrace = array_reverse ( $oException->getTrace () );
+        
+        // 调试消息
+        $sTraceInfo = '';
+        if ($this->oProject ['option'] ['app_debug']) {
+            foreach ( $arrTrace as $intKey => &$arrVal ) {
+                // 参数处理
+                $arrVal ['class'] = isset ( $arrVal ['class'] ) ? $arrVal ['class'] : '';
+                $arrVal ['type'] = isset ( $arrVal ['type'] ) ? $arrVal ['type'] : '';
+                $arrVal ['function'] = isset ( $arrVal ['function'] ) ? $arrVal ['function'] : '';
+                $arrVal ['file'] = isset ( $arrVal ['file'] ) ? fso::tidyPathLinux ( $arrVal ['file'] ) : '';
+                $arrVal ['line'] = isset ( $arrVal ['line'] ) ? $arrVal ['line'] : '';
+                $arrVal ['args'] = isset ( $arrVal ['args'] ) ? $arrVal ['args'] : '';
+                
+                // 参数格式化组装
+                if (is_array ( $arrVal ['args'] )) {
+                    foreach ( $arrVal ['args'] as $intArgsKey => $mixArgsVal ) {
+                        $arrVal ['args'] [$intArgsKey] = is_scalar ( $mixArgsVal ) ? strip_tags ( var_export ( $mixArgsVal, true ) ) : gettype ( $mixArgsVal );
+                    }
+                }
+            }
+            $arrError ['trace'] = $arrTrace;
+        }
+        
+        // 调试消息
+        $arrError ['message'] = $oException->getMessage ();
+        $arrError ['type'] = isset ( $arrVal ['type'] ) ? $arrVal ['type'] : '';
+        $arrError ['class'] = isset ( $arrTrace ['0'] ['class'] ) ? $arrTrace ['0'] ['class'] : '';
+        $arrError ['code'] = $oException->getCode ();
+        $arrError ['function'] = isset ( $arrTrace ['0'] ['function'] ) ? $arrTrace ['0'] ['function'] : '';
+        $arrError ['line'] = $oException->getLine ();
+        $arrError ['excetion_type'] = get_class ( $oException );
+        
+        return $arrError;
+    }
+    
+    /**
+     * 格式化参数
+     *
+     * @param mixed $mixArgsVal            
+     * @return mixed
+     */
+    protected function formatArgs($mixArgsVal) {
+        if (is_callable ( $mixArgsVal )) {
+            if (is_array ( $mixArgsVal ) && is_object ( $mixArgsVal [0] )) {
+                $mixArgsVal [0] = $this->formatObject ( $mixArgsVal [0] );
+            } elseif ($mixArgsVal instanceof Closure) {
+                $mixArgsVal = 'Closure';
+            }
+            
+            return $mixArgsVal;
+        } elseif (is_object ( $mixArgsVal )) {
+            return $this->formatObject ( $mixArgsVal );
+        } else {
+            return $mixArgsVal;
+        }
+    }
+    
+    /**
+     * 格式化对象
+     *
+     * @param object $obj            
+     * @return string
+     */
+    protected function formatObject($obj) {
+        $objReflectionClass = new ReflectionClass ( $obj );
+        
+        $strDes = [ ];
+        $strDes [] = 'class ' . get_class ( $obj ) . ' {';
+        
+        foreach ( $objReflectionClass->getProperties () as $oProperty ) {
+            $arrTemp = [ 
+                    '    ' 
+            ];
+            
+            if ($oProperty->isPrivate ()) {
+                $arrTemp [] = 'private';
+            } elseif ($oProperty->isProtected ()) {
+                $arrTemp [] = 'protected';
+            } else {
+                $arrTemp [] = 'public';
+            }
+            
+            if ($oProperty->isStatic ()) {
+                $arrTemp [] = 'static';
+            }
+            
+            $arrTemp [] = '$' . $oProperty->getName () . ';';
+            $strDes [] = implode ( ' ', $arrTemp );
+        }
+        
+        foreach ( $objReflectionClass->getMethods () as $oMethod ) {
+            $arrTemp = [ 
+                    '    ' 
+            ];
+            
+            if ($oMethod->isPrivate ()) {
+                $arrTemp [] = 'private';
+            } elseif ($oMethod->isProtected ()) {
+                $arrTemp [] = 'protected';
+            } else {
+                $arrTemp [] = 'public';
+            }
+            
+            if ($oMethod->isStatic ()) {
+                $arrTemp [] = 'static ';
+            }
+            
+            $arrTemp [] = 'function ' . $oMethod->getName () . '(';
+            
+            $arrArgTemp = [ ];
+            $objReflection = new ReflectionMethod ( $obj, $oMethod->getName () );
+            foreach ( $objReflection->getParameters () as $oArg ) {
+                $arrArgTemp [] = '$' . $oArg->getName ();
+            }
+            
+            $arrTemp [] = implode ( ', ', $arrArgTemp );
+            $arrTemp [] = ');';
+            $strDes [] = implode ( ' ', $arrTemp );
+        }
+        
+        $strDes [] = '}';
+        
+        return PHP_EOL . implode ( PHP_EOL, $strDes ) . PHP_EOL;
     }
 }

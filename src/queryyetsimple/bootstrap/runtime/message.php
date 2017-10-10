@@ -86,22 +86,26 @@ abstract class message {
             return $this->objException->getResponse ()->output ();
         }
         
-        $intLevel = ob_get_level ();
-        ob_start ();
-        
-        try {
-            $this->errorMessage ( $sMessage );
-        } 
+        if ($this->oProject ['option'] ['default_response'] == 'api') {
+            $strContent = $this->errorMessage ( $sMessage );
+        } else {
+            $intLevel = ob_get_level ();
+            ob_start ();
+            
+            try {
+                $this->errorMessage ( $sMessage );
+            } 
 
-        catch ( Exceptions $oE ) {
-            while ( ob_get_level () > $intLevel ) {
-                ob_end_clean ();
+            catch ( Exceptions $oE ) {
+                while ( ob_get_level () > $intLevel ) {
+                    ob_end_clean ();
+                }
+                
+                throw $oE;
             }
             
-            throw $oE;
+            $strContent = ob_get_clean ();
         }
-        
-        $strContent = ob_get_clean ();
         
         $booStatusCode = property_exists ( $this, 'objException' ) && method_exists ( $this->objException, 'statusCode' );
         
