@@ -20,6 +20,7 @@ use ArrayAccess;
 use ReflectionClass;
 use ReflectionMethod;
 use ReflectionFunction;
+use ReflectionException;
 use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\support\interfaces\container as interfaces_container;
@@ -123,7 +124,7 @@ class container implements ArrayAccess, interfaces_container {
      * @return void
      */
     public function instance($mixFactoryName, $mixFactory = null) {
-        if (! helper::isThese ( $mixFactoryName, [ 
+        if (! helper::varThese ( $mixFactoryName, [ 
                 'scalar',
                 'array' 
         ] )) {
@@ -149,7 +150,7 @@ class container implements ArrayAccess, interfaces_container {
      * @return void
      */
     public function singleton($mixFactoryName, $mixFactory = null) {
-        if (! helper::isThese ( $mixFactoryName, [ 
+        if (! helper::varThese ( $mixFactoryName, [ 
                 'scalar',
                 'array' 
         ] )) {
@@ -415,30 +416,35 @@ class container implements ArrayAccess, interfaces_container {
         
         foreach ( $arrParameter as $objParameter ) {
             $strName = $objParameter->name;
-            if (($objParameterClass = $objParameter->getClass ()) && $objParameterClass instanceof ReflectionClass && ($objParameterClass = $objParameterClass->getName ())) {
-                // 接口绑定实现
-                if (($objParameterMake = $this->make ( $objParameterClass )) !== false) {
-                    // 实例对象
-                    if (is_object ( $objParameterMake )) {
-                        $arrResult ['args'] [$strName] = $objParameterMake;
-                        $booFindClass = true;
-                    }                    
-
+            
+            try {
+                if (($objParameterClass = $objParameter->getClass ()) && $objParameterClass instanceof ReflectionClass && ($objParameterClass = $objParameterClass->getName ())) {
                     // 接口绑定实现
-                    elseif (class_exists ( $objParameterMake )) {
-                        $arrResult ['args'] [$strName] = $this->make ( $objParameterMake );
+                    if (($objParameterMake = $this->make ( $objParameterClass )) !== false) {
+                        // 实例对象
+                        if (is_object ( $objParameterMake )) {
+                            $arrResult ['args'] [$strName] = $objParameterMake;
+                            $booFindClass = true;
+                        }                        
+
+                        // 接口绑定实现
+                        elseif (class_exists ( $objParameterMake )) {
+                            $arrResult ['args'] [$strName] = $this->make ( $objParameterMake );
+                            $booFindClass = true;
+                        }
+                    } elseif (class_exists ( $objParameterClass )) {
+                        $arrResult ['args'] [$strName] = $this->make ( $objParameterClass );
                         $booFindClass = true;
+                    } else {
+                        throw new InvalidArgumentException ( sprintf ( 'Class or interface %s is not register in container', $objParameterClass ) );
                     }
-                } elseif (class_exists ( $objParameterClass )) {
-                    $arrResult ['args'] [$strName] = $this->make ( $objParameterClass );
-                    $booFindClass = true;
+                } elseif ($objParameter->isDefaultValueAvailable ()) {
+                    $arrResult ['args'] [$strName] = $objParameter->getDefaultValue ();
                 } else {
-                    throw new InvalidArgumentException ( sprintf ( 'Class or interface %s is not register in container', $objParameterClass ) );
+                    $arrResult ['args'] [$strName] = '';
                 }
-            } elseif ($objParameter->isDefaultValueAvailable ()) {
-                $arrResult ['args'] [$strName] = $objParameter->getDefaultValue ();
-            } else {
-                $arrResult ['args'] [$strName] = '';
+            } catch ( ReflectionException $oE ) {
+                throw new InvalidArgumentException ( $oE->getMessage () );
             }
         }
         
