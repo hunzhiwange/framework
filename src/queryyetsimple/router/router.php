@@ -26,6 +26,8 @@ use queryyetsimple\support\option;
 use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\infinity;
+use queryyetsimple\mvc\interfaces\action;
+use queryyetsimple\mvc\interfaces\controller;
 use queryyetsimple\pipeline\interfaces\pipeline;
 use queryyetsimple\support\interfaces\container;
 
@@ -237,7 +239,8 @@ class router {
             'args_regex' => [ ],
             'args_strict' => false,
             'middleware_strict' => false,
-            'method_strict' => false 
+            'method_strict' => false,
+            'controller_dir' => 'app/controller' 
     ];
     
     /**
@@ -978,7 +981,7 @@ class router {
                     break;
                 
                 // 如果为方法则注册为方法
-                case is_object ( $mixBind ) && (method_exists ( $mixBind, 'run' ) || helper::isKindOf ( $mixBind, 'queryyetsimple\mvc\action' )) :
+                case is_object ( $mixBind ) && (method_exists ( $mixBind, 'run' ) || $mixBind instanceof action) :
                     return $this->arrBinds [$sBindName] = [ 
                             $mixBind,
                             'run' 
@@ -986,7 +989,7 @@ class router {
                     break;
                 
                 // 如果为控制器实例，注册为回调
-                case helper::isKindOf ( $mixBind, 'queryyetsimple\mvc\controller' ) :
+                case $mixBind instanceof controller :
                 // 实例回调
                 case is_object ( $mixBind ) :
                 // 静态类回调
@@ -1046,7 +1049,7 @@ class router {
         
         switch (true) {
             // 判断是否为控制器回调
-            case is_array ( $mixAction ) && isset ( $mixAction [1] ) && helper::isKindOf ( $mixAction [0], 'queryyetsimple\mvc\controller' ) :
+            case is_array ( $mixAction ) && isset ( $mixAction [1] ) && $mixAction [0] instanceof controller :
                 try {
                     $objClass = new ReflectionMethod ( $mixAction [0], $mixAction [1] );
                     if ($objClass->isPublic () && ! $objClass->isStatic ()) {
@@ -1075,7 +1078,7 @@ class router {
                 break;
             
             // 如果为方法则注册为方法
-            case helper::isKindOf ( $mixAction, 'queryyetsimple\mvc\action' ) :
+            case $mixAction instanceof action :
             case is_object ( $mixAction ) :
                 if (method_exists ( $mixAction, 'run' )) {
                     // 注册方法
@@ -1563,8 +1566,8 @@ class router {
      *
      * @return boolean
      */
-    protected function checkOpen() {
-        return $this->getOption ( 'router_cache' ) && $this->strCachePath;
+    public function checkOpen() {
+        // return $this->getOption ( 'router_cache' ) && $this->strCachePath;
     }
     
     /**
@@ -1858,14 +1861,14 @@ class router {
         }
         
         // 尝试读取默认控制器
-        $sControllerClass = '\\' . $sApp . '\\application\\controller\\' . $sController;
+        $sControllerClass = '\\' . $sApp . '\\' . $this->getOption ( 'controller_dir' ) . '\\' . $sController;
         $booFindController = false;
         if (class_exists ( $sControllerClass )) {
             $booFindController = true;
         }
         
         // 尝试直接读取方法类
-        $sActionClass = '\\' . $sApp . '\\application\\controller\\' . $sController . '\\' . $sAction;
+        $sActionClass = '\\' . $sApp . '\\' . $this->getOption ( 'controller_dir' ) . '\\' . $sController . '\\' . $sAction;
         if (class_exists ( $sActionClass )) {
             return [ 
                     $this->objContainer->make ( $sActionClass, $this->arrVariable )->setController ( $this->objContainer->make ( $sControllerClass, $this->arrVariable )->setView ( $this->objContainer ['view'] )->setRouter ( $this ) ),
