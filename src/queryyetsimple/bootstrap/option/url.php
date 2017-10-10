@@ -176,5 +176,15 @@ return [
          * 是否启用严格 HTTP 方法匹配模式,使用启用严格匹配，参数匹配正则结尾会加入 $ 标志
          * see \queryyetsimple\router\router::getMethod
          */
-        'method_strict' => false 
+        'method_strict' => false,
+        
+        /**
+         * ---------------------------------------------------------------
+         * 模板控制器目录
+         * ---------------------------------------------------------------
+         *
+         * 系统指定的模板控制器目录，建议不用更改
+         * see \queryyetsimple\router\router::parseDefaultBind
+         */
+        'controller_dir' => 'app\controller' 
 ]; 
