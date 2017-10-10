@@ -196,7 +196,7 @@ class helper {
                 { // 数组
                     if (! empty ( $sType [1] )) {
                         $sType [1] = explode ( ',', $sType [1] );
-                        return static::checkArray ( $mixVar, $sType [1] );
+                        return static::varArray ( $mixVar, $sType [1] );
                     } else {
                         return is_array ( $mixVar );
                     }
@@ -207,31 +207,9 @@ class helper {
                 return ($mixVar === null);
             case 'callback' : // 回调函数
                 return is_callable ( $mixVar, false );
-            default : // 类
-                return static::isKindOf ( $mixVar, implode ( ':', $sType ) );
-        }
-    }
-    
-    /**
-     * 验证是否为同一回调
-     *
-     * @param callback $calA            
-     * @param callback $calkB            
-     * @return boolean
-     */
-    public static function isSameCallback($calA, $calB) {
-        if (! is_callable ( $calA ) || is_callable ( $calB )) {
-            return false;
-        }
-        
-        if (is_array ( $calA )) {
-            if (is_array ( $calB )) {
-                return ($calA [0] === $calB [0]) and (strtolower ( $calA [1] ) === strtolower ( $calB [1] ));
-            } else {
-                return false;
-            }
-        } else {
-            return strtolower ( $calA ) === strtolower ( $calB );
+            default : // 类或者接口检验
+                $sType = implode ( ':', $sType );
+                return $mixVar instanceof $sType;
         }
     }
     
@@ -242,8 +220,8 @@ class helper {
      * @param mixed $mixTypes            
      * @return boolean
      */
-    public static function isThese($mixVar, $mixTypes) {
-        if (! static::varType ( $mixTypes, 'string' ) && ! static::checkArray ( $mixTypes, [ 
+    public static function varThese($mixVar, $mixTypes) {
+        if (! static::varType ( $mixTypes, 'string' ) && ! static::varArray ( $mixTypes, [ 
                 'string' 
         ] )) {
             throw new InvalidArgumentException ( __ ( '参数必须为 string 或 各项元素为 string 的数组' ) );
@@ -263,97 +241,13 @@ class helper {
     }
     
     /**
-     * 检查一个对象实例或者类名是否继承至接口或者类
-     *
-     * @param mixed $mixSubClass            
-     * @param string $sBaseClass            
-     * @return boolean
-     */
-    public static function isKindOf($mixSubClass, $sBaseClass) {
-        if (interface_exists ( $sBaseClass )) { // 接口
-            return static::isImplementedTo ( $mixSubClass, $sBaseClass );
-        } else { // 类
-            if (is_object ( $mixSubClass )) { // 统一类名,如果不是，返回false
-                $mixSubClass = get_class ( $mixSubClass );
-            } elseif (! is_string ( $mixSubClass )) {
-                return false;
-            }
-            
-            if ($mixSubClass == $sBaseClass) { // 子类名 即为父类名
-                return true;
-            }
-            
-            $sParClass = get_parent_class ( $mixSubClass ); // 递归检查
-            if (! $sParClass) {
-                return false;
-            }
-            
-            return static::isKindOf ( $sParClass, $sBaseClass );
-        }
-    }
-    
-    /**
-     * 检查对象实例或者类名是否继承至接口
-     *
-     * @param mixed $mixClass            
-     * @param string $sInterface            
-     * @param string $bStrictly            
-     * @return boolean
-     */
-    public static function isImplementedTo($mixClass, $sInterface, $bStrictly = false) {
-        if (is_object ( $mixClass )) { // 尝试获取类名，否则返回false
-            $mixClass = get_class ( $mixClass );
-            if (! is_string ( $mixClass )) { // 类型检查
-                return false;
-            }
-        } elseif (! is_string ( $mixClass )) {
-            return false;
-        }
-        
-        if (! class_exists ( $mixClass ) || ! interface_exists ( $sInterface )) { // 检查类和接口是否都有效
-            return false;
-        }
-        
-        // 建立反射
-        $oReflectionClass = new ReflectionClass ( $mixClass );
-        $arrInterfaceRefs = $oReflectionClass->getInterfaces ();
-        foreach ( $arrInterfaceRefs as $oInterfaceRef ) {
-            if ($oInterfaceRef->getName () != $sInterface) {
-                continue;
-            }
-            
-            if (! $bStrictly) { // 找到 匹配的 接口
-                return true;
-            }
-            
-            // 依次检查接口中的每个方法是否实现
-            $arrInterfaceFuncs = get_class_methods ( $sInterface );
-            foreach ( $arrInterfaceFuncs as $sFuncName ) {
-                $sReflectionMethod = $oReflectionClass->getMethod ( $sFuncName );
-                if ($sReflectionMethod->isAbstract ()) { // 发现尚为抽象的方法
-                    return false;
-                }
-            }
-            
-            return true;
-        }
-        
-        // 递归检查父类
-        if (($sParName = get_parent_class ( $mixClass )) !== false) {
-            return static::isImplementedTo ( $sParName, $sInterface, $bStrictly );
-        } else {
-            return false;
-        }
-    }
-    
-    /**
      * 验证数组中的每一项格式化是否正确
      *
      * @param array $arrArray            
      * @param array $arrTypes            
      * @return boolean
      */
-    public static function checkArray($arrArray, array $arrTypes) {
+    public static function varArray($arrArray, array $arrTypes) {
         if (! is_array ( $arrArray )) { // 不是数组直接返回
             return false;
         }
