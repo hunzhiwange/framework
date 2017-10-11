@@ -20,7 +20,7 @@ use Swift_Message;
 use Swift_Attachment;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\assert\assert;
+use queryyetsimple\support\assert;
 use queryyetsimple\support\option;
 use queryyetsimple\mvc\interfaces\view;
 use queryyetsimple\support\flow_control;

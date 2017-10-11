@@ -16,7 +16,7 @@ namespace queryyetsimple\log;
 queryphp;
 
 use RuntimeException;
-use queryyetsimple\assert\assert;
+use queryyetsimple\support\assert;
 use queryyetsimple\support\option;
 use queryyetsimple\log\interfaces\connect;
 use queryyetsimple\support\interfaces\jsonable;

@@ -18,7 +18,7 @@ queryphp;
 use queryyetsimple\support\psr4;
 use queryyetsimple\debug\console;
 use queryyetsimple\http\response;
-use queryyetsimple\assert\assert;
+use queryyetsimple\support\assert;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\i18n\tool as i18n_tool;
 use queryyetsimple\option\tool as option_tool;

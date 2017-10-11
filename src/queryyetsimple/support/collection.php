@@ -21,7 +21,6 @@ use ArrayAccess;
 use JsonSerializable;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\assert\assert;
 use queryyetsimple\support\interfaces\jsonable;
 use queryyetsimple\support\interfaces\arrayable;
 

@@ -3,7 +3,6 @@
 modify this file ../.git/config add alias,then using git foobar to commit your subtree repository
 
 [alias]
-    assert = subtree push --prefix=src/queryyetsimple/assert git@github.com:queryyetsimple/assert.git master
     auth = subtree push --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
     cache = subtree push --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
     console = subtree push --prefix=src/queryyetsimple/console git@github.com:queryyetsimple/console.git master
@@ -34,8 +33,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     view = subtree push --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
     xml = subtree push --prefix=src/queryyetsimple/xml git@github.com:queryyetsimple/xml.git master
 
-
-    assertp = subtree pull --prefix=src/queryyetsimple/assert git@github.com:queryyetsimple/assert.git master
     authp = subtree pull --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
     cachep = subtree pull --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
     consolep = subtree pull --prefix=src/queryyetsimple/console git@github.com:queryyetsimple/console.git master

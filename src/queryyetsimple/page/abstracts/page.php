@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\support\option;
-use queryyetsimple\assert\assert;
+use queryyetsimple\support\assert;
 use queryyetsimple\support\interfaces\htmlable;
 
 /**

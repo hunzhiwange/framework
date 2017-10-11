@@ -19,7 +19,7 @@ use RuntimeException;
 use BadMethodCallException;
 use SessionHandlerInterface;
 use queryyetsimple\support\option;
-use queryyetsimple\assert\assert;
+use queryyetsimple\support\assert;
 use queryyetsimple\session\interfaces\store as interfaces_store;
 
 /**

@@ -17,8 +17,8 @@ queryphp;
 
 use queryyetsimple\xml\xml;
 use InvalidArgumentException;
-use queryyetsimple\assert\assert;
 use queryyetsimple\router\router;
+use queryyetsimple\support\assert;
 use queryyetsimple\support\option;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\infinity;

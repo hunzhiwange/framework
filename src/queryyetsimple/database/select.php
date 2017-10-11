@@ -18,7 +18,7 @@ queryphp;
 use PDO;
 use Exception;
 use BadMethodCallException;
-use queryyetsimple\assert\assert;
+use queryyetsimple\support\assert;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\collection;
 use queryyetsimple\support\flow_control;

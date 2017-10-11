@@ -20,7 +20,7 @@ use Exception;
 use PDOException;
 use queryyetsimple\log\store;
 use queryyetsimple\debug\dump;
-use queryyetsimple\assert\assert;
+use queryyetsimple\support\assert;
 use queryyetsimple\database\select;
 use queryyetsimple\log\interfaces\store as interfaces_store;
 
