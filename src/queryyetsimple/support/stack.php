@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\stack;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -16,21 +16,21 @@ namespace queryyetsimple\stack;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\stack\interfaces\stack as interfaces_stack;
+use queryyetsimple\support\interfaces\stack_queue;
 
 /**
- * 队列，先进先出
+ * 栈，后进先出
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.21
- * @see http://php.net/manual/zh/class.splqueue.php
+ * @see http://php.net/manual/zh/class.splstack.php
  * @version 1.0
  */
-class queue extends linkedlist implements interfaces_stack {
+class stack extends linkedlist implements stack_queue {
     
     /**
-     * 入对
+     * 入栈
      *
      * @param mixed $mixValue            
      * @return void
@@ -40,21 +40,21 @@ class queue extends linkedlist implements interfaces_stack {
     }
     
     /**
-     * 出对
+     * 出栈
      *
      * @return mixed
      */
     public function out() {
-        return $this->shift ();
+        return $this->pop ();
     }
     
     /**
      * (non-PHPdoc)
      *
-     * @see \queryyetsimple\stack\linkedlist::validate()
+     * @see \queryyetsimple\support\linkedlist::validate()
      */
     public function validate($mixValue) {
         if (! $this->checkType ( $mixValue ))
-            throw new InvalidArgumentException ( __ ( '队列元素类型验证失败，允许类型为 %s', implode ( ',', $this->arrType ) ) );
+            throw new InvalidArgumentException ( __ ( '栈元素类型验证失败，允许类型为 %s', implode ( ',', $this->arrType ) ) );
     }
 }

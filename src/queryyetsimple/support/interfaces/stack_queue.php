@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple;
+namespace queryyetsimple\support\interfaces;
 
 <<<queryphp
 ##########################################################
@@ -15,37 +15,36 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\support\face;
-
 /**
- * 沙盒 stack
+ * 栈和队列接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2017.04.11
  * @version 1.0
  */
-class stack extends face {
+interface stack_queue {
     
     /**
-     * 返回门面名字
+     * 入
      *
-     * @return string
+     * @param mixed $mixValue            
+     * @return void
      */
-    protected static function name() {
-        return 'stack';
-    }
-}
-
-namespace qys;
-
-/**
- * 沙盒 stack
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class stack extends \queryyetsimple\stack {
+    public function in($mixValue);
+    
+    /**
+     * 出
+     *
+     * @return mixed
+     */
+    public function out();
+    
+    /**
+     * 验证类型是否正确遇到错误抛出异常
+     *
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function validate($mixValue);
 }

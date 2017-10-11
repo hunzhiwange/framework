@@ -16,7 +16,7 @@ namespace queryyetsimple\view;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\stack\stack;
+use queryyetsimple\support\stack;
 use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\option;

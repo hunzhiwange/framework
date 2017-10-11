@@ -93,7 +93,6 @@ return [
                 'queryyetsimple\router',
                 'queryyetsimple\rss',
                 'queryyetsimple\session',
-                'queryyetsimple\stack',
                 'queryyetsimple\throttler',
                 'queryyetsimple\validate',
                 'queryyetsimple\view' 
