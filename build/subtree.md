@@ -19,7 +19,6 @@ git subtree add --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/p
 git subtree add --prefix=src/queryyetsimple/pipeline git@github.com:queryyetsimple/pipeline.git master
 git subtree add --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
 git subtree add --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
-git subtree add --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master
 git subtree add --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
 git subtree add --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
 git subtree add --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master

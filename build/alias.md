@@ -22,7 +22,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     pipeline = subtree push --prefix=src/queryyetsimple/pipeline git@github.com:queryyetsimple/pipeline.git master
     queue = subtree push --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
     router = subtree push --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
-    rss = subtree push --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master
     seccode = subtree push --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
     session = subtree push --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
     support = subtree push --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
@@ -49,7 +48,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     pipelinep = subtree pull --prefix=src/queryyetsimple/pipeline git@github.com:queryyetsimple/pipeline.git master
     queuep = subtree pull --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
     routerp = subtree pull --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
-    rssp = subtree pull --prefix=src/queryyetsimple/rss git@github.com:queryyetsimple/rss.git master
     seccodep = subtree pull --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
     sessionp = subtree pull --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
     supportp = subtree pull --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
