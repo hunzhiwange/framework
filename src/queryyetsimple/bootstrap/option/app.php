@@ -91,7 +91,6 @@ return [
                 'queryyetsimple\page',
                 'queryyetsimple\pipeline',
                 'queryyetsimple\router',
-                'queryyetsimple\rss',
                 'queryyetsimple\session',
                 'queryyetsimple\throttler',
                 'queryyetsimple\validate',

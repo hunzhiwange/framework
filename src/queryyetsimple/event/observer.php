@@ -15,7 +15,7 @@ namespace queryyetsimple\event;
 ##########################################################
 queryphp;
 
-use queryyetsimple\observer\observer as observer_observer;
+use queryyetsimple\support\observer\observer as observer_observer;
 
 /**
  * 事件观察者角色 observer

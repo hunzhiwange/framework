@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\observer;
+namespace queryyetsimple\support\observer;
 
 <<<queryphp
 ##########################################################
@@ -20,7 +20,7 @@ use SplObserver;
 use SplObjectStorage;
 use InvalidArgumentException;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\observer\interfaces\subject as interfaces_subject;
+use queryyetsimple\support\observer\interfaces\subject as interfaces_subject;
 
 /**
  * 观察者目标角色 subject
