@@ -26,10 +26,10 @@ use queryyetsimple\support\string;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\infinity;
 use queryyetsimple\support\serialize;
+use queryyetsimple\support\collection;
 use queryyetsimple\mvc\relation\has_one;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\mvc\relation\relation;
-use queryyetsimple\collection\collection;
 use queryyetsimple\mvc\relation\has_many;
 use queryyetsimple\mvc\relation\many_many;
 use queryyetsimple\mvc\relation\belongs_to;
@@ -1630,11 +1630,11 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
     /**
      * 创建一个模型集合
      *
-     * @param array $arrProp            
-     * @return \queryyetsimple\collection\collection
+     * @param array $arrModel            
+     * @return \queryyetsimple\support\collection
      */
-    public function collection(array $arrProp = []) {
-        return new collection ( $arrProp );
+    public function collection(array $arrModel = []) {
+        return new collection ( $arrModel );
     }
     
     /**

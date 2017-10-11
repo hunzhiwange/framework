@@ -15,8 +15,8 @@ namespace queryyetsimple\mvc\relation;
 ##########################################################
 queryphp;
 
+use queryyetsimple\support\collection;
 use queryyetsimple\mvc\interfaces\model;
-use queryyetsimple\collection\collection;
 
 /**
  * 关联模型 has_many
@@ -67,7 +67,7 @@ class has_many extends relation {
      * 匹配关联查询数据到模型 has_many
      *
      * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
-     * @param \queryyetsimple\collection\collection $objResult            
+     * @param \queryyetsimple\support\collection $objResult            
      * @param string $strRelation            
      * @return array
      */
@@ -107,8 +107,8 @@ class has_many extends relation {
     /**
      * 批量保存模型
      *
-     * @param \queryyetsimple\collection\collection|array $mixModel            
-     * @return \queryyetsimple\collection\collection|array
+     * @param \queryyetsimple\support\collection|array $mixModel            
+     * @return \queryyetsimple\support\collection|array
      */
     public function saveMany($mixModel) {
         foreach ( $mixModel as $objModel ) {
@@ -180,7 +180,7 @@ class has_many extends relation {
      * 匹配预载入数据
      *
      * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
-     * @param \queryyetsimple\collection\collection $objResult            
+     * @param \queryyetsimple\support\collection $objResult            
      * @param string $strRelation            
      * @param string $strType            
      * @return array
@@ -215,7 +215,7 @@ class has_many extends relation {
     /**
      * 模型隐射数据
      *
-     * @param \queryyetsimple\collection\collection $objResult            
+     * @param \queryyetsimple\support\collection $objResult            
      * @return array
      */
     protected function buildMap(collection $objResult) {

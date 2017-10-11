@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\collection;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -22,7 +22,6 @@ use JsonSerializable;
 use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\assert\assert;
-use queryyetsimple\support\infinity;
 use queryyetsimple\support\interfaces\jsonable;
 use queryyetsimple\support\interfaces\arrayable;
 

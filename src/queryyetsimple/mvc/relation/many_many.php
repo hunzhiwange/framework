@@ -15,8 +15,8 @@ namespace queryyetsimple\mvc\relation;
 ##########################################################
 queryphp;
 
+use queryyetsimple\support\collection;
 use queryyetsimple\mvc\interfaces\model;
-use queryyetsimple\collection\collection;
 
 /**
  * 关联模型 many_many
@@ -109,7 +109,7 @@ class many_many extends relation {
      * 匹配关联查询数据到模型
      *
      * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
-     * @param \queryyetsimple\collection\collection $objResult            
+     * @param \queryyetsimple\support\collection $objResult            
      * @param string $strRelation            
      * @return array
      */
@@ -244,7 +244,7 @@ class many_many extends relation {
     /**
      * 模型隐射数据
      *
-     * @param \queryyetsimple\collection\collection $objResult            
+     * @param \queryyetsimple\support\collection $objResult            
      * @return array
      */
     protected function buildMap(collection $objResult) {

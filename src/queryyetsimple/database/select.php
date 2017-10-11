@@ -20,8 +20,8 @@ use Exception;
 use BadMethodCallException;
 use queryyetsimple\assert\assert;
 use queryyetsimple\support\helper;
+use queryyetsimple\support\collection;
 use queryyetsimple\support\flow_control;
-use queryyetsimple\collection\collection;
 
 /**
  * 数据库查询器
@@ -784,7 +784,7 @@ class select {
         if (is_string ( $strFieldKey )) {
             $arrField [] = $strFieldKey;
         }
-
+        
         // 解析结果
         $arrResult = [ ];
         foreach ( $this->sql ( $bFlag, true )->asDefault ()->setColumns ( $arrField )->getAll () as $arrTemp ) {
@@ -2801,7 +2801,7 @@ class select {
                     $arrSqlCond [] = $mixCond [0] . ' ' . strtoupper ( $mixCond [1] ) . ' ' . $mixCond [2] [0] . ' AND ' . $mixCond [2] [1];
                 } elseif (is_scalar ( $mixCond [2] )) {
                     $arrSqlCond [] = $mixCond [0] . ' ' . strtoupper ( $mixCond [1] ) . ' ' . $mixCond [2];
-                }elseif(is_null($mixCond [2])) {
+                } elseif (is_null ( $mixCond [2] )) {
                     $arrSqlCond [] = $mixCond [0] . ' IS NULL';
                 }
             }

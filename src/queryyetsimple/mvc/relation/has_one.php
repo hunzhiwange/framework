@@ -15,7 +15,7 @@ namespace queryyetsimple\mvc\relation;
 ##########################################################
 queryphp;
 
-use queryyetsimple\collection\collection;
+use queryyetsimple\support\collection;
 
 /**
  * 关联模型 has_one

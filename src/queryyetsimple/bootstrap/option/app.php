@@ -90,7 +90,6 @@ return [
                 'queryyetsimple\cache',
                 'queryyetsimple\validate',
                 'queryyetsimple\throttler',
-                'queryyetsimple\collection',
                 'queryyetsimple\router',
                 'queryyetsimple\encryption',
                 'queryyetsimple\rss',

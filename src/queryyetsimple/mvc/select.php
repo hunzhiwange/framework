@@ -19,7 +19,7 @@ use Closure;
 use Exception;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\string;
-use queryyetsimple\collection\collection;
+use queryyetsimple\support\collection;
 use queryyetsimple\mvc\relation\relation;
 use queryyetsimple\mvc\exception\model_not_found;
 use queryyetsimple\database\select as database_select;
@@ -157,7 +157,7 @@ class select {
      *
      * @param mixed $mixId            
      * @param array $arrColumn            
-     * @return \queryyetsimple\mvc\interfaces\model|\queryyetsimple\collection\collection|null
+     * @return \queryyetsimple\mvc\interfaces\model|\queryyetsimple\support\collection|null
      */
     public function find($mixId, $arrColumn = ['*']) {
         if (is_array ( $mixId )) {
@@ -172,7 +172,7 @@ class select {
      *
      * @param array $arrId            
      * @param array $arrColumn            
-     * @return \queryyetsimple\collection\collection
+     * @return \queryyetsimple\support\collection
      */
     public function findMany($arrId, $arrColumn = ['*']) {
         if (empty ( $arrId )) {
@@ -186,7 +186,7 @@ class select {
      *
      * @param mixed $mixId            
      * @param array $arrColumn            
-     * @return \queryyetsimple\mvc\interfaces\model|\queryyetsimple\collection\collection
+     * @return \queryyetsimple\mvc\interfaces\model|\queryyetsimple\support\collection
      */
     public function findOrFail($mixId, $arrColumn = ['*']) {
         $mixResult = $this->find ( $mixId, $arrColumn );

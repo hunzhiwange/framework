@@ -17,8 +17,8 @@ queryphp;
 
 use Closure;
 use Exception;
+use queryyetsimple\support\collection;
 use queryyetsimple\mvc\interfaces\model;
-use queryyetsimple\collection\collection;
 
 /**
  * 关联模型基类
@@ -103,7 +103,7 @@ abstract class relation {
     /**
      * 取得预载入关联模型
      *
-     * @return \queryyetsimple\collection\collection
+     * @return \queryyetsimple\support\collection
      */
     public function getPreLoad() {
         return $this->querySelelct ()->preLoadResult ( $this->getAll () );
@@ -183,7 +183,7 @@ abstract class relation {
      * 匹配关联查询数据到模型 has_many
      *
      * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
-     * @param \queryyetsimple\collection\collection $objResult            
+     * @param \queryyetsimple\support\collection $objResult            
      * @param string $strRelation            
      * @return array
      */
