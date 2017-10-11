@@ -60,7 +60,7 @@ class has_many extends relation {
      * @return void
      */
     public function preLoadCondition(array $arrModel) {
-        $this->objSelect->reset ( 'where' )->whereIn ( $this->strTargetKey, $this->getModelKey ( $arrModel, $this->strSourceKey ) );
+        $this->objSelect->whereIn ( $this->strTargetKey, $this->getModelKey ( $arrModel, $this->strSourceKey ) );
     }
     
     /**

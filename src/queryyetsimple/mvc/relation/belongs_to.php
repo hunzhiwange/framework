@@ -80,7 +80,7 @@ class belongs_to extends relation {
      * @return void
      */
     public function preLoadCondition(array $arrModel) {
-        $this->objSelect->reset ( 'where' )->whereIn ( $this->strTargetKey, $this->getPreLoadModelValue ( $arrModel ) );
+        $this->objSelect->whereIn ( $this->strTargetKey, $this->getPreLoadModelValue ( $arrModel ) );
     }
     
     /**

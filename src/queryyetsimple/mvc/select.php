@@ -20,6 +20,7 @@ use Exception;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\string;
 use queryyetsimple\collection\collection;
+use queryyetsimple\mvc\relation\relation;
 use queryyetsimple\mvc\exception\model_not_found;
 use queryyetsimple\database\select as database_select;
 use queryyetsimple\mvc\interfaces\model as interfaces_model;
@@ -472,7 +473,9 @@ class select {
      * @return \queryyetsimple\mvc\relation\relation
      */
     protected function getRelation($strName) {
-        $objRelation = $this->objModel->$strName ();
+        $objRelation = relation::withoutRelationCondition ( function () use($strName) {
+            return $this->objModel->$strName ();
+        } );
         
         $arrNested = $this->nestedRelation ( $strName );
         if (count ( $arrNested ) > 0) {

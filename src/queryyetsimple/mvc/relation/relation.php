@@ -15,6 +15,8 @@ namespace queryyetsimple\mvc\relation;
 ##########################################################
 queryphp;
 
+use Closure;
+use Exception;
 use queryyetsimple\mvc\interfaces\model;
 use queryyetsimple\collection\collection;
 
@@ -144,16 +146,22 @@ abstract class relation {
     }
     
     /**
-     * 返回模型的主键
+     * 获取不带关联条件的关联对象
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
-     * @param string $strKey            
-     * @return array
+     * @param \Closure $calReturnRelation            
+     * @return \queryyetsimple\mvc\relation\relation
      */
-    protected function getModelKey(array $arrModel, $strKey = null) {
-        return array_unique ( array_values ( array_map ( function ($objModel) use($strKey) {
-            return $strKey ? $objModel->getProp ( $strKey ) : $objModel->getPrimaryKeyForQuery ();
-        }, $arrModel ) ) );
+    public static function withoutRelationCondition(Closure $calReturnRelation) {
+        $booOld = static::$booRelationCondition;
+        static::$booRelationCondition = false;
+        
+        $objRelation = call_user_func ( $calReturnRelation );
+        if (! ($objRelation instanceof relation)) {
+            throw new Exception ( 'The result must be relation' );
+        }
+        
+        static::$booRelationCondition = $booOld;
+        return $objRelation;
     }
     
     /**
@@ -187,6 +195,19 @@ abstract class relation {
      * @return mixed
      */
     abstract public function sourceQuery();
+    
+    /**
+     * 返回模型的主键
+     *
+     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param string $strKey            
+     * @return array
+     */
+    protected function getModelKey(array $arrModel, $strKey = null) {
+        return array_unique ( array_values ( array_map ( function ($objModel) use($strKey) {
+            return $strKey ? $objModel->getProp ( $strKey ) : $objModel->getPrimaryKeyForQuery ();
+        }, $arrModel ) ) );
+    }
     
     /**
      * 从模型返回查询
