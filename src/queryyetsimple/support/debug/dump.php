@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\debug;
+namespace queryyetsimple\support\debug;
 
 <<<queryphp
 ##########################################################
@@ -50,7 +50,7 @@ class dump {
             array_shift ( $arrArgs );
             array_unshift ( $arrArgs, $mixValue );
             return call_user_func_array ( [ 
-                    'queryyetsimple\debug\dump',
+                    'queryyetsimple\support\debug\dump',
                     'varDump' 
             ], $arrArgs );
         }

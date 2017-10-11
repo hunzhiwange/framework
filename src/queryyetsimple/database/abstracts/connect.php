@@ -19,9 +19,9 @@ use PDO;
 use Exception;
 use PDOException;
 use queryyetsimple\log\store;
-use queryyetsimple\debug\dump;
 use queryyetsimple\support\assert;
 use queryyetsimple\database\select;
+use queryyetsimple\support\debug\dump;
 use queryyetsimple\log\interfaces\store as interfaces_store;
 
 /**

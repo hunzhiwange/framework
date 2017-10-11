@@ -59,7 +59,7 @@ if (! function_exists ( 'dump' )) {
      */
     function dump($mixValue /*argvs*/ ){
         return call_user_func_array ( [ 
-                'queryyetsimple\debug\dump',
+                'queryyetsimple\support\debug\dump',
                 'dump' 
         ], func_get_args () );
     }

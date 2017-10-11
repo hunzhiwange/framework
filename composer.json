@@ -29,14 +29,11 @@
         "monolog/monolog": "^1.23"
     },
      "replace": {
-        "queryyetsimple/assert": "self.version",
         "queryyetsimple/auth": "self.version",
         "queryyetsimple/cache": "self.version",
-        "queryyetsimple/collection": "self.version",
         "queryyetsimple/console": "self.version",
         "queryyetsimple/cookie": "self.version",
         "queryyetsimple/database": "self.version",
-        "queryyetsimple/debug": "self.version",
         "queryyetsimple/encryption": "self.version",
         "queryyetsimple/event": "self.version",
         "queryyetsimple/filesystem": "self.version",
@@ -54,12 +51,10 @@
         "queryyetsimple/rss": "self.version",
         "queryyetsimple/seccode": "self.version",
         "queryyetsimple/session": "self.version",
-        "queryyetsimple/stack": "self.version",
         "queryyetsimple/support": "self.version",
         "queryyetsimple/throttler": "self.version",
         "queryyetsimple/validate": "self.version",
-        "queryyetsimple/view": "self.version",
-        "queryyetsimple/xml": "self.version"
+        "queryyetsimple/view": "self.version"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.6",
