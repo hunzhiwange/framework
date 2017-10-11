@@ -31,7 +31,6 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     throttler = subtree push --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
     validate = subtree push --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
     view = subtree push --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
-    xml = subtree push --prefix=src/queryyetsimple/xml git@github.com:queryyetsimple/xml.git master
 
     authp = subtree pull --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
     cachep = subtree pull --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
@@ -61,4 +60,3 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     throttlerp = subtree pull --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
     validatep = subtree pull --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
     viewp = subtree pull --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
-    xmlp = subtree pull --prefix=src/queryyetsimple/xml git@github.com:queryyetsimple/xml.git master

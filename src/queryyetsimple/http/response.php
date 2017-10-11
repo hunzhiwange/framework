@@ -15,8 +15,8 @@ namespace queryyetsimple\http;
 ##########################################################
 queryphp;
 
-use queryyetsimple\xml\xml;
 use InvalidArgumentException;
+use queryyetsimple\support\xml;
 use queryyetsimple\router\router;
 use queryyetsimple\support\assert;
 use queryyetsimple\support\option;

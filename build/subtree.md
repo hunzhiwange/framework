@@ -28,4 +28,3 @@ git subtree add --prefix=src/queryyetsimple/support git@github.com:queryyetsimpl
 git subtree add --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
 git subtree add --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
 git subtree add --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
-git subtree add --prefix=src/queryyetsimple/xml git@github.com:queryyetsimple/xml.git master
