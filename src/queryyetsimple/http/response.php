@@ -647,7 +647,7 @@ class response {
             }
         }
         
-        list ( $mixMessage, $strKey ) = is_array ( $mixMessage ) ? $mixMessage : (strpos ( $mixMessage, '\\' ) !== false ? explode ( '\\', $mixMessage ) : [ 
+        list ( $mixMessage, $strKey ) = is_array ( $mixMessage ) ? $mixMessage : (strpos ( $mixMessage, '@' ) !== false ? explode ( '@', $mixMessage ) : [ 
                 $mixMessage,
                 '' 
         ]);
