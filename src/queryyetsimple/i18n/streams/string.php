@@ -25,6 +25,7 @@ queryphp;
  * @version 1.0
  */
 class string extends reader {
+    
     /**
      * prop
      *
