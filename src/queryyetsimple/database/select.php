@@ -2997,7 +2997,7 @@ class select {
                 if (count ( $arrTemp ) === 2 && ! in_array ( $arrTemp [1], [ 
                         'null',
                         'not null' 
-                ] )) {
+                ], true )) {
                     $arrTemp [2] = $arrTemp [1];
                     $arrTemp [1] = '=';
                 }
