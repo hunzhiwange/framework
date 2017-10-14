@@ -280,6 +280,27 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
     protected $arrPrimaryKey;
     
     /**
+     * 最后插入记录
+     *
+     * @var mixed
+     */
+    protected $mixLastInsertId;
+    
+    /**
+     * 响应记录
+     *
+     * @var int
+     */
+    protected $intRowCount;
+    
+    /**
+     * 最后插入记录或者响应记录
+     *
+     * @var mixed
+     */
+    protected $mixLastInsertIdOrRowCount;
+    
+    /**
      * 构造函数
      *
      * @param array|null $arrData            
@@ -321,7 +342,8 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
      * @return $this
      */
     public function save($arrData = null) {
-        return $this->saves ( 'save', $arrData );
+        $this->saveEntry ( 'save', $arrData );
+        return $this;
     }
     
     /**
@@ -331,7 +353,8 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
      * @return $this
      */
     public function create($arrData = null) {
-        return $this->saves ( 'create', $arrData );
+        $this->saveEntry ( 'create', $arrData );
+        return $this;
     }
     
     /**
@@ -341,7 +364,8 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
      * @return $this
      */
     public function update($arrData = null) {
-        return $this->saves ( 'update', $arrData );
+        $this->saveEntry ( 'update', $arrData );
+        return $this;
     }
     
     /**
@@ -351,63 +375,123 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
      * @return $this
      */
     public function replace($arrData = null) {
-        return $this->saves ( 'replace', $arrData );
+        $this->saveEntry ( 'replace', $arrData );
+        return $this;
     }
     
     /**
-     * 保存统一入口
+     * 自动判断快捷方式返回主键或者响应记录
      *
-     * @param strint $sSaveMethod            
+     * @param array|null $arrData            
+     * @return mixed
+     */
+    public function saveWith($arrData = null) {
+        return $this->saveEntry ( 'save', $arrData );
+    }
+    
+    /**
+     * 新增快捷方式返回主键或者响应记录
+     *
+     * @param array|null $arrData            
+     * @return mixed
+     */
+    public function createWith($arrData = null) {
+        return $this->saveEntry ( 'create', $arrData );
+    }
+    
+    /**
+     * 更新快捷方式返回主键或者响应记录
+     *
+     * @param array|null $arrData            
+     * @return mixed
+     */
+    public function updateWith($arrData = null) {
+        return $this->saveEntry ( 'update', $arrData );
+    }
+    
+    /**
+     * replace 快捷方式返回主键或者响应记录
+     *
+     * @param array|null $arrData            
+     * @return mixed
+     */
+    public function replaceWith($arrData = null) {
+        return $this->saveEntry ( 'replace', $arrData );
+    }
+    
+    /**
+     * 自动判断快捷方式生成模型
+     *
      * @param array|null $arrData            
      * @return $this
      */
-    public function saves($sSaveMethod = 'save', $arrData = null) {
-        if ($this->checkFlowControl ())
-            return $this;
-        
-        if (is_array ( $arrData ) && $arrData) {
-            $this->forceProps ( $arrData );
-        }
-        
-        // 表单自动填充
-        $this->parseAutoPost ();
-        
-        $this->runEvent ( static::BEFORE_SAVE_EVENT );
-        
-        // 程序通过内置方法统一实现
-        switch (strtolower ( $sSaveMethod )) {
-            case 'create' :
-                $this->createReal ();
-                break;
-            case 'update' :
-                $this->updateReal ();
-                break;
-            case 'replace' :
-                $this->replaceReal ();
-                break;
-            case 'save' :
-            default :
-                $arrPrimaryData = $this->primaryKey ( true );
-                
-                // 复合主键的情况下，则使用 replace 方式
-                if (is_array ( $arrPrimaryData )) {
-                    $this->replaceReal ();
-                }                 
-
-                // 单一主键
-                else {
-                    if (empty ( $arrPrimaryData )) {
-                        $this->createReal ();
-                    } else {
-                        $this->updateReal ();
-                    }
-                }
-                break;
-        }
-        
-        $this->runEvent ( static::AFTER_SAVE_EVENT );
-        
-        return $this;
+    public static function saveNew($arrData = null) {
+        $objModel = new static ( $arrData );
+        $objModel->save ();
+        return $objModel;
+    }
+    
+    /**
+     * 新增快捷方式生成模型
+     *
+     * @param array|null $arrData            
+     * @return $this
+     */
+    public static function createNew($arrData = null) {
+        $objModel = new static ( $arrData );
+        $objModel->create ();
+        return $objModel;
+    }
+    
+    /**
+     * 更新快捷方式生成模型
+     *
+     * @param array|null $arrData            
+     * @return $this
+     */
+    public static function updateNew($arrData = null) {
+        $objModel = new static ( $arrData );
+        $objModel->update ();
+        return $objModel;
+    }
+    
+    /**
+     * replace 快捷方式生成模型
+     *
+     * @param array|null $arrData            
+     * @return $this
+     */
+    public static function replaceNew($arrData = null) {
+        $objModel = new static ( $arrData );
+        $objModel->replace ();
+        return $objModel;
+    }
+    
+    /**
+     * 返回最后插入记录
+     *
+     * @return mixed
+     */
+    public function lastInsertId() {
+        return $this->mixLastInsertId;
+    }
+    
+    /**
+     * 返回响应记录
+     *
+     * @return int
+     */
+    public function rowCount() {
+        return $this->intRowCount;
+    }
+    
+    /**
+     * 返回最后插入记录或者响应记录
+     *
+     * @return mixed
+     */
+    public function lastInsertIdOrRowCount() {
+        return $this->mixLastInsertIdOrRowCount;
     }
     
     /**
@@ -1759,9 +1843,65 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
     }
     
     /**
+     * 保存统一入口
+     *
+     * @param strint $sSaveMethod            
+     * @param array|null $arrData            
+     * @return mixed
+     */
+    protected function saveEntry($sSaveMethod = 'save', $arrData = null) {
+        if ($this->checkFlowControl ())
+            return $this;
+        
+        if (is_array ( $arrData ) && $arrData) {
+            $this->forceProps ( $arrData );
+        }
+        
+        // 表单自动填充
+        $this->parseAutoPost ();
+        
+        $this->runEvent ( static::BEFORE_SAVE_EVENT );
+        
+        // 程序通过内置方法统一实现
+        switch (strtolower ( $sSaveMethod )) {
+            case 'create' :
+                $mixResult = $this->createReal ();
+                break;
+            case 'update' :
+                $mixResult = $this->updateReal ();
+                break;
+            case 'replace' :
+                $mixResult = $this->replaceReal ();
+                break;
+            case 'save' :
+            default :
+                $arrPrimaryData = $this->primaryKey ( true );
+                
+                // 复合主键的情况下，则使用 replace 方式
+                if (is_array ( $arrPrimaryData )) {
+                    $mixResult = $this->replaceReal ();
+                }                 
+
+                // 单一主键
+                else {
+                    if (empty ( $arrPrimaryData )) {
+                        $mixResult = $this->createReal ();
+                    } else {
+                        $mixResult = $this->updateReal ();
+                    }
+                }
+                break;
+        }
+        
+        $this->runEvent ( static::AFTER_SAVE_EVENT );
+        
+        return $mixResult;
+    }
+    
+    /**
      * 添加数据
      *
-     * @return void
+     * @return mixed
      */
     protected function createReal() {
         $this->parseAutoFill ( 'create' );
@@ -1797,13 +1937,13 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
         
         $this->runEvent ( static::AFTER_CREATE_EVENT, $arrSaveData );
         
-        return reset ( $arrLastInsertId );
+        return $this->mixLastInsertIdOrRowCount = $this->mixLastInsertId = reset ( $arrLastInsertId );
     }
     
     /**
      * 更新数据
      *
-     * @return void|int
+     * @return int
      */
     protected function updateReal() {
         $this->parseAutoFill ( 'update' );
@@ -1850,19 +1990,19 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
         
         $this->runEvent ( static::AFTER_UPDATE_EVENT );
         
-        return isset ( $intNum ) ? $intNum : 0;
+        return $this->mixLastInsertIdOrRowCount = $this->intRowCount = isset ( $intNum ) ? $intNum : 0;
     }
     
     /**
      * 模拟 replace 数据
      *
-     * @return void
+     * @return mixed
      */
     protected function replaceReal() {
         try {
-            $this->createReal ();
+            return $this->createReal ();
         } catch ( Exception $oE ) {
-            $this->updateReal ();
+            return $this->updateReal ();
         }
     }
     
