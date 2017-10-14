@@ -840,7 +840,7 @@ abstract class connect {
      *
      * @param string $strError
      *            错误信息
-     * @return string
+     * @return void
      */
     protected function throwException($strError = '') {
         if ($this->objPDOStatement) {
