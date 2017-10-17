@@ -385,27 +385,27 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
      * @param array|null $arrData            
      * @return mixed
      */
-    public function saveWith($arrData = null) {
+    public function saveResult($arrData = null) {
         return $this->saveEntry ( 'save', $arrData );
     }
     
     /**
-     * 新增快捷方式返回主键或者响应记录
+     * 新增快捷方式返回主键
      *
      * @param array|null $arrData            
      * @return mixed
      */
-    public function createWith($arrData = null) {
+    public function createResult($arrData = null) {
         return $this->saveEntry ( 'create', $arrData );
     }
     
     /**
-     * 更新快捷方式返回主键或者响应记录
+     * 更新快捷方式返回响应记录
      *
      * @param array|null $arrData            
-     * @return mixed
+     * @return int
      */
-    public function updateWith($arrData = null) {
+    public function updateResult($arrData = null) {
         return $this->saveEntry ( 'update', $arrData );
     }
     
@@ -415,7 +415,7 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
      * @param array|null $arrData            
      * @return mixed
      */
-    public function replaceWith($arrData = null) {
+    public function replaceResult($arrData = null) {
         return $this->saveEntry ( 'replace', $arrData );
     }
     
@@ -515,7 +515,7 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
     /**
      * 删除模型
      *
-     * @return bool|null
+     * @return int
      */
     public function delete() {
         if (is_null ( $this->getPrimaryKeyName () )) {
@@ -532,10 +532,19 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
     }
     
     /**
+     * 唯一标识符
+     *
+     * @return mixed
+     */
+    public function id() {
+        return $this->primaryKey ();
+    }
+    
+    /**
      * 获取主键
      *
      * @param boolean $booUpdateChange            
-     * @return null|array
+     * @return mixed
      */
     public function primaryKey($booUpdateChange = false) {
         $arrPrimaryData = [ ];

@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.07.10
  * @version 1.0
  */
-interface model {
+interface model extends ientity {
     
     /**
      * 批量查找前事件

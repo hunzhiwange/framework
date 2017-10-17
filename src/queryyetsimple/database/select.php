@@ -262,12 +262,30 @@ class select {
     /**
      * 构造函数
      *
-     * @param queryyetsimple\database\connect $objConnect            
+     * @param \queryyetsimple\database\connect $objConnect            
      * @return void
      */
     public function __construct($objConnect) {
         $this->objConnect = $objConnect;
         $this->initOption ();
+    }
+    
+    /**
+     * 返回数据库连接对象
+     *
+     * @return \queryyetsimple\database\connect
+     */
+    public function databaseConnect() {
+        return $this->objConnect;
+    }
+    
+    /**
+     * 占位符返回本对象
+     *
+     * @return $this
+     */
+    public function selfQuerySelect() {
+        return $this;
     }
     
     /**
