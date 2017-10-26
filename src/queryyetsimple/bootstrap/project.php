@@ -255,7 +255,7 @@ class project extends container implements interfaces_project {
      * @return boolean
      */
     public function debug() {
-        return $this->arrAppOption ['app_debug'];
+        return isset ( $this->arrAppOption ['app_debug'] ) ? $this->arrAppOption ['app_debug'] : false;
     }
     
     /**
@@ -347,7 +347,7 @@ class project extends container implements interfaces_project {
     protected function loadApp() {
         if (($strCache = $this->pathApplicationCache ( 'option' ) . '/' . application::INIT_APP . '.php') && is_file ( $strCache )) {
             if ($this->checkEnv ( $strCache )) {
-                fso::deleteDirectory ( dirname ( $strCache ) );
+                fso::deleteDirectory ( dirname ( $strCache ), true );
                 $this->loadAppOption ();
             } else {
                 $this->loadAppOption ( $strCache );
@@ -514,7 +514,6 @@ class project extends container implements interfaces_project {
      * @return array
      */
     protected function registerCacheProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
-        $booForce = true;
         foreach ( helper::arrayMergeSource ( $this ['psr4'], $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
             
             if (strpos ( $strType, '@' ) !== false) {
