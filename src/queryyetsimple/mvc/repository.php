@@ -59,20 +59,22 @@ class repository implements irepository {
      * 取得一条数据
      *
      * @param int $intId            
+     * @param array $arrColumn            
      * @return \queryyetsimple\mvc\interfaces\ientity
      */
-    public function find($intId) {
-        return $this->objAggregate->find ( $intId );
+    public function find($intId, $arrColumn = ['*']) {
+        return $this->objAggregate->find ( $intId, $arrColumn );
     }
     
     /**
      * 取得一条数据，未找到记录抛出异常
      *
      * @param int $intId            
+     * @param array $arrColumn            
      * @return \queryyetsimple\mvc\interfaces\ientity|void
      */
-    public function findOrFail($intId) {
-        return $this->objAggregate->findOrFail ( $intId );
+    public function findOrFail($intId, $arrColumn = ['*']) {
+        return $this->objAggregate->findOrFail ( $intId, $arrColumn );
     }
     
     /**

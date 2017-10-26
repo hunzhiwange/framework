@@ -29,17 +29,19 @@ interface irepository {
      * 取得一条数据
      *
      * @param int $intId            
+     * @param array $arrColumn            
      * @return \queryyetsimple\mvc\interfaces\ientity
      */
-    public function find($intId);
+    public function find($intId, $arrColumn = ['*']);
     
     /**
      * 取得一条数据，未找到记录抛出异常
      *
      * @param int $intId            
+     * @param array $arrColumn            
      * @return \queryyetsimple\mvc\interfaces\ientity|void
      */
-    public function findOrFail($intId);
+    public function findOrFail($intId, $arrColumn = ['*']);
     
     /**
      * 取得所有记录

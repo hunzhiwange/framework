@@ -20,7 +20,7 @@ use queryyetsimple\mvc\interfaces\iunit_of_work;
 use queryyetsimple\mvc\interfaces\iaggregate_root;
 
 /**
- * 工作单元接口
+ * 工作单元
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
