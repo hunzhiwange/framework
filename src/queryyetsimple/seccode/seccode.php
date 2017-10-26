@@ -19,7 +19,6 @@ use Exception;
 use queryyetsimple\support\option;
 use queryyetsimple\support\string;
 use queryyetsimple\filesystem\fso;
-use queryyetsimple\seccode\interfaces\seccode as interfaces_seccode;
 
 /**
  * 验证码
@@ -29,7 +28,7 @@ use queryyetsimple\seccode\interfaces\seccode as interfaces_seccode;
  * @since 2017.07.27
  * @version 1.0
  */
-class seccode implements interfaces_seccode {
+class seccode implements iseccode {
     
     use option;
     

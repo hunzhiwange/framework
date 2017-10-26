@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\seccode\interfaces;
+namespace queryyetsimple\seccode;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,14 @@ namespace queryyetsimple\seccode\interfaces;
 queryphp;
 
 /**
- * seccode 接口
+ * iseccode 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.07
  * @version 1.0
  */
-interface seccode {
+interface iseccode {
     
     /**
      * 图像最大宽度
