@@ -59,7 +59,6 @@ class exception extends message {
      */
     public function run() {
         $this->log ( $this->strMessage );
-        
         $this->toResponse ( $this->oProject ['option'] ['default_response'] == 'api' ? $this->formatForApi ( $this->objException ) : $this->format ( $this->objException ) );
     }
     
@@ -159,7 +158,7 @@ class exception extends message {
         $arrError ['code'] = $oException->getCode ();
         $arrError ['function'] = isset ( $arrTrace ['0'] ['function'] ) ? $arrTrace ['0'] ['function'] : '';
         $arrError ['line'] = $oException->getLine ();
-        $arrError ['excetion_type'] = get_class ( $oException );
+        $arrError ['exception_type'] = get_class ( $oException );
         
         return $arrError;
     }
@@ -206,7 +205,9 @@ class exception extends message {
         $arrError ['code'] = $oException->getCode ();
         $arrError ['function'] = isset ( $arrTrace ['0'] ['function'] ) ? $arrTrace ['0'] ['function'] : '';
         $arrError ['line'] = $oException->getLine ();
-        $arrError ['excetion_type'] = get_class ( $oException );
+        $arrError ['exception_type'] = get_class ( $oException );
+        $arrError ['ecode'] = $arrError ['code'];
+        $arrError ['code'] = 400;
         
         return $arrError;
     }
