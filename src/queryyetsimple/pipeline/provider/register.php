@@ -25,7 +25,7 @@ return [
         'register@pipeline' => [ 
                 [ 
                         'queryyetsimple\pipeline\pipeline',
-                        'queryyetsimple\pipeline\interfaces\pipeline' 
+                        'queryyetsimple\pipeline\ipipeline' 
                 ],
                 function ($oProject) {
                     return new queryyetsimple\pipeline\pipeline ( $oProject );

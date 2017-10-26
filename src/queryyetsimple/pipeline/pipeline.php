@@ -17,7 +17,6 @@ queryphp;
 
 use InvalidArgumentException;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\pipeline\interfaces\pipeline as interfaces_pipeline;
 
 /**
  * 管道实现类
@@ -27,7 +26,7 @@ use queryyetsimple\pipeline\interfaces\pipeline as interfaces_pipeline;
  * @since 2017.05.25
  * @version 1.0
  */
-class pipeline implements interfaces_pipeline {
+class pipeline implements ipipeline {
     
     /**
      * 容器
