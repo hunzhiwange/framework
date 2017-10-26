@@ -25,7 +25,7 @@ return [
         'singleton@throttler' => [ 
                 [ 
                         'queryyetsimple\throttler\throttler',
-                        'queryyetsimple\throttler\interfaces\throttler' 
+                        'queryyetsimple\throttler\ithrottler' 
                 ],
                 function ($oProject) {
                     return (new queryyetsimple\throttler\throttler ( $oProject ['cache']->connect ( $oProject ['option'] ['throttler\driver'] ) ))->setRequest ( $oProject ['request'] );

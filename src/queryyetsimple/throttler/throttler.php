@@ -18,7 +18,6 @@ queryphp;
 use RuntimeException;
 use queryyetsimple\http\request;
 use queryyetsimple\cache\interfaces\repository;
-use queryyetsimple\throttler\interfaces\throttler as interfaces_throttler;
 
 /**
  * throttler 入口
@@ -28,7 +27,7 @@ use queryyetsimple\throttler\interfaces\throttler as interfaces_throttler;
  * @since 2017.08.07
  * @version 1.0
  */
-class throttler implements interfaces_throttler {
+class throttler implements ithrottler {
     
     /**
      * 节流器实例

@@ -19,7 +19,6 @@ use Countable;
 use RuntimeException;
 use queryyetsimple\cache\interfaces\repository;
 use queryyetsimple\support\interfaces\arrayable;
-use queryyetsimple\throttler\interfaces\rate_limiter as interfaces_rate_limiter;
 
 /**
  * rate_limiter 入口
@@ -29,7 +28,7 @@ use queryyetsimple\throttler\interfaces\rate_limiter as interfaces_rate_limiter;
  * @since 2017.08.07
  * @version 1.0
  */
-class rate_limiter implements interfaces_rate_limiter, Countable, arrayable {
+class rate_limiter implements irate_limiter, Countable, arrayable {
     
     /**
      * 缓存接口

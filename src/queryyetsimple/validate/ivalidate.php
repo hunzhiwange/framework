@@ -18,7 +18,7 @@ queryphp;
 use queryyetsimple\support\interfaces\container;
 
 /**
- * validate 接口
+ * ivalidate 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
