@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\validate\exception;
+namespace queryyetsimple\validate;
 
 <<<queryphp
 ##########################################################
@@ -25,12 +25,12 @@ use Exception;
  * @since 2017.08.25
  * @version 1.0
  */
-class validate extends Exception {
+class validate_failed extends Exception {
     
     /**
      * 验证器
      *
-     * @var \queryyetsimple\validate\interfaces\validate
+     * @var \queryyetsimple\validate\ivalidate
      */
     public $objValidate;
     
@@ -44,7 +44,7 @@ class validate extends Exception {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\validate\interfaces\validate $objValidate            
+     * @param \queryyetsimple\validate\ivalidate $objValidate            
      * @param \queryyetsimple\http\response $objResponse            
      * @return void
      */
@@ -67,7 +67,7 @@ class validate extends Exception {
     /**
      * 返回验证器
      *
-     * @return \queryyetsimple\validate\interfaces\validate
+     * @return \queryyetsimple\validate\ivalidate
      */
     public function getValidate() {
         return $this->objValidate;

@@ -24,7 +24,6 @@ use queryyetsimple\support\string;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\validate\interfaces\validate as interfaces_validate;
 
 /**
  * validate 数据验证器
@@ -34,7 +33,7 @@ use queryyetsimple\validate\interfaces\validate as interfaces_validate;
  * @since 2017.05.02
  * @version 1.0
  */
-class validate implements interfaces_validate {
+class validate implements ivalidate {
     
     use flow_control;
     

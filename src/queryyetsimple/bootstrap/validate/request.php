@@ -16,10 +16,10 @@ namespace queryyetsimple\bootstrap\validate;
 queryphp;
 
 use queryyetsimple\http\response;
+use queryyetsimple\validate\ivalidate;
+use queryyetsimple\validate\validate_failed;
 use queryyetsimple\http\request as http_request;
 use queryyetsimple\session\interfaces\session as interfaces_session;
-use queryyetsimple\validate\exception\validate as exception_validate;
-use queryyetsimple\validate\interfaces\validate as interfaces_validate;
 
 /**
  * 请求验证
@@ -51,11 +51,11 @@ trait request {
      * 验证失败异常
      *
      * @param \queryyetsimple\http\request $oRequest            
-     * @param \queryyetsimple\validate\interfaces\validate $oValidate            
+     * @param \queryyetsimple\validate\ivalidate $oValidate            
      * @return void
      */
     protected function throwValidateException(http_request $oRequest, $oValidate) {
-        throw new exception_validate ( $oValidate, $this->validationResponse ( $oRequest, $this->validationErrors ( $oValidate ) ) );
+        throw new validate_failed ( $oValidate, $this->validationResponse ( $oRequest, $this->validationErrors ( $oValidate ) ) );
     }
     
     /**
@@ -72,16 +72,16 @@ trait request {
         
         return $this->getResponseComponent ()->redirect ( $this->getRedirectUrl ( $oRequest ), [ 
                 'make' => false 
-        ] )->clearErrors()->withErrors ( $arrErrors )->withInputs ( $oRequest->allAll () );
+        ] )->clearErrors ()->withErrors ( $arrErrors )->withInputs ( $oRequest->allAll () );
     }
     
     /**
      * 返回错误消息
      *
-     * @param \queryyetsimple\validate\interfaces\validate $oValidate            
+     * @param \queryyetsimple\validate\ivalidate $oValidate            
      * @return array
      */
-    protected function validationErrors(interfaces_validate $oValidate) {
+    protected function validationErrors(ivalidate $oValidate) {
         return $oValidate->error ();
     }
     
@@ -107,7 +107,7 @@ trait request {
     /**
      * 返回 validate 组件
      *
-     * @return \queryyetsimple\validate\interfaces\validate
+     * @return \queryyetsimple\validate\ivalidate
      */
     protected function getValidateComponent() {
         return project ( interfaces_validate::class );

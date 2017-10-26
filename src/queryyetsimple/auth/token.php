@@ -18,11 +18,11 @@ queryphp;
 use Exception;
 use queryyetsimple\http\request;
 use queryyetsimple\support\string;
+use queryyetsimple\validate\ivalidate;
 use queryyetsimple\mvc\interfaces\model;
 use queryyetsimple\auth\abstracts\connect;
 use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\auth\exception\login_failed;
-use queryyetsimple\validate\interfaces\validate;
 use queryyetsimple\auth\exception\register_failed;
 use queryyetsimple\encryption\interfaces\encryption;
 use queryyetsimple\auth\exception\change_password_failed;
@@ -71,14 +71,14 @@ class token extends connect implements interfaces_connect {
     /**
      * 验证
      *
-     * @var \queryyetsimple\validate\interfaces\validate
+     * @var \queryyetsimple\validate\ivalidate
      */
     protected $oValidate;
             
     /**
      * 验证
      *
-     * @var \queryyetsimple\validate\interfaces\validate
+     * @var \queryyetsimple\validate\ivalidate
      */
     protected $oCache;
     /**
@@ -101,9 +101,9 @@ class token extends connect implements interfaces_connect {
      * @param \queryyetsimple\session\interfaces\session $oSession            
      * @param \queryyetsimple\cookie\interfaces\cookie $oCookie            
      * @param \queryyetsimple\encryption\interfaces\encryption $oEncryption            
-     * @param \queryyetsimple\validate\interfaces\validate $oValidate            
+     * @param \queryyetsimple\validate\ivalidate $oValidate            
      */
-    public function __construct(array $arrOption, model $oUser, interfaces_session $oSession, cookie $oCookie, encryption $oEncryption, validate $oValidate,interfaces_cache $oCache) {
+    public function __construct(array $arrOption, model $oUser, interfaces_session $oSession, cookie $oCookie, encryption $oEncryption, ivalidate $oValidate,interfaces_cache $oCache) {
         $this->oUser = $oUser;
         $this->oSession = $oSession;
         $this->oCookie = $oCookie;

@@ -25,7 +25,7 @@ return [
         'singleton@validate' => [ 
                 [ 
                         'queryyetsimple\validate\validate',
-                        'queryyetsimple\validate\interfaces\validate' 
+                        'queryyetsimple\validate\ivalidate' 
                 ],
                 function ($oProject) {
                     return (new queryyetsimple\validate\validate ())->container ( $oProject );
