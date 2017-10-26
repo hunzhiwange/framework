@@ -31,7 +31,7 @@ return [
          * 根据不同的阶段设置不同的开发环境
          * 可以为 production : 生产环境 testing : 测试环境 development : 开发环境
          */
-        'app_environment' => env ( 'app_development', 'development' ),
+        'app_environment' => env ( 'app_environment', 'development' ),
         
         /**
          * ---------------------------------------------------------------
