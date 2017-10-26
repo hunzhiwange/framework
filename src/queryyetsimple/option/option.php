@@ -16,7 +16,6 @@ namespace queryyetsimple\option;
 queryphp;
 
 use ArrayAccess;
-use queryyetsimple\option\interfaces\option as interfaces_option;
 
 /**
  * 配置管理类
@@ -26,7 +25,7 @@ use queryyetsimple\option\interfaces\option as interfaces_option;
  * @since 2017.02.13
  * @version 1.0
  */
-class option implements ArrayAccess, interfaces_option {
+class option implements ArrayAccess, ioption {
     
     /**
      * 配置数据

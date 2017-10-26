@@ -23,7 +23,10 @@ queryphp;
  */
 return [ 
         'singleton@option' => [ 
-                'queryyetsimple\option\option',
+                [ 
+                        'queryyetsimple\option\option',
+                        'queryyetsimple\option\ioption' 
+                ],
                 function ($objProject) {
                     return new queryyetsimple\option\option ();
                 } 
