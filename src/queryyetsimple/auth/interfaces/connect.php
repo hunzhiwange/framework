@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\auth;
+namespace queryyetsimple\auth\interfaces;
 
 <<<queryphp
 ##########################################################
@@ -14,7 +14,17 @@ namespace queryyetsimple\auth;
 #                          |___ /  Since 2010.10.03      #
 ##########################################################
 queryphp;
-class auth {
-    public function __construct() {
-    }
+
+use queryyetsimple\support\interfaces\connect as interfaces_connect;
+
+/**
+ * connect 接口
+ *
+ * @author Xiangmin Liu <635750556@qq.com>
+ * @package $$
+ * @since 2017.09.07
+ * @version 1.0
+ */
+interface connect /* extends interfaces_connect */
+{
 }

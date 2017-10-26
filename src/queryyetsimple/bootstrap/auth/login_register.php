@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\auth;
+namespace queryyetsimple\bootstrap\auth;
 
 <<<queryphp
 ##########################################################
@@ -14,7 +14,17 @@ namespace queryyetsimple\auth;
 #                          |___ /  Since 2010.10.03      #
 ##########################################################
 queryphp;
-class auth {
-    public function __construct() {
-    }
+
+/**
+ * 用户登录和注册
+ *
+ * @author Xiangmin Liu <635750556@qq.com>
+ * @package $$
+ * @since 2017.09.09
+ * @version 1.0
+ */
+trait login_register {
+    
+    use login;
+    use register;
 }

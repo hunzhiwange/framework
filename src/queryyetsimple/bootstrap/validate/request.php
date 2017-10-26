@@ -67,12 +67,12 @@ trait request {
      */
     protected function validationResponse(http_request $oRequest, array $arrErrors) {
         if ($oRequest->isAjax () && ! $oRequest->isPjax ()) {
-            return $this->getResponseComponent ()->code ( 422 )->api ( $arrErrors );
+            return $this->getResponseComponent ()/*->code ( 422 )*/->api ( $arrErrors );
         }
         
         return $this->getResponseComponent ()->redirect ( $this->getRedirectUrl ( $oRequest ), [ 
                 'make' => false 
-        ] )->withErrors ( $arrErrors )->withInputs ( $oRequest->allAll () );
+        ] )->clearErrors()->withErrors ( $arrErrors )->withInputs ( $oRequest->allAll () );
     }
     
     /**
