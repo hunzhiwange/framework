@@ -15,8 +15,6 @@ namespace queryyetsimple\page;
 ##########################################################
 queryphp;
 
-use queryyetsimple\page\interfaces\page as interfaces_page;
-
 /**
  * 默认简单分页渲染
  *
@@ -30,11 +28,11 @@ class defaults_simple extends defaults {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\page\interfaces\page $objPage            
+     * @param \queryyetsimple\page\ipage $objPage            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(interfaces_page $objPage, array $arrOption = []) {
+    public function __construct(ipage $objPage, array $arrOption = []) {
         parent::__construct ( $objPage, $arrOption );
         $this->option ( 'template', '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}' );
     }

@@ -20,9 +20,6 @@ use ArrayAccess;
 use JsonSerializable;
 use queryyetsimple\support\interfaces\jsonable;
 use queryyetsimple\support\interfaces\arrayable;
-use queryyetsimple\page\abstracts\page as abstracts_page;
-use queryyetsimple\page\interfaces\page as interfaces_page;
-use queryyetsimple\page\interfaces\render as interfaces_render;
 
 /**
  * 分页处理
@@ -32,7 +29,7 @@ use queryyetsimple\page\interfaces\render as interfaces_render;
  * @since 2017.07.14
  * @version 1.0
  */
-class page extends abstracts_page implements interfaces_page, Countable, ArrayAccess, JsonSerializable, jsonable, arrayable {
+class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializable, jsonable, arrayable {
     
     /**
      * 构造函数
@@ -51,10 +48,10 @@ class page extends abstracts_page implements interfaces_page, Countable, ArrayAc
     /**
      * 渲染分页
      *
-     * @param \queryyetsimple\page\interfaces\render $objRender            
+     * @param \queryyetsimple\page\irender $objRender            
      * @return string
      */
-    public function render(interfaces_render $objRender = null) {
+    public function render(irender $objRender = null) {
         if (is_null ( $objRender )) {
             $objRender = 'queryyetsimple\page\\' . $this->getRender ();
             $objRender = new $objRender ( $this );

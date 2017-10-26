@@ -16,8 +16,6 @@ namespace queryyetsimple\page;
 queryphp;
 
 use queryyetsimple\support\option;
-use queryyetsimple\page\interfaces\render;
-use queryyetsimple\page\interfaces\page as interfaces_page;
 
 /**
  * 默认分页渲染
@@ -27,14 +25,14 @@ use queryyetsimple\page\interfaces\page as interfaces_page;
  * @since 2017.07.14
  * @version 1.0
  */
-class defaults implements render {
+class defaults implements irender {
     
     use option;
     
     /**
      * 分页
      *
-     * @var \queryyetsimple\page\interfaces\page
+     * @var \queryyetsimple\page\ipage
      */
     protected $objPage;
     
@@ -52,11 +50,11 @@ class defaults implements render {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\page\interfaces\page $objPage            
+     * @param \queryyetsimple\page\ipage $objPage            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(interfaces_page $objPage, array $arrOption = []) {
+    public function __construct(ipage $objPage, array $arrOption = []) {
         $this->objPage = $objPage;
         $this->options ( $arrOption );
         if ($this->objPage->getRenderOption ()) {

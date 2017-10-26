@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\page\abstracts;
+namespace queryyetsimple\page;
 
 <<<queryphp
 ##########################################################
@@ -28,7 +28,7 @@ use queryyetsimple\support\interfaces\htmlable;
  * @since 2017.07.14
  * @version 1.0
  */
-abstract class page implements htmlable {
+abstract class apage implements htmlable {
     
     use option;
     
