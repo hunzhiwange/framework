@@ -260,6 +260,13 @@ class select {
     protected $objCallSelect;
     
     /**
+     * 分页查询条件备份
+     *
+     * @var array
+     */
+    protected $arrBackupPage = [ ];
+    
+    /**
      * 构造函数
      *
      * @param \queryyetsimple\database\connect $objConnect            
@@ -906,6 +913,35 @@ class select {
             return $arrRow;
         }
         return $arrRow [$sAlias];
+    }
+    
+    /**
+     * 分页查询
+     *
+     * @param int $intPerPage            
+     * @param mixed $mixCols            
+     * @param array $arrOption            
+     * @return array
+     */
+    public function paginate($intPerPage = 10, $mixCols = '*', array $arrOption = []) {
+        $objPage = new \queryyetsimple\page\page_with_total ( $intPerPage, $this->getPaginateCount ( $mixCols ), $arrOption );
+        return [ 
+                $objPage,
+                $this->limit ( $objPage->getFirstRecord (), $intPerPage )->getAll () 
+        ];
+    }
+    
+    /**
+     * 取得分页查询记录数量
+     *
+     * @param mixed $mixCols            
+     * @return int
+     */
+    public function getPaginateCount($mixCols = '*') {
+        $this->backupPaginateArgs ();
+        $intCount = $this->getCount ( is_array ( $mixCols ) ? reset ( $mixCols ) : $mixCols );
+        $this->restorePaginateArgs ();
+        return $intCount;
     }
     
     // ######################################################
@@ -3841,6 +3877,29 @@ class select {
     protected function initOption() {
         $this->arrOption = static::$arrOptionDefault;
         $this->arrQueryParams = static::$arrQueryParamsDefault;
+    }
+    
+    /**
+     * 备份分页查询条件
+     *
+     * @return void
+     */
+    protected function backupPaginateArgs() {
+        $this->arrBackupPage = [ ];
+        $this->arrBackupPage ['aggregate'] = $this->arrOption ['aggregate'];
+        $this->arrBackupPage ['query_params'] = $this->arrQueryParams;
+        $this->arrBackupPage ['columns'] = $this->arrOption ['columns'];
+    }
+    
+    /**
+     * 恢复分页查询条件
+     *
+     * @return void
+     */
+    protected function restorePaginateArgs() {
+        $this->arrOption ['aggregate'] = $this->arrBackupPage ['aggregate'];
+        $this->arrQueryParams = $this->arrBackupPage ['query_params'];
+        $this->arrOption ['columns'] = $this->arrBackupPage ['columns'];
     }
     
     // ######################################################
