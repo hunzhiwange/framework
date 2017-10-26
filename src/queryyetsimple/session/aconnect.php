@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\session\abstracts;
+namespace queryyetsimple\session;
 
 <<<queryphp
 ##########################################################
@@ -19,14 +19,14 @@ use SessionHandler;
 use queryyetsimple\support\option;
 
 /**
- * connect 驱动抽象类
+ * aconnect 驱动抽象类
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.06
  * @version 1.0
  */
-abstract class connect {
+abstract class aconnect {
     
     use option;
     

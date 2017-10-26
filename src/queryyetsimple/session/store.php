@@ -20,7 +20,6 @@ use BadMethodCallException;
 use SessionHandlerInterface;
 use queryyetsimple\support\option;
 use queryyetsimple\support\assert;
-use queryyetsimple\session\interfaces\store as interfaces_store;
 
 /**
  * session 存储
@@ -30,7 +29,7 @@ use queryyetsimple\session\interfaces\store as interfaces_store;
  * @since 2017.04.17
  * @version 1.0
  */
-class store implements interfaces_store {
+class store implements istore {
     
     use option;
     

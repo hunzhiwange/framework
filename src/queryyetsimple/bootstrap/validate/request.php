@@ -16,10 +16,10 @@ namespace queryyetsimple\bootstrap\validate;
 queryphp;
 
 use queryyetsimple\http\response;
+use queryyetsimple\session\isession;
 use queryyetsimple\validate\ivalidate;
 use queryyetsimple\validate\validate_failed;
 use queryyetsimple\http\request as http_request;
-use queryyetsimple\session\interfaces\session as interfaces_session;
 
 /**
  * 请求验证
@@ -116,10 +116,10 @@ trait request {
     /**
      * 返回 session 组件
      *
-     * @return \queryyetsimple\session\interfaces\session
+     * @return \queryyetsimple\session\isession
      */
     protected function getSessionComponent() {
-        return project ( interfaces_session::class );
+        return project ( isession::class );
     }
     
     /**

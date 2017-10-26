@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\session\interfaces;
+namespace queryyetsimple\session;
 
 <<<queryphp
 ##########################################################
@@ -18,7 +18,7 @@ queryphp;
 use SessionHandlerInterface;
 
 /**
- * session 接口
+ * isession 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$

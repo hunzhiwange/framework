@@ -18,7 +18,6 @@ queryphp;
 use Exception;
 use SessionHandlerInterface;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\session\interfaces\session as interfaces_session;
 
 /**
  * session 入口
@@ -28,7 +27,7 @@ use queryyetsimple\session\interfaces\session as interfaces_session;
  * @since 2017.02.15
  * @version 1.0
  */
-class session implements interfaces_session {
+class session implements isession {
     
     /**
      * IOC Container

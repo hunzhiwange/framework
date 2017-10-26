@@ -16,7 +16,6 @@ namespace queryyetsimple\session;
 queryphp;
 
 use SessionHandlerInterface;
-use queryyetsimple\session\abstracts\connect;
 use queryyetsimple\cache\memcache as cache_memcache;
 
 /**
@@ -27,7 +26,7 @@ use queryyetsimple\cache\memcache as cache_memcache;
  * @since 2017.06.05
  * @version 1.0
  */
-class memcache extends connect implements SessionHandlerInterface {
+class memcache extends aconnect implements SessionHandlerInterface {
     
     /**
      * 配置

@@ -25,7 +25,7 @@ return [
         'singleton@session' => [ 
                 [ 
                         'queryyetsimple\session\session',
-                        'queryyetsimple\session\interfaces\session' 
+                        'queryyetsimple\session\isession' 
                 ],
                 function ($oProject) {
                     return new queryyetsimple\session\session ( $oProject );

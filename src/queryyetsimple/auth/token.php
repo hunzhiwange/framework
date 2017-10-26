@@ -18,6 +18,7 @@ queryphp;
 use Exception;
 use queryyetsimple\http\request;
 use queryyetsimple\support\string;
+use queryyetsimple\session\isession;
 use queryyetsimple\validate\ivalidate;
 use queryyetsimple\mvc\interfaces\model;
 use queryyetsimple\auth\abstracts\connect;
@@ -26,9 +27,8 @@ use queryyetsimple\auth\exception\login_failed;
 use queryyetsimple\auth\exception\register_failed;
 use queryyetsimple\encryption\interfaces\encryption;
 use queryyetsimple\auth\exception\change_password_failed;
-use queryyetsimple\auth\interfaces\connect as interfaces_connect;
-use queryyetsimple\session\interfaces\session as interfaces_session;
 use queryyetsimple\cache\interfaces\cache as interfaces_cache;
+use queryyetsimple\auth\interfaces\connect as interfaces_connect;
 
 /**
  * auth.token
@@ -50,7 +50,7 @@ class token extends connect implements interfaces_connect {
     /**
      * session
      *
-     * @var \queryyetsimple\session\interfaces\session
+     * @var \queryyetsimple\session\isession
      */
     protected $oSession;
     
@@ -74,7 +74,7 @@ class token extends connect implements interfaces_connect {
      * @var \queryyetsimple\validate\ivalidate
      */
     protected $oValidate;
-            
+    
     /**
      * 验证
      *
@@ -98,19 +98,19 @@ class token extends connect implements interfaces_connect {
      *
      * @param array $arrOption            
      * @param \queryyetsimple\mvc\interfaces\model $oUser            
-     * @param \queryyetsimple\session\interfaces\session $oSession            
+     * @param \queryyetsimple\session\isession $oSession            
      * @param \queryyetsimple\cookie\interfaces\cookie $oCookie            
      * @param \queryyetsimple\encryption\interfaces\encryption $oEncryption            
      * @param \queryyetsimple\validate\ivalidate $oValidate            
      */
-    public function __construct(array $arrOption, model $oUser, interfaces_session $oSession, cookie $oCookie, encryption $oEncryption, ivalidate $oValidate,interfaces_cache $oCache) {
+    public function __construct(array $arrOption, model $oUser, isession $oSession, cookie $oCookie, encryption $oEncryption, ivalidate $oValidate, interfaces_cache $oCache) {
         $this->oUser = $oUser;
         $this->oSession = $oSession;
         $this->oCookie = $oCookie;
         $this->oEncryption = $oEncryption;
         $this->oValidate = $oValidate;
         $this->oCache = $oCache;
-
+        
         parent::__construct ( $arrOption );
     }
     
@@ -165,12 +165,15 @@ class token extends connect implements interfaces_connect {
         
         if (! $this->checkPassword ( $sPassword, $oUser->{$this->getField ( 'password' )}, $oUser->{$this->getField ( 'random' )} ))
             throw new login_failed ( __ ( '账号或者密码错误' ) );
-
-        $this->setCookieName( $strAuth = $this->getOption('cookie').md5($oUser->{$this->getField ( 'name' )}.$oUser->{$this->getField ( 'password' )}.string::randAlphaNum(5) ) );
+        
+        $this->setCookieName ( $strAuth = $this->getOption ( 'cookie' ) . md5 ( $oUser->{$this->getField ( 'name' )} . $oUser->{$this->getField ( 'password' )} . string::randAlphaNum ( 5 ) ) );
         
         $this->sendCookie ( $oUser->{$this->getField ( 'id' )}, $oUser->{$this->getField ( 'password' )}, $mixLoginTime );
-
-        return [$oUser, $strAuth];
+        
+        return [ 
+                $oUser,
+                $strAuth 
+        ];
     }
     
     /**
@@ -179,8 +182,8 @@ class token extends connect implements interfaces_connect {
      * @return void
      */
     public function logout() {
-        //$this->oCookie->delete ( $this->getCookieName () );
-        $this->oCache->delele($this->getCookieName ());
+        // $this->oCookie->delete ( $this->getCookieName () );
+        $this->oCache->delele ( $this->getCookieName () );
         $this->oSession->delete ( $this->getSessionName () );
     }
     
@@ -366,17 +369,14 @@ class token extends connect implements interfaces_connect {
      *
      * @return string
      */
-    
     protected $strSessionName;
-
-    protected function setSessionName($strSessionName){
-        return $this->strSessionName=$strSessionName;
+    protected function setSessionName($strSessionName) {
+        return $this->strSessionName = $strSessionName;
     }
-
     protected function getSessionName() {
-        if(!is_null($this->strSessionName))
+        if (! is_null ( $this->strSessionName ))
             return $this->strSessionName;
-
+        
         return $this->strSessionName = $this->getOption ( 'prefix' ) . $this->getOption ( 'session' );
     }
     
@@ -385,17 +385,14 @@ class token extends connect implements interfaces_connect {
      *
      * @return string
      */
-    
     protected $strCookieName;
-
-    protected function setCookieName($strCookieName){
-        return $this->strCookieName=$strCookieName;
+    protected function setCookieName($strCookieName) {
+        return $this->strCookieName = $strCookieName;
     }
-
     protected function getCookieName() {
-        if(!is_null($this->strCookieName))
+        if (! is_null ( $this->strCookieName ))
             return $this->strCookieName;
-
+        
         return $this->strCookieNam = $this->getOption ( 'prefix' ) . $this->getOption ( 'cookie' );
     }
     
