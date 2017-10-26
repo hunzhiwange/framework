@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\view\interfaces;
+namespace queryyetsimple\view;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,36 @@ namespace queryyetsimple\view\interfaces;
 queryphp;
 
 /**
- * theme 接口
+ * itheme 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.23
  * @version 1.0
  */
-interface theme {
+interface itheme {
+    
+    /**
+     * 设置 parse 解析回调
+     *
+     * @param callable $calParseResolver            
+     * @return void
+     */
+    public static function setParseResolver($calParseResolver);
+    
+    /**
+     * 解析 parse
+     *
+     * @return \queryyetsimple\view\parser
+     */
+    public function resolverParse();
+    
+    /**
+     * 获取分析器
+     *
+     * @return \queryyetsimple\view\iparser
+     */
+    public function parser();
     
     /**
      * 加载视图文件

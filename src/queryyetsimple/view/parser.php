@@ -20,7 +20,6 @@ use queryyetsimple\support\stack;
 use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\option;
-use queryyetsimple\view\interfaces\parser as interfaces_parser;
 
 /**
  * 分析模板
@@ -31,14 +30,14 @@ use queryyetsimple\view\interfaces\parser as interfaces_parser;
  * @see http://jecat.cn 模板引擎架构
  * @version 1.0
  */
-class parser implements interfaces_parser {
+class parser implements iparser {
     
     use option;
     
     /**
-     * 项目容器
+     * 编译器
      *
-     * @var \queryyetsimple\view\compiler
+     * @var \queryyetsimple\view\icompiler
      */
     protected $objCompiler;
     
@@ -170,11 +169,11 @@ class parser implements interfaces_parser {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\view\compiler $objParse            
+     * @param \queryyetsimple\view\icompiler $objParse            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(compiler $objCompiler, array $arrOption = []) {
+    public function __construct(icompiler $objCompiler, array $arrOption = []) {
         $this->objCompiler = $objCompiler;
         $this->options ( $arrOption );
     }

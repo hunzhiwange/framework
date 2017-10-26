@@ -25,7 +25,7 @@ return [
         'singleton@view.compiler' => [ 
                 [ 
                         'queryyetsimple\view\compiler',
-                        'queryyetsimple\view\interfaces\compiler' 
+                        'queryyetsimple\view\icompiler' 
                 ],
                 function ($oProject) {
                     $arrOption = [ ];
@@ -44,7 +44,7 @@ return [
         'singleton@view.parser' => [ 
                 [ 
                         'queryyetsimple\view\parser',
-                        'queryyetsimple\view\interfaces\parser' 
+                        'queryyetsimple\view\iparser' 
                 ],
                 function ($oProject) {
                     return (new queryyetsimple\view\parser ( $oProject ['view.compiler'], [ 
@@ -55,7 +55,7 @@ return [
         'singleton@view.theme' => [ 
                 [ 
                         'queryyetsimple\view\theme',
-                        'queryyetsimple\view\interfaces\theme' 
+                        'queryyetsimple\view\itheme' 
                 ],
                 function ($oProject) {
                     $arrOption = [ ];
@@ -72,13 +72,17 @@ return [
                         $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
                     }
                     
-                    $arrOption ['app_environment'] = $oProject ['option'] ['app_environment'];
+                    $arrOption ['app_development'] = $oProject->development ();
                     $arrOption ['app_name'] = $oProject ['app_name'];
                     $arrOption ['controller_name'] = $oProject ['controller_name'];
                     $arrOption ['action_name'] = $oProject ['action_name'];
                     $arrOption ['theme_cache_path'] = $oProject->pathApplicationCache ( 'theme' );
                     
-                    return (new queryyetsimple\view\theme ( $oProject ['view.parser'], $oProject ['cookie'], $arrOption ))->parseContext ( $oProject->pathApplicationDir ( 'theme' ) );
+                    queryyetsimple\view\theme::setParseResolver ( function () use($oProject) {
+                        return $oProject ['view.parser'];
+                    } );
+                    
+                    return (new queryyetsimple\view\theme ( $oProject ['cookie'], $arrOption ))->parseContext ( $oProject->pathApplicationDir ( 'theme' ) );
                 } 
         ] 
 ];

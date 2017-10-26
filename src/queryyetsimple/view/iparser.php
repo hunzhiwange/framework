@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\view\interfaces;
+namespace queryyetsimple\view;
 
 <<<queryphp
 ##########################################################
@@ -16,33 +16,52 @@ namespace queryyetsimple\view\interfaces;
 queryphp;
 
 /**
- * compiler 接口
+ * iparser 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.23
  * @version 1.0
  */
-interface compiler {
+interface iparser {
     
     /**
-     * 获取编译器
+     * 注册视图编译器
      *
-     * @return array
+     * @return $this
      */
-    public function getCompilers();
+    public function registerCompilers();
     
     /**
-     * node.tag
+     * 注册视图分析器
      *
-     * @return array
+     * @return $this
      */
-    public function getNodeTagHelp();
+    public function registerParsers();
     
     /**
-     * js.tag
+     * 执行编译
      *
-     * @return array
+     * @param string $sFile            
+     * @param string $sCachePath            
+     * @param boolean $bReturn            
+     * @return string
      */
-    public function getJsTagHelp();
+    public function doCombile($sFile, $sCachePath, $bReturn = false);
+    
+    /**
+     * code 编译编码，后还原
+     *
+     * @param string $sContent            
+     * @return string
+     */
+    public static function revertEncode($sContent);
+    
+    /**
+     * tagself 编译编码，后还原
+     *
+     * @param string $sContent            
+     * @return string
+     */
+    public static function globalEncode($sContent);
 }

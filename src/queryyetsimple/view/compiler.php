@@ -18,7 +18,6 @@ queryphp;
 use InvalidArgumentException;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\option;
-use queryyetsimple\view\interfaces\compiler as interfaces_compiler;
 
 /**
  * 编译器列表
@@ -28,7 +27,7 @@ use queryyetsimple\view\interfaces\compiler as interfaces_compiler;
  * @since 2016.11.18
  * @version 1.0
  */
-class compiler implements interfaces_compiler {
+class compiler implements icompiler {
     
     use option;
     

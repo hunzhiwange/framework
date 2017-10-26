@@ -17,7 +17,7 @@ queryphp;
 
 use Closure;
 use RuntimeException;
-use queryyetsimple\view\interfaces\theme;
+use queryyetsimple\view\itheme;
 use queryyetsimple\mvc\interfaces\view as interfaces_view;
 
 /**
@@ -33,7 +33,7 @@ class view implements interfaces_view {
     /**
      * 视图模板
      *
-     * @var \queryyessimple\view\interfaces\theme
+     * @var \queryyessimple\view\itheme
      */
     protected $objTheme;
     
@@ -54,10 +54,10 @@ class view implements interfaces_view {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\view\interfaces\theme $objTheme            
+     * @param \queryyetsimple\view\itheme $objTheme            
      * @return void
      */
-    public function __construct(theme $objTheme) {
+    public function __construct(itheme $objTheme) {
         $this->objTheme = $objTheme;
     }
     

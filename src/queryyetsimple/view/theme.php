@@ -18,9 +18,8 @@ queryphp;
 use RuntimeException;
 use InvalidArgumentException;
 use queryyetsimple\support\option;
-use queryyetsimple\view\interfaces\parser;
+use queryyetsimple\support\assert;
 use queryyetsimple\cookie\interfaces\cookie;
-use queryyetsimple\view\interfaces\theme as interfaces_theme;
 
 /**
  * 模板处理类
@@ -30,16 +29,23 @@ use queryyetsimple\view\interfaces\theme as interfaces_theme;
  * @since 2016.11.18
  * @version 1.0
  */
-class theme implements interfaces_theme {
+class theme implements itheme {
     
     use option;
     
     /**
      * 视图分析器
      *
-     * @var \queryyetsimple\view\parser
+     * @var \queryyetsimple\view\iparser
      */
     protected $objParse;
+    
+    /**
+     * 解析 parse
+     *
+     * @var callable
+     */
+    protected static $calParseResolver;
     
     /**
      * cookie 处理
@@ -68,7 +74,7 @@ class theme implements interfaces_theme {
      * @var array
      */
     protected $arrOption = [ 
-            'app_environment' => false,
+            'app_development' => false,
             'app_name' => 'home',
             'controller_name' => 'index',
             'action_name' => 'index',
@@ -87,15 +93,46 @@ class theme implements interfaces_theme {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\view\parser $objParse            
      * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(parser $objParse, cookie $objCookie, array $arrOption = []) {
-        $this->objParse = $objParse;
+    public function __construct(cookie $objCookie, array $arrOption = []) {
         $this->objCookie = $objCookie;
         $this->options ( $arrOption );
+    }
+    
+    /**
+     * 设置 parse 解析回调
+     *
+     * @param callable $calParseResolver            
+     * @return void
+     */
+    public static function setParseResolver($calParseResolver) {
+        assert::callback ( $calParseResolver );
+        static::$calParseResolver = $calParseResolver;
+    }
+    
+    /**
+     * 解析 parse
+     *
+     * @return \queryyetsimple\view\iparser
+     */
+    public function resolverParse() {
+        if (! static::$calParseResolver)
+            throw new RuntimeException ( 'Theme not set parse resolver' );
+        return call_user_func ( static::$calParseResolver );
+    }
+    
+    /**
+     * 获取分析器
+     *
+     * @return \queryyetsimple\view\iparser
+     */
+    public function parser() {
+        if (! is_null ( $this->objParse ))
+            return $this->objParse;
+        return $this->objParse = $this->resolverParse ();
     }
     
     /**
@@ -135,7 +172,7 @@ class theme implements interfaces_theme {
         
         $sCachePath = $this->getCachePath ( $sFile ); // 编译文件路径
         if ($this->isCacheExpired ( $sFile, $sCachePath )) { // 重新编译
-            $this->objParse->doCombile ( $sFile, $sCachePath );
+            $this->parser ()->doCombile ( $sFile, $sCachePath );
         }
         
         // 逐步将子模板缓存写入父模板至到最后
@@ -379,7 +416,7 @@ class theme implements interfaces_theme {
      */
     protected function isCacheExpired($sFile, $sCachePath) {
         // 开启调试
-        if ($this->getOption ( 'app_environment' )) {
+        if ($this->getOption ( 'app_development' )) {
             return true;
         }
         
