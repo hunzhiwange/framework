@@ -18,6 +18,7 @@
         "queryyetsimple/log": "1.0.*",
         "queryyetsimple/option": "1.0.*",
         "queryyetsimple/support": "1.0.*",
+        "queryyetsimple/page": "1.0.*",
         "robmorgan/phinx": "^0.8.0"
     },
     "autoload": {

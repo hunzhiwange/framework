@@ -22,6 +22,7 @@ use queryyetsimple\support\assert;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\collection;
 use queryyetsimple\support\flow_control;
+use queryyetsimple\page\page_with_total;
 
 /**
  * 数据库查询器
@@ -924,7 +925,7 @@ class select {
      * @return array
      */
     public function paginate($intPerPage = 10, $mixCols = '*', array $arrOption = []) {
-        $objPage = new \queryyetsimple\page\page_with_total ( $intPerPage, $this->getPaginateCount ( $mixCols ), $arrOption );
+        $objPage = new page_with_total ( $intPerPage, $this->getPaginateCount ( $mixCols ), $arrOption );
         return [ 
                 $objPage,
                 $this->limit ( $objPage->getFirstRecord (), $intPerPage )->getAll () 
