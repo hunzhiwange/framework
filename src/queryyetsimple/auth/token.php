@@ -18,6 +18,7 @@ queryphp;
 use Exception;
 use queryyetsimple\mvc\imodel;
 use queryyetsimple\http\request;
+use queryyetsimple\cache\icache;
 use queryyetsimple\support\string;
 use queryyetsimple\session\isession;
 use queryyetsimple\validate\ivalidate;
@@ -27,7 +28,6 @@ use queryyetsimple\auth\exception\login_failed;
 use queryyetsimple\auth\exception\register_failed;
 use queryyetsimple\encryption\interfaces\encryption;
 use queryyetsimple\auth\exception\change_password_failed;
-use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 use queryyetsimple\auth\interfaces\connect as interfaces_connect;
 
 /**
@@ -103,7 +103,7 @@ class token extends connect implements interfaces_connect {
      * @param \queryyetsimple\encryption\interfaces\encryption $oEncryption            
      * @param \queryyetsimple\validate\ivalidate $oValidate            
      */
-    public function __construct(array $arrOption, imodel $oUser, isession $oSession, cookie $oCookie, encryption $oEncryption, ivalidate $oValidate, interfaces_cache $oCache) {
+    public function __construct(array $arrOption, imodel $oUser, isession $oSession, cookie $oCookie, encryption $oEncryption, ivalidate $oValidate, icache $oCache) {
         $this->oUser = $oUser;
         $this->oSession = $oSession;
         $this->oCookie = $oCookie;

@@ -18,8 +18,6 @@ queryphp;
 use InvalidArgumentException;
 use queryyetsimple\support\option;
 use queryyetsimple\filesystem\fso;
-use queryyetsimple\cache\interfaces\connect;
-use queryyetsimple\cache\abstracts\cache as abstracts_connect;
 
 /**
  * 文件缓存
@@ -29,7 +27,7 @@ use queryyetsimple\cache\abstracts\cache as abstracts_connect;
  * @since 2017.02.15
  * @version 1.0
  */
-class file extends abstracts_connect implements connect {
+class file extends acache implements iconnect {
     
     use option;
     

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\cache\interfaces;
+namespace queryyetsimple\cache;
 
 <<<queryphp
 ##########################################################
@@ -15,8 +15,6 @@ namespace queryyetsimple\cache\interfaces;
 ##########################################################
 queryphp;
 
-use queryyetsimple\cache\interfaces\connect;
-
 /**
  * cache 接口
  *
@@ -25,23 +23,23 @@ use queryyetsimple\cache\interfaces\connect;
  * @since 2017.04.23
  * @version 1.0
  */
-interface cache {
+interface icache {
     
     /**
      * 连接缓存并返回连接对象
      *
      * @param array $arrOption            
-     * @return \queryyetsimple\abstracts\cache
+     * @return \queryyetsimple\acache
      */
     public function connect($arrOption = []);
     
     /**
      * 创建一个缓存仓库
      *
-     * @param \queryyetsimple\cache\interfaces\connect $objCache            
+     * @param \queryyetsimple\cache\iconnect $objCache            
      * @return \queryyetsimple\cache\repository
      */
-    public function repository(connect $objCache);
+    public function repository(iconnect $objCache);
     
     /**
      * 返回默认连接

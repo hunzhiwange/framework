@@ -16,9 +16,7 @@ namespace queryyetsimple\cache;
 queryphp;
 
 use Exception;
-use queryyetsimple\cache\interfaces\connect;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\cache\interfaces\cache as interfaces_cache;
 
 /**
  * 缓存入口
@@ -28,7 +26,7 @@ use queryyetsimple\cache\interfaces\cache as interfaces_cache;
  * @since 2017.02.15
  * @version 1.0
  */
-class cache implements interfaces_cache {
+class cache implements icache {
     
     /**
      * IOC Container
@@ -78,10 +76,10 @@ class cache implements interfaces_cache {
     /**
      * 创建一个缓存仓库
      *
-     * @param \queryyetsimple\cache\interfaces\connect $objCache            
+     * @param \queryyetsimple\cache\iconnect $objCache            
      * @return \queryyetsimple\cache\repository
      */
-    public function repository(connect $objCache) {
+    public function repository(iconnect $objCache) {
         return new repository ( $objCache );
     }
     

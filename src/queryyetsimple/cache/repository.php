@@ -17,8 +17,6 @@ queryphp;
 
 use Exception;
 use queryyetsimple\support\infinity;
-use queryyetsimple\cache\interfaces\connect;
-use queryyetsimple\cache\interfaces\repository as interfaces_repository;
 
 /**
  * 缓存入口
@@ -28,7 +26,7 @@ use queryyetsimple\cache\interfaces\repository as interfaces_repository;
  * @since 2017.02.15
  * @version 1.0
  */
-class repository implements interfaces_repository {
+class repository implements irepository {
     
     use infinity {
         __call as infinityCall;
@@ -37,14 +35,14 @@ class repository implements interfaces_repository {
     /**
      * 缓存连接对象
      *
-     * @var \queryyetsimple\cache\interfaces\cache
+     * @var \queryyetsimple\cache\icache
      */
     protected $objConnect;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\cache\interfaces\connect $objConnect            
+     * @param \queryyetsimple\cache\iconnect $objConnect            
      * @return void
      */
     public function __construct(connect $objConnect) {

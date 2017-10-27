@@ -109,7 +109,7 @@ interface irate_limiter {
     /**
      * 返回缓存组件
      *
-     * @return \queryyetsimple\cache\interfaces\repository
+     * @return \queryyetsimple\cache\irepository
      */
     public function getCache();
 }

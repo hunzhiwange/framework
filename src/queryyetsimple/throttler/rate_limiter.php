@@ -17,7 +17,7 @@ queryphp;
 
 use Countable;
 use RuntimeException;
-use queryyetsimple\cache\interfaces\repository;
+use queryyetsimple\cache\irepository;
 use queryyetsimple\support\interfaces\arrayable;
 
 /**
@@ -33,7 +33,7 @@ class rate_limiter implements irate_limiter, Countable, arrayable {
     /**
      * 缓存接口
      *
-     * @var \queryyetsimple\cache\interfaces\repository
+     * @var \queryyetsimple\cache\irepository
      */
     protected $objCache;
     
@@ -119,13 +119,13 @@ class rate_limiter implements irate_limiter, Countable, arrayable {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\cache\interfaces\repository $objCache            
+     * @param \queryyetsimple\cache\irepository $objCache            
      * @param string $strKey            
      * @param string $intXRateLimitLimit            
      * @param string $intXRateLimitTime            
      * @return void
      */
-    public function __construct(repository $objCache, $strKey, $intXRateLimitLimit = 60, $intXRateLimitTime = 60) {
+    public function __construct(irepository $objCache, $strKey, $intXRateLimitLimit = 60, $intXRateLimitTime = 60) {
         $this->objCache = $objCache;
         $this->strKey = $strKey;
         $this->intXRateLimitLimit = $intXRateLimitLimit;
@@ -277,7 +277,7 @@ class rate_limiter implements irate_limiter, Countable, arrayable {
     /**
      * 返回缓存组件
      *
-     * @return \queryyetsimple\cache\interfaces\repository
+     * @return \queryyetsimple\cache\irepository
      */
     public function getCache() {
         return $this->objCache;

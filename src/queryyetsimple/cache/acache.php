@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\cache\abstracts;
+namespace queryyetsimple\cache;
 
 <<<queryphp
 ##########################################################
@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.02.15
  * @version 1.0
  */
-abstract class cache {
+abstract class acache {
     
     /**
      * 缓存服务句柄

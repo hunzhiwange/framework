@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\cache\interfaces;
+namespace queryyetsimple\cache;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,14 @@ namespace queryyetsimple\cache\interfaces;
 queryphp;
 
 /**
- * repository 接口
+ * iconnect 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.23
  * @version 1.0
  */
-interface repository {
+interface iconnect {
     
     /**
      * 获取缓存
@@ -53,6 +53,15 @@ interface repository {
      * @return void
      */
     public function delele($sCacheName, array $arrOption = []);
+
+    /**
+     * 批量插入
+     *
+     * @param string|array $mixKey            
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function put($mixKey, $mixValue = null);
     
     /**
      * 返回缓存句柄

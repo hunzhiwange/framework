@@ -23,7 +23,10 @@ queryphp;
  */
 return [ 
         'singleton@cache' => [ 
-                'queryyetsimple\cache\cache',
+                [ 
+                        'queryyetsimple\cache\cache',
+                        'queryyetsimple\cache\icache' 
+                ],
                 function ($oProject) {
                     return new queryyetsimple\cache\cache ( $oProject );
                 } 

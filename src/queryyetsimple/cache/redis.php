@@ -18,8 +18,6 @@ queryphp;
 use Redis as Rediss;
 use RuntimeException;
 use queryyetsimple\support\option;
-use queryyetsimple\cache\interfaces\connect;
-use queryyetsimple\cache\abstracts\cache as abstracts_connect;
 
 /**
  * redis 扩展缓存
@@ -29,7 +27,7 @@ use queryyetsimple\cache\abstracts\cache as abstracts_connect;
  * @since 2017.06.05
  * @version 1.0
  */
-class redis extends abstracts_connect implements connect {
+class redis extends acache implements iconnect {
     
     use option;
     
