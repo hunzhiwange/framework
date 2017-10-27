@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\filesystem\interfaces;
+namespace queryyetsimple\filesystem;
 
 <<<queryphp
 ##########################################################
@@ -16,12 +16,12 @@ namespace queryyetsimple\filesystem\interfaces;
 queryphp;
 
 /**
- * store 接口
+ * istore 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.29
  * @version 1.0
  */
-interface store {
+interface istore {
 }

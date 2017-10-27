@@ -16,8 +16,6 @@ namespace queryyetsimple\filesystem;
 queryphp;
 
 use League\Flysystem\Sftp\SftpAdapter;
-use queryyetsimple\filesystem\abstracts\connect;
-use queryyetsimple\filesystem\interfaces\connect as interfaces_connect;
 
 /**
  * filesystem.sftp
@@ -28,7 +26,7 @@ use queryyetsimple\filesystem\interfaces\connect as interfaces_connect;
  * @see https://flysystem.thephpleague.com/adapter/sftp/
  * @version 1.0
  */
-class sftp extends connect implements interfaces_connect {
+class sftp extends aconnect implements iconnect {
     
     /**
      * 配置

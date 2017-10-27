@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\filesystem\interfaces;
+namespace queryyetsimple\filesystem;
 
 <<<queryphp
 ##########################################################
@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.08.29
  * @version 1.0
  */
-interface filesystem {
+interface ifilesystem {
     
     /**
      * 连接 filesystem 并返回连接对象
@@ -36,7 +36,7 @@ interface filesystem {
     /**
      * 创建 filesystem store
      *
-     * @param \queryyetsimple\filesystem\interfaces\connect $oConnect            
+     * @param \queryyetsimple\filesystem\iconnect $oConnect            
      * @return \queryyetsimple\filesystem\store
      */
     public function store($oConnect);

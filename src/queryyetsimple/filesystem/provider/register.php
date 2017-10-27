@@ -25,7 +25,7 @@ return [
         'singleton@filesystem' => [ 
                 [ 
                         'queryyetsimple\filesystem\filesystem',
-                        'queryyetsimple\filesystem\interfaces\filesystem' 
+                        'queryyetsimple\filesystem\ifilesystem' 
                 ],
                 function ($oProject) {
                     return new queryyetsimple\filesystem\filesystem ( $oProject );

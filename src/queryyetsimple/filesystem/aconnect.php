@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\filesystem\abstracts;
+namespace queryyetsimple\filesystem;
 
 <<<queryphp
 ##########################################################
@@ -27,7 +27,7 @@ use queryyetsimple\support\option;
  * @see https://flysystem.thephpleague.com/api/
  * @version 1.0
  */
-abstract class connect {
+abstract class aconnect {
     
     use option;
     

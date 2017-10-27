@@ -16,9 +16,7 @@ namespace queryyetsimple\filesystem;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\filesystem\abstracts\connect;
 use League\Flysystem\Adapter\Local as AdapterLocal;
-use queryyetsimple\filesystem\interfaces\connect as interfaces_connect;
 
 /**
  * filesystem.local
@@ -29,7 +27,7 @@ use queryyetsimple\filesystem\interfaces\connect as interfaces_connect;
  * @see https://flysystem.thephpleague.com/adapter/local/
  * @version 1.0
  */
-class local extends connect implements interfaces_connect {
+class local extends aconnect implements iconnect {
     
     /**
      * 配置

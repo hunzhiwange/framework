@@ -16,9 +16,7 @@ namespace queryyetsimple\filesystem;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\filesystem\abstracts\connect;
 use League\Flysystem\ZipArchive\ZipArchiveAdapter;
-use queryyetsimple\filesystem\interfaces\connect as interfaces_connect;
 
 /**
  * filesystem.zip
@@ -29,7 +27,7 @@ use queryyetsimple\filesystem\interfaces\connect as interfaces_connect;
  * @see https://flysystem.thephpleague.com/adapter/zip-archive/
  * @version 1.0
  */
-class zip extends connect implements interfaces_connect {
+class zip extends aconnect implements iconnect {
     
     /**
      * 配置
@@ -47,7 +45,7 @@ class zip extends connect implements interfaces_connect {
      */
     public function makeConnect() {
         if (empty ( $this->getOption ( 'path' ) )) {
-            throw new InvalidArgumentException ( 'The local requires path option' );
+            throw new InvalidArgumentException ( 'The zip requires path option' );
         }
         
         if (! class_exists ( 'League\Flysystem\ZipArchive\ZipArchiveAdapter' )) {

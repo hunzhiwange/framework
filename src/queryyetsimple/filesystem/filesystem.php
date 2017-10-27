@@ -18,7 +18,6 @@ queryphp;
 use Exception;
 use InvalidArgumentException;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\filesystem\interfaces\filesystem as interfaces_filesystem;
 
 /**
  * filesystem 入口
@@ -52,7 +51,7 @@ use queryyetsimple\filesystem\interfaces\filesystem as interfaces_filesystem;
  * @since 2017.08.29
  * @version 1.0
  */
-class filesystem implements interfaces_filesystem {
+class filesystem implements ifilesystem {
     
     /**
      * IOC Container
@@ -101,7 +100,7 @@ class filesystem implements interfaces_filesystem {
     /**
      * 创建 filesystem store
      *
-     * @param \queryyetsimple\filesystem\interfaces\connect $oConnect            
+     * @param \queryyetsimple\filesystem\iconnect $oConnect            
      * @return \queryyetsimple\filesystem\store
      */
     public function store($oConnect) {
@@ -132,7 +131,7 @@ class filesystem implements interfaces_filesystem {
      *
      * @param string $strConnect            
      * @param array $arrOption            
-     * @return \queryyetsimple\filesystem\interfaces\connect
+     * @return \queryyetsimple\filesystem\iconnect
      */
     protected function makeConnect($strConnect, $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] ['filesystem\connect.' . $strConnect] ))

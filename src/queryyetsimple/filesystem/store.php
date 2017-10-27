@@ -16,7 +16,6 @@ namespace queryyetsimple\filesystem;
 queryphp;
 
 use queryyetsimple\filesystem\interfaces\connect;
-use queryyetsimple\filesystem\interfaces\store as interfaces_store;
 
 /**
  * filesystem 存储
@@ -26,19 +25,19 @@ use queryyetsimple\filesystem\interfaces\store as interfaces_store;
  * @since 2017.08.29
  * @version 1.0
  */
-class store implements interfaces_store {
+class store implements istore {
     
     /**
      * 连接驱动
      *
-     * @var \queryyetsimple\filesystem\interfaces\connect
+     * @var \queryyetsimple\filesystem\iconnect
      */
     protected $oConnect;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\filesystem\interfaces\connect $oConnect            
+     * @param \queryyetsimple\filesystem\iconnect $oConnect            
      * @return void
      */
     public function __construct(connect $oConnect) {

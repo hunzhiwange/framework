@@ -16,8 +16,6 @@ namespace queryyetsimple\filesystem;
 queryphp;
 
 use League\Flysystem\Adapter\Ftp as AdapterFtp;
-use queryyetsimple\filesystem\abstracts\connect;
-use queryyetsimple\filesystem\interfaces\connect as interfaces_connect;
 
 /**
  * filesystem.ftp
@@ -28,7 +26,7 @@ use queryyetsimple\filesystem\interfaces\connect as interfaces_connect;
  * @see https://flysystem.thephpleague.com/adapter/ftp/
  * @version 1.0
  */
-class ftp extends connect implements interfaces_connect {
+class ftp extends aconnect implements iconnect {
     
     /**
      * 配置
