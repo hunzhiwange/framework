@@ -57,7 +57,7 @@ class store implements interfaces_store {
     /**
      * 事件
      *
-     * @var \queryyetsimple\event\interfaces\dispatch|null
+     * @var \queryyetsimple\event\idispatch|null
      */
     protected $objEvent;
     
@@ -107,7 +107,7 @@ class store implements interfaces_store {
      * @param array $arrOption            
      * @param \queryyetsimple\mail\interfaces\connect $oConnect            
      * @param \queryyetsimple\mvc\iview $objView            
-     * @param \queryyetsimple\event\interfaces\dispatch|null $objEvent            
+     * @param \queryyetsimple\event\idispatch|null $objEvent            
      * @return void
      */
     public function __construct(array $arrOption = [], connect $oConnect, iview $objView, $objEvent = null) {

@@ -24,6 +24,7 @@ use DateTimeInterface;
 use BadMethodCallException;
 use queryyetsimple\support\string;
 use queryyetsimple\support\helper;
+use queryyetsimple\event\idispatch;
 use queryyetsimple\support\infinity;
 use queryyetsimple\support\serialize;
 use queryyetsimple\support\collection;
@@ -33,7 +34,6 @@ use queryyetsimple\mvc\relation\relation;
 use queryyetsimple\mvc\relation\has_many;
 use queryyetsimple\mvc\relation\many_many;
 use queryyetsimple\mvc\relation\belongs_to;
-use queryyetsimple\event\interfaces\dispatch;
 use queryyetsimple\support\interfaces\jsonable;
 use queryyetsimple\support\interfaces\arrayable;
 
@@ -246,7 +246,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, arrayable
     /**
      * 模型事件处理器
      *
-     * @var \queryyetsimple\event\interfaces\dispatch
+     * @var \queryyetsimple\event\idispatch
      */
     protected static $objDispatch;
     
@@ -1123,7 +1123,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, arrayable
     /**
      * 返回模型事件处理器
      *
-     * @return \queryyetsimple\event\interfaces\dispatch
+     * @return \queryyetsimple\event\idispatch
      */
     public static function getEventDispatch() {
         return static::$objDispatch;
@@ -1132,10 +1132,10 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, arrayable
     /**
      * 设置模型事件处理器
      *
-     * @param \queryyetsimple\event\interfaces\dispatch $objDispatch            
+     * @param \queryyetsimple\event\idispatch $objDispatch            
      * @return void
      */
-    public static function setEventDispatch(dispatch $objDispatch) {
+    public static function setEventDispatch(idispatch $objDispatch) {
         static::$objDispatch = $objDispatch;
     }
     

@@ -25,7 +25,7 @@ return [
         'singleton@event' => [ 
                 [ 
                         'queryyetsimple\event\dispatch',
-                        'queryyetsimple\event\interfaces\dispatch' 
+                        'queryyetsimple\event\idispatch' 
                 ],
                 function ($oProject) {
                     return new queryyetsimple\event\dispatch ( $oProject );

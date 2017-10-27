@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\event\interfaces;
+namespace queryyetsimple\event;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,14 @@ namespace queryyetsimple\event\interfaces;
 queryphp;
 
 /**
- * dispatch 接口
+ * idispatch 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.07.12
  * @version 1.0
  */
-interface dispatch {
+interface idispatch {
     
     /**
      * 执行一个事件

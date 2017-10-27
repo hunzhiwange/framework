@@ -15,8 +15,8 @@ namespace queryyetsimple\bootstrap\provider;
 ##########################################################
 queryphp;
 
+use queryyetsimple\event\idispatch;
 use queryyetsimple\support\provider;
-use queryyetsimple\event\interfaces\dispatch;
 
 /**
  * 事件服务提供者
@@ -38,10 +38,10 @@ class event extends provider {
     /**
      * 注册时间监听器
      *
-     * @param \queryyetsimple\event\interfaces\dispatch $objEvent            
+     * @param \queryyetsimple\event\idispatch $objEvent            
      * @return void
      */
-    public function bootstrap(dispatch $objEvent) {
+    public function bootstrap(idispatch $objEvent) {
         foreach ( $this->getListener () as $strEvent => $arrListeners ) {
             foreach ( $arrListeners as $strListener ) {
                 $objEvent->listener ( $strEvent, $strListener );

@@ -16,7 +16,6 @@ namespace queryyetsimple\event;
 queryphp;
 
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\event\interfaces\dispatch as interfaces_dispatch;
 
 /**
  * 事件
@@ -26,7 +25,7 @@ use queryyetsimple\event\interfaces\dispatch as interfaces_dispatch;
  * @since 2017.04.17
  * @version 1.0
  */
-class dispatch implements interfaces_dispatch {
+class dispatch implements idispatch {
     
     /**
      * 项目容器
