@@ -25,7 +25,7 @@ return [
         'singleton@cookie' => [ 
                 [ 
                         'queryyetsimple\cookie\cookie',
-                        'queryyetsimple\cookie\interfaces\cookie' 
+                        'queryyetsimple\cookie\icookie' 
                 ],
                 function ($oProject) {
                     return new queryyetsimple\cookie\cookie ( $oProject ['option']->get ( 'cookie\\' ) );

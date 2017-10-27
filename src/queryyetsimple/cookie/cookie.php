@@ -17,7 +17,6 @@ queryphp;
 
 use Exception;
 use queryyetsimple\support\option;
-use queryyetsimple\cookie\interfaces\cookie as interfaces_cookie;
 
 /**
  * cookie 封装
@@ -27,7 +26,7 @@ use queryyetsimple\cookie\interfaces\cookie as interfaces_cookie;
  * @since 2016.11.19
  * @version 1.0
  */
-class cookie implements interfaces_cookie {
+class cookie implements icookie {
     
     use option;
     

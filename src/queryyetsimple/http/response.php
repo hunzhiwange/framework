@@ -22,10 +22,10 @@ use queryyetsimple\router\router;
 use queryyetsimple\support\assert;
 use queryyetsimple\support\option;
 use queryyetsimple\filesystem\fso;
+use queryyetsimple\cookie\icookie;
 use queryyetsimple\support\infinity;
 use queryyetsimple\session\isession;
 use queryyetsimple\support\flow_control;
-use queryyetsimple\cookie\interfaces\cookie;
 
 /**
  * 响应请求
@@ -63,7 +63,7 @@ class response {
     /**
      * cookie 处理
      *
-     * @var \queryyetsimple\cookie\interfaces\cookie
+     * @var \queryyetsimple\cookie\icookie
      */
     protected $objCookie;
     
@@ -164,11 +164,11 @@ class response {
      * @param \queryyetsimple\router\router $objRouter            
      * @param \queryyetsimple\mvc\iview $objView            
      * @param \queryyetsimple\session\isession $objSession            
-     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
+     * @param \queryyetsimple\cookie\icookie $objCookie            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(router $objRouter, iview $objView, isession $objSession, cookie $objCookie, array $arrOption = []) {
+    public function __construct(router $objRouter, iview $objView, isession $objSession, icookie $objCookie, array $arrOption = []) {
         $this->objRouter = $objRouter;
         $this->objView = $objView;
         $this->objSession = $objSession;

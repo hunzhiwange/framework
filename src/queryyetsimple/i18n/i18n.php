@@ -17,7 +17,7 @@ queryphp;
 
 use InvalidArgumentException;
 use queryyetsimple\support\option;
-use queryyetsimple\cookie\interfaces\cookie;
+use queryyetsimple\cookie\icookie;
 use queryyetsimple\i18n\interfaces\i18n as interfaces_i18n;
 
 /**
@@ -35,7 +35,7 @@ class i18n implements interfaces_i18n {
     /**
      * cookie
      *
-     * @var \queryyetsimple\cookie\interfaces\cookie
+     * @var \queryyetsimple\cookie\icookie
      */
     protected $objCookie;
     
@@ -91,11 +91,11 @@ class i18n implements interfaces_i18n {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
+     * @param \queryyetsimple\cookie\icookie $objCookie            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(cookie $objCookie, array $arrOption = []) {
+    public function __construct(icookie $objCookie, array $arrOption = []) {
         $this->objCookie = $objCookie;
         $this->options ( $arrOption );
     }

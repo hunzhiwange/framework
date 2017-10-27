@@ -18,11 +18,11 @@ queryphp;
 use Exception;
 use queryyetsimple\mvc\imodel;
 use queryyetsimple\http\request;
+use queryyetsimple\cookie\icookie;
 use queryyetsimple\support\string;
 use queryyetsimple\session\isession;
 use queryyetsimple\validate\ivalidate;
 use queryyetsimple\auth\abstracts\connect;
-use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\auth\exception\login_failed;
 use queryyetsimple\auth\exception\register_failed;
 use queryyetsimple\encryption\interfaces\encryption;
@@ -56,7 +56,7 @@ class session extends connect implements interfaces_connect {
     /**
      * cookie
      *
-     * @var \queryyetsimple\cookie\interfaces\cookie
+     * @var \queryyetsimple\cookie\icookie
      */
     protected $oCookie;
     
@@ -92,11 +92,11 @@ class session extends connect implements interfaces_connect {
      * @param array $arrOption            
      * @param \queryyetsimple\mvc\imodel $oUser            
      * @param \queryyetsimple\session\isession $oSession            
-     * @param \queryyetsimple\cookie\interfaces\cookie $oCookie            
+     * @param \queryyetsimple\cookie\icookie $oCookie            
      * @param \queryyetsimple\encryption\interfaces\encryption $oEncryption            
      * @param \queryyetsimple\validate\ivalidate $oValidate            
      */
-    public function __construct(array $arrOption, imodel $oUser, isession $oSession, cookie $oCookie, encryption $oEncryption, ivalidate $oValidate) {
+    public function __construct(array $arrOption, imodel $oUser, isession $oSession, icookie $oCookie, encryption $oEncryption, ivalidate $oValidate) {
         $this->oUser = $oUser;
         $this->oSession = $oSession;
         $this->oCookie = $oCookie;

@@ -18,9 +18,9 @@ queryphp;
 use ArrayAccess;
 use RuntimeException;
 use queryyetsimple\support\option;
+use queryyetsimple\cookie\icookie;
 use queryyetsimple\support\infinity;
 use queryyetsimple\support\flow_control;
-use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\session\interfaces\store;
 use queryyetsimple\support\interfaces\arrayable;
 
@@ -43,7 +43,7 @@ class request implements arrayable, ArrayAccess {
     /**
      * cookie 存储
      *
-     * @var \queryyetsimple\cookie\interfaces\cookie
+     * @var \queryyetsimple\cookie\icookie
      */
     protected $objCookie;
     
@@ -251,10 +251,10 @@ class request implements arrayable, ArrayAccess {
      * 构造函数
      *
      * @param \queryyetsimple\session\interfaces\store $objSession            
-     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
+     * @param \queryyetsimple\cookie\icookie $objCookie            
      * @return void
      */
-    public function __construct(store $objSession, cookie $objCookie, array $arrOption = []) {
+    public function __construct(store $objSession, icookie $objCookie, array $arrOption = []) {
         $this->objSession = $objSession;
         $this->objCookie = $objCookie;
         $this->options ( $arrOption );
@@ -683,7 +683,7 @@ class request implements arrayable, ArrayAccess {
     /**
      * 设置 cookie 存储
      *
-     * @return \queryyetsimple\cookie\interfaces\cookie|null
+     * @return \queryyetsimple\cookie\icookie|null
      */
     public function getCookieStore() {
         return $this->objCookie;
@@ -701,10 +701,10 @@ class request implements arrayable, ArrayAccess {
     /**
      * 设置 cookie 储存
      *
-     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
+     * @param \queryyetsimple\cookie\icookie $objCookie            
      * @return $this
      */
-    public function setCookieStore(cookie $objCookie) {
+    public function setCookieStore(icookie $objCookie) {
         if ($this->checkFlowControl ())
             return $this;
         $this->objCookie = $objCookie;

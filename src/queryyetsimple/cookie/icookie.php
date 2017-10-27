@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\cookie\interfaces;
+namespace queryyetsimple\cookie;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,14 @@ namespace queryyetsimple\cookie\interfaces;
 queryphp;
 
 /**
- * cookie 接口
+ * icookie 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.23
  * @version 1.0
  */
-interface cookie {
+interface icookie {
     
     /**
      * 设置 COOKIE

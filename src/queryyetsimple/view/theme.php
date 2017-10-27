@@ -19,7 +19,7 @@ use RuntimeException;
 use InvalidArgumentException;
 use queryyetsimple\support\option;
 use queryyetsimple\support\assert;
-use queryyetsimple\cookie\interfaces\cookie;
+use queryyetsimple\cookie\icookie;
 
 /**
  * 模板处理类
@@ -50,7 +50,7 @@ class theme implements itheme {
     /**
      * cookie 处理
      *
-     * @var \queryyetsimple\cookie\interfaces\cookie
+     * @var \queryyetsimple\cookie\icookie
      */
     protected $objCookie;
     
@@ -93,11 +93,11 @@ class theme implements itheme {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
+     * @param \queryyetsimple\cookie\icookie $objCookie            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(cookie $objCookie, array $arrOption = []) {
+    public function __construct(icookie $objCookie, array $arrOption = []) {
         $this->objCookie = $objCookie;
         $this->options ( $arrOption );
     }
