@@ -24,7 +24,6 @@ use queryyetsimple\support\helper;
 use Composer\Autoload\ClassLoader;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\container;
-use queryyetsimple\bootstrap\interfaces\project as interfaces_project;
 
 /**
  * 项目管理
@@ -34,7 +33,7 @@ use queryyetsimple\bootstrap\interfaces\project as interfaces_project;
  * @since 2017.01.14
  * @version 1.0
  */
-class project extends container implements interfaces_project {
+class project extends container implements iproject {
     
     /**
      * 当前项目实例
@@ -403,7 +402,7 @@ class project extends container implements interfaces_project {
                 'project' => [ 
                         'queryyetsimple\bootstrap\project',
                         'queryyetsimple\support\interfaces\container',
-                        'queryyetsimple\bootstrap\interfaces\project',
+                        'queryyetsimple\bootstrap\iproject',
                         'app' 
                 ] 
         ] );
