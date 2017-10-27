@@ -20,14 +20,14 @@ use RuntimeException;
 use ReflectionMethod;
 use ReflectionException;
 use InvalidArgumentException;
+use queryyetsimple\mvc\iaction;
 use queryyetsimple\http\request;
 use queryyetsimple\http\response;
 use queryyetsimple\support\option;
 use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
+use queryyetsimple\mvc\icontroller;
 use queryyetsimple\support\infinity;
-use queryyetsimple\mvc\interfaces\action;
-use queryyetsimple\mvc\interfaces\controller;
 use queryyetsimple\pipeline\interfaces\pipeline;
 use queryyetsimple\support\interfaces\container;
 
@@ -981,7 +981,7 @@ class router {
                     break;
                 
                 // 如果为方法则注册为方法
-                case is_object ( $mixBind ) && (method_exists ( $mixBind, 'run' ) || $mixBind instanceof action) :
+                case is_object ( $mixBind ) && (method_exists ( $mixBind, 'run' ) || $mixBind instanceof iaction) :
                     return $this->arrBinds [$sBindName] = [ 
                             $mixBind,
                             'run' 
@@ -989,7 +989,7 @@ class router {
                     break;
                 
                 // 如果为控制器实例，注册为回调
-                case $mixBind instanceof controller :
+                case $mixBind instanceof icontroller :
                 // 实例回调
                 case is_object ( $mixBind ) :
                 // 静态类回调
@@ -1049,7 +1049,7 @@ class router {
         
         switch (true) {
             // 判断是否为控制器回调
-            case is_array ( $mixAction ) && isset ( $mixAction [1] ) && $mixAction [0] instanceof controller :
+            case is_array ( $mixAction ) && isset ( $mixAction [1] ) && $mixAction [0] instanceof icontroller :
                 try {
                     $objClass = new ReflectionMethod ( $mixAction [0], $mixAction [1] );
                     if ($objClass->isPublic () && ! $objClass->isStatic ()) {
@@ -1078,7 +1078,7 @@ class router {
                 break;
             
             // 如果为方法则注册为方法
-            case $mixAction instanceof action :
+            case $mixAction instanceof iaction :
             case is_object ( $mixAction ) :
                 if (method_exists ( $mixAction, 'run' )) {
                     // 注册方法

@@ -36,7 +36,6 @@ use queryyetsimple\mvc\relation\belongs_to;
 use queryyetsimple\event\interfaces\dispatch;
 use queryyetsimple\support\interfaces\jsonable;
 use queryyetsimple\support\interfaces\arrayable;
-use queryyetsimple\mvc\interfaces\model as interfaces_model;
 
 /**
  * 模型 Object Relational Mapping
@@ -46,7 +45,7 @@ use queryyetsimple\mvc\interfaces\model as interfaces_model;
  * @since 2017.04.27
  * @version 1.0
  */
-abstract class model implements interfaces_model, JsonSerializable, ArrayAccess, arrayable, jsonable {
+abstract class model implements imodel, JsonSerializable, ArrayAccess, arrayable, jsonable {
     
     use serialize;
     use infinity {
@@ -931,7 +930,7 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
     /**
      * 中间表带命名空间完整名字
      *
-     * @param \queryyetsimple\mvc\interfaces\model $objRelatedModel            
+     * @param \queryyetsimple\mvc\imodel $objRelatedModel            
      * @return string
      */
     public function getMiddleModel($objRelatedModel) {
@@ -945,7 +944,7 @@ abstract class model implements interfaces_model, JsonSerializable, ArrayAccess,
     /**
      * 取得中间表名字
      *
-     * @param \queryyetsimple\mvc\interfaces\model $objRelatedModel            
+     * @param \queryyetsimple\mvc\imodel $objRelatedModel            
      * @return string
      */
     public function getMiddleTable($objRelatedModel) {

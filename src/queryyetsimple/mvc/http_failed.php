@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc\exception;
+namespace queryyetsimple\mvc;
 
 <<<queryphp
 ##########################################################
@@ -16,28 +16,45 @@ namespace queryyetsimple\mvc\exception;
 queryphp;
 
 use Exception;
+use RuntimeException;
 
 /**
- * 请求过于频繁异常
+ * HTTP 异常
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.10
  * @version 1.0
  */
-class too_many_requests_http extends http {
+class http extends RuntimeException {
+    
+    /**
+     * HTTP 状态
+     *
+     * @var int
+     */
+    protected $intStatusCode;
     
     /**
      * 构造函数
      *
      * @param int $intStatusCode            
      * @param string|null $strMessage            
-     * @param \Exception $objPrevious            
-     * @param array $arrHeader            
      * @param integer $intCode            
+     * @param \Exception $objPrevious            
      * @return void
      */
-    public function __construct($strMessage = null, $intCode = 0, Exception $objPrevious = null) {
-        parent::__construct ( 429, $strMessage, $intCode, $objPrevious );
+    public function __construct($intStatusCode, $strMessage = null, $intCode = 0, Exception $objPrevious = null) {
+        $this->intStatusCode = $intStatusCode;
+        parent::__construct ( $strMessage, $intCode, $objPrevious );
+    }
+    
+    /**
+     * HTTP 状态
+     *
+     * @return void
+     */
+    public function statusCode() {
+        return $this->intStatusCode;
     }
 }

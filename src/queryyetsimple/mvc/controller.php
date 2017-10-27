@@ -17,8 +17,6 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\router\router;
-use queryyetsimple\mvc\interfaces\view as interfaces_view;
-use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
 
 /**
  * 基类控制器
@@ -28,12 +26,12 @@ use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
  * @since 2016.11.19
  * @version 1.0
  */
-abstract class controller implements interfaces_controller {
+abstract class controller implements icontroller {
     
     /**
      * 视图
      *
-     * @var \queryyetsimple\mvc\interfaces\view
+     * @var \queryyetsimple\mvc\iview
      */
     protected $objView;
     
@@ -55,10 +53,10 @@ abstract class controller implements interfaces_controller {
     /**
      * 设置视图
      *
-     * @param \queryyetsimple\mvc\interfaces\view $objView            
+     * @param \queryyetsimple\mvc\iview $objView            
      * @return $this
      */
-    public function setView(interfaces_view $objView) {
+    public function setView(iview $objView) {
         $this->objView = $objView;
         return $this;
     }

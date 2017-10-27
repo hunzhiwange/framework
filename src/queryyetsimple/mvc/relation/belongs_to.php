@@ -15,8 +15,8 @@ namespace queryyetsimple\mvc\relation;
 ##########################################################
 queryphp;
 
+use queryyetsimple\mvc\imodel;
 use queryyetsimple\support\collection;
-use queryyetsimple\mvc\interfaces\model;
 
 /**
  * 关联模型 belongs_to
@@ -31,13 +31,13 @@ class belongs_to extends relation {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\interfaces\model $objTargetModel            
-     * @param \queryyetsimple\mvc\interfaces\model $objSourceModel            
+     * @param \queryyetsimple\mvc\imodel $objTargetModel            
+     * @param \queryyetsimple\mvc\imodel $objSourceModel            
      * @param string $strTargetKey            
      * @param string $strSourceKey            
      * @return void
      */
-    public function __construct(model $objTargetModel, model $objSourceModel, $strTargetKey, $strSourceKey) {
+    public function __construct(imodel $objTargetModel, imodel $objSourceModel, $strTargetKey, $strSourceKey) {
         parent::__construct ( $objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey );
     }
     
@@ -55,7 +55,7 @@ class belongs_to extends relation {
     /**
      * 匹配关联查询数据到模型
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @param \queryyetsimple\support\collection $objResult            
      * @param string $strRelation            
      * @return array
@@ -76,7 +76,7 @@ class belongs_to extends relation {
     /**
      * 设置预载入关联查询条件
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @return void
      */
     public function preLoadCondition(array $arrModel) {
@@ -120,7 +120,7 @@ class belongs_to extends relation {
     /**
      * 分析预载入模型中对应的源数据
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @return array
      */
     protected function getPreLoadModelValue(array $arrModel) {

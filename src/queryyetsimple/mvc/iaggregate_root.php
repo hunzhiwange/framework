@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc\interfaces;
+namespace queryyetsimple\mvc;
 
 <<<queryphp
 ##########################################################
@@ -15,41 +15,13 @@ namespace queryyetsimple\mvc\interfaces;
 ##########################################################
 queryphp;
 
-use queryyetsimple\router\router;
-use queryyetsimple\mvc\interfaces\view as interfaces_view;
-
 /**
- * controller 接口
+ * 聚合根基础接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.23
+ * @since 2017.10.14
  * @version 1.0
  */
-interface controller extends view {
-    
-    /**
-     * 返回父控制器
-     *
-     * @param \queryyetsimple\mvc\interfaces\view $objView            
-     * @return $this
-     */
-    public function setView(interfaces_view $objView);
-    
-    /**
-     * 返回父控制器
-     *
-     * @param \queryyetsimple\router\router $objRouter            
-     * @return $this
-     */
-    public function setRouter(router $objRouter);
-    
-    /**
-     * 执行子方法器
-     *
-     * @param string $sActionName
-     *            方法名
-     * @return void
-     */
-    public function action($sActionName);
+interface iaggregate_root extends ientity {
 }

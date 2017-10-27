@@ -16,11 +16,11 @@ namespace queryyetsimple\auth;
 queryphp;
 
 use Exception;
+use queryyetsimple\mvc\imodel;
 use queryyetsimple\http\request;
 use queryyetsimple\support\string;
 use queryyetsimple\session\isession;
 use queryyetsimple\validate\ivalidate;
-use queryyetsimple\mvc\interfaces\model;
 use queryyetsimple\auth\abstracts\connect;
 use queryyetsimple\cookie\interfaces\cookie;
 use queryyetsimple\auth\exception\login_failed;
@@ -43,7 +43,7 @@ class token extends connect implements interfaces_connect {
     /**
      * user 对象
      *
-     * @var \queryyetsimple\mvc\interfaces\model
+     * @var \queryyetsimple\mvc\imodel
      */
     protected $oUser;
     
@@ -97,13 +97,13 @@ class token extends connect implements interfaces_connect {
      * 构造函数
      *
      * @param array $arrOption            
-     * @param \queryyetsimple\mvc\interfaces\model $oUser            
+     * @param \queryyetsimple\mvc\imodel $oUser            
      * @param \queryyetsimple\session\isession $oSession            
      * @param \queryyetsimple\cookie\interfaces\cookie $oCookie            
      * @param \queryyetsimple\encryption\interfaces\encryption $oEncryption            
      * @param \queryyetsimple\validate\ivalidate $oValidate            
      */
-    public function __construct(array $arrOption, model $oUser, isession $oSession, cookie $oCookie, encryption $oEncryption, ivalidate $oValidate, interfaces_cache $oCache) {
+    public function __construct(array $arrOption, imodel $oUser, isession $oSession, cookie $oCookie, encryption $oEncryption, ivalidate $oValidate, interfaces_cache $oCache) {
         $this->oUser = $oUser;
         $this->oSession = $oSession;
         $this->oCookie = $oCookie;
@@ -149,7 +149,7 @@ class token extends connect implements interfaces_connect {
      * @param mixed $mixName            
      * @param string $sPassword            
      * @param mixed $mixLoginTime            
-     * @return \queryyetsimple\mvc\interfaces\model|void
+     * @return \queryyetsimple\mvc\imodel|void
      */
     public function login($mixName, $sPassword, $mixLoginTime = null) {
         $mixName = trim ( $mixName );
@@ -309,7 +309,7 @@ class token extends connect implements interfaces_connect {
     /**
      * 将用户信息保存至 session
      *
-     * @param \queryyetsimple\mvc\interfaces\model $oUser            
+     * @param \queryyetsimple\mvc\imodel $oUser            
      * @return array
      */
     protected function setUserToSession($oUser) {

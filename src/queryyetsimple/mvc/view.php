@@ -18,7 +18,6 @@ queryphp;
 use Closure;
 use RuntimeException;
 use queryyetsimple\view\itheme;
-use queryyetsimple\mvc\interfaces\view as interfaces_view;
 
 /**
  * 视图
@@ -28,7 +27,7 @@ use queryyetsimple\mvc\interfaces\view as interfaces_view;
  * @since 2016.11.19
  * @version 1.0
  */
-class view implements interfaces_view {
+class view implements iview {
     
     /**
      * 视图模板

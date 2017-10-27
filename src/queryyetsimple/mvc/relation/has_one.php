@@ -34,13 +34,12 @@ class has_one extends has_many {
      */
     public function sourceQuery() {
         return $this->objSelect->getOne ();
-        ;
     }
     
     /**
      * 匹配关联查询数据到模型
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @param \queryyetsimple\collection $objResult            
      * @param string $strRelation            
      * @return array

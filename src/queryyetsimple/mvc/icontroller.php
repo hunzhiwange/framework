@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc\exception;
+namespace queryyetsimple\mvc;
 
 <<<queryphp
 ##########################################################
@@ -15,46 +15,40 @@ namespace queryyetsimple\mvc\exception;
 ##########################################################
 queryphp;
 
-use Exception;
-use RuntimeException;
+use queryyetsimple\router\router;
 
 /**
- * HTTP 异常
+ * icontroller 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.08.10
+ * @since 2017.04.23
  * @version 1.0
  */
-class http extends RuntimeException {
+interface icontroller extends iview {
     
     /**
-     * HTTP 状态
+     * 返回父控制器
      *
-     * @var int
+     * @param \queryyetsimple\mvc\iview $objView            
+     * @return $this
      */
-    protected $intStatusCode;
+    public function setView(iview $objView);
     
     /**
-     * 构造函数
+     * 返回父控制器
      *
-     * @param int $intStatusCode            
-     * @param string|null $strMessage            
-     * @param integer $intCode            
-     * @param \Exception $objPrevious            
+     * @param \queryyetsimple\router\router $objRouter            
+     * @return $this
+     */
+    public function setRouter(router $objRouter);
+    
+    /**
+     * 执行子方法器
+     *
+     * @param string $sActionName
+     *            方法名
      * @return void
      */
-    public function __construct($intStatusCode, $strMessage = null, $intCode = 0, Exception $objPrevious = null) {
-        $this->intStatusCode = $intStatusCode;
-        parent::__construct ( $strMessage, $intCode, $objPrevious );
-    }
-    
-    /**
-     * HTTP 状态
-     *
-     * @return void
-     */
-    public function statusCode() {
-        return $this->intStatusCode;
-    }
+    public function action($sActionName);
 }

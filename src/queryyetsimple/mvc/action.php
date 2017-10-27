@@ -18,9 +18,6 @@ queryphp;
 use RuntimeException;
 use BadFunctionCallException;
 use queryyetsimple\router\router;
-use queryyetsimple\mvc\interfaces\view as interfaces_view;
-use queryyetsimple\mvc\interfaces\action as interfaces_action;
-use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
 
 /**
  * 基类方法器
@@ -30,12 +27,12 @@ use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
  * @since 2016.11.19
  * @version 1.0
  */
-abstract class action implements interfaces_action {
+abstract class action implements iaction {
     
     /**
      * 父控制器
      *
-     * @var \queryyetsimple\mvc\interfaces\controller
+     * @var \queryyetsimple\mvc\icontroller
      */
     protected $objController;
     
@@ -50,10 +47,10 @@ abstract class action implements interfaces_action {
     /**
      * 设置父控制器
      *
-     * @param \queryyetsimple\mvc\interfaces\controller $objController            
+     * @param \queryyetsimple\mvc\icontroller $objController            
      * @return $this
      */
-    public function setController(interfaces_controller $objController) {
+    public function setController(icontroller $objController) {
         $this->objController = $objController;
         return $this;
     }
@@ -65,10 +62,10 @@ abstract class action implements interfaces_action {
     /**
      * 设置视图
      *
-     * @param \queryyetsimple\mvc\interfaces\view $objView            
+     * @param \queryyetsimple\mvc\iview $objView            
      * @return $this
      */
-    public function setView(interfaces_view $objView) {
+    public function setView(iview $objView) {
         $this->checkController ();
         return $this->objController->setView ( $objView );
     }

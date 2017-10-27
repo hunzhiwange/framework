@@ -15,6 +15,7 @@ namespace queryyetsimple\http;
 ##########################################################
 queryphp;
 
+use queryyetsimple\mvc\iview;
 use InvalidArgumentException;
 use queryyetsimple\support\xml;
 use queryyetsimple\router\router;
@@ -23,7 +24,6 @@ use queryyetsimple\support\option;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\infinity;
 use queryyetsimple\session\isession;
-use queryyetsimple\mvc\interfaces\view;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\cookie\interfaces\cookie;
 
@@ -49,7 +49,7 @@ class response {
     /**
      * view
      *
-     * @var \queryyetsimple\mvc\interfaces\view
+     * @var \queryyetsimple\mvc\iview
      */
     protected $objView;
     
@@ -162,13 +162,13 @@ class response {
      * 构造函数
      *
      * @param \queryyetsimple\router\router $objRouter            
-     * @param \queryyetsimple\mvc\interfaces\view $objView            
+     * @param \queryyetsimple\mvc\iview $objView            
      * @param \queryyetsimple\session\isession $objSession            
      * @param \queryyetsimple\cookie\interfaces\cookie $objCookie            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(router $objRouter, view $objView, isession $objSession, cookie $objCookie, array $arrOption = []) {
+    public function __construct(router $objRouter, iview $objView, isession $objSession, cookie $objCookie, array $arrOption = []) {
         $this->objRouter = $objRouter;
         $this->objView = $objView;
         $this->objSession = $objSession;

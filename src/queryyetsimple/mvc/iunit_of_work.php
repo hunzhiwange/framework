@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc\interfaces;
+namespace queryyetsimple\mvc;
 
 <<<queryphp
 ##########################################################
@@ -71,8 +71,8 @@ interface iunit_of_work {
     /**
      * 注册新建
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @param \queryyetsimple\mvc\interfaces\irepository $objRepository            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\irepository $objRepository            
      * @return $this
      */
     public function registerCreate(iaggregate_root $objEntity, irepository $objRepository);
@@ -80,8 +80,8 @@ interface iunit_of_work {
     /**
      * 注册更新
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @param \queryyetsimple\mvc\interfaces\irepository $objRepository            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\irepository $objRepository            
      * @return $this
      */
     public function registerUpdate(iaggregate_root $objEntity, irepository $objRepository);
@@ -89,8 +89,8 @@ interface iunit_of_work {
     /**
      * 注册删除
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @param \queryyetsimple\mvc\interfaces\irepository $objRepository            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\irepository $objRepository            
      * @return $this
      */
     public function registerDelete(iaggregate_root $objEntity, irepository $objRepository);

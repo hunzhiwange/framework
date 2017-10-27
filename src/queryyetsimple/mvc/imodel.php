@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc\interfaces;
+namespace queryyetsimple\mvc;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,14 @@ namespace queryyetsimple\mvc\interfaces;
 queryphp;
 
 /**
- * model 接口
+ * imodel 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.07.10
  * @version 1.0
  */
-interface model extends ientity {
+interface imodel extends ientity {
     
     /**
      * 批量查找前事件

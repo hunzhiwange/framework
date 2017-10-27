@@ -16,9 +16,6 @@ namespace queryyetsimple\mvc;
 queryphp;
 
 use Exception;
-use queryyetsimple\mvc\interfaces\irepository;
-use queryyetsimple\mvc\interfaces\iunit_of_work;
-use queryyetsimple\mvc\interfaces\iaggregate_root;
 
 /**
  * 仓储基础
@@ -33,21 +30,21 @@ class repository implements irepository {
     /**
      * 工作单元
      *
-     * @var \queryyetsimple\mvc\interfaces\iunit_of_work
+     * @var \queryyetsimple\mvc\iunit_of_work
      */
     protected $objUnitOfWork;
     
     /**
      * 聚合根
      *
-     * @var \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @var \queryyetsimple\mvc\iaggregate_root
      */
     protected $objAggregate;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objAggregate            
+     * @param \queryyetsimple\mvc\iaggregate_root $objAggregate            
      * @return void
      */
     public function __construct(iaggregate_root $objAggregate) {
@@ -60,7 +57,7 @@ class repository implements irepository {
      *
      * @param int $intId            
      * @param array $arrColumn            
-     * @return \queryyetsimple\mvc\interfaces\ientity
+     * @return \queryyetsimple\mvc\ientity
      */
     public function find($intId, $arrColumn = ['*']) {
         return $this->objAggregate->find ( $intId, $arrColumn );
@@ -71,7 +68,7 @@ class repository implements irepository {
      *
      * @param int $intId            
      * @param array $arrColumn            
-     * @return \queryyetsimple\mvc\interfaces\ientity|void
+     * @return \queryyetsimple\mvc\ientity|void
      */
     public function findOrFail($intId, $arrColumn = ['*']) {
         return $this->objAggregate->findOrFail ( $intId, $arrColumn );
@@ -112,8 +109,8 @@ class repository implements irepository {
     /**
      * 保存数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function create(iaggregate_root $objEntity) {
         return $this->handleCreate ( $objEntity );
@@ -122,8 +119,8 @@ class repository implements irepository {
     /**
      * 更新数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function update(iaggregate_root $objEntity) {
         return $this->handleUpdate ( $objEntity );
@@ -132,7 +129,7 @@ class repository implements irepository {
     /**
      * 删除数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return int
      */
     public function delete(iaggregate_root $objEntity) {
@@ -142,7 +139,7 @@ class repository implements irepository {
     /**
      * 注册保存数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerCreate(iaggregate_root $objEntity) {
@@ -153,7 +150,7 @@ class repository implements irepository {
     /**
      * 注册更新数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerUpdate(iaggregate_root $objEntity) {
@@ -164,7 +161,7 @@ class repository implements irepository {
     /**
      * 注册删除数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerDelete(iaggregate_root $objEntity) {
@@ -175,8 +172,8 @@ class repository implements irepository {
     /**
      * 响应新建
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function handleCreate(iaggregate_root $objEntity) {
         return $objEntity->create ();
@@ -185,8 +182,8 @@ class repository implements irepository {
     /**
      * 响应修改
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function handleUpdate(iaggregate_root $objEntity) {
         return $objEntity->update ();
@@ -195,7 +192,7 @@ class repository implements irepository {
     /**
      * 响应删除
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return int
      */
     public function handleDelete(iaggregate_root $objEntity) {
@@ -242,7 +239,7 @@ class repository implements irepository {
     /**
      * 设置聚合根
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objAggregate            
+     * @param \queryyetsimple\mvc\iaggregate_root $objAggregate            
      * @return void
      */
     public function setAggregate(iaggregate_root $objAggregate) {
@@ -252,7 +249,7 @@ class repository implements irepository {
     /**
      * 返回聚合根
      *
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function aggregate() {
         return $this->objAggregate;
@@ -261,7 +258,7 @@ class repository implements irepository {
     /**
      * 返回工作单元
      *
-     * @return \queryyetsimple\mvc\interfaces\iunit_of_work
+     * @return \queryyetsimple\mvc\iunit_of_work
      */
     public function unitOfWork() {
         return $this->objUnitOfWork;
@@ -288,7 +285,7 @@ class repository implements irepository {
     /**
      * 创建设计工作单元
      *
-     * @return \queryyetsimple\mvc\interfaces\iunit_of_work
+     * @return \queryyetsimple\mvc\iunit_of_work
      */
     protected function createUnitOfWork() {
         return $this->objUnitOfWork = new unit_of_work ( $this );

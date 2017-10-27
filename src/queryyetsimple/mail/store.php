@@ -20,9 +20,9 @@ use Swift_Message;
 use Swift_Attachment;
 use BadMethodCallException;
 use InvalidArgumentException;
+use queryyetsimple\mvc\iview;
 use queryyetsimple\support\assert;
 use queryyetsimple\support\option;
-use queryyetsimple\mvc\interfaces\view;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\mail\interfaces\connect;
 use queryyetsimple\mail\interfaces\store as interfaces_store;
@@ -50,7 +50,7 @@ class store implements interfaces_store {
     /**
      * 视图
      *
-     * @var \queryyetsimple\mvc\interfaces\view
+     * @var \queryyetsimple\mvc\iview
      */
     protected $objView;
     
@@ -106,11 +106,11 @@ class store implements interfaces_store {
      *
      * @param array $arrOption            
      * @param \queryyetsimple\mail\interfaces\connect $oConnect            
-     * @param \queryyetsimple\mvc\interfaces\view $objView            
+     * @param \queryyetsimple\mvc\iview $objView            
      * @param \queryyetsimple\event\interfaces\dispatch|null $objEvent            
      * @return void
      */
-    public function __construct(array $arrOption = [], connect $oConnect, view $objView, $objEvent = null) {
+    public function __construct(array $arrOption = [], connect $oConnect, iview $objView, $objEvent = null) {
         $this->options ( $arrOption );
         $this->oConnect = $oConnect;
         $this->objView = $objView;

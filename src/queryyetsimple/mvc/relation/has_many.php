@@ -15,8 +15,8 @@ namespace queryyetsimple\mvc\relation;
 ##########################################################
 queryphp;
 
+use queryyetsimple\mvc\imodel;
 use queryyetsimple\support\collection;
-use queryyetsimple\mvc\interfaces\model;
 
 /**
  * 关联模型 has_many
@@ -31,13 +31,13 @@ class has_many extends relation {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\interfaces\model $objTargetModel            
-     * @param \queryyetsimple\mvc\interfaces\model $objSourceModel            
+     * @param \queryyetsimple\mvc\imodel $objTargetModel            
+     * @param \queryyetsimple\mvc\imodel $objSourceModel            
      * @param string $strTargetKey            
      * @param string $strSourceKey            
      * @return void
      */
-    public function __construct(model $objTargetModel, model $objSourceModel, $strTargetKey, $strSourceKey) {
+    public function __construct(imodel $objTargetModel, imodel $objSourceModel, $strTargetKey, $strSourceKey) {
         parent::__construct ( $objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey );
     }
     
@@ -56,7 +56,7 @@ class has_many extends relation {
     /**
      * 设置预载入关联查询条件
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @return void
      */
     public function preLoadCondition(array $arrModel) {
@@ -66,7 +66,7 @@ class has_many extends relation {
     /**
      * 匹配关联查询数据到模型 has_many
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @param \queryyetsimple\support\collection $objResult            
      * @param string $strRelation            
      * @return array
@@ -96,10 +96,10 @@ class has_many extends relation {
     /**
      * 保存模型
      *
-     * @param \queryyetsimple\mvc\interfaces\model $objModel            
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @param \queryyetsimple\mvc\imodel $objModel            
+     * @return \queryyetsimple\mvc\imodel
      */
-    public function save(model $objModel) {
+    public function save(imodel $objModel) {
         $this->withSourceKeyValue ( $objModel );
         return $objModel->save ();
     }
@@ -122,7 +122,7 @@ class has_many extends relation {
      * 创建模型实例
      *
      * @param array $arrProp            
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function create(array $arrProp) {
         $objModel = $this->objTargetModel->newInstance ( $arrProp );
@@ -169,17 +169,17 @@ class has_many extends relation {
     /**
      * 模型添加源字段数据
      *
-     * @param \queryyetsimple\mvc\interfaces\model $objModel            
+     * @param \queryyetsimple\mvc\imodel $objModel            
      * @return void
      */
-    protected function withSourceKeyValue(model $objModel) {
+    protected function withSourceKeyValue(imodel $objModel) {
         $objModel->forceProp ( $this->strTargetKey, $this->getSourceKeyValue () );
     }
     
     /**
      * 匹配预载入数据
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @param \queryyetsimple\support\collection $objResult            
      * @param string $strRelation            
      * @param string $strType            

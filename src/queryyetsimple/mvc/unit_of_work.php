@@ -15,10 +15,6 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
-use queryyetsimple\mvc\interfaces\irepository;
-use queryyetsimple\mvc\interfaces\iunit_of_work;
-use queryyetsimple\mvc\interfaces\iaggregate_root;
-
 /**
  * 工作单元
  *
@@ -32,7 +28,7 @@ class unit_of_work implements iunit_of_work {
     /**
      * 基础仓库
      *
-     * @var \queryyetsimple\mvc\interfaces\irepository
+     * @var \queryyetsimple\mvc\irepository
      */
     protected $objRepository;
     
@@ -74,7 +70,7 @@ class unit_of_work implements iunit_of_work {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\interfaces\irepository $objRepository            
+     * @param \queryyetsimple\mvc\irepository $objRepository            
      * @return $this
      */
     public function __construct(irepository $objRepository) {
@@ -161,8 +157,8 @@ class unit_of_work implements iunit_of_work {
     /**
      * 注册新建
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @param \queryyetsimple\mvc\interfaces\irepository $objRepository            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\irepository $objRepository            
      * @return $this
      */
     public function registerCreate(iaggregate_root $objEntity, irepository $objRepository) {
@@ -181,8 +177,8 @@ class unit_of_work implements iunit_of_work {
     /**
      * 注册更新
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @param \queryyetsimple\mvc\interfaces\irepository $objRepository            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\irepository $objRepository            
      * @return $this
      */
     public function registerUpdate(iaggregate_root $objEntity, irepository $objRepository) {
@@ -202,8 +198,8 @@ class unit_of_work implements iunit_of_work {
     /**
      * 注册删除
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @param \queryyetsimple\mvc\interfaces\irepository $objRepository            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\irepository $objRepository            
      * @return $this
      */
     public function registerDelete(iaggregate_root $objEntity, irepository $objRepository) {

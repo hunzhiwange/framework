@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc\interfaces;
+namespace queryyetsimple\mvc;
 
 <<<queryphp
 ##########################################################
@@ -15,23 +15,20 @@ namespace queryyetsimple\mvc\interfaces;
 ##########################################################
 queryphp;
 
-use queryyetsimple\mvc\interfaces\controller as interfaces_controller;
-
 /**
- * action 接口
+ * 实体基础接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.23
+ * @since 2017.10.14
  * @version 1.0
  */
-interface action extends controller {
+interface ientity {
     
     /**
-     * 设置父控制器
+     * 唯一标识符
      *
-     * @param \queryyetsimple\mvc\interfaces\controller $objController            
-     * @return $this
+     * @return mixed
      */
-    public function setController(interfaces_controller $objController);
+    public function id();
 }

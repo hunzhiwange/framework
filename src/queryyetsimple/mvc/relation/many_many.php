@@ -15,8 +15,8 @@ namespace queryyetsimple\mvc\relation;
 ##########################################################
 queryphp;
 
+use queryyetsimple\mvc\imodel;
 use queryyetsimple\support\collection;
-use queryyetsimple\mvc\interfaces\model;
 
 /**
  * 关联模型 many_many
@@ -38,7 +38,7 @@ class many_many extends relation {
     /**
      * 中间表模型
      *
-     * @var \queryyetsimple\mvc\interfaces\model
+     * @var \queryyetsimple\mvc\imodel
      */
     protected $objMiddleModel;
     
@@ -66,16 +66,16 @@ class many_many extends relation {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\interfaces\model $objTargetModel            
-     * @param \queryyetsimple\mvc\interfaces\model $objSourceModel            
-     * @param \queryyetsimple\mvc\interfaces\model $objMiddleModel            
+     * @param \queryyetsimple\mvc\imodel $objTargetModel            
+     * @param \queryyetsimple\mvc\imodel $objSourceModel            
+     * @param \queryyetsimple\mvc\imodel $objMiddleModel            
      * @param string $strTargetKey            
      * @param string $strSourceKey            
      * @param string $strMiddleTargetKey            
      * @param string $strMiddleSourceKey            
      * @return void
      */
-    public function __construct(model $objTargetModel, model $objSourceModel, model $objMiddleModel, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey) {
+    public function __construct(imodel $objTargetModel, imodel $objSourceModel, imodel $objMiddleModel, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey) {
         $this->objMiddleModel = $objMiddleModel;
         $this->strMiddleTargetKey = $strMiddleTargetKey;
         $this->strMiddleSourceKey = $strMiddleSourceKey;
@@ -97,7 +97,7 @@ class many_many extends relation {
     /**
      * 设置预载入关联查询条件
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @return void
      */
     public function preLoadCondition(array $arrModel) {
@@ -108,7 +108,7 @@ class many_many extends relation {
     /**
      * 匹配关联查询数据到模型
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @param \queryyetsimple\support\collection $objResult            
      * @param string $strRelation            
      * @return array
@@ -175,7 +175,7 @@ class many_many extends relation {
     /**
      * 取得中间表模型
      *
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function getMiddleModel() {
         return $this->objMiddleModel;

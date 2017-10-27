@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc\exception;
+namespace queryyetsimple\mvc;
 
 <<<queryphp
 ##########################################################
@@ -15,43 +15,29 @@ namespace queryyetsimple\mvc\exception;
 ##########################################################
 queryphp;
 
-use RuntimeException;
+use Exception;
 
 /**
- * 模型未找到异常
+ * 请求过于频繁异常
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.07.10
+ * @since 2017.08.10
  * @version 1.0
  */
-class model_not_found extends RuntimeException {
+class too_many_requests_http extends http_failed {
     
     /**
-     * 模型名字
+     * 构造函数
      *
-     * @var string
+     * @param int $intStatusCode            
+     * @param string|null $strMessage            
+     * @param \Exception $objPrevious            
+     * @param array $arrHeader            
+     * @param integer $intCode            
+     * @return void
      */
-    protected $strModel;
-    
-    /**
-     * 设置模型
-     *
-     * @param string $strModel            
-     * @return $this
-     */
-    public function model($strModel) {
-        $this->strModel = $strModel;
-        $this->message = "Can not find {$strModel} data";
-        return $this;
-    }
-    
-    /**
-     * 取回模型
-     *
-     * @return string
-     */
-    public function getModel() {
-        return $this->strModel;
+    public function __construct($strMessage = null, $intCode = 0, Exception $objPrevious = null) {
+        parent::__construct ( 429, $strMessage, $intCode, $objPrevious );
     }
 }

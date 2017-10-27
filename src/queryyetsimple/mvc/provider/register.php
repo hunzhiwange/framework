@@ -25,7 +25,7 @@ return [
         'singleton@view' => [ 
                 [ 
                         'queryyetsimple\mvc\view',
-                        'queryyetsimple\mvc\interfaces\view' 
+                        'queryyetsimple\mvc\iview' 
                 ],
                 function ($oProject) {
                     return (new queryyetsimple\mvc\view ( $oProject ['view.theme'] ))->setResponseFactory ( function () use($oProject) {

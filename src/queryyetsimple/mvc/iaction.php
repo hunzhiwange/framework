@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mvc\interfaces;
+namespace queryyetsimple\mvc;
 
 <<<queryphp
 ##########################################################
@@ -16,12 +16,20 @@ namespace queryyetsimple\mvc\interfaces;
 queryphp;
 
 /**
- * 聚合根基础接口
+ * iaction 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.10.14
+ * @since 2017.04.23
  * @version 1.0
  */
-interface iaggregate_root extends ientity {
+interface iaction extends icontroller {
+    
+    /**
+     * 设置父控制器
+     *
+     * @param \queryyetsimple\mvc\icontroller $objController            
+     * @return $this
+     */
+    public function setController(icontroller $objController);
 }

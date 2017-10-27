@@ -17,8 +17,8 @@ queryphp;
 
 use Closure;
 use Exception;
+use queryyetsimple\mvc\imodel;
 use queryyetsimple\support\collection;
-use queryyetsimple\mvc\interfaces\model;
 
 /**
  * 关联模型基类
@@ -40,14 +40,14 @@ abstract class relation {
     /**
      * 关联目标模型
      *
-     * @var \queryyetsimple\mvc\interfaces\model
+     * @var \queryyetsimple\mvc\imodel
      */
     protected $objTargetModel;
     
     /**
      * 源模型
      *
-     * @var \queryyetsimple\mvc\interfaces\model
+     * @var \queryyetsimple\mvc\imodel
      */
     protected $objSourceModel;
     
@@ -75,13 +75,13 @@ abstract class relation {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\interfaces\model $objTargetModel            
-     * @param \queryyetsimple\mvc\interfaces\model $objSourceModel            
+     * @param \queryyetsimple\mvc\imodel $objTargetModel            
+     * @param \queryyetsimple\mvc\imodel $objSourceModel            
      * @param string $strTargetKey            
      * @param string $strSourceKey            
      * @return void
      */
-    public function __construct(model $objTargetModel, model $objSourceModel, $strTargetKey, $strSourceKey) {
+    public function __construct(imodel $objTargetModel, imodel $objSourceModel, $strTargetKey, $strSourceKey) {
         $this->objTargetModel = $objTargetModel;
         $this->objSourceModel = $objSourceModel;
         $this->strTargetKey = $strTargetKey;
@@ -112,7 +112,7 @@ abstract class relation {
     /**
      * 取得关联目标模型
      *
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function getTargetModel() {
         return $this->objTargetModel;
@@ -121,7 +121,7 @@ abstract class relation {
     /**
      * 取得源模型
      *
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function getSourceModel() {
         return $this->objSourceModel;
@@ -174,7 +174,7 @@ abstract class relation {
     /**
      * 设置预载入关联查询条件
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @return void
      */
     abstract public function preLoadCondition(array $arrModel);
@@ -182,7 +182,7 @@ abstract class relation {
     /**
      * 匹配关联查询数据到模型 has_many
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @param \queryyetsimple\support\collection $objResult            
      * @param string $strRelation            
      * @return array
@@ -199,7 +199,7 @@ abstract class relation {
     /**
      * 返回模型的主键
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @param string $strKey            
      * @return array
      */

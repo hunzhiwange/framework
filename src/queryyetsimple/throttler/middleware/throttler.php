@@ -16,7 +16,7 @@ namespace queryyetsimple\throttler\middleware;
 queryphp;
 
 use queryyetsimple\http\response;
-use queryyetsimple\mvc\exception\too_many_requests_http;
+use queryyetsimple\mvc\too_many_requests_http;
 use queryyetsimple\throttler\interfaces\throttler as interfaces_throttler;
 
 /**

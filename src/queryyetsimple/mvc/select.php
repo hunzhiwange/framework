@@ -17,13 +17,13 @@ queryphp;
 
 use Closure;
 use Exception;
+use queryyetsimple\mvc\imodel;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\string;
 use queryyetsimple\support\collection;
+use queryyetsimple\mvc\model_not_found;
 use queryyetsimple\mvc\relation\relation;
-use queryyetsimple\mvc\exception\model_not_found;
 use queryyetsimple\database\select as database_select;
-use queryyetsimple\mvc\interfaces\model as interfaces_model;
 
 /**
  * 模型查询
@@ -38,7 +38,7 @@ class select {
     /**
      * 模型
      *
-     * @var \queryyetsimple\mvc\interfaces\model
+     * @var \queryyetsimple\mvc\imodel
      */
     protected $objModel;
     
@@ -59,7 +59,7 @@ class select {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\interfaces\model $objModel            
+     * @param \queryyetsimple\mvc\imodel $objModel            
      * @return void
      */
     public function __construct($objModel) {
@@ -91,7 +91,7 @@ class select {
     /**
      * 获取模型
      *
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function getModel($objModel) {
         return $this->objModel;
@@ -157,7 +157,7 @@ class select {
      *
      * @param mixed $mixId            
      * @param array $arrColumn            
-     * @return \queryyetsimple\mvc\interfaces\model|\queryyetsimple\support\collection|null
+     * @return \queryyetsimple\mvc\imodel|\queryyetsimple\support\collection|null
      */
     public function find($mixId, $arrColumn = ['*']) {
         if (is_array ( $mixId )) {
@@ -186,7 +186,7 @@ class select {
      *
      * @param mixed $mixId            
      * @param array $arrColumn            
-     * @return \queryyetsimple\mvc\interfaces\model|\queryyetsimple\support\collection
+     * @return \queryyetsimple\mvc\imodel|\queryyetsimple\support\collection
      */
     public function findOrFail($mixId, $arrColumn = ['*']) {
         $mixResult = $this->find ( $mixId, $arrColumn );
@@ -210,7 +210,7 @@ class select {
      * @param array $arrData            
      * @param mixed $mixConnect            
      * @param string $strTable            
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function findOrNew($mixId, $arrColumn = ['*'], $arrData = null, $mixConnect = null, $strTable = null) {
         if (! is_null ( $objModel = $this->find ( $mixId, $arrColumn ) )) {
@@ -223,7 +223,7 @@ class select {
      * 查找第一个结果
      *
      * @param array $columns            
-     * @return \queryyetsimple\mvc\interfaces\model|static|null
+     * @return \queryyetsimple\mvc\imodel|static|null
      */
     public function first($arrColumn = ['*']) {
         return $this->objSelect->setColumns ( $arrColumn )->getOne ();
@@ -233,7 +233,7 @@ class select {
      * 查找第一个结果，未找到则抛出异常
      *
      * @param array $arrColumn            
-     * @return \queryyetsimple\mvc\interfaces\model|static
+     * @return \queryyetsimple\mvc\imodel|static
      */
     public function firstOrFail($arrColumn = ['*']) {
         if (! is_null ( ($objModel = $this->first ( $arrColumn )) )) {
@@ -248,7 +248,7 @@ class select {
      * @param array $arrProp            
      * @param mixed $mixConnect            
      * @param string $strTable            
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function firstOrNew(array $arrProp, $mixConnect = null, $strTable = null) {
         if (! is_null ( ($objModel = $this->getFirstByProp ( $arrProp )) )) {
@@ -263,7 +263,7 @@ class select {
      * @param array $arrProp            
      * @param mixed $mixConnect            
      * @param string $strTable            
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function firstOrCreate(array $arrProp, $mixConnect = null, $strTable = null) {
         if (! is_null ( ($objModel = $this->getFirstByProp ( $arrProp )) )) {
@@ -279,7 +279,7 @@ class select {
      * @param array $arrData            
      * @param mixed $mixConnect            
      * @param string $strTable            
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function updateOrCreate(array $arrProp, array $arrData = [], $mixConnect = null, $strTable = null) {
         return $this->firstOrNew ( $arrProp, $mixConnect, $strTable )->forceProps ( $arrData )->save ();
@@ -291,7 +291,7 @@ class select {
      * @param array $arrProp            
      * @param mixed $mixConnect            
      * @param string $strTable            
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function onlyCreate(array $arrProp = [], $mixConnect = null, $strTable = null) {
         return $this->objModel->newInstance ( $arrProp, $mixConnect ?  : $this->objModel->getConnect (), $strTable ?  : $this->objModel->getTable () )->save ();
@@ -410,7 +410,7 @@ class select {
      * 查询范围
      *
      * @param mixed $mixScope            
-     * @return \queryyetsimple\mvc\interfaces\model
+     * @return \queryyetsimple\mvc\imodel
      */
     public function scope($mixScope /* args */) {
         if ($mixScope instanceof database_select) {
@@ -454,7 +454,7 @@ class select {
     /**
      * 预载入模型
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @return array
      */
     protected function preLoadRelation(array $arrModel) {
@@ -576,7 +576,7 @@ class select {
             }
             $mixResult = $arr;
             $strType = 'collection';
-        } elseif ($mixResult instanceof interfaces_model) {
+        } elseif ($mixResult instanceof imodel) {
             $mixResult = [ 
                     $mixResult 
             ];
@@ -592,7 +592,7 @@ class select {
     /**
      * 关联数据设置到模型上
      *
-     * @param \queryyetsimple\mvc\interfaces\model[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel            
      * @param string $strName            
      * @param callable $calCondition            
      * @return array
@@ -608,7 +608,7 @@ class select {
      * 尝试根据属性查找一个模型
      *
      * @param array $arrProp            
-     * @return \queryyetsimple\mvc\interfaces\model|null
+     * @return \queryyetsimple\mvc\imodel|null
      */
     protected function getFirstByProp(array $arrProp) {
         if (! is_null ( $objModel = $this->objSelect->where ( $arrProp )->getOne () )) {
