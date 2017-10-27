@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\encryption\abstracts;
+namespace queryyetsimple\encryption;
 
 <<<queryphp
 ##########################################################
@@ -16,26 +16,29 @@ namespace queryyetsimple\encryption\abstracts;
 queryphp;
 
 /**
- * 加密抽象类
+ * iencryption 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.02.15
+ * @since 2017.04.23
  * @version 1.0
  */
-abstract class encryption {
+interface iencryption {
     
     /**
-     * 加密 key
+     * 加密
      *
-     * @var string
+     * @param string $strValue            
+     * @param int $intExpiry            
+     * @return string
      */
-    protected $strKey;
+    public function encrypt($strValue, $intExpiry = null);
     
     /**
-     * 加密过期时间
+     * 解密
      *
-     * @var int
+     * @param string $strValue            
+     * @return string
      */
-    protected $intExpiry = 0;
+    public function decrypt($strValue);
 }
