@@ -17,9 +17,7 @@ queryphp;
 
 use Exception;
 use queryyetsimple\support\helper;
-use queryyetsimple\database\interfaces\connect;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\database\interfaces\database as interfaces_database;
 
 /**
  * 数据库入口
@@ -29,7 +27,7 @@ use queryyetsimple\database\interfaces\database as interfaces_database;
  * @since 2017.02.15
  * @version 1.0
  */
-class database implements interfaces_database {
+class database implements idatabase {
     
     /**
      * IOC Container
@@ -41,9 +39,9 @@ class database implements interfaces_database {
     /**
      * 数据库连接对象
      *
-     * @var \queryyetsimple\database\interfaces\connect[]
+     * @var \queryyetsimple\database\iconnect[]
      */
-    protected static $arrConnect;
+    protected static $arrConnect = [ ];
     
     /**
      * 构造函数
@@ -59,7 +57,7 @@ class database implements interfaces_database {
      * 连接数据库并返回连接对象
      *
      * @param array|string $mixOption            
-     * @return \queryyetsimple\database\interfaces\connect
+     * @return \queryyetsimple\database\iconnect
      */
     public function connect($mixOption = []) {
         if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objContainer ['option'] ['database\\connect.' . $mixOption]) )) {
@@ -100,7 +98,7 @@ class database implements interfaces_database {
      *
      * @param string $strConnect            
      * @param array $arrOption            
-     * @return \queryyetsimple\database\interfaces\connect
+     * @return \queryyetsimple\database\iconnect
      */
     protected function makeConnect($strConnect, $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] ['database\connect.' . $strConnect] ))

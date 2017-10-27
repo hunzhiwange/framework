@@ -37,9 +37,9 @@ class meta {
     /**
      * 数据库连接
      *
-     * @var \queryyetsimple\database\interfaces\connect
+     * @var \queryyetsimple\database\iconnect
      */
-    protected $objConnect = null;
+    protected $objConnect;
     
     /**
      * 数据库查询的原生字段
@@ -277,7 +277,7 @@ class meta {
     /**
      * 返回连接
      *
-     * @return \queryyetsimple\database\interfaces\connect
+     * @return \queryyetsimple\database\iconnect
      */
     public function getConnect() {
         return $this->objConnect;
@@ -286,7 +286,7 @@ class meta {
     /**
      * 返回查询
      *
-     * @var \queryyetsimple\database\interfaces\connect
+     * @var \queryyetsimple\database\iconnect
      */
     public function getSelect() {
         return $this->objConnect->table ( $this->strTable );
@@ -322,7 +322,7 @@ class meta {
     /**
      * 连接数据库
      *
-     * @return \queryyetsimple\database\interfaces\connect
+     * @return \queryyetsimple\database\iconnect
      */
     protected function initConnect() {
         $this->objConnect = database::connect ( $this->mixConnect );

@@ -23,7 +23,10 @@ queryphp;
  */
 return [ 
         'singleton@database' => [ 
-                'queryyetsimple\database\database',
+                [ 
+                        'queryyetsimple\database\database',
+                        'queryyetsimple\validate\idatabase' 
+                ],
                 function ($oProject) {
                     return new queryyetsimple\database\database ( $oProject );
                 } 

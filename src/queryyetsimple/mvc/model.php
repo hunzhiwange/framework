@@ -1795,7 +1795,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, arrayable
     /**
      * 返回数据库查询集合对象
      *
-     * @return \queryyetsimple\database\interfaces\connect
+     * @return \queryyetsimple\database\iconnect
      */
     public function getClassCollectionQuerySource() {
         return $this->getQuery ()->asClass ( $this->getCalledClass () )->asCollection ()->registerCallSelect ( new select ( $this ) );
@@ -1804,7 +1804,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, arrayable
     /**
      * 返回数据库查询集合对象
      *
-     * @return \queryyetsimple\database\interfaces\connect
+     * @return \queryyetsimple\database\iconnect
      */
     public function getClassCollectionQuery() {
         return $this->getSelectForQuery () ?  : $this->getClassCollectionQuerySource ();
@@ -1813,7 +1813,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, arrayable
     /**
      * 返回数据库查询对象
      *
-     * @return \queryyetsimple\database\interfaces\connect
+     * @return \queryyetsimple\database\iconnect
      */
     public function getQuery() {
         return $this->meta ()->getSelect ();

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\database\abstracts;
+namespace queryyetsimple\database;
 
 <<<queryphp
 ##########################################################
@@ -32,7 +32,7 @@ use queryyetsimple\log\interfaces\store as interfaces_store;
  * @since 2017.03.09
  * @version 1.0
  */
-abstract class connect {
+abstract class aconnect {
     
     /**
      * 所有数据库连接

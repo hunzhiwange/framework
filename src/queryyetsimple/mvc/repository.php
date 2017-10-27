@@ -267,7 +267,7 @@ class repository implements irepository {
     /**
      * 返回数据库连接
      *
-     * @return \queryyetsimple\database\interfaces\connect
+     * @return \queryyetsimple\database\iconnect
      */
     public function databaseConnect() {
         return $this->objAggregate->databaseConnect ();
