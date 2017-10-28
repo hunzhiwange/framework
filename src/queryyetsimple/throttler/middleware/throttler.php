@@ -16,8 +16,8 @@ namespace queryyetsimple\throttler\middleware;
 queryphp;
 
 use queryyetsimple\http\response;
+use queryyetsimple\throttler\ithrottler;
 use queryyetsimple\mvc\too_many_requests_http;
-use queryyetsimple\throttler\interfaces\throttler as interfaces_throttler;
 
 /**
  * throttler 中间件
@@ -32,7 +32,7 @@ class throttler {
     /**
      * throttler
      *
-     * @var \queryyetsimple\throttler\interfaces\throttler $objThrottler
+     * @var \queryyetsimple\throttler\ithrottler $objThrottler
      */
     protected $objThrottler;
     
@@ -46,11 +46,11 @@ class throttler {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\throttler\interfaces\throttler $objThrottler            
+     * @param \queryyetsimple\throttler\ithrottler $objThrottler            
      * @param \queryyetsimple\http\response $objResponse            
      * @return void
      */
-    public function __construct(interfaces_throttler $objThrottler, response $objResponse) {
+    public function __construct(ithrottler $objThrottler, response $objResponse) {
         $this->objThrottler = $objThrottler;
         $this->objResponse = $objResponse;
     }
