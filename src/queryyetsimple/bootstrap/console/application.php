@@ -41,7 +41,7 @@ class application {
      *
      * @var object
      */
-    protected $objSymfonyApplication = null;
+    protected $objSymfonyApplication;
     
     /**
      * 创建一个命令行应用程序

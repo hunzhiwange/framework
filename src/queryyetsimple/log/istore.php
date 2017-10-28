@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\log\interfaces;
+namespace queryyetsimple\log;
 
 <<<queryphp
 ##########################################################
@@ -18,14 +18,14 @@ queryphp;
 use Psr\Log\LoggerInterface;
 
 /**
- * store 接口
+ * istore 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.11
  * @version 1.0
  */
-interface store extends LoggerInterface {
+interface istore extends LoggerInterface {
     
     /**
      * debug

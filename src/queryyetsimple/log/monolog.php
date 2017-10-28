@@ -25,9 +25,6 @@ use queryyetsimple\support\string;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;
-use queryyetsimple\log\interfaces\connect;
-use queryyetsimple\log\interfaces\store as interfaces_store;
-use queryyetsimple\log\abstracts\connect as abstracts_connect;
 
 /**
  * log.monolog
@@ -37,7 +34,7 @@ use queryyetsimple\log\abstracts\connect as abstracts_connect;
  * @since 2017.09.01
  * @version 1.0
  */
-class monolog extends abstracts_connect implements connect {
+class monolog extends aconnect implements iconnect {
     
     /**
      * Monolog
@@ -65,14 +62,14 @@ class monolog extends abstracts_connect implements connect {
      * @var array
      */
     protected $arrSupportLevel = [ 
-            interfaces_store::DEBUG => Logger::DEBUG,
-            interfaces_store::INFO => Logger::INFO,
-            interfaces_store::NOTICE => Logger::NOTICE,
-            interfaces_store::WARNING => Logger::WARNING,
-            interfaces_store::ERROR => Logger::ERROR,
-            interfaces_store::CRITICAL => Logger::CRITICAL,
-            interfaces_store::ALERT => Logger::ALERT,
-            interfaces_store::EMERGENCY => Logger::EMERGENCY 
+            istore::DEBUG => Logger::DEBUG,
+            istore::INFO => Logger::INFO,
+            istore::NOTICE => Logger::NOTICE,
+            istore::WARNING => Logger::WARNING,
+            istore::ERROR => Logger::ERROR,
+            istore::CRITICAL => Logger::CRITICAL,
+            istore::ALERT => Logger::ALERT,
+            istore::EMERGENCY => Logger::EMERGENCY 
     ];
     
     /**
@@ -97,7 +94,7 @@ class monolog extends abstracts_connect implements connect {
      * @param string $strLevel            
      * @return void
      */
-    public function file($strPath, $strLevel = interfaces_store::DEBUG) {
+    public function file($strPath, $strLevel = istore::DEBUG) {
         $this->objMonolog->pushHandler ( $objHandler = new StreamHandler ( $strPath, $this->parseMonologLevel ( $strLevel ) ) );
         $objHandler->setFormatter ( $this->getDefaultFormatter () );
     }
@@ -110,7 +107,7 @@ class monolog extends abstracts_connect implements connect {
      * @param string $level            
      * @return void
      */
-    public function dailyFile($strPath, $intDays = 0, $strLevel = interfaces_store::DEBUG) {
+    public function dailyFile($strPath, $intDays = 0, $strLevel = istore::DEBUG) {
         $this->objMonolog->pushHandler ( $objHandler = new RotatingFileHandler ( $strPath, $intDays, $this->parseMonologLevel ( $strLevel ) ) );
         $objHandler->setFormatter ( $this->getDefaultFormatter () );
     }
@@ -122,7 +119,7 @@ class monolog extends abstracts_connect implements connect {
      * @param string $strLevel            
      * @return \Psr\Log\LoggerInterface
      */
-    public function syslog($strName = 'queryphp', $strLevel = interfaces_store::DEBUG) {
+    public function syslog($strName = 'queryphp', $strLevel = istore::DEBUG) {
         return $this->objMonolog->pushHandler ( new SyslogHandler ( $strName, LOG_USER, $strLevel ) );
     }
     
@@ -133,7 +130,7 @@ class monolog extends abstracts_connect implements connect {
      * @param int $intMessageType            
      * @return void
      */
-    public function errorLog($strLevel = interfaces_store::DEBUG, $intMessageType = ErrorLogHandler::OPERATING_SYSTEM) {
+    public function errorLog($strLevel = istore::DEBUG, $intMessageType = ErrorLogHandler::OPERATING_SYSTEM) {
         $this->objMonolog->pushHandler ( $objHandler = new ErrorLogHandler ( $intMessageType, $this->parseMonologLevel ( $strLevel ) ) );
         $objHandler->setFormatter ( $this->getDefaultFormatter () );
     }
@@ -250,6 +247,6 @@ class monolog extends abstracts_connect implements connect {
         if (isset ( $this->arrSupportLevel [$strLevel] )) {
             return $this->arrSupportLevel [$strLevel];
         }
-        return $this->arrSupportLevel [interfaces_store::DEBUG];
+        return $this->arrSupportLevel [istore::DEBUG];
     }
 }

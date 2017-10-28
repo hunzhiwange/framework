@@ -18,11 +18,10 @@ queryphp;
 use PDO;
 use Exception;
 use PDOException;
-use queryyetsimple\log\store;
+use queryyetsimple\log\istore;
 use queryyetsimple\support\assert;
 use queryyetsimple\database\select;
 use queryyetsimple\support\debug\dump;
-use queryyetsimple\log\interfaces\store as interfaces_store;
 
 /**
  * 数据库连接抽象层
@@ -46,28 +45,28 @@ abstract class aconnect {
      *
      * @var array
      */
-    protected $objConnect = null;
+    protected $objConnect;
     
     /**
      * PDO 预处理语句对象
      *
      * @var PDOStatement
      */
-    protected $objPDOStatement = null;
+    protected $objPDOStatement;
     
     /**
      * 数据查询组件
      *
      * @var \queryyetsimple\database\select
      */
-    protected $objSelect = null;
+    protected $objSelect;
     
     /**
      * 日志存储
      *
-     * @var \queryyetsimple\log\interfaces\store
+     * @var \queryyetsimple\log\istore
      */
-    protected $objLogStore = null;
+    protected $objLogStore;
     
     /**
      * 数据库连接参数
@@ -88,7 +87,7 @@ abstract class aconnect {
      *
      * @var string
      */
-    protected $strSql = '';
+    protected $strSql;
     
     /*
      * sql 绑定参数
@@ -109,16 +108,16 @@ abstract class aconnect {
      *
      * @var callable
      */
-    protected static $calSqlListen = null;
+    protected static $calSqlListen;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\log\interfaces\store $objLogStore            
+     * @param \queryyetsimple\log\istore $objLogStore            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(interfaces_store $objLogStore, $arrOption) {
+    public function __construct(istore $objLogStore, $arrOption) {
         // 日志
         $this->objLogStore = $objLogStore;
         
@@ -832,7 +831,7 @@ abstract class aconnect {
         // 记录 SQL 日志
         $arrLastSql = $this->getLastSql ( true );
         if ($this->arrOption ['log'])
-            $this->objLogStore->log ( store::SQL, $arrLastSql [0], $arrLastSql [1] ?  : [ ] );
+            $this->objLogStore->log ( istore::SQL, $arrLastSql [0], $arrLastSql [1] ?  : [ ] );
     }
     
     /**

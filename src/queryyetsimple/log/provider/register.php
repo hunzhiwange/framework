@@ -23,7 +23,10 @@ queryphp;
  */
 return [ 
         'singleton@log' => [ 
-                'queryyetsimple\log\log',
+                [ 
+                        'queryyetsimple\log\log',
+                        'queryyetsimple\log\ilog' 
+                ],
                 function ($oProject) {
                     return new queryyetsimple\log\log ( $oProject );
                 } 

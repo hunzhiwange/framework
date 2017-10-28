@@ -33,7 +33,7 @@ class xml {
      *
      * @var resource
      */
-    protected $resParser = null;
+    protected $resParser;
     
     /**
      * Document

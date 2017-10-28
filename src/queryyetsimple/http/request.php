@@ -1621,7 +1621,7 @@ class request implements arrayable, ArrayAccess {
      * @return string
      */
     public function ip() {
-        static $sRealip = null;
+        static $sRealip;
         
         if ($sRealip !== null) {
             return $sRealip;

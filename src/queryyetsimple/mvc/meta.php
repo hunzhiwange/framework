@@ -60,7 +60,7 @@ class meta {
      *
      * @var string
      */
-    protected $strAutoIncrement = null;
+    protected $strAutoIncrement;
     
     /**
      * 属性映射字段

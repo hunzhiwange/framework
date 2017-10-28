@@ -43,7 +43,7 @@ class i18n implements ii18n {
      *
      * @var string
      */
-    protected $sI18nName = null;
+    protected $sI18nName;
     
     /**
      * 默认语言上下文

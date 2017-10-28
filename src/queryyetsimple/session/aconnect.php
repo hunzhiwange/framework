@@ -35,7 +35,7 @@ abstract class aconnect {
      *
      * @var \queryyetsimple\cache\repository
      */
-    protected $objCache = null;
+    protected $objCache;
     
     /**
      * 构造函数

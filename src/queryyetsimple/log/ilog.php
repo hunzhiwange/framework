@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\log\interfaces;
+namespace queryyetsimple\log;
 
 <<<queryphp
 ##########################################################
@@ -15,17 +15,15 @@ namespace queryyetsimple\log\interfaces;
 ##########################################################
 queryphp;
 
-use queryyetsimple\log\interfaces\connect;
-
 /**
- * log 接口
+ * ilog 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.11
  * @version 1.0
  */
-interface log {
+interface ilog {
     
     /**
      * 连接 log 并返回连接对象
@@ -38,10 +36,10 @@ interface log {
     /**
      * 创建 log store
      *
-     * @param \queryyetsimple\log\interfaces\connect $oConnect            
+     * @param \queryyetsimple\log\iconnect $oConnect            
      * @return \queryyetsimple\log\store
      */
-    public function store(connect $oConnect);
+    public function store(iconnect $oConnect);
     
     /**
      * 返回默认驱动

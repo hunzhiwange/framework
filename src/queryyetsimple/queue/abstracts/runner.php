@@ -34,14 +34,14 @@ abstract class runner extends PHPQueueRunner {
      *
      * @var \queryyetsimple\bootstrap\console\command\queue\work
      */
-    protected $objWork = null;
+    protected $objWork;
     
     /**
      * 消息队列
      *
      * @var \queryyetsimple\queue\interfaces\queue
      */
-    protected $objQueue = null;
+    protected $objQueue;
     
     /**
      * 任务不可用等待时间

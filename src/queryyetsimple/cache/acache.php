@@ -30,7 +30,7 @@ abstract class acache {
      *
      * @var handle
      */
-    protected $hHandle = null;
+    protected $hHandle;
     
     /**
      * 构造函数

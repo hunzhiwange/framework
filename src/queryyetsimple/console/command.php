@@ -43,7 +43,7 @@ abstract class command extends SymfonyCommand {
      *
      * @var \queryyetsimple\bootstrap\project
      */
-    protected $objProject = null;
+    protected $objProject;
     
     /**
      * 命令名字

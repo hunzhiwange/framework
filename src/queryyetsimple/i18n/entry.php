@@ -32,9 +32,9 @@ class entry {
      * @var boolean
      */
     var $is_plural = false;
-    var $context = null;
-    var $singular = null;
-    var $plural = null;
+    var $context;
+    var $singular;
+    var $plural;
     var $translations = array ();
     var $translator_comments = '';
     var $extracted_comments = '';

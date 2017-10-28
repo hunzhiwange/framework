@@ -36,7 +36,7 @@ abstract class face {
      *
      * @var \queryyetsimple\support\interfaces\container
      */
-    protected static $objContainer = null;
+    protected static $objContainer;
     
     /**
      * 注入容器实例

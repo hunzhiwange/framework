@@ -18,10 +18,8 @@ queryphp;
 use RuntimeException;
 use queryyetsimple\support\assert;
 use queryyetsimple\support\option;
-use queryyetsimple\log\interfaces\connect;
 use queryyetsimple\support\interfaces\jsonable;
 use queryyetsimple\support\interfaces\arrayable;
-use queryyetsimple\log\interfaces\store as interfaces_store;
 
 /**
  * 日志存储
@@ -31,14 +29,14 @@ use queryyetsimple\log\interfaces\store as interfaces_store;
  * @since 2017.03.03
  * @version 1.0
  */
-class store implements interfaces_store {
+class store implements istore {
     
     use option;
     
     /**
      * 存储连接对象
      *
-     * @var \queryyetsimple\log\interfaces\connect
+     * @var \queryyetsimple\log\iconnect
      */
     protected $oConnect;
     
@@ -54,14 +52,14 @@ class store implements interfaces_store {
      *
      * @var callable
      */
-    protected $calFilter = null;
+    protected $calFilter;
     
     /**
      * 日志处理器
      *
      * @var callable
      */
-    protected $calProcessor = null;
+    protected $calProcessor;
     
     /**
      * 配置
@@ -87,11 +85,11 @@ class store implements interfaces_store {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\log\interfaces\connect $oConnect            
+     * @param \queryyetsimple\log\iconnect $oConnect            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(connect $oConnect, array $arrOption = []) {
+    public function __construct(iconnect $oConnect, array $arrOption = []) {
         $this->oConnect = $oConnect;
         $this->options ( $arrOption );
     }

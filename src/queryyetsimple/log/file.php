@@ -18,8 +18,6 @@ queryphp;
 use RuntimeException;
 use queryyetsimple\support\option;
 use queryyetsimple\filesystem\fso;
-use queryyetsimple\log\interfaces\connect;
-use queryyetsimple\log\abstracts\connect as abstracts_connect;
 
 /**
  * log.file
@@ -29,7 +27,7 @@ use queryyetsimple\log\abstracts\connect as abstracts_connect;
  * @since 2017.06.05
  * @version 1.0
  */
-class file extends abstracts_connect implements connect {
+class file extends aconnect implements iconnect {
     
     use option;
     

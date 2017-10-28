@@ -40,7 +40,7 @@ class project extends container implements iproject {
      *
      * @var queryyetsimple\bootstrap\project
      */
-    protected static $objProject = null;
+    protected static $objProject;
     
     /**
      * 项目配置

@@ -30,7 +30,7 @@ class bootstrap {
      *
      * @var queryyetsimple\bootstrap\project
      */
-    protected $objProject = null;
+    protected $objProject;
     
     /**
      * 项目配置

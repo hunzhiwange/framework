@@ -16,9 +16,7 @@ namespace queryyetsimple\log;
 queryphp;
 
 use Exception;
-use queryyetsimple\log\interfaces\connect;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\log\interfaces\log as interfaces_log;
 
 /**
  * log 入口
@@ -28,7 +26,7 @@ use queryyetsimple\log\interfaces\log as interfaces_log;
  * @since 2017.02.15
  * @version 1.0
  */
-class log implements interfaces_log {
+class log implements ilog {
     
     /**
      * 项目管理
@@ -77,7 +75,7 @@ class log implements interfaces_log {
     /**
      * 创建 log store
      *
-     * @param \queryyetsimple\log\interfaces\connect $oConnect            
+     * @param \queryyetsimple\log\iconnect $oConnect            
      * @return \queryyetsimple\log\store
      */
     public function store(connect $oConnect) {
@@ -110,7 +108,7 @@ class log implements interfaces_log {
      *
      * @param string $strConnect            
      * @param array $arrOption            
-     * @return \queryyetsimple\log\interfaces\connect
+     * @return \queryyetsimple\log\iconnect
      */
     protected function makeConnect($strConnect, $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] ['log\connect.' . $strConnect] ))

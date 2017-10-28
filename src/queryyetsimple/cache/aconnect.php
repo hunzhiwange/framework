@@ -30,7 +30,7 @@ abstract class aconnect {
      *
      * @var handle
      */
-    protected $hHandle = null;
+    protected $hHandle;
     
     /**
      * 构造函数

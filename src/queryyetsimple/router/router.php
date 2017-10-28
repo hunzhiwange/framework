@@ -133,21 +133,21 @@ class router {
      *
      * @var string
      */
-    protected $strApp = null;
+    protected $strApp;
     
     /**
      * 控制器名字
      *
      * @var string
      */
-    protected $strController = null;
+    protected $strController;
     
     /**
      * 方法名字
      *
      * @var string
      */
-    protected $strAction = null;
+    protected $strAction;
     
     /**
      * 路由绑定中间件
@@ -161,7 +161,7 @@ class router {
      *
      * @var array
      */
-    protected $arrCurrentMiddleware = null;
+    protected $arrCurrentMiddleware;
     
     /**
      * HTTP 方法

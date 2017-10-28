@@ -13,8 +13,8 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\log\istore;
 use queryyetsimple\bootstrap\project;
-use queryyetsimple\log\interfaces\store as log_store;
 
 if (! function_exists ( 'project' )) {
     /**
@@ -275,7 +275,7 @@ if (! function_exists ( 'debug' )) {
      * @return void
      */
     function debug($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( log_store::DEBUG, $mixMessage, $arrContext, $booWrite );
+        log ( istore::DEBUG, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -289,7 +289,7 @@ if (! function_exists ( 'info' )) {
      * @return void
      */
     function info($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( log_store::INFO, $mixMessage, $arrContext, $booWrite );
+        log ( istore::INFO, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -303,7 +303,7 @@ if (! function_exists ( 'notice' )) {
      * @return void
      */
     function notice($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( log_store::NOTICE, $mixMessage, $arrContext, $booWrite );
+        log ( istore::NOTICE, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -317,7 +317,7 @@ if (! function_exists ( 'warning' )) {
      * @return void
      */
     function warning($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( log_store::WARNING, $mixMessage, $arrContext, $booWrite );
+        log ( istore::WARNING, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -331,7 +331,7 @@ if (! function_exists ( 'error' )) {
      * @return void
      */
     function error($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( log_store::ERROR, $mixMessage, $arrContext, $booWrite );
+        log ( istore::ERROR, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -345,7 +345,7 @@ if (! function_exists ( 'critical' )) {
      * @return void
      */
     function critical($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( log_store::CRITICAL, $mixMessage, $arrContext, $booWrite );
+        log ( istore::CRITICAL, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -359,7 +359,7 @@ if (! function_exists ( 'alert' )) {
      * @return void
      */
     function alert($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( log_store::ALERT, $mixMessage, $arrContext, $booWrite );
+        log ( istore::ALERT, $mixMessage, $arrContext, $booWrite );
     }
 }
 
@@ -373,7 +373,7 @@ if (! function_exists ( 'emergency' )) {
      * @return void
      */
     function emergency($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( log_store::EMERGENCY, $mixMessage, $arrContext, $booWrite );
+        log ( istore::EMERGENCY, $mixMessage, $arrContext, $booWrite );
     }
 }
 
