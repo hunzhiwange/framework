@@ -28,7 +28,7 @@ use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\mvc\icontroller;
 use queryyetsimple\support\infinity;
-use queryyetsimple\pipeline\interfaces\pipeline;
+use queryyetsimple\pipeline\ipipeline;
 use queryyetsimple\support\interfaces\container;
 
 /**
@@ -54,7 +54,7 @@ class router {
     /**
      * pipeline
      *
-     * @var \queryyetsimple\pipeline\interfaces\pipeline
+     * @var \queryyetsimple\pipeline\ipipeline
      */
     protected $objPipeline;
     
@@ -246,13 +246,13 @@ class router {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\pipeline\interfaces\pipeline $objPipeline            
+     * @param \queryyetsimple\pipeline\ipipeline $objPipeline            
      * @param \queryyetsimple\support\interfaces\container $objContainer            
      * @param \queryyetsimple\http\request $objRequest            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(container $objContainer, pipeline $objPipeline, request $objRequest, array $arrOption = []) {
+    public function __construct(container $objContainer, ipipeline $objPipeline, request $objRequest, array $arrOption = []) {
         $this->objContainer = $objContainer;
         $this->objPipeline = $objPipeline;
         $this->objRequest = $objRequest;
@@ -629,11 +629,11 @@ class router {
     /**
      * 穿越中间件
      *
-     * @param \queryyetsimple\pipeline\interfaces\pipeline $objPipeline            
+     * @param \queryyetsimple\pipeline\ipipeline $objPipeline            
      * @param \queryyetsimple\http\response|null $objPassed            
      * @return void
      */
-    public function throughMidleware(pipeline $objPipeline, response $objPassed = null) {
+    public function throughMidleware(ipipeline $objPipeline, response $objPassed = null) {
         if (is_null ( $this->arrCurrentMiddleware ))
             $this->arrCurrentMiddleware = $this->getMiddleware ( $this->packageNode () );
         
