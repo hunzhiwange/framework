@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\support\observer\interfaces;
+namespace queryyetsimple\support\observer;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,14 @@ namespace queryyetsimple\support\observer\interfaces;
 queryphp;
 
 /**
- * subject 接口
+ * isubject 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.24
  * @version 1.0
  */
-interface subject {
+interface isubject {
     
     /**
      * 添加一个观察者角色

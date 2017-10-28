@@ -20,7 +20,6 @@ use SplObserver;
 use SplObjectStorage;
 use InvalidArgumentException;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\support\observer\interfaces\subject as interfaces_subject;
 
 /**
  * 观察者目标角色 subject
@@ -30,7 +29,7 @@ use queryyetsimple\support\observer\interfaces\subject as interfaces_subject;
  * @since 2017.06.23
  * @version 1.0
  */
-abstract class subject implements SplSubject, interfaces_subject {
+abstract class subject implements SplSubject, isubject {
     
     /**
      * 容器
