@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mail\interfaces;
+namespace queryyetsimple\mail;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,14 @@ namespace queryyetsimple\mail\interfaces;
 queryphp;
 
 /**
- * mail 接口
+ * imail 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.26
  * @version 1.0
  */
-interface mail {
+interface imail {
     
     /**
      * 连接 mail 并返回连接对象
@@ -36,7 +36,7 @@ interface mail {
     /**
      * 创建 mail store
      *
-     * @param \queryyetsimple\mail\interfaces\connect $oConnect            
+     * @param \queryyetsimple\mail\iconnect $oConnect            
      * @return \queryyetsimple\mail\store
      */
     public function store($oConnect);

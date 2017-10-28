@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mail\abstracts;
+namespace queryyetsimple\mail;
 
 <<<queryphp
 ##########################################################
@@ -29,7 +29,7 @@ use queryyetsimple\support\option;
  * @since 2017.08.26
  * @version 1.0
  */
-abstract class connect implements Swift_Transport {
+abstract class aconnect implements Swift_Transport {
     
     use option;
     

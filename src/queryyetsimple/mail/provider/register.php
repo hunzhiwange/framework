@@ -25,7 +25,7 @@ return [
         'singleton@mail' => [ 
                 [ 
                         'queryyetsimple\mail\mail',
-                        'queryyetsimple\mail\interfaces\mail' 
+                        'queryyetsimple\mail\imail' 
                 ],
                 function ($oProject) {
                     return new queryyetsimple\mail\mail ( $oProject );

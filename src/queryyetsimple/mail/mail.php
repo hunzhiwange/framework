@@ -18,7 +18,6 @@ queryphp;
 use Exception;
 use InvalidArgumentException;
 use queryyetsimple\support\interfaces\container;
-use queryyetsimple\mail\interfaces\mail as interfaces_mail;
 
 /**
  * mail 入口
@@ -28,7 +27,7 @@ use queryyetsimple\mail\interfaces\mail as interfaces_mail;
  * @since 2017.08.26
  * @version 1.0
  */
-class mail implements interfaces_mail {
+class mail implements imail {
     
     /**
      * IOC Container
@@ -77,7 +76,7 @@ class mail implements interfaces_mail {
     /**
      * 创建 mail store
      *
-     * @param \queryyetsimple\mail\interfaces\connect $oConnect            
+     * @param \queryyetsimple\mail\iconnect $oConnect            
      * @return \queryyetsimple\mail\store
      */
     public function store($oConnect) {
@@ -110,7 +109,7 @@ class mail implements interfaces_mail {
      *
      * @param string $strConnect            
      * @param array $arrOption            
-     * @return \queryyetsimple\mail\interfaces\connect
+     * @return \queryyetsimple\mail\iconnect
      */
     protected function makeConnect($strConnect, $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] ['mail\connect.' . $strConnect] ))

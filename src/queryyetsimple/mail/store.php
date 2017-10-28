@@ -24,8 +24,6 @@ use queryyetsimple\mvc\iview;
 use queryyetsimple\support\assert;
 use queryyetsimple\support\option;
 use queryyetsimple\support\flow_control;
-use queryyetsimple\mail\interfaces\connect;
-use queryyetsimple\mail\interfaces\store as interfaces_store;
 
 /**
  * mail 存储
@@ -35,7 +33,7 @@ use queryyetsimple\mail\interfaces\store as interfaces_store;
  * @since 2017.08.26
  * @version 1.0
  */
-class store implements interfaces_store {
+class store implements istore {
     
     use option;
     use flow_control;
@@ -43,7 +41,7 @@ class store implements interfaces_store {
     /**
      * 连接驱动
      *
-     * @var \queryyetsimple\mail\interfaces\connect
+     * @var \queryyetsimple\mail\iconnect
      */
     protected $oConnect;
     
@@ -105,12 +103,12 @@ class store implements interfaces_store {
      * 构造函数
      *
      * @param array $arrOption            
-     * @param \queryyetsimple\mail\interfaces\connect $oConnect            
+     * @param \queryyetsimple\mail\iconnect $oConnect            
      * @param \queryyetsimple\mvc\iview $objView            
      * @param \queryyetsimple\event\idispatch|null $objEvent            
      * @return void
      */
-    public function __construct(array $arrOption = [], connect $oConnect, iview $objView, $objEvent = null) {
+    public function __construct(array $arrOption = [], iconnect $oConnect, iview $objView, $objEvent = null) {
         $this->options ( $arrOption );
         $this->oConnect = $oConnect;
         $this->objView = $objView;

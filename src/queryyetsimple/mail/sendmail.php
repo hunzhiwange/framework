@@ -16,8 +16,6 @@ namespace queryyetsimple\mail;
 queryphp;
 
 use Swift_SendmailTransport;
-use queryyetsimple\mail\abstracts\connect;
-use queryyetsimple\mail\interfaces\connect as interfaces_connect;
 
 /**
  * mail.sendmail
@@ -27,7 +25,7 @@ use queryyetsimple\mail\interfaces\connect as interfaces_connect;
  * @since 2017.08.28
  * @version 1.0
  */
-class sendmail extends connect implements interfaces_connect {
+class sendmail extends aconnect implements iconnect {
     
     /**
      * 配置
