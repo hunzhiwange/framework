@@ -23,7 +23,10 @@ queryphp;
  */
 return [ 
         'singleton@i18n' => [ 
-                'queryyetsimple\i18n\i18n',
+                [ 
+                        'queryyetsimple\i18n\i18n',
+                        'queryyetsimple\i18n\ii18n' 
+                ],
                 function ($oProject) {
                     return new queryyetsimple\i18n\i18n ( $oProject ['cookie'], array_merge ( $oProject ['option'] ['i18n\\'], [ 
                             'app_name' => $oProject ['app_name'] 

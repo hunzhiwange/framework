@@ -18,7 +18,6 @@ queryphp;
 use InvalidArgumentException;
 use queryyetsimple\support\option;
 use queryyetsimple\cookie\icookie;
-use queryyetsimple\i18n\interfaces\i18n as interfaces_i18n;
 
 /**
  * 国际化组件
@@ -28,7 +27,7 @@ use queryyetsimple\i18n\interfaces\i18n as interfaces_i18n;
  * @since 2016.11.18
  * @version 1.0
  */
-class i18n implements interfaces_i18n {
+class i18n implements ii18n {
     
     use option;
     
