@@ -22,8 +22,8 @@ use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\support\string;
 use queryyetsimple\support\helper;
+use queryyetsimple\support\icontainer;
 use queryyetsimple\support\flow_control;
-use queryyetsimple\support\interfaces\container;
 
 /**
  * validate 数据验证器
@@ -38,9 +38,9 @@ class validate implements ivalidate {
     use flow_control;
     
     /**
-     * 项目容器
+     * IOC 容器
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
     
@@ -590,12 +590,12 @@ class validate implements ivalidate {
     }
     
     /**
-     * 设置 ioc 容器
+     * 设置 IOC 容器
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @return $this
      */
-    public function container(container $objContainer) {
+    public function container(icontainer $objContainer) {
         $this->objContainer = $objContainer;
         return $this;
     }

@@ -19,7 +19,7 @@ use Closure;
 use Exception;
 use RuntimeException;
 use BadMethodCallException;
-use queryyetsimple\support\interfaces\container as interfaces_container;
+use queryyetsimple\support\icontainer;
 
 /**
  * 实现类的静态访问门面
@@ -34,7 +34,7 @@ abstract class face {
     /**
      * 项目容器
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected static $objContainer;
     
@@ -66,7 +66,7 @@ abstract class face {
     /**
      * 返回服务容器
      *
-     * @return \queryyetsimple\support\interfaces\container
+     * @return \queryyetsimple\support\icontainer
      */
     public static function container() {
         return static::$objContainer;
@@ -75,10 +75,10 @@ abstract class face {
     /**
      * 设置服务容器
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @return void
      */
-    public static function setContainer(interfaces_container $objContainer) {
+    public static function setContainer(icontainer $objContainer) {
         static::$objContainer = $objContainer;
     }
     

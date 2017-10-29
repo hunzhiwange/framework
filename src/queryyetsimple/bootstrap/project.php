@@ -401,7 +401,7 @@ class project extends container implements iproject {
         $this->alias ( [ 
                 'project' => [ 
                         'queryyetsimple\bootstrap\project',
-                        'queryyetsimple\support\interfaces\container',
+                        'queryyetsimple\support\icontainer',
                         'queryyetsimple\bootstrap\iproject',
                         'app' 
                 ] 

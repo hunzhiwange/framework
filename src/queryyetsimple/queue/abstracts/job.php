@@ -198,7 +198,7 @@ abstract class job extends PHPQueueJob {
     /**
      * 返回服务容器
      *
-     * @return \queryyetsimple\support\interfaces\container
+     * @return \queryyetsimple\support\icontainer
      */
     protected function container() {
         return project ();

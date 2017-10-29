@@ -17,7 +17,7 @@ queryphp;
 
 use Exception;
 use InvalidArgumentException;
-use queryyetsimple\support\interfaces\container as interfaces_container;
+use queryyetsimple\support\icontainer;
 use queryyetsimple\support\interfaces\manager as interfaces_manager;
 
 /**
@@ -33,7 +33,7 @@ abstract class manager implements interfaces_manager {
     /**
      * IOC Container
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
     
@@ -47,10 +47,10 @@ abstract class manager implements interfaces_manager {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @return void
      */
-    public function __construct(interfaces_container $objContainer) {
+    public function __construct(icontainer $objContainer) {
         $this->objContainer = $objContainer;
     }
     

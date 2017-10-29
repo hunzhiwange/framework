@@ -15,7 +15,7 @@ namespace queryyetsimple\validate;
 ##########################################################
 queryphp;
 
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\icontainer;
 
 /**
  * ivalidate 接口
@@ -335,10 +335,10 @@ interface ivalidate {
     /**
      * 设置 ioc 容器
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @return $this
      */
-    public function container(container $objContainer);
+    public function container(icontainer $objContainer);
     
     /**
      * 获取需要跳过的验证规则

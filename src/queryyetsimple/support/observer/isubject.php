@@ -36,7 +36,7 @@ interface isubject {
     /**
      * 返回容器
      *
-     * @return \queryyetsimple\support\interfaces\container
+     * @return \queryyetsimple\support\icontainer
      */
     public function container();
 }

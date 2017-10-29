@@ -19,7 +19,7 @@ use SplSubject;
 use SplObserver;
 use SplObjectStorage;
 use InvalidArgumentException;
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\icontainer;
 
 /**
  * 观察者目标角色 subject
@@ -34,7 +34,7 @@ abstract class subject implements SplSubject, isubject {
     /**
      * 容器
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
     
@@ -48,10 +48,10 @@ abstract class subject implements SplSubject, isubject {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @return void
      */
-    public function __construct(container $objContainer) {
+    public function __construct(icontainer $objContainer) {
         $this->objObservers = new SplObjectStorage ();
         $this->objContainer = $objContainer;
     }
@@ -116,7 +116,7 @@ abstract class subject implements SplSubject, isubject {
     /**
      * 返回容器
      *
-     * @return \queryyetsimple\support\interfaces\container
+     * @return \queryyetsimple\support\icontainer
      */
     public function container() {
         return $this->objContainer;

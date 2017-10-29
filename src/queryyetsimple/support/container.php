@@ -23,7 +23,7 @@ use ReflectionFunction;
 use ReflectionException;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\support\interfaces\container as interfaces_container;
+use queryyetsimple\support\icontainer;
 
 /**
  * IOC 容器
@@ -33,7 +33,7 @@ use queryyetsimple\support\interfaces\container as interfaces_container;
  * @since 2017.04.13
  * @version 1.0
  */
-class container implements ArrayAccess, interfaces_container {
+class container implements ArrayAccess, icontainer {
     
     use flow_control;
     

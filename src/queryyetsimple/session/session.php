@@ -17,7 +17,7 @@ queryphp;
 
 use Exception;
 use SessionHandlerInterface;
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\icontainer;
 
 /**
  * session 入口
@@ -32,7 +32,7 @@ class session implements isession {
     /**
      * IOC Container
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
     
@@ -46,10 +46,10 @@ class session implements isession {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\interfaces\container $objConnect            
+     * @param \queryyetsimple\support\icontainer $objConnect            
      * @return void
      */
-    public function __construct(container $objContainer) {
+    public function __construct(icontainer $objContainer) {
         $this->objContainer = $objContainer;
     }
     

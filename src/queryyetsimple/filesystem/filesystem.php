@@ -17,7 +17,7 @@ queryphp;
 
 use Exception;
 use InvalidArgumentException;
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\icontainer;
 
 /**
  * filesystem 入口
@@ -56,7 +56,7 @@ class filesystem implements ifilesystem {
     /**
      * IOC Container
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
     
@@ -70,10 +70,10 @@ class filesystem implements ifilesystem {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @return void
      */
-    public function __construct(container $objContainer) {
+    public function __construct(icontainer $objContainer) {
         $this->objContainer = $objContainer;
     }
     

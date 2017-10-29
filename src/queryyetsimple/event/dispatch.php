@@ -15,7 +15,7 @@ namespace queryyetsimple\event;
 ##########################################################
 queryphp;
 
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\icontainer;
 
 /**
  * 事件
@@ -30,7 +30,7 @@ class dispatch implements idispatch {
     /**
      * 项目容器
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
     
@@ -44,10 +44,10 @@ class dispatch implements idispatch {
     /**
      * 创建一个事件解析器
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @return void
      */
-    public function __construct(container $objContainer) {
+    public function __construct(icontainer $objContainer) {
         $this->objContainer = $objContainer;
     }
     

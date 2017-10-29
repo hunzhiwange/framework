@@ -29,7 +29,7 @@ use queryyetsimple\filesystem\fso;
 use queryyetsimple\mvc\icontroller;
 use queryyetsimple\support\infinity;
 use queryyetsimple\pipeline\ipipeline;
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\icontainer;
 
 /**
  * 路由解析
@@ -47,7 +47,7 @@ class router {
     /**
      * container
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
     
@@ -247,12 +247,12 @@ class router {
      * 构造函数
      *
      * @param \queryyetsimple\pipeline\ipipeline $objPipeline            
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @param \queryyetsimple\http\request $objRequest            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(container $objContainer, ipipeline $objPipeline, request $objRequest, array $arrOption = []) {
+    public function __construct(icontainer $objContainer, ipipeline $objPipeline, request $objRequest, array $arrOption = []) {
         $this->objContainer = $objContainer;
         $this->objPipeline = $objPipeline;
         $this->objRequest = $objRequest;

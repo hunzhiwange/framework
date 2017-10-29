@@ -15,7 +15,7 @@ namespace queryyetsimple\bootstrap;
 ##########################################################
 queryphp;
 
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\icontainer;
 
 /**
  * iproject 接口
@@ -25,7 +25,7 @@ use queryyetsimple\support\interfaces\container;
  * @since 2017.04.23
  * @version 1.0
  */
-interface iproject extends container {
+interface iproject extends icontainer {
     
     /**
      * QueryPHP 版本

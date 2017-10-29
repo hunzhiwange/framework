@@ -16,7 +16,7 @@ namespace queryyetsimple\cache;
 queryphp;
 
 use Exception;
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\icontainer;
 
 /**
  * 缓存入口
@@ -31,7 +31,7 @@ class cache implements icache {
     /**
      * IOC Container
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
     
@@ -45,10 +45,10 @@ class cache implements icache {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\interfaces\container $objConnect            
+     * @param \queryyetsimple\support\icontainer $objConnect            
      * @return void
      */
-    public function __construct(container $objContainer) {
+    public function __construct(icontainer $objContainer) {
         $this->objContainer = $objContainer;
     }
     

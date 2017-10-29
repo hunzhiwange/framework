@@ -16,7 +16,7 @@ namespace queryyetsimple\pipeline;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\support\interfaces\container;
+use queryyetsimple\support\icontainer;
 
 /**
  * 管道实现类
@@ -31,7 +31,7 @@ class pipeline implements ipipeline {
     /**
      * 容器
      *
-     * @var \queryyetsimple\support\interfaces\container
+     * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
     
@@ -52,10 +52,10 @@ class pipeline implements ipipeline {
     /**
      * 创建一个管道
      *
-     * @param \queryyetsimple\support\interfaces\container $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @return void
      */
-    public function __construct(container $objContainer) {
+    public function __construct(icontainer $objContainer) {
         $this->objContainer = $objContainer;
     }
     
