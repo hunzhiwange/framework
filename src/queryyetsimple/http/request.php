@@ -20,9 +20,9 @@ use RuntimeException;
 use queryyetsimple\support\option;
 use queryyetsimple\cookie\icookie;
 use queryyetsimple\support\infinity;
+use queryyetsimple\support\iarrayable;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\session\interfaces\store;
-use queryyetsimple\support\interfaces\arrayable;
 
 /**
  * http 请求
@@ -32,7 +32,7 @@ use queryyetsimple\support\interfaces\arrayable;
  * @since 2016.11.19
  * @version 1.0
  */
-class request implements arrayable, ArrayAccess {
+class request implements iarrayable, ArrayAccess {
     
     use option;
     use infinity {

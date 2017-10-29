@@ -18,7 +18,7 @@ queryphp;
 use RuntimeException;
 use queryyetsimple\support\option;
 use queryyetsimple\support\assert;
-use queryyetsimple\support\interfaces\htmlable;
+use queryyetsimple\support\ihtmlable;
 
 /**
  * 分页处理
@@ -28,7 +28,7 @@ use queryyetsimple\support\interfaces\htmlable;
  * @since 2017.07.14
  * @version 1.0
  */
-abstract class apage implements htmlable {
+abstract class apage implements ihtmlable {
     
     use option;
     

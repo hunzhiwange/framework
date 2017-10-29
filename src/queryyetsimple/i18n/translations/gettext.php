@@ -16,7 +16,7 @@ namespace queryyetsimple\i18n\translations;
 queryphp;
 
 use Exception;
-use queryyetsimple\support\interfaces\arrayable;
+use queryyetsimple\support\iarrayable;
 
 /**
  * translations.gettext
@@ -27,7 +27,7 @@ use queryyetsimple\support\interfaces\arrayable;
  * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
-class gettext extends translations implements arrayable {
+class gettext extends translations implements iarrayable {
     
     /**
      * The gettext implementation of select_plural_form.

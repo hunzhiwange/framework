@@ -18,8 +18,8 @@ queryphp;
 use RuntimeException;
 use queryyetsimple\support\assert;
 use queryyetsimple\support\option;
-use queryyetsimple\support\interfaces\jsonable;
-use queryyetsimple\support\interfaces\arrayable;
+use queryyetsimple\support\ijsonable;
+use queryyetsimple\support\iarrayable;
 
 /**
  * 日志存储
@@ -365,9 +365,9 @@ class store implements istore {
     protected function formatMessage($mixMessage) {
         if (is_array ( $mixMessage )) {
             return var_export ( $mixMessage, true );
-        } elseif ($mixMessage instanceof jsonable) {
+        } elseif ($mixMessage instanceof ijsonable) {
             return $mixMessage->toJson ();
-        } elseif ($mixMessage instanceof arrayable) {
+        } elseif ($mixMessage instanceof iarrayable) {
             return var_export ( $mixMessage->toArray (), true );
         } elseif (is_scalar ( $mixMessage )) {
             return $mixMessage;

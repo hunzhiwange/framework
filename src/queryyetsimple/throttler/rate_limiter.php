@@ -18,7 +18,7 @@ queryphp;
 use Countable;
 use RuntimeException;
 use queryyetsimple\cache\irepository;
-use queryyetsimple\support\interfaces\arrayable;
+use queryyetsimple\support\iarrayable;
 
 /**
  * rate_limiter 入口
@@ -28,7 +28,7 @@ use queryyetsimple\support\interfaces\arrayable;
  * @since 2017.08.07
  * @version 1.0
  */
-class rate_limiter implements irate_limiter, Countable, arrayable {
+class rate_limiter implements irate_limiter, Countable, iarrayable {
     
     /**
      * 缓存接口

@@ -15,10 +15,6 @@ namespace queryyetsimple\support;
 ##########################################################
 queryphp;
 
-use queryyetsimple\support\interfaces\jsonable;
-use queryyetsimple\support\interfaces\arrayable;
-use queryyetsimple\support\interfaces\tree as interfaces_tree;
-
 /**
  * 树数据处理
  *
@@ -27,7 +23,7 @@ use queryyetsimple\support\interfaces\tree as interfaces_tree;
  * @since 2017.09.11
  * @version 1.0
  */
-class tree implements interfaces_tree, jsonable, arrayable {
+class tree implements itree, ijsonable, iarrayable {
     
     /**
      * 子父关系映射

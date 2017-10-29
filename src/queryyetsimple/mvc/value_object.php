@@ -19,10 +19,10 @@ use ArrayAccess;
 use JsonSerializable;
 use BadMethodCallException;
 use queryyetsimple\support\string;
+use queryyetsimple\support\ijsonable;
 use queryyetsimple\support\serialize;
+use queryyetsimple\support\iarrayable;
 use queryyetsimple\support\flow_control;
-use queryyetsimple\support\interfaces\jsonable;
-use queryyetsimple\support\interfaces\arrayable;
 
 /**
  * 值对象
@@ -32,7 +32,7 @@ use queryyetsimple\support\interfaces\arrayable;
  * @since 2017.09.17
  * @version 1.0
  */
-class value_object implements JsonSerializable, ArrayAccess, arrayable, jsonable {
+class value_object implements JsonSerializable, ArrayAccess, iarrayable, ijsonable {
     
     use serialize;
     use flow_control;

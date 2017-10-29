@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\support\interfaces;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -16,35 +16,19 @@ namespace queryyetsimple\support\interfaces;
 queryphp;
 
 /**
- * 栈和队列接口
+ * ihtmlable 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.11
+ * @since 2017.07.19
  * @version 1.0
  */
-interface stack_queue {
+interface ihtmlable {
     
     /**
-     * 入
+     * 转化输出 HTML
      *
-     * @param mixed $mixValue            
-     * @return void
+     * @return string
      */
-    public function in($mixValue);
-    
-    /**
-     * 出
-     *
-     * @return mixed
-     */
-    public function out();
-    
-    /**
-     * 验证类型是否正确遇到错误抛出异常
-     *
-     * @param mixed $mixValue            
-     * @return void
-     */
-    public function validate($mixValue);
+    public function toHtml();
 }

@@ -18,8 +18,8 @@ queryphp;
 use Countable;
 use ArrayAccess;
 use JsonSerializable;
-use queryyetsimple\support\interfaces\jsonable;
-use queryyetsimple\support\interfaces\arrayable;
+use queryyetsimple\support\ijsonable;
+use queryyetsimple\support\iarrayable;
 
 /**
  * 分页处理
@@ -29,7 +29,7 @@ use queryyetsimple\support\interfaces\arrayable;
  * @since 2017.07.14
  * @version 1.0
  */
-class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializable, jsonable, arrayable {
+class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializable, ijsonable, iarrayable {
     
     /**
      * 构造函数

@@ -27,15 +27,15 @@ use queryyetsimple\support\helper;
 use queryyetsimple\event\idispatch;
 use queryyetsimple\support\infinity;
 use queryyetsimple\support\serialize;
+use queryyetsimple\support\ijsonable;
 use queryyetsimple\support\collection;
+use queryyetsimple\support\iarrayable;
 use queryyetsimple\mvc\relation\has_one;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\mvc\relation\relation;
 use queryyetsimple\mvc\relation\has_many;
 use queryyetsimple\mvc\relation\many_many;
 use queryyetsimple\mvc\relation\belongs_to;
-use queryyetsimple\support\interfaces\jsonable;
-use queryyetsimple\support\interfaces\arrayable;
 
 /**
  * 模型 Object Relational Mapping
@@ -45,7 +45,7 @@ use queryyetsimple\support\interfaces\arrayable;
  * @since 2017.04.27
  * @version 1.0
  */
-abstract class model implements imodel, JsonSerializable, ArrayAccess, arrayable, jsonable {
+abstract class model implements imodel, JsonSerializable, ArrayAccess, iarrayable, ijsonable {
     
     use serialize;
     use infinity {

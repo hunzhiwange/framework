@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\support\interfaces;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,14 @@ namespace queryyetsimple\support\interfaces;
 queryphp;
 
 /**
- * psr4 接口
+ * ipsr4 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.23
  * @version 1.0
  */
-interface psr4 {
+interface ipsr4 {
     
     /**
      * 获取 composer

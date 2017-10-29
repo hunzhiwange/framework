@@ -16,7 +16,6 @@ namespace queryyetsimple\support;
 queryphp;
 
 use InvalidArgumentException;
-use queryyetsimple\support\interfaces\stack_queue;
 
 /**
  * 队列，先进先出
@@ -27,7 +26,7 @@ use queryyetsimple\support\interfaces\stack_queue;
  * @see http://php.net/manual/zh/class.splqueue.php
  * @version 1.0
  */
-class queue extends linkedlist implements stack_queue {
+class queue extends linkedlist implements istack_queue {
     
     /**
      * 入对

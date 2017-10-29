@@ -21,8 +21,8 @@ use ArrayAccess;
 use JsonSerializable;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\support\interfaces\jsonable;
-use queryyetsimple\support\interfaces\arrayable;
+use queryyetsimple\support\ijsonable;
+use queryyetsimple\support\iarrayable;
 
 /**
  * 数组转对象集合
@@ -32,7 +32,7 @@ use queryyetsimple\support\interfaces\arrayable;
  * @since 2016.11.21
  * @version 1.0
  */
-class collection implements Iterator, ArrayAccess, Countable, arrayable, jsonable, JsonSerializable {
+class collection implements Iterator, ArrayAccess, Countable, iarrayable, ijsonable, JsonSerializable {
     
     use infinity;
     

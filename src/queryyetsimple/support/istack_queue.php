@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\support\interfaces;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -16,19 +16,35 @@ namespace queryyetsimple\support\interfaces;
 queryphp;
 
 /**
- * arrayable 接口
+ * 栈和队列接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.13
+ * @since 2017.04.11
  * @version 1.0
  */
-interface arrayable {
+interface istack_queue {
     
     /**
-     * 对象转数组
+     * 入
      *
-     * @return array
+     * @param mixed $mixValue            
+     * @return void
      */
-    public function toArray();
+    public function in($mixValue);
+    
+    /**
+     * 出
+     *
+     * @return mixed
+     */
+    public function out();
+    
+    /**
+     * 验证类型是否正确遇到错误抛出异常
+     *
+     * @param mixed $mixValue            
+     * @return void
+     */
+    public function validate($mixValue);
 }

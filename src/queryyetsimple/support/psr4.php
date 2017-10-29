@@ -17,7 +17,6 @@ queryphp;
 
 use RuntimeException;
 use Composer\Autoload\ClassLoader;
-use queryyetsimple\support\interfaces\psr4 as interfaces_psr4;
 
 /**
  * psr4 自动载入规范
@@ -27,7 +26,7 @@ use queryyetsimple\support\interfaces\psr4 as interfaces_psr4;
  * @since 2016.11.17
  * @version 1.0
  */
-class psr4 implements interfaces_psr4 {
+class psr4 implements ipsr4 {
     
     /**
      * 设置 composer

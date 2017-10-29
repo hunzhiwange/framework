@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\support\interfaces;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -16,19 +16,19 @@ namespace queryyetsimple\support\interfaces;
 queryphp;
 
 /**
- * htmlable 接口
+ * iarrayable 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.07.19
+ * @since 2017.04.13
  * @version 1.0
  */
-interface htmlable {
+interface iarrayable {
     
     /**
-     * 转化输出 HTML
+     * 对象转数组
      *
-     * @return string
+     * @return array
      */
-    public function toHtml();
+    public function toArray();
 }
