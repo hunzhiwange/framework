@@ -16,14 +16,14 @@ namespace queryyetsimple\queue\interfaces;
 queryphp;
 
 /**
- * runner 接口
+ * irunner 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.06
  * @version 1.0
  */
-interface runner {
+interface irunner {
     
     /**
      * work 命名
