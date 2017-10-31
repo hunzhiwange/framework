@@ -1567,7 +1567,7 @@ class router {
      * @return boolean
      */
     public function checkOpen() {
-        // return $this->getOption ( 'router_cache' ) && $this->strCachePath;
+        return $this->getOption ( 'router_cache' ) && $this->strCachePath;
     }
     
     /**
@@ -1870,6 +1870,10 @@ class router {
         // 尝试直接读取方法类
         $sActionClass = '\\' . $sApp . '\\' . $this->getOption ( 'controller_dir' ) . '\\' . $sController . '\\' . $sAction;
         if (class_exists ( $sActionClass )) {
+            if (! $booFindController) {
+                throw new RuntimeException ( sprintf ( 'Parent controller %s must be set', $sControllerClass ) );
+            }
+            
             return [ 
                     $this->objContainer->make ( $sActionClass, $this->arrVariable )->setController ( $this->objContainer->make ( $sControllerClass, $this->arrVariable )->setView ( $this->objContainer ['view'] )->setRouter ( $this ) ),
                     'run' 
