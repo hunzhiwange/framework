@@ -16,19 +16,20 @@ namespace queryyetsimple\support;
 queryphp;
 
 /**
- * ihtmlable 接口
+ * ijson 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.07.19
  * @version 1.0
  */
-interface ihtmlable {
+interface ijson {
     
     /**
-     * 转化输出 HTML
+     * 对象转 JSON
      *
+     * @param integer $intOption            
      * @return string
      */
-    public function toHtml();
+    public function toJson($intOption = JSON_UNESCAPED_UNICODE);
 }

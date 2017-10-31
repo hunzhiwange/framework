@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\support\interfaces;
+namespace queryyetsimple\auth;
 
 <<<queryphp
 ##########################################################
@@ -15,21 +15,15 @@ namespace queryyetsimple\support\interfaces;
 ##########################################################
 queryphp;
 
+use RuntimeException;
+
 /**
- * jsonable 接口
+ * 修改密码失败异常
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.07.19
+ * @since 2017.09.09
  * @version 1.0
  */
-interface jsonable {
-    
-    /**
-     * 对象转 JSON
-     *
-     * @param integer $intOption            
-     * @return string
-     */
-    public function toJson($intOption = JSON_UNESCAPED_UNICODE);
+class change_password_failed extends RuntimeException {
 }

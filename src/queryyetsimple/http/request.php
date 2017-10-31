@@ -17,12 +17,12 @@ queryphp;
 
 use ArrayAccess;
 use RuntimeException;
+use queryyetsimple\session\istore;
 use queryyetsimple\support\option;
 use queryyetsimple\cookie\icookie;
+use queryyetsimple\support\iarray;
 use queryyetsimple\support\infinity;
-use queryyetsimple\support\iarrayable;
 use queryyetsimple\support\flow_control;
-use queryyetsimple\session\interfaces\store;
 
 /**
  * http 请求
@@ -32,7 +32,7 @@ use queryyetsimple\session\interfaces\store;
  * @since 2016.11.19
  * @version 1.0
  */
-class request implements iarrayable, ArrayAccess {
+class request implements iarray, ArrayAccess {
     
     use option;
     use infinity {
@@ -50,7 +50,7 @@ class request implements iarrayable, ArrayAccess {
     /**
      * session 存储
      *
-     * @var \queryyetsimple\session\interfaces\store
+     * @var \queryyetsimple\session\istore
      */
     protected $objSession;
     
@@ -250,11 +250,11 @@ class request implements iarrayable, ArrayAccess {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\session\interfaces\store $objSession            
+     * @param \queryyetsimple\session\istore $objSession            
      * @param \queryyetsimple\cookie\icookie $objCookie            
      * @return void
      */
-    public function __construct(store $objSession, icookie $objCookie, array $arrOption = []) {
+    public function __construct(istore $objSession, icookie $objCookie, array $arrOption = []) {
         $this->objSession = $objSession;
         $this->objCookie = $objCookie;
         $this->options ( $arrOption );
@@ -652,7 +652,7 @@ class request implements iarrayable, ArrayAccess {
     /**
      * 返回 session 存储
      *
-     * @return \queryyetsimple\session\interfaces\store|null
+     * @return \queryyetsimple\session\istore|null
      */
     public function getSessionStore() {
         return $this->objSession;
@@ -670,10 +670,10 @@ class request implements iarrayable, ArrayAccess {
     /**
      * 设置 session 存储
      *
-     * @param \queryyetsimple\session\interfaces\store $objSession            
+     * @param \queryyetsimple\session\istore $objSession            
      * @return $this
      */
-    public function setSessionStore(store $objSession) {
+    public function setSessionStore(istore $objSession) {
         if ($this->checkFlowControl ())
             return $this;
         $this->objSession = $objSession;

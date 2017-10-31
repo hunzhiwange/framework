@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\auth\abstracts;
+namespace queryyetsimple\auth;
 
 <<<queryphp
 ##########################################################
@@ -25,7 +25,7 @@ use queryyetsimple\support\option;
  * @since 2017.09.07
  * @version 1.0
  */
-abstract class connect {
+abstract class aconnect {
     
     use option;
     

@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.09.11
  * @version 1.0
  */
-class tree implements itree, ijsonable, iarrayable {
+class tree implements itree, ijson, iarray {
     
     /**
      * 子父关系映射

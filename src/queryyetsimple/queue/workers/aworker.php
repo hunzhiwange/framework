@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\abstracts;
+namespace queryyetsimple\queue\workers;
 
 <<<queryphp
 ##########################################################
@@ -26,13 +26,12 @@ use PHPQueue\Worker as PHPQueueWorker;
  * @since 2017.05.11
  * @version 1.0
  */
-abstract class worker extends PHPQueueWorker {
+abstract class aworker extends PHPQueueWorker {
     
     /**
      * 运行任务
      *
-     * @param \queryyetsimple\queue\interfaces\job $objJob
-     *            $objJob
+     * @param \queryyetsimple\queue\jobs\ijob $objJob
      * @return void
      */
     public function runJob($objJob) {

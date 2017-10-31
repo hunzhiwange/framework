@@ -16,14 +16,14 @@ namespace queryyetsimple\support;
 queryphp;
 
 /**
- * iarrayable 接口
+ * iarray 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.13
  * @version 1.0
  */
-interface iarrayable {
+interface iarray {
     
     /**
      * 对象转数组

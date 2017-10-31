@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\abstracts;
+namespace queryyetsimple\queue\jobs;
 
 <<<queryphp
 ##########################################################
@@ -25,7 +25,7 @@ use PHPQueue\Job as PHPQueueJob;
  * @since 2017.05.12
  * @version 1.0
  */
-abstract class job extends PHPQueueJob {
+abstract class ajob extends PHPQueueJob {
     
     /**
      * 任务所属的消息队列

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\abstracts;
+namespace queryyetsimple\queue\runners;
 
 <<<queryphp
 ##########################################################
@@ -27,19 +27,19 @@ use PHPQueue\Runner as PHPQueueRunner;
  * @since 2017.05.12
  * @version 1.0
  */
-abstract class runner extends PHPQueueRunner {
+abstract class arunner extends PHPQueueRunner {
     
     /**
      * work 命令
      *
-     * @var \queryyetsimple\bootstrap\console\command\queue\work
+     * @var \queryyetsimple\queue\console\work
      */
     protected $objWork;
     
     /**
      * 消息队列
      *
-     * @var \queryyetsimple\queue\interfaces\queue
+     * @var \queryyetsimple\queue\queues\iqueue
      */
     protected $objQueue;
     
@@ -60,7 +60,7 @@ abstract class runner extends PHPQueueRunner {
     /**
      * work 命名
      *
-     * @param \queryyetsimple\bootstrap\console\command\queue\work $objWork            
+     * @param \queryyetsimple\queue\console\work $objWork            
      * @return void
      */
     public function workCommand($objWork) {
@@ -150,7 +150,7 @@ abstract class runner extends PHPQueueRunner {
     /**
      * 记录错误任务
      *
-     * @param \queryyetsimple\queue\interfaces\job $objJob            
+     * @param \queryyetsimple\queue\jobs\ijob $objJob            
      * @return void
      */
     protected function failedJob($objJob) {
@@ -175,7 +175,7 @@ abstract class runner extends PHPQueueRunner {
     /**
      * 更新任务数据
      *
-     * @param \queryyetsimple\queue\interfaces\job $objJob            
+     * @param \queryyetsimple\queue\jobs\ijob $objJob            
      * @param mixed $mixResultData            
      * @return bool|void
      * @throws \Exception

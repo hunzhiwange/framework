@@ -15,9 +15,6 @@ namespace queryyetsimple\queue\runners;
 ##########################################################
 queryphp;
 
-use queryyetsimple\queue\abstracts\runner;
-use queryyetsimple\queue\interfaces\runner as interfaces_runner;
-
 /**
  * redis runner
  *
@@ -26,7 +23,7 @@ use queryyetsimple\queue\interfaces\runner as interfaces_runner;
  * @since 2017.05.12
  * @version 1.0
  */
-class redis extends runner implements interfaces_runner {
+class redis extends arunner implements irunner {
     
     /**
      * 消息队列名字

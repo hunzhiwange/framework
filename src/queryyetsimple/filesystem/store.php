@@ -15,8 +15,6 @@ namespace queryyetsimple\filesystem;
 ##########################################################
 queryphp;
 
-use queryyetsimple\filesystem\interfaces\connect;
-
 /**
  * filesystem 存储
  *
@@ -40,7 +38,7 @@ class store implements istore {
      * @param \queryyetsimple\filesystem\iconnect $oConnect            
      * @return void
      */
-    public function __construct(connect $oConnect) {
+    public function __construct(iconnect $oConnect) {
         $this->oConnect = $oConnect;
     }
     

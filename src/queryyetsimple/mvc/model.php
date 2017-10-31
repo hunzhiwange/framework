@@ -22,14 +22,14 @@ use Carbon\Carbon;
 use JsonSerializable;
 use DateTimeInterface;
 use BadMethodCallException;
+use queryyetsimple\support\ijson;
+use queryyetsimple\support\iarray;
 use queryyetsimple\support\string;
 use queryyetsimple\support\helper;
 use queryyetsimple\event\idispatch;
 use queryyetsimple\support\infinity;
 use queryyetsimple\support\serialize;
-use queryyetsimple\support\ijsonable;
 use queryyetsimple\support\collection;
-use queryyetsimple\support\iarrayable;
 use queryyetsimple\mvc\relation\has_one;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\mvc\relation\relation;
@@ -45,7 +45,7 @@ use queryyetsimple\mvc\relation\belongs_to;
  * @since 2017.04.27
  * @version 1.0
  */
-abstract class model implements imodel, JsonSerializable, ArrayAccess, iarrayable, ijsonable {
+abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, ijson {
     
     use serialize;
     use infinity {

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\interfaces;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -16,20 +16,19 @@ namespace queryyetsimple\queue\interfaces;
 queryphp;
 
 /**
- * 任务接口
+ * iarray 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.06
+ * @since 2017.04.13
  * @version 1.0
  */
-interface worker {
+interface iarray {
     
     /**
-     * 运行任务
+     * 对象转数组
      *
-     * @param \PHPQueue\Job $objJob            
-     * @return void
+     * @return array
      */
-    public function runJob($objJob);
+    public function toArray();
 }

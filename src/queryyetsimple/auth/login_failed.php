@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\auth\exception;
+namespace queryyetsimple\auth;
 
 <<<queryphp
 ##########################################################
@@ -18,12 +18,12 @@ queryphp;
 use RuntimeException;
 
 /**
- * 注册失败异常
+ * 登录失败异常
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.09.09
+ * @since 2017.09.08
  * @version 1.0
  */
-class register_failed extends RuntimeException {
+class login_failed extends RuntimeException {
 }

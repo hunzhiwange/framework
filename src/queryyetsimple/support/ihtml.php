@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\auth\interfaces;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -15,16 +15,20 @@ namespace queryyetsimple\auth\interfaces;
 ##########################################################
 queryphp;
 
-use queryyetsimple\support\interfaces\connect as interfaces_connect;
-
 /**
- * connect 接口
+ * ihtml 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.09.07
+ * @since 2017.07.19
  * @version 1.0
  */
-interface connect /* extends interfaces_connect */
-{
+interface ihtml {
+    
+    /**
+     * 转化输出 HTML
+     *
+     * @return string
+     */
+    public function toHtml();
 }

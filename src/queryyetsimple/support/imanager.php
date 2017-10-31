@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\interfaces;
+namespace queryyetsimple\support;
 
 <<<queryphp
 ##########################################################
@@ -16,68 +16,58 @@ namespace queryyetsimple\queue\interfaces;
 queryphp;
 
 /**
- * 任务接口
+ * imanager 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.06
+ * @since 2017.09.07
  * @version 1.0
  */
-interface job {
+interface manager {
     
     /**
-     * 执行任务
+     * 连接 connect 并返回连接对象
      *
+     * @param array|string $mixOption            
+     * @return object
+     */
+    public function connect($mixOption = []);
+    
+    /**
+     * 重新连接
+     *
+     * @param array|string $mixOption            
+     * @return object
+     */
+    public function reconnect($mixOption = []);
+    
+    /**
+     * 删除连接
+     *
+     * @param array|string $mixOption            
      * @return void
      */
-    public function handle();
+    public function disconnect($mixOption = []);
     
     /**
-     * 调用任务的失败方法
+     * 取回所有连接
      *
+     * @return object[]
+     */
+    public function getConnects();
+    
+    /**
+     * 返回默认驱动
+     *
+     * @return string
+     */
+    public function getDefaultDriver();
+    
+    /**
+     * 设置默认驱动
+     *
+     * @param string $strName            
      * @return void
      */
-    public function failed();
-    
-    /**
-     * 取得 job 名字
-     *
-     * @return string
-     */
-    public function getName();
-    
-    /**
-     * 取得 job 数据
-     *
-     * @return string
-     */
-    public function getData();
-    
-    /**
-     * 返回任务执行次数
-     *
-     * @return int
-     */
-    public function getAttempts();
-    
-    /**
-     * 获取任务所属的消息队列
-     *
-     * @return string
-     */
-    public function getQueue();
-    
-    /**
-     * 取得 worker
-     *
-     * @return string
-     */
-    public function getWorker();
-    
-    /**
-     * 取得 job_id
-     *
-     * @return string
-     */
-    public function getJobId();
+    public function setDefaultDriver($strName);
 }

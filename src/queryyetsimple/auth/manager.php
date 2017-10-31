@@ -18,7 +18,6 @@ queryphp;
 use Exception;
 use InvalidArgumentException;
 use queryyetsimple\support\manager as support_manager;
-// use queryyetsimple\mail\interfaces\mail as interfaces_mail;
 
 /**
  * manager 入口
@@ -28,7 +27,7 @@ use queryyetsimple\support\manager as support_manager;
  * @since 2017.09.07
  * @version 1.0
  */
-class manager extends support_manager /* implements interfaces_mail */
+class manager extends support_manager
 {
     
     /**

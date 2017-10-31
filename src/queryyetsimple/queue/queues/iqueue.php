@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\interfaces;
+namespace queryyetsimple\queue\queues;
 
 <<<queryphp
 ##########################################################
@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.06.06
  * @version 1.0
  */
-interface queue {
+interface iqueue {
     
     /**
      * 设置消息队列

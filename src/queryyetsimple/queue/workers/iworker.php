@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\auth\exception;
+namespace queryyetsimple\queue\workers;
 
 <<<queryphp
 ##########################################################
@@ -15,15 +15,21 @@ namespace queryyetsimple\auth\exception;
 ##########################################################
 queryphp;
 
-use RuntimeException;
-
 /**
- * 修改密码失败异常
+ * 任务接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.09.09
+ * @since 2017.06.06
  * @version 1.0
  */
-class change_password_failed extends RuntimeException {
+interface iworker {
+    
+    /**
+     * 运行任务
+     *
+     * @param \PHPQueue\Job $objJob            
+     * @return void
+     */
+    public function runJob($objJob);
 }

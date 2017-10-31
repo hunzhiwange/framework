@@ -25,7 +25,7 @@ use SessionHandlerInterface;
  * @since 2017.04.11
  * @version 1.0
  */
-interface session {
+interface isession {
     
     /**
      * 连接 session 并返回连接对象

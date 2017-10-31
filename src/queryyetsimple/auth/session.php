@@ -23,11 +23,6 @@ use queryyetsimple\support\string;
 use queryyetsimple\session\isession;
 use queryyetsimple\validate\ivalidate;
 use queryyetsimple\encryption\iencryption;
-use queryyetsimple\auth\abstracts\connect;
-use queryyetsimple\auth\exception\login_failed;
-use queryyetsimple\auth\exception\register_failed;
-use queryyetsimple\auth\exception\change_password_failed;
-use queryyetsimple\auth\interfaces\connect as interfaces_connect;
 
 /**
  * auth.session
@@ -37,7 +32,7 @@ use queryyetsimple\auth\interfaces\connect as interfaces_connect;
  * @since 2017.09.07
  * @version 1.0
  */
-class session extends connect implements interfaces_connect {
+class session extends aconnect implements iconnect {
     
     /**
      * user 对象

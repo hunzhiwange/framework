@@ -16,10 +16,10 @@ namespace queryyetsimple\log;
 queryphp;
 
 use RuntimeException;
+use queryyetsimple\support\ijson;
 use queryyetsimple\support\assert;
 use queryyetsimple\support\option;
-use queryyetsimple\support\ijsonable;
-use queryyetsimple\support\iarrayable;
+use queryyetsimple\support\iarray;
 
 /**
  * 日志存储
@@ -365,9 +365,9 @@ class store implements istore {
     protected function formatMessage($mixMessage) {
         if (is_array ( $mixMessage )) {
             return var_export ( $mixMessage, true );
-        } elseif ($mixMessage instanceof ijsonable) {
+        } elseif ($mixMessage instanceof ijson) {
             return $mixMessage->toJson ();
-        } elseif ($mixMessage instanceof iarrayable) {
+        } elseif ($mixMessage instanceof iarray) {
             return var_export ( $mixMessage->toArray (), true );
         } elseif (is_scalar ( $mixMessage )) {
             return $mixMessage;

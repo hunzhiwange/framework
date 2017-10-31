@@ -16,9 +16,7 @@ namespace queryyetsimple\queue\queues;
 queryphp;
 
 use PHPQueue\Base;
-use queryyetsimple\queue\abstracts\queue;
 use queryyetsimple\queue\backend\redis as backend_redis;
-use queryyetsimple\queue\interfaces\queue as interfaces_queue;
 
 /**
  * redis 消息队列
@@ -28,7 +26,7 @@ use queryyetsimple\queue\interfaces\queue as interfaces_queue;
  * @since 2017.05.11
  * @version 1.0
  */
-class redis extends queue implements interfaces_queue {
+class redis extends aqueue implements iqueue {
     
     /**
      * 队列连接

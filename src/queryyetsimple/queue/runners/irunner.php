@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\mail\interfaces;
+namespace queryyetsimple\queue\interfaces;
 
 <<<queryphp
 ##########################################################
@@ -16,43 +16,27 @@ namespace queryyetsimple\mail\interfaces;
 queryphp;
 
 /**
- * mail 接口
+ * runner 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.08.26
+ * @since 2017.06.06
  * @version 1.0
  */
-interface mail {
+interface runner {
     
     /**
-     * 连接 mail 并返回连接对象
+     * work 命名
      *
-     * @param array|string $mixOption            
-     * @return \queryyetsimple\mail\store
-     */
-    public function connect($mixOption = []);
-    
-    /**
-     * 创建 mail store
-     *
-     * @param \queryyetsimple\mail\interfaces\connect $oConnect            
-     * @return \queryyetsimple\mail\store
-     */
-    public function store($oConnect);
-    
-    /**
-     * 返回默认驱动
-     *
-     * @return string
-     */
-    public function getDefaultDriver();
-    
-    /**
-     * 设置默认驱动
-     *
-     * @param string $strName            
+     * @param \queryyetsimple\queue\console\work $objWork            
      * @return void
      */
-    public function setDefaultDriver($strName);
+    public function workCommand($objWork);
+    
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \PHPQueue\Runner::workJob()
+     */
+    public function workJob();
 }

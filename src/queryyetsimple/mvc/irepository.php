@@ -30,7 +30,7 @@ interface irepository {
      *
      * @param int $intId            
      * @param array $arrColumn            
-     * @return \queryyetsimple\mvc\interfaces\ientity
+     * @return \queryyetsimple\mvc\ientity
      */
     public function find($intId, $arrColumn = ['*']);
     
@@ -39,7 +39,7 @@ interface irepository {
      *
      * @param int $intId            
      * @param array $arrColumn            
-     * @return \queryyetsimple\mvc\interfaces\ientity|void
+     * @return \queryyetsimple\mvc\ientity|void
      */
     public function findOrFail($intId, $arrColumn = ['*']);
     
@@ -62,23 +62,23 @@ interface irepository {
     /**
      * 保存数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function create(iaggregate_root $objEntity);
     
     /**
      * 更新数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function update(iaggregate_root $objEntity);
     
     /**
      * 删除数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return int
      */
     public function delete(iaggregate_root $objEntity);
@@ -86,7 +86,7 @@ interface irepository {
     /**
      * 注册保存数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerCreate(iaggregate_root $objEntity);
@@ -94,7 +94,7 @@ interface irepository {
     /**
      * 注册更新数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerUpdate(iaggregate_root $objEntity);
@@ -102,7 +102,7 @@ interface irepository {
     /**
      * 注册删除数据
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerDelete(iaggregate_root $objEntity);
@@ -110,23 +110,23 @@ interface irepository {
     /**
      * 响应新建
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function handleCreate(iaggregate_root $objEntity);
     
     /**
      * 响应修改
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function handleUpdate(iaggregate_root $objEntity);
     
     /**
      * 响应删除
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
      * @return int
      */
     public function handleDelete(iaggregate_root $objEntity);
@@ -163,7 +163,7 @@ interface irepository {
     /**
      * 设置聚合根
      *
-     * @param \queryyetsimple\mvc\interfaces\iaggregate_root $objAggregate            
+     * @param \queryyetsimple\mvc\iaggregate_root $objAggregate            
      * @return void
      */
     public function setAggregate(iaggregate_root $objAggregate);
@@ -171,14 +171,14 @@ interface irepository {
     /**
      * 返回聚合根
      *
-     * @return \queryyetsimple\mvc\interfaces\iaggregate_root
+     * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function aggregate();
     
     /**
      * 返回工作单元
      *
-     * @return \queryyetsimple\mvc\interfaces\iunit_of_work
+     * @return \queryyetsimple\mvc\iunit_of_work
      */
     public function unitOfWork();
     

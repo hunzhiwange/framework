@@ -15,9 +15,6 @@ namespace queryyetsimple\queue\jobs;
 ##########################################################
 queryphp;
 
-use queryyetsimple\queue\abstracts\job;
-use queryyetsimple\queue\interfaces\job as interfaces_job;
-
 /**
  * redis job
  *
@@ -26,5 +23,5 @@ use queryyetsimple\queue\interfaces\job as interfaces_job;
  * @since 2017.05.12
  * @version 1.0
  */
-class redis extends job implements interfaces_job {
+class redis extends ajob implements ijob {
 }

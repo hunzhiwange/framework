@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\queue\interfaces;
+namespace queryyetsimple\queue\jobs;
 
 <<<queryphp
 ##########################################################
@@ -16,27 +16,68 @@ namespace queryyetsimple\queue\interfaces;
 queryphp;
 
 /**
- * runner 接口
+ * 任务接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.06
  * @version 1.0
  */
-interface runner {
+interface ijob {
     
     /**
-     * work 命名
+     * 执行任务
      *
-     * @param \queryyetsimple\bootstrap\console\command\queue\work $objWork            
      * @return void
      */
-    public function workCommand($objWork);
+    public function handle();
     
     /**
-     * (non-PHPdoc)
+     * 调用任务的失败方法
      *
-     * @see \PHPQueue\Runner::workJob()
+     * @return void
      */
-    public function workJob();
+    public function failed();
+    
+    /**
+     * 取得 job 名字
+     *
+     * @return string
+     */
+    public function getName();
+    
+    /**
+     * 取得 job 数据
+     *
+     * @return string
+     */
+    public function getData();
+    
+    /**
+     * 返回任务执行次数
+     *
+     * @return int
+     */
+    public function getAttempts();
+    
+    /**
+     * 获取任务所属的消息队列
+     *
+     * @return string
+     */
+    public function getQueue();
+    
+    /**
+     * 取得 worker
+     *
+     * @return string
+     */
+    public function getWorker();
+    
+    /**
+     * 取得 job_id
+     *
+     * @return string
+     */
+    public function getJobId();
 }

@@ -23,7 +23,7 @@ queryphp;
  * @since 2017.04.11
  * @version 1.0
  */
-interface store {
+interface istore {
     
     /**
      * 启动 session

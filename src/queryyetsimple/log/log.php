@@ -78,7 +78,7 @@ class log implements ilog {
      * @param \queryyetsimple\log\iconnect $oConnect            
      * @return \queryyetsimple\log\store
      */
-    public function store(connect $oConnect) {
+    public function store(iconnect $oConnect) {
         $arrOption = $this->objContainer ['option'] ['log\\'];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
         return new store ( $oConnect, $arrOption );

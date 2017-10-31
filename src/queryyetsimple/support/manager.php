@@ -18,7 +18,6 @@ queryphp;
 use Exception;
 use InvalidArgumentException;
 use queryyetsimple\support\icontainer;
-use queryyetsimple\support\interfaces\manager as interfaces_manager;
 
 /**
  * manager 入口
@@ -28,7 +27,7 @@ use queryyetsimple\support\interfaces\manager as interfaces_manager;
  * @since 2017.09.07
  * @version 1.0
  */
-abstract class manager implements interfaces_manager {
+abstract class manager implements imanager {
     
     /**
      * IOC Container
@@ -154,7 +153,7 @@ abstract class manager implements interfaces_manager {
      *
      * @param string $strConnect            
      * @param array $arrOption            
-     * @return \queryyetsimple\support\interfaces\connect
+     * @return object
      */
     protected function makeConnect($strConnect, array $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] [$this->getOptionName ( 'connect.' . $strConnect )] ))

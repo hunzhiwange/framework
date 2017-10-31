@@ -32,7 +32,7 @@ return [
         ],
         'singleton@auth.connect' => [ 
                 [ 
-                        'queryyetsimple\auth\interfaces\connect' 
+                        'queryyetsimple\auth\iconnect' 
                 ],
                 function ($oProject) {
                     return $oProject ['auth']->connect ();

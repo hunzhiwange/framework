@@ -16,9 +16,9 @@ namespace queryyetsimple\page;
 queryphp;
 
 use RuntimeException;
+use queryyetsimple\support\ihtml;
 use queryyetsimple\support\option;
 use queryyetsimple\support\assert;
-use queryyetsimple\support\ihtmlable;
 
 /**
  * 分页处理
@@ -28,7 +28,7 @@ use queryyetsimple\support\ihtmlable;
  * @since 2017.07.14
  * @version 1.0
  */
-abstract class apage implements ihtmlable {
+abstract class apage implements ihtml {
     
     use option;
     
