@@ -47,7 +47,7 @@ class container implements ArrayAccess, icontainer {
     /**
      * 注册的实例
      *
-     * @var object
+     * @var array
      */
     protected $arrInstances = [ ];
     
@@ -77,68 +77,50 @@ class container implements ArrayAccess, icontainer {
      *
      * @param mixed $mixFactoryName            
      * @param mixed $mixFactory            
-     * @return void
+     * @param boolean $booShare            
+     * @return $this
      */
-    public function register($mixFactoryName, $mixFactory = null) {
-        // 回调
-        if (is_callable ( $mixFactory )) {
-            $this->arrFactorys [$mixFactoryName] = $mixFactory;
-        }         
-
-        // 批量注册
-        else if (is_array ( $mixFactoryName )) {
-            foreach ( $mixFactoryName as $mixName => $mixValue ) {
-                $this->register ( $mixName, $mixValue );
-            }
-            return $this;
-        }        
-
-        // 实例
-        elseif (is_object ( $mixFactoryName )) {
-            $this->arrInstances [get_class ( $mixFactoryName )] = $mixFactoryName;
-        }        
-
-        // 实例化
-        elseif (is_object ( $mixFactory )) {
-            $this->arrInstances [$mixFactoryName] = $mixFactory;
-        }         
-
-        // 创建一个默认存储的值
-        else {
+    public function register($mixFactoryName, $mixFactory = null, $booShare = false) {
+        if (is_array ( $mixFactoryName )) {
+            list ( $mixFactoryName, $mixAlias ) = $this->parseAlias ( $mixFactoryName );
+            $this->alias ( $mixFactoryName, $mixAlias );
+        }
+        
+        if (! is_callable ( $mixFactory )) {
             if (is_null ( $mixFactory )) {
                 $mixFactory = $mixFactoryName;
             }
             $mixFactory = function () use($mixFactory) {
                 return $mixFactory;
             };
-            $this->arrFactorys [$mixFactoryName] = $mixFactory;
         }
+        
+        $this->arrFactorys [$mixFactoryName] = $mixFactory;
+        
+        if ($booShare)
+            $this->arrSingletons [] = $mixFactoryName;
+        
         return $this;
     }
     
     /**
-     * 强制注册为实例，存放数据
+     * 注册为实例
      *
-     * @param string $mixFactoryName            
+     * @param mixed $mixFactoryName            
      * @param mixed $mixFactory            
-     * @return void
+     * @return $this
      */
     public function instance($mixFactoryName, $mixFactory = null) {
-        if (! helper::varThese ( $mixFactoryName, [ 
-                'scalar',
-                'array' 
-        ] )) {
-            throw new InvalidArgumentException ( __ ( 'instance 第一个参数只能为 scalar 或者 array' ) );
+        if (is_array ( $mixFactoryName )) {
+            list ( $mixFactoryName, $mixAlias ) = $this->parseAlias ( $mixFactoryName );
+            $this->alias ( $mixFactoryName, $mixAlias );
         }
         
-        if (is_array ( $mixFactoryName )) {
-            $this->arrInstances = array_merge ( $this->arrInstances, $mixFactoryName );
-        } else {
-            if (is_null ( $mixFactory )) {
-                $mixFactory = $mixFactoryName;
-            }
-            $this->arrInstances [$mixFactoryName] = $mixFactory;
+        if (is_null ( $mixFactory )) {
+            $mixFactory = $mixFactoryName;
         }
+        $this->arrInstances [$mixFactoryName] = $mixFactory;
+        
         return $this;
     }
     
@@ -147,22 +129,25 @@ class container implements ArrayAccess, icontainer {
      *
      * @param scalar|array $mixFactoryName            
      * @param mixed $mixFactory            
-     * @return void
+     * @return $this
      */
     public function singleton($mixFactoryName, $mixFactory = null) {
-        if (! helper::varThese ( $mixFactoryName, [ 
-                'scalar',
-                'array' 
-        ] )) {
-            throw new InvalidArgumentException ( __ ( 'singleton 第一个参数只能为 scalar 或者 array' ) );
-        }
-        
-        if (is_array ( $mixFactoryName )) {
-            $this->arrSingletons = array_merge ( $this->arrSingletons, array_keys ( $mixFactoryName ) );
-        } else {
-            $this->arrSingletons [] = $mixFactoryName;
-        }
-        return $this->register ( $mixFactoryName, $mixFactory );
+        return $this->register ( $mixFactoryName, $mixFactory, true );
+    }
+    
+    /**
+     * 创建共享的闭包
+     *
+     * @param \Closure $objClosure            
+     * @return \Closure
+     */
+    public function share(Closure $objClosure) {
+        return function ($ojbContainer) use($objClosure) {
+            static $obj;
+            if (is_null ( $obj ))
+                $obj = $ojbContainer ( $ojbContainer );
+            return $obj;
+        };
     }
     
     /**
@@ -170,7 +155,7 @@ class container implements ArrayAccess, icontainer {
      *
      * @param array|string $mixAlias            
      * @param string|null|array $mixValue            
-     * @return void
+     * @return $this
      */
     public function alias($mixAlias, $mixValue = null) {
         if (is_array ( $mixAlias )) {
@@ -190,7 +175,7 @@ class container implements ArrayAccess, icontainer {
      *
      * @param string $strGroupName            
      * @param mixed $mixGroupData            
-     * @return void
+     * @return $this
      */
     public function group($strGroupName, $mixGroupData) {
         if (! isset ( $this->arrGroups [$strGroupName] )) {
@@ -220,7 +205,7 @@ class container implements ArrayAccess, icontainer {
     }
     
     /**
-     * 生产产品
+     * 服务容器返回对象
      *
      * @param string $strFactoryName            
      * @param array $arrArgs            
@@ -261,7 +246,7 @@ class container implements ArrayAccess, icontainer {
     }
     
     /**
-     * 实例回调自动注入并返回结果
+     * 实例回调自动注入
      *
      * @param callable $calClass            
      * @param array $arrArgs            
@@ -277,81 +262,6 @@ class container implements ArrayAccess, icontainer {
         }
         
         return call_user_func_array ( $calClass, $arrArgs );
-    }
-    
-    /**
-     * 判断工厂是否存在
-     *
-     * @param string $strFactoryName            
-     * @return bool
-     */
-    public function offsetExists($strFactoryName) {
-        return isset ( $this->arrFactorys [$this->normalize ( $strFactoryName )] );
-    }
-    
-    /**
-     * 获取一个工厂产品
-     *
-     * @param string $strFactoryName            
-     * @return mixed
-     */
-    public function offsetGet($strFactoryName) {
-        return $this->make ( $strFactoryName );
-    }
-    
-    /**
-     * 注册一个工厂
-     *
-     * @param string $strFactoryName            
-     * @param mixed $mixFactory            
-     * @return void
-     */
-    public function offsetSet($strFactoryName, $mixFactory) {
-        return $this->register ( $strFactoryName, $mixFactory );
-    }
-    
-    /**
-     * 删除一个注册的工厂
-     *
-     * @param string $strFactoryName            
-     * @return void
-     */
-    public function offsetUnset($strFactoryName) {
-        $strFactoryName = $this->normalize ( $strFactoryName );
-        foreach ( [ 
-                'Factorys',
-                'Instances',
-                'Singletons' 
-        ] as $strType ) {
-            $strType = 'arr' . $strType;
-            if (isset ( $this->{$strType} [$strFactoryName] ))
-                unset ( $this->{$strType} [$strFactoryName] );
-        }
-    }
-    
-    /**
-     * 捕捉支持属性参数
-     *
-     * @param string $sName
-     *            支持的项
-     * @return 设置项
-     */
-    public function __get($sName) {
-        return $this [$sName];
-    }
-    
-    /**
-     * 设置支持属性参数
-     *
-     * @param string $sName
-     *            支持的项
-     * @param mixed $mixVal
-     *            支持的值
-     * @return void
-     */
-    public function __set($sName, $mixVal) {
-        $this [$sName] = $mixVal;
-        return $this;
     }
     
     /**
@@ -490,6 +400,94 @@ class container implements ArrayAccess, icontainer {
      */
     protected function newInstanceArgs($strClass, $arrArgs) {
         return (new ReflectionClass ( $strClass ))->newInstanceArgs ( $arrArgs );
+    }
+    
+    /**
+     * 解析注册容器对象别名
+     *
+     * @param array $arrFactoryName            
+     * @return array
+     */
+    protected function parseAlias(array $arrFactoryName) {
+        return [ 
+                key ( $arrFactoryName ),
+                current ( $arrFactoryName ) 
+        ];
+    }
+    
+    /**
+     * 判断容器对象是否存在
+     *
+     * @param string $strFactoryName            
+     * @return bool
+     */
+    public function offsetExists($strFactoryName) {
+        return isset ( $this->arrFactorys [$this->normalize ( $strFactoryName )] );
+    }
+    
+    /**
+     * 获取一个容器对象
+     *
+     * @param string $strFactoryName            
+     * @return mixed
+     */
+    public function offsetGet($strFactoryName) {
+        return $this->make ( $strFactoryName );
+    }
+    
+    /**
+     * 注册容器对象
+     *
+     * @param string $strFactoryName            
+     * @param mixed $mixFactory            
+     * @return void
+     */
+    public function offsetSet($strFactoryName, $mixFactory) {
+        return $this->register ( $strFactoryName, $mixFactory );
+    }
+    
+    /**
+     * 删除一个容器对象
+     *
+     * @param string $strFactoryName            
+     * @return void
+     */
+    public function offsetUnset($strFactoryName) {
+        $strFactoryName = $this->normalize ( $strFactoryName );
+        foreach ( [ 
+                'Factorys',
+                'Instances',
+                'Singletons' 
+        ] as $strType ) {
+            $strType = 'arr' . $strType;
+            if (isset ( $this->{$strType} [$strFactoryName] ))
+                unset ( $this->{$strType} [$strFactoryName] );
+        }
+    }
+    
+    /**
+     * 捕捉支持属性参数
+     *
+     * @param string $sName
+     *            支持的项
+     * @return 设置项
+     */
+    public function __get($sName) {
+        return $this [$sName];
+    }
+    
+    /**
+     * 设置支持属性参数
+     *
+     * @param string $sName
+     *            支持的项
+     * @param mixed $mixVal
+     *            支持的值
+     * @return void
+     */
+    public function __set($sName, $mixVal) {
+        $this [$sName] = $mixVal;
+        return $this;
     }
     
     /**

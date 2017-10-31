@@ -15,6 +15,8 @@ namespace queryyetsimple\support;
 ##########################################################
 queryphp;
 
+use Closure;
+
 /**
  * icontainer 接口
  *
@@ -30,18 +32,19 @@ interface icontainer {
      *
      * @param mixed $mixFactoryName            
      * @param mixed $mixFactory            
-     * @return void
+     * @param boolean $booShare            
+     * @return $this
      */
-    public function register($mixFactoryName, $mixFactory = null);
+    public function register($mixFactoryName, $mixFactory = null, $booShare = false);
     
     /**
-     * 强制注册为实例，存放数据
+     * 注册为实例
      *
-     * @param string $strFactoryName            
+     * @param mixed $mixFactoryName            
      * @param mixed $mixFactory            
      * @return void
      */
-    public function instance($strFactoryName, $mixFactory);
+    public function instance($mixFactoryName, $mixFactory);
     
     /**
      * 注册单一实例
@@ -51,6 +54,14 @@ interface icontainer {
      * @return void
      */
     public function singleton($mixFactoryName, $mixFactory = null);
+    
+    /**
+     * 创建共享的闭包
+     *
+     * @param \Closure $objClosure            
+     * @return \Closure
+     */
+    public function share(Closure $objClosure);
     
     /**
      * 设置别名
@@ -80,7 +91,7 @@ interface icontainer {
     public function groupMake($strGroupName, array $arrArgs = []);
     
     /**
-     * 生产产品
+     * 服务容器返回对象
      *
      * @param string $strFactoryName            
      * @param array $arrArgs            
@@ -89,7 +100,7 @@ interface icontainer {
     public function make($strFactoryName, array $arrArgs = []);
     
     /**
-     * 实例回调自动注入并返回结果 (数组参数)
+     * 实例回调自动注入
      *
      * @param callable $calClass            
      * @param array $arrArgs            
