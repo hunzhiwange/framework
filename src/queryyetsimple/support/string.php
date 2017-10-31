@@ -227,29 +227,7 @@ class string {
      * @return boolean
      */
     public static function isUtf8($sString) {
-        $nLength = strlen ( $sString );
-        
-        for($nI = 0; $nI < $nLength; $nI ++) {
-            if (ord ( $sString [$nI] ) < 0x80) {
-                $nN = 0;
-            } elseif ((ord ( $sString [$nI] ) & 0xE0) == 0xC0) {
-                $nN = 1;
-            } elseif ((ord ( $sString [$nI] ) & 0xF0) == 0xE0) {
-                $nN = 2;
-            } elseif ((ord ( $sString [$nI] ) & 0xF0) == 0xF0) {
-                $nN = 3;
-            } else {
-                return false;
-            }
-            
-            for($nJ = 0; $nJ < $nN; $nJ ++) {
-                if ((++ $nI == $nLength) || ((ord ( $sString [$nI] ) & 0xC0) != 0x80)) {
-                    return false;
-                }
-            }
-        }
-        
-        return true;
+        return mb_is_utf8 ( $sString );
     }
     
     /**
