@@ -86,10 +86,8 @@ class container implements ArrayAccess, icontainer {
             $this->alias ( $mixFactoryName, $mixAlias );
         }
         
-        if (! is_callable ( $mixFactory )) {
-            if (is_null ( $mixFactory )) {
-                $mixFactory = $mixFactoryName;
-            }
+        if (is_null ( $mixFactory )) {
+            $mixFactory = $mixFactoryName;
         }
         
         $this->arrFactorys [$mixFactoryName] = $mixFactory;
