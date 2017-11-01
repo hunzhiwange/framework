@@ -45,7 +45,7 @@ class repository implements irepository {
      * @param \queryyetsimple\cache\iconnect $objConnect            
      * @return void
      */
-    public function __construct(connect $objConnect) {
+    public function __construct(iconnect $objConnect) {
         $this->objConnect = $objConnect;
     }
     

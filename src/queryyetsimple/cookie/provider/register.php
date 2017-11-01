@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\cookie\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,22 +15,41 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\cookie\cookie;
+use queryyetsimple\support\provider;
+
 /**
- * cookie.register 服务提供者
+ * cookie 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.12
  * @version 1.0
  */
-return [ 
-        'singleton@cookie' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->singleton ( 'cookie', function ($oProject) {
+            return new cookie ( $oProject ['option']->get ( 'cookie\\' ) );
+        } );
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'cookie' => [ 
                         'queryyetsimple\cookie\cookie',
                         'queryyetsimple\cookie\icookie' 
-                ],
-                function ($oProject) {
-                    return new queryyetsimple\cookie\cookie ( $oProject ['option']->get ( 'cookie\\' ) );
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+}

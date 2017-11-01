@@ -90,9 +90,6 @@ class container implements ArrayAccess, icontainer {
             if (is_null ( $mixFactory )) {
                 $mixFactory = $mixFactoryName;
             }
-            $mixFactory = function () use($mixFactory) {
-                return $mixFactory;
-            };
         }
         
         $this->arrFactorys [$mixFactoryName] = $mixFactory;
@@ -159,8 +156,10 @@ class container implements ArrayAccess, icontainer {
      */
     public function alias($mixAlias, $mixValue = null) {
         if (is_array ( $mixAlias )) {
-            foreach ( $mixAlias as $strKey => $mixValue ) {
-                $this->alias ( $strKey, $mixValue );
+            foreach ( $mixAlias as $mixKey => $mixValue ) {
+                if (is_int ( $mixKey ))
+                    continue;
+                $this->alias ( $mixKey, $mixValue );
             }
         } else {
             foreach ( ( array ) $mixValue as $strValue ) {
@@ -229,8 +228,16 @@ class container implements ArrayAccess, icontainer {
             return $this->getInjectionObject ( $strFactoryName, $arrArgs );
         }
         
-        array_unshift ( $arrArgs, $this );
-        $mixInstances = call_user_func_array ( $this->arrFactorys [$strFactoryName], $arrArgs );
+        if (is_callable ( $this->arrFactorys [$strFactoryName] )) {
+            array_unshift ( $arrArgs, $this );
+            $mixInstances = call_user_func_array ( $this->arrFactorys [$strFactoryName], $arrArgs );
+        } else {
+            if (is_string ( $this->arrFactorys [$strFactoryName] )) {
+                $mixInstances = $this->getInjectionObject ( $this->arrFactorys [$strFactoryName], $arrArgs );
+            } else {
+                $mixInstances = $this->arrFactorys [$strFactoryName];
+            }
+        }
         
         // 单一实例
         if (in_array ( $strFactoryName, $this->arrSingletons )) {
@@ -334,7 +341,6 @@ class container implements ArrayAccess, icontainer {
         }
         
         foreach ( $arrParameter as $intKey => $objParameter ) {
-            var_dump ( $intKey );
             $strName = $objParameter->name;
             
             try {

@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\session\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,22 +15,41 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\session\session;
+use queryyetsimple\support\provider;
+
 /**
- * session.register 服务提供者
+ * session 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.05
  * @version 1.0
  */
-return [ 
-        'singleton@session' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->singleton ( 'session', function ($oProject) {
+            return new session ( $oProject );
+        } );
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'session' => [ 
                         'queryyetsimple\session\session',
                         'queryyetsimple\session\isession' 
-                ],
-                function ($oProject) {
-                    return new queryyetsimple\session\session ( $oProject );
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+}

@@ -73,7 +73,7 @@ abstract class provider {
     }
     
     /**
-     * 延迟载入的服务提供者
+     * 可用服务提供者
      *
      * @return array
      */

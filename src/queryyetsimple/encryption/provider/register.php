@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\encryption\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,6 +15,9 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\support\provider;
+use queryyetsimple\encryption\encryption;
+
 /**
  * encryption 服务提供者
  *
@@ -21,14 +26,37 @@ queryphp;
  * @since 2017.06.03
  * @version 1.0
  */
-return [ 
-        'singleton@encryption' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 是否延迟载入
+     *
+     * @var boolean
+     */
+    public static $booDefer = true;
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->singleton ( 'encryption', function ($oProject) {
+            return new encryption ( $oProject ['option'] ['app_auth_key'], $oProject ['option'] ['app_auth_expiry'] );
+        } );
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'encryption' => [ 
                         'queryyetsimple\encryption\encryption',
                         'queryyetsimple\encryption\iencryption' 
-                ],
-                function ($oProject) {
-                    return new queryyetsimple\encryption\encryption ( $oProject ['option'] ['app_auth_key'], $oProject ['option'] ['app_auth_expiry'] );
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+}

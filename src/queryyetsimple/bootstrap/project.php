@@ -504,8 +504,11 @@ class project extends container implements iproject {
             
             if ($strProvider::isDeferred ()) {
                 $arrProviders = $strProvider::providers ();
-                foreach ( $arrProviders as $strKey => $arrAlias )
-                    $this->arrDeferredProviders [$strKey] = $strProvider;
+                foreach ( $arrProviders as $mixKey => $mixAlias ) {
+                    if (is_int ( $mixKey ))
+                        $mixKey = $mixAlias;
+                    $this->arrDeferredProviders [$mixKey] = $strProvider;
+                }
                 $this->alias ( $arrProviders );
                 continue;
             }

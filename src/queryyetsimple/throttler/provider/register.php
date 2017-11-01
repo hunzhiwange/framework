@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\throttler\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,22 +15,60 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\support\provider;
+use queryyetsimple\throttler\throttler;
+
 /**
- * throttler.register 服务提供者
+ * throttler 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.09
  * @version 1.0
  */
-return [ 
-        'singleton@throttler' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 是否延迟载入
+     *
+     * @var boolean
+     */
+    public static $booDefer = true;
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->registerThrottler ();
+        
+        $this->singleton ( 'queryyetsimple\throttler\middleware\throttler' );
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'throttler' => [ 
                         'queryyetsimple\throttler\throttler',
                         'queryyetsimple\throttler\ithrottler' 
                 ],
-                function ($oProject) {
-                    return (new queryyetsimple\throttler\throttler ( $oProject ['cache']->connect ( $oProject ['option'] ['throttler\driver'] ) ))->setRequest ( $oProject ['request'] );
-                } 
-        ] 
-];
+                'queryyetsimple\throttler\middleware\throttler' 
+        ];
+    }
+    
+    /**
+     * 注册 throttler 服务
+     *
+     * @return void
+     */
+    protected function registerThrottler() {
+        $this->singleton ( 'throttler', function ($oProject) {
+            return (new throttler ( $oProject ['cache']->connect ( $oProject ['option'] ['throttler\driver'] ) ))->setRequest ( $oProject ['request'] );
+        } );
+    }
+}
