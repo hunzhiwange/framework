@@ -64,6 +64,13 @@ class project extends container implements iproject {
     protected $arrAppOption = [ ];
     
     /**
+     * 延迟载入服务提供者
+     *
+     * @var array
+     */
+    protected $arrDeferredProviders = [ ];
+    
+    /**
      * 构造函数
      * 受保护的禁止外部通过 new 实例化，只能通过 singletons 生成单一实例
      *
@@ -142,6 +149,21 @@ class project extends container implements iproject {
      */
     public function version() {
         return static::VERSION;
+    }
+    
+    /**
+     * (non-PHPdoc)
+     *
+     * @see \queryyetsimple\support\container::make()
+     */
+    public function make($strFactoryName, array $arrArgs = []) {
+        $strFactoryName = $this->getAlias ( $strFactoryName );
+        
+        if (isset ( $this->arrDeferredProviders [$strFactoryName] )) {
+            $this->registerDeferredProvider ( $strFactoryName );
+        }
+        
+        return parent::make ( $strFactoryName, $arrArgs );
     }
     
     /**
@@ -471,21 +493,42 @@ class project extends container implements iproject {
      * @return void
      */
     protected function runProvider($strType) {
-        if (empty ( $this->arrAppOption ['provider'] ))
+        if (empty ( $this->arrAppOption ['provider_with_cache'] ))
             return $this;
         
-        foreach ( $this->arrAppOption ['provider'] as $strProvider ) {
-            $objProvider = $this->make ( $strProvider, [ 
-                    $this 
-            ] );
-            if (method_exists ( $objProvider, $strType )) {
-                $this->call ( [ 
-                        $objProvider,
-                        $strType 
-                ] );
+        foreach ( $this->arrAppOption ['provider_with_cache'] as $strProvider ) {
+            $strProvider .= '\provider\\' . $strType;
+            
+            if (! class_exists ( $strProvider ))
+                continue;
+            
+            if ($strProvider::isDeferred ()) {
+                $arrProviders = $strProvider::providers ();
+                foreach ( $arrProviders as $strKey => $arrAlias )
+                    $this->arrDeferredProviders [$strKey] = $strProvider;
+                $this->alias ( $arrProviders );
+                continue;
             }
+            
+            $objProvider = new $strProvider ( $this );
+            $objProvider->register ();
         }
         return $this;
+    }
+    
+    /**
+     * 注册延迟载入服务提供者
+     *
+     * @param string $strProvider            
+     * @return void
+     */
+    protected function registerDeferredProvider($strProvider) {
+        if (! isset ( $this->arrDeferredProviders [$strProvider] )) {
+            return;
+        }
+        
+        (new $this->arrDeferredProviders [$strProvider] ( $this ))->register ();
+        unset ( $this->arrDeferredProviders [$strProvider] );
     }
     
     /**
@@ -530,10 +573,17 @@ class project extends container implements iproject {
                 }
             }
             
+            if (is_array ( $mixProvider ) && isset ( $mixProvider ['defer'] ) && $mixProvider ['defer'] === true) {
+                continue;
+            }
+            
             switch ($arrRegisterArgs [0]) {
                 case 'singleton' :
                 case 'instance' :
                 case 'register' :
+                    if ($arrRegisterArgs [0] == 'register') {
+                        $arrRegisterArgs [0] = 'bind';
+                    }
                     $this->{$arrRegisterArgs [0]} ( $arrRegisterArgs [1], $mixProvider [1] );
                     if ($mixProvider [0]) {
                         $this->alias ( $arrRegisterArgs [1], $mixProvider [0] );

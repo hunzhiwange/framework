@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\cache\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,6 +15,9 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\cache\cache;
+use queryyetsimple\support\provider;
+
 /**
  * cache 服务提供者
  *
@@ -21,14 +26,37 @@ queryphp;
  * @since 2017.06.03
  * @version 1.0
  */
-return [ 
-        'singleton@cache' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 是否延迟载入
+     *
+     * @var boolean
+     */
+    public static $booDefer = true;
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->singleton ( 'cache', function ($oProject) {
+            return new cache ( $oProject );
+        } );
+    }
+    
+    /**
+     * 延迟载入的服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'cache' => [ 
                         'queryyetsimple\cache\cache',
                         'queryyetsimple\cache\icache' 
-                ],
-                function ($oProject) {
-                    return new queryyetsimple\cache\cache ( $oProject );
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+}

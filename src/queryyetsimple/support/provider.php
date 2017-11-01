@@ -15,6 +15,9 @@ namespace queryyetsimple\support;
 ##########################################################
 queryphp;
 
+use Closure;
+use BadMethodCallException;
+
 /**
  * 服务提供者
  *
@@ -26,7 +29,14 @@ queryphp;
 abstract class provider {
     
     /**
-     * 应用程序实例
+     * 是否延迟载入
+     *
+     * @var boolean
+     */
+    public static $booDefer = false;
+    
+    /**
+     * IOC 容器
      *
      * @var \queryyetsimple\support\icontainer
      */
@@ -40,12 +50,122 @@ abstract class provider {
      */
     public function __construct(icontainer $objContainer) {
         $this->objContainer = $objContainer;
+        
+        if (! static::isDeferred ())
+            $this->registerAlias ();
     }
     
     /**
-     * 注册一个提供者
+     * 注册服务
      *
      * @return void
      */
     abstract public function register();
+    
+    /**
+     * 注册服务别名
+     *
+     * @return void
+     */
+    public function registerAlias() {
+        if (! static::isDeferred () && static::providers ())
+            $this->alias ( static::providers () );
+    }
+    
+    /**
+     * 延迟载入的服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ ];
+    }
+    
+    /**
+     * 是否延迟载入
+     *
+     * @return boolean
+     */
+    public static function isDeferred() {
+        return static::$booDefer;
+    }
+    
+    /**
+     * 返回 IOC 容器
+     *
+     * @return \queryyetsimple\support\icontainer
+     */
+    public function container() {
+        return $this->objContainer;
+    }
+    
+    /**
+     * 注册到容器
+     *
+     * @param mixed $mixFactoryName            
+     * @param mixed $mixFactory            
+     * @param boolean $booShare            
+     * @return $this
+     */
+    public function bind($mixFactoryName, $mixFactory = null, $booShare = false) {
+        $this->objContainer->bind ( $mixFactoryName, $mixFactory, $booShare );
+        return $this;
+    }
+    
+    /**
+     * 注册为实例
+     *
+     * @param mixed $mixFactoryName            
+     * @param mixed $mixFactory            
+     * @return $this
+     */
+    public function instance($mixFactoryName, $mixFactory = null) {
+        $this->objContainer->instance ( $mixFactoryName, $mixFactory );
+        return $this;
+    }
+    
+    /**
+     * 注册单一实例
+     *
+     * @param scalar|array $mixFactoryName            
+     * @param mixed $mixFactory            
+     * @return $this
+     */
+    public function singleton($mixFactoryName, $mixFactory = null) {
+        $this->objContainer->singleton ( $mixFactoryName, $mixFactory );
+        return $this;
+    }
+    
+    /**
+     * 创建共享的闭包
+     *
+     * @param \Closure $objClosure            
+     * @return \Closure
+     */
+    public function share(Closure $objClosure) {
+        return $this->objContainer->share ( $objClosure );
+    }
+    
+    /**
+     * 设置别名
+     *
+     * @param array|string $mixAlias            
+     * @param string|null|array $mixValue            
+     * @return $this
+     */
+    public function alias($mixAlias, $mixValue = null) {
+        $this->objContainer->alias ( $mixAlias, $mixValue );
+        return $this;
+    }
+    
+    /**
+     * 缺省方法
+     *
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
+     */
+    public function __call($sMethod, $arrArgs) {
+        throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
+    }
 }

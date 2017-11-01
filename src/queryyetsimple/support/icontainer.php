@@ -35,7 +35,7 @@ interface icontainer {
      * @param boolean $booShare            
      * @return $this
      */
-    public function register($mixFactoryName, $mixFactory = null, $booShare = false);
+    public function bind($mixFactoryName, $mixFactory = null, $booShare = false);
     
     /**
      * 注册为实例

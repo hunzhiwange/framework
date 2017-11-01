@@ -80,7 +80,7 @@ class container implements ArrayAccess, icontainer {
      * @param boolean $booShare            
      * @return $this
      */
-    public function register($mixFactoryName, $mixFactory = null, $booShare = false) {
+    public function bind($mixFactoryName, $mixFactory = null, $booShare = false) {
         if (is_array ( $mixFactoryName )) {
             list ( $mixFactoryName, $mixAlias ) = $this->parseAlias ( $mixFactoryName );
             $this->alias ( $mixFactoryName, $mixAlias );
@@ -132,7 +132,7 @@ class container implements ArrayAccess, icontainer {
      * @return $this
      */
     public function singleton($mixFactoryName, $mixFactory = null) {
-        return $this->register ( $mixFactoryName, $mixFactory, true );
+        return $this->bind ( $mixFactoryName, $mixFactory, true );
     }
     
     /**
@@ -217,9 +217,7 @@ class container implements ArrayAccess, icontainer {
         }
         
         // 别名
-        if (isset ( $this->arrAlias [$strFactoryName] )) {
-            $strFactoryName = $this->arrAlias [$strFactoryName];
-        }
+        $strFactoryName = $this->getAlias ( $strFactoryName );
         
         // 存在直接返回
         if (isset ( $this->arrInstances [$strFactoryName] )) {
@@ -275,6 +273,16 @@ class container implements ArrayAccess, icontainer {
     }
     
     /**
+     * 返回对象别名
+     *
+     * @param string $strFactoryName            
+     * @return string
+     */
+    protected function getAlias($strFactoryName) {
+        return isset ( $this->arrAlias [$strFactoryName] ) ? $this->arrAlias [$strFactoryName] : $strFactoryName;
+    }
+    
+    /**
      * 根据 class 名字创建实例
      *
      * @param string $strClassName            
@@ -287,7 +295,7 @@ class container implements ArrayAccess, icontainer {
         }
         
         // 注入构造器
-        if (($arrInjection = $this->parseInjection ( $strClassName )) && isset ( $arrInjection ['args'] )) {
+        if (($arrInjection = $this->parseInjection ( $strClassName, $arrArgs )) && isset ( $arrInjection ['args'] )) {
             return $this->newInstanceArgs ( $strClassName, $this->getInjectionArgs ( $arrInjection ['args'], $arrArgs, $arrInjection ['class'] ) );
         } else {
             return $this->newInstanceArgs ( $strClassName, $arrArgs );
@@ -298,9 +306,10 @@ class container implements ArrayAccess, icontainer {
      * 分析自动依赖注入
      *
      * @param mixed $mixClassOrCallback            
+     * @param array $arrArgs            
      * @return array
      */
-    protected function parseInjection($mixClassOrCallback) {
+    protected function parseInjection($mixClassOrCallback, array &$arrArgs = []) {
         $arrResult = $arrParameter = [ ];
         $booFind = $booFindClass = false;
         
@@ -324,13 +333,18 @@ class container implements ArrayAccess, icontainer {
             }
         }
         
-        foreach ( $arrParameter as $objParameter ) {
+        foreach ( $arrParameter as $intKey => $objParameter ) {
+            var_dump ( $intKey );
             $strName = $objParameter->name;
             
             try {
                 if (($objParameterClass = $objParameter->getClass ()) && $objParameterClass instanceof ReflectionClass && ($objParameterClass = $objParameterClass->getName ())) {
-                    // 接口绑定实现
-                    if (($objParameterMake = $this->make ( $objParameterClass )) !== false) {
+                    // 参数中含有实例化
+                    if (isset ( $arrArgs [$intKey] ) && $arrArgs [$intKey] instanceof $objParameterClass) {
+                        $arrResult ['args'] [$strName] = $arrArgs [$intKey];
+                        $booFindClass = true;
+                        unset ( $arrArgs [$intKey] );
+                    } elseif (($objParameterMake = $this->make ( $objParameterClass )) !== false) {
                         // 实例对象
                         if (is_object ( $objParameterMake )) {
                             $arrResult ['args'] [$strName] = $objParameterMake;
