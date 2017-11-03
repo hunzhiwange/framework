@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\event\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,22 +15,41 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\event\dispatch;
+use queryyetsimple\support\provider;
+
 /**
- * event.register 服务提供者
+ * event 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.12
  * @version 1.0
  */
-return [ 
-        'singleton@event' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->singleton ( 'event', function ($oProject) {
+            return new dispatch ( $oProject );
+        } );
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'event' => [ 
                         'queryyetsimple\event\dispatch',
                         'queryyetsimple\event\idispatch' 
-                ],
-                function ($oProject) {
-                    return new queryyetsimple\event\dispatch ( $oProject );
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+}

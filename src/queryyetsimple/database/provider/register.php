@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\database\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,22 +15,48 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\support\provider;
+use queryyetsimple\database\database;
+
 /**
- * database.register 服务提供者
+ * database 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.12
  * @version 1.0
  */
-return [ 
-        'singleton@database' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 是否延迟载入
+     *
+     * @var boolean
+     */
+    public static $booDefer = true;
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->singleton ( 'database', function ($oProject) {
+            return new database ( $oProject );
+        } );
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'database' => [ 
                         'queryyetsimple\database\database',
-                        'queryyetsimple\validate\idatabase' 
-                ],
-                function ($oProject) {
-                    return new queryyetsimple\database\database ( $oProject );
-                } 
-        ] 
-];
+                        'queryyetsimple\database\idatabase' 
+                ] 
+        ];
+    }
+}

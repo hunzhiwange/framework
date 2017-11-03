@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\auth\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,29 +15,64 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\auth\manager;
+use queryyetsimple\support\provider;
+
 /**
- * auth.register 服务提供者
+ * auth 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.09.08
  * @version 1.0
  */
-return [ 
-        'singleton@auth' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->auth ();
+        $this->authConnect ();
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'auth' => [ 
                         'queryyetsimple\auth\manager' 
                 ],
-                function ($oProject) {
-                    return new queryyetsimple\auth\manager ( $oProject );
-                } 
-        ],
-        'singleton@auth.connect' => [ 
-                [ 
+                'auth.connect' => [ 
                         'queryyetsimple\auth\iconnect' 
-                ],
-                function ($oProject) {
-                    return $oProject ['auth']->connect ();
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+    
+    /**
+     * 注册 auth 服务
+     *
+     * @return void
+     */
+    protected function auth() {
+        $this->singleton ( 'auth', function ($oProject) {
+            return new manager ( $oProject );
+        } );
+    }
+    
+    /**
+     * 注册 auth.connect 服务
+     *
+     * @return void
+     */
+    protected function authConnect() {
+        $this->singleton ( 'auth.connect', function ($oProject) {
+            return $oProject ['auth']->connect ();
+        } );
+    }
+}

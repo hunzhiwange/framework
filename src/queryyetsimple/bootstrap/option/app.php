@@ -82,6 +82,7 @@ return [
                 'queryyetsimple\database',
                 'queryyetsimple\encryption',
                 'queryyetsimple\event',
+                'queryyetsimple\filesystem',
                 'queryyetsimple\http',
                 'queryyetsimple\i18n',
                 'queryyetsimple\log',

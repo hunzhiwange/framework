@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\view\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,76 +15,120 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\view\theme;
+use queryyetsimple\view\parser;
+use queryyetsimple\view\compiler;
+use queryyetsimple\support\provider;
+
 /**
- * view.register 服务提供者
+ * view 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.12
  * @version 1.0
  */
-return [ 
-        'singleton@view.compiler' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->viewCompiler ();
+        $this->viewParser ();
+        $this->viewTheme ();
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'view.compiler' => [ 
                         'queryyetsimple\view\compiler',
                         'queryyetsimple\view\icompiler' 
                 ],
-                function ($oProject) {
-                    $arrOption = [ ];
-                    foreach ( [ 
-                            'cache_children',
-                            'var_identify',
-                            'notallows_func',
-                            'notallows_func_js' 
-                    ] as $strOption ) {
-                        $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
-                    }
-                    
-                    return new queryyetsimple\view\compiler ( $arrOption );
-                } 
-        ],
-        'singleton@view.parser' => [ 
-                [ 
+                'view.parser' => [ 
                         'queryyetsimple\view\parser',
                         'queryyetsimple\view\iparser' 
                 ],
-                function ($oProject) {
-                    return (new queryyetsimple\view\parser ( $oProject ['view.compiler'], [ 
-                            'tag_note' => $oProject ['option']->get ( 'view\\tag_note' ) 
-                    ] ))->registerCompilers ()->registerParsers ();
-                } 
-        ],
-        'singleton@view.theme' => [ 
-                [ 
+                'view.theme' => [ 
                         'queryyetsimple\view\theme',
                         'queryyetsimple\view\itheme' 
-                ],
-                function ($oProject) {
-                    $arrOption = [ ];
-                    foreach ( [ 
-                            'cache_lifetime',
-                            'suffix',
-                            'controlleraction_depr',
-                            'cache_children',
-                            'switch',
-                            'default',
-                            'cookie_app',
-                            'theme_path_default' 
-                    ] as $strOption ) {
-                        $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
-                    }
-                    
-                    $arrOption ['app_development'] = $oProject->development ();
-                    $arrOption ['app_name'] = $oProject ['app_name'];
-                    $arrOption ['controller_name'] = $oProject ['controller_name'];
-                    $arrOption ['action_name'] = $oProject ['action_name'];
-                    $arrOption ['theme_cache_path'] = $oProject->pathApplicationCache ( 'theme' );
-                    
-                    queryyetsimple\view\theme::setParseResolver ( function () use($oProject) {
-                        return $oProject ['view.parser'];
-                    } );
-                    
-                    return (new queryyetsimple\view\theme ( $oProject ['cookie'], $arrOption ))->parseContext ( $oProject->pathApplicationDir ( 'theme' ) );
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+    
+    /**
+     * 注册 view.compiler 服务
+     *
+     * @return void
+     */
+    protected function viewCompiler() {
+        $this->singleton ( 'view.compiler', function ($oProject) {
+            $arrOption = [ ];
+            foreach ( [ 
+                    'cache_children',
+                    'var_identify',
+                    'notallows_func',
+                    'notallows_func_js' 
+            ] as $strOption ) {
+                $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
+            }
+            
+            return new compiler ( $arrOption );
+        } );
+    }
+    
+    /**
+     * 注册 view.parser 服务
+     *
+     * @return void
+     */
+    protected function viewParser() {
+        $this->singleton ( 'view.parser', function ($oProject) {
+            return (new parser ( $oProject ['view.compiler'], [ 
+                    'tag_note' => $oProject ['option']->get ( 'view\\tag_note' ) 
+            ] ))->registerCompilers ()->registerParsers ();
+        } );
+    }
+    
+    /**
+     * 注册 view.theme 服务
+     *
+     * @return void
+     */
+    protected function viewTheme() {
+        $this->singleton ( 'view.theme', function ($oProject) {
+            $arrOption = [ ];
+            foreach ( [ 
+                    'cache_lifetime',
+                    'suffix',
+                    'controlleraction_depr',
+                    'cache_children',
+                    'switch',
+                    'default',
+                    'cookie_app',
+                    'theme_path_default' 
+            ] as $strOption ) {
+                $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
+            }
+            
+            $arrOption ['app_development'] = $oProject->development ();
+            $arrOption ['app_name'] = $oProject ['app_name'];
+            $arrOption ['controller_name'] = $oProject ['controller_name'];
+            $arrOption ['action_name'] = $oProject ['action_name'];
+            $arrOption ['theme_cache_path'] = $oProject->pathApplicationCache ( 'theme' );
+            
+            theme::setParseResolver ( function () use($oProject) {
+                return $oProject ['view.parser'];
+            } );
+            
+            return (new theme ( $oProject ['cookie'], $arrOption ))->parseContext ( $oProject->pathApplicationDir ( 'theme' ) );
+        } );
+    }
+}

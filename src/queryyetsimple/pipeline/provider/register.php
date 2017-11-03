@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\pipeline\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,6 +15,9 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\support\provider;
+use queryyetsimple\pipeline\pipeline;
+
 /**
  * pipeline 服务提供者
  *
@@ -21,14 +26,30 @@ queryphp;
  * @since 2017.05.25
  * @version 1.0
  */
-return [ 
-        'register@pipeline' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->singleton ( 'pipeline', function ($oProject) {
+            return new pipeline ( $oProject );
+        } );
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'pipeline' => [ 
                         'queryyetsimple\pipeline\pipeline',
                         'queryyetsimple\pipeline\ipipeline' 
-                ],
-                function ($oProject) {
-                    return new queryyetsimple\pipeline\pipeline ( $oProject );
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+}

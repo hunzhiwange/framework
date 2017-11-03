@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\mail\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,22 +15,41 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\mail\mail;
+use queryyetsimple\support\provider;
+
 /**
- * mail.register 服务提供者
+ * mail 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.26
  * @version 1.0
  */
-return [ 
-        'singleton@mail' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->singleton ( 'mail', function ($oProject) {
+            return new mail ( $oProject );
+        } );
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'mail' => [ 
                         'queryyetsimple\mail\mail',
                         'queryyetsimple\mail\imail' 
-                ],
-                function ($oProject) {
-                    return new queryyetsimple\mail\mail ( $oProject );
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+}

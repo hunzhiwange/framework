@@ -1,6 +1,8 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
+namespace queryyetsimple\mvc\provider;
+
 <<<queryphp
 ##########################################################
 #   ____                          ______  _   _ ______   #
@@ -13,24 +15,43 @@
 ##########################################################
 queryphp;
 
+use queryyetsimple\mvc\view;
+use queryyetsimple\support\provider;
+
 /**
- * mvc.register 服务提供者
+ * mvc 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.07.13
  * @version 1.0
  */
-return [ 
-        'singleton@view' => [ 
-                [ 
+class register extends provider {
+    
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register() {
+        $this->singleton ( 'view', function ($oProject) {
+            return (new view ( $oProject ['view.theme'] ))->setResponseFactory ( function () use($oProject) {
+                return $oProject ['response'];
+            } );
+        } );
+    }
+    
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers() {
+        return [ 
+                'view' => [ 
                         'queryyetsimple\mvc\view',
                         'queryyetsimple\mvc\iview' 
-                ],
-                function ($oProject) {
-                    return (new queryyetsimple\mvc\view ( $oProject ['view.theme'] ))->setResponseFactory ( function () use($oProject) {
-                        return $oProject ['response'];
-                    } );
-                } 
-        ] 
-];
+                ] 
+        ];
+    }
+}

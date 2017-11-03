@@ -41,9 +41,8 @@ class register extends provider {
      * @return void
      */
     public function register() {
-        $this->registerThrottler ();
-        
-        $this->singleton ( 'queryyetsimple\throttler\middleware\throttler' );
+        $this->throttler ();
+        $this->middleware ();
     }
     
     /**
@@ -66,9 +65,18 @@ class register extends provider {
      *
      * @return void
      */
-    protected function registerThrottler() {
+    protected function throttler() {
         $this->singleton ( 'throttler', function ($oProject) {
             return (new throttler ( $oProject ['cache']->connect ( $oProject ['option'] ['throttler\driver'] ) ))->setRequest ( $oProject ['request'] );
         } );
+    }
+    
+    /**
+     * 注册 middleware 服务
+     *
+     * @return void
+     */
+    protected function middleware() {
+        $this->singleton ( 'queryyetsimple\throttler\middleware\throttler' );
     }
 }
