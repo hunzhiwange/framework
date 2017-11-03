@@ -16,6 +16,8 @@ namespace queryyetsimple\mvc\provider;
 queryphp;
 
 use queryyetsimple\mvc\view;
+use queryyetsimple\mvc\model;
+use queryyetsimple\event\idispatch;
 use queryyetsimple\support\provider;
 
 /**
@@ -39,6 +41,16 @@ class register extends provider {
                 return $oProject ['response'];
             } );
         } );
+    }
+    
+    /**
+     * 设置模型事件
+     *
+     * @param \queryyetsimple\event\idispatch $objEvent            
+     * @return void
+     */
+    public function bootstrap(idispatch $objEvent) {
+        model::setEventDispatch ( $objEvent );
     }
     
     /**

@@ -166,6 +166,10 @@ abstract class provider {
      * @return mixed
      */
     public function __call($sMethod, $arrArgs) {
+        if ($sMethod == 'bootstrap') {
+            return;
+        }
+        
         throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
     }
 }

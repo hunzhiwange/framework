@@ -20,9 +20,9 @@ use Dotenv\Dotenv;
 use RuntimeException;
 use queryyetsimple\support\psr4;
 use queryyetsimple\support\face;
-use queryyetsimple\support\helper;
 use Composer\Autoload\ClassLoader;
 use queryyetsimple\filesystem\fso;
+use queryyetsimple\support\provider;
 use queryyetsimple\support\container;
 
 /**
@@ -69,6 +69,13 @@ class project extends container implements iproject {
      * @var array
      */
     protected $arrDeferredProviders = [ ];
+    
+    /**
+     * 服务提供者 bootstrap
+     *
+     * @var array
+     */
+    protected $arrProviderBootstrap = [ ];
     
     /**
      * 构造函数
@@ -385,7 +392,63 @@ class project extends container implements iproject {
      * @return $this
      */
     protected function registerBaseProvider() {
-        return $this->runCacheProvider ( 'register' )->runProvider ( 'register' );
+        if (empty ( $this->arrAppOption ['provider_with_cache'] ))
+            return $this;
+        
+        $booCache = false;
+        
+        $strCachePath = $this->defferProviderCachePath ();
+        if (! $this->development () && is_file ( $strCachePath )) {
+            list ( $this->arrDeferredProviders, $arrDeferredAlias ) = include $strCachePath;
+            $booCache = true;
+        } else {
+            $arrDeferredAlias = [ ];
+        }
+        
+        foreach ( $this->arrAppOption ['provider_with_cache'] as $strProvider ) {
+            $strProvider .= '\provider\register';
+            
+            if ($booCache === true && isset ( $arrDeferredAlias [$strProvider] )) {
+                $this->alias ( $arrDeferredAlias [$strProvider] );
+                continue;
+            }
+            
+            if (! class_exists ( $strProvider ))
+                continue;
+            
+            if ($strProvider::isDeferred ()) {
+                $arrProviders = $strProvider::providers ();
+                foreach ( $arrProviders as $mixKey => $mixAlias ) {
+                    if (is_int ( $mixKey ))
+                        $mixKey = $mixAlias;
+                    $this->arrDeferredProviders [$mixKey] = $strProvider;
+                }
+                $this->alias ( $arrProviders );
+                $arrDeferredAlias [$strProvider] = $arrProviders;
+                continue;
+            }
+            
+            $objProvider = new $strProvider ( $this );
+            $objProvider->register ();
+            
+            if (method_exists ( $objProvider, 'bootstrap' )) {
+                $this->arrProviderBootstrap [] = $objProvider;
+            }
+        }
+        
+        if (! is_dir ( dirname ( $strCachePath ) )) {
+            fso::createDirectory ( dirname ( $strCachePath ) );
+        }
+        
+        if ($this->development () || ! is_file ( $strCachePath )) {
+            file_put_contents ( $strCachePath, '<?php return ' . var_export ( [ 
+                    $this->arrDeferredProviders,
+                    $arrDeferredAlias 
+            ], true ) . '; ?>' );
+            file_put_contents ( $strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */ ?>' . PHP_EOL . php_strip_whitespace ( $strCachePath ) );
+        }
+        
+        return $this;
     }
     
     /**
@@ -394,7 +457,10 @@ class project extends container implements iproject {
      * @return $this
      */
     protected function registerBaseProviderBootstrap() {
-        return $this->runCacheProvider ( 'bootstrap' )->runProvider ( 'bootstrap' );
+        foreach ( $this->arrProviderBootstrap as $obj ) {
+            $this->callBootstrap ( $obj );
+        }
+        return $this;
     }
     
     /**
@@ -487,39 +553,6 @@ class project extends container implements iproject {
     }
     
     /**
-     * 运行服务提供者
-     *
-     * @param string $strType            
-     * @return void
-     */
-    protected function runProvider($strType) {
-        if (empty ( $this->arrAppOption ['provider_with_cache'] ))
-            return $this;
-        
-        foreach ( $this->arrAppOption ['provider_with_cache'] as $strProvider ) {
-            $strProvider .= '\provider\\' . $strType;
-            
-            if (! class_exists ( $strProvider ))
-                continue;
-            
-            if ($strProvider::isDeferred ()) {
-                $arrProviders = $strProvider::providers ();
-                foreach ( $arrProviders as $mixKey => $mixAlias ) {
-                    if (is_int ( $mixKey ))
-                        $mixKey = $mixAlias;
-                    $this->arrDeferredProviders [$mixKey] = $strProvider;
-                }
-                $this->alias ( $arrProviders );
-                continue;
-            }
-            
-            $objProvider = new $strProvider ( $this );
-            $objProvider->register ();
-        }
-        return $this;
-    }
-    
-    /**
      * 注册延迟载入服务提供者
      *
      * @param string $strProvider            
@@ -530,93 +563,36 @@ class project extends container implements iproject {
             return;
         }
         
-        (new $this->arrDeferredProviders [$strProvider] ( $this ))->register ();
+        $objProvider = new $this->arrDeferredProviders [$strProvider] ( $this );
+        $objProvider->register ();
+        
+        if (method_exists ( $objProvider, 'bootstrap' )) {
+            $this->callBootstrap ( $objProvider );
+        }
+        
         unset ( $this->arrDeferredProviders [$strProvider] );
     }
     
     /**
-     * 运行基础服务提供者
+     * 执行 bootstrap
      *
-     * @param string $strAction            
-     * @param string $strType            
-     * @param array $arrProvider            
-     * @param boolean $booSystem            
-     * @return $this
+     * @param \queryyetsimple\support\provider $objProvider            
+     * @return void
      */
-    protected function runCacheProvider($strAction, $arrProvider = [], $booSystem = true) {
-        return $this->registerCacheProvider ( $this->providerCachePath ( $strAction ), array_map ( function ($strPackage) use($strAction) {
-            return sprintf ( '%s\provider\%s', $strPackage, $strAction );
-        }, $this->arrAppOption ['provider_with_cache'] ), $this->development () );
+    protected function callBootstrap(provider $objProvider) {
+        $this->call ( [ 
+                $objProvider,
+                'bootstrap' 
+        ] );
     }
     
     /**
-     * 注册缓存式服务提供者
+     * 返回延迟服务提供者缓存路径
      *
-     * @param string $strCachePath            
-     * @param array $arrFile            
-     * @param boolean $booParseNamespace            
-     * @param boolean $booForce            
-     * @return array
-     */
-    protected function registerCacheProvider($strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
-        foreach ( helper::arrayMergeSource ( $this ['psr4'], $strCachePath, $arrFile, $booForce, $booParseNamespace ) as $strType => $mixProvider ) {
-            
-            if (strpos ( $strType, '@' ) !== false) {
-                $arrRegisterArgs = explode ( '@', $strType );
-            } else {
-                if ($strType == 'bootstrap') {
-                    $arrRegisterArgs = [ 
-                            $strType 
-                    ];
-                } else {
-                    $arrRegisterArgs = [ 
-                            'register',
-                            $strType 
-                    ];
-                }
-            }
-            
-            if (is_array ( $mixProvider ) && isset ( $mixProvider ['defer'] ) && $mixProvider ['defer'] === true) {
-                continue;
-            }
-            
-            switch ($arrRegisterArgs [0]) {
-                case 'singleton' :
-                case 'instance' :
-                case 'register' :
-                    if ($arrRegisterArgs [0] == 'register') {
-                        $arrRegisterArgs [0] = 'bind';
-                    }
-                    $this->{$arrRegisterArgs [0]} ( $arrRegisterArgs [1], $mixProvider [1] );
-                    if ($mixProvider [0]) {
-                        $this->alias ( $arrRegisterArgs [1], $mixProvider [0] );
-                    }
-                    break;
-                case 'bootstrap' :
-                    if (! is_array ( $mixProvider )) {
-                        $mixProvider = [ 
-                                $mixProvider 
-                        ];
-                    }
-                    foreach ( $mixProvider as $calVal ) {
-                        call_user_func_array ( $calVal, [ 
-                                $this 
-                        ] );
-                    }
-                    break;
-            }
-        }
-        return $this;
-    }
-    
-    /**
-     * 返回服务提供者路径
-     *
-     * @param string $strAction            
      * @return string
      */
-    protected function providerCachePath($strAction) {
-        return $this->pathRuntime () . '/provider/' . $strAction . '.php';
+    protected function defferProviderCachePath() {
+        return $this->pathRuntime () . '/provider/deffer.php';
     }
     
     /**

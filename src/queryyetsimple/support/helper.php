@@ -18,7 +18,6 @@ queryphp;
 use Closure;
 use ReflectionClass;
 use InvalidArgumentException;
-use queryyetsimple\filesystem\fso;
 
 /**
  * 辅助函数
@@ -88,49 +87,6 @@ class helper {
         }
         
         return $arrOption;
-    }
-    
-    /**
-     * 源代码方式合并带有匿名函数的数组
-     * 只支持简单格式，复杂的无 fuck 做
-     *
-     * @param \queryyetsimple\support\psr4 $objPsr4            
-     * @param string $strCachePath            
-     * @param array $arrFile            
-     * @param boolean $booParseNamespace            
-     * @param boolean $booForce            
-     * @return array
-     */
-    public static function arrayMergeSource(psr4 $objPsr4, $strCachePath, $arrFile = [], $booForce = false, $booParseNamespace = true) {
-        if (! $arrFile)
-            return [ ];
-        
-        if (is_file ( $strCachePath ) && $booForce === false) {
-            return require $strCachePath;
-        }
-        
-        $arrResult = [ ];
-        $strContent = '';
-        foreach ( $arrFile as $strFile ) {
-            if (! is_file ( $strFile ))
-                $booParseNamespace === true && ($strFile = $objPsr4->file ( $strFile ));
-            if (! is_file ( $strFile ) || ! is_array ( include $strFile ))
-                continue;
-            
-            $strContent = str_replace ( PHP_EOL, ' ', trim ( php_strip_whitespace ( $strFile ) ) );
-            $strContent = substr ( $strContent, strpos ( $strContent, '[' ) + 1, - (strlen ( $strContent ) - strripos ( $strContent, ']' )) );
-            $strContent = trim ( rtrim ( trim ( $strContent ), ',' ) );
-            $arrResult [] = $strContent;
-        }
-        
-        if (! is_dir ( dirname ( $strCachePath ) )) {
-            fso::createDirectory ( dirname ( $strCachePath ) );
-        }
-        
-        file_put_contents ( $strCachePath, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */' . PHP_EOL . 'return [ ' . implode ( ', ', $arrResult ) . ' ]; ?>' );
-        unset ( $strContent, $arrResult );
-        
-        return require $strCachePath;
     }
     
     /**
