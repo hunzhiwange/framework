@@ -15,6 +15,8 @@ namespace queryyetsimple\throttler\middleware;
 ##########################################################
 queryphp;
 
+use Closure;
+use queryyetsimple\http\request;
 use queryyetsimple\http\response;
 use queryyetsimple\throttler\ithrottler;
 use queryyetsimple\mvc\too_many_requests_http;
@@ -32,7 +34,7 @@ class throttler {
     /**
      * throttler
      *
-     * @var \queryyetsimple\throttler\ithrottler $objThrottler
+     * @var \queryyetsimple\throttler\ithrottler
      */
     protected $objThrottler;
     
@@ -58,12 +60,13 @@ class throttler {
     /**
      * 请求
      *
-     * @param mixed|\queryyetsimple\request $objRequest            
+     * @param \Closure $calNext            
+     * @param \queryyetsimple\http\request $objRequest            
      * @param int $intLimit            
      * @param int $intLime            
      * @return mixed
      */
-    public function handle($objRequest, $intLimit = 60, $intLime = 60) {
+    public function handle(Closure $calNext, request $objRequest, $intLimit = 60, $intLime = 60) {
         $oRateLimiter = $this->objThrottler->create ( null, ( int ) $intLimit, ( int ) $intLime );
         
         if ($oRateLimiter->attempt ()) {
@@ -73,7 +76,7 @@ class throttler {
             $this->header ( $oRateLimiter );
         }
         
-        return $objRequest;
+        return $calNext ( $objRequest );
     }
     
     /**

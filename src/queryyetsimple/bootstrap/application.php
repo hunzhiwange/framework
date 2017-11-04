@@ -15,6 +15,7 @@ namespace queryyetsimple\bootstrap;
 ##########################################################
 queryphp;
 
+use Exception;
 use queryyetsimple\support\psr4;
 use queryyetsimple\http\response;
 use queryyetsimple\support\assert;
@@ -207,8 +208,8 @@ class application {
         }
         
         // 穿越中间件
-        if (($objResponse = $this->objProject ['router']->throughMidleware ( $this->objProject ['pipeline'], $mixResponse )) instanceof response) {
-            $this->objContainer [response::class] = $objResponse;
+        if (! ($this->objProject ['router']->throughMiddleware ( $this->objProject ['pipeline'], $mixResponse ) instanceof response)) {
+            throw new Exception ( 'Middleware terminate should return queryyetsimple\http\response' );
         }
         
         // 调试
@@ -216,32 +217,10 @@ class application {
             $mixResponse->appendContent ( console::trace () );
         }
         
-        // 响应结束处理
-        $this->afterResponse ();
-        
         // 输出响应
         $mixResponse->output ();
-        unset ( $mixResponse, $objResponse );
     }
-    
-    /**
-     * 响应结束处理
-     *
-     * @return void
-     */
-    protected function afterResponse() {
-        // 清理闪存
-        $this->objProject ['session']->unregisterFlash ();
-        
-        // 记录日志
-        if ($this->objProject ['option'] ['log\enabled']) {
-            $this->objProject ['log']->save ();
-        }
-        
-        // 记录上次访问地址
-        $this->objProject ['session']->start ()->setPrevUrl ( $this->objProject ['request']->url () );
-    }
-    
+
     /**
      * 分析配置文件
      *

@@ -80,33 +80,6 @@ class pipeline implements ipipeline {
         $mixStages = is_array ( $mixStages ) ? $mixStages : func_get_args ();
         
         foreach ( $mixStages as $mixStage ) {
-            if (is_string ( $mixStage )) {
-                $mixStage = $this->parse ( $mixStage );
-                $mixStage = function ($mixPassed) use($mixStage) {
-                    if (strpos ( $mixStage [0], '@' ) !== false) {
-                        $arrStage = explode ( '@', $mixStage [0] );
-                        if (empty ( $arrStage [1] ))
-                            $arrStage [1] = 'handle';
-                    } else {
-                        $arrStage = [ 
-                                $mixStage [0],
-                                'handle' 
-                        ];
-                    }
-                    
-                    if (($objStage = $this->objContainer->make ( $arrStage [0] )) === false)
-                        throw new InvalidArgumentException ( sprintf ( 'Stage %s is not valid.', $arrStage [0] ) );
-                    
-                    $strMethod = method_exists ( $objStage, $arrStage [1] ) ? $arrStage [1] : ($arrStage [1] != 'handle' && method_exists ( $objStage, 'handle' ) ? 'handle' : 'run');
-                    $mixStage = $mixStage [1];
-                    array_unshift ( $mixStage, $mixPassed );
-                    
-                    return $this->objContainer->call ( [ 
-                            $objStage,
-                            $strMethod 
-                    ], $mixStage );
-                };
-            }
             $this->stage ( $mixStage );
         }
         return $this;
@@ -115,14 +88,11 @@ class pipeline implements ipipeline {
     /**
      * 添加一道工序
      *
-     * @param callable $calStage            
+     * @param mixed $mixStage            
      * @return $this
      */
-    public function stage(callable $calStage) {
-        if (! is_callable ( $calStage )) {
-            throw new InvalidArgumentException ( sprintf ( 'Stage %s is not valid.', '$calStage' ) );
-        }
-        $this->arrStage [] = $calStage;
+    public function stage($mixStage) {
+        $this->arrStage [] = $mixStage;
         return $this;
     }
     
@@ -133,21 +103,46 @@ class pipeline implements ipipeline {
      * @return mixed
      */
     public function then(callable $calEnd) {
-        return call_user_func_array ( $calEnd, [ 
-                $this->run () 
-        ] );
+        $calEnd = function ($mixPassed) use($calEnd) {
+            return call_user_func ( $calEnd, $mixPassed );
+        };
+        $arrStage = array_reverse ( $this->arrStage );
+        
+        return call_user_func ( array_reduce ( $arrStage, $this->stageCallback (), $calEnd ), $this->mixPassed );
     }
     
     /**
-     * 执行管道工序
+     * 工序回调
      *
-     * @return mixed
+     * @return \Closure
      */
-    public function run() {
-        foreach ( $this->arrStage as $calStage ) {
-            $this->mixPassed = call_user_func ( $calStage, $this->mixPassed );
-        }
-        return $this->mixPassed;
+    protected function stageCallback() {
+        return function ($calResult, $mixStage) {
+            return function ($mixPassed) use($calResult, $mixStage) {
+                if (is_callable ( $mixStage )) {
+                    return call_user_func ( $mixStage, $calResult, $mixPassed );
+                } else {
+                    list ( $strStage, $arrParams ) = $this->parse ( $mixStage );
+                    
+                    if (strpos ( $strStage, '@' ) !== false) {
+                        list ( $strStage, $strMethod ) = explode ( '@', $strStage );
+                    } else {
+                        $strMethod = 'handle';
+                    }
+                    
+                    if (($objStage = $this->objContainer->make ( $strStage )) === false)
+                        throw new InvalidArgumentException ( sprintf ( 'Stage %s is not valid.', $strStage ) );
+                    
+                    return call_user_func_array ( [ 
+                            $objStage,
+                            $strMethod 
+                    ], array_merge ( [ 
+                            $calResult,
+                            $mixPassed 
+                    ], $arrParams ) );
+                }
+            };
+        };
     }
     
     /**
@@ -160,6 +155,7 @@ class pipeline implements ipipeline {
         list ( $strName, $arrArgs ) = array_pad ( explode ( ':', $strStage, 2 ), 2, [ ] );
         if (is_string ( $arrArgs ))
             $arrArgs = explode ( ',', $arrArgs );
+        
         return [ 
                 $strName,
                 $arrArgs 

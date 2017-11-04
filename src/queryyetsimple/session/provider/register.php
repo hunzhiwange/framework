@@ -34,9 +34,8 @@ class register extends provider {
      * @return void
      */
     public function register() {
-        $this->singleton ( 'session', function ($oProject) {
-            return new session ( $oProject );
-        } );
+        $this->session ();
+        $this->middleware ();
     }
     
     /**
@@ -51,5 +50,25 @@ class register extends provider {
                         'queryyetsimple\session\isession' 
                 ] 
         ];
+    }
+    
+    /**
+     * 注册 session 服务
+     *
+     * @return void
+     */
+    protected function session() {
+        $this->singleton ( 'session', function ($oProject) {
+            return new session ( $oProject );
+        } );
+    }
+    
+    /**
+     * 注册 middleware 服务
+     *
+     * @return void
+     */
+    protected function middleware() {
+        $this->singleton ( 'queryyetsimple\session\middleware\session' );
     }
 }

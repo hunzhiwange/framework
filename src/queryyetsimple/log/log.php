@@ -53,6 +53,15 @@ class log implements ilog {
     }
     
     /**
+     * 返回 IOC 容器
+     *
+     * @return \queryyetsimple\support\icontainer
+     */
+    public function container() {
+        return $this->objContainer;
+    }
+    
+    /**
      * 连接 log 并返回连接对象
      *
      * @param array|string $mixOption            

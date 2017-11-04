@@ -16,6 +16,7 @@ namespace queryyetsimple\router;
 queryphp;
 
 use Closure;
+use Exception;
 use RuntimeException;
 use ReflectionMethod;
 use ReflectionException;
@@ -279,10 +280,9 @@ class router {
         $this->validateMethod ();
         
         // 穿越中间件
-        if (($objRequest = $this->throughMidleware ( $this->objPipeline )) instanceof request) {
-            $this->objRequest = $objRequest;
+        if (! ($this->throughMiddleware ( $this->objPipeline ) instanceof request)) {
+            throw new Exception ( 'Middleware handle should return queryyetsimple\http\request' );
         }
-        unset ( $objRequest );
         
         // 解析项目公共 url 地址
         $this->parsePublicAndRoot ();
@@ -631,27 +631,39 @@ class router {
      *
      * @param \queryyetsimple\pipeline\ipipeline $objPipeline            
      * @param \queryyetsimple\http\response|null $objPassed            
-     * @return void
+     * @return mixed
      */
-    public function throughMidleware(ipipeline $objPipeline, response $objPassed = null) {
+    public function throughMiddleware(ipipeline $objPipeline, response $objPassed = null) {
         if (is_null ( $this->arrCurrentMiddleware ))
             $this->arrCurrentMiddleware = $this->getMiddleware ( $this->packageNode () );
         
-        if ($this->arrCurrentMiddleware) {
-            $arrCurrentMiddleware = $this->arrCurrentMiddleware;
-            if (! is_null ( $objPassed )) {
-                $arrCurrentMiddleware = array_map ( function ($strItem) {
-                    if (strpos ( $strItem, ':' ) === false) {
-                        return $strItem . '@terminate';
-                    } else {
-                        return str_replace ( ':', '@terminate:', $strItem );
-                    }
-                }, $arrCurrentMiddleware );
+        $objResult = $objPassed ?  : $this->objRequest;
+        
+        if (! $this->arrCurrentMiddleware) {
+            return $objResult;
+        }
+        
+        $arrCurrentMiddleware = $this->arrCurrentMiddleware;
+        $strMethod = is_null ( $objPassed ) ? 'handle' : 'terminate';
+        $arrCurrentMiddleware = array_map ( function ($strItem) use($strMethod) {
+            if (! method_exists ( $strItem, $strMethod )) {
+                return '';
             }
             
-            return $objPipeline->send ( $objPassed ?  : $this->objRequest )->through ( $arrCurrentMiddleware )->then ( function ($objPassed) {
+            if (strpos ( $strItem, ':' ) === false) {
+                return $strItem . '@' . $strMethod;
+            } else {
+                return str_replace ( ':', '@' . $strMethod . ':', $strItem );
+            }
+        }, $arrCurrentMiddleware );
+        $arrCurrentMiddleware = array_filter ( $arrCurrentMiddleware );
+        
+        if ($arrCurrentMiddleware) {
+            return $objPipeline->send ( $objResult )->through ( $arrCurrentMiddleware )->then ( function ($objPassed) {
                 return $objPassed;
             } );
+        } else {
+            return $objResult;
         }
     }
     

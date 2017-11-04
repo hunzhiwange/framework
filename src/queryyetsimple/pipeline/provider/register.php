@@ -34,7 +34,7 @@ class register extends provider {
      * @return void
      */
     public function register() {
-        $this->singleton ( 'pipeline', function ($oProject) {
+        $this->bind ( 'pipeline', function ($oProject) {
             return new pipeline ( $oProject );
         } );
     }

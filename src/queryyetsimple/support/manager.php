@@ -54,6 +54,15 @@ abstract class manager implements imanager {
     }
     
     /**
+     * 返回 IOC 容器
+     *
+     * @return \queryyetsimple\support\icontainer
+     */
+    public function container() {
+        return $this->objContainer;
+    }
+    
+    /**
      * 连接 connect 并返回连接对象
      *
      * @param array|string $mixOption            

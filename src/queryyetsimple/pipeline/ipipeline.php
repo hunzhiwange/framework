@@ -44,10 +44,10 @@ interface ipipeline {
     /**
      * 添加一道工序
      *
-     * @param callable $calStage            
+     * @param mixed $mixStage            
      * @return $this
      */
-    public function stage(callable $calStage);
+    public function stage($mixStage);
     
     /**
      * 执行管道工序响应结果
@@ -56,11 +56,4 @@ interface ipipeline {
      * @return mixed
      */
     public function then(callable $calEnd);
-    
-    /**
-     * 执行管道工序
-     *
-     * @return mixed
-     */
-    public function run();
 }

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\log\provider;
+namespace queryyetsimple\log\middleware;
 
 <<<queryphp
 ##########################################################
@@ -15,60 +15,56 @@ namespace queryyetsimple\log\provider;
 ##########################################################
 queryphp;
 
-use queryyetsimple\log\log;
-use queryyetsimple\support\provider;
+use Closure;
+use queryyetsimple\http\response;
+use queryyetsimple\log\log as manager;
 
 /**
- * log 服务提供者
+ * log 中间件
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2017.11.14
  * @version 1.0
  */
-class register extends provider {
+class log {
     
     /**
-     * 注册服务
+     * log 管理
      *
+     * @var \queryyetsimple\log\log
+     */
+    protected $objManager;
+    
+    /**
+     * 构造函数
+     *
+     * @param \queryyetsimple\throttler\ithrottler $objManager            
      * @return void
      */
-    public function register() {
-        $this->log ();
-        $this->middleware ();
+    public function __construct(manager $objManager) {
+        $this->objManager = $objManager;
     }
     
     /**
-     * 可用服务提供者
+     * 响应
      *
-     * @return array
+     * @param \queryyetsimple\http\response $mixResponse            
+     * @return mixed
      */
-    public static function providers() {
-        return [ 
-                'log' => [ 
-                        'queryyetsimple\log\log',
-                        'queryyetsimple\log\ilog' 
-                ] 
-        ];
+    public function terminate(Closure $calNext, response $objResponse) {
+        $this->saveLog ();
+        return $calNext ( $objResponse );
     }
     
     /**
-     * 注册 log 服务
+     * 保存日志
      *
      * @return void
      */
-    protected function log() {
-        $this->singleton ( 'log', function ($oProject) {
-            return new log ( $oProject );
-        } );
-    }
-    
-    /**
-     * 注册 middleware 服务
-     *
-     * @return void
-     */
-    protected function middleware() {
-        $this->singleton ( 'queryyetsimple\log\middleware\log' );
+    protected function saveLog() {
+        if ($this->objManager->container ()['option'] ['log\enabled']) {
+            $this->objManager->save ();
+        }
     }
 }
