@@ -420,7 +420,7 @@ class compiler implements icompiler {
                 } elseif ($nNum == 3) {
                     $sResult = "\${$arrArray[1]} => \${$arrArray[2]}";
                 } else {
-                    throw new InvalidArgumentException ( __ ( 'code.foreach 参数最多只能为 3 个' ) );
+                    throw new InvalidArgumentException ( 'The parameter of code.foreach tag can be at most three.' );
                 }
                 
                 return "if (is_array ( \${$arrArray[0]} ) ) : foreach( \${$arrArray[0]} as $sResult )";
@@ -1202,19 +1202,19 @@ out += '";
         
         // 验证标签的属性值
         if ($arrAttribute ['is_attribute'] !== true) {
-            throw new InvalidArgumentException ( __ ( '标签属性类型验证失败' ) );
+            throw new InvalidArgumentException ( 'Tag attribute type validation failed.' );
         }
         
         // 验证必要属性
         $arrTag = $bJsNode === true ? $this->arrJsTag : $this->arrNodeTag;
         if (! isset ( $arrTag [$arrTheme ['name']] )) {
-            throw new InvalidArgumentException ( __ ( '标签 %s 未定义', $arrTheme ['name'] ) );
+            throw new InvalidArgumentException ( sprintf ( 'The tag %s is undefined.', $arrTheme ['name'] ) );
         }
         
         foreach ( $arrTag [$arrTheme ['name']] ['required'] as $sName ) {
             $sName = strtolower ( $sName );
             if (! isset ( $arrAttribute ['attribute_list'] [$sName] )) {
-                throw new InvalidArgumentException ( __ ( '节点 “%s” 缺少必须的属性：“%s”', $arrTheme ['name'], $sName ) );
+                throw new InvalidArgumentException ( sprintf ( 'The node %s lacks the required property: %s.', $arrTheme ['name'], $sName ) );
             }
         }
         

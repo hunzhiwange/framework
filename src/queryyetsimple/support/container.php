@@ -209,10 +209,6 @@ class container implements ArrayAccess, icontainer {
      * @return object|false
      */
     public function make($strFactoryName, array $arrArgs = []) {
-        if (! is_array ( $arrArgs )) {
-            throw new InvalidArgumentException ( __ ( 'makeWithArgs 第二个参数只能为 array' ) );
-        }
-        
         // 别名
         $strFactoryName = $this->getAlias ( $strFactoryName );
         
@@ -256,10 +252,6 @@ class container implements ArrayAccess, icontainer {
      * @return mixed
      */
     public function call($calClass, array $arrArgs = []) {
-        if (! is_array ( $arrArgs )) {
-            throw new InvalidArgumentException ( __ ( 'callWithArgs 第二个参数只能为 array' ) );
-        }
-        
         if (($arrInjection = $this->parseInjection ( $calClass, $arrArgs )) && isset ( $arrInjection ['args'] )) {
             $arrArgs = $this->getInjectionArgs ( $arrInjection ['args'], $arrArgs, $arrInjection ['class'] );
         }

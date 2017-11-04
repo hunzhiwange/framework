@@ -1020,7 +1020,7 @@ class router {
                     if (isset ( $mixBind [$sAction] )) {
                         return $this->arrBinds [$sBindName] = $mixBind [$sAction];
                     } else {
-                        throw new InvalidArgumentException ( __ ( '数组控制器不存在 %s 方法键值', $sAction ) );
+                        throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sController, $sAction ) );
                     }
                     break;
                 
@@ -1030,7 +1030,7 @@ class router {
                     break;
                 
                 default :
-                    throw new InvalidArgumentException ( __ ( '注册的控制器类型不受支持' ) );
+                    throw new InvalidArgumentException ( 'The type of registered controller is not supported.' );
                     break;
             }
         }
@@ -1056,7 +1056,7 @@ class router {
             $sApp = $this->app ();
         
         if (! ($mixAction = $this->getBind ( $this->packageNode ( $sController, $sAction, $sApp ) )) && ! ($mixAction = $this->bind ( $this->packageNode ( $sController, $sAction, $sApp ) ))) {
-            throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 未注册', $sController, $sAction ) );
+            throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sController, $sAction ) );
         }
         
         switch (true) {
@@ -1067,7 +1067,7 @@ class router {
                     if ($objClass->isPublic () && ! $objClass->isStatic ()) {
                         return $this->objContainer->call ( $mixAction, $this->arrVariable );
                     } else {
-                        throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 不存在', $sController, $sAction ) );
+                        throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sController, $sAction ) );
                     }
                 } catch ( ReflectionException $oE ) {
                     if ($booForChild === false) {
@@ -1079,7 +1079,7 @@ class router {
                                 $mixAction [1] 
                         ] );
                     } else {
-                        throw new InvalidArgumentException ( __ ( '控制器 %s 的方法 %s 不存在', $sController, $sAction ) );
+                        throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sController, $sAction ) );
                     }
                 }
                 break;
@@ -1100,7 +1100,7 @@ class router {
                     ] );
                     return $this->doBind ( $sController, $sAction, $sApp );
                 } else {
-                    throw new InvalidArgumentException ( __ ( '方法对象不存在执行入口  run' ) );
+                    throw new InvalidArgumentException ( 'The run method do not exits.' );
                 }
                 break;
             
@@ -1115,7 +1115,7 @@ class router {
                 break;
             
             default :
-                throw new InvalidArgumentException ( __ ( '注册的方法类型 %s 不受支持', $sAction ) );
+                throw new InvalidArgumentException ( sprintf ( 'The registration method type %s is not supported.', $sAction ) );
                 break;
         }
     }

@@ -162,7 +162,7 @@ class theme implements itheme {
         }
         
         if (! is_file ( $sFile )) {
-            throw new InvalidArgumentException ( __ ( '模板文件 %s 不存在', $sFile ) );
+            throw new InvalidArgumentException ( sprintf ( 'Template file %s does not exist.', $sFile ) );
         }
         
         // 变量赋值

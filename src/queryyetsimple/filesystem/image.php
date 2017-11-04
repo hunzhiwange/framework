@@ -209,10 +209,10 @@ class image {
                     $oBackgroundIm = @imagecreatefrompng ( $sBackgroundPath );
                     break;
                 default :
-                    throw new RuntimeException ( __ ( '错误的图像格式' ) );
+                    throw new RuntimeException ( 'Wrong image format.' );
             }
         } else {
-            throw new RuntimeException ( __ ( '图像 %s 为空或者不存在', $sBackgroundPath ) );
+            throw new RuntimeException ( sprintf ( 'The image %s is empty or nonexistent.', $sBackgroundPath ) );
         }
         
         @imagealphablending ( $oBackgroundIm, true ); // 设定图像的混色模式
@@ -240,13 +240,13 @@ class image {
                         $oWaterIm = @imagecreatefrompng ( $arrWaterArgs ['path'] );
                         break;
                     default :
-                        throw new RuntimeException ( __ ( '错误的图像格式' ) );
+                        throw new RuntimeException ( 'Wrong image format.' );
                 }
             } elseif ($arrWaterArgs ['type'] === 'text' && $arrWaterArgs ['content'] != '') {
                 $sFontfileTemp = $sFontfile = isset ( $arrWaterArgs ['textFile'] ) && ! empty ( $arrWaterArgs ['textFile'] ) ? $arrWaterArgs ['textFile'] : 'Microsoft YaHei.ttf';
                 $sFontfile = (! empty ( $arrWaterArgs ['textPath'] ) ? str_replace ( '\\', '/', $arrWaterArgs ['textPath'] ) : 'C:\WINDOWS\Fonts') . '/' . $sFontfile;
                 if (! is_file ( $sFontfile )) {
-                    throw new RuntimeException ( __ ( '字体文件 %s 无法找到', $sFontfile ) );
+                    throw new RuntimeException ( sprintf ( 'The font file %s cannot be found.', $sFontfile ) );
                 }
                 
                 $sWaterText = $arrWaterArgs ['content'];
@@ -259,10 +259,10 @@ class image {
                 $nWaterHeight = $arrTemp [3] - $arrTemp [7];
                 unset ( $arrTemp );
             } else {
-                throw new RuntimeException ( __ ( '水印参数 type 不为 img 和 text' ) );
+                throw new RuntimeException ( 'The watermark parameter type is not img or text.' );
             }
         } else {
-            throw new RuntimeException ( __ ( '水印参数必须为一个数组' ) );
+            throw new RuntimeException ( 'The watermark parameter must be an array.' );
         }
         
         if (($nGroundWidth < ($nWaterWidth * 2)) || ($nGroundHeight < ($nWaterHeight * 2))) { // 如果水印占了原图一半就不搞水印了.影响浏览.抵制影响正常浏览的广告
@@ -322,7 +322,7 @@ class image {
                 $G = hexdec ( substr ( $sTextColor, 3, 2 ) );
                 $B = hexdec ( substr ( $sTextColor, 5 ) );
             } else {
-                throw new RuntimeException ( __ ( '水印文字颜色错误' ) );
+                throw new RuntimeException ( 'Watermark text color error.' );
             }
             @imagettftext ( $oBackgroundIm, $nTextFont, 0, $nPosX, $nPosY, @imagecolorallocate ( $oBackgroundIm, $R, $G, $B ), $sFontfile, $sWaterText );
         }
@@ -342,7 +342,7 @@ class image {
                 @imagepng ( $oBackgroundIm, $sBackgroundPath );
                 break;
             default :
-                throw new RuntimeException ( __ ( '错误的图像格式' ) );
+                throw new RuntimeException ( 'Wrong image format.' );
         }
         
         if (isset ( $oWaterIm )) {

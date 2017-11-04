@@ -188,8 +188,8 @@ abstract class action implements iaction {
      */
     public function __call($sMethod, $arrArgs) {
         if ($sMethod == 'run') {
-            throw new BadFunctionCallException ( __ ( '方法对象不允许通过 __call 方法执行  run 入口' ) );
+            throw new BadFunctionCallException ( sprintf ( 'Run method is not allowed.' ) );
         }
-        throw new BadFunctionCallException ( 'Method %s is not defined' );
+        throw new BadFunctionCallException ( sprintf ( 'Method %s is not defined.', $sMethod ) );
     }
 }

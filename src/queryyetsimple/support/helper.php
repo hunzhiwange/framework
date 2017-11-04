@@ -180,7 +180,7 @@ class helper {
         if (! static::varType ( $mixTypes, 'string' ) && ! static::varArray ( $mixTypes, [ 
                 'string' 
         ] )) {
-            throw new InvalidArgumentException ( __ ( '参数必须为 string 或 各项元素为 string 的数组' ) );
+            throw new InvalidArgumentException ( 'The parameter must be string or an array of string elements.' );
         }
         
         if (is_string ( $mixTypes )) {

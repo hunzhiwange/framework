@@ -141,7 +141,7 @@ class store implements istore {
         
         // 驱动
         if ($this->oHandler && ! session_set_save_handler ( $this->oHandler )) {
-            throw new RuntimeException ( __ ( 'session 驱动 %s 设置失败', get_class ( $this->oHandler ) ) );
+            throw new RuntimeException ( sprintf ( 'Session drive %s settings failed.', get_class ( $this->oHandler ) ) );
         }
         
         // 启动 session

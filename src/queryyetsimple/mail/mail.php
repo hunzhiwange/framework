@@ -113,7 +113,7 @@ class mail implements imail {
      */
     protected function makeConnect($strConnect, $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] ['mail\connect.' . $strConnect] ))
-            throw new Exception ( sprintf ( 'Mail driver %s not exits', $strConnect ) );
+            throw new Exception ( sprintf ( '%s driver %s not exits.', 'Mail', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
     

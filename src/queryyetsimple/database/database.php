@@ -102,7 +102,7 @@ class database implements idatabase {
      */
     protected function makeConnect($strConnect, $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] ['database\connect.' . $strConnect] ))
-            throw new Exception ( __ ( '数据库驱动 %s 不存在', $strConnect ) );
+            throw new Exception ( sprintf ( '%s driver %s does not exist.', 'Database', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
     

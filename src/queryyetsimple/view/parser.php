@@ -554,7 +554,7 @@ class parser implements iparser {
             if (! $arrTailTag or ! $this->findHeadTag ( $arrTag, $arrTailTag )) { // 单标签节点
                 
                 if ($arrNodeTag [$arrTag ['name']] ['single'] !== true) {
-                    throw new InvalidArgumentException ( __ ( '%s 类型节点必须成对使用，没有找到对应的尾标签', $arrTag ['name'] ) . '<br />' . $this->getLocation ( $arrTag ['position'] ) );
+                    throw new InvalidArgumentException ( sprintf ( '%s type nodes must be used in pairs, and no corresponding tail tags are found.', $arrTag ['name'] ) . '<br />' . $this->getLocation ( $arrTag ['position'] ) );
                 }
                 if ($arrTailTag) { // 退回栈中
                     $oTailStack->in ( $arrTailTag );
@@ -630,7 +630,7 @@ class parser implements iparser {
      */
     protected function findHeadTag($arrTag, $arrTailTag) {
         if ($arrTailTag ['type'] != 'tail') {
-            throw new InvalidArgumentException ( __ ( '参数必须是一个尾标签' ) );
+            throw new InvalidArgumentException ( sprintf ( 'The parameter must be a tail tag.' ) );
         }
         return preg_match ( "/^{$arrTailTag['name']}/i", $arrTag ['name'] );
     }
@@ -1029,7 +1029,7 @@ class parser implements iparser {
         /**
          * 交叉（两个时间段相互关系）
          */
-        throw new InvalidArgumentException ( __ ( '模板引擎标签库不支持交叉' ) );
+        throw new InvalidArgumentException ( 'Template engine tag library does not support cross.' );
     }
     
     /**
@@ -1058,7 +1058,7 @@ class parser implements iparser {
      * @return string
      */
     protected function getLocation($arrPosition) {
-        return __ ( '行: %s; 列: %s; 文件: %s', $arrPosition ['start_line'], $arrPosition ['start_in'], $this->strSourceFile ) . $this->getLocationSource ( $arrPosition );
+        return sprintf ( 'Line:%s; column:%s; file:%s.', $arrPosition ['start_line'], $arrPosition ['start_in'], $this->strSourceFile ) . $this->getLocationSource ( $arrPosition );
     }
     
     /**

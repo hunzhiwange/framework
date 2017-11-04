@@ -198,7 +198,7 @@ abstract class aconnect {
                 'select',
                 'procedure' 
         ] )) {
-            $this->throwException ( __ ( 'query 方法只允许运行 select sql 语句' ) );
+            $this->throwException ( 'The query method only allows select SQL statements.' );
         }
         
         // 预处理
@@ -240,7 +240,7 @@ abstract class aconnect {
         
         // 验证 sql 类型
         if (($strSqlType = $this->getSqlType ( $strSql )) == 'select') {
-            $this->throwException ( __ ( 'execute 方法不允许运行 select sql 语句' ) );
+            $this->throwException ( 'The execute method does not allow select SQL statements.' );
         }
         
         // 预处理
@@ -742,7 +742,7 @@ abstract class aconnect {
             }
             
             if ($this->objPDOStatement->bindValue ( $mixKey, $mixVal, $strParam ) === false) {
-                $this->throwException ( __ ( 'sql %s 参数绑定失败: %s', $this->strSql, dump::dump ( $arrBindParams, true ) ) );
+                $this->throwException ( sprintf ( 'Parameter of sql %s binding failed: %s.', $this->strSql, dump::dump ( $arrBindParams, true ) ) );
             }
         }
     }

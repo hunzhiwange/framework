@@ -841,7 +841,7 @@ class response {
         if ($this->checkFlowControl ())
             return $this;
         $arrOption = array_merge ( [ 
-                'message' => $sMessage ?  : __ ( '操作成功' ),
+                'message' => $sMessage ?  : 'Succeed',
                 'url' => '',
                 'time' => 1 
         ], $arrOption );
@@ -865,7 +865,7 @@ class response {
         if ($this->checkFlowControl ())
             return $this;
         $arrOption = array_merge ( [ 
-                'message' => $sMessage ?  : __ ( '操作失败' ),
+                'message' => $sMessage ?  : 'Failed',
                 'url' => '',
                 'time' => 3 
         ], $arrOption );
@@ -958,7 +958,7 @@ class response {
      */
     protected function downloadAndFile($sFileName, array $arrHeader = []) {
         if (! is_file ( $sFileName )) {
-            throw new InvalidArgumentException ( __ ( '读取的文件不存在' ) );
+            throw new InvalidArgumentException ( sprintf ( 'File %s does not exist.', $sFileName ) );
         }
         $sFileName = realpath ( $sFileName );
         

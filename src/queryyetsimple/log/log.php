@@ -121,7 +121,7 @@ class log implements ilog {
      */
     protected function makeConnect($strConnect, $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] ['log\connect.' . $strConnect] ))
-            throw new Exception ( __ ( 'log 驱动 %s 不存在', $strConnect ) );
+            throw new Exception ( sprintf ( '%s driver %s does not exist.', 'Log', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
     

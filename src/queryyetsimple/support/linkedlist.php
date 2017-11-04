@@ -107,7 +107,7 @@ class linkedlist extends SplDoublyLinkedList {
      */
     public function validate($mixValue) {
         if (! $this->checkType ( $mixValue ))
-            throw new InvalidArgumentException ( __ ( '链表元素类型验证失败，允许类型为 %s', implode ( ',', $this->arrType ) ) );
+            throw new InvalidArgumentException ( sprintf ( 'The linkedlist element type verification failed, and the allowed type is %s.', implode ( ',', $this->arrType ) ) );
     }
     
     /**

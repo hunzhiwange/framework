@@ -111,7 +111,7 @@ class cache implements icache {
      */
     protected function makeConnect($strConnect, $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] ['cache\connect.' . $strConnect] ))
-            throw new Exception ( __ ( '缓存驱动 %s 不存在', $strConnect ) );
+            throw new Exception ( sprintf ( '%s driver %s does not exist.', 'Cache', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
     

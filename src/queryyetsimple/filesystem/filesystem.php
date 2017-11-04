@@ -135,7 +135,7 @@ class filesystem implements ifilesystem {
      */
     protected function makeConnect($strConnect, $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] ['filesystem\connect.' . $strConnect] ))
-            throw new Exception ( sprintf ( 'Filesystem driver %s not exits', $strConnect ) );
+            throw new Exception ( sprintf ( '%s driver %s not exits.', 'Filesystem', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
     

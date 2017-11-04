@@ -85,7 +85,7 @@ class select {
             return $mixResult;
         }
         
-        throw new Exception ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ) );
+        throw new Exception ( sprintf ( 'Select do not implement magic method %s.', $sMethod ) );
     }
     
     /**

@@ -115,7 +115,7 @@ class session implements isession {
         if (! $strConnect)
             return null;
         if (is_null ( $this->objContainer ['option'] ['session\connect.' . $strConnect] ))
-            throw new Exception ( __ ( 'session 驱动 %s 不存在', $strConnect ) );
+            throw new Exception ( sprintf ( '%s driver %s does not exist.', 'Session', $strConnect ) );
         return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
     }
     

@@ -302,13 +302,13 @@ class string {
      */
     public static function formatBytes($nFileSize, $booUnit = true) {
         if ($nFileSize >= 1073741824) {
-            $nFileSize = round ( $nFileSize / 1073741824, 2 ) . ($booUnit ? 'GB' : '');
+            $nFileSize = round ( $nFileSize / 1073741824, 2 ) . ($booUnit ? 'G' : '');
         } elseif ($nFileSize >= 1048576) {
-            $nFileSize = round ( $nFileSize / 1048576, 2 ) . ($booUnit ? 'MB' : '');
+            $nFileSize = round ( $nFileSize / 1048576, 2 ) . ($booUnit ? 'M' : '');
         } elseif ($nFileSize >= 1024) {
-            $nFileSize = round ( $nFileSize / 1024, 2 ) . ($booUnit ? 'KB' : '');
+            $nFileSize = round ( $nFileSize / 1024, 2 ) . ($booUnit ? 'K' : '');
         } else {
-            $nFileSize = $nFileSize . ($booUnit ? __ ( '字节' ) : '');
+            $nFileSize = $nFileSize . ($booUnit ? 'B' : '');
         }
         
         return $nFileSize;

@@ -58,7 +58,7 @@ abstract class face {
             return static::$arrInstance [$strUnique];
         }
         if (! (static::$arrInstance [$strUnique] = static::container ()->make ( $strClass, $arrArgs ))) {
-            throw new RuntimeException ( __ ( '容器中未发现注入的 %s', $strClass ) );
+            throw new RuntimeException ( sprintf ( 'No %s services are found in the IOC container.', $strClass ) );
         }
         return static::$arrInstance [$strUnique];
     }

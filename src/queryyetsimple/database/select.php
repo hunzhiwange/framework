@@ -320,14 +320,14 @@ class select {
                 $sMethod = substr ( $sMethod, 2 );
                 $arrKeys = explode ( 'And', $sMethod );
                 if (count ( $arrKeys ) != count ( $arrArgs )) {
-                    throw new Exception ( __ ( 'getBy 参数数量不对应' ) );
+                    throw new Exception ( 'Parameter quantity does not correspond.' );
                 }
                 return $this->where ( array_combine ( $arrKeys, $arrArgs ) )->getOne ();
             } elseif (strncasecmp ( $sMethod, 'AllBy', 5 ) === 0) { // support getAllByNameAndSex etc.
                 $sMethod = substr ( $sMethod, 5 );
                 $arrKeys = explode ( 'And', $sMethod );
                 if (count ( $arrKeys ) != count ( $arrArgs )) {
-                    throw new Exception ( __ ( 'getAllBy 参数数量不对应' ) );
+                    throw new Exception ( 'Parameter quantity does not correspond.' );
                 }
                 return $this->where ( array_combine ( $arrKeys, $arrArgs ) )->getAll ();
             }
@@ -336,7 +336,7 @@ class select {
         
         // 查询组件
         if (! $this->objCallSelect) {
-            throw new Exception ( __ ( 'select 没有实现魔法方法 %s.', $sMethod ) );
+            throw new Exception ( sprintf ( 'Select do not implement magic method %s.', $sMethod ) );
         }
         
         // 调用事件
@@ -378,7 +378,7 @@ class select {
                 'null',
                 'callback' 
         ] ) && ! $mixData instanceof select) {
-            throw new Exception ( __ ( 'select 查询数据第一个参数只能为 null、callback、select 或者 string' ) );
+            throw new Exception ( 'Unsupported parameters.' );
         }
         
         // 查询对象直接查询
@@ -424,7 +424,7 @@ class select {
                 'string',
                 'array' 
         ] )) {
-            throw new Exception ( __ ( 'insert 插入数据第一个参数只能为 string 或者 array' ) );
+            throw new Exception ( 'Unsupported parameters.' );
         }
         
         // 绑定参数
@@ -479,7 +479,7 @@ class select {
      */
     public function insertAll($arrData, $arrBind = [], $booReplace = false, $bFlag = false) {
         if (! is_array ( $arrData )) {
-            throw new Exception ( __ ( 'insertAll 批量插入数据第一个参数必须为数组' ) );
+            throw new Exception ( 'Unsupported parameters.' );
         }
         
         // 绑定参数
@@ -546,7 +546,7 @@ class select {
                 'string',
                 'array' 
         ] )) {
-            throw new Exception ( __ ( 'update 更新数据第一个参数只能为 string 或者 array' ) );
+            throw new Exception ( 'Unsupported parameters.' );
         }
         
         // 绑定参数
@@ -605,7 +605,7 @@ class select {
      */
     public function updateColumn($strColumn, $mixValue, $arrBind = [], $bFlag = false) {
         if (! is_string ( $strColumn )) {
-            throw new Exception ( __ ( 'updateColumn 第一个参数必须为字符串' ) );
+            throw new Exception ( 'Unsupported parameters.' );
         }
         
         return $this->sql ( $bFlag )->update ( [ 
@@ -655,7 +655,7 @@ class select {
                 'string',
                 'null' 
         ] )) {
-            throw new Exception ( __ ( 'delete 删除数据第一个参数只能为 null 或者 string' ) );
+            throw new Exception ( 'Unsupported parameters.' );
         }
         
         // 构造数据删除
@@ -1560,7 +1560,7 @@ class select {
         if ($this->checkFlowControl ())
             return $this;
         if (! isset ( static::$arrIndexTypes [$sType] )) {
-            throw new Exception ( __ ( '无效的 Index 类型 %s', $sType ) );
+            throw new Exception ( sprintf ( 'Invalid Index type %s.', $sType ) );
         }
         $sType = strtoupper ( $sType );
         $mixIndex = helper::arrays ( $mixIndex );
@@ -1755,7 +1755,7 @@ class select {
         if ($this->checkFlowControl ())
             return $this;
         if (! isset ( static::$arrUnionTypes [$sType] )) {
-            throw new Exception ( __ ( '无效的 UNION 类型 %s', $sType ) );
+            throw new Exception ( sprintf ( 'Invalid UNION type %s.', $sType ) );
         }
         
         if (! is_array ( $mixSelect )) {
@@ -2782,7 +2782,7 @@ class select {
                         }
                     }
                     if ($strFindTime === null) {
-                        throw new Exception ( __ ( '你正在尝试一个不受支持的时间处理语法' ) );
+                        throw new Exception ( 'You are trying to an unsupported time processing grammar.' );
                     }
                 }
                 
@@ -2851,7 +2851,7 @@ class select {
                         'not between' 
                 ] )) {
                     if (! is_array ( $mixCond [2] ) || count ( $mixCond [2] ) < 2) {
-                        throw new Exception ( __ ( '[not] between 参数值必须是一个数组，不能少于 2 个元素' ) );
+                        throw new Exception ( 'The [not] between parameter value must be an array of not less than two elements.' );
                     }
                     $arrSqlCond [] = $mixCond [0] . ' ' . strtoupper ( $mixCond [1] ) . ' ' . $mixCond [2] [0] . ' AND ' . $mixCond [2] [1];
                 } elseif (is_scalar ( $mixCond [2] )) {
@@ -2962,7 +2962,7 @@ class select {
             if (is_string ( $strKey ) && $strKey == 'string__') {
                 // 不符合规则抛出异常
                 if (! is_string ( $arrTemp )) {
-                    throw new Exception ( __ ( 'string__ 只支持字符串' ) );
+                    throw new Exception ( 'String__ type only supports string.' );
                 }
                 
                 // 表达式支持
@@ -3013,7 +3013,7 @@ class select {
             ] )) {
                 // having 不支持 [not] exists
                 if ($this->getTypeAndLogic ()[0] == 'having') {
-                    throw new Exception ( __ ( 'having 不支持 [not] exists  写法' ) );
+                    throw new Exception ( 'Having do not support [not] exists writing.' );
                 }
                 
                 if ($arrTemp instanceof select) {
@@ -3190,12 +3190,12 @@ class select {
     protected function addJoin($sJoinType, $mixName, $mixCols, $mixCond = null/* args */) {
         // 验证 join 类型
         if (! isset ( static::$arrJoinTypes [$sJoinType] )) {
-            throw new Exception ( __ ( '无效的 JOIN 类型 %s', $sJoinType ) );
+            throw new Exception ( sprintf ( 'Invalid JOIN type %s.', $sJoinType ) );
         }
         
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count ( $this->arrOption ['union'] )) {
-            throw new Exception ( __ ( '不能在使用 UNION 查询的同时使用 JOIN 查询' ) );
+            throw new Exception ( 'JOIN queries cannot be used while using UNION queries.' );
         }
         
         // 是否分析 schema，子表达式不支持
@@ -3580,7 +3580,7 @@ class select {
                 $strSqlType = 'select';
             }
             if ($strSqlType != $strNativeSql) {
-                throw new Exception ( __ ( '%s 方法只允许运行 %s sql 语句', $strNativeSql, $strNativeSql ) );
+                throw new Exception ( 'Unsupported parameters.' );
             }
             
             $arrArgs = func_get_args ();
@@ -3595,7 +3595,7 @@ class select {
                     $strNativeSql == 'select' ? 'query' : 'execute' 
             ], $arrArgs );
         } else {
-            throw new Exception ( __ ( '%s 方法第一个参数只允许是 null 或者字符串', $strNativeSql ) );
+            throw new Exception ( 'Unsupported parameters.' );
         }
     }
     
@@ -3799,11 +3799,11 @@ class select {
             case 'date' :
                 $mixValue = strtotime ( $mixValue );
                 if ($mixValue === false) {
-                    throw new Exception ( __ ( '请输入一个支持 strtotime 正确的时间' ) );
+                    throw new Exception ( 'Please enter a right time of strtotime.' );
                 }
                 break;
             default :
-                throw new Exception ( __ ( '不受支持的时间格式化类型 %s', $strType ) );
+                throw new Exception ( sprintf ( 'Unsupported time formatting type %s.', $strType ) );
                 break;
         }
         

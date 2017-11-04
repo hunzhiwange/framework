@@ -49,7 +49,7 @@ abstract class aconnect {
     protected function checkSize($sFilePath) {
         // 如果不是文件，则创建
         if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! fso::createDirectory ( dirname ( $sFilePath ) )) {
-            throw new RuntimeException ( __ ( '无法创建日志文件：%s', $sFilePath ) );
+            throw new RuntimeException ( sprintf ( 'Unable to create log file：%s.', $sFilePath ) );
         }
         
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成
@@ -69,7 +69,7 @@ abstract class aconnect {
         // 不存在路径，则直接使用项目默认路径
         if (empty ( $sFilePath )) {
             if (! $this->getOption ( 'path' )) {
-                throw new RuntimeException ( __ ( '未指定日志默认路径' ) );
+                throw new RuntimeException ( 'Default path for log has not specified.' );
             }
             $sFilePath = $this->getOption ( 'path' ) . '/' . ($strLevel ? $strLevel . '/' : '') . date ( $this->getOption ( 'name' ) ) . ".log";
         }
