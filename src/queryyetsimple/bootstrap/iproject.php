@@ -15,6 +15,7 @@ namespace queryyetsimple\bootstrap;
 ##########################################################
 queryphp;
 
+use queryyetsimple\support\provider;
 use queryyetsimple\support\icontainer;
 
 /**
@@ -156,4 +157,20 @@ interface iproject extends icontainer {
      * @return string
      */
     public function urlEnter();
+    
+    /**
+     * 创建服务提供者
+     *
+     * @param string $strProvider            
+     * @return \queryyetsimple\support\provider
+     */
+    public function makeProvider($strProvider);
+    
+    /**
+     * 执行 bootstrap
+     *
+     * @param \queryyetsimple\support\provider $objProvider            
+     * @return void
+     */
+    public function callProviderBootstrap(provider $objProvider);
 }

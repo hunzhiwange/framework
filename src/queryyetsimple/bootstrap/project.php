@@ -332,6 +332,33 @@ class project extends container implements iproject {
     }
     
     /**
+     * 创建服务提供者
+     *
+     * @param string $strProvider            
+     * @return \queryyetsimple\support\provider
+     */
+    public function makeProvider($strProvider) {
+        return new $strProvider ( $this );
+    }
+    
+    /**
+     * 执行 bootstrap
+     *
+     * @param \queryyetsimple\support\provider $objProvider            
+     * @return void
+     */
+    public function callProviderBootstrap(provider $objProvider) {
+        if (! method_exists ( $objProvider, 'bootstrap' )) {
+            return;
+        }
+        
+        $this->call ( [ 
+                $objProvider,
+                'bootstrap' 
+        ] );
+    }
+    
+    /**
      * 设置项目基础配置
      *
      * @param array $arrOption            
@@ -428,7 +455,7 @@ class project extends container implements iproject {
                 continue;
             }
             
-            $objProvider = new $strProvider ( $this );
+            $objProvider = $this->makeProvider ( $strProvider );
             $objProvider->register ();
             
             if (method_exists ( $objProvider, 'bootstrap' )) {
@@ -458,7 +485,7 @@ class project extends container implements iproject {
      */
     protected function registerBaseProviderBootstrap() {
         foreach ( $this->arrProviderBootstrap as $obj ) {
-            $this->callBootstrap ( $obj );
+            $this->callProviderBootstrap ( $obj );
         }
         return $this;
     }
@@ -563,27 +590,14 @@ class project extends container implements iproject {
             return;
         }
         
-        $objProvider = new $this->arrDeferredProviders [$strProvider] ( $this );
+        $objProvider = $this->makeProvider ( $this->arrDeferredProviders [$strProvider] );
         $objProvider->register ();
         
         if (method_exists ( $objProvider, 'bootstrap' )) {
-            $this->callBootstrap ( $objProvider );
+            $this->callProviderBootstrap ( $objProvider );
         }
         
         unset ( $this->arrDeferredProviders [$strProvider] );
-    }
-    
-    /**
-     * 执行 bootstrap
-     *
-     * @param \queryyetsimple\support\provider $objProvider            
-     * @return void
-     */
-    protected function callBootstrap(provider $objProvider) {
-        $this->call ( [ 
-                $objProvider,
-                'bootstrap' 
-        ] );
     }
     
     /**
