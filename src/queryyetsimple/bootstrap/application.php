@@ -208,9 +208,9 @@ class application {
         }
         
         // 穿越中间件
-        if (! ($this->objProject ['router']->throughMiddleware ( $this->objProject ['pipeline'], $mixResponse ) instanceof response)) {
-            throw new Exception ( 'Middleware terminate should return queryyetsimple\http\response' );
-        }
+        $this->objProject ['router']->throughMiddleware ( $this->objProject ['pipeline'], $this->objProject ['request'], [ 
+                $mixResponse 
+        ] );
         
         // 调试
         if ($this->objProject->debug ()) {
@@ -220,7 +220,7 @@ class application {
         // 输出响应
         $mixResponse->output ();
     }
-
+    
     /**
      * 分析配置文件
      *

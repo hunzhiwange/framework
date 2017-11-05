@@ -16,6 +16,7 @@ namespace queryyetsimple\log\middleware;
 queryphp;
 
 use Closure;
+use queryyetsimple\http\request;
 use queryyetsimple\http\response;
 use queryyetsimple\log\log as manager;
 
@@ -49,12 +50,13 @@ class log {
     /**
      * 响应
      *
+     * @param \queryyetsimple\http\request $objRequest            
      * @param \queryyetsimple\http\response $mixResponse            
      * @return mixed
      */
-    public function terminate(Closure $calNext, response $objResponse) {
+    public function terminate(Closure $calNext, request $objRequest, response $objResponse) {
         $this->saveLog ();
-        return $calNext ( $objResponse );
+        return $calNext ( $objRequest, $objResponse );
     }
     
     /**

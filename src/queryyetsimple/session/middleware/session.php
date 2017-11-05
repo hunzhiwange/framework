@@ -38,22 +38,13 @@ class session {
     protected $objManager;
     
     /**
-     * HTTP request
-     *
-     * @var \queryyetsimple\http\request
-     */
-    protected $objRequest;
-    
-    /**
      * 构造函数
      *
      * @param \queryyetsimple\throttler\ithrottler $objManager            
-     * @param \queryyetsimple\http\request $objRequest            
      * @return void
      */
-    public function __construct(manager $objManager, request $objRequest) {
+    public function __construct(manager $objManager) {
         $this->objManager = $objManager;
-        $this->objRequest = $objRequest;
     }
     
     /**
@@ -71,13 +62,14 @@ class session {
     /**
      * 响应
      *
+     * @param \queryyetsimple\http\request $objRequest            
      * @param \queryyetsimple\http\response $mixResponse            
      * @return mixed
      */
-    public function terminate(Closure $calNext, response $objResponse) {
+    public function terminate(Closure $calNext, request $objRequest, response $objResponse) {
         $this->unregisterFlash ();
-        $this->setPrevUrl ();
-        return $calNext ( $objResponse );
+        $this->setPrevUrl ( $objRequest );
+        return $calNext ( $objRequest, $objResponse );
     }
     
     /**
@@ -101,9 +93,10 @@ class session {
     /**
      * 保存当期请求 URL
      *
+     * @param \queryyetsimple\http\request $objRequest            
      * @return void
      */
-    protected function setPrevUrl() {
-        $this->objManager->setPrevUrl ( $this->objRequest->url () );
+    protected function setPrevUrl(request $objRequest) {
+        $this->objManager->setPrevUrl ( $objRequest->url () );
     }
 }

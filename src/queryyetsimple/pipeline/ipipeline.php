@@ -34,6 +34,14 @@ interface ipipeline {
     public function send($mixPassed);
     
     /**
+     * 将附加传输对象传入管道
+     *
+     * @param mixed $mixPassed            
+     * @return $this
+     */
+    public function sendExtend($mixPassed);
+    
+    /**
      * 设置管道中的执行工序
      *
      * @param dynamic|array $mixStages            

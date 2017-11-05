@@ -71,7 +71,7 @@ class throttler {
         
         if ($oRateLimiter->attempt ()) {
             $this->header ( $oRateLimiter );
-            throw new too_many_requests_http ( 'Too many attempts' );
+            throw new too_many_requests_http ( 'Too many attempts.' );
         } else {
             $this->header ( $oRateLimiter );
         }

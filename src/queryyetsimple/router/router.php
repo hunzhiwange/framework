@@ -286,9 +286,7 @@ class router {
         $this->validateMethod ();
         
         // 穿越中间件
-        if (! ($this->throughMiddleware ( $this->objPipeline ) instanceof request)) {
-            throw new Exception ( 'Middleware handle should return queryyetsimple\http\request' );
-        }
+        $this->throughMiddleware ( $this->objPipeline, $this->objRequest );
         
         // 解析项目公共 url 地址
         $this->parsePublicAndRoot ();
@@ -636,21 +634,20 @@ class router {
      * 穿越中间件
      *
      * @param \queryyetsimple\pipeline\ipipeline $objPipeline            
-     * @param \queryyetsimple\http\response|null $objPassed            
+     * @param \queryyetsimple\http\request $objPassed            
+     * @param array $arrPassedExtend            
      * @return mixed
      */
-    public function throughMiddleware(ipipeline $objPipeline, response $objPassed = null) {
+    public function throughMiddleware(ipipeline $objPipeline, request $objPassed, array $arrPassedExtend = []) {
         if (is_null ( $this->arrCurrentMiddleware ))
             $this->arrCurrentMiddleware = $this->getMiddleware ( $this->packageNode () );
         
-        $objResult = $objPassed ?  : $this->objRequest;
-        
         if (! $this->arrCurrentMiddleware) {
-            return $objResult;
+            return $objPassed;
         }
         
         $arrCurrentMiddleware = $this->arrCurrentMiddleware;
-        $strMethod = is_null ( $objPassed ) ? 'handle' : 'terminate';
+        $strMethod = ! $arrPassedExtend ? 'handle' : 'terminate';
         $arrCurrentMiddleware = array_map ( function ($strItem) use($strMethod) {
             if (! method_exists ( $strItem, $strMethod )) {
                 return '';
@@ -665,11 +662,11 @@ class router {
         $arrCurrentMiddleware = array_filter ( $arrCurrentMiddleware );
         
         if ($arrCurrentMiddleware) {
-            return $objPipeline->send ( $objResult )->through ( $arrCurrentMiddleware )->then ( function ($objPassed) {
+            return $objPipeline->send ( $objPassed )->sendExtend ( $arrPassedExtend )->through ( $arrCurrentMiddleware )->then ( function ($objPassed) {
                 return $objPassed;
             } );
         } else {
-            return $objResult;
+            return $objPassed;
         }
     }
     
