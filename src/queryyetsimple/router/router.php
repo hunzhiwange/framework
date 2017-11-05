@@ -636,14 +636,14 @@ class router {
      * @param \queryyetsimple\pipeline\ipipeline $objPipeline            
      * @param \queryyetsimple\http\request $objPassed            
      * @param array $arrPassedExtend            
-     * @return mixed
+     * @return void
      */
     public function throughMiddleware(ipipeline $objPipeline, request $objPassed, array $arrPassedExtend = []) {
         if (is_null ( $this->arrCurrentMiddleware ))
             $this->arrCurrentMiddleware = $this->getMiddleware ( $this->packageNode () );
         
         if (! $this->arrCurrentMiddleware) {
-            return $objPassed;
+            return;
         }
         
         $arrCurrentMiddleware = $this->arrCurrentMiddleware;
@@ -662,11 +662,8 @@ class router {
         $arrCurrentMiddleware = array_filter ( $arrCurrentMiddleware );
         
         if ($arrCurrentMiddleware) {
-            return $objPipeline->send ( $objPassed )->sendExtend ( $arrPassedExtend )->through ( $arrCurrentMiddleware )->then ( function ($objPassed) {
-                return $objPassed;
+            $objPipeline->send ( $objPassed )->sendExtend ( $arrPassedExtend )->through ( $arrCurrentMiddleware )->then ( function ($objPassed) {
             } );
-        } else {
-            return $objPassed;
         }
     }
     
