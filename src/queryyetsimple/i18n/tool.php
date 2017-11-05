@@ -95,7 +95,7 @@ class tool {
     }
     
     /**
-     * 分析目录中的 PHP 和 JS 语言包包含的文件
+     * 分析目录中的 PHP 语言包包含的文件
      *
      * @param string|array $mixI18nDir
      *            文件地址
@@ -108,25 +108,16 @@ class tool {
             $mixI18nDir = ( array ) $mixI18nDir;
         }
         
-        // 返回结果 PHP 和 JS 分别返回
-        $arrFiles = [ 
-                'js' => [ ],
-                'php' => [ ] 
-        ];
+        // 返回结果
+        $arrFiles = [ ];
         foreach ( $mixI18nDir as $sDir ) {
             if (! is_dir ( $sDir )) {
                 continue;
             }
-            if (is_dir ( $sDir . '/js' )) {
-                $arrFiles ['js'] = array_merge ( $arrFiles ['js'], fso::lists ( $sDir . '/js', 'file', true, [ ], [ 
-                        'po' 
-                ] ) );
-            }
-            if (is_dir ( $sDir . '/php' )) {
-                $arrFiles ['php'] = array_merge ( $arrFiles ['php'], fso::lists ( $sDir . '/php', 'file', true, [ ], [ 
-                        'po' 
-                ] ) );
-            }
+            
+            $arrFiles = array_merge ( $arrFiles, fso::lists ( $sDir, 'file', true, [ ], [ 
+                    'po' 
+            ] ) );
         }
         
         return $arrFiles;

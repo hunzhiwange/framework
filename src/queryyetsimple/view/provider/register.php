@@ -122,7 +122,7 @@ class register extends provider {
             $arrOption ['app_name'] = $oProject ['app_name'];
             $arrOption ['controller_name'] = $oProject ['controller_name'];
             $arrOption ['action_name'] = $oProject ['action_name'];
-            $arrOption ['theme_cache_path'] = $oProject->pathApplicationCache ( 'theme' );
+            $arrOption ['theme_cache_path'] = $oProject->pathApplicationCache ( 'theme' ) . '/' . $oProject ['app_name'];
             
             theme::setParseResolver ( function () use($oProject) {
                 return $oProject ['view.parser'];

@@ -795,6 +795,7 @@ out += '";
     public function includeNodeCompiler(&$arrTheme) {
         $this->checkNode ( $arrTheme );
         $arrAttr = $this->getNodeAttribute ( $arrTheme );
+        $arrAttr ['file'] = str_replace ( '->', '.', $arrAttr ['file'] );
         
         if (strpos ( $arrAttr ['file'], '$' ) !== 0 && strpos ( $arrAttr ['file'], '(' ) === false) {
             $arrAttr ['file'] = (strpos ( $arrAttr ['file'], '$' ) === 0 ? '' : '\'') . $arrAttr ['file'] . '\'';

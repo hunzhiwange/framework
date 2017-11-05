@@ -250,13 +250,12 @@ class project extends container implements iproject {
                 'theme',
                 'option',
                 'i18n',
-                'i18n_js',
                 'router' 
         ];
         if (! in_array ( $strType, $arrType )) {
             throw new Exception ( sprintf ( 'Application cache type %s not support', $strType ) );
         }
-        return $strType != 'i18n_js' ? $this->pathRuntime () . '/' . $strType : $this->pathPublic () . '/js/i18n';
+        return $this->pathRuntime () . '/' . $strType;
     }
     
     /**

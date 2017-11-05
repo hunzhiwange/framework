@@ -184,15 +184,12 @@ class application {
             return;
         
         $sCachePath = $this->getI18nCachePath ( $sI18nSet );
-        $sCacheJsPath = $this->getI18nCacheJsPath ( $sI18nSet );
         
-        if (! $this->objProject->development () && is_file ( $sCachePath ) && is_file ( $sCacheJsPath )) {
+        if (! $this->objProject->development () && is_file ( $sCachePath )) {
             $this->objProject ['i18n']->addI18n ( $sI18nSet, ( array ) include $sCachePath );
         } else {
             $arrFiles = i18n_tool::findMoFile ( $this->getI18nDir ( $sI18nSet ) );
-            $this->objProject ['i18n']->addI18n ( $sI18nSet, i18n_tool::saveToPhp ( $arrFiles ['php'], $sCachePath ) );
-            i18n_tool::saveToJs ( $arrFiles ['js'], $sCacheJsPath, $sI18nSet );
-            unset ( $sI18nSet, $arrFiles, $sCachePath, $sCacheJsPath );
+            $this->objProject ['i18n']->addI18n ( $sI18nSet, i18n_tool::saveToPhp ( $arrFiles, $sCachePath ) );
         }
     }
     
@@ -297,16 +294,6 @@ class application {
      */
     protected function getI18nCachePath($sI18nSet) {
         return $this->objProject->pathApplicationCache ( 'i18n' ) . '/' . $sI18nSet . '/default.php';
-    }
-    
-    /**
-     * 返回 i18n.js 缓存路径
-     *
-     * @param string $sI18nSet            
-     * @return array
-     */
-    protected function getI18nCacheJsPath($sI18nSet) {
-        return $this->objProject->pathApplicationCache ( 'i18n_js' ) . '/' . $sI18nSet . '/default.js';
     }
     
     /**
