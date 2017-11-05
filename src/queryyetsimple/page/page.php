@@ -21,6 +21,21 @@ use JsonSerializable;
 use queryyetsimple\support\ijson;
 use queryyetsimple\support\iarray;
 
+if (! function_exists ( '__' )) {
+    /**
+     * 语言包
+     *
+     * @param string $sValue            
+     * @return mixed
+     */
+    function __($sValue) {
+        if (func_num_args () > 1) { // 代入参数
+            $sValue = call_user_func_array ( 'sprintf', func_get_args () );
+        }
+        return $sValue;
+    }
+}
+
 /**
  * 分页处理
  *

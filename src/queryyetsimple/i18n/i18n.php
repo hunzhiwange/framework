@@ -106,7 +106,7 @@ class i18n implements ii18n {
      *            当前的语言
      * @return string
      */
-    public function getText($sValue/*Argvs*/){
+    public function getText($sValue) {
         // 未开启直接返回
         if (! $this->getOption ( 'on' )) {
             if (func_num_args () > 1) { // 代入参数
@@ -134,7 +134,7 @@ class i18n implements ii18n {
      *            当前的语言
      * @return string
      */
-    public function __($sValue/*Argvs*/){
+    public function __($sValue) {
         return call_user_func_array ( [ 
                 $this,
                 'getText' 

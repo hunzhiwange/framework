@@ -25,6 +25,21 @@ use queryyetsimple\support\helper;
 use queryyetsimple\support\icontainer;
 use queryyetsimple\support\flow_control;
 
+if (! function_exists ( '__' )) {
+    /**
+     * 语言包
+     *
+     * @param string $sValue            
+     * @return mixed
+     */
+    function __($sValue) {
+        if (func_num_args () > 1) { // 代入参数
+            $sValue = call_user_func_array ( 'sprintf', func_get_args () );
+        }
+        return $sValue;
+    }
+}
+
 /**
  * validate 数据验证器
  *
@@ -143,7 +158,7 @@ class validate implements ivalidate {
     }
     
     /**
-     * 创建一个验证器
+     * 初始化验证器
      *
      * @param array $arrData            
      * @param array $arrRule            

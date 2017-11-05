@@ -19,6 +19,21 @@ use Exception;
 use InvalidArgumentException;
 use queryyetsimple\support\manager as support_manager;
 
+if (! function_exists ( '__' )) {
+    /**
+     * 语言包
+     *
+     * @param string $sValue            
+     * @return mixed
+     */
+    function __($sValue) {
+        if (func_num_args () > 1) { // 代入参数
+            $sValue = call_user_func_array ( 'sprintf', func_get_args () );
+        }
+        return $sValue;
+    }
+}
+
 /**
  * manager 入口
  *
@@ -27,8 +42,7 @@ use queryyetsimple\support\manager as support_manager;
  * @since 2017.09.07
  * @version 1.0
  */
-class manager extends support_manager
-{
+class manager extends support_manager {
     
     /**
      * 返回默认驱动
@@ -86,6 +100,6 @@ class manager extends support_manager
      * @return \queryyetsimple\auth\token
      */
     protected function makeConnectToken($arrOption = []) {
-        return new token ( $arrOption = array_merge ( $this->getOption ( 'token', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['session'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'], $this->objContainer ['cache']);
+        return new token ( $arrOption = array_merge ( $this->getOption ( 'token', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['session'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'], $this->objContainer ['cache'] );
     }
 }

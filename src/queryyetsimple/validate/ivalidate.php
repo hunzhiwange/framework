@@ -80,7 +80,7 @@ interface ivalidate {
     public static function make(array $arrData = [], array $arrRule = [], array $arrMessage = []);
     
     /**
-     * 创建一个验证器
+     * 初始化验证器
      *
      * @param array $arrData            
      * @param array $arrRule            

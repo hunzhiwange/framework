@@ -61,14 +61,14 @@ if (! function_exists ( 'api' )) {
     }
 }
 
-if (! function_exists ( 'dump' )) {
+if (! function_exists ( 'dumps' )) {
     /**
      * 调试一个变量
      *
      * @param mixed $mixValue            
      * @return mixed
      */
-    function dump($mixValue /*argvs*/ ){
+    function dumps($mixValue) {
         return call_user_func_array ( [ 
                 'queryyetsimple\support\debug\dump',
                 'dump' 
@@ -218,10 +218,10 @@ if (! function_exists ( '__' )) {
     /**
      * 语言包
      *
-     * @param string|null $sValue            
+     * @param string $sValue            
      * @return mixed
      */
-    function __($sValue = null /*argvs*/ ){
+    function __($sValue) {
         return call_user_func_array ( [ 
                 project ( 'i18n' ),
                 'getText' 
@@ -236,7 +236,7 @@ if (! function_exists ( 'gettext' )) {
      * @param string|null $sValue            
      * @return mixed
      */
-    function gettext($sValue = null /*argvs*/ ){
+    function gettext($sValue = null) {
         return call_user_func_array ( __, func_get_args () );
     }
 }
