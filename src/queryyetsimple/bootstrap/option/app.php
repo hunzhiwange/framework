@@ -58,24 +58,13 @@ return [
          * 应用提供者
          * ---------------------------------------------------------------
          *
-         * 这里的服务提供者为类的名字，例如 home\infrastructure\provider\test
+         * 这里的服务提供者为类的名字，例如 home\is\provider\test
          * 每一个服务提供者必须包含一个 register 方法，还可以包含一个 bootstrap 方法
          * 系统所有 register 方法注册后，bootstrap 才开始执行以便于调用其它服务提供者 register 注册的服务
          * 相关文档请访问 [系统架构\应用服务提供者]
          * see https://github.com/hunzhiwange/document/blob/master/system-architecture/service-provider.md
          */
-        'provider' => [ ],
-        
-        /**
-         * ---------------------------------------------------------------
-         * 具有缓存功能的应用服务提供者
-         * ---------------------------------------------------------------
-         *
-         * 这里的服务提供者严格意义上是服务提供者包，例如 queryyetsimple\log,queryyetsimple\http，系统会自动合并 queryyetsimple/log/provider 目录下面的 ['register.php', 'bootstrap.php']
-         * register 为预先注册服务提供者，bootstrap 为系统注册完毕所有服务提供者后再注册其它服务
-         * 正如其名具有缓存功能的服务提供者，他们会被自动缓存到 {缓存目录}/provider 下面,并且有两组一组是应用服务提供者，一组为系统服务提供者
-         */
-        'provider_with_cache' => [ 
+        'provider' => [ 
                 'queryyetsimple\auth',
                 'queryyetsimple\cache',
                 'queryyetsimple\cookie',
@@ -96,6 +85,41 @@ return [
                 'queryyetsimple\throttler',
                 'queryyetsimple\validate',
                 'queryyetsimple\view' 
+        ],
+        
+        /**
+         * ---------------------------------------------------------------
+         * 中间件分组
+         * ---------------------------------------------------------------
+         *
+         * 分组可以很方便地批量调用组件
+         */
+        'middleware_group' => [ 
+                'web' => [ 
+                        'session' 
+                ],
+                
+                'api' => [ 
+                        'throttler:60,1' 
+                ],
+                
+                'common' => [ 
+                        'log' 
+                ] 
+        ],
+        
+        /**
+         * ---------------------------------------------------------------
+         * 中间件
+         * ---------------------------------------------------------------
+         *
+         * HTTP 中间件提供一个方便的机制来过滤进入应用程序的 HTTP 请求
+         * 例外在应用执行结束后响应环节也会调用 HTTP 中间件
+         */
+        'middleware_alias' => [ 
+                'session' => 'queryyetsimple\session\middleware\session',
+                'throttler' => 'queryyetsimple\throttler\middleware\throttler',
+                'log' => 'queryyetsimple\log\middleware\log' 
         ],
         
         /**

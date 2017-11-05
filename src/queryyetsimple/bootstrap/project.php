@@ -305,6 +305,15 @@ class project extends container implements iproject {
     }
     
     /**
+     * 是否为 API
+     *
+     * @return boolean
+     */
+    public function api() {
+        return $this->arrAppOption ['default_response'] == 'api';
+    }
+    
+    /**
      * public url
      *
      * @return string
@@ -419,7 +428,7 @@ class project extends container implements iproject {
      * @return $this
      */
     protected function registerBaseProvider() {
-        if (empty ( $this->arrAppOption ['provider_with_cache'] ))
+        if (empty ( $this->arrAppOption ['provider'] ))
             return $this;
         
         $booCache = false;
@@ -432,7 +441,7 @@ class project extends container implements iproject {
             $arrDeferredAlias = [ ];
         }
         
-        foreach ( $this->arrAppOption ['provider_with_cache'] as $strProvider ) {
+        foreach ( $this->arrAppOption ['provider'] as $strProvider ) {
             $strProvider .= '\provider\register';
             
             if ($booCache === true && isset ( $arrDeferredAlias [$strProvider] )) {

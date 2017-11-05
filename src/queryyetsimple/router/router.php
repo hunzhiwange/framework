@@ -241,7 +241,13 @@ class router {
             'args_strict' => false,
             'middleware_strict' => false,
             'method_strict' => false,
-            'controller_dir' => 'app/controller' 
+            'controller_dir' => 'app/controller',
+            
+            // 路由分组
+            'middleware_group' => [ ],
+            
+            // 路由别名
+            'middleware_alias' => [ ] 
     ];
     
     /**
@@ -1149,22 +1155,12 @@ class router {
             return;
         
         if (! $mixMiddleware)
-            throw new InvalidArgumentException ( sprintf ( 'Middleware %s disallowed empty', $sMiddlewareName ) );
+            throw new InvalidArgumentException ( sprintf ( 'Middleware %s disallowed empty.', $sMiddlewareName ) );
         
         if (! isset ( $this->arrMiddlewares [$sMiddlewareName] ))
             $this->arrMiddlewares [$sMiddlewareName] = [ ];
         
-        $mixMiddleware = ( array ) $mixMiddleware;
-        
-        foreach ( $mixMiddleware as $strTemp ) {
-            if (! is_string ( $strTemp ))
-                throw new InvalidArgumentException ( 'Middleware only allowed string' );
-        }
-        
-        if (is_array ( $mixMiddleware ))
-            $this->arrMiddlewares [$sMiddlewareName] = array_merge ( $this->arrMiddlewares [$sMiddlewareName], $mixMiddleware );
-        else
-            $this->arrMiddlewares [$sMiddlewareName] [] = $mixMiddleware;
+        $this->arrMiddlewares [$sMiddlewareName] = array_merge ( $this->arrMiddlewares [$sMiddlewareName], $this->parseMiddlewares ( $mixMiddleware ) );
     }
     
     /**
@@ -1173,7 +1169,7 @@ class router {
      * @param array $arrMiddleware            
      * @return void
      */
-    public function middlewares($arrMiddleware) {
+    public function middlewares(array $arrMiddleware) {
         if (! $this->checkExpired ())
             return;
         
@@ -1936,5 +1932,54 @@ class router {
                 $sAction ?  : $this->action (),
                 $sApp ?  : $this->app () 
         ];
+    }
+    
+    /**
+     * 解析中间件
+     *
+     * @param string|array $mixMiddleware            
+     * @return array
+     */
+    protected function parseMiddlewares($mixMiddleware) {
+        $arrMiddleware = [ ];
+        foreach ( ( array ) $mixMiddleware as $strTemp ) {
+            if (! is_string ( $strTemp ))
+                throw new InvalidArgumentException ( 'Middleware only allowed string.' );
+            
+            $strParams = '';
+            if (strpos ( $strTemp, ':' ) !== false)
+                list ( $strTemp, $strParams ) = explode ( ':', $strTemp );
+            
+            if (isset ( $this->getOption ( 'middleware_group' )[$strTemp] )) {
+                foreach ( ( array ) $this->getOption ( 'middleware_group' )[$strTemp] as $strTempTwo ) {
+                    $strParams = '';
+                    if (strpos ( $strTempTwo, ':' ) !== false)
+                        list ( $strTempTwo, $strParams ) = explode ( ':', $strTempTwo );
+                    
+                    if (isset ( $this->getOption ( 'middleware_alias' )[$strTempTwo] )) {
+                        $arrMiddleware [] = $this->explodeMiddlewareName ( $this->getOption ( 'middleware_alias' )[$strTempTwo], $strParams );
+                    } else {
+                        $arrMiddleware [] = $this->explodeMiddlewareName ( $strBackupTempTwo, $strParams );
+                    }
+                }
+            } elseif (isset ( $this->getOption ( 'middleware_alias' )[$strTemp] )) {
+                $arrMiddleware [] = $this->explodeMiddlewareName ( $this->getOption ( 'middleware_alias' )[$strTemp], $strParams );
+            } else {
+                $arrMiddleware [] = $this->explodeMiddlewareName ( $strTemp, $strParams );
+            }
+        }
+        
+        return $arrMiddleware;
+    }
+    
+    /**
+     * 中间件名字
+     *
+     * @param string $strMiddleware            
+     * @param string $strParams            
+     * @return string
+     */
+    protected function explodeMiddlewareName($strMiddleware, $strParams) {
+        return $strMiddleware . ($strParams ? ':' . $strParams : '');
     }
 }

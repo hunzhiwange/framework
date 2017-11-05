@@ -50,6 +50,17 @@ if (! function_exists ( 'app' )) {
     }
 }
 
+if (! function_exists ( 'api' )) {
+    /**
+     * 是否为 API
+     *
+     * @return boolean
+     */
+    function api() {
+        return project ()->api ();
+    }
+}
+
 if (! function_exists ( 'dump' )) {
     /**
      * 调试一个变量
@@ -192,8 +203,7 @@ if (! function_exists ( 'url' )) {
     }
 }
 
-if (! function_exists ( 'prev_url' )) :
-    
+if (! function_exists ( 'prev_url' )) {
     /**
      * 上一次访问 URL 地址
      *
@@ -202,12 +212,7 @@ if (! function_exists ( 'prev_url' )) :
     function prev_url() {
         return project ( 'request' )->header ( 'referer' ) ?  : project ( 'session' )->prevUrl ();
     }
-
-
-
-
-
-endif;
+}
 
 if (! function_exists ( '__' )) {
     /**

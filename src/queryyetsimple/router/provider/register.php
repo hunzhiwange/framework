@@ -40,7 +40,9 @@ class register extends provider {
                     '~apps~',
                     'default_app',
                     'default_controller',
-                    'default_action' 
+                    'default_action',
+                    'middleware_group',
+                    'middleware_alias' 
             ] as $strOption ) {
                 $arrOption [$strOption] = $oProject ['option']->get ( $strOption );
             }

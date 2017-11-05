@@ -138,6 +138,13 @@ interface iproject extends icontainer {
     public function environment();
     
     /**
+     * 是否为 API
+     *
+     * @return boolean
+     */
+    public function api();
+    
+    /**
      * public url
      *
      * @return string
