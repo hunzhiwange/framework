@@ -1240,7 +1240,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function where($mixCond /* args */){
+    public function where($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1258,7 +1258,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereBetween($mixCond /* args */){
+    public function whereBetween($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'where', static::LOGIC_AND );
@@ -1276,7 +1276,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereNotBetween($mixCond /* args */){
+    public function whereNotBetween($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'where', static::LOGIC_AND );
@@ -1294,7 +1294,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereIn($mixCond /* args */){
+    public function whereIn($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'where', static::LOGIC_AND );
@@ -1312,7 +1312,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereNotIn($mixCond /* args */){
+    public function whereNotIn($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'where', static::LOGIC_AND );
@@ -1330,7 +1330,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereNull($mixCond /* args */){
+    public function whereNull($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'where', static::LOGIC_AND );
@@ -1348,7 +1348,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereNotNull($mixCond /* args */){
+    public function whereNotNull($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'where', static::LOGIC_AND );
@@ -1366,7 +1366,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereLike($mixCond /* args */){
+    public function whereLike($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'where', static::LOGIC_AND );
@@ -1384,7 +1384,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereNotLike($mixCond /* args */){
+    public function whereNotLike($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'where', static::LOGIC_AND );
@@ -1402,7 +1402,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereDate($mixCond /* args */){
+    public function whereDate($mixCond) {
         $this->setInTimeCondition ( 'date' );
         call_user_func_array ( [ 
                 $this,
@@ -1418,7 +1418,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereMonth($mixCond /* args */){
+    public function whereMonth($mixCond) {
         $this->setInTimeCondition ( 'month' );
         call_user_func_array ( [ 
                 $this,
@@ -1434,7 +1434,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereDay($mixCond /* args */){
+    public function whereDay($mixCond) {
         $this->setInTimeCondition ( 'day' );
         call_user_func_array ( [ 
                 $this,
@@ -1450,7 +1450,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function whereYear($mixCond /* args */){
+    public function whereYear($mixCond) {
         $this->setInTimeCondition ( 'year' );
         call_user_func_array ( [ 
                 $this,
@@ -1466,7 +1466,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function orWhere($mixCond /* args */){
+    public function orWhere($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1483,7 +1483,7 @@ class select {
      *
      * @return $this
      */
-    public function whereExists(/* args */){
+    public function whereExists() {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1502,7 +1502,7 @@ class select {
      *
      * @return $this
      */
-    public function whereNotExists(/* args */){
+    public function whereNotExists() {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1601,7 +1601,7 @@ class select {
      *            同 where $mixCond
      * @return $this
      */
-    public function join($mixTable, $mixCols = '*', $mixCond /* args */){
+    public function join($mixTable, $mixCols = '*', $mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1623,7 +1623,7 @@ class select {
      *            同 where $mixCond
      * @return $this
      */
-    public function innerJoin($mixTable, $mixCols = '*', $mixCond /* args */){
+    public function innerJoin($mixTable, $mixCols = '*', $mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1645,7 +1645,7 @@ class select {
      *            同 where $mixCond
      * @return $this
      */
-    public function leftJoin($mixTable, $mixCols = '*', $mixCond /* args */){
+    public function leftJoin($mixTable, $mixCols = '*', $mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1667,7 +1667,7 @@ class select {
      *            同 where $mixCond
      * @return $this
      */
-    public function rightJoin($mixTable, $mixCols = '*', $mixCond /* args */){
+    public function rightJoin($mixTable, $mixCols = '*', $mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1689,7 +1689,7 @@ class select {
      *            同 where $mixCond
      * @return $this
      */
-    public function fullJoin($mixTable, $mixCols = '*', $mixCond /* args */){
+    public function fullJoin($mixTable, $mixCols = '*', $mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1711,7 +1711,7 @@ class select {
      *            同 where $mixCond
      * @return $this
      */
-    public function crossJoin($mixTable, $mixCols = '*', $mixCond /* args */){
+    public function crossJoin($mixTable, $mixCols = '*', $mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1733,7 +1733,7 @@ class select {
      *            同 where $mixCond
      * @return $this
      */
-    public function naturalJoin($mixTable, $mixCols = '*', $mixCond /* args */){
+    public function naturalJoin($mixTable, $mixCols = '*', $mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1842,7 +1842,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function having($mixCond /* args */){
+    public function having($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -1860,7 +1860,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingBetween($mixCond /* args */){
+    public function havingBetween($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'having', static::LOGIC_AND );
@@ -1878,7 +1878,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingNotBetween($mixCond /* args */){
+    public function havingNotBetween($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'having', static::LOGIC_AND );
@@ -1896,7 +1896,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingIn($mixCond /* args */){
+    public function havingIn($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'having', static::LOGIC_AND );
@@ -1914,7 +1914,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingNotIn($mixCond /* args */){
+    public function havingNotIn($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'having', static::LOGIC_AND );
@@ -1932,7 +1932,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingNull($mixCond /* args */){
+    public function havingNull($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'having', static::LOGIC_AND );
@@ -1950,7 +1950,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingNotNull($mixCond /* args */){
+    public function havingNotNull($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'having', static::LOGIC_AND );
@@ -1968,7 +1968,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingLike($mixCond /* args */){
+    public function havingLike($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'having', static::LOGIC_AND );
@@ -1986,7 +1986,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingNotLike($mixCond /* args */){
+    public function havingNotLike($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $this->setTypeAndLogic ( 'having', static::LOGIC_AND );
@@ -2004,7 +2004,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingDate($mixCond /* args */){
+    public function havingDate($mixCond) {
         $this->setInTimeCondition ( 'date' );
         call_user_func_array ( [ 
                 $this,
@@ -2020,7 +2020,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingMonth($mixCond /* args */){
+    public function havingMonth($mixCond) {
         $this->setInTimeCondition ( 'month' );
         call_user_func_array ( [ 
                 $this,
@@ -2036,7 +2036,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingDay($mixCond /* args */){
+    public function havingDay($mixCond) {
         $this->setInTimeCondition ( 'day' );
         call_user_func_array ( [ 
                 $this,
@@ -2052,7 +2052,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function havingYear($mixCond /* args */){
+    public function havingYear($mixCond) {
         $this->setInTimeCondition ( 'year' );
         call_user_func_array ( [ 
                 $this,
@@ -2068,7 +2068,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    public function orHaving($mixCond /* args */){
+    public function orHaving($mixCond) {
         if ($this->checkFlowControl ())
             return $this;
         $arrArgs = func_get_args ();
@@ -2894,7 +2894,7 @@ class select {
      * @param mixed $mixCond            
      * @return $this
      */
-    protected function aliasTypeAndLogic($strType, $strLogic, $mixCond /* args */){
+    protected function aliasTypeAndLogic($strType, $strLogic, $mixCond) {
         $this->setTypeAndLogic ( $strType, $strLogic );
         if (is_callable ( $mixCond )) {
             $objSelect = new static ( $this->objConnect );
@@ -3187,7 +3187,7 @@ class select {
      * @param array|null $arrCondArgs            
      * @return $this
      */
-    protected function addJoin($sJoinType, $mixName, $mixCols, $mixCond = null/* args */) {
+    protected function addJoin($sJoinType, $mixName, $mixCols, $mixCond = null) {
         // 验证 join 类型
         if (! isset ( static::$arrJoinTypes [$sJoinType] )) {
             throw new Exception ( sprintf ( 'Invalid JOIN type %s.', $sJoinType ) );

@@ -31,7 +31,7 @@ interface idispatch {
      * @param string|object $mixEvent            
      * @return void
      */
-    public function run($mixEvent /* args */ );
+    public function run($mixEvent);
     
     /**
      * 注册监听器

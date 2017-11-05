@@ -1168,7 +1168,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      * @param string $strEvent            
      * @return mixed
      */
-    public function runEvent($strEvent /* args */){
+    public function runEvent($strEvent) {
         if (! isset ( static::$objDispatch )) {
             return true;
         }
@@ -2081,7 +2081,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventSelecting(/* args */){
+    protected function runEventSelecting() {
     }
     
     /**
@@ -2089,7 +2089,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventSelected(/* args */){
+    protected function runEventSelected() {
     }
     
     /**
@@ -2097,7 +2097,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventFinding(/* args */){
+    protected function runEventFinding() {
     }
     
     /**
@@ -2105,7 +2105,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventFinded(/* args */){
+    protected function runEventFinded() {
     }
     
     /**
@@ -2113,7 +2113,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventSaveing(/* args */){
+    protected function runEventSaveing() {
     }
     
     /**
@@ -2121,7 +2121,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventSaved(/* args */){
+    protected function runEventSaved() {
     }
     
     /**
@@ -2129,7 +2129,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventCreating(/* args */){
+    protected function runEventCreating() {
     }
     
     /**
@@ -2137,7 +2137,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventCreated(/* args */){
+    protected function runEventCreated() {
     }
     
     /**
@@ -2145,7 +2145,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventUpdating(/* args */){
+    protected function runEventUpdating() {
     }
     
     /**
@@ -2153,7 +2153,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventUpdated(/* args */){
+    protected function runEventUpdated() {
     }
     
     /**
@@ -2161,7 +2161,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventDeleting(/* args */){
+    protected function runEventDeleting() {
     }
     
     /**
@@ -2169,7 +2169,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventDeleted(/* args */){
+    protected function runEventDeleted() {
     }
     
     /**
@@ -2177,7 +2177,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventSoftDeleting(/* args */){
+    protected function runEventSoftDeleting() {
     }
     
     /**
@@ -2185,7 +2185,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventSoftDeleted(/* args */){
+    protected function runEventSoftDeleted() {
     }
     
     /**
@@ -2193,7 +2193,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventSoftRestoring(/* args */){
+    protected function runEventSoftRestoring() {
     }
     
     /**
@@ -2201,7 +2201,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      *
      * @return void
      */
-    protected function runEventSoftRestored(/* args */){
+    protected function runEventSoftRestored() {
     }
     
     /**

@@ -412,7 +412,7 @@ class select {
      * @param mixed $mixScope            
      * @return \queryyetsimple\mvc\imodel
      */
-    public function scope($mixScope /* args */) {
+    public function scope($mixScope) {
         if ($mixScope instanceof database_select) {
             return $mixScope;
         }

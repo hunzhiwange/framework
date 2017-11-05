@@ -57,7 +57,7 @@ class dispatch implements idispatch {
      * @param string|object $mixEvent            
      * @return void
      */
-    public function run($mixEvent /* args */ ){
+    public function run($mixEvent) {
         if (is_object ( $mixEvent )) {
             $objEvent = $mixEvent;
             $mixEvent = get_class ( $mixEvent );

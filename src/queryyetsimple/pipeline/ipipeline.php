@@ -47,7 +47,7 @@ interface ipipeline {
      * @param dynamic|array $mixStages            
      * @return $this
      */
-    public function through($mixStages /* args */ );
+    public function through($mixStages);
     
     /**
      * 添加一道工序

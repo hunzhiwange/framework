@@ -44,7 +44,7 @@ class linkedlist extends SplDoublyLinkedList {
      * @param mixed $mixArgs            
      * @return void
      */
-    public function __construct($mixArgs = null /* args */ ){
+    public function __construct($mixArgs = null) {
         $this->arrType = is_array ( $mixArgs ) ? $mixArgs : func_get_args ();
     }
     

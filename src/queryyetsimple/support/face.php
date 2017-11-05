@@ -50,7 +50,7 @@ abstract class face {
      *
      * @return mixed
      */
-    public static function face( /* args */ ) {
+    public static function face() {
         $strClass = static::name ();
         $strUnique = static::makeFaceKey ( $strClass, $arrArgs = func_get_args () );
         

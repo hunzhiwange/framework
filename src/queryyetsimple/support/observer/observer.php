@@ -49,7 +49,7 @@ abstract class observer implements SplObserver {
      *
      * @see SplObserver::update()
      */
-    public function update(SplSubject $objSubject /* args */) {
+    public function update(SplSubject $objSubject) {
         $strMethod = method_exists ( $this, 'handle' ) ? 'handle' : 'run';
         
         $arrArgs = func_get_args ();
