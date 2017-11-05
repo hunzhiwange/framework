@@ -40,6 +40,15 @@ class register extends provider {
     }
     
     /**
+     * 载入语言包
+     *
+     * @return void
+     */
+    public function bootstrap() {
+        $this->loadI18nDir ( __DIR__ . '/../i18n' );
+    }
+    
+    /**
      * 可用服务提供者
      *
      * @return array

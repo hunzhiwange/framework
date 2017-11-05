@@ -453,7 +453,7 @@ class container implements ArrayAccess, icontainer {
      * @return void
      */
     public function offsetSet($strFactoryName, $mixFactory) {
-        return $this->register ( $strFactoryName, $mixFactory );
+        return $this->bind ( $strFactoryName, $mixFactory );
     }
     
     /**

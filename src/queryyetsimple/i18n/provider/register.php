@@ -16,6 +16,7 @@ namespace queryyetsimple\i18n\provider;
 queryphp;
 
 use queryyetsimple\i18n\i18n;
+use queryyetsimple\i18n\load;
 use queryyetsimple\support\provider;
 
 /**
@@ -34,11 +35,8 @@ class register extends provider {
      * @return void
      */
     public function register() {
-        $this->singleton ( 'i18n', function ($oProject) {
-            return new i18n ( $oProject ['cookie'], array_merge ( $oProject ['option'] ['i18n\\'], [ 
-                    'app_name' => $oProject ['app_name'] 
-            ] ) );
-        } );
+        $this->i18n ();
+        $this->i18nLoad ();
     }
     
     /**
@@ -51,7 +49,32 @@ class register extends provider {
                 'i18n' => [ 
                         'queryyetsimple\i18n\i18n',
                         'queryyetsimple\i18n\ii18n' 
-                ] 
+                ],
+                'load' => 'queryyetsimple\i18n\load' 
         ];
+    }
+    
+    /**
+     * 注册 i18n 服务
+     *
+     * @return void
+     */
+    protected function i18n() {
+        $this->singleton ( 'i18n', function ($oProject) {
+            return new i18n ( $oProject ['cookie'], array_merge ( $oProject ['option'] ['i18n\\'], [ 
+                    'app_name' => $oProject ['app_name'] 
+            ] ) );
+        } );
+    }
+    
+    /**
+     * 注册 i18n.load 服务
+     *
+     * @return void
+     */
+    protected function i18nLoad() {
+        $this->singleton ( 'i18n.load', function () {
+            return new load ();
+        } );
     }
 }

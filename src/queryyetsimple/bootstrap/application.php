@@ -21,7 +21,6 @@ use queryyetsimple\http\response;
 use queryyetsimple\support\assert;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\debug\console;
-use queryyetsimple\i18n\tool as i18n_tool;
 use queryyetsimple\option\tool as option_tool;
 
 /**
@@ -188,8 +187,8 @@ class application {
         if (! $this->objProject->development () && is_file ( $sCachePath )) {
             $this->objProject ['i18n']->addI18n ( $sI18nSet, ( array ) include $sCachePath );
         } else {
-            $arrFiles = i18n_tool::findMoFile ( $this->getI18nDir ( $sI18nSet ) );
-            $this->objProject ['i18n']->addI18n ( $sI18nSet, i18n_tool::saveToPhp ( $arrFiles, $sCachePath ) );
+            $this->objProject ['i18n.load']->setI18n ( $sI18nSet )->setCachePath ( $sCachePath )->addDir ( $this->getI18nDir ( $sI18nSet ) );
+            $this->objProject ['i18n']->addI18n ( $sI18nSet, $this->objProject ['i18n.load']->loadData () );
         }
     }
     
@@ -266,20 +265,18 @@ class application {
      * @param string $sI18nSet            
      * @return array
      */
-    protected function getI18nDir($sI18nSet) {
+    protected function getI18nDir() {
         $arrDir = [ 
-                dirname ( __DIR__ ) . '/bootstrap/i18n/' . $sI18nSet,
-                $this->objProject->pathCommon . '/ui/i18n/' . $sI18nSet,
-                $this->objProject->pathApplicationDir ( 'i18n' ) . '/' . $sI18nSet 
+                dirname ( __DIR__ ) . '/bootstrap/i18n',
+                $this->objProject->pathCommon () . '/ui/i18n',
+                $this->objProject->pathApplicationDir ( 'i18n' ) 
         ];
         
         if ($this->objProject ['option'] ['i18n\extend']) {
             if (is_array ( $this->objProject ['option'] ['i18n\extend'] )) {
-                $arrDir = array_merge ( $arrDir, array_map ( function ($strDir) use($sI18nSet) {
-                    return $strDir . '/' . $sI18nSet;
-                }, $this->objProject ['option'] ['i18n\extend'] ) );
+                $arrDir = array_merge ( $arrDir, $this->objProject ['option'] ['i18n\extend'] );
             } else {
-                $arrDir [] = $this->objProject ['option'] ['i18n\extend'] . '/' . $sI18nSet;
+                $arrDir [] = $this->objProject ['option'] ['i18n\extend'];
             }
         }
         

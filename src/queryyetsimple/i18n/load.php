@@ -20,70 +20,107 @@ use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
 
 /**
- * 语言包工具类
+ * 语言包工具类导入类
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.25
  * @version 1.0
  */
-class tool {
+class load {
     
     /**
-     * 保存数据到 JS 的缓存文件
+     * 当前语言包
      *
-     * @param string|array $mixFiles
-     *            文件地址
-     * @param string $sCacheFile
-     *            缓存目录
-     * @param string $sI18nSet
-     *            语言上下文环境
-     * @author 小牛
-     * @since 2016.11.27
-     * @return array
+     * @var string
      */
-    public static function saveToJs($mixFiles, $sCacheFile, $sI18nSet) {
-        // 读取语言包数据
-        if (is_string ( $mixFiles )) {
-            $mixFiles = ( array ) $mixFiles;
-        }
-        $arrTexts = static::parseMoData ( $mixFiles );
-        
-        $sDir = dirname ( $sCacheFile );
-        if (! is_dir ( $sDir )) {
-            fso::createDirectory ( $sDir );
-        }
-        // 防止空数据无法写入
-        $arrTexts ['Query Yet Simple'] = 'Query Yet Simple';
-        if (! file_put_contents ( $sCacheFile, '/* ' . date ( 'Y-m-d H:i:s' ) . ' */;$(function(){$.fn.queryphp(\'i18nPackage\',\'' . $sI18nSet . '\',' . json_encode ( $arrTexts, 256 ) . ');});' )) {
-            throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $sCacheDir ) );
-        }
-        
-        return $arrTexts;
+    protected $strI18n = 'zh-cn';
+    
+    /**
+     * 缓存路径
+     *
+     * @var string
+     */
+    protected $strCachePath;
+    
+    /**
+     * 载入路径
+     *
+     * @var array
+     */
+    protected $arrDir = [ ];
+    
+    /**
+     * 已经载入数据
+     *
+     * @var array
+     */
+    protected $arrLoad;
+    
+    /**
+     * 构造函数
+     *
+     * @param array $arrDir            
+     * @return void
+     */
+    public function __construct(array $arrDir = []) {
+        $this->arrDir = $arrDir;
     }
     
     /**
-     * 保存数据到 PHP 的缓存文件
+     * 设置当前语言包
+     *
+     * @param string $strI18n            
+     * @return $this
+     */
+    public function setI18n($strI18n) {
+        $this->strI18n = $strI18n;
+        return $this;
+    }
+    
+    /**
+     * 设置缓存路径
+     *
+     * @param string $strCachePath            
+     * @return $this
+     */
+    public function setCachePath($strCachePath) {
+        $this->strCachePath = $strCachePath;
+        return $this;
+    }
+    
+    /**
+     * 添加目录
+     *
+     * @param array $arrDir            
+     * @return $this
+     */
+    public function addDir(array $arrDir) {
+        $this->arrDir = array_unique ( array_merge ( $this->arrDir, $arrDir ) );
+        return $this;
+    }
+    
+    /**
+     * 载入语言包数据
      *
      * @param string|array $mixFiles
      *            文件地址
-     * @param string $CacheFile
-     *            缓存目录
      * @author 小牛
      * @since 2016.11.27
      * @return array
      */
-    public static function saveToPhp($mixFiles, $sCacheFile) {
-        // 读取语言包数据
-        if (is_string ( $mixFiles )) {
-            $mixFiles = ( array ) $mixFiles;
-        }
-        $arrTexts = static::parseMoData ( $mixFiles );
+    public function loadData() {
+        if (! is_null ( $this->arrLoad ))
+            return $this->arrLoad;
         
+        $arrFiles = $this->findMoFile ( $this->parseDir ( $this->arrDir ) );
+        $arrTexts = $this->parseMoData ( $arrFiles );
+        $sCacheFile = $this->strCachePath;
         $sDir = dirname ( $sCacheFile );
         if (! is_dir ( $sDir )) {
             fso::createDirectory ( $sDir );
         }
+        
         // 防止空数据无法写入
         $arrTexts ['Query Yet Simple'] = 'Query Yet Simple';
         if (! file_put_contents ( $sCacheFile, '<?php return ' . var_export ( $arrTexts, true ) . '; ?>' )) {
@@ -91,26 +128,21 @@ class tool {
         }
         file_put_contents ( $sCacheFile, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */ ?>' . PHP_EOL . php_strip_whitespace ( $sCacheFile ) );
         
-        return $arrTexts;
+        return $this->arrLoad = $arrTexts;
     }
     
     /**
      * 分析目录中的 PHP 语言包包含的文件
      *
-     * @param string|array $mixI18nDir
+     * @param array $arrDir
      *            文件地址
      * @author 小牛
      * @since 2016.11.27
      * @return array
      */
-    public static function findMoFile($mixI18nDir) {
-        if (is_string ( $mixI18nDir )) {
-            $mixI18nDir = ( array ) $mixI18nDir;
-        }
-        
-        // 返回结果
+    public function findMoFile(array $arrDir) {
         $arrFiles = [ ];
-        foreach ( $mixI18nDir as $sDir ) {
+        foreach ( $arrDir as $sDir ) {
             if (! is_dir ( $sDir )) {
                 continue;
             }
@@ -126,17 +158,26 @@ class tool {
     /**
      * 分析 mo 文件语言包数据
      *
-     * @param string|array $mixI18nFile
+     * @param array $arrFile
      *            文件地址
      * @author 小牛
      * @since 2016.11.25
      * @return array
      */
-    protected static function parseMoData($mixI18nFile) {
-        if (is_string ( $mixI18nFile )) {
-            $mixI18nFile = ( array ) $mixI18nFile;
-        }
-        
-        return (new mo ())->readToArray ( $mixI18nFile );
+    public function parseMoData(array $arrFile) {
+        return (new mo ())->readToArray ( $arrFile );
+    }
+    
+    /**
+     * 分析目录
+     *
+     * @param array $arrDir            
+     * @return array
+     */
+    protected function parseDir(array $arrDir) {
+        $strI18n = $this->strI18n;
+        return array_map ( function ($strDir) use($strI18n) {
+            return $strDir . '/' . $strI18n;
+        }, $arrDir );
     }
 }

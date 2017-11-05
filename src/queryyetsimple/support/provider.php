@@ -159,6 +159,18 @@ abstract class provider {
     }
     
     /**
+     * 添加语言包目录
+     *
+     * @param mixed $mixDir            
+     * @return void
+     */
+    protected function loadI18nDir($mixDir) {
+        if (! is_array ( $mixDir ))
+            $mixDir = ( array ) $mixDir;
+        $this->objContainer ['i18n.load']->addDir ( $mixDir );
+    }
+    
+    /**
      * 缺省方法
      *
      * @param 方法名 $sMethod            
