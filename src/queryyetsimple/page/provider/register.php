@@ -38,17 +38,13 @@ class register extends provider {
     }
     
     /**
-     * 分页路由 url 生成
+     * bootstrap
      *
      * @return void
      */
     public function bootstrap() {
-        page::setUrlResolver ( function () {
-            return call_user_func_array ( [ 
-                    $this->objContainer ['router'],
-                    'url' 
-            ], func_get_args () );
-        } );
+        $this->urlResolver ();
+        $this->i18n ();
     }
     
     /**
@@ -58,5 +54,28 @@ class register extends provider {
      */
     public static function providers() {
         return [ ];
+    }
+    
+    /**
+     * 分页路由 url 生成
+     *
+     * @return void
+     */
+    protected function urlResolver() {
+        page::setUrlResolver ( function () {
+            return call_user_func_array ( [ 
+                    $this->objContainer ['router'],
+                    'url' 
+            ], func_get_args () );
+        } );
+    }
+    
+    /**
+     * 载入语言包
+     *
+     * @return void
+     */
+    protected function i18n() {
+        $this->loadI18nDir ( __DIR__ . '/../i18n' );
     }
 }
