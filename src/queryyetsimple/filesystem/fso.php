@@ -162,10 +162,11 @@ class fso {
      * @param string $strReturnType            
      * @param boolean $booFullpath            
      * @param array $arrFilter            
+     * @param array $arrAllowedExt            
      * @param array $arrFilterExt            
      * @return array
      */
-    public static function lists($sDir, $strReturnType = 'dir', $booFullpath = false, $arrFilter = [], $arrFilterExt = []) {
+    public static function lists($sDir, $strReturnType = 'dir', $booFullpath = false, $arrFilter = [], $arrAllowedExt = [], $arrFilterExt = []) {
         $arrFilter = array_merge ( [ 
                 '.svn',
                 '.git',
@@ -193,10 +194,12 @@ class fso {
                     $arrReturnData ['dir'] [] = $booFullpath ? $objFile->getRealPath () : $objFile->getFilename ();
                 }
                 
+                $strExt = static::getExtension ( $objFile->getFilename (), 2 );
+                
                 if ($objFile->isFile () && in_array ( $strReturnType, [ 
                         'file',
                         'both' 
-                ] ) && (! $arrFilterExt || ! in_array ( static::getExtension ( $objFile->getFilename (), 2 ), $arrFilterExt ))) {
+                ] ) && (! $arrFilterExt || ! in_array ( $strExt, $arrFilterExt )) && (! $arrAllowedExt || in_array ( $strExt, $arrAllowedExt ))) {
                     $arrReturnData ['file'] [] = $booFullpath ? $objFile->getRealPath () : $objFile->getFilename ();
                 }
             }

@@ -53,10 +53,10 @@ class application {
         $this->objProject = $objProject;
         
         // 创建应用
-        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo ().PHP_EOL, $this->objProject->version () );
+        $this->objSymfonyApplication = new SymfonyApplication ( $this->getLogo () . PHP_EOL, $this->objProject->version () );
         
         // 注册默认命令行
-        $this->registerDefaultCommands ()->
+        $this->registerLoadCommands ()->
         
         // 注册用户自定义命令
         registerUserCommands ();
@@ -72,12 +72,12 @@ class application {
     }
     
     /**
-     * 注册默认命令行
+     * 注册载入命令行
      *
      * @return $this
      */
-    protected function registerDefaultCommands() {
-        return $this->doRegisterCommands ( ( array ) require __DIR__ . '/default.php' );
+    protected function registerLoadCommands() {
+        return $this->doRegisterCommands ( $this->objProject ['console.load']->loadData () );
     }
     
     /**

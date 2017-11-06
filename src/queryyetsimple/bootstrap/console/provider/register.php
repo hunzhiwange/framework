@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\database\provider;
+namespace queryyetsimple\bootstrap\console\provider;
 
 <<<queryphp
 ##########################################################
@@ -16,14 +16,14 @@ namespace queryyetsimple\database\provider;
 queryphp;
 
 use queryyetsimple\support\provider;
-use queryyetsimple\database\database;
+use queryyetsimple\bootstrap\console\load;
 
 /**
- * database 服务提供者
+ * console 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2017.11.06
  * @version 1.0
  */
 class register extends provider {
@@ -34,18 +34,9 @@ class register extends provider {
      * @return void
      */
     public function register() {
-        $this->singleton ( 'database', function ($oProject) {
-            return new database ( $oProject );
+        $this->singleton ( 'console.load', function () {
+            return new load ();
         } );
-    }
-    
-    /**
-     * 载入命令包
-     *
-     * @return void
-     */
-    public function bootstrap() {
-        $this->loadCommandNamespace ( 'queryyetsimple\database\console' );
     }
     
     /**
@@ -55,10 +46,7 @@ class register extends provider {
      */
     public static function providers() {
         return [ 
-                'database' => [ 
-                        'queryyetsimple\database\database',
-                        'queryyetsimple\database\idatabase' 
-                ] 
+                'console.load' => 'queryyetsimple\bootstrap\console\load' 
         ];
     }
 }

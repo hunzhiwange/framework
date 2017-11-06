@@ -103,8 +103,6 @@ class load {
     /**
      * 载入语言包数据
      *
-     * @param string|array $mixFiles
-     *            文件地址
      * @author 小牛
      * @since 2016.11.27
      * @return array
@@ -148,7 +146,7 @@ class load {
             }
             
             $arrFiles = array_merge ( $arrFiles, fso::lists ( $sDir, 'file', true, [ ], [ 
-                    'po' 
+                    'mo' 
             ] ) );
         }
         

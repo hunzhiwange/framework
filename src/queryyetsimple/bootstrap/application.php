@@ -70,6 +70,7 @@ class application {
             'initialization',
             'loadBootstrap',
             'i18n',
+            'console',
             'response' 
     ];
     
@@ -193,6 +194,24 @@ class application {
     }
     
     /**
+     * 初始化命令行设置
+     *
+     * @return void
+     */
+    protected function consoleRun() {
+        if (! $this->objProject->console ())
+            return;
+        
+        $sCachePath = $this->getConsoleCachePath ();
+        
+        if (! $this->objProject->development () && is_file ( $sCachePath )) {
+            $this->objProject ['console.load']->setData ( ( array ) include $sCachePath );
+        } else {
+            $this->objProject ['console.load']->setCachePath ( $sCachePath );
+        }
+    }
+    
+    /**
      * 执行请求返回相应结果
      *
      * @return void
@@ -284,13 +303,22 @@ class application {
     }
     
     /**
-     * 返回 i18n.php 缓存路径
+     * 返回 i18n 缓存路径
      *
      * @param string $sI18nSet            
-     * @return array
+     * @return string
      */
     protected function getI18nCachePath($sI18nSet) {
         return $this->objProject->pathApplicationCache ( 'i18n' ) . '/' . $sI18nSet . '/default.php';
+    }
+    
+    /**
+     * 返回 console 缓存路径
+     *
+     * @return string
+     */
+    protected function getConsoleCachePath() {
+        return $this->objProject->pathApplicationCache ( 'console' ) . '/default.php';
     }
     
     /**
@@ -311,7 +339,7 @@ class application {
     /**
      * 返回配置缓存路径
      *
-     * @return array
+     * @return string
      */
     protected function getOptionCachePath() {
         return $this->objProject->pathApplicationCache ( 'option' ) . '/' . $this->strApp . '.php';
@@ -320,7 +348,7 @@ class application {
     /**
      * 设置路由缓存路径
      *
-     * @return array
+     * @return void
      */
     protected function setRouterCachePath() {
         $this->objProject ['router']->cachePath ( $this->objProject->pathApplicationCache ( 'router' ) . '/router.php' )->development ( $this->objProject->development () );

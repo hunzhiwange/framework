@@ -145,6 +145,13 @@ interface iproject extends icontainer {
     public function api();
     
     /**
+     * 是否为 Console
+     *
+     * @return boolean
+     */
+    public function console();
+    
+    /**
      * public url
      *
      * @return string

@@ -80,6 +80,7 @@ return [
                 'queryyetsimple\option',
                 'queryyetsimple\page',
                 'queryyetsimple\pipeline',
+                'queryyetsimple\queue',
                 'queryyetsimple\router',
                 'queryyetsimple\session',
                 'queryyetsimple\throttler',
@@ -110,7 +111,7 @@ return [
         
         /**
          * ---------------------------------------------------------------
-         * 中间件
+         * 中间件别名
          * ---------------------------------------------------------------
          *
          * HTTP 中间件提供一个方便的机制来过滤进入应用程序的 HTTP 请求
@@ -121,6 +122,16 @@ return [
                 'throttler' => 'queryyetsimple\throttler\middleware\throttler',
                 'log' => 'queryyetsimple\log\middleware\log' 
         ],
+        
+        /**
+         * ---------------------------------------------------------------
+         * 自定义命令
+         * ---------------------------------------------------------------
+         *
+         * 如果你创建了一个命令，你需要在这里注册这个命令
+         * 命令一行一条，直接书写完整的命名空间类
+         */
+        'console' => [ ],
         
         /**
          * ---------------------------------------------------------------

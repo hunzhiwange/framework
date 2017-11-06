@@ -44,13 +44,14 @@ class register extends provider {
     }
     
     /**
-     * 设置模型事件
+     * bootstrap
      *
      * @param \queryyetsimple\event\idispatch $objEvent            
      * @return void
      */
     public function bootstrap(idispatch $objEvent) {
-        model::setEventDispatch ( $objEvent );
+        $this->eventDispatch ( $objEvent );
+        $this->console ();
     }
     
     /**
@@ -65,5 +66,24 @@ class register extends provider {
                         'queryyetsimple\mvc\iview' 
                 ] 
         ];
+    }
+    
+    /**
+     * 设置模型事件
+     *
+     * @param \queryyetsimple\event\idispatch $objEvent            
+     * @return void
+     */
+    protected function eventDispatch(idispatch $objEvent) {
+        model::setEventDispatch ( $objEvent );
+    }
+    
+    /**
+     * 载入命令包
+     *
+     * @return void
+     */
+    protected function console() {
+        $this->loadCommandNamespace ( 'queryyetsimple\mvc\console' );
     }
 }

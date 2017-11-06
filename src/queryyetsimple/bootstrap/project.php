@@ -24,6 +24,7 @@ use Composer\Autoload\ClassLoader;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\provider;
 use queryyetsimple\support\container;
+use queryyetsimple\bootstrap\console\provider\register as console_provider;
 
 /**
  * 项目管理
@@ -250,7 +251,8 @@ class project extends container implements iproject {
                 'theme',
                 'option',
                 'i18n',
-                'router' 
+                'router',
+                'console' 
         ];
         if (! in_array ( $strType, $arrType )) {
             throw new Exception ( sprintf ( 'Application cache type %s not support', $strType ) );
@@ -310,6 +312,15 @@ class project extends container implements iproject {
      */
     public function api() {
         return $this->arrAppOption ['default_response'] == 'api';
+    }
+    
+    /**
+     * 是否为 Console
+     *
+     * @return boolean
+     */
+    public function console() {
+        return env ( 'app_name' ) == 'frameworkconsole';
     }
     
     /**
@@ -508,6 +519,11 @@ class project extends container implements iproject {
         $this->singleton ( application::class, function (project $objProject, $sApp, $arrOption = []) {
             return new application ( $objProject, $sApp, $arrOption );
         } );
+        
+        // 注册 console
+        if ($this->console ()) {
+            $this->makeProvider ( console_provider::class )->register ();
+        }
         
         return $this;
     }

@@ -171,6 +171,25 @@ abstract class provider {
     }
     
     /**
+     * 添加命令包命名空间
+     *
+     * @param mixed $mixNamespace            
+     * @return void
+     */
+    protected function loadCommandNamespace($mixNamespace) {
+        $arrNamespace = [ ];
+        
+        if (! is_array ( $mixNamespace ))
+            $mixNamespace = ( array ) $mixNamespace;
+        
+        foreach ( $mixNamespace as $strNamespace ) {
+            $arrNamespace [$strNamespace] = $this->objContainer ['psr4']->namespaces ( $strNamespace );
+        }
+        
+        $this->objContainer ['console.load']->addNamespace ( $arrNamespace );
+    }
+    
+    /**
      * 缺省方法
      *
      * @param 方法名 $sMethod            
