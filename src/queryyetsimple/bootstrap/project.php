@@ -384,10 +384,7 @@ class project extends container implements iproject {
      * @return $this
      */
     protected function registerPsr4(ClassLoader $objComposer) {
-        $this->instance ( 'psr4', new psr4 ( $objComposer, dirname ( __DIR__ ) . '/bootstrap/sandbox', [ 
-                'queryyetsimple',
-                'qys' 
-        ] ) );
+        $this->instance ( 'psr4', new psr4 ( $objComposer, $this->psr4SandboxCacheDir (), dirname ( __DIR__ ) . '/bootstrap/sandbox', 'qys' ) );
         $this->alias ( 'psr4', psr4::class );
         
         $this->instance ( 'composer', $objComposer );
@@ -615,6 +612,15 @@ class project extends container implements iproject {
      */
     protected function defferProviderCachePath() {
         return $this->pathRuntime () . '/provider/deffer.php';
+    }
+    
+    /**
+     * 返回 prs4 沙盒缓存路径
+     *
+     * @return string
+     */
+    protected function psr4SandboxCacheDir() {
+        return $this->pathRuntime () . '/sandbox';
     }
     
     /**

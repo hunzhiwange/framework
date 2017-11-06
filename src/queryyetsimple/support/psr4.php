@@ -17,6 +17,7 @@ queryphp;
 
 use RuntimeException;
 use Composer\Autoload\ClassLoader;
+use queryyetsimple\filesystem\fso;
 
 /**
  * psr4 自动载入规范
@@ -29,11 +30,18 @@ use Composer\Autoload\ClassLoader;
 class psr4 implements ipsr4 {
     
     /**
-     * 设置 composer
+     * Composer
      *
      * @var \Composer\Autoload\ClassLoader
      */
     protected $objComposer;
+    
+    /**
+     * 沙盒缓存路径
+     *
+     * @var string
+     */
+    protected $strSandboxCacheDir;
     
     /**
      * 沙盒路径
@@ -41,26 +49,35 @@ class psr4 implements ipsr4 {
      * @var string
      */
     protected $strSandboxPath;
-
+    
     /**
-     * namespace
+     * 短命名空间
      *
-     * @var array
+     * @var string
      */
-    protected $arrNamespace=[];
+    protected $strShortNamespace;
+    
+    /**
+     * 框架自定义命名空间
+     *
+     * @var string
+     */
+    const DEFAULT_NAMESPACE = 'queryyetsimple';
     
     /**
      * 设置 composer
      *
      * @param \Composer\Autoload\ClassLoader $objComposer            
-     * @param string $strSandboxPath    
-     * @param array $arrNamespace         
+     * @param string $strSandboxCacheDir            
+     * @param string $strSandboxPath            
+     * @param string $strShortNamespace            
      * @return void
      */
-    public function __construct(ClassLoader $objComposer, $strSandboxPath = '',$arrNamespace=[]) {
+    public function __construct(ClassLoader $objComposer, $strSandboxCacheDir, $strSandboxPath, $strShortNamespace) {
         $this->objComposer = $objComposer;
+        $this->strSandboxCacheDir = $strSandboxCacheDir;
         $this->strSandboxPath = $strSandboxPath;
-        $this->arrNamespace = $arrNamespace;
+        $this->strShortNamespace = $strShortNamespace;
     }
     
     /**
@@ -127,18 +144,55 @@ class psr4 implements ipsr4 {
      * @return void
      */
     public function autoload($strClass) {
-        if (! $this->strSandboxPath)
-            return;
-
-        if($this->arrNamespace){
-            foreach($this->arrNamespace as $strNamespace){
-                if(strpos ( $strClass, $strNamespace.'\\' ) !== false && is_file(($strSandbox = $this->strSandboxPath . '/' . str_replace ( '\\', '/', substr ( $strClass, strlen($strNamespace)+1 ) ) . '.php'))){
-                    require $strSandbox;
-                }
+        foreach ( [ 
+                static::DEFAULT_NAMESPACE,
+                $this->strShortNamespace 
+        ] as $strNamespace ) {
+            if (strpos ( $strClass, $strNamespace . '\\' ) !== false && is_file ( ($strSandbox = $this->strSandboxPath . '/' . str_replace ( '\\', '/', substr ( $strClass, strlen ( $strNamespace ) + 1 ) ) . '.php') )) {
+                require $strSandbox;
+                return;
             }
         }
         
         if (is_file ( ($strSandbox = $this->strSandboxPath . '/' . str_replace ( '\\', '/', $strClass ) . '.php') ))
             require $strSandbox;
+        
+        if (strpos ( $strClass, $this->strShortNamespace . '\\' ) !== false) {
+            $this->shortNamespaceMap ( $strClass );
+        }
+    }
+    
+    /**
+     * 框架命名空间自动关联
+     *
+     * @param string $strClass            
+     * @return void
+     */
+    public function shortNamespaceMap($strClass) {
+        $strTryMapClass = str_replace ( $this->strShortNamespace . '\\', static::DEFAULT_NAMESPACE . '\\', $strClass );
+        
+        if (class_exists ( $strTryMapClass ) || interface_exists ( $strTryMapClass )) {
+            $strSandboxCache = $this->strSandboxCacheDir . '\\' . str_replace ( '\\', '_', $strClass ) . '.php';
+            
+            if (is_file ( $strSandboxCache )) {
+                require $strSandboxCache;
+                return;
+            }
+            
+            $arrClass = explode ( '\\', $strClass );
+            $strDefinedClass = array_pop ( $arrClass );
+            $strNamespace = implode ( '\\', $arrClass );
+            
+            $strSandboxContent = sprintf ( '<?php namespace %s; %s %s extends  \%s {}', $strNamespace, class_exists ( $strTryMapClass ) ? 'class' : 'interface', $strDefinedClass, $strTryMapClass );
+            
+            if (! is_dir ( dirname ( $strSandboxCache ) )) {
+                fso::createDirectory ( dirname ( $strSandboxCache ) );
+            }
+            
+            if (! file_put_contents ( $strSandboxCache, $strSandboxContent )) {
+                throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', dirname ( $strSandboxCache ) ) );
+            }
+            require $strSandboxCache;
+        }
     }
 }
