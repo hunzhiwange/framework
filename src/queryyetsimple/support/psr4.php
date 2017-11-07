@@ -144,6 +144,9 @@ class psr4 implements ipsr4 {
      * @return void
      */
     public function autoload($strClass) {
+        if (strpos ( $strClass, '\\' ) === false)
+            return;
+        
         foreach ( [ 
                 static::DEFAULT_NAMESPACE,
                 $this->strShortNamespace 

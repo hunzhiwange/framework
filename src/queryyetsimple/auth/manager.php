@@ -75,7 +75,7 @@ class manager extends support_manager {
      * @return \queryyetsimple\auth\session
      */
     protected function makeConnectSession($arrOption = []) {
-        return new session ( $arrOption = array_merge ( $this->getOption ( 'session', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['sessions'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'] );
+        return new session ( $arrOption = array_merge ( $this->getOption ( 'session', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['session'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'] );
     }
     
     /**
@@ -85,7 +85,7 @@ class manager extends support_manager {
      * @return \queryyetsimple\auth\token
      */
     protected function makeConnectToken($arrOption = []) {
-        return new token ( $arrOption = array_merge ( $this->getOption ( 'token', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['sessions'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'], $this->objContainer ['cache'] );
+        return new token ( $arrOption = array_merge ( $this->getOption ( 'token', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['session'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'], $this->objContainer ['cache'] );
     }
 }
 

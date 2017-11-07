@@ -34,8 +34,8 @@ class register extends provider {
      * @return void
      */
     public function register() {
+        $this->sessions ();
         $this->session ();
-        $this->sessionRepository ();
         $this->middleware ();
     }
     
@@ -46,8 +46,8 @@ class register extends provider {
      */
     public static function providers() {
         return [ 
-                'session' => 'queryyetsimple\session\manager',
-                'sessions' => [ 
+                'sessions' => 'queryyetsimple\session\manager',
+                'session' => [ 
                         'queryyetsimple\session\session',
                         'queryyetsimple\session\isession' 
                 ],
@@ -56,12 +56,12 @@ class register extends provider {
     }
     
     /**
-     * 注册 session 服务
+     * 注册 sessions 服务
      *
      * @return void
      */
-    protected function session() {
-        $this->singleton ( 'session', function ($oProject) {
+    protected function sessions() {
+        $this->singleton ( 'sessions', function ($oProject) {
             return new manager ( $oProject );
         } );
     }
@@ -71,9 +71,9 @@ class register extends provider {
      *
      * @return void
      */
-    protected function sessionRepository() {
-        $this->singleton ( 'sessions', function ($oProject) {
-            return $oProject ['session']->connect ();
+    protected function session() {
+        $this->singleton ( 'session', function ($oProject) {
+            return $oProject ['sessions']->connect ();
         } );
     }
     

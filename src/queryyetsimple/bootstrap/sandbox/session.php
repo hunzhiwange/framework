@@ -33,7 +33,7 @@ class session extends face {
      * @return string
      */
     protected static function name() {
-        return 'session';
+        return 'sessions';
     }
 }
 

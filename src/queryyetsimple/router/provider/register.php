@@ -46,6 +46,7 @@ class register extends provider {
             ] as $strOption ) {
                 $arrOption [$strOption] = $oProject ['option']->get ( $strOption );
             }
+            
             return new router ( $oProject, $oProject ['pipeline'], $oProject ['request'], $arrOption );
         } );
     }
