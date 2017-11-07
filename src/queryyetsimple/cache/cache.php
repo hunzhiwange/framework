@@ -16,10 +16,10 @@ namespace queryyetsimple\cache;
 queryphp;
 
 use Exception;
-use queryyetsimple\support\icontainer;
+use queryyetsimple\support\infinity;
 
 /**
- * 缓存入口
+ * cache 仓储
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -28,147 +28,78 @@ use queryyetsimple\support\icontainer;
  */
 class cache implements icache {
     
-    /**
-     * IOC Container
-     *
-     * @var \queryyetsimple\support\icontainer
-     */
-    protected $objContainer;
+    use infinity {
+        __call as infinityCall;
+    }
     
     /**
      * 缓存连接对象
      *
-     * @var \queryyetsimple\cache\repository[]
+     * @var \queryyetsimple\cache\icache
      */
-    protected static $arrConnect;
+    protected $objConnect;
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\icontainer $objConnect            
+     * @param \queryyetsimple\cache\iconnect $objConnect            
      * @return void
      */
-    public function __construct(icontainer $objContainer) {
-        $this->objContainer = $objContainer;
+    public function __construct(iconnect $objConnect) {
+        $this->objConnect = $objConnect;
     }
     
     /**
-     * 连接缓存并返回连接对象
+     * 获取缓存
      *
-     * @param array|string $mixOption            
-     * @return \queryyetsimple\cache\repository
+     * @param string $sCacheName            
+     * @param mixed $mixDefault            
+     * @param array $arrOption            
+     * @return mixed
      */
-    public function connect($mixOption = []) {
-        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objContainer ['option'] ['cache\\connect.' . $mixOption]) )) {
-            $mixOption = [ ];
-        }
-        
-        $strDriver = ! empty ( $mixOption ['driver'] ) ? $mixOption ['driver'] : $this->getDefaultDriver ();
-        $strUnique = $this->getUnique ( $mixOption );
-        
-        if (isset ( static::$arrConnect [$strUnique] )) {
-            return static::$arrConnect [$strUnique];
-        }
-        
-        return static::$arrConnect [$strUnique] = $this->makeConnect ( $strDriver, $mixOption );
+    public function get($sCacheName, $mixDefault = false, array $arrOption = []) {
+        return $this->objConnect->get ( $sCacheName, $mixDefault, $arrOption );
     }
     
     /**
-     * 创建一个缓存仓库
+     * 设置缓存
      *
-     * @param \queryyetsimple\cache\iconnect $objCache            
-     * @return \queryyetsimple\cache\repository
-     */
-    public function repository(iconnect $objCache) {
-        return new repository ( $objCache );
-    }
-    
-    /**
-     * 返回默认驱动
-     *
-     * @return string
-     */
-    public function getDefaultDriver() {
-        return $this->objContainer ['option'] ['cache\default'];
-    }
-    
-    /**
-     * 设置默认驱动
-     *
-     * @param string $strName            
+     * @param string $sCacheName            
+     * @param mixed $mixData            
+     * @param array $arrOption            
      * @return void
      */
-    public function setDefaultDriver($strName) {
-        $this->objContainer ['option'] ['cache\default'] = $strName;
+    public function set($sCacheName, $mixData, array $arrOption = []) {
+        $this->objConnect->set ( $sCacheName, $mixData, $arrOption );
     }
     
     /**
-     * 创建连接
+     * 清除缓存
      *
-     * @param string $strConnect            
+     * @param string $sCacheName            
      * @param array $arrOption            
-     * @return \queryyetsimple\cache\repository
+     * @return void
      */
-    protected function makeConnect($strConnect, $arrOption = []) {
-        if (is_null ( $this->objContainer ['option'] ['cache\connect.' . $strConnect] ))
-            throw new Exception ( sprintf ( '%s driver %s does not exist.', 'Cache', $strConnect ) );
-        return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
+    public function delele($sCacheName, array $arrOption = []) {
+        $this->objConnect->delele ( $sCacheName, $arrOption );
     }
     
     /**
-     * 创建文件缓存
+     * 返回缓存句柄
      *
-     * @param array $arrOption            
-     * @return \queryyetsimple\cache\repository
+     * @return mixed
      */
-    protected function makeConnectFile($arrOption = []) {
-        return $this->repository ( new file ( array_merge ( $this->getOption ( 'file', $arrOption ) ) ) );
+    public function handle() {
+        return $this->objConnect->handle ();
     }
     
     /**
-     * 创建 memcache 缓存
+     * 关闭
      *
-     * @param array $arrOption            
-     * @return \queryyetsimple\cache\repository
+     * @return void
      */
-    protected function makeConnectMemcache($arrOption = []) {
-        return $this->repository ( new memcache ( array_merge ( $this->getOption ( 'memcache', $arrOption ) ) ) );
-    }
-    
-    /**
-     * 创建 redis 缓存
-     *
-     * @param array $arrOption            
-     * @return \queryyetsimple\cache\repository
-     */
-    protected function makeConnectRedis($arrOption = []) {
-        return $this->repository ( new redis ( array_merge ( $this->getOption ( 'redis', $arrOption ) ) ) );
-    }
-    
-    /**
-     * 取得唯一值
-     *
-     * @param array $arrOption            
-     * @return string
-     */
-    protected function getUnique($arrOption) {
-        return md5 ( serialize ( $arrOption ) );
-    }
-    
-    /**
-     * 读取默认缓存配置
-     *
-     * @param string $strConnect            
-     * @param array $arrExtendOption            
-     * @return array
-     */
-    protected function getOption($strConnect, array $arrExtendOption = []) {
-        $arrOption = $this->objContainer ['option'] ['cache\\'];
-        unset ( $arrOption ['default'], $arrOption ['connect'] );
-        
-        return array_merge ( array_filter ( $this->objContainer ['option'] ['cache\connect.' . $strConnect], function ($mixValue) {
-            return ! is_null ( $mixValue );
-        } ), $arrOption, $arrExtendOption );
+    public function close() {
+        $this->objConnect->close ();
     }
     
     /**
@@ -179,8 +110,12 @@ class cache implements icache {
      * @return mixed
      */
     public function __call($sMethod, $arrArgs) {
+        if (static::hasInfinity ( $sMethod )) {
+            return $this->infinityCall ( $sMethod, $arrArgs );
+        }
+        
         return call_user_func_array ( [ 
-                $this->connect (),
+                $this->objConnect,
                 $sMethod 
         ], $arrArgs );
     }

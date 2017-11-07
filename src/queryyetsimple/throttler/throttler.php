@@ -17,7 +17,7 @@ queryphp;
 
 use RuntimeException;
 use queryyetsimple\http\request;
-use queryyetsimple\cache\irepository;
+use queryyetsimple\cache\icache;
 
 /**
  * throttler 入口
@@ -39,7 +39,7 @@ class throttler implements ithrottler {
     /**
      * cache
      *
-     * @var \queryyetsimple\cache\irepository
+     * @var \queryyetsimple\cache\icache
      */
     protected $objCache;
     
@@ -53,10 +53,10 @@ class throttler implements ithrottler {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\cache\irepository $objCache            
+     * @param \queryyetsimple\cache\icache $objCache            
      * @return void
      */
-    public function __construct(irepository $objCache) {
+    public function __construct(icache $objCache) {
         $this->objCache = $objCache;
     }
     

@@ -67,7 +67,7 @@ class register extends provider {
     }
     
     /**
-     * 注册 session.repository 服务
+     * 注册 session 服务
      *
      * @return void
      */

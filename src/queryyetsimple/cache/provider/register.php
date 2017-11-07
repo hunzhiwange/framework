@@ -15,7 +15,7 @@ namespace queryyetsimple\cache\provider;
 ##########################################################
 queryphp;
 
-use queryyetsimple\cache\cache;
+use queryyetsimple\cache\manager;
 use queryyetsimple\support\provider;
 
 /**
@@ -41,9 +41,8 @@ class register extends provider {
      * @return void
      */
     public function register() {
-        $this->singleton ( 'cache', function ($oProject) {
-            return new cache ( $oProject );
-        } );
+        $this->caches ();
+        $this->cache ();
     }
     
     /**
@@ -53,10 +52,33 @@ class register extends provider {
      */
     public static function providers() {
         return [ 
+                'caches' => 'queryyetsimple\cache\manager',
                 'cache' => [ 
                         'queryyetsimple\cache\cache',
                         'queryyetsimple\cache\icache' 
                 ] 
         ];
+    }
+    
+    /**
+     * 注册 caches 服务
+     *
+     * @return void
+     */
+    protected function caches() {
+        $this->singleton ( 'caches', function ($oProject) {
+            return new manager ( $oProject );
+        } );
+    }
+    
+    /**
+     * 注册 cache 服务
+     *
+     * @return void
+     */
+    protected function cache() {
+        $this->singleton ( 'cache', function ($oProject) {
+            return $oProject ['caches']->connect ();
+        } );
     }
 }

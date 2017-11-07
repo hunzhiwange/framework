@@ -33,7 +33,7 @@ class cache extends face {
      * @return string
      */
     protected static function name() {
-        return 'cache';
+        return 'caches';
     }
 }
 

@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple\session;
+namespace queryyetsimple\cache;
 
 <<<queryphp
 ##########################################################
@@ -18,7 +18,7 @@ queryphp;
 use queryyetsimple\support\manager as support_manager;
 
 /**
- * manager 入口
+ * 缓存入口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -33,7 +33,7 @@ class manager extends support_manager {
      * @return string
      */
     protected function getOptionNamespace() {
-        return 'session';
+        return 'cache';
     }
     
     /**
@@ -44,24 +44,24 @@ class manager extends support_manager {
      * @return object
      */
     protected function createConnect($strConnect, array $arrOption = []) {
-        return new session ( $this->{'makeConnect' . ucwords ( $strConnect )} ( $arrOption ), $this->getOptionCommon () );
+        return new cache ( $this->{'makeConnect' . ucwords ( $strConnect )} ( $arrOption ) );
     }
     
     /**
-     * 创建 cookie 缓存
+     * 创建文件缓存
      *
      * @param array $arrOption            
-     * @return null
+     * @return \queryyetsimple\cache\file
      */
-    protected function makeConnectCookie($arrOption = []) {
-        return null;
+    protected function makeConnectFile($arrOption = []) {
+        return new file ( array_merge ( $this->getOption ( 'file', $arrOption ) ) );
     }
     
     /**
      * 创建 memcache 缓存
      *
      * @param array $arrOption            
-     * @return \queryyetsimple\session\memcache
+     * @return \queryyetsimple\cache\memcache
      */
     protected function makeConnectMemcache($arrOption = []) {
         return new memcache ( array_merge ( $this->getOption ( 'memcache', $arrOption ) ) );
@@ -71,7 +71,7 @@ class manager extends support_manager {
      * 创建 redis 缓存
      *
      * @param array $arrOption            
-     * @return \queryyetsimple\session\redis
+     * @return \queryyetsimple\cache\redis
      */
     protected function makeConnectRedis($arrOption = []) {
         return new redis ( array_merge ( $this->getOption ( 'redis', $arrOption ) ) );

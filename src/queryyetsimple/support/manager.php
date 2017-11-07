@@ -240,6 +240,18 @@ abstract class manager {
     }
     
     /**
+     * 清除配置 null
+     *
+     * @param array $arrOption            
+     * @return array
+     */
+    protected function optionFilterNull(array $arrOption) {
+        return array_filter ( $arrOption, function ($mixValue) {
+            return ! is_null ( $mixValue );
+        } );
+    }
+    
+    /**
      * 拦截匿名注册控制器方法
      *
      * @param 方法名 $sMethod            

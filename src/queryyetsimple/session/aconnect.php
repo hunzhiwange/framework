@@ -31,9 +31,9 @@ abstract class aconnect {
     use option;
     
     /**
-     * 缓存仓库
+     * 缓存仓储
      *
-     * @var \queryyetsimple\cache\repository
+     * @var \queryyetsimple\cache\icache
      */
     protected $objCache;
     
