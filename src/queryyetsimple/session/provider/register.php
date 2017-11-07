@@ -72,7 +72,7 @@ class register extends provider {
      * @return void
      */
     protected function sessionRepository() {
-        $this->singleton ( 'session.repository', function ($oProject) {
+        $this->singleton ( 'sessions', function ($oProject) {
             return $oProject ['session']->connect ();
         } );
     }
