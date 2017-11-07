@@ -111,32 +111,32 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     protected $arrFillWhite = [ ];
     
     /**
-     * 写入数据黑名单
+     * 数据赋值写入黑名单
      *
      * @var array
      */
-    protected $arrCreateBlack = [ ];
+    protected $arrCreateFillBlack = [ ];
     
     /**
-     * 写入数据白名单
+     * 数据赋值写入白名单
      *
      * @var array
      */
-    protected $arrCreateWhite = [ ];
+    protected $arrCreateFillWhite = [ ];
     
     /**
-     * 更新数据黑名单
+     * 数据赋值更新黑名单
      *
      * @var array
      */
-    protected $arrUpdateBlack = [ ];
+    protected $arrUpdateFillBlack = [ ];
     
     /**
-     * 更新数据白名单
+     * 数据赋值更新白名单
      *
      * @var array
      */
-    protected $arrUpdateWhite = [ ];
+    protected $arrUpdateFillWhite = [ ];
     
     /**
      * 只读属性
@@ -146,25 +146,74 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     protected $arrReadonly = [ ];
     
     /**
-     * 是否自动提交 POST 数据
+     * 写入是否自动提交 POST 数据
      *
      * @var boolean
      */
-    protected $booAutoPost = false;
+    protected $booCreateAutoPost = false;
     
     /**
-     * 是否处于强制改变属性中
+     * 更新是否自动提交 POST 数据
      *
      * @var boolean
      */
-    protected $booForceProp = false;
+    protected $booUpdateAutoPost = false;
     
     /**
-     * 是否自动填充
+     * 自动提交 POST 数据白名单
+     *
+     * @var array
+     */
+    protected $arrPostWhite = [ ];
+    
+    /**
+     * 自动提交 POST 数据黑名单
+     *
+     * @var array
+     */
+    protected $arrPostBlack = [ ];
+    
+    /**
+     * 自动提交 POST 数据写入白名单
+     *
+     * @var array
+     */
+    protected $arrCreatePostWhite = [ ];
+    
+    /**
+     * 自动提交 POST 数据写入黑名单
+     *
+     * @var array
+     */
+    protected $arrCreatePostBlack = [ ];
+    
+    /**
+     * 自动提交 POST 数据更新白名单
+     *
+     * @var array
+     */
+    protected $arrUpdatePostWhite = [ ];
+    
+    /**
+     * 自动提交 POST 数据更新黑名单
+     *
+     * @var array
+     */
+    protected $arrUpdatePostBlack = [ ];
+    
+    /**
+     * 写入是否自动填充
      *
      * @var boolean
      */
-    protected $booAutoFill = true;
+    protected $booCreateAutoFill = true;
+    
+    /**
+     * 更新是否自动填充
+     *
+     * @var boolean
+     */
+    protected $booUpdateAutoFill = true;
     
     /**
      * 自动填充
@@ -300,6 +349,13 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     protected $mixLastInsertIdOrRowCount;
     
     /**
+     * 是否处于强制改变属性中
+     *
+     * @var boolean
+     */
+    protected $booForceProp = false;
+    
+    /**
      * 构造函数
      *
      * @param array|null $arrData            
@@ -321,15 +377,9 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
         $this->initField ();
         
         if (is_array ( $arrData ) && $arrData) {
-            if ($this->arrConstructBlack) {
-                foreach ( $arrData as $strField => $mixValue ) {
-                    if (in_array ( $strField, $this->arrConstructBlack ) && ! in_array ( $strField, $this->arrConstructBlack )) {
-                        unset ( $arrData [$strField] );
-                    }
-                }
-            }
-            if ($arrData) {
-                $this->props ( $arrData );
+            foreach ( $this->whiteAndBlack ( array_keys ( $arrData ), $this->arrConstructWhite, $this->arrConstructBlack ) as $strProp ) {
+                if (array_key_exists ( $strProp, $arrData ))
+                    $this->prop ( $strProp, $arrData [$strProp] );
             }
         }
     }
@@ -1396,17 +1446,95 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     public function autoPost($booAutoPost = true) {
         if ($this->checkFlowControl ())
             return $this;
-        $this->booAutoPost = $booAutoPost;
+        $this->booCreateAutoPost = $booAutoPost;
+        $this->booUpdateAutoPost = $booAutoPost;
+        return $this;
+    }
+    
+    /**
+     * 写入是否自动提交表单数据
+     *
+     * @param boolean $booAutoPost            
+     * @return $this
+     */
+    public function createAutoPost($booAutoPost = true) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->booCreateAutoPost = $booAutoPost;
+        return $this;
+    }
+    
+    /**
+     * 更新是否自动提交表单数据
+     *
+     * @param boolean $booAutoPost            
+     * @return $this
+     */
+    public function updateAutoPost($booAutoPost = true) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->booUpdateAutoPost = $booAutoPost;
         return $this;
     }
     
     /**
      * 返回是否自动提交表单数据
      *
+     * @param string $strType            
      * @return boolean
      */
-    public function getAutoPost() {
-        return $this->booAutoPost;
+    public function getAutoPost($strType = 'create') {
+        return $strType == 'create' ? $this->booCreateAutoPost : $this->booUpdateAutoPost;
+    }
+    
+    /**
+     * 是否自动填充数据
+     *
+     * @param boolean $booAutoFill            
+     * @return $this
+     */
+    public function autoFill($booAutoFill = true) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->booCreateAutoFill = $booAutoFill;
+        $this->booUpdateAutoFill = $booAutoFill;
+        return $this;
+    }
+    
+    /**
+     * 写入是否自动填充数据
+     *
+     * @param boolean $booAutoFill            
+     * @return $this
+     */
+    public function createAutoFill($booAutoFill = true) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->booCreateAutoFill = $booAutoFill;
+        return $this;
+    }
+    
+    /**
+     * 更新是否自动填充数据
+     *
+     * @param boolean $booAutoFill            
+     * @return $this
+     */
+    public function updateAutoFill($booAutoFill = true) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->booUpdateAutoFill = $booAutoFill;
+        return $this;
+    }
+    
+    /**
+     * 返回是否自动填充数据
+     *
+     * @param string $strType            
+     * @return boolean
+     */
+    public function getAutoFill($strType = 'create') {
+        return $strType == 'create' ? $this->booCreateAutoFill : $this->booUpdateAutoFill;
     }
     
     /**
@@ -1442,6 +1570,19 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
             return $this;
         $mixProp = is_array ( $mixProp ) ? $mixProp : func_get_args ();
         $this->arrHidden = array_merge ( $this->arrHidden, $mixProp );
+        return $this;
+    }
+    
+    /**
+     * 删除 hidden
+     *
+     * @param array|string $mixProp            
+     * @return $this
+     */
+    public function removeHidden($mixProp) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->arrHidden = array_diff ( $this->arrHidden, ( array ) $mixProp );
         return $this;
     }
     
@@ -1482,6 +1623,19 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     }
     
     /**
+     * 删除 visible
+     *
+     * @param array|string $mixProp            
+     * @return $this
+     */
+    public function removeVisible($mixProp) {
+        if ($this->checkFlowControl ())
+            return $this;
+        $this->arrVisible = array_diff ( $this->arrVisible, ( array ) $mixProp );
+        return $this;
+    }
+    
+    /**
      * 设置转换追加属性
      *
      * @param array $arrAppend            
@@ -1518,25 +1672,16 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     }
     
     /**
-     * 是否自动填充数据
+     * 删除 append
      *
-     * @param boolean $booAutoFill            
+     * @param array|string $mixProp            
      * @return $this
      */
-    public function autoFill($booAutoFill = true) {
+    public function removeAppend($mixProp) {
         if ($this->checkFlowControl ())
             return $this;
-        $this->booAutoFill = $booAutoFill;
+        $this->arrAppend = array_diff ( $this->arrAppend, ( array ) $mixProp );
         return $this;
-    }
-    
-    /**
-     * 返回是否自动填充数据
-     *
-     * @return boolean
-     */
-    public function getAutoFill() {
-        return $this->booAutoFill;
     }
     
     /**
@@ -1558,13 +1703,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      * @return array
      */
     public function toArray() {
-        if (! empty ( $this->arrVisible )) {
-            $arrProp = array_intersect_key ( $this->arrProp, array_flip ( $this->arrVisible ) );
-        } elseif (! empty ( $this->arrHidden )) {
-            $arrProp = array_diff_key ( $this->arrProp, array_flip ( $this->arrHidden ) );
-        } else {
-            $arrProp = $this->arrProp;
-        }
+        $arrProp = $this->whiteAndBlack ( $this->arrProp, $this->arrVisible, $this->arrHidden );
         
         $arrProp = array_merge ( $arrProp, $this->arrAppend ? array_flip ( $this->arrAppend ) : [ ] );
         foreach ( $arrProp as $strProp => &$mixValue ) {
@@ -1579,6 +1718,24 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
         }
         
         return $arrProp;
+    }
+    
+    /**
+     * 黑白名单数据解析
+     *
+     * @param array $arrKey            
+     * @param array $arrWhite            
+     * @param array $arrBlack            
+     * @return array
+     */
+    public function whiteAndBlack(array $arrKey, array $arrWhite, array $arrBlack) {
+        if (! empty ( $arrWhite )) {
+            $arrKey = array_intersect_key ( $arrKey, array_flip ( $arrWhite ) );
+        } elseif (! empty ( $arrBlack )) {
+            $arrKey = array_diff_key ( $arrKey, array_flip ( $arrBlack ) );
+        }
+        
+        return $arrKey;
     }
     
     /**
@@ -1865,9 +2022,6 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
             $this->forceProps ( $arrData );
         }
         
-        // 表单自动填充
-        $this->parseAutoPost ();
-        
         $this->runEvent ( static::BEFORE_SAVE_EVENT );
         
         // 程序通过内置方法统一实现
@@ -1912,17 +2066,16 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      * @return mixed
      */
     protected function createReal() {
+        $this->parseAutoPost ( 'create' );
         $this->parseAutoFill ( 'create' );
+        
+        $arrPropKey = $this->whiteAndBlack ( array_keys ( $this->arrProp ), $this->arrFillWhite, $this->arrFillBlack );
+        if ($arrPropKey)
+            $arrPropKey = $this->whiteAndBlack ( $arrPropKey, $this->arrCreateFillWhite, $this->arrCreateFillBlack );
         
         $arrSaveData = [ ];
         foreach ( $this->arrProp as $sPropName => $mixValue ) {
-            if (is_null ( $mixValue )) {
-                continue;
-            }
-            if (in_array ( $sPropName, $this->arrFillBlack ) && ! in_array ( $sPropName, $this->arrFillWhite ) && ! in_array ( $sPropName, $this->arrCreateWhite )) {
-                continue;
-            }
-            if (in_array ( $sPropName, $this->arrCreateBlack ) && ! in_array ( $sPropName, $this->arrCreateWhite )) {
+            if (is_null ( $mixValue ) || ! in_array ( $sPropName, $arrPropKey )) {
                 continue;
             }
             $arrSaveData [$sPropName] = $mixValue;
@@ -1954,17 +2107,16 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      * @return int
      */
     protected function updateReal() {
+        $this->parseAutoPost ( 'update' );
         $this->parseAutoFill ( 'update' );
+        
+        $arrPropKey = $this->whiteAndBlack ( array_keys ( $this->arrProp ), $this->arrFillWhite, $this->arrFillBlack );
+        if ($arrPropKey)
+            $arrPropKey = $this->whiteAndBlack ( $arrPropKey, $this->arrUpdateFillWhite, $this->arrUpdateFillBlack );
         
         $arrSaveData = [ ];
         foreach ( $this->arrProp as $sPropName => $mixValue ) {
-            if (! in_array ( $sPropName, $this->arrChangedProp )) {
-                continue;
-            }
-            if (in_array ( $sPropName, $this->arrFillBlack ) && ! in_array ( $sPropName, $this->arrFillWhite ) && ! in_array ( $sPropName, $this->arrUpdateWhite )) {
-                continue;
-            }
-            if (in_array ( $sPropName, $this->arrUpdateBlack ) && ! in_array ( $sPropName, $this->arrUpdateWhite )) {
+            if (! in_array ( $sPropName, $this->arrChangedProp ) || ! in_array ( $sPropName, $arrPropKey )) {
                 continue;
             }
             $arrSaveData [$sPropName] = $mixValue;
@@ -2017,18 +2169,37 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     /**
      * 自动提交表单数据
      *
+     * @param string $strType            
      * @return void
      */
-    protected function parseAutoPost() {
-        if ($this->booAutoPost === false || empty ( $_POST )) {
+    protected function parseAutoPost($strType = 'create') {
+        if ($this->getAutoPost ( $strType ) === false || empty ( $_POST )) {
             return;
         }
         
-        $_POST = $this->meta ()->fieldsProps ( $_POST );
-        foreach ( $_POST as $strField => $mixValue ) {
-            if (! in_array ( $strField, $this->arrChangedProp )) {
-                $this->arrProp [$strField] = trim ( $mixValue );
-                $this->arrChangedProp [] = $strField;
+        $arrPost = $this->whiteAndBlack ( array_keys ( $_POST ), $this->arrPostWhite, $this->arrPostBlack );
+        if ($arrPost) {
+            if ($strType == 'create') {
+                $arrPost = $this->whiteAndBlack ( $arrPost, $this->arrCreatePostWhite, $this->arrCreatePostBlack );
+            } else {
+                $arrPost = $this->whiteAndBlack ( $arrPost, $this->arrUpdatePostWhite, $this->arrUpdatePostBlack );
+            }
+        }
+        
+        if ($arrPost) {
+            $arrValue = [ ];
+            foreach ( $_POST as $strKey => $mixValue ) {
+                if (in_array ( $strKey, $arrPost ))
+                    $arrTemp [$strKey] = $mixValue;
+            }
+            
+            if ($arrValue) {
+                foreach ( $this->meta ()->fieldsProps ( $arrValue ) as $strField => $mixValue ) {
+                    if (! in_array ( $strField, $this->arrChangedProp )) {
+                        $this->arrProp [$strField] = trim ( $mixValue );
+                        $this->arrChangedProp [] = $strField;
+                    }
+                }
             }
         }
     }
@@ -2040,7 +2211,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
      * @return void
      */
     protected function parseAutoFill($strType = 'create') {
-        if ($this->booAutoFill === false) {
+        if ($this->getAutoFill ( $strType ) === false) {
             return;
         }
         
