@@ -30,7 +30,7 @@ return [
          *
          * 采用什么源保存 session 数据，默认采用 PHP 惯性设置
          */
-        'default' => env ( 'session_driver', null ),
+        'default' => env ( 'session_driver', 'cookie' ),
         
         /**
          * ---------------------------------------------------------------
@@ -141,6 +141,11 @@ return [
          * 虽然有不同的驱动，但是在使用上却有着一致性
          */
         '+connect' => [ 
+                
+                '+cookie' => [
+                        // driver
+                        'driver' => 'cookie' 
+                ],
                 
                 '+memcache' => [
                         // driver

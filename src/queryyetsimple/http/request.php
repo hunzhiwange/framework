@@ -17,11 +17,11 @@ queryphp;
 
 use ArrayAccess;
 use RuntimeException;
-use queryyetsimple\session\istore;
 use queryyetsimple\support\option;
 use queryyetsimple\cookie\icookie;
 use queryyetsimple\support\iarray;
 use queryyetsimple\support\infinity;
+use queryyetsimple\session\isession;
 use queryyetsimple\support\flow_control;
 
 /**
@@ -50,7 +50,7 @@ class request implements iarray, ArrayAccess {
     /**
      * session 存储
      *
-     * @var \queryyetsimple\session\istore
+     * @var \queryyetsimple\session\isession
      */
     protected $objSession;
     
@@ -250,11 +250,11 @@ class request implements iarray, ArrayAccess {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\session\istore $objSession            
+     * @param \queryyetsimple\session\isession $objSession            
      * @param \queryyetsimple\cookie\icookie $objCookie            
      * @return void
      */
-    public function __construct(istore $objSession, icookie $objCookie, array $arrOption = []) {
+    public function __construct(isession $objSession, icookie $objCookie, array $arrOption = []) {
         $this->objSession = $objSession;
         $this->objCookie = $objCookie;
         $this->options ( $arrOption );
@@ -652,28 +652,28 @@ class request implements iarray, ArrayAccess {
     /**
      * 返回 session 存储
      *
-     * @return \queryyetsimple\session\istore|null
+     * @return \queryyetsimple\session\isession|null
      */
-    public function getSessionStore() {
+    public function getSessionRepository() {
         return $this->objSession;
     }
     
     /**
-     * 是否设置 session 存储
+     * 是否设置 session 仓储
      *
      * @return bool
      */
-    public function hasSessionStore() {
+    public function hasSessionRepository() {
         return null !== $this->objSession;
     }
     
     /**
-     * 设置 session 存储
+     * 设置 session 仓储
      *
-     * @param \queryyetsimple\session\istore $objSession            
+     * @param \queryyetsimple\session\isession $objSession            
      * @return $this
      */
-    public function setSessionStore(istore $objSession) {
+    public function setSessionRepository(isession $objSession) {
         if ($this->checkFlowControl ())
             return $this;
         $this->objSession = $objSession;
@@ -681,30 +681,30 @@ class request implements iarray, ArrayAccess {
     }
     
     /**
-     * 设置 cookie 存储
+     * 设置 cookie 仓储
      *
      * @return \queryyetsimple\cookie\icookie|null
      */
-    public function getCookieStore() {
+    public function getCookieRepository() {
         return $this->objCookie;
     }
     
     /**
-     * 是否设置 cookie 存储
+     * 是否设置 cookie 仓储
      *
      * @return bool
      */
-    public function hasCookieStore() {
+    public function hasCookieRepository() {
         return null !== $this->objCookie;
     }
     
     /**
-     * 设置 cookie 储存
+     * 设置 cookie 仓储
      *
      * @param \queryyetsimple\cookie\icookie $objCookie            
      * @return $this
      */
-    public function setCookieStore(icookie $objCookie) {
+    public function setCookieRepository(icookie $objCookie) {
         if ($this->checkFlowControl ())
             return $this;
         $this->objCookie = $objCookie;

@@ -58,7 +58,7 @@ class register extends provider {
      */
     protected function request() {
         $this->singleton ( 'request', function ($oProject) {
-            return new request ( $oProject ['session']->connect (), $oProject ['cookie'], [ 
+            return new request ( $oProject ['sessions'], $oProject ['cookie'], [ 
                     'var_method' => $oProject ['option'] ['var_method'],
                     'var_ajax' => $oProject ['option'] ['var_ajax'],
                     'var_pjax' => $oProject ['option'] ['var_pjax'] 
@@ -73,7 +73,7 @@ class register extends provider {
      */
     protected function response() {
         $this->singleton ( 'response', function ($oProject) {
-            return new response ( $oProject ['router'], $oProject ['view'], $oProject ['session'], $oProject ['cookie'], [ 
+            return new response ( $oProject ['router'], $oProject ['view'], $oProject ['sessions'], $oProject ['cookie'], [ 
                     'action_fail' => $oProject ['option'] ['view\action_fail'],
                     'action_success' => $oProject ['option'] ['view\action_success'],
                     'default_response' => $oProject ['option'] ['default_response'] 

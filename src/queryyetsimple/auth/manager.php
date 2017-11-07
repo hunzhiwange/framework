@@ -19,21 +19,6 @@ use Exception;
 use InvalidArgumentException;
 use queryyetsimple\support\manager as support_manager;
 
-if (! function_exists ( '__' )) {
-    /**
-     * 语言包
-     *
-     * @param string $sValue            
-     * @return mixed
-     */
-    function __($sValue) {
-        if (func_num_args () > 1) { // 代入参数
-            $sValue = call_user_func_array ( 'sprintf', func_get_args () );
-        }
-        return $sValue;
-    }
-}
-
 /**
  * manager 入口
  *
@@ -90,7 +75,7 @@ class manager extends support_manager {
      * @return \queryyetsimple\auth\session
      */
     protected function makeConnectSession($arrOption = []) {
-        return new session ( $arrOption = array_merge ( $this->getOption ( 'session', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['session'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'] );
+        return new session ( $arrOption = array_merge ( $this->getOption ( 'session', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['sessions'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'] );
     }
     
     /**
@@ -100,6 +85,18 @@ class manager extends support_manager {
      * @return \queryyetsimple\auth\token
      */
     protected function makeConnectToken($arrOption = []) {
-        return new token ( $arrOption = array_merge ( $this->getOption ( 'token', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['session'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'], $this->objContainer ['cache'] );
+        return new token ( $arrOption = array_merge ( $this->getOption ( 'token', $arrOption ) ), $this->objContainer [$arrOption ['model']], $this->objContainer ['sessions'], $this->objContainer ['cookie'], $this->objContainer ['encryption'], $this->objContainer ['validate'], $this->objContainer ['cache'] );
+    }
+}
+
+if (! function_exists ( '__' )) {
+    /**
+     * lang
+     *
+     * @param string $sValue            
+     * @return string
+     */
+    function __($sValue) {
+        return func_num_args () > 1 ? call_user_func_array ( 'sprintf', func_get_args () ) : $sValue;
     }
 }

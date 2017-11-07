@@ -27,7 +27,7 @@ use queryyetsimple\support\icontainer;
  * @since 2017.09.07
  * @version 1.0
  */
-abstract class manager implements imanager {
+abstract class manager {
     
     /**
      * IOC Container
@@ -215,9 +215,28 @@ abstract class manager implements imanager {
      * @return array
      */
     protected function getOption($strConnect, array $arrExtendOption = []) {
+        return array_merge ( $this->getOptionConnect ( $strConnect ), $this->getOptionCommon (), $arrExtendOption );
+    }
+    
+    /**
+     * 读取连接全局配置
+     *
+     * @return array
+     */
+    protected function getOptionCommon() {
         $arrOption = $this->objContainer ['option'] [$this->getOptionName ()];
         unset ( $arrOption ['default'], $arrOption ['connect'] );
-        return array_merge ( $this->objContainer ['option'] [$this->getOptionName ( 'connect.' . $strConnect )], $arrOption, $arrExtendOption );
+        return $arrOption;
+    }
+    
+    /**
+     * 读取连接配置
+     *
+     * @param string $strConnect            
+     * @return array
+     */
+    protected function getOptionConnect($strConnect) {
+        return $this->objContainer ['option'] [$this->getOptionName ( 'connect.' . $strConnect )];
     }
     
     /**

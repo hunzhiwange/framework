@@ -25,21 +25,6 @@ use queryyetsimple\support\helper;
 use queryyetsimple\support\icontainer;
 use queryyetsimple\support\flow_control;
 
-if (! function_exists ( '__' )) {
-    /**
-     * 语言包
-     *
-     * @param string $sValue            
-     * @return mixed
-     */
-    function __($sValue) {
-        if (func_num_args () > 1) { // 代入参数
-            $sValue = call_user_func_array ( 'sprintf', func_get_args () );
-        }
-        return $sValue;
-    }
-}
-
 /**
  * validate 数据验证器
  *
@@ -2214,5 +2199,17 @@ class validate implements ivalidate {
         }
         
         throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
+    }
+}
+
+if (! function_exists ( '__' )) {
+    /**
+     * lang
+     *
+     * @param string $sValue            
+     * @return string
+     */
+    function __($sValue) {
+        return func_num_args () > 1 ? call_user_func_array ( 'sprintf', func_get_args () ) : $sValue;
     }
 }

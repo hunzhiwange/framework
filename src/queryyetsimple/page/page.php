@@ -21,21 +21,6 @@ use JsonSerializable;
 use queryyetsimple\support\ijson;
 use queryyetsimple\support\iarray;
 
-if (! function_exists ( '__' )) {
-    /**
-     * 语言包
-     *
-     * @param string $sValue            
-     * @return mixed
-     */
-    function __($sValue) {
-        if (func_num_args () > 1) { // 代入参数
-            $sValue = call_user_func_array ( 'sprintf', func_get_args () );
-        }
-        return $sValue;
-    }
-}
-
 /**
  * 分页处理
  *
@@ -108,5 +93,17 @@ class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializa
      */
     public function toJson($intOption = JSON_UNESCAPED_UNICODE) {
         return json_encode ( $this->jsonSerialize (), $intOption );
+    }
+}
+
+if (! function_exists ( '__' )) {
+    /**
+     * lang
+     *
+     * @param string $sValue            
+     * @return string
+     */
+    function __($sValue) {
+        return func_num_args () > 1 ? call_user_func_array ( 'sprintf', func_get_args () ) : $sValue;
     }
 }

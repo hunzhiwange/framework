@@ -32,7 +32,7 @@ interface ii18n {
      *            当前的语言
      * @return string
      */
-    public function getText($sValue/*Argvs*/);
+    public function getText($sValue);
     
     /**
      * 获取语言text
@@ -41,7 +41,7 @@ interface ii18n {
      *            当前的语言
      * @return string
      */
-    public function __($sValue/*Argvs*/);
+    public function __($sValue);
     
     /**
      * 添加语言包

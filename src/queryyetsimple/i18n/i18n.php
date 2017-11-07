@@ -109,10 +109,7 @@ class i18n implements ii18n {
     public function getText($sValue) {
         // 未开启直接返回
         if (! $this->getOption ( 'on' )) {
-            if (func_num_args () > 1) { // 代入参数
-                $sValue = call_user_func_array ( 'sprintf', func_get_args () );
-            }
-            return $sValue;
+            return func_num_args () > 1 ? call_user_func_array ( 'sprintf', func_get_args () ) : $sValue;
         }
         
         // 开启读取语言包

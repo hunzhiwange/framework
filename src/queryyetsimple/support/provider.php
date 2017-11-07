@@ -177,6 +177,9 @@ abstract class provider {
      * @return void
      */
     protected function loadCommandNamespace($mixNamespace) {
+        if (! $this->objContainer->console ())
+            return;
+        
         $arrNamespace = [ ];
         
         if (! is_array ( $mixNamespace ))

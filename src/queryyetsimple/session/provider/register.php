@@ -15,7 +15,7 @@ namespace queryyetsimple\session\provider;
 ##########################################################
 queryphp;
 
-use queryyetsimple\session\session;
+use queryyetsimple\session\manager;
 use queryyetsimple\support\provider;
 
 /**
@@ -35,6 +35,7 @@ class register extends provider {
      */
     public function register() {
         $this->session ();
+        $this->sessionRepository ();
         $this->middleware ();
     }
     
@@ -45,10 +46,12 @@ class register extends provider {
      */
     public static function providers() {
         return [ 
-                'session' => [ 
+                'session' => 'queryyetsimple\session\manager',
+                'sessions' => [ 
                         'queryyetsimple\session\session',
                         'queryyetsimple\session\isession' 
-                ] 
+                ],
+                'queryyetsimple\session\middleware\session' 
         ];
     }
     
@@ -59,7 +62,18 @@ class register extends provider {
      */
     protected function session() {
         $this->singleton ( 'session', function ($oProject) {
-            return new session ( $oProject );
+            return new manager ( $oProject );
+        } );
+    }
+    
+    /**
+     * 注册 session.repository 服务
+     *
+     * @return void
+     */
+    protected function sessionRepository() {
+        $this->singleton ( 'session.repository', function ($oProject) {
+            return $oProject ['session']->connect ();
         } );
     }
     
