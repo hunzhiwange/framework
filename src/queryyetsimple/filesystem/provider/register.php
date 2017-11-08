@@ -16,7 +16,7 @@ namespace queryyetsimple\filesystem\provider;
 queryphp;
 
 use queryyetsimple\support\provider;
-use queryyetsimple\filesystem\filesystem;
+use queryyetsimple\filesystem\manager;
 
 /**
  * filesystem 服务提供者
@@ -41,9 +41,8 @@ class register extends provider {
      * @return void
      */
     public function register() {
-        $this->singleton ( 'filesystem', function ($oProject) {
-            return new filesystem ( $oProject );
-        } );
+        $this->filesystems ();
+        $this->filesystem ();
     }
     
     /**
@@ -53,10 +52,33 @@ class register extends provider {
      */
     public static function providers() {
         return [ 
+                'filesystems' => 'queryyetsimple\filesystem\manager',
                 'filesystem' => [ 
                         'queryyetsimple\filesystem\filesystem',
                         'queryyetsimple\filesystem\ifilesystem' 
                 ] 
         ];
+    }
+    
+    /**
+     * 注册 filesystems 服务
+     *
+     * @return void
+     */
+    protected function filesystems() {
+        $this->singleton ( 'filesystems', function ($oProject) {
+            return new manager ( $oProject );
+        } );
+    }
+    
+    /**
+     * 注册 filesystem 服务
+     *
+     * @return void
+     */
+    protected function filesystem() {
+        $this->singleton ( 'filesystem', function ($oProject) {
+            return $oProject ['filesystems']->connect ();
+        } );
     }
 }

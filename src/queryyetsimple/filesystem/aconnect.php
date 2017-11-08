@@ -15,7 +15,7 @@ namespace queryyetsimple\filesystem;
 ##########################################################
 queryphp;
 
-use League\Flysystem\Filesystem;
+use League\Flysystem\Filesystem as LeagueFilesystem;
 use queryyetsimple\support\option;
 
 /**
@@ -64,7 +64,7 @@ abstract class aconnect {
      * @return \League\Flysystem\Filesystem
      */
     protected function filesystem() {
-        return $this->objFilesystem = new Filesystem($this->makeConnect (), $this->getOptions());
+        return $this->objFilesystem = new LeagueFilesystem($this->makeConnect (), $this->getOptions());
     }
 
     /**

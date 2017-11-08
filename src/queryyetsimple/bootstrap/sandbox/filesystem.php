@@ -33,7 +33,7 @@ class filesystem extends face {
      * @return string
      */
     protected static function name() {
-        return 'filesystem';
+        return 'filesystems';
     }
 }
 

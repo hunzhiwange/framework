@@ -16,7 +16,7 @@ namespace queryyetsimple\filesystem;
 queryphp;
 
 /**
- * filesystem 接口
+ * ifilesystem 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -24,35 +24,4 @@ queryphp;
  * @version 1.0
  */
 interface ifilesystem {
-    
-    /**
-     * 连接 filesystem 并返回连接对象
-     *
-     * @param array|string $mixOption            
-     * @return \queryyetsimple\filesystem\store
-     */
-    public function connect($mixOption = []);
-    
-    /**
-     * 创建 filesystem store
-     *
-     * @param \queryyetsimple\filesystem\iconnect $oConnect            
-     * @return \queryyetsimple\filesystem\store
-     */
-    public function store($oConnect);
-    
-    /**
-     * 返回默认驱动
-     *
-     * @return string
-     */
-    public function getDefaultDriver();
-    
-    /**
-     * 设置默认驱动
-     *
-     * @param string $strName            
-     * @return void
-     */
-    public function setDefaultDriver($strName);
 }
