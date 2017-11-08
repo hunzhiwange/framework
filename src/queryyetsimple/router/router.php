@@ -1020,7 +1020,7 @@ class router {
                     if (isset ( $mixBind [$sAction] )) {
                         return $this->arrBinds [$sBindName] = $mixBind [$sAction];
                     } else {
-                        throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sController, $sAction ) );
+                        throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sAction, $sController ) );
                     }
                     break;
                 
@@ -1056,7 +1056,7 @@ class router {
             $sApp = $this->app ();
         
         if (! ($mixAction = $this->getBind ( $this->packageNode ( $sController, $sAction, $sApp ) )) && ! ($mixAction = $this->bind ( $this->packageNode ( $sController, $sAction, $sApp ) ))) {
-            throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sController, $sAction ) );
+            throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sAction, $sController ) );
         }
         
         switch (true) {
@@ -1067,7 +1067,7 @@ class router {
                     if ($objClass->isPublic () && ! $objClass->isStatic ()) {
                         return $this->objContainer->call ( $mixAction, $this->arrVariable );
                     } else {
-                        throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sController, $sAction ) );
+                        throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sAction, $sController ) );
                     }
                 } catch ( ReflectionException $oE ) {
                     if ($booForChild === false) {
@@ -1079,7 +1079,7 @@ class router {
                                 $mixAction [1] 
                         ] );
                     } else {
-                        throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sController, $sAction ) );
+                        throw new InvalidArgumentException ( sprintf ( 'The method %s of controller %s is not registered.', $sAction, $sController ) );
                     }
                 }
                 break;

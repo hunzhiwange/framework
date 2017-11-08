@@ -15,7 +15,7 @@ namespace queryyetsimple\mail\provider;
 ##########################################################
 queryphp;
 
-use queryyetsimple\mail\mail;
+use queryyetsimple\mail\manager;
 use queryyetsimple\support\provider;
 
 /**
@@ -34,9 +34,8 @@ class register extends provider {
      * @return void
      */
     public function register() {
-        $this->singleton ( 'mail', function ($oProject) {
-            return new mail ( $oProject );
-        } );
+        $this->mails ();
+        $this->mail ();
     }
     
     /**
@@ -46,10 +45,33 @@ class register extends provider {
      */
     public static function providers() {
         return [ 
+                'mails' => 'queryyetsimple\mail\manager',
                 'mail' => [ 
                         'queryyetsimple\mail\mail',
                         'queryyetsimple\mail\imail' 
                 ] 
         ];
+    }
+    
+    /**
+     * 注册 mails 服务
+     *
+     * @return void
+     */
+    protected function mails() {
+        $this->singleton ( 'mails', function ($oProject) {
+            return new manager ( $oProject );
+        } );
+    }
+    
+    /**
+     * 注册 mail 服务
+     *
+     * @return void
+     */
+    protected function mail() {
+        $this->singleton ( 'mail', function ($oProject) {
+            return $oProject ['mails']->connect ();
+        } );
     }
 }

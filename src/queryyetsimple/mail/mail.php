@@ -15,12 +15,18 @@ namespace queryyetsimple\mail;
 ##########################################################
 queryphp;
 
-use Exception;
+use Swift_Image;
+use Swift_Message;
+use Swift_Attachment;
+use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\support\icontainer;
+use queryyetsimple\mvc\iview;
+use queryyetsimple\support\assert;
+use queryyetsimple\support\option;
+use queryyetsimple\support\flow_control;
 
 /**
- * mail 入口
+ * mail 存储
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -29,147 +35,467 @@ use queryyetsimple\support\icontainer;
  */
 class mail implements imail {
     
-    /**
-     * IOC Container
-     *
-     * @var \queryyetsimple\support\icontainer
-     */
-    protected $objContainer;
+    use option;
+    use flow_control;
     
     /**
-     * mail 连接对象
+     * 连接驱动
      *
-     * @var \queryyetsimple\mail\store[]
+     * @var \queryyetsimple\mail\iconnect
      */
-    protected static $arrConnect;
+    protected $oConnect;
+    
+    /**
+     * 视图
+     *
+     * @var \queryyetsimple\mvc\iview
+     */
+    protected $objView;
+    
+    /**
+     * 事件
+     *
+     * @var \queryyetsimple\event\idispatch|null
+     */
+    protected $objEvent;
+    
+    /**
+     * 邮件错误消息
+     *
+     * @var array
+     */
+    protected $arrFailedRecipients = [ ];
+    
+    /**
+     * 消息
+     *
+     * @var \queryyetsimple\mail\message
+     */
+    protected $objMessage;
+    
+    /**
+     * 消息配置
+     *
+     * @var array
+     */
+    protected $arrMessageData = [ 
+            'html' => [ ],
+            'plain' => [ ] 
+    ];
+    
+    /**
+     * 配置
+     *
+     * @var array
+     */
+    protected $arrOption = [ 
+            'global_from' => [ 
+                    'address' => null,
+                    'name' => null 
+            ],
+            'global_to' => [ 
+                    'address' => null,
+                    'name' => null 
+            ] 
+    ];
     
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\icontainer $objContainer            
-     * @return void
-     */
-    public function __construct(icontainer $objContainer) {
-        $this->objContainer = $objContainer;
-    }
-    
-    /**
-     * 连接 mail 并返回连接对象
-     *
-     * @param array|string $mixOption            
-     * @return \queryyetsimple\mail\store
-     */
-    public function connect($mixOption = []) {
-        if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objContainer ['option'] ['mail\\connect.' . $mixOption]) )) {
-            $mixOption = [ ];
-        }
-        
-        $strDriver = ! empty ( $mixOption ['driver'] ) ? $mixOption ['driver'] : $this->getDefaultDriver ();
-        $strUnique = $this->getUnique ( $mixOption );
-        
-        if (isset ( static::$arrConnect [$strUnique] )) {
-            return static::$arrConnect [$strUnique];
-        }
-        return static::$arrConnect [$strUnique] = $this->store ( $this->makeConnect ( $strDriver, $mixOption ) );
-    }
-    
-    /**
-     * 创建 mail store
-     *
      * @param \queryyetsimple\mail\iconnect $oConnect            
-     * @return \queryyetsimple\mail\store
-     */
-    public function store($oConnect) {
-        $arrOption = $this->objContainer ['option'] ['mail\\'];
-        unset ( $arrOption ['default'], $arrOption ['connect'] );
-        return new store ( $arrOption, $oConnect, $this->objContainer ['view'], $this->objContainer ['event'] );
-    }
-    
-    /**
-     * 返回默认驱动
-     *
-     * @return string
-     */
-    public function getDefaultDriver() {
-        return $this->objContainer ['option'] ['mail\default'];
-    }
-    
-    /**
-     * 设置默认驱动
-     *
-     * @param string $strName            
+     * @param \queryyetsimple\mvc\iview $objView            
+     * @param \queryyetsimple\event\idispatch|null $objEvent            
+     * @param array $arrOption            
      * @return void
      */
-    public function setDefaultDriver($strName) {
-        $this->objContainer ['option'] ['mail\default'] = $strName;
+    public function __construct(iconnect $oConnect, iview $objView, $objEvent = null, array $arrOption = []) {
+        $this->oConnect = $oConnect;
+        $this->objView = $objView;
+        $this->objEvent = $objEvent;
+        $this->options ( $arrOption );
     }
     
     /**
-     * 创建连接
+     * 设置邮件发送来源
      *
-     * @param string $strConnect            
-     * @param array $arrOption            
-     * @return \queryyetsimple\mail\iconnect
+     * @param string $strAddress            
+     * @param string|null $mixName            
+     * @return $this
      */
-    protected function makeConnect($strConnect, $arrOption = []) {
-        if (is_null ( $this->objContainer ['option'] ['mail\connect.' . $strConnect] ))
-            throw new Exception ( sprintf ( '%s driver %s not exits.', 'Mail', $strConnect ) );
-        return $this->{'makeConnect' . ucfirst ( $strConnect )} ( $arrOption );
+    public function globalFrom($strAddress, $mixName = null) {
+        $this->option ( 'global_from', compact ( 'strAddress', 'mixName' ) );
+        return $this;
     }
     
     /**
-     * 创建 smtp 连接
+     * 设置邮件发送地址
      *
-     * @param array $arrOption            
-     * @return \queryyetsimple\mail\smtp
+     * @param string $strAddress            
+     * @param string|null $mixName            
+     * @return $this
      */
-    protected function makeConnectSmtp($arrOption = []) {
-        return new smtp ( array_merge ( $this->getOption ( 'smtp', $arrOption ) ) );
+    public function globalTo($strAddress, $mixName = null) {
+        $this->option ( 'global_to', compact ( 'strAddress', 'mixName' ) );
+        return $this;
     }
     
     /**
-     * 创建 sendmail 连接
+     * 视图 html 邮件内容
      *
-     * @param array $arrOption            
-     * @return \queryyetsimple\mail\sendmail
+     * @param string $sFile            
+     * @param array $arrData            
+     * @return $this
      */
-    protected function makeConnectSendmail($arrOption = []) {
-        return new sendmail ( array_merge ( $this->getOption ( 'sendmail', $arrOption ) ) );
+    public function view($sFile, array $arrData = []) {
+        if ($this->checkFlowControl ())
+            return $this;
+        
+        $this->arrMessageData ['html'] [] = [ 
+                'file' => $sFile,
+                'data' => $arrData 
+        ];
+        return $this;
     }
     
     /**
-     * 取得唯一值
+     * html 邮件内容
      *
-     * @param array $arrOption            
+     * @param string $strContent            
+     * @return $this
+     */
+    public function html($strContent) {
+        if ($this->checkFlowControl ())
+            return $this;
+        
+        assert::scalar ( $strContent );
+        
+        $this->arrMessageData ['html'] [] = $strContent;
+        return $this;
+    }
+    
+    /**
+     * 纯文本邮件内容
+     *
+     * @param string $strContent            
+     * @return $this
+     */
+    public function plain($strContent) {
+        if ($this->checkFlowControl ())
+            return $this;
+        
+        assert::scalar ( $strContent );
+        
+        $this->arrMessageData ['plain'] [] = $strContent;
+        return $this;
+    }
+    
+    /**
+     * 视图纯文本邮件内容
+     *
+     * @param string $sFile            
+     * @param array $arrData            
+     * @return $this
+     */
+    public function viewPlain($sFile, array $arrData = []) {
+        if ($this->checkFlowControl ())
+            return $this;
+        
+        $this->arrMessageData ['plain'] [] = [ 
+                'file' => $sFile,
+                'data' => $arrData 
+        ];
+        return $this;
+    }
+    
+    /**
+     * 消息回调处理
+     *
+     * @param callable|string $mixCallback            
+     * @return $this
+     */
+    public function message($mixCallback) {
+        $this->callbackMessage ( $mixCallback, $this->makeMessage () );
+        return $this;
+    }
+    
+    /**
+     * 添加附件
+     *
+     * @param string $strFile            
+     * @param callable|null $mixCallback            
+     * @return $this
+     */
+    public function attach($strFile, $mixCallback = null) {
+        $this->makeMessage ();
+        return $this->callbackAttachment ( $this->createPathAttachment ( $strFile ), $mixCallback );
+    }
+    
+    /**
+     * 添加内存内容附件
+     * file_get_content( path )
+     *
+     * @param string $strData            
+     * @param string $strName            
+     * @param callable|null $mixCallback            
+     * @return $this
+     */
+    public function attachData($strData, $strName, $mixCallback = null) {
+        $this->makeMessage ();
+        return $this->callbackAttachment ( $this->createDataAttachment ( $strData, $strName ), $mixCallback );
+    }
+    
+    /**
+     * 图片嵌入邮件
+     *
+     * @param string $file            
      * @return string
      */
-    protected function getUnique($arrOption) {
-        return md5 ( serialize ( $arrOption ) );
+    public function attachView($strFile) {
+        $this->makeMessage ();
+        return $this->objMessage->embed ( Swift_Image::fromPath ( $strFile ) );
     }
     
     /**
-     * 读取默认 mail 配置
+     * 内存内容图片嵌入邮件
      *
-     * @param string $strConnect            
-     * @param array $arrExtendOption            
+     * @param string $strData            
+     * @param string $strName            
+     * @param string|null $contentType            
+     * @return string
+     */
+    public function attachDataView($strData, $strName, $strContentType = null) {
+        $this->makeMessage ();
+        return $this->objMessage->embed ( Swift_Image::newInstance ( $strData, $strName, $strContentType ) );
+    }
+    
+    /**
+     * 格式化中文附件名字
+     *
+     * @param string $strFile            
+     * @return string
+     */
+    public function attachChinese($strFile) {
+        $strExt = pathinfo ( $strFile, PATHINFO_EXTENSION );
+        if ($strExt) {
+            $strFile = substr ( $strFile, 0, strrpos ( $strFile, '.' . $strExt ) );
+        }
+        return '=?UTF-8?B?' . base64_encode ( $strFile ) . '?=' . ($strExt ? '.' . $strExt : '');
+    }
+    
+    /**
+     * 发送邮件
+     *
+     * @param callable|string $mixCallback            
+     * @param boolean $booHtmlPriority            
+     * @return int
+     */
+    public function send($mixCallback = null, $booHtmlPriority = true) {
+        $this->makeMessage ();
+        
+        $this->parseMailContent ( $booHtmlPriority );
+        
+        if ($mixCallback) {
+            $this->message ( $mixCallback );
+        }
+        
+        if (! empty ( $this->getOption ( 'global_to' )['address'] )) {
+            $this->objMessage->addTo ( $this->getOption ( 'global_to' )['address'], $this->getOption ( 'global_to' )['name'] );
+        }
+        
+        return $this->sendMessage ( $this->objMessage );
+    }
+    
+    /**
+     * 错误消息
+     *
      * @return array
      */
-    protected function getOption($strConnect, array $arrExtendOption = []) {
-        $arrOption = $this->objContainer ['option'] ['mail\\'];
-        unset ( $arrOption ['default'], $arrOption ['from'], $arrOption ['to'], $arrOption ['connect'] );
-        return array_merge ( $this->objContainer ['option'] ['mail\connect.' . $strConnect], $arrOption, $arrExtendOption );
+    public function failedRecipients() {
+        return $this->arrFailedRecipients;
     }
     
     /**
-     * 拦截匿名注册控制器方法
+     * 试图渲染数据
+     *
+     * @param string $strFile            
+     * @param array $arrData            
+     * @return string
+     */
+    protected function getViewData($strFile, array $arrData) {
+        return $this->objView->clearAssign ()->assign ( 'objMail', $this )->assign ( $arrData )->display ( $strFile, [ 
+                'return' => true 
+        ] );
+    }
+    
+    /**
+     * 解析邮件内容
+     *
+     * @param boolean $booHtmlPriority            
+     * @return void
+     */
+    protected function parseMailContent($booHtmlPriority = true) {
+        $booFind = false;
+        
+        $arrMessageData = $this->arrMessageData;
+        
+        if (! empty ( $arrMessageData ['html'] ) && ! empty ( $arrMessageData ['plain'] )) {
+            unset ( $arrMessageData [$booHtmlPriority === true ? 'plain' : 'html'] );
+        }
+        
+        if (! empty ( $arrMessageData ['html'] )) {
+            foreach ( $arrMessageData ['html'] as $mixView ) {
+                if ($booFind === false) {
+                    $strMethod = 'setBody';
+                    $booFind = true;
+                } else {
+                    $strMethod = 'addPart';
+                }
+                
+                $this->objMessage->$strMethod ( is_array ( $mixView ) ? $this->getViewData ( $mixView ['file'], $mixView ['data'] ) : $mixView, 'text/html' );
+            }
+        }
+        
+        if (! empty ( $arrMessageData ['plain'] )) {
+            foreach ( $arrMessageData ['plain'] as $mixView ) {
+                if ($booFind === false) {
+                    $strMethod = 'setBody';
+                    $booFind = true;
+                } else {
+                    $strMethod = 'addPart';
+                }
+                
+                $this->objMessage->$strMethod ( is_array ( $mixView ) ? $this->getViewData ( $mixView ['file'], $mixView ['data'] ) : $mixView, 'text/plain' );
+            }
+        }
+    }
+    
+    /**
+     * 发送消息对象
+     *
+     * @param \Swift_Message $objMessage            
+     * @return int
+     */
+    protected function sendMessage(Swift_Message $objMessage) {
+        return $this->oConnect->send ( $objMessage, $this->arrFailedRecipients );
+    }
+    
+    /**
+     * 创建消息对象
+     *
+     * @return \Swift_Message
+     */
+    protected function makeMessage() {
+        if (! is_null ( $this->objMessage )) {
+            return $this->objMessage;
+        }
+        
+        $oMessage = new Swift_Message ();
+        
+        if (! empty ( $this->getOption ( 'global_from' )['address'] )) {
+            $oMessage->setFrom ( $this->getOption ( 'global_from' )['address'], $this->getOption ( 'global_from' )['name'] );
+        }
+        
+        return $this->objMessage = $oMessage;
+    }
+    
+    /**
+     * 邮件消息回调处理
+     *
+     * @param callable|string $mixCallback            
+     * @param \Swift_Message $objMessage            
+     * @return mixed
+     */
+    protected function callbackMessage($mixCallback, Swift_Message $objMessage) {
+        if (is_callable ( $mixCallback )) {
+            return call_user_func_array ( $mixCallback, [ 
+                    $objMessage,
+                    $this 
+            ] );
+        }
+        
+        if (is_string ( $mixCallback )) {
+            if (strpos ( $mixCallback, '@' ) !== false) {
+                $arrCallback = explode ( '@', $mixCallback );
+                if (empty ( $arrCallback [1] ))
+                    $arrCallback [1] = 'handle';
+            } else {
+                $arrCallback = [ 
+                        $mixCallback,
+                        'handle' 
+                ];
+            }
+            
+            if (($mixCallback = $this->objContainer->make ( $arrCallback [0] )) === false)
+                throw new InvalidArgumentException ( sprintf ( 'Message callback %s is not valid', $arrCallback [0] ) );
+            
+            $strMethod = method_exists ( $mixCallback, $arrCallback [1] ) ? $arrCallback [1] : ($arrCallback [1] != 'handle' && method_exists ( $mixCallback, 'handle' ) ? 'handle' : 'run');
+            
+            return call_user_func_array ( [ 
+                    $mixCallback,
+                    $strMethod 
+            ], [ 
+                    $objMessage,
+                    $this 
+            ] );
+        }
+        
+        throw new InvalidArgumentException ( 'Message callback is not valid' );
+    }
+    
+    /**
+     * 路径创建 Swift_Attachment
+     *
+     * @param string $strFile            
+     * @return \Swift_Attachment
+     */
+    protected function createPathAttachment($strFile) {
+        return Swift_Attachment::fromPath ( $strFile );
+    }
+    
+    /**
+     * 内存内容创建 Swift_Attachment
+     *
+     * @param string $strData            
+     * @param string $strName            
+     * @return \Swift_Attachment
+     */
+    protected function createDataAttachment($strData, $strName) {
+        return Swift_Attachment::newInstance ( $strData, $strName );
+    }
+    
+    /**
+     * 邮件附件消息回调处理
+     *
+     * @param \Swift_Attachment $objAttachment            
+     * @param callable|null $mixCallback            
+     * @return $this
+     */
+    protected function callbackAttachment($objAttachment, $mixCallback = null) {
+        if (is_callable ( $mixCallback )) {
+            call_user_func_array ( $mixCallback, [ 
+                    $objAttachment,
+                    $this 
+            ] );
+            $this->objMessage->attach ( $objAttachment );
+        }
+        
+        return $this;
+    }
+    
+    /**
+     * 缺省方法
      *
      * @param 方法名 $sMethod            
      * @param 参数 $arrArgs            
      * @return mixed
      */
     public function __call($sMethod, $arrArgs) {
+        if ($this->placeholderFlowControl ( $sMethod )) {
+            return $this;
+        }
+        
         return call_user_func_array ( [ 
-                $this->connect (),
+                $this->oConnect,
                 $sMethod 
         ], $arrArgs );
     }

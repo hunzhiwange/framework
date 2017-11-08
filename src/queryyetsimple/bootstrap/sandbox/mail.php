@@ -26,14 +26,14 @@ use queryyetsimple\support\face;
  * @version 1.0
  */
 class mail extends face {
-    
+
     /**
      * 返回门面名字
      *
      * @return string
      */
     protected static function name() {
-        return 'mail';
+        return 'mails';
     }
 }
 

@@ -225,8 +225,35 @@ abstract class manager {
      */
     protected function getOptionCommon() {
         $arrOption = $this->objContainer ['option'] [$this->getOptionName ()];
-        unset ( $arrOption ['default'], $arrOption ['connect'] );
+        $arrOption = $this->filterOptionCommon ( $arrOption );
         return $arrOption;
+    }
+    
+    /**
+     * 过滤全局配置
+     *
+     * @param array $arrOption            
+     * @return array
+     */
+    protected function filterOptionCommon(array $arrOption) {
+        foreach ( $this->filterOptionCommonItem () as $strItem ) {
+            if (isset ( $arrOption [$strItem] ))
+                unset ( $arrOption [$strItem] );
+        }
+        
+        return $arrOption;
+    }
+    
+    /**
+     * 过滤全局配置项
+     *
+     * @return array
+     */
+    protected function filterOptionCommonItem() {
+        return [ 
+                'default',
+                'connect' 
+        ];
     }
     
     /**

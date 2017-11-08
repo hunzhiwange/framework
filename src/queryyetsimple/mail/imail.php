@@ -26,33 +26,124 @@ queryphp;
 interface imail {
     
     /**
-     * 连接 mail 并返回连接对象
+     * 设置邮件发送来源
      *
-     * @param array|string $mixOption            
-     * @return \queryyetsimple\mail\store
+     * @param string $strAddress            
+     * @param string|null $mixName            
+     * @return $this
      */
-    public function connect($mixOption = []);
+    public function globalFrom($strAddress, $mixName = null);
     
     /**
-     * 创建 mail store
+     * 设置邮件发送地址
      *
-     * @param \queryyetsimple\mail\iconnect $oConnect            
-     * @return \queryyetsimple\mail\store
+     * @param string $strAddress            
+     * @param string|null $mixName            
+     * @return $this
      */
-    public function store($oConnect);
+    public function globalTo($strAddress, $mixName = null);
     
     /**
-     * 返回默认驱动
+     * 视图 html 邮件内容
      *
+     * @param string $sFile            
+     * @param array $arrData            
+     * @return $this
+     */
+    public function view($sFile, array $arrData = []);
+    
+    /**
+     * html 邮件内容
+     *
+     * @param string $strContent            
+     * @return $this
+     */
+    public function html($strContent);
+    
+    /**
+     * 纯文本邮件内容
+     *
+     * @param string $strContent            
+     * @return $this
+     */
+    public function plain($strContent);
+    
+    /**
+     * 视图纯文本邮件内容
+     *
+     * @param string $sFile            
+     * @param array $arrData            
+     * @return $this
+     */
+    public function viewPlain($sFile, array $arrData = []);
+    
+    /**
+     * 消息回调处理
+     *
+     * @param callable|string $mixCallback            
+     * @return $this
+     */
+    public function message($mixCallback);
+    
+    /**
+     * 添加附件
+     *
+     * @param string $strFile            
+     * @param callable|null $mixCallback            
+     * @return $this
+     */
+    public function attach($strFile, $mixCallback = null);
+    
+    /**
+     * 添加内存内容附件
+     * file_get_content( path )
+     *
+     * @param string $strData            
+     * @param string $strName            
+     * @param callable|null $mixCallback            
+     * @return $this
+     */
+    public function attachData($strData, $strName, $mixCallback = null);
+    
+    /**
+     * 图片嵌入邮件
+     *
+     * @param string $file            
      * @return string
      */
-    public function getDefaultDriver();
+    public function attachView($strFile);
     
     /**
-     * 设置默认驱动
+     * 内存内容图片嵌入邮件
      *
+     * @param string $strData            
      * @param string $strName            
-     * @return void
+     * @param string|null $contentType            
+     * @return string
      */
-    public function setDefaultDriver($strName);
+    public function attachDataView($strData, $strName, $strContentType = null);
+    
+    /**
+     * 格式化中文附件名字
+     *
+     * @param string $strFile            
+     * @return string
+     */
+    public function attachChinese($strFile);
+    
+    /**
+     * 发送邮件
+     *
+     * @param callable|string $mixCallback            
+     * @param boolean $booHtmlPriority            
+     * @return int
+     */
+    public function send($mixCallback = null, $booHtmlPriority = true);
+    
+    /**
+     * 错误消息
+     *
+     * @return array
+     */
+    public function failedRecipients();
 }
