@@ -18,7 +18,7 @@ queryphp;
 use PDO;
 use Exception;
 use PDOException;
-use queryyetsimple\log\istore;
+use queryyetsimple\log\ilog;
 use queryyetsimple\support\assert;
 use queryyetsimple\database\select;
 use queryyetsimple\support\debug\dump;
@@ -64,9 +64,9 @@ abstract class aconnect {
     /**
      * 日志存储
      *
-     * @var \queryyetsimple\log\istore
+     * @var \queryyetsimple\log\ilog
      */
-    protected $objLogStore;
+    protected $objLog;
     
     /**
      * 数据库连接参数
@@ -113,13 +113,13 @@ abstract class aconnect {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\log\istore $objLogStore            
+     * @param \queryyetsimple\log\ilog $objLog            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(istore $objLogStore, $arrOption) {
+    public function __construct(ilog $objLog, $arrOption) {
         // 日志
-        $this->objLogStore = $objLogStore;
+        $this->objLog = $objLog;
         
         // 记录连接参数
         $this->arrOption = $arrOption;
@@ -831,7 +831,7 @@ abstract class aconnect {
         // 记录 SQL 日志
         $arrLastSql = $this->getLastSql ( true );
         if ($this->arrOption ['log'])
-            $this->objLogStore->log ( istore::SQL, $arrLastSql [0], $arrLastSql [1] ?  : [ ] );
+            $this->objLog->log ( ilog::SQL, $arrLastSql [0], $arrLastSql [1] ?  : [ ] );
     }
     
     /**

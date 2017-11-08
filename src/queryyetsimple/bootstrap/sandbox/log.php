@@ -33,7 +33,7 @@ class log extends face {
      * @return string
      */
     protected static function name() {
-        return 'log';
+        return 'logs';
     }
 }
 

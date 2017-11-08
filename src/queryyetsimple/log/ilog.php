@@ -15,6 +15,8 @@ namespace queryyetsimple\log;
 ##########################################################
 queryphp;
 
+use Psr\Log\LoggerInterface;
+
 /**
  * ilog 接口
  *
@@ -23,36 +25,127 @@ queryphp;
  * @since 2017.04.11
  * @version 1.0
  */
-interface ilog {
+interface ilog extends LoggerInterface {
     
     /**
-     * 连接 log 并返回连接对象
+     * debug
      *
-     * @param array|string $mixOption            
-     * @return \queryyetsimple\log\store
+     * @var string
      */
-    public function connect($mixOption = []);
+    const DEBUG = 'debug';
     
     /**
-     * 创建 log store
+     * info
      *
-     * @param \queryyetsimple\log\iconnect $oConnect            
-     * @return \queryyetsimple\log\store
+     * @var string
      */
-    public function store(iconnect $oConnect);
+    const INFO = 'info';
     
     /**
-     * 返回默认驱动
+     * notice
      *
-     * @return string
+     * @var string
      */
-    public function getDefaultDriver();
+    const NOTICE = 'notice';
     
     /**
-     * 设置默认驱动
+     * warning
      *
-     * @param string $strName            
+     * @var string
+     */
+    const WARNING = 'warning';
+    
+    /**
+     * error
+     *
+     * @var string
+     */
+    const ERROR = 'error';
+    
+    /**
+     * critical
+     *
+     * @var string
+     */
+    const CRITICAL = 'critical';
+    
+    /**
+     * alert
+     *
+     * @var string
+     */
+    const ALERT = 'alert';
+    
+    /**
+     * emergency
+     *
+     * @var string
+     */
+    const EMERGENCY = 'emergency';
+    
+    /**
+     * sql
+     *
+     * @var string
+     */
+    const SQL = 'sql';
+    
+    /**
+     * 记录错误消息并写入
+     *
+     * @param string $strLevel
+     *            日志类型
+     * @param string $strMessage
+     *            应该被记录的错误信息
+     * @param array $arrContext            
      * @return void
      */
-    public function setDefaultDriver($strName);
+    public function write($strLevel, $strMessage, array $arrContext = []);
+    
+    /**
+     * 保存日志信息
+     *
+     * @return void
+     */
+    public function save();
+    
+    /**
+     * 注册日志过滤器
+     *
+     * @param callable $calFilter            
+     * @return void
+     */
+    public function registerFilter(callable $calFilter);
+    
+    /**
+     * 注册日志处理器
+     *
+     * @param callable $calProcessor            
+     * @return void
+     */
+    public function registerProcessor(callable $calProcessor);
+    
+    /**
+     * 清理日志记录
+     *
+     * @param string $strLevel            
+     * @return int
+     */
+    public function clear($strLevel = null);
+    
+    /**
+     * 获取日志记录
+     *
+     * @param string $strLevel            
+     * @return array
+     */
+    public function get($strLevel = null);
+    
+    /**
+     * 获取日志记录数量
+     *
+     * @param string $strLevel            
+     * @return int
+     */
+    public function count($strLevel = null);
 }

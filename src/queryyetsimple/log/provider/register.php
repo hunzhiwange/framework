@@ -15,7 +15,7 @@ namespace queryyetsimple\log\provider;
 ##########################################################
 queryphp;
 
-use queryyetsimple\log\log;
+use queryyetsimple\log\manager;
 use queryyetsimple\support\provider;
 
 /**
@@ -34,6 +34,7 @@ class register extends provider {
      * @return void
      */
     public function register() {
+        $this->logs ();
         $this->log ();
         $this->middleware ();
     }
@@ -45,11 +46,24 @@ class register extends provider {
      */
     public static function providers() {
         return [ 
+                'logs' => 'queryyetsimple\log\manager',
                 'log' => [ 
                         'queryyetsimple\log\log',
                         'queryyetsimple\log\ilog' 
-                ] 
+                ],
+                'queryyetsimple\log\middleware\log' 
         ];
+    }
+    
+    /**
+     * 注册 logs 服务
+     *
+     * @return void
+     */
+    protected function logs() {
+        $this->singleton ( 'logs', function ($oProject) {
+            return new manager ( $oProject );
+        } );
     }
     
     /**
@@ -59,7 +73,7 @@ class register extends provider {
      */
     protected function log() {
         $this->singleton ( 'log', function ($oProject) {
-            return new log ( $oProject );
+            return $oProject ['logs']->connect ();
         } );
     }
     

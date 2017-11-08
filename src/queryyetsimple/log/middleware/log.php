@@ -16,9 +16,9 @@ namespace queryyetsimple\log\middleware;
 queryphp;
 
 use Closure;
+use queryyetsimple\log\manager;
 use queryyetsimple\http\request;
 use queryyetsimple\http\response;
-use queryyetsimple\log\log as manager;
 
 /**
  * log 中间件
