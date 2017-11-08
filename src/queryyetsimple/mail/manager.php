@@ -39,12 +39,11 @@ class manager extends support_manager {
     /**
      * 创建连接对象
      *
-     * @param string $strConnect            
-     * @param array $arrOption            
+     * @param object $objConnect            
      * @return object
      */
-    protected function createConnect($strConnect, array $arrOption = []) {
-        return new mail ( $this->{'makeConnect' . ucwords ( $strConnect )} ( $arrOption ), $this->objContainer ['view'], $this->objContainer ['event'], $this->getOptionCommon () );
+    protected function createConnect($objConnect) {
+        return new mail ( $objConnect, $this->objContainer ['view'], $this->objContainer ['event'], $this->getOptionCommon () );
     }
     
     /**

@@ -27,7 +27,7 @@ use queryyetsimple\support\manager as support_manager;
  * @version 1.0
  */
 class manager extends support_manager {
-
+    
     /**
      * 取得配置命名空间
      *
@@ -36,16 +36,15 @@ class manager extends support_manager {
     protected function getOptionNamespace() {
         return 'database';
     }
-
+    
     /**
      * 创建连接对象
      *
-     * @param string $strConnect            
-     * @param array $arrOption            
+     * @param object $objConnect            
      * @return object
      */
-    protected function createConnect($strConnect, array $arrOption = []) {
-        return new database ( $this->{'makeConnect' . ucwords ( $strConnect )} ( $arrOption ) );
+    protected function createConnect($objConnect) {
+        return new database ( $objConnect );
     }
     
     /**
@@ -66,7 +65,7 @@ class manager extends support_manager {
      * @return array
      */
     protected function getOption($strConnect, array $arrExtendOption = []) {
-        return $this->parseOption ( parent::getOption($strConnect,  $arrExtendOption) );
+        return $this->parseOption ( parent::getOption ( $strConnect, $arrExtendOption ) );
     }
     
     /**
@@ -129,5 +128,4 @@ class manager extends support_manager {
         unset ( $arrTemp );
         return $arrOption;
     }
-
 }

@@ -63,12 +63,11 @@ class manager extends support_manager {
     /**
      * 创建连接对象
      *
-     * @param string $strConnect            
-     * @param array $arrOption            
+     * @param object $objConnect            
      * @return object
      */
-    protected function createConnect($strConnect, array $arrOption = []) {
-        return new filesystem ( $this->{'makeConnect' . ucwords ( $strConnect )} ( $arrOption ) );
+    protected function createConnect($objConnect) {
+        return new filesystem ( $objConnect );
     }
     
     /**
