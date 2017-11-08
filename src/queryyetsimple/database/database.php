@@ -26,7 +26,7 @@ queryphp;
 class database implements idatabase {
     
     /**
-     * 缓存连接对象
+     * 数据库连接对象
      *
      * @var \queryyetsimple\database\iconnect
      */
@@ -35,7 +35,7 @@ class database implements idatabase {
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\database\idatabase $objConnect            
+     * @param \queryyetsimple\database\iconnect $objConnect            
      * @return void
      */
     public function __construct(iconnect $objConnect) {

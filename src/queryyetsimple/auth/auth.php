@@ -26,6 +26,23 @@ queryphp;
 class auth implements iauth {
     
     /**
+     * auth 连接对象
+     *
+     * @var \queryyetsimple\database\iconnect
+     */
+    protected $objConnect;
+    
+    /**
+     * 构造函数
+     *
+     * @param \queryyetsimple\auth\iconnect $objConnect            
+     * @return void
+     */
+    public function __construct(iconnect $objConnect) {
+        $this->objConnect = $objConnect;
+    }
+    
+    /**
      * 拦截匿名注册控制器方法
      *
      * @param 方法名 $sMethod            
