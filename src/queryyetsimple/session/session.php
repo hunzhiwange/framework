@@ -38,7 +38,7 @@ class session implements isession {
      *
      * @var array
      */
-    protected $oHandler;
+    protected $objConnect;
     
     /**
      * 配置
@@ -63,12 +63,12 @@ class session implements isession {
     /**
      * 构造函数
      *
-     * @param \SessionHandlerInterface|null $oHandler            
+     * @param \SessionHandlerInterface|null $objConnect            
      * @param array $arrOption            
      * @return void
      */
-    public function __construct(SessionHandlerInterface $oHandler = null, array $arrOption = []) {
-        $this->oHandler = $oHandler;
+    public function __construct(SessionHandlerInterface $objConnect = null, array $arrOption = []) {
+        $this->objConnect = $objConnect;
         $this->options ( $arrOption );
     }
     
@@ -140,8 +140,8 @@ class session implements isession {
         }
         
         // 驱动
-        if ($this->oHandler && ! session_set_save_handler ( $this->oHandler )) {
-            throw new RuntimeException ( sprintf ( 'Session drive %s settings failed.', get_class ( $this->oHandler ) ) );
+        if ($this->objConnect && ! session_set_save_handler ( $this->objConnect )) {
+            throw new RuntimeException ( sprintf ( 'Session drive %s settings failed.', get_class ( $this->objConnect ) ) );
         }
         
         // 启动 session
@@ -808,11 +808,11 @@ class session implements isession {
      * @return mixed
      */
     public function __call($sMethod, $arrArgs) {
-        if (is_null ( $this->oHandler ))
+        if (is_null ( $this->objConnect ))
             throw new BadMethodCallException ( sprintf ( 'Method %s is not exits.', $sMethod ) );
         
         return call_user_func_array ( [ 
-                $this->oHandler,
+                $this->objConnect,
                 $sMethod 
         ], $arrArgs );
     }
