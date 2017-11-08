@@ -33,7 +33,7 @@ class auth extends face {
      * @return string
      */
     protected static function name() {
-        return 'auth';
+        return 'auths';
     }
 }
 

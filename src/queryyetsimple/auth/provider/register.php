@@ -34,8 +34,8 @@ class register extends provider {
      * @return void
      */
     public function register() {
+        $this->auths ();
         $this->auth ();
-        $this->authConnect ();
     }
     
     /**
@@ -45,13 +45,23 @@ class register extends provider {
      */
     public static function providers() {
         return [ 
+                'auths' => 'queryyetsimple\auth\manager',
                 'auth' => [ 
-                        'queryyetsimple\auth\manager' 
-                ],
-                'auth.connect' => [ 
-                        'queryyetsimple\auth\iconnect' 
+                        'queryyetsimple\auth\auth',
+                        'queryyetsimple\auth\iauth' 
                 ] 
         ];
+    }
+    
+    /**
+     * 注册 auths 服务
+     *
+     * @return void
+     */
+    protected function auths() {
+        $this->singleton ( 'auths', function ($oProject) {
+            return new manager ( $oProject );
+        } );
     }
     
     /**
@@ -61,18 +71,7 @@ class register extends provider {
      */
     protected function auth() {
         $this->singleton ( 'auth', function ($oProject) {
-            return new manager ( $oProject );
-        } );
-    }
-    
-    /**
-     * 注册 auth.connect 服务
-     *
-     * @return void
-     */
-    protected function authConnect() {
-        $this->singleton ( 'auth.connect', function ($oProject) {
-            return $oProject ['auth']->connect ();
+            return $oProject ['auths']->connect ();
         } );
     }
 }

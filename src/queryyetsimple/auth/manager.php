@@ -30,25 +30,6 @@ use queryyetsimple\support\manager as support_manager;
 class manager extends support_manager {
     
     /**
-     * 返回默认驱动
-     *
-     * @return string
-     */
-    public function getDefaultDriver() {
-        return $this->objContainer ['option'] [$this->getOptionName ( $this->objContainer ['option'] [$this->getOptionName ( 'default' )] . '_default' )];
-    }
-    
-    /**
-     * 设置默认驱动
-     *
-     * @param string $strName            
-     * @return void
-     */
-    public function setDefaultDriver($strName) {
-        $this->objContainer ['option'] [$this->getOptionName ( $this->objContainer ['option'] [$this->getOptionName ( 'default' )] . '_default' )] = $strName;
-    }
-    
-    /**
      * 取得配置命名空间
      *
      * @return string
@@ -65,7 +46,26 @@ class manager extends support_manager {
      * @return object
      */
     protected function createConnect($strConnect, array $arrOption = []) {
-        return $this->{'makeConnect' . ucwords ( $strConnect )} ( $arrOption );
+        return new auth ( $this->{'makeConnect' . ucwords ( $strConnect )} ( $arrOption ) );
+    }
+    
+    /**
+     * 返回默认驱动
+     *
+     * @return string
+     */
+    public function getDefaultDriver() {
+        return $this->objContainer ['option'] [$this->getOptionName ( $this->objContainer ['option'] [$this->getOptionName ( 'default' )] . '_default' )];
+    }
+    
+    /**
+     * 设置默认驱动
+     *
+     * @param string $strName            
+     * @return void
+     */
+    public function setDefaultDriver($strName) {
+        $this->objContainer ['option'] [$this->getOptionName ( $this->objContainer ['option'] [$this->getOptionName ( 'default' )] . '_default' )] = $strName;
     }
     
     /**

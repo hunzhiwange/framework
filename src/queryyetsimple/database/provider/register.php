@@ -16,7 +16,7 @@ namespace queryyetsimple\database\provider;
 queryphp;
 
 use queryyetsimple\support\provider;
-use queryyetsimple\database\database;
+use queryyetsimple\database\manager;
 
 /**
  * database 服务提供者
@@ -34,9 +34,8 @@ class register extends provider {
      * @return void
      */
     public function register() {
-        $this->singleton ( 'database', function ($oProject) {
-            return new database ( $oProject );
-        } );
+        $this->databases ();
+        $this->database ();
     }
     
     /**
@@ -55,10 +54,33 @@ class register extends provider {
      */
     public static function providers() {
         return [ 
+                'databases' => 'queryyetsimple\database\manager',
                 'database' => [ 
                         'queryyetsimple\database\database',
                         'queryyetsimple\database\idatabase' 
                 ] 
         ];
+    }
+    
+    /**
+     * 注册 databases 服务
+     *
+     * @return void
+     */
+    protected function databases() {
+        $this->singleton ( 'databases', function ($oProject) {
+            return new manager ( $oProject );
+        } );
+    }
+    
+    /**
+     * 注册 database 服务
+     *
+     * @return void
+     */
+    protected function database() {
+        $this->singleton ( 'database', function ($oProject) {
+            return $oProject ['databases']->connect ();
+        } );
     }
 }

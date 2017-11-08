@@ -1,7 +1,7 @@
 <?php
 // [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
 // ©2010-2017 http://queryphp.com All rights reserved.
-namespace queryyetsimple;
+namespace queryyetsimple\auth;
 
 <<<queryphp
 ##########################################################
@@ -15,37 +15,27 @@ namespace queryyetsimple;
 ##########################################################
 queryphp;
 
-use queryyetsimple\support\face;
-
 /**
- * 沙盒 database
+ * auth 仓储
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2017.11.08
  * @version 1.0
  */
-class database extends face {
+class auth implements iauth {
     
     /**
-     * 返回门面名字
+     * 拦截匿名注册控制器方法
      *
-     * @return string
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
+     * @return mixed
      */
-    protected static function name() {
-        return 'databases';
+    public function __call($sMethod, $arrArgs) {
+        return call_user_func_array ( [ 
+                $this->objConnect,
+                $sMethod 
+        ], $arrArgs );
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 database
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class database extends \queryyetsimple\database {
 }

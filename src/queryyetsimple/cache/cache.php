@@ -15,7 +15,6 @@ namespace queryyetsimple\cache;
 ##########################################################
 queryphp;
 
-use Exception;
 use queryyetsimple\support\infinity;
 
 /**
@@ -35,7 +34,7 @@ class cache implements icache {
     /**
      * 缓存连接对象
      *
-     * @var \queryyetsimple\cache\icache
+     * @var \queryyetsimple\cache\iconnect
      */
     protected $objConnect;
     

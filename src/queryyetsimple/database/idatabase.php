@@ -20,31 +20,8 @@ queryphp;
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.23
+ * @since 2017.11.08
  * @version 1.0
  */
 interface idatabase {
-    
-    /**
-     * 连接数据库并返回连接对象
-     *
-     * @param array|string $mixOption            
-     * @return \queryyetsimple\database\iconnect
-     */
-    public function connect($mixOption = []);
-    
-    /**
-     * 返回默认驱动
-     *
-     * @return string
-     */
-    public function getDefaultDriver();
-    
-    /**
-     * 设置默认驱动
-     *
-     * @param string $strName            
-     * @return void
-     */
-    public function setDefaultDriver($strName);
 }

@@ -183,9 +183,9 @@ interface irepository {
     public function unitOfWork();
     
     /**
-     * 返回数据库连接
+     * 返回数据库仓储
      *
-     * @return \queryyetsimple\database\iconnect
+     * @return \queryyetsimple\database\idatabase
      */
     public function databaseConnect();
     
