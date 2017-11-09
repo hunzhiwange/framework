@@ -213,7 +213,7 @@ class log implements ilog {
             return;
         }
         
-        $mixMessage = $this->formatMessage ( $mixMessage );
+        $mixMessage = date ( $this->getOption ( 'time_format' ) ) . $this->formatMessage ( $mixMessage );
         
         $arrData = [ 
                 $strLevel,
@@ -225,9 +225,6 @@ class log implements ilog {
         if ($this->calFilter !== null && call_user_func_array ( $this->calFilter, $arrData ) === false) {
             return;
         }
-        
-        // 日志消息
-        $mixMessage = date ( $this->getOption ( 'time_format' ) ) . $mixMessage;
         
         // 记录到内存方便后期调用
         if (! isset ( $this->arrLog [$strLevel] )) {
