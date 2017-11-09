@@ -1351,7 +1351,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     }
     
     /**
-     * 返回属性映射字段
+     * 返回字段名字
      *
      * @return array
      */
@@ -1986,12 +1986,12 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     }
     
     /**
-     * 初始化属性映射字段
+     * 初始化字段名字
      *
      * @return void
      */
     protected function initField() {
-        $this->arrField = $this->meta ()->getPropField ();
+        $this->arrField = $this->meta ()->getField ();
     }
     
     /**

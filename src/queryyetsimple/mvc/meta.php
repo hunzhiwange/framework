@@ -49,6 +49,13 @@ class meta {
     protected $arrFields = [ ];
     
     /**
+     * 数据库字段名字
+     *
+     * @var array
+     */
+    protected $arrField = [ ];
+    
+    /**
      * 主键
      *
      * @var array
@@ -61,20 +68,6 @@ class meta {
      * @var string
      */
     protected $strAutoIncrement;
-    
-    /**
-     * 属性映射字段
-     *
-     * @var array
-     */
-    protected $arrPropField = [ ];
-    
-    /**
-     * 字段映射属性
-     *
-     * @var array
-     */
-    protected $arrFieldProp = [ ];
     
     /**
      * 是否使用复合主键
@@ -150,27 +143,28 @@ class meta {
     }
     
     /**
-     * 字段转属性
+     * 字段强制过滤
      *
      * @param string $strField            
      * @param mixed $mixValue            
      * @return array
      */
     public function fieldsProp($strField, $mixValue) {
-        if (! isset ( $this->arrFieldProp [$strField] ))
-            return null;
-        $strField = $this->arrFieldProp [$strField];
+        if (! in_array ( $strField, $this->arrField ))
+            return $mixValue;
+        
+        $strType = $this->arrFields [$strField] ['type'];
         
         switch (true) {
-            case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['int'] ) :
+            case in_array ( $strType, static::$arrFieldType ['int'] ) :
                 $mixValue = intval ( $mixValue );
                 break;
             
-            case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['float'] ) :
+            case in_array ( $strType, static::$arrFieldType ['float'] ) :
                 $mixValue = floatval ( $mixValue );
                 break;
             
-            case in_array ( $this->arrFields [$strField] ['type'], static::$arrFieldType ['boolean'] ) :
+            case in_array ( $strType, static::$arrFieldType ['boolean'] ) :
                 $mixValue = $mixValue ? true : false;
                 break;
             
@@ -205,7 +199,7 @@ class meta {
      */
     public function insert(array $arrSaveData) {
         return [ 
-                $this->getAutoIncrement () => $this->objConnect->table ( $this->strTable )->insert ( $arrSaveData ) 
+                $this->getAutoIncrement () ?  : 0 => $this->objConnect->table ( $this->strTable )->insert ( $arrSaveData ) 
         ];
     }
     
@@ -257,21 +251,12 @@ class meta {
     }
     
     /**
-     * 返回属性映射字段
+     * 返回字段名字
      *
      * @return array
      */
-    public function getPropField() {
-        return $this->arrPropField;
-    }
-    
-    /**
-     * 返回字段映射属性
-     *
-     * @return array
-     */
-    public function getFieldProp() {
-        return $this->arrFieldProp;
+    public function getField() {
+        return $this->arrField;
     }
     
     /**
@@ -296,8 +281,7 @@ class meta {
      * 初始化元对象
      *
      * @param string $strTable            
-     * @return
-     *
+     * @return void
      */
     protected function initialization($strTable) {
         $this->initConnect ();
@@ -311,12 +295,7 @@ class meta {
             $this->booCompositeId = true;
         }
         
-        foreach ( $arrColumnInfo ['list'] as $strField => $arrField ) {
-            $this->arrPropField [$strField] = $strField;
-            $this->arrFieldProp [$strField] = $strField;
-        }
-        
-        unset ( $arrColumnInfo );
+        $this->arrField = array_keys ( $arrColumnInfo ['list'] );
     }
     
     /**
