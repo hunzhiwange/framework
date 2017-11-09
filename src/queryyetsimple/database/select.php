@@ -23,6 +23,7 @@ use queryyetsimple\support\helper;
 use queryyetsimple\support\collection;
 use queryyetsimple\support\flow_control;
 use queryyetsimple\page\page_with_total;
+use queryyetsimple\page\page_without_total;
 
 /**
  * 数据库查询器
@@ -926,6 +927,22 @@ class select {
      */
     public function paginate($intPerPage = 10, $mixCols = '*', array $arrOption = []) {
         $objPage = new page_with_total ( $intPerPage, $this->getPaginateCount ( $mixCols ), $arrOption );
+        return [ 
+                $objPage,
+                $this->limit ( $objPage->getFirstRecord (), $intPerPage )->getAll () 
+        ];
+    }
+    
+    /**
+     * 简单分页查询
+     *
+     * @param int $intPerPage            
+     * @param mixed $mixCols            
+     * @param array $arrOption            
+     * @return array
+     */
+    public function simplePaginate($intPerPage = 10, $mixCols = '*', array $arrOption = []) {
+        $objPage = new page_without_total ( $intPerPage, $arrOption );
         return [ 
                 $objPage,
                 $this->limit ( $objPage->getFirstRecord (), $intPerPage )->getAll () 

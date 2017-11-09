@@ -130,7 +130,6 @@ abstract class apage implements ihtml {
      */
     protected $arrOption = [ 
             'page' => 'page',
-            'per_page' => 15,
             'range' => 2,
             'render' => 'defaults',
             'render_option' => [ ],
@@ -314,11 +313,12 @@ abstract class apage implements ihtml {
     /**
      * 设置每页分页数量
      *
-     * @param string $strPageName            
+     * @param
+     *            int intPerPage
      * @return $this
      */
-    public function perPage($strPageName) {
-        return $this->option ( 'per_page' );
+    public function perPage($intPerPage) {
+        return $this->intPerPage = $intPerPage;
     }
     
     /**
@@ -328,7 +328,7 @@ abstract class apage implements ihtml {
      */
     public function getPerPage() {
         if (is_null ( $this->intPerPage )) {
-            $this->intPerPage = $this->getOption ( 'per_page' ) ?  : static::PER_PAGE;
+            $this->intPerPage = static::PER_PAGE;
         }
         return $this->intPerPage;
     }
