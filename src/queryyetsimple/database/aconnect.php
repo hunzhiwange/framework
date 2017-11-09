@@ -19,6 +19,7 @@ use PDO;
 use Exception;
 use PDOException;
 use queryyetsimple\log\ilog;
+use queryyetsimple\cache\icache;
 use queryyetsimple\support\assert;
 use queryyetsimple\database\select;
 use queryyetsimple\support\debug\dump;
@@ -62,11 +63,32 @@ abstract class aconnect {
     protected $objSelect;
     
     /**
-     * 日志存储
+     * 日志仓储
      *
      * @var \queryyetsimple\log\ilog
      */
     protected $objLog;
+    
+    /**
+     * 缓存仓储
+     *
+     * @var \queryyetsimple\cache\icache
+     */
+    protected $objCache;
+    
+    /**
+     * 开发模式
+     *
+     * @var boolean
+     */
+    protected $booDevelopment = false;
+    
+    /**
+     * 字段缓存
+     *
+     * @var array
+     */
+    protected static $arrTableColumnsCache = [ ];
     
     /**
      * 数据库连接参数
@@ -114,12 +136,20 @@ abstract class aconnect {
      * 构造函数
      *
      * @param \queryyetsimple\log\ilog $objLog            
+     * @param \queryyetsimple\cache\icache $objCache            
      * @param array $arrOption            
+     * @param boolean $booDevelopment            
      * @return void
      */
-    public function __construct(ilog $objLog, $arrOption) {
+    public function __construct(ilog $objLog, icache $objCache, $arrOption, $booDevelopment = false) {
         // 日志
         $this->objLog = $objLog;
+        
+        // 缓存
+        $this->objCache = $objCache;
+        
+        // 开发模式
+        $this->booDevelopment = $booDevelopment;
         
         // 记录连接参数
         $this->arrOption = $arrOption;
@@ -406,6 +436,29 @@ abstract class aconnect {
     public function closeDatabase() {
         $this->arrConnect = [ ];
         $this->objConnect = null;
+    }
+    
+    /**
+     * 取得数据库表字段信息缓存
+     *
+     * @param string $sTableName            
+     * @param mixed $mixMaster            
+     * @return array
+     */
+    public function getTableColumnsCache($sTableName, $mixMaster = false) {
+        $strCacheKey = sprintf ( '%s_%s', 'tablecolumns', $sTableName );
+        if (isset ( static::$arrTableColumnsCache [$strCacheKey] )) {
+            return static::$arrTableColumnsCache [$strCacheKey];
+        }
+        
+        $arrTableColumns = $this->objCache->get ( $strCacheKey );
+        if (! $this->booDevelopment && $arrTableColumns !== false) {
+            return static::$arrTableColumnsCache [$strCacheKey] = $arrTableColumns;
+        } else {
+            $arrTableColumns = $this->getTableColumns ( $sTableName, $mixMaster );
+            $this->objCache->set ( $strCacheKey, $arrTableColumns );
+            return static::$arrTableColumnsCache [$strCacheKey] = $arrTableColumns;
+        }
     }
     
     // ######################################################

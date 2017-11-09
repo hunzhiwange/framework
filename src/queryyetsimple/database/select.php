@@ -3782,7 +3782,7 @@ class select {
             return '';
         }
         if (! isset ( $arrColumns [$strTable] )) {
-            $arrColumns [$strTable] = $this->objConnect->getTableColumns ( $strTable )['list'];
+            $arrColumns [$strTable] = $this->objConnect->getTableColumnsCache ( $strTable )['list'];
         }
         
         // 支持类型

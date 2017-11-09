@@ -54,7 +54,7 @@ class manager extends support_manager {
      * @return \queryyetsimple\database\mysql
      */
     protected function makeConnectMysql($arrOption = []) {
-        return new mysql ( $this->objContainer ['log'], $this->getOption ( 'mysql', is_array ( $arrOption ) ? $arrOption : [ ] ) );
+        return new mysql ( $this->objContainer ['log'], $this->objContainer ['cache'], $this->getOption ( 'mysql', is_array ( $arrOption ) ? $arrOption : [ ] ), $this->objContainer->development () );
     }
     
     /**

@@ -16,6 +16,7 @@ namespace queryyetsimple\mvc\provider;
 queryphp;
 
 use queryyetsimple\mvc\view;
+use queryyetsimple\mvc\meta;
 use queryyetsimple\mvc\model;
 use queryyetsimple\event\idispatch;
 use queryyetsimple\support\provider;
@@ -52,6 +53,7 @@ class register extends provider {
     public function bootstrap(idispatch $objEvent) {
         $this->eventDispatch ( $objEvent );
         $this->console ();
+        $this->meta ();
     }
     
     /**
@@ -85,5 +87,14 @@ class register extends provider {
      */
     protected function console() {
         $this->loadCommandNamespace ( 'queryyetsimple\mvc\console' );
+    }
+    
+    /**
+     * Meta 设置数据库管理
+     *
+     * @return void
+     */
+    protected function meta() {
+        meta::setDatabaseManager ( $this->objContainer ['databases'] );
     }
 }

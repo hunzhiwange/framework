@@ -15,7 +15,7 @@ namespace queryyetsimple\mvc;
 ##########################################################
 queryphp;
 
-use queryyetsimple\database;
+use queryyetsimple\database\manager as database_manager;
 
 /**
  * 数据库元对象
@@ -26,6 +26,13 @@ use queryyetsimple\database;
  * @version 1.0
  */
 class meta {
+    
+    /**
+     * Database 管理
+     *
+     * @var array
+     */
+    protected static $objDatabaseManager;
     
     /**
      * meta 对象实例
@@ -140,6 +147,16 @@ class meta {
         } else {
             return static::$arrInstances [$strUnique];
         }
+    }
+    
+    /**
+     * 设置数据库管理对象
+     *
+     * @param \queryyetsimple\database\manager $objDatabaseManager            
+     * @return void
+     */
+    public static function setDatabaseManager(database_manager $objDatabaseManager) {
+        static::$objDatabaseManager = $objDatabaseManager;
     }
     
     /**
@@ -286,7 +303,7 @@ class meta {
     protected function initialization($strTable) {
         $this->initConnect ();
         
-        $arrColumnInfo = $this->objConnect->getTableColumns ( $strTable );
+        $arrColumnInfo = $this->objConnect->getTableColumnsCache ( $strTable );
         $this->arrFields = $arrColumnInfo ['list'];
         $this->arrPrimaryKey = $arrColumnInfo ['primary_key'];
         $this->strAutoIncrement = $arrColumnInfo ['auto_increment'];
@@ -304,7 +321,7 @@ class meta {
      * @return \queryyetsimple\database\idatabase
      */
     protected function initConnect() {
-        $this->objConnect = database::connect ( $this->mixConnect );
+        $this->objConnect = $objDatabaseManager->connect ( $this->mixConnect );
     }
     
     /**
