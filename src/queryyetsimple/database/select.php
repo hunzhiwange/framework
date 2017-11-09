@@ -833,6 +833,47 @@ class select {
     }
     
     /**
+     * 数据分块处理
+     *
+     * @param int $intCount            
+     * @param callable $calCallback            
+     * @return bool
+     */
+    public function chunk($intCount, callable $calCallback) {
+        $mixResult = $this->forPage ( $intPage = 1, $intCount )->getAll ();
+        
+        while ( count ( $mixResult ) > 0 ) {
+            if (call_user_func_array ( $calCallback, [ 
+                    $mixResult,
+                    $intPage 
+            ] ) === false) {
+                return false;
+            }
+            $intPage ++;
+            $mixResult = $this->forPage ( $intPage, $intCount )->getAll ();
+        }
+        
+        return true;
+    }
+    
+    /**
+     * 数据分块处理依次回调
+     *
+     * @param int $intCount            
+     * @param callable $calCallback            
+     * @return bool
+     */
+    public function each($intCount, callable $calCallback) {
+        return $this->chunk ( $intCount, function ($mixResult, $intPage) use($calCallback) {
+            foreach ( $mixResult as $intKey => $mixValue ) {
+                if ($calCallback ( $mixValue, $intKey, $intPage ) === false) {
+                    return false;
+                }
+            }
+        } );
+    }
+    
+    /**
      * 总记录数
      *
      * @param string $strField            
@@ -960,6 +1001,17 @@ class select {
         $intCount = $this->getCount ( is_array ( $mixCols ) ? reset ( $mixCols ) : $mixCols );
         $this->restorePaginateArgs ();
         return $intCount;
+    }
+    
+    /**
+     * 根据分页设置条件
+     *
+     * @param int $intPage            
+     * @param int $intPerPage            
+     * @return $this
+     */
+    public function forPage($intPage, $intPerPage = 15) {
+        return $this->limit ( ($intPage - 1) * $intPerPage, $intPerPage );
     }
     
     // ######################################################
