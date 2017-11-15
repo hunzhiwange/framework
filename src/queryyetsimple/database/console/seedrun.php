@@ -25,15 +25,17 @@ use Phinx\Console\Command\SeedRun as PhinxSeedRun;
  * @since 2017.05.09
  * @version 1.0
  */
-class seedrun extends PhinxSeedRun {
-    
+class seedrun extends PhinxSeedRun
+{
+
     /**
      * Configures the current command.
      *
      * @return void
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:seedrun' );
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:seedrun');
     }
-}  
+}

@@ -26,57 +26,62 @@ use queryyetsimple\throttler\throttler;
  * @since 2017.08.09
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 是否延迟载入
      *
      * @var boolean
      */
     public static $booDefer = true;
-    
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->throttler ();
-        $this->middleware ();
+    public function register()
+    {
+        $this->throttler();
+        $this->middleware();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
-                'throttler' => [ 
+    public static function providers()
+    {
+        return [
+                'throttler' => [
                         'queryyetsimple\throttler\throttler',
-                        'queryyetsimple\throttler\ithrottler' 
+                        'queryyetsimple\throttler\ithrottler'
                 ],
-                'queryyetsimple\throttler\middleware\throttler' 
+                'queryyetsimple\throttler\middleware\throttler'
         ];
     }
-    
+
     /**
      * 注册 throttler 服务
      *
      * @return void
      */
-    protected function throttler() {
-        $this->singleton ( 'throttler', function ($oProject) {
-            return (new throttler ( $oProject ['cache']->connect ( $oProject ['option'] ['throttler\driver'] ) ))->setRequest ( $oProject ['request'] );
-        } );
+    protected function throttler()
+    {
+        $this->singleton('throttler', function ($oProject) {
+            return (new throttler($oProject ['cache']->connect($oProject ['option'] ['throttler\driver'])))->setRequest($oProject ['request']);
+        });
     }
-    
+
     /**
      * 注册 middleware 服务
      *
      * @return void
      */
-    protected function middleware() {
-        $this->singleton ( 'queryyetsimple\throttler\middleware\throttler' );
+    protected function middleware()
+    {
+        $this->singleton('queryyetsimple\throttler\middleware\throttler');
     }
 }

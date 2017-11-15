@@ -27,54 +27,59 @@ use queryyetsimple\support\provider;
  * @since 2017.05.12
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->i18n ();
-        $this->i18nLoad ();
+    public function register()
+    {
+        $this->i18n();
+        $this->i18nLoad();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
-                'i18n' => [ 
+    public static function providers()
+    {
+        return [
+                'i18n' => [
                         'queryyetsimple\i18n\i18n',
-                        'queryyetsimple\i18n\ii18n' 
+                        'queryyetsimple\i18n\ii18n'
                 ],
-                'load' => 'queryyetsimple\i18n\load' 
+                'load' => 'queryyetsimple\i18n\load'
         ];
     }
-    
+
     /**
      * 注册 i18n 服务
      *
      * @return void
      */
-    protected function i18n() {
-        $this->singleton ( 'i18n', function ($oProject) {
-            return new i18n ( $oProject ['cookie'], array_merge ( $oProject ['option'] ['i18n\\'], [ 
-                    'app_name' => $oProject ['app_name'] 
-            ] ) );
-        } );
+    protected function i18n()
+    {
+        $this->singleton('i18n', function ($oProject) {
+            return new i18n($oProject ['cookie'], array_merge($oProject ['option'] ['i18n\\'], [
+                    'app_name' => $oProject ['app_name']
+            ]));
+        });
     }
-    
+
     /**
      * 注册 i18n.load 服务
      *
      * @return void
      */
-    protected function i18nLoad() {
-        $this->singleton ( 'i18n.load', function () {
-            return new load ();
-        } );
+    protected function i18nLoad()
+    {
+        $this->singleton('i18n.load', function () {
+            return new load();
+        });
     }
 }

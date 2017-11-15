@@ -25,15 +25,17 @@ use Phinx\Console\Command\Status as PhinxStatus;
  * @since 2017.05.09
  * @version 1.0
  */
-class status extends PhinxStatus {
-    
+class status extends PhinxStatus
+{
+
     /**
      * Configures the current command.
      *
      * @return void
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:status' );
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:status');
     }
-}  
+}

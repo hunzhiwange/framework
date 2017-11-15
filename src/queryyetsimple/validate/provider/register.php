@@ -26,39 +26,43 @@ use queryyetsimple\validate\validate;
  * @since 2017.07.26
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->singleton ( 'validate', function ($oProject) {
-            return (new validate ())->container ( $oProject );
-        } );
+    public function register()
+    {
+        $this->singleton('validate', function ($oProject) {
+            return (new validate())->container($oProject);
+        });
     }
-    
+
     /**
      * 载入语言包
      *
      * @return void
      */
-    public function bootstrap() {
-        $this->loadI18nDir ( __DIR__ . '/../i18n' );
+    public function bootstrap()
+    {
+        $this->loadI18nDir(__DIR__ . '/../i18n');
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
-                'validate' => [ 
+    public static function providers()
+    {
+        return [
+                'validate' => [
                         'queryyetsimple\validate\validate',
-                        'queryyetsimple\validate\ivalidate' 
-                ] 
+                        'queryyetsimple\validate\ivalidate'
+                ]
         ];
     }
 }

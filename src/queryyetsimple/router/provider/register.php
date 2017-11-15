@@ -26,39 +26,42 @@ use queryyetsimple\support\provider;
  * @since 2017.05.12
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->singleton ( 'router', function ($oProject) {
-            $arrOption = $oProject ['option']->get ( 'url\\' );
-            foreach ( [ 
+    public function register()
+    {
+        $this->singleton('router', function ($oProject) {
+            $arrOption = $oProject ['option']->get('url\\');
+            foreach ([
                     '~apps~',
                     'default_app',
                     'default_controller',
                     'default_action',
                     'middleware_group',
-                    'middleware_alias' 
-            ] as $strOption ) {
-                $arrOption [$strOption] = $oProject ['option']->get ( $strOption );
+                    'middleware_alias'
+            ] as $strOption) {
+                $arrOption [$strOption] = $oProject ['option']->get($strOption);
             }
-            
-            return new router ( $oProject, $oProject ['pipeline'], $oProject ['request'], $arrOption );
-        } );
+
+            return new router($oProject, $oProject ['pipeline'], $oProject ['request'], $arrOption);
+        });
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
-                'router' => 'queryyetsimple\router\router' 
+    public static function providers()
+    {
+        return [
+                'router' => 'queryyetsimple\router\router'
         ];
     }
 }

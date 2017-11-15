@@ -26,30 +26,33 @@ use queryyetsimple\support\provider;
  * @since 2017.05.12
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->singleton ( 'event', function ($oProject) {
-            return new dispatch ( $oProject );
-        } );
+    public function register()
+    {
+        $this->singleton('event', function ($oProject) {
+            return new dispatch($oProject);
+        });
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
-                'event' => [ 
+    public static function providers()
+    {
+        return [
+                'event' => [
                         'queryyetsimple\event\dispatch',
-                        'queryyetsimple\event\idispatch' 
-                ] 
+                        'queryyetsimple\event\idispatch'
+                ]
         ];
     }
 }

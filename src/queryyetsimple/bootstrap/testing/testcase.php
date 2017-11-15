@@ -25,5 +25,6 @@ use PHPUnit_Framework_TestCase;
  * @since 2017.05.08
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase {
+abstract class testcase extends PHPUnit_Framework_TestCase
+{
 }

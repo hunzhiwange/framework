@@ -26,63 +26,69 @@ use queryyetsimple\support\provider;
  * @since 2017.05.12
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->logs ();
-        $this->log ();
-        $this->middleware ();
+    public function register()
+    {
+        $this->logs();
+        $this->log();
+        $this->middleware();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
+    public static function providers()
+    {
+        return [
                 'logs' => 'queryyetsimple\log\manager',
-                'log' => [ 
+                'log' => [
                         'queryyetsimple\log\log',
-                        'queryyetsimple\log\ilog' 
+                        'queryyetsimple\log\ilog'
                 ],
-                'queryyetsimple\log\middleware\log' 
+                'queryyetsimple\log\middleware\log'
         ];
     }
-    
+
     /**
      * 注册 logs 服务
      *
      * @return void
      */
-    protected function logs() {
-        $this->singleton ( 'logs', function ($oProject) {
-            return new manager ( $oProject );
-        } );
+    protected function logs()
+    {
+        $this->singleton('logs', function ($oProject) {
+            return new manager($oProject);
+        });
     }
-    
+
     /**
      * 注册 log 服务
      *
      * @return void
      */
-    protected function log() {
-        $this->singleton ( 'log', function ($oProject) {
-            return $oProject ['logs']->connect ();
-        } );
+    protected function log()
+    {
+        $this->singleton('log', function ($oProject) {
+            return $oProject ['logs']->connect();
+        });
     }
-    
+
     /**
      * 注册 middleware 服务
      *
      * @return void
      */
-    protected function middleware() {
-        $this->singleton ( 'queryyetsimple\log\middleware\log' );
+    protected function middleware()
+    {
+        $this->singleton('queryyetsimple\log\middleware\log');
     }
 }

@@ -23,12 +23,13 @@ queryphp;
  * @since 2017.04.23
  * @version 1.0
  */
-interface iaction extends icontroller {
-    
+interface iaction extends icontroller
+{
+
     /**
      * 设置父控制器
      *
-     * @param \queryyetsimple\mvc\icontroller $objController            
+     * @param \queryyetsimple\mvc\icontroller $objController
      * @return $this
      */
     public function setController(icontroller $objController);

@@ -25,5 +25,6 @@ use RuntimeException;
  * @since 2017.09.08
  * @version 1.0
  */
-class login_failed extends RuntimeException {
+class login_failed extends RuntimeException
+{
 }

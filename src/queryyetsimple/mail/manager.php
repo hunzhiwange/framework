@@ -25,58 +25,64 @@ use queryyetsimple\support\manager as support_manager;
  * @since 2017.08.26
  * @version 1.0
  */
-class manager extends support_manager {
-    
+class manager extends support_manager
+{
+
     /**
      * 取得配置命名空间
      *
      * @return string
      */
-    protected function getOptionNamespace() {
+    protected function getOptionNamespace()
+    {
         return 'mail';
     }
-    
+
     /**
      * 创建连接对象
      *
-     * @param object $objConnect            
+     * @param object $objConnect
      * @return object
      */
-    protected function createConnect($objConnect) {
-        return new mail ( $objConnect, $this->objContainer ['view'], $this->objContainer ['event'], $this->getOptionCommon () );
+    protected function createConnect($objConnect)
+    {
+        return new mail($objConnect, $this->objContainer ['view'], $this->objContainer ['event'], $this->getOptionCommon());
     }
-    
+
     /**
      * 创建 smtp 连接
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\mail\smtp
      */
-    protected function makeConnectSmtp($arrOption = []) {
-        return new smtp ( array_merge ( $this->getOption ( 'smtp', $arrOption ) ) );
+    protected function makeConnectSmtp($arrOption = [])
+    {
+        return new smtp(array_merge($this->getOption('smtp', $arrOption)));
     }
-    
+
     /**
      * 创建 sendmail 连接
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\mail\sendmail
      */
-    protected function makeConnectSendmail($arrOption = []) {
-        return new sendmail ( array_merge ( $this->getOption ( 'sendmail', $arrOption ) ) );
+    protected function makeConnectSendmail($arrOption = [])
+    {
+        return new sendmail(array_merge($this->getOption('sendmail', $arrOption)));
     }
-    
+
     /**
      * 过滤全局配置项
      *
      * @return array
      */
-    protected function filterOptionCommonItem() {
-        return [ 
+    protected function filterOptionCommonItem()
+    {
+        return [
                 'default',
                 'connect',
                 'from',
-                'to' 
+                'to'
         ];
     }
 }

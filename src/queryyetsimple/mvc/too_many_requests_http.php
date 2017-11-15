@@ -25,19 +25,21 @@ use Exception;
  * @since 2017.08.10
  * @version 1.0
  */
-class too_many_requests_http extends http_failed {
-    
+class too_many_requests_http extends http_failed
+{
+
     /**
      * 构造函数
      *
-     * @param int $intStatusCode            
-     * @param string|null $strMessage            
-     * @param \Exception $objPrevious            
-     * @param array $arrHeader            
-     * @param integer $intCode            
+     * @param int $intStatusCode
+     * @param string|null $strMessage
+     * @param \Exception $objPrevious
+     * @param array $arrHeader
+     * @param integer $intCode
      * @return void
      */
-    public function __construct($strMessage = null, $intCode = 0, Exception $objPrevious = null) {
-        parent::__construct ( 429, $strMessage, $intCode, $objPrevious );
+    public function __construct($strMessage = null, $intCode = 0, Exception $objPrevious = null)
+    {
+        parent::__construct(429, $strMessage, $intCode, $objPrevious);
     }
 }

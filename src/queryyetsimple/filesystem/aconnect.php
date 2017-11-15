@@ -27,26 +27,27 @@ use queryyetsimple\support\option;
  * @see https://flysystem.thephpleague.com/api/
  * @version 1.0
  */
-abstract class aconnect {
-    
+abstract class aconnect
+{
     use option;
-    
+
     /**
      * Filesystem
      *
      * @var \League\Flysystem\Filesystem
      */
     protected $objFilesystem;
-    
+
     /**
      * 构造函数
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(array $arrOption = []) {
-        $this->options ( $arrOption );
-        $this->filesystem ();
+    public function __construct(array $arrOption = [])
+    {
+        $this->options($arrOption);
+        $this->filesystem();
     }
 
     /**
@@ -54,30 +55,33 @@ abstract class aconnect {
      *
      * @return \League\Flysystem\Filesystem
      */
-    public function getFilesystem() {
+    public function getFilesystem()
+    {
         return $this->objFilesystem;
     }
-    
+
     /**
      * 生成 Filesystem
      *
      * @return \League\Flysystem\Filesystem
      */
-    protected function filesystem() {
-        return $this->objFilesystem = new LeagueFilesystem($this->makeConnect (), $this->getOptions());
+    protected function filesystem()
+    {
+        return $this->objFilesystem = new LeagueFilesystem($this->makeConnect(), $this->getOptions());
     }
 
     /**
      * 缺省方法
      *
-     * @param 方法名 $sMethod            
-     * @param 参数 $arrArgs            
+     * @param 方法名 $sMethod
+     * @param 参数 $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs) {
-        return call_user_func_array ( [ 
+    public function __call($sMethod, $arrArgs)
+    {
+        return call_user_func_array([
                 $this->objFilesystem,
-                $sMethod 
-        ], $arrArgs );
+                $sMethod
+        ], $arrArgs);
     }
 }

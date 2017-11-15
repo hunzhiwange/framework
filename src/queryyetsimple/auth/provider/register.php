@@ -26,52 +26,57 @@ use queryyetsimple\support\provider;
  * @since 2017.09.08
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->auths ();
-        $this->auth ();
+    public function register()
+    {
+        $this->auths();
+        $this->auth();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
+    public static function providers()
+    {
+        return [
                 'auths' => 'queryyetsimple\auth\manager',
-                'auth' => [ 
+                'auth' => [
                         'queryyetsimple\auth\auth',
-                        'queryyetsimple\auth\iauth' 
-                ] 
+                        'queryyetsimple\auth\iauth'
+                ]
         ];
     }
-    
+
     /**
      * 注册 auths 服务
      *
      * @return void
      */
-    protected function auths() {
-        $this->singleton ( 'auths', function ($oProject) {
-            return new manager ( $oProject );
-        } );
+    protected function auths()
+    {
+        $this->singleton('auths', function ($oProject) {
+            return new manager($oProject);
+        });
     }
-    
+
     /**
      * 注册 auth 服务
      *
      * @return void
      */
-    protected function auth() {
-        $this->singleton ( 'auth', function ($oProject) {
-            return $oProject ['auths']->connect ();
-        } );
+    protected function auth()
+    {
+        $this->singleton('auth', function ($oProject) {
+            return $oProject ['auths']->connect();
+        });
     }
 }

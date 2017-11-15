@@ -23,17 +23,19 @@ queryphp;
  * @since 2017.07.14
  * @version 1.0
  */
-class bootstrap_simple_justify extends bootstrap_simple {
-    
+class bootstrap_simple_justify extends bootstrap_simple
+{
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\page\ipage $objPage            
-     * @param array $arrOption            
+     * @param \queryyetsimple\page\ipage $objPage
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(ipage $objPage, array $arrOption = []) {
-        parent::__construct ( $objPage, $arrOption );
-        $this->option ( 'align', 'justify' );
+    public function __construct(ipage $objPage, array $arrOption = [])
+    {
+        parent::__construct($objPage, $arrOption);
+        $this->option('align', 'justify');
     }
 }

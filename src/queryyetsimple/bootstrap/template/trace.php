@@ -24,13 +24,13 @@ queryphp;
 ?>
 <script type="text/javascript">
 console.log( '%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.queryphp.com)', 'font-weight: bold;color: #06359a;', 'color: #02d629;' );
-<?php foreach ( $arrTrace as $sKey => $sTrace ): ?>
-    <?php if( is_string($sKey) ): ?>
+<?php foreach ($arrTrace as $sKey => $sTrace): ?>
+    <?php if (is_string($sKey)): ?>
         console.log('');
         console.log('%c <?php echo $sKey; ?>', 'color: blue; background: #045efc; color: #fff; padding: 8px 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px; border-radius: 15px;');
         console.log('');
     <?php endif; ?>
-    <?php if( $sTrace ): ?>
+    <?php if ($sTrace): ?>
         console.log('%c<?php echo $sTrace; ?>', 'color: gray;');
     <?php endif; ?>
 <?php endforeach; ?>

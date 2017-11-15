@@ -25,14 +25,16 @@ use queryyetsimple\support\face;
  * @since 2017.07.12
  * @version 1.0
  */
-class event extends face {
-    
+class event extends face
+{
+
     /**
      * 返回门面名字
      *
      * @return string
      */
-    protected static function name() {
+    protected static function name()
+    {
         return 'event';
     }
 }
@@ -47,5 +49,6 @@ namespace qys;
  * @since 2017.07.12
  * @version 1.0
  */
-class event extends \queryyetsimple\event {
+class event extends \queryyetsimple\event
+{
 }

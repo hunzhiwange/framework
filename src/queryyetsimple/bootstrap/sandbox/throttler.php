@@ -25,14 +25,16 @@ use queryyetsimple\support\face;
  * @since 2017.08.10
  * @version 1.0
  */
-class throttler extends face {
-    
+class throttler extends face
+{
+
     /**
      * 返回门面名字
      *
      * @return string
      */
-    protected static function name() {
+    protected static function name()
+    {
         return 'throttler';
     }
 }
@@ -47,5 +49,6 @@ namespace qys;
  * @since 2017.08.10
  * @version 1.0
  */
-class throttler extends \queryyetsimple\throttler {
+class throttler extends \queryyetsimple\throttler
+{
 }

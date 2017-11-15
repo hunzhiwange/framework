@@ -27,55 +27,61 @@ use queryyetsimple\support\provider;
  * @since 2017.07.19
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
     }
-    
+
     /**
      * bootstrap
      *
      * @return void
      */
-    public function bootstrap() {
-        $this->urlResolver ();
-        $this->i18n ();
+    public function bootstrap()
+    {
+        $this->urlResolver();
+        $this->i18n();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
+    public static function providers()
+    {
         return [ ];
     }
-    
+
     /**
      * 分页路由 url 生成
      *
      * @return void
      */
-    protected function urlResolver() {
-        page::setUrlResolver ( function () {
-            return call_user_func_array ( [ 
+    protected function urlResolver()
+    {
+        page::setUrlResolver(function () {
+            return call_user_func_array([
                     $this->objContainer ['router'],
-                    'url' 
-            ], func_get_args () );
-        } );
+                    'url'
+            ], func_get_args());
+        });
     }
-    
+
     /**
      * 载入语言包
      *
      * @return void
      */
-    protected function i18n() {
-        $this->loadI18nDir ( __DIR__ . '/../i18n' );
+    protected function i18n()
+    {
+        $this->loadI18nDir(__DIR__ . '/../i18n');
     }
 }

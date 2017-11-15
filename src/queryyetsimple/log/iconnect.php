@@ -23,12 +23,13 @@ queryphp;
  * @since 2017.04.23
  * @version 1.0
  */
-interface iconnect {
-    
+interface iconnect
+{
+
     /**
      * 日志写入接口
      *
-     * @param array $arrData            
+     * @param array $arrData
      * @return void
      */
     public function save(array $arrData);

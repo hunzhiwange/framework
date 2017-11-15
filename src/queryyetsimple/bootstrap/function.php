@@ -16,566 +16,605 @@ queryphp;
 use queryyetsimple\log\ilog;
 use queryyetsimple\bootstrap\project;
 
-if (! function_exists ( 'project' )) {
+if (! function_exists('project')) {
     /**
      * 返回项目容器或者注入
      *
-     * @param string|null $sInstance            
-     * @param array $arrArgs            
+     * @param string|null $sInstance
+     * @param array $arrArgs
      * @return \queryyetsimple\bootstrap\project
      */
-    function project($sInstance = null, $arrArgs = []) {
+    function project($sInstance = null, $arrArgs = [])
+    {
         if ($sInstance === null) {
-            return project::singletons ();
+            return project::singletons();
         } else {
-            if (($objInstance = project::singletons ()->make ( $sInstance, $arrArgs ))) {
+            if (($objInstance = project::singletons()->make($sInstance, $arrArgs))) {
                 return $objInstance;
             }
-            throw new BadMethodCallException ( __ ( '容器中未发现注入的 %s', $sInstance ) );
+            throw new BadMethodCallException(__('容器中未发现注入的 %s', $sInstance));
         }
     }
 }
 
-if (! function_exists ( 'app' )) {
+if (! function_exists('app')) {
     /**
      * 返回项目容器或者注入
      * project 别名函数
      *
-     * @param string|null $sInstance            
-     * @param array $arrArgs            
+     * @param string|null $sInstance
+     * @param array $arrArgs
      * @return \queryyetsimple\bootstrap\project
      */
-    function app($sInstance = null, $arrArgs = []) {
-        return project ( $sInstance, $arrArgs );
+    function app($sInstance = null, $arrArgs = [])
+    {
+        return project($sInstance, $arrArgs);
     }
 }
 
-if (! function_exists ( 'api' )) {
+if (! function_exists('api')) {
     /**
      * 是否为 API
      *
      * @return boolean
      */
-    function api() {
-        return project ()->api ();
+    function api()
+    {
+        return project()->api();
     }
 }
 
-if (! function_exists ( 'dumps' )) {
+if (! function_exists('dumps')) {
     /**
      * 调试一个变量
      *
-     * @param mixed $mixValue            
+     * @param mixed $mixValue
      * @return mixed
      */
-    function dumps($mixValue) {
-        return call_user_func_array ( [ 
+    function dumps($mixValue)
+    {
+        return call_user_func_array([
                 'queryyetsimple\support\debug\dump',
-                'dump' 
-        ], func_get_args () );
+                'dump'
+        ], func_get_args());
     }
 }
 
-if (! function_exists ( 'env' )) {
+if (! function_exists('env')) {
     /**
      * 取得项目的环境变量.支持 boolean, empty 和 null.
      *
-     * @param string $strName            
-     * @param mixed $mixDefault            
+     * @param string $strName
+     * @param mixed $mixDefault
      * @return mixed
      */
-    function env($strName, $mixDefault = null) {
+    function env($strName, $mixDefault = null)
+    {
         switch (true) {
-            case array_key_exists ( $strName, $_ENV ) :
+            case array_key_exists($strName, $_ENV):
                 $strName = $_ENV [$strName];
                 break;
-            case array_key_exists ( $strName, $_SERVER ) :
+            case array_key_exists($strName, $_SERVER):
                 $strName = $_SERVER [$strName];
                 break;
-            default :
-                $strName = getenv ( $strName );
-                if ($strName === false)
-                    $strName = value ( $mixDefault );
+            default:
+                $strName = getenv($strName);
+                if ($strName === false) {
+                    $strName = value($mixDefault);
+                }
         }
-        
-        switch (strtolower ( $strName )) {
-            case 'true' :
-            case '(true)' :
+
+        switch (strtolower($strName)) {
+            case 'true':
+            case '(true)':
                 return true;
-            
-            case 'false' :
-            case '(false)' :
+
+            case 'false':
+            case '(false)':
                 return false;
-            
-            case 'empty' :
-            case '(empty)' :
+
+            case 'empty':
+            case '(empty)':
                 return '';
-            
-            case 'null' :
-            case '(null)' :
+
+            case 'null':
+            case '(null)':
                 return;
         }
-        
-        if (strlen ( $strName ) > 1 && $strName [0] == '"' && $strName [strlen ( $strName ) - 1] == '"') {
-            return substr ( $strName, 1, - 1 );
+
+        if (strlen($strName) > 1 && $strName [0] == '"' && $strName [strlen($strName) - 1] == '"') {
+            return substr($strName, 1, - 1);
         }
-        
+
         return $strName;
     }
 }
 
-if (! function_exists ( 'encrypt' )) {
+if (! function_exists('encrypt')) {
     /**
      * 加密字符串
      *
-     * @param string $strValue            
+     * @param string $strValue
      * @return string
      */
-    function encrypt($strValue) {
-        return project ( 'encryption' )->encrypt ( $strValue );
+    function encrypt($strValue)
+    {
+        return project('encryption')->encrypt($strValue);
     }
 }
 
-if (! function_exists ( 'decrypt' )) {
+if (! function_exists('decrypt')) {
     /**
      * 解密字符串
      *
-     * @param string $strValue            
+     * @param string $strValue
      * @return string
      */
-    function decrypt($strValue) {
-        return project ( 'encryption' )->decrypt ( $strValue );
+    function decrypt($strValue)
+    {
+        return project('encryption')->decrypt($strValue);
     }
 }
 
-if (! function_exists ( 'session' )) {
+if (! function_exists('session')) {
     /**
      * 设置或者获取 session 值
      *
-     * @param array|string $mixKey            
-     * @param mixed $mixDefault            
+     * @param array|string $mixKey
+     * @param mixed $mixDefault
      * @return mixed
      */
-    function session($mixKey = null, $mixDefault = null) {
-        if (is_null ( $mixKey )) {
-            return project ( 'session' );
+    function session($mixKey = null, $mixDefault = null)
+    {
+        if (is_null($mixKey)) {
+            return project('session');
         }
-        
-        if (is_array ( $mixKey )) {
-            return project ( 'session' )->put ( $mixKey );
+
+        if (is_array($mixKey)) {
+            return project('session')->put($mixKey);
         }
-        
-        return project ( 'session' )->get ( $mixKey, $mixDefault );
+
+        return project('session')->get($mixKey, $mixDefault);
     }
 }
 
-if (! function_exists ( 'flash' )) {
+if (! function_exists('flash')) {
     /**
      * 返回 flash
      *
-     * @param string $strKey            
-     * @param mixed $mixDefault            
+     * @param string $strKey
+     * @param mixed $mixDefault
      * @return mixed
      */
-    function flash($strKey, $mixDefault = null) {
-        return project ( 'session' )->getFlash ( $strKey, $mixDefault );
+    function flash($strKey, $mixDefault = null)
+    {
+        return project('session')->getFlash($strKey, $mixDefault);
     }
 }
 
-if (! function_exists ( 'url' )) {
+if (! function_exists('url')) {
     /**
      * 生成路由地址
      *
-     * @param string $sUrl            
-     * @param array $arrParams            
+     * @param string $sUrl
+     * @param array $arrParams
      * @param array $arrOption
-     *            suffix boolean 是否包含后缀
-     *            normal boolean 是否为普通 url
-     *            subdomain string 子域名
+     * @sub boolean suffix 是否包含后缀
+     * @sub boolean normal 是否为普通 url
+     * @sub string subdomain 子域名
      * @return string
      */
-    function url($sUrl, $arrParams = [], $arrOption = []) {
-        if (is_null ( $sUrl )) {
-            return project ( 'router' );
+    function url($sUrl, $arrParams = [], $arrOption = [])
+    {
+        if (is_null($sUrl)) {
+            return project('router');
         }
-        
-        return project ( 'router' )->url ( $sUrl, $arrParams, $arrOption );
+
+        return project('router')->url($sUrl, $arrParams, $arrOption);
     }
 }
 
-if (! function_exists ( 'prev_url' )) {
+if (! function_exists('prev_url')) {
     /**
      * 上一次访问 URL 地址
      *
      * @return string
      */
-    function prev_url() {
-        return project ( 'request' )->header ( 'referer' ) ?  : project ( 'session' )->prevUrl ();
+    function prev_url()
+    {
+        return project('request')->header('referer') ?  : project('session')->prevUrl();
     }
 }
 
-if (! function_exists ( '__' )) {
+if (! function_exists('__')) {
     /**
      * 语言包
      *
-     * @param string $sValue            
+     * @param string $sValue
      * @return mixed
      */
-    function __($sValue) {
-        return call_user_func_array ( [ 
-                project ( 'i18n' ),
-                'getText' 
-        ], func_get_args () );
+    function __($sValue)
+    {
+        return call_user_func_array([
+                project('i18n'),
+                'getText'
+        ], func_get_args());
     }
 }
 
-if (! function_exists ( 'gettext' )) {
+if (! function_exists('gettext')) {
     /**
      * 语言包
      *
-     * @param string|null $sValue            
+     * @param string|null $sValue
      * @return mixed
      */
-    function gettext($sValue = null) {
-        return call_user_func_array ( __, func_get_args () );
+    function gettext($sValue = null)
+    {
+        return call_user_func_array(__, func_get_args());
     }
 }
 
-if (! function_exists ( 'value' )) {
+if (! function_exists('value')) {
     /**
      * 返回默认值
      *
-     * @param mixed $mixValue            
+     * @param mixed $mixValue
      * @return mixed
      */
-    function value($mixValue) {
-        $arrArgs = func_get_args ();
-        array_shift ( $arrArgs );
-        return ! is_string ( $mixValue ) && is_callable ( $mixValue ) ? call_user_func_array ( $mixValue, $arrArgs ) : $mixValue;
+    function value($mixValue)
+    {
+        $arrArgs = func_get_args();
+        array_shift($arrArgs);
+        return ! is_string($mixValue) && is_callable($mixValue) ? call_user_func_array($mixValue, $arrArgs) : $mixValue;
     }
 }
 
-if (! function_exists ( 'log' )) {
+if (! function_exists('log')) {
     /**
      * 记录错误消息
      *
-     * @param string $strLevel            
-     * @param mixed $mixMessage            
-     * @param array $arrContext            
-     * @param boolean $booWrite            
+     * @param string $strLevel
+     * @param mixed $mixMessage
+     * @param array $arrContext
+     * @param boolean $booWrite
      * @return void
      */
-    function log($strLevel, $mixMessage, array $arrContext = [], $booWrite = false) {
-        project ( 'log' )->{$booWrite ? 'write' : 'log'} ( $strLevel, $mixMessage, $arrContext );
+    function log($strLevel, $mixMessage, array $arrContext = [], $booWrite = false)
+    {
+        project('log')->{$booWrite ? 'write' : 'log'} ($strLevel, $mixMessage, $arrContext);
     }
 }
 
-if (! function_exists ( 'debug' )) {
+if (! function_exists('debug')) {
     /**
      * 记录错误消息 debug
      *
-     * @param mixed $mixMessage            
-     * @param array $arrContext            
-     * @param boolean $booWrite            
+     * @param mixed $mixMessage
+     * @param array $arrContext
+     * @param boolean $booWrite
      * @return void
      */
-    function debug($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( ilog::DEBUG, $mixMessage, $arrContext, $booWrite );
+    function debug($mixMessage, array $arrContext = [], $booWrite = false)
+    {
+        log(ilog::DEBUG, $mixMessage, $arrContext, $booWrite);
     }
 }
 
-if (! function_exists ( 'info' )) {
+if (! function_exists('info')) {
     /**
      * 记录错误消息 info
      *
-     * @param mixed $mixMessage            
-     * @param array $arrContext            
-     * @param boolean $booWrite            
+     * @param mixed $mixMessage
+     * @param array $arrContext
+     * @param boolean $booWrite
      * @return void
      */
-    function info($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( ilog::INFO, $mixMessage, $arrContext, $booWrite );
+    function info($mixMessage, array $arrContext = [], $booWrite = false)
+    {
+        log(ilog::INFO, $mixMessage, $arrContext, $booWrite);
     }
 }
 
-if (! function_exists ( 'notice' )) {
+if (! function_exists('notice')) {
     /**
      * 记录错误消息 notice
      *
-     * @param mixed $mixMessage            
-     * @param array $arrContext            
-     * @param boolean $booWrite            
+     * @param mixed $mixMessage
+     * @param array $arrContext
+     * @param boolean $booWrite
      * @return void
      */
-    function notice($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( ilog::NOTICE, $mixMessage, $arrContext, $booWrite );
+    function notice($mixMessage, array $arrContext = [], $booWrite = false)
+    {
+        log(ilog::NOTICE, $mixMessage, $arrContext, $booWrite);
     }
 }
 
-if (! function_exists ( 'warning' )) {
+if (! function_exists('warning')) {
     /**
      * 记录错误消息 warning
      *
-     * @param mixed $mixMessage            
-     * @param array $arrContext            
-     * @param boolean $booWrite            
+     * @param mixed $mixMessage
+     * @param array $arrContext
+     * @param boolean $booWrite
      * @return void
      */
-    function warning($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( ilog::WARNING, $mixMessage, $arrContext, $booWrite );
+    function warning($mixMessage, array $arrContext = [], $booWrite = false)
+    {
+        log(ilog::WARNING, $mixMessage, $arrContext, $booWrite);
     }
 }
 
-if (! function_exists ( 'error' )) {
+if (! function_exists('error')) {
     /**
      * 记录错误消息 error
      *
-     * @param mixed $mixMessage            
-     * @param array $arrContext            
-     * @param boolean $booWrite            
+     * @param mixed $mixMessage
+     * @param array $arrContext
+     * @param boolean $booWrite
      * @return void
      */
-    function error($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( ilog::ERROR, $mixMessage, $arrContext, $booWrite );
+    function error($mixMessage, array $arrContext = [], $booWrite = false)
+    {
+        log(ilog::ERROR, $mixMessage, $arrContext, $booWrite);
     }
 }
 
-if (! function_exists ( 'critical' )) {
+if (! function_exists('critical')) {
     /**
      * 记录错误消息 critical
      *
-     * @param mixed $mixMessage            
-     * @param array $arrContext            
-     * @param boolean $booWrite            
+     * @param mixed $mixMessage
+     * @param array $arrContext
+     * @param boolean $booWrite
      * @return void
      */
-    function critical($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( ilog::CRITICAL, $mixMessage, $arrContext, $booWrite );
+    function critical($mixMessage, array $arrContext = [], $booWrite = false)
+    {
+        log(ilog::CRITICAL, $mixMessage, $arrContext, $booWrite);
     }
 }
 
-if (! function_exists ( 'alert' )) {
+if (! function_exists('alert')) {
     /**
      * 记录错误消息 alert
      *
-     * @param mixed $mixMessage            
-     * @param array $arrContext            
-     * @param boolean $booWrite            
+     * @param mixed $mixMessage
+     * @param array $arrContext
+     * @param boolean $booWrite
      * @return void
      */
-    function alert($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( ilog::ALERT, $mixMessage, $arrContext, $booWrite );
+    function alert($mixMessage, array $arrContext = [], $booWrite = false)
+    {
+        log(ilog::ALERT, $mixMessage, $arrContext, $booWrite);
     }
 }
 
-if (! function_exists ( 'emergency' )) {
+if (! function_exists('emergency')) {
     /**
      * 记录错误消息 emergency
      *
-     * @param mixed $mixMessage            
-     * @param array $arrContext            
-     * @param boolean $booWrite            
+     * @param mixed $mixMessage
+     * @param array $arrContext
+     * @param boolean $booWrite
      * @return void
      */
-    function emergency($mixMessage, array $arrContext = [], $booWrite = false) {
-        log ( ilog::EMERGENCY, $mixMessage, $arrContext, $booWrite );
+    function emergency($mixMessage, array $arrContext = [], $booWrite = false)
+    {
+        log(ilog::EMERGENCY, $mixMessage, $arrContext, $booWrite);
     }
 }
 
-if (! function_exists ( 'option' )) {
+if (! function_exists('option')) {
     /**
      * 设置或者获取 option 值
      *
-     * @param array|string $mixKey            
-     * @param mixed $mixDefault            
+     * @param array|string $mixKey
+     * @param mixed $mixDefault
      * @return mixed
      */
-    function option($mixKey = null, $mixDefault = null) {
-        if (is_null ( $mixKey )) {
-            return project ( 'option' );
+    function option($mixKey = null, $mixDefault = null)
+    {
+        if (is_null($mixKey)) {
+            return project('option');
         }
-        
-        if (is_array ( $mixKey )) {
-            return project ( 'option' )->set ( $mixKey );
+
+        if (is_array($mixKey)) {
+            return project('option')->set($mixKey);
         }
-        
-        return project ( 'option' )->get ( $mixKey, $mixDefault );
+
+        return project('option')->get($mixKey, $mixDefault);
     }
 }
 
-if (! function_exists ( 'cache' )) {
+if (! function_exists('cache')) {
     /**
      * 设置或者获取 cache 值
      *
-     * @param array|string $mixKey            
-     * @param mixed $mixDefault            
+     * @param array|string $mixKey
+     * @param mixed $mixDefault
      * @return mixed
      */
-    function cache($mixKey = null, $mixDefault = null) {
-        if (is_null ( $mixKey )) {
-            return project ( 'cache' );
+    function cache($mixKey = null, $mixDefault = null)
+    {
+        if (is_null($mixKey)) {
+            return project('cache');
         }
-        
-        if (is_array ( $mixKey )) {
-            return project ( 'cache' )->put ( $mixKey );
+
+        if (is_array($mixKey)) {
+            return project('cache')->put($mixKey);
         }
-        
-        return project ( 'cache' )->get ( $mixKey, $mixDefault );
+
+        return project('cache')->get($mixKey, $mixDefault);
     }
 }
 
-if (! function_exists ( 'path' )) {
+if (! function_exists('path')) {
     /**
      * 取得项目路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path($strPath = '') {
-        return project ()->path () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path($strPath = '')
+    {
+        return project()->path() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_applications' )) {
+if (! function_exists('path_applications')) {
     /**
      * 取得项目应用路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_applications($strPath = '') {
-        return project ()->pathApplication () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_applications($strPath = '')
+    {
+        return project()->pathApplication() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_common' )) {
+if (! function_exists('path_common')) {
     /**
      * 取得项目公共路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_common($strPath = '') {
-        return project ()->pathCommon () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_common($strPath = '')
+    {
+        return project()->pathCommon() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_runtime' )) {
+if (! function_exists('path_runtime')) {
     /**
      * 取得项目缓存路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_runtime($strPath = '') {
-        return project ()->pathRuntime () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_runtime($strPath = '')
+    {
+        return project()->pathRuntime() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_public' )) {
+if (! function_exists('path_public')) {
     /**
      * 取得项目资源路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_public($strPath = '') {
-        return project ()->pathPublic () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_public($strPath = '')
+    {
+        return project()->pathPublic() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_storage' )) {
+if (! function_exists('path_storage')) {
     /**
      * 取得项目附件路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_storage($strPath = '') {
-        return project ()->pathStorage () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_storage($strPath = '')
+    {
+        return project()->pathStorage() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_application' )) {
+if (! function_exists('path_application')) {
     /**
      * 取得项目当前应用路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_application($strPath = '') {
-        return project ()->pathApplicationCurrent () . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_application($strPath = '')
+    {
+        return project()->pathApplicationCurrent() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_option' )) {
+if (! function_exists('path_option')) {
     /**
      * 取得项目当前应用配置路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_option($strPath = '') {
-        return project ()->pathApplicationDir ( 'option' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_option($strPath = '')
+    {
+        return project()->pathApplicationDir('option') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_theme' )) {
+if (! function_exists('path_theme')) {
     /**
      * 取得项目当前应用主题路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_theme($strPath = '') {
-        return project ()->pathApplicationDir ( 'theme' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_theme($strPath = '')
+    {
+        return project()->pathApplicationDir('theme') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_i18n' )) {
+if (! function_exists('path_i18n')) {
     /**
      * 取得项目当前应用国际化路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_i18n($strPath = '') {
-        return project ()->pathApplicationDir ( 'i18n' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_i18n($strPath = '')
+    {
+        return project()->pathApplicationDir('i18n') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_file_cache' )) {
+if (! function_exists('path_file_cache')) {
     /**
      * 取得项目当前应用文件缓存路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_file_cache($strPath = '') {
-        return project ()->pathApplicationCache ( 'file' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_file_cache($strPath = '')
+    {
+        return project()->pathApplicationCache('file') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_log_cache' )) {
+if (! function_exists('path_log_cache')) {
     /**
      * 取得项目当前应用日志缓存路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_log_cache($strPath = '') {
-        return project ()->pathApplicationCache ( 'log' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_log_cache($strPath = '')
+    {
+        return project()->pathApplicationCache('log') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 
-if (! function_exists ( 'path_table_cache' )) {
+if (! function_exists('path_table_cache')) {
     /**
      * 取得项目当前应用数据表缓存路径
      *
-     * @param string $strPath            
+     * @param string $strPath
      * @return string
      */
-    function path_table_cache($strPath = '') {
-        return project ()->pathApplicationCache ( 'table' ) . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    function path_table_cache($strPath = '')
+    {
+        return project()->pathApplicationCache('table') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }

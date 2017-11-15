@@ -23,16 +23,17 @@ queryphp;
  * @since 2017.06.06
  * @version 1.0
  */
-interface irunner {
-    
+interface irunner
+{
+
     /**
      * work 命名
      *
-     * @param \queryyetsimple\queue\console\work $objWork            
+     * @param \queryyetsimple\queue\console\work $objWork
      * @return void
      */
     public function workCommand($objWork);
-    
+
     /**
      * (non-PHPdoc)
      *

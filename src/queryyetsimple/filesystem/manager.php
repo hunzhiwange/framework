@@ -49,64 +49,71 @@ use queryyetsimple\support\manager as support_manager;
  * @since 2017.08.29
  * @version 1.0
  */
-class manager extends support_manager {
-    
+class manager extends support_manager
+{
+
     /**
      * 取得配置命名空间
      *
      * @return string
      */
-    protected function getOptionNamespace() {
+    protected function getOptionNamespace()
+    {
         return 'filesystem';
     }
-    
+
     /**
      * 创建连接对象
      *
-     * @param object $objConnect            
+     * @param object $objConnect
      * @return object
      */
-    protected function createConnect($objConnect) {
-        return new filesystem ( $objConnect );
+    protected function createConnect($objConnect)
+    {
+        return new filesystem($objConnect);
     }
-    
+
     /**
      * 创建 local 连接
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\filesystem\local
      */
-    protected function makeConnectLocal($arrOption = []) {
-        return new local ( array_merge ( $this->getOption ( 'local', $arrOption ) ) );
+    protected function makeConnectLocal($arrOption = [])
+    {
+        return new local(array_merge($this->getOption('local', $arrOption)));
     }
-    
+
     /**
      * 创建 ftp 连接
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\filesystem\ftp
      */
-    protected function makeConnectFtp($arrOption = []) {
-        return new ftp ( array_merge ( $this->getOption ( 'ftp', $arrOption ) ) );
+    protected function makeConnectFtp($arrOption = [])
+    {
+        return new ftp(array_merge($this->getOption('ftp', $arrOption)));
     }
-    
+
     /**
      * 创建 sftp 连接
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\filesystem\sftp
      */
-    protected function makeConnectSftp($arrOption = []) {
-        return new sftp ( array_merge ( $this->getOption ( 'sftp', $arrOption ) ) );
+    protected function makeConnectSftp($arrOption = [])
+    {
+        return new sftp(array_merge($this->getOption('sftp', $arrOption)));
     }
-    
+
     /**
      * 创建 zip 连接
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\filesystem\zip
      */
-    protected function makeConnectZip($arrOption = []) {
-        return new zip ( array_merge ( $this->getOption ( 'zip', $arrOption ) ) );
+    protected function makeConnectZip($arrOption = [])
+    {
+        return new zip(array_merge($this->getOption('zip', $arrOption)));
     }
 }

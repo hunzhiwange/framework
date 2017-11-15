@@ -29,102 +29,114 @@ use InvalidArgumentException;
  * @see http://php.net/manual/zh/class.spldoublylinkedlist.php
  * @version 1.0
  */
-class linkedlist extends SplDoublyLinkedList {
-    
+class linkedlist extends SplDoublyLinkedList
+{
+
     /**
      * 允许的类型
      *
      * @var array
      */
     protected $arrType = [ ];
-    
+
     /**
      * 构造函数
      *
-     * @param mixed $mixArgs            
+     * @param mixed $mixArgs
      * @return void
      */
-    public function __construct($mixArgs = null) {
-        $this->arrType = is_array ( $mixArgs ) ? $mixArgs : func_get_args ();
+    public function __construct($mixArgs = null)
+    {
+        $this->arrType = is_array($mixArgs) ? $mixArgs : func_get_args();
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SplDoublyLinkedList::pop()
      */
-    public function pop() {
-        if ($this->isEmpty ())
+    public function pop()
+    {
+        if ($this->isEmpty()) {
             return null;
-        return parent::pop ();
+        }
+        return parent::pop();
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SplDoublyLinkedList::add()
      */
-    public function add($mixIndex, $mixNewval) {
-        $this->validate ( $mixNewval );
-        parent::add ( $mixIndex, $mixNewval );
+    public function add($mixIndex, $mixNewval)
+    {
+        $this->validate($mixNewval);
+        parent::add($mixIndex, $mixNewval);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SplDoublyLinkedList::offsetSet()
      */
-    public function offsetSet($mixIndex, $mixNewval) {
-        $this->validate ( $mixNewval );
-        parent::offsetSet ( $mixIndex, $mixNewval );
+    public function offsetSet($mixIndex, $mixNewval)
+    {
+        $this->validate($mixNewval);
+        parent::offsetSet($mixIndex, $mixNewval);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SplDoublyLinkedList::push()
      */
-    public function push($mixValue) {
-        $this->validate ( $mixValue );
-        parent::push ( $mixValue );
+    public function push($mixValue)
+    {
+        $this->validate($mixValue);
+        parent::push($mixValue);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SplDoublyLinkedList::unshift()
      */
-    public function unshift($mixValue) {
-        $this->validate ( $mixValue );
-        parent::unshift ( $mixValue );
+    public function unshift($mixValue)
+    {
+        $this->validate($mixValue);
+        parent::unshift($mixValue);
     }
-    
+
     /**
      * 验证类型是否正确遇到错误抛出异常
      *
-     * @param mixed $mixValue            
+     * @param mixed $mixValue
      * @return void
      */
-    public function validate($mixValue) {
-        if (! $this->checkType ( $mixValue ))
-            throw new InvalidArgumentException ( sprintf ( 'The linkedlist element type verification failed, and the allowed type is %s.', implode ( ',', $this->arrType ) ) );
+    public function validate($mixValue)
+    {
+        if (! $this->checkType($mixValue)) {
+            throw new InvalidArgumentException(sprintf('The linkedlist element type verification failed, and the allowed type is %s.', implode(',', $this->arrType)));
+        }
     }
-    
+
     /**
      * 验证类型是否正确
      *
-     * @param mixed $mixValue            
+     * @param mixed $mixValue
      * @return bool
      */
-    protected function checkType($mixValue) {
-        if (! count ( $this->arrType ))
+    protected function checkType($mixValue)
+    {
+        if (! count($this->arrType)) {
             return true;
-        return call_user_func_array ( [ 
+        }
+        return call_user_func_array([
                 'queryyetsimple\support\helper',
-                'varThese' 
-        ], [ 
+                'varThese'
+        ], [
                 $mixValue,
-                $this->arrType 
-        ] );
+                $this->arrType
+        ]);
     }
 }

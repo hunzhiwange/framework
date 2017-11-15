@@ -23,21 +23,22 @@ queryphp;
  * @since 2017.04.23
  * @version 1.0
  */
-interface iencryption {
-    
+interface iencryption
+{
+
     /**
      * 加密
      *
-     * @param string $strValue            
-     * @param int $intExpiry            
+     * @param string $strValue
+     * @param int $intExpiry
      * @return string
      */
     public function encrypt($strValue, $intExpiry = null);
-    
+
     /**
      * 解密
      *
-     * @param string $strValue            
+     * @param string $strValue
      * @return string
      */
     public function decrypt($strValue);

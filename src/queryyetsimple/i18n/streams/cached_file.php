@@ -24,16 +24,19 @@ queryphp;
  * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
-class cached_file extends string {
-    
+class cached_file extends string
+{
+
     /**
      * PHP5 constructor.
      */
-    function __construct($filename) {
-        parent::__construct ();
-        $this->_str = file_get_contents ( $filename );
-        if (false === $this->_str)
+    public function __construct($filename)
+    {
+        parent::__construct();
+        $this->_str = file_get_contents($filename);
+        if (false === $this->_str) {
             return false;
+        }
         $this->_pos = 0;
     }
 }

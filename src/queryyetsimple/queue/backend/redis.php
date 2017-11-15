@@ -25,35 +25,38 @@ use PHPQueue\Backend\Predis;
  * @since 2017.06.08
  * @version 1.0
  */
-class redis extends Predis {
-    
+class redis extends Predis
+{
+
     /**
      * (non-PHPdoc)
      *
      * @see \PHPQueue\Backend\Predis::release()
      */
-    public function release($jobId = null) {
-        $this->beforeRelease ( $jobId );
-        if (! $this->hasQueue ()) {
-            throw new BackendException ( "No queue specified." );
+    public function release($jobId = null)
+    {
+        $this->beforeRelease($jobId);
+        if (! $this->hasQueue()) {
+            throw new BackendException("No queue specified.");
         }
         $strJobData = $this->open_items [$jobId];
-        
+
         // 加入执行次数
-        $strJobData = json_decode ( $strJobData, true );
+        $strJobData = json_decode($strJobData, true);
         if ($strJobData) {
-            if (empty ( $strJobData ['data'] ['attempts'] ))
+            if (empty($strJobData ['data'] ['attempts'])) {
                 $strJobData ['data'] ['attempts'] = 1;
-            else
+            } else {
                 $strJobData ['data'] ['attempts'] ++;
-            $strJobData = json_encode ( $strJobData );
+            }
+            $strJobData = json_encode($strJobData);
         }
-        
-        $booStatus = $this->getConnection ()->rpush ( $this->queue_name, $strJobData );
+
+        $booStatus = $this->getConnection()->rpush($this->queue_name, $strJobData);
         if (! $booStatus) {
-            throw new BackendException ( "Unable to save data." );
+            throw new BackendException("Unable to save data.");
         }
         $this->last_job_id = $jobId;
-        $this->afterClearRelease ();
+        $this->afterClearRelease();
     }
 }

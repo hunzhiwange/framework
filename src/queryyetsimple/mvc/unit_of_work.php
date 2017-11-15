@@ -23,7 +23,8 @@ queryphp;
  * @since 2017.10.14
  * @version 1.0
  */
-class unit_of_work implements iunit_of_work {
+class unit_of_work implements iunit_of_work
+{
 
     /**
      * 基础仓储
@@ -73,7 +74,8 @@ class unit_of_work implements iunit_of_work {
      * @param \queryyetsimple\mvc\irepository $objRepository
      * @return $this
      */
-    public function __construct(irepository $objRepository) {
+    public function __construct(irepository $objRepository)
+    {
         $this->objRepository = $objRepository;
     }
 
@@ -82,8 +84,9 @@ class unit_of_work implements iunit_of_work {
      *
      * @return void
      */
-    public function beginTransaction() {
-        $this->objRepository->beginTransaction ();
+    public function beginTransaction()
+    {
+        $this->objRepository->beginTransaction();
         $this->booCommitted = false;
     }
 
@@ -92,8 +95,9 @@ class unit_of_work implements iunit_of_work {
      *
      * @return void
      */
-    public function rollback() {
-        $this->objRepository->rollback ();
+    public function rollback()
+    {
+        $this->objRepository->rollback();
         $this->booCommitted = false;
     }
 
@@ -102,11 +106,12 @@ class unit_of_work implements iunit_of_work {
      *
      * @return void
      */
-    public function commit() {
+    public function commit()
+    {
         if ($this->booCommitted) {
             return;
         }
-        $this->objRepository->commit ();
+        $this->objRepository->commit();
         $this->booCommitted = true;
     }
 
@@ -116,12 +121,13 @@ class unit_of_work implements iunit_of_work {
      * @param callable $calAction
      * @return mixed
      */
-    public function transaction($calAction) {
+    public function transaction($calAction)
+    {
         if ($this->booCommitted) {
             return;
         }
         $this->booCommitted = true;
-        return $this->objRepository->transaction ( $calAction );
+        return $this->objRepository->transaction($calAction);
     }
 
     /**
@@ -129,7 +135,8 @@ class unit_of_work implements iunit_of_work {
      *
      * @return boolean
      */
-    public function committed() {
+    public function committed()
+    {
         return $this->booCommitted;
     }
 
@@ -138,17 +145,18 @@ class unit_of_work implements iunit_of_work {
      *
      * @return void
      */
-    public function registerCommit() {
+    public function registerCommit()
+    {
         if ($this->booCommitted && $this->intCount == 0) {
             return;
         }
 
         if ($this->intCount > 1) {
-            $this->transaction ( function () {
-                $this->handleRepository ();
-            } );
+            $this->transaction(function () {
+                $this->handleRepository();
+            });
         } else {
-            $this->handleRepository ();
+            $this->handleRepository();
         }
 
         $this->booCommitted = true;
@@ -161,9 +169,10 @@ class unit_of_work implements iunit_of_work {
      * @param \queryyetsimple\mvc\irepository $objRepository
      * @return $this
      */
-    public function registerCreate(iaggregate_root $objEntity, irepository $objRepository) {
-        $strHash = spl_object_hash ( $objEntity );
-        if (! isset ( $this->arrCreates [$strHash] )) {
+    public function registerCreate(iaggregate_root $objEntity, irepository $objRepository)
+    {
+        $strHash = spl_object_hash($objEntity);
+        if (! isset($this->arrCreates [$strHash])) {
             $this->arrCreates [$strHash] = [
                     $objEntity,
                     $objRepository
@@ -181,10 +190,11 @@ class unit_of_work implements iunit_of_work {
      * @param \queryyetsimple\mvc\irepository $objRepository
      * @return $this
      */
-    public function registerUpdate(iaggregate_root $objEntity, irepository $objRepository) {
-        $strHash = spl_object_hash ( $objEntity );
+    public function registerUpdate(iaggregate_root $objEntity, irepository $objRepository)
+    {
+        $strHash = spl_object_hash($objEntity);
 
-        if (! isset ( $this->arrUpdates [$strHash] )) {
+        if (! isset($this->arrUpdates [$strHash])) {
             $this->arrUpdates [$strHash] = [
                     $objEntity,
                     $objRepository
@@ -202,9 +212,10 @@ class unit_of_work implements iunit_of_work {
      * @param \queryyetsimple\mvc\irepository $objRepository
      * @return $this
      */
-    public function registerDelete(iaggregate_root $objEntity, irepository $objRepository) {
-        $strHash = spl_object_hash ( $objEntity );
-        if (! isset ( $this->arrDeletes [$strHash] )) {
+    public function registerDelete(iaggregate_root $objEntity, irepository $objRepository)
+    {
+        $strHash = spl_object_hash($objEntity);
+        if (! isset($this->arrDeletes [$strHash])) {
             $this->arrDeletes [$strHash] = [
                     $objEntity,
                     $objRepository
@@ -220,20 +231,21 @@ class unit_of_work implements iunit_of_work {
      *
      * @return void
      */
-    protected function handleRepository() {
-        foreach ( $this->arrCreates as $arrCreate ) {
-            list ( $objEntity, $objRepository ) = $arrCreate;
-            $objRepository->handleCreate ( $objEntity );
+    protected function handleRepository()
+    {
+        foreach ($this->arrCreates as $arrCreate) {
+            list($objEntity, $objRepository) = $arrCreate;
+            $objRepository->handleCreate($objEntity);
         }
 
-        foreach ( $this->arrUpdates as $arrUpdate ) {
-            list ( $objEntity, $objRepository ) = $arrUpdate;
-            $objRepository->handleUpdate ( $objEntity );
+        foreach ($this->arrUpdates as $arrUpdate) {
+            list($objEntity, $objRepository) = $arrUpdate;
+            $objRepository->handleUpdate($objEntity);
         }
 
-        foreach ( $this->arrDeletes as $arrDelete ) {
-            list ( $objEntity, $objRepository ) = $arrDelete;
-            $objRepository->handleDelete ( $objEntity );
+        foreach ($this->arrDeletes as $arrDelete) {
+            list($objEntity, $objRepository) = $arrDelete;
+            $objRepository->handleDelete($objEntity);
         }
     }
 }

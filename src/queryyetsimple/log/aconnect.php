@@ -26,52 +26,55 @@ use queryyetsimple\support\option;
  * @since 2017.08.26
  * @version 1.0
  */
-abstract class aconnect {
-    
+abstract class aconnect
+{
     use option;
-    
+
     /**
      * 构造函数
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(array $arrOption = []) {
-        $this->options ( $arrOption );
+    public function __construct(array $arrOption = [])
+    {
+        $this->options($arrOption);
     }
-    
+
     /**
      * 验证日志文件大小
      *
-     * @param string $sFilePath            
+     * @param string $sFilePath
      * @return void
      */
-    protected function checkSize($sFilePath) {
+    protected function checkSize($sFilePath)
+    {
         // 如果不是文件，则创建
-        if (! is_file ( $sFilePath ) && ! is_dir ( dirname ( $sFilePath ) ) && ! fso::createDirectory ( dirname ( $sFilePath ) )) {
-            throw new RuntimeException ( sprintf ( 'Unable to create log file：%s.', $sFilePath ) );
+        if (! is_file($sFilePath) && ! is_dir(dirname($sFilePath)) && ! fso::createDirectory(dirname($sFilePath))) {
+            throw new RuntimeException(sprintf('Unable to create log file：%s.', $sFilePath));
         }
-        
+
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成
-        if (is_file ( $sFilePath ) && floor ( $this->getOption ( 'size' ) ) <= filesize ( $sFilePath )) {
-            rename ( $sFilePath, dirname ( $sFilePath ) . '/' . date ( 'Y-m-d H.i.s' ) . '~@' . basename ( $sFilePath ) );
+        if (is_file($sFilePath) && floor($this->getOption('size')) <= filesize($sFilePath)) {
+            rename($sFilePath, dirname($sFilePath) . '/' . date('Y-m-d H.i.s') . '~@' . basename($sFilePath));
         }
     }
-    
+
     /**
      * 获取日志路径
      *
-     * @param string $strLevel            
-     * @param string $sFilePath            
+     * @param string $strLevel
+     * @param string $sFilePath
      * @return string
      */
-    protected function getPath($strLevel = '') {
+    protected function getPath($strLevel = '')
+    {
         // 不存在路径，则直接使用项目默认路径
-        if (empty ( $sFilePath )) {
-            if (! $this->getOption ( 'path' )) {
-                throw new RuntimeException ( 'Default path for log has not specified.' );
+        if (empty($sFilePath)) {
+            if (! $this->getOption('path')) {
+                throw new RuntimeException('Default path for log has not specified.');
             }
-            $sFilePath = $this->getOption ( 'path' ) . '/' . ($strLevel ? $strLevel . '/' : '') . date ( $this->getOption ( 'name' ) ) . ".log";
+            $sFilePath = $this->getOption('path') . '/' . ($strLevel ? $strLevel . '/' : '') . date($this->getOption('name')) . ".log";
         }
         return $sFilePath;
     }

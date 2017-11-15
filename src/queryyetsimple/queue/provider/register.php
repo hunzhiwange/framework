@@ -25,31 +25,35 @@ use queryyetsimple\support\provider;
  * @since 2017.11.06
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
     }
-    
+
     /**
      * 载入命令包
      *
      * @return void
      */
-    public function bootstrap() {
-        $this->loadCommandNamespace ( 'queryyetsimple\queue\console' );
+    public function bootstrap()
+    {
+        $this->loadCommandNamespace('queryyetsimple\queue\console');
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
+    public static function providers()
+    {
         return [ ];
     }
 }

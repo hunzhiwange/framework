@@ -25,21 +25,22 @@ use InvalidArgumentException;
  * @since 2017.05.05
  * @version 1.0
  */
-class assert {
-    
+class assert
+{
+
     /**
      * 是否开启断言
      *
      * @var boolean
      */
     protected static $booOpen = false;
-    
+
     /**
      * 默认断言消息
      *
      * @var array
      */
-    protected static $arrMessage = [ 
+    protected static $arrMessage = [
             'trueExpression' => 'Make sure the incoming expression is true.',
             'notTrueExpression' => 'Make sure the incoming expression is false.',
             'true' => 'Make sure that the incoming variable must now be fully equal to true.',
@@ -79,484 +80,529 @@ class assert {
             'file' => 'Make sure the path variables exists and is a file (not a directory).',
             'notFile' => 'Make sure the path variables exists and is a not file (not a directory).',
             'dir' => 'Make sure the path variables exists and is a directory(not a file).',
-            'notDir' => 'Make sure the path variables exists and is a not directory(not a file).' 
+            'notDir' => 'Make sure the path variables exists and is a not directory(not a file).'
     ];
-    
+
     /**
      * 断言状态设置
      *
-     * @param boolean $booOpen            
+     * @param boolean $booOpen
      * @return void
      */
-    public static function open($booOpen = true) {
+    public static function open($booOpen = true)
+    {
         static::$booOpen = $booOpen;
     }
-    
+
     /**
      * 返回开放状态
      *
      * @return boolean
      */
-    public static function getOpen() {
+    public static function getOpen()
+    {
         return static::$booOpen;
     }
-    
+
     /**
      * trueExpression 断言
      *
      * < false,null,0 或空触发异常 >
      *
-     * @param mixed $mixExpression            
-     * @param string $strDescription            
+     * @param mixed $mixExpression
+     * @param string $strDescription
      * @return void
      */
-    public static function trueExpression($mixExpression, $strDescription = null) {
-        return static::checkExpression ( $mixExpression, 'trueExpression', $strDescription );
+    public static function trueExpression($mixExpression, $strDescription = null)
+    {
+        return static::checkExpression($mixExpression, 'trueExpression', $strDescription);
     }
-    
+
     /**
      * notTrueExpression 断言
      *
      * < 非 false,null,0 或空触发异常 >
      *
-     * @param mixed $mixExpression            
-     * @param string $strDescription            
+     * @param mixed $mixExpression
+     * @param string $strDescription
      * @return void
      */
-    public static function notTrueExpression($mixExpression, $strDescription = null) {
-        return static::checkExpression ( ! $mixExpression, 'notTrueExpression', $strDescription );
+    public static function notTrueExpression($mixExpression, $strDescription = null)
+    {
+        return static::checkExpression(! $mixExpression, 'notTrueExpression', $strDescription);
     }
-    
+
     /**
      * true 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function true($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable === true, 'true', $strDescription );
+    public static function true($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable === true, 'true', $strDescription);
     }
-    
+
     /**
      * not true 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notTrue($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable === false, 'notTrue', $strDescription );
+    public static function notTrue($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable === false, 'notTrue', $strDescription);
     }
-    
+
     /**
      * null 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function null($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable === null, 'null', $strDescription );
+    public static function null($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable === null, 'null', $strDescription);
     }
-    
+
     /**
      * not null 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notNull($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable !== null, 'notNull', $strDescription );
+    public static function notNull($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable !== null, 'notNull', $strDescription);
     }
-    
+
     /**
      * zero 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function zero($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable === 0 || $mixVariable === '0', 'zero', $strDescription );
+    public static function zero($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable === 0 || $mixVariable === '0', 'zero', $strDescription);
     }
-    
+
     /**
      * not zero 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notZero($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable !== 0 && $mixVariable !== '0', 'notZero', $strDescription );
+    public static function notZero($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable !== 0 && $mixVariable !== '0', 'notZero', $strDescription);
     }
-    
+
     /**
      * string zero 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function stringZero($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable === '0', 'stringZero', $strDescription );
+    public static function stringZero($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable === '0', 'stringZero', $strDescription);
     }
-    
+
     /**
      * strict zero 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function strictZero($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable === 0, 'strictZero', $strDescription );
+    public static function strictZero($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable === 0, 'strictZero', $strDescription);
     }
-    
+
     /**
      * not strict zero 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notStrictZero($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable !== 0, 'notStrictZero', $strDescription );
+    public static function notStrictZero($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable !== 0, 'notStrictZero', $strDescription);
     }
-    
+
     /**
      * string empty 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function stringEmpty($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable === '', 'stringEmpty', $strDescription );
+    public static function stringEmpty($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable === '', 'stringEmpty', $strDescription);
     }
-    
+
     /**
      * not string empty 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notStringEmpty($mixVariable, $strDescription = null) {
-        return static::checkExpression ( $mixVariable !== '', 'notStringEmpty', $strDescription );
+    public static function notStringEmpty($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression($mixVariable !== '', 'notStringEmpty', $strDescription);
     }
-    
+
     /**
      * integer 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function integer($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_int ( $mixVariable ), 'integer', $strDescription );
+    public static function integer($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_int($mixVariable), 'integer', $strDescription);
     }
-    
+
     /**
      * not integer 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notInteger($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_int ( $mixVariable ), 'notInteger', $strDescription );
+    public static function notInteger($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_int($mixVariable), 'notInteger', $strDescription);
     }
-    
+
     /**
      * float 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function float($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_float ( $mixVariable ), 'float', $strDescription );
+    public static function float($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_float($mixVariable), 'float', $strDescription);
     }
-    
+
     /**
      * not float 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notFloat($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_float ( $mixVariable ), 'notFloat', $strDescription );
+    public static function notFloat($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_float($mixVariable), 'notFloat', $strDescription);
     }
-    
+
     /**
      * numeric 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function numeric($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_numeric ( $mixVariable ), 'numeric', $strDescription );
+    public static function numeric($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_numeric($mixVariable), 'numeric', $strDescription);
     }
-    
+
     /**
      * not numeric 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notNumeric($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_numeric ( $mixVariable ), 'notNumeric', $strDescription );
+    public static function notNumeric($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_numeric($mixVariable), 'notNumeric', $strDescription);
     }
-    
+
     /**
      * string 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function string($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_string ( $mixVariable ), 'string', $strDescription );
+    public static function string($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_string($mixVariable), 'string', $strDescription);
     }
-    
+
     /**
      * not string 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notString($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_string ( $mixVariable ), 'notString', $strDescription );
+    public static function notString($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_string($mixVariable), 'notString', $strDescription);
     }
-    
+
     /**
      * scalar 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function scalar($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_scalar ( $mixVariable ), 'scalar', $strDescription );
+    public static function scalar($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_scalar($mixVariable), 'scalar', $strDescription);
     }
-    
+
     /**
      * not scalar 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notScalar($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_scalar ( $mixVariable ), 'notScalar', $strDescription );
+    public static function notScalar($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_scalar($mixVariable), 'notScalar', $strDescription);
     }
-    
+
     /**
      * resource 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function resource($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_resource ( $mixVariable ), 'resource', $strDescription );
+    public static function resource($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_resource($mixVariable), 'resource', $strDescription);
     }
-    
+
     /**
      * not resource 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notResource($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_resource ( $mixVariable ), 'notResource', $strDescription );
+    public static function notResource($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_resource($mixVariable), 'notResource', $strDescription);
     }
-    
+
     /**
      * object 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function object($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_object ( $mixVariable ), 'object', $strDescription );
+    public static function object($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_object($mixVariable), 'object', $strDescription);
     }
-    
+
     /**
      * not object 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notObject($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_object ( $mixVariable ), 'notObject', $strDescription );
+    public static function notObject($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_object($mixVariable), 'notObject', $strDescription);
     }
-    
+
     /**
      * callback 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function callback($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_callable ( $mixVariable ), 'callback', $strDescription );
+    public static function callback($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_callable($mixVariable), 'callback', $strDescription);
     }
-    
+
     /**
      * not callback 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notCallback($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_callable ( $mixVariable ), 'notCallback', $strDescription );
+    public static function notCallback($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_callable($mixVariable), 'notCallback', $strDescription);
     }
-    
+
     /**
      * boolean 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function boolean($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_bool ( $mixVariable ), 'boolean', $strDescription );
+    public static function boolean($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_bool($mixVariable), 'boolean', $strDescription);
     }
-    
+
     /**
      * not boolean 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notBoolean($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_bool ( $mixVariable ), 'notBoolean', $strDescription );
+    public static function notBoolean($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_bool($mixVariable), 'notBoolean', $strDescription);
     }
-    
+
     /**
      * is array 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function isArray($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_array ( $mixVariable ), 'isArray', $strDescription );
+    public static function isArray($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_array($mixVariable), 'isArray', $strDescription);
     }
-    
+
     /**
      * not is array 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notIsArray($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_array ( $mixVariable ), 'notIsArray', $strDescription );
+    public static function notIsArray($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_array($mixVariable), 'notIsArray', $strDescription);
     }
-    
+
     /**
      * path 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function path($mixVariable, $strDescription = null) {
-        return static::checkExpression ( file_exists ( $mixVariable ), 'path', $strDescription );
+    public static function path($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(file_exists($mixVariable), 'path', $strDescription);
     }
-    
+
     /**
      * not path 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notPath($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! file_exists ( $mixVariable ), 'notPath', $strDescription );
+    public static function notPath($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! file_exists($mixVariable), 'notPath', $strDescription);
     }
-    
+
     /**
      * file 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function file($mixVariable, $strDescription = null) {
-        return static::checkExpression ( file_exists ( $mixVariable ), 'file', $strDescription );
+    public static function file($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(file_exists($mixVariable), 'file', $strDescription);
     }
-    
+
     /**
      * not file 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notFile($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! file_exists ( $mixVariable ), 'notFile', $strDescription );
+    public static function notFile($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! file_exists($mixVariable), 'notFile', $strDescription);
     }
-    
+
     /**
      * dir 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function dir($mixVariable, $strDescription = null) {
-        return static::checkExpression ( is_dir ( $mixVariable ), 'dir', $strDescription );
+    public static function dir($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(is_dir($mixVariable), 'dir', $strDescription);
     }
-    
+
     /**
      * not dir 断言
      *
-     * @param mixed $mixVariable            
-     * @param string $strDescription            
+     * @param mixed $mixVariable
+     * @param string $strDescription
      * @return void
      */
-    public static function notDir($mixVariable, $strDescription = null) {
-        return static::checkExpression ( ! is_dir ( $mixVariable ), 'notDir', $strDescription );
+    public static function notDir($mixVariable, $strDescription = null)
+    {
+        return static::checkExpression(! is_dir($mixVariable), 'notDir', $strDescription);
     }
-    
+
     /**
      * 验证表达式
      *
-     * @param mixed $mixExpression            
+     * @param mixed $mixExpression
      * @return void
      */
-    protected static function checkExpression($mixExpression, $strType, $strDescription = null) {
-        if (static::$booOpen === false || $mixExpression)
+    protected static function checkExpression($mixExpression, $strType, $strDescription = null)
+    {
+        if (static::$booOpen === false || $mixExpression) {
             return true;
-        static::throwException ( $strType, $strDescription );
+        }
+        static::throwException($strType, $strDescription);
     }
-    
+
     /**
      * 断言验证失败抛出异常
      *
-     * @param string $strType            
-     * @param string $strDescription            
+     * @param string $strType
+     * @param string $strDescription
      * @return void
      */
-    protected static function throwException($strType, $strDescription = null) {
-        if (empty ( $strDescription ))
+    protected static function throwException($strType, $strDescription = null)
+    {
+        if (empty($strDescription)) {
             $strDescription = static::$arrMessage [$strType];
+        }
         $strDescription = '[' . $strType . ']' . $strDescription;
-        throw new InvalidArgumentException ( $strDescription );
+        throw new InvalidArgumentException($strDescription);
     }
 }

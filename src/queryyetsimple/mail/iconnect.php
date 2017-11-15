@@ -23,8 +23,9 @@ queryphp;
  * @since 2017.08.26
  * @version 1.0
  */
-interface iconnect {
-    
+interface iconnect
+{
+
     /**
      * 创建 transport
      *

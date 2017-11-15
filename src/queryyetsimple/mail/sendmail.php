@@ -25,23 +25,25 @@ use Swift_SendmailTransport;
  * @since 2017.08.28
  * @version 1.0
  */
-class sendmail extends aconnect implements iconnect {
-    
+class sendmail extends aconnect implements iconnect
+{
+
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [ 
-            'path' => '/usr/sbin/sendmail -bs' 
+    protected $arrOption = [
+            'path' => '/usr/sbin/sendmail -bs'
     ];
-    
+
     /**
      * 创建 transport
      *
      * @return mixed
      */
-    public function makeTransport() {
-        return Swift_SendmailTransport::newInstance ( $this->getOption ( 'path' ) );
+    public function makeTransport()
+    {
+        return Swift_SendmailTransport::newInstance($this->getOption('path'));
     }
 }

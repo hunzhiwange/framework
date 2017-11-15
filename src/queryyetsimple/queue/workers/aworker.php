@@ -26,34 +26,37 @@ use PHPQueue\Worker as PHPQueueWorker;
  * @since 2017.05.11
  * @version 1.0
  */
-abstract class aworker extends PHPQueueWorker {
-    
+abstract class aworker extends PHPQueueWorker
+{
+
     /**
      * 运行任务
      *
      * @param \queryyetsimple\queue\jobs\ijob $objJob
      * @return void
      */
-    public function runJob($objJob) {
-        parent::runJob ( $objJob );
-        
-        $this->formatMessage ( sprintf ( 'Trying do run job %s.', $objJob->getName () ) );
-        
-        $objJob->handle ();
-        
-        $this->formatMessage ( sprintf ( 'Job %s is done.' . "", $objJob->getName () ) );
-        $this->formatMessage ( 'Starting the next. ' );
-        
+    public function runJob($objJob)
+    {
+        parent::runJob($objJob);
+
+        $this->formatMessage(sprintf('Trying do run job %s.', $objJob->getName()));
+
+        $objJob->handle();
+
+        $this->formatMessage(sprintf('Job %s is done.' . "", $objJob->getName()));
+        $this->formatMessage('Starting the next. ');
+
         $this->result_data = $objJob->data;
     }
-    
+
     /**
      * 格式化输出消息
      *
-     * @param string $strMessage            
+     * @param string $strMessage
      * @return string
      */
-    protected function formatMessage($strMessage) {
-        Console::stdout ( sprintf ( '[%s]', date ( 'H:i:s' ) ) . $strMessage . PHP_EOL );
+    protected function formatMessage($strMessage)
+    {
+        Console::stdout(sprintf('[%s]', date('H:i:s')) . $strMessage . PHP_EOL);
     }
 }

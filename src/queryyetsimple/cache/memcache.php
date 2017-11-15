@@ -27,16 +27,16 @@ use queryyetsimple\support\option;
  * @since 2017.02.15
  * @version 1.0
  */
-class memcache extends acache implements iconnect {
-    
+class memcache extends acache implements iconnect
+{
     use option;
-    
+
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [ 
+    protected $arrOption = [
             'nocache_force' => '~@nocache_force',
             'time_preset' => [ ],
             'prefix' => '~@',
@@ -45,99 +45,106 @@ class memcache extends acache implements iconnect {
             'host' => '127.0.0.1',
             'port' => 11211,
             'compressed' => false,
-            'persistent' => false 
+            'persistent' => false
     ];
-    
+
     /**
      * 构造函数
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(array $arrOption = []) {
-        if (! extension_loaded ( 'memcache' )) {
-            throw new RuntimeException ( 'Memcache extension must be loaded before use.' );
+    public function __construct(array $arrOption = [])
+    {
+        if (! extension_loaded('memcache')) {
+            throw new RuntimeException('Memcache extension must be loaded before use.');
         }
-        
-        parent::__construct ( $arrOption );
-        
-        if (empty ( $this->arrOption ['servers'] )) {
-            $this->arrOption ['servers'] [] = [ 
-                    'host' => $this->getOption ( 'host' ),
-                    'port' => $this->getOption ( 'port' ) 
+
+        parent::__construct($arrOption);
+
+        if (empty($this->arrOption ['servers'])) {
+            $this->arrOption ['servers'] [] = [
+                    'host' => $this->getOption('host'),
+                    'port' => $this->getOption('port')
             ];
         }
-        
+
         // 连接缓存服务器
-        $this->hHandle = $this->getMemcache ();
-        
-        foreach ( $this->arrOption ['servers'] as $arrServer ) {
-            $bResult = $this->hHandle->addServer ( $arrServer ['host'], $arrServer ['port'], $this->arrOption ['persistent'] );
+        $this->hHandle = $this->getMemcache();
+
+        foreach ($this->arrOption ['servers'] as $arrServer) {
+            $bResult = $this->hHandle->addServer($arrServer ['host'], $arrServer ['port'], $this->arrOption ['persistent']);
             if (! $bResult) {
-                throw new RuntimeException ( sprintf ( 'Unable to connect the memcached server [%s:%s] failed.', $arrServer ['host'], $arrServer ['port'] ) );
+                throw new RuntimeException(sprintf('Unable to connect the memcached server [%s:%s] failed.', $arrServer ['host'], $arrServer ['port']));
             }
         }
     }
-    
+
     /**
      * 获取缓存
      *
-     * @param string $sCacheName            
-     * @param mixed $mixDefault            
-     * @param array $arrOption            
+     * @param string $sCacheName
+     * @param mixed $mixDefault
+     * @param array $arrOption
      * @return mixed
      */
-    public function get($sCacheName, $mixDefault = false, array $arrOption = []) {
-        if ($this->checkForce ())
+    public function get($sCacheName, $mixDefault = false, array $arrOption = [])
+    {
+        if ($this->checkForce()) {
             return $mixDefault;
-        
-        $mixData = $this->hHandle->get ( $this->getCacheName ( $sCacheName, $this->getOptions ( $arrOption )['prefix'] ) );
+        }
+
+        $mixData = $this->hHandle->get($this->getCacheName($sCacheName, $this->getOptions($arrOption)['prefix']));
         return $mixData === false ? $mixDefault : $mixData;
     }
-    
+
     /**
      * 设置缓存
      *
      * memcache 0 表示永不过期
      *
-     * @param string $sCacheName            
-     * @param mixed $mixData            
-     * @param array $arrOption            
+     * @param string $sCacheName
+     * @param mixed $mixData
+     * @param array $arrOption
      * @return void
      */
-    public function set($sCacheName, $mixData, array $arrOption = []) {
-        $arrOption = $this->getOptions ( $arrOption );
-        $arrOption ['expire'] = $this->cacheTime ( $sCacheName, $arrOption ['expire'] );
-        $this->hHandle->set ( $this->getCacheName ( $sCacheName, $arrOption ['prefix'] ), $mixData, $arrOption ['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption ['expire'] <= 0 ? 0 : ( int ) $arrOption ['expire'] );
+    public function set($sCacheName, $mixData, array $arrOption = [])
+    {
+        $arrOption = $this->getOptions($arrOption);
+        $arrOption ['expire'] = $this->cacheTime($sCacheName, $arrOption ['expire']);
+        $this->hHandle->set($this->getCacheName($sCacheName, $arrOption ['prefix']), $mixData, $arrOption ['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption ['expire'] <= 0 ? 0 : ( int ) $arrOption ['expire']);
     }
-    
+
     /**
      * 清除缓存
      *
-     * @param string $sCacheName            
-     * @param array $arrOption            
+     * @param string $sCacheName
+     * @param array $arrOption
      * @return void
      */
-    public function delele($sCacheName, array $arrOption = []) {
-        $this->hHandle->delete ( $this->getCacheName ( $sCacheName, $this->getOptions ( $arrOption )['prefix'] ) );
+    public function delele($sCacheName, array $arrOption = [])
+    {
+        $this->hHandle->delete($this->getCacheName($sCacheName, $this->getOptions($arrOption)['prefix']));
     }
-    
+
     /**
      * 关闭 memcache
      *
      * @return void
      */
-    public function close() {
-        $this->hHandle->close ();
+    public function close()
+    {
+        $this->hHandle->close();
         $this->hHandle = null;
     }
-    
+
     /**
      * 返回 memcache 对象
      *
      * @return \Memcache
      */
-    protected function getMemcache() {
-        return new Memcaches ();
+    protected function getMemcache()
+    {
+        return new Memcaches();
     }
 }

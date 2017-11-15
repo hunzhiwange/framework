@@ -23,8 +23,9 @@ queryphp;
  * @since 2017.07.19
  * @version 1.0
  */
-interface irender {
-    
+interface irender
+{
+
     /**
      * 渲染
      *

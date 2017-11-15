@@ -26,30 +26,33 @@ use queryyetsimple\support\provider;
  * @since 2017.05.12
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->singleton ( 'option', function ($oProject) {
-            return new option ();
-        } );
+    public function register()
+    {
+        $this->singleton('option', function ($oProject) {
+            return new option();
+        });
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
-                'option' => [ 
+    public static function providers()
+    {
+        return [
+                'option' => [
                         'queryyetsimple\option\option',
-                        'queryyetsimple\option\ioption' 
-                ] 
+                        'queryyetsimple\option\ioption'
+                ]
         ];
     }
 }

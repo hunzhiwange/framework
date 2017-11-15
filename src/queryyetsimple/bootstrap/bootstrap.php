@@ -23,137 +23,148 @@ queryphp;
  * @since 2017.04.13
  * @version 1.0
  */
-class bootstrap {
-    
+class bootstrap
+{
+
     /**
      * 父控制器
      *
      * @var queryyetsimple\bootstrap\project
      */
     protected $objProject;
-    
+
     /**
      * 项目配置
      *
      * @var array
      */
     protected $arrOption = [ ];
-    
+
     /**
      * 执行事件流程
      *
      * @var array
      */
-    protected $arrEvent = [ 
+    protected $arrEvent = [
             'check',
             'registerRuntime',
             'initProject',
             'router',
-            'runApp' 
+            'runApp'
     ];
-    
+
     /**
      * 构造函数
      *
-     * @param queryyetsimple\bootstrap\project $objProject            
-     * @param array $arrOption            
+     * @param queryyetsimple\bootstrap\project $objProject
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(project $objProject = null, $arrOption = []) {
+    public function __construct(project $objProject = null, $arrOption = [])
+    {
         $this->objProject = $objProject;
         $this->arrOption = $arrOption;
     }
-    
+
     /**
      * 执行初始化事件
      *
      * @return void
      */
-    public function run() {
-        foreach ( $this->arrEvent as $strEvent ) {
+    public function run()
+    {
+        foreach ($this->arrEvent as $strEvent) {
             $this->{$strEvent} ();
         }
     }
-    
+
     /**
      * 项目初始化验证
      *
      * @return void
      */
-    protected function check() {
-        if (version_compare ( PHP_VERSION, '5.5.0', '<' ))
-            die ( 'PHP 5.5.0 OR Higher' );
-        
-        if (env ( 'queryphp_version' ))
+    protected function check()
+    {
+        if (version_compare(PHP_VERSION, '5.5.0', '<')) {
+            die('PHP 5.5.0 OR Higher');
+        }
+
+        if (env('queryphp_version')) {
             return;
+        }
     }
-    
+
     /**
      * QueryPHP 系统错误处理
      *
      * @return void
      */
-    protected function registerRuntime() {
-        if (PHP_SAPI == 'cli')
+    protected function registerRuntime()
+    {
+        if (PHP_SAPI == 'cli') {
             return;
-        
-        set_error_handler ( [ 
+        }
+
+        set_error_handler([
                 'queryyetsimple\bootstrap\runtime\runtime',
-                'errorHandle' 
-        ] );
-        
-        register_shutdown_function ( [ 
+                'errorHandle'
+        ]);
+
+        register_shutdown_function([
                 'queryyetsimple\bootstrap\runtime\runtime',
-                'shutdownHandle' 
-        ] );
-        
-        set_exception_handler ( [ 
+                'shutdownHandle'
+        ]);
+
+        set_exception_handler([
                 'queryyetsimple\bootstrap\runtime\runtime',
-                'exceptionHandle' 
-        ] );
+                'exceptionHandle'
+        ]);
     }
-    
+
     /**
      * 初始化项目
      *
      * @return void
      */
-    protected function initProject() {
+    protected function initProject()
+    {
         // 注册公共组件命名空间
-        $this->objProject ['psr4']->import ( 'common', $this->objProject->pathCommon () );
-        
+        $this->objProject ['psr4']->import('common', $this->objProject->pathCommon());
+
         // 载入 project 引导文件
-        if (is_file ( ($strBootstrap = $this->objProject->pathCommon () . '/bootstrap.php') )) {
+        if (is_file(($strBootstrap = $this->objProject->pathCommon() . '/bootstrap.php'))) {
             require $strBootstrap;
         }
     }
-    
+
     /**
      * 执行路由请求
      *
      * @return void
      */
-    protected function router() {
+    protected function router()
+    {
         // 运行笑脸初始化应用
-        $this->objProject->make ( application::class, [ 
+        $this->objProject->make(application::class, [
                 application::INIT_APP,
-                $this->arrOption 
-        ] )->bootstrap ()->namespaces ();
-        
+                $this->arrOption
+        ])->bootstrap()->namespaces();
+
         // 完成路由请求
-        $this->objProject->router->run ();
+        $this->objProject->router->run();
     }
-    
+
     /**
      * 执行应用
      *
      * @return void
      */
-    protected function runApp() {
+    protected function runApp()
+    {
         // 创建 & 注册
-        $objApp = $this->objProject->make ( application::class )->bootstrap ( $this->objProject->router->app () );
-        
+        $objApp = $this->objProject->make(application::class)->bootstrap($this->objProject->router->app());
+
         // 运行应用
-        $objApp->run ();
+        $objApp->run();
     }
 }

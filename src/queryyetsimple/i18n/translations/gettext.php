@@ -27,154 +27,164 @@ use queryyetsimple\support\iarray;
  * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
-class gettext extends translations implements iarray {
-    
+class gettext extends translations implements iarray
+{
+
     /**
      * The gettext implementation of select_plural_form.
      *
      * It lives in this class, because there are more than one descendand, which will use it and
      * they can't share it effectively.
      *
-     * @param int $count            
+     * @param int $count
      */
-    function gettext_select_plural_form($count) {
-        if (! isset ( $this->_gettext_select_plural_form ) || is_null ( $this->_gettext_select_plural_form )) {
-            list ( $nplurals, $expression ) = $this->nplurals_and_expression_from_header ( $this->get_header ( 'Plural-Forms' ) );
+    public function gettext_select_plural_form($count)
+    {
+        if (! isset($this->_gettext_select_plural_form) || is_null($this->_gettext_select_plural_form)) {
+            list($nplurals, $expression) = $this->nplurals_and_expression_from_header($this->get_header('Plural-Forms'));
             $this->_nplurals = $nplurals;
-            $this->_gettext_select_plural_form = $this->make_plural_form_function ( $nplurals, $expression );
+            $this->_gettext_select_plural_form = $this->make_plural_form_function($nplurals, $expression);
         }
-        return call_user_func ( $this->_gettext_select_plural_form, $count );
+        return call_user_func($this->_gettext_select_plural_form, $count);
     }
-    
+
     /**
      *
-     * @param string $header            
+     * @param string $header
      * @return array
      */
-    function nplurals_and_expression_from_header($header) {
-        if (preg_match ( '/^\s*nplurals\s*=\s*(\d+)\s*;\s+plural\s*=\s*(.+)$/', $header, $matches )) {
+    public function nplurals_and_expression_from_header($header)
+    {
+        if (preg_match('/^\s*nplurals\s*=\s*(\d+)\s*;\s+plural\s*=\s*(.+)$/', $header, $matches)) {
             $nplurals = ( int ) $matches [1];
-            $expression = trim ( $this->parenthesize_plural_exression ( $matches [2] ) );
-            return array (
+            $expression = trim($this->parenthesize_plural_exression($matches [2]));
+            return array(
                     $nplurals,
-                    $expression 
+                    $expression
             );
         } else {
-            return array (
+            return array(
                     2,
-                    'n != 1' 
+                    'n != 1'
             );
         }
     }
-    
+
     /**
      * Makes a function, which will return the right translation index, according to the
      * plural forms header
      *
-     * @param int $nplurals            
-     * @param string $expression            
+     * @param int $nplurals
+     * @param string $expression
      */
-    function make_plural_form_function($nplurals, $expression) {
-        $expression = str_replace ( 'n', '$n', $expression );
+    public function make_plural_form_function($nplurals, $expression)
+    {
+        $expression = str_replace('n', '$n', $expression);
         $func_body = "
             \$index = (int)($expression);
             return (\$index < $nplurals)? \$index : $nplurals - 1;";
-        return create_function ( '$n', $func_body );
+        return create_function('$n', $func_body);
     }
-    
+
     /**
      * Adds parentheses to the inner parts of ternary operators in
      * plural expressions, because PHP evaluates ternary oerators from left to right
      *
-     * @param string $expression
-     *            the expression without parentheses
+     * @param string $expression the expression without parentheses
      * @return string the expression with parentheses added
      */
-    function parenthesize_plural_exression($expression) {
+    public function parenthesize_plural_exression($expression)
+    {
         $expression .= ';';
         $res = '';
         $depth = 0;
-        for($i = 0; $i < strlen ( $expression ); ++ $i) {
+        for ($i = 0; $i < strlen($expression); ++ $i) {
             $char = $expression [$i];
             switch ($char) {
-                case '?' :
+                case '?':
                     $res .= ' ? (';
                     $depth ++;
                     break;
-                case ':' :
+                case ':':
                     $res .= ') : (';
                     break;
-                case ';' :
-                    $res .= str_repeat ( ')', $depth ) . ';';
+                case ';':
+                    $res .= str_repeat(')', $depth) . ';';
                     $depth = 0;
                     break;
-                default :
+                default:
                     $res .= $char;
             }
         }
-        return rtrim ( $res, ';' );
+        return rtrim($res, ';');
     }
-    
+
     /**
      *
-     * @param string $translation            
+     * @param string $translation
      * @return array
      */
-    function make_headers($translation) {
-        $headers = array ();
+    public function make_headers($translation)
+    {
+        $headers = array();
         // sometimes \ns are used instead of real new lines
-        $translation = str_replace ( '\n', "\n", $translation );
-        $lines = explode ( "\n", $translation );
-        foreach ( $lines as $line ) {
-            $parts = explode ( ':', $line, 2 );
-            if (! isset ( $parts [1] ))
+        $translation = str_replace('\n', "\n", $translation);
+        $lines = explode("\n", $translation);
+        foreach ($lines as $line) {
+            $parts = explode(':', $line, 2);
+            if (! isset($parts [1])) {
                 continue;
-            $headers [trim ( $parts [0] )] = trim ( $parts [1] );
+            }
+            $headers [trim($parts [0])] = trim($parts [1]);
         }
         return $headers;
     }
-    
+
     /**
      *
-     * @param string $header            
-     * @param string $value            
+     * @param string $header
+     * @param string $value
      */
-    function set_header($header, $value) {
-        parent::set_header ( $header, $value );
+    public function set_header($header, $value)
+    {
+        parent::set_header($header, $value);
         if ('Plural-Forms' == $header) {
-            list ( $nplurals, $expression ) = $this->nplurals_and_expression_from_header ( $this->get_header ( 'Plural-Forms' ) );
+            list($nplurals, $expression) = $this->nplurals_and_expression_from_header($this->get_header('Plural-Forms'));
             $this->_nplurals = $nplurals;
-            $this->_gettext_select_plural_form = $this->make_plural_form_function ( $nplurals, $expression );
+            $this->_gettext_select_plural_form = $this->make_plural_form_function($nplurals, $expression);
         }
     }
-    
+
     /**
      * 读取文件到数组
      *
-     * @param string|array $strFilename            
+     * @param string|array $strFilename
      * @return array
      */
-    public function readToArray($mixFilename) {
-        if (! is_array ( $mixFilename )) {
-            $mixFilename = [ 
-                    $mixFilename 
+    public function readToArray($mixFilename)
+    {
+        if (! is_array($mixFilename)) {
+            $mixFilename = [
+                    $mixFilename
             ];
         }
-        
-        foreach ( $mixFilename as $strFilename )
-            $this->import_from_file ( $strFilename );
-        
-        return $this->toArray ();
+
+        foreach ($mixFilename as $strFilename) {
+            $this->import_from_file($strFilename);
+        }
+
+        return $this->toArray();
     }
-    
+
     /**
      * 对象转数组
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         $arrData = [ ];
-        foreach ( $this->entries as $strKey => $objEntry ) {
+        foreach ($this->entries as $strKey => $objEntry) {
             $arrData [$strKey] = $objEntry->translations [0];
         }
         return $arrData;

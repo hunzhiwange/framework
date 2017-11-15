@@ -25,90 +25,98 @@ use queryyetsimple\log\ilog;
  * @since 2017.05.04
  * @version 1.0
  */
-abstract class message {
-    
+abstract class message
+{
+
     /**
      * 返回项目容器
      *
      * @var \queryyetsimple\bootstrap\project
      */
     protected $oProject;
-    
+
     /**
      * 错误消息
      *
      * @var string
      */
     protected $strMessage;
-    
+
     /**
      * 错误消息执行入口
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
         if ($this->strMessage) {
-            $this->log ( $this->strMessage );
-            $this->toResponse ( $this->strMessage );
+            $this->log($this->strMessage);
+            $this->toResponse($this->strMessage);
         }
     }
-    
+
     /**
      * 记录日志
      *
-     * @param string $strMessage            
+     * @param string $strMessage
      * @return void
      */
-    protected function log($strMessage) {
-        if ($this->oProject ['option']->get ( 'log\runtime_enabled', false )) {
-            $this->oProject ['log']->write ( ilog::ERROR, $strMessage );
+    protected function log($strMessage)
+    {
+        if ($this->oProject ['option']->get('log\runtime_enabled', false)) {
+            $this->oProject ['log']->write(ilog::ERROR, $strMessage);
         }
     }
-    
+
     /**
      * 输出一个致命错误
      *
-     * @param string $sMessage            
+     * @param string $sMessage
      * @return void
      */
-    protected function errorMessage($sMessage) {
-        require_once dirname ( __DIR__ ) . '/template/error.php';
+    protected function errorMessage($sMessage)
+    {
+        require_once dirname(__DIR__) . '/template/error.php';
     }
-    
+
     /**
      * 格式为 response
      *
-     * @param string $sMessage            
+     * @param string $sMessage
      * @return void
      */
-    protected function toResponse($sMessage) {
-        if (property_exists ( $this, 'objException' ) && method_exists ( $this->objException, 'getResponse' )) {
-            return $this->objException->getResponse ()->output ();
+    protected function toResponse($sMessage)
+    {
+        if (property_exists($this, 'objException') && method_exists($this->objException, 'getResponse')) {
+            return $this->objException->getResponse()->output();
         }
-        
-        if ($this->oProject ['option'] ['default_response'] == 'api') {
-            $strContent = $this->errorMessage ( $sMessage );
-        } else {
-            $intLevel = ob_get_level ();
-            ob_start ();
-            
-            try {
-                $this->errorMessage ( $sMessage );
-            } 
 
-            catch ( Exceptions $oE ) {
-                while ( ob_get_level () > $intLevel ) {
-                    ob_end_clean ();
+        if ($this->oProject ['option'] ['default_response'] == 'api') {
+            $strContent = $this->errorMessage($sMessage);
+        } else {
+            $intLevel = ob_get_level();
+            ob_start();
+
+            try {
+                $this->errorMessage($sMessage);
+            } catch (Exceptions $oE) {
+                while (ob_get_level() > $intLevel) {
+                    ob_end_clean();
                 }
-                
+
                 throw $oE;
             }
-            
-            $strContent = ob_get_clean ();
+
+            $strContent = ob_get_clean();
         }
-        
-        $booStatusCode = property_exists ( $this, 'objException' ) && method_exists ( $this->objException, 'statusCode' );
-        
-        $this->oProject ['response']->data ( $strContent )->ifs ( $booStatusCode )->code ( $booStatusCode ? $this->objException->statusCode () : null )->endIfs ()->output ();
+
+        $booStatusCode = property_exists($this, 'objException') && method_exists($this->objException, 'statusCode');
+
+        $this->oProject ['response']
+            ->data($strContent)
+            ->ifs($booStatusCode)
+            ->code($booStatusCode ? $this->objException->statusCode() : null)
+            ->endIfs()
+            ->output();
     }
 }

@@ -23,8 +23,9 @@ queryphp;
  * @since 2017.10.14
  * @version 1.0
  */
-interface ientity {
-    
+interface ientity
+{
+
     /**
      * 唯一标识符
      *

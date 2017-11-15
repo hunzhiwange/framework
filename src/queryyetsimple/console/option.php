@@ -25,5 +25,6 @@ use Symfony\Component\Console\Input\InputOption;
  * @since 2017.05.09
  * @version 1.0
  */
-class option extends InputOption {
-}  
+class option extends InputOption
+{
+}

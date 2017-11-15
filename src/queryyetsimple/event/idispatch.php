@@ -23,45 +23,46 @@ queryphp;
  * @since 2017.07.12
  * @version 1.0
  */
-interface idispatch {
-    
+interface idispatch
+{
+
     /**
      * 执行一个事件
      *
-     * @param string|object $mixEvent            
+     * @param string|object $mixEvent
      * @return void
      */
     public function run($mixEvent);
-    
+
     /**
      * 注册监听器
      *
-     * @param string|array $mixEvent            
-     * @param mixed $mixListener            
+     * @param string|array $mixEvent
+     * @param mixed $mixListener
      * @return void
      */
     public function listener($mixEvent, $mixListener);
-    
+
     /**
      * 获取一个监听器
      *
-     * @param string $strEvent            
+     * @param string $strEvent
      * @return array
      */
     public function getListener($strEvent);
-    
+
     /**
      * 判断监听器是否存在
      *
-     * @param string $strEvent            
+     * @param string $strEvent
      * @return bool
      */
     public function hasListener($strEvent);
-    
+
     /**
      * 删除一个事件所有监听器
      *
-     * @param string $strEvent            
+     * @param string $strEvent
      * @return void
      */
     public function deleteListener($strEvent);

@@ -23,36 +23,39 @@ queryphp;
  * @since 2017.11.08
  * @version 1.0
  */
-class auth implements iauth {
-    
+class auth implements iauth
+{
+
     /**
      * auth 连接对象
      *
      * @var \queryyetsimple\database\iconnect
      */
     protected $objConnect;
-    
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\auth\iconnect $objConnect            
+     * @param \queryyetsimple\auth\iconnect $objConnect
      * @return void
      */
-    public function __construct(iconnect $objConnect) {
+    public function __construct(iconnect $objConnect)
+    {
         $this->objConnect = $objConnect;
     }
-    
+
     /**
      * 拦截匿名注册控制器方法
      *
-     * @param 方法名 $sMethod            
-     * @param 参数 $arrArgs            
+     * @param 方法名 $sMethod
+     * @param 参数 $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs) {
-        return call_user_func_array ( [ 
+    public function __call($sMethod, $arrArgs)
+    {
+        return call_user_func_array([
                 $this->objConnect,
-                $sMethod 
-        ], $arrArgs );
+                $sMethod
+        ], $arrArgs);
     }
 }

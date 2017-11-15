@@ -29,63 +29,67 @@ use queryyetsimple\mvc\too_many_requests_http;
  * @since 2017.08.10
  * @version 1.0
  */
-class throttler {
-    
+class throttler
+{
+
     /**
      * throttler
      *
      * @var \queryyetsimple\throttler\ithrottler
      */
     protected $objThrottler;
-    
+
     /**
      * HTTP Response
      *
      * @var \queryyetsimple\http\response $objResponse
      */
     protected $objResponse;
-    
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\throttler\ithrottler $objThrottler            
-     * @param \queryyetsimple\http\response $objResponse            
+     * @param \queryyetsimple\throttler\ithrottler $objThrottler
+     * @param \queryyetsimple\http\response $objResponse
      * @return void
      */
-    public function __construct(ithrottler $objThrottler, response $objResponse) {
+    public function __construct(ithrottler $objThrottler, response $objResponse)
+    {
         $this->objThrottler = $objThrottler;
         $this->objResponse = $objResponse;
     }
-    
+
     /**
      * 请求
      *
-     * @param \Closure $calNext            
-     * @param \queryyetsimple\http\request $objRequest            
-     * @param int $intLimit            
-     * @param int $intLime            
+     * @param \Closure $calNext
+     * @param \queryyetsimple\http\request $objRequest
+     * @param int $intLimit
+     * @param int $intLime
      * @return mixed
      */
-    public function handle(Closure $calNext, request $objRequest, $intLimit = 60, $intLime = 60) {
-        $oRateLimiter = $this->objThrottler->create ( null, ( int ) $intLimit, ( int ) $intLime );
-        
-        if ($oRateLimiter->attempt ()) {
-            $this->header ( $oRateLimiter );
-            throw new too_many_requests_http ( 'Too many attempts.' );
+    public function handle(Closure $calNext, request $objRequest, $intLimit = 60, $intLime = 60)
+    {
+        $oRateLimiter = $this->objThrottler->create(null, ( int ) $intLimit, ( int ) $intLime);
+
+        if ($oRateLimiter->attempt()) {
+            $this->header($oRateLimiter);
+            throw new too_many_requests_http('Too many attempts.');
         } else {
-            $this->header ( $oRateLimiter );
+            $this->header($oRateLimiter);
         }
-        
-        return $calNext ( $objRequest );
+
+        return $calNext($objRequest);
     }
-    
+
     /**
      * 发送 HEADER
      *
-     * @param \queryyetsimple\throttler\rate_limiter $oRateLimiter            
+     * @param \queryyetsimple\throttler\rate_limiter $oRateLimiter
      * @return void
      */
-    protected function header($oRateLimiter) {
-        $this->objResponse->headers ( $oRateLimiter->toArray () );
+    protected function header($oRateLimiter)
+    {
+        $this->objResponse->headers($oRateLimiter->toArray());
     }
 }

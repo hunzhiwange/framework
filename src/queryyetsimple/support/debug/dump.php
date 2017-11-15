@@ -27,54 +27,58 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
  * @since 2017.04.05
  * @version 1.0
  */
-class dump {
-    
+class dump
+{
+
     /**
      * 调试一个变量
      *
-     * @param mixed $mixValue            
-     * @param boolean $booSimple            
+     * @param mixed $mixValue
+     * @param boolean $booSimple
      * @return void|string
      */
-    public static function dump($mixValue, $booSimple = false) {
+    public static function dump($mixValue, $booSimple = false)
+    {
         static $objDump, $objVarCloner;
-        if ($booSimple === false && class_exists ( CliDumper::class )) {
+        if ($booSimple === false && class_exists(CliDumper::class)) {
             if (! $objDump) {
-                $objDump = ('cli' === PHP_SAPI ? new CliDumper () : new HtmlDumper ());
-                $objVarCloner = new VarCloner ();
+                $objDump = ('cli' === PHP_SAPI ? new CliDumper() : new HtmlDumper());
+                $objVarCloner = new VarCloner();
             }
-            $objDump->dump ( $objVarCloner->cloneVar ( $mixValue ) );
+            $objDump->dump($objVarCloner->cloneVar($mixValue));
         } else {
-            $arrArgs = func_get_args ();
-            array_shift ( $arrArgs );
-            array_shift ( $arrArgs );
-            array_unshift ( $arrArgs, $mixValue );
-            return call_user_func_array ( [ 
+            $arrArgs = func_get_args();
+            array_shift($arrArgs);
+            array_shift($arrArgs);
+            array_unshift($arrArgs, $mixValue);
+            return call_user_func_array([
                     'queryyetsimple\support\debug\dump',
-                    'varDump' 
-            ], $arrArgs );
+                    'varDump'
+            ], $arrArgs);
         }
     }
-    
+
     /**
      * 调试变量
      *
-     * @param mixed $Var            
-     * @param boolean $bEcho            
+     * @param mixed $Var
+     * @param boolean $bEcho
      * @return mixed
      */
-    public static function varDump($mixVar, $bEcho = true) {
-        ob_start ();
-        var_dump ( $mixVar );
-        $sOutput = ob_get_clean ();
-        if (! extension_loaded ( 'xdebug' )) {
-            $sOutput = preg_replace ( "/\]\=\>\n(\s+)/m", "] => ", $sOutput );
-            $sOutput = 'cli' === PHP_SAPI ? $sOutput : '<pre>' . htmlspecialchars ( $sOutput, ENT_QUOTES ) . '</pre>';
+    public static function varDump($mixVar, $bEcho = true)
+    {
+        ob_start();
+        var_dump($mixVar);
+        $sOutput = ob_get_clean();
+        if (! extension_loaded('xdebug')) {
+            $sOutput = preg_replace("/\]\=\>\n(\s+)/m", "] => ", $sOutput);
+            $sOutput = 'cli' === PHP_SAPI ? $sOutput : '<pre>' . htmlspecialchars($sOutput, ENT_QUOTES) . '</pre>';
         }
-        
-        if ($bEcho)
+
+        if ($bEcho) {
             echo $sOutput;
-        else
+        } else {
             return $sOutput;
+        }
     }
 }

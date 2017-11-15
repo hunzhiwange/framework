@@ -25,5 +25,6 @@ use queryyetsimple\support\observer\subject as observer_subject;
  * @since 2017.07.12
  * @version 1.0
  */
-class subject extends observer_subject {
+class subject extends observer_subject
+{
 }

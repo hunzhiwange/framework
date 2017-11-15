@@ -28,71 +28,77 @@ use queryyetsimple\encryption\iencryption;
  * @since 2017.09.07
  * @version 1.0
  */
-class session extends aconnect implements iconnect {
-    
+class session extends aconnect implements iconnect
+{
+
     /**
      * session
      *
      * @var \queryyetsimple\session\isession
      */
     protected $oSession;
-    
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\imodel $oUser            
-     * @param \queryyetsimple\encryption\iencryption $oEncryption            
-     * @param \queryyetsimple\validate\ivalidate $oValidate            
-     * @param \queryyetsimple\session\isession $oSession            
-     * @param array $arrOption            
+     * @param \queryyetsimple\mvc\imodel $oUser
+     * @param \queryyetsimple\encryption\iencryption $oEncryption
+     * @param \queryyetsimple\validate\ivalidate $oValidate
+     * @param \queryyetsimple\session\isession $oSession
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(imodel $oUser, iencryption $oEncryption, ivalidate $oValidate, isession $oSession, array $arrOption = []) {
+    public function __construct(imodel $oUser, iencryption $oEncryption, ivalidate $oValidate, isession $oSession, array $arrOption = [])
+    {
         $this->oSession = $oSession;
-        
-        parent::__construct ( $oUser, $oEncryption, $oValidate, $arrOption );
+
+        parent::__construct($oUser, $oEncryption, $oValidate, $arrOption);
     }
-    
+
     /**
      * 设置认证名字
      *
-     * @param \queryyetsimple\mvc\imodel $oUser            
+     * @param \queryyetsimple\mvc\imodel $oUser
      * @return void
      */
-    protected function setLoginTokenName($oUser) {
+    protected function setLoginTokenName($oUser)
+    {
     }
-    
+
     /**
      * 数据持久化
      *
-     * @param string $strKey            
-     * @param string $mixValue            
-     * @param mixed $mixExpire            
+     * @param string $strKey
+     * @param string $mixValue
+     * @param mixed $mixExpire
      * @return void
      */
-    protected function setPersistence($strKey, $mixValue, $mixExpire = null) {
-        $this->oSession->set ( $strKey, $mixValue, [ 
-                'expire' => $mixExpire 
-        ] );
+    protected function setPersistence($strKey, $mixValue, $mixExpire = null)
+    {
+        $this->oSession->set($strKey, $mixValue, [
+                'expire' => $mixExpire
+        ]);
     }
-    
+
     /**
      * 获取持久化数据
      *
-     * @param string $strKey            
+     * @param string $strKey
      * @return mixed
      */
-    protected function getPersistence($strKey) {
-        return $this->oSession->get ( $strKey );
+    protected function getPersistence($strKey)
+    {
+        return $this->oSession->get($strKey);
     }
-    
+
     /**
      * 删除持久化数据
      *
-     * @param string $strKey            
+     * @param string $strKey
      * @return void
      */
-    protected function deletePersistence($strKey) {
-        $this->oSession->delele ( $strKey );
+    protected function deletePersistence($strKey)
+    {
+        $this->oSession->delele($strKey);
     }
 }

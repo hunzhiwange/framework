@@ -25,29 +25,29 @@ use queryyetsimple\router\router;
  * @since 2017.04.23
  * @version 1.0
  */
-interface icontroller extends iview {
-    
+interface icontroller extends iview
+{
+
     /**
      * 返回父控制器
      *
-     * @param \queryyetsimple\mvc\iview $objView            
+     * @param \queryyetsimple\mvc\iview $objView
      * @return $this
      */
     public function setView(iview $objView);
-    
+
     /**
      * 返回父控制器
      *
-     * @param \queryyetsimple\router\router $objRouter            
+     * @param \queryyetsimple\router\router $objRouter
      * @return $this
      */
     public function setRouter(router $objRouter);
-    
+
     /**
      * 执行子方法器
      *
-     * @param string $sActionName
-     *            方法名
+     * @param string $sActionName 方法名
      * @return void
      */
     public function action($sActionName);

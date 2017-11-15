@@ -25,14 +25,16 @@ use queryyetsimple\support\face;
  * @since 2017.06.10
  * @version 1.0
  */
-class option extends face {
-    
+class option extends face
+{
+
     /**
      * 返回门面名字
      *
      * @return string
      */
-    protected static function name() {
+    protected static function name()
+    {
         return 'option';
     }
 }
@@ -47,5 +49,6 @@ namespace qys;
  * @since 2017.06.10
  * @version 1.0
  */
-class option extends \queryyetsimple\option {
+class option extends \queryyetsimple\option
+{
 }

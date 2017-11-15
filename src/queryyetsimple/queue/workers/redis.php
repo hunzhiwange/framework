@@ -23,5 +23,6 @@ queryphp;
  * @since 2017.05.11
  * @version 1.0
  */
-class redis extends aworker implements iworker {
+class redis extends aworker implements iworker
+{
 }

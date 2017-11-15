@@ -11,7 +11,7 @@ class {{file_name}} extends action {
      * 构造函数
      *
      * @return void
-     */      
+     */
     public function __construct() {
     }
 

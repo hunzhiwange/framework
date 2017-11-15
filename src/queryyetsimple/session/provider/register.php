@@ -26,63 +26,69 @@ use queryyetsimple\support\provider;
  * @since 2017.06.05
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->sessions ();
-        $this->session ();
-        $this->middleware ();
+    public function register()
+    {
+        $this->sessions();
+        $this->session();
+        $this->middleware();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
+    public static function providers()
+    {
+        return [
                 'sessions' => 'queryyetsimple\session\manager',
-                'session' => [ 
+                'session' => [
                         'queryyetsimple\session\session',
-                        'queryyetsimple\session\isession' 
+                        'queryyetsimple\session\isession'
                 ],
-                'queryyetsimple\session\middleware\session' 
+                'queryyetsimple\session\middleware\session'
         ];
     }
-    
+
     /**
      * 注册 sessions 服务
      *
      * @return void
      */
-    protected function sessions() {
-        $this->singleton ( 'sessions', function ($oProject) {
-            return new manager ( $oProject );
-        } );
+    protected function sessions()
+    {
+        $this->singleton('sessions', function ($oProject) {
+            return new manager($oProject);
+        });
     }
-    
+
     /**
      * 注册 session 服务
      *
      * @return void
      */
-    protected function session() {
-        $this->singleton ( 'session', function ($oProject) {
-            return $oProject ['sessions']->connect ();
-        } );
+    protected function session()
+    {
+        $this->singleton('session', function ($oProject) {
+            return $oProject ['sessions']->connect();
+        });
     }
-    
+
     /**
      * 注册 middleware 服务
      *
      * @return void
      */
-    protected function middleware() {
-        $this->singleton ( 'queryyetsimple\session\middleware\session' );
+    protected function middleware()
+    {
+        $this->singleton('queryyetsimple\session\middleware\session');
     }
 }

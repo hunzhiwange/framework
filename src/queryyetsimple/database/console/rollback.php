@@ -25,15 +25,17 @@ use Phinx\Console\Command\Rollback as PhinxRollback;
  * @since 2017.05.09
  * @version 1.0
  */
-class rollback extends PhinxRollback {
-    
+class rollback extends PhinxRollback
+{
+
     /**
      * Configures the current command.
      *
      * @return void
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:rollback' );
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:rollback');
     }
-}  
+}

@@ -26,81 +26,88 @@ use queryyetsimple\support\option;
  * @since 2017.06.06
  * @version 1.0
  */
-abstract class aconnect {
-    
+abstract class aconnect
+{
     use option;
-    
+
     /**
      * 缓存仓储
      *
      * @var \queryyetsimple\cache\icache
      */
     protected $objCache;
-    
+
     /**
      * 构造函数
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(array $arrOption = []) {
-        $this->options ( $arrOption );
+    public function __construct(array $arrOption = [])
+    {
+        $this->options($arrOption);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SessionHandler::close()
      */
-    public function close() {
-        $this->gc ( ini_get ( 'session.gc_maxlifetime' ) );
-        $this->objCache->close ();
+    public function close()
+    {
+        $this->gc(ini_get('session.gc_maxlifetime'));
+        $this->objCache->close();
         return true;
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SessionHandler::read()
      */
-    public function read($strSessID) {
-        return $this->objCache->get ( $this->getSessionName ( $strSessID ) );
+    public function read($strSessID)
+    {
+        return $this->objCache->get($this->getSessionName($strSessID));
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SessionHandler::write()
      */
-    public function write($strSessID, $mixSessData) {
-        $this->objCache->set ( $this->getSessionName ( $strSessID ), $mixSessData );
+    public function write($strSessID, $mixSessData)
+    {
+        $this->objCache->set($this->getSessionName($strSessID), $mixSessData);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SessionHandler::destroy()
      */
-    public function destroy($strSessID) {
-        $this->objCache->delele ( $this->getSessionName ( $strSessID ) );
+    public function destroy($strSessID)
+    {
+        $this->objCache->delele($this->getSessionName($strSessID));
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SessionHandler::gc()
      */
-    public function gc($intMaxlifetime) {
+    public function gc($intMaxlifetime)
+    {
         return true;
     }
-    
+
     /**
      * 获取 session 名字
      *
-     * @param string $strSessID            
+     * @param string $strSessID
      * @return string
      */
-    protected function getSessionName($strSessID) {
+    protected function getSessionName($strSessID)
+    {
         return $this->arrOption ['prefix'] . $strSessID;
     }
 }

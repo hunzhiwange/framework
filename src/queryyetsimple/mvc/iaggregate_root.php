@@ -23,5 +23,6 @@ queryphp;
  * @since 2017.10.14
  * @version 1.0
  */
-interface iaggregate_root extends ientity {
+interface iaggregate_root extends ientity
+{
 }

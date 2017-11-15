@@ -25,15 +25,17 @@ use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
  * @since 2017.05.09
  * @version 1.0
  */
-class seedcreate extends PhinxSeedCreate {
-    
+class seedcreate extends PhinxSeedCreate
+{
+
     /**
      * Configures the current command.
      *
      * @return void
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:seedcreate' );
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:seedcreate');
     }
-}  
+}

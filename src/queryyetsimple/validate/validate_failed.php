@@ -25,51 +25,55 @@ use Exception;
  * @since 2017.08.25
  * @version 1.0
  */
-class validate_failed extends Exception {
-    
+class validate_failed extends Exception
+{
+
     /**
      * 验证器
      *
      * @var \queryyetsimple\validate\ivalidate
      */
     public $objValidate;
-    
+
     /**
      * 响应组件
      *
      * @var \queryyetsimple\http\response|null
      */
     public $objResponse;
-    
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\validate\ivalidate $objValidate            
-     * @param \queryyetsimple\http\response $objResponse            
+     * @param \queryyetsimple\validate\ivalidate $objValidate
+     * @param \queryyetsimple\http\response $objResponse
      * @return void
      */
-    public function __construct($objValidate, $objResponse = null) {
-        parent::__construct ( 'Validate failed' );
-        
+    public function __construct($objValidate, $objResponse = null)
+    {
+        parent::__construct('Validate failed');
+
         $this->objResponse = $objResponse;
         $this->objValidate = $objValidate;
     }
-    
+
     /**
      * 响应实例
      *
      * @return \queryyetsimple\http\response
      */
-    public function getResponse() {
+    public function getResponse()
+    {
         return $this->objResponse;
     }
-    
+
     /**
      * 返回验证器
      *
      * @return \queryyetsimple\validate\ivalidate
      */
-    public function getValidate() {
+    public function getValidate()
+    {
         return $this->objValidate;
     }
 }

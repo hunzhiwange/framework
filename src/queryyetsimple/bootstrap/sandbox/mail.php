@@ -25,14 +25,16 @@ use queryyetsimple\support\face;
  * @since 2017.08.26
  * @version 1.0
  */
-class mail extends face {
+class mail extends face
+{
 
     /**
      * 返回门面名字
      *
      * @return string
      */
-    protected static function name() {
+    protected static function name()
+    {
         return 'mails';
     }
 }
@@ -47,5 +49,6 @@ namespace qys;
  * @since 2017.08.26
  * @version 1.0
  */
-class mail extends \queryyetsimple\mail {
+class mail extends \queryyetsimple\mail
+{
 }

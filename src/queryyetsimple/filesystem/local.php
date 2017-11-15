@@ -27,30 +27,32 @@ use League\Flysystem\Adapter\Local as AdapterLocal;
  * @see https://flysystem.thephpleague.com/adapter/local/
  * @version 1.0
  */
-class local extends aconnect implements iconnect {
-    
+class local extends aconnect implements iconnect
+{
+
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [ 
+    protected $arrOption = [
             'path' => '',
             'write_flags' => LOCK_EX,
             'link_handling' => AdapterLocal::DISALLOW_LINKS,
-            'permissions' => [ ] 
+            'permissions' => [ ]
     ];
-    
+
     /**
      * 创建连接
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeConnect() {
-        if (empty ( $this->getOption ( 'path' ) )) {
-            throw new InvalidArgumentException ( 'The local requires path option' );
+    public function makeConnect()
+    {
+        if (empty($this->getOption('path'))) {
+            throw new InvalidArgumentException('The local requires path option');
         }
-        
-        return new AdapterLocal ( $this->getOption ( 'path' ), $this->getOption ( 'write_flags' ), $this->getOption ( 'link_handling' ), $this->getOption ( 'permissions' ) );
+
+        return new AdapterLocal($this->getOption('path'), $this->getOption('write_flags'), $this->getOption('link_handling'), $this->getOption('permissions'));
     }
 }

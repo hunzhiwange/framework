@@ -23,23 +23,26 @@ queryphp;
  * @since 2017.05.27
  * @version 1.0
  */
-class first {
-    
+class first
+{
+
     /**
      * 构造函数
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
-    
+
     /**
      * 响应请求
      *
-     * @param string $strPassed            
+     * @param string $strPassed
      * @return string
      */
-    public function handle($strPassed) {
+    public function handle($strPassed)
+    {
         return $strPassed . ' Love';
     }
 }

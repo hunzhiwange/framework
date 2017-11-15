@@ -23,21 +23,24 @@ queryphp;
  * @since 2017.05.08
  * @version 1.0
  */
-class application {
-    
+class application
+{
+
     /**
      * 创建一个 phpunit 应用程序
      *
      * @return queryyetsimple\testing\application
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
-    
+
     /**
      * 默认方法
      *
      * @return void
      */
-    public function run() {
+    public function run()
+    {
     }
 }

@@ -23,19 +23,21 @@ queryphp;
  * @since 2017.05.04
  * @version 1.0
  */
-class error extends message {
-    
+class error extends message
+{
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\bootstrap\project $oProject            
-     * @param int $nErrorNo            
-     * @param string $sErrStr            
-     * @param string $sErrFile            
-     * @param int $nErrLine            
+     * @param \queryyetsimple\bootstrap\project $oProject
+     * @param int $nErrorNo
+     * @param string $sErrStr
+     * @param string $sErrFile
+     * @param int $nErrLine
      * @return void
      */
-    public function __construct($oProject, $nErrorNo, $sErrStr, $sErrFile, $nErrLine) {
+    public function __construct($oProject, $nErrorNo, $sErrStr, $sErrFile, $nErrLine)
+    {
         $this->oProject = $oProject;
         if ($nErrorNo) {
             $this->strMessage = "[{$nErrorNo}]: {$sErrStr}<br> File: {$sErrFile}<br> Line: {$nErrLine}";

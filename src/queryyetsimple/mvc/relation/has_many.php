@@ -26,205 +26,222 @@ use queryyetsimple\support\collection;
  * @since 2017.09.28
  * @version 1.0
  */
-class has_many extends relation {
-    
+class has_many extends relation
+{
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\imodel $objTargetModel            
-     * @param \queryyetsimple\mvc\imodel $objSourceModel            
-     * @param string $strTargetKey            
-     * @param string $strSourceKey            
+     * @param \queryyetsimple\mvc\imodel $objTargetModel
+     * @param \queryyetsimple\mvc\imodel $objSourceModel
+     * @param string $strTargetKey
+     * @param string $strSourceKey
      * @return void
      */
-    public function __construct(imodel $objTargetModel, imodel $objSourceModel, $strTargetKey, $strSourceKey) {
-        parent::__construct ( $objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey );
+    public function __construct(imodel $objTargetModel, imodel $objSourceModel, $strTargetKey, $strSourceKey)
+    {
+        parent::__construct($objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey);
     }
-    
+
     /**
      * 关联基础查询条件
      *
      * @return void
      */
-    public function addRelationCondition() {
+    public function addRelationCondition()
+    {
         if (static::$booRelationCondition) {
-            $this->objSelect->where ( $this->strTargetKey, $this->getSourceValue () );
-            $this->objSelect->whereNotNull ( $this->strTargetKey );
+            $this->objSelect->where($this->strTargetKey, $this->getSourceValue());
+            $this->objSelect->whereNotNull($this->strTargetKey);
         }
     }
-    
+
     /**
      * 设置预载入关联查询条件
      *
-     * @param \queryyetsimple\mvc\imodel[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel
      * @return void
      */
-    public function preLoadCondition(array $arrModel) {
-        $this->objSelect->whereIn ( $this->strTargetKey, $this->getModelKey ( $arrModel, $this->strSourceKey ) );
+    public function preLoadCondition(array $arrModel)
+    {
+        $this->objSelect->whereIn($this->strTargetKey, $this->getModelKey($arrModel, $this->strSourceKey));
     }
-    
+
     /**
      * 匹配关联查询数据到模型 has_many
      *
-     * @param \queryyetsimple\mvc\imodel[] $arrModel            
-     * @param \queryyetsimple\support\collection $objResult            
-     * @param string $strRelation            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel
+     * @param \queryyetsimple\support\collection $objResult
+     * @param string $strRelation
      * @return array
      */
-    public function matchPreLoad(array $arrModel, collection $objResult, $strRelation) {
-        return $this->matchPreLoadOneOrMany ( $arrModel, $objResult, $strRelation, 'many' );
+    public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
+    {
+        return $this->matchPreLoadOneOrMany($arrModel, $objResult, $strRelation, 'many');
     }
-    
+
     /**
      * 取回源模型对应数据
      *
      * @return mixed
      */
-    public function getSourceValue() {
-        return $this->objSourceModel->getProp ( $this->strSourceKey );
+    public function getSourceValue()
+    {
+        return $this->objSourceModel->getProp($this->strSourceKey);
     }
-    
+
     /**
      * 查询关联对象
      *
      * @return mixed
      */
-    public function sourceQuery() {
-        return $this->objSelect->getAll ();
+    public function sourceQuery()
+    {
+        return $this->objSelect->getAll();
     }
-    
+
     /**
      * 保存模型
      *
-     * @param \queryyetsimple\mvc\imodel $objModel            
+     * @param \queryyetsimple\mvc\imodel $objModel
      * @return \queryyetsimple\mvc\imodel
      */
-    public function save(imodel $objModel) {
-        $this->withSourceKeyValue ( $objModel );
-        return $objModel->save ();
+    public function save(imodel $objModel)
+    {
+        $this->withSourceKeyValue($objModel);
+        return $objModel->save();
     }
-    
+
     /**
      * 批量保存模型
      *
-     * @param \queryyetsimple\support\collection|array $mixModel            
+     * @param \queryyetsimple\support\collection|array $mixModel
      * @return \queryyetsimple\support\collection|array
      */
-    public function saveMany($mixModel) {
-        foreach ( $mixModel as $objModel ) {
-            $this->save ( $objModel );
+    public function saveMany($mixModel)
+    {
+        foreach ($mixModel as $objModel) {
+            $this->save($objModel);
         }
-        
+
         return $mixModel;
     }
-    
+
     /**
      * 创建模型实例
      *
-     * @param array $arrProp            
+     * @param array $arrProp
      * @return \queryyetsimple\mvc\imodel
      */
-    public function create(array $arrProp) {
-        $objModel = $this->objTargetModel->newInstance ( $arrProp );
-        $this->withSourceKeyValue ( $objModel );
-        $objModel->save ();
-        
+    public function create(array $arrProp)
+    {
+        $objModel = $this->objTargetModel->newInstance($arrProp);
+        $this->withSourceKeyValue($objModel);
+        $objModel->save();
+
         return $objModel;
     }
-    
+
     /**
      * 批量创建模型实例
      *
-     * @param array $arrProps            
+     * @param array $arrProps
      * @return array
      */
-    public function createMany(array $arrProps) {
+    public function createMany(array $arrProps)
+    {
         $arrModels = [ ];
-        foreach ( $arrProps as $arrProp ) {
-            $arrModels [] = $this->create ( $arrProp );
+        foreach ($arrProps as $arrProp) {
+            $arrModels [] = $this->create($arrProp);
         }
-        
+
         return $arrModels;
     }
-    
+
     /**
      * 更新关联模型的数据
      *
-     * @param array $arrProp            
+     * @param array $arrProp
      * @return int
      */
-    public function update(array $arrProp) {
-        return $this->objSelect->update ( $arrProp );
+    public function update(array $arrProp)
+    {
+        return $this->objSelect->update($arrProp);
     }
-    
+
     /**
      * 取得源外键值
      *
      * @return mixed
      */
-    public function getSourceKeyValue() {
-        return $this->objSourceModel->getProp ( $this->strSourceKey );
+    public function getSourceKeyValue()
+    {
+        return $this->objSourceModel->getProp($this->strSourceKey);
     }
-    
+
     /**
      * 模型添加源字段数据
      *
-     * @param \queryyetsimple\mvc\imodel $objModel            
+     * @param \queryyetsimple\mvc\imodel $objModel
      * @return void
      */
-    protected function withSourceKeyValue(imodel $objModel) {
-        $objModel->forceProp ( $this->strTargetKey, $this->getSourceKeyValue () );
+    protected function withSourceKeyValue(imodel $objModel)
+    {
+        $objModel->forceProp($this->strTargetKey, $this->getSourceKeyValue());
     }
-    
+
     /**
      * 匹配预载入数据
      *
-     * @param \queryyetsimple\mvc\imodel[] $arrModel            
-     * @param \queryyetsimple\support\collection $objResult            
-     * @param string $strRelation            
-     * @param string $strType            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel
+     * @param \queryyetsimple\support\collection $objResult
+     * @param string $strRelation
+     * @param string $strType
      * @return array
      */
-    protected function matchPreLoadOneOrMany(array $arrModel, collection $objResult, $strRelation, $strType) {
-        $arrMap = $this->buildMap ( $objResult );
-        
-        foreach ( $arrModel as &$objModel ) {
-            $mixKey = $objModel->getProp ( $this->strSourceKey );
-            
-            if (isset ( $arrMap [$mixKey] )) {
-                $objModel->setRelationProp ( $strRelation, $this->getRelationValue ( $arrMap, $mixKey, $strType ) );
+    protected function matchPreLoadOneOrMany(array $arrModel, collection $objResult, $strRelation, $strType)
+    {
+        $arrMap = $this->buildMap($objResult);
+
+        foreach ($arrModel as &$objModel) {
+            $mixKey = $objModel->getProp($this->strSourceKey);
+
+            if (isset($arrMap [$mixKey])) {
+                $objModel->setRelationProp($strRelation, $this->getRelationValue($arrMap, $mixKey, $strType));
             }
         }
-        
+
         return $arrModel;
     }
-    
+
     /**
      * 取得关联模型数据
      *
-     * @param array $arrMap            
-     * @param string $strKey            
-     * @param string $strType            
+     * @param array $arrMap
+     * @param string $strKey
+     * @param string $strType
      * @return mixed
      */
-    protected function getRelationValue(array $arrMap, $strKey, $strType) {
+    protected function getRelationValue(array $arrMap, $strKey, $strType)
+    {
         $arrValue = $arrMap [$strKey];
-        return $strType == 'one' ? reset ( $arrValue ) : $this->objTargetModel->collection ( $arrValue );
+        return $strType == 'one' ? reset($arrValue) : $this->objTargetModel->collection($arrValue);
     }
-    
+
     /**
      * 模型隐射数据
      *
-     * @param \queryyetsimple\support\collection $objResult            
+     * @param \queryyetsimple\support\collection $objResult
      * @return array
      */
-    protected function buildMap(collection $objResult) {
+    protected function buildMap(collection $objResult)
+    {
         $arrMap = [ ];
-        
-        foreach ( $objResult as $objResultModel ) {
-            $arrMap [$objResultModel->getProp ( $this->strTargetKey )] [] = $objResultModel;
+
+        foreach ($objResult as $objResultModel) {
+            $arrMap [$objResultModel->getProp($this->strTargetKey)] [] = $objResultModel;
         }
-        
+
         return $arrMap;
     }
 }

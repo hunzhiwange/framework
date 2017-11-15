@@ -25,31 +25,33 @@ use queryyetsimple\console\command;
  * @since 2017.06.07
  * @version 1.0
  */
-class restart extends command {
-    
+class restart extends command
+{
+
     /**
      * 命令名字
      *
      * @var string
      */
     protected $strName = 'queue:restart';
-    
+
     /**
      * 命令行描述
      *
      * @var string
      */
     protected $strDescription = 'Restart queue work after done it current job.';
-    
+
     /**
      * 响应命令
      *
      * @return void
      */
-    public function handle() {
-        cache ()->set ( 'queryphp.queue.restart', time (), [ 
-                'expire' => 0 
-        ] );
-        $this->info ( 'Send queue restart signal.' );
+    public function handle()
+    {
+        cache()->set('queryphp.queue.restart', time(), [
+                'expire' => 0
+        ]);
+        $this->info('Send queue restart signal.');
     }
 }

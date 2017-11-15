@@ -7,12 +7,10 @@
         "issues": "https://github.com/hunzhiwange/framework/issues",
         "source": "https://github.com/hunzhiwange/framework"
     },
-    "authors": [
-        {
-            "name": "Xiangmin Liu",
-            "email": "635750556@qq.com"
-        }
-    ],
+    "authors": [{
+        "name": "Xiangmin Liu",
+        "email": "635750556@qq.com"
+    }],
     "require": {
         "php": ">=5.5.0",
         "queryyetsimple/log": "1.0.*",

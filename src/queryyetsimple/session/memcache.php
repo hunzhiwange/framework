@@ -26,30 +26,32 @@ use queryyetsimple\cache\memcache as cache_memcache;
  * @since 2017.06.05
  * @version 1.0
  */
-class memcache extends aconnect implements SessionHandlerInterface {
-    
+class memcache extends aconnect implements SessionHandlerInterface
+{
+
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [ 
+    protected $arrOption = [
             'servers' => [ ],
             'host' => '127.0.0.1',
             'port' => 11211,
             'compressed' => false,
             'persistent' => false,
             'prefix' => null,
-            'expire' => null 
+            'expire' => null
     ];
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see \SessionHandler::open()
      */
-    public function open($strSavePath, $strName) {
-        $this->objCache = new cache_memcache ( $this->arrOption );
+    public function open($strSavePath, $strName)
+    {
+        $this->objCache = new cache_memcache($this->arrOption);
         return true;
     }
 }

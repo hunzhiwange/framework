@@ -25,14 +25,16 @@ use queryyetsimple\support\face;
  * @since 2017.08.29
  * @version 1.0
  */
-class filesystem extends face {
-    
+class filesystem extends face
+{
+
     /**
      * 返回门面名字
      *
      * @return string
      */
-    protected static function name() {
+    protected static function name()
+    {
         return 'filesystems';
     }
 }
@@ -47,5 +49,6 @@ namespace qys;
  * @since 2017.08.29
  * @version 1.0
  */
-class filesystem extends \queryyetsimple\filesystem {
+class filesystem extends \queryyetsimple\filesystem
+{
 }

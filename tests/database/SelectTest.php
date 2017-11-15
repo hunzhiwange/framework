@@ -26,57 +26,60 @@ use queryyetsimple\database;
  * @since 2017.06.04
  * @version 1.0
  */
-class Select_test extends testcase {
-    
+class Select_test extends testcase
+{
+
     /**
      * 测试表
      *
      * @var string
      */
     private static $strTable = 'test';
-    
+
     /**
      * 初始化
      *
      * @return void
      */
-    protected function setUp() {
+    protected function setUp()
+    {
     }
-    
+
     /**
      * table 查询
      *
      * @see https://github.com/hunzhiwange/document/blob/master/database/database-constructor-table.md
      * @return void
      */
-    public function testTable() {
-        $this->assertEquals ( database::table ( 'test' )->limit ( 2 )->getAll ( true ), [ 
+    public function testTable()
+    {
+        $this->assertEquals(database::table('test')->limit(2)->getAll(true), [
                 'SELECT `test`.* FROM `test` LIMIT 0,2',
                 [ ],
                 false,
                 5,
                 null,
-                [ ] 
-        ] );
-        
-        $this->assertEquals ( database::table ( 'test as t' )->limit ( 2 )->getAll ( true ), [ 
+                [ ]
+        ]);
+
+        $this->assertEquals(database::table('test as t')->limit(2)->getAll(true), [
                 'SELECT `t`.* FROM `test`  `t` LIMIT 0,2',
                 [ ],
                 false,
                 5,
                 null,
-                [ ] 
-        ] );
-        
-        $this->assertEquals ( database::table ( [ 
-                't2' => 'test' 
-        ] )->limit ( 2 )->getAll ( true ), [ 
+                [ ]
+        ]);
+
+        $this->assertEquals(database::table([
+                't2' => 'test'
+        ])->limit(2)->getAll(true), [
                 'SELECT `t2`.* FROM `test`  `t2` LIMIT 0,2',
                 [ ],
                 false,
                 5,
                 null,
-                [ ] 
-        ] );
+                [ ]
+        ]);
     }
 }

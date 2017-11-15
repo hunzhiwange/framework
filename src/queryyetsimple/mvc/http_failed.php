@@ -26,35 +26,38 @@ use RuntimeException;
  * @since 2017.08.10
  * @version 1.0
  */
-class http extends RuntimeException {
-    
+class http extends RuntimeException
+{
+
     /**
      * HTTP 状态
      *
      * @var int
      */
     protected $intStatusCode;
-    
+
     /**
      * 构造函数
      *
-     * @param int $intStatusCode            
-     * @param string|null $strMessage            
-     * @param integer $intCode            
-     * @param \Exception $objPrevious            
+     * @param int $intStatusCode
+     * @param string|null $strMessage
+     * @param integer $intCode
+     * @param \Exception $objPrevious
      * @return void
      */
-    public function __construct($intStatusCode, $strMessage = null, $intCode = 0, Exception $objPrevious = null) {
+    public function __construct($intStatusCode, $strMessage = null, $intCode = 0, Exception $objPrevious = null)
+    {
         $this->intStatusCode = $intStatusCode;
-        parent::__construct ( $strMessage, $intCode, $objPrevious );
+        parent::__construct($strMessage, $intCode, $objPrevious);
     }
-    
+
     /**
      * HTTP 状态
      *
      * @return void
      */
-    public function statusCode() {
+    public function statusCode()
+    {
         return $this->intStatusCode;
     }
 }

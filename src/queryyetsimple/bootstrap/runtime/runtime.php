@@ -23,49 +23,54 @@ queryphp;
  * @since 2017.04.09
  * @version 1.0
  */
-class runtime {
-    
+class runtime
+{
+
     /**
      * 接管 PHP 异常
      *
-     * @param Exception $oException            
+     * @param Exception $oException
      * @return void
      */
-    public static function exceptionHandle($oException) {
-        (new exception ( static::project (), $oException ))->run ();
-        exit ();
+    public static function exceptionHandle($oException)
+    {
+        (new exception(static::project(), $oException))->run();
+        exit();
     }
-    
+
     /**
      * 接管 PHP 错误
      *
-     * @param int $nErrorNo            
-     * @param string $sErrStr            
-     * @param string $sErrFile            
-     * @param int $nErrLine            
+     * @param int $nErrorNo
+     * @param string $sErrStr
+     * @param string $sErrFile
+     * @param int $nErrLine
      * @return void
      */
-    public static function errorHandle($nErrorNo, $sErrStr, $sErrFile, $nErrLine) {
-        (new error ( static::project (), $nErrorNo, $sErrStr, $sErrFile, $nErrLine ))->run ();
-        exit ();
+    public static function errorHandle($nErrorNo, $sErrStr, $sErrFile, $nErrLine)
+    {
+        (new error(static::project(), $nErrorNo, $sErrStr, $sErrFile, $nErrLine))->run();
+        exit();
     }
-    
+
     /**
      * 接管 PHP 致命错误
      *
      * @return void
      */
-    public static function shutdownHandle() {
-        (new shutdown ( static::project () ))->run ();
-        exit ();
+    public static function shutdownHandle()
+    {
+        (new shutdown(static::project()))->run();
+        exit();
     }
-    
+
     /**
      * 返回项目容器
      *
      * @return \queryyetsimple\bootstrap\project
      */
-    protected static function project() {
-        return project ();
+    protected static function project()
+    {
+        return project();
     }
 }

@@ -26,177 +26,191 @@ use queryyetsimple\router\router;
  * @since 2016.11.19
  * @version 1.0
  */
-abstract class controller implements icontroller {
-    
+abstract class controller implements icontroller
+{
+
     /**
      * 视图
      *
      * @var \queryyetsimple\mvc\iview
      */
     protected $objView;
-    
+
     /**
      * 视图
      *
      * @var \queryyetsimple\router\router
      */
     protected $objRouter;
-    
+
     /**
      * 构造函数
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
-    
+
     /**
      * 设置视图
      *
-     * @param \queryyetsimple\mvc\iview $objView            
+     * @param \queryyetsimple\mvc\iview $objView
      * @return $this
      */
-    public function setView(iview $objView) {
+    public function setView(iview $objView)
+    {
         $this->objView = $objView;
         return $this;
     }
-    
+
     /**
      * 设置路由
      *
-     * @param \queryyetsimple\router\router $objRouter            
+     * @param \queryyetsimple\router\router $objRouter
      * @return $this
      */
-    public function setRouter(router $objRouter) {
+    public function setRouter(router $objRouter)
+    {
         $this->objRouter = $objRouter;
         return $this;
     }
-    
+
     /**
      * 执行子方法器
      *
-     * @param string $sActionName
-     *            方法名
+     * @param string $sActionName 方法名
      * @return void
      */
-    public function action($sActionName) {
+    public function action($sActionName)
+    {
         // 判断是否存在方法
-        if (method_exists ( $this, $sActionName )) {
-            $arrArgs = func_get_args ();
-            array_shift ( $arrArgs );
-            return call_user_func_array ( [ 
+        if (method_exists($this, $sActionName)) {
+            $arrArgs = func_get_args();
+            array_shift($arrArgs);
+            return call_user_func_array([
                     $this,
-                    $sActionName 
-            ], $arrArgs );
+                    $sActionName
+            ], $arrArgs);
         }
-        
+
         // 执行默认方法器
-        if (! $this->objRouter)
-            throw new RuntimeException ( 'Router is not set in controller' );
-        return $this->objRouter->doBind ( null, $sActionName, null, true );
+        if (! $this->objRouter) {
+            throw new RuntimeException('Router is not set in controller');
+        }
+        return $this->objRouter->doBind(null, $sActionName, null, true);
     }
-    
+
     // ######################################################
     // ---------------- 实现 view 接口 start ----------------
     // ######################################################
-    
+
     /**
      * 变量赋值
      *
-     * @param mixed $mixName            
-     * @param mixed $mixValue            
+     * @param mixed $mixName
+     * @param mixed $mixValue
      * @return $this
      */
-    public function assign($mixName, $mixValue = null) {
-        $this->checkView ();
-        $this->objView->assign ( $mixName, $mixValue );
+    public function assign($mixName, $mixValue = null)
+    {
+        $this->checkView();
+        $this->objView->assign($mixName, $mixValue);
         return $this;
     }
-    
+
     /**
      * 获取变量赋值
      *
-     * @param string|null $sName            
+     * @param string|null $sName
      * @return mixed
      */
-    public function getAssign($sName = null) {
-        $this->checkView ();
-        return $this->objView->getVar ( $sName );
+    public function getAssign($sName = null)
+    {
+        $this->checkView();
+        return $this->objView->getVar($sName);
     }
-    
+
     /**
      * 删除变量值
      *
-     * @param mixed $mixName            
+     * @param mixed $mixName
      * @return $this
      */
-    public function deleteAssign($mixName) {
-        $this->checkView ();
-        call_user_func_array ( [ 
+    public function deleteAssign($mixName)
+    {
+        $this->checkView();
+        call_user_func_array([
                 $this->objView,
-                'deleteAssign' 
-        ], func_get_args () );
+                'deleteAssign'
+        ], func_get_args());
         return $this;
     }
-    
+
     /**
      * 清空变量值
      *
-     * @param string|null $sName            
+     * @param string|null $sName
      * @return $this
      */
-    public function clearAssign() {
-        $this->checkView ();
-        $this->objView->clearAssign ();
+    public function clearAssign()
+    {
+        $this->checkView();
+        $this->objView->clearAssign();
         return $this;
     }
-    
+
     /**
      * 加载视图文件
      *
-     * @param string $sThemeFile            
-     * @param array $in
-     *            charset 编码
-     *            content_type 类型
+     * @param string $sThemeFile
+     * @param array $arrOption
+     * @sub string charset 编码
+     * @sub string content_type 类型
      * @return string
      */
-    public function display($sThemeFile = '', $arrOption = []) {
-        $this->checkView ();
-        return $this->objView->display ( $sThemeFile, $arrOption );
+    public function display($sThemeFile = '', $arrOption = [])
+    {
+        $this->checkView();
+        return $this->objView->display($sThemeFile, $arrOption);
     }
-    
+
     // ######################################################
     // ---------------- 实现 view 接口 end ----------------
     // ######################################################
-    
+
     /**
      * 验证 view
      *
      * @return void
      */
-    protected function checkView() {
-        if (! $this->objView)
-            throw new RuntimeException ( 'View is not set in controller' );
+    protected function checkView()
+    {
+        if (! $this->objView) {
+            throw new RuntimeException('View is not set in controller');
+        }
     }
-    
+
     /**
      * 赋值
      *
-     * @param mixed $mixName            
-     * @param mixed $Value            
+     * @param mixed $mixName
+     * @param mixed $Value
      * @return void
      */
-    public function __set($mixName, $mixValue) {
-        $this->assign ( $mixName, $mixValue );
+    public function __set($mixName, $mixValue)
+    {
+        $this->assign($mixName, $mixValue);
     }
-    
+
     /**
      * 获取值
      *
-     * @param string $sName            
+     * @param string $sName
      * @return mixed
      */
-    public function __get($sName) {
-        return $this->getAssign ( $sName );
+    public function __get($sName)
+    {
+        return $this->getAssign($sName);
     }
 }

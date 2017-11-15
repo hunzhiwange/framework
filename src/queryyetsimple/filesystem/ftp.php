@@ -26,8 +26,9 @@ use League\Flysystem\Adapter\Ftp as AdapterFtp;
  * @see https://flysystem.thephpleague.com/adapter/ftp/
  * @version 1.0
  */
-class ftp extends aconnect implements iconnect {
-    
+class ftp extends aconnect implements iconnect
+{
+
     /**
      * 配置
      *
@@ -36,35 +37,36 @@ class ftp extends aconnect implements iconnect {
     protected $arrOption = [
             // 主机
             'host' => 'ftp.example.com',
-            
+
             // 端口
             'port' => 21,
-            
+
             // 用户名
             'username' => 'your-username',
-            
+
             // 密码
             'password' => 'your-password',
-            
+
             // 根目录
             'root' => '',
-            
+
             // 被动、主动
             'passive' => true,
-            
+
             // 加密传输
             'ssl' => false,
-            
+
             // 超时设置
-            'timeout' => 20 
+            'timeout' => 20
     ];
-    
+
     /**
      * 创建连接
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeConnect() {
-        return new AdapterFtp ( $this->getOptions () );
+    public function makeConnect()
+    {
+        return new AdapterFtp($this->getOptions());
     }
 }

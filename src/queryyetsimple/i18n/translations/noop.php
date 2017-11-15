@@ -24,99 +24,110 @@ queryphp;
  * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
-class noop extends translations {
-    
+class noop extends translations
+{
+
     /**
      * prop
      *
      * @var array
      */
-    var $entries = array ();
-    var $headers = array ();
-    
+    public $entries = array();
+    public $headers = array();
+
     /**
      * (non-PHPdoc)
      *
      * @see \queryyetsimple\i18n\translations\translations::add_entry()
      */
-    function add_entry($entry) {
+    public function add_entry($entry)
+    {
         return true;
     }
-    
+
     /**
      *
-     * @param string $header            
-     * @param string $value            
+     * @param string $header
+     * @param string $value
      */
-    function set_header($header, $value) {
+    public function set_header($header, $value)
+    {
     }
-    
+
     /**
      *
-     * @param array $headers            
+     * @param array $headers
      */
-    function set_headers($headers) {
+    public function set_headers($headers)
+    {
     }
-    
+
     /**
      *
-     * @param string $header            
+     * @param string $header
      * @return false
      */
-    function get_header($header) {
+    public function get_header($header)
+    {
         return false;
     }
-    
+
     /**
      *
-     * @param Translation_Entry $entry            
+     * @param Translation_Entry $entry
      * @return false
      */
-    function translate_entry(&$entry) {
+    public function translate_entry(&$entry)
+    {
         return false;
     }
-    
+
     /**
      *
-     * @param string $singular            
-     * @param string $context            
+     * @param string $singular
+     * @param string $context
      */
-    function translate($singular, $context = null) {
+    public function translate($singular, $context = null)
+    {
         return $singular;
     }
-    
+
     /**
      *
-     * @param int $count            
+     * @param int $count
      * @return bool
      */
-    function select_plural_form($count) {
+    public function select_plural_form($count)
+    {
         return 1 == $count ? 0 : 1;
     }
-    
+
     /**
      *
      * @return int
      */
-    function get_plural_forms_count() {
+    public function get_plural_forms_count()
+    {
         return 2;
     }
-    
+
     /**
      *
-     * @param string $singular            
-     * @param string $plural            
-     * @param int $count            
-     * @param string $context            
+     * @param string $singular
+     * @param string $plural
+     * @param int $count
+     * @param string $context
      */
-    function translate_plural($singular, $plural, $count, $context = null) {
+    public function translate_plural($singular, $plural, $count, $context = null)
+    {
         return 1 == $count ? $singular : $plural;
     }
-    
+
     /**
      *
-     * @param object $other            
+     * @param object $other
      */
-    function merge_with(&$other) {
+    public function merge_with(&$other)
+    {
     }
 }

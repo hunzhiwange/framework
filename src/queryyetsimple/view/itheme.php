@@ -23,92 +23,88 @@ queryphp;
  * @since 2017.04.23
  * @version 1.0
  */
-interface itheme {
-    
+interface itheme
+{
+
     /**
      * 设置 parse 解析回调
      *
-     * @param callable $calParseResolver            
+     * @param callable $calParseResolver
      * @return void
      */
     public static function setParseResolver($calParseResolver);
-    
+
     /**
      * 解析 parse
      *
      * @return \queryyetsimple\view\parser
      */
     public function resolverParse();
-    
+
     /**
      * 获取分析器
      *
      * @return \queryyetsimple\view\iparser
      */
     public function parser();
-    
+
     /**
      * 加载视图文件
      *
-     * @param string $sFile
-     *            视图文件地址
-     * @param boolean $bDisplay
-     *            是否显示
-     * @param string $strExt
-     *            后缀
-     * @param string $sTargetCache
-     *            主模板缓存路径
-     * @param string $sMd5
-     *            源文件地址 md5 标记
+     * @param string $sFile 视图文件地址
+     * @param boolean $bDisplay 是否显示
+     * @param string $strExt 后缀
+     * @param string $sTargetCache 主模板缓存路径
+     * @param string $sMd5 源文件地址 md5 标记
      * @return string
      */
     public function display($sFile, $bDisplay = true, $strExt = '', $sTargetCache = '', $sMd5 = '');
-    
+
     /**
      * 设置模板变量
      *
-     * @param mixed $mixName            
-     * @param mixed $mixValue            
+     * @param mixed $mixName
+     * @param mixed $mixValue
      * @return void
      */
     public function setVar($mixName, $mixValue = null);
-    
+
     /**
      * 获取变量值
      *
-     * @param string|null $sName            
+     * @param string|null $sName
      * @return mixed
      */
     public function getVar($sName = null);
-    
+
     /**
      * 删除变量值
      *
-     * @param mixed $mixName            
+     * @param mixed $mixName
      * @return $this
      */
     public function deleteVar($mixName);
-    
+
     /**
      * 清空变量值
      *
-     * @param string|null $sName            
+     * @param string|null $sName
      * @return $this
      */
     public function clearVar();
-    
+
     /**
      * 获取编译路径
      *
-     * @param string $sFile            
+     * @param string $sFile
      * @return string
      */
     public function getCachePath($sFile);
-    
+
     /**
      * 自动分析视图上下文环境
      *
-     * @param string $strThemePath            
+     * @param string $strThemePath
      * @return void
      */
     public function parseContext($strThemePath);

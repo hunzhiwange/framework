@@ -23,5 +23,6 @@ queryphp;
  * @since 2017.05.12
  * @version 1.0
  */
-class redis extends ajob implements ijob {
+class redis extends ajob implements ijob
+{
 }

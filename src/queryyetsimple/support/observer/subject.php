@@ -29,96 +29,104 @@ use queryyetsimple\support\icontainer;
  * @since 2017.06.23
  * @version 1.0
  */
-abstract class subject implements SplSubject, isubject {
-    
+abstract class subject implements SplSubject, isubject
+{
+
     /**
      * 容器
      *
      * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
-    
+
     /**
      * 观察者角色 observer
      *
      * @var \SplObjectStorage(\SplObserver)
      */
     protected $objObservers;
-    
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\icontainer $objContainer            
+     * @param \queryyetsimple\support\icontainer $objContainer
      * @return void
      */
-    public function __construct(icontainer $objContainer) {
-        $this->objObservers = new SplObjectStorage ();
+    public function __construct(icontainer $objContainer)
+    {
+        $this->objObservers = new SplObjectStorage();
         $this->objContainer = $objContainer;
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SplSubject::attach()
      */
-    public function attach(SplObserver $objObserver) {
-        $this->objObservers->attach ( $objObserver );
+    public function attach(SplObserver $objObserver)
+    {
+        $this->objObservers->attach($objObserver);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SplSubject::detach()
      */
-    public function detach(SplObserver $objObserver) {
-        $this->objObservers->detach ( $objObserver );
+    public function detach(SplObserver $objObserver)
+    {
+        $this->objObservers->detach($objObserver);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SplSubject::notify()
      */
-    public function notify() {
-        $arrArgs = func_get_args ();
-        array_unshift ( $arrArgs, $this );
-        
-        foreach ( $this->objObservers as $objObserver ) {
-            call_user_func_array ( [ 
+    public function notify()
+    {
+        $arrArgs = func_get_args();
+        array_unshift($arrArgs, $this);
+
+        foreach ($this->objObservers as $objObserver) {
+            call_user_func_array([
                     $objObserver,
-                    'update' 
-            ], $arrArgs );
+                    'update'
+            ], $arrArgs);
         }
-        unset ( $arrArgs );
+        unset($arrArgs);
     }
-    
+
     /**
      * 添加一个观察者角色
      *
-     * @param \SplObserver|string $mixObserver            
+     * @param \SplObserver|string $mixObserver
      * @return $this
      */
-    public function attachs($mixObserver) {
-        if (is_string ( $mixObserver )) {
+    public function attachs($mixObserver)
+    {
+        if (is_string($mixObserver)) {
             $strObserver = $mixObserver;
-            
-            if (($mixObserver = $this->objContainer->make ( $mixObserver )) === false)
-                throw new InvalidArgumentException ( sprintf ( 'Observer %s is not valid.', $strObserver ) );
+
+            if (($mixObserver = $this->objContainer->make($mixObserver)) === false) {
+                throw new InvalidArgumentException(sprintf('Observer %s is not valid.', $strObserver));
+            }
         }
-        
+
         if ($mixObserver instanceof SplObserver) {
-            $this->objObservers->attach ( $mixObserver );
+            $this->objObservers->attach($mixObserver);
         } else {
-            throw new InvalidArgumentException ( 'Invalid observer argument because it not instanceof SplObserver' );
+            throw new InvalidArgumentException('Invalid observer argument because it not instanceof SplObserver');
         }
     }
-    
+
     /**
      * 返回容器
      *
      * @return \queryyetsimple\support\icontainer
      */
-    public function container() {
+    public function container()
+    {
         return $this->objContainer;
     }
 }

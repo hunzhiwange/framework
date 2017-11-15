@@ -28,84 +28,90 @@ use queryyetsimple\support\provider;
  * @since 2017.05.12
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->viewCompiler ();
-        $this->viewParser ();
-        $this->viewTheme ();
+    public function register()
+    {
+        $this->viewCompiler();
+        $this->viewParser();
+        $this->viewTheme();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
-                'view.compiler' => [ 
+    public static function providers()
+    {
+        return [
+                'view.compiler' => [
                         'queryyetsimple\view\compiler',
-                        'queryyetsimple\view\icompiler' 
+                        'queryyetsimple\view\icompiler'
                 ],
-                'view.parser' => [ 
+                'view.parser' => [
                         'queryyetsimple\view\parser',
-                        'queryyetsimple\view\iparser' 
+                        'queryyetsimple\view\iparser'
                 ],
-                'view.theme' => [ 
+                'view.theme' => [
                         'queryyetsimple\view\theme',
-                        'queryyetsimple\view\itheme' 
-                ] 
+                        'queryyetsimple\view\itheme'
+                ]
         ];
     }
-    
+
     /**
      * 注册 view.compiler 服务
      *
      * @return void
      */
-    protected function viewCompiler() {
-        $this->singleton ( 'view.compiler', function ($oProject) {
+    protected function viewCompiler()
+    {
+        $this->singleton('view.compiler', function ($oProject) {
             $arrOption = [ ];
-            foreach ( [ 
+            foreach ([
                     'cache_children',
                     'var_identify',
                     'notallows_func',
-                    'notallows_func_js' 
-            ] as $strOption ) {
-                $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
+                    'notallows_func_js'
+            ] as $strOption) {
+                $arrOption [$strOption] = $oProject ['option']->get('view\\' . $strOption);
             }
-            
-            return new compiler ( $arrOption );
-        } );
+
+            return new compiler($arrOption);
+        });
     }
-    
+
     /**
      * 注册 view.parser 服务
      *
      * @return void
      */
-    protected function viewParser() {
-        $this->singleton ( 'view.parser', function ($oProject) {
-            return (new parser ( $oProject ['view.compiler'], [ 
-                    'tag_note' => $oProject ['option']->get ( 'view\\tag_note' ) 
-            ] ))->registerCompilers ()->registerParsers ();
-        } );
+    protected function viewParser()
+    {
+        $this->singleton('view.parser', function ($oProject) {
+            return (new parser($oProject ['view.compiler'], [
+                    'tag_note' => $oProject ['option']->get('view\\tag_note')
+            ]))->registerCompilers()->registerParsers();
+        });
     }
-    
+
     /**
      * 注册 view.theme 服务
      *
      * @return void
      */
-    protected function viewTheme() {
-        $this->singleton ( 'view.theme', function ($oProject) {
+    protected function viewTheme()
+    {
+        $this->singleton('view.theme', function ($oProject) {
             $arrOption = [ ];
-            foreach ( [ 
+            foreach ([
                     'cache_lifetime',
                     'suffix',
                     'controlleraction_depr',
@@ -113,22 +119,22 @@ class register extends provider {
                     'switch',
                     'default',
                     'cookie_app',
-                    'theme_path_default' 
-            ] as $strOption ) {
-                $arrOption [$strOption] = $oProject ['option']->get ( 'view\\' . $strOption );
+                    'theme_path_default'
+            ] as $strOption) {
+                $arrOption [$strOption] = $oProject ['option']->get('view\\' . $strOption);
             }
-            
-            $arrOption ['app_development'] = $oProject->development ();
+
+            $arrOption ['app_development'] = $oProject->development();
             $arrOption ['app_name'] = $oProject ['app_name'];
             $arrOption ['controller_name'] = $oProject ['controller_name'];
             $arrOption ['action_name'] = $oProject ['action_name'];
-            $arrOption ['theme_cache_path'] = $oProject->pathApplicationCache ( 'theme' ) . '/' . $oProject ['app_name'];
-            
-            theme::setParseResolver ( function () use($oProject) {
+            $arrOption ['theme_cache_path'] = $oProject->pathApplicationCache('theme') . '/' . $oProject ['app_name'];
+
+            theme::setParseResolver(function () use ($oProject) {
                 return $oProject ['view.parser'];
-            } );
-            
-            return (new theme ( $oProject ['cookie'], $arrOption ))->parseContext ( $oProject->pathApplicationDir ( 'theme' ) );
-        } );
+            });
+
+            return (new theme($oProject ['cookie'], $arrOption))->parseContext($oProject->pathApplicationDir('theme'));
+        });
     }
 }

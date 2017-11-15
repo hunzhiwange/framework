@@ -29,72 +29,78 @@ use queryyetsimple\encryption\iencryption;
  * @since 2017.09.07
  * @version 1.0
  */
-class token extends aconnect implements iconnect {
-    
+class token extends aconnect implements iconnect
+{
+
     /**
      * 验证
      *
      * @var \queryyetsimple\validate\ivalidate
      */
     protected $oCache;
-    
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\imodel $oUser            
-     * @param \queryyetsimple\encryption\iencryption $oEncryption            
-     * @param \queryyetsimple\validate\ivalidate $oValidate            
-     * @param \queryyetsimple\cache\icache $oCache            
-     * @param array $arrOption            
+     * @param \queryyetsimple\mvc\imodel $oUser
+     * @param \queryyetsimple\encryption\iencryption $oEncryption
+     * @param \queryyetsimple\validate\ivalidate $oValidate
+     * @param \queryyetsimple\cache\icache $oCache
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(imodel $oUser, iencryption $oEncryption, ivalidate $oValidate, icache $oCache, array $arrOption = []) {
+    public function __construct(imodel $oUser, iencryption $oEncryption, ivalidate $oValidate, icache $oCache, array $arrOption = [])
+    {
         $this->oCache = $oCache;
-        
-        parent::__construct ( $oUser, $oEncryption, $oValidate, $arrOption );
+
+        parent::__construct($oUser, $oEncryption, $oValidate, $arrOption);
     }
-    
+
     /**
      * 设置认证名字
      *
-     * @param \queryyetsimple\mvc\imodel $oUser            
+     * @param \queryyetsimple\mvc\imodel $oUser
      * @return void
      */
-    protected function setLoginTokenName($oUser) {
-        $this->setTokenName ( md5 ( $oUser->{$this->getField ( 'name' )} . $oUser->{$this->getField ( 'password' )} . string::randAlphaNum ( 5 ) ) );
+    protected function setLoginTokenName($oUser)
+    {
+        $this->setTokenName(md5($oUser->{$this->getField('name')} . $oUser->{$this->getField('password')} . string::randAlphaNum(5)));
     }
-    
+
     /**
      * 数据持久化
      *
-     * @param string $strKey            
-     * @param string $mixValue            
-     * @param mixed $mixExpire            
+     * @param string $strKey
+     * @param string $mixValue
+     * @param mixed $mixExpire
      * @return void
      */
-    protected function setPersistence($strKey, $mixValue, $mixExpire = null) {
-        $this->oCache->set ( $strKey, $mixValue, [ 
-                'expire' => $mixExpire 
-        ] );
+    protected function setPersistence($strKey, $mixValue, $mixExpire = null)
+    {
+        $this->oCache->set($strKey, $mixValue, [
+                'expire' => $mixExpire
+        ]);
     }
-    
+
     /**
      * 获取持久化数据
      *
-     * @param string $strKey            
+     * @param string $strKey
      * @return mixed
      */
-    protected function getPersistence($strKey) {
-        return $this->oCache->get ( $strKey );
+    protected function getPersistence($strKey)
+    {
+        return $this->oCache->get($strKey);
     }
-    
+
     /**
      * 删除持久化数据
      *
-     * @param string $strKey            
+     * @param string $strKey
      * @return void
      */
-    protected function deletePersistence($strKey) {
-        $this->oCache->delele ( $strKey );
+    protected function deletePersistence($strKey)
+    {
+        $this->oCache->delele($strKey);
     }
 }

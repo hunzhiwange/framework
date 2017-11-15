@@ -25,15 +25,17 @@ use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
  * @since 2017.05.09
  * @version 1.0
  */
-class breakpoint extends PhinxBreakpoint {
-    
+class breakpoint extends PhinxBreakpoint
+{
+
     /**
      * Configures the current command.
      *
      * @return void
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:breakpoint' );
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:breakpoint');
     }
 }

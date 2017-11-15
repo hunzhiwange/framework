@@ -26,59 +26,64 @@ use queryyetsimple\support\provider;
  * @since 2017.06.03
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 是否延迟载入
      *
      * @var boolean
      */
     public static $booDefer = true;
-    
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->caches ();
-        $this->cache ();
+    public function register()
+    {
+        $this->caches();
+        $this->cache();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
+    public static function providers()
+    {
+        return [
                 'caches' => 'queryyetsimple\cache\manager',
-                'cache' => [ 
+                'cache' => [
                         'queryyetsimple\cache\cache',
-                        'queryyetsimple\cache\icache' 
-                ] 
+                        'queryyetsimple\cache\icache'
+                ]
         ];
     }
-    
+
     /**
      * 注册 caches 服务
      *
      * @return void
      */
-    protected function caches() {
-        $this->singleton ( 'caches', function ($oProject) {
-            return new manager ( $oProject );
-        } );
+    protected function caches()
+    {
+        $this->singleton('caches', function ($oProject) {
+            return new manager($oProject);
+        });
     }
-    
+
     /**
      * 注册 cache 服务
      *
      * @return void
      */
-    protected function cache() {
-        $this->singleton ( 'cache', function ($oProject) {
-            return $oProject ['caches']->connect ();
-        } );
+    protected function cache()
+    {
+        $this->singleton('cache', function ($oProject) {
+            return $oProject ['caches']->connect();
+        });
     }
 }

@@ -23,172 +23,173 @@ queryphp;
  * @since 2017.10.14
  * @version 1.0
  */
-interface irepository {
-    
+interface irepository
+{
+
     /**
      * 取得一条数据
      *
-     * @param int $intId            
-     * @param array $arrColumn            
+     * @param int $intId
+     * @param array $arrColumn
      * @return \queryyetsimple\mvc\ientity
      */
     public function find($intId, $arrColumn = ['*']);
-    
+
     /**
      * 取得一条数据，未找到记录抛出异常
      *
-     * @param int $intId            
-     * @param array $arrColumn            
+     * @param int $intId
+     * @param array $arrColumn
      * @return \queryyetsimple\mvc\ientity|void
      */
     public function findOrFail($intId, $arrColumn = ['*']);
-    
+
     /**
      * 取得所有记录
      *
-     * @param null|callback $mixCallback            
+     * @param null|callback $mixCallback
      * @return \queryyetsimple\support\collection
      */
     public function count($mixSpecification = null);
-    
+
     /**
      * 取得所有记录
      *
-     * @param null|callback $mixCallback            
+     * @param null|callback $mixCallback
      * @return \queryyetsimple\support\collection
      */
     public function all($mixSpecification = null);
-    
+
     /**
      * 保存数据
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function create(iaggregate_root $objEntity);
-    
+
     /**
      * 更新数据
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function update(iaggregate_root $objEntity);
-    
+
     /**
      * 删除数据
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity
      * @return int
      */
     public function delete(iaggregate_root $objEntity);
-    
+
     /**
      * 注册保存数据
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerCreate(iaggregate_root $objEntity);
-    
+
     /**
      * 注册更新数据
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerUpdate(iaggregate_root $objEntity);
-    
+
     /**
      * 注册删除数据
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerDelete(iaggregate_root $objEntity);
-    
+
     /**
      * 响应新建
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function handleCreate(iaggregate_root $objEntity);
-    
+
     /**
      * 响应修改
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function handleUpdate(iaggregate_root $objEntity);
-    
+
     /**
      * 响应删除
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objEntity            
+     * @param \queryyetsimple\mvc\iaggregate_root $objEntity
      * @return int
      */
     public function handleDelete(iaggregate_root $objEntity);
-    
+
     /**
      * 启动事物
      *
      * @return void
      */
     public function beginTransaction();
-    
+
     /**
      * 事务回滚
      *
      * @return void
      */
     public function rollback();
-    
+
     /**
      * 事务自动提交
      *
      * @return void
      */
     public function commit();
-    
+
     /**
      * 执行数据库事务
      *
-     * @param callable $calAction            
+     * @param callable $calAction
      * @return mixed
      */
     public function transaction($calAction);
-    
+
     /**
      * 设置聚合根
      *
-     * @param \queryyetsimple\mvc\iaggregate_root $objAggregate            
+     * @param \queryyetsimple\mvc\iaggregate_root $objAggregate
      * @return void
      */
     public function setAggregate(iaggregate_root $objAggregate);
-    
+
     /**
      * 返回聚合根
      *
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function aggregate();
-    
+
     /**
      * 返回工作单元
      *
      * @return \queryyetsimple\mvc\iunit_of_work
      */
     public function unitOfWork();
-    
+
     /**
      * 返回数据库仓储
      *
      * @return \queryyetsimple\database\idatabase
      */
     public function databaseConnect();
-    
+
     /**
      * 注册事务提交
      *

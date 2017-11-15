@@ -27,31 +27,33 @@ use League\Flysystem\ZipArchive\ZipArchiveAdapter;
  * @see https://flysystem.thephpleague.com/adapter/zip-archive/
  * @version 1.0
  */
-class zip extends aconnect implements iconnect {
-    
+class zip extends aconnect implements iconnect
+{
+
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [ 
-            'path' => '' 
+    protected $arrOption = [
+            'path' => ''
     ];
-    
+
     /**
      * 创建连接
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeConnect() {
-        if (empty ( $this->getOption ( 'path' ) )) {
-            throw new InvalidArgumentException ( 'The zip requires path option' );
+    public function makeConnect()
+    {
+        if (empty($this->getOption('path'))) {
+            throw new InvalidArgumentException('The zip requires path option');
         }
-        
-        if (! class_exists ( 'League\Flysystem\ZipArchive\ZipArchiveAdapter' )) {
-            throw new InvalidArgumentException ( 'Please run composer require league/flysystem-ziparchive' );
+
+        if (! class_exists('League\Flysystem\ZipArchive\ZipArchiveAdapter')) {
+            throw new InvalidArgumentException('Please run composer require league/flysystem-ziparchive');
         }
-        
-        return new ZipArchiveAdapter ( $this->getOption ( 'path' ) );
+
+        return new ZipArchiveAdapter($this->getOption('path'));
     }
 }

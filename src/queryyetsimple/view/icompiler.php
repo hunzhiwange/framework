@@ -23,22 +23,23 @@ queryphp;
  * @since 2017.04.23
  * @version 1.0
  */
-interface icompiler {
-    
+interface icompiler
+{
+
     /**
      * 获取编译器
      *
      * @return array
      */
     public function getCompilers();
-    
+
     /**
      * node.tag
      *
      * @return array
      */
     public function getNodeTagHelp();
-    
+
     /**
      * js.tag
      *

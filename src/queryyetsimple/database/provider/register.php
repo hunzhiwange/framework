@@ -26,61 +26,67 @@ use queryyetsimple\database\manager;
  * @since 2017.05.12
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->databases ();
-        $this->database ();
+    public function register()
+    {
+        $this->databases();
+        $this->database();
     }
-    
+
     /**
      * 载入命令包
      *
      * @return void
      */
-    public function bootstrap() {
-        $this->loadCommandNamespace ( 'queryyetsimple\database\console' );
+    public function bootstrap()
+    {
+        $this->loadCommandNamespace('queryyetsimple\database\console');
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
+    public static function providers()
+    {
+        return [
                 'databases' => 'queryyetsimple\database\manager',
-                'database' => [ 
+                'database' => [
                         'queryyetsimple\database\database',
-                        'queryyetsimple\database\idatabase' 
-                ] 
+                        'queryyetsimple\database\idatabase'
+                ]
         ];
     }
-    
+
     /**
      * 注册 databases 服务
      *
      * @return void
      */
-    protected function databases() {
-        $this->singleton ( 'databases', function ($oProject) {
-            return new manager ( $oProject );
-        } );
+    protected function databases()
+    {
+        $this->singleton('databases', function ($oProject) {
+            return new manager($oProject);
+        });
     }
-    
+
     /**
      * 注册 database 服务
      *
      * @return void
      */
-    protected function database() {
-        $this->singleton ( 'database', function ($oProject) {
-            return $oProject ['databases']->connect ();
-        } );
+    protected function database()
+    {
+        $this->singleton('database', function ($oProject) {
+            return $oProject ['databases']->connect();
+        });
     }
 }

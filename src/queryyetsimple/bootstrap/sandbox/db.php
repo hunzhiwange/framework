@@ -25,14 +25,16 @@ use queryyetsimple\support\face;
  * @since 2017.08.31
  * @version 1.0
  */
-class db extends face {
-    
+class db extends face
+{
+
     /**
      * 返回门面名字
      *
      * @return string
      */
-    protected static function name() {
+    protected static function name()
+    {
         return 'database';
     }
 }
@@ -47,5 +49,6 @@ namespace qys;
  * @since 2017.08.31
  * @version 1.0
  */
-class db extends \queryyetsimple\db {
+class db extends \queryyetsimple\db
+{
 }

@@ -26,34 +26,39 @@ use InvalidArgumentException;
  * @see http://php.net/manual/zh/class.splqueue.php
  * @version 1.0
  */
-class queue extends linkedlist implements istack_queue {
-    
+class queue extends linkedlist implements istack_queue
+{
+
     /**
      * 入对
      *
-     * @param mixed $mixValue            
+     * @param mixed $mixValue
      * @return void
      */
-    public function in($mixValue) {
-        $this->push ( $mixValue );
+    public function in($mixValue)
+    {
+        $this->push($mixValue);
     }
-    
+
     /**
      * 出对
      *
      * @return mixed
      */
-    public function out() {
-        return $this->shift ();
+    public function out()
+    {
+        return $this->shift();
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see \queryyetsimple\support\linkedlist::validate()
      */
-    public function validate($mixValue) {
-        if (! $this->checkType ( $mixValue ))
-            throw new InvalidArgumentException ( sprintf ( 'The queue element type verification failed, and the allowed type is %s.', implode ( ',', $this->arrType ) ) );
+    public function validate($mixValue)
+    {
+        if (! $this->checkType($mixValue)) {
+            throw new InvalidArgumentException(sprintf('The queue element type verification failed, and the allowed type is %s.', implode(',', $this->arrType)));
+        }
     }
 }

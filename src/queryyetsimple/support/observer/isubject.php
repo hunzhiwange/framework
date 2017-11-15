@@ -23,16 +23,17 @@ queryphp;
  * @since 2017.06.24
  * @version 1.0
  */
-interface isubject {
-    
+interface isubject
+{
+
     /**
      * 添加一个观察者角色
      *
-     * @param \SplObserver|string $mixObserver            
+     * @param \SplObserver|string $mixObserver
      * @return $this
      */
     public function attachs($mixObserver);
-    
+
     /**
      * 返回容器
      *

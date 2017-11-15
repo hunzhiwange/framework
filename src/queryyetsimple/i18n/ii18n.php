@@ -23,83 +23,79 @@ queryphp;
  * @since 2017.08.07
  * @version 1.0
  */
-interface ii18n {
-    
+interface ii18n
+{
+
     /**
      * 获取语言text
      *
-     * @param string $sValue
-     *            当前的语言
+     * @param string $sValue 当前的语言
      * @return string
      */
     public function getText($sValue);
-    
+
     /**
      * 获取语言text
      *
-     * @param string $sValue
-     *            当前的语言
+     * @param string $sValue 当前的语言
      * @return string
      */
     public function __($sValue);
-    
+
     /**
      * 添加语言包
      *
-     * @param string $sI18nName
-     *            语言名字
-     * @param array $arrData
-     *            语言包数据
+     * @param string $sI18nName 语言名字
+     * @param array $arrData 语言包数据
      * @return void
      */
     public function addI18n($sI18nName, $arrData = []);
-    
+
     /**
      * 自动分析语言上下文环境
      *
      * @return string
      */
     public function parseContext();
-    
+
     /**
      * 设置当前语言包上下文环境
      *
-     * @param string $sI18nName            
+     * @param string $sI18nName
      * @return void
      */
     public function setContext($sI18nName);
-    
+
     /**
      * 设置当前语言包默认上下文环境
      *
-     * @param string $sI18nName            
+     * @param string $sI18nName
      * @return void
      */
     public function setDefaultContext($sI18nName);
-    
+
     /**
      * 设置 cookie 名字
      *
-     * @param string $sCookieName
-     *            cookie名字
+     * @param string $sCookieName cookie名字
      * @return void
      */
     public function setCookieName($sCookieName);
-    
+
     /**
      * 获取当前语言包默认上下文环境
      *
      * @return string
      */
     public function getDefaultContext();
-    
+
     /**
      * 获取当前语言包 cookie 名字
      *
      * @return string
      */
     public function getCookieName();
-    
+
     /**
      * 获取当前语言包上下文环境
      *

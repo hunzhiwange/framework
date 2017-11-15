@@ -26,25 +26,28 @@ use queryyetsimple\assert\assert;
  * @since 2017.05.09
  * @version 1.0
  */
-class AssertTest extends testcase {
-    
+class AssertTest extends testcase
+{
+
     /**
      * 开启断言
      *
      * @return void
      */
-    protected function setUp() {
-        assert::open ( true );
+    protected function setUp()
+    {
+        assert::open(true);
     }
-    
+
     /**
      * test
      *
      * @return void
      */
-    public function testFirst() {
-        $this->assertEquals ( true, assert::string ( 'hello' ) );
-        $this->assertEquals ( true, assert::boolean ( true ) );
-        $this->assertEquals ( true, assert::null ( null ) );
+    public function testFirst()
+    {
+        $this->assertEquals(true, assert::string('hello'));
+        $this->assertEquals(true, assert::boolean(true));
+        $this->assertEquals(true, assert::null(null));
     }
 }

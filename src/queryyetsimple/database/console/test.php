@@ -25,15 +25,17 @@ use Phinx\Console\Command\Test as PhinxTest;
  * @since 2017.05.09
  * @version 1.0
  */
-class test extends PhinxTest {
-    
+class test extends PhinxTest
+{
+
     /**
      * Configures the current command.
      *
      * @return void
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:test' );
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:test');
     }
-}  
+}

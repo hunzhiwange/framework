@@ -25,44 +25,49 @@ use queryyetsimple\support\manager as support_manager;
  * @since 2017.02.15
  * @version 1.0
  */
-class manager extends support_manager {
-    
+class manager extends support_manager
+{
+
     /**
      * 取得配置命名空间
      *
      * @return string
      */
-    protected function getOptionNamespace() {
+    protected function getOptionNamespace()
+    {
         return 'log';
     }
-    
+
     /**
      * 创建连接对象
      *
-     * @param object $objConnect            
+     * @param object $objConnect
      * @return object
      */
-    protected function createConnect($objConnect) {
-        return new log ( $objConnect, $this->getOptionCommon () );
+    protected function createConnect($objConnect)
+    {
+        return new log($objConnect, $this->getOptionCommon());
     }
-    
+
     /**
      * 创建 file 日志驱动
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\log\file
      */
-    protected function makeConnectFile($arrOption = []) {
-        return new file ( array_merge ( $this->getOption ( 'file', $arrOption ) ) );
+    protected function makeConnectFile($arrOption = [])
+    {
+        return new file(array_merge($this->getOption('file', $arrOption)));
     }
-    
+
     /**
      * 创建 monolog 日志驱动
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\log\monolog
      */
-    protected function makeConnectMonolog($arrOption = []) {
-        return new monolog ( array_merge ( $this->getOption ( 'monolog', $arrOption ) ) );
+    protected function makeConnectMonolog($arrOption = [])
+    {
+        return new monolog(array_merge($this->getOption('monolog', $arrOption)));
     }
 }

@@ -29,81 +29,88 @@ use queryyetsimple\support\iarray;
  * @since 2017.07.14
  * @version 1.0
  */
-class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializable, ijson, iarray {
-    
+class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializable, ijson, iarray
+{
+
     /**
      * 构造函数
      *
-     * @param int $intPerPage            
-     * @param int $intTotalRecord            
-     * @param array $arrOption            
+     * @param int $intPerPage
+     * @param int $intTotalRecord
+     * @param array $arrOption
      * @return void
      */
-    public function __construct($intPerPage, $intTotalRecord = null, array $arrOption = []) {
+    public function __construct($intPerPage, $intTotalRecord = null, array $arrOption = [])
+    {
         $this->intPerPage = $intPerPage;
         $this->intTotalRecord = $intTotalRecord;
-        $this->options ( $arrOption );
+        $this->options($arrOption);
     }
-    
+
     /**
      * 渲染分页
      *
-     * @param \queryyetsimple\page\irender $objRender            
+     * @param \queryyetsimple\page\irender $objRender
      * @return string
      */
-    public function render(irender $objRender = null) {
-        if (is_null ( $objRender )) {
-            $objRender = 'queryyetsimple\page\\' . $this->getRender ();
-            $objRender = new $objRender ( $this );
+    public function render(irender $objRender = null)
+    {
+        if (is_null($objRender)) {
+            $objRender = 'queryyetsimple\page\\' . $this->getRender();
+            $objRender = new $objRender($this);
         }
-        return $objRender->render ();
+        return $objRender->render();
     }
-    
+
     /**
      * 对象转数组
      *
      * @return array
      */
-    public function toArray() {
-        return [ 
-                'per_page' => $this->getPerPage (),
-                'current_page' => $this->getCurrentPage (),
-                'total_page' => $this->getTotalPage (),
-                'total_record' => $this->getTotalRecord (),
-                'total_infinity' => $this->isTotalInfinity (),
-                'from' => $this->getFirstRecord (),
-                'to' => $this->getLastRecord () 
+    public function toArray()
+    {
+        return [
+                'per_page' => $this->getPerPage(),
+                'current_page' => $this->getCurrentPage(),
+                'total_page' => $this->getTotalPage(),
+                'total_record' => $this->getTotalRecord(),
+                'total_infinity' => $this->isTotalInfinity(),
+                'from' => $this->getFirstRecord(),
+                'to' => $this->getLastRecord()
         ];
     }
-    
+
     /**
      * 实现 JsonSerializable::jsonSerialize
      *
      * @return boolean
      */
-    public function jsonSerialize() {
-        return $this->toArray ();
+    public function jsonSerialize()
+    {
+        return $this->toArray();
     }
-    
+
     /**
      * 对象转 JSON
      *
-     * @param integer $intOption            
+     * @param integer $intOption
      * @return string
      */
-    public function toJson($intOption = JSON_UNESCAPED_UNICODE) {
-        return json_encode ( $this->jsonSerialize (), $intOption );
+    public function toJson($intOption = JSON_UNESCAPED_UNICODE)
+    {
+        return json_encode($this->jsonSerialize(), $intOption);
     }
 }
 
-if (! function_exists ( '__' )) {
+if (! function_exists('__')) {
     /**
      * lang
      *
-     * @param string $sValue            
+     * @param string $sValue
      * @return string
      */
-    function __($sValue) {
-        return func_num_args () > 1 ? call_user_func_array ( 'sprintf', func_get_args () ) : $sValue;
+    function __($sValue)
+    {
+        return func_num_args() > 1 ? call_user_func_array('sprintf', func_get_args()) : $sValue;
     }
 }

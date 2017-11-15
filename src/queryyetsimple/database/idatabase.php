@@ -23,5 +23,6 @@ queryphp;
  * @since 2017.11.08
  * @version 1.0
  */
-interface idatabase {
+interface idatabase
+{
 }

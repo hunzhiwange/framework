@@ -23,17 +23,19 @@ queryphp;
  * @since 2017.07.14
  * @version 1.0
  */
-class defaults_simple extends defaults {
-    
+class defaults_simple extends defaults
+{
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\page\ipage $objPage            
-     * @param array $arrOption            
+     * @param \queryyetsimple\page\ipage $objPage
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(ipage $objPage, array $arrOption = []) {
-        parent::__construct ( $objPage, $arrOption );
-        $this->option ( 'template', '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}' );
+    public function __construct(ipage $objPage, array $arrOption = [])
+    {
+        parent::__construct($objPage, $arrOption);
+        $this->option('template', '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}');
     }
 }

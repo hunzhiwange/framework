@@ -23,17 +23,19 @@ queryphp;
  * @since 2017.05.04
  * @version 1.0
  */
-class shutdown extends message {
-    
+class shutdown extends message
+{
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\bootstrap\project $oProject            
+     * @param \queryyetsimple\bootstrap\project $oProject
      * @return void
      */
-    public function __construct($oProject) {
+    public function __construct($oProject)
+    {
         $this->oProject = $oProject;
-        if (($arrError = error_get_last ()) && ! empty ( $arrError ['type'] )) {
+        if (($arrError = error_get_last()) && ! empty($arrError ['type'])) {
             $this->strMessage = "[{$arrError['type']}]: {$arrError['message']} <br> File: {$arrError['file']} <br> Line: {$arrError['line']}";
         }
     }

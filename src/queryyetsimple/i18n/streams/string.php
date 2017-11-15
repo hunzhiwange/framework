@@ -24,62 +24,70 @@ queryphp;
  * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
-class string extends reader {
-    
+class string extends reader
+{
+
     /**
      * prop
      *
      * @var string
      */
-    var $_str = '';
-    
+    public $_str = '';
+
     /**
      * PHP5 constructor.
      */
-    function __construct($str = '') {
-        parent::__construct ();
+    public function __construct($str = '')
+    {
+        parent::__construct();
         $this->_str = $str;
         $this->_pos = 0;
     }
-    
+
     /**
      *
-     * @param string $bytes            
+     * @param string $bytes
      * @return string
      */
-    function read($bytes) {
-        $data = $this->substr ( $this->_str, $this->_pos, $bytes );
+    public function read($bytes)
+    {
+        $data = $this->substr($this->_str, $this->_pos, $bytes);
         $this->_pos += $bytes;
-        if ($this->strlen ( $this->_str ) < $this->_pos)
-            $this->_pos = $this->strlen ( $this->_str );
+        if ($this->strlen($this->_str) < $this->_pos) {
+            $this->_pos = $this->strlen($this->_str);
+        }
         return $data;
     }
-    
+
     /**
      *
-     * @param int $pos            
+     * @param int $pos
      * @return int
      */
-    function seekto($pos) {
+    public function seekto($pos)
+    {
         $this->_pos = $pos;
-        if ($this->strlen ( $this->_str ) < $this->_pos)
-            $this->_pos = $this->strlen ( $this->_str );
+        if ($this->strlen($this->_str) < $this->_pos) {
+            $this->_pos = $this->strlen($this->_str);
+        }
         return $this->_pos;
     }
-    
+
     /**
      *
      * @return int
      */
-    function length() {
-        return $this->strlen ( $this->_str );
+    public function length()
+    {
+        return $this->strlen($this->_str);
     }
-    
+
     /**
      *
      * @return string
      */
-    function read_all() {
-        return $this->substr ( $this->_str, $this->_pos, $this->strlen ( $this->_str ) );
+    public function read_all()
+    {
+        return $this->substr($this->_str, $this->_pos, $this->strlen($this->_str));
     }
 }

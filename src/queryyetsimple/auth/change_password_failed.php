@@ -25,5 +25,6 @@ use RuntimeException;
  * @since 2017.09.09
  * @version 1.0
  */
-class change_password_failed extends RuntimeException {
+class change_password_failed extends RuntimeException
+{
 }

@@ -25,64 +25,71 @@ use queryyetsimple\support\manager as support_manager;
  * @since 2017.02.15
  * @version 1.0
  */
-class manager extends support_manager {
-    
+class manager extends support_manager
+{
+
     /**
      * 取得配置命名空间
      *
      * @return string
      */
-    protected function getOptionNamespace() {
+    protected function getOptionNamespace()
+    {
         return 'cache';
     }
-    
+
     /**
      * 创建连接对象
      *
-     * @param object $objConnect            
+     * @param object $objConnect
      * @return object
      */
-    protected function createConnect($objConnect) {
-        return new cache ( $objConnect );
+    protected function createConnect($objConnect)
+    {
+        return new cache($objConnect);
     }
-    
+
     /**
      * 创建文件缓存
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\cache\file
      */
-    protected function makeConnectFile($arrOption = []) {
-        return new file ( array_merge ( $this->getOption ( 'file', $arrOption ) ) );
+    protected function makeConnectFile($arrOption = [])
+    {
+        return new file(array_merge($this->getOption('file', $arrOption)));
     }
-    
+
     /**
      * 创建 memcache 缓存
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\cache\memcache
      */
-    protected function makeConnectMemcache($arrOption = []) {
-        return new memcache ( array_merge ( $this->getOption ( 'memcache', $arrOption ) ) );
+    protected function makeConnectMemcache($arrOption = [])
+    {
+        return new memcache(array_merge($this->getOption('memcache', $arrOption)));
     }
-    
+
     /**
      * 创建 redis 缓存
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return \queryyetsimple\cache\redis
      */
-    protected function makeConnectRedis($arrOption = []) {
-        return new redis ( array_merge ( $this->getOption ( 'redis', $arrOption ) ) );
+    protected function makeConnectRedis($arrOption = [])
+    {
+        return new redis(array_merge($this->getOption('redis', $arrOption)));
     }
-    
+
     /**
      * 读取连接配置
      *
-     * @param string $strConnect            
+     * @param string $strConnect
      * @return array
      */
-    protected function getOptionConnect($strConnect) {
-        return $this->optionFilterNull ( parent::getOptionConnect ( $strConnect ) );
+    protected function getOptionConnect($strConnect)
+    {
+        return $this->optionFilterNull(parent::getOptionConnect($strConnect));
     }
 }

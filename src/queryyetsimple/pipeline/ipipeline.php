@@ -23,44 +23,45 @@ queryphp;
  * @since 2017.04.11
  * @version 1.0
  */
-interface ipipeline {
-    
+interface ipipeline
+{
+
     /**
      * 将传输对象传入管道
      *
-     * @param mixed $mixPassed            
+     * @param mixed $mixPassed
      * @return $this
      */
     public function send($mixPassed);
-    
+
     /**
      * 将附加传输对象传入管道
      *
-     * @param mixed $mixPassed            
+     * @param mixed $mixPassed
      * @return $this
      */
     public function sendExtend($mixPassed);
-    
+
     /**
      * 设置管道中的执行工序
      *
-     * @param dynamic|array $mixStages            
+     * @param dynamic|array $mixStages
      * @return $this
      */
     public function through($mixStages);
-    
+
     /**
      * 添加一道工序
      *
-     * @param mixed $mixStage            
+     * @param mixed $mixStage
      * @return $this
      */
     public function stage($mixStage);
-    
+
     /**
      * 执行管道工序响应结果
      *
-     * @param callable $calEnd            
+     * @param callable $calEnd
      * @return mixed
      */
     public function then(callable $calEnd);

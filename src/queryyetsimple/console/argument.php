@@ -25,5 +25,6 @@ use Symfony\Component\Console\Input\InputArgument;
  * @since 2017.05.09
  * @version 1.0
  */
-class argument extends InputArgument {
-}  
+class argument extends InputArgument
+{
+}

@@ -28,45 +28,49 @@ use queryyetsimple\http\response;
  * @since 2017.11.14
  * @version 1.0
  */
-class log {
-    
+class log
+{
+
     /**
      * log 管理
      *
      * @var \queryyetsimple\log\log
      */
     protected $objManager;
-    
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\throttler\ithrottler $objManager            
+     * @param \queryyetsimple\throttler\ithrottler $objManager
      * @return void
      */
-    public function __construct(manager $objManager) {
+    public function __construct(manager $objManager)
+    {
         $this->objManager = $objManager;
     }
-    
+
     /**
      * 响应
      *
-     * @param \queryyetsimple\http\request $objRequest            
-     * @param \queryyetsimple\http\response $mixResponse            
+     * @param \queryyetsimple\http\request $objRequest
+     * @param \queryyetsimple\http\response $mixResponse
      * @return mixed
      */
-    public function terminate(Closure $calNext, request $objRequest, response $objResponse) {
-        $this->saveLog ();
-        return $calNext ( $objRequest, $objResponse );
+    public function terminate(Closure $calNext, request $objRequest, response $objResponse)
+    {
+        $this->saveLog();
+        return $calNext($objRequest, $objResponse);
     }
-    
+
     /**
      * 保存日志
      *
      * @return void
      */
-    protected function saveLog() {
-        if ($this->objManager->container ()['option'] ['log\enabled']) {
-            $this->objManager->save ();
+    protected function saveLog()
+    {
+        if ($this->objManager->container()['option'] ['log\enabled']) {
+            $this->objManager->save();
         }
     }
 }

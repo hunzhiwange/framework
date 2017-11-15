@@ -23,134 +23,135 @@ queryphp;
  * @since 2017.09.07
  * @version 1.0
  */
-interface iconnect {
-    
+interface iconnect
+{
+
     /**
      * 用户是否已经登录
      *
      * @return boolean
      */
     public function isLogin();
-    
+
     /**
      * 获取登录信息
      *
      * @return mixed
      */
     public function getLogin();
-    
+
     /**
      * 登录验证
      *
-     * @param mixed $mixName            
-     * @param string $sPassword            
-     * @param mixed $mixLoginTime            
+     * @param mixed $mixName
+     * @param string $sPassword
+     * @param mixed $mixLoginTime
      * @return \queryyetsimple\mvc\imodel|void
      */
     public function login($mixName, $sPassword, $mixLoginTime = null);
-    
+
     /**
      * 登出
      *
      * @return void
      */
     public function logout();
-    
+
     /**
      * 修改密码
      *
-     * @param mixed $mixName            
-     * @param string $sNewPassword            
-     * @param string $sConfirmPassword            
-     * @param string $sOldPassword            
-     * @param boolean $bIgnoreOldPassword            
+     * @param mixed $mixName
+     * @param string $sNewPassword
+     * @param string $sConfirmPassword
+     * @param string $sOldPassword
+     * @param boolean $bIgnoreOldPassword
      * @return mixed
      */
     public function changePassword($mixName, $sNewPassword, $sConfirmPassword, $sOldPassword, $bIgnoreOldPassword = false);
-    
+
     /**
      * 注册用户
      *
-     * @param string $strName            
-     * @param string $strPassword            
-     * @param string $strComfirmPassword            
-     * @param string $strNikename            
-     * @param string $strIp            
-     * @param string $strEmail            
-     * @param string $strMobile            
+     * @param string $strName
+     * @param string $strPassword
+     * @param string $strComfirmPassword
+     * @param string $strNikename
+     * @param string $strIp
+     * @param string $strEmail
+     * @param string $strMobile
      * @return mixed
      */
     public function registerUser($strName, $strPassword, $strComfirmPassword, $strNikename = null, $strIp = null, $strEmail = null, $strMobile = null);
-    
+
     /**
      * 设置认证名字
      *
-     * @param string $strTokenName            
+     * @param string $strTokenName
      * @return string
      */
     public function setTokenName($strTokenName);
-    
+
     /**
      * 取得认证名字
      *
      * @return string
      */
     public function getTokenName();
-    
+
     /**
      * 设置用户信息持久化名字
      *
-     * @param string $strUserPersistenceName            
+     * @param string $strUserPersistenceName
      * @return string
      */
     public function setUserPersistenceName($strUserPersistenceName);
-    
+
     /**
      * 取得用户信息持久化名字
      *
      * @return string
      */
     public function getUserPersistenceName();
-    
+
     /**
      * 设置字段
      *
-     * @param array $arrField            
-     * @param boolean $booForce            
+     * @param array $arrField
+     * @param boolean $booForce
      * @return void
      */
     public function setField(array $arrField, $booForce = false);
-    
+
     /**
      * 获取字段
      *
-     * @param array $strField            
+     * @param array $strField
      * @return mixed
      */
     public function getField($strField);
-    
+
     /**
      * 批量获取字段
      *
-     * @param array $arrField            
-     * @param boolean $booFilterNull            
+     * @param array $arrField
+     * @param boolean $booFilterNull
      * @return array
      */
     public function getFields(array $arrField, $booFilterNull = true);
-    
+
     /**
      * 验证数据分离
      *
-     * @param string $sAuth            
+     * @param string $sAuth
      * @return mixed
      */
     public function explodeTokenData($sAuth);
-    
+
     /**
      * 验证数据组合
      *
-     * @param mixed $maxIdentifier            
-     * @param string $strPassword            
+     * @param mixed $maxIdentifier
+     * @param string $strPassword
      * @return string
      */
     public function implodeTokenData($maxIdentifier, $strPassword);

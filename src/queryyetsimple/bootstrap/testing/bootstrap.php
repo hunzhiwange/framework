@@ -25,6 +25,6 @@ use queryyetsimple\router;
  * @since 2017.05.08
  * @version 1.0
  */
-router::bind ( 'phpunittesting://bootstrap/index', function () {
-    return (new application ())->run ();
-} );
+router::bind('phpunittesting://bootstrap/index', function () {
+    return (new application())->run();
+});

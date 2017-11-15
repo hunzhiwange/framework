@@ -26,34 +26,39 @@ use InvalidArgumentException;
  * @see http://php.net/manual/zh/class.splstack.php
  * @version 1.0
  */
-class stack extends linkedlist implements istack_queue {
-    
+class stack extends linkedlist implements istack_queue
+{
+
     /**
      * 入栈
      *
-     * @param mixed $mixValue            
+     * @param mixed $mixValue
      * @return void
      */
-    public function in($mixValue) {
-        $this->push ( $mixValue );
+    public function in($mixValue)
+    {
+        $this->push($mixValue);
     }
-    
+
     /**
      * 出栈
      *
      * @return mixed
      */
-    public function out() {
-        return $this->pop ();
+    public function out()
+    {
+        return $this->pop();
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see \queryyetsimple\support\linkedlist::validate()
      */
-    public function validate($mixValue) {
-        if (! $this->checkType ( $mixValue ))
-            throw new InvalidArgumentException ( sprintf ( 'The stack element type verification failed, and the allowed type is %s.', implode ( ',', $this->arrType ) ) );
+    public function validate($mixValue)
+    {
+        if (! $this->checkType($mixValue)) {
+            throw new InvalidArgumentException(sprintf('The stack element type verification failed, and the allowed type is %s.', implode(',', $this->arrType)));
+        }
     }
 }

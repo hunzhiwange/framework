@@ -29,87 +29,95 @@ use queryyetsimple\support\option;
  * @since 2017.08.26
  * @version 1.0
  */
-abstract class aconnect implements Swift_Transport {
-    
+abstract class aconnect implements Swift_Transport
+{
     use option;
-    
+
     /**
      * swift mailer
      *
      * @var \Swift_Mailer
      */
     protected $objSwiftMailer;
-    
+
     /**
      * 构造函数
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return void
      */
-    public function __construct(array $arrOption = []) {
-        $this->options ( $arrOption );
-        $this->swiftMailer ();
+    public function __construct(array $arrOption = [])
+    {
+        $this->options($arrOption);
+        $this->swiftMailer();
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see Swift_Transport::isStarted()
      */
-    public function isStarted() {
+    public function isStarted()
+    {
         return true;
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see Swift_Transport::start()
      */
-    public function start() {
+    public function start()
+    {
         return true;
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see Swift_Transport::stop()
      */
-    public function stop() {
+    public function stop()
+    {
         return true;
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see Swift_Transport::registerPlugin()
      */
-    public function registerPlugin(Swift_Events_EventListener $plugin) {
+    public function registerPlugin(Swift_Events_EventListener $plugin)
+    {
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see Swift_Transport::send()
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null) {
-        return $this->getSwiftMailer ()->send ( $message, $failedRecipients );
+    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    {
+        return $this->getSwiftMailer()->send($message, $failedRecipients);
     }
-    
+
     /**
      * 返回 swift mailer
      *
      * @return \Swift_Mailer
      */
-    public function getSwiftMailer() {
+    public function getSwiftMailer()
+    {
         return $this->objSwiftMailer;
     }
-    
+
     /**
      * 生成 swift mailer
      *
      * @return \Swift_Mailer
      */
-    protected function swiftMailer() {
-        return $this->objSwiftMailer = new Swift_Mailer ( $this->makeTransport () );
+    protected function swiftMailer()
+    {
+        return $this->objSwiftMailer = new Swift_Mailer($this->makeTransport());
     }
 }

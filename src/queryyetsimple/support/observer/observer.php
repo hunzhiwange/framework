@@ -27,46 +27,49 @@ use RuntimeException;
  * @since 2017.06.23
  * @version 1.0
  */
-abstract class observer implements SplObserver {
-    
+abstract class observer implements SplObserver
+{
+
     /**
      * 观察者目标角色 subject
      *
      * @var \SplSubject
      */
     protected $objSubject;
-    
+
     /**
      * 构造函数
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
-    
+
     /**
      * (non-PHPdoc)
      *
      * @see SplObserver::update()
      */
-    public function update(SplSubject $objSubject) {
-        $strMethod = method_exists ( $this, 'handle' ) ? 'handle' : 'run';
-        
-        $arrArgs = func_get_args ();
-        array_shift ( $arrArgs );
-        
-        if (! is_callable ( [ 
+    public function update(SplSubject $objSubject)
+    {
+        $strMethod = method_exists($this, 'handle') ? 'handle' : 'run';
+
+        $arrArgs = func_get_args();
+        array_shift($arrArgs);
+
+        if (! is_callable([
                 $this,
-                $strMethod 
-        ] )) {
-            throw new RuntimeException ( sprintf ( 'Observer %s must has run method', get_class ( $this ) ) );
+                $strMethod
+        ])) {
+            throw new RuntimeException(sprintf('Observer %s must has run method', get_class($this)));
         }
-        
-        $objSubject->container ()->call ( [ 
+
+        $objSubject->container()->call([
                 $this,
-                $strMethod 
-        ], $arrArgs );
-        
-        unset ( $arrArgs );
+                $strMethod
+        ], $arrArgs);
+
+        unset($arrArgs);
     }
 }

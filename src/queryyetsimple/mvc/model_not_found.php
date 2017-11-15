@@ -25,33 +25,36 @@ use RuntimeException;
  * @since 2017.07.10
  * @version 1.0
  */
-class model_not_found extends RuntimeException {
-    
+class model_not_found extends RuntimeException
+{
+
     /**
      * 模型名字
      *
      * @var string
      */
     protected $strModel;
-    
+
     /**
      * 设置模型
      *
-     * @param string $strModel            
+     * @param string $strModel
      * @return $this
      */
-    public function model($strModel) {
+    public function model($strModel)
+    {
         $this->strModel = $strModel;
         $this->message = "Can not find {$strModel} data";
         return $this;
     }
-    
+
     /**
      * 取回模型
      *
      * @return string
      */
-    public function getModel() {
+    public function getModel()
+    {
         return $this->strModel;
     }
 }

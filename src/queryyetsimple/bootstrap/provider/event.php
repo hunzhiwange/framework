@@ -26,43 +26,47 @@ use queryyetsimple\support\provider;
  * @since 2017.04.26
  * @version 1.0
  */
-class event extends provider {
-    
+class event extends provider
+{
+
     /**
      * 监听器列表
      *
      * @var array
      */
     protected $arrListener = [ ];
-    
+
     /**
      * 注册时间监听器
      *
-     * @param \queryyetsimple\event\idispatch $objEvent            
+     * @param \queryyetsimple\event\idispatch $objEvent
      * @return void
      */
-    public function bootstrap(idispatch $objEvent) {
-        foreach ( $this->getListener () as $strEvent => $arrListeners ) {
-            foreach ( $arrListeners as $strListener ) {
-                $objEvent->listener ( $strEvent, $strListener );
+    public function bootstrap(idispatch $objEvent)
+    {
+        foreach ($this->getListener() as $strEvent => $arrListeners) {
+            foreach ($arrListeners as $strListener) {
+                $objEvent->listener($strEvent, $strListener);
             }
         }
     }
-    
+
     /**
      * 注册一个提供者
      *
      * @return void
      */
-    public function register() {
+    public function register()
+    {
     }
-    
+
     /**
      * 取得监听器
      *
      * @return array
      */
-    public function getListener() {
+    public function getListener()
+    {
         return $this->arrListener;
     }
 }

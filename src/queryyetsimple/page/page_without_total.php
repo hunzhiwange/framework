@@ -23,19 +23,21 @@ queryphp;
  * @since 2017.07.14
  * @version 1.0
  */
-class page_without_total extends page {
-    
+class page_without_total extends page
+{
+
     /**
      * 构造函数
      *
-     * @param int $intPerPage            
-     * @param int $intTotalRecord            
-     * @param array $arrOption            
+     * @param int $intPerPage
+     * @param int $intTotalRecord
+     * @param array $arrOption
      * @return void
      */
-    public function __construct($intPerPage, array $arrOption = []) {
+    public function __construct($intPerPage, array $arrOption = [])
+    {
         $this->intPerPage = $intPerPage;
         $this->intTotalRecord = true;
-        $this->options ( $arrOption );
+        $this->options($arrOption);
     }
 }

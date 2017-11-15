@@ -26,8 +26,9 @@ use League\Flysystem\Sftp\SftpAdapter;
  * @see https://flysystem.thephpleague.com/adapter/sftp/
  * @version 1.0
  */
-class sftp extends aconnect implements iconnect {
-    
+class sftp extends aconnect implements iconnect
+{
+
     /**
      * 配置
      *
@@ -36,36 +37,37 @@ class sftp extends aconnect implements iconnect {
     protected $arrOption = [
             // 主机
             'host' => 'sftp.example.com',
-            
+
             // 端口
             'port' => 22,
-            
+
             // 用户名
             'username' => 'your-username',
-            
+
             // 密码
             'password' => 'your-password',
-            
+
             // 根目录
             'root' => '',
-            
+
             // 私钥路径
             'privateKey' => '',
-            
+
             // 超时设置
-            'timeout' => 20 
+            'timeout' => 20
     ];
-    
+
     /**
      * 创建连接
      *
      * @return \League\Flysystem\AdapterInterface
      */
-    public function makeConnect() {
-        if (! class_exists ( 'League\Flysystem\Sftp\SftpAdapter' )) {
-            throw new InvalidArgumentException ( 'Please run composer require league/flysystem-sftp' );
+    public function makeConnect()
+    {
+        if (! class_exists('League\Flysystem\Sftp\SftpAdapter')) {
+            throw new InvalidArgumentException('Please run composer require league/flysystem-sftp');
         }
-        
-        return new SftpAdapter ( $this->getOptions () );
+
+        return new SftpAdapter($this->getOptions());
     }
 }

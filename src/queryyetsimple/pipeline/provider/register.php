@@ -26,30 +26,33 @@ use queryyetsimple\pipeline\pipeline;
  * @since 2017.05.25
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->bind ( 'pipeline', function ($oProject) {
-            return new pipeline ( $oProject );
-        } );
+    public function register()
+    {
+        $this->bind('pipeline', function ($oProject) {
+            return new pipeline($oProject);
+        });
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
-                'pipeline' => [ 
+    public static function providers()
+    {
+        return [
+                'pipeline' => [
                         'queryyetsimple\pipeline\pipeline',
-                        'queryyetsimple\pipeline\ipipeline' 
-                ] 
+                        'queryyetsimple\pipeline\ipipeline'
+                ]
         ];
     }
 }

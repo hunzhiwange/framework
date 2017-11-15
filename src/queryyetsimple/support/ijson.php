@@ -23,12 +23,13 @@ queryphp;
  * @since 2017.07.19
  * @version 1.0
  */
-interface ijson {
-    
+interface ijson
+{
+
     /**
      * 对象转 JSON
      *
-     * @param integer $intOption            
+     * @param integer $intOption
      * @return string
      */
     public function toJson($intOption = JSON_UNESCAPED_UNICODE);

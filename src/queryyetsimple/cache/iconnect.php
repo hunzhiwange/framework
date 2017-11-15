@@ -23,33 +23,34 @@ queryphp;
  * @since 2017.04.23
  * @version 1.0
  */
-interface iconnect {
-    
+interface iconnect
+{
+
     /**
      * 获取缓存
      *
-     * @param string $sCacheName            
-     * @param mixed $mixDefault            
-     * @param array $arrOption            
+     * @param string $sCacheName
+     * @param mixed $mixDefault
+     * @param array $arrOption
      * @return mixed
      */
     public function get($sCacheName, $mixDefault = false, array $arrOption = []);
-    
+
     /**
      * 设置缓存
      *
-     * @param string $sCacheName            
-     * @param mixed $mixData            
-     * @param array $arrOption            
+     * @param string $sCacheName
+     * @param mixed $mixData
+     * @param array $arrOption
      * @return void
      */
     public function set($sCacheName, $mixData, array $arrOption = []);
-    
+
     /**
      * 清除缓存
      *
-     * @param string $sCacheName            
-     * @param array $arrOption            
+     * @param string $sCacheName
+     * @param array $arrOption
      * @return void
      */
     public function delele($sCacheName, array $arrOption = []);
@@ -57,19 +58,19 @@ interface iconnect {
     /**
      * 批量插入
      *
-     * @param string|array $mixKey            
-     * @param mixed $mixValue            
+     * @param string|array $mixKey
+     * @param mixed $mixValue
      * @return void
      */
     public function put($mixKey, $mixValue = null);
-    
+
     /**
      * 返回缓存句柄
      *
      * @return mixed
      */
     public function handle();
-    
+
     /**
      * 关闭
      *

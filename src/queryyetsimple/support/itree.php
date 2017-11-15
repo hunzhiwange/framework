@@ -23,109 +23,110 @@ queryphp;
  * @since 2017.09.13
  * @version 1.0
  */
-interface itree {
-    
+interface itree
+{
+
     /**
      * 设置节点数据
      *
-     * @param int $nId            
-     * @param int $nParent            
-     * @param mixed $mixValue            
+     * @param int $nId
+     * @param int $nParent
+     * @param mixed $mixValue
      * @return void
      */
     public function setNode($nId, $nParent, $mixValue);
-    
+
     /**
      * 取得给定 ID 子树
      *
-     * @param int $nId            
+     * @param int $nId
      * @return array
      */
     public function getChildrenTree($nId = 0);
-    
+
     /**
      * 取得给定 ID 一级子树 ID
      *
-     * @param int $nId            
+     * @param int $nId
      * @return array
      */
     public function getChild($nId);
-    
+
     /**
      * 取得给定 ID 所有子树 ID
      *
-     * @param int $nId            
+     * @param int $nId
      * @return array
      */
     public function getChildren($nId = 0);
-    
+
     /**
      * 取得给定 ID 是否包含子树
      *
-     * @param int $nId            
+     * @param int $nId
      * @return boolean
      */
     public function hasChild($nId);
-    
+
     /**
      * 验证是否存在子菜单
      *
-     * @param int $intId            
-     * @param array $arrCheckChildren            
-     * @param boolean $booStrict            
+     * @param int $intId
+     * @param array $arrCheckChildren
+     * @param boolean $booStrict
      * @return boolean
      */
     public function hasChildren($intId, array $arrCheckChildren = [], $booStrict = true);
-    
+
     /**
      * 取得给定 ID 上级父级 ID
      *
-     * @param int $nId            
-     * @param boolean $booWithItSelf            
+     * @param int $nId
+     * @param boolean $booWithItSelf
      * @return array
      */
     public function getParent($nId, $booWithItSelf = false);
-    
+
     /**
      * 取得给定 ID 所有父级 ID
      *
-     * @param int $nId            
-     * @param boolean $booWithItSelf            
+     * @param int $nId
+     * @param boolean $booWithItSelf
      * @return array
      */
     public function getParents($nId, $booWithItSelf = true);
-    
+
     /**
      * 判断级别
      *
-     * @param int $nId            
+     * @param int $nId
      * @return string
      */
     public function getLevel($nId);
-    
+
     /**
      * 取得节点的值
      *
-     * @param int $nId            
+     * @param int $nId
      * @return mixed
      */
     public function getData($nId, $mixDefault = null);
-    
+
     /**
      * 设置节点的值
      *
-     * @param int $nId            
-     * @param mixed $mixValue            
+     * @param int $nId
+     * @param mixed $mixValue
      * @return void
      */
     public function setData($nId, $mixValue);
-    
+
     /**
      * 树转化为数组
      *
-     * @param mixed $mixCallable            
-     * @param array $arrKey            
-     * @param int $nId            
+     * @param mixed $mixCallable
+     * @param array $arrKey
+     * @param int $nId
      * @return array
      */
     public function treeToArray($mixCallable = null, $arrKey = [], $nId = 0);

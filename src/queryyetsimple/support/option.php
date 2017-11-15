@@ -25,66 +25,75 @@ queryphp;
  * @since 2017.04.13
  * @version 1.0
  */
-trait option {
-    
+trait option
+{
+
     /**
      * 修改单个配置
      *
-     * @param string $strName            
-     * @param mixed $mixValue            
+     * @param string $strName
+     * @param mixed $mixValue
      * @return $this
      */
-    public function option($strName, $mixValue) {
-        if (! is_string ( $strName ))
-            throw new InvalidArgumentException ( 'Option set name must be a string.' );
+    public function option($strName, $mixValue)
+    {
+        if (! is_string($strName)) {
+            throw new InvalidArgumentException('Option set name must be a string.');
+        }
         $this->arrOption [$strName] = $mixValue;
         return $this;
     }
-    
+
     /**
      * 修改单个数组性配置
      *
-     * @param string $strName            
-     * @param array $arrValue            
+     * @param string $strName
+     * @param array $arrValue
      * @return $this
      */
-    public function optionArray($strName, array $arrValue) {
-        return $this->option ( $strName, array_merge ( $this->getOption ( $strName ), $arrValue ) );
+    public function optionArray($strName, array $arrValue)
+    {
+        return $this->option($strName, array_merge($this->getOption($strName), $arrValue));
     }
-    
+
     /**
      * 修改多个配置
      *
-     * @param string $strName            
-     * @param mixed $mixValue            
+     * @param string $strName
+     * @param mixed $mixValue
      * @return $this
      */
-    public function options($arrOption = []) {
-        if (! $arrOption)
+    public function options($arrOption = [])
+    {
+        if (! $arrOption) {
             return $this;
-        foreach ( ( array ) $arrOption as $strName => $mixValue )
-            $this->option ( $strName, $mixValue );
+        }
+        foreach (( array ) $arrOption as $strName => $mixValue) {
+            $this->option($strName, $mixValue);
+        }
         return $this;
     }
-    
+
     /**
      * 获取单个配置
      *
-     * @param string $strName            
-     * @param mixed $mixDefault            
+     * @param string $strName
+     * @param mixed $mixDefault
      * @return mixed
      */
-    public function getOption($strName, $mixDefault = null) {
-        return isset ( $this->arrOption [$strName] ) ? $this->arrOption [$strName] : $mixDefault;
+    public function getOption($strName, $mixDefault = null)
+    {
+        return isset($this->arrOption [$strName]) ? $this->arrOption [$strName] : $mixDefault;
     }
-    
+
     /**
      * 获取所有配置
      *
-     * @param array $arrOption            
+     * @param array $arrOption
      * @return mixed
      */
-    public function getOptions($arrOption = []) {
-        return $arrOption ? array_merge ( $this->arrOption, $arrOption ) : $this->arrOption;
+    public function getOptions($arrOption = [])
+    {
+        return $arrOption ? array_merge($this->arrOption, $arrOption) : $this->arrOption;
     }
 }

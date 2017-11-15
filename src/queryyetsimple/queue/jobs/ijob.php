@@ -23,57 +23,58 @@ queryphp;
  * @since 2017.06.06
  * @version 1.0
  */
-interface ijob {
-    
+interface ijob
+{
+
     /**
      * 执行任务
      *
      * @return void
      */
     public function handle();
-    
+
     /**
      * 调用任务的失败方法
      *
      * @return void
      */
     public function failed();
-    
+
     /**
      * 取得 job 名字
      *
      * @return string
      */
     public function getName();
-    
+
     /**
      * 取得 job 数据
      *
      * @return string
      */
     public function getData();
-    
+
     /**
      * 返回任务执行次数
      *
      * @return int
      */
     public function getAttempts();
-    
+
     /**
      * 获取任务所属的消息队列
      *
      * @return string
      */
     public function getQueue();
-    
+
     /**
      * 取得 worker
      *
      * @return string
      */
     public function getWorker();
-    
+
     /**
      * 取得 job_id
      *

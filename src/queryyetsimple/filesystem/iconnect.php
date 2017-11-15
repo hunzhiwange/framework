@@ -23,8 +23,9 @@ queryphp;
  * @since 2017.08.29
  * @version 1.0
  */
-interface iconnect {
-    
+interface iconnect
+{
+
     /**
      * 创建连接
      *

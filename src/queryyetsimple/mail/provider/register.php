@@ -26,52 +26,57 @@ use queryyetsimple\support\provider;
  * @since 2017.08.26
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->mails ();
-        $this->mail ();
+    public function register()
+    {
+        $this->mails();
+        $this->mail();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
+    public static function providers()
+    {
+        return [
                 'mails' => 'queryyetsimple\mail\manager',
-                'mail' => [ 
+                'mail' => [
                         'queryyetsimple\mail\mail',
-                        'queryyetsimple\mail\imail' 
-                ] 
+                        'queryyetsimple\mail\imail'
+                ]
         ];
     }
-    
+
     /**
      * 注册 mails 服务
      *
      * @return void
      */
-    protected function mails() {
-        $this->singleton ( 'mails', function ($oProject) {
-            return new manager ( $oProject );
-        } );
+    protected function mails()
+    {
+        $this->singleton('mails', function ($oProject) {
+            return new manager($oProject);
+        });
     }
-    
+
     /**
      * 注册 mail 服务
      *
      * @return void
      */
-    protected function mail() {
-        $this->singleton ( 'mail', function ($oProject) {
-            return $oProject ['mails']->connect ();
-        } );
+    protected function mail()
+    {
+        $this->singleton('mail', function ($oProject) {
+            return $oProject ['mails']->connect();
+        });
     }
 }

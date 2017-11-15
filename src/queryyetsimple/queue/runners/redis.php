@@ -23,8 +23,9 @@ queryphp;
  * @since 2017.05.12
  * @version 1.0
  */
-class redis extends arunner implements irunner {
-    
+class redis extends arunner implements irunner
+{
+
     /**
      * 消息队列名字
      *

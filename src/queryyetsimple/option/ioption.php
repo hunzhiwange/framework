@@ -23,59 +23,54 @@ queryphp;
  * @since 2017.04.23
  * @version 1.0
  */
-interface ioption {
-    
+interface ioption
+{
+
     /**
      * 是否存在配置
      *
-     * @param string $sName
-     *            配置键值
+     * @param string $sName 配置键值
      * @return string
      */
     public function has($sName = 'app\\');
-    
+
     /**
      * 获取配置
      *
-     * @param string $sName
-     *            配置键值
-     * @param mixed $mixDefault
-     *            配置默认值
+     * @param string $sName 配置键值
+     * @param mixed $mixDefault 配置默认值
      * @return string
      */
     public function get($sName = 'app\\', $mixDefault = null);
-    
+
     /**
      * 返回所有配置
      *
      * @return array
      */
     public function all();
-    
+
     /**
      * 设置配置
      *
-     * @param mixed $mixName
-     *            配置键值
-     * @param mixed $mixValue
-     *            配置值
+     * @param mixed $mixName 配置键值
+     * @param mixed $mixValue 配置值
      * @return array
      */
     public function set($mixName, $mixValue = null);
-    
+
     /**
      * 删除配置
      *
-     * @param string $mixName
-     *            配置键值
+     * @param string $mixName 配置键值
      * @return string
      */
     public function delete($mixName);
-    
+
     /**
      * 初始化配置参数
      *
-     * @param mixed $mixNamespace            
+     * @param mixed $mixNamespace
      * @return void
      */
     public function reset($mixNamespace = null);

@@ -25,37 +25,42 @@ use PHPUnit_Framework_TestCase;
  * @since 2017.05.09
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase {
-    
+abstract class testcase extends PHPUnit_Framework_TestCase
+{
+
     /**
      * setUpBeforeClass
      *
      * @return void
      */
-    public static function setUpBeforeClass() {
+    public static function setUpBeforeClass()
+    {
     }
-    
+
     /**
      * tearDownAfterClass
      *
      * @return void
      */
-    public static function tearDownAfterClass() {
+    public static function tearDownAfterClass()
+    {
     }
-    
+
     /**
      * setUp
      *
      * @return void
      */
-    protected function setUp() {
+    protected function setUp()
+    {
     }
-    
+
     /**
      * tearDown
      *
      * @return void
      */
-    protected function tearDown() {
+    protected function tearDown()
+    {
     }
 }

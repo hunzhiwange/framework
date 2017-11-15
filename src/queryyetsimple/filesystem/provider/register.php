@@ -26,59 +26,64 @@ use queryyetsimple\filesystem\manager;
  * @since 2017.08.26
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 是否延迟载入
      *
      * @var boolean
      */
     public static $booDefer = true;
-    
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->filesystems ();
-        $this->filesystem ();
+    public function register()
+    {
+        $this->filesystems();
+        $this->filesystem();
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
+    public static function providers()
+    {
+        return [
                 'filesystems' => 'queryyetsimple\filesystem\manager',
-                'filesystem' => [ 
+                'filesystem' => [
                         'queryyetsimple\filesystem\filesystem',
-                        'queryyetsimple\filesystem\ifilesystem' 
-                ] 
+                        'queryyetsimple\filesystem\ifilesystem'
+                ]
         ];
     }
-    
+
     /**
      * 注册 filesystems 服务
      *
      * @return void
      */
-    protected function filesystems() {
-        $this->singleton ( 'filesystems', function ($oProject) {
-            return new manager ( $oProject );
-        } );
+    protected function filesystems()
+    {
+        $this->singleton('filesystems', function ($oProject) {
+            return new manager($oProject);
+        });
     }
-    
+
     /**
      * 注册 filesystem 服务
      *
      * @return void
      */
-    protected function filesystem() {
-        $this->singleton ( 'filesystem', function ($oProject) {
-            return $oProject ['filesystems']->connect ();
-        } );
+    protected function filesystem()
+    {
+        $this->singleton('filesystem', function ($oProject) {
+            return $oProject ['filesystems']->connect();
+        });
     }
 }

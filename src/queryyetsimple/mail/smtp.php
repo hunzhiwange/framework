@@ -25,38 +25,40 @@ use Swift_SmtpTransport;
  * @since 2017.08.26
  * @version 1.0
  */
-class smtp extends aconnect implements iconnect {
-    
+class smtp extends aconnect implements iconnect
+{
+
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [ 
+    protected $arrOption = [
             'host' => 'smtp.qq.com',
             'port' => 465,
             'username' => null,
             'password' => '',
-            'encryption' => 'ssl' 
+            'encryption' => 'ssl'
     ];
-    
+
     /**
      * 创建 transport
      *
      * @return mixed
      */
-    public function makeTransport() {
-        $objTransport = Swift_SmtpTransport::newInstance ( $this->getOption ( 'host' ), $this->getOption ( 'port' ) );
-        
-        if (! is_null ( $this->getOption ( 'encryption' ) )) {
-            $objTransport->setEncryption ( $this->getOption ( 'encryption' ) );
+    public function makeTransport()
+    {
+        $objTransport = Swift_SmtpTransport::newInstance($this->getOption('host'), $this->getOption('port'));
+
+        if (! is_null($this->getOption('encryption'))) {
+            $objTransport->setEncryption($this->getOption('encryption'));
         }
-        
-        if (! is_null ( $this->getOption ( 'username' ) )) {
-            $objTransport->setUsername ( $this->getOption ( 'username' ) );
-            $objTransport->setPassword ( $this->getOption ( 'password' ) );
+
+        if (! is_null($this->getOption('username'))) {
+            $objTransport->setUsername($this->getOption('username'));
+            $objTransport->setPassword($this->getOption('password'));
         }
-        
+
         return $objTransport;
     }
 }

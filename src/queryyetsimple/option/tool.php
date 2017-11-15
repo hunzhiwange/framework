@@ -27,83 +27,86 @@ use queryyetsimple\filesystem\fso;
  * @since 2017.05.18
  * @version 1.0
  */
-class tool {
-    
+class tool
+{
+
     /**
      * 合并配置文件数据
      *
-     * @param array $arrOptionDir            
-     * @param string $sOptionCache            
-     * @param array $arrExtendData            
-     * @param boolean $booInitApp            
+     * @param array $arrOptionDir
+     * @param string $sOptionCache
+     * @param array $arrExtendData
+     * @param boolean $booInitApp
      * @return array
      */
-    public static function saveToCache($arrOptionDir, $sOptionCache, $arrExtendData = [], $booInitApp = false) {
+    public static function saveToCache($arrOptionDir, $sOptionCache, $arrExtendData = [], $booInitApp = false)
+    {
         $arrData = $arrType = [ ];
-        
-        foreach ( $arrOptionDir as $sDir ) {
-            if (is_dir ( $sDir ) && ($arrFile = fso::lists ( $sDir, 'file' ))) {
-                foreach ( $arrFile as $strFile ) {
-                    if (fso::getExtension ( $strFile, 2 ) == 'php') {
-                        $strType = substr ( $strFile, 0, - 4 );
+
+        foreach ($arrOptionDir as $sDir) {
+            if (is_dir($sDir) && ($arrFile = fso::lists($sDir, 'file'))) {
+                foreach ($arrFile as $strFile) {
+                    if (fso::getExtension($strFile, 2) == 'php') {
+                        $strType = substr($strFile, 0, - 4);
                         $arrType [] = $strType;
-                        
-                        if (! isset ( $arrData [$strType] )) {
+
+                        if (! isset($arrData [$strType])) {
                             $arrData [$strType] = [ ];
                         }
-                        if (is_array ( $arrFoo = include $sDir . '/' . $strFile )) {
-                            $arrData [$strType] = array_merge ( $arrData [$strType], $arrFoo );
+                        if (is_array($arrFoo = include $sDir . '/' . $strFile)) {
+                            $arrData [$strType] = array_merge($arrData [$strType], $arrFoo);
                         }
                     }
                 }
             }
         }
-        
-        foreach ( $arrType as $sType ) {
-            $arrData [$sType] = helper::arrayMergePlus ( $arrData [$sType] );
+
+        foreach ($arrType as $sType) {
+            $arrData [$sType] = helper::arrayMergePlus($arrData [$sType]);
         }
-        
+
         if ($arrExtendData) {
-            foreach ( $arrExtendData as $sType => $arrTemp ) {
-                if (isset ( $arrData [$sType] )) {
-                    $arrData [$sType] = helper::arrayMergePlus ( array_merge ( $arrData [$sType], $arrTemp ) );
+            foreach ($arrExtendData as $sType => $arrTemp) {
+                if (isset($arrData [$sType])) {
+                    $arrData [$sType] = helper::arrayMergePlus(array_merge($arrData [$sType], $arrTemp));
                 } else {
                     $arrData [$sType] = $arrTemp;
                 }
             }
         }
-        
+
         if ($booInitApp) {
-            self::router ( $arrData, $arrOptionDir );
+            self::router($arrData, $arrOptionDir);
         }
-        
-        if (! is_dir ( dirname ( $sOptionCache ) )) {
-            fso::createDirectory ( dirname ( $sOptionCache ) );
+
+        if (! is_dir(dirname($sOptionCache))) {
+            fso::createDirectory(dirname($sOptionCache));
         }
-        
-        if (! file_put_contents ( $sOptionCache, '<?php return ' . var_export ( $arrData, true ) . '; ?>' )) {
-            throw new RuntimeException ( sprintf ( 'Dir %s do not have permission.', $this->optioncache_path ) );
+
+        if (! file_put_contents($sOptionCache, '<?php return ' . var_export($arrData, true) . '; ?>')) {
+            throw new RuntimeException(sprintf('Dir %s do not have permission.', $this->optioncache_path));
         }
-        file_put_contents ( $sOptionCache, '<?php /* ' . date ( 'Y-m-d H:i:s' ) . ' */ ?>' . PHP_EOL . php_strip_whitespace ( $sOptionCache ) );
-        
+        file_put_contents($sOptionCache, '<?php /* ' . date('Y-m-d H:i:s') . ' */ ?>' . PHP_EOL . php_strip_whitespace($sOptionCache));
+
         return $arrData;
     }
-    
+
     /**
      * 路由配置
      *
-     * @param array $arrData            
-     * @param array $arrOptionDir            
+     * @param array $arrData
+     * @param array $arrOptionDir
      * @return void
      */
-    protected static function router(&$arrData, $arrOptionDir) {
+    protected static function router(&$arrData, $arrOptionDir)
+    {
         $arrData ['app'] ['~routers~'] = [ ];
-        
-        foreach ( $arrOptionDir as $sDir ) {
-            $sDir = dirname ( $sDir ) . '/router';
-            if (is_dir ( $sDir ) && ($arrFile = fso::lists ( $sDir, 'file' ))) {
-                foreach ( $arrFile as $strFile ) {
-                    if (fso::getExtension ( $strFile, 2 ) == 'php') {
+
+        foreach ($arrOptionDir as $sDir) {
+            $sDir = dirname($sDir) . '/router';
+            if (is_dir($sDir) && ($arrFile = fso::lists($sDir, 'file'))) {
+                foreach ($arrFile as $strFile) {
+                    if (fso::getExtension($strFile, 2) == 'php') {
                         $arrData ['app'] ['~routers~'] [] = $sDir . '/' . $strFile;
                     }
                 }

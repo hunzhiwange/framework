@@ -25,15 +25,17 @@ use Phinx\Console\Command\Migrate as PhinxMigrate;
  * @since 2017.05.09
  * @version 1.0
  */
-class migrate extends PhinxMigrate {
-    
+class migrate extends PhinxMigrate
+{
+
     /**
      * Configures the current command.
      *
      * @return void
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:migrate' );
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:migrate');
     }
-}  
+}

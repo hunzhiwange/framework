@@ -23,24 +23,27 @@ queryphp;
  * @since 2017.05.27
  * @version 1.0
  */
-class second {
-    
+class second
+{
+
     /**
      * 构造函数
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
-    
+
     /**
      * 响应请求
      *
-     * @param string $strPassed            
-     * @param string $strFoo            
+     * @param string $strPassed
+     * @param string $strFoo
      * @return string
      */
-    public function handle($strPassed, $strFoo) {
-        return $strPassed . ' ' . ucfirst ( $strFoo );
+    public function handle($strPassed, $strFoo)
+    {
+        return $strPassed . ' ' . ucfirst($strFoo);
     }
 }

@@ -23,8 +23,9 @@ queryphp;
  * @since 2017.07.19
  * @version 1.0
  */
-interface ihtml {
-    
+interface ihtml
+{
+
     /**
      * 转化输出 HTML
      *

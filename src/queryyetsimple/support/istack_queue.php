@@ -23,27 +23,28 @@ queryphp;
  * @since 2017.04.11
  * @version 1.0
  */
-interface istack_queue {
-    
+interface istack_queue
+{
+
     /**
      * 入
      *
-     * @param mixed $mixValue            
+     * @param mixed $mixValue
      * @return void
      */
     public function in($mixValue);
-    
+
     /**
      * 出
      *
      * @return mixed
      */
     public function out();
-    
+
     /**
      * 验证类型是否正确遇到错误抛出异常
      *
-     * @param mixed $mixValue            
+     * @param mixed $mixValue
      * @return void
      */
     public function validate($mixValue);

@@ -23,8 +23,9 @@ queryphp;
  * @since 2017.04.13
  * @version 1.0
  */
-interface iarray {
-    
+interface iarray
+{
+
     /**
      * 对象转数组
      *

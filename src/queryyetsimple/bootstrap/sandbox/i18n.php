@@ -25,14 +25,16 @@ use queryyetsimple\support\face;
  * @since 2017.06.10
  * @version 1.0
  */
-class i18n extends face {
-    
+class i18n extends face
+{
+
     /**
      * 返回门面名字
      *
      * @return string
      */
-    protected static function name() {
+    protected static function name()
+    {
         return 'i18n';
     }
 }
@@ -47,5 +49,6 @@ namespace qys;
  * @since 2017.06.10
  * @version 1.0
  */
-class i18n extends \queryyetsimple\i18n {
+class i18n extends \queryyetsimple\i18n
+{
 }

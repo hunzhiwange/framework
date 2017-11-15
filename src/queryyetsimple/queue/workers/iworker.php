@@ -23,12 +23,13 @@ queryphp;
  * @since 2017.06.06
  * @version 1.0
  */
-interface iworker {
-    
+interface iworker
+{
+
     /**
      * 运行任务
      *
-     * @param \PHPQueue\Job $objJob            
+     * @param \PHPQueue\Job $objJob
      * @return void
      */
     public function runJob($objJob);

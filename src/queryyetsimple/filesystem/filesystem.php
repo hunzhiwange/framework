@@ -23,36 +23,39 @@ queryphp;
  * @since 2017.08.29
  * @version 1.0
  */
-class filesystem implements ifilesystem {
-    
+class filesystem implements ifilesystem
+{
+
     /**
      * 连接驱动
      *
      * @var \queryyetsimple\filesystem\iconnect
      */
     protected $oConnect;
-    
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\filesystem\iconnect $oConnect            
+     * @param \queryyetsimple\filesystem\iconnect $oConnect
      * @return void
      */
-    public function __construct(iconnect $oConnect) {
+    public function __construct(iconnect $oConnect)
+    {
         $this->oConnect = $oConnect;
     }
-    
+
     /**
      * 缺省方法
      *
-     * @param 方法名 $sMethod            
-     * @param 参数 $arrArgs            
+     * @param 方法名 $sMethod
+     * @param 参数 $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs) {
-        return call_user_func_array ( [ 
+    public function __call($sMethod, $arrArgs)
+    {
+        return call_user_func_array([
                 $this->oConnect,
-                $sMethod 
-        ], $arrArgs );
+                $sMethod
+        ], $arrArgs);
     }
 }

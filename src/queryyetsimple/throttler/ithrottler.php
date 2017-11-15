@@ -25,30 +25,31 @@ use queryyetsimple\http\request;
  * @since 2017.08.07
  * @version 1.0
  */
-interface ithrottler {
-    
+interface ithrottler
+{
+
     /**
      * 创建一个节流器
      *
-     * @param string|null $strKey            
-     * @param integer $intXRateLimitLimit            
-     * @param integer $intXRateLimitTime            
+     * @param string|null $strKey
+     * @param integer $intXRateLimitLimit
+     * @param integer $intXRateLimitTime
      * @return \queryyetsimple\throttler\rate_limiter
      */
     public function create($strKey = null, $intXRateLimitLimit = 20, $intXRateLimitTime = 20);
-    
+
     /**
      * 设置 http request
      *
-     * @param \queryyetsimple\http\request $objRequest            
+     * @param \queryyetsimple\http\request $objRequest
      * @return $this
      */
     public function setRequest(request $objRequest);
-    
+
     /**
      * 获取请求 key
      *
-     * @param null|string $strKey            
+     * @param null|string $strKey
      * @return string
      */
     public function getRequestKey($strKey = null);

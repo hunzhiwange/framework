@@ -28,213 +28,225 @@ use queryyetsimple\support\collection;
  * @since 2017.09.28
  * @version 1.0
  */
-abstract class relation {
-    
+abstract class relation
+{
+
     /**
      * 查询对象
      *
      * @var \queryyetsimple\database\select
      */
     protected $objSelect;
-    
+
     /**
      * 关联目标模型
      *
      * @var \queryyetsimple\mvc\imodel
      */
     protected $objTargetModel;
-    
+
     /**
      * 源模型
      *
      * @var \queryyetsimple\mvc\imodel
      */
     protected $objSourceModel;
-    
+
     /**
      * 目标关联字段
      *
      * @var string
      */
     protected $strTargetKey;
-    
+
     /**
      * 源关联字段
      *
      * @var string
      */
     protected $strSourceKey;
-    
+
     /**
      * 是否初始化查询
      *
      * @var boolean
      */
     protected static $booRelationCondition = true;
-    
+
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\mvc\imodel $objTargetModel            
-     * @param \queryyetsimple\mvc\imodel $objSourceModel            
-     * @param string $strTargetKey            
-     * @param string $strSourceKey            
+     * @param \queryyetsimple\mvc\imodel $objTargetModel
+     * @param \queryyetsimple\mvc\imodel $objSourceModel
+     * @param string $strTargetKey
+     * @param string $strSourceKey
      * @return void
      */
-    public function __construct(imodel $objTargetModel, imodel $objSourceModel, $strTargetKey, $strSourceKey) {
+    public function __construct(imodel $objTargetModel, imodel $objSourceModel, $strTargetKey, $strSourceKey)
+    {
         $this->objTargetModel = $objTargetModel;
         $this->objSourceModel = $objSourceModel;
         $this->strTargetKey = $strTargetKey;
         $this->strSourceKey = $strSourceKey;
-        
-        $this->getSelectFromModel ();
-        $this->addRelationCondition ();
+
+        $this->getSelectFromModel();
+        $this->addRelationCondition();
     }
-    
+
     /**
      * 返回查询
      *
      * @return \queryyetsimple\database\select
      */
-    public function getSelect() {
+    public function getSelect()
+    {
         return $this->objSelect;
     }
-    
+
     /**
      * 取得预载入关联模型
      *
      * @return \queryyetsimple\support\collection
      */
-    public function getPreLoad() {
-        return $this->querySelelct ()->preLoadResult ( $this->getAll () );
+    public function getPreLoad()
+    {
+        return $this->querySelelct()->preLoadResult($this->getAll());
     }
-    
+
     /**
      * 取得关联目标模型
      *
      * @return \queryyetsimple\mvc\imodel
      */
-    public function getTargetModel() {
+    public function getTargetModel()
+    {
         return $this->objTargetModel;
     }
-    
+
     /**
      * 取得源模型
      *
      * @return \queryyetsimple\mvc\imodel
      */
-    public function getSourceModel() {
+    public function getSourceModel()
+    {
         return $this->objSourceModel;
     }
-    
+
     /**
      * 取得目标字段
      *
      * @return string
      */
-    public function getTargetKey() {
+    public function getTargetKey()
+    {
         return $this->strTargetKey;
     }
-    
+
     /**
      * 取得源字段
      *
      * @return string
      */
-    public function getSourceKey() {
+    public function getSourceKey()
+    {
         return $this->strSourceKey;
     }
-    
+
     /**
      * 获取不带关联条件的关联对象
      *
-     * @param \Closure $calReturnRelation            
+     * @param \Closure $calReturnRelation
      * @return \queryyetsimple\mvc\relation\relation
      */
-    public static function withoutRelationCondition(Closure $calReturnRelation) {
+    public static function withoutRelationCondition(Closure $calReturnRelation)
+    {
         $booOld = static::$booRelationCondition;
         static::$booRelationCondition = false;
-        
-        $objRelation = call_user_func ( $calReturnRelation );
+
+        $objRelation = call_user_func($calReturnRelation);
         if (! ($objRelation instanceof relation)) {
-            throw new Exception ( 'The result must be relation' );
+            throw new Exception('The result must be relation');
         }
-        
+
         static::$booRelationCondition = $booOld;
         return $objRelation;
     }
-    
+
     /**
      * 关联基础查询条件
      *
      * @return void
      */
     abstract public function addRelationCondition();
-    
+
     /**
      * 设置预载入关联查询条件
      *
-     * @param \queryyetsimple\mvc\imodel[] $arrModel            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel
      * @return void
      */
     abstract public function preLoadCondition(array $arrModel);
-    
+
     /**
      * 匹配关联查询数据到模型 has_many
      *
-     * @param \queryyetsimple\mvc\imodel[] $arrModel            
-     * @param \queryyetsimple\support\collection $objResult            
-     * @param string $strRelation            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel
+     * @param \queryyetsimple\support\collection $objResult
+     * @param string $strRelation
      * @return array
      */
     abstract public function matchPreLoad(array $arrModel, collection $objResult, $strRelation);
-    
+
     /**
      * 查询关联对象
      *
      * @return mixed
      */
     abstract public function sourceQuery();
-    
+
     /**
      * 返回模型的主键
      *
-     * @param \queryyetsimple\mvc\imodel[] $arrModel            
-     * @param string $strKey            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel
+     * @param string $strKey
      * @return array
      */
-    protected function getModelKey(array $arrModel, $strKey = null) {
-        return array_unique ( array_values ( array_map ( function ($objModel) use($strKey) {
-            return $strKey ? $objModel->getProp ( $strKey ) : $objModel->getPrimaryKeyForQuery ();
-        }, $arrModel ) ) );
+    protected function getModelKey(array $arrModel, $strKey = null)
+    {
+        return array_unique(array_values(array_map(function ($objModel) use ($strKey) {
+            return $strKey ? $objModel->getProp($strKey) : $objModel->getPrimaryKeyForQuery();
+        }, $arrModel)));
     }
-    
+
     /**
      * 从模型返回查询
      *
      * @return \queryyetsimple\database\select
      */
-    protected function getSelectFromModel() {
-        $this->objSelect = $this->objTargetModel->getClassCollectionQuery ();
+    protected function getSelectFromModel()
+    {
+        $this->objSelect = $this->objTargetModel->getClassCollectionQuery();
     }
-    
+
     /**
      * 缺省方法
      *
-     * @param 方法名 $sMethod            
-     * @param 参数 $arrArgs            
+     * @param 方法名 $sMethod
+     * @param 参数 $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs) {
-        $objSelect = call_user_func_array ( [ 
+    public function __call($sMethod, $arrArgs)
+    {
+        $objSelect = call_user_func_array([
                 $this->objSelect,
-                $sMethod 
-        ], $arrArgs );
-        
-        if ($this->getSelect () === $objSelect) {
+                $sMethod
+        ], $arrArgs);
+
+        if ($this->getSelect() === $objSelect) {
             return $this;
         }
-        
+
         return $objSelect;
     }
 }

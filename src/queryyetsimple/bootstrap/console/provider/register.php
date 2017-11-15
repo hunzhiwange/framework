@@ -26,27 +26,30 @@ use queryyetsimple\bootstrap\console\load;
  * @since 2017.11.06
  * @version 1.0
  */
-class register extends provider {
-    
+class register extends provider
+{
+
     /**
      * 注册服务
      *
      * @return void
      */
-    public function register() {
-        $this->singleton ( 'console.load', function () {
-            return new load ();
-        } );
+    public function register()
+    {
+        $this->singleton('console.load', function () {
+            return new load();
+        });
     }
-    
+
     /**
      * 可用服务提供者
      *
      * @return array
      */
-    public static function providers() {
-        return [ 
-                'console.load' => 'queryyetsimple\bootstrap\console\load' 
+    public static function providers()
+    {
+        return [
+                'console.load' => 'queryyetsimple\bootstrap\console\load'
         ];
     }
 }

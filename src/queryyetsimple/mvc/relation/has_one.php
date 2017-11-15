@@ -25,26 +25,29 @@ use queryyetsimple\support\collection;
  * @since 2017.09.28
  * @version 1.0
  */
-class has_one extends has_many {
-    
+class has_one extends has_many
+{
+
     /**
      * 查询关联对象
      *
      * @return mixed
      */
-    public function sourceQuery() {
-        return $this->objSelect->getOne ();
+    public function sourceQuery()
+    {
+        return $this->objSelect->getOne();
     }
-    
+
     /**
      * 匹配关联查询数据到模型
      *
-     * @param \queryyetsimple\mvc\imodel[] $arrModel            
-     * @param \queryyetsimple\collection $objResult            
-     * @param string $strRelation            
+     * @param \queryyetsimple\mvc\imodel[] $arrModel
+     * @param \queryyetsimple\collection $objResult
+     * @param string $strRelation
      * @return array
      */
-    public function matchPreLoad(array $arrModel, collection $objResult, $strRelation) {
-        return $this->matchPreLoadOneOrMany ( $arrModel, $objResult, $strRelation, 'one' );
+    public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
+    {
+        return $this->matchPreLoadOneOrMany($arrModel, $objResult, $strRelation, 'one');
     }
 }

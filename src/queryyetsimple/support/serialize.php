@@ -26,85 +26,92 @@ use ReflectionProperty;
  * @since 2017.05.04
  * @version 1.0
  */
-trait serialize {
-    
+trait serialize
+{
+
     /**
      * 序列化模型
      *
      * @return void
      */
-    public function __sleep() {
-        $arrProps = (new ReflectionClass ( $this ))->getProperties ();
-        
-        foreach ( $arrProps as $oProp ) {
-            $oProp->setValue ( $this, $this->setAndReturnSerializeProp ( $this->getPropertySource ( $oProp ), $oProp->getName () ) );
+    public function __sleep()
+    {
+        $arrProps = (new ReflectionClass($this))->getProperties();
+
+        foreach ($arrProps as $oProp) {
+            $oProp->setValue($this, $this->setAndReturnSerializeProp($this->getPropertySource($oProp), $oProp->getName()));
         }
-        
-        return $this->setAndReturnSerializeFilter ( array_map ( function ($oProp) {
-            return $oProp->getName ();
-        }, $arrProps ) );
+
+        return $this->setAndReturnSerializeFilter(array_map(function ($oProp) {
+            return $oProp->getName();
+        }, $arrProps));
     }
-    
+
     /**
      * 反序列化模型
      *
      * @return void
      */
-    public function __wakeup() {
-        foreach ( (new ReflectionClass ( $this ))->getProperties () as $oProp ) {
-            $oProp->setValue ( $this, $this->getSerializeProp ( $this->getPropertySource ( $oProp ), $oProp->getName () ) );
+    public function __wakeup()
+    {
+        foreach ((new ReflectionClass($this))->getProperties() as $oProp) {
+            $oProp->setValue($this, $this->getSerializeProp($this->getPropertySource($oProp), $oProp->getName()));
         }
     }
-    
+
     /**
      * 设置序列化的属性
      *
-     * @param array $arrProp            
+     * @param array $arrProp
      * @return array
      */
-    protected function setAndReturnSerializeFilter($arrProp) {
-        if (($strMethod = 'setSerializeFilterProp') && method_exists ( $this, $strMethod )) {
-            $this->$strMethod ( $arrProp );
+    protected function setAndReturnSerializeFilter($arrProp)
+    {
+        if (($strMethod = 'setSerializeFilterProp') && method_exists($this, $strMethod)) {
+            $this->$strMethod($arrProp);
         }
         return $arrProp;
     }
-    
+
     /**
      * 设置序列化的值并返回
      *
-     * @param mixed $mixValue            
-     * @param string $strName            
+     * @param mixed $mixValue
+     * @param string $strName
      * @return mixed
      */
-    protected function setAndReturnSerializeProp($mixValue, $strName) {
-        if (($strMethod = 'setAndReturnSerializeProp' . ucwords ( $strName )) && method_exists ( $this, $strMethod )) {
-            return $this->$strMethod ( $mixValue );
+    protected function setAndReturnSerializeProp($mixValue, $strName)
+    {
+        if (($strMethod = 'setAndReturnSerializeProp' . ucwords($strName)) && method_exists($this, $strMethod)) {
+            return $this->$strMethod($mixValue);
         }
         return $mixValue;
     }
-    
+
     /**
      * 返回序列化的值
      *
-     * @param mixed $mixValue            
-     * @param string $strName            
+     * @param mixed $mixValue
+     * @param string $strName
      * @return mixed
      */
-    protected function getSerializeProp($mixValue, $strName) {
-        if (($strMethod = 'getSerializeProp' . ucwords ( $strName )) && method_exists ( $this, $strMethod )) {
-            return $this->$strMethod ( $mixValue );
+    protected function getSerializeProp($mixValue, $strName)
+    {
+        if (($strMethod = 'getSerializeProp' . ucwords($strName)) && method_exists($this, $strMethod)) {
+            return $this->$strMethod($mixValue);
         }
         return $mixValue;
     }
-    
+
     /**
      * 取得属性值
      *
-     * @param \ReflectionProperty $oProp            
+     * @param \ReflectionProperty $oProp
      * @return mixed
      */
-    protected function getPropertySource(ReflectionProperty $oProp) {
-        $oProp->setAccessible ( true );
-        return $oProp->getValue ( $this );
+    protected function getPropertySource(ReflectionProperty $oProp)
+    {
+        $oProp->setAccessible(true);
+        return $oProp->getValue($this);
     }
 }

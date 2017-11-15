@@ -25,15 +25,17 @@ use Phinx\Console\Command\Create as PhinxCreate;
  * @since 2017.05.09
  * @version 1.0
  */
-class create extends PhinxCreate {
-    
+class create extends PhinxCreate
+{
+
     /**
      * Configures the current command.
      *
      * @return void
      */
-    protected function configure() {
-        parent::configure ();
-        $this->setName ( 'migrate:create' );
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:create');
     }
-}  
+}
