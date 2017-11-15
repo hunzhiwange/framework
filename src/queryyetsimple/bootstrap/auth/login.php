@@ -18,8 +18,8 @@ queryphp;
 use queryyetsimple\auth;
 use queryyetsimple\response;
 use queryyetsimple\http\request;
-use queryyetsimple\auth\exception\login_failed;
-use queryyetsimple\auth\exception\change_password_failed;
+use queryyetsimple\auth\login_failed;
+use queryyetsimple\auth\change_password_failed;
 use queryyetsimple\bootstrap\validate\request as validate_request;
 
 /**
@@ -75,26 +75,44 @@ trait login {
      * 登录验证
      *
      * @param \queryyetsimple\http\request $oRequest            
-     * @return \queryyetsimple\http\response
+     * @return \queryyetsimple\http\response|boolean
      */
     public function checkLogin(request $oRequest) {
         $this->validateLogin ( $oRequest );
         
         try {
-            $aPost = $oRequest->posts ( [ 
+            $aInput = $oRequest->alls ( [ 
                     'name|trim',
                     'password|trim',
                     'remember_me|trim',
-                    'remember_time|trim' 
+                    'remember_time|trim',
+                    'remember_key|trim' 
             ] );
+            
+            if ($aInput ['remember_key']) {
+                $aInput ['remember_key'] = auth::explodeTokenData ( $aInput ['remember_key'] );
+                if (! $aInput ['remember_key']) {
+                    return response::api ( __ ( '您尚未登录' ), 400 );
+                } else {
+                    list ( $aInput ['name'], $aInput ['password'] ) = $aInput ['remember_key'];
+                }
+            }
             
             $this->setAuthField ();
             
-            $aUser = auth::login ( $aPost ['name'], $aPost ['password'], $aPost ['remember_me'] ? $aPost ['remember_time'] : null );
+            $oUser = auth::login ( $aInput ['name'], $aInput ['password'], $aInput ['remember_me'] ? $aInput ['remember_time'] : null );
             
-            return $this->sendSucceededLoginResponse ( $this->getLoginSucceededMessage ( $aUser ['nikename'] ?  : $aUser ['name'] ) );
+            if ($this->isAjaxRequest ( $oRequest )) {
+                $aReturn = [ ];
+                $aReturn ['api_token'] = auth::getTokenName ();
+                $aReturn ['user'] = $oUser->toArray ();
+                $aReturn ['remember_key'] = auth::implodeTokenData ( $aInput ['name'], $aInput ['password'] );
+                return $aReturn;
+            } else {
+                return $this->sendSucceededLoginResponse ( $oRequest, $this->getLoginSucceededMessage ( $oUser ['nikename'] ?  : $oUser ['name'] ) );
+            }
         } catch ( login_failed $oE ) {
-            return $this->sendFailedLoginResponse ($oRequest, $oE->getMessage () );
+            return $this->sendFailedLoginResponse ( $oRequest, $oE->getMessage () );
         }
     }
     
@@ -114,6 +132,13 @@ trait login {
      */
     public function displayLoginout() {
         auth::logout ();
+        
+        if ($this->isAjaxRequest ( project ( 'request' ) )) {
+            return [ 
+                    'message' => $this->getLogoutMessage () 
+            ];
+        }
+        
         return response::redirect ( $this->getLogoutRedirect () )->with ( 'login_out', $this->getLogoutMessage () );
     }
     
@@ -157,7 +182,7 @@ trait login {
             
             $aUser = auth::changePassword ( $arrUser ['id'], $aPost ['password'], $aPost ['comfirm_password'], $aPost ['old_password'] );
             
-            return $this->sendSucceededChangePasswordResponse ( $this->getChangePasswordSucceededMessage ( $aUser ['nikename'] ?  : $aUser ['name'] ) );
+            return $this->sendSucceededChangePasswordResponse ( $oRequest, $this->getChangePasswordSucceededMessage ( $aUser ['nikename'] ?  : $aUser ['name'] ) );
         } catch ( change_password_failed $oE ) {
             return $this->sendFailedChangePasswordResponse ( $oE->getMessage () );
         }
@@ -166,29 +191,31 @@ trait login {
     /**
      * 发送正确登录消息
      *
+     * @param \queryyetsimple\http\request $oRequest            
      * @param string $strSuccess            
-     * @return \queryyetsimple\http\response
+     * @return \queryyetsimple\http\response|boolean
      */
-    protected function sendSucceededLoginResponse($strSuccess) {
+    protected function sendSucceededLoginResponse(request $oRequest, $strSuccess) {
         return response::redirect ( $this->getLoginSucceededRedirect () )->with ( 'login_succeeded', $strSuccess );
     }
     
     /**
      * 发送错误登录消息
      *
+     * @param \queryyetsimple\http\request $oRequest            
      * @param string $strError            
-     * @return \queryyetsimple\http\response
+     * @return \queryyetsimple\http\response|boolean
      */
-    protected function sendFailedLoginResponse($oRequest,$strError) {
-        if ($oRequest->isAjax () && ! $oRequest->isPjax ()) {
-            return response::/*code ( 422 )->*/api ( $strError );
+    protected function sendFailedLoginResponse(request $oRequest, $strError) {
+        if ($this->isAjaxRequest ( $oRequest )) {
+            return response::api ( $strError, 400 );
         }
-
+        
         return response::redirect ( $this->getLoginFailedRedirect () )->withErrors ( [ 
                 'login_error' => $strError 
         ] );
     }
-
+    
     /**
      * 发送正确修改密码消息
      *
@@ -301,6 +328,19 @@ trait login {
      */
     protected function getChangePasswordSucceededMessage($strName) {
         return __ ( '%s 修改密码成功', $strName );
+    }
+    
+    /**
+     * 是否为 ajax
+     *
+     * @param \queryyetsimple\http\request $oRequest            
+     * @return boolean
+     */
+    protected function isAjaxRequest(request $oRequest) {
+        if ($oRequest->isAjax () && ! $oRequest->isPjax ()) {
+            return true;
+        }
+        return false;
     }
     
     /**

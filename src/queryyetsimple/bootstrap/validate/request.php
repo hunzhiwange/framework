@@ -110,7 +110,7 @@ trait request {
      * @return \queryyetsimple\validate\ivalidate
      */
     protected function getValidateComponent() {
-        return project ( interfaces_validate::class );
+        return project ( ivalidate::class );
     }
     
     /**

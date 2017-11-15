@@ -17,6 +17,7 @@ queryphp;
 
 use queryyetsimple\mvc\imodel;
 use queryyetsimple\cache\icache;
+use queryyetsimple\support\string;
 use queryyetsimple\validate\ivalidate;
 use queryyetsimple\encryption\iencryption;
 

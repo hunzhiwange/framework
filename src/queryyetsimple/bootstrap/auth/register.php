@@ -18,7 +18,7 @@ queryphp;
 use queryyetsimple\auth;
 use queryyetsimple\response;
 use queryyetsimple\http\request;
-use queryyetsimple\auth\exception\register_failed;
+use queryyetsimple\auth\register_failed;
 
 /**
  * 用户注册
