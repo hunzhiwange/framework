@@ -28,31 +28,31 @@ use queryyetsimple\support\icontainer;
  * @version 1.0
  */
 abstract class manager {
-
+    
     /**
      * IOC Container
      *
      * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
-
+    
     /**
      * 连接对象
      *
      * @var object[]
      */
     protected $arrConnect;
-
+    
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\icontainer $objContainer
+     * @param \queryyetsimple\support\icontainer $objContainer            
      * @return void
      */
     public function __construct(icontainer $objContainer) {
         $this->objContainer = $objContainer;
     }
-
+    
     /**
      * 返回 IOC 容器
      *
@@ -61,48 +61,48 @@ abstract class manager {
     public function container() {
         return $this->objContainer;
     }
-
+    
     /**
      * 连接 connect 并返回连接对象
      *
-     * @param array|string $mixOption
+     * @param array|string|null $mixOption            
      * @return object
      */
-    public function connect($mixOption = []) {
+    public function connect($mixOption = null) {
         list ( $mixOption, $strUnique ) = $this->parseOptionAndUnique ( $mixOption );
-
+        
         if (isset ( $this->arrConnect [$strUnique] )) {
             return $this->arrConnect [$strUnique];
         }
-
+        
         $strDriver = ! empty ( $mixOption ['driver'] ) ? $mixOption ['driver'] : $this->getDefaultDriver ();
         return $this->arrConnect [$strUnique] = $this->makeConnect ( $strDriver, $mixOption );
     }
-
+    
     /**
      * 重新连接
      *
-     * @param array|string $mixOption
+     * @param array|string $mixOption            
      * @return object
      */
     public function reconnect($mixOption = []) {
         $this->disconnect ( $mixOption );
         return $this->connect ( $mixOption );
     }
-
+    
     /**
      * 删除连接
      *
-     * @param array|string $mixOption
+     * @param array|string $mixOption            
      * @return void
      */
     public function disconnect($mixOption = []) {
         list ( $mixOption, $strUnique ) = $this->parseOptionAndUnique ( $mixOption );
-
+        
         if (isset ( $this->arrConnect [$strUnique] ))
             unset ( $this->arrConnect [$strUnique] );
     }
-
+    
     /**
      * 取回所有连接
      *
@@ -111,7 +111,7 @@ abstract class manager {
     public function getConnects() {
         return $this->arrConnect;
     }
-
+    
     /**
      * 返回默认驱动
      *
@@ -120,114 +120,118 @@ abstract class manager {
     public function getDefaultDriver() {
         return $this->objContainer ['option'] [$this->getOptionName ( 'default' )];
     }
-
+    
     /**
      * 设置默认驱动
      *
-     * @param string $strName
+     * @param string $strName            
      * @return void
      */
     public function setDefaultDriver($strName) {
         $this->objContainer ['option'] [$this->getOptionName ( 'default' )] = $strName;
     }
-
+    
     /**
      * 取得配置命名空间
      *
      * @return string
      */
     abstract protected function getOptionNamespace();
-
+    
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $objConnect            
      * @return object
      */
-     abstract protected function createConnect($objConnect);
-
+    abstract protected function createConnect($objConnect);
+    
     /**
      * 取得连接名字
      *
-     * @param string $strOptionName
+     * @param string $strOptionName            
      * @return string
      */
     protected function getOptionName($strOptionName = null) {
         return $this->getOptionNamespace () . '\\' . $strOptionName;
     }
-
+    
     /**
      * 创建连接
      *
-     * @param string $strConnect
-     * @param array $arrOption
+     * @param string $strConnect            
+     * @param array $arrOption            
      * @return object
      */
     protected function makeConnect($strConnect, array $arrOption = []) {
         if (is_null ( $this->objContainer ['option'] [$this->getOptionName ( 'connect.' . $strConnect )] ))
             throw new Exception ( sprintf ( 'Connect driver %s not exits', $strConnect ) );
-        return $this->createConnect ( $this->createConnectCommon($strConnect, $arrOption)  );
+        return $this->createConnect ( $this->createConnectCommon ( $strConnect, $arrOption ) );
     }
-
+    
     /**
      * 创建连接对象公共入口
      *
-     * @param string $strConnect
-     * @param array $arrOption
+     * @param string $strConnect            
+     * @param array $arrOption            
      * @return object
      */
     protected function createConnectCommon($strConnect, array $arrOption = []) {
         return $this->{'makeConnect' . ucwords ( $strConnect )} ( $arrOption );
     }
-
+    
     /**
      * 分析连接参数以及其唯一值
      *
-     * @param array|string $mixOption
+     * @param array|string $mixOption            
      * @return array
      */
     protected function parseOptionAndUnique($mixOption = []) {
-        return [
+        return [ 
                 $mixOption = $this->parseOptionParameter ( $mixOption ),
-                $this->getUnique ( $mixOption )
+                $this->getUnique ( $mixOption ) 
         ];
     }
-
+    
     /**
      * 分析连接参数
      *
-     * @param array|string $mixOption
+     * @param array|string $mixOption            
      * @return array
      */
     protected function parseOptionParameter($mixOption = []) {
+        if (is_null ( $mixOption )) {
+            return [ ];
+        }
+        
         if (is_string ( $mixOption ) && ! is_array ( ($mixOption = $this->objContainer ['option'] [$this->getOptionName ( 'connect.' . $mixOption )]) )) {
             $mixOption = [ ];
         }
-
+        
         return $mixOption;
     }
-
+    
     /**
      * 取得唯一值
      *
-     * @param array $arrOption
+     * @param array $arrOption            
      * @return string
      */
     protected function getUnique($arrOption) {
         return md5 ( serialize ( $arrOption ) );
     }
-
+    
     /**
      * 读取默认配置
      *
-     * @param string $strConnect
-     * @param array $arrExtendOption
+     * @param string $strConnect            
+     * @param array $arrExtendOption            
      * @return array
      */
     protected function getOption($strConnect, array $arrExtendOption = []) {
         return array_merge ( $this->getOptionConnect ( $strConnect ), $this->getOptionCommon (), $arrExtendOption );
     }
-
+    
     /**
      * 读取连接全局配置
      *
@@ -238,11 +242,11 @@ abstract class manager {
         $arrOption = $this->filterOptionCommon ( $arrOption );
         return $arrOption;
     }
-
+    
     /**
      * 过滤全局配置
      *
-     * @param array $arrOption
+     * @param array $arrOption            
      * @return array
      */
     protected function filterOptionCommon(array $arrOption) {
@@ -250,36 +254,36 @@ abstract class manager {
             if (isset ( $arrOption [$strItem] ))
                 unset ( $arrOption [$strItem] );
         }
-
+        
         return $arrOption;
     }
-
+    
     /**
      * 过滤全局配置项
      *
      * @return array
      */
     protected function filterOptionCommonItem() {
-        return [
+        return [ 
                 'default',
-                'connect'
+                'connect' 
         ];
     }
-
+    
     /**
      * 读取连接配置
      *
-     * @param string $strConnect
+     * @param string $strConnect            
      * @return array
      */
     protected function getOptionConnect($strConnect) {
         return $this->objContainer ['option'] [$this->getOptionName ( 'connect.' . $strConnect )];
     }
-
+    
     /**
      * 清除配置 null
      *
-     * @param array $arrOption
+     * @param array $arrOption            
      * @return array
      */
     protected function optionFilterNull(array $arrOption) {
@@ -287,18 +291,18 @@ abstract class manager {
             return ! is_null ( $mixValue );
         } );
     }
-
+    
     /**
      * 拦截匿名注册控制器方法
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param 方法名 $sMethod            
+     * @param 参数 $arrArgs            
      * @return mixed
      */
     public function __call($sMethod, $arrArgs) {
-        return call_user_func_array ( [
+        return call_user_func_array ( [ 
                 $this->connect (),
-                $sMethod
+                $sMethod 
         ], $arrArgs );
     }
 }

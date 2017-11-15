@@ -78,42 +78,42 @@ trait login_api {
      * @return \queryyetsimple\http\response
      */
     public function checkLogin(request $oRequest) {
-        //$this->validateLogin ( $oRequest );
-        
+        // $this->validateLogin ( $oRequest );
         try {
+            
+            // print_r($_REQUEST);
+            
             $aPost = $oRequest->alls ( [ 
                     'username|trim',
                     'password|trim',
                     'remember_me|trim',
-                    'remember_time|trim' 
+                    'remember_time|intval' 
             ] );
-
+            
             $this->setAuthField ();
-$aPost['username'] = 'xiaoniuge';
-$aPost['password'] = '123456';
-
             
-            list($oUser, $strAuth) = auth::login ( $aPost ['username'], $aPost ['password'], $aPost ['remember_me'] ? $aPost ['remember_time'] : null );
-
-            $aReturn = [];
-
-            $aReturn['authKey']        = $strAuth;
-            $aReturn['userInfo']       = $oUser->toArray();
-            $aReturn['sessionId'] = '1234567899';
-            $aReturn['rememberKey'] = $oUser['name'].'|'.$oUser['password'];
-            //$data['authList']       = $dataList['rulesList'];
-            //$data['menusList']      = $dataList['menusList'];
+            // list($oUser, $strAuth,$strRememberKey) =
+            $oUser = auth::login ( $aPost ['username'], $aPost ['password'], $aPost ['remember_me'] ? $aPost ['remember_time'] : null );
+            
+            $aReturn = [ ];
+            
+            $aReturn ['authKey'] = auth::getTokenName ();
+            $aReturn ['userInfo'] = $oUser->toArray ();
+            $aReturn ['sessionId'] = '1234567899';
+            $aReturn ['rememberKey'] = auth::implodeTokenData ( $aPost ['username'], $aPost ['password'] );
+            // $data['authList'] = $dataList['rulesList'];
+            // $data['menusList'] = $dataList['menusList'];
             return $aReturn;
-
-            //exit();
-
-           // return [$this->getLoginSucceededMessage ( $aUser ['nikename'] ?  : $aUser ['name'] )];
-            //return $aUser;
             
-            //return $this->sendSucceededLoginResponse ( $this->getLoginSucceededMessage ( $aUser ['nikename'] ?  : $aUser ['name'] ) );
+            // exit();
+            
+            // return [$this->getLoginSucceededMessage ( $aUser ['nikename'] ? : $aUser ['name'] )];
+            // return $aUser;
+            
+            // return $this->sendSucceededLoginResponse ( $this->getLoginSucceededMessage ( $aUser ['nikename'] ? : $aUser ['name'] ) );
         } catch ( login_failed $oE ) {
-            return $oE->getMessage();
-            //return $this->sendFailedLoginResponse ($oRequest, $oE->getMessage () );
+            return $oE->getMessage ();
+            // return $this->sendFailedLoginResponse ($oRequest, $oE->getMessage () );
         }
     }
     
@@ -133,7 +133,7 @@ $aPost['password'] = '123456';
      */
     public function displayLoginout() {
         auth::logout ();
-        //return response::redirect ( $this->getLogoutRedirect () )->with ( 'login_out', $this->getLogoutMessage () );
+        // return response::redirect ( $this->getLogoutRedirect () )->with ( 'login_out', $this->getLogoutMessage () );
     }
     
     /**
@@ -198,16 +198,16 @@ $aPost['password'] = '123456';
      * @param string $strError            
      * @return \queryyetsimple\http\response
      */
-    protected function sendFailedLoginResponse($oRequest,$strError) {
+    protected function sendFailedLoginResponse($oRequest, $strError) {
         if ($oRequest->isAjax () && ! $oRequest->isPjax ()) {
             return response::/*code ( 422 )->*/api ( $strError );
         }
-
+        
         return response::redirect ( $this->getLoginFailedRedirect () )->withErrors ( [ 
                 'login_error' => $strError 
         ] );
     }
-
+    
     /**
      * 发送正确修改密码消息
      *

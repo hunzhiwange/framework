@@ -446,7 +446,7 @@ abstract class aconnect {
      * @return array
      */
     public function getTableColumnsCache($sTableName, $mixMaster = false) {
-        $strCacheKey = sprintf ( '%s_%s', 'tablecolumns', $sTableName );
+        $strCacheKey = sprintf ( '%s_%s', 'table_columns', $sTableName );
         if (isset ( static::$arrTableColumnsCache [$strCacheKey] )) {
             return static::$arrTableColumnsCache [$strCacheKey];
         }

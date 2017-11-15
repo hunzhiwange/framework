@@ -820,10 +820,9 @@ class request implements iarray, ArrayAccess {
      * 批量设置 env 参数
      *
      * @param array $arrValue            
-     * @param string $sType            
      * @return $this
      */
-    public function setEnvs(array $arrValue, $mixValue) {
+    public function setEnvs(array $arrValue) {
         return $this->setInputs ( $arrValue, 'env' );
     }
     
@@ -867,7 +866,6 @@ class request implements iarray, ArrayAccess {
      *
      * @param string $sKey            
      * @param mixed $mixValue            
-     * @param string $sType            
      * @return $this
      */
     public function setPut($sKey, $mixValue) {
@@ -878,10 +876,9 @@ class request implements iarray, ArrayAccess {
      * 批量设置 put 参数
      *
      * @param array $arrValue            
-     * @param string $sType            
      * @return $this
      */
-    public function setPuts(array $arrValue, $mixValue) {
+    public function setPuts(array $arrValue) {
         return $this->setInputs ( $arrValue, 'put' );
     }
     
@@ -925,7 +922,6 @@ class request implements iarray, ArrayAccess {
      *
      * @param string $sKey            
      * @param mixed $mixValue            
-     * @param string $sType            
      * @return $this
      */
     public function setPatch($sKey, $mixValue) {
@@ -936,10 +932,9 @@ class request implements iarray, ArrayAccess {
      * 批量设置 patch 参数
      *
      * @param array $arrValue            
-     * @param string $sType            
      * @return $this
      */
-    public function setPatchs(array $arrValue, $mixValue) {
+    public function setPatchs(array $arrValue) {
         return $this->setInputs ( $arrValue, 'patch' );
     }
     
@@ -983,7 +978,6 @@ class request implements iarray, ArrayAccess {
      *
      * @param string $sKey            
      * @param mixed $mixValue            
-     * @param string $sType            
      * @return $this
      */
     public function setDelete($sKey, $mixValue) {
@@ -994,10 +988,9 @@ class request implements iarray, ArrayAccess {
      * 批量设置 delete 参数
      *
      * @param array $arrValue            
-     * @param string $sType            
      * @return $this
      */
-    public function setDeletes(array $arrValue, $mixValue) {
+    public function setDeletes(array $arrValue) {
         return $this->setInputs ( $arrValue, 'delete' );
     }
     
@@ -1041,7 +1034,6 @@ class request implements iarray, ArrayAccess {
      *
      * @param string $sKey            
      * @param mixed $mixValue            
-     * @param string $sType            
      * @return $this
      */
     public function setRouter($sKey, $mixValue) {
@@ -1052,10 +1044,9 @@ class request implements iarray, ArrayAccess {
      * 批量设置 router 参数
      *
      * @param array $arrValue            
-     * @param string $sType            
      * @return $this
      */
-    public function setRouters(array $arrValue, $mixValue) {
+    public function setRouters(array $arrValue) {
         return $this->setInputs ( $arrValue, 'router' );
     }
     
@@ -2363,10 +2354,8 @@ class request implements iarray, ArrayAccess {
      * @return array
      */
     protected function globalAll($booFile = false) {
-        if (is_null ( $this->arrAll )) {
-            $this->arrAll = array_merge ( $this->requestAll (), $this->putAll () );
-        }
-        return $booFile ? array_merge ( $this->arrAll, $this->fileAll () ) : $this->arrAll;
+        $arrAll = array_merge ( $this->arrAll ?  : [ ], $this->requestAll (), $this->putAll () );
+        return $booFile ? array_merge ( $arrAll, $this->fileAll () ) : $arrAll;
     }
     
     /**

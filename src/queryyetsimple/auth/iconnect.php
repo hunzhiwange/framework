@@ -23,6 +23,5 @@ queryphp;
  * @since 2017.09.07
  * @version 1.0
  */
-interface iconnect
-{
+interface iconnect {
 }

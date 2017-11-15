@@ -321,7 +321,7 @@ class meta {
      * @return \queryyetsimple\database\idatabase
      */
     protected function initConnect() {
-        $this->objConnect = $objDatabaseManager->connect ( $this->mixConnect );
+        $this->objConnect = static::$objDatabaseManager->connect ( $this->mixConnect );
     }
     
     /**
