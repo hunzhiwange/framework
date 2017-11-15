@@ -2030,6 +2030,7 @@ class request implements iarray, ArrayAccess {
     protected function setGlobalGet($sKey, $mixValue) {
         $this->initGlobalGet ();
         $this->arrGet [$sKey] = $mixValue;
+        $this->setGlobalRequest ( $sKey, $mixValue );
         return $this;
     }
     
@@ -2063,6 +2064,7 @@ class request implements iarray, ArrayAccess {
     protected function setGlobalPost($sKey, $mixValue) {
         $this->initGlobalPost ();
         $this->arrPost [$sKey] = $mixValue;
+        $this->setGlobalRequest ( $sKey, $mixValue );
         return $this;
     }
     
