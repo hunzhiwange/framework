@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -41,113 +41,113 @@ use queryyetsimple\page\page_without_total;
 class select
 {
     use flow_control;
-    
+
     /**
      * 数据库连接
      *
      * @var queryyetsimple\database\connect
      */
     protected $objConnect;
-    
+
     /**
      * 绑定参数
      *
      * @var array
      */
     protected $arrBindParams = [];
-    
+
     /**
      * 连接参数
      *
      * @var array
      */
     protected $arrOption = [];
-    
+
     /**
      * 查询类型
      *
      * @var array
      */
     protected $arrQueryParams = [];
-    
+
     /**
      * 字段映射
      *
      * @var array
      */
     protected $arrColumnsMapping = [];
-    
+
     /**
      * 支持的聚合类型
      *
      * @var array
      */
     protected static $arrAggregateTypes = [
-        'COUNT' => 'COUNT', 
-        'MAX' => 'MAX', 
-        'MIN' => 'MIN', 
-        'AVG' => 'AVG', 
+        'COUNT' => 'COUNT',
+        'MAX' => 'MAX',
+        'MIN' => 'MIN',
+        'AVG' => 'AVG',
         'SUM' => 'SUM'
     ];
-    
+
     /**
      * 支持的 join 类型
      *
      * @var array
      */
     protected static $arrJoinTypes = [
-        'inner join' => 'inner join', 
-        'left join' => 'left join', 
-        'right join' => 'right join', 
-        'full join' => 'full join', 
-        'cross join' => 'cross join', 
+        'inner join' => 'inner join',
+        'left join' => 'left join',
+        'right join' => 'right join',
+        'full join' => 'full join',
+        'cross join' => 'cross join',
         'natural join' => 'natural join'
     ];
-    
+
     /**
      * 支持的 union 类型
      *
      * @var array
      */
     protected static $arrUnionTypes = [
-        'UNION' => 'UNION', 
+        'UNION' => 'UNION',
         'UNION ALL' => 'UNION ALL'
     ];
-    
+
     /**
      * 支持的 index 类型
      *
      * @var array
      */
     protected static $arrIndexTypes = [
-        'FORCE' => 'FORCE', 
+        'FORCE' => 'FORCE',
         'IGNORE' => 'IGNORE'
     ];
-    
+
     /**
      * 连接参数
      *
      * @var array
      */
     protected static $arrOptionDefault = [
-        'prefix' => [], 
-        'distinct' => false, 
-        'columns' => [], 
-        'aggregate' => [], 
-        'union' => [], 
-        'from' => [], 
-        'using' => [], 
-        'index' => [], 
-        'where' => null, 
-        'group' => [], 
-        'having' => null, 
-        'order' => [], 
-        'limitcount' => null, 
-        'limitoffset' => null, 
-        'limitquery' => true, 
+        'prefix' => [],
+        'distinct' => false,
+        'columns' => [],
+        'aggregate' => [],
+        'union' => [],
+        'from' => [],
+        'using' => [],
+        'index' => [],
+        'where' => null,
+        'group' => [],
+        'having' => null,
+        'order' => [],
+        'limitcount' => null,
+        'limitoffset' => null,
+        'limitquery' => true,
         'forupdate' => false
     ];
-    
+
     /**
      * 查询类型
      *
@@ -156,122 +156,122 @@ class select
     protected static $arrQueryParamsDefault = [
         // PDO:fetchAll 参数
         'fetch_type' => [
-            'fetch_type' => null, 
-            'fetch_argument' => null, 
+            'fetch_type' => null,
+            'fetch_argument' => null,
             'ctor_args' => []
-        ], 
-        
+        ],
+
         // 查询主服务器
-        'master' => false, 
-        
+        'master' => false,
+
         // 每一项记录以对象返回
-        'as_class' => null, 
-        
+        'as_class' => null,
+
         // 数组或者默认
-        'as_default' => true, 
-        
+        'as_default' => true,
+
         // 以对象集合方法返回
         'as_collection' => false
     ];
-    
+
     /**
      * 原生 sql 类型
      *
      * @var string
      */
     protected $strNativeSql = 'select';
-    
+
     /**
      * And 逻辑运算符
      *
      * @var string
      */
     const LOGIC_AND = 'and';
-    
+
     /**
      * Or 逻辑运算符
      *
      * @var string
      */
     const LOGIC_OR = 'or';
-    
+
     /**
      * 逻辑分组左符号
      *
      * @var string
      */
     const LOGIC_GROUP_LEFT = '(';
-    
+
     /**
      * 逻辑分组右符号
      *
      * @var string
      */
     const LOGIC_GROUP_RIGHT = ')';
-    
+
     /**
      * 条件逻辑连接符
      *
      * @var string
      */
     public $strConditionLogic = 'and';
-    
+
     /**
      * 条件逻辑类型
      *
      * @var string
      */
     protected $strConditionType = 'where';
-    
+
     /**
      * 当前表信息
      *
      * @var string
      */
     protected $strCurrentTable = '';
-    
+
     /**
      * 是否为表操作
      *
      * @var boolean
      */
     protected $booIsTable = false;
-    
+
     /**
      * 子表达式默认别名
      *
      * @var string
      */
     const DEFAULT_SUBEXPRESSION_ALIAS = 'a';
-    
+
     /**
      * 不查询直接返回 SQL
      *
      * @var boolean
      */
     protected $booOnlyMakeSql = false;
-    
+
     /**
      * 是否处于时间功能状态
      *
      * @var string
      */
     protected $strInTimeCondition;
-    
+
     /**
      * 额外的查询扩展
      *
      * @var object
      */
     protected $objCallSelect;
-    
+
     /**
      * 分页查询条件备份
      *
      * @var array
      */
     protected $arrBackupPage = [];
-    
+
     /**
      * 构造函数
      *
@@ -283,7 +283,7 @@ class select
         $this->objConnect = $objConnect;
         $this->initOption();
     }
-    
+
     /**
      * 返回数据库连接对象
      *
@@ -293,7 +293,7 @@ class select
     {
         return $this->objConnect;
     }
-    
+
     /**
      * 占位符返回本对象
      *
@@ -303,7 +303,7 @@ class select
     {
         return $this;
     }
-    
+
     /**
      * 拦截一些别名和快捷方式
      *
@@ -316,7 +316,7 @@ class select
         if ($this->placeholderFlowControl($sMethod)) {
             return $this;
         }
-        
+
         // 动态查询支持
         if (strncasecmp($sMethod, 'get', 3) === 0) {
             $sMethod = substr($sMethod, 3);
@@ -342,19 +342,19 @@ class select
             }
             return $this->top(intval(substr($sMethod, 3)));
         }
-        
+
         // 查询组件
         if (! $this->objCallSelect) {
             throw new Exception(sprintf('Select do not implement magic method %s.', $sMethod));
         }
-        
+
         // 调用事件
         return call_user_func_array([
-            $this->objCallSelect, 
+            $this->objCallSelect,
             $sMethod
         ], $arrArgs);
     }
-    
+
     /**
      * 注册额外的查询扩展
      *
@@ -369,11 +369,11 @@ class select
         }
         return $this;
     }
-    
+
     // ######################################################
     // ------------------ 返回查询结果 start -------------------
     // ######################################################
-    
+
 
     /**
      * 原生 sql 查询数据 select
@@ -386,17 +386,17 @@ class select
     public function select($mixData = null, $arrBind = [], $bFlag = false)
     {
         if (! helper::varThese($mixData, [
-            'string', 
-            'null', 
+            'string',
+            'null',
             'callback'
         ]) && ! $mixData instanceof select) {
             throw new Exception('Unsupported parameters.');
         }
-        
+
         // 查询对象直接查询
         if ($mixData instanceof select) {
             return $mixData->select(null, $arrBind, $bFlag);
-        }        
+        }
 
         // 回调
         elseif (is_callable($mixData)) {
@@ -405,22 +405,22 @@ class select
             ]);
             $mixData = null;
         }
-        
+
         // 调用查询
         if (is_null($mixData)) {
             return $this->get(null, $bFlag);
         }
-        
+
         $this->sql($bFlag)->setNativeSql('select');
         return call_user_func_array([
-            $this, 
+            $this,
             'runNativeSql'
         ], [
-            $mixData, 
+            $mixData,
             $arrBind
         ]);
     }
-    
+
     /**
      * 插入数据 insert (支持原生 sql)
      *
@@ -433,15 +433,15 @@ class select
     public function insert($mixData, $arrBind = [], $booReplace = false, $bFlag = false)
     {
         if (! helper::varThese($mixData, [
-            'string', 
+            'string',
             'array'
         ])) {
             throw new Exception('Unsupported parameters.');
         }
-        
+
         // 绑定参数
         $arrBind = array_merge($this->getBindParams(), $arrBind);
-        
+
         // 构造数据插入
         if (is_array($mixData)) {
             $intQuestionMark = 0;
@@ -449,11 +449,11 @@ class select
             $arrField = $arrBindData[0];
             $arrValue = $arrBindData[1];
             $sTableName = $this->getCurrentTable();
-            
+
             foreach ($arrField as &$strField) {
                 $strField = $this->qualifyOneColumn($strField, $sTableName);
             }
-            
+
             // 构造 insert 语句
             if ($arrValue) {
                 $arrSql = [];
@@ -467,18 +467,18 @@ class select
             }
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
-        
+
         // 执行查询
         $this->sql($bFlag)->setNativeSql($booReplace === false ? 'insert' : 'replace');
         return call_user_func_array([
-            $this, 
+            $this,
             'runNativeSql'
         ], [
-            $mixData, 
+            $mixData,
             $arrBind
         ]);
     }
-    
+
     /**
      * 批量插入数据 insertAll
      *
@@ -493,10 +493,10 @@ class select
         if (! is_array($arrData)) {
             throw new Exception('Unsupported parameters.');
         }
-        
+
         // 绑定参数
         $arrBind = array_merge($this->getBindParams(), $arrBind);
-        
+
         // 构造数据批量插入
         if (is_array($arrData)) {
             $arrDataResult = [];
@@ -518,7 +518,7 @@ class select
                     $arrDataResult[] = '(' . implode(',', $arrValue) . ')';
                 }
             }
-            
+
             // 构造 insertAll 语句
             if ($arrDataResult) {
                 $arrSql = [];
@@ -532,18 +532,18 @@ class select
             }
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
-        
+
         // 执行查询
         $this->sql($bFlag)->setNativeSql($booReplace === false ? 'insert' : 'replace');
         return call_user_func_array([
-            $this, 
+            $this,
             'runNativeSql'
         ], [
-            $mixData, 
+            $mixData,
             $arrBind
         ]);
     }
-    
+
     /**
      * 更新数据 update (支持原生 sql)
      *
@@ -555,15 +555,15 @@ class select
     public function update($mixData, $arrBind = [], $bFlag = false)
     {
         if (! helper::varThese($mixData, [
-            'string', 
+            'string',
             'array'
         ])) {
             throw new Exception('Unsupported parameters.');
         }
-        
+
         // 绑定参数
         $arrBind = array_merge($this->getBindParams(), $arrBind);
-        
+
         // 构造数据更新
         if (is_array($mixData)) {
             $intQuestionMark = 0;
@@ -571,14 +571,14 @@ class select
             $arrField = $arrBindData[0];
             $arrValue = $arrBindData[1];
             $sTableName = $this->getCurrentTable();
-            
+
             // SET 语句
             $arrSetData = [];
             foreach ($arrField as $intKey => $strField) {
                 $strField = $this->qualifyOneColumn($strField, $sTableName);
                 $arrSetData[] = $strField . ' = ' . $arrValue[$intKey];
             }
-            
+
             // 构造 update 语句
             if ($arrValue) {
                 $arrSql = [];
@@ -594,17 +594,17 @@ class select
             }
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
-        
+
         $this->sql($bFlag)->setNativeSql('update');
         return call_user_func_array([
-            $this, 
+            $this,
             'runNativeSql'
         ], [
-            $mixData, 
+            $mixData,
             $arrBind
         ]);
     }
-    
+
     /**
      * 更新某个字段的值
      *
@@ -619,12 +619,12 @@ class select
         if (! is_string($strColumn)) {
             throw new Exception('Unsupported parameters.');
         }
-        
+
         return $this->sql($bFlag)->update([
             $strColumn => $mixValue
         ], $arrBind);
     }
-    
+
     /**
      * 字段递增
      *
@@ -638,7 +638,7 @@ class select
     {
         return $this->sql($bFlag)->updateColumn($strColumn, '{[' . $strColumn . ']+' . $intStep . '}', $arrBind);
     }
-    
+
     /**
      * 字段减少
      *
@@ -652,7 +652,7 @@ class select
     {
         return $this->sql($bFlag)->updateColumn($strColumn, '{[' . $strColumn . ']-' . $intStep . '}', $arrBind);
     }
-    
+
     /**
      * 删除数据 delete (支持原生 sql)
      *
@@ -664,12 +664,12 @@ class select
     public function delete($mixData = null, $arrBind = [], $bFlag = false)
     {
         if (! helper::varThese($mixData, [
-            'string', 
+            'string',
             'null'
         ])) {
             throw new Exception('Unsupported parameters.');
         }
-        
+
         // 构造数据删除
         if (is_null($mixData)) {
             // 构造 delete 语句
@@ -689,17 +689,17 @@ class select
             unset($arrSql);
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
-        
+
         $this->sql($bFlag)->setNativeSql('delete');
         return call_user_func_array([
-            $this, 
+            $this,
             'runNativeSql'
         ], [
-            $mixData, 
+            $mixData,
             $arrBind
         ]);
     }
-    
+
     /**
      * 清空表重置自增 ID
      *
@@ -713,16 +713,16 @@ class select
         $arrSql[] = 'TRUNCATE TABLE';
         $arrSql[] = $this->parseTable(true);
         $arrSql = implode(' ', $arrSql);
-        
+
         $this->sql($bFlag)->setNativeSql('statement');
         call_user_func_array([
-            $this, 
+            $this,
             'runNativeSql'
         ], [
             $arrSql
         ]);
     }
-    
+
     /**
      * 声明 statement 运行一般 sql,无返回
      *
@@ -736,14 +736,14 @@ class select
         assert::string($strData);
         $this->sql($bFlag)->setNativeSql('statement');
         call_user_func_array([
-            $this, 
+            $this,
             'runNativeSql'
         ], [
-            $strData, 
+            $strData,
             $arrBind
         ]);
     }
-    
+
     /**
      * 返回一条记录
      *
@@ -754,7 +754,7 @@ class select
     {
         return $this->sql($bFlag, true)->one()->query();
     }
-    
+
     /**
      * 返回所有记录
      *
@@ -769,7 +769,7 @@ class select
             return $this->sql($bFlag, true)->all()->query();
         }
     }
-    
+
     /**
      * 返回最后几条记录
      *
@@ -785,7 +785,7 @@ class select
             return $this->sql($bFlag, true)->query();
         }
     }
-    
+
     /**
      * 返回一个字段的值
      *
@@ -801,7 +801,7 @@ class select
         }
         return isset($arrRow[$strField]) ? $arrRow[$strField] : null;
     }
-    
+
     /**
      * 返回一列数据
      *
@@ -822,7 +822,7 @@ class select
         if (is_string($strFieldKey)) {
             $arrField[] = $strFieldKey;
         }
-        
+
         // 解析结果
         $arrResult = [];
         foreach ($this->sql($bFlag, true)->asDefault()->setColumns($arrField)->getAll() as $arrTemp) {
@@ -830,7 +830,7 @@ class select
                 $arrResult[] = $arrTemp;
                 continue;
             }
-            
+
             $arrTemp = $arrTemp;
             if (count($arrTemp) == 1) {
                 $arrResult[] = reset($arrTemp);
@@ -842,7 +842,7 @@ class select
         }
         return $arrResult;
     }
-    
+
     /**
      * 数据分块处理
      *
@@ -853,10 +853,10 @@ class select
     public function chunk($intCount, callable $calCallback)
     {
         $mixResult = $this->forPage($intPage = 1, $intCount)->getAll();
-        
+
         while (count($mixResult) > 0) {
             if (call_user_func_array($calCallback, [
-                $mixResult, 
+                $mixResult,
                 $intPage
             ]) === false) {
                 return false;
@@ -864,10 +864,10 @@ class select
             $intPage ++;
             $mixResult = $this->forPage($intPage, $intCount)->getAll();
         }
-        
+
         return true;
     }
-    
+
     /**
      * 数据分块处理依次回调
      *
@@ -877,8 +877,7 @@ class select
      */
     public function each($intCount, callable $calCallback)
     {
-        return $this->chunk($intCount, function ($mixResult, $intPage) use($calCallback)
-        {
+        return $this->chunk($intCount, function ($mixResult, $intPage) use ($calCallback) {
             foreach ($mixResult as $intKey => $mixValue) {
                 if ($calCallback($mixValue, $intKey, $intPage) === false) {
                     return false;
@@ -886,7 +885,7 @@ class select
             }
         });
     }
-    
+
     /**
      * 总记录数
      *
@@ -903,7 +902,7 @@ class select
         }
         return intval($arrRow[$sAlias]);
     }
-    
+
     /**
      * 平均数
      *
@@ -920,7 +919,7 @@ class select
         }
         return ( float ) $arrRow[$sAlias];
     }
-    
+
     /**
      * 最大值
      *
@@ -937,7 +936,7 @@ class select
         }
         return ( float ) $arrRow[$sAlias];
     }
-    
+
     /**
      * 最小值
      *
@@ -954,7 +953,7 @@ class select
         }
         return ( float ) $arrRow[$sAlias];
     }
-    
+
     /**
      * 合计
      *
@@ -971,7 +970,7 @@ class select
         }
         return $arrRow[$sAlias];
     }
-    
+
     /**
      * 分页查询
      *
@@ -984,11 +983,11 @@ class select
     {
         $objPage = new page_with_total($intPerPage, $this->getPaginateCount($mixCols), $arrOption);
         return [
-            $objPage, 
+            $objPage,
             $this->limit($objPage->getFirstRecord(), $intPerPage)->getAll()
         ];
     }
-    
+
     /**
      * 简单分页查询
      *
@@ -1001,11 +1000,11 @@ class select
     {
         $objPage = new page_without_total($intPerPage, $arrOption);
         return [
-            $objPage, 
+            $objPage,
             $this->limit($objPage->getFirstRecord(), $intPerPage)->getAll()
         ];
     }
-    
+
     /**
      * 取得分页查询记录数量
      *
@@ -1019,7 +1018,7 @@ class select
         $this->restorePaginateArgs();
         return $intCount;
     }
-    
+
     /**
      * 根据分页设置条件
      *
@@ -1031,16 +1030,16 @@ class select
     {
         return $this->limit(($intPage - 1) * $intPerPage, $intPerPage);
     }
-    
+
     // ######################################################
     // ------------------- 返回查询结果 end --------------------
     // ######################################################
-    
+
 
     // ######################################################
     // ------------------ 构造查询条件 start -------------------
     // ######################################################
-    
+
 
     /**
      * 时间控制语句开始
@@ -1054,13 +1053,13 @@ class select
         }
         $arrArgs = func_get_args();
         $this->setInTimeCondition(isset($arrArgs[0]) && in_array($arrArgs[0], [
-            'date', 
-            'month', 
-            'year', 
+            'date',
+            'month',
+            'year',
             'day'
         ]) ? $arrArgs[0] : null);
     }
-    
+
     /**
      * 时间控制语句结束
      *
@@ -1073,7 +1072,7 @@ class select
         }
         $this->setInTimeCondition(null);
     }
-    
+
     /**
      * 指定返回 SQL 不做任何操作
      *
@@ -1092,7 +1091,7 @@ class select
         $this->booOnlyMakeSql = ( bool ) $bFlag;
         return $this;
     }
-    
+
     /**
      * 设置是否查询主服务器
      *
@@ -1107,7 +1106,7 @@ class select
         $this->arrQueryParams['master'] = $booMaster;
         return $this;
     }
-    
+
     /**
      * 设置查询结果类型
      *
@@ -1131,7 +1130,7 @@ class select
         }
         return $this;
     }
-    
+
     /**
      * 设置以类返会结果
      *
@@ -1147,7 +1146,7 @@ class select
         $this->arrQueryParams['as_default'] = false;
         return $this;
     }
-    
+
     /**
      * 设置默认形式返回
      *
@@ -1162,7 +1161,7 @@ class select
         $this->arrQueryParams['as_default'] = true;
         return $this;
     }
-    
+
     /**
      * 设置是否以集合返回
      *
@@ -1178,7 +1177,7 @@ class select
         $this->arrQueryParams['as_default'] = false;
         return $this;
     }
-    
+
     /**
      * 重置查询条件
      *
@@ -1197,7 +1196,7 @@ class select
         }
         return $this;
     }
-    
+
     /**
      * prefix 查询
      *
@@ -1222,7 +1221,7 @@ class select
         }
         return $this;
     }
-    
+
     /**
      * 添加一个要查询的表及其要查询的字段
      *
@@ -1240,7 +1239,7 @@ class select
         $this->setIsTable(false);
         return $this;
     }
-    
+
     /**
      * 添加一个 using 用于删除操作
      *
@@ -1259,11 +1258,11 @@ class select
                 $sAlias = $arrMatch[2];
                 $sTable = $arrMatch[1];
             }
-            
+
             if (! is_string($sAlias)) {
                 $sAlias = $sTable;
             }
-            
+
             // 确定 table_name 和 schema
             $arrTemp = explode('.', $sTable);
             if (isset($arrTemp[1])) {
@@ -1273,19 +1272,19 @@ class select
                 $sSchema = null;
                 $sTableName = $sTable;
             }
-            
+
             // 获得一个唯一的别名
             $sAlias = $this->uniqueAlias(empty($sAlias) ? $sTableName : $sAlias);
-            
+
             $this->arrOption['using'][$sAlias] = [
-                'table_name' => $sTable, 
+                'table_name' => $sTable,
                 'schema' => $sSchema
             ];
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 添加字段
      *
@@ -1304,7 +1303,7 @@ class select
         $this->addCols($strTable, $mixCols);
         return $this;
     }
-    
+
     /**
      * 设置字段
      *
@@ -1324,7 +1323,7 @@ class select
         $this->addCols($strTable, $mixCols);
         return $this;
     }
-    
+
     /**
      * 设置一个或多个字段的映射名，如果 $sMappingTo 为 null，则取消对指定字段的映射
      *
@@ -1350,7 +1349,7 @@ class select
         }
         return $this;
     }
-    
+
     /**
      * where 查询条件
      *
@@ -1366,11 +1365,11 @@ class select
         array_unshift($arrArgs, static::LOGIC_AND);
         array_unshift($arrArgs, 'where');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasTypeAndLogic'
         ], $arrArgs);
     }
-    
+
     /**
      * whereBetween 查询条件
      *
@@ -1386,11 +1385,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'between');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * whereNotBetween 查询条件
      *
@@ -1406,11 +1405,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'not between');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * whereIn 查询条件
      *
@@ -1426,11 +1425,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'in');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * whereNotIn 查询条件
      *
@@ -1446,11 +1445,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'not in');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * whereNull 查询条件
      *
@@ -1466,11 +1465,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'null');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * whereNotNull 查询条件
      *
@@ -1486,11 +1485,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'not null');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * whereLike 查询条件
      *
@@ -1506,11 +1505,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'like');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * whereNotLike 查询条件
      *
@@ -1526,11 +1525,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'not like');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * whereDate 查询条件
      *
@@ -1541,13 +1540,13 @@ class select
     {
         $this->setInTimeCondition('date');
         call_user_func_array([
-            $this, 
+            $this,
             'where'
         ], func_get_args());
         $this->setInTimeCondition(null);
         return $this;
     }
-    
+
     /**
      * whereMonth 查询条件
      *
@@ -1558,13 +1557,13 @@ class select
     {
         $this->setInTimeCondition('month');
         call_user_func_array([
-            $this, 
+            $this,
             'where'
         ], func_get_args());
         $this->setInTimeCondition(null);
         return $this;
     }
-    
+
     /**
      * whereDay 查询条件
      *
@@ -1575,13 +1574,13 @@ class select
     {
         $this->setInTimeCondition('day');
         call_user_func_array([
-            $this, 
+            $this,
             'where'
         ], func_get_args());
         $this->setInTimeCondition(null);
         return $this;
     }
-    
+
     /**
      * whereYear 查询条件
      *
@@ -1592,13 +1591,13 @@ class select
     {
         $this->setInTimeCondition('year');
         call_user_func_array([
-            $this, 
+            $this,
             'where'
         ], func_get_args());
         $this->setInTimeCondition(null);
         return $this;
     }
-    
+
     /**
      * orWhere 查询条件
      *
@@ -1614,11 +1613,11 @@ class select
         array_unshift($arrArgs, static::LOGIC_OR);
         array_unshift($arrArgs, 'where');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasTypeAndLogic'
         ], $arrArgs);
     }
-    
+
     /**
      * exists 方法支持
      *
@@ -1631,7 +1630,7 @@ class select
         }
         $arrArgs = func_get_args();
         return call_user_func_array([
-            $this, 
+            $this,
             'addConditions'
         ], [
             [
@@ -1639,7 +1638,7 @@ class select
             ]
         ]);
     }
-    
+
     /**
      * not exists 方法支持
      *
@@ -1652,7 +1651,7 @@ class select
         }
         $arrArgs = func_get_args();
         return call_user_func_array([
-            $this, 
+            $this,
             'addConditions'
         ], [
             [
@@ -1660,7 +1659,7 @@ class select
             ]
         ]);
     }
-    
+
     /**
      * 参数绑定支持
      *
@@ -1678,7 +1677,7 @@ class select
             foreach ($mixName as $mixKey => $mixValue) {
                 if (! is_array($mixValue)) {
                     $mixValue = [
-                        $mixValue, 
+                        $mixValue,
                         $intType
                     ];
                 }
@@ -1687,7 +1686,7 @@ class select
         } else {
             if (! is_array($mixValue)) {
                 $mixValue = [
-                    $mixValue, 
+                    $mixValue,
                     $intType
                 ];
             }
@@ -1695,7 +1694,7 @@ class select
         }
         return $this;
     }
-    
+
     /**
      * index 强制索引（或者忽略索引）
      *
@@ -1728,7 +1727,7 @@ class select
         }
         return $this;
     }
-    
+
     /**
      * index 忽略索引
      *
@@ -1739,7 +1738,7 @@ class select
     {
         return $this->forceIndex($mixIndex, 'IGNORE');
     }
-    
+
     /**
      * join 查询
      *
@@ -1756,11 +1755,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'inner join');
         return call_user_func_array([
-            $this, 
+            $this,
             'addJoin'
         ], $arrArgs);
     }
-    
+
     /**
      * innerJoin 查询
      *
@@ -1777,11 +1776,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'inner join');
         return call_user_func_array([
-            $this, 
+            $this,
             'addJoin'
         ], $arrArgs);
     }
-    
+
     /**
      * leftJoin 查询
      *
@@ -1798,11 +1797,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'left join');
         return call_user_func_array([
-            $this, 
+            $this,
             'addJoin'
         ], $arrArgs);
     }
-    
+
     /**
      * rightJoin 查询
      *
@@ -1819,11 +1818,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'right join');
         return call_user_func_array([
-            $this, 
+            $this,
             'addJoin'
         ], $arrArgs);
     }
-    
+
     /**
      * fullJoin 查询
      *
@@ -1840,11 +1839,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'full join');
         return call_user_func_array([
-            $this, 
+            $this,
             'addJoin'
         ], $arrArgs);
     }
-    
+
     /**
      * crossJoin 查询
      *
@@ -1861,11 +1860,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'cross join');
         return call_user_func_array([
-            $this, 
+            $this,
             'addJoin'
         ], $arrArgs);
     }
-    
+
     /**
      * naturalJoin 查询
      *
@@ -1882,11 +1881,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'natural join');
         return call_user_func_array([
-            $this, 
+            $this,
             'addJoin'
         ], $arrArgs);
     }
-    
+
     /**
      * 添加一个 UNION 查询
      *
@@ -1902,21 +1901,21 @@ class select
         if (! isset(static::$arrUnionTypes[$sType])) {
             throw new Exception(sprintf('Invalid UNION type %s.', $sType));
         }
-        
+
         if (! is_array($mixSelect)) {
             $mixSelect = ( array ) $mixSelect;
         }
-        
+
         foreach ($mixSelect as $mixTemp) {
             $this->arrOption['union'][] = [
-                $mixTemp, 
+                $mixTemp,
                 $sType
             ];
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 添加一个 UNION ALL 查询
      *
@@ -1930,7 +1929,7 @@ class select
         }
         return $this->union($mixSelect, 'UNION ALL');
     }
-    
+
     /**
      * 指定 GROUP BY 子句
      *
@@ -1942,7 +1941,7 @@ class select
         if ($this->checkFlowControl()) {
             return $this;
         }
-        
+
         if (is_string($mixExpr) && strpos($mixExpr, ',') !== false && strpos($mixExpr, '{') !== false && preg_match_all('/{(.+?)}/', $mixExpr, $arrRes)) {
             $mixExpr = str_replace($arrRes[1][0], base64_encode($arrRes[1][0]), $mixExpr);
         }
@@ -1953,7 +1952,7 @@ class select
                 $mixExpr[array_search('{' . base64_encode($strTemp) . '}', $mixExpr, true)] = '{' . $strTemp . '}';
             }
         }
-        
+
         $strTableName = $this->getCurrentTable();
         foreach ($mixExpr as $strValue) {
             // 处理条件表达式
@@ -1967,22 +1966,22 @@ class select
                     $strValue[array_search('{' . base64_encode($strTemp) . '}', $strValue, true)] = '{' . $strTemp . '}';
                 }
             }
-            
+
             foreach ($strValue as $strTemp) {
                 $strTemp = trim($strTemp);
                 if (empty($strTemp)) {
                     continue;
                 }
-                
+
                 // 表达式支持
                 $strTemp = $this->qualifyOneColumn($strTemp, $strTableName);
                 $this->arrOption['group'][] = $strTemp;
             }
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 添加一个 HAVING 条件
      *
@@ -2000,11 +1999,11 @@ class select
         array_unshift($arrArgs, static::LOGIC_AND);
         array_unshift($arrArgs, 'having');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasTypeAndLogic'
         ], $arrArgs);
     }
-    
+
     /**
      * havingBetween 查询条件
      *
@@ -2020,11 +2019,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'between');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * havingNotBetween 查询条件
      *
@@ -2040,11 +2039,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'not between');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * havingIn 查询条件
      *
@@ -2060,11 +2059,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'in');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * havingNotIn 查询条件
      *
@@ -2080,11 +2079,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'not in');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * havingNull 查询条件
      *
@@ -2100,11 +2099,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'null');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * havingNotNull 查询条件
      *
@@ -2120,11 +2119,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'not null');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * havingLike 查询条件
      *
@@ -2140,11 +2139,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'like');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * havingNotLike 查询条件
      *
@@ -2160,11 +2159,11 @@ class select
         $arrArgs = func_get_args();
         array_unshift($arrArgs, 'not like');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasCondition'
         ], $arrArgs);
     }
-    
+
     /**
      * havingDate 查询条件
      *
@@ -2175,13 +2174,13 @@ class select
     {
         $this->setInTimeCondition('date');
         call_user_func_array([
-            $this, 
+            $this,
             'having'
         ], func_get_args());
         $this->setInTimeCondition(null);
         return $this;
     }
-    
+
     /**
      * havingMonth 查询条件
      *
@@ -2192,13 +2191,13 @@ class select
     {
         $this->setInTimeCondition('month');
         call_user_func_array([
-            $this, 
+            $this,
             'having'
         ], func_get_args());
         $this->setInTimeCondition(null);
         return $this;
     }
-    
+
     /**
      * havingDay 查询条件
      *
@@ -2209,13 +2208,13 @@ class select
     {
         $this->setInTimeCondition('day');
         call_user_func_array([
-            $this, 
+            $this,
             'having'
         ], func_get_args());
         $this->setInTimeCondition(null);
         return $this;
     }
-    
+
     /**
      * havingYear 查询条件
      *
@@ -2226,13 +2225,13 @@ class select
     {
         $this->setInTimeCondition('year');
         call_user_func_array([
-            $this, 
+            $this,
             'having'
         ], func_get_args());
         $this->setInTimeCondition(null);
         return $this;
     }
-    
+
     /**
      * orHaving 查询条件
      *
@@ -2248,11 +2247,11 @@ class select
         array_unshift($arrArgs, static::LOGIC_OR);
         array_unshift($arrArgs, 'having');
         return call_user_func_array([
-            $this, 
+            $this,
             'aliasTypeAndLogic'
         ], $arrArgs);
     }
-    
+
     /**
      * 添加排序
      *
@@ -2265,9 +2264,9 @@ class select
         if ($this->checkFlowControl()) {
             return $this;
         }
-        
+
         $sOrderDefault = strtoupper($sOrderDefault); // 格式化为大写
-        
+
 
         // 处理条件表达式
         if (is_string($mixExpr) && strpos($mixExpr, ',') !== false && strpos($mixExpr, '{') !== false && preg_match_all('/{(.+?)}/', $mixExpr, $arrRes)) {
@@ -2280,7 +2279,7 @@ class select
                 $mixExpr[array_search('{' . base64_encode($strTemp) . '}', $mixExpr, true)] = '{' . $strTemp . '}';
             }
         }
-        
+
         $strTableName = $this->getCurrentTable();
         foreach ($mixExpr as $strValue) {
             // 处理条件表达式
@@ -2299,7 +2298,7 @@ class select
                 if (empty($strTemp)) {
                     continue;
                 }
-                
+
                 // 表达式支持
                 if (strpos($strTemp, '{') !== false && preg_match('/^{(.+?)}$/', $strTemp, $arrResThree)) {
                     $strTemp = $this->objConnect->qualifyExpression($arrResThree[1], $strTableName, $this->arrColumnsMapping);
@@ -2317,7 +2316,7 @@ class select
                         $strTemp = trim($arrMatch[1]);
                         $sSort = strtoupper($arrMatch[2]);
                     }
-                    
+
                     if (! preg_match('/\(.*\)/', $strTemp)) {
                         if (preg_match('/(.+)\.(.+)/', $strTemp, $arrMatch)) {
                             $sCurrentTableName = $arrMatch[1];
@@ -2332,10 +2331,10 @@ class select
                 }
             }
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 最近排序数据
      *
@@ -2346,7 +2345,7 @@ class select
     {
         return $this->orderBy($mixField, 'DESC');
     }
-    
+
     /**
      * 最早排序数据
      *
@@ -2357,7 +2356,7 @@ class select
     {
         return $this->orderBy($mixField, 'ASC');
     }
-    
+
     /**
      * 创建一个 SELECT DISTINCT 查询
      *
@@ -2372,7 +2371,7 @@ class select
         $this->arrOption['distinct'] = ( bool ) $bFlag;
         return $this;
     }
-    
+
     /**
      * 总记录数
      *
@@ -2387,7 +2386,7 @@ class select
         }
         return $this->addAggregate('COUNT', $strField, $sAlias);
     }
-    
+
     /**
      * 平均数
      *
@@ -2402,7 +2401,7 @@ class select
         }
         return $this->addAggregate('AVG', $strField, $sAlias);
     }
-    
+
     /**
      * 最大值
      *
@@ -2417,7 +2416,7 @@ class select
         }
         return $this->addAggregate('MAX', $strField, $sAlias);
     }
-    
+
     /**
      * 最小值
      *
@@ -2432,7 +2431,7 @@ class select
         }
         return $this->addAggregate('MIN', $strField, $sAlias);
     }
-    
+
     /**
      * 合计
      *
@@ -2447,7 +2446,7 @@ class select
         }
         return $this->addAggregate('SUM', $strField, $sAlias);
     }
-    
+
     /**
      * 指示仅查询第一个符合条件的记录
      *
@@ -2463,7 +2462,7 @@ class select
         $this->arrOption['limitquery'] = false;
         return $this;
     }
-    
+
     /**
      * 指示查询所有符合条件的记录
      *
@@ -2479,7 +2478,7 @@ class select
         $this->arrOption['limitquery'] = true;
         return $this;
     }
-    
+
     /**
      * 查询几条记录
      *
@@ -2493,7 +2492,7 @@ class select
         }
         return $this->limit(0, $nCount);
     }
-    
+
     /**
      * limit 限制条数
      *
@@ -2515,7 +2514,7 @@ class select
         }
         return $this;
     }
-    
+
     /**
      * 是否构造一个 FOR UPDATE 查询
      *
@@ -2530,16 +2529,16 @@ class select
         $this->arrOption['forupdate'] = ( bool ) $bFlag;
         return $this;
     }
-    
+
     // ######################################################
     // -------------------- 构造查询条件 end -------------------
     // ######################################################
-    
+
 
     // ######################################################
     // ------------------ sql 语句分析 start -------------------
     // ######################################################
-    
+
 
     /**
      * 获得查询字符串
@@ -2552,7 +2551,7 @@ class select
         $arrSql = [
             'SELECT'
         ];
-        
+
         foreach (array_keys($this->arrOption) as $sOption) {
             if ($sOption == 'from') {
                 $arrSql['from'] = '';
@@ -2565,24 +2564,24 @@ class select
                 }
             }
         }
-        
+
         $arrSql['from'] = $this->parseFrom();
         foreach ($arrSql as $nOffset => $sOption) { // 删除空元素
             if (trim($sOption) == '') {
                 unset($arrSql[$nOffset]);
             }
         }
-        
+
         $arrSql[] = $this->parseUnion();
         $sLastSql = trim(implode(' ', $arrSql));
-        
+
         if ($booWithLogicGroup === true) {
             return static::LOGIC_GROUP_LEFT . $sLastSql . static::LOGIC_GROUP_RIGHT;
         } else {
             return $sLastSql;
         }
     }
-    
+
     /**
      * 解析 prefix 分析结果
      *
@@ -2595,7 +2594,7 @@ class select
         }
         return join(' ', $this->arrOption['prefix']);
     }
-    
+
     /**
      * 解析 distinct 分析结果
      *
@@ -2608,7 +2607,7 @@ class select
         }
         return 'DISTINCT';
     }
-    
+
     /**
      * 分析语句中的字段
      *
@@ -2619,11 +2618,11 @@ class select
         if (empty($this->arrOption['columns'])) {
             return '';
         }
-        
+
         $arrColumns = array();
         foreach ($this->arrOption['columns'] as $arrEntry) {
             list($sTableName, $sCol, $sAlias) = $arrEntry;
-            
+
             // 表达式支持
             if (strpos($sCol, '{') !== false && preg_match('/^{(.+?)}$/', $sCol, $arrRes)) {
                 $arrColumns[] = $this->objConnect->qualifyExpression($arrRes[1], $sTableName, $this->arrColumnsMapping);
@@ -2638,10 +2637,10 @@ class select
                 }
             }
         }
-        
+
         return implode(',', $arrColumns);
     }
-    
+
     /**
      * 解析 aggregate 分析结果
      *
@@ -2652,7 +2651,7 @@ class select
         if (empty($this->arrOption['aggregate'])) {
             return '';
         }
-        
+
         $arrColumns = [];
         foreach ($this->arrOption['aggregate'] as $arrAggregate) {
             list(, $sField, $sAlias) = $arrAggregate;
@@ -2662,10 +2661,10 @@ class select
                 $arrColumns[] = $sField;
             }
         }
-        
+
         return (empty($arrColumns)) ? '' : implode(',', $arrColumns);
     }
-    
+
     /**
      * 解析 from 分析结果
      *
@@ -2676,7 +2675,7 @@ class select
         if (empty($this->arrOption['from'])) {
             return '';
         }
-        
+
         $arrFrom = [];
         foreach ($this->arrOption['from'] as $sAlias => $arrTable) {
             $sTmp = '';
@@ -2684,7 +2683,7 @@ class select
             if (! empty($arrFrom)) {
                 $sTmp .= ' ' . strtoupper($arrTable['join_type']) . ' ';
             }
-            
+
             // 表名子表达式支持
             if (strpos($arrTable['table_name'], '(') !== false) {
                 $sTmp .= $arrTable['table_name'] . ' ' . $sAlias;
@@ -2693,21 +2692,21 @@ class select
             } else {
                 $sTmp .= $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
             }
-            
+
             // 添加 JOIN 查询条件
             if (! empty($arrFrom) && ! empty($arrTable['join_cond'])) {
                 $sTmp .= ' ON ' . $arrTable['join_cond'];
             }
             $arrFrom[] = $sTmp;
         }
-        
+
         if (! empty($arrFrom)) {
             return 'FROM ' . implode(' ', $arrFrom);
         } else {
             return '';
         }
     }
-    
+
     /**
      * 解析 table 分析结果
      *
@@ -2720,12 +2719,12 @@ class select
         if (empty($this->arrOption['from'])) {
             return '';
         }
-        
+
         // 如果为删除,没有 join 则返回为空
         if ($booForDelete === true && count($this->arrOption['from']) == 1) {
             return '';
         }
-        
+
         foreach ($this->arrOption['from'] as $sAlias => $arrTable) {
             if ($sAlias == $arrTable['table_name']) {
                 return $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}");
@@ -2744,7 +2743,7 @@ class select
             break;
         }
     }
-    
+
     /**
      * 解析 using 分析结果
      *
@@ -2757,14 +2756,14 @@ class select
         if ($booForDelete === false || empty($this->arrOption['using'])) {
             return '';
         }
-        
+
         $arrUsing = [];
         $arrOptionUsing = $this->arrOption['using'];
         foreach ($this->arrOption['from'] as $sAlias => $arrTable) { // table 自动加入
             $arrOptionUsing[$sAlias] = $arrTable;
             break;
         }
-        
+
         foreach ($arrOptionUsing as $sAlias => $arrTable) {
             if ($sAlias == $arrTable['table_name']) {
                 $arrUsing[] = $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}");
@@ -2772,10 +2771,10 @@ class select
                 $arrUsing[] = $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
             }
         }
-        
+
         return 'USING ' . implode(',', array_unique($arrUsing));
     }
-    
+
     /**
      * 解析 index 分析结果
      *
@@ -2785,7 +2784,7 @@ class select
     {
         $strIndex = '';
         foreach ([
-            'FORCE', 
+            'FORCE',
             'IGNORE'
         ] as $sType) {
             if (empty($this->arrOption['index'][$sType])) {
@@ -2795,7 +2794,7 @@ class select
         }
         return $strIndex;
     }
-    
+
     /**
      * 解析 where 分析结果
      *
@@ -2809,7 +2808,7 @@ class select
         }
         return $this->analyseCondition('where', $booChild);
     }
-    
+
     /**
      * 解析 union 分析结果
      *
@@ -2820,7 +2819,7 @@ class select
         if (empty($this->arrOption['union'])) {
             return '';
         }
-        
+
         $sSql = '';
         if ($this->arrOption['union']) {
             $nOptions = count($this->arrOption['union']);
@@ -2836,7 +2835,7 @@ class select
         }
         return $sSql;
     }
-    
+
     /**
      * 解析 order 分析结果
      *
@@ -2854,7 +2853,7 @@ class select
         }
         return 'ORDER BY ' . implode(',', array_unique($this->arrOption['order']));
     }
-    
+
     /**
      * 解析 group 分析结果
      *
@@ -2867,7 +2866,7 @@ class select
         }
         return 'GROUP BY ' . implode(',', $this->arrOption['group']);
     }
-    
+
     /**
      * 解析 having 分析结果
      *
@@ -2881,7 +2880,7 @@ class select
         }
         return $this->analyseCondition('having', $booChild);
     }
-    
+
     /**
      * 解析 limit 分析结果
      *
@@ -2895,28 +2894,28 @@ class select
         if ($booForDelete === true && (count($this->arrOption['from']) > 1 || ! empty($this->arrOption['using']))) {
             return '';
         }
-        
+
         if ($booNullLimitOffset === true) {
             $this->arrOption['limitoffset'] = null;
         }
-        
+
         if (is_null($this->arrOption['limitoffset']) && is_null($this->arrOption['limitcount'])) {
             return '';
         }
-        
+
         if (method_exists($this->objConnect, 'parseLimitcount')) {
             return call_user_func_array([
-                $this->objConnect, 
+                $this->objConnect,
                 'parseLimitcount'
             ], [
-                $this->arrOption['limitcount'], 
+                $this->arrOption['limitcount'],
                 $this->arrOption['limitoffset']
             ]);
         }
-        
+
         throw new BadMethodCallException(sprintf('Connect method %s is not exits', 'parseLimitcount'));
     }
-    
+
     /**
      * 解析 forupdate 分析结果
      *
@@ -2929,7 +2928,7 @@ class select
         }
         return 'FOR UPDATE';
     }
-    
+
     /**
      * 解析 condition　条件（包括 where,having）
      *
@@ -2942,19 +2941,19 @@ class select
         if (! $this->arrOption[$sCondType]) {
             return '';
         }
-        
+
         $arrSqlCond = [];
         $strTable = $this->getCurrentTable();
         foreach ($this->arrOption[$sCondType] as $sKey => $mixCond) {
             // 逻辑连接符
             if (in_array($mixCond, [
-                static::LOGIC_AND, 
+                static::LOGIC_AND,
                 static::LOGIC_OR
             ])) {
                 $arrSqlCond[] = strtoupper($mixCond);
                 continue;
             }
-            
+
             // 特殊处理
             if (is_string($sKey)) {
                 if (in_array($sKey, [
@@ -2975,21 +2974,21 @@ class select
                     } else {
                         $strCurrentTable = $strTable;
                     }
-                    
+
                     if (isset($this->arrColumnsMapping[$mixCond[0]])) {
                         $mixCond[0] = $this->arrColumnsMapping[$mixCond[0]];
                     }
-                    
+
                     $mixCond[0] = $this->objConnect->qualifyColumn($mixCond[0], $strCurrentTable);
                 }
-                
+
                 // 分析是否存在自动格式化时间标识
                 $strFindTime = null;
                 if (strpos($mixCond[1], '@') === 0) {
                     foreach ([
-                        'date', 
-                        'month', 
-                        'day', 
+                        'date',
+                        'month',
+                        'day',
                         'year'
                     ] as $strTimeType) {
                         if (stripos($mixCond[1], '@' . $strTimeType) === 0) {
@@ -3002,7 +3001,7 @@ class select
                         throw new Exception('You are trying to an unsupported time processing grammar.');
                     }
                 }
-                
+
                 // 格式化字段值，支持数组
                 if (isset($mixCond[2])) {
                     $booIsArray = true;
@@ -3010,12 +3009,12 @@ class select
                         $mixCond[2] = ( array ) $mixCond[2];
                         $booIsArray = false;
                     }
-                    
+
                     foreach ($mixCond[2] as &$strTemp) {
                         // 对象子表达式支持
                         if ($strTemp instanceof select) {
                             $strTemp = $strTemp->makeSql(true);
-                        }                        
+                        }
 
                         // 回调方法子表达式支持
                         elseif (is_callable($strTemp)) {
@@ -3029,10 +3028,11 @@ class select
                             } else {
                                 $strTemp = $mixResultCallback;
                             }
-                        }                        
+                        }
 
                         // 字符串子表达式支持
-                        elseif (strpos(trim($strTemp), '(') === 0) {}                        
+                        elseif (strpos(trim($strTemp), '(') === 0) {
+                        }
 
                         // 表达式支持
                         elseif (strpos($strTemp, '{') !== false && preg_match('/^{(.+?)}$/', $strTemp, $arrRes)) {
@@ -3045,25 +3045,25 @@ class select
                             $strTemp = $this->objConnect->qualifyColumnValue($strTemp);
                         }
                     }
-                    
+
                     if ($booIsArray === false || (count($mixCond[2]) == 1 && strpos(trim($mixCond[2][0]), '(') === 0)) {
                         $mixCond[2] = reset($mixCond[2]);
                     }
                 }
-                
+
                 // 拼接结果
                 if (in_array($mixCond[1], [
-                    'null', 
+                    'null',
                     'not null'
                 ])) {
                     $arrSqlCond[] = $mixCond[0] . ' IS ' . strtoupper($mixCond[1]);
                 } elseif (in_array($mixCond[1], [
-                    'in', 
+                    'in',
                     'not in'
                 ])) {
                     $arrSqlCond[] = $mixCond[0] . ' ' . strtoupper($mixCond[1]) . ' ' . (is_array($mixCond[2]) ? '(' . implode(',', $mixCond[2]) . ')' : $mixCond[2]);
                 } elseif (in_array($mixCond[1], [
-                    'between', 
+                    'between',
                     'not between'
                 ])) {
                     if (! is_array($mixCond[2]) || count($mixCond[2]) < 2) {
@@ -3077,12 +3077,12 @@ class select
                 }
             }
         }
-        
+
         // 剔除第一个逻辑符
         array_shift($arrSqlCond);
         return ($booChild === false ? strtoupper($sCondType) . ' ' : '') . implode(' ', $arrSqlCond);
     }
-    
+
     /**
      * 别名条件
      *
@@ -3102,7 +3102,7 @@ class select
         }
         return $this;
     }
-    
+
     /**
      * 别名类型和逻辑
      *
@@ -3133,12 +3133,12 @@ class select
             array_shift($arrArgs);
             array_shift($arrArgs);
             return call_user_func_array([
-                $this, 
+                $this,
                 'addConditions'
             ], $arrArgs);
         }
     }
-    
+
     /**
      * 组装条件
      *
@@ -3148,7 +3148,7 @@ class select
     {
         $arrArgs = func_get_args();
         $strTable = $this->getCurrentTable();
-        
+
         // 整理多个参数到二维数组
         if (! is_array($arrArgs[0])) {
             $arrArgs[0] = [
@@ -3163,45 +3163,45 @@ class select
                 }
                 break;
             }
-            
+
             if ($booOneImension === true) {
                 $arrArgs[0] = [
                     $arrArgs[0]
                 ];
             }
         }
-        
+
         // 遍历数组拼接结果
         foreach ($arrArgs[0] as $strKey => $arrTemp) {
             if (! is_int($strKey)) {
                 $strKey = trim($strKey);
             }
-            
+
             // 字符串表达式
             if (is_string($strKey) && $strKey == 'string__') {
                 // 不符合规则抛出异常
                 if (! is_string($arrTemp)) {
                     throw new Exception('String__ type only supports string.');
                 }
-                
+
                 // 表达式支持
                 if (strpos($arrTemp, '{') !== false && preg_match('/^{(.+?)}$/', $arrTemp, $arrRes)) {
                     $arrTemp = $this->objConnect->qualifyExpression($arrRes[1], $strTable, $this->arrColumnsMapping);
                 }
                 $this->setConditionItem($arrTemp, 'string__');
-            }            
+            }
 
             // 子表达式
             elseif (is_string($strKey) && in_array($strKey, [
-                'subor__', 
+                'subor__',
                 'suband__'
             ])) {
                 $arrTypeAndLogic = $this->getTypeAndLogic();
-                
+
                 $objSelect = new static($this->objConnect);
                 $objSelect->setCurrentTable($this->getCurrentTable());
                 $objSelect->setTypeAndLogic($arrTypeAndLogic[0]);
-                
+
                 // 逻辑表达式
                 if (isset($arrTemp['logic__'])) {
                     if (strtolower($arrTemp['logic__']) == static::LOGIC_OR) {
@@ -3209,32 +3209,32 @@ class select
                     }
                     unset($arrTemp['logic__']);
                 }
-                
+
                 $objSelect = call_user_func_array([
-                    $objSelect, 
+                    $objSelect,
                     'addConditions'
                 ], [
                     $arrTemp
                 ]);
-                
+
                 // 解析结果
                 $strParseType = 'parse' . ucwords($arrTypeAndLogic[0]);
                 $strOldLogic = $arrTypeAndLogic[1];
                 $this->setTypeAndLogic(null, 'subor__' ? static::LOGIC_OR : static::LOGIC_AND);
                 $this->setConditionItem(static::LOGIC_GROUP_LEFT . $objSelect->{$strParseType}(true) . static::LOGIC_GROUP_RIGHT, 'string__');
                 $this->setTypeAndLogic(null, $strOldLogic);
-            }            
+            }
 
             // exists 支持
             elseif (is_string($strKey) && in_array($strKey, [
-                'exists__', 
+                'exists__',
                 'notexists__'
             ])) {
                 // having 不支持 [not] exists
                 if ($this->getTypeAndLogic()[0] == 'having') {
                     throw new Exception('Having do not support [not] exists writing.');
                 }
-                
+
                 if ($arrTemp instanceof select) {
                     $arrTemp = $arrTemp->makeSql();
                 } elseif (is_callable($arrTemp)) {
@@ -3249,54 +3249,54 @@ class select
                         $strTemp = $mixResultCallback;
                     }
                 }
-                
+
                 $arrTemp = ($strKey == 'notexists__' ? 'NOT EXISTS ' : 'EXISTS ') . static::LOGIC_GROUP_LEFT . ' ' . $arrTemp . ' ' . static::LOGIC_GROUP_RIGHT;
                 $this->setConditionItem($arrTemp, 'string__');
-            }             
+            }
 
             // 其它
             else {
-                
+
                 // 处理字符串 "null"
                 if (is_scalar($arrTemp)) {
                     $arrTemp = ( array ) $arrTemp;
                 }
-                
+
                 // 合并字段到数组
                 if (is_string($strKey)) {
                     array_unshift($arrTemp, $strKey);
                 }
-                
+
                 // 处理默认 “=” 的类型
                 if (count($arrTemp) === 2 && ! in_array($arrTemp[1], [
-                    'null', 
+                    'null',
                     'not null'
                 ], true)) {
                     $arrTemp[2] = $arrTemp[1];
                     $arrTemp[1] = '=';
                 }
-                
+
                 // 字段
                 $arrTemp[1] = trim($arrTemp[1]);
-                
+
                 // 特殊类型
                 if (in_array($arrTemp[1], [
-                    'between', 
-                    'not between', 
-                    'in', 
-                    'not in', 
-                    'null', 
+                    'between',
+                    'not between',
+                    'in',
+                    'not in',
+                    'null',
                     'not null'
                 ])) {
                     if (isset($arrTemp[2]) && is_string($arrTemp[2])) {
                         $arrTemp[2] = explode(',', $arrTemp[2]);
                     }
                     $this->setConditionItem([
-                        $arrTemp[0], 
-                        $arrTemp[1], 
+                        $arrTemp[0],
+                        $arrTemp[1],
                         isset($arrTemp[2]) ? $arrTemp[2] : null
                     ]);
-                }                 
+                }
 
                 // 普通类型
                 else {
@@ -3304,10 +3304,10 @@ class select
                 }
             }
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 设置条件的一项
      *
@@ -3334,7 +3334,7 @@ class select
             $this->arrOption[$arrTypeAndLogic[0]][] = $arrItem;
         }
     }
-    
+
     /**
      * 设置条件的逻辑和类型
      *
@@ -3351,7 +3351,7 @@ class select
             $this->strConditionLogic = $strLogic;
         }
     }
-    
+
     /**
      * 获取条件的逻辑和类型
      *
@@ -3360,11 +3360,11 @@ class select
     protected function getTypeAndLogic()
     {
         return [
-            $this->strConditionType, 
+            $this->strConditionType,
             $this->strConditionLogic
         ];
     }
-    
+
     /**
      * 格式化一个字段
      *
@@ -3378,11 +3378,11 @@ class select
         if (empty($strField)) {
             return '';
         }
-        
+
         if (is_null($sTableName)) {
             $sTableName = $this->getCurrentTable();
         }
-        
+
         if (strpos($strField, '{') !== false && preg_match('/^{(.+?)}$/', $strField, $arrRes)) {
             $strField = $this->objConnect->qualifyExpression($arrRes[1], $sTableName, $this->arrColumnsMapping);
         } elseif (! preg_match('/\(.*\)/', $strField)) {
@@ -3397,10 +3397,10 @@ class select
             }
             $strField = $this->objConnect->qualifyTableOrColumn("{$sCurrentTableName}.{$strField}");
         }
-        
+
         return $strField;
     }
-    
+
     /**
      * 连表 join 操作
      *
@@ -3416,20 +3416,20 @@ class select
         if (! isset(static::$arrJoinTypes[$sJoinType])) {
             throw new Exception(sprintf('Invalid JOIN type %s.', $sJoinType));
         }
-        
+
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->arrOption['union'])) {
             throw new Exception('JOIN queries cannot be used while using UNION queries.');
         }
-        
+
         // 是否分析 schema，子表达式不支持
         $booParseSchema = true;
-        
+
         // 没有指定表，获取默认表
         if (empty($mixName)) {
             $sTable = $this->getCurrentTable();
             $sAlias = '';
-        }        
+        }
 
         // $mixName 为数组配置
         elseif (is_array($mixName)) {
@@ -3437,7 +3437,7 @@ class select
                 if (! is_string($sAlias)) {
                     $sAlias = '';
                 }
-                
+
                 // 对象子表达式
                 if ($sTable instanceof select) {
                     $sTable = $sTable->makeSql(true);
@@ -3445,7 +3445,7 @@ class select
                         $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                     }
                     $booParseSchema = false;
-                }                
+                }
 
                 // 回调方法子表达式
                 elseif (is_callable($sTable)) {
@@ -3466,14 +3466,14 @@ class select
                 }
                 break;
             }
-        }        
+        }
 
         // 对象子表达式
         elseif ($mixName instanceof select) {
             $sTable = $mixName->makeSql(true);
             $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             $booParseSchema = false;
-        }        
+        }
 
         // 回调方法
         elseif (is_callable($mixName)) {
@@ -3489,7 +3489,7 @@ class select
             }
             $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             $booParseSchema = false;
-        }        
+        }
 
         // 字符串子表达式
         elseif (strpos(trim($mixName), '(') === 0) {
@@ -3511,7 +3511,7 @@ class select
                 $sAlias = '';
             }
         }
-        
+
         // 确定 table_name 和 schema
         if ($booParseSchema === true) {
             $arrTemp = explode('.', $sTable);
@@ -3526,15 +3526,15 @@ class select
             $sSchema = null;
             $sTableName = $sTable;
         }
-        
+
         // 获得一个唯一的别名
         $sAlias = $this->uniqueAlias(empty($sAlias) ? $sTableName : $sAlias);
-        
+
         // 只有表操作才设置当前表
         if ($this->getIsTable()) {
             $this->setCurrentTable(($sSchema ? $sSchema . '.' : '') . $sAlias);
         }
-        
+
         // 查询条件
         $arrArgs = func_get_args();
         if (count($arrArgs) > 3) {
@@ -3544,26 +3544,26 @@ class select
             $objSelect = new static($this->objConnect);
             $objSelect->setCurrentTable($sAlias);
             call_user_func_array([
-                $objSelect, 
+                $objSelect,
                 'where'
             ], $arrArgs);
             $mixCond = $objSelect->parseWhere(true);
         }
-        
+
         // 添加一个要查询的数据表
         $this->arrOption['from'][$sAlias] = [
-            'join_type' => $sJoinType, 
-            'table_name' => $sTableName, 
-            'schema' => $sSchema, 
+            'join_type' => $sJoinType,
+            'table_name' => $sTableName,
+            'schema' => $sSchema,
             'join_cond' => $mixCond
         ];
-        
+
         // 添加查询字段
         $this->addCols($sAlias, $mixCols);
-        
+
         return $this;
     }
-    
+
     /**
      * 添加字段
      *
@@ -3584,16 +3584,16 @@ class select
                 $mixCols[array_search('{' . base64_encode($strTemp) . '}', $mixCols, true)] = '{' . $strTemp . '}';
             }
         }
-        
+
         if (is_null($sTableName)) {
             $sTableName = '';
         }
-        
+
         // 没有字段则退出
         if (empty($mixCols)) {
             return;
         }
-        
+
         foreach ($mixCols as $sAlias => $mixCol) {
             if (is_string($mixCol)) {
                 // 处理条件表达式
@@ -3609,37 +3609,37 @@ class select
                 }
                 foreach (helper::arrays($mixCol) as $sCol) { // 将包含多个字段的字符串打散
                     $strThisTableName = $sTableName;
-                    
+
                     if (preg_match('/^(.+)\s+' . 'AS' . '\s+(.+)$/i', $sCol, $arrMatch)) { // 检查是不是 "字段名 AS 别名"这样的形式
                         $sCol = $arrMatch[1];
                         $sAlias = $arrMatch[2];
                     }
-                    
+
                     if (preg_match('/(.+)\.(.+)/', $sCol, $arrMatch)) { // 检查字段名是否包含表名称
                         $strThisTableName = $arrMatch[1];
                         $sCol = $arrMatch[2];
                     }
-                    
+
                     if (isset($this->arrColumnsMapping[$sCol])) {
                         $sCol = $this->arrColumnsMapping[$sCol];
                     }
-                    
+
                     $this->arrOption['columns'][] = [
-                        $strThisTableName, 
-                        $sCol, 
+                        $strThisTableName,
+                        $sCol,
                         is_string($sAlias) ? $sAlias : null
                     ];
                 }
             } else {
                 $this->arrOption['columns'][] = [
-                    $sTableName, 
-                    $mixCol, 
+                    $sTableName,
+                    $mixCol,
                     is_string($sAlias) ? $sAlias : null
                 ];
             }
         }
     }
-    
+
     /**
      * 添加一个集合查询
      *
@@ -3652,7 +3652,7 @@ class select
     {
         $this->arrOption['columns'] = [];
         $strTableName = $this->getCurrentTable();
-        
+
         // 表达式支持
         if (strpos($strField, '{') !== false && preg_match('/^{(.+?)}$/', $strField, $arrRes)) {
             $strField = $this->objConnect->qualifyExpression($arrRes[1], $strTableName, $this->arrColumnsMapping);
@@ -3670,27 +3670,27 @@ class select
             $strField = $this->objConnect->qualifyColumn($strField, $strTableName);
         }
         $strField = "{$sType}($strField)";
-        
+
         $this->arrOption['aggregate'][] = [
-            $sType, 
-            $strField, 
+            $sType,
+            $strField,
             $sAlias
         ];
-        
+
         $this->one();
         $this->arrQueryParam['as_default'] = true;
         return $this;
     }
-    
+
     // ######################################################
     // ------------------ sql 语句分析 end -------------------
     // ######################################################
-    
+
 
     // ######################################################
     // ------------------- 私有方法 start --------------------
     // ######################################################
-    
+
 
     /**
      * 查询获得结果
@@ -3700,36 +3700,36 @@ class select
     protected function query()
     {
         $strSql = $this->makeSql();
-        
+
         $arrArgs = [
-            $strSql, 
-            $this->getBindParams(), 
-            $this->arrQueryParams['master'], 
-            $this->arrQueryParams['fetch_type']['fetch_type'], 
-            $this->arrQueryParams['fetch_type']['fetch_argument'], 
+            $strSql,
+            $this->getBindParams(),
+            $this->arrQueryParams['master'],
+            $this->arrQueryParams['fetch_type']['fetch_type'],
+            $this->arrQueryParams['fetch_type']['fetch_argument'],
             $this->arrQueryParams['fetch_type']['ctor_args']
         ];
-        
+
         // 只返回 SQL，不做任何实际操作
         if ($this->booOnlyMakeSql === true) {
             return $arrArgs;
         }
-        
+
         $arrData = call_user_func_array([
-            $this->objConnect, 
+            $this->objConnect,
             'query'
         ], $arrArgs);
         unset($arrArgs);
-        
+
         if ($this->arrQueryParams['as_default']) {
             $this->queryDefault($arrData);
         } else {
             $this->queryClass($arrData);
         }
-        
+
         return $arrData;
     }
-    
+
     /**
      * 以数组返回结果
      *
@@ -3744,13 +3744,13 @@ class select
             }
             return;
         }
-        
+
         // 返回一条记录
         if (! $this->arrOption['limitquery']) {
             $arrData = reset($arrData) ?  : null;
         }
     }
-    
+
     /**
      * 以 class 返回结果
      *
@@ -3769,18 +3769,18 @@ class select
             }
             return;
         }
-        
+
         // 模型类不存在，直接以数组结果返回
         $sClassName = $this->arrQueryParams['as_class'];
         if ($sClassName && ! class_exists($sClassName)) {
             $this->queryDefault($arrData);
             return;
         }
-        
+
         foreach ($arrData as &$mixTemp) {
             $mixTemp = new $sClassName(( array ) $mixTemp);
         }
-        
+
         // 创建一个单独的对象
         if (! $this->arrOption['limitquery']) {
             $arrData = reset($arrData) ?  : null;
@@ -3790,7 +3790,7 @@ class select
             }
         }
     }
-    
+
     /**
      * 原生 sql 执行方法
      *
@@ -3800,7 +3800,7 @@ class select
     protected function runNativeSql($mixData = null)
     {
         $strNativeSql = $this->getNativeSql();
-        
+
         // 空参数返回当前对象
         if (is_null($mixData)) {
             return $this;
@@ -3813,23 +3813,23 @@ class select
             if ($strSqlType != $strNativeSql) {
                 throw new Exception('Unsupported parameters.');
             }
-            
+
             $arrArgs = func_get_args();
-            
+
             // 只返回 SQL，不做任何实际操作
             if ($this->booOnlyMakeSql === true) {
                 return $arrArgs;
             }
-            
+
             return call_user_func_array([
-                $this->objConnect, 
+                $this->objConnect,
                 $strNativeSql == 'select' ? 'query' : 'execute'
             ], $arrArgs);
         } else {
             throw new Exception('Unsupported parameters.');
         }
     }
-    
+
     /**
      * 设置原生 sql 类型
      *
@@ -3840,7 +3840,7 @@ class select
     {
         $this->strNativeSql = $strNativeSql;
     }
-    
+
     /**
      * 返回原生 sql 类型
      *
@@ -3850,7 +3850,7 @@ class select
     {
         return $this->strNativeSql;
     }
-    
+
     /**
      * 返回参数绑定
      *
@@ -3865,7 +3865,7 @@ class select
             return isset($this->arrBindParams[$mixName]) ? $this->arrBindParams[$mixName] : null;
         }
     }
-    
+
     /**
      * 判断是否有参数绑定支持
      *
@@ -3876,7 +3876,7 @@ class select
     {
         return isset($this->arrBindParams[$mixName]);
     }
-    
+
     /**
      * 删除参数绑定支持
      *
@@ -3889,7 +3889,7 @@ class select
             unset($this->arrBindParams[$mixName]);
         }
     }
-    
+
     /**
      * 分析绑定参数数据
      *
@@ -3903,7 +3903,7 @@ class select
     {
         $arrField = $arrValue = [];
         $strTableName = $this->getCurrentTable();
-        
+
         foreach ($arrData as $sKey => $mixValue) {
             // 表达式支持
             $arrRes = null;
@@ -3912,12 +3912,12 @@ class select
             } else {
                 $mixValue = $this->objConnect->qualifyColumnValue($mixValue, false);
             }
-            
+
             // 字段
             if ($intIndex === 0) {
                 $arrField[] = $sKey;
             }
-            
+
             if (strpos($mixValue, ':') === 0 || ! empty($arrRes)) {
                 $arrValue[] = $mixValue;
             } else {
@@ -3929,22 +3929,22 @@ class select
                     $this->deleteBindParams($intQuestionMark);
                     $intQuestionMark ++;
                 }
-                
+
                 if ($intIndex > 0) {
                     $sKey = $sKey . '_' . $intIndex;
                 }
                 $arrValue[] = ':' . $sKey;
-                
+
                 $this->bind($sKey, $mixValue, $this->objConnect->getBindParamType($mixValue));
             }
         }
-        
+
         return [
-            $arrField, 
+            $arrField,
             $arrValue
         ];
     }
-    
+
     /**
      * 设置当前表名字
      *
@@ -3955,7 +3955,7 @@ class select
     {
         $this->strCurrentTable = $mixTable;
     }
-    
+
     /**
      * 获取当前表名字
      *
@@ -3971,7 +3971,7 @@ class select
             return $this->strCurrentTable;
         }
     }
-    
+
     /**
      * 设置是否为表操作
      *
@@ -3982,7 +3982,7 @@ class select
     {
         $this->booIsTable = $booIsTable;
     }
-    
+
     /**
      * 返回是否为表操作
      *
@@ -3992,7 +3992,7 @@ class select
     {
         return $this->booIsTable;
     }
-    
+
     /**
      * 解析时间信息
      *
@@ -4004,7 +4004,7 @@ class select
     protected function parseTime($sField, $mixValue, $strType)
     {
         static $arrDate = null, $arrColumns = [];
-        
+
         // 获取时间和字段信息
         if ($arrDate === null) {
             $arrDate = getdate();
@@ -4026,7 +4026,7 @@ class select
         if (! isset($arrColumns[$strTable])) {
             $arrColumns[$strTable] = $this->objConnect->getTableColumnsCache($strTable)['list'];
         }
-        
+
         // 支持类型
         switch ($strType) {
             case 'day':
@@ -4048,12 +4048,12 @@ class select
                 throw new Exception(sprintf('Unsupported time formatting type %s.', $strType));
                 break;
         }
-        
+
         // 自动格式化时间
         if (! empty($arrColumns[$strTable][$sField])) {
             $strFieldType = $arrColumns[$strTable][$sField]['type'];
             if (in_array($strFieldType, [
-                'datetime', 
+                'datetime',
                 'timestamp'
             ])) {
                 $mixValue = date('Y-m-d H:i:s', $mixValue);
@@ -4065,10 +4065,10 @@ class select
                 $mixValue = date('Y', $mixValue);
             }
         }
-        
+
         return $mixValue;
     }
-    
+
     /**
      * 别名唯一
      *
@@ -4080,7 +4080,7 @@ class select
         if (empty($mixName)) {
             return '';
         }
-        
+
         if (is_array($mixName)) { // 数组，返回最后一个元素
             $strAliasReturn = end($mixName);
         } else { // 字符串
@@ -4090,10 +4090,10 @@ class select
         for ($nI = 2; array_key_exists($strAliasReturn, $this->arrOption['from']); ++ $nI) {
             $strAliasReturn = $mixName . '_' . ( string ) $nI;
         }
-        
+
         return $strAliasReturn;
     }
-    
+
     /**
      * 设置当前是否处于时间条件状态
      *
@@ -4104,7 +4104,7 @@ class select
     {
         $this->strInTimeCondition = $strInTimeCondition;
     }
-    
+
     /**
      * 返回当前是否处于时间条件状态
      *
@@ -4114,7 +4114,7 @@ class select
     {
         return $this->strInTimeCondition;
     }
-    
+
     /**
      * 初始化查询条件
      *
@@ -4125,7 +4125,7 @@ class select
         $this->arrOption = static::$arrOptionDefault;
         $this->arrQueryParams = static::$arrQueryParamsDefault;
     }
-    
+
     /**
      * 备份分页查询条件
      *
@@ -4138,7 +4138,7 @@ class select
         $this->arrBackupPage['query_params'] = $this->arrQueryParams;
         $this->arrBackupPage['columns'] = $this->arrOption['columns'];
     }
-    
+
     /**
      * 恢复分页查询条件
      *

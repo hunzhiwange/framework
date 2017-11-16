@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,7 +33,7 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
  */
 class dump
 {
-    
+
     /**
      * 调试一个变量
      *
@@ -56,12 +56,12 @@ class dump
             array_shift($arrArgs);
             array_unshift($arrArgs, $mixValue);
             return call_user_func_array([
-                'queryyetsimple\support\debug\dump', 
+                'queryyetsimple\support\debug\dump',
                 'varDump'
             ], $arrArgs);
         }
     }
-    
+
     /**
      * 调试变量
      *
@@ -78,7 +78,7 @@ class dump
             $sOutput = preg_replace("/\]\=\>\n(\s+)/m", "] => ", $sOutput);
             $sOutput = 'cli' === PHP_SAPI ? $sOutput : '<pre>' . htmlspecialchars($sOutput, ENT_QUOTES) . '</pre>';
         }
-        
+
         if ($bEcho) {
             echo $sOutput;
         } else {

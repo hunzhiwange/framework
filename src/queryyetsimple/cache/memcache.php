@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,24 +34,24 @@ use queryyetsimple\support\option;
 class memcache extends acache implements iconnect
 {
     use option;
-    
+
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-        'nocache_force' => '~@nocache_force', 
-        'time_preset' => [], 
-        'prefix' => '~@', 
-        'expire' => 86400, 
-        'servers' => [], 
-        'host' => '127.0.0.1', 
-        'port' => 11211, 
-        'compressed' => false, 
+        'nocache_force' => '~@nocache_force',
+        'time_preset' => [],
+        'prefix' => '~@',
+        'expire' => 86400,
+        'servers' => [],
+        'host' => '127.0.0.1',
+        'port' => 11211,
+        'compressed' => false,
         'persistent' => false
     ];
-    
+
     /**
      * 构造函数
      *
@@ -63,19 +63,19 @@ class memcache extends acache implements iconnect
         if (! extension_loaded('memcache')) {
             throw new RuntimeException('Memcache extension must be loaded before use.');
         }
-        
+
         parent::__construct($arrOption);
-        
+
         if (empty($this->arrOption['servers'])) {
             $this->arrOption['servers'][] = [
-                'host' => $this->getOption('host'), 
+                'host' => $this->getOption('host'),
                 'port' => $this->getOption('port')
             ];
         }
-        
+
         // 连接缓存服务器
         $this->hHandle = $this->getMemcache();
-        
+
         foreach ($this->arrOption['servers'] as $arrServer) {
             $bResult = $this->hHandle->addServer($arrServer['host'], $arrServer['port'], $this->arrOption['persistent']);
             if (! $bResult) {
@@ -83,7 +83,7 @@ class memcache extends acache implements iconnect
             }
         }
     }
-    
+
     /**
      * 获取缓存
      *
@@ -97,11 +97,11 @@ class memcache extends acache implements iconnect
         if ($this->checkForce()) {
             return $mixDefault;
         }
-        
+
         $mixData = $this->hHandle->get($this->getCacheName($sCacheName, $this->getOptions($arrOption)['prefix']));
         return $mixData === false ? $mixDefault : $mixData;
     }
-    
+
     /**
      * 设置缓存
      *
@@ -118,7 +118,7 @@ class memcache extends acache implements iconnect
         $arrOption['expire'] = $this->cacheTime($sCacheName, $arrOption['expire']);
         $this->hHandle->set($this->getCacheName($sCacheName, $arrOption['prefix']), $mixData, $arrOption['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption['expire'] <= 0 ? 0 : ( int ) $arrOption['expire']);
     }
-    
+
     /**
      * 清除缓存
      *
@@ -130,7 +130,7 @@ class memcache extends acache implements iconnect
     {
         $this->hHandle->delete($this->getCacheName($sCacheName, $this->getOptions($arrOption)['prefix']));
     }
-    
+
     /**
      * 关闭 memcache
      *
@@ -141,7 +141,7 @@ class memcache extends acache implements iconnect
         $this->hHandle->close();
         $this->hHandle = null;
     }
-    
+
     /**
      * 返回 memcache 对象
      *

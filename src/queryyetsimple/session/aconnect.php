@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,14 +33,14 @@ use queryyetsimple\support\option;
 abstract class aconnect
 {
     use option;
-    
+
     /**
      * 缓存仓储
      *
      * @var \queryyetsimple\cache\icache
      */
     protected $objCache;
-    
+
     /**
      * 构造函数
      *
@@ -51,7 +51,7 @@ abstract class aconnect
     {
         $this->options($arrOption);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -63,7 +63,7 @@ abstract class aconnect
         $this->objCache->close();
         return true;
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -73,7 +73,7 @@ abstract class aconnect
     {
         return $this->objCache->get($this->getSessionName($strSessID));
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -83,7 +83,7 @@ abstract class aconnect
     {
         $this->objCache->set($this->getSessionName($strSessID), $mixSessData);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -93,7 +93,7 @@ abstract class aconnect
     {
         $this->objCache->delele($this->getSessionName($strSessID));
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -103,7 +103,7 @@ abstract class aconnect
     {
         return true;
     }
-    
+
     /**
      * 获取 session 名字
      *

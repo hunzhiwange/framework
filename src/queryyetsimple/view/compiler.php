@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,42 +34,42 @@ use queryyetsimple\support\option;
 class compiler implements icompiler
 {
     use option;
-    
+
     /**
      * code 支持的特殊别名映射
      *
      * @var array
      */
     protected $arrCodeMap = [
-        'php' => '~', 
-        'note' => '#', 
-        'variable' => '$', 
+        'php' => '~',
+        'note' => '#',
+        'variable' => '$',
         'foreach' => 'list',  // foreach和for冲突，foreach改为list
-        'echo' => ':', 
+        'echo' => ':',
         'endtag' => [
-            '/list', 
-            '/for', 
-            '/while', 
-            '/if', 
-            '/script', 
+            '/list',
+            '/for',
+            '/while',
+            '/if',
+            '/script',
             '/style'
         ]
     ];
-    
+
     /**
      * node 支持的特殊别名映射
      *
      * @var array
      */
     protected $arrNodeMap = [];
-    
+
     /**
      * javascript 支持的特殊别名映射
      *
      * @var array
      */
     protected $arrJsMap = [];
-    
+
     /**
      * javascript 标签
      *
@@ -80,39 +80,39 @@ class compiler implements icompiler
         'if' => [
             'attr' => [
                 'condition'
-            ], 
-            'single' => false, 
+            ],
+            'single' => false,
             'required' => [
                 'condition'
             ]
-        ], 
+        ],
         'elseif' => [
             'attr' => [
                 'condition'
-            ], 
-            'single' => true, 
+            ],
+            'single' => true,
             'required' => [
                 'condition'
             ]
-        ], 
+        ],
         'else' => [
-            'attr' => [], 
-            'single' => true, 
+            'attr' => [],
+            'single' => true,
             'required' => []
-        ], 
+        ],
         'each' => [
             'attr' => [
-                'for', 
-                'value', 
+                'for',
+                'value',
                 'index'
-            ], 
-            'single' => false, 
+            ],
+            'single' => false,
             'required' => [
                 'for'
             ]
         ]
     ];
-    
+
     /**
      * Node标签
      *
@@ -122,130 +122,130 @@ class compiler implements icompiler
         // required 属性不能为空，single 单标签
         'assign' => [
             'attr' => [
-                'name', 
+                'name',
                 'value'
-            ], 
-            'single' => true, 
+            ],
+            'single' => true,
             'required' => [
                 'name'
             ]
-        ], 
+        ],
         'if' => [
             'attr' => [
                 'condition'
-            ], 
-            'single' => false, 
+            ],
+            'single' => false,
             'required' => [
                 'condition'
             ]
-        ], 
+        ],
         'elseif' => [
             'attr' => [
                 'condition'
-            ], 
-            'single' => true, 
+            ],
+            'single' => true,
             'required' => [
                 'condition'
             ]
-        ], 
+        ],
         'else' => [
-            'attr' => [], 
-            'single' => true, 
+            'attr' => [],
+            'single' => true,
             'required' => []
-        ], 
+        ],
         'list' => [
             'attr' => [
-                'for', 
-                'key', 
-                'value', 
+                'for',
+                'key',
+                'value',
                 'index'
-            ], 
-            'single' => false, 
+            ],
+            'single' => false,
             'required' => [
                 'for'
             ]
-        ], 
+        ],
         'lists' => [
             'attr' => [
-                'index', 
-                'key', 
-                'mod', 
-                'empty', 
-                'length', 
-                'offset', 
-                'name', 
+                'index',
+                'key',
+                'mod',
+                'empty',
+                'length',
+                'offset',
+                'name',
                 'id'
-            ], 
-            'single' => false, 
+            ],
+            'single' => false,
             'required' => [
                 'name'
             ]
-        ], 
+        ],
         'include' => [
             'attr' => [
-                'file', 
+                'file',
                 'ext'
-            ], 
-            'single' => true, 
+            ],
+            'single' => true,
             'required' => [
                 'file'
             ]
-        ], 
+        ],
         'for' => [
             'attr' => [
-                'step', 
-                'start', 
-                'end', 
-                'var', 
+                'step',
+                'start',
+                'end',
+                'var',
                 'type'
-            ], 
-            'single' => false, 
+            ],
+            'single' => false,
             'required' => []
-        ], 
+        ],
         'while' => [
             'attr' => [
                 'condition'
-            ], 
-            'single' => false, 
+            ],
+            'single' => false,
             'required' => [
                 'condition'
             ]
-        ], 
+        ],
         'break' => [
-            'attr' => [], 
-            'single' => true, 
+            'attr' => [],
+            'single' => true,
             'required' => []
-        ], 
+        ],
         'continue' => [
-            'attr' => [], 
-            'single' => true, 
+            'attr' => [],
+            'single' => true,
             'required' => []
-        ], 
+        ],
         'php' => [
-            'attr' => [], 
-            'single' => false, 
+            'attr' => [],
+            'single' => false,
             'required' => []
         ]
     ];
-    
+
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-        'cache_children' => false, 
-        'var_identify' => '', 
+        'cache_children' => false,
+        'var_identify' => '',
         'notallows_func' => [
-            'exit', 
-            'die', 
+            'exit',
+            'die',
             'return'
-        ], 
+        ],
         'notallows_func_js' => [
             'alert'
         ]
     ];
-    
+
     /**
      * 构造函数
      *
@@ -256,7 +256,7 @@ class compiler implements icompiler
     {
         $this->options($arrOption);
     }
-    
+
     /**
      * 获取编译器
      *
@@ -265,18 +265,18 @@ class compiler implements icompiler
     public function getCompilers()
     {
         $arrMethods = get_class_methods($this);
-        
+
         $arrCompilers = [];
         foreach ($arrMethods as $sMethod) {
             if (substr($sMethod, - 8) != 'Compiler') {
                 continue;
             }
-            
+
             $sMethod = substr($sMethod, 0, - 8);
             if (! in_array($sMethod, [
-                'global', 
-                'jsvar', 
-                'globalrevert', 
+                'global',
+                'jsvar',
+                'globalrevert',
                 'revert'
             ])) {
                 $sType = strtolower(substr($sMethod, - 4));
@@ -291,17 +291,17 @@ class compiler implements icompiler
                     $mixName = isset($this->arrJsMap[$sTag]) ? $this->arrJsMap[$sTag] : $sTag;
                 }
                 $arrCompilers[] = [
-                    $sType, 
-                    $mixName, 
+                    $sType,
+                    $mixName,
                     $sTag
                 ];
             }
         }
-        
+
         unset($arrMethods);
         return $arrCompilers;
     }
-    
+
     /**
      * node.tag
      *
@@ -311,7 +311,7 @@ class compiler implements icompiler
     {
         return $this->arrNodeTag;
     }
-    
+
     /**
      * js.tag
      *
@@ -321,11 +321,11 @@ class compiler implements icompiler
     {
         return $this->arrJsTag;
     }
-    
+
     // ######################################################
     // ------------------- 全局编译器 start -------------------
     // ######################################################
-    
+
 
     /**
      * 全局编译器（保护标签）
@@ -337,7 +337,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent($arrTheme['content'], 'global');
     }
-    
+
     /**
      * 全局还原编译器（保护标签还原）
      *
@@ -348,7 +348,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent($arrTheme['content'], 'revert');
     }
-    
+
     /**
      * node.code 还原编译器
      *
@@ -359,16 +359,16 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent($arrTheme['content'], 'revert');
     }
-    
+
     // ######################################################
     // --------------------- 全局编译器 end ---------------------
     // ######################################################
-    
+
 
     // ######################################################
     // ------------------- code 编译器 start -------------------
     // ######################################################
-    
+
 
     /**
      * 变量
@@ -384,7 +384,7 @@ class compiler implements icompiler
         }
         $arrTheme['content'] = $this->encodeContent($arrTheme['content']);
     }
-    
+
     /**
      * if
      *
@@ -396,7 +396,7 @@ class compiler implements icompiler
         $arrTheme['content'] = $this->parseContentIf($arrTheme['content']);
         $arrTheme['content'] = $this->encodeContent('<?' . 'php ' . $arrTheme['content'] . ' : ?' . '>');
     }
-    
+
     /**
      * elseif
      *
@@ -408,7 +408,7 @@ class compiler implements icompiler
         $arrTheme['content'] = $this->parseContentIf($arrTheme['content'], 'else');
         $arrTheme['content'] = $this->encodeContent('<?' . 'php ' . $arrTheme['content'] . ' : ?' . '>');
     }
-    
+
     /**
      * else 标签
      *
@@ -419,7 +419,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent('<?' . 'php else: ?' . '>');
     }
-    
+
     /**
      * foreach
      *
@@ -429,10 +429,9 @@ class compiler implements icompiler
     public function foreachCodeCompiler(&$arrTheme)
     {
         // 分析 foreach
-        $calHelp = function ($sContent)
-        {
+        $calHelp = function ($sContent) {
             preg_match_all('/\\$([\S]+)/', $sContent, $arrArray);
-            
+
             $arrArray = $arrArray[1];
             $nNum = count($arrArray);
             if ($nNum > 0) {
@@ -443,15 +442,15 @@ class compiler implements icompiler
                 } else {
                     throw new InvalidArgumentException('The parameter of code.foreach tag can be at most three.');
                 }
-                
+
                 return "if (is_array ( \${$arrArray[0]} ) ) : foreach( \${$arrArray[0]} as $sResult )";
             }
         };
-        
+
         $arrTheme['content'] = $calHelp($arrTheme['content']);
         $arrTheme['content'] = $this->encodeContent('<?' . 'php ' . $arrTheme['content'] . ': ?' . '>');
     }
-    
+
     /**
      * for
      *
@@ -462,7 +461,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent('<?' . 'php for( ' . $arrTheme['content'] . ' ) : ?' . '>');
     }
-    
+
     /**
      * while 头部
      *
@@ -473,7 +472,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent('<?' . 'php while( ' . $arrTheme['content'] . ' ) : ?' . '>');
     }
-    
+
     /**
      * php 脚本
      *
@@ -484,7 +483,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent('<?' . 'php ' . $arrTheme['content'] . '; ?' . '>');
     }
-    
+
     /**
      * 注释
      *
@@ -495,7 +494,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent(' ');
     }
-    
+
     /**
      * PHP echo 标签
      *
@@ -506,7 +505,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent('<?' . 'php echo ' . $arrTheme['content'] . '; ?' . '>');
     }
-    
+
     /**
      * javascript 初始标签
      *
@@ -517,7 +516,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent('<script type="text/javascript">');
     }
-    
+
     /**
      * css 初始标签
      *
@@ -528,7 +527,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = $this->encodeContent('<style type="text/css">');
     }
-    
+
     /**
      * endtag
      *
@@ -538,8 +537,7 @@ class compiler implements icompiler
     public function endtagCodeCompiler(&$arrTheme)
     {
         // 尾标签
-        $calHelp = function ($sContent)
-        {
+        $calHelp = function ($sContent) {
             $sContent = ltrim(trim($sContent), '/');
             switch ($sContent) {
                 case 'list':
@@ -563,20 +561,20 @@ class compiler implements icompiler
             }
             return $sContent;
         };
-        
+
         $arrTheme['content'] = $calHelp(substr($arrTheme['source'], strpos($arrTheme['source'], '/'), strripos($arrTheme['source'], '}') - 1));
         $arrTheme['content'] = $this->encodeContent($arrTheme['content']);
     }
-    
+
     // ######################################################
     // ------------------- code 编译器 end --------------------
     // ######################################################
-    
+
 
     // ######################################################
     // --------------- javascript 编译器 start ---------------
     // ######################################################
-    
+
 
     /**
      * 变量及表达式
@@ -588,7 +586,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = "' + " . $this->parseJsContent($arrTheme['content']) . " + '";
     }
-    
+
     /**
      * if 编译器
      *
@@ -599,18 +597,18 @@ class compiler implements icompiler
     {
         $this->checkNode($arrTheme, true);
         $arrAttr = $this->getNodeAttribute($arrTheme);
-        
+
         $arrAttr['condition'] = $this->parseJsContent($arrAttr['condition']);
-        
+
         $sCompiled = "';
 if( {$arrAttr['condition']} ) {
     out += '" . $this->getNodeBody($arrTheme) . "';
 }
 out += '";
-        
+
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * elseif 编译器
      *
@@ -621,17 +619,17 @@ out += '";
     {
         $this->checkNode($arrTheme, true);
         $arrAttr = $this->getNodeAttribute($arrTheme);
-        
+
         $arrAttr['condition'] = $this->parseJsContent($arrAttr['condition']);
-        
+
         $sCompiled = "';
 } else if( {$arrAttr['condition']} ) {
         out += '" . $this->getNodeBody($arrTheme) . "';
 out += '";
-        
+
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * else
      *
@@ -643,10 +641,10 @@ out += '";
         $sCompiled = "';
 } else {
 out += '";
-        
+
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * each 循环
      *
@@ -657,32 +655,32 @@ out += '";
     {
         $this->checkNode($arrTheme, true);
         $arrAttr = $this->getNodeAttribute($arrTheme);
-        
+
         foreach ([
-            'value', 
+            'value',
             'index'
         ] as $sKey) {
             $arrAttr[$sKey] === null && $arrAttr[$sKey] = $sKey;
         }
-        
+
         $sCompiled = "';
 \$.each( {$arrAttr['for']}, function( {$arrAttr['index']}, {$arrAttr['value']} ) {
     out += '" . $this->getNodeBody($arrTheme) . "';
 });
 out += '";
-        
+
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     // ######################################################
     // ---------------- javascript 编译器 end ----------------
     // ######################################################
-    
+
 
     // ######################################################
     // ------------------ node 编译器 start ------------------
     // ######################################################
-    
+
 
     /**
      * assign
@@ -694,7 +692,7 @@ out += '";
     {
         $this->checkNode($arrTheme);
         $arrAttr = $this->getNodeAttribute($arrTheme);
-        
+
         $arrAttr['name'] = $this->parseContent($arrAttr['name'], false);
         if ($arrAttr['value'] === null) {
             $arrAttr['value'] = '';
@@ -705,12 +703,12 @@ out += '";
                 $arrAttr['value'] = '\'' . $arrAttr['value'] . '\'';
             }
         }
-        
+
         // 编译
         $sCompiled = '<?' . 'php ' . $arrAttr['name'] . '=' . $arrAttr['value'] . '; ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * if
      *
@@ -725,7 +723,7 @@ out += '";
         $sCompiled = '<' . '?php if( ' . $arrAttr['condition'] . ' ) : ?' . '>' . $this->getNodeBody($arrTheme) . '<' . '?php endif; ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * elseif
      *
@@ -740,7 +738,7 @@ out += '";
         $sCompiled = '<' . '?php elseif( ' . $arrAttr['condition'] . ' ) : ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * else
      *
@@ -753,7 +751,7 @@ out += '";
         $sCompiled = '<' . '?php else : ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * foreach list
      *
@@ -764,19 +762,19 @@ out += '";
     {
         $this->checkNode($arrTheme);
         $arrAttr = $this->getNodeAttribute($arrTheme);
-        
+
         foreach ([
-            'key', 
-            'value', 
+            'key',
+            'value',
             'index'
         ] as $sKey) {
             $arrAttr[$sKey] === null && $arrAttr[$sKey] = '$' . $sKey;
         }
-        
+
         foreach ([
-            'for', 
-            'key', 
-            'value', 
+            'for',
+            'key',
+            'value',
             'index'
         ] as $sKey) {
             if ('$' . $sKey == $arrAttr[$sKey]) {
@@ -784,12 +782,12 @@ out += '";
             }
             $arrAttr[$sKey] = $this->parseContent($arrAttr[$sKey]);
         }
-        
+
         // 编译
         $sCompiled = '<' . '?php ' . $arrAttr['index'] . ' = 1; ?' . '>' . '<' . '?php if( is_array( ' . $arrAttr['for'] . ' ) ) : foreach( ' . $arrAttr['for'] . ' as ' . $arrAttr['key'] . ' => ' . $arrAttr['value'] . ') : ?' . '>' . $this->getNodeBody($arrTheme) . '<' . '?php ' . $arrAttr['index'] . '++; ?' . '>' . '<' . '?php endforeach; endif; ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * lists 增强版
      *
@@ -800,7 +798,7 @@ out += '";
     {
         $this->checkNode($arrTheme);
         $arrAttr = $this->getNodeAttribute($arrTheme);
-        
+
         $arrAttr['index'] === null && $arrAttr['index'] = 'index';
         $arrAttr['key'] === null && $arrAttr['key'] = 'key';
         $arrAttr['id'] === null && $arrAttr['id'] = 'id';
@@ -812,7 +810,7 @@ out += '";
         $arrAttr['length'] === null && $arrAttr['length'] = '';
         $arrAttr['offset'] === null && $arrAttr['offset'] = '';
         $arrAttr['name'] = $this->parseContent($arrAttr['name']);
-        
+
         $sCompiled = '<' . '?php if( is_array ( ' . $arrAttr['name'] . ' ) ) : $' . $arrAttr['index'] . ' = 0; ';
         if ('' != $arrAttr['length']) {
             $sCompiled .= '$arrList = array_slice( ' . $arrAttr['name'] . ', ' . $arrAttr['offset'] . ', ' . $arrAttr['length'] . ' ); ';
@@ -830,7 +828,7 @@ out += '";
         $sCompiled .= '<' . '?php endforeach; endif; else: echo "' . $arrAttr['empty'] . '"; endif; ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * include
      *
@@ -842,11 +840,11 @@ out += '";
         $this->checkNode($arrTheme);
         $arrAttr = $this->getNodeAttribute($arrTheme);
         $arrAttr['file'] = str_replace('->', '.', $arrAttr['file']);
-        
+
         if (strpos($arrAttr['file'], '$') !== 0 && strpos($arrAttr['file'], '(') === false) {
             $arrAttr['file'] = (strpos($arrAttr['file'], '$') === 0 ? '' : '\'') . $arrAttr['file'] . '\'';
         }
-        
+
         // 子模板合并到主模板
         if ($this->getOption('cache_children')) {
             $sMd5 = md5($arrAttr['file']);
@@ -856,10 +854,10 @@ out += '";
         } else {
             $sCompiled = '<?' . 'php $this->display( ' . $arrAttr['file'] . ', true, \'' . ($arrAttr['ext'] ?  : '') . '\' ); ?' . '>';
         }
-        
+
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * for
      *
@@ -870,7 +868,7 @@ out += '";
     {
         $this->checkNode($arrTheme);
         $arrAttr = $this->getNodeAttribute($arrTheme);
-        
+
         $arrAttr['step'] === null && $arrAttr['step'] = '1';
         $arrAttr['start'] === null && $arrAttr['start'] = '0';
         $arrAttr['end'] === null && $arrAttr['end'] = '0';
@@ -883,11 +881,11 @@ out += '";
             $sComparison = ' <= ';
             $sMinusPlus = ' += ';
         }
-        
+
         $sCompiled = '<' . '?php for( ' . $arrAttr['var'] . ' = ' . $arrAttr['start'] . '; ' . $arrAttr['var'] . $sComparison . $arrAttr['end'] . '; ' . $arrAttr['var'] . $sMinusPlus . $arrAttr['step'] . ' ) : ?' . '>' . $this->getNodeBody($arrTheme) . '<' . '?php endfor; ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * while
      *
@@ -898,11 +896,11 @@ out += '";
     {
         $this->checkNode($arrTheme);
         $arrAttr = $this->getNodeAttribute($arrTheme);
-        
+
         $sCompiled = '<' . '?php while( ' . $arrAttr['condition'] . ' ) : ?' . '>' . $this->getNodeBody($arrTheme) . '<' . '?php endwhile; ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * break
      *
@@ -915,7 +913,7 @@ out += '";
         $sCompiled = '<' . '?php break; ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * continue
      *
@@ -928,7 +926,7 @@ out += '";
         $sCompiled = '<' . '?php continue; ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * php
      *
@@ -941,7 +939,7 @@ out += '";
         $sCompiled = '<' . '?php ' . $this->getNodeBody($arrTheme) . ' ?' . '>';
         $arrTheme['content'] = $sCompiled;
     }
-    
+
     /**
      * 属性编译
      *
@@ -952,15 +950,15 @@ out += '";
     {
         $sSource = trim($arrTheme['content']);
         $this->escapeCharacter($sSource);
-        
+
         if ($arrTheme['is_js'] === true) {
             $arrTag = $this->arrJsTag;
         } else {
             $arrTag = $this->arrNodeTag;
         }
-        
+
         $arrAllowedAttr = $arrTag[$arrTheme['parent_name']]['attr'];
-        
+
         // 正则匹配
         $arrRegexp = [];
         $arrRegexp[] = "/(([^=\s]+)=)?\"([^\"]+)\"/"; // xxx="yyy" 或 "yyy" 格式
@@ -983,7 +981,7 @@ out += '";
                             continue;
                         }
                     }
-                    
+
                     $sValue = $arrRes[$nValueIdx][$nIdx];
                     $this->escapeCharacter($sValue, false);
                     $arrTheme['attribute_list'][strtolower($sName)] = $sValue;
@@ -998,16 +996,16 @@ out += '";
         }
         $arrTheme['content'] = $sSource;
     }
-    
+
     // ######################################################
     // ------------------- node 编译器 end -------------------
     // ######################################################
-    
+
 
     // ######################################################
     // --------------------- 私有函数 start --------------------
     // ######################################################
-    
+
 
     /**
      * 分析if
@@ -1032,19 +1030,19 @@ out += '";
                 $arrParamTwo[] = $sV;
             }
         }
-        
+
         if ($bObj) {
             $sStr = 'is_array(' . $arrArgs[0] . ')' . '?' . join(' ', $arrParam) . ':' . join(' ', $arrParamTwo);
         } else {
             $sStr = join(' ', $arrParam);
         }
-        
+
         $sStr = str_replace(':', '->', $sStr);
         $sStr = str_replace('+', '::', $sStr);
-        
+
         return $sType . "if ( {$sStr} ) ";
     }
-    
+
     /**
      * 解析 JS 变量内容
      *
@@ -1055,14 +1053,14 @@ out += '";
     {
         $arrVar = explode('|', $sContent);
         $sContent = array_shift($arrVar);
-        
+
         if (count($arrVar) > 0) {
             $sContent = $this->parseJsFunction($sContent, $arrVar);
         }
-        
+
         return '(' . $sContent . ')';
     }
-    
+
     /**
      * 解析 JS 函数
      *
@@ -1074,7 +1072,7 @@ out += '";
     {
         return $this->parseVarFunction($sName, $arrVar, true);
     }
-    
+
     /**
      * 解析变量内容
      *
@@ -1085,7 +1083,7 @@ out += '";
     protected function parseContent($sContent, $booFunc = true)
     {
         $sContent = str_replace(':', '->', $sContent); // 以|分割字符串,数组第一位是变量名字符串,之后的都是函数参数&&函数{$hello|md5}
-        
+
 
         $arrVar = explode('|', $sContent);
         $sVar = array_shift($arrVar); // 弹出第一个元素,也就是变量名
@@ -1098,7 +1096,7 @@ out += '";
                 if (substr($sContent, - 1) == ')') {
                     $bIsObject = true;
                 }
-                
+
                 if ($bIsObject === false) { // 非对象
                     switch (strtolower($this->getOption('var_identify'))) {
                         case 'array': // 识别为数组
@@ -1123,15 +1121,15 @@ out += '";
         } else {
             $sName = "\$$sVar";
         }
-        
+
         if ($booFunc === true && count($arrVar) > 0) { // 如果有使用函数
             $sName = $this->parseVarFunction($sName, $arrVar); // 传入变量名,和函数参数继续解析,这里的变量名是上面的判断设置的值
         }
-        
+
         $sName = str_replace('^', ':', $sName);
         return ! empty($sName) ? $sName : '';
     }
-    
+
     /**
      * 解析函数
      *
@@ -1151,16 +1149,16 @@ out += '";
             } else {
                 $arrArgs = explode('=', $arrVar[$nI]);
             }
-            
+
             $arrArgs[0] = trim($arrArgs[0]);
-            
+
             if ($bJs === false) {
                 $arrArgs[0] = str_replace('+', '::', $arrArgs[0]);
                 if (isset($arrArgs[1])) {
                     $arrArgs[1] = str_replace('->', ':', $arrArgs[1]);
                 }
             }
-            
+
             switch (strtolower($arrArgs[0])) {
                 case 'default': // 特殊模板函数
                     $sName = $sName . ' ?  : ' . $arrArgs[1];
@@ -1180,10 +1178,10 @@ out += '";
                     }
             }
         }
-        
+
         return $sName;
     }
-    
+
     /**
      * 转换对象方法和静态方法连接符
      *
@@ -1193,14 +1191,14 @@ out += '";
     protected function parseConditionHelp($sContent)
     {
         return str_replace([
-            ':', 
+            ':',
             '+'
         ], [
-            '->', 
+            '->',
             '::'
         ], $sContent);
     }
-    
+
     /**
      * 数组格式
      *
@@ -1212,7 +1210,7 @@ out += '";
     protected function arrayHandler(&$arrVars, $nType = 1, $nGo = 2)
     {
         $nLen = count($arrVars);
-        
+
         $sParam = '';
         if ($nType == 1) { // 类似$hello['test']['test2']
             for ($nI = $nGo; $nI < $nLen; $nI ++) {
@@ -1227,10 +1225,10 @@ out += '";
                 $sParam .= ".{$arrVars[$nI]}";
             }
         }
-        
+
         return $sParam;
     }
-    
+
     /**
      * 编码内容
      *
@@ -1243,7 +1241,7 @@ out += '";
         if ($sType == 'global') {
             $sContent = parser::globalEncode($sContent);
         } elseif (in_array($sType, [
-            'revert', 
+            'revert',
             'include'
         ])) {
             $sContent = base64_decode($sContent);
@@ -1252,7 +1250,7 @@ out += '";
         }
         return $sContent;
     }
-    
+
     /**
      * 验证节点是否正确
      *
@@ -1262,28 +1260,28 @@ out += '";
     protected function checkNode($arrTheme, $bJsNode = false)
     {
         $arrAttribute = $arrTheme['children'][0];
-        
+
         // 验证标签的属性值
         if ($arrAttribute['is_attribute'] !== true) {
             throw new InvalidArgumentException('Tag attribute type validation failed.');
         }
-        
+
         // 验证必要属性
         $arrTag = $bJsNode === true ? $this->arrJsTag : $this->arrNodeTag;
         if (! isset($arrTag[$arrTheme['name']])) {
             throw new InvalidArgumentException(sprintf('The tag %s is undefined.', $arrTheme['name']));
         }
-        
+
         foreach ($arrTag[$arrTheme['name']]['required'] as $sName) {
             $sName = strtolower($sName);
             if (! isset($arrAttribute['attribute_list'][$sName])) {
                 throw new InvalidArgumentException(sprintf('The node %s lacks the required property: %s.', $arrTheme['name'], $sName));
             }
         }
-        
+
         return true;
     }
-    
+
     /**
      * 取得节点的属性列表
      *
@@ -1299,7 +1297,7 @@ out += '";
         }
         return [];
     }
-    
+
     /**
      * 取得body编译内容
      *
@@ -1315,7 +1313,7 @@ out += '";
         }
         return null;
     }
-    
+
     /**
      * 正则属性转义
      *
@@ -1328,22 +1326,22 @@ out += '";
         $sTxt = helper::escapeCharacter($sTxt, $bEsc);
         if (! $bEsc) {
             $sTxt = str_replace([
-                ' nheq ', 
-                ' heq ', 
-                ' neq ', 
-                ' eq ', 
-                ' egt ', 
-                ' gt ', 
-                ' elt ', 
+                ' nheq ',
+                ' heq ',
+                ' neq ',
+                ' eq ',
+                ' egt ',
+                ' gt ',
+                ' elt ',
                 ' lt '
             ], [
-                '!==', 
-                '===', 
-                '!=', 
-                '==', 
-                '>=', 
-                '>', 
-                '<=', 
+                '!==',
+                '===',
+                '!=',
+                '==',
+                '>=',
+                '>',
+                '<=',
                 '<'
             ], $sTxt);
         }

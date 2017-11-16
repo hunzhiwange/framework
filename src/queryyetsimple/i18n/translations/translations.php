@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use queryyetsimple\i18n\entry;
  */
 abstract class translations
 {
-    
+
     /**
      * prop
      *
@@ -40,7 +40,7 @@ abstract class translations
      */
     public $entries = array();
     public $headers = array();
-    
+
     /**
      * Add entry to the PO structure
      *
@@ -59,7 +59,7 @@ abstract class translations
         $this->entries[$key] = &$entry;
         return true;
     }
-    
+
     /**
      *
      * @param array|Translation_Entry $entry
@@ -81,7 +81,7 @@ abstract class translations
         }
         return true;
     }
-    
+
     /**
      * Sets $header PO header to $value
      * If the header already exists, it will be overwritten
@@ -94,7 +94,7 @@ abstract class translations
     {
         $this->headers[$header] = $value;
     }
-    
+
     /**
      *
      * @param array $headers
@@ -105,7 +105,7 @@ abstract class translations
             $this->set_header($header, $value);
         }
     }
-    
+
     /**
      *
      * @param string $header
@@ -114,7 +114,7 @@ abstract class translations
     {
         return isset($this->headers[$header]) ? $this->headers[$header] : false;
     }
-    
+
     /**
      *
      * @param Translation_Entry $entry
@@ -124,7 +124,7 @@ abstract class translations
         $key = $entry->key();
         return isset($this->entries[$key]) ? $this->entries[$key] : false;
     }
-    
+
     /**
      *
      * @param string $singular
@@ -134,13 +134,13 @@ abstract class translations
     public function translate($singular, $context = null)
     {
         $entry = new entry(array(
-            'singular' => $singular, 
+            'singular' => $singular,
             'context' => $context
         ));
         $translated = $this->translate_entry($entry);
         return ($translated && ! empty($translated->translations)) ? $translated->translations[0] : $singular;
     }
-    
+
     /**
      * Given the number of items, returns the 0-based index of the plural form to use
      *
@@ -156,7 +156,7 @@ abstract class translations
     {
         return 1 == $count ? 0 : 1;
     }
-    
+
     /**
      *
      * @return int
@@ -165,7 +165,7 @@ abstract class translations
     {
         return 2;
     }
-    
+
     /**
      *
      * @param string $singular
@@ -176,8 +176,8 @@ abstract class translations
     public function translate_plural($singular, $plural, $count, $context = null)
     {
         $entry = new entry(array(
-            'singular' => $singular, 
-            'plural' => $plural, 
+            'singular' => $singular,
+            'plural' => $plural,
             'context' => $context
         ));
         $translated = $this->translate_entry($entry);
@@ -189,7 +189,7 @@ abstract class translations
             return 1 == $count ? $singular : $plural;
         }
     }
-    
+
     /**
      * Merge $other in the current object.
      *
@@ -203,7 +203,7 @@ abstract class translations
             $this->entries[$entry->key()] = $entry;
         }
     }
-    
+
     /**
      *
      * @param object $other

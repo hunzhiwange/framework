@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -30,7 +30,7 @@ namespace queryyetsimple\i18n\streams;
  */
 class file extends reader
 {
-    
+
     /**
      *
      * @param string $filename
@@ -40,7 +40,7 @@ class file extends reader
         parent::__construct();
         $this->_f = fopen($filename, 'rb');
     }
-    
+
     /**
      *
      * @param int $bytes
@@ -49,7 +49,7 @@ class file extends reader
     {
         return fread($this->_f, $bytes);
     }
-    
+
     /**
      *
      * @param int $pos
@@ -63,7 +63,7 @@ class file extends reader
         $this->_pos = $pos;
         return true;
     }
-    
+
     /**
      *
      * @return bool
@@ -72,7 +72,7 @@ class file extends reader
     {
         return is_resource($this->_f);
     }
-    
+
     /**
      *
      * @return bool
@@ -81,7 +81,7 @@ class file extends reader
     {
         return feof($this->_f);
     }
-    
+
     /**
      *
      * @return bool
@@ -90,7 +90,7 @@ class file extends reader
     {
         return fclose($this->_f);
     }
-    
+
     /**
      *
      * @return string

@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -35,14 +35,14 @@ use InvalidArgumentException;
  */
 class linkedlist extends SplDoublyLinkedList
 {
-    
+
     /**
      * 允许的类型
      *
      * @var array
      */
     protected $arrType = [];
-    
+
     /**
      * 构造函数
      *
@@ -53,7 +53,7 @@ class linkedlist extends SplDoublyLinkedList
     {
         $this->arrType = is_array($mixArgs) ? $mixArgs : func_get_args();
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -66,7 +66,7 @@ class linkedlist extends SplDoublyLinkedList
         }
         return parent::pop();
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -77,7 +77,7 @@ class linkedlist extends SplDoublyLinkedList
         $this->validate($mixNewval);
         parent::add($mixIndex, $mixNewval);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -88,7 +88,7 @@ class linkedlist extends SplDoublyLinkedList
         $this->validate($mixNewval);
         parent::offsetSet($mixIndex, $mixNewval);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -99,7 +99,7 @@ class linkedlist extends SplDoublyLinkedList
         $this->validate($mixValue);
         parent::push($mixValue);
     }
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -110,7 +110,7 @@ class linkedlist extends SplDoublyLinkedList
         $this->validate($mixValue);
         parent::unshift($mixValue);
     }
-    
+
     /**
      * 验证类型是否正确遇到错误抛出异常
      *
@@ -123,7 +123,7 @@ class linkedlist extends SplDoublyLinkedList
             throw new InvalidArgumentException(sprintf('The linkedlist element type verification failed, and the allowed type is %s.', implode(',', $this->arrType)));
         }
     }
-    
+
     /**
      * 验证类型是否正确
      *
@@ -136,10 +136,10 @@ class linkedlist extends SplDoublyLinkedList
             return true;
         }
         return call_user_func_array([
-            'queryyetsimple\support\helper', 
+            'queryyetsimple\support\helper',
             'varThese'
         ], [
-            $mixValue, 
+            $mixValue,
             $this->arrType
         ]);
     }

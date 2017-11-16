@@ -10,18 +10,14 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-
 namespace queryyetsimple\http;
-
-
 
 use ArrayAccess;
 use RuntimeException;
@@ -250,9 +246,9 @@ class request implements iarray, ArrayAccess
      * @var array
      */
     protected $arrOption = [
-            'var_method' => '_method',
-            'var_ajax' => '_ajax',
-            'var_pjax' => '_pjax'
+        'var_method' => '_method',
+        'var_ajax' => '_ajax',
+        'var_pjax' => '_pjax'
     ];
 
     /**
@@ -294,9 +290,9 @@ class request implements iarray, ArrayAccess
      */
     public function alls(array $arrKey, $mixDefault = null, $mixFilter = null, $booFile = false)
     {
-        $arrValue = [ ];
+        $arrValue = [];
         foreach ($arrKey as $strKey) {
-            $arrValue [strpos($strKey, '|') !== false ? explode('|', $strKey)[0] : $strKey] = $this->all($strKey, $mixDefault, $mixFilter, $booFile);
+            $arrValue[strpos($strKey, '|') !== false ? explode('|', $strKey)[0] : $strKey] = $this->all($strKey, $mixDefault, $mixFilter, $booFile);
         }
         return $arrValue;
     }
@@ -1161,18 +1157,18 @@ class request implements iarray, ArrayAccess
             list($sKey) = explode('\\', $sKey);
         }
 
-        if (! isset($arrVar [$sKey])) {
+        if (! isset($arrVar[$sKey])) {
             return $mixDefault;
         }
 
         if ($mixFilter) {
-            $this->filterValue($arrVar [$sKey], $mixFilter, $mixDefault);
+            $this->filterValue($arrVar[$sKey], $mixFilter, $mixDefault);
         }
 
         if (isset($sKeyOld)) {
-            return $this->getPartData($sKeyOld, $arrVar [$sKey]);
+            return $this->getPartData($sKeyOld, $arrVar[$sKey]);
         } else {
-            return $arrVar [$sKey];
+            return $arrVar[$sKey];
         }
     }
 
@@ -1187,9 +1183,9 @@ class request implements iarray, ArrayAccess
      */
     public function inputs(array $arrKey, $mixDefault = null, $mixFilter = null, $sType = 'request')
     {
-        $arrValue = [ ];
+        $arrValue = [];
         foreach ($arrKey as $strKey) {
-            $arrValue [strpos($strKey, '|') !== false ? explode('|', $strKey)[0] : $strKey] = $this->input($strKey, $mixDefault, $mixFilter, $sType);
+            $arrValue[strpos($strKey, '|') !== false ? explode('|', $strKey)[0] : $strKey] = $this->input($strKey, $mixDefault, $mixFilter, $sType);
         }
         return $arrValue;
     }
@@ -1232,7 +1228,7 @@ class request implements iarray, ArrayAccess
         if ($this->checkFlowControl()) {
             return $this;
         }
-        $this->{'setGlobal' . ucfirst($sType)} ($sKey, $mixValue);
+        $this->{'setGlobal' . ucfirst($sType)}($sKey, $mixValue);
         return $this;
     }
 
@@ -1263,7 +1259,7 @@ class request implements iarray, ArrayAccess
     public function file($sKey)
     {
         $arrFiles = $this->globalFiles();
-        return isset($arrFiles [$sKey]) ? $arrFiles [$sKey] : null;
+        return isset($arrFiles[$sKey]) ? $arrFiles[$sKey] : null;
     }
 
     /**
@@ -1274,9 +1270,9 @@ class request implements iarray, ArrayAccess
      */
     public function files(array $arrKey)
     {
-        $arrValue = [ ];
+        $arrValue = [];
         foreach ($arrKey as $strKey) {
-            $arrValue [] = $this->file($strKey);
+            $arrValue[] = $this->file($strKey);
         }
         return $arrValue;
     }
@@ -1302,7 +1298,7 @@ class request implements iarray, ArrayAccess
     {
         $arrVar = $this->globalHeader();
         $sKey = str_replace('_', '-', strtolower($sKey));
-        return isset($arrVar [$sKey]) ? $arrVar [$sKey] : $mixDefault;
+        return isset($arrVar[$sKey]) ? $arrVar[$sKey] : $mixDefault;
     }
 
     /**
@@ -1314,9 +1310,9 @@ class request implements iarray, ArrayAccess
      */
     public function headers(array $arrKey, $mixDefault = null)
     {
-        $arrValue = [ ];
+        $arrValue = [];
         foreach ($arrKey as $strKey) {
-            $arrValue [] = $this->header($strKey, $mixDefault);
+            $arrValue[] = $this->header($strKey, $mixDefault);
         }
         return $arrValue;
     }
@@ -1370,7 +1366,7 @@ class request implements iarray, ArrayAccess
      */
     public function isAjaxReal()
     {
-        return isset($_SERVER ['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower($_SERVER ['HTTP_X_REQUESTED_WITH']);
+        return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH']);
     }
 
     /**
@@ -1390,7 +1386,7 @@ class request implements iarray, ArrayAccess
      */
     public function isPjaxReal()
     {
-        return isset($_SERVER ['HTTP_X_PJAX']) && ! is_null($_SERVER ['HTTP_X_PJAX']);
+        return isset($_SERVER['HTTP_X_PJAX']) && ! is_null($_SERVER['HTTP_X_PJAX']);
     }
 
     /**
@@ -1401,125 +1397,125 @@ class request implements iarray, ArrayAccess
     public function isMobile()
     {
         // Pre-final check to reset everything if the user is on Windows
-        if (strpos(strtolower($_SERVER ['HTTP_USER_AGENT']), 'windows') !== false) {
+        if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows') !== false) {
             return false;
         }
 
-        $_SERVER ['ALL_HTTP'] = isset($_SERVER ['ALL_HTTP']) ? $_SERVER ['ALL_HTTP'] : '';
+        $_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
 
-        if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', strtolower($_SERVER ['HTTP_USER_AGENT']))) {
+        if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', strtolower($_SERVER['HTTP_USER_AGENT']))) {
             return true;
         }
 
-        if ((isset($_SERVER ['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER ['HTTP_ACCEPT']), 'application/vnd.wap.xhtml+xml') !== false)) {
+        if ((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']), 'application/vnd.wap.xhtml+xml') !== false)) {
             return true;
         }
 
-        if (isset($_SERVER ['HTTP_X_WAP_PROFILE'])) {
+        if (isset($_SERVER['HTTP_X_WAP_PROFILE'])) {
             return true;
         }
 
-        if (isset($_SERVER ['HTTP_PROFILE'])) {
+        if (isset($_SERVER['HTTP_PROFILE'])) {
             return true;
         }
 
-        if (in_array(strtolower(substr($_SERVER ['HTTP_USER_AGENT'], 0, 4)), [
-                'w3c ',
-                'acs-',
-                'alav',
-                'alca',
-                'amoi',
-                'audi',
-                'avan',
-                'benq',
-                'bird',
-                'blac',
-                'blaz',
-                'brew',
-                'cell',
-                'cldc',
-                'cmd-',
-                'dang',
-                'doco',
-                'eric',
-                'hipt',
-                'inno',
-                'ipaq',
-                'java',
-                'jigs',
-                'kddi',
-                'keji',
-                'leno',
-                'lg-c',
-                'lg-d',
-                'lg-g',
-                'lge-',
-                'maui',
-                'maxo',
-                'midp',
-                'mits',
-                'mmef',
-                'mobi',
-                'mot-',
-                'moto',
-                'mwbp',
-                'nec-',
-                'newt',
-                'noki',
-                'oper',
-                'palm',
-                'pana',
-                'pant',
-                'phil',
-                'play',
-                'port',
-                'prox',
-                'qwap',
-                'sage',
-                'sams',
-                'sany',
-                'sch-',
-                'sec-',
-                'send',
-                'seri',
-                'sgh-',
-                'shar',
-                'sie-',
-                'siem',
-                'smal',
-                'smar',
-                'sony',
-                'sph-',
-                'symb',
-                't-mo',
-                'teli',
-                'tim-',
-                'tosh',
-                'tsm-',
-                'upg1',
-                'upsi',
-                'vk-v',
-                'voda',
-                'wap-',
-                'wapa',
-                'wapi',
-                'wapp',
-                'wapr',
-                'webc',
-                'winw',
-                'winw',
-                'xda',
-                'xda-'
+        if (in_array(strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4)), [
+            'w3c ',
+            'acs-',
+            'alav',
+            'alca',
+            'amoi',
+            'audi',
+            'avan',
+            'benq',
+            'bird',
+            'blac',
+            'blaz',
+            'brew',
+            'cell',
+            'cldc',
+            'cmd-',
+            'dang',
+            'doco',
+            'eric',
+            'hipt',
+            'inno',
+            'ipaq',
+            'java',
+            'jigs',
+            'kddi',
+            'keji',
+            'leno',
+            'lg-c',
+            'lg-d',
+            'lg-g',
+            'lge-',
+            'maui',
+            'maxo',
+            'midp',
+            'mits',
+            'mmef',
+            'mobi',
+            'mot-',
+            'moto',
+            'mwbp',
+            'nec-',
+            'newt',
+            'noki',
+            'oper',
+            'palm',
+            'pana',
+            'pant',
+            'phil',
+            'play',
+            'port',
+            'prox',
+            'qwap',
+            'sage',
+            'sams',
+            'sany',
+            'sch-',
+            'sec-',
+            'send',
+            'seri',
+            'sgh-',
+            'shar',
+            'sie-',
+            'siem',
+            'smal',
+            'smar',
+            'sony',
+            'sph-',
+            'symb',
+            't-mo',
+            'teli',
+            'tim-',
+            'tosh',
+            'tsm-',
+            'upg1',
+            'upsi',
+            'vk-v',
+            'voda',
+            'wap-',
+            'wapa',
+            'wapi',
+            'wapp',
+            'wapr',
+            'webc',
+            'winw',
+            'winw',
+            'xda',
+            'xda-'
         ])) {
             return true;
         }
 
-        if (strpos(strtolower($_SERVER ['ALL_HTTP']), 'operamini') !== false) {
+        if (strpos(strtolower($_SERVER['ALL_HTTP']), 'operamini') !== false) {
             return true;
         }
 
         // But WP7 is also Windows, with a slightly different characteristic
-        if (strpos(strtolower($_SERVER ['HTTP_USER_AGENT']), 'windows phone') !== false) {
+        if (strpos(strtolower($_SERVER['HTTP_USER_AGENT']), 'windows phone') !== false) {
             return true;
         }
 
@@ -1603,9 +1599,9 @@ class request implements iarray, ArrayAccess
      */
     public function isSsl()
     {
-        if (isset($_SERVER ['HTTPS']) && ('1' == $_SERVER ['HTTPS'] || 'on' == strtolower($_SERVER ['HTTPS']))) {
+        if (isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))) {
             return true;
-        } elseif (isset($_SERVER ['SERVER_PORT']) && ('443' == $_SERVER ['SERVER_PORT'])) {
+        } elseif (isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {
             return true;
         }
         return false;
@@ -1619,7 +1615,7 @@ class request implements iarray, ArrayAccess
     public function host()
     {
         if (is_null($this->strHost)) {
-            $this->strHost = isset($_SERVER ['HTTP_X_FORWARDED_HOST']) ? $_SERVER ['HTTP_X_FORWARDED_HOST'] : (isset($_SERVER ['HTTP_HOST']) ? $_SERVER ['HTTP_HOST'] : '');
+            $this->strHost = isset($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '');
         }
         return $this->strHost;
     }
@@ -1684,7 +1680,7 @@ class request implements iarray, ArrayAccess
      */
     public function requestUri()
     {
-        return $_SERVER ['REQUEST_URI'];
+        return $_SERVER['REQUEST_URI'];
     }
 
     /**
@@ -1695,7 +1691,7 @@ class request implements iarray, ArrayAccess
      */
     public function query()
     {
-        return $_SERVER ['QUERY_STRING'];
+        return $_SERVER['QUERY_STRING'];
     }
 
     /**
@@ -1705,7 +1701,7 @@ class request implements iarray, ArrayAccess
      */
     public function port()
     {
-        return $_SERVER ['SERVER_PORT'];
+        return $_SERVER['SERVER_PORT'];
     }
 
     /**
@@ -1725,7 +1721,7 @@ class request implements iarray, ArrayAccess
      */
     public function remotePort()
     {
-        return $_SERVER ['REMOTE_PORT'];
+        return $_SERVER['REMOTE_PORT'];
     }
 
     /**
@@ -1752,8 +1748,8 @@ class request implements iarray, ArrayAccess
         }
 
         if (isset($_SERVER)) {
-            if (isset($_SERVER ['HTTP_X_FORWARDED_FOR'])) {
-                $arrValue = explode(',', $_SERVER ['HTTP_X_FORWARDED_FOR']);
+            if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+                $arrValue = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
                 foreach ($arrValue as $sIp) { // 取 X-Forwarded-For 中第一个非 unknown 的有效 IP 字符串
                     $sIp = trim($sIp);
                     if ($sIp != 'unknown') {
@@ -1761,11 +1757,11 @@ class request implements iarray, ArrayAccess
                         break;
                     }
                 }
-            } elseif (isset($_SERVER ['HTTP_CLIENT_IP'])) {
-                $sRealip = $_SERVER ['HTTP_CLIENT_IP'];
+            } elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+                $sRealip = $_SERVER['HTTP_CLIENT_IP'];
             } else {
-                if (isset($_SERVER ['REMOTE_ADDR'])) {
-                    $sRealip = $_SERVER ['REMOTE_ADDR'];
+                if (isset($_SERVER['REMOTE_ADDR'])) {
+                    $sRealip = $_SERVER['REMOTE_ADDR'];
                 } else {
                     $sRealip = '0.0.0.0';
                 }
@@ -1781,7 +1777,7 @@ class request implements iarray, ArrayAccess
         }
 
         preg_match("/[\d\.]{7,15}/", $sRealip, $arrOnlineip);
-        $sRealip = ! empty($arrOnlineip [0]) ? $arrOnlineip [0] : '0.0.0.0';
+        $sRealip = ! empty($arrOnlineip[0]) ? $arrOnlineip[0] : '0.0.0.0';
 
         return $sRealip;
     }
@@ -1797,13 +1793,13 @@ class request implements iarray, ArrayAccess
             return $this->strMethod;
         }
 
-        if (isset($_POST [$this->getOption('var_method')])) {
-            $this->strMethod = strtoupper($_POST [$this->getOption('var_method')]);
+        if (isset($_POST[$this->getOption('var_method')])) {
+            $this->strMethod = strtoupper($_POST[$this->getOption('var_method')]);
             if ($this->strMethod != 'POST') {
-                $this->{'set' . ucfirst(strtolower($this->strMethod)) . 's'} ($_POST);
+                $this->{'set' . ucfirst(strtolower($this->strMethod)) . 's'}($_POST);
             }
-        } elseif (isset($_SERVER ['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
-            $this->strMethod = strtoupper($_SERVER ['HTTP_X_HTTP_METHOD_OVERRIDE']);
+        } elseif (isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) {
+            $this->strMethod = strtoupper($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE']);
         } else {
             $this->strMethod = $this->methodReal();
         }
@@ -1821,7 +1817,7 @@ class request implements iarray, ArrayAccess
             return $this->strMethodReal;
         }
 
-        return $this->strMethodReal = $this->isCli() ? 'GET' : $_SERVER ['REQUEST_METHOD'];
+        return $this->strMethodReal = $this->isCli() ? 'GET' : $_SERVER['REQUEST_METHOD'];
     }
 
     /**
@@ -1832,7 +1828,7 @@ class request implements iarray, ArrayAccess
      */
     public function time($booFloat = false)
     {
-        return $booFloat ? $_SERVER ['REQUEST_TIME_FLOAT'] : $_SERVER ['REQUEST_TIME'];
+        return $booFloat ? $_SERVER['REQUEST_TIME_FLOAT'] : $_SERVER['REQUEST_TIME'];
     }
 
     /**
@@ -1954,10 +1950,10 @@ class request implements iarray, ArrayAccess
     {
         if (is_null($this->strEnter)) {
             if ($this->isCgi()) {
-                $arrTemp = explode('.php', $_SERVER ["PHP_SELF"]); // CGI/FASTCGI模式下
-                $this->strEnter = rtrim(str_replace($this->host(), '', $arrTemp [0] . '.php'), '/');
+                $arrTemp = explode('.php', $_SERVER["PHP_SELF"]); // CGI/FASTCGI模式下
+                $this->strEnter = rtrim(str_replace($this->host(), '', $arrTemp[0] . '.php'), '/');
             } else {
-                $this->strEnter = rtrim($_SERVER ["SCRIPT_NAME"], '/');
+                $this->strEnter = rtrim($_SERVER["SCRIPT_NAME"], '/');
             }
         }
         return $this->strEnter;
@@ -2053,8 +2049,8 @@ class request implements iarray, ArrayAccess
      */
     public function pathinfo()
     {
-        if (! empty($_SERVER ['PATH_INFO'])) {
-            return $_SERVER ['PATH_INFO'];
+        if (! empty($_SERVER['PATH_INFO'])) {
+            return $_SERVER['PATH_INFO'];
         }
 
         // 分析基础 url
@@ -2090,22 +2086,22 @@ class request implements iarray, ArrayAccess
         }
 
         // 兼容分析
-        $sFileName = basename($_SERVER ['SCRIPT_FILENAME']);
-        if (basename($_SERVER ['SCRIPT_NAME']) === $sFileName) {
-            $sUrl = $_SERVER ['SCRIPT_NAME'];
-        } elseif (basename($_SERVER ['PHP_SELF']) === $sFileName) {
-            $sUrl = $_SERVER ['PHP_SELF'];
-        } elseif (isset($_SERVER ['ORIG_SCRIPT_NAME']) && basename($_SERVER ['ORIG_SCRIPT_NAME']) === $sFileName) {
-            $sUrl = $_SERVER ['ORIG_SCRIPT_NAME'];
+        $sFileName = basename($_SERVER['SCRIPT_FILENAME']);
+        if (basename($_SERVER['SCRIPT_NAME']) === $sFileName) {
+            $sUrl = $_SERVER['SCRIPT_NAME'];
+        } elseif (basename($_SERVER['PHP_SELF']) === $sFileName) {
+            $sUrl = $_SERVER['PHP_SELF'];
+        } elseif (isset($_SERVER['ORIG_SCRIPT_NAME']) && basename($_SERVER['ORIG_SCRIPT_NAME']) === $sFileName) {
+            $sUrl = $_SERVER['ORIG_SCRIPT_NAME'];
         } else {
-            $sPath = $_SERVER ['PHP_SELF'];
-            $arrSegs = explode('/', trim($_SERVER ['SCRIPT_FILENAME'], '/'));
+            $sPath = $_SERVER['PHP_SELF'];
+            $arrSegs = explode('/', trim($_SERVER['SCRIPT_FILENAME'], '/'));
             $arrSegs = array_reverse($arrSegs);
             $nIndex = 0;
             $nLast = count($arrSegs);
             $sUrl = '';
             do {
-                $sSeg = $arrSegs [$nIndex];
+                $sSeg = $arrSegs[$nIndex];
                 $sUrl = '/' . $sSeg . $sUrl;
                 ++ $nIndex;
             } while (($nLast > $nIndex) && (false !== ($nPos = strpos($sPath, $sUrl))) && (0 != $nPos));
@@ -2144,16 +2140,16 @@ class request implements iarray, ArrayAccess
         }
 
         // For IIS
-        $_SERVER ['REQUEST_URI'] = isset($_SERVER ['REQUEST_URI']) ? $_SERVER ['REQUEST_URI'] : $_SERVER ["HTTP_X_REWRITE_URL"];
+        $_SERVER['REQUEST_URI'] = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $_SERVER["HTTP_X_REWRITE_URL"];
 
-        if (isset($_SERVER ['HTTP_X_REWRITE_URL'])) {
-            $sUrl = $_SERVER ['HTTP_X_REWRITE_URL'];
-        } elseif (isset($_SERVER ['REQUEST_URI'])) {
-            $sUrl = $_SERVER ['REQUEST_URI'];
-        } elseif (isset($_SERVER ['ORIG_PATH_INFO'])) {
-            $sUrl = $_SERVER ['ORIG_PATH_INFO'];
-            if (! empty($_SERVER ['QUERY_STRING'])) {
-                $sUrl .= '?' . $_SERVER ['QUERY_STRING'];
+        if (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
+            $sUrl = $_SERVER['HTTP_X_REWRITE_URL'];
+        } elseif (isset($_SERVER['REQUEST_URI'])) {
+            $sUrl = $_SERVER['REQUEST_URI'];
+        } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
+            $sUrl = $_SERVER['ORIG_PATH_INFO'];
+            if (! empty($_SERVER['QUERY_STRING'])) {
+                $sUrl .= '?' . $_SERVER['QUERY_STRING'];
             }
         } else {
             $sUrl = '';
@@ -2197,7 +2193,7 @@ class request implements iarray, ArrayAccess
     protected function setGlobalGet($sKey, $mixValue)
     {
         $this->initGlobalGet();
-        $this->arrGet [$sKey] = $mixValue;
+        $this->arrGet[$sKey] = $mixValue;
         $this->setGlobalRequest($sKey, $mixValue);
         return $this;
     }
@@ -2235,7 +2231,7 @@ class request implements iarray, ArrayAccess
     protected function setGlobalPost($sKey, $mixValue)
     {
         $this->initGlobalPost();
-        $this->arrPost [$sKey] = $mixValue;
+        $this->arrPost[$sKey] = $mixValue;
         $this->setGlobalRequest($sKey, $mixValue);
         return $this;
     }
@@ -2273,7 +2269,7 @@ class request implements iarray, ArrayAccess
     protected function setGlobalRequest($sKey, $mixValue)
     {
         $this->initGlobalRequest();
-        $this->arrRequest [$sKey] = $mixValue;
+        $this->arrRequest[$sKey] = $mixValue;
         return $this;
     }
 
@@ -2311,9 +2307,9 @@ class request implements iarray, ArrayAccess
     {
         $this->initGlobalCookie();
         $this->objCookie->set($sKey, $mixValue, [
-                'prefix' => ''
+            'prefix' => ''
         ]);
-        $this->arrCookie [$sKey] = $mixValue;
+        $this->arrCookie[$sKey] = $mixValue;
         return $this;
     }
 
@@ -2357,7 +2353,7 @@ class request implements iarray, ArrayAccess
         $strOldPrefix = $this->objSession->getOption('prefix');
         $this->objSession->option('prefix', '')->set($sKey, $mixValue);
         $this->objSession->option('prefix', $strOldPrefix);
-        $this->arrSession [$sKey] = $mixValue;
+        $this->arrSession[$sKey] = $mixValue;
         return $this;
     }
 
@@ -2398,7 +2394,7 @@ class request implements iarray, ArrayAccess
     protected function setGlobalServer($sKey, $mixValue)
     {
         $this->initGlobalServer();
-        $this->arrServer [$sKey] = $mixValue;
+        $this->arrServer[$sKey] = $mixValue;
         return $this;
     }
 
@@ -2435,7 +2431,7 @@ class request implements iarray, ArrayAccess
     protected function setGlobalEnv($sKey, $mixValue)
     {
         $this->initGlobalEnv();
-        $this->arrEnv [$sKey] = $mixValue;
+        $this->arrEnv[$sKey] = $mixValue;
         $this->setEnvironmentVariable($sKey, $mixValue);
         $this->setGlobalServer($sKey, $mixValue);
         return $this;
@@ -2474,7 +2470,7 @@ class request implements iarray, ArrayAccess
     protected function setGlobalPut($sKey, $mixValue)
     {
         $this->initGlobalPut();
-        $this->arrPut [$sKey] = $mixValue;
+        $this->arrPut[$sKey] = $mixValue;
         return $this;
     }
 
@@ -2547,7 +2543,7 @@ class request implements iarray, ArrayAccess
     protected function globalFiles()
     {
         if (is_null($this->arrFiles)) {
-            $this->arrFiles = isset($_FILES) ? $_FILES : [ ];
+            $this->arrFiles = isset($_FILES) ? $_FILES : [];
         }
         return $this->arrFiles;
     }
@@ -2560,7 +2556,7 @@ class request implements iarray, ArrayAccess
      */
     protected function globalAll($booFile = false)
     {
-        $arrAll = array_merge($this->arrAll ?  : [ ], $this->requestAll(), $this->putAll());
+        $arrAll = array_merge($this->arrAll ?  : [], $this->requestAll(), $this->putAll());
         return $booFile ? array_merge($arrAll, $this->fileAll()) : $arrAll;
     }
 
@@ -2585,7 +2581,7 @@ class request implements iarray, ArrayAccess
     protected function setGlobalRouter($sKey, $mixValue)
     {
         $this->initGlobalRouter();
-        $this->arrRouter [$sKey] = $mixValue;
+        $this->arrRouter[$sKey] = $mixValue;
         return $this;
     }
 
@@ -2597,7 +2593,7 @@ class request implements iarray, ArrayAccess
     protected function initGlobalRouter()
     {
         if (is_null($this->arrRouter)) {
-            $this->arrRouter = [ ];
+            $this->arrRouter = [];
         }
     }
 
@@ -2613,7 +2609,7 @@ class request implements iarray, ArrayAccess
                 foreach ($_SERVER as $strKey => $mixValue) {
                     if (substr($strKey, 0, 5) === 'HTTP_') {
                         $strKey = strtolower(str_replace(' ', '-', str_replace('_', ' ', substr($strKey, 5))));
-                        $this->arrHeader [$strKey] = $mixValue;
+                        $this->arrHeader[$strKey] = $mixValue;
                     }
                 }
             }
@@ -2674,10 +2670,10 @@ class request implements iarray, ArrayAccess
         if (is_array($mixValue)) {
             $arrParts = explode('.', $strName);
             foreach ($arrParts as $sPart) {
-                if (! isset($mixValue [$sPart])) {
+                if (! isset($mixValue[$sPart])) {
                     return $mixDefault;
                 }
-                $mixValue = &$mixValue [$sPart];
+                $mixValue = &$mixValue[$sPart];
             }
             return $mixValue;
         } else {
@@ -2716,7 +2712,7 @@ class request implements iarray, ArrayAccess
             $sType = strtolower($this->method());
         }
         $this->parseFilter($mixFilter);
-        return $this->{'global' . ucfirst($sType)} ();
+        return $this->{'global' . ucfirst($sType)}();
     }
 
     /**
@@ -2728,10 +2724,10 @@ class request implements iarray, ArrayAccess
     protected function parseFilter(&$mixFilter = null)
     {
         if (! $mixFilter) {
-            $mixFilter = [ ];
+            $mixFilter = [];
         } else {
             $mixFilter = is_array($mixFilter) ? $mixFilter : [
-                    $mixFilter
+                $mixFilter
             ];
         }
     }
@@ -2810,7 +2806,7 @@ class request implements iarray, ArrayAccess
     public function __get($strKey)
     {
         $arrAll = $this->allAll();
-        return isset($arrAll [$strKey]) ? $arrAll [$strKey] : null;
+        return isset($arrAll[$strKey]) ? $arrAll[$strKey] : null;
     }
 
     /**

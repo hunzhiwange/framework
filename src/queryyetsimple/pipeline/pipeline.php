@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,35 +32,35 @@ use queryyetsimple\support\icontainer;
  */
 class pipeline implements ipipeline
 {
-    
+
     /**
      * 容器
      *
      * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
-    
+
     /**
      * 管道传递的对象
      *
      * @var mixed
      */
     protected $mixPassed;
-    
+
     /**
      * 管道传递的附加对象
      *
      * @var array
      */
     protected $arrPassedExtend = [];
-    
+
     /**
      * 管道中所有执行工序
      *
      * @var array
      */
     protected $arrStage = [];
-    
+
     /**
      * 创建一个管道
      *
@@ -71,7 +71,7 @@ class pipeline implements ipipeline
     {
         $this->objContainer = $objContainer;
     }
-    
+
     /**
      * 将传输对象传入管道
      *
@@ -83,7 +83,7 @@ class pipeline implements ipipeline
         $this->mixPassed = $mixPassed;
         return $this;
     }
-    
+
     /**
      * 将附加传输对象传入管道
      *
@@ -98,7 +98,7 @@ class pipeline implements ipipeline
         }
         return $this;
     }
-    
+
     /**
      * 设置管道中的执行工序
      *
@@ -108,13 +108,13 @@ class pipeline implements ipipeline
     public function through($mixStages)
     {
         $mixStages = is_array($mixStages) ? $mixStages : func_get_args();
-        
+
         foreach ($mixStages as $mixStage) {
             $this->stage($mixStage);
         }
         return $this;
     }
-    
+
     /**
      * 添加一道工序
      *
@@ -126,7 +126,7 @@ class pipeline implements ipipeline
         $this->arrStage[] = $mixStage;
         return $this;
     }
-    
+
     /**
      * 执行管道工序响应结果
      *
@@ -135,17 +135,16 @@ class pipeline implements ipipeline
      */
     public function then(callable $calEnd)
     {
-        $calEnd = function ($mixPassed) use($calEnd)
-        {
+        $calEnd = function ($mixPassed) use ($calEnd) {
             return call_user_func($calEnd, $mixPassed);
         };
         $arrStage = array_reverse($this->arrStage);
         $arrPassedExtend = $this->arrPassedExtend;
         array_unshift($arrPassedExtend, $this->mixPassed);
-        
+
         return call_user_func_array(array_reduce($arrStage, $this->stageCallback(), $calEnd), $arrPassedExtend);
     }
-    
+
     /**
      * 工序回调
      *
@@ -153,37 +152,35 @@ class pipeline implements ipipeline
      */
     protected function stageCallback()
     {
-        return function ($calResult, $mixStage)
-        {
-            return function ($mixPassed) use($calResult, $mixStage)
-            {
+        return function ($calResult, $mixStage) {
+            return function ($mixPassed) use ($calResult, $mixStage) {
                 $arrArgs = func_get_args();
                 array_unshift($arrArgs, $calResult);
-                
+
                 if (is_callable($mixStage)) {
                     return call_user_func_array($mixStage, $arrArgs);
                 } else {
                     list($strStage, $arrParams) = $this->parse($mixStage);
-                    
+
                     if (strpos($strStage, '@') !== false) {
                         list($strStage, $strMethod) = explode('@', $strStage);
                     } else {
                         $strMethod = 'handle';
                     }
-                    
+
                     if (($objStage = $this->objContainer->make($strStage)) === false) {
                         throw new InvalidArgumentException(sprintf('Stage %s is not valid.', $strStage));
                     }
-                    
+
                     return call_user_func_array([
-                        $objStage, 
+                        $objStage,
                         $strMethod
                     ], array_merge($arrArgs, $arrParams));
                 }
             };
         };
     }
-    
+
     /**
      * 解析工序
      *
@@ -196,7 +193,7 @@ class pipeline implements ipipeline
         if (is_string($arrArgs)) {
             $arrArgs = explode(',', $arrArgs);
         }
-        
+
         return [
             $strName,
                 $arrArgs

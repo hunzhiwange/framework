@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,14 +34,14 @@ use queryyetsimple\support\option;
 abstract class aconnect
 {
     use option;
-    
+
     /**
      * Filesystem
      *
      * @var \League\Flysystem\Filesystem
      */
     protected $objFilesystem;
-    
+
     /**
      * 构造函数
      *
@@ -53,7 +53,7 @@ abstract class aconnect
         $this->options($arrOption);
         $this->filesystem();
     }
-    
+
     /**
      * 返回 Filesystem
      *
@@ -63,7 +63,7 @@ abstract class aconnect
     {
         return $this->objFilesystem;
     }
-    
+
     /**
      * 生成 Filesystem
      *
@@ -73,7 +73,7 @@ abstract class aconnect
     {
         return $this->objFilesystem = new LeagueFilesystem($this->makeConnect(), $this->getOptions());
     }
-    
+
     /**
      * 缺省方法
      *
@@ -84,7 +84,7 @@ abstract class aconnect
     public function __call($sMethod, $arrArgs)
     {
         return call_user_func_array([
-            $this->objFilesystem, 
+            $this->objFilesystem,
             $sMethod
         ], $arrArgs);
     }

@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -27,7 +27,7 @@
  * @version 1.0
  */
 return [
-    
+
     /**
      * ---------------------------------------------------------------
      * 默认消息队列驱动
@@ -35,8 +35,8 @@ return [
      *
      * 默认采用 redis 来做消息队列性能比较好
      */
-    'default' => env('redis_driver', 'redis'), 
-    
+    'default' => env('redis_driver', 'redis'),
+
     /**
      * ---------------------------------------------------------------
      * 消息队列连接
@@ -50,10 +50,10 @@ return [
         // 分别对应 new \Predis\Client($arrServers, $arrOptions) 构造器两个参数
         '+redis' => [
             'servers' => [
-                'host' => env('queue_redis_host', '127.0.0.1'), 
-                'port' => env('queue_redis_port', 6379), 
+                'host' => env('queue_redis_host', '127.0.0.1'),
+                'port' => env('queue_redis_port', 6379),
                 'password' => env('queue_redis_password', null)
-            ], 
+            ],
             'options' => []
         ]
     ]

@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,7 +29,7 @@ namespace queryyetsimple\mvc;
  */
 interface irepository
 {
-    
+
     /**
      * 取得一条数据
      *
@@ -38,7 +38,7 @@ interface irepository
      * @return \queryyetsimple\mvc\ientity
      */
     public function find($intId, $arrColumn = ['*']);
-    
+
     /**
      * 取得一条数据，未找到记录抛出异常
      *
@@ -47,7 +47,7 @@ interface irepository
      * @return \queryyetsimple\mvc\ientity|void
      */
     public function findOrFail($intId, $arrColumn = ['*']);
-    
+
     /**
      * 取得所有记录
      *
@@ -55,7 +55,7 @@ interface irepository
      * @return \queryyetsimple\support\collection
      */
     public function count($mixSpecification = null);
-    
+
     /**
      * 取得所有记录
      *
@@ -63,7 +63,7 @@ interface irepository
      * @return \queryyetsimple\support\collection
      */
     public function all($mixSpecification = null);
-    
+
     /**
      * 保存数据
      *
@@ -71,7 +71,7 @@ interface irepository
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function create(iaggregate_root $objEntity);
-    
+
     /**
      * 更新数据
      *
@@ -79,7 +79,7 @@ interface irepository
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function update(iaggregate_root $objEntity);
-    
+
     /**
      * 删除数据
      *
@@ -87,7 +87,7 @@ interface irepository
      * @return int
      */
     public function delete(iaggregate_root $objEntity);
-    
+
     /**
      * 注册保存数据
      *
@@ -95,7 +95,7 @@ interface irepository
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerCreate(iaggregate_root $objEntity);
-    
+
     /**
      * 注册更新数据
      *
@@ -103,7 +103,7 @@ interface irepository
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerUpdate(iaggregate_root $objEntity);
-    
+
     /**
      * 注册删除数据
      *
@@ -111,7 +111,7 @@ interface irepository
      * @return \queryyetsimple\mvc\unit_of_work
      */
     public function registerDelete(iaggregate_root $objEntity);
-    
+
     /**
      * 响应新建
      *
@@ -119,7 +119,7 @@ interface irepository
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function handleCreate(iaggregate_root $objEntity);
-    
+
     /**
      * 响应修改
      *
@@ -127,7 +127,7 @@ interface irepository
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function handleUpdate(iaggregate_root $objEntity);
-    
+
     /**
      * 响应删除
      *
@@ -135,28 +135,28 @@ interface irepository
      * @return int
      */
     public function handleDelete(iaggregate_root $objEntity);
-    
+
     /**
      * 启动事物
      *
      * @return void
      */
     public function beginTransaction();
-    
+
     /**
      * 事务回滚
      *
      * @return void
      */
     public function rollback();
-    
+
     /**
      * 事务自动提交
      *
      * @return void
      */
     public function commit();
-    
+
     /**
      * 执行数据库事务
      *
@@ -164,7 +164,7 @@ interface irepository
      * @return mixed
      */
     public function transaction($calAction);
-    
+
     /**
      * 设置聚合根
      *
@@ -172,28 +172,28 @@ interface irepository
      * @return void
      */
     public function setAggregate(iaggregate_root $objAggregate);
-    
+
     /**
      * 返回聚合根
      *
      * @return \queryyetsimple\mvc\iaggregate_root
      */
     public function aggregate();
-    
+
     /**
      * 返回工作单元
      *
      * @return \queryyetsimple\mvc\iunit_of_work
      */
     public function unitOfWork();
-    
+
     /**
      * 返回数据库仓储
      *
      * @return \queryyetsimple\database\idatabase
      */
     public function databaseConnect();
-    
+
     /**
      * 注册事务提交
      *

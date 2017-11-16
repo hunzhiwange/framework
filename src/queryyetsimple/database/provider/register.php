@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use queryyetsimple\database\manager;
  */
 class register extends provider
 {
-    
+
     /**
      * 注册服务
      *
@@ -43,7 +43,7 @@ class register extends provider
         $this->databases();
         $this->database();
     }
-    
+
     /**
      * 载入命令包
      *
@@ -53,7 +53,7 @@ class register extends provider
     {
         $this->loadCommandNamespace('queryyetsimple\database\console');
     }
-    
+
     /**
      * 可用服务提供者
      *
@@ -62,14 +62,14 @@ class register extends provider
     public static function providers()
     {
         return [
-            'databases' => 'queryyetsimple\database\manager', 
+            'databases' => 'queryyetsimple\database\manager',
             'database' => [
-                'queryyetsimple\database\database', 
+                'queryyetsimple\database\database',
                 'queryyetsimple\database\idatabase'
             ]
         ];
     }
-    
+
     /**
      * 注册 databases 服务
      *
@@ -77,12 +77,11 @@ class register extends provider
      */
     protected function databases()
     {
-        $this->singleton('databases', function ($oProject)
-        {
+        $this->singleton('databases', function ($oProject) {
             return new manager($oProject);
         });
     }
-    
+
     /**
      * 注册 database 服务
      *
@@ -90,8 +89,7 @@ class register extends provider
      */
     protected function database()
     {
-        $this->singleton('database', function ($oProject)
-        {
+        $this->singleton('database', function ($oProject) {
             return $oProject['databases']->connect();
         });
     }

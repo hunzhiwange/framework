@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,7 +31,7 @@ use PDO;
  */
 class mysql extends aconnect implements iconnect
 {
-    
+
     /**
      * dsn 解析
      *
@@ -42,16 +42,16 @@ class mysql extends aconnect implements iconnect
     {
         $arrDsn = [];
         foreach ([
-            'Base', 
-            'Port', 
-            'Socket', 
+            'Base',
+            'Port',
+            'Socket',
             'Charset'
         ] as $strMethod) {
             $arrDsn[] = $this->{'get' . $strMethod}($arrOption);
         }
         return implode('', $arrDsn);
     }
-    
+
     /**
      * 取得数据库表名列表
      *
@@ -75,7 +75,7 @@ class mysql extends aconnect implements iconnect
         unset($arrTables, $strSql);
         return $arrResult;
     }
-    
+
     /**
      * 取得数据库表字段信息
      *
@@ -87,11 +87,11 @@ class mysql extends aconnect implements iconnect
     {
         $strSql = 'SHOW FULL COLUMNS FROM ' . $this->qualifyTableOrColumn($sTableName);
         $arrResult = [
-            'list' => [], 
-            'primary_key' => null, 
+            'list' => [],
+            'primary_key' => null,
             'auto_increment' => null
         ];
-        
+
         if (($arrColumns = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
             foreach ($arrColumns as $arrColumn) {
                 // 处理字段
@@ -111,7 +111,7 @@ class mysql extends aconnect implements iconnect
                 } else {
                     $arrTemp['default'] = null;
                 }
-                
+
                 // 返回结果
                 $arrResult['list'][$arrTemp['name']] = $arrTemp;
                 if ($arrTemp['auto_increment']) {
@@ -128,7 +128,7 @@ class mysql extends aconnect implements iconnect
         unset($arrColumns, $strSql);
         return $arrResult;
     }
-    
+
     /**
      * sql 字段格式化
      *
@@ -138,7 +138,7 @@ class mysql extends aconnect implements iconnect
     {
         return $sName != '*' ? "`{$sName}`" : '*';
     }
-    
+
     /**
      * 分析 limit
      *
@@ -155,13 +155,13 @@ class mysql extends aconnect implements iconnect
             } else {
                 $sSql .= ',999999999999';
             }
-            
+
             return $sSql;
         } elseif (! is_null($mixLimitcount)) {
             return 'LIMIT ' . ( int ) $mixLimitcount;
         }
     }
-    
+
     /**
      * 基本
      *
@@ -172,7 +172,7 @@ class mysql extends aconnect implements iconnect
     {
         return 'mysql:dbname=' . $arrOption['name'] . ';host=' . $arrOption['host'];
     }
-    
+
     /**
      * 端口
      *
@@ -185,7 +185,7 @@ class mysql extends aconnect implements iconnect
             return ';port=' . $arrOption['port'];
         }
     }
-    
+
     /**
      * 用 unix socket 加速 php-fpm、mysql、redis 连接
      *
@@ -198,7 +198,7 @@ class mysql extends aconnect implements iconnect
             return ';unix_socket=' . $arrOption['socket'];
         }
     }
-    
+
     /**
      * 编码
      *

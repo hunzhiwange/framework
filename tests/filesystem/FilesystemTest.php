@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,14 +32,14 @@ use queryyetsimple\filesystem\fso;
  */
 class Filesystem_test extends testcase
 {
-    
+
     /**
      * 目录
      *
      * @var string
      */
     private $strDir;
-    
+
     /**
      * 初始化
      *
@@ -49,7 +49,7 @@ class Filesystem_test extends testcase
     {
         $this->strDir = project()->pathRuntime() . '/test_create_dir';
     }
-    
+
     /**
      * 测试打散目录
      *
@@ -58,15 +58,15 @@ class Filesystem_test extends testcase
     public function testDistributed()
     {
         $this->assertTrue(fso::distributed(1) === [
-            '000/00/00/', 
+            '000/00/00/',
             '01'
         ]);
         $this->assertTrue(fso::distributed(1000) === [
-            '000/00/10/', 
+            '000/00/10/',
             '00'
         ]);
     }
-    
+
     /**
      * 测试创建目录和文件
      *
@@ -76,17 +76,17 @@ class Filesystem_test extends testcase
     {
         fso::createDirectory($this->strDir);
         fso::createDirectory($this->strDir . '/test');
-        
+
         fso::createFile($this->strDir . '/test.txt');
         fso::createFile($this->strDir . '/test/test.txt');
-        
+
         $this->assertEquals(true, is_dir($this->strDir));
         $this->assertEquals(true, is_dir($this->strDir . '/test'));
-        
+
         $this->assertEquals(true, is_file($this->strDir . '/test.txt'));
         $this->assertEquals(true, is_file($this->strDir . '/test/test.txt'));
     }
-    
+
     /**
      * 测试复制目录
      *
@@ -97,7 +97,7 @@ class Filesystem_test extends testcase
         fso::copyDirectory($this->strDir, dirname($this->strDir) . '/test_copy2');
         $this->assertEquals(true, is_file(dirname($this->strDir) . '/test_copy2/test/test.txt'));
     }
-    
+
     /**
      * 测试读取目录
      *
@@ -108,13 +108,13 @@ class Filesystem_test extends testcase
         $this->assertEquals([
             'file' => [
                 'NewFile.html'
-            ], 
+            ],
             'dir' => [
                 'test'
             ]
         ], fso::lists(dirname($this->strDir) . '/test_copy2', 'both'));
     }
-    
+
     /**
      * 测试删除目录
      *

@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use queryyetsimple\validate\validate;
  */
 class register extends provider
 {
-    
+
     /**
      * 注册服务
      *
@@ -40,12 +40,11 @@ class register extends provider
      */
     public function register()
     {
-        $this->singleton('validate', function ($oProject)
-        {
+        $this->singleton('validate', function ($oProject) {
             return (new validate())->container($oProject);
         });
     }
-    
+
     /**
      * 载入语言包
      *
@@ -55,7 +54,7 @@ class register extends provider
     {
         $this->loadI18nDir(__DIR__ . '/../i18n');
     }
-    
+
     /**
      * 可用服务提供者
      *
@@ -65,7 +64,7 @@ class register extends provider
     {
         return [
             'validate' => [
-                'queryyetsimple\validate\validate', 
+                'queryyetsimple\validate\validate',
                 'queryyetsimple\validate\ivalidate'
                 ]
         ];

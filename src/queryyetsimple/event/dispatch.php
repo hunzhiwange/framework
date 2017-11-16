@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,21 +31,21 @@ use queryyetsimple\support\icontainer;
  */
 class dispatch implements idispatch
 {
-    
+
     /**
      * 项目容器
      *
      * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
-    
+
     /**
      * 注册的监听器
      *
      * @var array
      */
     protected $arrListener = [];
-    
+
     /**
      * 创建一个事件解析器
      *
@@ -56,7 +56,7 @@ class dispatch implements idispatch
     {
         $this->objContainer = $objContainer;
     }
-    
+
     /**
      * 执行一个事件
      *
@@ -71,23 +71,23 @@ class dispatch implements idispatch
         } else {
             $objEvent = $this->objContainer->make($mixEvent);
         }
-        
+
         $arrArgs = func_get_args();
         array_shift($arrArgs);
         if (is_object($objEvent)) {
             array_unshift($arrArgs, $objEvent);
         }
-        
+
         if (! $this->hasListener($mixEvent)) {
             return;
         }
-        
+
         call_user_func_array([
-            $this->getListener($mixEvent), 
+            $this->getListener($mixEvent),
             'notify'
         ], $arrArgs);
     }
-    
+
     /**
      * 注册监听器
      *
@@ -102,7 +102,7 @@ class dispatch implements idispatch
             $this->arrListener[$strEvent]->attachs($mixListener);
         }
     }
-    
+
     /**
      * 获取一个监听器
      *
@@ -116,7 +116,7 @@ class dispatch implements idispatch
         }
         return null;
     }
-    
+
     /**
      * 判断监听器是否存在
      *
@@ -127,7 +127,7 @@ class dispatch implements idispatch
     {
         return isset($this->arrListener[$strEvent]);
     }
-    
+
     /**
      * 删除一个事件所有监听器
      *
@@ -140,7 +140,7 @@ class dispatch implements idispatch
             unset($this->arrListener[$strEvent]);
         }
     }
-    
+
     /**
      * 注册事件观察者角色主体
      *

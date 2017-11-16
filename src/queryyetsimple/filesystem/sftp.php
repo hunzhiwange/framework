@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use League\Flysystem\Sftp\SftpAdapter;
  */
 class sftp extends aconnect implements iconnect
 {
-    
+
     /**
      * 配置
      *
@@ -40,27 +40,27 @@ class sftp extends aconnect implements iconnect
      */
     protected $arrOption = [
         // 主机
-        'host' => 'sftp.example.com', 
-        
+        'host' => 'sftp.example.com',
+
         // 端口
-        'port' => 22, 
-        
+        'port' => 22,
+
         // 用户名
-        'username' => 'your-username', 
-        
+        'username' => 'your-username',
+
         // 密码
-        'password' => 'your-password', 
-        
+        'password' => 'your-password',
+
         // 根目录
-        'root' => '', 
-        
+        'root' => '',
+
         // 私钥路径
-        'privateKey' => '', 
-        
+        'privateKey' => '',
+
         // 超时设置
         'timeout' => 20
     ];
-    
+
     /**
      * 创建连接
      *
@@ -71,7 +71,7 @@ class sftp extends aconnect implements iconnect
         if (! class_exists('League\Flysystem\Sftp\SftpAdapter')) {
             throw new InvalidArgumentException('Please run composer require league/flysystem-sftp');
         }
-        
+
         return new SftpAdapter($this->getOptions());
     }
 }

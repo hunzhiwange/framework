@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,7 +33,7 @@ use queryyetsimple\support\manager as support_manager;
  */
 class manager extends support_manager
 {
-    
+
     /**
      * 取得配置命名空间
      *
@@ -43,7 +43,7 @@ class manager extends support_manager
     {
         return 'auth';
     }
-    
+
     /**
      * 创建连接对象
      *
@@ -54,7 +54,7 @@ class manager extends support_manager
     {
         return new auth($objConnect);
     }
-    
+
     /**
      * 返回默认驱动
      *
@@ -64,7 +64,7 @@ class manager extends support_manager
     {
         return $this->objContainer['option'][$this->getOptionName($this->objContainer['option'][$this->getOptionName('default')] . '_default')];
     }
-    
+
     /**
      * 设置默认驱动
      *
@@ -75,7 +75,7 @@ class manager extends support_manager
     {
         $this->objContainer['option'][$this->getOptionName($this->objContainer['option'][$this->getOptionName('default')] . '_default')] = $strName;
     }
-    
+
     /**
      * 创建 session 连接
      *
@@ -87,7 +87,7 @@ class manager extends support_manager
         $arrOption = array_merge($this->getOption('session', $arrOption));
         return new session($this->objContainer[$arrOption['model']], $this->objContainer['encryption'], $this->objContainer['validate'], $this->objContainer['session'], $arrOption);
     }
-    
+
     /**
      * 创建 token 连接
      *

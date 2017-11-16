@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,70 +31,70 @@ use Psr\Log\LoggerInterface;
  */
 interface ilog extends LoggerInterface
 {
-    
+
     /**
      * debug
      *
      * @var string
      */
     const DEBUG = 'debug';
-    
+
     /**
      * info
      *
      * @var string
      */
     const INFO = 'info';
-    
+
     /**
      * notice
      *
      * @var string
      */
     const NOTICE = 'notice';
-    
+
     /**
      * warning
      *
      * @var string
      */
     const WARNING = 'warning';
-    
+
     /**
      * error
      *
      * @var string
      */
     const ERROR = 'error';
-    
+
     /**
      * critical
      *
      * @var string
      */
     const CRITICAL = 'critical';
-    
+
     /**
      * alert
      *
      * @var string
      */
     const ALERT = 'alert';
-    
+
     /**
      * emergency
      *
      * @var string
      */
     const EMERGENCY = 'emergency';
-    
+
     /**
      * sql
      *
      * @var string
      */
     const SQL = 'sql';
-    
+
     /**
      * 记录错误消息并写入
      *
@@ -104,14 +104,14 @@ interface ilog extends LoggerInterface
      * @return void
      */
     public function write($strLevel, $strMessage, array $arrContext = []);
-    
+
     /**
      * 保存日志信息
      *
      * @return void
      */
     public function save();
-    
+
     /**
      * 注册日志过滤器
      *
@@ -119,7 +119,7 @@ interface ilog extends LoggerInterface
      * @return void
      */
     public function registerFilter(callable $calFilter);
-    
+
     /**
      * 注册日志处理器
      *
@@ -127,7 +127,7 @@ interface ilog extends LoggerInterface
      * @return void
      */
     public function registerProcessor(callable $calProcessor);
-    
+
     /**
      * 清理日志记录
      *
@@ -135,7 +135,7 @@ interface ilog extends LoggerInterface
      * @return int
      */
     public function clear($strLevel = null);
-    
+
     /**
      * 获取日志记录
      *
@@ -143,7 +143,7 @@ interface ilog extends LoggerInterface
      * @return array
      */
     public function get($strLevel = null);
-    
+
     /**
      * 获取日志记录数量
      *

@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,49 +29,49 @@ namespace queryyetsimple\mvc;
  */
 class unit_of_work implements iunit_of_work
 {
-    
+
     /**
      * 基础仓储
      *
      * @var \queryyetsimple\mvc\irepository
      */
     protected $objRepository;
-    
+
     /**
      * 是否提交事务
      *
      * @var boolean
      */
     protected $booCommitted = false;
-    
+
     /**
      * 新建对象
      *
      * @var array
      */
     protected $arrCreates = [];
-    
+
     /**
      * 更新对象
      *
      * @var array
      */
     protected $arrUpdates = [];
-    
+
     /**
      * 删除对象
      *
      * @var array
      */
     protected $arrDeletes = [];
-    
+
     /**
      * 注册对象数量
      *
      * @var int
      */
     protected $intCount = 0;
-    
+
     /**
      * 构造函数
      *
@@ -82,7 +82,7 @@ class unit_of_work implements iunit_of_work
     {
         $this->objRepository = $objRepository;
     }
-    
+
     /**
      * 启动事物
      *
@@ -93,7 +93,7 @@ class unit_of_work implements iunit_of_work
         $this->objRepository->beginTransaction();
         $this->booCommitted = false;
     }
-    
+
     /**
      * 事务回滚
      *
@@ -104,7 +104,7 @@ class unit_of_work implements iunit_of_work
         $this->objRepository->rollback();
         $this->booCommitted = false;
     }
-    
+
     /**
      * 事务自动提交
      *
@@ -118,7 +118,7 @@ class unit_of_work implements iunit_of_work
         $this->objRepository->commit();
         $this->booCommitted = true;
     }
-    
+
     /**
      * 事务回滚
      *
@@ -133,7 +133,7 @@ class unit_of_work implements iunit_of_work
         $this->booCommitted = true;
         return $this->objRepository->transaction($calAction);
     }
-    
+
     /**
      * 是否已经提交事务
      *
@@ -143,7 +143,7 @@ class unit_of_work implements iunit_of_work
     {
         return $this->booCommitted;
     }
-    
+
     /**
      * 注册事务提交
      *
@@ -154,19 +154,18 @@ class unit_of_work implements iunit_of_work
         if ($this->booCommitted && $this->intCount == 0) {
             return;
         }
-        
+
         if ($this->intCount > 1) {
-            $this->transaction(function ()
-            {
+            $this->transaction(function () {
                 $this->handleRepository();
             });
         } else {
             $this->handleRepository();
         }
-        
+
         $this->booCommitted = true;
     }
-    
+
     /**
      * 注册新建
      *
@@ -179,15 +178,15 @@ class unit_of_work implements iunit_of_work
         $strHash = spl_object_hash($objEntity);
         if (! isset($this->arrCreates[$strHash])) {
             $this->arrCreates[$strHash] = [
-                $objEntity, 
+                $objEntity,
                 $objRepository
             ];
             $this->intCount ++;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 注册更新
      *
@@ -198,18 +197,18 @@ class unit_of_work implements iunit_of_work
     public function registerUpdate(iaggregate_root $objEntity, irepository $objRepository)
     {
         $strHash = spl_object_hash($objEntity);
-        
+
         if (! isset($this->arrUpdates[$strHash])) {
             $this->arrUpdates[$strHash] = [
-                $objEntity, 
+                $objEntity,
                 $objRepository
             ];
             $this->intCount ++;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 注册删除
      *
@@ -222,15 +221,15 @@ class unit_of_work implements iunit_of_work
         $strHash = spl_object_hash($objEntity);
         if (! isset($this->arrDeletes[$strHash])) {
             $this->arrDeletes[$strHash] = [
-                $objEntity, 
+                $objEntity,
                 $objRepository
             ];
             $this->intCount ++;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 响应仓储
      *
@@ -242,12 +241,12 @@ class unit_of_work implements iunit_of_work
             list($objEntity, $objRepository) = $arrCreate;
             $objRepository->handleCreate($objEntity);
         }
-        
+
         foreach ($this->arrUpdates as $arrUpdate) {
             list($objEntity, $objRepository) = $arrUpdate;
             $objRepository->handleUpdate($objEntity);
         }
-        
+
         foreach ($this->arrDeletes as $arrDelete) {
             list($objEntity, $objRepository) = $arrDelete;
             $objRepository->handleDelete($objEntity);

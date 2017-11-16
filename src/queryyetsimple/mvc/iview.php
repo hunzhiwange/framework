@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,7 +29,7 @@ namespace queryyetsimple\mvc;
  */
 interface iview
 {
-    
+
     /**
      * 变量赋值
      *
@@ -38,7 +38,7 @@ interface iview
      * @return $this
      */
     public function assign($mixName, $mixValue = null);
-    
+
     /**
      * 获取变量赋值
      *
@@ -46,7 +46,7 @@ interface iview
      * @return mixed
      */
     public function getAssign($sName = null);
-    
+
     /**
      * 删除变量值
      *
@@ -54,7 +54,7 @@ interface iview
      * @return $this
      */
     public function deleteAssign($mixName);
-    
+
     /**
      * 清空变量值
      *
@@ -62,7 +62,7 @@ interface iview
      * @return $this
      */
     public function clearAssign();
-    
+
     /**
      * 加载视图文件
      *

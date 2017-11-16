@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use queryyetsimple\support\provider;
  */
 class register extends provider
 {
-    
+
     /**
      * 注册服务
      *
@@ -44,7 +44,7 @@ class register extends provider
         $this->session();
         $this->middleware();
     }
-    
+
     /**
      * 可用服务提供者
      *
@@ -53,15 +53,15 @@ class register extends provider
     public static function providers()
     {
         return [
-            'sessions' => 'queryyetsimple\session\manager', 
+            'sessions' => 'queryyetsimple\session\manager',
             'session' => [
-                'queryyetsimple\session\session', 
+                'queryyetsimple\session\session',
                 'queryyetsimple\session\isession'
-            ], 
+            ],
             'queryyetsimple\session\middleware\session'
         ];
     }
-    
+
     /**
      * 注册 sessions 服务
      *
@@ -69,12 +69,11 @@ class register extends provider
      */
     protected function sessions()
     {
-        $this->singleton('sessions', function ($oProject)
-        {
+        $this->singleton('sessions', function ($oProject) {
             return new manager($oProject);
         });
     }
-    
+
     /**
      * 注册 session 服务
      *
@@ -82,12 +81,11 @@ class register extends provider
      */
     protected function session()
     {
-        $this->singleton('session', function ($oProject)
-        {
+        $this->singleton('session', function ($oProject) {
             return $oProject['sessions']->connect();
         });
     }
-    
+
     /**
      * 注册 middleware 服务
      *

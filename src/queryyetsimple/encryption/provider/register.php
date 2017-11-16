@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,14 +32,14 @@ use queryyetsimple\encryption\encryption;
  */
 class register extends provider
 {
-    
+
     /**
      * 是否延迟载入
      *
      * @var boolean
      */
     public static $booDefer = true;
-    
+
     /**
      * 注册服务
      *
@@ -47,12 +47,11 @@ class register extends provider
      */
     public function register()
     {
-        $this->singleton('encryption', function ($oProject)
-        {
+        $this->singleton('encryption', function ($oProject) {
             return new encryption($oProject['option']['app_auth_key'], $oProject['option']['app_auth_expiry']);
         });
     }
-    
+
     /**
      * 可用服务提供者
      *
@@ -62,7 +61,7 @@ class register extends provider
     {
         return [
             'encryption' => [
-                'queryyetsimple\encryption\encryption', 
+                'queryyetsimple\encryption\encryption',
                 'queryyetsimple\encryption\iencryption'
                 ]
         ];

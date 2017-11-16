@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use queryyetsimple\support\collection;
  */
 class belongs_to extends relation
 {
-    
+
     /**
      * 构造函数
      *
@@ -46,7 +46,7 @@ class belongs_to extends relation
     {
         parent::__construct($objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey);
     }
-    
+
     /**
      * 关联基础查询条件
      *
@@ -58,7 +58,7 @@ class belongs_to extends relation
             $this->objSelect->where($this->strTargetKey, $this->getSourceValue());
         }
     }
-    
+
     /**
      * 匹配关联查询数据到模型
      *
@@ -70,17 +70,17 @@ class belongs_to extends relation
     public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
     {
         $arrMap = $this->buildMap($objResult);
-        
+
         foreach ($arrModel as &$objModel) {
             $mixKey = $objModel->getProp($this->strSourceKey);
             if (isset($arrMap[$mixKey])) {
                 $objModel->setRelationProp($strRelation, $arrMap[$mixKey]);
             }
         }
-        
+
         return $arrModel;
     }
-    
+
     /**
      * 设置预载入关联查询条件
      *
@@ -91,7 +91,7 @@ class belongs_to extends relation
     {
         $this->objSelect->whereIn($this->strTargetKey, $this->getPreLoadModelValue($arrModel));
     }
-    
+
     /**
      * 取回源模型对应数据
      *
@@ -101,7 +101,7 @@ class belongs_to extends relation
     {
         return $this->objSourceModel->getProp($this->strSourceKey);
     }
-    
+
     /**
      * 查询关联对象
      *
@@ -111,7 +111,7 @@ class belongs_to extends relation
     {
         return $this->objSelect->getOne();
     }
-    
+
     /**
      * 模型隐射数据
      *
@@ -121,14 +121,14 @@ class belongs_to extends relation
     protected function buildMap(collection $objResult)
     {
         $arrMap = [];
-        
+
         foreach ($objResult as $objResultModel) {
             $arrMap[$objResultModel->getProp($this->strTargetKey)] = $objResultModel;
         }
-        
+
         return $arrMap;
     }
-    
+
     /**
      * 分析预载入模型中对应的源数据
      *
@@ -138,19 +138,19 @@ class belongs_to extends relation
     protected function getPreLoadModelValue(array $arrModel)
     {
         $arr = [];
-        
+
         foreach ($arrModel as $objModel) {
             if (! is_null($mixTemp = $objModel->getProp($this->strSourceKey))) {
                 $arr[] = $mixTemp;
             }
         }
-        
+
         if (count($arr) == 0) {
             return [
                 0
             ];
         }
-        
+
         return array_values(array_unique($arr));
     }
 }

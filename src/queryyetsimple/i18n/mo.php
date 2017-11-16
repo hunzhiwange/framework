@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,21 +34,21 @@ use queryyetsimple\i18n\translations\gettext;
  */
 class mo extends gettext
 {
-    
+
     /**
      * prop
      *
      * @var int
      */
     public $_nplurals = 2;
-    
+
     /**
      * Loaded MO file.
      *
      * @var string
      */
     private $filename = '';
-    
+
     /**
      * Returns the loaded MO file.
      *
@@ -58,7 +58,7 @@ class mo extends gettext
     {
         return $this->filename;
     }
-    
+
     /**
      * Fills up with the entries from MO file $filename
      *
@@ -73,7 +73,7 @@ class mo extends gettext
         $this->filename = ( string ) $filename;
         return $this->import_from_reader($reader);
     }
-    
+
     /**
      *
      * @param string $filename
@@ -89,7 +89,7 @@ class mo extends gettext
         fclose($fh);
         return $res;
     }
-    
+
     /**
      *
      * @return string|false
@@ -104,7 +104,7 @@ class mo extends gettext
         rewind($tmp_fh);
         return stream_get_contents($tmp_fh);
     }
-    
+
     /**
      *
      * @param Translation_Entry $entry
@@ -120,7 +120,7 @@ class mo extends gettext
         }
         return true;
     }
-    
+
     /**
      *
      * @param resource $fh
@@ -129,7 +129,7 @@ class mo extends gettext
     public function export_to_file_handle($fh)
     {
         $entries = array_filter($this->entries, array(
-            $this, 
+            $this,
             'is_entry_good_for_export'
         ));
         ksort($entries);
@@ -168,7 +168,7 @@ class mo extends gettext
         fwrite($fh, $translations_table);
         return true;
     }
-    
+
     /**
      *
      * @param Translation_Entry $entry
@@ -186,7 +186,7 @@ class mo extends gettext
         }
         return $exported;
     }
-    
+
     /**
      *
      * @param Translation_Entry $entry
@@ -197,7 +197,7 @@ class mo extends gettext
         // TODO: warnings for control characters
         return $entry->is_plural ? implode(chr(0), $entry->translations) : $entry->translations[0];
     }
-    
+
     /**
      *
      * @return string
@@ -210,7 +210,7 @@ class mo extends gettext
         }
         return $exported;
     }
-    
+
     /**
      *
      * @param int $magic
@@ -232,7 +232,7 @@ class mo extends gettext
             return false;
         }
     }
-    
+
     /**
      *
      * @param POMO_FileReader $reader
@@ -306,7 +306,7 @@ class mo extends gettext
         }
         return true;
     }
-    
+
     /**
      * Build a Translation_Entry from original string and translation strings,
      * found in a MO file
@@ -338,7 +338,7 @@ class mo extends gettext
         $entry->translations = explode(chr(0), $translation);
         return $entry;
     }
-    
+
     /**
      *
      * @param int $count
@@ -348,7 +348,7 @@ class mo extends gettext
     {
         return $this->gettext_select_plural_form($count);
     }
-    
+
     /**
      *
      * @return int

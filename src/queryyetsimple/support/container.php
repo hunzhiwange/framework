@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -40,42 +40,42 @@ use queryyetsimple\support\icontainer;
 class container implements ArrayAccess, icontainer
 {
     use flow_control;
-    
+
     /**
      * 注册工厂
      *
      * @var array
      */
     protected $arrFactorys = [];
-    
+
     /**
      * 注册的实例
      *
      * @var array
      */
     protected $arrInstances = [];
-    
+
     /**
      * 单一实例
      *
      * @var array
      */
     protected $arrSingletons = [];
-    
+
     /**
      * 别名支持
      *
      * @var array
      */
     protected $arrAlias = [];
-    
+
     /**
      * 分组
      *
      * @var array
      */
     protected $arrGroups = [];
-    
+
     /**
      * 注册到容器
      *
@@ -90,20 +90,20 @@ class container implements ArrayAccess, icontainer
             list($mixFactoryName, $mixAlias) = $this->parseAlias($mixFactoryName);
             $this->alias($mixFactoryName, $mixAlias);
         }
-        
+
         if (is_null($mixFactory)) {
             $mixFactory = $mixFactoryName;
         }
-        
+
         $this->arrFactorys[$mixFactoryName] = $mixFactory;
-        
+
         if ($booShare) {
             $this->arrSingletons[] = $mixFactoryName;
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 注册为实例
      *
@@ -117,15 +117,15 @@ class container implements ArrayAccess, icontainer
             list($mixFactoryName, $mixAlias) = $this->parseAlias($mixFactoryName);
             $this->alias($mixFactoryName, $mixAlias);
         }
-        
+
         if (is_null($mixFactory)) {
             $mixFactory = $mixFactoryName;
         }
         $this->arrInstances[$mixFactoryName] = $mixFactory;
-        
+
         return $this;
     }
-    
+
     /**
      * 注册单一实例
      *
@@ -137,7 +137,7 @@ class container implements ArrayAccess, icontainer
     {
         return $this->bind($mixFactoryName, $mixFactory, true);
     }
-    
+
     /**
      * 创建共享的闭包
      *
@@ -146,8 +146,7 @@ class container implements ArrayAccess, icontainer
      */
     public function share(Closure $objClosure)
     {
-        return function ($ojbContainer) use($objClosure)
-        {
+        return function ($ojbContainer) use ($objClosure) {
             static $obj;
             if (is_null($obj)) {
                 $obj = $ojbContainer($ojbContainer);
@@ -155,7 +154,7 @@ class container implements ArrayAccess, icontainer
             return $obj;
         };
     }
-    
+
     /**
      * 设置别名
      *
@@ -179,7 +178,7 @@ class container implements ArrayAccess, icontainer
         }
         return $this;
     }
-    
+
     /**
      * 分组注册
      *
@@ -195,7 +194,7 @@ class container implements ArrayAccess, icontainer
         $this->arrGroups[$strGroupName] = $mixGroupData;
         return $this;
     }
-    
+
     /**
      * 分组制造
      *
@@ -208,14 +207,14 @@ class container implements ArrayAccess, icontainer
         if (! isset($this->arrGroups[$strGroupName])) {
             return [];
         }
-        
+
         $arrResult = [];
         foreach (( array ) $this->arrGroups[$strGroupName] as $strGroupInstance) {
             $arrResult[$strGroupInstance] = $this->make($strGroupInstance, $arrArgs);
         }
         return $arrResult;
     }
-    
+
     /**
      * 服务容器返回对象
      *
@@ -227,17 +226,17 @@ class container implements ArrayAccess, icontainer
     {
         // 别名
         $strFactoryName = $this->getAlias($strFactoryName);
-        
+
         // 存在直接返回
         if (isset($this->arrInstances[$strFactoryName])) {
             return $this->arrInstances[$strFactoryName];
         }
-        
+
         // 生成实例
         if (! isset($this->arrFactorys[$strFactoryName])) {
             return $this->getInjectionObject($strFactoryName, $arrArgs);
         }
-        
+
         if (is_callable($this->arrFactorys[$strFactoryName])) {
             array_unshift($arrArgs, $this);
             $mixInstances = call_user_func_array($this->arrFactorys[$strFactoryName], $arrArgs);
@@ -248,18 +247,18 @@ class container implements ArrayAccess, icontainer
                 $mixInstances = $this->arrFactorys[$strFactoryName];
             }
         }
-        
+
         // 单一实例
         if (in_array($strFactoryName, $this->arrSingletons)) {
             return $this->arrInstances[$strFactoryName] = $mixInstances;
-        }         
+        }
 
         // 多个实例
         else {
             return $mixInstances;
         }
     }
-    
+
     /**
      * 实例回调自动注入
      *
@@ -272,10 +271,10 @@ class container implements ArrayAccess, icontainer
         if (($arrInjection = $this->parseInjection($calClass, $arrArgs)) && isset($arrInjection['args'])) {
             $arrArgs = $this->getInjectionArgs($arrInjection['args'], $arrArgs, $arrInjection['class']);
         }
-        
+
         return call_user_func_array($calClass, $arrArgs);
     }
-    
+
     /**
      * 统一去掉前面的斜杠
      *
@@ -286,7 +285,7 @@ class container implements ArrayAccess, icontainer
     {
         return ltrim($strFactoryName, '\\');
     }
-    
+
     /**
      * 返回对象别名
      *
@@ -297,7 +296,7 @@ class container implements ArrayAccess, icontainer
     {
         return isset($this->arrAlias[$strFactoryName]) ? $this->arrAlias[$strFactoryName] : $strFactoryName;
     }
-    
+
     /**
      * 根据 class 名字创建实例
      *
@@ -310,7 +309,7 @@ class container implements ArrayAccess, icontainer
         if (! class_exists($strClassName)) {
             return false;
         }
-        
+
         // 注入构造器
         if (($arrInjection = $this->parseInjection($strClassName, $arrArgs)) && isset($arrInjection['args'])) {
             return $this->newInstanceArgs($strClassName, $this->getInjectionArgs($arrInjection['args'], $arrArgs, $arrInjection['class']));
@@ -318,7 +317,7 @@ class container implements ArrayAccess, icontainer
             return $this->newInstanceArgs($strClassName, $arrArgs);
         }
     }
-    
+
     /**
      * 分析自动依赖注入
      *
@@ -330,7 +329,7 @@ class container implements ArrayAccess, icontainer
     {
         $arrResult = $arrParameter = [];
         $booFind = $booFindClass = false;
-        
+
         if ($mixClassOrCallback instanceof Closure) {
             $objReflection = new ReflectionFunction($mixClassOrCallback);
             if (($arrTemp = $objReflection->getParameters())) {
@@ -350,10 +349,10 @@ class container implements ArrayAccess, icontainer
                 $arrParameter = $arrTemp;
             }
         }
-        
+
         foreach ($arrParameter as $intKey => $objParameter) {
             $strName = $objParameter->name;
-            
+
             try {
                 if (($objParameterClass = $objParameter->getClass()) && $objParameterClass instanceof ReflectionClass && ($objParameterClass = $objParameterClass->getName())) {
                     // 参数中含有实例化
@@ -366,7 +365,7 @@ class container implements ArrayAccess, icontainer
                         if (is_object($objParameterMake)) {
                             $arrResult['args'][$strName] = $objParameterMake;
                             $booFindClass = true;
-                        }                        
+                        }
 
                         // 接口绑定实现
                         elseif (class_exists($objParameterMake)) {
@@ -388,12 +387,12 @@ class container implements ArrayAccess, icontainer
                 throw new InvalidArgumentException($oE->getMessage());
             }
         }
-        
+
         $arrResult['class'] = $booFindClass;
-        
+
         return $arrResult;
     }
-    
+
     /**
      * 注入参数分析
      *
@@ -405,7 +404,7 @@ class container implements ArrayAccess, icontainer
     protected function getInjectionArgs(array $arrArgs, array $arrExtends = [], $booFindClass = false)
     {
         $arrParse = [];
-        
+
         foreach ($arrExtends as $mixKey => $mixExtend) {
             if (isset($arrArgs[$mixKey])) {
                 unset($arrArgs[$mixKey]);
@@ -414,15 +413,15 @@ class container implements ArrayAccess, icontainer
             }
             $arrParse[] = $mixExtend;
         }
-        
+
         foreach ($arrArgs as $mixArg) {
             $arrParse[] = $mixArg;
         }
-        
+
         unset($arrArgs, $arrExtends);
         return $arrParse;
     }
-    
+
     /**
      * 动态创建实例对象
      *
@@ -434,7 +433,7 @@ class container implements ArrayAccess, icontainer
     {
         return (new ReflectionClass($strClass))->newInstanceArgs($arrArgs);
     }
-    
+
     /**
      * 解析注册容器对象别名
      *
@@ -444,11 +443,11 @@ class container implements ArrayAccess, icontainer
     protected function parseAlias(array $arrFactoryName)
     {
         return [
-            key($arrFactoryName), 
+            key($arrFactoryName),
             current($arrFactoryName)
         ];
     }
-    
+
     /**
      * 判断容器对象是否存在
      *
@@ -459,7 +458,7 @@ class container implements ArrayAccess, icontainer
     {
         return isset($this->arrFactorys[$this->normalize($strFactoryName)]);
     }
-    
+
     /**
      * 获取一个容器对象
      *
@@ -470,7 +469,7 @@ class container implements ArrayAccess, icontainer
     {
         return $this->make($strFactoryName);
     }
-    
+
     /**
      * 注册容器对象
      *
@@ -482,7 +481,7 @@ class container implements ArrayAccess, icontainer
     {
         return $this->bind($strFactoryName, $mixFactory);
     }
-    
+
     /**
      * 删除一个容器对象
      *
@@ -493,8 +492,8 @@ class container implements ArrayAccess, icontainer
     {
         $strFactoryName = $this->normalize($strFactoryName);
         foreach ([
-            'Factorys', 
-            'Instances', 
+            'Factorys',
+            'Instances',
             'Singletons'
         ] as $strType) {
             $strType = 'arr' . $strType;
@@ -503,7 +502,7 @@ class container implements ArrayAccess, icontainer
             }
         }
     }
-    
+
     /**
      * 捕捉支持属性参数
      *
@@ -514,7 +513,7 @@ class container implements ArrayAccess, icontainer
     {
         return $this[$sName];
     }
-    
+
     /**
      * 设置支持属性参数
      *
@@ -527,7 +526,7 @@ class container implements ArrayAccess, icontainer
         $this[$sName] = $mixVal;
         return $this;
     }
-    
+
     /**
      * 缺省方法
      *

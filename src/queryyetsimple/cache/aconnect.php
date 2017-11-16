@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,14 +29,14 @@ namespace queryyetsimple\cache;
  */
 abstract class aconnect
 {
-    
+
     /**
      * 缓存服务句柄
      *
      * @var handle
      */
     protected $hHandle;
-    
+
     /**
      * 构造函数
      *
@@ -47,7 +47,7 @@ abstract class aconnect
     {
         $this->options($arrOption);
     }
-    
+
     /**
      * 批量插入
      *
@@ -62,12 +62,12 @@ abstract class aconnect
                 $mixKey => $mixValue
             ];
         }
-        
+
         foreach ($mixKey as $strKey => $mixValue) {
             $this->set($strKey, $mixValue);
         }
     }
-    
+
     /**
      * 返回缓存句柄
      *
@@ -77,7 +77,7 @@ abstract class aconnect
     {
         return $this->hHandle;
     }
-    
+
     /**
      * 关闭
      *
@@ -86,7 +86,7 @@ abstract class aconnect
     public function close()
     {
     }
-    
+
     /**
      * 获取缓存名字
      *
@@ -98,7 +98,7 @@ abstract class aconnect
     {
         return $strPrefix . $sCacheName;
     }
-    
+
     /**
      * 读取缓存时间配置
      *
@@ -111,21 +111,21 @@ abstract class aconnect
         if (! $this->arrOption['time_preset']) {
             return $intDefaultTime;
         }
-        
+
         if (isset($this->arrOption['time_preset'][$sId])) {
             return $this->arrOption['time_preset'][$sId];
         }
-        
+
         foreach ($this->arrOption['time_preset'] as $sKey => $nValue) {
             $sKeyCache = '/^' . str_replace('*', '(\S+)', $sKey) . '$/';
             if (preg_match($sKeyCache, $sId, $arrRes)) {
                 return $this->arrOption['time_preset'][$sKey];
             }
         }
-        
+
         return $intDefaultTime;
     }
-    
+
     /**
      * 强制不启用缓存
      *

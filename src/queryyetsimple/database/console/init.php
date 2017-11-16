@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -35,7 +35,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class init extends PhinxInit
 {
-    
+
     /**
      * Configures the current command.
      *
@@ -46,7 +46,7 @@ class init extends PhinxInit
         parent::configure();
         $this->setName('migrate:init');
     }
-    
+
     /**
      * Initializes the application.
      * 重写读取配置文件，个性化配置，例外默认配置文件有一个解析 BUG
@@ -61,29 +61,29 @@ class init extends PhinxInit
     {
         // get the migration path from the config
         $path = $input->getArgument('path');
-        
+
         if (null === $path) {
             $path = getcwd();
         }
-        
+
         $path = realpath($path);
-        
+
         if (! is_writable($path)) {
             throw new InvalidArgumentException(sprintf('The directory "%s" is not writable', $path));
         }
-        
+
         // Compute the file path
         $fileName = 'phinx.yml'; // TODO - maybe in the future we allow custom config names.
         $filePath = $path . DIRECTORY_SEPARATOR . $fileName;
-        
+
         if (file_exists($filePath)) {
             throw new InvalidArgumentException(sprintf('The file "%s" already exists', $filePath));
         }
-        
+
         // load the config template
         // 自定义 migrate.yml 文件
         $contents = file_get_contents(__DIR__ . '/migrate.yml');
-        
+
         if (false === file_put_contents($filePath, $contents)) {
             throw new RuntimeException(sprintf('The file "%s" could not be written to', $path));
         }

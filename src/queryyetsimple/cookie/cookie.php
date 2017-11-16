@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,20 +33,20 @@ use queryyetsimple\support\option;
 class cookie implements icookie
 {
     use option;
-    
+
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-        'prefix' => 'q_', 
-        'expire' => 86400, 
-        'domain' => '', 
-        'path' => '/', 
+        'prefix' => 'q_',
+        'expire' => 86400,
+        'domain' => '',
+        'path' => '/',
         'httponly' => false
     ];
-    
+
     /**
      * 构造函数
      *
@@ -57,7 +57,7 @@ class cookie implements icookie
     {
         $this->options($arrOption);
     }
-    
+
     /**
      * 设置 COOKIE
      *
@@ -69,17 +69,17 @@ class cookie implements icookie
     public function set($sName, $mixValue = '', array $arrOption = [])
     {
         $arrOption = $this->getOptions($arrOption);
-        
+
         if (is_array($mixValue)) {
             $mixValue = json_encode($mixValue);
         }
-        
+
         if (! is_scalar($mixValue) && ! is_null($mixValue)) {
             throw new Exception('Cookie value must be scalar or null');
         }
-        
+
         $sName = $arrOption['prefix'] . $sName;
-        
+
         if ($mixValue === null || $arrOption['expire'] < 0) {
             if (isset($_COOKIE[$sName])) {
                 unset($_COOKIE[$sName]);
@@ -87,11 +87,11 @@ class cookie implements icookie
         } else {
             $_COOKIE[$sName] = $mixValue;
         }
-        
+
         $arrOption['expire'] = $arrOption['expire'] > 0 ? time() + $arrOption['expire'] : ($arrOption['expire'] < 0 ? time() - 31536000 : 0);
         setcookie($sName, $mixValue, $arrOption['expire'], $arrOption['path'], $arrOption['domain'], ! empty($_SERVER['HTTPS']) && strtoupper($_SERVER['HTTPS']) == 'ON', $arrOption['httponly']);
     }
-    
+
     /**
      * 批量插入
      *
@@ -107,12 +107,12 @@ class cookie implements icookie
                 $mixKey => $mixValue
             ];
         }
-        
+
         foreach ($mixKey as $strKey => $mixValue) {
             $this->set($strKey, $mixValue, $arrOption);
         }
     }
-    
+
     /**
      * 数组插入数据
      *
@@ -127,7 +127,7 @@ class cookie implements icookie
         $arr[] = $mixValue;
         $this->set($strKey, $arr, $arrOption);
     }
-    
+
     /**
      * 合并元素
      *
@@ -140,7 +140,7 @@ class cookie implements icookie
     {
         $this->set($strKey, array_unique(array_merge($this->get($strKey, [], $arrOption), $arrValue)), $arrOption);
     }
-    
+
     /**
      * 弹出元素
      *
@@ -153,7 +153,7 @@ class cookie implements icookie
     {
         $this->set($strKey, array_diff($this->get($strKey, [], $arrOption), $arrValue), $arrOption);
     }
-    
+
     /**
      * 数组插入键值对数据
      *
@@ -173,7 +173,7 @@ class cookie implements icookie
         }
         $this->set($strKey, $arr, $arrOption);
     }
-    
+
     /**
      * 数组键值删除数据
      *
@@ -196,7 +196,7 @@ class cookie implements icookie
         }
         $this->set($strKey, $arr, $arrOption);
     }
-    
+
     /**
      * 获取 cookie
      *
@@ -209,7 +209,7 @@ class cookie implements icookie
     {
         $arrOption = $this->getOptions($arrOption);
         $sName = $arrOption['prefix'] . $sName;
-        
+
         if (isset($_COOKIE[$sName])) {
             if ($this->isJson($_COOKIE[$sName])) {
                 return json_decode($_COOKIE[$sName], true);
@@ -219,7 +219,7 @@ class cookie implements icookie
             return $mixDefault;
         }
     }
-    
+
     /**
      * 删除 cookie
      *
@@ -231,7 +231,7 @@ class cookie implements icookie
     {
         $this->set($sName, null, $arrOption);
     }
-    
+
     /**
      * 清空 cookie
      *
@@ -254,7 +254,7 @@ class cookie implements icookie
             }
         }
     }
-    
+
     /**
      * 验证是否为正常的 JSON 字符串
      *
@@ -266,9 +266,9 @@ class cookie implements icookie
         if (! is_scalar($mixData) && ! method_exists($mixData, '__toString')) {
             return false;
         }
-        
+
         json_decode($mixData);
-        
+
         return json_last_error() === JSON_ERROR_NONE;
     }
 }

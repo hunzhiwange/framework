@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -27,7 +27,7 @@
  * @version 1.0
  */
 return [
-    
+
     /**
      * ---------------------------------------------------------------
      * 自定义命令行
@@ -36,8 +36,8 @@ return [
      * 你可以在这里设置你应用程序的自定义命名行，直接填写命名行的类名字即可
      * 例如：queryyetsimple\console\command\make\action
      */
-    'custom' => [], 
-    
+    'custom' => [],
+
     /**
      * ---------------------------------------------------------------
      * 通用模板注释和变量解析
@@ -46,7 +46,7 @@ return [
      * 模板中支持 {{var}} 变量替换
      */
     'template' => [
-        
+
         // 头部注释
         'header_comment' => '/*
  * This file is part of {{product_name}}.
@@ -55,8 +55,8 @@ return [
  *
  * {{product_description}}
  * <{{product_slogan}}>
- */', 
-        
+ */',
+
         // 文件头部注释
         'file_comment' => '/**
  * {{file_name}}
@@ -65,19 +65,19 @@ return [
  * @package {{file_package}}
  * @since {{file_since}}
  * @version {{file_version}}
- */', 
-        
+ */',
+
         // 产品信息
-        'product_homepage' => 'http://www.youdomain.com', 
-        'product_name' => 'Your.Product', 
-        'product_description' => 'This project can help people to do things very funny.', 
-        'product_slogan' => 'To make the world better', 
-        
+        'product_homepage' => 'http://www.youdomain.com',
+        'product_name' => 'Your.Product',
+        'product_description' => 'This project can help people to do things very funny.',
+        'product_slogan' => 'To make the world better',
+
         // 文件头部替换
-        'file_name' => '', 
-        'file_since' => date('Y.m.d'), 
-        'file_version' => '1.0', 
-        'file_package' => '$$', 
+        'file_name' => '',
+        'file_since' => date('Y.m.d'),
+        'file_version' => '1.0',
+        'file_package' => '$$',
         'file_author' => 'your.name <your.email>'
     ]
 ];

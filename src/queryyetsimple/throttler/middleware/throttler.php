@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -35,21 +35,21 @@ use queryyetsimple\mvc\too_many_requests_http;
  */
 class throttler
 {
-    
+
     /**
      * throttler
      *
      * @var \queryyetsimple\throttler\ithrottler
      */
     protected $objThrottler;
-    
+
     /**
      * HTTP Response
      *
      * @var \queryyetsimple\http\response $objResponse
      */
     protected $objResponse;
-    
+
     /**
      * 构造函数
      *
@@ -62,7 +62,7 @@ class throttler
         $this->objThrottler = $objThrottler;
         $this->objResponse = $objResponse;
     }
-    
+
     /**
      * 请求
      *
@@ -75,14 +75,14 @@ class throttler
     public function handle(Closure $calNext, request $objRequest, $intLimit = 60, $intLime = 60)
     {
         $oRateLimiter = $this->objThrottler->create(null, ( int ) $intLimit, ( int ) $intLime);
-        
+
         if ($oRateLimiter->attempt()) {
             $this->header($oRateLimiter);
             throw new too_many_requests_http('Too many attempts.');
         } else {
             $this->header($oRateLimiter);
         }
-        
+
         return $calNext($objRequest);
     }
 

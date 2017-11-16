@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use InvalidArgumentException;
  */
 class stack extends linkedlist implements istack_queue
 {
-    
+
     /**
      * 入栈
      *
@@ -43,7 +43,7 @@ class stack extends linkedlist implements istack_queue
     {
         $this->push($mixValue);
     }
-    
+
     /**
      * 出栈
      *
@@ -53,7 +53,7 @@ class stack extends linkedlist implements istack_queue
     {
         return $this->pop();
     }
-    
+
     /**
      * (non-PHPdoc)
      *

@@ -32,21 +32,21 @@ use queryyetsimple\router\router;
  */
 abstract class controller implements icontroller
 {
-    
+
     /**
      * 视图
      *
      * @var \queryyetsimple\mvc\iview
      */
     protected $objView;
-    
+
     /**
      * 视图
      *
      * @var \queryyetsimple\router\router
      */
     protected $objRouter;
-    
+
     /**
      * 构造函数
      *
@@ -55,7 +55,7 @@ abstract class controller implements icontroller
     public function __construct()
     {
     }
-    
+
     /**
      * 设置视图
      *
@@ -67,7 +67,7 @@ abstract class controller implements icontroller
         $this->objView = $objView;
         return $this;
     }
-    
+
     /**
      * 设置路由
      *
@@ -79,7 +79,7 @@ abstract class controller implements icontroller
         $this->objRouter = $objRouter;
         return $this;
     }
-    
+
     /**
      * 执行子方法器
      *
@@ -93,22 +93,22 @@ abstract class controller implements icontroller
             $arrArgs = func_get_args();
             array_shift($arrArgs);
             return call_user_func_array([
-                $this, 
+                $this,
                 $sActionName
             ], $arrArgs);
         }
-        
+
         // 执行默认方法器
         if (! $this->objRouter) {
             throw new RuntimeException('Router is not set in controller');
         }
         return $this->objRouter->doBind(null, $sActionName, null, true);
     }
-    
+
     // ######################################################
     // ---------------- 实现 view 接口 start ----------------
     // ######################################################
-    
+
 
     /**
      * 变量赋值
@@ -123,7 +123,7 @@ abstract class controller implements icontroller
         $this->objView->assign($mixName, $mixValue);
         return $this;
     }
-    
+
     /**
      * 获取变量赋值
      *
@@ -135,7 +135,7 @@ abstract class controller implements icontroller
         $this->checkView();
         return $this->objView->getVar($sName);
     }
-    
+
     /**
      * 删除变量值
      *
@@ -146,12 +146,12 @@ abstract class controller implements icontroller
     {
         $this->checkView();
         call_user_func_array([
-            $this->objView, 
+            $this->objView,
             'deleteAssign'
         ], func_get_args());
         return $this;
     }
-    
+
     /**
      * 清空变量值
      *
@@ -164,7 +164,7 @@ abstract class controller implements icontroller
         $this->objView->clearAssign();
         return $this;
     }
-    
+
     /**
      * 加载视图文件
      *
@@ -179,11 +179,11 @@ abstract class controller implements icontroller
         $this->checkView();
         return $this->objView->display($sThemeFile, $arrOption);
     }
-    
+
     // ######################################################
     // ---------------- 实现 view 接口 end ----------------
     // ######################################################
-    
+
 
     /**
      * 验证 view
@@ -196,7 +196,7 @@ abstract class controller implements icontroller
             throw new RuntimeException('View is not set in controller');
         }
     }
-    
+
     /**
      * 赋值
      *
@@ -208,7 +208,7 @@ abstract class controller implements icontroller
     {
         $this->assign($mixName, $mixValue);
     }
-    
+
     /**
      * 获取值
      *

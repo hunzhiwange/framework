@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -38,105 +38,105 @@ use queryyetsimple\support\debug\dump;
  */
 abstract class aconnect
 {
-    
+
     /**
      * 所有数据库连接
      *
      * @var array
      */
     protected $arrConnect = [];
-    
+
     /**
      * 当前数据库连接
      *
      * @var array
      */
     protected $objConnect;
-    
+
     /**
      * PDO 预处理语句对象
      *
      * @var PDOStatement
      */
     protected $objPDOStatement;
-    
+
     /**
      * 数据查询组件
      *
      * @var \queryyetsimple\database\select
      */
     protected $objSelect;
-    
+
     /**
      * 日志仓储
      *
      * @var \queryyetsimple\log\ilog
      */
     protected $objLog;
-    
+
     /**
      * 缓存仓储
      *
      * @var \queryyetsimple\cache\icache
      */
     protected $objCache;
-    
+
     /**
      * 开发模式
      *
      * @var boolean
      */
     protected $booDevelopment = false;
-    
+
     /**
      * 字段缓存
      *
      * @var array
      */
     protected static $arrTableColumnsCache = [];
-    
+
     /**
      * 数据库连接参数
      *
      * @var array
      */
     protected $arrOption = [];
-    
+
     /**
      * 当前数据库连接参数
      *
      * @var array
      */
     protected $arrCurrentOption = [];
-    
+
     /*
      * sql 最后查询语句
      *
      * @var string
      */
     protected $strSql;
-    
+
     /*
      * sql 绑定参数
      *
      * @var array
      */
     protected $arrBindParams = [];
-    
+
     /*
      * sql 影响记录数量
      *
      * @var int
      */
     protected $intNumRows = 0;
-    
+
     /**
      * SQL 监听器
      *
      * @var callable
      */
     protected static $calSqlListen;
-    
+
     /**
      * 构造函数
      *
@@ -150,19 +150,19 @@ abstract class aconnect
     {
         // 日志
         $this->objLog = $objLog;
-        
+
         // 缓存
         $this->objCache = $objCache;
-        
+
         // 开发模式
         $this->booDevelopment = $booDevelopment;
-        
+
         // 记录连接参数
         $this->arrOption = $arrOption;
-        
+
         // 尝试连接主服务器
         $this->writeConnect();
-        
+
         // 连接分布式服务器
         if ($arrOption['distributed'] === true) {
             if (! $this->readConnect()) {
@@ -170,7 +170,7 @@ abstract class aconnect
             }
         }
     }
-    
+
     /**
      * 拦截查询静态方法转接参数并再次转接到 select 组件
      *
@@ -182,14 +182,14 @@ abstract class aconnect
     {
         // 查询组件
         $this->initSelect();
-        
+
         // 调用事件
         return call_user_func_array([
-            $this->objSelect, 
+            $this->objSelect,
             $sMethod
         ], $arrArgs);
     }
-    
+
     /**
      * 返回 Pdo 查询连接
      *
@@ -210,7 +210,7 @@ abstract class aconnect
             return isset($this->arrConnect[$mixMaster]) ? $this->arrConnect[$mixMaster] : null;
         }
     }
-    
+
     /**
      * 查询数据记录
      *
@@ -226,39 +226,39 @@ abstract class aconnect
     {
         // 查询组件
         $this->initSelect();
-        
+
         // 记录 sql 参数
         $this->setSqlBindParams($strSql, $arrBindParams);
-        
+
         // 验证 sql 类型PROCEDURE
         if (! in_array(($strSqlType = $this->getSqlType($strSql)), [
-            'select', 
+            'select',
             'procedure'
         ])) {
             $this->throwException('The query method only allows select SQL statements.');
         }
-        
+
         // 预处理
         $this->objPDOStatement = $this->getPdo($mixMaster)->prepare($strSql);
-        
+
         // 参数绑定
         $this->bindParams($arrBindParams);
-        
+
         // 执行 sql
         if ($this->objPDOStatement->execute() === false) {
             $this->throwException();
         }
-        
+
         // 记录 SQL 日志
         $this->recordSqlLog();
-        
+
         // 返回影响函数
         $this->intNumRows = $this->objPDOStatement->rowCount();
-        
+
         // 返回结果
         return $this->fetchResult($intFetchType, $mixFetchArgument, $arrCtorArgs, $strSqlType == 'procedure');
     }
-    
+
     /**
      * 执行 sql 语句
      *
@@ -270,34 +270,34 @@ abstract class aconnect
     {
         // 查询组件
         $this->initSelect();
-        
+
         // 记录 sql 参数
         $this->setSqlBindParams($strSql, $arrBindParams);
-        
+
         // 验证 sql 类型
         if (($strSqlType = $this->getSqlType($strSql)) == 'select') {
             $this->throwException('The execute method does not allow select SQL statements.');
         }
-        
+
         // 预处理
         $this->objPDOStatement = $this->getPdo(true)->prepare($strSql);
-        
+
         // 参数绑定
         $this->bindParams($arrBindParams);
-        
+
         // 执行 sql
         if ($this->objPDOStatement->execute() === false) {
             $this->throwException();
         }
-        
+
         // 记录 SQL 日志
         $this->recordSqlLog();
-        
+
         // 返回影响函数
         $this->intNumRows = $this->objPDOStatement->rowCount();
-        
+
         if (in_array($strSqlType, [
-            'insert', 
+            'insert',
             'replace'
         ])) {
             return $this->lastInsertId();
@@ -305,7 +305,7 @@ abstract class aconnect
             return $this->intNumRows;
         }
     }
-    
+
     /**
      * 执行数据库事务
      *
@@ -316,7 +316,7 @@ abstract class aconnect
     {
         // 严格验证参数
         assert::callback($calAction);
-        
+
         // 事务过程
         $this->beginTransaction();
         try {
@@ -330,7 +330,7 @@ abstract class aconnect
             throw $oE;
         }
     }
-    
+
     /**
      * 启动事务
      *
@@ -340,7 +340,7 @@ abstract class aconnect
     {
         $this->getPdo(true)->beginTransaction();
     }
-    
+
     /**
      * 检查是否处于事务中
      *
@@ -350,7 +350,7 @@ abstract class aconnect
     {
         return $this->getPdo(true)->inTransaction();
     }
-    
+
     /**
      * 用于非自动提交状态下面的查询提交
      *
@@ -360,7 +360,7 @@ abstract class aconnect
     {
         $this->getPdo(true)->commit();
     }
-    
+
     /**
      * 事务回滚
      *
@@ -370,7 +370,7 @@ abstract class aconnect
     {
         $this->getPdo(true)->rollBack();
     }
-    
+
     /**
      * 获取最后插入 ID 或者列
      *
@@ -381,7 +381,7 @@ abstract class aconnect
     {
         return $this->objConnect->lastInsertId($strName);
     }
-    
+
     /**
      * 获取最近一次查询的 sql 语句
      *
@@ -392,14 +392,14 @@ abstract class aconnect
     {
         if ($booWithBindParams === true) {
             return [
-                $this->strSql, 
+                $this->strSql,
                 $this->arrBindParams
             ];
         } else {
             return $this->strSql;
         }
     }
-    
+
     /**
      * 获取最近一次绑定参数
      *
@@ -409,7 +409,7 @@ abstract class aconnect
     {
         return $this->arrBindParams;
     }
-    
+
     /**
      * 返回影响记录
      *
@@ -419,7 +419,7 @@ abstract class aconnect
     {
         return $this->intNumRows;
     }
-    
+
     /**
      * 注册 SQL 监视器
      *
@@ -431,7 +431,7 @@ abstract class aconnect
         assert::callback($calSqlListen);
         static::$calSqlListen = $calSqlListen;
     }
-    
+
     /**
      * 释放 PDO 预处理查询
      *
@@ -441,7 +441,7 @@ abstract class aconnect
     {
         $this->objPDOStatement = null;
     }
-    
+
     /**
      * 关闭数据库连接
      *
@@ -452,7 +452,7 @@ abstract class aconnect
         $this->arrConnect = [];
         $this->objConnect = null;
     }
-    
+
     /**
      * 取得数据库表字段信息缓存
      *
@@ -466,7 +466,7 @@ abstract class aconnect
         if (isset(static::$arrTableColumnsCache[$strCacheKey])) {
             return static::$arrTableColumnsCache[$strCacheKey];
         }
-        
+
         $arrTableColumns = $this->objCache->get($strCacheKey);
         if (! $this->booDevelopment && $arrTableColumns !== false) {
             return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
@@ -476,11 +476,11 @@ abstract class aconnect
             return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
         }
     }
-    
+
     // ######################################################
     // ------------------- 辅助方法 start --------------------
     // ######################################################
-    
+
 
     /**
      * sql 表达式格式化
@@ -495,14 +495,14 @@ abstract class aconnect
         if (empty($sSql)) {
             return '';
         }
-        
+
         $arrMatches = null;
         preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sSql, $arrMatches, PREG_OFFSET_CAPTURE);
         $arrMatches = reset($arrMatches);
         if (! is_array($arrMapping)) {
             $arrMapping = [];
         }
-        
+
         $sOut = '';
         $nOffset = 0;
         foreach ($arrMatches as $arrM) {
@@ -527,10 +527,10 @@ abstract class aconnect
             $nOffset = $arrM[1] + $nLen;
         }
         $sOut .= substr($sSql, $nOffset);
-        
+
         return $sOut;
     }
-    
+
     /**
      * 表或者字段格式化（支持别名）
      *
@@ -561,7 +561,7 @@ abstract class aconnect
             return $sName;
         }
     }
-    
+
     /**
      * 字段格式化
      *
@@ -587,7 +587,7 @@ abstract class aconnect
         }
         return $sField;
     }
-    
+
     /**
      * 字段值格式化
      *
@@ -603,7 +603,7 @@ abstract class aconnect
             }
             return $mixValue;
         }
-        
+
         if (is_int($mixValue)) {
             return $mixValue;
         }
@@ -613,26 +613,26 @@ abstract class aconnect
         if (is_null($mixValue)) {
             return null;
         }
-        
+
         $mixValue = trim($mixValue);
-        
+
         // 问号占位符
         if ($mixValue == '[?]') {
             return '?';
         }
-        
+
         // [:id] 占位符
         if (preg_match('/^\[:[a-z][a-z0-9_\-\.]*\]$/i', $mixValue, $arrMatche)) {
             return trim($arrMatche[0], '[]');
         }
-        
+
         if ($booQuotationMark === true) {
             return "'" . addslashes($mixValue) . "'";
         } else {
             return $mixValue;
         }
     }
-    
+
     /**
      * 返回当前配置连接信息（方便其他组件调用设置为 public）
      *
@@ -647,7 +647,7 @@ abstract class aconnect
             return isset($this->arrCurrentOption[$strOptionName]) ? $this->arrCurrentOption[$strOptionName] : null;
         }
     }
-    
+
     /**
      * 分析 sql 类型数据
      *
@@ -658,20 +658,20 @@ abstract class aconnect
     {
         $strSql = trim($strSql);
         foreach ([
-            'select', 
-            'show', 
-            'call', 
-            'exec', 
-            'delete', 
-            'insert', 
-            'replace', 
+            'select',
+            'show',
+            'call',
+            'exec',
+            'delete',
+            'insert',
+            'replace',
             'update'
         ] as $strType) {
             if (stripos($strSql, $strType) === 0) {
                 if ($strType == 'show') {
                     $strType = 'select';
                 } elseif (in_array($strType, [
-                    'call', 
+                    'call',
                     'exec'
                 ])) {
                     $strType = 'procedure';
@@ -681,7 +681,7 @@ abstract class aconnect
         }
         return 'statement';
     }
-    
+
     /**
      * 分析绑定参数类型数据
      *
@@ -710,16 +710,16 @@ abstract class aconnect
                 break;
         }
     }
-    
+
     // ######################################################
     // -------------------- 辅助方法 end ---------------------
     // ######################################################
-    
+
 
     // ######################################################
     // ------------------- 私有方法 start --------------------
     // ######################################################
-    
+
 
     /**
      * 连接主服务器
@@ -732,14 +732,14 @@ abstract class aconnect
         if (! empty($this->arrConnect[0])) {
             return $this->objConnect = $this->arrConnect[0];
         }
-        
+
         // 没有连接开始请求连接
         $objPdo = $this->commonConnect($this->arrOption['master'], 0, true);
-        
+
         // 当前连接
         return $this->objConnect = $objPdo;
     }
-    
+
     /**
      * 连接读服务器
      *
@@ -751,29 +751,29 @@ abstract class aconnect
         if ($this->arrOption['distributed'] === false || empty($this->arrOption['slave'])) {
             return $this->writeConnect();
         }
-        
+
         // 只有主服务器,主服务器必须先连接,未连接过附属服务器
         if (count($this->arrConnect) == 1) {
             foreach ($this->arrOption['slave'] as $arrRead) {
                 $this->commonConnect($arrRead, null);
             }
-            
+
             // 没有连接成功的读服务器则还是连接写服务器
             if (count($this->arrConnect) < 2) {
                 return $this->writeConnect();
             }
         }
-        
+
         // 如果为读写分离,去掉主服务器
         $arrConnect = $this->arrConnect;
         if ($this->arrOption['readwrite_separate'] === true) {
             unset($arrConnect[0]);
         }
-        
+
         // 随机在已连接的 slave 服务器中选择一台
         return $this->objConnect = $arrConnect[floor(mt_rand(0, count($arrConnect) - 1))];
     }
-    
+
     /**
      * 连接数据库
      *
@@ -788,12 +788,12 @@ abstract class aconnect
         if ($nLinkid === null) {
             $nLinkid = count($this->arrConnect);
         }
-        
+
         // 已经存在连接
         if (! empty($this->arrConnect[$nLinkid])) {
             return $this->arrConnect[$nLinkid];
         }
-        
+
         try {
             $this->setCurrentOption($arrOption);
             return $this->arrConnect[$nLinkid] = new PDO($this->parseDsn($arrOption), $arrOption['user'], $arrOption['password'], $arrOption['options']);
@@ -805,7 +805,7 @@ abstract class aconnect
             }
         }
     }
-    
+
     /**
      * pdo　参数绑定
      *
@@ -816,20 +816,20 @@ abstract class aconnect
     {
         foreach ($arrBindParams as $mixKey => $mixVal) {
             $mixKey = is_numeric($mixKey) ? $mixKey + 1 : ':' . $mixKey;
-            
+
             if (is_array($mixVal)) {
                 $strParam = $mixVal[1];
                 $mixVal = $mixVal[0];
             } else {
                 $strParam = PDO::PARAM_STR;
             }
-            
+
             if ($this->objPDOStatement->bindValue($mixKey, $mixVal, $strParam) === false) {
                 $this->throwException(sprintf('Parameter of sql %s binding failed: %s.', $this->strSql, dump::dump($arrBindParams, true)));
             }
         }
     }
-    
+
     /**
      * 获得数据集
      *
@@ -845,7 +845,7 @@ abstract class aconnect
         if ($booProcedure) {
             return $this->fetchProcedureResult($intFetchType, $mixFetchArgument, $arrCtorArgs);
         }
-        
+
         $arrArgs = [
             $intFetchType !== null ? $intFetchType : $this->arrOption['fetch']
         ];
@@ -856,11 +856,11 @@ abstract class aconnect
             }
         }
         return call_user_func_array([
-            $this->objPDOStatement, 
+            $this->objPDOStatement,
             'fetchAll'
         ], $arrArgs);
     }
-    
+
     /**
      * 获得数据集
      *
@@ -879,7 +879,7 @@ abstract class aconnect
         } while ($this->objPDOStatement->nextRowset());
         return $arrResult;
     }
-    
+
     /**
      * 设置 sql 绑定参数
      *
@@ -890,7 +890,7 @@ abstract class aconnect
         $this->strSql = $strSql;
         $this->arrBindParams = $arrBindParams;
     }
-    
+
     /**
      * 设置当前数据库连接信息
      *
@@ -901,7 +901,7 @@ abstract class aconnect
     {
         $this->arrCurrentOption = $arrOption;
     }
-    
+
     /**
      * 记录 SQL 日志
      *
@@ -915,14 +915,14 @@ abstract class aconnect
                 $this
             ]);
         }
-        
+
         // 记录 SQL 日志
         $arrLastSql = $this->getLastSql(true);
         if ($this->arrOption['log']) {
             $this->objLog->log(ilog::SQL, $arrLastSql[0], $arrLastSql[1] ?  : []);
         }
     }
-    
+
     /**
      * 数据查询异常，抛出错误
      *
@@ -939,7 +939,7 @@ abstract class aconnect
             throw new Exception($strError);
         }
     }
-    
+
     /**
      * 初始化查询组件
      *

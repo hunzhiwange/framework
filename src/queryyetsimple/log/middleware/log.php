@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,14 +34,14 @@ use queryyetsimple\http\response;
  */
 class log
 {
-    
+
     /**
      * log 管理
      *
      * @var \queryyetsimple\log\log
      */
     protected $objManager;
-    
+
     /**
      * 构造函数
      *
@@ -52,7 +52,7 @@ class log
     {
         $this->objManager = $objManager;
     }
-    
+
     /**
      * 响应
      *
@@ -65,7 +65,7 @@ class log
         $this->saveLog();
         return $calNext($objRequest, $objResponse);
     }
-    
+
     /**
      * 保存日志
      *

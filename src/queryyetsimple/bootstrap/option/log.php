@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -27,7 +27,7 @@
  * @version 1.0
  */
 return [
-    
+
     /**
      * ---------------------------------------------------------------
      * 默认日志驱动
@@ -35,8 +35,8 @@ return [
      *
      * 系统为所有日志提供了统一的接口，在使用上拥有一致性
      */
-    'default' => env('log_driver', 'file'), 
-    
+    'default' => env('log_driver', 'file'),
+
     /**
      * ---------------------------------------------------------------
      * 是否启用日志
@@ -44,8 +44,8 @@ return [
      *
      * 默认记录日志，记录日志会消耗服务器资源
      */
-    'enabled' => true, 
-    
+    'enabled' => true,
+
     /**
      * ---------------------------------------------------------------
      * 记录系统运行异常
@@ -54,8 +54,8 @@ return [
      * 系统异常错误等日志是否记录
      * 系统运行过程 queryyetsimple\bootstrap\runtime
      */
-    'runtime_enabled' => true, 
-    
+    'runtime_enabled' => true,
+
     /**
      * ---------------------------------------------------------------
      * 允许记录的日志级别
@@ -64,17 +64,17 @@ return [
      * 随意自定义,其中 debug、info、notice、warning、error、critical、alert、emergency 和 sql 为系统内部使用
      */
     '+level' => [
-        'debug', 
-        'info', 
-        'notice', 
-        'warning', 
-        'error', 
-        'critical', 
-        'alert', 
-        'emergency', 
+        'debug',
+        'info',
+        'notice',
+        'warning',
+        'error',
+        'critical',
+        'alert',
+        'emergency',
         'sql'
-    ], 
-    
+    ],
+
     /**
      * ---------------------------------------------------------------
      * 日志时间格式化
@@ -82,8 +82,8 @@ return [
      *
      * 每条日志信息开头的时间信息
      */
-    'time_format' => '[Y-m-d H:i]', 
-    
+    'time_format' => '[Y-m-d H:i]',
+
     /**
      * ---------------------------------------------------------------
      * 日志连接参数
@@ -95,37 +95,37 @@ return [
     '+connect' => [
         '+file' => [
             // driver
-            'driver' => 'file', 
-            
+            'driver' => 'file',
+
             // 日志文件名时间格式化
-            'name' => 'Y-m-d H', 
-            
+            'name' => 'Y-m-d H',
+
             // 日志文件大小限制,单位为字节 byte
-            'size' => 2097152, 
-            
+            'size' => 2097152,
+
             // 默认的日志路径
             'path' => path_log_cache()
-        ], 
-        
+        ],
+
         '+monolog' => [
             // driver
-            'driver' => 'monolog', 
-            
+            'driver' => 'monolog',
+
             // 日志类型
             // support file、daily_file、syslog、error_log
             'type' => [
                 'file'
-            ], 
-            
+            ],
+
             // 频道
-            'channel' => 'Q', 
-            
+            'channel' => 'Q',
+
             // 日志文件名时间格式化
-            'name' => 'Y-m-d H', 
-            
+            'name' => 'Y-m-d H',
+
             // 日志文件大小限制,单位为字节 byte
-            'size' => 2097152, 
-            
+            'size' => 2097152,
+
             // 默认的日志路径
             'path' => path_log_cache('monolog')
         ]

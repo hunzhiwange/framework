@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,18 +34,18 @@ use queryyetsimple\filesystem\fso;
 class file extends aconnect implements iconnect
 {
     use option;
-    
+
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-        'name' => 'Y-m-d H', 
-        'size' => 2097152, 
+        'name' => 'Y-m-d H',
+        'size' => 2097152,
         'path' => ''
     ];
-    
+
     /**
      * 构造函数
      *
@@ -56,7 +56,7 @@ class file extends aconnect implements iconnect
     {
         $this->options($arrOption);
     }
-    
+
     /**
      * 日志写入接口
      *
@@ -67,13 +67,13 @@ class file extends aconnect implements iconnect
     {
         // 保存日志
         $this->checkSize($strDestination = $this->getPath($arrData[0][0]));
-        
+
         // 记录到系统
         foreach ($arrData as $arrItem) {
             error_log($this->formatMessage($arrItem[1], $arrItem[2]) . PHP_EOL, 3, $strDestination);
         }
     }
-    
+
     /**
      * 格式化日志信息
      *

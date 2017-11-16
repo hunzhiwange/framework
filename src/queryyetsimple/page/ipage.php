@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,7 +29,7 @@ namespace queryyetsimple\page;
  */
 interface ipage
 {
-    
+
     /**
      * 追加分页条件
      *
@@ -38,7 +38,7 @@ interface ipage
      * @return $this
      */
     public function append($strKey, $strValue);
-    
+
     /**
      * 批量追加分页条件
      *
@@ -46,7 +46,7 @@ interface ipage
      * @return $this
      */
     public function appends(array $arrValue);
-    
+
     /**
      * 设置分页条件
      *
@@ -54,7 +54,7 @@ interface ipage
      * @return $this
      */
     public function parameter(array $arrParameter);
-    
+
     /**
      * 添加分页条件
      *
@@ -63,7 +63,7 @@ interface ipage
      * @return $this
      */
     public function addParameter($strKey, $strValue);
-    
+
     /**
      * 设置渲染参数
      *
@@ -72,7 +72,7 @@ interface ipage
      * @return $this
      */
     public function renderOption($strKey, $strValue);
-    
+
     /**
      * 批量设置渲染参数
      *
@@ -81,7 +81,7 @@ interface ipage
      * @return $this
      */
     public function renderOptions(array $arrOption);
-    
+
     /**
      * 是否启用 CSS
      *
@@ -89,14 +89,14 @@ interface ipage
      * @return $this
      */
     public function css($booOn = true);
-    
+
     /**
      * 获取渲染参数
      *
      * @return $this
      */
     public function getRenderOption();
-    
+
     /**
      * 设置 url
      *
@@ -104,7 +104,7 @@ interface ipage
      * @return $this
      */
     public function url($mixUrl = null);
-    
+
     /**
      * 设置 render
      *
@@ -112,14 +112,14 @@ interface ipage
      * @return $this
      */
     public function renders($mixRender = null);
-    
+
     /**
      * 获取 render
      *
      * @return string|null
      */
     public function getRender();
-    
+
     /**
      * 设置 range
      *
@@ -127,14 +127,14 @@ interface ipage
      * @return $this
      */
     public function range($mixRange = null);
-    
+
     /**
      * 获取 range
      *
      * @return int
      */
     public function getRange();
-    
+
     /**
      * 设置 url 描点
      *
@@ -142,14 +142,14 @@ interface ipage
      * @return $this
      */
     public function fragment($mixFragment = null);
-    
+
     /**
      * 获取 url 描点
      *
      * @return string|null
      */
     public function getFragment();
-    
+
     /**
      * 设置每页分页数量
      *
@@ -157,14 +157,14 @@ interface ipage
      * @return $this
      */
     public function perPage($strPageName);
-    
+
     /**
      * 返回每页数量
      *
      * @return int
      */
     public function getPerPage();
-    
+
     /**
      * 设置分页名字
      *
@@ -172,147 +172,147 @@ interface ipage
      * @return $this
      */
     public function pageName($strPageName);
-    
+
     /**
      * 获取分页名字
      *
      * @return string
      */
     public function getPageName();
-    
+
     /**
      * 返回总记录数量
      *
      * @return int
      */
     public function getTotalRecord();
-    
+
     /**
      * 是否为无限分页
      *
      * @return boolean
      */
     public function isTotalInfinity();
-    
+
     /**
      * 取得第一个记录的编号
      *
      * @return int
      */
     public function getFirstRecord();
-    
+
     /**
      * 取得最后一个记录的编号
      *
      * @return int
      */
     public function getLastRecord();
-    
+
     /**
      * 返回当前分页
      *
      * @return int
      */
     public function getCurrentPage();
-    
+
     /**
      * 返回分页视图开始页码
      *
      * @return int
      */
     public function getPageStart();
-    
+
     /**
      * 返回分页视图结束页码
      *
      * @return int
      */
     public function getPageEnd();
-    
+
     /**
      * 返回总分页数量
      *
      * @return int
      */
     public function getTotalPage();
-    
+
     /**
      * 是否渲染 total
      *
      * @return boolean
      */
     public function canTotalRender();
-    
+
     /**
      * 是否渲染 first
      *
      * @return boolean
      */
     public function canFirstRender();
-    
+
     /**
      * 返回渲染 first.prev
      *
      * @return int
      */
     public function parseFirstRenderPrev();
-    
+
     /**
      * 是否渲染 prev
      *
      * @return boolean
      */
     public function canPrevRender();
-    
+
     /**
      * 返回渲染 prev.prev
      *
      * @return int
      */
     public function parsePrevRenderPrev();
-    
+
     /**
      * 是否渲染 main
      *
      * @return boolean
      */
     public function canMainRender();
-    
+
     /**
      * 是否渲染 next
      *
      * @return string
      */
     public function canNextRender();
-    
+
     /**
      * 是否渲染 last
      *
      * @return string
      */
     public function canLastRender();
-    
+
     /**
      * 是否渲染 last
      *
      * @return string
      */
     public function canLastRenderNext();
-    
+
     /**
      * 返回渲染 last.next
      *
      * @return int
      */
     public function parseLastRenderNext();
-    
+
     /**
      * 解析 url
      *
      * @return string
      */
     public function resolverUrl();
-    
+
     /**
      * 设置 url 解析回调
      *
@@ -320,7 +320,7 @@ interface ipage
      * @return void
      */
     public static function setUrlResolver($calUrlResolver);
-    
+
     /**
      * 替换分页变量
      *

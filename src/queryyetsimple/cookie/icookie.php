@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,7 +29,7 @@ namespace queryyetsimple\cookie;
  */
 interface icookie
 {
-    
+
     /**
      * 设置 COOKIE
      *
@@ -39,7 +39,7 @@ interface icookie
      * @return void
      */
     public function set($sName, $mixValue = '', array $arrOption = []);
-    
+
     /**
      * 批量插入
      *
@@ -49,7 +49,7 @@ interface icookie
      * @return void
      */
     public function put($mixKey, $mixValue = null, array $arrOption = []);
-    
+
     /**
      * 数组插入数据
      *
@@ -59,7 +59,7 @@ interface icookie
      * @return void
      */
     public function push($strKey, $mixValue, array $arrOption = []);
-    
+
     /**
      * 合并元素
      *
@@ -69,7 +69,7 @@ interface icookie
      * @return void
      */
     public function merge($strKey, array $arrValue, array $arrOption = []);
-    
+
     /**
      * 弹出元素
      *
@@ -79,7 +79,7 @@ interface icookie
      * @return void
      */
     public function pop($strKey, array $arrValue, array $arrOption = []);
-    
+
     /**
      * 数组插入键值对数据
      *
@@ -90,7 +90,7 @@ interface icookie
      * @return void
      */
     public function arrays($strKey, $mixKey, $mixValue = null, array $arrOption = []);
-    
+
     /**
      * 数组键值删除数据
      *
@@ -99,7 +99,7 @@ interface icookie
      * @return void
      */
     public function arraysDelete($strKey, $mixKey, array $arrOption = []);
-    
+
     /**
      * 获取 cookie
      *
@@ -109,7 +109,7 @@ interface icookie
      * @return mixed
      */
     public function get($sName, $mixDefault = null, array $arrOption = []);
-    
+
     /**
      * 删除 cookie
      *
@@ -118,7 +118,7 @@ interface icookie
      * @return void
      */
     public function delete($sName, array $arrOption = []);
-    
+
     /**
      * 清空 cookie
      *

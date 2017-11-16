@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -27,7 +27,7 @@
  * @version 1.0
  */
 return [
-    
+
     /**
      * ---------------------------------------------------------------
      * cookie 前缀
@@ -35,8 +35,8 @@ return [
      *
      * 设置 cookie 前缀可以用来解决冲突
      */
-    'prefix' => 'q_', 
-    
+    'prefix' => 'q_',
+
     /**
      * ---------------------------------------------------------------
      * cookie 域名
@@ -47,8 +47,8 @@ return [
      * 有效（包括它的全部子域名），只要设置成域名就可以了（这个例子里是 'example.com'）
      * 相关技术文档：http://php.net/manual/zh/function.setcookie.php
      */
-    'domain' => '', 
-    
+    'domain' => '',
+
     /**
      * ---------------------------------------------------------------
      * cookie 路径
@@ -58,8 +58,8 @@ return [
      * Cookie 仅仅对 domain 中 /foo/ 目录及其子目录有效（比如 /foo/bar/）。 默认值是设置 Cookie 时的当前目录
      * 相关技术文档：http://php.net/manual/zh/function.setcookie.php
      */
-    'path' => '/', 
-    
+    'path' => '/',
+
     /**
      * ---------------------------------------------------------------
      * cookie 默认过期时间
@@ -71,8 +71,8 @@ return [
      * 这里的过期时间为我们在当前时间上加上了过期的秒数量即为过期时间
      * 相关技术文档：http://php.net/manual/zh/function.setcookie.php
      */
-    'expire' => 86400, 
-    
+    'expire' => 86400,
+
     /**
      * ---------------------------------------------------------------
      * cookie 仅 HTTP 协议访问

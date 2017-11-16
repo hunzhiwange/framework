@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,77 +34,77 @@ use queryyetsimple\support\iarray;
  */
 class rate_limiter implements irate_limiter, Countable, iarray
 {
-    
+
     /**
      * 缓存接口
      *
      * @var \queryyetsimple\cache\icache
      */
     protected $objCache;
-    
+
     /**
      * 缓存键值
      *
      * @var string
      */
     protected $strKey;
-    
+
     /**
      * 指定时间内允许的最大请求次数
      *
      * @var int
      */
     protected $intXRateLimitLimit = 60;
-    
+
     /**
      * 指定时间长度
      *
      * @var int
      */
     protected $intXRateLimitTime = 60;
-    
+
     /**
      * 距离下一次请求等待时间
      *
      * @var int
      */
     protected $intXRateLimitRetryAfter;
-    
+
     /**
      * 指定时间内剩余请求次数
      *
      * @var int
      */
     protected $intXRateLimitRemaining;
-    
+
     /**
      * 请求返回 HEADER
      *
      * @var array
      */
     protected $arrHeader;
-    
+
     /**
      * 当前请求次数
      *
      * @var int
      */
     protected $intCount;
-    
+
     /**
      * 下次重置时间
      *
      * @var int
      */
     protected $intEndTime;
-    
+
     /**
      * 缓存数据
      *
      * @var array
      */
     protected $arrData;
-    
+
     /**
      * 距离下一次请求等待时间
      * 实际，可能扣减为负数
@@ -112,7 +112,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
      * @var int
      */
     protected $intXRateLimitRetryAfterReal;
-    
+
     /**
      * 指定时间内剩余请求次数
      * 实际，可能扣减为负数
@@ -120,7 +120,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
      * @var int
      */
     protected $intXRateLimitRemainingReal;
-    
+
     /**
      * 构造函数
      *
@@ -137,7 +137,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         $this->intXRateLimitLimit = $intXRateLimitLimit;
         $this->intXRateLimitTime = $intXRateLimitTime;
     }
-    
+
     /**
      * 验证请求
      *
@@ -150,7 +150,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         }
         return $boo;
     }
-    
+
     /**
      * 判断资源是否被耗尽
      *
@@ -159,7 +159,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
     public function tooManyAttempt()
     {
         $booTooMany = false;
-        
+
         // 剩余时间完毕，重新计算
         if ($this->retryAfterReal() < 0) {
             $this->clear();
@@ -169,10 +169,10 @@ class rate_limiter implements irate_limiter, Countable, iarray
                 $booTooMany = true;
             }
         }
-        
+
         return $booTooMany;
     }
-    
+
     /**
      * 执行请求
      *
@@ -184,7 +184,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         $this->saveData();
         return $this;
     }
-    
+
     /**
      * 清理记录
      *
@@ -196,7 +196,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         $this->intCount = $this->getInitCount();
         return $this;
     }
-    
+
     /**
      * 下次重置时间
      *
@@ -209,7 +209,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         }
         return $this->intEndTime = $this->getData()[0];
     }
-    
+
     /**
      * 请求返回 HEADER
      *
@@ -220,25 +220,25 @@ class rate_limiter implements irate_limiter, Countable, iarray
         if (! is_null($this->arrHeader)) {
             return $this->arrHeader;
         }
-        
+
         return $this->arrHeader = [
             // 指定时间长度
-            'X-RateLimit-Time' => $this->intXRateLimitTime, 
-            
+            'X-RateLimit-Time' => $this->intXRateLimitTime,
+
             // 指定时间内允许的最大请求次数
-            'X-RateLimit-Limit' => $this->intXRateLimitLimit, 
-            
+            'X-RateLimit-Limit' => $this->intXRateLimitLimit,
+
             // 指定时间内剩余请求次数
-            'X-RateLimit-Remaining' => $this->remaining(), 
-            
+            'X-RateLimit-Remaining' => $this->remaining(),
+
             // 距离下一次请求等待时间
-            'X-RateLimit-RetryAfter' => $this->retryAfter(), 
-            
+            'X-RateLimit-RetryAfter' => $this->retryAfter(),
+
             // 下次重置时间
             'X-RateLimit-Reset' => $this->intEndTime
         ];
     }
-    
+
     /**
      * 距离下一次请求等待时间
      *
@@ -249,10 +249,10 @@ class rate_limiter implements irate_limiter, Countable, iarray
         if (! is_null($this->intXRateLimitRetryAfter)) {
             return $this->intXRateLimitRetryAfter;
         }
-        
+
         return $this->intXRateLimitRetryAfter = $this->remainingReal() < 0 ? ($this->retryAfterReal() > 0 ? $this->retryAfterReal() : 0) : 0;
     }
-    
+
     /**
      * 指定时间内剩余请求次数
      *
@@ -265,7 +265,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         }
         return $this->intXRateLimitRemaining = $this->remainingReal() > 0 ? $this->remainingReal() : 0;
     }
-    
+
     /**
      * 指定时间长度
      *
@@ -277,7 +277,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         $this->intXRateLimitLimit = $intXRateLimitLimit;
         return $this;
     }
-    
+
     /**
      * 指定时间内允许的最大请求次数
      *
@@ -289,7 +289,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         $this->intXRateLimitTime = $intXRateLimitTime;
         return $this;
     }
-    
+
     /**
      * 返回缓存组件
      *
@@ -299,7 +299,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
     {
         return $this->objCache;
     }
-    
+
     /**
      * 对象转数组
      *
@@ -309,7 +309,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
     {
         return $this->header();
     }
-    
+
     /**
      * 请求次数
      *
@@ -322,7 +322,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         }
         return $this->intCount = $this->getData()[1];
     }
-    
+
     /**
      * 距离下一次请求等待时间
      * 实际，可能扣减为负数
@@ -336,7 +336,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         }
         return $this->intXRateLimitRetryAfterReal = $this->endTime() - time();
     }
-    
+
     /**
      * 指定时间内剩余请求次数
      * 实际，可能扣减为负数
@@ -350,7 +350,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         }
         return $this->intXRateLimitRemainingReal = $this->intXRateLimitLimit - $this->count();
     }
-    
+
     /**
      * 保存缓存数据
      *
@@ -360,7 +360,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
     {
         $this->objCache->set($this->getKey(), $this->getImplodeData($this->endTime(), $this->count()));
     }
-    
+
     /**
      * 读取缓存数据
      *
@@ -371,18 +371,18 @@ class rate_limiter implements irate_limiter, Countable, iarray
         if (! is_null($this->arrData)) {
             return $this->arrData;
         }
-        
+
         if (($this->arrData = $this->objCache->get($this->getKey()))) {
             $this->arrData = $this->getExplodeData($this->arrData);
         } else {
             $this->arrData = [
-                $this->getInitEndTime(), 
+                $this->getInitEndTime(),
                 $this->getInitCount()
             ];
         }
         return $this->arrData;
     }
-    
+
     /**
      * 组装缓存数据
      *
@@ -394,7 +394,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
     {
         return $intEndTime . static::SEPARATE . $intCount;
     }
-    
+
     /**
      * 分隔缓存数据
      *
@@ -405,7 +405,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
     {
         return explode(static::SEPARATE, $arrData);
     }
-    
+
     /**
      * 获取 key
      *
@@ -418,7 +418,7 @@ class rate_limiter implements irate_limiter, Countable, iarray
         }
         return $this->strKey;
     }
-    
+
     /**
      * 初始化下一次重置时间
      *

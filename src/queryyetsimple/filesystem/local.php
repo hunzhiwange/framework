@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,19 +33,19 @@ use League\Flysystem\Adapter\Local as AdapterLocal;
  */
 class local extends aconnect implements iconnect
 {
-    
+
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-        'path' => '', 
-        'write_flags' => LOCK_EX, 
-        'link_handling' => AdapterLocal::DISALLOW_LINKS, 
+        'path' => '',
+        'write_flags' => LOCK_EX,
+        'link_handling' => AdapterLocal::DISALLOW_LINKS,
         'permissions' => []
     ];
-    
+
     /**
      * 创建连接
      *
@@ -56,7 +56,7 @@ class local extends aconnect implements iconnect
         if (empty($this->getOption('path'))) {
             throw new InvalidArgumentException('The local requires path option');
         }
-        
+
         return new AdapterLocal($this->getOption('path'), $this->getOption('write_flags'), $this->getOption('link_handling'), $this->getOption('permissions'));
     }
 }

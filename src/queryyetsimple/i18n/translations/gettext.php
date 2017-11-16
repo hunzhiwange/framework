@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,7 +33,7 @@ use queryyetsimple\support\iarray;
  */
 class gettext extends translations implements iarray
 {
-    
+
     /**
      * The gettext implementation of select_plural_form.
      *
@@ -51,7 +51,7 @@ class gettext extends translations implements iarray
         }
         return call_user_func($this->_gettext_select_plural_form, $count);
     }
-    
+
     /**
      *
      * @param string $header
@@ -63,17 +63,17 @@ class gettext extends translations implements iarray
             $nplurals = ( int ) $matches[1];
             $expression = trim($this->parenthesize_plural_exression($matches[2]));
             return array(
-                $nplurals, 
+                $nplurals,
                 $expression
             );
         } else {
             return array(
-                2, 
+                2,
                 'n != 1'
             );
         }
     }
-    
+
     /**
      * Makes a function, which will return the right translation index, according to the
      * plural forms header
@@ -89,7 +89,7 @@ class gettext extends translations implements iarray
             return (\$index < $nplurals)? \$index : $nplurals - 1;";
         return create_function('$n', $func_body);
     }
-    
+
     /**
      * Adds parentheses to the inner parts of ternary operators in
      * plural expressions, because PHP evaluates ternary oerators from left to right
@@ -122,7 +122,7 @@ class gettext extends translations implements iarray
         }
         return rtrim($res, ';');
     }
-    
+
     /**
      *
      * @param string $translation
@@ -143,7 +143,7 @@ class gettext extends translations implements iarray
         }
         return $headers;
     }
-    
+
     /**
      *
      * @param string $header
@@ -158,7 +158,7 @@ class gettext extends translations implements iarray
             $this->_gettext_select_plural_form = $this->make_plural_form_function($nplurals, $expression);
         }
     }
-    
+
     /**
      * 读取文件到数组
      *
@@ -172,14 +172,14 @@ class gettext extends translations implements iarray
                 $mixFilename
             ];
         }
-        
+
         foreach ($mixFilename as $strFilename) {
             $this->import_from_file($strFilename);
         }
-        
+
         return $this->toArray();
     }
-    
+
     /**
      * 对象转数组
      *

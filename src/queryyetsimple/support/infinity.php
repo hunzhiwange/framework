@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,14 +33,14 @@ use BadMethodCallException;
  */
 trait infinity
 {
-    
+
     /**
      * 注册的动态扩展
      *
      * @var array
      */
     protected static $arrInfinity = [];
-    
+
     /**
      * 注册一个扩展
      *
@@ -52,7 +52,7 @@ trait infinity
     {
         static::$arrInfinity[$strName] = $calInfinity;
     }
-    
+
     /**
      * 判断一个扩展是否注册
      *
@@ -63,7 +63,7 @@ trait infinity
     {
         return isset(static::$arrInfinity[$strName]);
     }
-    
+
     /**
      * 缺省静态方法
      *
@@ -81,10 +81,10 @@ trait infinity
                 return call_user_func_array(static::$arrInfinity[$sMethod], $arrArgs);
             }
         }
-        
+
         throw new BadMethodCallException(sprintf('Method %s is not exits.', $sMethod));
     }
-    
+
     /**
      * 缺省方法
      *
@@ -102,7 +102,7 @@ trait infinity
                 return call_user_func_array(static::$arrInfinity[$sMethod], $arrArgs);
             }
         }
-        
+
         throw new BadMethodCallException(sprintf('Method %s is not exits.', $sMethod));
     }
 }

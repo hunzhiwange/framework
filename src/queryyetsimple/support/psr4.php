@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,42 +33,42 @@ use queryyetsimple\filesystem\fso;
  */
 class psr4 implements ipsr4
 {
-    
+
     /**
      * Composer
      *
      * @var \Composer\Autoload\ClassLoader
      */
     protected $objComposer;
-    
+
     /**
      * 沙盒缓存路径
      *
      * @var string
      */
     protected $strSandboxCacheDir;
-    
+
     /**
      * 沙盒路径
      *
      * @var string
      */
     protected $strSandboxPath;
-    
+
     /**
      * 短命名空间
      *
      * @var string
      */
     protected $strShortNamespace;
-    
+
     /**
      * 框架自定义命名空间
      *
      * @var string
      */
     const DEFAULT_NAMESPACE = 'queryyetsimple';
-    
+
     /**
      * 设置 composer
      *
@@ -85,7 +85,7 @@ class psr4 implements ipsr4
         $this->strSandboxPath = $strSandboxPath;
         $this->strShortNamespace = $strShortNamespace;
     }
-    
+
     /**
      * 获取 composer
      *
@@ -95,7 +95,7 @@ class psr4 implements ipsr4
     {
         return $this->objComposer;
     }
-    
+
     /**
      * 导入一个目录中命名空间结构
      *
@@ -111,7 +111,7 @@ class psr4 implements ipsr4
         $sPackagePath = realpath($sPackage);
         $this->composer()->setPsr4($sNamespace . '\\', $sPackagePath);
     }
-    
+
     /**
      * 获取命名空间路径
      *
@@ -122,15 +122,15 @@ class psr4 implements ipsr4
     {
         $arrNamespace = explode('\\', $sNamespace);
         $arrPrefix = $this->composer()->getPrefixesPsr4();
-        
+
         if (! isset($arrPrefix[$arrNamespace[0] . '\\'])) {
             return null;
         }
-        
+
         $arrNamespace[0] = $arrPrefix[$arrNamespace[0] . '\\'][0];
         return implode('\\', $arrNamespace);
     }
-    
+
     /**
      * 根据命名空间取得文件路径
      *
@@ -145,7 +145,7 @@ class psr4 implements ipsr4
             return $strFile . '.php';
         }
     }
-    
+
     /**
      * 框架自动载入
      *
@@ -157,9 +157,9 @@ class psr4 implements ipsr4
         if (strpos($strClass, '\\') === false) {
             return;
         }
-        
+
         foreach ([
-            static::DEFAULT_NAMESPACE, 
+            static::DEFAULT_NAMESPACE,
             $this->strShortNamespace
         ] as $strNamespace) {
             if (strpos($strClass, $strNamespace . '\\') !== false && is_file(($strSandbox = $this->strSandboxPath . '/' . str_replace('\\', '/', substr($strClass, strlen($strNamespace) + 1)) . '.php'))) {
@@ -167,16 +167,16 @@ class psr4 implements ipsr4
                 return;
             }
         }
-        
+
         if (is_file(($strSandbox = $this->strSandboxPath . '/' . str_replace('\\', '/', $strClass) . '.php'))) {
             require $strSandbox;
         }
-        
+
         if (strpos($strClass, $this->strShortNamespace . '\\') !== false) {
             $this->shortNamespaceMap($strClass);
         }
     }
-    
+
     /**
      * 框架命名空间自动关联
      *
@@ -186,25 +186,25 @@ class psr4 implements ipsr4
     public function shortNamespaceMap($strClass)
     {
         $strTryMapClass = str_replace($this->strShortNamespace . '\\', static::DEFAULT_NAMESPACE . '\\', $strClass);
-        
+
         if (class_exists($strTryMapClass) || interface_exists($strTryMapClass)) {
             $strSandboxCache = $this->strSandboxCacheDir . '\\' . str_replace('\\', '_', $strClass) . '.php';
-            
+
             if (is_file($strSandboxCache)) {
                 require $strSandboxCache;
                 return;
             }
-            
+
             $arrClass = explode('\\', $strClass);
             $strDefinedClass = array_pop($arrClass);
             $strNamespace = implode('\\', $arrClass);
-            
+
             $strSandboxContent = sprintf('<?php namespace %s; %s %s extends  \%s {}', $strNamespace, class_exists($strTryMapClass) ? 'class' : 'interface', $strDefinedClass, $strTryMapClass);
-            
+
             if (! is_dir(dirname($strSandboxCache))) {
                 fso::createDirectory(dirname($strSandboxCache));
             }
-            
+
             if (! file_put_contents($strSandboxCache, $strSandboxContent)) {
                 throw new RuntimeException(sprintf('Dir %s do not have permission.', dirname($strSandboxCache)));
             }

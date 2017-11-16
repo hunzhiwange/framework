@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,7 +29,7 @@ namespace queryyetsimple\cache;
  */
 interface iconnect
 {
-    
+
     /**
      * 获取缓存
      *
@@ -39,7 +39,7 @@ interface iconnect
      * @return mixed
      */
     public function get($sCacheName, $mixDefault = false, array $arrOption = []);
-    
+
     /**
      * 设置缓存
      *
@@ -49,7 +49,7 @@ interface iconnect
      * @return void
      */
     public function set($sCacheName, $mixData, array $arrOption = []);
-    
+
     /**
      * 清除缓存
      *
@@ -58,7 +58,7 @@ interface iconnect
      * @return void
      */
     public function delele($sCacheName, array $arrOption = []);
-    
+
     /**
      * 批量插入
      *
@@ -67,14 +67,14 @@ interface iconnect
      * @return void
      */
     public function put($mixKey, $mixValue = null);
-    
+
     /**
      * 返回缓存句柄
      *
      * @return mixed
      */
     public function handle();
-    
+
     /**
      * 关闭
      *

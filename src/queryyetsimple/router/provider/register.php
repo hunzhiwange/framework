@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use queryyetsimple\support\provider;
  */
 class register extends provider
 {
-    
+
     /**
      * 注册服务
      *
@@ -40,24 +40,23 @@ class register extends provider
      */
     public function register()
     {
-        $this->singleton('router', function ($oProject)
-        {
+        $this->singleton('router', function ($oProject) {
             $arrOption = $oProject['option']->get('url\\');
             foreach ([
-                '~apps~', 
-                'default_app', 
-                'default_controller', 
-                'default_action', 
-                'middleware_group', 
+                '~apps~',
+                'default_app',
+                'default_controller',
+                'default_action',
+                'middleware_group',
                 'middleware_alias'
             ] as $strOption) {
                 $arrOption[$strOption] = $oProject['option']->get($strOption);
             }
-            
+
             return new router($oProject, $oProject['pipeline'], $oProject['request'], $arrOption);
         });
     }
-    
+
     /**
      * 可用服务提供者
      *

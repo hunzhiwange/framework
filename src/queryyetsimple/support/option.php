@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,7 +31,7 @@ use InvalidArgumentException;
  */
 trait option
 {
-    
+
     /**
      * 修改单个配置
      *
@@ -47,7 +47,7 @@ trait option
         $this->arrOption[$strName] = $mixValue;
         return $this;
     }
-    
+
     /**
      * 修改单个数组性配置
      *
@@ -59,7 +59,7 @@ trait option
     {
         return $this->option($strName, array_merge($this->getOption($strName), $arrValue));
     }
-    
+
     /**
      * 修改多个配置
      *
@@ -77,7 +77,7 @@ trait option
         }
         return $this;
     }
-    
+
     /**
      * 获取单个配置
      *
@@ -89,7 +89,7 @@ trait option
     {
         return isset($this->arrOption[$strName]) ? $this->arrOption[$strName] : $mixDefault;
     }
-    
+
     /**
      * 获取所有配置
      *

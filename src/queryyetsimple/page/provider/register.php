@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,7 +33,7 @@ use queryyetsimple\support\provider;
  */
 class register extends provider
 {
-    
+
     /**
      * 注册服务
      *
@@ -42,7 +42,7 @@ class register extends provider
     public function register()
     {
     }
-    
+
     /**
      * bootstrap
      *
@@ -53,7 +53,7 @@ class register extends provider
         $this->urlResolver();
         $this->i18n();
     }
-    
+
     /**
      * 可用服务提供者
      *
@@ -63,7 +63,7 @@ class register extends provider
     {
         return [];
     }
-    
+
     /**
      * 分页路由 url 生成
      *
@@ -71,15 +71,14 @@ class register extends provider
      */
     protected function urlResolver()
     {
-        page::setUrlResolver(function ()
-        {
+        page::setUrlResolver(function () {
             return call_user_func_array([
-                $this->objContainer['router'], 
+                $this->objContainer['router'],
                 'url'
             ], func_get_args());
         });
     }
-    
+
     /**
      * 载入语言包
      *

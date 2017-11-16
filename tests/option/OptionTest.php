@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,25 +32,25 @@ use queryyetsimple\option;
  */
 class Option_test extends testcase
 {
-    
+
     /**
      * 测试配置
      *
      * @var array
      */
     private static $arrTest = [
-        'hello' => 'world', 
-        'router\name' => '小牛仔', 
+        'hello' => 'world',
+        'router\name' => '小牛仔',
         'test\child' => [
-            'sub1' => 'hello', 
-            'sub2' => 'world', 
-            'sub3' => '新式软件', 
+            'sub1' => 'hello',
+            'sub2' => 'world',
+            'sub3' => '新式软件',
             'goods' => [
                 'world' => 'new'
             ]
         ]
     ];
-    
+
     /**
      * 初始化
      *
@@ -61,7 +61,7 @@ class Option_test extends testcase
         option::reset();
         option::set(self::$arrTest);
     }
-    
+
     /**
      * 读取生成的命名空间配置结构
      *
@@ -72,15 +72,15 @@ class Option_test extends testcase
         $this->assertTrue(option::all() === [
             'app' => [
                 'hello' => 'world'
-            ], 
+            ],
             'router' => [
                 'name' => '小牛仔'
-            ], 
+            ],
             'test' => [
                 'child' => [
-                    'sub1' => 'hello', 
-                    'sub2' => 'world', 
-                    'sub3' => '新式软件', 
+                    'sub1' => 'hello',
+                    'sub2' => 'world',
+                    'sub3' => '新式软件',
                     'goods' => [
                         'world' => 'new'
                     ]
@@ -88,7 +88,7 @@ class Option_test extends testcase
             ]
         ]);
     }
-    
+
     /**
      * 读取生成的命名空间配置结构
      *
@@ -100,7 +100,7 @@ class Option_test extends testcase
             'name' => '小牛仔'
         ]);
     }
-    
+
     /**
      * 获取信息
      *
@@ -112,7 +112,7 @@ class Option_test extends testcase
         $this->assertEquals('new', option::get('test\child.goods.world'));
         $this->assertEquals('default value', option::get('not_found', 'default value'));
     }
-    
+
     /**
      * 设置信息
      *

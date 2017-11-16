@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -39,28 +39,28 @@ use queryyetsimple\support\iarray;
 class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, JsonSerializable
 {
     use infinity;
-    
+
     /**
      * 元素合集
      *
      * @var array
      */
     protected $arrObject = [];
-    
+
     /**
      * 验证
      *
      * @var boolean
      */
     protected $booValid = true;
-    
+
     /**
      * 类型
      *
      * @var string
      */
     protected $sType = '';
-    
+
     /**
      * 构造函数
      *
@@ -75,7 +75,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         }
         return $this;
     }
-    
+
     /**
      * call 魔术方法
      *
@@ -87,7 +87,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         throw new BadMethodCallException(sprintf('Collection method %s is not defined.', $sMethod));
     }
-    
+
     /**
      * __get 魔术方法
      *
@@ -102,7 +102,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
             return null;
         }
     }
-    
+
     /**
      * __set 魔术方法
      *
@@ -117,11 +117,11 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         $this->arrObject[$sKey] = $mixVal;
         return $mixOld;
     }
-    
+
     // ######################################################
     // ------------- 实现 Iterator 迭代器接口 start -------------
     // ######################################################
-    
+
 
     /**
      * 当前元素
@@ -132,7 +132,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return current($this->arrObject);
     }
-    
+
     /**
      * 当前 key
      *
@@ -142,7 +142,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return key($this->arrObject);
     }
-    
+
     /**
      * 下一个元素
      *
@@ -154,7 +154,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         $this->booValid = $next !== false;
         return $next;
     }
-    
+
     /**
      * 指针重置
      *
@@ -166,7 +166,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         $this->booValid = $first !== false;
         return $first;
     }
-    
+
     /**
      * 验证
      *
@@ -176,16 +176,16 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return $this->booValid;
     }
-    
+
     // ######################################################
     // --------------- 实现 Iterator 迭代器接口 end ---------------
     // ######################################################
-    
+
 
     // ######################################################
     // -------------- 实现 ArrayAccess 接口 start --------------
     // ######################################################
-    
+
 
     /**
      * 实现 isset( $obj['hello'] )
@@ -197,7 +197,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return isset($this->arrObject[$strKey]);
     }
-    
+
     /**
      * 实现 $strHello = $obj['hello']
      *
@@ -208,7 +208,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return isset($this->arrObject[$strKey]) ? $this->arrObject[$strKey] : null;
     }
-    
+
     /**
      * 实现 $obj['hello'] = 'world'
      *
@@ -221,7 +221,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         $this->checkType($mixValue);
         $this->arrObject[$strKey] = $mixValue;
     }
-    
+
     /**
      * 实现 unset($obj['hello'])
      *
@@ -234,16 +234,16 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
             unset($this->arrObject[$strKey]);
         }
     }
-    
+
     // ######################################################
     // -------------- 实现 ArrayAccess 接口 start --------------
     // ######################################################
-    
+
 
     // ######################################################
     // --------------- 实现 Countable 接口 start ---------------
     // ######################################################
-    
+
 
     /**
      * 统计元素数量 count($obj)
@@ -254,16 +254,16 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return count($this->arrObject);
     }
-    
+
     // ######################################################
     // ---------------- 实现 Countable 接口 end ----------------
     // ######################################################
-    
+
 
     // ######################################################
     // ------------------ 实现额外的方法 start ------------------
     // ######################################################
-    
+
 
     /**
      * 对象转数组
@@ -272,12 +272,11 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
      */
     public function toArray()
     {
-        return array_map(function ($mixValue)
-        {
+        return array_map(function ($mixValue) {
             return $mixValue instanceof arrayable ? $mixValue->toArray() : $mixValue;
         }, $this->arrObject);
     }
-    
+
     /**
      * 实现 JsonSerializable::jsonSerialize
      *
@@ -285,8 +284,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
      */
     public function jsonSerialize()
     {
-        return array_map(function ($mixValue)
-        {
+        return array_map(function ($mixValue) {
             if ($mixValue instanceof JsonSerializable) {
                 return $mixValue->jsonSerialize();
             } elseif ($mixValue instanceof jsonable) {
@@ -298,7 +296,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
             }
         }, $this->arrObject);
     }
-    
+
     /**
      * 对象转 JSON
      *
@@ -309,7 +307,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return json_encode($this->jsonSerialize(), $intOption);
     }
-    
+
     /**
      * jquery.each
      *
@@ -324,7 +322,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         } else {
             $sKeyName = 'key';
         }
-        
+
         $arrObject = $this->arrObject;
         foreach ($arrObject as $key => $val) {
             if (is_array($val)) {
@@ -332,14 +330,14 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
                 $arrData[$sKeyName] = $key;
             } else {
                 $arrData = [
-                    $sKeyName => $key, 
+                    $sKeyName => $key,
                     'value' => $val
                 ];
             }
             $arrArgs[0](new static($arrData));
         }
     }
-    
+
     /**
      * jquery.prev
      *
@@ -351,7 +349,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         $this->booValid = $mixPrev !== false;
         return $mixPrev;
     }
-    
+
     /**
      * jquery.end
      *
@@ -363,7 +361,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         $this->booValid = $mixEnd !== false;
         return $mixEnd;
     }
-    
+
     /**
      * jquery.siblings
      *
@@ -387,7 +385,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         unset($arrObject);
         return $arrSiblings;
     }
-    
+
     /**
      * jquery.nextAll
      *
@@ -412,7 +410,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         unset($arrObject);
         return $arrNexts;
     }
-    
+
     /**
      * jquery.prevAll
      *
@@ -435,7 +433,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         unset($arrObject);
         return $arrPrevs;
     }
-    
+
     /**
      * jquery.attr
      *
@@ -451,7 +449,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
             $this->__set($sKey, $mixValue);
         }
     }
-    
+
     /**
      * jquery.eq
      *
@@ -462,7 +460,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return $this->offsetGet($sKey);
     }
-    
+
     /**
      * jquery.get
      *
@@ -473,7 +471,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return $this->offsetGet($sKey);
     }
-    
+
     /**
      * jquery.index
      *
@@ -492,7 +490,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
             return $sKey;
         }
     }
-    
+
     /**
      * jquery.find
      *
@@ -503,7 +501,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return $this->offsetGet($sKey);
     }
-    
+
     /**
      * jquery.first
      *
@@ -513,7 +511,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return $this->rewind();
     }
-    
+
     /**
      * jquery.last
      *
@@ -533,7 +531,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return $this->offsetExists($sKey);
     }
-    
+
     /**
      * jquery.slice
      *
@@ -549,7 +547,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
             return array_slice($this->arrObject, $nSelector, $nEnd);
         }
     }
-    
+
     /**
      * jquery.not
      *
@@ -560,7 +558,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return $this->siblings($sKey);
     }
-    
+
     /**
      * jquery.filter
      *
@@ -571,7 +569,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return $this->siblings($sKey);
     }
-    
+
     /**
      * jquer.size
      *
@@ -581,7 +579,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return $this->count();
     }
-    
+
     /**
      * 是否为空
      *
@@ -591,7 +589,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     {
         return empty($this->arrObject);
     }
-    
+
     /**
      * 数据 map
      *
@@ -609,11 +607,11 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
             return array_column($this->arrObject, $mixValueName, $sKeyName);
         }
     }
-    
+
     // ######################################################
     // ------------------- 实现额外的方法 end -------------------
     // ######################################################
-    
+
 
     /**
      * 验证类型
@@ -626,7 +624,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
         if (! $this->sType) {
             return;
         }
-        
+
         if (is_object($mixObject)) {
             if ($mixObject instanceof $this->sType) {
                 return;

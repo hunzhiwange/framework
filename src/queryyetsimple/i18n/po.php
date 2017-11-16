@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -40,14 +40,14 @@ ini_set('auto_detect_line_endings', 1);
  */
 class po extends gettext
 {
-    
+
     /**
      * prop
      *
      * @var string
      */
     public $comments_before_headers = '';
-    
+
     /**
      * Exports headers to a PO entry
      *
@@ -67,7 +67,7 @@ class po extends gettext
         }
         return rtrim("{$before_headers}msgid \"\"\nmsgstr $poified");
     }
-    
+
     /**
      * Exports all entries to PO format
      *
@@ -77,11 +77,11 @@ class po extends gettext
     {
         // TODO sorting
         return implode("\n\n", array_map(array(
-            'queryyetsimple\i18n\po', 
+            'queryyetsimple\i18n\po',
             'export_entry'
         ), $this->entries));
     }
-    
+
     /**
      * Exports the whole PO file as a string
      *
@@ -98,7 +98,7 @@ class po extends gettext
         $res .= $this->export_entries();
         return $res;
     }
-    
+
     /**
      * Same as {@link export}, but writes the result to a file
      *
@@ -119,7 +119,7 @@ class po extends gettext
         }
         return fclose($fh);
     }
-    
+
     /**
      * Text to include as a comment before the start of the PO contents
      *
@@ -129,7 +129,7 @@ class po extends gettext
     {
         $this->comments_before_headers = $text;
     }
-    
+
     /**
      * Formats a string in PO-style
      *
@@ -142,8 +142,8 @@ class po extends gettext
         $slash = '\\';
         $newline = "\n";
         $replaces = array(
-            "$slash" => "$slash$slash", 
-            "$quote" => "$slash$quote", 
+            "$slash" => "$slash$slash",
+            "$quote" => "$slash$quote",
             "\t" => '\t'
         );
         $string = str_replace(array_keys($replaces), array_values($replaces), $string);
@@ -156,7 +156,7 @@ class po extends gettext
         $po = str_replace("$newline$quote$quote", '', $po);
         return $po;
     }
-    
+
     /**
      * Gives back the original string from a PO-formatted string
      *
@@ -166,14 +166,14 @@ class po extends gettext
     public static function unpoify($string)
     {
         $escapes = array(
-            't' => "\t", 
-            'n' => "\n", 
-            'r' => "\r", 
+            't' => "\t",
+            'n' => "\n",
+            'r' => "\r",
             '\\' => '\\'
         );
         $lines = array_map('trim', explode("\n", $string));
         $lines = array_map(array(
-            'queryyetsimple\i18n\po', 
+            'queryyetsimple\i18n\po',
             'trim_quotes'
         ), $lines);
         $unpoified = '';
@@ -196,12 +196,12 @@ class po extends gettext
         }
         // Standardise the line endings on imported content, technically PO files shouldn't contain \r
         $unpoified = str_replace(array(
-            "\r\n", 
+            "\r\n",
             "\r"
         ), "\n", $unpoified);
         return $unpoified;
     }
-    
+
     /**
      * Inserts $with in the beginning of every new line of $string and
      * returns the modified string
@@ -226,7 +226,7 @@ class po extends gettext
         unset($line);
         return implode("\n", $lines) . $append;
     }
-    
+
     /**
      * Prepare a text as a comment -- wraps the lines and prepends #
      * and a special character to each line
@@ -242,7 +242,7 @@ class po extends gettext
         $text = wordwrap($text, PO_MAX_LINE_LEN - 3);
         return static::prepend_each_line($text, "#$char ");
     }
-    
+
     /**
      * Builds a string from the entry for inclusion in PO file
      *
@@ -278,7 +278,7 @@ class po extends gettext
         } else {
             $po[] = 'msgid_plural ' . static::poify($entry->plural);
             $translations = empty($entry->translations) ? array(
-                '', 
+                '',
                 ''
             ) : $entry->translations;
             foreach ($translations as $i => $translation) {
@@ -288,7 +288,7 @@ class po extends gettext
         }
         return implode("\n", $po);
     }
-    
+
     /**
      *
      * @param string $translation
@@ -320,7 +320,7 @@ class po extends gettext
         }
         return $translation;
     }
-    
+
     /**
      *
      * @param string $filename
@@ -353,7 +353,7 @@ class po extends gettext
         }
         return true;
     }
-    
+
     /**
      * Helper function for read_entry
      *
@@ -364,7 +364,7 @@ class po extends gettext
     {
         return ($context === 'msgstr') || ($context === 'msgstr_plural');
     }
-    
+
     /**
      *
      * @param resource $f
@@ -491,11 +491,11 @@ class po extends gettext
             $entry->translations = array();
         }
         return array(
-            'entry' => $entry, 
+            'entry' => $entry,
             'lineno' => $lineno
         );
     }
-    
+
     /**
      *
      * @staticvar string $last_line
@@ -523,7 +523,7 @@ class po extends gettext
         $use_last_line = false;
         return $line;
     }
-    
+
     /**
      *
      * @param Translation_Entry $entry
@@ -543,7 +543,7 @@ class po extends gettext
             $entry->translator_comments = trim($entry->translator_comments . "\n" . $comment);
         }
     }
-    
+
     /**
      *
      * @param string $s

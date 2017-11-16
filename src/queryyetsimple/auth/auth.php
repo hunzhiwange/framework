@@ -29,14 +29,14 @@ namespace queryyetsimple\auth;
  */
 class auth implements iauth
 {
-    
+
     /**
      * auth 连接对象
      *
      * @var \queryyetsimple\database\iconnect
      */
     protected $objConnect;
-    
+
     /**
      * 构造函数
      *
@@ -47,7 +47,7 @@ class auth implements iauth
     {
         $this->objConnect = $objConnect;
     }
-    
+
     /**
      * 拦截匿名注册控制器方法
      *
@@ -58,7 +58,7 @@ class auth implements iauth
     public function __call($sMethod, $arrArgs)
     {
         return call_user_func_array([
-            $this->objConnect, 
+            $this->objConnect,
             $sMethod
         ], $arrArgs);
     }

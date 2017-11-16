@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,7 +29,7 @@ namespace queryyetsimple\support;
  */
 interface itree
 {
-    
+
     /**
      * 设置节点数据
      *
@@ -39,7 +39,7 @@ interface itree
      * @return void
      */
     public function setNode($nId, $nParent, $mixValue);
-    
+
     /**
      * 取得给定 ID 子树
      *
@@ -47,7 +47,7 @@ interface itree
      * @return array
      */
     public function getChildrenTree($nId = 0);
-    
+
     /**
      * 取得给定 ID 一级子树 ID
      *
@@ -55,7 +55,7 @@ interface itree
      * @return array
      */
     public function getChild($nId);
-    
+
     /**
      * 取得给定 ID 所有子树 ID
      *
@@ -63,7 +63,7 @@ interface itree
      * @return array
      */
     public function getChildren($nId = 0);
-    
+
     /**
      * 取得给定 ID 是否包含子树
      *
@@ -71,7 +71,7 @@ interface itree
      * @return boolean
      */
     public function hasChild($nId);
-    
+
     /**
      * 验证是否存在子菜单
      *
@@ -81,7 +81,7 @@ interface itree
      * @return boolean
      */
     public function hasChildren($intId, array $arrCheckChildren = [], $booStrict = true);
-    
+
     /**
      * 取得给定 ID 上级父级 ID
      *
@@ -90,7 +90,7 @@ interface itree
      * @return array
      */
     public function getParent($nId, $booWithItSelf = false);
-    
+
     /**
      * 取得给定 ID 所有父级 ID
      *
@@ -99,7 +99,7 @@ interface itree
      * @return array
      */
     public function getParents($nId, $booWithItSelf = true);
-    
+
     /**
      * 判断级别
      *
@@ -107,7 +107,7 @@ interface itree
      * @return string
      */
     public function getLevel($nId);
-    
+
     /**
      * 取得节点的值
      *
@@ -115,7 +115,7 @@ interface itree
      * @return mixed
      */
     public function getData($nId, $mixDefault = null);
-    
+
     /**
      * 设置节点的值
      *
@@ -124,7 +124,7 @@ interface itree
      * @return void
      */
     public function setData($nId, $mixValue);
-    
+
     /**
      * 树转化为数组
      *

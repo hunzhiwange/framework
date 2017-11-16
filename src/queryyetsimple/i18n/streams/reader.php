@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -30,7 +30,7 @@ namespace queryyetsimple\i18n\streams;
  */
 class reader
 {
-    
+
     /**
      * prop
      *
@@ -38,7 +38,7 @@ class reader
      */
     public $endian = 'little';
     public $_post = '';
-    
+
     /**
      * PHP5 constructor.
      */
@@ -47,7 +47,7 @@ class reader
         $this->is_overloaded = ((ini_get("mbstring.func_overload") & 2) != 0) && function_exists('mb_substr');
         $this->_pos = 0;
     }
-    
+
     /**
      * Sets the endianness of the file.
      *
@@ -57,7 +57,7 @@ class reader
     {
         $this->endian = $endian;
     }
-    
+
     /**
      * Reads a 32bit Integer from the Stream
      *
@@ -74,7 +74,7 @@ class reader
         $int = unpack($endian_letter, $bytes);
         return reset($int);
     }
-    
+
     /**
      * Reads an array of 32-bit Integers from the Stream
      *
@@ -90,7 +90,7 @@ class reader
         $endian_letter = ('big' == $this->endian) ? 'N' : 'V';
         return unpack($endian_letter . $count, $bytes);
     }
-    
+
     /**
      *
      * @param string $string
@@ -106,7 +106,7 @@ class reader
             return substr($string, $start, $length);
         }
     }
-    
+
     /**
      *
      * @param string $string
@@ -120,7 +120,7 @@ class reader
             return strlen($string);
         }
     }
-    
+
     /**
      *
      * @param string $string
@@ -140,7 +140,7 @@ class reader
             return str_split($string, $chunk_size);
         }
     }
-    
+
     /**
      *
      * @return int
@@ -149,7 +149,7 @@ class reader
     {
         return $this->_pos;
     }
-    
+
     /**
      *
      * @return true
@@ -158,7 +158,7 @@ class reader
     {
         return true;
     }
-    
+
     /**
      *
      * @return true

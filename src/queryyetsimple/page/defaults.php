@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,25 +32,25 @@ use queryyetsimple\support\option;
 class defaults implements irender
 {
     use option;
-    
+
     /**
      * 分页
      *
      * @var \queryyetsimple\page\ipage
      */
     protected $objPage;
-    
+
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-        'small' => false, 
-        'template' => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}', 
+        'small' => false,
+        'template' => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
         'css' => true
     ];
-    
+
     /**
      * 构造函数
      *
@@ -66,7 +66,7 @@ class defaults implements irender
             $this->options($this->objPage->getRenderOption('render'));
         }
     }
-    
+
     /**
      * 渲染
      *
@@ -74,12 +74,11 @@ class defaults implements irender
      */
     public function render()
     {
-        return ($this->getOption('css') ? $this->css() : '') . preg_replace_callback("/{(.+?)}/", function ($arrMatche)
-        {
+        return ($this->getOption('css') ? $this->css() : '') . preg_replace_callback("/{(.+?)}/", function ($arrMatche) {
             return $this->{'get' . ucwords($arrMatche[1]) . 'Render'}();
         }, $this->getOption('template'));
     }
-    
+
     /**
      * 返回渲染 CSS
      *
@@ -89,7 +88,7 @@ class defaults implements irender
     {
         return sprintf('<style type="text/css">%s</style>', file_get_contents(__DIR__ . '/defaults.css'));
     }
-    
+
     /**
      * 返回渲染 header
      *
@@ -99,7 +98,7 @@ class defaults implements irender
     {
         return sprintf('<div class="pagination%s">', $this->getOption('small') ? ' pagination-small' : '');
     }
-    
+
     /**
      * 返回渲染 pager.ul
      *
@@ -109,7 +108,7 @@ class defaults implements irender
     {
         return '<ul class="pager">';
     }
-    
+
     /**
      * 返回渲染 total
      *
@@ -122,7 +121,7 @@ class defaults implements irender
         }
         return sprintf('<span class="pagination-total">%s</span>', __('共 %d 条', $this->objPage->getTotalRecord() ?  : 0));
     }
-    
+
     /**
      * 返回渲染 first
      *
@@ -135,7 +134,7 @@ class defaults implements irender
         }
         return sprintf('<li class=""><a href="%s" >1</a></li><li onclick="window.location.href=\'%s\';" class="btn-quickprev" onmouseenter="this.innerHTML=\'&laquo;\';" onmouseleave="this.innerHTML=\'...\';">...</li>', $this->replace(1), $this->replace($this->objPage->parseFirstRenderPrev()));
     }
-    
+
     /**
      * 返回渲染 prev
      *
@@ -149,7 +148,7 @@ class defaults implements irender
             return '<button class="btn-prev disabled">&#8249;</button>';
         }
     }
-    
+
     /**
      * 返回渲染 main
      *
@@ -160,7 +159,7 @@ class defaults implements irender
         if (! $this->objPage->canMainRender()) {
             return;
         }
-        
+
         $strMain = '';
         for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); $nI ++) {
             $booActive = $this->objPage->getCurrentPage() == $nI;
@@ -168,7 +167,7 @@ class defaults implements irender
         }
         return $strMain;
     }
-    
+
     /**
      * 返回渲染 next
      *
@@ -182,7 +181,7 @@ class defaults implements irender
             return '<button class="btn-next disabled">&#8250;</button>';
         }
     }
-    
+
     /**
      * 返回渲染 last
      *
@@ -193,12 +192,12 @@ class defaults implements irender
         if ($this->objPage->isTotalInfinity()) {
             return sprintf('<li class="btn-quicknext" onclick="window.location.href=\'%s\';" onmouseenter="this.innerHTML=\'&raquo;\';" onmouseleave="this.innerHTML=\'...\';">...</li>', $this->replace($this->objPage->parseLastRenderNext()));
         }
-        
+
         if ($this->objPage->canLastRender()) {
             return ($this->objPage->canLastRenderNext() ? sprintf('<li class="btn-quicknext" onclick="window.location.href=\'%s\';" onmouseenter="this.innerHTML=\'&raquo;\';" onmouseleave="this.innerHTML=\'...\';">...</li>', $this->replace($this->objPage->parseLastRenderNext())) : '') . sprintf('<li><a href="%s">%d</a></li>', $this->replace($this->objPage->getTotalPage()), $this->objPage->getTotalPage());
         }
     }
-    
+
     /**
      * 返回渲染 pager.endul
      *
@@ -208,7 +207,7 @@ class defaults implements irender
     {
         return '</ul>';
     }
-    
+
     /**
      * 返回渲染 jump
      *
@@ -218,7 +217,7 @@ class defaults implements irender
     {
         return sprintf('<span class="pagination-jump">%s<input type="number" link="%s" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute(\'link\').replace( \'{jump}\', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">%s</span>', __('前往'), $this->replace('{jump}'), __('页'));
     }
-    
+
     /**
      * 返回渲染 footer
      *
@@ -228,7 +227,7 @@ class defaults implements irender
     {
         return '</div>';
     }
-    
+
     /**
      * 替换分页变量
      *

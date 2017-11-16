@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,21 +31,21 @@ use PHPQueue\Job as PHPQueueJob;
  */
 abstract class ajob extends PHPQueueJob
 {
-    
+
     /**
      * 任务所属的消息队列
      *
      * @var string
      */
     protected $strQueue;
-    
+
     /**
      * 任务是否被删除
      *
      * @var boolean
      */
     protected $booDeleted = false;
-    
+
     /**
      * 构造函数
      *
@@ -60,7 +60,7 @@ abstract class ajob extends PHPQueueJob
         $this->strQueue = $strQueue;
         $this->initialization();
     }
-    
+
     /**
      * 执行任务
      *
@@ -70,15 +70,15 @@ abstract class ajob extends PHPQueueJob
     {
         list($strJob, $strMethod) = $this->parseString($this->getName());
         $objJob = $this->getJob($strJob);
-        
+
         $strMethod = method_exists($objJob, $strMethod) ? $strMethod : ($strMethod != 'handle' && method_exists($objJob, 'handle') ? 'handle' : 'run');
-        
+
         $this->dispatch([
-            $objJob, 
+            $objJob,
             $strMethod
         ]);
     }
-    
+
     /**
      * 调用任务的失败方法
      *
@@ -88,15 +88,15 @@ abstract class ajob extends PHPQueueJob
     {
         list($strJob, $strMethod) = $this->parseString($this->getName());
         $objJob = $this->getJob($strJob);
-        
+
         if ($objJob && method_exists($objJob, 'failed')) {
             $this->dispatch([
-                $objJob, 
+                $objJob,
                 'failed'
             ]);
         }
     }
-    
+
     /**
      * 标识任务删除
      *
@@ -106,7 +106,7 @@ abstract class ajob extends PHPQueueJob
     {
         $this->booDeleted = true;
     }
-    
+
     /**
      * 任务是否被删除
      *
@@ -116,7 +116,7 @@ abstract class ajob extends PHPQueueJob
     {
         return $this->booDeleted;
     }
-    
+
     /**
      * 取得 job 名字
      *
@@ -126,7 +126,7 @@ abstract class ajob extends PHPQueueJob
     {
         return $this->data['job'];
     }
-    
+
     /**
      * 取得 job 数据
      *
@@ -136,7 +136,7 @@ abstract class ajob extends PHPQueueJob
     {
         return $this->data['data'];
     }
-    
+
     /**
      * 返回任务执行次数
      *
@@ -146,7 +146,7 @@ abstract class ajob extends PHPQueueJob
     {
         return $this->data['attempts'];
     }
-    
+
     /**
      * 获取任务所属的消息队列
      *
@@ -156,7 +156,7 @@ abstract class ajob extends PHPQueueJob
     {
         return $this->strQueue;
     }
-    
+
     /**
      * 取得 worker
      *
@@ -166,7 +166,7 @@ abstract class ajob extends PHPQueueJob
     {
         return $this->worker;
     }
-    
+
     /**
      * 取得 job_id
      *
@@ -176,7 +176,7 @@ abstract class ajob extends PHPQueueJob
     {
         return $this->job_id;
     }
-    
+
     /**
      * 分析任务名字
      *
@@ -187,11 +187,11 @@ abstract class ajob extends PHPQueueJob
     {
         $strJob = explode('@', $strJob);
         return ! empty($strJob[1]) ? $strJob : [
-            $strJob[0], 
+            $strJob[0],
             'handle'
         ];
     }
-    
+
     /**
      * 取得任务实例
      *
@@ -202,7 +202,7 @@ abstract class ajob extends PHPQueueJob
     {
         return $this->container()->make($strJob);
     }
-    
+
     /**
      * 调度回调方法
      *
@@ -213,7 +213,7 @@ abstract class ajob extends PHPQueueJob
     {
         $this->container()->call($calFunc, $this->args());
     }
-    
+
     /**
      * 返回服务容器
      *
@@ -223,7 +223,7 @@ abstract class ajob extends PHPQueueJob
     {
         return project();
     }
-    
+
     /**
      * 获取任务调度参数
      *
@@ -235,7 +235,7 @@ abstract class ajob extends PHPQueueJob
         array_unshift($arrArgs, $this);
         return $arrArgs;
     }
-    
+
     /**
      * 初始化
      *
@@ -246,7 +246,7 @@ abstract class ajob extends PHPQueueJob
         if (! isset($this->data['data'])) {
             $this->data['data'] = [];
         }
-        
+
         if (! isset($this->data['attempts'])) {
             $this->data['attempts'] = 1;
         }

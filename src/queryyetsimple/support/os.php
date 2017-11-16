@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,7 +29,7 @@ namespace queryyetsimple\support;
  */
 class os
 {
-    
+
     /**
      * 是否为 window 平台
      *
@@ -39,17 +39,17 @@ class os
     {
         return DIRECTORY_SEPARATOR === '\\';
     }
-    
+
     /**
      * 是否为 Linux 平台
      *
      * @return boolean
      */
-    static public function isLinux()
+    public static function isLinux()
     {
         return PHP_OS === 'Linux';
     }
-    
+
     /**
      * 是否为 mac 平台
      *
@@ -59,7 +59,7 @@ class os
     {
         return strstr(PHP_OS, 'Darwin');
     }
-    
+
     /**
      * 返回操作系统名称
      *
@@ -69,7 +69,7 @@ class os
     {
         return PHP_OS;
     }
-    
+
     /**
      * 当前操作系统换行符
      *

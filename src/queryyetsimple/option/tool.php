@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,7 +33,7 @@ use queryyetsimple\filesystem\fso;
  */
 class tool
 {
-    
+
     /**
      * 合并配置文件数据
      *
@@ -46,14 +46,14 @@ class tool
     public static function saveToCache($arrOptionDir, $sOptionCache, $arrExtendData = [], $booInitApp = false)
     {
         $arrData = $arrType = [];
-        
+
         foreach ($arrOptionDir as $sDir) {
             if (is_dir($sDir) && ($arrFile = fso::lists($sDir, 'file'))) {
                 foreach ($arrFile as $strFile) {
                     if (fso::getExtension($strFile, 2) == 'php') {
                         $strType = substr($strFile, 0, - 4);
                         $arrType[] = $strType;
-                        
+
                         if (! isset($arrData[$strType])) {
                             $arrData[$strType] = [];
                         }
@@ -64,11 +64,11 @@ class tool
                 }
             }
         }
-        
+
         foreach ($arrType as $sType) {
             $arrData[$sType] = helper::arrayMergePlus($arrData[$sType]);
         }
-        
+
         if ($arrExtendData) {
             foreach ($arrExtendData as $sType => $arrTemp) {
                 if (isset($arrData[$sType])) {
@@ -78,23 +78,23 @@ class tool
                 }
             }
         }
-        
+
         if ($booInitApp) {
             self::router($arrData, $arrOptionDir);
         }
-        
+
         if (! is_dir(dirname($sOptionCache))) {
             fso::createDirectory(dirname($sOptionCache));
         }
-        
+
         if (! file_put_contents($sOptionCache, '<?php return ' . var_export($arrData, true) . '; ?>')) {
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $this->optioncache_path));
         }
         file_put_contents($sOptionCache, '<?php /* ' . date('Y-m-d H:i:s') . ' */ ?>' . PHP_EOL . php_strip_whitespace($sOptionCache));
-        
+
         return $arrData;
     }
-    
+
     /**
      * 路由配置
      *
@@ -105,7 +105,7 @@ class tool
     protected static function router(&$arrData, $arrOptionDir)
     {
         $arrData['app']['~routers~'] = [];
-        
+
         foreach ($arrOptionDir as $sDir) {
             $sDir = dirname($sDir) . '/router';
             if (is_dir($sDir) && ($arrFile = fso::lists($sDir, 'file'))) {

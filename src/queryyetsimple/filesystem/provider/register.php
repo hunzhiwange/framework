@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,14 +32,14 @@ use queryyetsimple\filesystem\manager;
  */
 class register extends provider
 {
-    
+
     /**
      * 是否延迟载入
      *
      * @var boolean
      */
     public static $booDefer = true;
-    
+
     /**
      * 注册服务
      *
@@ -50,7 +50,7 @@ class register extends provider
         $this->filesystems();
         $this->filesystem();
     }
-    
+
     /**
      * 可用服务提供者
      *
@@ -59,14 +59,14 @@ class register extends provider
     public static function providers()
     {
         return [
-            'filesystems' => 'queryyetsimple\filesystem\manager', 
+            'filesystems' => 'queryyetsimple\filesystem\manager',
             'filesystem' => [
-                'queryyetsimple\filesystem\filesystem', 
+                'queryyetsimple\filesystem\filesystem',
                 'queryyetsimple\filesystem\ifilesystem'
             ]
         ];
     }
-    
+
     /**
      * 注册 filesystems 服务
      *
@@ -74,12 +74,11 @@ class register extends provider
      */
     protected function filesystems()
     {
-        $this->singleton('filesystems', function ($oProject)
-        {
+        $this->singleton('filesystems', function ($oProject) {
             return new manager($oProject);
         });
     }
-    
+
     /**
      * 注册 filesystem 服务
      *
@@ -87,8 +86,7 @@ class register extends provider
      */
     protected function filesystem()
     {
-        $this->singleton('filesystem', function ($oProject)
-        {
+        $this->singleton('filesystem', function ($oProject) {
             return $oProject['filesystems']->connect();
         });
     }

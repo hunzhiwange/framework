@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -30,7 +30,7 @@ namespace queryyetsimple\i18n;
  */
 class entry
 {
-    
+
     /**
      * Whether the entry contains a string and its plural form, default is false
      *
@@ -45,7 +45,7 @@ class entry
     public $extracted_comments = '';
     public $references = array();
     public $flags = array();
-    
+
     /**
      *
      * @param array $args associative array, support following keys:
@@ -81,7 +81,7 @@ class entry
             $this->flags = array();
         }
     }
-    
+
     /**
      * Generates a unique key for this entry
      *
@@ -96,12 +96,12 @@ class entry
         $key = ! $this->context ? $this->singular : $this->context . chr(4) . $this->singular;
         // Standardize on \n line endings
         $key = str_replace(array(
-            "\r\n", 
+            "\r\n",
             "\r"
         ), "\n", $key);
         return $key;
     }
-    
+
     /**
      *
      * @param object $other

@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,7 +31,7 @@ use Closure;
  */
 interface icontainer
 {
-    
+
     /**
      * 注册到容器
      *
@@ -41,7 +41,7 @@ interface icontainer
      * @return $this
      */
     public function bind($mixFactoryName, $mixFactory = null, $booShare = false);
-    
+
     /**
      * 注册为实例
      *
@@ -50,7 +50,7 @@ interface icontainer
      * @return void
      */
     public function instance($mixFactoryName, $mixFactory);
-    
+
     /**
      * 注册单一实例
      *
@@ -59,7 +59,7 @@ interface icontainer
      * @return void
      */
     public function singleton($mixFactoryName, $mixFactory = null);
-    
+
     /**
      * 创建共享的闭包
      *
@@ -67,7 +67,7 @@ interface icontainer
      * @return \Closure
      */
     public function share(Closure $objClosure);
-    
+
     /**
      * 设置别名
      *
@@ -76,7 +76,7 @@ interface icontainer
      * @return void
      */
     public function alias($mixAlias, $mixValue = null);
-    
+
     /**
      * 分组注册
      *
@@ -85,7 +85,7 @@ interface icontainer
      * @return void
      */
     public function group($strGroupName, $mixGroupData);
-    
+
     /**
      * 分组制造
      *
@@ -94,7 +94,7 @@ interface icontainer
      * @return array
      */
     public function groupMake($strGroupName, array $arrArgs = []);
-    
+
     /**
      * 服务容器返回对象
      *
@@ -103,7 +103,7 @@ interface icontainer
      * @return object|false
      */
     public function make($strFactoryName, array $arrArgs = []);
-    
+
     /**
      * 实例回调自动注入
      *

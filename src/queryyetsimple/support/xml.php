@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,49 +32,49 @@ use InvalidArgumentException;
  */
 class xml
 {
-    
+
     /**
      * 函数创建 XML 解析器
      *
      * @var resource
      */
     protected $resParser;
-    
+
     /**
      * Document
      *
      * @var array
      */
     protected $arrDocument;
-    
+
     /**
      * Parent
      *
      * @var array
      */
     protected $arrParent;
-    
+
     /**
      * Stack
      *
      * @var array
      */
     protected $arrStack;
-    
+
     /**
      * LastOpenedTag
      *
      * @var array
      */
     protected $sLastOpenedTag;
-    
+
     /**
      * Data
      *
      * @var string
      */
     protected $sData;
-    
+
     /**
      * 构造函数
      *
@@ -83,7 +83,7 @@ class xml
     protected function __construct()
     {
     }
-    
+
     /**
      * 禁止克隆
      *
@@ -93,7 +93,7 @@ class xml
     {
         throw new RuntimeException('Xml disallowed clone');
     }
-    
+
     /**
      * 数据数据 xml
      *
@@ -109,12 +109,12 @@ class xml
         if (! is_array($arrData)) {
             throw new InvalidArgumentException('The first argument variable is not an array');
         }
-        
+
         if ($nLevel == 0) {
             ob_start();
             echo '<?xml version="1.0" encoding="' . $sCharset . '"?>' . PHP_EOL . '<root>' . PHP_EOL;
         }
-        
+
         while ((list($sKey, $sValue) = each($arrData)) !== false) {
             if (! strpos($sKey, ' attr')) {
                 if (is_array($sValue) and array_key_exists(0, $sValue)) {
@@ -128,7 +128,7 @@ class xml
                         }
                         reset($arrData["$sKey attr"]);
                     }
-                    
+
                     if (is_null($sValue)) {
                         echo ' />' . PHP_EOL;
                     } elseif (! is_array($sValue)) {
@@ -139,9 +139,9 @@ class xml
                 }
             }
         }
-        
+
         reset($arrData);
-        
+
         if ($nLevel == 0) {
             echo '</root>';
             $sStr = ob_get_contents();
@@ -149,7 +149,7 @@ class xml
             return $sStr;
         }
     }
-    
+
     /**
      * xml 反序列化
      *
@@ -168,7 +168,7 @@ class xml
         }
         return $arrData;
     }
-    
+
     /**
      * 分析 xml 数据
      *
@@ -182,7 +182,7 @@ class xml
         $this->arrParent = &$this->arrDocument;
         return xml_parse($this->resParser, $sData, true) ? $this->arrDocument : null;
     }
-    
+
     /**
      * 初始化 xml 分析器句柄
      *
@@ -196,7 +196,7 @@ class xml
         xml_set_element_handler($this->resParser, 'open', 'close');
         xml_set_character_data_handler($this->resParser, 'data');
     }
-    
+
     /**
      * 关闭 xml 分析器句柄
      *
@@ -206,7 +206,7 @@ class xml
     {
         xml_parser_free($this->resParser);
     }
-    
+
     /**
      * 打开
      *
@@ -225,7 +225,7 @@ class xml
             } else {
                 if (array_key_exists("$sTag attr", $this->arrParent)) {
                     $arrValue = [
-                        '0 attr' => &$this->arrParent["$sTag attr"], 
+                        '0 attr' => &$this->arrParent["$sTag attr"],
                         &$this->arrParent[$sTag]
                     ];
                     unset($this->arrParent["$sTag attr"]);
@@ -234,7 +234,7 @@ class xml
                         &$this->arrParent[$sTag]
                     ];
                 }
-                
+
                 $this->arrParent[$sTag] = &$arrValue;
                 $nKey = 1;
             }
@@ -242,15 +242,15 @@ class xml
         } else {
             $nKey = $sTag;
         }
-        
+
         if ($arrAttributes) {
             $this->arrParent["$nKey attr"] = $arrAttributes;
         }
-        
+
         $this->arrParent = &$this->arrParent[$nKey];
         $this->arrStack[] = &$this->arrParent;
     }
-    
+
     /**
      * 关闭
      *
@@ -264,13 +264,13 @@ class xml
             $this->arrParent = $this->sData;
             $this->sLastOpenedTag = null;
         }
-        
+
         array_pop($this->arrStack);
         if ($this->arrStack) {
             $this->arrParent = &$this->arrStack[count($this->arrStack) - 1];
         }
     }
-    
+
     /**
      * 数据设置
      *
@@ -284,7 +284,7 @@ class xml
             $this->sData .= $sData;
         }
     }
-    
+
     /**
      * 数字项数量
      *
@@ -295,7 +295,7 @@ class xml
     {
         return is_array($array) ? count(array_filter(array_keys($array), 'is_numeric')) : 0;
     }
-    
+
     /**
      * 格式化节点
      *

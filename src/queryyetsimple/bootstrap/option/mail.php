@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -27,7 +27,7 @@
  * @version 1.0
  */
 return [
-    
+
     /**
      * ---------------------------------------------------------------
      * mail 驱动
@@ -35,8 +35,8 @@ return [
      *
      * 采用什么方式发送邮件数据
      */
-    'default' => env('mail_driver', 'smtp'), 
-    
+    'default' => env('mail_driver', 'smtp'),
+
     /**
      * ---------------------------------------------------------------
      * mail 发送地址
@@ -45,10 +45,10 @@ return [
      * 必须设置邮件发送的邮箱
      */
     'global_from' => [
-        'address' => null, 
+        'address' => null,
         'name' => null
-    ], 
-    
+    ],
+
     /**
      * ---------------------------------------------------------------
      * mail 全局接收地址
@@ -57,10 +57,10 @@ return [
      * 这个可以不用设置，如果设置所有邮件都会发送一份到这个邮箱
      */
     'global_to' => [
-        'address' => null, 
+        'address' => null,
         'name' => null
-    ], 
-    
+    ],
+
     /**
      * ---------------------------------------------------------------
      * mail 驱动连接参数
@@ -72,28 +72,28 @@ return [
     '+connect' => [
         '+smtp' => [
             // driver
-            'driver' => 'smtp', 
-            
+            'driver' => 'smtp',
+
             // smtp 主机
-            'host' => env('mail_host', 'smtp.qq.com'), 
-            
+            'host' => env('mail_host', 'smtp.qq.com'),
+
             // 端口
-            'port' => env('mail_port', 587), 
-            
+            'port' => env('mail_port', 587),
+
             // 用户名
-            'username' => env('mail_username'), 
-            
+            'username' => env('mail_username'),
+
             // 登录密码
-            'password' => env('mail_password'), 
-            
+            'password' => env('mail_password'),
+
             // 加密方式
             'encryption' => env('mail_encryption', 'ssl')
-        ], 
-        
+        ],
+
         '+sendmail' => [
             // driver
-            'driver' => 'sendmail', 
-            
+            'driver' => 'sendmail',
+
             // 命令路径
             'path' => '/usr/sbin/sendmail -bs'
         ]

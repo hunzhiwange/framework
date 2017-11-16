@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,14 +32,14 @@ use queryyetsimple\support\option;
 class bootstrap implements irender
 {
     use option;
-    
+
     /**
      * 分页
      *
      * @var \queryyetsimple\page\ipage
      */
     protected $objPage;
-    
+
     /**
      * 配置
      *
@@ -47,11 +47,11 @@ class bootstrap implements irender
      */
     protected $arrOption = [
         // lg sm
-        'size' => '', 
-        'template' => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}', 
+        'size' => '',
+        'template' => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',
         'css' => true
     ];
-    
+
     /**
      * 构造函数
      *
@@ -67,7 +67,7 @@ class bootstrap implements irender
             $this->options($this->objPage->getRenderOption('render'));
         }
     }
-    
+
     /**
      * 渲染
      *
@@ -75,12 +75,11 @@ class bootstrap implements irender
      */
     public function render()
     {
-        return ($this->getOption('css') ? $this->css() : '') . preg_replace_callback("/{(.+?)}/", function ($arrMatche)
-        {
+        return ($this->getOption('css') ? $this->css() : '') . preg_replace_callback("/{(.+?)}/", function ($arrMatche) {
             return $this->{'get' . ucwords($arrMatche[1]) . 'Render'}();
         }, $this->getOption('template'));
     }
-    
+
     /**
      * 返回渲染 CSS
      *
@@ -90,7 +89,7 @@ class bootstrap implements irender
     {
         return '<link href="http://v3.bootcss.com/dist/css/bootstrap.min.css" rel="stylesheet">';
     }
-    
+
     /**
      * 返回渲染 header
      *
@@ -100,7 +99,7 @@ class bootstrap implements irender
     {
         return '<nav aria-label="navigation">';
     }
-    
+
     /**
      * 返回渲染 pager.ul
      *
@@ -110,7 +109,7 @@ class bootstrap implements irender
     {
         return sprintf('<ul class="pagination%s">', $this->getOption('size') ? ' pagination-' . $this->getOption('size') : '');
     }
-    
+
     /**
      * 返回渲染 first
      *
@@ -123,7 +122,7 @@ class bootstrap implements irender
         }
         return sprintf('<li class=""><a href="%s" >1</a></li><li><a href="%s">...</a></li>', $this->replace(1), $this->replace($this->objPage->parseFirstRenderPrev()));
     }
-    
+
     /**
      * 返回渲染 prev
      *
@@ -137,7 +136,7 @@ class bootstrap implements irender
             return '<li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
         }
     }
-    
+
     /**
      * 返回渲染 main
      *
@@ -148,7 +147,7 @@ class bootstrap implements irender
         if (! $this->objPage->canMainRender()) {
             return;
         }
-        
+
         $strMain = '';
         for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); $nI ++) {
             $booActive = $this->objPage->getCurrentPage() == $nI;
@@ -156,7 +155,7 @@ class bootstrap implements irender
         }
         return $strMain;
     }
-    
+
     /**
      * 返回渲染 next
      *
@@ -170,7 +169,7 @@ class bootstrap implements irender
             return '<li class="disabled"><a aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
         }
     }
-    
+
     /**
      * 返回渲染 last
      *
@@ -181,12 +180,12 @@ class bootstrap implements irender
         if ($this->objPage->isTotalInfinity()) {
             return sprintf('<li><a href="%s">...</a></li>', $this->replace($this->objPage->parseLastRenderNext()));
         }
-        
+
         if ($this->objPage->canLastRender()) {
             return ($this->objPage->canLastRenderNext() ? sprintf('<li><a href="%s">...</a></li>', $this->replace($this->objPage->parseLastRenderNext())) : '') . sprintf('<li><a href="%s">%d</a></li>', $this->replace($this->objPage->getTotalPage()), $this->objPage->getTotalPage());
         }
     }
-    
+
     /**
      * 返回渲染 pager.endul
      *
@@ -196,7 +195,7 @@ class bootstrap implements irender
     {
         return '</ul>';
     }
-    
+
     /**
      * 返回渲染 footer
      *
@@ -206,7 +205,7 @@ class bootstrap implements irender
     {
         return '</nav>';
     }
-    
+
     /**
      * 替换分页变量
      *

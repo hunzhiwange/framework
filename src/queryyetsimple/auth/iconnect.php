@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,21 +29,21 @@ namespace queryyetsimple\auth;
  */
 interface iconnect
 {
-    
+
     /**
      * 用户是否已经登录
      *
      * @return boolean
      */
     public function isLogin();
-    
+
     /**
      * 获取登录信息
      *
      * @return mixed
      */
     public function getLogin();
-    
+
     /**
      * 登录验证
      *
@@ -53,14 +53,14 @@ interface iconnect
      * @return \queryyetsimple\mvc\imodel|void
      */
     public function login($mixName, $sPassword, $mixLoginTime = null);
-    
+
     /**
      * 登出
      *
      * @return void
      */
     public function logout();
-    
+
     /**
      * 修改密码
      *
@@ -72,7 +72,7 @@ interface iconnect
      * @return mixed
      */
     public function changePassword($mixName, $sNewPassword, $sConfirmPassword, $sOldPassword, $bIgnoreOldPassword = false);
-    
+
     /**
      * 注册用户
      *
@@ -86,7 +86,7 @@ interface iconnect
      * @return mixed
      */
     public function registerUser($strName, $strPassword, $strComfirmPassword, $strNikename = null, $strIp = null, $strEmail = null, $strMobile = null);
-    
+
     /**
      * 设置认证名字
      *
@@ -94,14 +94,14 @@ interface iconnect
      * @return string
      */
     public function setTokenName($strTokenName);
-    
+
     /**
      * 取得认证名字
      *
      * @return string
      */
     public function getTokenName();
-    
+
     /**
      * 设置用户信息持久化名字
      *
@@ -109,14 +109,14 @@ interface iconnect
      * @return string
      */
     public function setUserPersistenceName($strUserPersistenceName);
-    
+
     /**
      * 取得用户信息持久化名字
      *
      * @return string
      */
     public function getUserPersistenceName();
-    
+
     /**
      * 设置字段
      *
@@ -125,7 +125,7 @@ interface iconnect
      * @return void
      */
     public function setField(array $arrField, $booForce = false);
-    
+
     /**
      * 获取字段
      *
@@ -133,7 +133,7 @@ interface iconnect
      * @return mixed
      */
     public function getField($strField);
-    
+
     /**
      * 批量获取字段
      *
@@ -142,7 +142,7 @@ interface iconnect
      * @return array
      */
     public function getFields(array $arrField, $booFilterNull = true);
-    
+
     /**
      * 验证数据分离
      *
@@ -150,7 +150,7 @@ interface iconnect
      * @return mixed
      */
     public function explodeTokenData($sAuth);
-    
+
     /**
      * 验证数据组合
      *

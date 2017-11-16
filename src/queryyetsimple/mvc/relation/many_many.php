@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,42 +32,42 @@ use queryyetsimple\support\collection;
  */
 class many_many extends relation
 {
-    
+
     /**
      * 中间表查询对象
      *
      * @var \queryyetsimple\database\select
      */
     protected $objMiddleSelect;
-    
+
     /**
      * 中间表模型
      *
      * @var \queryyetsimple\mvc\imodel
      */
     protected $objMiddleModel;
-    
+
     /**
      * 目标中间表关联字段
      *
      * @var string
      */
     protected $strMiddleTargetKey;
-    
+
     /**
      * 源中间表关联字段
      *
      * @var string
      */
     protected $strMiddleSourceKey;
-    
+
     /**
      * 中间表隐射数据
      *
      * @var array
      */
     protected $arrMiddleMap = [];
-    
+
     /**
      * 构造函数
      *
@@ -85,10 +85,10 @@ class many_many extends relation
         $this->objMiddleModel = $objMiddleModel;
         $this->strMiddleTargetKey = $strMiddleTargetKey;
         $this->strMiddleSourceKey = $strMiddleSourceKey;
-        
+
         parent::__construct($objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey);
     }
-    
+
     /**
      * 关联基础查询条件
      *
@@ -100,7 +100,7 @@ class many_many extends relation
             $this->objMiddleSelect = $this->objMiddleModel->where($this->strMiddleSourceKey, $this->getSourceValue());
         }
     }
-    
+
     /**
      * 设置预载入关联查询条件
      *
@@ -112,7 +112,7 @@ class many_many extends relation
         $this->preLoadRelationCondition($arrModel);
         $this->parseSelectCondition();
     }
-    
+
     /**
      * 匹配关联查询数据到模型
      *
@@ -124,17 +124,17 @@ class many_many extends relation
     public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
     {
         $arrMap = $this->buildMap($objResult);
-        
+
         foreach ($arrModel as &$objModel) {
             $mixKey = $objModel->getProp($this->strSourceKey);
             if (isset($arrMap[$mixKey])) {
                 $objModel->setRelationProp($strRelation, $this->objTargetModel->collection($arrMap[$mixKey]));
             }
         }
-        
+
         return $arrModel;
     }
-    
+
     /**
      * 中间表查询回调处理
      *
@@ -144,13 +144,13 @@ class many_many extends relation
     public function middleCondition($calCallback)
     {
         call_user_func_array($calCallback, [
-            $this->objMiddleSelect, 
+            $this->objMiddleSelect,
             $this
         ]);
-        
+
         return $this;
     }
-    
+
     /**
      * 取回源模型对应数据
      *
@@ -160,7 +160,7 @@ class many_many extends relation
     {
         return $this->objSourceModel->getProp($this->strSourceKey);
     }
-    
+
     /**
      * 查询关联对象
      *
@@ -174,7 +174,7 @@ class many_many extends relation
             return $this->objSelect->getAll();
         }
     }
-    
+
     /**
      * 取得中间表查询对象
      *
@@ -184,7 +184,7 @@ class many_many extends relation
     {
         return $this->objMiddleSelect;
     }
-    
+
     /**
      * 取得中间表模型
      *
@@ -194,7 +194,7 @@ class many_many extends relation
     {
         return $this->objMiddleModel;
     }
-    
+
     /**
      * 取得目标中间表关联字段
      *
@@ -204,7 +204,7 @@ class many_many extends relation
     {
         return $this->strMiddleTargetKey;
     }
-    
+
     /**
      * 取得源中间表关联字段
      *
@@ -214,7 +214,7 @@ class many_many extends relation
     {
         return $this->strMiddleSourceKey;
     }
-    
+
     /**
      * 取得中间表隐射数据
      *
@@ -224,7 +224,7 @@ class many_many extends relation
     {
         return $this->arrMiddleMap;
     }
-    
+
     /**
      * 取得源外键值
      *
@@ -234,7 +234,7 @@ class many_many extends relation
     {
         return $this->objSourceModel->getProp($this->strSourceKey);
     }
-    
+
     /**
      * 预载入关联基础查询条件
      *
@@ -244,7 +244,7 @@ class many_many extends relation
     {
         $this->objMiddleSelect = $this->objMiddleModel->whereIn($this->strMiddleSourceKey, $this->getPreLoadSourceValue($arrModel));
     }
-    
+
     /**
      * 取回源模型对应数据
      *
@@ -253,14 +253,14 @@ class many_many extends relation
     protected function getPreLoadSourceValue(array $arrModel)
     {
         $arr = [];
-        
+
         foreach ($arrModel as $objSourceModel) {
             $arr[] = $objSourceModel->{$this->strSourceKey};
         }
-        
+
         return $arr;
     }
-    
+
     /**
      * 模型隐射数据
      *
@@ -270,7 +270,7 @@ class many_many extends relation
     protected function buildMap(collection $objResult)
     {
         $arrMap = [];
-        
+
         foreach ($objResult as $objResultModel) {
             $mixKey = $objResultModel->getProp($this->strTargetKey);
             if (isset($this->arrMiddleMap[$mixKey])) {
@@ -279,10 +279,10 @@ class many_many extends relation
                 }
             }
         }
-        
+
         return $arrMap;
     }
-    
+
     /**
      * 通过中间表获取目标 ID
      *
@@ -291,16 +291,16 @@ class many_many extends relation
     protected function parseSelectCondition()
     {
         $arrTargetId = $this->parseTargetId();
-        
+
         $this->objSelect->whereIn($this->strTargetKey, $arrTargetId ?  : [
             0
         ]);
-        
+
         if (! $arrTargetId) {
             return false;
         }
     }
-    
+
     /**
      * 通过中间表获取目标 ID
      *
@@ -309,14 +309,14 @@ class many_many extends relation
     protected function parseTargetId()
     {
         $arr = $arrTargetId = [];
-        
+
         foreach ($this->objMiddleSelect->getAll() as $objMiddleModel) {
             $arr[$objMiddleModel->{$this->strMiddleTargetKey}][] = $objMiddleModel->{$this->strMiddleSourceKey};
             $arrTargetId[] = $objMiddleModel->{$this->strMiddleTargetKey};
         }
-        
+
         $this->arrMiddleMap = $arr;
-        
+
         return array_unique($arrTargetId);
     }
 }

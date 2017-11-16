@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -35,7 +35,7 @@ use queryyetsimple\support\provider;
  */
 class register extends provider
 {
-    
+
     /**
      * 注册服务
      *
@@ -43,15 +43,13 @@ class register extends provider
      */
     public function register()
     {
-        $this->singleton('view', function ($oProject)
-        {
-            return (new view($oProject['view.theme']))->setResponseFactory(function () use($oProject)
-            {
+        $this->singleton('view', function ($oProject) {
+            return (new view($oProject['view.theme']))->setResponseFactory(function () use ($oProject) {
                 return $oProject['response'];
             });
         });
     }
-    
+
     /**
      * bootstrap
      *
@@ -64,7 +62,7 @@ class register extends provider
         $this->console();
         $this->meta();
     }
-    
+
     /**
      * 可用服务提供者
      *
@@ -74,12 +72,12 @@ class register extends provider
     {
         return [
             'view' => [
-                'queryyetsimple\mvc\view', 
+                'queryyetsimple\mvc\view',
                 'queryyetsimple\mvc\iview'
             ]
         ];
     }
-    
+
     /**
      * 设置模型事件
      *
@@ -90,7 +88,7 @@ class register extends provider
     {
         model::setEventDispatch($objEvent);
     }
-    
+
     /**
      * 载入命令包
      *

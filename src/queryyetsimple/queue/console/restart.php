@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,21 +31,21 @@ use queryyetsimple\console\command;
  */
 class restart extends command
 {
-    
+
     /**
      * 命令名字
      *
      * @var string
      */
     protected $strName = 'queue:restart';
-    
+
     /**
      * 命令行描述
      *
      * @var string
      */
     protected $strDescription = 'Restart queue work after done it current job.';
-    
+
     /**
      * 响应命令
      *

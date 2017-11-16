@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,7 +31,7 @@ use queryyetsimple\support\manager as support_manager;
  */
 class manager extends support_manager
 {
-    
+
     /**
      * 取得配置命名空间
      *
@@ -41,7 +41,7 @@ class manager extends support_manager
     {
         return 'mail';
     }
-    
+
     /**
      * 创建连接对象
      *
@@ -52,7 +52,7 @@ class manager extends support_manager
     {
         return new mail($objConnect, $this->objContainer['view'], $this->objContainer['event'], $this->getOptionCommon());
     }
-    
+
     /**
      * 创建 smtp 连接
      *
@@ -63,7 +63,7 @@ class manager extends support_manager
     {
         return new smtp(array_merge($this->getOption('smtp', $arrOption)));
     }
-    
+
     /**
      * 创建 sendmail 连接
      *
@@ -74,7 +74,7 @@ class manager extends support_manager
     {
         return new sendmail(array_merge($this->getOption('sendmail', $arrOption)));
     }
-    
+
     /**
      * 过滤全局配置项
      *
@@ -83,9 +83,9 @@ class manager extends support_manager
     protected function filterOptionCommonItem()
     {
         return [
-            'default', 
-            'connect', 
-            'from', 
+            'default',
+            'connect',
+            'from',
             'to'
         ];
     }

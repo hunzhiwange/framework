@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,7 +29,7 @@ namespace queryyetsimple\page;
  */
 class bootstrap_simple extends bootstrap
 {
-    
+
     /**
      * 配置
      *
@@ -37,11 +37,11 @@ class bootstrap_simple extends bootstrap
      */
     protected $arrOption = [
         // center,justify
-        'align' => 'center', 
-        'template' => '{header} {ul} {prev} {next} {endul} {footer}', 
+        'align' => 'center',
+        'template' => '{header} {ul} {prev} {next} {endul} {footer}',
         'css' => true
     ];
-    
+
     /**
      * 返回渲染 header
      *
@@ -51,7 +51,7 @@ class bootstrap_simple extends bootstrap
     {
         return '<nav aria-label="...">';
     }
-    
+
     /**
      * 返回渲染 pager.ul
      *
@@ -61,7 +61,7 @@ class bootstrap_simple extends bootstrap
     {
         return '<ul class="pager">';
     }
-    
+
     /**
      * 返回渲染 prev
      *
@@ -75,7 +75,7 @@ class bootstrap_simple extends bootstrap
             return sprintf('<li class="disabled%s"><a aria-label="Previous"><span aria-hidden="true">%s</span></a></li>', $this->getOption('align') == 'justify' ? ' previous' : '', __('上一页'));
         }
     }
-    
+
     /**
      * 返回渲染 next
      *
@@ -89,7 +89,7 @@ class bootstrap_simple extends bootstrap
             return sprintf('<li class="disabled%s"><a aria-label="Next"><span aria-hidden="true">%s</span></a></li>', $this->getOption('align') == 'justify' ? ' next' : '', __('下一页'));
         }
     }
-    
+
     /**
      * 返回渲染 pager.endul
      *
@@ -99,7 +99,7 @@ class bootstrap_simple extends bootstrap
     {
         return '</ul>';
     }
-    
+
     /**
      * 返回渲染 footer
      *

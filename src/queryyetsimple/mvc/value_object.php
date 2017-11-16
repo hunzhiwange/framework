@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -40,49 +40,49 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
 {
     use serialize;
     use flow_control;
-    
+
     /**
      * 值对象数据
      *
      * @var array
      */
     protected $arrData = [];
-    
+
     /**
      * 值对象源数据
      *
      * @var array
      */
     protected $arrSourceData = [];
-    
+
     /**
      * 转换隐藏的属性
      *
      * @var array
      */
     protected $arrHidden = [];
-    
+
     /**
      * 转换显示的属性
      *
      * @var array
      */
     protected $arrVisible = [];
-    
+
     /**
      * 追加
      *
      * @var array
      */
     protected $arrAppend = [];
-    
+
     /**
      * 缓存驼峰法命名属性到下划线
      *
      * @var array
      */
     protected static $arrUnCamelize = [];
-    
+
     /**
      * 构造函数
      *
@@ -95,7 +95,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         $this->arrData = $arrData;
         $this->arrSourceData = $arrSourceData;
     }
-    
+
     /**
      * 设置值对象
      *
@@ -107,7 +107,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         $this->arrData[$sName] = $mixValue;
     }
-    
+
     /**
      * 批量插入
      *
@@ -122,12 +122,12 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
                 $mixKey => $mixValue
             ];
         }
-        
+
         foreach ($mixKey as $strKey => $mixValue) {
             $this->set($strKey, $mixValue);
         }
     }
-    
+
     /**
      * 数组插入数据
      *
@@ -141,7 +141,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         $arr[] = $mixValue;
         $this->set($strKey, $arr);
     }
-    
+
     /**
      * 合并元素
      *
@@ -153,7 +153,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         $this->set($strKey, array_unique(array_merge($this->get($strKey, []), $arrValue)));
     }
-    
+
     /**
      * 弹出元素
      *
@@ -165,7 +165,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         $this->set($strKey, array_diff($this->get($strKey, []), $arrValue));
     }
-    
+
     /**
      * 数组插入键值对数据
      *
@@ -184,7 +184,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         $this->set($strKey, $arr);
     }
-    
+
     /**
      * 数组键值删除数据
      *
@@ -207,7 +207,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         $this->set($strKey, $arr);
     }
-    
+
     /**
      * 取回值对象
      *
@@ -219,7 +219,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return isset($this->arrData[$sName]) ? $this->arrData[$sName] : $mixValue;
     }
-    
+
     /**
      * 删除值对象
      *
@@ -231,10 +231,10 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         if (isset($this->arrData[$sName])) {
             unset($this->arrData[$sName]);
         }
-        
+
         return true;
     }
-    
+
     /**
      * 是否存在值对象
      *
@@ -245,7 +245,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return isset($this->arrData[$sName]);
     }
-    
+
     /**
      * 清理所有值对象数据
      *
@@ -255,7 +255,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         $this->arrData = [];
     }
-    
+
     /**
      * 数据是否为空
      *
@@ -265,7 +265,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return empty($this->arrData);
     }
-    
+
     /**
      * 取回值对象数据
      *
@@ -281,7 +281,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
             return $this->get($sName, $mixDefault);
         }
     }
-    
+
     /**
      * 批量取回值对象数据
      *
@@ -297,7 +297,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         return $arr;
     }
-    
+
     /**
      * 取回值对象所有数据
      *
@@ -307,7 +307,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->arrData;
     }
-    
+
     /**
      * 设置值对象源数据
      *
@@ -319,7 +319,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         $this->arrSourceData[$sName] = $mixValue;
     }
-    
+
     /**
      * 批量插入源数据
      *
@@ -334,12 +334,12 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
                 $mixKey => $mixValue
             ];
         }
-        
+
         foreach ($mixKey as $strKey => $mixValue) {
             $this->setSource($strKey, $mixValue);
         }
     }
-    
+
     /**
      * 数组插入源数据
      *
@@ -353,7 +353,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         $arr[] = $mixValue;
         $this->setSource($strKey, $arr);
     }
-    
+
     /**
      * 合并源数据元素
      *
@@ -365,7 +365,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         $this->setSource($strKey, array_unique(array_merge($this->getSource($strKey, []), $arrValue)));
     }
-    
+
     /**
      * 弹出源数据元素
      *
@@ -377,7 +377,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         $this->setSource($strKey, array_diff($this->getSource($strKey, []), $arrValue));
     }
-    
+
     /**
      * 数组插入键值对源数据
      *
@@ -396,7 +396,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         $this->setSource($strKey, $arr);
     }
-    
+
     /**
      * 数组键值删除源数据
      *
@@ -419,7 +419,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         $this->setSource($strKey, $arr);
     }
-    
+
     /**
      * 取回源数据值对象
      *
@@ -431,7 +431,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return isset($this->arrSourceData[$sName]) ? $this->arrSourceData[$sName] : $mixValue;
     }
-    
+
     /**
      * 删除值对象源数据
      *
@@ -443,10 +443,10 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         if (isset($this->arrSourceData[$sName])) {
             unset($this->arrSourceData[$sName]);
         }
-        
+
         return true;
     }
-    
+
     /**
      * 是否存在值对象源数据
      *
@@ -457,7 +457,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return isset($this->arrSourceData[$sName]);
     }
-    
+
     /**
      * 清理所有值对象源数据
      *
@@ -467,7 +467,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         $this->arrSourceData = [];
     }
-    
+
     /**
      * 源数据是否为空
      *
@@ -477,7 +477,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return empty($this->arrSourceData);
     }
-    
+
     /**
      * 取回值对象源数据
      *
@@ -493,7 +493,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
             return $this->getSource($sName, $mixDefault);
         }
     }
-    
+
     /**
      * 批量取回值对象源数据
      *
@@ -509,7 +509,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         return $arr;
     }
-    
+
     /**
      * 取回值对象所有源数据
      *
@@ -519,7 +519,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->arrSourceData;
     }
-    
+
     /**
      * 比较数据是否变更
      *
@@ -531,10 +531,10 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         $mixNewData = $this->getData($sName);
         $mixSourceData = $this->getSourceData($sName);
-        
+
         return ($booStrict === false && $mixNewData != $mixSourceData) || ($booStrict === true && $mixNewData !== $mixSourceData);
     }
-    
+
     /**
      * 批量比较数据是否变更
      *
@@ -550,7 +550,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         return $arr;
     }
-    
+
     /**
      * 依据新数据比较数据是否变更
      *
@@ -565,7 +565,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         return $arr;
     }
-    
+
     /**
      * 依据源数据比较数据是否变更
      *
@@ -580,7 +580,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         return $arr;
     }
-    
+
     /**
      * 设置转换隐藏属性
      *
@@ -595,7 +595,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         $this->arrHidden = $arrHidden;
         return $this;
     }
-    
+
     /**
      * 获取转换隐藏属性
      *
@@ -605,7 +605,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->arrHidden;
     }
-    
+
     /**
      * 添加转换隐藏属性
      *
@@ -621,7 +621,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         $this->arrHidden = array_merge($this->arrHidden, $mixProp);
         return $this;
     }
-    
+
     /**
      * 设置转换显示属性
      *
@@ -636,7 +636,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         $this->arrVisible = $arrVisible;
         return $this;
     }
-    
+
     /**
      * 获取转换显示属性
      *
@@ -646,7 +646,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->arrVisible;
     }
-    
+
     /**
      * 添加转换显示属性
      *
@@ -662,7 +662,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         $this->arrVisible = array_merge($this->arrVisible, $mixProp);
         return $this;
     }
-    
+
     /**
      * 设置转换追加属性
      *
@@ -677,7 +677,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         $this->arrAppend = $arrAppend;
         return $this;
     }
-    
+
     /**
      * 获取转换追加属性
      *
@@ -687,7 +687,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->arrAppend;
     }
-    
+
     /**
      * 添加转换追加属性
      *
@@ -703,7 +703,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         $this->arrAppend = array_merge($this->arrAppend, $mixProp);
         return $this;
     }
-    
+
     /**
      * 返回部分闪存数据
      *
@@ -715,7 +715,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->getTypePartData($sName, $mixDefault);
     }
-    
+
     /**
      * 返回部分闪存源数据
      *
@@ -727,7 +727,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->getTypePartData($sName, $mixDefault, 'source');
     }
-    
+
     /**
      * 返回部分闪存源数据
      *
@@ -740,7 +740,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         list($sName, $strName) = explode('\\', $sName);
         $mixValue = $this->{'get' . ($strType ? ucwords($strType) : '')}($sName);
-        
+
         if (is_array($mixValue)) {
             $arrParts = explode('.', $strName);
             foreach ($arrParts as $sPart) {
@@ -754,7 +754,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
             return $mixDefault;
         }
     }
-    
+
     /**
      * 返回下划线式命名
      *
@@ -768,7 +768,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         }
         return static::$arrUnCamelize[$strKey] = string::unCamelize($strKey);
     }
-    
+
     /**
      * 魔术方法获取
      *
@@ -779,7 +779,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->getData($this->getUnCamelizeKey($sName));
     }
-    
+
     /**
      * 强制更新属性值
      *
@@ -791,7 +791,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->set($this->getUnCamelizeKey($sName), $mixValue);
     }
-    
+
     /**
      * 是否存在属性
      *
@@ -802,7 +802,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->has($this->getUnCamelizeKey($sName));
     }
-    
+
     /**
      * 删除属性
      *
@@ -813,7 +813,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->delete($this->getUnCamelizeKey($sName));
     }
-    
+
     /**
      * 实现 ArrayAccess::offsetExists
      *
@@ -824,7 +824,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->has($sName);
     }
-    
+
     /**
      * 实现 ArrayAccess::offsetSet
      *
@@ -836,7 +836,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->set($sName, $mixValue);
     }
-    
+
     /**
      * 实现 ArrayAccess::offsetGet
      *
@@ -847,7 +847,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->get($sName);
     }
-    
+
     /**
      * 实现 ArrayAccess::offsetUnset
      *
@@ -858,7 +858,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->delete($sName);
     }
-    
+
     /**
      * 对象转数组
      *
@@ -872,7 +872,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         } else {
             $arrVisible = $this->arrVisible;
         }
-        
+
         if (! empty($arrVisible)) {
             $arrData = array_intersect_key($this->arrData, array_flip($arrVisible));
         } elseif (! empty($this->arrHidden)) {
@@ -880,15 +880,15 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         } else {
             $arrData = $this->arrData;
         }
-        
+
         $arrData = array_merge($arrData, $this->arrAppend ? array_flip($this->arrAppend) : []);
         foreach ($arrData as $strKey => &$mixValue) {
             $mixValue = $this->getData($strKey);
         }
-        
+
         return $arrData;
     }
-    
+
     /**
      * 实现 JsonSerializable::jsonSerialize
      *
@@ -898,7 +898,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return $this->toArray();
     }
-    
+
     /**
      * 对象转 JSON
      *
@@ -909,7 +909,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
     {
         return json_encode($this->toArray(), $intOption);
     }
-    
+
     /**
      * 拦截匿名注册控制器方法
      *
@@ -922,7 +922,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         if ($this->placeholderFlowControl($sMethod)) {
             return $this;
         }
-        
+
         switch (true) {
             case substr($sMethod, 0, 3) == 'get':
                 return $this->__get(substr($sMethod, 3), isset($arrArgs[0]) ? $arrArgs[0] : null);

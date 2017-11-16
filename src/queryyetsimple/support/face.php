@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -35,21 +35,21 @@ use queryyetsimple\support\icontainer;
  */
 abstract class face
 {
-    
+
     /**
      * 项目容器
      *
      * @var \queryyetsimple\support\icontainer
      */
     protected static $objContainer;
-    
+
     /**
      * 注入容器实例
      *
      * @var object
      */
     protected static $arrInstance = [];
-    
+
     /**
      * 获取注册容器的实例
      *
@@ -59,7 +59,7 @@ abstract class face
     {
         $strClass = static::name();
         $strUnique = static::makeFaceKey($strClass, $arrArgs = func_get_args());
-        
+
         if (isset(static::$arrInstance[$strUnique])) {
             return static::$arrInstance[$strUnique];
         }
@@ -68,7 +68,7 @@ abstract class face
         }
         return static::$arrInstance[$strUnique];
     }
-    
+
     /**
      * 返回服务容器
      *
@@ -78,7 +78,7 @@ abstract class face
     {
         return static::$objContainer;
     }
-    
+
     /**
      * 设置服务容器
      *
@@ -89,7 +89,7 @@ abstract class face
     {
         static::$objContainer = $objContainer;
     }
-    
+
     /**
      * 生成唯一 key
      *
@@ -111,14 +111,15 @@ abstract class face
                     } else {
                         $strSerialize .= serialize($mixArg);
                     }
-                } catch (Exception $oE) {}
+                } catch (Exception $oE) {
+                }
             }
             return $strClass . '.' . md5($strSerialize);
         } else {
             return $strClass;
         }
     }
-    
+
     /**
      * 缺省静态方法
      *
@@ -132,9 +133,9 @@ abstract class face
         if (! $objInstance) {
             throw new RuntimeException('Can not find instance from container.');
         }
-        
+
         $calMethod = [
-            $objInstance, 
+            $objInstance,
             $sMethod
         ];
         if (! is_callable($calMethod)) {

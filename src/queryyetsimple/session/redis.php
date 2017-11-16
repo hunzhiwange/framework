@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,24 +32,24 @@ use queryyetsimple\cache\redis as cache_redis;
  */
 class redis extends aconnect implements SessionHandlerInterface
 {
-    
+
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-        'host' => '127.0.0.1', 
-        'port' => 6379, 
-        'password' => '', 
-        'select' => 0, 
-        'timeout' => 0, 
-        'persistent' => false, 
-        'serialize' => true, 
-        'prefix' => null, 
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'password' => '',
+        'select' => 0,
+        'timeout' => 0,
+        'persistent' => false,
+        'serialize' => true,
+        'prefix' => null,
         'expire' => null
     ];
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -57,7 +57,7 @@ class redis extends aconnect implements SessionHandlerInterface
      */
     public function open($strSavePath, $strName)
     {
-        $this->objCache = new cache_redis($this->arrOption );
+        $this->objCache = new cache_redis($this->arrOption);
         return true;
     }
 }

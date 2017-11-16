@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,14 +33,14 @@ use queryyetsimple\router\router;
  */
 abstract class action implements iaction
 {
-    
+
     /**
      * 父控制器
      *
      * @var \queryyetsimple\mvc\icontroller
      */
     protected $objController;
-    
+
     /**
      * 构造函数
      *
@@ -49,7 +49,7 @@ abstract class action implements iaction
     public function __construct()
     {
     }
-    
+
     /**
      * 设置父控制器
      *
@@ -61,11 +61,11 @@ abstract class action implements iaction
         $this->objController = $objController;
         return $this;
     }
-    
+
     // ######################################################
     // ------------- 实现 controller 接口 start -------------
     // ######################################################
-    
+
 
     /**
      * 设置视图
@@ -78,7 +78,7 @@ abstract class action implements iaction
         $this->checkController();
         return $this->objController->setView($objView);
     }
-    
+
     /**
      * 设置路由
      *
@@ -90,7 +90,7 @@ abstract class action implements iaction
         $this->checkController();
         return $this->objController->setRouter($objRouter);
     }
-    
+
     /**
      * 执行子方法器
      *
@@ -102,16 +102,16 @@ abstract class action implements iaction
         $this->checkController();
         return $this->objController->action($sActionName);
     }
-    
+
     // ######################################################
     // -------------- 实现 controller 接口 end --------------
     // ######################################################
-    
+
 
     // ######################################################
     // ---------------- 实现 view 接口 start ----------------
     // ######################################################
-    
+
 
     /**
      * 变量赋值
@@ -125,7 +125,7 @@ abstract class action implements iaction
         $this->checkController();
         return $this->objController->assign($mixName, $mixValue);
     }
-    
+
     /**
      * 获取变量赋值
      *
@@ -137,7 +137,7 @@ abstract class action implements iaction
         $this->checkController();
         return $this->objController->getAssign($sName);
     }
-    
+
     /**
      * 删除变量值
      *
@@ -148,12 +148,12 @@ abstract class action implements iaction
     {
         $this->checkController();
         call_user_func_array([
-            $this->objController, 
+            $this->objController,
             'deleteAssign'
         ], func_get_args());
         return $this;
     }
-    
+
     /**
      * 清空变量值
      *
@@ -166,7 +166,7 @@ abstract class action implements iaction
         $this->objController->clearAssign();
         return $this;
     }
-    
+
     /**
      * 加载视图文件
      *
@@ -181,11 +181,11 @@ abstract class action implements iaction
         $this->checkController();
         return $this->objController->display($sThemeFile, $arrOption);
     }
-    
+
     // ######################################################
     // ---------------- 实现 view 接口 end ----------------
     // ######################################################
-    
+
 
     /**
      * 验证 controller
@@ -198,7 +198,7 @@ abstract class action implements iaction
             throw new RuntimeException('Controller is not set in action');
         }
     }
-    
+
     /**
      * 访问父控制器
      *

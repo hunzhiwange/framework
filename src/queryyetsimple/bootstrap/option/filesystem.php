@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -27,7 +27,7 @@
  * @version 1.0
  */
 return [
-    
+
     /**
      * ---------------------------------------------------------------
      * filesystem 驱动
@@ -35,8 +35,8 @@ return [
      *
      * 采用什么方式发送邮件数据
      */
-    'default' => env('filesystem_driver', 'local'), 
-    
+    'default' => env('filesystem_driver', 'local'),
+
     /**
      * ---------------------------------------------------------------
      * filesystem 驱动连接参数
@@ -48,71 +48,71 @@ return [
     '+connect' => [
         '+local' => [
             // driver
-            'driver' => 'local', 
-            
+            'driver' => 'local',
+
             // path
             'path' => path_storage()
-        ], 
-        
+        ],
+
         '+zip' => [
             // driver
-            'driver' => 'zip', 
-            
+            'driver' => 'zip',
+
             // path
             'path' => path_storage('filesystem.zip')
-        ], 
-        
+        ],
+
         '+ftp' => [
             // driver
-            'driver' => 'ftp', 
-            
+            'driver' => 'ftp',
+
             // 主机
-            'host' => env('filesystem_ftp_host', 'ftp.example.com'), 
-            
+            'host' => env('filesystem_ftp_host', 'ftp.example.com'),
+
             // 端口
-            'port' => env('filesystem_ftp_port', 21), 
-            
+            'port' => env('filesystem_ftp_port', 21),
+
             // 用户名
-            'username' => env('filesystem_ftp_username', 'your-username'), 
-            
+            'username' => env('filesystem_ftp_username', 'your-username'),
+
             // 密码
-            'password' => env('filesystem_ftp_password', 'your-password'), 
-            
+            'password' => env('filesystem_ftp_password', 'your-password'),
+
             // 根目录
-            'root' => '', 
-            
+            'root' => '',
+
             // 被动、主动
-            'passive' => true, 
-            
+            'passive' => true,
+
             // 加密传输
-            'ssl' => false, 
-            
+            'ssl' => false,
+
             // 超时设置
             'timeout' => 20
-        ], 
-        
+        ],
+
         '+sftp' => [
             // driver
-            'driver' => 'sftp', 
-            
+            'driver' => 'sftp',
+
             // 主机
-            'host' => env('filesystem_sftp_host', 'sftp.example.com'), 
-            
+            'host' => env('filesystem_sftp_host', 'sftp.example.com'),
+
             // 端口
-            'port' => env('filesystem_sftp_port', 22), 
-            
+            'port' => env('filesystem_sftp_port', 22),
+
             // 用户名
-            'username' => env('filesystem_sftp_username', 'your-username'), 
-            
+            'username' => env('filesystem_sftp_username', 'your-username'),
+
             // 密码
-            'password' => env('filesystem_sftp_password', 'your-password'), 
-            
+            'password' => env('filesystem_sftp_password', 'your-password'),
+
             // 根目录
-            'root' => '', 
-            
+            'root' => '',
+
             // 私钥路径
-            'privateKey' => '', 
-            
+            'privateKey' => '',
+
             // 超时设置
             'timeout' => 20
         ]

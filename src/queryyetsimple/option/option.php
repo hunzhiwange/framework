@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,21 +31,21 @@ use ArrayAccess;
  */
 class option implements ArrayAccess, ioption
 {
-    
+
     /**
      * 配置数据
      *
      * @var array
      */
     protected $arrOption = [];
-    
+
     /**
      * 默认命名空间
      *
      * @var string
      */
     const DEFAUTL_NAMESPACE = 'app';
-    
+
     /**
      * 构造函数
      *
@@ -54,7 +54,7 @@ class option implements ArrayAccess, ioption
     public function __construct()
     {
     }
-    
+
     /**
      * 是否存在配置
      *
@@ -66,15 +66,15 @@ class option implements ArrayAccess, ioption
         $sName = $this->parseNamespace($sName);
         $strNamespace = $sName[0];
         $sName = $sName[1];
-        
+
         if ($sName == '*') {
             return isset($this->arrOption[$strNamespace]);
         }
-        
+
         if (! strpos($sName, '.')) {
             return array_key_exists($sName, $this->arrOption[$strNamespace]);
         }
-        
+
         $arrParts = explode('.', $sName);
         $arrOption = &$this->arrOption[$strNamespace];
         foreach ($arrParts as $sPart) {
@@ -85,7 +85,7 @@ class option implements ArrayAccess, ioption
         }
         return true;
     }
-    
+
     /**
      * 获取配置
      *
@@ -98,15 +98,15 @@ class option implements ArrayAccess, ioption
         $sName = $this->parseNamespace($sName);
         $strNamespace = $sName[0];
         $sName = $sName[1];
-        
+
         if ($sName == '*') {
             return $this->arrOption[$strNamespace];
         }
-        
+
         if (! strpos($sName, '.')) {
             return array_key_exists($sName, $this->arrOption[$strNamespace]) ? $this->arrOption[$strNamespace][$sName] : $mixDefault;
         }
-        
+
         $arrParts = explode('.', $sName);
         $arrOption = &$this->arrOption[$strNamespace];
         foreach ($arrParts as $sPart) {
@@ -117,7 +117,7 @@ class option implements ArrayAccess, ioption
         }
         return $arrOption;
     }
-    
+
     /**
      * 返回所有配置
      *
@@ -127,7 +127,7 @@ class option implements ArrayAccess, ioption
     {
         return $this->arrOption;
     }
-    
+
     /**
      * 设置配置
      *
@@ -145,12 +145,12 @@ class option implements ArrayAccess, ioption
             $mixName = $this->parseNamespace($mixName);
             $strNamespace = $mixName[0];
             $mixName = $mixName[1];
-            
+
             if ($mixName == '*') {
                 $this->arrOption[$strNamespace] = $mixValue;
                 return;
             }
-            
+
             if (! strpos($mixName, '.')) {
                 $this->arrOption[$strNamespace][$mixName] = $mixValue;
             } else {
@@ -171,7 +171,7 @@ class option implements ArrayAccess, ioption
             }
         }
     }
-    
+
     /**
      * 删除配置
      *
@@ -183,12 +183,12 @@ class option implements ArrayAccess, ioption
         $mixName = $this->parseNamespace($mixName);
         $strNamespace = $mixName[0];
         $mixName = $mixName[1];
-        
+
         if ($mixName == '*') {
             $this->arrOption[$strNamespace] = [];
             return;
         }
-        
+
         if (! strpos($mixName, '.')) {
             if (isset($this->arrOption[$strNamespace][$mixName])) {
                 unset($this->arrOption[$strNamespace][$mixName]);
@@ -212,7 +212,7 @@ class option implements ArrayAccess, ioption
             }
         }
     }
-    
+
     /**
      * 初始化配置参数
      *
@@ -231,7 +231,7 @@ class option implements ArrayAccess, ioption
             $this->arrOption = [];
         }
     }
-    
+
     /**
      * 判断配置是否存在
      *
@@ -242,7 +242,7 @@ class option implements ArrayAccess, ioption
     {
         return $this->has($strName);
     }
-    
+
     /**
      * 获取配置
      *
@@ -253,7 +253,7 @@ class option implements ArrayAccess, ioption
     {
         return $this->get($strName);
     }
-    
+
     /**
      * 设置配置
      *
@@ -265,7 +265,7 @@ class option implements ArrayAccess, ioption
     {
         return $this->set($strName, $mixValue);
     }
-    
+
     /**
      * 删除配置
      *
@@ -276,7 +276,7 @@ class option implements ArrayAccess, ioption
     {
         $this->delete($strName);
     }
-    
+
     /**
      * 分析命名空间
      *
@@ -295,13 +295,13 @@ class option implements ArrayAccess, ioption
         } else {
             $strNamespace = static::DEFAUTL_NAMESPACE;
         }
-        
+
         if (! isset($this->arrOption[$strNamespace])) {
             $this->arrOption[$strNamespace] = [];
         }
-        
+
         return [
-            $strNamespace, 
+            $strNamespace,
             $strName
         ];
     }

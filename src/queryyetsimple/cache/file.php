@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,35 +34,35 @@ use queryyetsimple\filesystem\fso;
 class file extends acache implements iconnect
 {
     use option;
-    
+
     /**
      * 缓存文件头部
      *
      * @var string
      */
     const HEADER = '<?php die( %s ); ?>';
-    
+
     /**
      * 缓存文件头部长度
      *
      * @var int
      */
     const HEADER_LENGTH = 43;
-    
+
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-        'nocache_force' => '~@nocache_force', 
-        'time_preset' => [], 
-        'prefix' => '~@', 
-        'expire' => 86400, 
-        'path' => '', 
+        'nocache_force' => '~@nocache_force',
+        'time_preset' => [],
+        'prefix' => '~@',
+        'expire' => 86400,
+        'path' => '',
         'serialize' => true
     ];
-    
+
     /**
      * 获取缓存
      *
@@ -76,57 +76,57 @@ class file extends acache implements iconnect
         if ($this->checkForce()) {
             return $mixDefault;
         }
-        
+
         $arrOption = $this->getOptions($arrOption);
         $sCachePath = $this->getCachePath($sCacheName, $arrOption);
-        
+
         // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php
         clearstatcache();
-        
+
         if (! is_file($sCachePath)) {
             return false;
         }
-        
+
         $hFp = fopen($sCachePath, 'rb');
         if (! $hFp) {
             return false;
         }
         flock($hFp, LOCK_SH);
-        
+
         // 头部的 43 个字节存储了安全代码
         $nLen = filesize($sCachePath);
         fread($hFp, static::HEADER_LENGTH);
         $nLen -= static::HEADER_LENGTH;
-        
+
         do {
             // 检查缓存是否已经过期
             if ($this->isExpired($sCacheName, $arrOption)) {
                 $strData = false;
                 break;
             }
-            
+
             if ($nLen > 0) {
                 $strData = fread($hFp, $nLen);
             } else {
                 $strData = false;
             }
         } while (false);
-        
+
         flock($hFp, LOCK_UN);
         fclose($hFp);
-        
+
         if ($strData === false) {
             return false;
         }
-        
+
         // 解码
         if ($arrOption['serialize']) {
             $strData = unserialize($strData);
         }
-        
+
         return $strData;
     }
-    
+
     /**
      * 设置缓存
      *
@@ -142,11 +142,11 @@ class file extends acache implements iconnect
             $mixData = serialize($mixData);
         }
         $mixData = sprintf(static::HEADER, '/* ' . date('Y-m-d H:i:s') . '  */') . $mixData;
-        
+
         $sCachePath = $this->getCachePath($sCacheName, $arrOption);
         $this->writeData($sCachePath, $mixData);
     }
-    
+
     /**
      * 清除缓存
      *
@@ -162,7 +162,7 @@ class file extends acache implements iconnect
             @unlink($sCachePath);
         }
     }
-    
+
     /**
      * 验证缓存是否过期
      *
@@ -179,7 +179,7 @@ class file extends acache implements iconnect
         $arrOption['expire'] = $this->cacheTime($sCacheName, $arrOption['expire']);
         return ( int ) $arrOption['expire'] > 0 && filemtime($sFilePath) + ( int ) $arrOption['expire'] < time();
     }
-    
+
     /**
      * 获取缓存路径
      *
@@ -192,13 +192,13 @@ class file extends acache implements iconnect
         if (! $arrOption['path']) {
             throw new InvalidArgumentException('Cache path is not allowed empty.');
         }
-        
+
         if (! is_dir($arrOption['path'])) {
             fso::createDirectory($arrOption['path']);
         }
         return $arrOption['path'] . '/' . $this->getCacheName($sCacheName, $arrOption['prefix']) . '.php';
     }
-    
+
     /**
      * 写入缓存数据
      *
@@ -211,7 +211,7 @@ class file extends acache implements iconnect
         ! is_dir(dirname($sFileName)) && fso::createDirectory(dirname($sFileName));
         file_put_contents($sFileName, $sData, LOCK_EX);
     }
-    
+
     /**
      * 验证缓存是否存在
      *
@@ -223,7 +223,7 @@ class file extends acache implements iconnect
     {
         return is_file($this->getCachePath($sCacheName, $arrOption));
     }
-    
+
     /**
      * 获取缓存名字
      * 去掉特殊缓存名字字符
@@ -235,14 +235,14 @@ class file extends acache implements iconnect
     protected function getCacheName($sCacheName, $strPrefix = '')
     {
         return str_replace([
-            '?', 
-            '*', 
-            ':', 
-            '"', 
-            '<', 
-            '>', 
-            '\\', 
-            '/', 
+            '?',
+            '*',
+            ':',
+            '"',
+            '<',
+            '>',
+            '\\',
+            '/',
             '|'
         ], '.', parent::getCacheName($sCacheName, $strPrefix));
     }

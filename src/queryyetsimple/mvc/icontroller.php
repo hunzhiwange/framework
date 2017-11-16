@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,7 +31,7 @@ use queryyetsimple\router\router;
  */
 interface icontroller extends iview
 {
-    
+
     /**
      * 返回父控制器
      *
@@ -39,7 +39,7 @@ interface icontroller extends iview
      * @return $this
      */
     public function setView(iview $objView);
-    
+
     /**
      * 返回父控制器
      *
@@ -47,7 +47,7 @@ interface icontroller extends iview
      * @return $this
      */
     public function setRouter(router $objRouter);
-    
+
     /**
      * 执行子方法器
      *

@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -29,28 +29,28 @@ namespace queryyetsimple\mvc;
  */
 interface iunit_of_work
 {
-    
+
     /**
      * 启动事物
      *
      * @return void
      */
     public function beginTransaction();
-    
+
     /**
      * 事务回滚
      *
      * @return void
      */
     public function rollback();
-    
+
     /**
      * 事务自动提交
      *
      * @return void
      */
     public function commit();
-    
+
     /**
      * 事务回滚
      *
@@ -58,21 +58,21 @@ interface iunit_of_work
      * @return mixed
      */
     public function transaction($calAction);
-    
+
     /**
      * 是否已经提交事务
      *
      * @return boolean
      */
     public function committed();
-    
+
     /**
      * 注册事务提交
      *
      * @return void
      */
     public function registerCommit();
-    
+
     /**
      * 注册新建
      *
@@ -81,7 +81,7 @@ interface iunit_of_work
      * @return $this
      */
     public function registerCreate(iaggregate_root $objEntity, irepository $objRepository);
-    
+
     /**
      * 注册更新
      *
@@ -90,7 +90,7 @@ interface iunit_of_work
      * @return $this
      */
     public function registerUpdate(iaggregate_root $objEntity, irepository $objRepository);
-    
+
     /**
      * 注册删除
      *

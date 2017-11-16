@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -34,7 +34,7 @@ use queryyetsimple\auth\register_failed;
  */
 trait register
 {
-    
+
     /**
      * 注册界面
      *
@@ -44,37 +44,37 @@ trait register
     {
         return $this->displayRegisterForm();
     }
-    
+
     /**
      * 注册用户
      *
-     * @param \queryyetsimple\http\request $oRequest            
+     * @param \queryyetsimple\http\request $oRequest
      * @return \queryyetsimple\http\response
      */
     public function registerUser(request $oRequest)
     {
         $this->validateRegister($oRequest);
-        
+
         try {
             $aPost = $oRequest->posts([
-                'name|trim', 
-                'nikename|trim', 
-                'password|trim', 
-                'comfirm_password|trim', 
-                'email|trim', 
+                'name|trim',
+                'nikename|trim',
+                'password|trim',
+                'comfirm_password|trim',
+                'email|trim',
                 'mobile|trim'
             ]);
-            
+
             $this->setAuthField();
-            
+
             auth::registerUser($aPost['name'], $aPost['password'], $aPost['comfirm_password'], $aPost['nikename'], $oRequest->ip(), $aPost['email'], $aPost['mobile']);
-            
+
             return $this->sendSucceededRegisterResponse($this->getRegisterSucceededMessage($aPost['nikename'] ?  : $aPost['name']));
         } catch (register_failed $oE) {
             return $this->sendFailedRegisterResponse($oE->getMessage());
         }
     }
-    
+
     /**
      * 获取注册界面
      *
@@ -84,22 +84,22 @@ trait register
     {
         return response::view($this->getRegisterView());
     }
-    
+
     /**
      * 发送正确注册消息
      *
-     * @param string $strSuccess            
+     * @param string $strSuccess
      * @return \queryyetsimple\http\response
      */
     protected function sendSucceededRegisterResponse($strSuccess)
     {
         return response::redirect($this->getRegisterSucceededRedirect())->with('register_succeeded', $strSuccess);
     }
-    
+
     /**
      * 发送错误注册消息
      *
-     * @param string $strError            
+     * @param string $strError
      * @return \queryyetsimple\http\response
      */
     protected function sendFailedRegisterResponse($strError)
@@ -108,18 +108,18 @@ trait register
             'register_error' => $strError
         ]);
     }
-    
+
     /**
      * 验证注册请求
      *
-     * @param \queryyetsimple\http\request $oRequest            
+     * @param \queryyetsimple\http\request $oRequest
      * @return void
      */
     protected function validateRegister(request $oRequest)
     {
         $this->validate($oRequest, $this->getValidateRegisterRule(), $this->getValidateRegisterMessage());
     }
-    
+
     /**
      * 获取注册验证规则
      *
@@ -128,15 +128,15 @@ trait register
     protected function getValidateRegisterRule()
     {
         return property_exists($this, 'strValidateRegisterRule') ? $this->strValidateRegisterRule : [
-            'name' => 'required|max_length:50', 
-            'nikename' => 'required|max_length:50', 
-            'password' => 'required|min_length:6', 
-            'comfirm_password' => 'required|min_length:6|equal_to:password', 
-            'email' => 'required|email', 
+            'name' => 'required|max_length:50',
+            'nikename' => 'required|max_length:50',
+            'password' => 'required|min_length:6',
+            'comfirm_password' => 'required|min_length:6|equal_to:password',
+            'email' => 'required|email',
             'mobile' => 'value|mobile'
         ];
     }
-    
+
     /**
      * 获取注册验证规则消息
      *
@@ -146,18 +146,18 @@ trait register
     {
         return property_exists($this, 'strValidateRegisterMessage') ? $this->strValidateRegisterMessage : [];
     }
-    
+
     /**
      * 获取注册消息
      *
-     * @param string $strName            
+     * @param string $strName
      * @return string
      */
     protected function getRegisterSucceededMessage($strName)
     {
         return __('%s 注册成功', $strName);
     }
-    
+
     /**
      * 获取注册视图
      *
@@ -167,7 +167,7 @@ trait register
     {
         return property_exists($this, 'strRegisterView') ? $this->strRegisterView : '';
     }
-    
+
     /**
      * 获取注册成功转向地址
      *
@@ -177,7 +177,7 @@ trait register
     {
         return property_exists($this, 'strRegisterSucceededRedirect') ? $this->strRegisterSucceededRedirect : 'auth/login';
     }
-    
+
     /**
      * 获取注册失败转向地址
      *
@@ -185,6 +185,6 @@ trait register
      */
     protected function getRegisterFailedRedirect()
     {
-        return property_exists ( $this, 'strRegisterFailedRedirect' ) ? $this->strRegisterFailedRedirect : 'auth/register';
+        return property_exists($this, 'strRegisterFailedRedirect') ? $this->strRegisterFailedRedirect : 'auth/register';
     }
 }

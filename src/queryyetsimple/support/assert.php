@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,62 +31,62 @@ use InvalidArgumentException;
  */
 class assert
 {
-    
+
     /**
      * 是否开启断言
      *
      * @var boolean
      */
     protected static $booOpen = false;
-    
+
     /**
      * 默认断言消息
      *
      * @var array
      */
     protected static $arrMessage = [
-        'trueExpression' => 'Make sure the incoming expression is true.', 
-        'notTrueExpression' => 'Make sure the incoming expression is false.', 
-        'true' => 'Make sure that the incoming variable must now be fully equal to true.', 
-        'notTrue' => 'Make sure that the incoming variable must now be fully equal to false.', 
-        'null' => 'Make sure that incoming variables must be null.', 
-        'notNull' => 'Make sure that incoming variables must be not null.', 
-        'zero' => 'Make sure that incoming variables must be zero.', 
-        'notZero' => 'Make sure that incoming variables must be not zero.', 
-        'stringZero' => 'Make sure that incoming variables must be string zero.', 
-        'notstringZero' => 'Make sure that incoming variables must be not string zero.', 
-        'strictZero' => 'Make sure that incoming variables must be strict zero.', 
-        'notStrictZero' => 'Make sure that incoming variables must be not strict zero.', 
-        'stringEmpty' => 'Make sure that incoming variables must be string empty.', 
-        'notStringEmpty' => 'Make sure that incoming variables must be not string empty.', 
-        'integer' => 'Make sure that incoming variables must be a integer.', 
-        'notInteger' => 'Make sure that incoming variables must be not a integer.', 
-        'float' => 'Make sure that incoming variables must be a float.', 
-        'notFloat' => 'Make sure that incoming variables must be not a float.', 
-        'numeric' => 'Make sure that incoming variables must be a number (including integer and floating point).', 
-        'notNumeric' => 'Make sure that incoming variables must be not a number (including integer and floating point).', 
-        'string' => 'Make sure that incoming variables must be a string.', 
-        'notString' => 'Make sure that incoming variables must be not a string.', 
-        'scalar' => 'Make sure that incoming variables must be a scalar.', 
-        'notScalar' => 'Make sure that incoming variables must be not a scalar.', 
-        'resource' => 'Make sure that incoming variables must be a resource.', 
-        'notResource' => 'Make sure that incoming variables must be not a resource.', 
-        'object' => 'Make sure that incoming variables must be a object.', 
-        'notObject' => 'Make sure that incoming variables must be not a object.', 
-        'callback' => 'Make sure that incoming variables must be a callback.', 
-        'notCallback' => 'Make sure that incoming variables must be not a callback.', 
-        'boolean' => 'Make sure that incoming variables must be a boolean.', 
-        'notBoolean' => 'Make sure that incoming variables must be not a boolean.', 
-        'isArray' => 'Make sure that incoming variables must be a array.', 
-        'notIsArray' => 'Make sure that incoming variables must be not a array.', 
-        'path' => 'Make sure path variables is valid.', 
-        'notPath' => 'Make sure path variables is not valid.', 
-        'file' => 'Make sure the path variables exists and is a file (not a directory).', 
-        'notFile' => 'Make sure the path variables exists and is a not file (not a directory).', 
-        'dir' => 'Make sure the path variables exists and is a directory(not a file).', 
+        'trueExpression' => 'Make sure the incoming expression is true.',
+        'notTrueExpression' => 'Make sure the incoming expression is false.',
+        'true' => 'Make sure that the incoming variable must now be fully equal to true.',
+        'notTrue' => 'Make sure that the incoming variable must now be fully equal to false.',
+        'null' => 'Make sure that incoming variables must be null.',
+        'notNull' => 'Make sure that incoming variables must be not null.',
+        'zero' => 'Make sure that incoming variables must be zero.',
+        'notZero' => 'Make sure that incoming variables must be not zero.',
+        'stringZero' => 'Make sure that incoming variables must be string zero.',
+        'notstringZero' => 'Make sure that incoming variables must be not string zero.',
+        'strictZero' => 'Make sure that incoming variables must be strict zero.',
+        'notStrictZero' => 'Make sure that incoming variables must be not strict zero.',
+        'stringEmpty' => 'Make sure that incoming variables must be string empty.',
+        'notStringEmpty' => 'Make sure that incoming variables must be not string empty.',
+        'integer' => 'Make sure that incoming variables must be a integer.',
+        'notInteger' => 'Make sure that incoming variables must be not a integer.',
+        'float' => 'Make sure that incoming variables must be a float.',
+        'notFloat' => 'Make sure that incoming variables must be not a float.',
+        'numeric' => 'Make sure that incoming variables must be a number (including integer and floating point).',
+        'notNumeric' => 'Make sure that incoming variables must be not a number (including integer and floating point).',
+        'string' => 'Make sure that incoming variables must be a string.',
+        'notString' => 'Make sure that incoming variables must be not a string.',
+        'scalar' => 'Make sure that incoming variables must be a scalar.',
+        'notScalar' => 'Make sure that incoming variables must be not a scalar.',
+        'resource' => 'Make sure that incoming variables must be a resource.',
+        'notResource' => 'Make sure that incoming variables must be not a resource.',
+        'object' => 'Make sure that incoming variables must be a object.',
+        'notObject' => 'Make sure that incoming variables must be not a object.',
+        'callback' => 'Make sure that incoming variables must be a callback.',
+        'notCallback' => 'Make sure that incoming variables must be not a callback.',
+        'boolean' => 'Make sure that incoming variables must be a boolean.',
+        'notBoolean' => 'Make sure that incoming variables must be not a boolean.',
+        'isArray' => 'Make sure that incoming variables must be a array.',
+        'notIsArray' => 'Make sure that incoming variables must be not a array.',
+        'path' => 'Make sure path variables is valid.',
+        'notPath' => 'Make sure path variables is not valid.',
+        'file' => 'Make sure the path variables exists and is a file (not a directory).',
+        'notFile' => 'Make sure the path variables exists and is a not file (not a directory).',
+        'dir' => 'Make sure the path variables exists and is a directory(not a file).',
         'notDir' => 'Make sure the path variables exists and is a not directory(not a file).'
     ];
-    
+
     /**
      * 断言状态设置
      *
@@ -97,7 +97,7 @@ class assert
     {
         static::$booOpen = $booOpen;
     }
-    
+
     /**
      * 返回开放状态
      *
@@ -107,7 +107,7 @@ class assert
     {
         return static::$booOpen;
     }
-    
+
     /**
      * trueExpression 断言
      *
@@ -121,7 +121,7 @@ class assert
     {
         return static::checkExpression($mixExpression, 'trueExpression', $strDescription);
     }
-    
+
     /**
      * notTrueExpression 断言
      *
@@ -135,7 +135,7 @@ class assert
     {
         return static::checkExpression(! $mixExpression, 'notTrueExpression', $strDescription);
     }
-    
+
     /**
      * true 断言
      *
@@ -147,7 +147,7 @@ class assert
     {
         return static::checkExpression($mixVariable === true, 'true', $strDescription);
     }
-    
+
     /**
      * not true 断言
      *
@@ -159,7 +159,7 @@ class assert
     {
         return static::checkExpression($mixVariable === false, 'notTrue', $strDescription);
     }
-    
+
     /**
      * null 断言
      *
@@ -171,7 +171,7 @@ class assert
     {
         return static::checkExpression($mixVariable === null, 'null', $strDescription);
     }
-    
+
     /**
      * not null 断言
      *
@@ -183,7 +183,7 @@ class assert
     {
         return static::checkExpression($mixVariable !== null, 'notNull', $strDescription);
     }
-    
+
     /**
      * zero 断言
      *
@@ -195,7 +195,7 @@ class assert
     {
         return static::checkExpression($mixVariable === 0 || $mixVariable === '0', 'zero', $strDescription);
     }
-    
+
     /**
      * not zero 断言
      *
@@ -207,7 +207,7 @@ class assert
     {
         return static::checkExpression($mixVariable !== 0 && $mixVariable !== '0', 'notZero', $strDescription);
     }
-    
+
     /**
      * string zero 断言
      *
@@ -219,7 +219,7 @@ class assert
     {
         return static::checkExpression($mixVariable === '0', 'stringZero', $strDescription);
     }
-    
+
     /**
      * strict zero 断言
      *
@@ -231,7 +231,7 @@ class assert
     {
         return static::checkExpression($mixVariable === 0, 'strictZero', $strDescription);
     }
-    
+
     /**
      * not strict zero 断言
      *
@@ -243,7 +243,7 @@ class assert
     {
         return static::checkExpression($mixVariable !== 0, 'notStrictZero', $strDescription);
     }
-    
+
     /**
      * string empty 断言
      *
@@ -255,7 +255,7 @@ class assert
     {
         return static::checkExpression($mixVariable === '', 'stringEmpty', $strDescription);
     }
-    
+
     /**
      * not string empty 断言
      *
@@ -267,7 +267,7 @@ class assert
     {
         return static::checkExpression($mixVariable !== '', 'notStringEmpty', $strDescription);
     }
-    
+
     /**
      * integer 断言
      *
@@ -279,7 +279,7 @@ class assert
     {
         return static::checkExpression(is_int($mixVariable), 'integer', $strDescription);
     }
-    
+
     /**
      * not integer 断言
      *
@@ -291,7 +291,7 @@ class assert
     {
         return static::checkExpression(! is_int($mixVariable), 'notInteger', $strDescription);
     }
-    
+
     /**
      * float 断言
      *
@@ -303,7 +303,7 @@ class assert
     {
         return static::checkExpression(is_float($mixVariable), 'float', $strDescription);
     }
-    
+
     /**
      * not float 断言
      *
@@ -315,7 +315,7 @@ class assert
     {
         return static::checkExpression(! is_float($mixVariable), 'notFloat', $strDescription);
     }
-    
+
     /**
      * numeric 断言
      *
@@ -327,7 +327,7 @@ class assert
     {
         return static::checkExpression(is_numeric($mixVariable), 'numeric', $strDescription);
     }
-    
+
     /**
      * not numeric 断言
      *
@@ -339,7 +339,7 @@ class assert
     {
         return static::checkExpression(! is_numeric($mixVariable), 'notNumeric', $strDescription);
     }
-    
+
     /**
      * string 断言
      *
@@ -351,7 +351,7 @@ class assert
     {
         return static::checkExpression(is_string($mixVariable), 'string', $strDescription);
     }
-    
+
     /**
      * not string 断言
      *
@@ -363,7 +363,7 @@ class assert
     {
         return static::checkExpression(! is_string($mixVariable), 'notString', $strDescription);
     }
-    
+
     /**
      * scalar 断言
      *
@@ -375,7 +375,7 @@ class assert
     {
         return static::checkExpression(is_scalar($mixVariable), 'scalar', $strDescription);
     }
-    
+
     /**
      * not scalar 断言
      *
@@ -387,7 +387,7 @@ class assert
     {
         return static::checkExpression(! is_scalar($mixVariable), 'notScalar', $strDescription);
     }
-    
+
     /**
      * resource 断言
      *
@@ -399,7 +399,7 @@ class assert
     {
         return static::checkExpression(is_resource($mixVariable), 'resource', $strDescription);
     }
-    
+
     /**
      * not resource 断言
      *
@@ -411,7 +411,7 @@ class assert
     {
         return static::checkExpression(! is_resource($mixVariable), 'notResource', $strDescription);
     }
-    
+
     /**
      * object 断言
      *
@@ -423,7 +423,7 @@ class assert
     {
         return static::checkExpression(is_object($mixVariable), 'object', $strDescription);
     }
-    
+
     /**
      * not object 断言
      *
@@ -435,7 +435,7 @@ class assert
     {
         return static::checkExpression(! is_object($mixVariable), 'notObject', $strDescription);
     }
-    
+
     /**
      * callback 断言
      *
@@ -447,7 +447,7 @@ class assert
     {
         return static::checkExpression(is_callable($mixVariable), 'callback', $strDescription);
     }
-    
+
     /**
      * not callback 断言
      *
@@ -459,7 +459,7 @@ class assert
     {
         return static::checkExpression(! is_callable($mixVariable), 'notCallback', $strDescription);
     }
-    
+
     /**
      * boolean 断言
      *
@@ -471,7 +471,7 @@ class assert
     {
         return static::checkExpression(is_bool($mixVariable), 'boolean', $strDescription);
     }
-    
+
     /**
      * not boolean 断言
      *
@@ -483,7 +483,7 @@ class assert
     {
         return static::checkExpression(! is_bool($mixVariable), 'notBoolean', $strDescription);
     }
-    
+
     /**
      * is array 断言
      *
@@ -495,7 +495,7 @@ class assert
     {
         return static::checkExpression(is_array($mixVariable), 'isArray', $strDescription);
     }
-    
+
     /**
      * not is array 断言
      *
@@ -507,7 +507,7 @@ class assert
     {
         return static::checkExpression(! is_array($mixVariable), 'notIsArray', $strDescription);
     }
-    
+
     /**
      * path 断言
      *
@@ -519,7 +519,7 @@ class assert
     {
         return static::checkExpression(file_exists($mixVariable), 'path', $strDescription);
     }
-    
+
     /**
      * not path 断言
      *
@@ -531,7 +531,7 @@ class assert
     {
         return static::checkExpression(! file_exists($mixVariable), 'notPath', $strDescription);
     }
-    
+
     /**
      * file 断言
      *
@@ -543,7 +543,7 @@ class assert
     {
         return static::checkExpression(file_exists($mixVariable), 'file', $strDescription);
     }
-    
+
     /**
      * not file 断言
      *
@@ -555,7 +555,7 @@ class assert
     {
         return static::checkExpression(! file_exists($mixVariable), 'notFile', $strDescription);
     }
-    
+
     /**
      * dir 断言
      *
@@ -567,7 +567,7 @@ class assert
     {
         return static::checkExpression(is_dir($mixVariable), 'dir', $strDescription);
     }
-    
+
     /**
      * not dir 断言
      *
@@ -579,7 +579,7 @@ class assert
     {
         return static::checkExpression(! is_dir($mixVariable), 'notDir', $strDescription);
     }
-    
+
     /**
      * 验证表达式
      *
@@ -593,7 +593,7 @@ class assert
         }
         static::throwException($strType, $strDescription);
     }
-    
+
     /**
      * 断言验证失败抛出异常
      *

@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -33,21 +33,21 @@ use queryyetsimple\pipeline\pipeline;
  */
 class Pipeline_test extends testcase
 {
-    
+
     /**
      * 管道对象 base
      *
      * @var \queryyetsimple\pipeline\pipeline
      */
     protected $objPipelineBase;
-    
+
     /**
      * 管道对象 class
      *
      * @var \queryyetsimple\pipeline\pipeline
      */
     protected $objPipelineClass;
-    
+
     /**
      * 初始化
      *
@@ -58,7 +58,7 @@ class Pipeline_test extends testcase
         $this->objPipelineBase = new pipeline();
         $this->objPipelineClass = new pipeline(project::singletons());
     }
-    
+
     /**
      * 基础测试
      *
@@ -67,28 +67,24 @@ class Pipeline_test extends testcase
     public function testBase()
     {
         $intPassed = 5;
-        
-        $intPassedEnd = $this->objPipelineBase->send($intPassed)->through(function ($intPassed)
-        {
+
+        $intPassedEnd = $this->objPipelineBase->send($intPassed)->through(function ($intPassed) {
             $this->assertTrue($intPassed === 5);
             return $intPassed + 1;
-        })->through(function ($intPassed)
-        {
+        })->through(function ($intPassed) {
             $this->assertTrue($intPassed === 6);
             return $intPassed * 10;
-        }, function ($intPassed)
-        {
+        }, function ($intPassed) {
             $this->assertTrue($intPassed === 60);
             return $intPassed + 30;
-        })->then(function ($intPassed)
-        {
+        })->then(function ($intPassed) {
             $this->assertTrue($intPassed === 90);
             return $intPassed + 2000;
         });
-        
+
         $this->assertTrue($intPassedEnd === 2090);
     }
-    
+
     /**
      * 类测试
      *
@@ -97,12 +93,11 @@ class Pipeline_test extends testcase
     public function testClass()
     {
         $strPassed = 'I';
-        
+
         $strPassedEnd = $this->objPipelineClass->send($strPassed)->through([
-            'tests\pipeline\first', 
+            'tests\pipeline\first',
             'tests\pipeline\second:you'
-        ])->then(function ($strPassed)
-        {
+        ])->then(function ($strPassed) {
             $this->assertTrue($strPassed === 'I Love You');
             return $strPassed . ' Forever';
         });

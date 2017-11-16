@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,14 +32,14 @@ use queryyetsimple\support\provider;
  */
 class register extends provider
 {
-    
+
     /**
      * 是否延迟载入
      *
      * @var boolean
      */
     public static $booDefer = true;
-    
+
     /**
      * 注册服务
      *
@@ -50,7 +50,7 @@ class register extends provider
         $this->caches();
         $this->cache();
     }
-    
+
     /**
      * 可用服务提供者
      *
@@ -59,14 +59,14 @@ class register extends provider
     public static function providers()
     {
         return [
-            'caches' => 'queryyetsimple\cache\manager', 
+            'caches' => 'queryyetsimple\cache\manager',
             'cache' => [
-                'queryyetsimple\cache\cache', 
+                'queryyetsimple\cache\cache',
                 'queryyetsimple\cache\icache'
             ]
         ];
     }
-    
+
     /**
      * 注册 caches 服务
      *
@@ -74,12 +74,11 @@ class register extends provider
      */
     protected function caches()
     {
-        $this->singleton('caches', function ($oProject)
-        {
+        $this->singleton('caches', function ($oProject) {
             return new manager($oProject);
         });
     }
-    
+
     /**
      * 注册 cache 服务
      *
@@ -87,8 +86,7 @@ class register extends provider
      */
     protected function cache()
     {
-        $this->singleton('cache', function ($oProject)
-        {
+        $this->singleton('cache', function ($oProject) {
             return $oProject['caches']->connect();
         });
     }

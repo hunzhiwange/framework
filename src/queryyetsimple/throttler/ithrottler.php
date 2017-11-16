@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,7 +31,7 @@ use queryyetsimple\http\request;
  */
 interface ithrottler
 {
-    
+
     /**
      * 创建一个节流器
      *
@@ -41,7 +41,7 @@ interface ithrottler
      * @return \queryyetsimple\throttler\rate_limiter
      */
     public function create($strKey = null, $intXRateLimitLimit = 20, $intXRateLimitTime = 20);
-    
+
     /**
      * 设置 http request
      *
@@ -49,7 +49,7 @@ interface ithrottler
      * @return $this
      */
     public function setRequest(request $objRequest);
-    
+
     /**
      * 获取请求 key
      *

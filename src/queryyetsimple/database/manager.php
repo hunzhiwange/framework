@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use queryyetsimple\support\manager as support_manager;
  */
 class manager extends support_manager
 {
-    
+
     /**
      * 取得配置命名空间
      *
@@ -42,7 +42,7 @@ class manager extends support_manager
     {
         return 'database';
     }
-    
+
     /**
      * 创建连接对象
      *
@@ -53,7 +53,7 @@ class manager extends support_manager
     {
         return new database($objConnect);
     }
-    
+
     /**
      * 创建 mysql 连接
      *
@@ -64,7 +64,7 @@ class manager extends support_manager
     {
         return new mysql($this->objContainer['log'], $this->objContainer['cache'], $this->getOption('mysql', is_array($arrOption) ? $arrOption : []), $this->objContainer->development());
     }
-    
+
     /**
      * 读取默认配置
      *
@@ -76,7 +76,7 @@ class manager extends support_manager
     {
         return $this->parseOption(parent::getOption($strConnect, $arrExtendOption));
     }
-    
+
     /**
      * 分析数据库配置参数
      *
@@ -86,15 +86,15 @@ class manager extends support_manager
     protected function parseOption($arrOption)
     {
         $arrTemp = $arrOption;
-        
+
         foreach (array_keys($arrOption) as $strType) {
             if (in_array($strType, [
-                'distributed', 
-                'readwrite_separate', 
-                'driver', 
-                'master', 
-                'slave', 
-                'fetch', 
+                'distributed',
+                'readwrite_separate',
+                'driver',
+                'master',
+                'slave',
+                'fetch',
                 'log'
             ])) {
                 if (isset($arrTemp[$strType])) {
@@ -106,20 +106,20 @@ class manager extends support_manager
                 }
             }
         }
-        
+
         // 纠正数据库服务器参数
         foreach ([
-            'master', 
+            'master',
             'slave'
         ] as $strType) {
             if (! is_array($arrOption[$strType])) {
                 $arrOption[$strType] = [];
             }
         }
-        
+
         // 填充数据库服务器参数
         $arrOption['master'] = array_merge($arrOption['master'], $arrTemp);
-        
+
         // 是否采用分布式服务器，非分布式关闭附属服务器
         if (! $arrOption['distributed']) {
             $arrOption['slave'] = [];
@@ -133,7 +133,7 @@ class manager extends support_manager
                 $arrSlave = array_merge($arrSlave, $arrTemp);
             }
         }
-        
+
         // + 合并支持
         $arrOption = helper::arrayMergePlus($arrOption);
 

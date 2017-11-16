@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,14 +32,14 @@ use RuntimeException;
  */
 class http extends RuntimeException
 {
-    
+
     /**
      * HTTP 状态
      *
      * @var int
      */
     protected $intStatusCode;
-    
+
     /**
      * 构造函数
      *
@@ -54,7 +54,7 @@ class http extends RuntimeException
         $this->intStatusCode = $intStatusCode;
         parent::__construct($strMessage, $intCode, $objPrevious);
     }
-    
+
     /**
      * HTTP 状态
      *

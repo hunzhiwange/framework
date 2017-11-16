@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -30,7 +30,7 @@ namespace queryyetsimple\i18n\translations;
  */
 class noop extends translations
 {
-    
+
     /**
      * prop
      *
@@ -38,7 +38,7 @@ class noop extends translations
      */
     public $entries = array();
     public $headers = array();
-    
+
     /**
      * (non-PHPdoc)
      *
@@ -48,7 +48,7 @@ class noop extends translations
     {
         return true;
     }
-    
+
     /**
      *
      * @param string $header
@@ -57,7 +57,7 @@ class noop extends translations
     public function set_header($header, $value)
     {
     }
-    
+
     /**
      *
      * @param array $headers
@@ -65,7 +65,7 @@ class noop extends translations
     public function set_headers($headers)
     {
     }
-    
+
     /**
      *
      * @param string $header
@@ -75,7 +75,7 @@ class noop extends translations
     {
         return false;
     }
-    
+
     /**
      *
      * @param Translation_Entry $entry
@@ -85,7 +85,7 @@ class noop extends translations
     {
         return false;
     }
-    
+
     /**
      *
      * @param string $singular
@@ -95,7 +95,7 @@ class noop extends translations
     {
         return $singular;
     }
-    
+
     /**
      *
      * @param int $count
@@ -105,7 +105,7 @@ class noop extends translations
     {
         return 1 == $count ? 0 : 1;
     }
-    
+
     /**
      *
      * @return int
@@ -114,7 +114,7 @@ class noop extends translations
     {
         return 2;
     }
-    
+
     /**
      *
      * @param string $singular
@@ -126,7 +126,7 @@ class noop extends translations
     {
         return 1 == $count ? $singular : $plural;
     }
-    
+
     /**
      *
      * @param object $other

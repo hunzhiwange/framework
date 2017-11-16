@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -32,7 +32,7 @@ use queryyetsimple\support\collection;
  */
 class has_many extends relation
 {
-    
+
     /**
      * 构造函数
      *
@@ -46,7 +46,7 @@ class has_many extends relation
     {
         parent::__construct($objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey);
     }
-    
+
     /**
      * 关联基础查询条件
      *
@@ -59,7 +59,7 @@ class has_many extends relation
             $this->objSelect->whereNotNull($this->strTargetKey);
         }
     }
-    
+
     /**
      * 设置预载入关联查询条件
      *
@@ -70,7 +70,7 @@ class has_many extends relation
     {
         $this->objSelect->whereIn($this->strTargetKey, $this->getModelKey($arrModel, $this->strSourceKey));
     }
-    
+
     /**
      * 匹配关联查询数据到模型 has_many
      *
@@ -83,7 +83,7 @@ class has_many extends relation
     {
         return $this->matchPreLoadOneOrMany($arrModel, $objResult, $strRelation, 'many');
     }
-    
+
     /**
      * 取回源模型对应数据
      *
@@ -93,7 +93,7 @@ class has_many extends relation
     {
         return $this->objSourceModel->getProp($this->strSourceKey);
     }
-    
+
     /**
      * 查询关联对象
      *
@@ -103,7 +103,7 @@ class has_many extends relation
     {
         return $this->objSelect->getAll();
     }
-    
+
     /**
      * 保存模型
      *
@@ -115,7 +115,7 @@ class has_many extends relation
         $this->withSourceKeyValue($objModel);
         return $objModel->save();
     }
-    
+
     /**
      * 批量保存模型
      *
@@ -127,10 +127,10 @@ class has_many extends relation
         foreach ($mixModel as $objModel) {
             $this->save($objModel);
         }
-        
+
         return $mixModel;
     }
-    
+
     /**
      * 创建模型实例
      *
@@ -142,10 +142,10 @@ class has_many extends relation
         $objModel = $this->objTargetModel->newInstance($arrProp);
         $this->withSourceKeyValue($objModel);
         $objModel->save();
-        
+
         return $objModel;
     }
-    
+
     /**
      * 批量创建模型实例
      *
@@ -158,10 +158,10 @@ class has_many extends relation
         foreach ($arrProps as $arrProp) {
             $arrModels[] = $this->create($arrProp);
         }
-        
+
         return $arrModels;
     }
-    
+
     /**
      * 更新关联模型的数据
      *
@@ -172,7 +172,7 @@ class has_many extends relation
     {
         return $this->objSelect->update($arrProp);
     }
-    
+
     /**
      * 取得源外键值
      *
@@ -182,7 +182,7 @@ class has_many extends relation
     {
         return $this->objSourceModel->getProp($this->strSourceKey);
     }
-    
+
     /**
      * 模型添加源字段数据
      *
@@ -193,7 +193,7 @@ class has_many extends relation
     {
         $objModel->forceProp($this->strTargetKey, $this->getSourceKeyValue());
     }
-    
+
     /**
      * 匹配预载入数据
      *
@@ -206,18 +206,18 @@ class has_many extends relation
     protected function matchPreLoadOneOrMany(array $arrModel, collection $objResult, $strRelation, $strType)
     {
         $arrMap = $this->buildMap($objResult);
-        
+
         foreach ($arrModel as &$objModel) {
             $mixKey = $objModel->getProp($this->strSourceKey);
-            
+
             if (isset($arrMap[$mixKey])) {
                 $objModel->setRelationProp($strRelation, $this->getRelationValue($arrMap, $mixKey, $strType));
             }
         }
-        
+
         return $arrModel;
     }
-    
+
     /**
      * 取得关联模型数据
      *
@@ -231,7 +231,7 @@ class has_many extends relation
         $arrValue = $arrMap[$strKey];
         return $strType == 'one' ? reset($arrValue) : $this->objTargetModel->collection($arrValue);
     }
-    
+
     /**
      * 模型隐射数据
      *
@@ -241,7 +241,7 @@ class has_many extends relation
     protected function buildMap(collection $objResult)
     {
         $arrMap = [];
-        
+
         foreach ($objResult as $objResultModel) {
             $arrMap[$objResultModel->getProp($this->strTargetKey)][] = $objResultModel;
         }
