@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
- * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ * (c) 2010-2018 http://queryphp.com All rights reserved.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -31,21 +31,21 @@ use queryyetsimple\log\ilog;
  */
 abstract class message
 {
-    
+
     /**
      * 返回项目容器
      *
      * @var \queryyetsimple\bootstrap\project
      */
     protected $oProject;
-    
+
     /**
      * 错误消息
      *
      * @var string
      */
     protected $strMessage;
-    
+
     /**
      * 错误消息执行入口
      *
@@ -58,7 +58,7 @@ abstract class message
             $this->toResponse($this->strMessage);
         }
     }
-    
+
     /**
      * 记录日志
      *
@@ -71,7 +71,7 @@ abstract class message
             $this->oProject['log']->write(ilog::ERROR, $strMessage);
         }
     }
-    
+
     /**
      * 输出一个致命错误
      *
@@ -82,7 +82,7 @@ abstract class message
     {
         require_once dirname(__DIR__) . '/template/error.php';
     }
-    
+
     /**
      * 格式为 response
      *
@@ -94,28 +94,38 @@ abstract class message
         if (property_exists($this, 'objException') && method_exists($this->objException, 'getResponse')) {
             return $this->objException->getResponse()->output();
         }
-        
+
         if ($this->oProject['option']['default_response'] == 'api') {
             $strContent = $this->errorMessage($sMessage);
         } else {
             $intLevel = ob_get_level();
             ob_start();
-            
+
             try {
                 $this->errorMessage($sMessage);
             } catch (Exceptions $oE) {
                 while (ob_get_level() > $intLevel) {
                     ob_end_clean();
                 }
-                
+
                 throw $oE;
             }
-            
+
             $strContent = ob_get_clean();
         }
-        
+
         $booStatusCode = property_exists($this, 'objException') && method_exists($this->objException, 'statusCode');
-        
-        $this->oProject['response']->data($strContent)->ifs($booStatusCode)->code($booStatusCode ? $this->objException->statusCode() : null)->endIfs()->output();
+
+        $this->oProject['response']->
+
+        data($strContent)->
+
+        ifs($booStatusCode)->
+
+        code($booStatusCode ? $this->objException->statusCode() : null)->
+
+        endIfs()->
+
+        output();
     }
 }

@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
- * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ * (c) 2010-2018 http://queryphp.com All rights reserved.
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -37,48 +37,48 @@ use queryyetsimple\option\tool as option_tool;
  */
 class application
 {
-    
+
     /**
      * 当前项目
      *
      * @var \queryyetsimple\bootstrap\project
      */
     protected $objProject;
-    
+
     /**
      * 默认
      *
      * @var string
      */
     const INIT_APP = '~_~';
-    
+
     /**
      * 项目配置
      *
      * @var array
      */
     protected $arrOption = [];
-    
+
     /**
      * app 名字
      *
      * @var array
      */
     protected $strApp;
-    
+
     /**
      * 执行事件流程
      *
      * @var array
      */
     protected $arrEvent = [
-        'initialization', 
-        'loadBootstrap', 
-        'i18n', 
-        'console', 
+        'initialization',
+        'loadBootstrap',
+        'i18n',
+        'console',
         'response'
     ];
-    
+
     /**
      * 构造函数
      *
@@ -93,7 +93,7 @@ class application
         $this->strApp = $sApp;
         $this->arrOption = $arrOption;
     }
-    
+
     /**
      * 执行应用
      *
@@ -105,10 +105,10 @@ class application
             $strEvent = $strEvent . 'Run';
             $this->{$strEvent}();
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 初始化应用
      *
@@ -124,7 +124,7 @@ class application
         $this->loadRouter();
         return $this;
     }
-    
+
     /**
      * 注册命名空间
      *
@@ -135,14 +135,14 @@ class application
         foreach ($this->objProject['option']['~apps~'] as $strApp) {
             $this->objProject['psr4']->import($strApp, $this->objProject->pathApplication() . '/' . $strApp);
         }
-        
+
         foreach ($this->objProject['option']['namespace'] as $strNamespace => $strPath) {
             $this->objProject['psr4']->import($strNamespace, $strPath);
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 初始化处理
      *
@@ -155,24 +155,24 @@ class application
         } else {
             error_reporting(E_ERROR | E_PARSE | E_STRICT);
         }
-        
+
         ini_set('default_charset', 'utf8');
-        
+
         if (function_exists('date_default_timezone_set')) {
             date_default_timezone_set($this->objProject['option']['time_zone']);
         }
-        
+
         if (function_exists('gz_handler') && $this->objProject['option']['start_gzip']) {
             ob_start('gz_handler');
         } else {
             ob_start();
         }
-        
+
         if ($this->objProject->development()) {
             assert::open(true);
         }
     }
-    
+
     /**
      * 载入 app 引导文件
      *
@@ -184,7 +184,7 @@ class application
             require $strBootstrap;
         }
     }
-    
+
     /**
      * 初始化国际语言包设置
      *
@@ -195,23 +195,29 @@ class application
         if (! $this->objProject['option']['i18n\on']) {
             return;
         }
-        
+
         $sI18nSet = $this->objProject['i18n']->parseContext();
         $this->objProject['request']->setLangset($sI18nSet);
         if ($this->objProject['option']['i18n\develop'] == $sI18nSet) {
             return;
         }
-        
+
         $sCachePath = $this->getI18nCachePath($sI18nSet);
-        
+
         if (! $this->objProject->development() && is_file($sCachePath)) {
             $this->objProject['i18n']->addI18n($sI18nSet, ( array ) include $sCachePath);
         } else {
-            $this->objProject['i18n.load']->setI18n($sI18nSet)->setCachePath($sCachePath)->addDir($this->getI18nDir($sI18nSet));
+            $this->objProject['i18n.load']->
+
+            setI18n($sI18nSet)->
+
+            setCachePath($sCachePath)->
+
+            addDir($this->getI18nDir($sI18nSet));
             $this->objProject['i18n']->addI18n($sI18nSet, $this->objProject['i18n.load']->loadData());
         }
     }
-    
+
     /**
      * 初始化命令行设置
      *
@@ -222,16 +228,16 @@ class application
         if (! $this->objProject->console()) {
             return;
         }
-        
+
         $sCachePath = $this->getConsoleCachePath();
-        
+
         if (! $this->objProject->development() && is_file($sCachePath)) {
             $this->objProject['console.load']->setData(( array ) include $sCachePath);
         } else {
             $this->objProject['console.load']->setCachePath($sCachePath);
         }
     }
-    
+
     /**
      * 执行请求返回相应结果
      *
@@ -243,21 +249,21 @@ class application
         if (! ($mixResponse instanceof response)) {
             $mixResponse = $this->objProject['response']->make($mixResponse);
         }
-        
+
         // 穿越中间件
         $this->objProject['router']->throughMiddleware($this->objProject['pipeline'], $this->objProject['request'], [
             $mixResponse
         ]);
-        
+
         // 调试
         if ($this->objProject->debug()) {
             $mixResponse->appendContent(console::trace());
         }
-        
+
         // 输出响应
         $mixResponse->output();
     }
-    
+
     /**
      * 分析配置文件
      *
@@ -266,7 +272,7 @@ class application
     protected function loadOption()
     {
         $sCachePath = $this->getOptionCachePath();
-        
+
         if ($this->strApp == static::INIT_APP) {
             if (! is_file($sCachePath) || ! is_null($this->objProject['option']->reset(( array ) include $sCachePath)) || $this->objProject->development()) {
                 $this->cacheOption($sCachePath);
@@ -279,7 +285,7 @@ class application
             }
         }
     }
-    
+
     /**
      * 分析路由
      *
@@ -290,20 +296,20 @@ class application
         if ($this->strApp != static::INIT_APP) {
             return;
         }
-        
+
         $this->setRouterCachePath();
-        
+
         if (! $this->objProject['router']->checkExpired()) {
             return;
         }
-        
+
         foreach ($this->objProject['option']['app\~routers~'] as $strRouter) {
             if (is_array($arrFoo = include $strRouter)) {
                 $this->objProject['router']->importCache($arrFoo);
             }
         }
     }
-    
+
     /**
      * 返回 i18n 目录
      *
@@ -313,11 +319,11 @@ class application
     protected function getI18nDir()
     {
         $arrDir = [
-            dirname(__DIR__) . '/bootstrap/i18n', 
-            $this->objProject->pathCommon() . '/ui/i18n', 
+            dirname(__DIR__) . '/bootstrap/i18n',
+            $this->objProject->pathCommon() . '/ui/i18n',
             $this->objProject->pathApplicationDir('i18n')
         ];
-        
+
         if ($this->objProject['option']['i18n\extend']) {
             if (is_array($this->objProject['option']['i18n\extend'])) {
                 $arrDir = array_merge($arrDir, $this->objProject['option']['i18n\extend']);
@@ -325,10 +331,10 @@ class application
                 $arrDir[] = $this->objProject['option']['i18n\extend'];
             }
         }
-        
+
         return $arrDir;
     }
-    
+
     /**
      * 返回 i18n 缓存路径
      *
@@ -339,7 +345,7 @@ class application
     {
         return $this->objProject->pathApplicationCache('i18n') . '/' . $sI18nSet . '/default.php';
     }
-    
+
     /**
      * 返回 console 缓存路径
      *
@@ -349,7 +355,7 @@ class application
     {
         return $this->objProject->pathApplicationCache('console') . '/default.php';
     }
-    
+
     /**
      * 返回配置目录
      *
@@ -366,7 +372,7 @@ class application
         $arrDir[] = $this->objProject->pathApplicationDir('option');
         return $arrDir;
     }
-    
+
     /**
      * 返回配置缓存路径
      *
@@ -376,7 +382,7 @@ class application
     {
         return $this->objProject->pathApplicationCache('option') . '/' . $this->strApp . '.php';
     }
-    
+
     /**
      * 设置路由缓存路径
      *
@@ -384,9 +390,13 @@ class application
      */
     protected function setRouterCachePath()
     {
-        $this->objProject['router']->cachePath($this->objProject->pathApplicationCache('router') . '/router.php')->development($this->objProject->development());
+        $this->objProject['router']->
+
+        cachePath($this->objProject->pathApplicationCache('router') . '/router.php')->
+
+        development($this->objProject->development());
     }
-    
+
     /**
      * 缓存配置
      *
@@ -398,7 +408,7 @@ class application
         $this->objProject['option']->reset(option_tool::saveToCache($this->getOptionDir(), $sCachePath, [
             'app' => [
                 '~apps~' => fso::lists($this->objProject->pathApplication())
-            ], 
+            ],
             'env' => $_ENV
         ], $this->strApp == static::INIT_APP));
     }
