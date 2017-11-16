@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\cache;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Redis as Rediss;
 use RuntimeException;
@@ -30,26 +34,26 @@ use queryyetsimple\support\option;
 class redis extends acache implements iconnect
 {
     use option;
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-            'nocache_force' => '~@nocache_force',
-            'time_preset' => [ ],
-            'prefix' => '~@',
-            'expire' => 86400,
-            'host' => '127.0.0.1',
-            'port' => 6379,
-            'password' => '',
-            'select' => 0,
-            'timeout' => 0,
-            'persistent' => false,
-            'serialize' => true
+        'nocache_force' => '~@nocache_force', 
+        'time_preset' => [], 
+        'prefix' => '~@', 
+        'expire' => 86400, 
+        'host' => '127.0.0.1', 
+        'port' => 6379, 
+        'password' => '', 
+        'select' => 0, 
+        'timeout' => 0, 
+        'persistent' => false, 
+        'serialize' => true
     ];
-
+    
     /**
      * 构造函数
      *
@@ -61,21 +65,21 @@ class redis extends acache implements iconnect
         if (! extension_loaded('redis')) {
             throw new RuntimeException('Redis extension must be loaded before use.');
         }
-
+        
         parent::__construct($arrOption);
-
+        
         $this->hHandle = $this->getRedis();
-        $this->hHandle->{$this->arrOption ['persistent'] ? 'pconnect' : 'connect'} ($this->arrOption ['host'], $this->arrOption ['port'], $this->arrOption ['timeout']);
-
-        if ($this->arrOption ['password']) {
-            $this->hHandle->auth($this->arrOption ['password']);
+        $this->hHandle->{$this->arrOption['persistent'] ? 'pconnect' : 'connect'}($this->arrOption['host'], $this->arrOption['port'], $this->arrOption['timeout']);
+        
+        if ($this->arrOption['password']) {
+            $this->hHandle->auth($this->arrOption['password']);
         }
-
-        if ($this->arrOption ['select']) {
-            $this->hHandle->select($this->arrOption ['select']);
+        
+        if ($this->arrOption['select']) {
+            $this->hHandle->select($this->arrOption['select']);
         }
     }
-
+    
     /**
      * 获取缓存
      *
@@ -89,18 +93,18 @@ class redis extends acache implements iconnect
         if ($this->checkForce()) {
             return $mixDefault;
         }
-
+        
         $arrOption = $this->getOptions($arrOption);
-        $mixData = $this->hHandle->get($this->getCacheName($sCacheName, $arrOption ['prefix']));
+        $mixData = $this->hHandle->get($this->getCacheName($sCacheName, $arrOption['prefix']));
         if (is_null($mixData)) {
             return $mixDefault;
         }
-        if ($arrOption ['serialize']) {
+        if ($arrOption['serialize']) {
             $mixData = unserialize($mixData);
         }
         return $mixData;
     }
-
+    
     /**
      * 设置缓存
      *
@@ -112,19 +116,19 @@ class redis extends acache implements iconnect
     public function set($sCacheName, $mixData, array $arrOption = [])
     {
         $arrOption = $this->getOptions($arrOption);
-        if ($arrOption ['serialize']) {
+        if ($arrOption['serialize']) {
             $mixData = serialize($mixData);
         }
-
-        $arrOption ['expire'] = $this->cacheTime($sCacheName, $arrOption ['expire']);
-
-        if (( int ) $arrOption ['expire']) {
-            $this->hHandle->setex($this->getCacheName($sCacheName, $arrOption ['prefix']), ( int ) $arrOption ['expire'], $mixData);
+        
+        $arrOption['expire'] = $this->cacheTime($sCacheName, $arrOption['expire']);
+        
+        if (( int ) $arrOption['expire']) {
+            $this->hHandle->setex($this->getCacheName($sCacheName, $arrOption['prefix']), ( int ) $arrOption['expire'], $mixData);
         } else {
-            $this->hHandle->set($this->getCacheName($sCacheName, $arrOption ['prefix']), $mixData);
+            $this->hHandle->set($this->getCacheName($sCacheName, $arrOption['prefix']), $mixData);
         }
     }
-
+    
     /**
      * 清除缓存
      *
@@ -136,7 +140,7 @@ class redis extends acache implements iconnect
     {
         $this->hHandle->delete($this->getCacheName($sCacheName, $this->getOptions($arrOption)['prefix']));
     }
-
+    
     /**
      * 关闭 redis
      *
@@ -147,7 +151,7 @@ class redis extends acache implements iconnect
         $this->hHandle->close();
         $this->hHandle = null;
     }
-
+    
     /**
      * 返回 redis 对象
      *

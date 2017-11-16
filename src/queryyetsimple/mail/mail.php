@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\mail;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Swift_Image;
 use Swift_Message;
@@ -37,68 +41,68 @@ class mail implements imail
 {
     use option;
     use flow_control;
-
+    
     /**
      * 连接驱动
      *
      * @var \queryyetsimple\mail\iconnect
      */
     protected $oConnect;
-
+    
     /**
      * 视图
      *
      * @var \queryyetsimple\mvc\iview
      */
     protected $objView;
-
+    
     /**
      * 事件
      *
      * @var \queryyetsimple\event\idispatch|null
      */
     protected $objEvent;
-
+    
     /**
      * 邮件错误消息
      *
      * @var array
      */
-    protected $arrFailedRecipients = [ ];
-
+    protected $arrFailedRecipients = [];
+    
     /**
      * 消息
      *
      * @var \queryyetsimple\mail\message
      */
     protected $objMessage;
-
+    
     /**
      * 消息配置
      *
      * @var array
      */
     protected $arrMessageData = [
-            'html' => [ ],
-            'plain' => [ ]
+        'html' => [], 
+        'plain' => []
     ];
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-            'global_from' => [
-                    'address' => null,
-                    'name' => null
-            ],
-            'global_to' => [
-                    'address' => null,
-                    'name' => null
-            ]
+        'global_from' => [
+            'address' => null, 
+            'name' => null
+        ], 
+        'global_to' => [
+            'address' => null, 
+            'name' => null
+        ]
     ];
-
+    
     /**
      * 构造函数
      *
@@ -115,7 +119,7 @@ class mail implements imail
         $this->objEvent = $objEvent;
         $this->options($arrOption);
     }
-
+    
     /**
      * 设置邮件发送来源
      *
@@ -128,7 +132,7 @@ class mail implements imail
         $this->option('global_from', compact('strAddress', 'mixName'));
         return $this;
     }
-
+    
     /**
      * 设置邮件发送地址
      *
@@ -141,7 +145,7 @@ class mail implements imail
         $this->option('global_to', compact('strAddress', 'mixName'));
         return $this;
     }
-
+    
     /**
      * 视图 html 邮件内容
      *
@@ -154,14 +158,14 @@ class mail implements imail
         if ($this->checkFlowControl()) {
             return $this;
         }
-
-        $this->arrMessageData ['html'] [] = [
-                'file' => $sFile,
-                'data' => $arrData
+        
+        $this->arrMessageData['html'][] = [
+            'file' => $sFile, 
+            'data' => $arrData
         ];
         return $this;
     }
-
+    
     /**
      * html 邮件内容
      *
@@ -173,13 +177,13 @@ class mail implements imail
         if ($this->checkFlowControl()) {
             return $this;
         }
-
+        
         assert::scalar($strContent);
-
-        $this->arrMessageData ['html'] [] = $strContent;
+        
+        $this->arrMessageData['html'][] = $strContent;
         return $this;
     }
-
+    
     /**
      * 纯文本邮件内容
      *
@@ -191,13 +195,13 @@ class mail implements imail
         if ($this->checkFlowControl()) {
             return $this;
         }
-
+        
         assert::scalar($strContent);
-
-        $this->arrMessageData ['plain'] [] = $strContent;
+        
+        $this->arrMessageData['plain'][] = $strContent;
         return $this;
     }
-
+    
     /**
      * 视图纯文本邮件内容
      *
@@ -210,14 +214,14 @@ class mail implements imail
         if ($this->checkFlowControl()) {
             return $this;
         }
-
-        $this->arrMessageData ['plain'] [] = [
-                'file' => $sFile,
-                'data' => $arrData
+        
+        $this->arrMessageData['plain'][] = [
+            'file' => $sFile, 
+            'data' => $arrData
         ];
         return $this;
     }
-
+    
     /**
      * 消息回调处理
      *
@@ -229,7 +233,7 @@ class mail implements imail
         $this->callbackMessage($mixCallback, $this->makeMessage());
         return $this;
     }
-
+    
     /**
      * 添加附件
      *
@@ -242,7 +246,7 @@ class mail implements imail
         $this->makeMessage();
         return $this->callbackAttachment($this->createPathAttachment($strFile), $mixCallback);
     }
-
+    
     /**
      * 添加内存内容附件
      * file_get_content( path )
@@ -257,7 +261,7 @@ class mail implements imail
         $this->makeMessage();
         return $this->callbackAttachment($this->createDataAttachment($strData, $strName), $mixCallback);
     }
-
+    
     /**
      * 图片嵌入邮件
      *
@@ -269,7 +273,7 @@ class mail implements imail
         $this->makeMessage();
         return $this->objMessage->embed(Swift_Image::fromPath($strFile));
     }
-
+    
     /**
      * 内存内容图片嵌入邮件
      *
@@ -283,7 +287,7 @@ class mail implements imail
         $this->makeMessage();
         return $this->objMessage->embed(Swift_Image::newInstance($strData, $strName, $strContentType));
     }
-
+    
     /**
      * 格式化中文附件名字
      *
@@ -298,7 +302,7 @@ class mail implements imail
         }
         return '=?UTF-8?B?' . base64_encode($strFile) . '?=' . ($strExt ? '.' . $strExt : '');
     }
-
+    
     /**
      * 发送邮件
      *
@@ -309,20 +313,20 @@ class mail implements imail
     public function send($mixCallback = null, $booHtmlPriority = true)
     {
         $this->makeMessage();
-
+        
         $this->parseMailContent($booHtmlPriority);
-
+        
         if ($mixCallback) {
             $this->message($mixCallback);
         }
-
+        
         if (! empty($this->getOption('global_to')['address'])) {
             $this->objMessage->addTo($this->getOption('global_to')['address'], $this->getOption('global_to')['name']);
         }
-
+        
         return $this->sendMessage($this->objMessage);
     }
-
+    
     /**
      * 错误消息
      *
@@ -332,7 +336,7 @@ class mail implements imail
     {
         return $this->arrFailedRecipients;
     }
-
+    
     /**
      * 试图渲染数据
      *
@@ -343,10 +347,10 @@ class mail implements imail
     protected function getViewData($strFile, array $arrData)
     {
         return $this->objView->clearAssign()->assign('objMail', $this)->assign($arrData)->display($strFile, [
-                'return' => true
+            'return' => true
         ]);
     }
-
+    
     /**
      * 解析邮件内容
      *
@@ -356,40 +360,40 @@ class mail implements imail
     protected function parseMailContent($booHtmlPriority = true)
     {
         $booFind = false;
-
+        
         $arrMessageData = $this->arrMessageData;
-
-        if (! empty($arrMessageData ['html']) && ! empty($arrMessageData ['plain'])) {
-            unset($arrMessageData [$booHtmlPriority === true ? 'plain' : 'html']);
+        
+        if (! empty($arrMessageData['html']) && ! empty($arrMessageData['plain'])) {
+            unset($arrMessageData[$booHtmlPriority === true ? 'plain' : 'html']);
         }
-
-        if (! empty($arrMessageData ['html'])) {
-            foreach ($arrMessageData ['html'] as $mixView) {
+        
+        if (! empty($arrMessageData['html'])) {
+            foreach ($arrMessageData['html'] as $mixView) {
                 if ($booFind === false) {
                     $strMethod = 'setBody';
                     $booFind = true;
                 } else {
                     $strMethod = 'addPart';
                 }
-
-                $this->objMessage->$strMethod(is_array($mixView) ? $this->getViewData($mixView ['file'], $mixView ['data']) : $mixView, 'text/html');
+                
+                $this->objMessage->$strMethod(is_array($mixView) ? $this->getViewData($mixView['file'], $mixView['data']) : $mixView, 'text/html');
             }
         }
-
-        if (! empty($arrMessageData ['plain'])) {
-            foreach ($arrMessageData ['plain'] as $mixView) {
+        
+        if (! empty($arrMessageData['plain'])) {
+            foreach ($arrMessageData['plain'] as $mixView) {
                 if ($booFind === false) {
                     $strMethod = 'setBody';
                     $booFind = true;
                 } else {
                     $strMethod = 'addPart';
                 }
-
-                $this->objMessage->$strMethod(is_array($mixView) ? $this->getViewData($mixView ['file'], $mixView ['data']) : $mixView, 'text/plain');
+                
+                $this->objMessage->$strMethod(is_array($mixView) ? $this->getViewData($mixView['file'], $mixView['data']) : $mixView, 'text/plain');
             }
         }
     }
-
+    
     /**
      * 发送消息对象
      *
@@ -400,7 +404,7 @@ class mail implements imail
     {
         return $this->oConnect->send($objMessage, $this->arrFailedRecipients);
     }
-
+    
     /**
      * 创建消息对象
      *
@@ -411,16 +415,16 @@ class mail implements imail
         if (! is_null($this->objMessage)) {
             return $this->objMessage;
         }
-
+        
         $oMessage = new Swift_Message();
-
+        
         if (! empty($this->getOption('global_from')['address'])) {
             $oMessage->setFrom($this->getOption('global_from')['address'], $this->getOption('global_from')['name']);
         }
-
+        
         return $this->objMessage = $oMessage;
     }
-
+    
     /**
      * 邮件消息回调处理
      *
@@ -432,42 +436,42 @@ class mail implements imail
     {
         if (is_callable($mixCallback)) {
             return call_user_func_array($mixCallback, [
-                    $objMessage,
-                    $this
+                $objMessage, 
+                $this
             ]);
         }
-
+        
         if (is_string($mixCallback)) {
             if (strpos($mixCallback, '@') !== false) {
                 $arrCallback = explode('@', $mixCallback);
-                if (empty($arrCallback [1])) {
-                    $arrCallback [1] = 'handle';
+                if (empty($arrCallback[1])) {
+                    $arrCallback[1] = 'handle';
                 }
             } else {
                 $arrCallback = [
-                        $mixCallback,
-                        'handle'
+                    $mixCallback, 
+                    'handle'
                 ];
             }
-
-            if (($mixCallback = $this->objContainer->make($arrCallback [0])) === false) {
-                throw new InvalidArgumentException(sprintf('Message callback %s is not valid', $arrCallback [0]));
+            
+            if (($mixCallback = $this->objContainer->make($arrCallback[0])) === false) {
+                throw new InvalidArgumentException(sprintf('Message callback %s is not valid', $arrCallback[0]));
             }
-
-            $strMethod = method_exists($mixCallback, $arrCallback [1]) ? $arrCallback [1] : ($arrCallback [1] != 'handle' && method_exists($mixCallback, 'handle') ? 'handle' : 'run');
-
+            
+            $strMethod = method_exists($mixCallback, $arrCallback[1]) ? $arrCallback[1] : ($arrCallback[1] != 'handle' && method_exists($mixCallback, 'handle') ? 'handle' : 'run');
+            
             return call_user_func_array([
-                    $mixCallback,
-                    $strMethod
+                $mixCallback, 
+                $strMethod
             ], [
-                    $objMessage,
-                    $this
+                $objMessage, 
+                $this
             ]);
         }
-
+        
         throw new InvalidArgumentException('Message callback is not valid');
     }
-
+    
     /**
      * 路径创建 Swift_Attachment
      *
@@ -478,7 +482,7 @@ class mail implements imail
     {
         return Swift_Attachment::fromPath($strFile);
     }
-
+    
     /**
      * 内存内容创建 Swift_Attachment
      *
@@ -490,7 +494,7 @@ class mail implements imail
     {
         return Swift_Attachment::newInstance($strData, $strName);
     }
-
+    
     /**
      * 邮件附件消息回调处理
      *
@@ -502,15 +506,15 @@ class mail implements imail
     {
         if (is_callable($mixCallback)) {
             call_user_func_array($mixCallback, [
-                    $objAttachment,
-                    $this
+                $objAttachment, 
+                $this
             ]);
             $this->objMessage->attach($objAttachment);
         }
-
+        
         return $this;
     }
-
+    
     /**
      * 缺省方法
      *

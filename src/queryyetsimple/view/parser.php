@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\view;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use InvalidArgumentException;
 use queryyetsimple\support\stack;
@@ -33,139 +37,139 @@ use queryyetsimple\support\option;
 class parser implements iparser
 {
     use option;
-
+    
     /**
      * 编译器
      *
      * @var \queryyetsimple\view\icompiler
      */
     protected $objCompiler;
-
+    
     /**
      * 成对节点栈
      *
      * @var stack
      */
     protected $oNodeStack;
-
+    
     /**
      * js 和 node 共用分析器
      *
      * @var boolean
      */
     protected $bJsNode = false;
-
+    
     /**
      * 编译器
      *
      * @var array
      */
-    protected $arrCompilers = [ ];
-
+    protected $arrCompilers = [];
+    
     /**
      * 分析器
      *
      * @var array
      */
-    protected $arrParses = [ ];
-
+    protected $arrParses = [];
+    
     /**
      * 分析器定界符
      *
      * @var array
      */
     protected $arrTag = [
-
-            // 全局
-            'global' => [
-                    'left' => '[<\{]',
-                    'right' => '[\}>]',
-                    'left_node' => '(?:<\!--<|<\!--\{)',
-                    'right_node' => '(?:\}-->|>-->)'
-            ],
-
-            // js代码
-            'js' => [
-                    'left' => '{{',
-                    'right' => '}}',
-                    'left_node' => '<!--{{',
-                    'right_node' => '}}-->'
-            ],
-
-            // js 变量代码
-            'jsvar' => [
-                    'left' => '{{',
-                    'right' => '}}',
-                    'left_node' => '<!--{{',
-                    'right_node' => '}}-->'
-            ],
-
-            // 代码
-            'code' => [
-                    'left' => '{',
-                    'right' => '}',
-                    'left_node' => '<!--{',
-                    'right_node' => '}-->'
-            ],
-
-            // 节点
-            'node' => [
-                    'left' => '<',
-                    'right' => '>',
-                    'left_node' => '<\!--<',
-                    'right_node' => '>-->'
-            ],
-
-            // 反向
-            'revert' => [ ],
-
-            // 全局反向
-            'globalrevert' => [ ]
+        
+        // 全局
+        'global' => [
+            'left' => '[<\{]', 
+            'right' => '[\}>]', 
+            'left_node' => '(?:<\!--<|<\!--\{)', 
+            'right_node' => '(?:\}-->|>-->)'
+        ], 
+        
+        // js代码
+        'js' => [
+            'left' => '{{', 
+            'right' => '}}', 
+            'left_node' => '<!--{{', 
+            'right_node' => '}}-->'
+        ], 
+        
+        // js 变量代码
+        'jsvar' => [
+            'left' => '{{', 
+            'right' => '}}', 
+            'left_node' => '<!--{{', 
+            'right_node' => '}}-->'
+        ], 
+        
+        // 代码
+        'code' => [
+            'left' => '{', 
+            'right' => '}', 
+            'left_node' => '<!--{', 
+            'right_node' => '}-->'
+        ], 
+        
+        // 节点
+        'node' => [
+            'left' => '<', 
+            'right' => '>', 
+            'left_node' => '<\!--<', 
+            'right_node' => '>-->'
+        ], 
+        
+        // 反向
+        'revert' => [], 
+        
+        // 全局反向
+        'globalrevert' => []
     ];
-
+    
     /**
      * 模板树结构
      *
      * @var array
      */
-    protected $arrThemeTree = [ ];
-
+    protected $arrThemeTree = [];
+    
     /**
      * 模板项结构
      *
      * @var array
      */
     protected $arrThemeStruct = [
-            'source' => '', // 原模板
-            'content' => '', //
-            'compiler' => null, // 编译器
-            'children' => [ ],
-            'position' => [ ]
+        'source' => '',  // 原模板
+        'content' => '',  //
+        'compiler' => null,  // 编译器
+        'children' => [], 
+        'position' => []
     ];
-
+    
     /**
      * 当前编译源文件
      *
      * @var string
      */
     protected $strSourceFile;
-
+    
     /**
      * 当前编译缓存文件
      *
      * @var array
      */
     protected $stringCachePath;
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-            'tag_note' => false
+        'tag_note' => false
     ];
-
+    
     /**
      * 构造函数
      *
@@ -178,7 +182,7 @@ class parser implements iparser
         $this->objCompiler = $objCompiler;
         $this->options($arrOption);
     }
-
+    
     /**
      * 注册视图编译器
      *
@@ -187,11 +191,11 @@ class parser implements iparser
     public function registerCompilers()
     {
         foreach ($this->objCompiler->getCompilers() as $arrCompiler) {
-            $this->registerCompiler($arrCompiler [0], $arrCompiler [1], $arrCompiler [2]);
+            $this->registerCompiler($arrCompiler[0], $arrCompiler[1], $arrCompiler[2]);
         }
         return $this;
     }
-
+    
     /**
      * 注册视图分析器
      *
@@ -204,7 +208,7 @@ class parser implements iparser
         }
         return $this;
     }
-
+    
     /**
      * 执行编译
      *
@@ -218,34 +222,35 @@ class parser implements iparser
         if (! is_file($sFile)) {
             throw new InvalidArgumentException(printf('file %s is not exits', $sFile));
         }
-
+        
         $this->strSourceFile = $sFile;
         $this->strCachePath = $sCachePath;
-
+        
         // 源码
         $sCache = file_get_contents($sFile);
-
+        
         // 逐个载入分析器编译模板
         foreach ($this->arrParses as $sParser) {
             // 清理对象 & 构建顶层树对象
             $this->clearThemeTree();
             $arrTheme = [
-                    'source' => $sCache,
-                    'content' => $sCache,
-                    'position' => $this->getPosition($sCache, '', 0)
+                'source' => $sCache, 
+                'content' => $sCache, 
+                'position' => $this->getPosition($sCache, '', 0)
             ];
-
+            
             $arrTheme = array_merge($this->getDefaultStruct(), $arrTheme);
             $this->topTheme($arrTheme);
-
+            
             // 分析模板生成模板树
             $sParser = $sParser . 'Parse';
-            $this->{$sParser} ($sCache); // 分析
+            $this->{$sParser}($sCache); // 分析
+            
 
             // 编译模板树
             $sCache = $this->compileThemeTree();
         }
-
+        
         // 生成编译文件
         if ($bReturn === false) {
             $this->makeCacheFile($sCachePath, $sCache);
@@ -253,7 +258,7 @@ class parser implements iparser
             return $sCompiled;
         }
     }
-
+    
     /**
      * code 编译编码，后还原
      *
@@ -265,7 +270,7 @@ class parser implements iparser
         $nRand = rand(1000000, 9999999);
         return "__##revert##START##{$nRand}@" . base64_encode($sContent) . '##END##revert##__';
     }
-
+    
     /**
      * tagself 编译编码，后还原
      *
@@ -277,10 +282,11 @@ class parser implements iparser
         $nRand = rand(1000000, 9999999);
         return "__##global##START##{$nRand}@" . base64_encode($sContent) . '##END##global##__';
     }
-
+    
     // ######################################################
     // --------------------- 分析器 start ---------------------
     // ######################################################
+    
 
     /**
      * 全局编译器 tagself
@@ -291,29 +297,29 @@ class parser implements iparser
     protected function globalParse(&$sCompiled)
     {
         $arrTag = $this->getTag('global');
-
-        $arrRes = [ ]; // 分析
+        
+        $arrRes = []; // 分析
         if (preg_match_all("/{$arrTag['left']}tagself{$arrTag['right']}(.+?){$arrTag['left']}\/tagself{$arrTag['right']}/isx", $sCompiled, $arrRes)) {
             $nStartPos = 0;
-            foreach ($arrRes [1] as $nIndex => $sEncode) {
-                $sSource = trim($arrRes [0] [$nIndex]);
-                $sContent = trim($arrRes [1] [$nIndex]);
-
+            foreach ($arrRes[1] as $nIndex => $sEncode) {
+                $sSource = trim($arrRes[0][$nIndex]);
+                $sContent = trim($arrRes[1][$nIndex]);
+                
                 $arrTheme = [
-                        'source' => $sSource,
-                        'content' => $sContent,
-                        'compiler' => 'global', // 编译器
-                        'children' => [ ]
+                    'source' => $sSource, 
+                    'content' => $sContent, 
+                    'compiler' => 'global',  // 编译器
+                    'children' => []
                 ];
-
-                $arrTheme ['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
-                $nStartPos = $arrTheme ['position'] ['end'] + 1;
+                
+                $arrTheme['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
+                $nStartPos = $arrTheme['position']['end'] + 1;
                 $arrTheme = array_merge($this->arrThemeStruct, $arrTheme);
                 $this->addTheme($arrTheme); // 将模板数据加入到树结构中
             }
         }
     }
-
+    
     /**
      * javascript 变量分析器
      *
@@ -323,29 +329,29 @@ class parser implements iparser
     protected function jsvarParse(&$sCompiled)
     {
         $arrTag = $this->getTag('jsvar');
-
-        $arrRes = [ ]; // 分析
+        
+        $arrRes = []; // 分析
         if (preg_match_all("/{$arrTag['left']}(.+?){$arrTag['right']}/isx", $sCompiled, $arrRes)) {
             $nStartPos = 0;
-            foreach ($arrRes [1] as $nIndex => $sEncode) {
-                $sSource = trim($arrRes [0] [$nIndex]);
-                $sContent = trim($arrRes [1] [$nIndex]);
-
+            foreach ($arrRes[1] as $nIndex => $sEncode) {
+                $sSource = trim($arrRes[0][$nIndex]);
+                $sContent = trim($arrRes[1][$nIndex]);
+                
                 $arrTheme = [
-                        'source' => $sSource,
-                        'content' => $sContent,
-                        'compiler' => 'jsvar', // 编译器
-                        'children' => [ ]
+                    'source' => $sSource, 
+                    'content' => $sContent, 
+                    'compiler' => 'jsvar',  // 编译器
+                    'children' => []
                 ];
-
-                $arrTheme ['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
-                $nStartPos = $arrTheme ['position'] ['end'] + 1;
+                
+                $arrTheme['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
+                $nStartPos = $arrTheme['position']['end'] + 1;
                 $arrTheme = array_merge($this->arrThemeStruct, $arrTheme);
                 $this->addTheme($arrTheme); // 将模板数据加入到树结构中
             }
         }
     }
-
+    
     /**
      * code 方式分析器
      *
@@ -354,40 +360,40 @@ class parser implements iparser
      */
     protected function codeParse(&$sCompiled)
     {
-        foreach ($this->arrCompilers ['code'] as $sCompilers => $sTag) {
-            $arrNames [] = $this->escapeCharacter($sCompilers); // 处理一些正则表达式中有特殊意义的符号
+        foreach ($this->arrCompilers['code'] as $sCompilers => $sTag) {
+            $arrNames[] = $this->escapeCharacter($sCompilers); // 处理一些正则表达式中有特殊意义的符号
         }
-
+        
         if (! count($arrNames)) { // 没有任何编译器
             return;
         }
-
+        
         // 正则分析
         $arrTag = $this->getTag('code');
         $sNames = implode('|', $arrNames);
-        $sRegexp = "/" . $arrTag ['left'] . "({$sNames})(|.+?)" . $arrTag ['right'] . "/s";
-        $arrRes = [ ]; // 分析
+        $sRegexp = "/" . $arrTag['left'] . "({$sNames})(|.+?)" . $arrTag['right'] . "/s";
+        $arrRes = []; // 分析
         if (preg_match_all($sRegexp, $sCompiled, $arrRes)) {
             $nStartPos = 0;
-            foreach ($arrRes [0] as $nIdx => &$sSource) {
-                $sObjType = trim($arrRes [1] [$nIdx]);
+            foreach ($arrRes[0] as $nIdx => &$sSource) {
+                $sObjType = trim($arrRes[1][$nIdx]);
                 ! $sObjType && $sObjType = '/';
-                $sContent = trim($arrRes [2] [$nIdx]);
-
+                $sContent = trim($arrRes[2][$nIdx]);
+                
                 $arrTheme = [
-                        'source' => $sSource,
-                        'content' => $sContent,
-                        'compiler' => $this->arrCompilers ['code'] [$sObjType] . 'Code', // 编译器
-                        'children' => [ ]
+                    'source' => $sSource, 
+                    'content' => $sContent, 
+                    'compiler' => $this->arrCompilers['code'][$sObjType] . 'Code',  // 编译器
+                    'children' => []
                 ];
-                $arrTheme ['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
-                $nStartPos = $arrTheme ['position'] ['end'] + 1;
+                $arrTheme['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
+                $nStartPos = $arrTheme['position']['end'] + 1;
                 $arrTheme = array_merge($this->arrThemeStruct, $arrTheme);
                 $this->addTheme($arrTheme); // 将模板数据加入到树结构中
             }
         }
     }
-
+    
     /**
      * javascript 分析器 与 node 公用分析器
      *
@@ -400,7 +406,7 @@ class parser implements iparser
         $this->findNodeTag($sCompiled); // 查找分析 Node 的标签
         $this->packNode($sCompiled); // 用标签组装 Node
     }
-
+    
     /**
      * node 分析器
      *
@@ -413,7 +419,7 @@ class parser implements iparser
         $this->findNodeTag($sCompiled); // 查找分析 Node 的标签
         $this->packNode($sCompiled); // 用标签组装 Node
     }
-
+    
     /**
      * code 还原分析器
      *
@@ -422,27 +428,27 @@ class parser implements iparser
      */
     protected function revertParse(&$sCompiled)
     {
-        $arrRes = [ ]; // 分析
+        $arrRes = []; // 分析
         if (preg_match_all('/__##revert##START##\d+@(.+?)##END##revert##__/', $sCompiled, $arrRes)) {
             $nStartPos = 0;
-            foreach ($arrRes [1] as $nIndex => $sEncode) {
-                $sSource = $arrRes [0] [$nIndex];
-
+            foreach ($arrRes[1] as $nIndex => $sEncode) {
+                $sSource = $arrRes[0][$nIndex];
+                
                 $arrTheme = [
-                        'source' => $sSource,
-                        'content' => $sEncode,
-                        'compiler' => 'revert', // 编译器
-                        'children' => [ ]
+                    'source' => $sSource, 
+                    'content' => $sEncode, 
+                    'compiler' => 'revert',  // 编译器
+                    'children' => []
                 ];
-
-                $arrTheme ['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
-                $nStartPos = $arrTheme ['position'] ['end'] + 1;
+                
+                $arrTheme['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
+                $nStartPos = $arrTheme['position']['end'] + 1;
                 $arrTheme = array_merge($this->arrThemeStruct, $arrTheme);
                 $this->addTheme($arrTheme); // 将模板数据加入到树结构中
             }
         }
     }
-
+    
     /**
      * tagself 还原分析器
      *
@@ -451,29 +457,29 @@ class parser implements iparser
      */
     protected function globalrevertParse(&$sCompiled)
     {
-        $arrRes = [ ]; // 分析
+        $arrRes = []; // 分析
         if (preg_match_all('/__##global##START##\d+@(.+?)##END##global##__/', $sCompiled, $arrRes)) {
             $nStartPos = 0;
-
-            foreach ($arrRes [1] as $nIndex => $sEncode) {
-                $sSource = $arrRes [0] [$nIndex];
-                $sContent = $arrRes [1] [$nIndex];
-
+            
+            foreach ($arrRes[1] as $nIndex => $sEncode) {
+                $sSource = $arrRes[0][$nIndex];
+                $sContent = $arrRes[1][$nIndex];
+                
                 $arrTheme = [
-                        'source' => $sSource,
-                        'content' => $sContent,
-                        'compiler' => 'globalrevert', // 编译器
-                        'children' => [ ]
+                    'source' => $sSource, 
+                    'content' => $sContent, 
+                    'compiler' => 'globalrevert',  // 编译器
+                    'children' => []
                 ];
-
-                $arrTheme ['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
-                $nStartPos = $arrTheme ['position'] ['end'] + 1;
+                
+                $arrTheme['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
+                $nStartPos = $arrTheme['position']['end'] + 1;
                 $arrTheme = array_merge($this->arrThemeStruct, $arrTheme);
                 $this->addTheme($arrTheme); // 将模板数据加入到树结构中
             }
         }
     }
-
+    
     /**
      * 查找成对节点
      *
@@ -484,12 +490,12 @@ class parser implements iparser
     {
         // 设置一个栈
         $this->oNodeStack = new stack('array');
-
+        
         // 判断是那种编译器
         $sNodeType = $this->bJsNode === true ? 'js' : 'node';
-
-        foreach ($this->arrCompilers [$sNodeType] as $sCompilers => $sTag) { // 所有一级节点名称
-            $arrNames [] = $this->escapeCharacter($sCompilers); // 处理一些正则表达式中有特殊意义的符号
+        
+        foreach ($this->arrCompilers[$sNodeType] as $sCompilers => $sTag) { // 所有一级节点名称
+            $arrNames[] = $this->escapeCharacter($sCompilers); // 处理一些正则表达式中有特殊意义的符号
         }
         if (! count($arrNames)) { // 没有任何编译器
             return;
@@ -502,44 +508,45 @@ class parser implements iparser
         $nNodeTopNameIdx = 3; // 标签顶级名称位置
         $nTailSlasheIdx = 1; // 尾标签斜线位置
         $nTagAttributeIdx = 5; // 标签属性位置
+        
 
         if ($this->bJsNode === true) {
-            $arrCompiler = $this->arrCompilers ['js'];
+            $arrCompiler = $this->arrCompilers['js'];
         } else {
-            $arrCompiler = $this->arrCompilers ['node'];
+            $arrCompiler = $this->arrCompilers['node'];
         }
-
+        
         if (preg_match_all($sRegexp, $sCompiled, $arrRes)) { // 依次创建标签对象
             $nStartPos = 0;
-            foreach ($arrRes [0] as $nIdx => &$sTagSource) {
-                $sNodeName = $arrRes [$nNodeNameIdx] [$nIdx];
-                $sNodeTopName = $arrRes [$nNodeTopNameIdx] [$nIdx];
-                $nNodeType = $arrRes [$nTailSlasheIdx] [$nIdx] === '/' ? 'tail' : 'head';
-
+            foreach ($arrRes[0] as $nIdx => &$sTagSource) {
+                $sNodeName = $arrRes[$nNodeNameIdx][$nIdx];
+                $sNodeTopName = $arrRes[$nNodeTopNameIdx][$nIdx];
+                $nNodeType = $arrRes[$nTailSlasheIdx][$nIdx] === '/' ? 'tail' : 'head';
+                
                 $sNodeName = strtolower($sNodeName); // 将节点名称统一为小写
                 $sNodeTopName = strtolower($sNodeTopName);
-
+                
                 $arrTheme = [
-                        'source' => $sTagSource,
-                        'name' => $arrCompiler [$sNodeTopName],
-                        'type' => $nNodeType
+                    'source' => $sTagSource, 
+                    'name' => $arrCompiler[$sNodeTopName], 
+                    'type' => $nNodeType
                 ];
-
+                
                 // 头标签的属性
                 if ($nNodeType == 'head') {
-                    $arrTheme ['attribute'] = $arrRes [$nTagAttributeIdx] [$nIdx];
+                    $arrTheme['attribute'] = $arrRes[$nTagAttributeIdx][$nIdx];
                 } else {
-                    $arrTheme ['attribute'] = '';
+                    $arrTheme['attribute'] = '';
                 }
-                $arrTheme ['content'] = $arrTheme ['attribute'];
-                $arrTheme ['position'] = $this->getPosition($sCompiled, $sTagSource, $nStartPos);
-                $nStartPos = $arrTheme ['position'] ['end'] + 1;
+                $arrTheme['content'] = $arrTheme['attribute'];
+                $arrTheme['position'] = $this->getPosition($sCompiled, $sTagSource, $nStartPos);
+                $nStartPos = $arrTheme['position']['end'] + 1;
                 $arrTheme = array_merge($this->arrThemeStruct, $arrTheme);
                 $this->oNodeStack->in($arrTheme); // 加入到标签栈
             }
         }
     }
-
+    
     /**
      * 装配节点
      *
@@ -555,87 +562,89 @@ class parser implements iparser
             $arrNodeTag = $this->objCompiler->getNodeTagHelp();
             $sCompiler = 'Node';
         }
-
+        
         $oTailStack = new stack('array'); // 尾标签栈
         while (($arrTag = $this->oNodeStack->out()) !== null) { // 载入节点属性分析器 & 依次处理所有标签
+            
 
             // 尾标签，加入到尾标签中
-            if ($arrTag ['type'] == 'tail') {
+            if ($arrTag['type'] == 'tail') {
                 $oTailStack->in($arrTag);
                 continue;
             }
-
+            
             $arrTailTag = $oTailStack->out(); // 从尾标签栈取出一项
             if (! $arrTailTag or ! $this->findHeadTag($arrTag, $arrTailTag)) { // 单标签节点
+                
 
-                if ($arrNodeTag [$arrTag ['name']] ['single'] !== true) {
-                    throw new InvalidArgumentException(sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $arrTag ['name']) . '<br />' . $this->getLocation($arrTag ['position']));
+                if ($arrNodeTag[$arrTag['name']]['single'] !== true) {
+                    throw new InvalidArgumentException(sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $arrTag['name']) . '<br />' . $this->getLocation($arrTag['position']));
                 }
                 if ($arrTailTag) { // 退回栈中
                     $oTailStack->in($arrTailTag);
                 }
-
+                
                 $arrThemeNode = [
-                        'content' => $arrTag ['content'],
-                        'compiler' => $arrTag ['name'] . $sCompiler, // 编译器
-                        'source' => $arrTag ['source'],
-                        'name' => $arrTag ['name']
+                    'content' => $arrTag['content'], 
+                    'compiler' => $arrTag['name'] . $sCompiler,  // 编译器
+                    'source' => $arrTag['source'], 
+                    'name' => $arrTag['name']
                 ];
-                $arrThemeNode ['position'] = $arrTag ['position'];
+                $arrThemeNode['position'] = $arrTag['position'];
                 $arrThemeNode = array_merge($this->arrThemeStruct, $arrThemeNode);
-            }
+            }             
 
             // 成对标签
             else {
                 // 头尾标签中间为整个标签内容
-                $nStart = $arrTag ['position'] ['start'];
-                $nLen = $arrTailTag ['position'] ['end'] - $nStart + 1;
+                $nStart = $arrTag['position']['start'];
+                $nLen = $arrTailTag['position']['end'] - $nStart + 1;
                 $sSource = substr($sCompiled, $nStart, $nLen);
-
+                
                 $arrThemeNode = [
-                        'content' => $sSource,
-                        'compiler' => $arrTag ['name'] . $sCompiler, // 编译器
-                        'source' => $sSource,
-                        'name' => $arrTag ['name']
+                    'content' => $sSource, 
+                    'compiler' => $arrTag['name'] . $sCompiler,  // 编译器
+                    'source' => $sSource, 
+                    'name' => $arrTag['name']
                 ];
-                $arrThemeNode ['position'] = $this->getPosition($sCompiled, $sSource, $nStart);
+                $arrThemeNode['position'] = $this->getPosition($sCompiled, $sSource, $nStart);
                 $arrThemeNode = array_merge($this->arrThemeStruct, $arrThemeNode);
-
+                
                 // 标签body
-                $nStart = $arrTag ['position'] ['end'] + 1;
-                $nLen = $arrTailTag ['position'] ['start'] - $nStart;
+                $nStart = $arrTag['position']['end'] + 1;
+                $nLen = $arrTailTag['position']['start'] - $nStart;
                 if ($nLen > 0) {
                     $sBody = substr($sCompiled, $nStart, $nLen);
                     $arrThemeBody = [
-                            'content' => $sBody,
-                            'compiler' => null, // 编译器
-                            'source' => $sBody,
-                            'is_body' => 1
+                        'content' => $sBody, 
+                        'compiler' => null,  // 编译器
+                        'source' => $sBody, 
+                        'is_body' => 1
                     ];
-                    $arrThemeBody ['position'] = $this->getPosition($sCompiled, $sBody, $nStart);
+                    $arrThemeBody['position'] = $this->getPosition($sCompiled, $sBody, $nStart);
                     $arrThemeBody = array_merge($this->arrThemeStruct, $arrThemeBody);
                     $arrThemeNode = $this->addThemeTree($arrThemeNode, $arrThemeBody);
                 }
             }
-
+            
             // 标签属性
             $arrThemeAttr = [
-                    'content' => $arrTag ['content'],
-                    'compiler' => 'attributeNode', // 编译器
-                    'source' => $arrTag ['source'],
-                    'attribute_list' => [ ],
-                    'is_attribute' => true,
-                    'parent_name' => $arrThemeNode ['name'],
-                    'is_js' => $this->bJsNode
+                'content' => $arrTag['content'], 
+                'compiler' => 'attributeNode',  // 编译器
+                'source' => $arrTag['source'], 
+                'attribute_list' => [], 
+                'is_attribute' => true, 
+                'parent_name' => $arrThemeNode['name'], 
+                'is_js' => $this->bJsNode
             ];
-
-            $arrThemeAttr ['position'] = $this->getPosition($sCompiled, $arrTag ['source'], 0);
+            
+            $arrThemeAttr['position'] = $this->getPosition($sCompiled, $arrTag['source'], 0);
             $arrThemeAttr = array_merge($this->arrThemeStruct, $arrThemeAttr);
             $arrThemeNode = $this->addThemeTree($arrThemeNode, $arrThemeAttr);
             $this->addTheme($arrThemeNode); // 将模板数据加入到树结构中
         }
     }
-
+    
     /**
      * 查找 node 标签
      *
@@ -645,19 +654,21 @@ class parser implements iparser
      */
     protected function findHeadTag($arrTag, $arrTailTag)
     {
-        if ($arrTailTag ['type'] != 'tail') {
+        if ($arrTailTag['type'] != 'tail') {
             throw new InvalidArgumentException(sprintf('The parameter must be a tail tag.'));
         }
-        return preg_match("/^{$arrTailTag['name']}/i", $arrTag ['name']);
+        return preg_match("/^{$arrTailTag['name']}/i", $arrTag['name']);
     }
-
+    
     // ######################################################
     // ---------------------- 分析器 end ----------------------
     // ######################################################
+    
 
     // ######################################################
     // -------------------- 私有函数 start --------------------
     // ######################################################
+    
 
     /**
      * 注册分析器
@@ -667,9 +678,9 @@ class parser implements iparser
      */
     protected function registerParser($sTag)
     {
-        $this->arrParses [] = $sTag;
+        $this->arrParses[] = $sTag;
     }
-
+    
     /**
      * 注册编译器 code和node编译器注册
      *
@@ -684,10 +695,10 @@ class parser implements iparser
             $mixName = ( array ) $mixName;
         }
         foreach ($mixName as $sTemp) {
-            $this->arrCompilers [$sType] [$sTemp] = $sTag;
+            $this->arrCompilers[$sType][$sTemp] = $sTag;
         }
     }
-
+    
     /**
      * 逐个编译模板树
      *
@@ -699,11 +710,11 @@ class parser implements iparser
         $sCache = '';
         foreach ($this->arrThemeTree as $arrTheme) {
             $this->compileTheme($arrTheme);
-            $sCache .= $arrTheme ['content'];
+            $sCache .= $arrTheme['content'];
         }
         return $sCache;
     }
-
+    
     /**
      * 分析模板调用编译器编译
      *
@@ -712,25 +723,25 @@ class parser implements iparser
      */
     protected function compileTheme(&$arrTheme)
     {
-        foreach ($arrTheme ['children'] as $intKey => $arrOne) {
-            $strSource = $arrOne ['source'];
-
+        foreach ($arrTheme['children'] as $intKey => $arrOne) {
+            $strSource = $arrOne['source'];
+            
             $this->compileTheme($arrOne); // 编译子对象
-            $arrTheme ['children'] [$intKey] = $arrOne;
-
+            $arrTheme['children'][$intKey] = $arrOne;
+            
             // 置换对象
-            $nStart = strpos($arrTheme ['content'], $strSource);
-            $nLen = $arrOne ['position'] ['end'] - $arrOne ['position'] ['start'] + 1;
-            $arrTheme ['content'] = substr_replace($arrTheme ['content'], $arrOne ['content'], $nStart, $nLen);
+            $nStart = strpos($arrTheme['content'], $strSource);
+            $nLen = $arrOne['position']['end'] - $arrOne['position']['start'] + 1;
+            $arrTheme['content'] = substr_replace($arrTheme['content'], $arrOne['content'], $nStart, $nLen);
         }
-
+        
         // 编译自身
-        if ($arrTheme ['compiler']) {
-            $strCompilers = $arrTheme ['compiler'] . 'Compiler';
-            $this->objCompiler->{$strCompilers} ($arrTheme);
+        if ($arrTheme['compiler']) {
+            $strCompilers = $arrTheme['compiler'] . 'Compiler';
+            $this->objCompiler->{$strCompilers}($arrTheme);
         }
     }
-
+    
     /**
      * 创建缓存文件
      *
@@ -744,7 +755,7 @@ class parser implements iparser
         file_put_contents($sCachePath, $sCompiled);
         file_put_contents($sCachePath, '<?php /* ' . date('Y-m-d H:i:s') . ' */ ?>' . PHP_EOL . php_strip_whitespace($sCachePath));
     }
-
+    
     /**
      * 取得模板分析器定界符
      *
@@ -753,9 +764,9 @@ class parser implements iparser
      */
     protected function getTag($sType)
     {
-        return $this->arrTag [$sType . ($this->getOption('tag_note') ? '_node' : '')];
+        return $this->arrTag[$sType . ($this->getOption('tag_note') ? '_node' : '')];
     }
-
+    
     /**
      * 将模板结构加入树结构中去
      *
@@ -764,10 +775,10 @@ class parser implements iparser
      */
     protected function addTheme($arrTheme)
     {
-        $arrTop = &$this->arrThemeTree [0];
+        $arrTop = &$this->arrThemeTree[0];
         $arrTop = $this->addThemeTree($arrTop, $arrTheme);
     }
-
+    
     /**
      * 清理模板树对象
      *
@@ -775,9 +786,9 @@ class parser implements iparser
      */
     protected function clearThemeTree()
     {
-        $this->arrThemeTree = [ ];
+        $this->arrThemeTree = [];
     }
-
+    
     /**
      * 添加顶层树对象
      *
@@ -786,9 +797,9 @@ class parser implements iparser
      */
     protected function topTheme($arrTheme)
     {
-        $this->arrThemeTree [] = $arrTheme;
+        $this->arrThemeTree[] = $arrTheme;
     }
-
+    
     /**
      * 将新的模板加入到树结构中去
      *
@@ -798,42 +809,42 @@ class parser implements iparser
      */
     protected function addThemeTree($arrTop, $arrNew)
     {
-        $arrResult = [ ];
-
-        foreach ($arrTop ['children'] as $arrChild) {
+        $arrResult = [];
+        
+        foreach ($arrTop['children'] as $arrChild) {
             if ($arrNew) {
-                $sRelative = $this->positionRelative($arrNew ['position'], $arrChild ['position']);
-
+                $sRelative = $this->positionRelative($arrNew['position'], $arrChild['position']);
+                
                 switch ($sRelative) {
-
+                    
                     /**
                      * 新增的和上次处于平级关系直接加入上级的 children 容器中
                      * new 在前 child 在后面
                      */
                     case 'front':
-                        $arrResult [] = $arrNew;
-                        $arrResult [] = $arrChild;
+                        $arrResult[] = $arrNew;
+                        $arrResult[] = $arrChild;
                         $arrNew = null;
                         break;
-
+                    
                     /**
                      * 新增的和上次处于平级关系直接加入上级的 children 容器中
                      * child 在前 new 在后面
                      */
                     case 'behind':
-                        $arrResult [] = $arrChild;
+                        $arrResult[] = $arrChild;
                         break;
-
+                    
                     /**
                      * new 处于 child 内部
                      * new 在 child 内部
                      */
                     case 'in':
                         $arrChild = $this->addThemeTree($arrChild, $arrNew);
-                        $arrResult [] = $arrChild;
+                        $arrResult[] = $arrChild;
                         $arrNew = null;
                         break;
-
+                    
                     /**
                      * child 处于 new 内部
                      * child 在 new 内部
@@ -843,18 +854,18 @@ class parser implements iparser
                         break;
                 }
             } else {
-                $arrResult [] = $arrChild;
+                $arrResult[] = $arrChild;
             }
         }
-
+        
         if ($arrNew) {
-            $arrResult [] = $arrNew;
+            $arrResult[] = $arrNew;
         }
-
-        $arrTop ['children'] = $arrResult;
+        
+        $arrTop['children'] = $arrResult;
         return $arrTop;
     }
-
+    
     /**
      * 分析匹配标签的位置
      *
@@ -890,52 +901,52 @@ class parser implements iparser
          * [end_in] => 17
          * )
          */
-        $arrData = [ ];
-
+        $arrData = [];
+        
         if (empty($sFind)) { // 空
-            $arrData ['start'] = - 1;
-            $arrData ['end'] = - 1;
-            $arrData ['start_line'] = - 1;
-            $arrData ['end_line'] = - 1;
-            $arrData ['start_in'] = - 1;
-            $arrData ['end_in'] = - 1;
+            $arrData['start'] = - 1;
+            $arrData['end'] = - 1;
+            $arrData['start_line'] = - 1;
+            $arrData['end_line'] = - 1;
+            $arrData['start_in'] = - 1;
+            $arrData['end_in'] = - 1;
             return $arrData;
         }
-
+        
         $nTotal = strlen($sContent);
-
+        
         // 起止字节位置
         $nStart = strpos($sContent, $sFind, $nStart);
         $nEnd = $nStart + strlen($sFind) - 1;
-
+        
         // 起止行数
         $nStartLine = $nStart <= 0 ? 0 : substr_count($sContent, "\n", 0, $nStart);
         $nEndLine = $nEnd <= 0 ? 0 : substr_count($sContent, "\n", 0, $nEnd);
-
+        
         /**
          * 匹配模块范围圈（在这个字节里面的都是它的子模快）
          * 找到开始和结束的地方就确定了这个模块所在区域范围
          */
-
+        
         // 起点的行首换行位置 && 结束点的行首位置
         $nLineStartFirst = strrpos(substr($sContent, 0, $nStart), "\n") + 1;
         $nLineEndFirst = strrpos(substr($sContent, 0, $nEnd), "\n") + 1;
         $nStartIn = $nStart - $nLineStartFirst;
         $nEndIn = $nEnd - $nLineEndFirst;
-
+        
         /**
          * 返回结果
          */
-        $arrData ['start'] = $nStart;
-        $arrData ['end'] = $nEnd;
-        $arrData ['start_line'] = $nStartLine;
-        $arrData ['end_line'] = $nEndLine;
-        $arrData ['start_in'] = $nStartIn;
-        $arrData ['end_in'] = $nEndIn;
-
+        $arrData['start'] = $nStart;
+        $arrData['end'] = $nEnd;
+        $arrData['start_line'] = $nStartLine;
+        $arrData['end_line'] = $nEndLine;
+        $arrData['start_in'] = $nStartIn;
+        $arrData['end_in'] = $nEndIn;
+        
         return $arrData;
     }
-
+    
     /**
      * 对比两个模板相对位置
      * 这个和两个时间段之间的关系一样，其中交叉在模板引擎中是不被支持，因为无法实现
@@ -951,7 +962,7 @@ class parser implements iparser
      */
     protected function positionRelative($arrOne, $arrTwo)
     {
-
+        
         /**
          * 第一个匹配的标签在第二个前面
          * 条件：第一个结束字节位置 <= 第二个开始位置
@@ -969,15 +980,15 @@ class parser implements iparser
          *
          * ======== end =======
          */
-        if ($arrOne ['end'] <= $arrTwo ['start']) {
+        if ($arrOne['end'] <= $arrTwo['start']) {
             return 'front';
         }
-
+        
         /**
          * 第一个匹配的标签在第二个后面
          * 条件：第一个开始字节位置 >= 第二个结束位置
          */
-
+        
         /*
          * ======= start =======
          *
@@ -991,15 +1002,15 @@ class parser implements iparser
          *
          * ======== end =======
          */
-        if ($arrOne ['start'] >= $arrTwo ['end']) {
+        if ($arrOne['start'] >= $arrTwo['end']) {
             return 'behind';
         }
-
+        
         /**
          * 第一个匹配的标签在第二个里面
          * 条件：第一个开始字节位置 >= 第二个开始位置
          */
-
+        
         /*
          * ======= start =======
          *
@@ -1014,15 +1025,15 @@ class parser implements iparser
          *
          * ======== end =======
          */
-        if ($arrOne ['start'] >= $arrTwo ['start']) {
+        if ($arrOne['start'] >= $arrTwo['start']) {
             return 'in';
         }
-
+        
         /**
          * 第一个匹配的标签在第二个外面
          * 条件：第一个开始字节位置 <= 第二个开始位置
          */
-
+        
         /*
          * ======= start =======
          *
@@ -1037,16 +1048,16 @@ class parser implements iparser
          *
          * ======== end =======
          */
-        if ($arrOne ['start'] <= $arrTwo ['start']) {
+        if ($arrOne['start'] <= $arrTwo['start']) {
             return 'out';
         }
-
+        
         /**
          * 交叉（两个时间段相互关系）
          */
         throw new InvalidArgumentException('Template engine tag library does not support cross.');
     }
-
+    
     /**
      * 取得默认模板项结构
      *
@@ -1056,7 +1067,7 @@ class parser implements iparser
     {
         return $this->arrThemeStruct;
     }
-
+    
     /**
      * 转移正则表达式特殊字符
      *
@@ -1067,7 +1078,7 @@ class parser implements iparser
     {
         return helper::escapeRegexCharacter($sTxt);
     }
-
+    
     /**
      * 取得模板位置
      *
@@ -1076,9 +1087,9 @@ class parser implements iparser
      */
     protected function getLocation($arrPosition)
     {
-        return sprintf('Line:%s; column:%s; file:%s.', $arrPosition ['start_line'], $arrPosition ['start_in'], $this->strSourceFile) . $this->getLocationSource($arrPosition);
+        return sprintf('Line:%s; column:%s; file:%s.', $arrPosition['start_line'], $arrPosition['start_in'], $this->strSourceFile) . $this->getLocationSource($arrPosition);
     }
-
+    
     /**
      * 取得模板位置源码
      *
@@ -1087,8 +1098,8 @@ class parser implements iparser
      */
     protected function getLocationSource($arrPosition)
     {
-        $arrLine = explode(PHP_EOL, htmlentities(substr(file_get_contents($this->strSourceFile), $arrPosition ['start'], $arrPosition ['end'])));
-        $arrLine [] = '<div class="key">' . array_pop($arrLine) . '</div>';
+        $arrLine = explode(PHP_EOL, htmlentities(substr(file_get_contents($this->strSourceFile), $arrPosition['start'], $arrPosition['end'])));
+        $arrLine[] = '<div class="key">' . array_pop($arrLine) . '</div>';
         return '<pre><code>' . implode(PHP_EOL, $arrLine) . '</code></pre>';
     }
 

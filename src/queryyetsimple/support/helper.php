@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Closure;
 use ReflectionClass;
@@ -29,7 +33,7 @@ use InvalidArgumentException;
  */
 class helper
 {
-
+    
     /**
      * 数组数据格式化
      *
@@ -44,7 +48,7 @@ class helper
             if (! is_array($mixInput)) {
                 $mixInput = explode($sDelimiter, $mixInput);
             }
-
+            
             $mixInput = array_filter($mixInput); // 过滤null
             if ($bAllowedEmpty === true) {
                 return $mixInput;
@@ -56,7 +60,7 @@ class helper
             return $mixInput;
         }
     }
-
+    
     /**
      * 数组合并支持 + 算法
      *
@@ -66,32 +70,32 @@ class helper
      */
     public static function arrayMergePlus($arrOption, $booRecursion = true)
     {
-        $arrExtend = [ ];
+        $arrExtend = [];
         foreach ($arrOption as $strKey => $mixTemp) {
             if (strpos($strKey, '+') === 0) {
-                $arrExtend [ltrim($strKey, '+')] = $mixTemp;
-                unset($arrOption [$strKey]);
+                $arrExtend[ltrim($strKey, '+')] = $mixTemp;
+                unset($arrOption[$strKey]);
             }
         }
         foreach ($arrExtend as $strKey => $mixTemp) {
-            if (isset($arrOption [$strKey]) && is_array($arrOption [$strKey]) && is_array($mixTemp)) {
-                $arrOption [$strKey] = array_merge($arrOption [$strKey], $mixTemp);
+            if (isset($arrOption[$strKey]) && is_array($arrOption[$strKey]) && is_array($mixTemp)) {
+                $arrOption[$strKey] = array_merge($arrOption[$strKey], $mixTemp);
             } else {
-                $arrOption [$strKey] = $mixTemp;
+                $arrOption[$strKey] = $mixTemp;
             }
         }
-
+        
         if ($booRecursion === true) {
             foreach ($arrOption as $strKey => $mixTemp) {
                 if (is_array($mixTemp)) {
-                    $arrOption [$strKey] = static::arrayMergePlus($mixTemp);
+                    $arrOption[$strKey] = static::arrayMergePlus($mixTemp);
                 }
             }
         }
-
+        
         return $arrOption;
     }
-
+    
     /**
      * 判断字符串是否为数字
      *
@@ -105,7 +109,7 @@ class helper
         }
         return ! preg_match("/[^\d-.,]/", trim($mixValue, '\''));
     }
-
+    
     /**
      * 判断字符串是否为整数
      *
@@ -119,7 +123,7 @@ class helper
         }
         return ctype_digit(strval($mixValue));
     }
-
+    
     /**
      * 验证 PHP 各种变量类型
      *
@@ -131,9 +135,9 @@ class helper
     {
         $sType = trim($sType); // 整理参数，以支持 array:ini 格式
         $sType = explode(':', $sType);
-        $sType [0] = strtolower($sType [0]);
-
-        switch ($sType [0]) {
+        $sType[0] = strtolower($sType[0]);
+        
+        switch ($sType[0]) {
             case 'string': // 字符串
                 return is_string($mixVar);
             case 'integer': // 整数
@@ -157,9 +161,9 @@ class helper
                 return $mixVar instanceof Closure;
             case 'array':
                 { // 数组
-                    if (! empty($sType [1])) {
-                        $sType [1] = explode(',', $sType [1]);
-                        return static::varArray($mixVar, $sType [1]);
+                    if (! empty($sType[1])) {
+                        $sType[1] = explode(',', $sType[1]);
+                        return static::varArray($mixVar, $sType[1]);
                     } else {
                         return is_array($mixVar);
                     }
@@ -175,7 +179,7 @@ class helper
                 return $mixVar instanceof $sType;
         }
     }
-
+    
     /**
      * 验证参数是否为指定的类型集合
      *
@@ -186,24 +190,24 @@ class helper
     public static function varThese($mixVar, $mixTypes)
     {
         if (! static::varType($mixTypes, 'string') && ! static::varArray($mixTypes, [
-                'string'
+            'string'
         ])) {
             throw new InvalidArgumentException('The parameter must be string or an array of string elements.');
         }
-
+        
         if (is_string($mixTypes)) {
             $mixTypes = ( array ) $mixTypes;
         }
-
+        
         foreach ($mixTypes as $sType) { // 类型检查
             if (static::varType($mixVar, $sType)) {
                 return true;
             }
         }
-
+        
         return false;
     }
-
+    
     /**
      * 验证数组中的每一项格式化是否正确
      *
@@ -216,7 +220,7 @@ class helper
         if (! is_array($arrArray)) { // 不是数组直接返回
             return false;
         }
-
+        
         // 判断数组内部每一个值是否为给定的类型
         foreach ($arrArray as &$mixValue) {
             $bRet = false;
@@ -226,15 +230,15 @@ class helper
                     break;
                 }
             }
-
+            
             if (! $bRet) {
                 return false;
             }
         }
-
+        
         return true;
     }
-
+    
     /**
      * 正则属性转义
      *
@@ -247,40 +251,40 @@ class helper
         if ($sTxt == '""') {
             $sTxt = '';
         }
-
+        
         if ($bEsc) { // 转义
             $sTxt = str_replace([
-                    '\\\\',
-                    "\\'",
-                    '\\"',
-                    '\\$',
-                    '\\.'
+                '\\\\', 
+                "\\'", 
+                '\\"', 
+                '\\$', 
+                '\\.'
             ], [
-                    '\\',
-                    '~~{#!`!#}~~',
-                    '~~{#!``!#}~~',
-                    '~~{#!S!#}~~',
-                    '~~{#!dot!#}~~'
+                '\\', 
+                '~~{#!`!#}~~', 
+                '~~{#!``!#}~~', 
+                '~~{#!S!#}~~', 
+                '~~{#!dot!#}~~'
             ], $sTxt);
         } else { // 还原
             $sTxt = str_replace([
-                    '.',
-                    "~~{#!`!#}~~",
-                    '~~{#!``!#}~~',
-                    '~~{#!S!#}~~',
-                    '~~{#!dot!#}~~'
+                '.', 
+                "~~{#!`!#}~~", 
+                '~~{#!``!#}~~', 
+                '~~{#!S!#}~~', 
+                '~~{#!dot!#}~~'
             ], [
-                    '->',
-                    "'",
-                    '"',
-                    '$',
-                    '.'
+                '->', 
+                "'", 
+                '"', 
+                '$', 
+                '.'
             ], $sTxt);
         }
-
+        
         return $sTxt;
     }
-
+    
     /**
      * 转移正则表达式特殊字符
      *
@@ -290,43 +294,43 @@ class helper
     public static function escapeRegexCharacter($sTxt)
     {
         $sTxt = str_replace([
-                '$',
-                '/',
-                '?',
-                '*',
-                '.',
-                '!',
-                '-',
-                '+',
-                '(',
-                ')',
-                '[',
-                ']',
-                ',',
-                '{',
-                '}',
-                '|'
+            '$', 
+            '/', 
+            '?', 
+            '*', 
+            '.', 
+            '!', 
+            '-', 
+            '+', 
+            '(', 
+            ')', 
+            '[', 
+            ']', 
+            ',', 
+            '{', 
+            '}', 
+            '|'
         ], [
-                '\$',
-                '\/',
-                '\\?',
-                '\\*',
-                '\\.',
-                '\\!',
-                '\\-',
-                '\\+',
-                '\\(',
-                '\\)',
-                '\\[',
-                '\\]',
-                '\\,',
-                '\\{',
-                '\\}',
-                '\\|'
+            '\$', 
+            '\/', 
+            '\\?', 
+            '\\*', 
+            '\\.', 
+            '\\!', 
+            '\\-', 
+            '\\+', 
+            '\\(', 
+            '\\)', 
+            '\\[', 
+            '\\]', 
+            '\\,', 
+            '\\{', 
+            '\\}', 
+            '\\|'
         ], $sTxt);
         return $sTxt;
     }
-
+    
     /**
      * 通配符正则
      *

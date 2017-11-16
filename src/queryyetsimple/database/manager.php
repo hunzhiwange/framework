@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\database;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use queryyetsimple\support\helper;
 use queryyetsimple\support\manager as support_manager;
@@ -28,7 +32,7 @@ use queryyetsimple\support\manager as support_manager;
  */
 class manager extends support_manager
 {
-
+    
     /**
      * 取得配置命名空间
      *
@@ -38,7 +42,7 @@ class manager extends support_manager
     {
         return 'database';
     }
-
+    
     /**
      * 创建连接对象
      *
@@ -49,7 +53,7 @@ class manager extends support_manager
     {
         return new database($objConnect);
     }
-
+    
     /**
      * 创建 mysql 连接
      *
@@ -58,9 +62,9 @@ class manager extends support_manager
      */
     protected function makeConnectMysql($arrOption = [])
     {
-        return new mysql($this->objContainer ['log'], $this->objContainer ['cache'], $this->getOption('mysql', is_array($arrOption) ? $arrOption : [ ]), $this->objContainer->development());
+        return new mysql($this->objContainer['log'], $this->objContainer['cache'], $this->getOption('mysql', is_array($arrOption) ? $arrOption : []), $this->objContainer->development());
     }
-
+    
     /**
      * 读取默认配置
      *
@@ -72,7 +76,7 @@ class manager extends support_manager
     {
         return $this->parseOption(parent::getOption($strConnect, $arrExtendOption));
     }
-
+    
     /**
      * 分析数据库配置参数
      *
@@ -82,54 +86,54 @@ class manager extends support_manager
     protected function parseOption($arrOption)
     {
         $arrTemp = $arrOption;
-
+        
         foreach (array_keys($arrOption) as $strType) {
             if (in_array($strType, [
-                    'distributed',
-                    'readwrite_separate',
-                    'driver',
-                    'master',
-                    'slave',
-                    'fetch',
-                    'log'
+                'distributed', 
+                'readwrite_separate', 
+                'driver', 
+                'master', 
+                'slave', 
+                'fetch', 
+                'log'
             ])) {
-                if (isset($arrTemp [$strType])) {
-                    unset($arrTemp [$strType]);
+                if (isset($arrTemp[$strType])) {
+                    unset($arrTemp[$strType]);
                 }
             } else {
-                if (isset($arrOption [$strType])) {
-                    unset($arrOption [$strType]);
+                if (isset($arrOption[$strType])) {
+                    unset($arrOption[$strType]);
                 }
             }
         }
-
+        
         // 纠正数据库服务器参数
         foreach ([
-                'master',
-                'slave'
+            'master', 
+            'slave'
         ] as $strType) {
-            if (! is_array($arrOption [$strType])) {
-                $arrOption [$strType] = [ ];
+            if (! is_array($arrOption[$strType])) {
+                $arrOption[$strType] = [];
             }
         }
-
+        
         // 填充数据库服务器参数
-        $arrOption ['master'] = array_merge($arrOption ['master'], $arrTemp);
-
+        $arrOption['master'] = array_merge($arrOption['master'], $arrTemp);
+        
         // 是否采用分布式服务器，非分布式关闭附属服务器
-        if (! $arrOption ['distributed']) {
-            $arrOption ['slave'] = [ ];
-        } elseif ($arrOption ['slave']) {
-            if (count($arrOption ['slave']) == count($arrOption ['slave'], COUNT_RECURSIVE)) {
-                $arrOption ['slave'] = [
-                        $arrOption ['slave']
+        if (! $arrOption['distributed']) {
+            $arrOption['slave'] = [];
+        } elseif ($arrOption['slave']) {
+            if (count($arrOption['slave']) == count($arrOption['slave'], COUNT_RECURSIVE)) {
+                $arrOption['slave'] = [
+                    $arrOption['slave']
                 ];
             }
-            foreach ($arrOption ['slave'] as &$arrSlave) {
+            foreach ($arrOption['slave'] as &$arrSlave) {
                 $arrSlave = array_merge($arrSlave, $arrTemp);
             }
         }
-
+        
         // + 合并支持
         $arrOption = helper::arrayMergePlus($arrOption);
 

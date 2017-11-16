@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\throttler\provider;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use queryyetsimple\support\provider;
 use queryyetsimple\throttler\throttler;
@@ -28,14 +32,14 @@ use queryyetsimple\throttler\throttler;
  */
 class register extends provider
 {
-
+    
     /**
      * 是否延迟载入
      *
      * @var boolean
      */
     public static $booDefer = true;
-
+    
     /**
      * 注册服务
      *
@@ -46,7 +50,7 @@ class register extends provider
         $this->throttler();
         $this->middleware();
     }
-
+    
     /**
      * 可用服务提供者
      *
@@ -55,14 +59,14 @@ class register extends provider
     public static function providers()
     {
         return [
-                'throttler' => [
-                        'queryyetsimple\throttler\throttler',
-                        'queryyetsimple\throttler\ithrottler'
-                ],
-                'queryyetsimple\throttler\middleware\throttler'
+            'throttler' => [
+                'queryyetsimple\throttler\throttler', 
+                'queryyetsimple\throttler\ithrottler'
+            ], 
+            'queryyetsimple\throttler\middleware\throttler'
         ];
     }
-
+    
     /**
      * 注册 throttler 服务
      *
@@ -70,11 +74,12 @@ class register extends provider
      */
     protected function throttler()
     {
-        $this->singleton('throttler', function ($oProject) {
-            return (new throttler($oProject ['cache']->connect($oProject ['option'] ['throttler\driver'])))->setRequest($oProject ['request']);
+        $this->singleton('throttler', function ($oProject)
+        {
+            return (new throttler($oProject['cache']->connect($oProject['option']['throttler\driver'])))->setRequest($oProject['request']);
         });
     }
-
+    
     /**
      * 注册 middleware 服务
      *

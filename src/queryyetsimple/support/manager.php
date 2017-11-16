@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Exception;
 use InvalidArgumentException;
@@ -29,21 +33,21 @@ use queryyetsimple\support\icontainer;
  */
 abstract class manager
 {
-
+    
     /**
      * IOC Container
      *
      * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
-
+    
     /**
      * 连接对象
      *
      * @var object[]
      */
     protected $arrConnect;
-
+    
     /**
      * 构造函数
      *
@@ -54,7 +58,7 @@ abstract class manager
     {
         $this->objContainer = $objContainer;
     }
-
+    
     /**
      * 返回 IOC 容器
      *
@@ -64,7 +68,7 @@ abstract class manager
     {
         return $this->objContainer;
     }
-
+    
     /**
      * 连接 connect 并返回连接对象
      *
@@ -74,15 +78,15 @@ abstract class manager
     public function connect($mixOption = null)
     {
         list($mixOption, $strUnique) = $this->parseOptionAndUnique($mixOption);
-
-        if (isset($this->arrConnect [$strUnique])) {
-            return $this->arrConnect [$strUnique];
+        
+        if (isset($this->arrConnect[$strUnique])) {
+            return $this->arrConnect[$strUnique];
         }
-
-        $strDriver = ! empty($mixOption ['driver']) ? $mixOption ['driver'] : $this->getDefaultDriver();
-        return $this->arrConnect [$strUnique] = $this->makeConnect($strDriver, $mixOption);
+        
+        $strDriver = ! empty($mixOption['driver']) ? $mixOption['driver'] : $this->getDefaultDriver();
+        return $this->arrConnect[$strUnique] = $this->makeConnect($strDriver, $mixOption);
     }
-
+    
     /**
      * 重新连接
      *
@@ -94,7 +98,7 @@ abstract class manager
         $this->disconnect($mixOption);
         return $this->connect($mixOption);
     }
-
+    
     /**
      * 删除连接
      *
@@ -104,12 +108,12 @@ abstract class manager
     public function disconnect($mixOption = [])
     {
         list($mixOption, $strUnique) = $this->parseOptionAndUnique($mixOption);
-
-        if (isset($this->arrConnect [$strUnique])) {
-            unset($this->arrConnect [$strUnique]);
+        
+        if (isset($this->arrConnect[$strUnique])) {
+            unset($this->arrConnect[$strUnique]);
         }
     }
-
+    
     /**
      * 取回所有连接
      *
@@ -119,7 +123,7 @@ abstract class manager
     {
         return $this->arrConnect;
     }
-
+    
     /**
      * 返回默认驱动
      *
@@ -127,9 +131,9 @@ abstract class manager
      */
     public function getDefaultDriver()
     {
-        return $this->objContainer ['option'] [$this->getOptionName('default')];
+        return $this->objContainer['option'][$this->getOptionName('default')];
     }
-
+    
     /**
      * 设置默认驱动
      *
@@ -138,16 +142,16 @@ abstract class manager
      */
     public function setDefaultDriver($strName)
     {
-        $this->objContainer ['option'] [$this->getOptionName('default')] = $strName;
+        $this->objContainer['option'][$this->getOptionName('default')] = $strName;
     }
-
+    
     /**
      * 取得配置命名空间
      *
      * @return string
      */
     abstract protected function getOptionNamespace();
-
+    
     /**
      * 创建连接对象
      *
@@ -155,7 +159,7 @@ abstract class manager
      * @return object
      */
     abstract protected function createConnect($objConnect);
-
+    
     /**
      * 取得连接名字
      *
@@ -166,7 +170,7 @@ abstract class manager
     {
         return $this->getOptionNamespace() . '\\' . $strOptionName;
     }
-
+    
     /**
      * 创建连接
      *
@@ -176,12 +180,12 @@ abstract class manager
      */
     protected function makeConnect($strConnect, array $arrOption = [])
     {
-        if (is_null($this->objContainer ['option'] [$this->getOptionName('connect.' . $strConnect)])) {
+        if (is_null($this->objContainer['option'][$this->getOptionName('connect.' . $strConnect)])) {
             throw new Exception(sprintf('Connect driver %s not exits', $strConnect));
         }
         return $this->createConnect($this->createConnectCommon($strConnect, $arrOption));
     }
-
+    
     /**
      * 创建连接对象公共入口
      *
@@ -191,9 +195,9 @@ abstract class manager
      */
     protected function createConnectCommon($strConnect, array $arrOption = [])
     {
-        return $this->{'makeConnect' . ucwords($strConnect)} ($arrOption);
+        return $this->{'makeConnect' . ucwords($strConnect)}($arrOption);
     }
-
+    
     /**
      * 分析连接参数以及其唯一值
      *
@@ -203,11 +207,11 @@ abstract class manager
     protected function parseOptionAndUnique($mixOption = [])
     {
         return [
-                $mixOption = $this->parseOptionParameter($mixOption),
-                $this->getUnique($mixOption)
+            $mixOption = $this->parseOptionParameter($mixOption), 
+            $this->getUnique($mixOption)
         ];
     }
-
+    
     /**
      * 分析连接参数
      *
@@ -217,16 +221,16 @@ abstract class manager
     protected function parseOptionParameter($mixOption = [])
     {
         if (is_null($mixOption)) {
-            return [ ];
+            return [];
         }
-
-        if (is_string($mixOption) && ! is_array(($mixOption = $this->objContainer ['option'] [$this->getOptionName('connect.' . $mixOption)]))) {
-            $mixOption = [ ];
+        
+        if (is_string($mixOption) && ! is_array(($mixOption = $this->objContainer['option'][$this->getOptionName('connect.' . $mixOption)]))) {
+            $mixOption = [];
         }
-
+        
         return $mixOption;
     }
-
+    
     /**
      * 取得唯一值
      *
@@ -237,7 +241,7 @@ abstract class manager
     {
         return md5(serialize($arrOption));
     }
-
+    
     /**
      * 读取默认配置
      *
@@ -249,7 +253,7 @@ abstract class manager
     {
         return array_merge($this->getOptionConnect($strConnect), $this->getOptionCommon(), $arrExtendOption);
     }
-
+    
     /**
      * 读取连接全局配置
      *
@@ -257,11 +261,11 @@ abstract class manager
      */
     protected function getOptionCommon()
     {
-        $arrOption = $this->objContainer ['option'] [$this->getOptionName()];
+        $arrOption = $this->objContainer['option'][$this->getOptionName()];
         $arrOption = $this->filterOptionCommon($arrOption);
         return $arrOption;
     }
-
+    
     /**
      * 过滤全局配置
      *
@@ -271,14 +275,14 @@ abstract class manager
     protected function filterOptionCommon(array $arrOption)
     {
         foreach ($this->filterOptionCommonItem() as $strItem) {
-            if (isset($arrOption [$strItem])) {
-                unset($arrOption [$strItem]);
+            if (isset($arrOption[$strItem])) {
+                unset($arrOption[$strItem]);
             }
         }
-
+        
         return $arrOption;
     }
-
+    
     /**
      * 过滤全局配置项
      *
@@ -287,11 +291,11 @@ abstract class manager
     protected function filterOptionCommonItem()
     {
         return [
-                'default',
-                'connect'
+            'default', 
+            'connect'
         ];
     }
-
+    
     /**
      * 读取连接配置
      *
@@ -300,9 +304,9 @@ abstract class manager
      */
     protected function getOptionConnect($strConnect)
     {
-        return $this->objContainer ['option'] [$this->getOptionName('connect.' . $strConnect)];
+        return $this->objContainer['option'][$this->getOptionName('connect.' . $strConnect)];
     }
-
+    
     /**
      * 清除配置 null
      *
@@ -311,11 +315,12 @@ abstract class manager
      */
     protected function optionFilterNull(array $arrOption)
     {
-        return array_filter($arrOption, function ($mixValue) {
+        return array_filter($arrOption, function ($mixValue)
+        {
             return ! is_null($mixValue);
         });
     }
-
+    
     /**
      * 拦截匿名注册控制器方法
      *
@@ -326,7 +331,7 @@ abstract class manager
     public function __call($sMethod, $arrArgs)
     {
         return call_user_func_array([
-                $this->connect(),
+            $this->connect(),
                 $sMethod
         ], $arrArgs);
     }

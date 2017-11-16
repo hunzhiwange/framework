@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\mail;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Swift_SmtpTransport;
 
@@ -27,20 +31,20 @@ use Swift_SmtpTransport;
  */
 class smtp extends aconnect implements iconnect
 {
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-            'host' => 'smtp.qq.com',
-            'port' => 465,
-            'username' => null,
-            'password' => '',
-            'encryption' => 'ssl'
+        'host' => 'smtp.qq.com', 
+        'port' => 465, 
+        'username' => null, 
+        'password' => '', 
+        'encryption' => 'ssl'
     ];
-
+    
     /**
      * 创建 transport
      *
@@ -49,16 +53,16 @@ class smtp extends aconnect implements iconnect
     public function makeTransport()
     {
         $objTransport = Swift_SmtpTransport::newInstance($this->getOption('host'), $this->getOption('port'));
-
+        
         if (! is_null($this->getOption('encryption'))) {
             $objTransport->setEncryption($this->getOption('encryption'));
         }
-
+        
         if (! is_null($this->getOption('username'))) {
             $objTransport->setUsername($this->getOption('username'));
             $objTransport->setPassword($this->getOption('password'));
         }
-
+        
         return $objTransport;
     }
 }

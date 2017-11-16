@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ *
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\mvc;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 use queryyetsimple\router\router;
@@ -28,21 +32,21 @@ use queryyetsimple\router\router;
  */
 abstract class controller implements icontroller
 {
-
+    
     /**
      * 视图
      *
      * @var \queryyetsimple\mvc\iview
      */
     protected $objView;
-
+    
     /**
      * 视图
      *
      * @var \queryyetsimple\router\router
      */
     protected $objRouter;
-
+    
     /**
      * 构造函数
      *
@@ -51,7 +55,7 @@ abstract class controller implements icontroller
     public function __construct()
     {
     }
-
+    
     /**
      * 设置视图
      *
@@ -63,7 +67,7 @@ abstract class controller implements icontroller
         $this->objView = $objView;
         return $this;
     }
-
+    
     /**
      * 设置路由
      *
@@ -75,7 +79,7 @@ abstract class controller implements icontroller
         $this->objRouter = $objRouter;
         return $this;
     }
-
+    
     /**
      * 执行子方法器
      *
@@ -89,21 +93,22 @@ abstract class controller implements icontroller
             $arrArgs = func_get_args();
             array_shift($arrArgs);
             return call_user_func_array([
-                    $this,
-                    $sActionName
+                $this, 
+                $sActionName
             ], $arrArgs);
         }
-
+        
         // 执行默认方法器
         if (! $this->objRouter) {
             throw new RuntimeException('Router is not set in controller');
         }
         return $this->objRouter->doBind(null, $sActionName, null, true);
     }
-
+    
     // ######################################################
     // ---------------- 实现 view 接口 start ----------------
     // ######################################################
+    
 
     /**
      * 变量赋值
@@ -118,7 +123,7 @@ abstract class controller implements icontroller
         $this->objView->assign($mixName, $mixValue);
         return $this;
     }
-
+    
     /**
      * 获取变量赋值
      *
@@ -130,7 +135,7 @@ abstract class controller implements icontroller
         $this->checkView();
         return $this->objView->getVar($sName);
     }
-
+    
     /**
      * 删除变量值
      *
@@ -141,12 +146,12 @@ abstract class controller implements icontroller
     {
         $this->checkView();
         call_user_func_array([
-                $this->objView,
-                'deleteAssign'
+            $this->objView, 
+            'deleteAssign'
         ], func_get_args());
         return $this;
     }
-
+    
     /**
      * 清空变量值
      *
@@ -159,7 +164,7 @@ abstract class controller implements icontroller
         $this->objView->clearAssign();
         return $this;
     }
-
+    
     /**
      * 加载视图文件
      *
@@ -174,10 +179,11 @@ abstract class controller implements icontroller
         $this->checkView();
         return $this->objView->display($sThemeFile, $arrOption);
     }
-
+    
     // ######################################################
     // ---------------- 实现 view 接口 end ----------------
     // ######################################################
+    
 
     /**
      * 验证 view
@@ -190,7 +196,7 @@ abstract class controller implements icontroller
             throw new RuntimeException('View is not set in controller');
         }
     }
-
+    
     /**
      * 赋值
      *
@@ -202,7 +208,7 @@ abstract class controller implements icontroller
     {
         $this->assign($mixName, $mixValue);
     }
-
+    
     /**
      * 获取值
      *

@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\cache;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use queryyetsimple\support\infinity;
 
@@ -30,14 +34,14 @@ class cache implements icache
     use infinity {
         __call as infinityCall;
     }
-
+    
     /**
      * 缓存连接对象
      *
      * @var \queryyetsimple\cache\iconnect
      */
     protected $objConnect;
-
+    
     /**
      * 构造函数
      *
@@ -48,7 +52,7 @@ class cache implements icache
     {
         $this->objConnect = $objConnect;
     }
-
+    
     /**
      * 获取缓存
      *
@@ -61,7 +65,7 @@ class cache implements icache
     {
         return $this->objConnect->get($sCacheName, $mixDefault, $arrOption);
     }
-
+    
     /**
      * 设置缓存
      *
@@ -74,7 +78,7 @@ class cache implements icache
     {
         $this->objConnect->set($sCacheName, $mixData, $arrOption);
     }
-
+    
     /**
      * 清除缓存
      *
@@ -86,7 +90,7 @@ class cache implements icache
     {
         $this->objConnect->delele($sCacheName, $arrOption);
     }
-
+    
     /**
      * 返回缓存句柄
      *
@@ -96,7 +100,7 @@ class cache implements icache
     {
         return $this->objConnect->handle();
     }
-
+    
     /**
      * 关闭
      *
@@ -106,7 +110,7 @@ class cache implements icache
     {
         $this->objConnect->close();
     }
-
+    
     /**
      * 拦截匿名注册控制器方法
      *
@@ -119,10 +123,10 @@ class cache implements icache
         if (static::hasInfinity($sMethod)) {
             return $this->infinityCall($sMethod, $arrArgs);
         }
-
+        
         return call_user_func_array([
-                $this->objConnect,
-                $sMethod
+            $this->objConnect, 
+            $sMethod
         ], $arrArgs);
     }
 }

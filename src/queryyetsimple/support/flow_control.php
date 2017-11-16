@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 /**
  * 流程控制复用
@@ -25,21 +29,21 @@ queryphp;
  */
 trait flow_control
 {
-
+    
     /**
      * 逻辑代码是否处于条件表达式中
      *
      * @var boolean
      */
     protected $booInFlowControl = false;
-
+    
     /**
      * 条件表达式是否为真
      *
      * @var boolean
      */
     protected $booFlowControlIsTrue = false;
-
+    
     /**
      * 条件语句 ifs
      *
@@ -50,7 +54,7 @@ trait flow_control
     {
         return $this->setFlowControl(true, $booValue);
     }
-
+    
     /**
      * 条件语句 elseIfs
      *
@@ -61,7 +65,7 @@ trait flow_control
     {
         return $this->setFlowControl(true, $booValue);
     }
-
+    
     /**
      * 条件语句 elses
      *
@@ -71,7 +75,7 @@ trait flow_control
     {
         return $this->setFlowControl(true, ! $this->getFlowControl()[1]);
     }
-
+    
     /**
      * 条件语句 endIfs
      *
@@ -81,7 +85,7 @@ trait flow_control
     {
         return $this->setFlowControl(false, false);
     }
-
+    
     /**
      * 设置当前条件表达式状态
      *
@@ -95,7 +99,7 @@ trait flow_control
         $this->booFlowControlIsTrue = $booFlowControlIsTrue;
         return $this;
     }
-
+    
     /**
      * 获取当前条件表达式状态
      *
@@ -104,11 +108,11 @@ trait flow_control
     protected function getFlowControl()
     {
         return [
-                $this->booInFlowControl,
-                $this->booFlowControlIsTrue
+            $this->booInFlowControl, 
+            $this->booFlowControlIsTrue
         ];
     }
-
+    
     /**
      * 验证一下条件表达式是否通过
      *
@@ -118,7 +122,7 @@ trait flow_control
     {
         return $this->booInFlowControl && ! $this->booFlowControlIsTrue;
     }
-
+    
     /**
      * 占位符
      *
@@ -128,8 +132,8 @@ trait flow_control
     protected function placeholderFlowControl($strMethod)
     {
         return in_array($strMethod, [
-                'placeholder',
-                'foobar'
+            'placeholder', 
+            'foobar'
         ]);
     }
 }

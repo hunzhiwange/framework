@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\log;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Monolog\Logger;
 use RuntimeException;
@@ -36,43 +40,45 @@ use Monolog\Handler\RotatingFileHandler;
  */
 class monolog extends aconnect implements iconnect
 {
-
+    
     /**
      * Monolog
      *
      * @var \Monolog\Logger
      */
     protected $objMonolog;
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-            'type' => ['file'],
-            'channel' => 'Q',
-            'name' => 'Y-m-d H',
-            'size' => 2097152,
-            'path' => ''
+        'type' => [
+            'file'
+        ], 
+        'channel' => 'Q', 
+        'name' => 'Y-m-d H', 
+        'size' => 2097152, 
+        'path' => ''
     ];
-
+    
     /**
      * Monolog 支持日志级别
      *
      * @var array
      */
     protected $arrSupportLevel = [
-            istore::DEBUG => Logger::DEBUG,
-            istore::INFO => Logger::INFO,
-            istore::NOTICE => Logger::NOTICE,
-            istore::WARNING => Logger::WARNING,
-            istore::ERROR => Logger::ERROR,
-            istore::CRITICAL => Logger::CRITICAL,
-            istore::ALERT => Logger::ALERT,
-            istore::EMERGENCY => Logger::EMERGENCY
+        istore::DEBUG => Logger::DEBUG, 
+        istore::INFO => Logger::INFO, 
+        istore::NOTICE => Logger::NOTICE, 
+        istore::WARNING => Logger::WARNING, 
+        istore::ERROR => Logger::ERROR, 
+        istore::CRITICAL => Logger::CRITICAL, 
+        istore::ALERT => Logger::ALERT, 
+        istore::EMERGENCY => Logger::EMERGENCY
     ];
-
+    
     /**
      * 构造函数
      *
@@ -83,12 +89,12 @@ class monolog extends aconnect implements iconnect
     {
         parent::__construct($arrOption);
         $this->objMonolog = new Logger($this->getOption('channel'));
-
+        
         foreach ($this->getOption('type') as $strType) {
-            $this->{'make'.ucwords(string::camelize($strType)).'Handler'}();
+            $this->{'make' . ucwords(string::camelize($strType)) . 'Handler'}();
         }
     }
-
+    
     /**
      * 注册文件 handler
      *
@@ -101,7 +107,7 @@ class monolog extends aconnect implements iconnect
         $this->objMonolog->pushHandler($objHandler = new StreamHandler($strPath, $this->parseMonologLevel($strLevel)));
         $objHandler->setFormatter($this->getDefaultFormatter());
     }
-
+    
     /**
      * 注册每日文件 handler
      *
@@ -115,7 +121,7 @@ class monolog extends aconnect implements iconnect
         $this->objMonolog->pushHandler($objHandler = new RotatingFileHandler($strPath, $intDays, $this->parseMonologLevel($strLevel)));
         $objHandler->setFormatter($this->getDefaultFormatter());
     }
-
+    
     /**
      * 注册系统 handler
      *
@@ -127,7 +133,7 @@ class monolog extends aconnect implements iconnect
     {
         return $this->objMonolog->pushHandler(new SyslogHandler($strName, LOG_USER, $strLevel));
     }
-
+    
     /**
      * 注册 error_log handler
      *
@@ -140,7 +146,7 @@ class monolog extends aconnect implements iconnect
         $this->objMonolog->pushHandler($objHandler = new ErrorLogHandler($intMessageType, $this->parseMonologLevel($strLevel)));
         $objHandler->setFormatter($this->getDefaultFormatter());
     }
-
+    
     /**
      * 回调
      *
@@ -151,14 +157,14 @@ class monolog extends aconnect implements iconnect
     {
         if (is_callable($mixCallback)) {
             call_user_func_array($mixCallback, [
-                    $this
+                $this
             ]);
             $this->objMessage->attach($objAttachment);
         }
-
+        
         return $this;
     }
-
+    
     /**
      * 取得 Monolog
      *
@@ -168,7 +174,7 @@ class monolog extends aconnect implements iconnect
     {
         return $this->objMonolog;
     }
-
+    
     /**
      * 日志写入接口
      *
@@ -178,11 +184,10 @@ class monolog extends aconnect implements iconnect
     public function save(array $arrData)
     {
         foreach ($arrData as $arrItem) {
-            $this->objMonolog->{$arrItem [0]} ($arrItem [1], $arrItem [2]);
+            $this->objMonolog->{$arrItem[0]}($arrItem[1], $arrItem[2]);
         }
     }
-
-
+    
     /**
      * 初始化文件 handler
      *
@@ -193,7 +198,7 @@ class monolog extends aconnect implements iconnect
         $this->checkSize($strPath = $this->getPath());
         $this->file($strPath);
     }
-
+    
     /**
      * 初始化每日文件 handler
      *
@@ -205,7 +210,7 @@ class monolog extends aconnect implements iconnect
         $this->checkSize($this->getDailyFilePath($strPath));
         $this->dailyFile($strPath);
     }
-
+    
     /**
      * 初始化系统 handler
      *
@@ -215,7 +220,7 @@ class monolog extends aconnect implements iconnect
     {
         $this->syslog();
     }
-
+    
     /**
      * 初始化 error_log handler
      *
@@ -225,7 +230,7 @@ class monolog extends aconnect implements iconnect
     {
         $this->errorLog();
     }
-
+    
     /**
      * 每日文件真实路径
      *
@@ -238,9 +243,9 @@ class monolog extends aconnect implements iconnect
         if ($strExt) {
             $strPath = substr($strPath, 0, strrpos($strPath, '.' . $strExt));
         }
-        return $strPath.date('-Y-m-d') . ($strExt ? '.' . $strExt : '');
+        return $strPath . date('-Y-m-d') . ($strExt ? '.' . $strExt : '');
     }
-
+    
     /**
      * 默认格式化
      *

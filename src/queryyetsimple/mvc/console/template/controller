@@ -5,14 +5,16 @@ namespace {{namespace}}\application\controller;
 use queryyetsimple\mvc\controller;
 
 {{file_comment}}
-class {{file_name}} extends controller {
+class {{file_name}} extends controller 
+{
 
     /**
      * 构造函数
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct() 
+    {
     }
 
     /**
@@ -20,6 +22,7 @@ class {{file_name}} extends controller {
      *
      * @return void
      */
-    public function index() {
+    public function index() 
+    {
     }
 }

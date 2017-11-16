@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\queue\runners;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Exception;
 use PHPQueue\Base;
@@ -29,35 +33,35 @@ use PHPQueue\Runner as PHPQueueRunner;
  */
 abstract class arunner extends PHPQueueRunner
 {
-
+    
     /**
      * work 命令
      *
      * @var \queryyetsimple\queue\console\work
      */
     protected $objWork;
-
+    
     /**
      * 消息队列
      *
      * @var \queryyetsimple\queue\queues\iqueue
      */
     protected $objQueue;
-
+    
     /**
      * 任务不可用等待时间
      *
      * @var int
      */
     protected $intSleep = 5;
-
+    
     /**
      * 任务最大尝试次数
      *
      * @var int
      */
     protected $intTries = 0;
-
+    
     /**
      * work 命名
      *
@@ -71,7 +75,7 @@ abstract class arunner extends PHPQueueRunner
         $this->intSleep = $objWork->sleep();
         return $this;
     }
-
+    
     /**
      * (non-PHPdoc)
      *
@@ -85,13 +89,13 @@ abstract class arunner extends PHPQueueRunner
             $obJNewJob = Base::getJob($this->objQueue);
         } catch (Exception $oEx) {
             $this->logger->addError($oEx->getMessage());
-
+            
             // 任务不可用等待时间
             $nSleepTime = self::RUN_USLEEP * $this->intSleep;
         }
         if (empty($obJNewJob)) {
             $this->logger->addNotice("No Job found.");
-
+            
             // 任务不可用等待时间
             $nSleepTime = self::RUN_USLEEP * $this->intSleep;
         } else {
@@ -99,12 +103,12 @@ abstract class arunner extends PHPQueueRunner
                 if (empty($obJNewJob->worker)) {
                     throw new Exception("No worker declared.");
                 }
-
+                
                 // 验证任务最大尝试次数
                 if ($this->intTries > 0 && $obJNewJob->getAttempts() > $this->intTries) {
                     return $this->failedJob($obJNewJob);
                 }
-
+                
                 if (is_string($obJNewJob->worker)) {
                     $arrResultData = $this->processWorker($obJNewJob->worker, $obJNewJob);
                 } elseif (is_array($obJNewJob->worker)) {
@@ -114,30 +118,30 @@ abstract class arunner extends PHPQueueRunner
                         $obJNewJob->data = $arrResultData;
                     }
                 }
-
+                
                 return $this->updateJob($obJNewJob, $arrResultData);
             } catch (Exception $oEx) {
                 $this->logger->addError($oEx->getMessage());
                 $this->logger->addInfo(sprintf('Releasing job (%s).', $obJNewJob->job_id));
-
+                
                 // 删除了就不能重新发布
                 if (! $obJNewJob->isDeleted()) {
                     $this->objQueue->releaseJob($obJNewJob->job_id);
                 }
-
+                
                 $nSleepTime = self::RUN_USLEEP * 1;
             }
         }
-
+        
         if ($nSleepTime) {
             $this->logger->addInfo('Sleeping ' . ceil($nSleepTime / 1000000) . ' seconds.');
             usleep($nSleepTime);
         }
-
+        
         // 验证是否需要重启
         $this->checkRestart();
     }
-
+    
     /**
      * (non-PHPdoc)
      *
@@ -150,7 +154,7 @@ abstract class arunner extends PHPQueueRunner
         }
         $this->objQueue = Base::getQueue($this->queue_name);
     }
-
+    
     /**
      * 记录错误任务
      *
@@ -160,7 +164,7 @@ abstract class arunner extends PHPQueueRunner
     protected function failedJob($objJob)
     {
         $booStatus = false;
-
+        
         if (! $objJob->isDeleted()) {
             try {
                 $objJob->delete();
@@ -170,13 +174,12 @@ abstract class arunner extends PHPQueueRunner
                 $this->objQueue->updateJob($objJob->job_id, $objJob->data);
                 $booStatus = $this->objQueue->clearJob($objJob->job_id);
                 $this->objQueue->afterUpdate();
-            } finally {
-            }
+            } finally {}
         }
-
+        
         return $booStatus;
     }
-
+    
     /**
      * 更新任务数据
      *
@@ -195,18 +198,18 @@ abstract class arunner extends PHPQueueRunner
             $this->objQueue->afterUpdate();
         } catch (Exception $oEx) {
             $this->objQueue->onError($oEx);
-
+            
             // 删除了就不能重新发布
             if (! $obJJob->isDeleted()) {
                 $this->objQueue->releaseJob($obJJob->job_id);
             }
-
+            
             throw $oEx;
         }
-
+        
         return $booStatus;
     }
-
+    
     /**
      * 验证是否需要重启
      *

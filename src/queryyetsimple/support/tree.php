@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 /**
  * 树数据处理
@@ -25,21 +29,21 @@ queryphp;
  */
 class tree implements itree, ijson, iarray
 {
-
+    
     /**
      * 子父关系映射
      *
      * @var array
      */
-    protected $arrMap = [ ];
-
+    protected $arrMap = [];
+    
     /**
      * 节点数据
      *
      * @var array
      */
-    protected $arrData = [ ];
-
+    protected $arrData = [];
+    
     /**
      * 构造函数
      *
@@ -49,10 +53,10 @@ class tree implements itree, ijson, iarray
     public function __construct($arrNodes = [])
     {
         foreach ($arrNodes as $arrNode) {
-            $this->setNode($arrNode [0], $arrNode [1], $arrNode [2]);
+            $this->setNode($arrNode[0], $arrNode[1], $arrNode[2]);
         }
     }
-
+    
     /**
      * 设置节点数据
      *
@@ -65,23 +69,23 @@ class tree implements itree, ijson, iarray
     public function setNode($nId, $nParent, $mixValue, $booPriority = false)
     {
         $nParent = $nParent ? $nParent : 0;
-        $this->arrData [$nId] = $mixValue;
-
+        $this->arrData[$nId] = $mixValue;
+        
         if ($booPriority) {
             $arr = [
-                    $nId => $nParent
+                $nId => $nParent
             ];
-
+            
             foreach ($this->arrMap as $intK => $intV) {
-                $arr [$intK] = $intV;
+                $arr[$intK] = $intV;
             }
             $this->arrMap = $arr;
             unset($arr);
         } else {
-            $this->arrMap [$nId] = $nParent;
+            $this->arrMap[$nId] = $nParent;
         }
     }
-
+    
     /**
      * 取得给定 ID 子树
      *
@@ -90,15 +94,15 @@ class tree implements itree, ijson, iarray
      */
     public function getChildrenTree($nId = 0)
     {
-        $arrChildren = [ ];
+        $arrChildren = [];
         foreach ($this->arrMap as $nChild => $nParent) {
             if ($nParent == $nId) {
-                $arrChildren [$nChild] = $this->getChildrenTree($nChild);
+                $arrChildren[$nChild] = $this->getChildrenTree($nChild);
             }
         }
         return $arrChildren;
     }
-
+    
     /**
      * 取得给定 ID 一级子树 ID
      *
@@ -107,15 +111,15 @@ class tree implements itree, ijson, iarray
      */
     public function getChild($nId)
     {
-        $arrChild = [ ];
+        $arrChild = [];
         foreach ($this->arrMap as $nChild => $nParent) {
             if ($nParent == $nId) {
-                $arrChild [$nChild] = $nChild;
+                $arrChild[$nChild] = $nChild;
             }
         }
         return $arrChild;
     }
-
+    
     /**
      * 取得给定 ID 所有子树 ID
      *
@@ -124,14 +128,14 @@ class tree implements itree, ijson, iarray
      */
     public function getChildren($nId = 0)
     {
-        $arrChild = [ ];
+        $arrChild = [];
         foreach ($this->getChild($nId) as $nChild) {
-            $arrChild [] = $nChild;
+            $arrChild[] = $nChild;
             $arrChild = array_merge($arrChild, $this->getChildren($nChild));
         }
         return $arrChild;
     }
-
+    
     /**
      * 取得给定 ID 是否包含子树
      *
@@ -142,7 +146,7 @@ class tree implements itree, ijson, iarray
     {
         return count($this->getChild($nId)) > 0;
     }
-
+    
     /**
      * 验证是否存在子菜单
      *
@@ -156,20 +160,20 @@ class tree implements itree, ijson, iarray
         if (empty($arrCheckChildren)) {
             return false;
         }
-
+        
         $arrChildren = $this->getChildren($intId);
-
+        
         if ($booStrict === true && array_diff($arrCheckChildren, $arrChildren)) {
             return false;
         }
-
+        
         if ($booStrict === false && array_intersect($arrCheckChildren, $arrChildren)) {
             return true;
         }
-
+        
         return true;
     }
-
+    
     /**
      * 取得给定 ID 上级父级 ID
      *
@@ -179,18 +183,18 @@ class tree implements itree, ijson, iarray
      */
     public function getParent($nId, $booWithItSelf = false)
     {
-        $arrParent = [ ];
-        if (array_key_exists($this->arrMap [$nId], $this->arrMap)) {
-            $arrParent [] = $this->arrMap [$nId];
+        $arrParent = [];
+        if (array_key_exists($this->arrMap[$nId], $this->arrMap)) {
+            $arrParent[] = $this->arrMap[$nId];
         }
-
+        
         if ($booWithItSelf === true) {
-            $arrParent [] = intval($nId);
+            $arrParent[] = intval($nId);
         }
-
+        
         return $arrParent;
     }
-
+    
     /**
      * 取得给定 ID 所有父级 ID
      *
@@ -202,14 +206,14 @@ class tree implements itree, ijson, iarray
     {
         $arrParent = $this->getParentsReal($nId);
         sort($arrParent);
-
+        
         if ($booWithItSelf === true) {
-            $arrParent [] = intval($nId);
+            $arrParent[] = intval($nId);
         }
-
+        
         return $arrParent;
     }
-
+    
     /**
      * 判断级别
      *
@@ -220,7 +224,7 @@ class tree implements itree, ijson, iarray
     {
         return count($this->getParentsReal($nId));
     }
-
+    
     /**
      * 取得节点的值
      *
@@ -229,9 +233,9 @@ class tree implements itree, ijson, iarray
      */
     public function getData($nId, $mixDefault = null)
     {
-        return isset($this->arrData [$nId]) ? $this->arrData [$nId] : $mixDefault;
+        return isset($this->arrData[$nId]) ? $this->arrData[$nId] : $mixDefault;
     }
-
+    
     /**
      * 设置节点的值
      *
@@ -241,11 +245,11 @@ class tree implements itree, ijson, iarray
      */
     public function setData($nId, $mixValue)
     {
-        if (isset($this->arrData [$nId])) {
-            $this->arrData [$nId] = $mixValue;
+        if (isset($this->arrData[$nId])) {
+            $this->arrData[$nId] = $mixValue;
         }
     }
-
+    
     /**
      * 树转化为数组
      *
@@ -256,33 +260,33 @@ class tree implements itree, ijson, iarray
      */
     public function treeToArray($mixCallable = null, $arrKey = [], $nId = 0)
     {
-        $arrData = [ ];
+        $arrData = [];
         foreach ($this->getChild($nId) as $nValue) {
             $arrItem = [
-                    isset($arrKey ['value']) ? $arrKey ['value'] : 'value' => $nValue,
-                    isset($arrKey ['data']) ? $arrKey ['data'] : 'data' => $this->arrData [$nValue]
+                isset($arrKey['value']) ? $arrKey['value'] : 'value' => $nValue, 
+                isset($arrKey['data']) ? $arrKey['data'] : 'data' => $this->arrData[$nValue]
             ];
-
+            
             if (is_callable($mixCallable)) {
                 $mixReturn = call_user_func_array($mixCallable, [
-                        $arrItem,
-                        $this
+                    $arrItem, 
+                    $this
                 ]);
-
+                
                 if (! is_null($mixReturn)) {
                     $arrItem = $mixReturn;
                 }
             }
-
+            
             if ($arrChildren = $this->treeToArray($mixCallable, $arrKey, $nValue)) {
-                $arrItem [isset($arrKey ['children']) ? $arrKey ['children'] : 'children'] = $arrChildren;
+                $arrItem[isset($arrKey['children']) ? $arrKey['children'] : 'children'] = $arrChildren;
             }
-
-            $arrData [] = $arrItem;
+            
+            $arrData[] = $arrItem;
         }
         return $arrData;
     }
-
+    
     /**
      * 对象转 JSON
      *
@@ -294,11 +298,11 @@ class tree implements itree, ijson, iarray
         $arrArgs = func_get_args();
         array_shift($arrArgs);
         return json_encode(call_user_func_array([
-                $this,
-                'toArray'
+            $this, 
+            'toArray'
         ], $arrArgs), $intOption);
     }
-
+    
     /**
      * 对象转数组
      *
@@ -307,11 +311,11 @@ class tree implements itree, ijson, iarray
     public function toArray()
     {
         return call_user_func_array([
-                $this,
-                'treeToArray'
+            $this, 
+            'treeToArray'
         ], func_get_args());
     }
-
+    
     /**
      * 取得给定 ID 所有父级 ID
      *
@@ -320,10 +324,10 @@ class tree implements itree, ijson, iarray
      */
     protected function getParentsReal($nId)
     {
-        $arrParent = [ ];
-        if (array_key_exists($this->arrMap [$nId], $this->arrMap)) {
-            $arrParent [] = $this->arrMap [$nId];
-            $arrParent = array_merge($arrParent, $this->getParentsReal($this->arrMap [$nId]));
+        $arrParent = [];
+        if (array_key_exists($this->arrMap[$nId], $this->arrMap)) {
+            $arrParent[] = $this->arrMap[$nId];
+            $arrParent = array_merge($arrParent, $this->getParentsReal($this->arrMap[$nId]));
         }
         return $arrParent;
     }

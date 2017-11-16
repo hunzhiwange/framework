@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\session;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 /**
  * isession 接口
@@ -25,14 +29,14 @@ queryphp;
  */
 interface isession
 {
-
+    
     /**
      * 启动 session
      *
      * @return void
      */
     public function start();
-
+    
     /**
      * 设置 session
      *
@@ -41,7 +45,7 @@ interface isession
      * @return void
      */
     public function set($sName, $mixValue);
-
+    
     /**
      * 批量插入
      *
@@ -50,7 +54,7 @@ interface isession
      * @return void
      */
     public function put($mixKey, $mixValue = null);
-
+    
     /**
      * 数组插入数据
      *
@@ -59,7 +63,7 @@ interface isession
      * @return void
      */
     public function push($strKey, $mixValue);
-
+    
     /**
      * 合并元素
      *
@@ -68,7 +72,7 @@ interface isession
      * @return void
      */
     public function merge($strKey, array $arrValue);
-
+    
     /**
      * 弹出元素
      *
@@ -77,7 +81,7 @@ interface isession
      * @return void
      */
     public function pop($strKey, array $arrValue);
-
+    
     /**
      * 数组插入键值对数据
      *
@@ -87,7 +91,7 @@ interface isession
      * @return void
      */
     public function arrays($strKey, $mixKey, $mixValue = null);
-
+    
     /**
      * 数组键值删除数据
      *
@@ -96,7 +100,7 @@ interface isession
      * @return void
      */
     public function arraysDelete($strKey, $mixKey);
-
+    
     /**
      * 取回 session
      *
@@ -105,7 +109,7 @@ interface isession
      * @return mxied
      */
     public function get($sName, $mixValue = null);
-
+    
     /**
      * 删除 session
      *
@@ -114,7 +118,7 @@ interface isession
      * @return bool
      */
     public function delete($sName, $bPrefix = true);
-
+    
     /**
      * 是否存在 session
      *
@@ -122,7 +126,7 @@ interface isession
      * @return boolean
      */
     public function has($sName);
-
+    
     /**
      * 删除 session
      *
@@ -130,7 +134,7 @@ interface isession
      * @return void
      */
     public function clear($bPrefix = true);
-
+    
     /**
      * 闪存一个数据，当前请求和下一个请求可用
      *
@@ -139,7 +143,7 @@ interface isession
      * @return void
      */
     public function flash($strKey, $mixValue = null);
-
+    
     /**
      * 批量闪存数据，当前请求和下一个请求可用
      *
@@ -147,7 +151,7 @@ interface isession
      * @return void
      */
     public function flashs(array $arrFlash);
-
+    
     /**
      * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取
      *
@@ -156,14 +160,14 @@ interface isession
      * @return void
      */
     public function nowFlash($strKey, $mixValue);
-
+    
     /**
      * 保持所有闪存数据
      *
      * @return void
      */
     public function rebuildFlash();
-
+    
     /**
      * 保持闪存数据
      *
@@ -171,7 +175,7 @@ interface isession
      * @return void
      */
     public function keepFlash($mixKey);
-
+    
     /**
      * 返回闪存数据
      *
@@ -180,7 +184,7 @@ interface isession
      * @return mixed
      */
     public function getFlash($strKey, $mixDefault = null);
-
+    
     /**
      * 删除闪存数据
      *
@@ -188,28 +192,28 @@ interface isession
      * @return void
      */
     public function deleteFlash($mixKey);
-
+    
     /**
      * 清理所有闪存数据
      *
      * @return void
      */
     public function clearFlash();
-
+    
     /**
      * 程序执行结束清理 flash
      *
      * @return void
      */
     public function unregisterFlash();
-
+    
     /**
      * 获取前一个请求地址
      *
      * @return string|null
      */
     public function prevUrl();
-
+    
     /**
      * 设置前一个请求地址
      *
@@ -217,21 +221,21 @@ interface isession
      * @return void
      */
     public function setPrevUrl($strUrl);
-
+    
     /**
      * 暂停 session
      *
      * @return void
      */
     public function pause();
-
+    
     /**
      * 终止会话
      *
      * @return bool
      */
     public function destroy();
-
+    
     /**
      * 获取解析 session_id
      *
@@ -239,7 +243,7 @@ interface isession
      * @return string
      */
     public function parseSessionId();
-
+    
     /**
      * 设置 save path
      *
@@ -247,7 +251,7 @@ interface isession
      * @return string
      */
     public function savePath($sSavePath = null);
-
+    
     /**
      * 设置 cache limiter
      *
@@ -255,7 +259,7 @@ interface isession
      * @return string
      */
     public function cacheLimiter($strCacheLimiter = null);
-
+    
     /**
      * 设置 cache expire
      *
@@ -263,7 +267,7 @@ interface isession
      * @return void
      */
     public function cacheExpire($nExpireSecond = null);
-
+    
     /**
      * session_name
      *
@@ -271,7 +275,7 @@ interface isession
      * @return string
      */
     public function sessionName($sName = null);
-
+    
     /**
      * session id
      *
@@ -279,7 +283,7 @@ interface isession
      * @return string
      */
     public function sessionId($sId = null);
-
+    
     /**
      * session 的 cookie_domain 设置
      *
@@ -287,7 +291,7 @@ interface isession
      * @return string
      */
     public function cookieDomain($sSessionDomain = null);
-
+    
     /**
      * session 是否使用 cookie
      *
@@ -295,7 +299,7 @@ interface isession
      * @return boolean
      */
     public function useCookies($bUseCookies = null);
-
+    
     /**
      * 客户端禁用 cookie 可以开启这个项
      *
@@ -303,7 +307,7 @@ interface isession
      * @return boolean
      */
     public function useTransSid($nUseTransSid = null);
-
+    
     /**
      * 设置过期 cookie lifetime
      *
@@ -311,7 +315,7 @@ interface isession
      * @return int
      */
     public function cookieLifetime($nCookieLifeTime);
-
+    
     /**
      * gc maxlifetime
      *
@@ -319,7 +323,7 @@ interface isession
      * @return int
      */
     public function gcMaxlifetime($nGcMaxlifetime = null);
-
+    
     /**
      * session 垃圾回收概率分子 (分母为 session.gc_divisor)
      *

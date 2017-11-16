@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\session;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 use BadMethodCallException;
@@ -32,34 +36,34 @@ use queryyetsimple\support\assert;
 class session implements isession
 {
     use option;
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $objConnect;
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-            'default' => null,
-            'prefix' => 'q_',
-            'id' => null,
-            'name' => null,
-            'cookie_domain' => null,
-            'cache_limiter' => null,
-            'expire' => 86400,
-            'cookie_lifetime' => null,
-            'gc_maxlifetime' => null,
-            'save_path' => null,
-            'use_trans_sid' => null,
-            'gc_probability' => null
+        'default' => null, 
+        'prefix' => 'q_', 
+        'id' => null, 
+        'name' => null, 
+        'cookie_domain' => null, 
+        'cache_limiter' => null, 
+        'expire' => 86400, 
+        'cookie_lifetime' => null, 
+        'gc_maxlifetime' => null, 
+        'save_path' => null, 
+        'use_trans_sid' => null, 
+        'gc_probability' => null
     ];
-
+    
     /**
      * 构造函数
      *
@@ -72,7 +76,7 @@ class session implements isession
         $this->objConnect = $objConnect;
         $this->options($arrOption);
     }
-
+    
     /**
      * 启动 session
      *
@@ -83,10 +87,10 @@ class session implements isession
         if ($this->isStart()) {
             return $this;
         }
-
+        
         // 设置 session 不自动启动
         ini_set('session.auto_start', 0);
-
+        
         // 设置 session id
         if ($this->getOption('id')) {
             session_id($this->getOption('id'));
@@ -95,65 +99,65 @@ class session implements isession
                 $this->sessionId(uniqid(dechex(mt_rand())));
             }
         }
-
+        
         // cookie domain
         if ($this->getOption('cookie_domain')) {
             $this->cookieDomain($this->getOption('cookie_domain'));
         }
-
+        
         // session name
         if ($this->getOption('name')) {
             $this->sessionName($this->getOption('name'));
         }
-
+        
         // cache expire
         if ($this->getOption('expire')) {
             $this->cacheExpire($this->getOption('expire'));
         }
-
+        
         // gc maxlifetime
         if ($this->getOption('gc_maxlifetime')) {
             $this->gcMaxlifetime($this->getOption('gc_maxlifetime'));
         }
-
+        
         // cookie lifetime
         if ($this->getOption('cookie_lifetime')) {
             $this->cookieLifetime($this->getOption('cookie_lifetime'));
         }
-
+        
         // cache limiter
         if ($this->getOption('cache_limiter')) {
             $this->cacheLimiter($this->getOption('cache_limiter'));
         }
-
+        
         // save path
         if ($this->getOption('save_path')) {
             $this->savePath($this->getOption('save_path'));
         }
-
+        
         // use_trans_sid
         if ($this->getOption('use_trans_sid')) {
             $this->useTransSid($this->getOption('use_trans_sid'));
         }
-
+        
         // gc_probability
         if ($this->getOption('gc_probability')) {
             $this->gcProbability($this->getOption('gc_probability'));
         }
-
+        
         // 驱动
         if ($this->objConnect && ! session_set_save_handler($this->objConnect)) {
             throw new RuntimeException(sprintf('Session drive %s settings failed.', get_class($this->objConnect)));
         }
-
+        
         // 启动 session
         if (! session_start()) {
             throw new RuntimeException('Session start failed');
         }
-
+        
         return $this;
     }
-
+    
     /**
      * 设置 session
      *
@@ -164,12 +168,12 @@ class session implements isession
     public function set($sName, $mixValue)
     {
         $this->checkStart();
-
+        
         assert::string($sName);
         $sName = $this->getName($sName);
-        $_SESSION [$sName] = $mixValue;
+        $_SESSION[$sName] = $mixValue;
     }
-
+    
     /**
      * 批量插入
      *
@@ -180,18 +184,18 @@ class session implements isession
     public function put($mixKey, $mixValue = null)
     {
         $this->checkStart();
-
+        
         if (! is_array($mixKey)) {
             $mixKey = [
-                    $mixKey => $mixValue
+                $mixKey => $mixValue
             ];
         }
-
+        
         foreach ($mixKey as $strKey => $mixValue) {
             $this->set($strKey, $mixValue);
         }
     }
-
+    
     /**
      * 数组插入数据
      *
@@ -201,11 +205,11 @@ class session implements isession
      */
     public function push($strKey, $mixValue)
     {
-        $arr = $this->get($strKey, [ ]);
-        $arr [] = $mixValue;
+        $arr = $this->get($strKey, []);
+        $arr[] = $mixValue;
         $this->set($strKey, $arr);
     }
-
+    
     /**
      * 合并元素
      *
@@ -215,9 +219,9 @@ class session implements isession
      */
     public function merge($strKey, array $arrValue)
     {
-        $this->set($strKey, array_unique(array_merge($this->get($strKey, [ ]), $arrValue)));
+        $this->set($strKey, array_unique(array_merge($this->get($strKey, []), $arrValue)));
     }
-
+    
     /**
      * 弹出元素
      *
@@ -227,9 +231,9 @@ class session implements isession
      */
     public function pop($strKey, array $arrValue)
     {
-        $this->set($strKey, array_diff($this->get($strKey, [ ]), $arrValue));
+        $this->set($strKey, array_diff($this->get($strKey, []), $arrValue));
     }
-
+    
     /**
      * 数组插入键值对数据
      *
@@ -240,15 +244,15 @@ class session implements isession
      */
     public function arrays($strKey, $mixKey, $mixValue = null)
     {
-        $arr = $this->get($strKey, [ ]);
+        $arr = $this->get($strKey, []);
         if (is_string($mixKey)) {
-            $arr [$mixKey] = $mixValue;
+            $arr[$mixKey] = $mixValue;
         } elseif (is_array($mixKey)) {
             $arr = array_merge($arr, $mixKey);
         }
         $this->set($strKey, $arr);
     }
-
+    
     /**
      * 数组键值删除数据
      *
@@ -258,20 +262,20 @@ class session implements isession
      */
     public function arraysDelete($strKey, $mixKey)
     {
-        $arr = $this->get($strKey, [ ]);
+        $arr = $this->get($strKey, []);
         if (! is_array($mixKey)) {
             $mixKey = [
-                    $mixKey
+                $mixKey
             ];
         }
         foreach ($mixKey as $strFoo) {
-            if (isset($arr [$strFoo])) {
-                unset($arr [$strFoo]);
+            if (isset($arr[$strFoo])) {
+                unset($arr[$strFoo]);
             }
         }
         $this->set($strKey, $arr);
     }
-
+    
     /**
      * 取回 session
      *
@@ -282,12 +286,12 @@ class session implements isession
     public function get($sName, $mixValue = null)
     {
         $this->checkStart();
-
+        
         assert::string($sName);
         $sName = $this->getName($sName);
-        return isset($_SESSION [$sName]) ? $_SESSION [$sName] : $mixValue;
+        return isset($_SESSION[$sName]) ? $_SESSION[$sName] : $mixValue;
     }
-
+    
     /**
      * 删除 session
      *
@@ -298,19 +302,19 @@ class session implements isession
     public function delete($sName, $bPrefix = true)
     {
         $this->checkStart();
-
+        
         assert::string($sName);
         if ($bPrefix) {
             $sName = $this->getName($sName);
         }
-
-        if (isset($_SESSION [$sName])) {
-            unset($_SESSION [$sName]);
+        
+        if (isset($_SESSION[$sName])) {
+            unset($_SESSION[$sName]);
         }
-
+        
         return true;
     }
-
+    
     /**
      * 是否存在 session
      *
@@ -320,12 +324,12 @@ class session implements isession
     public function has($sName)
     {
         $this->checkStart();
-
+        
         assert::string($sName);
         $sName = $this->getName($sName);
-        return isset($_SESSION [$sName]);
+        return isset($_SESSION[$sName]);
     }
-
+    
     /**
      * 删除 session
      *
@@ -335,7 +339,7 @@ class session implements isession
     public function clear($bPrefix = true)
     {
         $this->checkStart();
-
+        
         $strPrefix = $this->getOption('prefix');
         foreach ($_SESSION as $sKey => $Val) {
             if ($bPrefix === true && $strPrefix && strpos($sKey, $strPrefix) === 0) {
@@ -345,7 +349,7 @@ class session implements isession
             }
         }
     }
-
+    
     /**
      * 闪存一个数据，当前请求和下一个请求可用
      *
@@ -360,14 +364,14 @@ class session implements isession
         } else {
             $this->set($this->flashDataKey($strKey), $mixValue);
             $this->mergeNewFlash([
-                    $strKey
+                $strKey
             ]);
             $this->popOldFlash([
-                    $strKey
+                $strKey
             ]);
         }
     }
-
+    
     /**
      * 批量闪存数据，当前请求和下一个请求可用
      *
@@ -380,7 +384,7 @@ class session implements isession
             $this->flash($strKey, $mixValue);
         }
     }
-
+    
     /**
      * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取
      *
@@ -392,10 +396,10 @@ class session implements isession
     {
         $this->set($this->flashDataKey($strKey), $mixValue);
         $this->mergeOldFlash([
-                $strKey
+            $strKey
         ]);
     }
-
+    
     /**
      * 保持所有闪存数据
      *
@@ -403,10 +407,10 @@ class session implements isession
      */
     public function rebuildFlash()
     {
-        $this->mergeNewFlash($this->get($this->flashOldKey(), [ ]));
-        $this->set($this->flashOldKey(), [ ]);
+        $this->mergeNewFlash($this->get($this->flashOldKey(), []));
+        $this->set($this->flashOldKey(), []);
     }
-
+    
     /**
      * 保持闪存数据
      *
@@ -419,7 +423,7 @@ class session implements isession
         $this->mergeNewFlash($mixKey);
         $this->popOldFlash($mixKey);
     }
-
+    
     /**
      * 返回闪存数据
      *
@@ -435,7 +439,7 @@ class session implements isession
             return $this->get($this->flashDataKey($strKey), $mixDefault);
         }
     }
-
+    
     /**
      * 删除闪存数据
      *
@@ -445,15 +449,15 @@ class session implements isession
     public function deleteFlash($mixKey)
     {
         $mixKey = is_array($mixKey) ? $mixKey : func_get_args();
-
+        
         foreach ($mixKey as $strKey) {
             $this->delete($this->flashDataKey($strKey));
         }
-
+        
         $this->mergeOldFlash($mixKey);
         $this->popNewFlash($mixKey);
     }
-
+    
     /**
      * 清理所有闪存数据
      *
@@ -461,11 +465,11 @@ class session implements isession
      */
     public function clearFlash()
     {
-        foreach ($this->get($this->flashNewKey(), [ ]) as $strNew) {
+        foreach ($this->get($this->flashNewKey(), []) as $strNew) {
             $this->deleteFlash($strNew);
         }
     }
-
+    
     /**
      * 程序执行结束清理 flash
      *
@@ -474,20 +478,20 @@ class session implements isession
     public function unregisterFlash()
     {
         if ($this->isStart()) {
-            $arr = $this->get($this->flashNewKey(), [ ]);
-            $arrOld = $this->get($this->flashOldKey(), [ ]);
-
+            $arr = $this->get($this->flashNewKey(), []);
+            $arrOld = $this->get($this->flashOldKey(), []);
+            
             foreach ($arrOld as $strOld) {
                 $this->delete($this->flashDataKey($strOld));
             }
-
+            
             $this->delete($this->flashNewKey());
             $this->set($this->flashOldKey(), $arr);
-
+            
             unset($arr, $arrOld);
         }
     }
-
+    
     /**
      * 获取前一个请求地址
      *
@@ -497,7 +501,7 @@ class session implements isession
     {
         return $this->get($this->prevUrlKey());
     }
-
+    
     /**
      * 设置前一个请求地址
      *
@@ -508,7 +512,7 @@ class session implements isession
     {
         return $this->set($this->prevUrlKey(), $strUrl);
     }
-
+    
     /**
      * 暂停 session
      *
@@ -519,7 +523,7 @@ class session implements isession
         $this->checkStart();
         session_write_close();
     }
-
+    
     /**
      * 终止会话
      *
@@ -528,16 +532,16 @@ class session implements isession
     public function destroy()
     {
         $this->checkStart();
-
+        
         $this->clear(false);
-
-        if (isset($_COOKIE [$this->sessionName()])) {
+        
+        if (isset($_COOKIE[$this->sessionName()])) {
             setcookie($this->sessionName(), '', time() - 42000, '/');
         }
-
+        
         session_destroy();
     }
-
+    
     /**
      * 获取解析 session_id
      *
@@ -550,20 +554,20 @@ class session implements isession
             return $sId;
         }
         if ($this->useCookies()) {
-            if (isset($_COOKIE [$this->sessionName()])) {
-                return $_COOKIE [$this->sessionName()];
+            if (isset($_COOKIE[$this->sessionName()])) {
+                return $_COOKIE[$this->sessionName()];
             }
         } else {
-            if (isset($_GET [$this->sessionName()])) {
-                return $_GET [$this->sessionName()];
+            if (isset($_GET[$this->sessionName()])) {
+                return $_GET[$this->sessionName()];
             }
-            if (isset($_POST [$this->sessionName()])) {
-                return $_POST [$this->sessionName()];
+            if (isset($_POST[$this->sessionName()])) {
+                return $_POST[$this->sessionName()];
             }
         }
         return null;
     }
-
+    
     /**
      * 设置 save path
      *
@@ -574,7 +578,7 @@ class session implements isession
     {
         return ! empty($sSavePath) ? session_save_path($sSavePath) : session_save_path();
     }
-
+    
     /**
      * 设置 cache limiter
      *
@@ -585,7 +589,7 @@ class session implements isession
     {
         return isset($strCacheLimiter) ? session_cache_limiter($strCacheLimiter) : session_cache_limiter();
     }
-
+    
     /**
      * 设置 cache expire
      *
@@ -596,7 +600,7 @@ class session implements isession
     {
         return isset($nExpireSecond) ? session_cache_expire(intval($nExpireSecond)) : session_cache_expire();
     }
-
+    
     /**
      * session_name
      *
@@ -607,7 +611,7 @@ class session implements isession
     {
         return isset($sName) ? session_name($sName) : session_name();
     }
-
+    
     /**
      * session id
      *
@@ -618,7 +622,7 @@ class session implements isession
     {
         return isset($sId) ? session_id($sId) : session_id();
     }
-
+    
     /**
      * session 的 cookie_domain 设置
      *
@@ -633,7 +637,7 @@ class session implements isession
         }
         return $sReturn;
     }
-
+    
     /**
      * session 是否使用 cookie
      *
@@ -648,7 +652,7 @@ class session implements isession
         }
         return $booReturn;
     }
-
+    
     /**
      * 客户端禁用 cookie 可以开启这个项
      *
@@ -663,7 +667,7 @@ class session implements isession
         }
         return $booReturn;
     }
-
+    
     /**
      * 设置过期 cookie lifetime
      *
@@ -678,7 +682,7 @@ class session implements isession
         }
         return $nReturn;
     }
-
+    
     /**
      * gc maxlifetime
      *
@@ -693,7 +697,7 @@ class session implements isession
         }
         return $nReturn;
     }
-
+    
     /**
      * session 垃圾回收概率分子 (分母为 session.gc_divisor)
      *
@@ -708,7 +712,7 @@ class session implements isession
         }
         return $nReturn;
     }
-
+    
     /**
      * 返回 session 名字
      *
@@ -719,7 +723,7 @@ class session implements isession
     {
         return $this->getOption('prefix') . $sName;
     }
-
+    
     /**
      * session 是否已经启动
      *
@@ -729,7 +733,7 @@ class session implements isession
     {
         return isset($_SESSION);
     }
-
+    
     /**
      * 验证 session 是否开启
      *
@@ -741,7 +745,7 @@ class session implements isession
             throw new RuntimeException('Session is not start yet');
         }
     }
-
+    
     /**
      * 弹出旧闪存 KEY
      *
@@ -752,7 +756,7 @@ class session implements isession
     {
         $this->pop($this->flashOldKey(), $arrKey);
     }
-
+    
     /**
      * 合并旧闪存 KEY
      *
@@ -763,7 +767,7 @@ class session implements isession
     {
         $this->merge($this->flashOldKey(), $arrKey);
     }
-
+    
     /**
      * 弹出新闪存 KEY
      *
@@ -774,7 +778,7 @@ class session implements isession
     {
         $this->pop($this->flashNewKey(), $arrKey);
     }
-
+    
     /**
      * 合并新闪存 KEY
      *
@@ -785,7 +789,7 @@ class session implements isession
     {
         $this->merge($this->flashNewKey(), $arrKey);
     }
-
+    
     /**
      * 返回部分闪存数据
      *
@@ -797,21 +801,21 @@ class session implements isession
     {
         list($strKey, $strName) = explode('\\', $strKey);
         $mixValue = $this->get($this->flashDataKey($strKey));
-
+        
         if (is_array($mixValue)) {
             $arrParts = explode('.', $strName);
             foreach ($arrParts as $sPart) {
-                if (! isset($mixValue [$sPart])) {
+                if (! isset($mixValue[$sPart])) {
                     return $mixDefault;
                 }
-                $mixValue = &$mixValue [$sPart];
+                $mixValue = &$mixValue[$sPart];
             }
             return $mixValue;
         } else {
             return $mixDefault;
         }
     }
-
+    
     /**
      * 闪存值 KEY
      *
@@ -822,7 +826,7 @@ class session implements isession
     {
         return 'flash.data.' . $strKey;
     }
-
+    
     /**
      * 新值闪存 KEY
      *
@@ -832,7 +836,7 @@ class session implements isession
     {
         return 'flash.new.key';
     }
-
+    
     /**
      * 旧值闪存 KEY
      *
@@ -842,7 +846,7 @@ class session implements isession
     {
         return 'flash.old.key';
     }
-
+    
     /**
      * 前一个页面 KEY
      *
@@ -852,7 +856,7 @@ class session implements isession
     {
         return 'prev.url.key';
     }
-
+    
     /**
      * 缺省方法
      *

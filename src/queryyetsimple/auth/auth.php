@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ *
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\auth;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 /**
  * auth 仓储
@@ -25,14 +29,14 @@ queryphp;
  */
 class auth implements iauth
 {
-
+    
     /**
      * auth 连接对象
      *
      * @var \queryyetsimple\database\iconnect
      */
     protected $objConnect;
-
+    
     /**
      * 构造函数
      *
@@ -43,7 +47,7 @@ class auth implements iauth
     {
         $this->objConnect = $objConnect;
     }
-
+    
     /**
      * 拦截匿名注册控制器方法
      *
@@ -54,8 +58,8 @@ class auth implements iauth
     public function __call($sMethod, $arrArgs)
     {
         return call_user_func_array([
-                $this->objConnect,
-                $sMethod
+            $this->objConnect, 
+            $sMethod
         ], $arrArgs);
     }
 }

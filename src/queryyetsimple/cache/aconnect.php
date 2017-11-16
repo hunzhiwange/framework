@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\cache;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 /**
  * 缓存抽象类
@@ -25,14 +29,14 @@ queryphp;
  */
 abstract class aconnect
 {
-
+    
     /**
      * 缓存服务句柄
      *
      * @var handle
      */
     protected $hHandle;
-
+    
     /**
      * 构造函数
      *
@@ -43,7 +47,7 @@ abstract class aconnect
     {
         $this->options($arrOption);
     }
-
+    
     /**
      * 批量插入
      *
@@ -55,15 +59,15 @@ abstract class aconnect
     {
         if (! is_array($mixKey)) {
             $mixKey = [
-                    $mixKey => $mixValue
+                $mixKey => $mixValue
             ];
         }
-
+        
         foreach ($mixKey as $strKey => $mixValue) {
             $this->set($strKey, $mixValue);
         }
     }
-
+    
     /**
      * 返回缓存句柄
      *
@@ -73,7 +77,7 @@ abstract class aconnect
     {
         return $this->hHandle;
     }
-
+    
     /**
      * 关闭
      *
@@ -82,7 +86,7 @@ abstract class aconnect
     public function close()
     {
     }
-
+    
     /**
      * 获取缓存名字
      *
@@ -94,7 +98,7 @@ abstract class aconnect
     {
         return $strPrefix . $sCacheName;
     }
-
+    
     /**
      * 读取缓存时间配置
      *
@@ -104,24 +108,24 @@ abstract class aconnect
      */
     protected function cacheTime($sId, $intDefaultTime = 0)
     {
-        if (! $this->arrOption ['time_preset']) {
+        if (! $this->arrOption['time_preset']) {
             return $intDefaultTime;
         }
-
-        if (isset($this->arrOption ['time_preset'] [$sId])) {
-            return $this->arrOption ['time_preset'] [$sId];
+        
+        if (isset($this->arrOption['time_preset'][$sId])) {
+            return $this->arrOption['time_preset'][$sId];
         }
-
-        foreach ($this->arrOption ['time_preset'] as $sKey => $nValue) {
+        
+        foreach ($this->arrOption['time_preset'] as $sKey => $nValue) {
             $sKeyCache = '/^' . str_replace('*', '(\S+)', $sKey) . '$/';
             if (preg_match($sKeyCache, $sId, $arrRes)) {
-                return $this->arrOption ['time_preset'] [$sKey];
+                return $this->arrOption['time_preset'][$sKey];
             }
         }
-
+        
         return $intDefaultTime;
     }
-
+    
     /**
      * 强制不启用缓存
      *
@@ -129,7 +133,7 @@ abstract class aconnect
      */
     protected function checkForce()
     {
-        if (! empty($_REQUEST [$this->getOption('nocache_force')])) {
+        if (! empty($_REQUEST[$this->getOption('nocache_force')])) {
             return true;
         }
         return false;

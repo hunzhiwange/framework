@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use ReflectionClass;
 use ReflectionProperty;
@@ -28,7 +32,7 @@ use ReflectionProperty;
  */
 trait serialize
 {
-
+    
     /**
      * 序列化模型
      *
@@ -37,16 +41,17 @@ trait serialize
     public function __sleep()
     {
         $arrProps = (new ReflectionClass($this))->getProperties();
-
+        
         foreach ($arrProps as $oProp) {
             $oProp->setValue($this, $this->setAndReturnSerializeProp($this->getPropertySource($oProp), $oProp->getName()));
         }
-
-        return $this->setAndReturnSerializeFilter(array_map(function ($oProp) {
+        
+        return $this->setAndReturnSerializeFilter(array_map(function ($oProp)
+        {
             return $oProp->getName();
         }, $arrProps));
     }
-
+    
     /**
      * 反序列化模型
      *
@@ -58,7 +63,7 @@ trait serialize
             $oProp->setValue($this, $this->getSerializeProp($this->getPropertySource($oProp), $oProp->getName()));
         }
     }
-
+    
     /**
      * 设置序列化的属性
      *
@@ -72,7 +77,7 @@ trait serialize
         }
         return $arrProp;
     }
-
+    
     /**
      * 设置序列化的值并返回
      *
@@ -87,7 +92,7 @@ trait serialize
         }
         return $mixValue;
     }
-
+    
     /**
      * 返回序列化的值
      *
@@ -102,7 +107,7 @@ trait serialize
         }
         return $mixValue;
     }
-
+    
     /**
      * 取得属性值
      *

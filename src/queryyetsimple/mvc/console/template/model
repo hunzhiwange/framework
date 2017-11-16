@@ -5,6 +5,7 @@ namespace {{namespace}}\domain\model;
 use queryyetsimple\mvc\model;
 
 {{file_comment}}
-class {{file_name}} extends model {
+class {{file_name}} extends model 
+{
 
 }

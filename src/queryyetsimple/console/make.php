@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\console;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 use queryyetsimple\filesystem\fso;
@@ -29,49 +33,49 @@ use queryyetsimple\console\command;
  */
 abstract class make extends command
 {
-
+    
     /**
      * 创建类型
      *
      * @var string
      */
     protected $strMakeType;
-
+    
     /**
      * 文件保存路径
      *
      * @var string
      */
     protected $strSaveFilePath;
-
+    
     /**
      * 模板路径
      *
      * @var string
      */
     protected $strTemplatePath;
-
+    
     /**
      * 模板源码
      *
      * @var string
      */
     protected $strTemplateSource;
-
+    
     /**
      * 保存的模板结果
      *
      * @var string
      */
     protected $strTemplateResult;
-
+    
     /**
      * 自定义替换
      *
      * @var array
      */
-    protected $arrCustomReplaceKeyValue = [ ];
-
+    protected $arrCustomReplaceKeyValue = [];
+    
     /**
      * 响应命令
      *
@@ -81,15 +85,15 @@ abstract class make extends command
     {
         // 替换模板变量
         $this->replaceTemplateSource();
-
+        
         // 保存文件
         $this->saveTemplateResult();
-
+        
         // 保存成功输出消息
         $this->info(sprintf('%s <%s> created successfully.', $this->getMakeType(), $this->argument('name')));
         $this->comment($this->formatFile($this->getSaveFilePath()));
     }
-
+    
     /**
      * 替换模板变量
      *
@@ -99,15 +103,15 @@ abstract class make extends command
     {
         // 解析模板源码
         $this->parseTemplateSource();
-
+        
         // 获取替换变量
         $arrSourceAndReplace = $this->parseSourceAndReplace();
-
+        
         // 执行替换
-        $strTemplateSource = str_replace($arrSourceAndReplace [0], $arrSourceAndReplace [1], $this->getTemplateSource()); // 第一替换基本变量
-        $this->strTemplateResult = str_replace($arrSourceAndReplace [0], $arrSourceAndReplace [1], $strTemplateSource); // 第一替换基本变量中的变量
+        $strTemplateSource = str_replace($arrSourceAndReplace[0], $arrSourceAndReplace[1], $this->getTemplateSource()); // 第一替换基本变量
+        $this->strTemplateResult = str_replace($arrSourceAndReplace[0], $arrSourceAndReplace[1], $strTemplateSource); // 第一替换基本变量中的变量
     }
-
+    
     /**
      * 保存模板
      *
@@ -126,7 +130,7 @@ abstract class make extends command
             throw new RuntimeException('Can not write file.' . PHP_EOL . $this->formatFile($this->getSaveFilePath()));
         }
     }
-
+    
     /**
      * 获取模板编译结果
      *
@@ -136,7 +140,7 @@ abstract class make extends command
     {
         return $this->strTemplateResult;
     }
-
+    
     /**
      * 分析模板源码
      *
@@ -150,7 +154,7 @@ abstract class make extends command
         }
         $this->strTemplateSource = file_get_contents($strTemplateSource);
     }
-
+    
     /**
      * 获取模板源码
      *
@@ -160,7 +164,7 @@ abstract class make extends command
     {
         return $this->strTemplateSource;
     }
-
+    
     /**
      * 分析变量替换
      *
@@ -169,16 +173,17 @@ abstract class make extends command
     protected function parseSourceAndReplace()
     {
         $arrReplaceKeyValue = array_merge(option('console\template'), $this->getDefaultReplaceKeyValue());
-        $arrSourceKey = array_map(function ($strItem) {
+        $arrSourceKey = array_map(function ($strItem)
+        {
             return '{{' . $strItem . '}}';
         }, array_keys($arrReplaceKeyValue));
         $arrReplace = array_values($arrReplaceKeyValue);
         return [
-                $arrSourceKey,
-                $arrReplace
+            $arrSourceKey, 
+            $arrReplace
         ];
     }
-
+    
     /**
      * 取得系统的替换变量
      *
@@ -187,12 +192,12 @@ abstract class make extends command
     protected function getDefaultReplaceKeyValue()
     {
         return array_merge([
-                'namespace' => $this->getNamespace(),
-                'file_name' => $this->argument('name'),
-                'date_y' => date('Y')
+            'namespace' => $this->getNamespace(), 
+            'file_name' => $this->argument('name'), 
+            'date_y' => date('Y')
         ], $this->getCustomReplaceKeyValue()); // 日期年
     }
-
+    
     /**
      * 设置文件保存路径
      *
@@ -203,7 +208,7 @@ abstract class make extends command
     {
         $this->strSaveFilePath = $strSaveFilePath;
     }
-
+    
     /**
      * 读取文件保存路径
      *
@@ -213,7 +218,7 @@ abstract class make extends command
     {
         return $this->strSaveFilePath;
     }
-
+    
     /**
      * 获取命名空间路径
      *
@@ -226,7 +231,7 @@ abstract class make extends command
         }
         return $strNamespacePath;
     }
-
+    
     /**
      * 分析命名空间
      *
@@ -240,7 +245,7 @@ abstract class make extends command
         }
         $this->setNamespace($strNamespace);
     }
-
+    
     /**
      * 设置命名空间
      *
@@ -251,7 +256,7 @@ abstract class make extends command
     {
         $this->strNamespace = $strNamespace;
     }
-
+    
     /**
      * 读取命名空间
      *
@@ -261,7 +266,7 @@ abstract class make extends command
     {
         return $this->strNamespace;
     }
-
+    
     /**
      * 设置创建类型
      *
@@ -272,7 +277,7 @@ abstract class make extends command
     {
         $this->strMakeType = $strMakeType;
     }
-
+    
     /**
      * 读取创建类型
      *
@@ -282,7 +287,7 @@ abstract class make extends command
     {
         return $this->strMakeType;
     }
-
+    
     /**
      * 设置模板文件路径
      *
@@ -293,7 +298,7 @@ abstract class make extends command
     {
         $this->strTemplatePath = $strTemplatePath;
     }
-
+    
     /**
      * 读取模板文件路径
      *
@@ -303,7 +308,7 @@ abstract class make extends command
     {
         return $this->strTemplatePath;
     }
-
+    
     /**
      * 设置自定义变量替换
      *
@@ -316,10 +321,10 @@ abstract class make extends command
         if (is_array($mixKey)) {
             $this->arrCustomReplaceKeyValue = array_merge($this->arrCustomReplaceKeyValue, $mixKey);
         } else {
-            $this->arrCustomReplaceKeyValue [$mixKey] = $strValue;
+            $this->arrCustomReplaceKeyValue[$mixKey] = $strValue;
         }
     }
-
+    
     /**
      * 读取自定义变量替换
      *
@@ -330,7 +335,7 @@ abstract class make extends command
     {
         return $this->arrCustomReplaceKeyValue;
     }
-
+    
     /**
      * 格式化文件路径
      *

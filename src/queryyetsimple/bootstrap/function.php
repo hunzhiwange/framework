@@ -1,18 +1,22 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
-
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 use queryyetsimple\log\ilog;
 use queryyetsimple\bootstrap\project;
 
@@ -74,8 +78,8 @@ if (! function_exists('dumps')) {
     function dumps($mixValue)
     {
         return call_user_func_array([
-                'queryyetsimple\support\debug\dump',
-                'dump'
+            'queryyetsimple\support\debug\dump', 
+            'dump'
         ], func_get_args());
     }
 }
@@ -92,10 +96,10 @@ if (! function_exists('env')) {
     {
         switch (true) {
             case array_key_exists($strName, $_ENV):
-                $strName = $_ENV [$strName];
+                $strName = $_ENV[$strName];
                 break;
             case array_key_exists($strName, $_SERVER):
-                $strName = $_SERVER [$strName];
+                $strName = $_SERVER[$strName];
                 break;
             default:
                 $strName = getenv($strName);
@@ -103,29 +107,29 @@ if (! function_exists('env')) {
                     $strName = value($mixDefault);
                 }
         }
-
+        
         switch (strtolower($strName)) {
             case 'true':
             case '(true)':
                 return true;
-
+            
             case 'false':
             case '(false)':
                 return false;
-
+            
             case 'empty':
             case '(empty)':
                 return '';
-
+            
             case 'null':
             case '(null)':
                 return;
         }
-
-        if (strlen($strName) > 1 && $strName [0] == '"' && $strName [strlen($strName) - 1] == '"') {
+        
+        if (strlen($strName) > 1 && $strName[0] == '"' && $strName[strlen($strName) - 1] == '"') {
             return substr($strName, 1, - 1);
         }
-
+        
         return $strName;
     }
 }
@@ -169,11 +173,11 @@ if (! function_exists('session')) {
         if (is_null($mixKey)) {
             return project('session');
         }
-
+        
         if (is_array($mixKey)) {
             return project('session')->put($mixKey);
         }
-
+        
         return project('session')->get($mixKey, $mixDefault);
     }
 }
@@ -209,7 +213,7 @@ if (! function_exists('url')) {
         if (is_null($sUrl)) {
             return project('router');
         }
-
+        
         return project('router')->url($sUrl, $arrParams, $arrOption);
     }
 }
@@ -236,8 +240,8 @@ if (! function_exists('__')) {
     function __($sValue)
     {
         return call_user_func_array([
-                project('i18n'),
-                'getText'
+            project('i18n'), 
+            'getText'
         ], func_get_args());
     }
 }
@@ -282,7 +286,7 @@ if (! function_exists('log')) {
      */
     function log($strLevel, $mixMessage, array $arrContext = [], $booWrite = false)
     {
-        project('log')->{$booWrite ? 'write' : 'log'} ($strLevel, $mixMessage, $arrContext);
+        project('log')->{$booWrite ? 'write' : 'log'}($strLevel, $mixMessage, $arrContext);
     }
 }
 
@@ -419,11 +423,11 @@ if (! function_exists('option')) {
         if (is_null($mixKey)) {
             return project('option');
         }
-
+        
         if (is_array($mixKey)) {
             return project('option')->set($mixKey);
         }
-
+        
         return project('option')->get($mixKey, $mixDefault);
     }
 }
@@ -441,11 +445,11 @@ if (! function_exists('cache')) {
         if (is_null($mixKey)) {
             return project('cache');
         }
-
+        
         if (is_array($mixKey)) {
             return project('cache')->put($mixKey);
         }
-
+        
         return project('cache')->get($mixKey, $mixDefault);
     }
 }

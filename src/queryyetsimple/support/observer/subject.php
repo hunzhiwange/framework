@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support\observer;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use SplSubject;
 use SplObserver;
@@ -31,21 +35,21 @@ use queryyetsimple\support\icontainer;
  */
 abstract class subject implements SplSubject, isubject
 {
-
+    
     /**
      * 容器
      *
      * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
-
+    
     /**
      * 观察者角色 observer
      *
      * @var \SplObjectStorage(\SplObserver)
      */
     protected $objObservers;
-
+    
     /**
      * 构造函数
      *
@@ -57,7 +61,7 @@ abstract class subject implements SplSubject, isubject
         $this->objObservers = new SplObjectStorage();
         $this->objContainer = $objContainer;
     }
-
+    
     /**
      * (non-PHPdoc)
      *
@@ -67,7 +71,7 @@ abstract class subject implements SplSubject, isubject
     {
         $this->objObservers->attach($objObserver);
     }
-
+    
     /**
      * (non-PHPdoc)
      *
@@ -77,7 +81,7 @@ abstract class subject implements SplSubject, isubject
     {
         $this->objObservers->detach($objObserver);
     }
-
+    
     /**
      * (non-PHPdoc)
      *
@@ -87,16 +91,16 @@ abstract class subject implements SplSubject, isubject
     {
         $arrArgs = func_get_args();
         array_unshift($arrArgs, $this);
-
+        
         foreach ($this->objObservers as $objObserver) {
             call_user_func_array([
-                    $objObserver,
-                    'update'
+                $objObserver, 
+                'update'
             ], $arrArgs);
         }
         unset($arrArgs);
     }
-
+    
     /**
      * 添加一个观察者角色
      *
@@ -107,12 +111,12 @@ abstract class subject implements SplSubject, isubject
     {
         if (is_string($mixObserver)) {
             $strObserver = $mixObserver;
-
+            
             if (($mixObserver = $this->objContainer->make($mixObserver)) === false) {
                 throw new InvalidArgumentException(sprintf('Observer %s is not valid.', $strObserver));
             }
         }
-
+        
         if ($mixObserver instanceof SplObserver) {
             $this->objObservers->attach($mixObserver);
         } else {

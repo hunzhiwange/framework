@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Closure;
 use ReflectionFunction;
@@ -29,14 +33,14 @@ use BadMethodCallException;
  */
 trait infinity
 {
-
+    
     /**
      * 注册的动态扩展
      *
      * @var array
      */
-    protected static $arrInfinity = [ ];
-
+    protected static $arrInfinity = [];
+    
     /**
      * 注册一个扩展
      *
@@ -46,9 +50,9 @@ trait infinity
      */
     public static function infinity($strName, callable $calInfinity)
     {
-        static::$arrInfinity [$strName] = $calInfinity;
+        static::$arrInfinity[$strName] = $calInfinity;
     }
-
+    
     /**
      * 判断一个扩展是否注册
      *
@@ -57,9 +61,9 @@ trait infinity
      */
     public static function hasInfinity($strName)
     {
-        return isset(static::$arrInfinity [$strName]);
+        return isset(static::$arrInfinity[$strName]);
     }
-
+    
     /**
      * 缺省静态方法
      *
@@ -71,16 +75,16 @@ trait infinity
     {
         // 第一步：判断是否存在已经注册的命名
         if (static::hasInfinity($sMethod)) {
-            if (static::$arrInfinity [$sMethod] instanceof Closure) {
-                return call_user_func_array(Closure::bind(static::$arrInfinity [$sMethod], null, get_called_class()), $arrArgs);
+            if (static::$arrInfinity[$sMethod] instanceof Closure) {
+                return call_user_func_array(Closure::bind(static::$arrInfinity[$sMethod], null, get_called_class()), $arrArgs);
             } else {
-                return call_user_func_array(static::$arrInfinity [$sMethod], $arrArgs);
+                return call_user_func_array(static::$arrInfinity[$sMethod], $arrArgs);
             }
         }
-
+        
         throw new BadMethodCallException(sprintf('Method %s is not exits.', $sMethod));
     }
-
+    
     /**
      * 缺省方法
      *
@@ -91,14 +95,14 @@ trait infinity
     public function __call($sMethod, $arrArgs)
     {
         if (static::hasInfinity($sMethod)) {
-            if (static::$arrInfinity [$sMethod] instanceof Closure) {
-                $objReflection = new ReflectionFunction(static::$arrInfinity [$sMethod]);
-                return call_user_func_array(Closure::bind(static::$arrInfinity [$sMethod], $objReflection->getClosureThis() ? $this : null, get_class($this)), $arrArgs);
+            if (static::$arrInfinity[$sMethod] instanceof Closure) {
+                $objReflection = new ReflectionFunction(static::$arrInfinity[$sMethod]);
+                return call_user_func_array(Closure::bind(static::$arrInfinity[$sMethod], $objReflection->getClosureThis() ? $this : null, get_class($this)), $arrArgs);
             } else {
-                return call_user_func_array(static::$arrInfinity [$sMethod], $arrArgs);
+                return call_user_func_array(static::$arrInfinity[$sMethod], $arrArgs);
             }
         }
-
+        
         throw new BadMethodCallException(sprintf('Method %s is not exits.', $sMethod));
     }
 }

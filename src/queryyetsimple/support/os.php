@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 /**
  * 操作系统类
@@ -23,14 +27,16 @@ queryphp;
  * @since 2017.05.05
  * @version 1.0
  */
-class os {
+class os
+{
     
     /**
      * 是否为 window 平台
      *
      * @return boolean
      */
-    public static function isWindows() {
+    public static function isWindows()
+    {
         return DIRECTORY_SEPARATOR === '\\';
     }
     
@@ -39,7 +45,8 @@ class os {
      *
      * @return boolean
      */
-    static public function isLinux() {
+    static public function isLinux()
+    {
         return PHP_OS === 'Linux';
     }
     
@@ -48,8 +55,9 @@ class os {
      *
      * @return boolean
      */
-    public static function isMac() {
-        return strstr ( PHP_OS, 'Darwin' );
+    public static function isMac()
+    {
+        return strstr(PHP_OS, 'Darwin');
     }
     
     /**
@@ -57,7 +65,8 @@ class os {
      *
      * @return string
      */
-    public static function osName() {
+    public static function osName()
+    {
         return PHP_OS;
     }
     
@@ -66,7 +75,8 @@ class os {
      *
      * @return string
      */
-    public static function osNewline() {
+    public static function osNewline()
+    {
         return PHP_EOL;
     }
 }

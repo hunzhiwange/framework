@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\bootstrap\validate;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use queryyetsimple\http\response;
 use queryyetsimple\session\isession;
@@ -31,7 +35,7 @@ use queryyetsimple\http\request as http_request;
  */
 trait request
 {
-
+    
     /**
      * 验证请求
      *
@@ -43,12 +47,12 @@ trait request
     public function validate(http_request $oRequest, array $arrRule, array $arrMessage = [])
     {
         $oValidate = $this->getValidateComponent()->make($oRequest->allAll(), $arrRule, $arrMessage);
-
+        
         if ($oValidate->fail()) {
             return $this->throwValidateException($oRequest, $oValidate);
         }
     }
-
+    
     /**
      * 验证失败异常
      *
@@ -60,7 +64,7 @@ trait request
     {
         throw new validate_failed($oValidate, $this->validationResponse($oRequest, $this->validationErrors($oValidate)));
     }
-
+    
     /**
      * 错误验证响应
      *
@@ -73,12 +77,12 @@ trait request
         if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
             return $this->getResponseComponent()/*->code ( 422 )*/->api($arrErrors);
         }
-
+        
         return $this->getResponseComponent()->redirect($this->getRedirectUrl($oRequest), [
-                'make' => false
+            'make' => false
         ])->clearErrors()->withErrors($arrErrors)->withInputs($oRequest->allAll());
     }
-
+    
     /**
      * 返回错误消息
      *
@@ -89,7 +93,7 @@ trait request
     {
         return $oValidate->error();
     }
-
+    
     /**
      * 返回前一个页面
      *
@@ -100,7 +104,7 @@ trait request
     {
         return $oRequest->header('referer') ?  : $this->getSessionPrevUrl();
     }
-
+    
     /**
      * 返回 session 前一个页面
      *
@@ -110,7 +114,7 @@ trait request
     {
         return $this->getSessionComponent()->prevUrl();
     }
-
+    
     /**
      * 返回 validate 组件
      *
@@ -120,7 +124,7 @@ trait request
     {
         return project(ivalidate::class);
     }
-
+    
     /**
      * 返回 session 组件
      *

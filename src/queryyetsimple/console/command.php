@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\console;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -38,69 +42,69 @@ use Symfony\Component\Console\Command\Command as SymfonyCommand;
  */
 abstract class command extends SymfonyCommand
 {
-
+    
     /**
      * 项目容器
      *
      * @var \queryyetsimple\bootstrap\project
      */
     protected $objProject;
-
+    
     /**
      * 命令名字
      *
      * @var string
      */
     protected $strName;
-
+    
     /**
      * 命令行描述
      *
      * @var string
      */
     protected $strDescription;
-
+    
     /**
      * 命令帮助
      *
      * @var string
      */
     protected $strHelp = '';
-
+    
     /**
      * 输出映射
      *
      * @var array
      */
     protected static $arrVerbosityMap = [
-            'v' => OutputInterface::VERBOSITY_VERBOSE,
-            'vv' => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            'vvv' => OutputInterface::VERBOSITY_DEBUG,
-            'quiet' => OutputInterface::VERBOSITY_QUIET,
-            'normal' => OutputInterface::VERBOSITY_NORMAL
+        'v' => OutputInterface::VERBOSITY_VERBOSE, 
+        'vv' => OutputInterface::VERBOSITY_VERY_VERBOSE, 
+        'vvv' => OutputInterface::VERBOSITY_DEBUG, 
+        'quiet' => OutputInterface::VERBOSITY_QUIET, 
+        'normal' => OutputInterface::VERBOSITY_NORMAL
     ];
-
+    
     /**
      * 默认输出映射
      *
      * @var int
      */
     protected $intVerbosity = OutputInterface::VERBOSITY_NORMAL;
-
+    
     /**
      * 输入接口
      *
      * @var object
      */
     protected $objInput;
-
+    
     /**
      * 输入接口
      *
      * @var object
      */
     protected $objOutput;
-
+    
     /**
      * 构造函数
      *
@@ -113,7 +117,7 @@ abstract class command extends SymfonyCommand
         $this->setHelp($this->getHelps());
         $this->specifyParameters();
     }
-
+    
     /**
      * 运行命令
      *
@@ -127,7 +131,7 @@ abstract class command extends SymfonyCommand
         $this->objOutput = new SymfonyStyle($input, $output);
         return parent::run($input, $output);
     }
-
+    
     /**
      * 响应命令
      *
@@ -138,11 +142,11 @@ abstract class command extends SymfonyCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         return $this->objProject->call([
-                $this,
-                'handle'
+            $this, 
+            'handle'
         ]);
     }
-
+    
     /**
      * 调用其他命令
      *
@@ -152,10 +156,10 @@ abstract class command extends SymfonyCommand
      */
     public function call($strCommand, array $arrArguments = [])
     {
-        $arrArguments ['command'] = $strCommand;
+        $arrArguments['command'] = $strCommand;
         return $this->objProject->make('command_' . $strCommand)->run(new ArrayInput($arrArguments), $this->objOutput);
     }
-
+    
     /**
      * 获取输入参数
      *
@@ -169,7 +173,7 @@ abstract class command extends SymfonyCommand
         }
         return $this->objInput->getArgument($strKey);
     }
-
+    
     /**
      * 获取配置信息
      *
@@ -183,7 +187,7 @@ abstract class command extends SymfonyCommand
         }
         return $this->objInput->getOption($strKey);
     }
-
+    
     /**
      * 确认用户的问题
      *
@@ -195,7 +199,7 @@ abstract class command extends SymfonyCommand
     {
         return $this->objOutput->confirm($strQuestion, $booDefault);
     }
-
+    
     /**
      * 提示用户输入
      *
@@ -207,7 +211,7 @@ abstract class command extends SymfonyCommand
     {
         return $this->objOutput->ask($strQuestion, $booDefault);
     }
-
+    
     /**
      * 输出一个表格文本
      *
@@ -221,7 +225,7 @@ abstract class command extends SymfonyCommand
         $objTable = new Table($this->objOutput);
         $objTable->setHeaders($arrHeaders)->setRows($arrRows)->setStyle($strStyle)->render();
     }
-
+    
     /**
      * 输出一个一般信息
      *
@@ -233,7 +237,7 @@ abstract class command extends SymfonyCommand
     {
         $this->line($strMessage, 'info', $intVerbosity);
     }
-
+    
     /**
      * 返回一个带有时间的消息
      *
@@ -245,7 +249,7 @@ abstract class command extends SymfonyCommand
     {
         return sprintf('[%s]', date($strFormat)) . $strMessage;
     }
-
+    
     /**
      * 输出一个注释信息
      *
@@ -257,7 +261,7 @@ abstract class command extends SymfonyCommand
     {
         $this->line($strMessage, 'comment', $intVerbosity);
     }
-
+    
     /**
      * 输出一个问题信息
      *
@@ -269,7 +273,7 @@ abstract class command extends SymfonyCommand
     {
         $this->line($strMessage, 'question', $intVerbosity);
     }
-
+    
     /**
      * 提示用户输入根据返回结果自动完成一些功能
      *
@@ -284,7 +288,7 @@ abstract class command extends SymfonyCommand
         $strQuestion->setAutocompleterValues($arrChoices);
         return $this->objOutput->askQuestion($strQuestion);
     }
-
+    
     /**
      * 提示用户输入但是控制台隐藏答案
      *
@@ -298,7 +302,7 @@ abstract class command extends SymfonyCommand
         $strQuestion->setHidden(true)->setHiddenFallback($booFallback);
         return $this->objOutput->askQuestion($strQuestion);
     }
-
+    
     /**
      * 给用户一个问题组选择
      *
@@ -315,7 +319,7 @@ abstract class command extends SymfonyCommand
         $strQuestion->setMaxAttempts($mixAttempts)->setMultiselect($booMultiple);
         return $this->objOutput->askQuestion($strQuestion);
     }
-
+    
     /**
      * 输出一个错误信息
      *
@@ -327,7 +331,7 @@ abstract class command extends SymfonyCommand
     {
         $this->line($strMessage, 'error', $intVerbosity);
     }
-
+    
     /**
      * 输出一个警告信息
      *
@@ -342,7 +346,7 @@ abstract class command extends SymfonyCommand
         }
         $this->line($strMessage, 'warning', $intVerbosity);
     }
-
+    
     /**
      * 输出一条独立的信息
      *
@@ -356,7 +360,7 @@ abstract class command extends SymfonyCommand
         $strMessage = $strStyle ? "<{$strStyle}>{$strMessage}</{$strStyle}>" : $strMessage;
         $this->objOutput->writeln($strMessage, $this->parseVerbosity($intVerbosity));
     }
-
+    
     /**
      * 获取输入对象
      *
@@ -366,7 +370,7 @@ abstract class command extends SymfonyCommand
     {
         return $this->objOutput;
     }
-
+    
     /**
      * 设置或者返回服务容器
      *
@@ -382,7 +386,7 @@ abstract class command extends SymfonyCommand
             return $this;
         }
     }
-
+    
     /**
      * 命令参数
      *
@@ -390,9 +394,9 @@ abstract class command extends SymfonyCommand
      */
     protected function getArguments()
     {
-        return [ ];
+        return [];
     }
-
+    
     /**
      * 命令配置
      *
@@ -400,9 +404,9 @@ abstract class command extends SymfonyCommand
      */
     protected function getOptions()
     {
-        return [ ];
+        return [];
     }
-
+    
     /**
      * 设置默认输出级别
      *
@@ -413,7 +417,7 @@ abstract class command extends SymfonyCommand
     {
         $this->intVerbosity = $this->parseVerbosity($mixLevel);
     }
-
+    
     /**
      * 定义参数和配置
      *
@@ -423,19 +427,19 @@ abstract class command extends SymfonyCommand
     {
         foreach ($this->getArguments() as $arrArgument) {
             call_user_func_array([
-                    $this,
-                    'addArgument'
+                $this, 
+                'addArgument'
             ], $arrArgument);
         }
-
+        
         foreach ($this->getOptions() as $arrOption) {
             call_user_func_array([
-                    $this,
-                    'addOption'
+                $this, 
+                'addOption'
             ], $arrOption);
         }
     }
-
+    
     /**
      * 获取输入信息级别
      *
@@ -444,14 +448,14 @@ abstract class command extends SymfonyCommand
      */
     protected function parseVerbosity($mixLevel = null)
     {
-        if (isset(static::$arrVerbosityMap [$mixLevel])) {
-            $mixLevel = static::$arrVerbosityMap [$mixLevel];
+        if (isset(static::$arrVerbosityMap[$mixLevel])) {
+            $mixLevel = static::$arrVerbosityMap[$mixLevel];
         } elseif (! is_int($mixLevel)) {
             $mixLevel = $this->intVerbosity;
         }
         return $mixLevel;
     }
-
+    
     /**
      * 返回命令名字
      *
@@ -461,7 +465,7 @@ abstract class command extends SymfonyCommand
     {
         return $this->strName;
     }
-
+    
     /**
      * 返回命令描述
      *
@@ -471,7 +475,7 @@ abstract class command extends SymfonyCommand
     {
         return $this->strDescription;
     }
-
+    
     /**
      * 返回命令帮助
      *

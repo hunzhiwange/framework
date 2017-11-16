@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\mvc;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Exception;
 
@@ -27,21 +31,21 @@ use Exception;
  */
 class repository implements irepository
 {
-
+    
     /**
      * 工作单元
      *
      * @var \queryyetsimple\mvc\iunit_of_work
      */
     protected $objUnitOfWork;
-
+    
     /**
      * 聚合根
      *
      * @var \queryyetsimple\mvc\iaggregate_root
      */
     protected $objAggregate;
-
+    
     /**
      * 构造函数
      *
@@ -53,7 +57,7 @@ class repository implements irepository
         $this->setAggregate($objAggregate);
         $this->createUnitOfWork();
     }
-
+    
     /**
      * 取得一条数据
      *
@@ -65,7 +69,7 @@ class repository implements irepository
     {
         return $this->objAggregate->find($intId, $arrColumn);
     }
-
+    
     /**
      * 取得一条数据，未找到记录抛出异常
      *
@@ -77,7 +81,7 @@ class repository implements irepository
     {
         return $this->objAggregate->findOrFail($intId, $arrColumn);
     }
-
+    
     /**
      * 取得所有记录
      *
@@ -87,14 +91,14 @@ class repository implements irepository
     public function count($mixSpecification = null)
     {
         $objSelect = $this->objAggregate->selfQuerySelect();
-
+        
         if (is_callable($mixSpecification)) {
             call_user_func($mixSpecification, $objSelect);
         }
-
+        
         return $objSelect->getCount();
     }
-
+    
     /**
      * 取得所有记录
      *
@@ -104,14 +108,14 @@ class repository implements irepository
     public function all($mixSpecification = null)
     {
         $objSelect = $this->objAggregate->selfQuerySelect();
-
+        
         if (is_callable($mixSpecification)) {
             call_user_func($mixSpecification, $objSelect);
         }
-
+        
         return $objSelect->getAll();
     }
-
+    
     /**
      * 保存数据
      *
@@ -122,7 +126,7 @@ class repository implements irepository
     {
         return $this->handleCreate($objEntity);
     }
-
+    
     /**
      * 更新数据
      *
@@ -133,7 +137,7 @@ class repository implements irepository
     {
         return $this->handleUpdate($objEntity);
     }
-
+    
     /**
      * 删除数据
      *
@@ -144,7 +148,7 @@ class repository implements irepository
     {
         return $this->handleDelete($objEntity);
     }
-
+    
     /**
      * 注册保存数据
      *
@@ -156,7 +160,7 @@ class repository implements irepository
         $this->checkUnitOfWork();
         return $this->objUnitOfWork->registerCreate($objEntity, $this);
     }
-
+    
     /**
      * 注册更新数据
      *
@@ -168,7 +172,7 @@ class repository implements irepository
         $this->checkUnitOfWork();
         return $this->objUnitOfWork->registerUpdate($objEntity, $this);
     }
-
+    
     /**
      * 注册删除数据
      *
@@ -180,7 +184,7 @@ class repository implements irepository
         $this->checkUnitOfWork();
         return $this->objUnitOfWork->registerDelete($objEntity, $this);
     }
-
+    
     /**
      * 响应新建
      *
@@ -191,7 +195,7 @@ class repository implements irepository
     {
         return $objEntity->create();
     }
-
+    
     /**
      * 响应修改
      *
@@ -202,7 +206,7 @@ class repository implements irepository
     {
         return $objEntity->update();
     }
-
+    
     /**
      * 响应删除
      *
@@ -213,7 +217,7 @@ class repository implements irepository
     {
         return $objEntity->delete();
     }
-
+    
     /**
      * 启动事物
      *
@@ -223,7 +227,7 @@ class repository implements irepository
     {
         $this->databaseConnect()->beginTransaction();
     }
-
+    
     /**
      * 事务回滚
      *
@@ -233,7 +237,7 @@ class repository implements irepository
     {
         $this->databaseConnect()->rollback();
     }
-
+    
     /**
      * 事务自动提交
      *
@@ -243,7 +247,7 @@ class repository implements irepository
     {
         $this->databaseConnect()->commit();
     }
-
+    
     /**
      * 执行数据库事务
      *
@@ -254,7 +258,7 @@ class repository implements irepository
     {
         return $this->databaseConnect()->transaction($calAction);
     }
-
+    
     /**
      * 设置聚合根
      *
@@ -265,7 +269,7 @@ class repository implements irepository
     {
         return $this->objAggregate = $objAggregate;
     }
-
+    
     /**
      * 返回聚合根
      *
@@ -275,7 +279,7 @@ class repository implements irepository
     {
         return $this->objAggregate;
     }
-
+    
     /**
      * 返回工作单元
      *
@@ -285,7 +289,7 @@ class repository implements irepository
     {
         return $this->objUnitOfWork;
     }
-
+    
     /**
      * 返回数据库仓储
      *
@@ -295,7 +299,7 @@ class repository implements irepository
     {
         return $this->objAggregate->databaseConnect();
     }
-
+    
     /**
      * 注册事务提交
      *
@@ -305,7 +309,7 @@ class repository implements irepository
     {
         return $this->objUnitOfWork->registerCommit();
     }
-
+    
     /**
      * 创建设计工作单元
      *
@@ -315,7 +319,7 @@ class repository implements irepository
     {
         return $this->objUnitOfWork = new unit_of_work($this);
     }
-
+    
     /**
      * 验证是否设计工作单元
      *
@@ -327,7 +331,7 @@ class repository implements irepository
             throw new Exception('unit_of_work is not set,please use parent::__construct( iaggregate_root $objAggregate ) to set.');
         }
     }
-
+    
     /**
      * 自定义规约处理
      *
@@ -338,18 +342,20 @@ class repository implements irepository
     protected function specification($mixCallback, $mixSpecification = null)
     {
         if (is_null($mixSpecification)) {
-            $mixSpecification = function ($objSelect) use ($mixCallback) {
+            $mixSpecification = function ($objSelect) use($mixCallback)
+            {
                 call_user_func($mixCallback, $objSelect);
             };
         } else {
-            $mixSpecification = function ($objSelect) use ($mixCallback, $mixSpecification) {
+            $mixSpecification = function ($objSelect) use($mixCallback, $mixSpecification)
+            {
                 call_user_func($mixCallback, $objSelect);
                 if (is_callable($mixSpecification)) {
                     call_user_func($mixSpecification, $objSelect);
                 }
             };
         }
-
+        
         return $mixSpecification;
     }
 }

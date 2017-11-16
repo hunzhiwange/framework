@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\option;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use ArrayAccess;
 
@@ -27,21 +31,21 @@ use ArrayAccess;
  */
 class option implements ArrayAccess, ioption
 {
-
+    
     /**
      * 配置数据
      *
      * @var array
      */
-    protected $arrOption = [ ];
-
+    protected $arrOption = [];
+    
     /**
      * 默认命名空间
      *
      * @var string
      */
     const DEFAUTL_NAMESPACE = 'app';
-
+    
     /**
      * 构造函数
      *
@@ -50,7 +54,7 @@ class option implements ArrayAccess, ioption
     public function __construct()
     {
     }
-
+    
     /**
      * 是否存在配置
      *
@@ -60,28 +64,28 @@ class option implements ArrayAccess, ioption
     public function has($sName = 'app\\')
     {
         $sName = $this->parseNamespace($sName);
-        $strNamespace = $sName [0];
-        $sName = $sName [1];
-
+        $strNamespace = $sName[0];
+        $sName = $sName[1];
+        
         if ($sName == '*') {
-            return isset($this->arrOption [$strNamespace]);
+            return isset($this->arrOption[$strNamespace]);
         }
-
+        
         if (! strpos($sName, '.')) {
-            return array_key_exists($sName, $this->arrOption [$strNamespace]);
+            return array_key_exists($sName, $this->arrOption[$strNamespace]);
         }
-
+        
         $arrParts = explode('.', $sName);
-        $arrOption = &$this->arrOption [$strNamespace];
+        $arrOption = &$this->arrOption[$strNamespace];
         foreach ($arrParts as $sPart) {
-            if (! isset($arrOption [$sPart])) {
+            if (! isset($arrOption[$sPart])) {
                 return false;
             }
-            $arrOption = &$arrOption [$sPart];
+            $arrOption = &$arrOption[$sPart];
         }
         return true;
     }
-
+    
     /**
      * 获取配置
      *
@@ -92,28 +96,28 @@ class option implements ArrayAccess, ioption
     public function get($sName = 'app\\', $mixDefault = null)
     {
         $sName = $this->parseNamespace($sName);
-        $strNamespace = $sName [0];
-        $sName = $sName [1];
-
+        $strNamespace = $sName[0];
+        $sName = $sName[1];
+        
         if ($sName == '*') {
-            return $this->arrOption [$strNamespace];
+            return $this->arrOption[$strNamespace];
         }
-
+        
         if (! strpos($sName, '.')) {
-            return array_key_exists($sName, $this->arrOption [$strNamespace]) ? $this->arrOption [$strNamespace] [$sName] : $mixDefault;
+            return array_key_exists($sName, $this->arrOption[$strNamespace]) ? $this->arrOption[$strNamespace][$sName] : $mixDefault;
         }
-
+        
         $arrParts = explode('.', $sName);
-        $arrOption = &$this->arrOption [$strNamespace];
+        $arrOption = &$this->arrOption[$strNamespace];
         foreach ($arrParts as $sPart) {
-            if (! isset($arrOption [$sPart])) {
+            if (! isset($arrOption[$sPart])) {
                 return $mixDefault;
             }
-            $arrOption = &$arrOption [$sPart];
+            $arrOption = &$arrOption[$sPart];
         }
         return $arrOption;
     }
-
+    
     /**
      * 返回所有配置
      *
@@ -123,7 +127,7 @@ class option implements ArrayAccess, ioption
     {
         return $this->arrOption;
     }
-
+    
     /**
      * 设置配置
      *
@@ -139,35 +143,35 @@ class option implements ArrayAccess, ioption
             }
         } else {
             $mixName = $this->parseNamespace($mixName);
-            $strNamespace = $mixName [0];
-            $mixName = $mixName [1];
-
+            $strNamespace = $mixName[0];
+            $mixName = $mixName[1];
+            
             if ($mixName == '*') {
-                $this->arrOption [$strNamespace] = $mixValue;
+                $this->arrOption[$strNamespace] = $mixValue;
                 return;
             }
-
+            
             if (! strpos($mixName, '.')) {
-                $this->arrOption [$strNamespace] [$mixName] = $mixValue;
+                $this->arrOption[$strNamespace][$mixName] = $mixValue;
             } else {
                 $arrParts = explode('.', $mixName);
                 $nMax = count($arrParts) - 1;
-                $arrOption = &$this->arrOption [$strNamespace];
+                $arrOption = &$this->arrOption[$strNamespace];
                 for ($nI = 0; $nI <= $nMax; $nI ++) {
-                    $sPart = $arrParts [$nI];
+                    $sPart = $arrParts[$nI];
                     if ($nI < $nMax) {
-                        if (! isset($arrOption [$sPart])) {
-                            $arrOption [$sPart] = [ ];
+                        if (! isset($arrOption[$sPart])) {
+                            $arrOption[$sPart] = [];
                         }
-                        $arrOption = &$arrOption [$sPart];
+                        $arrOption = &$arrOption[$sPart];
                     } else {
-                        $arrOption [$sPart] = $mixValue;
+                        $arrOption[$sPart] = $mixValue;
                     }
                 }
             }
         }
     }
-
+    
     /**
      * 删除配置
      *
@@ -177,38 +181,38 @@ class option implements ArrayAccess, ioption
     public function delete($mixName)
     {
         $mixName = $this->parseNamespace($mixName);
-        $strNamespace = $mixName [0];
-        $mixName = $mixName [1];
-
+        $strNamespace = $mixName[0];
+        $mixName = $mixName[1];
+        
         if ($mixName == '*') {
-            $this->arrOption [$strNamespace] = [ ];
+            $this->arrOption[$strNamespace] = [];
             return;
         }
-
+        
         if (! strpos($mixName, '.')) {
-            if (isset($this->arrOption [$strNamespace] [$mixName])) {
-                unset($this->arrOption [$strNamespace] [$mixName]);
+            if (isset($this->arrOption[$strNamespace][$mixName])) {
+                unset($this->arrOption[$strNamespace][$mixName]);
             }
         } else {
             $arrParts = explode('.', $mixName);
             $nMax = count($arrParts) - 1;
-            $arrOption = &$this->arrOption [$strNamespace];
+            $arrOption = &$this->arrOption[$strNamespace];
             for ($nI = 0; $nI <= $nMax; $nI ++) {
-                $sPart = $arrParts [$nI];
+                $sPart = $arrParts[$nI];
                 if ($nI < $nMax) {
-                    if (! isset($arrOption [$sPart])) {
-                        $arrOption [$sPart] = [ ];
+                    if (! isset($arrOption[$sPart])) {
+                        $arrOption[$sPart] = [];
                     }
-                    $arrOption = &$arrOption [$sPart];
+                    $arrOption = &$arrOption[$sPart];
                 } else {
-                    if (isset($arrOption [$sPart])) {
-                        unset($arrOption [$sPart]);
+                    if (isset($arrOption[$sPart])) {
+                        unset($arrOption[$sPart]);
                     }
                 }
             }
         }
     }
-
+    
     /**
      * 初始化配置参数
      *
@@ -220,14 +224,14 @@ class option implements ArrayAccess, ioption
         if (is_array($mixNamespace)) {
             $this->arrOption = $mixNamespace;
         } elseif (is_string($mixNamespace)) {
-            if (isset($this->arrOption [$mixNamespace])) {
-                $this->arrOption [$mixNamespace] = [ ];
+            if (isset($this->arrOption[$mixNamespace])) {
+                $this->arrOption[$mixNamespace] = [];
             }
         } else {
-            $this->arrOption = [ ];
+            $this->arrOption = [];
         }
     }
-
+    
     /**
      * 判断配置是否存在
      *
@@ -238,7 +242,7 @@ class option implements ArrayAccess, ioption
     {
         return $this->has($strName);
     }
-
+    
     /**
      * 获取配置
      *
@@ -249,7 +253,7 @@ class option implements ArrayAccess, ioption
     {
         return $this->get($strName);
     }
-
+    
     /**
      * 设置配置
      *
@@ -261,7 +265,7 @@ class option implements ArrayAccess, ioption
     {
         return $this->set($strName, $mixValue);
     }
-
+    
     /**
      * 删除配置
      *
@@ -272,7 +276,7 @@ class option implements ArrayAccess, ioption
     {
         $this->delete($strName);
     }
-
+    
     /**
      * 分析命名空间
      *
@@ -283,22 +287,22 @@ class option implements ArrayAccess, ioption
     {
         if (strpos($strName, '\\')) {
             $strNamespace = explode('\\', $strName);
-            if (empty($strNamespace [1])) {
-                $strNamespace [1] = '*';
+            if (empty($strNamespace[1])) {
+                $strNamespace[1] = '*';
             }
-            $strName = $strNamespace [1];
-            $strNamespace = $strNamespace [0];
+            $strName = $strNamespace[1];
+            $strNamespace = $strNamespace[0];
         } else {
             $strNamespace = static::DEFAUTL_NAMESPACE;
         }
-
-        if (! isset($this->arrOption [$strNamespace])) {
-            $this->arrOption [$strNamespace] = [ ];
+        
+        if (! isset($this->arrOption[$strNamespace])) {
+            $this->arrOption[$strNamespace] = [];
         }
-
+        
         return [
-                $strNamespace,
-                $strName
+            $strNamespace, 
+            $strName
         ];
     }
 }

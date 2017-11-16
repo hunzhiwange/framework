@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace tests\option;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use tests\testcase;
 use queryyetsimple\option;
@@ -28,25 +32,25 @@ use queryyetsimple\option;
  */
 class Option_test extends testcase
 {
-
+    
     /**
      * 测试配置
      *
      * @var array
      */
     private static $arrTest = [
-            'hello' => 'world',
-            'router\name' => '小牛仔',
-            'test\child' => [
-                    'sub1' => 'hello',
-                    'sub2' => 'world',
-                    'sub3' => '新式软件',
-                    'goods' => [
-                            'world' => 'new'
-                    ]
+        'hello' => 'world', 
+        'router\name' => '小牛仔', 
+        'test\child' => [
+            'sub1' => 'hello', 
+            'sub2' => 'world', 
+            'sub3' => '新式软件', 
+            'goods' => [
+                'world' => 'new'
             ]
+        ]
     ];
-
+    
     /**
      * 初始化
      *
@@ -57,7 +61,7 @@ class Option_test extends testcase
         option::reset();
         option::set(self::$arrTest);
     }
-
+    
     /**
      * 读取生成的命名空间配置结构
      *
@@ -66,25 +70,25 @@ class Option_test extends testcase
     public function testGetsAll()
     {
         $this->assertTrue(option::all() === [
-                'app' => [
-                        'hello' => 'world'
-                ],
-                'router' => [
-                        'name' => '小牛仔'
-                ],
-                'test' => [
-                        'child' => [
-                                'sub1' => 'hello',
-                                'sub2' => 'world',
-                                'sub3' => '新式软件',
-                                'goods' => [
-                                        'world' => 'new'
-                                ]
-                        ]
+            'app' => [
+                'hello' => 'world'
+            ], 
+            'router' => [
+                'name' => '小牛仔'
+            ], 
+            'test' => [
+                'child' => [
+                    'sub1' => 'hello', 
+                    'sub2' => 'world', 
+                    'sub3' => '新式软件', 
+                    'goods' => [
+                        'world' => 'new'
+                    ]
                 ]
+            ]
         ]);
     }
-
+    
     /**
      * 读取生成的命名空间配置结构
      *
@@ -93,10 +97,10 @@ class Option_test extends testcase
     public function testGetsOneNamespace()
     {
         $this->assertTrue(option::get('router\\') === [
-                'name' => '小牛仔'
+            'name' => '小牛仔'
         ]);
     }
-
+    
     /**
      * 获取信息
      *
@@ -108,7 +112,7 @@ class Option_test extends testcase
         $this->assertEquals('new', option::get('test\child.goods.world'));
         $this->assertEquals('default value', option::get('not_found', 'default value'));
     }
-
+    
     /**
      * 设置信息
      *

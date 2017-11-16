@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\log;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 use queryyetsimple\support\ijson;
@@ -32,56 +36,56 @@ use queryyetsimple\support\iarray;
 class log implements ilog
 {
     use option;
-
+    
     /**
      * 存储连接对象
      *
      * @var \queryyetsimple\log\iconnect
      */
     protected $oConnect;
-
+    
     /**
      * 当前记录的日志信息
      *
      * @var array
      */
-    protected $arrLog = [ ];
-
+    protected $arrLog = [];
+    
     /**
      * 日志过滤器
      *
      * @var callable
      */
     protected $calFilter;
-
+    
     /**
      * 日志处理器
      *
      * @var callable
      */
     protected $calProcessor;
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-            'enabled' => true,
-            'level' => [
-                    self::DEBUG,
-                    self::INFO,
-                    self::NOTICE,
-                    self::WARNING,
-                    self::ERROR,
-                    self::CRITICAL,
-                    self::ALERT,
-                    self::EMERGENCY,
-                    self::SQL
-            ],
-            'time_format' => '[Y-m-d H:i]'
+        'enabled' => true, 
+        'level' => [
+            self::DEBUG, 
+            self::INFO, 
+            self::NOTICE, 
+            self::WARNING, 
+            self::ERROR, 
+            self::CRITICAL, 
+            self::ALERT, 
+            self::EMERGENCY, 
+            self::SQL
+        ], 
+        'time_format' => '[Y-m-d H:i]'
     ];
-
+    
     /**
      * 构造函数
      *
@@ -94,10 +98,11 @@ class log implements ilog
         $this->oConnect = $oConnect;
         $this->options($arrOption);
     }
-
+    
     // ######################################################
     // ------ 实现 \Psr\Log\LoggerInterface 接口 start -------
     // ######################################################
+    
 
     /**
      * 记录 emergency 日志
@@ -109,9 +114,9 @@ class log implements ilog
      */
     public function emergency($mixMessage, array $arrContext = [], $booWrite = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'} (static::EMERGENCY, $mixMessage, $arrContext);
+        return $this->{$booWrite ? 'write' : 'log'}(static::EMERGENCY, $mixMessage, $arrContext);
     }
-
+    
     /**
      * 记录 alert 日志
      *
@@ -122,9 +127,9 @@ class log implements ilog
      */
     public function alert($mixMessage, array $arrContext = [], $booWrite = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'} (static::ALERT, $mixMessage, $arrContext);
+        return $this->{$booWrite ? 'write' : 'log'}(static::ALERT, $mixMessage, $arrContext);
     }
-
+    
     /**
      * 记录 critical 日志
      *
@@ -135,9 +140,9 @@ class log implements ilog
      */
     public function critical($mixMessage, array $arrContext = [], $booWrite = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'} (static::CRITICAL, $mixMessage, $arrContext);
+        return $this->{$booWrite ? 'write' : 'log'}(static::CRITICAL, $mixMessage, $arrContext);
     }
-
+    
     /**
      * 记录 error 日志
      *
@@ -148,9 +153,9 @@ class log implements ilog
      */
     public function error($mixMessage, array $arrContext = [], $booWrite = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'} (static::ERROR, $mixMessage, $arrContext);
+        return $this->{$booWrite ? 'write' : 'log'}(static::ERROR, $mixMessage, $arrContext);
     }
-
+    
     /**
      * 记录 warning 日志
      *
@@ -161,9 +166,9 @@ class log implements ilog
      */
     public function warning($mixMessage, array $arrContext = [], $booWrite = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'} (static::WARNING, $mixMessage, $arrContext);
+        return $this->{$booWrite ? 'write' : 'log'}(static::WARNING, $mixMessage, $arrContext);
     }
-
+    
     /**
      * 记录 notice 日志
      *
@@ -174,9 +179,9 @@ class log implements ilog
      */
     public function notice($mixMessage, array $arrContext = [], $booWrite = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'} (static::NOTICE, $mixMessage, $arrContext);
+        return $this->{$booWrite ? 'write' : 'log'}(static::NOTICE, $mixMessage, $arrContext);
     }
-
+    
     /**
      * 记录 info 日志
      *
@@ -187,9 +192,9 @@ class log implements ilog
      */
     public function info($mixMessage, array $arrContext = [], $booWrite = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'} (static::INFO, $mixMessage, $arrContext);
+        return $this->{$booWrite ? 'write' : 'log'}(static::INFO, $mixMessage, $arrContext);
     }
-
+    
     /**
      * 记录 debug 日志
      *
@@ -200,9 +205,9 @@ class log implements ilog
      */
     public function debug($mixMessage, array $arrContext = [], $booWrite = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'} (static::DEBUG, $mixMessage, $arrContext);
+        return $this->{$booWrite ? 'write' : 'log'}(static::DEBUG, $mixMessage, $arrContext);
     }
-
+    
     /**
      * 记录日志
      *
@@ -217,37 +222,38 @@ class log implements ilog
         if (! $this->getOption('enabled')) {
             return;
         }
-
+        
         // 只记录系统允许的日志级别
         if (! in_array($strLevel, $this->getOption('level'))) {
             return;
         }
-
+        
         $mixMessage = date($this->getOption('time_format')) . $this->formatMessage($mixMessage);
-
+        
         $arrData = [
-                $strLevel,
-                $mixMessage,
-                $arrContext
+            $strLevel, 
+            $mixMessage, 
+            $arrContext
         ];
-
+        
         // 执行过滤器
         if ($this->calFilter !== null && call_user_func_array($this->calFilter, $arrData) === false) {
             return;
         }
-
+        
         // 记录到内存方便后期调用
-        if (! isset($this->arrLog [$strLevel])) {
-            $this->arrLog [$strLevel] = [ ];
+        if (! isset($this->arrLog[$strLevel])) {
+            $this->arrLog[$strLevel] = [];
         }
-        $this->arrLog [$strLevel] [] = $arrData;
-
+        $this->arrLog[$strLevel][] = $arrData;
+        
         return $arrData;
     }
-
+    
     // ######################################################
     // ------- 实现 \Psr\Log\LoggerInterface 接口 end --------
     // ######################################################
+    
 
     /**
      * 记录错误消息并写入
@@ -260,10 +266,10 @@ class log implements ilog
     public function write($strLevel, $strMessage, array $arrContext = [])
     {
         $this->saveStore([
-                $this->log($strLevel, $strMessage, $arrContext)
+            $this->log($strLevel, $strMessage, $arrContext)
         ]);
     }
-
+    
     /**
      * 保存日志信息
      *
@@ -274,14 +280,14 @@ class log implements ilog
         if (! $this->arrLog) {
             return;
         }
-
+        
         foreach ($this->arrLog as $arrData) {
             $this->saveStore($arrData);
         }
-
+        
         $this->clear();
     }
-
+    
     /**
      * 注册日志过滤器
      *
@@ -293,7 +299,7 @@ class log implements ilog
         assert::callback($calFilter);
         $this->calFilter = $calFilter;
     }
-
+    
     /**
      * 注册日志处理器
      *
@@ -305,7 +311,7 @@ class log implements ilog
         assert::callback($calProcessor);
         $this->calProcessor = $calProcessor;
     }
-
+    
     /**
      * 清理日志记录
      *
@@ -314,17 +320,17 @@ class log implements ilog
      */
     public function clear($strLevel = null)
     {
-        if ($strLevel && isset($this->arrLog [$strLevel])) {
-            $nCount = count($this->arrLog [$strLevel]);
-            $this->arrLog [$strLevel] = [ ];
+        if ($strLevel && isset($this->arrLog[$strLevel])) {
+            $nCount = count($this->arrLog[$strLevel]);
+            $this->arrLog[$strLevel] = [];
         } else {
             $nCount = count($this->arrLog);
-            $this->arrLog = [ ];
+            $this->arrLog = [];
         }
-
+        
         return $nCount;
     }
-
+    
     /**
      * 获取日志记录
      *
@@ -333,13 +339,13 @@ class log implements ilog
      */
     public function get($strLevel = null)
     {
-        if ($strLevel && isset($this->arrLog [$strLevel])) {
-            return $this->arrLog [$strLevel];
+        if ($strLevel && isset($this->arrLog[$strLevel])) {
+            return $this->arrLog[$strLevel];
         } else {
             return $this->arrLog;
         }
     }
-
+    
     /**
      * 获取日志记录数量
      *
@@ -348,13 +354,13 @@ class log implements ilog
      */
     public function count($strLevel = null)
     {
-        if ($strLevel && isset($this->arrLog [$strLevel])) {
-            return count($this->arrLog [$strLevel]);
+        if ($strLevel && isset($this->arrLog[$strLevel])) {
+            return count($this->arrLog[$strLevel]);
         } else {
             return count($this->arrLog);
         }
     }
-
+    
     /**
      * 存储日志
      *
@@ -369,7 +375,7 @@ class log implements ilog
         }
         $this->oConnect->save($arrData);
     }
-
+    
     /**
      * 格式化日志消息
      *
@@ -387,10 +393,10 @@ class log implements ilog
         } elseif (is_scalar($mixMessage)) {
             return $mixMessage;
         }
-
+        
         throw new RuntimeException('Message is invalid');
     }
-
+    
     /**
      * 缺省方法
      *

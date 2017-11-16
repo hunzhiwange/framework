@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace tests\database;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use tests\testcase;
 use queryyetsimple\database;
@@ -28,14 +32,14 @@ use queryyetsimple\database;
  */
 class Select_test extends testcase
 {
-
+    
     /**
      * 测试表
      *
      * @var string
      */
     private static $strTable = 'test';
-
+    
     /**
      * 初始化
      *
@@ -44,7 +48,7 @@ class Select_test extends testcase
     protected function setUp()
     {
     }
-
+    
     /**
      * table 查询
      *
@@ -54,31 +58,31 @@ class Select_test extends testcase
     public function testTable()
     {
         $this->assertEquals(database::table('test')->limit(2)->getAll(true), [
-                'SELECT `test`.* FROM `test` LIMIT 0,2',
-                [ ],
-                false,
-                5,
-                null,
-                [ ]
+            'SELECT `test`.* FROM `test` LIMIT 0,2', 
+            [], 
+            false, 
+            5, 
+            null, 
+            []
         ]);
-
+        
         $this->assertEquals(database::table('test as t')->limit(2)->getAll(true), [
-                'SELECT `t`.* FROM `test`  `t` LIMIT 0,2',
-                [ ],
-                false,
-                5,
-                null,
-                [ ]
+            'SELECT `t`.* FROM `test`  `t` LIMIT 0,2', 
+            [], 
+            false, 
+            5, 
+            null, 
+            []
         ]);
-
+        
         $this->assertEquals(database::table([
-                't2' => 'test'
+            't2' => 'test'
         ])->limit(2)->getAll(true), [
-                'SELECT `t2`.* FROM `test`  `t2` LIMIT 0,2',
-                [ ],
-                false,
-                5,
-                null,
+            'SELECT `t2`.* FROM `test`  `t2` LIMIT 0,2', 
+            [], 
+            false, 
+            5, 
+            null,
                 [ ]
         ]);
     }

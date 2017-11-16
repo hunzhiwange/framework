@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\event;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 /**
  * idispatch 接口
@@ -25,7 +29,7 @@ queryphp;
  */
 interface idispatch
 {
-
+    
     /**
      * 执行一个事件
      *
@@ -33,7 +37,7 @@ interface idispatch
      * @return void
      */
     public function run($mixEvent);
-
+    
     /**
      * 注册监听器
      *
@@ -42,7 +46,7 @@ interface idispatch
      * @return void
      */
     public function listener($mixEvent, $mixListener);
-
+    
     /**
      * 获取一个监听器
      *
@@ -50,7 +54,7 @@ interface idispatch
      * @return array
      */
     public function getListener($strEvent);
-
+    
     /**
      * 判断监听器是否存在
      *
@@ -58,7 +62,7 @@ interface idispatch
      * @return bool
      */
     public function hasListener($strEvent);
-
+    
     /**
      * 删除一个事件所有监听器
      *

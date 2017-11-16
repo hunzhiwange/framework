@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\database;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use PDO;
 
@@ -27,7 +31,7 @@ use PDO;
  */
 class mysql extends aconnect implements iconnect
 {
-
+    
     /**
      * dsn 解析
      *
@@ -36,18 +40,18 @@ class mysql extends aconnect implements iconnect
      */
     public function parseDsn($arrOption)
     {
-        $arrDsn = [ ];
+        $arrDsn = [];
         foreach ([
-                'Base',
-                'Port',
-                'Socket',
-                'Charset'
+            'Base', 
+            'Port', 
+            'Socket', 
+            'Charset'
         ] as $strMethod) {
-            $arrDsn [] = $this->{'get' . $strMethod} ($arrOption);
+            $arrDsn[] = $this->{'get' . $strMethod}($arrOption);
         }
         return implode('', $arrDsn);
     }
-
+    
     /**
      * 取得数据库表名列表
      *
@@ -62,16 +66,16 @@ class mysql extends aconnect implements iconnect
             $sDbName = $this->getCurrentOption('name');
         }
         $strSql = 'SHOW TABLES FROM ' . $this->qualifyTableOrColumn($sDbName);
-        $arrResult = [ ];
-        if (($arrTables = $this->query($strSql, [ ], $mixMaster, PDO::FETCH_ASSOC))) {
+        $arrResult = [];
+        if (($arrTables = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
             foreach ($arrTables as $arrTable) {
-                $arrResult [] = reset($arrTable);
+                $arrResult[] = reset($arrTable);
             }
         }
         unset($arrTables, $strSql);
         return $arrResult;
     }
-
+    
     /**
      * 取得数据库表字段信息
      *
@@ -83,48 +87,48 @@ class mysql extends aconnect implements iconnect
     {
         $strSql = 'SHOW FULL COLUMNS FROM ' . $this->qualifyTableOrColumn($sTableName);
         $arrResult = [
-                'list' => [ ],
-                'primary_key' => null,
-                'auto_increment' => null
+            'list' => [], 
+            'primary_key' => null, 
+            'auto_increment' => null
         ];
-
-        if (($arrColumns = $this->query($strSql, [ ], $mixMaster, PDO::FETCH_ASSOC))) {
+        
+        if (($arrColumns = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
             foreach ($arrColumns as $arrColumn) {
                 // 处理字段
-                $arrTemp = [ ];
-                $arrTemp ['name'] = $arrColumn ['Field'];
-                if (preg_match('/(.+)\((.+)\)/', $arrColumn ['Type'], $arrMatch)) {
-                    $arrTemp ['type'] = $arrMatch [1];
-                    $arrTemp ['length'] = $arrMatch [1];
+                $arrTemp = [];
+                $arrTemp['name'] = $arrColumn['Field'];
+                if (preg_match('/(.+)\((.+)\)/', $arrColumn['Type'], $arrMatch)) {
+                    $arrTemp['type'] = $arrMatch[1];
+                    $arrTemp['length'] = $arrMatch[1];
                 } else {
-                    $arrTemp ['type'] = $arrColumn ['Type'];
-                    $arrTemp ['length'] = null;
+                    $arrTemp['type'] = $arrColumn['Type'];
+                    $arrTemp['length'] = null;
                 }
-                $arrTemp ['primary_key'] = strtolower($arrColumn ['Key']) == 'pri';
-                $arrTemp ['auto_increment'] = strpos($arrColumn ['Extra'], 'auto_increment') !== false;
-                if (! is_null($arrColumn ['Default']) && strtolower($arrColumn ['Default']) != 'null') {
-                    $arrTemp ['default'] = $arrColumn ['Default'];
+                $arrTemp['primary_key'] = strtolower($arrColumn['Key']) == 'pri';
+                $arrTemp['auto_increment'] = strpos($arrColumn['Extra'], 'auto_increment') !== false;
+                if (! is_null($arrColumn['Default']) && strtolower($arrColumn['Default']) != 'null') {
+                    $arrTemp['default'] = $arrColumn['Default'];
                 } else {
-                    $arrTemp ['default'] = null;
+                    $arrTemp['default'] = null;
                 }
-
+                
                 // 返回结果
-                $arrResult ['list'] [$arrTemp ['name']] = $arrTemp;
-                if ($arrTemp ['auto_increment']) {
-                    $arrResult ['auto_increment'] = $arrTemp ['name'];
+                $arrResult['list'][$arrTemp['name']] = $arrTemp;
+                if ($arrTemp['auto_increment']) {
+                    $arrResult['auto_increment'] = $arrTemp['name'];
                 }
-                if ($arrTemp ['primary_key']) {
-                    if (! is_array($arrResult ['primary_key'])) {
-                        $arrResult ['primary_key'] = [ ];
+                if ($arrTemp['primary_key']) {
+                    if (! is_array($arrResult['primary_key'])) {
+                        $arrResult['primary_key'] = [];
                     }
-                    $arrResult ['primary_key'] [] = $arrTemp ['name'];
+                    $arrResult['primary_key'][] = $arrTemp['name'];
                 }
             }
         }
         unset($arrColumns, $strSql);
         return $arrResult;
     }
-
+    
     /**
      * sql 字段格式化
      *
@@ -134,7 +138,7 @@ class mysql extends aconnect implements iconnect
     {
         return $sName != '*' ? "`{$sName}`" : '*';
     }
-
+    
     /**
      * 分析 limit
      *
@@ -151,13 +155,13 @@ class mysql extends aconnect implements iconnect
             } else {
                 $sSql .= ',999999999999';
             }
-
+            
             return $sSql;
         } elseif (! is_null($mixLimitcount)) {
             return 'LIMIT ' . ( int ) $mixLimitcount;
         }
     }
-
+    
     /**
      * 基本
      *
@@ -166,9 +170,9 @@ class mysql extends aconnect implements iconnect
      */
     protected function getBase($arrOption)
     {
-        return 'mysql:dbname=' . $arrOption ['name'] . ';host=' . $arrOption ['host'];
+        return 'mysql:dbname=' . $arrOption['name'] . ';host=' . $arrOption['host'];
     }
-
+    
     /**
      * 端口
      *
@@ -177,11 +181,11 @@ class mysql extends aconnect implements iconnect
      */
     protected function getPort($arrOption)
     {
-        if (! empty($arrOption ['port'])) {
-            return ';port=' . $arrOption ['port'];
+        if (! empty($arrOption['port'])) {
+            return ';port=' . $arrOption['port'];
         }
     }
-
+    
     /**
      * 用 unix socket 加速 php-fpm、mysql、redis 连接
      *
@@ -190,11 +194,11 @@ class mysql extends aconnect implements iconnect
      */
     protected function getSocket($arrOption)
     {
-        if (! empty($arrOption ['socket'])) {
-            return ';unix_socket=' . $arrOption ['socket'];
+        if (! empty($arrOption['socket'])) {
+            return ';unix_socket=' . $arrOption['socket'];
         }
     }
-
+    
     /**
      * 编码
      *
@@ -203,8 +207,8 @@ class mysql extends aconnect implements iconnect
      */
     protected function getCharset($arrOption)
     {
-        if (! empty($arrOption ['charset'])) {
-            return ';charset=' . $arrOption ['charset'];
+        if (! empty($arrOption['charset'])) {
+            return ';charset=' . $arrOption['charset'];
         }
     }
 }

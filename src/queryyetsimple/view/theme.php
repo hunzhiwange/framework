@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\view;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 use InvalidArgumentException;
@@ -32,64 +36,64 @@ use queryyetsimple\cookie\icookie;
 class theme implements itheme
 {
     use option;
-
+    
     /**
      * 视图分析器
      *
      * @var \queryyetsimple\view\iparser
      */
     protected $objParse;
-
+    
     /**
      * 解析 parse
      *
      * @var callable
      */
     protected static $calParseResolver;
-
+    
     /**
      * cookie 处理
      *
      * @var \queryyetsimple\cookie\icookie
      */
     protected $objCookie;
-
+    
     /**
      * 主题参数名
      *
      * @var string
      */
     const ARGS = '~@theme';
-
+    
     /**
      * 变量值
      *
      * @var array
      */
-    protected $arrVar = [ ];
-
+    protected $arrVar = [];
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-            'app_development' => false,
-            'app_name' => 'home',
-            'controller_name' => 'index',
-            'action_name' => 'index',
-            'controlleraction_depr' => '_',
-            'theme_name' => '',
-            'theme_path' => '',
-            'theme_path_default' => '',
-            'suffix' => '.html',
-            'theme_cache_path' => '',
-            'cache_children' => false,
-            'switch' => true,
-            'default' => 'default',
-            'cookie_app' => false
+        'app_development' => false, 
+        'app_name' => 'home', 
+        'controller_name' => 'index', 
+        'action_name' => 'index', 
+        'controlleraction_depr' => '_', 
+        'theme_name' => '', 
+        'theme_path' => '', 
+        'theme_path_default' => '', 
+        'suffix' => '.html', 
+        'theme_cache_path' => '', 
+        'cache_children' => false, 
+        'switch' => true, 
+        'default' => 'default', 
+        'cookie_app' => false
     ];
-
+    
     /**
      * 构造函数
      *
@@ -102,7 +106,7 @@ class theme implements itheme
         $this->objCookie = $objCookie;
         $this->options($arrOption);
     }
-
+    
     /**
      * 设置 parse 解析回调
      *
@@ -114,7 +118,7 @@ class theme implements itheme
         assert::callback($calParseResolver);
         static::$calParseResolver = $calParseResolver;
     }
-
+    
     /**
      * 解析 parse
      *
@@ -127,7 +131,7 @@ class theme implements itheme
         }
         return call_user_func(static::$calParseResolver);
     }
-
+    
     /**
      * 获取分析器
      *
@@ -140,7 +144,7 @@ class theme implements itheme
         }
         return $this->objParse = $this->resolverParse();
     }
-
+    
     /**
      * 加载视图文件
      *
@@ -157,43 +161,43 @@ class theme implements itheme
         if (! is_file($sFile)) {
             $sFile = $this->parseFile($sFile, $strExt);
         }
-
+        
         // 分析默认视图文件
         if (! is_file($sFile)) {
             $sFile = $this->parseDefaultFile($sFile);
         }
-
+        
         if (! is_file($sFile)) {
             throw new InvalidArgumentException(sprintf('Template file %s does not exist.', $sFile));
         }
-
+        
         // 变量赋值
         if (is_array($this->arrVar) and ! empty($this->arrVar)) {
             extract($this->arrVar, EXTR_PREFIX_SAME, 'q_');
         }
-
+        
         $sCachePath = $this->getCachePath($sFile); // 编译文件路径
         if ($this->isCacheExpired($sFile, $sCachePath)) { // 重新编译
             $this->parser()->doCombile($sFile, $sCachePath);
         }
-
+        
         // 逐步将子模板缓存写入父模板至到最后
         if ($sTargetCache) {
             if (is_file($sFile) && is_file($sTargetCache)) {
                 // 源码
                 $sTargetContent = file_get_contents($sTargetCache);
                 $sChildCache = file_get_contents($sCachePath);
-
+                
                 // 替换
                 $sTargetContent = preg_replace("/<!--<\#\#\#\#incl\*" . $sMd5 . "\*ude\#\#\#\#>-->(.*?)<!--<\/\#\#\#\#incl\*" . $sMd5 . "\*ude\#\#\#\#\/>-->/s", substr($sChildCache, strpos($sChildCache, PHP_EOL)), $sTargetContent);
                 file_put_contents($sTargetCache, $sTargetContent);
-
+                
                 unset($sChildCache, $sTargetContent);
             } else {
                 throw new InvalidArgumentException(sprintf('Source %s and target cache %s is not a valid path', $sFile, $sTargetCache));
             }
         }
-
+        
         // 返回类型
         if ($bDisplay === false) {
             ob_start();
@@ -206,7 +210,7 @@ class theme implements itheme
             include $sCachePath;
         }
     }
-
+    
     /**
      * 设置模板变量
      *
@@ -217,12 +221,12 @@ class theme implements itheme
     public function setVar($mixName, $mixValue = null)
     {
         if (is_string($mixName)) {
-            $this->arrVar [$mixName] = $mixValue;
+            $this->arrVar[$mixName] = $mixValue;
         } elseif (is_array($mixName)) {
             $this->arrVar = array_merge($this->arrVar, $mixName);
         }
     }
-
+    
     /**
      * 获取变量值
      *
@@ -234,9 +238,9 @@ class theme implements itheme
         if (is_null($sName)) {
             return $this->arrVar;
         }
-        return isset($this->arrVar [$sName]) ? $this->_arrVar [$sName] : null;
+        return isset($this->arrVar[$sName]) ? $this->_arrVar[$sName] : null;
     }
-
+    
     /**
      * 删除变量值
      *
@@ -247,13 +251,13 @@ class theme implements itheme
     {
         $mixName = is_array($mixName) ? $mixName : func_get_args();
         foreach ($mixName as $strName) {
-            if (isset($this->arrVar [$strName])) {
-                unset($this->arrVar [$strName]);
+            if (isset($this->arrVar[$strName])) {
+                unset($this->arrVar[$strName]);
             }
         }
         return $this;
     }
-
+    
     /**
      * 清空变量值
      *
@@ -262,10 +266,10 @@ class theme implements itheme
      */
     public function clearVar()
     {
-        $this->arrVar = [ ];
+        $this->arrVar = [];
         return $this;
     }
-
+    
     /**
      * 获取编译路径
      *
@@ -277,17 +281,17 @@ class theme implements itheme
         if (! $this->getOption('theme_cache_path')) {
             throw new RuntimeException('Theme cache path must be set');
         }
-
+        
         // 统一斜线
         $sFile = str_replace('//', '/', str_replace('\\', '/', $sFile));
-
+        
         // 统一缓存文件
         $sFile = basename($sFile, '.' . pathinfo($sFile, PATHINFO_EXTENSION)) . '.' . md5($sFile) . '.php';
-
+        
         // 返回真实路径
         return $this->getOption('theme_cache_path') . '/' . $sFile;
     }
-
+    
     /**
      * 自动分析视图上下文环境
      *
@@ -299,7 +303,7 @@ class theme implements itheme
         if (! $strThemePath) {
             throw new RuntimeException('Theme path must be set');
         }
-
+        
         if (! $this->getOption('switch')) {
             $sThemeSet = $this->getOption('default');
         } else {
@@ -308,9 +312,9 @@ class theme implements itheme
             } else {
                 $sCookieName = 'view';
             }
-
-            if (isset($_GET [static::ARGS])) {
-                $sThemeSet = $_GET [static::ARGS];
+            
+            if (isset($_GET[static::ARGS])) {
+                $sThemeSet = $_GET[static::ARGS];
                 $this->objCookie->set($sCookieName, $sThemeSet);
             } else {
                 if ($this->objCookie->get($sCookieName)) {
@@ -320,12 +324,12 @@ class theme implements itheme
                 }
             }
         }
-
-        $this->arrOption ['theme_name'] = $sThemeSet;
-        $this->arrOption ['theme_path'] = $strThemePath . '/' . $sThemeSet;
+        
+        $this->arrOption['theme_name'] = $sThemeSet;
+        $this->arrOption['theme_path'] = $strThemePath . '/' . $sThemeSet;
         return $this;
     }
-
+    
     /**
      * 分析模板真实路径
      *
@@ -335,18 +339,19 @@ class theme implements itheme
      */
     protected function parseFile($sTpl, $sExt = '')
     {
-        $calHelp = function ($sContent) {
+        $calHelp = function ($sContent)
+        {
             return str_replace([
-                    ':',
-                    '+'
+                ':', 
+                '+'
             ], [
-                    '->',
-                    '::'
+                '->', 
+                '::'
             ], $sContent);
         };
-
+        
         $sTpl = trim(str_replace('->', '.', $sTpl));
-
+        
         // 完整路径 或者变量
         if (pathinfo($sTpl, PATHINFO_EXTENSION) || strpos($sTpl, '$') === 0) {
             return $calHelp($sTpl);
@@ -356,27 +361,27 @@ class theme implements itheme
             if (! $this->getOption('theme_path')) {
                 throw new RuntimeException('Theme path must be set');
             }
-
+            
             // 空取默认控制器和方法
             if ($sTpl == '') {
                 $sTpl = $this->getOption('controller_name') . $this->getOption('controlleraction_depr') . $this->getOption('action_name');
             }
-
+            
             if (strpos($sTpl, '@')) { // 分析主题
                 $arrArray = explode('@', $sTpl);
                 $sTheme = array_shift($arrArray);
                 $sTpl = array_shift($arrArray);
                 unset($arrArray);
             }
-
+            
             $sTpl = str_replace([
-                    '+',
-                    ':'
+                '+', 
+                ':'
             ], $this->getOption('controlleraction_depr'), $sTpl);
             return dirname($this->getOption('theme_path')) . '/' . (isset($sTheme) ? $sTheme : $this->getOption('theme_name')) . '/' . $sTpl . ($sExt ?  : $this->getOption('suffix'));
         }
     }
-
+    
     /**
      * 匹配默认地址（文件不存在）
      *
@@ -388,36 +393,36 @@ class theme implements itheme
         if (is_file($sTpl)) {
             return $sTpl;
         }
-
+        
         if (! $this->getOption('theme_path')) {
             throw new RuntimeException('Theme path must be set');
         }
-
+        
         $sBakTpl = $sTpl;
-
+        
         // 物理路径
         if (strpos($sTpl, ':') !== false || strpos($sTpl, '/') === 0 || strpos($sTpl, '\\') === 0) {
             $sTpl = str_replace(str_replace('\\', '/', $this->getOption('theme_path') . '/'), '', str_replace('\\', '/', ($sTpl)));
         }
-
+        
         // 当前主题
         if (is_file(($sTpl = $this->getOption('theme_path') . '/' . $sTpl))) {
             return $sTpl;
         }
-
+        
         // 备用地址
         if ($this->getOption('theme_path_default') && is_file(($sTpl = $this->getOption('theme_path_default') . '/' . $sTpl))) {
             return $sTpl;
         }
-
+        
         // default 主题
         if ($this->getOption('theme_name') != 'default' && is_file(($sTpl = dirname($this->getOption('theme_path')) . '/default/' . $sTpl))) {
             return $sTpl;
         }
-
+        
         return $sBakTpl;
     }
-
+    
     /**
      * 判断缓存是否过期
      *
@@ -431,30 +436,30 @@ class theme implements itheme
         if ($this->getOption('app_development')) {
             return true;
         }
-
+        
         // 缓存文件不存在过期
         if (! is_file($sCachePath)) {
             return true;
         }
-
+        
         // 编译过期时间为 <= 0 表示永不过期
         if ($this->getOption('cache_lifetime') <= 0) {
             return false;
         }
-
+        
         // 缓存时间到期
         if (filemtime($sCachePath) + intval($this->getOption('cache_lifetime')) < time()) {
             return true;
         }
-
+        
         // 文件有更新
         if (filemtime($sFile) >= filemtime($sCachePath)) {
             return true;
         }
-
+        
         return false;
     }
-
+    
     /**
      * 修复 ie 显示问题
      * 过滤编译文件子模板定位注释标签，防止在网页头部出现注释，导致 IE 浏览器不居中

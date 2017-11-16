@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\cache;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 /**
  * icache 接口
@@ -25,7 +29,7 @@ queryphp;
  */
 interface icache
 {
-
+    
     /**
      * 获取缓存
      *
@@ -35,7 +39,7 @@ interface icache
      * @return mixed
      */
     public function get($sCacheName, $mixDefault = false, array $arrOption = []);
-
+    
     /**
      * 设置缓存
      *
@@ -45,7 +49,7 @@ interface icache
      * @return void
      */
     public function set($sCacheName, $mixData, array $arrOption = []);
-
+    
     /**
      * 清除缓存
      *
@@ -54,14 +58,14 @@ interface icache
      * @return void
      */
     public function delele($sCacheName, array $arrOption = []);
-
+    
     /**
      * 返回缓存句柄
      *
      * @return mixed
      */
     public function handle();
-
+    
     /**
      * 关闭
      *

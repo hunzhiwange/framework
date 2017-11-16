@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Closure;
 use BadMethodCallException;
@@ -28,21 +32,21 @@ use BadMethodCallException;
  */
 abstract class provider
 {
-
+    
     /**
      * 是否延迟载入
      *
      * @var boolean
      */
     public static $booDefer = false;
-
+    
     /**
      * IOC 容器
      *
      * @var \queryyetsimple\support\icontainer
      */
     protected $objContainer;
-
+    
     /**
      * 创建一个服务容器提供者实例
      *
@@ -52,19 +56,19 @@ abstract class provider
     public function __construct(icontainer $objContainer)
     {
         $this->objContainer = $objContainer;
-
+        
         if (! static::isDeferred()) {
             $this->registerAlias();
         }
     }
-
+    
     /**
      * 注册服务
      *
      * @return void
      */
     abstract public function register();
-
+    
     /**
      * 注册服务别名
      *
@@ -76,7 +80,7 @@ abstract class provider
             $this->alias(static::providers());
         }
     }
-
+    
     /**
      * 可用服务提供者
      *
@@ -84,9 +88,9 @@ abstract class provider
      */
     public static function providers()
     {
-        return [ ];
+        return [];
     }
-
+    
     /**
      * 是否延迟载入
      *
@@ -96,7 +100,7 @@ abstract class provider
     {
         return static::$booDefer;
     }
-
+    
     /**
      * 返回 IOC 容器
      *
@@ -106,7 +110,7 @@ abstract class provider
     {
         return $this->objContainer;
     }
-
+    
     /**
      * 注册到容器
      *
@@ -120,7 +124,7 @@ abstract class provider
         $this->objContainer->bind($mixFactoryName, $mixFactory, $booShare);
         return $this;
     }
-
+    
     /**
      * 注册为实例
      *
@@ -133,7 +137,7 @@ abstract class provider
         $this->objContainer->instance($mixFactoryName, $mixFactory);
         return $this;
     }
-
+    
     /**
      * 注册单一实例
      *
@@ -146,7 +150,7 @@ abstract class provider
         $this->objContainer->singleton($mixFactoryName, $mixFactory);
         return $this;
     }
-
+    
     /**
      * 创建共享的闭包
      *
@@ -157,7 +161,7 @@ abstract class provider
     {
         return $this->objContainer->share($objClosure);
     }
-
+    
     /**
      * 设置别名
      *
@@ -170,7 +174,7 @@ abstract class provider
         $this->objContainer->alias($mixAlias, $mixValue);
         return $this;
     }
-
+    
     /**
      * 添加语言包目录
      *
@@ -182,9 +186,9 @@ abstract class provider
         if (! is_array($mixDir)) {
             $mixDir = ( array ) $mixDir;
         }
-        $this->objContainer ['i18n.load']->addDir($mixDir);
+        $this->objContainer['i18n.load']->addDir($mixDir);
     }
-
+    
     /**
      * 添加命令包命名空间
      *
@@ -196,20 +200,20 @@ abstract class provider
         if (! $this->objContainer->console()) {
             return;
         }
-
-        $arrNamespace = [ ];
-
+        
+        $arrNamespace = [];
+        
         if (! is_array($mixNamespace)) {
             $mixNamespace = ( array ) $mixNamespace;
         }
-
+        
         foreach ($mixNamespace as $strNamespace) {
-            $arrNamespace [$strNamespace] = $this->objContainer ['psr4']->namespaces($strNamespace);
+            $arrNamespace[$strNamespace] = $this->objContainer['psr4']->namespaces($strNamespace);
         }
-
-        $this->objContainer ['console.load']->addNamespace($arrNamespace);
+        
+        $this->objContainer['console.load']->addNamespace($arrNamespace);
     }
-
+    
     /**
      * 缺省方法
      *
@@ -222,7 +226,7 @@ abstract class provider
         if ($sMethod == 'bootstrap') {
             return;
         }
-
+        
         throw new BadMethodCallException(sprintf('Method %s is not exits.', $sMethod));
     }
 }

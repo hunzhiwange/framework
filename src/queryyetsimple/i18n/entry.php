@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\i18n;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 /**
  * 解析出每一项语言数据
@@ -26,7 +30,7 @@ queryphp;
  */
 class entry
 {
-
+    
     /**
      * Whether the entry contains a string and its plural form, default is false
      *
@@ -41,7 +45,7 @@ class entry
     public $extracted_comments = '';
     public $references = array();
     public $flags = array();
-
+    
     /**
      *
      * @param array $args associative array, support following keys:
@@ -57,14 +61,14 @@ class entry
     public function __construct($args = array())
     {
         // if no singular -- empty object
-        if (! isset($args ['singular'])) {
+        if (! isset($args['singular'])) {
             return;
         }
         // get member variable values from args hash
         foreach ($args as $varname => $value) {
             $this->$varname = $value;
         }
-        if (isset($args ['plural']) && $args ['plural']) {
+        if (isset($args['plural']) && $args['plural']) {
             $this->is_plural = true;
         }
         if (! is_array($this->translations)) {
@@ -77,7 +81,7 @@ class entry
             $this->flags = array();
         }
     }
-
+    
     /**
      * Generates a unique key for this entry
      *
@@ -92,12 +96,12 @@ class entry
         $key = ! $this->context ? $this->singular : $this->context . chr(4) . $this->singular;
         // Standardize on \n line endings
         $key = str_replace(array(
-                "\r\n",
-                "\r"
+            "\r\n", 
+            "\r"
         ), "\n", $key);
         return $key;
     }
-
+    
     /**
      *
      * @param object $other

@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 use InvalidArgumentException;
@@ -28,49 +32,49 @@ use InvalidArgumentException;
  */
 class xml
 {
-
+    
     /**
      * 函数创建 XML 解析器
      *
      * @var resource
      */
     protected $resParser;
-
+    
     /**
      * Document
      *
      * @var array
      */
     protected $arrDocument;
-
+    
     /**
      * Parent
      *
      * @var array
      */
     protected $arrParent;
-
+    
     /**
      * Stack
      *
      * @var array
      */
     protected $arrStack;
-
+    
     /**
      * LastOpenedTag
      *
      * @var array
      */
     protected $sLastOpenedTag;
-
+    
     /**
      * Data
      *
      * @var string
      */
     protected $sData;
-
+    
     /**
      * 构造函数
      *
@@ -79,7 +83,7 @@ class xml
     protected function __construct()
     {
     }
-
+    
     /**
      * 禁止克隆
      *
@@ -89,7 +93,7 @@ class xml
     {
         throw new RuntimeException('Xml disallowed clone');
     }
-
+    
     /**
      * 数据数据 xml
      *
@@ -105,12 +109,12 @@ class xml
         if (! is_array($arrData)) {
             throw new InvalidArgumentException('The first argument variable is not an array');
         }
-
+        
         if ($nLevel == 0) {
             ob_start();
             echo '<?xml version="1.0" encoding="' . $sCharset . '"?>' . PHP_EOL . '<root>' . PHP_EOL;
         }
-
+        
         while ((list($sKey, $sValue) = each($arrData)) !== false) {
             if (! strpos($sKey, ' attr')) {
                 if (is_array($sValue) and array_key_exists(0, $sValue)) {
@@ -119,12 +123,12 @@ class xml
                     $sTag = $sPriorKey ? $sPriorKey : $sKey;
                     echo str_repeat("\t", $nLevel), '<', $sTag;
                     if (array_key_exists("$sKey attr", $arrData)) {
-                        while ((list($sAttrName, $sAttrValue) = each($arrData ["$sKey attr"])) != '') {
+                        while ((list($sAttrName, $sAttrValue) = each($arrData["$sKey attr"])) != '') {
                             echo ' ', $sAttrName, '="', static::formatNode($sAttrValue, $bHtmlOn), '"';
                         }
-                        reset($arrData ["$sKey attr"]);
+                        reset($arrData["$sKey attr"]);
                     }
-
+                    
                     if (is_null($sValue)) {
                         echo ' />' . PHP_EOL;
                     } elseif (! is_array($sValue)) {
@@ -135,9 +139,9 @@ class xml
                 }
             }
         }
-
+        
         reset($arrData);
-
+        
         if ($nLevel == 0) {
             echo '</root>';
             $sStr = ob_get_contents();
@@ -145,7 +149,7 @@ class xml
             return $sStr;
         }
     }
-
+    
     /**
      * xml 反序列化
      *
@@ -155,16 +159,16 @@ class xml
      */
     public static function unSerialize($sXml, $booWithRoot = false)
     {
-        $objXml = new static ();
+        $objXml = new static();
         $objXml->initParser();
         $arrData = $objXml->parse($sXml);
         $objXml->destroyParser();
-        if (! $booWithRoot && isset($arrData ['root'])) {
-            $arrData = $arrData ['root'];
+        if (! $booWithRoot && isset($arrData['root'])) {
+            $arrData = $arrData['root'];
         }
         return $arrData;
     }
-
+    
     /**
      * 分析 xml 数据
      *
@@ -173,12 +177,12 @@ class xml
      */
     public function parse(&$sData)
     {
-        $this->arrDocument = [ ];
-        $this->arrStack = [ ];
+        $this->arrDocument = [];
+        $this->arrStack = [];
         $this->arrParent = &$this->arrDocument;
         return xml_parse($this->resParser, $sData, true) ? $this->arrDocument : null;
     }
-
+    
     /**
      * 初始化 xml 分析器句柄
      *
@@ -192,7 +196,7 @@ class xml
         xml_set_element_handler($this->resParser, 'open', 'close');
         xml_set_character_data_handler($this->resParser, 'data');
     }
-
+    
     /**
      * 关闭 xml 分析器句柄
      *
@@ -202,7 +206,7 @@ class xml
     {
         xml_parser_free($this->resParser);
     }
-
+    
     /**
      * 打开
      *
@@ -216,37 +220,37 @@ class xml
         $this->sData = '';
         $this->sLastOpenedTag = $sTag;
         if (is_array($this->arrParent) and array_key_exists($sTag, $this->arrParent)) {
-            if (is_array($this->arrParent [$sTag]) and array_key_exists(0, $this->arrParent [$sTag])) {
-                $nKey = $tthis->countNumericItems($this->arrParent [$sTag]);
+            if (is_array($this->arrParent[$sTag]) and array_key_exists(0, $this->arrParent[$sTag])) {
+                $nKey = $tthis->countNumericItems($this->arrParent[$sTag]);
             } else {
                 if (array_key_exists("$sTag attr", $this->arrParent)) {
                     $arrValue = [
-                            '0 attr' => &$this->arrParent ["$sTag attr"],
-                            &$this->arrParent [$sTag]
+                        '0 attr' => &$this->arrParent["$sTag attr"], 
+                        &$this->arrParent[$sTag]
                     ];
-                    unset($this->arrParent ["$sTag attr"]);
+                    unset($this->arrParent["$sTag attr"]);
                 } else {
                     $arrValue = [
-                            &$this->arrParent [$sTag]
+                        &$this->arrParent[$sTag]
                     ];
                 }
-
-                $this->arrParent [$sTag] = &$arrValue;
+                
+                $this->arrParent[$sTag] = &$arrValue;
                 $nKey = 1;
             }
-            $this->arrParent = &$this->arrParent [$sTag];
+            $this->arrParent = &$this->arrParent[$sTag];
         } else {
             $nKey = $sTag;
         }
-
+        
         if ($arrAttributes) {
-            $this->arrParent ["$nKey attr"] = $arrAttributes;
+            $this->arrParent["$nKey attr"] = $arrAttributes;
         }
-
-        $this->arrParent = &$this->arrParent [$nKey];
-        $this->arrStack [] = &$this->arrParent;
+        
+        $this->arrParent = &$this->arrParent[$nKey];
+        $this->arrStack[] = &$this->arrParent;
     }
-
+    
     /**
      * 关闭
      *
@@ -260,13 +264,13 @@ class xml
             $this->arrParent = $this->sData;
             $this->sLastOpenedTag = null;
         }
-
+        
         array_pop($this->arrStack);
         if ($this->arrStack) {
-            $this->arrParent = &$this->arrStack [count($this->arrStack) - 1];
+            $this->arrParent = &$this->arrStack[count($this->arrStack) - 1];
         }
     }
-
+    
     /**
      * 数据设置
      *
@@ -280,7 +284,7 @@ class xml
             $this->sData .= $sData;
         }
     }
-
+    
     /**
      * 数字项数量
      *
@@ -291,7 +295,7 @@ class xml
     {
         return is_array($array) ? count(array_filter(array_keys($array), 'is_numeric')) : 0;
     }
-
+    
     /**
      * 格式化节点
      *

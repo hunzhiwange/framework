@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support\debug;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
@@ -29,7 +33,7 @@ use Symfony\Component\VarDumper\Dumper\HtmlDumper;
  */
 class dump
 {
-
+    
     /**
      * 调试一个变量
      *
@@ -52,12 +56,12 @@ class dump
             array_shift($arrArgs);
             array_unshift($arrArgs, $mixValue);
             return call_user_func_array([
-                    'queryyetsimple\support\debug\dump',
-                    'varDump'
+                'queryyetsimple\support\debug\dump', 
+                'varDump'
             ], $arrArgs);
         }
     }
-
+    
     /**
      * 调试变量
      *
@@ -74,7 +78,7 @@ class dump
             $sOutput = preg_replace("/\]\=\>\n(\s+)/m", "] => ", $sOutput);
             $sOutput = 'cli' === PHP_SAPI ? $sOutput : '<pre>' . htmlspecialchars($sOutput, ENT_QUOTES) . '</pre>';
         }
-
+        
         if ($bEcho) {
             echo $sOutput;
         } else {

@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\throttler;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 use queryyetsimple\http\request;
@@ -29,28 +33,28 @@ use queryyetsimple\cache\icache;
  */
 class throttler implements ithrottler
 {
-
+    
     /**
      * 节流器实例
      *
      * @var \queryyetsimple\throttler\rate_limiter[]
      */
-    protected $arrRateLimiter = [ ];
-
+    protected $arrRateLimiter = [];
+    
     /**
      * cache
      *
      * @var \queryyetsimple\cache\icache
      */
     protected $objCache;
-
+    
     /**
      * http request
      *
      * @var \queryyetsimple\http\request
      */
     protected $objRequest;
-
+    
     /**
      * 构造函数
      *
@@ -61,7 +65,7 @@ class throttler implements ithrottler
     {
         $this->objCache = $objCache;
     }
-
+    
     /**
      * 创建一个节流器
      *
@@ -73,13 +77,13 @@ class throttler implements ithrottler
     public function create($strKey = null, $intXRateLimitLimit = 20, $intXRateLimitTime = 20)
     {
         $strKey = $this->getRequestKey($strKey);
-        if (isset($this->arrRateLimiter [$strKey])) {
-            return $this->arrRateLimiter [$strKey]->limitLimit($intXRateLimitLimit)->limitTime($intXRateLimitTime);
+        if (isset($this->arrRateLimiter[$strKey])) {
+            return $this->arrRateLimiter[$strKey]->limitLimit($intXRateLimitLimit)->limitTime($intXRateLimitTime);
         }
-
-        return $this->arrRateLimiter [$strKey] = new rate_limiter($this->objCache, $strKey, $intXRateLimitLimit, $intXRateLimitTime);
+        
+        return $this->arrRateLimiter[$strKey] = new rate_limiter($this->objCache, $strKey, $intXRateLimitLimit, $intXRateLimitTime);
     }
-
+    
     /**
      * 设置 http request
      *
@@ -91,7 +95,7 @@ class throttler implements ithrottler
         $this->objRequest = $objRequest;
         return $this;
     }
-
+    
     /**
      * 获取请求 key
      *
@@ -105,7 +109,7 @@ class throttler implements ithrottler
         }
         return $strKey ?  : sha1($this->objRequest->ip() . '@' . $this->objRequest->routerNode());
     }
-
+    
     /**
      * 拦截匿名注册控制器方法
      *
@@ -116,7 +120,7 @@ class throttler implements ithrottler
     public function __call($sMethod, $arrArgs)
     {
         return call_user_func_array([
-                $this,
+            $this,
                 'create'
         ], $arrArgs)->$sMethod();
     }

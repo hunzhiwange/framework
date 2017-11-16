@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\page;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Countable;
 use ArrayAccess;
@@ -31,7 +35,7 @@ use queryyetsimple\support\iarray;
  */
 class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializable, ijson, iarray
 {
-
+    
     /**
      * 构造函数
      *
@@ -46,7 +50,7 @@ class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializa
         $this->intTotalRecord = $intTotalRecord;
         $this->options($arrOption);
     }
-
+    
     /**
      * 渲染分页
      *
@@ -61,7 +65,7 @@ class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializa
         }
         return $objRender->render();
     }
-
+    
     /**
      * 对象转数组
      *
@@ -70,16 +74,16 @@ class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializa
     public function toArray()
     {
         return [
-                'per_page' => $this->getPerPage(),
-                'current_page' => $this->getCurrentPage(),
-                'total_page' => $this->getTotalPage(),
-                'total_record' => $this->getTotalRecord(),
-                'total_infinity' => $this->isTotalInfinity(),
-                'from' => $this->getFirstRecord(),
-                'to' => $this->getLastRecord()
+            'per_page' => $this->getPerPage(), 
+            'current_page' => $this->getCurrentPage(), 
+            'total_page' => $this->getTotalPage(), 
+            'total_record' => $this->getTotalRecord(), 
+            'total_infinity' => $this->isTotalInfinity(), 
+            'from' => $this->getFirstRecord(), 
+            'to' => $this->getLastRecord()
         ];
     }
-
+    
     /**
      * 实现 JsonSerializable::jsonSerialize
      *
@@ -89,7 +93,7 @@ class page extends apage implements ipage, Countable, ArrayAccess, JsonSerializa
     {
         return $this->toArray();
     }
-
+    
     /**
      * 对象转 JSON
      *

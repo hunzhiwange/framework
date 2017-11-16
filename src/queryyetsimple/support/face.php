@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\support;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Closure;
 use Exception;
@@ -31,21 +35,21 @@ use queryyetsimple\support\icontainer;
  */
 abstract class face
 {
-
+    
     /**
      * 项目容器
      *
      * @var \queryyetsimple\support\icontainer
      */
     protected static $objContainer;
-
+    
     /**
      * 注入容器实例
      *
      * @var object
      */
-    protected static $arrInstance = [ ];
-
+    protected static $arrInstance = [];
+    
     /**
      * 获取注册容器的实例
      *
@@ -55,16 +59,16 @@ abstract class face
     {
         $strClass = static::name();
         $strUnique = static::makeFaceKey($strClass, $arrArgs = func_get_args());
-
-        if (isset(static::$arrInstance [$strUnique])) {
-            return static::$arrInstance [$strUnique];
+        
+        if (isset(static::$arrInstance[$strUnique])) {
+            return static::$arrInstance[$strUnique];
         }
-        if (! (static::$arrInstance [$strUnique] = static::container()->make($strClass, $arrArgs))) {
+        if (! (static::$arrInstance[$strUnique] = static::container()->make($strClass, $arrArgs))) {
             throw new RuntimeException(sprintf('No %s services are found in the IOC container.', $strClass));
         }
-        return static::$arrInstance [$strUnique];
+        return static::$arrInstance[$strUnique];
     }
-
+    
     /**
      * 返回服务容器
      *
@@ -74,7 +78,7 @@ abstract class face
     {
         return static::$objContainer;
     }
-
+    
     /**
      * 设置服务容器
      *
@@ -85,7 +89,7 @@ abstract class face
     {
         static::$objContainer = $objContainer;
     }
-
+    
     /**
      * 生成唯一 key
      *
@@ -107,15 +111,14 @@ abstract class face
                     } else {
                         $strSerialize .= serialize($mixArg);
                     }
-                } catch (Exception $oE) {
-                }
+                } catch (Exception $oE) {}
             }
             return $strClass . '.' . md5($strSerialize);
         } else {
             return $strClass;
         }
     }
-
+    
     /**
      * 缺省静态方法
      *
@@ -129,10 +132,10 @@ abstract class face
         if (! $objInstance) {
             throw new RuntimeException('Can not find instance from container.');
         }
-
+        
         $calMethod = [
-                $objInstance,
-                $sMethod
+            $objInstance, 
+            $sMethod
         ];
         if (! is_callable($calMethod)) {
             throw new BadMethodCallException(sprintf('Method %s is not exits.', $sMethod));

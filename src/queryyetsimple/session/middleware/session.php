@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\session\middleware;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Closure;
 use queryyetsimple\http\request;
@@ -28,7 +32,8 @@ use queryyetsimple\session\session as manager;
  * @since 2017.11.14
  * @version 1.0
  */
-class session {
+class session
+{
     
     /**
      * session 管理
@@ -43,7 +48,8 @@ class session {
      * @param \queryyetsimple\throttler\ithrottler $objManager            
      * @return void
      */
-    public function __construct(manager $objManager) {
+    public function __construct(manager $objManager)
+    {
         $this->objManager = $objManager;
     }
     
@@ -54,9 +60,10 @@ class session {
      * @param \queryyetsimple\http\request $objRequest            
      * @return mixed
      */
-    public function handle(Closure $calNext, request $objRequest) {
-        $this->startSession ();
-        return $calNext ( $objRequest );
+    public function handle(Closure $calNext, request $objRequest)
+    {
+        $this->startSession();
+        return $calNext($objRequest);
     }
     
     /**
@@ -66,10 +73,11 @@ class session {
      * @param \queryyetsimple\http\response $mixResponse            
      * @return mixed
      */
-    public function terminate(Closure $calNext, request $objRequest, response $objResponse) {
-        $this->unregisterFlash ();
-        $this->setPrevUrl ( $objRequest );
-        return $calNext ( $objRequest, $objResponse );
+    public function terminate(Closure $calNext, request $objRequest, response $objResponse)
+    {
+        $this->unregisterFlash();
+        $this->setPrevUrl($objRequest);
+        return $calNext($objRequest, $objResponse);
     }
     
     /**
@@ -77,8 +85,9 @@ class session {
      *
      * @return void
      */
-    protected function startSession() {
-        $this->objManager->start ();
+    protected function startSession()
+    {
+        $this->objManager->start();
     }
     
     /**
@@ -86,8 +95,9 @@ class session {
      *
      * @return void
      */
-    protected function unregisterFlash() {
-        $this->objManager->unregisterFlash ();
+    protected function unregisterFlash()
+    {
+        $this->objManager->unregisterFlash();
     }
     
     /**
@@ -96,7 +106,8 @@ class session {
      * @param \queryyetsimple\http\request $objRequest            
      * @return void
      */
-    protected function setPrevUrl(request $objRequest) {
-        $this->objManager->setPrevUrl ( $objRequest->url () );
+    protected function setPrevUrl(request $objRequest)
+    {
+        $this->objManager->setPrevUrl($objRequest->url());
     }
 }

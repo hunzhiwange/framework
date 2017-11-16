@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\page;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 use queryyetsimple\support\ihtml;
@@ -31,113 +35,113 @@ use queryyetsimple\support\assert;
 abstract class apage implements ihtml
 {
     use option;
-
+    
     /**
      * 总记录数量
      *
      * @var int
      */
     protected $intTotalRecord;
-
+    
     /**
      * 每页分页数量
      *
      * @var int
      */
     protected $intPerPage;
-
+    
     /**
      * 当前分页页码
      *
      * @var int
      */
     protected $intCurrentPage;
-
+    
     /**
      * 总页数
      *
      * @var int
      */
     protected $intTotalPage;
-
+    
     /**
      * 分页开始位置
      *
      * @var int
      */
     protected $intPageStart;
-
+    
     /**
      * 分页结束位置
      *
      * @var int
      */
     protected $intPageEnd;
-
+    
     /**
      * 解析后参数变量
      *
      * @var array
      */
     protected $arrResolveParameter;
-
+    
     /**
      * 解析后 url 地址
      *
      * @var array
      */
     protected $strResolveUrl;
-
+    
     /**
      * 解析 url
      *
      * @var callable
      */
     protected static $calUrlResolver;
-
+    
     /**
      * 默认每页分页数量
      *
      * @var int
      */
     const PER_PAGE = 15;
-
+    
     /**
      * 无穷大记录数
      *
      * @var int
      */
     const INFINITY = 999999999;
-
+    
     /**
      * 默认分页渲染
      *
      * @var int
      */
     const RENDER = 'defaults';
-
+    
     /**
      * 默认范围
      *
      * @var int
      */
     const RANGE = 2;
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-            'page' => 'page',
-            'range' => 2,
-            'render' => 'defaults',
-            'render_option' => [ ],
-            'url' => null,
-            'parameter' => [ ],
-            'fragment' => null
+        'page' => 'page', 
+        'range' => 2, 
+        'render' => 'defaults', 
+        'render_option' => [], 
+        'url' => null, 
+        'parameter' => [], 
+        'fragment' => null
     ];
-
+    
     /**
      * 转化输出 HTML
      *
@@ -147,7 +151,7 @@ abstract class apage implements ihtml
     {
         return ( string ) $this->render();
     }
-
+    
     /**
      * 追加分页条件
      *
@@ -159,7 +163,7 @@ abstract class apage implements ihtml
     {
         return $this->addParameter($mixKey, $mixValue);
     }
-
+    
     /**
      * 批量追加分页条件
      *
@@ -173,7 +177,7 @@ abstract class apage implements ihtml
         }
         return $this;
     }
-
+    
     /**
      * 设置分页条件
      *
@@ -184,7 +188,7 @@ abstract class apage implements ihtml
     {
         return $this->option('parameter', $arrParameter);
     }
-
+    
     /**
      * 添加分页条件
      *
@@ -196,12 +200,12 @@ abstract class apage implements ihtml
     {
         if ($strKey !== $this->getPageName()) {
             $this->optionArray('parameter', [
-                    $strKey => $strValue
+                $strKey => $strValue
             ]);
         }
         return $this;
     }
-
+    
     /**
      * 设置渲染参数
      *
@@ -212,10 +216,10 @@ abstract class apage implements ihtml
     public function renderOption($strKey, $strValue)
     {
         return $this->optionArray('render_option', [
-                $strKey => $strValue
+            $strKey => $strValue
         ]);
     }
-
+    
     /**
      * 批量设置渲染参数
      *
@@ -230,7 +234,7 @@ abstract class apage implements ihtml
         }
         return $this;
     }
-
+    
     /**
      * 是否启用 CSS
      *
@@ -241,7 +245,7 @@ abstract class apage implements ihtml
     {
         return $this->renderOption('css', $booOn);
     }
-
+    
     /**
      * 获取渲染参数
      *
@@ -251,7 +255,7 @@ abstract class apage implements ihtml
     {
         return $this->getOption('render_option');
     }
-
+    
     /**
      * 设置 url
      *
@@ -262,7 +266,7 @@ abstract class apage implements ihtml
     {
         return $this->option('url', $mixUrl);
     }
-
+    
     /**
      * 设置 render
      *
@@ -273,7 +277,7 @@ abstract class apage implements ihtml
     {
         return $this->option('render', $mixRender);
     }
-
+    
     /**
      * 获取 render
      *
@@ -283,7 +287,7 @@ abstract class apage implements ihtml
     {
         return $this->getOption('render') ?  : static::RENDER;
     }
-
+    
     /**
      * 设置 range
      *
@@ -294,7 +298,7 @@ abstract class apage implements ihtml
     {
         return $this->option('range', $mixRange);
     }
-
+    
     /**
      * 获取 range
      *
@@ -304,7 +308,7 @@ abstract class apage implements ihtml
     {
         return $this->getOption('range') ? intval($this->getOption('range')) : static::RANGE;
     }
-
+    
     /**
      * 设置 url 描点
      *
@@ -315,7 +319,7 @@ abstract class apage implements ihtml
     {
         return $this->option('fragment', $mixFragment);
     }
-
+    
     /**
      * 获取 url 描点
      *
@@ -325,7 +329,7 @@ abstract class apage implements ihtml
     {
         return $this->getOption('fragment');
     }
-
+    
     /**
      * 设置每页分页数量
      *
@@ -336,7 +340,7 @@ abstract class apage implements ihtml
     {
         return $this->intPerPage = $intPerPage;
     }
-
+    
     /**
      * 返回每页数量
      *
@@ -349,7 +353,7 @@ abstract class apage implements ihtml
         }
         return $this->intPerPage;
     }
-
+    
     /**
      * 设置分页名字
      *
@@ -360,7 +364,7 @@ abstract class apage implements ihtml
     {
         return $this->option('page');
     }
-
+    
     /**
      * 获取分页名字
      *
@@ -370,7 +374,7 @@ abstract class apage implements ihtml
     {
         return $this->getOption('page');
     }
-
+    
     /**
      * 返回总记录数量
      *
@@ -380,7 +384,7 @@ abstract class apage implements ihtml
     {
         return $this->intTotalRecord === true ? static::INFINITY : $this->intTotalRecord;
     }
-
+    
     /**
      * 是否为无限分页
      *
@@ -390,7 +394,7 @@ abstract class apage implements ihtml
     {
         return $this->getTotalRecord() === static::INFINITY;
     }
-
+    
     /**
      * 取得第一个记录的编号
      *
@@ -403,7 +407,7 @@ abstract class apage implements ihtml
         }
         return ($this->getCurrentPage() - 1) * $this->getPerPage() + 1;
     }
-
+    
     /**
      * 取得最后一个记录的编号
      *
@@ -416,7 +420,7 @@ abstract class apage implements ihtml
         }
         return $this->getFirstRecord() + $this->getTotalRecord() - 1;
     }
-
+    
     /**
      * 返回当前分页
      *
@@ -425,8 +429,8 @@ abstract class apage implements ihtml
     public function getCurrentPage()
     {
         if (is_null($this->intCurrentPage)) {
-            if (isset($_GET [$this->getOption('page')])) {
-                $this->intCurrentPage = abs(intval($_GET [$this->getOption('page')]));
+            if (isset($_GET[$this->getOption('page')])) {
+                $this->intCurrentPage = abs(intval($_GET[$this->getOption('page')]));
                 if ($this->intCurrentPage < 1) {
                     $this->intCurrentPage = 1;
                 }
@@ -434,10 +438,10 @@ abstract class apage implements ihtml
                 $this->intCurrentPage = 1;
             }
         }
-
+        
         return $this->intCurrentPage;
     }
-
+    
     /**
      * 返回分页视图开始页码
      *
@@ -451,10 +455,10 @@ abstract class apage implements ihtml
                 $this->intPageStart = 1;
             }
         }
-
+        
         return $this->intPageStart;
     }
-
+    
     /**
      * 返回分页视图结束页码
      *
@@ -467,15 +471,15 @@ abstract class apage implements ihtml
             if ($this->getPageStart() == 1) {
                 $this->intPageEnd = $this->getRange() * 2 + 2;
             }
-
+            
             if ($this->getTotalPage() && $this->intPageEnd > $this->getTotalPage()) {
                 $this->intPageEnd = $this->getTotalPage();
             }
         }
-
+        
         return $this->intPageEnd;
     }
-
+    
     /**
      * 返回总分页数量
      *
@@ -489,10 +493,10 @@ abstract class apage implements ihtml
                 $this->intTotalPage = 1;
             }
         }
-
+        
         return $this->intTotalPage;
     }
-
+    
     /**
      * 是否渲染 total
      *
@@ -502,7 +506,7 @@ abstract class apage implements ihtml
     {
         return ! is_null($this->getTotalRecord()) && ! $this->isTotalInfinity();
     }
-
+    
     /**
      * 是否渲染 first
      *
@@ -512,7 +516,7 @@ abstract class apage implements ihtml
     {
         return $this->getTotalPage() > 1 && $this->getCurrentPage() >= ($this->getRange() * 2 + 2);
     }
-
+    
     /**
      * 返回渲染 first.prev
      *
@@ -522,7 +526,7 @@ abstract class apage implements ihtml
     {
         return $this->getCurrentPage() - ($this->getRange() * 2 + 1);
     }
-
+    
     /**
      * 是否渲染 prev
      *
@@ -532,7 +536,7 @@ abstract class apage implements ihtml
     {
         return (is_null($this->getTotalPage()) || $this->getTotalPage() > 1) && $this->getCurrentPage() != 1;
     }
-
+    
     /**
      * 返回渲染 prev.prev
      *
@@ -542,7 +546,7 @@ abstract class apage implements ihtml
     {
         return $this->getCurrentPage() - 1;
     }
-
+    
     /**
      * 是否渲染 main
      *
@@ -552,7 +556,7 @@ abstract class apage implements ihtml
     {
         return $this->getTotalPage() > 1;
     }
-
+    
     /**
      * 是否渲染 next
      *
@@ -562,7 +566,7 @@ abstract class apage implements ihtml
     {
         return is_null($this->getTotalPage()) || ($this->getTotalPage() > 1 && $this->getCurrentPage() != $this->getTotalPage());
     }
-
+    
     /**
      * 是否渲染 last
      *
@@ -572,7 +576,7 @@ abstract class apage implements ihtml
     {
         return $this->getTotalPage() > 1 && $this->getCurrentPage() != $this->getTotalPage() && $this->getTotalPage() > $this->getPageEnd();
     }
-
+    
     /**
      * 是否渲染 last
      *
@@ -582,7 +586,7 @@ abstract class apage implements ihtml
     {
         return $this->getTotalPage() > $this->getPageEnd() + 1;
     }
-
+    
     /**
      * 返回渲染 last.next
      *
@@ -596,7 +600,7 @@ abstract class apage implements ihtml
         }
         return $intNext;
     }
-
+    
     /**
      * 解析 url
      *
@@ -609,7 +613,7 @@ abstract class apage implements ihtml
         }
         return call_user_func_array(static::$calUrlResolver, func_get_args());
     }
-
+    
     /**
      * 设置 url 解析回调
      *
@@ -621,7 +625,7 @@ abstract class apage implements ihtml
         assert::callback($calUrlResolver);
         static::$calUrlResolver = $calUrlResolver;
     }
-
+    
     /**
      * 替换分页变量
      *
@@ -631,11 +635,11 @@ abstract class apage implements ihtml
     public function pageReplace($mixPage)
     {
         return str_replace([
-                urlencode('{page}'),
-                '{page}'
+            urlencode('{page}'), 
+            '{page}'
         ], $mixPage, $this->getUrl());
     }
-
+    
     /**
      * 分析分页 url 地址
      *
@@ -653,25 +657,25 @@ abstract class apage implements ihtml
         if (! is_null($this->strResolveUrl)) {
             return $this->strResolveUrl;
         }
-
+        
         $booWithUrl = false;
         $strSubdomain = 'www';
-
+        
         if (strpos($this->getOption('url'), '@') !== false) {
             $booWithUrl = true;
             if (strpos($this->getOption('url'), '@') !== 0) {
                 $arrTemp = explode('@', $this->getOption('url'));
-                $this->option('url', $arrTemp [1]);
-                $strSubdomain = $arrTemp [0];
+                $this->option('url', $arrTemp[1]);
+                $strSubdomain = $arrTemp[0];
                 unset($arrTemp);
             }
         }
-
+        
         // 当前URL分析
         if (! empty($this->getOption('url'))) {
             if ($booWithUrl) {
                 $this->strResolveUrl = $this->resolverUrl($this->getOption('url'), $this->getDefaultPageParameter(false === strpos($this->getOption('url'), '{page}')), [
-                        'subdomain' => $strSubdomain
+                    'subdomain' => $strSubdomain
                 ]);
             } else {
                 if (false === strpos($this->getOption('url'), '{page}')) {
@@ -680,16 +684,16 @@ abstract class apage implements ihtml
             }
         } else {
             $this->strResolveUrl = $this->resolverUrl('', $this->getParseParameter(), [
-                    'subdomain' => $strSubdomain
+                'subdomain' => $strSubdomain
             ]);
         }
-
+        
         $this->strResolveUrl = $this->strResolveUrl . $this->buildFragment();
-
+        
         unset($booWithUrl, $strSubdomain);
         return $this->strResolveUrl;
     }
-
+    
     /**
      * 返回分析后的参数
      *
@@ -700,7 +704,7 @@ abstract class apage implements ihtml
     {
         return $this->getParameter($this->getDefaultPageParameter($booWithDefault));
     }
-
+    
     /**
      * 默认分页参数
      *
@@ -710,10 +714,10 @@ abstract class apage implements ihtml
     protected function getDefaultPageParameter($booWithDefault = true)
     {
         return $booWithDefault ? [
-                $this->getOption('page') => '{page}'
-        ] : [ ];
+            $this->getOption('page') => '{page}'
+        ] : [];
     }
-
+    
     /**
      * 解析参数
      *
@@ -735,7 +739,7 @@ abstract class apage implements ihtml
         }
         return array_merge($this->arrResolveParameter, $arrExtend);
     }
-
+    
     /**
      * 创建描点
      *
@@ -745,7 +749,7 @@ abstract class apage implements ihtml
     {
         return $this->getFragment() ? '#' . $this->getFragment() : '';
     }
-
+    
     /**
      * 统计元素数量 count($obj)
      *
@@ -754,7 +758,7 @@ abstract class apage implements ihtml
     public function count()
     {
     }
-
+    
     /**
      * 实现 isset( $obj['hello'] )
      *
@@ -764,7 +768,7 @@ abstract class apage implements ihtml
     public function offsetExists($strKey)
     {
     }
-
+    
     /**
      * 实现 $strHello = $obj['hello']
      *
@@ -774,7 +778,7 @@ abstract class apage implements ihtml
     public function offsetGet($strKey)
     {
     }
-
+    
     /**
      * 实现 $obj['hello'] = 'world'
      *
@@ -785,7 +789,7 @@ abstract class apage implements ihtml
     public function offsetSet($strKey, $mixValue)
     {
     }
-
+    
     /**
      * 实现 unset($obj['hello'])
      *

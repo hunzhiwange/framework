@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\filesystem;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 use DirectoryIterator;
@@ -30,7 +34,7 @@ use queryyetsimple\support\infinity;
 class fso
 {
     use infinity;
-
+    
     /**
      * 取得文件内容
      *
@@ -42,10 +46,10 @@ class fso
         if (static::isFile($strPath)) {
             return file_get_contents($strPath);
         }
-
+        
         throw new RuntimeException(sprintf('File %s does not exist', $strPath));
     }
-
+    
     /**
      * 创建目录
      *
@@ -58,26 +62,26 @@ class fso
         if (is_dir($sDir)) {
             return;
         }
-
+        
         if (is_string($sDir)) {
             $sDir = explode('/', str_replace('\\', '/', trim($sDir, '/')));
         }
-
+        
         $sCurDir = DIRECTORY_SEPARATOR == '\\' ? '' : '/';
-
+        
         foreach ($sDir as $nKey => $sTemp) {
             $sCurDir .= $sTemp . '/';
             if (! is_dir($sCurDir)) {
-                if (isset($sDir [$nKey + 1]) && is_dir($sCurDir . $sDir [$nKey + 1])) {
+                if (isset($sDir[$nKey + 1]) && is_dir($sCurDir . $sDir[$nKey + 1])) {
                     continue;
                 }
                 @mkdir($sCurDir, $nMode);
             }
         }
-
+        
         return true;
     }
-
+    
     /**
      * 删除目录
      *
@@ -90,7 +94,7 @@ class fso
         if (! file_exists($sDir) || ! is_dir($sDir)) {
             return;
         }
-
+        
         if (! $bRecursive) {
             rmdir($sDir);
         } else {
@@ -99,7 +103,7 @@ class fso
                 if ($objFile->isDot()) {
                     continue;
                 }
-
+                
                 if ($objFile->isFile()) {
                     if (! unlink($objFile->getRealPath())) {
                         return;
@@ -111,7 +115,7 @@ class fso
             rmdir($sDir);
         }
     }
-
+    
     /**
      * 复制目录
      *
@@ -123,27 +127,27 @@ class fso
     public static function copyDirectory($sSourcePath, $sTargetPath, $arrFilter = [])
     {
         $arrFilter = array_merge([
-                '.svn',
-                '.git',
-                'node_modules',
-                '.gitkeep'
+            '.svn', 
+            '.git', 
+            'node_modules', 
+            '.gitkeep'
         ], $arrFilter);
-
+        
         if (! is_dir($sSourcePath)) {
             return;
         }
         if (file_exists($sTargetPath)) {
             return;
         }
-
+        
         $objDir = new DirectoryIterator($sSourcePath);
         foreach ($objDir as $objFile) {
             if ($objFile->isDot() || in_array($objFile->getFilename(), $arrFilter)) {
                 continue;
             }
-
+            
             $sNewPath = $sTargetPath . '/' . $objFile->getFilename();
-
+            
             if ($objFile->isFile()) {
                 if (! is_dir($sNewPath)) {
                     static::createDirectory(dirname($sNewPath));
@@ -158,7 +162,7 @@ class fso
             }
         }
     }
-
+    
     /**
      * 只读取一级目录
      *
@@ -173,55 +177,55 @@ class fso
     public static function lists($sDir, $strReturnType = 'dir', $booFullpath = false, $arrFilter = [], $arrAllowedExt = [], $arrFilterExt = [])
     {
         $arrFilter = array_merge([
-                '.svn',
-                '.git',
-                'node_modules',
-                '.gitkeep'
+            '.svn', 
+            '.git', 
+            'node_modules', 
+            '.gitkeep'
         ], $arrFilter);
-
+        
         $arrReturnData = [
-                'file' => [ ],
-                'dir' => [ ]
+            'file' => [], 
+            'dir' => []
         ];
-
+        
         if (is_dir($sDir)) {
-            $arrFiles = [ ];
-
+            $arrFiles = [];
+            
             $objDir = new DirectoryIterator($sDir);
             foreach ($objDir as $objFile) {
                 if ($objFile->isDot() || in_array($objFile->getFilename(), $arrFilter)) {
                     continue;
                 }
-
+                
                 if ($objFile->isDir() && in_array($strReturnType, [
-                        'dir',
-                        'both'
+                    'dir', 
+                    'both'
                 ])) {
-                    $arrReturnData ['dir'] [] = $booFullpath ? $objFile->getRealPath() : $objFile->getFilename();
+                    $arrReturnData['dir'][] = $booFullpath ? $objFile->getRealPath() : $objFile->getFilename();
                 }
-
+                
                 $strExt = static::getExtension($objFile->getFilename(), 2);
-
+                
                 if ($objFile->isFile() && in_array($strReturnType, [
-                        'file',
-                        'both'
+                    'file', 
+                    'both'
                 ]) && (! $arrFilterExt || ! in_array($strExt, $arrFilterExt)) && (! $arrAllowedExt || in_array($strExt, $arrAllowedExt))) {
-                    $arrReturnData ['file'] [] = $booFullpath ? $objFile->getRealPath() : $objFile->getFilename();
+                    $arrReturnData['file'][] = $booFullpath ? $objFile->getRealPath() : $objFile->getFilename();
                 }
             }
-
+            
             if ($strReturnType == 'file') {
-                return $arrReturnData ['file'];
+                return $arrReturnData['file'];
             } elseif ($strReturnType == 'dir') {
-                return $arrReturnData ['dir'];
+                return $arrReturnData['dir'];
             } else {
                 return $arrReturnData;
             }
         } else {
-            return [ ];
+            return [];
         }
     }
-
+    
     /**
      * 整理目录斜线风格
      *
@@ -239,7 +243,7 @@ class fso
         }
         return rtrim($sPath, '\\/');
     }
-
+    
     /**
      * 格式化文件或者目录为 Linux 风格
      *
@@ -252,11 +256,11 @@ class fso
         $strPath = ltrim(static::tidyPath($strPath, true), '//');
         if (strpos($strPath, ':\\') !== false) {
             $arrTemp = explode(':\\', $strPath);
-            $strPath = ($booWindowsWithLetter === true ? strtolower($arrTemp [0]) . '/' : '') . $arrTemp [1];
+            $strPath = ($booWindowsWithLetter === true ? strtolower($arrTemp[0]) . '/' : '') . $arrTemp[1];
         }
         return '/' . $strPath;
     }
-
+    
     /**
      * 判断是否为绝对路径
      *
@@ -267,7 +271,7 @@ class fso
     {
         return preg_match('/^(\/|[a-z]:)/i', $sPath);
     }
-
+    
     /**
      * 根据 ID 获取打散目录
      *
@@ -279,11 +283,11 @@ class fso
         $intDataId = abs(intval($intDataId));
         $intDataId = sprintf("%09d", $intDataId); // 格式化为 9 位数，前面不够填充 0
         return [
-                substr($intDataId, 0, 3) . '/' . substr($intDataId, 3, 2) . '/' . substr($intDataId, 5, 2) . '/',
-                substr($intDataId, - 2)
+            substr($intDataId, 0, 3) . '/' . substr($intDataId, 3, 2) . '/' . substr($intDataId, 5, 2) . '/', 
+            substr($intDataId, - 2)
         ];
     }
-
+    
     /**
      * 新建文件
      *
@@ -294,15 +298,15 @@ class fso
     public static function createFile($sPath, $nMode = 0766)
     {
         $sDir = dirname($sPath);
-
+        
         if (is_file($sDir)) {
             throw new InvalidArgumentException('Dir cannot be a file.');
         }
-
+        
         if (! file_exists($sDir) && static::createDirectory($sDir)) {
             throw new RuntimeException(sprint('Create dir %s failed.', $sDir));
         }
-
+        
         if ($hFile = fopen($sPath, 'a')) {
             chmod($sPath, $nMode);
             return fclose($hFile);
@@ -310,7 +314,7 @@ class fso
             throw new RuntimeException(sprint('Create file %s failed.', $sPath));
         }
     }
-
+    
     /**
      * 获取上传文件扩展名
      *
@@ -329,7 +333,7 @@ class fso
             return $sFileName;
         }
     }
-
+    
     /**
      * 获取文件名字
      *
@@ -340,7 +344,7 @@ class fso
     {
         return pathinfo($strPath, PATHINFO_FILENAME);
     }
-
+    
     /**
      * 是否为目录
      *
@@ -351,7 +355,7 @@ class fso
     {
         return is_dir($strDirectory);
     }
-
+    
     /**
      * 是否可写
      *
@@ -362,7 +366,7 @@ class fso
     {
         return is_writable($strPath);
     }
-
+    
     /**
      * 是否为文件
      *

@@ -5,14 +5,16 @@ namespace {{namespace}}\application\controller\{{controller}};
 use queryyetsimple\mvc\action;
 
 {{file_comment}}
-class {{file_name}} extends action {
+class {{file_name}} extends action 
+{
 
     /**
      * 构造函数
      *
      * @return void
      */
-    public function __construct() {
+    public function __construct() 
+    {
     }
 
     /**
@@ -20,6 +22,7 @@ class {{file_name}} extends action {
      *
      * @return void
      */
-    public function run() {
+    public function run() 
+    {
     }
 }

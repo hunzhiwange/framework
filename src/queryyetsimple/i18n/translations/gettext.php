@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\i18n\translations;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use Exception;
 use queryyetsimple\support\iarray;
@@ -29,7 +33,7 @@ use queryyetsimple\support\iarray;
  */
 class gettext extends translations implements iarray
 {
-
+    
     /**
      * The gettext implementation of select_plural_form.
      *
@@ -47,7 +51,7 @@ class gettext extends translations implements iarray
         }
         return call_user_func($this->_gettext_select_plural_form, $count);
     }
-
+    
     /**
      *
      * @param string $header
@@ -56,20 +60,20 @@ class gettext extends translations implements iarray
     public function nplurals_and_expression_from_header($header)
     {
         if (preg_match('/^\s*nplurals\s*=\s*(\d+)\s*;\s+plural\s*=\s*(.+)$/', $header, $matches)) {
-            $nplurals = ( int ) $matches [1];
-            $expression = trim($this->parenthesize_plural_exression($matches [2]));
+            $nplurals = ( int ) $matches[1];
+            $expression = trim($this->parenthesize_plural_exression($matches[2]));
             return array(
-                    $nplurals,
-                    $expression
+                $nplurals, 
+                $expression
             );
         } else {
             return array(
-                    2,
-                    'n != 1'
+                2, 
+                'n != 1'
             );
         }
     }
-
+    
     /**
      * Makes a function, which will return the right translation index, according to the
      * plural forms header
@@ -85,7 +89,7 @@ class gettext extends translations implements iarray
             return (\$index < $nplurals)? \$index : $nplurals - 1;";
         return create_function('$n', $func_body);
     }
-
+    
     /**
      * Adds parentheses to the inner parts of ternary operators in
      * plural expressions, because PHP evaluates ternary oerators from left to right
@@ -99,7 +103,7 @@ class gettext extends translations implements iarray
         $res = '';
         $depth = 0;
         for ($i = 0; $i < strlen($expression); ++ $i) {
-            $char = $expression [$i];
+            $char = $expression[$i];
             switch ($char) {
                 case '?':
                     $res .= ' ? (';
@@ -118,7 +122,7 @@ class gettext extends translations implements iarray
         }
         return rtrim($res, ';');
     }
-
+    
     /**
      *
      * @param string $translation
@@ -132,14 +136,14 @@ class gettext extends translations implements iarray
         $lines = explode("\n", $translation);
         foreach ($lines as $line) {
             $parts = explode(':', $line, 2);
-            if (! isset($parts [1])) {
+            if (! isset($parts[1])) {
                 continue;
             }
-            $headers [trim($parts [0])] = trim($parts [1]);
+            $headers[trim($parts[0])] = trim($parts[1]);
         }
         return $headers;
     }
-
+    
     /**
      *
      * @param string $header
@@ -154,7 +158,7 @@ class gettext extends translations implements iarray
             $this->_gettext_select_plural_form = $this->make_plural_form_function($nplurals, $expression);
         }
     }
-
+    
     /**
      * 读取文件到数组
      *
@@ -165,17 +169,17 @@ class gettext extends translations implements iarray
     {
         if (! is_array($mixFilename)) {
             $mixFilename = [
-                    $mixFilename
+                $mixFilename
             ];
         }
-
+        
         foreach ($mixFilename as $strFilename) {
             $this->import_from_file($strFilename);
         }
-
+        
         return $this->toArray();
     }
-
+    
     /**
      * 对象转数组
      *
@@ -183,9 +187,9 @@ class gettext extends translations implements iarray
      */
     public function toArray()
     {
-        $arrData = [ ];
+        $arrData = [];
         foreach ($this->entries as $strKey => $objEntry) {
-            $arrData [$strKey] = $objEntry->translations [0];
+            $arrData[$strKey] = $objEntry->translations[0];
         }
         return $arrData;
     }

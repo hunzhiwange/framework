@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\encryption;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use RuntimeException;
 
@@ -27,7 +31,7 @@ use RuntimeException;
  */
 class safe
 {
-
+    
     /**
      * 移除魔术方法转义
      *
@@ -39,7 +43,7 @@ class safe
     {
         if ($bRecursive === true and is_array($mixString)) { // 递归
             foreach ($mixString as $sKey => $mixValue) {
-                $mixString [static::stripslashes($sKey)] = static::stripslashes($mixValue); // 如果你只注意到值，却没有注意到key
+                $mixString[static::stripslashes($sKey)] = static::stripslashes($mixValue); // 如果你只注意到值，却没有注意到key
             }
         } else {
             if (is_string($mixString)) {
@@ -48,7 +52,7 @@ class safe
         }
         return $mixString;
     }
-
+    
     /**
      * 添加模式转义
      *
@@ -60,7 +64,7 @@ class safe
     {
         if ($bRecursive === true and is_array($mixString)) {
             foreach ($mixString as $sKey => $mixValue) {
-                $mixString [static::addslashes($sKey)] = static::addslashes($mixValue); // 如果你只注意到值，却没有注意到key
+                $mixString[static::addslashes($sKey)] = static::addslashes($mixValue); // 如果你只注意到值，却没有注意到key
             }
         } else {
             if (is_string($mixString)) {
@@ -69,7 +73,7 @@ class safe
         }
         return $mixString;
     }
-
+    
     /**
      * 深度过滤
      *
@@ -92,7 +96,7 @@ class safe
         }
         return $sSubject;
     }
-
+    
     /**
      * url 安全过滤
      *
@@ -107,50 +111,51 @@ class safe
         if ('' == trim($sUrl)) {
             return $sUrl;
         }
-
+        
         $sUrl = preg_replace('|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\\x80-\\xff]|i', '', $sUrl);
         $arrStrip = array(
-                '%0d',
-                '%0a',
-                '%0D',
-                '%0A'
+            '%0d', 
+            '%0a', 
+            '%0D', 
+            '%0A'
         );
         $sUrl = static::deepReplace($arrStrip, $sUrl);
         $sUrl = str_replace(';//', '://', $sUrl); // 防止拼写错误
+        
 
         // 加上 http:// ，防止导入一个脚本如 php，从而引发安全问题
         if (strpos($sUrl, ':') === false && substr($sUrl, 0, 1) != '/' && substr($sUrl, 0, 1) != '#' && ! preg_match('/^[a-z0-9-]+?\.php/i', $sUrl)) {
             $sUrl = 'http://' . $sUrl;
         }
-
+        
         if ($booShow === true) {
             $sUrl = str_replace('&amp;', '&#038;', $sUrl);
             $sUrl = str_replace("'", '&#039;', $sUrl);
         }
-
+        
         // 协议检查
         if (! is_array($arrProtocols)) {
             $arrProtocols = [
-                    'http',
-                    'https',
-                    'ftp',
-                    'ftps',
-                    'mailto',
-                    'news',
-                    'irc',
-                    'gopher',
-                    'nntp',
-                    'feed',
-                    'telnet',
-                    'mms',
-                    'rtsp',
-                    'svn'
+                'http', 
+                'https', 
+                'ftp', 
+                'ftps', 
+                'mailto', 
+                'news', 
+                'irc', 
+                'gopher', 
+                'nntp', 
+                'feed', 
+                'telnet', 
+                'mms', 
+                'rtsp', 
+                'svn'
             ];
         }
-
+        
         return $sUrl;
     }
-
+    
     /**
      * 过滤 script
      *
@@ -160,18 +165,18 @@ class safe
     public static function filterScript($sStr)
     {
         return preg_replace([
-                '/<\s*script/',
-                '/<\s*\/\s*script\s*>/',
-                "/<\?/",
-                "/\?>/"
+            '/<\s*script/', 
+            '/<\s*\/\s*script\s*>/', 
+            "/<\?/", 
+            "/\?>/"
         ], [
-                "&lt;script",
-                "&lt;/script&gt;",
-                "&lt;?",
-                "?&gt;"
+            "&lt;script", 
+            "&lt;/script&gt;", 
+            "&lt;?", 
+            "?&gt;"
         ], $sStr);
     }
-
+    
     /**
      * 过滤十六进制字符串
      *
@@ -182,7 +187,7 @@ class safe
     {
         return preg_replace("![\][xX]([A-Fa-f0-9]{1,3})!", "", $sInput);
     }
-
+    
     /**
      * sql 过滤
      *
@@ -192,19 +197,19 @@ class safe
     public static function sqlFilter($sStr)
     {
         return str_replace([
-                "/",
-                "\\",
-                "'",
-                "#",
-                " ",
-                "  ",
-                "%",
-                "&",
-                "\(",
-                "\)"
+            "/", 
+            "\\", 
+            "'", 
+            "#", 
+            " ", 
+            "  ", 
+            "%", 
+            "&", 
+            "\(", 
+            "\)"
         ], "", $sStr);
     }
-
+    
     /**
      * 字段过滤
      *
@@ -216,14 +221,15 @@ class safe
         if (! is_array($mixFields)) {
             $mixFields = explode(',', $mixFields);
         }
-        $mixFields = array_map(function ($str) {
+        $mixFields = array_map(function ($str)
+        {
             return safe::fieldsFilter(sqlFilter);
         }, $mixFields);
         $mixFields = join(',', $mixFields);
         $mixFields = preg_replace('/^,|,$/', '', $mixFields);
         return $mixFields;
     }
-
+    
     /**
      * 字符过滤
      *
@@ -235,7 +241,7 @@ class safe
     {
         if (is_array($mixStrOrArray)) {
             foreach ($mixStrOrArray as $sKey => $strVal) {
-                $mixStrOrArray [static::strFilter($sKey)] = static::strFilter($strVal, $nMaxNum);
+                $mixStrOrArray[static::strFilter($sKey)] = static::strFilter($strVal, $nMaxNum);
             }
         } else {
             $mixStrOrArray = trim(static::lengthLimit($mixStrOrArray, $nMaxNum));
@@ -244,7 +250,7 @@ class safe
         }
         return $mixStrOrArray;
     }
-
+    
     /**
      * html 过滤
      *
@@ -256,24 +262,24 @@ class safe
     {
         if (is_array($mixStrOrArray)) {
             foreach ($mixStrOrArray as $sKey => $strVal) {
-                $mixStrOrArray [static::htmlFilter($sKey)] = static::htmlFilter($strVal);
+                $mixStrOrArray[static::htmlFilter($sKey)] = static::htmlFilter($strVal);
             }
         } else {
             $mixStrOrArray = trim(static::lengthLimit($mixStrOrArray, $nMaxNum));
             $mixStrOrArray = preg_replace([
-                    '/<\s*a[^>]*href\s*=\s*[\'\"]?(javascript|vbscript)[^>]*>/i',
-                    '/<([^>]*)on(\w)+=[^>]*>/i',
-                    '/<\s*\/?\s*(script|i?frame)[^>]*\s*>/i'
+                '/<\s*a[^>]*href\s*=\s*[\'\"]?(javascript|vbscript)[^>]*>/i', 
+                '/<([^>]*)on(\w)+=[^>]*>/i', 
+                '/<\s*\/?\s*(script|i?frame)[^>]*\s*>/i'
             ], [
-                    '<a href="#">',
-                    '<$1>',
-                    '&lt;$1&gt;'
+                '<a href="#">', 
+                '<$1>', 
+                '&lt;$1&gt;'
             ], $mixStrOrArray);
             $mixStrOrArray = str_replace("　", "", $mixStrOrArray);
         }
         return $mixStrOrArray;
     }
-
+    
     /**
      * int array 过滤
      *
@@ -292,7 +298,7 @@ class safe
             return 0;
         }
     }
-
+    
     /**
      * string array 过滤
      *
@@ -305,7 +311,8 @@ class safe
         if (! is_array($mixStrOrArray)) {
             $mixStrOrArray = explode(',', $mixStrOrArray);
         }
-        $mixStrOrArray = array_map(function ($str) {
+        $mixStrOrArray = array_map(function ($str)
+        {
             return safe::fieldsFilter(sqlFilter);
         }, $mixStrOrArray);
         foreach ($StrOrArray as $sVal) {
@@ -315,7 +322,7 @@ class safe
         }
         return preg_replace("/,$/", "", $sResult);
     }
-
+    
     /**
      * 访问时间限制
      *
@@ -327,22 +334,22 @@ class safe
         if (empty($arrLimitTime)) {
             return;
         }
-
-        $nLimitMinTime = strtotime($arrLimitTime [0]);
-        $nLimitMaxTime = strtotime(isset($arrLimitTime [1]) ? $arrLimitTime [1] : '');
+        
+        $nLimitMinTime = strtotime($arrLimitTime[0]);
+        $nLimitMaxTime = strtotime(isset($arrLimitTime[1]) ? $arrLimitTime[1] : '');
         if ($nLimitMinTime === false || $nLimitMaxTime === false) {
             return;
         }
-
+        
         if ($nLimitMaxTime < $nLimitMinTime) {
             $nLimitMaxTime = $nLimitMaxTime + 60 * 60 * 24;
         }
-
+        
         if (time() >= $nLimitMinTime && time() <= $nLimitMaxTime) {
             throw new RuntimeException(sprintf('You can only before %s or after %s to access this.', date('Y-m-d H:i:s', $nLimitMinTime), date('Y-m-d H:i:s', $nLimitMaxTime)));
         }
     }
-
+    
     /**
      * IP 访问限制
      *
@@ -356,7 +363,7 @@ class safe
             if (is_string($mixLimitIp)) {
                 $mixLimitIp = ( array ) $mixLimitIp;
             }
-
+            
             foreach ($mixLimitIp as $sIp) {
                 if (preg_match("/{$sIp}/", $sVisitorIp)) {
                     throw new RuntimeException(sprintf('You IP %s are banned,you can not access this', $sVisitorIp));
@@ -364,7 +371,7 @@ class safe
             }
         }
     }
-
+    
     /**
      * 检测代理
      *
@@ -372,11 +379,11 @@ class safe
      */
     public static function limitAgent()
     {
-        if ($_SERVER ['HTTP_X_FORWARDED_FOR'] || $_SERVER ['HTTP_VIA'] || $_SERVER ['HTTP_PROXY_CONNECTION'] || $_SERVER ['HTTP_USER_AGENT_VIA']) {
+        if ($_SERVER['HTTP_X_FORWARDED_FOR'] || $_SERVER['HTTP_VIA'] || $_SERVER['HTTP_PROXY_CONNECTION'] || $_SERVER['HTTP_USER_AGENT_VIA']) {
             throw new RuntimeException('Proxy Connection denied.Your request was forbidden due to the administrator has set to deny all proxy connection.');
         }
     }
-
+    
     /**
      * 过滤掉 javascript
      *
@@ -392,14 +399,14 @@ class safe
         $sText = preg_replace('/<script?.*\/script>/', '', $sText); // 完全过滤js
         $sText = preg_replace('/<\/?(html|head|meta|link|base|body|title|style|script|form|iframe|frame|frameset)[^><]*>/i', '', $sText); // 过滤多余html
         while (preg_match('/(<[^><]+)(lang|onfinish|onmouse|onexit|onerror|onclick|onkey|onload|onchange|onfocus|onblur)[^><]+/i', $sText, $arrMat)) { // 过滤on事件lang js
-            $sText = str_replace($arrMat [0], $arrMat [1], $sText);
+            $sText = str_replace($arrMat[0], $arrMat[1], $sText);
         }
         while (preg_match('/(<[^><]+)(window\.|javascript:|js:|about:|file:|document\.|vbs:|cookie)([^><]*)/i', $sText, $arrMat)) {
-            $sText = str_replace($arrMat [0], $arrMat [1] . $arrMat [3], $sText);
+            $sText = str_replace($arrMat[0], $arrMat[1] . $arrMat[3], $sText);
         }
         return $sText;
     }
-
+    
     /**
      * 字符串文本化
      *
@@ -413,33 +420,33 @@ class safe
     {
         if ($booDeep === true) {
             $arrBlack = array_merge([
-                    ' ',
-                    '&nbsp;',
-                    '&',
-                    '=',
-                    '-',
-                    '#',
-                    '%',
-                    '!',
-                    '@',
-                    '^',
-                    '*',
-                    'amp;'
+                ' ', 
+                '&nbsp;', 
+                '&', 
+                '=', 
+                '-', 
+                '#', 
+                '%', 
+                '!', 
+                '@', 
+                '^', 
+                '*', 
+                'amp;'
             ], $arrBlack);
-
+            
             if ($arrWhite) {
-                $arrTemp = [ ];
+                $arrTemp = [];
                 foreach ($arrBlack as $sType) {
                     if (! in_array($sType, $arrWhite)) {
-                        $arrTemp [] = $sType;
+                        $arrTemp[] = $sType;
                     }
                 }
                 $arrBlack = $arrTemp;
             }
         } else {
-            $arrBlack = [ ];
+            $arrBlack = [];
         }
-
+        
         $sText = static::cleanJs($sText);
         $sText = preg_replace('/\s(?=\s)/', '', $sText); // 彻底过滤空格
         $sText = preg_replace('/[\n\r\t]/', ' ', $sText);
@@ -451,7 +458,7 @@ class safe
         $sText = str_replace("'", "", $sText);
         return $sText;
     }
-
+    
     /**
      * 字符过滤 JS和 HTML标签
      *
@@ -465,7 +472,7 @@ class safe
         $sText = strip_tags($sText);
         return $sText;
     }
-
+    
     /**
      * 字符 HTML 安全显示
      *
@@ -478,7 +485,7 @@ class safe
         $sText = nl2br($sText);
         return $sText;
     }
-
+    
     /**
      * 字符 HTML 安全实体
      *
@@ -490,20 +497,21 @@ class safe
         if (! is_array($mixString)) {
             $mixString = ( array ) $mixString;
         }
-
-        $mixString = array_map(function ($sStr) {
+        
+        $mixString = array_map(function ($sStr)
+        {
             if (is_string($sStr)) {
                 $sStr = htmlspecialchars(trim($sStr));
             }
             return $sStr;
         }, $mixString);
-
+        
         if (count($mixString) == 1) {
             $mixString = reset($mixString);
         }
         return $mixString;
     }
-
+    
     /**
      * 字符 HTML 实体还原
      *
@@ -515,18 +523,19 @@ class safe
         if (! is_array($mixString)) {
             $mixString = ( array ) $mixString;
         }
-
-        $mixString = array_map(function ($sStr) {
+        
+        $mixString = array_map(function ($sStr)
+        {
             $sStr = strtr($sStr, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
             return $sStr;
         }, $mixString);
-
+        
         if (count($mixString) == 1) {
             $mixString = reset($mixString);
         }
         return $mixString;
     }
-
+    
     /**
      * 短字符串长度验证
      *
@@ -538,16 +547,16 @@ class safe
     {
         $sStr = self::lengthLimit($sStr, $nMaxLength);
         $sStr = str_replace(array(
-                "\'",
-                "\\",
-                "#"
+            "\'", 
+            "\\", 
+            "#"
         ), "", $sStr);
         if ($sStr != '') {
             $sStr = static::htmlspecialchars($sStr);
         }
         return preg_replace("/　+/", "", trim($sStr));
     }
-
+    
     /**
      * 长字符串长度验证
      *
@@ -563,7 +572,7 @@ class safe
         $sPost = nl2br($sPost);
         return $sPost;
     }
-
+    
     /**
      * 超长字符串长度验证
      *
@@ -579,7 +588,7 @@ class safe
         $sPost = str_replace("</script ", "", $sPost);
         return $sPost;
     }
-
+    
     /**
      * 字符串长度限制
      *
@@ -589,7 +598,7 @@ class safe
      */
     public static function lengthLimit($sStr, $nMaxSlen)
     {
-        if (isset($sStr {$nMaxSlen})) {
+        if (isset($sStr{$nMaxSlen})) {
             return " ";
         } else {
             return $sStr;

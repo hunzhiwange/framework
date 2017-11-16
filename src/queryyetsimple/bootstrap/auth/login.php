@@ -1,19 +1,23 @@
 <?php
-// [$QueryPHP] The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
-// ©2010-2017 http://queryphp.com All rights reserved.
+/*
+ * This file is part of the ************************ package.
+ * ##########################################################
+ * #   ____                          ______  _   _ ______   #
+ * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
+ * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
+ * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
+ * #       \__   | \___ |_|    \__  || |    | | | || |      #
+ * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
+ * #                          |___ /  Since 2010.10.03      #
+ * ##########################################################
+ * 
+ * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
+ * (c) 2010-2017 http://queryphp.com All rights reserved.
+ * 
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace queryyetsimple\bootstrap\auth;
-
-<<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
 
 use queryyetsimple\auth;
 use queryyetsimple\response;
@@ -30,7 +34,8 @@ use queryyetsimple\bootstrap\validate\request as validate_request;
  * @since 2017.09.09
  * @version 1.0
  */
-trait login {
+trait login
+{
     
     use field;
     use validate_request;
@@ -40,8 +45,9 @@ trait login {
      *
      * @return boolean
      */
-    public function isLogin() {
-        return auth::isLogin ();
+    public function isLogin()
+    {
+        return auth::isLogin();
     }
     
     /**
@@ -49,8 +55,9 @@ trait login {
      *
      * @return mixed
      */
-    public function getLogin() {
-        return auth::getLogin ();
+    public function getLogin()
+    {
+        return auth::getLogin();
     }
     
     /**
@@ -58,8 +65,9 @@ trait login {
      *
      * @return \queryyetsimple\http\response
      */
-    public function login() {
-        return $this->displayLoginForm ();
+    public function login()
+    {
+        return $this->displayLoginForm();
     }
     
     /**
@@ -67,8 +75,9 @@ trait login {
      *
      * @return \queryyetsimple\http\response
      */
-    public function displayLoginForm() {
-        return response::view ( $this->getLoginView () );
+    public function displayLoginForm()
+    {
+        return response::view($this->getLoginView());
     }
     
     /**
@@ -77,42 +86,43 @@ trait login {
      * @param \queryyetsimple\http\request $oRequest            
      * @return \queryyetsimple\http\response|boolean
      */
-    public function checkLogin(request $oRequest) {
-        $this->validateLogin ( $oRequest );
+    public function checkLogin(request $oRequest)
+    {
+        $this->validateLogin($oRequest);
         
         try {
-            $aInput = $oRequest->alls ( [ 
-                    'name|trim',
-                    'password|trim',
-                    'remember_me|trim',
-                    'remember_time|trim',
-                    'remember_key|trim' 
-            ] );
+            $aInput = $oRequest->alls([
+                'name|trim', 
+                'password|trim', 
+                'remember_me|trim', 
+                'remember_time|trim', 
+                'remember_key|trim'
+            ]);
             
-            if ($aInput ['remember_key']) {
-                $aInput ['remember_key'] = auth::explodeTokenData ( $aInput ['remember_key'] );
-                if (! $aInput ['remember_key']) {
-                    return response::api ( __ ( '您尚未登录' ), 400 );
+            if ($aInput['remember_key']) {
+                $aInput['remember_key'] = auth::explodeTokenData($aInput['remember_key']);
+                if (! $aInput['remember_key']) {
+                    return response::api(__('您尚未登录'), 400);
                 } else {
-                    list ( $aInput ['name'], $aInput ['password'] ) = $aInput ['remember_key'];
+                    list($aInput['name'], $aInput['password']) = $aInput['remember_key'];
                 }
             }
             
-            $this->setAuthField ();
+            $this->setAuthField();
             
-            $oUser = auth::login ( $aInput ['name'], $aInput ['password'], $aInput ['remember_me'] ? $aInput ['remember_time'] : null );
+            $oUser = auth::login($aInput['name'], $aInput['password'], $aInput['remember_me'] ? $aInput['remember_time'] : null);
             
-            if ($this->isAjaxRequest ( $oRequest )) {
-                $aReturn = [ ];
-                $aReturn ['api_token'] = auth::getTokenName ();
-                $aReturn ['user'] = $oUser->toArray ();
-                $aReturn ['remember_key'] = auth::implodeTokenData ( $aInput ['name'], $aInput ['password'] );
+            if ($this->isAjaxRequest($oRequest)) {
+                $aReturn = [];
+                $aReturn['api_token'] = auth::getTokenName();
+                $aReturn['user'] = $oUser->toArray();
+                $aReturn['remember_key'] = auth::implodeTokenData($aInput['name'], $aInput['password']);
                 return $aReturn;
             } else {
-                return $this->sendSucceededLoginResponse ( $oRequest, $this->getLoginSucceededMessage ( $oUser ['nikename'] ?  : $oUser ['name'] ) );
+                return $this->sendSucceededLoginResponse($oRequest, $this->getLoginSucceededMessage($oUser['nikename'] ?  : $oUser['name']));
             }
-        } catch ( login_failed $oE ) {
-            return $this->sendFailedLoginResponse ( $oRequest, $oE->getMessage () );
+        } catch (login_failed $oE) {
+            return $this->sendFailedLoginResponse($oRequest, $oE->getMessage());
         }
     }
     
@@ -121,8 +131,9 @@ trait login {
      *
      * @return \queryyetsimple\http\response
      */
-    public function logout() {
-        return $this->displayLoginout ();
+    public function logout()
+    {
+        return $this->displayLoginout();
     }
     
     /**
@@ -130,16 +141,17 @@ trait login {
      *
      * @return \queryyetsimple\http\response
      */
-    public function displayLoginout() {
-        auth::logout ();
+    public function displayLoginout()
+    {
+        auth::logout();
         
-        if ($this->isAjaxRequest ( project ( 'request' ) )) {
-            return [ 
-                    'message' => $this->getLogoutMessage () 
+        if ($this->isAjaxRequest(project('request'))) {
+            return [
+                'message' => $this->getLogoutMessage()
             ];
         }
         
-        return response::redirect ( $this->getLogoutRedirect () )->with ( 'login_out', $this->getLogoutMessage () );
+        return response::redirect($this->getLogoutRedirect())->with('login_out', $this->getLogoutMessage());
     }
     
     /**
@@ -147,8 +159,9 @@ trait login {
      *
      * @return \queryyetsimple\http\response
      */
-    public function changePassword() {
-        return $this->displayChangePasswordForm ();
+    public function changePassword()
+    {
+        return $this->displayChangePasswordForm();
     }
     
     /**
@@ -156,8 +169,9 @@ trait login {
      *
      * @return \queryyetsimple\http\response
      */
-    public function displayChangePasswordForm() {
-        return response::view ( $this->getChangePasswordView () );
+    public function displayChangePasswordForm()
+    {
+        return response::view($this->getChangePasswordView());
     }
     
     /**
@@ -166,25 +180,26 @@ trait login {
      * @param \queryyetsimple\http\request $oRequest            
      * @return \queryyetsimple\http\response
      */
-    public function changeUserPassword(request $oRequest) {
-        $this->validateChangePassword ( $oRequest );
+    public function changeUserPassword(request $oRequest)
+    {
+        $this->validateChangePassword($oRequest);
         
         try {
-            $arrUser = $this->getLogin ();
+            $arrUser = $this->getLogin();
             
-            $aPost = $oRequest->posts ( [ 
-                    'old_password|trim',
-                    'password|trim',
-                    'comfirm_password|trim' 
-            ] );
+            $aPost = $oRequest->posts([
+                'old_password|trim', 
+                'password|trim', 
+                'comfirm_password|trim'
+            ]);
             
-            $this->setAuthField ();
+            $this->setAuthField();
             
-            $aUser = auth::changePassword ( $arrUser ['id'], $aPost ['password'], $aPost ['comfirm_password'], $aPost ['old_password'] );
+            $aUser = auth::changePassword($arrUser['id'], $aPost['password'], $aPost['comfirm_password'], $aPost['old_password']);
             
-            return $this->sendSucceededChangePasswordResponse ( $oRequest, $this->getChangePasswordSucceededMessage ( $aUser ['nikename'] ?  : $aUser ['name'] ) );
-        } catch ( change_password_failed $oE ) {
-            return $this->sendFailedChangePasswordResponse ( $oE->getMessage () );
+            return $this->sendSucceededChangePasswordResponse($oRequest, $this->getChangePasswordSucceededMessage($aUser['nikename'] ?  : $aUser['name']));
+        } catch (change_password_failed $oE) {
+            return $this->sendFailedChangePasswordResponse($oE->getMessage());
         }
     }
     
@@ -195,8 +210,9 @@ trait login {
      * @param string $strSuccess            
      * @return \queryyetsimple\http\response|boolean
      */
-    protected function sendSucceededLoginResponse(request $oRequest, $strSuccess) {
-        return response::redirect ( $this->getLoginSucceededRedirect () )->with ( 'login_succeeded', $strSuccess );
+    protected function sendSucceededLoginResponse(request $oRequest, $strSuccess)
+    {
+        return response::redirect($this->getLoginSucceededRedirect())->with('login_succeeded', $strSuccess);
     }
     
     /**
@@ -206,14 +222,15 @@ trait login {
      * @param string $strError            
      * @return \queryyetsimple\http\response|boolean
      */
-    protected function sendFailedLoginResponse(request $oRequest, $strError) {
-        if ($this->isAjaxRequest ( $oRequest )) {
-            return response::api ( $strError, 400 );
+    protected function sendFailedLoginResponse(request $oRequest, $strError)
+    {
+        if ($this->isAjaxRequest($oRequest)) {
+            return response::api($strError, 400);
         }
         
-        return response::redirect ( $this->getLoginFailedRedirect () )->withErrors ( [ 
-                'login_error' => $strError 
-        ] );
+        return response::redirect($this->getLoginFailedRedirect())->withErrors([
+            'login_error' => $strError
+        ]);
     }
     
     /**
@@ -222,8 +239,9 @@ trait login {
      * @param string $strSuccess            
      * @return \queryyetsimple\http\response
      */
-    protected function sendSucceededChangePasswordResponse($strSuccess) {
-        return response::redirect ( $this->getChangePasswordSucceededRedirect () )->with ( 'change_password_succeeded', $strSuccess );
+    protected function sendSucceededChangePasswordResponse($strSuccess)
+    {
+        return response::redirect($this->getChangePasswordSucceededRedirect())->with('change_password_succeeded', $strSuccess);
     }
     
     /**
@@ -232,10 +250,11 @@ trait login {
      * @param string $strError            
      * @return \queryyetsimple\http\response
      */
-    protected function sendFailedChangePasswordResponse($strError) {
-        return response::redirect ( $this->getChangePasswordFailedRedirect () )->withErrors ( [ 
-                'change_password_error' => $strError 
-        ] );
+    protected function sendFailedChangePasswordResponse($strError)
+    {
+        return response::redirect($this->getChangePasswordFailedRedirect())->withErrors([
+            'change_password_error' => $strError
+        ]);
     }
     
     /**
@@ -244,8 +263,9 @@ trait login {
      * @param \queryyetsimple\http\request $oRequest            
      * @return void
      */
-    protected function validateLogin(request $oRequest) {
-        $this->validate ( $oRequest, $this->getValidateLoginRule (), $this->getValidateLoginMessage () );
+    protected function validateLogin(request $oRequest)
+    {
+        $this->validate($oRequest, $this->getValidateLoginRule(), $this->getValidateLoginMessage());
     }
     
     /**
@@ -253,10 +273,11 @@ trait login {
      *
      * @return array
      */
-    protected function getValidateLoginRule() {
-        return property_exists ( $this, 'strValidateLoginRule' ) ? $this->strValidateLoginRule : [ 
-                'name' => 'required|max_length:50',
-                'password' => 'required|min_length:6' 
+    protected function getValidateLoginRule()
+    {
+        return property_exists($this, 'strValidateLoginRule') ? $this->strValidateLoginRule : [
+            'name' => 'required|max_length:50', 
+            'password' => 'required|min_length:6'
         ];
     }
     
@@ -265,8 +286,9 @@ trait login {
      *
      * @return array
      */
-    protected function getValidateLoginMessage() {
-        return property_exists ( $this, 'strValidateLoginMessage' ) ? $this->strValidateLoginMessage : [ ];
+    protected function getValidateLoginMessage()
+    {
+        return property_exists($this, 'strValidateLoginMessage') ? $this->strValidateLoginMessage : [];
     }
     
     /**
@@ -275,8 +297,9 @@ trait login {
      * @param \queryyetsimple\http\request $oRequest            
      * @return void
      */
-    protected function validateChangePassword(request $oRequest) {
-        $this->validate ( $oRequest, $this->getValidateChangePasswordRule (), $this->getValidateChangePasswordMessage () );
+    protected function validateChangePassword(request $oRequest)
+    {
+        $this->validate($oRequest, $this->getValidateChangePasswordRule(), $this->getValidateChangePasswordMessage());
     }
     
     /**
@@ -284,11 +307,12 @@ trait login {
      *
      * @return array
      */
-    protected function getValidateChangePasswordRule() {
-        return property_exists ( $this, 'strValidateChangePasswordRule' ) ? $this->strValidateChangePasswordRule : [ 
-                'old_password' => 'required|min_length:6',
-                'password' => 'required|min_length:6',
-                'comfirm_password' => 'required|min_length:6|equal_to:password' 
+    protected function getValidateChangePasswordRule()
+    {
+        return property_exists($this, 'strValidateChangePasswordRule') ? $this->strValidateChangePasswordRule : [
+            'old_password' => 'required|min_length:6', 
+            'password' => 'required|min_length:6', 
+            'comfirm_password' => 'required|min_length:6|equal_to:password'
         ];
     }
     
@@ -297,8 +321,9 @@ trait login {
      *
      * @return array
      */
-    protected function getValidateChangePasswordMessage() {
-        return property_exists ( $this, 'strValidateChangePasswordMessage' ) ? $this->strValidateChangePasswordMessage : [ ];
+    protected function getValidateChangePasswordMessage()
+    {
+        return property_exists($this, 'strValidateChangePasswordMessage') ? $this->strValidateChangePasswordMessage : [];
     }
     
     /**
@@ -306,8 +331,9 @@ trait login {
      *
      * @return string
      */
-    protected function getLogoutMessage() {
-        return __ ( '退出成功' );
+    protected function getLogoutMessage()
+    {
+        return __('退出成功');
     }
     
     /**
@@ -316,8 +342,9 @@ trait login {
      * @param string $strName            
      * @return string
      */
-    protected function getLoginSucceededMessage($strName) {
-        return __ ( '%s 登录成功', $strName );
+    protected function getLoginSucceededMessage($strName)
+    {
+        return __('%s 登录成功', $strName);
     }
     
     /**
@@ -326,8 +353,9 @@ trait login {
      * @param string $strName            
      * @return string
      */
-    protected function getChangePasswordSucceededMessage($strName) {
-        return __ ( '%s 修改密码成功', $strName );
+    protected function getChangePasswordSucceededMessage($strName)
+    {
+        return __('%s 修改密码成功', $strName);
     }
     
     /**
@@ -336,8 +364,9 @@ trait login {
      * @param \queryyetsimple\http\request $oRequest            
      * @return boolean
      */
-    protected function isAjaxRequest(request $oRequest) {
-        if ($oRequest->isAjax () && ! $oRequest->isPjax ()) {
+    protected function isAjaxRequest(request $oRequest)
+    {
+        if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
             return true;
         }
         return false;
@@ -348,8 +377,9 @@ trait login {
      *
      * @return string
      */
-    protected function getLoginView() {
-        return property_exists ( $this, 'strLoginView' ) ? $this->strLoginView : '';
+    protected function getLoginView()
+    {
+        return property_exists($this, 'strLoginView') ? $this->strLoginView : '';
     }
     
     /**
@@ -357,8 +387,9 @@ trait login {
      *
      * @return string
      */
-    protected function getChangePasswordView() {
-        return property_exists ( $this, 'strChangePasswordView' ) ? $this->strChangePasswordView : '';
+    protected function getChangePasswordView()
+    {
+        return property_exists($this, 'strChangePasswordView') ? $this->strChangePasswordView : '';
     }
     
     /**
@@ -366,8 +397,9 @@ trait login {
      *
      * @return string
      */
-    protected function getLogoutRedirect() {
-        return property_exists ( $this, 'strLogoutRedirect' ) ? $this->strLogoutRedirect : 'auth/index';
+    protected function getLogoutRedirect()
+    {
+        return property_exists($this, 'strLogoutRedirect') ? $this->strLogoutRedirect : 'auth/index';
     }
     
     /**
@@ -375,8 +407,9 @@ trait login {
      *
      * @return string
      */
-    protected function getLoginSucceededRedirect() {
-        return property_exists ( $this, 'strLoginSucceededRedirect' ) ? $this->strLoginSucceededRedirect : 'auth/index';
+    protected function getLoginSucceededRedirect()
+    {
+        return property_exists($this, 'strLoginSucceededRedirect') ? $this->strLoginSucceededRedirect : 'auth/index';
     }
     
     /**
@@ -384,8 +417,9 @@ trait login {
      *
      * @return string
      */
-    protected function getLoginFailedRedirect() {
-        return property_exists ( $this, 'strLoginFailedRedirect' ) ? $this->strLoginFailedRedirect : 'auth/login';
+    protected function getLoginFailedRedirect()
+    {
+        return property_exists($this, 'strLoginFailedRedirect') ? $this->strLoginFailedRedirect : 'auth/login';
     }
     
     /**
@@ -393,8 +427,9 @@ trait login {
      *
      * @return string
      */
-    protected function getChangePasswordSucceededRedirect() {
-        return property_exists ( $this, 'strChangePasswordSucceededRedirect' ) ? $this->strChangePasswordSucceededRedirect : 'auth/login';
+    protected function getChangePasswordSucceededRedirect()
+    {
+        return property_exists($this, 'strChangePasswordSucceededRedirect') ? $this->strChangePasswordSucceededRedirect : 'auth/login';
     }
     
     /**
