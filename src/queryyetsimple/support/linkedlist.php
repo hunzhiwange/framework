@@ -55,9 +55,7 @@ class linkedlist extends SplDoublyLinkedList
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SplDoublyLinkedList::pop()
+     * {@inheritdoc}
      */
     public function pop()
     {
@@ -68,9 +66,7 @@ class linkedlist extends SplDoublyLinkedList
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SplDoublyLinkedList::add()
+     * {@inheritdoc}
      */
     public function add($mixIndex, $mixNewval)
     {
@@ -79,9 +75,7 @@ class linkedlist extends SplDoublyLinkedList
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SplDoublyLinkedList::offsetSet()
+     * {@inheritdoc}
      */
     public function offsetSet($mixIndex, $mixNewval)
     {
@@ -90,9 +84,7 @@ class linkedlist extends SplDoublyLinkedList
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SplDoublyLinkedList::push()
+     * {@inheritdoc}
      */
     public function push($mixValue)
     {
@@ -101,9 +93,7 @@ class linkedlist extends SplDoublyLinkedList
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SplDoublyLinkedList::unshift()
+     * {@inheritdoc}
      */
     public function unshift($mixValue)
     {

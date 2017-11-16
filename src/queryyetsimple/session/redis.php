@@ -51,9 +51,7 @@ class redis extends aconnect implements SessionHandlerInterface
     ];
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see \SessionHandler::open()
+     * {@inheritdoc}
      */
     public function open($strSavePath, $strName)
     {

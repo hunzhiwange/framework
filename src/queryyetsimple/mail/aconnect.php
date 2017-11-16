@@ -59,9 +59,7 @@ abstract class aconnect implements Swift_Transport
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see Swift_Transport::isStarted()
+     * {@inheritdoc}
      */
     public function isStarted()
     {
@@ -69,9 +67,7 @@ abstract class aconnect implements Swift_Transport
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see Swift_Transport::start()
+     * {@inheritdoc}
      */
     public function start()
     {
@@ -79,9 +75,7 @@ abstract class aconnect implements Swift_Transport
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see Swift_Transport::stop()
+     * {@inheritdoc}
      */
     public function stop()
     {
@@ -89,18 +83,14 @@ abstract class aconnect implements Swift_Transport
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see Swift_Transport::registerPlugin()
+     * {@inheritdoc}
      */
     public function registerPlugin(Swift_Events_EventListener $plugin)
     {
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see Swift_Transport::send()
+     * {@inheritdoc}
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)
     {

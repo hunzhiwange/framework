@@ -63,9 +63,7 @@ abstract class subject implements SplSubject, isubject
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SplSubject::attach()
+     * {@inheritdoc}
      */
     public function attach(SplObserver $objObserver)
     {
@@ -73,9 +71,7 @@ abstract class subject implements SplSubject, isubject
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SplSubject::detach()
+     * {@inheritdoc}
      */
     public function detach(SplObserver $objObserver)
     {
@@ -83,9 +79,7 @@ abstract class subject implements SplSubject, isubject
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SplSubject::notify()
+     * {@inheritdoc}
      */
     public function notify()
     {

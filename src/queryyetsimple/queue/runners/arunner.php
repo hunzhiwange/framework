@@ -77,9 +77,7 @@ abstract class arunner extends PHPQueueRunner
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see \PHPQueue\Runner::workJob()
+     * {@inheritdoc}
      */
     public function workJob()
     {
@@ -143,9 +141,7 @@ abstract class arunner extends PHPQueueRunner
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see \PHPQueue\Runner::beforeLoop()
+     * {@inheritdoc}
      */
     protected function beforeLoop()
     {

@@ -40,9 +40,7 @@ class noop extends translations
     public $headers = array();
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see \queryyetsimple\i18n\translations\translations::add_entry()
+     * {@inheritdoc}
      */
     public function add_entry($entry)
     {

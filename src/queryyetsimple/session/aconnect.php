@@ -53,9 +53,7 @@ abstract class aconnect
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SessionHandler::close()
+     * {@inheritdoc}
      */
     public function close()
     {
@@ -65,9 +63,7 @@ abstract class aconnect
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SessionHandler::read()
+     * {@inheritdoc}
      */
     public function read($strSessID)
     {
@@ -75,9 +71,7 @@ abstract class aconnect
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SessionHandler::write()
+     * {@inheritdoc}
      */
     public function write($strSessID, $mixSessData)
     {
@@ -85,9 +79,7 @@ abstract class aconnect
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SessionHandler::destroy()
+     * {@inheritdoc}
      */
     public function destroy($strSessID)
     {
@@ -95,9 +87,7 @@ abstract class aconnect
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SessionHandler::gc()
+     * {@inheritdoc}
      */
     public function gc($intMaxlifetime)
     {

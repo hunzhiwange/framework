@@ -33,9 +33,7 @@ class redis extends Predis
 {
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see \PHPQueue\Backend\Predis::release()
+     * {@inheritdoc}
      */
     public function release($jobId = null)
     {

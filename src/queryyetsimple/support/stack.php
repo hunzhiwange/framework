@@ -55,9 +55,7 @@ class stack extends linkedlist implements istack_queue
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see \queryyetsimple\support\linkedlist::validate()
+     * {@inheritdoc}
      */
     public function validate($mixValue)
     {

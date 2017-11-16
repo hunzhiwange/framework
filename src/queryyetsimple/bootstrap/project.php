@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2017 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -40,49 +40,49 @@ use queryyetsimple\bootstrap\console\provider\register as console_provider;
  */
 class project extends container implements iproject
 {
-    
+
     /**
      * 当前项目实例
      *
      * @var queryyetsimple\bootstrap\project
      */
     protected static $objProject;
-    
+
     /**
      * 项目配置
      *
      * @var array
      */
     protected $arrOption = [];
-    
+
     /**
      * 项目基础路径
      *
      * @var string
      */
     protected $strPath;
-    
+
     /**
      * 项目 APP 基本配置
      *
      * @var string
      */
     protected $arrAppOption = [];
-    
+
     /**
      * 延迟载入服务提供者
      *
      * @var array
      */
     protected $arrDeferredProviders = [];
-    
+
     /**
      * 服务提供者 bootstrap
      *
      * @var array
      */
     protected $arrProviderBootstrap = [];
-    
+
     /**
      * 构造函数
      * 受保护的禁止外部通过 new 实例化，只能通过 singletons 生成单一实例
@@ -95,29 +95,29 @@ class project extends container implements iproject
     {
         // 项目基础配置
         $this->setOption($arrOption)->
-        
+
         // 初始化项目路径
         setPath()->
-        
+
         // 注册别名
         registerAlias()->
-        
+
         // 注册 psr4
         registerPsr4($objComposer)->
-        
+
         // 载入 app 配置
         loadApp()->
-        
+
         // 注册基础提供者 register
         registerBaseProvider()->
-        
+
         // 注册框架核心提供者
         registerMvcProvider()->
-        
+
         // 注册基础提供者 bootstrap
         registerBaseProviderBootstrap();
     }
-    
+
     /**
      * 禁止克隆
      *
@@ -127,7 +127,7 @@ class project extends container implements iproject
     {
         throw new RuntimeException('Project disallowed clone');
     }
-    
+
     /**
      * 执行项目
      *
@@ -138,7 +138,7 @@ class project extends container implements iproject
         (new bootstrap($this))->run();
         return $this;
     }
-    
+
     /**
      * 返回项目
      *
@@ -159,7 +159,7 @@ class project extends container implements iproject
             return static::$objProject;
         }
     }
-    
+
     /**
      * 程序版本
      *
@@ -169,23 +169,21 @@ class project extends container implements iproject
     {
         return static::VERSION;
     }
-    
+
     /**
-     * (non-PHPdoc)
-     *
-     * @see \queryyetsimple\support\container::make()
+     * {@inheritdoc}
      */
     public function make($strFactoryName, array $arrArgs = [])
     {
         $strFactoryName = $this->getAlias($strFactoryName);
-        
+
         if (isset($this->arrDeferredProviders[$strFactoryName])) {
             $this->registerDeferredProvider($strFactoryName);
         }
-        
+
         return parent::make($strFactoryName, $arrArgs);
     }
-    
+
     /**
      * 基础路径
      *
@@ -195,7 +193,7 @@ class project extends container implements iproject
     {
         return $this->strPath;
     }
-    
+
     /**
      * 应用路径
      *
@@ -205,7 +203,7 @@ class project extends container implements iproject
     {
         return isset($this->arrOption['path_application']) ? $this->arrOption['path_applicationp'] : $this->strPath . DIRECTORY_SEPARATOR . 'application';
     }
-    
+
     /**
      * 公共路径
      *
@@ -215,7 +213,7 @@ class project extends container implements iproject
     {
         return isset($this->arrOption['path_common']) ? $this->arrOption['path_common'] : $this->strPath . DIRECTORY_SEPARATOR . 'common';
     }
-    
+
     /**
      * 运行路径
      *
@@ -225,7 +223,7 @@ class project extends container implements iproject
     {
         return isset($this->arrOption['path_runtime']) ? $this->arrOption['path_runtime'] : $this->strPath . DIRECTORY_SEPARATOR . '~@~';
     }
-    
+
     /**
      * 资源路径
      *
@@ -235,7 +233,7 @@ class project extends container implements iproject
     {
         return isset($this->arrOption['path_public']) ? $this->arrOption['path_public'] : $this->strPath . DIRECTORY_SEPARATOR . 'public';
     }
-    
+
     /**
      * 附件路径
      *
@@ -245,7 +243,7 @@ class project extends container implements iproject
     {
         return isset($this->arrOption['path_storage']) ? $this->arrOption['path_storage'] : $this->strPath . DIRECTORY_SEPARATOR . 'storage';
     }
-    
+
     /**
      * 应用路径
      *
@@ -255,7 +253,7 @@ class project extends container implements iproject
     {
         return $this->pathApplication() . '/' . $this['app_name'];
     }
-    
+
     /**
      * 取得应用缓存目录
      *
@@ -265,13 +263,13 @@ class project extends container implements iproject
     public function pathApplicationCache($strType)
     {
         $arrType = [
-            'file', 
-            'log', 
-            'table', 
-            'theme', 
-            'option', 
-            'i18n', 
-            'router', 
+            'file',
+            'log',
+            'table',
+            'theme',
+            'option',
+            'i18n',
+            'router',
             'console'
         ];
         if (! in_array($strType, $arrType)) {
@@ -279,7 +277,7 @@ class project extends container implements iproject
         }
         return $this->pathRuntime() . '/' . $strType;
     }
-    
+
     /**
      * 取得应用目录
      *
@@ -289,8 +287,8 @@ class project extends container implements iproject
     public function pathApplicationDir($strType)
     {
         $arrType = [
-            'option', 
-            'theme', 
+            'option',
+            'theme',
             'i18n'
         ];
         if (! in_array($strType, $arrType)) {
@@ -298,7 +296,7 @@ class project extends container implements iproject
         }
         return $this->pathApplicationCurrent() . '/ui/' . $strType;
     }
-    
+
     /**
      * 是否开启 debug
      *
@@ -308,7 +306,7 @@ class project extends container implements iproject
     {
         return isset($this->arrAppOption['app_debug']) ? $this->arrAppOption['app_debug'] : false;
     }
-    
+
     /**
      * 是否为开发环境
      *
@@ -318,7 +316,7 @@ class project extends container implements iproject
     {
         return $this->arrAppOption['app_environment'] == 'development';
     }
-    
+
     /**
      * 运行环境
      *
@@ -328,7 +326,7 @@ class project extends container implements iproject
     {
         return $this->arrAppOption['app_environment'];
     }
-    
+
     /**
      * 是否为 API
      *
@@ -338,7 +336,7 @@ class project extends container implements iproject
     {
         return $this->arrAppOption['default_response'] == 'api';
     }
-    
+
     /**
      * 是否为 Console
      *
@@ -348,7 +346,7 @@ class project extends container implements iproject
     {
         return env('app_name') == 'frameworkconsole';
     }
-    
+
     /**
      * public url
      *
@@ -358,7 +356,7 @@ class project extends container implements iproject
     {
         return $this->url_public;
     }
-    
+
     /**
      * root url
      *
@@ -368,7 +366,7 @@ class project extends container implements iproject
     {
         return $this->url_root;
     }
-    
+
     /**
      * enter url
      *
@@ -378,7 +376,7 @@ class project extends container implements iproject
     {
         return $this->url_enter;
     }
-    
+
     /**
      * 创建服务提供者
      *
@@ -389,7 +387,7 @@ class project extends container implements iproject
     {
         return new $strProvider($this);
     }
-    
+
     /**
      * 执行 bootstrap
      *
@@ -401,13 +399,13 @@ class project extends container implements iproject
         if (! method_exists($objProvider, 'bootstrap')) {
             return;
         }
-        
+
         $this->call([
-            $objProvider, 
+            $objProvider,
             'bootstrap'
         ]);
     }
-    
+
     /**
      * 设置项目基础配置
      *
@@ -419,7 +417,7 @@ class project extends container implements iproject
         $this->arrOption = $arrOption;
         return $this;
     }
-    
+
     /**
      * 注册 psr4
      *
@@ -430,19 +428,19 @@ class project extends container implements iproject
     {
         $this->instance('psr4', new psr4($objComposer, $this->psr4SandboxCacheDir(), dirname(__DIR__) . '/bootstrap/sandbox', 'qys'));
         $this->alias('psr4', psr4::class);
-        
+
         $this->instance('composer', $objComposer);
         $this->alias('composer', ClassLoader::class);
-        
+
         face::setContainer($this);
-        
+
         spl_autoload_register([
-            $this['psr4'], 
+            $this['psr4'],
             'autoload'
         ]);
         return $this;
     }
-    
+
     /**
      * 载入 APP 配置
      *
@@ -462,7 +460,7 @@ class project extends container implements iproject
         }
         return $this;
     }
-    
+
     /**
      * 框架基础提供者 register
      *
@@ -473,9 +471,9 @@ class project extends container implements iproject
         if (empty($this->arrAppOption['provider'])) {
             return $this;
         }
-        
+
         $booCache = false;
-        
+
         $strCachePath = $this->defferProviderCachePath();
         if (! $this->development() && is_file($strCachePath)) {
             list($this->arrDeferredProviders, $arrDeferredAlias) = include $strCachePath;
@@ -483,19 +481,19 @@ class project extends container implements iproject
         } else {
             $arrDeferredAlias = [];
         }
-        
+
         foreach ($this->arrAppOption['provider'] as $strProvider) {
             $strProvider .= '\provider\register';
-            
+
             if ($booCache === true && isset($arrDeferredAlias[$strProvider])) {
                 $this->alias($arrDeferredAlias[$strProvider]);
                 continue;
             }
-            
+
             if (! class_exists($strProvider)) {
                 continue;
             }
-            
+
             if ($strProvider::isDeferred()) {
                 $arrProviders = $strProvider::providers();
                 foreach ($arrProviders as $mixKey => $mixAlias) {
@@ -508,30 +506,30 @@ class project extends container implements iproject
                 $arrDeferredAlias[$strProvider] = $arrProviders;
                 continue;
             }
-            
+
             $objProvider = $this->makeProvider($strProvider);
             $objProvider->register();
-            
+
             if (method_exists($objProvider, 'bootstrap')) {
                 $this->arrProviderBootstrap[] = $objProvider;
             }
         }
-        
+
         if (! is_dir(dirname($strCachePath))) {
             fso::createDirectory(dirname($strCachePath));
         }
-        
+
         if ($this->development() || ! is_file($strCachePath)) {
             file_put_contents($strCachePath, '<?php return ' . var_export([
-                $this->arrDeferredProviders, 
+                $this->arrDeferredProviders,
                 $arrDeferredAlias
             ], true) . '; ?>');
             file_put_contents($strCachePath, '<?php /* ' . date('Y-m-d H:i:s') . ' */ ?>' . PHP_EOL . php_strip_whitespace($strCachePath));
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 框架基础提供者 bootstrap
      *
@@ -544,7 +542,7 @@ class project extends container implements iproject
         }
         return $this;
     }
-    
+
     /**
      * 框架 MVC 基础提供者
      *
@@ -554,21 +552,21 @@ class project extends container implements iproject
     {
         // 注册本身
         $this->instance('project', $this);
-        
+
         // 注册 app
         $this->singleton(application::class, function (project $objProject, $sApp, $arrOption = [])
         {
             return new application($objProject, $sApp, $arrOption);
         });
-        
+
         // 注册 console
         if ($this->console()) {
             $this->makeProvider(console_provider::class)->register();
         }
-        
+
         return $this;
     }
-    
+
     /**
      * 注册别名
      *
@@ -578,15 +576,15 @@ class project extends container implements iproject
     {
         $this->alias([
             'project' => [
-                'queryyetsimple\bootstrap\project', 
-                'queryyetsimple\support\icontainer', 
-                'queryyetsimple\bootstrap\iproject', 
+                'queryyetsimple\bootstrap\project',
+                'queryyetsimple\support\icontainer',
+                'queryyetsimple\bootstrap\iproject',
                 'app'
             ]
         ]);
         return $this;
     }
-    
+
     /**
      * 初始化项目路径
      *
@@ -597,16 +595,16 @@ class project extends container implements iproject
     {
         // 基础路径
         $this->strPath = dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
-        
+
         // 注册路径
         $this->registerPath();
-        
+
         // 注册 url
         $this->registerUrl();
-        
+
         return $this;
     }
-    
+
     /**
      * 注册路径到容器
      *
@@ -616,18 +614,18 @@ class project extends container implements iproject
     {
         // 基础路径
         $this->instance('path', $this->path());
-        
+
         // 其它路径
         foreach ([
-            'application', 
-            'common', 
-            'runtime', 
+            'application',
+            'common',
+            'runtime',
             'public'
         ] as $sKey => $sPath) {
             $this->instance('path_' . $sPath, $this->{'path' . ucwords($sPath)}());
         }
     }
-    
+
     /**
      * 注册 url 到容器
      *
@@ -636,15 +634,15 @@ class project extends container implements iproject
     protected function registerUrl()
     {
         foreach ([
-            'enter', 
-            'root', 
+            'enter',
+            'root',
             'public'
         ] as $sKey => $sUrl) {
             $sUrl = 'url_' . $sUrl;
             $this->instance($sUrl, isset($this->arrOption[$sUrl]) ? $this->arrOption[$sUrl] : '');
         }
     }
-    
+
     /**
      * 注册延迟载入服务提供者
      *
@@ -656,17 +654,17 @@ class project extends container implements iproject
         if (! isset($this->arrDeferredProviders[$strProvider])) {
             return;
         }
-        
+
         $objProvider = $this->makeProvider($this->arrDeferredProviders[$strProvider]);
         $objProvider->register();
-        
+
         if (method_exists($objProvider, 'bootstrap')) {
             $this->callProviderBootstrap($objProvider);
         }
-        
+
         unset($this->arrDeferredProviders[$strProvider]);
     }
-    
+
     /**
      * 返回延迟服务提供者缓存路径
      *
@@ -676,7 +674,7 @@ class project extends container implements iproject
     {
         return $this->pathRuntime() . '/provider/deffer.php';
     }
-    
+
     /**
      * 返回 prs4 沙盒缓存路径
      *
@@ -686,7 +684,7 @@ class project extends container implements iproject
     {
         return $this->pathRuntime() . '/sandbox';
     }
-    
+
     /**
      * 载入 APP 配置
      *
@@ -703,7 +701,7 @@ class project extends container implements iproject
             $this->arrAppOption = ( array ) include $this->pathCommon() . '/ui/option/app.php';
         }
     }
-    
+
     /**
      * 验证环境变量是否变动
      *
@@ -714,7 +712,7 @@ class project extends container implements iproject
     {
         return filemtime($this->path() . '/.env') > filemtime($strCache);
     }
-    
+
     /**
      * 设置环境变量
      *
@@ -732,7 +730,7 @@ class project extends container implements iproject
             $objDotenv->load();
         }
     }
-    
+
     /**
      * 设置单个环境变量
      *

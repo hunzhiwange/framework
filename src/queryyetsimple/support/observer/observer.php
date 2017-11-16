@@ -51,9 +51,7 @@ abstract class observer implements SplObserver
     }
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see SplObserver::update()
+     * {@inheritdoc}
      */
     public function update(SplSubject $objSubject)
     {

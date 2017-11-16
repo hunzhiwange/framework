@@ -39,9 +39,7 @@ interface irunner
     public function workCommand($objWork);
 
     /**
-     * (non-PHPdoc)
-     *
-     * @see \PHPQueue\Runner::workJob()
+     * {@inheritdoc}
      */
     public function workJob();
 }
