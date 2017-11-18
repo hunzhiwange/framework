@@ -1350,6 +1350,7 @@ out += '";
 
     /**
      * PHP 结束标签
+     * 
      * @return string
      */
     protected function phpTagEnd()
