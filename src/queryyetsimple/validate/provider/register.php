@@ -66,7 +66,7 @@ class register extends provider
             'validate' => [
                 'queryyetsimple\validate\validate',
                 'queryyetsimple\validate\ivalidate'
-                ]
+            ]
         ];
     }
 }

@@ -75,24 +75,15 @@ interface ivalidate
     const SKIP_OTHER = 'other';
 
     /**
-     * 创建一个验证器
-     *
-     * @param array $arrData
-     * @param array $arrRule
-     * @param array $arrMessage
-     * @return \queryyetsimple\validate
-     */
-    public static function make(array $arrData = [], array $arrRule = [], array $arrMessage = []);
-
-    /**
      * 初始化验证器
      *
      * @param array $arrData
      * @param array $arrRule
+     * @param array $arrFieldName
      * @param array $arrMessage
-     * @return $this
+     * @return \queryyetsimple\validate
      */
-    public function init(array $arrData = [], array $arrRule = [], array $arrMessage = []);
+    public static function make(array $arrData = [], array $arrRule = [], array $arrFieldName = [], array $arrMessage = []);
 
     /**
      * 验证是否成功
@@ -266,6 +257,29 @@ interface ivalidate
     public function addMessage(array $arrMessage);
 
     /**
+     * 返回字段名字
+     *
+     * @return array
+     */
+    public function getFieldName();
+
+    /**
+     * 设置字段名字
+     *
+     * @param array $arrFieldName
+     * @return $this
+     */
+    public function fieldName(array $arrFieldName);
+
+    /**
+     * 添加字段名字
+     *
+     * @param array $arrFieldName
+     * @return $this
+     */
+    public function addFieldName(array $arrFieldName);
+
+    /**
      * 设置单个字段验证消息
      *
      * @param string $strFieldRule
@@ -351,4 +365,11 @@ interface ivalidate
      * @return array
      */
     public function getSkipRule();
+
+    /**
+     * 设置默认的消息
+     *
+     * @return void
+     */
+    public static function defaultMessage();
 }
