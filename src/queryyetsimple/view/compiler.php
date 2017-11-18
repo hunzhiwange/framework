@@ -380,7 +380,7 @@ class compiler implements icompiler
     {
         $arrTheme['content'] = ! empty($arrTheme['content']) ? $this->parseContent($arrTheme['content']) : null;
         if ($arrTheme['content'] !== null) {
-            $arrTheme['content'] = '<' . '?php echo ' . $arrTheme['content'] . '; ?' . '>';
+            $arrTheme['content'] = $this->phpTagStart() . 'echo ' . $arrTheme['content'] . ';' . $this->phpTagEnd();
         }
         $arrTheme['content'] = $this->encodeContent($arrTheme['content']);
     }
@@ -394,7 +394,7 @@ class compiler implements icompiler
     public function ifCodeCompiler(&$arrTheme)
     {
         $arrTheme['content'] = $this->parseContentIf($arrTheme['content']);
-        $arrTheme['content'] = $this->encodeContent('<?' . 'php ' . $arrTheme['content'] . ' : ?' . '>');
+        $arrTheme['content'] = $this->encodeContent($this->phpTagStart() . $arrTheme['content'] . ' :' . $this->phpTagEnd());
     }
 
     /**
@@ -406,7 +406,7 @@ class compiler implements icompiler
     public function elseifCodeCompiler(&$arrTheme)
     {
         $arrTheme['content'] = $this->parseContentIf($arrTheme['content'], 'else');
-        $arrTheme['content'] = $this->encodeContent('<?' . 'php ' . $arrTheme['content'] . ' : ?' . '>');
+        $arrTheme['content'] = $this->encodeContent($this->phpTagStart() . $arrTheme['content'] . ' :' . $this->phpTagEnd());
     }
 
     /**
@@ -417,7 +417,7 @@ class compiler implements icompiler
      */
     public function elseCodeCompiler(&$arrTheme)
     {
-        $arrTheme['content'] = $this->encodeContent('<?' . 'php else: ?' . '>');
+        $arrTheme['content'] = $this->encodeContent($this->phpTagStart() . 'else:' . $this->phpTagEnd());
     }
 
     /**
@@ -448,7 +448,7 @@ class compiler implements icompiler
         };
 
         $arrTheme['content'] = $calHelp($arrTheme['content']);
-        $arrTheme['content'] = $this->encodeContent('<?' . 'php ' . $arrTheme['content'] . ': ?' . '>');
+        $arrTheme['content'] = $this->encodeContent($this->phpTagStart() . $arrTheme['content'] . ':' . $this->phpTagEnd());
     }
 
     /**
@@ -459,7 +459,7 @@ class compiler implements icompiler
      */
     public function forCodeCompiler(&$arrTheme)
     {
-        $arrTheme['content'] = $this->encodeContent('<?' . 'php for( ' . $arrTheme['content'] . ' ) : ?' . '>');
+        $arrTheme['content'] = $this->encodeContent($this->phpTagStart() . 'for( ' . $arrTheme['content'] . ' ) :' . $this->phpTagEnd());
     }
 
     /**
@@ -470,7 +470,7 @@ class compiler implements icompiler
      */
     public function whileCodeCompiler(&$arrTheme)
     {
-        $arrTheme['content'] = $this->encodeContent('<?' . 'php while( ' . $arrTheme['content'] . ' ) : ?' . '>');
+        $arrTheme['content'] = $this->encodeContent($this->phpTagStart() . 'while( ' . $arrTheme['content'] . ' ) :' . $this->phpTagEnd());
     }
 
     /**
@@ -481,7 +481,7 @@ class compiler implements icompiler
      */
     public function phpCodeCompiler(&$arrTheme)
     {
-        $arrTheme['content'] = $this->encodeContent('<?' . 'php ' . $arrTheme['content'] . '; ?' . '>');
+        $arrTheme['content'] = $this->encodeContent($this->phpTagStart() . $arrTheme['content'] . ';' . $this->phpTagEnd());
     }
 
     /**
@@ -503,7 +503,7 @@ class compiler implements icompiler
      */
     public function echoCodeCompiler(&$arrTheme)
     {
-        $arrTheme['content'] = $this->encodeContent('<?' . 'php echo ' . $arrTheme['content'] . '; ?' . '>');
+        $arrTheme['content'] = $this->encodeContent($this->phpTagStart() . 'echo ' . $arrTheme['content'] . ';' . $this->phpTagEnd());
     }
 
     /**
@@ -541,16 +541,16 @@ class compiler implements icompiler
             $sContent = ltrim(trim($sContent), '/');
             switch ($sContent) {
                 case 'list':
-                    $sContent = '<' . '?php endforeach; endif; ?' . '>';
+                    $sContent = $this->phpTagStart() . 'endforeach; endif;' . $this->phpTagEnd();
                     break;
                 case 'for':
-                    $sContent = '<' . '?php endfor; ?' . '>';
+                    $sContent = $this->phpTagStart() . 'endfor;' . $this->phpTagEnd();
                     break;
                 case 'while':
-                    $sContent = '<' . '?php endwhile; ?' . '>';
+                    $sContent = $this->phpTagStart() . 'endwhile;' . $this->phpTagEnd();
                     break;
                 case 'if':
-                    $sContent = '<' . '?php endif; ?' . '>';
+                    $sContent = $this->phpTagStart() . 'endif;' . $this->phpTagEnd();
                     break;
                 case 'script':
                     $sContent = '</script>';
@@ -600,13 +600,11 @@ class compiler implements icompiler
 
         $arrAttr['condition'] = $this->parseJsContent($arrAttr['condition']);
 
-        $sCompiled = "';
+        $arrTheme['content'] = "';
 if( {$arrAttr['condition']} ) {
     out += '" . $this->getNodeBody($arrTheme) . "';
 }
 out += '";
-
-        $arrTheme['content'] = $sCompiled;
     }
 
     /**
@@ -622,12 +620,10 @@ out += '";
 
         $arrAttr['condition'] = $this->parseJsContent($arrAttr['condition']);
 
-        $sCompiled = "';
+        $arrTheme['content'] = "';
 } else if( {$arrAttr['condition']} ) {
         out += '" . $this->getNodeBody($arrTheme) . "';
 out += '";
-
-        $arrTheme['content'] = $sCompiled;
     }
 
     /**
@@ -638,11 +634,9 @@ out += '";
      */
     public function elseJsCompiler(&$arrTheme)
     {
-        $sCompiled = "';
+        $arrTheme['content'] = "';
 } else {
 out += '";
-
-        $arrTheme['content'] = $sCompiled;
     }
 
     /**
@@ -663,13 +657,11 @@ out += '";
             $arrAttr[$sKey] === null && $arrAttr[$sKey] = $sKey;
         }
 
-        $sCompiled = "';
+        $arrTheme['content'] = "';
 \$.each( {$arrAttr['for']}, function( {$arrAttr['index']}, {$arrAttr['value']} ) {
     out += '" . $this->getNodeBody($arrTheme) . "';
 });
 out += '";
-
-        $arrTheme['content'] = $sCompiled;
     }
 
     // ######################################################
@@ -705,8 +697,7 @@ out += '";
         }
 
         // 编译
-        $sCompiled = '<?' . 'php ' . $arrAttr['name'] . '=' . $arrAttr['value'] . '; ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrTheme['content'] = $this->phpTagStart() . $arrAttr['name'] . '=' . $arrAttr['value'] . ';' . $this->phpTagEnd();
     }
 
     /**
@@ -720,8 +711,7 @@ out += '";
         $this->checkNode($arrTheme);
         $arrAttr = $this->getNodeAttribute($arrTheme);
         $arrAttr['condition'] = $this->parseConditionHelp($arrAttr['condition']);
-        $sCompiled = '<' . '?php if( ' . $arrAttr['condition'] . ' ) : ?' . '>' . $this->getNodeBody($arrTheme) . '<' . '?php endif; ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrTheme['content'] = $this->phpTagStart() . 'if( ' . $arrAttr['condition'] . ' ) :' . $this->phpTagEnd() . $this->getNodeBody($arrTheme) . $this->phpTagStart() . 'endif;' . $this->phpTagEnd();
     }
 
     /**
@@ -735,8 +725,7 @@ out += '";
         $this->checkNode($arrTheme);
         $arrAttr = $this->getNodeAttribute($arrTheme);
         $arrAttr['condition'] = $this->parseConditionHelp($arrAttr['condition']);
-        $sCompiled = '<' . '?php elseif( ' . $arrAttr['condition'] . ' ) : ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrTheme['content'] = $this->phpTagStart() . 'elseif( ' . $arrAttr['condition'] . ' ) :' . $this->phpTagEnd();
     }
 
     /**
@@ -748,8 +737,7 @@ out += '";
     public function elseNodeCompiler(&$arrTheme)
     {
         $this->checkNode($arrTheme);
-        $sCompiled = '<' . '?php else : ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrTheme['content'] = $this->phpTagStart() . 'else :' . $this->phpTagEnd();
     }
 
     /**
@@ -784,8 +772,7 @@ out += '";
         }
 
         // 编译
-        $sCompiled = '<' . '?php ' . $arrAttr['index'] . ' = 1; ?' . '>' . '<' . '?php if( is_array( ' . $arrAttr['for'] . ' ) ) : foreach( ' . $arrAttr['for'] . ' as ' . $arrAttr['key'] . ' => ' . $arrAttr['value'] . ') : ?' . '>' . $this->getNodeBody($arrTheme) . '<' . '?php ' . $arrAttr['index'] . '++; ?' . '>' . '<' . '?php endforeach; endif; ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrtheme['content'] = $this->phpTagStart() . $arrAttr['index'] . ' = 1;' . $this->phpTagEnd() . $this->phpTagStart() . 'if( is_array( ' . $arrAttr['for'] . ' ) ) : foreach( ' . $arrAttr['for'] . ' as ' . $arrAttr['key'] . ' => ' . $arrAttr['value'] . ') :' . $this->phpTagEnd() . $this->getNodeBody($arrTheme) . $this->phpTagStart() . $arrAttr['index'] . '++;' . $this->phpTagEnd() . $this->phpTagStart() . 'endforeach; endif;' . $this->phpTagEnd();
     }
 
     /**
@@ -811,22 +798,23 @@ out += '";
         $arrAttr['offset'] === null && $arrAttr['offset'] = '';
         $arrAttr['name'] = $this->parseContent($arrAttr['name']);
 
-        $sCompiled = '<' . '?php if( is_array ( ' . $arrAttr['name'] . ' ) ) : $' . $arrAttr['index'] . ' = 0; ';
+        $arrCompiled = [];
+        $arrCompiled[] = $this->phpTagStart() . 'if( is_array ( ' . $arrAttr['name'] . ' ) ) : $' . $arrAttr['index'] . ' = 0;';
         if ('' != $arrAttr['length']) {
-            $sCompiled .= '$arrList = array_slice( ' . $arrAttr['name'] . ', ' . $arrAttr['offset'] . ', ' . $arrAttr['length'] . ' ); ';
+            $arrCompiled[] = '$arrList = array_slice( ' . $arrAttr['name'] . ', ' . $arrAttr['offset'] . ', ' . $arrAttr['length'] . ' );';
         } elseif ('' != $arrAttr['offset']) {
-            $sCompiled .= '$arrList = array_slice ( ' . $arrAttr['name'] . ', ' . $arrAttr['offset'] . ' ); ';
+            $arrCompiled[] = '$arrList = array_slice ( ' . $arrAttr['name'] . ', ' . $arrAttr['offset'] . ' );';
         } else {
-            $sCompiled .= '$arrList = ' . $arrAttr['name'] . '; ';
+            $arrCompiled[] = '$arrList = ' . $arrAttr['name'] . ';';
         }
-        $sCompiled .= 'if( count( $arrList ) == 0 ) : echo  "' . $arrAttr['empty'] . '"; ';
-        $sCompiled .= 'else : ';
-        $sCompiled .= 'foreach ( $arrList as $' . $arrAttr['key'] . ' => $' . $arrAttr['id'] . ' ) : ';
-        $sCompiled .= '++$' . $arrAttr['index'] . '; ';
-        $sCompiled .= '$mod = ( $' . $arrAttr['index'] . ' % ' . $arrAttr['mod'] . ') ?' . '>';
-        $sCompiled .= $this->getNodeBody($arrTheme);
-        $sCompiled .= '<' . '?php endforeach; endif; else: echo "' . $arrAttr['empty'] . '"; endif; ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrCompiled[] = 'if( count( $arrList ) == 0 ) : echo  "' . $arrAttr['empty'] . '";';
+        $arrCompiled[] = 'else :';
+        $arrCompiled[] = 'foreach ( $arrList as $' . $arrAttr['key'] . ' => $' . $arrAttr['id'] . ' ) :';
+        $arrCompiled[] = '++$' . $arrAttr['index'] . ';';
+        $arrCompiled[] = '$mod = $' . $arrAttr['index'] . ' % ' . $arrAttr['mod'] . ';' . $this->phpTagEnd();
+        $arrCompiled[] = $this->getNodeBody($arrTheme);
+        $arrCompiled[] = $this->phpTagStart() . 'endforeach; endif; else: echo "' . $arrAttr['empty'] . '"; endif;' . $this->phpTagEnd();
+        $arrTheme['content'] = implode(' ', $arrCompiled);
     }
 
     /**
@@ -849,10 +837,10 @@ out += '";
         if ($this->getOption('cache_children')) {
             $sMd5 = md5($arrAttr['file']);
             $sCompiled = "<!--<####incl*" . $sMd5 . "*ude####>-->";
-            $sCompiled .= '<?' . 'php $this->display( ' . $arrAttr['file'] . ', true, \'' . ($arrAttr['ext'] ?  : '') . '\', __FILE__,\'' . $sMd5 . '\'   ); ?' . '>';
+            $sCompiled .= $this->phpTagStart() . '$this->display( ' . $arrAttr['file'] . ', true, \'' . ($arrAttr['ext'] ?  : '') . '\', __FILE__,\'' . $sMd5 . '\'   );' . $this->phpTagEnd();
             $sCompiled .= "<!--</####incl*" . $sMd5 . "*ude####/>-->";
         } else {
-            $sCompiled = '<?' . 'php $this->display( ' . $arrAttr['file'] . ', true, \'' . ($arrAttr['ext'] ?  : '') . '\' ); ?' . '>';
+            $sCompiled = $this->phpTagStart() . '$this->display( ' . $arrAttr['file'] . ', true, \'' . ($arrAttr['ext'] ?  : '') . '\' );' . $this->phpTagEnd();
         }
 
         $arrTheme['content'] = $sCompiled;
@@ -882,8 +870,14 @@ out += '";
             $sMinusPlus = ' += ';
         }
 
-        $sCompiled = '<' . '?php for( ' . $arrAttr['var'] . ' = ' . $arrAttr['start'] . '; ' . $arrAttr['var'] . $sComparison . $arrAttr['end'] . '; ' . $arrAttr['var'] . $sMinusPlus . $arrAttr['step'] . ' ) : ?' . '>' . $this->getNodeBody($arrTheme) . '<' . '?php endfor; ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrCompiled = [];
+        $arrCompiled[] = $this->phpTagStart() . 'for( ' . $arrAttr['var'] . ' = ' . $arrAttr['start'] . ';';
+        $arrCompiled[] = $arrAttr['var'] . $sComparison . $arrAttr['end'] . ';';
+        $arrCompiled[] = $arrAttr['var'] . $sMinusPlus . $arrAttr['step'] . ' ) :' . $this->phpTagEnd();
+        $arrCompiled[] = $this->getNodeBody($arrTheme);
+        $arrCompiled[] = $this->phpTagStart() . 'endfor;' . $this->phpTagEnd();
+
+        $arrTheme['content'] = implode(' ', $arrCompiled);
     }
 
     /**
@@ -897,8 +891,7 @@ out += '";
         $this->checkNode($arrTheme);
         $arrAttr = $this->getNodeAttribute($arrTheme);
 
-        $sCompiled = '<' . '?php while( ' . $arrAttr['condition'] . ' ) : ?' . '>' . $this->getNodeBody($arrTheme) . '<' . '?php endwhile; ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrTheme['content'] = $this->phpTagStart() . 'while( ' . $arrAttr['condition'] . ' ) :' . $this->phpTagEnd() . $this->getNodeBody($arrTheme) . $this->phpTagStart() . 'endwhile;' . $this->phpTagEnd();
     }
 
     /**
@@ -910,8 +903,7 @@ out += '";
     public function breakNodeCompiler(&$arrTheme)
     {
         $this->checkNode($arrTheme);
-        $sCompiled = '<' . '?php break; ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrTheme['content'] = $this->phpTagStart() . 'break;' . $this->phpTagEnd();
     }
 
     /**
@@ -923,8 +915,7 @@ out += '";
     public function continueNodeCompiler(&$arrTheme)
     {
         $this->checkNode($arrTheme);
-        $sCompiled = '<' . '?php continue; ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrTheme['content'] = $this->phpTagStart() . 'continue;' . $this->phpTagEnd();
     }
 
     /**
@@ -936,8 +927,7 @@ out += '";
     public function phpNodeCompiler(&$arrTheme)
     {
         $this->checkNode($arrTheme);
-        $sCompiled = '<' . '?php ' . $this->getNodeBody($arrTheme) . ' ?' . '>';
-        $arrTheme['content'] = $sCompiled;
+        $arrTheme['content'] = $this->phpTagStart() . $this->getNodeBody($arrTheme) . $this->phpTagEnd();
     }
 
     /**
@@ -1346,6 +1336,25 @@ out += '";
             ], $sTxt);
         }
         return $sTxt;
+    }
+
+    /**
+     * PHP 开始标签
+     *
+     * @return string
+     */
+    protected function phpTagStart()
+    {
+        return '<?' . 'php ';
+    }
+
+    /**
+     * PHP 结束标签
+     * @return string
+     */
+    protected function phpTagEnd()
+    {
+        return ' ?' . '>';
     }
 
     // ######################################################
