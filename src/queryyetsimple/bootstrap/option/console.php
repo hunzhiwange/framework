@@ -48,14 +48,7 @@ return [
     'template' => [
 
         // 头部注释
-        'header_comment' => '/*
- * This file is part of {{product_name}}.
- *
- * (c) {{date_y}}-2099 {{product_homepage}} All rights reserved.
- *
- * {{product_description}}
- * <{{product_slogan}}>
- */',
+        'header_comment' => '// (c) {{date_y}} {{product_homepage}} All rights reserved.',
 
         // 文件头部注释
         'file_comment' => '/**
@@ -68,7 +61,7 @@ return [
  */',
 
         // 产品信息
-        'product_homepage' => 'http://www.youdomain.com',
+        'product_homepage' => 'http://your.domain.com',
         'product_name' => 'Your.Product',
         'product_description' => 'This project can help people to do things very funny.',
         'product_slogan' => 'To make the world better',
@@ -78,6 +71,6 @@ return [
         'file_since' => date('Y.m.d'),
         'file_version' => '1.0',
         'file_package' => '$$',
-        'file_author' => 'your.name <your.email>'
+        'file_author' => 'Name Your <your@mail.com>'
     ]
 ];
