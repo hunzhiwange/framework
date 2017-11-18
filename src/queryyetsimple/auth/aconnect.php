@@ -282,7 +282,23 @@ abstract class aconnect
         }
 
         try {
-            $oUser = $this->oUser->forceProp('name', $strName)->ifs($strNikename)->forceProp('nikename', $strNikename)->endIfs()->forceProp('random', $strRandom = string::randAlphaNum(6))->forceProp('password', $this->encodePassword($strPassword, $strRandom))->ifs($strEmail)->forceProp('email', $strEmail)->endIfs()->ifs($strMobile)->forceProp('mobile', $strMobile)->endIfs()->ifs($strIp)->forceProp('register_ip', $strIp)->endIfs()->create();
+            $oUser = $this->oUser->
+
+            forceProp('name', $strName)->
+
+            ifs(! is_null($strNikename))->forceProp('nikename', $strNikename)->endIfs()->
+
+            forceProp('random', $strRandom = string::randAlphaNum(6))->
+
+            forceProp('password', $this->encodePassword($strPassword, $strRandom))->
+
+            ifs(! is_null($strEmail))->forceProp('email', $strEmail)->endIfs()->
+
+            ifs(! is_null($strMobile))->forceProp('mobile', $strMobile)->endIfs()->
+
+            ifs(! is_null($strIp))->forceProp('register_ip', $strIp)->endIfs()->
+
+            create();
 
             if (empty($oUser->id)) {
                 throw new register_failed(__('注册失败'));

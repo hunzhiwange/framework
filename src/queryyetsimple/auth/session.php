@@ -80,7 +80,7 @@ class session extends aconnect implements iconnect
     protected function setPersistence($strKey, $mixValue, $mixExpire = null)
     {
         $this->oSession->set($strKey, $mixValue, [
-                'expire' => $mixExpire
+            'expire' => $mixExpire
         ]);
     }
 

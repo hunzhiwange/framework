@@ -82,7 +82,7 @@ class token extends aconnect implements iconnect
     protected function setPersistence($strKey, $mixValue, $mixExpire = null)
     {
         $this->oCache->set($strKey, $mixValue, [
-                'expire' => $mixExpire
+            'expire' => $mixExpire
         ]);
     }
 

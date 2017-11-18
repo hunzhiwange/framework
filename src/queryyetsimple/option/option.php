@@ -49,10 +49,12 @@ class option implements ArrayAccess, ioption
     /**
      * 构造函数
      *
+     * @param array $arrOptions
      * @return void
      */
-    public function __construct()
+    public function __construct(array $arrOptions)
     {
+        $this->reset($arrOptions);
     }
 
     /**

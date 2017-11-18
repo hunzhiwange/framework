@@ -120,11 +120,7 @@ abstract class message
 
         data($strContent)->
 
-        ifs($booStatusCode)->
-
-        code($booStatusCode ? $this->objException->statusCode() : null)->
-
-        endIfs()->
+        ifs($booStatusCode)->code($booStatusCode ? $this->objException->statusCode() : null)->endIfs()->
 
         output();
     }
