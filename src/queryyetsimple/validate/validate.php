@@ -1265,6 +1265,32 @@ class validate implements ivalidate
     }
 
     /**
+     * 是否为大写英文字母
+     *
+     * @param string $strField
+     * @param mixed $mixData
+     * @param array $arrParameter
+     * @return boolean
+     */
+    protected function validateAlphaUpper($strField, $mixData, $arrParameter)
+    {
+        return preg_match('/^[A-Z]+$/', $mixData);
+    }
+
+    /**
+     * 是否为小写英文字母
+     *
+     * @param string $strField
+     * @param mixed $mixData
+     * @param array $arrParameter
+     * @return boolean
+     */
+    protected function validateAlphaLower($strField, $mixData, $arrParameter)
+    {
+        return preg_match('/^[a-z]+$/', $mixData);
+    }
+
+    /**
      * 字符串是否为数字和字母
      *
      * @param string $strField
@@ -2265,6 +2291,8 @@ class validate implements ivalidate
             'date_format' => __('{field} 必须使用日期格式 {rule}'),
             'timezone' => __('{field} 不是正确的时区'),
             'alpha' => __('{field} 只能是字母'),
+            'alpha_upper' => __('{field} 只能是大写字母'),
+            'alpha_lower' => __('{field} 只能是小写字母'),
             'alpha_num' => __('{field} 只能是字母和数字'),
             'alpha_dash' => __('{field} 只能是字母、数字、短横线和下划线'),
             'chinese' => __('{field} 只能是汉字'),
