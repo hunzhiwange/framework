@@ -19,6 +19,7 @@
  */
 namespace queryyetsimple\option\provider;
 
+use queryyetsimple\option\load;
 use queryyetsimple\option\option;
 use queryyetsimple\support\provider;
 
@@ -40,9 +41,8 @@ class register extends provider
      */
     public function register()
     {
-        $this->singleton('option', function ($oProject) {
-            return new option();
-        });
+        $this->option();
+        $this->optionLoad();
     }
 
     /**
@@ -54,9 +54,34 @@ class register extends provider
     {
         return [
             'option' => [
-                'queryyetsimple\option\option',
+                'queryyetsimple\optionoption',
                 'queryyetsimple\option\ioption'
-                ]
+            ],
+            'load' => 'queryyetsimple\option\load'
         ];
+    }
+
+    /**
+     * 注册 option 服务
+     *
+     * @return void
+     */
+    protected function option()
+    {
+        $this->singleton('option', function ($oProject) {
+            return new option();
+        });
+    }
+
+    /**
+     * 注册 option.load 服务
+     *
+     * @return void
+     */
+    protected function optionLoad()
+    {
+        $this->singleton('option.load', function () {
+            return new load();
+        });
     }
 }

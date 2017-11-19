@@ -20,7 +20,6 @@
 namespace queryyetsimple\bootstrap\console;
 
 use RuntimeException;
-use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
 
 /**

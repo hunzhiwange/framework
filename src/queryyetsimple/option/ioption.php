@@ -75,7 +75,7 @@ interface ioption
      * 初始化配置参数
      *
      * @param mixed $mixNamespace
-     * @return void
+     * @return boolean
      */
     public function reset($mixNamespace = null);
 }

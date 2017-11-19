@@ -35,80 +35,80 @@ use queryyetsimple\encryption\iencryption;
 abstract class aconnect
 {
     use option;
-
+    
     /**
      * user 对象
      *
      * @var \queryyetsimple\mvc\imodel
      */
     protected $oUser;
-
+    
     /**
      * 加密
      *
      * @var \queryyetsimple\encryption\iencryption
      */
     protected $oEncryption;
-
+    
     /**
      * 验证
      *
      * @var \queryyetsimple\validate\ivalidate
      */
     protected $oValidate;
-
+    
     /**
      * 是否已经设置过登录字段
      *
      * @var boolean
      */
     protected $booSetField = false;
-
+    
     /**
      * 认证名字
      *
      * @var string
      */
     protected $strTokenName;
-
+    
     /**
      * 获取用户持久化名字
      *
      * @return string
      */
     protected $strUserPersistenceName;
-
+    
     /**
      * 登录字段设置
      *
      * @var array
      */
     protected $arrField = [
-        'id' => 'id',
-        'name' => 'name',
-        'nikename' => 'nikename',
-        'random' => 'random',
-        'email' => 'email',
-        'mobile' => 'mobile',
-        'password' => 'password',
-        'register_ip' => 'register_ip',
-        'login_time' => 'login_time',
-        'login_ip' => 'login_ip',
-        'login_count' => 'login_count',
+        'id' => 'id', 
+        'name' => 'name', 
+        'nikename' => 'nikename', 
+        'random' => 'random', 
+        'email' => 'email', 
+        'mobile' => 'mobile', 
+        'password' => 'password', 
+        'register_ip' => 'register_ip', 
+        'login_time' => 'login_time', 
+        'login_ip' => 'login_ip', 
+        'login_count' => 'login_count', 
         'status' => 'status'
     ];
-
+    
     /**
      * 配置
      *
      * @var array
      */
     protected $arrOption = [
-        'user_persistence' => 'user_persistence',
-        'token_persistence' => 'token_persistence',
+        'user_persistence' => 'user_persistence', 
+        'token_persistence' => 'token_persistence', 
         'field' => 'id,name,nikename,email,mobile'
     ];
-
+    
     /**
      * 构造函数
      *
@@ -120,10 +120,10 @@ abstract class aconnect
         $this->oUser = $oUser;
         $this->oEncryption = $oEncryption;
         $this->oValidate = $oValidate;
-
+        
         $this->options($arrOption);
     }
-
+    
     /**
      * 用户是否已经登录
      *
@@ -133,7 +133,7 @@ abstract class aconnect
     {
         return $this->getLogin() ? true : false;
     }
-
+    
     /**
      * 获取登录信息
      *
@@ -143,10 +143,10 @@ abstract class aconnect
     {
         $sToken = $this->tokenData();
         list($nUserId, $sPassword) = $sToken ? $this->explodeTokenData($sToken) : [
-            '',
+            '', 
             ''
         ];
-
+        
         if ($nUserId && $sPassword) {
             return $this->getPersistenceUser($nUserId, $sPassword) ?  : false;
         } else {
@@ -154,7 +154,7 @@ abstract class aconnect
             return false;
         }
     }
-
+    
     /**
      * 登录验证
      *
@@ -167,28 +167,28 @@ abstract class aconnect
     {
         $mixName = trim($mixName);
         $sPassword = trim($sPassword);
-
+        
         if (! $mixName || ! $sPassword) {
             throw new login_failed(__('帐号或者密码不能为空'));
         }
-
+        
         $oUser = $this->oUser->where($this->parseLoginField($mixName), $mixName)->getOne();
-
+        
         if (empty($oUser->{$this->getField('id')}) || $oUser->{$this->getField('status')} != 'enable') {
             throw new login_failed(__('帐号不存在或者未启用'));
         }
-
+        
         if (! $this->checkPassword($sPassword, $oUser->{$this->getField('password')}, $oUser->{$this->getField('random')})) {
             throw new login_failed(__('账号或者密码错误'));
         }
-
+        
         $this->setLoginTokenName($oUser);
-
+        
         $this->tokenPersistence($oUser->{$this->getField('id')}, $oUser->{$this->getField('password')}, $mixLoginTime);
-
+        
         return $oUser;
     }
-
+    
     /**
      * 登出
      *
@@ -199,7 +199,7 @@ abstract class aconnect
         $this->deletePersistence($this->getUserPersistenceName());
         $this->deletePersistence($this->getTokenName());
     }
-
+    
     /**
      * 修改密码
      *
@@ -215,39 +215,39 @@ abstract class aconnect
         if (! $mixName) {
             throw new change_password_failed(__('账号或者 ID 不能为空'));
         }
-
+        
         if ($bIgnoreOldPassword === false && $sOldPassword == '') {
             throw new change_password_failed(__('旧密码不能为空'));
         }
-
+        
         if (! $sNewPassword) {
             throw new change_password_failed(__('新密码不能为空'));
         }
-
+        
         if ($sConfirmPassword != $sNewPassword) {
             throw new change_password_failed(__('两次输入的密码不一致'));
         }
-
+        
         $oUser = $this->oUser->where($this->parseChangePasswordField($mixName), $mixName)->setColumns('id,status,random,password')->getOne();
-
+        
         if (empty($oUser->{$this->getField('id')}) || $oUser->{$this->getField('status')} != 'enable') {
             throw new change_password_failed(__('帐号不存在或者未启用'));
         }
-
+        
         if (! $bIgnoreOldPassword && ! $this->checkPassword($sOldPassword, $oUser->{$this->getField('password')}, $oUser->{$this->getField('random')})) {
             throw new change_password_failed(__('用户输入的旧密码错误'));
         }
-
+        
         try {
             $oUser->password = $this->encodePassword($sNewPassword, $oUser->random);
             $oUser->update();
-
+            
             return $oUser;
         } catch (Exception $oE) {
             throw new change_password_failed($oE->getMessage());
         }
     }
-
+    
     /**
      * 注册用户
      *
@@ -268,19 +268,19 @@ abstract class aconnect
         $strComfirmPassword = trim($strComfirmPassword);
         $strEmail = trim($strEmail);
         $strMobile = trim($strMobile);
-
+        
         if (! $strName || $strName != addslashes($strName)) {
             throw new register_failed(__('用户名不能为空或包含非法字符'));
         }
-
+        
         if (! $strPassword || $strPassword != addslashes($strPassword) || strpos($strPassword, "\n") !== false || strpos($strPassword, "\r") !== false || strpos($strPassword, "\t") !== false) {
             throw new register_failed(__('密码不能为空或包含非法字符'));
         }
-
+        
         if ($strPassword != $strComfirmPassword) {
             throw new register_failed(__('两次输入的密码不一致'));
         }
-
+        
         try {
             $oUser = $this->oUser->
 
@@ -299,17 +299,17 @@ abstract class aconnect
             ifs(! is_null($strIp))->forceProp('register_ip', $strIp)->endIfs()->
 
             create();
-
+            
             if (empty($oUser->id)) {
                 throw new register_failed(__('注册失败'));
             }
-
+            
             return $oUser;
         } catch (Exception $oE) {
             throw new register_failed($oE->getMessage());
         }
     }
-
+    
     /**
      * 设置认证名字
      *
@@ -320,7 +320,7 @@ abstract class aconnect
     {
         return $this->strTokenName = $strTokenName;
     }
-
+    
     /**
      * 取得认证名字
      *
@@ -334,7 +334,7 @@ abstract class aconnect
         }
         return $this->strTokenName = $this->getOption('token_persistence');
     }
-
+    
     /**
      * 设置用户信息持久化名字
      *
@@ -345,7 +345,7 @@ abstract class aconnect
     {
         return $this->strUserPersistenceName = $strUserPersistenceName;
     }
-
+    
     /**
      * 取得用户信息持久化名字
      *
@@ -358,7 +358,7 @@ abstract class aconnect
         }
         return $this->strUserPersistenceName = $this->getOption('user_persistence');
     }
-
+    
     /**
      * 设置字段
      *
@@ -371,7 +371,7 @@ abstract class aconnect
         if ($booForce === false && $this->booSetField = true) {
             return;
         }
-
+        
         $this->booSetField = true;
         foreach ($arrField as $strKey => $strField) {
             if (isset($this->arrField[$strKey])) {
@@ -379,7 +379,7 @@ abstract class aconnect
             }
         }
     }
-
+    
     /**
      * 获取字段
      *
@@ -390,7 +390,7 @@ abstract class aconnect
     {
         return isset($this->arrField[$strField]) ? $this->arrField[$strField] : null;
     }
-
+    
     /**
      * 批量获取字段
      *
@@ -409,7 +409,7 @@ abstract class aconnect
         }
         return $arrData;
     }
-
+    
     /**
      * 验证数据分离
      *
@@ -424,7 +424,7 @@ abstract class aconnect
         $sAuth = $this->oEncryption->decrypt($sAuth);
         return $sAuth ? explode("\t", $sAuth) : false;
     }
-
+    
     /**
      * 验证数据组合
      *
@@ -436,7 +436,7 @@ abstract class aconnect
     {
         return $this->oEncryption->encrypt($maxIdentifier . "\t" . $strPassword);
     }
-
+    
     /**
      * 验证密码是否正确
      *
@@ -449,7 +449,7 @@ abstract class aconnect
     {
         return $this->encodePassword($sSourcePassword, $sRandom) == $sPassword;
     }
-
+    
     /**
      * 加密密码
      *
@@ -461,7 +461,7 @@ abstract class aconnect
     {
         return md5(md5($sSourcePassword) . $sRandom);
     }
-
+    
     /**
      * 解析登录字段
      *
@@ -472,7 +472,7 @@ abstract class aconnect
     {
         return $this->oValidate->email($sName) ? $this->getField('email') : ($this->oValidate->mobile($sName) ? $this->getField('mobile') : $this->getField('name'));
     }
-
+    
     /**
      * 解析修改密码字段
      *
@@ -483,7 +483,7 @@ abstract class aconnect
     {
         return is_numeric($sName) ? $this->getField('id') : $this->getField('name');
     }
-
+    
     /**
      * 从持久化系统获取用户信息
      *
@@ -493,7 +493,7 @@ abstract class aconnect
     {
         return $this->getPersistence($this->getUserPersistenceName());
     }
-
+    
     /**
      * 将用户信息保存至持久化
      *
@@ -506,7 +506,7 @@ abstract class aconnect
         $this->setPersistence($this->getUserPersistenceName(), $oUser);
         return $oUser;
     }
-
+    
     /**
      * 从数据库获取用户信息
      *
@@ -518,7 +518,7 @@ abstract class aconnect
     {
         return $this->oUser->where($this->getField('id'), $nUserId)->where($this->getField('password'), $sPassword)->where($this->getField('status'), 'enable')->setColumns($this->getOption('field'))->getOne();
     }
-
+    
     /**
      * 获取用户数据
      *
@@ -531,7 +531,7 @@ abstract class aconnect
         if ($arrUser = $this->getUserFromPersistence()) {
             return $arrUser;
         }
-
+        
         if ($oUser = $this->getUserFromDatabase($nUserId, $sPassword)) {
             return $this->setUserToPersistence($oUser);
         } else {
@@ -539,7 +539,7 @@ abstract class aconnect
             return false;
         }
     }
-
+    
     /**
      * 认证信息持久化
      *
@@ -552,7 +552,7 @@ abstract class aconnect
     {
         $this->setPersistence($this->getTokenName(), $this->implodeTokenData($intId, $strPassword), $mixLoginTime);
     }
-
+    
     /**
      * 认证信息获取
      *
@@ -562,7 +562,7 @@ abstract class aconnect
     {
         return $this->getPersistence($this->getTokenName());
     }
-
+    
     /**
      * 认证信息删除
      *

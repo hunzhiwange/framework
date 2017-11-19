@@ -52,7 +52,7 @@ class option implements ArrayAccess, ioption
      * @param array $arrOptions
      * @return void
      */
-    public function __construct(array $arrOptions)
+    public function __construct(array $arrOptions = [])
     {
         $this->reset($arrOptions);
     }
@@ -219,7 +219,7 @@ class option implements ArrayAccess, ioption
      * 初始化配置参数
      *
      * @param mixed $mixNamespace
-     * @return void
+     * @return boolean
      */
     public function reset($mixNamespace = null)
     {
@@ -232,6 +232,8 @@ class option implements ArrayAccess, ioption
         } else {
             $this->arrOption = [];
         }
+
+        return true;
     }
 
     /**

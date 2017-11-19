@@ -20,7 +20,6 @@
 namespace queryyetsimple\i18n;
 
 use RuntimeException;
-use queryyetsimple\support\helper;
 use queryyetsimple\filesystem\fso;
 
 /**

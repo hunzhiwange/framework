@@ -25,7 +25,6 @@ use queryyetsimple\http\response;
 use queryyetsimple\support\assert;
 use queryyetsimple\filesystem\fso;
 use queryyetsimple\support\debug\console;
-use queryyetsimple\option\tool as option_tool;
 
 /**
  * 应用程序对象
@@ -274,7 +273,7 @@ class application
         $sCachePath = $this->getOptionCachePath();
 
         if ($this->strApp == static::INIT_APP) {
-            if (! is_file($sCachePath) || ! is_null($this->objProject['option']->reset(( array ) include $sCachePath)) || $this->objProject->development()) {
+            if (! is_file($sCachePath) || !$this->objProject['option']->reset(( array ) include $sCachePath) || $this->objProject->development()) {
                 $this->cacheOption($sCachePath);
             }
         } else {
@@ -405,11 +404,29 @@ class application
      */
     protected function cacheOption($sCachePath)
     {
-        $this->objProject['option']->reset(option_tool::saveToCache($this->getOptionDir(), $sCachePath, [
+        $this->objProject['option']->reset(
+            $this->objProject['option.load']->
+
+            setCachePath($sCachePath)->
+
+            setDir($this->getOptionDir())->
+
+            loadData($this->strApp === static::INIT_APP, $this->extendOption())
+        );
+    }
+
+    /**
+     * 额外的系统缓存配置
+     *
+     * @return array
+     */
+    protected function extendOption()
+    {
+        return [
             'app' => [
                 '~apps~' => fso::lists($this->objProject->pathApplication())
             ],
             'env' => $_ENV
-        ], $this->strApp == static::INIT_APP));
+        ];
     }
 }
