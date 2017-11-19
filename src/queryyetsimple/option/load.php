@@ -53,7 +53,7 @@ class load
      *
      * @var array
      */
-    protected $arrLoad;
+    protected $arrLoad = [];
 
     /**
      * 构造函数
