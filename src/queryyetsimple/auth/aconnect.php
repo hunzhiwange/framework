@@ -511,7 +511,7 @@ abstract class aconnect
      *
      * @param int $nUserId
      * @param string $sPassword
-     * @return void
+     * @return \queryyetsimple\mvc\imodel
      */
     protected function getUserFromDatabase($nUserId, $sPassword)
     {
