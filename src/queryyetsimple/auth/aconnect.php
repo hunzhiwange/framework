@@ -328,7 +328,6 @@ abstract class aconnect
      */
     public function getTokenName()
     {
-        return $this->strTokenName;
         if (! is_null($this->strTokenName)) {
             return $this->strTokenName;
         }
