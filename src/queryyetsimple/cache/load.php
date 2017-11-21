@@ -123,15 +123,14 @@ class load
      *
      * @param string|array $mixCacheName
      * @param array $arrOption
-     * @param bool $booForce
-     * @return array
+     * @return void
      */
-    public function refresh($mixCacheName, array $arrOption = [], $booForce = false)
+    public function refresh($mixCacheName, array $arrOption = [])
     {
         $mixCacheName = is_array($mixCacheName) ? $mixCacheName : [
             $mixCacheName
         ];
-        $this->deletes($mixCacheName);
+        $this->deletes($mixCacheName, $arrOption);
     }
 
     /**
