@@ -22,6 +22,7 @@ namespace queryyetsimple\view\provider;
 use queryyetsimple\view\theme;
 use queryyetsimple\view\parser;
 use queryyetsimple\view\compiler;
+use queryyetsimple\view\phpui_theme;
 use queryyetsimple\support\provider;
 
 /**
@@ -134,11 +135,17 @@ class register extends provider
             $arrOption['action_name'] = $oProject['action_name'];
             $arrOption['theme_cache_path'] = $oProject->pathApplicationCache('theme') . '/' . $oProject['app_name'];
 
-            theme::setParseResolver(function () use ($oProject) {
-                return $oProject['view.parser'];
-            });
+            if (env('app_mode', false) == 'phpui') {
+                $arrOption['suffix'] = '.php';
+                $oTheme = new phpui_theme($oProject['cookie'], $arrOption);
+            } else {
+                theme::setParseResolver(function () use ($oProject) {
+                    return $oProject['view.parser'];
+                });
+                $oTheme = new theme($oProject['cookie'], $arrOption);
+            }
 
-            return (new theme($oProject ['cookie'], $arrOption))->parseContext($oProject->pathApplicationDir('theme'));
+            return $oTheme->parseContext($oProject->pathApplicationDir('theme'));
         });
     }
 }

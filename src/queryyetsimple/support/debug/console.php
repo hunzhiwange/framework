@@ -40,6 +40,10 @@ class console
      */
     public static function trace()
     {
+        if (PHP_SAPI == 'cli') {
+            return;
+        }
+
         // ajax 不调试
         if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             return;

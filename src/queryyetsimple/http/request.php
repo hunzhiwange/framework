@@ -1680,6 +1680,9 @@ class request implements iarray, ArrayAccess
      */
     public function requestUri()
     {
+        if (PHP_SAPI == 'cli') {
+            return;
+        }
         return $_SERVER['REQUEST_URI'];
     }
 

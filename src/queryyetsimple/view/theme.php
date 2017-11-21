@@ -158,21 +158,10 @@ class theme implements itheme
     public function display($sFile, $bDisplay = true, $strExt = '', $sTargetCache = '', $sMd5 = '')
     {
         // 加载视图文件
-        if (! is_file($sFile)) {
-            $sFile = $this->parseFile($sFile, $strExt);
-        }
-
-        // 分析默认视图文件
-        if (! is_file($sFile)) {
-            $sFile = $this->parseDefaultFile($sFile);
-        }
-
-        if (! is_file($sFile)) {
-            throw new InvalidArgumentException(sprintf('Template file %s does not exist.', $sFile));
-        }
+        $sFile = $this->parseDisplayFile($sFile, $strExt);
 
         // 变量赋值
-        if (is_array($this->arrVar) and ! empty($this->arrVar)) {
+        if (is_array($this->arrVar) && ! empty($this->arrVar)) {
             extract($this->arrVar, EXTR_PREFIX_SAME, 'q_');
         }
 
@@ -328,6 +317,32 @@ class theme implements itheme
         $this->arrOption['theme_name'] = $sThemeSet;
         $this->arrOption['theme_path'] = $strThemePath . '/' . $sThemeSet;
         return $this;
+    }
+
+    /**
+     * 分析展示的视图文件
+     *
+     * @param string $sFile 视图文件地址
+     * @param string $strExt 后缀
+     * @return string|void
+     */
+    protected function parseDisplayFile($sFile, $strExt = '')
+    {
+        // 加载视图文件
+        if (! is_file($sFile)) {
+            $sFile = $this->parseFile($sFile, $strExt);
+        }
+
+        // 分析默认视图文件
+        if (! is_file($sFile)) {
+            $sFile = $this->parseDefaultFile($sFile);
+        }
+
+        if (! is_file($sFile)) {
+            throw new InvalidArgumentException(sprintf('Template file %s does not exist.', $sFile));
+        }
+
+        return $sFile;
     }
 
     /**
