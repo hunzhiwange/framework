@@ -20,6 +20,7 @@
 namespace queryyetsimple\bootstrap\auth;
 
 use queryyetsimple\auth;
+use queryyetsimple\http\request;
 
 /**
  * 登录字段设置
@@ -183,5 +184,19 @@ trait field
     public function authFieldStatus()
     {
         return property_exists($this, 'strFieldStatus') ? $this->strFieldStatus : 'status';
+    }
+
+    /**
+     * 是否为 ajax
+     *
+     * @return boolean
+     */
+    protected function isAjaxRequest()
+    {
+        $oRequest = app('request');
+        if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
+            return true;
+        }
+        return false;
     }
 }
