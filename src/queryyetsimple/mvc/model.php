@@ -26,9 +26,9 @@ use Carbon\Carbon;
 use JsonSerializable;
 use DateTimeInterface;
 use BadMethodCallException;
+use queryyetsimple\support\str;
 use queryyetsimple\support\ijson;
 use queryyetsimple\support\iarray;
-use queryyetsimple\support\string;
 use queryyetsimple\support\helper;
 use queryyetsimple\event\idispatch;
 use queryyetsimple\support\infinity;
@@ -2773,7 +2773,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
         if (isset(static::$arrCamelizeProp[$strProp])) {
             return static::$arrCamelizeProp[$strProp];
         }
-        return static::$arrCamelizeProp[$strProp] = ucwords(string::camelize($strProp));
+        return static::$arrCamelizeProp[$strProp] = ucwords(str::camelize($strProp));
     }
 
     /**

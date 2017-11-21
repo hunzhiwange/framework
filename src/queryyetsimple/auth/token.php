@@ -20,8 +20,8 @@
 namespace queryyetsimple\auth;
 
 use queryyetsimple\mvc\imodel;
+use queryyetsimple\support\str;
 use queryyetsimple\cache\icache;
-use queryyetsimple\support\string;
 use queryyetsimple\validate\ivalidate;
 use queryyetsimple\encryption\iencryption;
 
@@ -68,7 +68,7 @@ class token extends aconnect implements iconnect
      */
     protected function setLoginTokenName($oUser)
     {
-        $this->setTokenName(md5($oUser->{$this->getField('name')} . $oUser->{$this->getField('password')} . string::randAlphaNum(5)));
+        $this->setTokenName(md5($oUser->{$this->getField('name')} . $oUser->{$this->getField('password')} . str::randAlphaNum(5)));
     }
 
     /**

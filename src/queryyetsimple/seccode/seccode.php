@@ -20,8 +20,8 @@
 namespace queryyetsimple\seccode;
 
 use Exception;
+use queryyetsimple\support\str;
 use queryyetsimple\support\option;
-use queryyetsimple\support\string;
 use queryyetsimple\filesystem\fso;
 
 /**
@@ -527,7 +527,7 @@ class seccode implements iseccode
         if (! in_array($strAutoType, $this->getAllowedAutoType())) {
             throw new Exception(sprintf('Code type must be these %s', implode(',', $this->getAllowedAutoType())));
         }
-        $this->code(string::{'rand' . ucwords(string::camelize($strAutoType))}($intSize));
+        $this->code(str::{'rand' . ucwords(str::camelize($strAutoType))}($intSize));
     }
 
     /**

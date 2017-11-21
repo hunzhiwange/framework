@@ -288,7 +288,7 @@ abstract class aconnect
 
             ifs(! is_null($strNikename))->forceProp('nikename', $strNikename)->endIfs()->
 
-            forceProp('random', $strRandom = string::randAlphaNum(6))->
+            forceProp('random', $strRandom = str::randAlphaNum(6))->
 
             forceProp('password', $this->encodePassword($strPassword, $strRandom))->
 

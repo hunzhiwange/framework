@@ -22,10 +22,10 @@ namespace queryyetsimple\log;
 use Monolog\Logger;
 use RuntimeException;
 use InvalidArgumentException;
+use queryyetsimple\support\str;
 use queryyetsimple\support\option;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogHandler;
-use queryyetsimple\support\string;
 use Monolog\Handler\ErrorLogHandler;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\RotatingFileHandler;
@@ -91,7 +91,7 @@ class monolog extends aconnect implements iconnect
         $this->objMonolog = new Logger($this->getOption('channel'));
 
         foreach ($this->getOption('type') as $strType) {
-            $this->{'make' . ucwords(string::camelize($strType)) . 'Handler'}();
+            $this->{'make' . ucwords(str::camelize($strType)) . 'Handler'}();
         }
     }
 

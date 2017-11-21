@@ -22,9 +22,9 @@ namespace queryyetsimple\mvc;
 use ArrayAccess;
 use JsonSerializable;
 use BadMethodCallException;
+use queryyetsimple\support\str;
 use queryyetsimple\support\ijson;
 use queryyetsimple\support\iarray;
-use queryyetsimple\support\string;
 use queryyetsimple\support\serialize;
 use queryyetsimple\support\flow_control;
 
@@ -766,7 +766,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
         if (isset(static::$arrUnCamelize[$strKey])) {
             return static::$arrUnCamelize[$strKey];
         }
-        return static::$arrUnCamelize[$strKey] = string::unCamelize($strKey);
+        return static::$arrUnCamelize[$strKey] = str::unCamelize($strKey);
     }
 
     /**

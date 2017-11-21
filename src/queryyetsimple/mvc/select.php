@@ -22,8 +22,8 @@ namespace queryyetsimple\mvc;
 use Closure;
 use Exception;
 use queryyetsimple\mvc\imodel;
+use queryyetsimple\support\str;
 use queryyetsimple\support\helper;
-use queryyetsimple\support\string;
 use queryyetsimple\support\collection;
 use queryyetsimple\mvc\model_not_found;
 use queryyetsimple\mvc\relation\relation;
@@ -547,7 +547,7 @@ class select
      */
     protected function isNested($strName, $strRelation)
     {
-        return string::contains($strName, '.') && string::startsWith($strName, $strRelation . '.');
+        return str::contains($strName, '.') && str::startsWith($strName, $strRelation . '.');
     }
 
     /**

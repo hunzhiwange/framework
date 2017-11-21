@@ -24,7 +24,7 @@ use Exception;
 use DateTimeZone;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\support\string;
+use queryyetsimple\support\str;
 use queryyetsimple\support\helper;
 use queryyetsimple\support\icontainer;
 use queryyetsimple\support\flow_control;
@@ -2183,7 +2183,7 @@ class validate implements ivalidate
             return;
         }
 
-        if (! $this->{'validate' . ucwords(string::camelize($strRule))}($strField, $mixFieldValue, $arrParameter)) {
+        if (! $this->{'validate' . ucwords(str::camelize($strRule))}($strField, $mixFieldValue, $arrParameter)) {
             $this->addFailure($strField, $strRule, $arrParameter);
             return false;
         }
@@ -2422,7 +2422,7 @@ class validate implements ivalidate
             return $this;
         }
 
-        $sExtend = string::unCamelize(substr($sMethod, 8));
+        $sExtend = str::unCamelize(substr($sMethod, 8));
         if (isset($this->arrExtend[$sExtend])) {
             return $this->callExtend($sExtend, $arrArgs);
         }
@@ -2444,7 +2444,7 @@ class validate implements ivalidate
                 ], $arrParameter);
             }
 
-            $sExtend = string::unCamelize($sMethod);
+            $sExtend = str::unCamelize($sMethod);
             if (isset($this->arrExtend[$sExtend])) {
                 return $this->callExtend($sExtend, $arrParameter);
             }

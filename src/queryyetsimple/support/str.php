@@ -27,7 +27,7 @@ namespace queryyetsimple\support;
  * @since 2017.04.05
  * @version 1.0
  */
-class string
+class str
 {
     use infinity;
 
