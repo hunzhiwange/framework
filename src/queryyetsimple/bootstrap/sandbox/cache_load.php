@@ -22,14 +22,14 @@ namespace queryyetsimple;
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 cache
+ * 沙盒 cache_load
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2017.11.20
  * @version 1.0
  */
-class cache extends face
+class cache_load extends face
 {
 
     /**
@@ -39,20 +39,20 @@ class cache extends face
      */
     protected static function name()
     {
-        return 'caches';
+        return 'cache_load';
     }
 }
 
 namespace qys;
 
 /**
- * 沙盒 cache
+ * 沙盒 cache_load
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2017.11.20
  * @version 1.0
  */
-class cache extends \queryyetsimple\cache
+class cache_load extends \queryyetsimple\cache_load
 {
 }

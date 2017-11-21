@@ -19,6 +19,7 @@
  */
 namespace queryyetsimple\cache\provider;
 
+use queryyetsimple\cache\load;
 use queryyetsimple\cache\manager;
 use queryyetsimple\support\provider;
 
@@ -49,6 +50,7 @@ class register extends provider
     {
         $this->caches();
         $this->cache();
+        $this->cacheLoad();
     }
 
     /**
@@ -63,7 +65,8 @@ class register extends provider
             'cache' => [
                 'queryyetsimple\cache\cache',
                 'queryyetsimple\cache\icache'
-            ]
+            ],
+            'cache.load' => 'queryyetsimple\cache\load'
         ];
     }
 
@@ -88,6 +91,18 @@ class register extends provider
     {
         $this->singleton('cache', function ($oProject) {
             return $oProject['caches']->connect();
+        });
+    }
+
+    /**
+     * 注册 cache.load 服务
+     *
+     * @return void
+     */
+    protected function cacheLoad()
+    {
+        $this->singleton('cache.load', function ($oProject) {
+            return new load($oProject, $oProject['cache']);
         });
     }
 }
