@@ -135,7 +135,7 @@ class register extends provider
             $arrOption['action_name'] = $oProject['action_name'];
             $arrOption['theme_cache_path'] = $oProject->pathApplicationCache('theme') . '/' . $oProject['app_name'];
 
-            if (env('app_mode', false) == 'phpui') {
+            if (phpui()) {
                 $arrOption['suffix'] = '.php';
                 $oTheme = new phpui_theme($oProject['cookie'], $arrOption);
             } else {

@@ -68,6 +68,18 @@ if (! function_exists('api')) {
     }
 }
 
+if (! function_exists('phpui')) {
+    /**
+     * 是否为 PHPUI
+     *
+     * @return boolean
+     */
+    function phpui()
+    {
+        return env('app_mode', false) == 'phpui';
+    }
+}
+
 if (! function_exists('dumps')) {
     /**
      * 调试一个变量
