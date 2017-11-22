@@ -10,10 +10,10 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -78,7 +78,7 @@ if (! function_exists('dumps')) {
     function dumps($mixValue)
     {
         return call_user_func_array([
-            'queryyetsimple\support\debug\dump', 
+            'queryyetsimple\support\debug\dump',
             'dump'
         ], func_get_args());
     }
@@ -107,29 +107,29 @@ if (! function_exists('env')) {
                     $strName = value($mixDefault);
                 }
         }
-        
+
         switch (strtolower($strName)) {
             case 'true':
             case '(true)':
                 return true;
-            
+
             case 'false':
             case '(false)':
                 return false;
-            
+
             case 'empty':
             case '(empty)':
                 return '';
-            
+
             case 'null':
             case '(null)':
                 return;
         }
-        
+
         if (strlen($strName) > 1 && $strName[0] == '"' && $strName[strlen($strName) - 1] == '"') {
             return substr($strName, 1, - 1);
         }
-        
+
         return $strName;
     }
 }
@@ -173,11 +173,11 @@ if (! function_exists('session')) {
         if (is_null($mixKey)) {
             return project('session');
         }
-        
+
         if (is_array($mixKey)) {
             return project('session')->put($mixKey);
         }
-        
+
         return project('session')->get($mixKey, $mixDefault);
     }
 }
@@ -213,7 +213,7 @@ if (! function_exists('url')) {
         if (is_null($sUrl)) {
             return project('router');
         }
-        
+
         return project('router')->url($sUrl, $arrParams, $arrOption);
     }
 }
@@ -240,7 +240,7 @@ if (! function_exists('__')) {
     function __($sValue)
     {
         return call_user_func_array([
-            project('i18n'), 
+            project('i18n'),
             'getText'
         ], func_get_args());
     }
@@ -423,11 +423,11 @@ if (! function_exists('option')) {
         if (is_null($mixKey)) {
             return project('option');
         }
-        
+
         if (is_array($mixKey)) {
             return project('option')->set($mixKey);
         }
-        
+
         return project('option')->get($mixKey, $mixDefault);
     }
 }
@@ -445,11 +445,11 @@ if (! function_exists('cache')) {
         if (is_null($mixKey)) {
             return project('cache');
         }
-        
+
         if (is_array($mixKey)) {
             return project('cache')->put($mixKey);
         }
-        
+
         return project('cache')->get($mixKey, $mixDefault);
     }
 }
@@ -620,5 +620,37 @@ if (! function_exists('path_table_cache')) {
     function path_table_cache($strPath = '')
     {
         return project()->pathApplicationCache('table') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists('is_ajax_request')) {
+    /**
+     * 是否为 ajax 请求
+     *
+     * @return boolean
+     */
+    protected function is_ajax_request()
+    {
+        $oRequest = app('request');
+        if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
+            return true;
+        }
+        return false;
+    }
+}
+
+if (! function_exists('set_ajax_request')) {
+    /**
+     * 强制设置是否为 ajax 请求
+     *
+     * @param boolean $booStatus
+     * @return boolean
+     * @note 返回上一次是否为 ajax 请求
+     */
+    protected function set_ajax_request($booStatus = true)
+    {
+        $booOld = is_ajax_request();
+        app('request')->setPost(app('option')->get('var_ajax'), $booStatus);
+        return $booOld;
     }
 }

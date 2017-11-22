@@ -193,10 +193,6 @@ trait field
      */
     protected function isAjaxRequest()
     {
-        $oRequest = app('request');
-        if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
-            return true;
-        }
-        return false;
+        return is_ajax_request();
     }
 }
