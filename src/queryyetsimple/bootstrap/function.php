@@ -641,7 +641,7 @@ if (! function_exists('is_ajax_request')) {
      *
      * @return boolean
      */
-    protected function is_ajax_request()
+    function is_ajax_request()
     {
         $oRequest = app('request');
         if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
@@ -659,7 +659,7 @@ if (! function_exists('set_ajax_request')) {
      * @return boolean
      * @note 返回上一次是否为 ajax 请求
      */
-    protected function set_ajax_request($booStatus = true)
+    function set_ajax_request($booStatus = true)
     {
         $booOld = is_ajax_request();
         app('request')->setPost(app('option')->get('var_ajax'), $booStatus);

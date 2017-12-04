@@ -95,15 +95,6 @@ trait login
                 'remember_key|trim'
             ]);
 
-            if ($aInput['remember_key']) {
-                $aInput['remember_key'] = auth::explodeTokenData($aInput['remember_key']);
-                if (! $aInput['remember_key']) {
-                    return response::api(__('您尚未登录'), 400);
-                } else {
-                    list($aInput['name'], $aInput['password']) = $aInput['remember_key'];
-                }
-            }
-
             $this->setAuthField();
 
             $oUser = auth::login($aInput['name'], $aInput['password'], $aInput['remember_me'] ? $aInput['remember_time'] : null);
@@ -120,16 +111,6 @@ trait login
         } catch (login_failed $oE) {
             return $this->sendFailedLoginResponse($oE->getMessage());
         }
-    }
-
-    /**
-     * 登录退出
-     *
-     * @return \queryyetsimple\http\response
-     */
-    public function logout()
-    {
-        return $this->displayLoginout();
     }
 
     /**

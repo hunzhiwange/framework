@@ -108,11 +108,11 @@ class project extends container implements iproject
         // 载入 app 配置
         loadApp()->
 
-        // 注册基础提供者 register
-        registerBaseProvider()->
-
         // 注册框架核心提供者
         registerMvcProvider()->
+
+        // 注册基础提供者 register
+        registerBaseProvider()->
 
         // 注册基础提供者 bootstrap
         registerBaseProviderBootstrap();
@@ -520,11 +520,16 @@ class project extends container implements iproject
         }
 
         if ($this->development() || ! is_file($strCachePath)) {
-            file_put_contents($strCachePath, '<?php return ' . var_export([
+            // file_put_contents($strCachePath, '<?' . 'php return ' . var_export([
+            //     $this->arrDeferredProviders,
+            //     $arrDeferredAlias
+            // ], true) . '; ?' . '>');
+            // file_put_contents($strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . php_strip_whitespace($strCachePath));
+
+            file_put_contents($strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . '<?' . 'php return ' . var_export([
                 $this->arrDeferredProviders,
                 $arrDeferredAlias
-            ], true) . '; ?>');
-            file_put_contents($strCachePath, '<?php /* ' . date('Y-m-d H:i:s') . ' */ ?>' . PHP_EOL . php_strip_whitespace($strCachePath));
+            ], true) . '; ?' . '>');
         }
 
         return $this;

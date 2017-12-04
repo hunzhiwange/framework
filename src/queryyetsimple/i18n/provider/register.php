@@ -46,6 +46,16 @@ class register extends provider
     }
 
     /**
+     * bootstrap
+     *
+     * @return void
+     */
+    public function bootstrap()
+    {
+        $this->console();
+    }
+
+    /**
      * 可用服务提供者
      *
      * @return array
@@ -85,5 +95,17 @@ class register extends provider
         $this->singleton('i18n.load', function () {
             return new load();
         });
+
+        $this->console();
+    }
+
+    /**
+     * 载入命令包
+     *
+     * @return void
+     */
+    protected function console()
+    {
+        $this->loadCommandNamespace('queryyetsimple\i18n\console');
     }
 }

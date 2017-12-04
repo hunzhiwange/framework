@@ -339,7 +339,7 @@ abstract class make extends command
      * 格式化文件路径
      *
      * @param string $strFile
-     * @return array
+     * @return string
      */
     protected function formatFile($strFile)
     {
