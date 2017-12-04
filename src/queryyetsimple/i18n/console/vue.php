@@ -28,7 +28,7 @@ use queryyetsimple\console\argument;
 
 /**
  * Vue mo 语言包转 export module
- * 通过本工具可以使用 GUN Gettext 语言包解决方法来实现国际化
+ * 通过本工具可以使用 GNU Gettext 语言包解决方法来实现国际化
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
