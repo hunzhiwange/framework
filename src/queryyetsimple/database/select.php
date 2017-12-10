@@ -399,7 +399,7 @@ class select
         }
 
         // 回调
-        elseif (is_callable($mixData)) {
+        elseif (! is_string($mixData) && is_callable($mixData)) {
             call_user_func_array($mixData, [
                 & $this
             ]);
@@ -3017,7 +3017,7 @@ class select
                         }
 
                         // 回调方法子表达式支持
-                        elseif (is_callable($strTemp)) {
+                        elseif (! is_string($strTemp) && is_callable($strTemp)) {
                             $objSelect = new static($this->objConnect);
                             $objSelect->setCurrentTable($this->getCurrentTable());
                             $mixResultCallback = call_user_func_array($strTemp, [
@@ -3114,7 +3114,7 @@ class select
     protected function aliasTypeAndLogic($strType, $strLogic, $mixCond)
     {
         $this->setTypeAndLogic($strType, $strLogic);
-        if (is_callable($mixCond)) {
+        if (! is_string($mixCond) && is_callable($mixCond)) {
             $objSelect = new static($this->objConnect);
             $objSelect->setCurrentTable($this->getCurrentTable());
             $mixResultCallback = call_user_func_array($mixCond, [
@@ -3237,7 +3237,7 @@ class select
 
                 if ($arrTemp instanceof select) {
                     $arrTemp = $arrTemp->makeSql();
-                } elseif (is_callable($arrTemp)) {
+                } elseif (! is_string($arrTemp) && is_callable($arrTemp)) {
                     $objSelect = new static($this->objConnect);
                     $objSelect->setCurrentTable($this->getCurrentTable());
                     $mixResultCallback = call_user_func_array($arrTemp, [
@@ -3448,7 +3448,7 @@ class select
                 }
 
                 // 回调方法子表达式
-                elseif (is_callable($sTable)) {
+                elseif (! is_string($sTable) && is_callable($sTable)) {
                     $objSelect = new static($this->objConnect);
                     $objSelect->setCurrentTable($this->getCurrentTable());
                     $mixResultCallback = call_user_func_array($sTable, [
@@ -3476,7 +3476,7 @@ class select
         }
 
         // 回调方法
-        elseif (is_callable($mixName)) {
+        elseif (! is_string($mixName) && is_callable($mixName)) {
             $objSelect = new static($this->objConnect);
             $objSelect->setCurrentTable($this->getCurrentTable());
             $mixResultCallback = call_user_func_array($mixName, [

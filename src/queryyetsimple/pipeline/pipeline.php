@@ -157,7 +157,7 @@ class pipeline implements ipipeline
                 $arrArgs = func_get_args();
                 array_unshift($arrArgs, $calResult);
 
-                if (is_callable($mixStage)) {
+                if (! is_string($mixStage) && is_callable($mixStage)) {
                     return call_user_func_array($mixStage, $arrArgs);
                 } else {
                     list($strStage, $arrParams) = $this->parse($mixStage);

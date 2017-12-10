@@ -92,7 +92,7 @@ class repository implements irepository
     {
         $objSelect = $this->objAggregate->selfQuerySelect();
 
-        if (is_callable($mixSpecification)) {
+        if (! is_string($mixSpecification) && is_callable($mixSpecification)) {
             call_user_func($mixSpecification, $objSelect);
         }
 
@@ -109,7 +109,7 @@ class repository implements irepository
     {
         $objSelect = $this->objAggregate->selfQuerySelect();
 
-        if (is_callable($mixSpecification)) {
+        if (! is_string($mixSpecification) && is_callable($mixSpecification)) {
             call_user_func($mixSpecification, $objSelect);
         }
 
@@ -348,12 +348,27 @@ class repository implements irepository
         } else {
             $mixSpecification = function ($objSelect) use ($mixCallback, $mixSpecification) {
                 call_user_func($mixCallback, $objSelect);
-                if (is_callable($mixSpecification)) {
+                if (! is_string($mixSpecification) && is_callable($mixSpecification)) {
                     call_user_func($mixSpecification, $objSelect);
                 }
             };
         }
 
         return $mixSpecification;
+    }
+
+    /**
+     * 缺省方法
+     *
+     * @param 方法名 $sMethod
+     * @param 参数 $arrArgs
+     * @return mixed
+     */
+    public function __call($sMethod, $arrArgs)
+    {
+        return call_user_func_array([
+                $this->objAggregate,
+                $sMethod
+        ], $arrArgs);
     }
 }

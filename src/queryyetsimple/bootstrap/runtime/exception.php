@@ -230,7 +230,7 @@ class exception extends message
      */
     protected function formatArgs($mixArgsVal)
     {
-        if (is_callable($mixArgsVal)) {
+        if (! is_string($mixArgsVal) && is_callable($mixArgsVal)) {
             if (is_array($mixArgsVal) && is_object($mixArgsVal[0])) {
                 $mixArgsVal[0] = $this->formatObject($mixArgsVal[0]);
             } elseif ($mixArgsVal instanceof Closure) {

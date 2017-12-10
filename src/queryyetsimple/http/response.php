@@ -650,7 +650,7 @@ class response
                 $mixContent = $this->objView->display($this->getOption('file'), $this->getOption('option'));
                 break;
             default:
-                if (is_callable($mixContent)) {
+                if (! is_string($mixContent) && is_callable($mixContent)) {
                     $mixTemp = call_user_func_array($mixContent, []);
                     if ($mixTemp !== null) {
                         $mixContent = $mixTemp;

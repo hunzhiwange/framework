@@ -19,6 +19,7 @@
  */
 namespace queryyetsimple\filesystem;
 
+use Closure;
 use RuntimeException;
 use DirectoryIterator;
 use queryyetsimple\support\infinity;
@@ -159,6 +160,40 @@ class fso
                 if (! static::copyDirectory($objFile->getRealPath(), $sNewPath)) {
                     return;
                 }
+            }
+        }
+    }
+
+    /**
+     * 浏览目录
+     *
+     * @param string $sPath
+     * @param \Closure $cal
+     * @param array $arrFilter
+     * @return void
+     */
+    public static function listDirectory($sPath, Closure $cal, $arrFilter = [])
+    {
+        $arrFilter = array_merge([
+            '.svn',
+            '.git',
+            'node_modules',
+            '.gitkeep'
+        ], $arrFilter);
+
+        if (! is_dir($sPath)) {
+            return;
+        }
+
+        $objDir = new DirectoryIterator($sPath);
+        foreach ($objDir as $objFile) {
+            if ($objFile->isDot() || in_array($objFile->getFilename(), $arrFilter)) {
+                continue;
+            }
+
+            call_user_func($cal, $objFile);
+            if ($objFile->isDir()) {
+                static::listDirectory($objFile->getPath() . '/' . $objFile->getFilename(), $cal, $arrFilter);
             }
         }
     }

@@ -55,11 +55,42 @@ interface iconnect
     public function login($mixName, $sPassword, $mixLoginTime = null);
 
     /**
+     * 仅仅验证登录用户和密码是否正确
+     *
+     * @param mixed $mixName
+     * @param string $sPassword
+     * @return \queryyetsimple\mvc\imodel|void
+     */
+    public function onlyValidate($mixName, $sPassword);
+
+    /**
      * 登出
      *
      * @return void
      */
     public function logout();
+
+    /**
+     * 是否处于锁定状态
+     *
+     * @return boolean
+     */
+    public function isLock();
+
+    /**
+     * 锁定登录
+     *
+     * @param mixed $mixLoginTime
+     * @return void
+     */
+    public function lock($mixLoginTime = null);
+
+    /**
+     * 解锁
+     *
+     * @return void
+     */
+    public function unlock();
 
     /**
      * 修改密码

@@ -2400,7 +2400,7 @@ class validate implements ivalidate
     {
         $booFoo = false;
 
-        if (is_callable($mixCallback)) {
+        if (! is_string($mixCallback) && is_callable($mixCallback)) {
             $booFoo = call_user_func($mixCallback, $this->getData());
         } else {
             $booFoo = $mixCallback;

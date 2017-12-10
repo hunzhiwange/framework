@@ -99,7 +99,7 @@ trait login
 
             $oUser = auth::login($aInput['name'], $aInput['password'], $aInput['remember_me'] ? $aInput['remember_time'] : null);
 
-            if ($this->isAjaxRequest($oRequest)) {
+            if ($this->isAjaxRequest()) {
                 $aReturn = [];
                 $aReturn['api_token'] = auth::getTokenName();
                 $aReturn['user'] = $oUser->toArray();
@@ -109,6 +109,78 @@ trait login
                 return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?  : $oUser['name']));
             }
         } catch (login_failed $oE) {
+            return $this->sendFailedLoginResponse($oE->getMessage());
+        }
+    }
+
+    /**
+     * 是否处于锁定状态
+     *
+     * @return boolean
+     */
+    public function isLock()
+    {
+        return auth::isLock();
+    }
+
+    /**
+     * 锁定登录
+     *
+     * @param mixed $mixLoginTime
+     * @return void
+     */
+    public function lock($mixLoginTime = null)
+    {
+        auth::lock($mixLoginTime);
+    }
+
+    /**
+     * 解锁
+     *
+     * @param \queryyetsimple\http\request $oRequest
+     * @return \queryyetsimple\http\response|array
+     * @return void
+     */
+    public function unlock(request $oRequest)
+    {
+        $booValidate = false;
+        $arrResult = $this->onlyValidate($oRequest, $booValidate);
+        if($booValidate === true) {
+            auth::unlock();
+        }
+        return $arrResult;
+    }
+
+    /**
+     * 仅仅验证用户和密码是否正确
+     *
+     * @param \queryyetsimple\http\request $oRequest
+     * @param boolean $booValidate
+     * @return \queryyetsimple\http\response|array
+     */
+    public function onlyValidate(request $oRequest, &$booValidate = false)
+    {
+        //$this->validateLogin($oRequest);
+
+        try {
+            $aInput = $oRequest->alls([
+                'name|trim',
+                'password|trim'
+            ]);
+
+            $this->setAuthField();
+
+            $oUser = auth::onlyValidate($aInput['name'], $aInput['password']);
+
+            $booValidate = true;
+
+            if ($this->isAjaxRequest()) {
+                return ['message' => $this->getLoginSucceededMessage($oUser['nikename'] ?  : $oUser['name'])];
+            } else {
+                return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?  : $oUser['name']));
+            }
+        } catch (login_failed $oE) {
+            $booValidate = false;
             return $this->sendFailedLoginResponse($oE->getMessage());
         }
     }

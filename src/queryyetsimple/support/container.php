@@ -236,8 +236,8 @@ class container implements ArrayAccess, icontainer
         if (! isset($this->arrFactorys[$strFactoryName])) {
             return $this->getInjectionObject($strFactoryName, $arrArgs);
         }
-
-        if (is_callable($this->arrFactorys[$strFactoryName])) {
+ 
+        if (! is_string($this->arrFactorys[$strFactoryName]) && is_callable($this->arrFactorys[$strFactoryName])) {
             array_unshift($arrArgs, $this);
             $mixInstances = call_user_func_array($this->arrFactorys[$strFactoryName], $arrArgs);
         } else {
@@ -335,7 +335,7 @@ class container implements ArrayAccess, icontainer
             if (($arrTemp = $objReflection->getParameters())) {
                 $arrParameter = $arrTemp;
             }
-        } elseif (is_callable($mixClassOrCallback)) {
+        } elseif (! is_string($mixClassOrCallback) && is_callable($mixClassOrCallback)) {
             $objReflection = new ReflectionMethod($mixClassOrCallback[0], $mixClassOrCallback[1]);
             if (($arrTemp = $objReflection->getParameters())) {
                 $arrParameter = $arrTemp;

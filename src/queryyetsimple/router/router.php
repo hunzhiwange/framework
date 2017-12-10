@@ -1022,7 +1022,7 @@ class router
 
             switch (true) {
                 // 判断是否为回调
-                case is_callable($mixBind):
+                case ! is_string($mixBind) && is_callable($mixBind):
                     return $this->arrBinds[$sBindName] = $mixBind;
                     break;
 
@@ -1123,7 +1123,7 @@ class router
                 break;
 
             // 判断是否为回调
-            case is_callable($mixAction):
+            case ! is_string($mixAction) && is_callable($mixAction):
                 return $this->objContainer->call($mixAction, $this->arrVariable);
                 break;
 

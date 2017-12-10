@@ -434,7 +434,7 @@ class mail implements imail
      */
     protected function callbackMessage($mixCallback, Swift_Message $objMessage)
     {
-        if (is_callable($mixCallback)) {
+        if (! is_string($mixCallback) && is_callable($mixCallback)) {
             return call_user_func_array($mixCallback, [
                 $objMessage,
                 $this
@@ -504,7 +504,7 @@ class mail implements imail
      */
     protected function callbackAttachment($objAttachment, $mixCallback = null)
     {
-        if (is_callable($mixCallback)) {
+        if (! is_string($mixCallback) && is_callable($mixCallback)) {
             call_user_func_array($mixCallback, [
                 $objAttachment,
                 $this

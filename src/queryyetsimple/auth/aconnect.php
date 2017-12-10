@@ -72,11 +72,18 @@ abstract class aconnect
     protected $strTokenName;
 
     /**
-     * 获取用户持久化名字
+     * 用户持久化名字
      *
      * @return string
      */
     protected $strUserPersistenceName;
+
+    /**
+     * 锁定名字
+     *
+     * @return string
+     */
+    protected $strLockName;
 
     /**
      * 登录字段设置
@@ -106,6 +113,7 @@ abstract class aconnect
     protected $arrOption = [
         'user_persistence' => 'user_persistence',
         'token_persistence' => 'token_persistence',
+        'lock_persistence' => 'lock_persistence',
         'field' => 'id,name,nikename,email,mobile'
     ];
 
@@ -165,6 +173,24 @@ abstract class aconnect
      */
     public function login($mixName, $sPassword, $mixLoginTime = null)
     {
+        $oUser = $this->onlyValidate($mixName, $sPassword);
+
+        $this->setLoginTokenName($oUser);
+
+        $this->tokenPersistence($oUser->{$this->getField('id')}, $oUser->{$this->getField('password')}, $mixLoginTime);
+
+        return $oUser;
+    }
+
+    /**
+     * 仅仅验证登录用户和密码是否正确
+     *
+     * @param mixed $mixName
+     * @param string $sPassword
+     * @return \queryyetsimple\mvc\imodel|void
+     */
+    public function onlyValidate($mixName, $sPassword)
+    {
         $mixName = trim($mixName);
         $sPassword = trim($sPassword);
 
@@ -182,10 +208,6 @@ abstract class aconnect
             throw new login_failed(__('账号或者密码错误'));
         }
 
-        $this->setLoginTokenName($oUser);
-
-        $this->tokenPersistence($oUser->{$this->getField('id')}, $oUser->{$this->getField('password')}, $mixLoginTime);
-
         return $oUser;
     }
 
@@ -198,6 +220,38 @@ abstract class aconnect
     {
         $this->deletePersistence($this->getUserPersistenceName());
         $this->deletePersistence($this->getTokenName());
+        $this->deletePersistence($this->getLockName());
+    }
+
+    /**
+     * 是否处于锁定状态
+     *
+     * @return boolean
+     */
+    public function isLock()
+    {
+        return $this->getPersistence($this->getLockName()) == 'locked';
+    }
+
+    /**
+     * 锁定登录
+     *
+     * @param mixed $mixLoginTime
+     * @return void
+     */
+    public function lock($mixLoginTime = null)
+    {
+        $this->setPersistence($this->getLockName(), 'locked', $mixLoginTime);
+    }
+
+    /**
+     * 解锁
+     *
+     * @return void
+     */
+    public function unlock()
+    {
+        $this->deletePersistence($this->getLockName());
     }
 
     /**
@@ -355,7 +409,31 @@ abstract class aconnect
         if (! is_null($this->strUserPersistenceName)) {
             return $this->strUserPersistenceName;
         }
-        return $this->strUserPersistenceName = $this->getOption('user_persistence');
+        return $this->strUserPersistenceName = $this->getTokenName() . '@' . $this->getOption('user_persistence');
+    }
+
+    /**
+     * 设置锁定名字
+     *
+     * @param string $strLockName
+     * @return string
+     */
+    public function setLockName($strLockName)
+    {
+        return $this->strLockName = $strLockName;
+    }
+
+    /**
+     * 取得锁定名字
+     *
+     * @return string
+     */
+    public function getLockName()
+    {
+        if (! is_null($this->strLockName)) {
+            return $this->strLockName;
+        }
+        return $this->strLockName = $this->getTokenName() . '@' . $this->getOption('lock_persistence');
     }
 
     /**
