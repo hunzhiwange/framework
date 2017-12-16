@@ -129,6 +129,13 @@ class request implements iarray, ArrayAccess
     protected $strPublic;
 
     /**
+     * pathInfo
+     *
+     * @var string
+     */
+    protected $strPathInfo;
+
+    /**
      * 应用名字
      *
      * @var string
@@ -364,10 +371,9 @@ class request implements iarray, ArrayAccess
      * 批量设置 arg 参数
      *
      * @param array $arrValue
-     * @param string $sType
      * @return $this
      */
-    public function setArgs(array $arrValue, $mixValue)
+    public function setArgs(array $arrValue)
     {
         return $this->setInputs($arrValue, null);
     }
@@ -427,12 +433,11 @@ class request implements iarray, ArrayAccess
      * 批量设置 get 参数
      *
      * @param array $arrValue
-     * @param string $sType
      * @return $this
      */
-    public function setGets(array $arrValue, $mixValue)
+    public function setGets(array $arrValue)
     {
-        return $this->setInputs($arrValue, 'post');
+        return $this->setInputs($arrValue, 'get');
     }
 
     /**
@@ -489,10 +494,9 @@ class request implements iarray, ArrayAccess
      * 批量设置 post 参数
      *
      * @param array $arrValue
-     * @param string $sType
      * @return $this
      */
-    public function setPosts(array $arrValue, $mixValue)
+    public function setPosts(array $arrValue)
     {
         return $this->setInputs($arrValue, 'post');
     }
@@ -552,10 +556,9 @@ class request implements iarray, ArrayAccess
      * 批量设置 request 参数
      *
      * @param array $arrValue
-     * @param string $sType
      * @return $this
      */
-    public function setRequests(array $arrValue, $mixValue)
+    public function setRequests(array $arrValue)
     {
         return $this->setInputs($arrValue, 'request');
     }
@@ -616,10 +619,9 @@ class request implements iarray, ArrayAccess
      * 批量设置 cookie 参数
      *
      * @param array $arrValue
-     * @param string $sType
      * @return $this
      */
-    public function setCookies(array $arrValue, $mixValue)
+    public function setCookies(array $arrValue)
     {
         return $this->setInputs($arrValue, 'cookie');
     }
@@ -679,10 +681,9 @@ class request implements iarray, ArrayAccess
      * 批量设置 session 参数
      *
      * @param array $arrValue
-     * @param string $sType
      * @return $this
      */
-    public function setSessions(array $arrValue, $mixValue)
+    public function setSessions(array $arrValue)
     {
         return $this->setInputs($arrValue, 'session');
     }
@@ -812,10 +813,9 @@ class request implements iarray, ArrayAccess
      * 批量设置 server 参数
      *
      * @param array $arrValue
-     * @param string $sType
      * @return $this
      */
-    public function setServers(array $arrValue, $mixValue)
+    public function setServers(array $arrValue)
     {
         return $this->setInputs($arrValue, 'server');
     }
@@ -1810,6 +1810,21 @@ class request implements iarray, ArrayAccess
     }
 
     /**
+     * 设置请求类型
+     *
+     * @param string $strMethod
+     * @return $this
+     */
+    public function setMethod($strMethod)
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+        $this->strMethod = strtoupper($strMethod);
+        return $this;
+    }
+
+    /**
      * 实际请求类型
      *
      * @return string
@@ -2046,12 +2061,31 @@ class request implements iarray, ArrayAccess
     }
 
     /**
-     * pathinfo 兼容性分析
+     * 设置 pathInfo
+     *
+     * @param string $strPathInfo
+     * @return $this
+     */
+    public function setPathInfo($strPathInfo)
+    {
+        if ($this->checkFlowControl()) {
+            return $this;
+        }
+        $this->strPathInfo = $strPathInfo;
+        return $this;
+    }
+
+    /**
+     * pathInfo 兼容性分析
      *
      * @return string
      */
-    public function pathinfo()
+    public function pathInfo()
     {
+        if (! is_null($this->strPathInfo)) {
+            return $this->strPathInfo;
+        }
+
         if (! empty($_SERVER['PATH_INFO'])) {
             return $_SERVER['PATH_INFO'];
         }
@@ -2068,13 +2102,13 @@ class request implements iarray, ArrayAccess
             $sRequestUrl = substr($sRequestUrl, 0, $nPos);
         }
 
-        if ((null !== $sBaseUrl) && (false === ($sPathinfo = substr($sRequestUrl, strlen($sBaseUrl))))) {
-            $sPathinfo = '';
+        if ((null !== $sBaseUrl) && (false === ($sPathInfo = substr($sRequestUrl, strlen($sBaseUrl))))) {
+            $sPathInfo = '';
         } elseif (null === $sBaseUrl) {
-            $sPathinfo = $sRequestUrl;
+            $sPathInfo = $sRequestUrl;
         }
 
-        return $sPathinfo;
+        return $sPathInfo;
     }
 
     /**

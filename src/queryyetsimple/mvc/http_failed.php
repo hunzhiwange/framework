@@ -30,7 +30,7 @@ use RuntimeException;
  * @since 2017.08.10
  * @version 1.0
  */
-class http extends RuntimeException
+class http_failed extends RuntimeException
 {
 
     /**

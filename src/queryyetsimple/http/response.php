@@ -221,15 +221,18 @@ class response
     /**
      * 输出内容
      *
+     * @param boolean $booSend
      * @return void
      */
-    public function output()
+    public function output($booSend = true)
     {
         // 组装编码
-        $this->contentTypeAndCharset($this->getContentType(), $this->getrCharset());
+        if ($booSend === true) {
+            $this->contentTypeAndCharset($this->getContentType(), $this->getrCharset());
+        }
 
         // 发送头部 header
-        if (! headers_sent() && ! empty($this->arrHeader)) {
+        if ($booSend === true && ! headers_sent() && ! empty($this->arrHeader)) {
             http_response_code($this->intCode);
             foreach ($this->arrHeader as $strName => $strValue) {
                 header($strName . ':' . $strValue);
@@ -237,10 +240,15 @@ class response
         }
 
         // 输出内容
-        echo $this->getContent() . (! $this->getContent() || ! $this->isJson($this->getContent()) ? $this->getAppendContent() : '');
+        $sContent = $this->getContent() . (! $this->getContent() || ! $this->isJson($this->getContent()) ? $this->getAppendContent() : '');
+        if ($booSend === true) {
+            echo $sContent;
+        } else {
+            return $sContent;
+        }
 
         // 提高响应速速
-        if (function_exists('fastcgi_finish_request')) {
+        if ($booSend === true && function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         }
     }
@@ -717,7 +725,7 @@ class response
             'message' => $mixMessage,
 
             // 描述信息英文
-            'message_key' => $strKey,
+            'key' => $strKey,
 
             // 响应时间
             'time' => time(),

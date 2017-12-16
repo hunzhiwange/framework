@@ -133,7 +133,7 @@ abstract class controller implements icontroller
     public function getAssign($sName = null)
     {
         $this->checkView();
-        return $this->objView->getVar($sName);
+        return $this->objView->getAssign($sName);
     }
 
     /**

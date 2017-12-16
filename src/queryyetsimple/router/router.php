@@ -183,6 +183,13 @@ class router
     protected $arrVariable = [];
 
     /**
+     * 路由 pathinfo
+     *
+     * @var string
+     */
+    protected $strPathInfo;
+
+    /**
      * 默认替换参数[字符串]
      *
      * @var string
@@ -278,6 +285,9 @@ class router
      */
     public function run()
     {
+        // 初始化
+        $this->initRequest();
+
         // 非命令行模式
         if (! $this->objRequest->isCli()) {
             $this->parseWeb();
@@ -296,14 +306,12 @@ class router
 
         // 解析项目公共 url 地址
         $this->parsePublicAndRoot();
-
-        return $this;
     }
 
     /**
      * 匹配路由
      *
-     * @return void
+     * @return mixed
      */
     public function parse()
     {
@@ -1159,6 +1167,62 @@ class router
     }
 
     /**
+     * 执行多重请求绑定
+     *
+     * @param string $$arrMultiRequest
+     * @return array
+     */
+    public function doBindMulti(array $arrMultiRequest)
+    {
+        if (empty($arrMultiRequest)) {
+            return [];
+        }
+
+        $arrReturn = [];
+        $arrOldGet = $_GET;
+
+        foreach ($arrMultiRequest as $arrItem) {
+            if (! is_array($arrItem) || empty($arrItem['url'])) {
+                throw new RuntimeException('The option of do bind multi is Invalid.');
+            }
+
+            $_GET = [];
+
+            if (empty($arrItem['method'])) {
+                $arrItem['method'] = 'GET';
+            }
+
+            // 解析路由
+            $this->objRequest->
+
+            setPathInfo($arrItem['url'])->
+
+            setMethod($arrItem['method']);
+
+            if (! empty($arrItem['data'])) {
+                $this->objRequest->{'set' . ucwords(strtolower($arrItem['method'])) . 's'}($arrItem['data']);
+            }
+
+            $this->run();
+
+            // 返回响应
+            $mixResponse = $this->doBind($this->controller(), $this->action(), $this->app());
+            if (! ($mixResponse instanceof response)) {
+                $mixResponse = $this->objContainer[response::class]->make($mixResponse);
+            }
+
+            // $arrReturn[] = $mixResponse->content(null)->getData();
+            $arrReturn[] = $mixResponse->content(null)->output(false);
+        }
+
+        $_GET = $arrOldGet;
+        $this->initRequest();
+        $this->objContainer[response::class]->content(null);
+
+        return $arrReturn;
+    }
+
+    /**
      * 获取绑定的中间件
      *
      * @param string $sNode
@@ -1295,6 +1359,34 @@ class router
     }
 
     /**
+     * 设置 pathInfo
+     *
+     * @param string $strPathInfo
+     * @return $this
+     */
+    public function setPathInfo($strPathInfo)
+    {
+        $this->strPathInfo = $strPathInfo;
+        return $this;
+    }
+
+    /**
+     * pathinfo 解析入口
+     *
+     * @return string
+     */
+    public function pathInfo()
+    {
+        if (! is_null($this->strPathInfo)) {
+            return $this->strPathInfo;
+        } else {
+            $strPathInfo = $this->clearHtmlSuffix($this->objRequest->pathInfo());
+            $strPathInfo = empty($strPathInfo) ? '/' : $strPathInfo;
+            return $this->strPathInfo = $strPathInfo;
+        }
+    }
+
+    /**
      * web 分析 url 参数
      *
      * @return void
@@ -1322,18 +1414,6 @@ class router
         if ($arrMethod && ! in_array($this->objRequest->method(), $arrMethod)) {
             throw new RuntimeException(sprintf('The node is allowed http method %s,but your current http method is %s', implode(',', $arrMethod), $this->objRequest->method()));
         }
-    }
-
-    /**
-     * pathinfo 解析入口
-     *
-     * @return void
-     */
-    protected function pathInfo()
-    {
-        $sPathInfo = $this->clearHtmlSuffix($this->objRequest->pathinfo());
-        $sPathInfo = empty($sPathInfo) ? '/' : $sPathInfo;
-        $_SERVER['PATH_INFO'] = $sPathInfo;
     }
 
     /**
@@ -1394,7 +1474,7 @@ class router
             static::ARGS => []
         ];
 
-        $sPathInfo = $_SERVER['PATH_INFO'];
+        $sPathInfo = $this->pathInfo();
         $arrPaths = explode($this->getOption('pathinfo_depr'), trim($sPathInfo, '/'));
 
         if (is_array($this->getOption('~apps~')) && in_array($arrPaths[0], $this->getOption('~apps~'))) {
@@ -1533,7 +1613,7 @@ class router
      * 解析路由规格
      *
      * @param array $arrNextParse
-     * @return array
+     * @return mixed
      */
     protected function parseRouter($arrNextParse = [])
     {
@@ -1542,7 +1622,7 @@ class router
         }
 
         $arrData = [];
-        $sPathinfo = $_SERVER['PATH_INFO'];
+        $sPathinfo = $this->pathInfo();
 
         // 匹配路由
         foreach ($this->arrRouters as $sKey => $arrRouters) {
@@ -1642,6 +1722,19 @@ class router
     public function checkOpen()
     {
         return $this->getOption('router_cache') && $this->strCachePath;
+    }
+
+    /**
+     * 初始化请求
+     *
+     * @return void
+     */
+    protected function initRequest()
+    {
+        $this->setPathInfo(null);
+        $this->strApp = null;
+        $this->strController = null;
+        $this->strAction = null;
     }
 
     /**
@@ -2059,7 +2152,7 @@ class router
             } elseif (isset($this->getOption('middleware_alias')[$strTemp])) {
                 $arrMiddleware[] = $this->explodeMiddlewareName($this->getOption('middleware_alias')[$strTemp], $strParams);
             } else {
-                $arrMiddleware [] = $this->explodeMiddlewareName($strTemp, $strParams);
+                $arrMiddleware[] = $this->explodeMiddlewareName($strTemp, $strParams);
             }
         }
 
