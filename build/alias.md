@@ -46,6 +46,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
     support = subtree push --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
 
+    swoole = subtree push --prefix=src/queryyetsimple/swoole git@github.com:queryyetsimple/swoole.git master
+
     throttler = subtree push --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
 
     validate = subtree push --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
@@ -93,6 +95,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     sessionp = subtree pull --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
 
     supportp = subtree pull --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
+
+    swoolep = subtree pull --prefix=src/queryyetsimple/swoole git@github.com:queryyetsimple/swoole.git master
 
     throttlerp = subtree pull --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
     
