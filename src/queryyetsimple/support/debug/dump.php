@@ -76,7 +76,7 @@ class dump
         $sOutput = ob_get_clean();
         if (! extension_loaded('xdebug')) {
             $sOutput = preg_replace("/\]\=\>\n(\s+)/m", "] => ", $sOutput);
-            $sOutput = 'cli' === PHP_SAPI ? $sOutput : '<pre>' . htmlspecialchars($sOutput, ENT_QUOTES) . '</pre>';
+            $sOutput = 'cli' === PHP_SAPI ? $sOutput : '<pre>' . htmlspecialchars($sOutput, ENT_COMPAT, 'UTF-8') . '</pre>';
         }
 
         if ($bEcho) {
