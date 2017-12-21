@@ -128,7 +128,7 @@ class psr4 implements ipsr4
         }
 
         $arrNamespace[0] = $arrPrefix[$arrNamespace[0] . '\\'][0];
-        return implode('\\', $arrNamespace);
+        return implode('/', $arrNamespace);
     }
 
     /**
