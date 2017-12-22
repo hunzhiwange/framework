@@ -127,12 +127,12 @@ class exception extends message
         if ($this->oProject['option']['app_debug']) {
             foreach ($arrTrace as $intKey => $arrVal) {
                 // 参数处理
-                $arrVal['class'] = isset($arrVal['class']) ? $arrVal['class'] : '';
-                $arrVal['type'] = isset($arrVal['type']) ? $arrVal['type'] : '';
-                $arrVal['function'] = isset($arrVal['function']) ? $arrVal['function'] : '';
+                $arrVal['class'] = $arrVal['class'] ?? '';
+                $arrVal['type'] = $arrVal['type'] ?? '';
+                $arrVal['function'] = $arrVal['function'] ?? '';
                 $arrVal['file'] = isset($arrVal['file']) ? fso::tidyPathLinux($arrVal['file']) : '';
-                $arrVal['line'] = isset($arrVal['line']) ? $arrVal['line'] : '';
-                $arrVal['args'] = isset($arrVal['args']) ? $arrVal['args'] : '';
+                $arrVal['line'] = $arrVal['line'] ?? '';
+                $arrVal['args'] = $arrVal['args'] ?? '';
                 
                 // 参数格式化组装
                 $sArgsInfo = $sArgsInfoDetail = '';
@@ -164,10 +164,10 @@ class exception extends message
         
         // 调试消息
         $arrError['message'] = $oException->getMessage();
-        $arrError['type'] = isset($arrVal['type']) ? $arrVal['type'] : '';
-        $arrError['class'] = isset($arrTrace['0']['class']) ? $arrTrace['0']['class'] : '';
+        $arrError['type'] = $arrVal['type'] ?? '';
+        $arrError['class'] = $arrTrace['0']['class'] ?? '';
         $arrError['code'] = $oException->getCode();
-        $arrError['function'] = isset($arrTrace['0']['function']) ? $arrTrace['0']['function'] : '';
+        $arrError['function'] = $arrTrace['0']['function'] ?? '';
         $arrError['line'] = $oException->getLine();
         $arrError['exception_type'] = get_class($oException);
         
@@ -193,12 +193,12 @@ class exception extends message
         if ($this->oProject['option']['app_debug']) {
             foreach ($arrTrace as $intKey => &$arrVal) {
                 // 参数处理
-                $arrVal['class'] = isset($arrVal['class']) ? $arrVal['class'] : '';
-                $arrVal['type'] = isset($arrVal['type']) ? $arrVal['type'] : '';
-                $arrVal['function'] = isset($arrVal['function']) ? $arrVal['function'] : '';
+                $arrVal['class'] = $arrVal['class'] ?? '';
+                $arrVal['type'] = $arrVal['type'] ?? '';
+                $arrVal['function'] = $arrVal['function'] ?? '';
                 $arrVal['file'] = isset($arrVal['file']) ? fso::tidyPathLinux($arrVal['file']) : '';
-                $arrVal['line'] = isset($arrVal['line']) ? $arrVal['line'] : '';
-                $arrVal['args'] = isset($arrVal['args']) ? $arrVal['args'] : '';
+                $arrVal['line'] = $arrVal['line'] ?? '';
+                $arrVal['args'] = $arrVal['args'] ?? '';
                 
                 // 参数格式化组装
                 if (is_array($arrVal['args'])) {
@@ -212,10 +212,10 @@ class exception extends message
         
         // 调试消息
         $arrError['message'] = $oException->getMessage();
-        $arrError['type'] = isset($arrVal['type']) ? $arrVal['type'] : '';
-        $arrError['class'] = isset($arrTrace['0']['class']) ? $arrTrace['0']['class'] : '';
+        $arrError['type'] = $arrVal['type'] ?? '';
+        $arrError['class'] = $arrTrace['0']['class'] ?? '';
         $arrError['code'] = $oException->getCode();
-        $arrError['function'] = isset($arrTrace['0']['function']) ? $arrTrace['0']['function'] : '';
+        $arrError['function'] = $arrTrace['0']['function'] ?? '';
         $arrError['line'] = $oException->getLine();
         $arrError['exception_type'] = get_class($oException);
         $arrError['ecode'] = $arrError['code'];

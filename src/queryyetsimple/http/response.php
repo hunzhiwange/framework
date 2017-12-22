@@ -297,7 +297,7 @@ class response
         if (is_null($strHeaderName)) {
             return $this->arrHeader;
         } else {
-            return isset($this->arrHeader[$strHeaderName]) ? $this->arrHeader[$strHeaderName] : null;
+            return $this->arrHeader[$strHeaderName] ?? null;
         }
     }
 
@@ -834,7 +834,17 @@ class response
         if (is_array($arrData)) {
             $this->data($arrData);
         }
-        $this->responseType('json')->contentType('application/json')->charset($strCharset)->option('json_options', $intOptions);
+
+        $this
+
+        ->responseType('json')
+
+        ->contentType('application/json')
+
+        ->charset($strCharset)
+
+        ->option('json_options', $intOptions);
+        
         return $this;
     }
 
@@ -866,7 +876,11 @@ class response
         if ($this->checkFlowControl()) {
             return $this;
         }
-        return $this->jsonCallback($strJsonCallback)->json($arrData, $intOptions, $strCharset);
+        return $this
+
+        ->jsonCallback($strJsonCallback)
+
+        ->json($arrData, $intOptions, $strCharset);
     }
 
     /**
@@ -890,7 +904,17 @@ class response
             $this->contentType($arrOption['content_type']);
         }
 
-        return $this->responseType('view')->option('file', $sFile)->option('option', $arrOption)->assign($arrOption)->message(isset($arrOption['message']) ? $arrOption['message'] : '')->header('Cache-control', 'protected');
+        return $this->responseType('view')->
+
+        option('file', $sFile)->
+
+        option('option', $arrOption)->
+
+        assign($arrOption)
+
+        ->message($arrOption['message'] ?? '')
+
+        ->header('Cache-control', 'protected');
     }
 
     /**
@@ -925,6 +949,7 @@ class response
         if ($this->checkFlowControl()) {
             return $this;
         }
+
         $arrOption = array_merge([
             'message' => $sMessage ?  : 'Succeed',
             'url' => '',
@@ -950,11 +975,13 @@ class response
         if ($this->checkFlowControl()) {
             return $this;
         }
+
         $arrOption = array_merge([
             'message' => $sMessage ?  : 'Failed',
             'url' => '',
             'time' => 3
         ], $arrOption);
+
         return $this->view($this->getOption('action_fail'), $arrOption);
     }
 
@@ -974,8 +1001,16 @@ class response
         if ($this->checkFlowControl()) {
             return $this;
         }
+
         assert::string($sUrl);
-        return $this->responseType('redirect')->option('redirect_url', $sUrl)->option('option', $arrOption);
+
+        return $this->
+
+        responseType('redirect')->
+
+        option('redirect_url', $sUrl)->
+
+        option('option', $arrOption);
     }
 
     /**
@@ -990,10 +1025,16 @@ class response
         if ($this->checkFlowControl()) {
             return $this;
         }
+
         if (is_array($arrData)) {
             $this->data($arrData);
         }
-        return $this->responseType('xml')->contentType('text/xml')->charset($strCharset);
+
+        return $this->responseType('xml')
+
+        ->contentType('text/xml')
+
+        ->charset($strCharset);
     }
 
     /**
@@ -1009,12 +1050,18 @@ class response
         if ($this->checkFlowControl()) {
             return $this;
         }
+
         if (! $sDownName) {
             $sDownName = basename($sFileName);
         } else {
             $sDownName = $sDownName . '.' . fso::getExtension($sFileName);
         }
-        return $this->downloadAndFile($sFileName, $arrHeader)->header('Content-Disposition', 'attachment;filename=' . $sDownName);
+
+        return $this
+
+        ->downloadAndFile($sFileName, $arrHeader)
+
+        ->header('Content-Disposition', 'attachment;filename=' . $sDownName);
     }
 
     /**
@@ -1029,7 +1076,12 @@ class response
         if ($this->checkFlowControl()) {
             return $this;
         }
-        return $this->downloadAndFile($sFileName, $arrHeader)->header('Content-Disposition', 'inline;filename=' . basename($sFileName));
+
+        return $this->
+
+        downloadAndFile($sFileName, $arrHeader)
+
+        ->header('Content-Disposition', 'inline;filename=' . basename($sFileName));
     }
 
     /**
@@ -1069,7 +1121,14 @@ class response
             'Content-type' => $strMimeType,
             'Content-Length' => filesize($sFileName)
         ], $arrHeader);
-        $this->responseType('file')->headers($arrHeader)->option('file_name', $sFileName);
+
+        $this
+
+        ->responseType('file')
+
+        ->headers($arrHeader)
+
+        ->option('file_name', $sFileName);
 
         return $this;
     }

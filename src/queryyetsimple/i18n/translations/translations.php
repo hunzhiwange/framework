@@ -112,7 +112,7 @@ abstract class translations
      */
     public function get_header($header)
     {
-        return isset($this->headers[$header]) ? $this->headers[$header] : false;
+        return $this->headers[$header] ?? false;
     }
 
     /**
@@ -122,7 +122,7 @@ abstract class translations
     public function translate_entry(&$entry)
     {
         $key = $entry->key();
-        return isset($this->entries[$key]) ? $this->entries[$key] : false;
+        return $this->entries[$key] ?? false;
     }
 
     /**

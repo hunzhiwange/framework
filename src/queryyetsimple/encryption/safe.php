@@ -334,7 +334,7 @@ class safe
         }
 
         $nLimitMinTime = strtotime($arrLimitTime[0]);
-        $nLimitMaxTime = strtotime(isset($arrLimitTime[1]) ? $arrLimitTime[1] : '');
+        $nLimitMaxTime = strtotime($arrLimitTime[1] ?? '');
         if ($nLimitMinTime === false || $nLimitMaxTime === false) {
             return;
         }

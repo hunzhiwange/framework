@@ -26,18 +26,16 @@ class server{
   }
 
   protected function checkPhpVersion(){
-      if(phpversion() < '7.1.0'){
+      if(version_compare(PHP_VERSION, '7.1.0', '<')){
         throw new RuntimeException("PHP 7.1.0 OR Higher");
     }
   }  
 
   protected function checkSwooleVersion(){
-    if(phpversion('swoole') < 2.0){
+    if(version_compare(phpversion('swoole'), '2.0', '<')){
         throw new RuntimeException("Swoole 2.0 OR Higher");
     }
   }
-
-
 
 }
 

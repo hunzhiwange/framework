@@ -192,7 +192,7 @@ class po extends gettext
                     }
                 } else {
                     $previous_is_backslash = false;
-                    $unpoified .= isset($escapes[$char]) ? $escapes[$char] : $char;
+                    $unpoified .= $escapes[$char] ?? $char;
                 }
             }
         }

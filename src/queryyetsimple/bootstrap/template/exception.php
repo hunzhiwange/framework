@@ -159,7 +159,7 @@
     </head>
     <body>
         <div class="queryphp-message-container">
-            <div class="queryphp-message-title"><?php echo isset($mixError[ 'exception_type' ]) ? $mixError[ 'exception_type' ] : 'Exception' ; ?></div>
+            <div class="queryphp-message-title"><?php echo $mixError[ 'exception_type' ] ?? 'Exception' ; ?></div>
             <div class="queryphp-message-subtitle">You can replace this with
                 debug\exception_template option.</div>
             <div class="queryphp-message-content">

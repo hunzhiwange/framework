@@ -219,7 +219,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
      */
     public function get($sName, $mixValue = null)
     {
-        return isset($this->arrData[$sName]) ? $this->arrData[$sName] : $mixValue;
+        return $this->arrData[$sName] ?? $mixValue;
     }
 
     /**
@@ -431,7 +431,7 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
      */
     public function getSource($sName, $mixValue = null)
     {
-        return isset($this->arrSourceData[$sName]) ? $this->arrSourceData[$sName] : $mixValue;
+        return $this->arrSourceData[$sName] ?? $mixValue;
     }
 
     /**
@@ -927,9 +927,9 @@ class value_object implements JsonSerializable, ArrayAccess, iarray, ijson
 
         switch (true) {
             case substr($sMethod, 0, 3) == 'get':
-                return $this->__get(substr($sMethod, 3), isset($arrArgs[0]) ? $arrArgs[0] : null);
+                return $this->__get(substr($sMethod, 3), $arrArgs[0] ?? null);
             case substr($sMethod, 0, 3) == 'set':
-                return $this->__set(substr($sMethod, 3), isset($arrArgs[0]) ? $arrArgs[0] : null);
+                return $this->__set(substr($sMethod, 3), $arrArgs[0] ?? null);
             case substr($sMethod, 0, 5) == 'delete':
                 return $this->__unset(substr($sMethod, 5));
             case substr($sMethod, 0, 3) == 'has':

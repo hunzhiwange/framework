@@ -87,7 +87,7 @@ trait option
      */
     public function getOption($strName, $mixDefault = null)
     {
-        return isset($this->arrOption[$strName]) ? $this->arrOption[$strName] : $mixDefault;
+        return $this->arrOption[$strName] ?? $mixDefault;
     }
 
     /**

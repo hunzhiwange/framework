@@ -431,7 +431,7 @@ class router
                 $arrArray = [];
             }
 
-            $arrOption['app'] = isset($arrArray['scheme']) ? $arrArray['scheme'] : $_GET[$arrOption['args_app']]; // APP
+            $arrOption['app'] = $arrArray['scheme'] ?? $_GET[$arrOption['args_app']]; // APP
 
 
             // 分析获取模块和操作(应用)
@@ -1569,7 +1569,7 @@ class router
                 $sKey = $this->formatRegex($sKey);
                 $sKey = preg_replace_callback("/{(.+?)}/", function ($arrMatches) use (&$arrDomains) {
                     $arrDomains['args'][] = $arrMatches[1];
-                    return '(' . (isset($arrDomains['domain_where'][$arrMatches[1]]) ? $arrDomains['domain_where'][$arrMatches[1]] : static::DEFAULT_REGEX) . ')';
+                    return '(' . ($arrDomains['domain_where'][$arrMatches[1]] ?? static::DEFAULT_REGEX) . ')';
                 }, $sKey);
                 $sKey = '/^' . $sKey . '$/';
 
@@ -1643,9 +1643,9 @@ class router
                     $arrRouter['regex'] = $this->formatRegex($arrRouter['regex']);
                     $arrRouter['regex'] = preg_replace_callback("/{(.+?)}/", function ($arrMatches) use (&$arrRouter) {
                         $arrRouter['args'][] = $arrMatches[1];
-                        return '(' . (isset($arrRouter['where'][$arrMatches[1]]) ? $arrRouter['where'][$arrMatches[1]] : static::DEFAULT_REGEX) . ')';
+                        return '(' . ($arrRouter['where'][$arrMatches[1]] ?? static::DEFAULT_REGEX) . ')';
                     }, $arrRouter['regex']);
-                    $arrRouter['regex'] = '/^\/' . $arrRouter['regex'] . ((isset($arrRouter['strict']) ? $arrRouter['strict'] : $this->getOption('router_strict')) ? '$' : '') . '/';
+                    $arrRouter['regex'] = '/^\/' . $arrRouter['regex'] . (($arrRouter['strict'] ?? $this->getOption('router_strict')) ? '$' : '') . '/';
 
                     // 匹配结果
                     if (preg_match($arrRouter['regex'], $sPathinfo, $arrRes)) {

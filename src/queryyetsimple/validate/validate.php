@@ -2254,7 +2254,7 @@ class validate implements ivalidate
         }
 
         $strMessage = preg_replace_callback("/{(.+?)}/", function ($arrMatche) use ($arrReplace) {
-            return isset($arrReplace[$arrMatche[1]]) ? $arrReplace[$arrMatche[1]] : $arrMatche[0];
+            return $arrReplace[$arrMatche[1]] ?? $arrMatche[0];
         }, $strMessage);
 
         $this->arrErrorMessages[$strField][] = $strMessage;
@@ -2270,8 +2270,7 @@ class validate implements ivalidate
      */
     protected function getFieldRuleMessage($strField, $strRule)
     {
-        $strKey = $strField . '.' . $strRule;
-        return isset($this->arrMessage[$strKey]) ? $this->arrMessage[$strKey] : (isset($this->arrMessage[$strRule]) ? $this->arrMessage[$strRule] : (isset(static::$arrDefaultMessage[$strRule]) ? static::$arrDefaultMessage[$strRule] : ''));
+        return $this->arrMessage[$strField . '.' . $strRule] ?? $this->arrMessage[$strRule] ?? static::$arrDefaultMessage[$strRule] ?? '';
     }
 
     /**
@@ -2282,7 +2281,7 @@ class validate implements ivalidate
      */
     protected function parseFieldName($strField)
     {
-        return isset($this->arrFieldName[$strField]) ? $this->arrFieldName[$strField] : $strField;
+        return $this->arrFieldName[$strField] ?? $strField;
     }
 
     /**
@@ -2305,7 +2304,7 @@ class validate implements ivalidate
                 $strFoo .= "['{$strRule[$nI]}']";
             }
 
-            eval("\$strFoo = isset( $strFoo ) ? $strFoo: null;");
+            eval("\$strFoo = $strFoo ?? null;");
             return $strFoo;
         }
 

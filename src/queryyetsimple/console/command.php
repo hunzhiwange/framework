@@ -448,12 +448,7 @@ abstract class command extends SymfonyCommand
      */
     protected function parseVerbosity($mixLevel = null)
     {
-        if (isset(static::$arrVerbosityMap[$mixLevel])) {
-            $mixLevel = static::$arrVerbosityMap[$mixLevel];
-        } elseif (! is_int($mixLevel)) {
-            $mixLevel = $this->intVerbosity;
-        }
-        return $mixLevel;
+        return static::$arrVerbosityMap[$mixLevel] ?? (! is_int($mixLevel) ? $this->intVerbosity : $mixLevel);
     }
     
     /**

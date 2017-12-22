@@ -204,7 +204,7 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
      */
     public function offsetGet($strKey)
     {
-        return isset($this->arrObject[$strKey]) ? $this->arrObject[$strKey] : null;
+        return $this->arrObject[$strKey] ?? null;
     }
 
     /**

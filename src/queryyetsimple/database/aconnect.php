@@ -205,7 +205,7 @@ abstract class aconnect
                 return $this->writeConnect();
             }
         } else {
-            return isset($this->arrConnect[$mixMaster]) ? $this->arrConnect[$mixMaster] : null;
+            return $this->arrConnect[$mixMaster] ?? null;
         }
     }
 
@@ -638,7 +638,7 @@ abstract class aconnect
         if (is_null($strOptionName)) {
             return $this->arrCurrentOption;
         } else {
-            return isset($this->arrCurrentOption[$strOptionName]) ? $this->arrCurrentOption[$strOptionName] : null;
+            return $this->arrCurrentOption[$strOptionName] ?? null;
         }
     }
 

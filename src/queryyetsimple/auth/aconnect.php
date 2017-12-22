@@ -467,7 +467,7 @@ abstract class aconnect
      */
     public function getField($strField)
     {
-        return isset($this->arrField[$strField]) ? $this->arrField[$strField] : null;
+        return $this->arrField[$strField] ?? null;
     }
 
     /**

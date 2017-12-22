@@ -203,7 +203,7 @@ class project extends container implements iproject
      */
     public function pathApplication()
     {
-        return isset($this->arrOption['path_application']) ? $this->arrOption['path_applicationp'] : $this->strPath . DIRECTORY_SEPARATOR . 'application';
+        return $this->arrOption['path_application'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'application';
     }
 
     /**
@@ -213,7 +213,7 @@ class project extends container implements iproject
      */
     public function pathCommon()
     {
-        return isset($this->arrOption['path_common']) ? $this->arrOption['path_common'] : $this->strPath . DIRECTORY_SEPARATOR . 'common';
+        return $this->arrOption['path_common'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'common';
     }
 
     /**
@@ -223,7 +223,7 @@ class project extends container implements iproject
      */
     public function pathRuntime()
     {
-        return isset($this->arrOption['path_runtime']) ? $this->arrOption['path_runtime'] : $this->strPath . DIRECTORY_SEPARATOR . '~@~';
+        return $this->arrOption['path_runtime'] ?? $this->strPath . DIRECTORY_SEPARATOR . '~@~';
     }
 
     /**
@@ -233,7 +233,7 @@ class project extends container implements iproject
      */
     public function pathPublic()
     {
-        return isset($this->arrOption['path_public']) ? $this->arrOption['path_public'] : $this->strPath . DIRECTORY_SEPARATOR . 'public';
+        return $this->arrOption['path_public'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'public';
     }
 
     /**
@@ -243,7 +243,7 @@ class project extends container implements iproject
      */
     public function pathStorage()
     {
-        return isset($this->arrOption['path_storage']) ? $this->arrOption['path_storage'] : $this->strPath . DIRECTORY_SEPARATOR . 'storage';
+        return $this->arrOption['path_storage'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'storage';
     }
 
     /**
@@ -306,7 +306,7 @@ class project extends container implements iproject
      */
     public function debug()
     {
-        return isset($this->arrAppOption['app_debug']) ? $this->arrAppOption['app_debug'] : false;
+        return $this->arrAppOption['app_debug'] ?? false;
     }
 
     /**
@@ -646,7 +646,7 @@ class project extends container implements iproject
             'public'
         ] as $sKey => $sUrl) {
             $sUrl = 'url_' . $sUrl;
-            $this->instance($sUrl, isset($this->arrOption[$sUrl]) ? $this->arrOption[$sUrl] : '');
+            $this->instance($sUrl, $this->arrOption[$sUrl] ?? '');
         }
     }
 

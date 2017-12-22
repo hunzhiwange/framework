@@ -229,7 +229,7 @@ class theme implements itheme
         if (is_null($sName)) {
             return $this->arrVar;
         }
-        return isset($this->arrVar[$sName]) ? $this->_arrVar[$sName] : null;
+        return $this->_arrVar[$sName] ?? null;
     }
 
     /**
@@ -394,7 +394,7 @@ class theme implements itheme
                 '+',
                 ':'
             ], $this->getOption('controlleraction_depr'), $sTpl);
-            return dirname($this->getOption('theme_path')) . '/' . (isset($sTheme) ? $sTheme : $this->getOption('theme_name')) . '/' . $sTpl . ($sExt ?  : $this->getOption('suffix'));
+            return dirname($this->getOption('theme_path')) . '/' . ($sTheme ?? $this->getOption('theme_name')) . '/' . $sTpl . ($sExt ?: $this->getOption('suffix'));
         }
     }
 

@@ -1261,7 +1261,7 @@ class request implements iarray, ArrayAccess
     public function file($sKey)
     {
         $arrFiles = $this->globalFiles();
-        return isset($arrFiles[$sKey]) ? $arrFiles[$sKey] : null;
+        return $arrFiles[$sKey] ?? null;
     }
 
     /**
@@ -1300,7 +1300,7 @@ class request implements iarray, ArrayAccess
     {
         $arrVar = $this->globalHeader();
         $sKey = str_replace('_', '-', strtolower($sKey));
-        return isset($arrVar[$sKey]) ? $arrVar[$sKey] : $mixDefault;
+        return $arrVar[$sKey] ?? $mixDefault;
     }
 
     /**
@@ -1617,7 +1617,7 @@ class request implements iarray, ArrayAccess
     public function host()
     {
         if (is_null($this->strHost)) {
-            $this->strHost = isset($_SERVER['HTTP_X_FORWARDED_HOST']) ? $_SERVER['HTTP_X_FORWARDED_HOST'] : (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '');
+            $this->strHost = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? $_SERVER['HTTP_HOST'] ?? '';
         }
         return $this->strHost;
     }
@@ -2179,7 +2179,7 @@ class request implements iarray, ArrayAccess
         }
 
         // For IIS
-        $_SERVER['REQUEST_URI'] = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $_SERVER["HTTP_X_REWRITE_URL"];
+        $_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'] ?? $_SERVER["HTTP_X_REWRITE_URL"];
 
         if (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
             $sUrl = $_SERVER['HTTP_X_REWRITE_URL'];
@@ -2845,7 +2845,7 @@ class request implements iarray, ArrayAccess
     public function __get($strKey)
     {
         $arrAll = $this->allAll();
-        return isset($arrAll[$strKey]) ? $arrAll[$strKey] : null;
+        return $arrAll[$strKey] ?? null;
     }
 
     /**

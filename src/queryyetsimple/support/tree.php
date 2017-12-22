@@ -233,7 +233,7 @@ class tree implements itree, ijson, iarray
      */
     public function getData($nId, $mixDefault = null)
     {
-        return isset($this->arrData[$nId]) ? $this->arrData[$nId] : $mixDefault;
+        return $this->arrData[$nId] ?? $mixDefault;
     }
 
     /**
@@ -263,8 +263,8 @@ class tree implements itree, ijson, iarray
         $arrData = [];
         foreach ($this->getChild($nId) as $nValue) {
             $arrItem = [
-                isset($arrKey['value']) ? $arrKey['value'] : 'value' => $nValue,
-                isset($arrKey['data']) ? $arrKey['data'] : 'data' => $this->arrData[$nValue]
+                $arrKey['value'] ?? 'value' => $nValue,
+                $arrKey['data'] ?? 'data' => $this->arrData[$nValue]
             ];
 
             if (is_callable($mixCallable)) {
@@ -279,7 +279,7 @@ class tree implements itree, ijson, iarray
             }
 
             if ($arrChildren = $this->treeToArray($mixCallable, $arrKey, $nValue)) {
-                $arrItem[isset($arrKey['children']) ? $arrKey['children'] : 'children'] = $arrChildren;
+                $arrItem[$arrKey['children'] ?? 'children'] = $arrChildren;
             }
 
             $arrData[] = $arrItem;

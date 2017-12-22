@@ -782,7 +782,7 @@ class select
         if ($bFlag === true) {
             return $arrRow;
         }
-        return isset($arrRow[$strField]) ? $arrRow[$strField] : null;
+        return $arrRow[$strField] ?? null;
     }
 
     /**
@@ -1034,7 +1034,9 @@ class select
         if ($this->checkFlowControl()) {
             return $this;
         }
+
         $arrArgs = func_get_args();
+
         $this->setInTimeCondition(isset($arrArgs[0]) && in_array($arrArgs[0], [
             'date',
             'month',
@@ -1319,6 +1321,7 @@ class select
         if ($this->checkFlowControl()) {
             return $this;
         }
+
         if (is_array($mixName)) {
             $this->arrColumnsMapping = array_merge($this->arrColumnsMapping, $mixName);
         } else {
@@ -1330,6 +1333,7 @@ class select
                 $this->arrColumnsMapping[$mixName] = $sMappingTo;
             }
         }
+
         return $this;
     }
 
@@ -3031,7 +3035,7 @@ class select
     {
         if (! is_array($mixCond)) {
             $arrArgs = func_get_args();
-            $this->addConditions($arrArgs[1], $strConditionType, isset($arrArgs[2]) ? $arrArgs[2] : null);
+            $this->addConditions($arrArgs[1], $strConditionType, $arrArgs[2] ?? null);
         } else {
             foreach ($mixCond as $arrTemp) {
                 $this->addConditions($arrTemp[0], $strConditionType, $arrTemp[1]);
@@ -3227,7 +3231,7 @@ class select
                     $this->setConditionItem([
                         $arrTemp[0],
                         $arrTemp[1],
-                        isset($arrTemp[2]) ? $arrTemp[2] : null
+                        $arrTemp[2] ?? null
                     ]);
                 }
 
@@ -3788,7 +3792,7 @@ class select
         if (is_null($mixName)) {
             return $this->arrBindParams;
         } else {
-            return isset($this->arrBindParams[$mixName]) ? $this->arrBindParams[$mixName] : null;
+            return $this->arrBindParams[$mixName] ?? null;
         }
     }
 

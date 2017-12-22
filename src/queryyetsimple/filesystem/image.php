@@ -131,7 +131,7 @@ class image
      */
     public static function thumbPreview($sTargetFile, $nThumbWidth, $nThumbHeight)
     {
-        $arrAttachInfo = @getimagesize($sTargetFile);
+        $arrAttachInfo = getimagesize($sTargetFile);
 
         list($nImgW, $nImgH) = $arrAttachInfo;
         header('Content-type:' . $arrAttachInfo['mime']);
@@ -166,13 +166,13 @@ class image
                     $arrThumb['height'] = $nThumbHeight;
                 }
 
-                $oThumbPhoto = @imagecreatetruecolor($arrThumb['width'], $arrThumb['height']);
+                $oThumbPhoto = imagecreatetruecolor($arrThumb['width'], $arrThumb['height']);
                 if ($arrAttachInfo['mime'] != 'image/jpeg') {
                     $oAlpha = imagecolorallocatealpha($oThumbPhoto, 0, 0, 0, 127);
                     imagefill($oThumbPhoto, 0, 0, $oAlpha);
                 }
 
-                @imageCopyreSampled($oThumbPhoto, $oAttachPhoto, 0, 0, 0, 0, $arrThumb['width'], $arrThumb['height'], $nImgW, $nImgH);
+                imageCopyreSampled($oThumbPhoto, $oAttachPhoto, 0, 0, 0, 0, $arrThumb['width'], $arrThumb['height'], $nImgW, $nImgH);
                 if ($arrAttachInfo['mime'] != 'image/jpeg') {
                     imagesavealpha($oThumbPhoto, true);
                 }
@@ -204,18 +204,18 @@ class image
         $bIsWaterImage = false;
 
         if (! empty($sBackgroundPath) && is_file($sBackgroundPath)) { // 读取背景图片
-            $arrBackgroundInfo = @getimagesize($sBackgroundPath);
+            $arrBackgroundInfo = getimagesize($sBackgroundPath);
             $nGroundWidth = $arrBackgroundInfo[0]; // 取得背景图片的宽
             $nGroundHeight = $arrBackgroundInfo[1]; // 取得背景图片的高
             switch ($arrBackgroundInfo[2]) { // 取得背景图片的格式
                 case 1:
-                    $oBackgroundIm = @imagecreatefromgif($sBackgroundPath);
+                    $oBackgroundIm = imagecreatefromgif($sBackgroundPath);
                     break;
                 case 2:
-                    $oBackgroundIm = @imagecreatefromjpeg($sBackgroundPath);
+                    $oBackgroundIm = imagecreatefromjpeg($sBackgroundPath);
                     break;
                 case 3:
-                    $oBackgroundIm = @imagecreatefrompng($sBackgroundPath);
+                    $oBackgroundIm = imagecreatefrompng($sBackgroundPath);
                     break;
                 default:
                     throw new RuntimeException('Wrong image format.');
@@ -224,7 +224,7 @@ class image
             throw new RuntimeException(sprintf('The image %s is empty or nonexistent.', $sBackgroundPath));
         }
 
-        @imagealphablending($oBackgroundIm, true); // 设定图像的混色模式
+        imagealphablending($oBackgroundIm, true); // 设定图像的混色模式
         if (! empty($sBackgroundPath) && is_file($sBackgroundPath)) {
             if ($arrWaterArgs['type'] == 'img' && ! empty($arrWaterArgs['path'])) {
                 $bIsWaterImage = true;
@@ -235,24 +235,24 @@ class image
                     $arrWaterArgs['path'] = str_replace('localhost', '127.0.0.1', $arrWaterArgs['path']);
                 }
 
-                $arrWaterInfo = @getimagesize($arrWaterArgs['path']);
+                $arrWaterInfo = getimagesize($arrWaterArgs['path']);
                 $nWaterWidth = $arrWaterInfo[0]; // 取得水印图片的宽
                 $nWaterHeight = $arrWaterInfo[1]; // 取得水印图片的高
                 switch ($arrWaterInfo[2]) { // 取得水印图片的格式
                     case 1:
-                        $oWaterIm = @imagecreatefromgif($arrWaterArgs['path']);
+                        $oWaterIm = imagecreatefromgif($arrWaterArgs['path']);
                         break;
                     case 2:
-                        $oWaterIm = @imagecreatefromjpeg($arrWaterArgs['path']);
+                        $oWaterIm = imagecreatefromjpeg($arrWaterArgs['path']);
                         break;
                     case 3:
-                        $oWaterIm = @imagecreatefrompng($arrWaterArgs['path']);
+                        $oWaterIm = imagecreatefrompng($arrWaterArgs['path']);
                         break;
                     default:
                         throw new RuntimeException('Wrong image format.');
                 }
             } elseif ($arrWaterArgs['type'] === 'text' && $arrWaterArgs['content'] != '') {
-                $sFontfileTemp = $sFontfile = isset($arrWaterArgs['textFile']) && ! empty($arrWaterArgs['textFile']) ? $arrWaterArgs['textFile'] : 'Microsoft YaHei.ttf';
+                $sFontfileTemp = $sFontfile = $arrWaterArgs['textFile'] ?? 'Microsoft YaHei.ttf';
                 $sFontfile = (! empty($arrWaterArgs['textPath']) ? str_replace('\\', '/', $arrWaterArgs['textPath']) : 'C:\WINDOWS\Fonts') . '/' . $sFontfile;
                 if (! is_file($sFontfile)) {
                     throw new RuntimeException(sprintf('The font file %s cannot be found.', $sFontfile));
@@ -262,8 +262,8 @@ class image
                 $nSet = 1;
                 $nOffset = ! empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 5;
                 $sTextColor = empty($arrWaterArgs['textColor']) ? '#FF0000' : $arrWaterArgs['textColor'];
-                $nTextFont = ! isset($arrWaterArgs['textFont']) || empty($arrWaterArgs['textFont']) ? 20 : $arrWaterArgs['textFont'];
-                $arrTemp = @imagettfbbox(ceil($nTextFont), 0, $sFontfile, $sWaterText); // 取得使用 TrueType 字体的文本的范围
+                $nTextFont = $arrWaterArgs['textFont'] ?? 20;
+                $arrTemp = imagettfbbox(ceil($nTextFont), 0, $sFontfile, $sWaterText); // 取得使用 TrueType 字体的文本的范围
                 $nWaterWidth = $arrTemp[2] - $arrTemp[6];
                 $nWaterHeight = $arrTemp[3] - $arrTemp[7];
                 unset($arrTemp);
@@ -322,9 +322,9 @@ class image
         }
 
         if ($bIsWaterImage === true) { // 图片水印
-            @imagealphablending($oWaterIm, true);
-            @imagealphablending($oBackgroundIm, true);
-            @imagecopy($oBackgroundIm, $oWaterIm, $nPosX, $nPosY, 0, 0, $nWaterWidth, $nWaterHeight); // 拷贝水印到目标文件
+            imagealphablending($oWaterIm, true);
+            imagealphablending($oBackgroundIm, true);
+            imagecopy($oBackgroundIm, $oWaterIm, $nPosX, $nPosY, 0, 0, $nWaterWidth, $nWaterHeight); // 拷贝水印到目标文件
         } else { // 文字水印
             if (! empty($sTextColor) && (strlen($sTextColor) == 7)) {
                 $R = hexdec(substr($sTextColor, 1, 2));
@@ -333,31 +333,31 @@ class image
             } else {
                 throw new RuntimeException('Watermark text color error.');
             }
-            @imagettftext($oBackgroundIm, $nTextFont, 0, $nPosX, $nPosY, @imagecolorallocate($oBackgroundIm, $R, $G, $B), $sFontfile, $sWaterText);
+            imagettftext($oBackgroundIm, $nTextFont, 0, $nPosX, $nPosY, imagecolorallocate($oBackgroundIm, $R, $G, $B), $sFontfile, $sWaterText);
         }
 
         if ($bDeleteBackgroupPath === true) { // 生成水印后的图片
-            @unlink($sBackgroundPath);
+            unlink($sBackgroundPath);
         }
 
         switch ($arrBackgroundInfo[2]) { // 取得背景图片的格式
             case 1:
-                @imagegif($oBackgroundIm, $sBackgroundPath);
+                imagegif($oBackgroundIm, $sBackgroundPath);
                 break;
             case 2:
-                @imagejpeg($oBackgroundIm, $sBackgroundPath);
+                imagejpeg($oBackgroundIm, $sBackgroundPath);
                 break;
             case 3:
-                @imagepng($oBackgroundIm, $sBackgroundPath);
+                imagepng($oBackgroundIm, $sBackgroundPath);
                 break;
             default:
                 throw new RuntimeException('Wrong image format.');
         }
 
         if (isset($oWaterIm)) {
-            @imagedestroy($oWaterIm);
+            imagedestroy($oWaterIm);
         }
-        @imagedestroy($oBackgroundIm);
+        imagedestroy($oBackgroundIm);
 
         return true;
     }
@@ -381,7 +381,7 @@ class image
             $sImageFun($oImage, $sFilename);
         }
 
-        @imagedestroy($oImage);
+        imagedestroy($oImage);
     }
 
     /**
@@ -407,7 +407,7 @@ class image
         readfile($sUrl);
         $sImg = ob_get_contents();
         ob_end_clean();
-        $resFp = @fopen($sFilename, 'a');
+        $resFp = fopen($sFilename, 'a');
         fwrite($resFp, $sImg);
         fclose($resFp);
     }
@@ -422,13 +422,13 @@ class image
      */
     public static function returnChangeSize($sImgPath, $nMaxWidth, $nMaxHeight)
     {
-        $arrSize = @getimagesize($sImgPath);
+        $arrSize = getimagesize($sImgPath);
 
         $nW = $arrSize[0];
         $nH = $arrSize[1];
 
-        @$nWRatio = $nMaxWidth / $nW; // 计算缩放比例
-        @$nHRatio = $nMaxHeight / $nH;
+        $nWRatio = $nMaxWidth / $nW; // 计算缩放比例
+        $nHRatio = $nMaxHeight / $nH;
 
         $arrReturn = [];
 

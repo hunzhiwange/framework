@@ -284,13 +284,13 @@ class compiler implements icompiler
                 $sType = strtolower(substr($sMethod, - 4));
                 $sTag = substr($sMethod, 0, - 4);
                 if ($sType == 'code') {
-                    $mixName = isset($this->arrCodeMap[$sTag]) ? $this->arrCodeMap[$sTag] : $sTag;
+                    $mixName = $this->arrCodeMap[$sTag] ?? $sTag;
                 } elseif ($sType == 'node') {
-                    $mixName = isset($this->arrNodeMap[$sTag]) ? $this->arrNodeMap[$sTag] : $sTag;
+                    $mixName = $this->arrNodeMap[$sTag] ?? $sTag;
                 } else {
                     $sType = strtolower(substr($sMethod, - 2));
                     $sTag = substr($sMethod, 0, - 2);
-                    $mixName = isset($this->arrJsMap[$sTag]) ? $this->arrJsMap[$sTag] : $sTag;
+                    $mixName = $this->arrJsMap[$sTag] ?? $sTag;
                 }
                 $arrCompilers[] = [
                     $sType,
