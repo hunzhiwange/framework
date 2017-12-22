@@ -172,22 +172,19 @@ abstract class aconnect
     }
 
     /**
-     * 拦截查询静态方法转接参数并再次转接到 select 组件
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
-     * @return boolean
+     * @param string $sMethod
+     * @param array $arrArgs
+     * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         // 查询组件
         $this->initSelect();
 
         // 调用事件
-        return call_user_func_array([
-            $this->objSelect,
-            $sMethod
-        ], $arrArgs);
+        return $this->objSelect->$sMethod(...$arrArgs);
     }
 
     /**

@@ -2410,13 +2410,13 @@ class validate implements ivalidate
     }
 
     /**
-     * 缺省方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         if ($this->placeholderFlowControl($sMethod)) {
             return $this;
@@ -2438,10 +2438,7 @@ class validate implements ivalidate
             unset($arrArgs);
 
             if (method_exists($this, $sExtend)) {
-                return call_user_func_array([
-                    $this,
-                    $sExtend
-                ], $arrParameter);
+                return $this->$sExtend(...$arrParameter);
             }
 
             $sExtend = str::unCamelize($sMethod);

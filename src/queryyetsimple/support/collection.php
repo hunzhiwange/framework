@@ -77,13 +77,13 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     }
 
     /**
-     * call 魔术方法
+     * call 
      *
      * @param string $sMethod
      * @param array $arrArgs
-     * @return void
+     * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         throw new BadMethodCallException(sprintf('Collection method %s is not defined.', $sMethod));
     }

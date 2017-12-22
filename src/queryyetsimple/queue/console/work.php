@@ -246,9 +246,9 @@ class work extends command
                 'tries',
                 null,
                 option::VALUE_OPTIONAL,
-                        'Number of times to attempt a job before logging it failed',
-                        0
-                ]
+                'Number of times to attempt a job before logging it failed',
+                0
+            ]
         ];
     }
 }

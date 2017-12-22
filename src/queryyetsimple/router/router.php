@@ -642,7 +642,7 @@ class router
                 header("Location:" . $sUrl);
             } else {
                 header("refresh:{$nTime};url={$sUrl}");
-                include dirname(__DIR__) . '/bootstrap/template/url.php'; // 包含跳转页面模板
+                require_once dirname(__DIR__) . '/bootstrap/template/url.php'; // 包含跳转页面模板
             }
             exit();
         } else {
@@ -650,7 +650,7 @@ class router
             if ($nTime == 0) {
                 $sHeader = '';
             }
-            include dirname(__DIR__) . '/bootstrap/template/url.php'; // 包含跳转页面模板
+            require_once dirname(__DIR__) . '/bootstrap/template/url.php'; // 包含跳转页面模板
             exit();
         }
     }

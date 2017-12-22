@@ -858,21 +858,18 @@ class session implements isession
     }
 
     /**
-     * 缺省方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         if (is_null($this->objConnect)) {
             throw new BadMethodCallException(sprintf('Method %s is not exits.', $sMethod));
         }
 
-        return call_user_func_array([
-                $this->objConnect,
-                $sMethod
-        ], $arrArgs);
+        return $this->objConnect->$sMethod(...$arrArgs);
     }
 }

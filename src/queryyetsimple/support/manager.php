@@ -321,17 +321,14 @@ abstract class manager
     }
 
     /**
-     * 拦截匿名注册控制器方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
-        return call_user_func_array([
-            $this->connect(),
-                $sMethod
-        ], $arrArgs);
+        return $this->connect()->$sMethod(...$arrArgs);
     }
 }

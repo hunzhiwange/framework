@@ -200,13 +200,13 @@ abstract class action implements iaction
     }
 
     /**
-     * 访问父控制器
+     * call 
      *
      * @param string $sMethod
      * @param array $arrArgs
-     * @return boolean
+     * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         if ($sMethod == 'run') {
             throw new BadFunctionCallException(sprintf('Run method is not allowed.'));

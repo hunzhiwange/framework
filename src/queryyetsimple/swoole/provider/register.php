@@ -17,46 +17,58 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace queryyetsimple\database;
+namespace queryyetsimple\swoole\provider;
+
+use queryyetsimple\support\provider;
 
 /**
- * database 仓储
+ * swoole 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.11.08
+ * @since 2017.12.21
  * @version 1.0
  */
-class database implements idatabase
+class register extends provider
 {
 
     /**
-     * 数据库连接对象
+     * 注册服务
      *
-     * @var \queryyetsimple\database\iconnect
-     */
-    protected $objConnect;
-
-    /**
-     * 构造函数
-     *
-     * @param \queryyetsimple\database\iconnect $objConnect
      * @return void
      */
-    public function __construct(iconnect $objConnect)
+    public function register()
     {
-        $this->objConnect = $objConnect;
     }
 
     /**
-     * call 
+     * bootstrap
      *
-     * @param string $sMethod
-     * @param array $arrArgs
-     * @return mixed
+     * @return void
      */
-    public function __call(string $sMethod, array $arrArgs)
+    public function bootstrap()
     {
-        return $this->objConnect->$sMethod(...$arrArgs);
+        $this->console();
+    }
+
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers()
+    {
+        return [
+        ];
+    }
+
+    /**
+     * 载入命令包
+     *
+     * @return void
+     */
+    protected function console()
+    {
+        $this->loadCommandNamespace('queryyetsimple\swoole\console');
     }
 }

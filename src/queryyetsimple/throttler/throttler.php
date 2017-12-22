@@ -111,17 +111,14 @@ class throttler implements ithrottler
     }
 
     /**
-     * 拦截匿名注册控制器方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
-        return call_user_func_array([
-            $this,
-                'create'
-        ], $arrArgs)->$sMethod();
+        return $this->{'create'}(...$arrArgs)->$sMethod();
     }
 }

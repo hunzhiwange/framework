@@ -516,21 +516,18 @@ class mail implements imail
     }
 
     /**
-     * 缺省方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         if ($this->placeholderFlowControl($sMethod)) {
             return $this;
         }
 
-        return call_user_func_array([
-                $this->oConnect,
-                $sMethod
-        ], $arrArgs);
+        return $this->oConnect->$sMethod(...$arrArgs);
     }
 }

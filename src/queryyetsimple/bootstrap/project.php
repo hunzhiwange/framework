@@ -599,7 +599,7 @@ class project extends container implements iproject
     protected function setPath()
     {
         // 基础路径
-        $this->strPath = dirname(dirname(dirname(dirname(dirname(dirname(__DIR__))))));
+        $this->strPath = dirname(__DIR__, 6);
 
         // 注册路径
         $this->registerPath();

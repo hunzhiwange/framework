@@ -234,18 +234,15 @@ abstract class relation
     }
 
     /**
-     * 缺省方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
-        $objSelect = call_user_func_array([
-            $this->objSelect,
-            $sMethod
-        ], $arrArgs);
+        $objSelect = $this->objSelect->$sMethod(...$arrArgs);
 
         if ($this->getSelect() === $objSelect) {
             return $this;

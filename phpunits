@@ -27,4 +27,4 @@
  * @version 1.0
  */
 require __DIR__ . '/tests/env.php';
-require dirname(dirname(dirname(__DIR__))) . '/www/index.php';
+require dirname(__DIR__, 3) . '/www/index.php';

@@ -73,19 +73,16 @@ class select
     }
 
     /**
-     * 拦截一些别名和快捷方式
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
-     * @return void|mixed
+     * @param string $sMethod
+     * @param array $arrArgs
+     * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         if (method_exists($this->objSelect, $sMethod)) {
-            $mixResult = call_user_func_array([
-                $this->objSelect,
-                $sMethod
-            ], $arrArgs);
+            $mixResult = $this->objSelect->$sMethod(...$arrArgs);
 
             $mixResult = $this->preLoadResult($mixResult);
 

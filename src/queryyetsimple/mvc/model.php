@@ -2856,13 +2856,13 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     }
 
     /**
-     * 查询方式
+     * call 
      *
      * @param string $sMethod
      * @param array $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         if ($this->placeholderFlowControl($sMethod)) {
             return $this;
@@ -2871,11 +2871,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
         // 作用域
         if (method_exists($this, 'scope' . ucwords($sMethod))) {
             array_unshift($arrArgs, $sMethod);
-
-            return call_user_func_array([
-                $this,
-                'scope'
-            ], $arrArgs);
+            return $this->{'scope'}(...$arrArgs);
         }
 
         try {
@@ -2885,10 +2881,7 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
             $this->runEvent(static::BEFORE_FIND_EVENT);
             $this->runEvent(static::BEFORE_SELECT_EVENT);
 
-            $mixData = call_user_func_array([
-                $this->getClassCollectionQuery(),
-                $sMethod
-            ], $arrArgs);
+            $mixData = $this->getClassCollectionQuery()->$sMethod(...$arrArgs);
 
             if ($mixData instanceof collection) {
                 $this->runEvent(static::AFTER_SELECT_EVENT, $mixData);
@@ -2901,22 +2894,19 @@ abstract class model implements imodel, JsonSerializable, ArrayAccess, iarray, i
     }
 
     /**
-     * 查询方式
+     * call static
      *
      * @param string $sMethod
      * @param array $arrArgs
      * @return mixed
      */
-    public static function __callStatic($sMethod, $arrArgs)
+    public static function __callStatic(string $sMethod, array $arrArgs)
     {
-        return call_user_func_array([
-                new static (),
-                $sMethod
-        ], $arrArgs);
+        return (new static)->$sMethod(...$arrArgs);
     }
 
     /**
-     * 将模型转化为数组
+     * 将模型转化为 JSON
      *
      * @return string
      */

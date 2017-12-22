@@ -145,8 +145,8 @@ class job extends command
                 'data',
                 null,
                 option::VALUE_OPTIONAL | option::VALUE_IS_ARRAY,
-                        'The job json args.'
-                ]
+                'The job json args.'
+            ]
         ];
     }
 }

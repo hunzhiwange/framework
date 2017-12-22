@@ -80,6 +80,18 @@ if (! function_exists('phpui')) {
     }
 }
 
+if (! function_exists('console')) {
+    /**
+     * 是否为 Console
+     *
+     * @return boolean
+     */
+    function console()
+    {
+        return project()->console();
+    }
+}
+
 if (! function_exists('dumps')) {
     /**
      * 调试一个变量

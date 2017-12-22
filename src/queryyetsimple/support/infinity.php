@@ -65,13 +65,13 @@ trait infinity
     }
 
     /**
-     * 缺省静态方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public static function __callStatic($sMethod, $arrArgs)
+    public static function __callStatic(string $sMethod, array $arrArgs)
     {
         // 第一步：判断是否存在已经注册的命名
         if (static::hasInfinity($sMethod)) {
@@ -86,13 +86,13 @@ trait infinity
     }
 
     /**
-     * 缺省方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         if (static::hasInfinity($sMethod)) {
             if (static::$arrInfinity[$sMethod] instanceof Closure) {

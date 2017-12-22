@@ -121,13 +121,13 @@ abstract class face
     }
 
     /**
-     * 缺省静态方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public static function __callStatic($sMethod, $arrArgs)
+    public static function __callStatic(string $sMethod, array $arrArgs)
     {
         $objInstance = static::face();
         if (! $objInstance) {

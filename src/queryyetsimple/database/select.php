@@ -305,13 +305,13 @@ class select
     }
 
     /**
-     * 拦截一些别名和快捷方式
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
-     * @return boolean
+     * @param string $sMethod
+     * @param array $arrArgs
+     * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         if ($this->placeholderFlowControl($sMethod)) {
             return $this;
@@ -349,10 +349,7 @@ class select
         }
 
         // 调用事件
-        return call_user_func_array([
-            $this->objCallSelect,
-            $sMethod
-        ], $arrArgs);
+        return $this->objCallSelect->$sMethod(...$arrArgs);
     }
 
     /**

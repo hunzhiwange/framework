@@ -98,9 +98,9 @@ class exception extends message
                 echo $mixError['message'];
             } else {
                 if ($this->oProject['option']->get('show_exception_template') && is_file($this->oProject['option']->get('show_exception_template'))) {
-                    include $this->oProject['option']->get('show_exception_template');
+                    require_once $this->oProject['option']->get('show_exception_template');
                 } else {
-                    include dirname(__DIR__) . '/template/exception.php';
+                    require_once dirname(__DIR__) . '/template/exception.php';
                 }
             }
         }

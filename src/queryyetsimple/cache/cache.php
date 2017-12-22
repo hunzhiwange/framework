@@ -112,21 +112,18 @@ class cache implements icache
     }
 
     /**
-     * 拦截匿名注册控制器方法
+     * call 
      *
-     * @param 方法名 $sMethod
-     * @param 参数 $arrArgs
+     * @param string $sMethod
+     * @param array $arrArgs
      * @return mixed
      */
-    public function __call($sMethod, $arrArgs)
+    public function __call(string $sMethod, array $arrArgs)
     {
         if (static::hasInfinity($sMethod)) {
             return $this->infinityCall($sMethod, $arrArgs);
         }
 
-        return call_user_func_array([
-            $this->objConnect,
-            $sMethod
-        ], $arrArgs);
+        return $this->objConnect->$sMethod(...$arrArgs);
     }
 }

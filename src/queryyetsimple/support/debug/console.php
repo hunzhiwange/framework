@@ -68,7 +68,7 @@ class console
         }, $arrInclude));
 
         ob_start();
-        include dirname(dirname(__DIR__)) . '/bootstrap/template/trace.php';
+        require_once dirname(__DIR__, 2) . '/bootstrap/template/trace.php';
         $sReturn = ob_get_contents();
         ob_end_clean();
 
