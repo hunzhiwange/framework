@@ -26,8 +26,8 @@ class server{
   }
 
   protected function checkPhpVersion(){
-      if(phpversion() < 7.1){
-        throw new RuntimeException("PHP 7.1 OR Higher");
+      if(phpversion() < '7.1.0'){
+        throw new RuntimeException("PHP 7.1.0 OR Higher");
     }
   }  
 

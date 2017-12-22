@@ -13,7 +13,7 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=7.1.0",
         "ext-mbstring": "*",
         "ext-openssl": "*",
         "symfony/console": "3.0.*",

@@ -89,8 +89,8 @@ class bootstrap
      */
     protected function check()
     {
-        if (version_compare(PHP_VERSION, '5.5.0', '<')) {
-            die('PHP 5.5.0 OR Higher');
+        if (version_compare(PHP_VERSION, '7.1.0', '<')) {
+            die('PHP 7.1.0 OR Higher');
         }
         
         if (env('queryphp_version')) {
