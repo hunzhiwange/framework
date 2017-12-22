@@ -33,7 +33,7 @@ class application
     /**
      * 创建一个 phpunit 应用程序
      *
-     * @return \tests\application
+     * @return $this
      */
     public function __construct()
     {

@@ -19,6 +19,7 @@
  */
 use queryyetsimple\log\ilog;
 use queryyetsimple\bootstrap\project;
+use queryyetsimple\support\debug\dump;
 
 if (! function_exists('project')) {
     /**
@@ -36,7 +37,7 @@ if (! function_exists('project')) {
             if (($objInstance = project::singletons()->make($sInstance, $arrArgs))) {
                 return $objInstance;
             }
-            throw new BadMethodCallException(__('容器中未发现注入的 %s', $sInstance));
+            throw new BadMethodCallException(sprintf('%s is not found in ioc container. ', $sInstance));
         }
     }
 }
@@ -96,15 +97,12 @@ if (! function_exists('dumps')) {
     /**
      * 调试一个变量
      *
-     * @param mixed $mixValue
+     * @param array $arr
      * @return mixed
      */
-    function dumps($mixValue)
+    function dumps(...$arr)
     {
-        return call_user_func_array([
-            'queryyetsimple\support\debug\dump',
-            'dump'
-        ], func_get_args());
+        return dump::dump(...$arr);
     }
 }
 
@@ -258,15 +256,12 @@ if (! function_exists('__')) {
     /**
      * 语言包
      *
-     * @param string $sValue
-     * @return mixed
+     * array $arr
+     * @return string
      */
-    function __($sValue)
+    function __(...$arr)
     {
-        return call_user_func_array([
-            project('i18n'),
-            'getText'
-        ], func_get_args());
+        return project('i18n')->{'getText'}(...$arr);
     }
 }
 
@@ -274,12 +269,12 @@ if (! function_exists('gettext')) {
     /**
      * 语言包
      *
-     * @param string|null $sValue
-     * @return mixed
+     * @param array $arr
+     * @return string
      */
-    function gettext($sValue = null)
+    function gettext(...$arr)
     {
-        return call_user_func_array(__, func_get_args());
+        return __(...$arr);
     }
 }
 
@@ -287,14 +282,14 @@ if (! function_exists('value')) {
     /**
      * 返回默认值
      *
-     * @param mixed $mixValue
+     * @param array $arr
      * @return mixed
      */
-    function value($mixValue)
+    function value(...$arr)
     {
-        $arrArgs = func_get_args();
-        array_shift($arrArgs);
-        return ! is_string($mixValue) && is_callable($mixValue) ? call_user_func_array($mixValue, $arrArgs) : $mixValue;
+        if(count($arr) === 0) return;
+        $mixValue = array_shift($arr);
+        return ! is_string($mixValue) && is_callable($mixValue) ? call_user_func_array($mixValue, $arr) : $mixValue;
     }
 }
 

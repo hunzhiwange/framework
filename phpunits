@@ -26,5 +26,5 @@
  * @since 2017.01.07
  * @version 1.0
  */
-require __DIR__ . '/tests/env.php';
-require dirname(__DIR__, 3) . '/www/index.php';
+require_once __DIR__ . '/tests/env.php';
+require_once dirname(__DIR__, 3) . '/www/index.php';

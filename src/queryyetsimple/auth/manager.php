@@ -105,11 +105,11 @@ if (! function_exists('__')) {
     /**
      * lang
      *
-     * @param string $sValue
+     * @param array $arr
      * @return string
      */
-    function __($sValue)
+    function __(...$arr)
     {
-        return func_num_args() > 1 ? call_user_func_array('sprintf', func_get_args()) : $sValue;
+        return count($arr) == 0 ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
     }
 }

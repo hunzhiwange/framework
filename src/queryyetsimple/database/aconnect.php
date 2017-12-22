@@ -24,7 +24,6 @@ use Exception;
 use PDOException;
 use queryyetsimple\log\ilog;
 use queryyetsimple\cache\icache;
-use queryyetsimple\support\assert;
 use queryyetsimple\database\select;
 use queryyetsimple\support\debug\dump;
 
@@ -309,11 +308,8 @@ abstract class aconnect
      * @param callable $calAction 事务回调
      * @return mixed
      */
-    public function transaction($calAction)
+    public function transaction(callable $calAction)
     {
-        // 严格验证参数
-        assert::callback($calAction);
-
         // 事务过程
         $this->beginTransaction();
         try {
@@ -423,9 +419,8 @@ abstract class aconnect
      * @param callable $calSqlListen
      * @return void
      */
-    public function registerListen($calSqlListen)
+    public function registerListen(callable $calSqlListen)
     {
-        assert::callback($calSqlListen);
         static::$calSqlListen = $calSqlListen;
     }
 
@@ -852,10 +847,8 @@ abstract class aconnect
                 $arrArgs[] = $arrCtorArgs;
             }
         }
-        return call_user_func_array([
-            $this->objPDOStatement,
-            'fetchAll'
-        ], $arrArgs);
+
+        return $this->objPDOStatement->{'fetchAll'}(...$arrArgs);
     }
 
     /**

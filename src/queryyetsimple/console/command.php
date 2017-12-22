@@ -426,17 +426,11 @@ abstract class command extends SymfonyCommand
     protected function specifyParameters()
     {
         foreach ($this->getArguments() as $arrArgument) {
-            call_user_func_array([
-                $this,
-                'addArgument'
-            ], $arrArgument);
+            $this->{'addArgument'}(...$arrArgument);
         }
 
         foreach ($this->getOptions() as $arrOption) {
-            call_user_func_array([
-                $this,
-                'addOption'
-            ], $arrOption);
+            $this->{'addOption'}(...$arrOption);
         }
     }
 

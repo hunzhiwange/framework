@@ -82,10 +82,7 @@ class dispatch implements idispatch
             return;
         }
 
-        call_user_func_array([
-            $this->getListener($mixEvent),
-            'notify'
-        ], $arrArgs);
+        $this->getListener($mixEvent)->{'notify'}(...$arrArgs);
     }
 
     /**

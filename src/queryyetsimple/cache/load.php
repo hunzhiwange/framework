@@ -263,10 +263,7 @@ class load
             throw new InvalidArgumentException(sprintf('Cache %s is not valid.', $strCacheName));
         }
 
-        $mixSourceData = call_user_func_array([
-            $objCache,
-            $strMethod
-        ], $arrParams);
+        $mixSourceData = $objCache->$strMethod(...$arrParams);
 
         $this->setPersistence($strCacheNameSource, $mixSourceData, $arrOption);
 

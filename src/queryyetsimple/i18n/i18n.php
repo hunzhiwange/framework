@@ -105,42 +105,37 @@ class i18n implements ii18n
     }
 
     /**
-     * 获取语言text
+     * 获取语言 text
      *
-     * @param string $sValue 当前的语言
+     * @param array $arr
      * @return string
      */
-    public function getText($sValue)
+    public function getText(...$arr)
     {
         // 未开启直接返回
         if (! $this->getOption('on')) {
-            return func_num_args() > 1 ? call_user_func_array('sprintf', func_get_args()) : $sValue;
+            return count($arr) == 0 ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
         }
 
         // 开启读取语言包
         $sContext = $this->getContext();
         $sValue = $sContext && isset($this->arrText[$sContext][$sValue]) ? $this->arrText[$sContext][$sValue] : $sValue;
         if (func_num_args() > 1) {
-            $arrArgs = func_get_args();
-            $arrArgs[0] = $sValue;
-            $sValue = call_user_func_array('sprintf', $arrArgs);
-            unset($arrArgs);
+            $arr[0] = $sValue;
+            $sValue = sprintf(...$arr);
         }
         return $sValue;
     }
 
     /**
-     * 获取语言text
+     * 获取语言 text
      *
-     * @param string $sValue 当前的语言
+     * @param array $arr
      * @return string
      */
-    public function __($sValue)
+    public function __(...$arr)
     {
-        return call_user_func_array([
-            $this,
-            'getText'
-        ], func_get_args());
+        return $this->{'getText'}(...$arr);
     }
 
     /**

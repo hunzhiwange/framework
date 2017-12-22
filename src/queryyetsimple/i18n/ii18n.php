@@ -31,20 +31,20 @@ interface ii18n
 {
 
     /**
-     * 获取语言text
+     * 获取语言 text
      *
-     * @param string $sValue 当前的语言
+     * @param array $arr
      * @return string
      */
-    public function getText($sValue);
+    public function getText(...$arr);
 
     /**
-     * 获取语言text
+     * 获取语言 text
      *
-     * @param string $sValue 当前的语言
+     * @param array $arr
      * @return string
      */
-    public function __($sValue);
+    public function __(...$arr);
 
     /**
      * 添加语言包
