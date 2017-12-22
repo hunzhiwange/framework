@@ -19,10 +19,12 @@
  */
 namespace queryyetsimple\swoole\console;
 
-use queryyetsimple\console\option;
-use queryyetsimple\console\command;
-use queryyetsimple\console\argument;
-use queryyetsimple\swoole\server\http_server;
+use queryyetsimple\{
+    console\option,
+    console\command,
+    console\argument,
+    swoole\server\http_server
+};
 
 /**
  * swoole 服务管理

@@ -19,10 +19,12 @@
  */
 namespace queryyetsimple\bootstrap\auth;
 
-use queryyetsimple\auth;
-use queryyetsimple\response;
-use queryyetsimple\http\request;
-use queryyetsimple\auth\change_password_failed;
+use queryyetsimple\{
+    auth,
+    response,
+    http\request,
+    auth\change_password_failed
+};
 
 /**
  * 修改密码

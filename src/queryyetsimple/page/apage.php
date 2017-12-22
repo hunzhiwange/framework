@@ -20,9 +20,11 @@
 namespace queryyetsimple\page;
 
 use RuntimeException;
-use queryyetsimple\support\ihtml;
-use queryyetsimple\support\option;
-use queryyetsimple\support\assert;
+use queryyetsimple\support\{
+    ihtml,
+    option,
+    assert
+};
 
 /**
  * 分页处理

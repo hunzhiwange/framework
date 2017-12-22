@@ -10,20 +10,22 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 namespace queryyetsimple\bootstrap\validate;
 
-use queryyetsimple\http\response;
-use queryyetsimple\session\isession;
-use queryyetsimple\validate\ivalidate;
-use queryyetsimple\validate\validate_failed;
-use queryyetsimple\http\request as http_request;
+use queryyetsimple\{
+    http\response,
+    session\isession,
+    validate\ivalidate,
+    validate\validate_failed,
+    http\request as http_request
+};
 
 /**
  * 请求验证
@@ -35,7 +37,7 @@ use queryyetsimple\http\request as http_request;
  */
 trait request
 {
-    
+
     /**
      * 验证请求
      *
@@ -47,12 +49,12 @@ trait request
     public function validate(http_request $oRequest, array $arrRule, array $arrMessage = [])
     {
         $oValidate = $this->getValidateComponent()->make($oRequest->allAll(), $arrRule, $arrMessage);
-        
+
         if ($oValidate->fail()) {
             return $this->throwValidateException($oRequest, $oValidate);
         }
     }
-    
+
     /**
      * 验证失败异常
      *
@@ -64,7 +66,7 @@ trait request
     {
         throw new validate_failed($oValidate, $this->validationResponse($oRequest, $this->validationErrors($oValidate)));
     }
-    
+
     /**
      * 错误验证响应
      *
@@ -77,12 +79,12 @@ trait request
         if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
             return $this->getResponseComponent()/*->code ( 422 )*/->api($arrErrors);
         }
-        
+
         return $this->getResponseComponent()->redirect($this->getRedirectUrl($oRequest), [
             'make' => false
         ])->clearErrors()->withErrors($arrErrors)->withInputs($oRequest->allAll());
     }
-    
+
     /**
      * 返回错误消息
      *
@@ -93,7 +95,7 @@ trait request
     {
         return $oValidate->error();
     }
-    
+
     /**
      * 返回前一个页面
      *
@@ -104,7 +106,7 @@ trait request
     {
         return $oRequest->header('referer') ?  : $this->getSessionPrevUrl();
     }
-    
+
     /**
      * 返回 session 前一个页面
      *
@@ -114,7 +116,7 @@ trait request
     {
         return $this->getSessionComponent()->prevUrl();
     }
-    
+
     /**
      * 返回 validate 组件
      *
@@ -124,7 +126,7 @@ trait request
     {
         return project(ivalidate::class);
     }
-    
+
     /**
      * 返回 session 组件
      *

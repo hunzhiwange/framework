@@ -22,11 +22,13 @@ namespace queryyetsimple\mvc;
 use ArrayAccess;
 use JsonSerializable;
 use BadMethodCallException;
-use queryyetsimple\support\str;
-use queryyetsimple\support\ijson;
-use queryyetsimple\support\iarray;
-use queryyetsimple\support\serialize;
-use queryyetsimple\support\flow_control;
+use queryyetsimple\support\{
+    str,
+    ijson,
+    iarray,
+    serialize,
+    flow_control
+};
 
 /**
  * 值对象

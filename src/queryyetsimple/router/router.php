@@ -25,16 +25,18 @@ use RuntimeException;
 use ReflectionMethod;
 use ReflectionException;
 use InvalidArgumentException;
-use queryyetsimple\mvc\iaction;
-use queryyetsimple\http\request;
-use queryyetsimple\http\response;
-use queryyetsimple\support\option;
-use queryyetsimple\support\helper;
-use queryyetsimple\filesystem\fso;
-use queryyetsimple\mvc\icontroller;
-use queryyetsimple\support\infinity;
-use queryyetsimple\pipeline\ipipeline;
-use queryyetsimple\support\icontainer;
+use queryyetsimple\{
+    mvc\iaction,
+    http\request,
+    http\response,
+    support\option,
+    support\helper,
+    filesystem\fso,
+    mvc\icontroller,
+    support\infinity,
+    pipeline\ipipeline,
+    support\icontainer
+};
 
 /**
  * 路由解析

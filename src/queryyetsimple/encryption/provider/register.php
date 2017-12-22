@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\encryption\provider;
 
-use queryyetsimple\support\provider;
-use queryyetsimple\encryption\encryption;
+use queryyetsimple\{
+    support\provider,
+    encryption\encryption
+};
 
 /**
  * encryption 服务提供者

@@ -19,9 +19,11 @@
  */
 namespace queryyetsimple\option\provider;
 
-use queryyetsimple\option\load;
-use queryyetsimple\option\option;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    option\load,
+    option\option,
+    support\provider
+};
 
 /**
  * option 服务提供者

@@ -22,11 +22,13 @@ namespace queryyetsimple\database;
 use PDO;
 use Exception;
 use BadMethodCallException;
-use queryyetsimple\support\helper;
-use queryyetsimple\support\collection;
-use queryyetsimple\support\flow_control;
-use queryyetsimple\page\page_with_total;
-use queryyetsimple\page\page_without_total;
+use queryyetsimple\{
+    support\helper,
+    support\collection,
+    support\flow_control,
+    page\page_with_total,
+    page\page_without_total
+};
 
 /**
  * 数据库查询器

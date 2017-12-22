@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\database\provider;
 
-use queryyetsimple\support\provider;
-use queryyetsimple\database\manager;
+use queryyetsimple\{
+    support\provider,
+    database\manager
+};
 
 /**
  * database 服务提供者

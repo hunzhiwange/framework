@@ -20,10 +20,12 @@
 namespace queryyetsimple\view;
 
 use InvalidArgumentException;
-use queryyetsimple\support\stack;
-use queryyetsimple\support\helper;
-use queryyetsimple\filesystem\fso;
-use queryyetsimple\support\option;
+use queryyetsimple\{
+    support\stack,
+    support\helper,
+    filesystem\fso,
+    support\option
+};
 
 /**
  * 分析模板

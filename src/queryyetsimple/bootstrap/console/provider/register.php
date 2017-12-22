@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\bootstrap\console\provider;
 
-use queryyetsimple\support\provider;
-use queryyetsimple\bootstrap\console\load;
+use queryyetsimple\{
+    support\provider,
+    bootstrap\console\load
+};
 
 /**
  * console 服务提供者

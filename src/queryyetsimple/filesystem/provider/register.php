@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\filesystem\provider;
 
-use queryyetsimple\support\provider;
-use queryyetsimple\filesystem\manager;
+use queryyetsimple\{
+    support\provider,
+    filesystem\manager
+};
 
 /**
  * filesystem 服务提供者

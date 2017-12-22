@@ -20,11 +20,13 @@
 namespace queryyetsimple\i18n\console;
 
 use RuntimeException;
-use queryyetsimple\i18n\mo;
-use queryyetsimple\filesystem\fso;
-use queryyetsimple\console\option;
-use queryyetsimple\console\command;
-use queryyetsimple\console\argument;
+use queryyetsimple\{
+    i18n\mo,
+    filesystem\fso,
+    console\option,
+    console\command,
+    console\argument
+};
 
 /**
  * Vue mo 语言包转 export module

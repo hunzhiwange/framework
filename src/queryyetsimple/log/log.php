@@ -20,10 +20,12 @@
 namespace queryyetsimple\log;
 
 use RuntimeException;
-use queryyetsimple\support\ijson;
-use queryyetsimple\support\assert;
-use queryyetsimple\support\option;
-use queryyetsimple\support\iarray;
+use queryyetsimple\support\{
+    ijson,
+    assert,
+    option,
+    iarray
+};
 
 /**
  * 日志仓储

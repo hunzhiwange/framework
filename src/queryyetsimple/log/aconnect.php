@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\log;
 
-use queryyetsimple\filesystem\fso;
-use queryyetsimple\support\option;
+use queryyetsimple\{
+    filesystem\fso,
+    support\option
+};
 
 /**
  * aconnect 驱动抽象类

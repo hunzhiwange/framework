@@ -23,8 +23,10 @@ use Closure;
 use ReflectionClass;
 use ReflectionMethod;
 use Exception as Exceptions;
-use queryyetsimple\filesystem\fso;
-use queryyetsimple\support\debug\dump;
+use queryyetsimple\{
+    filesystem\fso,
+    support\debug\dump
+};
 
 /**
  * 异常消息

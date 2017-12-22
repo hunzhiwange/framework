@@ -24,10 +24,12 @@ use Swift_Message;
 use Swift_Attachment;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\mvc\iview;
-use queryyetsimple\support\assert;
-use queryyetsimple\support\option;
-use queryyetsimple\support\flow_control;
+use queryyetsimple\{
+    mvc\iview,
+    support\assert,
+    support\option,
+    support\flow_control
+};
 
 /**
  * mail 存储

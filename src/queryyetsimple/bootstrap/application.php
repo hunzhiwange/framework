@@ -20,11 +20,13 @@
 namespace queryyetsimple\bootstrap;
 
 use Exception;
-use queryyetsimple\support\psr4;
-use queryyetsimple\http\response;
-use queryyetsimple\support\assert;
-use queryyetsimple\filesystem\fso;
-use queryyetsimple\support\debug\console;
+use queryyetsimple\{
+    http\response, 
+    filesystem\fso,
+    support\psr4,
+    support\assert,
+    support\debug\console
+};
 
 /**
  * 应用程序对象

@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\cookie\provider;
 
-use queryyetsimple\cookie\cookie;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    cookie\cookie,
+    support\provider
+};
 
 /**
  * cookie 服务提供者

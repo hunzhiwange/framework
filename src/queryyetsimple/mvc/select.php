@@ -21,13 +21,15 @@ namespace queryyetsimple\mvc;
 
 use Closure;
 use Exception;
-use queryyetsimple\mvc\imodel;
-use queryyetsimple\support\str;
-use queryyetsimple\support\helper;
-use queryyetsimple\support\collection;
-use queryyetsimple\mvc\model_not_found;
-use queryyetsimple\mvc\relation\relation;
-use queryyetsimple\database\select as database_select;
+use queryyetsimple\{
+    mvc\imodel,
+    support\str,
+    support\helper,
+    support\collection,
+    mvc\model_not_found,
+    mvc\relation\relation,
+    database\select as database_select
+};
 
 /**
  * 模型查询

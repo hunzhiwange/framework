@@ -20,9 +20,11 @@
 namespace queryyetsimple\session\middleware;
 
 use Closure;
-use queryyetsimple\http\request;
-use queryyetsimple\http\response;
-use queryyetsimple\session\session as manager;
+use queryyetsimple\{
+    http\request,
+    http\response,
+    session\session as manager
+};
 
 /**
  * session 中间件

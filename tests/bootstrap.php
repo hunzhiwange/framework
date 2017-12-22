@@ -19,8 +19,10 @@
  */
 namespace tests;
 
-use queryyetsimple\psr4;
-use queryyetsimple\router;
+use queryyetsimple\{
+    psr4,
+    router
+};
 
 /**
  * phpunit 内部启动文件

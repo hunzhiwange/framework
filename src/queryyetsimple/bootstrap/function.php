@@ -17,9 +17,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use queryyetsimple\log\ilog;
-use queryyetsimple\bootstrap\project;
-use queryyetsimple\support\debug\dump;
+use queryyetsimple\{
+    log\ilog,
+    bootstrap\project,
+    support\debug\dump
+};
 
 if (! function_exists('project')) {
     /**

@@ -19,9 +19,11 @@
  */
 namespace queryyetsimple\mvc\console;
 
-use queryyetsimple\console\make;
-use queryyetsimple\console\option;
-use queryyetsimple\console\argument;
+use queryyetsimple\console\{
+    make,
+    option,
+    argument
+};
 
 /**
  * 生成模型

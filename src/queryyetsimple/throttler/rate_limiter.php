@@ -21,8 +21,10 @@ namespace queryyetsimple\throttler;
 
 use Countable;
 use RuntimeException;
-use queryyetsimple\cache\icache;
-use queryyetsimple\support\iarray;
+use queryyetsimple\{
+    cache\icache,
+    support\iarray
+};
 
 /**
  * rate_limiter 入口

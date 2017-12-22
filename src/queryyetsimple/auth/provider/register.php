@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\auth\provider;
 
-use queryyetsimple\auth\manager;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    auth\manager,
+    support\provider
+};
 
 /**
  * auth 服务提供者

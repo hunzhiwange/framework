@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\bootstrap\auth;
 
-use queryyetsimple\auth;
-use queryyetsimple\http\request;
+use queryyetsimple\{
+    auth,
+    http\request
+};
 
 /**
  * 登录字段设置

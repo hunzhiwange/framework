@@ -21,8 +21,10 @@ namespace queryyetsimple\mvc\relation;
 
 use Closure;
 use Exception;
-use queryyetsimple\mvc\imodel;
-use queryyetsimple\support\collection;
+use queryyetsimple\{
+    mvc\imodel,
+    support\collection
+};
 
 /**
  * 关联模型基类

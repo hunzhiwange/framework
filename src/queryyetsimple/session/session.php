@@ -22,8 +22,10 @@ namespace queryyetsimple\session;
 use RuntimeException;
 use BadMethodCallException;
 use SessionHandlerInterface;
-use queryyetsimple\support\option;
-use queryyetsimple\support\assert;
+use queryyetsimple\support\{
+    option,
+    assert
+};
 
 /**
  * session 仓储

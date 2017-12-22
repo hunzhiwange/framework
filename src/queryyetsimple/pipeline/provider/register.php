@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\pipeline\provider;
 
-use queryyetsimple\support\provider;
-use queryyetsimple\pipeline\pipeline;
+use queryyetsimple\{
+    support\provider,
+    pipeline\pipeline
+};
 
 /**
  * pipeline 服务提供者

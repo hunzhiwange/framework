@@ -19,9 +19,11 @@
  */
 namespace queryyetsimple\page\provider;
 
-use queryyetsimple\page\page;
-use queryyetsimple\router\router;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    page\page,
+    router\router,
+    support\provider
+};
 
 /**
  * page 服务提供者

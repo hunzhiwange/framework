@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\bootstrap\console;
 
-use queryyetsimple\option;
-use queryyetsimple\bootstrap\project;
+use queryyetsimple\{
+    option,
+    bootstrap\project
+};
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**

@@ -22,8 +22,10 @@ namespace queryyetsimple\database\console;
 use RuntimeException;
 use InvalidArgumentException;
 use Phinx\Console\Command\Init as PhinxInit;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\{
+    Input\InputInterface,
+    Output\OutputInterface
+};
 
 /**
  * 数据库迁移初始化

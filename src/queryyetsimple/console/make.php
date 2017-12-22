@@ -20,8 +20,10 @@
 namespace queryyetsimple\console;
 
 use RuntimeException;
-use queryyetsimple\filesystem\fso;
-use queryyetsimple\console\command;
+use queryyetsimple\{
+    filesystem\fso,
+    console\command
+};
 
 /**
  * 生成器基类

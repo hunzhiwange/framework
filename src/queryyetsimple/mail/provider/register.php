@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\mail\provider;
 
-use queryyetsimple\mail\manager;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    mail\manager,
+    support\provider
+};
 
 /**
  * mail 服务提供者

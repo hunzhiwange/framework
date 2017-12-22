@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\throttler\provider;
 
-use queryyetsimple\support\provider;
-use queryyetsimple\throttler\throttler;
+use queryyetsimple\{
+    support\provider,
+    throttler\throttler
+};
 
 /**
  * throttler 服务提供者

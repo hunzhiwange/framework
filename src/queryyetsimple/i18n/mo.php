@@ -19,9 +19,11 @@
  */
 namespace queryyetsimple\i18n;
 
-use queryyetsimple\i18n\streams\file;
-use queryyetsimple\i18n\streams\reader;
-use queryyetsimple\i18n\translations\gettext;
+use queryyetsimple\i18n\{
+    streams\file,
+    streams\reader,
+    translations\gettext
+};
 
 /**
  * 解析 mo 文件

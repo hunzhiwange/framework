@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\bootstrap\auth;
 
-use queryyetsimple\auth;
-use queryyetsimple\response;
+use queryyetsimple\{
+    auth,
+    response
+};
 
 /**
  * 退出登录

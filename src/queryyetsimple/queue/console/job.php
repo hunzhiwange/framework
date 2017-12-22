@@ -21,9 +21,11 @@ namespace queryyetsimple\queue\console;
 
 use Exception;
 use PHPQueue\Base;
-use queryyetsimple\console\option;
-use queryyetsimple\console\command;
-use queryyetsimple\console\argument;
+use queryyetsimple\console\{
+    option,
+    command,
+    argument
+};
 
 /**
  * 导入消息队列配置

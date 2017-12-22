@@ -19,9 +19,11 @@
  */
 namespace queryyetsimple\queue\queues;
 
-use PHPQueue\Logger;
-use PHPQueue\JobQueue;
 use queryyetsimple\filesystem\fso;
+use PHPQueue\{
+    Logger,
+    JobQueue
+};
 
 /**
  * base 消息队列

@@ -19,9 +19,11 @@
  */
 namespace queryyetsimple\i18n\provider;
 
-use queryyetsimple\i18n\i18n;
-use queryyetsimple\i18n\load;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    i18n\i18n,
+    i18n\load,
+    support\provider
+};
 
 /**
  * i18n 服务提供者

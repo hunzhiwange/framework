@@ -20,10 +20,12 @@
 namespace queryyetsimple\throttler\middleware;
 
 use Closure;
-use queryyetsimple\http\request;
-use queryyetsimple\http\response;
-use queryyetsimple\throttler\ithrottler;
-use queryyetsimple\mvc\too_many_requests_http;
+use queryyetsimple\{
+    http\request,
+    http\response,
+    throttler\ithrottler,
+    mvc\too_many_requests_http
+};
 
 /**
  * throttler 中间件

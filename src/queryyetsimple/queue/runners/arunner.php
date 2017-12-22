@@ -20,8 +20,10 @@
 namespace queryyetsimple\queue\runners;
 
 use Exception;
-use PHPQueue\Base;
-use PHPQueue\Runner as PHPQueueRunner;
+use PHPQueue\{
+    Base,
+    Runner as PHPQueueRunner
+};
 
 /**
  * 基类 runner

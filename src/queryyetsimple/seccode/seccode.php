@@ -20,9 +20,11 @@
 namespace queryyetsimple\seccode;
 
 use Exception;
-use queryyetsimple\support\str;
-use queryyetsimple\support\option;
-use queryyetsimple\filesystem\fso;
+use queryyetsimple\{
+    support\str,
+    support\option,
+    filesystem\fso
+};
 
 /**
  * 验证码

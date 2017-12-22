@@ -19,9 +19,11 @@
  */
 namespace queryyetsimple\http\provider;
 
-use queryyetsimple\http\request;
-use queryyetsimple\http\response;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    http\request,
+    http\response,
+    support\provider
+};
 
 /**
  * http 服务提供者

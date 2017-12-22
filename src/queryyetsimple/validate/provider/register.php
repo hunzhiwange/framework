@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\validate\provider;
 
-use queryyetsimple\support\provider;
-use queryyetsimple\validate\validate;
+use queryyetsimple\{
+    support\provider,
+    validate\validate
+};
 
 /**
  * validate 服务提供者

@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\bootstrap\provider;
 
-use queryyetsimple\event\idispatch;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    event\idispatch,
+    support\provider
+};
 
 /**
  * 事件服务提供者

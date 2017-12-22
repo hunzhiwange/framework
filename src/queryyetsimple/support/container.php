@@ -27,7 +27,6 @@ use ReflectionFunction;
 use ReflectionException;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\support\icontainer;
 
 /**
  * IOC 容器

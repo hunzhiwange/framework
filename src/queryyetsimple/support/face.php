@@ -23,7 +23,6 @@ use Closure;
 use Exception;
 use RuntimeException;
 use BadMethodCallException;
-use queryyetsimple\support\icontainer;
 
 /**
  * 实现类的静态访问门面

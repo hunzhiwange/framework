@@ -22,8 +22,10 @@ namespace queryyetsimple\page;
 use Countable;
 use ArrayAccess;
 use JsonSerializable;
-use queryyetsimple\support\ijson;
-use queryyetsimple\support\iarray;
+use queryyetsimple\support\{
+    ijson,
+    iarray
+};
 
 /**
  * 分页处理

@@ -26,20 +26,22 @@ use Carbon\Carbon;
 use JsonSerializable;
 use DateTimeInterface;
 use BadMethodCallException;
-use queryyetsimple\support\str;
-use queryyetsimple\support\ijson;
-use queryyetsimple\support\iarray;
-use queryyetsimple\support\helper;
-use queryyetsimple\event\idispatch;
-use queryyetsimple\support\infinity;
-use queryyetsimple\support\serialize;
-use queryyetsimple\support\collection;
-use queryyetsimple\mvc\relation\has_one;
-use queryyetsimple\support\flow_control;
-use queryyetsimple\mvc\relation\relation;
-use queryyetsimple\mvc\relation\has_many;
-use queryyetsimple\mvc\relation\many_many;
-use queryyetsimple\mvc\relation\belongs_to;
+use queryyetsimple\{
+    support\str,
+    support\ijson,
+    support\iarray,
+    support\helper,
+    event\idispatch,
+    support\infinity,
+    support\serialize,
+    support\collection,
+    support\flow_control,
+    mvc\relation\has_one,
+    mvc\relation\relation,
+    mvc\relation\has_many,
+    mvc\relation\many_many,
+    mvc\relation\belongs_to
+};
 
 /**
  * 模型 Object Relational Mapping

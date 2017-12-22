@@ -19,16 +19,20 @@
  */
 namespace queryyetsimple\log;
 
-use Monolog\Logger;
 use RuntimeException;
 use InvalidArgumentException;
-use queryyetsimple\support\str;
-use queryyetsimple\support\option;
-use Monolog\Handler\StreamHandler;
-use Monolog\Handler\SyslogHandler;
-use Monolog\Handler\ErrorLogHandler;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\RotatingFileHandler;
+use Monolog\{
+    Logger,
+    Handler\StreamHandler,
+    Handler\SyslogHandler,
+    Handler\ErrorLogHandler,
+    Formatter\LineFormatter,
+    Handler\RotatingFileHandler
+};
+use queryyetsimple\support\{
+    str,
+    option
+};
 
 /**
  * log.monolog

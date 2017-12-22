@@ -20,8 +20,10 @@
 namespace queryyetsimple\log;
 
 use RuntimeException;
-use queryyetsimple\support\option;
-use queryyetsimple\filesystem\fso;
+use queryyetsimple\{
+    support\option,
+    filesystem\fso
+};
 
 /**
  * log.file

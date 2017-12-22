@@ -19,8 +19,8 @@
  */
 namespace queryyetsimple\filesystem;
 
-use League\Flysystem\Filesystem as LeagueFilesystem;
 use queryyetsimple\support\option;
+use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
  * connect 驱动抽象类

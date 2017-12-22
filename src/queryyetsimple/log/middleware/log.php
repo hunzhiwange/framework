@@ -20,9 +20,11 @@
 namespace queryyetsimple\log\middleware;
 
 use Closure;
-use queryyetsimple\log\manager;
-use queryyetsimple\http\request;
-use queryyetsimple\http\response;
+use queryyetsimple\{
+    log\manager,
+    http\request,
+    http\response
+};
 
 /**
  * log 中间件

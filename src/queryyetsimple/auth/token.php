@@ -19,11 +19,13 @@
  */
 namespace queryyetsimple\auth;
 
-use queryyetsimple\mvc\imodel;
-use queryyetsimple\support\str;
-use queryyetsimple\cache\icache;
-use queryyetsimple\validate\ivalidate;
-use queryyetsimple\encryption\iencryption;
+use queryyetsimple\{
+    mvc\imodel,
+    support\str,
+    cache\icache,
+    validate\ivalidate,
+    encryption\iencryption
+};
 
 /**
  * auth.token

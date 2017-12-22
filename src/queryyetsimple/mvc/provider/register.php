@@ -19,11 +19,13 @@
  */
 namespace queryyetsimple\mvc\provider;
 
-use queryyetsimple\mvc\view;
-use queryyetsimple\mvc\meta;
-use queryyetsimple\mvc\model;
-use queryyetsimple\event\idispatch;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    mvc\view,
+    mvc\meta,
+    mvc\model,
+    event\idispatch,
+    support\provider
+};
 
 /**
  * mvc 服务提供者

@@ -19,10 +19,12 @@
  */
 namespace queryyetsimple\auth;
 
-use queryyetsimple\mvc\imodel;
-use queryyetsimple\support\option;
-use queryyetsimple\validate\ivalidate;
-use queryyetsimple\encryption\iencryption;
+use queryyetsimple\{
+    mvc\imodel,
+    support\option,
+    validate\ivalidate,
+    encryption\iencryption
+};
 
 /**
  * connect 驱动抽象类

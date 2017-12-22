@@ -22,10 +22,12 @@ namespace queryyetsimple\database;
 use PDO;
 use Exception;
 use PDOException;
-use queryyetsimple\log\ilog;
-use queryyetsimple\cache\icache;
-use queryyetsimple\database\select;
-use queryyetsimple\support\debug\dump;
+use queryyetsimple\{
+    log\ilog,
+    cache\icache,
+    database\select,
+    support\debug\dump
+};
 
 /**
  * 数据库连接抽象层

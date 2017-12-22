@@ -19,17 +19,19 @@
  */
 namespace queryyetsimple\http;
 
-use queryyetsimple\mvc\iview;
 use InvalidArgumentException;
-use queryyetsimple\support\xml;
-use queryyetsimple\router\router;
-use queryyetsimple\support\assert;
-use queryyetsimple\support\option;
-use queryyetsimple\filesystem\fso;
-use queryyetsimple\cookie\icookie;
-use queryyetsimple\support\infinity;
-use queryyetsimple\session\isession;
-use queryyetsimple\support\flow_control;
+use queryyetsimple\{
+    mvc\iview,
+    support\xml,
+    router\router,
+    support\assert,
+    support\option,
+    filesystem\fso,
+    cookie\icookie,
+    support\infinity,
+    session\isession,
+    support\flow_control
+};
 
 /**
  * 响应请求

@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\database;
 
-use queryyetsimple\support\helper;
-use queryyetsimple\support\manager as support_manager;
+use queryyetsimple\{
+    support\helper,
+    support\manager as support_manager
+};
 
 /**
  * database 入口

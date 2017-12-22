@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\session\provider;
 
-use queryyetsimple\session\manager;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    session\manager,
+    support\provider
+};
 
 /**
  * session 服务提供者

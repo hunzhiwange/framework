@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\mvc\relation;
 
-use queryyetsimple\mvc\imodel;
-use queryyetsimple\support\collection;
+use queryyetsimple\{
+    mvc\imodel,
+    support\collection
+};
 
 /**
  * 关联模型 belongs_to

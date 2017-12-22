@@ -19,9 +19,11 @@
  */
 namespace queryyetsimple\cache\provider;
 
-use queryyetsimple\cache\load;
-use queryyetsimple\cache\manager;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    cache\load,
+    cache\manager,
+    support\provider
+};
 
 /**
  * cache 服务提供者

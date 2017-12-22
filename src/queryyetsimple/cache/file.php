@@ -20,8 +20,10 @@
 namespace queryyetsimple\cache;
 
 use InvalidArgumentException;
-use queryyetsimple\support\option;
-use queryyetsimple\filesystem\fso;
+use queryyetsimple\{
+    support\option,
+    filesystem\fso
+};
 
 /**
  * 文件缓存

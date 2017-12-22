@@ -20,8 +20,10 @@
 namespace queryyetsimple\throttler;
 
 use RuntimeException;
-use queryyetsimple\http\request;
-use queryyetsimple\cache\icache;
+use queryyetsimple\{
+    http\request,
+    cache\icache
+};
 
 /**
  * throttler 入口

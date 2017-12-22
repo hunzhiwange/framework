@@ -25,8 +25,6 @@ use ArrayAccess;
 use JsonSerializable;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\support\ijson;
-use queryyetsimple\support\iarray;
 
 /**
  * 数组转对象集合

@@ -21,7 +21,6 @@ namespace queryyetsimple\support;
 
 use Exception;
 use InvalidArgumentException;
-use queryyetsimple\support\icontainer;
 
 /**
  * manager 入口

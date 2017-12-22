@@ -20,8 +20,10 @@
 namespace queryyetsimple\i18n;
 
 use InvalidArgumentException;
-use queryyetsimple\support\option;
-use queryyetsimple\cookie\icookie;
+use queryyetsimple\{
+    support\option,
+    cookie\icookie
+};
 
 /**
  * 国际化组件

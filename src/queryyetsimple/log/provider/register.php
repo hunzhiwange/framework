@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\log\provider;
 
-use queryyetsimple\log\manager;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    log\manager,
+    support\provider
+};
 
 /**
  * log 服务提供者

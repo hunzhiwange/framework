@@ -19,10 +19,12 @@
  */
 namespace queryyetsimple\auth;
 
-use queryyetsimple\mvc\imodel;
-use queryyetsimple\session\isession;
-use queryyetsimple\validate\ivalidate;
-use queryyetsimple\encryption\iencryption;
+use queryyetsimple\{
+    mvc\imodel,
+    session\isession,
+    validate\ivalidate,
+    encryption\iencryption
+};
 
 /**
  * auth.session

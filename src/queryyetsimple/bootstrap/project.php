@@ -22,13 +22,15 @@ namespace queryyetsimple\bootstrap;
 use Exception;
 use Dotenv\Dotenv;
 use RuntimeException;
-use queryyetsimple\support\psr4;
-use queryyetsimple\support\face;
 use Composer\Autoload\ClassLoader;
-use queryyetsimple\filesystem\fso;
-use queryyetsimple\support\provider;
-use queryyetsimple\support\container;
-use queryyetsimple\bootstrap\console\provider\register as console_provider;
+use queryyetsimple\{
+    support\psr4,
+    support\face,
+    filesystem\fso,
+    support\provider,
+    support\container,
+    bootstrap\console\provider\register as console_provider
+};
 
 /**
  * 项目管理

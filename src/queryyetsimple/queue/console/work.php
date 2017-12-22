@@ -21,9 +21,11 @@ namespace queryyetsimple\queue\console;
 
 use PHPQueue\Base;
 use PHPQueue\Runner;
-use queryyetsimple\console\option;
-use queryyetsimple\console\command;
-use queryyetsimple\console\argument;
+use queryyetsimple\console\{
+    option,
+    command,
+    argument
+};
 
 /**
  * 运行任务

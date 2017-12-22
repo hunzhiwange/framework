@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\event\provider;
 
-use queryyetsimple\event\dispatch;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    event\dispatch,
+    support\provider
+};
 
 /**
  * event 服务提供者

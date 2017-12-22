@@ -24,10 +24,12 @@ use Exception;
 use DateTimeZone;
 use BadMethodCallException;
 use InvalidArgumentException;
-use queryyetsimple\support\str;
-use queryyetsimple\support\helper;
-use queryyetsimple\support\icontainer;
-use queryyetsimple\support\flow_control;
+use queryyetsimple\support\{
+    str,
+    helper,
+    icontainer,
+    flow_control
+};
 
 /**
  * validate 数据验证器

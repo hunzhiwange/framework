@@ -20,8 +20,10 @@
 namespace queryyetsimple\view;
 
 use InvalidArgumentException;
-use queryyetsimple\support\helper;
-use queryyetsimple\support\option;
+use queryyetsimple\support\{
+    helper,
+    option
+};
 
 /**
  * 编译器列表

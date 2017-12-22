@@ -21,12 +21,14 @@ namespace queryyetsimple\http;
 
 use ArrayAccess;
 use RuntimeException;
-use queryyetsimple\support\option;
-use queryyetsimple\cookie\icookie;
-use queryyetsimple\support\iarray;
-use queryyetsimple\support\infinity;
-use queryyetsimple\session\isession;
-use queryyetsimple\support\flow_control;
+use queryyetsimple\{
+    support\option,
+    cookie\icookie,
+    support\iarray,
+    support\infinity,
+    session\isession,
+    support\flow_control
+};
 
 /**
  * http 请求

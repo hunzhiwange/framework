@@ -20,8 +20,10 @@
 namespace queryyetsimple\option;
 
 use RuntimeException;
-use queryyetsimple\support\helper;
-use queryyetsimple\filesystem\fso;
+use queryyetsimple\{
+    support\helper,
+    filesystem\fso
+};
 
 /**
  * 配置工具类

@@ -19,11 +19,13 @@
  */
 namespace queryyetsimple\view\provider;
 
-use queryyetsimple\view\theme;
-use queryyetsimple\view\parser;
-use queryyetsimple\view\compiler;
-use queryyetsimple\view\phpui_theme;
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    view\theme,
+    view\parser,
+    view\compiler,
+    view\phpui_theme,
+    support\provider
+};
 
 /**
  * view 服务提供者

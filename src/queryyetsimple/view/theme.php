@@ -21,9 +21,11 @@ namespace queryyetsimple\view;
 
 use RuntimeException;
 use InvalidArgumentException;
-use queryyetsimple\support\option;
-use queryyetsimple\support\assert;
-use queryyetsimple\cookie\icookie;
+use queryyetsimple\{
+    support\option,
+    support\assert,
+    cookie\icookie
+};
 
 /**
  * 模板处理类

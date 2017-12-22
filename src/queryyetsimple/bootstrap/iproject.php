@@ -19,8 +19,10 @@
  */
 namespace queryyetsimple\bootstrap;
 
-use queryyetsimple\support\provider;
-use queryyetsimple\support\icontainer;
+use queryyetsimple\{
+    support\provider,
+    support\icontainer
+};
 
 /**
  * iproject 接口
