@@ -68,7 +68,7 @@ interface iconnect
      * @param callable $calAction 事务回调
      * @return mixed
      */
-    public function transaction($calAction);
+    public function transaction(callable $calAction);
 
     /**
      * 启动事务
@@ -134,7 +134,7 @@ interface iconnect
      * @param callable $calSqlListen
      * @return void
      */
-    public function registerListen($calSqlListen);
+    public function registerListen(callable $calSqlListen);
 
     /**
      * 释放 PDO 预处理查询

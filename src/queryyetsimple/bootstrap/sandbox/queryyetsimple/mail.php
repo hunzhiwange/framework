@@ -22,14 +22,14 @@ namespace queryyetsimple;
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 response
+ * 沙盒 mail
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2017.08.26
  * @version 1.0
  */
-class response extends face
+class mail extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class response extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name(): string 
     {
-        return 'response';
+        return 'mails';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 response
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class response extends \queryyetsimple\response
-{
 }

@@ -17,19 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace queryyetsimple;
+namespace qys;
 
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 i18n
+ * 沙盒 auth
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2017.09.08
  * @version 1.0
  */
-class i18n extends face
+class auth extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class i18n extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name (): string
     {
-        return 'i18n';
+        return 'auths';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 i18n
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class i18n extends \queryyetsimple\i18n
-{
 }

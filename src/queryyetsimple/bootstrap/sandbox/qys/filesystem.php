@@ -17,19 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace queryyetsimple;
+namespace qys;
 
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 log
+ * 沙盒 filesystem
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2017.08.29
  * @version 1.0
  */
-class log extends face
+class filesystem extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class log extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name(): string 
     {
-        return 'logs';
+        return 'filesystems';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 log
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class log extends \queryyetsimple\log
-{
 }

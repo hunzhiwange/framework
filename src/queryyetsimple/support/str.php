@@ -295,9 +295,10 @@ class str
      *
      * @param int $nDateTemp
      * @param string $sDateFormat
+     * @param array $arrLang
      * @return string
      */
-    public static function formatDate($nDateTemp, $sDateFormat = 'Y-m-d H:i')
+    public static function formatDate($nDateTemp, $sDateFormat = 'Y-m-d H:i', array $arrLang = [])
     {
         $sReturn = '';
 
@@ -306,12 +307,12 @@ class str
         if ($nHover == 0) {
             $nMin = floor($nSec / 60);
             if ($nMin == 0) {
-                $sReturn = $nSec . ' ' . __("秒前");
+                $sReturn = $nSec . ' ' . ($arrLang['seconds'] ?? 'Seconds ago');
             } else {
-                $sReturn = $nMin . ' ' . __("分钟前");
+                $sReturn = $nMin . ' ' . ($arrLang['minutes'] ?? 'minutes ago');
             }
         } elseif ($nHover < 24) {
-            $sReturn = __("大约 %d 小时前", $nHover);
+            $sReturn = $nHover . ' ' . ($arrLang['hour'] ?? 'hour ago');
         } else {
             $sReturn = date($sDateFormat, $nDateTemp);
         }

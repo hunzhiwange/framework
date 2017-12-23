@@ -835,15 +835,15 @@ class response
             $this->data($arrData);
         }
 
-        $this
+        $this->
 
-        ->responseType('json')
+        responseType('json')->
 
-        ->contentType('application/json')
+        contentType('application/json')->
 
-        ->charset($strCharset)
+        charset($strCharset)->
 
-        ->option('json_options', $intOptions);
+        option('json_options', $intOptions);
         
         return $this;
     }
@@ -876,11 +876,11 @@ class response
         if ($this->checkFlowControl()) {
             return $this;
         }
-        return $this
+        return $this->
 
-        ->jsonCallback($strJsonCallback)
+        jsonCallback($strJsonCallback)->
 
-        ->json($arrData, $intOptions, $strCharset);
+        json($arrData, $intOptions, $strCharset);
     }
 
     /**
@@ -910,11 +910,11 @@ class response
 
         option('option', $arrOption)->
 
-        assign($arrOption)
+        assign($arrOption)->
 
-        ->message($arrOption['message'] ?? '')
+        message($arrOption['message'] ?? '')->
 
-        ->header('Cache-control', 'protected');
+        header('Cache-control', 'protected');
     }
 
     /**
@@ -942,7 +942,7 @@ class response
      * @sub string content_type 内容类型
      * @sub string url 跳转 url 地址
      * @sub int time 停留时间
-     * @return json
+     * @return void|string
      */
     public function viewSuccess($sMessage = '', $arrOption = [])
     {
@@ -968,7 +968,7 @@ class response
      * @sub string content_type 内容类型
      * @sub string url 跳转 url 地址
      * @sub int time 停留时间
-     * @return json
+     * @return void|string
      */
     public function viewError($sMessage = '', $arrOption = [])
     {
@@ -1030,11 +1030,11 @@ class response
             $this->data($arrData);
         }
 
-        return $this->responseType('xml')
+        return $this->responseType('xml')->
 
-        ->contentType('text/xml')
+        contentType('text/xml')->
 
-        ->charset($strCharset);
+        charset($strCharset);
     }
 
     /**
@@ -1057,11 +1057,11 @@ class response
             $sDownName = $sDownName . '.' . fso::getExtension($sFileName);
         }
 
-        return $this
+        return $this->
 
-        ->downloadAndFile($sFileName, $arrHeader)
+        downloadAndFile($sFileName, $arrHeader)->
 
-        ->header('Content-Disposition', 'attachment;filename=' . $sDownName);
+        header('Content-Disposition', 'attachment;filename=' . $sDownName);
     }
 
     /**
@@ -1079,9 +1079,9 @@ class response
 
         return $this->
 
-        downloadAndFile($sFileName, $arrHeader)
+        downloadAndFile($sFileName, $arrHeader)->
 
-        ->header('Content-Disposition', 'inline;filename=' . basename($sFileName));
+        header('Content-Disposition', 'inline;filename=' . basename($sFileName));
     }
 
     /**
@@ -1122,13 +1122,11 @@ class response
             'Content-Length' => filesize($sFileName)
         ], $arrHeader);
 
-        $this
+        $this->responseType('file')->
 
-        ->responseType('file')
+        headers($arrHeader)->
 
-        ->headers($arrHeader)
-
-        ->option('file_name', $sFileName);
+        option('file_name', $sFileName);
 
         return $this;
     }

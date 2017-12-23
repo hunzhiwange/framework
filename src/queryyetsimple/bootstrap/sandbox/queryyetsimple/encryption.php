@@ -22,14 +22,14 @@ namespace queryyetsimple;
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 router
+ * 沙盒 encryption
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
  */
-class router extends face
+class encryption extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class router extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name(): string 
     {
-        return 'router';
+        return 'encryption';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 router
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class router extends \queryyetsimple\router
-{
 }

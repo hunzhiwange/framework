@@ -22,14 +22,14 @@ namespace queryyetsimple;
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 session
+ * 沙盒 auth
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2017.09.08
  * @version 1.0
  */
-class session extends face
+class auth extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class session extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name (): string
     {
-        return 'sessions';
+        return 'auths';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 session
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class session extends \queryyetsimple\session
-{
 }

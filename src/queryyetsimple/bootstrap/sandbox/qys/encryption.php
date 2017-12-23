@@ -17,19 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace queryyetsimple;
+namespace qys;
 
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 throttler
+ * 沙盒 encryption
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.08.10
+ * @since 2017.06.10
  * @version 1.0
  */
-class throttler extends face
+class encryption extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class throttler extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name(): string 
     {
-        return 'throttler';
+        return 'encryption';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 throttler
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.08.10
- * @version 1.0
- */
-class throttler extends \queryyetsimple\throttler
-{
 }

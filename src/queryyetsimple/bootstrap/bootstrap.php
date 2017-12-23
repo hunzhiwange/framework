@@ -108,15 +108,15 @@ class bootstrap
         if (PHP_SAPI == 'cli') {
             return;
         }
+
+        register_shutdown_function([
+            'queryyetsimple\bootstrap\runtime\runtime', 
+            'shutdownHandle'
+        ]);
         
         set_error_handler([
             'queryyetsimple\bootstrap\runtime\runtime', 
             'errorHandle'
-        ]);
-        
-        register_shutdown_function([
-            'queryyetsimple\bootstrap\runtime\runtime', 
-            'shutdownHandle'
         ]);
         
         set_exception_handler([

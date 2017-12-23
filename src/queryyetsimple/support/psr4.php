@@ -162,14 +162,10 @@ class psr4 implements ipsr4
             static::DEFAULT_NAMESPACE,
             $this->strShortNamespace
         ] as $strNamespace) {
-            if (strpos($strClass, $strNamespace . '\\') !== false && is_file(($strSandbox = $this->strSandboxPath . '/' . str_replace('\\', '/', substr($strClass, strlen($strNamespace) + 1)) . '.php'))) {
-                require $strSandbox;
+            if (strpos($strClass, $strNamespace . '\\') === 0 && is_file(($strSandbox = $this->strSandboxPath . '/' . str_replace('\\', '/', $strClass) . '.php'))) {
+                require_once $strSandbox;
                 return;
             }
-        }
-
-        if (is_file(($strSandbox = $this->strSandboxPath . '/' . str_replace('\\', '/', $strClass) . '.php'))) {
-            require $strSandbox;
         }
 
         if (strpos($strClass, $this->strShortNamespace . '\\') !== false) {
@@ -188,10 +184,10 @@ class psr4 implements ipsr4
         $strTryMapClass = str_replace($this->strShortNamespace . '\\', static::DEFAULT_NAMESPACE . '\\', $strClass);
 
         if (class_exists($strTryMapClass) || interface_exists($strTryMapClass)) {
-            $strSandboxCache = $this->strSandboxCacheDir . '\\' . str_replace('\\', '_', $strClass) . '.php';
+            $strSandboxCache = $this->strSandboxCacheDir . '/' . str_replace('\\', '_', $strClass) . '.php';
 
             if (is_file($strSandboxCache)) {
-                require $strSandboxCache;
+                require_once $strSandboxCache;
                 return;
             }
 
@@ -208,7 +204,7 @@ class psr4 implements ipsr4
             if (! file_put_contents($strSandboxCache, $strSandboxContent)) {
                 throw new RuntimeException(sprintf('Dir %s do not have permission.', dirname($strSandboxCache)));
             }
-            require $strSandboxCache;
+            require_once $strSandboxCache;
         }
     }
 }

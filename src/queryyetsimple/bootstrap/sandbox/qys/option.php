@@ -17,19 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace queryyetsimple;
+namespace qys;
 
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 psr4
+ * 沙盒 option
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
  */
-class psr4 extends face
+class option extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class psr4 extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name(): string 
     {
-        return 'psr4';
+        return 'option';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 psr4
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class psr4 extends \queryyetsimple\psr4
-{
 }

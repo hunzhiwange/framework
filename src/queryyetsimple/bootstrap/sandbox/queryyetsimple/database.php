@@ -22,14 +22,14 @@ namespace queryyetsimple;
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 cookie
+ * 沙盒 database
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.10
  * @version 1.0
  */
-class cookie extends face
+class database extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class cookie extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name(): string
     {
-        return 'cookie';
+        return 'databases';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 cookie
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class cookie extends \queryyetsimple\cookie
-{
 }

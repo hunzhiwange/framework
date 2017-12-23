@@ -57,7 +57,7 @@ class exception extends message
     {
         $this->oProject = $oProject;
         $this->objException = $objException;
-        $this->strMessage = "[{$this->objException->getCode()}] {$this->objException->getMessage()} " . basename($this->objException->getFile()) . __(" 第 %d 行", $this->objException->getLine());
+        $this->strMessage = "[{$this->objException->getCode()}] {$this->objException->getMessage()} " . basename($this->objException->getFile()) . sprintf(" line %d", $this->objException->getLine());
     }
     
     /**
@@ -203,7 +203,7 @@ class exception extends message
                 // 参数格式化组装
                 if (is_array($arrVal['args'])) {
                     foreach ($arrVal['args'] as $intArgsKey => $mixArgsVal) {
-                        $arrVal['args'][$intArgsKey] = is_scalar($mixArgsVal) ? strip_tags(var_export($mixArgsVal, true)) : gettype($mixArgsVal);
+                        $arrVal['args'][$intArgsKey] = $this->formatArgsApi($mixArgsVal);
                     }
                 }
             }
@@ -245,6 +245,28 @@ class exception extends message
         } else {
             return $mixArgsVal;
         }
+    }
+
+    /**
+     * 格式化 web 参数
+     *
+     * @param mixed $mixArgsVal
+     * @return mixed
+     */
+    protected function formatArgsWeb($mixArgsVal)
+    {
+        return is_scalar($mixArgsVal) ? strip_tags(var_export($mixArgsVal, true)) : gettype($mixArgsVal);
+    }
+
+    /**
+     * 格式化 api 参数
+     *
+     * @param mixed $mixArgsVal
+     * @return mixed
+     */
+    protected function formatArgsApi($mixArgsVal)
+    {
+        return is_scalar($mixArgsVal) ? strip_tags(var_export($mixArgsVal, true)) : gettype($mixArgsVal);
     }
     
     /**

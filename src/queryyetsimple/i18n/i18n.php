@@ -114,18 +114,24 @@ class i18n implements ii18n
      */
     public function getText(...$arr)
     {
+        if(count($arr) == 0) {
+            return '';
+        }
+
         // 未开启直接返回
         if (! $this->getOption('on')) {
-            return count($arr) == 0 ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
+            return count($arr) > 1 ? sprintf(...$arr) : $arr[0];
         }
 
         // 开启读取语言包
         $sContext = $this->getContext();
-        $sValue = $sContext && isset($this->arrText[$sContext][$sValue]) ? $this->arrText[$sContext][$sValue] : $sValue;
-        if (func_num_args() > 1) {
+        $sValue = $arr[0];
+        $sValue = $this->arrText[$sContext][$sValue] ?? $sValue;
+        if (count($arr) > 1) {
             $arr[0] = $sValue;
             $sValue = sprintf(...$arr);
         }
+        
         return $sValue;
     }
 

@@ -17,19 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace queryyetsimple;
+namespace qys;
 
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 validate
+ * 沙盒 view
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.07.26
+ * @since 2017.06.10
  * @version 1.0
  */
-class validate extends face
+class view extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class validate extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name(): string 
     {
-        return 'validate';
+        return 'view';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 validate
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.07.26
- * @version 1.0
- */
-class validate extends \queryyetsimple\validate
-{
 }

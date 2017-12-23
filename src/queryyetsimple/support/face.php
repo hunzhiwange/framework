@@ -54,18 +54,19 @@ abstract class face
      *
      * @return mixed
      */
-    public static function face()
+    public static function faces()
     {
-        $strClass = static::name();
-        $strUnique = static::makeFaceKey($strClass, $arrArgs = func_get_args());
+        $strUnique = static::name();
 
-        if (isset(static::$arrInstance[$strUnique])) {
-            return static::$arrInstance[$strUnique];
+        if (isset(self::$arrInstance[$strUnique])) {
+            return self::$arrInstance[$strUnique];
         }
-        if (! (static::$arrInstance[$strUnique] = static::container()->make($strClass, $arrArgs))) {
-            throw new RuntimeException(sprintf('No %s services are found in the IOC container.', $strClass));
+
+        if (!is_object(self::$arrInstance[$strUnique] = self::container()->make($strUnique))) {
+            throw new RuntimeException(sprintf('Services %s was found in the IOC container.', $strUnique));
         }
-        return static::$arrInstance[$strUnique];
+
+        return self::$arrInstance[$strUnique];
     }
 
     /**
@@ -73,9 +74,9 @@ abstract class face
      *
      * @return \queryyetsimple\support\icontainer
      */
-    public static function container()
+    public static function container(): icontainer
     {
-        return static::$objContainer;
+        return self::$objContainer;
     }
 
     /**
@@ -84,39 +85,18 @@ abstract class face
      * @param \queryyetsimple\support\icontainer $objContainer
      * @return void
      */
-    public static function setContainer(icontainer $objContainer)
+    public static function setContainer(icontainer $objContainer): void
     {
-        static::$objContainer = $objContainer;
+        self::$objContainer = $objContainer;
     }
 
     /**
-     * 生成唯一 key
+     * 门面名字
      *
-     * @param string $strClass
-     * @param array $arrArgs
      * @return string
      */
-    protected static function makeFaceKey($strClass, $arrArgs = [])
-    {
-        if ($arrArgs) {
-            $strSerialize = '';
-            foreach ($arrArgs as $mixArg) {
-                // Serialization of 'Closure' is not allowed
-                try {
-                    // 返回指定对象的 hash id
-                    // http://php.net/manual/zh/function.spl-object-hash.php
-                    if (is_object($mixArg)) {
-                        $strSerialize .= spl_object_hash($mixArg);
-                    } else {
-                        $strSerialize .= serialize($mixArg);
-                    }
-                } catch (Exception $oE) {
-                }
-            }
-            return $strClass . '.' . md5($strSerialize);
-        } else {
-            return $strClass;
-        }
+    protected static function name(): string {
+        return '';
     }
 
     /**
@@ -128,7 +108,7 @@ abstract class face
      */
     public static function __callStatic(string $sMethod, array $arrArgs)
     {
-        $objInstance = static::face();
+        $objInstance = static::faces();
         if (! $objInstance) {
             throw new RuntimeException('Can not find instance from container.');
         }

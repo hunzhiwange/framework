@@ -20,6 +20,7 @@
 namespace queryyetsimple\database;
 
 use PDO;
+use Throwable;
 use Exception;
 use PDOException;
 use queryyetsimple\{
@@ -320,7 +321,7 @@ abstract class aconnect
             ]);
             $this->commit();
             return $mixResult;
-        } catch (Exception $oE) {
+        } catch (Throwable $oE) {
             $this->rollBack();
             throw $oE;
         }

@@ -22,14 +22,14 @@ namespace queryyetsimple;
 use queryyetsimple\support\face;
 
 /**
- * 沙盒 request
+ * 沙盒 event
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2017.07.12
  * @version 1.0
  */
-class request extends face
+class event extends face
 {
     
     /**
@@ -37,22 +37,8 @@ class request extends face
      *
      * @return string
      */
-    protected static function name()
+    protected static function name(): string 
     {
-        return 'request';
+        return 'event';
     }
-}
-
-namespace qys;
-
-/**
- * 沙盒 request
- *
- * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
- * @since 2017.06.10
- * @version 1.0
- */
-class request extends \queryyetsimple\request
-{
 }
