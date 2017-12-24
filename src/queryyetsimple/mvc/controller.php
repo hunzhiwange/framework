@@ -155,7 +155,6 @@ abstract class controller implements icontroller
     /**
      * 清空变量值
      *
-     * @param string|null $sName
      * @return $this
      */
     public function clearAssign()
@@ -168,16 +167,16 @@ abstract class controller implements icontroller
     /**
      * 加载视图文件
      *
-     * @param string $sThemeFile
+     * @param string $sFile
      * @param array $arrOption
      * @sub string charset 编码
      * @sub string content_type 类型
      * @return string
      */
-    public function display($sThemeFile = '', $arrOption = [])
+    public function display($sFile = null, array $arrOption = null)
     {
         $this->checkView();
-        return $this->objView->display($sThemeFile, $arrOption);
+        return $this->objView->display($sFile, $arrOption);
     }
 
     // ######################################################

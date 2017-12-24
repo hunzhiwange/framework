@@ -147,17 +147,16 @@ abstract class action implements iaction
     public function deleteAssign($mixName)
     {
         $this->checkController();
-        call_user_func_array([
-            $this->objController,
-            'deleteAssign'
-        ], func_get_args());
+
+        $arrArgs = func_get_args();
+        $this->objController->{'deleteAssign'}(...$arrArgs);
+
         return $this;
     }
 
     /**
      * 清空变量值
      *
-     * @param string|null $sName
      * @return $this
      */
     public function clearAssign()
@@ -170,16 +169,16 @@ abstract class action implements iaction
     /**
      * 加载视图文件
      *
-     * @param string $sThemeFile
+     * @param string $sFile
      * @param array $arrOption
      * @sub string charset 编码
      * @sub string content_type 类型
      * @return string
      */
-    public function display($sThemeFile = '', $arrOption = [])
+    public function display($sFile = null, array $arrOption = null)
     {
         $this->checkController();
-        return $this->objController->display($sThemeFile, $arrOption);
+        return $this->objController->display($sFile, $arrOption);
     }
 
     // ######################################################

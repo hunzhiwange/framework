@@ -62,8 +62,8 @@ abstract class face
             return self::$arrInstance[$strUnique];
         }
 
-        if (!is_object(self::$arrInstance[$strUnique] = self::container()->make($strUnique))) {
-            throw new RuntimeException(sprintf('Services %s was found in the IOC container.', $strUnique));
+        if (! is_object(self::$arrInstance[$strUnique] = self::container()->make($strUnique))) {
+            throw new RuntimeException(sprintf('Services %s was not found in the IOC container.', $strUnique));
         }
 
         return self::$arrInstance[$strUnique];

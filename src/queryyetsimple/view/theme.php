@@ -229,7 +229,7 @@ class theme implements itheme
         if (is_null($sName)) {
             return $this->arrVar;
         }
-        return $this->_arrVar[$sName] ?? null;
+        return $this->arrVar[$sName] ?? null;
     }
 
     /**

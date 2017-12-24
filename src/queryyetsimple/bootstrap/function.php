@@ -488,6 +488,19 @@ if (! function_exists('path')) {
     }
 }
 
+if (! function_exists('path_framework')) {
+    /**
+     * 取得框架路径
+     *
+     * @param string $strPath
+     * @return string
+     */
+    function path_framework($strPath = '')
+    {
+        return project()->pathFramework() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
 if (! function_exists('path_applications')) {
     /**
      * 取得项目应用路径

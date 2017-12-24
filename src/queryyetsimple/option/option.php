@@ -54,7 +54,7 @@ class option implements ArrayAccess, ioption
      */
     public function __construct(array $arrOptions = [])
     {
-        $this->reset($arrOptions);
+        $this->arrOption = $arrOptions;
     }
 
     /**
@@ -78,12 +78,12 @@ class option implements ArrayAccess, ioption
         }
 
         $arrParts = explode('.', $sName);
-        $arrOption = &$this->arrOption[$strNamespace];
+        $arrOption = $this->arrOption[$strNamespace];
         foreach ($arrParts as $sPart) {
             if (! isset($arrOption[$sPart])) {
                 return false;
             }
-            $arrOption = &$arrOption[$sPart];
+            $arrOption = $arrOption[$sPart];
         }
         return true;
     }
@@ -110,12 +110,12 @@ class option implements ArrayAccess, ioption
         }
 
         $arrParts = explode('.', $sName);
-        $arrOption = &$this->arrOption[$strNamespace];
+        $arrOption = $this->arrOption[$strNamespace];
         foreach ($arrParts as $sPart) {
             if (! isset($arrOption[$sPart])) {
                 return $mixDefault;
             }
-            $arrOption = &$arrOption[$sPart];
+            $arrOption = $arrOption[$sPart];
         }
         return $arrOption;
     }
@@ -177,33 +177,33 @@ class option implements ArrayAccess, ioption
     /**
      * 删除配置
      *
-     * @param string $mixName 配置键值
+     * @param string $sName 配置键值
      * @return string
      */
-    public function delete($mixName)
+    public function delete($sName)
     {
-        $mixName = $this->parseNamespace($mixName);
-        $strNamespace = $mixName[0];
-        $mixName = $mixName[1];
+        $sName = $this->parseNamespace($sName);
+        $strNamespace = $sName[0];
+        $sName = $sName[1];
 
-        if ($mixName == '*') {
+        if ($sName == '*') {
             $this->arrOption[$strNamespace] = [];
             return;
         }
 
-        if (! strpos($mixName, '.')) {
-            if (isset($this->arrOption[$strNamespace][$mixName])) {
-                unset($this->arrOption[$strNamespace][$mixName]);
+        if (! strpos($sName, '.')) {
+            if (isset($this->arrOption[$strNamespace][$sName])) {
+                unset($this->arrOption[$strNamespace][$sName]);
             }
         } else {
-            $arrParts = explode('.', $mixName);
+            $arrParts = explode('.', $sName);
             $nMax = count($arrParts) - 1;
             $arrOption = &$this->arrOption[$strNamespace];
             for ($nI = 0; $nI <= $nMax; $nI ++) {
                 $sPart = $arrParts[$nI];
                 if ($nI < $nMax) {
                     if (! isset($arrOption[$sPart])) {
-                        $arrOption[$sPart] = [];
+                        break;
                     }
                     $arrOption = &$arrOption[$sPart];
                 } else {

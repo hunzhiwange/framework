@@ -50,7 +50,7 @@ class register extends provider
     public function register()
     {
         $this->singleton('encryption', function ($oProject) {
-            return new encryption($oProject['option']['app_auth_key'], $oProject['option']['app_auth_expiry']);
+            return new encryption($oProject['option']['auth_key'], $oProject['option']['auth_expiry']);
         });
     }
 

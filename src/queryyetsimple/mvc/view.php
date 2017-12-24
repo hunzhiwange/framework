@@ -155,14 +155,14 @@ class view implements iview
      * @sub string content_type 内容类型
      * @return string
      */
-    public function display($sFile = '', $arrOption = [])
+    public function display($sFile = null, array $arrOption = null)
     {
         $this->checkTheme();
 
         $arrOption = array_merge([
             'charset' => 'utf-8',
             'content_type' => 'text/html'
-        ], $arrOption);
+        ], $arrOption ?: []);
 
         $this->responseHeader($arrOption['content_type'], $arrOption['charset']);
 

@@ -71,6 +71,13 @@ interface iproject extends icontainer
      * @return string
      */
     public function path();
+
+    /**
+     * 框架路径
+     *
+     * @return string
+     */
+    public function pathFramework();
     
     /**
      * 应用路径

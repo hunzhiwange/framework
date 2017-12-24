@@ -58,7 +58,6 @@ interface iview
     /**
      * 清空变量值
      *
-     * @param string|null $sName
      * @return $this
      */
     public function clearAssign();
@@ -72,5 +71,5 @@ interface iview
      * @sub string content_type 内容类型
      * @return string
      */
-    public function display($sFile = '', $arrOption = []);
+    public function display($sFile = null, array $arrOption = null);
 }

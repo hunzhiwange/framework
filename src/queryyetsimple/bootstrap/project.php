@@ -58,6 +58,13 @@ class project extends container implements iproject
     protected $arrOption = [];
 
     /**
+     * 项目框架路径
+     *
+     * @var string
+     */
+    protected $strFrameworkPath;
+
+    /**
      * 项目基础路径
      *
      * @var string
@@ -197,6 +204,16 @@ class project extends container implements iproject
     }
 
     /**
+     * 框架路径
+     *
+     * @return string
+     */
+    public function pathFramework()
+    {
+        return $this->strFrameworkPath;
+    }
+
+    /**
      * 应用路径
      *
      * @return string
@@ -316,7 +333,7 @@ class project extends container implements iproject
      */
     public function development()
     {
-        return $this->arrAppOption['app_environment'] == 'development';
+        return $this->arrAppOption['environment'] == 'development';
     }
 
     /**
@@ -326,7 +343,7 @@ class project extends container implements iproject
      */
     public function environment()
     {
-        return $this->arrAppOption['app_environment'];
+        return $this->arrAppOption['environment'];
     }
 
     /**
@@ -600,6 +617,9 @@ class project extends container implements iproject
      */
     protected function setPath()
     {
+        // 框架路径
+        $this->strFrameworkPath = dirname(__DIR__);
+
         // 基础路径
         $this->strPath = dirname(__DIR__, 6);
 
