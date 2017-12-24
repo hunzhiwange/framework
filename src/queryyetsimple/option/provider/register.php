@@ -56,7 +56,7 @@ class register extends provider
     {
         return [
             'option' => [
-                'queryyetsimple\optionoption',
+                'queryyetsimple\option\option',
                 'queryyetsimple\option\ioption'
             ],
             'load' => 'queryyetsimple\option\load'
@@ -70,7 +70,7 @@ class register extends provider
      */
     protected function option()
     {
-        $this->singleton('option', function ($oProject) {
+        $this->singleton('option', function () {
             return new option();
         });
     }

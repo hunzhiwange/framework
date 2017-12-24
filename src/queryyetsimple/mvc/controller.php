@@ -145,10 +145,12 @@ abstract class controller implements icontroller
     public function deleteAssign($mixName)
     {
         $this->checkView();
+
         call_user_func_array([
             $this->objView,
             'deleteAssign'
         ], func_get_args());
+        
         return $this;
     }
 

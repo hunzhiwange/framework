@@ -323,7 +323,7 @@ class project extends container implements iproject
      */
     public function debug()
     {
-        return $this->arrAppOption['app_debug'] ?? false;
+        return $this->arrAppOption['debug'] ?? false;
     }
 
     /**
