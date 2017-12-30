@@ -247,9 +247,9 @@ abstract class command extends SymfonyCommand
      * @param string $strFormat
      * @return string
      */
-    protected function time($strMessage, $strFormat = 'H:i:s')
+    public function time($strMessage, $strFormat = 'H:i:s')
     {
-        return sprintf('[%s]', date($strFormat)) . $strMessage;
+        return ($strFormat ? sprintf('[%s]', date($strFormat)) : '') . $strMessage;
     }
     
     /**

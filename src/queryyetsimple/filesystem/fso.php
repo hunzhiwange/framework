@@ -76,7 +76,7 @@ class fso
                 if (isset($sDir[$nKey + 1]) && is_dir($sCurDir . $sDir[$nKey + 1])) {
                     continue;
                 }
-                @mkdir($sCurDir, $nMode);
+                mkdir($sCurDir, $nMode);
             }
         }
 

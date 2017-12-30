@@ -19,22 +19,24 @@
  */
 namespace queryyetsimple\swoole\console;
 
+use Exception;
 use queryyetsimple\{
     filesystem\fso,
     console\option,
     console\command,
-    console\argument
+    console\argument,
+    swoole\http\server as http_server
 };
 
 /**
- * swoole 服务启动
+ * swoole 服务停止
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.12.21
+ * @since 2017.12.26
  * @version 1.0
  */
-class server extends command
+class stop extends command
 {
 
     /**
@@ -42,14 +44,14 @@ class server extends command
      *
      * @var string
      */
-    protected $strName = 'swoole:server';
+    protected $strName = 'swoole:stop';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Start swoole server.';
+    protected $strDescription = 'Stop swoole service process.';
 
     /**
      * 响应命令
@@ -59,11 +61,11 @@ class server extends command
     public function handle()
     {
         $this->warn($this->getVersion());
-
-        $objServer = app('swoole.' . $this->argument('type').'.server');
+        
+        $objServer = app('swoole.http.server');
         $objServer->setCommand($this);
         $objServer->options($this->parseOption());
-        $objServer->startServer();
+        $objServer->stopServer();
     }
 
     /**
@@ -90,7 +92,7 @@ class server extends command
      */
     protected function getVersion()
     {
-        return 'Swoole ' . ucfirst($this->argument('type')) . ' Server Version ' . app()->version() . PHP_EOL;
+        return 'The Stop of Swoole ' . ucfirst($this->argument('type')) . ' Server Version ' . app()->version() . PHP_EOL;
     }
 
     /**
@@ -137,20 +139,6 @@ class server extends command
                 null,
                 option::VALUE_OPTIONAL,
                 'The save path of process',
-                null
-            ],
-            [
-                'worker_num',
-                null,
-                option::VALUE_OPTIONAL,
-                'Set the number of worker processes',
-                null
-            ],
-            [
-                'daemonize',
-                null,
-                option::VALUE_OPTIONAL,
-                'Daemon process',
                 null
             ]
         ];

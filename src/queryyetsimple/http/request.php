@@ -1330,12 +1330,28 @@ class request implements iarray, ArrayAccess
     }
 
     /**
-     * PHP 运行模式命令行
-     *
+     * PHP 运行模式命令行, 兼容 swoole http service
+     * Swoole http 服务器也以命令行运行
+     * 
      * @see http://php.net/manual/zh/function.php-sapi-name.php
      * @return boolean
      */
     public function isCli()
+    {
+        if(isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == 'swoole-http-server') {
+            return false;
+        }
+
+        return PHP_SAPI == 'cli';
+    }
+
+    /**
+     * PHP 运行模式命令行
+     * 
+     * @see http://php.net/manual/zh/function.php-sapi-name.php
+     * @return boolean
+     */
+    public function isCliReal()
     {
         return PHP_SAPI == 'cli';
     }
@@ -2433,7 +2449,7 @@ class request implements iarray, ArrayAccess
     protected function setGlobalServer($sKey, $mixValue)
     {
         $this->initGlobalServer();
-        $this->arrServer[$sKey] = $mixValue;
+        $this->arrServer[strtoupper($sKey)] = $mixValue;
         return $this;
     }
 

@@ -19,7 +19,12 @@
  */
 namespace queryyetsimple\swoole\provider;
 
-use queryyetsimple\support\provider;
+use queryyetsimple\{
+    swoole\server,
+    support\provider,
+    swoole\http\server as http_server,
+    swoole\websocket\server as websocket_server
+};
 
 /**
  * swoole 服务提供者
@@ -31,7 +36,7 @@ use queryyetsimple\support\provider;
  */
 class register extends provider
 {
-
+    
     /**
      * 注册服务
      *
@@ -39,8 +44,11 @@ class register extends provider
      */
     public function register()
     {
+        $this->swooleServer();
+        $this->swooleHttpServer();
+        $this->swooleWebsocketServer();
     }
-
+    
     /**
      * bootstrap
      *
@@ -50,7 +58,7 @@ class register extends provider
     {
         $this->console();
     }
-
+    
     /**
      * 可用服务提供者
      *
@@ -59,7 +67,57 @@ class register extends provider
     public static function providers()
     {
         return [
+            'swoole.default.server' => [
+                'qys\swoole\server',
+                'queryyetsimple\swoole\server'
+            ],
+            'swoole.http.server' => [
+                'qys\swoole\http\server',
+                'queryyetsimple\swoole\http\server'
+            ],
+            'swoole.websocket.server' => [
+                'qys\swoole\websocket\server',
+                'queryyetsimple\swoole\websocket\server'
+            ]
         ];
+    }
+
+    /**
+     * 注册 swoole 服务
+     *
+     * @return void
+     */
+    protected function swooleServer()
+    {
+        $this->singleton('swoole.default.server', function ($oProject) {
+            return new server($oProject['option']['swoole\server']);
+        });
+    }
+
+    /**
+     * 注册 swoole http 服务
+     *
+     * @return void
+     */
+    protected function swooleHttpServer()
+    {
+        $this->singleton('swoole.http.server', function ($oProject) {
+            $arrOption = array_merge($oProject['option']['swoole\server'], $oProject['option']['swoole\http_server']);
+            return new http_server($oProject['router'], $oProject['request'], $oProject['response'], $arrOption);
+        });
+    }
+    
+    /**
+     * 注册 swoole websocket 服务
+     *
+     * @return void
+     */
+    protected function swooleWebsocketServer()
+    {
+        $this->singleton('swoole.websocket.server', function ($oProject) {
+            $arrOption = array_merge($oProject['option']['swoole\server'], $oProject['option']['swoole\websocket_server']);
+            return new websocket_server($oProject['router'], $oProject['request'], $oProject['response'], $arrOption);
+        });
     }
 
     /**

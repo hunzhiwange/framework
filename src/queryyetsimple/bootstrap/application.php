@@ -163,14 +163,18 @@ class application
             date_default_timezone_set($this->objProject['option']['time_zone']);
         }
 
+        if ($this->objProject->development()) {
+            assert::open(true);
+        }
+
+        if(PHP_SAPI == 'cli') {
+            return;
+        }
+
         if (function_exists('gz_handler') && $this->objProject['option']['start_gzip']) {
             ob_start('gz_handler');
         } else {
             ob_start();
-        }
-
-        if ($this->objProject->development()) {
-            assert::open(true);
         }
     }
 
@@ -182,7 +186,7 @@ class application
     protected function loadBootstrapRun()
     {
         if (is_file(($strBootstrap = env('app_bootstrap') ?  : $this->objProject->pathApplication() . '/' . $this->strApp . '/bootstrap.php'))) {
-            require $strBootstrap;
+            require_once $strBootstrap;
         }
     }
 

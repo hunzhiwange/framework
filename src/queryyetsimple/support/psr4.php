@@ -21,7 +21,6 @@ namespace queryyetsimple\support;
 
 use RuntimeException;
 use Composer\Autoload\ClassLoader;
-use queryyetsimple\filesystem\fso;
 
 /**
  * psr4 自动载入规范
@@ -182,29 +181,15 @@ class psr4 implements ipsr4
     public function shortNamespaceMap($strClass)
     {
         $strTryMapClass = str_replace($this->strShortNamespace . '\\', static::DEFAULT_NAMESPACE . '\\', $strClass);
-
+        
         if (class_exists($strTryMapClass) || interface_exists($strTryMapClass)) {
-            $strSandboxCache = $this->strSandboxCacheDir . '/' . str_replace('\\', '_', $strClass) . '.php';
-
-            if (is_file($strSandboxCache)) {
-                require_once $strSandboxCache;
-                return;
-            }
-
             $arrClass = explode('\\', $strClass);
             $strDefinedClass = array_pop($arrClass);
             $strNamespace = implode('\\', $arrClass);
 
-            $strSandboxContent = sprintf('<?php namespace %s; %s %s extends  \%s {}', $strNamespace, class_exists($strTryMapClass) ? 'class' : 'interface', $strDefinedClass, $strTryMapClass);
+            $strSandboxContent = sprintf('namespace %s; %s %s extends  \%s {}', $strNamespace, class_exists($strTryMapClass) ? 'class' : 'interface', $strDefinedClass, $strTryMapClass);
 
-            if (! is_dir(dirname($strSandboxCache))) {
-                fso::createDirectory(dirname($strSandboxCache));
-            }
-
-            if (! file_put_contents($strSandboxCache, $strSandboxContent)) {
-                throw new RuntimeException(sprintf('Dir %s do not have permission.', dirname($strSandboxCache)));
-            }
-            require_once $strSandboxCache;
+            eval($strSandboxContent);
         }
     }
 }

@@ -289,7 +289,8 @@ class project extends container implements iproject
             'option',
             'i18n',
             'router',
-            'console'
+            'console',
+            'swoole'
         ];
         if (! in_array($strType, $arrType)) {
             throw new Exception(sprintf('Application cache type %s not support', $strType));

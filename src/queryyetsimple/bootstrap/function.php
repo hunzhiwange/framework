@@ -644,6 +644,19 @@ if (! function_exists('path_log_cache')) {
     }
 }
 
+if (! function_exists('path_swoole_cache')) {
+    /**
+     * 取得项目当前应用 swoole 缓存路径
+     *
+     * @param string $strPath
+     * @return string
+     */
+    function path_swoole_cache($strPath = '')
+    {
+        return project()->pathApplicationCache('swoole') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
 if (! function_exists('path_table_cache')) {
     /**
      * 取得项目当前应用数据表缓存路径

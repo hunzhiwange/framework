@@ -1731,7 +1731,7 @@ class router
      *
      * @return void
      */
-    protected function initRequest()
+    public function initRequest()
     {
         $this->setPathInfo(null);
         $this->strApp = null;

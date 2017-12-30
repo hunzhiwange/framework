@@ -137,7 +137,7 @@ class bootstrap
         
         // 载入 project 引导文件
         if (is_file(($strBootstrap = $this->objProject->pathCommon() . '/bootstrap.php'))) {
-            require $strBootstrap;
+            require_once $strBootstrap;
         }
     }
     

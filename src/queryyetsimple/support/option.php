@@ -39,7 +39,7 @@ trait option
      * @param mixed $mixValue
      * @return $this
      */
-    public function option($strName, $mixValue)
+    public function option(string $strName, $mixValue)
     {
         if (! is_string($strName)) {
             throw new InvalidArgumentException('Option set name must be a string.');
@@ -55,7 +55,7 @@ trait option
      * @param array $arrValue
      * @return $this
      */
-    public function optionArray($strName, array $arrValue)
+    public function optionArray(string $strName, array $arrValue)
     {
         return $this->option($strName, array_merge($this->getOption($strName), $arrValue));
     }
@@ -67,12 +67,12 @@ trait option
      * @param mixed $mixValue
      * @return $this
      */
-    public function options($arrOption = [])
+    public function options(array $arrOption = [])
     {
         if (! $arrOption) {
             return $this;
         }
-        foreach (( array ) $arrOption as $strName => $mixValue) {
+        foreach ($arrOption as $strName => $mixValue) {
             $this->option($strName, $mixValue);
         }
         return $this;
@@ -85,7 +85,7 @@ trait option
      * @param mixed $mixDefault
      * @return mixed
      */
-    public function getOption($strName, $mixDefault = null)
+    public function getOption(string $strName, $mixDefault = null)
     {
         return $this->arrOption[$strName] ?? $mixDefault;
     }
@@ -96,8 +96,42 @@ trait option
      * @param array $arrOption
      * @return mixed
      */
-    public function getOptions($arrOption = [])
+    public function getOptions(array $arrOption = [])
     {
         return $arrOption ? array_merge($this->arrOption, $arrOption) : $this->arrOption;
+    }
+
+    /**
+     * 删除单个配置
+     *
+     * @param string $strName
+     * @return $this
+     */
+    public function deleteOption(string $strName)
+    {
+        if (! is_string($strName)) {
+            throw new InvalidArgumentException('Option set name must be a string.');
+        }
+        if(isset($this->arrOption[$strName])) {
+            unset($this->arrOption[$strName]);
+        }
+        return $this;
+    }
+
+    /**
+     * 删除多个配置
+     *
+     * @param array $arrOption
+     * @return $this
+     */
+    public function deleteOptions(array $arrOption = [])
+    {
+        if (! $arrOption) {
+            return $this;
+        }
+        foreach ($arrOption as $strOption) {
+            $this->deleteOption($strOption);
+        }
+        return $this;
     }
 }
