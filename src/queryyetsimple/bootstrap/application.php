@@ -52,7 +52,7 @@ class application
      * @var string
      */
     const INIT_APP = '~_~';
-
+    
     /**
      * 项目配置
      *

@@ -52,7 +52,6 @@ class server
      */
     protected $objServer;
 
-
     /**
      * 命令行工具
      * 

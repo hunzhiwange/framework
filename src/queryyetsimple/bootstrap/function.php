@@ -501,14 +501,14 @@ if (! function_exists('path_framework')) {
     }
 }
 
-if (! function_exists('path_applications')) {
+if (! function_exists('path_application')) {
     /**
      * 取得项目应用路径
      *
      * @param string $strPath
      * @return string
      */
-    function path_applications($strPath = '')
+    function path_application($strPath = '')
     {
         return project()->pathApplication() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }

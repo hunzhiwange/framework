@@ -40,6 +40,7 @@ class console
      */
     public static function trace()
     {
+        return;
         // swoole http server 可以调试
         if (PHP_SAPI == 'cli' && ! (isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == 'swoole-http-server')) {
             return;
