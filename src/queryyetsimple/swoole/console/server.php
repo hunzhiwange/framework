@@ -122,36 +122,31 @@ class server extends command
                 'host',
                 null,
                 option::VALUE_OPTIONAL,
-                'The host to listen on',
-                null
+                'The host to listen on'
             ],
             [
                 'port',
                 null,
                 option::VALUE_OPTIONAL,
-                'The port to listen on',
-                null
+                'The port to listen on'
             ],
             [
                 'pid_path',
                 null,
                 option::VALUE_OPTIONAL,
-                'The save path of process',
-                null
+                'The save path of process'
             ],
             [
                 'worker_num',
                 null,
                 option::VALUE_OPTIONAL,
-                'Set the number of worker processes',
-                null
+                'Set the number of worker processes'
             ],
             [
                 'daemonize',
                 null,
                 option::VALUE_OPTIONAL,
-                'Daemon process',
-                null
+                'Daemon process'
             ]
         ];
     }

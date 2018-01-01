@@ -24,8 +24,7 @@ use queryyetsimple\{
     filesystem\fso,
     console\option,
     console\command,
-    console\argument,
-    swoole\http\server as http_server
+    console\argument
 };
 
 /**
@@ -62,7 +61,7 @@ class restart extends command
     {
         $this->warn($this->getVersion());
         
-        $objServer = app('swoole.http.server');
+        $objServer = app('swoole.' . $this->argument('type').'.server');
         $objServer->setCommand($this);
         $objServer->options($this->parseOption());
         $objServer->restartServer();
@@ -76,7 +75,7 @@ class restart extends command
     protected function parseOption() :array {
         $arrOption = [];
 
-        foreach(['host', 'port', 'pid_path', 'worker_num', 'daemonize'] as $sKey) {
+        foreach(['host', 'port', 'pid_path'] as $sKey) {
             if(! is_null($this->option($sKey))) {
                 $arrOption[$sKey] = $this->option($sKey);
             }
@@ -124,22 +123,19 @@ class restart extends command
                 'host',
                 null,
                 option::VALUE_OPTIONAL,
-                'The host to listen on',
-                null
+                'The host to listen on'
             ],
             [
                 'port',
                 null,
                 option::VALUE_OPTIONAL,
-                'The port to listen on',
-                null
+                'The port to listen on'
             ],
             [
                 'pid_path',
                 null,
                 option::VALUE_OPTIONAL,
-                'The save path of process',
-                null
+                'The save path of process'
             ]
         ];
     }
