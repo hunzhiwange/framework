@@ -81,9 +81,7 @@ class register extends provider
     protected function i18n()
     {
         $this->singleton('i18n', function ($oProject) {
-            return new i18n($oProject['cookie'], array_merge($oProject['option']['i18n\\'], [
-                'app_name' => $oProject['app_name']
-            ]));
+            return new i18n($oProject['option']['i18n\default']);
         });
     }
 

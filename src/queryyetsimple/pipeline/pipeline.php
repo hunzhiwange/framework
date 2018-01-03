@@ -19,6 +19,7 @@
  */
 namespace queryyetsimple\pipeline;
 
+use Closure;
 use InvalidArgumentException;
 use queryyetsimple\support\icontainer;
 
@@ -108,7 +109,6 @@ class pipeline implements ipipeline
     public function through($mixStages)
     {
         $mixStages = is_array($mixStages) ? $mixStages : func_get_args();
-
         foreach ($mixStages as $mixStage) {
             $this->stage($mixStage);
         }
@@ -131,54 +131,93 @@ class pipeline implements ipipeline
      * 执行管道工序响应结果
      *
      * @param callable $calEnd
-     * @return mixed
+     * @since 2018.01.03
+     * @return void
      */
     public function then(callable $calEnd)
     {
-        $calEnd = function ($mixPassed) use ($calEnd) {
-            return call_user_func($calEnd, $mixPassed);
-        };
-        $arrStage = array_reverse($this->arrStage);
+        $arrStage = $this->arrStage;
+        $arrStage[] = $calEnd;
+        $objGenerator = $this->stageGenerator($arrStage);
+        unset($arrStage);
+
         $arrPassedExtend = $this->arrPassedExtend;
         array_unshift($arrPassedExtend, $this->mixPassed);
+        array_unshift($arrPassedExtend, $objGenerator);
 
-        return call_user_func_array(array_reduce($arrStage, $this->stageCallback(), $calEnd), $arrPassedExtend);
+        $this->traverseGenerator(...$arrPassedExtend);
+    }
+
+    /**
+     * 遍历迭代器
+     *
+     * @param \Generator $objGenerator
+     * @since 2018.01.03
+     * @return void
+     */
+    protected function traverseGenerator($objGenerator) {
+        if(! $objGenerator->valid() || $objGenerator->next() || ! $objGenerator->valid()) {
+           return;
+        }
+
+        $aArgs = func_get_args();
+        array_shift($aArgs);
+        array_unshift($aArgs, function() use($objGenerator) {
+            $aArgs = func_get_args();
+            array_unshift($aArgs, $objGenerator);
+            $this->traverseGenerator(...$aArgs);
+        });
+
+        $objGenerator->current()(...$aArgs);
+    }
+
+    /**
+     * 工序迭代器
+     *
+     * @param array $arrStage
+     * @return \Generator
+     */
+    protected function stageGenerator(array $arrStage) {
+        // 添加一个空的迭代器，第一次自动移除
+        array_unshift($arrStage, null);
+
+        foreach ($arrStage as $sStage) {
+           yield $this->stageCallback($sStage);
+        }
     }
 
     /**
      * 工序回调
      *
-     * @return \Closure
+     * @param mixed $mixStage
+     * @return null|callable
      */
-    protected function stageCallback()
-    {
-        return function ($calResult, $mixStage) {
-            return function ($mixPassed) use ($calResult, $mixStage) {
-                $arrArgs = func_get_args();
-                array_unshift($arrArgs, $calResult);
+    protected function stageCallback($mixStage)
+    {   
+        if(is_null($mixStage)) {
+            return;
+        }
 
-                if (! is_string($mixStage) && is_callable($mixStage)) {
-                    return call_user_func_array($mixStage, $arrArgs);
-                } else {
-                    list($strStage, $arrParams) = $this->parse($mixStage);
+        if (is_callable($mixStage)) {
+            return $mixStage;
+        } else {
+            list($strStage, $arrParams) = $this->parse($mixStage);
 
-                    if (strpos($strStage, '@') !== false) {
-                        list($strStage, $strMethod) = explode('@', $strStage);
-                    } else {
-                        $strMethod = 'handle';
-                    }
+            if (strpos($strStage, '@') !== false) {
+                list($strStage, $strMethod) = explode('@', $strStage);
+            } else {
+                $strMethod = 'handle';
+            }
 
-                    if (($objStage = $this->objContainer->make($strStage)) === false) {
-                        throw new InvalidArgumentException(sprintf('Stage %s is not valid.', $strStage));
-                    }
+            if (($objStage = $this->objContainer->make($strStage)) === false) {
+                throw new InvalidArgumentException(sprintf('Stage %s is not valid.', $strStage));
+            }
 
-                    return call_user_func_array([
-                        $objStage,
-                        $strMethod
-                    ], array_merge($arrArgs, $arrParams));
-                }
-            };
-        };
+            return [
+                $objStage,
+                $strMethod
+            ];
+        }
     }
 
     /**
@@ -196,7 +235,7 @@ class pipeline implements ipipeline
 
         return [
             $strName,
-                $arrArgs
+            $arrArgs
         ];
     }
 }

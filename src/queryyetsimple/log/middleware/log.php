@@ -60,12 +60,12 @@ class log
      *
      * @param \queryyetsimple\http\request $objRequest
      * @param \queryyetsimple\http\response $mixResponse
-     * @return mixed
+     * @return void
      */
     public function terminate(Closure $calNext, request $objRequest, response $objResponse)
     {
         $this->saveLog();
-        return $calNext($objRequest, $objResponse);
+        $calNext($objRequest, $objResponse);
     }
 
     /**

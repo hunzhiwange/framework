@@ -126,10 +126,10 @@ class view implements iview
     public function deleteAssign($mixName)
     {
         $this->checkTheme();
-        call_user_func_array([
-            $this->objTheme,
-            'deleteVar'
-        ], func_get_args());
+
+        $arrArgs = func_get_args();
+        $this->objTheme->deleteVar(...$arrArgs);
+
         return $this;
     }
 

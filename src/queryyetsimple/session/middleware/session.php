@@ -60,12 +60,12 @@ class session
      *
      * @param \Closure $calNext
      * @param \queryyetsimple\http\request $objRequest
-     * @return mixed
+     * @return void
      */
     public function handle(Closure $calNext, request $objRequest)
     {
         $this->startSession();
-        return $calNext($objRequest);
+        $calNext($objRequest);
     }
 
     /**

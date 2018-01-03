@@ -20,10 +20,6 @@
 namespace queryyetsimple\i18n;
 
 use InvalidArgumentException;
-use queryyetsimple\{
-    support\option,
-    cookie\icookie
-};
 
 /**
  * 国际化组件
@@ -35,28 +31,20 @@ use queryyetsimple\{
  */
 class i18n implements ii18n
 {
-    use option;
-
-    /**
-     * cookie
-     *
-     * @var \queryyetsimple\cookie\icookie
-     */
-    protected $objCookie;
 
     /**
      * 当前语言上下文
      *
      * @var string
      */
-    protected $sI18nName;
+    protected $sI18n;
 
     /**
      * 默认语言上下文
      *
      * @var string
      */
-    protected $sDefaultI18nName = 'zh-cn';
+    protected $sDefault = 'zh-cn';
 
     /**
      * 语言数据
@@ -66,44 +54,14 @@ class i18n implements ii18n
     protected $arrText = [];
 
     /**
-     * 语言 cookie
-     *
-     * @var string
-     */
-    protected $sCookieName = 'i18n';
-
-    /**
-     * 国际化参数名
-     *
-     * @var string
-     */
-    const ARGS = '~@i18n';
-
-    /**
-     * 配置
-     *
-     * @var array
-     */
-    protected $arrOption = [
-        'on' => true,
-        'switch' => true,
-        'cookie_app' => false,
-        'default' => 'zh-cn',
-        'auto_accept' => true,
-        'app_name' => 'home'
-    ];
-
-    /**
      * 构造函数
      *
-     * @param \queryyetsimple\cookie\icookie $objCookie
-     * @param array $arrOption
+     * @param string $sI18n
      * @return void
      */
-    public function __construct(icookie $objCookie, array $arrOption = [])
+    public function __construct(string $sI18n)
     {
-        $this->objCookie = $objCookie;
-        $this->options($arrOption);
+        $this->sI18n = $sI18n;
     }
 
     /**
@@ -118,15 +76,8 @@ class i18n implements ii18n
             return '';
         }
 
-        // 未开启直接返回
-        if (! $this->getOption('on')) {
-            return count($arr) > 1 ? sprintf(...$arr) : $arr[0];
-        }
-
-        // 开启读取语言包
-        $sContext = $this->getContext();
         $sValue = $arr[0];
-        $sValue = $this->arrText[$sContext][$sValue] ?? $sValue;
+        $sValue = $this->arrText[$sContext][$this->getI18n()] ?? $sValue;
         if (count($arr) > 1) {
             $arr[0] = $sValue;
             $sValue = sprintf(...$arr);
@@ -147,123 +98,60 @@ class i18n implements ii18n
     }
 
     /**
-     * 添加语言包
+     * 添加语言包语句
      *
      * @param string $sI18nName 语言名字
      * @param array $arrData 语言包数据
      * @return void
      */
-    public function addI18n($sI18nName, $arrData = [])
+    public function addText(string $sI18n, array $arrData = [])
     {
-        if (! $sI18nName || ! is_string($sI18nName)) {
-            throw new InvalidArgumentException('I18n name not allowed empty.');
-        }
-
-        if (array_key_exists($sI18nName, $this->arrText)) {
-            $this->arrText[$sI18nName] = array_merge($this->arrText[$sI18nName], $arrData);
+        if (array_key_exists($sI18n, $this->arrText)) {
+            $this->arrText[$sI18n] = array_merge($this->arrText[$sI18n], $arrData);
         } else {
-            $this->arrText[$sI18nName] = $arrData;
+            $this->arrText[$sI18n] = $arrData;
         }
     }
 
     /**
-     * 自动分析语言上下文环境
+     * 设置当前语言包
+     *
+     * @param string $sI18n
+     * @return void
+     */
+    public function setI18n(string $sI18n)
+    {
+        $this->sI18n = $sI18n;
+    }
+
+    /**
+     * 获取当前语言包
      *
      * @return string
      */
-    public function parseContext()
+    public function getI18n()
     {
-        if (! $this->getOption('switch')) {
-            $sI18nSet = $this->getOption('default');
-        } else {
-            if ($this->getOption('cookie_app') === true) {
-                $sCookieName = $this->getOption('app_name') . '_i18n';
-            } else {
-                $sCookieName = 'i18n';
-            }
-            $this->setCookieName($sCookieName);
-
-            if (isset($_GET[static::ARGS])) {
-                $sI18nSet = $_GET[static::ARGS];
-                $this->objCookie->set($sCookieName, $sI18nSet);
-            } elseif ($sCookieName) {
-                $sI18nSet = $this->objCookie->get($sCookieName);
-                if (empty($sI18nSet)) {
-                    $sI18nSet = $this->getOption('default');
-                }
-            } elseif ($this->getOption('auto_accept') && isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-                preg_match('/^([a-z\-]+)/i', $_SERVER['HTTP_ACCEPT_LANGUAGE'], $arrMatches);
-                $sI18nSet = $arrMatches[1];
-            } else {
-                $sI18nSet = $this->getOption('default');
-            }
-        }
-        $this->setDefaultContext($this->getOption('default'));
-        $this->setContext($sI18nSet);
-
-        return $sI18nSet;
+        return $this->sI18n;
     }
 
     /**
-     * 设置当前语言包上下文环境
+     * 设置默认语言包
      *
      * @param string $sI18nName
      * @return void
      */
-    public function setContext($sI18nName)
+    public function setDefault(string $sI18n)
     {
-        $this->sI18nName = $sI18nName;
+        $this->sDefault = $sI18n;
     }
 
     /**
-     * 设置当前语言包默认上下文环境
-     *
-     * @param string $sI18nName
-     * @return void
-     */
-    public function setDefaultContext($sI18nName)
-    {
-        $this->sDefaultI18nName = $sI18nName;
-    }
-
-    /**
-     * 设置 cookie 名字
-     *
-     * @param string $sCookieName cookie名字
-     * @return void
-     */
-    public function setCookieName($sCookieName)
-    {
-        return $this->sCookieName == $sCookieName;
-    }
-
-    /**
-     * 获取当前语言包默认上下文环境
+     * 获取默认语言包
      *
      * @return string
      */
-    public function getDefaultContext()
+    public function getDefault()
     {
-        return $this->sDefaultI18nName;
-    }
-
-    /**
-     * 获取当前语言包 cookie 名字
-     *
-     * @return string
-     */
-    public function getCookieName()
-    {
-        return $this->sCookieName;
-    }
-
-    /**
-     * 获取当前语言包上下文环境
-     *
-     * @return string
-     */
-    public function getContext()
-    {
-        return $this->sI18nName;
+        return $this->sDefault;
     }
 }

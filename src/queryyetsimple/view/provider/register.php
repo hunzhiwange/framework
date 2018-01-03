@@ -117,6 +117,8 @@ class register extends provider
     protected function viewTheme()
     {
         $this->singleton('view.theme', function ($oProject) {
+            $objOption = $oProject['option'];
+
             $arrOption = [];
             foreach ([
                 'cache_lifetime',
@@ -124,30 +126,30 @@ class register extends provider
                 'controlleraction_depr',
                 'cache_children',
                 'switch',
-                'default',
+                'theme_name',
                 'cookie_app',
                 'theme_path_default'
             ] as $strOption) {
-                $arrOption[$strOption] = $oProject['option']->get('view\\' . $strOption);
+                $arrOption[$strOption] = $objOption[$strOption];
             }
 
             $arrOption['app_development'] = $oProject->development();
-            $arrOption['app_name'] = $oProject['app_name'];
             $arrOption['controller_name'] = $oProject['controller_name'];
             $arrOption['action_name'] = $oProject['action_name'];
             $arrOption['theme_cache_path'] = $oProject->pathApplicationCache('theme') . '/' . $oProject['app_name'];
+            $arrOption['theme_path'] = $oProject->pathApplicationDir('theme') . '/' . $objOption->get('view\theme_name');
 
             if (phpui()) {
                 $arrOption['suffix'] = '.php';
-                $oTheme = new phpui_theme($oProject['cookie'], $arrOption);
+                $oTheme = new phpui_theme($arrOption);
             } else {
                 theme::setParseResolver(function () use ($oProject) {
                     return $oProject['view.parser'];
                 });
-                $oTheme = new theme($oProject['cookie'], $arrOption);
+                $oTheme = new theme($arrOption);
             }
 
-            return $oTheme->parseContext($oProject->pathApplicationDir('theme'));
+            return $oTheme;
         });
     }
 }

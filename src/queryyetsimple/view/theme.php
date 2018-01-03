@@ -21,11 +21,7 @@ namespace queryyetsimple\view;
 
 use RuntimeException;
 use InvalidArgumentException;
-use queryyetsimple\{
-    support\option,
-    support\assert,
-    cookie\icookie
-};
+use queryyetsimple\support\option;
 
 /**
  * 模板处理类
@@ -54,20 +50,6 @@ class theme implements itheme
     protected static $calParseResolver;
 
     /**
-     * cookie 处理
-     *
-     * @var \queryyetsimple\cookie\icookie
-     */
-    protected $objCookie;
-
-    /**
-     * 主题参数名
-     *
-     * @var string
-     */
-    const ARGS = '~@theme';
-
-    /**
      * 变量值
      *
      * @var array
@@ -81,31 +63,25 @@ class theme implements itheme
      */
     protected $arrOption = [
         'app_development' => false,
-        'app_name' => 'home',
         'controller_name' => 'index',
         'action_name' => 'index',
         'controlleraction_depr' => '_',
-        'theme_name' => '',
+        'theme_name' => 'default',
         'theme_path' => '',
         'theme_path_default' => '',
         'suffix' => '.html',
         'theme_cache_path' => '',
-        'cache_children' => false,
-        'switch' => true,
-        'default' => 'default',
-        'cookie_app' => false
+        'cache_children' => false
     ];
 
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\cookie\icookie $objCookie
      * @param array $arrOption
      * @return void
      */
-    public function __construct(icookie $objCookie, array $arrOption = [])
+    public function __construct(array $arrOption = [])
     {
-        $this->objCookie = $objCookie;
         $this->options($arrOption);
     }
 
@@ -115,9 +91,8 @@ class theme implements itheme
      * @param callable $calParseResolver
      * @return void
      */
-    public static function setParseResolver($calParseResolver)
+    public static function setParseResolver(callable $calParseResolver)
     {
-        assert::callback($calParseResolver);
         static::$calParseResolver = $calParseResolver;
     }
 
@@ -157,7 +132,7 @@ class theme implements itheme
      * @param string $sMd5 源文件地址 md5 标记
      * @return string
      */
-    public function display($sFile, $bDisplay = true, $strExt = '', $sTargetCache = '', $sMd5 = '')
+    public function display(string $sFile, bool $bDisplay = true, string $strExt = '', string $sTargetCache = '', string $sMd5 = '')
     {
         // 加载视图文件
         $sFile = $this->parseDisplayFile($sFile, $strExt);
@@ -211,10 +186,10 @@ class theme implements itheme
      */
     public function setVar($mixName, $mixValue = null)
     {
-        if (is_string($mixName)) {
-            $this->arrVar[$mixName] = $mixValue;
-        } elseif (is_array($mixName)) {
+        if (is_array($mixName)) {
             $this->arrVar = array_merge($this->arrVar, $mixName);
+        } else {
+            $this->arrVar[$mixName] = $mixValue;
         }
     }
 
@@ -224,7 +199,7 @@ class theme implements itheme
      * @param string|null $sName
      * @return mixed
      */
-    public function getVar($sName = null)
+    public function getVar(string $sName = null)
     {
         if (is_null($sName)) {
             return $this->arrVar;
@@ -267,7 +242,7 @@ class theme implements itheme
      * @param string $sFile
      * @return string
      */
-    public function getCachePath($sFile)
+    public function getCachePath(string $sFile)
     {
         if (! $this->getOption('theme_cache_path')) {
             throw new RuntimeException('Theme cache path must be set');
@@ -284,51 +259,13 @@ class theme implements itheme
     }
 
     /**
-     * 自动分析视图上下文环境
-     *
-     * @param string $strThemePath
-     * @return void
-     */
-    public function parseContext($strThemePath)
-    {
-        if (! $strThemePath) {
-            throw new RuntimeException('Theme path must be set');
-        }
-
-        if (! $this->getOption('switch')) {
-            $sThemeSet = $this->getOption('default');
-        } else {
-            if ($this->getOption('cookie_app') === true) {
-                $sCookieName = $this->getOption('app_name') . '_view';
-            } else {
-                $sCookieName = 'view';
-            }
-
-            if (isset($_GET[static::ARGS])) {
-                $sThemeSet = $_GET[static::ARGS];
-                $this->objCookie->set($sCookieName, $sThemeSet);
-            } else {
-                if ($this->objCookie->get($sCookieName)) {
-                    $sThemeSet = $this->objCookie->get($sCookieName);
-                } else {
-                    $sThemeSet = $this->getOption('default');
-                }
-            }
-        }
-
-        $this->arrOption['theme_name'] = $sThemeSet;
-        $this->arrOption['theme_path'] = $strThemePath . '/' . $sThemeSet;
-        return $this;
-    }
-
-    /**
      * 分析展示的视图文件
      *
      * @param string $sFile 视图文件地址
      * @param string $strExt 后缀
      * @return string|void
      */
-    protected function parseDisplayFile($sFile, $strExt = '')
+    protected function parseDisplayFile(string $sFile, string $strExt = '')
     {
         // 加载视图文件
         if (! is_file($sFile)) {
@@ -354,7 +291,7 @@ class theme implements itheme
      * @param string $sExt 扩展名
      * @return string
      */
-    protected function parseFile($sTpl, $sExt = '')
+    protected function parseFile(string $sTpl, string $sExt = '')
     {
         $calHelp = function ($sContent) {
             return str_replace([
@@ -368,7 +305,7 @@ class theme implements itheme
 
         $sTpl = trim(str_replace('->', '.', $sTpl));
 
-        // 完整路径 或者变量
+        // 完整路径或者变量
         if (pathinfo($sTpl, PATHINFO_EXTENSION) || strpos($sTpl, '$') === 0) {
             return $calHelp($sTpl);
         } elseif (strpos($sTpl, '(') !== false) { // 存在表达式
@@ -383,7 +320,7 @@ class theme implements itheme
                 $sTpl = $this->getOption('controller_name') . $this->getOption('controlleraction_depr') . $this->getOption('action_name');
             }
 
-            if (strpos($sTpl, '@')) { // 分析主题
+            if (strpos($sTpl, '@') !== false) { // 分析主题
                 $arrArray = explode('@', $sTpl);
                 $sTheme = array_shift($arrArray);
                 $sTpl = array_shift($arrArray);
@@ -404,7 +341,7 @@ class theme implements itheme
      * @param string $sTpl 文件地址
      * @return string
      */
-    protected function parseDefaultFile($sTpl)
+    protected function parseDefaultFile(string $sTpl)
     {
         if (is_file($sTpl)) {
             return $sTpl;
@@ -446,7 +383,7 @@ class theme implements itheme
      * @param string $sCachePath
      * @return boolean
      */
-    protected function isCacheExpired($sFile, $sCachePath)
+    protected function isCacheExpired(string $sFile, string $sCachePath)
     {
         // 开启调试
         if ($this->getOption('app_development')) {
@@ -483,7 +420,7 @@ class theme implements itheme
      * @param string $sContent
      * @return string
      */
-    protected function fixIe($sContent)
+    protected function fixIe(string $sContent)
     {
         if ($this->getOption('cache_children') === true) {
             $sContent = preg_replace("/<!--<\#\#\#\#incl\*(.*?)\*ude\#\#\#\#>-->/", '', $sContent);

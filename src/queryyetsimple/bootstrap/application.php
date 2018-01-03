@@ -201,16 +201,17 @@ class application
             return;
         }
 
-        $sI18nSet = $this->objProject['i18n']->parseContext();
-        $this->objProject['request']->setLangset($sI18nSet);
-        if ($this->objProject['option']['i18n\develop'] == $sI18nSet) {
+        if ($this->objProject['option']['i18n\develop'] == $this->objProject['option']['i18n\default']) {
             return;
         }
+
+        $sI18nSet = $this->objProject['i18n']->getI18n();
+        $this->objProject['request']->setLangset($sI18nSet);
 
         $sCachePath = $this->getI18nCachePath($sI18nSet);
 
         if (! $this->objProject->development() && is_file($sCachePath)) {
-            $this->objProject['i18n']->addI18n($sI18nSet, ( array ) include $sCachePath);
+            $this->objProject['i18n']->addText($sI18nSet, ( array ) include $sCachePath);
         } else {
             $this->objProject['i18n.load']->
 
@@ -219,7 +220,7 @@ class application
             setCachePath($sCachePath)->
 
             addDir($this->getI18nDir($sI18nSet));
-            $this->objProject['i18n']->addI18n($sI18nSet, $this->objProject['i18n.load']->loadData());
+            $this->objProject['i18n']->addText($sI18nSet, $this->objProject['i18n.load']->loadData());
         }
     }
 

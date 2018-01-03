@@ -36,7 +36,7 @@ interface itheme
      * @param callable $calParseResolver
      * @return void
      */
-    public static function setParseResolver($calParseResolver);
+    public static function setParseResolver(callable $calParseResolver);
 
     /**
      * 解析 parse
@@ -62,7 +62,7 @@ interface itheme
      * @param string $sMd5 源文件地址 md5 标记
      * @return string
      */
-    public function display($sFile, $bDisplay = true, $strExt = '', $sTargetCache = '', $sMd5 = '');
+    public function display(string $sFile, bool $bDisplay = true, string $strExt = '', string $sTargetCache = '', string $sMd5 = '');
 
     /**
      * 设置模板变量
@@ -79,7 +79,7 @@ interface itheme
      * @param string|null $sName
      * @return mixed
      */
-    public function getVar($sName = null);
+    public function getVar(string $sName = null);
 
     /**
      * 删除变量值
@@ -103,13 +103,5 @@ interface itheme
      * @param string $sFile
      * @return string
      */
-    public function getCachePath($sFile);
-
-    /**
-     * 自动分析视图上下文环境
-     *
-     * @param string $strThemePath
-     * @return void
-     */
-    public function parseContext($strThemePath);
+    public function getCachePath(string $sFile);
 }

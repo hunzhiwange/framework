@@ -72,7 +72,7 @@ class throttler
      * @param \queryyetsimple\http\request $objRequest
      * @param int $intLimit
      * @param int $intLime
-     * @return mixed
+     * @return void
      */
     public function handle(Closure $calNext, request $objRequest, $intLimit = 60, $intLime = 60)
     {
@@ -85,7 +85,7 @@ class throttler
             $this->header($oRateLimiter);
         }
 
-        return $calNext($objRequest);
+        $calNext($objRequest);
     }
 
     /**

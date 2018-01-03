@@ -19,8 +19,6 @@
  */
 namespace queryyetsimple\support;
 
-use InvalidArgumentException;
-
 /**
  * 类配置复用
  *
@@ -41,15 +39,12 @@ trait option
      */
     public function option(string $strName, $mixValue)
     {
-        if (! is_string($strName)) {
-            throw new InvalidArgumentException('Option set name must be a string.');
-        }
         $this->arrOption[$strName] = $mixValue;
         return $this;
     }
 
     /**
-     * 修改单个数组性配置
+     * 修改数组配置
      *
      * @param string $strName
      * @param array $arrValue
@@ -109,9 +104,6 @@ trait option
      */
     public function deleteOption(string $strName)
     {
-        if (! is_string($strName)) {
-            throw new InvalidArgumentException('Option set name must be a string.');
-        }
         if(isset($this->arrOption[$strName])) {
             unset($this->arrOption[$strName]);
         }
@@ -129,9 +121,11 @@ trait option
         if (! $arrOption) {
             return $this;
         }
+
         foreach ($arrOption as $strOption) {
             $this->deleteOption($strOption);
         }
+        
         return $this;
     }
 }
