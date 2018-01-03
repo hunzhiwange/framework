@@ -173,14 +173,14 @@ class pipeline implements ipipeline
 
     /**
      * 工序迭代器
+     * 添加一个空的迭代器，第一次迭代 next 自动移除
      *
      * @param array $arrStage
      * @return \Generator
      */
     protected function stageGenerator(array $arrStage) {
-        // 添加一个空的迭代器，第一次自动移除
         array_unshift($arrStage, null);
-
+        
         foreach ($arrStage as $sStage) {
            yield $this->stageCallback($sStage);
         }
