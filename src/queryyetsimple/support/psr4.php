@@ -178,7 +178,7 @@ class psr4 implements ipsr4
      * @param string $strClass
      * @return void
      */
-    public function shortNamespaceMap($strClass)
+    protected function shortNamespaceMap($strClass)
     {
         $strTryMapClass = str_replace($this->strShortNamespace . '\\', static::DEFAULT_NAMESPACE . '\\', $strClass);
         

@@ -20,6 +20,7 @@
 namespace queryyetsimple\pipeline;
 
 use Closure;
+use Generator;
 use InvalidArgumentException;
 use queryyetsimple\support\icontainer;
 
@@ -44,16 +45,9 @@ class pipeline implements ipipeline
     /**
      * 管道传递的对象
      *
-     * @var mixed
-     */
-    protected $mixPassed;
-
-    /**
-     * 管道传递的附加对象
-     *
      * @var array
      */
-    protected $arrPassedExtend = [];
+    protected $arrPassed = [];
 
     /**
      * 管道中所有执行工序
@@ -61,6 +55,13 @@ class pipeline implements ipipeline
      * @var array
      */
     protected $arrStage = [];
+
+    /**
+     * 迭代器
+     *
+     * @var \Generator
+     */
+    protected $objGenerator;
 
     /**
      * 创建一个管道
@@ -81,49 +82,27 @@ class pipeline implements ipipeline
      */
     public function send($mixPassed)
     {
-        $this->mixPassed = $mixPassed;
-        return $this;
-    }
-
-    /**
-     * 将附加传输对象传入管道
-     *
-     * @param mixed $mixPassed
-     * @return $this
-     */
-    public function sendExtend($mixPassed)
-    {
         $mixPassed = is_array($mixPassed) ? $mixPassed : func_get_args();
         foreach ($mixPassed as $mixItem) {
-            $this->arrPassedExtend[] = $mixItem;
+            $this->arrPassed[] = $mixItem;
         }
+
         return $this;
     }
 
     /**
      * 设置管道中的执行工序
      *
-     * @param dynamic|array $mixStages
+     * @param dynamic|array $mixStage
      * @return $this
      */
-    public function through($mixStages)
+    public function through($mixStage)
     {
-        $mixStages = is_array($mixStages) ? $mixStages : func_get_args();
-        foreach ($mixStages as $mixStage) {
-            $this->stage($mixStage);
+        $mixStage = is_array($mixStage) ? $mixStage : func_get_args();
+        foreach ($mixStage as $mixItem) {
+            $this->arrStage[] = $mixItem;
         }
-        return $this;
-    }
 
-    /**
-     * 添加一道工序
-     *
-     * @param mixed $mixStage
-     * @return $this
-     */
-    public function stage($mixStage)
-    {
-        $this->arrStage[] = $mixStage;
         return $this;
     }
 
@@ -138,37 +117,28 @@ class pipeline implements ipipeline
     {
         $arrStage = $this->arrStage;
         $arrStage[] = $calEnd;
-        $objGenerator = $this->stageGenerator($arrStage);
-        unset($arrStage);
+        $this->objGenerator = $this->stageGenerator($arrStage);
 
-        $arrPassedExtend = $this->arrPassedExtend;
-        array_unshift($arrPassedExtend, $this->mixPassed);
-        array_unshift($arrPassedExtend, $objGenerator);
-
-        $this->traverseGenerator(...$arrPassedExtend);
+        $this->traverseGenerator(...$this->arrPassed);
     }
 
     /**
      * 遍历迭代器
      *
-     * @param \Generator $objGenerator
      * @since 2018.01.03
      * @return void
      */
-    protected function traverseGenerator($objGenerator) {
-        if(! $objGenerator->valid() || $objGenerator->next() || ! $objGenerator->valid()) {
+    protected function traverseGenerator() {
+        if(! $this->objGenerator->valid() || $this->objGenerator->next() || ! $this->objGenerator->valid()) {
            return;
         }
 
         $aArgs = func_get_args();
-        array_shift($aArgs);
-        array_unshift($aArgs, function() use($objGenerator) {
-            $aArgs = func_get_args();
-            array_unshift($aArgs, $objGenerator);
-            $this->traverseGenerator(...$aArgs);
+        array_unshift($aArgs, function() {
+            $this->traverseGenerator(...func_get_args());
         });
 
-        $objGenerator->current()(...$aArgs);
+        $this->objGenerator->current()(...$aArgs);
     }
 
     /**
@@ -226,7 +196,7 @@ class pipeline implements ipipeline
      * @param string $strStage
      * @return array
      */
-    protected function parse($strStage)
+    protected function parse(string $strStage)
     {
         list($strName, $arrArgs) = array_pad(explode(':', $strStage, 2), 2, []);
         if (is_string($arrArgs)) {

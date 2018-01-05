@@ -331,6 +331,7 @@ class theme implements itheme
                 '+',
                 ':'
             ], $this->getOption('controlleraction_depr'), $sTpl);
+            
             return dirname($this->getOption('theme_path')) . '/' . ($sTheme ?? $this->getOption('theme_name')) . '/' . $sTpl . ($sExt ?: $this->getOption('suffix'));
         }
     }
@@ -358,19 +359,14 @@ class theme implements itheme
             $sTpl = str_replace(str_replace('\\', '/', $this->getOption('theme_path') . '/'), '', str_replace('\\', '/', ($sTpl)));
         }
 
-        // 当前主题
-        if (is_file(($sTpl = $this->getOption('theme_path') . '/' . $sTpl))) {
-            return $sTpl;
-        }
-
         // 备用地址
-        if ($this->getOption('theme_path_default') && is_file(($sTpl = $this->getOption('theme_path_default') . '/' . $sTpl))) {
-            return $sTpl;
+        if ($this->getOption('theme_path_default') && is_file(($sTempTpl = $this->getOption('theme_path_default') . '/' . $sTpl))) {
+            return $sTempTpl;
         }
 
         // default 主题
-        if ($this->getOption('theme_name') != 'default' && is_file(($sTpl = dirname($this->getOption('theme_path')) . '/default/' . $sTpl))) {
-            return $sTpl;
+        if ($this->getOption('theme_name') != 'default' && is_file(($sTempTpl = dirname($this->getOption('theme_path')) . '/default/' . $sTpl))) {
+            return $sTempTpl;
         }
 
         return $sBakTpl;

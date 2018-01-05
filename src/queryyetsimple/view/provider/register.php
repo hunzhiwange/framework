@@ -125,12 +125,10 @@ class register extends provider
                 'suffix',
                 'controlleraction_depr',
                 'cache_children',
-                'switch',
                 'theme_name',
-                'cookie_app',
                 'theme_path_default'
             ] as $strOption) {
-                $arrOption[$strOption] = $objOption[$strOption];
+                $arrOption[$strOption] = $objOption['view\\' . $strOption];
             }
 
             $arrOption['app_development'] = $oProject->development();
