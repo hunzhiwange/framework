@@ -313,8 +313,11 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
      */
     public function each()
     {
+        if (is_callable($arrArgs[0])) {
+            throw new InvalidArgumentException('The first args of each must be callable.');
+        }
+
         $arrArgs = func_get_args();
-        assert::callback($arrArgs[0]);
         if (! empty($arrArgs[1]) && is_string($arrArgs[1])) {
             $sKeyName = $arrArgs[1];
         } else {

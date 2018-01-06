@@ -24,7 +24,6 @@ use queryyetsimple\{
     mvc\iview,
     support\xml,
     router\router,
-    support\assert,
     support\option,
     filesystem\fso,
     cookie\icookie,
@@ -996,13 +995,11 @@ class response
      * @sub int time 停留时间，0表示不停留
      * @return void
      */
-    public function redirect($sUrl, $arrOption = [])
+    public function redirect(string $sUrl, $arrOption = [])
     {
         if ($this->checkFlowControl()) {
             return $this;
         }
-
-        assert::string($sUrl);
 
         return $this->
 

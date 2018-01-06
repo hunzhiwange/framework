@@ -22,8 +22,7 @@ namespace queryyetsimple\page;
 use RuntimeException;
 use queryyetsimple\support\{
     ihtml,
-    option,
-    assert
+    option
 };
 
 /**
@@ -622,9 +621,8 @@ abstract class apage implements ihtml
      * @param callable $calUrlResolver
      * @return void
      */
-    public static function setUrlResolver($calUrlResolver)
+    public static function setUrlResolver(callable $calUrlResolver)
     {
-        assert::callback($calUrlResolver);
         static::$calUrlResolver = $calUrlResolver;
     }
 

@@ -22,7 +22,6 @@ namespace queryyetsimple\log;
 use RuntimeException;
 use queryyetsimple\support\{
     ijson,
-    assert,
     option,
     iarray
 };
@@ -104,7 +103,6 @@ class log implements ilog
     // ######################################################
     // ------ 实现 \Psr\Log\LoggerInterface 接口 start -------
     // ######################################################
-
 
     /**
      * 记录 emergency 日志
@@ -256,7 +254,6 @@ class log implements ilog
     // ------- 实现 \Psr\Log\LoggerInterface 接口 end --------
     // ######################################################
 
-
     /**
      * 记录错误消息并写入
      *
@@ -298,7 +295,6 @@ class log implements ilog
      */
     public function registerFilter(callable $calFilter)
     {
-        assert::callback($calFilter);
         $this->calFilter = $calFilter;
     }
 
@@ -310,7 +306,6 @@ class log implements ilog
      */
     public function registerProcessor(callable $calProcessor)
     {
-        assert::callback($calProcessor);
         $this->calProcessor = $calProcessor;
     }
 

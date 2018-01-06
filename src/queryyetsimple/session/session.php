@@ -22,10 +22,7 @@ namespace queryyetsimple\session;
 use RuntimeException;
 use BadMethodCallException;
 use SessionHandlerInterface;
-use queryyetsimple\support\{
-    option,
-    assert
-};
+use queryyetsimple\support\option;
 
 /**
  * session 仓储
@@ -167,11 +164,10 @@ class session implements isession
      * @param mxied $mixValue
      * @return void
      */
-    public function set($sName, $mixValue)
+    public function set(string $sName, $mixValue)
     {
         $this->checkStart();
 
-        assert::string($sName);
         $sName = $this->getName($sName);
         $_SESSION[$sName] = $mixValue;
     }
@@ -285,7 +281,7 @@ class session implements isession
      * @param mixed $mixValue
      * @return mxied
      */
-    public function get($sName, $mixValue = null)
+    public function get(string $sName, $mixValue = null)
     {
         $this->checkStart();
 
@@ -301,11 +297,10 @@ class session implements isession
      * @param boolean $bPrefix
      * @return bool
      */
-    public function delete($sName, $bPrefix = true)
+    public function delete(string $sName, $bPrefix = true)
     {
         $this->checkStart();
 
-        assert::string($sName);
         if ($bPrefix) {
             $sName = $this->getName($sName);
         }
@@ -323,11 +318,10 @@ class session implements isession
      * @param string $sName
      * @return boolean
      */
-    public function has($sName)
+    public function has(string $sName)
     {
         $this->checkStart();
 
-        assert::string($sName);
         $sName = $this->getName($sName);
         return isset($_SESSION[$sName]);
     }

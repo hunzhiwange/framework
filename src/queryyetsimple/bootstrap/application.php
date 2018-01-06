@@ -163,10 +163,6 @@ class application
             date_default_timezone_set($this->objProject['option']['time_zone']);
         }
 
-        if ($this->objProject->development()) {
-            assert::open(true);
-        }
-
         if(PHP_SAPI == 'cli') {
             return;
         }

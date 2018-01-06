@@ -44,7 +44,7 @@ interface isession
      * @param mxied $mixValue
      * @return void
      */
-    public function set($sName, $mixValue);
+    public function set(string $sName, $mixValue);
 
     /**
      * 批量插入
@@ -108,7 +108,7 @@ interface isession
      * @param mixed $mixValue
      * @return mxied
      */
-    public function get($sName, $mixValue = null);
+    public function get(string $sName, $mixValue = null);
 
     /**
      * 删除 session
@@ -117,7 +117,7 @@ interface isession
      * @param boolean $bPrefix
      * @return bool
      */
-    public function delete($sName, $bPrefix = true);
+    public function delete(string $sName, $bPrefix = true);
 
     /**
      * 是否存在 session
@@ -125,7 +125,7 @@ interface isession
      * @param string $sName
      * @return boolean
      */
-    public function has($sName);
+    public function has(string $sName);
 
     /**
      * 删除 session

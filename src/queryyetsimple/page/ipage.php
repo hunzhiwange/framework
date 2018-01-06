@@ -319,7 +319,7 @@ interface ipage
      * @param callable $calUrlResolver
      * @return void
      */
-    public static function setUrlResolver($calUrlResolver);
+    public static function setUrlResolver(callable $calUrlResolver);
 
     /**
      * 替换分页变量

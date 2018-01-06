@@ -26,7 +26,6 @@ use BadMethodCallException;
 use InvalidArgumentException;
 use queryyetsimple\{
     mvc\iview,
-    support\assert,
     support\option,
     support\flow_control
 };
@@ -180,8 +179,6 @@ class mail implements imail
             return $this;
         }
 
-        assert::scalar($strContent);
-
         $this->arrMessageData['html'][] = $strContent;
         return $this;
     }
@@ -197,8 +194,6 @@ class mail implements imail
         if ($this->checkFlowControl()) {
             return $this;
         }
-
-        assert::scalar($strContent);
 
         $this->arrMessageData['plain'][] = $strContent;
         return $this;
