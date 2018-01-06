@@ -77,7 +77,7 @@ class i18n implements ii18n
         }
 
         $sValue = $arr[0];
-        $sValue = $this->arrText[$sContext][$this->getI18n()] ?? $sValue;
+        $sValue = $this->arrText[$this->getI18n()][$sValue] ?? $sValue;
         if (count($arr) > 1) {
             $arr[0] = $sValue;
             $sValue = sprintf(...$arr);

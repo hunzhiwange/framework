@@ -183,6 +183,14 @@ abstract class provider
      */
     protected function loadI18nDir($mixDir)
     {
+        if (! $this->objContainer['option']['i18n\on']) {
+            return;
+        }
+
+        if ($this->objContainer['option']['i18n\develop'] == $this->objContainer['option']['i18n\default']) {
+            return;
+        }
+        
         if (! is_array($mixDir)) {
             $mixDir = ( array ) $mixDir;
         }

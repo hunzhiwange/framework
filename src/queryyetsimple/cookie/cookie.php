@@ -243,13 +243,14 @@ class cookie implements icookie
     {
         $arrOption = $this->getOptions($arrOption);
         $strPrefix = $arrOption['prefix'];
+        $arrOption['prefix'] = '';
+
         foreach ($_COOKIE as $sKey => $mixVal) {
             if ($bOnlyPrefix === true && $strPrefix) {
                 if (strpos($sKey, $strPrefix) === 0) {
                     $this->delete($sKey, $arrOption);
                 }
             } else {
-                $arrOption['prefix'] = '';
                 $this->delete($sKey, $arrOption);
             }
         }

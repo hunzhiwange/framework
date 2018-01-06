@@ -220,6 +220,7 @@ class application
             setCachePath($sCachePath)->
 
             addDir($this->getI18nDir($sI18nSet));
+            
             $this->objProject['i18n']->addText($sI18nSet, $this->objProject['i18n.load']->loadData());
         }
     }
