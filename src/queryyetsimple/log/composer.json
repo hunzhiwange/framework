@@ -15,7 +15,6 @@
         "php": ">=7.1.0",
         "queryyetsimple/option": "1.0.*",
         "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/filesystem": "1.0.*",
         "monolog/monolog": "^1.23"
     },
     "autoload": {

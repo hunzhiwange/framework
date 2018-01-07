@@ -20,7 +20,6 @@
 namespace queryyetsimple\bootstrap\console;
 
 use RuntimeException;
-use queryyetsimple\filesystem\fso;
 
 /**
  * 命令行工具类导入类
@@ -117,7 +116,7 @@ class load
         $sCacheFile = $this->strCachePath;
         $sDir = dirname($sCacheFile);
         if (! is_dir($sDir)) {
-            fso::createDirectory($sDir);
+            mkdir($sDir, 0777, true);
         }
 
         // if (! file_put_contents($sCacheFile, '<?' . 'php return ' . var_export($arrFiles, true) . '; ?' . '>')) {

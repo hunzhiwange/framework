@@ -19,10 +19,7 @@
  */
 namespace queryyetsimple\log;
 
-use queryyetsimple\{
-    filesystem\fso,
-    support\option
-};
+use queryyetsimple\support\option;
 
 /**
  * aconnect 驱动抽象类
@@ -56,7 +53,7 @@ abstract class aconnect
     protected function checkSize($sFilePath)
     {
         // 如果不是文件，则创建
-        if (! is_file($sFilePath) && ! is_dir(dirname($sFilePath)) && ! fso::createDirectory(dirname($sFilePath))) {
+        if (! is_file($sFilePath) && ! is_dir(dirname($sFilePath)) && ! mkdir(dirname($sFilePath), 0777, true)) {
             throw new RuntimeException(sprintf('Unable to create log file：%s.', $sFilePath));
         }
 
@@ -82,6 +79,7 @@ abstract class aconnect
             }
             $sFilePath = $this->getOption('path') . '/' . ($strLevel ? $strLevel . '/' : '') . date($this->getOption('name')) . ".log";
         }
+
         return $sFilePath;
     }
 }

@@ -64,21 +64,7 @@ class fso
             return;
         }
 
-        if (is_string($sDir)) {
-            $sDir = explode('/', str_replace('\\', '/', trim($sDir, '/')));
-        }
-
-        $sCurDir = DIRECTORY_SEPARATOR == '\\' ? '' : '/';
-
-        foreach ($sDir as $nKey => $sTemp) {
-            $sCurDir .= $sTemp . '/';
-            if (! is_dir($sCurDir)) {
-                if (isset($sDir[$nKey + 1]) && is_dir($sCurDir . $sDir[$nKey + 1])) {
-                    continue;
-                }
-                mkdir($sCurDir, $nMode);
-            }
-        }
+        mkdir($sDir, $nMode, true);
 
         return true;
     }

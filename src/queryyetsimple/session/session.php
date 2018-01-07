@@ -285,7 +285,6 @@ class session implements isession
     {
         $this->checkStart();
 
-        assert::string($sName);
         $sName = $this->getName($sName);
         return $_SESSION[$sName] ?? $mixValue;
     }

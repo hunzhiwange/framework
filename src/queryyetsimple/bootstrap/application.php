@@ -24,7 +24,6 @@ use queryyetsimple\{
     http\response, 
     filesystem\fso,
     support\psr4,
-    support\assert,
     support\debug\console
 };
 

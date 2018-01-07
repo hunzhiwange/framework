@@ -20,10 +20,6 @@
 namespace queryyetsimple\log;
 
 use RuntimeException;
-use queryyetsimple\{
-    support\option,
-    filesystem\fso
-};
 
 /**
  * log.file
@@ -35,7 +31,6 @@ use queryyetsimple\{
  */
 class file extends aconnect implements iconnect
 {
-    use option;
 
     /**
      * 配置
@@ -47,17 +42,6 @@ class file extends aconnect implements iconnect
         'size' => 2097152,
         'path' => ''
     ];
-
-    /**
-     * 构造函数
-     *
-     * @param array $arrOption
-     * @return void
-     */
-    public function __construct(array $arrOption = [])
-    {
-        $this->options($arrOption);
-    }
 
     /**
      * 日志写入接口

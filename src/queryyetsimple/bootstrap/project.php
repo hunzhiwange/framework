@@ -26,7 +26,6 @@ use Composer\Autoload\ClassLoader;
 use queryyetsimple\{
     support\psr4,
     support\face,
-    filesystem\fso,
     support\provider,
     support\container,
     bootstrap\console\provider\register as console_provider
@@ -536,7 +535,7 @@ class project extends container implements iproject
         }
 
         if (! is_dir(dirname($strCachePath))) {
-            fso::createDirectory(dirname($strCachePath));
+            mkdir(dirname($strCachePath), 0777, true);
         }
 
         if ($this->development() || ! is_file($strCachePath)) {

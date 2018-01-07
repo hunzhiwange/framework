@@ -61,7 +61,7 @@ class manager extends support_manager
      */
     protected function makeConnectFile($arrOption = [])
     {
-        return new file(array_merge($this->getOption('file', $arrOption)));
+        return new file($this->getOption('file', $arrOption));
     }
 
     /**
@@ -72,6 +72,6 @@ class manager extends support_manager
      */
     protected function makeConnectMonolog($arrOption = [])
     {
-        return new monolog(array_merge($this->getOption('monolog', $arrOption)));
+        return new monolog($this->getOption('monolog', $arrOption));
     }
 }

@@ -29,10 +29,7 @@ use Monolog\{
     Formatter\LineFormatter,
     Handler\RotatingFileHandler
 };
-use queryyetsimple\support\{
-    str,
-    option
-};
+use queryyetsimple\support\str;
 
 /**
  * log.monolog
@@ -73,14 +70,14 @@ class monolog extends aconnect implements iconnect
      * @var array
      */
     protected $arrSupportLevel = [
-        istore::DEBUG => Logger::DEBUG,
-        istore::INFO => Logger::INFO,
-        istore::NOTICE => Logger::NOTICE,
-        istore::WARNING => Logger::WARNING,
-        istore::ERROR => Logger::ERROR,
-        istore::CRITICAL => Logger::CRITICAL,
-        istore::ALERT => Logger::ALERT,
-        istore::EMERGENCY => Logger::EMERGENCY
+        ilog::DEBUG => Logger::DEBUG,
+        ilog::INFO => Logger::INFO,
+        ilog::NOTICE => Logger::NOTICE,
+        ilog::WARNING => Logger::WARNING,
+        ilog::ERROR => Logger::ERROR,
+        ilog::CRITICAL => Logger::CRITICAL,
+        ilog::ALERT => Logger::ALERT,
+        ilog::EMERGENCY => Logger::EMERGENCY
     ];
 
     /**
@@ -92,6 +89,7 @@ class monolog extends aconnect implements iconnect
     public function __construct(array $arrOption = [])
     {
         parent::__construct($arrOption);
+        
         $this->objMonolog = new Logger($this->getOption('channel'));
 
         foreach ($this->getOption('type') as $strType) {
@@ -106,7 +104,7 @@ class monolog extends aconnect implements iconnect
      * @param string $strLevel
      * @return void
      */
-    public function file($strPath, $strLevel = istore::DEBUG)
+    public function file($strPath, $strLevel = ilog::DEBUG)
     {
         $this->objMonolog->pushHandler($objHandler = new StreamHandler($strPath, $this->parseMonologLevel($strLevel)));
         $objHandler->setFormatter($this->getDefaultFormatter());
@@ -120,7 +118,7 @@ class monolog extends aconnect implements iconnect
      * @param string $level
      * @return void
      */
-    public function dailyFile($strPath, $intDays = 0, $strLevel = istore::DEBUG)
+    public function dailyFile($strPath, $intDays = 0, $strLevel = ilog::DEBUG)
     {
         $this->objMonolog->pushHandler($objHandler = new RotatingFileHandler($strPath, $intDays, $this->parseMonologLevel($strLevel)));
         $objHandler->setFormatter($this->getDefaultFormatter());
@@ -133,7 +131,7 @@ class monolog extends aconnect implements iconnect
      * @param string $strLevel
      * @return \Psr\Log\LoggerInterface
      */
-    public function syslog($strName = 'queryphp', $strLevel = istore::DEBUG)
+    public function syslog($strName = 'queryphp', $strLevel = ilog::DEBUG)
     {
         return $this->objMonolog->pushHandler(new SyslogHandler($strName, LOG_USER, $strLevel));
     }
@@ -145,7 +143,7 @@ class monolog extends aconnect implements iconnect
      * @param int $intMessageType
      * @return void
      */
-    public function errorLog($strLevel = istore::DEBUG, $intMessageType = ErrorLogHandler::OPERATING_SYSTEM)
+    public function errorLog($strLevel = ilog::DEBUG, $intMessageType = ErrorLogHandler::OPERATING_SYSTEM)
     {
         $this->objMonolog->pushHandler($objHandler = new ErrorLogHandler($intMessageType, $this->parseMonologLevel($strLevel)));
         $objHandler->setFormatter($this->getDefaultFormatter());
@@ -163,7 +161,6 @@ class monolog extends aconnect implements iconnect
             call_user_func_array($mixCallback, [
                 $this
             ]);
-            $this->objMessage->attach($objAttachment);
         }
 
         return $this;
@@ -187,7 +184,12 @@ class monolog extends aconnect implements iconnect
      */
     public function save(array $arrData)
     {
+        $arrLevel = array_keys($this->arrSupportLevel);
+
         foreach ($arrData as $arrItem) {
+            if (! in_array($arrItem[0], $arrLevel)) {
+                $arrItem[0] = ilog::DEBUG;
+            }
             $this->objMonolog->{$arrItem[0]}($arrItem[1], $arrItem[2]);
         }
     }
@@ -269,9 +271,9 @@ class monolog extends aconnect implements iconnect
      */
     protected function parseMonologLevel($strLevel)
     {
-        if (isset($this->arrSupportLevel [$strLevel])) {
-            return $this->arrSupportLevel [$strLevel];
+        if (isset($this->arrSupportLevel[$strLevel])) {
+            return $this->arrSupportLevel[$strLevel];
         }
-        return $this->arrSupportLevel [istore::DEBUG];
+        return $this->arrSupportLevel[ilog::DEBUG];
     }
 }

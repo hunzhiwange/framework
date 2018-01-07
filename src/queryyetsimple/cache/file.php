@@ -196,7 +196,7 @@ class file extends acache implements iconnect
         }
 
         if (! is_dir($arrOption['path'])) {
-            fso::createDirectory($arrOption['path']);
+            mkdir($arrOption['path'], 0777, true);
         }
         return $arrOption['path'] . '/' . $this->getCacheName($sCacheName, $arrOption['prefix']) . '.php';
     }
@@ -210,7 +210,7 @@ class file extends acache implements iconnect
      */
     protected function writeData($sFileName, $sData)
     {
-        ! is_dir(dirname($sFileName)) && fso::createDirectory(dirname($sFileName));
+        ! is_dir(dirname($sFileName)) && mkdir(dirname($sFileName), 0777, true);
         file_put_contents($sFileName, $sData, LOCK_EX);
     }
 

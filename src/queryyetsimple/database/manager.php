@@ -74,7 +74,7 @@ class manager extends support_manager
      * @param array $arrExtendOption
      * @return array
      */
-    protected function getOption($strConnect, array $arrExtendOption = [])
+    protected function getOption($strConnect, array $arrExtendOption = null)
     {
         return $this->parseOption(parent::getOption($strConnect, $arrExtendOption));
     }
