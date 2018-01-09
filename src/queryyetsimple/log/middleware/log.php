@@ -57,9 +57,10 @@ class log
 
     /**
      * 响应
-     *
+     * 
+     * @param \Closure $calNext
      * @param \queryyetsimple\http\request $objRequest
-     * @param \queryyetsimple\http\response $mixResponse
+     * @param \queryyetsimple\http\response $objResponse
      * @return void
      */
     public function terminate(Closure $calNext, request $objRequest, response $objResponse)

@@ -37,11 +37,18 @@ class session implements isession
     use option;
 
     /**
-     * 配置
+     * session handler 
      *
-     * @var array
+     * @var \SessionHandlerInterface|null
      */
     protected $objConnect;
+
+    /**
+     * session 是否开启
+     *
+     * @var boolean
+     */
+    protected $booStarted = false;
 
     /**
      * 配置
@@ -64,6 +71,27 @@ class session implements isession
     ];
 
     /**
+     * session 状态启用
+     *
+     * @var int
+     */
+    const SESSION_ACTIVE = 2;
+
+    /**
+     * session 状态未运行
+     *
+     * @var int
+     */
+    const SESSION_NONE = 1;
+
+    /**
+     * session 状态关闭
+     *
+     * @var int
+     */
+    const SESSION_DISABLED = 0;
+
+    /**
      * 构造函数
      *
      * @param \SessionHandlerInterface|null $objConnect
@@ -83,7 +111,7 @@ class session implements isession
      */
     public function start()
     {
-        if ($this->isStart()) {
+        if (headers_sent() || $this->isStart() || $this->status() === self::SESSION_ACTIVE) {
             return $this;
         }
 
@@ -153,6 +181,8 @@ class session implements isession
         if (! session_start()) {
             throw new RuntimeException('Session start failed');
         }
+
+        $this->booStarted = true;
 
         return $this;
     }
@@ -287,6 +317,17 @@ class session implements isession
 
         $sName = $this->getName($sName);
         return $_SESSION[$sName] ?? $mixValue;
+    }
+
+    /**
+     * 返回数组部分数据
+     *
+     * @param string $sName
+     * @param mixed $mixValue
+     * @return mixed
+     */
+    public function getPart(string $sName, $mixValue = null) {
+        return $this->getPartData($sName, $mixValue);
     }
 
     /**
@@ -429,7 +470,7 @@ class session implements isession
     public function getFlash($strKey, $mixDefault = null)
     {
         if (strpos($strKey, '\\') !== false) {
-            return $this->getPartData($strKey, $mixDefault);
+            return $this->getPartData($strKey, $mixDefault, 'flash');
         } else {
             return $this->get($this->flashDataKey($strKey), $mixDefault);
         }
@@ -530,11 +571,41 @@ class session implements isession
 
         $this->clear(false);
 
-        if (isset($_COOKIE[$this->sessionName()])) {
-            setcookie($this->sessionName(), '', time() - 42000, '/');
+        $strName = $this->sessionName();
+        if (isset($_COOKIE[$strName])) {
+            setcookie($strName, '', time() - 42000, '/');
         }
 
         session_destroy();
+    }
+
+    /**
+     * session 是否已经启动
+     *
+     * @return boolean
+     */
+    public function isStart()
+    {
+        return $this->booStarted;
+    }
+
+    /**
+     * session 状态
+     *
+     * @return int
+     */
+    public function status(){
+        $intStatus = session_status();
+
+        switch ($intStatus) {
+            case PHP_SESSION_DISABLED:
+                return self::SESSION_DISABLED;
+
+            case PHP_SESSION_ACTIVE:
+                return self::SESSION_ACTIVE;
+        }
+
+        return self::SESSION_NONE;
     }
 
     /**
@@ -548,18 +619,22 @@ class session implements isession
         if (($sId = $this->sessionId())) {
             return $sId;
         }
+
+        $strName = $this->sessionName();
+
         if ($this->useCookies()) {
-            if (isset($_COOKIE[$this->sessionName()])) {
-                return $_COOKIE[$this->sessionName()];
+            if (isset($_COOKIE[$strName])) {
+                return $_COOKIE[$strName];
             }
         } else {
-            if (isset($_GET[$this->sessionName()])) {
-                return $_GET[$this->sessionName()];
+            if (isset($_GET[$strName])) {
+                return $_GET[$strName];
             }
-            if (isset($_POST[$this->sessionName()])) {
-                return $_POST[$this->sessionName()];
+            if (isset($_POST[$strName])) {
+                return $_POST[$strName];
             }
         }
+        
         return null;
     }
 
@@ -672,7 +747,7 @@ class session implements isession
     public function cookieLifetime($nCookieLifeTime)
     {
         $nReturn = ini_get('session.cookie_lifetime');
-        if (isset($nCookieLifeTime) && intval($nCookieLifeTime) >= 1) {
+        if (intval($nCookieLifeTime) >= 1) {
             ini_set('session.cookie_lifetime', intval($nCookieLifeTime));
         }
         return $nReturn;
@@ -687,7 +762,7 @@ class session implements isession
     public function gcMaxlifetime($nGcMaxlifetime = null)
     {
         $nReturn = ini_get('session.gc_maxlifetime');
-        if (isset($nGcMaxlifetime) && intval($nGcMaxlifetime) >= 1) {
+        if (intval($nGcMaxlifetime) >= 1) {
             ini_set('session.gc_maxlifetime', intval($nGcMaxlifetime));
         }
         return $nReturn;
@@ -702,7 +777,7 @@ class session implements isession
     public function gcProbability($nGcProbability = null)
     {
         $nReturn = ini_get('session.gc_probability');
-        if (isset($nGcProbability) && intval($nGcProbability) >= 1 && intval($nGcProbability) <= 100) {
+        if (intval($nGcProbability) >= 1 && intval($nGcProbability) <= 100) {
             ini_set('session.gc_probability', intval($nGcProbability));
         }
         return $nReturn;
@@ -717,16 +792,6 @@ class session implements isession
     protected function getName($sName)
     {
         return $this->getOption('prefix') . $sName;
-    }
-
-    /**
-     * session 是否已经启动
-     *
-     * @return boolean
-     */
-    protected function isStart()
-    {
-        return isset($_SESSION);
     }
 
     /**
@@ -790,20 +855,28 @@ class session implements isession
      *
      * @param string $strKey
      * @param mixed $mixDefault
+     * @param string $strType
      * @return mixed
      */
-    protected function getPartData($strKey, $mixDefault = null)
+    protected function getPartData($strKey, $mixDefault = null, string $strType = null)
     {
         list($strKey, $strName) = explode('\\', $strKey);
-        $mixValue = $this->get($this->flashDataKey($strKey));
+        if ($strType == "flash") {
+            $strKey = $this->flashDataKey($strKey);
+        }
+        $mixValue = $this->get($strKey);
 
         if (is_array($mixValue)) {
+            if (! strpos($strName, ".")) {
+                return array_key_exists($strName, $mixValue) ? $mixValue[$strName] : $mixDefault;
+            }
+
             $arrParts = explode('.', $strName);
             foreach ($arrParts as $sPart) {
                 if (! isset($mixValue[$sPart])) {
                     return $mixDefault;
                 }
-                $mixValue = &$mixValue[$sPart];
+                $mixValue = $mixValue[$sPart];
             }
             return $mixValue;
         } else {

@@ -150,7 +150,7 @@ class monolog extends aconnect implements iconnect
     }
 
     /**
-     * 回调
+     * monolog 回调
      *
      * @param callable|null $mixCallback
      * @return $this

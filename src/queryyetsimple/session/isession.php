@@ -111,6 +111,15 @@ interface isession
     public function get(string $sName, $mixValue = null);
 
     /**
+     * 返回数组部分数据
+     *
+     * @param string $sName
+     * @param mixed $mixValue
+     * @return mixed
+     */
+    public function getPart(string $sName, $mixValue = null);
+
+    /**
      * 删除 session
      *
      * @param string $sName
@@ -235,6 +244,20 @@ interface isession
      * @return bool
      */
     public function destroy();
+
+    /**
+     * session 是否已经启动
+     *
+     * @return boolean
+     */
+    public function isStart();
+
+    /**
+     * session 状态
+     *
+     * @return int
+     */
+    public function status();
 
     /**
      * 获取解析 session_id

@@ -691,8 +691,7 @@ class router
         $arrCurrentMiddleware = array_filter($arrCurrentMiddleware);
 
         if ($arrCurrentMiddleware) {
-            $objPipeline->send($objPassed)->send($arrPassedExtend)->through($arrCurrentMiddleware)->then(function ($objPassed) {
-            });
+            $objPipeline->reset()->send($objPassed)->send($arrPassedExtend)->through($arrCurrentMiddleware)->then();
         }
     }
 

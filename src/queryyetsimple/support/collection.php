@@ -144,25 +144,23 @@ class collection implements Iterator, ArrayAccess, Countable, iarray, ijson, Jso
     /**
      * 下一个元素
      *
-     * @return mixed
+     * @return void
      */
     public function next()
     {
-        $next = next($this->arrObject);
-        $this->booValid = $next !== false;
-        return $next;
+        $mixNext = next($this->arrObject);
+        $this->booValid = $mixNext !== false;
     }
 
     /**
      * 指针重置
      *
-     * @return mixed
+     * @return void
      */
     public function rewind()
     {
-        $first = reset($this->arrObject);
-        $this->booValid = $first !== false;
-        return $first;
+        reset($this->arrObject);
+        $this->booValid = true;
     }
 
     /**

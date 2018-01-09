@@ -75,6 +75,20 @@ class pipeline implements ipipeline
     }
 
     /**
+     * 管道初始化
+     *
+     * @return $this
+     */
+    public function reset()
+    {
+        $this->arrPassed = [];
+        $this->arrStage = [];
+        $this->objGenerator = null;
+
+        return $this;
+    }
+
+    /**
      * 将传输对象传入管道
      *
      * @param mixed $mixPassed
@@ -113,10 +127,12 @@ class pipeline implements ipipeline
      * @since 2018.01.03
      * @return void
      */
-    public function then(callable $calEnd)
+    public function then(callable $calEnd = null)
     {
         $arrStage = $this->arrStage;
-        $arrStage[] = $calEnd;
+        if ($calEnd) {
+            $arrStage[] = $calEnd;
+        }
         $this->objGenerator = $this->stageGenerator($arrStage);
 
         $this->traverseGenerator(...$this->arrPassed);
@@ -151,8 +167,8 @@ class pipeline implements ipipeline
     protected function stageGenerator(array $arrStage) {
         array_unshift($arrStage, null);
         
-        foreach ($arrStage as $sStage) {
-           yield $this->stageCallback($sStage);
+        foreach ($arrStage as $mixStage) {
+           yield $this->stageCallback($mixStage);
         }
     }
 

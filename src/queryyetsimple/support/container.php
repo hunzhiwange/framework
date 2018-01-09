@@ -293,7 +293,7 @@ class container implements ArrayAccess, icontainer
      */
     protected function getAlias($strFactoryName)
     {
-        return isset($this->arrAlias[$strFactoryName]) ? $this->arrAlias[$strFactoryName] : $strFactoryName;
+        return isset($this->arrAlias[$strFactoryName]) ? strtolower($this->arrAlias[$strFactoryName]) : strtolower($strFactoryName);
     }
 
     /**

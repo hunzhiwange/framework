@@ -42,7 +42,7 @@ class register extends provider
      */
     public function register()
     {
-        $this->bind('pipeline', function ($oProject) {
+        $this->singleton('pipeline', function ($oProject) {
             return new pipeline($oProject);
         });
     }
@@ -58,7 +58,7 @@ class register extends provider
             'pipeline' => [
                 'queryyetsimple\pipeline\pipeline',
                 'queryyetsimple\pipeline\ipipeline'
-                ]
+            ]
         ];
     }
 }

@@ -31,6 +31,13 @@ interface ipipeline
 {
 
     /**
+     * 管道初始化
+     *
+     * @return $this
+     */
+    public function reset();
+
+    /**
      * 将传输对象传入管道
      *
      * @param mixed $mixPassed
@@ -52,5 +59,5 @@ interface ipipeline
      * @param callable $calEnd
      * @return mixed
      */
-    public function then(callable $calEnd);
+    public function then(callable $calEnd = null);
 }

@@ -71,15 +71,16 @@ class session
     /**
      * 响应
      *
+     * @param \Closure $calNext
      * @param \queryyetsimple\http\request $objRequest
-     * @param \queryyetsimple\http\response $mixResponse
-     * @return mixed
+     * @param \queryyetsimple\http\response $objResponse
+     * @return void
      */
     public function terminate(Closure $calNext, request $objRequest, response $objResponse)
     {
         $this->unregisterFlash();
         $this->setPrevUrl($objRequest);
-        return $calNext($objRequest, $objResponse);
+        $calNext($objRequest, $objResponse);   
     }
 
     /**
