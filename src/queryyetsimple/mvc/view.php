@@ -21,7 +21,7 @@ namespace queryyetsimple\mvc;
 
 use Closure;
 use RuntimeException;
-use queryyetsimple\view\itheme;
+use queryyetsimple\view\iview as view_iview;
 
 /**
  * 视图
@@ -37,9 +37,23 @@ class view implements iview
     /**
      * 视图模板
      *
-     * @var \queryyessimple\view\itheme
+     * @var \queryyessimple\view\iview
      */
     protected $objTheme;
+
+    /**
+     * 备份视图模板
+     *
+     * @var \queryyessimple\view\iview
+     */
+    protected $objBackupTheme;
+
+    /**
+     * 是否永久切换
+     *
+     * @var boolean
+     */
+    protected $booForever = false;
 
     /**
      * 响应工厂
@@ -58,12 +72,35 @@ class view implements iview
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\view\itheme $objTheme
+     * @param \queryyetsimple\view\iview $objTheme
      * @return void
      */
-    public function __construct(itheme $objTheme)
+    public function __construct(view_iview $objTheme)
     {
         $this->objTheme = $objTheme;
+    }
+
+    /**
+     * 切换视图
+     *
+     * @param \queryyetsimple\view\iview $objTheme
+     * @param boolean $booForever
+     * @return $this
+     */
+    public function switchView(view_iview $objTheme, bool $booForever = false)
+    {
+
+        $arrAssign = $this->getAssign();
+
+        if ($booForever === false) {
+            $this->objBackupTheme = $this->objTheme;
+        }
+        
+        $this->booForever = $booForever;
+        $this->objTheme = $objTheme;
+        $this->assign($arrAssign);
+
+        return $this;
     }
 
     /**
@@ -166,7 +203,14 @@ class view implements iview
 
         $this->responseHeader($arrOption['content_type'], $arrOption['charset']);
 
-        return $this->objTheme->display($sFile, false);
+        $strResult = $this->objTheme->display($sFile, false);
+
+        if ($this->booForever === false) {
+            $this->objTheme = $this->objBackupTheme;
+        }
+        $this->booForever = false;
+
+        return $strResult;
     }
 
     /**

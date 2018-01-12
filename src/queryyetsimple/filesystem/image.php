@@ -20,7 +20,6 @@
 namespace queryyetsimple\filesystem;
 
 use RuntimeException;
-use queryyetsimple\filesystem\fso;
 
 /**
  * 图像处理
@@ -399,7 +398,7 @@ class image
 
         // 创建文件
         if (! is_dir(dirname($sFilename))) {
-            fso::createDirectory(dirname($sFilename));
+            mkdir(dirname($sFilename), 0777, true);
         }
 
         // 写入文件

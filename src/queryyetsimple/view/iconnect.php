@@ -20,38 +20,15 @@
 namespace queryyetsimple\view;
 
 /**
- * itheme 接口
+ * iconnect 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.23
  * @version 1.0
  */
-interface itheme
+interface iconnect
 {
-
-    /**
-     * 设置 parse 解析回调
-     *
-     * @param callable $calParseResolver
-     * @return void
-     */
-    public static function setParseResolver(callable $calParseResolver);
-
-    /**
-     * 解析 parse
-     *
-     * @return \queryyetsimple\view\parser
-     */
-    public function resolverParse();
-
-    /**
-     * 获取分析器
-     *
-     * @return \queryyetsimple\view\iparser
-     */
-    public function parser();
-
     /**
      * 加载视图文件
      *
@@ -62,7 +39,7 @@ interface itheme
      * @param string $sMd5 源文件地址 md5 标记
      * @return string
      */
-    public function display(string $sFile, bool $bDisplay = true, string $strExt = '', string $sTargetCache = '', string $sMd5 = '');
+    public function display(string $sFile = null, bool $bDisplay = true, string $strExt = '', string $sTargetCache = '', string $sMd5 = '');
 
     /**
      * 设置模板变量
@@ -96,12 +73,4 @@ interface itheme
      * @return $this
      */
     public function clearVar();
-
-    /**
-     * 获取编译路径
-     *
-     * @param string $sFile
-     * @return string
-     */
-    public function getCachePath(string $sFile);
 }

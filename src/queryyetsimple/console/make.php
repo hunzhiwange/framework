@@ -123,7 +123,7 @@ abstract class make extends command
     {
         $strSaveFilePath = $this->getSaveFilePath();
         if (! is_dir(dirname($strSaveFilePath))) {
-            fso::createDirectory(dirname($strSaveFilePath));
+            mkdir(dirname($strSaveFilePath), 0777, true);
         }
         if (is_file($strSaveFilePath)) {
             throw new RuntimeException('File is already exits.' . PHP_EOL . $this->formatFile($this->getSaveFilePath()));

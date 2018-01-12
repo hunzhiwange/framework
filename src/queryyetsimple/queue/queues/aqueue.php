@@ -19,7 +19,6 @@
  */
 namespace queryyetsimple\queue\queues;
 
-use queryyetsimple\filesystem\fso;
 use PHPQueue\{
     Logger,
     JobQueue
@@ -100,7 +99,7 @@ abstract class aqueue extends JobQueue
         // 记录日志
         if (self::$strLogPath) {
             if (! is_dir(self::$strLogPath)) {
-                fso::createDirectory(self::$strLogPath);
+                mkdir(self::$strLogPath, 0777, true);
             }
             $this->objResultLog = Logger::createLogger($this->strConnect, Logger::INFO, self::$strLogPath . '/' . $this->strConnect . '.log');
         }

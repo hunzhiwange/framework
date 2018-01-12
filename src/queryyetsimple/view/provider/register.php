@@ -20,10 +20,9 @@
 namespace queryyetsimple\view\provider;
 
 use queryyetsimple\{
-    view\theme,
     view\parser,
+    view\manager,
     view\compiler,
-    view\phpui_theme,
     support\provider
 };
 
@@ -45,9 +44,13 @@ class register extends provider
      */
     public function register()
     {
+        $this->viewViews();
+        $this->viewView();
+        $this->viewHtml();
+        $this->viewV8();
+        $this->viewPhpui();
         $this->viewCompiler();
         $this->viewParser();
-        $this->viewTheme();
     }
 
     /**
@@ -58,6 +61,23 @@ class register extends provider
     public static function providers()
     {
         return [
+            'view.views' => 'queryyetsimple\view\manager',
+            'view.view' => [
+                'queryyetsimple\view\view',
+                'queryyetsimple\view\iview'
+            ],
+            'view.html' => [
+                'html',
+                'queryyetsimple\view\html'
+            ],
+            'view.v8' => [
+                'v8',
+                'queryyetsimple\view\v8'
+            ],
+            'view.phpui' => [
+                'phpui',
+                'queryyetsimple\view\phpui'
+            ],
             'view.compiler' => [
                 'queryyetsimple\view\compiler',
                 'queryyetsimple\view\icompiler'
@@ -65,12 +85,68 @@ class register extends provider
             'view.parser' => [
                 'queryyetsimple\view\parser',
                 'queryyetsimple\view\iparser'
-            ],
-            'view.theme' => [
-                'queryyetsimple\view\theme',
-                'queryyetsimple\view\itheme'
             ]
         ];
+    }
+
+    /**
+     * 注册 view.views 服务
+     *
+     * @return void
+     */
+    protected function viewViews()
+    {
+        $this->singleton('view.views', function ($oProject) {
+            return new manager($oProject);
+        });
+    }
+
+    /**
+     * 注册 view.html 服务
+     *
+     * @return void
+     */
+    protected function viewHtml()
+    {
+        $this->singleton('view.html', function ($oProject) {
+            return $oProject['view.views']->connect('html');
+        });
+    }
+
+    /**
+     * 注册 view.v8 服务
+     *
+     * @return void
+     */
+    protected function viewV8()
+    {
+        $this->singleton('view.v8', function ($oProject) {
+            return $oProject['view.views']->connect('v8');
+        });
+    }
+
+    /**
+     * 注册 view.phpui 服务
+     *
+     * @return void
+     */
+    protected function viewPhpui()
+    {
+        $this->singleton('view.phpui', function ($oProject) {
+            return $oProject['view.views']->connect('phpui');
+        });
+    }
+
+    /**
+     * 注册 view.view 服务
+     *
+     * @return void
+     */
+    protected function viewView()
+    {
+        $this->singleton('view.view', function ($oProject) {
+            return $oProject['view.views']->connect();
+        });
     }
 
     /**
@@ -106,48 +182,6 @@ class register extends provider
             return (new parser($oProject['view.compiler'], [
                 'tag_note' => $oProject['option']->get('view\\tag_note')
             ]))->registerCompilers()->registerParsers();
-        });
-    }
-
-    /**
-     * 注册 view.theme 服务
-     *
-     * @return void
-     */
-    protected function viewTheme()
-    {
-        $this->singleton('view.theme', function ($oProject) {
-            $objOption = $oProject['option'];
-
-            $arrOption = [];
-            foreach ([
-                'cache_lifetime',
-                'suffix',
-                'controlleraction_depr',
-                'cache_children',
-                'theme_name',
-                'theme_path_default'
-            ] as $strOption) {
-                $arrOption[$strOption] = $objOption['view\\' . $strOption];
-            }
-
-            $arrOption['app_development'] = $oProject->development();
-            $arrOption['controller_name'] = $oProject['controller_name'];
-            $arrOption['action_name'] = $oProject['action_name'];
-            $arrOption['theme_cache_path'] = $oProject->pathApplicationCache('theme') . '/' . $oProject['app_name'];
-            $arrOption['theme_path'] = $oProject->pathApplicationDir('theme') . '/' . $objOption->get('view\theme_name');
-
-            if (phpui()) {
-                $arrOption['suffix'] = '.php';
-                $oTheme = new phpui_theme($arrOption);
-            } else {
-                theme::setParseResolver(function () use ($oProject) {
-                    return $oProject['view.parser'];
-                });
-                $oTheme = new theme($arrOption);
-            }
-
-            return $oTheme;
         });
     }
 }

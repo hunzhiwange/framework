@@ -26,7 +26,6 @@ use Swoole\{
     Client as SwooleClient
 };
 use queryyetsimple\{
-    filesystem\fso,
     support\option,
     console\command
 };
@@ -603,7 +602,7 @@ class server
         $strDir = dirname($this->getOption('pid_path'));
         
         if (! is_dir($strDir)) {
-            fso::createDirectory($strDir);
+            mkdir($strDir, 0777, true);
         }
         
         if (! is_writable($strDir)) {

@@ -126,16 +126,12 @@ class load
         $sCacheFile = $this->strCachePath;
         $sDir = dirname($sCacheFile);
         if (! is_dir($sDir)) {
-            fso::createDirectory($sDir);
+            mkdir($sDir, 0777, true);
         }
 
         // 防止空数据无法写入
         $arrTexts['Query Yet Simple'] = 'Query Yet Simple';
-        // if (! file_put_contents($sCacheFile, '<?' . 'php return ' . var_export($arrTexts, true) . '; ?' . '>')) {
-        //     throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
-        // }
-        // file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . php_strip_whitespace($sCacheFile));
-
+        
         if (! file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . '<?' . 'php return ' . var_export($arrTexts, true) . '; ?' . '>')) {
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
         }

@@ -21,7 +21,6 @@ namespace queryyetsimple\swoole\console;
 
 use Exception;
 use queryyetsimple\{
-    filesystem\fso,
     console\option,
     console\command,
     console\argument

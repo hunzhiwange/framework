@@ -19,6 +19,8 @@
  */
 namespace queryyetsimple\mvc;
 
+use queryyetsimple\view\iview as view_iview;
+
 /**
  * iview 接口
  *
@@ -29,6 +31,15 @@ namespace queryyetsimple\mvc;
  */
 interface iview
 {
+
+    /**
+     * 切换视图
+     *
+     * @param \queryyetsimple\view\iview $objTheme
+     * @param boolean $booForever
+     * @return $this
+     */
+    public function switchView(view_iview $objTheme, bool $booForever = false);
 
     /**
      * 变量赋值

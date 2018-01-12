@@ -22,6 +22,7 @@ namespace queryyetsimple\mvc;
 use RuntimeException;
 use BadFunctionCallException;
 use queryyetsimple\router\router;
+use queryyetsimple\view\iview as view_iview;
 
 /**
  * 基类方法器
@@ -62,11 +63,6 @@ abstract class action implements iaction
         return $this;
     }
 
-    // ######################################################
-    // ------------- 实现 controller 接口 start -------------
-    // ######################################################
-
-
     /**
      * 设置视图
      *
@@ -103,15 +99,19 @@ abstract class action implements iaction
         return $this->objController->action($sActionName);
     }
 
-    // ######################################################
-    // -------------- 实现 controller 接口 end --------------
-    // ######################################################
-
-
-    // ######################################################
-    // ---------------- 实现 view 接口 start ----------------
-    // ######################################################
-
+    /**
+     * 切换视图
+     *
+     * @param \queryyetsimple\view\iview $objTheme
+     * @param boolean $booForever
+     * @return $this
+     */
+    public function switchView(view_iview $objTheme, bool $booForever = false)
+    {
+        $this->checkController();
+        $this->objController->switchView($objTheme, $booForever);
+        return $this;
+    }
 
     /**
      * 变量赋值
@@ -180,11 +180,6 @@ abstract class action implements iaction
         $this->checkController();
         return $this->objController->display($sFile, $arrOption);
     }
-
-    // ######################################################
-    // ---------------- 实现 view 接口 end ----------------
-    // ######################################################
-
 
     /**
      * 验证 controller

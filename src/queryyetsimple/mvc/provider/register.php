@@ -46,7 +46,7 @@ class register extends provider
     public function register()
     {
         $this->singleton('view', function ($oProject) {
-            return (new view($oProject['view.theme']))->setResponseFactory(function () use ($oProject) {
+            return (new view($oProject['view.view']))->setResponseFactory(function () use ($oProject) {
                 return $oProject['response'];
             });
         });
@@ -108,6 +108,6 @@ class register extends provider
      */
     protected function meta()
     {
-        meta::setDatabaseManager($this->objContainer ['databases']);
+        meta::setDatabaseManager($this->objContainer['databases']);
     }
 }

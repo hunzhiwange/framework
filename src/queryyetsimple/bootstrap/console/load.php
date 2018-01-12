@@ -119,11 +119,6 @@ class load
             mkdir($sDir, 0777, true);
         }
 
-        // if (! file_put_contents($sCacheFile, '<?' . 'php return ' . var_export($arrFiles, true) . '; ?' . '>')) {
-        //     throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
-        // }
-        // file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . php_strip_whitespace($sCacheFile));
-
         if (! file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . '<?' . 'php return ' . var_export($arrFiles, true) . '; ?' . '>')) {
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
         }

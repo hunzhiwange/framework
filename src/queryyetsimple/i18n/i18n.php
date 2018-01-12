@@ -37,31 +37,24 @@ class i18n implements ii18n
      *
      * @var string
      */
-    protected $sI18n;
-
-    /**
-     * 默认语言上下文
-     *
-     * @var string
-     */
-    protected $sDefault = 'zh-cn';
+    protected $i18n;
 
     /**
      * 语言数据
      *
      * @var array
      */
-    protected $arrText = [];
+    protected $text = [];
 
     /**
      * 构造函数
      *
-     * @param string $sI18n
+     * @param string $i18n
      * @return void
      */
-    public function __construct(string $sI18n)
+    public function __construct(string $i18n)
     {
-        $this->sI18n = $sI18n;
+        $this->i18n = $i18n;
     }
 
     /**
@@ -76,14 +69,14 @@ class i18n implements ii18n
             return '';
         }
 
-        $sValue = $arr[0];
-        $sValue = $this->arrText[$this->getI18n()][$sValue] ?? $sValue;
+        $value = $arr[0];
+        $value = $this->text[$this->getI18n()][$value] ?? $value;
         if (count($arr) > 1) {
-            $arr[0] = $sValue;
-            $sValue = sprintf(...$arr);
+            $arr[0] = $value;
+            $value = sprintf(...$arr);
         }
         
-        return $sValue;
+        return $value;
     }
 
     /**
@@ -100,28 +93,28 @@ class i18n implements ii18n
     /**
      * 添加语言包语句
      *
-     * @param string $sI18nName 语言名字
-     * @param array $arrData 语言包数据
+     * @param string $i18nName 语言名字
+     * @param array $data 语言包数据
      * @return void
      */
-    public function addText(string $sI18n, array $arrData = [])
+    public function addText(string $i18n, array $data = [])
     {
-        if (array_key_exists($sI18n, $this->arrText)) {
-            $this->arrText[$sI18n] = array_merge($this->arrText[$sI18n], $arrData);
+        if (array_key_exists($i18n, $this->text)) {
+            $this->text[$i18n] = array_merge($this->text[$i18n], $data);
         } else {
-            $this->arrText[$sI18n] = $arrData;
+            $this->text[$i18n] = $data;
         }
     }
 
     /**
      * 设置当前语言包
      *
-     * @param string $sI18n
+     * @param string $i18n
      * @return void
      */
-    public function setI18n(string $sI18n)
+    public function setI18n(string $i18n)
     {
-        $this->sI18n = $sI18n;
+        $this->i18n = $i18n;
     }
 
     /**
@@ -131,27 +124,6 @@ class i18n implements ii18n
      */
     public function getI18n()
     {
-        return $this->sI18n;
-    }
-
-    /**
-     * 设置默认语言包
-     *
-     * @param string $sI18nName
-     * @return void
-     */
-    public function setDefault(string $sI18n)
-    {
-        $this->sDefault = $sI18n;
-    }
-
-    /**
-     * 获取默认语言包
-     *
-     * @return string
-     */
-    public function getDefault()
-    {
-        return $this->sDefault;
+        return $this->i18n;
     }
 }

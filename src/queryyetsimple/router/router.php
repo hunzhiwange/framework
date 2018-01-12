@@ -31,7 +31,6 @@ use queryyetsimple\{
     http\response,
     support\option,
     support\helper,
-    filesystem\fso,
     mvc\icontroller,
     support\infinity,
     pipeline\ipipeline,
@@ -1771,13 +1770,8 @@ class router
         ];
 
         if (! is_dir(dirname($this->strCachePath))) {
-            fso::createDirectory(dirname($this->strCachePath));
+            mkdir(dirname($this->strCachePath), 0777, true);
         }
-
-        // if (! file_put_contents($this->strCachePath, '<?' . 'php return ' . var_export($arrCacheData, true) . '; ?' . '>')) {
-        //     throw new RuntimeException(sprintf('Dir %s do not have permission.', $this->strCachePath));
-        // }
-        // ! file_put_contents($this->strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . php_strip_whitespace($this->strCachePath));
 
         if (! file_put_contents($this->strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . '<?' . 'php return ' . var_export($arrCacheData, true) . '; ?' . '>')) {
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $this->strCachePath));

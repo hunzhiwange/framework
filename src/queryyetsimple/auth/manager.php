@@ -62,7 +62,9 @@ class manager extends support_manager
      */
     public function getDefaultDriver()
     {
-        return $this->objContainer['option'][$this->getOptionName($this->objContainer['option'][$this->getOptionName('default')] . '_default')];
+        $strOption = $this->objContainer['option'][$this->getOptionName('default')];
+        $strOption = $this->getOptionName($strOption . '_default');
+        return $this->objContainer['option'][$strOption];
     }
 
     /**
@@ -73,7 +75,9 @@ class manager extends support_manager
      */
     public function setDefaultDriver($strName)
     {
-        $this->objContainer['option'][$this->getOptionName($this->objContainer['option'][$this->getOptionName('default')] . '_default')] = $strName;
+        $strOption = $this->objContainer['option'][$this->getOptionName('default')];
+        $strOption = $this->getOptionName($strOption . '_default');
+        $this->objContainer['option'][$strOption] = $strName;
     }
 
     /**

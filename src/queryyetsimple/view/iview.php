@@ -20,41 +20,13 @@
 namespace queryyetsimple\view;
 
 /**
- * phpui 模板处理类
+ * iview 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.11.21
+ * @since 2018.01.10
  * @version 1.0
  */
-class phpui_theme extends theme
+interface iview
 {
-
-    /**
-     * 加载视图文件
-     *
-     * @param string $sFile 视图文件地址
-     * @param boolean $bDisplay 是否显示
-     * @param string $strExt 后缀
-     * @param string $sTargetCache 主模板缓存路径
-     * @param string $sMd5 源文件地址 md5 标记
-     * @return string
-     */
-    public function display($sFile, $bDisplay = true, $strExt = '', $sTargetCache = '', $sMd5 = '')
-    {
-        // 加载视图文件
-        $sFile = $this->parseDisplayFile($sFile, $strExt);
-
-        // 变量赋值
-        if (is_array($this->arrVar) && ! empty($this->arrVar)) {
-            extract($this->arrVar, EXTR_PREFIX_SAME, 'q_');
-        }
-
-        // 返回类型
-        if ($bDisplay === false) {
-            return include $sFile;
-        } else {
-            include $sFile;
-        }
-    }
 }

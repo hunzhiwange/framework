@@ -20,7 +20,6 @@
 namespace queryyetsimple\swoole\console;
 
 use queryyetsimple\{
-    filesystem\fso,
     console\option,
     console\command,
     console\argument

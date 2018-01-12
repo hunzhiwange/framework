@@ -95,14 +95,14 @@ if (! function_exists('console')) {
     }
 }
 
-if (! function_exists('dumps')) {
+if (! function_exists('ddd')) {
     /**
      * 调试一个变量
      *
      * @param array $arr
      * @return mixed
      */
-    function dumps(...$arr)
+    function ddd(...$arr)
     {
         return dump::dump(...$arr);
     }

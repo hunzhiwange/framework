@@ -25,7 +25,6 @@ use queryyetsimple\{
     support\xml,
     router\router,
     support\option,
-    filesystem\fso,
     cookie\icookie,
     support\infinity,
     session\isession,
@@ -1051,7 +1050,7 @@ class response
         if (! $sDownName) {
             $sDownName = basename($sFileName);
         } else {
-            $sDownName = $sDownName . '.' . fso::getExtension($sFileName);
+            $sDownName = $sDownName . '.' . pathinfo($sFileName, PATHINFO_EXTENSION);
         }
 
         return $this->

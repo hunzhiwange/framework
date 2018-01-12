@@ -26,6 +26,7 @@ use Composer\Autoload\ClassLoader;
 use queryyetsimple\{
     support\psr4,
     support\face,
+    filesystem\fso,
     support\provider,
     support\container,
     bootstrap\console\provider\register as console_provider
@@ -539,12 +540,6 @@ class project extends container implements iproject
         }
 
         if ($this->development() || ! is_file($strCachePath)) {
-            // file_put_contents($strCachePath, '<?' . 'php return ' . var_export([
-            //     $this->arrDeferredProviders,
-            //     $arrDeferredAlias
-            // ], true) . '; ?' . '>');
-            // file_put_contents($strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . php_strip_whitespace($strCachePath));
-
             file_put_contents($strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . '<?' . 'php return ' . var_export([
                 $this->arrDeferredProviders,
                 $arrDeferredAlias

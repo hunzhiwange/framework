@@ -21,6 +21,7 @@ namespace queryyetsimple\mvc;
 
 use RuntimeException;
 use queryyetsimple\router\router;
+use queryyetsimple\view\iview as view_iview;
 
 /**
  * 基类控制器
@@ -105,10 +106,19 @@ abstract class controller implements icontroller
         return $this->objRouter->doBind(null, $sActionName, null, true);
     }
 
-    // ######################################################
-    // ---------------- 实现 view 接口 start ----------------
-    // ######################################################
-
+    /**
+     * 切换视图
+     *
+     * @param \queryyetsimple\view\iview $objTheme
+     * @param boolean $booForever
+     * @return $this
+     */
+    public function switchView(view_iview $objTheme, bool $booForever = false)
+    {
+        $this->checkView();
+        $this->objView->switchView($objTheme, $booForever);
+        return $this;
+    }
 
     /**
      * 变量赋值
@@ -180,11 +190,6 @@ abstract class controller implements icontroller
         $this->checkView();
         return $this->objView->display($sFile, $arrOption);
     }
-
-    // ######################################################
-    // ---------------- 实现 view 接口 end ----------------
-    // ######################################################
-
 
     /**
      * 验证 view

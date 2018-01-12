@@ -285,11 +285,6 @@ class parser implements iparser
         return "__##global##START##{$nRand}@" . base64_encode($sContent) . '##END##global##__';
     }
 
-    // ######################################################
-    // --------------------- 分析器 start ---------------------
-    // ######################################################
-
-
     /**
      * 全局编译器 tagself
      *
@@ -662,16 +657,6 @@ class parser implements iparser
         return preg_match("/^{$arrTailTag['name']}/i", $arrTag['name']);
     }
 
-    // ######################################################
-    // ---------------------- 分析器 end ----------------------
-    // ######################################################
-
-
-    // ######################################################
-    // -------------------- 私有函数 start --------------------
-    // ######################################################
-
-
     /**
      * 注册分析器
      *
@@ -753,10 +738,6 @@ class parser implements iparser
      */
     protected function makeCacheFile($sCachePath, &$sCompiled)
     {
-        // ! is_file($sCachePath) && ! is_dir(dirname($sCachePath)) && fso::createDirectory(dirname($sCachePath));
-        // file_put_contents($sCachePath, $sCompiled);
-        // file_put_contents($sCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . php_strip_whitespace($sCachePath));
-
         ! is_file($sCachePath) && ! is_dir(dirname($sCachePath)) && fso::createDirectory(dirname($sCachePath));
         file_put_contents($sCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . $sCompiled);
     }
@@ -1107,8 +1088,4 @@ class parser implements iparser
         $arrLine[] = '<div class="key">' . array_pop($arrLine) . '</div>';
         return '<pre><code>' . implode(PHP_EOL, $arrLine) . '</code></pre>';
     }
-
-    // ######################################################
-    // --------------------- 私有函数 end ---------------------
-    // ######################################################
 }
