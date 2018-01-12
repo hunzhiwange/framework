@@ -254,7 +254,7 @@ class request implements iarray, ArrayAccess
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'var_method' => '_method',
         'var_ajax' => '_ajax',
         'var_pjax' => '_pjax'
@@ -267,11 +267,11 @@ class request implements iarray, ArrayAccess
      * @param \queryyetsimple\cookie\icookie $objCookie
      * @return void
      */
-    public function __construct(isession $objSession, icookie $objCookie, array $arrOption = [])
+    public function __construct(isession $objSession, icookie $objCookie, array $option = [])
     {
         $this->objSession = $objSession;
         $this->objCookie = $objCookie;
-        $this->options($arrOption);
+        $this->options($option);
     }
 
     /**

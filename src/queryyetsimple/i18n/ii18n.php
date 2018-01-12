@@ -49,19 +49,19 @@ interface ii18n
     /**
      * 添加语言包
      *
-     * @param string $sI18n 语言名字
-     * @param array $arrData 语言包数据
+     * @param string $i18n 语言名字
+     * @param array $data 语言包数据
      * @return void
      */
-    public function addText(string $sI18n, array $arrData = []);
+    public function addText(string $i18n, array $data = []);
 
     /**
      * 设置当前语言包上下文环境
      *
-     * @param string $sI18n
+     * @param string $i18n
      * @return void
      */
-    public function setI18n(string $sI18n);
+    public function setI18n(string $i18n);
 
     /**
      * 获取当前语言包

@@ -33,98 +33,98 @@ interface icookie
     /**
      * 设置 COOKIE
      *
-     * @param string $sName
-     * @param string $mixValue
-     * @param array $arrOption
+     * @param string $name
+     * @param string $value
+     * @param array $option
      * @return void
      */
-    public function set($sName, $mixValue = '', array $arrOption = []);
+    public function set($name, $value = '', array $option = []);
 
     /**
      * 批量插入
      *
-     * @param string|array $mixKey
-     * @param mixed $mixValue
-     * @param array $arrOption
+     * @param string|array $keys
+     * @param mixed $value
+     * @param array $option
      * @return void
      */
-    public function put($mixKey, $mixValue = null, array $arrOption = []);
+    public function put($keys, $value = null, array $option = []);
 
     /**
      * 数组插入数据
      *
-     * @param string $strKey
-     * @param mixed $mixValue
-     * @param array $arrOption
+     * @param string $key
+     * @param mixed $value
+     * @param array $option
      * @return void
      */
-    public function push($strKey, $mixValue, array $arrOption = []);
+    public function push($key, $value, array $option = []);
 
     /**
      * 合并元素
      *
-     * @param string $strKey
-     * @param array $arrValue
-     * @param array $arrOption
+     * @param string $key
+     * @param array $value
+     * @param array $option
      * @return void
      */
-    public function merge($strKey, array $arrValue, array $arrOption = []);
+    public function merge($key, array $value, array $option = []);
 
     /**
      * 弹出元素
      *
-     * @param string $strKey
-     * @param mixed $mixValue
-     * @param array $arrOption
+     * @param string $key
+     * @param mixed $value
+     * @param array $option
      * @return void
      */
-    public function pop($strKey, array $arrValue, array $arrOption = []);
+    public function pop($key, array $value, array $option = []);
 
     /**
      * 数组插入键值对数据
      *
-     * @param string $strKey
-     * @param mixed $mixKey
-     * @param mixed $mixValue
-     * @param array $arrOption
+     * @param string $key
+     * @param mixed $keys
+     * @param mixed $value
+     * @param array $option
      * @return void
      */
-    public function arrays($strKey, $mixKey, $mixValue = null, array $arrOption = []);
+    public function arrays($key, $keys, $value = null, array $option = []);
 
     /**
      * 数组键值删除数据
      *
-     * @param string $strKey
-     * @param mixed $mixKey
+     * @param string $key
+     * @param mixed $keys
      * @return void
      */
-    public function arraysDelete($strKey, $mixKey, array $arrOption = []);
+    public function arraysDelete($key, $keys, array $option = []);
 
     /**
      * 获取 cookie
      *
-     * @param string $sName
-     * @param mixed $mixDefault
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $defaults
+     * @param array $option
      * @return mixed
      */
-    public function get($sName, $mixDefault = null, array $arrOption = []);
+    public function get($name, $defaults = null, array $option = []);
 
     /**
      * 删除 cookie
      *
-     * @param string $sName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return void
      */
-    public function delete($sName, array $arrOption = []);
+    public function delete($name, array $option = []);
 
     /**
      * 清空 cookie
      *
-     * @param boolean $bOnlyPrefix
-     * @param array $arrOption
+     * @param boolean $deletePrefix
+     * @param array $option
      * @return void
      */
-    public function clear($bOnlyPrefix = true, array $arrOption = []);
+    public function clear($deletePrefix = true, array $option = []);
 }

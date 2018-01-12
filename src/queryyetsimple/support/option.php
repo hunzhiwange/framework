@@ -33,42 +33,42 @@ trait option
     /**
      * 修改单个配置
      *
-     * @param string $strName
-     * @param mixed $mixValue
+     * @param string $name
+     * @param mixed $value
      * @return $this
      */
-    public function option(string $strName, $mixValue)
+    public function option(string $name, $value)
     {
-        $this->arrOption[$strName] = $mixValue;
+        $this->option[$name] = $value;
         return $this;
     }
 
     /**
      * 修改数组配置
      *
-     * @param string $strName
-     * @param array $arrValue
+     * @param string $name
+     * @param array $value
      * @return $this
      */
-    public function optionArray(string $strName, array $arrValue)
+    public function optionArray(string $name, array $value)
     {
-        return $this->option($strName, array_merge($this->getOption($strName), $arrValue));
+        return $this->option($name, array_merge($this->getOption($name), $value));
     }
 
     /**
      * 修改多个配置
      *
-     * @param string $strName
-     * @param mixed $mixValue
+     * @param string $name
+     * @param mixed $value
      * @return $this
      */
-    public function options(array $arrOption = [])
+    public function options(array $option = [])
     {
-        if (! $arrOption) {
+        if (! $option) {
             return $this;
         }
-        foreach ($arrOption as $strName => $mixValue) {
-            $this->option($strName, $mixValue);
+        foreach ($option as $name => $value) {
+            $this->option($name, $value);
         }
         return $this;
     }
@@ -76,36 +76,36 @@ trait option
     /**
      * 获取单个配置
      *
-     * @param string $strName
-     * @param mixed $mixDefault
+     * @param string $name
+     * @param mixed $defaults
      * @return mixed
      */
-    public function getOption(string $strName, $mixDefault = null)
+    public function getOption(string $name, $defaults = null)
     {
-        return $this->arrOption[$strName] ?? $mixDefault;
+        return $this->option[$name] ?? $defaults;
     }
 
     /**
      * 获取所有配置
      *
-     * @param array $arrOption
+     * @param array $option
      * @return mixed
      */
-    public function getOptions(array $arrOption = [])
+    public function getOptions(array $option = [])
     {
-        return $arrOption ? array_merge($this->arrOption, $arrOption) : $this->arrOption;
+        return $option ? array_merge($this->option, $option) : $this->option;
     }
 
     /**
      * 删除单个配置
      *
-     * @param string $strName
+     * @param string $name
      * @return $this
      */
-    public function deleteOption(string $strName)
+    public function deleteOption(string $name)
     {
-        if(isset($this->arrOption[$strName])) {
-            unset($this->arrOption[$strName]);
+        if(isset($this->option[$name])) {
+            unset($this->option[$name]);
         }
         return $this;
     }
@@ -113,17 +113,17 @@ trait option
     /**
      * 删除多个配置
      *
-     * @param array $arrOption
+     * @param array $option
      * @return $this
      */
-    public function deleteOptions(array $arrOption = [])
+    public function deleteOptions(array $option = [])
     {
-        if (! $arrOption) {
+        if (! $option) {
             return $this;
         }
 
-        foreach ($arrOption as $strOption) {
-            $this->deleteOption($strOption);
+        foreach ($option as $key) {
+            $this->deleteOption($key);
         }
         
         return $this;
