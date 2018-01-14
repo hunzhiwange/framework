@@ -40,7 +40,7 @@ abstract class aconnect
      *
      * @var array
      */
-    protected $arrVar = [];
+    protected $vars = [];
 
     /**
      * 构造函数
@@ -56,45 +56,45 @@ abstract class aconnect
     /**
      * 设置模板变量
      *
-     * @param mixed $mixName
-     * @param mixed $mixValue
+     * @param mixed $name
+     * @param mixed $value
      * @return void
      */
-    public function setVar($mixName, $mixValue = null)
+    public function setVar($name, $value = null)
     {
-        if (is_array($mixName)) {
-            $this->arrVar = array_merge($this->arrVar, $mixName);
+        if (is_array($name)) {
+            $this->vars = array_merge($this->vars, $name);
         } else {
-            $this->arrVar[$mixName] = $mixValue;
+            $this->vars[$name] = $value;
         }
     }
 
     /**
      * 获取变量值
      *
-     * @param string|null $sName
+     * @param string|null $name
      * @return mixed
      */
-    public function getVar(string $sName = null)
+    public function getVar(string $name = null)
     {
-        if (is_null($sName)) {
-            return $this->arrVar;
+        if (is_null($name)) {
+            return $this->vars;
         }
-        return $this->arrVar[$sName] ?? null;
+        return $this->vars[$name] ?? null;
     }
 
     /**
      * 删除变量值
      *
-     * @param mixed $mixName
+     * @param mixed $name
      * @return $this
      */
-    public function deleteVar($mixName)
+    public function deleteVar($name)
     {
-        $mixName = is_array($mixName) ? $mixName : func_get_args();
-        foreach ($mixName as $strName) {
-            if (isset($this->arrVar[$strName])) {
-                unset($this->arrVar[$strName]);
+        $name = is_array($name) ? $name : func_get_args();
+        foreach ($name as $item) {
+            if (isset($this->vars[$item])) {
+                unset($this->vars[$item]);
             }
         }
         return $this;
@@ -103,126 +103,131 @@ abstract class aconnect
     /**
      * 清空变量值
      *
-     * @param string|null $sName
+     * @param string|null $name
      * @return $this
      */
     public function clearVar()
     {
-        $this->arrVar = [];
+        $this->vars = [];
         return $this;
     }
 
     /**
      * 分析展示的视图文件
      *
-     * @param string $sFile 视图文件地址
-     * @param string $strExt 后缀
+     * @param string $file 视图文件地址
+     * @param string $ext 后缀
      * @return string|void
      */
-    protected function parseDisplayFile(string $sFile = null, string $strExt = '')
+    protected function parseDisplayFile(string $file = null, string $ext = '')
     {
         // 加载视图文件
-        if (! is_file($sFile)) {
-            $sFile = $this->parseFile($sFile, $strExt);
+        if (! is_file($file)) {
+            $file = $this->parseFile($file, $ext);
         }
 
         // 分析默认视图文件
-        if (! is_file($sFile)) {
-            $sFile = $this->parseDefaultFile($sFile);
+        if (! is_file($file)) {
+            $file = $this->parseDefaultFile($file);
         }
 
-        if (! is_file($sFile)) {
-            throw new InvalidArgumentException(sprintf('Template file %s does not exist.', $sFile));
+        if (! is_file($file)) {
+            throw new InvalidArgumentException(sprintf('Template file %s does not exist.', $file));
         }
 
-        return $sFile;
+        return $file;
     }
 
     /**
      * 分析模板真实路径
      *
-     * @param string $sTpl 文件地址
-     * @param string $sExt 扩展名
+     * @param string $tpl 文件地址
+     * @param string $ext 扩展名
      * @return string
      */
-    protected function parseFile(string $sTpl = null, string $sExt = '')
+    protected function parseFile(string $tpl = null, string $ext = '')
     {
-        $calHelp = function ($sContent) {
-            return str_replace([
-                ':',
-                '+'
-            ], [
-                '->',
-                '::'
-            ], $sContent);
-        };
-
-        $sTpl = trim(str_replace('->', '.', $sTpl));
+        $tpl = trim(str_replace('->', '.', $tpl));
 
         // 完整路径或者变量
-        if (pathinfo($sTpl, PATHINFO_EXTENSION) || strpos($sTpl, '$') === 0) {
-            return $calHelp($sTpl);
-        } elseif (strpos($sTpl, '(') !== false) { // 存在表达式
-            return $calHelp($sTpl);
+        if (pathinfo($tpl, PATHINFO_EXTENSION) || strpos($tpl, '$') === 0 ||　strpos($tpl, '(') !== false) {
+            return $this->formatFile($tpl);
         } else {
             if (! $this->getOption('theme_path')) {
                 throw new RuntimeException('Theme path must be set');
             }
 
             // 空取默认控制器和方法
-            if ($sTpl == '') {
-                $sTpl = $this->getOption('controller_name') . $this->getOption('controlleraction_depr') . $this->getOption('action_name');
+            if ($tpl == '') {
+                $tpl = $this->getOption('controller_name') . $this->getOption('controlleraction_depr') . $this->getOption('action_name');
             }
 
-            if (strpos($sTpl, '@') !== false) { // 分析主题
-                $arrArray = explode('@', $sTpl);
-                $sTheme = array_shift($arrArray);
-                $sTpl = array_shift($arrArray);
-                unset($arrArray);
+            if (strpos($tpl, '@') !== false) { // 分析主题
+                $arr = explode('@', $tpl);
+                $theme = array_shift($arr);
+                $tpl = array_shift($arr);
+                unset($arr);
             }
 
-            $sTpl = str_replace([
+            $tpl = str_replace([
                 '+',
                 ':'
-            ], $this->getOption('controlleraction_depr'), $sTpl);
+            ], $this->getOption('controlleraction_depr'), $tpl);
             
-            return dirname($this->getOption('theme_path')) . '/' . ($sTheme ?? $this->getOption('theme_name')) . '/' . $sTpl . ($sExt ?: $this->getOption('suffix'));
+            return dirname($this->getOption('theme_path')) . '/' . ($theme ?? $this->getOption('theme_name')) . '/' . $tpl . ($ext ?: $this->getOption('suffix'));
         }
+    }
+
+    /**
+     * 格式化文件名
+     *
+     * @param string $content
+     * @return string
+     */
+    protected function formatFile(string $content)
+    {
+        return str_replace([
+            ":",
+            "+"
+        ], [
+            "->",
+            "::"
+        ], $content);
     }
 
     /**
      * 匹配默认地址（文件不存在）
      *
-     * @param string $sTpl 文件地址
+     * @param string $tpl 文件地址
      * @return string
      */
-    protected function parseDefaultFile(string $sTpl = null)
+    protected function parseDefaultFile(string $tpl = null)
     {
-        if (is_file($sTpl)) {
-            return $sTpl;
+        if (is_file($tpl)) {
+            return $tpl;
         }
 
         if (! $this->getOption('theme_path')) {
             throw new RuntimeException('Theme path must be set');
         }
 
-        $sBakTpl = $sTpl;
+        $bak = $tpl;
 
         // 物理路径
-        if (strpos($sTpl, ':') !== false || strpos($sTpl, '/') === 0 || strpos($sTpl, '\\') === 0) {
-            $sTpl = str_replace(str_replace('\\', '/', $this->getOption('theme_path') . '/'), '', str_replace('\\', '/', ($sTpl)));
+        if (strpos($tpl, ':') !== false || strpos($tpl, '/') === 0 || strpos($tpl, '\\') === 0) {
+            $tpl = str_replace(str_replace('\\', '/', $this->getOption('theme_path') . '/'), '', str_replace('\\', '/', ($tpl)));
         }
 
         // 备用地址
-        if ($this->getOption('theme_path_default') && is_file(($sTempTpl = $this->getOption('theme_path_default') . '/' . $sTpl))) {
-            return $sTempTpl;
+        if ($this->getOption('theme_path_default') && is_file(($tempTpl = $this->getOption('theme_path_default') . '/' . $tpl))) {
+            return $tempTpl;
         }
 
         // default 主题
-        if ($this->getOption('theme_name') != 'default' && is_file(($sTempTpl = dirname($this->getOption('theme_path')) . '/default/' . $sTpl))) {
-            return $sTempTpl;
+        if ($this->getOption('theme_name') != 'default' && is_file(($tempTpl = dirname($this->getOption('theme_path')) . '/default/' . $tpl))) {
+            return $tempTpl;
         }
 
-        return $sBakTpl;
+        return $bak;
     }
 }

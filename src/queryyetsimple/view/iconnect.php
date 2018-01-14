@@ -32,42 +32,41 @@ interface iconnect
     /**
      * 加载视图文件
      *
-     * @param string $sFile 视图文件地址
-     * @param boolean $bDisplay 是否显示
-     * @param string $strExt 后缀
+     * @param string $file 视图文件地址
+     * @param boolean $display 是否显示
+     * @param string $ext 后缀
      * @return string
      */
-    public function display(string $sFile = null, bool $bDisplay = true, string $strExt = '');
+    public function display(string $file = null, bool $display = true, string $ext = '');
 
     /**
      * 设置模板变量
      *
-     * @param mixed $mixName
-     * @param mixed $mixValue
+     * @param mixed $name
+     * @param mixed $value
      * @return void
      */
-    public function setVar($mixName, $mixValue = null);
+    public function setVar($name, $value = null);
 
     /**
      * 获取变量值
      *
-     * @param string|null $sName
+     * @param string|null $name
      * @return mixed
      */
-    public function getVar(string $sName = null);
+    public function getVar(string $name = null);
 
     /**
      * 删除变量值
      *
-     * @param mixed $mixName
+     * @param mixed $name
      * @return $this
      */
-    public function deleteVar($mixName);
+    public function deleteVar($name);
 
     /**
      * 清空变量值
      *
-     * @param string|null $sName
      * @return $this
      */
     public function clearVar();

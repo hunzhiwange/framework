@@ -33,142 +33,142 @@ interface isession
     /**
      * 启动 session
      *
-     * @return void
+     * @return $this
      */
     public function start();
 
     /**
      * 设置 session
      *
-     * @param string $sName
-     * @param mxied $mixValue
+     * @param string $name
+     * @param mxied $value
      * @return void
      */
-    public function set(string $sName, $mixValue);
+    public function set(string $name, $value);
 
     /**
      * 批量插入
      *
-     * @param string|array $mixKey
-     * @param mixed $mixValue
+     * @param string|array $keys
+     * @param mixed $value
      * @return void
      */
-    public function put($mixKey, $mixValue = null);
+    public function put($keys, $value = null);
 
     /**
      * 数组插入数据
      *
-     * @param string $strKey
-     * @param mixed $mixValue
+     * @param string $key
+     * @param mixed $value
      * @return void
      */
-    public function push($strKey, $mixValue);
+    public function push($key, $value);
 
     /**
      * 合并元素
      *
-     * @param string $strKey
-     * @param array $arrValue
+     * @param string $key
+     * @param array $value
      * @return void
      */
-    public function merge($strKey, array $arrValue);
+    public function merge($key, array $value);
 
     /**
      * 弹出元素
      *
-     * @param string $strKey
-     * @param mixed $mixValue
+     * @param string $key
+     * @param mixed $value
      * @return void
      */
-    public function pop($strKey, array $arrValue);
+    public function pop($key, array $value);
 
     /**
      * 数组插入键值对数据
      *
-     * @param string $strKey
-     * @param mixed $mixKey
-     * @param mixed $mixValue
+     * @param string $key
+     * @param mixed $keys
+     * @param mixed $value
      * @return void
      */
-    public function arrays($strKey, $mixKey, $mixValue = null);
+    public function arr($key, $keys, $value = null);
 
     /**
      * 数组键值删除数据
      *
-     * @param string $strKey
-     * @param mixed $mixKey
+     * @param string $key
+     * @param mixed $keys
      * @return void
      */
-    public function arraysDelete($strKey, $mixKey);
+    public function arrDelete($key, $keys);
 
     /**
      * 取回 session
      *
-     * @param string $sName
-     * @param mixed $mixValue
+     * @param string $name
+     * @param mixed $value
      * @return mxied
      */
-    public function get(string $sName, $mixValue = null);
+    public function get(string $name, $value = null);
 
     /**
      * 返回数组部分数据
      *
-     * @param string $sName
-     * @param mixed $mixValue
+     * @param string $name
+     * @param mixed $value
      * @return mixed
      */
-    public function getPart(string $sName, $mixValue = null);
+    public function getPart(string $name, $value = null);
 
     /**
      * 删除 session
      *
-     * @param string $sName
-     * @param boolean $bPrefix
+     * @param string $name
+     * @param boolean $prefix
      * @return bool
      */
-    public function delete(string $sName, $bPrefix = true);
+    public function delete(string $name, $prefix = true);
 
     /**
      * 是否存在 session
      *
-     * @param string $sName
+     * @param string $name
      * @return boolean
      */
-    public function has(string $sName);
+    public function has(string $name);
 
     /**
      * 删除 session
      *
-     * @param boolean $bPrefix
+     * @param boolean $prefix
      * @return void
      */
-    public function clear($bPrefix = true);
+    public function clear($prefix = true);
 
     /**
      * 闪存一个数据，当前请求和下一个请求可用
      *
-     * @param string $strKey
-     * @param mixed $mixValue
+     * @param string $key
+     * @param mixed $value
      * @return void
      */
-    public function flash($strKey, $mixValue = null);
+    public function flash($key, $value = null);
 
     /**
      * 批量闪存数据，当前请求和下一个请求可用
      *
-     * @param array $arrFlash
+     * @param array $flash
      * @return void
      */
-    public function flashs(array $arrFlash);
+    public function flashs(array $flash);
 
     /**
      * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取
      *
-     * @param string $strKey
-     * @param mixed $mixValue
+     * @param string $key
+     * @param mixed $value
      * @return void
      */
-    public function nowFlash($strKey, $mixValue);
+    public function nowFlash($key, $value);
 
     /**
      * 保持所有闪存数据
@@ -180,27 +180,27 @@ interface isession
     /**
      * 保持闪存数据
      *
-     * @param mixed $mixKey
+     * @param mixed $keys
      * @return void
      */
-    public function keepFlash($mixKey);
+    public function keepFlash($keys);
 
     /**
      * 返回闪存数据
      *
-     * @param string $strKey
-     * @param mixed $mixDefault
+     * @param string $key
+     * @param mixed $defaults
      * @return mixed
      */
-    public function getFlash($strKey, $mixDefault = null);
+    public function getFlash($key, $defaults = null);
 
     /**
      * 删除闪存数据
      *
-     * @param mixed $mixKey
+     * @param mixed $keys
      * @return void
      */
-    public function deleteFlash($mixKey);
+    public function deleteFlash($keys);
 
     /**
      * 清理所有闪存数据
@@ -226,10 +226,10 @@ interface isession
     /**
      * 设置前一个请求地址
      *
-     * @param string $strUrl
+     * @param string $url
      * @return void
      */
-    public function setPrevUrl($strUrl);
+    public function setPrevUrl($url);
 
     /**
      * 暂停 session
@@ -262,7 +262,7 @@ interface isession
     /**
      * 获取解析 session_id
      *
-     * @param string $sId
+     * @param string $id
      * @return string
      */
     public function parseSessionId();
@@ -270,88 +270,88 @@ interface isession
     /**
      * 设置 save path
      *
-     * @param string $sSavePath
+     * @param string $savepath
      * @return string
      */
-    public function savePath($sSavePath = null);
+    public function savePath($savepath = null);
 
     /**
      * 设置 cache limiter
      *
-     * @param string $strCacheLimiter
+     * @param string $limiter
      * @return string
      */
-    public function cacheLimiter($strCacheLimiter = null);
+    public function cacheLimiter($limiter = null);
 
     /**
      * 设置 cache expire
      *
-     * @param int $nExpireSecond
+     * @param int $second
      * @return void
      */
-    public function cacheExpire($nExpireSecond = null);
+    public function cacheExpire($second = null);
 
     /**
      * session_name
      *
-     * @param string $sName
+     * @param string $name
      * @return string
      */
-    public function sessionName($sName = null);
+    public function sessionName($name = null);
 
     /**
      * session id
      *
-     * @param string $sId
+     * @param string $id
      * @return string
      */
-    public function sessionId($sId = null);
+    public function sessionId($id = null);
 
     /**
      * session 的 cookie_domain 设置
      *
-     * @param string $sSessionDomain
+     * @param string $domain
      * @return string
      */
-    public function cookieDomain($sSessionDomain = null);
+    public function cookieDomain($domain = null);
 
     /**
      * session 是否使用 cookie
      *
-     * @param boolean $bUseCookies
+     * @param boolean $cookies
      * @return boolean
      */
-    public function useCookies($bUseCookies = null);
+    public function useCookies($cookies = null);
 
     /**
      * 客户端禁用 cookie 可以开启这个项
      *
-     * @param string $nUseTransSid
+     * @param string $id
      * @return boolean
      */
-    public function useTransSid($nUseTransSid = null);
+    public function useTransSid($id = null);
 
     /**
      * 设置过期 cookie lifetime
      *
-     * @param int $nCookieLifeTime
+     * @param int $lifetime
      * @return int
      */
-    public function cookieLifetime($nCookieLifeTime);
+    public function cookieLifetime($lifetime);
 
     /**
      * gc maxlifetime
      *
-     * @param int $nGcMaxlifetime
+     * @param int $lifetime
      * @return int
      */
-    public function gcMaxlifetime($nGcMaxlifetime = null);
+    public function gcMaxlifetime($lifetime = null);
 
     /**
      * session 垃圾回收概率分子 (分母为 session.gc_divisor)
      *
-     * @param int $nGcProbability
+     * @param int $probability
      * @return int
      */
-    public function gcProbability($nGcProbability = null);
+    public function gcProbability($probability = null);
 }

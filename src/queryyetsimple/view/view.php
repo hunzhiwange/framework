@@ -35,28 +35,28 @@ class view implements iview
      *
      * @var \queryyetsimple\view\iconnect
      */
-    protected $oConnect;
+    protected $connect;
 
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\view\iconnect $oConnect
+     * @param \queryyetsimple\view\iconnect $connect
      * @return void
      */
-    public function __construct(iconnect $oConnect)
+    public function __construct(iconnect $connect)
     {
-        $this->oConnect = $oConnect;
+        $this->connect = $connect;
     }
 
     /**
      * call 
      *
-     * @param string $sMethod
-     * @param array $arrArgs
+     * @param string $method
+     * @param array $args
      * @return mixed
      */
-    public function __call(string $sMethod, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        return $this->oConnect->$sMethod(...$arrArgs);
+        return $this->connect->$method(...$args);
     }
 }
