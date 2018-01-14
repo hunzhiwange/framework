@@ -20,7 +20,6 @@
 namespace queryyetsimple\view;
 
 use RuntimeException;
-use InvalidArgumentException;
 
 /**
  * html 模板处理类
@@ -71,11 +70,9 @@ class html extends aconnect implements iconnect
      * @param string $sFile 视图文件地址
      * @param boolean $bDisplay 是否显示
      * @param string $strExt 后缀
-     * @param string $sTargetCache 主模板缓存路径
-     * @param string $sMd5 源文件地址 md5 标记
      * @return string
      */
-    public function display(string $sFile = null, bool $bDisplay = true, string $strExt = '', string $sTargetCache = '', string $sMd5 = '')
+    public function display(string $sFile = null, bool $bDisplay = true, string $strExt = '')
     {
         // 加载视图文件
         $sFile = $this->parseDisplayFile($sFile, $strExt);
@@ -86,25 +83,9 @@ class html extends aconnect implements iconnect
         }
 
         $sCachePath = $this->getCachePath($sFile); // 编译文件路径
+        
         if ($this->isCacheExpired($sFile, $sCachePath)) { // 重新编译
             $this->parser()->doCombile($sFile, $sCachePath);
-        }
-
-        // 逐步将子模板缓存写入父模板至到最后
-        if ($sTargetCache) {
-            if (is_file($sFile) && is_file($sTargetCache)) {
-                // 源码
-                $sTargetContent = file_get_contents($sTargetCache);
-                $sChildCache = file_get_contents($sCachePath);
-
-                // 替换
-                $sTargetContent = preg_replace("/<!--<\#\#\#\#incl\*" . $sMd5 . "\*ude\#\#\#\#>-->(.*?)<!--<\/\#\#\#\#incl\*" . $sMd5 . "\*ude\#\#\#\#\/>-->/s", substr($sChildCache, strpos($sChildCache, PHP_EOL)), $sTargetContent);
-                file_put_contents($sTargetCache, $sTargetContent);
-
-                unset($sChildCache, $sTargetContent);
-            } else {
-                throw new InvalidArgumentException(sprintf('Source %s and target cache %s is not a valid path', $sFile, $sTargetCache));
-            }
         }
 
         // 返回类型
@@ -113,7 +94,7 @@ class html extends aconnect implements iconnect
             include $sCachePath;
             $sReturn = ob_get_contents();
             ob_end_clean();
-            $this->fixIe($sReturn);
+
             return $sReturn;
         } else {
             include $sCachePath;
@@ -214,21 +195,5 @@ class html extends aconnect implements iconnect
         }
 
         return false;
-    }
-
-    /**
-     * 修复 ie 显示问题
-     * 过滤编译文件子模板定位注释标签，防止在网页头部出现注释，导致 IE 浏览器不居中
-     *
-     * @param string $sContent
-     * @return string
-     */
-    protected function fixIe(string $sContent)
-    {
-        if ($this->getOption('cache_children') === true) {
-            $sContent = preg_replace("/<!--<\#\#\#\#incl\*(.*?)\*ude\#\#\#\#>-->/", '', $sContent);
-            $sContent = preg_replace("/<!--<\/\#\#\#\#incl\*(.*?)\*ude\#\#\#\#\/>-->/", '', $sContent);
-        }
-        return $sContent;
     }
 }

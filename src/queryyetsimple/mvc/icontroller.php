@@ -35,24 +35,24 @@ interface icontroller extends iview
     /**
      * 返回父控制器
      *
-     * @param \queryyetsimple\mvc\iview $objView
+     * @param \queryyetsimple\mvc\iview $view
      * @return $this
      */
-    public function setView(iview $objView);
+    public function setView(iview $view);
 
     /**
      * 返回父控制器
      *
-     * @param \queryyetsimple\router\router $objRouter
+     * @param \queryyetsimple\router\router $router
      * @return $this
      */
-    public function setRouter(router $objRouter);
+    public function setRouter(router $router);
 
     /**
      * 执行子方法器
      *
-     * @param string $sActionName 方法名
+     * @param string $action 方法名
      * @return void
      */
-    public function action($sActionName);
+    public function action($action);
 }

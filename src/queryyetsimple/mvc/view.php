@@ -39,66 +39,65 @@ class view implements iview
      *
      * @var \queryyessimple\view\iview
      */
-    protected $objTheme;
+    protected $theme;
 
     /**
      * 备份视图模板
      *
      * @var \queryyessimple\view\iview
      */
-    protected $objBackupTheme;
+    protected $backupTheme;
 
     /**
      * 是否永久切换
      *
      * @var boolean
      */
-    protected $booForever = false;
+    protected $foreverSwitch = false;
 
     /**
      * 响应工厂
      *
      * @var \Closure
      */
-    protected $calResponseFactory;
+    protected $responseFactory;
 
     /**
      * 响应
      *
      * @var \queryyetsimple\http\response
      */
-    protected $objResponse;
+    protected $response;
 
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\view\iview $objTheme
+     * @param \queryyetsimple\view\iview $theme
      * @return void
      */
-    public function __construct(view_iview $objTheme)
+    public function __construct(view_iview $theme)
     {
-        $this->objTheme = $objTheme;
+        $this->theme = $theme;
     }
 
     /**
      * 切换视图
      *
-     * @param \queryyetsimple\view\iview $objTheme
-     * @param boolean $booForever
+     * @param \queryyetsimple\view\iview $theme
+     * @param boolean $foreverSwitch
      * @return $this
      */
-    public function switchView(view_iview $objTheme, bool $booForever = false)
+    public function switchView(view_iview $theme, bool $foreverSwitch = false)
     {
+        $assign = $this->getAssign();
 
-        $arrAssign = $this->getAssign();
-
-        if ($booForever === false) {
-            $this->objBackupTheme = $this->objTheme;
+        if ($foreverSwitch === false) {
+            $this->backupTheme = $this->theme;
         }
         
-        $this->booForever = $booForever;
-        $this->objTheme = $objTheme;
-        $this->assign($arrAssign);
+        $this->foreverSwitch = $foreverSwitch;
+        $this->theme = $theme;
+        $this->assign($assign);
 
         return $this;
     }
@@ -106,66 +105,66 @@ class view implements iview
     /**
      * 设置响应工厂
      *
-     * @param \Closure $calResponseFactory
+     * @param \Closure $responseFactory
      * @return $this;
      */
-    public function setResponseFactory(Closure $calResponseFactory)
+    public function setResponseFactory(Closure $responseFactory)
     {
-        $this->calResponseFactory = $calResponseFactory;
+        $this->responseFactory = $responseFactory;
         return $this;
     }
 
     /**
      * 获取响应
      *
-     * @return \queryyetsimple\http\response $objResponse
+     * @return \queryyetsimple\http\response $response
      */
     public function getResponse()
     {
-        if (! $this->objResponse) {
-            $this->objResponse = call_user_func($this->calResponseFactory);
+        if (! $this->response) {
+            $this->response = call_user_func($this->responseFactory);
         }
-        return $this->objResponse;
+        return $this->response;
     }
 
     /**
      * 变量赋值
      *
-     * @param mixed $mixName
-     * @param mixed $mixValue
+     * @param mixed $name
+     * @param mixed $value
      * @return $this
      */
-    public function assign($mixName, $mixValue = null)
+    public function assign($name, $value = null)
     {
         $this->checkTheme();
-        $this->objTheme->setVar($mixName, $mixValue);
+        $this->theme->setVar($name, $value);
         return $this;
     }
 
     /**
      * 获取变量赋值
      *
-     * @param string|null $sName
+     * @param string|null $name
      * @return mixed
      */
-    public function getAssign($sName = null)
+    public function getAssign($name = null)
     {
         $this->checkTheme();
-        return $this->objTheme->getVar($sName);
+        return $this->theme->getVar($name);
     }
 
     /**
      * 删除变量值
      *
-     * @param mixed $mixName
+     * @param mixed $name
      * @return $this
      */
-    public function deleteAssign($mixName)
+    public function deleteAssign($name)
     {
         $this->checkTheme();
 
-        $arrArgs = func_get_args();
-        $this->objTheme->deleteVar(...$arrArgs);
+        $args = func_get_args();
+        $this->theme->deleteVar(...$args);
 
         return $this;
     }
@@ -173,44 +172,44 @@ class view implements iview
     /**
      * 清空变量值
      *
-     * @param string|null $sName
+     * @param string|null $name
      * @return $this
      */
     public function clearAssign()
     {
         $this->checkTheme();
-        $this->objTheme->clearVar();
+        $this->theme->clearVar();
         return $this;
     }
 
     /**
      * 加载视图文件
      *
-     * @param string $sFile
-     * @param array $arrOption
+     * @param string $file
+     * @param array $option
      * @sub string charset 编码
      * @sub string content_type 内容类型
      * @return string
      */
-    public function display($sFile = null, array $arrOption = null)
+    public function display($file = null, array $option = null)
     {
         $this->checkTheme();
 
-        $arrOption = array_merge([
+        $option = array_merge([
             'charset' => 'utf-8',
             'content_type' => 'text/html'
-        ], $arrOption ?: []);
+        ], $option ?: []);
 
-        $this->responseHeader($arrOption['content_type'], $arrOption['charset']);
+        $this->responseHeader($option['content_type'], $option['charset']);
 
-        $strResult = $this->objTheme->display($sFile, false);
+        $result = $this->theme->display($file, false);
 
-        if ($this->booForever === false) {
-            $this->objTheme = $this->objBackupTheme;
+        if ($this->foreverSwitch === false) {
+            $this->theme = $this->backupTheme;
         }
-        $this->booForever = false;
+        $this->foreverSwitch = false;
 
-        return $strResult;
+        return $result;
     }
 
     /**
@@ -220,7 +219,7 @@ class view implements iview
      */
     protected function checkTheme()
     {
-        if (! $this->objTheme) {
+        if (! $this->theme) {
             throw new RuntimeException('Theme is not set in view');
         }
     }
@@ -228,18 +227,18 @@ class view implements iview
     /**
      * 发送 header
      *
-     * @param string $strContentType
-     * @param string $strCharset
+     * @param string $contentType
+     * @param string $charset
      * @return void
      */
-    protected function responseHeader($strContentType = 'text/html', $strCharset = 'utf-8')
+    protected function responseHeader($contentType = 'text/html', $charset = 'utf-8')
     {
         $this->getResponse();
 
-        if (! $this->objResponse) {
+        if (! $this->response) {
             throw new RuntimeException('Response is not set in view');
         }
 
-        $this->objResponse->contentType($strContentType)->charset($strCharset);
+        $this->response->contentType($contentType)->charset($charset);
     }
 }

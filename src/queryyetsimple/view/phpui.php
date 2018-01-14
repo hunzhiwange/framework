@@ -51,11 +51,9 @@ class phpui extends aconnect implements iconnect
      * @param string $sFile 视图文件地址
      * @param boolean $bDisplay 是否显示
      * @param string $strExt 后缀
-     * @param string $sTargetCache 主模板缓存路径
-     * @param string $sMd5 源文件地址 md5 标记
      * @return string
      */
-    public function display(string $sFile = null, bool $bDisplay = true, string $strExt = '', string $sTargetCache = '', string $sMd5 = '')
+    public function display(string $sFile = null, bool $bDisplay = true, string $strExt = '')
     {
         // 加载视图文件
         $sFile = $this->parseDisplayFile($sFile, $strExt);

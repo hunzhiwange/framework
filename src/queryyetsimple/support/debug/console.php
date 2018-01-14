@@ -36,9 +36,10 @@ class console
      * 记录调试信息
      * SQL 记录，加载文件等等
      *
+     * @param array $log
      * @return void
      */
-    public static function trace()
+    public static function trace(array $log)
     {
         // swoole http server 可以调试
         if (PHP_SAPI == 'cli' && ! (isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == 'swoole-http-server')) {
@@ -52,11 +53,8 @@ class console
 
         $arrTrace = [];
 
-        // LOGO
-        $arrTrace[] = implode('\n', self::formatLogo());
-
         // 日志
-        foreach (project('log')->get() as $strType => $arrTemp) {
+        foreach ($log as $strType => $arrTemp) {
             $arrTrace[strtoupper($strType) . '.LOG' . ' (' . count($arrTemp) . ')'] = implode('\n', array_map(function ($arrItem) {
                 return static::formatMessage($arrItem);
             }, $arrTemp));
@@ -85,29 +83,5 @@ class console
     protected static function formatMessage($arrItem)
     {
         return addslashes($arrItem[0] . ' ' . json_encode($arrItem[1], JSON_UNESCAPED_UNICODE));
-    }
-
-    /**
-     * 格式化 LOGO
-     *
-     * @return array
-     */
-    protected static function formatLogo()
-    {
-        $strLogo = <<<queryphp
-##########################################################
-#   ____                          ______  _   _ ______   #
-#  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
-# |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
-#  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
-#       \__   | \___ |_|    \__  || |    | | | || |      #
-#     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
-#                          |___ /  Since 2010.10.03      #
-##########################################################
-queryphp;
-
-        return array_map(function ($strItem) {
-            return addslashes($strItem);
-        }, explode(PHP_EOL, $strLogo));
     }
 }

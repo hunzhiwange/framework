@@ -47,14 +47,14 @@ class monolog extends aconnect implements iconnect
      *
      * @var \Monolog\Logger
      */
-    protected $objMonolog;
+    protected $monolog;
 
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'type' => [
             'file'
         ],
@@ -69,7 +69,7 @@ class monolog extends aconnect implements iconnect
      *
      * @var array
      */
-    protected $arrSupportLevel = [
+    protected $supportLevel = [
         ilog::DEBUG => Logger::DEBUG,
         ilog::INFO => Logger::INFO,
         ilog::NOTICE => Logger::NOTICE,
@@ -83,82 +83,86 @@ class monolog extends aconnect implements iconnect
     /**
      * 构造函数
      *
-     * @param array $arrOption
+     * @param array $option
      * @return void
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
-        parent::__construct($arrOption);
+        parent::__construct($option);
         
-        $this->objMonolog = new Logger($this->getOption('channel'));
+        $this->monolog = new Logger($this->getOption('channel'));
 
-        foreach ($this->getOption('type') as $strType) {
-            $this->{'make' . ucwords(str::camelize($strType)) . 'Handler'}();
+        foreach ($this->getOption('type') as $type) {
+            $this->{'make' . ucwords(str::camelize($type)) . 'Handler'}();
         }
     }
 
     /**
      * 注册文件 handler
      *
-     * @param string $strPath
-     * @param string $strLevel
+     * @param string $path
+     * @param string $level
      * @return void
      */
-    public function file($strPath, $strLevel = ilog::DEBUG)
+    public function file($path, $level = ilog::DEBUG)
     {
-        $this->objMonolog->pushHandler($objHandler = new StreamHandler($strPath, $this->parseMonologLevel($strLevel)));
-        $objHandler->setFormatter($this->getDefaultFormatter());
+        $handler = new StreamHandler($path, $this->parseMonologLevel($level));
+        $this->monolog->pushHandler($handler);
+        $handler->setFormatter($this->getDefaultFormatter());
     }
 
     /**
      * 注册每日文件 handler
      *
-     * @param string $strPath
-     * @param int $intDays
+     * @param string $path
+     * @param int $days
      * @param string $level
      * @return void
      */
-    public function dailyFile($strPath, $intDays = 0, $strLevel = ilog::DEBUG)
+    public function dailyFile($path, $days = 0, $level = ilog::DEBUG)
     {
-        $this->objMonolog->pushHandler($objHandler = new RotatingFileHandler($strPath, $intDays, $this->parseMonologLevel($strLevel)));
-        $objHandler->setFormatter($this->getDefaultFormatter());
+        $handler = new RotatingFileHandler($path, $days, $this->parseMonologLevel($level));
+        $this->monolog->pushHandler($handler);
+        $handler->setFormatter($this->getDefaultFormatter());
     }
 
     /**
      * 注册系统 handler
      *
-     * @param string $strName
-     * @param string $strLevel
+     * @param string $name
+     * @param string $level
      * @return \Psr\Log\LoggerInterface
      */
-    public function syslog($strName = 'queryphp', $strLevel = ilog::DEBUG)
+    public function syslog($name = 'queryphp', $level = ilog::DEBUG)
     {
-        return $this->objMonolog->pushHandler(new SyslogHandler($strName, LOG_USER, $strLevel));
+        $handler = new SyslogHandler($name, LOG_USER, $level);
+        return $this->monolog->pushHandler($handler);
     }
 
     /**
      * 注册 error_log handler
      *
-     * @param string $strLevel
-     * @param int $intMessageType
+     * @param string $level
+     * @param int $messageType
      * @return void
      */
-    public function errorLog($strLevel = ilog::DEBUG, $intMessageType = ErrorLogHandler::OPERATING_SYSTEM)
+    public function errorLog($level = ilog::DEBUG, $messageType = ErrorLogHandler::OPERATING_SYSTEM)
     {
-        $this->objMonolog->pushHandler($objHandler = new ErrorLogHandler($intMessageType, $this->parseMonologLevel($strLevel)));
-        $objHandler->setFormatter($this->getDefaultFormatter());
+        $handler = new ErrorLogHandler($messageType, $this->parseMonologLevel($level));
+        $this->monolog->pushHandler($handler);
+        $handler->setFormatter($this->getDefaultFormatter());
     }
 
     /**
      * monolog 回调
      *
-     * @param callable|null $mixCallback
+     * @param callable|null $callback
      * @return $this
      */
-    public function monolog($mixCallback = null)
+    public function monolog($callback = null)
     {
-        if (is_callable($mixCallback)) {
-            call_user_func_array($mixCallback, [
+        if (is_callable($callback)) {
+            call_user_func_array($callback, [
                 $this
             ]);
         }
@@ -173,24 +177,24 @@ class monolog extends aconnect implements iconnect
      */
     public function getMonolog()
     {
-        return $this->objMonolog;
+        return $this->monolog;
     }
 
     /**
      * 日志写入接口
      *
-     * @param array $arrData
+     * @param array $data
      * @return void
      */
-    public function save(array $arrData)
+    public function save(array $data)
     {
-        $arrLevel = array_keys($this->arrSupportLevel);
+        $level = array_keys($this->supportLevel);
 
-        foreach ($arrData as $arrItem) {
-            if (! in_array($arrItem[0], $arrLevel)) {
-                $arrItem[0] = ilog::DEBUG;
+        foreach ($data as $item) {
+            if (! in_array($item[0], $level)) {
+                $item[0] = ilog::DEBUG;
             }
-            $this->objMonolog->{$arrItem[0]}($arrItem[1], $arrItem[2]);
+            $this->monolog->{$item[0]}($item[1], $item[2]);
         }
     }
 
@@ -201,8 +205,9 @@ class monolog extends aconnect implements iconnect
      */
     protected function makeFileHandler()
     {
-        $this->checkSize($strPath = $this->getPath());
-        $this->file($strPath);
+        $path = $this->getPath();
+        $this->checkSize($path);
+        $this->file($path);
     }
 
     /**
@@ -212,9 +217,9 @@ class monolog extends aconnect implements iconnect
      */
     protected function makeDailyFileHandler()
     {
-        $strPath = $this->getPath();
-        $this->checkSize($this->getDailyFilePath($strPath));
-        $this->dailyFile($strPath);
+        $path = $this->getPath();
+        $this->checkSize($this->getDailyFilePath($path));
+        $this->dailyFile($path);
     }
 
     /**
@@ -240,16 +245,16 @@ class monolog extends aconnect implements iconnect
     /**
      * 每日文件真实路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return void
      */
-    protected function getDailyFilePath($strPath)
+    protected function getDailyFilePath($path)
     {
-        $strExt = pathinfo($strPath, PATHINFO_EXTENSION);
-        if ($strExt) {
-            $strPath = substr($strPath, 0, strrpos($strPath, '.' . $strExt));
+        $ext = pathinfo($path, PATHINFO_EXTENSION);
+        if ($ext) {
+            $path = substr($path, 0, strrpos($path, '.' . $ext));
         }
-        return $strPath . date('-Y-m-d') . ($strExt ? '.' . $strExt : '');
+        return $path . date('-Y-m-d') . ($ext ? '.' . $ext : '');
     }
 
     /**
@@ -266,14 +271,14 @@ class monolog extends aconnect implements iconnect
      * 获取 Monolog 级别
      * 不支持级别归并到 DEBUG
      *
-     * @param string $strLevel
+     * @param string $level
      * @return int
      */
-    protected function parseMonologLevel($strLevel)
+    protected function parseMonologLevel($level)
     {
-        if (isset($this->arrSupportLevel[$strLevel])) {
-            return $this->arrSupportLevel[$strLevel];
+        if (isset($this->supportLevel[$level])) {
+            return $this->supportLevel[$level];
         }
-        return $this->arrSupportLevel[ilog::DEBUG];
+        return $this->supportLevel[ilog::DEBUG];
     }
 }

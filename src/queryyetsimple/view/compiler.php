@@ -236,7 +236,6 @@ class compiler implements icompiler
      * @var array
      */
     protected $arrOption = [
-        'cache_children' => false,
         'var_identify' => '',
         'notallows_func' => [
             'exit',
@@ -800,17 +799,7 @@ out += '";
             $arrAttr['file'] = (strpos($arrAttr['file'], '$') === 0 ? '' : '\'') . $arrAttr['file'] . '\'';
         }
 
-        // 子模板合并到主模板
-        if ($this->getOption('cache_children')) {
-            $sMd5 = md5($arrAttr['file']);
-            $sCompiled = "<!--<####incl*" . $sMd5 . "*ude####>-->";
-            $sCompiled .= $this->phpTagStart() . '$this->display( ' . $arrAttr['file'] . ', true, \'' . ($arrAttr['ext'] ?  : '') . '\', __FILE__,\'' . $sMd5 . '\'   );' . $this->phpTagEnd();
-            $sCompiled .= "<!--</####incl*" . $sMd5 . "*ude####/>-->";
-        } else {
-            $sCompiled = $this->phpTagStart() . '$this->display( ' . $arrAttr['file'] . ', true, \'' . ($arrAttr['ext'] ?  : '') . '\' );' . $this->phpTagEnd();
-        }
-
-        $arrTheme['content'] = $sCompiled;
+        $arrTheme['content'] = $this->phpTagStart() . '$this->display( ' . $arrAttr['file'] . ', true, \'' . ($arrAttr['ext'] ?  : '') . '\' );' . $this->phpTagEnd();
     }
 
     /**

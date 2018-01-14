@@ -33,8 +33,8 @@ interface iaction extends icontroller
     /**
      * 设置父控制器
      *
-     * @param \queryyetsimple\mvc\icontroller $objController
+     * @param \queryyetsimple\mvc\icontroller $controller
      * @return $this
      */
-    public function setController(icontroller $objController);
+    public function setController(icontroller $controller);
 }

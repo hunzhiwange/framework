@@ -39,14 +39,14 @@ abstract class controller implements icontroller
      *
      * @var \queryyetsimple\mvc\iview
      */
-    protected $objView;
+    protected $view;
 
     /**
      * 视图
      *
      * @var \queryyetsimple\router\router
      */
-    protected $objRouter;
+    protected $router;
 
     /**
      * 构造函数
@@ -60,104 +60,105 @@ abstract class controller implements icontroller
     /**
      * 设置视图
      *
-     * @param \queryyetsimple\mvc\iview $objView
+     * @param \queryyetsimple\mvc\iview $view
      * @return $this
      */
-    public function setView(iview $objView)
+    public function setView(iview $view)
     {
-        $this->objView = $objView;
+        $this->view = $view;
         return $this;
     }
 
     /**
      * 设置路由
      *
-     * @param \queryyetsimple\router\router $objRouter
+     * @param \queryyetsimple\router\router $router
      * @return $this
      */
-    public function setRouter(router $objRouter)
+    public function setRouter(router $router)
     {
-        $this->objRouter = $objRouter;
+        $this->router = $router;
         return $this;
     }
 
     /**
      * 执行子方法器
      *
-     * @param string $sActionName 方法名
+     * @param string $action 方法名
      * @return void
      */
-    public function action($sActionName)
+    public function action($action)
     {
         // 判断是否存在方法
-        if (method_exists($this, $sActionName)) {
-            $arrArgs = func_get_args();
-            array_shift($arrArgs);
+        if (method_exists($this, $action)) {
+            $args = func_get_args();
+            array_shift($args);
+
             return call_user_func_array([
                 $this,
-                $sActionName
-            ], $arrArgs);
+                $action
+            ], $args);
         }
 
         // 执行默认方法器
-        if (! $this->objRouter) {
+        if (! $this->router) {
             throw new RuntimeException('Router is not set in controller');
         }
-        return $this->objRouter->doBind(null, $sActionName, null, true);
+        return $this->router->doBind(null, $action, null, true);
     }
 
     /**
      * 切换视图
      *
-     * @param \queryyetsimple\view\iview $objTheme
-     * @param boolean $booForever
+     * @param \queryyetsimple\view\iview $theme
+     * @param boolean $forever
      * @return $this
      */
-    public function switchView(view_iview $objTheme, bool $booForever = false)
+    public function switchView(view_iview $theme, bool $forever = false)
     {
         $this->checkView();
-        $this->objView->switchView($objTheme, $booForever);
+        $this->view->switchView($theme, $forever);
         return $this;
     }
 
     /**
      * 变量赋值
      *
-     * @param mixed $mixName
-     * @param mixed $mixValue
+     * @param mixed $name
+     * @param mixed $value
      * @return $this
      */
-    public function assign($mixName, $mixValue = null)
+    public function assign($name, $value = null)
     {
         $this->checkView();
-        $this->objView->assign($mixName, $mixValue);
+        $this->view->assign($name, $value);
         return $this;
     }
 
     /**
      * 获取变量赋值
      *
-     * @param string|null $sName
+     * @param string|null $name
      * @return mixed
      */
-    public function getAssign($sName = null)
+    public function getAssign($name = null)
     {
         $this->checkView();
-        return $this->objView->getAssign($sName);
+        return $this->view->getAssign($name);
     }
 
     /**
      * 删除变量值
      *
-     * @param mixed $mixName
+     * @param mixed $name
      * @return $this
      */
-    public function deleteAssign($mixName)
+    public function deleteAssign($name)
     {
         $this->checkView();
 
         call_user_func_array([
-            $this->objView,
+            $this->view,
             'deleteAssign'
         ], func_get_args());
         
@@ -172,23 +173,23 @@ abstract class controller implements icontroller
     public function clearAssign()
     {
         $this->checkView();
-        $this->objView->clearAssign();
+        $this->view->clearAssign();
         return $this;
     }
 
     /**
      * 加载视图文件
      *
-     * @param string $sFile
-     * @param array $arrOption
+     * @param string $file
+     * @param array $option
      * @sub string charset 编码
      * @sub string content_type 类型
      * @return string
      */
-    public function display($sFile = null, array $arrOption = null)
+    public function display($file = null, array $option = null)
     {
         $this->checkView();
-        return $this->objView->display($sFile, $arrOption);
+        return $this->view->display($file, $option);
     }
 
     /**
@@ -198,7 +199,7 @@ abstract class controller implements icontroller
      */
     protected function checkView()
     {
-        if (! $this->objView) {
+        if (! $this->view) {
             throw new RuntimeException('View is not set in controller');
         }
     }
@@ -206,23 +207,23 @@ abstract class controller implements icontroller
     /**
      * 赋值
      *
-     * @param mixed $mixName
+     * @param mixed $name
      * @param mixed $Value
      * @return void
      */
-    public function __set($mixName, $mixValue)
+    public function __set($name, $value)
     {
-        $this->assign($mixName, $mixValue);
+        $this->assign($name, $value);
     }
 
     /**
      * 获取值
      *
-     * @param string $sName
+     * @param string $name
      * @return mixed
      */
-    public function __get($sName)
+    public function __get($name)
     {
-        return $this->getAssign($sName);
+        return $this->getAssign($name);
     }
 }
