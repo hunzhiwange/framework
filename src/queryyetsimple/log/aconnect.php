@@ -36,50 +36,52 @@ abstract class aconnect
     /**
      * 构造函数
      *
-     * @param array $arrOption
+     * @param array $option
      * @return void
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
-        $this->options($arrOption);
+        $this->options($option);
     }
 
     /**
      * 验证日志文件大小
      *
-     * @param string $sFilePath
+     * @param string $filepath
      * @return void
      */
-    protected function checkSize($sFilePath)
+    protected function checkSize($filepath)
     {
+        $filedir = dirname($filepath);
+
         // 如果不是文件，则创建
-        if (! is_file($sFilePath) && ! is_dir(dirname($sFilePath)) && ! mkdir(dirname($sFilePath), 0777, true)) {
-            throw new RuntimeException(sprintf('Unable to create log file：%s.', $sFilePath));
+        if (! is_file($filepath) && ! is_dir($filedir) && ! mkdir($filedir, 0777, true)) {
+            throw new RuntimeException(sprintf('Unable to create log file：%s.', $filepath));
         }
 
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成
-        if (is_file($sFilePath) && floor($this->getOption('size')) <= filesize($sFilePath)) {
-            rename($sFilePath, dirname($sFilePath) . '/' . date('Y-m-d H.i.s') . '~@' . basename($sFilePath));
+        if (is_file($filepath) && floor($this->getOption('size')) <= filesize($filepath)) {
+            rename($filepath, $filedir . '/' . date('Y-m-d H.i.s') . '~@' . basename($filepath));
         }
     }
 
     /**
      * 获取日志路径
      *
-     * @param string $strLevel
-     * @param string $sFilePath
+     * @param string $level
+     * @param string $filepath
      * @return string
      */
-    protected function getPath($strLevel = '')
+    protected function getPath($level = '')
     {
         // 不存在路径，则直接使用项目默认路径
-        if (empty($sFilePath)) {
+        if (empty($filepath)) {
             if (! $this->getOption('path')) {
                 throw new RuntimeException('Default path for log has not specified.');
             }
-            $sFilePath = $this->getOption('path') . '/' . ($strLevel ? $strLevel . '/' : '') . date($this->getOption('name')) . ".log";
+            $filepath = $this->getOption('path') . '/' . ($level ? $level . '/' : '') . date($this->getOption('name')) . ".log";
         }
 
-        return $sFilePath;
+        return $filepath;
     }
 }

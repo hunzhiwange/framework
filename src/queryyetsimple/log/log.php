@@ -43,35 +43,35 @@ class log implements ilog
      *
      * @var \queryyetsimple\log\iconnect
      */
-    protected $oConnect;
+    protected $connect;
 
     /**
      * 当前记录的日志信息
      *
      * @var array
      */
-    protected $arrLog = [];
+    protected $logs = [];
 
     /**
      * 日志过滤器
      *
      * @var callable
      */
-    protected $calFilter;
+    protected $filter;
 
     /**
      * 日志处理器
      *
      * @var callable
      */
-    protected $calProcessor;
+    protected $processor;
 
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'enabled' => true,
         'level' => [
             self::DEBUG,
@@ -90,129 +90,129 @@ class log implements ilog
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\log\iconnect $oConnect
-     * @param array $arrOption
+     * @param \queryyetsimple\log\iconnect $connect
+     * @param array $option
      * @return void
      */
-    public function __construct(iconnect $oConnect, array $arrOption = [])
+    public function __construct(iconnect $connect, array $option = [])
     {
-        $this->oConnect = $oConnect;
-        $this->options($arrOption);
+        $this->connect = $connect;
+        $this->options($option);
     }
 
     /**
      * 记录 emergency 日志
      *
-     * @param string $mixMessage
-     * @param array $arrContext
-     * @param boolean $booWrite
+     * @param string $message
+     * @param array $context
+     * @param boolean $write
      * @return array
      */
-    public function emergency($mixMessage, array $arrContext = [], $booWrite = false)
+    public function emergency($message, array $context = [], $write = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'}(static::EMERGENCY, $mixMessage, $arrContext);
+        return $this->{$write ? 'write' : 'log'}(static::EMERGENCY, $message, $context);
     }
 
     /**
      * 记录 alert 日志
      *
-     * @param string $mixMessage
-     * @param array $arrContext
-     * @param boolean $booWrite
+     * @param string $message
+     * @param array $context
+     * @param boolean $write
      * @return array
      */
-    public function alert($mixMessage, array $arrContext = [], $booWrite = false)
+    public function alert($message, array $context = [], $write = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'}(static::ALERT, $mixMessage, $arrContext);
+        return $this->{$write ? 'write' : 'log'}(static::ALERT, $message, $context);
     }
 
     /**
      * 记录 critical 日志
      *
-     * @param string $mixMessage
-     * @param array $arrContext
-     * @param boolean $booWrite
+     * @param string $message
+     * @param array $context
+     * @param boolean $write
      * @return array
      */
-    public function critical($mixMessage, array $arrContext = [], $booWrite = false)
+    public function critical($message, array $context = [], $write = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'}(static::CRITICAL, $mixMessage, $arrContext);
+        return $this->{$write ? 'write' : 'log'}(static::CRITICAL, $message, $context);
     }
 
     /**
      * 记录 error 日志
      *
-     * @param string $mixMessage
-     * @param array $arrContext
-     * @param boolean $booWrite
+     * @param string $message
+     * @param array $context
+     * @param boolean $write
      * @return array
      */
-    public function error($mixMessage, array $arrContext = [], $booWrite = false)
+    public function error($message, array $context = [], $write = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'}(static::ERROR, $mixMessage, $arrContext);
+        return $this->{$write ? 'write' : 'log'}(static::ERROR, $message, $context);
     }
 
     /**
      * 记录 warning 日志
      *
-     * @param string $mixMessage
-     * @param array $arrContext
-     * @param boolean $booWrite
+     * @param string $message
+     * @param array $context
+     * @param boolean $write
      * @return array
      */
-    public function warning($mixMessage, array $arrContext = [], $booWrite = false)
+    public function warning($message, array $context = [], $write = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'}(static::WARNING, $mixMessage, $arrContext);
+        return $this->{$write ? 'write' : 'log'}(static::WARNING, $message, $context);
     }
 
     /**
      * 记录 notice 日志
      *
-     * @param string $mixMessage
-     * @param array $arrContext
-     * @param boolean $booWrite
+     * @param string $message
+     * @param array $context
+     * @param boolean $write
      * @return array
      */
-    public function notice($mixMessage, array $arrContext = [], $booWrite = false)
+    public function notice($message, array $context = [], $write = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'}(static::NOTICE, $mixMessage, $arrContext);
+        return $this->{$write ? 'write' : 'log'}(static::NOTICE, $message, $context);
     }
 
     /**
      * 记录 info 日志
      *
-     * @param string $mixMessage
-     * @param array $arrContext
-     * @param boolean $booWrite
+     * @param string $message
+     * @param array $context
+     * @param boolean $write
      * @return array
      */
-    public function info($mixMessage, array $arrContext = [], $booWrite = false)
+    public function info($message, array $context = [], $write = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'}(static::INFO, $mixMessage, $arrContext);
+        return $this->{$write ? 'write' : 'log'}(static::INFO, $message, $context);
     }
 
     /**
      * 记录 debug 日志
      *
-     * @param string $mixMessage
-     * @param array $arrContext
-     * @param boolean $booWrite
+     * @param string $message
+     * @param array $context
+     * @param boolean $write
      * @return array
      */
-    public function debug($mixMessage, array $arrContext = [], $booWrite = false)
+    public function debug($message, array $context = [], $write = false)
     {
-        return $this->{$booWrite ? 'write' : 'log'}(static::DEBUG, $mixMessage, $arrContext);
+        return $this->{$write ? 'write' : 'log'}(static::DEBUG, $message, $context);
     }
 
     /**
      * 记录日志
      *
-     * @param string $strLevel
-     * @param mixed $mixMessage
-     * @param array $arrContext
+     * @param string $level
+     * @param mixed $message
+     * @param array $context
      * @return array
      */
-    public function log($strLevel, $mixMessage, array $arrContext = [])
+    public function log($level, $message, array $context = [])
     {
         // 是否开启日志
         if (! $this->getOption('enabled')) {
@@ -220,44 +220,44 @@ class log implements ilog
         }
 
         // 只记录系统允许的日志级别
-        if (! in_array($strLevel, $this->getOption('level'))) {
+        if (! in_array($level, $this->getOption('level'))) {
             return;
         }
 
-        $mixMessage = date($this->getOption('time_format')) . $this->formatMessage($mixMessage);
+        $message = date($this->getOption('time_format')) . $this->formatMessage($message);
 
-        $arrData = [
-            $strLevel,
-            $mixMessage,
-            $arrContext
+        $data = [
+            $level,
+            $message,
+            $context
         ];
 
         // 执行过滤器
-        if ($this->calFilter !== null && call_user_func_array($this->calFilter, $arrData) === false) {
+        if ($this->filter !== null && call_user_func_array($this->filter, $data) === false) {
             return;
         }
 
         // 记录到内存方便后期调用
-        if (! isset($this->arrLog[$strLevel])) {
-            $this->arrLog[$strLevel] = [];
+        if (! isset($this->logs[$level])) {
+            $this->logs[$level] = [];
         }
-        $this->arrLog[$strLevel][] = $arrData;
+        $this->logs[$level][] = $data;
 
-        return $arrData;
+        return $data;
     }
 
     /**
      * 记录错误消息并写入
      *
-     * @param string $strLevel 日志类型
-     * @param string $strMessage 应该被记录的错误信息
-     * @param array $arrContext
+     * @param string $level 日志类型
+     * @param string $message 应该被记录的错误信息
+     * @param array $context
      * @return void
      */
-    public function write($strLevel, $strMessage, array $arrContext = [])
+    public function write($level, $message, array $context = [])
     {
         $this->saveStore([
-            $this->log($strLevel, $strMessage, $arrContext)
+            $this->log($level, $message, $context)
         ]);
     }
 
@@ -268,12 +268,12 @@ class log implements ilog
      */
     public function save()
     {
-        if (! $this->arrLog) {
+        if (! $this->logs) {
             return;
         }
 
-        foreach ($this->arrLog as $arrData) {
-            $this->saveStore($arrData);
+        foreach ($this->logs as $data) {
+            $this->saveStore($data);
         }
 
         $this->clear();
@@ -282,119 +282,119 @@ class log implements ilog
     /**
      * 注册日志过滤器
      *
-     * @param callable $calFilter
+     * @param callable $filter
      * @return void
      */
-    public function registerFilter(callable $calFilter)
+    public function registerFilter(callable $filter)
     {
-        $this->calFilter = $calFilter;
+        $this->filter = $filter;
     }
 
     /**
      * 注册日志处理器
      *
-     * @param callable $calProcessor
+     * @param callable $processor
      * @return void
      */
-    public function registerProcessor(callable $calProcessor)
+    public function registerProcessor(callable $processor)
     {
-        $this->calProcessor = $calProcessor;
+        $this->processor = $processor;
     }
 
     /**
      * 清理日志记录
      *
-     * @param string $strLevel
+     * @param string $level
      * @return int
      */
-    public function clear($strLevel = null)
+    public function clear($level = null)
     {
-        if ($strLevel && isset($this->arrLog[$strLevel])) {
-            $nCount = count($this->arrLog[$strLevel]);
-            $this->arrLog[$strLevel] = [];
+        if ($level && isset($this->logs[$level])) {
+            $count = count($this->logs[$level]);
+            $this->logs[$level] = [];
         } else {
-            $nCount = count($this->arrLog);
-            $this->arrLog = [];
+            $count = count($this->logs);
+            $this->logs = [];
         }
 
-        return $nCount;
+        return $count;
     }
 
     /**
      * 获取日志记录
      *
-     * @param string $strLevel
+     * @param string $level
      * @return array
      */
-    public function get($strLevel = null)
+    public function get($level = null)
     {
-        if ($strLevel && isset($this->arrLog[$strLevel])) {
-            return $this->arrLog[$strLevel];
+        if ($level && isset($this->logs[$level])) {
+            return $this->logs[$level];
         } else {
-            return $this->arrLog;
+            return $this->logs;
         }
     }
 
     /**
      * 获取日志记录数量
      *
-     * @param string $strLevel
+     * @param string $level
      * @return int
      */
-    public function count($strLevel = null)
+    public function count($level = null)
     {
-        if ($strLevel && isset($this->arrLog[$strLevel])) {
-            return count($this->arrLog[$strLevel]);
+        if ($level && isset($this->logs[$level])) {
+            return count($this->logs[$level]);
         } else {
-            return count($this->arrLog);
+            return count($this->logs);
         }
     }
 
     /**
      * 存储日志
      *
-     * @param array $arrData
+     * @param array $data
      * @return void
      */
-    protected function saveStore($arrData)
+    protected function saveStore($data)
     {
         // 执行处理器
-        if ($this->calProcessor !== null) {
-            call_user_func_array($this->calProcessor, $arrData);
+        if ($this->processor !== null) {
+            call_user_func_array($this->processor, $data);
         }
-        $this->oConnect->save($arrData);
+        $this->connect->save($data);
     }
 
     /**
      * 格式化日志消息
      *
-     * @param mixed $mixMessage
+     * @param mixed $message
      * @return mixed
      */
-    protected function formatMessage($mixMessage)
+    protected function formatMessage($message)
     {
-        if (is_array($mixMessage)) {
-            return var_export($mixMessage, true);
-        } elseif ($mixMessage instanceof ijson) {
-            return $mixMessage->toJson();
-        } elseif ($mixMessage instanceof iarray) {
-            return var_export($mixMessage->toArray(), true);
-        } elseif (is_scalar($mixMessage)) {
-            return $mixMessage;
+        if (is_array($message)) {
+            return var_export($message, true);
+        } elseif ($message instanceof ijson) {
+            return $message->toJson();
+        } elseif ($message instanceof iarray) {
+            return var_export($message->toArray(), true);
+        } elseif (is_scalar($message)) {
+            return $message;
         }
 
-        throw new RuntimeException('Message is invalid');
+        throw new RuntimeException('Message is invalid.');
     }
 
     /**
      * call 
      *
-     * @param string $sMethod
-     * @param array $arrArgs
+     * @param string $method
+     * @param array $args
      * @return mixed
      */
-    public function __call(string $sMethod, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        return $this->oConnect->$sMethod(...$arrArgs);
+        return $this->connect->$method(...$args);
     }
 }

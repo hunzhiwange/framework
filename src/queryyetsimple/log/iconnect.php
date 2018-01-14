@@ -33,8 +33,8 @@ interface iconnect
     /**
      * 日志写入接口
      *
-     * @param array $arrData
+     * @param array $data
      * @return void
      */
-    public function save(array $arrData);
+    public function save(array $datas);
 }

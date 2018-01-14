@@ -45,58 +45,58 @@ class manager extends support_manager
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $connect
      * @return object
      */
-    protected function createConnect($objConnect)
+    protected function createConnect($connect)
     {
-        return new view($objConnect);
+        return new view($connect);
     }
 
     /**
      * 创建 html 模板驱动
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\view\html
      */
-    protected function makeConnectHtml($arrOption = [])
+    protected function makeConnectHtml($options = [])
     {
-        $arrOption = $this->getOption('html', $arrOption);
-        $arrOption = array_merge($arrOption, $this->viewOptionCommon());
+        $options = $this->getOption('html', $options);
+        $options = array_merge($options, $this->viewOptionCommon());
 
-        $oProject = $this->objContainer;
+        $container = $this->container;
         
-        html::setParseResolver(function () use ($oProject) {
-            return $oProject['view.parser'];
+        html::setParseResolver(function () use ($container) {
+            return $container['view.parser'];
         });
 
-        return new html($arrOption);
+        return new html($options);
     }
 
     /**
      * 创建 phpui 模板驱动
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\view\phpui
      */
-    protected function makeConnectPhpui($arrOption = [])
+    protected function makeConnectPhpui($options = [])
     {
-        $arrOption = $this->getOption('phpui', $arrOption);
-        $arrOption = array_merge($arrOption, $this->viewOptionCommon());
-        return new phpui($arrOption);
+        $options = $this->getOption('phpui', $options);
+        $options = array_merge($options, $this->viewOptionCommon());
+        return new phpui($options);
     }
 
     /**
      * 创建 v8 模板驱动
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\view\vue
      */
-    protected function makeConnectV8($arrOption = [])
+    protected function makeConnectV8($options = [])
     {
-        $arrOption = $this->getOption('v8', $arrOption);
-        $arrOption = array_merge($arrOption, $this->viewOptionCommon());
-        return new v8($arrOption);
+        $options = $this->getOption('v8', $options);
+        $options = array_merge($options, $this->viewOptionCommon());
+        return new v8($options);
     }
 
     /**
@@ -106,16 +106,16 @@ class manager extends support_manager
      */
     protected function viewOptionCommon()
     {
-        $arrOption = [
-            'development' => $this->objContainer->development(),
-            'controller_name' => $this->objContainer['controller_name'],
-            'action_name' => $this->objContainer['action_name'],
-            'theme_path' => $this->objContainer->pathApplicationDir('theme') . '/' . $this->objContainer['option']['view\theme_name'],
+        $options = [
+            'development' => $this->container->development(),
+            'controller_name' => $this->container['controller_name'],
+            'action_name' => $this->container['action_name'],
+            'theme_path' => $this->container->pathApplicationDir('theme') . '/' . $this->container['option']['view\theme_name'],
 
             // 仅 html 模板需要缓存路径
-            'theme_cache_path' => $this->objContainer->pathApplicationCache('theme') . '/' . $this->objContainer['app_name']
+            'theme_cache_path' => $this->container->pathApplicationCache('theme') . '/' . $this->container['app_name']
         ];
 
-        return $arrOption;
+        return $options;
     }
 }

@@ -45,21 +45,21 @@ class manager extends support_manager
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $connect
      * @return object
      */
-    protected function createConnect($objConnect)
+    protected function createConnect($connect)
     {
-        return new session($objConnect, $this->getOptionCommon());
+        return new session($connect, $this->getOptionCommon());
     }
 
     /**
      * 创建 cookie 缓存
      *
-     * @param array $arrOption
+     * @param array $options
      * @return null
      */
-    protected function makeConnectCookie($arrOption = [])
+    protected function makeConnectCookie($options = [])
     {
         return null;
     }
@@ -67,33 +67,33 @@ class manager extends support_manager
     /**
      * 创建 memcache 缓存
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\session\memcache
      */
-    protected function makeConnectMemcache($arrOption = [])
+    protected function makeConnectMemcache($options = [])
     {
-        return new memcache(array_merge($this->getOption('memcache', $arrOption)));
+        return new memcache(array_merge($this->getOption('memcache', $options)));
     }
 
     /**
      * 创建 redis 缓存
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\session\redis
      */
-    protected function makeConnectRedis($arrOption = [])
+    protected function makeConnectRedis($options = [])
     {
-        return new redis(array_merge($this->getOption('redis', $arrOption)));
+        return new redis(array_merge($this->getOption('redis', $options)));
     }
 
     /**
      * 读取连接配置
      *
-     * @param string $strConnect
+     * @param string $connect
      * @return array
      */
-    protected function getOptionConnect($strConnect)
+    protected function getOptionConnect($connect)
     {
-        return $this->optionFilterNull(parent::getOptionConnect($strConnect));
+        return $this->optionFilterNull(parent::getOptionConnect($connect));
     }
 }

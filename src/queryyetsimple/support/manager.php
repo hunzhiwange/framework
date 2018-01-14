@@ -38,24 +38,24 @@ abstract class manager
      *
      * @var \queryyetsimple\support\icontainer
      */
-    protected $objContainer;
+    protected $container;
 
     /**
      * 连接对象
      *
      * @var object[]
      */
-    protected $arrConnect;
+    protected $connects;
 
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\support\icontainer $objContainer
+     * @param \queryyetsimple\support\icontainer $container
      * @return void
      */
-    public function __construct(icontainer $objContainer)
+    public function __construct(icontainer $container)
     {
-        $this->objContainer = $objContainer;
+        $this->container = $container;
     }
 
     /**
@@ -65,51 +65,52 @@ abstract class manager
      */
     public function container()
     {
-        return $this->objContainer;
+        return $this->container;
     }
 
     /**
      * 连接 connect 并返回连接对象
      *
-     * @param array|string|null $mixOption
+     * @param array|string|null $options
      * @return object
      */
-    public function connect($mixOption = null)
+    public function connect($options = null)
     {
-        list($mixOption, $strUnique) = $this->parseOptionAndUnique($mixOption);
+        list($options, $unique) = $this->parseOptionAndUnique($options);
 
-        if (isset($this->arrConnect[$strUnique])) {
-            return $this->arrConnect[$strUnique];
+        if (isset($this->connects[$unique])) {
+            return $this->connects[$unique];
         }
 
-        $strDriver = ! empty($mixOption['driver']) ? $mixOption['driver'] : $this->getDefaultDriver();
-        return $this->arrConnect[$strUnique] = $this->makeConnect($strDriver, $mixOption);
+        $driver = ! empty($options['driver']) ? $options['driver'] : $this->getDefaultDriver();
+
+        return $this->connects[$unique] = $this->makeConnect($driver, $options);
     }
 
     /**
      * 重新连接
      *
-     * @param array|string $mixOption
+     * @param array|string $options
      * @return object
      */
-    public function reconnect($mixOption = [])
+    public function reconnect($options = [])
     {
-        $this->disconnect($mixOption);
-        return $this->connect($mixOption);
+        $this->disconnect($options);
+        return $this->connect($options);
     }
 
     /**
      * 删除连接
      *
-     * @param array|string $mixOption
+     * @param array|string $options
      * @return void
      */
-    public function disconnect($mixOption = [])
+    public function disconnect($options = [])
     {
-        list($mixOption, $strUnique) = $this->parseOptionAndUnique($mixOption);
+        list($options, $unique) = $this->parseOptionAndUnique($options);
 
-        if (isset($this->arrConnect[$strUnique])) {
-            unset($this->arrConnect[$strUnique]);
+        if (isset($this->connects[$unique])) {
+            unset($this->connects[$unique]);
         }
     }
 
@@ -120,7 +121,7 @@ abstract class manager
      */
     public function getConnects()
     {
-        return $this->arrConnect;
+        return $this->connects;
     }
 
     /**
@@ -130,18 +131,18 @@ abstract class manager
      */
     public function getDefaultDriver()
     {
-        return $this->objContainer['option'][$this->getOptionName('default')];
+        return $this->container['option'][$this->getOptionName('default')];
     }
 
     /**
      * 设置默认驱动
      *
-     * @param string $strName
+     * @param string $name
      * @return void
      */
-    public function setDefaultDriver($strName)
+    public function setDefaultDriver($name)
     {
-        $this->objContainer['option'][$this->getOptionName('default')] = $strName;
+        $this->container['option'][$this->getOptionName('default')] = $name;
     }
 
     /**
@@ -154,103 +155,103 @@ abstract class manager
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $connect
      * @return object
      */
-    abstract protected function createConnect($objConnect);
+    abstract protected function createConnect($connect);
 
     /**
      * 取得连接名字
      *
-     * @param string $strOptionName
+     * @param string $name
      * @return string
      */
-    protected function getOptionName($strOptionName = null)
+    protected function getOptionName($name = null)
     {
-        return $this->getOptionNamespace() . '\\' . $strOptionName;
+        return $this->getOptionNamespace() . '\\' . $name;
     }
 
     /**
      * 创建连接
      *
-     * @param string $strConnect
-     * @param array $arrOption
+     * @param string $connect
+     * @param array $options
      * @return object
      */
-    protected function makeConnect($strConnect, array $arrOption = [])
+    protected function makeConnect($connect, array $options = [])
     {
-        if (is_null($this->objContainer['option'][$this->getOptionName('connect.' . $strConnect)])) {
-            throw new Exception(sprintf('Connect driver %s not exits', $strConnect));
+        if (is_null($this->container['option'][$this->getOptionName('connect.' . $connect)])) {
+            throw new Exception(sprintf('Connect driver %s not exits', $connect));
         }
-        return $this->createConnect($this->createConnectCommon($strConnect, $arrOption));
+        return $this->createConnect($this->createConnectCommon($connect, $options));
     }
 
     /**
      * 创建连接对象公共入口
      *
-     * @param string $strConnect
-     * @param array $arrOption
+     * @param string $connect
+     * @param array $options
      * @return object
      */
-    protected function createConnectCommon($strConnect, array $arrOption = [])
+    protected function createConnectCommon($connect, array $options = [])
     {
-        return $this->{'makeConnect' . ucwords($strConnect)}($arrOption);
+        return $this->{'makeConnect' . ucwords($connect)}($options);
     }
 
     /**
      * 分析连接参数以及其唯一值
      *
-     * @param array|string $mixOption
+     * @param array|string $options
      * @return array
      */
-    protected function parseOptionAndUnique($mixOption = [])
+    protected function parseOptionAndUnique($options = [])
     {
         return [
-            $mixOption = $this->parseOptionParameter($mixOption),
-            $this->getUnique($mixOption)
+            $options = $this->parseOptionParameter($options),
+            $this->getUnique($options)
         ];
     }
 
     /**
      * 分析连接参数
      *
-     * @param array|string $mixOption
+     * @param array|string $options
      * @return array
      */
-    protected function parseOptionParameter($mixOption = [])
+    protected function parseOptionParameter($options = [])
     {
-        if (is_null($mixOption)) {
+        if (is_null($options)) {
             return [];
         }
 
-        if (is_string($mixOption) && ! is_array(($mixOption = $this->objContainer['option'][$this->getOptionName('connect.' . $mixOption)]))) {
-            $mixOption = [];
+        if (is_string($options) && ! is_array(($options = $this->container['option'][$this->getOptionName('connect.' . $options)]))) {
+            $options = [];
         }
 
-        return $mixOption;
+        return $options;
     }
 
     /**
      * 取得唯一值
      *
-     * @param array $arrOption
+     * @param array $options
      * @return string
      */
-    protected function getUnique($arrOption)
+    protected function getUnique($options)
     {
-        return md5(serialize($arrOption));
+        return md5(serialize($options));
     }
 
     /**
      * 读取默认配置
      *
-     * @param string $strConnect
-     * @param array $arrExtendOption
+     * @param string $connect
+     * @param array $extendOption
      * @return array
      */
-    protected function getOption($strConnect, array $arrExtendOption = [])
+    protected function getOption($connect, array $extendOption = [])
     {
-        return array_merge($this->getOptionConnect($strConnect), $this->getOptionCommon(), $arrExtendOption);
+        return array_merge($this->getOptionConnect($connect), $this->getOptionCommon(), $extendOption);
     }
 
     /**
@@ -260,26 +261,26 @@ abstract class manager
      */
     protected function getOptionCommon()
     {
-        $arrOption = $this->objContainer['option'][$this->getOptionName()];
-        $arrOption = $this->filterOptionCommon($arrOption);
-        return $arrOption;
+        $options = $this->container['option'][$this->getOptionName()];
+        $options = $this->filterOptionCommon($options);
+        return $options;
     }
 
     /**
      * 过滤全局配置
      *
-     * @param array $arrOption
+     * @param array $options
      * @return array
      */
-    protected function filterOptionCommon(array $arrOption)
+    protected function filterOptionCommon(array $options)
     {
-        foreach ($this->filterOptionCommonItem() as $strItem) {
-            if (isset($arrOption[$strItem])) {
-                unset($arrOption[$strItem]);
+        foreach ($this->filterOptionCommonItem() as $item) {
+            if (isset($options[$item])) {
+                unset($options[$item]);
             }
         }
 
-        return $arrOption;
+        return $options;
     }
 
     /**
@@ -298,36 +299,36 @@ abstract class manager
     /**
      * 读取连接配置
      *
-     * @param string $strConnect
+     * @param string $connect
      * @return array
      */
-    protected function getOptionConnect($strConnect)
+    protected function getOptionConnect($connect)
     {
-        return $this->objContainer['option'][$this->getOptionName('connect.' . $strConnect)];
+        return $this->container['option'][$this->getOptionName('connect.' . $connect)];
     }
 
     /**
      * 清除配置 null
      *
-     * @param array $arrOption
+     * @param array $options
      * @return array
      */
-    protected function optionFilterNull(array $arrOption)
+    protected function optionFilterNull(array $options)
     {
-        return array_filter($arrOption, function ($mixValue) {
-            return ! is_null($mixValue);
+        return array_filter($options, function ($value) {
+            return ! is_null($value);
         });
     }
 
     /**
      * call 
      *
-     * @param string $sMethod
-     * @param array $arrArgs
+     * @param string $method
+     * @param array $args
      * @return mixed
      */
-    public function __call(string $sMethod, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        return $this->connect()->$sMethod(...$arrArgs);
+        return $this->connect()->$method(...$args);
     }
 }

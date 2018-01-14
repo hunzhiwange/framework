@@ -45,55 +45,55 @@ class manager extends support_manager
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $connect
      * @return object
      */
-    protected function createConnect($objConnect)
+    protected function createConnect($connect)
     {
-        return new cache($objConnect);
+        return new cache($connect);
     }
 
     /**
      * 创建文件缓存
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\cache\file
      */
-    protected function makeConnectFile($arrOption = [])
+    protected function makeConnectFile($options = [])
     {
-        return new file(array_merge($this->getOption('file', $arrOption)));
+        return new file(array_merge($this->getOption('file', $options)));
     }
 
     /**
      * 创建 memcache 缓存
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\cache\memcache
      */
-    protected function makeConnectMemcache($arrOption = [])
+    protected function makeConnectMemcache($options = [])
     {
-        return new memcache(array_merge($this->getOption('memcache', $arrOption)));
+        return new memcache(array_merge($this->getOption('memcache', $options)));
     }
 
     /**
      * 创建 redis 缓存
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\cache\redis
      */
-    protected function makeConnectRedis($arrOption = [])
+    protected function makeConnectRedis($options = [])
     {
-        return new redis(array_merge($this->getOption('redis', $arrOption)));
+        return new redis(array_merge($this->getOption('redis', $options)));
     }
 
     /**
      * 读取连接配置
      *
-     * @param string $strConnect
+     * @param string $connect
      * @return array
      */
-    protected function getOptionConnect($strConnect)
+    protected function getOptionConnect($connect)
     {
-        return $this->optionFilterNull(parent::getOptionConnect($strConnect));
+        return $this->optionFilterNull(parent::getOptionConnect($connect));
     }
 }

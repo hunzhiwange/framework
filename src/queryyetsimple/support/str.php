@@ -307,7 +307,7 @@ class str
         if ($nHover == 0) {
             $nMin = floor($nSec / 60);
             if ($nMin == 0) {
-                $sReturn = $nSec . ' ' . ($arrLang['seconds'] ?? 'Seconds ago');
+                $sReturn = $nSec . ' ' . ($arrLang['seconds'] ?? 'seconds ago');
             } else {
                 $sReturn = $nMin . ' ' . ($arrLang['minutes'] ?? 'minutes ago');
             }

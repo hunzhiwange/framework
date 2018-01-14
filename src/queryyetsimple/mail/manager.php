@@ -45,34 +45,34 @@ class manager extends support_manager
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $connect
      * @return object
      */
-    protected function createConnect($objConnect)
+    protected function createConnect($connect)
     {
-        return new mail($objConnect, $this->objContainer['view'], $this->objContainer['event'], $this->getOptionCommon());
+        return new mail($connect, $this->container['view'], $this->container['event'], $this->getOptionCommon());
     }
 
     /**
      * 创建 smtp 连接
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\mail\smtp
      */
-    protected function makeConnectSmtp($arrOption = [])
+    protected function makeConnectSmtp($options = [])
     {
-        return new smtp(array_merge($this->getOption('smtp', $arrOption)));
+        return new smtp(array_merge($this->getOption('smtp', $options)));
     }
 
     /**
      * 创建 sendmail 连接
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\mail\sendmail
      */
-    protected function makeConnectSendmail($arrOption = [])
+    protected function makeConnectSendmail($options = [])
     {
-        return new sendmail(array_merge($this->getOption('sendmail', $arrOption)));
+        return new sendmail(array_merge($this->getOption('sendmail', $options)));
     }
 
     /**

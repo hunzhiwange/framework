@@ -45,33 +45,33 @@ class manager extends support_manager
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $connect
      * @return object
      */
-    protected function createConnect($objConnect)
+    protected function createConnect($connect)
     {
-        return new log($objConnect, $this->getOptionCommon());
+        return new log($connect, $this->getOptionCommon());
     }
 
     /**
      * 创建 file 日志驱动
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\log\file
      */
-    protected function makeConnectFile($arrOption = [])
+    protected function makeConnectFile($options = [])
     {
-        return new file($this->getOption('file', $arrOption));
+        return new file($this->getOption('file', $options));
     }
 
     /**
      * 创建 monolog 日志驱动
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\log\monolog
      */
-    protected function makeConnectMonolog($arrOption = [])
+    protected function makeConnectMonolog($options = [])
     {
-        return new monolog($this->getOption('monolog', $arrOption));
+        return new monolog($this->getOption('monolog', $options));
     }
 }

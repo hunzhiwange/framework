@@ -98,12 +98,12 @@ interface ilog extends LoggerInterface
     /**
      * 记录错误消息并写入
      *
-     * @param string $strLevel 日志类型
-     * @param string $strMessage 应该被记录的错误信息
-     * @param array $arrContext
+     * @param string $level 日志类型
+     * @param string $message 应该被记录的错误信息
+     * @param array $context
      * @return void
      */
-    public function write($strLevel, $strMessage, array $arrContext = []);
+    public function write($level, $message, array $context = []);
 
     /**
      * 保存日志信息
@@ -115,40 +115,40 @@ interface ilog extends LoggerInterface
     /**
      * 注册日志过滤器
      *
-     * @param callable $calFilter
+     * @param callable $filter
      * @return void
      */
-    public function registerFilter(callable $calFilter);
+    public function registerFilter(callable $filter);
 
     /**
      * 注册日志处理器
      *
-     * @param callable $calProcessor
+     * @param callable $processor
      * @return void
      */
-    public function registerProcessor(callable $calProcessor);
+    public function registerProcessor(callable $processor);
 
     /**
      * 清理日志记录
      *
-     * @param string $strLevel
+     * @param string $level
      * @return int
      */
-    public function clear($strLevel = null);
+    public function clear($level = null);
 
     /**
      * 获取日志记录
      *
-     * @param string $strLevel
+     * @param string $level
      * @return array
      */
-    public function get($strLevel = null);
+    public function get($level = null);
 
     /**
      * 获取日志记录数量
      *
-     * @param string $strLevel
+     * @param string $level
      * @return int
      */
-    public function count($strLevel = null);
+    public function count($level = null);
 }

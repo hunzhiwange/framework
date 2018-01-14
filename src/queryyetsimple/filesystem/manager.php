@@ -69,55 +69,55 @@ class manager extends support_manager
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $connect
      * @return object
      */
-    protected function createConnect($objConnect)
+    protected function createConnect($connect)
     {
-        return new filesystem($objConnect);
+        return new filesystem($connect);
     }
 
     /**
      * 创建 local 连接
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\filesystem\local
      */
-    protected function makeConnectLocal($arrOption = [])
+    protected function makeConnectLocal($options = [])
     {
-        return new local(array_merge($this->getOption('local', $arrOption)));
+        return new local(array_merge($this->getOption('local', $options)));
     }
 
     /**
      * 创建 ftp 连接
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\filesystem\ftp
      */
-    protected function makeConnectFtp($arrOption = [])
+    protected function makeConnectFtp($options = [])
     {
-        return new ftp(array_merge($this->getOption('ftp', $arrOption)));
+        return new ftp(array_merge($this->getOption('ftp', $options)));
     }
 
     /**
      * 创建 sftp 连接
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\filesystem\sftp
      */
-    protected function makeConnectSftp($arrOption = [])
+    protected function makeConnectSftp($options = [])
     {
-        return new sftp(array_merge($this->getOption('sftp', $arrOption)));
+        return new sftp(array_merge($this->getOption('sftp', $options)));
     }
 
     /**
      * 创建 zip 连接
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\filesystem\zip
      */
-    protected function makeConnectZip($arrOption = [])
+    protected function makeConnectZip($options = [])
     {
-        return new zip(array_merge($this->getOption('zip', $arrOption)));
+        return new zip(array_merge($this->getOption('zip', $options)));
     }
 }

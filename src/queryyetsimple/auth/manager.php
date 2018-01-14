@@ -47,12 +47,12 @@ class manager extends support_manager
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $connect
      * @return object
      */
-    protected function createConnect($objConnect)
+    protected function createConnect($connect)
     {
-        return new auth($objConnect);
+        return new auth($connect);
     }
 
     /**
@@ -62,46 +62,46 @@ class manager extends support_manager
      */
     public function getDefaultDriver()
     {
-        $strOption = $this->objContainer['option'][$this->getOptionName('default')];
-        $strOption = $this->getOptionName($strOption . '_default');
-        return $this->objContainer['option'][$strOption];
+        $option = $this->container['option'][$this->getOptionName('default')];
+        $option = $this->getOptionName($option . '_default');
+        return $this->container['option'][$option];
     }
 
     /**
      * 设置默认驱动
      *
-     * @param string $strName
+     * @param string $name
      * @return void
      */
-    public function setDefaultDriver($strName)
+    public function setDefaultDriver($name)
     {
-        $strOption = $this->objContainer['option'][$this->getOptionName('default')];
-        $strOption = $this->getOptionName($strOption . '_default');
-        $this->objContainer['option'][$strOption] = $strName;
+        $option = $this->container['option'][$this->getOptionName('default')];
+        $option = $this->getOptionName($option . '_default');
+        $this->container['option'][$option] = $name;
     }
 
     /**
      * 创建 session 连接
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\auth\session
      */
-    protected function makeConnectSession($arrOption = [])
+    protected function makeConnectSession($options = [])
     {
-        $arrOption = array_merge($this->getOption('session', $arrOption));
-        return new session($this->objContainer[$arrOption['model']], $this->objContainer['encryption'], $this->objContainer['validate'], $this->objContainer['session'], $arrOption);
+        $options = array_merge($this->getOption('session', $options));
+        return new session($this->container[$options['model']], $this->container['encryption'], $this->container['validate'], $this->container['session'], $options);
     }
 
     /**
      * 创建 token 连接
      *
-     * @param array $arrOption
+     * @param array $options
      * @return \queryyetsimple\auth\token
      */
-    protected function makeConnectToken($arrOption = [])
+    protected function makeConnectToken($options = [])
     {
-        $arrOption = array_merge($this->getOption('token', $arrOption));
-        return new token($this->objContainer[$arrOption['model']], $this->objContainer['encryption'], $this->objContainer['validate'], $this->objContainer['cache'], $arrOption);
+        $options = array_merge($this->getOption('token', $options));
+        return new token($this->container[$options['model']], $this->container['encryption'], $this->container['validate'], $this->container['cache'], $options);
     }
 }
 
