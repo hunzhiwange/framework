@@ -43,59 +43,59 @@ class throttler
      *
      * @var \queryyetsimple\throttler\ithrottler
      */
-    protected $objThrottler;
+    protected $throttler;
 
     /**
      * HTTP Response
      *
-     * @var \queryyetsimple\http\response $objResponse
+     * @var \queryyetsimple\http\response $response
      */
-    protected $objResponse;
+    protected $response;
 
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\throttler\ithrottler $objThrottler
-     * @param \queryyetsimple\http\response $objResponse
+     * @param \queryyetsimple\throttler\ithrottler $throttler
+     * @param \queryyetsimple\http\response $response
      * @return void
      */
-    public function __construct(ithrottler $objThrottler, response $objResponse)
+    public function __construct(ithrottler $throttler, response $response)
     {
-        $this->objThrottler = $objThrottler;
-        $this->objResponse = $objResponse;
+        $this->throttler = $throttler;
+        $this->response = $response;
     }
 
     /**
      * 请求
      *
-     * @param \Closure $calNext
-     * @param \queryyetsimple\http\request $objRequest
-     * @param int $intLimit
-     * @param int $intLime
+     * @param \Closure $next
+     * @param \queryyetsimple\http\request $request
+     * @param int $limit
+     * @param int $time
      * @return void
      */
-    public function handle(Closure $calNext, request $objRequest, $intLimit = 60, $intLime = 60)
+    public function handle(Closure $next, request $request, $limit = 60, $time = 60)
     {
-        $oRateLimiter = $this->objThrottler->create(null, ( int ) $intLimit, ( int ) $intLime);
+        $rateLimiter = $this->throttler->create(null, ( int ) $limit, ( int ) $time);
 
-        if ($oRateLimiter->attempt()) {
-            $this->header($oRateLimiter);
+        if ($rateLimiter->attempt()) {
+            $this->header($rateLimiter);
             throw new too_many_requests_http('Too many attempts.');
         } else {
-            $this->header($oRateLimiter);
+            $this->header($rateLimiter);
         }
 
-        $calNext($objRequest);
+        $next($request);
     }
 
     /**
      * 发送 HEADER
      *
-     * @param \queryyetsimple\throttler\rate_limiter $oRateLimiter
+     * @param \queryyetsimple\throttler\rate_limiter $rateLimiter
      * @return void
      */
-    protected function header($oRateLimiter)
+    protected function header($rateLimiter)
     {
-        $this->objResponse->headers($oRateLimiter->toArray());
+        $this->response->headers($rateLimiter->toArray());
     }
 }

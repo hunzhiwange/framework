@@ -42,45 +42,45 @@ class session
      *
      * @var \queryyetsimple\session\session
      */
-    protected $objManager;
+    protected $manager;
 
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\throttler\ithrottler $objManager
+     * @param \queryyetsimple\throttler\ithrottler $manager
      * @return void
      */
-    public function __construct(manager $objManager)
+    public function __construct(manager $manager)
     {
-        $this->objManager = $objManager;
+        $this->manager = $manager;
     }
 
     /**
      * 请求
      *
-     * @param \Closure $calNext
-     * @param \queryyetsimple\http\request $objRequest
+     * @param \Closure $next
+     * @param \queryyetsimple\http\request $request
      * @return void
      */
-    public function handle(Closure $calNext, request $objRequest)
+    public function handle(Closure $next, request $request)
     {
         $this->startSession();
-        $calNext($objRequest);
+        $next($request);
     }
 
     /**
      * 响应
      *
-     * @param \Closure $calNext
-     * @param \queryyetsimple\http\request $objRequest
-     * @param \queryyetsimple\http\response $objResponse
+     * @param \Closure $next
+     * @param \queryyetsimple\http\request $request
+     * @param \queryyetsimple\http\response $response
      * @return void
      */
-    public function terminate(Closure $calNext, request $objRequest, response $objResponse)
+    public function terminate(Closure $next, request $request, response $response)
     {
         $this->unregisterFlash();
-        $this->setPrevUrl($objRequest);
-        $calNext($objRequest, $objResponse);   
+        $this->setPrevUrl($request);
+        $next($request, $response);   
     }
 
     /**
@@ -90,7 +90,7 @@ class session
      */
     protected function startSession()
     {
-        $this->objManager->start();
+        $this->manager->start();
     }
 
     /**
@@ -100,17 +100,17 @@ class session
      */
     protected function unregisterFlash()
     {
-        $this->objManager->unregisterFlash();
+        $this->manager->unregisterFlash();
     }
 
     /**
      * 保存当期请求 URL
      *
-     * @param \queryyetsimple\http\request $objRequest
+     * @param \queryyetsimple\http\request $request
      * @return void
      */
-    protected function setPrevUrl(request $objRequest)
+    protected function setPrevUrl(request $request)
     {
-        $this->objManager->setPrevUrl($objRequest->url());
+        $this->manager->setPrevUrl($request->url());
     }
 }

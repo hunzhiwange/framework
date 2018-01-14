@@ -42,31 +42,31 @@ class log
      *
      * @var \queryyetsimple\log\log
      */
-    protected $objManager;
+    protected $manager;
 
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\throttler\ithrottler $objManager
+     * @param \queryyetsimple\throttler\ithrottler $manager
      * @return void
      */
-    public function __construct(manager $objManager)
+    public function __construct(manager $manager)
     {
-        $this->objManager = $objManager;
+        $this->manager = $manager;
     }
 
     /**
      * 响应
      * 
-     * @param \Closure $calNext
-     * @param \queryyetsimple\http\request $objRequest
-     * @param \queryyetsimple\http\response $objResponse
+     * @param \Closure $next
+     * @param \queryyetsimple\http\request $request
+     * @param \queryyetsimple\http\response $response
      * @return void
      */
-    public function terminate(Closure $calNext, request $objRequest, response $objResponse)
+    public function terminate(Closure $next, request $request, response $response)
     {
         $this->saveLog();
-        $calNext($objRequest, $objResponse);
+        $next($request, $response);
     }
 
     /**
@@ -76,8 +76,8 @@ class log
      */
     protected function saveLog()
     {
-        if ($this->objManager->container()['option'] ['log\enabled']) {
-            $this->objManager->save();
+        if ($this->manager->container()['option'] ['log\enabled']) {
+            $this->manager->save();
         }
     }
 }
