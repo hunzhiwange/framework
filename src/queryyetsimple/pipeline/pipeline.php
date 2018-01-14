@@ -40,38 +40,38 @@ class pipeline implements ipipeline
      *
      * @var \queryyetsimple\support\icontainer
      */
-    protected $objContainer;
+    protected $container;
 
     /**
      * 管道传递的对象
      *
      * @var array
      */
-    protected $arrPassed = [];
+    protected $passed = [];
 
     /**
      * 管道中所有执行工序
      *
      * @var array
      */
-    protected $arrStage = [];
+    protected $stage = [];
 
     /**
      * 迭代器
      *
      * @var \Generator
      */
-    protected $objGenerator;
+    protected $generator;
 
     /**
      * 创建一个管道
      *
-     * @param \queryyetsimple\support\icontainer $objContainer
+     * @param \queryyetsimple\support\icontainer $container
      * @return void
      */
-    public function __construct(icontainer $objContainer)
+    public function __construct(icontainer $container)
     {
-        $this->objContainer = $objContainer;
+        $this->container = $container;
     }
 
     /**
@@ -81,9 +81,9 @@ class pipeline implements ipipeline
      */
     public function reset()
     {
-        $this->arrPassed = [];
-        $this->arrStage = [];
-        $this->objGenerator = null;
+        $this->passed = [];
+        $this->stage = [];
+        $this->generator = null;
 
         return $this;
     }
@@ -91,14 +91,14 @@ class pipeline implements ipipeline
     /**
      * 将传输对象传入管道
      *
-     * @param mixed $mixPassed
+     * @param mixed $passed
      * @return $this
      */
-    public function send($mixPassed)
+    public function send($passed)
     {
-        $mixPassed = is_array($mixPassed) ? $mixPassed : func_get_args();
-        foreach ($mixPassed as $mixItem) {
-            $this->arrPassed[] = $mixItem;
+        $passed = is_array($passed) ? $passed : func_get_args();
+        foreach ($passed as $item) {
+            $this->passed[] = $item;
         }
 
         return $this;
@@ -107,14 +107,14 @@ class pipeline implements ipipeline
     /**
      * 设置管道中的执行工序
      *
-     * @param dynamic|array $mixStage
+     * @param dynamic|array $stage
      * @return $this
      */
-    public function through($mixStage)
+    public function through($stage)
     {
-        $mixStage = is_array($mixStage) ? $mixStage : func_get_args();
-        foreach ($mixStage as $mixItem) {
-            $this->arrStage[] = $mixItem;
+        $stage = is_array($stage) ? $stage : func_get_args();
+        foreach ($stage as $item) {
+            $this->stage[] = $item;
         }
 
         return $this;
@@ -123,19 +123,19 @@ class pipeline implements ipipeline
     /**
      * 执行管道工序响应结果
      *
-     * @param callable $calEnd
+     * @param callable $end
      * @since 2018.01.03
      * @return void
      */
-    public function then(callable $calEnd = null)
+    public function then(callable $end = null)
     {
-        $arrStage = $this->arrStage;
-        if ($calEnd) {
-            $arrStage[] = $calEnd;
+        $stage = $this->stage;
+        if ($end) {
+            $stage[] = $end;
         }
-        $this->objGenerator = $this->stageGenerator($arrStage);
+        $this->generator = $this->stageGenerator($stage);
 
-        $this->traverseGenerator(...$this->arrPassed);
+        $this->traverseGenerator(...$this->passed);
     }
 
     /**
@@ -145,63 +145,63 @@ class pipeline implements ipipeline
      * @return void
      */
     protected function traverseGenerator() {
-        if(! $this->objGenerator->valid() || $this->objGenerator->next() || ! $this->objGenerator->valid()) {
+        if(! $this->generator->valid() || $this->generator->next() || ! $this->generator->valid()) {
            return;
         }
 
-        $aArgs = func_get_args();
-        array_unshift($aArgs, function() {
+        $args = func_get_args();
+        array_unshift($args, function() {
             $this->traverseGenerator(...func_get_args());
         });
 
-        $this->objGenerator->current()(...$aArgs);
+        $this->generator->current()(...$args);
     }
 
     /**
      * 工序迭代器
      * 添加一个空的迭代器，第一次迭代 next 自动移除
      *
-     * @param array $arrStage
+     * @param array $stage
      * @return \Generator
      */
-    protected function stageGenerator(array $arrStage) {
-        array_unshift($arrStage, null);
+    protected function stageGenerator(array $stage) {
+        array_unshift($stage, null);
         
-        foreach ($arrStage as $mixStage) {
-           yield $this->stageCallback($mixStage);
+        foreach ($stage as $item) {
+           yield $this->stageCallback($item);
         }
     }
 
     /**
      * 工序回调
      *
-     * @param mixed $mixStage
+     * @param mixed $stages
      * @return null|callable
      */
-    protected function stageCallback($mixStage)
+    protected function stageCallback($stages)
     {   
-        if(is_null($mixStage)) {
+        if(is_null($stages)) {
             return;
         }
 
-        if (is_callable($mixStage)) {
-            return $mixStage;
+        if (is_callable($stages)) {
+            return $stages;
         } else {
-            list($strStage, $arrParams) = $this->parse($mixStage);
+            list($stage, $params) = $this->parse($stages);
 
-            if (strpos($strStage, '@') !== false) {
-                list($strStage, $strMethod) = explode('@', $strStage);
+            if (strpos($stage, '@') !== false) {
+                list($stage, $method) = explode('@', $stage);
             } else {
-                $strMethod = 'handle';
+                $method = 'handle';
             }
 
-            if (($objStage = $this->objContainer->make($strStage)) === false) {
-                throw new InvalidArgumentException(sprintf('Stage %s is not valid.', $strStage));
+            if (($stage = $this->container->make($stage)) === false) {
+                throw new InvalidArgumentException('Stage is invalid.');
             }
 
             return [
-                $objStage,
-                $strMethod
+                $stage,
+                $method
             ];
         }
     }
@@ -209,19 +209,20 @@ class pipeline implements ipipeline
     /**
      * 解析工序
      *
-     * @param string $strStage
+     * @param string $stage
      * @return array
      */
-    protected function parse(string $strStage)
+    protected function parse(string $stage)
     {
-        list($strName, $arrArgs) = array_pad(explode(':', $strStage, 2), 2, []);
-        if (is_string($arrArgs)) {
-            $arrArgs = explode(',', $arrArgs);
+        list($name, $args) = array_pad(explode(':', $stage, 2), 2, []);
+        
+        if (is_string($args)) {
+            $args = explode(',', $args);
         }
 
         return [
-            $strName,
-            $arrArgs
+            $name,
+            $args
         ];
     }
 }

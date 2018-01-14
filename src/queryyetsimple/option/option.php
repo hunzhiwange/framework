@@ -37,7 +37,7 @@ class option implements ArrayAccess, ioption
      *
      * @var array
      */
-    protected $arrOption = [];
+    protected $option = [];
 
     /**
      * 默认命名空间
@@ -49,75 +49,77 @@ class option implements ArrayAccess, ioption
     /**
      * 构造函数
      *
-     * @param array $arrOptions
+     * @param array $option
      * @return void
      */
-    public function __construct(array $arrOptions = [])
+    public function __construct(array $option = [])
     {
-        $this->arrOption = $arrOptions;
+        $this->option = $option;
     }
 
     /**
      * 是否存在配置
      *
-     * @param string $sName 配置键值
+     * @param string $name 配置键值
      * @return string
      */
-    public function has($sName = 'app\\')
+    public function has($name = 'app\\')
     {
-        $sName = $this->parseNamespace($sName);
-        $strNamespace = $sName[0];
-        $sName = $sName[1];
+        $name = $this->parseNamespace($name);
+        $namespaces = $name[0];
+        $name = $name[1];
 
-        if ($sName == '*') {
-            return isset($this->arrOption[$strNamespace]);
+        if ($name == '*') {
+            return isset($this->option[$namespaces]);
         }
 
-        if (! strpos($sName, '.')) {
-            return array_key_exists($sName, $this->arrOption[$strNamespace]);
+        if (! strpos($name, '.')) {
+            return array_key_exists($name, $this->option[$namespaces]);
         }
 
-        $arrParts = explode('.', $sName);
-        $arrOption = $this->arrOption[$strNamespace];
-        foreach ($arrParts as $sPart) {
-            if (! isset($arrOption[$sPart])) {
+        $parts = explode('.', $name);
+        $option = $this->option[$namespaces];
+        foreach ($parts as $part) {
+            if (! isset($option[$part])) {
                 return false;
             }
-            $arrOption = $arrOption[$sPart];
+            $option = $option[$part];
         }
+
         return true;
     }
 
     /**
      * 获取配置
      *
-     * @param string $sName 配置键值
-     * @param mixed $mixDefault 配置默认值
+     * @param string $name 配置键值
+     * @param mixed $defaults 配置默认值
      * @return string
      */
-    public function get($sName = 'app\\', $mixDefault = null)
+    public function get($name = 'app\\', $defaults = null)
     {
-        $sName = $this->parseNamespace($sName);
-        $strNamespace = $sName[0];
-        $sName = $sName[1];
+        $name = $this->parseNamespace($name);
+        $namespaces = $name[0];
+        $name = $name[1];
 
-        if ($sName == '*') {
-            return $this->arrOption[$strNamespace];
+        if ($name == '*') {
+            return $this->option[$namespaces];
         }
 
-        if (! strpos($sName, '.')) {
-            return array_key_exists($sName, $this->arrOption[$strNamespace]) ? $this->arrOption[$strNamespace][$sName] : $mixDefault;
+        if (! strpos($name, '.')) {
+            return array_key_exists($name, $this->option[$namespaces]) ? $this->option[$namespaces][$name] : $defaults;
         }
 
-        $arrParts = explode('.', $sName);
-        $arrOption = $this->arrOption[$strNamespace];
-        foreach ($arrParts as $sPart) {
-            if (! isset($arrOption[$sPart])) {
-                return $mixDefault;
+        $parts = explode('.', $name);
+        $option = $this->option[$namespaces];
+        foreach ($parts as $part) {
+            if (! isset($option[$part])) {
+                return $defaults;
             }
-            $arrOption = $arrOption[$sPart];
+            $option = $option[$part];
         }
-        return $arrOption;
+
+        return $option;
     }
 
     /**
@@ -127,47 +129,47 @@ class option implements ArrayAccess, ioption
      */
     public function all()
     {
-        return $this->arrOption;
+        return $this->option;
     }
 
     /**
      * 设置配置
      *
-     * @param mixed $mixName 配置键值
-     * @param mixed $mixValue 配置值
+     * @param mixed $name 配置键值
+     * @param mixed $value 配置值
      * @return array
      */
-    public function set($mixName, $mixValue = null)
+    public function set($name, $value = null)
     {
-        if (is_array($mixName)) {
-            foreach ($mixName as $sKey => $mixValue) {
-                $this->set($sKey, $mixValue);
+        if (is_array($name)) {
+            foreach ($name as $key => $value) {
+                $this->set($key, $value);
             }
         } else {
-            $mixName = $this->parseNamespace($mixName);
-            $strNamespace = $mixName[0];
-            $mixName = $mixName[1];
+            $name = $this->parseNamespace($name);
+            $namespaces = $name[0];
+            $name = $name[1];
 
-            if ($mixName == '*') {
-                $this->arrOption[$strNamespace] = $mixValue;
+            if ($name == '*') {
+                $this->option[$namespaces] = $value;
                 return;
             }
 
-            if (! strpos($mixName, '.')) {
-                $this->arrOption[$strNamespace][$mixName] = $mixValue;
+            if (! strpos($name, '.')) {
+                $this->option[$namespaces][$name] = $value;
             } else {
-                $arrParts = explode('.', $mixName);
-                $nMax = count($arrParts) - 1;
-                $arrOption = &$this->arrOption[$strNamespace];
-                for ($nI = 0; $nI <= $nMax; $nI ++) {
-                    $sPart = $arrParts[$nI];
-                    if ($nI < $nMax) {
-                        if (! isset($arrOption[$sPart])) {
-                            $arrOption[$sPart] = [];
+                $parts = explode('.', $name);
+                $max = count($parts) - 1;
+                $option = &$this->option[$namespaces];
+                for ($i = 0; $i <= $max; $i ++) {
+                    $part = $parts[$i];
+                    if ($i < $max) {
+                        if (! isset($option[$part])) {
+                            $option[$part] = [];
                         }
-                        $arrOption = &$arrOption[$sPart];
+                        $option = &$option[$part];
                     } else {
-                        $arrOption[$sPart] = $mixValue;
+                        $option[$part] = $value;
                     }
                 }
             }
@@ -177,38 +179,38 @@ class option implements ArrayAccess, ioption
     /**
      * 删除配置
      *
-     * @param string $sName 配置键值
+     * @param string $name 配置键值
      * @return string
      */
-    public function delete($sName)
+    public function delete($name)
     {
-        $sName = $this->parseNamespace($sName);
-        $strNamespace = $sName[0];
-        $sName = $sName[1];
+        $name = $this->parseNamespace($name);
+        $namespaces = $name[0];
+        $name = $name[1];
 
-        if ($sName == '*') {
-            $this->arrOption[$strNamespace] = [];
+        if ($name == '*') {
+            $this->option[$namespaces] = [];
             return;
         }
 
-        if (! strpos($sName, '.')) {
-            if (isset($this->arrOption[$strNamespace][$sName])) {
-                unset($this->arrOption[$strNamespace][$sName]);
+        if (! strpos($name, '.')) {
+            if (isset($this->option[$namespaces][$name])) {
+                unset($this->option[$namespaces][$name]);
             }
         } else {
-            $arrParts = explode('.', $sName);
-            $nMax = count($arrParts) - 1;
-            $arrOption = &$this->arrOption[$strNamespace];
-            for ($nI = 0; $nI <= $nMax; $nI ++) {
-                $sPart = $arrParts[$nI];
-                if ($nI < $nMax) {
-                    if (! isset($arrOption[$sPart])) {
+            $parts = explode('.', $name);
+            $max = count($parts) - 1;
+            $option = &$this->option[$namespaces];
+            for ($i = 0; $i <= $max; $i ++) {
+                $part = $parts[$i];
+                if ($i < $max) {
+                    if (! isset($option[$part])) {
                         break;
                     }
-                    $arrOption = &$arrOption[$sPart];
+                    $option = &$option[$part];
                 } else {
-                    if (isset($arrOption[$sPart])) {
-                        unset($arrOption[$sPart]);
+                    if (isset($option[$part])) {
+                        unset($option[$part]);
                     }
                 }
             }
@@ -218,19 +220,19 @@ class option implements ArrayAccess, ioption
     /**
      * 初始化配置参数
      *
-     * @param mixed $mixNamespace
+     * @param mixed $namespaces
      * @return boolean
      */
-    public function reset($mixNamespace = null)
+    public function reset($namespaces = null)
     {
-        if (is_array($mixNamespace)) {
-            $this->arrOption = $mixNamespace;
-        } elseif (is_string($mixNamespace)) {
-            if (isset($this->arrOption[$mixNamespace])) {
-                $this->arrOption[$mixNamespace] = [];
+        if (is_array($namespaces)) {
+            $this->option = $namespaces;
+        } elseif (is_string($namespaces)) {
+            if (isset($this->option[$namespaces])) {
+                $this->option[$namespaces] = [];
             }
         } else {
-            $this->arrOption = [];
+            $this->option = [];
         }
 
         return true;
@@ -239,74 +241,74 @@ class option implements ArrayAccess, ioption
     /**
      * 判断配置是否存在
      *
-     * @param string $strName
+     * @param string $name
      * @return bool
      */
-    public function offsetExists($strName)
+    public function offsetExists($name)
     {
-        return $this->has($strName);
+        return $this->has($name);
     }
 
     /**
      * 获取配置
      *
-     * @param string $strName
+     * @param string $name
      * @return mixed
      */
-    public function offsetGet($strName)
+    public function offsetGet($name)
     {
-        return $this->get($strName);
+        return $this->get($name);
     }
 
     /**
      * 设置配置
      *
-     * @param string $strName
-     * @param mixed $mixValue
+     * @param string $name
+     * @param mixed $value
      * @return void
      */
-    public function offsetSet($strName, $mixValue)
+    public function offsetSet($name, $value)
     {
-        return $this->set($strName, $mixValue);
+        return $this->set($name, $value);
     }
 
     /**
      * 删除配置
      *
-     * @param string $strName
+     * @param string $name
      * @return void
      */
-    public function offsetUnset($strName)
+    public function offsetUnset($name)
     {
-        $this->delete($strName);
+        $this->delete($name);
     }
 
     /**
      * 分析命名空间
      *
-     * @param string $strName
+     * @param string $name
      * @return array
      */
-    protected function parseNamespace($strName)
+    protected function parseNamespace($name)
     {
-        if (strpos($strName, '\\')) {
-            $strNamespace = explode('\\', $strName);
-            if (empty($strNamespace[1])) {
-                $strNamespace[1] = '*';
+        if (strpos($name, '\\')) {
+            $namespaces = explode('\\', $name);
+            if (empty($namespaces[1])) {
+                $namespaces[1] = '*';
             }
-            $strName = $strNamespace[1];
-            $strNamespace = $strNamespace[0];
+            $name = $namespaces[1];
+            $namespaces = $namespaces[0];
         } else {
-            $strNamespace = static::DEFAUTL_NAMESPACE;
+            $namespaces = static::DEFAUTL_NAMESPACE;
         }
 
-        if (! isset($this->arrOption[$strNamespace])) {
-            $this->arrOption[$strNamespace] = [];
+        if (! isset($this->option[$namespaces])) {
+            $this->option[$namespaces] = [];
         }
 
         return [
-            $strNamespace,
-            $strName
+            $namespaces,
+            $name
         ];
     }
 }

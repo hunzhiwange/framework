@@ -343,7 +343,15 @@ class mail implements imail
      */
     protected function getViewData($strFile, array $arrData)
     {
-        return $this->objView->clearAssign()->assign('objMail', $this)->assign($arrData)->display($strFile, [
+        return $this->objView->
+
+        clearAssign()->
+
+        assign('objMail', $this)->
+
+        assign($arrData)->
+
+        display($strFile, [
             'return' => true
         ]);
     }
