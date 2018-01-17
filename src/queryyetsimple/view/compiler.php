@@ -102,6 +102,11 @@ class compiler implements icompiler
             'single' => true,
             'required' => []
         ],
+        'let' => [
+            'attr' => [],
+            'single' => true,
+            'required' => []
+        ],
         'each' => [
             'attr' => [
                 'for',
@@ -110,7 +115,7 @@ class compiler implements icompiler
             ],
             'single' => false,
             'required' => [
-                'for'
+                //'for'
             ]
         ]
     ];
@@ -231,31 +236,12 @@ class compiler implements icompiler
     ];
 
     /**
-     * 配置
-     *
-     * @var array
-     */
-    protected $arrOption = [
-        'var_identify' => '',
-        'notallows_func' => [
-            'exit',
-            'die',
-            'return'
-        ],
-        'notallows_func_js' => [
-            'alert'
-        ]
-    ];
-
-    /**
      * 构造函数
      *
-     * @param array $arrOption
      * @return void
      */
-    public function __construct(array $arrOption = [])
+    public function __construct()
     {
-        $this->options($arrOption);
     }
 
     /**
@@ -560,7 +546,33 @@ class compiler implements icompiler
      */
     public function jsvarCompiler(&$arrTheme)
     {
-        $arrTheme['content'] = "' + " . $this->parseJsContent($arrTheme['content']) . " + '";
+        $arrTheme['content'] = $this->phpTagStart() . 'echo ' . $this->parseJsContent($arrTheme['content']) . ';' . $this->phpTagEnd();
+    }
+
+    /**
+     * if 编译器
+     *
+     * @param array $arrTheme
+     * @return void
+     */
+    public function letJsCompiler(&$arrTheme)
+    {
+
+
+
+        $this->checkNode($arrTheme, true);
+        $arrAttr = $this->getNodeAttribute($arrTheme);
+
+        print_r($arrAttr);
+        exit();
+
+        $arrAttr['condition'] = $this->parseJsContent($arrAttr['condition']);
+
+        $arrTheme['content'] = "';
+if( {$arrAttr['condition']} ) {
+    out += '" . $this->getNodeBody($arrTheme) . "';
+}
+out += '";
     }
 
     /**
@@ -571,6 +583,9 @@ class compiler implements icompiler
      */
     public function ifJsCompiler(&$arrTheme)
     {
+
+
+
         $this->checkNode($arrTheme, true);
         $arrAttr = $this->getNodeAttribute($arrTheme);
 
@@ -625,6 +640,9 @@ out += '";
     {
         $this->checkNode($arrTheme, true);
         $arrAttr = $this->getNodeAttribute($arrTheme);
+
+        print_r($arrAttr);
+        exit();
 
         foreach ([
             'value',
@@ -795,11 +813,18 @@ out += '";
         $arrAttr = $this->getNodeAttribute($arrTheme);
         $arrAttr['file'] = str_replace('->', '.', $arrAttr['file']);
 
+        // 后缀由主模板提供
+        if (! $arrAttr['ext'] && strpos($arrAttr['file'], '.') !== false) {
+            $temp = explode('.', $arrAttr['file']);
+            $arrAttr['ext'] = '.' . array_pop($temp);
+            $arrAttr['file'] = implode('.', $temp);
+        }
+
         if (strpos($arrAttr['file'], '$') !== 0 && strpos($arrAttr['file'], '(') === false) {
             $arrAttr['file'] = (strpos($arrAttr['file'], '$') === 0 ? '' : '\'') . $arrAttr['file'] . '\'';
         }
 
-        $arrTheme['content'] = $this->phpTagStart() . '$this->display( ' . $arrAttr['file'] . ', true, \'' . ($arrAttr['ext'] ?  : '') . '\' );' . $this->phpTagEnd();
+        $arrTheme['content'] = $this->phpTagStart() . '$this->display( ' . $arrAttr['file'] . ', [], \'' . ($arrAttr['ext'] ?  : '') . '\', true);' . $this->phpTagEnd();
     }
 
     /**
@@ -907,8 +932,8 @@ out += '";
 
         // 正则匹配
         $arrRegexp = [];
-        $arrRegexp[] = "/(([^=\s]+)=)?\"([^\"]+)\"/"; // xxx="yyy" 或 "yyy" 格式
-        $arrRegexp[] = "/(([^=\s]+)=)?'([^\']+)'/"; // xxx='yyy' 或 'yyy' 格式
+        //$arrRegexp[] = "/(([^=\s]+)=)?\"([^\"]+)\"/"; // xxx="yyy" 或 "yyy" 格式
+        //$arrRegexp[] = "/(([^=\s]+)=)?'([^\']+)'/"; // xxx='yyy' 或 'yyy' 格式
         $arrRegexp[] = "/(([^=\s]+)=)?([^\s]+)/"; // xxx=yyy 或 yyy 格式
         $nNameIdx = 2;
         $nValueIdx = 3;
@@ -924,7 +949,7 @@ out += '";
                     } else {
                         // 过滤掉不允许的属性
                         if (! in_array($sName, $arrAllowedAttr)) {
-                            continue;
+                           // continue;
                         }
                     }
 
@@ -942,7 +967,62 @@ out += '";
         }
         $arrTheme['content'] = $sSource;
     }
+    /**
+     * 属性编译
+     *
+     * @param array $arrTheme
+     * @return void
+     */
+    // public function attributeNodeCompiler(&$arrTheme)
+    // {
+    //     $sSource = trim($arrTheme['content']);
+    //     $this->escapeCharacter($sSource);
 
+    //     if ($arrTheme['is_js'] === true) {
+    //         $arrTag = $this->arrJsTag;
+    //     } else {
+    //         $arrTag = $this->arrNodeTag;
+    //     }
+
+    //     $arrAllowedAttr = $arrTag[$arrTheme['parent_name']]['attr'];
+
+    //     // 正则匹配
+    //     $arrRegexp = [];
+    //     $arrRegexp[] = "/(([^=\s]+)=)?\"([^\"]+)\"/"; // xxx="yyy" 或 "yyy" 格式
+    //     $arrRegexp[] = "/(([^=\s]+)=)?'([^\']+)'/"; // xxx='yyy' 或 'yyy' 格式
+    //     $arrRegexp[] = "/(([^=\s]+)=)?([^\s]+)/"; // xxx=yyy 或 yyy 格式
+    //     $nNameIdx = 2;
+    //     $nValueIdx = 3;
+    //     $nDefaultIdx = 0;
+    //     foreach ($arrRegexp as $sRegexp) {
+    //         if (preg_match_all($sRegexp, $sSource, $arrRes)) {
+    //             foreach ($arrRes[0] as $nIdx => $sAttribute) {
+    //                 $sSource = str_replace($sAttribute, '', $sSource);
+    //                 $sName = $arrRes[$nNameIdx][$nIdx];
+    //                 if (empty($sName)) {
+    //                     $nDefaultIdx ++;
+    //                     $sName = 'condition' . $nDefaultIdx;
+    //                 } else {
+    //                     // 过滤掉不允许的属性
+    //                     if (! in_array($sName, $arrAllowedAttr)) {
+    //                        // continue;
+    //                     }
+    //                 }
+
+    //                 $sValue = $arrRes[$nValueIdx][$nIdx];
+    //                 $this->escapeCharacter($sValue, false);
+    //                 $arrTheme['attribute_list'][strtolower($sName)] = $sValue;
+    //             }
+    //         }
+    //     }
+    //     // 补全节点其余参数
+    //     foreach ($arrAllowedAttr as $str) {
+    //         if (! isset($arrTheme['attribute_list'][$str])) {
+    //             $arrTheme['attribute_list'][$str] = null;
+    //         }
+    //     }
+    //     $arrTheme['content'] = $sSource;
+    // }
     /**
      * 分析if
      *
@@ -985,16 +1065,136 @@ out += '";
      * @param string $sContent
      * @return string
      */
-    protected function parseJsContent($sContent)
+    protected function parseJsContent($content)
     {
-        $arrVar = explode('|', $sContent);
-        $sContent = array_shift($arrVar);
+        $arrVar = explode('|', $content);
+        $content = array_shift($arrVar);
+
+        $content = $this->parseExpression($content);
 
         if (count($arrVar) > 0) {
-            $sContent = $this->parseJsFunction($sContent, $arrVar);
+            return $this->parseJsFunction($content, $arrVar);
+        }else {
+            return $content;
+        }
+    }
+
+    /**
+     * 解析表达式语法
+     *
+     * @param string $content
+     * @return string
+     */
+    protected function parseExpression($content)
+    {
+        $content = trim($content);
+
+        $logic = [
+            '+',
+            '-',
+            '.',
+            '(',
+            ')',
+            '/',
+            '%',
+            '*',
+            '?',
+            ':'
+        ];
+
+        $result = [];
+
+        // 单逻辑
+        $findLogic = false;
+        for($i=0;$i<strlen($content);$i++) {
+            $temp = $content{$i};
+
+            if ($i === 0 && $this->isVarExpression($temp)) {
+               $result[] = '$';
+            }
+
+            if (in_array($temp, $logic)) {
+                $findLogic = true;
+                $result[] = $temp;
+                continue;
+            }
+
+            if ($findLogic === true && $temp != ' ') {
+                if ($this->isVarExpression($temp)) {
+                    $result[] = '$';
+                }
+                $findLogic = false;
+            }
+
+            $result[] = $temp;
         }
 
-        return '(' . $sContent . ')';
+        // 复合逻辑
+        $logic = [
+            ' band ',
+            ' bxor ',
+            ' bor ',
+            ' bnot ',
+            ' bleft ',
+            ' bright ',
+            ' and ',
+            ' or ',
+            ' not ',
+            ' dot ',
+            ' nheq ',
+            ' heq ',
+            ' neq ',
+            ' eq ',
+            ' egt ',
+            ' gt ',
+            ' elt ',
+            ' lt ' 
+        ];
+
+        $replace = [
+            ' & ',
+            ' ^ ',
+            ' | ',
+            ' ~ ',
+            ' << ',
+            ' >> ',
+            ' && ',
+            ' || ',
+            ' != ',
+            '->',
+            ' !== ',
+            ' === ',
+            ' != ',
+            ' == ',
+            ' >= ',
+            ' > ',
+            ' <= ',
+            ' < '
+        ];
+
+        $content = str_replace($logic, $replace,implode('',$result));
+
+        // 还原函数去掉开头的美元符号
+        $content = preg_replace_callback("/(\\$+?[a-z0-9\_]+?\s*?)\(.+?\)/", function ($match) {
+            return substr($match[0], 1);
+        }, $content);
+
+        return $content;
+    }
+
+    /**
+     * 是否为字符串表达式字符
+     *
+     * @param string $char
+     * @return boolean
+     */
+    protected function isVarExpression($char)
+    {
+        return ! in_array($char, [
+            '"',
+            '\'',
+            '('
+        ]) && ! is_numeric($char);
     }
 
     /**
@@ -1020,7 +1220,6 @@ out += '";
     {
         $sContent = str_replace(':', '->', $sContent); // 以|分割字符串,数组第一位是变量名字符串,之后的都是函数参数&&函数{$hello|md5}
 
-
         $arrVar = explode('|', $sContent);
         $sVar = array_shift($arrVar); // 弹出第一个元素,也就是变量名
         if (strpos($sVar, '.')) { // 访问数组元素或者属性
@@ -1028,26 +1227,7 @@ out += '";
             if (substr($arrVars['1'], 0, 1) == "'" or substr($arrVars['1'], 0, 1) == '"' or substr($arrVars['1'], 0, 1) == "$") {
                 $sName = '$' . $arrVars[0] . '.' . $arrVars[1] . ($this->arrayHandler($arrVars, 3)); // 特殊的.连接字符串
             } else {
-                $bIsObject = false; // 解析对象的方法
-                if (substr($sContent, - 1) == ')') {
-                    $bIsObject = true;
-                }
-
-                if ($bIsObject === false) { // 非对象
-                    switch (strtolower($this->getOption('var_identify'))) {
-                        case 'array': // 识别为数组
-                            $sName = '$' . $arrVars[0] . '[\'' . $arrVars[1] . '\']' . ($this->arrayHandler($arrVars));
-                            break;
-                        case 'obj': // 识别为对象
-                            $sName = '$' . $arrVars[0] . '->' . $arrVars[1] . ($this->arrayHandler($arrVars, 2));
-                            break;
-                        default: // 自动判断数组或对象 支持多维
-                            $sName = 'is_array( $' . $arrVars[0] . ' ) ? $' . $arrVars[0] . '[\'' . $arrVars[1] . '\']' . ($this->arrayHandler($arrVars)) . ' : $' . $arrVars[0] . '->' . $arrVars[1] . ($this->arrayHandler($arrVars, 2));
-                            break;
-                    }
-                } else {
-                    $sName = '$' . $arrVars[0] . '->' . $arrVars[1] . ($this->arrayHandler($arrVars, 2));
-                }
+                $sName = '$' . $arrVars[0] . '->' . $arrVars[1] . ($this->arrayHandler($arrVars, 2));
             }
             $sVar = $arrVars[0];
         } elseif (strpos($sVar, '[')) { // $hello['demo'] 方式访问数组
@@ -1077,8 +1257,7 @@ out += '";
     protected function parseVarFunction($sName, $arrVar, $bJs = false)
     {
         $nLen = count($arrVar);
-        // 取得模板禁止使用函数列表
-        $arrNot = $this->getOption('notallows_func' . ($bJs ? '' : '_js'));
+
         for ($nI = 0; $nI < $nLen; $nI ++) {
             if (0 === stripos($arrVar[$nI], 'default=')) {
                 $arrArgs = explode('=', $arrVar[$nI], 2);
@@ -1100,17 +1279,15 @@ out += '";
                     $sName = $sName . ' ?  : ' . $arrArgs[1];
                     break;
                 default: // 通用模板函数
-                    if (! in_array($arrArgs[0], $arrNot)) {
-                        if (isset($arrArgs[1])) {
-                            if (strstr($arrArgs[1], '**')) {
-                                $arrArgs[1] = str_replace('**', $sName, $arrArgs[1]);
-                                $sName = "$arrArgs[0] ( $arrArgs[1] )";
-                            } else {
-                                $sName = "$arrArgs[0] ( $sName, $arrArgs[1] )";
-                            }
-                        } elseif (! empty($arrArgs[0])) {
-                            $sName = "$arrArgs[0] ( $sName )";
+                    if (isset($arrArgs[1])) {
+                        if (strstr($arrArgs[1], '**')) {
+                            $arrArgs[1] = str_replace('**', $sName, $arrArgs[1]);
+                            $sName = "$arrArgs[0] ( $arrArgs[1] )";
+                        } else {
+                            $sName = "$arrArgs[0] ( $sName, $arrArgs[1] )";
                         }
+                    } elseif (! empty($arrArgs[0])) {
+                        $sName = "$arrArgs[0] ( $sName )";
                     }
             }
         }

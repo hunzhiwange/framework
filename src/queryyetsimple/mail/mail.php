@@ -351,7 +351,7 @@ class mail implements imail
 
         assign($arrData)->
 
-        display($strFile, [
+        display($strFile, [], [
             'return' => true
         ]);
     }

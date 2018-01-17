@@ -93,13 +93,6 @@ class response
     protected $strContent;
 
     /**
-     * 追加内容
-     *
-     * @var string
-     */
-    protected $strAppendContent;
-
-    /**
      * 响应状态
      *
      * @var int
@@ -240,7 +233,7 @@ class response
         }
 
         // 输出内容
-        $sContent = $this->getContent() . (! $this->getContent() || ! $this->isJson($this->getContent()) ? $this->getAppendContent() : '');
+        $sContent = $this->getContent();
         if ($booSend === true) {
             echo $sContent;
         } else {
@@ -581,45 +574,6 @@ class response
     }
 
     /**
-     * 追加内容
-     *
-     * @param string $strContent
-     * @return $this
-     */
-    public function appendContent($strContent)
-    {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-        $this->strAppendContent .= $strContent;
-        return $this;
-    }
-
-    /**
-     * 返回追加内容
-     *
-     * @return string
-     */
-    public function getAppendContent()
-    {
-        return $this->strAppendContent;
-    }
-
-    /**
-     * 清理追加内容
-     *
-     * @return $this
-     */
-    public function restAppendContent()
-    {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-        $this->strAppendContent = '';
-        return $this;
-    }
-
-    /**
      * 解析并且返回内容
      *
      * @return string
@@ -655,7 +609,7 @@ class response
                 $this->objRouter->redirect($this->getOption('redirect_url'), $this->getOption('option'));
                 break;
             case 'view':
-                $mixContent = $this->objView->display($this->getOption('file'), $this->getOption('option'));
+                $mixContent = $this->objView->display($this->getOption('file'), [], $this->getOption('option'));
                 break;
             default:
                 if (! is_string($mixContent) && is_callable($mixContent)) {

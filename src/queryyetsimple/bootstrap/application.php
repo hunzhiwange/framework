@@ -259,7 +259,7 @@ class application
 
         // 调试
         if ($this->objProject->debug()) {
-            $mixResponse->appendContent(console::trace($this->objProject['log']->get()));
+            console::trace($this->objProject['log']->get());
         }
 
         // 输出响应

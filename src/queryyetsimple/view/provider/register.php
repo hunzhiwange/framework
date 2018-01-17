@@ -19,6 +19,8 @@
  */
 namespace queryyetsimple\view\provider;
 
+use Twig_Environment;
+use Twig_Loader_Filesystem;
 use queryyetsimple\{
     view\parser,
     view\manager,
@@ -47,10 +49,12 @@ class register extends provider
         $this->viewViews();
         $this->viewView();
         $this->viewHtml();
+        $this->viewTwig();
         $this->viewV8();
         $this->viewPhpui();
         $this->viewCompiler();
         $this->viewParser();
+        $this->viewTwigParser();
     }
 
     /**
@@ -70,6 +74,10 @@ class register extends provider
                 'html',
                 'queryyetsimple\view\html'
             ],
+            'view.twig' => [
+                'twig',
+                'queryyetsimple\view\twig'
+            ],
             'view.v8' => [
                 'v8',
                 'queryyetsimple\view\v8'
@@ -85,7 +93,8 @@ class register extends provider
             'view.parser' => [
                 'queryyetsimple\view\parser',
                 'queryyetsimple\view\iparser'
-            ]
+            ],
+            'view.twig.parser' => 'view.twig.parser'
         ];
     }
 
@@ -96,8 +105,8 @@ class register extends provider
      */
     protected function viewViews()
     {
-        $this->singleton('view.views', function ($oProject) {
-            return new manager($oProject);
+        $this->singleton('view.views', function ($project) {
+            return new manager($project);
         });
     }
 
@@ -108,8 +117,20 @@ class register extends provider
      */
     protected function viewHtml()
     {
-        $this->singleton('view.html', function ($oProject) {
-            return $oProject['view.views']->connect('html');
+        $this->singleton('view.html', function ($project) {
+            return $project['view.views']->connect('html');
+        });
+    }
+
+    /**
+     * 注册 view.twig 服务
+     *
+     * @return void
+     */
+    protected function viewTwig()
+    {
+        $this->singleton('view.twig', function ($project) {
+            return $project['view.views']->connect('twig');
         });
     }
 
@@ -120,8 +141,8 @@ class register extends provider
      */
     protected function viewV8()
     {
-        $this->singleton('view.v8', function ($oProject) {
-            return $oProject['view.views']->connect('v8');
+        $this->singleton('view.v8', function ($project) {
+            return $project['view.views']->connect('v8');
         });
     }
 
@@ -132,8 +153,8 @@ class register extends provider
      */
     protected function viewPhpui()
     {
-        $this->singleton('view.phpui', function ($oProject) {
-            return $oProject['view.views']->connect('phpui');
+        $this->singleton('view.phpui', function ($project) {
+            return $project['view.views']->connect('phpui');
         });
     }
 
@@ -144,8 +165,8 @@ class register extends provider
      */
     protected function viewView()
     {
-        $this->singleton('view.view', function ($oProject) {
-            return $oProject['view.views']->connect();
+        $this->singleton('view.view', function ($project) {
+            return $project['view.views']->connect();
         });
     }
 
@@ -156,18 +177,8 @@ class register extends provider
      */
     protected function viewCompiler()
     {
-        $this->singleton('view.compiler', function ($oProject) {
-            $arrOption = [];
-            foreach ([
-                'cache_children',
-                'var_identify',
-                'notallows_func',
-                'notallows_func_js'
-            ] as $strOption) {
-                $arrOption[$strOption] = $oProject['option']->get('view\\' . $strOption);
-            }
-
-            return new compiler($arrOption);
+        $this->singleton('view.compiler', function ($project) {
+            return new compiler();
         });
     }
 
@@ -178,10 +189,24 @@ class register extends provider
      */
     protected function viewParser()
     {
-        $this->singleton('view.parser', function ($oProject) {
-            return (new parser($oProject['view.compiler'], [
-                'tag_note' => $oProject['option']->get('view\\tag_note')
-            ]))->registerCompilers()->registerParsers();
+        $this->singleton('view.parser', function ($project) {
+            return (new parser($project['view.compiler']))->registerCompilers()->registerParsers();
+        });
+    }
+
+    /**
+     * 注册 view.twig.parser 服务
+     *
+     * @return void
+     */
+    protected function viewTwigParser()
+    {
+        $this->singleton('view.twig.parser', function ($project) {
+            return new Twig_Environment(new Twig_Loader_Filesystem(), [
+                'auto_reload' => true,
+                'debug' => $project->development(),
+                'cache' => $project->pathApplicationCache('theme') . '/' . $project['app_name']
+            ]);
         });
     }
 }

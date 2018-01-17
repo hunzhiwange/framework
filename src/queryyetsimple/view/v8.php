@@ -40,7 +40,7 @@ class v8 extends aconnect implements iconnect
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'controller_name' => 'index',
         'action_name' => 'index',
         'controlleraction_depr' => '_',
@@ -64,29 +64,34 @@ class v8 extends aconnect implements iconnect
      * 
      * @var \V8Js
      */
-    protected  $objV8js;
+    protected  $v8js;
 
     /**
      * 自定义错误
      * 
      * @var callable
      */
-    protected $calErrorHandler;
+    protected $errorHandler;
 
     /**
      * 构造函数
      *
-     * @param array $arrOption
+     * @param array $option
+     * @see http://php.net/manual/zh/book.v8js.php
      * @return void
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
-        parent::__construct($arrOption);
+        if (! class_exists('V8Js', false)) {
+            throw new RuntimeException('Please install php v8js extension.');
+        }
 
-        $this->objV8js = new V8Js('$');
+        parent::__construct($option);
 
-        foreach(['base', 'ddd', 'html', 'load', 'module'] as $strInit) {
-            $this->{'init' . ucwords($strInit)}();
+        $this->v8js = new V8Js('$');
+
+        foreach(['base', 'ddd', 'html', 'load', 'module'] as $item) {
+            $this->{'init' . ucwords($item)}();
         }
     }
 
@@ -95,55 +100,60 @@ class v8 extends aconnect implements iconnect
      *
      * @return \V8js
      */
-    public function getV8js(array $arrOption = [])
+    public function getV8js(array $option = [])
     {
-        return $this->objV8js;
+        return $this->v8js;
     }
 
     /**
      * 加载视图文件
      *
-     * @param string $sFile 视图文件地址
-     * @param boolean $bDisplay 是否显示
-     * @param string $strExt 后缀
+     * @param string $file 视图文件地址
+     * @param array $vars
+     * @param string $ext 后缀
+     * @param boolean $display 是否显示
      * @return string
      */
-    public function display(string $sFile = null, bool $bDisplay = true, string $strExt = '')
+    public function display(string $file = null, array $vars = [], string $ext = '', bool $display = true)
     {
         // 加载视图文件
-        $sFile = $this->parseDisplayFile($sFile, $strExt);
+        $file = $this->parseDisplayFile($file, $ext);
 
         // 传递变量
-        foreach($this->arrVar as $strKey => $mixValue) {
-            $this->objV8js->$strKey = $mixValue;
+        if ($vars) {
+            $this->setVar($vars);
         }
 
-        $strSource = file_get_contents($sFile);
+        foreach($this->vars as $key => $value) {
+            $this->v8js->$key = $value;
+        }
+
+        $source = file_get_contents($file);
 
         // 返回类型
-        if ($bDisplay === false) {
-            return $this->select($strSource);
+        if ($display === false) {
+            return $this->select($source);
         } else {
-            $this->execute($strSource);
+            $this->execute($source);
         }
     }
     
     /**
      * 执行 js 并返回输入文本
      *
-     * @param string $strJs
+     * @param string $js
      * @return string
      */
-    public function select(string $strJs) {
+    public function select(string $js) {
         try {
             ob_start();
-            $this->objV8js->executeString($strJs);
+            $this->v8js->executeString($js);
             return ob_get_clean();
-        } catch (V8JsException $oE) {
-            if ($this->calErrorHandler) {
-                call_user_func($this->calErrorHandler, $oE);
+        } catch (V8JsException $e) {
+            if ($this->errorHandler) {
+                call_user_func($this->errorHandler, $e);
             } else {
-                throw $oE;
+                throw $e;
             }
         }
     }
@@ -151,17 +161,17 @@ class v8 extends aconnect implements iconnect
     /**
      * 执行 js
      *
-     * @param string $strJs
+     * @param string $js
      * @return mixed
      */
-    public function execute(string $strJs) {
+    public function execute(string $js) {
         try {
-            return $this->objV8js->executeString($strJs);
-        } catch (V8JsException $oE) {
-            if ($this->calErrorHandler) {
-                call_user_func($this->calErrorHandler, $oE);
+            return $this->v8js->executeString($js);
+        } catch (V8JsException $e) {
+            if ($this->errorHandler) {
+                call_user_func($this->errorHandler, $e);
             } else {
-                throw $oE;
+                throw $e;
             }
         }  
     }
@@ -169,11 +179,11 @@ class v8 extends aconnect implements iconnect
     /**
      * 自定义异常
      *
-     * @param callable $calErrorHandler
+     * @param callable $errorHandler
      * @return $this
      */
-    public function setErrorHandler(callable $calErrorHandler) {
-        $this->calErrorHandler = $calErrorHandler;
+    public function setErrorHandler(callable $errorHandler) {
+        $this->errorHandler = $errorHandler;
         return $this;
     }
 
@@ -183,7 +193,7 @@ class v8 extends aconnect implements iconnect
      * @return void
      */
     protected function initBase() {
-        $strConsole = <<<'EOT'
+        $console = <<<'EOT'
 /*!
  * console.js v0.2.0 (https://github.com/yanhaijing/console.js)
  * Copyright 2013 yanhaijing. All Rights Reserved
@@ -214,9 +224,9 @@ class v8 extends aconnect implements iconnect
     g.console = console;
 }(this));
 EOT;
-        $this->execute($strConsole);
+        $this->execute($console);
 
-        unset($strConsole);  
+        unset($console);  
     }
 
     /**
@@ -226,8 +236,8 @@ EOT;
      */
     public function initDdd()
     {
-        $this->objV8js->{'$ddd'} = function($strMessage) {
-            ddd($strMessage);
+        $this->v8js->{'$ddd'} = function($message) {
+            ddd($message);
         };
 
         $this->execute('this.ddd = this.$ddd = $.$ddd;');   
@@ -240,9 +250,9 @@ EOT;
      */
     public function initHtml()
     {
-        $this->objV8js->{'$html'} = function($strPath, $strExt = '.html') {
-            $sFile = $this->parseDisplayFile($strPath, $strExt);
-            return file_get_contents($sFile);
+        $this->v8js->{'$html'} = function($path, $ext = '.html') {
+            $file = $this->parseDisplayFile($path, $ext);
+            return file_get_contents($file);
         };
 
         $this->execute('this.html = this.$html = $.$html;');   
@@ -255,14 +265,14 @@ EOT;
      */
     public function initLoad()
     {
-        $this->objV8js->{'$load'} = function($strPackage) {
-            $strPackage .= 'Package';
+        $this->v8js->{'$load'} = function($package) {
+            $package .= 'Package';
 
-            if (! method_exists($this, $strPackage)) {
+            if (! method_exists($this, $package)) {
                 throw new RuntimeException('Package is not preset, we just support vue and art.');
             }
 
-            $this->$strPackage();
+            $this->$package();
         };
 
         $this->execute('this.load = this.$load = $.$load;');   
@@ -275,18 +285,18 @@ EOT;
      */
     public function initModule()
     {
-        $this->objV8js->setModuleNormaliser(function($strBase, $strModule) {
+        $this->v8js->setModuleNormaliser(function($base, $module) {
             try {
-                $strModule = $this->parseDisplayFile($strModule);
-            } catch (Exception $oE) {
-                $strModule = $this->parseDisplayFile($strModule.'/index');
+                $module = $this->parseDisplayFile($module);
+            } catch (Exception $e) {
+                $module = $this->parseDisplayFile($module.'/index');
             }
             
-            return ['', $strModule];
+            return ['', $module];
         });
 
-        $this->objV8js->setModuleLoader(function($strModule) {
-            return file_get_contents($strModule);
+        $this->v8js->setModuleLoader(function($module) {
+            return file_get_contents($module);
         });
     }
 
@@ -296,22 +306,22 @@ EOT;
      * @return void
      */
     protected function vuePackage() {
-        $strVue = $this->getOption('vue_path');
-        $strRenderer = $this->getOption('vue_renderer');
+        $vue = $this->getOption('vue_path');
+        $renderer = $this->getOption('vue_renderer');
 
-        if (! is_file($strVue)) {
-            throw new RuntimeException(sprintf('Vue path %s is not exits, please use npm install.', $strVue));
+        if (! is_file($vue)) {
+            throw new RuntimeException(sprintf('Vue path %s is not exits, please use npm install.', $vue));
         }
 
-        if (! is_file($strRenderer)) {
-            throw new RuntimeException(sprintf('Vue renderer %s is not exits, please use npm install.', $strRenderer));
+        if (! is_file($renderer)) {
+            throw new RuntimeException(sprintf('Vue renderer %s is not exits, please use npm install.', $renderer));
         }
 
         $this->execute('delete this.window; this.global = { process: { env: { VUE_ENV: "server", NODE_ENV: "production" } } };');
 
-        $this->execute(file_get_contents($strVue));
+        $this->execute(file_get_contents($vue));
 
-        $this->execute(file_get_contents($strRenderer));
+        $this->execute(file_get_contents($renderer));
     }
 
     /**
@@ -320,14 +330,14 @@ EOT;
      * @return void
      */
     protected function artPackage() {
-        $strArt = $this->getOption('art_path');
+        $art = $this->getOption('art_path');
 
-        if (! is_file($strArt)) {
-            throw new RuntimeException(sprintf('Art path %s is not exits, please use npm install.', $strArt));
+        if (! is_file($art)) {
+            throw new RuntimeException(sprintf('Art path %s is not exits, please use npm install.', $art));
         }
 
         $this->execute('this.window = null;');
-        $this->execute(file_get_contents($strArt));
+        $this->execute(file_get_contents($art));
         $this->execute('delete this.window;');
     }
 }

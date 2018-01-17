@@ -150,7 +150,7 @@ abstract class aconnect
         $tpl = trim(str_replace('->', '.', $tpl));
 
         // 完整路径或者变量
-        if (pathinfo($tpl, PATHINFO_EXTENSION) || strpos($tpl, '$') === 0 ||　strpos($tpl, '(') !== false) {
+        if (pathinfo($tpl, PATHINFO_EXTENSION) || strpos($tpl, '$') === 0 || strpos($tpl, '(') !== false) {
             return $this->formatFile($tpl);
         } else {
             if (! $this->getOption('theme_path')) {
@@ -173,7 +173,7 @@ abstract class aconnect
                 '+',
                 ':'
             ], $this->getOption('controlleraction_depr'), $tpl);
-            
+
             return dirname($this->getOption('theme_path')) . '/' . ($theme ?? $this->getOption('theme_name')) . '/' . $tpl . ($ext ?: $this->getOption('suffix'));
         }
     }

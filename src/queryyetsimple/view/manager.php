@@ -74,6 +74,26 @@ class manager extends support_manager
     }
 
     /**
+     * 创建 twig 模板驱动
+     *
+     * @param array $options
+     * @return \queryyetsimple\view\twig
+     */
+    protected function makeConnectTwig($options = [])
+    {
+        $options = $this->getOption('twig', $options);
+        $options = array_merge($options, $this->viewOptionCommon());
+
+        $container = $this->container;
+        
+        twig::setParseResolver(function () use ($container) {
+            return $container['view.twig.parser'];
+        });
+
+        return new twig($options);
+    }
+
+    /**
      * 创建 phpui 模板驱动
      *
      * @param array $options

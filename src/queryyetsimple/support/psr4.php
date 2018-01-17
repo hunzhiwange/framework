@@ -41,13 +41,6 @@ class psr4 implements ipsr4
     protected $objComposer;
 
     /**
-     * 沙盒缓存路径
-     *
-     * @var string
-     */
-    protected $strSandboxCacheDir;
-
-    /**
      * 沙盒路径
      *
      * @var string
@@ -72,15 +65,13 @@ class psr4 implements ipsr4
      * 设置 composer
      *
      * @param \Composer\Autoload\ClassLoader $objComposer
-     * @param string $strSandboxCacheDir
      * @param string $strSandboxPath
      * @param string $strShortNamespace
      * @return void
      */
-    public function __construct(ClassLoader $objComposer, $strSandboxCacheDir, $strSandboxPath, $strShortNamespace)
+    public function __construct(ClassLoader $objComposer, $strSandboxPath, $strShortNamespace)
     {
         $this->objComposer = $objComposer;
-        $this->strSandboxCacheDir = $strSandboxCacheDir;
         $this->strSandboxPath = $strSandboxPath;
         $this->strShortNamespace = $strShortNamespace;
     }

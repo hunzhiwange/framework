@@ -4,6 +4,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
 [alias]
 
+    aop = subtree push --prefix=src/queryyetsimple/aop git@github.com:queryyetsimple/aop.git master
+
     auth = subtree push --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
 
     cache = subtree push --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
@@ -53,6 +55,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     validate = subtree push --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
 
     view = subtree push --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
+
+    aopp = subtree pull --prefix=src/queryyetsimple/aop git@github.com:queryyetsimple/aop.git master
 
     authp = subtree pull --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
 

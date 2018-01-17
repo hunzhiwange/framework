@@ -19,16 +19,32 @@
  */
 namespace queryyetsimple\view;
 
+use RuntimeException;
+
 /**
- * phpui 模板处理类
+ * twig 模板处理类
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.11.21
+ * @since 2018.01.15
  * @version 1.0
  */
-class phpui extends aconnect implements iconnect
+class twig extends aconnect implements iconnect
 {
+
+    /**
+     * 视图分析器
+     *
+     * @var \queryyetsimple\view\iparser
+     */
+    protected $parser;
+
+    /**
+     * 解析 parse
+     *
+     * @var callable
+     */
+    protected static $parseResolver;
 
     /**
      * 配置
@@ -36,13 +52,14 @@ class phpui extends aconnect implements iconnect
      * @var array
      */
     protected $option = [
+        'development' => false,
         'controller_name' => 'index',
         'action_name' => 'index',
         'controlleraction_depr' => '_',
         'theme_name' => 'default',
         'theme_path' => '',
         'theme_path_default' => '',
-        'suffix' => '.php'
+        'suffix' => '.twig'
     ];
 
     /**
@@ -50,8 +67,8 @@ class phpui extends aconnect implements iconnect
      *
      * @param string $file 视图文件地址
      * @param array $vars
-     * @param string $ext 后缀
      * @param boolean $display 是否显示
+     * @param string $ext 后缀
      * @return string
      */
     public function display(string $file = null, array $vars = [], string $ext = '', bool $display = true)
@@ -64,15 +81,67 @@ class phpui extends aconnect implements iconnect
             $this->setVar($vars);
         }
 
-        if (is_array($this->vars) && ! empty($this->vars)) {
-            extract($this->vars, EXTR_PREFIX_SAME, 'q_');
-        }
-
         // 返回类型
         if ($display === false) {
-            return include $file;
+            return $this->renderFile($file);
         } else {
-            include $file;
+            echo $this->renderFile($file);
         }
+    }
+
+    /**
+     * 设置 parse 解析回调
+     *
+     * @param callable $parseResolver
+     * @return void
+     */
+    public static function setParseResolver(callable $parseResolver)
+    {
+        static::$parseResolver = $parseResolver;
+    }
+
+    /**
+     * 解析 parse
+     *
+     * @return \queryyetsimple\view\iparser
+     */
+    public function resolverParser()
+    {
+        if (! static::$parseResolver) {
+            throw new RuntimeException('Twig theme not set parse resolver');
+        }
+        return call_user_func(static::$parseResolver);
+    }
+
+    /**
+     * 获取分析器
+     *
+     * @return \queryyetsimple\view\iparser
+     */
+    public function parser()
+    {
+        if (! is_null($this->parser)) {
+            return $this->parser;
+        }
+        return $this->parser = $this->resolverParser();
+    }
+
+    /**
+     * 渲染模板
+     *
+     * @param string $file
+     * @return string
+     */
+    protected function renderFile(string $file)
+    {
+        $this->parser();
+
+        $loader = $this->parser->getLoader();
+        $loader->setPaths(dirname($file));
+        $this->parser->setLoader($loader);
+
+        $template = $this->parser->load(basename($file));
+
+        return $template->render($this->vars);
     }
 }

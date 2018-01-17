@@ -33,11 +33,12 @@ interface iconnect
      * 加载视图文件
      *
      * @param string $file 视图文件地址
-     * @param boolean $display 是否显示
+     * @param array $vars
      * @param string $ext 后缀
+     * @param boolean $display 是否显示
      * @return string
      */
-    public function display(string $file = null, bool $display = true, string $ext = '');
+    public function display(string $file = null, array $vars = [], string $ext = '', bool $display = true);
 
     /**
      * 设置模板变量

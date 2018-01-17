@@ -290,7 +290,8 @@ class project extends container implements iproject
             'i18n',
             'router',
             'console',
-            'swoole'
+            'swoole',
+            'aop'
         ];
         if (! in_array($strType, $arrType)) {
             throw new Exception(sprintf('Application cache type %s not support', $strType));
@@ -446,8 +447,16 @@ class project extends container implements iproject
      */
     protected function registerPsr4(ClassLoader $objComposer)
     {
-        $this->instance('psr4', new psr4($objComposer, $this->psr4SandboxCacheDir(), dirname(__DIR__) . '/bootstrap/sandbox', 'qys'));
+        $this->instance('psr4', new psr4($objComposer, dirname(__DIR__) . '/bootstrap/sandbox', 'qys'));
         $this->alias('psr4', psr4::class);
+
+        // 优先载入 aop autoload，恢复 composer autoload
+        $objComposer->unregister();
+        spl_autoload_register(array($this, 'loadAopClass'));
+        $objComposer->register();
+
+        $this->registerAop();
+        $this->doMakeAop();
 
         $this->instance('composer', $objComposer);
         $this->alias('composer', ClassLoader::class);
@@ -458,7 +467,63 @@ class project extends container implements iproject
             $this['psr4'],
             'autoload'
         ]);
+
         return $this;
+    }
+
+    protected $aops = [];
+
+    CONST AOP_DEFORE = 1;
+    CONST AOP_AFTER = 2;
+
+    public function registerAop() {
+        //aop_add_before('testClass1->testBeforAdd1()', $testpoint12);
+        $this->aops = [
+            'home\app\controller\hello' => [
+                'testBeforAdd1' => [
+                    self::AOP_DEFORE => function() {
+                        echo 'before call';
+                    }
+                ]
+            ]
+        ];
+    }
+
+    public function getAops() {
+        return $this->aops;
+    }
+
+    protected function doMakeAop() {
+        $aop = new \queryyetsimple\support\aop($this);
+        foreach ($this->aops as $aopclass => $methods) {
+            //echo $aopclass;
+           //echo $this['psr4']->file($aopclass);;
+           $file = $this['psr4']->file($aopclass);
+           $aop->parse($aopclass,$file,$methods);
+        }
+    }
+
+    public function loadAopClass($class) {
+        //require_once $this['psr4']->file('queryyetsimple\support\aop');
+        // $aop = new \queryyetsimple\support\aop();
+        // //echo $class;
+        // //echo '<br/>';
+        if(isset($this->aops[$class])) {
+           // echo $class;
+            $file = $this->pathApplicationCache('aop') . '/' . str_replace('\\', '/', $class) . '.php';
+            var_dump(is_file($file));
+            include $file;
+            //$file = ;
+            //echo $file;
+            //$file = $this['psr4']->file($class);
+
+           // $aop->parse($file);
+
+           // echo $class;
+            //foreach() {
+
+           // }
+        }
     }
 
     /**
@@ -695,16 +760,6 @@ class project extends container implements iproject
     protected function defferProviderCachePath()
     {
         return $this->pathRuntime() . '/provider/deffer.php';
-    }
-
-    /**
-     * 返回 prs4 沙盒缓存路径
-     *
-     * @return string
-     */
-    protected function psr4SandboxCacheDir()
-    {
-        return $this->pathRuntime() . '/sandbox';
     }
 
     /**

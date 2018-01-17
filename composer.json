@@ -14,8 +14,8 @@
     }],
     "require": {
         "php": ">=7.1.0",
-        "ext-mbstring": "*",
-        "ext-openssl": "*",
+        //"ext-mbstring": "*",
+        //"ext-openssl": "*",
         "symfony/console": "3.0.*",
         "symfony/var-dumper": "2.8.*|3.0.*",
         "predis/predis": "^1.1",
@@ -27,6 +27,7 @@
         "monolog/monolog": "^1.23"
     },
     "replace": {
+        "queryyetsimple/aop": "self.version",
         "queryyetsimple/auth": "self.version",
         "queryyetsimple/cache": "self.version",
         "queryyetsimple/console": "self.version",

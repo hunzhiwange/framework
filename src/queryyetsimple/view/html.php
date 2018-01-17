@@ -37,21 +37,21 @@ class html extends aconnect implements iconnect
      *
      * @var \queryyetsimple\view\iparser
      */
-    protected $objParse;
+    protected $parser;
 
     /**
      * 解析 parse
      *
      * @var callable
      */
-    protected static $calParseResolver;
+    protected static $parseResolver;
 
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'development' => false,
         'controller_name' => 'index',
         'action_name' => 'index',
@@ -61,55 +61,60 @@ class html extends aconnect implements iconnect
         'theme_path_default' => '',
         'suffix' => '.html',
         'theme_cache_path' => '',
-        'cache_children' => false
+        'cache_lifetime' => 2592000
     ];
 
     /**
      * 加载视图文件
      *
-     * @param string $sFile 视图文件地址
-     * @param boolean $bDisplay 是否显示
-     * @param string $strExt 后缀
+     * @param string $file 视图文件地址
+     * @param array $vars
+     * @param boolean $display 是否显示
+     * @param string $ext 后缀
      * @return string
      */
-    public function display(string $sFile = null, bool $bDisplay = true, string $strExt = '')
+    public function display(string $file = null, array $vars = [], string $ext = '', bool $display = true)
     {
         // 加载视图文件
-        $sFile = $this->parseDisplayFile($sFile, $strExt);
+        $file = $this->parseDisplayFile($file, $ext);
 
         // 变量赋值
-        if (is_array($this->arrVar) && ! empty($this->arrVar)) {
-            extract($this->arrVar, EXTR_PREFIX_SAME, 'q_');
+        if ($vars) {
+            $this->setVar($vars);
+        }
+        
+        if (is_array($this->vars) && ! empty($this->vars)) {
+            extract($this->vars, EXTR_PREFIX_SAME, 'q_');
         }
 
-        $sCachePath = $this->getCachePath($sFile); // 编译文件路径
-        
-        if ($this->isCacheExpired($sFile, $sCachePath)) { // 重新编译
-            $this->parser()->doCombile($sFile, $sCachePath);
+        $cachepath = $this->getCachePath($file); // 编译文件路径
+
+        if ($this->isCacheExpired($file, $cachepath)) { // 重新编译
+            $this->parser()->doCombile($file, $cachepath);
         }
 
         // 返回类型
-        if ($bDisplay === false) {
+        if ($display === false) {
             ob_start();
-            include $sCachePath;
-            $sReturn = ob_get_contents();
+            include $cachepath;
+            $result = ob_get_contents();
             ob_end_clean();
 
-            return $sReturn;
+            return $result;
         } else {
-            include $sCachePath;
+            include $cachepath;
         }
     }
 
     /**
      * 设置 parse 解析回调
      *
-     * @param callable $calParseResolver
+     * @param callable $parseResolver
      * @return void
      */
-    public static function setParseResolver(callable $calParseResolver)
+    public static function setParseResolver(callable $parseResolver)
     {
-        static::$calParseResolver = $calParseResolver;
+        static::$parseResolver = $parseResolver;
     }
 
     /**
@@ -117,12 +122,12 @@ class html extends aconnect implements iconnect
      *
      * @return \queryyetsimple\view\iparser
      */
-    public function resolverParse()
+    public function resolverParser()
     {
-        if (! static::$calParseResolver) {
-            throw new RuntimeException('Theme not set parse resolver');
+        if (! static::$parseResolver) {
+            throw new RuntimeException('Html theme not set parse resolver');
         }
-        return call_user_func(static::$calParseResolver);
+        return call_user_func(static::$parseResolver);
     }
 
     /**
@@ -132,42 +137,42 @@ class html extends aconnect implements iconnect
      */
     public function parser()
     {
-        if (! is_null($this->objParse)) {
-            return $this->objParse;
+        if (! is_null($this->parser)) {
+            return $this->parser;
         }
-        return $this->objParse = $this->resolverParse();
+        return $this->parser = $this->resolverParser();
     }
 
     /**
      * 获取编译路径
      *
-     * @param string $sFile
+     * @param string $file
      * @return string
      */
-    protected function getCachePath(string $sFile)
+    protected function getCachePath(string $file)
     {
         if (! $this->getOption('theme_cache_path')) {
             throw new RuntimeException('Theme cache path must be set');
         }
 
         // 统一斜线
-        $sFile = str_replace('//', '/', str_replace('\\', '/', $sFile));
+        $file = str_replace('//', '/', str_replace('\\', '/', $file));
 
         // 统一缓存文件
-        $sFile = basename($sFile, '.' . pathinfo($sFile, PATHINFO_EXTENSION)) . '.' . md5($sFile) . '.php';
+        $file = basename($file, '.' . pathinfo($file, PATHINFO_EXTENSION)) . '.' . md5($file) . '.php';
 
         // 返回真实路径
-        return $this->getOption('theme_cache_path') . '/' . $sFile;
+        return $this->getOption('theme_cache_path') . '/' . $file;
     }
 
     /**
      * 判断缓存是否过期
      *
-     * @param string $sFile
-     * @param string $sCachePath
+     * @param string $file
+     * @param string $cachepath
      * @return boolean
      */
-    protected function isCacheExpired(string $sFile, string $sCachePath)
+    protected function isCacheExpired(string $file, string $cachepath)
     {
         // 开启调试
         if ($this->getOption('development')) {
@@ -175,7 +180,7 @@ class html extends aconnect implements iconnect
         }
 
         // 缓存文件不存在过期
-        if (! is_file($sCachePath)) {
+        if (! is_file($cachepath)) {
             return true;
         }
 
@@ -185,12 +190,12 @@ class html extends aconnect implements iconnect
         }
 
         // 缓存时间到期
-        if (filemtime($sCachePath) + intval($this->getOption('cache_lifetime')) < time()) {
+        if (filemtime($cachepath) + intval($this->getOption('cache_lifetime')) < time()) {
             return true;
         }
 
         // 文件有更新
-        if (filemtime($sFile) >= filemtime($sCachePath)) {
+        if (filemtime($file) >= filemtime($cachepath)) {
             return true;
         }
 

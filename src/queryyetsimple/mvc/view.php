@@ -186,12 +186,13 @@ class view implements iview
      * 加载视图文件
      *
      * @param string $file
+     * @param array $vars
      * @param array $option
      * @sub string charset 编码
      * @sub string content_type 内容类型
      * @return string
      */
-    public function display($file = null, array $option = null)
+    public function display($file = null, array $vars = [], array $option = null)
     {
         $this->checkTheme();
 
@@ -202,7 +203,7 @@ class view implements iview
 
         $this->responseHeader($option['content_type'], $option['charset']);
 
-        $result = $this->theme->display($file, false);
+        $result = $this->theme->display($file, $vars, $option['ext'] ?? '', false);
 
         if ($this->foreverSwitch === false) {
             $this->theme = $this->backupTheme;

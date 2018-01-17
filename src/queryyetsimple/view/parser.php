@@ -23,8 +23,7 @@ use InvalidArgumentException;
 use queryyetsimple\{
     support\stack,
     support\helper,
-    filesystem\fso,
-    support\option
+    filesystem\fso
 };
 
 /**
@@ -38,7 +37,6 @@ use queryyetsimple\{
  */
 class parser implements iparser
 {
-    use option;
 
     /**
      * 编译器
@@ -85,41 +83,31 @@ class parser implements iparser
         // 全局
         'global' => [
             'left' => '[<\{]',
-            'right' => '[\}>]',
-            'left_node' => '(?:<\!--<|<\!--\{)',
-            'right_node' => '(?:\}-->|>-->)'
+            'right' => '[\}>]'
         ],
 
         // js代码
         'js' => [
-            'left' => '{{',
-            'right' => '}}',
-            'left_node' => '<!--{{',
-            'right_node' => '}}-->'
+            'left' => '{%',
+            'right' => '%}'
         ],
 
         // js 变量代码
         'jsvar' => [
             'left' => '{{',
-            'right' => '}}',
-            'left_node' => '<!--{{',
-            'right_node' => '}}-->'
+            'right' => '}}'
         ],
 
         // 代码
         'code' => [
             'left' => '{',
-            'right' => '}',
-            'left_node' => '<!--{',
-            'right_node' => '}-->'
+            'right' => '}'
         ],
 
         // 节点
         'node' => [
             'left' => '<',
-            'right' => '>',
-            'left_node' => '<\!--<',
-            'right_node' => '>-->'
+            'right' => '>'
         ],
 
         // 反向
@@ -164,25 +152,14 @@ class parser implements iparser
     protected $stringCachePath;
 
     /**
-     * 配置
-     *
-     * @var array
-     */
-    protected $arrOption = [
-        'tag_note' => false
-    ];
-
-    /**
      * 构造函数
      *
-     * @param \queryyetsimple\view\icompiler $objParse
-     * @param array $arrOption
+     * @param \queryyetsimple\view\icompiler $objCompiler
      * @return void
      */
-    public function __construct(icompiler $objCompiler, array $arrOption = [])
+    public function __construct(icompiler $objCompiler)
     {
         $this->objCompiler = $objCompiler;
-        $this->options($arrOption);
     }
 
     /**
@@ -247,7 +224,6 @@ class parser implements iparser
             // 分析模板生成模板树
             $sParser = $sParser . 'Parse';
             $this->{$sParser}($sCache); // 分析
-
 
             // 编译模板树
             $sCache = $this->compileThemeTree();
@@ -750,7 +726,7 @@ class parser implements iparser
      */
     protected function getTag($sType)
     {
-        return $this->arrTag[$sType . ($this->getOption('tag_note') ? '_node' : '')];
+        return $this->arrTag[$sType];
     }
 
     /**

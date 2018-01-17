@@ -170,15 +170,16 @@ abstract class action implements iaction
      * 加载视图文件
      *
      * @param string $file
+     * @param array $vars
      * @param array $option
      * @sub string charset 编码
      * @sub string content_type 类型
      * @return string
      */
-    public function display($file = null, array $option = null)
+    public function display($file = null, array $vars = [], array $option = null)
     {
         $this->checkController();
-        return $this->controller->display($file, $option);
+        return $this->controller->display($file, $vars, $option);
     }
 
     /**
