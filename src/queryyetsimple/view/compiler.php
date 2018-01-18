@@ -1012,7 +1012,7 @@ class compiler implements icompiler
         $sStr = str_replace(':', '->', $sStr);
         $sStr = str_replace('+', '::', $sStr);
 
-        return $sType . "if ( {$sStr} ) ";
+        return $sType . "if({$sStr})";
     }
 
     /**
@@ -1092,51 +1092,6 @@ class compiler implements icompiler
             $result[] = $temp;
         }
 
-        // 复合逻辑
-        $logic = [
-            ' band ',
-            ' bxor ',
-            ' bor ',
-            ' bnot ',
-            ' bleft ',
-            ' bright ',
-            ' and ',
-            ' or ',
-            ' not ',
-            ' dot ',
-            ' nheq ',
-            ' heq ',
-            ' neq ',
-            ' eq ',
-            ' egt ',
-            ' gt ',
-            ' elt ',
-            ' lt ' 
-        ];
-
-        $replace = [
-            ' & ',
-            ' ^ ',
-            ' | ',
-            ' ~ ',
-            ' << ',
-            ' >> ',
-            ' && ',
-            ' || ',
-            ' != ',
-            '->',
-            ' !== ',
-            ' === ',
-            ' != ',
-            ' == ',
-            ' >= ',
-            ' > ',
-            ' <= ',
-            ' < '
-        ];
-
-        //$content = str_replace($logic, $replace, implode('',$result));
-        
         $content = implode('',$result);
 
         // 还原函数去掉开头的美元符号
@@ -1404,6 +1359,16 @@ class compiler implements icompiler
         $sTxt = helper::escapeCharacter($sTxt, $bEsc);
         if (! $bEsc) {
             $sTxt = str_replace([
+                ' band ',
+                ' bxor ',
+                ' bor ',
+                ' bnot ',
+                ' bleft ',
+                ' bright ',
+                ' and ',
+                ' or ',
+                ' not ',
+                ' dot ',
                 ' nheq ',
                 ' heq ',
                 ' neq ',
@@ -1411,18 +1376,29 @@ class compiler implements icompiler
                 ' egt ',
                 ' gt ',
                 ' elt ',
-                ' lt '
+                ' lt ' 
             ], [
-                '!==',
-                '===',
-                '!=',
-                '==',
-                '>=',
-                '>',
-                '<=',
-                '<'
+                ' & ',
+                ' ^ ',
+                ' | ',
+                ' ~ ',
+                ' << ',
+                ' >> ',
+                ' && ',
+                ' || ',
+                ' != ',
+                '->',
+                ' !== ',
+                ' === ',
+                ' != ',
+                ' == ',
+                ' >= ',
+                ' > ',
+                ' <= ',
+                ' < '
             ], $sTxt);
         }
+
         return $sTxt;
     }
 
