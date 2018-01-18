@@ -59,6 +59,21 @@ if (! function_exists('app')) {
     }
 }
 
+function aop_before($pointcut, $advice) {
+    $aop = \queryyetsimple\aop\aop::singleton();
+    $aop->before($pointcut, $advice);
+}
+
+function aop_after($pointcut, $advice) {
+    $aop = \queryyetsimple\aop\aop::singleton();
+    $aop->after($pointcut, $advice);
+}
+
+function aop_around($pointcut, $advice) {
+    $aop = \queryyetsimple\aop\aop::singleton();
+    $aop->around($pointcut, $advice);
+}
+
 if (! function_exists('api')) {
     /**
      * 是否为 API

@@ -86,13 +86,13 @@ class parser implements iparser
             'right' => '[\}>]'
         ],
 
-        // js风格 代码
+        // js 风格代码
         'js' => [
             'left' => '{%',
             'right' => '%}'
         ],
 
-        // js风格 变量代码
+        // js 风格变量代码
         'jsvar' => [
             'left' => '{{',
             'right' => '}}'
