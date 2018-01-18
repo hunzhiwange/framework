@@ -53,7 +53,7 @@ class parser implements iparser
     protected $oNodeStack;
 
     /**
-     * js 和 node 共用分析器
+     * js 风格 和 node 共用分析器
      *
      * @var boolean
      */
@@ -86,13 +86,13 @@ class parser implements iparser
             'right' => '[\}>]'
         ],
 
-        // js代码
+        // js风格 代码
         'js' => [
             'left' => '{%',
             'right' => '%}'
         ],
 
-        // js 变量代码
+        // js风格 变量代码
         'jsvar' => [
             'left' => '{{',
             'right' => '}}'
@@ -294,7 +294,7 @@ class parser implements iparser
     }
 
     /**
-     * javascript 变量分析器
+     * js 风格 变量分析器
      *
      * @param string $sCompiled
      * @return void
@@ -344,7 +344,7 @@ class parser implements iparser
         // 正则分析
         $arrTag = $this->getTag('code');
         $sNames = implode('|', $arrNames);
-        $sRegexp = "/" . $arrTag['left'] . "({$sNames})(|.+?)" . $arrTag['right'] . "/s";
+        $sRegexp = "/" . $arrTag['left'] . "\s*({$sNames})(|.+?)" . $arrTag['right'] . "/s";
         $arrRes = []; // 分析
         if (preg_match_all($sRegexp, $sCompiled, $arrRes)) {
             $nStartPos = 0;
@@ -368,7 +368,7 @@ class parser implements iparser
     }
 
     /**
-     * javascript 分析器 与 node 公用分析器
+     * js 风格分析器 与 node 公用分析器
      *
      * @param string $sCompiled
      * @return void
@@ -476,12 +476,12 @@ class parser implements iparser
         // 正则分析
         $arrTag = $this->getTag($sNodeType);
         $sNames = implode('|', $arrNames);
-        $sRegexp = "/{$arrTag['left']}(\/?)(({$sNames})(:[^\s" . ($this->bJsNode === true ? '' : "\>") . "\}]+)?)(\s[^" . ($this->bJsNode === true ? '' : ">") . "\}]*?)?\/?{$arrTag['right']}/isx";
+        $sRegexp = "/{$arrTag['left']}\s*(\/?)(({$sNames})(:[^\s" . ($this->bJsNode === true ? '' : "\>") . "\}]+)?)(\s[^" . ($this->bJsNode === true ? '' : ">") . "\}]*?)?\/?{$arrTag['right']}/isx";
+
         $nNodeNameIdx = 2; // 标签名称位置
         $nNodeTopNameIdx = 3; // 标签顶级名称位置
         $nTailSlasheIdx = 1; // 尾标签斜线位置
         $nTagAttributeIdx = 5; // 标签属性位置
-
 
         if ($this->bJsNode === true) {
             $arrCompiler = $this->arrCompilers['js'];
