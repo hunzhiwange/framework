@@ -1,0 +1,30 @@
+{
+    "name": "queryyetsimple/option",
+    "description": "The Queryyetsimple Option package.",
+    "license": "MIT",
+    "homepage": "http://queryphp.com",
+    "support": {
+        "issues": "https://github.com/hunzhiwange/framework/issues",
+        "source": "https://github.com/hunzhiwange/framework"
+    },
+    "authors": [{
+        "name": "Xiangmin Liu",
+        "email": "635750556@qq.com"
+    }],
+    "require": {
+        "php": ">=7.1.0",
+        "queryyetsimple/support": "1.0.*",
+        "queryyetsimple/filesystem": "1.0.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "queryyetsimple\\option\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "minimum-stability": "dev"
+}
