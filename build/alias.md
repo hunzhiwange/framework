@@ -4,106 +4,106 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
 [alias]
 
-    aop = subtree push --prefix=src/queryyetsimple/aop git@github.com:queryyetsimple/aop.git master
+    aop = subtree push --prefix=src/Queryyetsimple/Aop git@github.com:queryyetsimple/aop.git master
 
-    auth = subtree push --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
+    auth = subtree push --prefix=src/Queryyetsimple/Auth git@github.com:queryyetsimple/auth.git master
 
-    cache = subtree push --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
+    cache = subtree push --prefix=src/Queryyetsimple/Cache git@github.com:queryyetsimple/cache.git master
 
-    console = subtree push --prefix=src/queryyetsimple/console git@github.com:queryyetsimple/console.git master
+    console = subtree push --prefix=src/Queryyetsimple/Console git@github.com:queryyetsimple/console.git master
 
-    cookie = subtree push --prefix=src/queryyetsimple/cookie git@github.com:queryyetsimple/cookie.git master
+    cookie = subtree push --prefix=src/Queryyetsimple/Cookie git@github.com:queryyetsimple/cookie.git master
 
-    database = subtree push --prefix=src/queryyetsimple/database git@github.com:queryyetsimple/database.git master
+    database = subtree push --prefix=src/Queryyetsimple/Database git@github.com:queryyetsimple/database.git master
 
-    encryption = subtree push --prefix=src/queryyetsimple/encryption git@github.com:queryyetsimple/encryption.git master
+    encryption = subtree push --prefix=src/Queryyetsimple/Encryption git@github.com:queryyetsimple/encryption.git master
 
-    event = subtree push --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
+    event = subtree push --prefix=src/Queryyetsimple/Event git@github.com:queryyetsimple/event.git master
 
-    filesystem = subtree push --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
+    filesystem = subtree push --prefix=src/Queryyetsimple/Filesystem git@github.com:queryyetsimple/filesystem.git master
 
-    http = subtree push --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
+    http = subtree push --prefix=src/Queryyetsimple/Http git@github.com:queryyetsimple/http.git master
 
-    i18n = subtree push --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
+    i18n = subtree push --prefix=src/Queryyetsimple/I18n git@github.com:queryyetsimple/i18n.git master
 
-    logs = subtree push --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
+    logs = subtree push --prefix=src/Queryyetsimple/Log git@github.com:queryyetsimple/log.git master
 
-    mail = subtree push --prefix=src/queryyetsimple/mail git@github.com:queryyetsimple/mail.git master
+    mail = subtree push --prefix=src/Queryyetsimple/Mail git@github.com:queryyetsimple/mail.git master
 
-    mvc = subtree push --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mvc.git master
+    mvc = subtree push --prefix=src/Queryyetsimple/Mvc git@github.com:queryyetsimple/mvc.git master
 
-    option = subtree push --prefix=src/queryyetsimple/option git@github.com:queryyetsimple/option.git master
+    option = subtree push --prefix=src/Queryyetsimple/Option git@github.com:queryyetsimple/option.git master
 
-    page = subtree push --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
+    page = subtree push --prefix=src/Queryyetsimple/Page git@github.com:queryyetsimple/page.git master
 
-    pipeline = subtree push --prefix=src/queryyetsimple/pipeline git@github.com:queryyetsimple/pipeline.git master
+    pipeline = subtree push --prefix=src/Queryyetsimple/Pipeline git@github.com:queryyetsimple/pipeline.git master
 
-    queue = subtree push --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
+    queue = subtree push --prefix=src/Queryyetsimple/Queue git@github.com:queryyetsimple/queue.git master
 
-    router = subtree push --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
+    router = subtree push --prefix=src/Queryyetsimple/Router git@github.com:queryyetsimple/router.git master
 
-    seccode = subtree push --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
+    seccode = subtree push --prefix=src/Queryyetsimple/Seccode git@github.com:queryyetsimple/seccode.git master
 
-    session = subtree push --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
+    session = subtree push --prefix=src/Queryyetsimple/Session git@github.com:queryyetsimple/session.git master
 
-    support = subtree push --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
+    support = subtree push --prefix=src/Queryyetsimple/Support git@github.com:queryyetsimple/support.git master
 
-    swoole = subtree push --prefix=src/queryyetsimple/swoole git@github.com:queryyetsimple/swoole.git master
+    swoole = subtree push --prefix=src/Queryyetsimple/Swoole git@github.com:queryyetsimple/swoole.git master
 
-    throttler = subtree push --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
+    throttler = subtree push --prefix=src/Queryyetsimple/Throttler git@github.com:queryyetsimple/throttler.git master
 
-    validate = subtree push --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
+    validate = subtree push --prefix=src/Queryyetsimple/Validate git@github.com:queryyetsimple/validate.git master
 
-    view = subtree push --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
+    view = subtree push --prefix=src/Queryyetsimple/View git@github.com:queryyetsimple/view.git master
 
-    aopp = subtree pull --prefix=src/queryyetsimple/aop git@github.com:queryyetsimple/aop.git master
+    aopp = subtree pull --prefix=src/Queryyetsimple/Aop git@github.com:queryyetsimple/aop.git master
 
-    authp = subtree pull --prefix=src/queryyetsimple/auth git@github.com:queryyetsimple/auth.git master
+    authp = subtree pull --prefix=src/Queryyetsimple/Auth git@github.com:queryyetsimple/auth.git master
 
-    cachep = subtree pull --prefix=src/queryyetsimple/cache git@github.com:queryyetsimple/cache.git master
+    cachep = subtree pull --prefix=src/Queryyetsimple/Cache git@github.com:queryyetsimple/cache.git master
 
-    consolep = subtree pull --prefix=src/queryyetsimple/console git@github.com:queryyetsimple/console.git master
+    consolep = subtree pull --prefix=src/Queryyetsimple/Console git@github.com:queryyetsimple/console.git master
 
-    cookiep = subtree pull --prefix=src/queryyetsimple/cookie git@github.com:queryyetsimple/cookie.git master
+    cookiep = subtree pull --prefix=src/Queryyetsimple/Cookie git@github.com:queryyetsimple/cookie.git master
 
-    databasep = subtree pull --prefix=src/queryyetsimple/database git@github.com:queryyetsimple/database.git master
+    databasep = subtree pull --prefix=src/Queryyetsimple/Database git@github.com:queryyetsimple/database.git master
 
-    encryptionp = subtree pull --prefix=src/queryyetsimple/encryption git@github.com:queryyetsimple/encryption.git master
+    encryptionp = subtree pull --prefix=src/Queryyetsimple/Encryption git@github.com:queryyetsimple/encryption.git master
 
-    eventp = subtree pull --prefix=src/queryyetsimple/event git@github.com:queryyetsimple/event.git master
+    eventp = subtree pull --prefix=src/Queryyetsimple/Event git@github.com:queryyetsimple/event.git master
 
-    filesystemp = subtree pull --prefix=src/queryyetsimple/filesystem git@github.com:queryyetsimple/filesystem.git master
+    filesystemp = subtree pull --prefix=src/Queryyetsimple/Filesystem git@github.com:queryyetsimple/filesystem.git master
 
-    httpp = subtree pull --prefix=src/queryyetsimple/http git@github.com:queryyetsimple/http.git master
+    httpp = subtree pull --prefix=src/Queryyetsimple/http git@github.com:queryyetsimple/http.git master
 
-    i18np = subtree pull --prefix=src/queryyetsimple/i18n git@github.com:queryyetsimple/i18n.git master
+    i18np = subtree pull --prefix=src/Queryyetsimple/I18n git@github.com:queryyetsimple/i18n.git master
 
-    logsp = subtree pull --prefix=src/queryyetsimple/log git@github.com:queryyetsimple/log.git master
+    logsp = subtree pull --prefix=src/Queryyetsimple/Log git@github.com:queryyetsimple/log.git master
 
-    mailp = subtree pull --prefix=src/queryyetsimple/mail git@github.com:queryyetsimple/mail.git master
+    mailp = subtree pull --prefix=src/Queryyetsimple/Mail git@github.com:queryyetsimple/mail.git master
 
-    mvcp = subtree pull --prefix=src/queryyetsimple/mvc git@github.com:queryyetsimple/mvc.git master
+    mvcp = subtree pull --prefix=src/Queryyetsimple/Mvc git@github.com:queryyetsimple/mvc.git master
 
-    optionp = subtree pull --prefix=src/queryyetsimple/option git@github.com:queryyetsimple/option.git master
+    optionp = subtree pull --prefix=src/Queryyetsimple/Option git@github.com:queryyetsimple/option.git master
 
-    pagep = subtree pull --prefix=src/queryyetsimple/page git@github.com:queryyetsimple/page.git master
+    pagep = subtree pull --prefix=src/Queryyetsimple/Page git@github.com:queryyetsimple/page.git master
 
-    pipelinep = subtree pull --prefix=src/queryyetsimple/pipeline git@github.com:queryyetsimple/pipeline.git master
+    pipelinep = subtree pull --prefix=src/Queryyetsimple/Pipeline git@github.com:queryyetsimple/pipeline.git master
 
-    queuep = subtree pull --prefix=src/queryyetsimple/queue git@github.com:queryyetsimple/queue.git master
+    queuep = subtree pull --prefix=src/Queryyetsimple/Queue git@github.com:queryyetsimple/queue.git master
 
-    routerp = subtree pull --prefix=src/queryyetsimple/router git@github.com:queryyetsimple/router.git master
+    routerp = subtree pull --prefix=src/Queryyetsimple/Router git@github.com:queryyetsimple/router.git master
 
-    seccodep = subtree pull --prefix=src/queryyetsimple/seccode git@github.com:queryyetsimple/seccode.git master
+    seccodep = subtree pull --prefix=src/Queryyetsimple/Seccode git@github.com:queryyetsimple/seccode.git master
 
-    sessionp = subtree pull --prefix=src/queryyetsimple/session git@github.com:queryyetsimple/session.git master
+    sessionp = subtree pull --prefix=src/Queryyetsimple/Session git@github.com:queryyetsimple/session.git master
 
-    supportp = subtree pull --prefix=src/queryyetsimple/support git@github.com:queryyetsimple/support.git master
+    supportp = subtree pull --prefix=src/Queryyetsimple/Support git@github.com:queryyetsimple/support.git master
 
-    swoolep = subtree pull --prefix=src/queryyetsimple/swoole git@github.com:queryyetsimple/swoole.git master
+    swoolep = subtree pull --prefix=src/Queryyetsimple/Swoole git@github.com:queryyetsimple/swoole.git master
 
-    throttlerp = subtree pull --prefix=src/queryyetsimple/throttler git@github.com:queryyetsimple/throttler.git master
+    throttlerp = subtree pull --prefix=src/Queryyetsimple/Throttler git@github.com:queryyetsimple/throttler.git master
     
-    validatep = subtree pull --prefix=src/queryyetsimple/validate git@github.com:queryyetsimple/validate.git master
+    validatep = subtree pull --prefix=src/Queryyetsimple/Validate git@github.com:queryyetsimple/validate.git master
 
-    viewp = subtree pull --prefix=src/queryyetsimple/view git@github.com:queryyetsimple/view.git master
+    viewp = subtree pull --prefix=src/Queryyetsimple/View git@github.com:queryyetsimple/view.git master
