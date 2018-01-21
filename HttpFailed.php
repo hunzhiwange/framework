@@ -17,54 +17,51 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Mvc;
 
-use PHPUnit_Framework_TestCase;
+use Exception;
+use RuntimeException;
 
 /**
- * phpunit 测试用例
+ * HTTP 异常
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.08.10
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class HttpFailed extends RuntimeException
 {
 
     /**
-     * setUpBeforeClass
+     * HTTP 状态
      *
+     * @var int
+     */
+    protected $intStatusCode;
+
+    /**
+     * 构造函数
+     *
+     * @param int $intStatusCode
+     * @param string|null $strMessage
+     * @param integer $intCode
+     * @param \Exception $objPrevious
      * @return void
      */
-    public static function setUpBeforeClass()
+    public function __construct($intStatusCode, $strMessage = null, $intCode = 0, Exception $objPrevious = null)
     {
+        $this->intStatusCode = $intStatusCode;
+        parent::__construct($strMessage, $intCode, $objPrevious);
     }
 
     /**
-     * tearDownAfterClass
+     * HTTP 状态
      *
      * @return void
      */
-    public static function tearDownAfterClass()
+    public function statusCode()
     {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        return $this->intStatusCode;
     }
 }

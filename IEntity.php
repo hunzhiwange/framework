@@ -17,16 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Queryyetsimple\Mvc;
 
 /**
- * phpunit 环境变量设置
+ * 实体基础接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.28
+ * @since 2017.10.14
  * @version 1.0
  */
-putenv('app_name=phpunittests');
-putenv('controller_name=bootstrap');
-putenv('action_name=index');
-putenv('app_bootstrap=' . __DIR__ . '/bootstrap.php');
+interface IEntity
+{
+
+    /**
+     * 唯一标识符
+     *
+     * @return mixed
+     */
+    public function id();
+}

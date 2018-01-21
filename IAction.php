@@ -17,34 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Mvc;
 
 /**
- * phpunit 内部应用程序
+ * IAction 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.04.23
  * @version 1.0
  */
-class application
+interface IAction extends IController
 {
 
     /**
-     * 创建一个 phpunit 应用程序
+     * 设置父控制器
      *
+     * @param \Queryyetsimple\Mvc\IController $controller
      * @return $this
      */
-    public function __construct()
-    {
-    }
-
-    /**
-     * 默认方法
-     *
-     * @return void
-     */
-    public function run()
-    {
-    }
+    public function setController(IController $controller);
 }

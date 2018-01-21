@@ -17,36 +17,33 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Mvc;
+
+use Exception;
 
 /**
- * first 管道组件
+ * 请求过于频繁异常
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.08.10
  * @version 1.0
  */
-class first
+class TooManyRequestsHttp extends HttpFailed
 {
 
     /**
      * 构造函数
      *
+     * @param int $intStatusCode
+     * @param string|null $strMessage
+     * @param \Exception $objPrevious
+     * @param array $arrHeader
+     * @param integer $intCode
      * @return void
      */
-    public function __construct()
+    public function __construct($strMessage = null, $intCode = 0, Exception $objPrevious = null)
     {
-    }
-
-    /**
-     * 响应请求
-     *
-     * @param string $strPassed
-     * @return string
-     */
-    public function handle($strPassed)
-    {
-        return $strPassed . ' Love';
+        parent::__construct(429, $strMessage, $intCode, $objPrevious);
     }
 }

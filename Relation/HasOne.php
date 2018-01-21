@@ -17,37 +17,41 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Mvc\Relation;
+
+use Queryyetsimple\Support\Collection;
 
 /**
- * second 管道组件
+ * 关联模型 HasOne
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.09.28
  * @version 1.0
  */
-class second
+class HasOne extends HasMany
 {
 
     /**
-     * 构造函数
+     * 查询关联对象
      *
-     * @return void
+     * @return mixed
      */
-    public function __construct()
+    public function sourceQuery()
     {
+        return $this->objSelect->getOne();
     }
 
     /**
-     * 响应请求
+     * 匹配关联查询数据到模型
      *
-     * @param string $strPassed
-     * @param string $strFoo
-     * @return string
+     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
+     * @param \queryyetsimple\collection $objResult
+     * @param string $strRelation
+     * @return array
      */
-    public function handle($strPassed, $strFoo)
+    public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
     {
-        return $strPassed . ' ' . ucfirst($strFoo);
+        return $this->matchPreLoadOneOrMany($arrModel, $objResult, $strRelation, 'one');
     }
 }
