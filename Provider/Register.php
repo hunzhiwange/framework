@@ -20,9 +20,9 @@
 namespace Queryyetsimple\Http\Provider;
 
 use Queryyetsimple\{
+    Di\Provider,
     Http\Request,
-    Http\Response,
-    Support\Provider
+    Http\Response
 };
 
 /**
