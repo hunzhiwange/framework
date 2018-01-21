@@ -1,9 +1,8 @@
 {
-    "name": "hunzhiwange/framework",
-    "description": "The QueryPHP Framework.",
-    "keywords": ["framework", "queryphp"],
+    "name": "queryyetsimple/view",
+    "description": "The Queryyetsimple View package.",
     "license": "MIT",
-    "homepage": "http://www.queryphp.com",
+    "homepage": "http://queryphp.com",
     "support": {
         "issues": "https://github.com/hunzhiwange/framework/issues",
         "source": "https://github.com/hunzhiwange/framework"
@@ -14,60 +13,11 @@
     }],
     "require": {
         "php": ">=7.1.0",
-        //"ext-mbstring": "*",
-        //"ext-openssl": "*",
-        "symfony/console": "3.0.*",
-        "symfony/var-dumper": "2.8.*|3.0.*",
-        "predis/predis": "^1.1",
-        "coderkungfu/php-queue": "^0.9.1",
-        "robmorgan/phinx": "^0.8.0",
-        "vlucas/phpdotenv": "~2.2",
-        "nesbot/carbon": "~1.20",
-        "league/flysystem": "^1.0",
-        "monolog/monolog": "^1.23"
-    },
-    "replace": {
-        "queryyetsimple/aop": "self.version",
-        "queryyetsimple/auth": "self.version",
-        "queryyetsimple/cache": "self.version",
-        "queryyetsimple/console": "self.version",
-        "queryyetsimple/cookie": "self.version",
-        "queryyetsimple/database": "self.version",
-        "queryyetsimple/encryption": "self.version",
-        "queryyetsimple/event": "self.version",
-        "queryyetsimple/filesystem": "self.version",
-        "queryyetsimple/http": "self.version",
-        "queryyetsimple/i18n": "self.version",
-        "queryyetsimple/log": "self.version",
-        "queryyetsimple/mail": "self.version",
-        "queryyetsimple/mvc": "self.version",
-        "queryyetsimple/option": "self.version",
-        "queryyetsimple/page": "self.version",
-        "queryyetsimple/pipeline": "self.version",
-        "queryyetsimple/queue": "self.version",
-        "queryyetsimple/router": "self.version",
-        "queryyetsimple/seccode": "self.version",
-        "queryyetsimple/session": "self.version",
-        "queryyetsimple/support": "self.version",
-        "queryyetsimple/swoole": "self.version",
-        "queryyetsimple/throttler": "self.version",
-        "queryyetsimple/validate": "self.version",
-        "queryyetsimple/view": "self.version"
-    },
-    "require-dev": {
-        "fzaninotto/faker": "^1.6",
-        "phpunit/phpunit": "~4.0"
-    },
-    "suggest": {
-        "league/flysystem-sftp": "Sftp adapter support.",
-        "league/flysystem-ziparchive": "ZipArchive adapter support."
+        "queryyetsimple/support": "1.0.*"
     },
     "autoload": {
-        "files": [
-            "src\\queryyetsimple\\bootstrap\\function.php"
-        ],
         "psr-4": {
-            "queryyetsimple\\": "src\\queryyetsimple"
+            "queryyetsimple\\view\\": ""
         }
     },
     "extra": {

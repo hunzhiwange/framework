@@ -17,36 +17,56 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\View;
 
 /**
- * first 管道组件
+ * iparser 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.04.23
  * @version 1.0
  */
-class first
+interface iparser
 {
 
     /**
-     * 构造函数
+     * 注册视图编译器
      *
-     * @return void
+     * @return $this
      */
-    public function __construct()
-    {
-    }
+    public function registerCompilers();
 
     /**
-     * 响应请求
+     * 注册视图分析器
      *
-     * @param string $strPassed
+     * @return $this
+     */
+    public function registerParsers();
+
+    /**
+     * 执行编译
+     *
+     * @param string $sFile
+     * @param string $sCachePath
+     * @param boolean $bReturn
      * @return string
      */
-    public function handle($strPassed)
-    {
-        return $strPassed . ' Love';
-    }
+    public function doCombile($sFile, $sCachePath, $bReturn = false);
+
+    /**
+     * code 编译编码，后还原
+     *
+     * @param string $sContent
+     * @return string
+     */
+    public static function revertEncode($sContent);
+
+    /**
+     * tagself 编译编码，后还原
+     *
+     * @param string $sContent
+     * @return string
+     */
+    public static function globalEncode($sContent);
 }
