@@ -17,54 +17,48 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Cookie\Provider;
 
-use PHPUnit_Framework_TestCase;
+use Queryyetsimple\{
+    Cookie\Cookie,
+    Support\Provider
+};
 
 /**
- * phpunit 测试用例
+ * cookie 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.05.12
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Register extends Provider
 {
 
     /**
-     * setUpBeforeClass
+     * 注册服务
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public function register()
     {
+        $this->singleton('cookie', function ($project) {
+            return new Cookie($project['option']->get('cookie\\'));
+        });
     }
 
     /**
-     * tearDownAfterClass
+     * 可用服务提供者
      *
-     * @return void
+     * @return array
      */
-    public static function tearDownAfterClass()
+    public static function providers()
     {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        return [
+            'cookie' => [
+                'Queryyetsimple\Cookie\Cookie',
+                'Queryyetsimple\Cookie\ICookie'
+            ]
+        ];
     }
 }
