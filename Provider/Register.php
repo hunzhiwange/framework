@@ -17,54 +17,77 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Throttler\Provider;
 
-use PHPUnit_Framework_TestCase;
+use Queryyetsimple\{
+    Support\Provider,
+    Throttler\Throttler
+};
 
 /**
- * phpunit 测试用例
+ * throttler 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.08.09
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Register extends Provider
 {
 
     /**
-     * setUpBeforeClass
+     * 是否延迟载入
+     *
+     * @var boolean
+     */
+    public static $defer = true;
+
+    /**
+     * 注册服务
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public function register()
     {
+        $this->throttler();
+        $this->middleware();
     }
 
     /**
-     * tearDownAfterClass
+     * 可用服务提供者
      *
-     * @return void
+     * @return array
      */
-    public static function tearDownAfterClass()
+    public static function providers()
     {
+        return [
+            'throttler' => [
+                'Queryyetsimple\Throttler\Throttler',
+                'Queryyetsimple\Throttler\IThrottler'
+            ],
+            'Queryyetsimple\Throttler\Middleware\Throttler'
+        ];
     }
 
     /**
-     * setUp
+     * 注册 throttler 服务
      *
      * @return void
      */
-    protected function setUp()
+    protected function throttler()
     {
+        $this->singleton('throttler', function ($project) {
+            return (new Throttler($project['cache']->connect($project['option']['throttler\driver'])))->setRequest($project['request']);
+        });
     }
 
     /**
-     * tearDown
+     * 注册 middleware 服务
      *
      * @return void
      */
-    protected function tearDown()
+    protected function middleware()
     {
+        $this->singleton('Queryyetsimple\Throttler\Middleware\Throttler');
     }
 }
