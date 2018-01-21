@@ -17,11 +17,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Log\provider;
+namespace Queryyetsimple\Log\Provider;
 
 use Queryyetsimple\{
-    log\manager,
-    Support\Provider
+    Log\Manager,
+    Di\Provider
 };
 
 /**
