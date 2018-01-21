@@ -17,22 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
-
-use queryyetsimple\{
-    psr4,
-    router
-};
+namespace Queryyetsimple\Page;
 
 /**
- * phpunit 内部启动文件
+ * 默认简单分页渲染
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.07.14
  * @version 1.0
  */
-psr4::import('tests', dirname(env('app_bootstrap')));
-router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+class DefaultsSimple extends Defaults
+{
+
+    /**
+     * 构造函数
+     *
+     * @param \Queryyetsimple\Page\IPage $objPage
+     * @param array $arrOption
+     * @return void
+     */
+    public function __construct(IPage $objPage, array $arrOption = [])
+    {
+        parent::__construct($objPage, $arrOption);
+        $this->option('template', '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}');
+    }
+}

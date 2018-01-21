@@ -17,41 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
-
-use tests\testcase;
-use queryyetsimple\assert\assert;
+namespace Queryyetsimple\Page;
 
 /**
- * assert 组件测试
+ * BootstrapSimpleJustify 分页渲染
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.07.14
  * @version 1.0
  */
-class AssertTest extends testcase
+class BootstrapSimpleJustify extends BootstrapSimple
 {
 
     /**
-     * 开启断言
+     * 构造函数
      *
+     * @param \Queryyetsimple\Page\IPage $objPage
+     * @param array $arrOption
      * @return void
      */
-    protected function setUp()
+    public function __construct(IPage $objPage, array $arrOption = [])
     {
-        assert::open(true);
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testFirst()
-    {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
+        parent::__construct($objPage, $arrOption);
+        $this->option('align', 'justify');
     }
 }

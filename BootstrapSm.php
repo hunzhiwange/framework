@@ -17,36 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Page;
 
 /**
- * first 管道组件
+ * BootstrapSm 分页渲染
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.07.14
  * @version 1.0
  */
-class first
+class BootstrapSm extends Bootstrap
 {
 
     /**
      * 构造函数
      *
+     * @param \Queryyetsimple\Page\IPage $objPage
+     * @param array $arrOption
      * @return void
      */
-    public function __construct()
+    public function __construct(IPage $objPage, array $arrOption = [])
     {
-    }
-
-    /**
-     * 响应请求
-     *
-     * @param string $strPassed
-     * @return string
-     */
-    public function handle($strPassed)
-    {
-        return $strPassed . ' Love';
+        parent::__construct($objPage, $arrOption);
+        $this->option('size', 'sm');
     }
 }

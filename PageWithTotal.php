@@ -17,16 +17,31 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Queryyetsimple\Page;
 
 /**
- * phpunit 环境变量设置
+ * 明确总数分页处理
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.28
+ * @since 2017.07.14
  * @version 1.0
  */
-putenv('app_name=phpunittests');
-putenv('controller_name=bootstrap');
-putenv('action_name=index');
-putenv('app_bootstrap=' . __DIR__ . '/bootstrap.php');
+class PageWithTotal extends Page
+{
+
+    /**
+     * 构造函数
+     *
+     * @param int $intPerPage
+     * @param int $intTotalRecord
+     * @param array $arrOption
+     * @return void
+     */
+    public function __construct($intPerPage, $intTotalRecord, array $arrOption = [])
+    {
+        $this->intPerPage = $intPerPage;
+        $this->intTotalRecord = $intTotalRecord;
+        $this->options($arrOption);
+    }
+}

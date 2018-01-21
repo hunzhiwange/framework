@@ -17,37 +17,31 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Page;
 
 /**
- * second 管道组件
+ * 不明确总数分页处理
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.07.14
  * @version 1.0
  */
-class second
+class PageWithoutTotal extends Page
 {
 
     /**
      * 构造函数
      *
+     * @param int $intPerPage
+     * @param int $intTotalRecord
+     * @param array $arrOption
      * @return void
      */
-    public function __construct()
+    public function __construct($intPerPage, array $arrOption = [])
     {
-    }
-
-    /**
-     * 响应请求
-     *
-     * @param string $strPassed
-     * @param string $strFoo
-     * @return string
-     */
-    public function handle($strPassed, $strFoo)
-    {
-        return $strPassed . ' ' . ucfirst($strFoo);
+        $this->intPerPage = $intPerPage;
+        $this->intTotalRecord = true;
+        $this->options($arrOption);
     }
 }

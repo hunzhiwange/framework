@@ -17,34 +17,77 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Page\provider;
+
+use Queryyetsimple\{
+    page\page,
+    Router\Router,
+    Support\Provider
+};
 
 /**
- * phpunit 内部应用程序
+ * page 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.07.19
  * @version 1.0
  */
-class application
+class Register extends Provider
 {
 
     /**
-     * 创建一个 phpunit 应用程序
+     * 注册服务
      *
-     * @return $this
+     * @return void
      */
-    public function __construct()
+    public function register()
     {
     }
 
     /**
-     * 默认方法
+     * bootstrap
      *
      * @return void
      */
-    public function run()
+    public function bootstrap()
     {
+        $this->urlResolver();
+        $this->i18n();
+    }
+
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers()
+    {
+        return [];
+    }
+
+    /**
+     * 分页路由 url 生成
+     *
+     * @return void
+     */
+    protected function urlResolver()
+    {
+        page::setUrlResolver(function () {
+            return call_user_func_array([
+                $this->objContainer['router'],
+                'url'
+            ], func_get_args());
+        });
+    }
+
+    /**
+     * 载入语言包
+     *
+     * @return void
+     */
+    protected function i18n()
+    {
+        $this->loadI18nDir(__DIR__ . '/../i18n');
     }
 }
