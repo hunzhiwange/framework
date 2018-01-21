@@ -17,54 +17,57 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
-
-use PHPUnit_Framework_TestCase;
+namespace Queryyetsimple\Event;
 
 /**
- * phpunit 测试用例
+ * IDispatch 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.07.12
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+interface IDispatch
 {
 
     /**
-     * setUpBeforeClass
+     * 执行一个事件
      *
+     * @param string|object $event
      * @return void
      */
-    public static function setUpBeforeClass()
-    {
-    }
+    public function run($event);
 
     /**
-     * tearDownAfterClass
+     * 注册监听器
      *
+     * @param string|array $event
+     * @param mixed $listener
      * @return void
      */
-    public static function tearDownAfterClass()
-    {
-    }
+    public function listener($event, $listener);
 
     /**
-     * setUp
+     * 获取一个监听器
      *
-     * @return void
+     * @param string $event
+     * @return array
      */
-    protected function setUp()
-    {
-    }
+    public function getListener($event);
 
     /**
-     * tearDown
+     * 判断监听器是否存在
      *
+     * @param string $event
+     * @return bool
+     */
+    public function hasListener($event);
+
+    /**
+     * 删除一个事件所有监听器
+     *
+     * @param string $event
      * @return void
      */
-    protected function tearDown()
-    {
-    }
+    public function deleteListener($event);
 }

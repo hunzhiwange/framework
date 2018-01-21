@@ -17,41 +17,48 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
+namespace Queryyetsimple\Event\provider;
 
-use tests\testcase;
-use queryyetsimple\assert\assert;
+use Queryyetsimple\{
+    Event\Dispatch,
+    Support\Provider
+};
 
 /**
- * assert 组件测试
+ * event 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.05.12
  * @version 1.0
  */
-class AssertTest extends testcase
+class Register extends Provider
 {
 
     /**
-     * 开启断言
+     * 注册服务
      *
      * @return void
      */
-    protected function setUp()
+    public function register()
     {
-        assert::open(true);
+        $this->singleton('event', function ($project) {
+            return new Dispatch($project);
+        });
     }
 
     /**
-     * test
+     * 可用服务提供者
      *
-     * @return void
+     * @return array
      */
-    public function testFirst()
+    public static function providers()
     {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
+        return [
+            'event' => [
+                'Queryyetsimple\Event\Dispatch',
+                'Queryyetsimple\Event\IDispatch'
+            ]
+        ];
     }
 }

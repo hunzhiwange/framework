@@ -17,18 +17,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Event;
+
+use SplSubject;
+use SplObserver;
+use RuntimeException;
 
 /**
- * first 管道组件
+ * 观察者角色 observer
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.06.23
+ * @see http://php.net/manual/zh/class.splobserver.php
  * @version 1.0
  */
-class first
+abstract class Observer implements SplObserver
 {
+
+    /**
+     * 观察者目标角色 subject
+     *
+     * @var \SplSubject
+     */
+    protected $subject;
 
     /**
      * 构造函数
@@ -40,13 +52,27 @@ class first
     }
 
     /**
-     * 响应请求
-     *
-     * @param string $strPassed
-     * @return string
+     * {@inheritdoc}
      */
-    public function handle($strPassed)
+    public function update(SplSubject $subject)
     {
-        return $strPassed . ' Love';
+        $method = method_exists($this, 'handle') ? 'handle' : 'run';
+
+        $args = func_get_args();
+        array_shift($args);
+
+        if (! is_callable([
+            $this,
+            $method
+        ])) {
+            throw new RuntimeException(sprintf('Observer %s must has run method', get_class($this)));
+        }
+
+        $subject->container()->call([
+            $this,
+            $method
+        ], $args);
+
+        unset($args);
     }
 }
