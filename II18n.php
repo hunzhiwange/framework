@@ -17,36 +17,56 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\I18n;
 
 /**
- * first 管道组件
+ * II18n 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.08.07
  * @version 1.0
  */
-class first
+interface II18n
 {
 
     /**
-     * 构造函数
+     * 获取语言 text
      *
-     * @return void
-     */
-    public function __construct()
-    {
-    }
-
-    /**
-     * 响应请求
-     *
-     * @param string $strPassed
+     * @param array $arr
      * @return string
      */
-    public function handle($strPassed)
-    {
-        return $strPassed . ' Love';
-    }
+    public function getText(...$arr);
+
+    /**
+     * 获取语言 text
+     *
+     * @param array $arr
+     * @return string
+     */
+    public function __(...$arr);
+
+    /**
+     * 添加语言包
+     *
+     * @param string $i18n 语言名字
+     * @param array $data 语言包数据
+     * @return void
+     */
+    public function addText(string $i18n, array $data = []);
+
+    /**
+     * 设置当前语言包上下文环境
+     *
+     * @param string $i18n
+     * @return void
+     */
+    public function setI18n(string $i18n);
+
+    /**
+     * 获取当前语言包
+     *
+     * @return string
+     */
+    public function getI18n();
 }

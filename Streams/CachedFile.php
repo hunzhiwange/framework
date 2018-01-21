@@ -17,54 +17,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
-
-use PHPUnit_Framework_TestCase;
+namespace Queryyetsimple\I18n\Streams;
 
 /**
- * phpunit 测试用例
+ * 数据流 CachedFile
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.09.18
+ * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class CachedFile extends Str
 {
 
     /**
-     * setUpBeforeClass
-     *
-     * @return void
+     * PHP5 constructor.
      */
-    public static function setUpBeforeClass()
+    public function __construct($filename)
     {
-    }
-
-    /**
-     * tearDownAfterClass
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass()
-    {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        parent::__construct();
+        $this->_str = file_get_contents($filename);
+        if (false === $this->_str) {
+            return false;
+        }
+        $this->_pos = 0;
     }
 }
