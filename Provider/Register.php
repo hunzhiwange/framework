@@ -20,7 +20,7 @@
 namespace Queryyetsimple\Pipeline\Provider;
 
 use Queryyetsimple\{
-    Support\Provider,
+    Di\Provider,
     Pipeline\Pipeline
 };
 
