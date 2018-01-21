@@ -34,7 +34,7 @@ use Queryyetsimple\{
     Mvc\IController,
     Support\Macro,
     Pipeline\IPipeline,
-    Support\IContainer
+    Di\IContainer
 };
 
 /**
@@ -54,7 +54,7 @@ class Router
     /**
      * container
      *
-     * @var \Queryyetsimple\Support\IContainer
+     * @var \Queryyetsimple\Di\IContainer
      */
     protected $objContainer;
 
@@ -267,7 +267,7 @@ class Router
      * 构造函数
      *
      * @param \Queryyetsimple\Pipeline\IPipeline $objPipeline
-     * @param \Queryyetsimple\Support\IContainer $objContainer
+     * @param \Queryyetsimple\Di\IContainer $objContainer
      * @param \Queryyetsimple\Http\Request $objRequest
      * @param array $arrOption
      * @return void
