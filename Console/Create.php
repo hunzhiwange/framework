@@ -17,16 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Queryyetsimple\Database\Console;
+
+use Phinx\Console\Command\Create as PhinxCreate;
 
 /**
- * phpunit 环境变量设置
+ * 数据库迁移创建一个脚本
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.28
+ * @since 2017.05.09
  * @version 1.0
  */
-putenv('app_name=phpunittests');
-putenv('controller_name=bootstrap');
-putenv('action_name=index');
-putenv('app_bootstrap=' . __DIR__ . '/bootstrap.php');
+class Create extends PhinxCreate
+{
+
+    /**
+     * Configures the current command.
+     *
+     * @return void
+     */
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:create');
+    }
+}

@@ -17,41 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
+namespace Queryyetsimple\Database\Console;
 
-use tests\testcase;
-use queryyetsimple\assert\assert;
+use Phinx\Console\Command\Breakpoint as PhinxBreakpoint;
 
 /**
- * assert 组件测试
+ * 数据库迁移设置断点
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0
  */
-class AssertTest extends testcase
+class Breakpoint extends PhinxBreakpoint
 {
 
     /**
-     * 开启断言
+     * Configures the current command.
      *
      * @return void
      */
-    protected function setUp()
+    protected function configure()
     {
-        assert::open(true);
-    }
-
-    /**
-     * test
-     *
-     * @return void
-     */
-    public function testFirst()
-    {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
+        parent::configure();
+        $this->setName('migrate:breakpoint');
     }
 }

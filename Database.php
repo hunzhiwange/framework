@@ -17,37 +17,46 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Database;
 
 /**
- * second 管道组件
+ * database 仓储
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.11.08
  * @version 1.0
  */
-class second
+class Database implements IDatabase
 {
+
+    /**
+     * 数据库连接对象
+     *
+     * @var \Queryyetsimple\Database\IConnect
+     */
+    protected $objConnect;
 
     /**
      * 构造函数
      *
+     * @param \Queryyetsimple\Database\IConnect $objConnect
      * @return void
      */
-    public function __construct()
+    public function __construct(IConnect $objConnect)
     {
+        $this->objConnect = $objConnect;
     }
 
     /**
-     * 响应请求
+     * call 
      *
-     * @param string $strPassed
-     * @param string $strFoo
-     * @return string
+     * @param string $method
+     * @param array $arrArgs
+     * @return mixed
      */
-    public function handle($strPassed, $strFoo)
+    public function __call(string $method, array $arrArgs)
     {
-        return $strPassed . ' ' . ucfirst($strFoo);
+        return $this->objConnect->$method(...$arrArgs);
     }
 }

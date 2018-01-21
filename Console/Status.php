@@ -17,54 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Database\Console;
 
-use PHPUnit_Framework_TestCase;
+use Phinx\Console\Command\Status as PhinxStatus;
 
 /**
- * phpunit 测试用例
+ * 数据库打印所有迁移脚本和他们的状态
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Status extends PhinxStatus
 {
 
     /**
-     * setUpBeforeClass
+     * Configures the current command.
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    protected function configure()
     {
-    }
-
-    /**
-     * tearDownAfterClass
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass()
-    {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        parent::configure();
+        $this->setName('migrate:status');
     }
 }

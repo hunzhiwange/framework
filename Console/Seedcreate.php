@@ -17,22 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Database\Console;
 
-use queryyetsimple\{
-    psr4,
-    router
-};
+use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
 
 /**
- * phpunit 内部启动文件
+ * 数据库测试数据
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0
  */
-psr4::import('tests', dirname(env('app_bootstrap')));
-router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+class Seedcreate extends PhinxSeedCreate
+{
+
+    /**
+     * Configures the current command.
+     *
+     * @return void
+     */
+    protected function configure()
+    {
+        parent::configure();
+        $this->setName('migrate:seedcreate');
+    }
+}
