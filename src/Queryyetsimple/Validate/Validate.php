@@ -24,10 +24,10 @@ use Exception;
 use DateTimeZone;
 use BadMethodCallException;
 use InvalidArgumentException;
+use Queryyetsimple\Di\IContainer;
 use Queryyetsimple\Support\{
     Str,
     Helper,
-    IContainer,
     FlowControl
 };
 
@@ -46,7 +46,7 @@ class Validate implements IValidate
     /**
      * IOC 容器
      *
-     * @var \Queryyetsimple\Support\IContainer
+     * @var \Queryyetsimple\Di\IContainer
      */
     protected $objContainer;
 
@@ -698,7 +698,7 @@ class Validate implements IValidate
     /**
      * 设置 IOC 容器
      *
-     * @param \Queryyetsimple\Support\IContainer $objContainer
+     * @param \Queryyetsimple\Di\IContainer $objContainer
      * @return $this
      */
     public function container(IContainer $objContainer)

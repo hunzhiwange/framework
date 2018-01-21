@@ -20,9 +20,9 @@
 namespace Queryyetsimple\Option\Provider;
 
 use Queryyetsimple\{
+    Di\Provider,
     Option\Load,
-    Option\Option,
-    Support\Provider
+    Option\Option
 };
 
 /**

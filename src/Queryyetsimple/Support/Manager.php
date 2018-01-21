@@ -21,6 +21,7 @@ namespace Queryyetsimple\Support;
 
 use Exception;
 use InvalidArgumentException;
+use Queryyetsimple\Di\IContainer;
 
 /**
  * manager 入口
@@ -36,7 +37,7 @@ abstract class Manager
     /**
      * IOC Container
      *
-     * @var \Queryyetsimple\Support\IContainer
+     * @var \Queryyetsimple\Di\IContainer
      */
     protected $container;
 
@@ -50,7 +51,7 @@ abstract class Manager
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Support\IContainer $container
+     * @param \Queryyetsimple\Di\IContainer $container
      * @return void
      */
     public function __construct(IContainer $container)
@@ -61,7 +62,7 @@ abstract class Manager
     /**
      * 返回 IOC 容器
      *
-     * @return \Queryyetsimple\Support\IContainer
+     * @return \Queryyetsimple\Di\IContainer
      */
     public function container()
     {

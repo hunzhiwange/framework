@@ -20,8 +20,8 @@
 namespace Queryyetsimple\Bootstrap\Provider;
 
 use Queryyetsimple\{
-    Event\IDispatch,
-    Support\Provider
+    Di\Provider,
+    Event\IDispatch
 };
 
 /**

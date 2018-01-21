@@ -20,7 +20,7 @@
 namespace Queryyetsimple\Cache;
 
 use InvalidArgumentException;
-use Queryyetsimple\Support\IContainer;
+use Queryyetsimple\Di\IContainer;
 
 /**
  * cache 快捷载入
@@ -36,7 +36,7 @@ class Load
     /**
      * IOC Container
      *
-     * @var \Queryyetsimple\Support\IContainer
+     * @var \Queryyetsimple\Di\IContainer
      */
     protected $objContainer;
 
@@ -57,7 +57,7 @@ class Load
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Support\IContainer $objContainer
+     * @param \Queryyetsimple\Di\IContainer $objContainer
      * @param \Queryyetsimple\Cache\ICache $objCache
      * @return void
      */

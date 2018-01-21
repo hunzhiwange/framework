@@ -20,7 +20,7 @@
 namespace Queryyetsimple\Bootstrap\Console\Provider;
 
 use Queryyetsimple\{
-    Support\Provider,
+    Di\Provider,
     Bootstrap\Console\Load
 };
 

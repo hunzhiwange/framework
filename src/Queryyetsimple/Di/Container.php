@@ -17,7 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Support;
+namespace Queryyetsimple\Di;
 
 use Closure;
 use ArrayAccess;
@@ -27,6 +27,7 @@ use ReflectionFunction;
 use ReflectionException;
 use BadMethodCallException;
 use InvalidArgumentException;
+use Queryyetsimple\Support\FlowControl;
 
 /**
  * IOC 容器

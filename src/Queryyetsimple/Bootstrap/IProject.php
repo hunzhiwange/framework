@@ -20,8 +20,8 @@
 namespace Queryyetsimple\Bootstrap;
 
 use Queryyetsimple\{
-    Support\Provider,
-    Support\IContainer
+    Di\Provider,
+    Di\IContainer
 };
 
 /**
@@ -198,15 +198,15 @@ interface IProject extends IContainer
      * 创建服务提供者
      *
      * @param string $strProvider
-     * @return \queryyetsimple\Support\Provider
+     * @return \queryyetsimple\Di\Provider
      */
     public function makeProvider($strProvider);
     
     /**
      * 执行 bootstrap
      *
-     * @param \queryyetsimple\Support\Provider $objProvider
+     * @param \queryyetsimple\Di\Provider $objProvider
      * @return void
      */
-    public function callProviderBootstrap(provider $objProvider);
+    public function callProviderBootstrap(Provider $objProvider);
 }

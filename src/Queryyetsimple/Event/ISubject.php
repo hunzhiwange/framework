@@ -41,7 +41,7 @@ interface ISubject
     /**
      * 返回容器
      *
-     * @return \Queryyetsimple\Support\IContainer
+     * @return \Queryyetsimple\Di\IContainer
      */
     public function container();
 }

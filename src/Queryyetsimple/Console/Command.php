@@ -48,9 +48,9 @@ abstract class Command extends SymfonyCommand
     /**
      * 项目容器
      *
-     * @var \Queryyetsimple\Bootstrap\Project
+     * @var \Queryyetsimple\Di\IContainer
      */
-    protected $objProject;
+    protected $container;
     
     /**
      * 命令名字
@@ -143,7 +143,7 @@ abstract class Command extends SymfonyCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        return $this->objProject->call([
+        return $this->container->call([
             $this, 
             'handle'
         ]);
@@ -159,7 +159,7 @@ abstract class Command extends SymfonyCommand
     public function call($strCommand, array $arrArguments = [])
     {
         $arrArguments['command'] = $strCommand;
-        return $this->objProject->make('command_' . $strCommand)->run(new ArrayInput($arrArguments), $this->objOutput);
+        return $this->container->make('command.' . $strCommand)->run(new ArrayInput($arrArguments), $this->objOutput);
     }
     
     /**
@@ -376,15 +376,15 @@ abstract class Command extends SymfonyCommand
     /**
      * 设置或者返回服务容器
      *
-     * @param \Queryyetsimple\Bootstrap\Project $objProject
+     * @param \Queryyetsimple\Di\IContainer $container
      * @return void
      */
-    public function project($objProject = null)
+    public function container($container = null)
     {
-        if (is_null($objProject)) {
-            return $this->objProject;
+        if (is_null($container)) {
+            return $this->container;
         } else {
-            $this->objProject = $objProject;
+            $this->container = $container;
             return $this;
         }
     }

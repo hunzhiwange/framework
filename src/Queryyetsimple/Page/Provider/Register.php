@@ -17,12 +17,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Page\provider;
+namespace Queryyetsimple\Page\Provider;
 
 use Queryyetsimple\{
     page\page,
-    Router\Router,
-    Support\Provider
+    Di\Provider,
+    Router\Router
 };
 
 /**

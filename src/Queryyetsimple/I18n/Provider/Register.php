@@ -17,12 +17,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\I18n\provider;
+namespace Queryyetsimple\I18n\Provider;
 
 use Queryyetsimple\{
     I18n\I18n,
     I18n\Load,
-    Support\Provider
+    Di\Provider
 };
 
 /**

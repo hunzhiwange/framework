@@ -111,12 +111,12 @@ class Application
         foreach ($arrCommands as $strCommand) {
             $objCommand = $this->objProject->make($strCommand);
             
-            // 基于 Phinx 数据库迁移组件无法设置 setContainer
-            if (method_exists($objCommand, 'project')) {
-                $objCommand->project($this->objProject);
+            // 基于 Phinx 数据库迁移组件无法设置容器
+            if (method_exists($objCommand, 'container')) {
+                $objCommand->container($this->objProject);
             }
 
-            $this->objProject->instance('command_' . $objCommand->getName(), $objCommand);
+            $this->objProject->instance('command.' . $objCommand->getName(), $objCommand);
             $this->objSymfonyApplication->add($objCommand);
         }
         return $this;

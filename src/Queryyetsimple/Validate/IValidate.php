@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Validate;
 
-use Queryyetsimple\Support\IContainer;
+use Queryyetsimple\Di\IContainer;
 
 /**
  * IValidate 接口
@@ -354,7 +354,7 @@ interface IValidate
     /**
      * 设置 ioc 容器
      *
-     * @param \Queryyetsimple\Support\IContainer $objContainer
+     * @param \Queryyetsimple\Di\IContainer $objContainer
      * @return $this
      */
     public function container(IContainer $objContainer);

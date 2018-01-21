@@ -24,11 +24,11 @@ use Dotenv\Dotenv;
 use RuntimeException;
 use Composer\Autoload\ClassLoader;
 use Queryyetsimple\{
+    Di\Provider,
+    Di\Container,
     Support\Psr4,
     Support\face,
     Filesystem\Fso,
-    Support\Provider,
-    Support\Container,
     Bootstrap\Console\Provider\Register as ConsoleProvider
 };
 
@@ -430,7 +430,7 @@ class Project extends Container implements IProject
      * 创建服务提供者
      *
      * @param string $strProvider
-     * @return \queryyetsimple\Support\Provider
+     * @return \queryyetsimple\Di\Provider
      */
     public function makeProvider($strProvider)
     {
@@ -440,7 +440,7 @@ class Project extends Container implements IProject
     /**
      * 执行 bootstrap
      *
-     * @param \queryyetsimple\Support\Provider $objProvider
+     * @param \queryyetsimple\Di\Provider $objProvider
      * @return void
      */
     public function callProviderBootstrap(Provider $objProvider)
@@ -596,7 +596,7 @@ class Project extends Container implements IProject
         }
 
         foreach ($this->arrAppOption['provider'] as $strProvider) {
-            $strProvider .= '\provider\register';
+            $strProvider .= '\Provider\Register';
 
             if ($booCache === true && isset($arrDeferredAlias[$strProvider])) {
                 $this->alias($arrDeferredAlias[$strProvider]);
@@ -689,7 +689,7 @@ class Project extends Container implements IProject
         $this->alias([
             'project' => [
                 'Queryyetsimple\Bootstrap\Project',
-                'Queryyetsimple\Support\IContainer',
+                'Queryyetsimple\Di\IContainer',
                 'Queryyetsimple\Bootstrap\IProject',
                 'app'
             ]
