@@ -66,11 +66,13 @@ class Manager extends SupportManager
 
         $container = $this->container;
         
-        Html::setParseResolver(function () use ($container) {
+        $html = new Html($options);
+
+        $html->setParseResolver(function () use ($container) {
             return $container['view.parser'];
         });
 
-        return new Html($options);
+        return $html;
     }
 
     /**
@@ -85,12 +87,14 @@ class Manager extends SupportManager
         $options = array_merge($options, $this->viewOptionCommon());
 
         $container = $this->container;
-        
-        Twig::setParseResolver(function () use ($container) {
+
+        $twig = new Twig($options);
+
+        $twig->setParseResolver(function () use ($container) {
             return $container['view.twig.parser'];
         });
 
-        return new Twig($options);
+        return $twig;
     }
 
     /**
