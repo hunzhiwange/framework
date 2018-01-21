@@ -44,7 +44,7 @@ class Twig extends Connect implements IConnect
      *
      * @var callable
      */
-    protected static $parseResolver;
+    protected $parseResolver;
 
     /**
      * 配置
@@ -95,28 +95,28 @@ class Twig extends Connect implements IConnect
      * @param callable $parseResolver
      * @return void
      */
-    public static function setParseResolver(callable $parseResolver)
+    public function setParseResolver(callable $parseResolver)
     {
-        static::$parseResolver = $parseResolver;
+        $this->parseResolver = $parseResolver;
     }
 
     /**
      * 解析 parse
      *
-     * @return \Queryyetsimple\View\iparser
+     * @return \Queryyetsimple\View\IParser
      */
     public function resolverParser()
     {
-        if (! static::$parseResolver) {
+        if (! $this->parseResolver) {
             throw new RuntimeException('Twig theme not set parse resolver');
         }
-        return call_user_func(static::$parseResolver);
+        return call_user_func($this->parseResolver);
     }
 
     /**
      * 获取分析器
      *
-     * @return \Queryyetsimple\View\iparser
+     * @return \Queryyetsimple\View\IParser
      */
     public function parser()
     {
