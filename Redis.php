@@ -17,54 +17,45 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Session;
 
-use PHPUnit_Framework_TestCase;
+use SessionHandlerInterface;
+use Queryyetsimple\Cache\Redis as CacheRedis;
 
 /**
- * phpunit 测试用例
+ * session.redis
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.06.05
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Redis extends Connect implements SessionHandlerInterface
 {
 
     /**
-     * setUpBeforeClass
+     * 配置
      *
-     * @return void
+     * @var array
      */
-    public static function setUpBeforeClass()
-    {
-    }
+    protected $option = [
+        'host' => '127.0.0.1',
+        'port' => 6379,
+        'password' => '',
+        'select' => 0,
+        'timeout' => 0,
+        'persistent' => false,
+        'serialize' => true,
+        'prefix' => null,
+        'expire' => null
+    ];
 
     /**
-     * tearDownAfterClass
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public static function tearDownAfterClass()
+    public function open($savepath, $sessionname)
     {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        $this->cache = new CacheRedis($this->option);
+        return true;
     }
 }

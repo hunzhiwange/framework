@@ -17,22 +17,44 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Session;
 
-use queryyetsimple\{
-    psr4,
-    router
-};
+use SessionHandlerInterface;
+use Queryyetsimple\Cache\Memcache as CacheMemcache;
 
 /**
- * phpunit 内部启动文件
+ * session.memcache
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.06.05
+ * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
  * @version 1.0
  */
-psr4::import('tests', dirname(env('app_bootstrap')));
-router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+class Memcache extends Connect implements SessionHandlerInterface
+{
+
+    /**
+     * 配置
+     *
+     * @var array
+     */
+    protected $option = [
+        'servers' => [],
+        'host' => '127.0.0.1',
+        'port' => 11211,
+        'compressed' => false,
+        'persistent' => false,
+        'prefix' => null,
+        'expire' => null
+    ];
+
+    /**
+     * {@inheritdoc}
+     */
+    public function open($savepath, $sessionname)
+    {
+        $this->cache = new CacheMemcache($this->option);
+        return true;
+    }
+}
