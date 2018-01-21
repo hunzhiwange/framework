@@ -23,8 +23,8 @@ use Queryyetsimple\{
     Mvc\View,
     Mvc\Meta,
     Mvc\Model,
-    Event\IDispatch,
-    Support\Provider
+    Di\Provider,
+    Event\IDispatch
 };
 
 /**
