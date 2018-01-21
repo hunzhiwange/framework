@@ -21,7 +21,7 @@ namespace Queryyetsimple\View;
 
 use InvalidArgumentException;
 use Queryyetsimple\{
-    Support\Stack,
+    Stack\Stack,
     Support\Helper,
     Filesystem\Fso
 };
