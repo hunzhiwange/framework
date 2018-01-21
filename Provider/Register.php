@@ -21,8 +21,8 @@ namespace Queryyetsimple\Cache\Provider;
 
 use Queryyetsimple\{
     Cache\Load,
-    Cache\Manager,
-    Support\Provider
+    Di\Provider,
+    Cache\Manager
 };
 
 /**
