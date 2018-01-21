@@ -20,8 +20,8 @@
 namespace Queryyetsimple\Auth\Provider;
 
 use Queryyetsimple\{
-    Auth\Manager,
-    Support\Provider
+    Di\Provider,
+    Auth\Manager
 };
 
 /**
