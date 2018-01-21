@@ -16,6 +16,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
     database = subtree push --prefix=src/Queryyetsimple/Database git@github.com:queryyetsimple/database.git master
 
+    di = subtree push --prefix=src/Queryyetsimple/Di git@github.com:queryyetsimple/di.git master
+
     encryption = subtree push --prefix=src/Queryyetsimple/Encryption git@github.com:queryyetsimple/encryption.git master
 
     event = subtree push --prefix=src/Queryyetsimple/Event git@github.com:queryyetsimple/event.git master
@@ -67,6 +69,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     cookiep = subtree pull --prefix=src/Queryyetsimple/Cookie git@github.com:queryyetsimple/cookie.git master
 
     databasep = subtree pull --prefix=src/Queryyetsimple/Database git@github.com:queryyetsimple/database.git master
+
+    dip = subtree pull --prefix=src/Queryyetsimple/Di git@github.com:queryyetsimple/di.git master
 
     encryptionp = subtree pull --prefix=src/Queryyetsimple/Encryption git@github.com:queryyetsimple/encryption.git master
 

@@ -33,6 +33,7 @@
         "queryyetsimple/console": "self.version",
         "queryyetsimple/cookie": "self.version",
         "queryyetsimple/database": "self.version",
+        "queryyetsimple/di": "self.version",
         "queryyetsimple/encryption": "self.version",
         "queryyetsimple/event": "self.version",
         "queryyetsimple/filesystem": "self.version",

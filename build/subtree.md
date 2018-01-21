@@ -12,6 +12,8 @@ git subtree add --prefix=src/Queryyetsimple/Cookie git@github.com:queryyetsimple
 
 git subtree add --prefix=src/Queryyetsimple/Database git@github.com:queryyetsimple/database.git master
 
+git subtree add --prefix=src/Queryyetsimple/Di git@github.com:queryyetsimple/di.git master
+
 git subtree add --prefix=src/Queryyetsimple/Encryption git@github.com:queryyetsimple/encryption.git master
 
 git subtree add --prefix=src/Queryyetsimple/Event git@github.com:queryyetsimple/event.git master

@@ -166,7 +166,6 @@ abstract class Connect
                 $arr = explode('@', $tpl);
                 $theme = array_shift($arr);
                 $tpl = array_shift($arr);
-                unset($arr);
             }
 
             $tpl = str_replace([
