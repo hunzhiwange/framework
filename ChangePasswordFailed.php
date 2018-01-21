@@ -17,54 +17,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Auth;
 
-use PHPUnit_Framework_TestCase;
+use RuntimeException;
 
 /**
- * phpunit 测试用例
+ * 修改密码失败异常
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.09.09
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class ChangePasswordFailed extends RuntimeException
 {
-
-    /**
-     * setUpBeforeClass
-     *
-     * @return void
-     */
-    public static function setUpBeforeClass()
-    {
-    }
-
-    /**
-     * tearDownAfterClass
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass()
-    {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
-    }
 }

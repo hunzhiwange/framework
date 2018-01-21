@@ -10,41 +10,26 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- *
+ * 
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
- *
+ * 
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Auth;
+
+
+use RuntimeException;
 
 /**
- * phpunit 内部应用程序
+ * 登录失败异常
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.09.08
  * @version 1.0
  */
-class application
+class LoginFailed extends RuntimeException
 {
-
-    /**
-     * 创建一个 phpunit 应用程序
-     *
-     * @return $this
-     */
-    public function __construct()
-    {
-    }
-
-    /**
-     * 默认方法
-     *
-     * @return void
-     */
-    public function run()
-    {
-    }
 }

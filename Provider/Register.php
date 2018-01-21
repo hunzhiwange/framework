@@ -17,41 +17,72 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
+namespace Queryyetsimple\Auth\Provider;
 
-use tests\testcase;
-use queryyetsimple\assert\assert;
+use Queryyetsimple\{
+    Auth\Manager,
+    Support\Provider
+};
 
 /**
- * assert 组件测试
+ * auth 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.09.08
  * @version 1.0
  */
-class AssertTest extends testcase
+class Register extends Provider
 {
 
     /**
-     * 开启断言
+     * 注册服务
      *
      * @return void
      */
-    protected function setUp()
+    public function register()
     {
-        assert::open(true);
+        $this->auths();
+        $this->auth();
     }
 
     /**
-     * test
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers()
+    {
+        return [
+            'auths' => 'Queryyetsimple\Auth\Manager',
+            'auth' => [
+                'Queryyetsimple\Auth\Auth',
+                'Queryyetsimple\Auth\IAuth'
+            ]
+        ];
+    }
+
+    /**
+     * 注册 auths 服务
      *
      * @return void
      */
-    public function testFirst()
+    protected function auths()
     {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
+        $this->singleton('auths', function ($project) {
+            return new Manager($project);
+        });
+    }
+
+    /**
+     * 注册 auth 服务
+     *
+     * @return void
+     */
+    protected function auth()
+    {
+        $this->singleton('auth', function ($project) {
+            return $project['auths']->connect();
+        });
     }
 }
