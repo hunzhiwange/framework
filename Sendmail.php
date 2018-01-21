@@ -17,41 +17,37 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
+namespace Queryyetsimple\Mail;
 
-use tests\testcase;
-use queryyetsimple\assert\assert;
+use Swift_SendmailTransport;
 
 /**
- * assert 组件测试
+ * mail.sendmail
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.08.28
  * @version 1.0
  */
-class AssertTest extends testcase
+class Sendmail extends Connect implements IConnect
 {
 
     /**
-     * 开启断言
+     * 配置
      *
-     * @return void
+     * @var array
      */
-    protected function setUp()
-    {
-        assert::open(true);
-    }
+    protected $arrOption = [
+        'path' => '/usr/sbin/sendmail -bs'
+    ];
 
     /**
-     * test
+     * 创建 transport
      *
-     * @return void
+     * @return mixed
      */
-    public function testFirst()
+    public function makeTransport()
     {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
+        return Swift_SendmailTransport::newInstance($this->getOption('path'));
     }
 }

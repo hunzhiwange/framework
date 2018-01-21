@@ -17,54 +17,52 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Mail;
 
-use PHPUnit_Framework_TestCase;
+use Swift_SmtpTransport;
 
 /**
- * phpunit 测试用例
+ * mail.smtp
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.08.26
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Smtp extends Connect implements IConnect
 {
 
     /**
-     * setUpBeforeClass
+     * 配置
      *
-     * @return void
+     * @var array
      */
-    public static function setUpBeforeClass()
-    {
-    }
+    protected $arrOption = [
+        'host' => 'smtp.qq.com',
+        'port' => 465,
+        'username' => null,
+        'password' => '',
+        'encryption' => 'ssl'
+    ];
 
     /**
-     * tearDownAfterClass
+     * 创建 transport
      *
-     * @return void
+     * @return mixed
      */
-    public static function tearDownAfterClass()
+    public function makeTransport()
     {
-    }
+        $objTransport = Swift_SmtpTransport::newInstance($this->getOption('host'), $this->getOption('port'));
 
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
+        if (! is_null($this->getOption('encryption'))) {
+            $objTransport->setEncryption($this->getOption('encryption'));
+        }
 
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        if (! is_null($this->getOption('username'))) {
+            $objTransport->setUsername($this->getOption('username'));
+            $objTransport->setPassword($this->getOption('password'));
+        }
+
+        return $objTransport;
     }
 }
