@@ -17,9 +17,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\provider;
+namespace Queryyetsimple\Queue\Provider;
 
-use Queryyetsimple\Support\Provider;
+use Queryyetsimple\Di\Provider;
 
 /**
  * queue 服务提供者
