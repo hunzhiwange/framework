@@ -17,22 +17,47 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
-
-use queryyetsimple\{
-    psr4,
-    router
-};
+namespace Queryyetsimple\Pipeline;
 
 /**
- * phpunit 内部启动文件
+ * IPipeline 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.04.11
  * @version 1.0
  */
-psr4::import('tests', dirname(env('app_bootstrap')));
-router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+interface IPipeline
+{
+
+    /**
+     * 管道初始化
+     *
+     * @return $this
+     */
+    public function reset();
+
+    /**
+     * 将传输对象传入管道
+     *
+     * @param mixed $passed
+     * @return $this
+     */
+    public function send($passed);
+
+    /**
+     * 设置管道中的执行工序
+     *
+     * @param dynamic|array $stage
+     * @return $this
+     */
+    public function through($stage);
+
+    /**
+     * 执行管道工序响应结果
+     *
+     * @param callable $end
+     * @return mixed
+     */
+    public function then(callable $end = null);
+}
