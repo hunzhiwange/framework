@@ -20,7 +20,7 @@
 namespace Queryyetsimple\Encryption\Provider;
 
 use Queryyetsimple\{
-    Support\Provider,
+    Di\Provider,
     Encryption\Encryption
 };
 
