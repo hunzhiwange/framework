@@ -17,41 +17,68 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
-
-use tests\testcase;
-use queryyetsimple\assert\assert;
+namespace Queryyetsimple\Cache;
 
 /**
- * assert 组件测试
+ * IConnect 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.04.23
  * @version 1.0
  */
-class AssertTest extends testcase
+interface IConnect
 {
 
     /**
-     * 开启断言
+     * 获取缓存
      *
-     * @return void
+     * @param string $sCacheName
+     * @param mixed $mixDefault
+     * @param array $arrOption
+     * @return mixed
      */
-    protected function setUp()
-    {
-        assert::open(true);
-    }
+    public function get($sCacheName, $mixDefault = false, array $arrOption = []);
 
     /**
-     * test
+     * 设置缓存
+     *
+     * @param string $sCacheName
+     * @param mixed $mixData
+     * @param array $arrOption
+     * @return void
+     */
+    public function set($sCacheName, $mixData, array $arrOption = []);
+
+    /**
+     * 清除缓存
+     *
+     * @param string $sCacheName
+     * @param array $arrOption
+     * @return void
+     */
+    public function delele($sCacheName, array $arrOption = []);
+
+    /**
+     * 批量插入
+     *
+     * @param string|array $mixKey
+     * @param mixed $mixValue
+     * @return void
+     */
+    public function put($mixKey, $mixValue = null);
+
+    /**
+     * 返回缓存句柄
+     *
+     * @return mixed
+     */
+    public function handle();
+
+    /**
+     * 关闭
      *
      * @return void
      */
-    public function testFirst()
-    {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
-    }
+    public function close();
 }
