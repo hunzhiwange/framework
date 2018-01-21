@@ -17,10 +17,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Filesystem\provider;
+namespace Queryyetsimple\Filesystem\Provider;
 
 use Queryyetsimple\{
-    Support\Provider,
+    Di\Provider,
     Filesystem\Manager
 };
 
