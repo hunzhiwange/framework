@@ -20,7 +20,7 @@
 namespace Queryyetsimple\Throttler\Provider;
 
 use Queryyetsimple\{
-    Support\Provider,
+    Di\Provider,
     Throttler\Throttler
 };
 
