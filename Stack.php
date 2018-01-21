@@ -17,34 +17,50 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Support;
+
+use InvalidArgumentException;
 
 /**
- * phpunit 内部应用程序
+ * 栈，后进先出
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2016.11.21
+ * @see http://php.net/manual/zh/class.splstack.php
  * @version 1.0
  */
-class application
+class Stack extends LinkedList implements IStackQueue
 {
 
     /**
-     * 创建一个 phpunit 应用程序
+     * 入栈
      *
-     * @return $this
+     * @param mixed $value
+     * @return void
      */
-    public function __construct()
+    public function in($value)
     {
+        $this->push($value);
     }
 
     /**
-     * 默认方法
+     * 出栈
      *
-     * @return void
+     * @return mixed
      */
-    public function run()
+    public function out()
     {
+        return $this->pop();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validate($value)
+    {
+        if (! $this->checkType($value)) {
+            throw new InvalidArgumentException(sprintf('The stack element type verification failed, and the allowed type is %s.', implode(',', $this->arrType)));
+        }
     }
 }

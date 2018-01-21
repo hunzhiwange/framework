@@ -17,54 +17,57 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
-
-use PHPUnit_Framework_TestCase;
+namespace Queryyetsimple\Support;
 
 /**
- * phpunit 测试用例
+ * IPsr4 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.04.23
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+interface IPsr4
 {
 
     /**
-     * setUpBeforeClass
+     * 获取 composer
      *
-     * @return void
+     * @return \Composer\Autoload\ClassLoader
      */
-    public static function setUpBeforeClass()
-    {
-    }
+    public function composer();
 
     /**
-     * tearDownAfterClass
+     * 导入一个目录中命名空间结构
      *
+     * @param string $sNamespace 命名空间名字
+     * @param string $sPackage 命名空间路径
+     * @param boolean $force 强制覆盖
      * @return void
      */
-    public static function tearDownAfterClass()
-    {
-    }
+    public function import($sNamespace, $sPackage, $force = false);
 
     /**
-     * setUp
+     * 获取命名空间路径
      *
-     * @return void
+     * @param string $sNamespace
+     * @return string|null
      */
-    protected function setUp()
-    {
-    }
+    public function namespaces($sNamespace);
 
     /**
-     * tearDown
+     * 根据命名空间取得文件路径
      *
+     * @param string $strFile
+     * @return string
+     */
+    public function file($strFile);
+
+    /**
+     * 框架自动载入
+     *
+     * @param string $strClass
      * @return void
      */
-    protected function tearDown()
-    {
-    }
+    public function autoload($strClass);
 }

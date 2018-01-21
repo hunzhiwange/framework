@@ -17,37 +17,50 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Support;
+
+use InvalidArgumentException;
 
 /**
- * second 管道组件
+ * 队列，先进先出
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2016.11.21
+ * @see http://php.net/manual/zh/class.splqueue.php
  * @version 1.0
  */
-class second
+class Queue extends LinkedList implements IStackQueue
 {
 
     /**
-     * 构造函数
+     * 入对
      *
+     * @param mixed $value
      * @return void
      */
-    public function __construct()
+    public function in($value)
     {
+        $this->push($value);
     }
 
     /**
-     * 响应请求
+     * 出对
      *
-     * @param string $strPassed
-     * @param string $strFoo
-     * @return string
+     * @return mixed
      */
-    public function handle($strPassed, $strFoo)
+    public function out()
     {
-        return $strPassed . ' ' . ucfirst($strFoo);
+        return $this->shift();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validate($value)
+    {
+        if (! $this->checkType($value)) {
+            throw new InvalidArgumentException(sprintf('The queue element type verification failed, and the allowed type is %s.', implode(',', $this->arrType)));
+        }
     }
 }

@@ -17,41 +17,66 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
-
-use tests\testcase;
-use queryyetsimple\assert\assert;
+namespace Queryyetsimple\Support;
 
 /**
- * assert 组件测试
+ * 操作系统类
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.05.05
  * @version 1.0
  */
-class AssertTest extends testcase
+class Os
 {
 
     /**
-     * 开启断言
+     * 是否为 window 平台
      *
-     * @return void
+     * @return boolean
      */
-    protected function setUp()
+    public static function isWindows()
     {
-        assert::open(true);
+        return DIRECTORY_SEPARATOR === '\\';
     }
 
     /**
-     * test
+     * 是否为 Linux 平台
      *
-     * @return void
+     * @return boolean
      */
-    public function testFirst()
+    public static function isLinux()
     {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
+        return PHP_OS === 'Linux';
+    }
+
+    /**
+     * 是否为 mac 平台
+     *
+     * @return boolean
+     */
+    public static function isMac()
+    {
+        return strstr(PHP_OS, 'Darwin');
+    }
+
+    /**
+     * 返回操作系统名称
+     *
+     * @return string
+     */
+    public static function osName()
+    {
+        return PHP_OS;
+    }
+
+    /**
+     * 当前操作系统换行符
+     *
+     * @return string
+     */
+    public static function osNewline()
+    {
+        return PHP_EOL;
     }
 }

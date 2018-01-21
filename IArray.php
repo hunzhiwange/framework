@@ -10,21 +10,30 @@
  * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
  * #                          |___ /  Since 2010.10.03      #
  * ##########################################################
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Queryyetsimple\Support;
 
 /**
- * 单元测试引导文件
+ * IArray 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.01.07
+ * @since 2017.04.13
  * @version 1.0
  */
-require_once __DIR__ . '/tests/env.php';
-require_once dirname(__DIR__, 3) . '/www/index.php';
+interface IArray
+{
+
+    /**
+     * 对象转数组
+     *
+     * @return array
+     */
+    public function toArray();
+}

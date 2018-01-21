@@ -17,36 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Support;
 
 /**
- * first 管道组件
+ * IJson 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.07.19
  * @version 1.0
  */
-class first
+interface IJson
 {
 
     /**
-     * 构造函数
+     * 对象转 JSON
      *
-     * @return void
-     */
-    public function __construct()
-    {
-    }
-
-    /**
-     * 响应请求
-     *
-     * @param string $strPassed
+     * @param integer $option
      * @return string
      */
-    public function handle($strPassed)
-    {
-        return $strPassed . ' Love';
-    }
+    public function toJson($option = JSON_UNESCAPED_UNICODE);
 }
