@@ -20,8 +20,8 @@
 namespace Queryyetsimple\Session\Provider;
 
 use Queryyetsimple\{
-    Session\Manager,
-    Support\Provider
+    Di\Provider,
+    Session\Manager
 };
 
 /**
