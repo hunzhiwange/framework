@@ -44,6 +44,8 @@ git subtree add --prefix=src/Queryyetsimple/Seccode git@github.com:queryyetsimpl
 
 git subtree add --prefix=src/Queryyetsimple/Session git@github.com:queryyetsimple/session.git master
 
+git subtree add --prefix=src/Queryyetsimple/Stack git@github.com:queryyetsimple/stack.git master
+
 git subtree add --prefix=src/Queryyetsimple/Support git@github.com:queryyetsimple/support.git master
 
 git subtree add --prefix=src/Queryyetsimple/Swoole git@github.com:queryyetsimple/swoole.git master

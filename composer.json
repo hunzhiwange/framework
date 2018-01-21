@@ -49,6 +49,7 @@
         "queryyetsimple/router": "self.version",
         "queryyetsimple/seccode": "self.version",
         "queryyetsimple/session": "self.version",
+        "queryyetsimple/stack": "self.version",
         "queryyetsimple/support": "self.version",
         "queryyetsimple/swoole": "self.version",
         "queryyetsimple/throttler": "self.version",

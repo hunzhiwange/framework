@@ -48,6 +48,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
     session = subtree push --prefix=src/Queryyetsimple/Session git@github.com:queryyetsimple/session.git master
 
+    stack = subtree push --prefix=src/Queryyetsimple/Stack git@github.com:queryyetsimple/stack.git master
+
     support = subtree push --prefix=src/Queryyetsimple/Support git@github.com:queryyetsimple/support.git master
 
     swoole = subtree push --prefix=src/Queryyetsimple/Swoole git@github.com:queryyetsimple/swoole.git master
@@ -104,7 +106,9 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
     sessionp = subtree pull --prefix=src/Queryyetsimple/Session git@github.com:queryyetsimple/session.git master
 
-    supportp = subtree pull --prefix=src/Queryyetsimple/Support git@github.com:queryyetsimple/support.git master
+    stackp = subtree pull --prefix=src/Queryyetsimple/Stack git@github.com:queryyetsimple/stack.git master
+
+    supportp = subtree pull --prefix=src/Queryyetsimple/Stack git@github.com:queryyetsimple/stack.git master
 
     swoolep = subtree pull --prefix=src/Queryyetsimple/Swoole git@github.com:queryyetsimple/swoole.git master
 
