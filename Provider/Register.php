@@ -17,54 +17,73 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Option\Provider;
 
-use PHPUnit_Framework_TestCase;
+use Queryyetsimple\{
+    Option\Load,
+    Option\Option,
+    Support\Provider
+};
 
 /**
- * phpunit 测试用例
+ * option 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.05.12
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Register extends Provider
 {
 
     /**
-     * setUpBeforeClass
+     * 注册服务
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public function register()
     {
+        $this->option();
+        $this->optionLoad();
     }
 
     /**
-     * tearDownAfterClass
+     * 可用服务提供者
      *
-     * @return void
+     * @return array
      */
-    public static function tearDownAfterClass()
+    public static function providers()
     {
+        return [
+            'option' => [
+                'Queryyetsimple\Option\Option',
+                'Queryyetsimple\Option\IOption'
+            ],
+            'load' => 'Queryyetsimple\Option\Load'
+        ];
     }
 
     /**
-     * setUp
+     * 注册 option 服务
      *
      * @return void
      */
-    protected function setUp()
+    protected function option()
     {
+        $this->singleton('option', function () {
+            return new Option();
+        });
     }
 
     /**
-     * tearDown
+     * 注册 option.load 服务
      *
      * @return void
      */
-    protected function tearDown()
+    protected function optionLoad()
     {
+        $this->singleton('option.load', function () {
+            return new Load();
+        });
     }
 }

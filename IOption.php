@@ -17,36 +17,65 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Option;
 
 /**
- * first 管道组件
+ * IOption 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.04.23
  * @version 1.0
  */
-class first
+interface IOption
 {
 
     /**
-     * 构造函数
+     * 是否存在配置
      *
-     * @return void
-     */
-    public function __construct()
-    {
-    }
-
-    /**
-     * 响应请求
-     *
-     * @param string $strPassed
+     * @param string $name 配置键值
      * @return string
      */
-    public function handle($strPassed)
-    {
-        return $strPassed . ' Love';
-    }
+    public function has($name = 'app\\');
+
+    /**
+     * 获取配置
+     *
+     * @param string $name 配置键值
+     * @param mixed $defaults 配置默认值
+     * @return string
+     */
+    public function get($name = 'app\\', $defaults = null);
+
+    /**
+     * 返回所有配置
+     *
+     * @return array
+     */
+    public function all();
+
+    /**
+     * 设置配置
+     *
+     * @param mixed $name 配置键值
+     * @param mixed $value 配置值
+     * @return array
+     */
+    public function set($name, $value = null);
+
+    /**
+     * 删除配置
+     *
+     * @param string $name 配置键值
+     * @return string
+     */
+    public function delete($name);
+
+    /**
+     * 初始化配置参数
+     *
+     * @param mixed $namespaces
+     * @return boolean
+     */
+    public function reset($namespaces = null);
 }
