@@ -52,6 +52,7 @@
         "queryyetsimple/support": "self.version",
         "queryyetsimple/swoole": "self.version",
         "queryyetsimple/throttler": "self.version",
+        "queryyetsimple/tree": "self.version",
         "queryyetsimple/validate": "self.version",
         "queryyetsimple/view": "self.version"
     },

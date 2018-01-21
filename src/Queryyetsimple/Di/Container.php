@@ -42,7 +42,7 @@ class Container implements IContainer, ArrayAccess
     use FlowControl;
 
     /**
-     * 注册工厂
+     * 注册服务
      *
      * @var array
      */
