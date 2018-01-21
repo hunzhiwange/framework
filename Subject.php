@@ -23,7 +23,7 @@ use SplSubject;
 use SplObserver;
 use SplObjectStorage;
 use InvalidArgumentException;
-use Queryyetsimple\Support\IContainer;
+use Queryyetsimple\Di\IContainer;
 
 /**
  * 观察者目标角色 subject
@@ -40,7 +40,7 @@ abstract class Subject implements ISubject, SplSubject
     /**
      * 容器
      *
-     * @var \Queryyetsimple\Support\IContainer
+     * @var \Queryyetsimple\Di\IContainer
      */
     protected $container;
 
@@ -54,7 +54,7 @@ abstract class Subject implements ISubject, SplSubject
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Support\IContainer $container
+     * @param \Queryyetsimple\Di\IContainer $container
      * @return void
      */
     public function __construct(IContainer $container)
@@ -123,7 +123,7 @@ abstract class Subject implements ISubject, SplSubject
     /**
      * 返回容器
      *
-     * @return \Queryyetsimple\Support\IContainer
+     * @return \Queryyetsimple\Di\IContainer
      */
     public function container()
     {

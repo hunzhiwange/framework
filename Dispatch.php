@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Event;
 
-use Queryyetsimple\Support\IContainer;
+use Queryyetsimple\Di\IContainer;
 
 /**
  * 事件
@@ -35,7 +35,7 @@ class Dispatch implements IDispatch
     /**
      * 项目容器
      *
-     * @var \Queryyetsimple\Support\IContainer
+     * @var \Queryyetsimple\Di\IContainer
      */
     protected $container;
 
@@ -49,7 +49,7 @@ class Dispatch implements IDispatch
     /**
      * 创建一个事件解析器
      *
-     * @param \Queryyetsimple\Support\IContainer $container
+     * @param \Queryyetsimple\Di\IContainer $container
      * @return void
      */
     public function __construct(IContainer $container)
