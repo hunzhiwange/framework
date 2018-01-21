@@ -17,15 +17,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\View\provider;
+namespace Queryyetsimple\View\Provider;
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Queryyetsimple\{
+    Di\Provider,
     View\Parser,
     View\Manager,
-    View\Compiler,
-    Support\Provider
+    View\Compiler
 };
 
 /**
