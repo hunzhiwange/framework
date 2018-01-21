@@ -41,6 +41,7 @@
         "queryyetsimple/i18n": "self.version",
         "queryyetsimple/log": "self.version",
         "queryyetsimple/mail": "self.version",
+        "queryyetsimple/manager": "self.version",
         "queryyetsimple/mvc": "self.version",
         "queryyetsimple/option": "self.version",
         "queryyetsimple/page": "self.version",

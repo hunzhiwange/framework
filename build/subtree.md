@@ -28,6 +28,8 @@ git subtree add --prefix=src/Queryyetsimple/Log git@github.com:queryyetsimple/lo
 
 git subtree add --prefix=src/Queryyetsimple/Mail git@github.com:queryyetsimple/mail.git master
 
+git subtree add --prefix=src/Queryyetsimple/Manager git@github.com:queryyetsimple/manager.git master
+
 git subtree add --prefix=src/Queryyetsimple/Mvc git@github.com:queryyetsimple/mvc.git master
 
 git subtree add --prefix=src/Queryyetsimple/Option git@github.com:queryyetsimple/option.git master

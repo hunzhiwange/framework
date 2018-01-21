@@ -32,6 +32,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
     mail = subtree push --prefix=src/Queryyetsimple/Mail git@github.com:queryyetsimple/mail.git master
 
+    manager = subtree push --prefix=src/Queryyetsimple/Manager git@github.com:queryyetsimple/manager.git master
+
     mvc = subtree push --prefix=src/Queryyetsimple/Mvc git@github.com:queryyetsimple/mvc.git master
 
     option = subtree push --prefix=src/Queryyetsimple/Option git@github.com:queryyetsimple/option.git master
@@ -89,6 +91,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     logsp = subtree pull --prefix=src/Queryyetsimple/Log git@github.com:queryyetsimple/log.git master
 
     mailp = subtree pull --prefix=src/Queryyetsimple/Mail git@github.com:queryyetsimple/mail.git master
+
+    managerp = subtree pull --prefix=src/Queryyetsimple/Manager git@github.com:queryyetsimple/manager.git master
 
     mvcp = subtree pull --prefix=src/Queryyetsimple/Mvc git@github.com:queryyetsimple/mvc.git master
 
