@@ -17,54 +17,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Console;
 
-use PHPUnit_Framework_TestCase;
+use Symfony\Component\Console\Input\InputArgument;
 
 /**
- * phpunit 测试用例
+ * 命令行参数
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.09
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Argument extends InputArgument
 {
-
-    /**
-     * setUpBeforeClass
-     *
-     * @return void
-     */
-    public static function setUpBeforeClass()
-    {
-    }
-
-    /**
-     * tearDownAfterClass
-     *
-     * @return void
-     */
-    public static function tearDownAfterClass()
-    {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
-    }
 }
