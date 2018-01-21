@@ -20,8 +20,8 @@
 namespace Queryyetsimple\Mail\Provider;
 
 use Queryyetsimple\{
-    Mail\Manager,
-    Support\Provider
+    Di\Provider,
+    Mail\Manager
 };
 
 /**
