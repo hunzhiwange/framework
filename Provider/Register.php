@@ -17,36 +17,55 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Encryption\Provider;
+
+use Queryyetsimple\{
+    Support\Provider,
+    Encryption\Encryption
+};
 
 /**
- * first 管道组件
+ * encryption 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.06.03
  * @version 1.0
  */
-class first
+class Register extends Provider
 {
 
     /**
-     * 构造函数
+     * 是否延迟载入
+     *
+     * @var boolean
+     */
+    public static $defer = true;
+
+    /**
+     * 注册服务
      *
      * @return void
      */
-    public function __construct()
+    public function register()
     {
+        $this->singleton('encryption', function ($project) {
+            return new Encryption($project['option']['auth_key'], $project['option']['auth_expiry']);
+        });
     }
 
     /**
-     * 响应请求
+     * 可用服务提供者
      *
-     * @param string $strPassed
-     * @return string
+     * @return array
      */
-    public function handle($strPassed)
+    public static function providers()
     {
-        return $strPassed . ' Love';
+        return [
+            'encryption' => [
+                'Queryyetsimple\Encryption\Encryption',
+                'Queryyetsimple\Encryption\IEncryption'
+            ]
+        ];
     }
 }

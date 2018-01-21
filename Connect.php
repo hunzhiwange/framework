@@ -17,22 +17,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
-
-use queryyetsimple\{
-    psr4,
-    router
-};
+namespace Queryyetsimple\Encryption;
 
 /**
- * phpunit 内部启动文件
+ * 加密抽象类
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.02.15
  * @version 1.0
  */
-psr4::import('tests', dirname(env('app_bootstrap')));
-router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+abstract class Connect
+{
+
+    /**
+     * 加密 key
+     *
+     * @var string
+     */
+    protected $strKey;
+
+    /**
+     * 加密过期时间
+     *
+     * @var int
+     */
+    protected $intExpiry = 0;
+}

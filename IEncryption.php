@@ -17,54 +17,33 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
-
-use PHPUnit_Framework_TestCase;
+namespace Queryyetsimple\Encryption;
 
 /**
- * phpunit 测试用例
+ * IEncryption 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.04.23
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+interface IEncryption
 {
 
     /**
-     * setUpBeforeClass
+     * 加密
      *
-     * @return void
+     * @param string $strValue
+     * @param int $intExpiry
+     * @return string
      */
-    public static function setUpBeforeClass()
-    {
-    }
+    public function encrypt($strValue, $intExpiry = null);
 
     /**
-     * tearDownAfterClass
+     * 解密
      *
-     * @return void
+     * @param string $strValue
+     * @return string
      */
-    public static function tearDownAfterClass()
-    {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
-    }
+    public function decrypt($strValue);
 }
