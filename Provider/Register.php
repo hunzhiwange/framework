@@ -20,8 +20,8 @@
 namespace Queryyetsimple\Swoole\Provider;
 
 use Queryyetsimple\{
+    Di\Provider,
     Swoole\Server,
-    Support\Provider,
     Swoole\Http\Server as HttpServer,
     Swoole\Websocket\Server as WebsocketServer
 };
