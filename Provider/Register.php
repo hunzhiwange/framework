@@ -20,8 +20,8 @@
 namespace Queryyetsimple\Cookie\Provider;
 
 use Queryyetsimple\{
-    Cookie\Cookie,
-    Support\Provider
+    Di\Provider,
+    Cookie\Cookie
 };
 
 /**
