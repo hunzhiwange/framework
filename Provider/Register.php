@@ -17,22 +17,58 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Validate\Provider;
 
-use queryyetsimple\{
-    psr4,
-    router
+use Queryyetsimple\{
+    Support\Provider,
+    Validate\Validate
 };
 
 /**
- * phpunit 内部启动文件
+ * validate 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.07.26
  * @version 1.0
  */
-psr4::import('tests', dirname(env('app_bootstrap')));
-router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+class Register extends Provider
+{
+
+    /**
+     * 注册服务
+     *
+     * @return void
+     */
+    public function register()
+    {
+        $this->singleton('validate', function ($project) {
+            return (new Validate())->container($project);
+        });
+    }
+
+    /**
+     * 载入语言包
+     *
+     * @return void
+     */
+    public function bootstrap()
+    {
+        $this->loadI18nDir(__DIR__ . '/../i18n');
+    }
+
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers()
+    {
+        return [
+            'validate' => [
+                'Queryyetsimple\Validate\Validate',
+                'Queryyetsimple\Validate\IValidate'
+            ]
+        ];
+    }
+}
