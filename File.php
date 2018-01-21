@@ -17,54 +17,58 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Log;
 
-use PHPUnit_Framework_TestCase;
+use RuntimeException;
 
 /**
- * phpunit 测试用例
+ * log.file
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.06.05
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class File extends Connect implements IConnect
 {
 
     /**
-     * setUpBeforeClass
+     * 配置
      *
+     * @var array
+     */
+    protected $option = [
+        'name' => 'Y-m-d H',
+        'size' => 2097152,
+        'path' => ''
+    ];
+
+    /**
+     * 日志写入接口
+     *
+     * @param array $datas
      * @return void
      */
-    public static function setUpBeforeClass()
+    public function save(array $datas)
     {
+        // 保存日志
+        $this->checkSize($filepath = $this->getPath($datas[0][0]));
+
+        // 记录到系统
+        foreach ($datas as $item) {
+            error_log($this->formatMessage($item[1], $item[2]) . PHP_EOL, 3, $filepath);
+        }
     }
 
     /**
-     * tearDownAfterClass
+     * 格式化日志信息
      *
-     * @return void
+     * @param string $message 应该被记录的错误信息
+     * @param array $contexts
+     * @return string
      */
-    public static function tearDownAfterClass()
+    protected function formatMessage($message, array $contexts = [])
     {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        return $message . ' ' . json_encode($contexts, JSON_UNESCAPED_UNICODE);
     }
 }

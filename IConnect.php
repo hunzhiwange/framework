@@ -17,22 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
-
-use queryyetsimple\{
-    psr4,
-    router
-};
+namespace Queryyetsimple\Log;
 
 /**
- * phpunit 内部启动文件
+ * IConnect 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.04.23
  * @version 1.0
  */
-psr4::import('tests', dirname(env('app_bootstrap')));
-router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+interface IConnect
+{
+
+    /**
+     * 日志写入接口
+     *
+     * @param array $data
+     * @return void
+     */
+    public function save(array $datas);
+}

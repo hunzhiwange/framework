@@ -17,41 +17,68 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
+namespace Queryyetsimple\Log\middleware;
 
-use tests\testcase;
-use queryyetsimple\assert\assert;
+use Closure;
+use Queryyetsimple\{
+    log\manager,
+    Http\Request,
+    Http\Response
+};
 
 /**
- * assert 组件测试
+ * log 中间件
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.11.14
  * @version 1.0
  */
-class AssertTest extends testcase
+class log
 {
 
     /**
-     * 开启断言
+     * log 管理
      *
+     * @var \Queryyetsimple\Log
+yetsimple\logueryyetsimple\I18nQueryyetsimple\Log\log
+     */
+    protected $manager;
+
+    /**
+     * 构造函数
+     *
+     * @param \Queryyetsimple\Throttler\IThrottler $manager
      * @return void
      */
-    protected function setUp()
+    public function __construct(manager $manager)
     {
-        assert::open(true);
+        $this->manager = $manager;
     }
 
     /**
-     * test
+     * 响应
+     * 
+     * @param \Closure $next
+     * @param \Queryyetsimple\Http\Request $request
+     * @param \Queryyetsimple\Http\Response $response
+     * @return void
+     */
+    public function terminate(Closure $next, Request $request, Response $response)
+    {
+        $this->saveLog();
+        $next($request, $response);
+    }
+
+    /**
+     * 保存日志
      *
      * @return void
      */
-    public function testFirst()
+    protected function saveLog()
     {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
+        if ($this->manager->container()['option'] ['log\enabled']) {
+            $this->manager->save();
+        }
     }
 }

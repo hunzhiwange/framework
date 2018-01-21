@@ -17,36 +17,61 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Log;
+
+use Queryyetsimple\Support\Manager as SupportManager;
 
 /**
- * first 管道组件
+ * log 入口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.02.15
  * @version 1.0
  */
-class first
+class Manager extends SupportManager
 {
 
     /**
-     * 构造函数
+     * 取得配置命名空间
      *
-     * @return void
+     * @return string
      */
-    public function __construct()
+    protected function getOptionNamespace()
     {
+        return 'log';
     }
 
     /**
-     * 响应请求
+     * 创建连接对象
      *
-     * @param string $strPassed
-     * @return string
+     * @param object $connect
+     * @return object
      */
-    public function handle($strPassed)
+    protected function createConnect($connect)
     {
-        return $strPassed . ' Love';
+        return new Log($connect, $this->getOptionCommon());
+    }
+
+    /**
+     * 创建 file 日志驱动
+     *
+     * @param array $options
+     * @return \Queryyetsimple\Log\File
+     */
+    protected function makeConnectFile($options = [])
+    {
+        return new File($this->getOption('file', $options));
+    }
+
+    /**
+     * 创建 monolog 日志驱动
+     *
+     * @param array $options
+     * @return \Queryyetsimple\Log\Monolog
+     */
+    protected function makeConnectMonolog($options = [])
+    {
+        return new Monolog($this->getOption('monolog', $options));
     }
 }
