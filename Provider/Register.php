@@ -20,7 +20,7 @@
 namespace Queryyetsimple\Validate\Provider;
 
 use Queryyetsimple\{
-    Support\Provider,
+    Di\Provider,
     Validate\Validate
 };
 
