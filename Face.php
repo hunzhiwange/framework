@@ -23,6 +23,7 @@ use Closure;
 use Exception;
 use RuntimeException;
 use BadMethodCallException;
+use Queryyetsimple\Di\IContainer;
 
 /**
  * 实现类的静态访问门面
@@ -38,7 +39,7 @@ abstract class Face
     /**
      * 项目容器
      *
-     * @var \Queryyetsimple\Support\IContainer
+     * @var \Queryyetsimple\Di\IContainer
      */
     protected static $container;
 
@@ -72,7 +73,7 @@ abstract class Face
     /**
      * 返回服务容器
      *
-     * @return \Queryyetsimple\Support\IContainer
+     * @return \Queryyetsimple\Di\IContainer
      */
     public static function container(): IContainer
     {
@@ -82,7 +83,7 @@ abstract class Face
     /**
      * 设置服务容器
      *
-     * @param \Queryyetsimple\Support\IContainer $container
+     * @param \Queryyetsimple\Di\IContainer $container
      * @return void
      */
     public static function setContainer(IContainer $container): void
