@@ -17,22 +17,45 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Queue\Console;
 
-use queryyetsimple\{
-    psr4,
-    router
-};
+use Queryyetsimple\Console\Command;
 
 /**
- * phpunit 内部启动文件
+ * 重启任务
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.06.07
  * @version 1.0
  */
-psr4::import('tests', dirname(env('app_bootstrap')));
-router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+class Restart extends Command
+{
+
+    /**
+     * 命令名字
+     *
+     * @var string
+     */
+    protected $strName = 'queue:restart';
+
+    /**
+     * 命令行描述
+     *
+     * @var string
+     */
+    protected $strDescription = 'Restart queue work after done it current job.';
+
+    /**
+     * 响应命令
+     *
+     * @return void
+     */
+    public function handle()
+    {
+        cache()->set('queryphp.queue.restart', time(), [
+            'expire' => 0
+        ]);
+        $this->info('Send queue restart signal.');
+    }
+}

@@ -17,16 +17,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Queryyetsimple\Queue\Workers;
 
 /**
- * phpunit 环境变量设置
+ * redis worker
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.28
+ * @since 2017.05.11
  * @version 1.0
  */
-putenv('app_name=phpunittests');
-putenv('controller_name=bootstrap');
-putenv('action_name=index');
-putenv('app_bootstrap=' . __DIR__ . '/bootstrap.php');
+class Redis extends Worker implements IWorker
+{
+}

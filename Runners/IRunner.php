@@ -17,41 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
-
-use tests\testcase;
-use queryyetsimple\assert\assert;
+namespace Queryyetsimple\Queue\Runners;
 
 /**
- * assert 组件测试
+ * IRunner 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.06.06
  * @version 1.0
  */
-class AssertTest extends testcase
+interface IRunner
 {
 
     /**
-     * 开启断言
+     * work 命名
      *
+     * @param \Queryyetsimple\Queue\console\work $objWork
      * @return void
      */
-    protected function setUp()
-    {
-        assert::open(true);
-    }
+    public function workCommand($objWork);
 
     /**
-     * test
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function testFirst()
-    {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
-    }
+    public function workJob();
 }

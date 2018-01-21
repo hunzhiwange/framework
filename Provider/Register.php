@@ -17,54 +17,47 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Queue\provider;
 
-use PHPUnit_Framework_TestCase;
+use Queryyetsimple\Support\Provider;
 
 /**
- * phpunit 测试用例
+ * queue 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.11.06
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Register extends Provider
 {
 
     /**
-     * setUpBeforeClass
+     * 注册服务
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public function register()
     {
     }
 
     /**
-     * tearDownAfterClass
+     * 载入命令包
      *
      * @return void
      */
-    public static function tearDownAfterClass()
+    public function bootstrap()
     {
+        $this->loadCommandNamespace('Queryyetsimple\Queue\console');
     }
 
     /**
-     * setUp
+     * 可用服务提供者
      *
-     * @return void
+     * @return array
      */
-    protected function setUp()
+    public static function providers()
     {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        return [];
     }
 }

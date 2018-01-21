@@ -17,37 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Queue\Runners;
 
 /**
- * second 管道组件
+ * redis runner
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.05.12
  * @version 1.0
  */
-class second
+class Redis extends Runner implements IRunner
 {
 
     /**
-     * 构造函数
+     * 消息队列名字
      *
-     * @return void
+     * @var string
      */
-    public function __construct()
-    {
-    }
-
-    /**
-     * 响应请求
-     *
-     * @param string $strPassed
-     * @param string $strFoo
-     * @return string
-     */
-    public function handle($strPassed, $strFoo)
-    {
-        return $strPassed . ' ' . ucfirst($strFoo);
-    }
+    public $queue_name = 'redis';
 }
