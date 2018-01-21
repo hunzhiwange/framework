@@ -20,7 +20,7 @@
 namespace Queryyetsimple\Database\Provider;
 
 use Queryyetsimple\{
-    Support\Provider,
+    Di\Provider,
     Database\Manager
 };
 
