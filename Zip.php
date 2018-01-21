@@ -17,41 +17,47 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\assert;
+namespace Queryyetsimple\Filesystem;
 
-use tests\testcase;
-use queryyetsimple\assert\assert;
+use InvalidArgumentException;
+use League\Flysystem\ZipArchive\ZipArchiveAdapter;
 
 /**
- * assert 组件测试
+ * filesystem.zip
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.08.29
+ * @see https://flysystem.thephpleague.com/adapter/zip-archive/
  * @version 1.0
  */
-class AssertTest extends testcase
+class Zip extends Connect implements IConnect
 {
 
     /**
-     * 开启断言
+     * 配置
      *
-     * @return void
+     * @var array
      */
-    protected function setUp()
-    {
-        assert::open(true);
-    }
+    protected $arrOption = [
+        'path' => ''
+    ];
 
     /**
-     * test
+     * 创建连接
      *
-     * @return void
+     * @return \League\Flysystem\AdapterInterface
      */
-    public function testFirst()
+    public function makeConnect()
     {
-        $this->assertEquals(true, assert::string('hello'));
-        $this->assertEquals(true, assert::boolean(true));
-        $this->assertEquals(true, assert::null(null));
+        if (empty($this->getOption('path'))) {
+            throw new InvalidArgumentException('The zip requires path option');
+        }
+
+        if (! class_exists('League\Flysystem\ZipArchive\ZipArchiveAdapter')) {
+            throw new InvalidArgumentException('Please run composer require league/flysystem-ziparchive');
+        }
+
+        return new ZipArchiveAdapter($this->getOption('path'));
     }
 }

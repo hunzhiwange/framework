@@ -17,22 +17,46 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
-
-use queryyetsimple\{
-    psr4,
-    router
-};
+namespace Queryyetsimple\Filesystem;
 
 /**
- * phpunit 内部启动文件
+ * filesystem 仓储
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.08.29
  * @version 1.0
  */
-psr4::import('tests', dirname(env('app_bootstrap')));
-router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+class Filesystem implements IFilesystem
+{
+
+    /**
+     * 连接驱动
+     *
+     * @var \Queryyetsimple\Filesystem\IConnect
+     */
+    protected $oConnect;
+
+    /**
+     * 构造函数
+     *
+     * @param \Queryyetsimple\Filesystem\IConnect $oConnect
+     * @return void
+     */
+    public function __construct(IConnect $oConnect)
+    {
+        $this->oConnect = $oConnect;
+    }
+
+    /**
+     * call 
+     *
+     * @param string $method
+     * @param array $arrArgs
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        return $this->oConnect->$method(...$arrArgs);
+    }
+}

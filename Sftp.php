@@ -17,34 +17,61 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Filesystem;
+
+use League\Flysystem\Sftp\SftpAdapter;
 
 /**
- * phpunit 内部应用程序
+ * filesystem.sftp
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.08.29
+ * @see https://flysystem.thephpleague.com/adapter/sftp/
  * @version 1.0
  */
-class application
+class Sftp extends Connect implements IConnect
 {
 
     /**
-     * 创建一个 phpunit 应用程序
+     * 配置
      *
-     * @return $this
+     * @var array
      */
-    public function __construct()
-    {
-    }
+    protected $arrOption = [
+        // 主机
+        'host' => 'sftp.example.com',
+
+        // 端口
+        'port' => 22,
+
+        // 用户名
+        'username' => 'your-username',
+
+        // 密码
+        'password' => 'your-password',
+
+        // 根目录
+        'root' => '',
+
+        // 私钥路径
+        'privateKey' => '',
+
+        // 超时设置
+        'timeout' => 20
+    ];
 
     /**
-     * 默认方法
+     * 创建连接
      *
-     * @return void
+     * @return \League\Flysystem\AdapterInterface
      */
-    public function run()
+    public function makeConnect()
     {
+        if (! class_exists('League\Flysystem\Sftp\SftpAdapter')) {
+            throw new InvalidArgumentException('Please run composer require league/flysystem-sftp');
+        }
+
+        return new SftpAdapter($this->getOptions());
     }
 }

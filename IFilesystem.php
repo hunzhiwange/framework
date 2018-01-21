@@ -17,37 +17,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Filesystem;
 
 /**
- * second 管道组件
+ * IFilesystem 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.08.29
  * @version 1.0
  */
-class second
+interface IFilesystem
 {
-
-    /**
-     * 构造函数
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-    }
-
-    /**
-     * 响应请求
-     *
-     * @param string $strPassed
-     * @param string $strFoo
-     * @return string
-     */
-    public function handle($strPassed, $strFoo)
-    {
-        return $strPassed . ' ' . ucfirst($strFoo);
-    }
 }

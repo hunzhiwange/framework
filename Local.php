@@ -17,54 +17,46 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Filesystem;
 
-use PHPUnit_Framework_TestCase;
+use InvalidArgumentException;
+use League\Flysystem\Adapter\Local as AdapterLocal;
 
 /**
- * phpunit 测试用例
+ * filesystem.local
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.08.29
+ * @see https://flysystem.thephpleague.com/adapter/local/
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Local extends Connect implements IConnect
 {
 
     /**
-     * setUpBeforeClass
+     * 配置
      *
-     * @return void
+     * @var array
      */
-    public static function setUpBeforeClass()
-    {
-    }
+    protected $arrOption = [
+        'path' => '',
+        'write_flags' => LOCK_EX,
+        'link_handling' => AdapterLocal::DISALLOW_LINKS,
+        'permissions' => []
+    ];
 
     /**
-     * tearDownAfterClass
+     * 创建连接
      *
-     * @return void
+     * @return \League\Flysystem\AdapterInterface
      */
-    public static function tearDownAfterClass()
+    public function makeConnect()
     {
-    }
+        if (empty($this->getOption('path'))) {
+            throw new InvalidArgumentException('The local requires path option');
+        }
 
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        return new AdapterLocal($this->getOption('path'), $this->getOption('write_flags'), $this->getOption('link_handling'), $this->getOption('permissions'));
     }
 }

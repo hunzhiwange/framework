@@ -17,36 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests\pipeline;
+namespace Queryyetsimple\Filesystem;
 
 /**
- * first 管道组件
+ * IConnect 接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.27
+ * @since 2017.08.29
  * @version 1.0
  */
-class first
+interface IConnect
 {
 
     /**
-     * 构造函数
+     * 创建连接
      *
-     * @return void
+     * @return \League\Flysystem\AdapterInterface
      */
-    public function __construct()
-    {
-    }
-
-    /**
-     * 响应请求
-     *
-     * @param string $strPassed
-     * @return string
-     */
-    public function handle($strPassed)
-    {
-        return $strPassed . ' Love';
-    }
+    public function makeConnect();
 }
