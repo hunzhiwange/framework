@@ -17,54 +17,57 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple\Router\provider;
 
-use PHPUnit_Framework_TestCase;
+use Queryyetsimple\{
+    Router\Router,
+    Support\Provider
+};
 
 /**
- * phpunit 测试用例
+ * router 服务提供者
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.05.12
  * @version 1.0
  */
-abstract class testcase extends PHPUnit_Framework_TestCase
+class Register extends Provider
 {
 
     /**
-     * setUpBeforeClass
+     * 注册服务
      *
      * @return void
      */
-    public static function setUpBeforeClass()
+    public function register()
     {
+        $this->singleton('router', function ($project) {
+            $arrOption = $project['option']->get('url\\');
+            foreach ([
+                '~apps~',
+                'default_app',
+                'default_controller',
+                'default_action',
+                'middleware_group',
+                'middleware_alias'
+            ] as $strOption) {
+                $arrOption[$strOption] = $project['option']->get($strOption);
+            }
+
+            return new Router($project, $project['pipeline'], $project['request'], $arrOption);
+        });
     }
 
     /**
-     * tearDownAfterClass
+     * 可用服务提供者
      *
-     * @return void
+     * @return array
      */
-    public static function tearDownAfterClass()
+    public static function providers()
     {
-    }
-
-    /**
-     * setUp
-     *
-     * @return void
-     */
-    protected function setUp()
-    {
-    }
-
-    /**
-     * tearDown
-     *
-     * @return void
-     */
-    protected function tearDown()
-    {
+        return [
+            'router' => 'Queryyetsimple\Router\Router'
+        ];
     }
 }
