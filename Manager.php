@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Log;
 
-use Queryyetsimple\Support\Manager as SupportManager;
+use Queryyetsimple\Manager\Manager as Managers;
 
 /**
  * log 入口
@@ -29,7 +29,7 @@ use Queryyetsimple\Support\Manager as SupportManager;
  * @since 2017.02.15
  * @version 1.0
  */
-class Manager extends SupportManager
+class Manager extends Managers
 {
 
     /**
