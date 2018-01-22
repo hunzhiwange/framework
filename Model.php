@@ -28,14 +28,14 @@ use DateTimeInterface;
 use BadMethodCallException;
 use Queryyetsimple\{
     Support\Str,
-    Support\TMacro,
+    Support\Arr,
+    Flow\TControl,
     Support\IJson,
     Support\IArray,
-    Support\Helper,
+    Support\TMacro,
     Event\IDispatch,
     Support\TSerialize,
     Support\Collection,
-    Support\FlowControl,
     Mvc\Relation\HasOne,
     Mvc\Relation\HasMany,
     Mvc\Relation\Relation,
@@ -60,7 +60,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         __call as macroCall;
     }
 
-    use FlowControl;
+    use TControl;
 
     /**
      * 与模型关联的数据表
@@ -668,7 +668,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function prop($strProp, $mixValue)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -702,7 +702,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function props(array $arrProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         foreach ($arrProp as $strProp => $mixValue) {
@@ -720,7 +720,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function forceProp($strPropName, $mixValue)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -744,7 +744,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function forceProps(array $arrProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -825,7 +825,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function deleteProp($sPropName)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (! isset($this->arrProp[$sPropName])) {
@@ -875,7 +875,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function setRelationProp($sPropName, $mixValue)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrRelationProp[$sPropName] = $mixValue;
@@ -890,7 +890,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function setRelationProps(array $arrRelationProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrRelationProp = $arrRelationProp;
@@ -1382,7 +1382,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             return ! empty($this->arrChangedProp);
         }
 
-        $arrPropsName = Helper::arrays($sPropsName);
+        $arrPropsName = Arr::normalize($sPropsName);
         foreach ($arrPropsName as $sPropName) {
             if (isset($this->arrChangedProp[$sPropName])) {
                 return true;
@@ -1399,13 +1399,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function clearChanged($mixProp = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (is_null($mixProp)) {
             $this->arrChangedProp = [];
         } else {
-            $mixProp = Helper::arrays($mixProp);
+            $mixProp = Arr::normalize($mixProp);
             foreach ($mixProp as $sProp) {
                 if (isset($this->arrChangedProp[$sProp])) {
                     unset($this->arrChangedProp[$sProp]);
@@ -1495,7 +1495,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function table($strTable)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strTable = $strTable;
@@ -1520,7 +1520,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function connect($mixConnect)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->mixConnect = $mixConnect;
@@ -1545,7 +1545,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function autoPost($booAutoPost = true)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->booCreateAutoPost = $booAutoPost;
@@ -1561,7 +1561,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function createAutoPost($booAutoPost = true)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->booCreateAutoPost = $booAutoPost;
@@ -1576,7 +1576,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function updateAutoPost($booAutoPost = true)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->booUpdateAutoPost = $booAutoPost;
@@ -1602,7 +1602,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function autoFill($booAutoFill = true)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->booCreateAutoFill = $booAutoFill;
@@ -1618,7 +1618,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function createAutoFill($booAutoFill = true)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->booCreateAutoFill = $booAutoFill;
@@ -1633,7 +1633,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function updateAutoFill($booAutoFill = true)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->booUpdateAutoFill = $booAutoFill;
@@ -1659,7 +1659,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function hidden(array $arrHidden)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrHidden = $arrHidden;
@@ -1684,7 +1684,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function addHidden($mixProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
@@ -1700,7 +1700,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function removeHidden($mixProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrHidden = array_diff($this->arrHidden, ( array ) $mixProp);
@@ -1715,7 +1715,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function visible(array $arrVisible)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrVisible = $arrVisible;
@@ -1740,7 +1740,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function addVisible($mixProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
@@ -1756,7 +1756,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function removeVisible($mixProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrVisible = array_diff($this->arrVisible, ( array ) $mixProp);
@@ -1771,7 +1771,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function append(array $arrAppend)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrAppend = $arrAppend;
@@ -1796,7 +1796,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function addAppend($mixProp = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
@@ -1812,7 +1812,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function removeAppend($mixProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrAppend = array_diff($this->arrAppend, ( array ) $mixProp);
@@ -1827,7 +1827,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function setDateFormat($strDateFormat)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strDateFormat = $strDateFormat;
@@ -1928,7 +1928,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function date(array $arrDate)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrDate = $arrDate;
@@ -1943,7 +1943,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function addDate($mixProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
@@ -2092,7 +2092,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function setSelectForQuery($objSelectForQuery)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -2183,7 +2183,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function saveEntry($sSaveMethod = 'save', $arrData = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -2869,7 +2869,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function __call(string $method, array $arrArgs)
     {
-        if ($this->placeholderFlowControl($method)) {
+        if ($this->placeholderTControl($method)) {
             return $this;
         }
 

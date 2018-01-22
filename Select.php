@@ -24,7 +24,7 @@ use Exception;
 use Queryyetsimple\{
     Mvc\IModel,
     Support\Str,
-    Support\Helper,
+    Support\Arr,
     Mvc\ModelNotFound,
     Support\Collection,
     Mvc\Relation\Relation,
@@ -462,7 +462,7 @@ class Select
             unset($mixResultCallback);
             $this->objModel->setSelectForQuery($objSelect);
         } else {
-            foreach (Helper::arrays($mixScope) as $strScope) {
+            foreach (Arr::normalize($mixScope) as $strScope) {
                 $strScope = 'scope' . ucwords($strScope);
                 if (method_exists($this->objModel, $strScope)) {
                     $mixResultCallback = call_user_func_array([
