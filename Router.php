@@ -28,13 +28,13 @@ use InvalidArgumentException;
 use Queryyetsimple\{
     Mvc\IAction,
     Http\Request,
-    Support\Macro,
+    Di\IContainer,
     Http\Response,
     Option\TClass,
+    Support\TMacro,
     Support\Helper,
     Mvc\IController,
-    Pipeline\IPipeline,
-    Di\IContainer
+    Pipeline\IPipeline
 };
 
 /**
@@ -47,7 +47,7 @@ use Queryyetsimple\{
  */
 class Router
 {
-    use Macro;
+    use TMacro;
 
     use TClass;
 
