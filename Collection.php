@@ -36,7 +36,7 @@ use InvalidArgumentException;
  */
 class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, JsonSerializable
 {
-    use Macro;
+    use TMacro;
 
     /**
      * 元素合集
