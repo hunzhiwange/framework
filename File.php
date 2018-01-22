@@ -21,7 +21,7 @@ namespace Queryyetsimple\Cache;
 
 use InvalidArgumentException;
 use Queryyetsimple\{
-    Support\Option,
+    Option\TClass,
     Filesystem\Fso
 };
 
@@ -35,7 +35,7 @@ use Queryyetsimple\{
  */
 class File extends Connect implements IConnect
 {
-    use Option;
+    use TClass;
 
     /**
      * 缓存文件头部
