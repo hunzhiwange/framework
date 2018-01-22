@@ -26,7 +26,7 @@ use BadMethodCallException;
 use InvalidArgumentException;
 use Queryyetsimple\{
     Mvc\IView,
-    Support\Option,
+    Option\TClass,
     Support\FlowControl
 };
 
@@ -40,7 +40,8 @@ use Queryyetsimple\{
  */
 class Mail implements IMail
 {
-    use Option;
+    use TClass;
+    
     use FlowControl;
 
     /**
