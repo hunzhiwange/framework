@@ -60,10 +60,7 @@ class Dump
             array_shift($args);
             array_unshift($args, $var);
 
-            return call_user_func_array([
-                'Queryyetsimple\Support\Debug\Dump',
-                'varDump'
-            ], $args);
+            return Dump::varDump(...$args);
         }
     }
 

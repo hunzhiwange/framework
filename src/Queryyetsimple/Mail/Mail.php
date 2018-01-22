@@ -27,7 +27,7 @@ use InvalidArgumentException;
 use Queryyetsimple\{
     Mvc\IView,
     Option\TClass,
-    Support\FlowControl
+    Flow\TControl
 };
 
 /**
@@ -42,7 +42,7 @@ class Mail implements IMail
 {
     use TClass;
     
-    use FlowControl;
+    use TControl;
 
     /**
      * 连接驱动
@@ -157,7 +157,7 @@ class Mail implements IMail
      */
     public function view($sFile, array $arrData = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -176,7 +176,7 @@ class Mail implements IMail
      */
     public function html($strContent)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -192,7 +192,7 @@ class Mail implements IMail
      */
     public function plain($strContent)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -209,7 +209,7 @@ class Mail implements IMail
      */
     public function viewPlain($sFile, array $arrData = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -530,7 +530,7 @@ class Mail implements IMail
      */
     public function __call(string $method, array $arrArgs)
     {
-        if ($this->placeholderFlowControl($method)) {
+        if ($this->placeholderTControl($method)) {
             return $this;
         }
 

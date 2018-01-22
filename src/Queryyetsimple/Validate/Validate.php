@@ -25,10 +25,10 @@ use DateTimeZone;
 use BadMethodCallException;
 use InvalidArgumentException;
 use Queryyetsimple\Di\IContainer;
+use Queryyetsimple\Flow\TControl;
 use Queryyetsimple\Support\{
     Str,
-    Helper,
-    FlowControl
+    Arr
 };
 
 /**
@@ -41,7 +41,7 @@ use Queryyetsimple\Support\{
  */
 class Validate implements IValidate
 {
-    use FlowControl;
+    use TControl;
 
     /**
      * IOC 容器
@@ -263,7 +263,7 @@ class Validate implements IValidate
      */
     public function data(array $arrData)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrData = $arrData;
@@ -278,7 +278,7 @@ class Validate implements IValidate
      */
     public function addData(array $arrData)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrData = array_merge($this->arrData, $arrData);
@@ -294,7 +294,7 @@ class Validate implements IValidate
      */
     public function fieldData($strField, $mixData)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrData[$strField] = $mixData;
@@ -319,7 +319,7 @@ class Validate implements IValidate
      */
     public function rule(array $arrRule)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrRule = $this->arrayRule($arrRule);
@@ -335,7 +335,7 @@ class Validate implements IValidate
      */
     public function ruleIf(array $arrRule, $mixCallback)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if ($this->isCallbackValid($mixCallback)) {
@@ -352,7 +352,7 @@ class Validate implements IValidate
      */
     public function addRule(array $arrRule)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrRule = array_merge($this->arrRule, $this->arrayRule($arrRule));
@@ -368,7 +368,7 @@ class Validate implements IValidate
      */
     public function addRuleIf(array $arrRule, $mixCallback)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if ($this->isCallbackValid($mixCallback)) {
@@ -386,7 +386,7 @@ class Validate implements IValidate
      */
     public function fieldRule($strField, $mixRule)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (! isset($this->arrRule[$strField])) {
@@ -407,7 +407,7 @@ class Validate implements IValidate
      */
     public function fieldRuleIf($strField, $mixRule, $mixCallback)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if ($this->isCallbackValid($mixCallback)) {
@@ -425,7 +425,7 @@ class Validate implements IValidate
      */
     public function addFieldRule($strField, $mixRule)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (! isset($this->arrRule[$strField])) {
@@ -446,7 +446,7 @@ class Validate implements IValidate
      */
     public function addFieldRuleIf($strField, $mixRule, $mixCallback)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if ($this->isCallbackValid($mixCallback)) {
@@ -499,7 +499,7 @@ class Validate implements IValidate
      */
     public function message(array $arrMessage)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrMessage = $arrMessage;
@@ -514,7 +514,7 @@ class Validate implements IValidate
      */
     public function addMessage(array $arrMessage)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrMessage = array_merge($this->arrMessage, $this->arrayMessage($arrMessage));
@@ -539,7 +539,7 @@ class Validate implements IValidate
      */
     public function fieldName(array $arrFieldName)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrFieldName = $arrFieldName;
@@ -554,7 +554,7 @@ class Validate implements IValidate
      */
     public function addFieldName(array $arrFieldName)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrFieldName = array_merge($this->arrFieldName, $this->arrayMessage($arrFieldName));
@@ -570,7 +570,7 @@ class Validate implements IValidate
      */
     public function fieldRuleMessage($strFieldRule, $strMessage)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrMessage[$strFieldRule] = $strMessage;
@@ -586,7 +586,7 @@ class Validate implements IValidate
      */
     public function alias($strAlias, $strFor)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (in_array($strAlias, $this->getSkipRule())) {
@@ -605,7 +605,7 @@ class Validate implements IValidate
      */
     public function aliasMany(array $arrAlias)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         foreach ($arrAlias as $strAlias => $strFor) {
@@ -632,7 +632,7 @@ class Validate implements IValidate
      */
     public function after($mixCallback)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrAfter[] = function () use ($mixCallback) {
@@ -673,7 +673,7 @@ class Validate implements IValidate
      */
     public function extend($strRule, $mixExtend)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrExtend[strtolower($strRule)] = $mixExtend;
@@ -688,7 +688,7 @@ class Validate implements IValidate
      */
     public function extendMany(array $arrExtend)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrExtend = array_merge($this->arrExtend, $arrExtend);
@@ -1931,7 +1931,7 @@ class Validate implements IValidate
      */
     protected function wildcardMessageItem($strField, $mixMessage)
     {
-        $strField = Helper::prepareRegexForWildcard($strField);
+        $strField = $this->prepareRegexForWildcard($strField);
 
         $arrMessage = [];
         foreach ($this->parseDataKey() as $strKey) {
@@ -1941,6 +1941,65 @@ class Validate implements IValidate
         }
 
         return $arrMessage;
+    }
+
+    /**
+     * 通配符正则
+     *
+     * @param string $strFoo
+     * @param bool $booStrict
+     * @return string
+     */
+    protected function prepareRegexForWildcard($strRegex, $booStrict = true)
+    {
+        return '/^' . str_replace('6084fef57e91a6ecb13fff498f9275a7', '(\S+)', $this->escapeRegexCharacter(str_replace('*', '6084fef57e91a6ecb13fff498f9275a7', $strRegex))) . ($booStrict ? '$' : '') . '/';
+    }
+
+    /**
+     * 转移正则表达式特殊字符
+     *
+     * @param string $sTxt
+     * @return string
+     */
+    protected function escapeRegexCharacter($sTxt)
+    {
+        $sTxt = str_replace([
+            '$',
+            '/',
+            '?',
+            '*',
+            '.',
+            '!',
+            '-',
+            '+',
+            '(',
+            ')',
+            '[',
+            ']',
+            ',',
+            '{',
+            '}',
+            '|'
+        ], [
+            '\$',
+            '\/',
+            '\\?',
+            '\\*',
+            '\\.',
+            '\\!',
+            '\\-',
+            '\\+',
+            '\\(',
+            '\\)',
+            '\\[',
+            '\\]',
+            '\\,',
+            '\\{',
+            '\\}',
+            '\\|'
+        ], $sTxt);
+
+        return $sTxt;
     }
 
     /**
@@ -2019,7 +2078,7 @@ class Validate implements IValidate
      */
     protected function arrayRuleItem($mixRule)
     {
-        return Helper::arrays($mixRule, '|');
+        return Arr::normalize($mixRule, '|');
     }
 
     /**
@@ -2031,7 +2090,7 @@ class Validate implements IValidate
      */
     protected function wildcardRuleItem($strField, $mixRule)
     {
-        $strField = Helper::prepareRegexForWildcard($strField);
+        $strField = $this->prepareRegexForWildcard($strField);
 
         $arrRule = [];
         foreach ($this->parseDataKey() as $strKey) {
@@ -2419,7 +2478,7 @@ class Validate implements IValidate
      */
     public function __call(string $method, array $arrArgs)
     {
-        if ($this->placeholderFlowControl($method)) {
+        if ($this->placeholderTControl($method)) {
             return $this;
         }
 

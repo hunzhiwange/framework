@@ -22,12 +22,12 @@ namespace Queryyetsimple\Mvc;
 use ArrayAccess;
 use JsonSerializable;
 use BadMethodCallException;
+use Queryyetsimple\Flow\TControl;
 use Queryyetsimple\Support\{
     Str,
     IJson,
     IArray,
-    Serialize,
-    FlowControl
+    TSerialize
 };
 
 /**
@@ -40,9 +40,9 @@ use Queryyetsimple\Support\{
  */
 class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
 {
-    use Serialize;
+    use TSerialize;
 
-    use FlowControl;
+    use TControl;
 
     /**
      * 值对象数据
@@ -592,7 +592,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function hidden(array $arrHidden)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrHidden = $arrHidden;
@@ -617,7 +617,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function addHidden($mixProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
@@ -633,7 +633,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function visible(array $arrVisible)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrVisible = $arrVisible;
@@ -658,7 +658,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function addVisible($mixProp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
@@ -674,7 +674,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function append(array $arrAppend)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrAppend = $arrAppend;
@@ -699,7 +699,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function addAppend($mixProp = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
@@ -922,7 +922,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function __call(string $method, array $arrArgs)
     {
-        if ($this->placeholderFlowControl($method)) {
+        if ($this->placeholderTControl($method)) {
             return $this;
         }
 

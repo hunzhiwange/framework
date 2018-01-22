@@ -17,7 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Support;
+namespace Queryyetsimple\Flow;
 
 /**
  * 流程控制复用
@@ -27,7 +27,7 @@ namespace Queryyetsimple\Support;
  * @since 2017.04.13
  * @version 1.0
  */
-trait FlowControl
+trait TControl
 {
 
     /**
@@ -35,14 +35,14 @@ trait FlowControl
      *
      * @var boolean
      */
-    protected $booInFlowControl = false;
+    protected $booInTControl = false;
 
     /**
      * 条件表达式是否为真
      *
      * @var boolean
      */
-    protected $booFlowControlIsTrue = false;
+    protected $booTControlIsTrue = false;
 
     /**
      * 条件语句 ifs
@@ -52,7 +52,7 @@ trait FlowControl
      */
     public function ifs($booValue = false)
     {
-        return $this->setFlowControl(true, $booValue);
+        return $this->setTControl(true, $booValue);
     }
 
     /**
@@ -63,7 +63,7 @@ trait FlowControl
      */
     public function elseIfs($booValue = false)
     {
-        return $this->setFlowControl(true, $booValue);
+        return $this->setTControl(true, $booValue);
     }
 
     /**
@@ -73,7 +73,7 @@ trait FlowControl
      */
     public function elses()
     {
-        return $this->setFlowControl(true, ! $this->getFlowControl()[1]);
+        return $this->setTControl(true, ! $this->getTControl()[1]);
     }
 
     /**
@@ -83,20 +83,20 @@ trait FlowControl
      */
     public function endIfs()
     {
-        return $this->setFlowControl(false, false);
+        return $this->setTControl(false, false);
     }
 
     /**
      * 设置当前条件表达式状态
      *
-     * @param boolean $booInFlowControl
-     * @param boolean $booFlowControlIsTrue
+     * @param boolean $booInTControl
+     * @param boolean $booTControlIsTrue
      * @return void
      */
-    protected function setFlowControl($booInFlowControl, $booFlowControlIsTrue)
+    protected function setTControl($booInTControl, $booTControlIsTrue)
     {
-        $this->booInFlowControl = $booInFlowControl;
-        $this->booFlowControlIsTrue = $booFlowControlIsTrue;
+        $this->booInTControl = $booInTControl;
+        $this->booTControlIsTrue = $booTControlIsTrue;
         return $this;
     }
 
@@ -105,11 +105,11 @@ trait FlowControl
      *
      * @return array
      */
-    protected function getFlowControl()
+    protected function getTControl()
     {
         return [
-            $this->booInFlowControl,
-            $this->booFlowControlIsTrue
+            $this->booInTControl,
+            $this->booTControlIsTrue
         ];
     }
 
@@ -118,9 +118,9 @@ trait FlowControl
      *
      * @return boolean
      */
-    protected function checkFlowControl()
+    protected function checkTControl()
     {
-        return $this->booInFlowControl && ! $this->booFlowControlIsTrue;
+        return $this->booInTControl && ! $this->booTControlIsTrue;
     }
 
     /**
@@ -129,7 +129,7 @@ trait FlowControl
      * @param string $strMethod
      * @return boolean
      */
-    protected function placeholderFlowControl($strMethod)
+    protected function placeholderTControl($strMethod)
     {
         return in_array($strMethod, [
             'placeholder',

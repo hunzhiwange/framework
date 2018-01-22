@@ -21,6 +21,7 @@ namespace Queryyetsimple\Stack;
 
 use SplDoublyLinkedList;
 use InvalidArgumentException;
+use Queryyetsimple\Support\Type;
 
 /**
  * 双向链表
@@ -126,12 +127,6 @@ class LinkedList extends SplDoublyLinkedList
             return true;
         }
 
-        return call_user_func_array([
-            'Queryyetsimple\Support\Helper',
-            'varThese'
-        ], [
-            $value,
-            $this->type
-        ]);
+        return Type::varThese($value, $this->type);
     }
 }

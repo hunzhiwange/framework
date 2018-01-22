@@ -28,7 +28,7 @@ use ReflectionException;
 use ReflectionParameter;
 use BadMethodCallException;
 use InvalidArgumentException;
-use Queryyetsimple\Support\FlowControl;
+use Queryyetsimple\Flow\TControl;
 
 /**
  * IOC 容器
@@ -40,7 +40,7 @@ use Queryyetsimple\Support\FlowControl;
  */
 class Container implements IContainer, ArrayAccess
 {
-    use FlowControl;
+    use TControl;
 
     /**
      * 注册服务
@@ -641,7 +641,7 @@ class Container implements IContainer, ArrayAccess
      */
     public function __call(string $method, array $args)
     {
-        if ($this->placeholderFlowControl($method)) {
+        if ($this->placeholderTControl($method)) {
             return $this;
         }
 

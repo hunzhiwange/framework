@@ -22,12 +22,12 @@ namespace Queryyetsimple\Http;
 use ArrayAccess;
 use RuntimeException;
 use Queryyetsimple\{
-    Support\TMacro,
+    Flow\TControl,
     Option\TClass,
+    Support\TMacro,
     Cookie\ICookie,
     Support\IArray,
-    Session\ISession,
-    Support\FlowControl
+    Session\ISession
 };
 
 /**
@@ -46,7 +46,7 @@ class request implements IArray, ArrayAccess
         __call as macroCall;
     }
 
-    use FlowControl;
+    use TControl;
 
     /**
      * cookie 存储
@@ -720,7 +720,7 @@ class request implements IArray, ArrayAccess
      */
     public function setSessionRepository(ISession $objSession)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->objSession = $objSession;
@@ -755,7 +755,7 @@ class request implements IArray, ArrayAccess
      */
     public function setCookieRepository(ICookie $objCookie)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->objCookie = $objCookie;
@@ -1229,7 +1229,7 @@ class request implements IArray, ArrayAccess
      */
     public function setInput($sKey, $mixValue, $sType = 'request')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->{'setGlobal' . ucfirst($sType)}($sKey, $mixValue);
@@ -1245,7 +1245,7 @@ class request implements IArray, ArrayAccess
      */
     public function setInputs(array $arrValue, $sType = 'request')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         foreach ($arrValue as $strKey => $mixValue) {
@@ -1686,7 +1686,7 @@ class request implements IArray, ArrayAccess
      */
     public function setUrl($strUrl)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strUrl = $strUrl;
@@ -1837,7 +1837,7 @@ class request implements IArray, ArrayAccess
      */
     public function setMethod($strMethod)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strMethod = strtoupper($strMethod);
@@ -1917,7 +1917,7 @@ class request implements IArray, ArrayAccess
      */
     public function setApp($strApp)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strApp = $strApp;
@@ -1932,7 +1932,7 @@ class request implements IArray, ArrayAccess
      */
     public function setController($strController)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strController = $strController;
@@ -1947,7 +1947,7 @@ class request implements IArray, ArrayAccess
      */
     public function setAction($strAction)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strAction = $strAction;
@@ -1972,7 +1972,7 @@ class request implements IArray, ArrayAccess
      */
     public function setLangset($strLangset)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strLangset = $strLangset;
@@ -2019,7 +2019,7 @@ class request implements IArray, ArrayAccess
      */
     public function setEnter($strEnter)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strEnter = $strEnter;
@@ -2048,7 +2048,7 @@ class request implements IArray, ArrayAccess
      */
     public function setRoot($strRoot)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strRoot = $strRoot;
@@ -2073,7 +2073,7 @@ class request implements IArray, ArrayAccess
      */
     public function setPublics($strPublic)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strPublic = $strPublic;
@@ -2088,7 +2088,7 @@ class request implements IArray, ArrayAccess
      */
     public function setPathInfo($strPathInfo)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strPathInfo = $strPathInfo;
@@ -2875,7 +2875,7 @@ class request implements IArray, ArrayAccess
      */
     public function __call(string $sMethod, array $arrArgs)
     {
-        if ($this->placeholderFlowControl($sMethod)) {
+        if ($this->placeholderTControl($sMethod)) {
             return $this;
         }
 

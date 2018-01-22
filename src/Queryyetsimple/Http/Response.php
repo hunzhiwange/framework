@@ -22,12 +22,12 @@ namespace Queryyetsimple\Http;
 use InvalidArgumentException;
 use Queryyetsimple\{
     Mvc\IView,
-    Support\TMacro,
+    Flow\TControl,
     Router\Router,
     Option\TClass,
+    Support\TMacro,
     Cookie\ICookie,
-    Session\ISession,
-    Support\FlowControl
+    Session\ISession
 };
 
 /**
@@ -49,7 +49,7 @@ class response
         __call as macroCall;
     }
     
-    use FlowControl;
+    use TControl;
 
     /**
      * view
@@ -199,7 +199,7 @@ class response
      */
     public function __call(string $method, array $arrArgs)
     {
-        if ($this->placeholderFlowControl($method)) {
+        if ($this->placeholderTControl($method)) {
             return $this;
         }
 
@@ -256,7 +256,7 @@ class response
      */
     public function header($strName, $strValue)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrHeader[$strName] = $strValue;
@@ -271,7 +271,7 @@ class response
      */
     public function headers($arrHeader)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrHeader = array_merge($this->arrHeader, $arrHeader);
@@ -302,7 +302,7 @@ class response
      */
     public function option($strName, $mixValue)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->macroOption($strName, $mixValue);
@@ -317,7 +317,7 @@ class response
      */
     public function options($arrOption)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->macroOptions($arrOption);
@@ -333,7 +333,7 @@ class response
      */
     public function withCookie($sName, $mixValue = '', array $arrOption = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->objCookie->set($sName, $mixValue, $arrOption);
@@ -349,7 +349,7 @@ class response
      */
     public function withCookies(array $arrCookie, array $arrOption = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         foreach ($arrCookie as $sName => $mixValue) {
@@ -367,7 +367,7 @@ class response
      */
     public function with($strFlash, $mixValue)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->objSession->flash($strFlash, $mixValue);
@@ -383,7 +383,7 @@ class response
      */
     public function withs(array $arrFlash)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->objSession->flashs($arrFlash);
@@ -398,7 +398,7 @@ class response
      */
     public function withErrors(array $arrErrors)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->objSession->flash('errors', array_merge($this->objSession->getFlash('errors', []), $arrErrors));
@@ -412,7 +412,7 @@ class response
      */
     public function clearErrors()
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->objSession->flash('errors', []);
@@ -427,7 +427,7 @@ class response
      */
     public function withInputs(array $arrInputs)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->objSession->flash('inputs', array_merge($this->objSession->getFlash('inputs', []), $arrInputs));
@@ -442,7 +442,7 @@ class response
      */
     public function data($mixData)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->mixData = $mixData;
@@ -467,7 +467,7 @@ class response
      */
     public function code($intCode)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->intCode = intval($intCode);
@@ -492,7 +492,7 @@ class response
      */
     public function message($strMessage)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strMessage = $strMessage;
@@ -517,7 +517,7 @@ class response
      */
     public function contentType($strContentType)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strContentType = $strContentType;
@@ -542,7 +542,7 @@ class response
      */
     public function charset($strCharset)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strCharset = $strCharset;
@@ -567,7 +567,7 @@ class response
      */
     public function content($strContent)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strContent = $strContent;
@@ -757,7 +757,7 @@ class response
      */
     public function responseType($strResponseType)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->strResponseType = $strResponseType;
@@ -784,7 +784,7 @@ class response
      */
     public function json($arrData = null, $option = JSON_UNESCAPED_UNICODE, $strCharset = 'utf-8')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (is_array($arrData)) {
@@ -812,7 +812,7 @@ class response
      */
     public function jsonCallback($strJsonCallback)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->option('json_callback', $strJsonCallback);
@@ -829,7 +829,7 @@ class response
      */
     public function jsonp($strJsonCallback, $arrData = null, $option = JSON_UNESCAPED_UNICODE, $strCharset = 'utf-8')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->
@@ -850,7 +850,7 @@ class response
      */
     public function view($sFile = '', $arrOption = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (! empty($arrOption['charset'])) {
@@ -882,7 +882,7 @@ class response
      */
     public function assign($mixName, $mixValue = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->objView->assign($mixName, $mixValue);
@@ -902,7 +902,7 @@ class response
      */
     public function viewSuccess($sMessage = '', $arrOption = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -928,7 +928,7 @@ class response
      */
     public function viewError($sMessage = '', $arrOption = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -954,7 +954,7 @@ class response
      */
     public function redirect(string $sUrl, $arrOption = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -977,7 +977,7 @@ class response
      */
     public function download($sFileName, $sDownName = '', array $arrHeader = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1003,7 +1003,7 @@ class response
      */
     public function file($sFileName, array $arrHeader = [])
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
