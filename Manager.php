@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Filesystem;
 
-use Queryyetsimple\Support\Manager as SupportManager;
+use Queryyetsimple\Manager\Manager as Managers;
 
 /**
  * filesystem 入口
@@ -53,7 +53,7 @@ use Queryyetsimple\Support\Manager as SupportManager;
  * @since 2017.08.29
  * @version 1.0
  */
-class Manager extends SupportManager
+class Manager extends Managers
 {
 
     /**
