@@ -22,7 +22,7 @@ namespace Queryyetsimple\Http;
 use ArrayAccess;
 use RuntimeException;
 use Queryyetsimple\{
-    Support\Macro,
+    Support\TMacro,
     Option\TClass,
     Cookie\ICookie,
     Support\IArray,
@@ -42,7 +42,7 @@ class request implements IArray, ArrayAccess
 {
     use TClass;
     
-    use Macro {
+    use TMacro {
         __call as macroCall;
     }
 
