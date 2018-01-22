@@ -24,9 +24,9 @@ use Dotenv\Dotenv;
 use RuntimeException;
 use Composer\Autoload\ClassLoader;
 use Queryyetsimple\{
+    Psr4\Psr4,
     Di\Provider,
     Di\Container,
-    Support\Psr4,
     Support\face,
     Filesystem\Fso,
     Bootstrap\Console\Provider\Register as ConsoleProvider
@@ -134,7 +134,7 @@ class Project extends Container implements IProject
      */
     protected function __clone()
     {
-        throw new RuntimeException('Project disallowed clone');
+        throw new RuntimeException('Project disallowed clone.');
     }
 
     /**

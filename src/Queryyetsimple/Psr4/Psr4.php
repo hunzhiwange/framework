@@ -17,7 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Support;
+namespace Queryyetsimple\Psr4;
 
 use RuntimeException;
 use Composer\Autoload\ClassLoader;
@@ -60,13 +60,6 @@ class Psr4 implements IPsr4
      * @var string
      */
     protected $shortNamespace;
-
-    /**
-     * 框架自定义命名空间
-     *
-     * @var string
-     */
-    const DEFAULT_NAMESPACE = 'queryyetsimple';
 
     /**
      * 设置 composer
