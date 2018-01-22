@@ -22,7 +22,7 @@ namespace Queryyetsimple\Filesystem;
 use Closure;
 use RuntimeException;
 use DirectoryIterator;
-use Queryyetsimple\Support\Macro;
+use Queryyetsimple\Support\TMacro;
 
 /**
  * File System Object 管理
@@ -34,7 +34,7 @@ use Queryyetsimple\Support\Macro;
  */
 class Fso
 {
-    use Macro;
+    use TMacro;
 
     /**
      * 取得文件内容
