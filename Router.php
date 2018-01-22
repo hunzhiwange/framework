@@ -32,7 +32,6 @@ use Queryyetsimple\{
     Http\Response,
     Option\TClass,
     Support\TMacro,
-    Support\Helper,
     Mvc\IController,
     Pipeline\IPipeline
 };
@@ -1247,7 +1246,7 @@ class Router
     {
         $arrMiddleware = [];
         foreach ($this->arrMiddlewares as $sKey => $arrValue) {
-            $sKey = Helper::prepareRegexForWildcard($sKey, $this->getOption('middleware_strict'));
+            $sKey = $this->prepareRegexForWildcard($sKey, $this->getOption('middleware_strict'));
             if (preg_match($sKey, $sNode, $arrRes)) {
                 $arrMiddleware = array_merge($arrMiddleware, $arrValue);
             }
@@ -1310,7 +1309,7 @@ class Router
 
         $arrMethod = [];
         foreach ($this->arrMethods as $sKey => $arrValue) {
-            $sKey = Helper::prepareRegexForWildcard($sKey, $this->getOption('method_strict'));
+            $sKey = $this->prepareRegexForWildcard($sKey, $this->getOption('method_strict'));
             if (preg_match($sKey, $sNode, $arrRes)) {
                 if ($arrMethod) {
                     $arrMethod = array_intersect($arrMethod, $arrValue);
@@ -1803,7 +1802,7 @@ class Router
      */
     protected function formatRegex($sRegex)
     {
-        $sRegex = Helper::escapeRegexCharacter($sRegex);
+        $sRegex = $this->escapeRegexCharacter($sRegex);
 
         // 还原变量特殊标记
         return str_replace([
@@ -1813,6 +1812,65 @@ class Router
             '{',
             '}'
         ], $sRegex);
+    }
+
+    /**
+     * 通配符正则
+     *
+     * @param string $strFoo
+     * @param bool $booStrict
+     * @return string
+     */
+    protected function prepareRegexForWildcard($strRegex, $booStrict = true)
+    {
+        return '/^' . str_replace('6084fef57e91a6ecb13fff498f9275a7', '(\S+)', $this->escapeRegexCharacter(str_replace('*', '6084fef57e91a6ecb13fff498f9275a7', $strRegex))) . ($booStrict ? '$' : '') . '/';
+    }
+
+    /**
+     * 转移正则表达式特殊字符
+     *
+     * @param string $sTxt
+     * @return string
+     */
+    protected function escapeRegexCharacter($sTxt)
+    {
+        $sTxt = str_replace([
+            '$',
+            '/',
+            '?',
+            '*',
+            '.',
+            '!',
+            '-',
+            '+',
+            '(',
+            ')',
+            '[',
+            ']',
+            ',',
+            '{',
+            '}',
+            '|'
+        ], [
+            '\$',
+            '\/',
+            '\\?',
+            '\\*',
+            '\\.',
+            '\\!',
+            '\\-',
+            '\\+',
+            '\\(',
+            '\\)',
+            '\\[',
+            '\\]',
+            '\\,',
+            '\\{',
+            '\\}',
+            '\\|'
+        ], $sTxt);
+
+        return $sTxt;
     }
 
     /**
