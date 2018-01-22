@@ -19,10 +19,8 @@
  */
 namespace Queryyetsimple\Database;
 
-use Queryyetsimple\Support\{
-    Helper,
-    Manager as SupportManager
-};
+use Queryyetsimple\Support\Helper;
+use Queryyetsimple\Manager\Manager as Managers;
 
 /**
  * database 入口
@@ -32,7 +30,7 @@ use Queryyetsimple\Support\{
  * @since 2017.02.15
  * @version 1.0
  */
-class Manager extends SupportManager
+class Manager extends Managers
 {
 
     /**
