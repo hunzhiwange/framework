@@ -37,6 +37,7 @@
         "queryyetsimple/encryption": "self.version",
         "queryyetsimple/event": "self.version",
         "queryyetsimple/filesystem": "self.version",
+        "queryyetsimple/flow": "self.version",
         "queryyetsimple/http": "self.version",
         "queryyetsimple/i18n": "self.version",
         "queryyetsimple/log": "self.version",

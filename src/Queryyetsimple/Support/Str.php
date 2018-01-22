@@ -29,7 +29,7 @@ namespace Queryyetsimple\Support;
  */
 class Str
 {
-    use Macro;
+    use TMacro;
 
     /**
      * 随机字母数字

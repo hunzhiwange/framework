@@ -20,6 +20,8 @@ git subtree add --prefix=src/Queryyetsimple/Event git@github.com:queryyetsimple/
 
 git subtree add --prefix=src/Queryyetsimple/Filesystem git@github.com:queryyetsimple/filesystem.git master
 
+git subtree add --prefix=src/Queryyetsimple/Flow git@github.com:queryyetsimple/flow.git master
+
 git subtree add --prefix=src/Queryyetsimple/Http git@github.com:queryyetsimple/http.git master
 
 git subtree add --prefix=src/Queryyetsimple/I18n git@github.com:queryyetsimple/i18n.git master

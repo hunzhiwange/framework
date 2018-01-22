@@ -22,7 +22,7 @@ namespace Queryyetsimple\Http;
 use InvalidArgumentException;
 use Queryyetsimple\{
     Mvc\IView,
-    Support\Macro,
+    Support\TMacro,
     Router\Router,
     Option\TClass,
     Cookie\ICookie,
@@ -45,7 +45,7 @@ class response
         options as macroOptions;
     }
 
-    use Macro {
+    use TMacro {
         __call as macroCall;
     }
     

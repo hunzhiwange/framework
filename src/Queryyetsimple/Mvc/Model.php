@@ -28,12 +28,12 @@ use DateTimeInterface;
 use BadMethodCallException;
 use Queryyetsimple\{
     Support\Str,
-    Support\Macro,
+    Support\TMacro,
     Support\IJson,
     Support\IArray,
     Support\Helper,
     Event\IDispatch,
-    Support\Serialize,
+    Support\TSerialize,
     Support\Collection,
     Support\FlowControl,
     Mvc\Relation\HasOne,
@@ -53,9 +53,9 @@ use Queryyetsimple\{
  */
 abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAccess
 {
-    use Serialize;
+    use TSerialize;
 
-    use Macro {
+    use TMacro {
         __callStatic as macroCallStatic;
         __call as macroCall;
     }

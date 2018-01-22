@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Cache;
 
-use Queryyetsimple\Support\Macro;
+use Queryyetsimple\Support\TMacro;
 
 /**
  * cache 仓储
@@ -31,7 +31,7 @@ use Queryyetsimple\Support\Macro;
  */
 class Cache implements ICache
 {
-    use Macro {
+    use TMacro {
         __call as macroCall;
     }
 

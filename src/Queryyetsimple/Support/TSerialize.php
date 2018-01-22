@@ -30,7 +30,7 @@ use ReflectionProperty;
  * @since 2017.05.04
  * @version 1.0
  */
-trait Serialize
+trait TSerialize
 {
 
     /**
