@@ -925,7 +925,7 @@ class Compiler implements ICompiler
     public function attributeNodeCompiler(&$arrTheme)
     {
         $sSource = trim($arrTheme['content']);
-        $this->escapeCharacter($sSource);
+        $this->escapeRegexCharacter($sSource);
 
         if ($arrTheme['is_js'] === true) {
             $arrTag = $this->arrJsTag;
@@ -956,14 +956,15 @@ class Compiler implements ICompiler
                         $nDefaultIdx ++;
                         $sName = 'condition' . $nDefaultIdx;
                     } else {
-                        // 过滤掉不允许的属性
+                        // old:过滤掉不允许的属性
+                        // new:js 风格的不能过滤
                         if (! in_array($sName, $arrAllowedAttr)) {
                            // continue;
                         }
                     }
 
                     $sValue = $arrRes[$nValueIdx][$nIdx];
-                    $this->escapeCharacter($sValue, false);
+                    $this->escapeRegexCharacter($sValue, false);
                     $arrTheme['attribute_list'][strtolower($sName)] = $sValue;
                 }
             }
@@ -992,8 +993,13 @@ class Compiler implements ICompiler
         foreach ($arrArray as $sV) {
             if (strpos($sV, '.') > 0) {
                 $arrArgs = explode('.', $sV);
-                $arrParam[] = $arrArgs[0] . ($this->arrayHandler($arrArgs, 1, 1)); // 以$hello['hello1']['hello2']['hello2']方式
-                $arrParamTwo[] = $arrArgs[0] . ($this->arrayHandler($arrArgs, 2, 1)); // 以$hello->'hello1->'hello2'->'hello2'方式
+
+                // 以$hello['hello1']['hello2']['hello2']方式
+                $arrParam[] = $arrArgs[0] . ($this->arrayHandler($arrArgs, 1, 1));
+
+                // 以$hello->'hello1->'hello2'->'hello2'方式
+                $arrParamTwo[] = $arrArgs[0] . ($this->arrayHandler($arrArgs, 2, 1)); 
+
                 $bObj = true;
             } else {
                 $arrParam[] = $sV;
@@ -1352,9 +1358,10 @@ class Compiler implements ICompiler
      * @param bool $bEsc
      * @return string
      */
-    protected function escapeCharacter(&$sTxt, $bEsc = true)
+    protected function escapeRegexCharacter(&$sTxt, $bEsc = true)
     {
-        $sTxt = Helper::escapeCharacter($sTxt, $bEsc);
+        $sTxt = $this->escapeCharacter($sTxt, $bEsc);
+
         if (! $bEsc) {
             $sTxt = str_replace([
                 ' band ',
@@ -1394,6 +1401,52 @@ class Compiler implements ICompiler
                 ' > ',
                 ' <= ',
                 ' < '
+            ], $sTxt);
+        }
+
+        return $sTxt;
+    }
+
+    /**
+     * 正则属性转义
+     *
+     * @param string $sTxt
+     * @param bool $bEsc
+     * @return string
+     */
+    protected function escapeCharacter($sTxt, $bEsc = true)
+    {
+        if ($sTxt == '""') {
+            $sTxt = '';
+        }
+
+        if ($bEsc) { // 转义
+            $sTxt = str_replace([
+                '\\\\',
+                "\\'",
+                '\\"',
+                '\\$',
+                '\\.'
+            ], [
+                '\\',
+                '~~{#!`!#}~~',
+                '~~{#!``!#}~~',
+                '~~{#!S!#}~~',
+                '~~{#!dot!#}~~'
+            ], $sTxt);
+        } else { // 还原
+            $sTxt = str_replace([
+                '.',
+                "~~{#!`!#}~~",
+                '~~{#!``!#}~~',
+                '~~{#!S!#}~~',
+                '~~{#!dot!#}~~'
+            ], [
+                '->',
+                "'",
+                '"',
+                '$',
+                '.'
             ], $sTxt);
         }
 
