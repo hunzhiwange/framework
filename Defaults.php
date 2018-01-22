@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Page;
 
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 
 /**
  * 默认分页渲染
@@ -31,7 +31,7 @@ use Queryyetsimple\Support\Option;
  */
 class Defaults implements IRender
 {
-    use Option;
+    use TClass;
 
     /**
      * 分页

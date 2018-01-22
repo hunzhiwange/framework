@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Page;
 
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 
 /**
  * bootstrap 分页渲染
@@ -31,7 +31,7 @@ use Queryyetsimple\Support\Option;
  */
 class Bootstrap implements IRender
 {
-    use Option;
+    use TClass;
 
     /**
      * 分页

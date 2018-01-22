@@ -20,10 +20,8 @@
 namespace Queryyetsimple\Page;
 
 use RuntimeException;
-use Queryyetsimple\Support\{
-    IHtml,
-    Option
-};
+use Queryyetsimple\Support\IHtml;
+use Queryyetsimple\Option\TClass;
 
 /**
  * 分页处理
@@ -35,7 +33,7 @@ use Queryyetsimple\Support\{
  */
 abstract class Connect implements IHtml
 {
-    use Option;
+    use TClass;
 
     /**
      * 总记录数量
