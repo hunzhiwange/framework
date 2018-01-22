@@ -23,9 +23,10 @@ use PDO;
 use Exception;
 use BadMethodCallException;
 use Queryyetsimple\{
-    Support\Helper,
+    Support\Arr,
+    Support\Type,
+    Flow\TControl,
     Support\Collection,
-    Support\FlowControl,
     Page\PageWithTotal,
     Page\PageWithoutTotal
 };
@@ -41,7 +42,7 @@ use Queryyetsimple\{
  */
 class Select
 {
-    use FlowControl;
+    use TControl;
 
     /**
      * 数据库连接
@@ -330,7 +331,7 @@ class Select
      */
     public function select($mixData = null, $arrBind = [], $bFlag = false)
     {
-        if (! Helper::varThese($mixData, [
+        if (! Type::varThese($mixData, [
             'string',
             'null',
             'callback'
@@ -375,7 +376,7 @@ class Select
      */
     public function insert($mixData, $arrBind = [], $booReplace = false, $bFlag = false)
     {
-        if (! Helper::varThese($mixData, [
+        if (! Type::varThese($mixData, [
             'string',
             'array'
         ])) {
@@ -493,7 +494,7 @@ class Select
      */
     public function update($mixData, $arrBind = [], $bFlag = false)
     {
-        if (! Helper::varThese($mixData, [
+        if (! Type::varThese($mixData, [
             'string',
             'array'
         ])) {
@@ -600,7 +601,7 @@ class Select
      */
     public function delete($mixData = null, $arrBind = [], $bFlag = false)
     {
-        if (! Helper::varThese($mixData, [
+        if (! Type::varThese($mixData, [
             'string',
             'null'
         ])) {
@@ -968,7 +969,7 @@ class Select
      */
     public function time()
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -989,7 +990,7 @@ class Select
      */
     public function endTime()
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->setInTimeCondition(null);
@@ -1004,7 +1005,7 @@ class Select
      */
     public function sql($bFlag = true, $bQuickSql = false)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if ($bFlag === false && $bQuickSql === true && $this->booOnlyMakeSql === true) { // 优先级最高 $this->sql(true, false)
@@ -1022,7 +1023,7 @@ class Select
      */
     public function asMaster($booMaster = false)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrQueryParams['master'] = $booMaster;
@@ -1038,7 +1039,7 @@ class Select
      */
     public function asFetchType($mixType, $mixValue = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (is_array($mixType)) {
@@ -1061,7 +1062,7 @@ class Select
      */
     public function asClass($sClassName)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrQueryParams['as_class'] = $sClassName;
@@ -1076,7 +1077,7 @@ class Select
      */
     public function asDefault()
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrQueryParams['as_class'] = null;
@@ -1092,7 +1093,7 @@ class Select
      */
     public function asCollection($bAsCollection = true)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrQueryParams['as_collection'] = $bAsCollection;
@@ -1108,7 +1109,7 @@ class Select
      */
     public function reset($sOption = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if ($sOption == null) {
@@ -1127,12 +1128,12 @@ class Select
      */
     public function prefix($mixPrefix)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
-        $mixPrefix = Helper::arrays($mixPrefix);
+        $mixPrefix = Arr::normalize($mixPrefix);
         foreach ($mixPrefix as $strValue) {
-            $strValue = Helper::arrays($strValue);
+            $strValue = Arr::normalize($strValue);
             foreach ($strValue as $strTemp) {
                 $strTemp = trim($strTemp);
                 if (empty($strTemp)) {
@@ -1153,7 +1154,7 @@ class Select
      */
     public function table($mixTable, $mixCols = '*')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->setIsTable(true);
@@ -1170,10 +1171,10 @@ class Select
      */
     public function using($mixName)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
-        $mixName = Helper::arrays($mixName);
+        $mixName = Arr::normalize($mixName);
         foreach ($mixName as $sAlias => $sTable) {
             // 字符串指定别名
             if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $sTable, $arrMatch)) {
@@ -1216,7 +1217,7 @@ class Select
      */
     public function columns($mixCols = '*', $strTable = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (is_null($strTable)) {
@@ -1235,7 +1236,7 @@ class Select
      */
     public function setColumns($mixCols = '*', $strTable = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (is_null($strTable)) {
@@ -1255,7 +1256,7 @@ class Select
      */
     public function columnsMapping($mixName, $sMappingTo = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1282,7 +1283,7 @@ class Select
      */
     public function where(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1300,7 +1301,7 @@ class Select
      */
     public function whereBetween(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1318,7 +1319,7 @@ class Select
      */
     public function whereNotBetween(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1336,7 +1337,7 @@ class Select
      */
     public function whereIn(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1354,7 +1355,7 @@ class Select
      */
     public function whereNotIn(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1372,7 +1373,7 @@ class Select
      */
     public function whereNull(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1390,7 +1391,7 @@ class Select
      */
     public function whereNotNull(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1408,7 +1409,7 @@ class Select
      */
     public function whereLike(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1426,7 +1427,7 @@ class Select
      */
     public function whereNotLike(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1512,7 +1513,7 @@ class Select
      */
     public function orWhere(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1530,7 +1531,7 @@ class Select
      */
     public function whereExists($mixExists)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1549,7 +1550,7 @@ class Select
      */
     public function whereNotExists($mixExists)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1570,7 +1571,7 @@ class Select
      */
     public function bind($mixName, $mixValue, $intType = PDO::PARAM_STR)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (is_array($mixName)) {
@@ -1604,16 +1605,16 @@ class Select
      */
     public function forceIndex($mixIndex, $sType = 'FORCE')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (! isset(static::$arrIndexTypes[$sType])) {
             throw new Exception(sprintf('Invalid Index type %s.', $sType));
         }
         $sType = strtoupper($sType);
-        $mixIndex = Helper::arrays($mixIndex);
+        $mixIndex = Arr::normalize($mixIndex);
         foreach ($mixIndex as $strValue) {
-            $strValue = Helper::arrays($strValue);
+            $strValue = Arr::normalize($strValue);
             foreach ($strValue as $strTemp) {
                 $strTemp = trim($strTemp);
                 if (empty($strTemp)) {
@@ -1649,7 +1650,7 @@ class Select
      */
     public function join($mixTable, $mixCols = '*', $mixCond)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1669,7 +1670,7 @@ class Select
      */
     public function innerJoin($mixTable, $mixCols = '*', $mixCond)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1689,7 +1690,7 @@ class Select
      */
     public function leftJoin($mixTable, $mixCols = '*', $mixCond)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1709,7 +1710,7 @@ class Select
      */
     public function rightJoin($mixTable, $mixCols = '*', $mixCond)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1729,7 +1730,7 @@ class Select
      */
     public function fullJoin($mixTable, $mixCols = '*', $mixCond)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1749,7 +1750,7 @@ class Select
      */
     public function crossJoin($mixTable, $mixCols = '*', $mixCond)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1769,7 +1770,7 @@ class Select
      */
     public function naturalJoin($mixTable, $mixCols = '*', $mixCond)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1788,7 +1789,7 @@ class Select
      */
     public function union($mixSelect, $sType = 'UNION')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1818,7 +1819,7 @@ class Select
      */
     public function unionAll($mixSelect)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->union($mixSelect, 'UNION ALL');
@@ -1832,14 +1833,14 @@ class Select
      */
     public function groupBy($mixExpr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
         if (is_string($mixExpr) && strpos($mixExpr, ',') !== false && strpos($mixExpr, '{') !== false && preg_match_all('/{(.+?)}/', $mixExpr, $arrRes)) {
             $mixExpr = str_replace($arrRes[1][0], base64_encode($arrRes[1][0]), $mixExpr);
         }
-        $mixExpr = Helper::arrays($mixExpr);
+        $mixExpr = Arr::normalize($mixExpr);
         // 还原
         if (! empty($arrRes)) {
             foreach ($arrRes[1] as $strTemp) {
@@ -1853,7 +1854,7 @@ class Select
             if (is_string($strValue) && strpos($strValue, ',') !== false && strpos($strValue, '{') !== false && preg_match_all('/{(.+?)}/', $strValue, $arrResTwo)) {
                 $strValue = str_replace($arrResTwo[1][0], base64_encode($arrResTwo[1][0]), $strValue);
             }
-            $strValue = Helper::arrays($strValue);
+            $strValue = Arr::normalize($strValue);
             // 还原
             if (! empty($arrResTwo)) {
                 foreach ($arrResTwo[1] as $strTemp) {
@@ -1885,7 +1886,7 @@ class Select
      */
     public function having(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1903,7 +1904,7 @@ class Select
      */
     public function havingBetween(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1922,7 +1923,7 @@ class Select
      */
     public function havingNotBetween(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1941,7 +1942,7 @@ class Select
      */
     public function havingIn(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1960,7 +1961,7 @@ class Select
      */
     public function havingNotIn(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1979,7 +1980,7 @@ class Select
      */
     public function havingNull(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -1998,7 +1999,7 @@ class Select
      */
     public function havingNotNull(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -2017,7 +2018,7 @@ class Select
      */
     public function havingLike(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -2036,7 +2037,7 @@ class Select
      */
     public function havingNotLike(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -2123,7 +2124,7 @@ class Select
      */
     public function orHaving(...$arr)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -2142,7 +2143,7 @@ class Select
      */
     public function orderBy($mixExpr, $sOrderDefault = 'ASC')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
 
@@ -2153,7 +2154,7 @@ class Select
         if (is_string($mixExpr) && strpos($mixExpr, ',') !== false && strpos($mixExpr, '{') !== false && preg_match_all('/{(.+?)}/', $mixExpr, $arrRes)) {
             $mixExpr = str_replace($arrRes[1][0], base64_encode($arrRes[1][0]), $mixExpr);
         }
-        $mixExpr = Helper::arrays($mixExpr);
+        $mixExpr = Arr::normalize($mixExpr);
         // 还原
         if (! empty($arrRes)) {
             foreach ($arrRes[1] as $strTemp) {
@@ -2167,7 +2168,7 @@ class Select
             if (is_string($strValue) && strpos($strValue, ',') !== false && strpos($strValue, '{') !== false && preg_match_all('/{(.+?)}/', $strValue, $arrResTwo)) {
                 $strValue = str_replace($arrResTwo[1][0], base64_encode($arrResTwo[1][0]), $strValue);
             }
-            $strValue = Helper::arrays($strValue);
+            $strValue = Arr::normalize($strValue);
             // 还原
             if (! empty($arrResTwo)) {
                 foreach ($arrResTwo[1] as $strTemp) {
@@ -2246,7 +2247,7 @@ class Select
      */
     public function distinct($bFlag = true)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrOption['distinct'] = ( bool ) $bFlag;
@@ -2262,7 +2263,7 @@ class Select
      */
     public function count($strField = '*', $sAlias = 'row_count')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->addAggregate('COUNT', $strField, $sAlias);
@@ -2277,7 +2278,7 @@ class Select
      */
     public function avg($strField, $sAlias = 'avg_value')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->addAggregate('AVG', $strField, $sAlias);
@@ -2292,7 +2293,7 @@ class Select
      */
     public function max($strField, $sAlias = 'max_value')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->addAggregate('MAX', $strField, $sAlias);
@@ -2307,7 +2308,7 @@ class Select
      */
     public function min($strField, $sAlias = 'min_value')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->addAggregate('MIN', $strField, $sAlias);
@@ -2322,7 +2323,7 @@ class Select
      */
     public function sum($strField, $sAlias = 'sum_value')
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->addAggregate('SUM', $strField, $sAlias);
@@ -2335,7 +2336,7 @@ class Select
      */
     public function one()
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrOption['limitcount'] = 1;
@@ -2351,7 +2352,7 @@ class Select
      */
     public function all()
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrOption['limitcount'] = null;
@@ -2368,7 +2369,7 @@ class Select
      */
     public function top($nCount = 30)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         return $this->limit(0, $nCount);
@@ -2383,7 +2384,7 @@ class Select
      */
     public function limit($nOffset = 0, $nCount = null)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         if (is_null($nCount)) {
@@ -2404,7 +2405,7 @@ class Select
      */
     public function forUpdate($bFlag = true)
     {
-        if ($this->checkFlowControl()) {
+        if ($this->checkTControl()) {
             return $this;
         }
         $this->arrOption['forupdate'] = ( bool ) $bFlag;
@@ -3441,7 +3442,7 @@ class Select
         if (is_string($mixCols) && strpos($mixCols, ',') !== false && strpos($mixCols, '{') !== false && preg_match_all('/{(.+?)}/', $mixCols, $arrRes)) {
             $mixCols = str_replace($arrRes[1][0], base64_encode($arrRes[1][0]), $mixCols);
         }
-        $mixCols = Helper::arrays($mixCols);
+        $mixCols = Arr::normalize($mixCols);
         // 还原
         if (! empty($arrRes)) {
             foreach ($arrRes[1] as $strTemp) {
@@ -3465,7 +3466,7 @@ class Select
                 if (is_string($mixCol) && strpos($mixCol, ',') !== false && strpos($mixCol, '{') !== false && preg_match_all('/{(.+?)}/', $mixCol, $arrResTwo)) {
                     $mixCol = str_replace($arrResTwo[1][0], base64_encode($arrResTwo[1][0]), $mixCol);
                 }
-                $mixCol = Helper::arrays($mixCol);
+                $mixCol = Arr::normalize($mixCol);
 
                 // 还原
                 if (! empty($arrResTwo)) {
@@ -3475,7 +3476,7 @@ class Select
                 }
 
                 // 将包含多个字段的字符串打散
-                foreach (Helper::arrays($mixCol) as $sCol) { 
+                foreach (Arr::normalize($mixCol) as $sCol) { 
                     $strThisTableName = $sTableName;
 
                     // 检查是不是 "字段名 AS 别名"这样的形式
@@ -4013,7 +4014,7 @@ class Select
      */
     public function __call(string $method, array $arrArgs)
     {
-        if ($this->placeholderFlowControl($method)) {
+        if ($this->placeholderTControl($method)) {
             return $this;
         }
 

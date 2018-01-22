@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Database;
 
-use Queryyetsimple\Support\Helper;
+use Queryyetsimple\Support\Arr;
 use Queryyetsimple\Manager\Manager as Managers;
 
 /**
@@ -135,7 +135,7 @@ class Manager extends Managers
         }
 
         // + 合并支持
-        $arrOption = Helper::arrayMergePlus($arrOption);
+        $arrOption = Arr::merge($arrOption);
 
         // 返回结果
         unset($arrTemp);
