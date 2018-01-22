@@ -21,7 +21,7 @@ namespace Queryyetsimple\Auth;
 
 use Exception;
 use InvalidArgumentException;
-use Queryyetsimple\Support\Manager as SupportManager;
+use Queryyetsimple\Manager\Manager as Managers;
 
 /**
  * manager 入口
@@ -31,7 +31,7 @@ use Queryyetsimple\Support\Manager as SupportManager;
  * @since 2017.09.07
  * @version 1.0
  */
-class Manager extends SupportManager
+class Manager extends Managers
 {
 
     /**

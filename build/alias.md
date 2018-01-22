@@ -42,6 +42,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
     pipeline = subtree push --prefix=src/Queryyetsimple/Pipeline git@github.com:queryyetsimple/pipeline.git master
 
+    psr4 = subtree push --prefix=src/Queryyetsimple/Psr4 git@github.com:queryyetsimple/psr4.git master
+
     queue = subtree push --prefix=src/Queryyetsimple/Queue git@github.com:queryyetsimple/queue.git master
 
     router = subtree push --prefix=src/Queryyetsimple/Router git@github.com:queryyetsimple/router.git master
@@ -101,6 +103,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     pagep = subtree pull --prefix=src/Queryyetsimple/Page git@github.com:queryyetsimple/page.git master
 
     pipelinep = subtree pull --prefix=src/Queryyetsimple/Pipeline git@github.com:queryyetsimple/pipeline.git master
+
+    psr4p = subtree pull --prefix=src/Queryyetsimple/Psr4 git@github.com:queryyetsimple/psr4.git master
 
     queuep = subtree pull --prefix=src/Queryyetsimple/Queue git@github.com:queryyetsimple/queue.git master
 

@@ -48,6 +48,13 @@ class Psr4 implements IPsr4
     protected $sandbox;
 
     /**
+     * 系统命名空间
+     *
+     * @var string
+     */
+    protected $namespace;
+
+    /**
      * 短命名空间
      *
      * @var string
@@ -66,13 +73,15 @@ class Psr4 implements IPsr4
      *
      * @param \Composer\Autoload\ClassLoader $composer
      * @param string $sandbox
+     * @param string $namespace
      * @param string $shortNamespace
      * @return void
      */
-    public function __construct(ClassLoader $composer, $sandbox, $shortNamespace)
+    public function __construct(ClassLoader $composer, $sandbox, $namespace, $shortNamespace)
     {
         $this->composer = $composer;
         $this->sandbox = $sandbox;
+        $this->namespace = $namespace;
         $this->shortNamespace = $shortNamespace;
     }
 
@@ -155,7 +164,7 @@ class Psr4 implements IPsr4
         }
 
         foreach ([
-            static::DEFAULT_NAMESPACE,
+            $this->namespace,
             $this->shortNamespace
         ] as $strNamespace) {
             if (strpos($strClass, $strNamespace . '\\') === 0 && is_file(($strSandbox = $this->sandbox . '/' . str_replace('\\', '/', $strClass) . '.php'))) {
@@ -177,7 +186,7 @@ class Psr4 implements IPsr4
      */
     protected function shortNamespaceMap($strClass)
     {
-        $strTryMapClass = str_replace($this->shortNamespace . '\\', static::DEFAULT_NAMESPACE . '\\', $strClass);
+        $strTryMapClass = str_replace($this->shortNamespace . '\\', $this->namespace . '\\', $strClass);
         
         if (class_exists($strTryMapClass) || interface_exists($strTryMapClass)) {
             $arrClass = explode('\\', $strClass);
