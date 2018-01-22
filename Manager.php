@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Mail;
 
-use Queryyetsimple\Support\Manager as SupportManager;
+use Queryyetsimple\Manager\Manager as Managers;
 
 /**
  * mail 入口
@@ -29,7 +29,7 @@ use Queryyetsimple\Support\Manager as SupportManager;
  * @since 2017.08.26
  * @version 1.0
  */
-class Manager extends SupportManager
+class Manager extends Managers
 {
 
     /**
