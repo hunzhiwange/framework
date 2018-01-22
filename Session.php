@@ -22,7 +22,7 @@ namespace Queryyetsimple\Session;
 use RuntimeException;
 use BadMethodCallException;
 use SessionHandlerInterface;
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 
 /**
  * session 仓储
@@ -34,7 +34,7 @@ use Queryyetsimple\Support\Option;
  */
 class Session implements ISession
 {
-    use Option;
+    use TClass;
 
     /**
      * session handler 
