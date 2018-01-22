@@ -21,7 +21,7 @@ namespace Queryyetsimple\Option;
 
 use RuntimeException;
 use Queryyetsimple\{
-    Support\Helper,
+    Support\Arr,
     Filesystem\Fso
 };
 
@@ -138,13 +138,13 @@ class Load
         }
 
         foreach ($arrType as $sType) {
-            $arrData[$sType] = Helper::arrayMergePlus($arrData[$sType]);
+            $arrData[$sType] = Arr::merge($arrData[$sType]);
         }
 
         if ($arrExtendData) {
             foreach ($arrExtendData as $sType => $arrTemp) {
                 if (isset($arrData[$sType])) {
-                    $arrData[$sType] = Helper::arrayMergePlus(array_merge($arrData[$sType], $arrTemp));
+                    $arrData[$sType] = Arr::merge(array_merge($arrData[$sType], $arrTemp));
                 } else {
                     $arrData[$sType] = $arrTemp;
                 }
