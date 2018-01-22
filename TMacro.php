@@ -31,7 +31,7 @@ use BadMethodCallException;
  * @since 2017.05.04
  * @version 1.0
  */
-trait Macro
+trait TMacro
 {
 
     /**
