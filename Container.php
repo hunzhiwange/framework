@@ -25,6 +25,7 @@ use ReflectionClass;
 use ReflectionMethod;
 use ReflectionFunction;
 use ReflectionException;
+use ReflectionParameter;
 use BadMethodCallException;
 use InvalidArgumentException;
 use Queryyetsimple\Support\FlowControl;
@@ -81,10 +82,10 @@ class Container implements IContainer, ArrayAccess
      *
      * @param mixed $name
      * @param mixed $service
-     * @param boolean $booShare
+     * @param boolean $share
      * @return $this
      */
-    public function bind($name, $service = null, $booShare = false)
+    public function bind($name, $service = null, $share = false)
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -97,7 +98,7 @@ class Container implements IContainer, ArrayAccess
 
         $this->services[$name] = $service;
 
-        if ($booShare) {
+        if ($share) {
             $this->singletons[] = $name;
         }
 
@@ -323,54 +324,54 @@ class Container implements IContainer, ArrayAccess
     /**
      * 分析自动依赖注入
      *
-     * @param mixed $callback
+     * @param mixed $injection
      * @param array $args
      * @return array
      */
-    protected function parseInjection($mixClassOrCallback, array &$arrArgs = [])
+    protected function parseInjection($injection, array &$args = [])
     {
-        $arrResult = $arrParameter = [];
-        $booFind = $booFindClass = false;
+        $result = [];
+        $findclass = false;
 
-        list($objReflection, $arrParameter) = $this->parseReflection($mixClassOrCallback);
+        $param = $this->parseReflection($injection);
 
-        foreach ($arrParameter as $intKey => $objParameter) {
+        foreach ($param as $key => $item) {
             try {
                 switch (true) {
-                    case $objParameterClass = $this->parseParameterClass($objParameter):
-                        $args = $this->parseClassParameter($objParameterClass, $arrArgs, $intKey);
-                        $booFindClass = true;
+                    case $argsclass = $this->parseParameterClass($item):
+                        $data = $this->parseClassInstance($argsclass, $args, $key);
+                        $findclass = true;
                         break;
 
-                    case $objParameter->isDefaultValueAvailable():
-                        $args = $objParameter->getDefaultValue();
+                    case $item->isDefaultValueAvailable():
+                        $data = $item->getDefaultValue();
                         break; 
 
                     default:
-                        $args = '';
+                        $data = '';
                         break;
                 }
 
-                $arrResult['args'][$objParameter->name] = $args;
+                $result['args'][$item->name] = $data;
             } catch (ReflectionException $e) {
                 throw new InvalidArgumentException($e->getMessage());
             }
         }
 
-        $arrResult['class'] = $booFindClass;
+        $result['class'] = $findclass;
 
-        return $arrResult;
+        return $result;
     }
 
     /**
-     * [parseParameterClass description]
+     * 分析反射参数的类
      * 
-     * @param  [type] $objParameter [description]
-     * @return [type]               [description]
+     * @param \ReflectionParameter $param
+     * @return boolean|string
      */
-    protected function parseParameterClass($objParameter)
+    protected function parseParameterClass(ReflectionParameter $param)
     {
-        $class = $objParameter->getClass();
+        $class = $param->getClass();
         if (! $class || ! ($class instanceof ReflectionClass)) {
             return false;
         }
@@ -379,49 +380,50 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * [parseClassParameter description]
+     * 解析反射参数类实例
      * 
-     * @param  [type] $objParameterClass [description]
-     * @param  [type] $arrArgs           [description]
-     * @param  [type] $intKey            [description]
-     * @return [type]                    [description]
+     * @param string $argsclass
+     * @param array $args
+     * @param int $key
+     * @return array
      */
-    protected function parseClassParameter($objParameterClass, $arrArgs, $intKey)
+    protected function parseClassInstance(string $argsclass, array &$args, int $key)
     {
         switch (true) {
+
             // 参数中含有实例化
-            case $args = $this->parseClassAlreadyInstance($objParameterClass, $arrArgs[$intKey] ?? false);
-                unset($arrArgs[$intKey]);
+            case $result = $this->parseClassAlreadyInstance($argsclass, $args[$key] ?? false);
+                unset($args[$key]);
                 break;
             
-            case $args = $this->parseClassFromContainer($objParameterClass):
+            case $result = $this->parseClassFromContainer($argsclass):
                 break;
 
-            case $args = $this->parseClassNotExists($objParameterClass):
+            case $result = $this->parseClassNotExists($argsclass):
                 break;
 
             default:
-                throw new InvalidArgumentException(sprintf('Class or interface %s is not register in container', $objParameterClass));
+                throw new InvalidArgumentException(sprintf('Class or interface %s is not register in container', $argsclass));
                 break;
         }
 
-        return $args;
+        return $result;
     }
 
     /**
-     * [parseClassAlreadyInstance description]
+     * 解析反射参数类实例已经存在参数中
      * 
-     * @param  [type] $objParameterClass [description]
-     * @param  [type] $args              [description]
-     * @return [type]                    [description]
+     * @param string $argsclass
+     * @param mixed $args
+     * @return boolean|array
      */
-    protected function parseClassAlreadyInstance($objParameterClass, $args)
+    protected function parseClassAlreadyInstance(string $argsclass, $args)
     {
         if (! $args) {
             return false;
         }
 
-        if (! ($args instanceof $objParameterClass)) {
+        if (! ($args instanceof $argsclass)) {
             return false;
         } 
 
@@ -429,66 +431,76 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * [parseClassFromContainer description]
+     * 从服务容器中获取解析反射参数类实例
      * 
-     * @param  [type] $objParameterClass [description]
-     * @return [type]                    [description]
+     * @param string $argsclass
+     * @return boolean|object
      */
-    protected function parseClassFromContainer($objParameterClass)
+    protected function parseClassFromContainer(string $argsclass)
     {
-        $objParameterMake = $this->make($objParameterClass);
+        $itemMake = $this->make($argsclass);
 
-        if ($objParameterMake === false) {
+        if ($itemMake === false) {
             return false;
         }
 
         // 实例对象
-        if (is_object($objParameterMake)) {
-            return $objParameterMake;
+        if (is_object($itemMake)) {
+            return $itemMake;
         }
 
         // 接口绑定实现
-        if (class_exists($objParameterMake)) {
-            return $this->make($objParameterMake);
+        if (class_exists($itemMake)) {
+            $result = $this->make($itemMake);
+            if (! is_object($result)) {
+                throw new InvalidArgumentException(sprintf('Class or interface %s is register in container is not object.', $argsclass));
+            }
+
+            return $result;
         }
 
-        throw new InvalidArgumentException(sprintf('Class or interface %s is not register in container', $objParameterClass));
+        throw new InvalidArgumentException(sprintf('Class or interface %s is not register in container', $argsclass));
     }
 
     /**
-     * [parseClassNotExists description]
+     * 独立类作为解析反射参数类实例
      * 
-     * @param  [type] $objParameterClass [description]
-     * @return [type]                    [description]
+     * @param string $argsclass
+     * @return boolean|object
      */
-    protected function parseClassNotExists($objParameterClass)
+    protected function parseClassNotExists(string $argsclass)
     {
-        if (! class_exists($objParameterClass)) {
+        if (! class_exists($argsclass)) {
             return false;
         }
 
-        return $this->make($objParameterClass);
+        $result = $this->make($argsclass);
+        if (! is_object($result)) {
+            throw new InvalidArgumentException(sprintf('Class or interface %s is register in container is not object.', $argsclass));
+        }
+
+        return $result;
     }
 
     /**
-     * [parseReflection description]
+     * 不同的类型不同的反射
      * 
-     * @param  [type] $mixClassOrCallback [description]
-     * @return [type]                     [description]
+     * @param mixed $injection
+     * @return array
      */
-    protected function parseReflection($mixClassOrCallback)
+    protected function parseReflection($injection)
     {
         switch (true) {
-            case $mixClassOrCallback instanceof Closure:
-                return $this->parseClosureReflection($mixClassOrCallback);
+            case $injection instanceof Closure:
+                return $this->parseClosureReflection($injection);
                 break;
 
-            case ! is_string($mixClassOrCallback) && is_callable($mixClassOrCallback):
-                return $this->parseMethodReflection($mixClassOrCallback);
+            case ! is_string($injection) && is_callable($injection):
+                return $this->parseMethodReflection($injection);
                 break;
 
-            case is_string($mixClassOrCallback):
-                return $this->parseClassReflection($mixClassOrCallback);
+            case is_string($injection):
+                return $this->parseClassReflection($injection);
                 break;
             
             default:
@@ -498,54 +510,54 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * [parseClosureReflection description]
+     * 解析闭包反射参数
      * 
-     * @param  [type] $mixClassOrCallback [description]
-     * @return [type]                     [description]
+     * @param Closure $injection
+     * @return array
      */
-    protected function parseClosureReflection($mixClassOrCallback)
+    protected function parseClosureReflection(Closure $injection)
     {
-        $objReflection = new ReflectionFunction($mixClassOrCallback);
-        if (! ($arrParameter = $objReflection->getParameters())) {
-            $arrParameter = [];
+        $reflection = new ReflectionFunction($injection);
+        if (! ($param = $reflection->getParameters())) {
+            $param = [];
         }
 
-        return [$objReflection, $arrParameter];
+        return $param;
     }
 
     /**
-     * [parseMethodReflection description]
+     * 解析数组回调反射参数
      * 
-     * @param  [type] $mixClassOrCallback [description]
-     * @return [type]                     [description]
+     * @param array&callback $injection
+     * @return array
      */
-    protected function parseMethodReflection($mixClassOrCallback)
+    protected function parseMethodReflection($injection)
     {
-        $objReflection = new ReflectionMethod($mixClassOrCallback[0], $mixClassOrCallback[1]);
-        if (! ($arrParameter = $objReflection->getParameters())) {
-            $arrParameter = [];
+        $reflection = new ReflectionMethod($injection[0], $injection[1]);
+        if (! ($param = $reflection->getParameters())) {
+            $param = [];
         }
 
-        return [$objReflection, $arrParameter];
+        return $param;
     }
 
     /**
-     * [parseClassReflection description]
+     * 解析类反射参数
      * 
-     * @param  [type] $mixClassOrCallback [description]
-     * @return [type]                     [description]
+     * @param string $injection
+     * @return array
      */
-    protected function parseClassReflection($mixClassOrCallback)
+    protected function parseClassReflection(string $injection)
     {
-        $objReflection = new ReflectionClass($mixClassOrCallback);
-        if (! $objReflection->isInstantiable()) {
-            throw new InvalidArgumentException(sprintf('Class %s is not instantiable.', $mixClassOrCallback));
+        $reflection = new ReflectionClass($injection);
+        if (! $reflection->isInstantiable()) {
+            throw new InvalidArgumentException(sprintf('Class %s is not instantiable.', $injection));
         }
-        if (($objConstructor = $objReflection->getConstructor()) && ! ($arrParameter = $objConstructor->getParameters())) {
-            $arrParameter = [];
+        if (($constructor = $reflection->getConstructor()) && ! ($param = $constructor->getParameters())) {
+            $param = [];
         }
 
-        return [$objReflection, $arrParameter];
+        return $param;
     }
 
     /**
