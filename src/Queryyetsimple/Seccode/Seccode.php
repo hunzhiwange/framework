@@ -22,7 +22,7 @@ namespace Queryyetsimple\Seccode;
 use Exception;
 use Queryyetsimple\{
     Support\Str,
-    Support\Option,
+    Option\TClass,
     Filesystem\Fso
 };
 
@@ -36,7 +36,7 @@ use Queryyetsimple\{
  */
 class Seccode implements ISeccode
 {
-    use Option;
+    use TClass;
 
     /**
      * 验证码

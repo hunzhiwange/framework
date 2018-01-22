@@ -23,7 +23,7 @@ use ArrayAccess;
 use RuntimeException;
 use Queryyetsimple\{
     Support\Macro,
-    Support\Option,
+    Option\TClass,
     Cookie\ICookie,
     Support\IArray,
     Session\ISession,
@@ -40,10 +40,12 @@ use Queryyetsimple\{
  */
 class request implements IArray, ArrayAccess
 {
-    use Option;
+    use TClass;
+    
     use Macro {
         __call as macroCall;
     }
+
     use FlowControl;
 
     /**

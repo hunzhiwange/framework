@@ -25,7 +25,7 @@ use Swift_Mailer;
 use Swift_Transport;
 use Swift_Mime_Message;
 use Swift_Events_EventListener;
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 
 /**
  * connect 驱动抽象类
@@ -37,7 +37,7 @@ use Queryyetsimple\Support\Option;
  */
 abstract class Connect implements Swift_Transport
 {
-    use Option;
+    use TClass;
 
     /**
      * swift mailer

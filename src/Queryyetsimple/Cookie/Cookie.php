@@ -20,7 +20,7 @@
 namespace Queryyetsimple\Cookie;
 
 use Exception;
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 
 /**
  * cookie 封装
@@ -32,7 +32,7 @@ use Queryyetsimple\Support\Option;
  */
 class Cookie implements ICookie
 {
-    use Option;
+    use TClass;
 
     /**
      * 配置

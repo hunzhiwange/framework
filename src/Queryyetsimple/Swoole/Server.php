@@ -26,7 +26,7 @@ use Swoole\{
     Client as SwooleClient
 };
 use Queryyetsimple\{
-    Support\Option,
+    Option\TClass,
     Console\Command
 };
 
@@ -43,7 +43,7 @@ use Queryyetsimple\{
 class Server
 {
 
-    use Option;
+    use TClass;
 
     /**
      * swoole 服务实例

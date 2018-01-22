@@ -20,9 +20,9 @@
 namespace Queryyetsimple\Log;
 
 use RuntimeException;
+use Queryyetsimple\Option\TClass;
 use Queryyetsimple\Support\{
     IJson,
-    Option,
     IArray
 };
 
@@ -36,7 +36,7 @@ use Queryyetsimple\Support\{
  */
 class Log implements ILog
 {
-    use Option;
+    use TClass;
 
     /**
      * 存储连接对象

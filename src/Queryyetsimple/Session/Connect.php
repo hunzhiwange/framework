@@ -20,7 +20,7 @@
 namespace Queryyetsimple\Session;
 
 use SessionHandler;
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 
 /**
  * aconnect 驱动抽象类
@@ -32,7 +32,7 @@ use Queryyetsimple\Support\Option;
  */
 abstract class Connect
 {
-    use Option;
+    use TClass;
 
     /**
      * 缓存仓储

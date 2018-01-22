@@ -20,10 +20,8 @@
 namespace Queryyetsimple\View;
 
 use InvalidArgumentException;
-use Queryyetsimple\Support\{
-    Helper,
-    Option
-};
+use Queryyetsimple\Option\TClass;
+use Queryyetsimple\Support\Helper;
 
 /**
  * 编译器列表
@@ -35,7 +33,7 @@ use Queryyetsimple\Support\{
  */
 class Compiler implements ICompiler
 {
-    use Option;
+    use TClass;
 
     /**
      * code 支持的特殊别名映射

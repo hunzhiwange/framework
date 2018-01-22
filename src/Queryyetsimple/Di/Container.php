@@ -271,8 +271,8 @@ class Container implements IContainer, ArrayAccess
      */
     public function call($callback, array $args = [])
     {
-        if (($injection = $this->parseInjection($callback, $args)) && isset($injection['args'])) {
-            $args = $this->getInjectionArgs($injection['args'], $args, $injection['class']);
+        if (! $args) {
+            $args = $this->parseInjection($callback);
         }
 
         return call_user_func_array($callback, $args);
@@ -303,44 +303,40 @@ class Container implements IContainer, ArrayAccess
     /**
      * 根据 class 名字创建实例
      *
-     * @param string $class
+     * @param string $classname
      * @param array $args
      * @return object
      */
-    protected function getInjectionObject($class, array $args = [])
+    protected function getInjectionObject($classname, array $args = [])
     {
-        if (! class_exists($class)) {
+        if (! class_exists($classname)) {
             return false;
         }
 
-        // 注入构造器
-        if (($injection = $this->parseInjection($class, $args)) && isset($injection['args'])) {
-            return $this->newInstanceArgs($class, $this->getInjectionArgs($injection['args'], $args, $injection['class']));
-        } else {
-            return $this->newInstanceArgs($class, $args);
+        if (! $args) {
+            $args = $this->parseInjection($classname);
         }
+
+        return $this->newInstanceArgs($classname, $args);
     }
 
     /**
      * 分析自动依赖注入
      *
      * @param mixed $injection
-     * @param array $args
      * @return array
      */
-    protected function parseInjection($injection, array &$args = [])
+    protected function parseInjection($injection)
     {
         $result = [];
-        $findclass = false;
 
         $param = $this->parseReflection($injection);
 
-        foreach ($param as $key => $item) {
+        foreach ($param as $item) {
             try {
                 switch (true) {
                     case $argsclass = $this->parseParameterClass($item):
-                        $data = $this->parseClassInstance($argsclass, $args, $key);
-                        $findclass = true;
+                        $data = $this->parseClassInstance($argsclass);
                         break;
 
                     case $item->isDefaultValueAvailable():
@@ -348,17 +344,15 @@ class Container implements IContainer, ArrayAccess
                         break; 
 
                     default:
-                        $data = '';
+                        $data = null;
                         break;
                 }
 
-                $result['args'][$item->name] = $data;
+                $result[$item->name] = $data;
             } catch (ReflectionException $e) {
                 throw new InvalidArgumentException($e->getMessage());
             }
         }
-
-        $result['class'] = $findclass;
 
         return $result;
     }
@@ -371,31 +365,23 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseParameterClass(ReflectionParameter $param)
     {
-        $class = $param->getClass();
-        if (! $class || ! ($class instanceof ReflectionClass)) {
+        $classObject = $param->getClass();
+        if (! $classObject || ! ($classObject instanceof ReflectionClass)) {
             return false;
         }
 
-        return $class->getName();
+        return $classObject->getName();
     }
 
     /**
      * 解析反射参数类实例
      * 
      * @param string $argsclass
-     * @param array $args
-     * @param int $key
      * @return array
      */
-    protected function parseClassInstance(string $argsclass, array &$args, int $key)
+    protected function parseClassInstance(string $argsclass)
     {
         switch (true) {
-
-            // 参数中含有实例化
-            case $result = $this->parseClassAlreadyInstance($argsclass, $args[$key] ?? false);
-                unset($args[$key]);
-                break;
-            
             case $result = $this->parseClassFromContainer($argsclass):
                 break;
 
@@ -408,26 +394,6 @@ class Container implements IContainer, ArrayAccess
         }
 
         return $result;
-    }
-
-    /**
-     * 解析反射参数类实例已经存在参数中
-     * 
-     * @param string $argsclass
-     * @param mixed $args
-     * @return boolean|array
-     */
-    protected function parseClassAlreadyInstance(string $argsclass, $args)
-    {
-        if (! $args) {
-            return false;
-        }
-
-        if (! ($args instanceof $argsclass)) {
-            return false;
-        } 
-
-        return $args;
     }
 
     /**
@@ -561,45 +527,15 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 注入参数分析
-     *
-     * @param array $args
-     * @param array $extends
-     * @param boolean $findclass
-     * @return array
-     */
-    protected function getInjectionArgs(array $args, array $extends = [], $findclass = false)
-    {
-        $result = [];
-
-        foreach ($extends as $key => $extend) {
-            if (isset($args[$key])) {
-                unset($args[$key]);
-            } elseif ($findclass === false) {
-                array_shift($args);
-            }
-            $result[] = $extend;
-        }
-
-        foreach ($args as $arg) {
-            $result[] = $arg;
-        }
-
-        unset($args, $extends);
-
-        return $result;
-    }
-
-    /**
      * 动态创建实例对象
      *
-     * @param string $class
+     * @param string $classname
      * @param array $args
      * @return mixed
      */
-    protected function newInstanceArgs($class, $args)
+    protected function newInstanceArgs($classname, $args)
     {
-        return (new ReflectionClass($class))->newInstanceArgs($args);
+        return (new ReflectionClass($classname))->newInstanceArgs($args);
     }
 
     /**

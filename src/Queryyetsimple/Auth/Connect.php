@@ -22,7 +22,7 @@ namespace Queryyetsimple\Auth;
 use Queryyetsimple\{
     Mvc\IModel,
     Support\Str,
-    Support\Option,
+    Option\TClass,
     Validate\IValidate,
     Encryption\IEncryption
 };
@@ -37,7 +37,7 @@ use Queryyetsimple\{
  */
 abstract class Connect
 {
-    use Option;
+    use TClass;
 
     /**
      * user 对象

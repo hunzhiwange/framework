@@ -21,7 +21,7 @@ namespace Queryyetsimple\Cache;
 
 use RuntimeException;
 use Memcache as Memcaches;
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 
 /**
  * memcache 扩展缓存
@@ -33,7 +33,7 @@ use Queryyetsimple\Support\Option;
  */
 class Memcache extends Connect implements IConnect
 {
-    use Option;
+    use TClass;
 
     /**
      * 配置

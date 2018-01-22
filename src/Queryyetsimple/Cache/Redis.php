@@ -21,7 +21,7 @@ namespace Queryyetsimple\Cache;
 
 use Redis as Rediss;
 use RuntimeException;
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 
 /**
  * redis 扩展缓存
@@ -33,7 +33,7 @@ use Queryyetsimple\Support\Option;
  */
 class Redis extends Connect implements IConnect
 {
-    use Option;
+    use TClass;
 
     /**
      * 配置

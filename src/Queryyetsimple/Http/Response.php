@@ -22,11 +22,10 @@ namespace Queryyetsimple\Http;
 use InvalidArgumentException;
 use Queryyetsimple\{
     Mvc\IView,
-    Support\Xml,
-    Router\Router,
-    Support\Option,
-    Cookie\ICookie,
     Support\Macro,
+    Router\Router,
+    Option\TClass,
+    Cookie\ICookie,
     Session\ISession,
     Support\FlowControl
 };
@@ -41,7 +40,7 @@ use Queryyetsimple\{
  */
 class response
 {
-    use Option{
+    use TClass{
         option as macroOption;
         options as macroOptions;
     }
@@ -600,10 +599,6 @@ class response
                 }
                 break;
 
-            case 'xml':
-                $mixContent = Xml::serialize($mixContent);
-                break;
-
             case 'file':
                 ob_end_clean();
                 $resFp = fopen($this->getOption('file_name'), 'rb');
@@ -970,30 +965,6 @@ class response
         option('redirect_url', $sUrl)->
 
         option('option', $arrOption);
-    }
-
-    /**
-     * xml
-     *
-     * @param mixed $arrData
-     * @param string $strCharset
-     * @return $this
-     */
-    public function xml($arrData = null, $strCharset = 'utf-8')
-    {
-        if ($this->checkFlowControl()) {
-            return $this;
-        }
-
-        if (is_array($arrData)) {
-            $this->data($arrData);
-        }
-
-        return $this->responseType('xml')->
-
-        contentType('text/xml')->
-
-        charset($strCharset);
     }
 
     /**

@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Filesystem;
 
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
@@ -33,7 +33,7 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
  */
 abstract class Connect
 {
-    use Option;
+    use TClass;
 
     /**
      * Filesystem

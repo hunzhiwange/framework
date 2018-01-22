@@ -17,7 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Support;
+namespace Queryyetsimple\Option;
 
 /**
  * 类配置复用
@@ -27,7 +27,7 @@ namespace Queryyetsimple\Support;
  * @since 2017.04.13
  * @version 1.0
  */
-trait Option
+trait TClass
 {
 
     /**

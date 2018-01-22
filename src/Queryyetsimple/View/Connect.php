@@ -21,7 +21,7 @@ namespace Queryyetsimple\View;
 
 use RuntimeException;
 use InvalidArgumentException;
-use Queryyetsimple\Support\Option;
+use Queryyetsimple\Option\TClass;
 
 /**
  * 模板处理抽象类
@@ -33,7 +33,7 @@ use Queryyetsimple\Support\Option;
  */
 abstract class Connect
 {
-    use Option;
+    use TClass;
 
     /**
      * 变量值
