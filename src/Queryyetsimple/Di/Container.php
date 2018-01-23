@@ -28,7 +28,6 @@ use ReflectionException;
 use ReflectionParameter;
 use BadMethodCallException;
 use InvalidArgumentException;
-use Queryyetsimple\Flow\TControl;
 
 /**
  * IOC 容器
@@ -40,8 +39,7 @@ use Queryyetsimple\Flow\TControl;
  */
 class Container implements IContainer, ArrayAccess
 {
-    use TControl;
-
+    
     /**
      * 注册服务
      *
@@ -179,6 +177,7 @@ class Container implements IContainer, ArrayAccess
                 $this->alias[$value] = $alias;
             }
         }
+
         return $this;
     }
 
@@ -195,6 +194,7 @@ class Container implements IContainer, ArrayAccess
             $this->groups[$group] = [];
         }
         $this->groups[$group] = $data;
+
         return $this;
     }
 
@@ -215,6 +215,7 @@ class Container implements IContainer, ArrayAccess
         foreach (( array ) $this->groups[$group] as $instance) {
             $result[$instance] = $this->make($instance, $args);
         }
+
         return $result;
     }
 
@@ -641,10 +642,6 @@ class Container implements IContainer, ArrayAccess
      */
     public function __call(string $method, array $args)
     {
-        if ($this->placeholderTControl($method)) {
-            return $this;
-        }
-
         throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
     }
 }
