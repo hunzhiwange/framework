@@ -13,11 +13,15 @@
     }],
     "require": {
         "php": ">=7.1.0",
-        "queryyetsimple/support": "1.0.*"
+        "queryyetsimple/support": "1.0.*",
+        "queryyetsimple/option": "1.0.*",
+        "queryyetsimple/filesystem": "1.0.*",
+        "queryyetsimple/di": "1.0.*",
+        "queryyetsimple/manager": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "queryyetsimple\\cache\\": ""
+            "Queryyetsimple\\Cache\\": ""
         }
     },
     "extra": {
