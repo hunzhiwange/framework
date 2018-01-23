@@ -26,7 +26,7 @@ use Queryyetsimple\{
     Support\Str,
     Support\Arr,
     Mvc\ModelNotFound,
-    Support\Collection,
+    Collection\Collection,
     Mvc\Relation\Relation,
     Database\Select as DatabaseSelect
 };
@@ -168,7 +168,7 @@ class Select
      *
      * @param mixed $mixId
      * @param array $arrColumn
-     * @return \Queryyetsimple\Mvc\IModel|\queryyetsimple\Support\Collection|null
+     * @return \Queryyetsimple\Mvc\IModel|\Queryyetsimple\Collection\Collection|null
      */
     public function find($mixId, $arrColumn = ['*'])
     {
@@ -184,7 +184,7 @@ class Select
      *
      * @param array $arrId
      * @param array $arrColumn
-     * @return \queryyetsimple\Support\Collection
+     * @return \Queryyetsimple\Collection\Collection
      */
     public function findMany($arrId, $arrColumn = ['*'])
     {
@@ -199,7 +199,7 @@ class Select
      *
      * @param mixed $mixId
      * @param array $arrColumn
-     * @return \Queryyetsimple\Mvc\IModel|\queryyetsimple\Support\Collection
+     * @return \Queryyetsimple\Mvc\IModel|\Queryyetsimple\Collection\Collection
      */
     public function findOrFail($mixId, $arrColumn = ['*'])
     {

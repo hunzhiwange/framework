@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple\Mvc\Relation;
 
-use Queryyetsimple\Support\Collection;
+use Queryyetsimple\Collection\Collection;
 
 /**
  * 关联模型 HasOne

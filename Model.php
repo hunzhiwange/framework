@@ -35,11 +35,11 @@ use Queryyetsimple\{
     Support\TMacro,
     Event\IDispatch,
     Support\TSerialize,
-    Support\Collection,
     Mvc\Relation\HasOne,
     Mvc\Relation\HasMany,
     Mvc\Relation\Relation,
     Mvc\Relation\ManyMany,
+    Collection\Collection,
     Mvc\Relation\BelongsTo
 };
 
@@ -2034,7 +2034,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 创建一个模型集合
      *
      * @param array $arrModel
-     * @return \queryyetsimple\Support\Collection
+     * @return \Queryyetsimple\Collection\Collection
      */
     public function collection(array $arrModel = [])
     {

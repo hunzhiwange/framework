@@ -77,7 +77,7 @@ class HasMany extends Relation
      * 匹配关联查询数据到模型 HasMany
      *
      * @param \Queryyetsimple\Mvc\IModel[] $arrModel
-     * @param \queryyetsimple\Support\Collection $objResult
+     * @param \Queryyetsimple\Collection\Collection $objResult
      * @param string $strRelation
      * @return array
      */
@@ -121,8 +121,8 @@ class HasMany extends Relation
     /**
      * 批量保存模型
      *
-     * @param \queryyetsimple\Support\Collection|array $mixModel
-     * @return \queryyetsimple\Support\Collection|array
+     * @param \Queryyetsimple\Collection\Collection|array $mixModel
+     * @return \Queryyetsimple\Collection\Collection|array
      */
     public function saveMany($mixModel)
     {
@@ -200,7 +200,7 @@ class HasMany extends Relation
      * 匹配预载入数据
      *
      * @param \Queryyetsimple\Mvc\IModel[] $arrModel
-     * @param \queryyetsimple\Support\Collection $objResult
+     * @param \Queryyetsimple\Collection\Collection $objResult
      * @param string $strRelation
      * @param string $strType
      * @return array
@@ -237,7 +237,7 @@ class HasMany extends Relation
     /**
      * 模型隐射数据
      *
-     * @param \queryyetsimple\Support\Collection $objResult
+     * @param \Queryyetsimple\Collection\Collection $objResult
      * @return array
      */
     protected function buildMap(collection $objResult)

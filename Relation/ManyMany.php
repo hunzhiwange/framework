@@ -119,7 +119,7 @@ class ManyMany extends Relation
      * 匹配关联查询数据到模型
      *
      * @param \Queryyetsimple\Mvc\IModel[] $arrModel
-     * @param \queryyetsimple\Support\Collection $objResult
+     * @param \Queryyetsimple\Collection\Collection $objResult
      * @param string $strRelation
      * @return array
      */
@@ -266,7 +266,7 @@ class ManyMany extends Relation
     /**
      * 模型隐射数据
      *
-     * @param \queryyetsimple\Support\Collection $objResult
+     * @param \Queryyetsimple\Collection\Collection $objResult
      * @return array
      */
     protected function buildMap(collection $objResult)
