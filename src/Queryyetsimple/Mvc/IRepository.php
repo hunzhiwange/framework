@@ -52,7 +52,7 @@ interface IRepository
      * 取得所有记录
      *
      * @param null|callback $mixCallback
-     * @return \queryyetsimple\Support\Collection
+     * @return \Queryyetsimple\Collection\Collection
      */
     public function count($mixSpecification = null);
 
@@ -60,7 +60,7 @@ interface IRepository
      * 取得所有记录
      *
      * @param null|callback $mixCallback
-     * @return \queryyetsimple\Support\Collection
+     * @return \Queryyetsimple\Collection\Collection
      */
     public function all($mixSpecification = null);
 

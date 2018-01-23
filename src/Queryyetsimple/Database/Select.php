@@ -26,9 +26,9 @@ use Queryyetsimple\{
     Support\Arr,
     Support\Type,
     Flow\TControl,
-    Support\Collection,
     Page\PageWithTotal,
-    Page\PageWithoutTotal
+    Page\PageWithoutTotal,
+    Collection\Collection
 };
 
 /**

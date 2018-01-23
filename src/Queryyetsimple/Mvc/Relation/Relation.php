@@ -112,7 +112,7 @@ abstract class Relation
     /**
      * 取得预载入关联模型
      *
-     * @return \queryyetsimple\Support\Collection
+     * @return \Queryyetsimple\Collection\Collection
      */
     public function getPreLoad()
     {
@@ -198,7 +198,7 @@ abstract class Relation
      * 匹配关联查询数据到模型 HasMany
      *
      * @param \Queryyetsimple\Mvc\IModel[] $arrModel
-     * @param \queryyetsimple\Support\Collection $objResult
+     * @param \Queryyetsimple\Collection\Collection $objResult
      * @param string $strRelation
      * @return array
      */

@@ -17,7 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Support;
+namespace Queryyetsimple\Collection;
 
 use Iterator;
 use Countable;
@@ -25,9 +25,13 @@ use ArrayAccess;
 use JsonSerializable;
 use BadMethodCallException;
 use InvalidArgumentException;
+use Queryyetsimple\Support\{
+    IArray,
+    IJson
+};
 
 /**
- * 数组转对象集合
+ * 集合
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
