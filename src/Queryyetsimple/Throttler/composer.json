@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/session",
-    "description": "The Queryyetsimple Session package.",
+    "name": "queryyetsimple/throttler",
+    "description": "The Queryyetsimple Throttler package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Session\\": ""
+            "Queryyetsimple\\Throttler\\": ""
         }
     },
     "extra": {

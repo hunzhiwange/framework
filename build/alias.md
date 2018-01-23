@@ -26,7 +26,7 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
     filesystem = subtree push --prefix=src/Queryyetsimple/Filesystem git@github.com:queryyetsimple/filesystem.git master
 
-    flow = subtree push --prefix=src/Queryyetsimple/Flow git@github.com:queryyetsimple/flow.git master
+    flows = subtree push --prefix=src/Queryyetsimple/Flow git@github.com:queryyetsimple/flow.git master
 
     http = subtree push --prefix=src/Queryyetsimple/Http git@github.com:queryyetsimple/http.git master
 
@@ -92,7 +92,7 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
     filesystemp = subtree pull --prefix=src/Queryyetsimple/Filesystem git@github.com:queryyetsimple/filesystem.git master
 
-    flow = subtree pull --prefix=src/Queryyetsimple/Flow git@github.com:queryyetsimple/flow.git master
+    flowsp = subtree pull --prefix=src/Queryyetsimple/Flow git@github.com:queryyetsimple/flow.git master
 
     httpp = subtree pull --prefix=src/Queryyetsimple/http git@github.com:queryyetsimple/http.git master
 
