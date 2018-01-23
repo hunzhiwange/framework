@@ -10,6 +10,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
 
     cache = subtree push --prefix=src/Queryyetsimple/Cache git@github.com:queryyetsimple/cache.git master
 
+    collection = subtree push --prefix=src/Queryyetsimple/Collection git@github.com:queryyetsimple/collection.git master
+
     console = subtree push --prefix=src/Queryyetsimple/Console git@github.com:queryyetsimple/console.git master
 
     cookie = subtree push --prefix=src/Queryyetsimple/Cookie git@github.com:queryyetsimple/cookie.git master
@@ -73,6 +75,8 @@ modify this file ../.git/config add alias,then using git foobar to commit your s
     authp = subtree pull --prefix=src/Queryyetsimple/Auth git@github.com:queryyetsimple/auth.git master
 
     cachep = subtree pull --prefix=src/Queryyetsimple/Cache git@github.com:queryyetsimple/cache.git master
+
+    collectionp = subtree pull --prefix=src/Queryyetsimple/Collection git@github.com:queryyetsimple/collection.git master
 
     consolep = subtree pull --prefix=src/Queryyetsimple/Console git@github.com:queryyetsimple/console.git master
 

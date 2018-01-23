@@ -30,6 +30,7 @@
         "queryyetsimple/aop": "self.version",
         "queryyetsimple/auth": "self.version",
         "queryyetsimple/cache": "self.version",
+        "queryyetsimple/collection": "self.version",
         "queryyetsimple/console": "self.version",
         "queryyetsimple/cookie": "self.version",
         "queryyetsimple/database": "self.version",
