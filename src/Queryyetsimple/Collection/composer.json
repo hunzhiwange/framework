@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/cache",
-    "description": "The Queryyetsimple Cache package.",
+    "name": "queryyetsimple/collection",
+    "description": "The Queryyetsimple Collection package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,15 +13,11 @@
     }],
     "require": {
         "php": ">=7.1.0",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/option": "1.0.*",
-        "queryyetsimple/filesystem": "1.0.*",
-        "queryyetsimple/di": "1.0.*",
-        "queryyetsimple/manager": "1.0.*"
+        "queryyetsimple/support": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Cache\\": ""
+            "Queryyetsimple\\Collection\\": ""
         }
     },
     "extra": {

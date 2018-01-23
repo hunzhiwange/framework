@@ -20,10 +20,6 @@
 namespace Queryyetsimple\Console;
 
 use RuntimeException;
-use Queryyetsimple\{
-    Filesystem\Fso,
-    Console\Command
-};
 
 /**
  * 生成器基类
@@ -345,6 +341,6 @@ abstract class Make extends Command
      */
     protected function formatFile($strFile)
     {
-        return Fso::tidyPathLinux($strFile);
+        return $strFile;
     }
 }

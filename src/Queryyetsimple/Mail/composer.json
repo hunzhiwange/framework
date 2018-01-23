@@ -19,7 +19,7 @@
     },
     "autoload": {
         "psr-4": {
-            "queryyetsimple\\mail\\": ""
+            "Queryyetsimple\\Mail\\": ""
         }
     },
     "extra": {

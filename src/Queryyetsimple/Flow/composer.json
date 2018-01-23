@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/cache",
-    "description": "The Queryyetsimple Cache package.",
+    "name": "queryyetsimple/flow",
+    "description": "The Queryyetsimple Flow package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -12,16 +12,11 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": ">=7.1.0",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/option": "1.0.*",
-        "queryyetsimple/filesystem": "1.0.*",
-        "queryyetsimple/di": "1.0.*",
-        "queryyetsimple/manager": "1.0.*"
+        "php": ">=7.1.0"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Cache\\": ""
+            "Queryyetsimple\\Flow\\": ""
         }
     },
     "extra": {

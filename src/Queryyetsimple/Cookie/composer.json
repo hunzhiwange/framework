@@ -13,11 +13,11 @@
     }],
     "require": {
         "php": ">=7.1.0",
-        "queryyetsimple/cookie": "1.0.*"
+        "queryyetsimple/option": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "queryyetsimple\\cookie\\": ""
+            "Queryyetsimple\\Cookie\\": ""
         }
     },
     "extra": {

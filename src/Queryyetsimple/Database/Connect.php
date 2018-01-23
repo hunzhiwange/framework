@@ -26,7 +26,6 @@ use PDOException;
 use Queryyetsimple\{
     Log\Ilog,
     Cache\ICache,
-    Database\Select,
     Support\Debug\Dump
 };
 

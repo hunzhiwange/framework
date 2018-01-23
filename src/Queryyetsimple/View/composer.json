@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "queryyetsimple\\view\\": ""
+            "Queryyetsimple\\View\\": ""
         }
     },
     "extra": {
