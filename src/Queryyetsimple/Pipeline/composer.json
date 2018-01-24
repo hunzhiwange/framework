@@ -12,8 +12,8 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": ">=7.1.0"，
-        "queryyetsimple/support": "1.0.*"
+        "php": ">=7.1.0",
+        "queryyetsimple/di": "1.0.*"
     },
     "autoload": {
         "psr-4": {
