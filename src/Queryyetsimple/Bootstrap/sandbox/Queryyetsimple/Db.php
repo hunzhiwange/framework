@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple;
 
-use Queryyetsimple\Support\Face;
+use Queryyetsimple\Support\Facade;
 
 /**
  * 沙盒 db 别名
@@ -29,7 +29,7 @@ use Queryyetsimple\Support\Face;
  * @since 2017.08.31
  * @version 1.0
  */
-class Db extends Face
+class Db extends Facade
 {
     
     /**

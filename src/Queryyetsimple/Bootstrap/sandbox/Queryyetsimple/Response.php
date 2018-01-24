@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple;
 
-use Queryyetsimple\Support\Face;
+use Queryyetsimple\Support\Facade;
 
 /**
  * 沙盒 response
@@ -29,7 +29,7 @@ use Queryyetsimple\Support\Face;
  * @since 2017.06.10
  * @version 1.0
  */
-class Response extends Face
+class Response extends Facade
 {
     
     /**

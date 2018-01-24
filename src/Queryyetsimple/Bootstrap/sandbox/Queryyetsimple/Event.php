@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple;
 
-use Queryyetsimple\Support\Face;
+use Queryyetsimple\Support\Facade;
 
 /**
  * 沙盒 event
@@ -29,7 +29,7 @@ use Queryyetsimple\Support\Face;
  * @since 2017.07.12
  * @version 1.0
  */
-class Event extends Face
+class Event extends Facade
 {
     
     /**

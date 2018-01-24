@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple;
 
-use Queryyetsimple\Support\Face;
+use Queryyetsimple\Support\Facade;
 
 /**
  * 沙盒 auth
@@ -29,7 +29,7 @@ use Queryyetsimple\Support\Face;
  * @since 2017.09.08
  * @version 1.0
  */
-class Auth extends Face
+class Auth extends Facade
 {
     
     /**

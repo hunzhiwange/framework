@@ -27,7 +27,7 @@ use Queryyetsimple\{
     Psr4\Psr4,
     Di\Provider,
     Di\Container,
-    Support\face,
+    Support\Facade,
     Filesystem\Fso,
     Bootstrap\Console\Provider\Register as ConsoleProvider
 };
@@ -489,7 +489,7 @@ class Project extends Container implements IProject
         $this->instance('composer', $objComposer);
         $this->alias('composer', ClassLoader::class);
 
-        Face::setContainer($this);
+        Facade::setContainer($this);
 
         spl_autoload_register([
             $this['psr4'],

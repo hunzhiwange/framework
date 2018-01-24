@@ -19,7 +19,7 @@
  */
 namespace Queryyetsimple;
 
-use Queryyetsimple\Support\Face;
+use Queryyetsimple\Support\Facade;
 
 /**
  * 沙盒 log
@@ -29,7 +29,7 @@ use Queryyetsimple\Support\Face;
  * @since 2017.06.10
  * @version 1.0
  */
-class Log extends Face
+class Log extends Facade
 {
     
     /**
