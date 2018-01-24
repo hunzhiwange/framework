@@ -26,8 +26,9 @@ use JsonSerializable;
 use BadMethodCallException;
 use InvalidArgumentException;
 use Queryyetsimple\Support\{
+    IJson,
     IArray,
-    IJson
+    TMacro
 };
 
 /**

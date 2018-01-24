@@ -598,11 +598,10 @@ class Container implements IContainer, ArrayAccess
         $name = $this->normalize($name);
 
         foreach ([
-            'Factorys',
-            'Instances',
-            'Singletons'
+            'services',
+            'instances',
+            'singletons'
         ] as $item) {
-            $item = 'arr' . $item;
             if (isset($this->{$item}[$name])) {
                 unset($this->{$item}[$name]);
             }
