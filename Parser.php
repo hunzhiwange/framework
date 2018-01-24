@@ -20,10 +20,7 @@
 namespace Queryyetsimple\View;
 
 use InvalidArgumentException;
-use Queryyetsimple\{
-    Stack\Stack,
-    Filesystem\Fso
-};
+use Queryyetsimple\Stack\Stack;
 
 /**
  * 分析模板
@@ -766,7 +763,7 @@ class Parser implements IParser
      */
     protected function makeCacheFile($sCachePath, &$sCompiled)
     {
-        ! is_file($sCachePath) && ! is_dir(dirname($sCachePath)) && Fso::createDirectory(dirname($sCachePath));
+        ! is_file($sCachePath) && ! is_dir(dirname($sCachePath)) && mkdir(dirname($sCachePath), 0777, true);
         file_put_contents($sCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . $sCompiled);
     }
 
