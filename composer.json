@@ -13,6 +13,7 @@
     }],
     "require": {
         "php": ">=7.1.0",
+        "queryyetsimple/option": "1.0.*",
         "queryyetsimple/support": "1.0.*"
     },
     "autoload": {
