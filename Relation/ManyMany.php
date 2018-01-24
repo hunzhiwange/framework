@@ -21,7 +21,7 @@ namespace Queryyetsimple\Mvc\Relation;
 
 use Queryyetsimple\{
     Mvc\IModel,
-    Support\Collection
+    Collection\Collection
 };
 
 /**
