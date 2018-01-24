@@ -31,9 +31,11 @@ use Queryyetsimple\Di\IContainer;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.04
+ * @see https://github.com/domnikl/DesignPatternsPHP/tree/master/Structural/Facade
+ * @see https://d.laravel-china.org/docs/5.5/facades
  * @version 1.0
  */
-abstract class Face
+abstract class Facade
 {
 
     /**
@@ -55,7 +57,7 @@ abstract class Face
      *
      * @return mixed
      */
-    public static function faces()
+    public static function facade()
     {
         $unique = static::name();
 
@@ -109,7 +111,7 @@ abstract class Face
      */
     public static function __callStatic(string $method, array $args)
     {
-        $instance = static::faces();
+        $instance = static::facade();
         if (! $instance) {
             throw new RuntimeException('Can not find instance from container.');
         }
