@@ -17,6 +17,9 @@
         "league/flysystem": "^1.0"
     },
     "require-dev": {
+        "queryyetsimple/option": "1.0.*",
+        "queryyetsimple/support": "1.0.*",
+        "queryyetsimple/manager": "1.0.*",
         "league/flysystem-sftp": "^1.0",
         "league/flysystem-ziparchive": "^1.0"
     },
