@@ -19,9 +19,6 @@
         "queryyetsimple/option": "1.0.*",
         "queryyetsimple/console": "1.0.*"
     },
-    "suggest": {
-        "league/flysystem-sftp": "Sftp adapter support."
-    },
     "autoload": {
         "psr-4": {
             "Queryyetsimple\\Swoole\\": ""
