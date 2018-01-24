@@ -13,10 +13,10 @@
     }],
     "require": {
         "php": ">=7.1.0",
-        "coderkungfu/php-queue": "^0.9.1",
         "queryyetsimple/option": "1.0.*",
-        "clio/clio": "@stable",
         "queryyetsimple/support": "1.0.*",
+        "coderkungfu/php-queue": "^0.9.1",
+        "clio/clio": "@stable"
     },
     "autoload": {
         "psr-4": {

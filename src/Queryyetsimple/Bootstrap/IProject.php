@@ -40,7 +40,7 @@ interface IProject extends IContainer
      *
      * @var string
      */
-    const VERSION = '4.0.0';
+    const VERSION = '1.0.0';
     
     /**
      * 执行项目
