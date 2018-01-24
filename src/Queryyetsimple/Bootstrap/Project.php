@@ -182,7 +182,7 @@ class Project extends Container implements IProject
     /**
      * {@inheritdoc}
      */
-    public function make($strFactoryName, array $arrArgs = [])
+    public function make($strFactoryName, ?array $arrArgs = null)
     {
         $strFactoryName = $this->getAlias($strFactoryName);
 
