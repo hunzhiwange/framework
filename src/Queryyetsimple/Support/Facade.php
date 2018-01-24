@@ -57,7 +57,7 @@ abstract class Facade
      *
      * @return mixed
      */
-    public static function facade()
+    public static function facades()
     {
         $unique = static::name();
 
@@ -111,7 +111,7 @@ abstract class Facade
      */
     public static function __callStatic(string $method, array $args)
     {
-        $instance = static::facade();
+        $instance = static::facades();
         if (! $instance) {
             throw new RuntimeException('Can not find instance from container.');
         }
