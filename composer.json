@@ -18,6 +18,9 @@
         "queryyetsimple/manager": "1.0.*",
         "queryyetsimple/stack": "1.0.*"
     },
+    "suggest": {
+        "ext-v8js": "PHP v8js support."
+    },
     "autoload": {
         "psr-4": {
             "Queryyetsimple\\View\\": ""
