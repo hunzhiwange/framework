@@ -23,7 +23,7 @@ use Closure;
 use Exception;
 use Queryyetsimple\{
     Mvc\IModel,
-    Support\Collection
+    Collection\Collection
 };
 
 /**
