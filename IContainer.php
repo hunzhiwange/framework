@@ -37,10 +37,10 @@ interface IContainer
      *
      * @param mixed $name
      * @param mixed $service
-     * @param boolean $booShare
+     * @param boolean $share
      * @return $this
      */
-    public function bind($name, $service = null, $booShare = false);
+    public function bind($name, $service = null, bool $share = false);
 
     /**
      * 注册为实例
@@ -102,7 +102,7 @@ interface IContainer
      * @param array $args
      * @return object|false
      */
-    public function make($name, array $args = []);
+    public function make($name, ?array $args = null);
 
     /**
      * 实例回调自动注入

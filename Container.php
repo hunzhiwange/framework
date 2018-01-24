@@ -83,7 +83,7 @@ class Container implements IContainer, ArrayAccess
      * @param boolean $share
      * @return $this
      */
-    public function bind($name, $service = null, $share = false)
+    public function bind($name, $service = null, bool $share = false)
     {
         if (is_array($name)) {
             list($name, $alias) = $this->parseAlias($name);
@@ -140,16 +140,16 @@ class Container implements IContainer, ArrayAccess
     /**
      * 创建共享的闭包
      *
-     * @param \Closure $closure
+     * @param \Closure $closures
      * @return \Closure
      */
-    public function share(Closure $closure)
+    public function share(Closure $closures)
     {
-        return function ($container) use ($closure) {
+        return function ($container) use ($closures) {
             static $obj;
 
             if (is_null($obj)) {
-                $obj = $container($container);
+                $obj = $closures($container);
             }
 
             return $obj;
@@ -166,15 +166,16 @@ class Container implements IContainer, ArrayAccess
     public function alias($alias, $value = null)
     {
         if (is_array($alias)) {
-            foreach ($alias as $key => $value) {
+            foreach ($alias as $key => $item) {
                 if (is_int($key)) {
                     continue;
                 }
-                $this->alias($key, $value);
+                $this->alias($key, $item);
             }
         } else {
-            foreach (( array ) $value as $value) {
-                $this->alias[$value] = $alias;
+            $value = ( array ) $value;
+            foreach ($value as $item) {
+                $this->alias[$item] = $alias;
             }
         }
 
@@ -212,8 +213,9 @@ class Container implements IContainer, ArrayAccess
         }
 
         $result = [];
-        foreach (( array ) $this->groups[$group] as $instance) {
-            $result[$instance] = $this->make($instance, $args);
+        $instance = ( array ) $this->groups[$group];
+        foreach ($instance as $item) {
+            $result[$item] = $this->make($item, $args);
         }
 
         return $result;
@@ -226,7 +228,7 @@ class Container implements IContainer, ArrayAccess
      * @param array $args
      * @return object|false
      */
-    public function make($name, array $args = [])
+    public function make($name, ?array $args = null)
     {
         // 别名
         $name = $this->getAlias($name);
@@ -242,6 +244,10 @@ class Container implements IContainer, ArrayAccess
         }
  
         if (! is_string($this->services[$name]) && is_callable($this->services[$name])) {
+            if (! $args) {
+                $args = [];
+            }
+
             array_unshift($args, $this);
             $instance = call_user_func_array($this->services[$name], $args);
         } else {
@@ -406,7 +412,6 @@ class Container implements IContainer, ArrayAccess
     protected function parseClassFromContainer(string $argsclass)
     {
         $itemMake = $this->make($argsclass);
-
         if ($itemMake === false) {
             return false;
         }
@@ -460,19 +465,15 @@ class Container implements IContainer, ArrayAccess
         switch (true) {
             case $injection instanceof Closure:
                 return $this->parseClosureReflection($injection);
-                break;
 
             case ! is_string($injection) && is_callable($injection):
                 return $this->parseMethodReflection($injection);
-                break;
 
             case is_string($injection):
                 return $this->parseClassReflection($injection);
-                break;
             
             default:
                 throw new InvalidArgumentException('Unsupported callback types.');
-                break;
         }
     }
 
@@ -597,11 +598,13 @@ class Container implements IContainer, ArrayAccess
     {
         $name = $this->normalize($name);
 
-        foreach ([
+        $prop = [
             'services',
             'instances',
             'singletons'
-        ] as $item) {
+        ];
+
+        foreach ($prop as $item) {
             if (isset($this->{$item}[$name])) {
                 unset($this->{$item}[$name]);
             }
