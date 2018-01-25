@@ -52,7 +52,7 @@ class Psr4 implements IPsr4
      *
      * @var string
      */
-    protected $namespace;
+    protected $namespaces;
 
     /**
      * 短命名空间
@@ -66,15 +66,15 @@ class Psr4 implements IPsr4
      *
      * @param \Composer\Autoload\ClassLoader $composer
      * @param string $sandbox
-     * @param string $namespace
+     * @param string $namespaces
      * @param string $shortNamespace
      * @return void
      */
-    public function __construct(ClassLoader $composer, $sandbox, $namespace, $shortNamespace)
+    public function __construct(ClassLoader $composer, $sandbox, $namespaces, $shortNamespace)
     {
         $this->composer = $composer;
         $this->sandbox = $sandbox;
-        $this->namespace = $namespace;
+        $this->namespaces = $namespaces;
         $this->shortNamespace = $shortNamespace;
     }
 
@@ -91,104 +91,106 @@ class Psr4 implements IPsr4
     /**
      * 导入一个目录中命名空间结构
      *
-     * @param string $sNamespace 命名空间名字
-     * @param string $sPackage 命名空间路径
+     * @param string $namespaces 命名空间名字
+     * @param string $package 命名空间路径
      * @param boolean $force 强制覆盖
      * @return void
      */
-    public function import($sNamespace, $sPackage, $force = false)
+    public function import($namespaces, $package, $force = false)
     {
-        if (! is_dir($sPackage)) {
+        if (! is_dir($package)) {
             return;
         }
 
-        if ($force === false && ! is_null($this->namespaces($sNamespace))) {
+        if ($force === false && ! is_null($this->namespaces($namespaces))) {
             return;
         }
 
-        $sPackagePath = realpath($sPackage);
-        $this->composer()->setPsr4($sNamespace . '\\', $sPackagePath);
+        $packagePath = realpath($package);
+        $this->composer()->setPsr4($namespaces . '\\', $packagePath);
     }
 
     /**
      * 获取命名空间路径
      *
-     * @param string $sNamespace
+     * @param string $namespaces
      * @return string|null
      */
-    public function namespaces($sNamespace)
+    public function namespaces($namespaces)
     {
-        $arrNamespace = explode('\\', $sNamespace);
-        $arrPrefix = $this->composer()->getPrefixesPsr4();
+        $temp = explode('\\', $namespaces);
+        $prefix = $this->composer()->getPrefixesPsr4();
 
-        if (! isset($arrPrefix[$arrNamespace[0] . '\\'])) {
+        $path = $temp[0] . '\\';
+        if (! isset($prefix[$path])) {
             return null;
         }
 
-        $arrNamespace[0] = $arrPrefix[$arrNamespace[0] . '\\'][0];
-        return implode('/', $arrNamespace);
+        $temp[0] = $prefix[$path][0];
+        return implode('/', $temp);
     }
 
     /**
      * 根据命名空间取得文件路径
      *
-     * @param string $strFile
+     * @param string $classname
      * @return string
      */
-    public function file($strFile)
+    public function file($classname)
     {
-        if (($strNamespace = $this->namespaces($strFile))) {
-            return $strNamespace . '.php';
+        if (($namespaces = $this->namespaces($classname))) {
+            return $namespaces . '.php';
         } else {
-            return $strFile . '.php';
+            return $classname . '.php';
         }
     }
 
     /**
      * 框架自动载入
      *
-     * @param string $strClass
+     * @param string $classname
      * @return void
      */
-    public function autoload($strClass)
+    public function autoload($classname)
     {
-        if (strpos($strClass, '\\') === false) {
+        if (strpos($classname, '\\') === false) {
             return;
         }
 
-        foreach ([
-            $this->namespace,
+        $namespaces = [
+            $this->namespaces,
             $this->shortNamespace
-        ] as $strNamespace) {
-            if (strpos($strClass, $strNamespace . '\\') === 0 && is_file(($strSandbox = $this->sandbox . '/' . str_replace('\\', '/', $strClass) . '.php'))) {
-                require_once $strSandbox;
-                return;
+        ];
+
+        foreach ($namespaces as $item) {
+            if (strpos($classname, $item . '\\') === 0 && is_file(($sandboxPath = $this->sandbox . '/' . str_replace('\\', '/', $classname) . '.php'))) {
+                return require_once $sandboxPath;
             }
         }
 
-        if (strpos($strClass, $this->shortNamespace . '\\') !== false) {
-            $this->shortNamespaceMap($strClass);
+        if (strpos($classname, $this->shortNamespace . '\\') !== false) {
+            $this->shortNamespaceMap($classname);
         }
     }
 
     /**
      * 框架命名空间自动关联
      *
-     * @param string $strClass
+     * @param string $classname
      * @return void
      */
-    protected function shortNamespaceMap($strClass)
+    protected function shortNamespaceMap($classname)
     {
-        $strTryMapClass = str_replace($this->shortNamespace . '\\', $this->namespace . '\\', $strClass);
-        
-        if (class_exists($strTryMapClass) || interface_exists($strTryMapClass)) {
-            $arrClass = explode('\\', $strClass);
-            $strDefinedClass = array_pop($arrClass);
-            $strNamespace = implode('\\', $arrClass);
+        $parentClass = str_replace($this->shortNamespace . '\\', $this->namespaces . '\\', $classname);
 
-            $strSandboxContent = sprintf('namespace %s; %s %s extends  \%s {}', $strNamespace, class_exists($strTryMapClass) ? 'class' : 'interface', $strDefinedClass, $strTryMapClass);
+        if (class_exists($parentClass) || interface_exists($parentClass)) {
+            $temp = explode('\\', $classname);
+            $definedClass = array_pop($temp);
+            $namespaces = implode('\\', $temp);
 
-            eval($strSandboxContent);
+            $evals = sprintf('namespace %s; %s %s extends  \%s {}', $namespaces, class_exists($parentClass) ? 'class' : 'interface', $definedClass, $parentClass);
+
+            eval($evals);
         }
     }
 }

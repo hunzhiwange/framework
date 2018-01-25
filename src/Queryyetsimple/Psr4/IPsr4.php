@@ -40,34 +40,34 @@ interface IPsr4
     /**
      * 导入一个目录中命名空间结构
      *
-     * @param string $sNamespace 命名空间名字
-     * @param string $sPackage 命名空间路径
+     * @param string $namespaces 命名空间名字
+     * @param string $package 命名空间路径
      * @param boolean $force 强制覆盖
      * @return void
      */
-    public function import($sNamespace, $sPackage, $force = false);
+    public function import($namespaces, $package, $force = false);
 
     /**
      * 获取命名空间路径
      *
-     * @param string $sNamespace
+     * @param string $namespaces
      * @return string|null
      */
-    public function namespaces($sNamespace);
+    public function namespaces($namespaces);
 
     /**
      * 根据命名空间取得文件路径
      *
-     * @param string $strFile
+     * @param string $classname
      * @return string
      */
-    public function file($strFile);
+    public function file($classname);
 
     /**
      * 框架自动载入
      *
-     * @param string $strClass
+     * @param string $classname
      * @return void
      */
-    public function autoload($strClass);
+    public function autoload($classname);
 }

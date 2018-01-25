@@ -108,6 +108,6 @@ class Register extends Provider
      */
     protected function meta()
     {
-        Meta::setDatabaseManager($this->objContainer['databases']);
+        Meta::setDatabaseManager($this->container['databases']);
     }
 }

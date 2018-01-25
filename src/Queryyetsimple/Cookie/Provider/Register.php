@@ -57,7 +57,9 @@ class Register extends Provider
         return [
             'cookie' => [
                 'Queryyetsimple\Cookie\Cookie',
-                'Queryyetsimple\Cookie\ICookie'
+                'Queryyetsimple\Cookie\ICookie',
+                'Qys\Cookie\Cookie',
+                'Qys\Cookie\ICookie'
             ]
         ];
     }
