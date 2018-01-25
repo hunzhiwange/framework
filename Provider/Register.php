@@ -48,10 +48,6 @@ class Register extends Provider
     {
         $this->viewViews();
         $this->viewView();
-        $this->viewHtml();
-        $this->viewTwig();
-        $this->viewV8();
-        $this->viewPhpui();
         $this->viewCompiler();
         $this->viewParser();
         $this->viewTwigParser();
@@ -69,22 +65,6 @@ class Register extends Provider
             'view.view' => [
                 'Queryyetsimple\View\View',
                 'Queryyetsimple\View\IView'
-            ],
-            'view.html' => [
-                'html',
-                'Queryyetsimple\View\Html'
-            ],
-            'view.twig' => [
-                'twig',
-                'Queryyetsimple\View\Twig'
-            ],
-            'view.v8' => [
-                'v8',
-                'Queryyetsimple\View\V8'
-            ],
-            'view.phpui' => [
-                'phpui',
-                'Queryyetsimple\View\Phpui'
             ],
             'view.compiler' => [
                 'Queryyetsimple\View\Compiler',
@@ -107,54 +87,6 @@ class Register extends Provider
     {
         $this->singleton('view.views', function ($project) {
             return new manager($project);
-        });
-    }
-
-    /**
-     * 注册 view.html 服务
-     *
-     * @return void
-     */
-    protected function viewHtml()
-    {
-        $this->singleton('view.html', function ($project) {
-            return $project['view.views']->connect('html');
-        });
-    }
-
-    /**
-     * 注册 view.twig 服务
-     *
-     * @return void
-     */
-    protected function viewTwig()
-    {
-        $this->singleton('view.twig', function ($project) {
-            return $project['view.views']->connect('twig');
-        });
-    }
-
-    /**
-     * 注册 view.v8 服务
-     *
-     * @return void
-     */
-    protected function viewV8()
-    {
-        $this->singleton('view.v8', function ($project) {
-            return $project['view.views']->connect('v8');
-        });
-    }
-
-    /**
-     * 注册 view.phpui 服务
-     *
-     * @return void
-     */
-    protected function viewPhpui()
-    {
-        $this->singleton('view.phpui', function ($project) {
-            return $project['view.views']->connect('phpui');
         });
     }
 
