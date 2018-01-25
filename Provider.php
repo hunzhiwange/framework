@@ -45,17 +45,17 @@ abstract class Provider
      *
      * @var \Queryyetsimple\Di\IContainer
      */
-    protected $objContainer;
+    protected $container;
 
     /**
      * 创建一个服务容器提供者实例
      *
-     * @param \Queryyetsimple\Di\IContainer $objContainer
+     * @param \Queryyetsimple\Di\IContainer $container
      * @return void
      */
-    public function __construct(IContainer $objContainer)
+    public function __construct(IContainer $container)
     {
-        $this->objContainer = $objContainer;
+        $this->container = $container;
 
         if (! static::isDeferred()) {
             $this->registerAlias();
@@ -108,128 +108,128 @@ abstract class Provider
      */
     public function container()
     {
-        return $this->objContainer;
+        return $this->container;
     }
 
     /**
      * 注册到容器
      *
-     * @param mixed $mixFactoryName
-     * @param mixed $mixFactory
-     * @param boolean $booShare
+     * @param mixed $name
+     * @param mixed $service
+     * @param boolean $share
      * @return $this
      */
-    public function bind($mixFactoryName, $mixFactory = null, $booShare = false)
+    public function bind($name, $service = null, bool $share = false)
     {
-        $this->objContainer->bind($mixFactoryName, $mixFactory, $booShare);
+        $this->container->bind($name, $service, $share);
         return $this;
     }
 
     /**
      * 注册为实例
      *
-     * @param mixed $mixFactoryName
-     * @param mixed $mixFactory
+     * @param mixed $name
+     * @param mixed $service
      * @return $this
      */
-    public function instance($mixFactoryName, $mixFactory = null)
+    public function instance($name, $service = null)
     {
-        $this->objContainer->instance($mixFactoryName, $mixFactory);
+        $this->container->instance($name, $service);
         return $this;
     }
 
     /**
      * 注册单一实例
      *
-     * @param scalar|array $mixFactoryName
-     * @param mixed $mixFactory
+     * @param scalar|array $name
+     * @param mixed $service
      * @return $this
      */
-    public function singleton($mixFactoryName, $mixFactory = null)
+    public function singleton($name, $service = null)
     {
-        $this->objContainer->singleton($mixFactoryName, $mixFactory);
+        $this->container->singleton($name, $service);
         return $this;
     }
 
     /**
      * 创建共享的闭包
      *
-     * @param \Closure $objClosure
+     * @param \Closure $closures
      * @return \Closure
      */
-    public function share(Closure $objClosure)
+    public function share(Closure $closures)
     {
-        return $this->objContainer->share($objClosure);
+        return $this->container->share($closures);
     }
 
     /**
      * 设置别名
      *
-     * @param array|string $mixAlias
-     * @param string|null|array $mixValue
+     * @param array|string $alias
+     * @param string|null|array $value
      * @return $this
      */
-    public function alias($mixAlias, $mixValue = null)
+    public function alias($alias, $value = null)
     {
-        $this->objContainer->alias($mixAlias, $mixValue);
+        $this->container->alias($alias, $value);
         return $this;
     }
 
     /**
      * 添加语言包目录
      *
-     * @param mixed $mixDir
+     * @param mixed $dir
      * @return void
      */
-    protected function loadI18nDir($mixDir)
+    protected function loadI18nDir($dir)
     {
-        if (! $this->objContainer['option']['i18n\on']) {
+        if (! $this->container['option']['i18n\on']) {
             return;
         }
 
-        if ($this->objContainer['option']['i18n\develop'] == $this->objContainer['option']['i18n\default']) {
+        if ($this->container['option']['i18n\develop'] == $this->container['option']['i18n\default']) {
             return;
         }
         
-        if (! is_array($mixDir)) {
-            $mixDir = ( array ) $mixDir;
+        if (! is_array($dir)) {
+            $dir = ( array ) $dir;
         }
-        $this->objContainer['i18n.load']->addDir($mixDir);
+        $this->container['i18n.load']->addDir($dir);
     }
 
     /**
      * 添加命令包命名空间
      *
-     * @param mixed $mixNamespace
+     * @param mixed $namespaces
      * @return void
      */
-    protected function loadCommandNamespace($mixNamespace)
+    protected function loadCommandNamespace($namespaces)
     {
-        if (! $this->objContainer->console()) {
+        if (! $this->container->console()) {
             return;
         }
 
-        $arrNamespace = [];
+        $result = [];
 
-        if (! is_array($mixNamespace)) {
-            $mixNamespace = ( array ) $mixNamespace;
+        if (! is_array($namespaces)) {
+            $namespaces = ( array ) $namespaces;
         }
 
-        foreach ($mixNamespace as $strNamespace) {
-            $arrNamespace[$strNamespace] = $this->objContainer['psr4']->namespaces($strNamespace);
+        foreach ($namespaces as $item) {
+            $result[$item] = $this->container['psr4']->namespaces($item);
         }
 
-        $this->objContainer['console.load']->addNamespace($arrNamespace);
+        $this->container['console.load']->addNamespace($result);
     }
 
     /**
      * call 
      *
      * @param string $method
-     * @param array $arrArgs
+     * @param array $args
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
         if ($method == 'bootstrap') {
             return;
