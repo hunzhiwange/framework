@@ -475,7 +475,7 @@ class Project extends Container implements IProject
      */
     protected function registerPsr4(ClassLoader $objComposer)
     {
-        $this->instance('psr4', new Psr4($objComposer, dirname(__DIR__) . '/bootstrap/sandbox', 'queryyetsimple', 'qys'));
+        $this->instance('psr4', new Psr4($objComposer, dirname(__DIR__) . '/bootstrap/sandbox', 'Queryyetsimple', 'Qys'));
         $this->alias('psr4', Psr4::class);
 
         // 优先载入 aop autoload，恢复 composer autoload
