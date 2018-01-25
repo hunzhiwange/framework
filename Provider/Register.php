@@ -48,16 +48,6 @@ class Register extends Provider
     }
 
     /**
-     * 载入语言包
-     *
-     * @return void
-     */
-    public function bootstrap()
-    {
-        $this->loadI18nDir(__DIR__ . '/../i18n');
-    }
-
-    /**
      * 可用服务提供者
      *
      * @return array
@@ -67,7 +57,9 @@ class Register extends Provider
         return [
             'validate' => [
                 'Queryyetsimple\Validate\Validate',
-                'Queryyetsimple\Validate\IValidate'
+                'Queryyetsimple\Validate\IValidate',
+                'Qys\Validate\Validate',
+                'Qys\Validate\IValidate'
             ]
         ];
     }
