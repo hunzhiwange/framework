@@ -75,7 +75,7 @@ class Register extends Provider
     {
         page::setUrlResolver(function () {
             return call_user_func_array([
-                $this->objContainer['router'],
+                $this->container['router'],
                 'url'
             ], func_get_args());
         });
