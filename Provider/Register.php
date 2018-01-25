@@ -57,7 +57,9 @@ class Register extends Provider
         return [
             'pipeline' => [
                 'Queryyetsimple\Pipeline\Pipeline',
-                'Queryyetsimple\Pipeline\IPipeline'
+                'Queryyetsimple\Pipeline\IPipeline',
+                'Qys\Pipeline\Pipeline',
+                'Qys\Pipeline\IPipeline'
             ]
         ];
     }
