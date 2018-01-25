@@ -63,12 +63,20 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'caches' => 'Queryyetsimple\Cache\Manager',
+            'caches' => [
+                'Queryyetsimple\Cache\Manager',
+                'Qys\Cache\Manager'
+            ],
             'cache' => [
                 'Queryyetsimple\Cache\Cache',
-                'Queryyetsimple\Cache\ICache'
+                'Queryyetsimple\Cache\ICache',
+                'Qys\Cache\Cache',
+                'Qys\Cache\ICache'
             ],
-            'cache.load' => 'Queryyetsimple\Cache\Load'
+            'cache.load' => [
+                'Queryyetsimple\Cache\Load',
+                'Qys\Cache\Load'
+            ]
         ];
     }
 
@@ -80,7 +88,7 @@ class Register extends Provider
     protected function caches()
     {
         $this->singleton('caches', function ($project) {
-            return new manager($project);
+            return new Manager($project);
         });
     }
 
@@ -104,7 +112,7 @@ class Register extends Provider
     protected function cacheLoad()
     {
         $this->singleton('cache.load', function ($project) {
-            return new load($project, $project['cache']);
+            return new Load($project, $project['cache']);
         });
     }
 }
