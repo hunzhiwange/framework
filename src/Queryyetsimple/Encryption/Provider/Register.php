@@ -64,7 +64,9 @@ class Register extends Provider
         return [
             'encryption' => [
                 'Queryyetsimple\Encryption\Encryption',
-                'Queryyetsimple\Encryption\IEncryption'
+                'Queryyetsimple\Encryption\IEncryption',
+                'Qys\Encryption\Encryption',
+                'Qys\Encryption\IEncryption'
             ]
         ];
     }

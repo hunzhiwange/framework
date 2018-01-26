@@ -61,20 +61,29 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'view.views' => 'Queryyetsimple\View\Manager',
+            'view.views' => [
+                'Queryyetsimple\View\Manager',
+                'Qys\View\Manager'
+            ],
             'view.view' => [
                 'Queryyetsimple\View\View',
-                'Queryyetsimple\View\IView'
+                'Queryyetsimple\View\IView',
+                'Qys\View\View',
+                'Qys\View\IView'
             ],
             'view.compiler' => [
                 'Queryyetsimple\View\Compiler',
-                'Queryyetsimple\View\ICompiler'
+                'Queryyetsimple\View\ICompiler',
+                'Qys\View\Compiler',
+                'Qys\View\ICompiler'
             ],
             'view.parser' => [
                 'Queryyetsimple\View\Parser',
-                'Queryyetsimple\View\IParser'
+                'Queryyetsimple\View\IParser',
+                'Qys\View\Parser',
+                'Qys\View\IParser'
             ],
-            'view.twig.parser' => 'view.twig.parser'
+            'view.twig.parser'
         ];
     }
 
@@ -86,7 +95,7 @@ class Register extends Provider
     protected function viewViews()
     {
         $this->singleton('view.views', function ($project) {
-            return new manager($project);
+            return new Manager($project);
         });
     }
 

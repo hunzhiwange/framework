@@ -55,15 +55,17 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'logs' => 'Queryyetsimple\Log
-yetsimple\logueryyetsimple\I18nqueryyetsimple\log\manager',
-            'log' => [
-                'Queryyetsimple\Log
-yetsimple\logueryyetsimple\I18nqueryyetsimple\log\log',
-                'queryyetsimple\Log\Ilog'
+            'logs' => [
+                'Queryyetsimple\Log\Manager',
+                'Qys\Log\Manager'
             ],
-            'Queryyetsimple\Log
-yetsimple\logueryyetsimple\I18nqueryyetsimple\log\middleware\log'
+            'log' => [
+                'Queryyetsimple\Log\Log',
+                'Queryyetsimple\Log\ILog',
+                'Qys\Log\Log',
+                'Qys\Log\ILog'
+            ],
+            'Queryyetsimple\Log\Middleware\Log'
         ];
     }
 
@@ -75,7 +77,7 @@ yetsimple\logueryyetsimple\I18nqueryyetsimple\log\middleware\log'
     protected function logs()
     {
         $this->singleton('logs', function ($project) {
-            return new manager($project);
+            return new Manager($project);
         });
     }
 
@@ -98,7 +100,6 @@ yetsimple\logueryyetsimple\I18nqueryyetsimple\log\middleware\log'
      */
     protected function middleware()
     {
-        $this->singleton('Queryyetsimple\Log
-yetsimple\logueryyetsimple\I18nqueryyetsimple\log\middleware\log');
+        $this->singleton('Queryyetsimple\Log\Middleware\Log');
     }
 }

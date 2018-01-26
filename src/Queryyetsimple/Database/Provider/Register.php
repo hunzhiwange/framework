@@ -64,10 +64,15 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'databases' => 'Queryyetsimple\Database\Manager',
+            'databases' => [
+                'Queryyetsimple\Database\Manager',
+                'Qys\Database\Manager'
+            ],
             'database' => [
                 'Queryyetsimple\Database\Database',
-                'Queryyetsimple\Database\IDatabase'
+                'Queryyetsimple\Database\IDatabase',
+                'Qys\Database\Database',
+                'Qys\Database\IDatabase'
             ]
         ];
     }
