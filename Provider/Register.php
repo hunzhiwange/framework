@@ -55,10 +55,15 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'sessions' => 'Queryyetsimple\Session\Manager',
+            'sessions' => [
+                'Queryyetsimple\Session\Manager',
+                'Qys\Session\Manager'
+            ],
             'session' => [
                 'Queryyetsimple\Session\Session',
-                'Queryyetsimple\Session\ISession'
+                'Queryyetsimple\Session\ISession',
+                'Qys\Session\Session',
+                'Qys\Session\ISession'
             ],
             'Queryyetsimple\Session\Middleware\Session'
         ];
