@@ -67,9 +67,14 @@ class Register extends Provider
         return [
             'i18n' => [
                 'queryyetsimple\I18n\I18n',
-                'Queryyetsimple\I18n\II18n'
+                'Queryyetsimple\I18n\II18n',
+                'Qys\I18n\I18n',
+                'Qys\I18n\II18n'     
             ],
-            'load' => 'Queryyetsimple\I18n\Load'
+            'load' => [
+                'Queryyetsimple\I18n\Load',
+                'Qys\I18n\Load'
+            ]
         ];
     }
 
@@ -81,7 +86,7 @@ class Register extends Provider
     protected function i18n()
     {
         $this->singleton('i18n', function ($project) {
-            return new i18n($project['option']['i18n\default']);
+            return new I18n($project['option']['i18n\default']);
         });
     }
 
@@ -93,10 +98,8 @@ class Register extends Provider
     protected function i18nLoad()
     {
         $this->singleton('i18n.load', function () {
-            return new load();
+            return new Load();
         });
-
-        $this->console();
     }
 
     /**
