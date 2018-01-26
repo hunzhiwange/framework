@@ -57,7 +57,9 @@ class Register extends Provider
         return [
             'event' => [
                 'Queryyetsimple\Event\Dispatch',
-                'Queryyetsimple\Event\IDispatch'
+                'Queryyetsimple\Event\IDispatch',
+                'Qys\Event\Dispatch',
+                'Qys\Event\IDispatch'
             ]
         ];
     }
