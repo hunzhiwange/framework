@@ -54,10 +54,15 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'mails' => 'Queryyetsimple\Mail\Manager',
+            'mails' => [
+                'Queryyetsimple\Mail\Manager',
+                'Qys\Mail\Manager'
+            ],
             'mail' => [
                 'Queryyetsimple\Mail\Mail',
-                'Queryyetsimple\Mail\IMail'
+                'Queryyetsimple\Mail\IMail',
+                'Qys\Mail\Mail',
+                'Qys\Mail\IMail'
             ]
         ];
     }
