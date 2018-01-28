@@ -55,8 +55,14 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'request' => 'Queryyetsimple\Http\Request',
-            'response' => 'Queryyetsimple\Http\Response'
+            'request' => [
+                'Queryyetsimple\Http\Request',
+                'Qys\Http\Request'
+            ],
+            'response' => [
+                'Queryyetsimple\Http\Response',
+                'Qys\Http\Response'
+            ]
         ];
     }
 
@@ -68,10 +74,12 @@ class Register extends Provider
     protected function request()
     {
         $this->singleton('request', function ($project) {
+            $option = $project['option'];
+
             return new Request($project['session'], $project['cookie'], [
-                'var_method' => $project['option']['var_method'],
-                'var_ajax' => $project['option']['var_ajax'],
-                'var_pjax' => $project['option']['var_pjax']
+                'var_method' => $option['var_method'],
+                'var_ajax' => $option['var_ajax'],
+                'var_pjax' => $option['var_pjax']
             ]);
         });
     }
@@ -84,10 +92,12 @@ class Register extends Provider
     protected function response()
     {
         $this->singleton('response', function ($project) {
+            $option = $project['option'];
+            
             return new Response($project['router'], $project['view'], $project['session'], $project['cookie'], [
-                'action_fail' => $project['option']['view\action_fail'],
-                'action_success' => $project['option']['view\action_success'],
-                'default_response' => $project ['option'] ['default_response']
+                'action_fail' => $option['view\action_fail'],
+                'action_success' => $option['view\action_success'],
+                'default_response' => $option['default_response']
             ]);
         });
     }
