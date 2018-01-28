@@ -43,7 +43,9 @@ class Register extends Provider
     public function register()
     {
         $this->singleton('router', function ($project) {
-            $arrOption = $project['option']->get('url\\');
+            $option = $project['option'];
+
+            $options = $option->get('url\\');
             foreach ([
                 '~apps~',
                 'default_app',
@@ -51,11 +53,11 @@ class Register extends Provider
                 'default_action',
                 'middleware_group',
                 'middleware_alias'
-            ] as $strOption) {
-                $arrOption[$strOption] = $project['option']->get($strOption);
+            ] as $item) {
+                $options[$item] = $option->get($item);
             }
 
-            return new Router($project, $project['pipeline'], $project['request'], $arrOption);
+            return new Router($project, $project['pipeline'], $project['request'], $options);
         });
     }
 
@@ -67,7 +69,10 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'router' => 'Queryyetsimple\Router\Router'
+            'router' => [
+                'Queryyetsimple\Router\Router',
+                'Qys\Router\Router'
+            ]
         ];
     }
 }
