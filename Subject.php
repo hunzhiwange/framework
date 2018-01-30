@@ -34,7 +34,7 @@ use Queryyetsimple\Di\IContainer;
  * @see http://php.net/manual/zh/class.splsubject.php
  * @version 1.0
  */
-abstract class Subject implements ISubject, SplSubject
+class Subject implements ISubject, SplSubject
 {
 
     /**
@@ -106,10 +106,8 @@ abstract class Subject implements ISubject, SplSubject
     public function attachs($observer)
     {
         if (is_string($observer)) {
-            $observer = $observer;
-
             if (($observer = $this->container->make($observer)) === false) {
-                throw new InvalidArgumentException(sprintf('Observer %s is not valid.', $observer));
+                throw new InvalidArgumentException(sprintf('Observer is invalid.'));
             }
         }
 
