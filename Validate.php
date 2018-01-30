@@ -1979,7 +1979,8 @@ class Validate implements IValidate
             ',',
             '{',
             '}',
-            '|'
+            '|',
+            '\\'
         ], [
             '\$',
             '\/',
@@ -1996,7 +1997,8 @@ class Validate implements IValidate
             '\\,',
             '\\{',
             '\\}',
-            '\\|'
+            '\\|',
+            '\\\\'
         ], $sTxt);
 
         return $sTxt;
