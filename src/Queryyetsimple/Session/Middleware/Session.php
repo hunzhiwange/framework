@@ -17,24 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Session\middleware;
+namespace Queryyetsimple\Session\Middleware;
 
 use Closure;
 use Queryyetsimple\{
     Http\Request,
     Http\Response,
-    Session\Manager as Manager
+    Session\Manager
 };
 
 /**
- * session 中间件
+ * Session 中间件
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.11.14
  * @version 1.0
  */
-class session
+class Session
 {
 
     /**

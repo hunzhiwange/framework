@@ -29,6 +29,7 @@ use Queryyetsimple\{
     Di\Container,
     Support\Facade,
     Filesystem\Fso,
+    Bootstrap\Runtime\Runtime,
     Bootstrap\Console\Provider\Register as ConsoleProvider
 };
 
@@ -74,9 +75,30 @@ class Project extends Container implements IProject
     /**
      * 项目 APP 基本配置
      *
-     * @var string
+     * @var array
      */
     protected $arrAppOption = [];
+
+    /**
+     * 项目应用列表
+     *
+     * @var array
+     */
+    protected $apps = [];
+
+    /**
+     * 项目路由文件列表
+     *
+     * @var array
+     */
+    protected $routers = [];
+
+    /**
+     * 系统所有环境变量
+     *
+     * @var array
+     */
+    protected $envs = [];
 
     /**
      * 延迟载入服务提供者
@@ -117,6 +139,12 @@ class Project extends Container implements IProject
         // 载入 app 配置
         loadApp()->
 
+        // 初始化项目
+        initProject()->
+
+        // 应用命名空间注册
+        namespaces()->
+
         // 注册框架核心提供者
         registerMvcProvider()->
 
@@ -144,8 +172,56 @@ class Project extends Container implements IProject
      */
     public function run()
     {
-        (new bootstrap($this))->run();
+        $this->registerRuntime();
+
+        $this->appInit();
+
+        $this->appRouter();
+
+        $this->appRun();
+
         return $this;
+    }
+
+    /**
+     * 运行笑脸初始化应用
+     *
+     * @return void
+     */
+    public function appInit()
+    {
+        $this->make(Application::class, [
+            Application::INIT_APP
+        ])->bootstrap();
+    }
+
+    /**
+     * 完成路由请求
+     *
+     * @return void
+     */
+    public function appRouter()
+    {
+        $this->router->run();
+    }
+    
+    /**
+     * 执行应用
+     *
+     * @param string $app
+     * @return void
+     */
+    public function appRun($app = null)
+    {
+        if (! $app) {
+            $app = $this->router->app();
+        }
+
+        $this->make(Application::class)->
+
+        bootstrap($app)->
+
+        run();
     }
 
     /**
@@ -191,6 +267,36 @@ class Project extends Container implements IProject
         }
 
         return parent::make($strFactoryName, $arrArgs);
+    }
+
+    /**
+     * 系统所有应用
+     *
+     * @return array
+     */
+    public function apps()
+    {
+        return $this->apps;
+    }
+
+    /**
+     * 系统所有路由文件列表
+     *
+     * @return array
+     */
+    public function routers()
+    {
+        return $this->routers;
+    }
+
+    /**
+     * 系统所有环境变量
+     *
+     * @return array
+     */
+    public function envs()
+    {
+        return $this->envs;
     }
 
     /**
@@ -427,6 +533,15 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 返回应用配置
+     *
+     * @return array
+     */
+    public function appOption() {
+        return $this->arrAppOption;
+    }
+
+    /**
      * 创建服务提供者
      *
      * @param string $strProvider
@@ -479,9 +594,9 @@ class Project extends Container implements IProject
         $this->alias('psr4', Psr4::class);
 
         // 优先载入 aop autoload，恢复 composer autoload
-        $objComposer->unregister();
-        spl_autoload_register(array($this, 'loadAopClass'));
-        $objComposer->register();
+        //$objComposer->unregister();
+        //spl_autoload_register(array($this, 'loadAopClass'));
+        //$objComposer->register();
 
         $this->registerAop();
         $this->doMakeAop();
@@ -561,16 +676,61 @@ class Project extends Container implements IProject
      */
     protected function loadApp()
     {
-        if (($strCache = $this->pathApplicationCache('option') . '/' . Application::INIT_APP . '.php') && is_file($strCache)) {
-            if ($this->checkEnv($strCache)) {
-                Fso::deleteDirectory(dirname($strCache), true);
-                $this->loadAppOption();
-            } else {
-                $this->loadAppOption($strCache);
-            }
-        } else {
-            $this->loadAppOption();
+        $strCache = $this->appOptionCachePath();
+
+        if (is_file($strCache) && $this->checkEnv($strCache)) {
+            Fso::deleteDirectory(dirname($strCache), true);
         }
+
+        $this->loadAppOption($strCache);
+
+        return $this;
+    }
+
+    /**
+     * 初始化处理
+     *
+     * @return $this
+     */
+    protected function initProject()
+    {
+        if ($this->development()) {
+            error_reporting(E_ALL);
+        } else {
+            error_reporting(E_ERROR | E_PARSE | E_STRICT);
+        }
+
+        ini_set('default_charset', 'utf8');
+
+        return $this;
+    }
+
+    /**
+     * 应用公共初始化
+     * 如果在 composer.json 注册过，则不会被重复注册，用于未在 composer 注册临时接管
+     *
+     * @return $this
+     */
+    protected function namespaces()
+    {
+        // 注册公共组件命名空间
+        $this['psr4']->import('common', $this->pathCommon(), true);
+
+        // 注册 application 命名空间
+        foreach ($this->apps() as $strApp) {
+            $this['psr4']->import($strApp, $this->pathApplication() . '/' . $strApp, true);
+        }
+
+        // 注册自定义命名空间
+        foreach ($this->arrAppOption['namespace'] as $strNamespace => $strPath) {
+           $this['psr4']->import($strNamespace, $strPath, true);
+        }
+        
+        // 载入 project 引导文件
+        if (is_file(($strBootstrap = $this->pathCommon() . '/bootstrap.php'))) {
+            require_once $strBootstrap;
+        }
+
         return $this;
     }
 
@@ -581,10 +741,6 @@ class Project extends Container implements IProject
      */
     protected function registerBaseProvider()
     {
-        if (empty($this->arrAppOption['provider'])) {
-            return $this;
-        }
-
         $booCache = false;
 
         $strCachePath = $this->defferProviderCachePath();
@@ -596,8 +752,6 @@ class Project extends Container implements IProject
         }
 
         foreach ($this->arrAppOption['provider'] as $strProvider) {
-            $strProvider .= '\Provider\Register';
-
             if ($booCache === true && isset($arrDeferredAlias[$strProvider])) {
                 $this->alias($arrDeferredAlias[$strProvider]);
                 continue;
@@ -665,10 +819,9 @@ class Project extends Container implements IProject
         // 注册本身
         $this->instance('project', $this);
 
-        // 注册 app
-        $this->singleton(Application::class, function (project $objProject, $sApp, $arrOption = [])
-        {
-            return new Application($objProject, $sApp, $arrOption);
+        // 注册 Application
+        $this->singleton(Application::class, function ($container, $sApp) {
+            return new Application($container, $sApp);
         });
 
         // 注册 console
@@ -695,6 +848,35 @@ class Project extends Container implements IProject
             ]
         ]);
         return $this;
+    }
+
+    /**
+     * QueryPHP 系统错误处理
+     *
+     * @return void
+     */
+    protected function registerRuntime()
+    {
+        if (PHP_SAPI == 'cli') {
+            return;
+        }
+
+        Runtime::container($this);
+
+        register_shutdown_function([
+            'Queryyetsimple\Bootstrap\Runtime\Runtime', 
+            'shutdownHandle'
+        ]);
+        
+        set_error_handler([
+            'Queryyetsimple\Bootstrap\Runtime\Runtime', 
+            'errorHandle'
+        ]);
+        
+        set_exception_handler([
+            'Queryyetsimple\Bootstrap\Runtime\Runtime', 
+            'exceptionHandle'
+        ]);
     }
 
     /**
@@ -796,15 +978,31 @@ class Project extends Container implements IProject
      * @param string $strCache
      * @return void
      */
-    protected function loadAppOption($strCache = null)
+    protected function loadAppOption($strCache)
     {
-        if ($strCache && is_array($arrOption = include $strCache)) {
+        if (is_file($strCache) && is_array($arrOption = include $strCache)) {
             $this->arrAppOption = $arrOption['app'];
-            $this->setEnvironmentVariables($arrOption['env']);
+            $this->envs = $this->environmentVariables($this->arrAppOption['~envs~']);
+            $this->apps = $this->arrAppOption['~apps~'];
+            $this->routers = $this->arrAppOption['~routers~'];
         } else {
-            $this->setEnvironmentVariables();
             $this->arrAppOption = ( array ) include $this->pathCommon() . '/ui/option/app.php';
+            $this->envs = $this->environmentVariables();
+            $this->apps = Fso::lists($this->pathApplication());
+            $this->routers = Fso::lists($this->pathCommon() . '/ui/router', 'file', true, [], [
+                'php'
+            ]);
         }
+    }
+
+    /**
+     * 系统缓存路径
+     *
+     * @return string
+     */
+    protected function appOptionCachePath()
+    {
+        return $this->pathApplicationCache('option') . '/' . Application::INIT_APP . '.php';
     }
 
     /**
@@ -822,17 +1020,19 @@ class Project extends Container implements IProject
      * 设置环境变量
      *
      * @param array $arrEnv
-     * @return void
+     * @return array
      */
-    protected function setEnvironmentVariables($arrEnv = [])
+    protected function environmentVariables($arrEnv = [])
     {
         if ($arrEnv) {
             foreach ($arrEnv as $strName => $strValue) {
                 $this->setEnvironmentVariable($strName, $strValue);
             }
+
+            return $arrEnv;
         } else {
             $objDotenv = new Dotenv($this->path());
-            $objDotenv->load();
+            return $objDotenv->load();
         }
     }
 

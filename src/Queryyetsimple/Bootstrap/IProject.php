@@ -48,6 +48,28 @@ interface IProject extends IContainer
      * @return void
      */
     public function run();
+
+    /**
+     * 运行笑脸初始化应用
+     *
+     * @return void
+     */
+    public function appInit();
+
+    /**
+     * 完成路由请求
+     *
+     * @return void
+     */
+    public function appRouter();
+    
+    /**
+     * 执行应用
+     *
+     * @param string $app
+     * @return void
+     */
+    public function appRun($app);
     
     /**
      * 返回项目
@@ -64,6 +86,27 @@ interface IProject extends IContainer
      * @return number
      */
     public function version();
+
+    /**
+     * 系统所有应用
+     *
+     * @return array
+     */
+    public function apps();
+
+    /**
+     * 系统所有路由文件列表
+     *
+     * @return array
+     */
+    public function routers();
+
+    /**
+     * 系统所有环境变量
+     *
+     * @return array
+     */
+    public function envs();
     
     /**
      * 基础路径
@@ -193,6 +236,13 @@ interface IProject extends IContainer
      * @return string
      */
     public function urlEnter();
+
+    /**
+     * 返回应用配置
+     *
+     * @return array
+     */
+    public function appOption();
     
     /**
      * 创建服务提供者

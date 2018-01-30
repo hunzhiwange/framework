@@ -154,19 +154,16 @@ class Server extends Servers
             putenv('action_name=null');
 
             // 完成路由请求
-            $this->objRouter->run();
-
-            // 创建 & 注册
-            $objApp = app('Queryyetsimple\Bootstrap\Application')->bootstrap($this->objRouter->app());
+            app()->appRouter();
 
             ob_start();
-            $objApp->run();
+            app()->appRun();
             $strHtml = ob_get_contents();
             ob_end_clean();
 
             $objSwooleResponse->write($strHtml);
 
-            unset($objApp, $strHtml);
+            unset($strHtml);
         } catch (Exception $oE) {
             $objSwooleResponse->write($oE->getMessage());
         }

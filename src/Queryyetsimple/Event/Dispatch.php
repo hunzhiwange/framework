@@ -19,6 +19,7 @@
  */
 namespace Queryyetsimple\Event;
 
+use RuntimeException;
 use Queryyetsimple\Di\IContainer;
 
 /**
@@ -44,45 +45,69 @@ class Dispatch implements IDispatch
      *
      * @var array
      */
-    protected $listener = [];
+    protected $listeners = [];
 
+    /**
+     * 通配符的监听器
+     *
+     * @var array
+     */
+    protected $wildcards = [];
+
+    /**
+     * 通配符是否严格匹配
+     *
+     * @var boolean
+     */
+    protected $strict = false;
+    
     /**
      * 创建一个事件解析器
      *
      * @param \Queryyetsimple\Di\IContainer $container
+     * @param bool $event
      * @return void
      */
-    public function __construct(IContainer $container)
+    public function __construct(IContainer $container, bool $strict = false)
     {
         $this->container = $container;
+        $this->strict = $strict;
     }
 
     /**
      * 执行一个事件
      *
      * @param string|object $event
+     * @param array $params
      * @return void
      */
-    public function run($event)
+    public function run($event, ...$params)
     {
         if (is_object($event)) {
             $object = $event;
             $event = get_class($event);
         } else {
             $object = $this->container->make($event);
+            if (! is_object($object)) {
+                throw new RuntimeException(sprintf('Event %s is invalid.', $event));
+            }
         }
 
-        $args = func_get_args();
-        array_shift($args);
-        if (is_object($object)) {
-            array_unshift($args, $object);
-        }
+        array_unshift($params, $object);
 
-        if (! $this->hasListener($event)) {
+        if (! $this->hasListeners($event)) {
             return;
         }
 
-        $this->getListener($event)->{'notify'}(...$args);
+        $listeners = $this->getListeners($event);
+        ksort($listeners);
+
+        foreach($listeners as $items) {
+            $items = $this->makeSubject($items);
+            $items->{'notify'}(...$params);
+        }
+
+        unset($listeners);
     }
 
     /**
@@ -90,39 +115,63 @@ class Dispatch implements IDispatch
      *
      * @param string|array $event
      * @param mixed $listener
+     * @param int $priority
      * @return void
      */
-    public function listener($event, $listener)
+    public function listeners($event, $listener, int $priority = 500)
     {
-        foreach (( array ) $event as $item) {
-            $this->registerSubject($item);
-            $this->listener[$item]->attachs($listener);
+        $event = ( array ) $event;
+        $priority = intval($priority);
+
+        foreach ($event as $item) {
+            if (strpos($item, '*') !== false) { 
+                $this->wildcards[$item][$priority][] = $listener;
+            } else {
+                $this->listeners[$item][$priority][] = $listener;     
+            }
         }
     }
 
     /**
-     * 获取一个监听器
+     * 获取一个事件监听器
      *
      * @param string $event
      * @return array
      */
-    public function getListener($event)
+    public function getListeners($event)
     {
-        if (isset($this->listener[$event])) {
-            return $this->listener[$event];
+        $listeners = [];
+
+        if (isset($this->listeners[$event])) {
+            $listeners = $this->listeners[$event];
         }
-        return null;
+
+        foreach ($this->wildcards as $key => $item) {
+            $key = $this->prepareRegexForWildcard($key, $this->strict);
+
+            if (preg_match($key, $event, $res)) {
+                foreach ($item as $priority => $value) {
+                    if (! isset($listeners[$priority])) {
+                        $listeners[$priority]= [];
+                    }
+
+                    $listeners[$priority] = array_merge($listeners[$priority], $value);
+                }
+            }
+        }
+
+        return $listeners;
     }
 
     /**
-     * 判断监听器是否存在
+     * 判断事件监听器是否存在
      *
      * @param string $event
      * @return bool
      */
-    public function hasListener($event)
+    public function hasListeners($event)
     {
-        return isset($this->listener[$event]);
+        return isset($this->listeners[$event]) || isset($this->wildcards[$event]);
     }
 
     /**
@@ -131,23 +180,104 @@ class Dispatch implements IDispatch
      * @param string $event
      * @return void
      */
-    public function deleteListener($event)
+    public function deleteListeners($event)
     {
-        if (isset($this->listener[$event])) {
-            unset($this->listener[$event]);
+        if (isset($this->listeners[$event])) {
+            unset($this->listeners[$event]);
+        }
+
+        if (isset($this->wildcards[$event])) {
+            unset($this->wildcards[$event]);
         }
     }
 
     /**
-     * 注册观察者角色主体
+     * 设置是否严格匹配事件
      *
-     * @param string $event
-     * @return void
+     * @param bool $event
+     * @return $this
      */
-    protected function registerSubject($event)
+    public function strict(bool $strict)
     {
-        if (! isset($this->listener[$event])) {
-            $this->listener[$event] = new Subject($this->container);
+        $this->strict = $strict;
+        return $this;
+    }
+
+    /**
+     * 创建监听器观察者角色主体
+     *
+     * @param string $listeners
+     * @return \Queryyetsimple\Event\Subject
+     */
+    protected function makeSubject(array $listeners)
+    {
+        $subject = new Subject($this->container);
+
+        foreach ($listeners as $item) {
+            $subject->attachs($item);
         }
+
+        return $subject;
+    }
+
+    /**
+     * 通配符正则
+     *
+     * @param string $strFoo
+     * @param bool $strict
+     * @return string
+     */
+    protected function prepareRegexForWildcard($regex, $strict = true)
+    {
+        return '/^' . str_replace('6084fef57e91a6ecb13fff498f9275a7', '(\S+)', $this->escapeRegexCharacter(str_replace('*', '6084fef57e91a6ecb13fff498f9275a7', $regex))) . ($strict ? '$' : '') . '/';
+    }
+
+    /**
+     * 转移正则表达式特殊字符
+     *
+     * @param string $txt
+     * @return string
+     */
+    protected function escapeRegexCharacter($txt)
+    {
+        $txt = str_replace([
+            '$',
+            '/',
+            '?',
+            '*',
+            '.',
+            '!',
+            '-',
+            '+',
+            '(',
+            ')',
+            '[',
+            ']',
+            ',',
+            '{',
+            '}',
+            '|',
+            '\\'
+        ], [
+            '\$',
+            '\/',
+            '\\?',
+            '\\*',
+            '\\.',
+            '\\!',
+            '\\-',
+            '\\+',
+            '\\(',
+            '\\)',
+            '\\[',
+            '\\]',
+            '\\,',
+            '\\{',
+            '\\}',
+            '\\|',
+            '\\\\'
+        ], $txt);
+
+        return $txt;
     }
 }

@@ -61,10 +61,15 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'filesystems' => 'queryyetsimple\Filesystem\Manager',
+            'filesystems' => [
+                'Queryyetsimple\Filesystem\Manager',
+                'Qys\Filesystem\Manager'
+            ],
             'filesystem' => [
-                'Queryyetsimple\Filesystem\filesystem',
-                'Queryyetsimple\Filesystem\ifilesystem'
+                'Queryyetsimple\Filesystem\Filesystem',
+                'Queryyetsimple\Filesystem\IFilesystem',
+                'Qys\Filesystem\Filesystem',
+                'Qys\Filesystem\IFilesystem'
             ]
         ];
     }
@@ -77,7 +82,7 @@ class Register extends Provider
     protected function filesystems()
     {
         $this->singleton('filesystems', function ($project) {
-            return new manager($project);
+            return new Manager($project);
         });
     }
 

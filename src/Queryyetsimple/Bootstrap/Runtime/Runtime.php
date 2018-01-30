@@ -19,6 +19,8 @@
  */
 namespace Queryyetsimple\Bootstrap\Runtime;
 
+use Queryyetsimple\Di\IContainer;
+
 /**
  * 异常响应
  *
@@ -29,7 +31,14 @@ namespace Queryyetsimple\Bootstrap\Runtime;
  */
 class Runtime
 {
-    
+
+    /**
+     * 服务容器
+     * 
+     * @var \Queryyetsimple\Di\IContainer
+     */
+    protected static $container;
+
     /**
      * 接管 PHP 异常
      *
@@ -38,7 +47,7 @@ class Runtime
      */
     public static function exceptionHandle($oException)
     {
-        (new exception(static::project(), $oException))->run();
+        (new exception(static::$container, $oException))->run();
     }
     
     /**
@@ -52,7 +61,7 @@ class Runtime
      */
     public static function errorHandle($nErrorNo, $sErrStr, $sErrFile, $nErrLine)
     {
-        (new error(static::project(), $nErrorNo, $sErrStr, $sErrFile, $nErrLine))->run();
+        (new error(static::$container, $nErrorNo, $sErrStr, $sErrFile, $nErrLine))->run();
     }
     
     /**
@@ -62,16 +71,17 @@ class Runtime
      */
     public static function shutdownHandle()
     {
-        (new shutdown(static::project()))->run();
+        (new shutdown(static::$container))->run();
     }
     
     /**
-     * 返回项目容器
+     * 设置项目容器
      *
-     * @return \Queryyetsimple\Bootstrap\Project
+     * @param \Queryyetsimple\Di\IContainer $container
+     * @return void
      */
-    protected static function project()
+    public static function container(IContainer $container)
     {
-        return project();
+        static::$container = $container;
     }
 }

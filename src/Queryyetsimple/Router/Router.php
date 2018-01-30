@@ -231,7 +231,7 @@ class Router
      * @var array
      */
     protected $arrOption = [
-        '~apps~' => [
+        'apps' => [
             '~_~',
             'home'
         ],
@@ -1450,7 +1450,7 @@ class Router
         if ($arrArgv) {
 
             // app
-            if (is_array($this->getOption('~apps~')) && in_array($arrArgv[0], $this->getOption('~apps~'))) {
+            if (is_array($this->getOption('apps')) && in_array($arrArgv[0], $this->getOption('apps'))) {
                 $_GET[static::APP] = array_shift($arrArgv);
             }
 
@@ -1491,7 +1491,7 @@ class Router
         $sPathInfo = $this->pathInfo();
         $arrPaths = explode($this->getOption('pathinfo_depr'), trim($sPathInfo, '/'));
 
-        if (is_array($this->getOption('~apps~')) && in_array($arrPaths[0], $this->getOption('~apps~'))) {
+        if (is_array($this->getOption('apps')) && in_array($arrPaths[0], $this->getOption('apps'))) {
             $arrPathInfo[static::APP] = array_shift($arrPaths);
         }
 
@@ -1850,7 +1850,8 @@ class Router
             ',',
             '{',
             '}',
-            '|'
+            '|',
+            '\\'
         ], [
             '\$',
             '\/',
@@ -1867,7 +1868,8 @@ class Router
             '\\,',
             '\\{',
             '\\}',
-            '\\|'
+            '\\|',
+            '\\\\'
         ], $sTxt);
 
         return $sTxt;

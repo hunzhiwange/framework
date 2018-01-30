@@ -63,7 +63,9 @@ class Register extends Provider
         return [
             'throttler' => [
                 'Queryyetsimple\Throttler\Throttler',
-                'Queryyetsimple\Throttler\IThrottler'
+                'Queryyetsimple\Throttler\IThrottler',
+                'Qys\Throttler\Throttler',
+                'Qys\Throttler\IThrottler'
             ],
             'Queryyetsimple\Throttler\Middleware\Throttler'
         ];

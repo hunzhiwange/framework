@@ -54,10 +54,15 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'auths' => 'Queryyetsimple\Auth\Manager',
+            'auths' => [
+                'Queryyetsimple\Auth\Manager',
+                'Qys\Auth\Manager'
+            ],
             'auth' => [
                 'Queryyetsimple\Auth\Auth',
-                'Queryyetsimple\Auth\IAuth'
+                'Queryyetsimple\Auth\IAuth',
+                'Qys\Auth\Auth',
+                'Qys\Auth\IAuth'
             ]
         ];
     }

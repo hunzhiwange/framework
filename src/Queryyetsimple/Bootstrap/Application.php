@@ -23,7 +23,6 @@ use Exception;
 use Queryyetsimple\{
     Support\Psr4,
     Http\Response, 
-    Filesystem\Fso,
     Support\Debug\Console
 };
 
@@ -53,13 +52,6 @@ class Application
     const INIT_APP = '~_~';
     
     /**
-     * 项目配置
-     *
-     * @var array
-     */
-    protected $arrOption = [];
-
-    /**
      * app 名字
      *
      * @var array
@@ -67,44 +59,60 @@ class Application
     protected $strApp;
 
     /**
-     * 执行事件流程
+     * 初始执行事件流程
      *
      * @var array
      */
     protected $arrEvent = [
-        'initialization',
         'loadBootstrap',
         'i18n',
-        'console',
-        'response'
+        'console'
     ];
+
+    /**
+     * 载入过的应用
+     *
+     * @var array
+     */
+    protected $loadedApp = [];
 
     /**
      * 构造函数
      *
      * @param \Queryyetsimple\Bootstrap\Project $objProject
      * @param string $sApp
-     * @param array $arrOption
-     * @return app
+     * @return void
      */
-    public function __construct(project $objProject, $sApp, $arrOption = [])
+    public function __construct(project $objProject, $sApp)
     {
         $this->objProject = $objProject;
         $this->strApp = $sApp;
-        $this->arrOption = $arrOption;
     }
 
     /**
-     * 执行应用
+     * 执行请求返回相应结果
      *
-     * @return void
+     * @return $this
      */
     public function run()
     {
-        foreach ($this->arrEvent as $strEvent) {
-            $strEvent = $strEvent . 'Run';
-            $this->{$strEvent}();
+        $mixResponse = $this->objProject['router']->doBind();
+        if (! ($mixResponse instanceof Response)) {
+            $mixResponse = $this->objProject['response']->make($mixResponse);
         }
+
+        // 穿越中间件
+        $this->objProject['router']->throughMiddleware($this->objProject['pipeline'], $this->objProject['request'], [
+            $mixResponse
+        ]);
+
+        // 调试
+        if ($this->objProject->debug()) {
+            Console::trace($this->objProject->pathSystem('trace'), $this->objProject['log']->get());
+        }
+
+        // 输出响应
+        $mixResponse->output();
 
         return $this;
     }
@@ -120,30 +128,25 @@ class Application
         if (! is_null($sApp)) {
             $this->strApp = $sApp;
         }
+
+        if (in_array($this->strApp, $this->loadedApp)) {
+            return $this;
+        }
+
         $this->loadOption();
-        $this->loadRouter();
-        return $this;
-    }
 
-    /**
-     * 注册命名空间
-     *
-     * @return $this
-     */
-    public function namespaces()
-    {
-        // 注册 application 命名空间
-        // 如果在 composer.json 注册过，则不会被重复注册，用于未在 composer 注册临时接管
-        foreach ($this->objProject['option']['~apps~'] as $strApp) {
-            $this->objProject['psr4']->import($strApp, $this->objProject->pathApplication() . '/' . $strApp);
+        if ($this->isInitApp()) {
+            $this->initialization();
+            $this->loadRouter();
+        } else {
+            foreach ($this->arrEvent as $strEvent) {
+                $strEvent = $strEvent . 'Bootstrap';
+                $this->{$strEvent}();
+            }
         }
 
-        // 注册自定义命名空间
-        // 如果在 composer.json 注册过，则不会被重复注册，用于未在 composer 注册临时接管
-        foreach ($this->objProject['option']['namespace'] as $strNamespace => $strPath) {
-            $this->objProject['psr4']->import($strNamespace, $strPath);
-        }
-
+        $this->loadedApp[] = $this->strApp;
+        
         return $this;
     }
 
@@ -152,16 +155,8 @@ class Application
      *
      * @return void
      */
-    protected function initializationRun()
+    protected function initialization()
     {
-        if ($this->objProject->development()) {
-            error_reporting(E_ALL);
-        } else {
-            error_reporting(E_ERROR | E_PARSE | E_STRICT);
-        }
-
-        ini_set('default_charset', 'utf8');
-
         if (function_exists('date_default_timezone_set')) {
             date_default_timezone_set($this->objProject['option']['time_zone']);
         }
@@ -182,7 +177,7 @@ class Application
      *
      * @return void
      */
-    protected function loadBootstrapRun()
+    protected function loadBootstrapBootstrap()
     {
         if (is_file(($strBootstrap = env('app_bootstrap') ?  : $this->objProject->pathApplication() . '/' . $this->strApp . '/bootstrap.php'))) {
             require_once $strBootstrap;
@@ -194,7 +189,7 @@ class Application
      *
      * @return void
      */
-    protected function i18nRun()
+    protected function i18nBootstrap()
     {
         if (! $this->objProject['option']['i18n\on']) {
             return;
@@ -229,7 +224,7 @@ class Application
      *
      * @return void
      */
-    protected function consoleRun()
+    protected function consoleBootstrap()
     {
         if (! $this->objProject->console()) {
             return;
@@ -245,32 +240,6 @@ class Application
     }
 
     /**
-     * 执行请求返回相应结果
-     *
-     * @return void
-     */
-    protected function responseRun()
-    {
-        $mixResponse = $this->objProject['router']->doBind();
-        if (! ($mixResponse instanceof Response)) {
-            $mixResponse = $this->objProject['response']->make($mixResponse);
-        }
-
-        // 穿越中间件
-        $this->objProject['router']->throughMiddleware($this->objProject['pipeline'], $this->objProject['request'], [
-            $mixResponse
-        ]);
-
-        // 调试
-        if ($this->objProject->debug()) {
-            Console::trace($this->objProject->pathSystem('trace'), $this->objProject['log']->get());
-        }
-
-        // 输出响应
-        $mixResponse->output();
-    }
-
-    /**
      * 分析配置文件
      *
      * @return void
@@ -279,7 +248,7 @@ class Application
     {
         $sCachePath = $this->getOptionCachePath();
 
-        if ($this->strApp == static::INIT_APP) {
+        if ($this->isInitApp()) {
             if (! is_file($sCachePath) || !$this->objProject['option']->reset(( array ) include $sCachePath) || $this->objProject->development()) {
                 $this->cacheOption($sCachePath);
             }
@@ -299,17 +268,13 @@ class Application
      */
     protected function loadRouter()
     {
-        if ($this->strApp != static::INIT_APP) {
-            return;
-        }
-
         $this->setRouterCachePath();
 
         if (! $this->objProject['router']->checkExpired()) {
             return;
         }
 
-        foreach ($this->objProject['option']['app\~routers~'] as $strRouter) {
+        foreach ($this->objProject->routers() as $strRouter) {
             if (is_array($arrFoo = include $strRouter)) {
                 $this->objProject['router']->importCache($arrFoo);
             }
@@ -372,7 +337,11 @@ class Application
         if (is_dir($this->objProject->pathCommon() . '/ui/option')) {
             $arrDir[] = $this->objProject->pathCommon() . '/ui/option';
         }
-        $arrDir[] = $this->objProject->pathApplicationDir('option');
+
+        if (! $this->isInitApp()) {
+            $arrDir[] = $this->objProject->pathApplicationDir('option');
+        }
+
         return $arrDir;
     }
 
@@ -415,7 +384,7 @@ class Application
 
             setDir($this->getOptionDir())->
 
-            loadData($this->strApp === static::INIT_APP, $this->extendOption())
+            loadData($this->extendOption())
         );
     }
 
@@ -428,9 +397,20 @@ class Application
     {
         return [
             'app' => [
-                '~apps~' => Fso::lists($this->objProject->pathApplication())
-            ],
-            'env' => $_ENV
+                '~apps~' => $this->objProject->apps(),
+                '~envs~' => $this->objProject->envs(),
+                '~routers~' => $this->objProject->routers()
+            ]
         ];
+    }
+
+    /**
+     * 是否为初始化应用
+     *
+     * @return boolean
+     */
+    protected function isInitApp()
+    {
+        $this->strApp === static::INIT_APP;
     }
 }

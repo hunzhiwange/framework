@@ -32,7 +32,7 @@ use RuntimeException;
  * @see http://php.net/manual/zh/class.splobserver.php
  * @version 1.0
  */
-abstract class Observer implements SplObserver
+class Observer implements SplObserver
 {
 
     /**

@@ -55,7 +55,7 @@ class Load
      *
      * @var array
      */
-    protected $arrLoad = [];
+    protected $loaded = [];
 
     /**
      * 构造函数
@@ -107,14 +107,13 @@ class Load
     /**
      * 载入配置数据
      *
-     * @param boolean $booInitApp
      * @param array $arrExtendData
      * @return array
      */
-    public function loadData($booInitApp = false, $arrExtendData = [])
+    public function loadData($arrExtendData = [])
     {
-        if (isset($this->arrLoad[$booInitApp])) {
-            return $this->arrLoad[$booInitApp];
+        if ($this->loaded) {
+            return $this->loaded;
         }
 
         $arrData = $arrType = [];
@@ -151,10 +150,6 @@ class Load
             }
         }
 
-        if ($booInitApp) {
-            $this->router($arrData, $this->arrDir);
-        }
-
         $sCacheFile = $this->strCachePath;
         $sDir = dirname($sCacheFile);
         if (! is_dir($sDir)) {
@@ -165,29 +160,6 @@ class Load
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
         }
 
-        return $this->arrLoad[$booInitApp] = $arrData;
-    }
-
-    /**
-     * 路由配置
-     *
-     * @param array $arrData
-     * @param array $arrOptionDir
-     * @return void
-     */
-    protected function router(&$arrData, $arrOptionDir)
-    {
-        $arrData['app']['~routers~'] = [];
-
-        foreach ($arrOptionDir as $sDir) {
-            $sDir = dirname($sDir) . '/router';
-            if (is_dir($sDir) && ($arrFile = Fso::lists($sDir, 'file', false, [], [
-                'php'
-            ]))) {
-                foreach ($arrFile as $strFile) {
-                    $arrData['app']['~routers~'][] = $sDir . '/' . $strFile;
-                }
-            }
-        }
+        return $this->loaded = $arrData;
     }
 }

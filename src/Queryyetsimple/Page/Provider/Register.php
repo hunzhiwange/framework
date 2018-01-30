@@ -53,7 +53,6 @@ class Register extends Provider
     public function bootstrap()
     {
         $this->urlResolver();
-        $this->i18n();
     }
 
     /**
@@ -79,15 +78,5 @@ class Register extends Provider
                 'url'
             ], func_get_args());
         });
-    }
-
-    /**
-     * 载入语言包
-     *
-     * @return void
-     */
-    protected function i18n()
-    {
-        $this->loadI18nDir(__DIR__ . '/../i18n');
     }
 }

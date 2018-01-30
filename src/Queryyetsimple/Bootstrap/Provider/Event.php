@@ -40,19 +40,23 @@ class Event extends Provider
      *
      * @var array
      */
-    protected $arrListener = [];
+    protected $listeners = [];
     
     /**
      * 注册时间监听器
      *
-     * @param \Queryyetsimple\Event\IDispatch $objEvent
+     * @param \Queryyetsimple\Event\IDispatch $dispatch
      * @return void
      */
-    public function bootstrap(IDispatch $objEvent)
+    public function bootstrap(IDispatch $dispatch)
     {
-        foreach ($this->getListener() as $strEvent => $arrListeners) {
-            foreach ($arrListeners as $strListener) {
-                $objEvent->listener($strEvent, $strListener);
+        foreach ($this->getListeners() as $event => $listeners) {
+            foreach ($listeners as $key => $item) {
+                if (is_int($item)) {
+                    $dispatch->listeners($event, $key, $item);
+                } else {
+                    $dispatch->listeners($event, $item);
+                }
             }
         }
     }
@@ -71,8 +75,8 @@ class Event extends Provider
      *
      * @return array
      */
-    public function getListener()
+    public function getListeners()
     {
-        return $this->arrListener;
+        return $this->listeners;
     }
 }

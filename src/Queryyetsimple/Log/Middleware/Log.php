@@ -21,37 +21,36 @@ namespace Queryyetsimple\Log\middleware;
 
 use Closure;
 use Queryyetsimple\{
-    log\manager,
+    Log\Manager,
     Http\Request,
     Http\Response
 };
 
 /**
- * log 中间件
+ * Log 中间件
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.11.14
  * @version 1.0
  */
-class log
+class Log
 {
 
     /**
      * log 管理
      *
-     * @var \Queryyetsimple\Log
-yetsimple\logueryyetsimple\I18nQueryyetsimple\Log\log
+     * @var \Queryyetsimple\Log\Manager
      */
     protected $manager;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Throttler\IThrottler $manager
+     * @param \Queryyetsimple\Log\Manager $manager
      * @return void
      */
-    public function __construct(manager $manager)
+    public function __construct(Manager $manager)
     {
         $this->manager = $manager;
     }
@@ -77,7 +76,7 @@ yetsimple\logueryyetsimple\I18nQueryyetsimple\Log\log
      */
     protected function saveLog()
     {
-        if ($this->manager->container()['option'] ['log\enabled']) {
+        if ($this->manager->container()['option']['log\enabled']) {
             $this->manager->save();
         }
     }
