@@ -57,9 +57,14 @@ class Register extends Provider
         return [
             'option' => [
                 'Queryyetsimple\Option\Option',
-                'Queryyetsimple\Option\IOption'
+                'Queryyetsimple\Option\IOption',
+                'Qys\Option\Option',
+                'Qys\Option\IOption'
             ],
-            'load' => 'Queryyetsimple\Option\Load'
+            'load' => [
+                'Queryyetsimple\Option\Load',
+                'Qys\Option\Load'
+            ]
         ];
     }
 
