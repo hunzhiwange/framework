@@ -45,17 +45,35 @@ class Register extends Provider
         $this->singleton('router', function ($project) {
             $option = $project['option'];
 
-            $options = $option->get('url\\');
+            $options = [];
             foreach ([
-                '~apps~',
                 'default_app',
                 'default_controller',
                 'default_action',
                 'middleware_group',
-                'middleware_alias'
+                'middleware_alias',
+                'model',
+                'rewrite',
+                'pathinfo_depr',
+                'html_suffix',
+                'router_cache',
+                'router_strict',
+                'router_domain_on',
+                'router_domain_top',
+                'make_subdomain_on',
+                'public',
+                'pathinfo_restful',
+                'args_protected',
+                'args_regex',
+                'args_strict',
+                'middleware_strict',
+                'method_strict',
+                'controller_dir'
             ] as $item) {
                 $options[$item] = $option->get($item);
             }
+
+            $options['apps'] = $project->apps();
 
             return new Router($project, $project['pipeline'], $project['request'], $options);
         });
