@@ -28,7 +28,7 @@ use League\Flysystem\ZipArchive\ZipArchiveAdapter;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.29
- * @see https://flysystem.thephpleague.com/adapter/zip-archive/
+ * @link https://flysystem.thephpleague.com/adapter/zip-archive/
  * @version 1.0
  */
 class Zip extends Connect implements IConnect

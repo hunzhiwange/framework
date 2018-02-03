@@ -27,7 +27,7 @@ use League\Flysystem\Sftp\SftpAdapter;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.29
- * @see https://flysystem.thephpleague.com/adapter/sftp/
+ * @link https://flysystem.thephpleague.com/adapter/sftp/
  * @version 1.0
  */
 class Sftp extends Connect implements IConnect

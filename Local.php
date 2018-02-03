@@ -28,7 +28,7 @@ use League\Flysystem\Adapter\Local as AdapterLocal;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.29
- * @see https://flysystem.thephpleague.com/adapter/local/
+ * @link https://flysystem.thephpleague.com/adapter/local/
  * @version 1.0
  */
 class Local extends Connect implements IConnect
