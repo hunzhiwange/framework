@@ -31,7 +31,7 @@ use Queryyetsimple\Di\IContainer;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.23
- * @see http://php.net/manual/zh/class.splsubject.php
+ * @link http://php.net/manual/zh/class.splsubject.php
  * @version 1.0
  */
 class Subject implements ISubject, SplSubject
@@ -42,7 +42,7 @@ class Subject implements ISubject, SplSubject
      *
      * @var \Queryyetsimple\Di\IContainer
      */
-    protected $container;
+    public $container;
 
     /**
      * 观察者角色 observer
@@ -50,6 +50,13 @@ class Subject implements ISubject, SplSubject
      * @var \SplObjectStorage(\SplObserver)
      */
     protected $observers;
+
+    /**
+     * 通知附件参数
+     *
+     * @var array
+     */
+    public $notifyArgs = [];
 
     /**
      * 构造函数
@@ -84,17 +91,11 @@ class Subject implements ISubject, SplSubject
      */
     public function notify()
     {
-        $args = func_get_args();
-        array_unshift($args, $this);
+        $this->notifyArgs = func_get_args();
 
         foreach ($this->observers as $observer) {
-            call_user_func_array([
-                $observer,
-                'update'
-            ], $args);
+            $observer->update($this);
         }
-
-        unset($args);
     }
 
     /**
@@ -116,15 +117,5 @@ class Subject implements ISubject, SplSubject
         } else {
             throw new InvalidArgumentException('Invalid observer argument because it not instanceof SplObserver');
         }
-    }
-
-    /**
-     * 返回容器
-     *
-     * @return \Queryyetsimple\Di\IContainer
-     */
-    public function container()
-    {
-        return $this->container;
     }
 }
