@@ -28,7 +28,7 @@ use Queryyetsimple\Cache\Memcache as CacheMemcache;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.05
- * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
+ * @link http://php.net/manual/zh/class.sessionhandlerinterface.php
  * @version 1.0
  */
 class Memcache extends Connect implements SessionHandlerInterface
