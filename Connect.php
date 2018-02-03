@@ -758,7 +758,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 实现 isset( $obj['hello'] )
+     * 实现 ArrayAccess::offsetExists
      *
      * @param string $strKey
      * @return mixed
@@ -768,7 +768,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 实现 $strHello = $obj['hello']
+     * 实现 ArrayAccess::offsetGet
      *
      * @param string $strKey
      * @return mixed
@@ -778,7 +778,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 实现 $obj['hello'] = 'world'
+     * 实现 ArrayAccess::offsetSet
      *
      * @param string $strKey
      * @param mixed $mixValue
@@ -789,7 +789,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 实现 unset($obj['hello'])
+     * 实现 ArrayAccess::offsetUnset
      *
      * @param string $strKey
      * @return void
