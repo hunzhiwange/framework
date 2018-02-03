@@ -1335,7 +1335,7 @@ class request implements IArray, ArrayAccess
      * PHP 运行模式命令行, 兼容 swoole http service
      * Swoole http 服务器也以命令行运行
      * 
-     * @see http://php.net/manual/zh/function.php-sapi-name.php
+     * @link http://php.net/manual/zh/function.php-sapi-name.php
      * @return boolean
      */
     public function isCli()
@@ -1350,7 +1350,7 @@ class request implements IArray, ArrayAccess
     /**
      * PHP 运行模式命令行
      * 
-     * @see http://php.net/manual/zh/function.php-sapi-name.php
+     * @link http://php.net/manual/zh/function.php-sapi-name.php
      * @return boolean
      */
     public function isCliReal()
@@ -1361,7 +1361,7 @@ class request implements IArray, ArrayAccess
     /**
      * PHP 运行模式 cgi
      *
-     * @see http://php.net/manual/zh/function.php-sapi-name.php
+     * @link http://php.net/manual/zh/function.php-sapi-name.php
      * @return boolean
      */
     public function isCgi()
@@ -2221,7 +2221,7 @@ class request implements IArray, ArrayAccess
      * @param string $strSearch
      * @since bool
      */
-    protected function isInteger($mixValue)
+    protected function isInt($mixValue)
     {
         if (is_int($mixValue)) {
             return true;
@@ -2702,7 +2702,7 @@ class request implements IArray, ArrayAccess
             } elseif (is_callable($mixFilter)) {
                 $mixValue = call_user_func($mixFilter, $mixValue);
             } elseif (is_scalar($mixValue) && ! empty($mixFilter)) {
-                $mixValue = filter_var($mixValue, $this->isInteger($mixFilter) ? $mixFilter : filter_id($mixFilter));
+                $mixValue = filter_var($mixValue, $this->isInt($mixFilter) ? $mixFilter : filter_id($mixFilter));
                 if (false === $mixValue) {
                     $mixValue = $mixDefault;
                     break;
@@ -2800,7 +2800,7 @@ class request implements IArray, ArrayAccess
     }
 
     /**
-     * 实现 isset( $obj['hello'] )
+     * 实现 ArrayAccess::offsetExists
      *
      * @param string $strKey
      * @return mixed
@@ -2811,7 +2811,7 @@ class request implements IArray, ArrayAccess
     }
 
     /**
-     * 实现 $strHello = $obj['hello']
+     * 实现 ArrayAccess::offsetGet
      *
      * @param string $strKey
      * @return mixed
@@ -2822,7 +2822,7 @@ class request implements IArray, ArrayAccess
     }
 
     /**
-     * 实现 $obj['hello'] = 'world'
+     * 实现 ArrayAccess::offsetSet
      *
      * @param string $strKey
      * @param mixed $mixValue
@@ -2834,7 +2834,7 @@ class request implements IArray, ArrayAccess
     }
 
     /**
-     * 实现 unset($obj['hello'])
+     * 实现 ArrayAccess::offsetUnset
      *
      * @param string $strKey
      * @return void
