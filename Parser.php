@@ -28,7 +28,7 @@ use Queryyetsimple\Stack\Stack;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.19
- * @see http://jecat.cn 模板引擎架构
+ * @link http://jecat.cn
  * @version 1.0
  */
 class Parser implements IParser
@@ -480,7 +480,7 @@ class Parser implements IParser
     protected function findNodeTag(&$sCompiled)
     {
         // 设置一个栈
-        $this->oNodeStack = new Stack('array');
+        $this->oNodeStack = new Stack(['array']);
 
         // 判断是那种编译器
         $sNodeType = $this->bJsNode === true ? 'js' : 'node';
@@ -569,7 +569,7 @@ class Parser implements IParser
         }
 
         // 尾标签栈
-        $oTailStack = new Stack('array');
+        $oTailStack = new Stack(['array']);
 
         // 载入节点属性分析器 & 依次处理所有标签
         while (($arrTag = $this->oNodeStack->out()) !== null) {

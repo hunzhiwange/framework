@@ -77,7 +77,7 @@ class V8 extends Connect implements IConnect
      * 构造函数
      *
      * @param array $option
-     * @see http://php.net/manual/zh/book.v8js.php
+     * @link http://php.net/manual/zh/book.v8js.php
      * @return void
      */
     public function __construct(array $option = [])
