@@ -27,7 +27,7 @@ use Queryyetsimple\I18n\Entry;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.09.18
- * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
 abstract class Translations
