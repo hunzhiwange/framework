@@ -31,8 +31,8 @@ use Queryyetsimple\Di\IContainer;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.05.04
- * @see https://github.com/domnikl/DesignPatternsPHP/tree/master/Structural/Facade
- * @see https://d.laravel-china.org/docs/5.5/facades
+ * @link https://github.com/domnikl/DesignPatternsPHP/tree/master/Structural/Facade
+ * @link https://d.laravel-china.org/docs/5.5/facades
  * @version 1.0
  */
 abstract class Facade

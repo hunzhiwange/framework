@@ -32,34 +32,7 @@ use InvalidArgumentException;
  */
 class Type
 {
-    /**
-     * 判断字符串是否为数字
-     *
-     * @param string $strSearch
-     * @since bool
-     */
-    public static function stringNumber($mixValue)
-    {
-        if (is_numeric($mixValue)) {
-            return true;
-        }
-        return ! preg_match("/[^\d-.,]/", trim($mixValue, '\''));
-    }
-
-    /**
-     * 判断字符串是否为整数
-     *
-     * @param string $strSearch
-     * @since bool
-     */
-    public static function isInteger($mixValue)
-    {
-        if (is_int($mixValue)) {
-            return true;
-        }
-        return ctype_digit(strval($mixValue));
-    }
-
+    
     /**
      * 验证 PHP 各种变量类型
      *
@@ -67,7 +40,7 @@ class Type
      * @param string $sType 变量类型
      * @return boolean
      */
-    public static function varType($mixVar, $sType)
+    public static function var($mixVar, $sType)
     {
         // 整理参数，以支持 array:ini 格式
         $sType = trim($sType); 
@@ -117,7 +90,7 @@ class Type
             case 'array':
                 if (! empty($sType[1])) {
                     $sType[1] = explode(',', $sType[1]);
-                    return static::varArray($mixVar, $sType[1]);
+                    return static::arr($mixVar, $sType[1]);
                 } else {
                     return is_array($mixVar);
                 }
@@ -136,10 +109,38 @@ class Type
 
             // 类或者接口检验
             default: 
-                $sType = implode(':', $sType);
-                return $mixVar instanceof $sType;
+                return $mixVar instanceof $sType[0];
         }
     }
+
+    /**
+     * 判断字符串是否为数字
+     *
+     * @param string $strSearch
+     * @since bool
+     */
+    public static function num($mixValue)
+    {
+        if (is_numeric($mixValue)) {
+            return true;
+        }
+        return ! preg_match("/[^\d-.,]/", trim($mixValue, '\''));
+    }
+
+    /**
+     * 判断字符串是否为整数
+     *
+     * @param string $strSearch
+     * @since bool
+     */
+    public static function int($mixValue)
+    {
+        if (is_int($mixValue)) {
+            return true;
+        }
+        return ctype_digit(strval($mixValue));
+    }
+
 
     /**
      * 验证参数是否为指定的类型集合
@@ -148,9 +149,9 @@ class Type
      * @param mixed $mixTypes
      * @return boolean
      */
-    public static function varThese($mixVar, $mixTypes)
+    public static function these($mixVar, $mixTypes)
     {
-        if (! static::varType($mixTypes, 'string') && ! static::varArray($mixTypes, [
+        if (! static::var($mixTypes, 'string') && ! static::arr($mixTypes, [
             'string'
         ])) {
             throw new InvalidArgumentException('The parameter must be string or an array of string elements.');
@@ -162,7 +163,7 @@ class Type
 
         // 类型检查
         foreach ($mixTypes as $sType) { 
-            if (static::varType($mixVar, $sType)) {
+            if (static::var($mixVar, $sType)) {
                 return true;
             }
         }
@@ -177,7 +178,7 @@ class Type
      * @param array $arrTypes
      * @return boolean
      */
-    public static function varArray($arrArray, array $arrTypes)
+    public static function arr($arrArray, array $arrTypes)
     {
         // 不是数组直接返回
         if (! is_array($arrArray)) { 
@@ -188,7 +189,7 @@ class Type
         foreach ($arrArray as &$mixValue) {
             $bRet = false;
             foreach ($arrTypes as $mixType) {
-                if (static::varType($mixValue, $mixType)) {
+                if (static::var($mixValue, $mixType)) {
                     $bRet = true;
                     break;
                 }
