@@ -27,7 +27,7 @@ use League\Flysystem\Adapter\Ftp as AdapterFtp;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.29
- * @see https://flysystem.thephpleague.com/adapter/ftp/
+ * @link https://flysystem.thephpleague.com/adapter/ftp/
  * @version 1.0
  */
 class Ftp extends Connect implements IConnect

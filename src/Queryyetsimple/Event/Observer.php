@@ -29,7 +29,7 @@ use RuntimeException;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.06.23
- * @see http://php.net/manual/zh/class.splobserver.php
+ * @link http://php.net/manual/zh/class.splobserver.php
  * @version 1.0
  */
 class Observer implements SplObserver
@@ -58,21 +58,15 @@ class Observer implements SplObserver
     {
         $method = method_exists($this, 'handle') ? 'handle' : 'run';
 
-        $args = func_get_args();
-        array_shift($args);
-
-        if (! is_callable([
+        $handle = [
             $this,
             $method
-        ])) {
+        ];
+
+        if (! is_callable($handle)) {
             throw new RuntimeException(sprintf('Observer %s must has run method', get_class($this)));
         }
 
-        $subject->container()->call([
-            $this,
-            $method
-        ], $args);
-
-        unset($args);
+        $subject->container->call($handle, $subject->notifyArgs);
     }
 }

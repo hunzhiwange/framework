@@ -37,11 +37,4 @@ interface ISubject
      * @return $this
      */
     public function attachs($observer);
-
-    /**
-     * 返回容器
-     *
-     * @return \Queryyetsimple\Di\IContainer
-     */
-    public function container();
 }

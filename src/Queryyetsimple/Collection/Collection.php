@@ -26,6 +26,7 @@ use JsonSerializable;
 use BadMethodCallException;
 use InvalidArgumentException;
 use Queryyetsimple\Support\{
+    Type,
     IJson,
     IArray,
     TMacro
@@ -60,23 +61,46 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     /**
      * 类型
      *
-     * @var string
+     * @var mixed
      */
-    protected $type = '';
+    protected $type = [];
 
     /**
      * 构造函数
      *
-     * @param array $objects
+     * @param mixed $objects
+     * @param array $type
      * @return void
      */
-    public function __construct(array $objects = [], $type = '')
+    public function __construct($objects = [], array $type = null)
     {
-        $this->type = $type;
-        foreach ($objects as $offset => $item) {
-            $this[$offset] = $item;
+        if ($type) {
+            $this->type = $type;
+        }        
+
+        $objects = $this->getArrayObjects($objects);
+
+        if ($this->type) {
+            foreach ($objects as $key => $value) {
+                $this->offsetSet($key, $value);
+            }
+        } else {
+            $this->objects = $objects;
         }
-        return $this;
+
+        unset($objects);
+    }
+
+    /**
+     * 创建一个集合
+     *
+     * @param mixed $objects
+     * @param mixed $type
+     * @return void
+     */
+    public static function make($objects = [], $type = null)
+    {
+        return new static($objects, $type);
     }
 
     /**
@@ -132,50 +156,50 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 实现 isset( $obj['hello'] )
+     * 实现 ArrayAccess::offsetExists
      *
-     * @param string $strKey
+     * @param string $key
      * @return mixed
      */
-    public function offsetExists($strKey)
+    public function offsetExists($key)
     {
-        return isset($this->objects[$strKey]);
+        return isset($this->objects[$key]);
     }
 
     /**
-     * 实现 $strHello = $obj['hello']
+     * 实现 ArrayAccess::offsetGet
      *
-     * @param string $strKey
+     * @param string $key
      * @return mixed
      */
-    public function offsetGet($strKey)
+    public function offsetGet($key)
     {
-        return $this->objects[$strKey] ?? null;
+        return $this->objects[$key] ?? null;
     }
 
     /**
-     * 实现 $obj['hello'] = 'world'
+     * 实现 ArrayAccess::offsetSet
      *
-     * @param string $strKey
-     * @param mixed $mixValue
+     * @param string $key
+     * @param mixed $value
      * @return void
      */
-    public function offsetSet($strKey, $mixValue)
+    public function offsetSet($key, $value)
     {
-        $this->checkType($mixValue);
-        $this->objects[$strKey] = $mixValue;
+        $this->checkType($value);
+        $this->objects[$key] = $value;
     }
 
     /**
-     * 实现 unset($obj['hello'])
+     * 实现 ArrayAccess::offsetUnset
      *
-     * @param string $strKey
+     * @param string $key
      * @return void
      */
-    public function offsetUnset($strKey)
+    public function offsetUnset($key)
     {
-        if (isset($this->objects[$strKey])) {
-            unset($this->objects[$strKey]);
+        if (isset($this->objects[$key])) {
+            unset($this->objects[$key]);
         }
     }
 
@@ -190,14 +214,24 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
+     * 返回所有元素
+     *
+     * @return array
+     */
+    public function all()
+    {
+        return $this->objects;
+    }
+
+    /**
      * 对象转数组
      *
      * @return array
      */
     public function toArray()
     {
-        return array_map(function ($mixValue) {
-            return $mixValue instanceof IArray ? $mixValue->toArray() : $mixValue;
+        return array_map(function ($value) {
+            return $value instanceof IArray ? $value->toArray() : $value;
         }, $this->objects);
     }
 
@@ -208,15 +242,15 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function jsonSerialize()
     {
-        return array_map(function ($mixValue) {
-            if ($mixValue instanceof JsonSerializable) {
-                return $mixValue->jsonSerialize();
-            } elseif ($mixValue instanceof IJson) {
-                return json_decode($mixValue->toJson(), true);
-            } elseif ($mixValue instanceof IArray) {
-                return $mixValue->toArray();
+        return array_map(function ($value) {
+            if ($value instanceof JsonSerializable) {
+                return $value->jsonSerialize();
+            } elseif ($value instanceof IJson) {
+                return json_decode($value->toJson(), true);
+            } elseif ($value instanceof IArray) {
+                return $value->toArray();
             } else {
-                return $mixValue;
+                return $value;
             }
         }, $this->objects);
     }
@@ -233,214 +267,217 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * jquery.each
+     * __toString 魔术方法
      *
-     * @return void
+     * @return string
      */
-    public function each()
+    public function __toString()
     {
-        if (is_callable($args[0])) {
-            throw new InvalidArgumentException('The first args of each must be callable.');
-        }
-
-        $args = func_get_args();
-        if (! empty($args[1]) && is_string($args[1])) {
-            $sKeyName = $args[1];
-        } else {
-            $sKeyName = 'key';
-        }
-
-        $objects = $this->objects;
-        foreach ($objects as $key => $val) {
-            if (is_array($val)) {
-                $arrData = $val;
-                $arrData[$sKeyName] = $key;
-            } else {
-                $arrData = [
-                    $sKeyName => $key,
-                    'value' => $val
-                ];
-            }
-            $args[0](new static($arrData));
-        }
+        return $this->toJson();
     }
 
     /**
-     * jquery.prev
+     * JQuery.each
+     * 
+     * @param callable $callback
+     * @return $this
+     */
+    public function each(callable $callback)
+    {
+        foreach ($this->objects as $key => $item) {
+            if ($callback($item, $key) === false) {
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * JQuery.prev
      *
      * @return mixed
      */
     public function prev()
     {
-        $mixPrev = prev($this->objects);
-        $this->valid = $mixPrev !== false;
-        return $mixPrev;
+        $prev = prev($this->objects);
+
+        $this->valid = true;
+
+        return $prev;
     }
 
     /**
-     * jquery.end
+     * JQuery.end
      *
      * @return mixed
      */
     public function end()
     {
-        $mixEnd = end($this->objects);
-        $this->valid = $mixEnd !== false;
-        return $mixEnd;
+        $end = end($this->objects);
+
+        $this->valid = false;
+
+        return $end;
     }
 
     /**
-     * jquery.siblings
+     * JQuery.siblings
      *
-     * @param mixed $mixCurrentKey
+     * @param mixed $key
      * @return array
      */
-    public function siblings($mixCurrentKey = null)
+    public function siblings($key = null)
     {
-        $arrSiblings = [];
-        $mixCurrentKey === null && $mixCurrentKey = $this->key();
-        if (! is_array($mixCurrentKey)) {
-            $mixCurrentKey = ( array ) $mixCurrentKey;
-        }
-        $objects = $this->objects;
-        foreach ($objects as $sKey => $mixVal) {
-            if (in_array($sKey, $mixCurrentKey)) {
+        $result = [];
+
+        $key = $this->parseKey($key);
+
+        foreach ($this->objects as $k => $value) {
+            if ($k === $key) {
                 continue;
             }
-            $arrSiblings[$sKey] = $mixVal;
+
+            $result[$k] = $value;
         }
-        unset($objects);
-        return $arrSiblings;
+
+        return $result;
     }
 
     /**
-     * jquery.nextAll
+     * JQuery.nextAll
      *
-     * @param mixed $mixCurrentKey
+     * @param mixed $key
      * @return array
      */
-    public function nextAll($mixCurrentKey = null)
+    public function nextAll($key = null)
     {
-        $arrNexts = [];
-        $mixCurrentKey === null && $mixCurrentKey = $this->key();
-        $objects = $this->objects;
-        $booCurrent = false;
-        foreach ($objects as $sKey => $mixVal) {
-            if ($booCurrent === false) {
-                if ($mixCurrentKey === $sKey) {
-                    $booCurrent = true;
+        $result = [];
+
+        $key = $this->parseKey($key);
+        $current = false;
+
+        foreach ($this->objects as $k => $value) {
+            if ($current === false) {
+                if ($k === $key) {
+                    $current = true;
                 }
                 continue;
             }
-            $arrNexts[$sKey] = $mixVal;
+            $result[$k] = $value;
         }
-        unset($objects);
-        return $arrNexts;
+
+        return $result;
     }
 
     /**
-     * jquery.prevAll
+     * JQuery.prevAll
      *
-     * @param mixed $mixCurrentKey
+     * @param mixed $key
      * @return array
      */
-    public function prevAll($mixCurrentKey = null)
+    public function prevAll($key = null)
     {
-        $arrPrevs = [];
-        $mixCurrentKey === null && $mixCurrentKey = $this->key();
-        $objects = $this->objects;
-        $booCurrent = false;
-        foreach ($objects as $sKey => $mixVal) {
-            if ($mixCurrentKey === $sKey) {
-                $booCurrent = true;
+        $result = [];
+
+        $key = $this->parseKey($key);
+        $current = false;
+
+        foreach ($this->objects as $k => $value) {
+            if ($k === $key) {
+                $current = true;
                 break;
             }
-            $arrPrevs[$sKey] = $mixVal;
+            $result[$k] = $value;
         }
-        unset($objects);
-        return $arrPrevs;
+
+        return $result;
     }
 
     /**
-     * jquery.attr
+     * JQuery.attr
      *
-     * @param string $sKey
-     * @param mixed $mixValue
+     * @param string $key
+     * @param mixed $value
      * @return void|mixed
      */
-    public function attr($sKey, $mixValue = null)
+    public function attr($key, $value = null)
     {
-        if ($mixValue === null) {
-            return $this->__get($sKey);
+        if ($value === null) {
+            return $this->offsetGet($key);
         } else {
-            $this->__set($sKey, $mixValue);
+            $this->offsetSet($key, $value);
         }
     }
 
     /**
-     * jquery.eq
+     * JQuery.eq
      *
-     * @param string $sKey
+     * @param string $key
      * @return mixed
      */
-    public function eq($sKey)
+    public function eq($key)
     {
-        return $this->offsetGet($sKey);
+        return $this->offsetGet($key);
     }
 
     /**
-     * jquery.get
+     * JQuery.get
      *
-     * @param string $sKey
+     * @param string $key
      * @return mixed
      */
-    public function get($sKey)
+    public function get($key)
     {
-        return $this->offsetGet($sKey);
+        return $this->offsetGet($key);
     }
 
     /**
-     * jquery.index
+     * JQuery.index
      *
-     * @param mixed $mixValue
+     * @param mixed $value
+     * @param boolean $strict
      * @return mixed
      */
-    public function index($mixValue = null)
+    public function index($value = null, bool $strict = true)
     {
-        if ($mixValue === null) {
+        if ($value === null) {
             return $this->key();
         } else {
-            $sKey = array_search($mixValue, $this->objects);
-            if ($sKey === false) {
+            $key = array_search($value, $this->objects, $strict);
+
+            if ($key === false) {
                 return null;
             }
-            return $sKey;
+
+            return $key;
         }
     }
 
     /**
-     * jquery.find
+     * JQuery.find
      *
-     * @param string $sKey
+     * @param string $key
      * @return mixed
      */
-    public function find($sKey)
+    public function find($key)
     {
-        return $this->offsetGet($sKey);
+        return $this->offsetGet($key);
     }
 
     /**
-     * jquery.first
+     * JQuery.first
      *
      * @return mixed
      */
     public function first()
     {
-        return $this->rewind();
+        $this->rewind();
+        return $this->current();
     }
 
     /**
-     * jquery.last
+     * JQuery.last
      *
      * @return mixed
      */
@@ -448,53 +485,50 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     {
         return $this->end();
     }
+
     /**
-     * jquery.is
+     * JQuery.is
      *
-     * @param string $sKey
+     * @param string $key
      * @return boolean
      */
-    public function is($sKey)
+    public function is($key)
     {
-        return $this->offsetExists($sKey);
+        return $this->offsetExists($key);
     }
 
     /**
-     * jquery.slice
+     * JQuery.slice
      *
-     * @param int $nSelector
-     * @param string $nEnd
+     * @param int $selector
+     * @param string $length
      * @return array
      */
-    public function slice($nSelector, $nEnd = null)
+    public function slice($selector, $length = null)
     {
-        if ($nEnd === null) {
-            return array_slice($this->objects, $nSelector);
-        } else {
-            return array_slice($this->objects, $nSelector, $nEnd);
-        }
+        return array_slice($this->objects, $selector, $length);
     }
 
     /**
-     * jquery.not
+     * JQuery.not
      *
-     * @param string $sKey
+     * @param string $key
      * @return array
      */
-    public function not($sKey)
+    public function not($key)
     {
-        return $this->siblings($sKey);
+        return $this->siblings($key);
     }
 
     /**
-     * jquery.filter
+     * JQuery.filter
      *
-     * @param string $sKey
+     * @param string $key
      * @return array
      */
-    public function filter($sKey)
+    public function filter($key)
     {
-        return $this->siblings($sKey);
+        return $this->siblings($key);
     }
 
     /**
@@ -520,47 +554,69 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     /**
      * 数据 map
      *
-     * @param string $sKeyName
-     * @param mixed $mixValueName
+     * @param mixed $key
+     * @param mixed $value
      * @return array
      */
-    public function map($sKeyName, $mixValueName = null)
+    public function map($key, $value = null)
     {
-        if ($mixValueName === null) {
-            return array_column($this->objects, null, $sKeyName);
-        } elseif ($mixValueName === true) {
-            return array_column($this->objects, $sKeyName);
-        } else {
-            return array_column($this->objects, $mixValueName, $sKeyName);
-        }
+        return array_column($this->objects, $key, $value);
     }
 
     /**
      * 验证类型
      *
-     * @param mixed $mixObject
+     * @param mixed $value
      * @return void
      */
-    protected function checkType($mixObject)
+    protected function checkType($value)
     {
         if (! $this->type) {
             return;
         }
 
-        if (is_object($mixObject)) {
-            if ($mixObject instanceof $this->type) {
-                return;
-            }
-            $type = get_class($mixObject);
-        } else {
-            $type = gettype($mixObject);
-        }
-
-        if ($type == $this->type) {
+        if (Type::these($value, $this->type)) {
             return;
         }
 
-        throw new InvalidArgumentException(sprintf('Collection type %s validation failed', $type));
+        throw new InvalidArgumentException(sprintf('Collection type %s validation failed', implode(',', $this->type)));
+    }
+
+    /**
+     * 转换数据到数组
+     *
+     * @param mixed $objects
+     * @return array
+     */
+    protected function getArrayObjects($objects)
+    {
+        if (is_array($objects)) {
+            return $objects;
+        } elseif ($objects instanceof self) {
+            return $objects->all();
+        } elseif ($objects instanceof IArray) {
+            return $objects->toArray();
+        } elseif ($objects instanceof IJson) {
+            return json_decode($objects->toJson(), true);
+        } elseif ($objects instanceof JsonSerializable) {
+            return $objects->jsonSerialize();
+        }
+
+        return (array) $objects;
+    }
+
+    /**
+     * 分析 key
+     *
+     * @param mixed $key
+     * @return mixed
+     */
+    protected function parseKey($key = null){
+        if (is_null($key)) {
+            $key = $this->key();
+        }
+
+        return $key;
     }
 
     /**
@@ -578,30 +634,23 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     /**
      * __get 魔术方法
      *
-     * @param string $strKey
+     * @param string $key
      * @return mixed
      */
-    public function __get($strKey)
+    public function __get($key)
     {
-        if (array_key_exists($strKey, $this->objects)) {
-            return $this->objects[$strKey];
-        } else {
-            return null;
-        }
+        return $this->offsetGet($key);
     }
 
     /**
      * __set 魔术方法
      *
-     * @param string $sKey
-     * @param mixed $mixVal
-     * @return mixed
+     * @param string $key
+     * @param mixed $value
+     * @return void
      */
-    public function __set($sKey, $mixVal)
+    public function __set($key, $value)
     {
-        $this->checkType($mixVal);
-        $mixOld = $this->__get($sKey);
-        $this->objects[$sKey] = $mixVal;
-        return $mixOld;
+        $this->offsetSet($key, $value);
     }
 }

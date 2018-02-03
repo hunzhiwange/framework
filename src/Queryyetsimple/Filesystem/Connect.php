@@ -28,7 +28,7 @@ use League\Flysystem\Filesystem as LeagueFilesystem;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.29
- * @see https://flysystem.thephpleague.com/api/
+ * @link https://flysystem.thephpleague.com/api/
  * @version 1.0
  */
 abstract class Connect

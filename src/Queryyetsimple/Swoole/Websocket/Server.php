@@ -33,7 +33,7 @@ use Queryyetsimple\Swoole\Http\Server as Servers;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.12.30
- * @see https://wiki.swoole.com/wiki/page/397.html
+ * @link https://wiki.swoole.com/wiki/page/397.html
  * @version 1.0
  */
 class Server extends Servers
@@ -95,7 +95,7 @@ class Server extends Servers
      * 
      * @param \Swoole\Websocket\Server $objServer
      * @param \Swoole\Http\Request $objRequest
-     * @see https://wiki.swoole.com/wiki/page/401.html
+     * @link https://wiki.swoole.com/wiki/page/401.html
      * @return void
      */
     public function onOpen(SwooleWebsocketServer $objServer, SwooleHttpRequest $objRequest) {
@@ -107,7 +107,7 @@ class Server extends Servers
      * 
      * @param \Swoole\Websocket\Server $objServer
      * @param \Swoole\Websocket\Frame $objFrame
-     * @see https://wiki.swoole.com/wiki/page/397.html
+     * @link https://wiki.swoole.com/wiki/page/397.html
      * @return void
      */
     public function onMessage(SwooleWebsocketServer $objServer, SwooleWebsocketFrame $objFrame) {

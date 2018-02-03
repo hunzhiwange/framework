@@ -25,7 +25,7 @@ namespace Queryyetsimple\I18n;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.09.18
- * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
 class Entry
@@ -50,7 +50,7 @@ class Entry
      *
      * @param array $args associative array, support following keys:
      * @sub string singular the string to translate, if omitted and empty entry will be created
-     * @sub string plural the plural form of the string, setting this will set {@link $is_plural} to true
+     * @sub string plural the plural form of the string, setting this will set {@see $is_plural} to true
      * @sub array translations translations of the string and possibly -- its plural forms
      * @sub string context (string) a string differentiating two equal strings used in different contexts
      * @sub string translator_comments comments left by translators

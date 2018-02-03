@@ -37,7 +37,7 @@ ini_set('auto_detect_line_endings', 1);
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.09.18
- * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
  * @version 1.0
  */
 class Po extends Gettext
@@ -102,7 +102,7 @@ class Po extends Gettext
     }
 
     /**
-     * Same as {@link export}, but writes the result to a file
+     * Same as {@see export}, but writes the result to a file
      *
      * @param string $filename where to write the PO string
      * @param bool $include_headers whether to include tje headers in the export

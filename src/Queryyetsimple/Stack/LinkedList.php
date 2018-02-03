@@ -31,7 +31,7 @@ use Queryyetsimple\Support\Type;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.21
- * @see http://php.net/manual/zh/class.spldoublylinkedlist.php
+ * @link http://php.net/manual/zh/class.spldoublylinkedlist.php
  * @version 1.0
  */
 class LinkedList extends SplDoublyLinkedList
@@ -47,12 +47,14 @@ class LinkedList extends SplDoublyLinkedList
     /**
      * 构造函数
      *
-     * @param mixed $type
+     * @param array $type
      * @return void
      */
-    public function __construct($type = null)
+    public function __construct(array $type = null)
     {
-        $this->type = is_array($type) ? $type : func_get_args();
+        if ($type) {
+            $this->type = $type;
+        }
     }
 
     /**
@@ -123,10 +125,10 @@ class LinkedList extends SplDoublyLinkedList
      */
     protected function checkType($value)
     {
-        if (! count($this->type)) {
+        if (! $this->type) {
             return true;
         }
 
-        return Type::varThese($value, $this->type);
+        return Type::these($value, $this->type);
     }
 }

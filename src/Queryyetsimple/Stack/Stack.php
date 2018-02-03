@@ -27,7 +27,7 @@ use InvalidArgumentException;
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.21
- * @see http://php.net/manual/zh/class.splstack.php
+ * @link http://php.net/manual/zh/class.splstack.php
  * @version 1.0
  */
 class Stack extends LinkedList implements IStackQueue

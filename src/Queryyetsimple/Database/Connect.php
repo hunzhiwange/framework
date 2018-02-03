@@ -658,7 +658,7 @@ abstract class Connect
     /**
      * 分析绑定参数类型数据
      *
-     * @see http://php.net/manual/en/pdo.constants.php
+     * @link http://php.net/manual/en/pdo.constants.php
      * @param mixed $mixValue
      * @return string
      */

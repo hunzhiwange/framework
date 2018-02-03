@@ -555,7 +555,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 判断容器对象是否存在
+     * 实现 ArrayAccess::offsetExits
      *
      * @param string $name
      * @return bool
@@ -566,7 +566,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 获取一个容器对象
+     * 实现 ArrayAccess::offsetGet
      *
      * @param string $name
      * @return mixed
@@ -577,7 +577,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 注册容器对象
+     * 实现 ArrayAccess::offsetSet
      *
      * @param string $name
      * @param mixed $service
@@ -589,7 +589,7 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 删除一个容器对象
+     * 实现 ArrayAccess::offsetUnset
      *
      * @param string $name
      * @return void

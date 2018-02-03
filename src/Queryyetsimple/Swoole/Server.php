@@ -36,8 +36,8 @@ use Queryyetsimple\{
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.12.25
- * @see https://www.swoole.com/
- * @see https://www.cnblogs.com/luojianqun/p/5355439.html
+ * @link https://www.swoole.com/
+ * @link https://www.cnblogs.com/luojianqun/p/5355439.html
  * @version 1.0
  */
 class Server
@@ -152,7 +152,7 @@ class Server
     /**
      * 列出当前服务进程
      *
-     * @see https://www.cnblogs.com/emanlee/p/3983678.html
+     * @link https://www.cnblogs.com/emanlee/p/3983678.html
      * @return void
      */
     public function listsServer()
@@ -411,7 +411,7 @@ class Server
      * 记录进程 id,脚本实现自动重启
      * 
      * @param \Swoole\Server $objServer
-     * @see https://wiki.swoole.com/wiki/page/p-event/onStart.html
+     * @link https://wiki.swoole.com/wiki/page/p-event/onStart.html
      * @return void
      */
     public function onStart(SwooleServer $objServer)
@@ -434,7 +434,7 @@ class Server
      * @param \Swoole\Server $objServer
      * @param int $intFd
      * @param int $intReactorId
-     * @see https://wiki.swoole.com/wiki/page/49.html
+     * @link https://wiki.swoole.com/wiki/page/49.html
      * @return void
      */
     public function onConnect(SwooleServer $objServer, int $intFd, int $intReactorId)
@@ -448,7 +448,7 @@ class Server
      * 
      * @param \Swoole\Server $objServer
      * @param int $intWorkeId
-     * @see https://wiki.swoole.com/wiki/page/p-event/onWorkerStart.html
+     * @link https://wiki.swoole.com/wiki/page/p-event/onWorkerStart.html
      * @return void
      */
     public function onWorkerStart(SwooleServer $objServer, int $intWorkeId)
@@ -464,7 +464,7 @@ class Server
      * 当管理进程启动时调用
      * 
      * @param \Swoole\Server $objServer
-     * @see https://wiki.swoole.com/wiki/page/190.html
+     * @link https://wiki.swoole.com/wiki/page/190.html
      * @return void
      */
     public function onManagerStart(SwooleServer $objServer)
@@ -493,7 +493,7 @@ class Server
      * @param int $intFd
      * @param int $intReactorId
      * @param string $strData
-     * @see https://wiki.swoole.com/wiki/page/50.html
+     * @link https://wiki.swoole.com/wiki/page/50.html
      * @return void
      */
     public function onReceive(SwooleServer $objServer, int $intFd, int $intReactorId, string $strData) {
@@ -539,7 +539,7 @@ class Server
      * @param \Swoole\Server $objServer
      * @param int $intTaskId
      * @param string $strData
-     * @see https://wiki.swoole.com/wiki/page/136.html
+     * @link https://wiki.swoole.com/wiki/page/136.html
      * @return void
      */
     public function onFinish(SwooleServer $objServer, int $intTaskId, string $strData)
@@ -554,7 +554,7 @@ class Server
      * @param int $intTaskId
      * @param int $intFromId
      * @param string $strData
-     * @see https://wiki.swoole.com/wiki/page/134.html
+     * @link https://wiki.swoole.com/wiki/page/134.html
      * @return void
      */
     public function onTask(SwooleServer $objServer, int $intTaskId, int $intFromId, string $strData) {
@@ -571,7 +571,7 @@ class Server
      * Server 正常结束时发生
      * 
      * @param \Swoole\Server $objServer
-     * @see https://wiki.swoole.com/wiki/page/p-event/onShutdown.html
+     * @link https://wiki.swoole.com/wiki/page/p-event/onShutdown.html
      * @return void
      */
     public function onShutdown(SwooleServer $objServer)
@@ -589,7 +589,7 @@ class Server
      * @param \Swoole\Server $objServer
      * @param int $intFd
      * @param int $intReactorId
-     * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
+     * @link https://wiki.swoole.com/wiki/page/p-event/onClose.html
      * @return void
      */
     public function onClose(SwooleServer $objServer, int $intFd, int $intReactorId)
@@ -777,8 +777,8 @@ class Server
      * 设置 swoole 进程名称
      * 
      * @param string $sName
-     * @see http://php.net/manual/zh/function.cli-set-process-title.php
-     * @see https://wiki.swoole.com/wiki/page/125.html
+     * @link http://php.net/manual/zh/function.cli-set-process-title.php
+     * @link https://wiki.swoole.com/wiki/page/125.html
      * @return void
      */
     protected function setProcessName(string $sName)

@@ -17,12 +17,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\Provider;
+namespace Queryyetsimple\Event;
 
-use Queryyetsimple\{
-    Di\Provider,
-    Event\IDispatch
-};
+use Queryyetsimple\Di\Provider;
 
 /**
  * 事件服务提供者
@@ -32,7 +29,7 @@ use Queryyetsimple\{
  * @since 2017.04.26
  * @version 1.0
  */
-class Event extends Provider
+class EventProvider extends Provider
 {
     
     /**
