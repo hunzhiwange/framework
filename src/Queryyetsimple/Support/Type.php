@@ -36,80 +36,82 @@ class Type
     /**
      * 验证 PHP 各种变量类型
      *
-     * @param mixed $mixVar 待验证的变量
-     * @param string $sType 变量类型
+     * @param mixed $value 待验证的变量
+     * @param string $type 变量类型
      * @return boolean
      */
-    public static function var($mixVar, $sType)
+    public static function vars($value, $type)
     {
         // 整理参数，以支持 array:ini 格式
-        $sType = trim($sType); 
-        $sType = explode(':', $sType);
-        $sType[0] = strtolower($sType[0]);
+        $tmp = explode(':', $type);
+        $type = strtolower($tmp[0]);
 
-        switch ($sType[0]) {
+        switch ($type) {
 
             // 字符串
+            case 'str': 
             case 'string': 
-                return is_string($mixVar);
+                return is_string($value);
 
             // 整数
-            case 'integer': 
             case 'int':
-                return is_int($mixVar);
+            case 'integer': 
+                return is_int($value);
 
             // 浮点
             case 'float': 
-                return is_float($mixVar);
+            case 'double':
+                return is_float($value);
 
             // 布尔
-            case 'boolean': 
             case 'bool':
-                return is_bool($mixVar);
+            case 'boolean': 
+                return is_bool($value);
 
             // 数字
             case 'num': 
             case 'numeric':
-                return is_numeric($mixVar);
+                return is_numeric($value);
 
             // 标量（所有基础类型）
             case 'base': 
             case 'scalar':
-                return is_scalar($mixVar);
+                return is_scalar($value);
 
             // 外部资源
             case 'handle': 
             case 'resource':
-                return is_resource($mixVar);
+                return is_resource($value);
 
             // 闭包
             case 'closure': 
-                return $mixVar instanceof Closure;
+                return $value instanceof Closure;
 
             // 数组
+            case 'arr':
             case 'array':
-                if (! empty($sType[1])) {
-                    $sType[1] = explode(',', $sType[1]);
-                    return static::arr($mixVar, $sType[1]);
+                if (! empty($tmp[1])) {
+                    $tmp[1] = explode(',', $tmp[1]);
+                    return static::arr($value, $tmp[1]);
                 } else {
-                    return is_array($mixVar);
+                    return is_array($value);
                 }
 
             // 对象
             case 'object': 
-                return is_object($mixVar);
+                return is_object($value);
 
-            // bull
+            // null
             case 'null': 
-                return ($mixVar === null);
+                return ($value === null);
 
             // 回调函数
             case 'callback': 
-                return is_callable($mixVar, false);
+                return is_callable($value, false);
 
             // 类或者接口检验
             default: 
-                return $mixVar instanceof $sType[0];
+                return $value instanceof $type;
         }
     }
 
@@ -119,12 +121,12 @@ class Type
      * @param string $strSearch
      * @since bool
      */
-    public static function num($mixValue)
+    public static function num($value)
     {
-        if (is_numeric($mixValue)) {
+        if (is_numeric($value)) {
             return true;
         }
-        return ! preg_match("/[^\d-.,]/", trim($mixValue, '\''));
+        return ! preg_match("/[^\d-.,]/", trim($value, '\''));
     }
 
     /**
@@ -133,37 +135,36 @@ class Type
      * @param string $strSearch
      * @since bool
      */
-    public static function int($mixValue)
+    public static function ints($value)
     {
-        if (is_int($mixValue)) {
+        if (is_int($value)) {
             return true;
         }
-        return ctype_digit(strval($mixValue));
+        return ctype_digit(strval($value));
     }
-
 
     /**
      * 验证参数是否为指定的类型集合
      *
-     * @param mixed $mixVar
-     * @param mixed $mixTypes
+     * @param mixed $value
+     * @param mixed $types
      * @return boolean
      */
-    public static function these($mixVar, $mixTypes)
+    public static function these($value, $types)
     {
-        if (! static::var($mixTypes, 'string') && ! static::arr($mixTypes, [
+        if (! static::vars($types, 'string') && ! static::arr($types, [
             'string'
         ])) {
             throw new InvalidArgumentException('The parameter must be string or an array of string elements.');
         }
 
-        if (is_string($mixTypes)) {
-            $mixTypes = ( array ) $mixTypes;
+        if (is_string($types)) {
+            $types = ( array ) $types;
         }
 
         // 类型检查
-        foreach ($mixTypes as $sType) { 
-            if (static::var($mixVar, $sType)) {
+        foreach ($types as $item) { 
+            if (static::vars($value, $item)) {
                 return true;
             }
         }
@@ -174,28 +175,29 @@ class Type
     /**
      * 验证数组中的每一项格式化是否正确
      *
-     * @param array $arrArray
-     * @param array $arrTypes
+     * @param array $arr
+     * @param array $types
      * @return boolean
      */
-    public static function arr($arrArray, array $arrTypes)
+    public static function arr($arr, array $types)
     {
         // 不是数组直接返回
-        if (! is_array($arrArray)) { 
+        if (! is_array($arr)) { 
             return false;
         }
 
         // 判断数组内部每一个值是否为给定的类型
-        foreach ($arrArray as &$mixValue) {
-            $bRet = false;
-            foreach ($arrTypes as $mixType) {
-                if (static::var($mixValue, $mixType)) {
-                    $bRet = true;
+        foreach ($arr as $value) {
+            $ret = false;
+
+            foreach ($types as $item) {
+                if (static::vars($value, $item)) {
+                    $ret = true;
                     break;
                 }
             }
 
-            if (! $bRet) {
+            if (! $ret) {
                 return false;
             }
         }

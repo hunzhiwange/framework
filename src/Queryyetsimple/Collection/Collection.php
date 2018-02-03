@@ -49,7 +49,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      *
      * @var array
      */
-    protected $objects = [];
+    protected $elements = [];
 
     /**
      * 验证
@@ -68,39 +68,39 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     /**
      * 构造函数
      *
-     * @param mixed $objects
+     * @param mixed $elements
      * @param array $type
      * @return void
      */
-    public function __construct($objects = [], array $type = null)
+    public function __construct($elements = [], array $type = null)
     {
         if ($type) {
             $this->type = $type;
         }        
 
-        $objects = $this->getArrayObjects($objects);
+        $elements = $this->getArrayElements($elements);
 
         if ($this->type) {
-            foreach ($objects as $key => $value) {
+            foreach ($elements as $key => $value) {
                 $this->offsetSet($key, $value);
             }
         } else {
-            $this->objects = $objects;
+            $this->elements = $elements;
         }
 
-        unset($objects);
+        unset($elements);
     }
 
     /**
      * 创建一个集合
      *
-     * @param mixed $objects
+     * @param mixed $elements
      * @param mixed $type
      * @return void
      */
-    public static function make($objects = [], $type = null)
+    public static function make($elements = [], $type = null)
     {
-        return new static($objects, $type);
+        return new static($elements, $type);
     }
 
     /**
@@ -110,7 +110,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function current()
     {
-        return current($this->objects);
+        return current($this->elements);
     }
 
     /**
@@ -120,7 +120,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function key()
     {
-        return key($this->objects);
+        return key($this->elements);
     }
 
     /**
@@ -130,7 +130,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function next()
     {
-        $next = next($this->objects);
+        $next = next($this->elements);
         $this->valid = $next !== false;
     }
 
@@ -141,7 +141,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function rewind()
     {
-        reset($this->objects);
+        reset($this->elements);
         $this->valid = true;
     }
 
@@ -163,7 +163,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function offsetExists($key)
     {
-        return isset($this->objects[$key]);
+        return isset($this->elements[$key]);
     }
 
     /**
@@ -174,7 +174,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function offsetGet($key)
     {
-        return $this->objects[$key] ?? null;
+        return $this->elements[$key] ?? null;
     }
 
     /**
@@ -187,7 +187,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     public function offsetSet($key, $value)
     {
         $this->checkType($value);
-        $this->objects[$key] = $value;
+        $this->elements[$key] = $value;
     }
 
     /**
@@ -198,8 +198,8 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function offsetUnset($key)
     {
-        if (isset($this->objects[$key])) {
-            unset($this->objects[$key]);
+        if (isset($this->elements[$key])) {
+            unset($this->elements[$key]);
         }
     }
 
@@ -210,7 +210,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function count()
     {
-        return count($this->objects);
+        return count($this->elements);
     }
 
     /**
@@ -220,7 +220,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function all()
     {
-        return $this->objects;
+        return $this->elements;
     }
 
     /**
@@ -232,7 +232,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     {
         return array_map(function ($value) {
             return $value instanceof IArray ? $value->toArray() : $value;
-        }, $this->objects);
+        }, $this->elements);
     }
 
     /**
@@ -252,7 +252,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
             } else {
                 return $value;
             }
-        }, $this->objects);
+        }, $this->elements);
     }
 
     /**
@@ -284,7 +284,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function each(callable $callback)
     {
-        foreach ($this->objects as $key => $item) {
+        foreach ($this->elements as $key => $item) {
             if ($callback($item, $key) === false) {
                 break;
             }
@@ -300,7 +300,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function prev()
     {
-        $prev = prev($this->objects);
+        $prev = prev($this->elements);
 
         $this->valid = true;
 
@@ -314,7 +314,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function end()
     {
-        $end = end($this->objects);
+        $end = end($this->elements);
 
         $this->valid = false;
 
@@ -333,7 +333,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
 
         $key = $this->parseKey($key);
 
-        foreach ($this->objects as $k => $value) {
+        foreach ($this->elements as $k => $value) {
             if ($k === $key) {
                 continue;
             }
@@ -357,7 +357,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         $key = $this->parseKey($key);
         $current = false;
 
-        foreach ($this->objects as $k => $value) {
+        foreach ($this->elements as $k => $value) {
             if ($current === false) {
                 if ($k === $key) {
                     $current = true;
@@ -383,7 +383,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         $key = $this->parseKey($key);
         $current = false;
 
-        foreach ($this->objects as $k => $value) {
+        foreach ($this->elements as $k => $value) {
             if ($k === $key) {
                 $current = true;
                 break;
@@ -444,7 +444,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         if ($value === null) {
             return $this->key();
         } else {
-            $key = array_search($value, $this->objects, $strict);
+            $key = array_search($value, $this->elements, $strict);
 
             if ($key === false) {
                 return null;
@@ -506,7 +506,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function slice($selector, $length = null)
     {
-        return array_slice($this->objects, $selector, $length);
+        return array_slice($this->elements, $selector, $length);
     }
 
     /**
@@ -548,7 +548,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function isEmpty()
     {
-        return empty($this->objects);
+        return empty($this->elements);
     }
 
     /**
@@ -560,7 +560,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function map($key, $value = null)
     {
-        return array_column($this->objects, $key, $value);
+        return array_column($this->elements, $key, $value);
     }
 
     /**
@@ -585,24 +585,24 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     /**
      * 转换数据到数组
      *
-     * @param mixed $objects
+     * @param mixed $elements
      * @return array
      */
-    protected function getArrayObjects($objects)
+    protected function getArrayElements($elements)
     {
-        if (is_array($objects)) {
-            return $objects;
-        } elseif ($objects instanceof self) {
-            return $objects->all();
-        } elseif ($objects instanceof IArray) {
-            return $objects->toArray();
-        } elseif ($objects instanceof IJson) {
-            return json_decode($objects->toJson(), true);
-        } elseif ($objects instanceof JsonSerializable) {
-            return $objects->jsonSerialize();
+        if (is_array($elements)) {
+            return $elements;
+        } elseif ($elements instanceof self) {
+            return $elements->all();
+        } elseif ($elements instanceof IArray) {
+            return $elements->toArray();
+        } elseif ($elements instanceof IJson) {
+            return json_decode($elements->toJson(), true);
+        } elseif ($elements instanceof JsonSerializable) {
+            return $elements->jsonSerialize();
         }
 
-        return (array) $objects;
+        return (array) $elements;
     }
 
     /**
