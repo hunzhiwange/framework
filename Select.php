@@ -331,7 +331,7 @@ class Select
      */
     public function select($mixData = null, $arrBind = [], $bFlag = false)
     {
-        if (! Type::varThese($mixData, [
+        if (! Type::these($mixData, [
             'string',
             'null',
             'callback'
@@ -376,7 +376,7 @@ class Select
      */
     public function insert($mixData, $arrBind = [], $booReplace = false, $bFlag = false)
     {
-        if (! Type::varThese($mixData, [
+        if (! Type::these($mixData, [
             'string',
             'array'
         ])) {
@@ -494,7 +494,7 @@ class Select
      */
     public function update($mixData, $arrBind = [], $bFlag = false)
     {
-        if (! Type::varThese($mixData, [
+        if (! Type::these($mixData, [
             'string',
             'array'
         ])) {
@@ -601,7 +601,7 @@ class Select
      */
     public function delete($mixData = null, $arrBind = [], $bFlag = false)
     {
-        if (! Type::varThese($mixData, [
+        if (! Type::these($mixData, [
             'string',
             'null'
         ])) {
@@ -3640,10 +3640,10 @@ class Select
 
         // 创建一个单独的对象
         if (! $this->arrOption['limitquery']) {
-            $arrData = reset($arrData) ?  : null;
+            $arrData = reset($arrData) ? : null;
         } else {
             if ($this->arrQueryParams['as_collection']) {
-                $arrData = new Collection($arrData, $sClassName);
+                $arrData = new Collection($arrData, [$sClassName]);
             }
         }
     }
