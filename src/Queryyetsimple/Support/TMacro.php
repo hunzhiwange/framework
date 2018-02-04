@@ -20,7 +20,6 @@
 namespace Queryyetsimple\Support;
 
 use Closure;
-use ReflectionFunction;
 use BadMethodCallException;
 
 /**
@@ -65,18 +64,39 @@ trait TMacro
     }
 
     /**
-     * call 
+     * __callStatic 魔术方法隐射
+     * 由于 zephir 对应的 C 扩展版本不支持对象内绑定 class
+     * 即 Closure::bind($closures, null, get_called_class())
+     * 为保持功能一致，所以取消 PHP 版本的静态闭包绑定功能
      *
      * @param string $method
      * @param array $args
      * @return mixed
      */
-    public static function __callStatic(string $method, array $args)
+    public static function callStaticMacro(string $method, array $args)
     {
-        // 第一步：判断是否存在已经注册的命名
+        if (static::hasMacro($method)) {
+            return call_user_func_array(static::$macro[$method], $args);
+        }
+
+        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+    }
+
+    /**
+     * __call 魔术方法隐射
+     * 由于 zephir 对应的 C 扩展版本不支持对象内绑定 class
+     * 即 Closure::bind($closures, null, get_called_class())
+     * 为保持功能一致，所以绑定对象但是不绑定作用域，即可以使用 $this,只能访问 public 属性
+     * 
+     * @param string $method
+     * @param array $args
+     * @return mixed
+     */
+    public function callMacro(string $method, array $args)
+    {
         if (static::hasMacro($method)) {
             if (static::$macro[$method] instanceof Closure) {
-                return call_user_func_array(Closure::bind(static::$macro[$method], null, get_called_class()), $args);
+                return call_user_func_array(static::$macro[$method]->bindTo($this), $args);
             } else {
                 return call_user_func_array(static::$macro[$method], $args);
             }
@@ -86,7 +106,19 @@ trait TMacro
     }
 
     /**
-     * call 
+     * __callStatic 魔术方法 
+     *
+     * @param string $method
+     * @param array $args
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args)
+    {
+        return static::callStaticMacro($method, $args);
+    }
+
+    /**
+     * __call 魔术方法 
      *
      * @param string $method
      * @param array $args
@@ -94,16 +126,6 @@ trait TMacro
      */
     public function __call(string $method, array $args)
     {
-        if (static::hasMacro($method)) {
-            if (static::$macro[$method] instanceof Closure) {
-                $reflection = new ReflectionFunction(static::$macro[$method]);
-
-                return call_user_func_array(Closure::bind(static::$macro[$method], $reflection->getClosureThis() ? $this : null, get_class($this)), $args);
-            } else {
-                return call_user_func_array(static::$macro[$method], $args);
-            }
-        }
-
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        return $this->callMacro($method, $args);
     }
 }
