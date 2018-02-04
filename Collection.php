@@ -620,18 +620,6 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * call 
-     *
-     * @param string $method
-     * @param array $args
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        throw new BadMethodCallException(sprintf('Collection method %s is not defined.', $method));
-    }
-
-    /**
      * __get 魔术方法
      *
      * @param string $key
