@@ -155,21 +155,45 @@ class Url
         return $url;
     }
 
+    /**
+     * 设置路由 app
+     *
+     * @param string $app
+     * @return $this
+     */
     public function setApp($app) {
         $this->app = $app;
         return $this;
     }
 
+    /**
+     * 设置路由 controller
+     *
+     * @param string $controller
+     * @return $this
+     */
     public function setController($controller) {
         $this->controller = $controller;
         return $this;
     }
 
+    /**
+     * 设置路由 action
+     *
+     * @param string $action
+     * @return $this
+     */
     public function setAction($action) {
         $this->action = $action;
         return $this;
     }
 
+    /**
+     * 设置路由 URL 入口
+     *
+     * @param string $urlEnter
+     * @return $this
+     */
     public function setUrlEnter($urlEnter) {
         $this->urlEnter = $urlEnter;
         return $this;
