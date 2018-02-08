@@ -17,22 +17,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace tests;
+namespace Queryyetsimple;
 
-use Queryyetsimple\{
-    Psr4,
-    Router
-};
+use Queryyetsimple\Support\Facade;
 
 /**
- * phpunit 内部启动文件
+ * 沙盒 url
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.09
+ * @since 2017.06.10
  * @version 1.0
  */
-Psr4::import('tests', dirname(env('app_bootstrap')));
-Router::bind('phpunittests://bootstrap/index', function () {
-    return (new application())->run();
-});
+class Url extends Facade
+{
+
+    /**
+     * 返回门面名字
+     *
+     * @return string
+     */
+    protected static function name (): string
+    {
+        return 'url';
+    }
+}

@@ -20,6 +20,7 @@
 namespace Queryyetsimple\Router\Provider;
 
 use Queryyetsimple\{
+    Router\Url,
     Di\Provider,
     Router\Router
 };
@@ -41,6 +42,36 @@ class Register extends Provider
      * @return void
      */
     public function register()
+    {
+        $this->router();
+        $this->url();
+    }
+
+    /**
+     * 可用服务提供者
+     *
+     * @return array
+     */
+    public static function providers()
+    {
+        return [
+            'router' => [
+                'Queryyetsimple\Router\Router',
+                'Qys\Router\Router'
+            ],
+            'url' => [
+                'Queryyetsimple\Router\Url',
+                'Qys\Router\Url'
+            ]
+        ];
+    }
+
+    /**
+     * 注册 router 服务
+     *
+     * @return void
+     */
+    protected function router()
     {
         $this->singleton('router', function ($project) {
             $option = $project['option'];
@@ -80,17 +111,38 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者
+     * 注册 url 服务
      *
-     * @return array
+     * @return void
      */
-    public static function providers()
+    protected function url()
     {
-        return [
-            'router' => [
-                'Queryyetsimple\Router\Router',
-                'Qys\Router\Router'
-            ]
-        ];
+        $this->singleton('url', function ($project) {
+            $option = $project['option'];
+            $router = $project['router'];
+
+            $options = [];
+            foreach ([
+                'default_app',
+                'default_controller',
+                'default_action',
+                'model',
+                'html_suffix',
+                'router_domain_top',
+                'make_subdomain_on'
+            ] as $item) {
+                $options[$item] = $option->get($item);
+            }
+
+            return (new Url($options))->
+
+            setApp($router->app())->
+
+            setController($router->controller())->
+
+            setAction($router->action())->
+
+            setUrlEnter($project['url_enter']);
+        });
     }
 }

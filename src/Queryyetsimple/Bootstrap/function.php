@@ -59,20 +59,20 @@ if (! function_exists('app')) {
     }
 }
 
-function aop_before($pointcut, $advice) {
-    $aop = \queryyetsimple\aop\aop::singleton();
-    $aop->before($pointcut, $advice);
-}
+// function aop_before($pointcut, $advice) {
+//     $aop = \queryyetsimple\aop\aop::singleton();
+//     $aop->before($pointcut, $advice);
+// }
 
-function aop_after($pointcut, $advice) {
-    $aop = \queryyetsimple\aop\aop::singleton();
-    $aop->after($pointcut, $advice);
-}
+// function aop_after($pointcut, $advice) {
+//     $aop = \queryyetsimple\aop\aop::singleton();
+//     $aop->after($pointcut, $advice);
+// }
 
-function aop_around($pointcut, $advice) {
-    $aop = \queryyetsimple\aop\aop::singleton();
-    $aop->around($pointcut, $advice);
-}
+// function aop_around($pointcut, $advice) {
+//     $aop = \queryyetsimple\aop\aop::singleton();
+//     $aop->around($pointcut, $advice);
+// }
 
 if (! function_exists('api')) {
     /**
@@ -239,21 +239,17 @@ if (! function_exists('url')) {
     /**
      * 生成路由地址
      *
-     * @param string $sUrl
-     * @param array $arrParams
-     * @param array $arrOption
+     * @param string $url
+     * @param array $params
+     * @param array $option
      * @sub boolean suffix 是否包含后缀
      * @sub boolean normal 是否为普通 url
      * @sub string subdomain 子域名
      * @return string
      */
-    function url($sUrl, $arrParams = [], $arrOption = [])
+    function url($url, $params = [], $option = [])
     {
-        if (is_null($sUrl)) {
-            return project('router');
-        }
-
-        return project('router')->url($sUrl, $arrParams, $arrOption);
+        return project('url')->make($url, $params, $option);
     }
 }
 
