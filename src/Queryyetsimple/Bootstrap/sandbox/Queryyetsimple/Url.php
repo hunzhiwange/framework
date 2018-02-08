@@ -26,7 +26,7 @@ use Queryyetsimple\Support\Facade;
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.06.10
+ * @since 2018.02.08
  * @version 1.0
  */
 class Url extends Facade
