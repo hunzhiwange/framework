@@ -35,12 +35,13 @@ use Queryyetsimple\{
     Support\TMacro,
     Event\IDispatch,
     Support\TSerialize,
-    Mvc\Relation\HasOne,
-    Mvc\Relation\HasMany,
-    Mvc\Relation\Relation,
-    Mvc\Relation\ManyMany,
-    Collection\Collection,
-    Mvc\Relation\BelongsTo
+    Collection\Collection
+};
+use Queryyetsimple\Mvc\Relation\{
+    HasMany,
+    Relation,
+    ManyMany,
+    BelongsTo
 };
 
 /**
