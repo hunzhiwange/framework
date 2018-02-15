@@ -29,7 +29,7 @@ use Queryyetsimple\Option\TClass;
  * @since 2017.01.10
  * @version 1.0
  */
-class Url
+class Url implements IUrl
 {
     use TClass;
 
