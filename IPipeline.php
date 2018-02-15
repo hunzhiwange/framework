@@ -31,13 +31,6 @@ interface IPipeline
 {
 
     /**
-     * 管道初始化
-     *
-     * @return $this
-     */
-    public function reset();
-
-    /**
      * 将传输对象传入管道
      *
      * @param mixed $passed
