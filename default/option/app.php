@@ -87,7 +87,6 @@ return [
         'Queryyetsimple\Mvc\Provider\Register',
         'Queryyetsimple\Option\Provider\Register',
         'Queryyetsimple\Page\Provider\Register',
-        'Queryyetsimple\Pipeline\Provider\Register',
         'Queryyetsimple\Queue\Provider\Register',
         'Queryyetsimple\Router\Provider\Register',
         'Queryyetsimple\Session\Provider\Register',
@@ -353,7 +352,7 @@ return [
      *
      * 例如 queryphp.com，用于路由解析以及 \Queryyetsimple\Router\Router::url 生成
      */
-    'router_domain_top' => '',
+    'router_domain_top' => env('router_domain_top', ''),
 
     /**
      * ---------------------------------------------------------------

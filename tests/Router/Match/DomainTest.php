@@ -17,40 +17,66 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Pipeline;
+namespace tests\Router\Match;
+
+use tests\testcase;
+use Queryyetsimple\Router\Router;
+use Queryyetsimple\Router\Match\Domain;
 
 /**
- * IPipeline 接口
+ * match.domain 组件测试
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.11
+ * @since 2018.02.13
  * @version 1.0
  */
-interface IPipeline
+class DomainTest extends testcase
 {
 
     /**
-     * 将传输对象传入管道
+     * 初始化
      *
-     * @param mixed $passed
-     * @return $this
+     * @return void
      */
-    public function send($passed);
+    protected function setUp()
+    {
+        $this->router = app('router');
+        $this->router->option('router_domain_on', true);
+        $this->router->option('router_domain_top', 'queryphp.cn');
+        $this->router->domain('{domain}', 'home://index/index');
+        $this->router->development(true);
+
+        $this->request = app('request');
+
+        $this->domain = new Domain();
+    }
 
     /**
-     * 设置管道中的执行工序
+     * pathinfo url 生成
      *
-     * @param dynamic|array $stage
-     * @return $this
+     * @return void
      */
-    public function through($stage);
+    public function testPathinfoUrl()
+    {
+        // ddd($this->domain->matche($this->router, $this->request)); 
+    }
 
     /**
-     * 执行管道工序响应结果
+     * 自定义 url
      *
-     * @param callable $end
-     * @return mixed
+     * @return void
      */
-    public function then(callable $end = null);
+    public function testCustomUrl()
+    {
+    }
+
+    /**
+     * normal url
+     *
+     * @return void
+     */
+    public function testNormalUrl()
+    {
+    }
 }

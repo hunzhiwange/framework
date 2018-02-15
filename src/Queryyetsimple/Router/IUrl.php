@@ -17,50 +17,61 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Pipeline\Provider;
-
-use Queryyetsimple\{
-    Di\Provider,
-    Pipeline\Pipeline
-};
+namespace Queryyetsimple\Router;
 
 /**
- * pipeline 服务提供者
+ * IUrl 生成
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.25
+ * @since 2017.01.10
  * @version 1.0
  */
-class Register extends Provider
+interface IUrl
 {
 
     /**
-     * 注册服务
+     * 生成路由地址
      *
-     * @return void
+     * @param string $url
+     * @param array $params
+     * @param array $option
+     * @sub boolean suffix 是否包含后缀
+     * @sub boolean normal 是否为普通 url
+     * @sub string subdomain 子域名
+     * @return string
      */
-    public function register()
-    {
-        $this->singleton('pipeline', function ($project) {
-            return new Pipeline($project);
-        });
-    }
+    public function make($url, $params = [], $option = []);
 
     /**
-     * 可用服务提供者
+     * 设置路由 app
      *
-     * @return array
+     * @param string $app
+     * @return $this
      */
-    public static function providers()
-    {
-        return [
-            'pipeline' => [
-                'Queryyetsimple\Pipeline\Pipeline',
-                'Queryyetsimple\Pipeline\IPipeline',
-                'Qys\Pipeline\Pipeline',
-                'Qys\Pipeline\IPipeline'
-            ]
-        ];
-    }
+    public function setApp($app);
+
+    /**
+     * 设置路由 controller
+     *
+     * @param string $controller
+     * @return $this
+     */
+    public function setController($controller);
+
+    /**
+     * 设置路由 action
+     *
+     * @param string $action
+     * @return $this
+     */
+    public function setAction($action);
+
+    /**
+     * 设置路由 URL 入口
+     *
+     * @param string $urlEnter
+     * @return $this
+     */
+    public function setUrlEnter($urlEnter);
 }

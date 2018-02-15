@@ -252,6 +252,18 @@ class request implements IArray, ArrayAccess
     protected $arrRouter;
 
     /**
+     * 服务器 url 重写支持 pathInfo
+     *
+     * Nginx
+     * location @rewrite {
+     *     rewrite ^/(.*)$ /index.php?_url=/$1;
+     * }
+     *
+     * @var string
+     */
+    const PATHINFO_URL = '_url';
+
+    /**
      * 配置
      *
      * @var array
@@ -259,7 +271,8 @@ class request implements IArray, ArrayAccess
     protected $option = [
         'var_method' => '_method',
         'var_ajax' => '_ajax',
-        'var_pjax' => '_pjax'
+        'var_pjax' => '_pjax',
+        'html_suffix' => '.html'
     ];
 
     /**
@@ -2107,7 +2120,14 @@ class request implements IArray, ArrayAccess
         }
 
         if (! empty($_SERVER['PATH_INFO'])) {
-            return $_SERVER['PATH_INFO'];
+            return $this->parsePathInfo($_SERVER['PATH_INFO']);
+        }
+
+        // 服务器重写
+        if (! empty($_GET[static::PATHINFO_URL])) {
+            $pathInfo = $this->parsePathInfo($_GET[static::PATHINFO_URL]);
+            unset($_GET[static::PATHINFO_URL]);
+            return $pathInfo;
         }
 
         // 分析基础 url
@@ -2115,7 +2135,7 @@ class request implements IArray, ArrayAccess
 
         // 分析请求参数
         if (null === ($sRequestUrl = $this->requestUrl())) {
-            return '';
+            return $this->parsePathInfo('');
         }
 
         if (($nPos = strpos($sRequestUrl, '?')) > 0) {
@@ -2128,7 +2148,7 @@ class request implements IArray, ArrayAccess
             $sPathInfo = $sRequestUrl;
         }
 
-        return $sPathInfo;
+        return $this->parsePathInfo($sPathInfo);
     }
 
     /**
@@ -2787,6 +2807,23 @@ class request implements IArray, ArrayAccess
                 $mixFilter
             ];
         }
+    }
+
+    /**
+     * pathinfo 处理
+     *
+     * @param string $strPathInfo
+     * @return string
+     */
+    protected function parsePathInfo($strPathInfo)
+    {
+        if ($strPathInfo && $this->getOption('html_suffix')) {
+            $sSuffix = substr($this->getOption('html_suffix'), 1);
+            $strPathInfo = preg_replace('/\.' . $sSuffix . '$/', '', $strPathInfo);
+        }
+
+        $strPathInfo = empty($strPathInfo) ? '/' : $strPathInfo;
+        return $strPathInfo;
     }
 
     /**

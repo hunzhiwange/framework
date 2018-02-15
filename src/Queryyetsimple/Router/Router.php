@@ -33,7 +33,7 @@ use Queryyetsimple\{
     Option\TClass,
     Support\TMacro,
     Mvc\IController,
-    Pipeline\IPipeline
+    Pipeline\Pipeline
 };
 
 /**
@@ -56,13 +56,6 @@ class Router
      * @var \Queryyetsimple\Di\IContainer
      */
     protected $objContainer;
-
-    /**
-     * pipeline
-     *
-     * @var \Queryyetsimple\Pipeline\IPipeline
-     */
-    protected $objPipeline;
 
     /**
      * http 请求
@@ -184,11 +177,11 @@ class Router
     protected $arrVariable = [];
 
     /**
-     * 路由 pathinfo
+     * 匹配域名成功后的路由
      *
-     * @var string
+     * @var array
      */
-    protected $strPathInfo;
+    protected $arrDomainRouters = [];
 
     /**
      * 默认替换参数[字符串]
@@ -241,9 +234,7 @@ class Router
         'router_cache' => true,
         'model' => 'pathinfo',
         'router_domain_on' => true,
-        'html_suffix' => '.html',
         'router_domain_top' => '',
-        'pathinfo_depr' => '/',
         'rewrite' => false,
         'public' => 'http://public.foo.bar',
         'pathinfo_restful' => true,
@@ -264,16 +255,14 @@ class Router
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Pipeline\IPipeline $objPipeline
      * @param \Queryyetsimple\Di\IContainer $objContainer
      * @param \Queryyetsimple\Http\Request $objRequest
      * @param array $arrOption
      * @return void
      */
-    public function __construct(IContainer $objContainer, IPipeline $objPipeline, request $objRequest, array $arrOption = [])
+    public function __construct(IContainer $objContainer, request $objRequest, array $arrOption = [])
     {
         $this->objContainer = $objContainer;
-        $this->objPipeline = $objPipeline;
         $this->objRequest = $objRequest;
         $this->options($arrOption);
     }
@@ -302,7 +291,7 @@ class Router
         $this->validateMethod();
 
         // 穿越中间件
-        $this->throughMiddleware($this->objPipeline, $this->objRequest);
+        $this->throughMiddleware($this->objRequest);
 
         // 解析项目公共 url 地址
         $this->parsePublicAndRoot();
@@ -318,18 +307,13 @@ class Router
         // 读取缓存
         $this->readCache();
 
-        $arrNextParse = [];
-
         // 解析域名
-        if ($this->getOption('router_domain_on') === true) {
-            if (($arrParseData = $this->parseDomain($arrNextParse)) !== false) {
-                return $arrParseData;
-            }
+        if (($arrParseData = $this->parseDomain())) {
+            return $arrParseData;
         }
 
         // 解析路由
-        $arrNextParse = $arrNextParse ? array_column($arrNextParse, 'url') : [];
-        return $this->parseRouter($arrNextParse);
+        return $this->parseRouter();
     }
 
     /**
@@ -459,12 +443,11 @@ class Router
     /**
      * 穿越中间件
      *
-     * @param \Queryyetsimple\Pipeline\IPipeline $objPipeline
      * @param \Queryyetsimple\Http\Request $objPassed
      * @param array $arrPassedExtend
      * @return void
      */
-    public function throughMiddleware(IPipeline $objPipeline, request $objPassed, array $arrPassedExtend = [])
+    public function throughMiddleware(request $objPassed, array $arrPassedExtend = [])
     {
         if (is_null($this->arrCurrentMiddleware)) {
             $this->arrCurrentMiddleware = $this->getMiddleware($this->packageNode());
@@ -490,7 +473,15 @@ class Router
         $arrCurrentMiddleware = array_filter($arrCurrentMiddleware);
 
         if ($arrCurrentMiddleware) {
-            $objPipeline->reset()->send($objPassed)->send($arrPassedExtend)->through($arrCurrentMiddleware)->then();
+            (new Pipeline($this->objContainer))->
+
+            send($objPassed)->
+
+            send($arrPassedExtend)->
+
+            through($arrCurrentMiddleware)->
+
+            then();
         }
     }
 
@@ -1159,328 +1150,6 @@ class Router
     }
 
     /**
-     * 设置 pathInfo
-     *
-     * @param string $strPathInfo
-     * @return $this
-     */
-    public function setPathInfo($strPathInfo)
-    {
-        $this->strPathInfo = $strPathInfo;
-        return $this;
-    }
-
-    /**
-     * pathinfo 解析入口
-     *
-     * @return string
-     */
-    public function pathInfo()
-    {
-        if (! is_null($this->strPathInfo)) {
-            return $this->strPathInfo;
-        } else {
-            $strPathInfo = $this->clearHtmlSuffix($this->objRequest->pathInfo());
-            $strPathInfo = empty($strPathInfo) ? '/' : $strPathInfo;
-            return $this->strPathInfo = $strPathInfo;
-        }
-    }
-
-    /**
-     * web 分析 url 参数
-     *
-     * @return void
-     */
-    protected function parseWeb()
-    {
-        // 分析 pathinfo
-        if ($this->getOption('model') == 'pathinfo') {
-            // 分析 pathinfo
-            $this->pathInfo();
-
-            // 解析结果
-            $_GET = array_merge($_GET, ($arrRouter = $this->parse()) ? $arrRouter : $this->parsePathInfo());
-        }
-    }
-
-    /**
-     * 验证 HTTP 方法
-     *
-     * @return void
-     */
-    protected function validateMethod()
-    {
-        $arrMethod = $this->getMethod($this->packageNode());
-        if ($arrMethod && ! in_array($this->objRequest->method(), $arrMethod)) {
-            throw new RuntimeException(sprintf('The node is allowed http method %s,but your current http method is %s', implode(',', $arrMethod), $this->objRequest->method()));
-        }
-    }
-
-    /**
-     * 分析 cli 参数
-     *
-     * @return void
-     */
-    protected function parseCli()
-    {
-        $arrArgv = isset($GLOBALS['argv']) ? $GLOBALS['argv'] : [];
-
-        if (! isset($arrArgv) || empty($arrArgv)) {
-            return;
-        }
-
-        // 第一个为脚本自身
-        array_shift($arrArgv);
-
-        // 继续分析
-        if ($arrArgv) {
-
-            // app
-            if (is_array($this->getOption('apps')) && in_array($arrArgv[0], $this->getOption('apps'))) {
-                $_GET[static::APP] = array_shift($arrArgv);
-            }
-
-            // controller
-            if ($arrArgv) {
-                $_GET[static::CONTROLLER] = array_shift($arrArgv);
-            }
-
-            // 方法
-            if ($arrArgv) {
-                $_GET[static::ACTION] = array_shift($arrArgv);
-            }
-
-            // 剩余参数
-            if ($arrArgv) {
-                for ($nI = 0, $nCnt = count($arrArgv); $nI < $nCnt; $nI ++) {
-                    if (isset($arrArgv[$nI + 1])) {
-                        $_GET[$arrArgv[$nI]] = ( string ) $arrArgv[++ $nI];
-                    } elseif ($nI == 0) {
-                        $_GET[$_GET[static::ACTION]] = ( string ) $arrArgv[$nI];
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * 解析 pathinfo 参数
-     *
-     * @return array
-     */
-    protected function parsePathInfo()
-    {
-        $arrPathInfo = [
-            static::ARGS => []
-        ];
-
-        $sPathInfo = $this->pathInfo();
-        $arrPaths = explode($this->getOption('pathinfo_depr'), trim($sPathInfo, '/'));
-
-        if (is_array($this->getOption('apps')) && in_array($arrPaths[0], $this->getOption('apps'))) {
-            $arrPathInfo[static::APP] = array_shift($arrPaths);
-        }
-
-        // 控制器名称
-        if (isset($_GET[static::CONTROLLER])) {
-            $arrPathInfo[static::CONTROLLER] = $_GET[static::CONTROLLER];
-        }
-
-        // 方法名称
-        if (isset($_GET[static::ACTION])) {
-            $arrPathInfo[static::ACTION] = $_GET[static::ACTION];
-        }
-
-        for ($nI = 0, $nCnt = count($arrPaths); $nI < $nCnt; $nI ++) {
-            if (is_numeric($arrPaths[$nI]) || in_array($arrPaths[$nI], $this->getOption('args_protected')) || $this->matchArgs($arrPaths[$nI], $this->getOption('args_regex'))) {
-                $arrPathInfo[static::ARGS][] = $arrPaths[$nI];
-            } else {
-                if (! isset($arrPathInfo[static::CONTROLLER])) {
-                    $arrPathInfo[static::CONTROLLER] = $arrPaths[$nI];
-                } elseif (! isset($arrPathInfo[static::ACTION])) {
-                    $arrPathInfo[static::ACTION] = $arrPaths[$nI];
-                } else {
-                    if (isset($arrPaths[$nI + 1])) {
-                        $arrPathInfo[$arrPaths[$nI]] = ( string ) $arrPaths[++ $nI];
-                    } else {
-                        $arrPathInfo[static::ARGS][] = $arrPaths[$nI];
-                    }
-                }
-            }
-        }
-
-        return $arrPathInfo;
-    }
-
-    /**
-     * 是否匹配参数正则
-     *
-     * @param array $strValue
-     * @param array $arrRegex
-     * @return boolean
-     */
-    protected function matchArgs($strValue, array $arrRegex = [])
-    {
-        if (! $arrRegex) {
-            return false;
-        }
-
-        foreach ($arrRegex as $strRegex) {
-            $strRegex = sprintf('/^(%s)%s/', $strRegex, $this->getOption('args_strict') ? '$' : '');
-            if (preg_match($strRegex, $strValue, $arrRes)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * 解析域名路由
-     *
-     * @param array $arrNextParse
-     * @return void
-     */
-    protected function parseDomain(&$arrNextParse)
-    {
-        if (! $this->arrDomains || ! $this->getOption('router_domain_top')) {
-            return false;
-        }
-
-        $strHost = $this->objRequest->host();
-
-        $booFindDomain = false;
-        foreach ($this->arrDomains as $sKey => $arrDomains) {
-
-            // 直接匹配成功
-            if ($strHost === $sKey || $strHost === $sKey . '.' . $this->getOption('router_domain_top')) {
-                $booFindDomain = true;
-            }
-
-            // 域名参数支持
-            elseif (strpos($sKey, '{') !== false) {
-                if (strpos($sKey, $this->getOption('router_domain_top')) === false) {
-                    $sKey = $sKey . '.' . $this->getOption('router_domain_top');
-                }
-
-                // 解析匹配正则
-                $sKey = $this->formatRegex($sKey);
-                $sKey = preg_replace_callback("/{(.+?)}/", function ($arrMatches) use (&$arrDomains) {
-                    $arrDomains['args'][] = $arrMatches[1];
-                    return '(' . ($arrDomains['domain_where'][$arrMatches[1]] ?? static::DEFAULT_REGEX) . ')';
-                }, $sKey);
-                $sKey = '/^' . $sKey . '$/';
-
-                // 匹配结果
-                if (preg_match($sKey, $strHost, $arrRes)) {
-                    // 变量解析
-                    if (isset($arrDomains['args'])) {
-                        array_shift($arrRes);
-                        foreach ($arrDomains['args'] as $intArgsKey => $strArgs) {
-                            $this->arrDomainData[$strArgs] = $arrRes[$intArgsKey];
-                            $this->objRequest->setRouter($strArgs, $arrRes[$intArgsKey]);
-                            $this->arrVariable[$strArgs] = $arrRes[$intArgsKey];
-                        }
-                    }
-
-                    $booFindDomain = true;
-                }
-            }
-
-            // 分析结果
-            if ($booFindDomain === true) {
-                if (isset($arrDomains['rule'])) {
-                    $arrNextParse = $arrDomains['rule'];
-                    return false;
-                } else {
-                    $arrData = $this->parseNodeUrl($arrDomains['main']['url']);
-
-                    // 额外参数[放入 GET]
-                    if (is_array($arrDomains['main']['params']) && $arrDomains['main']['params']) {
-                        $arrData = array_merge($arrData, $arrDomains['main']['params']);
-                    }
-
-                    // 合并域名匹配数据
-                    $arrData = array_merge($this->arrDomainData, $arrData);
-
-                    return $arrData;
-                }
-            }
-        }
-    }
-
-    /**
-     * 解析路由规格
-     *
-     * @param array $arrNextParse
-     * @return mixed
-     */
-    protected function parseRouter($arrNextParse = [])
-    {
-        if (! $this->arrRouters) {
-            return;
-        }
-
-        $arrData = [];
-        $sPathinfo = $this->pathInfo();
-
-        // 匹配路由
-        foreach ($this->arrRouters as $sKey => $arrRouters) {
-            // 域名过滤掉无关路由
-            if ($arrNextParse && ! in_array($sKey, $arrNextParse)) {
-                continue;
-            }
-
-            foreach ($arrRouters as $arrRouter) {
-                // 尝试匹配
-                $booFindFouter = false;
-                if ($arrRouter['regex'] == $sPathinfo) {
-                    $booFindFouter = true;
-                } else {
-                    // 解析匹配正则
-                    $arrRouter['regex'] = $this->formatRegex($arrRouter['regex']);
-                    $arrRouter['regex'] = preg_replace_callback("/{(.+?)}/", function ($arrMatches) use (&$arrRouter) {
-                        $arrRouter['args'][] = $arrMatches[1];
-                        return '(' . ($arrRouter['where'][$arrMatches[1]] ?? static::DEFAULT_REGEX) . ')';
-                    }, $arrRouter['regex']);
-                    $arrRouter['regex'] = '/^\/' . $arrRouter['regex'] . (($arrRouter['strict'] ?? $this->getOption('router_strict')) ? '$' : '') . '/';
-
-                    // 匹配结果
-                    if (preg_match($arrRouter['regex'], $sPathinfo, $arrRes)) {
-                        $booFindFouter = true;
-                    }
-                }
-
-                // 分析结果
-                if ($booFindFouter === true) {
-                    $arrData = $this->parseNodeUrl($arrRouter['url']);
-
-                    // 额外参数
-                    if (is_array($arrRouter['params']) && $arrRouter['params']) {
-                        $arrData = array_merge($arrData, $arrRouter['params']);
-                    }
-
-                    // 变量解析
-                    if (isset($arrRouter['args'])) {
-                        array_shift($arrRes);
-                        foreach ($arrRouter['args'] as $intArgsKey => $strArgs) {
-                            $arrData[$strArgs] = $arrRes[$intArgsKey];
-                            $this->objRequest->setRouter($strArgs, $arrRes[$intArgsKey]);
-                            $this->arrVariable[$strArgs] = $arrRes[$intArgsKey];
-                        }
-                    }
-                    break 2;
-                }
-            }
-        }
-
-        // 合并域名匹配数据
-        $arrData = array_merge($this->arrDomainData, $arrData);
-
-        return $arrData;
-    }
-
-    /**
      * 设置路由缓存地址
      *
      * @param string $strCachePath
@@ -1515,6 +1184,137 @@ class Router
     }
 
     /**
+     * 添加匹配变量
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function addVariable($name, $value)
+    {
+        $this->arrVariable[$name] = $value;
+    }
+
+    /**
+     * 当前域名
+     *
+     * @return array
+     */
+    public function getDomains() {
+        return $this->arrDomains;
+    }
+
+    /**
+     * 取得当前路由
+     *
+     * @return array
+     */
+    public function getRouters() {
+        return $this->arrRouters;
+    }
+
+    /**
+     * 域名匹配成功后的路由规则
+     *
+     * @return array
+     */
+    public function getDomainRouters() {
+        return $this->arrDomainRouters;
+    }
+
+    /**
+     * 域名匹配成功后的路由规则
+     *
+     * @param array $domainRouters
+     * @return void
+     */
+    public function setDomainRouters(array $domainRouters) {
+        $this->arrDomainRouters = $domainRouters;
+    }
+
+    /**
+     * 域名路由匹配数据
+     *
+     * @return array
+     */
+    public function getDomainData() {
+        return $this->arrDomainData;
+    }
+
+    /**
+     * 添加域名匹配数据
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function addDomainData($name, $value)
+    {
+        $this->arrDomainData[$name] = $value;
+    }
+
+    /**
+     * 格式化正则
+     *
+     * @param string $sRegex
+     * @return string
+     */
+    public function formatRegex($sRegex)
+    {
+        $sRegex = $this->escapeRegexCharacter($sRegex);
+
+        // 还原变量特殊标记
+        return str_replace([
+            '\{',
+            '\}'
+        ], [
+            '{',
+            '}'
+        ], $sRegex);
+    }
+
+    /**
+     * 分析 url 数据
+     * like [home://blog/index?arg1=1&arg2=2]
+     *
+     * @param string $sUrl
+     * @return array
+     */
+    public function parseNodeUrl($sUrl)
+    {
+        $arrData = [];
+
+        // 解析 url
+        if (strpos($sUrl, '://') === false) {
+            $sUrl = 'QueryPHP://' . $sUrl;
+        }
+        $sUrl = parse_url($sUrl);
+
+        // 应用
+        if ($sUrl['scheme'] != 'QueryPHP') {
+            $arrData[static::APP] = $sUrl['scheme'];
+        }
+
+        // 控制器
+        $arrData[static::CONTROLLER] = $sUrl['host'];
+
+        // 方法
+        if (isset($sUrl['path']) && $sUrl['path'] != '/') {
+            $arrData[static::ACTION] = ltrim($sUrl['path'], '/');
+        }
+
+        // 额外参数
+        if (isset($sUrl['query'])) {
+            foreach (explode('&', $sUrl['query']) as $strQuery) {
+                $strQuery = explode('=', $strQuery);
+                $arrData[$strQuery[0]] = $strQuery[1];
+            }
+        }
+
+        return $arrData;
+    }
+
+    /**
      * 检查路由缓存是否开启
      *
      * @return boolean
@@ -1531,10 +1331,84 @@ class Router
      */
     public function initRequest()
     {
-        $this->setPathInfo(null);
         $this->strApp = null;
         $this->strController = null;
         $this->strAction = null;
+    }
+
+    /**
+     * web 分析 url 参数
+     *
+     * @return void
+     */
+    protected function parseWeb()
+    {
+        // 分析 pathinfo
+        if ($this->getOption('model') == 'pathinfo') {
+            // 解析结果
+            $_GET = array_merge($_GET, ($arrRouter = $this->parse()) ? $arrRouter : $this->parsePathInfo());
+        }
+    }
+
+    /**
+     * 验证 HTTP 方法
+     *
+     * @return void
+     */
+    protected function validateMethod()
+    {
+        $arrMethod = $this->getMethod($this->packageNode());
+        if ($arrMethod && ! in_array($this->objRequest->method(), $arrMethod)) {
+            throw new RuntimeException(sprintf('The node is allowed http method %s, but your current http method is %s', implode(',', $arrMethod), $this->objRequest->method()));
+        }
+    }
+
+    /**
+     * 分析 cli 参数
+     *
+     * @return void
+     */
+    protected function parseCli()
+    {
+        $data = (new \Queryyetsimple\Router\Match\Cli)->matche($this, $this->objRequest);
+
+        $_GET = $data;
+
+        return $data;
+    }
+
+    /**
+     * 解析 pathinfo 参数
+     *
+     * @return array
+     */
+    protected function parsePathInfo()
+    {
+        $data = (new \Queryyetsimple\Router\Match\PathInfo())->matche($this, $this->objRequest);
+        return $data;
+    }
+
+    /**
+     * 解析域名路由
+     *
+     * @param array $arrNextParse
+     * @return void
+     */
+    protected function parseDomain()
+    {
+       $data = (new \Queryyetsimple\Router\Match\Domain())->matche($this, $this->objRequest);
+       return $data;
+    }
+
+    /**
+     * 解析路由规格
+     *
+     * @return mixed
+     */
+    protected function parseRouter()
+    {
+        $data = (new \Queryyetsimple\Router\Match\Url())->matche($this, $this->objRequest);
+        return $data;
     }
 
     /**
@@ -1581,26 +1455,6 @@ class Router
     }
 
     /**
-     * 格式化正则
-     *
-     * @param string $sRegex
-     * @return string
-     */
-    protected function formatRegex($sRegex)
-    {
-        $sRegex = $this->escapeRegexCharacter($sRegex);
-
-        // 还原变量特殊标记
-        return str_replace([
-            '\{',
-            '\}'
-        ], [
-            '{',
-            '}'
-        ], $sRegex);
-    }
-
-    /**
      * 通配符正则
      *
      * @param string $strFoo
@@ -1637,7 +1491,7 @@ class Router
             '{',
             '}',
             '|',
-            '\\'
+            //'\\'
         ], [
             '\$',
             '\/',
@@ -1655,7 +1509,7 @@ class Router
             '\\{',
             '\\}',
             '\\|',
-            '\\\\'
+            //'\\\\'
         ], $sTxt);
 
         return $sTxt;
@@ -1719,47 +1573,6 @@ class Router
         }
 
         return $arrWhere;
-    }
-
-    /**
-     * 分析 url 数据
-     * like [home://blog/index?arg1=1&arg2=2]
-     *
-     * @param string $sUrl
-     * @return array
-     */
-    protected function parseNodeUrl($sUrl)
-    {
-        $arrData = [];
-
-        // 解析 url
-        if (strpos($sUrl, '://') === false) {
-            $sUrl = 'QueryPHP://' . $sUrl;
-        }
-        $sUrl = parse_url($sUrl);
-
-        // 应用
-        if ($sUrl['scheme'] != 'QueryPHP') {
-            $arrData[static::APP] = $sUrl['scheme'];
-        }
-
-        // 控制器
-        $arrData[static::CONTROLLER] = $sUrl['host'];
-
-        // 方法
-        if (isset($sUrl['path']) && $sUrl['path'] != '/') {
-            $arrData[static::ACTION] = ltrim($sUrl['path'], '/');
-        }
-
-        // 额外参数
-        if (isset($sUrl['query'])) {
-            foreach (explode('&', $sUrl['query']) as $strQuery) {
-                $strQuery = explode('=', $strQuery);
-                $arrData[$strQuery[0]] = $strQuery[1];
-            }
-        }
-
-        return $arrData;
     }
 
     /**
@@ -1845,21 +1658,6 @@ class Router
         } else {
             $this->objRequest->setPublics($this->objContainer['url_public']);
         }
-    }
-
-    /**
-     * 清理 url 后缀
-     *
-     * @param string $sVal
-     * @return string
-     */
-    protected function clearHtmlSuffix($sVal)
-    {
-        if ($this->getOption('html_suffix') && ! empty($sVal)) {
-            $sSuffix = substr($this->getOption('html_suffix'), 1);
-            $sVal = preg_replace('/\.' . $sSuffix . '$/', '', $sVal);
-        }
-        return $sVal;
     }
 
     /**

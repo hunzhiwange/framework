@@ -20,7 +20,7 @@
 use Queryyetsimple\{
     Log\Ilog,
     Bootstrap\Project,
-    Support\debug\dump
+    Support\Debug\Dump
 };
 
 if (! function_exists('project')) {
@@ -114,12 +114,13 @@ if (! function_exists('ddd')) {
     /**
      * 调试一个变量
      *
-     * @param array $arr
+     * @param mixed $var
+     * @param boolean $simple
      * @return mixed
      */
-    function ddd(...$arr)
+    function ddd($var, $simple = false)
     {
-        return dump::dump(...$arr);
+        return Dump::dump($var, $simple);
     }
 }
 

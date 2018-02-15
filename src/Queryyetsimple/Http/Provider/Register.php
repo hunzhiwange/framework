@@ -79,7 +79,8 @@ class Register extends Provider
             return new Request($project['session'], $project['cookie'], [
                 'var_method' => $option['var_method'],
                 'var_ajax' => $option['var_ajax'],
-                'var_pjax' => $option['var_pjax']
+                'var_pjax' => $option['var_pjax'],
+                'html_suffix' => $option['html_suffix']
             ]);
         });
     }

@@ -85,8 +85,6 @@ class Register extends Provider
                 'middleware_alias',
                 'model',
                 'rewrite',
-                'pathinfo_depr',
-                'html_suffix',
                 'router_cache',
                 'router_strict',
                 'router_domain_on',
@@ -106,7 +104,7 @@ class Register extends Provider
 
             $options['apps'] = $project->apps();
 
-            return new Router($project, $project['pipeline'], $project['request'], $options);
+            return new Router($project, $project['request'], $options);
         });
     }
 

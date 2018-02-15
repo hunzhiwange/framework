@@ -102,7 +102,7 @@ class Application
         }
 
         // 穿越中间件
-        $this->objProject['router']->throughMiddleware($this->objProject['pipeline'], $this->objProject['request'], [
+        $this->objProject['router']->throughMiddleware($this->objProject['request'], [
             $mixResponse
         ]);
 
@@ -362,6 +362,8 @@ class Application
      */
     protected function setRouterCachePath()
     {
+        $router = $this->objProject['router'];
+
         $this->objProject['router']->
 
         cachePath($this->objProject->pathApplicationCache('router') . '/router.php')->
@@ -411,6 +413,6 @@ class Application
      */
     protected function isInitApp()
     {
-        $this->strApp === static::INIT_APP;
+        return $this->strApp === static::INIT_APP;
     }
 }
