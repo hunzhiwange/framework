@@ -19,8 +19,6 @@
  */
 namespace Queryyetsimple\Mvc;
 
-use Queryyetsimple\Router\Router;
-
 /**
  * IController 接口
  *
@@ -39,20 +37,4 @@ interface IController extends IView
      * @return $this
      */
     public function setView(IView $view);
-
-    /**
-     * 返回父控制器
-     *
-     * @param \queryyetsimple\Router\Router $router
-     * @return $this
-     */
-    public function setRouter(Router $router);
-
-    /**
-     * 执行子方法器
-     *
-     * @param string $action 方法名
-     * @return void
-     */
-    public function action($action);
 }
