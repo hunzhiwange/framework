@@ -26,7 +26,6 @@ use ReflectionMethod;
 use ReflectionException;
 use InvalidArgumentException;
 use Queryyetsimple\{
-    Mvc\IAction,
     Http\Request,
     Di\IContainer,
     Http\Response,
@@ -195,28 +194,70 @@ class Router
      *
      * @var string
      */
-    const APP = 'app';
+    const APP = '_app';
 
     /**
      * 控制器参数名
      *
      * @var string
      */
-    const CONTROLLER = 'c';
+    const CONTROLLER = '_ctrl';
 
     /**
      * 方法参数名
      *
      * @var string
      */
-    const ACTION = 'a';
+    const ACTION = '_act';
 
     /**
-     * 数字参数名
+     * 解析参数名
      *
      * @var string
      */
-    const ARGS = 'args';
+    const ARGS = '_args';
+
+    /**
+     * 控制器前缀
+     *
+     * @var string
+     */
+    const PREFIX = '_prefix';
+
+    /**
+     * restful show
+     *
+     * @var string
+     */
+    const RESTFUL_SHOW = 'show';
+
+    /**
+     * restful store
+     *
+     * @var string
+     */
+    const RESTFUL_STORE = 'store';
+
+    /**
+     * restful update
+     *
+     * @var string
+     */
+    const RESTFUL_UPDATE = 'update';
+
+    /**
+     * restful destroy
+     *
+     * @var string
+     */
+    const RESTFUL_DESTROY = 'destroy';
+
+    /**
+     * 路由匹配数据
+     * 
+     * @var array
+     */
+    protected $matcheData = [];
 
     /**
      * 配置
@@ -329,8 +370,8 @@ class Router
             if (($this->strApp = env('app_name'))) {
                 return $this->strApp;
             }
-            $sVar = static::APP;
-            return $this->strApp = $_GET[$sVar] = ! empty($_POST[$sVar]) ? $_POST[$sVar] : (! empty($_GET[$sVar]) ? $_GET[$sVar] : $this->getOption('default_app'));
+
+            return $this->strApp = $this->matcheData[static::APP] ?? $this->getOption('default_app');
         }
     }
 
@@ -347,8 +388,8 @@ class Router
             if (($this->strController = env('controller_name'))) {
                 return $this->strController;
             }
-            $sVar = static::CONTROLLER;
-            return $this->strController = $_GET[$sVar] = ! empty($_GET[$sVar]) ? $_GET[$sVar] : $this->getOption('default_controller');
+
+            return $this->matcheData[static::CONTROLLER] ?? $this->getOption('default_controller');
         }
     }
 
@@ -365,9 +406,19 @@ class Router
             if (($this->strAction = env('action_name'))) {
                 return $this->strAction;
             }
-            $sVar = static::ACTION;
-            return $this->strAction = $_GET[$sVar] = ! empty($_POST[$sVar]) ? $_POST[$sVar] : (! empty($_GET[$sVar]) ? $_GET[$sVar] : $this->getOption('default_action'));
+
+            return $this->matcheData[static::ACTION] ?? $this->getOption('default_action');
         }
+    }
+
+    /**
+     * 取回控制器前缀
+     *
+     * @return string
+     */
+    public function prefix()
+    {
+        return $this->matcheData[static::PREFIX] ?? '';
     }
 
     /**
@@ -820,23 +871,15 @@ class Router
             ! $sAction = $sAction = $this->action();
 
             switch (true) {
+
                 // 判断是否为回调
-                case ! is_string($mixBind) && is_callable($mixBind):
+                case is_callable($mixBind):
                     return $this->arrBinds[$sBindName] = $mixBind;
                     break;
 
-                // 如果为方法则注册为方法
-                case is_object($mixBind) && (method_exists($mixBind, 'run') || $mixBind instanceof IAction):
-                    return $this->arrBinds[$sBindName] = [
-                        $mixBind,
-                        'run'
-                    ];
-                    break;
-
-                // 如果为控制器实例，注册为回调
-                case $mixBind instanceof IController:
                 // 实例回调
                 case is_object($mixBind):
+
                 // 静态类回调
                 case is_string($mixBind) && is_callable([
                     $mixBind,
@@ -853,7 +896,7 @@ class Router
                     if (isset($mixBind[$sAction])) {
                         return $this->arrBinds[$sBindName] = $mixBind[$sAction];
                     } else {
-                        throw new InvalidArgumentException(sprintf('The method %s of controller %s is not registered.', $sAction, $sController));
+                        $this->nodeNotRegistered($sController, $sAction);
                     }
                     break;
 
@@ -875,10 +918,9 @@ class Router
      * @param string $sController
      * @param string $sAction
      * @param string $sApp
-     * @param boolean $booForChild
      * @return mixed|void
      */
-    public function doBind($sController = null, $sAction = null, $sApp = null, $booForChild = false)
+    public function doBind($sController = null, $sAction = null, $sApp = null)
     {
         if (is_null($sController)) {
             $sController = $this->controller();
@@ -893,56 +935,18 @@ class Router
         }
 
         if (! ($mixAction = $this->getBind($this->packageNode($sController, $sAction, $sApp))) && ! ($mixAction = $this->bind($this->packageNode($sController, $sAction, $sApp)))) {
-            throw new InvalidArgumentException(sprintf('The method %s of controller %s is not registered.', $sAction, $sController));
+            $this->nodeNotRegistered($sController, $sAction);
         }
 
         switch (true) {
-            // 判断是否为控制器回调
-            case is_array($mixAction) && isset($mixAction[1]) && $mixAction[0] instanceof IController:
-                try {
-                    $objClass = new ReflectionMethod($mixAction[0], $mixAction[1]);
-                    if ($objClass->isPublic() && ! $objClass->isStatic()) {
-                        return $this->objContainer->call($mixAction, $this->arrVariable);
-                    } else {
-                        throw new InvalidArgumentException(sprintf('The method %s of controller %s is not registered.', $sAction, $sController));
-                    }
-                } catch (ReflectionException $oE) {
-                    if ($booForChild === false) {
-                        // 请求默认子方法器
-                        return call_user_func_array([
-                            $mixAction[0],
-                            'action'
-                        ], [
-                            $mixAction[1]
-                        ]);
-                    } else {
-                        throw new InvalidArgumentException(sprintf('The method %s of controller %s is not registered.', $sAction, $sController));
-                    }
-                }
-                break;
 
             // 判断是否为回调
-            case ! is_string($mixAction) && is_callable($mixAction):
+            case is_callable($mixAction):
                 return $this->objContainer->call($mixAction, $this->arrVariable);
                 break;
 
-            // 如果为方法则注册为方法
-            case $mixAction instanceof IAction:
-            case is_object($mixAction):
-                if (method_exists($mixAction, 'run')) {
-                    // 注册方法
-                    $this->bind($this->packageNode($sController, $sAction, $sApp), [
-                        $mixAction,
-                        'run'
-                    ]);
-                    return $this->doBind($sController, $sAction, $sApp);
-                } else {
-                    throw new InvalidArgumentException('The run method do not exits.');
-                }
-                break;
-
             // 数组支持,方法名即数组的键值,注册方法
-            case is_array($mixAction):
+            case is_array($mixAction): 
                 return $mixAction;
                 break;
 
@@ -955,62 +959,6 @@ class Router
                 throw new InvalidArgumentException(sprintf('The registration method type %s is not supported.', $sAction));
                 break;
         }
-    }
-
-    /**
-     * 执行多重请求绑定
-     *
-     * @param string $$arrMultiRequest
-     * @return array
-     */
-    public function doBindMulti(array $arrMultiRequest)
-    {
-        if (empty($arrMultiRequest)) {
-            return [];
-        }
-
-        $arrReturn = [];
-        $arrOldGet = $_GET;
-
-        foreach ($arrMultiRequest as $arrItem) {
-            if (! is_array($arrItem) || empty($arrItem['url'])) {
-                throw new RuntimeException('The option of do bind multi is Invalid.');
-            }
-
-            $_GET = [];
-
-            if (empty($arrItem['method'])) {
-                $arrItem['method'] = 'GET';
-            }
-
-            // 解析路由
-            $this->objRequest->
-
-            setPathInfo($arrItem['url'])->
-
-            setMethod($arrItem['method']);
-
-            if (! empty($arrItem['data'])) {
-                $this->objRequest->{'set' . ucwords(strtolower($arrItem['method'])) . 's'}($arrItem['data']);
-            }
-
-            $this->run();
-
-            // 返回响应
-            $mixResponse = $this->doBind($this->controller(), $this->action(), $this->app());
-            if (! ($mixResponse instanceof response)) {
-                $mixResponse = $this->objContainer[response::class]->make($mixResponse);
-            }
-
-            // $arrReturn[] = $mixResponse->content(null)->getData();
-            $arrReturn[] = $mixResponse->content(null)->output(false);
-        }
-
-        $_GET = $arrOldGet;
-        $this->initRequest();
-        $this->objContainer[response::class]->content(null);
-
-        return $arrReturn;
     }
 
     /**
@@ -1345,8 +1293,13 @@ class Router
     {
         // 分析 pathinfo
         if ($this->getOption('model') == 'pathinfo') {
-            // 解析结果
-            $_GET = array_merge($_GET, ($arrRouter = $this->parse()) ? $arrRouter : $this->parsePathInfo());
+            $this->matcheData = $this->parse();
+
+            if (! $this->matcheData) {
+                $this->matcheData = $this->parsePathInfo();
+            }
+        } else {
+            $this->matcheData = $this->parseDefault();
         }
     }
 
@@ -1370,11 +1323,7 @@ class Router
      */
     protected function parseCli()
     {
-        $data = (new \Queryyetsimple\Router\Match\Cli)->matche($this, $this->objRequest);
-
-        $_GET = $data;
-
-        return $data;
+        $this->matcheData = (new \Queryyetsimple\Router\Match\Cli)->matche($this, $this->objRequest);
     }
 
     /**
@@ -1516,6 +1465,48 @@ class Router
     }
 
     /**
+     * 节点资源未注册异常
+     *
+     * @param string $sController
+     * @param string $sAction
+     * @return void
+     */
+    protected function nodeNotRegistered($sController, $sAction)
+    {
+        $message = sprintf('The node %s is not registered.', $this->makeNode($sController, $sAction));
+
+        throw new InvalidArgumentException($message);
+    }
+
+    /**
+     * 生成节点资源
+     *
+     * @param string $sController
+     * @param string $sAction
+     * @return string
+     */
+    protected function makeNode($sController, $sAction)
+    {
+        return $this->app() . '\\' . $this->controllerDir() . '\\' . $sController . '->' . $sAction . '()';
+    }
+
+    /**
+     * 取得控制器命名空间目录
+     *
+     * @return string
+     */
+    protected function controllerDir()
+    {
+        $result = $this->getOption('controller_dir');
+
+        if ($this->prefix()) {
+            $result = $result . '\\' . $this->prefix();
+        }
+
+        return $result;
+    }
+
+    /**
      * 合并 option 参数
      *
      * @param array $arrOption
@@ -1594,7 +1585,6 @@ class Router
             $this->objContainer->instance($strType . '_name', $this->{$strType}());
             $this->objRequest->{'set' . ucfirst($strType)}($this->{$strType}());
         }
-        $_REQUEST = array_merge($_POST, $_GET);
     }
 
     /**
@@ -1605,26 +1595,24 @@ class Router
      */
     protected function pathinfoRestful()
     {
+        if (isset($this->matcheData[static::ACTION])) {
+            return;
+        }
+
         switch ($this->objRequest->method()) {
             case 'GET':
-                if (empty($_GET[static::ACTION])) {
-                    $_GET[static::ACTION] = ! empty($_GET['args']) ? 'show' : '';
+                if (! empty($this->matcheData[static::ARGS])) {
+                    $this->matcheData[static::ACTION] = static::RESTFUL_SHOW;
                 }
                 break;
             case 'POST':
-                if (empty($_GET[static::ACTION])) {
-                    $_GET[static::ACTION] = 'store';
-                }
+                $this->matcheData[static::ACTION] = static::RESTFUL_STORE;
                 break;
             case 'PUT':
-                if (empty($_GET[static::ACTION])) {
-                    $_GET[static::ACTION] = 'update';
-                }
+                $this->matcheData[static::ACTION] = static::RESTFUL_UPDATE;
                 break;
             case 'DELETE':
-                if (empty($_GET[static::ACTION])) {
-                    $_GET[static::ACTION] = 'destroy';
-                }
+                $this->matcheData[static::ACTION] = static::RESTFUL_DESTROY;
                 break;
         }
     }
@@ -1682,32 +1670,31 @@ class Router
             $sApp = $this->app();
         }
 
-        // 尝试读取默认控制器
-        $sControllerClass = '\\' . $sApp . '\\' . $this->getOption('controller_dir') . '\\' . $sController;
-        $booFindController = false;
+        // 尝试直接读取方法控制器类
+        $sControllerClass = $sApp . '\\' . $this->controllerDir() . '\\' . $sController . '\\' . $sAction;
         if (class_exists($sControllerClass)) {
-            $booFindController = true;
-        }
+            $controller = $this->objContainer->make($sControllerClass, $this->arrVariable);
+            $method = method_exists($controller, 'handle') ? 'handle' : 'run';
+        } else {
 
-        // 尝试直接读取方法类
-        $sActionClass = '\\' . $sApp . '\\' . $this->getOption('controller_dir') . '\\' . $sController . '\\' . $sAction;
-        if (class_exists($sActionClass)) {
-            if (! $booFindController) {
-                throw new RuntimeException(sprintf('Parent controller %s must be set', $sControllerClass));
+            // 尝试读取默认控制器
+            $sControllerClass = $sApp . '\\' . $this->controllerDir() . '\\' . $sController;
+            if (! class_exists($sControllerClass)) {
+                return false;
             }
 
-            return [
-                $this->objContainer->make($sActionClass, $this->arrVariable)->setController($this->objContainer->make($sControllerClass, $this->arrVariable)->setView($this->objContainer['view'])->setRouter($this)),
-                'run'
-            ];
-        } elseif ($booFindController === true) {
-            return [
-                $this->objContainer->make($sControllerClass, $this->arrVariable)->setView($this->objContainer['view'])->setRouter($this),
-                $sAction
-            ];
+            $controller = $this->objContainer->make($sControllerClass, $this->arrVariable);
+            $method = $sAction;
         }
 
-        return false;
+        if ($controller instanceof IController) {
+            $controller->setView($this->objContainer['view']);
+        }
+
+        return [
+            $controller,
+            $method
+        ];
     }
 
     /**

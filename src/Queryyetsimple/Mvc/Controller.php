@@ -20,7 +20,6 @@
 namespace Queryyetsimple\Mvc;
 
 use RuntimeException;
-use Queryyetsimple\Router\Router;
 use Queryyetsimple\View\IView as ViewIView;
 
 /**
@@ -42,13 +41,6 @@ abstract class controller implements IController
     protected $view;
 
     /**
-     * 视图
-     *
-     * @var \queryyetsimple\Router\Router
-     */
-    protected $router;
-
-    /**
      * 构造函数
      *
      * @return void
@@ -67,44 +59,6 @@ abstract class controller implements IController
     {
         $this->view = $view;
         return $this;
-    }
-
-    /**
-     * 设置路由
-     *
-     * @param \queryyetsimple\Router\Router $router
-     * @return $this
-     */
-    public function setRouter(Router $router)
-    {
-        $this->router = $router;
-        return $this;
-    }
-
-    /**
-     * 执行子方法器
-     *
-     * @param string $action 方法名
-     * @return void
-     */
-    public function action($action)
-    {
-        // 判断是否存在方法
-        if (method_exists($this, $action)) {
-            $args = func_get_args();
-            array_shift($args);
-
-            return call_user_func_array([
-                $this,
-                $action
-            ], $args);
-        }
-
-        // 执行默认方法器
-        if (! $this->router) {
-            throw new RuntimeException('Router is not set in controller');
-        }
-        return $this->router->doBind(null, $action, null, true);
     }
 
     /**
