@@ -92,9 +92,7 @@ class PathInfo
             }
         }
 
-        $result[Router::ARGS] = $options;
-
-        ddd($result);
+        $result[Router::PARAMS] = $options;
 
         return $result;
     }
