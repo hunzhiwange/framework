@@ -201,21 +201,21 @@ class Router
      *
      * @var string
      */
-    const CONTROLLER = '_ctrl';
+    const CONTROLLER = '_c';
 
     /**
      * 方法参数名
      *
      * @var string
      */
-    const ACTION = '_act';
+    const ACTION = '_a';
 
     /**
      * 解析参数名
      *
      * @var string
      */
-    const ARGS = '_args';
+    const PARAMS = '_params';
 
     /**
      * 控制器前缀
@@ -276,8 +276,6 @@ class Router
         'model' => 'pathinfo',
         'router_domain_on' => true,
         'router_domain_top' => '',
-        'rewrite' => false,
-        'public' => 'http://public.foo.bar',
         'pathinfo_restful' => true,
         'args_protected' => [],
         'args_regex' => [],
@@ -318,43 +316,14 @@ class Router
         // 初始化
         $this->initRequest();
 
-        // 非命令行模式
-        if (! $this->objRequest->isCli()) {
-            $this->parseWeb();
-        } else {
-            $this->parseCli();
-        }
-
-        // 完成请求
-        $this->completeRequest();
+        // 匹配路由
+        $this->matchRouter();
 
         // 验证 HTTP 方法
         $this->validateMethod();
 
         // 穿越中间件
         $this->throughMiddleware($this->objRequest);
-
-        // 解析项目公共 url 地址
-        $this->parsePublicAndRoot();
-    }
-
-    /**
-     * 匹配路由
-     *
-     * @return mixed
-     */
-    public function parse()
-    {
-        // 读取缓存
-        $this->readCache();
-
-        // 解析域名
-        if (($arrParseData = $this->parseDomain())) {
-            return $arrParseData;
-        }
-
-        // 解析路由
-        return $this->parseRouter();
     }
 
     /**
@@ -419,6 +388,16 @@ class Router
     public function prefix()
     {
         return $this->matcheData[static::PREFIX] ?? '';
+    }
+
+    /**
+     * 取回匹配参数
+     *
+     * @return string
+     */
+    public function params()
+    {
+        return $this->matcheData[static::PARAMS] ?? [];
     }
 
     /**
@@ -1282,25 +1261,50 @@ class Router
         $this->strApp = null;
         $this->strController = null;
         $this->strAction = null;
-    }
+    }    
 
     /**
-     * web 分析 url 参数
+     * 路由匹配
      *
      * @return void
      */
-    protected function parseWeb()
+    protected function matchRouter()
     {
-        // 分析 pathinfo
-        if ($this->getOption('model') == 'pathinfo') {
-            $this->matcheData = $this->parse();
+        $matches = $this->getRouterMatches();
 
-            if (! $this->matcheData) {
-                $this->matcheData = $this->parsePathInfo();
+        foreach ($matches as $item) {
+            $item = 'Queryyetsimple\Router\Match\\' . $item;
+            $data = (new $item)->matche($this, $this->objRequest);
+
+            if ($data) {
+                $this->matcheData = $data;
+                break;
             }
-        } else {
-            $this->matcheData = $this->parseDefault();
         }
+
+        $this->completeRequest();
+    }
+
+    /**
+     * 获取路由匹配项
+     *
+     * @return array
+     */
+    protected function getRouterMatches()
+    {
+        if ($this->objRequest->isCli()) {
+            $matches = ['Cli'];
+        } else {
+            if ($this->getOption('model') == 'pathinfo') {
+                $this->readCache();
+                
+                $matches = ['Domain', 'Url', 'PathInfo'];
+            } else {
+                $matches = ['Defaults'];
+            }
+        }
+
+        return $matches;
     }
 
     /**
@@ -1314,50 +1318,6 @@ class Router
         if ($arrMethod && ! in_array($this->objRequest->method(), $arrMethod)) {
             throw new RuntimeException(sprintf('The node is allowed http method %s, but your current http method is %s', implode(',', $arrMethod), $this->objRequest->method()));
         }
-    }
-
-    /**
-     * 分析 cli 参数
-     *
-     * @return void
-     */
-    protected function parseCli()
-    {
-        $this->matcheData = (new \Queryyetsimple\Router\Match\Cli)->matche($this, $this->objRequest);
-    }
-
-    /**
-     * 解析 pathinfo 参数
-     *
-     * @return array
-     */
-    protected function parsePathInfo()
-    {
-        $data = (new \Queryyetsimple\Router\Match\PathInfo())->matche($this, $this->objRequest);
-        return $data;
-    }
-
-    /**
-     * 解析域名路由
-     *
-     * @param array $arrNextParse
-     * @return void
-     */
-    protected function parseDomain()
-    {
-       $data = (new \Queryyetsimple\Router\Match\Domain())->matche($this, $this->objRequest);
-       return $data;
-    }
-
-    /**
-     * 解析路由规格
-     *
-     * @return mixed
-     */
-    protected function parseRouter()
-    {
-        $data = (new \Queryyetsimple\Router\Match\Url())->matche($this, $this->objRequest);
-        return $data;
     }
 
     /**
@@ -1439,8 +1399,7 @@ class Router
             ',',
             '{',
             '}',
-            '|',
-            //'\\'
+            '|'
         ], [
             '\$',
             '\/',
@@ -1457,8 +1416,7 @@ class Router
             '\\,',
             '\\{',
             '\\}',
-            '\\|',
-            //'\\\\'
+            '\\|'
         ], $sTxt);
 
         return $sTxt;
@@ -1582,9 +1540,10 @@ class Router
             'controller',
             'action'
         ] as $strType) {
-            $this->objContainer->instance($strType . '_name', $this->{$strType}());
             $this->objRequest->{'set' . ucfirst($strType)}($this->{$strType}());
         }
+
+        $this->objRequest->params->replace($this->params());
     }
 
     /**
@@ -1601,7 +1560,7 @@ class Router
 
         switch ($this->objRequest->method()) {
             case 'GET':
-                if (! empty($this->matcheData[static::ARGS])) {
+                if (! empty($this->matcheData[static::PARAMS])) {
                     $this->matcheData[static::ACTION] = static::RESTFUL_SHOW;
                 }
                 break;
@@ -1614,37 +1573,6 @@ class Router
             case 'DELETE':
                 $this->matcheData[static::ACTION] = static::RESTFUL_DESTROY;
                 break;
-        }
-    }
-
-    /**
-     * 解析项目公共和基础路径
-     *
-     * @return void
-     */
-    protected function parsePublicAndRoot()
-    {
-        if ($this->objRequest->isCli()) {
-            return;
-        }
-
-        if (! $this->objContainer['url_enter']) {
-            $this->objContainer->instance('url_enter', $this->getOption('rewrite') === true ? $this->objRequest->enterRewrite() : $this->objRequest->enter());
-        } else {
-            $this->objRequest->setEnter($this->objContainer['url_enter']);
-        }
-
-        if (! $this->objContainer['url_root']) {
-            $this->objContainer->instance('url_root', $this->objRequest->root());
-        } else {
-            $this->objRequest->setRoot($this->objContainer['url_root']);
-        }
-
-        if (! $this->objContainer['url_public']) {
-            $this->objRequest->setPublics($this->getOption('public'));
-            $this->objContainer->instance('url_public', $this->objRequest->publics());
-        } else {
-            $this->objRequest->setPublics($this->objContainer['url_public']);
         }
     }
 
@@ -1689,6 +1617,10 @@ class Router
 
         if ($controller instanceof IController) {
             $controller->setView($this->objContainer['view']);
+        }
+
+        if (! method_exists($controller, $method)) {
+            $this->nodeNotRegistered($sController, $sAction);
         }
 
         return [

@@ -21,17 +21,16 @@ namespace Queryyetsimple\Router\Match;
 
 use Queryyetsimple\Http\Request;
 use Queryyetsimple\Router\Router;
-use Queryyetsimple\Console\Cli as ConsoleCli;
  
 /**
- * 路由命令行匹配
+ * 路由默认匹配
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2018.02.15
+ * @since 2018.02.19
  * @version 1.0
  */
-class Cli
+class Defaults
 {
 
     /**
@@ -43,19 +42,14 @@ class Cli
      */
     public function matche(Router $router, Request $request)
     { 
-        list($node, $querys, $options) = (new ConsoleCli)->parse();
-
         $result = [];
 
-        if ($node) {
-            $result = $router->parseNodeUrl($node);
+        foreach ([Router::APP, Router::CONTROLLER, Router::ACTION, Router::PARAMS, Router::PREFIX] as $item) {
+            if (isset($_GET[$item])) {
+                $result[$item] = $_GET[$item];
+                unset($_GET[$item]);
+            }
         }
-
-        if ($querys) {
-            $result = array_merge($result, $querys);
-        }
-
-        $result[Router::PARAMS] = $options;
 
         return $result;
     }

@@ -38,7 +38,7 @@ use Queryyetsimple\{
  * @since 2016.11.19
  * @version 1.0
  */
-class request implements IArray, ArrayAccess
+class Request implements IArray, ArrayAccess
 {
     use TClass;
     
@@ -47,6 +47,34 @@ class request implements IArray, ArrayAccess
     }
 
     use TControl;
+
+    /**
+     * GET Bag
+     *
+     * @var \Queryyetsimple\Http\Bag
+     */
+    public $query;
+
+    /**
+     * POST Bag
+     *
+     * @var \Queryyetsimple\Http\Bag
+     */
+    public $request;
+
+    /**
+     * 路由解析后的参数
+     *
+     * @var \Queryyetsimple\Http\Bag
+     */
+    public $params;
+
+    /**
+     * COOKIE Bag
+     *
+     * @var \Queryyetsimple\Http\Bag
+     */
+    public $cookie;
 
     /**
      * cookie 存储
@@ -117,6 +145,13 @@ class request implements IArray, ArrayAccess
      * @var string
      */
     protected $strEnter;
+
+    /**
+     * 真实入口文件
+     *
+     * @var string
+     */
+    protected $strEnterReal;
 
     /**
      * root
@@ -272,21 +307,55 @@ class request implements IArray, ArrayAccess
         'var_method' => '_method',
         'var_ajax' => '_ajax',
         'var_pjax' => '_pjax',
-        'html_suffix' => '.html'
+        'html_suffix' => '.html',
+        'rewrite' => false,
+        'public' => 'http://public.foo.bar'
     ];
 
-    /**
-     * 构造函数
-     *
-     * @param \Queryyetsimple\Session\ISession $objSession
-     * @param \Queryyetsimple\Cookie\ICookie $objCookie
-     * @return void
-     */
-    public function __construct(ISession $objSession, ICookie $objCookie, array $option = [])
+    // /**
+    //  * 构造函数
+    //  *
+    //  * @param \Queryyetsimple\Session\ISession $objSession
+    //  * @param \Queryyetsimple\Cookie\ICookie $objCookie
+    //  * @return void
+    //  */
+    // public function __construct(ISession $objSession, ICookie $objCookie, array $option = [])
+    // {
+    //     $this->objSession = $objSession;
+    //     $this->objCookie = $objCookie;
+    //     $this->options($option);
+    // }
+    public function __construct(array $query = [], array $request = [], array $params = [], array $cookie = [], array $files = [], array $server = [], $content = null, array $option = [])
     {
-        $this->objSession = $objSession;
-        $this->objCookie = $objCookie;
+        $this->reset($query, $request, $params, $cookie, $files, $server, $content);
         $this->options($option);
+    }
+
+    public function reset(array $query = [], array $request = [], array $params = [], array $cookie = [], array $files = [], array $server = [], $content = null)
+    {
+        $this->query = new Bag($query);
+        $this->request = new Bag($request);
+        $this->params = new Bag($params);
+        $this->cookie = new Bag($cookie);
+    }
+
+    /**
+     * 全局变量创建一个 Request
+     *
+     * @return static
+     */
+    public static function createFromGlobals(array $option = [])
+    {
+        $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null, $option);
+
+        // if (0 === strpos($request->headers->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded')
+        //     && in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), array('PUT', 'DELETE', 'PATCH'))
+        // ) {
+        //     parse_str($request->getContent(), $data);
+        //     $request->request = new ParameterBag($data);
+        // }
+
+        return $request;
     }
 
     /**
@@ -1972,23 +2041,24 @@ class request implements IArray, ArrayAccess
      *
      * @return string|null
      */
-    public function langset()
+    public function language()
     {
-        return $this->strLangset;
+        return $this->language;
     }
 
     /**
      * 设置当前的语言
      *
-     * @param string $strLangset
+     * @param string $language
      * @return $this
      */
-    public function setLangset($strLangset)
+    public function setLanguage($language)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->strLangset = $strLangset;
+        $this->language = $language;
+        
         return $this;
     }
 
@@ -1999,29 +2069,43 @@ class request implements IArray, ArrayAccess
      */
     public function enter()
     {
-        if (is_null($this->strEnter)) {
-            if ($this->isCgi()) {
-                $arrTemp = explode('.php', $_SERVER["PHP_SELF"]); // CGI/FASTCGI模式下
-                $this->strEnter = rtrim(str_replace($this->host(), '', $arrTemp[0] . '.php'), '/');
-            } else {
-                $this->strEnter = rtrim($_SERVER["SCRIPT_NAME"], '/');
-            }
+        if (! is_null($this->strEnter)) {
+            return $this->strEnter;
         }
-        return $this->strEnter;
+
+        $enter = $this->enterReal();
+
+        if ($this->getOption('rewrite') !== true) {
+            return $enter;
+        }
+
+        $enter = dirname($enter);
+        if ($enter == '\\') {
+            $enter = '/';
+        }
+
+        return $this->strEnter = $enter;
     }
 
     /**
-     * 返回入口文件 rewrite
+     * 返回真实入口文件
      *
      * @return string
      */
-    public function enterRewrite()
+    public function enterReal()
     {
-        $strEnter = dirname($this->strEnter);
-        if ($strEnter == '\\') {
-            $strEnter = '/';
+        if (! is_null($this->strEnterReal)) {
+            return $this->strEnterReal;
         }
-        return $strEnter;
+
+        if ($this->isCgi()) {
+            $arrTemp = explode('.php', $_SERVER["PHP_SELF"]); // CGI/FASTCGI模式下
+            $this->strEnterReal = rtrim(str_replace($this->host(), '', $arrTemp[0] . '.php'), '/');
+        } else {
+            $this->strEnterReal = rtrim($_SERVER["SCRIPT_NAME"], '/');
+        }
+
+        return $this->strEnterReal;
     }
 
     /**
@@ -2075,7 +2159,11 @@ class request implements IArray, ArrayAccess
      */
     public function publics()
     {
-        return $this->strPublic;
+        if (! is_null($this->strPublic)) {
+            return $this->strPublic;
+        }
+
+        return $this->strPublic = $this->getOption('public');
     }
 
     /**
@@ -2709,13 +2797,13 @@ class request implements IArray, ArrayAccess
                 list($mixFilter, $strExtend) = explode('=', $mixFilter);
 
                 if ($mixFilter == 'default') {
-                    $mixFilter = '$mixValue = ' . $mixValue . ' ?  : $mixDefault;';
+                    $mixFilter = '$mixValue = ' . $mixValue . ' ?: $mixDefault;';
                 } elseif ($strExtend) {
                     if (strstr($strExtend, '**')) {
                         $strExtend = str_replace('**', '$mixValue', $strExtend);
-                        $mixFilter = "\$mixValue = {$mixFilter} ( {$strExtend} );";
+                        $mixFilter = "\$mixValue = {$mixFilter}({$strExtend});";
                     } else {
-                        $mixFilter = "\$mixValue = {$mixFilter} ( \$mixValue, {$strExtend} );";
+                        $mixFilter = "\$mixValue = {$mixFilter}(\$mixValue, {$strExtend});";
                     }
                 }
                 eval($mixFilter);
@@ -2795,18 +2883,16 @@ class request implements IArray, ArrayAccess
     /**
      * 分析过滤器
      *
-     * @param string|array $mixFilter
-     * @return mixed
+     * @param string|array $filter
+     * @return array
      */
-    protected function parseFilter(&$mixFilter = null)
+    protected function parseFilter($filter = null)
     {
-        if (! $mixFilter) {
-            $mixFilter = [];
-        } else {
-            $mixFilter = is_array($mixFilter) ? $mixFilter : [
-                $mixFilter
-            ];
+        if (is_null($filter)) {
+            return [];
         }
+
+        return is_array($filter) ? $filter : func_get_args();
     }
 
     /**

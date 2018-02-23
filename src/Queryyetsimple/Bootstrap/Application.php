@@ -200,7 +200,7 @@ class Application
         }
 
         $sI18nSet = $this->objProject['i18n']->getI18n();
-        $this->objProject['request']->setLangset($sI18nSet);
+        $this->objProject['request']->setLanguage($sI18nSet);
 
         $sCachePath = $this->getI18nCachePath($sI18nSet);
 

@@ -404,7 +404,7 @@ class Project extends Container implements IProject
      */
     public function pathApplicationCurrent()
     {
-        return $this->pathApplication() . '/' . $this['app_name'];
+        return $this->pathApplication() . '/' . $this->request->app();
     }
 
     /**
