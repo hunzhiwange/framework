@@ -38,7 +38,7 @@ use Queryyetsimple\{
  * @since 2017.04.18
  * @version 1.0
  */
-class response
+class Response
 {
     use TClass{
         option as macroOption;
@@ -187,7 +187,17 @@ class response
      */
     public function make($mixData = '', $intCode = 200, $strMessage = '', array $arrHeader = [], $arrOption = [])
     {
-        return $this->data($mixData)->code(intval($intCode))->message($strMessage)->headers($arrHeader)->options($arrOption);
+        return $this->
+
+        data($mixData)->
+
+        code(intval($intCode))->
+
+        message($strMessage)->
+
+        withHeaders($arrHeader)->
+
+        options($arrOption);
     }
 
     /**
@@ -269,7 +279,7 @@ class response
      * @param array $arrHeader
      * @return $this
      */
-    public function headers($arrHeader)
+    public function withHeaders($arrHeader)
     {
         if ($this->checkTControl()) {
             return $this;

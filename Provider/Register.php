@@ -76,11 +76,13 @@ class Register extends Provider
         $this->singleton('request', function ($project) {
             $option = $project['option'];
 
-            return new Request($project['session'], $project['cookie'], [
+            return Request::createFromGlobals([
                 'var_method' => $option['var_method'],
                 'var_ajax' => $option['var_ajax'],
                 'var_pjax' => $option['var_pjax'],
-                'html_suffix' => $option['html_suffix']
+                'html_suffix' => $option['html_suffix'],
+                'rewrite' => $option['rewrite'],
+                'public' => $option['public']
             ]);
         });
     }
