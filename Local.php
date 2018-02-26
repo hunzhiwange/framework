@@ -39,7 +39,7 @@ class Local extends Connect implements IConnect
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'path' => '',
         'write_flags' => LOCK_EX,
         'link_handling' => AdapterLocal::DISALLOW_LINKS,

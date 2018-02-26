@@ -85,7 +85,7 @@ class Manager extends Managers
      */
     protected function makeConnectLocal($options = [])
     {
-        return new Local(array_merge($this->getOption('local', $options)));
+        return new Local($this->getOption('local', $options));
     }
 
     /**
@@ -96,7 +96,7 @@ class Manager extends Managers
      */
     protected function makeConnectFtp($options = [])
     {
-        return new Ftp(array_merge($this->getOption('ftp', $options)));
+        return new Ftp($this->getOption('ftp', $options));
     }
 
     /**
@@ -107,7 +107,7 @@ class Manager extends Managers
      */
     protected function makeConnectSftp($options = [])
     {
-        return new Sftp(array_merge($this->getOption('sftp', $options)));
+        return new Sftp($this->getOption('sftp', $options));
     }
 
     /**
@@ -118,6 +118,6 @@ class Manager extends Managers
      */
     protected function makeConnectZip($options = [])
     {
-        return new Zip(array_merge($this->getOption('zip', $options)));
+        return new Zip($this->getOption('zip', $options));
     }
 }
