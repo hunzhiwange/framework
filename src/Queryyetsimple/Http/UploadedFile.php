@@ -110,7 +110,7 @@ class UploadedFile extends File
      *
      * @return string|null
      */
-    public function getClientMimeType()
+    public function getMimeType()
     {
         return $this->mimeType;
     }

@@ -50,7 +50,7 @@ class Manager extends Managers
      */
     protected function createConnect($connect)
     {
-        return new cache($connect);
+        return new Cache($connect);
     }
 
     /**
@@ -61,7 +61,7 @@ class Manager extends Managers
      */
     protected function makeConnectFile($options = [])
     {
-        return new file(array_merge($this->getOption('file', $options)));
+        return new File($this->getOption('file', $options));
     }
 
     /**
@@ -72,7 +72,7 @@ class Manager extends Managers
      */
     protected function makeConnectMemcache($options = [])
     {
-        return new memcache(array_merge($this->getOption('memcache', $options)));
+        return new Memcache($this->getOption('memcache', $options));
     }
 
     /**
@@ -83,7 +83,7 @@ class Manager extends Managers
      */
     protected function makeConnectRedis($options = [])
     {
-        return new redis(array_merge($this->getOption('redis', $options)));
+        return new Redis($this->getOption('redis', $options));
     }
 
     /**

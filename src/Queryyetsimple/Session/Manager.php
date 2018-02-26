@@ -72,7 +72,7 @@ class Manager extends Managers
      */
     protected function makeConnectMemcache($options = [])
     {
-        return new Memcache(array_merge($this->getOption('memcache', $options)));
+        return new Memcache($this->getOption('memcache', $options));
     }
 
     /**
@@ -83,7 +83,7 @@ class Manager extends Managers
      */
     protected function makeConnectRedis($options = [])
     {
-        return new Redis(array_merge($this->getOption('redis', $options)));
+        return new Redis($this->getOption('redis', $options));
     }
 
     /**

@@ -162,23 +162,23 @@ abstract class controller implements IController
     /**
      * 赋值
      *
-     * @param mixed $name
-     * @param mixed $Value
+     * @param mixed $key
+     * @param mixed $value
      * @return void
      */
-    public function __set($name, $value)
+    public function __set($key, $value)
     {
-        $this->assign($name, $value);
+        $this->assign($key, $value);
     }
 
     /**
      * 获取值
      *
-     * @param string $name
+     * @param string $key
      * @return mixed
      */
-    public function __get($name)
+    public function __get($key)
     {
-        return $this->getAssign($name);
+        return $this->getAssign($key);
     }
 }

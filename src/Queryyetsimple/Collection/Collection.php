@@ -158,48 +158,48 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     /**
      * 实现 ArrayAccess::offsetExists
      *
-     * @param string $key
+     * @param string $offset
      * @return mixed
      */
-    public function offsetExists($key)
+    public function offsetExists($offset)
     {
-        return isset($this->elements[$key]);
+        return isset($this->elements[$offset]);
     }
 
     /**
      * 实现 ArrayAccess::offsetGet
      *
-     * @param string $key
+     * @param string $offset
      * @return mixed
      */
-    public function offsetGet($key)
+    public function offsetGet($offset)
     {
-        return $this->elements[$key] ?? null;
+        return $this->elements[$offset] ?? null;
     }
 
     /**
      * 实现 ArrayAccess::offsetSet
      *
-     * @param string $key
+     * @param string $offset
      * @param mixed $value
      * @return void
      */
-    public function offsetSet($key, $value)
+    public function offsetSet($offset, $value)
     {
         $this->checkType($value);
-        $this->elements[$key] = $value;
+        $this->elements[$offset] = $value;
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset
      *
-     * @param string $key
+     * @param string $offset
      * @return void
      */
-    public function offsetUnset($key)
+    public function offsetUnset($offset)
     {
-        if (isset($this->elements[$key])) {
-            unset($this->elements[$key]);
+        if (isset($this->elements[$offset])) {
+            unset($this->elements[$offset]);
         }
     }
 

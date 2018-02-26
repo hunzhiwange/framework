@@ -778,9 +778,9 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      * @param string $sName
      * @return mixed
      */
-    public function __get($sName)
+    public function __get($key)
     {
-        return $this->getData($this->getUnCamelizeKey($sName));
+        return $this->getData($this->getUnCamelizeKey($key));
     }
 
     /**
@@ -790,9 +790,9 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      * @param mixed $mixValue
      * @return $this
      */
-    public function __set($sName, $mixValue)
+    public function __set($key, $mixValue)
     {
-        return $this->set($this->getUnCamelizeKey($sName), $mixValue);
+        return $this->set($this->getUnCamelizeKey($key), $mixValue);
     }
 
     /**
@@ -820,46 +820,46 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetExists
      *
-     * @param string $sName
+     * @param string $offset
      * @return boolean
      */
-    public function offsetExists($sName)
+    public function offsetExists($offset)
     {
-        return $this->has($sName);
+        return $this->has($offset);
     }
 
     /**
      * 实现 ArrayAccess::offsetSet
      *
-     * @param string $sName
-     * @param mixed $mixValue
+     * @param string $offset
+     * @param mixed $value
      * @return $this
      */
-    public function offsetSet($sName, $mixValue)
+    public function offsetSet($offset, $value)
     {
-        return $this->set($sName, $mixValue);
+        return $this->set($offset, $value);
     }
 
     /**
      * 实现 ArrayAccess::offsetGet
      *
-     * @param string $sName
+     * @param string $offset
      * @return mixed
      */
-    public function offsetGet($sName)
+    public function offsetGet($offset)
     {
-        return $this->get($sName);
+        return $this->get($offset);
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset
      *
-     * @param string $sName
+     * @param string $offset
      * @return $this
      */
-    public function offsetUnset($sName)
+    public function offsetUnset($offset)
     {
-        return $this->delete($sName);
+        return $this->delete($offset);
     }
 
     /**

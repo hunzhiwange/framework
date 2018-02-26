@@ -53,6 +53,8 @@ class FileBag extends Bag
      */
     public function __construct(array $elements = [])
     {
+        $elements = $this->normalizeArray($elements);
+        
         $this->add($elements);
     }
 
@@ -89,10 +91,29 @@ class FileBag extends Bag
     }
 
     /**
+     * 取回文件数组
+     * 数组文件请在末尾加上反斜杆访问
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return mixed
+     */
+    public function getArr($key, $default = null) {
+        $files = [];
+        foreach ($this->elements as $k => $value) {
+            if (strpos($k, $key) === 0) {
+                $files[] = $value;
+            }
+        }
+
+        return $files ?: $default;
+    }
+
+    /**
      * 转换上传信息到文件实例 UploadedFile
      *
      * @param array|\Queryyetsimple\Http\UploadedFile $file
-     * @return \Queryyetsimple\Http\UploadedFile[]|\Queryyetsimple\Http\UploadedFile|null
+     * @return \Queryyetsimple\Http\UploadedFile|null
      */
     protected function convertFile($file)
     {
@@ -132,6 +153,40 @@ class FileBag extends Bag
 
         if ($keys !== static::$fileKeys) {
             throw new InvalidArgumentException(sprintf('An array uploaded file must be contain keys %s.', implode(',', static::$fileKeys)));
+        }
+
+        return $result;
+    }
+
+    /**
+     * 格式化二维数组类文件为一维数组
+     *
+     * @param array $elements
+     * @return array
+     */
+    protected function normalizeArray(array $elements)
+    {
+        $result = [];
+
+        foreach ($elements as $key => $value) {
+            if (! isset($value['name'])) {
+                throw new InvalidArgumentException('An uploaded file must be contain key name.');
+            } elseif (is_array($value['name'])) {
+                foreach ($value['name'] as $index => $item) {
+                    $element = [];
+                    foreach (static::$fileKeys as $fileKey) {
+                        if (! isset($value[$fileKey])) {
+                            throw new InvalidArgumentException(sprintf('An uploaded file must be contain key %s.', $fileKey));
+                        }
+
+                        $element[$fileKey] = $value[$fileKey][$index] ?? '';
+                    }
+
+                    $result[$key . '\\' . $index] = $element;
+                }
+            } else {
+                $result[$key] = $value;
+            }
         }
 
         return $result;
