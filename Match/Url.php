@@ -80,7 +80,7 @@ class Url
         $this->router = $router;
 
         $result = [];
-        $pathInfo = $request->pathInfo();
+        $pathInfo = $request->getPathInfo();
         $domainRouters = $router->getDomainRouters();
 
         // 匹配路由
@@ -170,7 +170,7 @@ class Url
     protected function addVariable(string $name, $value)
     {
         $this->router->addVariable($name, $value);
-        $this->request->setRouter($name, $value);
+        $this->request->params->set($name, $value);
     }
 
     /**
