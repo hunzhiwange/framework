@@ -2785,24 +2785,24 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 魔术方法获取
      *
-     * @param string $sPropName
+     * @param string $key
      * @return mixed
      */
-    public function __get($sPropName)
+    public function __get($key)
     {
-        return $this->getProp($sPropName);
+        return $this->getProp($key);
     }
 
     /**
      * 强制更新属性值
      *
-     * @param string $sPropName
+     * @param string $key
      * @param mixed $mixValue
      * @return $this
      */
-    public function __set($sPropName, $mixValue)
+    public function __set($key, $mixValue)
     {
-        return $this->forceProp($sPropName, $mixValue);
+        return $this->forceProp($key, $mixValue);
     }
 
     /**
@@ -2819,46 +2819,46 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 实现 ArrayAccess::offsetExists
      *
-     * @param string $sPropName
+     * @param string $offset
      * @return boolean
      */
-    public function offsetExists($sPropName)
+    public function offsetExists($offset)
     {
-        return $this->hasProp($sPropName);
+        return $this->hasProp($offset);
     }
 
     /**
      * 实现 ArrayAccess::offsetSet
      *
-     * @param string $sPropName
-     * @param mixed $mixValue
+     * @param string $offset
+     * @param mixed $value
      * @return $this
      */
-    public function offsetSet($sPropName, $mixValue)
+    public function offsetSet($offset, $value)
     {
-        return $this->forceProp($sPropName, $mixValue);
+        return $this->forceProp($offset, $value);
     }
 
     /**
      * 实现 ArrayAccess::offsetGet
      *
-     * @param string $sPropName
+     * @param string $offset
      * @return mixed
      */
-    public function offsetGet($sPropName)
+    public function offsetGet($offset)
     {
-        return $this->getProp($sPropName);
+        return $this->getProp($offset);
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset
      *
-     * @param string $sPropName
+     * @param string $offset
      * @return $this
      */
-    public function offsetUnset($sPropName)
+    public function offsetUnset($offset)
     {
-        return $this->deleteProp($sPropName);
+        return $this->deleteProp($offset);
     }
 
     /**
