@@ -61,7 +61,7 @@ class Manager extends Managers
      */
     protected function makeConnectSmtp($options = [])
     {
-        return new Smtp(array_merge($this->getOption('smtp', $options)));
+        return new Smtp($this->getOption('smtp', $options));
     }
 
     /**
@@ -72,7 +72,7 @@ class Manager extends Managers
      */
     protected function makeConnectSendmail($options = [])
     {
-        return new Sendmail(array_merge($this->getOption('sendmail', $options)));
+        return new Sendmail($this->getOption('sendmail', $options));
     }
 
     /**
