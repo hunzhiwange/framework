@@ -557,46 +557,46 @@ class Container implements IContainer, ArrayAccess
     /**
      * 实现 ArrayAccess::offsetExits
      *
-     * @param string $name
+     * @param string $offset
      * @return bool
      */
-    public function offsetExists($name)
+    public function offsetExists($offset)
     {
-        return isset($this->services[$this->normalize($name)]);
+        return isset($this->services[$this->normalize($offset)]);
     }
 
     /**
      * 实现 ArrayAccess::offsetGet
      *
-     * @param string $name
+     * @param string $offset
      * @return mixed
      */
-    public function offsetGet($name)
+    public function offsetGet($offset)
     {
-        return $this->make($name);
+        return $this->make($offset);
     }
 
     /**
      * 实现 ArrayAccess::offsetSet
      *
-     * @param string $name
-     * @param mixed $service
+     * @param string $offset
+     * @param mixed $value
      * @return void
      */
-    public function offsetSet($name, $service)
+    public function offsetSet($offset, $value)
     {
-        return $this->bind($name, $service);
+        return $this->bind($offset, $value);
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset
      *
-     * @param string $name
+     * @param string $offset
      * @return void
      */
-    public function offsetUnset($name)
+    public function offsetUnset($offset)
     {
-        $name = $this->normalize($name);
+        $offset = $this->normalize($offset);
 
         $prop = [
             'services',
@@ -605,8 +605,8 @@ class Container implements IContainer, ArrayAccess
         ];
 
         foreach ($prop as $item) {
-            if (isset($this->{$item}[$name])) {
-                unset($this->{$item}[$name]);
+            if (isset($this->{$item}[$offset])) {
+                unset($this->{$item}[$offset]);
             }
         }
     }
@@ -614,24 +614,24 @@ class Container implements IContainer, ArrayAccess
     /**
      * 捕捉支持属性参数
      *
-     * @param string $name 支持的项
+     * @param string $key
      * @return 设置项
      */
-    public function __get($name)
+    public function __get($key)
     {
-        return $this[$name];
+        return $this[$key];
     }
 
     /**
      * 设置支持属性参数
      *
-     * @param string $name 支持的项
-     * @param mixed $service 支持的值
+     * @param string $key
+     * @param mixed $service
      * @return void
      */
-    public function __set($name, $service)
+    public function __set($key, $service)
     {
-        $this[$name] = $service;
+        $this[$key] = $service;
         return $this;
     }
 
