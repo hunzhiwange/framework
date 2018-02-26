@@ -54,7 +54,7 @@ class FileBag extends Bag
     public function __construct(array $elements = [])
     {
         $elements = $this->normalizeArray($elements);
-        
+
         $this->add($elements);
     }
 
@@ -148,8 +148,7 @@ class FileBag extends Bag
             }
         }
 
-        $keys = array_keys($result);
-        sort($keys);
+        $keys = $this->normalizeKey($result);
 
         if ($keys !== static::$fileKeys) {
             throw new InvalidArgumentException(sprintf('An array uploaded file must be contain keys %s.', implode(',', static::$fileKeys)));
@@ -159,7 +158,7 @@ class FileBag extends Bag
     }
 
     /**
-     * 格式化二维数组类文件为一维数组
+     * 格式化多维数组类文件为一维数组
      *
      * @param array $elements
      * @return array
@@ -175,7 +174,7 @@ class FileBag extends Bag
                 foreach ($value['name'] as $index => $item) {
                     $element = [];
                     foreach (static::$fileKeys as $fileKey) {
-                        if (! isset($value[$fileKey])) {
+                        if (! isset($value[$fileKey][$index])) {
                             throw new InvalidArgumentException(sprintf('An uploaded file must be contain key %s.', $fileKey));
                         }
 
@@ -183,6 +182,8 @@ class FileBag extends Bag
                     }
 
                     $result[$key . '\\' . $index] = $element;
+
+                    $result = $this->normalizeArray($result);
                 }
             } else {
                 $result[$key] = $value;
@@ -190,5 +191,18 @@ class FileBag extends Bag
         }
 
         return $result;
+    }
+
+    /**
+     * 格式化 keys
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function normalizeKey(array $data) {
+        $keys = array_keys($data);
+        sort($keys);
+
+        return $keys;
     }
 }
