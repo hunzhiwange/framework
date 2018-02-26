@@ -109,7 +109,7 @@ class Throttler implements IThrottler
         if (! $strKey && ! $this->objRequest) {
             throw new RuntimeException('Request is not set');
         }
-        return $strKey ?  : sha1($this->objRequest->ip() . '@' . $this->objRequest->routerNode());
+        return $strKey ?  : sha1($this->objRequest->getClientIp() . '@' . $this->objRequest->getNode());
     }
 
     /**
