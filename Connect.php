@@ -760,41 +760,41 @@ abstract class Connect implements IHtml
     /**
      * 实现 ArrayAccess::offsetExists
      *
-     * @param string $strKey
+     * @param string $offset
      * @return mixed
      */
-    public function offsetExists($strKey)
+    public function offsetExists($offset)
     {
     }
 
     /**
      * 实现 ArrayAccess::offsetGet
      *
-     * @param string $strKey
+     * @param string $offset
      * @return mixed
      */
-    public function offsetGet($strKey)
+    public function offsetGet($offset)
     {
     }
 
     /**
      * 实现 ArrayAccess::offsetSet
      *
-     * @param string $strKey
-     * @param mixed $mixValue
+     * @param string $offset
+     * @param mixed $value
      * @return void
      */
-    public function offsetSet($strKey, $mixValue)
+    public function offsetSet($offset, $value)
     {
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset
      *
-     * @param string $strKey
+     * @param string $offset
      * @return void
      */
-    public function offsetUnset($strKey)
+    public function offsetUnset($offset)
     {
     }
 
