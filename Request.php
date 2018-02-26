@@ -20,13 +20,12 @@
 namespace Queryyetsimple\Http;
 
 use ArrayAccess;
+use SplFileObject;
 use RuntimeException;
 use Queryyetsimple\{
     Option\TClass,
     Support\TMacro,
-    Cookie\ICookie,
-    Support\IArray,
-    Session\ISession
+    Support\IArray
 };
 
 /**
@@ -322,8 +321,21 @@ class Request implements IArray, ArrayAccess
     {
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null, $option);
 
+        $request = static::normalizeRequestFromContent($request);
+
+        return $request;
+    }
+
+    /**
+     * 格式化请求的内容
+     *
+     * @param \Queryyetsimple\Http\Request $request
+     * @return \Queryyetsimple\Http\Request
+     */
+    public static function normalizeRequestFromContent(Request $request)
+    {
         if (0 === strpos($request->headers->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded')
-            && in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'DELETE', 'PATCH'])
+            && in_array(strtoupper($request->server->get('REQUEST_METHOD', static::METHOD_GET)), [static::METHOD_PUT, static::METHOD_DELETE, static::METHOD_PATCH])
         ) {
             parse_str($request->getContent(), $data);
             $request->request = new Bag($data);
@@ -341,19 +353,283 @@ class Request implements IArray, ArrayAccess
      */
     public function get($key, $default = null)
     {
-        if ($this !== $result = $this->params->get($key, $this)) {
-            return $result;
+        $all = $this->all();
+
+        if (array_key_exists($key, $all)) {
+            return $all[$key];
+        } else {
+            return $this->params->get($key, $default);
+        }
+    }
+
+    /**
+     * 请求是否包含给定的 key
+     *
+     * @param string|array $key
+     * @return bool
+     */
+    public function exists($key)
+    {
+        $keys = is_array($key) ? $key : func_get_args();
+
+        $input = $this->all();
+
+        foreach ($keys as $value) {
+            if (! array_key_exists($value, $input)) {
+                return false;
+            }
         }
 
-        if ($this !== $result = $this->query->get($key, $this)) {
-            return $result;
+        return true;
+    }
+
+    /**
+     * 请求是否包含非空
+     *
+     * @param string|array $key
+     * @return bool
+     */
+    public function has($key)
+    {
+        $keys = is_array($key) ? $key : func_get_args();
+
+        foreach ($keys as $value) {
+            if ($this->isEmptyString($value)) {
+                return false;
+            }
         }
 
-        if ($this !== $result = $this->request->get($key, $this)) {
-            return $result;
+        return true;
+    }
+
+    /**
+     * 取得给定的 key 数据
+     *
+     * @param array|mixed $keys
+     * @return array
+     */
+    public function only($keys)
+    {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
+        $results = [];
+
+        $input = $this->all();
+
+        foreach ($keys as $key) {
+            $results[$key] = $input[$key] ?? null;
         }
 
-        return $default;
+        return $results;
+    }
+
+    /**
+     * 取得排除给定的 key 数据
+     *
+     * @param array|mixed $keys
+     * @return array
+     */
+    public function except($keys)
+    {
+        $keys = is_array($keys) ? $keys : func_get_args();
+
+        $results = $this->all();
+
+        foreach ($keys as $key) {
+            if (array_key_exists($key, $results)) {
+                unset($results[$key]);
+            }
+        }
+
+        return $results;
+    }
+
+    /**
+     * 取回输入和文件
+     *
+     * @return array
+     */
+    public function all()
+    {
+        return array_replace_recursive($this->input(), $this->allFiles());
+    }
+
+    /**
+     * 获取输入数据
+     *
+     * @param string $key
+     * @param string|array|null $default
+     * @return mixed
+     */
+    public function input($key = null, $default = null)
+    {
+        $input = $this->getInputSource()->all() + $this->query->all();
+
+        if (is_null($key)) {
+            return $input;
+        }
+
+        return $input[$key] ?? $default;
+    }
+
+    /**
+     * 取回 query
+     *
+     * @param string $key
+     * @param string|array|null $default
+     * @return string|array
+     */
+    public function query($key = null, $default = null)
+    {
+        return $this->getItem('query', $key, $default);
+    }
+
+    /**
+     * Determine if a cookie is set on the request.
+     *
+     * @param  string  $key
+     * @return bool
+     */
+    public function hasCookie($key)
+    {
+        return ! is_null($this->cookie($key));
+    }
+
+    /**
+     * 取回 cookie
+     *
+     * @param string $key
+     * @param string|array|null $default
+     * @return string|array
+     */
+    public function cookie($key = null, $default = null)
+    {
+        return $this->getItem('cookies', $key, $default);
+    }
+
+    /**
+     * 取得所有文件
+     *
+     * @return array
+     */
+    public function allFiles()
+    {
+        return $this->files->all();
+    }
+
+    /**
+     * 获取文件
+     * 数组文件请在末尾加上反斜杆访问
+     *
+     * @param string $key
+     * @param mixed $default
+     * @return \Queryyetsimple\Http\UploadedFile|array|null
+     */
+    public function file($key = null, $default = null)
+    {
+        if (strpos($key, '\\') === false) {
+            return $this->getItem('files', $key, $default);
+        } else {
+            return $this->files->getArr($key, $default);
+        }
+    }
+
+    /**
+     * 文件是否存在已上传的文件
+     * 数组文件请在末尾加上反斜杆访问
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function hasFile($key)
+    {
+        $files = $this->file($key);
+
+        if (! is_array($files)) {
+            $files = [$files];
+        }
+
+        foreach ($files as $file) {
+            if ($this->isValidFile($file)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 验证是否为文件实例
+     *
+     * @param mixed $file
+     * @return bool
+     */
+    public function isValidFile($file)
+    {
+        return $file instanceof SplFileObject && $file->getPath() != '';
+    }
+
+    /**
+     * 取回 header
+     *
+     * @param string $key
+     * @param string|array|null $default
+     * @return string|array
+     */
+    public function header($key = null, $default = null)
+    {
+        return $this->getItem('headers', $key, $default);
+    }
+
+    /**
+     * 取回 server
+     *
+     * @param string $key
+     * @param string|array|null $default
+     * @return string|array
+     */
+    public function server($key = null, $default = null)
+    {
+        return $this->getItem('server', $key, $default);
+    }
+
+    /**
+     * 取回数据项
+     *
+     * @param string $source
+     * @param string $key
+     * @param string|array|null $default
+     * @return string|array
+     */
+    public function getItem($source, $key, $default)
+    {
+        if (is_null($key)) {
+            return $this->$source->all();
+        }
+
+        return $this->$source->get($key, $default);
+    }
+
+    /**
+     * 合并输入
+     *
+     * @param array $input
+     * @return void
+     */
+    public function merge(array $input)
+    {
+        $this->getInputSource()->add($input);
+    }
+
+    /**
+     * 替换输入
+     *
+     * @param array $input
+     * @return void
+     */
+    public function replace(array $input)
+    {
+        $this->getInputSource()->replace($input);
     }
 
     /**
@@ -829,6 +1105,27 @@ class Request implements IArray, ArrayAccess
     }
 
     /**
+     * 取得请求内容
+     *
+     * @return string|resource
+     */
+    public function getContent()
+    {
+        $resource = is_resource($this->content);
+
+        if ($resource) {
+            rewind($this->content);
+            return stream_get_contents($this->content);
+        }
+
+        if (null === $this->content || false === $this->content) {
+            $this->content = file_get_contents('php://input');
+        }
+
+        return $this->content;
+    }
+
+    /**
      * 返回网站公共文件目录
      *
      * @return string
@@ -1126,56 +1423,32 @@ class Request implements IArray, ArrayAccess
             return $this->requestUri;
         }
 
-        // For IIS
-        $_SERVER['REQUEST_URI'] = $_SERVER['REQUEST_URI'] ?? $_SERVER["HTTP_X_REWRITE_URL"];
+        $requestUri = $this->headers->get('X_REWRITE_URL', $this->server->get('REQUEST_URI', ''));
 
-        if (isset($_SERVER['HTTP_X_REWRITE_URL'])) {
-            $url = $_SERVER['HTTP_X_REWRITE_URL'];
-        } elseif (isset($_SERVER['REQUEST_URI'])) {
-            $url = $_SERVER['REQUEST_URI'];
-        } elseif (isset($_SERVER['ORIG_PATH_INFO'])) {
-            $url = $_SERVER['ORIG_PATH_INFO'];
-            if (! empty($_SERVER['QUERY_STRING'])) {
-                $url .= '?' . $_SERVER['QUERY_STRING'];
+        if (! $requestUri) {
+            $requestUri = $this->server->get('ORIG_PATH_INFO');
+
+            if ($this->server->get('QUERY_STRING')) {
+                $requestUri .= '?' . $this->server->get('QUERY_STRING');
             }
-        } else {
-            $url = '';
         }
 
-        return $this->requestUri = $url;
+        return $this->requestUri = $requestUri;
     }
 
     /**
      * 判断字符串是否为数字
      *
-     * @param string $strSearch
+     * @param mixed $value
      * @since bool
      */
-    protected function isInt($mixValue)
+    protected function isInt($value)
     {
-        if (is_int($mixValue)) {
+        if (is_int($value)) {
             return true;
         }
 
-        return ctype_digit(strval($mixValue));
-    }
-
-    /**
-     * 设置单个环境变量
-     *
-     * @param string $strName
-     * @param string|null $mixValue
-     * @return void
-     */
-    protected function setEnvironmentVariable($strName, $mixValue = null)
-    {
-        if (is_bool($mixValue)) {
-            putenv($strName . '=' . ($mixValue ? '(true)' : '(false)'));
-        } elseif (is_null($mixValue)) {
-            putenv($strName . '(null)');
-        } else {
-            putenv($strName . '=' . $mixValue);
-        }
+        return ctype_digit(strval($value));
     }
 
     /**
@@ -1222,79 +1495,102 @@ class Request implements IArray, ArrayAccess
     }
 
     /**
+     * 取得请求输入源
+     *
+     * @return \Queryyetsimple\Http\Bag
+     */
+    protected function getInputSource()
+    {
+        return $this->getMethod() == static::METHOD_GET ? $this->query : $this->request;
+    }
+
+    /**
+     * 是否为空字符串
+     *
+     * @param string $key
+     * @return bool
+     */
+    protected function isEmptyString($key)
+    {
+        $value = $this->input($key);
+
+        return is_string($value) && trim($value) === '';
+    }
+
+    /**
      * 对象转数组
      *
      * @return array
      */
     public function toArray()
     {
-        return $this->allAll();
+        return $this->all();
     }
 
     /**
      * 实现 ArrayAccess::offsetExists
      *
-     * @param string $strKey
+     * @param string $offset
      * @return mixed
      */
-    public function offsetExists($strKey)
+    public function offsetExists($offset)
     {
-        return array_key_exists($strKey, $this->allAll());
+        return array_key_exists($offset, $this->all());
     }
 
     /**
      * 实现 ArrayAccess::offsetGet
      *
-     * @param string $strKey
+     * @param string $offset
      * @return mixed
      */
-    public function offsetGet($strKey)
+    public function offsetGet($offset)
     {
-        return data_get($this->allAll(), $strKey);
+        return data_get($this->all(), $offset);
     }
 
     /**
      * 实现 ArrayAccess::offsetSet
      *
-     * @param string $strKey
-     * @param mixed $mixValue
+     * @param string $offset
+     * @param mixed $value
      * @return mixed
      */
-    public function offsetSet($strKey, $mixValue)
+    public function offsetSet($offset, $value)
     {
-        $this->getMethod() == 'GET' ? $this->setGet($strKey, $mixValue) : $this->setRequest($strKey, $mixValue);
+        return $this->getInputSource()->set($offset, $value);
     }
 
     /**
      * 实现 ArrayAccess::offsetUnset
      *
-     * @param string $strKey
+     * @param string $offset
      * @return void
      */
-    public function offsetUnset($strKey)
+    public function offsetUnset($offset)
     {
+        return $this->getInputSource()->remove($offset);
     }
 
     /**
      * 是否存在输入值
      *
-     * @param string $strKey
+     * @param string $key
      * @return bool
      */
-    public function __isset($strKey)
+    public function __isset($key)
     {
-        return ! is_null($this->__get($strKey));
+        return ! is_null($this->__get($key));
     }
 
     /**
      * 获取输入值
      *
-     * @param string $strKey
+     * @param string $key
      * @return mixed
      */
-    public function __get($strKey)
+    public function __get($key)
     {
-        $arrAll = $this->allAll();
-        return $arrAll[$strKey] ?? null;
+        return $this->get($key);
     }
 }
