@@ -108,6 +108,8 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      */
     public function get($key, $default = null)
     {
+        $key = $this->normalize($key);
+
         return $this->filter($key, $default);
     }
 
@@ -116,9 +118,12 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @param string $key
      * @param mixed $value
+     * @return void
      */
     public function set($key, $value)
-    {
+    {   
+        $key = $this->normalize($key);
+
         $this->elements[$key] = $value;
     }
 
@@ -130,6 +135,8 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      */
     public function has($key)
     {
+        $key = $this->normalize($key);
+
         return array_key_exists($key, $this->elements);
     }
 
@@ -141,6 +148,8 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      */
     public function remove($key)
     {
+        $key = $this->normalize($key);
+
         if ($this->has($key)) {
             unset($this->elements[$key]);
         }
@@ -157,6 +166,8 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      */
     public function filter($key, $default = null, $filter = null, array $options = [])
     {
+        $key = $this->normalize($key);
+
         $filter = $this->parseFilter($filter);
 
         list($key, $filter) = $this->parseKeyFilter($key, $filter);
@@ -166,7 +177,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
             list($key) = explode('\\', $key);
         }
 
-        $result = $this->has($key) ? $this->elements[$key] : $default;
+        $result = array_key_exists($key, $this->elements) ? $this->elements[$key] : $default;
 
         if ($filter) {
             $options = $this->formatOptions($result, $options);
@@ -198,7 +209,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      */
     public function toArray()
     {
-        return $this->elements();
+        return $this->elements;
     }
 
     /**
@@ -241,7 +252,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     {
         return $this->toJson();
     }
-
 
     /**
      * 分析键值和过滤器
@@ -436,5 +446,16 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         } else {
             return $default;
         }
+    }
+
+    /**
+     * 格式化键值
+     *
+     * @param string $key
+     * @return string
+     */
+    protected function normalize($key)
+    {
+        return $key;
     }
 }
