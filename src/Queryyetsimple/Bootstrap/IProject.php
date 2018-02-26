@@ -215,27 +215,6 @@ interface IProject extends IContainer
      * @return boolean
      */
     public function console();
-    
-    /**
-     * public url
-     *
-     * @return string
-     */
-    public function urlPublic();
-    
-    /**
-     * root url
-     *
-     * @return string
-     */
-    public function urlRoot();
-    
-    /**
-     * enter url
-     *
-     * @return string
-     */
-    public function urlEnter();
 
     /**
      * 返回应用配置

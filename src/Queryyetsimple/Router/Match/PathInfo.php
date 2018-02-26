@@ -56,9 +56,9 @@ class PathInfo
      */
     public function matche(Router $router, Request $request)
     {
-        $pathInfo = $request->pathInfo();
+        $pathInfo = $request->getPathInfo();
         $pathInfo = trim($pathInfo, '/');
-
+        
         if (! $pathInfo) {
             return [];
         }

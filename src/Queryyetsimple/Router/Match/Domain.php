@@ -73,7 +73,7 @@ class Domain
         $this->request = $request;
         $this->router = $router;
         
-        $host = $request->host();
+        $host = $request->getHttpHost();
         
         foreach ($domains as $rule => $routers) {
             $rule = $this->rule($rule, $topLevelDomain);
@@ -170,7 +170,7 @@ class Domain
     {
         $this->router->addDomainData($name, $value);
         $this->router->addVariable($name, $value);
-        $this->request->setRouter($name, $value);
+        $this->request->params->set($name, $value);
     }
     
     /**

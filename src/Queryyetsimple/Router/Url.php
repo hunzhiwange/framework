@@ -426,7 +426,7 @@ class Url implements IUrl
         }
 
         if (is_null($this->httpPrefix)) {
-            $this->httpPrefix = $this->isSsl() ? 'https://' : 'http://';
+            $this->httpPrefix = $this->isSecure() ? 'https://' : 'http://';
             $this->httpSuffix = $this->getOption('router_domain_top');
         }
 
@@ -438,13 +438,14 @@ class Url implements IUrl
      *
      * @return boolean
      */
-    public function isSsl()
+    public function isSecure()
     {
         if (isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))) {
             return true;
         } elseif (isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {
             return true;
         }
+        
         return false;
     }
 

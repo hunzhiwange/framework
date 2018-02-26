@@ -1314,9 +1314,11 @@ class Router
      */
     protected function validateMethod()
     {
+        $method = $this->objRequest->getMethod();
+
         $arrMethod = $this->getMethod($this->packageNode());
-        if ($arrMethod && ! in_array($this->objRequest->method(), $arrMethod)) {
-            throw new RuntimeException(sprintf('The node is allowed http method %s, but your current http method is %s', implode(',', $arrMethod), $this->objRequest->method()));
+        if ($arrMethod && ! in_array($method, $arrMethod)) {
+            throw new RuntimeException(sprintf('The node is allowed http method %s, but your current http method is %s', implode(',', $arrMethod), $method));
         }
     }
 
@@ -1558,7 +1560,7 @@ class Router
             return;
         }
 
-        switch ($this->objRequest->method()) {
+        switch ($this->objRequest->getMethod()) {
             case 'GET':
                 if (! empty($this->matcheData[static::PARAMS])) {
                     $this->matcheData[static::ACTION] = static::RESTFUL_SHOW;

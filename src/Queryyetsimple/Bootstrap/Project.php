@@ -503,36 +503,6 @@ class Project extends Container implements IProject
     }
 
     /**
-     * public url
-     *
-     * @return string
-     */
-    public function urlPublic()
-    {
-        return $this->url_public;
-    }
-
-    /**
-     * root url
-     *
-     * @return string
-     */
-    public function urlRoot()
-    {
-        return $this->url_root;
-    }
-
-    /**
-     * enter url
-     *
-     * @return string
-     */
-    public function urlEnter()
-    {
-        return $this->url_enter;
-    }
-
-    /**
      * 返回应用配置
      *
      * @return array

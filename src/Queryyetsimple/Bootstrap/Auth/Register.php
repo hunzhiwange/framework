@@ -69,7 +69,7 @@ trait register
 
             $this->setAuthField();
 
-            auth::registerUser($aPost['name'], $aPost['password'], $aPost['comfirm_password'], $aPost['nikename'], $oRequest->ip(), $aPost['email'], $aPost['mobile']);
+            auth::registerUser($aPost['name'], $aPost['password'], $aPost['comfirm_password'], $aPost['nikename'], $oRequest->getClientIp(), $aPost['email'], $aPost['mobile']);
 
             return $this->sendSucceededRegisterResponse($this->getRegisterSucceededMessage($aPost['nikename'] ?  : $aPost['name']));
         } catch (RegisterFailed $oE) {
