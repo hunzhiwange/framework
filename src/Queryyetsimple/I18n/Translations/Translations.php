@@ -23,6 +23,7 @@ use Queryyetsimple\I18n\Entry;
 
 /**
  * 翻译语言
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$

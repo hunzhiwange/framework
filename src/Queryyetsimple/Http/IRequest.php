@@ -17,69 +17,86 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
-
-use Queryyetsimple\View\IView as ViewIView;
+namespace Queryyetsimple\Http;
 
 /**
- * IView 接口
+ * HTTP 请求接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.23
+ * @since 2018.02.27
  * @version 1.0
  */
-interface IView
+interface IRequest
 {
 
     /**
-     * 切换视图
-     *
-     * @param \Queryyetsimple\View\IView $theme
-     * @param boolean $forever
-     * @return $this
+     * METHOD_HEAD
+     * 
+     * @var string
      */
-    public function switchView(ViewIView $theme, bool $forever = false);
+    const METHOD_HEAD = 'HEAD';
 
     /**
-     * 变量赋值
-     *
-     * @param mixed $name
-     * @param mixed $value
-     * @return $this
+     * METHOD_GET
+     * 
+     * @var string
      */
-    public function assign($name, $value = null);
+    const METHOD_GET = 'GET';
 
     /**
-     * 获取变量赋值
-     *
-     * @param string|null $name
-     * @return mixed
+     * METHOD_POST
+     * 
+     * @var string
      */
-    public function getAssign($name = null);
+    const METHOD_POST = 'POST';
 
     /**
-     * 删除变量值
-     *
-     * @param mixed $name
-     * @return $this
+     * METHOD_PUT
+     * 
+     * @var string
      */
-    public function deleteAssign($name);
+    const METHOD_PUT = 'PUT';
 
     /**
-     * 清空变量值
-     *
-     * @return $this
+     * METHOD_PATCH
+     * 
+     * @var string
      */
-    public function clearAssign();
+    const METHOD_PATCH = 'PATCH';
 
     /**
-     * 加载视图文件
-     *
-     * @param string $file
-     * @param array $vars
-     * @param string $ext
-     * @return string
+     * METHOD_DELETE
+     * 
+     * @var string
      */
-    public function display($file = null, array $vars = [], string $ext = '');
+    const METHOD_DELETE = 'DELETE';
+
+    /**
+     * METHOD_PURGE
+     * 
+     * @var string
+     */
+    const METHOD_PURGE = 'PURGE';
+
+    /**
+     * METHOD_OPTIONS
+     * 
+     * @var string
+     */
+    const METHOD_OPTIONS = 'OPTIONS';
+
+    /**
+     * METHOD_TRACE
+     * 
+     * @var string
+     */
+    const METHOD_TRACE = 'TRACE';
+
+    /**
+     * METHOD_CONNECT
+     * 
+     * @var string
+     */
+    const METHOD_CONNECT = 'CONNECT';
 }

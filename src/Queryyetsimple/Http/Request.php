@@ -29,14 +29,16 @@ use Queryyetsimple\{
 };
 
 /**
- * http 请求
- *
+ * HTTP 请求
+ * This class borrows heavily from the Symfony2 Framework and is part of the symfony package
+ * 
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.19
  * @version 1.0
+ * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
-class Request implements IArray, ArrayAccess
+class Request implements IRequest, IArray, ArrayAccess
 {
     use TClass;
 
@@ -174,76 +176,6 @@ class Request implements IArray, ArrayAccess
      * @var string
      */
     const PATHINFO_URL = '_url';
-
-    /**
-     * METHOD_HEAD
-     * 
-     * @var string
-     */
-    const METHOD_HEAD = 'HEAD';
-
-    /**
-     * METHOD_GET
-     * 
-     * @var string
-     */
-    const METHOD_GET = 'GET';
-
-    /**
-     * METHOD_POST
-     * 
-     * @var string
-     */
-    const METHOD_POST = 'POST';
-
-    /**
-     * METHOD_PUT
-     * 
-     * @var string
-     */
-    const METHOD_PUT = 'PUT';
-
-    /**
-     * METHOD_PATCH
-     * 
-     * @var string
-     */
-    const METHOD_PATCH = 'PATCH';
-
-    /**
-     * METHOD_DELETE
-     * 
-     * @var string
-     */
-    const METHOD_DELETE = 'DELETE';
-
-    /**
-     * METHOD_PURGE
-     * 
-     * @var string
-     */
-    const METHOD_PURGE = 'PURGE';
-
-    /**
-     * METHOD_OPTIONS
-     * 
-     * @var string
-     */
-    const METHOD_OPTIONS = 'OPTIONS';
-
-    /**
-     * METHOD_TRACE
-     * 
-     * @var string
-     */
-    const METHOD_TRACE = 'TRACE';
-
-    /**
-     * METHOD_CONNECT
-     * 
-     * @var string
-     */
-    const METHOD_CONNECT = 'CONNECT';
 
     /**
      * 配置

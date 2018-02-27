@@ -33,12 +33,13 @@ use Queryyetsimple\{
 
 /**
  * 数据库查询器
+ * This class borrows heavily from the QeePHP Framework and is part of the QeePHP package
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.03.09
- * @see http://qeephp.com 致经典国产框架
  * @version 1.0
+ * @see http://qeephp.com
  */
 class Select
 {

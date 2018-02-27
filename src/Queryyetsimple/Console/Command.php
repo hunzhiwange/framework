@@ -35,12 +35,14 @@ use Symfony\Component\Console\{
 };
 
 /**
- * 命令抽象类 <from lavarel>
+ * 命令抽象类
+ * This class borrows heavily from the Lavavel Framework and is part of the lavavel package
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.28
  * @version 1.0
+ * @see Illuminate/Console (https://github.com/laravel/framework)
  */
 abstract class Command extends SymfonyCommand
 {

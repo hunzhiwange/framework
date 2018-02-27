@@ -21,6 +21,7 @@ namespace Queryyetsimple\I18n\Translations;
 
 /**
  * translations.noop
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$

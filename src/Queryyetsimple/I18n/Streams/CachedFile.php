@@ -21,6 +21,7 @@ namespace Queryyetsimple\I18n\Streams;
 
 /**
  * 数据流 CachedFile
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$

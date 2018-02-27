@@ -17,26 +17,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\I18n\Streams;
+namespace Queryyetsimple\Http;
 
 /**
- * 数据流 CachedIntFile
- * This class borrows heavily from the Wordpress and is part of the Wordpress package
+ * response header bag
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.09.18
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @since 2018.02.27
  * @version 1.0
  */
-class CachedIntFile extends CachedFile
+class ResponseHeaderBag extends HeaderBag
 {
-
-    /**
-     * PHP5 constructor.
-     */
-    public function __construct($filename)
-    {
-        parent::__construct($filename);
-    }
 }
