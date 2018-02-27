@@ -31,7 +31,7 @@ use Queryyetsimple\{
 };
 
 /**
- * 响应请求
+ * HTTP 响应
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
