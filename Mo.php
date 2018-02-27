@@ -27,6 +27,7 @@ use Queryyetsimple\I18n\{
 
 /**
  * 解析 mo 文件
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$

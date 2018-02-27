@@ -24,6 +24,7 @@ use Queryyetsimple\Support\IArray;
 
 /**
  * translations.gettext
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
