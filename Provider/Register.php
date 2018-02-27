@@ -46,9 +46,7 @@ class Register extends Provider
     public function register()
     {
         $this->singleton('view', function ($project) {
-            return (new view($project['view.view']))->setResponseFactory(function () use ($project) {
-                return $project['response'];
-            });
+            return (new view($project['view.view']));
         });
     }
 

@@ -19,7 +19,6 @@
  */
 namespace Queryyetsimple\Mvc;
 
-use Closure;
 use RuntimeException;
 use Queryyetsimple\View\IView as ViewIView;
 
@@ -56,20 +55,6 @@ class View implements IView
     protected $foreverSwitch = false;
 
     /**
-     * 响应工厂
-     *
-     * @var \Closure
-     */
-    protected $responseFactory;
-
-    /**
-     * 响应
-     *
-     * @var \Queryyetsimple\Http\Response
-     */
-    protected $response;
-
-    /**
      * 构造函数
      *
      * @param \Queryyetsimple\View\IView $theme
@@ -100,31 +85,6 @@ class View implements IView
         $this->assign($assign);
 
         return $this;
-    }
-
-    /**
-     * 设置响应工厂
-     *
-     * @param \Closure $responseFactory
-     * @return $this;
-     */
-    public function setResponseFactory(Closure $responseFactory)
-    {
-        $this->responseFactory = $responseFactory;
-        return $this;
-    }
-
-    /**
-     * 获取响应
-     *
-     * @return \Queryyetsimple\Http\Response $response
-     */
-    public function getResponse()
-    {
-        if (! $this->response) {
-            $this->response = call_user_func($this->responseFactory);
-        }
-        return $this->response;
     }
 
     /**
@@ -187,23 +147,14 @@ class View implements IView
      *
      * @param string $file
      * @param array $vars
-     * @param array $option
-     * @sub string charset 编码
-     * @sub string content_type 内容类型
+     * @param string $ext
      * @return string
      */
-    public function display($file = null, array $vars = [], array $option = null)
+    public function display($file = null, array $vars = [], string $ext = '')
     {
         $this->checkTheme();
 
-        $option = array_merge([
-            'charset' => 'utf-8',
-            'content_type' => 'text/html'
-        ], $option ?: []);
-
-        $this->responseHeader($option['content_type'], $option['charset']);
-
-        $result = $this->theme->display($file, $vars, $option['ext'] ?? '', false);
+        $result = $this->theme->display($file, $vars, $ext, false);
 
         if ($this->foreverSwitch === false) {
             $this->theme = $this->backupTheme;
@@ -223,23 +174,5 @@ class View implements IView
         if (! $this->theme) {
             throw new RuntimeException('Theme is not set in view');
         }
-    }
-
-    /**
-     * 发送 header
-     *
-     * @param string $contentType
-     * @param string $charset
-     * @return void
-     */
-    protected function responseHeader($contentType = 'text/html', $charset = 'utf-8')
-    {
-        $this->getResponse();
-
-        if (! $this->response) {
-            throw new RuntimeException('Response is not set in view');
-        }
-
-        $this->response->contentType($contentType)->charset($charset);
     }
 }
