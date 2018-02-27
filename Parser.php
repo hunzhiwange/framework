@@ -24,12 +24,13 @@ use Queryyetsimple\Stack\Stack;
 
 /**
  * 分析模板
+ * This class borrows heavily from the JeCat Framework and is part of the JeCat package
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2016.11.19
- * @link http://jecat.cn
  * @version 1.0
+ * @link http://jecat.cn
  */
 class Parser implements IParser
 {
