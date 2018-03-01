@@ -31,21 +31,6 @@ class ApiResponse extends JsonResponse
 {
 
     /**
-     * 构造函数
-     * 
-     * @param string $content
-     * @param integer $status
-     * @param array $headers
-     * @return void
-     */
-    public function __construct($content = '', int $status = 200, array $headers = []) {
-        $this->headers = new ResponseHeaderBag($headers);
-        $this->setContent($content);
-        $this->setStatusCode($status);
-        $this->setProtocolVersion('1.0');
-    }
-
-    /**
      * 请求成功
      * 一般用于GET与POST请求： 200
      * 
@@ -70,7 +55,7 @@ class ApiResponse extends JsonResponse
      * @param null|string $location
      * @return $this
      */
-    public function created($location = '', $content = null)
+    public function created($location = '', $content = '')
     {
         if ($this->checkTControl()) {
             return $this;
