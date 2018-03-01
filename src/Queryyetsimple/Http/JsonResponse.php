@@ -24,9 +24,7 @@ use JsonSerializable;
 use InvalidArgumentException;
 use Queryyetsimple\{
     Support\IJson,
-    Support\IArray,
-    Flow\TControl,
-    Support\TMacro
+    Support\IArray
 };
 
 /**
@@ -88,19 +86,6 @@ class JsonResponse extends Response2
         }
 
         $json ? $this->setJson($data) : $this->setData($data);
-    }
-
-    /**
-     * 创建 JSON 响应  
-     * 
-     * @param string $content
-     * @param integer $status
-     * @param array $headers
-     * @return static
-     */
-    public static function createJson($data = null, $status = 200, $headers = [])
-    {
-        return new static($data, $status, $headers);
     }
 
     /**

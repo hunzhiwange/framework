@@ -136,12 +136,10 @@ abstract class controller implements IController
      *
      * @param string $file
      * @param array $vars
-     * @param array $option
-     * @sub string charset 编码
-     * @sub string content_type 类型
+     * @param string $ext
      * @return string
      */
-    public function display($file = null, array $vars = [], array $option = null)
+    public function display($file = null, array $vars = [], string $ext = '')
     {
         $this->checkView();
         return $this->view->display($file, $vars, $option);
