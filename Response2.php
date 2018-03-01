@@ -271,7 +271,7 @@ class Response2 implements IResponse
         $this->original = $content;
 
         if ($this->contentShouldJson($content)) {
-            $this->header('Content-Type', 'application/json');
+            $this->setHeader('Content-Type', 'application/json');
 
             $content = $this->contentToJson($content);
         }

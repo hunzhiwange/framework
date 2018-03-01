@@ -88,7 +88,7 @@ class FileResponse extends Response2
      * @param bool $autoLastModified
      * @return static
      */
-    public static function createFile($file = null, $status = 200, $headers = [], $contentDisposition = null, $autoEtag = false, $autoLastModified = true)
+    public static function create($file = null, int $status = 200, array $headers = [], $contentDisposition = null, $autoEtag = false, $autoLastModified = true)
     {
         return new static($file, $status, $headers, $contentDisposition, $autoEtag, $autoLastModified);
     }
