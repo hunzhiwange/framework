@@ -22,7 +22,10 @@ namespace Queryyetsimple\Router\Provider;
 use Queryyetsimple\{
     Router\Url,
     Di\Provider,
-    Router\Router
+    Http\Request,
+    Router\Router,
+    Router\Redirect,
+    Router\ResponseFactory
 };
 
 /**
@@ -45,6 +48,9 @@ class Register extends Provider
     {
         $this->router();
         $this->url();
+        $this->redirect();
+        $this->request();
+        $this->response();
     }
 
     /**
@@ -62,6 +68,20 @@ class Register extends Provider
             'url' => [
                 'Queryyetsimple\Router\Url',
                 'Qys\Router\Url'
+            ],
+            'redirect' => [
+                'Queryyetsimple\Router\Redirect',
+                'Qys\Router\Redirect'
+            ],
+            'request' => [
+                'Queryyetsimple\Http\Request',
+                'Qys\Http\Request'
+            ],
+            'response' => [
+                'Queryyetsimple\Router\IResponseFactory',
+                'Queryyetsimple\Router\ResponseFactory',
+                'Qys\Router\IResponseFactory',
+                'Qys\Router\ResponseFactory'
             ]
         ];
     }
@@ -130,15 +150,64 @@ class Register extends Provider
                 $options[$item] = $option->get($item);
             }
 
-            return (new Url($options))->
+            return new Url($project['request'], $options);
+        });
+    }
 
-            setApp($router->app())->
+    /**
+     * 注册 redirect 服务
+     *
+     * @return void
+     */
+    protected function redirect()
+    {
+        $this->container['redirect'] = $this->share(function ($project) {
+            $redirect = new Redirect($project['url']);
 
-            setController($router->controller())->
+            if (isset($project['session'])) {
+                $redirect->setSession($project['session']);
+            }
 
-            setAction($router->action())->
+            return $redirect;
+        });
+    }
 
-            setUrlEnter($project['url_enter']);
+    /**
+     * 注册 request 服务
+     *
+     * @return void
+     */
+    protected function request()
+    {
+        $this->singleton('request', function ($project) {
+            $option = $project['option'];
+
+            return Request::createFromGlobals([
+                'var_method' => $option['var_method'],
+                'var_ajax' => $option['var_ajax'],
+                'var_pjax' => $option['var_pjax'],
+                'html_suffix' => $option['html_suffix'],
+                'rewrite' => $option['rewrite'],
+                'public' => $option['public']
+            ]);
+        });
+    }
+
+    /**
+     * 注册 response 服务
+     *
+     * @return void
+     */
+    protected function response()
+    {
+        $this->singleton('response', function ($project) {
+            $option = $project['option'];
+
+            return (new ResponseFactory($project['view'], $project['redirect']))->
+
+            setViewSuccessTemplate($option->get('view\action_success'))->
+
+            setViewFailTemplate($option->get('view\action_fail'));
         });
     }
 }

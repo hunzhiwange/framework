@@ -80,7 +80,6 @@ return [
         'Queryyetsimple\Encryption\Provider\Register',
         'Queryyetsimple\Event\Provider\Register',
         'Queryyetsimple\Filesystem\Provider\Register',
-        'Queryyetsimple\Http\Provider\Register',
         'Queryyetsimple\I18n\Provider\Register',
         'Queryyetsimple\Log\Provider\Register',
         'Queryyetsimple\Mail\Provider\Register',

@@ -19,31 +19,31 @@
  */
 namespace Queryyetsimple\Http;
 
+use DateTime;
+use ArrayObject;
+use DateTimeZone;
+use JsonSerializable;
 use InvalidArgumentException;
+use UnexpectedValueException;
 use Queryyetsimple\{
-    Mvc\IView,
+    Support\IJson,
     Flow\TControl,
-    Router\Router,
-    Option\TClass,
-    Support\TMacro,
-    Cookie\ICookie,
-    Session\ISession
+    Support\IArray,
+    Support\TMacro
 };
 
 /**
  * HTTP 响应
+ * This class borrows heavily from the Symfony2 Framework and is part of the symfony package
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.04.18
  * @version 1.0
+ * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
-class Response
+class Response implements IResponse
 {
-    use TClass{
-        option as macroOption;
-        options as macroOptions;
-    }
 
     use TMacro {
         __call as macroCall;
@@ -52,510 +52,486 @@ class Response
     use TControl;
 
     /**
-     * view
-     *
-     * @var \queryyetsimple\Mvc\IView
+     * 响应头
+     * 
+     * @var \Queryyetsimple\Http\ResponseHeaderBag
      */
-    protected $objView;
+    public $headers;
 
     /**
-     * session 处理
-     *
-     * @var \Queryyetsimple\Session\ISession
-     */
-    protected $objSession;
-
-    /**
-     * cookie 处理
-     *
-     * @var \Queryyetsimple\Cookie\ICookie
-     */
-    protected $objCookie;
-
-    /**
-     * router
-     *
-     * @var \queryyetsimple\Router\Router
-     */
-    protected $objRouter;
-
-    /**
-     * 响应数据
+     * 原生响应内容.
      *
      * @var mixed
      */
-    protected $mixData;
+    public $original;
 
     /**
-     * 设置内容
-     *
+     * 响应内容
+     * 
      * @var string
      */
-    protected $strContent;
+    protected $content;
 
     /**
-     * 响应状态
-     *
-     * @var int
-     */
-    protected $intCode = 200;
-
-    /**
-     * 消息内容
-     *
-     * @var int
-     */
-    protected $strMessage = '';
-
-    /**
-     * 响应头
-     *
-     * @var array
-     */
-    protected $arrHeader = [];
-
-    /**
-     * 响应类型
-     *
+     * HTTP 协议版本
+     * 
      * @var string
      */
-    protected $strContentType = 'text/html';
+    protected $protocolVersion;
+
+    /**
+     * 状态码
+     * 
+     * @var int
+     */
+    protected $statusCode;
+
+    /**
+     * 状态码内容
+     * 
+     * @var string
+     */
+    protected $statusText;
 
     /**
      * 字符编码
-     *
+     * 
      * @var string
      */
-    protected $strCharset = 'utf-8';
+    protected $charset;
 
     /**
-     * 响应类型
-     *
-     * @var string
+     * 是否为 JSON
+     * 
+     * @var boolean
      */
-    protected $strResponseType = 'default';
+    protected $isJson = false;
 
     /**
-     * json 配置
+     * 状态码
      *
+     * @see http://www.iana.org/assignments/http-status-codes/
      * @var array
      */
-    protected static $arrJsonOption = [
-        'json_callback' => '',
-        'json_options' => JSON_UNESCAPED_UNICODE
-    ];
-
-    /**
-     * 配置
-     *
-     * @var array
-     */
-    protected $arrOption = [
-        'action_fail' => 'public+fail',
-        'action_success' => 'public+success',
-        'default_response' => 'default'
+    public static $statusTexts = [
+        100 => 'Continue',
+        101 => 'Switching Protocols',
+        102 => 'Processing', // RFC2518
+        103 => 'Early Hints',
+        200 => 'OK',
+        201 => 'Created',
+        202 => 'Accepted',
+        203 => 'Non-Authoritative Information',
+        204 => 'No Content',
+        205 => 'Reset Content',
+        206 => 'Partial Content',
+        207 => 'Multi-Status', // RFC4918
+        208 => 'Already Reported', // RFC5842
+        226 => 'IM Used', // RFC3229
+        300 => 'Multiple Choices',
+        301 => 'Moved Permanently',
+        302 => 'Found',
+        303 => 'See Other',
+        304 => 'Not Modified',
+        305 => 'Use Proxy',
+        307 => 'Temporary Redirect',
+        308 => 'Permanent Redirect', // RFC7238
+        400 => 'Bad Request',
+        401 => 'Unauthorized',
+        402 => 'Payment Required',
+        403 => 'Forbidden',
+        404 => 'Not Found',
+        405 => 'Method Not Allowed',
+        406 => 'Not Acceptable',
+        407 => 'Proxy Authentication Required',
+        408 => 'Request Timeout',
+        409 => 'Conflict',
+        410 => 'Gone',
+        411 => 'Length Required',
+        412 => 'Precondition Failed',
+        413 => 'Payload Too Large',
+        414 => 'URI Too Long',
+        415 => 'Unsupported Media Type',
+        416 => 'Range Not Satisfiable',
+        417 => 'Expectation Failed',
+        418 => 'I\'m a teapot', // RFC2324
+        421 => 'Misdirected Request', // RFC7540
+        422 => 'Unprocessable Entity', // RFC4918
+        423 => 'Locked', // RFC4918
+        424 => 'Failed Dependency', // RFC4918
+        425 => 'Reserved for WebDAV advanced collections expired proposal', // RFC2817
+        426 => 'Upgrade Required', // RFC2817
+        428 => 'Precondition Required', // RFC6585
+        429 => 'Too Many Requests', // RFC6585
+        431 => 'Request Header Fields Too Large', // RFC6585
+        451 => 'Unavailable For Legal Reasons', // RFC7725
+        500 => 'Internal Server Error',
+        501 => 'Not Implemented',
+        502 => 'Bad Gateway',
+        503 => 'Service Unavailable',
+        504 => 'Gateway Timeout',
+        505 => 'HTTP Version Not Supported',
+        506 => 'Variant Also Negotiates', // RFC2295
+        507 => 'Insufficient Storage', // RFC4918
+        508 => 'Loop Detected', // RFC5842
+        510 => 'Not Extended', // RFC2774
+        511 => 'Network Authentication Required', // RFC6585
     ];
 
     /**
      * 构造函数
-     *
-     * @param \queryyetsimple\Router\Router $objRouter
-     * @param \queryyetsimple\Mvc\IView $objView
-     * @param \Queryyetsimple\Session\ISession $objSession
-     * @param \Queryyetsimple\Cookie\ICookie $objCookie
-     * @param array $arrOption
+     * 
+     * @param string $content
+     * @param integer $status
+     * @param array $headers
      * @return void
      */
-    public function __construct(router $objRouter, IView $objView, ISession $objSession, ICookie $objCookie, array $arrOption = [])
-    {
-        $this->objRouter = $objRouter;
-        $this->objView = $objView;
-        $this->objSession = $objSession;
-        $this->objCookie = $objCookie;
-        $this->options($arrOption);
+    public function __construct($content = '', int $status = 200, array $headers = []) {
+        $this->headers = new ResponseHeaderBag($headers);
+        $this->setContent($content);
+        $this->setStatusCode($status);
+        $this->setProtocolVersion('1.0');
     }
 
     /**
      * 创建一个响应
+     * 
+     * @param string $content
+     * @param integer $status
+     * @param array $headers
+     * @return static
+     */
+    public static function create($content = '', int $status = 200, array $headers = []) {
+        return new static($content, $status, $headers);
+    }
+
+    /**
+     * 发送 HTTP 响应
      *
-     * @param mixed $mixData
-     * @param int $intCode
-     * @param string $strMessage
-     * @param array $arrHeader
-     * @param array $arrOption
      * @return $this
      */
-    public function make($mixData = '', $intCode = 200, $strMessage = '', array $arrHeader = [], $arrOption = [])
+    public function send()
     {
-        return $this->
-
-        data($mixData)->
-
-        code(intval($intCode))->
-
-        message($strMessage)->
-
-        withHeaders($arrHeader)->
-
-        options($arrOption);
-    }
-
-    /**
-     * call 
-     *
-     * @param string $method
-     * @param array $arrArgs
-     * @return mixed
-     */
-    public function __call(string $method, array $arrArgs)
-    {
-        if ($this->placeholderTControl($method)) {
-            return $this;
-        }
-
-        // 调用 trait __call 实现扩展方法
-        $mixData = $this->macroCall($method, $arrArgs);
-        if ($mixData instanceof response) {
-            return $mixData;
-        } else {
-            return $this->data($mixData);
-        }
-    }
-
-    /**
-     * 输出内容
-     *
-     * @param boolean $booSend
-     * @return void
-     */
-    public function output($booSend = true)
-    {
-        // 组装编码
-        if ($booSend === true) {
-            $this->contentTypeAndCharset($this->getContentType(), $this->getrCharset());
-        }
-
-        // 发送头部 header
-        if ($booSend === true && ! headers_sent() && ! empty($this->arrHeader)) {
-            http_response_code($this->intCode);
-            foreach ($this->arrHeader as $strName => $strValue) {
-                header($strName . ':' . $strValue);
-            }
-        }
-
-        // 输出内容
-        $sContent = $this->getContent();
-        if ($booSend === true) {
-            echo $sContent;
-        } else {
-            return $sContent;
-        }
-
-        // 提高响应速速
-        if ($booSend === true && function_exists('fastcgi_finish_request')) {
+        $this->sendHeaders();
+        
+        $this->sendContent();
+        
+        if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         }
-    }
 
-    /**
-     * 设置头部参数
-     *
-     * @param string $strName
-     * @param string $strValue
-     * @return $this
-     */
-    public function header($strName, $strValue)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->arrHeader[$strName] = $strValue;
         return $this;
     }
 
     /**
-     * 批量设置头部参数
+     * 发送响应头
      *
-     * @param array $arrHeader
      * @return $this
      */
-    public function withHeaders($arrHeader)
+    public function sendHeaders()
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrHeader = array_merge($this->arrHeader, $arrHeader);
+
+        if (headers_sent()) {
+            return $this;
+        }
+
+        foreach ($this->headers->all() as $name => $value) {
+            header($name . ': ' . $value, false, $this->statusCode);
+        }
+
+        // 状态码
+        header(sprintf('HTTP/%s %s %s', $this->protocolVersion, $this->statusCode, $this->statusText), true, $this->statusCode);
+
         return $this;
     }
 
     /**
-     * 返回头部参数
+     * 发送响应内容
      *
-     * @param string $strHeaderName
+     * @return $this
+     */
+    public function sendContent()
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        echo $this->content;
+
+        return $this;
+    }
+
+    /**
+     * 设置内容
+     *
+     * @param mixed $content
+     * @return $this
+     */
+    public function setContent($content)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $this->original = $content;
+
+        if ($this->contentShouldJson($content)) {
+            $this->setHeader('Content-Type', 'application/json');
+
+            $this->isJson = true;
+
+            $content = $this->contentToJson($content);
+        }
+
+        if (! is_scalar($content) && ! is_callable([$content, '__toString'])) {
+            throw new UnexpectedValueException(sprintf('The Response content must be a scalar or object implementing __toString(), "%s" given.', gettype($content)));
+        }
+
+        $this->content = (string) $content;
+
+        return $this;
+    }
+
+    /**
+     * 附加内容
+     *
+     * @param string $content
+     * @return $this
+     */
+    public function appendContent(string $content)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $this->content = $this->getContent() . $content;
+
+        return $this;
+    }
+
+    /**
+     * 设置响应头
+     *
+     * @param string $key
+     * @param string $value
+     * @param bool $replace
+     * @return $this
+     */
+    public function setHeader($key, $value, $replace = true)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        if ($replace === true || ! $this->headers->has($key)) {
+            $this->headers->set($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 批量设置响应头
+     *
+     * @param array $headers
+     * @return $this
+     */
+    public function withHeaders(array $headers)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        foreach ($headers as $key => $value) {
+            $this->headers->set($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 取回 JSON 数据
+     *
+     * @param bool $assoc
+     * @param int $depth
      * @return mixed
      */
-    public function getHeader($strHeaderName = null)
+    public function getData($assoc = true, $depth = 512)
     {
-        if (is_null($strHeaderName)) {
-            return $this->arrHeader;
+        if ($this->isJson) {
+            return json_decode($this->content, $assoc, $depth);
+        }
+
+        return $this->content;
+    }
+
+    /**
+     * 设置 JSON 数据
+     *
+     * @param bool $assoc
+     * @param mixed $data
+     * @param int $encodingOptions
+     * @return $this
+     */
+    public function setData($data = [], $encodingOptions = null)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $this->original = $data;
+
+        if ($encodingOptions !== null) {
+           $encodingOptions = 256; 
+        }
+
+        if ($data instanceof IArray) {
+            $data = json_encode($data->toArray(), $encodingOptions);
+        } elseif ($data instanceof IJson) {
+            $data = $data->toJson($encodingOptions);
+        } elseif ($data instanceof JsonSerializable) {
+            $data = json_encode($data->jsonSerialize(), $encodingOptions);
         } else {
-            return $this->arrHeader[$strHeaderName] ?? null;
+            $data = json_encode($data, $encodingOptions);
         }
-    }
 
-    /**
-     * 修改单个配置
-     *
-     * @param string $strName
-     * @param mixed $mixValue
-     * @return $this
-     */
-    public function option($strName, $mixValue)
-    {
-        if ($this->checkTControl()) {
-            return $this;
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            throw new InvalidArgumentException(json_last_error_msg());
         }
-        return $this->macroOption($strName, $mixValue);
-    }
 
-    /**
-     * 修改多个配置
-     *
-     * @param string $strName
-     * @param mixed $mixValue
-     * @return $this
-     */
-    public function options($arrOption)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        return $this->macroOptions($arrOption);
-    }
+        $this->content = (string) $data;
 
-    /**
-     * 设置响应 cookie
-     *
-     * @param string $sName
-     * @param mixed $mixValue
-     * @param array $arrOption
-     * @return $this
-     */
-    public function withCookie($sName, $mixValue = '', array $arrOption = [])
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->objCookie->set($sName, $mixValue, $arrOption);
         return $this;
     }
 
     /**
-     * 批量设置响应 cookie
-     *
-     * @param array $arrCookie
-     * @param array $arrOption
-     * @return $this
-     */
-    public function withCookies(array $arrCookie, array $arrOption = [])
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        foreach ($arrCookie as $sName => $mixValue) {
-            $this->objCookie->set($sName, $mixValue, $arrOption);
-        }
-        return $this;
-    }
-
-    /**
-     * 闪存消息
-     *
-     * @param string $mixFlash
-     * @param mixed $mixValue
-     * @return $this
-     */
-    public function with($strFlash, $mixValue)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->objSession->flash($strFlash, $mixValue);
-        return $this;
-    }
-
-    /**
-     * 批量闪存消息
-     *
-     * @param array $$arrFlash
-     * @param mixed $mixValue
-     * @return $this
-     */
-    public function withs(array $arrFlash)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->objSession->flashs($arrFlash);
-        return $this;
-    }
-
-    /**
-     * 闪存错误信息
-     *
-     * @param array $arrErrors
-     * @return $this
-     */
-    public function withErrors(array $arrErrors)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->objSession->flash('errors', array_merge($this->objSession->getFlash('errors', []), $arrErrors));
-        return $this;
-    }
-
-    /**
-     * 清理错误信息
-     *
-     * @return $this
-     */
-    public function clearErrors()
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->objSession->flash('errors', []);
-        return $this;
-    }
-
-    /**
-     * 闪存输入信息
-     *
-     * @param array $arrInputs
-     * @return $this
-     */
-    public function withInputs(array $arrInputs)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->objSession->flash('inputs', array_merge($this->objSession->getFlash('inputs', []), $arrInputs));
-        return $this;
-    }
-
-    /**
-     * 设置原始数据
-     *
-     * @param mixed $mixData
-     * @return $this
-     */
-    public function data($mixData)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->mixData = $mixData;
-        return $this;
-    }
-
-    /**
-     * 返回原始数据
-     *
-     * @return $this
-     */
-    public function getData()
-    {
-        return $this->mixData;
-    }
-
-    /**
-     * 响应状态
-     *
-     * @param int $intCode
-     * @return $this
-     */
-    public function code($intCode)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->intCode = intval($intCode);
-        return $this;
-    }
-
-    /**
-     * 返回响应状态
-     *
-     * @return number
-     */
-    public function getCode()
-    {
-        return $this->intCode;
-    }
-
-    /**
-     * 消息内容
-     *
-     * @param string $strMessage
-     * @return $this
-     */
-    public function message($strMessage)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->strMessage = $strMessage;
-        return $this;
-    }
-
-    /**
-     * 返回消息内容
+     * 获取内容
      *
      * @return string
      */
-    public function getMessage()
+    public function getContent()
     {
-        return $this->strMessage;
+        return $this->content;
     }
 
     /**
-     * contentType
+     * 获取内容
      *
-     * @param string $strContentType
+     * @return string
+     */
+    public function content()
+    {
+        return $this->getContent();
+    }
+
+    /**
+     * 获取原始内容
+     *
+     * @return string
+     */
+    public function getOriginal()
+    {
+        return $this->original;
+    }
+
+    /**
+     * 设置 HTTP 协议版本 (1.0 or 1.1).
+     *
+     * @param string $protocolVersion
      * @return $this
      */
-    public function contentType($strContentType)
+    public function setProtocolVersion(string $protocolVersion)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->strContentType = $strContentType;
+
+        $this->protocolVersion = $protocolVersion;
+
         return $this;
     }
 
     /**
-     * 返回 contentType
+     * 获取 HTTP 协议版本
      *
-     * @return string
+     * @final
      */
-    public function getContentType()
+    public function getProtocolVersion(): string
     {
-        return $this->strContentType;
+        return $this->protocolVersion;
+    }
+
+    /**
+     * 设置相应状态码
+     * 
+     * @param int $code
+     * @param string $text
+     * @return $this
+     */
+    public function setStatusCode(int $code, $text = null)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $this->statusCode = $code;
+
+        if ($this->isInvalid()) {
+            throw new InvalidArgumentException(sprintf('The HTTP status code "%s" is not valid.', $code));
+        }
+
+        if (null === $text) {
+            $this->statusText = self::$statusTexts[$code] ?? 'unknown status';
+            return $this;
+        }
+
+        if (false === $text) {
+            $this->statusText = '';
+            return $this;
+        }
+
+        $this->statusText = $text;
+
+        return $this;
+    }
+
+    /**
+     * 获取状态码
+     *
+     * @return int
+     */
+    public function status(): int
+    {
+        return $this->getStatusCode();
+    }
+
+    /**
+     * 获取状态码
+     *
+     * @final
+     */
+    public function getStatusCode(): int
+    {
+        return $this->statusCode;
     }
 
     /**
      * 编码设置
      *
-     * @param string $strCharset
+     * @param string $charset
      * @return $this
      */
-    public function charset($strCharset)
+    public function charset(string $charset)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->strCharset = $strCharset;
+
+        $this->charset = $charset;
+
         return $this;
     }
 
@@ -564,544 +540,310 @@ class Response
      *
      * @return string
      */
-    public function getrCharset()
+    public function getrCharset(): ?string
     {
-        return $this->strCharset;
+        return $this->charset;
     }
 
     /**
-     * 设置内容
+     * 设置过期时间
      *
-     * @param string $strContent
+     * @param \DateTime $datetime
      * @return $this
      */
-    public function content($strContent)
+    public function setExpires(DateTime $datetime)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->strContent = $strContent;
+
+        $this->setHeader('Expires', $this->normalizeDateTime($datetime));
+
         return $this;
     }
 
     /**
-     * 解析并且返回内容
+     * 设置最后修改时间
      *
-     * @return string
+     * @param \DateTime $datetime
+     * @return $this
      */
-    public function getContent()
+    public function setLastModified(DateTime $datetime)
     {
-        if (! is_null($this->strContent)) {
-            return $this->strContent;
+        if ($this->checkTControl()) {
+            return $this;
         }
 
-        $mixContent = $this->getData();
-        switch ($this->getResponseType()) {
-            
-            case 'json':
-                if ($this->isApi()) {
-                    $mixContent = $this->api($mixContent, null, null, true);
-                } else {
-                    $mixContent = json_encode($mixContent, $this->getJsonOption()['json_options']);
-                }
-                if ($this->getJsonOption()['json_callback']) {
-                    $mixContent = $this->getJsonOption()['json_callback'] . '(' . $mixContent . ');';
-                }
-                break;
+        $this->setHeader('Last-Modified', $this->normalizeDateTime($datetime));
 
-            case 'file':
-                ob_end_clean();
-                $resFp = fopen($this->getOption('file_name'), 'rb');
-                fpassthru($resFp);
-                fclose($resFp);
-                break;
-
-            case 'redirect':
-                $this->objRouter->redirect($this->getOption('redirect_url'), $this->getOption('option'));
-                break;
-
-            case 'view':
-                $mixContent = $this->objView->display($this->getOption('file'), [], $this->getOption('option'));
-                break;
-
-            default:
-                if (! is_string($mixContent) && is_callable($mixContent)) {
-                    $mixTemp = call_user_func_array($mixContent, []);
-                    if ($mixTemp !== null) {
-                        $mixContent = $mixTemp;
-                    }
-                    unset($mixTemp);
-                } elseif (is_array($mixContent)) {
-                    if (! $this->isApi()) {
-                        $mixContent = json_encode($mixContent, $this->getJsonOption()['json_options']);
-                    }
-                }
-                $mixContent = $this->varString($mixContent);
-                if ($this->isApi()) {
-                    $mixContent = $this->api($mixContent, null, null, true);
-                }
-                break;
-        }
-
-        $this->content($mixContent);
-        unset($mixContent);
-
-        return $this->strContent;
+        return $this;
     }
 
     /**
-     * api 接口形式
+     * 设置缓存
      *
-     * @param mixed $mixContent
-     * @param int|null $intCode
-     * @param string|null $mixMessage
-     * @param boolean $booReturn
-     * @return json|$this mixed
+     * @param int $minutes
+     * @return $this
      */
-    public function api($mixContent = [], $intCode = null, $mixMessage = null, $booReturn = false)
+    public function setCache(int $minutes)
     {
-        $mixContent = $this->varString($mixContent);
-
-        if (is_null($intCode)) {
-            if (is_array($mixContent) && isset($mixContent['code'])) {
-                $intCode = $mixContent['code'];
-                unset($mixContent['code']);
-            } else {
-                $intCode = $this->getCode();
-            }
+        if ($this->checkTControl()) {
+            return $this;
         }
 
-        if (is_null($mixMessage)) {
-            if (is_array($mixContent) && isset($mixContent['message'])) {
-                $mixMessage = $mixContent['message'];
-                unset($mixContent['message']);
-            } else {
-                $mixMessage = $this->getMessage();
-            }
+        $date = new DateTime();
+        $date->modify('+' . $minutes . 'minutes');
+
+        $this->setExpires($date);
+        $this->setHeader('Cache-Control', 'max-age=' . ($minutes * 60));
+
+        return $this;
+    }
+
+    /**
+     * 设置响应未修改
+     *
+     * @return $this
+     */
+    public function setNotModified()
+    {
+        if ($this->checkTControl()) {
+            return $this;
         }
 
-        list($mixMessage, $strKey) = is_array($mixMessage) ? $mixMessage : (strpos($mixMessage, '\@') !== false ? explode('\@', $mixMessage) : [
-            $mixMessage,
-            ''
+        $this->setStatusCode(304, self::$statusTexts[304]);
+
+        return $this;
+    }
+
+    /**
+     * 设置响应内容类型
+     *
+     * @param string $contentType
+     * @param string $charset
+     * @return $this
+     */
+    public function setContentType(string $contentType, $charset = null)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        if ($charset === null) {
+            $this->setHeader('Content-Type', $contentType);
+        } else {
+            $this->setHeader('Content-Type', $contentType . '; charset=' . $charset);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 设置响应内容长度
+     *
+     * @param int $contentLength
+     * @return $this
+     */
+    public function setContentLength(int $contentLength)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $this->setHeader('Content-Length', $contentLength);
+
+        return $this;
+    }
+
+    /**
+     * 设置自定义标识符
+     *
+     * @param string $etag
+     * @return $this
+     */
+    public function setEtag(string $etag)
+    {   
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $this->setHeader('Etag', $etag);
+
+        return $this;
+    }
+
+    /**
+     * 响应是否为 JSON
+     *
+     * @return bool
+     */
+    public function isJson(): bool
+    {
+        return $this->isJson;
+    }
+
+    /**
+     * 响应是否正确
+     *
+     * @return bool
+     */
+    public function isInvalid(): bool
+    {
+        return $this->statusCode < 100 || $this->statusCode >= 600;
+    }
+
+    /**
+     * 是否为信息性响应
+     *
+     * @return bool
+     */
+    public function isInformational(): bool
+    {
+        return $this->statusCode >= 100 && $this->statusCode < 200;
+    }
+
+    /**
+     * 是否为正确响应
+     *
+     * @return bool
+     */
+    public function isSuccessful(): bool
+    {
+        return $this->statusCode >= 200 && $this->statusCode < 300;
+    }
+
+    /**
+     * 是否为重定向响应
+     *
+     * @return bool
+     */
+    public function isRedirection(): bool
+    {
+        return $this->statusCode >= 300 && $this->statusCode < 400;
+    }
+
+    /**
+     * 是否为客户端错误响应
+     *
+     * @return bool
+     */
+    public function isClientError(): bool
+    {
+        return $this->statusCode >= 400 && $this->statusCode < 500;
+    }
+
+    /**
+     * 是否为服务端错误响应
+     *
+     * @return bool
+     */
+    public function isServerError(): bool
+    {
+        return $this->statusCode >= 500 && $this->statusCode < 600;
+    }
+
+    /**
+     * 是否为正常响应
+     *
+     * @return bool
+     */
+    public function isOk(): bool
+    {
+        return 200 === $this->statusCode;
+    }
+
+    /**
+     * 是否为受限响应
+     *
+     * @return bool
+     */
+    public function isForbidden(): bool
+    {
+        return 403 === $this->statusCode;
+    }
+
+    /**
+     * 是否为 404 NOT FOUND
+     *
+     * @return bool
+     */
+    public function isNotFound(): bool
+    {
+        return 404 === $this->statusCode;
+    }
+
+    /**
+     * 是否为表单重定向响应
+     *
+     * @return bool
+     */
+    public function isRedirect(string $location = null): bool
+    {
+        return in_array($this->statusCode, [
+            201, 
+            301, 
+            302, 
+            303, 
+            307, 
+            308
+        ]) 
+            && (null === $location ?: $location == $this->headers->get('Location'));
+    }
+
+    /**
+     * 是否为空响应
+     *
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return in_array($this->statusCode, [
+            204, 
+            304
         ]);
-
-        $strReturn = json_encode([
-            // 反码状态
-            'code' => $intCode,
-
-            // 描述信息
-            'message' => $mixMessage,
-
-            // 描述信息英文
-            'key' => $strKey,
-
-            // 响应时间
-            'time' => time(),
-
-            // 数据
-            'data' => is_array($mixContent) ? $mixContent : [
-                'content' => $mixContent
-            ]
-        ], $this->getJsonOption()['json_options']);
-
-        if ($booReturn === true) {
-            return $strReturn;
-        } else {
-            $this->content($strReturn);
-            unset($strReturn);
-            return $this;
-        }
     }
 
     /**
-     * api error
+     * 格式化响应时间
      *
-     * @param string|null $mixMessage
-     * @param mixed $mixContent
-     * @param int|null $intCode
-     * @return $this
-     */
-    public function apiError($mixMessage = null, $mixContent = [], $intCode = 400)
-    {
-        return $this->api($mixContent, $intCode, $mixMessage, false);
-    }
-
-    /**
-     * api success
-     *
-     * @param string|null $mixMessage
-     * @param mixed $mixContent
-     * @param int|null $intCode
-     * @return $this
-     */
-    public function apiSuccess($mixMessage = null, $mixContent = [], $intCode = 200)
-    {
-        return $this->api($mixContent, $intCode, $mixMessage, false);
-    }
-
-    /**
-     * 判断是否 api 模式
-     *
-     * @return boolean
-     */
-    public function isApi()
-    {
-        return $this->getOption('default_response') == 'api';
-    }
-
-    /**
-     * 返回 JSON 配置
-     *
-     * @return array
-     */
-    public function getJsonOption()
-    {
-        return array_merge(static::$arrJsonOption, $this->getOptions());
-    }
-
-    /**
-     * 设置相应类型
-     *
-     * @param string $strResponseType
-     * @return $this
-     */
-    public function responseType($strResponseType)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->strResponseType = $strResponseType;
-        return $this;
-    }
-
-    /**
-     * 返回相应类型
-     *
+     * @param \DateTime $datetime
      * @return string
      */
-    public function getResponseType()
+    protected function normalizeDateTime(DateTime $datetime)
     {
-        return $this->strResponseType;
+        $date = clone $datetime;
+
+        $date->setTimezone(new DateTimeZone('UTC'));
+
+        return $date->format('D, d M Y H:i:s') . ' GMT';
     }
 
     /**
-     * jsonp
+     * 内容转换为 JSON
      *
-     * @param array $arrData
-     * @param int $option
-     * @param string $strCharset
-     * @return $this
-     */
-    public function json($arrData = null, $option = JSON_UNESCAPED_UNICODE, $strCharset = 'utf-8')
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        if (is_array($arrData)) {
-            $this->data($arrData);
-        }
-
-        $this->
-
-        responseType('json')->
-
-        contentType('application/json')->
-
-        charset($strCharset)->
-
-        option('json_options', $option);
-        
-        return $this;
-    }
-
-    /**
-     * json callback
-     *
-     * @param string $strJsonCallback
-     * @return $this
-     */
-    public function jsonCallback($strJsonCallback)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        return $this->option('json_callback', $strJsonCallback);
-    }
-
-    /**
-     * jsonp
-     *
-     * @param string $strJsonCallback
-     * @param array $arrData
-     * @param int $option
-     * @param string $strCharset
-     * @return $this
-     */
-    public function jsonp($strJsonCallback, $arrData = null, $option = JSON_UNESCAPED_UNICODE, $strCharset = 'utf-8')
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        return $this->
-
-        jsonCallback($strJsonCallback)->
-
-        json($arrData, $option, $strCharset);
-    }
-
-    /**
-     * view 加载视图文件
-     *
-     * @param string $sFile
-     * @param array $arrOption
-     * @sub string charset 编码
-     * @sub string content_type 内容类型
-     * @return void|string
-     */
-    public function view($sFile = '', $arrOption = [])
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        if (! empty($arrOption['charset'])) {
-            $this->charset($arrOption['charset']);
-        }
-        if (! empty($arrOption['content_type'])) {
-            $this->contentType($arrOption['content_type']);
-        }
-
-        return $this->responseType('view')->
-
-        option('file', $sFile)->
-
-        option('option', $arrOption)->
-
-        assign($arrOption)->
-
-        message($arrOption['message'] ?? '')->
-
-        header('Cache-control', 'protected');
-    }
-
-    /**
-     * view 变量赋值
-     *
-     * @param mixed $mixName
-     * @param mixed $mixValue
-     * @return $this
-     */
-    public function assign($mixName, $mixValue = null)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->objView->assign($mixName, $mixValue);
-        return $this;
-    }
-
-    /**
-     * 正确返回消息
-     *
-     * @param string $sMessage 消息
-     * @param array $arrOption
-     * @sub string charset 编码
-     * @sub string content_type 内容类型
-     * @sub string url 跳转 url 地址
-     * @sub int time 停留时间
-     * @return void|string
-     */
-    public function viewSuccess($sMessage = '', $arrOption = [])
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $arrOption = array_merge([
-            'message' => $sMessage ?  : 'Succeed',
-            'url' => '',
-            'time' => 1
-        ], $arrOption);
-
-        return $this->view($this->getOption('action_success'), $arrOption);
-    }
-
-    /**
-     * 错误返回消息
-     *
-     * @param string $sMessage 消息
-     * @param array $arrOption
-     * @sub string charset 编码
-     * @sub string content_type 内容类型
-     * @sub string url 跳转 url 地址
-     * @sub int time 停留时间
-     * @return void|string
-     */
-    public function viewError($sMessage = '', $arrOption = [])
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $arrOption = array_merge([
-            'message' => $sMessage ?  : 'Failed',
-            'url' => '',
-            'time' => 3
-        ], $arrOption);
-
-        return $this->view($this->getOption('action_fail'), $arrOption);
-    }
-
-    /**
-     * 路由 URL 跳转
-     *
-     * @param string $sUrl
-     * @param array $arrOption
-     * @sub string make 是否使用 url 生成地址
-     * @sub string params url 额外参数
-     * @sub string message 消息
-     * @sub int time 停留时间，0表示不停留
-     * @return void
-     */
-    public function redirect(string $sUrl, $arrOption = [])
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        return $this->
-
-        responseType('redirect')->
-
-        option('redirect_url', $sUrl)->
-
-        option('option', $arrOption);
-    }
-
-    /**
-     * 下载文件
-     *
-     * @param string $sFileName
-     * @param string $sDownName
-     * @param array $arrHeader
-     * @return $this
-     */
-    public function download($sFileName, $sDownName = '', array $arrHeader = [])
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        if (! $sDownName) {
-            $sDownName = basename($sFileName);
-        } else {
-            $sDownName = $sDownName . '.' . pathinfo($sFileName, PATHINFO_EXTENSION);
-        }
-
-        return $this->
-
-        downloadAndFile($sFileName, $arrHeader)->
-
-        header('Content-Disposition', 'attachment;filename=' . $sDownName);
-    }
-
-    /**
-     * 读取文件
-     *
-     * @param string $sFileName
-     * @param array $arrHeader
-     * @return $this
-     */
-    public function file($sFileName, array $arrHeader = [])
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        return $this->
-
-        downloadAndFile($sFileName, $arrHeader)->
-
-        header('Content-Disposition', 'inline;filename=' . basename($sFileName));
-    }
-
-    /**
-     * 页面输出类型
-     *
-     * @param string $strContentType
-     * @param string $strCharset
-     * @return $this
-     */
-    protected function contentTypeAndCharset($strContentType, $strCharset = 'utf-8')
-    {
-        return $this->header('Content-Type', $strContentType . '; charset=' . $strCharset);
-    }
-
-    /**
-     * 下载或者读取文件
-     *
-     * @param string $sFileName
-     * @param array $arrHeader
-     * @return $this
-     */
-    protected function downloadAndFile($sFileName, array $arrHeader = [])
-    {
-        if (! is_file($sFileName)) {
-            throw new InvalidArgumentException(sprintf('File %s does not exist.', $sFileName));
-        }
-        $sFileName = realpath($sFileName);
-
-        // 读取类型
-        $resFinfo = finfo_open(FILEINFO_MIME);
-        $strMimeType = finfo_file($resFinfo, $sFileName);
-        finfo_close($resFinfo);
-
-        $arrHeader = array_merge([
-            'Cache-control' => 'max-age=31536000',
-            'Content-Encoding' => 'none',
-            'Content-type' => $strMimeType,
-            'Content-Length' => filesize($sFileName)
-        ], $arrHeader);
-
-        $this->responseType('file')->
-
-        headers($arrHeader)->
-
-        option('file_name', $sFileName);
-
-        return $this;
-    }
-
-    /**
-     * PHP 变量转为字符串
-     *
-     * @param mixed $mixVar
+     * @param mixed $content
      * @return string
      */
-    protected function varString($mixVar)
+    protected function contentToJson($content)
     {
-        if (! is_scalar($mixVar) && ! is_array($mixVar)) {
-            ob_start();
-            print_r($mixVar);
-            $mixVar = ob_get_contents();
-            ob_end_clean();
+        if ($content instanceof IJson) {
+            return $content->toJson();
         }
-        return $mixVar;
+
+        return json_encode($content, JSON_UNESCAPED_UNICODE);
     }
 
     /**
-     * 验证是否为正常的 JSON 字符串
+     * 可以转换为 JSON
      *
-     * @param mixed $mixData
-     * @return boolean
+     * @param mixed $content
+     * @return bool
      */
-    protected function isJson($mixData)
+    protected function contentShouldJson($content)
     {
-        if (! is_scalar($mixData) && ! method_exists($mixData, '__toString')) {
-            return false;
-        }
-
-        json_decode($mixData);
-
-        return json_last_error() === JSON_ERROR_NONE;
+        return $content instanceof IJson ||
+               $content instanceof ArrayObject ||
+               $content instanceof JsonSerializable ||
+               is_array($content);
     }
 }

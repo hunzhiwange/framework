@@ -20,6 +20,7 @@
 namespace Queryyetsimple\Http;
 
 use InvalidArgumentException;
+use Queryyetsimple\Session\ISession;
 
 /**
  * Redirect 响应请求
@@ -31,7 +32,7 @@ use InvalidArgumentException;
  * @version 1.0
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
-class RedirectResponse extends Response2
+class RedirectResponse extends Response
 {
 
     /**
@@ -40,6 +41,20 @@ class RedirectResponse extends Response2
      * @var string
      */
     protected $targetUrl;
+
+    /**
+     * HTTP 请求
+     *
+     * @var \Queryyetsimple\Http\IRequest
+     */
+    protected $request;
+
+    /**
+     * SESSION 仓储
+     *
+     * @var \Queryyetsimple\Session\ISession
+     */
+    protected $session;
 
     /**
      * 构造函数
@@ -121,5 +136,47 @@ class RedirectResponse extends Response2
         $this->headers->set('Location', $url);
 
         return $this;
+    }
+
+    /**
+     * 获取 HTTP 请求
+     *
+     * @return \Queryyetsimple\Http\IRequest|null
+     */
+    public function getRequest()
+    {
+        return $this->request;
+    }
+
+    /**
+     * 设置 HTTP 请求
+     *
+     * @param \Queryyetsimple\Http\IRequest $request
+     * @return void
+     */
+    public function setRequest(IRequest $request)
+    {
+        $this->request = $request;
+    }
+
+    /**
+     * 获取 SESSION 仓储
+     *
+     * @return \Queryyetsimple\Session\ISession|null
+     */
+    public function getSession()
+    {
+        return $this->session;
+    }
+
+    /**
+     * 设置 SESSION 仓储
+     *
+     * @param \Queryyetsimple\Session\ISession $session
+     * @return void
+     */
+    public function setSession(ISession $session)
+    {
+        $this->session = $session;
     }
 }

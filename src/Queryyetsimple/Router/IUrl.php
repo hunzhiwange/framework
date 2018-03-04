@@ -44,34 +44,9 @@ interface IUrl
     public function make($url, $params = [], $option = []);
 
     /**
-     * 设置路由 app
-     *
-     * @param string $app
-     * @return $this
+     * 返回 HTTP 请求
+     * 
+     * @return \Queryyetsimple\Http\IRequest
      */
-    public function setApp($app);
-
-    /**
-     * 设置路由 controller
-     *
-     * @param string $controller
-     * @return $this
-     */
-    public function setController($controller);
-
-    /**
-     * 设置路由 action
-     *
-     * @param string $action
-     * @return $this
-     */
-    public function setAction($action);
-
-    /**
-     * 设置路由 URL 入口
-     *
-     * @param string $urlEnter
-     * @return $this
-     */
-    public function setUrlEnter($urlEnter);
+    public function getRequest();
 }

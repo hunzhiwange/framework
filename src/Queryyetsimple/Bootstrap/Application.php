@@ -22,7 +22,9 @@ namespace Queryyetsimple\Bootstrap;
 use Exception;
 use Queryyetsimple\{
     Support\Psr4,
-    Http\Response, 
+    Http\IResponse,
+    Http\ApiResponse,
+    Http\JsonResponse,
     Support\Debug\Console
 };
 
@@ -42,7 +44,7 @@ class Application
      *
      * @var \Queryyetsimple\Bootstrap\Project
      */
-    protected $objProject;
+    protected $project;
 
     /**
      * 默认
@@ -79,42 +81,47 @@ class Application
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Bootstrap\Project $objProject
+     * @param \Queryyetsimple\Bootstrap\Project $project
      * @param string $sApp
      * @return void
      */
-    public function __construct(project $objProject, $sApp)
+    public function __construct(project $project, $sApp)
     {
-        $this->objProject = $objProject;
+        $this->project = $project;
         $this->strApp = $sApp;
     }
 
     /**
      * 执行请求返回相应结果
      *
-     * @return $this
+     * @return void
      */
     public function run()
     {
-        $mixResponse = $this->objProject['router']->doBind();
-        if (! ($mixResponse instanceof Response)) {
-            $mixResponse = $this->objProject['response']->make($mixResponse);
+        $response = $this->project['router']->doBind();
+        if (! ($response instanceof IResponse)) {
+            $response = $this->project['response']->make($response);
         }
 
         // 穿越中间件
-        $this->objProject['router']->throughMiddleware($this->objProject['request'], [
-            $mixResponse
+        $this->project['router']->throughMiddleware($this->project['request'], [
+            $response
         ]);
 
         // 调试
-        if ($this->objProject->debug()) {
-            Console::trace($this->objProject->pathSystem('trace'), $this->objProject['log']->get());
+        if ($this->project->debug()) {
+            if (($response instanceof ApiResponse || $response instanceof JsonResponse || $response->isJson()) && 
+                is_array(($data = $response->getData()))) {
+                $data['_TRACE'] = Console::jsonTrace($this->project['log']->get());
+                $response->setData($data);
+            } elseif(! ($response instanceof RedirectResponse)) {
+                $data = Console::trace($this->project->pathSystem('trace'), $this->project['log']->get());
+                $response->appendContent($data);
+            }
         }
 
         // 输出响应
-        $mixResponse->output();
-
-        return $this;
+        $response->send();
     }
 
     /**
@@ -158,14 +165,14 @@ class Application
     protected function initialization()
     {
         if (function_exists('date_default_timezone_set')) {
-            date_default_timezone_set($this->objProject['option']['time_zone']);
+            date_default_timezone_set($this->project['option']['time_zone']);
         }
         
         if(PHP_SAPI == 'cli') {
             return;
         }
 
-        if (function_exists('gz_handler') && $this->objProject['option']['start_gzip']) {
+        if (function_exists('gz_handler') && $this->project['option']['start_gzip']) {
             ob_start('gz_handler');
         } else {
             ob_start();
@@ -179,7 +186,7 @@ class Application
      */
     protected function loadBootstrapBootstrap()
     {
-        if (is_file(($strBootstrap = env('app_bootstrap') ?  : $this->objProject->pathApplication() . '/' . $this->strApp . '/bootstrap.php'))) {
+        if (is_file(($strBootstrap = env('app_bootstrap') ?  : $this->project->pathApplication() . '/' . $this->strApp . '/bootstrap.php'))) {
             require_once $strBootstrap;
         }
     }
@@ -191,23 +198,23 @@ class Application
      */
     protected function i18nBootstrap()
     {
-        if (! $this->objProject['option']['i18n\on']) {
+        if (! $this->project['option']['i18n\on']) {
             return;
         }
 
-        if ($this->objProject['option']['i18n\develop'] == $this->objProject['option']['i18n\default']) {
+        if ($this->project['option']['i18n\develop'] == $this->project['option']['i18n\default']) {
             return;
         }
 
-        $sI18nSet = $this->objProject['i18n']->getI18n();
-        $this->objProject['request']->setLanguage($sI18nSet);
+        $sI18nSet = $this->project['i18n']->getI18n();
+        $this->project['request']->setLanguage($sI18nSet);
 
         $sCachePath = $this->getI18nCachePath($sI18nSet);
 
-        if (! $this->objProject->development() && is_file($sCachePath)) {
-            $this->objProject['i18n']->addText($sI18nSet, ( array ) include $sCachePath);
+        if (! $this->project->development() && is_file($sCachePath)) {
+            $this->project['i18n']->addText($sI18nSet, ( array ) include $sCachePath);
         } else {
-            $this->objProject['i18n.load']->
+            $this->project['i18n.load']->
 
             setI18n($sI18nSet)->
 
@@ -215,7 +222,7 @@ class Application
 
             addDir($this->getI18nDir($sI18nSet));
             
-            $this->objProject['i18n']->addText($sI18nSet, $this->objProject['i18n.load']->loadData());
+            $this->project['i18n']->addText($sI18nSet, $this->project['i18n.load']->loadData());
         }
     }
 
@@ -226,16 +233,16 @@ class Application
      */
     protected function consoleBootstrap()
     {
-        if (! $this->objProject->console()) {
+        if (! $this->project->console()) {
             return;
         }
 
         $sCachePath = $this->getConsoleCachePath();
 
-        if (! $this->objProject->development() && is_file($sCachePath)) {
-            $this->objProject['console.load']->setData(( array ) include $sCachePath);
+        if (! $this->project->development() && is_file($sCachePath)) {
+            $this->project['console.load']->setData(( array ) include $sCachePath);
         } else {
-            $this->objProject['console.load']->setCachePath($sCachePath);
+            $this->project['console.load']->setCachePath($sCachePath);
         }
     }
 
@@ -249,12 +256,12 @@ class Application
         $sCachePath = $this->getOptionCachePath();
 
         if ($this->isInitApp()) {
-            if (! is_file($sCachePath) || !$this->objProject['option']->reset(( array ) include $sCachePath) || $this->objProject->development()) {
+            if (! is_file($sCachePath) || !$this->project['option']->reset(( array ) include $sCachePath) || $this->project->development()) {
                 $this->cacheOption($sCachePath);
             }
         } else {
-            if (! $this->objProject->development() && is_file($sCachePath)) {
-                $this->objProject['option']->reset(( array ) include $sCachePath);
+            if (! $this->project->development() && is_file($sCachePath)) {
+                $this->project['option']->reset(( array ) include $sCachePath);
             } else {
                 $this->cacheOption($sCachePath);
             }
@@ -270,13 +277,13 @@ class Application
     {
         $this->setRouterCachePath();
 
-        if (! $this->objProject['router']->checkExpired()) {
+        if (! $this->project['router']->checkExpired()) {
             return;
         }
 
-        foreach ($this->objProject->routers() as $strRouter) {
+        foreach ($this->project->routers() as $strRouter) {
             if (is_array($arrFoo = include $strRouter)) {
-                $this->objProject['router']->importCache($arrFoo);
+                $this->project['router']->importCache($arrFoo);
             }
         }
     }
@@ -290,15 +297,15 @@ class Application
     protected function getI18nDir()
     {
         $arrDir = [
-            $this->objProject->pathCommon() . '/ui/i18n',
-            $this->objProject->pathApplicationDir('i18n')
+            $this->project->pathCommon() . '/ui/i18n',
+            $this->project->pathApplicationDir('i18n')
         ];
 
-        if ($this->objProject['option']['i18n\extend']) {
-            if (is_array($this->objProject['option']['i18n\extend'])) {
-                $arrDir = array_merge($arrDir, $this->objProject['option']['i18n\extend']);
+        if ($this->project['option']['i18n\extend']) {
+            if (is_array($this->project['option']['i18n\extend'])) {
+                $arrDir = array_merge($arrDir, $this->project['option']['i18n\extend']);
             } else {
-                $arrDir[] = $this->objProject['option']['i18n\extend'];
+                $arrDir[] = $this->project['option']['i18n\extend'];
             }
         }
 
@@ -313,7 +320,7 @@ class Application
      */
     protected function getI18nCachePath($sI18nSet)
     {
-        return $this->objProject->pathApplicationCache('i18n') . '/' . $sI18nSet . '/default.php';
+        return $this->project->pathApplicationCache('i18n') . '/' . $sI18nSet . '/default.php';
     }
 
     /**
@@ -323,7 +330,7 @@ class Application
      */
     protected function getConsoleCachePath()
     {
-        return $this->objProject->pathApplicationCache('console') . '/default.php';
+        return $this->project->pathApplicationCache('console') . '/default.php';
     }
 
     /**
@@ -334,12 +341,12 @@ class Application
     protected function getOptionDir()
     {
         $arrDir = [];
-        if (is_dir($this->objProject->pathCommon() . '/ui/option')) {
-            $arrDir[] = $this->objProject->pathCommon() . '/ui/option';
+        if (is_dir($this->project->pathCommon() . '/ui/option')) {
+            $arrDir[] = $this->project->pathCommon() . '/ui/option';
         }
 
         if (! $this->isInitApp()) {
-            $arrDir[] = $this->objProject->pathApplicationDir('option');
+            $arrDir[] = $this->project->pathApplicationDir('option');
         }
 
         return $arrDir;
@@ -352,7 +359,7 @@ class Application
      */
     protected function getOptionCachePath()
     {
-        return $this->objProject->pathApplicationCache('option') . '/' . $this->strApp . '.php';
+        return $this->project->pathApplicationCache('option') . '/' . $this->strApp . '.php';
     }
 
     /**
@@ -362,13 +369,13 @@ class Application
      */
     protected function setRouterCachePath()
     {
-        $router = $this->objProject['router'];
+        $router = $this->project['router'];
 
-        $this->objProject['router']->
+        $this->project['router']->
 
-        cachePath($this->objProject->pathApplicationCache('router') . '/router.php')->
+        cachePath($this->project->pathApplicationCache('router') . '/router.php')->
 
-        development($this->objProject->development());
+        development($this->project->development());
     }
 
     /**
@@ -379,8 +386,8 @@ class Application
      */
     protected function cacheOption($sCachePath)
     {
-        $this->objProject['option']->reset(
-            $this->objProject['option.load']->
+        $this->project['option']->reset(
+            $this->project['option.load']->
 
             setCachePath($sCachePath)->
 
@@ -399,9 +406,9 @@ class Application
     {
         return [
             'app' => [
-                '~apps~' => $this->objProject->apps(),
-                '~envs~' => $this->objProject->envs(),
-                '~routers~' => $this->objProject->routers()
+                '~apps~' => $this->project->apps(),
+                '~envs~' => $this->project->envs(),
+                '~routers~' => $this->project->routers()
             ]
         ];
     }

@@ -35,7 +35,7 @@ use InvalidArgumentException;
  * @version 1.0
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
-class FileResponse extends Response2
+class FileResponse extends Response
 {
 
     /**
