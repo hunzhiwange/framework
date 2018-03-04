@@ -19,7 +19,10 @@
  */
 namespace Queryyetsimple\Router;
 
-use Queryyetsimple\Option\TClass;
+use Queryyetsimple\{
+    Http\IRequest,
+    Option\TClass
+};
 
 /**
  * url 生成
@@ -34,32 +37,11 @@ class Url implements IUrl
     use TClass;
 
     /**
-     * 路由解析后的 app
+     * HTTP 请求
      * 
-     * @var string
+     * @var \Queryyetsimple\Http\IRequest
      */
-    protected $app = 'home';
-
-    /**
-     * 路由解析后的 controller
-     * 
-     * @var string
-     */
-    protected $controller = 'index';
-
-    /**
-     * 路由解析后的 action
-     * 
-     * @var string
-     */
-    protected $action = 'index';
-
-    /**
-     * url 入口
-     * 
-     * @var string
-     */
-    protected $urlEnter;
+    protected $request;
 
     /**
      * 解析后的 MVC 参数
@@ -110,12 +92,15 @@ class Url implements IUrl
 
     /**
      * 构造函数
-     *
+     * 
+     * @param \Queryyetsimple\Http\IRequest $request
      * @param array $option
      * @return void
      */
-    public function __construct(array $option = [])
+    public function __construct(IRequest $request, array $option = [])
     {
+        $this->request = $request;
+
         $this->options($option);
     }
 
@@ -156,47 +141,12 @@ class Url implements IUrl
     }
 
     /**
-     * 设置路由 app
-     *
-     * @param string $app
-     * @return $this
+     * 返回 HTTP 请求
+     * 
+     * @return \Queryyetsimple\Http\IRequest
      */
-    public function setApp($app) {
-        $this->app = $app;
-        return $this;
-    }
-
-    /**
-     * 设置路由 controller
-     *
-     * @param string $controller
-     * @return $this
-     */
-    public function setController($controller) {
-        $this->controller = $controller;
-        return $this;
-    }
-
-    /**
-     * 设置路由 action
-     *
-     * @param string $action
-     * @return $this
-     */
-    public function setAction($action) {
-        $this->action = $action;
-        return $this;
-    }
-
-    /**
-     * 设置路由 URL 入口
-     *
-     * @param string $urlEnter
-     * @return $this
-     */
-    public function setUrlEnter($urlEnter) {
-        $this->urlEnter = $urlEnter;
-        return $this;
+    public function getRequest() {
+        return $this->request;
     }
 
     /**
@@ -354,7 +304,7 @@ class Url implements IUrl
 
         if ($url != '') {
             if (! strpos($url, '://')) {
-                $url = $this->app . '://' . $url;
+                $url = $this->request->app() . '://' . $url;
             }
             $parse = parse_url($url);
         } else {
@@ -362,7 +312,7 @@ class Url implements IUrl
         }
 
         // app、controller 和 action
-        $app = $parse['scheme'] ?? $this->app; 
+        $app = $parse['scheme'] ?? $this->request->app(); 
         $controller = $action = null;
         
         $mvc = [
@@ -380,7 +330,7 @@ class Url implements IUrl
 
         if (isset($parse['path'])) {
             if (! $controller) {
-                $controller = $parse['host'] ?? $this->controller;
+                $controller = $parse['host'] ?? $this->request->controller();
             }
 
             if (! $action) {
@@ -388,11 +338,11 @@ class Url implements IUrl
             }
         } else {
             if (! $controller) {
-                $controller = $parse['host'] ?? $this->controller;
+                $controller = $parse['host'] ?? $this->request->controller();
             }
 
             if (! $action) {
-                $action = $this->action;
+                $action = $this->request->action();
             }
         }
 
@@ -492,7 +442,9 @@ class Url implements IUrl
      * @return string
      */
     protected function parseEnter(bool $normal = false) {
-        return $normal === true || $this->urlEnter !== '/' ? $this->urlEnter : '';
+        $enter = $this->request->getEnter();
+
+        return $normal === true || $enter !== '/' ? $enter : '';
     }
 
     /**
