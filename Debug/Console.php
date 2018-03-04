@@ -38,7 +38,7 @@ class Console
      *
      * @param string $tracepath
      * @param array $log
-     * @return void
+     * @return string
      */
     public static function trace(string $tracepath, array $log)
     {
@@ -52,24 +52,56 @@ class Console
             return;
         }
 
-        $trace = [];
+        $trace = static::normalizeLog($log);
 
-        // 日志
-        foreach ($log as $type => $item) {
-            $trace[strtoupper($type) . '.LOG' . ' (' . count($item) . ')'] = implode('\n', array_map(function ($item) {
-                return static::formatMessage($item);
-            }, $item));
-        }
-
-        // 加载文件
         $include = get_included_files();
         $trace['LOADED.FILE' . ' (' . count($include) . ')'] = implode('\n', $include);
 
         if (! is_file($tracepath)) {
             throw new RuntimeException(sprintf('Trace file %s is not exits.', $tracepath));
         }
-        
+
+        ob_start();
         require_once $tracepath;
+        $contents = ob_get_contents();
+        ob_end_clean();
+        
+        return $contents;
+    }
+
+    /**
+     * JSON 记录调试信息
+     * SQL 记录，加载文件等等
+     *
+     * @param array $log
+     * @return array
+     */
+    public static function jsonTrace(array $log)
+    {
+        $trace = static::normalizeLog($log);
+
+        $include = get_included_files();
+        $trace['LOADED.FILE' . ' (' . count($include) . ')'] = $include;
+
+        return $trace;
+    }
+
+    /**
+     * 格式化日志信息
+     *
+     * @param array $log
+     * @return array
+     */
+    protected static function normalizeLog(array $log) {
+        $result = [];
+
+        foreach ($log as $type => $item) {
+            $result[strtoupper($type) . '.LOG' . ' (' . count($item) . ')'] = implode('\n', array_map(function ($item) {
+                return static::formatMessage($item);
+            }, $item));
+        }
+
+        return $result; 
     }
 
     /**
