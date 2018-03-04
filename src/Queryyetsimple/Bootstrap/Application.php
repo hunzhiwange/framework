@@ -25,6 +25,7 @@ use Queryyetsimple\{
     Http\IResponse,
     Http\ApiResponse,
     Http\JsonResponse,
+    Http\RedirectResponse,
     Support\Debug\Console
 };
 
