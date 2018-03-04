@@ -242,9 +242,9 @@ class ApiResponse extends JsonResponse
      * @return $this
      */
     protected function normalizeErrorMessage($message = null, $text = null) {
-        $this->setData([
+        return $this->setData([
             'message' => $this->parseErrorMessage($message)
-        ]);   
+        ]);
     }
 
     /**

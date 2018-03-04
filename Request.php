@@ -1099,7 +1099,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return string
      */
-    public function getScriptNameRewrite()
+    public function getEnter()
     {
         $scriptName = $this->getScriptName();
 

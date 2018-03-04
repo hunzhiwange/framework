@@ -37,7 +37,7 @@ use Queryyetsimple\{
  * @version 1.0
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
-class JsonResponse extends Response2
+class JsonResponse extends Response
 {
 
     /**
@@ -71,7 +71,7 @@ class JsonResponse extends Response2
     /**
      * 构造函数
      * 
-     * @param string $content
+     * @param string $data
      * @param integer $status
      * @param array $headers
      * @param bool $json
@@ -86,12 +86,14 @@ class JsonResponse extends Response2
         }
 
         $json ? $this->setJson($data) : $this->setData($data);
+
+        $this->isJson = true;
     }
 
     /**
      * 从 JSON 字符串创建响应对象  
      * 
-     * @param string $content
+     * @param string $data
      * @param integer $status
      * @param array $headers
      * @return static
@@ -143,12 +145,17 @@ class JsonResponse extends Response2
      * 设置数据作为 JSON   
      *
      * @param mixed $data
+     * @param int $encodingOptions
      * @return $this
      */
-    public function setData($data = [])
+    public function setData($data = [], $encodingOptions = null)
     {
         if ($this->checkTControl()) {
             return $this;
+        }
+
+        if ($encodingOptions !== null) {
+           $this->encodingOptions = $encodingOptions; 
         }
 
         if ($data instanceof IArray) {
@@ -175,7 +182,7 @@ class JsonResponse extends Response2
      * @param int $depth
      * @return mixed
      */
-    public function getData($assoc = false, $depth = 512)
+    public function getData($assoc = true, $depth = 512)
     {
         return json_decode($this->data, $assoc, $depth);
     }
