@@ -76,10 +76,10 @@ class File extends SplFileObject
     {
         if (! is_dir($directory)) {
             if (false === mkdir($directory, 0777, true) && ! is_dir($directory)) {
-                throw new FileException(sprintf('Unable to create the "%s" directory', $directory));
+                throw new FileException(sprintf('Unable to create the %s directory', $directory));
             }
         } elseif (! is_writable($directory)) {
-            throw new FileException(sprintf('Unable to write in the "%s" directory', $directory));
+            throw new FileException(sprintf('Unable to write in the %s directory', $directory));
         }
 
         $target = rtrim($directory, '/\\') . DIRECTORY_SEPARATOR . (null === $name ? $this->getBasename() : $name);
@@ -98,8 +98,7 @@ class File extends SplFileObject
     {
         if (! move_uploaded_file($sourcePath, $target)) {
             $error = error_get_last();
-            throw new FileException(sprintf('Could not move the file "%s" to "%s" (%s)', $sourcePath, $target, strip_tags($error['message'])));
+            throw new FileException(sprintf('Could not move the file %s to %s (%s)', $sourcePath, $target, strip_tags($error['message'])));
         }
-        chmod($target, 0666 & ~umask());
     }
 }

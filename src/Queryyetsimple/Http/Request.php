@@ -42,9 +42,7 @@ class Request implements IRequest, IArray, ArrayAccess
 {
     use TClass;
 
-    use TMacro {
-        __call as macroCall;
-    }
+    use TMacro;
 
     /**
      * GET Bag
@@ -166,18 +164,6 @@ class Request implements IRequest, IArray, ArrayAccess
     protected $language;
 
     /**
-     * 服务器 url 重写支持 pathInfo
-     *
-     * Nginx
-     * location @rewrite {
-     *     rewrite ^/(.*)$ /index.php?_url=/$1;
-     * }
-     *
-     * @var string
-     */
-    const PATHINFO_URL = '_url';
-
-    /**
      * 配置
      *
      * @var array
@@ -192,6 +178,18 @@ class Request implements IRequest, IArray, ArrayAccess
     ];
 
     /**
+     * 服务器 url 重写支持 pathInfo
+     *
+     * Nginx
+     * location @rewrite {
+     *     rewrite ^/(.*)$ /index.php?_url=/$1;
+     * }
+     *
+     * @var string
+     */
+    const PATHINFO_URL = '_url';
+
+    /**
      * 构造函数
      * 
      * @param array $query
@@ -202,6 +200,7 @@ class Request implements IRequest, IArray, ArrayAccess
      * @param array $server
      * @param string $content
      * @param array $option
+     * @return void
      */
     public function __construct(array $query = [], array $request = [], array $params = [], array $cookie = [], array $files = [], array $server = [], $content = null, array $option = [])
     {
@@ -220,6 +219,7 @@ class Request implements IRequest, IArray, ArrayAccess
      * @param array $server
      * @param string $content
      * @param array $option
+     * @return void
      */
     public function reset(array $query = [], array $request = [], array $params = [], array $cookie = [], array $files = [], array $server = [], $content = null)
     {
@@ -280,17 +280,17 @@ class Request implements IRequest, IArray, ArrayAccess
      * 获取参数
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed $defaults
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, $defaults = null)
     {
         $all = $this->all();
 
         if (array_key_exists($key, $all)) {
             return $all[$key];
         } else {
-            return $this->params->get($key, $default);
+            return $this->params->get($key, $defaults);
         }
     }
 
@@ -390,10 +390,10 @@ class Request implements IRequest, IArray, ArrayAccess
      * 获取输入数据
      *
      * @param string $key
-     * @param string|array|null $default
+     * @param string|array|null $defaults
      * @return mixed
      */
-    public function input($key = null, $default = null)
+    public function input($key = null, $defaults = null)
     {
         $input = $this->getInputSource()->all() + $this->query->all();
 
@@ -401,23 +401,23 @@ class Request implements IRequest, IArray, ArrayAccess
             return $input;
         }
 
-        return $input[$key] ?? $default;
+        return $input[$key] ?? $defaults;
     }
 
     /**
      * 取回 query
      *
      * @param string $key
-     * @param string|array|null $default
+     * @param string|array|null $defaults
      * @return string|array
      */
-    public function query($key = null, $default = null)
+    public function query($key = null, $defaults = null)
     {
-        return $this->getItem('query', $key, $default);
+        return $this->getItem('query', $key, $defaults);
     }
 
     /**
-     * Determine if a cookie is set on the request.
+     * 请求是否存在 COOKIE
      *
      * @param  string  $key
      * @return bool
@@ -431,12 +431,12 @@ class Request implements IRequest, IArray, ArrayAccess
      * 取回 cookie
      *
      * @param string $key
-     * @param string|array|null $default
+     * @param string|array|null $defaults
      * @return string|array
      */
-    public function cookie($key = null, $default = null)
+    public function cookie($key = null, $defaults = null)
     {
-        return $this->getItem('cookies', $key, $default);
+        return $this->getItem('cookies', $key, $defaults);
     }
 
     /**
@@ -454,15 +454,15 @@ class Request implements IRequest, IArray, ArrayAccess
      * 数组文件请在末尾加上反斜杆访问
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed $defaults
      * @return \Queryyetsimple\Http\UploadedFile|array|null
      */
-    public function file($key = null, $default = null)
+    public function file($key = null, $defaults = null)
     {
         if (strpos($key, '\\') === false) {
-            return $this->getItem('files', $key, $default);
+            return $this->getItem('files', $key, $defaults);
         } else {
-            return $this->files->getArr($key, $default);
+            return $this->files->getArr($key, $defaults);
         }
     }
 
@@ -505,24 +505,24 @@ class Request implements IRequest, IArray, ArrayAccess
      * 取回 header
      *
      * @param string $key
-     * @param string|array|null $default
+     * @param string|array|null $defaults
      * @return string|array
      */
-    public function header($key = null, $default = null)
+    public function header($key = null, $defaults = null)
     {
-        return $this->getItem('headers', $key, $default);
+        return $this->getItem('headers', $key, $defaults);
     }
 
     /**
      * 取回 server
      *
      * @param string $key
-     * @param string|array|null $default
+     * @param string|array|null $defaults
      * @return string|array
      */
-    public function server($key = null, $default = null)
+    public function server($key = null, $defaults = null)
     {
-        return $this->getItem('server', $key, $default);
+        return $this->getItem('server', $key, $defaults);
     }
 
     /**
@@ -530,16 +530,16 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param string $source
      * @param string $key
-     * @param string|array|null $default
+     * @param string|array|null $defaults
      * @return string|array
      */
-    public function getItem($source, $key, $default)
+    public function getItem($source, $key, $defaults)
     {
         if (is_null($key)) {
             return $this->$source->all();
         }
 
-        return $this->$source->get($key, $default);
+        return $this->$source->get($key, $defaults);
     }
 
     /**
@@ -1043,9 +1043,9 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function getContent()
     {
-        $resource = is_resource($this->content);
+        $resources = is_resource($this->content);
 
-        if ($resource) {
+        if ($resources) {
             rewind($this->content);
             return stream_get_contents($this->content);
         }
@@ -1132,7 +1132,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isSecure()
     {
-        if (in_array($this->server->get('HTTPS'), ['1', '1'])) {
+        if (in_array($this->server->get('HTTPS'), ['1', 'on'])) {
             return true;
         } elseif ($this->server->get('SERVER_PORT') == '443') {
             return true;
@@ -1161,7 +1161,7 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 获取 host
      *
-     * @return boolean
+     * @return string
      */
     public function getHost()
     {
@@ -1256,14 +1256,14 @@ class Request implements IRequest, IArray, ArrayAccess
 
         $pathInfo = $this->server->get('PATH_INFO');
         if ($pathInfo) {
-            return $this->parsePathInfo($pathInfo);
+            return $this->pathInfo = $this->parsePathInfo($pathInfo);
         }
 
         // 服务器重写
-        if (! empty($_GET[static::PATHINFO_URL])) {
-            $pathInfo = $this->parsePathInfo($_GET[static::PATHINFO_URL]);
-            unset($_GET[static::PATHINFO_URL]);
-            return $pathInfo;
+        if ($this->query->get(static::PATHINFO_URL)) {
+            $pathInfo = $this->parsePathInfo($this->query->get(static::PATHINFO_URL));
+            $this->query->remove(static::PATHINFO_URL);
+            return $this->pathInfo = $pathInfo;
         }
 
         // 分析基础 url
@@ -1271,7 +1271,7 @@ class Request implements IRequest, IArray, ArrayAccess
 
         // 分析请求参数
         if (null === ($requestUri = $this->getRequestUri())) {
-            return $this->parsePathInfo('');
+            return $this->pathInfo = $this->parsePathInfo('');
         }
 
         if (($pos = strpos($requestUri, '?')) > 0) {
@@ -1284,7 +1284,7 @@ class Request implements IRequest, IArray, ArrayAccess
             $pathInfo = $requestUri;
         }
 
-        return $this->parsePathInfo($pathInfo);
+        return $this->pathInfo = $this->parsePathInfo($pathInfo);
     }
 
     /**
@@ -1319,7 +1319,7 @@ class Request implements IRequest, IArray, ArrayAccess
                 $seg = $segs[$index];
                 $url = '/' . $seg . $url;
                 ++ $index;
-            } while (($maxCount > $index) && (false !== ($pos = strpos($path, $url))) && (0 != $pos));
+            } while (($maxCount > $index) && (false !== ($pos = strpos($path, $url))) && (0 !== $pos));
         }
 
         // 比对请求
@@ -1392,8 +1392,8 @@ class Request implements IRequest, IArray, ArrayAccess
     protected function parsePathInfo($pathInfo)
     {
         if ($pathInfo && $this->getOption('html_suffix')) {
-            $sSuffix = substr($this->getOption('html_suffix'), 1);
-            $pathInfo = preg_replace('/\.' . $sSuffix . '$/', '', $pathInfo);
+            $suffix = substr($this->getOption('html_suffix'), 1);
+            $pathInfo = preg_replace('/\.' . $suffix . '$/', '', $pathInfo);
         }
 
         $pathInfo = empty($pathInfo) ? '/' : $pathInfo;

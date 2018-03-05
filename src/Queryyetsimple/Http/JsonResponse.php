@@ -132,7 +132,7 @@ class JsonResponse extends Response
             return $this;
         }
 
-        if (! $this->isJson($json)) {
+        if (! $this->isJsonData($json)) {
             throw new InvalidArgumentException('The method setJson need a json data.');
         }
 
@@ -220,7 +220,7 @@ class JsonResponse extends Response
      * @param mixed $data
      * @return boolean
      */
-    protected function isJson($data)
+    protected function isJsonData($data)
     {
         if (! is_scalar($data) && ! method_exists($data, '__toString')) {
             return false;

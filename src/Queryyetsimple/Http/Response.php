@@ -46,12 +46,9 @@ use Queryyetsimple\{
  */
 class Response implements IResponse
 {
-
-    use TMacro {
-        __call as macroCall;
-    }
-    
     use TControl;
+
+    use TMacro;
 
     /**
      * 响应头
@@ -306,7 +303,7 @@ class Response implements IResponse
         }
 
         if (null !== $content && ! is_scalar($content) && ! is_callable([$content, '__toString'])) {
-            throw new UnexpectedValueException(sprintf('The Response content must be a scalar or object implementing __toString(), "%s" given.', gettype($content)));
+            throw new UnexpectedValueException(sprintf('The Response content must be a scalar or object implementing __toString(), %s given.', gettype($content)));
         }
 
         $this->content = (string) $content;
@@ -433,7 +430,6 @@ class Response implements IResponse
     /**
      * 设置 JSON 数据
      *
-     * @param bool $assoc
      * @param mixed $data
      * @param int $encodingOptions
      * @return $this
@@ -446,7 +442,7 @@ class Response implements IResponse
 
         $this->original = $data;
 
-        if ($encodingOptions !== null) {
+        if ($encodingOptions === null) {
            $encodingOptions = 256; 
         }
 
