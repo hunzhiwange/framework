@@ -35,35 +35,35 @@ trait TControl
      *
      * @var boolean
      */
-    protected $booInTControl = false;
+    protected $inFlowControl = false;
 
     /**
      * 条件表达式是否为真
      *
      * @var boolean
      */
-    protected $booTControlIsTrue = false;
+    protected $isFlowontrolTrue = false;
 
     /**
      * 条件语句 ifs
      *
-     * @param boolean $booValue
+     * @param boolean $value
      * @return $this
      */
-    public function ifs($booValue = false)
+    public function ifs($value = false)
     {
-        return $this->setTControl(true, $booValue);
+        return $this->setTControl(true, $value);
     }
 
     /**
      * 条件语句 elseIfs
      *
-     * @param boolean $booValue
+     * @param boolean $value
      * @return $this
      */
-    public function elseIfs($booValue = false)
+    public function elseIfs($value = false)
     {
-        return $this->setTControl(true, $booValue);
+        return $this->setTControl(true, $value);
     }
 
     /**
@@ -89,14 +89,15 @@ trait TControl
     /**
      * 设置当前条件表达式状态
      *
-     * @param boolean $booInTControl
-     * @param boolean $booTControlIsTrue
-     * @return void
+     * @param boolean $inFlowControl
+     * @param boolean $isFlowontrolTrue
+     * @return $this
      */
-    protected function setTControl($booInTControl, $booTControlIsTrue)
+    public function setTControl($inFlowControl, $isFlowontrolTrue)
     {
-        $this->booInTControl = $booInTControl;
-        $this->booTControlIsTrue = $booTControlIsTrue;
+        $this->inFlowControl = $inFlowControl;
+        $this->isFlowontrolTrue = $isFlowontrolTrue;
+
         return $this;
     }
 
@@ -105,11 +106,11 @@ trait TControl
      *
      * @return array
      */
-    protected function getTControl()
+    public function getTControl()
     {
         return [
-            $this->booInTControl,
-            $this->booTControlIsTrue
+            $this->inFlowControl,
+            $this->isFlowontrolTrue
         ];
     }
 
@@ -118,20 +119,20 @@ trait TControl
      *
      * @return boolean
      */
-    protected function checkTControl()
+    public function checkTControl()
     {
-        return $this->booInTControl && ! $this->booTControlIsTrue;
+        return $this->inFlowControl && ! $this->isFlowontrolTrue;
     }
 
     /**
      * 占位符
      *
-     * @param string $strMethod
+     * @param string $method
      * @return boolean
      */
-    protected function placeholderTControl($strMethod)
+    public function placeholderTControl($method)
     {
-        return in_array($strMethod, [
+        return in_array($method, [
             'placeholder',
             'foobar'
         ]);
