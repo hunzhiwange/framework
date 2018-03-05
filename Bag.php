@@ -441,7 +441,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
                 if (! isset($value[$item])) {
                     return $default;
                 }
-                $value = &$value[$item];
+                $value = $value[$item];
             }
 
             return $value;
