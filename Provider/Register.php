@@ -23,6 +23,7 @@ use Queryyetsimple\{
     Router\Url,
     Di\Provider,
     Http\Request,
+    Http\Response,
     Router\Router,
     Router\Redirect,
     Router\ResponseFactory
@@ -51,6 +52,7 @@ class Register extends Provider
         $this->redirect();
         $this->request();
         $this->response();
+        $this->cookieResolver();
     }
 
     /**
@@ -208,6 +210,18 @@ class Register extends Provider
             setViewSuccessTemplate($option->get('view\action_success'))->
 
             setViewFailTemplate($option->get('view\action_fail'));
+        });
+    }
+
+    /**
+     * 设置 COOKIE Resolver
+     *
+     * @return void
+     */
+    protected function cookieResolver()
+    {
+        Response::setCookieResolver(function() {
+            return $project['cookie'];
         });
     }
 }
