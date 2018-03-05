@@ -42,7 +42,7 @@ trait TControl
      *
      * @var boolean
      */
-    protected $isFlowontrolTrue = false;
+    protected $isFlowcontrolTrue = false;
 
     /**
      * 条件语句 ifs
@@ -90,13 +90,13 @@ trait TControl
      * 设置当前条件表达式状态
      *
      * @param boolean $inFlowControl
-     * @param boolean $isFlowontrolTrue
+     * @param boolean $isFlowcontrolTrue
      * @return $this
      */
-    public function setTControl($inFlowControl, $isFlowontrolTrue)
+    public function setTControl($inFlowControl, $isFlowcontrolTrue)
     {
         $this->inFlowControl = $inFlowControl;
-        $this->isFlowontrolTrue = $isFlowontrolTrue;
+        $this->isFlowcontrolTrue = $isFlowcontrolTrue;
 
         return $this;
     }
@@ -110,7 +110,7 @@ trait TControl
     {
         return [
             $this->inFlowControl,
-            $this->isFlowontrolTrue
+            $this->isFlowcontrolTrue
         ];
     }
 
@@ -121,7 +121,7 @@ trait TControl
      */
     public function checkTControl()
     {
-        return $this->inFlowControl && ! $this->isFlowontrolTrue;
+        return $this->inFlowControl && ! $this->isFlowcontrolTrue;
     }
 
     /**
