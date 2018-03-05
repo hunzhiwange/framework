@@ -37,7 +37,7 @@ class FileBag extends Bag
      * 
      * @var array
      */
-    protected static $fileKeys =[
+    protected static $fileKeys = [
         'error', 
         'name', 
         'size', 
@@ -95,10 +95,10 @@ class FileBag extends Bag
      * 数组文件请在末尾加上反斜杆访问
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed $defaults
      * @return mixed
      */
-    public function getArr($key, $default = null) {
+    public function getArr($key, $defaults = null) {
         $files = [];
         foreach ($this->elements as $k => $value) {
             if (strpos($k, $key) === 0) {
@@ -106,7 +106,7 @@ class FileBag extends Bag
             }
         }
 
-        return $files ?: $default;
+        return $files ?: $defaults;
     }
 
     /**

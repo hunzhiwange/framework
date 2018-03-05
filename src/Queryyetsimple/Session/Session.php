@@ -878,6 +878,7 @@ class Session implements ISession
                 }
                 $value = $value[$part];
             }
+            
             return $value;
         } else {
             return $defaults;

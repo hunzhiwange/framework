@@ -750,7 +750,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
                 if (! isset($mixValue[$sPart])) {
                     return $mixDefault;
                 }
-                $mixValue = &$mixValue[$sPart];
+                $mixValue = $mixValue[$sPart];
             }
             return $mixValue;
         } else {

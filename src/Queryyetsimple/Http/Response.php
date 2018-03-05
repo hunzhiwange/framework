@@ -19,6 +19,7 @@
  */
 namespace Queryyetsimple\Http;
 
+use Closure;
 use DateTime;
 use ArrayObject;
 use DateTimeZone;
@@ -29,7 +30,8 @@ use Queryyetsimple\{
     Support\IJson,
     Flow\TControl,
     Support\IArray,
-    Support\TMacro
+    Support\TMacro,
+    Cookie\ICookie
 };
 
 /**
@@ -106,6 +108,13 @@ class Response implements IResponse
      * @var boolean
      */
     protected $isJson = false;
+
+    /**
+     * COOKIE Resolver
+     * 
+     * @var \Closure
+     */
+    protected static $cookieResolver;
 
     /**
      * 状态码
@@ -206,6 +215,16 @@ class Response implements IResponse
     }
 
     /**
+     * 设置 COOKIE Resolver
+     * 
+     * @param \Closure $cookieResolver
+     * @return void
+     */
+    public static function setCookieResolver(Closure $cookieResolver) {
+        static::$cookieResolver = $cookieResolver;
+    }
+
+    /**
      * 发送 HTTP 响应
      *
      * @return $this
@@ -286,7 +305,7 @@ class Response implements IResponse
             $content = $this->contentToJson($content);
         }
 
-        if (! is_scalar($content) && ! is_callable([$content, '__toString'])) {
+        if (null !== $content && ! is_scalar($content) && ! is_callable([$content, '__toString'])) {
             throw new UnexpectedValueException(sprintf('The Response content must be a scalar or object implementing __toString(), "%s" given.', gettype($content)));
         }
 
@@ -301,7 +320,7 @@ class Response implements IResponse
      * @param string $content
      * @return $this
      */
-    public function appendContent(string $content)
+    public function appendContent(string $content = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -347,6 +366,49 @@ class Response implements IResponse
 
         foreach ($headers as $key => $value) {
             $this->headers->set($key, $value);
+        }
+
+        return $this;
+    }
+
+    /**
+     * 设置 COOKIE
+     *
+     * @param string $name
+     * @param string $value
+     * @param array $option
+     * @return $this
+     */
+    public function setCookie($name, $value = '', array $option = [])
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        if (! static::$cookieResolver) {
+            return $this;
+        }
+
+        $cookie = call_user_func(static::$cookieResolver);
+        $cookie->set($name, $value, $option);
+
+        return $this;
+    }
+
+    /**
+     * 批量设置 COOKIE
+     *
+     * @param array $cookies
+     * @return $this
+     */
+    public function withCookies(array $cookies)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        foreach ($cookies as $value) {
+            call_user_func_array([$this, 'setCookie'], $value);
         }
 
         return $this;

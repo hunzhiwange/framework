@@ -1002,7 +1002,9 @@ class Project extends Container implements IProject
             return $arrEnv;
         } else {
             $objDotenv = new Dotenv($this->path());
-            return $objDotenv->load();
+            $objDotenv->load();
+            
+            return $_ENV;
         }
     }
 

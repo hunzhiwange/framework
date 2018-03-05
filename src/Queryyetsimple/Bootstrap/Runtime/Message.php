@@ -120,14 +120,14 @@ abstract class Message
             $strContent = ob_get_clean();
         }
 
-        $booStatusCode = property_exists($this, 'objException') && method_exists($this->objException, 'statusCode');
+        $statusCode = property_exists($this, 'objException') && method_exists($this->objException, 'statusCode') ?
+            $this->objException->statusCode() : 
+            404;
 
-        $this->oProject['response']->
+        $response = $this->oProject['response']->make($strContent);
 
-        data($strContent)->
+        $response->setStatusCode($statusCode)->
 
-        ifs($booStatusCode)->code($booStatusCode ? $this->objException->statusCode() : null)->endIfs()->
-
-        output();
+        send();
     }
 }
