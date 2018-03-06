@@ -75,39 +75,12 @@ return [
 
     /**
      * ---------------------------------------------------------------
-     * cookie_lifetime
-     * ---------------------------------------------------------------
-     *
-     * ini_set ( 'session.cookie_lifetime', cookie_lifetime )
-     */
-    'cookie_lifetime' => null,
-
-    /**
-     * ---------------------------------------------------------------
-     * gc_maxlifetime
-     * ---------------------------------------------------------------
-     *
-     * ini_set ( 'session.gc_maxlifetime', gc_maxlifetime )
-     */
-    'gc_maxlifetime' => null,
-
-    /**
-     * ---------------------------------------------------------------
      * save_path
      * ---------------------------------------------------------------
      *
      * session_save_path ( save_path )
      */
     'save_path' => null,
-
-    /**
-     * ---------------------------------------------------------------
-     * use_trans_sid
-     * ---------------------------------------------------------------
-     *
-     * ini_set ( 'session.use_trans_sid', use_trans_sid ? 1 : 0 )
-     */
-    'use_trans_sid' => null,
 
     /**
      * ---------------------------------------------------------------
@@ -132,8 +105,9 @@ return [
      * expire
      * ---------------------------------------------------------------
      *
-     * 为了与下面的配置 expire 对应，这里没有设置为 cache_expire
-     * session_cache_expire ( expire )
+     * 修改 session 过期时间
+     * ini_set ( 'session.gc_maxlifetime', gc_maxlifetime )
+     * ini_set ( 'session.cookie_lifetime', cookie_lifetime )
      */
     'expire' => 86400,
 

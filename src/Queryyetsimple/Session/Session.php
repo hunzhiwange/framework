@@ -63,10 +63,7 @@ class Session implements ISession
         'cookie_domain' => null,
         'cache_limiter' => null,
         'expire' => 86400,
-        'cookie_lifetime' => null,
-        'gc_maxlifetime' => null,
         'save_path' => null,
-        'use_trans_sid' => null,
         'gc_probability' => null
     ];
 
@@ -120,56 +117,40 @@ class Session implements ISession
 
         // 设置 session id
         if ($this->getOption('id')) {
-            session_id($this->getOption('id'));
-        } else {
-            if (is_null($this->parseSessionId())) {
-                $this->sessionId(uniqid(dechex(mt_rand())));
-            }
-        }
-
-        // cookie domain
-        if ($this->getOption('cookie_domain')) {
-            $this->cookieDomain($this->getOption('cookie_domain'));
+            $this->setId($this->getOption('id'));
         }
 
         // session name
         if ($this->getOption('name')) {
-            $this->sessionName($this->getOption('name'));
+            $this->setName($this->getOption('name'));
         }
 
-        // cache expire
+        // cookie set
+        $this->setUseCookies();
+
+        // save path
+        if ($this->getOption('save_path')) {
+            $this->setSavePath($this->getOption('save_path'));
+        }
+
+        // cookie domain
+        if ($this->getOption('cookie_domain')) {
+            $this->setCookieDomain($this->getOption('cookie_domain'));
+        }
+
+        // session expire
         if ($this->getOption('expire')) {
-            $this->cacheExpire($this->getOption('expire'));
-        }
-
-        // gc maxlifetime
-        if ($this->getOption('gc_maxlifetime')) {
-            $this->gcMaxlifetime($this->getOption('gc_maxlifetime'));
-        }
-
-        // cookie lifetime
-        if ($this->getOption('cookie_lifetime')) {
-            $this->cookieLifetime($this->getOption('cookie_lifetime'));
+            $this->setCacheExpire($this->getOption('expire'));
         }
 
         // cache limiter
         if ($this->getOption('cache_limiter')) {
-            $this->cacheLimiter($this->getOption('cache_limiter'));
-        }
-
-        // save path
-        if ($this->getOption('save_path')) {
-            $this->savePath($this->getOption('save_path'));
-        }
-
-        // use_trans_sid
-        if ($this->getOption('use_trans_sid')) {
-            $this->useTransSid($this->getOption('use_trans_sid'));
+            $this->setCacheLimiter($this->getOption('cache_limiter'));
         }
 
         // gc_probability
         if ($this->getOption('gc_probability')) {
-            $this->gcProbability($this->getOption('gc_probability'));
+            $this->setGcProbability($this->getOption('gc_probability'));
         }
 
         // 驱动
@@ -198,7 +179,7 @@ class Session implements ISession
     {
         $this->checkStart();
 
-        $name = $this->getName($name);
+        $name = $this->getNormalizeName($name);
         $_SESSION[$name] = $value;
     }
 
@@ -235,6 +216,7 @@ class Session implements ISession
     {
         $arr = $this->get($key, []);
         $arr[] = $value;
+        
         $this->set($key, $arr);
     }
 
@@ -273,11 +255,13 @@ class Session implements ISession
     public function arr($key, $keys, $value = null)
     {
         $arr = $this->get($key, []);
+
         if (is_string($keys)) {
             $arr[$keys] = $value;
         } elseif (is_array($keys)) {
             $arr = array_merge($arr, $keys);
         }
+
         $this->set($key, $arr);
     }
 
@@ -291,16 +275,19 @@ class Session implements ISession
     public function arrDelete($key, $keys)
     {
         $arr = $this->get($key, []);
+
         if (! is_array($keys)) {
             $keys = [
                 $keys
             ];
         }
+
         foreach ($keys as $item) {
             if (isset($arr[$item])) {
                 unset($arr[$item]);
             }
         }
+
         $this->set($key, $arr);
     }
 
@@ -315,7 +302,8 @@ class Session implements ISession
     {
         $this->checkStart();
 
-        $name = $this->getName($name);
+        $name = $this->getNormalizeName($name);
+
         return $_SESSION[$name] ?? $value;
     }
 
@@ -342,7 +330,7 @@ class Session implements ISession
         $this->checkStart();
 
         if ($prefix) {
-            $name = $this->getName($name);
+            $name = $this->getNormalizeName($name);
         }
 
         if (isset($_SESSION[$name])) {
@@ -362,7 +350,8 @@ class Session implements ISession
     {
         $this->checkStart();
 
-        $name = $this->getName($name);
+        $name = $this->getNormalizeName($name);
+
         return isset($_SESSION[$name]);
     }
 
@@ -377,6 +366,7 @@ class Session implements ISession
         $this->checkStart();
 
         $strPrefix = $this->getOption('prefix');
+
         foreach ($_SESSION as $sKey => $val) {
             if ($prefix === true && $strPrefix && strpos($sKey, $strPrefix) === 0) {
                 $this->delete($sKey, false);
@@ -399,9 +389,11 @@ class Session implements ISession
             return $this->getFlash($key);
         } else {
             $this->set($this->flashDataKey($key), $value);
+
             $this->mergeNewFlash([
                 $key
             ]);
+
             $this->popOldFlash([
                 $key
             ]);
@@ -431,6 +423,7 @@ class Session implements ISession
     public function nowFlash($key, $value)
     {
         $this->set($this->flashDataKey($key), $value);
+
         $this->mergeOldFlash([
             $key
         ]);
@@ -609,55 +602,87 @@ class Session implements ISession
     }
 
     /**
-     * 获取解析 session_id
+     * 设置 SESSION 名字
      *
-     * @param string $id
+     * @param string $name
+     * @return void
+     */
+    public function setName(string $name)
+    {
+        session_name($name);
+    }
+
+    /**
+     * 取得 SESSION 名字
+     *
      * @return string
      */
-    public function parseSessionId()
+    public function getName(): string
     {
-        if (($id = $this->sessionId())) {
-            return $id;
-        }
+        return session_name();
+    }
 
-        $name = $this->sessionName();
+    /**
+     * 设置 SESSION ID
+     *
+     * @param string $name
+     * @return void
+     */
+    public function setId(string $id)
+    {
+        session_id($id);
+    }
 
-        if ($this->useCookies()) {
-            if (isset($_COOKIE[$name])) {
-                return $_COOKIE[$name];
-            }
-        } else {
-            if (isset($_GET[$name])) {
-                return $_GET[$name];
-            }
-            if (isset($_POST[$name])) {
-                return $_POST[$name];
-            }
-        }
-        
-        return null;
+    /**
+     * 取得 SESSION ID
+     *
+     * @return string
+     */
+    public function getId(): string
+    {
+        return session_id();
     }
 
     /**
      * 设置 save path
      *
      * @param string $savepath
-     * @return string
+     * @return void
      */
-    public function savePath($savepath = null)
+    public function setSavePath(string $savepath)
     {
-        return ! empty($savepath) ? session_save_path($savepath) : session_save_path();
+        session_save_path($savepath);
     }
 
     /**
-     * 设置 cache limiter
+     * 获取 save path
      *
-     * @param string $limiter
      * @return string
      */
-    public function cacheLimiter($limiter = null)
+    public function getSavePath()
     {
-        return isset($limiter) ? session_cache_limiter($limiter) : session_cache_limiter();
+        return session_save_path();
+    }
+
+    /**
+     * 设置 cookie_domain
+     *
+     * @param string $domain
+     * @return void
+     */
+    public function setCookieDomain(string $domain)
+    {
+        ini_set("session.cookie_domain", $domain);
+    }
+
+    /**
+     * 获取 cookie_domain
+     *
+     * @return string
+     */
+    public function getCookieDomain()
+    {
+        return ini_get("session.cookie_domain");
     }
 
     /**
@@ -666,121 +691,71 @@ class Session implements ISession
      * @param int $second
      * @return void
      */
-    public function cacheExpire($second = null)
+    public function setCacheExpire(int $second)
     {
-        return isset($second) ? session_cache_expire(intval($second)) : session_cache_expire();
+        $second = intval($second);
+
+        ini_set("session.gc_maxlifetime", $second);
+        ini_set("session.cookie_lifetime", $second);
     }
 
     /**
-     * session_name
+     * session 使用 cookie
      *
-     * @param string $name
-     * @return string
-     */
-    public function sessionName($name = null)
-    {
-        return isset($name) ? session_name($name) : session_name();
-    }
-
-    /**
-     * session id
-     *
-     * @param string $id
-     * @return string
-     */
-    public function sessionId($id = null)
-    {
-        return isset($id) ? session_id($id) : session_id();
-    }
-
-    /**
-     * session 的 cookie_domain 设置
-     *
-     * @param string $domain
-     * @return string
-     */
-    public function cookieDomain($domain = null)
-    {
-        $result = ini_get('session.cookie_domain');
-        if (! empty($domain)) {
-            ini_set('session.cookie_domain', $domain); // 跨域访问 session
-        }
-        return $result;
-    }
-
-    /**
-     * session 是否使用 cookie
-     *
-     * @param boolean $cookies
      * @return boolean
      */
-    public function useCookies($cookies = null)
+    public function setUseCookies()
     {
-        $result = ini_get('session.use_cookies') ? true : false;
-        if (isset($cookies)) {
-            ini_set('session.use_cookies', $cookies ? 1 : 0);
-        }
-        return $result;
+        ini_set("session.use_cookies", 1);
+        ini_set("session.use_trans_sid", 0);
     }
 
     /**
-     * 客户端禁用 cookie 可以开启这个项
+     * 设置 cache limiter
      *
-     * @param string $id
-     * @return boolean
+     * @param string $limiter
+     * @return void
      */
-    public function useTransSid($id = null)
+    public function setCacheLimiter(string $limiter)
     {
-        $result = ini_get('session.use_trans_sid') ? true : false;
-        if (isset($id)) {
-            ini_set('session.use_trans_sid', $id ? 1 : 0);
-        }
-        return $result;
+        session_cache_limiter($limiter);
     }
 
     /**
-     * 设置过期 cookie lifetime
+     * 获取 cache limiter
      *
-     * @param int $lifetime
-     * @return int
+     * @return string
      */
-    public function cookieLifetime($lifetime)
+    public function getCacheLimiter()
     {
-        $result = ini_get('session.cookie_lifetime');
-        if (intval($lifetime) >= 1) {
-            ini_set('session.cookie_lifetime', intval($lifetime));
-        }
-        return $result;
+        return session_cache_limiter();
     }
 
     /**
-     * gc maxlifetime
-     *
-     * @param int $lifetime
-     * @return int
-     */
-    public function gcMaxlifetime($lifetime = null)
-    {
-        $result = ini_get('session.gc_maxlifetime');
-        if (intval($lifetime) >= 1) {
-            ini_set('session.gc_maxlifetime', intval($lifetime));
-        }
-        return $result;
-    }
-
-    /**
-     * session 垃圾回收概率分子 (分母为 session.gc_divisor)
+     * 设置 session 垃圾回收概率分子
+     * 分母为 session.gc_divisor
      *
      * @param int $probability
+     * @return void
+     */
+    public function setGcProbability(int $probability)
+    {
+        $probability = intval($probability);
+
+        if ($probability >= 1 && $probability <= 100) {
+            ini_set("session.gc_probability", $probability);
+        }
+    }
+
+    /**
+     * 获取 session 垃圾回收概率分子
+     * 分母为 session.gc_divisor
+     *
      * @return int
      */
-    public function gcProbability($probability = null)
+    public function getGcProbability()
     {
-        $result = ini_get('session.gc_probability');
-        if (intval($probability) >= 1 && intval($probability) <= 100) {
-            ini_set('session.gc_probability', intval($probability));
-        }
-        return $result;
+        return ini_get("session.gc_probability");
     }
 
     /**
@@ -789,7 +764,7 @@ class Session implements ISession
      * @param string $name
      * @return string
      */
-    protected function getName($name)
+    protected function getNormalizeName($name)
     {
         return $this->getOption('prefix') . $name;
     }

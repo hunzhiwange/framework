@@ -383,7 +383,7 @@ class Response implements IResponse
         }
 
         if (! static::$cookieResolver) {
-            return $this;
+            throw new InvalidArgumentException("Cookie resolver is not set.");
         }
 
         $cookie = call_user_func(static::$cookieResolver);

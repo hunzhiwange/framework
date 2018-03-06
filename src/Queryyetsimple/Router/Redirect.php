@@ -19,7 +19,10 @@
  */
 namespace Queryyetsimple\Router;
 
-use Queryyetsimple\Session\ISession;
+use Queryyetsimple\{
+    Session\ISession,
+    Http\RedirectResponse
+};
 
 /**
  * Redirect
