@@ -260,28 +260,64 @@ interface ISession
     public function status();
 
     /**
-     * 获取解析 session_id
+     * 设置 SESSION 名字
      *
-     * @param string $id
+     * @param string $name
+     * @return void
+     */
+    public function setName(string $name);
+
+    /**
+     * 取得 SESSION 名字
+     *
      * @return string
      */
-    public function parseSessionId();
+    public function getName(): string;
+
+    /**
+     * 设置 SESSION ID
+     *
+     * @param string $name
+     * @return void
+     */
+    public function setId(string $id);
+
+    /**
+     * 取得 SESSION ID
+     *
+     * @return string
+     */
+    public function getId(): string;
 
     /**
      * 设置 save path
      *
      * @param string $savepath
-     * @return string
+     * @return void
      */
-    public function savePath($savepath = null);
+    public function setSavePath(string $savepath);
 
     /**
-     * 设置 cache limiter
+     * 获取 save path
      *
-     * @param string $limiter
      * @return string
      */
-    public function cacheLimiter($limiter = null);
+    public function getSavePath();
+
+    /**
+     * 设置 cookie_domain
+     *
+     * @param string $domain
+     * @return void
+     */
+    public function setCookieDomain(string $domain);
+
+    /**
+     * 获取 cookie_domain
+     *
+     * @return string
+     */
+    public function getCookieDomain();
 
     /**
      * 设置 cache expire
@@ -289,69 +325,44 @@ interface ISession
      * @param int $second
      * @return void
      */
-    public function cacheExpire($second = null);
+    public function setCacheExpire(int $second);
 
     /**
-     * session_name
+     * session 使用 cookie
      *
-     * @param string $name
-     * @return string
-     */
-    public function sessionName($name = null);
-
-    /**
-     * session id
-     *
-     * @param string $id
-     * @return string
-     */
-    public function sessionId($id = null);
-
-    /**
-     * session 的 cookie_domain 设置
-     *
-     * @param string $domain
-     * @return string
-     */
-    public function cookieDomain($domain = null);
-
-    /**
-     * session 是否使用 cookie
-     *
-     * @param boolean $cookies
      * @return boolean
      */
-    public function useCookies($cookies = null);
+    public function setUseCookies();
 
     /**
-     * 客户端禁用 cookie 可以开启这个项
+     * 设置 cache limiter
      *
-     * @param string $id
-     * @return boolean
+     * @param string $limiter
+     * @return void
      */
-    public function useTransSid($id = null);
+    public function setCacheLimiter(string $limiter);
 
     /**
-     * 设置过期 cookie lifetime
+     * 获取 cache limiter
      *
-     * @param int $lifetime
-     * @return int
+     * @return string
      */
-    public function cookieLifetime($lifetime);
+    public function getCacheLimiter();
 
     /**
-     * gc maxlifetime
-     *
-     * @param int $lifetime
-     * @return int
-     */
-    public function gcMaxlifetime($lifetime = null);
-
-    /**
-     * session 垃圾回收概率分子 (分母为 session.gc_divisor)
+     * 设置 session 垃圾回收概率分子
+     * 分母为 session.gc_divisor
      *
      * @param int $probability
+     * @return void
+     */
+    public function setGcProbability(int $probability);
+
+    /**
+     * 获取 session 垃圾回收概率分子
+     * 分母为 session.gc_divisor
+     *
      * @return int
      */
-    public function gcProbability($probability = null);
+    public function getGcProbability();
 }
