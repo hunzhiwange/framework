@@ -221,7 +221,7 @@ class Register extends Provider
     protected function cookieResolver()
     {
         Response::setCookieResolver(function() {
-            return $project['cookie'];
+            return $this->container['cookie'];
         });
     }
 }

@@ -257,7 +257,7 @@ class ResponseFactory
      * @return $this
      */
     public function apiOk($content = '', $text = null) {
-        return $this->createApiResponse()->ok($location, $text);
+        return $this->createApiResponse()->ok($content, $text);
     }
 
     /**
