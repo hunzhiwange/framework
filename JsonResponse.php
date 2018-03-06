@@ -48,13 +48,6 @@ class JsonResponse extends Response
     protected $data;
 
     /**
-     * 默认 JSON 格式化参数 
-     *  
-     * @var int
-     */
-    const DEFAULT_ENCODING_OPTIONS = 256;
-
-    /**
      * JSON 格式化参数
      * 
      * @var int
@@ -67,6 +60,13 @@ class JsonResponse extends Response
      * @var \callable
      */
     protected $callback;
+
+    /**
+     * 默认 JSON 格式化参数 
+     *  
+     * @var int
+     */
+    const DEFAULT_ENCODING_OPTIONS = 256;
 
     /**
      * 构造函数

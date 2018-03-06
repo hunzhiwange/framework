@@ -58,7 +58,7 @@ class Response implements IResponse
     public $headers;
 
     /**
-     * 原生响应内容.
+     * 原生响应内容
      *
      * @var mixed
      */
@@ -538,7 +538,7 @@ class Response implements IResponse
         $this->statusCode = $code;
 
         if ($this->isInvalid()) {
-            throw new InvalidArgumentException(sprintf('The HTTP status code "%s" is not valid.', $code));
+            throw new InvalidArgumentException(sprintf('The HTTP status code %s is not valid.', $code));
         }
 
         if (null === $text) {
