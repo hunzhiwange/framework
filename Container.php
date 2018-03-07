@@ -213,7 +213,7 @@ class Container implements IContainer, ArrayAccess
         }
 
         $result = [];
-        $instance = ( array ) $this->groups[$group];
+        $instance = (array) $this->groups[$group];
         foreach ($instance as $item) {
             $result[$item] = $this->make($item, $args);
         }
