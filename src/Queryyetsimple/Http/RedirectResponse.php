@@ -101,11 +101,89 @@ class RedirectResponse extends Response
      */
     public function with($key, $value = null)
     {
-        $key = is_array($key) ? $key : [$key => $value];
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $key = is_array($key) ? $key : [
+            $key => $value
+        ];
 
         foreach ($key as $k => $v) {
             $this->session->flash($k, $v);
         }
+
+        return $this;
+    }
+
+    /**
+     * 闪存输入信息
+     *
+     * @param array $input
+     * @return $this
+     */
+    public function withInput(array $input = null)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $input = $input ?: $this->request->input();
+
+        $inputs = array_merge($this->session->getFlash('inputs', []), $input);
+
+        $this->session->flash('inputs', $inputs);
+
+        return $this;
+    }
+
+    /**
+     * 闪存输入信息
+     *
+     * @return $this
+     */
+    public function onlyInput()
+    {
+        $args = func_get_args();
+        if (! $args) {
+            throw new InvalidArgumentException('Method onlyInput need an args.');
+        }
+
+        return $this->withInput($this->request->only($args));
+    }
+
+    /**
+     * 闪存输入信息
+     *
+     * @return $this
+     */
+    public function exceptInput()
+    {  
+        $args = func_get_args();
+        if (! $args) {
+            throw new InvalidArgumentException('Method exceptInput need an args.');
+        }
+
+        return $this->withInput($this->request->except($args));
+    }
+
+    /**
+     * 闪存错误信息
+     *
+     * @param mixed $value
+     * @param string $key
+     * @return $this
+     */
+    public function withErrors($value, string $key = 'default')
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
+        $errors = $this->session->getFlash('errors', []);
+        $errors[$key] = $value;
+
+        $this->session->flash('errors', $errors);
 
         return $this;
     }

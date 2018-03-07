@@ -369,6 +369,19 @@ class Response implements IResponse
     }
 
     /**
+     * 设置 COOKIE 别名
+     *
+     * @param string $name
+     * @param string $value
+     * @param array $option
+     * @return $this
+     */
+    public function cookie($name, $value = '', array $option = [])
+    {
+        return $this->setCookie($name, $value, $option);
+    }
+
+    /**
      * 设置 COOKIE
      *
      * @param string $name
@@ -396,16 +409,17 @@ class Response implements IResponse
      * 批量设置 COOKIE
      *
      * @param array $cookies
+     * @param array $option
      * @return $this
      */
-    public function withCookies(array $cookies)
+    public function withCookies(array $cookies, array $option = [])
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        foreach ($cookies as $value) {
-            call_user_func_array([$this, 'setCookie'], $value);
+        foreach ($cookies as $key => $value) {
+            $this->setCookie($key, $value, $option);
         }
 
         return $this;
