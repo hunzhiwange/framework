@@ -21,6 +21,7 @@ namespace tests\Router;
 
 use tests\testcase;
 use Queryyetsimple\Router\Url;
+use Queryyetsimple\Http\Request;
 
 /**
  * url 组件测试
@@ -40,17 +41,27 @@ class UrlTest extends testcase
      */
     protected function setUp()
     {
-        $this->url = new Url();
+        $request = Request::createFromGlobals();
 
-        $this->urlDomain = new Url([
+        $request->
+
+        setApp('home')->
+
+        setController('index')->
+
+        setAction('index');
+
+        $this->url = new Url($request);
+
+        $this->urlDomain = new Url($request, [
             'router_domain_top' => 'queryphp.com'
         ]);
 
-        $this->urlNormal = new Url([
+        $this->urlNormal = new Url($request, [
             'model' => 'default'
         ]);
 
-        $this->urlNormalDomain = new Url([
+        $this->urlNormalDomain = new Url($request, [
             'model' => 'default',
             'router_domain_top' => 'queryphp.com'
         ]);
@@ -63,15 +74,21 @@ class UrlTest extends testcase
      */
     public function testPathinfoUrl()
     {
+        $this->assertEquals($this->url->make('/'), '/'); 
+
         $this->assertEquals($this->url->make('test/hello'), '/test/hello.html'); 
 
-        $this->assertEquals($this->url->make('test/hello?arg1=1&arg2=3'), '/test/hello/arg1/1/arg2/3.html'); 
+        $this->assertEquals($this->url->make('test/hello?arg1=1&arg2=3'), '/test/hello.html?arg1=1&arg2=3');
 
-        $this->assertEquals($this->url->make('myapp://hello/world' ,['id'=>5,'name'=>'yes']), '/myapp/hello/world/id/5/name/yes.html'); 
+        $this->assertEquals($this->url->make('test/hello?arg1=1&arg2=3'), '/test/hello.html?arg1=1&arg2=3');
+
+        $this->assertEquals($this->url->make('test/sub1/sub2/hello?arg1=1&arg2=3'), '/test/sub1/sub2/hello.html?arg1=1&arg2=3');
+
+        $this->assertEquals($this->url->make('myapp://hello/world' ,['id'=>5,'name'=>'yes']), '/myapp/hello/world.html?id=5&name=yes'); 
 
         $this->assertEquals($this->url->make('myapp://test'), '/myapp/test.html'); 
 
-        $this->assertEquals($this->url->make('hello/world', [], ['normal' => true]), '?app=home&c=hello&a=world'); 
+        $this->assertEquals($this->url->make('hello/world', [], ['normal' => true]), '?_app=home&_c=hello&_a=world'); 
 
         $this->assertEquals($this->url->make('hello/world', [], ['suffix' => false]), '/hello/world'); 
 
@@ -93,9 +110,15 @@ class UrlTest extends testcase
      */
     public function testCustomUrl()
     {
+        $this->assertEquals($this->url->make('/'), '/');
+
         $this->assertEquals($this->url->make('/hello-world'), '/hello-world.html'); 
 
-        $this->assertEquals($this->url->make('/new-{id}-{name}', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom/arg1/5.html'); 
+        $this->assertEquals($this->url->make('/new-{id}-{name}', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom.html?arg1=5');
+
+        $this->assertEquals($this->url->make('/new-{id}-{name}?hello=world', ['id' => 5, 'name' => 'tom', 'arg1' => '5']), '/new-5-tom.html?hello=world&arg1=5');
+
+        $this->assertEquals($this->url->make('/new-{id}-{name}?hello={foo}', ['id' => 5, 'name' => 'tom', 'foo' => 'bar', 'arg1' => '5']), '/new-5-tom.html?hello=bar&arg1=5');
     }
 
     /**
@@ -105,14 +128,20 @@ class UrlTest extends testcase
      */
     public function testNormalUrl()
     {
-        $this->assertEquals($this->urlNormal->make('test/hello'), '?c=test&a=hello');
+        $this->assertEquals($this->urlNormal->make('/'), '');
 
-        $this->assertEquals($this->urlNormal->make('test/hello?arg1=1&arg2=3'), '?c=test&a=hello&arg1=1&arg2=3');
+        $this->assertEquals($this->urlNormal->make('test/hello'), '?_c=test&_a=hello');
 
-        $this->assertEquals($this->urlNormal->make('test/hello?arg1=1&arg2=3', ['foo' => 'bar']), '?c=test&a=hello&arg1=1&arg2=3&foo=bar');
+        $this->assertEquals($this->urlNormal->make('test/hello?arg1=1&arg2=3'), '?_c=test&_a=hello&arg1=1&arg2=3');
 
-        $this->assertEquals($this->urlNormal->make('group://test/hello?arg1=1&arg2=3', ['foo' => 'bar']), '?app=group&c=test&a=hello&arg1=1&arg2=3&foo=bar');
+        $this->assertEquals($this->urlNormal->make('test/hello?arg1=1&arg2=3', ['foo' => 'bar']), '?_c=test&_a=hello&arg1=1&arg2=3&foo=bar');
 
-        $this->assertEquals($this->urlNormalDomain->make('group://test/hello?arg1=1&arg2=3', ['foo' => 'bar']), 'http://www.queryphp.com?app=group&c=test&a=hello&arg1=1&arg2=3&foo=bar');
+        $this->assertEquals($this->urlNormal->make('group://test/hello?arg1=1&arg2=3', ['foo' => 'bar']), '?_app=group&_c=test&_a=hello&arg1=1&arg2=3&foo=bar');
+
+        $this->assertEquals($this->urlNormalDomain->make('group://test/hello?arg1=1&arg2=3', ['foo' => 'bar']), 'http://www.queryphp.com?_app=group&_c=test&_a=hello&arg1=1&arg2=3&foo=bar');
+        
+        $this->assertEquals($this->urlNormal->make('test/subdir/subdir2/hello?query1=1&query2=2'), '?_c=test&_a=hello&_prefix=subdir%5Csubdir2&query1=1&query2=2');
+
+        $this->assertEquals($this->urlNormal->make('test/subdir/subdir2/hello?_params[]=1&_params[]=2&_params[foo]=bar'), '?_c=test&_a=hello&_prefix=subdir%5Csubdir2&_params%5B0%5D=1&_params%5B1%5D=2&_params%5Bfoo%5D=bar');
     }
 }

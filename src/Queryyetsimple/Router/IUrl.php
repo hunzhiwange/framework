@@ -41,7 +41,7 @@ interface IUrl
      * @sub string subdomain 子域名
      * @return string
      */
-    public function make($url, $params = [], $option = []);
+    public function make(string $url, array $params = [], array $option = []);
 
     /**
      * 返回 HTTP 请求

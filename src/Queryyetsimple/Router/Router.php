@@ -43,14 +43,14 @@ use Queryyetsimple\{
  * @since 2017.01.10
  * @version 1.0
  */
-class Router
+class Router implements IRouter
 {
     use TMacro;
 
     use TClass;
 
     /**
-     * container
+     * IOC Container
      *
      * @var \Queryyetsimple\Di\IContainer
      */
@@ -183,76 +183,6 @@ class Router
     protected $arrDomainRouters = [];
 
     /**
-     * 默认替换参数[字符串]
-     *
-     * @var string
-     */
-    const DEFAULT_REGEX = '\S+';
-
-    /**
-     * 应用参数名
-     *
-     * @var string
-     */
-    const APP = '_app';
-
-    /**
-     * 控制器参数名
-     *
-     * @var string
-     */
-    const CONTROLLER = '_c';
-
-    /**
-     * 方法参数名
-     *
-     * @var string
-     */
-    const ACTION = '_a';
-
-    /**
-     * 解析参数名
-     *
-     * @var string
-     */
-    const PARAMS = '_params';
-
-    /**
-     * 控制器前缀
-     *
-     * @var string
-     */
-    const PREFIX = '_prefix';
-
-    /**
-     * restful show
-     *
-     * @var string
-     */
-    const RESTFUL_SHOW = 'show';
-
-    /**
-     * restful store
-     *
-     * @var string
-     */
-    const RESTFUL_STORE = 'store';
-
-    /**
-     * restful update
-     *
-     * @var string
-     */
-    const RESTFUL_UPDATE = 'update';
-
-    /**
-     * restful destroy
-     *
-     * @var string
-     */
-    const RESTFUL_DESTROY = 'destroy';
-
-    /**
      * 路由匹配数据
      * 
      * @var array
@@ -290,6 +220,13 @@ class Router
         // 路由别名
         'middleware_alias' => []
     ];
+
+    /**
+     * 默认替换参数[字符串]
+     *
+     * @var string
+     */
+    const DEFAULT_REGEX = '\S+';
 
     /**
      * 构造函数
