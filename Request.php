@@ -1101,6 +1101,10 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function getEnter()
     {
+        if ($this->isCli()) {
+            return '';
+        }
+
         $scriptName = $this->getScriptName();
 
         if ($this->getOption('rewrite') !== true) {
@@ -1262,7 +1266,6 @@ class Request implements IRequest, IArray, ArrayAccess
         // 服务器重写
         if ($this->query->get(static::PATHINFO_URL)) {
             $pathInfo = $this->parsePathInfo($this->query->get(static::PATHINFO_URL));
-            $this->query->remove(static::PATHINFO_URL);
             return $this->pathInfo = $pathInfo;
         }
 
