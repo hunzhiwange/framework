@@ -19,65 +19,16 @@
  */
 namespace Queryyetsimple\Router;
 
-use Queryyetsimple\{
-    Mvc\IView,
-    Http\Response,
-    Http\ApiResponse,
-    Http\FileResponse,
-    Http\JsonResponse
-};
-
 /**
- * 响应工厂
+ * 响应工厂接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2018.03.03
+ * @since 2018.03.07
  * @version 1.0
  */
-class ResponseFactory implements IResponseFactory
+interface IResponseFactory
 {
-
-    /**
-     * 视图
-     *
-     * @var \Queryyetsimple\Mvc\IView
-     */
-    protected $view;
-
-    /**
-     * 跳转实例
-     *
-     * @var \Queryyetsimple\Router\Redirector
-     */
-    protected $redirector;
-
-    /**
-     * 视图正确模板
-     *
-     * @var string
-     */
-    protected $viewSuccessTemplate = 'public+success';
-
-    /**
-     * 视图错误模板
-     *
-     * @var string
-     */
-    protected $viewFailTemplate = 'public+fail';
-
-    /**
-     * 构造函数
-     *
-     * @param \Queryyetsimple\Mvc\IViewy $view
-     * @param \Queryyetsimple\Router\Redirect $redirector
-     * @return void
-     */
-    public function __construct(IView $view, Redirect $redirector)
-    {
-        $this->view = $view;
-        $this->redirector = $redirector;
-    }
 
     /**
      * 返回一个响应
@@ -87,10 +38,7 @@ class ResponseFactory implements IResponseFactory
      * @param array $headers
      * @return \Queryyetsimple\Http\Response
      */
-    public function make($content = '', $status = 200, array $headers = [])
-    {
-        return new Response($content, $status, $headers);
-    }
+    public function make($content = '', $status = 200, array $headers = []);
 
     /**
      * 返回视图响应
@@ -102,10 +50,7 @@ class ResponseFactory implements IResponseFactory
      * @param array $headers
      * @return \Queryyetsimple\Http\Response
      */
-    public function view($file = null, array $vars = [], string $ext = '', $status = 200, array $headers = [])
-    {
-        return $this->make($this->view->display($file, $vars, $ext), $status, $headers);
-    }
+    public function view($file = null, array $vars = [], string $ext = '', $status = 200, array $headers = []);
 
     /**
      * 返回视图正确消息
@@ -117,16 +62,7 @@ class ResponseFactory implements IResponseFactory
      * @param array $headers
      * @return \Queryyetsimple\Http\Response
      */
-    public function viewSuccess($message = '', $url = '', $time = 1, $status = 200, array $headers = [])
-    {
-        $vars = [
-            'message' => $message ?: 'Succeed',
-            'url' => $url,
-            'time' => $time  
-        ];
-
-        return $this->view($this->viewSuccessTemplate, $vars, '', $status, $headers);
-    }
+    public function viewSuccess($message = '', $url = '', $time = 1, $status = 200, array $headers = []);
 
     /**
      * 返回视图错误消息
@@ -138,16 +74,7 @@ class ResponseFactory implements IResponseFactory
      * @param array $headers
      * @return \Queryyetsimple\Http\Response
      */
-    public function viewError($message = '', $url = '', $time = 3, $status = 200, array $headers = [])
-    {
-        $vars = [
-            'message' => $message ?: 'Failed',
-            'url' => $url,
-            'time' => $time  
-        ];
-
-        return $this->view($this->viewFailTemplate, $vars, '', $status, $headers);
-    }
+    public function viewError($message = '', $url = '', $time = 3, $status = 200, array $headers = []);
 
     /**
      * 返回 JSON 响应
@@ -158,10 +85,7 @@ class ResponseFactory implements IResponseFactory
      * @param bool $json
      * @return \Queryyetsimple\Http\JsonResponse
      */
-    public function json($data = null, int $status = 200, array $headers = [], bool $json = false)
-    {
-        return new JsonResponse($data, $status, $headers, $json);
-    }
+    public function json($data = null, int $status = 200, array $headers = [], bool $json = false);
 
     /**
      * 返回 JSONP 响应
@@ -173,12 +97,7 @@ class ResponseFactory implements IResponseFactory
      * @param bool $json
      * @return \Queryyetsimple\Http\JsonResponse
      */
-    public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false)
-    {
-        return $this->json($data, $status, $headers, $json)->
-
-        setCallback($callback);
-    }
+    public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false);
 
     /**
      * 返回下载响应
@@ -191,16 +110,7 @@ class ResponseFactory implements IResponseFactory
      * @param bool $autoLastModified
      * @return \Queryyetsimple\Http\FileResponse
      */
-    public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true)
-    {
-        $response = new FileResponse($file, $status, $headers, FileResponse::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
-
-        if (! is_null($name)) {
-            return $response->setContentDisposition(FileResponse::DISPOSITION_ATTACHMENT, $name);
-        }
-
-        return $response;
-    }
+    public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true);
 
     /**
      * 返回文件响应
@@ -212,10 +122,7 @@ class ResponseFactory implements IResponseFactory
      * @param bool $autoLastModified
      * @return \Queryyetsimple\Http\FileResponse
      */
-    public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true)
-    {
-        return new FileResponse($file, $status, $headers, FileResponse::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
-    }
+    public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true);
 
     /*
      * 返回一个 URL 生成跳转响应
@@ -230,10 +137,7 @@ class ResponseFactory implements IResponseFactory
      * @param array $headers
      * @return \Queryyetsimple\Http\RedirectResponse
      */
-    public function redirect(?string $url, $params = [], $option = [], int $status = 302, array $headers = [])
-    {
-        return $this->redirector->url($url, $params, $option, $status, $headers);
-    }
+    public function redirect(?string $url, $params = [], $option = [], int $status = 302, array $headers = []);
 
     /**
      * 返回一个跳转响应
@@ -243,10 +147,7 @@ class ResponseFactory implements IResponseFactory
      * @param array $headers
      * @return \Queryyetsimple\Http\RedirectResponse
      */
-    public function redirectRaw(?string $url, int $status = 302, array $headers = [])
-    {
-        return $this->redirector->raw($url, $status, $headers);
-    }
+    public function redirectRaw(?string $url, int $status = 302, array $headers = []);
 
     /**
      * 请求成功
@@ -256,9 +157,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiOk($content = '', $text = null) {
-        return $this->createApiResponse()->ok($content, $text);
-    }
+    public function apiOk($content = '', $text = null);
 
     /**
      * 已创建
@@ -267,10 +166,7 @@ class ResponseFactory implements IResponseFactory
      * @param null|string $location
      * @return $this
      */
-    public function apiCreated($location = '', $content = '')
-    {
-        return $this->createApiResponse()->created($location, $content);
-    }
+    public function apiCreated($location = '', $content = '');
 
     /**
      * 已接受
@@ -280,10 +176,7 @@ class ResponseFactory implements IResponseFactory
      * @param mixed $content
      * @return $this
      */
-    public function apiAccepted($location = null, $content = '')
-    {
-        return $this->createApiResponse()->accepted($location, $content);
-    }
+    public function apiAccepted($location = null, $content = '');
 
     /**
      * 无内容
@@ -291,10 +184,7 @@ class ResponseFactory implements IResponseFactory
      *
      * @return $this
      */
-    public function apiNoContent()
-    {
-        return $this->createApiResponse()->noContent();
-    }
+    public function apiNoContent();
 
     /**
      * 无法处理的实体
@@ -305,9 +195,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiUnprocessableEntity(array $errors = null, $message = null, $text = null) {
-        return $this->createApiResponse()->unprocessableEntity($errors, $message, $text);
-    }
+    public function apiUnprocessableEntity(array $errors = null, $message = null, $text = null);
 
     /**
      * 错误请求
@@ -318,9 +206,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiError($message, $statusCode, $text = null) {
-        return $this->createApiResponse()->error($message, $statusCode, $text);
-    }
+    public function apiError($message, $statusCode, $text = null);
 
     /**
      * 错误请求
@@ -330,9 +216,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiBadRequest($message = null, $text = null) {
-        return $this->createApiResponse()->badRequest($message, $text);
-    }
+    public function apiBadRequest($message = null, $text = null);
 
     /**
      * 未授权
@@ -342,9 +226,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiUnauthorized($message = null, $text = null) {
-        return $this->createApiResponse()->unauthorized($message, $text);
-    }
+    public function apiUnauthorized($message = null, $text = null);
 
     /**
      * 禁止
@@ -354,9 +236,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiForbidden($message = null, $text = null) {
-        return $this->createApiResponse()->forbidden($message, $text);
-    }
+    public function apiForbidden($message = null, $text = null);
 
     /**
      * 未找到
@@ -366,9 +246,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiNotFound($message = null, $text = null) {
-        return $this->createApiResponse()->notFound($message, $text);
-    }
+    public function apiNotFound($message = null, $text = null);
 
     /**
      * 方法禁用
@@ -378,9 +256,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiMethodNotAllowed($message = null, $text = null) {
-        return $this->createApiResponse()->methodNotAllowed($message, $text);
-    }
+    public function apiMethodNotAllowed($message = null, $text = null);
 
     /**
      * 太多请求
@@ -390,9 +266,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiTooManyRequests($message = null, $text = null) {
-        return $this->createApiResponse()->tooManyRequests($message, $text);
-    }
+    public function apiTooManyRequests($message = null, $text = null);
 
     /**
      * 服务器内部错误
@@ -402,9 +276,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiInternalServerError($message = null, $text = null) {
-        return $this->createApiResponse()->internalServerError($message, $text);
-    }
+    public function apiInternalServerError($message = null, $text = null);
 
     /**
      * 设置视图正确模板
@@ -412,11 +284,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $template
      * @return $this
      */
-    public function setViewSuccessTemplate(string $template) {
-        $this->viewSuccessTemplate = $template;
-
-        return $this;
-    }
+    public function setViewSuccessTemplate(string $template);
 
     /**
      * 设置视图错误模板
@@ -424,18 +292,5 @@ class ResponseFactory implements IResponseFactory
      * @param string $template
      * @return $this
      */
-    public function setViewFailTemplate(string $template) {
-        $this->viewFailTemplate = $template;
-
-        return $this;
-    }
-
-    /**
-     * 创建基础 API 响应
-     * 
-     * @return \Queryyetsimple\Http\ApiResponse
-     */
-    protected function createApiResponse() {
-        return new ApiResponse();
-    }
+    public function setViewFailTemplate(string $template);
 }

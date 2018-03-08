@@ -115,7 +115,7 @@ class Url implements IUrl
      * @sub string subdomain 子域名
      * @return string
      */
-    public function make($url, $params = [], $option = [])
+    public function make(string $url, array $params = [], array $option = [])
     {
         $option = array_merge($this->makeOption, $option);
 
@@ -131,6 +131,10 @@ class Url implements IUrl
             }
 
             $url = $this->withSuffix($url, $option['suffix']);
+
+            if ($this->parseMvc['params']) {
+                $url .= '?' . http_build_query($this->parseMvc['params']);
+            }
         } else {
             $url = $this->normalUrl($option['normal']);
         }
@@ -156,43 +160,20 @@ class Url implements IUrl
      */
     protected function pathinfoUrl() 
     {
-        $params = $this->parseMvc['params'];
+        $url = $this->parseEnter() . 
+            (! $this->equalDefault('app') ? '/' . $this->parseMvc['app'] . '/' : '/');
 
-        // 额外参数
-        $paramUrl = '/';
-        foreach ($params as $key => $val) {
-            if (! is_scalar($val)) {
-                if (is_array($val) && $val) {
-                    $paramUrl .= implode('/', $val) . '/';
-                }
-                continue;
-            }
-            $paramUrl .= $key . '/' . urlencode($val) . '/';
+        if ($this->parseMvc['prefix']) {
+            $this->parseMvc['action'] = str_replace('\\', '/', $this->parseMvc['prefix']) . '/' . 
+                $this->parseMvc['action'];
         }
-        $paramUrl = substr($paramUrl, 0, - 1);
 
-        // 分析 url
-        $url = $this->parseEnter() . (! $this->equalDefault('app') ? '/' . $this->parseMvc['app'] . '/' : '/');
+        if (! $this->equalDefault('controller') || ! $this->equalDefault('action')) {
+            $url .= $this->parseMvc['controller'];
+        }
 
-        if ($paramUrl) {
-            $url .= $this->parseMvc['controller'] . '/' . $this->parseMvc['action'] . $paramUrl;
-        } else {
-            $tmp = '';
-
-            if (! $this->equalDefault('controller') || ! $this->equalDefault('action')) {
-                $tmp .= $this->parseMvc['controller'];
-            }
-            if (! $this->equalDefault('action')) {
-                $tmp .= '/' . $this->parseMvc['action'];
-            }
-
-            if ($tmp == '') {
-                $url = rtrim($url, '/' . '/');
-            } else {
-                $url .= $tmp;
-            }
-
-            unset($tmp);
+        if (! $this->equalDefault('action')) {
+            $url .= '/' . $this->parseMvc['action'];
         }
 
         return $url;
@@ -206,13 +187,11 @@ class Url implements IUrl
      */
     protected function customUrl(string $url) 
     {
-        $params = $this->parseMvc['params'];
-
         if (strpos($url, '{') !== false) {
-            $url = preg_replace_callback("/{(.+?)}/", function ($match) use (&$params) {
-                if (isset($params[$match[1]])) {
-                    $result = $params[$match[1]];
-                    unset($params[$match[1]]);
+            $url = preg_replace_callback("/{(.+?)}/", function ($match) {
+                if (isset($this->parseMvc['params'][$match[1]])) {
+                    $result = $this->parseMvc['params'][$match[1]];
+                    unset($this->parseMvc['params'][$match[1]]);
                 } else {
                     $result = $match[0];
                 }
@@ -221,20 +200,18 @@ class Url implements IUrl
             }, $url);
         }
 
-        // 额外参数
-        $paramUrl = '/';
-        foreach ($params as $key => $val) {
-            if (! is_scalar($val)) {
-                if (is_array($val) && $val) {
-                    $paramUrl .= implode('/', $val) . '/';
-                }
-                continue;
-            }
-            $paramUrl .= $key . '/' . urlencode($val) . '/';
-        }
-        $paramUrl = substr($paramUrl, 0, - 1);
+        if (strpos($url, '?') !== false) {
+            $tmp = explode('?', $url);
+            $url = $tmp[0];
 
-        $url .= $paramUrl;
+            parse_str($tmp[1], $tmpQuery);
+            
+            foreach ($this->parseMvc['params'] as $k => $v) {
+                $tmpQuery[$k] = $v;
+            }
+
+            $this->parseMvc['params'] = $tmpQuery;
+        }
 
         return $url;
     }
@@ -247,41 +224,31 @@ class Url implements IUrl
      */
     protected function normalUrl(bool $normal) 
     {
-        $params = $this->parseMvc['params'];
+        $querys = [];
 
-        $paramUrl = '';
-        foreach ($params as $key => $val) {
-            if (! is_scalar($val)) {
-                if (is_array($val) && $val) {
-                    $paramUrl .= implode('/', $val) . '/';
-                }
-                continue;
-            }
-            $paramUrl .= $key . '=' . urlencode($val) . '&';
-        }
-        $paramUrl = rtrim($paramUrl, '&');
-
-        $tmp = [];
         if ($normal || ! $this->equalDefault('app')) {
-            $tmp[] = Router::APP . '=' . $this->parseMvc['app'];
+            $querys[IRouter::APP] = $this->parseMvc['app'];
         }
 
         if (! $this->equalDefault('controller')) {
-            $tmp[] = Router::CONTROLLER . '=' . $this->parseMvc['controller'];
+            $querys[IRouter::CONTROLLER] = $this->parseMvc['controller'];
         }
+
         if (! $this->equalDefault('action')) {
-            $tmp[] = Router::ACTION . '=' . $this->parseMvc['action'];
-        }
-        if ($paramUrl) {
-            $tmp[] = $paramUrl;
-        }
-        if (! empty($tmp)) {
-            $tmp = '?' . implode('&', $tmp);
+            $querys[IRouter::ACTION] = $this->parseMvc['action'];
         }
 
-        $url = $this->parseEnter($normal) . $tmp;
+        if ($this->parseMvc['prefix']) {
+            $querys[IRouter::PREFIX] = $this->parseMvc['prefix'];
+        }
 
-        unset($tmp);
+        $params = $this->parseMvc['params'];
+
+        foreach ($params as $key => $val) {
+            $querys[$key] = $val;
+        }
+
+        $url = $this->parseEnter($normal) . ($querys ? '?' . http_build_query($querys) : '');
 
         return $url;
     }
@@ -296,13 +263,13 @@ class Url implements IUrl
      */
     protected function parseMvc(string $url, array $params, bool $custom) 
     {
-        if ( $custom) {
+        if ($custom) {
             return [
                 'params' => $params
             ];
         }
 
-        if ($url != '') {
+        if (! in_array($url, ['', '/'])) {
             if (! strpos($url, '://')) {
                 $url = $this->request->app() . '://' . $url;
             }
@@ -311,54 +278,73 @@ class Url implements IUrl
             $parse = [];
         }
 
+        $result = [
+            'app' => '',
+            'controller' => '',
+            'action' => '',
+            'params' => [],
+            'prefix' => ''
+        ];
+
+        if ($url === '/') {
+            $result['app'] = $this->getOption('default_app');
+            $result['controller'] = $this->getOption('default_controller');
+            $result['action'] = $this->getOption('default_action');
+        }
+
         // app、controller 和 action
-        $app = $parse['scheme'] ?? $this->request->app(); 
-        $controller = $action = null;
+        $result['app'] = $parse['scheme'] ?? $this->request->app();
         
         $mvc = [
-            Router::APP => 'app',
-            Router::CONTROLLER => 'controller',
-            Router::ACTION => 'action'
+            IRouter::APP => 'app',
+            IRouter::CONTROLLER => 'controller',
+            IRouter::ACTION => 'action'
         ];
 
         foreach($mvc as $key => $item) {
             if (isset($params[$key])) {
-                $$item = $params[$key];
+                $result[$item] = $params[$key];
                 unset($params[$key]);
             }
         }
 
         if (isset($parse['path'])) {
-            if (! $controller) {
-                $controller = $parse['host'] ?? $this->request->controller();
+            if (! $result['controller']) {
+                $result['controller'] = $parse['host'] ?? $this->request->controller();
             }
 
-            if (! $action) {
-                $action = substr($parse['path'], 1);
+            if (! $result['action']) {
+                $result['action'] = substr($parse['path'], 1);
             }
         } else {
-            if (! $controller) {
-                $controller = $parse['host'] ?? $this->request->controller();
+            if (! $result['controller']) {
+                $result['controller'] = $parse['host'] ?? $this->request->controller();
             }
 
-            if (! $action) {
-                $action = $this->request->action();
+            if (! $result['action']) {
+                $result['action'] = $this->request->action();
             }
         }
 
-        // 如果指定了查询参数
+        if (strpos($result['action'], '/') !== false) {
+            $tmpAction = explode('/', $result['action']);
+            $result['action'] = array_pop($tmpAction);
+            $result['prefix'] = implode('\\', $tmpAction);
+        }
+
         if (isset($parse['query'])) {
-            $tmp = [];
-            parse_str($parse['query'], $tmp);
-            $params = array_merge($tmp, $params);
+            parse_str($parse['query'], $tmpQuery);
+            
+            foreach ($params as $k => $v) {
+                $tmpQuery[$k] = $v;
+            }
+
+            $result['params'] = $tmpQuery;
+        } else {
+            $result['params'] = $params;
         }
 
-        return [
-            'app' => $app,
-            'controller' => $controller,
-            'action' => $action,
-            'params' => $params
-        ];
+        return $result;
     }
 
     /**
@@ -370,7 +356,8 @@ class Url implements IUrl
      */
     protected function urlWithDomain(string $url, string $domain)
     {
-        if ($this->getOption('make_subdomain_on') !== true || ! $this->getOption('router_domain_top') || 
+        if ($this->getOption('make_subdomain_on') !== true || 
+            ! $this->getOption('router_domain_top') || 
             ! $domain) {
             return $url;
         }
@@ -380,7 +367,10 @@ class Url implements IUrl
             $this->httpSuffix = $this->getOption('router_domain_top');
         }
 
-        return $this->httpPrefix . ($domain && $domain != '*' ? $domain . '.' : '') . $this->httpSuffix . $url;
+        return $this->httpPrefix . 
+            ($domain && $domain != '*' ? $domain . '.' : '') . 
+            $this->httpSuffix . 
+            $url;
     }
 
     /**
@@ -388,15 +378,9 @@ class Url implements IUrl
      *
      * @return boolean
      */
-    public function isSecure()
+    protected function isSecure()
     {
-        if (isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))) {
-            return true;
-        } elseif (isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {
-            return true;
-        }
-        
-        return false;
+        return $this->request->isSecure();
     }
 
     /**
@@ -418,7 +402,8 @@ class Url implements IUrl
      * @return string
      */
     protected function withSuffix($url, $suffix) {
-        if ($suffix && $url) {
+
+        if ($suffix && $url && $url != '/') {
             $url .= $suffix === true ? $this->getOption('html_suffix') : $suffix;
         }
 
@@ -454,6 +439,6 @@ class Url implements IUrl
      * @return boolean
      */
     protected function isCustom(string $url) {
-        return 0 === strpos($url, '/');
+        return $url !== '/' &&  0 === strpos($url, '/');
     }
 }
