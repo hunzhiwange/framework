@@ -174,36 +174,24 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
         list($key, $filter) = $this->parseKeyFilter($key, $filter);
 
-        $isPart = false;
+        $part = '';
         if (strpos($key, '\\') !== false) {
-            $isPart = true;
-            list($key) = explode('\\', $key);
+            list($key, $part) = explode('\\', $key);
         }
-dump($key);
+
         $result = array_key_exists($key, $this->elements) ? $this->elements[$key] : $default;
 
-ddd($result);
-
-        if ($isPart) {
-            $result = $this->getPartData($key, $result);
+        if ($part) {
+            $result = $this->getPartData($part, $result);
         }
-
-        ddd($result);
-
-        exit();
 
         if ($filter) {
             $options = $this->formatOptions($result, $options);
-ddd($result);
+
             $result = $this->filterValue($result, $default, $filter, $options);
-            ddd($result);
         }
 
-        if (isset($keyOld)) {
-            return $this->getPartData($keyOld, $result);
-        } else {
-            return $result;
-        }
+        return $result;
     }
 
     /**
@@ -341,8 +329,29 @@ ddd($result);
         list($filter, $extend) = explode('=', $filter);
 
         if ($filter == 'default') {
-            $evals = "\$value = '" . ($value ? '1' : '') . "' ?: '" . $extend . "';";
+            if (! is_numeric($extend) && ! preg_match('/^[A-Z\_]+$/', $extend)) {
+                $extend = "'" . $extend . "'";
+            }
+
+            $evals = "\$value = '" . ($value ? '1' : '') . "' ?: " . $extend . ";";
         } elseif ($extend) {
+            if (strpos($extend, ',') !== false) {
+                $tmp = explode(',', $extend);
+                $result = [];
+
+                foreach($tmp as $v) {
+                    $v = trim($v);
+
+                    if ($v == '**' || is_numeric($v) || preg_match('/^[A-Z\_]+$/', $v)) {
+                        $result[] = $v;
+                    } else {
+                        $result[] = "'" . $v . "'";
+                    }
+                }
+
+                $extend = implode(',', $result);
+            }
+
             if (strstr($extend, '**')) {
                 $extend = str_replace('**', '$value', $extend);
                 $evals = "\$value = {$filter}({$extend});";
@@ -449,13 +458,12 @@ ddd($result);
             return $value;
         }
 
+        $defaults = $value;
         $parts = explode('.', $key);
-
-        ddd($parts);
 
         foreach ($parts as $item) {
             if (! is_array($value) || ! isset($value[$item])) {
-                return $default;
+                return $defaults;
             }
 
             $value = $value[$item];

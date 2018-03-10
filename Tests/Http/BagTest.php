@@ -35,26 +35,26 @@ use Queryyetsimple\Http\Bag;
 class BagTest extends TestCase
 {
 
-    public function t2estAll()
+    public function testAll()
     {
         $bag = new Bag(array('foo' => 'bar'));
         $this->assertEquals(array('foo' => 'bar'), $bag->all(), '->all() gets all the input');
     }
 
-    public function t2estKeys()
+    public function testKeys()
     {
         $bag = new Bag(array('foo' => 'bar'));
         $this->assertEquals(array('foo'), $bag->keys());
     }
 
-    public function t2estAdd()
+    public function testAdd()
     {
         $bag = new Bag(array('foo' => 'bar'));
         $bag->add(array('bar' => 'bas'));
         $this->assertEquals(array('foo' => 'bar', 'bar' => 'bas'), $bag->all());
     }
 
-    public function t2estRemove()
+    public function testRemove()
     {
         $bag = new Bag(array('foo' => 'bar'));
         $bag->add(array('bar' => 'bas'));
@@ -63,7 +63,7 @@ class BagTest extends TestCase
         $this->assertEquals(array('foo' => 'bar'), $bag->all());
     }
 
-    public function t2estReplace()
+    public function testReplace()
     {
         $bag = new Bag(array('foo' => 'bar'));
         $bag->replace(array('FOO' => 'BAR'));
@@ -71,7 +71,7 @@ class BagTest extends TestCase
         $this->assertFalse($bag->has('foo'), '->replace() overrides previously set the input');
     }
 
-    public function t2estGet()
+    public function testGet()
     {
         $bag = new Bag(array('foo' => 'bar', 'null' => null));
         $this->assertEquals('bar', $bag->get('foo'), '->get() gets the value of a parameter');
@@ -79,7 +79,7 @@ class BagTest extends TestCase
         $this->assertNull($bag->get('null', 'default'), '->get() returns null if null is set');
     }
 
-    public function t2estSet()
+    public function testSet()
     {
         $bag = new Bag(array());
         $bag->set('foo', 'bar');
@@ -88,14 +88,14 @@ class BagTest extends TestCase
         $this->assertEquals('baz', $bag->get('foo'), '->set() overrides previously set parameter');
     }
 
-    public function t2estHas()
+    public function testHas()
     {
         $bag = new Bag(array('foo' => 'bar'));
         $this->assertTrue($bag->has('foo'), '->has() returns true if a parameter is defined');
         $this->assertFalse($bag->has('unknown'), '->has() return false if a parameter is not defined');
     }
 
-    public function t2estGetIterator()
+    public function testGetIterator()
     {
         $parameters = array('foo' => 'bar', 'hello' => 'world');
         $bag = new Bag($parameters);
@@ -109,21 +109,21 @@ class BagTest extends TestCase
         $this->assertEquals(count($parameters), $i);
     }
 
-    public function t2estCount()
+    public function testCount()
     {
         $parameters = array('foo' => 'bar', 'hello' => 'world');
         $bag = new Bag($parameters);
         $this->assertCount(count($parameters), $bag);
     }
 
-    public function t2estToJson()
+    public function testToJson()
     {
         $parameters = array('foo' => 'bar', 'hello' => 'world');
         $bag = new Bag($parameters);
         $this->assertEquals($bag->toJson(), '{"foo":"bar","hello":"world"}');
     }
 
-    public function t2estFilter()
+    public function testFilter()
     {
         $parameters = array('foo' => '- 1234', 'hello' => 'world', 'number' => ' 12.11');
         $bag = new Bag($parameters);
@@ -137,6 +137,12 @@ class BagTest extends TestCase
         $this->assertEquals($bag->filter('foo|tests\Router\custom_func=hello,**,concact', null, 'substr=5'), '-- 1234-concact');
 
         $this->assertEquals($bag->filter('foo|substr=5', null, 'tests\Router\custom_func=hello,**,concact'), 'hello-4-concact');
+
+        $this->assertEquals($bag->get('foo|tests\Router\custom_func=hello,**,MY_CONST'), 'hello-- 1234-hello const');
+
+        $this->assertEquals($bag->get('no|default=5'), '5');
+        $this->assertEquals($bag->get('no|default=helloworld'), 'helloworld');
+        $this->assertEquals($bag->get('no|default=MY_CONST'), 'hello const');
     }
 
     public function testGetPartData() {
@@ -148,12 +154,16 @@ class BagTest extends TestCase
         );
         $bag = new Bag($parameters);
 
-        //$this->assertEquals($bag->get('foo\hello'), 'world');
-        //$this->assertEquals($bag->get('foo\namepace.sub'), 'i am here');
+        $this->assertEquals($bag->get('foo\hello'), 'world');
+        $this->assertEquals($bag->get('foo\namepace.sub'), 'i am here');
         $this->assertEquals($bag->get('foo\namepace.sub|substr=2'), 'am here');
     }
 }
 
 function custom_func($arg1, $arg2, $arg3) {
     return $arg1 . '-' . $arg2 . '-' . $arg3;
+}
+
+if (! defined('MY_CONST')) {
+    define('MY_CONST', 'hello const');
 }
