@@ -1410,7 +1410,7 @@ class Request implements IRequest, IArray, ArrayAccess
         // 比对请求
         $requestUri = $this->getRequestUri();
 
-        if ('' !== $requestUri && '/' !== $requestUri[0]) {
+        if ('' !== $requestUri && '/' !== substr($requestUri, 0, 1)) {
             $requestUri = '/' . $requestUri;
         }
 
