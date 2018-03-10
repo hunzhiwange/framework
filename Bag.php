@@ -174,17 +174,29 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
         list($key, $filter) = $this->parseKeyFilter($key, $filter);
 
+        $isPart = false;
         if (strpos($key, '\\') !== false) {
-            $keyOld = $key;
+            $isPart = true;
             list($key) = explode('\\', $key);
         }
-
+dump($key);
         $result = array_key_exists($key, $this->elements) ? $this->elements[$key] : $default;
+
+ddd($result);
+
+        if ($isPart) {
+            $result = $this->getPartData($key, $result);
+        }
+
+        ddd($result);
+
+        exit();
 
         if ($filter) {
             $options = $this->formatOptions($result, $options);
-
+ddd($result);
             $result = $this->filterValue($result, $default, $filter, $options);
+            ddd($result);
         }
 
         if (isset($keyOld)) {
@@ -267,7 +279,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         if (strpos($key, '|') !== false) {
             $temp = explode('|', $key);
             $key = array_shift($temp);
-            $filter = array_merge($filter, $temp);
+            $filter = array_merge($temp, $filter);
         }
 
         return [$key, $filter];
@@ -412,7 +424,9 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     protected function formatOptions($value, $options)
     {
         if (! is_array($options) && $options) {
-            $options = ['flags' => $options];
+            $options = [
+                'flags' => $options
+            ];
         }
 
         if (is_array($value) && ! isset($options['flags'])) {
@@ -431,23 +445,23 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      */
     protected function getPartData($key, $value)
     {
-        list($key, $name) = explode('\\', $key);
-        $default = $value;
+        if (! is_array($value)) {
+            return $value;
+        }
 
-        if (is_array($value)) {
-            $parts = explode('.', $name);
+        $parts = explode('.', $key);
 
-            foreach ($parts as $item) {
-                if (! isset($value[$item])) {
-                    return $default;
-                }
-                $value = $value[$item];
+        ddd($parts);
+
+        foreach ($parts as $item) {
+            if (! is_array($value) || ! isset($value[$item])) {
+                return $default;
             }
 
-            return $value;
-        } else {
-            return $default;
+            $value = $value[$item];
         }
+
+        return $value;
     }
 
     /**
