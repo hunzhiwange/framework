@@ -70,7 +70,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @var \Queryyetsimple\Http\Bag
      */
-    public $cookie;
+    public $cookies;
 
     /**
      * FILE Bag
@@ -106,6 +106,13 @@ class Request implements IRequest, IArray, ArrayAccess
      * @var string
      */
     protected $baseUrl;
+
+    /**
+     * 基础路径
+     * 
+     * @var string
+     */
+    protected $basePath;
 
     /**
      * 请求 url
@@ -195,16 +202,16 @@ class Request implements IRequest, IArray, ArrayAccess
      * @param array $query
      * @param array $request
      * @param array $params
-     * @param array $cookie
+     * @param array $cookies
      * @param array $files
      * @param array $server
      * @param string $content
      * @param array $option
      * @return void
      */
-    public function __construct(array $query = [], array $request = [], array $params = [], array $cookie = [], array $files = [], array $server = [], $content = null, array $option = [])
+    public function __construct(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null, array $option = [])
     {
-        $this->reset($query, $request, $params, $cookie, $files, $server, $content);
+        $this->reset($query, $request, $params, $cookies, $files, $server, $content);
         $this->options($option);
     }
 
@@ -214,19 +221,19 @@ class Request implements IRequest, IArray, ArrayAccess
      * @param array $query
      * @param array $request
      * @param array $params
-     * @param array $cookie
+     * @param array $cookies
      * @param array $files
      * @param array $server
      * @param string $content
      * @param array $option
      * @return void
      */
-    public function reset(array $query = [], array $request = [], array $params = [], array $cookie = [], array $files = [], array $server = [], $content = null)
+    public function reset(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         $this->query = new Bag($query);
         $this->request = new Bag($request);
         $this->params = new Bag($params);
-        $this->cookie = new Bag($cookie);
+        $this->cookies = new Bag($cookies);
         $this->files = new FileBag($files);
         $this->server = new ServerBag($server);
         $this->headers = new HeaderBag($this->server->getHeaders());
@@ -625,7 +632,17 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isRealAjax()
     {
-        return $this->headers->get('X_REQUESTED_WITH') === 'xmlhttprequest';
+        return $this->isXmlHttpRequest();
+    }
+
+    /**
+     * 是否为 Ajax 请求行为真实
+     *
+     * @return boolean
+     */
+    public function isXmlHttpRequest()
+    {
+        return $this->headers->get('X_REQUESTED_WITH') === 'XMLHttpRequest';
     }
 
     /**
@@ -935,6 +952,17 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
+     * 验证是否为指定的方法
+     *
+     * @param string $method
+     * @return bool
+     */
+    public function isMethod($method)
+    {
+        return $this->getMethod() === strtoupper($method);
+    }
+
+    /**
      * 取回应用名
      *
      * @return string
@@ -1019,6 +1047,16 @@ class Request implements IRequest, IArray, ArrayAccess
      * @return string|null
      */
     public function language()
+    {
+        return $this->language;
+    }
+
+    /**
+     * 返回当前的语言
+     *
+     * @return string|null
+     */
+    public function getLanguage()
     {
         return $this->language;
     }
@@ -1169,7 +1207,17 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function getHost()
     {
-        return $this->headers->get('X_FORWARDED_HOST', $this->headers->get('HOST', ''));
+        $host = $this->headers->get('X_FORWARDED_HOST', $this->headers->get('HOST', ''));
+
+        if (! $host) {
+            $host = $this->server->get('SERVER_NAME', $this->server->get('SERVER_ADDR', ''));
+        }
+
+        if (strpos($host, ':') !== false) {
+            list($host) = explode(':', $host);
+        }
+
+        return $host;
     }
 
     /**
@@ -1179,7 +1227,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function getSchemeAndHttpHost()
     {
-        return $this->getScheme() . '://' . $this->getHost();
+        return $this->getScheme() . '://' . $this->getHttpHost();
     }
 
     /**
@@ -1266,6 +1314,7 @@ class Request implements IRequest, IArray, ArrayAccess
         // 服务器重写
         if ($this->query->get(static::PATHINFO_URL)) {
             $pathInfo = $this->parsePathInfo($this->query->get(static::PATHINFO_URL));
+            $this->query->remove(static::PATHINFO_URL);
             return $this->pathInfo = $pathInfo;
         }
 
@@ -1277,7 +1326,7 @@ class Request implements IRequest, IArray, ArrayAccess
             return $this->pathInfo = $this->parsePathInfo('');
         }
 
-        if (($pos = strpos($requestUri, '?')) > 0) {
+        if (($pos = strpos($requestUri, '?')) > -1) {
             $requestUri = substr($requestUri, 0, $pos);
         }
 
@@ -1288,6 +1337,39 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         return $this->pathInfo = $this->parsePathInfo($pathInfo);
+    }
+
+    /**
+     * 获取基础路径
+     *
+     * @return string
+     */
+    public function getBasePath()
+    {
+        if (null !== $this->basePath) {
+            return $this->basePath;
+        }
+
+        $baseUrl = $this->getBaseUrl();
+        if (empty($baseUrl)) {
+            return '';
+        }
+
+        $filename = basename($this->server->get('SCRIPT_FILENAME'));
+
+        if (basename($baseUrl) === $filename) {
+            $basePath = dirname($baseUrl);
+        } else {
+            $basePath = $baseUrl;
+        }
+
+        if ('\\' === DIRECTORY_SEPARATOR) {
+            $basePath = str_replace('\\', '/', $basePath);
+        }
+
+        $this->basePath = rtrim($basePath, '/');
+
+        return $this->basePath;
     }
 
     /**
@@ -1328,16 +1410,27 @@ class Request implements IRequest, IArray, ArrayAccess
         // 比对请求
         $requestUri = $this->getRequestUri();
 
-        if (0 === strpos($requestUri, $url)) {
-            return $this->baseUrl = $url;
+        if ('' !== $requestUri && '/' !== $requestUri[0]) {
+            $requestUri = '/' . $requestUri;
         }
 
-        if (0 === strpos($requestUri, dirname($url))) {
-            return $this->baseUrl = rtrim(dirname($url), '/') . '/';
+        if ($url) {
+            $prefix = $this->getUrlencodedPrefix($requestUri, $url);
+
+            if (false !== $prefix) {
+                return $this->baseUrl = $prefix;
+            }
+
+            $prefix = $this->getUrlencodedPrefix($requestUri, dirname($url));
+
+            if (false !== $prefix) {
+                return $this->baseUrl = rtrim($prefix, '/') . '/';
+            }
         }
 
-        if (! strpos($requestUri, basename($url))) {
-            return '';
+        $basename = basename($url);
+        if (empty($basename) || ! strpos(rawurldecode($requestUri), $basename)) {
+            return $this->baseUrl = '';
         }
 
         if ((strlen($requestUri) >= strlen($url)) && ((false !== ($pos = strpos($requestUri, $url))) && ($pos !== 0))) {
@@ -1419,7 +1512,7 @@ class Request implements IRequest, IArray, ArrayAccess
         $parts = [];
 
         foreach (explode('&', $queryString) as $item) {
-            if (strpos($item, static::PATHINFO_URL . '=') === 0) {
+            if ($item === "" || strpos($item, static::PATHINFO_URL . '=') === 0) {
                 continue;
             }
 
@@ -1450,6 +1543,28 @@ class Request implements IRequest, IArray, ArrayAccess
         $value = $this->input($key);
 
         return is_string($value) && trim($value) === '';
+    }
+
+    /**
+     * URL 前缀编码
+     * 
+     * @param string $strings
+     * @param string $prefix
+     * @return string|boolean
+     */
+    protected function getUrlencodedPrefix(string $strings, string $prefix)
+    {
+        if (0 !== strpos(rawurldecode($strings), $prefix)) {
+            return false;
+        }
+
+        $len = strlen($prefix);
+
+        if (preg_match(sprintf('#^(%%[[:xdigit:]]{2}|.){%d}#', $len), $strings, $matches)) {
+            return $matches[0];
+        }
+
+        return false;
     }
 
     /**
