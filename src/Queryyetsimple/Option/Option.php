@@ -228,9 +228,7 @@ class Option implements IOption, ArrayAccess
         if (is_array($namespaces)) {
             $this->option = $namespaces;
         } elseif (is_string($namespaces)) {
-            if (isset($this->option[$namespaces])) {
-                $this->option[$namespaces] = [];
-            }
+            $this->option[$namespaces] = [];
         } else {
             $this->option = [];
         }
