@@ -13,3 +13,27 @@ Documentation for the framework can be found on the [QueryPHP website](http://ww
 ## License
 
 The QueryPHP framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
+
+## Run tests
+
+```
+composer install
+```
+
+Just all files.
+
+```
+vendor/bin/phpunit Tests
+```
+
+Just one dir files.
+
+```
+vendor/bin/phpunit Tests/Router
+```
+
+Just one file.
+
+```
+vendor/bin/phpunit Tests/Option/OptionTest.php
+```
