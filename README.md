@@ -10,30 +10,13 @@ QueryPHP was founded in 2010 and released the first version on 2010.10.03.
 
 Documentation for the framework can be found on the [QueryPHP website](http://www.queryphp.com).
 
-## License
-
-The QueryPHP framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
-
-## Run tests
+## Run Tests
 
 ```
 composer install
-```
-
-Just all files.
-
-```
 vendor/bin/phpunit Tests
 ```
 
-Just one dir files.
+## License
 
-```
-vendor/bin/phpunit Tests/Router
-```
-
-Just one file.
-
-```
-vendor/bin/phpunit Tests/Option/OptionTest.php
-```
+The QueryPHP framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
