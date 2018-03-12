@@ -2,7 +2,7 @@
 <phpunit
     backupGlobals="false"
     backupStaticAttributes="false"
-    bootstrap="Tests/bootstrap.php"
+    bootstrap="tests/bootstrap.php"
     colors="true"
     convertErrorsToExceptions="true"
     convertNoticesToExceptions="true"
@@ -15,15 +15,15 @@
     </listeners>
     <testsuites>
         <testsuite name="Application Test Suite">
-            <directory>./Tests/</directory>
+            <directory>./tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
             <directory suffix=".php">./</directory>
             <exclude>
-                <directory suffix=".php">Tests</directory>
-                <directory suffix=".php">Vendor</directory>
+                <directory suffix=".php">tests</directory>
+                <directory suffix=".php">vendor</directory>
             </exclude>
         </whitelist>
     </filter>

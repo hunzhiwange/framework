@@ -238,16 +238,16 @@ class Container implements IContainer, ArrayAccess
             return $this->instances[$name];
         }
 
+        if (! $args) {
+            $args = [];
+        }
+
         // 生成实例
         if (! isset($this->services[$name])) {
             return $this->getInjectionObject($name, $args);
         }
  
         if (! is_string($this->services[$name]) && is_callable($this->services[$name])) {
-            if (! $args) {
-                $args = [];
-            }
-
             array_unshift($args, $this);
             $instance = call_user_func_array($this->services[$name], $args);
         } else {
@@ -518,11 +518,15 @@ class Container implements IContainer, ArrayAccess
     protected function parseClassReflection(string $injection)
     {
         $reflection = new ReflectionClass($injection);
+
         if (! $reflection->isInstantiable()) {
             throw new InvalidArgumentException(sprintf('Class %s is not instantiable.', $injection));
         }
-        if (($constructor = $reflection->getConstructor()) && ! ($param = $constructor->getParameters())) {
-            $param = [];
+
+        $param = [];
+
+        if (($constructor = $reflection->getConstructor())) {
+            $param = $constructor->getParameters();
         }
 
         return $param;
