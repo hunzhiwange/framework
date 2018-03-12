@@ -83,6 +83,7 @@ class Pipeline implements IPipeline
     public function send($passed)
     {
         $passed = is_array($passed) ? $passed : func_get_args();
+
         foreach ($passed as $item) {
             $this->passed[] = $item;
         }
@@ -99,6 +100,7 @@ class Pipeline implements IPipeline
     public function through($stage)
     {
         $stage = is_array($stage) ? $stage : func_get_args();
+
         foreach ($stage as $item) {
             $this->stage[] = $item;
         }
@@ -116,6 +118,7 @@ class Pipeline implements IPipeline
     public function then(callable $end = null)
     {
         $stage = $this->stage;
+        
         if ($end) {
             $stage[] = $end;
         }
@@ -181,7 +184,7 @@ class Pipeline implements IPipeline
                 $method = 'handle';
             }
 
-            if (($stage = $this->container->make($stage)) === false) {
+            if (($stage = $this->container->make($stage, $params)) === false) {
                 throw new InvalidArgumentException('Stage is invalid.');
             }
 
