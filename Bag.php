@@ -105,14 +105,14 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 取回元素值
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed $defaults
      * @return mixed
      */
-    public function get($key, $default = null)
+    public function get($key, $defaults = null)
     {
         $key = $this->normalize($key);
 
-        return $this->filter($key, $default);
+        return $this->filter($key, $defaults);
     }
 
     /**
@@ -161,12 +161,12 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 获取过滤变量
      *
      * @param string $key
-     * @param mixed $default
+     * @param mixed $defaults
      * @param array|sting|int $filter
      * @param array $options
      * @return mixed
      */
-    public function filter($key, $default = null, $filter = null, array $options = [])
+    public function filter($key, $defaults = null, $filter = null, array $options = [])
     {
         $key = $this->normalize($key);
 
@@ -179,7 +179,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
             list($key, $part) = explode('\\', $key);
         }
 
-        $result = array_key_exists($key, $this->elements) ? $this->elements[$key] : $default;
+        $result = array_key_exists($key, $this->elements) ? $this->elements[$key] : $defaults;
 
         if ($part) {
             $result = $this->getPartData($part, $result);
@@ -188,7 +188,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         if ($filter) {
             $options = $this->formatOptions($result, $options);
 
-            $result = $this->filterValue($result, $default, $filter, $options);
+            $result = $this->filterValue($result, $defaults, $filter, $options);
         }
 
         return $result;
@@ -292,12 +292,12 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 过滤值
      *
      * @param mixed $value
-     * @param mixed $default
+     * @param mixed $defaults
      * @param array $filters
      * @param array $options
      * @return mixed
      */
-    protected function filterValue($value, $default, $filters, array $options = [])
+    protected function filterValue($value, $defaults, $filters, array $options = [])
     {
         foreach ($filters as $item) {
             if (strpos($item, '=') !== false) {
@@ -308,7 +308,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
                 $value = $this->filterValueWithFilterVar($value, $item, $options);
 
                 if (false === $value) {
-                    $value = $default;
+                    $value = $defaults;
                     break;
                 }
             }

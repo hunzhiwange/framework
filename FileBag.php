@@ -65,6 +65,8 @@ class FileBag extends Bag
     {
         $this->elements = [];
 
+        $elements = $this->normalizeArray($elements);
+        
         $this->add($elements);
     }
 

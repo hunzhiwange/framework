@@ -31,6 +31,18 @@ class ApiResponse extends JsonResponse
 {
 
     /**
+     * 创建一个 API 响应
+     * 
+     * @param string $data
+     * @param integer $status
+     * @param array $headers
+     * @return static
+     */
+    public static function create($data = '', int $status = 200, array $headers = []) {
+        return new static($data, $status, $headers);
+    }
+
+    /**
      * 请求成功
      * 一般用于GET与POST请求： 200
      * 
