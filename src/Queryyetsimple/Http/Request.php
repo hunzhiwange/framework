@@ -273,8 +273,15 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public static function normalizeRequestFromContent(Request $request)
     {
-        if (0 === strpos($request->headers->get('CONTENT_TYPE'), 'application/x-www-form-urlencoded')
-            && in_array(strtoupper($request->server->get('REQUEST_METHOD', static::METHOD_GET)), [static::METHOD_PUT, static::METHOD_DELETE, static::METHOD_PATCH])
+        $contentType = $request->headers->get("CONTENT_TYPE");
+        $method = strtoupper($request->server->get("REQUEST_METHOD", self::METHOD_GET));
+
+        if ($contentType && 0 === strpos($contentType, 'application/x-www-form-urlencoded') && 
+            in_array($method, [
+                static::METHOD_PUT, 
+                static::METHOD_DELETE, 
+                static::METHOD_PATCH
+            ])
         ) {
             parse_str($request->getContent(), $data);
             $request->request = new Bag($data);
