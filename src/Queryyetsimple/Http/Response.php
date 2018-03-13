@@ -217,7 +217,7 @@ class Response implements IResponse
      * @param \Closure $cookieResolver
      * @return void
      */
-    public static function setCookieResolver(Closure $cookieResolver) {
+    public static function setCookieResolver(Closure $cookieResolver = null) {
         static::$cookieResolver = $cookieResolver;
     }
 
@@ -596,6 +596,17 @@ class Response implements IResponse
      * @param string $charset
      * @return $this
      */
+    public function setCharset(string $charset)
+    {
+        return $this->charset($charset);
+    }
+
+    /**
+     * 编码设置
+     *
+     * @param string $charset
+     * @return $this
+     */
     public function charset(string $charset)
     {
         if ($this->checkTControl()) {
@@ -612,7 +623,7 @@ class Response implements IResponse
      *
      * @return string
      */
-    public function getrCharset(): ?string
+    public function getCharset()
     {
         return $this->charset;
     }
@@ -623,9 +634,14 @@ class Response implements IResponse
      * @param \DateTime $datetime
      * @return $this
      */
-    public function setExpires(DateTime $datetime)
+    public function setExpires(DateTime $datetime = null)
     {
         if ($this->checkTControl()) {
+            return $this;
+        }
+
+        if (is_null($datetime)) {
+            $this->headers->remove('Expires');
             return $this;
         }
 
@@ -640,9 +656,14 @@ class Response implements IResponse
      * @param \DateTime $datetime
      * @return $this
      */
-    public function setLastModified(DateTime $datetime)
+    public function setLastModified(DateTime $datetime = null)
     {
         if ($this->checkTControl()) {
+            return $this;
+        }
+
+        if (is_null($datetime)) {
+            $this->headers->remove('Last-Modified');
             return $this;
         }
 
@@ -699,6 +720,10 @@ class Response implements IResponse
     {
         if ($this->checkTControl()) {
             return $this;
+        }
+
+        if (is_null($charset)) {
+            $charset = $this->getCharset();
         }
 
         if ($charset === null) {
