@@ -501,7 +501,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      * JQuery.slice
      *
      * @param int $selector
-     * @param string $length
+     * @param int $length
      * @return array
      */
     public function slice($selector, $length = null)
