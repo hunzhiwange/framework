@@ -340,8 +340,7 @@ class Project extends Container implements IProject
         $types = [
             'error',
             'exception',
-            'trace',
-            'url'
+            'trace'
         ];
         if (! in_array($type, $types)) {
             throw new Exception(sprintf('System type %s not support', $type));

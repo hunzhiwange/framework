@@ -64,7 +64,7 @@
     },
     "require-dev": {
         "fzaninotto/faker": "^1.6",
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "~7.0"
     },
     "suggest": {
         "ext-swoole": "Required to use swoole.",

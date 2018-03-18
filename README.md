@@ -14,7 +14,7 @@ Documentation for the framework can be found on the [QueryPHP website](http://ww
 
 ```
 composer install
-vendor/bin/phpunit Tests
+vendor/bin/phpunit tests
 ```
 
 ## License
