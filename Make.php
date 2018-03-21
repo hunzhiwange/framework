@@ -118,15 +118,20 @@ abstract class Make extends Command
     protected function saveTemplateResult()
     {
         $strSaveFilePath = $this->getSaveFilePath();
+
         if (! is_dir(dirname($strSaveFilePath))) {
             mkdir(dirname($strSaveFilePath), 0777, true);
         }
+
         if (is_file($strSaveFilePath)) {
             throw new RuntimeException('File is already exits.' . PHP_EOL . $this->formatFile($this->getSaveFilePath()));
         }
+
         if (! file_put_contents($strSaveFilePath, $this->getTemplateResult())) {
             throw new RuntimeException('Can not write file.' . PHP_EOL . $this->formatFile($this->getSaveFilePath()));
         }
+
+        chmod($strSaveFilePath, 0777);
     }
 
     /**
@@ -224,8 +229,9 @@ abstract class Make extends Command
     protected function getNamespacePath()
     {
         if (($strNamespacePath = $this->project()->make('psr4')->namespaces($this->getNamespace()) . '/') != '/') {
-            $strNamespacePath = $this->project()->path_application . '/' . $this->getNamespace() . '/';
+            $strNamespacePath = $this->project()->pathApplication() . '/' . $this->getNamespace() . '/';
         }
+
         return $strNamespacePath;
     }
 
