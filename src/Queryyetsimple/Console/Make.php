@@ -130,8 +130,6 @@ abstract class Make extends Command
         if (! file_put_contents($strSaveFilePath, $this->getTemplateResult())) {
             throw new RuntimeException('Can not write file.' . PHP_EOL . $this->formatFile($this->getSaveFilePath()));
         }
-
-        chmod($strSaveFilePath, 0777);
     }
 
     /**

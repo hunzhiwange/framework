@@ -91,8 +91,6 @@ class Init extends PhinxInit
             throw new RuntimeException(sprintf('The file "%s" could not be written to', $path));
         }
 
-        chmod($filePath, 0777);
-
         $output->writeln('<info>created</info> .' . str_replace(getcwd(), '', $filePath));
     }
 }
