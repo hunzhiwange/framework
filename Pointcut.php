@@ -133,6 +133,7 @@ $methods = [$methods];
 
                 file_put_contents($file, $code);
 
+                chmod($file, 0777);
             } catch (Error $e) {
                 echo 'Parse Error: ', $e->getMessage();
             }
