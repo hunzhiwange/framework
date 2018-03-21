@@ -123,6 +123,8 @@ class Load
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
         }
 
+        chmod($sCacheFile, 0777);
+
         return $this->arrLoad = $arrFiles;
     }
 

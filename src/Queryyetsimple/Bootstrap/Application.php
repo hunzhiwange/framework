@@ -52,7 +52,7 @@ class Application
      *
      * @var string
      */
-    const INIT_APP = '~_~';
+    const INIT_APP = '_init';
     
     /**
      * app 名字

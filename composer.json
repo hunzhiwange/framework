@@ -25,7 +25,8 @@
         "vlucas/phpdotenv": "~2.2",
         "nesbot/carbon": "~1.20",
         "league/flysystem": "^1.0",
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.23",
+        "swiftmailer/swiftmailer": "6.0.2"
     },
     "replace": {
         "queryyetsimple/aop": "self.version",

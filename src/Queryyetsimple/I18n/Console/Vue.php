@@ -143,6 +143,8 @@ EOF;
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $strOutputDir));
         }
 
+        chmod($strOutputDir, 0777);
+
         $this->info(sprintf('Vue lang file %s created successfully.', $strLang));
         $this->comment($strOutputDir . '/' . $strOutputFile);
     }

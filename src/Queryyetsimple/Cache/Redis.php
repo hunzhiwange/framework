@@ -41,9 +41,9 @@ class Redis extends Connect implements IConnect
      * @var array
      */
     protected $arrOption = [
-        'nocache_force' => '~@nocache_force',
+        'nocache_force' => '_nocache_force',
         'time_preset' => [],
-        'prefix' => '~@',
+        'prefix' => '_',
         'expire' => 86400,
         'host' => '127.0.0.1',
         'port' => 6379,

@@ -426,6 +426,8 @@ class Server
         if (! file_put_contents($this->getOption('pid_path'), $strPid)) {
             $this->warn('Swoole pid saved failed', true);
         }
+
+        chmod($this->getOption('pid_path'), 0777);
     }
     
     /**
@@ -758,7 +760,7 @@ class Server
         $arrOption = [];
         foreach ($objServer->setting as $sKey => $mixVal) {
             if ($sKey == 'pid_path') {
-                $mixVal = str_replace(path_swoole_cache(), '~@~/swoole', $mixVal);
+                $mixVal = str_replace(path_swoole_cache(), 'runtime/swoole', $mixVal);
             }
             
             $arrOption[] = [

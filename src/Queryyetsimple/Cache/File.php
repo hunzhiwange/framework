@@ -57,9 +57,9 @@ class File extends Connect implements IConnect
      * @var array
      */
     protected $arrOption = [
-        'nocache_force' => '~@nocache_force',
+        'nocache_force' => '_nocache_force',
         'time_preset' => [],
-        'prefix' => '~@',
+        'prefix' => '_',
         'expire' => 86400,
         'path' => '',
         'serialize' => true
@@ -211,7 +211,10 @@ class File extends Connect implements IConnect
     protected function writeData($sFileName, $sData)
     {
         ! is_dir(dirname($sFileName)) && mkdir(dirname($sFileName), 0777, true);
+
         file_put_contents($sFileName, $sData, LOCK_EX);
+
+        chmod($sFileName, 0777);
     }
 
     /**

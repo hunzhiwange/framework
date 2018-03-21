@@ -1229,6 +1229,8 @@ class Router implements IRouter
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $this->strCachePath));
         }
 
+        chmod($this->strCachePath, 0777);
+
         unset($arrCacheData);
     }
 

@@ -238,9 +238,11 @@ class Project extends Container implements IProject
             return static::$objProject;
         } else {
             static::$objProject = new static($objComposer, $arrOption);
+
             if ($booRun === true) {
                 static::$objProject->run();
             }
+
             return static::$objProject;
         }
     }
@@ -342,6 +344,7 @@ class Project extends Container implements IProject
             'exception',
             'trace'
         ];
+
         if (! in_array($type, $types)) {
             throw new Exception(sprintf('System type %s not support', $type));
         }
@@ -373,7 +376,7 @@ class Project extends Container implements IProject
      */
     public function pathRuntime()
     {
-        return $this->arrOption['path_runtime'] ?? $this->strPath . DIRECTORY_SEPARATOR . '~@~';
+        return $this->arrOption['path_runtime'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'runtime';
     }
 
     /**
@@ -426,9 +429,11 @@ class Project extends Container implements IProject
             'swoole',
             'aop'
         ];
+
         if (! in_array($strType, $arrType)) {
             throw new Exception(sprintf('Application cache type %s not support', $strType));
         }
+
         return $this->pathRuntime() . '/' . $strType;
     }
 
@@ -445,9 +450,11 @@ class Project extends Container implements IProject
             'theme',
             'i18n'
         ];
+
         if (! in_array($strType, $arrType)) {
             throw new Exception(sprintf('Application dir type %s not support', $strType));
         }
+
         return $this->pathApplicationCurrent() . '/ui/' . $strType;
     }
 
@@ -548,6 +555,7 @@ class Project extends Container implements IProject
     protected function setOption($arrOption)
     {
         $this->arrOption = $arrOption;
+
         return $this;
     }
 
@@ -751,8 +759,9 @@ class Project extends Container implements IProject
             }
         }
 
-        if (! is_dir(dirname($strCachePath))) {
-            mkdir(dirname($strCachePath), 0777, true);
+        $cacheDir = dirname($strCachePath);
+        if (! is_dir($cacheDir)) {
+            mkdir($cacheDir, 0777, true);
         }
 
         if ($this->development() || ! is_file($strCachePath)) {
@@ -760,6 +769,8 @@ class Project extends Container implements IProject
                 $this->arrDeferredProviders,
                 $arrDeferredAlias
             ], true) . '; ?' . '>');
+
+            chmod($strCachePath, 0777);
         }
 
         return $this;
@@ -775,6 +786,7 @@ class Project extends Container implements IProject
         foreach ($this->arrProviderBootstrap as $obj) {
             $this->callProviderBootstrap($obj);
         }
+
         return $this;
     }
 
@@ -816,6 +828,7 @@ class Project extends Container implements IProject
                 'app'
             ]
         ]);
+
         return $this;
     }
 
@@ -862,51 +875,12 @@ class Project extends Container implements IProject
         // 基础路径
         $this->strPath = dirname(__DIR__, 6);
 
-        // 注册路径
-        $this->registerPath();
-
-        // 注册 url
-        $this->registerUrl();
+        // 验证缓存路径
+        if (! is_writeable($this->pathRuntime())) {
+            throw new RuntimeException(sprintf('Runtime path %s is not writeable.', $this->pathRuntime()));
+        }
 
         return $this;
-    }
-
-    /**
-     * 注册路径到容器
-     *
-     * @return void
-     */
-    protected function registerPath()
-    {
-        // 基础路径
-        $this->instance('path', $this->path());
-
-        // 其它路径
-        foreach ([
-            'application',
-            'common',
-            'runtime',
-            'public'
-        ] as $sKey => $sPath) {
-            $this->instance('path_' . $sPath, $this->{'path' . ucwords($sPath)}());
-        }
-    }
-
-    /**
-     * 注册 url 到容器
-     *
-     * @return void
-     */
-    protected function registerUrl()
-    {
-        foreach ([
-            'enter',
-            'root',
-            'public'
-        ] as $sKey => $sUrl) {
-            $sUrl = 'url_' . $sUrl;
-            $this->instance($sUrl, $this->arrOption[$sUrl] ?? '');
-        }
     }
 
     /**
@@ -1023,7 +997,8 @@ class Project extends Container implements IProject
         } else {
             putenv($strName . '=' . $mixValue);
         }
-        $_ENV [$strName] = $mixValue;
-        $_SERVER [$strName] = $mixValue;
+
+        $_ENV[$strName] = $mixValue;
+        $_SERVER[$strName] = $mixValue;
     }
 }

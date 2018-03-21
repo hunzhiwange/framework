@@ -61,7 +61,7 @@ abstract class Connect
 
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成
         if (is_file($filepath) && floor($this->getOption('size')) <= filesize($filepath)) {
-            rename($filepath, $filedir . '/' . date('Y-m-d H.i.s') . '~@' . basename($filepath));
+            rename($filepath, $filedir . '/' . date('Y-m-d H.i.s') . '_' . basename($filepath));
         }
     }
 
