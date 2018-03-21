@@ -765,7 +765,10 @@ class Parser implements IParser
     protected function makeCacheFile($sCachePath, &$sCompiled)
     {
         ! is_file($sCachePath) && ! is_dir(dirname($sCachePath)) && mkdir(dirname($sCachePath), 0777, true);
+
         file_put_contents($sCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . $sCompiled);
+
+        chmod($sCachePath, 0777);
     }
 
     /**
