@@ -16,7 +16,8 @@
         "queryyetsimple/option": "1.0.*",
         "queryyetsimple/support": "1.0.*",
         "coderkungfu/php-queue": "^0.9.1",
-        "clio/clio": "@stable"
+        "clio/clio": "@stable",
+        "predis/predis": "1.1.1"
     },
     "autoload": {
         "psr-4": {

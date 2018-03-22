@@ -1,15 +1,12 @@
 <?php
 /*
  * This file is part of the ************************ package.
- * ##########################################################
- * #   ____                          ______  _   _ ______   #
- * #  /     \       ___  _ __  _   _ | ___ \| | | || ___ \  #
- * # |   (  ||(_)| / _ \| '__|| | | || |_/ /| |_| || |_/ /  #
- * #  \____/ |___||  __/| |   | |_| ||  __/ |  _  ||  __/   #
- * #       \__   | \___ |_|    \__  || |    | | | || |      #
- * #     Query Yet Simple      __/  |\_|    |_| |_|\_|      #
- * #                          |___ /  Since 2010.10.03      #
- * ##########################################################
+ * _____________                           _______________
+ *  ______/     \__  _____  ____  ______  / /_  _________
+ *   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+ *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+ *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+ *         \_\                /_/_/         /_/
  *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
@@ -34,25 +31,25 @@ use Queryyetsimple\Http\JsonResponse;
  */
 class JsonResponseTest extends TestCase
 {
-    public function testConstructorEmptyCreatesJsonObject()
+    public function t2estConstructorEmptyCreatesJsonObject()
     {
         $response = new JsonResponse();
         $this->assertSame('{}', $response->getContent());
     }
 
-    public function testConstructorWithArrayCreatesJsonArray()
+    public function t2estConstructorWithArrayCreatesJsonArray()
     {
         $response = new JsonResponse(array(0, 1, 2, 3));
         $this->assertSame('[0,1,2,3]', $response->getContent());
     }
 
-    public function testConstructorWithAssocArrayCreatesJsonObject()
+    public function t2estConstructorWithAssocArrayCreatesJsonObject()
     {
         $response = new JsonResponse(array('foo' => 'bar'));
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
 
-    public function testConstructorWithSimpleTypes()
+    public function t2estConstructorWithSimpleTypes()
     {
         $response = new JsonResponse('foo');
         $this->assertSame('"foo"', $response->getContent());
@@ -72,52 +69,62 @@ class JsonResponseTest extends TestCase
         $response = new JsonResponse(array(), 202);
         $this->assertSame(202, $response->getStatusCode());
     }
+
     public function t2estConstructorAddsContentTypeHeader()
     {
         $response = new JsonResponse();
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
     }
+
     public function t2estConstructorWithCustomHeaders()
     {
         $response = new JsonResponse(array(), 200, array('ETag' => 'foo'));
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('foo', $response->headers->get('ETag'));
     }
+
     public function t2estConstructorWithCustomContentType()
     {
         $headers = array('Content-Type' => 'application/vnd.acme.blog-v1+json');
         $response = new JsonResponse(array(), 200, $headers);
         $this->assertSame('application/vnd.acme.blog-v1+json', $response->headers->get('Content-Type'));
     }
+
     public function t2estSetJson()
     {
         $response = new JsonResponse('1', 200, array(), true);
         $this->assertEquals('1', $response->getContent());
+
         $response = new JsonResponse('[1]', 200, array(), true);
         $this->assertEquals('[1]', $response->getContent());
+
         $response = new JsonResponse(null, 200, array());
         $response->setJson('true');
         $this->assertEquals('true', $response->getContent());
     }
+
     public function t2estCreate()
     {
         $response = JsonResponse::create(array('foo' => 'bar'), 204);
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
+        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
         $this->assertEquals('{"foo":"bar"}', $response->getContent());
         $this->assertEquals(204, $response->getStatusCode());
     }
-    public function t2estStaticCreateEmptyJsonObject()
+
+    public function testStaticCreateEmptyJsonObject()
     {
         $response = JsonResponse::create();
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
+        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
         $this->assertSame('{}', $response->getContent());
     }
+
     public function t2estStaticCreateJsonArray()
     {
         $response = JsonResponse::create(array(0, 1, 2, 3));
-        $this->assertInstanceOf('Symfony\Component\HttpFoundation\JsonResponse', $response);
+        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
         $this->assertSame('[0,1,2,3]', $response->getContent());
     }
+
     public function t2estStaticCreateJsonObject()
     {
         $response = JsonResponse::create(array('foo' => 'bar'));

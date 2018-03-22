@@ -13,6 +13,13 @@ Documentation for the framework can be found on the [QueryPHP website](http://ww
 ## Run Tests
 
 ```
+_____________                           _______________
+ ______/     \__  _____  ____  ______  / /_  _________
+  ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+   __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+     \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+        \_\                /_/_/         /_/
+        
 composer install
 vendor/bin/phpunit tests
 ```
