@@ -87,7 +87,7 @@ class V8 extends Connect implements IConnect
 
         $this->v8js = new V8Js('$');
 
-        foreach(['base', 'ddd', 'html', 'load', 'module'] as $item) {
+        foreach(['base', 'dd', 'html', 'load', 'module'] as $item) {
             $this->{'init' . ucwords($item)}();
         }
     }
@@ -209,7 +209,7 @@ class V8 extends Connect implements IConnect
             var method = key;
             return function () {
                 if (method == 'log') {
-                    $.$ddd(arguments[0]);
+                    $.$dd(arguments[0]);
                 } else {
                     print(arguments[0]);
                     print('<br />');
@@ -227,17 +227,17 @@ EOT;
     }
 
     /**
-     * initDdd
+     * initDd
      *
      * @return void
      */
-    public function initDdd()
+    public function initDd()
     {
-        $this->v8js->{'$ddd'} = function($message) {
-            ddd($message);
+        $this->v8js->{'$dd'} = function($message) {
+            dd($message);
         };
 
-        $this->execute('this.ddd = this.$ddd = $.$ddd;');   
+        $this->execute('this.dd = this.$dd = $.$dd;');   
     }
 
     /**
