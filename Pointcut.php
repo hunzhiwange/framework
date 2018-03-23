@@ -121,7 +121,7 @@ $methods = [$methods];
                 // pretty print
                 $code = $prettyPrinter->prettyPrintFile($stmts);
 
-               ddd(substr($code,5));// $code;
+               dd(substr($code,5));// $code;
 
 
                $file =  $this->container->pathApplicationCache('aop').'/'.str_replace('\\','/',$aopclass).'.php';
