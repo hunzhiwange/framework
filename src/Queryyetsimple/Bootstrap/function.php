@@ -107,7 +107,7 @@ if (! function_exists('console')) {
     }
 }
 
-if (! function_exists('ddd')) {
+if (! function_exists('dd')) {
     /**
      * 调试一个变量
      *
@@ -115,7 +115,7 @@ if (! function_exists('ddd')) {
      * @param boolean $simple
      * @return mixed
      */
-    function ddd($var, $simple = false)
+    function dd($var, $simple = false)
     {
         return Dump::dump($var, $simple);
     }
