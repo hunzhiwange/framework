@@ -35,25 +35,25 @@ use Queryyetsimple\Http\JsonResponse;
  */
 class JsonResponseTest extends TestCase
 {
-    public function t2estConstructorEmptyCreatesJsonObject()
+    public function testConstructorEmptyCreatesJsonObject()
     {
         $response = new JsonResponse();
         $this->assertSame('{}', $response->getContent());
     }
 
-    public function t2estConstructorWithArrayCreatesJsonArray()
+    public function testConstructorWithArrayCreatesJsonArray()
     {
         $response = new JsonResponse(array(0, 1, 2, 3));
         $this->assertSame('[0,1,2,3]', $response->getContent());
     }
 
-    public function t2estConstructorWithAssocArrayCreatesJsonObject()
+    public function testConstructorWithAssocArrayCreatesJsonObject()
     {
         $response = new JsonResponse(array('foo' => 'bar'));
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
 
-    public function t2estConstructorWithSimpleTypes()
+    public function testConstructorWithSimpleTypes()
     {
         $response = new JsonResponse('foo');
         $this->assertSame('"foo"', $response->getContent());
@@ -68,33 +68,33 @@ class JsonResponseTest extends TestCase
         $this->assertSame('true', $response->getContent());
     }
 
-    public function t2estConstructorWithCustomStatus()
+    public function testConstructorWithCustomStatus()
     {
         $response = new JsonResponse(array(), 202);
         $this->assertSame(202, $response->getStatusCode());
     }
 
-    public function t2estConstructorAddsContentTypeHeader()
+    public function testConstructorAddsContentTypeHeader()
     {
         $response = new JsonResponse();
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
-    public function t2estConstructorWithCustomHeaders()
+    public function testConstructorWithCustomHeaders()
     {
         $response = new JsonResponse(array(), 200, array('ETag' => 'foo'));
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('foo', $response->headers->get('ETag'));
     }
 
-    public function t2estConstructorWithCustomContentType()
+    public function testConstructorWithCustomContentType()
     {
         $headers = array('Content-Type' => 'application/vnd.acme.blog-v1+json');
         $response = new JsonResponse(array(), 200, $headers);
         $this->assertSame('application/vnd.acme.blog-v1+json', $response->headers->get('Content-Type'));
     }
 
-    public function t2estSetJson()
+    public function testSetJson()
     {
         $response = new JsonResponse('1', 200, array(), true);
         $this->assertEquals('1', $response->getContent());
@@ -107,7 +107,7 @@ class JsonResponseTest extends TestCase
         $this->assertEquals('true', $response->getContent());
     }
 
-    public function t2estCreate()
+    public function testCreate()
     {
         $response = JsonResponse::create(array('foo' => 'bar'), 204);
         $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
@@ -115,28 +115,28 @@ class JsonResponseTest extends TestCase
         $this->assertEquals(204, $response->getStatusCode());
     }
 
-    public function t2estStaticCreateEmptyJsonObject()
+    public function testStaticCreateEmptyJsonObject()
     {
         $response = JsonResponse::create();
         $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
         $this->assertSame('{}', $response->getContent());
     }
 
-    public function t2estStaticCreateJsonArray()
+    public function testStaticCreateJsonArray()
     {
         $response = JsonResponse::create(array(0, 1, 2, 3));
         $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
         $this->assertSame('[0,1,2,3]', $response->getContent());
     }
 
-    public function t2estStaticCreateJsonObject()
+    public function testStaticCreateJsonObject()
     {
         $response = JsonResponse::create(array('foo' => 'bar'));
         $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
 
-    public function t2estStaticCreateWithSimpleTypes()
+    public function testStaticCreateWithSimpleTypes()
     {
         $response = JsonResponse::create('foo');
         $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
@@ -155,53 +155,53 @@ class JsonResponseTest extends TestCase
         $this->assertSame('true', $response->getContent());
     }
 
-    public function t2estStaticCreateWithCustomStatus()
+    public function testStaticCreateWithCustomStatus()
     {
         $response = JsonResponse::create(array(), 202);
         $this->assertSame(202, $response->getStatusCode());
     }
 
-    public function t2estStaticCreateAddsContentTypeHeader()
+    public function testStaticCreateAddsContentTypeHeader()
     {
         $response = JsonResponse::create();
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
     }
 
-    public function t2estStaticCreateWithCustomHeaders()
+    public function testStaticCreateWithCustomHeaders()
     {
         $response = JsonResponse::create(array(), 200, array('ETag' => 'foo'));
         $this->assertSame('application/json', $response->headers->get('Content-Type'));
         $this->assertSame('foo', $response->headers->get('ETag'));
     }
 
-    public function t2estStaticCreateWithCustomContentType()
+    public function testStaticCreateWithCustomContentType()
     {
         $headers = array('Content-Type' => 'application/vnd.acme.blog-v1+json');
         $response = JsonResponse::create(array(), 200, $headers);
         $this->assertSame('application/vnd.acme.blog-v1+json', $response->headers->get('Content-Type'));
     }
 
-    public function t2estSetCallback()
+    public function testSetCallback()
     {
         $response = JsonResponse::create(array('foo' => 'bar'))->setCallback('callback');
         $this->assertEquals(';callback({"foo":"bar"});', $response->getContent());
         $this->assertEquals('text/javascript', $response->headers->get('Content-Type'));
     }
 
-    public function t2estJsonEncodeFlags()
+    public function testJsonEncodeFlags()
     {
         $response = new JsonResponse('<>\'&"');
         $this->assertEquals("\"<>'&\\\"\"", $response->getContent());
     }
 
-    public function t2estGetEncodingOptions()
+    public function testGetEncodingOptions()
     {
         $response = new JsonResponse();
         
         $this->assertEquals(JSON_UNESCAPED_UNICODE, $response->getEncodingOptions());
     }
 
-    public function t2estSetEncodingOptions()
+    public function testSetEncodingOptions()
     {
         $response = new JsonResponse();
         $response->setData(array(array(1, 2, 3)));
@@ -211,7 +211,7 @@ class JsonResponseTest extends TestCase
         $this->assertEquals('{"0":{"0":1,"1":2,"2":3}}', $response->getContent());
     }
 
-    public function t2estItAcceptsJsonAsString()
+    public function testItAcceptsJsonAsString()
     {
         $response = JsonResponse::fromJsonString('{"foo":"bar"}');
         $this->assertSame('{"foo":"bar"}', $response->getContent());
@@ -230,7 +230,7 @@ class JsonResponseTest extends TestCase
         }
     }
 
-    public function t2estSetContentJsonObject()
+    public function testSetContentJsonObject()
     {
         $response = new JsonResponse();
         $response->setData(['foo' => 'bar']);
@@ -246,7 +246,7 @@ class JsonResponseTest extends TestCase
         $this->assertEquals('{"hello":"JsonSerializable"}', $response->getContent());
     }
 
-    public function t2estSetComplexCallback()
+    public function testSetComplexCallback()
     {
         $response = JsonResponse::create(array('foo' => 'bar'));
         $response->setCallback('ಠ_ಠ["foo"].bar[0]');
