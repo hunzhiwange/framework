@@ -67,6 +67,13 @@ interface IProject extends IContainer
      * @return void
      */
     public function appRun($app);
+
+    /**
+     * 是否以扩展方式运行
+     *
+     * @return boolean
+     */
+    public function runWithExtension();
     
     /**
      * 返回项目
@@ -80,7 +87,7 @@ interface IProject extends IContainer
     /**
      * 程序版本
      *
-     * @return number
+     * @return string
      */
     public function version();
 

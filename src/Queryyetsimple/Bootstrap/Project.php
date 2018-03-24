@@ -245,9 +245,19 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 是否以扩展方式运行
+     *
+     * @return boolean
+     */
+    public function runWithExtension()
+    {
+        return extension_loaded('queryyetsimple');
+    }
+
+    /**
      * 程序版本
      *
-     * @return number
+     * @return string
      */
     public function version()
     {

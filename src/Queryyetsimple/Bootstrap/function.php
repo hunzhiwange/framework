@@ -56,6 +56,18 @@ if (! function_exists('app')) {
     }
 }
 
+if (! function_exists('run_with_extension')) {
+    /**
+     * 是否以扩展方式运行
+     *
+     * @return boolean
+     */
+    function run_with_extension()
+    {
+        return project()->runwithExtension();
+    }
+}
+
 // function aop_before($pointcut, $advice) {
 //     $aop = \queryyetsimple\aop\aop::singleton();
 //     $aop->before($pointcut, $advice);

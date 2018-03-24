@@ -97,18 +97,42 @@ class RedirectResponseTest extends TestCase
 
     public function testWith() {
         $response = new RedirectResponse('foo.bar');
-        $response->setSession($this->initSession());
+        $response->setSession($this->mokeSessionForWith());
         $this->assertInstanceOf('Queryyetsimple\Session\Session', $response->getSession());
 
         $response->with('foo', 'bar');
         $this->assertEquals($response->getSession()->getFlash('foo'), 'bar');
 
-        $response->withInput(['myinput', 'world']);
-
-        ddd($response->getSession()->getFlash('inputs'));
+        $data = ['myinput', 'world'];
+        $response->setSession($this->mokeSessionArrayForWith());
+        $response->withInput($data);
+        $this->assertEquals($response->getSession()->getFlash('inputs'), $data);
     }
 
-    public function initSession() {
+    public function testWithError() {
+        $response = new RedirectResponse('foo.bar');
+        $response->setSession($this->mokeSessionForWithError());
+        $this->assertInstanceOf('Queryyetsimple\Session\Session', $response->getSession());
+
+        $errorsDefault = [
+            'name' => 'less than 6',
+            'age' => 'must be 18'
+        ];
+
+        $errorsCustom = [
+            'foo' => 'bar is error'
+        ];
+
+        $response->withErrors($errorsDefault);
+        $response->withErrors($errorsCustom, 'custom');
+
+        $this->assertEquals($response->getSession()->getFlash('errors'), [
+            'default' => $errorsDefault,
+            'custom' => $errorsCustom
+        ]);
+    }
+
+    protected function mokeSessionForWith() {
         $session = $this->createMock(Session::class);  
 
         $session->
@@ -122,6 +146,53 @@ class RedirectResponseTest extends TestCase
         method('getFlash')->
 
         willReturn('bar'); 
+
+        return $session;
+    }
+
+    protected function mokeSessionArrayForWith() {
+        $session = $this->createMock(Session::class);  
+
+        $session->
+
+        method('flash')->
+
+        willReturn(null); 
+
+        $session->
+
+        method('getFlash')->
+
+        willReturn(['myinput', 'world']); 
+
+        return $session;
+    }
+
+    protected function mokeSessionForWithError() {
+        $session = $this->createMock(Session::class);  
+
+        $session->
+
+        method('flash')->
+
+        willReturn(null); 
+
+        $session->
+
+        method('getFlash')->
+
+        willReturn(array (
+            'default' => 
+                array (
+                    'name' => 'less than 6',
+                    'age' => 'must be 18',
+                ),
+            'custom' => 
+                array (
+                    'foo' => 'bar is error',
+                ),
+            )
+        ); 
 
         return $session;
     }

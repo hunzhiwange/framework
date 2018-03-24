@@ -21,7 +21,6 @@ use Tests\TestCase;
 use JsonSerializable;
 use ReflectionProperty;
 use InvalidArgumentException;
-use Queryyetsimple\Http\Request;
 use Queryyetsimple\Http\Response;
 use Queryyetsimple\Support\IJson;
 use Queryyetsimple\Support\IArray;
