@@ -335,6 +335,7 @@ class RequestTest extends TestCase
         $request = RequestContentProxy::createFromGlobals();
         $this->assertEquals($normalizedMethod, $request->getMethod());
         $this->assertEquals('mycontent', $request->request->get('content'));
+
         unset($_SERVER['REQUEST_METHOD'], $_SERVER['CONTENT_TYPE']);
     }
 
@@ -418,11 +419,11 @@ class RequestTest extends TestCase
         $request->request->set('foo', 'body');
         $this->assertSame('query', $request->get('foo'));
 
-        //$request->query->remove('foo');
-        //$this->assertSame('attr', $request->get('foo'));
+        $request->query->remove('foo');
+        $this->assertSame('attr', $request->get('foo'));
 
-        //$request->params->remove('foo');
-        //$this->assertNull($request->get('foo'));
+        $request->params->remove('foo');
+        $this->assertNull($request->get('foo'));
     }
 
     public function testIsXmlHttpRequest()
@@ -465,6 +466,11 @@ class RequestContentProxy extends Request
      */
     public static function createFromGlobals(?array $option = NULL)
     {
+        // C 扩展版本兼容处理
+        if (! $option) {
+            $option = [];
+        }
+
         $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null, $option);
 
         $request = static::normalizeRequestFromContent($request);
