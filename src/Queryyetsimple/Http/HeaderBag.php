@@ -59,6 +59,28 @@ class HeaderBag extends Bag
     }
 
     /**
+     * 格式化 header 字符串 
+     * 
+     * @return string
+     */
+    public function __toString()
+    {
+        if (! $headers = $this->all()) {
+            return '';
+        }
+
+        ksort($headers);
+        
+        $content = '';
+        foreach ($headers as $name => $value) {
+            $name = ucwords($name, '-');
+            $content .= $name . ': ' . $value . "\r\n";
+        }
+
+        return $content;
+    }
+
+    /**
      * {@inheritdoc}
      */
     protected function normalize($key)
