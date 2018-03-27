@@ -94,13 +94,14 @@ class FileBag extends Bag
      * 数组文件请在末尾加上反斜杆访问
      *
      * @param string $key
-     * @param mixed $defaults
+     * @param array $defaults
      * @return mixed
      */
-    public function getArr($key, $defaults = null) {
+    public function getArr($key, array $defaults = []) {
         $files = [];
+
         foreach ($this->elements as $k => $value) {
-            if (strpos($k, $key) === 0) {
+            if (strpos($k, $key) === 0 && ! is_null($value)) {
                 $files[] = $value;
             }
         }
@@ -167,22 +168,26 @@ class FileBag extends Bag
         $result = [];
 
         foreach ($elements as $key => $value) {
-            if (! isset($value['name'])) {
-                throw new InvalidArgumentException('An uploaded file must be contain key name.');
-            } elseif (is_array($value['name'])) {
-                foreach ($value['name'] as $index => $item) {
-                    $element = [];
-                    foreach (static::$fileKeys as $fileKey) {
-                        if (! isset($value[$fileKey][$index])) {
-                            throw new InvalidArgumentException(sprintf('An uploaded file must be contain key %s.', $fileKey));
+            if (is_array($value)) {
+                if (array_key_exists('name', $value) === false) {
+                    throw new InvalidArgumentException('An uploaded file must be contain key name.');
+                } elseif (isset($value['name']) && is_array($value['name'])) {
+                     foreach ($value['name'] as $index => $item) {
+                        $element = [];
+                        foreach (static::$fileKeys as $fileKey) {
+                            if (! array_key_exists($index, $value[$fileKey])) {
+                                throw new InvalidArgumentException(sprintf('An uploaded file must be contain key %s.', $fileKey));
+                            }
+
+                            $element[$fileKey] = $value[$fileKey][$index] ?? '';
                         }
 
-                        $element[$fileKey] = $value[$fileKey][$index] ?? '';
+                        $result[$key . '\\' . $index] = $element;
+
+                        $result = $this->normalizeArray($result);
                     }
-
-                    $result[$key . '\\' . $index] = $element;
-
-                    $result = $this->normalizeArray($result);
+                } else {
+                    $result[$key] = $value;
                 }
             } else {
                 $result[$key] = $value;
