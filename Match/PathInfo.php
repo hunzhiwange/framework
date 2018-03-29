@@ -55,7 +55,7 @@ class PathInfo
     {
         $pathInfo = $request->getPathInfo();
         $pathInfo = trim($pathInfo, '/');
-        
+
         if (! $pathInfo) {
             return [];
         }

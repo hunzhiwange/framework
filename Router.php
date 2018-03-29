@@ -910,7 +910,7 @@ class Router implements IRouter
             $this->arrMethods[$sMethodName] = [];
         }
 
-        $mixMethod = ( array ) $mixMethod;
+        $mixMethod = (array) $mixMethod;
 
         $mixMethod = array_map(function ($strItem) {
             return strtoupper($strItem);
@@ -1125,6 +1125,7 @@ class Router implements IRouter
         $this->strApp = null;
         $this->strController = null;
         $this->strAction = null;
+        $this->matcheData = [];
     }    
 
     /**
