@@ -45,7 +45,7 @@ class Register extends Provider
      */
     public function bootstrap()
     {
-        $this->loadCommandNamespace('Queryyetsimple\Queue\console');
+        $this->loadCommandNamespace('Queryyetsimple\Queue\Console');
     }
 
     /**
