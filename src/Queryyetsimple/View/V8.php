@@ -79,7 +79,7 @@ class V8 extends Connect implements IConnect
      */
     public function __construct(array $option = [])
     {
-        if (! class_exists('V8Js', false)) {
+        if (! extension_loaded('v8js')) {
             throw new RuntimeException('Please install php v8js extension.');
         }
 

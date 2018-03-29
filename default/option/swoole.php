@@ -33,7 +33,7 @@ return [
      * swoole 服务类型，支持 default,http,websocket
      * see https://wiki.swoole.com/wiki/page/p-server.html
      */
-    'default' => env('swoole_server', 'default'),
+    'default' => env('swoole_server', 'http'),
 
     /**
      * ---------------------------------------------------------------
@@ -68,7 +68,7 @@ return [
         'task_worker_num' => 4,
 
         // swoole 进程名称
-        'process_name' => 'queryswoole', 
+        'process_name' => 'queryphp.swoole.default', 
         
         // swoole 进程保存路径
         'pid_path' => path_swoole_cache('pid') . '/default.pid'
@@ -86,7 +86,7 @@ return [
      */
     'http_server' => [
         // swoole 进程名称
-        'process_name' => 'queryswoolehttp', 
+        'process_name' => 'queryphp.swoole.http', 
         
         // swoole 进程保存路径
         'pid_path' => path_swoole_cache('pid') . '/http.pid'
@@ -113,7 +113,7 @@ return [
         'task_worker_num' => 4,
 
         // swoole 进程名称
-        'process_name' => 'queryswoolewebsocket', 
+        'process_name' => 'queryphp.swoole.websocket', 
         
         // swoole 进程保存路径
         'pid_path' => path_swoole_cache('pid') . '/websocket.pid'

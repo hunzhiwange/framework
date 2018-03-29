@@ -43,20 +43,6 @@ class FileResponse extends Response
     protected $file;
 
     /**
-     * 下载附件
-     *
-     * @var string
-     */
-    const DISPOSITION_ATTACHMENT = 'attachment';
-
-    /**
-     * 文件直接读取
-     *
-     * @var string
-     */
-    const DISPOSITION_INLINE = 'inline';
-
-    /**
      * 构造函数
      * 
      * @param \SplFileObject|\SplFileInfo|string $file
@@ -217,11 +203,14 @@ class FileResponse extends Response
             $filename = $this->file->getFilename();
         }
 
-        if (! in_array($disposition, [self::DISPOSITION_ATTACHMENT, self::DISPOSITION_INLINE])) {
+        if (! in_array($disposition, [
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT, 
+            ResponseHeaderBag::DISPOSITION_INLINE
+        ])) {
             throw new InvalidArgumentException('The disposition type is invalid.');
         }
 
-        $this->headers->set('Content-Disposition', $disposition . ';filename=' . basename($filename));
+        $this->headers->set('Content-Disposition', sprintf('%s; filename="%s"', $disposition, str_replace('"', '\\"', basename($filename))));
 
         return $this;
     }

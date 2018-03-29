@@ -54,9 +54,10 @@ class Server extends Command
      */
     public function handle()
     {
+        $this->info($this->getLogo());
         $this->warn($this->getVersion());
 
-        $objServer = app('swoole.' . $this->argument('type').'.server');
+        $objServer = app('swoole.' . $this->argument('type') . '.server');
         $objServer->setCommand($this);
         $objServer->options($this->parseOption());
         $objServer->startServer();
@@ -87,6 +88,23 @@ class Server extends Command
     protected function getVersion()
     {
         return 'Swoole ' . ucfirst($this->argument('type')) . ' Server Version ' . app()->version() . PHP_EOL;
+    }
+
+    /**
+     * 返回 QueryPHP Logo
+     *
+     * @return string
+     */
+    protected function getLogo()
+    {
+        return <<<queryphp
+_____________                           _______________
+ ______/     \__  _____  ____  ______  / /_  _________
+  ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
+   __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
+     \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
+        \_\                /_/_/         /_/
+queryphp;
     }
 
     /**

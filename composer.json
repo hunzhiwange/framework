@@ -13,11 +13,11 @@
         "email": "635750556@qq.com"
     }],
     "require": {
-        "php": ">=7.1.0",
+        "php": "^7.1.3",
         "ext-mbstring": "*",
         "ext-openssl": "*",
-        "symfony/console": "3.0.*",
-        "symfony/var-dumper": "2.8.*|3.0.*",
+        "symfony/console": "~4.0",
+        "symfony/var-dumper": "~4.0",
         "predis/predis": "1.1.1",
         "coderkungfu/php-queue": "^0.9.1",
         "clio/clio": "@stable",
@@ -26,7 +26,8 @@
         "nesbot/carbon": "~1.20",
         "league/flysystem": "^1.0",
         "monolog/monolog": "^1.23",
-        "swiftmailer/swiftmailer": "6.0.2"
+        "swiftmailer/swiftmailer": "6.0.2",
+        "nunomaduro/collision": "dev-master"
     },
     "replace": {
         "queryyetsimple/aop": "self.version",

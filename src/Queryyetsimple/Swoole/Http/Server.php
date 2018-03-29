@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Swoole\http;
+namespace Queryyetsimple\Swoole\Http;
 
-use Exception;
+use Throwable;
 use Swoole\{
     Http\Server as SwooleHttpServer,
     Http\Request as SwooleHttpRequest,
@@ -24,8 +24,8 @@ use Swoole\{
 };
 use Queryyetsimple\{
     Http\Request,
-    Http\Response,
     Router\Router,
+    Router\ResponseFactory,
     Swoole\Server as Servers
 };
 
@@ -52,21 +52,21 @@ class Server extends Servers
      *
      * @var \Queryyetsimple\Http\Request
      */
-    protected $objRequest;
+    protected $request;
     
     /**
      * 响应
      *
      * @var \Queryyetsimple\Http\Response
      */
-    protected $objResponse;
+    protected $response;
     
     /**
      * 配置
      * 
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
@@ -78,7 +78,7 @@ class Server extends Servers
         'port' => '9501', 
         
         // swoole 进程名称
-        'process_name' => 'queryswoolehttp', 
+        'process_name' => 'queryphp.swoole.http', 
         
         // swoole 进程保存路径
         'pid_path' => '', 
@@ -112,37 +112,84 @@ class Server extends Servers
      * 构造函数
      * 
      * @param \queryyetsimple\Router\Router $objRouter
-     * @param \Queryyetsimple\Http\Request $objRequest
-     * @param \Queryyetsimple\Http\Response $objResponse
-     * @param array $arrOption
+     * @param \Queryyetsimple\Http\Request $request
+     * @param \Queryyetsimple\Router\ResponseFactory $response
+     * @param array $option
      * @return void
      */
-    public function __construct(Router $objRouter, Request $objRequest, Response $objResponse, array $arrOption = [])
+    public function __construct(Router $objRouter, Request $request, ResponseFactory $response, array $option = [])
     {
         $this->objRouter = $objRouter;
-        $this->objRequest = $objRequest;
-        $this->objResponse = $objResponse;
-        $this->options($arrOption);
+        $this->request = $request;
+        $this->response = $response;
+        $this->options($option);
     }
 
     /**
      * 处理 http 请求
+     * 浏览器连接服务器后, 页面上的每个请求均会执行一次
+     * 每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
      * 
-     * @param \Swoole\Http\Request $objSwooleRequest
-     * @param \Swoole\Http\Response $objSwooleResponse
+     * @param \Swoole\Http\Request $swooleRequest
+     * @param \Swoole\Http\Response $swooleResponse
      * @return void
      */
-    public function onRequest(SwooleHttpRequest $objSwooleRequest, SwooleHttpResponse $objSwooleResponse)
+    public function onRequest(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse)
     {
+        // 请求过滤
+        if ($swooleRequest->server['path_info'] == '/favicon.ico' || 
+            $swooleRequest->server['request_uri'] == '/favicon.ico') {
+            return $swooleResponse->end();
+        }
+
+
+
+        //return;
+
         // 设置请求数据
-        if ($objSwooleRequest->server) {
-            $this->objRequest->setServers($objSwooleRequest->server);
+        $this->request->reset();
+
+        $datas = [
+            'header' => 'headers',
+            'server' => 'server',
+            'cookie' => 'cookies',
+            'get' => 'query', 
+            'files' => 'files',
+            'post' => 'request'
+        ];
+
+        $servers = [];
+
+        if ($swooleRequest->header) {
+            $tmp = $tmpHeader = [];
+
+            foreach ($swooleRequest->header as $key => $value) {
+                $key = strtoupper(str_replace('-', '_', $key));
+                $tmpHeader[$key] = $value;
+
+                $key = 'HTTP_' . $key;
+                $tmp[$key] = $value;
+            }
+
+            $servers = $tmp;
+            $swooleRequest->header = $tmpHeader;
+        }
+
+        if ($swooleRequest->server) {
+            $swooleRequest->server = array_change_key_case($swooleRequest->server, CASE_UPPER);
+            
+            $servers = array_merge($servers, $swooleRequest->server);
+            $swooleRequest->server = $servers;
+        } else {
+            $swooleRequest->server = $servers ?: null;
         }
         
-        if ($objSwooleRequest->get) {
-            $this->objRequest->setGets($objSwooleRequest->get);
+        foreach ($datas as $key => $item) {
+            if ($swooleRequest->{$key}) {
+                $this->request->{$item}->replace($swooleRequest->{$key});
+            }
         }
-        
+
         try {
             // 重置应用环境变量
             // 不然系统会再次获取服务端命令行所在应用信息
@@ -153,19 +200,18 @@ class Server extends Servers
             // 完成路由请求
             app()->appRouter();
 
-            ob_start();
+            //ob_start();
             app()->appRun();
-            $strHtml = ob_get_contents();
-            ob_end_clean();
 
-            $objSwooleResponse->write($strHtml);
+            //$content = ob_get_contents();
+            //ob_end_clean();
 
-            unset($strHtml);
-        } catch (Exception $oE) {
-            $objSwooleResponse->write($oE->getMessage());
+            //$swooleResponse->write($content ?: ' ');
+        } catch (Throwable $e) {
+            $swooleResponse->write($e->getMessage());
         }
         
-        $objSwooleResponse->end();
+        $swooleResponse->end();
     }
 
     /**

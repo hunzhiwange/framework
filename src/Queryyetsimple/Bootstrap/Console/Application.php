@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\console;
+namespace Queryyetsimple\Bootstrap\Console;
 
 use Queryyetsimple\{
     Option,
@@ -94,7 +94,7 @@ class Application
      */
     protected function registerUserCommands()
     {
-        return $this->doRegisterCommands(( array ) option::get('console'));
+        return $this->doRegisterCommands((array) Option::get('console'));
     }
 
     /**
@@ -116,6 +116,7 @@ class Application
             $this->objProject->instance('command.' . $objCommand->getName(), $objCommand);
             $this->objSymfonyApplication->add($objCommand);
         }
+        
         return $this;
     }
 

@@ -57,7 +57,7 @@ class Task extends Command
     {
         $this->warn($this->getVersion());
         
-        $objServer = app('swoole.' . $this->argument('type').'.server');
+        $objServer = app('swoole.' . $this->argument('type') . '.server');
         $objServer->setCommand($this);
         $objServer->options($this->parseOption());
         $objServer->taskServer();

@@ -14,9 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\console;
+namespace Queryyetsimple\Bootstrap\Console;
 
 use RuntimeException;
+use Queryyetsimple\Filesystem\Fso;
 
 /**
  * 命令行工具类导入类
@@ -141,7 +142,7 @@ class Load
 
             $arrFiles = array_merge($arrFiles, array_map(function ($strItem) use ($sNamespace) {
                 return $sNamespace . '\\' . basename($strItem, '.php');
-            }, Fso::lists($sDir, 'file', false, [ ], [
+            }, Fso::lists($sDir, 'file', false, [], [
                     'php'
             ])));
         }
