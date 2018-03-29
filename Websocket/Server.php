@@ -41,7 +41,7 @@ class Server extends Servers
      * 
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
@@ -53,7 +53,7 @@ class Server extends Servers
         'port' => '9501', 
         
         // swoole 进程名称
-        'process_name' => 'queryswoolewebsocket', 
+        'process_name' => 'queryphp.swoole.websocket', 
         
         // swoole 进程保存路径
         'pid_path' => '', 

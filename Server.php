@@ -61,7 +61,7 @@ class Server
      * 
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
@@ -73,7 +73,7 @@ class Server
         'port' => '9501', 
         
         // swoole 进程名称
-        'process_name' => 'queryswoole', 
+        'process_name' => 'queryphp.swoole.default', 
         
         // swoole 进程保存路径
         'pid_path' => '', 
@@ -102,7 +102,6 @@ class Server
         'workerStart', 
         'managerStart', 
         'workerStop',
-        'request',
         'receive',
         'task',
         'finish',
@@ -113,12 +112,12 @@ class Server
     /**
      * 构造函数
      * 
-     * @param array $arrOption
+     * @param array $option
      * @return void
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
-        $this->options($arrOption);
+        $this->options($option);
     }
 
     /**
@@ -206,6 +205,7 @@ class Server
 
     /**
      * 结束当前服务进程
+     * 每个 Worker 进程退出或重启时执行一次
      *
      * @return void
      */
@@ -417,7 +417,7 @@ class Server
         
         $this->info('Swoole server master worker start', true);
         
-        $this->setProcessName($this->arrOption['process_name'] . '-master');
+        $this->setProcessName($this->option['process_name'] . '-master');
         
         $strPid = $objServer->master_pid . "\n" . $objServer->manager_pid;
         if (! file_put_contents($this->getOption('pid_path'), $strPid)) {
@@ -429,6 +429,7 @@ class Server
     
     /**
      * 新的连接进入时
+     * 每次连接时(相当于每个浏览器第一次打开页面时)执行一次, reload 时连接不会断开, 也就不会再次触发该事件
      * 
      * @param \Swoole\Server $objServer
      * @param int $intFd
@@ -444,6 +445,7 @@ class Server
     /**
      * worker start 加载业务脚本常驻内存
      * 由于服务端命令行也采用 QueryPHP,无需再次引入 QueryPHP
+     * 每个 Worker 进程启动或重启时都会执行
      * 
      * @param \Swoole\Server $objServer
      * @param int $intWorkeId
@@ -461,6 +463,7 @@ class Server
     
     /**
      * 当管理进程启动时调用
+     * 服务器启动时执行一次
      * 
      * @param \Swoole\Server $objServer
      * @link https://wiki.swoole.com/wiki/page/190.html
@@ -469,7 +472,7 @@ class Server
     public function onManagerStart(SwooleServer $objServer)
     {
         $this->info('Swoole server manager worker start', true);
-        $this->setProcessName($this->arrOption['process_name'] . '-manager');
+        $this->setProcessName($this->option['process_name'] . '-manager');
         $this->showStartOption($objServer);
     }
     
@@ -568,6 +571,7 @@ class Server
     
     /**
      * Server 正常结束时发生
+     * 服务器关闭时执行一次
      * 
      * @param \Swoole\Server $objServer
      * @link https://wiki.swoole.com/wiki/page/p-event/onShutdown.html
@@ -584,6 +588,7 @@ class Server
     
     /**
      * 监听连接关闭事件
+     * 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件
      * 
      * @param \Swoole\Server $objServer
      * @param int $intFd
@@ -649,7 +654,9 @@ class Server
             if (! empty($arrOut)) {
                 throw new Exception(sprintf('Swoole pid file %s is already exists,pid is %d', $strFile, $arrPid[0]));
             } else {
-                $this->warn(sprintf('Warning:swoole pid file is already exists.', $strFile) . PHP_EOL . 'It is possible that the swoole service was last unusual exited.' . PHP_EOL . 'The non daemon mode ctrl+c termination is the most possible.' . PHP_EOL);
+                $this->warn(sprintf('Warning:swoole pid file is already exists.', $strFile) . PHP_EOL . 
+                    'It is possible that the swoole service was last unusual exited.' . PHP_EOL . 
+                    'The non daemon mode ctrl+c termination is the most possible.' . PHP_EOL);
                 unlink($strFile);
             }
         }
@@ -718,7 +725,7 @@ class Server
      */
     protected function initServer()
     {
-        $this->objServer->set($this->arrOption);
+        $this->objServer->set($this->option);
     }
     
     /**
@@ -748,19 +755,20 @@ class Server
     
     /**
      * 显示服务启动配置
+     * 服务器启动时执行一次
      *
      * @param \Swoole\Server $objServer
      * @return void
      */
     protected function showStartOption(SwooleServer $objServer)
     {
-        $arrOption = [];
+        $option = [];
         foreach ($objServer->setting as $sKey => $mixVal) {
             if ($sKey == 'pid_path') {
                 $mixVal = str_replace(path_swoole_cache(), 'runtime/swoole', $mixVal);
             }
             
-            $arrOption[] = [
+            $option[] = [
                 $sKey, 
                 $mixVal
             ];
@@ -769,7 +777,7 @@ class Server
         $this->objCommand->table([
             'Item', 
             'Value'
-        ], $arrOption);
+        ], $option);
     }
     
     /**
@@ -800,7 +808,7 @@ class Server
      */
     protected function daemonize()
     {
-        return ! $this->getOption['daemonize'];
+        return ! $this->getOption('daemonize');
     }
     
     /**
@@ -919,7 +927,7 @@ class Server
      */
     protected function checkSwooleInstalled() :void
     {
-        if (! class_exists('Swoole\Server')) {
+        if (! extension_loaded('swoole')) {
             throw new RuntimeException('Swoole is not installed.');
         }
     }
@@ -931,8 +939,8 @@ class Server
      */
     protected function checkPhpVersion() :void
     {
-        if (version_compare(PHP_VERSION, '7.1.0', '<')) {
-            throw new RuntimeException("PHP 7.1.0 OR Higher");
+        if (version_compare(PHP_VERSION, '7.1.3', '<')) {
+            throw new RuntimeException("PHP 7.1.3 OR Higher");
         }
     }
     
