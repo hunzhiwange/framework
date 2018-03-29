@@ -26,4 +26,18 @@ namespace Queryyetsimple\Http;
  */
 class ResponseHeaderBag extends HeaderBag
 {
+
+    /**
+     * 下载附件
+     *
+     * @var string
+     */
+    const DISPOSITION_ATTACHMENT = 'attachment';
+
+    /**
+     * 文件直接读取
+     *
+     * @var string
+     */
+    const DISPOSITION_INLINE = 'inline';
 }
