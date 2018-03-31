@@ -102,9 +102,10 @@ abstract class Make extends Command
         // 获取替换变量
         $arrSourceAndReplace = $this->parseSourceAndReplace();
 
-        // 执行替换
-        $strTemplateSource = str_replace($arrSourceAndReplace[0], $arrSourceAndReplace[1], $this->getTemplateSource()); // 第一替换基本变量
-        $this->strTemplateResult = str_replace($arrSourceAndReplace[0], $arrSourceAndReplace[1], $strTemplateSource); // 第一替换基本变量中的变量
+        // 第一次替换基本变量
+        // 第二次替换基本变量中的变量
+        $strTemplateSource = str_replace($arrSourceAndReplace[0], $arrSourceAndReplace[1], $this->getTemplateSource()); 
+        $this->strTemplateResult = str_replace($arrSourceAndReplace[0], $arrSourceAndReplace[1], $strTemplateSource);
     }
 
     /**
