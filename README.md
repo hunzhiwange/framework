@@ -36,12 +36,12 @@ QueryPHP was based on the DoYouHaoBaby framework.
 ## How to install
 
 ```
-composer require queryyetsimple/composer
+composer require queryyetsimple/framework
 ```
 
 ## The components that make up the QueryPHP framework
 
-Components for the framework can be found on the [Github website](https://github.com/queryyetsimple) and [Github website](https://packagist.org/packages/queryyetsimple/).
+Components for the framework can be found on the [Github website](https://github.com/queryyetsimple) and [Packagist website](https://packagist.org/packages/queryyetsimple/).
 
 ```
 composer require queryyetsimple/di
