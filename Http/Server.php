@@ -142,10 +142,6 @@ class Server extends Servers
             return $swooleResponse->end();
         }
 
-
-
-        //return;
-
         // 设置请求数据
         $this->request->reset();
 
