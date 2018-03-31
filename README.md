@@ -31,7 +31,7 @@ QueryPHP was based on the DoYouHaoBaby framework.
 
 <p>DoYouHaoBaby 于 2010/10/03 发布 0.0.1 版本，最后版本于 2014/10 发布 3.0 版本，感觉功能已经够自己用了并进入停止开发阶段。</p>
 
-<p align="right">小牛哥 2014.10 @ HTTP://DoYouHaoBaby.NET（官网已挂）</p>
+<p align="right">小牛哥 2014.10 @ HTTP://DoYouHaoBaby.NET</p>
 
 ## How to install
 
