@@ -114,6 +114,7 @@ abstract class Command extends SymfonyCommand
     public function __construct()
     {
         parent::__construct($this->getNames());
+        
         $this->setDescription($this->getDescriptions());
         $this->setHelp($this->getHelps());
         $this->specifyParameters();
@@ -130,6 +131,7 @@ abstract class Command extends SymfonyCommand
     {
         $this->objInput = $input;
         $this->objOutput = new SymfonyStyle($input, $output);
+
         return parent::run($input, $output);
     }
     
@@ -164,29 +166,31 @@ abstract class Command extends SymfonyCommand
     /**
      * 获取输入参数
      *
-     * @param string $strKey
+     * @param string $key
      * @return string|array
      */
-    public function argument($strKey = null)
+    public function argument($key = null)
     {
-        if (is_null($strKey)) {
+        if (is_null($key)) {
             return $this->objInput->getArguments();
         }
-        return $this->objInput->getArgument($strKey);
+
+        return $this->objInput->getArgument($key);
     }
     
     /**
      * 获取配置信息
      *
-     * @param string $strKey
+     * @param string $key
      * @return string|array
      */
-    public function option($strKey = null)
+    public function option($key = null)
     {
-        if (is_null($strKey)) {
+        if (is_null($key)) {
             return $this->objInput->getOptions();
         }
-        return $this->objInput->getOption($strKey);
+
+        return $this->objInput->getOption($key);
     }
     
     /**
