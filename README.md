@@ -22,7 +22,7 @@ QueryPHP was founded in 2010 and released the first version on 2010.10.03.
 ## How to install
 
 ```
-composer require queryyetsimple\composer
+composer require queryyetsimple/composer
 ```
 
 ## The components that make up the QueryPHP framework
@@ -30,7 +30,10 @@ composer require queryyetsimple\composer
 Components for the framework can be found on the [Github website](https://github.com/queryyetsimple) and [Github website](https://packagist.org/packages/queryyetsimple/).
 
 ```
-composer require queryyetsimple\di
+composer require queryyetsimple/di
+composer require queryyetsimple/cache
+
+... and more
 ```
 
 ## Official Documentation
