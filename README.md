@@ -28,9 +28,9 @@ QueryPHP was based on the DoYouHaoBaby framework.
 DoYouHaoBaby 具备了大量丰富的特性: 包括 MVC、ActiveRecord、国际化语言包、缓存组件、主从数据库、领域驱动设计、模式扩展, 
 模板引擎、RBAC 权限扩展等等。她能够快速地构建一个企业级应用。DoYouHaoBaby 核心思想来自于 QeePHP，使用习惯靠近 ThinkPHP。
 
-DoYouHaoBaby 于 2010/10/03 发布 0.0.1 版本，最后版本 2014/10 发布 3.0 版本，感觉功能已经够自己用了并进入停止开发阶段。
+DoYouHaoBaby 于 2010/10/03 发布 0.0.1 版本，最后版本于 2014/10 发布 3.0 版本，感觉功能已经够自己用了并进入停止开发阶段。
 
-<p align="right">小牛哥 @ HTTP://DoYouHaoBaby.NET</p>
+<p align="right">小牛哥 2014.10 @ HTTP://DoYouHaoBaby.NET</p>
 
 ## How to install
 
