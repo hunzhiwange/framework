@@ -7,8 +7,6 @@
     <img alt="Build Status" src="https://img.shields.io/travis/hunzhiwange/framework.svg?style=for-the-badge" /></a>
   <a href="https://secure.php.net/">
     <img alt="Php Version" src="https://img.shields.io/packagist/php-v/hunzhiwange/framework.svg?style=for-the-badge" /></a>
-  <a href="https://github.com/swoole/swoole-src">
-    <img alt="Swoole Version" src="https://img.shields.io/badge/swoole-%3E=2.1.1-brightgreen.svg?style=for-the-badge" /></a>
   <a href="http://opensource.org/licenses/MIT">
     <img alt="QueryPHP License" src="https://img.shields.io/packagist/l/hunzhiwange/framework.svg?style=for-the-badge" /></a>
 </p>

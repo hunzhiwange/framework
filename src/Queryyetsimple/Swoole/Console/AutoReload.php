@@ -61,7 +61,8 @@ class AutoReload extends Command
         $this->warn($this->getVersion());
 
         // 设置服务器程序的 PID
-        $kit = new AutoReloads($this->argument('pid'));
+        $pid = intval($this->argument('pid'));
+        $kit = new AutoReloads($pid);
 
         // 设置要监听的源码目录
         $watchDir = $this->getWatchDir();
@@ -72,13 +73,17 @@ class AutoReload extends Command
         // 监听后缀为 .php 的文件
         $kit->addFileType('.php');
 
-        // 执行监听
-        $kit->run();
-
         // 输入调试信息
+        $this->info(sprintf('The listen pid is %d,ctrl + c can exit.', $pid));
+
         $this->table([
             'Watch dirs'
-        ], $watchDir);
+        ], array_map(function ($value) {
+            return [$value];
+        }, $watchDir));
+
+        // 执行监听
+        $kit->run();
     }
 
     /**
