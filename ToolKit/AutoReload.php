@@ -30,48 +30,77 @@ class AutoReload
 {
 
     /**
+     * inotify
+     * 
      * @var resource
      */
     protected $inotify;
-    protected $pid;
-
-    protected $reloadFileTypes = array('.php' => true);
-    protected $watchFiles = array();
-    protected $afterNSeconds = 10;
 
     /**
-     * 正在reload
+     * 监听的进程 ID
+     * 
+     * @var int
+     */
+    protected $pid;
+
+    /**
+     * 监听文件类型
+     * 
+     * @var array
+     */
+    protected $reloadFileTypes = [
+        '.php' => true
+    ];
+
+    /**
+     * 监听的文件
+     * 
+     * @var array
+     */
+    protected $watchFiles = [];
+
+    /**
+     * 多少秒后重启
+     * 
+     * @var integer
+     */
+    protected $afterNumSeconds = 10;
+
+    /**
+     * 正在 reload
+     *
+     * @var bool
      */
     protected $reloading = false;
 
+    /**
+     * 事件
+     * 
+     * @var int
+     */
     protected $events;
 
     /**
      * 根目录
+     * 
      * @var array
      */
-    protected $rootDirs = array();
-
-    function putLog($log)
-    {
-        $_log = "[".date('Y-m-d H:i:s')."]\t".$log."\n";
-        echo $_log;
-    }
+    protected $rootDirs = [];
 
     /**
      * 构造函数
      * 
-     * @param int $serverPid
+     * @param int $pid
      * @return void
      * @throws \Queryyetsimple\Swoole\ToolKit\AutoReloadException
      */
-    public function __construct(int $serverPid)
+    public function __construct(int $pid)
     {
-        $this->pid = $serverPid;
+        $this->pid = $pid;
 
-        // if (posix_kill($serverPid, 0) === false) {
-        //     throw new AutoReloadException("Process#$serverPid not found.");
-        // }
+        if (posix_getsid($pid) === false) {
+            throw new AutoReloadException(sprintf('Process %d is not found.', $pid));
+        }
 
         $this->inotify = inotify_init();
         $this->events = IN_MODIFY | IN_DELETE | IN_CREATE | IN_MOVE;
@@ -92,7 +121,7 @@ class AutoReload
                     IN_MODIFY,
                     IN_MOVED_TO,
                     IN_MOVED_FROM
-                ]) {
+                ])) {
                     $fileType = strrchr($ev['name'], '.');
 
                     // 非重启类型
@@ -103,10 +132,10 @@ class AutoReload
 
                 // 正在 reload，不再接受任何事件，冻结 10 秒
                 if (! $this->reloading) {
-                    $this->putLog('after 10 seconds reload the server');
+                    $this->putLog('After 10 seconds reload the server');
 
                     // 有事件发生了，进行重启
-                    swoole_timer_after($this->afterNSeconds * 1000, [$this, 'reload']);
+                    swoole_timer_after($this->afterNumSeconds * 1000, [$this, 'reload']);
 
                     $this->reloading = true;
                 }
@@ -125,57 +154,27 @@ class AutoReload
     }
 
     /**
-     * 添加文件类型
-     * @param $type
-     */
-    function addFileType($type)
-    {
-        $type = trim($type, '.');
-        $this->reloadFileTypes['.' . $type] = true;
-    }
-
-    /**
-     * 添加事件
-     * @param $inotifyEvent
-     */
-    function addEvent($inotifyEvent)
-    {
-        $this->events |= $inotifyEvent;
-    }
-
-    /**
-     * 清理所有inotify监听
-     */
-    function clearWatch()
-    {
-        foreach($this->watchFiles as $wd)
-        {
-            inotify_rm_watch($this->inotify, $wd);
-        }
-        $this->watchFiles = array();
-    }
-
-    /**
-     * @param $dir
+     * 监听目录
+     * 
+     * @param string $dir
      * @param bool $root
      * @return bool
      * @throws \Queryyetsimple\Swoole\ToolKit\AutoReloadException
      */
-    function watch($dir, $root = true)
+    public function watch(string $dir, bool $root = true)
     {
-        //目录不存在
-        if (!is_dir($dir))
-        {
-            throw new AutoReloadException("[$dir] is not a directory.");
+        // 目录不存在
+        if (! is_dir($dir)) {
+            throw new AutoReloadException(sprintf('%s is not a directory.', $dir));
         }
-        //避免重复监听
-        if (isset($this->watchFiles[$dir]))
-        {
+
+        // 避免重复监听
+        if (isset($this->watchFiles[$dir])) {
             return false;
         }
-        //根目录
-        if ($root)
-        {
+
+        // 根目录
+        if ($root) {
             $this->rootDirs[] = $dir;
         }
 
@@ -183,44 +182,104 @@ class AutoReload
         $this->watchFiles[$dir] = $wd;
 
         $files = scandir($dir);
-        foreach ($files as $f)
-        {
-            if ($f == '.' or $f == '..')
-            {
+        foreach ($files as $f) {
+            if ($f == '.' or $f == '..') {
                 continue;
             }
+
             $path = $dir . '/' . $f;
-            //递归目录
-            if (is_dir($path))
-            {
+
+            // 递归目录
+            if (is_dir($path)) {
                 $this->watch($path, false);
             }
-            //检测文件类型
+
+            // 检测文件类型
             $fileType = strrchr($f, '.');
-            if (isset($this->reloadFileTypes[$fileType]))
-            {
+
+            if (isset($this->reloadFileTypes[$fileType])) {
                 $wd = inotify_add_watch($this->inotify, $path, $this->events);
                 $this->watchFiles[$path] = $wd;
             }
         }
+
         return true;
     }
 
-
-
-        function reload()
+    /**
+     * 添加文件类型
+     * 
+     * @param string $type
+     * @return void
+     */
+    public function addFileType(string $type)
     {
-        $this->putLog("reloading");
-        //向主进程发送信号
-        posix_kill($this->pid, SIGUSR1);
-        //清理所有监听
+        $type = trim($type, '.');
+        $this->reloadFileTypes['.' . $type] = true;
+    }
+
+    /**
+     * 添加事件
+     * 
+     * @param int $inotifyEvent
+     * @return void
+     */
+    public function addEvent(int $inotifyEvent)
+    {
+        $this->events |= $inotifyEvent;
+    }
+
+    /**
+     * 清理所有 inotify 监听
+     *
+     * @return void
+     */
+    public function clearWatch()
+    {
+        foreach ($this->watchFiles as $wd) {
+            inotify_rm_watch($this->inotify, $wd);
+        }
+
+        $this->watchFiles = [];
+    }
+
+    /**
+     * 重启
+     * 
+     * @return void
+     */
+    protected function reload()
+    {
+        $this->putLog('The swoole is reloading.');
+
+        // 向主进程发送信号
+        $result = posix_kill($this->pid, SIGUSR1);
+        if ($result) {
+            $this->putLog('The swoole reload success.');
+        } else {
+            $this->putLog('The swoole reload failed.');
+        }
+
+        // 清理所有监听
         $this->clearWatch();
-        //重新监听
-        foreach($this->rootDirs as $root)
-        {
+
+        // 重新监听
+        foreach ($this->rootDirs as $root) {
             $this->watch($root);
         }
-        //继续进行reload
+
+        // 继续进行 reload
         $this->reloading = false;
+    }
+
+    /**
+     * 记录日志
+     * 
+     * @param string $log
+     * @return void
+     */
+    protected function putLog(string $log)
+    {
+        fwrite(STDOUT, $log . PHP_EOL);
     }
 }
