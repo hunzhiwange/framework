@@ -64,7 +64,7 @@ class AutoReload
      * 
      * @var integer
      */
-    protected $afterNumSeconds = 10;
+    protected $afterSeconds = 10;
 
     /**
      * 正在 reload
@@ -96,10 +96,14 @@ class AutoReload
      */
     public function __construct(int $pid)
     {
+        if (! extension_loaded('inotify')) {
+           throw new AutoReloadException('PHP extension inotify is not install.'); 
+        }
+
         $this->pid = $pid;
 
         if (posix_getsid($pid) === false) {
-            throw new AutoReloadException(sprintf('Process %d is not found.', $pid));
+            throw new AutoReloadException(sprintf('Process %d was not found.', $pid));
         }
 
         $this->inotify = inotify_init();
@@ -135,7 +139,7 @@ class AutoReload
                     $this->putLog('After 10 seconds reload the server');
 
                     // 有事件发生了，进行重启
-                    swoole_timer_after($this->afterNumSeconds * 1000, [$this, 'reload']);
+                    swoole_timer_after($this->afterSeconds * 1000, [$this, 'reload']);
 
                     $this->reloading = true;
                 }
@@ -216,6 +220,17 @@ class AutoReload
     {
         $type = trim($type, '.');
         $this->reloadFileTypes['.' . $type] = true;
+    }
+
+    /**
+     * 设置多少秒后重启时间
+     * 
+     * @param int $seconds
+     * @return void
+     */
+    public function setAfterSeconds(int $seconds)
+    {
+        $this->afterSeconds = $seconds;
     }
 
     /**

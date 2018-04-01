@@ -27,7 +27,7 @@ use Queryyetsimple\Swoole\ToolKit\AutoReload as AutoReloads;
 /**
  * swoole 服务自动重启
  * 使用 inotify 监听 PHP 源码目录
- * 程序文件更新时自动 reload 服务器程序
+ * 程序文件更新时自动重启 swoole 服务端
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -42,7 +42,7 @@ class AutoReload extends Command
      *
      * @var string
      */
-    protected $strName = 'swoole:autoreload';
+    protected $strName = 'swoole:autoReload';
 
     /**
      * 命令行描述
@@ -62,16 +62,16 @@ class AutoReload extends Command
 
         // 设置服务器程序的 PID
         $pid = intval($this->argument('pid'));
-        $kit = new AutoReloads($pid);
+        $autoReload = new AutoReloads($pid);
 
         // 设置要监听的源码目录
         $watchDir = $this->getWatchDir();
         foreach ($watchDir as $item) {
-            $kit->watch($item);
+            $autoReload->watch($item);
         }
 
         // 监听后缀为 .php 的文件
-        $kit->addFileType('.php');
+        $autoReload->addFileType('.php');
 
         // 输入调试信息
         $this->info(sprintf('The listen pid is %d,ctrl + c can exit.', $pid));
@@ -83,7 +83,7 @@ class AutoReload extends Command
         }, $watchDir));
 
         // 执行监听
-        $kit->run();
+        $autoReload->run();
     }
 
     /**
@@ -129,10 +129,7 @@ class AutoReload extends Command
      */
     protected function getDefaultWatchDir()
     {
-        return [
-            app()->pathApplication(),
-            app()->pathCommon()
-        ];
+        return app('option')->get('swoole\autoReload_watch_dir');
     }
 
     /**
@@ -142,7 +139,7 @@ class AutoReload extends Command
      */
     protected function getVersion()
     {
-        return 'The Autoreload of Swoole Version ' . app()->version() . PHP_EOL;
+        return 'The AutoReload of Swoole Version ' . app()->version() . PHP_EOL;
     }
 
     /**
@@ -173,6 +170,14 @@ class AutoReload extends Command
      */
     protected function getOptions()
     {
-        return [];
+        return [
+            [
+                'after',
+                null,
+                Option::VALUE_REQUIRED,
+                'The after seconds reload the server when file updated.',
+                app('option')->get('swoole\autoReload_after_seconds')
+            ]
+        ];
     }
 }
