@@ -110,16 +110,10 @@ class Fso
      */
     public static function copyDirectory($sSourcePath, $sTargetPath, $arrFilter = [])
     {
-        $arrFilter = array_merge([
-            '.svn',
-            '.git',
-            'node_modules',
-            '.gitkeep'
-        ], $arrFilter);
-
         if (! is_dir($sSourcePath)) {
             return;
         }
+        
         if (file_exists($sTargetPath)) {
             return;
         }
@@ -157,13 +151,6 @@ class Fso
      */
     public static function listDirectory($sPath, Closure $cal, $arrFilter = [])
     {
-        $arrFilter = array_merge([
-            '.svn',
-            '.git',
-            'node_modules',
-            '.gitkeep'
-        ], $arrFilter);
-
         if (! is_dir($sPath)) {
             return;
         }
