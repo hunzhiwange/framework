@@ -27,7 +27,10 @@
         "league/flysystem": "^1.0",
         "monolog/monolog": "^1.23",
         "swiftmailer/swiftmailer": "6.0.2",
-        "nunomaduro/collision": "~2.0"
+        "nunomaduro/collision": "~2.0",
+        "leric/php-thrift": "0.10.0",
+        "twig/twig": "~2.0",
+        "nikic/php-parser": "v4.0.0alpha3"
     },
     "replace": {
         "queryyetsimple/aop": "self.version",

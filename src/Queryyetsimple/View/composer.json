@@ -16,7 +16,8 @@
         "queryyetsimple/support": "1.0.*",
         "queryyetsimple/option": "1.0.*",
         "queryyetsimple/manager": "1.0.*",
-        "queryyetsimple/stack": "1.0.*"
+        "queryyetsimple/stack": "1.0.*",
+        "twig/twig": "~2.0"
     },
     "suggest": {
         "ext-v8js": "PHP v8js support."
