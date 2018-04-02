@@ -29,7 +29,7 @@ use Queryyetsimple\Http\HeaderBag;
  * @version 1.0
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
-class JsonResponseTest extends TestCase
+class HeaderBagTest extends TestCase
 {
     public function testConstructor()
     {
