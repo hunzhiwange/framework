@@ -129,7 +129,7 @@ class AutoReload extends Command
      */
     protected function getDefaultWatchDir()
     {
-        return app('option')->get('swoole\autoReload_watch_dir');
+        return app('option')->get('swoole\autoreload_watch_dir');
     }
 
     /**
@@ -176,7 +176,7 @@ class AutoReload extends Command
                 null,
                 Option::VALUE_REQUIRED,
                 'The after seconds reload the server when file updated.',
-                app('option')->get('swoole\autoReload_after_seconds')
+                app('option')->get('swoole\autoreload_after_seconds')
             ]
         ];
     }
