@@ -17,10 +17,16 @@
 namespace Queryyetsimple\Bootstrap\Runtime;
 
 use Closure;
+use Throwable;
+use Whoops\Run;
 use ReflectionClass;
 use ReflectionMethod;
 use Exception as Exceptions;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Handler\JsonResponseHandler;
 use Queryyetsimple\{
+    Http\Response,
+    Di\IContainer,
     Filesystem\Fso,
     Support\Debug\Dump
 };
@@ -41,20 +47,22 @@ class Exception extends Message
      *
      * @var object
      */
-    protected $objException;
+    protected $exception;
     
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Bootstrap\Project $oProject
-     * @param object $objException
+     * @param \Queryyetsimple\Bootstrap\Project $project
+     * @param object $exception
      * @return void
      */
-    public function __construct($oProject, $objException)
+    public function __construct($project, $exception)
     {
-        $this->oProject = $oProject;
-        $this->objException = $objException;
-        $this->strMessage = "[{$this->objException->getCode()}] {$this->objException->getMessage()} " . basename($this->objException->getFile()) . sprintf(" line %d", $this->objException->getLine());
+        $this->project = $project;
+        $this->exception = $exception;
+        $this->strMessage = "[{$this->exception->getCode()}] {$this->exception->getMessage()} " . 
+            basename($this->exception->getFile()) . 
+            sprintf(" line %d", $this->exception->getLine());
     }
     
     /**
@@ -65,7 +73,14 @@ class Exception extends Message
     public function run()
     {
         $this->log($this->strMessage);
-        $this->toResponse($this->oProject['option']['default_response'] == 'api' ? $this->formatForApi($this->objException) : $this->format($this->objException));
+
+        if ($this->project['option']['debug_driver'] == 'whoops' && $this->project['option']->get('debug')) {
+            return $this->renderExceptionWithWhoops($this->exception);
+        } else {
+            $this->toResponse($this->project['option']['default_response'] == 'api' ? 
+                $this->formatForApi($this->exception) : 
+                $this->format($this->exception));
+        }
     }
     
     /**
@@ -77,37 +92,29 @@ class Exception extends Message
     protected function errorMessage($mixError)
     {
         if (! is_array($mixError)) {
-            $mixError = ( array ) $mixError;
+            $mixError = (array) $mixError;
         }
 
-        if ($this->oProject['option']['default_response'] == 'api') {
+        if ($this->project['option']['default_response'] == 'api') {
             return $mixError;
         }
         
-        // 否则定向到错误页面
-        if (PHP_SAPI != 'cli' && $this->oProject['option']['show_exception_redirect'] && ! $this->oProject['option']['debug']) {
-            $this->oProject['router']->urlRedirect($this->oProject['router']->url($this->oProject['option']['show_exception_redirect']));
+        if (! $this->project['option']->get('debug')) {
+            $mixError['message'] = $this->project['option']->get('custom_exception_message');
+        }
+        
+        // 包含异常页面模板
+        if (PHP_SAPI == 'cli') {
+            echo $mixError['message'];
         } else {
-            if (! $this->oProject['option']->get('show_exception_show_message', true) && $this->oProject['option']->get('show_exception_default_message')) {
-                $mixError['message'] = $this->oProject['option']->get('show_exception_default_message');
-            }
+            $exceptionpath = $this->project['option']->get('custom_exception_template') ?:
+                $this->project->pathSystem('exception');
             
-            // 包含异常页面模板
-            if (PHP_SAPI == 'cli') {
-                echo $mixError['message'];
-            } else {
-                if ($this->oProject['option']->get('show_exception_template') && is_file($this->oProject['option']->get('show_exception_template'))) {
-                    $exceptionpath = $this->oProject['option']->get('show_exception_template');
-                } else {
-                    $exceptionpath = $this->oProject->pathSystem('exception');
-                }
-                
-                if (! is_file($exceptionpath)) {
-                    exit(sprintf('Exception file %s is not exits.', $exceptionpath));
-                }
-
-                require_once $exceptionpath;
+            if (! is_file($exceptionpath)) {
+                exit(sprintf('Exception file %s is not exits.', $exceptionpath));
             }
+
+            require_once $exceptionpath;
         }
     }
     
@@ -127,7 +134,7 @@ class Exception extends Message
         
         // 调试消息
         $sTraceInfo = '';
-        if ($this->oProject['option']['debug']) {
+        if ($this->project['option']['debug']) {
             foreach ($arrTrace as $intKey => $arrVal) {
                 // 参数处理
                 $arrVal['class'] = $arrVal['class'] ?? '';
@@ -153,11 +160,14 @@ class Exception extends Message
                 }
                 
                 // 调试信息
-                $sTraceInfo .= "<li><a " . ($sArgsInfoDetail ? "data-toggle=\"queryphp-message-argsline-{$intKey}\" style=\"cursor: pointer;\"" : '') . "><span>#{$arrVal['line']}</span> {$arrVal['file']} - {$arrVal['class']}{$arrVal['type']}{$arrVal['function']}( {$sArgsInfo} )</a>
-                " . ($sArgsInfoDetail ? "<div class=\"queryphp-message-argsline-{$intKey}\" style=\"display:none;\">
-                {$sArgsInfoDetail}
-                </div>" : '') . "
-                </li>";
+                $sTraceInfo .= "<li><a " . 
+                    ($sArgsInfoDetail ? "data-toggle=\"queryphp-message-argsline-{$intKey}\" style=\"cursor: pointer;\"" : '') . 
+                    "><span>#{$arrVal['line']}</span> {$arrVal['file']} - {$arrVal['class']}{$arrVal['type']}{$arrVal['function']}( {$sArgsInfo} )</a>" . 
+                    ($sArgsInfoDetail ? 
+                        "<div class=\"queryphp-message-argsline-{$intKey}\" style=\"display:none;\">{$sArgsInfoDetail}</div>" 
+                        : ''
+                    ) . 
+                    "</li>";
                 
                 unset($sArgsInfo, $sArgsInfoDetail);
             }
@@ -193,7 +203,7 @@ class Exception extends Message
         
         // 调试消息
         $sTraceInfo = '';
-        if ($this->oProject['option']['debug']) {
+        if ($this->project['option']['debug']) {
             foreach ($arrTrace as $intKey => &$arrVal) {
                 // 参数处理
                 $arrVal['class'] = $arrVal['class'] ?? '';
@@ -339,5 +349,28 @@ class Exception extends Message
         $strDes[] = '}';
         
         return PHP_EOL . implode(PHP_EOL, $strDes) . PHP_EOL;
+    }
+
+    /**
+     * Whoops 接管异常
+     * 
+     * @param \Throwable $e
+     * @return \Queryyetsimple\Http\Response
+     */
+    protected function renderExceptionWithWhoops(Throwable $e)
+    {
+        $whoops = new Run;
+
+        if ($this->project['option']['default_response'] == 'api') {
+            $whoops->pushHandler(new JsonResponseHandler);
+        } else {
+            $whoops->pushHandler(new PrettyPageHandler);
+        }
+
+        return new Response(
+            $whoops->handleException($e),
+            $e->getStatusCode(),
+            $e->getHeaders()
+        );
     }
 }

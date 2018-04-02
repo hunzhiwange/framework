@@ -30,16 +30,16 @@ class Error extends Message
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Bootstrap\Project $oProject
+     * @param \Queryyetsimple\Bootstrap\Project $project
      * @param int $nErrorNo
      * @param string $sErrStr
      * @param string $sErrFile
      * @param int $nErrLine
      * @return void
      */
-    public function __construct($oProject, $nErrorNo, $sErrStr, $sErrFile, $nErrLine)
+    public function __construct($project, $nErrorNo, $sErrStr, $sErrFile, $nErrLine)
     {
-        $this->oProject = $oProject;
+        $this->project = $project;
         if ($nErrorNo) {
             $this->strMessage = "[{$nErrorNo}]: {$sErrStr}<br> File: {$sErrFile}<br> Line: {$nErrLine}";
         }

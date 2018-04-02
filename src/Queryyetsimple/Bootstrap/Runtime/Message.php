@@ -34,7 +34,7 @@ abstract class Message
      *
      * @var \Queryyetsimple\Bootstrap\Project
      */
-    protected $oProject;
+    protected $project;
 
     /**
      * 错误消息
@@ -64,8 +64,8 @@ abstract class Message
      */
     protected function log($strMessage)
     {
-        if ($this->oProject['option']->get('log\runtime_enabled', false)) {
-            $this->oProject['log']->write(ILog::ERROR, $strMessage);
+        if ($this->project['option']->get('log\runtime_enabled', false)) {
+            $this->project['log']->write(ILog::ERROR, $strMessage);
         }
     }
 
@@ -77,7 +77,7 @@ abstract class Message
      */
     protected function errorMessage($sMessage)
     {
-        $errorpath = $this->oProject->pathSystem('error');
+        $errorpath = $this->project->pathSystem('error');
 
         if (! is_file($errorpath)) {
             exit(sprintf('Error file %s is not exits.', $errorpath));
@@ -98,7 +98,7 @@ abstract class Message
             return $this->objException->getResponse()->output();
         }
 
-        if ($this->oProject['option']['default_response'] == 'api') {
+        if ($this->project['option']['default_response'] == 'api') {
             $strContent = $this->errorMessage($sMessage);
         } else {
             $intLevel = ob_get_level();
@@ -121,7 +121,7 @@ abstract class Message
             $this->objException->statusCode() : 
             404;
 
-        $response = $this->oProject['response']->make($strContent);
+        $response = $this->project['response']->make($strContent);
 
         $response->setStatusCode($statusCode)->
 

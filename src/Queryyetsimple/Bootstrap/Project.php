@@ -20,6 +20,7 @@ use Exception;
 use Dotenv\Dotenv;
 use RuntimeException;
 use Composer\Autoload\ClassLoader;
+use NunoMaduro\Collision\Provider as CollisionProvider;
 use Queryyetsimple\{
     Psr4\Psr4,
     Di\Provider,
@@ -847,6 +848,7 @@ class Project extends Container implements IProject
     protected function registerRuntime()
     {
         if (PHP_SAPI == 'cli') {
+            (new CollisionProvider)->register();
             return;
         }
 

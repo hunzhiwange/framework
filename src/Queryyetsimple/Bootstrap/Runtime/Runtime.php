@@ -16,7 +16,10 @@
  */
 namespace Queryyetsimple\Bootstrap\Runtime;
 
+use Whoops\Run;
 use Queryyetsimple\Di\IContainer;
+use Queryyetsimple\Http\Response;
+use Whoops\Handler\PrettyPageHandler;
 
 /**
  * 异常响应
@@ -39,13 +42,12 @@ class Runtime
     /**
      * 接管 PHP 异常
      *
-     * @param Exception $oException
+     * @param \Exception $oException
      * @return void
      */
     public static function exceptionHandle($oException)
     {
-        return static::renderExceptionWithWhoops($oException);
-        (new exception(static::$container, $oException))->run();
+        (new Exception(static::$container, $oException))->run();
     }
     
     /**
@@ -59,28 +61,7 @@ class Runtime
      */
     public static function errorHandle($nErrorNo, $sErrStr, $sErrFile, $nErrLine)
     {
-        //return $this->renderExceptionWithWhoops($)
-        //exit();
-    //echo 'xxx';
-        (new error(static::$container, $nErrorNo, $sErrStr, $sErrFile, $nErrLine))->run();
-    }
-
-    /**
-     * Render an exception using Whoops.
-     * 
-     * @param  \Exception $e
-     * @return \Illuminate\Http\Response
-     */
-    protected static function renderExceptionWithWhoops(\Exception $e)
-    {
-        $whoops = new \Whoops\Run;
-        $whoops->pushHandler(new \Whoops\Handler\PrettyPageHandler());
-
-        return new \Queryyetsimple\Http\Response(
-            $whoops->handleException($e),
-            $e->getStatusCode(),
-            $e->getHeaders()
-        );
+        (new Error(static::$container, $nErrorNo, $sErrStr, $sErrFile, $nErrLine))->run();
     }
     
     /**
@@ -89,8 +70,8 @@ class Runtime
      * @return void
      */
     public static function shutdownHandle()
-    {echo 'x';
-        (new shutdown(static::$container))->run();
+    {
+        (new Shutdown(static::$container))->run();
     }
     
     /**
