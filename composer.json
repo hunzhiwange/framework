@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Encryption\\": ""
+            "Leevel\\Encryption\\": ""
         }
     },
     "extra": {
