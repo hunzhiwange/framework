@@ -20,7 +20,8 @@ use Queryyetsimple\{
     Di\Provider,
     Swoole\Server,
     Swoole\Http\Server as HttpServer,
-    Swoole\Websocket\Server as WebsocketServer
+    Swoole\Websocket\Server as WebsocketServer,
+    Protocol\RpcServer
 };
 
 /**
@@ -44,6 +45,7 @@ class Register extends Provider
         $this->swooleServer();
         $this->swooleHttpServer();
         $this->swooleWebsocketServer();
+        $this->swooleRpcServer();
     }
     
     /**
@@ -75,6 +77,10 @@ class Register extends Provider
             'swoole.websocket.server' => [
                 'Qys\Swoole\Websocket\Server',
                 'Queryyetsimple\Swoole\Websocket\Server'
+            ],
+            'swoole.rpc.server' => [
+                'Qys\Protocol\RpcServer',
+                'Queryyetsimple\Protocol\RpcServer'
             ]
         ];
     }
@@ -114,6 +120,19 @@ class Register extends Provider
         $this->singleton('swoole.websocket.server', function ($project) {
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\websocket_server']);
             return new WebsocketServer($project['router'], $project['request'], $project['response'], $arrOption);
+        });
+    }
+
+    /**
+     * 注册 swoole rpc 服务
+     *
+     * @return void
+     */
+    protected function swooleRpcServer()
+    {
+        $this->singleton('swoole.rpc.server', function ($project) {
+            $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\rpc_server']);
+            return new RpcServer($arrOption);
         });
     }
 

@@ -21,7 +21,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Cache\\": ""
+            "Leevel\\Cache\\": ""
         }
     },
     "extra": {

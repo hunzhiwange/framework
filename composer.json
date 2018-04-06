@@ -82,7 +82,7 @@
             "src\\Queryyetsimple\\Bootstrap\\function.php"
         ],
         "psr-4": {
-            "Queryyetsimple\\": "src\\Queryyetsimple"
+            "Leevel\\": "src\\Queryyetsimple"
         }
     },
     "extra": {

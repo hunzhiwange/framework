@@ -93,7 +93,7 @@ class RedirectResponse extends Response
      * 闪存一个数据片段到 SESSION
      *
      * @param string|array $key
-     * @param mixed  $value
+     * @param mixed $value
      * @return $this
      */
     public function with($key, $value = null)
