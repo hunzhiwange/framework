@@ -1,28 +1,28 @@
 <?php
 namespace Queryyetsimple\Protocol;
 
-use Queryyetsimple\Protocol\Thrift\TNonblockingServer;
-use Queryyetsimple\Protocol\Thrift\Socket;
+use Queryyetsimple\Protocol\Thrift\Base\TNonblockingServer;
+use Queryyetsimple\Protocol\Thrift\Base\Socket;
 
 class ThriftServer extends TNonblockingServer
 {
     protected $processor = null;
     protected $serviceName = 'Thrift';
 
-    function onStart()
+    public function onStart()
     {
         echo "ThriftServer Start\n";
     }
 
-    function notice($log)
+    public function notice($log)
     {
         echo $log."\n";
     }
 
     public function onReceive($serv, $fd, $from_id, $data)
     {
-        $processor_class = "\\Queryyetsimple\\Protocol\\Thrift\\" . $this->serviceName . 'Processor';
-        $handler_class = "\\Queryyetsimple\\Protocol\\Thrift\\" . $this->serviceName . "Handler";
+        $processor_class = "\\Queryyetsimple\\Protocol\\Thrift\\Service\\" . $this->serviceName . 'Processor';
+        $handler_class = "\\Queryyetsimple\\Protocol\\Thrift\\service\\" . $this->serviceName . "Handler";
 
         $handler = new $handler_class();
         $this->processor = new $processor_class($handler);
@@ -41,7 +41,7 @@ class ThriftServer extends TNonblockingServer
         }
     }
 
-    function serve()
+    public function serve()
     {
         $serv = new \swoole_server('127.0.0.1', 8099);
         $serv->on('workerStart', [$this, 'onStart']);

@@ -11,7 +11,7 @@ struct Request
 {
   // call 为字符串类型，是指 Service 接口的名称
   // 例如：home://blog/info:get 为调用 mvc 接口中的数据
-  1: string call;
+  1: required string call;
 
   // params 为 list 类型数据，一个元素可重复的有序列表，C++ 之 vector，Java 之 ArrayList，PHP 之 array
   // 在 PHP 服务端开发中相当于 call_user_func_array($call, $params)
@@ -32,10 +32,10 @@ struct Request
 struct Response
 {
   // status 为响应状态，200 表示成功，其他参考 HTTP 状态
-  1: i16 status;
+  1: required i16 status;
 
   // code 为 JSON 字符串，客户端自主进行解析
-  2: string data;
+  2: required string data;
 }
 
 /**
