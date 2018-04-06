@@ -29,7 +29,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Filesystem\\": ""
+            "Leevel\\Filesystem\\": ""
         }
     },
     "extra": {
