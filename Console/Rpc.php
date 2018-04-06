@@ -39,7 +39,7 @@ use Queryyetsimple\Protocol\Thrift\{
  * @since 2017.12.27
  * @version 1.0
  */
-class ThriftRpc extends Command
+class Rpc extends Command
 {
 
     /**
@@ -47,7 +47,7 @@ class ThriftRpc extends Command
      *
      * @var string
      */
-    protected $strName = 'swoole:thriftrpc';
+    protected $strName = 'swoole:rpc';
 
     /**
      * 命令行描述
