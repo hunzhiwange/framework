@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Event\\": ""
+            "Leevel\\Event\\": ""
         }
     },
     "extra": {
