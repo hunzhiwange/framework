@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Di\\": ""
+            "Leevel\\Di\\": ""
         }
     },
     "extra": {
