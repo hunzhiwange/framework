@@ -63,7 +63,7 @@ class Register extends Provider
     {
         return [
             'i18n' => [
-                'queryyetsimple\I18n\I18n',
+                'Queryyetsimple\I18n\I18n',
                 'Queryyetsimple\I18n\II18n',
                 'Qys\I18n\I18n',
                 'Qys\I18n\II18n'     
