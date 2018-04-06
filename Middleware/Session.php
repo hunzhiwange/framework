@@ -44,7 +44,7 @@ class Session
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\Session\Manager $manager
+     * @param \Queryyetsimple\Session\Manager $manager
      * @return void
      */
     public function __construct(Manager $manager)
