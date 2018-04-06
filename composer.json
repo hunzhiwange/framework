@@ -1,5 +1,5 @@
 {
-    "name": "queryyetsimple/aop",
+    "name": "leevel/aop",
     "description": "The Queryyetsimple Aop package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
@@ -17,7 +17,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Aop\\": ""
+            "Leevel\\Aop\\": ""
         }
     },
     "extra": {
