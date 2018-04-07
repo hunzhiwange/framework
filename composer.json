@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/manager",
-    "description": "The Queryyetsimple Manager package.",
+    "name": "leevel/manager",
+    "description": "The Leevel Manager Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,11 +13,11 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/di": "1.0.*"
+        "leevel/di": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Manager\\": ""
+            "Leevel\\Manager\\": ""
         }
     },
     "extra": {
