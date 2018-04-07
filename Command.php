@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Console;
+namespace Leevel\Console;
 
 use Symfony\Component\Console\{
     Helper\Table,
@@ -47,7 +47,7 @@ abstract class Command extends SymfonyCommand
     /**
      * 项目容器
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected $container;
     
@@ -379,7 +379,7 @@ abstract class Command extends SymfonyCommand
     /**
      * 设置或者返回服务容器
      *
-     * @param \Queryyetsimple\Di\IContainer $container
+     * @param \Leevel\Di\IContainer $container
      * @return void
      */
     public function container($container = null)
