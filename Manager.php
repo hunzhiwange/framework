@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Database;
+namespace Leevel\Database;
 
-use Queryyetsimple\Support\Arr;
-use Queryyetsimple\Manager\Manager as Managers;
+use Leevel\Support\Arr;
+use Leevel\Manager\Manager as Managers;
 
 /**
  * database 入口
@@ -55,7 +55,7 @@ class Manager extends Managers
      * 创建 mysql 连接
      *
      * @param array $arrOption
-     * @return \Queryyetsimple\Database\mysql
+     * @return \Leevel\Database\mysql
      */
     protected function makeConnectMysql($arrOption = [])
     {

@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Database;
+namespace Leevel\Database;
 
 /**
  * database 仓储
@@ -30,14 +30,14 @@ class Database implements IDatabase
     /**
      * 数据库连接对象
      *
-     * @var \Queryyetsimple\Database\IConnect
+     * @var \Leevel\Database\IConnect
      */
     protected $objConnect;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Database\IConnect $objConnect
+     * @param \Leevel\Database\IConnect $objConnect
      * @return void
      */
     public function __construct(IConnect $objConnect)

@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Database\Console;
+namespace Leevel\Database\Console;
 
 use Phinx\Console\Command\SeedCreate as PhinxSeedCreate;
 

@@ -14,13 +14,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Database;
+namespace Leevel\Database;
 
 use PDO;
 use Throwable;
 use Exception;
 use PDOException;
-use Queryyetsimple\{
+use Leevel\{
     Log\Ilog,
     Cache\ICache,
     Support\Debug\Dump
@@ -61,21 +61,21 @@ abstract class Connect
     /**
      * 数据查询组件
      *
-     * @var \Queryyetsimple\Database\Select
+     * @var \Leevel\Database\Select
      */
     protected $objSelect;
 
     /**
      * 日志仓储
      *
-     * @var \queryyetsimple\Log\Ilog
+     * @var \leevel\Log\Ilog
      */
     protected $objLog;
 
     /**
      * 缓存仓储
      *
-     * @var \Queryyetsimple\Cache\ICache
+     * @var \Leevel\Cache\ICache
      */
     protected $objCache;
 
@@ -138,8 +138,8 @@ abstract class Connect
     /**
      * 构造函数
      *
-     * @param \queryyetsimple\Log\Ilog $objLog
-     * @param \Queryyetsimple\Cache\ICache $objCache
+     * @param \leevel\Log\Ilog $objLog
+     * @param \Leevel\Cache\ICache $objCache
      * @param array $arrOption
      * @param boolean $booDevelopment
      * @return void
