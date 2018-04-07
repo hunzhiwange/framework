@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/encryption",
-    "description": "The Queryyetsimple Encryption package.",
+    "name": "leevel/encryption",
+    "description": "The Leevel Encryption Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
