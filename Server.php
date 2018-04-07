@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Swoole;
+namespace Leevel\Swoole;
 
 use Exception;
 use RuntimeException;
@@ -22,7 +22,7 @@ use Swoole\{
     Server as SwooleServer,
     Client as SwooleClient
 };
-use Queryyetsimple\{
+use Leevel\{
     Option\TClass,
     Console\Command
 };
@@ -52,7 +52,7 @@ class Server
     /**
      * 命令行工具
      * 
-     * @var \queryyetsimple\Console\Command
+     * @var \leevel\Console\Command
      */
     protected $objCommand;
 
@@ -124,7 +124,7 @@ class Server
      * 设置命名行
      * 实现友好的屏幕信息输出
      *
-     * @param queryyetsimple\Console\Command $objCommand
+     * @param leevel\Console\Command $objCommand
      * @return void
      */
     public function setCommand(command $objCommand)

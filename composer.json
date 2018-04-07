@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/swoole",
-    "description": "The Queryyetsimple Swoole package.",
+    "name": "leevel/swoole",
+    "description": "The Leevel Swoole Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -14,15 +14,15 @@
     "require": {
         "php": "^7.1.3",
         "ext-swoole": "*",
-        "queryyetsimple/http": "1.0.*",
-        "queryyetsimple/router": "1.0.*",
-        "queryyetsimple/option": "1.0.*",
-        "queryyetsimple/console": "1.0.*",
+        "leevel/http": "1.0.*",
+        "leevel/router": "1.0.*",
+        "leevel/option": "1.0.*",
+        "leevel/console": "1.0.*",
         "leric/php-thrift": "0.10.0"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Swoole\\": ""
+            "Leevel\\Swoole\\": ""
         }
     },
     "extra": {

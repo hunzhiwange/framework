@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Swoole\Websocket;
+namespace Leevel\Swoole\Websocket;
 
 use Exception;
 use Swoole\{
@@ -22,7 +22,7 @@ use Swoole\{
     Websocket\Frame as SwooleWebsocketFrame,
     Websocket\Server as SwooleWebsocketServer
 };
-use Queryyetsimple\Swoole\Http\Server as Servers;
+use Leevel\Swoole\Http\Server as Servers;
 
 /**
  * swoole websocket 服务
