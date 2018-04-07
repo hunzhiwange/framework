@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/option",
-    "description": "The Queryyetsimple Option package.",
+    "name": "leevel/option",
+    "description": "The Leevel Option Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Option\\": ""
+            "Leevel\\Option\\": ""
         }
     },
     "extra": {
