@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Http;
+namespace Leevel\Http;
 
 use Closure;
 use DateTime;
@@ -23,7 +23,7 @@ use DateTimeZone;
 use JsonSerializable;
 use InvalidArgumentException;
 use UnexpectedValueException;
-use Queryyetsimple\{
+use Leevel\{
     Support\IJson,
     Flow\TControl,
     Support\IArray,
@@ -50,7 +50,7 @@ class Response implements IResponse
     /**
      * 响应头
      * 
-     * @var \Queryyetsimple\Http\ResponseHeaderBag
+     * @var \Leevel\Http\ResponseHeaderBag
      */
     public $headers;
 
