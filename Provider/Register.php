@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\I18n\Provider;
+namespace Leevel\I18n\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     I18n\I18n,
     I18n\Load,
     Di\Provider
@@ -63,13 +63,13 @@ class Register extends Provider
     {
         return [
             'i18n' => [
-                'Queryyetsimple\I18n\I18n',
-                'Queryyetsimple\I18n\II18n',
+                'Leevel\I18n\I18n',
+                'Leevel\I18n\II18n',
                 'Qys\I18n\I18n',
                 'Qys\I18n\II18n'     
             ],
             'load' => [
-                'Queryyetsimple\I18n\Load',
+                'Leevel\I18n\Load',
                 'Qys\I18n\Load'
             ]
         ];
@@ -106,6 +106,6 @@ class Register extends Provider
      */
     protected function console()
     {
-        $this->loadCommandNamespace('Queryyetsimple\I18n\Console');
+        $this->loadCommandNamespace('Leevel\I18n\Console');
     }
 }

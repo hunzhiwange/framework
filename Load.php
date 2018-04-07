@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\I18n;
+namespace Leevel\I18n;
 
 use RuntimeException;
-use Queryyetsimple\Filesystem\Fso;
+use Leevel\Filesystem\Fso;
 
 /**
  * 语言包工具类导入类

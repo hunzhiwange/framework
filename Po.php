@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\I18n;
+namespace Leevel\I18n;
 
-use Queryyetsimple\I18n\{
+use Leevel\I18n\{
     Streams\File,
     Streams\Reader,
     Translations\Gettext
@@ -77,7 +77,7 @@ class Po extends Gettext
     {
         // TODO sorting
         return implode("\n\n", array_map(array(
-            'Queryyetsimple\I18n\po',
+            'Leevel\I18n\po',
             'export_entry'
         ), $this->entries));
     }
@@ -173,7 +173,7 @@ class Po extends Gettext
         );
         $lines = array_map('trim', explode("\n", $string));
         $lines = array_map(array(
-            'Queryyetsimple\I18n\po',
+            'Leevel\I18n\po',
             'trim_quotes'
         ), $lines);
         $unpoified = '';
