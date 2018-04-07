@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Validate;
+namespace Leevel\Validate;
 
-use Queryyetsimple\Di\IContainer;
+use Leevel\Di\IContainer;
 
 /**
  * IValidate 接口
@@ -78,7 +78,7 @@ interface IValidate
      * @param array $arrRule
      * @param array $arrFieldName
      * @param array $arrMessage
-     * @return \Queryyetsimple\Validate
+     * @return \Leevel\Validate
      */
     public static function make(array $arrData = [], array $arrRule = [], array $arrFieldName = [], array $arrMessage = []);
 
@@ -351,7 +351,7 @@ interface IValidate
     /**
      * 设置 ioc 容器
      *
-     * @param \Queryyetsimple\Di\IContainer $objContainer
+     * @param \Leevel\Di\IContainer $objContainer
      * @return $this
      */
     public function container(IContainer $objContainer);

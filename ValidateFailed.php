@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Validate;
+namespace Leevel\Validate;
 
 use Exception;
 
@@ -32,22 +32,22 @@ class ValidateFailed extends Exception
     /**
      * 验证器
      *
-     * @var \Queryyetsimple\Validate\IValidate
+     * @var \Leevel\Validate\IValidate
      */
     public $objValidate;
 
     /**
      * 响应组件
      *
-     * @var \Queryyetsimple\Http\Response|null
+     * @var \Leevel\Http\Response|null
      */
     public $objResponse;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Validate\IValidate $objValidate
-     * @param \Queryyetsimple\Http\Response $objResponse
+     * @param \Leevel\Validate\IValidate $objValidate
+     * @param \Leevel\Http\Response $objResponse
      * @return void
      */
     public function __construct($objValidate, $objResponse = null)
@@ -61,7 +61,7 @@ class ValidateFailed extends Exception
     /**
      * 响应实例
      *
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function getResponse()
     {
@@ -71,7 +71,7 @@ class ValidateFailed extends Exception
     /**
      * 返回验证器
      *
-     * @return \Queryyetsimple\Validate\IValidate
+     * @return \Leevel\Validate\IValidate
      */
     public function getValidate()
     {
