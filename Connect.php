@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Page;
+namespace Leevel\Page;
 
 use RuntimeException;
-use Queryyetsimple\Support\IHtml;
-use Queryyetsimple\Option\TClass;
+use Leevel\Support\IHtml;
+use Leevel\Option\TClass;
 
 /**
  * 分页处理

@@ -14,12 +14,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Page;
+namespace Leevel\Page;
 
 use Countable;
 use ArrayAccess;
 use JsonSerializable;
-use Queryyetsimple\Support\{
+use Leevel\Support\{
     IJson,
     IArray
 };
@@ -53,13 +53,13 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
     /**
      * 渲染分页
      *
-     * @param \Queryyetsimple\Page\IRender $objRender
+     * @param \Leevel\Page\IRender $objRender
      * @return string
      */
     public function render(IRender $objRender = null)
     {
         if (is_null($objRender)) {
-            $objRender = 'Queryyetsimple\Page\\' . $this->getRender();
+            $objRender = 'Leevel\Page\\' . $this->getRender();
             $objRender = new $objRender($this);
         }
         return $objRender->render();

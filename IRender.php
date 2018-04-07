@@ -16,7 +16,7 @@
  */
 
 
-namespace Queryyetsimple\Page;
+namespace Leevel\Page;
 
 /**
  * IRender 接口
