@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Throttler;
+namespace Leevel\Throttler;
 
 /**
  * IRateLimiter 接口
@@ -109,7 +109,7 @@ interface IRateLimiter
     /**
      * 返回缓存组件
      *
-     * @return \Queryyetsimple\Cache\ICache
+     * @return \Leevel\Cache\ICache
      */
     public function getCache();
 }

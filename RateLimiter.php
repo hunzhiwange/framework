@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Throttler;
+namespace Leevel\Throttler;
 
 use Countable;
 use RuntimeException;
-use Queryyetsimple\{
+use Leevel\{
     Cache\ICache,
     Support\IArray
 };
@@ -37,7 +37,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 缓存接口
      *
-     * @var \Queryyetsimple\Cache\ICache
+     * @var \Leevel\Cache\ICache
      */
     protected $objCache;
 
@@ -123,7 +123,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Cache\ICache $objCache
+     * @param \Leevel\Cache\ICache $objCache
      * @param string $strKey
      * @param string $intXRateLimitLimit
      * @param string $intXRateLimitTime
@@ -292,7 +292,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 返回缓存组件
      *
-     * @return \Queryyetsimple\Cache\ICache
+     * @return \Leevel\Cache\ICache
      */
     public function getCache()
     {
