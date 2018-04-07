@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Router;
+namespace Leevel\Router;
 
 use Closure;
 use Exception;
@@ -22,7 +22,7 @@ use RuntimeException;
 use ReflectionMethod;
 use ReflectionException;
 use InvalidArgumentException;
-use Queryyetsimple\{
+use Leevel\{
     Http\Request,
     Di\IContainer,
     Http\Response,
@@ -49,14 +49,14 @@ class Router implements IRouter
     /**
      * IOC Container
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected $objContainer;
 
     /**
      * http 请求
      *
-     * @var \Queryyetsimple\Http\Request
+     * @var \Leevel\Http\Request
      */
     protected $objRequest;
 
@@ -228,8 +228,8 @@ class Router implements IRouter
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Di\IContainer $objContainer
-     * @param \Queryyetsimple\Http\Request $objRequest
+     * @param \Leevel\Di\IContainer $objContainer
+     * @param \Leevel\Http\Request $objRequest
      * @param array $arrOption
      * @return void
      */
@@ -337,7 +337,7 @@ class Router implements IRouter
     /**
      * 穿越中间件
      *
-     * @param \Queryyetsimple\Http\Request $objPassed
+     * @param \Leevel\Http\Request $objPassed
      * @param array $arrPassedExtend
      * @return void
      */
@@ -1138,7 +1138,7 @@ class Router implements IRouter
         $matches = $this->getRouterMatches();
 
         foreach ($matches as $item) {
-            $item = 'Queryyetsimple\Router\Match\\' . $item;
+            $item = 'Leevel\Router\Match\\' . $item;
             $data = (new $item)->matche($this, $this->objRequest);
 
             if ($data) {

@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Router;
+namespace Leevel\Router;
 
 /**
  * 响应工厂接口
@@ -33,7 +33,7 @@ interface IResponseFactory
      * @param string $content
      * @param integer $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function make($content = '', $status = 200, array $headers = []);
 
@@ -45,7 +45,7 @@ interface IResponseFactory
      * @param string $ext
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function view($file = null, array $vars = [], string $ext = '', $status = 200, array $headers = []);
 
@@ -57,7 +57,7 @@ interface IResponseFactory
      * @param int $time
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function viewSuccess($message = '', $url = '', $time = 1, $status = 200, array $headers = []);
 
@@ -69,7 +69,7 @@ interface IResponseFactory
      * @param int $time
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function viewError($message = '', $url = '', $time = 3, $status = 200, array $headers = []);
 
@@ -80,7 +80,7 @@ interface IResponseFactory
      * @param integer $status
      * @param array $headers
      * @param bool $json
-     * @return \Queryyetsimple\Http\JsonResponse
+     * @return \Leevel\Http\JsonResponse
      */
     public function json($data = null, int $status = 200, array $headers = [], bool $json = false);
 
@@ -92,7 +92,7 @@ interface IResponseFactory
      * @param integer $status
      * @param array $headers
      * @param bool $json
-     * @return \Queryyetsimple\Http\JsonResponse
+     * @return \Leevel\Http\JsonResponse
      */
     public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false);
 
@@ -105,7 +105,7 @@ interface IResponseFactory
      * @param array $headers
      * @param bool $autoEtag
      * @param bool $autoLastModified
-     * @return \Queryyetsimple\Http\FileResponse
+     * @return \Leevel\Http\FileResponse
      */
     public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true);
 
@@ -117,7 +117,7 @@ interface IResponseFactory
      * @param array $headers
      * @param bool $autoEtag
      * @param bool $autoLastModified
-     * @return \Queryyetsimple\Http\FileResponse
+     * @return \Leevel\Http\FileResponse
      */
     public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true);
 
@@ -132,7 +132,7 @@ interface IResponseFactory
      * @sub string subdomain 子域名
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\RedirectResponse
+     * @return \Leevel\Http\RedirectResponse
      */
     public function redirect(?string $url, $params = [], $option = [], int $status = 302, array $headers = []);
 
@@ -142,7 +142,7 @@ interface IResponseFactory
      * @param string $url
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\RedirectResponse
+     * @return \Leevel\Http\RedirectResponse
      */
     public function redirectRaw(?string $url, int $status = 302, array $headers = []);
 

@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Router;
+namespace Leevel\Router;
 
-use Queryyetsimple\{
+use Leevel\{
     Http\IRequest,
     Option\TClass
 };
@@ -36,7 +36,7 @@ class Url implements IUrl
     /**
      * HTTP 请求
      * 
-     * @var \Queryyetsimple\Http\IRequest
+     * @var \Leevel\Http\IRequest
      */
     protected $request;
 
@@ -90,7 +90,7 @@ class Url implements IUrl
     /**
      * 构造函数
      * 
-     * @param \Queryyetsimple\Http\IRequest $request
+     * @param \Leevel\Http\IRequest $request
      * @param array $option
      * @return void
      */
@@ -144,7 +144,7 @@ class Url implements IUrl
     /**
      * 返回 HTTP 请求
      * 
-     * @return \Queryyetsimple\Http\IRequest
+     * @return \Leevel\Http\IRequest
      */
     public function getRequest() {
         return $this->request;

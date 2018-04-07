@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Router;
+namespace Leevel\Router;
 
-use Queryyetsimple\{
+use Leevel\{
     Session\ISession,
     Http\RedirectResponse
 };
@@ -35,21 +35,21 @@ class Redirect
     /**
      * URL 生成实例
      *
-     * @var \Queryyetsimple\Router\Url
+     * @var \Leevel\Router\Url
      */
     protected $url;
 
     /**
      * SESSION 仓储
      *
-     * @var \Queryyetsimple\Session\ISession
+     * @var \Leevel\Session\ISession
      */
     protected $session;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Router\Url $url
+     * @param \Leevel\Router\Url $url
      * @return void
      */
     public function __construct(IUrl $url)
@@ -68,7 +68,7 @@ class Redirect
      * @sub string subdomain 子域名
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\RedirectResponse
+     * @return \Leevel\Http\RedirectResponse
      */
     public function url(?string $url, $params = [], $option = [], int $status = 302, array $headers = [])
     {
@@ -83,7 +83,7 @@ class Redirect
      * @param string $url
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\RedirectResponse
+     * @return \Leevel\Http\RedirectResponse
      */
     public function raw(?string $url, int $status = 302, array $headers = [])
     {
@@ -93,7 +93,7 @@ class Redirect
     /**
      * 取回 URL 生成实例
      *
-     * @return \Queryyetsimple\Router\Url
+     * @return \Leevel\Router\Url
      */
     public function getUrl()
     {
@@ -103,7 +103,7 @@ class Redirect
     /**
      * 设置 SESSION 仓储
      *
-     * @param \Queryyetsimple\Session\ISession $session
+     * @param \Leevel\Session\ISession $session
      * @return void
      */
     public function setSession(ISession $session)
@@ -117,7 +117,7 @@ class Redirect
      * @param string $url
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\RedirectResponse
+     * @return \Leevel\Http\RedirectResponse
      */
     protected function createRedirectResponse(?string $url, int $status = 302, array $headers = [])
     {

@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Router\Match;
+namespace Leevel\Router\Match;
 
-use Queryyetsimple\Http\Request;
-use Queryyetsimple\Router\Router;
+use Leevel\Http\Request;
+use Leevel\Router\Router;
 
 /**
  * 路由域名匹配
@@ -33,14 +33,14 @@ class Domain
     /**
      * Router
      * 
-     * @var \Queryyetsimple\Router\Router
+     * @var \Leevel\Router\Router
      */
     protected $router;
     
     /** 
      * HTTP Request
      * 
-     * @var \Queryyetsimple\Http\Request
+     * @var \Leevel\Http\Request
      */
     protected $request;
 
@@ -54,8 +54,8 @@ class Domain
     /**
      * 匹配数据项
      *
-     * @param \Queryyetsimple\Router\Router $route
-     * @param \Queryyetsimple\Http\Request $request
+     * @param \Leevel\Router\Router $route
+     * @param \Leevel\Http\Request $request
      * @return array
      */
     public function matche(Router $router, Request $request)

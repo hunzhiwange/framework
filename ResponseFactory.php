@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Router;
+namespace Leevel\Router;
 
-use Queryyetsimple\{
+use Leevel\{
     Mvc\IView,
     Http\Response,
     Http\ApiResponse,
@@ -38,14 +38,14 @@ class ResponseFactory implements IResponseFactory
     /**
      * 视图
      *
-     * @var \Queryyetsimple\Mvc\IView
+     * @var \Leevel\Mvc\IView
      */
     protected $view;
 
     /**
      * 跳转实例
      *
-     * @var \Queryyetsimple\Router\Redirector
+     * @var \Leevel\Router\Redirector
      */
     protected $redirector;
 
@@ -66,8 +66,8 @@ class ResponseFactory implements IResponseFactory
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mvc\IViewy $view
-     * @param \Queryyetsimple\Router\Redirect $redirector
+     * @param \Leevel\Mvc\IViewy $view
+     * @param \Leevel\Router\Redirect $redirector
      * @return void
      */
     public function __construct(IView $view, Redirect $redirector)
@@ -82,7 +82,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $content
      * @param integer $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function make($content = '', $status = 200, array $headers = [])
     {
@@ -97,7 +97,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $ext
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function view($file = null, array $vars = [], string $ext = '', $status = 200, array $headers = [])
     {
@@ -112,7 +112,7 @@ class ResponseFactory implements IResponseFactory
      * @param int $time
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function viewSuccess($message = '', $url = '', $time = 1, $status = 200, array $headers = [])
     {
@@ -133,7 +133,7 @@ class ResponseFactory implements IResponseFactory
      * @param int $time
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function viewError($message = '', $url = '', $time = 3, $status = 200, array $headers = [])
     {
@@ -153,7 +153,7 @@ class ResponseFactory implements IResponseFactory
      * @param integer $status
      * @param array $headers
      * @param bool $json
-     * @return \Queryyetsimple\Http\JsonResponse
+     * @return \Leevel\Http\JsonResponse
      */
     public function json($data = null, int $status = 200, array $headers = [], bool $json = false)
     {
@@ -168,7 +168,7 @@ class ResponseFactory implements IResponseFactory
      * @param integer $status
      * @param array $headers
      * @param bool $json
-     * @return \Queryyetsimple\Http\JsonResponse
+     * @return \Leevel\Http\JsonResponse
      */
     public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false)
     {
@@ -186,7 +186,7 @@ class ResponseFactory implements IResponseFactory
      * @param array $headers
      * @param bool $autoEtag
      * @param bool $autoLastModified
-     * @return \Queryyetsimple\Http\FileResponse
+     * @return \Leevel\Http\FileResponse
      */
     public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true)
     {
@@ -207,7 +207,7 @@ class ResponseFactory implements IResponseFactory
      * @param array $headers
      * @param bool $autoEtag
      * @param bool $autoLastModified
-     * @return \Queryyetsimple\Http\FileResponse
+     * @return \Leevel\Http\FileResponse
      */
     public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true)
     {
@@ -225,7 +225,7 @@ class ResponseFactory implements IResponseFactory
      * @sub string subdomain 子域名
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\RedirectResponse
+     * @return \Leevel\Http\RedirectResponse
      */
     public function redirect(?string $url, $params = [], $option = [], int $status = 302, array $headers = [])
     {
@@ -238,7 +238,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $url
      * @param int $status
      * @param array $headers
-     * @return \Queryyetsimple\Http\RedirectResponse
+     * @return \Leevel\Http\RedirectResponse
      */
     public function redirectRaw(?string $url, int $status = 302, array $headers = [])
     {
@@ -430,7 +430,7 @@ class ResponseFactory implements IResponseFactory
     /**
      * 创建基础 API 响应
      * 
-     * @return \Queryyetsimple\Http\ApiResponse
+     * @return \Leevel\Http\ApiResponse
      */
     protected function createApiResponse() {
         return new ApiResponse();

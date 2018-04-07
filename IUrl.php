@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Router;
+namespace Leevel\Router;
 
 /**
  * IUrl 生成
@@ -43,7 +43,7 @@ interface IUrl
     /**
      * 返回 HTTP 请求
      * 
-     * @return \Queryyetsimple\Http\IRequest
+     * @return \Leevel\Http\IRequest
      */
     public function getRequest();
 }

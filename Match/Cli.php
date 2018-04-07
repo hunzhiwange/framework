@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Router\Match;
+namespace Leevel\Router\Match;
 
-use Queryyetsimple\Http\Request;
-use Queryyetsimple\Router\Router;
-use Queryyetsimple\Console\Cli as ConsoleCli;
+use Leevel\Http\Request;
+use Leevel\Router\Router;
+use Leevel\Console\Cli as ConsoleCli;
  
 /**
  * 路由命令行匹配
@@ -34,8 +34,8 @@ class Cli
     /**
      * 匹配路径
      *
-     * @param \Queryyetsimple\Router\Router $route
-     * @param \Queryyetsimple\Http\Request $request
+     * @param \Leevel\Router\Router $route
+     * @param \Leevel\Http\Request $request
      * @return array
      */
     public function matche(Router $router, Request $request)

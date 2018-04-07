@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Router\Provider;
+namespace Leevel\Router\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Router\Url,
     Di\Provider,
     Http\Request,
@@ -61,24 +61,24 @@ class Register extends Provider
     {
         return [
             'router' => [
-                'Queryyetsimple\Router\Router',
+                'Leevel\Router\Router',
                 'Qys\Router\Router'
             ],
             'url' => [
-                'Queryyetsimple\Router\Url',
+                'Leevel\Router\Url',
                 'Qys\Router\Url'
             ],
             'redirect' => [
-                'Queryyetsimple\Router\Redirect',
+                'Leevel\Router\Redirect',
                 'Qys\Router\Redirect'
             ],
             'request' => [
-                'Queryyetsimple\Http\Request',
+                'Leevel\Http\Request',
                 'Qys\Http\Request'
             ],
             'response' => [
-                'Queryyetsimple\Router\IResponseFactory',
-                'Queryyetsimple\Router\ResponseFactory',
+                'Leevel\Router\IResponseFactory',
+                'Leevel\Router\ResponseFactory',
                 'Qys\Router\IResponseFactory',
                 'Qys\Router\ResponseFactory'
             ]
