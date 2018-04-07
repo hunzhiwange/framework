@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Cache;
+namespace Leevel\Cache;
 
-use Queryyetsimple\Manager\Manager as Managers;
+use Leevel\Manager\Manager as Managers;
 
 /**
  * 缓存入口
@@ -54,7 +54,7 @@ class Manager extends Managers
      * 创建文件缓存
      *
      * @param array $options
-     * @return \Queryyetsimple\Cache\file
+     * @return \Leevel\Cache\file
      */
     protected function makeConnectFile($options = [])
     {
@@ -65,7 +65,7 @@ class Manager extends Managers
      * 创建 memcache 缓存
      *
      * @param array $options
-     * @return \Queryyetsimple\Cache\memcache
+     * @return \Leevel\Cache\memcache
      */
     protected function makeConnectMemcache($options = [])
     {
@@ -76,7 +76,7 @@ class Manager extends Managers
      * 创建 redis 缓存
      *
      * @param array $options
-     * @return \Queryyetsimple\Cache\Redis
+     * @return \Leevel\Cache\Redis
      */
     protected function makeConnectRedis($options = [])
     {

@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Cache;
+namespace Leevel\Cache;
 
-use Queryyetsimple\Support\TMacro;
+use Leevel\Support\TMacro;
 
 /**
  * cache 仓储
@@ -35,14 +35,14 @@ class Cache implements ICache
     /**
      * 缓存连接对象
      *
-     * @var \Queryyetsimple\Cache\IConnect
+     * @var \Leevel\Cache\IConnect
      */
     protected $objConnect;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Cache\IConnect $objConnect
+     * @param \Leevel\Cache\IConnect $objConnect
      * @return void
      */
     public function __construct(IConnect $objConnect)
