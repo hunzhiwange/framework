@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\Console;
+namespace Leevel\Bootstrap\Console;
 
-use Queryyetsimple\{
+use Leevel\{
     Option,
     Bootstrap\Project
 };
@@ -36,7 +36,7 @@ class Application
     /**
      * 项目容器
      *
-     * @var \Queryyetsimple\Bootstrap\Project
+     * @var \Leevel\Bootstrap\Project
      */
     protected $objProject;
 
@@ -50,7 +50,7 @@ class Application
     /**
      * 创建一个命令行应用程序
      *
-     * @param \Queryyetsimple\Bootstrap\Project $objProject
+     * @param \Leevel\Bootstrap\Project $objProject
      * @return $this
      */
     public function __construct(project $objProject)

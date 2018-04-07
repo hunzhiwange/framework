@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap;
+namespace Leevel\Bootstrap;
 
 use Exception;
-use Queryyetsimple\{
+use Leevel\{
     Support\Psr4,
     Http\IResponse,
     Http\ApiResponse,
@@ -40,7 +40,7 @@ class Application
     /**
      * 当前项目
      *
-     * @var \Queryyetsimple\Bootstrap\Project
+     * @var \Leevel\Bootstrap\Project
      */
     protected $project;
 
@@ -79,7 +79,7 @@ class Application
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Bootstrap\Project $project
+     * @param \Leevel\Bootstrap\Project $project
      * @param string $sApp
      * @return void
      */

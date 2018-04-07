@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Cache\Provider;
+namespace Leevel\Cache\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Cache\Load,
     Di\Provider,
     Cache\Manager
@@ -61,17 +61,17 @@ class Register extends Provider
     {
         return [
             'caches' => [
-                'Queryyetsimple\Cache\Manager',
+                'Leevel\Cache\Manager',
                 'Qys\Cache\Manager'
             ],
             'cache' => [
-                'Queryyetsimple\Cache\Cache',
-                'Queryyetsimple\Cache\ICache',
+                'Leevel\Cache\Cache',
+                'Leevel\Cache\ICache',
                 'Qys\Cache\Cache',
                 'Qys\Cache\ICache'
             ],
             'cache.load' => [
-                'Queryyetsimple\Cache\Load',
+                'Leevel\Cache\Load',
                 'Qys\Cache\Load'
             ]
         ];

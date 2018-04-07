@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\I18n\Console;
+namespace Leevel\I18n\Console;
 
 use RuntimeException;
-use Queryyetsimple\{
+use Leevel\{
     I18n\Mo,
     Filesystem\Fso,
     Console\Option,

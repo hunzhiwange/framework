@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\Runtime;
+namespace Leevel\Bootstrap\Runtime;
 
 use Whoops\Run;
-use Queryyetsimple\Di\IContainer;
-use Queryyetsimple\Http\Response;
+use Leevel\Di\IContainer;
+use Leevel\Http\Response;
 use Whoops\Handler\PrettyPageHandler;
 
 /**
@@ -35,7 +35,7 @@ class Runtime
     /**
      * 服务容器
      * 
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected static $container;
 
@@ -77,7 +77,7 @@ class Runtime
     /**
      * 设置项目容器
      *
-     * @param \Queryyetsimple\Di\IContainer $container
+     * @param \Leevel\Di\IContainer $container
      * @return void
      */
     public static function container(IContainer $container)

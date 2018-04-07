@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Http;
+namespace Leevel\Http;
 
 use SplFileObject;
 
@@ -51,7 +51,7 @@ class File extends SplFileObject
      *
      * @param string $directory
      * @param string $name
-     * @return \Queryyetsimple\Http\File
+     * @return \Leevel\Http\File
      */
     public function move($directory, $name = null)
     {

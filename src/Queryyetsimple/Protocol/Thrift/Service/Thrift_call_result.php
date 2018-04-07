@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Protocol\Thrift\Service;
+namespace Leevel\Protocol\Thrift\Service;
 
 use Thrift\Base\TBase;
 use Thrift\Type\TType;
@@ -38,7 +38,7 @@ class Thrift_call_result
     public static $_TSPEC;
 
     /**
-     * @var \Queryyetsimple\Protocol\Thrift\Service\Response
+     * @var \Leevel\Protocol\Thrift\Service\Response
      */
     public $success = null;
 
@@ -49,7 +49,7 @@ class Thrift_call_result
         0 => array(
           'var' => 'success',
           'type' => TType::STRUCT,
-          'class' => '\Queryyetsimple\Protocol\Thrift\Service\Response',
+          'class' => '\Leevel\Protocol\Thrift\Service\Response',
           ),
         );
         }

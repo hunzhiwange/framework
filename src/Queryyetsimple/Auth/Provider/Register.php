@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Auth\Provider;
+namespace Leevel\Auth\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Auth\Manager
 };
@@ -52,12 +52,12 @@ class Register extends Provider
     {
         return [
             'auths' => [
-                'Queryyetsimple\Auth\Manager',
+                'Leevel\Auth\Manager',
                 'Qys\Auth\Manager'
             ],
             'auth' => [
-                'Queryyetsimple\Auth\Auth',
-                'Queryyetsimple\Auth\IAuth',
+                'Leevel\Auth\Auth',
+                'Leevel\Auth\IAuth',
                 'Qys\Auth\Auth',
                 'Qys\Auth\IAuth'
             ]

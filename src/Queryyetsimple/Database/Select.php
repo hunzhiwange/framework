@@ -14,12 +14,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Database;
+namespace Leevel\Database;
 
 use PDO;
 use Exception;
 use BadMethodCallException;
-use Queryyetsimple\{
+use Leevel\{
     Support\Arr,
     Support\Type,
     Flow\TControl,
@@ -45,7 +45,7 @@ class Select
     /**
      * 数据库连接
      *
-     * @var Queryyetsimple\Database\Connect
+     * @var Leevel\Database\Connect
      */
     protected $objConnect;
 
@@ -275,7 +275,7 @@ class Select
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Database\Connect $objConnect
+     * @param \Leevel\Database\Connect $objConnect
      * @return void
      */
     public function __construct($objConnect)
@@ -287,7 +287,7 @@ class Select
     /**
      * 返回数据库连接对象
      *
-     * @return \Queryyetsimple\Database\Connect
+     * @return \Leevel\Database\Connect
      */
     public function databaseConnect()
     {

@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
 use Exception;
 
@@ -32,21 +32,21 @@ class Repository implements IRepository
     /**
      * 工作单元
      *
-     * @var \Queryyetsimple\Mvc\IUnitOfWork
+     * @var \Leevel\Mvc\IUnitOfWork
      */
     protected $objUnitOfWork;
 
     /**
      * 聚合根
      *
-     * @var \Queryyetsimple\Mvc\IAggregateRoot
+     * @var \Leevel\Mvc\IAggregateRoot
      */
     protected $objAggregate;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objAggregate
+     * @param \Leevel\Mvc\IAggregateRoot $objAggregate
      * @return void
      */
     public function __construct(IAggregateRoot $objAggregate)
@@ -60,7 +60,7 @@ class Repository implements IRepository
      *
      * @param int $intId
      * @param array $arrColumn
-     * @return \Queryyetsimple\Mvc\IEntity
+     * @return \Leevel\Mvc\IEntity
      */
     public function find($intId, $arrColumn = ['*'])
     {
@@ -72,7 +72,7 @@ class Repository implements IRepository
      *
      * @param int $intId
      * @param array $arrColumn
-     * @return \Queryyetsimple\Mvc\IEntity|void
+     * @return \Leevel\Mvc\IEntity|void
      */
     public function findOrFail($intId, $arrColumn = ['*'])
     {
@@ -83,7 +83,7 @@ class Repository implements IRepository
      * 取得所有记录
      *
      * @param null|callback $mixCallback
-     * @return \Queryyetsimple\Collection\Collection
+     * @return \Leevel\Collection\Collection
      */
     public function count($mixSpecification = null)
     {
@@ -100,7 +100,7 @@ class Repository implements IRepository
      * 取得所有记录
      *
      * @param null|callback $mixCallback
-     * @return \Queryyetsimple\Collection\Collection
+     * @return \Leevel\Collection\Collection
      */
     public function all($mixSpecification = null)
     {
@@ -116,8 +116,8 @@ class Repository implements IRepository
     /**
      * 保存数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function create(IAggregateRoot $objEntity)
     {
@@ -127,8 +127,8 @@ class Repository implements IRepository
     /**
      * 更新数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function update(IAggregateRoot $objEntity)
     {
@@ -138,7 +138,7 @@ class Repository implements IRepository
     /**
      * 删除数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
      * @return int
      */
     public function delete(IAggregateRoot $objEntity)
@@ -149,8 +149,8 @@ class Repository implements IRepository
     /**
      * 注册保存数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\UnitOfWork
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\UnitOfWork
      */
     public function registerCreate(IAggregateRoot $objEntity)
     {
@@ -161,8 +161,8 @@ class Repository implements IRepository
     /**
      * 注册更新数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\UnitOfWork
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\UnitOfWork
      */
     public function registerUpdate(IAggregateRoot $objEntity)
     {
@@ -173,8 +173,8 @@ class Repository implements IRepository
     /**
      * 注册删除数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\UnitOfWork
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\UnitOfWork
      */
     public function registerDelete(IAggregateRoot $objEntity)
     {
@@ -185,8 +185,8 @@ class Repository implements IRepository
     /**
      * 响应新建
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function handleCreate(IAggregateRoot $objEntity)
     {
@@ -196,8 +196,8 @@ class Repository implements IRepository
     /**
      * 响应修改
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function handleUpdate(IAggregateRoot $objEntity)
     {
@@ -207,7 +207,7 @@ class Repository implements IRepository
     /**
      * 响应删除
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
      * @return int
      */
     public function handleDelete(IAggregateRoot $objEntity)
@@ -259,7 +259,7 @@ class Repository implements IRepository
     /**
      * 设置聚合根
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objAggregate
+     * @param \Leevel\Mvc\IAggregateRoot $objAggregate
      * @return void
      */
     public function setAggregate(IAggregateRoot $objAggregate)
@@ -270,7 +270,7 @@ class Repository implements IRepository
     /**
      * 返回聚合根
      *
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function aggregate()
     {
@@ -280,7 +280,7 @@ class Repository implements IRepository
     /**
      * 返回工作单元
      *
-     * @return \Queryyetsimple\Mvc\IUnitOfWork
+     * @return \Leevel\Mvc\IUnitOfWork
      */
     public function unitOfWork()
     {
@@ -290,7 +290,7 @@ class Repository implements IRepository
     /**
      * 返回数据库仓储
      *
-     * @return \Queryyetsimple\Database\IDatabase
+     * @return \Leevel\Database\IDatabase
      */
     public function databaseConnect()
     {
@@ -310,7 +310,7 @@ class Repository implements IRepository
     /**
      * 创建设计工作单元
      *
-     * @return \Queryyetsimple\Mvc\IUnitOfWork
+     * @return \Leevel\Mvc\IUnitOfWork
      */
     protected function createUnitOfWork()
     {

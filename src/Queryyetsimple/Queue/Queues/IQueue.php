@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Queues;
+namespace Leevel\Queue\Queues;
 
 /**
  * 队列接口

@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Cache;
+namespace Leevel\Cache;
 
 use InvalidArgumentException;
-use Queryyetsimple\Di\IContainer;
+use Leevel\Di\IContainer;
 
 /**
  * cache 快捷载入
@@ -33,14 +33,14 @@ class Load
     /**
      * IOC Container
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected $objContainer;
 
     /**
      * cache 仓储
      *
-     * @var \Queryyetsimple\Cache\ICache
+     * @var \Leevel\Cache\ICache
      */
     protected $objCache;
 
@@ -54,8 +54,8 @@ class Load
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Di\IContainer $objContainer
-     * @param \Queryyetsimple\Cache\ICache $objCache
+     * @param \Leevel\Di\IContainer $objContainer
+     * @param \Leevel\Cache\ICache $objCache
      * @return void
      */
     public function __construct(IContainer $objContainer, ICache $objCache)
@@ -67,7 +67,7 @@ class Load
     /**
      * 切换缓存仓储
      *
-     * @param \Queryyetsimple\Cache\ICache $objCache
+     * @param \Leevel\Cache\ICache $objCache
      * @return void
      */
     public function switchCache(ICache $objCache)
@@ -78,7 +78,7 @@ class Load
     /**
      * 返回缓存仓储
      *
-     * @return \Queryyetsimple\Cache\ICache
+     * @return \Leevel\Cache\ICache
      */
     public function getCache()
     {

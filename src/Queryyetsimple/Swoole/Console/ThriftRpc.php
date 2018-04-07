@@ -14,18 +14,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Swoole\Console;
+namespace Leevel\Swoole\Console;
 
 use Exception;
 use Thrift\Server\TServerSocket;
 use Thrift\Factory\TBinaryProtocolFactory;
-use Queryyetsimple\{
+use Leevel\{
     Console\Option,
     Console\Command,
     Console\Argument,
     Protocol\ThriftServer
 };
-use Queryyetsimple\Protocol\Thrift\{
+use Leevel\Protocol\Thrift\{
     Service\ThriftHandler,
     Service\ThriftProcessor,
     Base\TFramedTransportFactory

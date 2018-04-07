@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\validate;
+namespace Leevel\Bootstrap\validate;
 
-use Queryyetsimple\{
+use Leevel\{
     Http\Response,
     Session\ISession,
     Validate\IValidate,
@@ -38,7 +38,7 @@ trait Request
     /**
      * 验证请求
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
+     * @param \Leevel\Http\Request $oRequest
      * @param array $arrRule
      * @param array $arrMessage
      * @return void
@@ -55,8 +55,8 @@ trait Request
     /**
      * 验证失败异常
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
-     * @param \Queryyetsimple\Validate\IValidate $oValidate
+     * @param \Leevel\Http\Request $oRequest
+     * @param \Leevel\Validate\IValidate $oValidate
      * @return void
      */
     protected function throwValidateException(HttpRequest $oRequest, $oValidate)
@@ -67,9 +67,9 @@ trait Request
     /**
      * 错误验证响应
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
+     * @param \Leevel\Http\Request $oRequest
      * @param array $arrErrors
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     protected function validationResponse(HttpRequest $oRequest, array $arrErrors)
     {
@@ -95,7 +95,7 @@ trait Request
     /**
      * 返回错误消息
      *
-     * @param \Queryyetsimple\Validate\IValidate $oValidate
+     * @param \Leevel\Validate\IValidate $oValidate
      * @return array
      */
     protected function validationErrors(IValidate $oValidate)
@@ -127,7 +127,7 @@ trait Request
     /**
      * 返回 validate 组件
      *
-     * @return \Queryyetsimple\Validate\IValidate
+     * @return \Leevel\Validate\IValidate
      */
     protected function getValidateComponent()
     {
@@ -137,7 +137,7 @@ trait Request
     /**
      * 返回 session 组件
      *
-     * @return \Queryyetsimple\Session\ISession
+     * @return \Leevel\Session\ISession
      */
     protected function getSessionComponent()
     {
@@ -147,7 +147,7 @@ trait Request
     /**
      * 返回响应组件
      *
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     protected function getResponseComponent()
     {

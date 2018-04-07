@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Encryption\Provider;
+namespace Leevel\Encryption\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Encryption\Encryption
 };
@@ -60,8 +60,8 @@ class Register extends Provider
     {
         return [
             'encryption' => [
-                'Queryyetsimple\Encryption\Encryption',
-                'Queryyetsimple\Encryption\IEncryption',
+                'Leevel\Encryption\Encryption',
+                'Leevel\Encryption\IEncryption',
                 'Qys\Encryption\Encryption',
                 'Qys\Encryption\IEncryption'
             ]

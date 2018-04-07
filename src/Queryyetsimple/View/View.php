@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\View;
+namespace Leevel\View;
 
 /**
  * view 仓储
@@ -30,14 +30,14 @@ class View implements IView
     /**
      * 连接驱动
      *
-     * @var \Queryyetsimple\View\IConnect
+     * @var \Leevel\View\IConnect
      */
     protected $connect;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\View\IConnect $connect
+     * @param \Leevel\View\IConnect $connect
      * @return void
      */
     public function __construct(IConnect $connect)

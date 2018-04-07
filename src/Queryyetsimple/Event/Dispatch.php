@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Event;
+namespace Leevel\Event;
 
 use RuntimeException;
-use Queryyetsimple\Di\IContainer;
+use Leevel\Di\IContainer;
 
 /**
  * 事件
@@ -33,7 +33,7 @@ class Dispatch implements IDispatch
     /**
      * 项目容器
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected $container;
 
@@ -61,7 +61,7 @@ class Dispatch implements IDispatch
     /**
      * 创建一个事件解析器
      *
-     * @param \Queryyetsimple\Di\IContainer $container
+     * @param \Leevel\Di\IContainer $container
      * @param bool $event
      * @return void
      */
@@ -204,7 +204,7 @@ class Dispatch implements IDispatch
      * 创建监听器观察者角色主体
      *
      * @param string $listeners
-     * @return \Queryyetsimple\Event\Subject
+     * @return \Leevel\Event\Subject
      */
     protected function makeSubject(array $listeners)
     {

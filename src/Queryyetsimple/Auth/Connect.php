@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Auth;
+namespace Leevel\Auth;
 
-use Queryyetsimple\{
+use Leevel\{
     Mvc\IModel,
     Support\Str,
     Option\TClass,
@@ -39,21 +39,21 @@ abstract class Connect
     /**
      * user 对象
      *
-     * @var \Queryyetsimple\Mvc\IModel
+     * @var \Leevel\Mvc\IModel
      */
     protected $oUser;
 
     /**
      * 加密
      *
-     * @var \Queryyetsimple\Encryption\IEncryption
+     * @var \Leevel\Encryption\IEncryption
      */
     protected $oEncryption;
 
     /**
      * 验证
      *
-     * @var \Queryyetsimple\Validate\IValidate
+     * @var \Leevel\Validate\IValidate
      */
     protected $oValidate;
 
@@ -169,7 +169,7 @@ abstract class Connect
      * @param mixed $mixName
      * @param string $sPassword
      * @param mixed $mixLoginTime
-     * @return \Queryyetsimple\Mvc\IModel|void
+     * @return \Leevel\Mvc\IModel|void
      */
     public function login($mixName, $sPassword, $mixLoginTime = null)
     {
@@ -187,7 +187,7 @@ abstract class Connect
      *
      * @param mixed $mixName
      * @param string $sPassword
-     * @return \Queryyetsimple\Mvc\IModel|void
+     * @return \Leevel\Mvc\IModel|void
      */
     public function onlyValidate($mixName, $sPassword)
     {
@@ -574,7 +574,7 @@ abstract class Connect
     /**
      * 将用户信息保存至持久化
      *
-     * @param \Queryyetsimple\Mvc\IModel $oUser
+     * @param \Leevel\Mvc\IModel $oUser
      * @return array
      */
     protected function setUserToPersistence($oUser)
@@ -589,7 +589,7 @@ abstract class Connect
      *
      * @param int $nUserId
      * @param string $sPassword
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     protected function getUserFromDatabase($nUserId, $sPassword)
     {

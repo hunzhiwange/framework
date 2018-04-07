@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/i18n",
-    "description": "The Queryyetsimple I18n package.",
+    "name": "leevel/i18n",
+    "description": "The Leevel I18n Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\I18n\\": ""
+            "Leevel\\I18n\\": ""
         }
     },
     "extra": {

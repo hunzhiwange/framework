@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc\Provider;
+namespace Leevel\Mvc\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Mvc\View,
     Mvc\Meta,
     Mvc\Model,
@@ -50,7 +50,7 @@ class Register extends Provider
     /**
      * bootstrap
      *
-     * @param \Queryyetsimple\Event\IDispatch $objEvent
+     * @param \Leevel\Event\IDispatch $objEvent
      * @return void
      */
     public function bootstrap(IDispatch $objEvent)
@@ -69,8 +69,8 @@ class Register extends Provider
     {
         return [
             'view' => [
-                'Queryyetsimple\Mvc\View',
-                'queryyetsimple\Mvc\IView'
+                'Leevel\Mvc\View',
+                'leevel\Mvc\IView'
             ]
         ];
     }
@@ -78,7 +78,7 @@ class Register extends Provider
     /**
      * 设置模型事件
      *
-     * @param \Queryyetsimple\Event\IDispatch $objEvent
+     * @param \Leevel\Event\IDispatch $objEvent
      * @return void
      */
     protected function eventDispatch(IDispatch $objEvent)
@@ -93,7 +93,7 @@ class Register extends Provider
      */
     protected function console()
     {
-        $this->loadCommandNamespace('Queryyetsimple\Mvc\Console');
+        $this->loadCommandNamespace('Leevel\Mvc\Console');
     }
 
     /**

@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Log;
+namespace Leevel\Log;
 
 use RuntimeException;
-use Queryyetsimple\Option\TClass;
-use Queryyetsimple\Support\{
+use Leevel\Option\TClass;
+use Leevel\Support\{
     IJson,
     IArray
 };
@@ -38,7 +38,7 @@ class Log implements ILog
     /**
      * 存储连接对象
      *
-     * @var \Queryyetsimple\Log\icooption,nnect
+     * @var \Leevel\Log\icooption,nnect
      */
     protected $connect;
 
@@ -87,7 +87,7 @@ class Log implements ILog
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Log\IConnect $connect
+     * @param \Leevel\Log\IConnect $connect
      * @param array $option
      * @return void
      */

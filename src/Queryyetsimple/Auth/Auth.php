@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Auth;
+namespace Leevel\Auth;
 
 /**
  * auth 仓储
@@ -30,14 +30,14 @@ class Auth implements IAuth
     /**
      * auth 连接对象
      *
-     * @var \queryyetsimple\Auth\IConnect
+     * @var \leevel\Auth\IConnect
      */
     protected $connect;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Auth\IConnect $connect
+     * @param \Leevel\Auth\IConnect $connect
      * @return void
      */
     public function __construct(IConnect $connect)

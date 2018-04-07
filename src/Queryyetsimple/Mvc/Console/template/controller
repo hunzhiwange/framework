@@ -2,7 +2,7 @@
 {{header_comment}}
 namespace {{namespace}}\application\controller;
 
-use Queryyetsimple\Mvc\controller;
+use Leevel\Mvc\controller;
 
 {{file_comment}}
 class {{file_name}} extends controller 

@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Throttler;
+namespace Leevel\Throttler;
 
 use RuntimeException;
-use Queryyetsimple\{
+use Leevel\{
     Http\Request,
     Cache\ICache
 };
@@ -36,28 +36,28 @@ class Throttler implements IThrottler
     /**
      * 节流器实例
      *
-     * @var \Queryyetsimple\Throttler\RateLimiter[]
+     * @var \Leevel\Throttler\RateLimiter[]
      */
     protected $arrRateLimiter = [];
 
     /**
      * cache
      *
-     * @var \Queryyetsimple\Cache\ICache
+     * @var \Leevel\Cache\ICache
      */
     protected $objCache;
 
     /**
      * http request
      *
-     * @var \Queryyetsimple\Http\Request
+     * @var \Leevel\Http\Request
      */
     protected $objRequest;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Cache\ICache $objCache
+     * @param \Leevel\Cache\ICache $objCache
      * @return void
      */
     public function __construct(ICache $objCache)
@@ -71,7 +71,7 @@ class Throttler implements IThrottler
      * @param string|null $strKey
      * @param integer $intXRateLimitLimit
      * @param integer $intXRateLimitTime
-     * @return \Queryyetsimple\Throttler\RateLimiter
+     * @return \Leevel\Throttler\RateLimiter
      */
     public function create($strKey = null, $intXRateLimitLimit = 20, $intXRateLimitTime = 20)
     {
@@ -86,7 +86,7 @@ class Throttler implements IThrottler
     /**
      * 设置 http request
      *
-     * @param \Queryyetsimple\Http\Request $objRequest
+     * @param \Leevel\Http\Request $objRequest
      * @return $this
      */
     public function setRequest(request $objRequest)

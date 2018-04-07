@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\Testing;
+namespace Leevel\Bootstrap\Testing;
 
 /**
  * phpunit 应用程序
@@ -30,7 +30,7 @@ class Application
     /**
      * 创建一个 phpunit 应用程序
      *
-     * @return queryyetsimple\testing\Application
+     * @return leevel\testing\Application
      */
     public function __construct()
     {

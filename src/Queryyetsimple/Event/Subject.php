@@ -14,13 +14,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Event;
+namespace Leevel\Event;
 
 use SplSubject;
 use SplObserver;
 use SplObjectStorage;
 use InvalidArgumentException;
-use Queryyetsimple\Di\IContainer;
+use Leevel\Di\IContainer;
 
 /**
  * 观察者目标角色 subject
@@ -37,7 +37,7 @@ class Subject implements ISubject, SplSubject
     /**
      * 容器
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     public $container;
 
@@ -58,7 +58,7 @@ class Subject implements ISubject, SplSubject
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Di\IContainer $container
+     * @param \Leevel\Di\IContainer $container
      * @return void
      */
     public function __construct(IContainer $container)

@@ -1,6 +1,6 @@
 <?php
 
-namespace Queryyetsimple\Aop;
+namespace Leevel\Aop;
 
 // Aspect（切面）：横向切面关系被成组的放进一个类中。
 // Advice（通知）：用于调用切面，定义某种情况下做什么和什么时间做这件事情。通知又分为：前通知、返回后通知、抛出后通知和周边通知。

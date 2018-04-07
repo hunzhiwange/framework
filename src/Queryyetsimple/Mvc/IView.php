@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
-use Queryyetsimple\View\IView as ViewIView;
+use Leevel\View\IView as ViewIView;
 
 /**
  * IView 接口
@@ -32,7 +32,7 @@ interface IView
     /**
      * 切换视图
      *
-     * @param \Queryyetsimple\View\IView $theme
+     * @param \Leevel\View\IView $theme
      * @param boolean $forever
      * @return $this
      */

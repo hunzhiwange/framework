@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Log;
+namespace Leevel\Log;
 
-use Queryyetsimple\Manager\Manager as Managers;
+use Leevel\Manager\Manager as Managers;
 
 /**
  * log 入口
@@ -54,7 +54,7 @@ class Manager extends Managers
      * 创建 file 日志驱动
      *
      * @param array $options
-     * @return \Queryyetsimple\Log\File
+     * @return \Leevel\Log\File
      */
     protected function makeConnectFile($options = [])
     {
@@ -65,7 +65,7 @@ class Manager extends Managers
      * 创建 monolog 日志驱动
      *
      * @param array $options
-     * @return \Queryyetsimple\Log\Monolog
+     * @return \Leevel\Log\Monolog
      */
     protected function makeConnectMonolog($options = [])
     {

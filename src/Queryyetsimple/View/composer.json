@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/view",
-    "description": "The Queryyetsimple View package.",
+    "name": "leevel/view",
+    "description": "The Leevel View Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,10 +13,10 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/option": "1.0.*",
-        "queryyetsimple/manager": "1.0.*",
-        "queryyetsimple/stack": "1.0.*",
+        "leevel/support": "1.0.*",
+        "leevel/option": "1.0.*",
+        "leevel/manager": "1.0.*",
+        "leevel/stack": "1.0.*",
         "twig/twig": "~2.0"
     },
     "suggest": {
@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\View\\": ""
+            "Leevel\\View\\": ""
         }
     },
     "extra": {

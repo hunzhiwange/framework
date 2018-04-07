@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\Runtime;
+namespace Leevel\Bootstrap\Runtime;
 
 /**
  * 致命错误消息
@@ -30,7 +30,7 @@ class Shutdown extends Message
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Bootstrap\Project $project
+     * @param \Leevel\Bootstrap\Project $project
      * @return void
      */
     public function __construct($project)

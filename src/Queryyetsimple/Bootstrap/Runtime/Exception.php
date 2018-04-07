@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\Runtime;
+namespace Leevel\Bootstrap\Runtime;
 
 use Closure;
 use Throwable;
@@ -24,7 +24,7 @@ use ReflectionMethod;
 use Exception as Exceptions;
 use Whoops\Handler\PrettyPageHandler;
 use Whoops\Handler\JsonResponseHandler;
-use Queryyetsimple\{
+use Leevel\{
     Http\Response,
     Di\IContainer,
     Filesystem\Fso,
@@ -52,7 +52,7 @@ class Exception extends Message
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Bootstrap\Project $project
+     * @param \Leevel\Bootstrap\Project $project
      * @param object $exception
      * @return void
      */
@@ -355,7 +355,7 @@ class Exception extends Message
      * Whoops 接管异常
      * 
      * @param \Throwable $e
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     protected function renderExceptionWithWhoops(Throwable $e)
     {

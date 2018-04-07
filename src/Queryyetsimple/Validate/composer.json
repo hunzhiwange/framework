@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/validate",
-    "description": "The Queryyetsimple Validate package.",
+    "name": "leevel/validate",
+    "description": "The Leevel Validate Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,13 +13,13 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/di": "1.0.*",
-        "queryyetsimple/flow": "1.0.*"
+        "leevel/support": "1.0.*",
+        "leevel/di": "1.0.*",
+        "leevel/flow": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Validate\\": ""
+            "Leevel\\Validate\\": ""
         }
     },
     "extra": {

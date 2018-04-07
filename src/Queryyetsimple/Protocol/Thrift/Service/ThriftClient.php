@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Protocol\Thrift\Service;
+namespace Leevel\Protocol\Thrift\Service;
 
 use Thrift\Base\TBase;
 use Thrift\Type\TType;
@@ -71,7 +71,7 @@ class ThriftClient implements ThriftIf
     {
         $bin_accel = ($this->input_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_read_binary');
         if ($bin_accel) {
-            $result = thrift_protocol_read_binary($this->input_, '\Queryyetsimple\Protocol\Thrift\Service\Thrift_call_result', $this->input_->isStrictRead());
+            $result = thrift_protocol_read_binary($this->input_, '\Leevel\Protocol\Thrift\Service\Thrift_call_result', $this->input_->isStrictRead());
         } else {
             $rseqid = 0;
             $fname = null;

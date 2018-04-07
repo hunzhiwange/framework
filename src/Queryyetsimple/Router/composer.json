@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/router",
-    "description": "The Queryyetsimple Router package.",
+    "name": "leevel/router",
+    "description": "The Leevel Router Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,17 +13,17 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/http": "1.0.*",
-        "queryyetsimple/pipeline": "1.0.*",
-        "queryyetsimple/mvc": "1.0.*",
-        "queryyetsimple/di": "1.0.*",
-        "queryyetsimple/option": "1.0.*",
-        "queryyetsimple/router": "1.0.*"
+        "leevel/support": "1.0.*",
+        "leevel/http": "1.0.*",
+        "leevel/pipeline": "1.0.*",
+        "leevel/mvc": "1.0.*",
+        "leevel/di": "1.0.*",
+        "leevel/option": "1.0.*",
+        "leevel/router": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Router\\": ""
+            "Leevel\\Router\\": ""
         }
     },
     "extra": {

@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Runners;
+namespace Leevel\Queue\Runners;
 
 /**
  * IRunner 接口
@@ -30,7 +30,7 @@ interface IRunner
     /**
      * work 命名
      *
-     * @param \Queryyetsimple\Queue\console\work $objWork
+     * @param \Leevel\Queue\console\work $objWork
      * @return void
      */
     public function workCommand($objWork);

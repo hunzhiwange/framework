@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Session;
+namespace Leevel\Session;
 
 use SessionHandlerInterface;
-use Queryyetsimple\Cache\Memcache as CacheMemcache;
+use Leevel\Cache\Memcache as CacheMemcache;
 
 /**
  * session.memcache

@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/cookie",
-    "description": "The Queryyetsimple Cookie package.",
+    "name": "leevel/cookie",
+    "description": "The Leevel Cookie Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,7 +13,7 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/option": "1.0.*"
+        "leevel/option": "1.0.*"
     },
     "autoload": {
         "psr-4": {

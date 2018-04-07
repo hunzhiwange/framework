@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\View;
+namespace Leevel\View;
 
 use InvalidArgumentException;
-use Queryyetsimple\Stack\Stack;
+use Leevel\Stack\Stack;
 
 /**
  * 分析模板
@@ -35,7 +35,7 @@ class Parser implements IParser
     /**
      * 编译器
      *
-     * @var \Queryyetsimple\View\ICompiler
+     * @var \Leevel\View\ICompiler
      */
     protected $objCompiler;
 
@@ -148,7 +148,7 @@ class Parser implements IParser
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\View\ICompiler $objCompiler
+     * @param \Leevel\View\ICompiler $objCompiler
      * @return void
      */
     public function __construct(icompiler $objCompiler)

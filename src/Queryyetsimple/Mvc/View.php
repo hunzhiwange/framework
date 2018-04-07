@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
 use RuntimeException;
-use Queryyetsimple\View\IView as ViewIView;
+use Leevel\View\IView as ViewIView;
 
 /**
  * 视图
@@ -33,14 +33,14 @@ class View implements IView
     /**
      * 视图模板
      *
-     * @var \Queryyetsimple\View\IView
+     * @var \Leevel\View\IView
      */
     protected $theme;
 
     /**
      * 备份视图模板
      *
-     * @var \Queryyetsimple\View\IView
+     * @var \Leevel\View\IView
      */
     protected $backupTheme;
 
@@ -54,7 +54,7 @@ class View implements IView
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\View\IView $theme
+     * @param \Leevel\View\IView $theme
      * @return void
      */
     public function __construct(ViewIView $theme)
@@ -65,7 +65,7 @@ class View implements IView
     /**
      * 切换视图
      *
-     * @param \Queryyetsimple\View\IView $theme
+     * @param \Leevel\View\IView $theme
      * @param boolean $foreverSwitch
      * @return $this
      */

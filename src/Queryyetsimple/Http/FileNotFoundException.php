@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Http;
+namespace Leevel\Http;
 
 /**
  * 文件不存在异常

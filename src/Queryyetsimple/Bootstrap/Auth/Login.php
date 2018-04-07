@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\auth;
+namespace Leevel\Bootstrap\auth;
 
-use Queryyetsimple\{
+use Leevel\{
     auth,
     response,
     Http\Request,
@@ -58,7 +58,7 @@ trait login
     /**
      * 登录界面
      *
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function login()
     {
@@ -68,7 +68,7 @@ trait login
     /**
      * 获取登录界面
      *
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function displayLoginForm()
     {
@@ -78,8 +78,8 @@ trait login
     /**
      * 登录验证
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
-     * @return \Queryyetsimple\Http\Response|array
+     * @param \Leevel\Http\Request $oRequest
+     * @return \Leevel\Http\Response|array
      */
     public function checkLogin(request $oRequest)
     {
@@ -136,8 +136,8 @@ trait login
     /**
      * 解锁
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
-     * @return \Queryyetsimple\Http\Response|array
+     * @param \Leevel\Http\Request $oRequest
+     * @return \Leevel\Http\Response|array
      * @return void
      */
     public function unlock(request $oRequest)
@@ -153,9 +153,9 @@ trait login
     /**
      * 仅仅验证用户和密码是否正确
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
+     * @param \Leevel\Http\Request $oRequest
      * @param boolean $booValidate
-     * @return \Queryyetsimple\Http\Response|array
+     * @return \Leevel\Http\Response|array
      */
     public function onlyValidate(request $oRequest, &$booValidate = false)
     {
@@ -188,7 +188,7 @@ trait login
      * 发送正确登录消息
      *
      * @param string $strSuccess
-     * @return \Queryyetsimple\Http\Response|boolean
+     * @return \Leevel\Http\Response|boolean
      */
     protected function sendSucceededLoginResponse($strSuccess)
     {
@@ -199,7 +199,7 @@ trait login
      * 发送错误登录消息
      *
      * @param string $strError
-     * @return \Queryyetsimple\Http\Response|boolean
+     * @return \Leevel\Http\Response|boolean
      */
     protected function sendFailedLoginResponse($strError)
     {
@@ -218,7 +218,7 @@ trait login
     /**
      * 验证登录请求
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
+     * @param \Leevel\Http\Request $oRequest
      * @return void
      */
     protected function validateLogin(request $oRequest)

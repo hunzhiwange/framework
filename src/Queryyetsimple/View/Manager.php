@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\View;
+namespace Leevel\View;
 
-use Queryyetsimple\Manager\Manager as Managers;
+use Leevel\Manager\Manager as Managers;
 
 /**
  * view 入口
@@ -54,7 +54,7 @@ class Manager extends Managers
      * 创建 html 模板驱动
      *
      * @param array $options
-     * @return \Queryyetsimple\View\html
+     * @return \Leevel\View\html
      */
     protected function makeConnectHtml($options = [])
     {
@@ -76,7 +76,7 @@ class Manager extends Managers
      * 创建 twig 模板驱动
      *
      * @param array $options
-     * @return \Queryyetsimple\View\twig
+     * @return \Leevel\View\twig
      */
     protected function makeConnectTwig($options = [])
     {
@@ -98,7 +98,7 @@ class Manager extends Managers
      * 创建 phpui 模板驱动
      *
      * @param array $options
-     * @return \Queryyetsimple\View\phpui
+     * @return \Leevel\View\phpui
      */
     protected function makeConnectPhpui($options = [])
     {
@@ -111,7 +111,7 @@ class Manager extends Managers
      * 创建 v8 模板驱动
      *
      * @param array $options
-     * @return \Queryyetsimple\View\vue
+     * @return \Leevel\View\vue
      */
     protected function makeConnectV8($options = [])
     {

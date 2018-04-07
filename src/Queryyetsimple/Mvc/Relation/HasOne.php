@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc\Relation;
+namespace Leevel\Mvc\Relation;
 
-use Queryyetsimple\Collection\Collection;
+use Leevel\Collection\Collection;
 
 /**
  * 关联模型 HasOne
@@ -42,8 +42,8 @@ class HasOne extends HasMany
     /**
      * 匹配关联查询数据到模型
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
-     * @param \queryyetsimple\collection $objResult
+     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \leevel\collection $objResult
      * @param string $strRelation
      * @return array
      */

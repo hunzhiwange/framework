@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
 use Closure;
 use Exception;
-use Queryyetsimple\{
+use Leevel\{
     Mvc\IModel,
     Support\Str,
     Support\Arr,
@@ -42,14 +42,14 @@ class Select
     /**
      * 模型
      *
-     * @var \Queryyetsimple\Mvc\IModel
+     * @var \Leevel\Mvc\IModel
      */
     protected $objModel;
 
     /**
      * 查询
      *
-     * @var \Queryyetsimple\Database\Select
+     * @var \Leevel\Database\Select
      */
     protected $objSelect;
 
@@ -63,7 +63,7 @@ class Select
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mvc\IModel $objModel
+     * @param \Leevel\Mvc\IModel $objModel
      * @return void
      */
     public function __construct($objModel)
@@ -94,7 +94,7 @@ class Select
     /**
      * 获取模型
      *
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     public function getModel($objModel)
     {
@@ -114,7 +114,7 @@ class Select
     /**
      * 注册查询
      *
-     * @param \Queryyetsimple\Database\Select $objSelect
+     * @param \Leevel\Database\Select $objSelect
      * @return void
      */
     public function registerSelect(DatabaseSelect $objSelect)
@@ -165,7 +165,7 @@ class Select
      *
      * @param mixed $mixId
      * @param array $arrColumn
-     * @return \Queryyetsimple\Mvc\IModel|\Queryyetsimple\Collection\Collection|null
+     * @return \Leevel\Mvc\IModel|\Leevel\Collection\Collection|null
      */
     public function find($mixId, $arrColumn = ['*'])
     {
@@ -181,7 +181,7 @@ class Select
      *
      * @param array $arrId
      * @param array $arrColumn
-     * @return \Queryyetsimple\Collection\Collection
+     * @return \Leevel\Collection\Collection
      */
     public function findMany($arrId, $arrColumn = ['*'])
     {
@@ -196,7 +196,7 @@ class Select
      *
      * @param mixed $mixId
      * @param array $arrColumn
-     * @return \Queryyetsimple\Mvc\IModel|\Queryyetsimple\Collection\Collection
+     * @return \Leevel\Mvc\IModel|\Leevel\Collection\Collection
      */
     public function findOrFail($mixId, $arrColumn = ['*'])
     {
@@ -221,7 +221,7 @@ class Select
      * @param array $arrData
      * @param mixed $mixConnect
      * @param string $strTable
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     public function findOrNew($mixId, $arrColumn = ['*'], $arrData = null, $mixConnect = null, $strTable = null)
     {
@@ -235,7 +235,7 @@ class Select
      * 查找第一个结果
      *
      * @param array $columns
-     * @return \Queryyetsimple\Mvc\IModel|static|null
+     * @return \Leevel\Mvc\IModel|static|null
      */
     public function first($arrColumn = ['*'])
     {
@@ -246,7 +246,7 @@ class Select
      * 查找第一个结果，未找到则抛出异常
      *
      * @param array $arrColumn
-     * @return \Queryyetsimple\Mvc\IModel|static
+     * @return \Leevel\Mvc\IModel|static
      */
     public function firstOrFail($arrColumn = ['*'])
     {
@@ -262,7 +262,7 @@ class Select
      * @param array $arrProp
      * @param mixed $mixConnect
      * @param string $strTable
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     public function firstOrNew(array $arrProp, $mixConnect = null, $strTable = null)
     {
@@ -278,7 +278,7 @@ class Select
      * @param array $arrProp
      * @param mixed $mixConnect
      * @param string $strTable
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     public function firstOrCreate(array $arrProp, $mixConnect = null, $strTable = null)
     {
@@ -295,7 +295,7 @@ class Select
      * @param array $arrData
      * @param mixed $mixConnect
      * @param string $strTable
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     public function updateOrCreate(array $arrProp, array $arrData = [], $mixConnect = null, $strTable = null)
     {
@@ -308,7 +308,7 @@ class Select
      * @param array $arrProp
      * @param mixed $mixConnect
      * @param string $strTable
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     public function onlyCreate(array $arrProp = [], $mixConnect = null, $strTable = null)
     {
@@ -376,7 +376,7 @@ class Select
     /**
      * 获取不包含软删除的数据
      *
-     * @return \Queryyetsimple\Database\Select
+     * @return \Leevel\Database\Select
      */
     public function withoutSoftDeleted()
     {
@@ -386,7 +386,7 @@ class Select
     /**
      * 获取只包含软删除的数据
      *
-     * @return \Queryyetsimple\Database\Select
+     * @return \Leevel\Database\Select
      */
     public function onlySoftDeleted()
     {
@@ -437,7 +437,7 @@ class Select
      * 查询范围
      *
      * @param mixed $mixScope
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     public function scope($mixScope)
     {
@@ -482,7 +482,7 @@ class Select
     /**
      * 预载入模型
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[] $arrModel
      * @return array
      */
     protected function preLoadRelation(array $arrModel)
@@ -499,7 +499,7 @@ class Select
      * 取得关联模型
      *
      * @param string $name
-     * @return \queryyetsimple\Mvc\Relation\Relation
+     * @return \leevel\Mvc\Relation\Relation
      */
     protected function getRelation($strName)
     {
@@ -627,7 +627,7 @@ class Select
     /**
      * 关联数据设置到模型上
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[] $arrModel
      * @param string $strName
      * @param callable $calCondition
      * @return array
@@ -644,7 +644,7 @@ class Select
      * 尝试根据属性查找一个模型
      *
      * @param array $arrProp
-     * @return \Queryyetsimple\Mvc\IModel|null
+     * @return \Leevel\Mvc\IModel|null
      */
     protected function getFirstByProp(array $arrProp)
     {

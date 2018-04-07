@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/stack",
-    "description": "The Queryyetsimple Stack package.",
+    "name": "leevel/stack",
+    "description": "The Leevel Stack Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,11 +13,11 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/support": "1.0.*"
+        "leevel/support": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Stack\\": ""
+            "Leevel\\Stack\\": ""
         }
     },
     "extra": {

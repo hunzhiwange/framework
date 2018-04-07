@@ -14,14 +14,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap;
+namespace Leevel\Bootstrap;
 
 use Exception;
 use Dotenv\Dotenv;
 use RuntimeException;
 use Composer\Autoload\ClassLoader;
 use NunoMaduro\Collision\Provider as CollisionProvider;
-use Queryyetsimple\{
+use Leevel\{
     Psr4\Psr4,
     Di\Provider,
     Di\Container,
@@ -45,7 +45,7 @@ class Project extends Container implements IProject
     /**
      * 当前项目实例
      *
-     * @var Queryyetsimple\Bootstrap\Project
+     * @var Leevel\Bootstrap\Project
      */
     protected static $objProject;
 
@@ -252,7 +252,7 @@ class Project extends Container implements IProject
      */
     public function runWithExtension()
     {
-        return extension_loaded('queryyetsimple');
+        return extension_loaded('leevel');
     }
 
     /**
@@ -529,7 +529,7 @@ class Project extends Container implements IProject
      * 创建服务提供者
      *
      * @param string $strProvider
-     * @return \queryyetsimple\Di\Provider
+     * @return \leevel\Di\Provider
      */
     public function makeProvider($strProvider)
     {
@@ -539,7 +539,7 @@ class Project extends Container implements IProject
     /**
      * 执行 bootstrap
      *
-     * @param \queryyetsimple\Di\Provider $objProvider
+     * @param \leevel\Di\Provider $objProvider
      * @return void
      */
     public function callProviderBootstrap(Provider $objProvider)
@@ -575,7 +575,7 @@ class Project extends Container implements IProject
      */
     protected function registerPsr4(ClassLoader $objComposer)
     {
-        $this->instance('psr4', new Psr4($objComposer, dirname(__DIR__) . '/bootstrap/sandbox', 'Queryyetsimple', 'Qys'));
+        $this->instance('psr4', new Psr4($objComposer, dirname(__DIR__) . '/bootstrap/sandbox', 'Leevel', 'Qys'));
         $this->alias('psr4', Psr4::class);
 
         // 优先载入 aop autoload，恢复 composer autoload
@@ -622,7 +622,7 @@ class Project extends Container implements IProject
     }
 
     protected function doMakeAop() {
-        // $aop = new \queryyetsimple\Support\aop($this);
+        // $aop = new \leevel\Support\aop($this);
         // foreach ($this->aops as $aopclass => $methods) {
         //     //echo $aopclass;
         //    //echo $this['psr4']->file($aopclass);;
@@ -632,8 +632,8 @@ class Project extends Container implements IProject
     }
 
     public function loadAopClass($class) {
-        // //require_once $this['psr4']->file('queryyetsimple\Support\aop');
-        // // $aop = new \queryyetsimple\Support\aop();
+        // //require_once $this['psr4']->file('leevel\Support\aop');
+        // // $aop = new \leevel\Support\aop();
         // // //echo $class;
         // // //echo '<br/>';
         // if(isset($this->aops[$class])) {
@@ -830,9 +830,9 @@ class Project extends Container implements IProject
     {
         $this->alias([
             'project' => [
-                'Queryyetsimple\Bootstrap\Project',
-                'Queryyetsimple\Di\IContainer',
-                'Queryyetsimple\Bootstrap\IProject',
+                'Leevel\Bootstrap\Project',
+                'Leevel\Di\IContainer',
+                'Leevel\Bootstrap\IProject',
                 'app'
             ]
         ]);
@@ -855,17 +855,17 @@ class Project extends Container implements IProject
         Runtime::container($this);
 
         register_shutdown_function([
-            'Queryyetsimple\Bootstrap\Runtime\Runtime', 
+            'Leevel\Bootstrap\Runtime\Runtime', 
             'shutdownHandle'
         ]);
         
         set_error_handler([
-            'Queryyetsimple\Bootstrap\Runtime\Runtime', 
+            'Leevel\Bootstrap\Runtime\Runtime', 
             'errorHandle'
         ]);
         
         set_exception_handler([
-            'Queryyetsimple\Bootstrap\Runtime\Runtime', 
+            'Leevel\Bootstrap\Runtime\Runtime', 
             'exceptionHandle'
         ]);
     }

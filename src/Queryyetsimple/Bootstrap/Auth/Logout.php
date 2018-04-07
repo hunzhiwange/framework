@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\auth;
+namespace Leevel\Bootstrap\auth;
 
-use Queryyetsimple\{
+use Leevel\{
     auth,
     response
 };
@@ -36,7 +36,7 @@ trait logout
     /**
      * 登录退出
      *
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function logout()
     {
@@ -46,7 +46,7 @@ trait logout
     /**
      * 登录退出
      *
-     * @return \Queryyetsimple\Http\Response|array
+     * @return \Leevel\Http\Response|array
      */
     public function displayLoginout()
     {

@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use Queryyetsimple\{
+use Leevel\{
     Log\Ilog,
     Bootstrap\Project,
     Support\Debug\Dump
@@ -26,7 +26,7 @@ if (! function_exists('project')) {
      *
      * @param string|null $sInstance
      * @param array $arrArgs
-     * @return \Queryyetsimple\Bootstrap\Project
+     * @return \Leevel\Bootstrap\Project
      */
     function project($sInstance = null, $arrArgs = [])
     {
@@ -48,7 +48,7 @@ if (! function_exists('app')) {
      *
      * @param string|null $sInstance
      * @param array $arrArgs
-     * @return \Queryyetsimple\Bootstrap\Project
+     * @return \Leevel\Bootstrap\Project
      */
     function app($sInstance = null, $arrArgs = [])
     {
@@ -69,17 +69,17 @@ if (! function_exists('run_with_extension')) {
 }
 
 // function aop_before($pointcut, $advice) {
-//     $aop = \queryyetsimple\aop\aop::singleton();
+//     $aop = \leevel\aop\aop::singleton();
 //     $aop->before($pointcut, $advice);
 // }
 
 // function aop_after($pointcut, $advice) {
-//     $aop = \queryyetsimple\aop\aop::singleton();
+//     $aop = \leevel\aop\aop::singleton();
 //     $aop->after($pointcut, $advice);
 // }
 
 // function aop_around($pointcut, $advice) {
-//     $aop = \queryyetsimple\aop\aop::singleton();
+//     $aop = \leevel\aop\aop::singleton();
 //     $aop->around($pointcut, $advice);
 // }
 

@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Throttler\Middleware;
+namespace Leevel\Throttler\Middleware;
 
 use Closure;
-use Queryyetsimple\{
+use Leevel\{
     Http\Request,
     Http\Response,
     Throttler\IThrottler,
@@ -38,22 +38,22 @@ class Throttler
     /**
      * throttler
      *
-     * @var \Queryyetsimple\Throttler\IThrottler
+     * @var \Leevel\Throttler\IThrottler
      */
     protected $throttler;
 
     /**
      * HTTP Response
      *
-     * @var \Queryyetsimple\Http\Response $response
+     * @var \Leevel\Http\Response $response
      */
     protected $response;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Throttler\IThrottler $throttler
-     * @param \Queryyetsimple\Http\Response $response
+     * @param \Leevel\Throttler\IThrottler $throttler
+     * @param \Leevel\Http\Response $response
      * @return void
      */
     public function __construct(IThrottler $throttler, Response $response)
@@ -66,7 +66,7 @@ class Throttler
      * 请求
      *
      * @param \Closure $next
-     * @param \Queryyetsimple\Http\Request $request
+     * @param \Leevel\Http\Request $request
      * @param int $limit
      * @param int $time
      * @return void
@@ -88,7 +88,7 @@ class Throttler
     /**
      * 发送 HEADER
      *
-     * @param \Queryyetsimple\Throttler\RateLimiter $rateLimiter
+     * @param \Leevel\Throttler\RateLimiter $rateLimiter
      * @return void
      */
     protected function header($rateLimiter)

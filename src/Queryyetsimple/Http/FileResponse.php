@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Http;
+namespace Leevel\Http;
 
 use DateTime;
 use SplFileInfo;
@@ -38,7 +38,7 @@ class FileResponse extends Response
     /**
      * 文件
      * 
-     * @var \Queryyetsimple\Http\File
+     * @var \Leevel\Http\File
      */
     protected $file;
 
@@ -123,7 +123,7 @@ class FileResponse extends Response
     /**
      * 取回文件
      *
-     * @return \Queryyetsimple\Http\File
+     * @return \Leevel\Http\File
      */
     public function getFile()
     {

@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/di",
-    "description": "The Queryyetsimple Di package.",
+    "name": "leevel/di",
+    "description": "The Leevel Di Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {

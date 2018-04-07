@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc\Relation;
+namespace Leevel\Mvc\Relation;
 
-use Queryyetsimple\{
+use Leevel\{
     Mvc\IModel,
     Collection\Collection
 };
@@ -35,8 +35,8 @@ class HasMany extends Relation
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mvc\IModel $objTargetModel
-     * @param \Queryyetsimple\Mvc\IModel $objSourceModel
+     * @param \Leevel\Mvc\IModel $objTargetModel
+     * @param \Leevel\Mvc\IModel $objSourceModel
      * @param string $strTargetKey
      * @param string $strSourceKey
      * @return void
@@ -62,7 +62,7 @@ class HasMany extends Relation
     /**
      * 设置预载入关联查询条件
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[] $arrModel
      * @return void
      */
     public function preLoadCondition(array $arrModel)
@@ -73,8 +73,8 @@ class HasMany extends Relation
     /**
      * 匹配关联查询数据到模型 HasMany
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
-     * @param \Queryyetsimple\Collection\Collection $objResult
+     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Collection\Collection $objResult
      * @param string $strRelation
      * @return array
      */
@@ -106,8 +106,8 @@ class HasMany extends Relation
     /**
      * 保存模型
      *
-     * @param \Queryyetsimple\Mvc\IModel $objModel
-     * @return \Queryyetsimple\Mvc\IModel
+     * @param \Leevel\Mvc\IModel $objModel
+     * @return \Leevel\Mvc\IModel
      */
     public function save(IModel $objModel)
     {
@@ -118,8 +118,8 @@ class HasMany extends Relation
     /**
      * 批量保存模型
      *
-     * @param \Queryyetsimple\Collection\Collection|array $mixModel
-     * @return \Queryyetsimple\Collection\Collection|array
+     * @param \Leevel\Collection\Collection|array $mixModel
+     * @return \Leevel\Collection\Collection|array
      */
     public function saveMany($mixModel)
     {
@@ -134,7 +134,7 @@ class HasMany extends Relation
      * 创建模型实例
      *
      * @param array $arrProp
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     public function create(array $arrProp)
     {
@@ -185,7 +185,7 @@ class HasMany extends Relation
     /**
      * 模型添加源字段数据
      *
-     * @param \Queryyetsimple\Mvc\IModel $objModel
+     * @param \Leevel\Mvc\IModel $objModel
      * @return void
      */
     protected function withSourceKeyValue(IModel $objModel)
@@ -196,8 +196,8 @@ class HasMany extends Relation
     /**
      * 匹配预载入数据
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
-     * @param \Queryyetsimple\Collection\Collection $objResult
+     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Collection\Collection $objResult
      * @param string $strRelation
      * @param string $strType
      * @return array
@@ -234,7 +234,7 @@ class HasMany extends Relation
     /**
      * 模型隐射数据
      *
-     * @param \Queryyetsimple\Collection\Collection $objResult
+     * @param \Leevel\Collection\Collection $objResult
      * @return array
      */
     protected function buildMap(collection $objResult)

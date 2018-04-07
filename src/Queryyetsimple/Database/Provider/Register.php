@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Database\Provider;
+namespace Leevel\Database\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Database\Manager
 };
@@ -50,7 +50,7 @@ class Register extends Provider
      */
     public function bootstrap()
     {
-        $this->loadCommandNamespace('Queryyetsimple\Database\Console');
+        $this->loadCommandNamespace('Leevel\Database\Console');
     }
 
     /**
@@ -62,12 +62,12 @@ class Register extends Provider
     {
         return [
             'databases' => [
-                'Queryyetsimple\Database\Manager',
+                'Leevel\Database\Manager',
                 'Qys\Database\Manager'
             ],
             'database' => [
-                'Queryyetsimple\Database\Database',
-                'Queryyetsimple\Database\IDatabase',
+                'Leevel\Database\Database',
+                'Leevel\Database\IDatabase',
                 'Qys\Database\Database',
                 'Qys\Database\IDatabase'
             ]

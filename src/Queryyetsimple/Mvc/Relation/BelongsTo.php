@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc\Relation;
+namespace Leevel\Mvc\Relation;
 
-use Queryyetsimple\{
+use Leevel\{
     Mvc\IModel,
     Collection\Collection
 };
@@ -35,8 +35,8 @@ class BelongsTo extends Relation
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mvc\IModel $objTargetModel
-     * @param \Queryyetsimple\Mvc\IModel $objSourceModel
+     * @param \Leevel\Mvc\IModel $objTargetModel
+     * @param \Leevel\Mvc\IModel $objSourceModel
      * @param string $strTargetKey
      * @param string $strSourceKey
      * @return void
@@ -61,8 +61,8 @@ class BelongsTo extends Relation
     /**
      * 匹配关联查询数据到模型
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
-     * @param \Queryyetsimple\Collection\Collection $objResult
+     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Collection\Collection $objResult
      * @param string $strRelation
      * @return array
      */
@@ -83,7 +83,7 @@ class BelongsTo extends Relation
     /**
      * 设置预载入关联查询条件
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[] $arrModel
      * @return void
      */
     public function preLoadCondition(array $arrModel)
@@ -114,7 +114,7 @@ class BelongsTo extends Relation
     /**
      * 模型隐射数据
      *
-     * @param \Queryyetsimple\Collection\Collection $objResult
+     * @param \Leevel\Collection\Collection $objResult
      * @return array
      */
     protected function buildMap(collection $objResult)
@@ -131,7 +131,7 @@ class BelongsTo extends Relation
     /**
      * 分析预载入模型中对应的源数据
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[] $arrModel
      * @return array
      */
     protected function getPreLoadModelValue(array $arrModel)

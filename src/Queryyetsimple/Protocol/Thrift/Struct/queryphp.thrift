@@ -1,4 +1,4 @@
-namespace php Queryyetsimple.Protocol.Thrift.Service
+namespace php Leevel.Protocol.Thrift.Service
 
 /**
  * ---------------------------------------------------------------

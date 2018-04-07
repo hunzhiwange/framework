@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Http;
+namespace Leevel\Http;
 
 use InvalidArgumentException;
-use Queryyetsimple\Session\ISession;
+use Leevel\Session\ISession;
 
 /**
  * Redirect 响应请求
@@ -42,14 +42,14 @@ class RedirectResponse extends Response
     /**
      * HTTP 请求
      *
-     * @var \Queryyetsimple\Http\IRequest
+     * @var \Leevel\Http\IRequest
      */
     protected $request;
 
     /**
      * SESSION 仓储
      *
-     * @var \Queryyetsimple\Session\ISession
+     * @var \Leevel\Session\ISession
      */
     protected $session;
 
@@ -234,7 +234,7 @@ class RedirectResponse extends Response
     /**
      * 获取 HTTP 请求
      *
-     * @return \Queryyetsimple\Http\IRequest|null
+     * @return \Leevel\Http\IRequest|null
      */
     public function getRequest()
     {
@@ -244,7 +244,7 @@ class RedirectResponse extends Response
     /**
      * 设置 HTTP 请求
      *
-     * @param \Queryyetsimple\Http\IRequest $request
+     * @param \Leevel\Http\IRequest $request
      * @return void
      */
     public function setRequest(IRequest $request)
@@ -255,7 +255,7 @@ class RedirectResponse extends Response
     /**
      * 获取 SESSION 仓储
      *
-     * @return \Queryyetsimple\Session\ISession|null
+     * @return \Leevel\Session\ISession|null
      */
     public function getSession()
     {
@@ -265,7 +265,7 @@ class RedirectResponse extends Response
     /**
      * 设置 SESSION 仓储
      *
-     * @param \Queryyetsimple\Session\ISession $session
+     * @param \Leevel\Session\ISession $session
      * @return void
      */
     public function setSession(ISession $session)

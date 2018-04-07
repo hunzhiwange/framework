@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Throttler\Provider;
+namespace Leevel\Throttler\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Throttler\Throttler
 };
@@ -59,12 +59,12 @@ class Register extends Provider
     {
         return [
             'throttler' => [
-                'Queryyetsimple\Throttler\Throttler',
-                'Queryyetsimple\Throttler\IThrottler',
+                'Leevel\Throttler\Throttler',
+                'Leevel\Throttler\IThrottler',
                 'Qys\Throttler\Throttler',
                 'Qys\Throttler\IThrottler'
             ],
-            'Queryyetsimple\Throttler\Middleware\Throttler'
+            'Leevel\Throttler\Middleware\Throttler'
         ];
     }
 
@@ -87,6 +87,6 @@ class Register extends Provider
      */
     protected function middleware()
     {
-        $this->singleton('Queryyetsimple\Throttler\Middleware\Throttler');
+        $this->singleton('Leevel\Throttler\Middleware\Throttler');
     }
 }

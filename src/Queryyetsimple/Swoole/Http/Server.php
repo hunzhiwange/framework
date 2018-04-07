@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Swoole\Http;
+namespace Leevel\Swoole\Http;
 
 use Throwable;
 use Swoole\{
@@ -22,7 +22,7 @@ use Swoole\{
     Http\Request as SwooleHttpRequest,
     Http\Response as SwooleHttpResponse
 };
-use Queryyetsimple\{
+use Leevel\{
     Http\Request,
     Router\Router,
     Router\ResponseFactory,
@@ -43,21 +43,21 @@ class Server extends Servers
     /**
      * 路由
      *
-     * @var \queryyetsimple\Router\Router
+     * @var \leevel\Router\Router
      */
     protected $objRouter;
     
     /**
      * 请求
      *
-     * @var \Queryyetsimple\Http\Request
+     * @var \Leevel\Http\Request
      */
     protected $request;
     
     /**
      * 响应
      *
-     * @var \Queryyetsimple\Http\Response
+     * @var \Leevel\Http\Response
      */
     protected $response;
     
@@ -111,9 +111,9 @@ class Server extends Servers
     /**
      * 构造函数
      * 
-     * @param \queryyetsimple\Router\Router $objRouter
-     * @param \Queryyetsimple\Http\Request $request
-     * @param \Queryyetsimple\Router\ResponseFactory $response
+     * @param \leevel\Router\Router $objRouter
+     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Router\ResponseFactory $response
      * @param array $option
      * @return void
      */

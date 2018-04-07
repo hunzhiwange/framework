@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap;
+namespace Leevel\Bootstrap;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Di\IContainer
 };
@@ -231,14 +231,14 @@ interface IProject extends IContainer
      * 创建服务提供者
      *
      * @param string $strProvider
-     * @return \queryyetsimple\Di\Provider
+     * @return \leevel\Di\Provider
      */
     public function makeProvider($strProvider);
     
     /**
      * 执行 bootstrap
      *
-     * @param \queryyetsimple\Di\Provider $objProvider
+     * @param \leevel\Di\Provider $objProvider
      * @return void
      */
     public function callProviderBootstrap(Provider $objProvider);

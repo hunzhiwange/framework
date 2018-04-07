@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\auth;
+namespace Leevel\Bootstrap\auth;
 
-use Queryyetsimple\{
+use Leevel\{
     auth,
     response,
     Http\Request,
@@ -38,7 +38,7 @@ trait change_password
     /**
      * 修改密码界面
      *
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function changePassword()
     {
@@ -48,7 +48,7 @@ trait change_password
     /**
      * 获取修改密码界面
      *
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function displayChangePasswordForm()
     {
@@ -58,8 +58,8 @@ trait change_password
     /**
      * 执行修改密码
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
-     * @return \Queryyetsimple\Http\Response|array
+     * @param \Leevel\Http\Request $oRequest
+     * @return \Leevel\Http\Response|array
      */
     public function changeUserPassword(request $oRequest)
     {
@@ -93,7 +93,7 @@ trait change_password
      * 发送正确修改密码消息
      *
      * @param string $strSuccess
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     protected function sendSucceededChangePasswordResponse($strSuccess)
     {
@@ -103,9 +103,9 @@ trait change_password
     /**
      * 发送错误修改密码消息
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
+     * @param \Leevel\Http\Request $oRequest
      * @param string $strError
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     protected function sendFailedChangePasswordResponse($strError)
     {
@@ -124,7 +124,7 @@ trait change_password
     /**
      * 验证登录修改密码请求
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
+     * @param \Leevel\Http\Request $oRequest
      * @return void
      */
     protected function validateChangePassword(request $oRequest)

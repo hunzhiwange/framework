@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Validate\Provider;
+namespace Leevel\Validate\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Validate\Validate
 };
@@ -53,8 +53,8 @@ class Register extends Provider
     {
         return [
             'validate' => [
-                'Queryyetsimple\Validate\Validate',
-                'Queryyetsimple\Validate\IValidate',
+                'Leevel\Validate\Validate',
+                'Leevel\Validate\IValidate',
                 'Qys\Validate\Validate',
                 'Qys\Validate\IValidate'
             ]

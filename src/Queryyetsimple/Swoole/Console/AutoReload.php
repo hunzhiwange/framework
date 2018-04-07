@@ -14,15 +14,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Swoole\Console;
+namespace Leevel\Swoole\Console;
 
 use Exception;
-use Queryyetsimple\{
+use Leevel\{
     Console\Option,
     Console\Command,
     Console\Argument
 };
-use Queryyetsimple\Swoole\ToolKit\AutoReload as AutoReloads;
+use Leevel\Swoole\ToolKit\AutoReload as AutoReloads;
 
 /**
  * swoole 服务自动重启

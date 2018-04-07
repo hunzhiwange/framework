@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Protocol\Thrift\Service;
+namespace Leevel\Protocol\Thrift\Service;
 
 /**
  * 默认服务调用接口
@@ -30,8 +30,8 @@ interface ThriftIf
     /**
      * 定义一个响应包结构
      *
-     * @param \Queryyetsimple\Protocol\Thrift\Service\Request $request
-     * @return \Queryyetsimple\Protocol\Thrift\Service\Response
+     * @param \Leevel\Protocol\Thrift\Service\Request $request
+     * @return \Leevel\Protocol\Thrift\Service\Response
      */
     public function call(Request $request);
 }

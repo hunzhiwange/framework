@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Swoole\Provider;
+namespace Leevel\Swoole\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Swoole\Server,
     Swoole\Http\Server as HttpServer,
@@ -68,19 +68,19 @@ class Register extends Provider
         return [
             'swoole.default.server' => [
                 'Qys\Swoole\Server',
-                'Queryyetsimple\Swoole\Server'
+                'Leevel\Swoole\Server'
             ],
             'swoole.http.server' => [
                 'Qys\Swoole\Http\Server',
-                'Queryyetsimple\Swoole\Http\Server'
+                'Leevel\Swoole\Http\Server'
             ],
             'swoole.websocket.server' => [
                 'Qys\Swoole\Websocket\Server',
-                'Queryyetsimple\Swoole\Websocket\Server'
+                'Leevel\Swoole\Websocket\Server'
             ],
             'swoole.rpc.server' => [
                 'Qys\Protocol\RpcServer',
-                'Queryyetsimple\Protocol\RpcServer'
+                'Leevel\Protocol\RpcServer'
             ]
         ];
     }
@@ -143,6 +143,6 @@ class Register extends Provider
      */
     protected function console()
     {
-        $this->loadCommandNamespace('Queryyetsimple\Swoole\Console');
+        $this->loadCommandNamespace('Leevel\Swoole\Console');
     }
 }

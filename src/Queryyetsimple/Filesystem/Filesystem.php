@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Filesystem;
+namespace Leevel\Filesystem;
 
 /**
  * filesystem 仓储
@@ -30,14 +30,14 @@ class Filesystem implements IFilesystem
     /**
      * 连接驱动
      *
-     * @var \Queryyetsimple\Filesystem\IConnect
+     * @var \Leevel\Filesystem\IConnect
      */
     protected $oConnect;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Filesystem\IConnect $oConnect
+     * @param \Leevel\Filesystem\IConnect $oConnect
      * @return void
      */
     public function __construct(IConnect $oConnect)

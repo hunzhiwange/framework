@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Stack;
+namespace Leevel\Stack;
 
 use SplDoublyLinkedList;
 use InvalidArgumentException;
-use Queryyetsimple\Support\Type;
+use Leevel\Support\Type;
 
 /**
  * 双向链表

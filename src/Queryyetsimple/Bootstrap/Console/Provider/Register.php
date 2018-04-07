@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\Console\Provider;
+namespace Leevel\Bootstrap\Console\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Bootstrap\Console\Load
 };
@@ -52,7 +52,7 @@ class Register extends Provider
     public static function providers()
     {
         return [
-            'console.load' => 'Queryyetsimple\Bootstrap\Console\Load'
+            'console.load' => 'Leevel\Bootstrap\Console\Load'
         ];
     }
 }

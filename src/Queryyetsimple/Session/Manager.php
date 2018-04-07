@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Session;
+namespace Leevel\Session;
 
-use Queryyetsimple\Manager\Manager as Managers;
+use Leevel\Manager\Manager as Managers;
 
 /**
  * manager 入口
@@ -65,7 +65,7 @@ class Manager extends Managers
      * 创建 memcache 缓存
      *
      * @param array $options
-     * @return \Queryyetsimple\Session\memcache
+     * @return \Leevel\Session\memcache
      */
     protected function makeConnectMemcache($options = [])
     {
@@ -76,7 +76,7 @@ class Manager extends Managers
      * 创建 redis 缓存
      *
      * @param array $options
-     * @return \Queryyetsimple\Session\redis
+     * @return \Leevel\Session\redis
      */
     protected function makeConnectRedis($options = [])
     {

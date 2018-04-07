@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
 use DateTime;
 use Exception;
@@ -23,7 +23,7 @@ use Carbon\Carbon;
 use JsonSerializable;
 use DateTimeInterface;
 use BadMethodCallException;
-use Queryyetsimple\{
+use Leevel\{
     Support\Str,
     Support\Arr,
     Flow\TControl,
@@ -34,7 +34,7 @@ use Queryyetsimple\{
     Support\TSerialize,
     Collection\Collection
 };
-use Queryyetsimple\Mvc\Relation\{
+use Leevel\Mvc\Relation\{
     HasMany,
     Relation,
     ManyMany,
@@ -294,14 +294,14 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 查询 select
      *
-     * @var \Queryyetsimple\Database\Select
+     * @var \Leevel\Database\Select
      */
     protected $objSelectForQuery;
 
     /**
      * 模型事件处理器
      *
-     * @var \Queryyetsimple\Event\IDispatch
+     * @var \Leevel\Event\IDispatch
      */
     protected static $objDispatch;
 
@@ -899,7 +899,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 预加载关联
      *
      * @param array|string $mixRelation
-     * @return \Queryyetsimple\Mvc\select
+     * @return \Leevel\Mvc\select
      */
     public static function with($mixRelation)
     {
@@ -915,7 +915,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strRelatedModel
      * @param string $strTargetKey
      * @param string $strSourceKey
-     * @return void|\Queryyetsimple\Mvc\Relation\HasOne
+     * @return void|\Leevel\Mvc\Relation\HasOne
      */
     public function hasOne($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
@@ -940,7 +940,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strRelatedModel
      * @param string $strTargetKey
      * @param string $strSourceKey
-     * @return void|\Queryyetsimple\Mvc\Relation\BelongsTo
+     * @return void|\Leevel\Mvc\Relation\BelongsTo
      */
     public function belongsTo($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
@@ -966,7 +966,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strRelatedModel
      * @param string $strTargetKey
      * @param string $strSourceKey
-     * @return void|\Queryyetsimple\Mvc\Relation\HasMany
+     * @return void|\Leevel\Mvc\Relation\HasMany
      */
     public function hasMany($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
@@ -994,7 +994,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strSourceKey
      * @param string $strMiddleTargetKey
      * @param string $strMiddleSourceKey
-     * @return void|\Queryyetsimple\Mvc\Relation\HasMany
+     * @return void|\Leevel\Mvc\Relation\HasMany
      */
     public function manyMany($strRelatedModel, $strMiddleModel = null, $strTargetKey = null, $strSourceKey = null, $strMiddleTargetKey = null, $strMiddleSourceKey = null)
     {
@@ -1031,7 +1031,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 中间表带命名空间完整名字
      *
-     * @param \Queryyetsimple\Mvc\IModel $objRelatedModel
+     * @param \Leevel\Mvc\IModel $objRelatedModel
      * @return string
      */
     public function getMiddleModel($objRelatedModel)
@@ -1046,7 +1046,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 取得中间表名字
      *
-     * @param \Queryyetsimple\Mvc\IModel $objRelatedModel
+     * @param \Leevel\Mvc\IModel $objRelatedModel
      * @return string
      */
     public function getMiddleTable($objRelatedModel)
@@ -1067,7 +1067,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 selecting
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function selecting($mixListener)
@@ -1078,7 +1078,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 selected
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function selected($mixListener)
@@ -1089,7 +1089,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 finding
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function finding($mixListener)
@@ -1100,7 +1100,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 finded
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function finded($mixListener)
@@ -1111,7 +1111,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 saveing
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function saveing($mixListener)
@@ -1122,7 +1122,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 saved
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function saved($mixListener)
@@ -1133,7 +1133,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 creating
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function creating($mixListener)
@@ -1144,7 +1144,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 created
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function created($mixListener)
@@ -1155,7 +1155,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 updating
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function updating($mixListener)
@@ -1166,7 +1166,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 updated
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function updated($mixListener)
@@ -1177,7 +1177,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 deleting
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function deleting($mixListener)
@@ -1188,7 +1188,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 deleted
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function deleted($mixListener)
@@ -1199,7 +1199,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 softDeleting
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function softDeleting($mixListener)
@@ -1210,7 +1210,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 softDeleted
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function softDeleted($mixListener)
@@ -1221,7 +1221,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 softRestoring
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function softRestoring($mixListener)
@@ -1232,7 +1232,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 注册模型事件 softRestored
      *
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function softRestored($mixListener)
@@ -1243,7 +1243,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 返回模型事件处理器
      *
-     * @return \Queryyetsimple\Event\IDispatch
+     * @return \Leevel\Event\IDispatch
      */
     public static function getEventDispatch()
     {
@@ -1253,7 +1253,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 设置模型事件处理器
      *
-     * @param \Queryyetsimple\Event\IDispatch $objDispatch
+     * @param \Leevel\Event\IDispatch $objDispatch
      * @return void
      */
     public static function setEventDispatch(IDispatch $objDispatch)
@@ -1275,7 +1275,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 注册模型事件
      *
      * @param string $strEvent
-     * @param \queryyetsimple\event\observer|string $mixListener
+     * @param \leevel\event\observer|string $mixListener
      * @return void
      */
     public static function registerEvent($strEvent, $mixListener)
@@ -2032,7 +2032,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 创建一个模型集合
      *
      * @param array $arrModel
-     * @return \Queryyetsimple\Collection\Collection
+     * @return \Leevel\Collection\Collection
      */
     public function collection(array $arrModel = [])
     {
@@ -2101,7 +2101,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 查询 select
      *
-     * @return \Queryyetsimple\Database\Select
+     * @return \Leevel\Database\Select
      */
     public function getSelectForQuery()
     {
@@ -2111,7 +2111,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 返回数据库查询集合对象
      *
-     * @return \Queryyetsimple\Database\IConnect
+     * @return \Leevel\Database\IConnect
      */
     public function getClassCollectionQuerySource()
     {
@@ -2121,7 +2121,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 返回数据库查询集合对象
      *
-     * @return \Queryyetsimple\Database\IConnect
+     * @return \Leevel\Database\IConnect
      */
     public function getClassCollectionQuery()
     {
@@ -2131,7 +2131,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 返回数据库查询对象
      *
-     * @return \Queryyetsimple\Database\IConnect
+     * @return \Leevel\Database\IConnect
      */
     public function getQuery()
     {
@@ -2420,7 +2420,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     {
         $oRelation = $this->$strPropName();
         if (! ($oRelation instanceof Relation)) {
-            throw new Exception(sprintf('Relation prop must return a type of %s', 'Queryyetsimple\Mvc\Relation\Relation'));
+            throw new Exception(sprintf('Relation prop must return a type of %s', 'Leevel\Mvc\Relation\Relation'));
         }
 
         return $this->arrRelationProp[$strPropName] = $oRelation->sourceQuery();

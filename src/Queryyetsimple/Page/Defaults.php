@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Page;
+namespace Leevel\Page;
 
-use Queryyetsimple\Option\TClass;
+use Leevel\Option\TClass;
 
 /**
  * 默认分页渲染
@@ -33,7 +33,7 @@ class Defaults implements IRender
     /**
      * 分页
      *
-     * @var \Queryyetsimple\Page\IPage
+     * @var \Leevel\Page\IPage
      */
     protected $objPage;
 
@@ -51,7 +51,7 @@ class Defaults implements IRender
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Page\IPage $objPage
+     * @param \Leevel\Page\IPage $objPage
      * @param array $arrOption
      * @return void
      */

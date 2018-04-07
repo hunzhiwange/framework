@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\Runtime;
+namespace Leevel\Bootstrap\Runtime;
 
-use Queryyetsimple\Log\Ilog;
+use Leevel\Log\Ilog;
 
 /**
  * 消息基类
@@ -32,7 +32,7 @@ abstract class Message
     /**
      * 返回项目容器
      *
-     * @var \Queryyetsimple\Bootstrap\Project
+     * @var \Leevel\Bootstrap\Project
      */
     protected $project;
 

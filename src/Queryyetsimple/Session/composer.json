@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/session",
-    "description": "The Queryyetsimple Session package.",
+    "name": "leevel/session",
+    "description": "The Leevel Session Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,14 +13,14 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/cache": "1.0.*",
-        "queryyetsimple/option": "1.0.*",
-        "queryyetsimple/manager": "1.0.*"
+        "leevel/support": "1.0.*",
+        "leevel/cache": "1.0.*",
+        "leevel/option": "1.0.*",
+        "leevel/manager": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Session\\": ""
+            "Leevel\\Session\\": ""
         }
     },
     "extra": {

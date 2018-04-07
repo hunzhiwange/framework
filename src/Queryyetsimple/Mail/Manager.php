@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mail;
+namespace Leevel\Mail;
 
-use Queryyetsimple\Manager\Manager as Managers;
+use Leevel\Manager\Manager as Managers;
 
 /**
  * mail 入口
@@ -54,7 +54,7 @@ class Manager extends Managers
      * 创建 smtp 连接
      *
      * @param array $options
-     * @return \Queryyetsimple\Mail\smtp
+     * @return \Leevel\Mail\smtp
      */
     protected function makeConnectSmtp($options = [])
     {
@@ -65,7 +65,7 @@ class Manager extends Managers
      * 创建 sendmail 连接
      *
      * @param array $options
-     * @return \Queryyetsimple\Mail\sendmail
+     * @return \Leevel\Mail\sendmail
      */
     protected function makeConnectSendmail($options = [])
     {

@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Provider;
+namespace Leevel\Queue\Provider;
 
-use Queryyetsimple\Di\Provider;
+use Leevel\Di\Provider;
 
 /**
  * queue 服务提供者
@@ -45,7 +45,7 @@ class Register extends Provider
      */
     public function bootstrap()
     {
-        $this->loadCommandNamespace('Queryyetsimple\Queue\Console');
+        $this->loadCommandNamespace('Leevel\Queue\Console');
     }
 
     /**

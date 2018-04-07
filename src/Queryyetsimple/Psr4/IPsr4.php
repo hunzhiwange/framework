@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Psr4;
+namespace Leevel\Psr4;
 
 /**
  * IPsr4 接口

@@ -14,13 +14,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Http;
+namespace Leevel\Http;
 
 use Countable;
 use ArrayIterator;
 use JsonSerializable;
 use IteratorAggregate;
-use Queryyetsimple\{
+use Leevel\{
     Support\IJson,
     Support\IArray
 };

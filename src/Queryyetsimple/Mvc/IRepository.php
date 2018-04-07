@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
 /**
  * 仓储基础接口
@@ -32,7 +32,7 @@ interface IRepository
      *
      * @param int $intId
      * @param array $arrColumn
-     * @return \Queryyetsimple\Mvc\IEntity
+     * @return \Leevel\Mvc\IEntity
      */
     public function find($intId, $arrColumn = ['*']);
 
@@ -41,7 +41,7 @@ interface IRepository
      *
      * @param int $intId
      * @param array $arrColumn
-     * @return \Queryyetsimple\Mvc\IEntity|void
+     * @return \Leevel\Mvc\IEntity|void
      */
     public function findOrFail($intId, $arrColumn = ['*']);
 
@@ -49,7 +49,7 @@ interface IRepository
      * 取得所有记录
      *
      * @param null|callback $mixCallback
-     * @return \Queryyetsimple\Collection\Collection
+     * @return \Leevel\Collection\Collection
      */
     public function count($mixSpecification = null);
 
@@ -57,30 +57,30 @@ interface IRepository
      * 取得所有记录
      *
      * @param null|callback $mixCallback
-     * @return \Queryyetsimple\Collection\Collection
+     * @return \Leevel\Collection\Collection
      */
     public function all($mixSpecification = null);
 
     /**
      * 保存数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function create(IAggregateRoot $objEntity);
 
     /**
      * 更新数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function update(IAggregateRoot $objEntity);
 
     /**
      * 删除数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
      * @return int
      */
     public function delete(IAggregateRoot $objEntity);
@@ -88,47 +88,47 @@ interface IRepository
     /**
      * 注册保存数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\UnitOfWork
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\UnitOfWork
      */
     public function registerCreate(IAggregateRoot $objEntity);
 
     /**
      * 注册更新数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\UnitOfWork
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\UnitOfWork
      */
     public function registerUpdate(IAggregateRoot $objEntity);
 
     /**
      * 注册删除数据
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\UnitOfWork
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\UnitOfWork
      */
     public function registerDelete(IAggregateRoot $objEntity);
 
     /**
      * 响应新建
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function handleCreate(IAggregateRoot $objEntity);
 
     /**
      * 响应修改
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function handleUpdate(IAggregateRoot $objEntity);
 
     /**
      * 响应删除
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
      * @return int
      */
     public function handleDelete(IAggregateRoot $objEntity);
@@ -165,7 +165,7 @@ interface IRepository
     /**
      * 设置聚合根
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objAggregate
+     * @param \Leevel\Mvc\IAggregateRoot $objAggregate
      * @return void
      */
     public function setAggregate(IAggregateRoot $objAggregate);
@@ -173,21 +173,21 @@ interface IRepository
     /**
      * 返回聚合根
      *
-     * @return \Queryyetsimple\Mvc\IAggregateRoot
+     * @return \Leevel\Mvc\IAggregateRoot
      */
     public function aggregate();
 
     /**
      * 返回工作单元
      *
-     * @return \Queryyetsimple\Mvc\IUnitOfWork
+     * @return \Leevel\Mvc\IUnitOfWork
      */
     public function unitOfWork();
 
     /**
      * 返回数据库仓储
      *
-     * @return \Queryyetsimple\Database\IDatabase
+     * @return \Leevel\Database\IDatabase
      */
     public function databaseConnect();
 

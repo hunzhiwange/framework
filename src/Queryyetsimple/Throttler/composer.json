@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/throttler",
-    "description": "The Queryyetsimple Throttler package.",
+    "name": "leevel/throttler",
+    "description": "The Leevel Throttler Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,13 +13,13 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/cache": "1.0.*",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/http": "1.0.*"
+        "leevel/cache": "1.0.*",
+        "leevel/support": "1.0.*",
+        "leevel/http": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Throttler\\": ""
+            "Leevel\\Throttler\\": ""
         }
     },
     "extra": {

@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Filesystem\Provider;
+namespace Leevel\Filesystem\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Filesystem\Manager
 };
@@ -59,12 +59,12 @@ class Register extends Provider
     {
         return [
             'filesystems' => [
-                'Queryyetsimple\Filesystem\Manager',
+                'Leevel\Filesystem\Manager',
                 'Qys\Filesystem\Manager'
             ],
             'filesystem' => [
-                'Queryyetsimple\Filesystem\Filesystem',
-                'Queryyetsimple\Filesystem\IFilesystem',
+                'Leevel\Filesystem\Filesystem',
+                'Leevel\Filesystem\IFilesystem',
                 'Qys\Filesystem\Filesystem',
                 'Qys\Filesystem\IFilesystem'
             ]

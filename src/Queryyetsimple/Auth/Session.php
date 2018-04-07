@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Auth;
+namespace Leevel\Auth;
 
-use Queryyetsimple\{
+use Leevel\{
     Mvc\IModel,
     Session\ISession,
     Validate\IValidate,
@@ -37,17 +37,17 @@ class Session extends Connect implements IConnect
     /**
      * session
      *
-     * @var \Queryyetsimple\Session\ISession
+     * @var \Leevel\Session\ISession
      */
     protected $oSession;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mvc\IModel $oUser
-     * @param \Queryyetsimple\Encryption\IEncryption $oEncryption
-     * @param \Queryyetsimple\Validate\IValidate $oValidate
-     * @param \Queryyetsimple\Session\ISession $oSession
+     * @param \Leevel\Mvc\IModel $oUser
+     * @param \Leevel\Encryption\IEncryption $oEncryption
+     * @param \Leevel\Validate\IValidate $oValidate
+     * @param \Leevel\Session\ISession $oSession
      * @param array $arrOption
      * @return void
      */
@@ -61,7 +61,7 @@ class Session extends Connect implements IConnect
     /**
      * 设置认证名字
      *
-     * @param \Queryyetsimple\Mvc\IModel $oUser
+     * @param \Leevel\Mvc\IModel $oUser
      * @return void
      */
     protected function setLoginTokenName($oUser)

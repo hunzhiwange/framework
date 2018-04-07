@@ -1,6 +1,6 @@
 <?php
 
-namespace Queryyetsimple\Aop;
+namespace Leevel\Aop;
 
 // use ClosureAnalysisException;
 // use ReflectionFunction;

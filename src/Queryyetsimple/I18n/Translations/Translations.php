@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\I18n\Translations;
+namespace Leevel\I18n\Translations;
 
-use Queryyetsimple\I18n\Entry;
+use Leevel\I18n\Entry;
 
 /**
  * 翻译语言

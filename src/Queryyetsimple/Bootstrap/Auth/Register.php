@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\auth;
+namespace Leevel\Bootstrap\auth;
 
-use Queryyetsimple\{
+use Leevel\{
     auth,
     response,
     Http\Request,
@@ -37,7 +37,7 @@ trait register
     /**
      * 注册界面
      *
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function register()
     {
@@ -47,8 +47,8 @@ trait register
     /**
      * 注册用户
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
-     * @return \Queryyetsimple\Http\Response
+     * @param \Leevel\Http\Request $oRequest
+     * @return \Leevel\Http\Response
      */
     public function registerUser(request $oRequest)
     {
@@ -77,7 +77,7 @@ trait register
     /**
      * 获取注册界面
      *
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     public function displayRegisterForm()
     {
@@ -88,7 +88,7 @@ trait register
      * 发送正确注册消息
      *
      * @param string $strSuccess
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     protected function sendSucceededRegisterResponse($strSuccess)
     {
@@ -99,7 +99,7 @@ trait register
      * 发送错误注册消息
      *
      * @param string $strError
-     * @return \Queryyetsimple\Http\Response
+     * @return \Leevel\Http\Response
      */
     protected function sendFailedRegisterResponse($strError)
     {
@@ -111,7 +111,7 @@ trait register
     /**
      * 验证注册请求
      *
-     * @param \Queryyetsimple\Http\Request $oRequest
+     * @param \Leevel\Http\Request $oRequest
      * @return void
      */
     protected function validateRegister(request $oRequest)

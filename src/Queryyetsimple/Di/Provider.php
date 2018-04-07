@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Di;
+namespace Leevel\Di;
 
 use Closure;
 use BadMethodCallException;
@@ -40,14 +40,14 @@ abstract class Provider
     /**
      * IOC 容器
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected $container;
 
     /**
      * 创建一个服务容器提供者实例
      *
-     * @param \Queryyetsimple\Di\IContainer $container
+     * @param \Leevel\Di\IContainer $container
      * @return void
      */
     public function __construct(IContainer $container)
@@ -101,7 +101,7 @@ abstract class Provider
     /**
      * 返回 IOC 容器
      *
-     * @return \Queryyetsimple\Di\IContainer
+     * @return \Leevel\Di\IContainer
      */
     public function container()
     {

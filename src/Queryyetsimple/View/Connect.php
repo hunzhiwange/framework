@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\View;
+namespace Leevel\View;
 
 use RuntimeException;
 use InvalidArgumentException;
-use Queryyetsimple\Option\TClass;
+use Leevel\Option\TClass;
 
 /**
  * 模板处理抽象类

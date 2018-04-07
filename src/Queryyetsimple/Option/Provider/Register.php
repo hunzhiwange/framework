@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Option\Provider;
+namespace Leevel\Option\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Option\Load,
     Option\Option
@@ -53,13 +53,13 @@ class Register extends Provider
     {
         return [
             'option' => [
-                'Queryyetsimple\Option\Option',
-                'Queryyetsimple\Option\IOption',
+                'Leevel\Option\Option',
+                'Leevel\Option\IOption',
                 'Qys\Option\Option',
                 'Qys\Option\IOption'
             ],
             'load' => [
-                'Queryyetsimple\Option\Load',
+                'Leevel\Option\Load',
                 'Qys\Option\Load'
             ]
         ];

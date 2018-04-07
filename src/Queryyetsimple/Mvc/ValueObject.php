@@ -14,13 +14,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
 use ArrayAccess;
 use JsonSerializable;
 use BadMethodCallException;
-use Queryyetsimple\Flow\TControl;
-use Queryyetsimple\Support\{
+use Leevel\Flow\TControl;
+use Leevel\Support\{
     Str,
     IJson,
     IArray,

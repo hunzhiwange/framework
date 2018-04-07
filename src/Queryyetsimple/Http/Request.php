@@ -14,12 +14,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Http;
+namespace Leevel\Http;
 
 use ArrayAccess;
 use SplFileObject;
 use RuntimeException;
-use Queryyetsimple\{
+use Leevel\{
     Option\TClass,
     Support\TMacro,
     Support\IArray
@@ -44,49 +44,49 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * GET Bag
      *
-     * @var \Queryyetsimple\Http\Bag
+     * @var \Leevel\Http\Bag
      */
     public $query;
 
     /**
      * POST Bag
      *
-     * @var \Queryyetsimple\Http\Bag
+     * @var \Leevel\Http\Bag
      */
     public $request;
 
     /**
      * 路由解析后的参数
      *
-     * @var \Queryyetsimple\Http\Bag
+     * @var \Leevel\Http\Bag
      */
     public $params;
 
     /**
      * COOKIE Bag
      *
-     * @var \Queryyetsimple\Http\Bag
+     * @var \Leevel\Http\Bag
      */
     public $cookies;
 
     /**
      * FILE Bag
      *
-     * @var \Queryyetsimple\Http\FileBag
+     * @var \Leevel\Http\FileBag
      */
     public $files;
 
     /**
      * SERVER Bag
      *
-     * @var \Queryyetsimple\Http\ServerBag
+     * @var \Leevel\Http\ServerBag
      */
     public $server;
 
     /**
      * HEADER Bag
      *
-     * @var \Queryyetsimple\Http\HeaderBag
+     * @var \Leevel\Http\HeaderBag
      */
     public $headers;
 
@@ -265,8 +265,8 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 格式化请求的内容
      *
-     * @param \Queryyetsimple\Http\Request $request
-     * @return \Queryyetsimple\Http\Request
+     * @param \Leevel\Http\Request $request
+     * @return \Leevel\Http\Request
      */
     public static function normalizeRequestFromContent(Request $request)
     {
@@ -466,7 +466,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param string $key
      * @param mixed $defaults
-     * @return \Queryyetsimple\Http\UploadedFile|array|null
+     * @return \Leevel\Http\UploadedFile|array|null
      */
     public function file($key = null, $defaults = null)
     {
@@ -1529,7 +1529,7 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 取得请求输入源
      *
-     * @return \Queryyetsimple\Http\Bag
+     * @return \Leevel\Http\Bag
      */
     protected function getInputSource()
     {

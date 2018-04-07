@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/collection",
-    "description": "The Queryyetsimple Collection package.",
+    "name": "leevel/collection",
+    "description": "The Leevel Collection Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,7 +13,7 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/support": "1.0.*"
+        "leevel/support": "1.0.*"
     },
     "autoload": {
         "psr-4": {

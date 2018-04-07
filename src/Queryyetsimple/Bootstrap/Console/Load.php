@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Bootstrap\Console;
+namespace Leevel\Bootstrap\Console;
 
 use RuntimeException;
-use Queryyetsimple\Filesystem\Fso;
+use Leevel\Filesystem\Fso;
 
 /**
  * 命令行工具类导入类

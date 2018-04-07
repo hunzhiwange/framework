@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
-use Queryyetsimple\Database\Manager as DatabaseManager;
+use Leevel\Database\Manager as DatabaseManager;
 
 /**
  * 数据库元对象
@@ -46,7 +46,7 @@ class Meta
     /**
      * 数据库仓储
      *
-     * @var \Queryyetsimple\Database\IDatabase
+     * @var \Leevel\Database\IDatabase
      */
     protected $objConnect;
 
@@ -157,7 +157,7 @@ class Meta
     /**
      * 设置数据库管理对象
      *
-     * @param \Queryyetsimple\Database\Manager $objDatabaseManager
+     * @param \Leevel\Database\Manager $objDatabaseManager
      * @return void
      */
     public static function setDatabaseManager(DatabaseManager $objDatabaseManager)
@@ -296,7 +296,7 @@ class Meta
     /**
      * 返回数据库仓储
      *
-     * @return \Queryyetsimple\Database\IDatabase
+     * @return \Leevel\Database\IDatabase
      */
     public function getConnect()
     {
@@ -306,7 +306,7 @@ class Meta
     /**
      * 返回查询
      *
-     * @var \Queryyetsimple\Database\IConnect
+     * @var \Leevel\Database\IConnect
      */
     public function getSelect()
     {
@@ -338,7 +338,7 @@ class Meta
     /**
      * 连接数据库仓储
      *
-     * @return \Queryyetsimple\Database\IDatabase
+     * @return \Leevel\Database\IDatabase
      */
     protected function initConnect()
     {

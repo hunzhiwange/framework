@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/cache",
-    "description": "The Queryyetsimple Cache package.",
+    "name": "leevel/cache",
+    "description": "The Leevel Cache Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,11 +13,11 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/option": "1.0.*",
-        "queryyetsimple/filesystem": "1.0.*",
-        "queryyetsimple/di": "1.0.*",
-        "queryyetsimple/manager": "1.0.*"
+        "leevel/support": "1.0.*",
+        "leevel/option": "1.0.*",
+        "leevel/filesystem": "1.0.*",
+        "leevel/di": "1.0.*",
+        "leevel/manager": "1.0.*"
     },
     "autoload": {
         "psr-4": {

@@ -14,16 +14,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Validate;
+namespace Leevel\Validate;
 
 use DateTime;
 use Exception;
 use DateTimeZone;
 use BadMethodCallException;
 use InvalidArgumentException;
-use Queryyetsimple\Di\IContainer;
-use Queryyetsimple\Flow\TControl;
-use Queryyetsimple\Support\{
+use Leevel\Di\IContainer;
+use Leevel\Flow\TControl;
+use Leevel\Support\{
     Str,
     Arr
 };
@@ -43,7 +43,7 @@ class Validate implements IValidate
     /**
      * IOC 容器
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected $objContainer;
 
@@ -178,7 +178,7 @@ class Validate implements IValidate
      * @param array $arrRule
      * @param array $arrFieldName
      * @param array $arrMessage
-     * @return \Queryyetsimple\Validate
+     * @return \Leevel\Validate
      */
     public static function make(array $arrData = [], array $arrRule = [], array $arrFieldName = [], array $arrMessage = [])
     {
@@ -695,7 +695,7 @@ class Validate implements IValidate
     /**
      * 设置 IOC 容器
      *
-     * @param \Queryyetsimple\Di\IContainer $objContainer
+     * @param \Leevel\Di\IContainer $objContainer
      * @return $this
      */
     public function container(IContainer $objContainer)

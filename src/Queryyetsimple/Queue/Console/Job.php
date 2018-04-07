@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Console;
+namespace Leevel\Queue\Console;
 
 use Exception;
 use PHPQueue\Base;
-use Queryyetsimple\Console\{
+use Leevel\Console\{
     Option,
     Command,
     Argument
@@ -75,7 +75,7 @@ class Job extends Command
             $arrPayload['attempts'] = 1;
 
             // 注册处理的队列
-            $strConnect = 'Queryyetsimple\Queue\queues\\' . $this->argument('connect');
+            $strConnect = 'Leevel\Queue\queues\\' . $this->argument('connect');
             if (! class_exists($strConnect)) {
                 $this->error($this->time(sprintf('Connect %s not exits.', $strConnect)));
                 return;

@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mail\Provider;
+namespace Leevel\Mail\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Mail\Manager
 };
@@ -52,12 +52,12 @@ class Register extends Provider
     {
         return [
             'mails' => [
-                'Queryyetsimple\Mail\Manager',
+                'Leevel\Mail\Manager',
                 'Qys\Mail\Manager'
             ],
             'mail' => [
-                'Queryyetsimple\Mail\Mail',
-                'Queryyetsimple\Mail\IMail',
+                'Leevel\Mail\Mail',
+                'Leevel\Mail\IMail',
                 'Qys\Mail\Mail',
                 'Qys\Mail\IMail'
             ]

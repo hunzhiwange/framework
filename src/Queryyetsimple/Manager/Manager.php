@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Manager;
+namespace Leevel\Manager;
 
 use Exception;
 use InvalidArgumentException;
-use Queryyetsimple\Di\IContainer;
+use Leevel\Di\IContainer;
 
 /**
  * manager 入口
@@ -34,7 +34,7 @@ abstract class Manager
     /**
      * IOC Container
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected $container;
 
@@ -48,7 +48,7 @@ abstract class Manager
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Di\IContainer $container
+     * @param \Leevel\Di\IContainer $container
      * @return void
      */
     public function __construct(IContainer $container)
@@ -59,7 +59,7 @@ abstract class Manager
     /**
      * 返回 IOC 容器
      *
-     * @return \Queryyetsimple\Di\IContainer
+     * @return \Leevel\Di\IContainer
      */
     public function container()
     {

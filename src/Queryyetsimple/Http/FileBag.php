@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Http;
+namespace Leevel\Http;
 
 use InvalidArgumentException;
 
@@ -112,8 +112,8 @@ class FileBag extends Bag
     /**
      * 转换上传信息到文件实例 UploadedFile
      *
-     * @param array|\Queryyetsimple\Http\UploadedFile $file
-     * @return \Queryyetsimple\Http\UploadedFile|null
+     * @param array|\Leevel\Http\UploadedFile $file
+     * @return \Leevel\Http\UploadedFile|null
      */
     protected function convertFile($file)
     {

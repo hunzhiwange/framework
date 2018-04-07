@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
 use RuntimeException;
-use Queryyetsimple\View\IView as ViewIView;
+use Leevel\View\IView as ViewIView;
 
 /**
  * 基类控制器
@@ -33,7 +33,7 @@ abstract class controller implements IController
     /**
      * 视图
      *
-     * @var \queryyetsimple\Mvc\IView
+     * @var \leevel\Mvc\IView
      */
     protected $view;
 
@@ -49,7 +49,7 @@ abstract class controller implements IController
     /**
      * 设置视图
      *
-     * @param \queryyetsimple\Mvc\IView $view
+     * @param \leevel\Mvc\IView $view
      * @return $this
      */
     public function setView(IView $view)
@@ -61,7 +61,7 @@ abstract class controller implements IController
     /**
      * 切换视图
      *
-     * @param \Queryyetsimple\View\IView $theme
+     * @param \Leevel\View\IView $theme
      * @param boolean $forever
      * @return $this
      */

@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Workers;
+namespace Leevel\Queue\Workers;
 
 use Clio\Console;
 use PHPQueue\Worker as PHPQueueWorker;
@@ -33,7 +33,7 @@ abstract class Worker extends PHPQueueWorker
     /**
      * 运行任务
      *
-     * @param \Queryyetsimple\Queue\Jobs\IJob $objJob
+     * @param \Leevel\Queue\Jobs\IJob $objJob
      * @return void
      */
     public function runJob($objJob)

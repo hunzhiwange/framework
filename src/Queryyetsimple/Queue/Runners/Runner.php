@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Runners;
+namespace Leevel\Queue\Runners;
 
 use Exception;
 use PHPQueue\{
@@ -36,14 +36,14 @@ abstract class Runner extends PHPQueueRunner
     /**
      * work 命令
      *
-     * @var \Queryyetsimple\Queue\Console\Work
+     * @var \Leevel\Queue\Console\Work
      */
     protected $objWork;
 
     /**
      * 消息队列
      *
-     * @var \Queryyetsimple\Queue\Queues\IQueue
+     * @var \Leevel\Queue\Queues\IQueue
      */
     protected $objQueue;
 
@@ -64,7 +64,7 @@ abstract class Runner extends PHPQueueRunner
     /**
      * work 命名
      *
-     * @param \Queryyetsimple\Queue\Console\Work $objWork
+     * @param \Leevel\Queue\Console\Work $objWork
      * @return void
      */
     public function workCommand($objWork)
@@ -153,7 +153,7 @@ abstract class Runner extends PHPQueueRunner
     /**
      * 记录错误任务
      *
-     * @param \Queryyetsimple\Queue\jobs\ijob $objJob
+     * @param \Leevel\Queue\jobs\ijob $objJob
      * @return void
      */
     protected function failedJob($objJob)
@@ -179,7 +179,7 @@ abstract class Runner extends PHPQueueRunner
     /**
      * 更新任务数据
      *
-     * @param \Queryyetsimple\Queue\jobs\ijob $objJob
+     * @param \Leevel\Queue\jobs\ijob $objJob
      * @param mixed $mixResultData
      * @return bool|void
      * @throws \Exception

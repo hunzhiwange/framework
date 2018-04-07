@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/seccode",
-    "description": "The Queryyetsimple Seccode package.",
+    "name": "leevel/seccode",
+    "description": "The Leevel Seccode Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,13 +13,13 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/filesystem": "1.0.*",
-        "queryyetsimple/option": "1.0.*"
+        "leevel/support": "1.0.*",
+        "leevel/filesystem": "1.0.*",
+        "leevel/option": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Seccode\\": ""
+            "Leevel\\Seccode\\": ""
         }
     },
     "extra": {

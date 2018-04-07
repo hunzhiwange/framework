@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/psr4",
-    "description": "The Queryyetsimple Psr4 package.",
+    "name": "leevel/psr4",
+    "description": "The Leevel Psr4 Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Psr4\\": ""
+            "Leevel\\Psr4\\": ""
         }
     },
     "extra": {

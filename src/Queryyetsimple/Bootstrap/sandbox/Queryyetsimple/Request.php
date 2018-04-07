@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple;
+namespace Leevel;
 
-use Queryyetsimple\Support\Facade;
+use Leevel\Support\Facade;
 
 /**
  * 沙盒 request

@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Jobs;
+namespace Leevel\Queue\Jobs;
 
 use PHPQueue\Job as PHPQueueJob;
 
@@ -214,7 +214,7 @@ abstract class Job extends PHPQueueJob
     /**
      * 返回服务容器
      *
-     * @return \Queryyetsimple\Di\IContainer
+     * @return \Leevel\Di\IContainer
      */
     protected function container()
     {

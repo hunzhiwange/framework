@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Session\Provider;
+namespace Leevel\Session\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Session\Manager
 };
@@ -53,16 +53,16 @@ class Register extends Provider
     {
         return [
             'sessions' => [
-                'Queryyetsimple\Session\Manager',
+                'Leevel\Session\Manager',
                 'Qys\Session\Manager'
             ],
             'session' => [
-                'Queryyetsimple\Session\Session',
-                'Queryyetsimple\Session\ISession',
+                'Leevel\Session\Session',
+                'Leevel\Session\ISession',
                 'Qys\Session\Session',
                 'Qys\Session\ISession'
             ],
-            'Queryyetsimple\Session\Middleware\Session'
+            'Leevel\Session\Middleware\Session'
         ];
     }
 
@@ -97,6 +97,6 @@ class Register extends Provider
      */
     protected function middleware()
     {
-        $this->singleton('Queryyetsimple\Session\Middleware\Session');
+        $this->singleton('Leevel\Session\Middleware\Session');
     }
 }
