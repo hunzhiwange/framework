@@ -10,10 +10,6 @@ git stpush Auth
 The code below need to be add.
 
 ```
-[remote "Aop"]
-    url = git@github.com:queryyetsimple/aop.git
-    fetch = +refs/heads/*:refs/remotes/Aop/*
-
 [remote "Auth"]
     url = git@github.com:queryyetsimple/auth.git
     fetch = +refs/heads/*:refs/remotes/Auth/*
@@ -101,10 +97,6 @@ The code below need to be add.
 [remote "Protocol"]
     url = git@github.com:queryyetsimple/protocol.git
     fetch = +refs/heads/*:refs/remotes/Protocol/*
-
-[remote "Psr4"]
-    url = git@github.com:queryyetsimple/psr4.git
-    fetch = +refs/heads/*:refs/remotes/Psr4/*
 
 [remote "Queue"]
     url = git@github.com:queryyetsimple/queue.git

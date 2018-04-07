@@ -1,8 +1,6 @@
 # QueryPHP Framework Subtree
 
 ```
-git subtree add --prefix=src/Queryyetsimple/Aop git@github.com:queryyetsimple/aop.git master
-
 git subtree add --prefix=src/Queryyetsimple/Auth git@github.com:queryyetsimple/auth.git master
 
 git subtree add --prefix=src/Queryyetsimple/Cache git@github.com:queryyetsimple/cache.git master
@@ -42,8 +40,6 @@ git subtree add --prefix=src/Queryyetsimple/Option git@github.com:queryyetsimple
 git subtree add --prefix=src/Queryyetsimple/Page git@github.com:queryyetsimple/page.git master
 
 git subtree add --prefix=src/Queryyetsimple/Pipeline git@github.com:queryyetsimple/pipeline.git master
-
-git subtree add --prefix=src/Queryyetsimple/Psr4 git@github.com:queryyetsimple/psr4.git master
 
 git subtree add --prefix=src/Queryyetsimple/Queue git@github.com:queryyetsimple/queue.git master
 
