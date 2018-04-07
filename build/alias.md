@@ -9,6 +9,7 @@ git stpush Auth
 
 The code below need to be add.
 
+```
 [remote "Aop"]
     url = git@github.com:queryyetsimple/aop.git
     fetch = +refs/heads/*:refs/remotes/Aop/*
@@ -150,11 +151,11 @@ The code below need to be add.
     fetch = +refs/heads/*:refs/remotes/View/*
 
 
-[alias]
-         
+[alias]      
     stpull = !git subtree pull --prefix=src/Queryyetsimple/$1 $1 master \
         && :
 
     stpush = !git subtree split --rejoin --prefix=src/Queryyetsimple/$1 master \
         && git subtree push --prefix=src/Queryyetsimple/$1 $1 master \
         && :
+```
