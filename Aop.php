@@ -15,7 +15,7 @@ class Aop
     protected $joinpoints;
 
     public function __construct() {
-
+echo 'test';
     }
 
     public static function singleton () {
