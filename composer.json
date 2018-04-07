@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/pipeline",
-    "description": "The Queryyetsimple Pipeline package.",
+    "name": "leevel/pipeline",
+    "description": "The Leevel Pipeline Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,11 +13,11 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/di": "1.0.*"
+        "leevel/di": "1.0.*"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Pipeline\\": ""
+            "Leevel\\Pipeline\\": ""
         }
     },
     "extra": {

@@ -14,12 +14,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Pipeline;
+namespace Leevel\Pipeline;
 
 use Closure;
 use Generator;
 use InvalidArgumentException;
-use Queryyetsimple\Di\IContainer;
+use Leevel\Di\IContainer;
 
 /**
  * 管道实现类
@@ -35,7 +35,7 @@ class Pipeline implements IPipeline
     /**
      * 容器
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected $container;
 
@@ -63,7 +63,7 @@ class Pipeline implements IPipeline
     /**
      * 创建一个管道
      *
-     * @param \Queryyetsimple\Di\IContainer $container
+     * @param \Leevel\Di\IContainer $container
      * @return void
      */
     public function __construct(IContainer $container)
