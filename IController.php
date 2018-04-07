@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
 /**
  * IController 接口
@@ -30,7 +30,7 @@ interface IController extends IView
     /**
      * 返回父控制器
      *
-     * @param \queryyetsimple\Mvc\IView $view
+     * @param \leevel\Mvc\IView $view
      * @return $this
      */
     public function setView(IView $view);

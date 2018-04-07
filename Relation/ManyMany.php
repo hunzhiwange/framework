@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc\Relation;
+namespace Leevel\Mvc\Relation;
 
-use Queryyetsimple\{
+use Leevel\{
     Mvc\IModel,
     Collection\Collection
 };
@@ -35,14 +35,14 @@ class ManyMany extends Relation
     /**
      * 中间表查询对象
      *
-     * @var \Queryyetsimple\Database\Select
+     * @var \Leevel\Database\Select
      */
     protected $objMiddleSelect;
 
     /**
      * 中间表模型
      *
-     * @var \Queryyetsimple\Mvc\IModel
+     * @var \Leevel\Mvc\IModel
      */
     protected $objMiddleModel;
 
@@ -70,9 +70,9 @@ class ManyMany extends Relation
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mvc\IModel $objTargetModel
-     * @param \Queryyetsimple\Mvc\IModel $objSourceModel
-     * @param \Queryyetsimple\Mvc\IModel $objMiddleModel
+     * @param \Leevel\Mvc\IModel $objTargetModel
+     * @param \Leevel\Mvc\IModel $objSourceModel
+     * @param \Leevel\Mvc\IModel $objMiddleModel
      * @param string $strTargetKey
      * @param string $strSourceKey
      * @param string $strMiddleTargetKey
@@ -103,7 +103,7 @@ class ManyMany extends Relation
     /**
      * 设置预载入关联查询条件
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[] $arrModel
      * @return void
      */
     public function preLoadCondition(array $arrModel)
@@ -115,8 +115,8 @@ class ManyMany extends Relation
     /**
      * 匹配关联查询数据到模型
      *
-     * @param \Queryyetsimple\Mvc\IModel[] $arrModel
-     * @param \Queryyetsimple\Collection\Collection $objResult
+     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Collection\Collection $objResult
      * @param string $strRelation
      * @return array
      */
@@ -177,7 +177,7 @@ class ManyMany extends Relation
     /**
      * 取得中间表查询对象
      *
-     * @return \Queryyetsimple\Database\Select
+     * @return \Leevel\Database\Select
      */
     public function getMiddleSelect()
     {
@@ -187,7 +187,7 @@ class ManyMany extends Relation
     /**
      * 取得中间表模型
      *
-     * @return \Queryyetsimple\Mvc\IModel
+     * @return \Leevel\Mvc\IModel
      */
     public function getMiddleModel()
     {
@@ -263,7 +263,7 @@ class ManyMany extends Relation
     /**
      * 模型隐射数据
      *
-     * @param \Queryyetsimple\Collection\Collection $objResult
+     * @param \Leevel\Collection\Collection $objResult
      * @return array
      */
     protected function buildMap(collection $objResult)

@@ -2,7 +2,7 @@
 {{header_comment}}
 namespace {{namespace}}\domain\model;
 
-use Queryyetsimple\Mvc\model;
+use Leevel\Mvc\model;
 
 {{file_comment}}
 class {{file_name}} extends model 

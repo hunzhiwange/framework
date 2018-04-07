@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mvc;
+namespace Leevel\Mvc;
 
 /**
  * 工作单元
@@ -30,7 +30,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 基础仓储
      *
-     * @var \Queryyetsimple\Mvc\IRepository
+     * @var \Leevel\Mvc\IRepository
      */
     protected $objRepository;
 
@@ -72,7 +72,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mvc\IRepository $objRepository
+     * @param \Leevel\Mvc\IRepository $objRepository
      * @return $this
      */
     public function __construct(IRepository $objRepository)
@@ -166,8 +166,8 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册新建
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @param \Queryyetsimple\Mvc\IRepository $objRepository
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Mvc\IRepository $objRepository
      * @return $this
      */
     public function registerCreate(IAggregateRoot $objEntity, IRepository $objRepository)
@@ -187,8 +187,8 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册更新
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @param \Queryyetsimple\Mvc\IRepository $objRepository
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Mvc\IRepository $objRepository
      * @return $this
      */
     public function registerUpdate(IAggregateRoot $objEntity, IRepository $objRepository)
@@ -209,8 +209,8 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除
      *
-     * @param \Queryyetsimple\Mvc\IAggregateRoot $objEntity
-     * @param \Queryyetsimple\Mvc\IRepository $objRepository
+     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Mvc\IRepository $objRepository
      * @return $this
      */
     public function registerDelete(IAggregateRoot $objEntity, IRepository $objRepository)
