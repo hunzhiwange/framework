@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Console;
+namespace Leevel\Queue\Console;
 
 use PHPQueue\Base;
 use PHPQueue\Runner;
-use Queryyetsimple\Console\{
+use Leevel\Console\{
     Option,
     Command,
     Argument
@@ -127,7 +127,7 @@ class Work extends Command
      */
     protected function setQueue($strConnect, $strQueue)
     {
-        $strConnect = 'Queryyetsimple\Queue\queues\\' . $strConnect;
+        $strConnect = 'Leevel\Queue\queues\\' . $strConnect;
         if (! class_exists($strConnect)) {
             $this->error($this->time(sprintf('connect %s not exits.', $strConnect)));
             return;
@@ -150,7 +150,7 @@ class Work extends Command
     protected function runWorker($strConnect, $strQueue)
     {
         // 验证运行器是否存在
-        $strRunner = 'Queryyetsimple\Queue\runners\\' . $strConnect;
+        $strRunner = 'Leevel\Queue\runners\\' . $strConnect;
         if (! class_exists($strRunner)) {
             $this->error($this->time(sprintf('runner %s not exits.', $strRunner)));
             return;

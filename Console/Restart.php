@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Console;
+namespace Leevel\Queue\Console;
 
-use Queryyetsimple\Console\Command;
+use Leevel\Console\Command;
 
 /**
  * 重启任务

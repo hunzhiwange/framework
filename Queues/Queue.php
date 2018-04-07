@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Queues;
+namespace Leevel\Queue\Queues;
 
 use PHPQueue\{
     Logger,
@@ -149,7 +149,7 @@ abstract class Queue extends JobQueue
     public function getJob($strJobId = null)
     {
         $arrData = $this->resDataSource->get();
-        if (! class_exists($strJob = '\Queryyetsimple\Queue\jobs\\' . $this->strConnect)) {
+        if (! class_exists($strJob = '\Leevel\Queue\jobs\\' . $this->strConnect)) {
             $strJob = '\PHPQueue\Job';
         }
         $objNextJob = new $strJob($arrData, $this->resDataSource->last_job_id, static::$strQueue);

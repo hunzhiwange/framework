@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Queue\Queues;
+namespace Leevel\Queue\Queues;
 
 use PHPQueue\Base;
-use Queryyetsimple\Queue\Backend\Redis as BackendRedis;
+use Leevel\Queue\Backend\Redis as BackendRedis;
 
 /**
  * redis 消息队列

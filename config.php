@@ -24,5 +24,5 @@ use PHPQueue\Base;
  * @since 2017.05.11
  * @version 1.0
  */
-Base::$queue_namespace = 'Queryyetsimple\Queue\Queues';
-Base::$worker_namespace = 'Queryyetsimple\Queue\Workers';
+Base::$queue_namespace = 'Leevel\Queue\Queues';
+Base::$worker_namespace = 'Leevel\Queue\Workers';
