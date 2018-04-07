@@ -16,13 +16,13 @@
  */
 
 
-namespace Queryyetsimple\Mail;
+namespace Leevel\Mail;
 
 use Swift_Mailer;
 use Swift_Transport;
 use Swift_Mime_Message;
 use Swift_Events_EventListener;
-use Queryyetsimple\Option\TClass;
+use Leevel\Option\TClass;
 
 /**
  * connect 驱动抽象类

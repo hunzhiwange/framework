@@ -14,14 +14,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Mail;
+namespace Leevel\Mail;
 
 use Swift_Image;
 use Swift_Message;
 use Swift_Attachment;
 use BadMethodCallException;
 use InvalidArgumentException;
-use Queryyetsimple\{
+use Leevel\{
     Mvc\IView,
     Option\TClass,
     Flow\TControl
@@ -44,21 +44,21 @@ class Mail implements IMail
     /**
      * 连接驱动
      *
-     * @var \Queryyetsimple\Mail\IConnect
+     * @var \Leevel\Mail\IConnect
      */
     protected $oConnect;
 
     /**
      * 视图
      *
-     * @var \queryyetsimple\Mvc\IView
+     * @var \leevel\Mvc\IView
      */
     protected $objView;
 
     /**
      * 事件
      *
-     * @var \Queryyetsimple\Event\IDispatch|null
+     * @var \Leevel\Event\IDispatch|null
      */
     protected $objEvent;
 
@@ -72,7 +72,7 @@ class Mail implements IMail
     /**
      * 消息
      *
-     * @var \Queryyetsimple\Mail\Message
+     * @var \Leevel\Mail\Message
      */
     protected $objMessage;
 
@@ -105,9 +105,9 @@ class Mail implements IMail
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mail\IConnect $oConnect
-     * @param \queryyetsimple\Mvc\IView $objView
-     * @param \Queryyetsimple\Event\IDispatch|null $objEvent
+     * @param \Leevel\Mail\IConnect $oConnect
+     * @param \leevel\Mvc\IView $objView
+     * @param \Leevel\Event\IDispatch|null $objEvent
      * @param array $arrOption
      * @return void
      */
