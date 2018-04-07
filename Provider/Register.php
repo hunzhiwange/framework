@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Log\Provider;
+namespace Leevel\Log\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Log\Manager,
     Di\Provider
 };
@@ -53,16 +53,16 @@ class Register extends Provider
     {
         return [
             'logs' => [
-                'Queryyetsimple\Log\Manager',
+                'Leevel\Log\Manager',
                 'Qys\Log\Manager'
             ],
             'log' => [
-                'Queryyetsimple\Log\Log',
-                'Queryyetsimple\Log\ILog',
+                'Leevel\Log\Log',
+                'Leevel\Log\ILog',
                 'Qys\Log\Log',
                 'Qys\Log\ILog'
             ],
-            'Queryyetsimple\Log\Middleware\Log'
+            'Leevel\Log\Middleware\Log'
         ];
     }
 
@@ -97,6 +97,6 @@ class Register extends Provider
      */
     protected function middleware()
     {
-        $this->singleton('Queryyetsimple\Log\Middleware\Log');
+        $this->singleton('Leevel\Log\Middleware\Log');
     }
 }

@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Log\middleware;
+namespace Leevel\Log\middleware;
 
 use Closure;
-use Queryyetsimple\{
+use Leevel\{
     Log\Manager,
     Http\Request,
     Http\Response
@@ -37,14 +37,14 @@ class Log
     /**
      * log 管理
      *
-     * @var \Queryyetsimple\Log\Manager
+     * @var \Leevel\Log\Manager
      */
     protected $manager;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Log\Manager $manager
+     * @param \Leevel\Log\Manager $manager
      * @return void
      */
     public function __construct(Manager $manager)
@@ -56,8 +56,8 @@ class Log
      * 响应
      * 
      * @param \Closure $next
-     * @param \Queryyetsimple\Http\Request $request
-     * @param \Queryyetsimple\Http\Response $response
+     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\Response $response
      * @return void
      */
     public function terminate(Closure $next, Request $request, Response $response)

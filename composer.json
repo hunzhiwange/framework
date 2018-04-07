@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/log",
-    "description": "The Queryyetsimple Log package.",
+    "name": "leevel/log",
+    "description": "The Leevel Log Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -13,14 +13,14 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "queryyetsimple/option": "1.0.*",
-        "queryyetsimple/support": "1.0.*",
-        "queryyetsimple/manager": "1.0.*",
+        "leevel/option": "1.0.*",
+        "leevel/support": "1.0.*",
+        "leevel/manager": "1.0.*",
         "monolog/monolog": "^1.23"
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Log\\": ""
+            "Leevel\\Log\\": ""
         }
     },
     "extra": {
