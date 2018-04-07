@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Session;
+namespace Leevel\Session;
 
 use SessionHandler;
-use Queryyetsimple\Option\TClass;
+use Leevel\Option\TClass;
 
 /**
  * aconnect 驱动抽象类
@@ -34,7 +34,7 @@ abstract class Connect
     /**
      * 缓存仓储
      *
-     * @var \Queryyetsimple\Cache\ICache
+     * @var \Leevel\Cache\ICache
      */
     protected $cache;
 

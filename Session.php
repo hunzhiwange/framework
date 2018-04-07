@@ -14,12 +14,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Session;
+namespace Leevel\Session;
 
 use RuntimeException;
 use BadMethodCallException;
 use SessionHandlerInterface;
-use Queryyetsimple\Option\TClass;
+use Leevel\Option\TClass;
 
 /**
  * session 仓储

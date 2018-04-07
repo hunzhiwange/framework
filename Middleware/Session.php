@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Session\Middleware;
+namespace Leevel\Session\Middleware;
 
 use Closure;
-use Queryyetsimple\{
+use Leevel\{
     Http\Request,
     Http\Response,
     Session\Manager
@@ -37,14 +37,14 @@ class Session
     /**
      * session 管理
      *
-     * @var \Queryyetsimple\Session\Manager
+     * @var \Leevel\Session\Manager
      */
     protected $manager;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Session\Manager $manager
+     * @param \Leevel\Session\Manager $manager
      * @return void
      */
     public function __construct(Manager $manager)
@@ -56,7 +56,7 @@ class Session
      * 请求
      *
      * @param \Closure $next
-     * @param \Queryyetsimple\Http\Request $request
+     * @param \Leevel\Http\Request $request
      * @return void
      */
     public function handle(Closure $next, Request $request)
@@ -69,8 +69,8 @@ class Session
      * 响应
      *
      * @param \Closure $next
-     * @param \Queryyetsimple\Http\Request $request
-     * @param \Queryyetsimple\Http\Response $response
+     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\Response $response
      * @return void
      */
     public function terminate(Closure $next, Request $request, Response $response)
@@ -103,7 +103,7 @@ class Session
     /**
      * 保存当期请求 URL
      *
-     * @param \Queryyetsimple\Http\Request $request
+     * @param \Leevel\Http\Request $request
      * @return void
      */
     protected function setPrevUrl(Request $request)
