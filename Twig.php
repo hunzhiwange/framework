@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\View;
+namespace Leevel\View;
 
 use RuntimeException;
 
@@ -32,7 +32,7 @@ class Twig extends Connect implements IConnect
     /**
      * 视图分析器
      *
-     * @var \Queryyetsimple\View\IParser
+     * @var \Leevel\View\IParser
      */
     protected $parser;
 
@@ -100,7 +100,7 @@ class Twig extends Connect implements IConnect
     /**
      * 解析 parse
      *
-     * @return \Queryyetsimple\View\IParser
+     * @return \Leevel\View\IParser
      */
     public function resolverParser()
     {
@@ -113,7 +113,7 @@ class Twig extends Connect implements IConnect
     /**
      * 获取分析器
      *
-     * @return \Queryyetsimple\View\IParser
+     * @return \Leevel\View\IParser
      */
     public function parser()
     {

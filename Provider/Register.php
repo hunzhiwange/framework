@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\View\Provider;
+namespace Leevel\View\Provider;
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     View\Parser,
     View\Manager,
@@ -59,24 +59,24 @@ class Register extends Provider
     {
         return [
             'view.views' => [
-                'Queryyetsimple\View\Manager',
+                'Leevel\View\Manager',
                 'Qys\View\Manager'
             ],
             'view.view' => [
-                'Queryyetsimple\View\View',
-                'Queryyetsimple\View\IView',
+                'Leevel\View\View',
+                'Leevel\View\IView',
                 'Qys\View\View',
                 'Qys\View\IView'
             ],
             'view.compiler' => [
-                'Queryyetsimple\View\Compiler',
-                'Queryyetsimple\View\ICompiler',
+                'Leevel\View\Compiler',
+                'Leevel\View\ICompiler',
                 'Qys\View\Compiler',
                 'Qys\View\ICompiler'
             ],
             'view.parser' => [
-                'Queryyetsimple\View\Parser',
-                'Queryyetsimple\View\IParser',
+                'Leevel\View\Parser',
+                'Leevel\View\IParser',
                 'Qys\View\Parser',
                 'Qys\View\IParser'
             ],
