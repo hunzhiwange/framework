@@ -2,7 +2,19 @@
 
 modify this file ../.git/config add alias,then using git foobar to commit your subtree repository
 
+
+
+git stpull appfe demo/xxx
+git stpush appfe demo/xxx
+
 [alias]
+   
+    stpull = !git subtree pull --prefix=src/Queryyetsimple/$1 $1 $2 \
+        && :
+    stpush = !git subtree pull --prefix=$1 appfe $2 \
+        && git subtree split --rejoin --prefix=$1 $2 \
+        && git subtree push --prefix=$1 appfe $2 \
+        && :
 
     aop = subtree push --prefix=src/Queryyetsimple/Aop git@github.com:queryyetsimple/aop.git master
 
