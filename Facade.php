@@ -14,13 +14,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Support;
+namespace Leevel\Support;
 
 use Closure;
 use Exception;
 use RuntimeException;
 use BadMethodCallException;
-use Queryyetsimple\Di\IContainer;
+use Leevel\Di\IContainer;
 
 /**
  * 实现类的静态访问门面
@@ -38,7 +38,7 @@ abstract class Facade
     /**
      * 项目容器
      *
-     * @var \Queryyetsimple\Di\IContainer
+     * @var \Leevel\Di\IContainer
      */
     protected static $container;
 
@@ -72,7 +72,7 @@ abstract class Facade
     /**
      * 返回服务容器
      *
-     * @return \Queryyetsimple\Di\IContainer
+     * @return \Leevel\Di\IContainer
      */
     public static function container(): IContainer
     {
@@ -82,7 +82,7 @@ abstract class Facade
     /**
      * 设置服务容器
      *
-     * @param \Queryyetsimple\Di\IContainer $container
+     * @param \Leevel\Di\IContainer $container
      * @return void
      */
     public static function setContainer(IContainer $container): void
