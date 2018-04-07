@@ -1,6 +1,6 @@
 {
-    "name": "queryyetsimple/flow",
-    "description": "The Queryyetsimple Flow package.",
+    "name": "leevel/flow",
+    "description": "The Leevel Flow Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Queryyetsimple\\Flow\\": ""
+            "Leevel\\Flow\\": ""
         }
     },
     "extra": {
