@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Cookie\Provider;
+namespace Leevel\Cookie\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Cookie\Cookie
 };
@@ -53,8 +53,8 @@ class Register extends Provider
     {
         return [
             'cookie' => [
-                'Queryyetsimple\Cookie\Cookie',
-                'Queryyetsimple\Cookie\ICookie',
+                'Leevel\Cookie\Cookie',
+                'Leevel\Cookie\ICookie',
                 'Qys\Cookie\Cookie',
                 'Qys\Cookie\ICookie'
             ]

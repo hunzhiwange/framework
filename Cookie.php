@@ -14,10 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Cookie;
+namespace Leevel\Cookie;
 
 use Exception;
-use Queryyetsimple\Option\TClass;
+use Leevel\Option\TClass;
 
 /**
  * cookie 封装
