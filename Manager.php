@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Auth;
+namespace Leevel\Auth;
 
 use Exception;
 use InvalidArgumentException;
-use Queryyetsimple\Manager\Manager as Managers;
+use Leevel\Manager\Manager as Managers;
 
 /**
  * manager 入口
@@ -81,7 +81,7 @@ class Manager extends Managers
      * 创建 session 连接
      *
      * @param array $options
-     * @return \Queryyetsimple\Auth\session
+     * @return \Leevel\Auth\session
      */
     protected function makeConnectSession($options = [])
     {
@@ -93,7 +93,7 @@ class Manager extends Managers
      * 创建 token 连接
      *
      * @param array $options
-     * @return \Queryyetsimple\Auth\token
+     * @return \Leevel\Auth\token
      */
     protected function makeConnectToken($options = [])
     {

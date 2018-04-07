@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Auth;
+namespace Leevel\Auth;
 
-use Queryyetsimple\{
+use Leevel\{
     Mvc\IModel,
     Support\Str,
     Cache\ICache,
@@ -38,17 +38,17 @@ class Token extends Connect implements IConnect
     /**
      * 验证
      *
-     * @var \Queryyetsimple\Validate\IValidate
+     * @var \Leevel\Validate\IValidate
      */
     protected $oCache;
 
     /**
      * 构造函数
      *
-     * @param \Queryyetsimple\Mvc\IModel $oUser
-     * @param \Queryyetsimple\Encryption\IEncryption $oEncryption
-     * @param \Queryyetsimple\Validate\IValidate $oValidate
-     * @param \Queryyetsimple\Cache\ICache $oCache
+     * @param \Leevel\Mvc\IModel $oUser
+     * @param \Leevel\Encryption\IEncryption $oEncryption
+     * @param \Leevel\Validate\IValidate $oValidate
+     * @param \Leevel\Cache\ICache $oCache
      * @param array $arrOption
      * @return void
      */
@@ -62,7 +62,7 @@ class Token extends Connect implements IConnect
     /**
      * 设置认证名字
      *
-     * @param \Queryyetsimple\Mvc\IModel $oUser
+     * @param \Leevel\Mvc\IModel $oUser
      * @return void
      */
     protected function setLoginTokenName($oUser)

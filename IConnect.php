@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Auth;
+namespace Leevel\Auth;
 
 /**
  * IConnect 接口
@@ -47,7 +47,7 @@ interface IConnect
      * @param mixed $mixName
      * @param string $sPassword
      * @param mixed $mixLoginTime
-     * @return \Queryyetsimple\Mvc\IModel|void
+     * @return \Leevel\Mvc\IModel|void
      */
     public function login($mixName, $sPassword, $mixLoginTime = null);
 
@@ -56,7 +56,7 @@ interface IConnect
      *
      * @param mixed $mixName
      * @param string $sPassword
-     * @return \Queryyetsimple\Mvc\IModel|void
+     * @return \Leevel\Mvc\IModel|void
      */
     public function onlyValidate($mixName, $sPassword);
 
