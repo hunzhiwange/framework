@@ -14,11 +14,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Protocol\Thrift\Base;
+namespace Leevel\Protocol\Thrift\Base;
 
 use Exception;
 use Thrift\Protocol\TBinaryProtocol;
-use Queryyetsimple\Protocol\Thrift\Base\Socket;
+use Leevel\Protocol\Thrift\Base\Socket;
 
 /**
  * Thrift 服务
@@ -37,8 +37,8 @@ class ThriftServer extends TNonblockingServer
 
     public function receive($serv, $fd, $fromId, $data)
     {
-        $processorClass = '\Queryyetsimple\Protocol\Thrift\Service\\' . $this->serviceName . 'Processor';
-        $handlerClass = '\Queryyetsimple\Protocol\Thrift\service\\' . $this->serviceName . 'Handler';
+        $processorClass = '\Leevel\Protocol\Thrift\Service\\' . $this->serviceName . 'Processor';
+        $handlerClass = '\Leevel\Protocol\Thrift\service\\' . $this->serviceName . 'Handler';
 
         $handler = new $handlerClass();
         $this->processor = new $processorClass($handler);

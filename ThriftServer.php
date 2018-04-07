@@ -1,8 +1,8 @@
 <?php
-namespace Queryyetsimple\Protocol;
+namespace Leevel\Protocol;
 
-use Queryyetsimple\Protocol\Thrift\Base\TNonblockingServer;
-use Queryyetsimple\Protocol\Thrift\Base\Socket;
+use Leevel\Protocol\Thrift\Base\TNonblockingServer;
+use Leevel\Protocol\Thrift\Base\Socket;
 
 class ThriftServer extends TNonblockingServer
 {
@@ -21,8 +21,8 @@ class ThriftServer extends TNonblockingServer
 
     public function onReceive($serv, $fd, $from_id, $data)
     {
-        $processor_class = "\\Queryyetsimple\\Protocol\\Thrift\\Service\\" . $this->serviceName . 'Processor';
-        $handler_class = "\\Queryyetsimple\\Protocol\\Thrift\\service\\" . $this->serviceName . "Handler";
+        $processor_class = "\\Leevel\\Protocol\\Thrift\\Service\\" . $this->serviceName . 'Processor';
+        $handler_class = "\\Leevel\\Protocol\\Thrift\\service\\" . $this->serviceName . "Handler";
 
         $handler = new $handler_class();
         $this->processor = new $processor_class($handler);

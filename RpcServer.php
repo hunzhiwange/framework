@@ -14,14 +14,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Protocol;
+namespace Leevel\Protocol;
 
 use Exception;
 use Thrift\Server\TServerSocket;
 use Swoole\Server as SwooleServer;
 use Thrift\Factory\TBinaryProtocolFactory;
-use Queryyetsimple\Swoole\Server as Servers;
-use Queryyetsimple\Protocol\Thrift\{
+use Leevel\Swoole\Server as Servers;
+use Leevel\Protocol\Thrift\{
     Base\ThriftServer,
     Service\ThriftHandler,
     Service\ThriftProcessor,
