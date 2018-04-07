@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Filesystem;
+namespace Leevel\Filesystem;
 
-use Queryyetsimple\Manager\Manager as Managers;
+use Leevel\Manager\Manager as Managers;
 
 /**
  * filesystem 入口
@@ -78,7 +78,7 @@ class Manager extends Managers
      * 创建 local 连接
      *
      * @param array $options
-     * @return \Queryyetsimple\Filesystem\local
+     * @return \Leevel\Filesystem\local
      */
     protected function makeConnectLocal($options = [])
     {
@@ -89,7 +89,7 @@ class Manager extends Managers
      * 创建 ftp 连接
      *
      * @param array $options
-     * @return \Queryyetsimple\Filesystem\ftp
+     * @return \Leevel\Filesystem\ftp
      */
     protected function makeConnectFtp($options = [])
     {
@@ -100,7 +100,7 @@ class Manager extends Managers
      * 创建 sftp 连接
      *
      * @param array $options
-     * @return \Queryyetsimple\Filesystem\sftp
+     * @return \Leevel\Filesystem\sftp
      */
     protected function makeConnectSftp($options = [])
     {
@@ -111,7 +111,7 @@ class Manager extends Managers
      * 创建 zip 连接
      *
      * @param array $options
-     * @return \Queryyetsimple\Filesystem\zip
+     * @return \Leevel\Filesystem\zip
      */
     protected function makeConnectZip($options = [])
     {

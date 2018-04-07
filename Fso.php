@@ -14,12 +14,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Filesystem;
+namespace Leevel\Filesystem;
 
 use Closure;
 use RuntimeException;
 use DirectoryIterator;
-use Queryyetsimple\Support\TMacro;
+use Leevel\Support\TMacro;
 
 /**
  * File System Object 管理

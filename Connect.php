@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Filesystem;
+namespace Leevel\Filesystem;
 
-use Queryyetsimple\Option\TClass;
+use Leevel\Option\TClass;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
