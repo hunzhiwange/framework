@@ -28,8 +28,8 @@ QueryPHP was based on the DoYouHaoBaby framework，we have a large code refactor
 ## Optional C Extension
 
 <p>
-  <a href="https://github.com/hunzhiwange/queryyetsimple">
-    <img alt="Queryyetsimple Version" src="https://img.shields.io/badge/queryyyetsimple-%3E=1.0.0-brightgreen.svg" /></a>
+  <a href="https://github.com/hunzhiwange/leevel">
+    <img alt="Leevel Version" src="https://img.shields.io/badge/leevel-%3E=1.0.0-brightgreen.svg" /></a>
   <a href="http://pecl.php.net/package/swoole">
     <img alt="Swoole Version" src="https://img.shields.io/badge/swoole-%3E=2.1.1-brightgreen.svg" /></a>
   <a href="https://github.com/apache/thrift/tree/master/lib/php">
@@ -47,7 +47,7 @@ QueryPHP was based on the DoYouHaoBaby framework，we have a large code refactor
 We think the performance of PHP applications is very important and the development of pleasure also needs to be considered, and that's why we have developed the QueryPHP framework to achieve great ideals.
 
 * PHP 7 - We choose the lowest version of 7.1.3, because php7 has a unique advantage over the earlier version.
-* QueryYet - We provides an optional c extension to takeover core components of the framework,such as IOC, log, cache.
+* Leevel - We provides an optional c extension to takeover core components of the framework,such as IOC, log, cache.
 * Redis - QueryPHP encapsulation a cache component, including files, redis, memcache and so on, so as to reduce the pressure of database.
 
 ```
@@ -65,8 +65,8 @@ composer require hunzhiwange/framework
 Components for the framework can be found on the [Github website](https://github.com/queryyetsimple) and [Packagist website](https://packagist.org/packages/queryyetsimple/).
 
 ```
-composer require queryyetsimple/di
-composer require queryyetsimple/cache
+composer require leevel/di
+composer require leevel/cache
 
 ... and more
 ```

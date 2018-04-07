@@ -19,7 +19,6 @@ namespace Leevel\Bootstrap;
 use Exception;
 use Dotenv\Dotenv;
 use RuntimeException;
-use Composer\Autoload\ClassLoader;
 use NunoMaduro\Collision\Provider as CollisionProvider;
 use Leevel\{
     Psr4\Psr4,
@@ -116,11 +115,10 @@ class Project extends Container implements IProject
      * 构造函数
      * 受保护的禁止外部通过 new 实例化，只能通过 singletons 生成单一实例
      *
-     * @param \Composer\Autoload\ClassLoader $objComposer
      * @param array $arrOption
      * @return void
      */
-    protected function __construct(ClassLoader $objComposer, $arrOption = [])
+    protected function __construct($arrOption = [])
     {
         // 项目基础配置
         $this->setOption($arrOption)->
@@ -131,17 +129,11 @@ class Project extends Container implements IProject
         // 注册别名
         registerAlias()->
 
-        // 注册 psr4
-        registerPsr4($objComposer)->
-
         // 载入 app 配置
         loadApp()->
 
         // 初始化项目
         initProject()->
-
-        // 应用命名空间注册
-        namespaces()->
 
         // 注册框架核心提供者
         registerMvcProvider()->
@@ -225,17 +217,16 @@ class Project extends Container implements IProject
     /**
      * 返回项目
      *
-     * @param \Composer\Autoload\ClassLoader|null $objComposer
      * @param array $arrOption
      * @param boolean $booRun
      * @return $this
      */
-    public static function singletons($objComposer = null, $arrOption = [], $booRun = true)
+    public static function singletons($arrOption = [], $booRun = true)
     {
         if (static::$objProject !== null) {
             return static::$objProject;
         } else {
-            static::$objProject = new static($objComposer, $arrOption);
+            static::$objProject = new static($arrOption);
 
             if ($booRun === true) {
                 static::$objProject->run();
@@ -434,8 +425,7 @@ class Project extends Container implements IProject
             'i18n',
             'router',
             'console',
-            'swoole',
-            'aop'
+            'swoole'
         ];
 
         if (! in_array($strType, $arrType)) {
@@ -568,93 +558,6 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 注册 psr4
-     *
-     * @param \Composer\Autoload\ClassLoader $objComposer
-     * @return $this
-     */
-    protected function registerPsr4(ClassLoader $objComposer)
-    {
-        $this->instance('psr4', new Psr4($objComposer, dirname(__DIR__) . '/bootstrap/sandbox', 'Leevel', 'Qys'));
-        $this->alias('psr4', Psr4::class);
-
-        // 优先载入 aop autoload，恢复 composer autoload
-        //$objComposer->unregister();
-        //spl_autoload_register(array($this, 'loadAopClass'));
-        //$objComposer->register();
-
-        $this->registerAop();
-        $this->doMakeAop();
-
-        $this->instance('composer', $objComposer);
-        $this->alias('composer', ClassLoader::class);
-
-        Facade::setContainer($this);
-
-        spl_autoload_register([
-            $this['psr4'],
-            'autoload'
-        ]);
-
-        return $this;
-    }
-
-    protected $aops = [];
-
-    CONST AOP_DEFORE = 1;
-    CONST AOP_AFTER = 2;
-
-    public function registerAop() {
-        // //aop_add_before('testClass1->testBeforAdd1()', $testpoint12);
-        // $this->aops = [
-        //     'home\app\controller\hello' => [
-        //         'testBeforAdd1' => [
-        //             self::AOP_DEFORE => function() {
-        //                 echo 'before call';
-        //             }
-        //         ]
-        //     ]
-        // ];
-    }
-
-    public function getAops() {
-        return $this->aops;
-    }
-
-    protected function doMakeAop() {
-        // $aop = new \leevel\Support\aop($this);
-        // foreach ($this->aops as $aopclass => $methods) {
-        //     //echo $aopclass;
-        //    //echo $this['psr4']->file($aopclass);;
-        //    $file = $this['psr4']->file($aopclass);
-        //    $aop->parse($aopclass,$file,$methods);
-        // }
-    }
-
-    public function loadAopClass($class) {
-        // //require_once $this['psr4']->file('leevel\Support\aop');
-        // // $aop = new \leevel\Support\aop();
-        // // //echo $class;
-        // // //echo '<br/>';
-        // if(isset($this->aops[$class])) {
-        //    // echo $class;
-        //     $file = $this->pathApplicationCache('aop') . '/' . str_replace('\\', '/', $class) . '.php';
-        //     var_dump(is_file($file));
-        //     include $file;
-        //     //$file = ;
-        //     //echo $file;
-        //     //$file = $this['psr4']->file($class);
-
-        //    // $aop->parse($file);
-
-        //    // echo $class;
-        //     //foreach() {
-
-        //    // }
-        // }
-    }
-
-    /**
      * 载入 APP 配置
      *
      * @return $this
@@ -687,30 +590,8 @@ class Project extends Container implements IProject
 
         ini_set('default_charset', 'utf8');
 
-        return $this;
-    }
+        Facade::setContainer($this);
 
-    /**
-     * 应用公共初始化
-     * 如果在 composer.json 注册过，则不会被重复注册，用于未在 composer 注册临时接管
-     *
-     * @return $this
-     */
-    protected function namespaces()
-    {
-        // 注册公共组件命名空间
-        $this['psr4']->import('common', $this->pathCommon(), true);
-
-        // 注册 application 命名空间
-        foreach ($this->apps() as $strApp) {
-            $this['psr4']->import($strApp, $this->pathApplication() . '/' . $strApp, true);
-        }
-
-        // 注册自定义命名空间
-        foreach ($this->arrAppOption['namespace'] as $strNamespace => $strPath) {
-           $this['psr4']->import($strNamespace, $strPath, true);
-        }
-        
         // 载入 project 引导文件
         if (is_file(($strBootstrap = $this->pathCommon() . '/bootstrap.php'))) {
             require_once $strBootstrap;
