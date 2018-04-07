@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Event;
+namespace Leevel\Event;
 
-use Queryyetsimple\Di\Provider;
+use Leevel\Di\Provider;
 
 /**
  * 事件服务提供者
@@ -39,7 +39,7 @@ class EventProvider extends Provider
     /**
      * 注册时间监听器
      *
-     * @param \Queryyetsimple\Event\IDispatch $dispatch
+     * @param \Leevel\Event\IDispatch $dispatch
      * @return void
      */
     public function bootstrap(IDispatch $dispatch)

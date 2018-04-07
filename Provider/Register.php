@@ -14,9 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Queryyetsimple\Event\Provider;
+namespace Leevel\Event\Provider;
 
-use Queryyetsimple\{
+use Leevel\{
     Di\Provider,
     Event\Dispatch
 };
@@ -53,8 +53,8 @@ class Register extends Provider
     {
         return [
             'event' => [
-                'Queryyetsimple\Event\Dispatch',
-                'Queryyetsimple\Event\IDispatch',
+                'Leevel\Event\Dispatch',
+                'Leevel\Event\IDispatch',
                 'Qys\Event\Dispatch',
                 'Qys\Event\IDispatch'
             ]
