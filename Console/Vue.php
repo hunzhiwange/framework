@@ -136,7 +136,8 @@ EOF;
             $arrData['Query Yet Simple'] = 'Query Yet Simple';
         }
 
-        if (! file_put_contents($strOutputDir . '/' . $strOutputFile, '/** ' . date('Y-m-d H:i:s') . ' */' . PHP_EOL . 'export default ' . json_encode($arrData, JSON_UNESCAPED_UNICODE) . ';')) {
+        if (! file_put_contents($strOutputDir . '/' . $strOutputFile, '/** ' . date('Y-m-d H:i:s') . ' */' . 
+            PHP_EOL . 'export default ' . json_encode($arrData, JSON_UNESCAPED_UNICODE) . ';')) {
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $strOutputDir));
         }
 

@@ -129,7 +129,8 @@ class Load
         // 防止空数据无法写入
         $arrTexts['Query Yet Simple'] = 'Query Yet Simple';
         
-        if (! file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . '<?' . 'php return ' . var_export($arrTexts, true) . '; ?' . '>')) {
+        if (! file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
+            PHP_EOL . '<?' . 'php return ' . var_export($arrTexts, true) . '; ?' . '>')) {
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
         }
 

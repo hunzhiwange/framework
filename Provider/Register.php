@@ -64,13 +64,10 @@ class Register extends Provider
         return [
             'i18n' => [
                 'Leevel\I18n\I18n',
-                'Leevel\I18n\II18n',
-                'Qys\I18n\I18n',
-                'Qys\I18n\II18n'     
+                'Leevel\I18n\II18n'  
             ],
             'load' => [
-                'Leevel\I18n\Load',
-                'Qys\I18n\Load'
+                'Leevel\I18n\Load'
             ]
         ];
     }
@@ -106,6 +103,6 @@ class Register extends Provider
      */
     protected function console()
     {
-        $this->loadCommandNamespace('Leevel\I18n\Console');
+        $this->loadCommand('Leevel\I18n\Console');
     }
 }
