@@ -178,20 +178,15 @@ abstract class Provider
      * @param mixed $dir
      * @return void
      */
-    protected function loadI18nDir($dir)
+    protected function loadI18n($dir)
     {
-        if (! $this->container['option']['i18n\on']) {
-            return;
+        if (! is_array($dir)) {
+            $tmps = [$dir];
+        } else {
+            $tmps = $dir;
         }
 
-        if ($this->container['option']['i18n\develop'] == $this->container['option']['i18n\default']) {
-            return;
-        }
-        
-        if (! is_array($dir)) {
-            $dir = ( array ) $dir;
-        }
-        $this->container['i18n.load']->addDir($dir);
+        $this->container['i18n.load']->addDir($tmps);
     }
 
     /**
@@ -200,7 +195,7 @@ abstract class Provider
      * @param mixed $namespaces
      * @return void
      */
-    protected function loadCommandNamespace($namespaces)
+    protected function loadCommand($namespaces)
     {
         if (! $this->container->console()) {
             return;
@@ -209,11 +204,13 @@ abstract class Provider
         $result = [];
 
         if (! is_array($namespaces)) {
-            $namespaces = ( array ) $namespaces;
+            $tmps = [$namespaces];
+        } else {
+            $tmps = $namespaces;
         }
 
-        foreach ($namespaces as $item) {
-            $result[$item] = $this->container['psr4']->namespaces($item);
+        foreach ($tmps as $item) {
+            $result[$item] = $this->container->getPathByNamespace($item);
         }
 
         $this->container['console.load']->addNamespace($result);
