@@ -54,9 +54,7 @@ class Register extends Provider
         return [
             'cookie' => [
                 'Leevel\Cookie\Cookie',
-                'Leevel\Cookie\ICookie',
-                'Qys\Cookie\Cookie',
-                'Qys\Cookie\ICookie'
+                'Leevel\Cookie\ICookie'
             ]
         ];
     }
