@@ -31,17 +31,22 @@ class Error extends Message
      * 构造函数
      *
      * @param \Leevel\Bootstrap\Project $project
-     * @param int $nErrorNo
+     * @param int $errno
      * @param string $sErrStr
      * @param string $sErrFile
      * @param int $nErrLine
      * @return void
      */
-    public function __construct($project, $nErrorNo, $sErrStr, $sErrFile, $nErrLine)
+    public function __construct($project, $errno, $sErrStr, $sErrFile, $nErrLine)
     {
+        // 根据 error_reporing 等级来确定是否抛出错误
+        if (! (error_reporting() & $errno)) {
+            return false;
+        }
+
         $this->project = $project;
-        if ($nErrorNo) {
-            $this->strMessage = "[{$nErrorNo}]: {$sErrStr}<br> File: {$sErrFile}<br> Line: {$nErrLine}";
+        if ($errno) {
+            $this->strMessage = "[{$errno}]: {$sErrStr}<br> File: {$sErrFile}<br> Line: {$nErrLine}";
         }
     }
 }

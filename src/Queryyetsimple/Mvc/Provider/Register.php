@@ -93,7 +93,7 @@ class Register extends Provider
      */
     protected function console()
     {
-        $this->loadCommandNamespace('Leevel\Mvc\Console');
+        $this->loadCommand('Leevel\Mvc\Console');
     }
 
     /**

@@ -53,14 +53,11 @@ class Register extends Provider
     {
         return [
             'sessions' => [
-                'Leevel\Session\Manager',
-                'Qys\Session\Manager'
+                'Leevel\Session\Manager'
             ],
             'session' => [
                 'Leevel\Session\Session',
-                'Leevel\Session\ISession',
-                'Qys\Session\Session',
-                'Qys\Session\ISession'
+                'Leevel\Session\ISession'
             ],
             'Leevel\Session\Middleware\Session'
         ];

@@ -49,7 +49,7 @@ class Subject implements ISubject, SplSubject
     protected $observers;
 
     /**
-     * 通知附件参数
+     * 通知附加参数
      *
      * @var array
      */

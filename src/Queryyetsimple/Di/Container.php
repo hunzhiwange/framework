@@ -66,13 +66,6 @@ class Container implements IContainer, ArrayAccess
     protected $alias = [];
 
     /**
-     * 分组
-     *
-     * @var array
-     */
-    protected $groups = [];
-
-    /**
      * 注册到容器
      *
      * @param mixed $name
@@ -177,45 +170,6 @@ class Container implements IContainer, ArrayAccess
         }
 
         return $this;
-    }
-
-    /**
-     * 分组注册
-     *
-     * @param string $group
-     * @param mixed $data
-     * @return $this
-     */
-    public function group($group, $data)
-    {
-        if (! isset($this->groups[$group])) {
-            $this->groups[$group] = [];
-        }
-        $this->groups[$group] = $data;
-
-        return $this;
-    }
-
-    /**
-     * 分组制造
-     *
-     * @param string $group
-     * @param array $args
-     * @return array
-     */
-    public function groupMake($group, array $args = [])
-    {
-        if (! isset($this->groups[$group])) {
-            return [];
-        }
-
-        $result = [];
-        $instance = (array) $this->groups[$group];
-        foreach ($instance as $item) {
-            $result[$item] = $this->make($item, $args);
-        }
-
-        return $result;
     }
 
     /**
@@ -538,7 +492,11 @@ class Container implements IContainer, ArrayAccess
      */
     protected function newInstanceArgs($classname, $args)
     {
-        return (new ReflectionClass($classname))->newInstanceArgs($args);
+        try {
+            return (new ReflectionClass($classname))->newInstanceArgs($args);
+        } catch (ReflectionException $e) {
+            return (new ReflectionClass($classname))->newInstanceWithoutConstructor();
+        }
     }
 
     /**

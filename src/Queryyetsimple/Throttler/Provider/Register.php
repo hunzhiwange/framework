@@ -60,9 +60,7 @@ class Register extends Provider
         return [
             'throttler' => [
                 'Leevel\Throttler\Throttler',
-                'Leevel\Throttler\IThrottler',
-                'Qys\Throttler\Throttler',
-                'Qys\Throttler\IThrottler'
+                'Leevel\Throttler\IThrottler'
             ],
             'Leevel\Throttler\Middleware\Throttler'
         ];

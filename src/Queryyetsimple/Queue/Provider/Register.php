@@ -45,7 +45,7 @@ class Register extends Provider
      */
     public function bootstrap()
     {
-        $this->loadCommandNamespace('Leevel\Queue\Console');
+        $this->loadCommand('Leevel\Queue\Console');
     }
 
     /**

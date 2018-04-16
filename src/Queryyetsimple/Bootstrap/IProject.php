@@ -184,6 +184,21 @@ interface IProject extends IContainer
      * @return string
      */
     public function pathApplicationDir($strType);
+
+    /**
+     * 取得 composer
+     *
+     * @return \Composer\Autoload\ClassLoader
+     */
+    public function composer();
+
+    /**
+     * 获取命名空间路径
+     *
+     * @param string $namespaces
+     * @return string|null
+     */
+    public function getPathByNamespace($namespaces);
     
     /**
      * 是否开启 debug

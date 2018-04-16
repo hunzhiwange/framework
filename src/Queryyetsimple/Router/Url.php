@@ -68,7 +68,6 @@ class Url implements IUrl
      */
     protected $makeOption = [
         'suffix' => true,
-        'normal' => false,
         'subdomain' => 'www'
     ];
 
@@ -81,7 +80,6 @@ class Url implements IUrl
         'default_app' => 'home',
         'default_controller' => 'index',
         'default_action' => 'index',
-        'model' => 'pathinfo',
         'html_suffix' => '.html',
         'router_domain_top' => '',
         'make_subdomain_on' => true
@@ -120,20 +118,16 @@ class Url implements IUrl
 
         $this->parseMvc = $this->parseMvc($url, $params, $custom);
 
-        if ($this->isNotNormal($option['normal'], $custom)) {
-            if ($custom === false) {
-                $url = $this->pathinfoUrl();
-            } else {
-                $url = $this->customUrl($url);
-            }
-
-            $url = $this->withSuffix($url, $option['suffix']);
-
-            if ($this->parseMvc['params']) {
-                $url .= '?' . http_build_query($this->parseMvc['params']);
-            }
+        if ($custom === false) {
+            $url = $this->pathinfoUrl();
         } else {
-            $url = $this->normalUrl($option['normal']);
+            $url = $this->customUrl($url);
+        }
+
+        $url = $this->withSuffix($url, $option['suffix']);
+
+        if ($this->parseMvc['params']) {
+            $url .= '?' . http_build_query($this->parseMvc['params']);
         }
 
         $url = $this->urlWithDomain($url, $option['subdomain']);

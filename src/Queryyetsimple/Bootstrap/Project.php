@@ -46,7 +46,7 @@ class Project extends Container implements IProject
      *
      * @var Leevel\Bootstrap\Project
      */
-    protected static $objProject;
+    protected static $project;
 
     /**
      * 项目配置
@@ -218,21 +218,21 @@ class Project extends Container implements IProject
      * 返回项目
      *
      * @param array $arrOption
-     * @param boolean $booRun
-     * @return $this
+     * @param boolean $autorun
+     * @return static
      */
-    public static function singletons($arrOption = [], $booRun = true)
+    public static function singletons($arrOption = [], $autorun = true)
     {
-        if (static::$objProject !== null) {
-            return static::$objProject;
+        if (static::$project !== null) {
+            return static::$project;
         } else {
-            static::$objProject = new static($arrOption);
+            static::$project = new static($arrOption);
 
-            if ($booRun === true) {
-                static::$objProject->run();
+            if ($autorun === true) {
+                static::$project->run();
             }
 
-            return static::$objProject;
+            return static::$project;
         }
     }
 
@@ -457,6 +457,34 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 取得 composer
+     *
+     * @return \Composer\Autoload\ClassLoader
+     */
+    public function composer() {
+        return require $this->strPath . '/vendor/autoload.php';
+    }
+
+    /**
+     * 获取命名空间路径
+     *
+     * @param string $namespaces
+     * @return string|null
+     */
+    public function getPathByNamespace($namespaces)
+    {
+        $namespaces = explode('\\', $namespaces);
+
+        $prefix = $this->composer()->getPrefixesPsr4();
+        if (! isset($prefix[$namespaces[0] . '\\'])) {
+            return null;
+        }
+
+        $namespaces[0] = $prefix[$namespaces[0] . '\\'][0];
+        return implode('/', $namespaces);
+    }
+
+    /**
      * 是否开启 debug
      *
      * @return boolean
@@ -654,7 +682,8 @@ class Project extends Container implements IProject
         }
 
         if ($this->development() || ! is_file($strCachePath)) {
-            file_put_contents($strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . '<?' . 'php return ' . var_export([
+            file_put_contents($strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
+                PHP_EOL . '<?' . 'php return ' . var_export([
                 $this->arrDeferredProviders,
                 $arrDeferredAlias
             ], true) . '; ?' . '>');

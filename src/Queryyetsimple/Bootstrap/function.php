@@ -68,21 +68,6 @@ if (! function_exists('run_with_extension')) {
     }
 }
 
-// function aop_before($pointcut, $advice) {
-//     $aop = \leevel\aop\aop::singleton();
-//     $aop->before($pointcut, $advice);
-// }
-
-// function aop_after($pointcut, $advice) {
-//     $aop = \leevel\aop\aop::singleton();
-//     $aop->after($pointcut, $advice);
-// }
-
-// function aop_around($pointcut, $advice) {
-//     $aop = \leevel\aop\aop::singleton();
-//     $aop->around($pointcut, $advice);
-// }
-
 if (! function_exists('api')) {
     /**
      * 是否为 API
@@ -688,6 +673,19 @@ if (! function_exists('path_table_cache')) {
     function path_table_cache($strPath = '')
     {
         return project()->pathApplicationCache('table') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+    }
+}
+
+if (! function_exists('path_router_cache')) {
+    /**
+     * 取得项目当前应用路由缓存路径
+     *
+     * @param string $strPath
+     * @return string
+     */
+    function path_router_cache($strPath = '')
+    {
+        return project()->pathApplicationCache('router') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 

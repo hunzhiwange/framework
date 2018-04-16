@@ -64,7 +64,7 @@ abstract class Message
      */
     protected function log($strMessage)
     {
-        if ($this->project['option']->get('log\runtime_enabled', false)) {
+        if ($this->project['option'] && $this->project['option']->get('log\runtime_enabled', false)) {
             $this->project['log']->write(ILog::ERROR, $strMessage);
         }
     }

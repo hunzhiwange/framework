@@ -67,19 +67,15 @@ class Register extends Provider
     {
         return [
             'swoole.default.server' => [
-                'Qys\Swoole\Server',
                 'Leevel\Swoole\Server'
             ],
             'swoole.http.server' => [
-                'Qys\Swoole\Http\Server',
                 'Leevel\Swoole\Http\Server'
             ],
             'swoole.websocket.server' => [
-                'Qys\Swoole\Websocket\Server',
                 'Leevel\Swoole\Websocket\Server'
             ],
             'swoole.rpc.server' => [
-                'Qys\Protocol\RpcServer',
                 'Leevel\Protocol\RpcServer'
             ]
         ];
@@ -143,6 +139,6 @@ class Register extends Provider
      */
     protected function console()
     {
-        $this->loadCommandNamespace('Leevel\Swoole\Console');
+        $this->loadCommand('Leevel\Swoole\Console');
     }
 }

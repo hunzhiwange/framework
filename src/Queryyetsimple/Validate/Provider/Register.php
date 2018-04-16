@@ -54,9 +54,7 @@ class Register extends Provider
         return [
             'validate' => [
                 'Leevel\Validate\Validate',
-                'Leevel\Validate\IValidate',
-                'Qys\Validate\Validate',
-                'Qys\Validate\IValidate'
+                'Leevel\Validate\IValidate'
             ]
         ];
     }

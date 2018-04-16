@@ -17,7 +17,7 @@
 namespace Leevel\Client;
 
 /**
- * Rpc 客服端 
+ * Rpc 客户端 
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$

@@ -75,24 +75,6 @@ interface IContainer
     public function alias($alias, $value = null);
 
     /**
-     * 分组注册
-     *
-     * @param string $group
-     * @param mixed $data
-     * @return void
-     */
-    public function group($group, $data);
-
-    /**
-     * 分组制造
-     *
-     * @param string $group
-     * @param array $args
-     * @return array
-     */
-    public function groupMake($group, array $args = []);
-
-    /**
      * 服务容器返回对象
      *
      * @param string $name

@@ -187,6 +187,19 @@ class Router implements IRouter
     protected $matcheData = [];
 
     /**
+     * 路由匹配数据
+     * 
+     * @var array
+     */
+    protected static $matcheInitData = [
+        self::APP => self::DEFAULT_APP,
+        self::CONTROLLER => null,
+        self::ACTION => null,
+        self::PREFIX => null,
+        self::PARAMS => []
+    ];
+
+    /**
      * 配置
      *
      * @var array
@@ -200,7 +213,6 @@ class Router implements IRouter
         'default_controller' => 'index',
         'default_action' => 'index',
         'router_cache' => true,
-        'model' => 'pathinfo',
         'router_domain_on' => true,
         'router_domain_top' => '',
         'pathinfo_restful' => true,
@@ -218,12 +230,32 @@ class Router implements IRouter
         'middleware_alias' => []
     ];
 
+    protected $basepaths = [];
+
+    protected $groups = [];
+
+    protected $routers = [];
+
     /**
      * 默认替换参数[字符串]
      *
      * @var string
      */
     const DEFAULT_REGEX = '\S+';
+
+    /**
+     * 默认应用
+     *
+     * @var string
+     */
+    const DEFAULT_APP = 'app';
+
+    /**
+     * 默认严格匹配模式
+     *
+     * @var string
+     */
+    const DEFAULT_STRICT = true;
 
     /**
      * 构造函数
@@ -268,14 +300,17 @@ class Router implements IRouter
     public function app()
     {
         if ($this->strApp) {
-            return $this->strApp;
+            $app = $this->strApp;
         } else {
             if (($this->strApp = env('app_name'))) {
-                return $this->strApp;
+                $app = $this->strApp;
+            } else {
+                var_dump($this->matcheData);
+                $app = $this->strApp = $this->matcheData[static::APP];
             }
-
-            return $this->strApp = $this->matcheData[static::APP] ?? $this->getOption('default_app');
         }
+
+        return ucfirst($app);
     }
 
     /**
@@ -286,14 +321,16 @@ class Router implements IRouter
     public function controller()
     {
         if ($this->strController) {
-            return $this->strController;
+            $controller = $this->strController;
         } else {
             if (($this->strController = env('controller_name'))) {
-                return $this->strController;
+                $controller = $this->strController;
+            } else {
+                $controller = $this->matcheData[static::CONTROLLER];
             }
-
-            return $this->matcheData[static::CONTROLLER] ?? $this->getOption('default_controller');
         }
+
+        return ucfirst($controller);
     }
 
     /**
@@ -304,14 +341,25 @@ class Router implements IRouter
     public function action()
     {
         if ($this->strAction) {
-            return $this->strAction;
+            $action = $this->strAction;
         } else {
             if (($this->strAction = env('action_name'))) {
-                return $this->strAction;
+                $action = $this->strAction;
+            } else {
+                $action = $this->matcheData[static::ACTION];
             }
-
-            return $this->matcheData[static::ACTION] ?? $this->getOption('default_action');
         }
+
+        if (strpos($action, '-') !== false) {
+            $action = str_replace('-', '_', $action);
+        } 
+
+        if (strpos($action, '_') !== false) {
+            $action = '_' . str_replace('_', ' ', $action);
+            $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
+        }
+
+        return $action;
     }
 
     /**
@@ -379,107 +427,15 @@ class Router implements IRouter
         }
     }
 
-    /**
-     * 导入路由规则
-     *
-     * @param mixed $mixRouter
-     * @param string $strUrl
-     * @param arra $arrOption
-     * @sub string domain 域名
-     * @sub array params 参数
-     * @sub array where 参数正则
-     * @sub boolean prepend 插入顺序
-     * @sub boolean strict 严格模式，启用将在匹配正则 $
-     * @sub string prefix 前缀
-     * @return void
-     */
-    public function import($mixRouter, $strUrl = '', $arrOption = [])
-    {
-        if (! $this->checkExpired()) {
-            return;
-        }
+    public function imports() {
+       // return;
+        $routers = include path_runtime('router/router.php');
 
-        $arrOption = $this->mergeOption([
-            'prepend' => false,
-            'where' => [],
-            'params' => [],
-            'domain' => '',
-            'prefix' => ''
-        ], $this->mergeOption($this->arrGroupArgs, $arrOption));
+        //print_r($routers);
 
-        // 支持数组传入
-        if (! is_array($mixRouter) || count($mixRouter) == count($mixRouter, 1)) {
-            $strTemp = $mixRouter;
-            $mixRouter = [];
-            if (is_string($strTemp)) {
-                $mixRouter[] = [
-                    $strTemp,
-                    $strUrl,
-                    $arrOption
-                ];
-            } else {
-                if ($strUrl || ! empty($strTemp[1])) {
-                    $mixRouter[] = [
-                        $strTemp[0],
-                        (! empty($strTemp[1]) ? $strTemp[1] : $strUrl),
-                        $arrOption
-                    ];
-                }
-            }
-        } else {
-            foreach ($mixRouter as $intKey => $arrRouter) {
-                if (! is_array($arrRouter) || count($arrRouter) < 2) {
-                    continue;
-                }
-                if (! isset($arrRouter[2])) {
-                    $arrRouter[2] = [];
-                }
-                if (! $arrRouter[1]) {
-                    $arrRouter[1] = $strUrl;
-                }
-                $arrRouter[2] = $this->mergeOption($arrOption, $arrRouter[2]);
-                $mixRouter[$intKey] = $arrRouter;
-            }
-        }
-
-        foreach ($mixRouter as $arrArgs) {
-            $strPrefix = ! empty($arrArgs[2]['prefix']) ? $arrArgs[2]['prefix'] : '';
-            $arrArgs[0] = $strPrefix . $arrArgs[0];
-
-            $arrRouter = [
-                'url' => $arrArgs[1],
-                'regex' => $arrArgs[0],
-                'params' => $arrArgs[2]['params'],
-                'where' => $this->arrWheres,
-                'domain' => $arrArgs[2]['domain']
-            ];
-
-            if (isset($arrArgs[2]['strict'])) {
-                $arrRouter['strict'] = $arrArgs[2]['strict'];
-            }
-
-            // 合并参数正则
-            if (! empty($arrArgs[2]['where']) && is_array($arrArgs[2]['where'])) {
-                $arrRouter['where'] = $this->mergeWhere($arrRouter['where'], $arrArgs[2]['where']);
-            }
-
-            if (! isset($this->arrRouters[$arrArgs[0]])) {
-                $this->arrRouters[$arrArgs[0]] = [];
-            }
-
-            // 优先插入
-            if ($arrArgs[2]['prepend'] === true) {
-                array_unshift($this->arrRouters[$arrArgs[0]], $arrRouter);
-            } else {
-                array_push($this->arrRouters[$arrArgs[0]], $arrRouter);
-            }
-
-            // 域名支持
-            if (! empty($arrRouter['domain'])) {
-                $arrOption['router'] = true;
-                $this->domain($arrRouter['domain'], $arrArgs[0], $arrOption);
-            }
-        }
+        $this->basepaths = $routers['basepaths'];
+        $this->groups = $routers['groups'];
+        $this->routers = $routers['routers'];
     }
 
     /**
@@ -499,169 +455,6 @@ class Router implements IRouter
             $this->arrWheres[$mixRegex] = $strValue;
         } else {
             $this->arrWheres = $this->mergeWhere($this->arrWheres, $mixRegex);
-        }
-    }
-
-    /**
-     * 注册全局域名参数正则
-     *
-     * @param mixed $mixRegex
-     * @param string $strValue
-     * @return void
-     */
-    public function regexDomain($mixRegex, $strValue = '')
-    {
-        if (! $this->checkExpired()) {
-            return;
-        }
-
-        if (is_string($mixRegex)) {
-            $this->arrDomainWheres[$mixRegex] = $strValue;
-        } else {
-            $this->arrDomainWheres = $this->mergeWhere($this->arrDomainWheres, $mixRegex);
-        }
-    }
-
-    /**
-     * 注册域名
-     *
-     * @param string $strDomain
-     * @param mixed $mixUrl
-     * @param array $arrOption
-     * @sub array params 扩展参数
-     * @sub array domain_where 域名参数
-     * @sub boolean prepend 插入顺序
-     * @sub string router 对应路由规则
-     * @return void
-     */
-    public function domain($strDomain, $mixUrl, $arrOption = [])
-    {
-        if (! $this->checkExpired()) {
-            return;
-        }
-
-        $arrOption = $this->mergeOption([
-            'prepend' => false,
-            'params' => [],
-            'domain_where' => [],
-            'router' => false
-        ], $arrOption);
-
-        // 闭包直接转接到分组
-        if ($mixUrl instanceof Closure) {
-            $arrOption['domain'] = $strDomain;
-            $this->group($arrOption, $mixUrl);
-        }
-
-        // 注册域名
-        else {
-            $arrDomain = [
-                'url' => $mixUrl,
-                'params' => $arrOption['params'],
-                'router' => $arrOption['router']
-            ];
-
-            // 合并参数正则
-            $arrDomainWheres = $this->arrDomainWheres;
-            if (! empty($arrOption['domain_where']) && is_array($arrOption['domain_where'])) {
-                $arrDomainWheres = $this->mergeWhere($arrOption['domain_where'], $arrDomainWheres);
-            }
-
-            // 主域名只有一个，路由可以有多个
-            $strDomainBox = $arrDomain['router'] === false ? 'main' : 'rule';
-            if (! isset($this->arrDomains[$strDomain])) {
-                $this->arrDomains[$strDomain] = [];
-            }
-            $this->arrDomains[$strDomain]['domain_where'] = $arrDomainWheres;
-            if (! isset($this->arrDomains[$strDomain][$strDomainBox])) {
-                $this->arrDomains[$strDomain][$strDomainBox] = [];
-            }
-
-            // 纯域名绑定只支持一个，可以被覆盖
-            if ($arrDomain['router'] === false) {
-                $this->arrDomains[$strDomain][$strDomainBox] = $arrDomain;
-            } else {
-                // 优先插入
-                if ($arrOption['prepend'] === true) {
-                    array_unshift($this->arrDomains[$strDomain][$strDomainBox], $arrDomain);
-                } else {
-                    array_push($this->arrDomains[$strDomain][$strDomainBox], $arrDomain);
-                }
-            }
-        }
-    }
-
-    /**
-     * 注册分组路由
-     *
-     * @param array $arrOption
-     * @sub string prefix 前缀
-     * @sub string domain 域名
-     * @sub array params 参数
-     * @sub array where 参数正则
-     * @sub boolean prepend 插入顺序
-     * @sub boolean strict 严格模式，启用将在匹配正则 $
-     * @param mixed $mixRouter
-     * @return void
-     */
-    public function group(array $arrOption, $mixRouter)
-    {
-        if (! $this->checkExpired()) {
-            return;
-        }
-
-        $this->arrGroupArgs = $arrOption = $this->mergeOption($this->arrGroupArgs, $arrOption);
-
-        if ($mixRouter instanceof Closure) {
-            call_user_func_array($mixRouter, []);
-        } else {
-            if (! is_array(current($mixRouter))) {
-                $mixRouter = [
-                    $mixRouter
-                ];
-            }
-            foreach ($mixRouter as $arrVal) {
-                if (! is_array($arrVal) || count($arrVal) < 2) {
-                    continue;
-                }
-
-                if (! isset($arrVal[2])) {
-                    $arrVal[2] = [];
-                }
-
-                $strPrefix = ! empty($arrArgs[2]['prefix']) ? $arrArgs[2]['prefix'] : (! empty($this->arrGroupArgs['prefix']) ? $this->arrGroupArgs['prefix'] : '');
-
-                $this->import($strPrefix . $arrVal[0], $arrVal[1], $this->mergeOption($arrOption, $arrVal[2]));
-            }
-        }
-
-        $this->arrGroupArgs = [];
-    }
-
-    /**
-     * 导入路由配置数据
-     *
-     * @param array $arrData
-     * @return void
-     */
-    public function importCache($arrData)
-    {
-        if (! $this->checkExpired()) {
-            return;
-        }
-
-        if (isset($arrData['~domains~'])) {
-            foreach ($arrData['~domains~'] as $arrVal) {
-                if (is_array($arrVal) && isset($arrVal[1])) {
-                    empty($arrVal[2]) && $arrVal[2] = [];
-                    $this->domain($arrVal[0], $arrVal[1], $arrVal[2]);
-                }
-            }
-            unset($arrData['~domains~']);
-        }
-
-        if ($arrData) {
-            $this->import($arrData);
         }
     }
 
@@ -712,6 +505,12 @@ class Router implements IRouter
             return $this->arrBinds[$sBindName] = $mixBind;
         } else {
             ! $sAction = $sAction = $this->action();
+
+            // if (is_callable($mixBind)) {
+            //     return $this->objContainer->call($mixAction, $this->arrVariable);
+            // } else {
+            //     throw new InvalidArgumentException(sprintf('The registration node %s is not a callback.', $node));
+            // }
 
             switch (true) {
 
@@ -777,30 +576,17 @@ class Router implements IRouter
             $sApp = $this->app();
         }
 
-        if (! ($mixAction = $this->getBind($this->packageNode($sController, $sAction, $sApp))) && ! ($mixAction = $this->bind($this->packageNode($sController, $sAction, $sApp)))) {
+        $node = $this->packageNode($sController, $sAction, $sApp);
+
+        if (! ($mixAction = $this->getBind($node)) && 
+            ! ($mixAction = $this->bind($node))) {
             $this->nodeNotRegistered($sController, $sAction);
         }
 
-        switch (true) {
-
-            // 判断是否为回调
-            case is_callable($mixAction):
-                return $this->objContainer->call($mixAction, $this->arrVariable);
-                break;
-
-            // 数组支持,方法名即数组的键值,注册方法
-            case is_array($mixAction): 
-                return $mixAction;
-                break;
-
-            // 简单数据直接输出
-            case is_scalar($mixAction):
-                return $mixAction;
-                break;
-
-            default:
-                throw new InvalidArgumentException(sprintf('The registration method type %s is not supported.', $sAction));
-                break;
+        if (is_callable($mixAction)) {
+            return $this->objContainer->call($mixAction, $this->arrVariable);
+        } else {
+            throw new InvalidArgumentException(sprintf('The registration node %s is not a callback.', $node));
         }
     }
 
@@ -1001,9 +787,17 @@ class Router implements IRouter
      * @return array
      */
     public function getRouters() {
-        return $this->arrRouters;
+        return $this->routers;
+        //return $this->arrRouters;
     }
-
+    public function getBasepaths() {
+        return $this->basepaths;
+        //return $this->arrRouters;
+    }
+    public function getGroups() {
+        return $this->groups;
+        //return $this->arrRouters;
+    }
     /**
      * 域名匹配成功后的路由规则
      *
@@ -1066,41 +860,53 @@ class Router implements IRouter
 
     /**
      * 分析 url 数据
-     * like [home://blog/index?arg1=1&arg2=2]
+     * like [:home/blog/index?arg1=1&arg2=2]
      *
      * @param string $sUrl
      * @return array
      */
     public function parseNodeUrl($sUrl)
     {
-        $arrData = [];
+        $arrData = ['params' => []];
 
-        // 解析 url
-        if (strpos($sUrl, '://') === false) {
-            $sUrl = 'QueryPHP://' . $sUrl;
+        if (strpos($sUrl, '?') >= 0) {
+            $tmp = explode('?', $sUrl);
+
+            // 额外参数
+            if (!empty($tmp[1])) {
+                foreach (explode('&', $tmp[1]) as $strQuery) {
+                    $strQuery = explode('=', $strQuery);
+                    $arrData['params'][$strQuery[0]] = $strQuery[1];
+                }
+            }
+        } else {
+            $tmp = [$sUrl];
+        }   
+
+        $urls = explode('/',$tmp[0]);
+
+        if (strpos($urls[0], ':') === 0) {
+            $arrData[static::APP] = substr(array_shift($urls), 1);
+        } else {
+            $arrData[static::APP] = Router::DEFAULT_APP;
         }
-        $sUrl = parse_url($sUrl);
 
-        // 应用
-        if ($sUrl['scheme'] != 'QueryPHP') {
-            $arrData[static::APP] = $sUrl['scheme'];
-        }
+        if (count($urls) == 1) {
+            $result[Router::CONTROLLER] = array_pop($urls);
+        } else { 
+            if ($urls) {
+                $arrData[Router::ACTION] = array_pop($urls);
+            }
 
-        // 控制器
-        $arrData[static::CONTROLLER] = $sUrl['host'];
+            if ($urls) {
+                $arrData[Router::CONTROLLER] = array_pop($urls);
+            }
 
-        // 方法
-        if (isset($sUrl['path']) && $sUrl['path'] != '/') {
-            $arrData[static::ACTION] = ltrim($sUrl['path'], '/');
-        }
-
-        // 额外参数
-        if (isset($sUrl['query'])) {
-            foreach (explode('&', $sUrl['query']) as $strQuery) {
-                $strQuery = explode('=', $strQuery);
-                $arrData[$strQuery[0]] = $strQuery[1];
+            if ($urls) {
+                $arrData[Router::PREFIX] = implode('\\', $urls);
             }
         }
+
 
         return $arrData;
     }
@@ -1125,7 +931,7 @@ class Router implements IRouter
         $this->strApp = null;
         $this->strController = null;
         $this->strAction = null;
-        $this->matcheData = [];
+        $this->matcheData = self::$matcheInitData;
     }    
 
     /**
@@ -1147,6 +953,9 @@ class Router implements IRouter
             }
         }
 
+        print_r($this->matcheData);
+        exit();
+
         $this->completeRequest();
     }
 
@@ -1160,13 +969,9 @@ class Router implements IRouter
         if ($this->objRequest->isCli()) {
             $matches = ['Cli'];
         } else {
-            if ($this->getOption('model') == 'pathinfo') {
-                $this->readCache();
+            $this->readCache();
                 
-                $matches = ['Domain', 'Url', 'PathInfo'];
-            } else {
-                $matches = ['Defaults'];
-            }
+            $matches = [/*'Domain', */'Url', 'PathInfo'];
         }
 
         return $matches;
@@ -1194,6 +999,7 @@ class Router implements IRouter
      */
     protected function readCache()
     {
+        return;
         if (! $this->checkOpen()) {
             return;
         }
@@ -1223,7 +1029,8 @@ class Router implements IRouter
             mkdir(dirname($this->strCachePath), 0777, true);
         }
 
-        if (! file_put_contents($this->strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . '<?' . 'php return ' . var_export($arrCacheData, true) . '; ?' . '>')) {
+        if (! file_put_contents($this->strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
+            PHP_EOL . '<?' . 'php return ' . var_export($arrCacheData, true) . '; ?' . '>')) {
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $this->strCachePath));
         }
 
@@ -1467,10 +1274,13 @@ class Router implements IRouter
             $sApp = $this->app();
         }
 
+        $sApp = ucfirst($sApp);
+
         // 尝试直接读取方法控制器类
         $sControllerClass = $sApp . '\\' . $this->controllerDir() . '\\' . $sController . '\\' . $sAction;
+
         if (class_exists($sControllerClass)) {
-            $controller = $this->objContainer->make($sControllerClass, $this->arrVariable);
+            $controller = $this->objContainer->make($sControllerClass);
             $method = method_exists($controller, 'handle') ? 'handle' : 'run';
         } else {
 
@@ -1480,7 +1290,7 @@ class Router implements IRouter
                 return false;
             }
 
-            $controller = $this->objContainer->make($sControllerClass, $this->arrVariable);
+            $controller = $this->objContainer->make($sControllerClass);
             $method = $sAction;
         }
 
@@ -1508,7 +1318,7 @@ class Router implements IRouter
      */
     protected function packageNode($strController = null, $strAction = null, $strApp = null)
     {
-        return ($strApp ?  : $this->app()) . '://' . ($strController ?  : $this->controller()) . '/' . ($strAction ?  : $this->action());
+        return ':' . ($strApp ? : $this->app()) . '/' . ($strController ?  : $this->controller()) . '/' . ($strAction ?  : $this->action());
     }
 
     /**

@@ -54,9 +54,7 @@ class Register extends Provider
         return [
             'event' => [
                 'Leevel\Event\Dispatch',
-                'Leevel\Event\IDispatch',
-                'Qys\Event\Dispatch',
-                'Qys\Event\IDispatch'
+                'Leevel\Event\IDispatch'
             ]
         ];
     }

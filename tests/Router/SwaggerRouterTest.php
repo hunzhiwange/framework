@@ -14,48 +14,41 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Cookie\Provider;
+namespace Tests\Router;
 
-use Leevel\{
-    Di\Provider,
-    Cookie\Cookie
-};
+use Tests\TestCase;
+use Leevel\Router\SwaggerRouter;
 
 /**
- * cookie 服务提供者
+ * swagger 生成注解路由组件测试
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2018.04.10
  * @version 1.0
  */
-class Register extends Provider
+class SwaggerRouteTest extends TestCase
 {
 
     /**
-     * 注册服务
-     *
-     * @return void
+     * @expectedException \InvalidArgumentException
      */
-    public function register()
-    {
-        $this->singleton('cookie', function ($project) {
-            return new Cookie($project['option']->get('cookie\\'));
-        });
+    public function testAddSwaggerScanCheckDir() {
+        $swaggerRouter = new SwaggerRouter();
+
+        $scanDir = dirname(__FILE__) . '/Petstore___';
+
+        $swaggerRouter->addSwaggerScan($scanDir);
     }
 
-    /**
-     * 可用服务提供者
-     *
-     * @return array
-     */
-    public static function providers()
-    {
-        return [
-            'cookie' => [
-                'Leevel\Cookie\Cookie',
-                'Leevel\Cookie\ICookie'
-            ]
-        ];
+    public function testSwaggerHandle() {
+        $swaggerRouter = new SwaggerRouter('Router');
+
+        $scanDir = dirname(__FILE__) . '/Petstore';
+
+        $swaggerRouter->addSwaggerScan($scanDir);
+        $result = $swaggerRouter->handle();
+
+        $this->assertEquals($result, include $scanDir . '/cache.php');
     }
 }

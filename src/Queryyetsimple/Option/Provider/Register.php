@@ -54,13 +54,10 @@ class Register extends Provider
         return [
             'option' => [
                 'Leevel\Option\Option',
-                'Leevel\Option\IOption',
-                'Qys\Option\Option',
-                'Qys\Option\IOption'
+                'Leevel\Option\IOption'
             ],
             'load' => [
-                'Leevel\Option\Load',
-                'Qys\Option\Load'
+                'Leevel\Option\Load'
             ]
         ];
     }

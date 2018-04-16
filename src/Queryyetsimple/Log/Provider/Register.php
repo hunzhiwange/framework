@@ -53,14 +53,11 @@ class Register extends Provider
     {
         return [
             'logs' => [
-                'Leevel\Log\Manager',
-                'Qys\Log\Manager'
+                'Leevel\Log\Manager'
             ],
             'log' => [
                 'Leevel\Log\Log',
-                'Leevel\Log\ILog',
-                'Qys\Log\Log',
-                'Qys\Log\ILog'
+                'Leevel\Log\ILog'
             ],
             'Leevel\Log\Middleware\Log'
         ];

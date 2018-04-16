@@ -53,6 +53,16 @@ class Register extends Provider
     }
 
     /**
+     * 载入命令包
+     *
+     * @return void
+     */
+    public function bootstrap()
+    {
+        $this->loadCommand('Leevel\Router\Console');
+    }
+
+    /**
      * 可用服务提供者
      *
      * @return array
@@ -61,26 +71,20 @@ class Register extends Provider
     {
         return [
             'router' => [
-                'Leevel\Router\Router',
-                'Qys\Router\Router'
+                'Leevel\Router\Router'
             ],
             'url' => [
-                'Leevel\Router\Url',
-                'Qys\Router\Url'
+                'Leevel\Router\Url'
             ],
             'redirect' => [
-                'Leevel\Router\Redirect',
-                'Qys\Router\Redirect'
+                'Leevel\Router\Redirect'
             ],
             'request' => [
-                'Leevel\Http\Request',
-                'Qys\Http\Request'
+                'Leevel\Http\Request'
             ],
             'response' => [
                 'Leevel\Router\IResponseFactory',
-                'Leevel\Router\ResponseFactory',
-                'Qys\Router\IResponseFactory',
-                'Qys\Router\ResponseFactory'
+                'Leevel\Router\ResponseFactory'
             ]
         ];
     }

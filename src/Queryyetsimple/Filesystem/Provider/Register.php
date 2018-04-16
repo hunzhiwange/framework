@@ -59,14 +59,11 @@ class Register extends Provider
     {
         return [
             'filesystems' => [
-                'Leevel\Filesystem\Manager',
-                'Qys\Filesystem\Manager'
+                'Leevel\Filesystem\Manager'
             ],
             'filesystem' => [
                 'Leevel\Filesystem\Filesystem',
-                'Leevel\Filesystem\IFilesystem',
-                'Qys\Filesystem\Filesystem',
-                'Qys\Filesystem\IFilesystem'
+                'Leevel\Filesystem\IFilesystem'
             ]
         ];
     }

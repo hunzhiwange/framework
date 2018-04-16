@@ -50,7 +50,7 @@ class Register extends Provider
      */
     public function bootstrap()
     {
-        $this->loadCommandNamespace('Leevel\Database\Console');
+        $this->loadCommand('Leevel\Database\Console');
     }
 
     /**
@@ -62,14 +62,11 @@ class Register extends Provider
     {
         return [
             'databases' => [
-                'Leevel\Database\Manager',
-                'Qys\Database\Manager'
+                'Leevel\Database\Manager'
             ],
             'database' => [
                 'Leevel\Database\Database',
-                'Leevel\Database\IDatabase',
-                'Qys\Database\Database',
-                'Qys\Database\IDatabase'
+                'Leevel\Database\IDatabase'
             ]
         ];
     }

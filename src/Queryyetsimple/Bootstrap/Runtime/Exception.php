@@ -74,7 +74,8 @@ class Exception extends Message
     {
         $this->log($this->strMessage);
 
-        if ($this->project['option']['debug_driver'] == 'whoops' && $this->project['option']->get('debug')) {
+        if ($this->project['option'] === false || 
+            ($this->project['option']['debug_driver'] == 'whoops' && $this->project['option']->get('debug'))) {
             return $this->renderExceptionWithWhoops($this->exception);
         } else {
             $this->toResponse($this->project['option']['default_response'] == 'api' ? 

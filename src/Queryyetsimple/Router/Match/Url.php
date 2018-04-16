@@ -56,7 +56,7 @@ class Url
      * 
      * @var array
      */
-    protected $matches = [];
+    protected $matcheVars = [];
 
     /**
      * 匹配数据项
@@ -79,32 +79,72 @@ class Url
         $result = [];
         $pathInfo = $request->getPathInfo();
         $domainRouters = $router->getDomainRouters();
+        $method = strtolower($request->getMethod());
 
-        // 匹配路由
-        foreach ($urlRouters as $rule => $item) {
+        if (! isset($urlRouters[$method])) {
+            return [];
+        }
 
-            // 域名和 url 同时匹配
-            if ($domainRouters && ! in_array($rule, $domainRouters)) {
-                continue;
-            }
+        $urlRouters = $urlRouters[$method];
 
-            foreach ($item as $routers) {
-                if ($routers['regex'] == $pathInfo) {
-                    $this->matcheUrl = true;
-                } else {
-                    $this->variable($routers, $pathInfo);
-                }
+        $basepaths = $router->getBasepaths();
 
-                // URL 匹配成功
-                if ($this->matcheUrl === true) {
-                    $result = $this->matcheSuccessed($routers);
-                    break 2;
-                }
+        $basepath = '';
+        foreach ($basepaths as $path) {
+            if (strpos($pathInfo, $path) === 0) {
+                $pathInfo = substr($pathInfo, strlen($path));
+                $basepath = $path;
+                break;
             }
         }
 
-        // 合并域名匹配数据
-        $result = array_merge($router->getDomainData(), $result);
+        $firstLetter = $pathInfo[1];
+
+        if (isset($urlRouters[$firstLetter])) {
+            $urlRouters = $urlRouters[$firstLetter];
+        } elseif (isset($urlRouters['_'])) {
+            $urlRouters = $urlRouters['_'];
+        }
+
+        $groups = $router->getGroups();
+        $matchGroup = false;
+        foreach ($groups as $group) {
+            if (strpos($pathInfo, $group) === 0) {
+                $urlRouters = $urlRouters[$group];
+                $matchGroup = true;
+                break;
+            }
+        }
+
+
+        if ($matchGroup === false) {
+            $urlRouters = $urlRouters['_'];
+        }
+
+        $pathInfo = $basepath . $pathInfo;
+
+        if (isset($urlRouters[$pathInfo])) {
+            $urlRouters = $urlRouters[$pathInfo];
+
+            $result = $this->matcheSuccessed($urlRouters);
+
+            return $result;
+        } else {
+
+        }
+
+        // 匹配路由
+        foreach ($urlRouters as $rule => $routers) {
+            $matcheVars = $this->variable($rule, $routers, $pathInfo);
+
+            // URL 匹配成功
+            if ($this->matcheUrl === true) {
+                $result = $this->matcheSuccessed($routers,$matcheVars,$basepath);
+                break;
+            }
+        }
+
+        print_r($result);
 
         return $result;
     }
@@ -113,27 +153,59 @@ class Url
      * url 匹配成功处理
      * 
      * @param array $routers
+     * @param array $matcheVars
      * @return array
      */
-    protected function matcheSuccessed(array $routers)
+    protected function matcheSuccessed(array $routers, array $matcheVars=[],$basepath = '')
     {
-        $result = $this->router->parseNodeUrl($routers['url']);
 
-        // 额外参数
-        if (is_array($routers['params']) && $routers['params']) {
-            $result = array_merge($result, $routers['params']);
+        $domainVars = [];
+
+        // 协议匹配
+        if ($routers['scheme'] && $this->request->getScheme() !== $routers['scheme']) {
+            return [];
         }
 
-        // 变量解析
-        if (isset($routers['args'])) {
-            array_shift($routers);
+        // 域名匹配
+        if ($routers['domain']) {
+            //$host = $this->request->getHttpHost();
+            $host = $this->request->getHost();
 
-            foreach ($routers['args'] as $key => $name) {
-                $value = $this->matches[$key];
+            if ($routers['domain_regex']) {
+                if(! preg_match($routers['domain_regex'], $host, $matches)) {
+                    return [];
+                } else {
+                    array_shift($matches);
 
-                $result[$name] = $value;
-                $this->addVariable($name, $value);
+                    foreach ($routers['domain_var'] as $var) {
+                        $value = array_shift($matches);
+
+                        $domainVars[$var] = $value;
+                        $this->addVariable($var, $value);
+                    }
+                }
+            } elseif ($host !== $routers['domain']) {
+                return [];
             }
+        }
+
+        $result = $this->router->parseNodeUrl($routers['bind']);
+
+        if ($domainVars) {
+            $result[Router::PARAMS] = array_merge($domainVars, $result[Router::PARAMS]);
+        }
+
+        if ($matcheVars) {
+            $result[Router::PARAMS] = array_merge($matcheVars, $result[Router::PARAMS]);
+        }
+
+        // 额外参数
+        if ($routers[Router::PARAMS]) {
+            $result[Router::PARAMS] = array_merge($result[Router::PARAMS], $routers[Router::PARAMS]);
+        }
+
+        if ($basepath) {
+            $result[Router::PARAMS]['_basepath'] = $basepath;
         }
 
         return $result;
@@ -144,17 +216,26 @@ class Url
      * 
      * @param array $routers
      * @param string $pathInfo
-     * @return void
+     * @return array
      */
-    protected function variable(array $routers, string $pathInfo)
+    protected function variable(string $rule, array $routers, string $pathInfo)
     {
-        list($rule, $routerVar) = $this->ruleRegex($routers);
-        
-        if (preg_match($rule, $pathInfo, $matches)) {
-            $this->matches = $matches;
-            
+        $result = [];
+
+        if (preg_match($routers['regex'], $pathInfo, $matches)) {
+            array_shift($matches);
+
+            foreach ($routers['var'] as $var) {
+                $value = array_shift($matches);
+
+                $result[$var] = $value;
+                $this->addVariable($var, $value);
+            }
+
             $this->matcheUrl = true;
         }
+
+        return $result;
     }
 
     /**
@@ -167,32 +248,5 @@ class Url
     protected function addVariable(string $name, $value)
     {
         $this->router->addVariable($name, $value);
-        $this->request->params->set($name, $value);
-    }
-
-    /**
-     * 路由正则
-     * 
-     * @param array $routers
-     * @return array
-     */
-    protected function ruleRegex(array $routers)
-    {
-        $routerVar = [];
-        
-        $rule = $this->router->formatRegex($routers['regex']);
-        
-        $rule = preg_replace_callback("/{(.+?)}/", function ($matches) use($routers, &$routerVar) {
-            $routerVar[] = $matches[1];
-            return '(' . ($routers['where'][$matches[1]] ?? Router::DEFAULT_REGEX) . 
-            ')';
-        }, $rule);
-        
-        $rule = '/^\/' . $rule . (($routers['strict'] ?? $this->router->getOption('router_strict')) ? '$' : '') . '/';
-        
-        return [
-            $rule, 
-            $routerVar
-        ];
     }
 }

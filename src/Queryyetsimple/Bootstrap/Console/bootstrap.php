@@ -27,6 +27,6 @@ use Leevel\{
  * @since 2017.04.17
  * @version 1.0
  */
-router::bind('frameworkconsole://bootstrap/index', function () {
+router::bind(':Frameworkconsole/Bootstrap/index', function () {
     return (new Application(project()))->run();
 });

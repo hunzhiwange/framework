@@ -210,7 +210,7 @@ class Application
         $sCachePath = $this->getI18nCachePath($sI18nSet);
 
         if (! $this->project->development() && is_file($sCachePath)) {
-            $this->project['i18n']->addText($sI18nSet, ( array ) include $sCachePath);
+            $this->project['i18n']->addText($sI18nSet, (array) include $sCachePath);
         } else {
             $this->project['i18n.load']->
 
