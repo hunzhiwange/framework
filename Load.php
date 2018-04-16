@@ -153,7 +153,8 @@ class Load
             mkdir($sDir, 0777, true);
         }
 
-        if (! file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . PHP_EOL . '<?' . 'php return ' . var_export($arrData, true) . '; ?' . '>')) {
+        if (! file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
+            PHP_EOL . '<?' . 'php return ' . var_export($arrData, true) . '; ?' . '>')) {
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
         }
 
