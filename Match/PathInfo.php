@@ -60,15 +60,28 @@ class PathInfo
             return [];
         }
 
+        $pathInfo = '/' . $pathInfo;
+
         $result = [];
 
         $this->request = $request;
         $this->router = $router;
 
+        $basepaths = $this->router->getBasepaths();
+
+        $basepath = '';
+        foreach ($basepaths as $path) {
+            if (strpos($pathInfo, $path) === 0) {
+                $pathInfo = substr($pathInfo, strlen($path) + 1);
+                $basepath = $path;
+                break;
+            }
+        }
+
         $paths = explode('/', $pathInfo);
 
         if ($paths && $this->findApp($paths[0])) {
-            $result[Router::APP] = array_pop($paths);
+            $result[Router::APP] = substr(array_shift($paths), 1);
         }
 
         list($pathInfos, $options) = $this->parseOptionsAndPathInfos($paths);
@@ -85,11 +98,24 @@ class PathInfo
             }
 
             if ($pathInfos) {
-                $result[Router::PREFIX] = implode('\\', $pathInfos);
+                $result[Router::PREFIX] = implode('\\', array_map(function($item) {
+                    if (strpos($item, '_') !== false) {
+                        $item = str_replace('_', ' ', $item);
+                        $item = str_replace(' ', '', ucwords($item));
+                    } else {
+                        $item = ucfirst($item);
+                    }
+
+                    return $item;
+                },$pathInfos));
             }
         }
 
         $result[Router::PARAMS] = $options;
+
+        if ($basepath) {
+            $result[Router::PARAMS]['_basepath'] = $basepath;
+        }
 
         return $result;
     }
@@ -102,13 +128,7 @@ class PathInfo
      */
     protected function findApp($app)
     {
-        $apps = $this->router->getOption('apps');
-
-        if (is_array($apps) && in_array($app, $apps)) {
-            return true;
-        }
-
-        return false;
+        return strpos($app, ':') === 0;
     }
 
     /**
@@ -119,14 +139,10 @@ class PathInfo
      */
     protected function parseOptionsAndPathInfos(array $paths)
     {
-        $protected = $this->router->getOption('args_protected');
-        $regex = $this->router->getOption('args_regex');
-        $strict = $this->router->getOption('args_strict');
-
         $pathInfos = $options = [];
 
         foreach ($paths as $path) {
-            if (is_numeric($path) || in_array($path, $protected) || $this->matchArgs($path, $regex, $strict)) {
+            if (is_numeric($path)) {
                 $options[] = $path;
             } else {
                 $pathInfos[] = $path;
@@ -137,30 +153,5 @@ class PathInfo
             $pathInfos,
             $options
         ];
-    }
-
-    /**
-     * 是否匹配参数正则
-     *
-     * @param array $path
-     * @param array $regex
-     * @param bool $strict
-     * @return boolean
-     */
-    protected function matchArgs($path, array $regex = [], bool $strict)
-    {
-        if (! $regex) {
-            return false;
-        }
-
-        foreach ($regex as $item) {
-            $item = sprintf('/^(%s)%s/', $item, $strict ? '$' : '');
-
-            if (preg_match($item, $path, $mathes)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
