@@ -348,8 +348,8 @@ class Str
      */
     public static function camelize($strValue, $strSeparator = '_')
     {
-        $strValue = $strSeparator . str_replace($strSeparator, " ", strtolower($strValue));
-        return ltrim(str_replace(" ", "", ucwords($strValue)), $strSeparator);
+        $strValue = $strSeparator . str_replace($strSeparator, ' ', strtolower($strValue));
+        return ltrim(str_replace(' ', '', ucwords($strValue)), $strSeparator);
     }
 
     /**
@@ -388,7 +388,7 @@ class Str
      */
     public static function endsWith($strToSearched, $strSearch)
     {
-        if (( string ) $strSearch === substr($strToSearched, - strlen($strSearch))) {
+        if ((string) $strSearch === substr($strToSearched, - strlen($strSearch))) {
             return true;
         }
         return false;
