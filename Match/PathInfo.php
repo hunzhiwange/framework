@@ -47,7 +47,7 @@ class PathInfo
     /**
      * 匹配数据项
      *
-     * @param \Leevel\Router\Router $route
+     * @param \Leevel\Router\Router $router
      * @param \Leevel\Http\Request $request
      * @return array
      */
@@ -56,6 +56,7 @@ class PathInfo
         $pathInfo = $request->getPathInfo();
         $pathInfo = trim($pathInfo, '/');
 
+        // 首页
         if (! $pathInfo) {
             return [];
         }
@@ -67,8 +68,8 @@ class PathInfo
         $this->request = $request;
         $this->router = $router;
 
+        // 匹配基础路径
         $basepaths = $this->router->getBasepaths();
-
         $basepath = '';
         foreach ($basepaths as $path) {
             if (strpos($pathInfo, $path) === 0) {
@@ -80,6 +81,7 @@ class PathInfo
 
         $paths = explode('/', $pathInfo);
 
+        // 应用
         if ($paths && $this->findApp($paths[0])) {
             $result[Router::APP] = substr(array_shift($paths), 1);
         }
@@ -113,9 +115,7 @@ class PathInfo
 
         $result[Router::PARAMS] = $options;
 
-        if ($basepath) {
-            $result[Router::PARAMS]['_basepath'] = $basepath;
-        }
+        $result[Router::PARAMS][Router::BASEPATH] = $basepath ?: null;
 
         return $result;
     }
