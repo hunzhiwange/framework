@@ -37,7 +37,7 @@ class EventProvider extends Provider
     protected $listeners = [];
     
     /**
-     * 注册时间监听器
+     * 注册事件监听器
      *
      * @param \Leevel\Event\IDispatch $dispatch
      * @return void
