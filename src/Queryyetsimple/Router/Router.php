@@ -187,11 +187,11 @@ class Router implements IRouter
     protected $matcheData = [];
 
     /**
-     * 路由匹配数据
+     * 路由匹配初始化数据
      * 
      * @var array
      */
-    protected static $matcheInitData = [
+    protected static $matcheDataInit = [
         self::APP => self::DEFAULT_APP,
         self::CONTROLLER => null,
         self::ACTION => null,
@@ -205,23 +205,10 @@ class Router implements IRouter
      * @var array
      */
     protected $arrOption = [
-        'apps' => [
-            '~_~',
-            'home'
-        ],
-        'default_app' => 'home',
-        'default_controller' => 'index',
-        'default_action' => 'index',
         'router_cache' => true,
         'router_domain_on' => true,
         'router_domain_top' => '',
         'pathinfo_restful' => true,
-        'args_protected' => [],
-        'args_regex' => [],
-        'args_strict' => false,
-        'middleware_strict' => false,
-        'method_strict' => false,
-        'controller_dir' => 'app/controller',
 
         // 路由分组
         'middleware_group' => [],
@@ -237,25 +224,11 @@ class Router implements IRouter
     protected $routers = [];
 
     /**
-     * 默认替换参数[字符串]
-     *
+     * 控制器相对目录
+     * 
      * @var string
      */
-    const DEFAULT_REGEX = '\S+';
-
-    /**
-     * 默认应用
-     *
-     * @var string
-     */
-    const DEFAULT_APP = 'app';
-
-    /**
-     * 默认严格匹配模式
-     *
-     * @var string
-     */
-    const DEFAULT_STRICT = true;
+    protected $controllerDir = 'App\Controller';
 
     /**
      * 构造函数
@@ -291,6 +264,8 @@ class Router implements IRouter
         // 穿越中间件
         $this->throughMiddleware($this->objRequest);
     }
+
+
 
     /**
      * 取回应用名
@@ -425,17 +400,6 @@ class Router implements IRouter
 
             then();
         }
-    }
-
-    public function imports() {
-       // return;
-        $routers = include path_runtime('router/router.php');
-
-        //print_r($routers);
-
-        $this->basepaths = $routers['basepaths'];
-        $this->groups = $routers['groups'];
-        $this->routers = $routers['routers'];
     }
 
     /**
@@ -727,6 +691,21 @@ class Router implements IRouter
     }
 
     /**
+     * 设置控制器相对目录
+     *
+     * @param string $controllerDir
+     * @return void
+     */
+    public function setControllerDir(?string $controllerDir) {
+        $controllerDir = str_replace('/', '\\', $controllerDir);
+        $this->controllerDir = $controllerDir;
+    }
+
+    public function getControllerDir() {
+        return $this->controllerDir;
+    }
+
+    /**
      * 设置路由缓存地址
      *
      * @param string $strCachePath
@@ -796,6 +775,19 @@ class Router implements IRouter
     }
     public function getGroups() {
         return $this->groups;
+        //return $this->arrRouters;
+    }
+
+    public function setRouters(array $routers) {
+        $this->routers = $routers;
+        //return $this->arrRouters;
+    }
+    public function setBasepaths(array $basepaths) {
+        $this->basepaths = $basepaths;
+        //return $this->arrRouters;
+    }
+    public function setGroups(array $groups) {
+        $this->groups = $groups;
         //return $this->arrRouters;
     }
     /**
@@ -887,8 +879,6 @@ class Router implements IRouter
 
         if (strpos($urls[0], ':') === 0) {
             $arrData[static::APP] = substr(array_shift($urls), 1);
-        } else {
-            $arrData[static::APP] = Router::DEFAULT_APP;
         }
 
         if (count($urls) == 1) {
@@ -931,7 +921,7 @@ class Router implements IRouter
         $this->strApp = null;
         $this->strController = null;
         $this->strAction = null;
-        $this->matcheData = self::$matcheInitData;
+        $this->matcheData = self::$matcheDataInit;
     }    
 
     /**
@@ -948,13 +938,13 @@ class Router implements IRouter
             $data = (new $item)->matche($this, $this->objRequest);
 
             if ($data) {
-                $this->matcheData = $data;
+                $this->matcheData = array_merge(self::$matcheDataInit, $data);
                 break;
             }
         }
 
         print_r($this->matcheData);
-        exit();
+        //exit();
 
         $this->completeRequest();
     }

@@ -139,10 +139,7 @@ class Project extends Container implements IProject
         registerMvcProvider()->
 
         // 注册基础提供者 register
-        registerBaseProvider()->
-
-        // 注册基础提供者 bootstrap
-        registerBaseProviderBootstrap();
+        registerBaseProvider();
     }
 
     /**
@@ -163,6 +160,8 @@ class Project extends Container implements IProject
     public function run()
     {
         $this->registerRuntime();
+
+        $this->baseProviderBootstrap();
 
         $this->appInit();
 
@@ -695,11 +694,11 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 框架基础提供者 bootstrap
+     * 执行框架基础提供者 bootstrap
      *
      * @return $this
      */
-    protected function registerBaseProviderBootstrap()
+    protected function baseProviderBootstrap()
     {
         foreach ($this->arrProviderBootstrap as $obj) {
             $this->callProviderBootstrap($obj);

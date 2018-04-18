@@ -63,6 +63,13 @@ interface IRouter
     const PREFIX = '_prefix';
 
     /**
+     * 匹配基础路径
+     *
+     * @var string
+     */
+    const BASEPATH = '_basepath';
+
+    /**
      * restful show
      *
      * @var string
@@ -89,4 +96,25 @@ interface IRouter
      * @var string
      */
     const RESTFUL_DESTROY = 'destroy';
+
+    /**
+     * 默认应用
+     *
+     * @var string
+     */
+    const DEFAULT_APP = 'app';
+
+    /**
+     * 默认替换参数[字符串]
+     *
+     * @var string
+     */
+    const DEFAULT_REGEX = '\S+';
+
+    /**
+     * 默认严格匹配模式
+     *
+     * @var string
+     */
+    const DEFAULT_STRICT = true;
 }
