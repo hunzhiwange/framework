@@ -56,11 +56,25 @@ interface IRouter
     const PARAMS = '_params';
 
     /**
+     * 解析中间件名
+     *
+     * @var string
+     */
+    const MIDDLEWARES = '_middlewares';
+
+    /**
      * 控制器前缀
      *
      * @var string
      */
     const PREFIX = '_prefix';
+
+    /**
+     * 路由绑定
+     *
+     * @var string
+     */
+    const BIND = '_bind';
 
     /**
      * 匹配基础路径

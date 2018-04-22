@@ -1081,7 +1081,7 @@ class Parser implements IParser
     }
 
     /**
-     * 转移正则表达式特殊字符
+     * 转义正则表达式特殊字符
      *
      * @param string $sTxt
      * @return string

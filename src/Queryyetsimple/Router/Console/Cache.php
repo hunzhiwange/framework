@@ -60,9 +60,9 @@ class Cache extends Command
         $this->line('Start to do convert swager to router.');
 
         try {
-            $routers = (new Router(app()))->getRouters(true);
+            (new Router(app()))->getRouters(true);
 
-            $this->info(sprintf('Router file %s cache successed.', path_router_cache('router.php')));
+            $this->info(sprintf('Router file %s cache successed.', path_router_cache()));
         } catch (Exception $e) {
             $this->error($e->getmessage());
         }

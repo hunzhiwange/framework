@@ -142,7 +142,6 @@ class Application
 
         if ($this->isInitApp()) {
             $this->initialization();
-            $this->loadRouter();
         } else {
             foreach ($this->arrEvent as $strEvent) {
                 $strEvent = $strEvent . 'Bootstrap';
@@ -267,26 +266,6 @@ class Application
     }
 
     /**
-     * 分析路由
-     *
-     * @return void
-     */
-    protected function loadRouter()
-    {
-        $this->setRouterCachePath();
-
-        if (! $this->project['router']->checkExpired()) {
-            return;
-        }
-
-        foreach ($this->project->routers() as $strRouter) {
-            if (is_array($arrFoo = include $strRouter)) {
-                $this->project['router']->importCache($arrFoo);
-            }
-        }
-    }
-
-    /**
      * 返回 i18n 目录
      *
      * @param string $sI18nSet
@@ -358,22 +337,6 @@ class Application
     protected function getOptionCachePath()
     {
         return $this->project->pathApplicationCache('option') . '/' . $this->strApp . '.php';
-    }
-
-    /**
-     * 设置路由缓存路径
-     *
-     * @return void
-     */
-    protected function setRouterCachePath()
-    {
-        $router = $this->project['router'];
-
-        $this->project['router']->
-
-        cachePath($this->project->pathApplicationCache('router') . '/router.php')->
-
-        development($this->project->development());
     }
 
     /**

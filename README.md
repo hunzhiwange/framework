@@ -62,7 +62,7 @@ composer require hunzhiwange/framework
 
 ## The components that make up the QueryPHP framework
 
-Components for the framework can be found on the [Github website](https://github.com/queryyetsimple) and [Packagist website](https://packagist.org/packages/queryyetsimple/).
+Components for the framework can be found on the [Github website](https://github.com/queryyetsimple) and [Packagist website](https://packagist.org/packages/leevel/).
 
 ```
 composer require leevel/di

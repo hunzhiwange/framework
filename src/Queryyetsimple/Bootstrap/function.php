@@ -683,7 +683,7 @@ if (! function_exists('path_router_cache')) {
      * @param string $strPath
      * @return string
      */
-    function path_router_cache($strPath = '')
+    function path_router_cache($strPath = 'router.php')
     {
         return project()->pathApplicationCache('router') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
