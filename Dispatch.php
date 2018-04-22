@@ -230,7 +230,7 @@ class Dispatch implements IDispatch
     }
 
     /**
-     * 转移正则表达式特殊字符
+     * 转义正则表达式特殊字符
      *
      * @param string $txt
      * @return string
