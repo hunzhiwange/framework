@@ -38,11 +38,12 @@ class ScanSwaggerRouter
     /**
      * 构造函数
      *
+     * @param \Leevel\Router\MiddlewareParser $middlewareParser
      * @return void
      */
-    public function __construct()
+    public function __construct(MiddlewareParser $middlewareParser)
     {
-        $this->swaggerRouter = new SwaggerRouter($this->getTopDomain(), $this->getController());
+        $this->swaggerRouter = new SwaggerRouter($middlewareParser, $this->getTopDomain(), $this->getController());
 
         // 添加扫描目录
         $this->swaggerRouter->addSwaggerScan($this->getApplicationDir());

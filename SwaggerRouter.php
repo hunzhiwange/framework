@@ -22,8 +22,8 @@ use Swagger\Annotations\Swagger;
 
 /*
  * Swagger 注解路由
- * 1:忽略已删除的路由 deprecated
- * 2:如果没有绑定路由参数 __bind,系统会尝试自动解析注解所在控制器方法
+ * 1:忽略已删除的路由 deprecated 和带有 _ignore 的路由
+ * 2:如果没有绑定路由参数 _bind,系统会尝试自动解析注解所在控制器方法
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -32,6 +32,14 @@ use Swagger\Annotations\Swagger;
  */
 class SwaggerRouter
 {
+
+    /**
+     * 路由中间件分析器
+     * 
+     * @var \Leevel\Router\MiddlewareParser
+     */
+    protected $middlewareParser;
+
     /**
      * 顶级域名
      * 
@@ -79,18 +87,22 @@ class SwaggerRouter
         'params',
         'where',
         'strict',
-        'bind'
+        'bind',
+        'middlewares'
     ];
 
     /**
      * 构造函数
      *
+     * @param \Leevel\Router\MiddlewareParser $middlewareParser
      * @param string $domain
      * @param string $controllerDir
      * @return void
      */
-    public function __construct($domain = null, $controllerDir = null)
+    public function __construct(MiddlewareParser $middlewareParser, $domain = null, $controllerDir = null)
     {
+        $this->middlewareParser = $middlewareParser;
+
         if ($domain) {
             $this->domain = $domain;
         }
@@ -139,8 +151,8 @@ class SwaggerRouter
                 foreach ($this->methods as $m) {
                     $method = $path->$m;
 
-                    // 忽略已删除的路由
-                    if (! $method || $method->deprecated === true) {
+                    // 忽略已删除和带有忽略标记的路由
+                    if (! $method || $method->deprecated === true || $method->_ignore) {
                         continue;
                     }
 
@@ -148,7 +160,7 @@ class SwaggerRouter
 
                     // 支持的自定义路由字段
                     foreach ($this->routerField as $f) {
-                        $field = '__' . $f;
+                        $field = '_' . $f;
                         $routerTmp[$f] = property_exists($method, $field) ? $method->$field : null;
                     }
 
@@ -157,9 +169,14 @@ class SwaggerRouter
                         $routerTmp['bind'] = $this->parseBindBySource($method->_context);
                     }
 
+                    // 解析中间件
+                    if ($routerTmp['middlewares']) {
+                        $routerTmp['middlewares'] = $this->middlewareParser->handle($routerTmp['middlewares']);
+                    }
+
                     $routerPath = $path->path;
 
-                    if (strlen($routerPath) > 1 && preg_match("/^[a-zA-Z\s]{1}$/", $routerPath[1])) {
+                    if (strlen($routerPath) > 1 && preg_match('/^[A-Za-z]+$/', $routerPath[1])) {
                         $prefix = $routerPath[1];
                     } else {
                         $prefix = '_';
@@ -255,8 +272,8 @@ class SwaggerRouter
 
         if ($swagger->tags) {
             foreach ($swagger->tags as $tag) { 
-                if (property_exists($tag, '__group')) {
-                    $groups[] = '/' . $tag->__group;
+                if (property_exists($tag, '_group')) {
+                    $groups[] = '/' . $tag->_group;
                 }
             }
         }
@@ -297,7 +314,7 @@ class SwaggerRouter
      * 如果没有设置域名，则加上顶级域名
      * 
      * @param string $domain
-     * @param string $domain
+     * @param string $topDomain
      * @return string
      */
     protected function normalizeDomain(?string $domain, ?string $topDomain)
@@ -334,7 +351,7 @@ class SwaggerRouter
     }
 
     /**
-     * 转移正则表达式特殊字符
+     * 转义正则表达式特殊字符
      *
      * @param string $txt
      * @return string

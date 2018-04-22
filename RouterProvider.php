@@ -26,7 +26,7 @@ use Leevel\Di\Provider;
  * @since 2018.04.17
  * @version 1.0
  */
-class RouterProvider extends Provider
+abstract class RouterProvider extends Provider
 {
     /**
      * 控制器相对目录
@@ -61,6 +61,8 @@ class RouterProvider extends Provider
     {
         $this->setControllerDir();
 
+        $this->setMiddleware();
+
         if ($this->isRouterCached()) {
             $this->importCachedRouters();
         } else {
@@ -87,6 +89,15 @@ class RouterProvider extends Provider
     }
 
     /**
+     * 全局中间件
+     *
+     * @return array
+     */
+    public function getMiddlewares() {
+        return [];
+    }
+
+    /**
      * 导入路由缓存
      *
      * @return void
@@ -107,7 +118,32 @@ class RouterProvider extends Provider
     {
         $routers = $this->getRouters();
 
+        $middlewares = $this->getMiddlewares();
+        $middlewares = $this->makeMiddlewareParser()->handle($middlewares);
+
+        $this->setGlobalMiddlewares($middlewares);
+
         $this->setRoutersData($routers);
+    }
+
+    /**
+     * 生成中间件分析器
+     * 
+     * @return \Leevel\Router\MiddlewareParser
+     */
+    protected function makeMiddlewareParser() {
+        return new MiddlewareParser($this->container['router']);
+    }
+
+    /**
+     * 设置全局中间件数据
+     *
+     * @param array $middlewares
+     * @return void
+     */
+    protected function setGlobalMiddlewares(array $middlewares)
+    {
+        $this->container['router']->setGlobalMiddlewares($middlewares);
     }
 
     /**
@@ -140,7 +176,7 @@ class RouterProvider extends Provider
      */
     protected function getRouterCachePath()
     {
-        return path_router_cache('router.php');
+        return path_router_cache();
     }
 
     /**
@@ -152,6 +188,22 @@ class RouterProvider extends Provider
     {
         if (! is_null($this->controllerDir)) {
             $this->container['router']->setControllerDir($this->controllerDir);
+        }
+    }
+
+    /**
+     * 设置中间件 
+     *
+     * @return void
+     */
+    protected function setMiddleware()
+    {
+        if (! is_null($this->middlewareGroups)) {
+            $this->container['router']->setMiddlewareGroups($this->middlewareGroups);
+        }
+
+        if (! is_null($this->middlewareAlias)) {
+            $this->container['router']->setMiddlewareAlias($this->middlewareAlias);
         }
     }
 }

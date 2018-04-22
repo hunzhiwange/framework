@@ -132,7 +132,6 @@ class Url
         foreach ($urlRouters as $routers) {
             $matcheVars = $this->matcheVariable($routers, $pathInfo);
 
-            // URL 匹配成功
             if ($this->matcheUrl === true) {
                 $result = $this->matcheSuccessed($routers, $matcheVars);
                 break;
@@ -190,6 +189,12 @@ class Url
 
         $result[Router::PARAMS] = $result['params'];
         unset($result['params']);
+
+        // 中间件
+        $result[Router::MIDDLEWARES] = $routers['middlewares'];
+
+        // 路由绑定
+        $result[Router::BIND] = $routers['bind'];
 
         return $result;
     }
