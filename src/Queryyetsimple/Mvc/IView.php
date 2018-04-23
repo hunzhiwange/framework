@@ -78,5 +78,5 @@ interface IView
      * @param string $ext
      * @return string
      */
-    public function display($file = null, array $vars = [], string $ext = '');
+    public function display($file = null, array $vars = [], $ext = null);
 }

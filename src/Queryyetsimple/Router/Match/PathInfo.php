@@ -58,7 +58,10 @@ class PathInfo
 
         // 首页
         if (! $pathInfo) {
-            return [];
+            return [
+                Router::CONTROLLER => Router::DEFAULT_HOME_CONTROLLER,
+                Router::ACTION => Router::DEFAULT_HOME_ACTION
+            ];
         }
 
         $pathInfo = '/' . $pathInfo;

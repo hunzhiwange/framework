@@ -51,7 +51,7 @@ class Phpui extends Connect implements IConnect
      * @param boolean $display 是否显示
      * @return string
      */
-    public function display(string $file = null, array $vars = [], string $ext = '', bool $display = true)
+    public function display(?string $file = null, array $vars = [], ?string $ext = null, bool $display = true)
     {
         // 加载视图文件
         $file = $this->parseDisplayFile($file, $ext);

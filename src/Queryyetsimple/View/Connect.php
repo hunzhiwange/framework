@@ -116,7 +116,7 @@ abstract class Connect
      * @param string $ext 后缀
      * @return string|void
      */
-    protected function parseDisplayFile(string $file = null, string $ext = '')
+    protected function parseDisplayFile(?string $file = null, ?string $ext = '')
     {
         // 加载视图文件
         if (! is_file($file)) {
@@ -142,7 +142,7 @@ abstract class Connect
      * @param string $ext 扩展名
      * @return string
      */
-    protected function parseFile(string $tpl = null, string $ext = '')
+    protected function parseFile(?string $tpl = null, ?string $ext = '')
     {
         $tpl = trim(str_replace('->', '.', $tpl));
 
@@ -197,7 +197,7 @@ abstract class Connect
      * @param string $tpl 文件地址
      * @return string
      */
-    protected function parseDefaultFile(string $tpl = null)
+    protected function parseDefaultFile(?string $tpl = null)
     {
         if (is_file($tpl)) {
             return $tpl;

@@ -121,7 +121,11 @@ class Register extends Provider
     protected function viewParser()
     {
         $this->singleton('view.parser', function ($project) {
-            return (new Parser($project['view.compiler']))->registerCompilers()->registerParsers();
+            return (new Parser($project['view.compiler']))->
+
+            registerCompilers()->
+
+            registerParsers();
         });
     }
 

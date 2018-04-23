@@ -35,7 +35,7 @@ interface IConnect
      * @param boolean $display 是否显示
      * @return string
      */
-    public function display(string $file = null, array $vars = [], string $ext = '', bool $display = true);
+    public function display(?string $file = null, array $vars = [], ?string $ext = null, bool $display = true);
 
     /**
      * 设置模板变量

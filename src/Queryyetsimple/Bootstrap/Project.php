@@ -203,7 +203,7 @@ class Project extends Container implements IProject
     public function appRun($app = null)
     {
         if (! $app) {
-            $app = $this->router->app();
+            $app = $this->request->app();
         }
 
         $this->make(Application::class)->
@@ -404,7 +404,7 @@ class Project extends Container implements IProject
      */
     public function pathApplicationCurrent()
     {
-        return $this->pathApplication() . '/' . $this->request->app();
+        return $this->pathApplication() . '/' . strtolower($this->request->app());
     }
 
     /**

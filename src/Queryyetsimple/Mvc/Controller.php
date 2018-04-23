@@ -27,7 +27,7 @@ use Leevel\View\IView as ViewIView;
  * @since 2016.11.19
  * @version 1.0
  */
-abstract class controller implements IController
+abstract class Controller implements IController
 {
 
     /**
@@ -136,7 +136,7 @@ abstract class controller implements IController
      * @param string $ext
      * @return string
      */
-    public function display($file = null, array $vars = [], string $ext = '')
+    public function display($file = null, array $vars = [], $ext = null)
     {
         $this->checkView();
         return $this->view->display($file, $vars, $option);
