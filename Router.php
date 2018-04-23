@@ -31,11 +31,11 @@ use Leevel\{
     Mvc\IController,
     Pipeline\Pipeline
 };
-use Leevel\Router\Match{
+use Leevel\Router\Match\{
     Cli as CliMatch,
     Url as UrlMatch,
     PathInfo as PathInfoMatch
-}
+};
 
 /**
  * 路由解析
@@ -66,27 +66,6 @@ class Router implements IRouter
     protected $request;
 
     /**
-     * 应用名字
-     *
-     * @var string
-     */
-    protected $app;
-
-    /**
-     * 控制器名字
-     *
-     * @var string
-     */
-    protected $controller;
-
-    /**
-     * 方法名字
-     *
-     * @var string
-     */
-    protected $action;
-
-    /**
      * 全局路由绑定中间件
      *
      * @var array
@@ -112,14 +91,35 @@ class Router implements IRouter
      *
      * @var array
      */
-    protected $arrVariable = [];
+    protected $variables = [];
 
     /**
      * 路由匹配数据
      * 
      * @var array
      */
-    protected $matcheData = [];
+    protected $matchedData = [];
+
+    /**
+     * 应用名字
+     *
+     * @var string
+     */
+    protected $matchedApp;
+
+    /**
+     * 控制器名字
+     *
+     * @var string
+     */
+    protected $matchedController;
+
+    /**
+     * 方法名字
+     *
+     * @var string
+     */
+    protected $matchedAction;
 
     protected $bind;
 
@@ -134,8 +134,7 @@ class Router implements IRouter
         self::ACTION => null,
         self::PREFIX => null,
         self::PARAMS => null,
-        self::MIDDLEWARES => null,
-        self::BIND => null
+        self::MIDDLEWARES => null
     ];
 
     protected $basepaths = [];
@@ -157,8 +156,6 @@ class Router implements IRouter
      * @var array
      */
     protected $middlewareAlias = [];
-
-
 
     /**
      * 控制器相对目录
@@ -209,7 +206,7 @@ class Router implements IRouter
     public function throughMiddleware(request $passed, array $passedExtend = [])
     {
         if (is_null($this->currentMiddlewares)) {
-            $this->currentMiddlewares = $this->getMiddleware();
+            $this->currentMiddlewares = $this->parseMiddleware();
         }
 
         $method = ! $passedExtend ? 'handle' : 'terminate';
@@ -238,22 +235,10 @@ class Router implements IRouter
      */
     public function doBind()
     {
-        return $this->container->call($this->bind, $this->arrVariable);
+        return $this->container->call($this->bind, $this->variables);
     }
 
-    /**
-     * 获取绑定的中间件
-     * 暂时不做重复过滤，允许中间件多次执行
-     *
-     * @return array
-     */
-    public function getMiddleware()
-    {
-        return [
-            'handle' => array_merge($this->globalMiddlewares['handle'], $this->middlewares()['handle']),
-            'terminate' => array_merge($this->globalMiddlewares['terminate'], $this->middlewares()['terminate'])
-        ];
-    }
+
 
     /**
      * 注册绑定中间件
@@ -294,11 +279,17 @@ class Router implements IRouter
      * @param string $controllerDir
      * @return void
      */
-    public function setControllerDir(?string $controllerDir) {
+    public function setControllerDir(string $controllerDir) {
         $controllerDir = str_replace('/', '\\', $controllerDir);
         $this->controllerDir = $controllerDir;
     }
 
+    /**
+     * 返回控制器相对目录
+     *
+     * @param string $controllerDir
+     * @return void
+     */
     public function getControllerDir() {
         return $this->controllerDir;
     }
@@ -312,7 +303,7 @@ class Router implements IRouter
      */
     public function addVariable($name, $value)
     {
-        $this->arrVariable[$name] = $value;
+        $this->variables[$name] = $value;
     }
 
     /**
@@ -358,9 +349,10 @@ class Router implements IRouter
         $this->globalMiddlewares = $middlewares;
     }
 
-    // public function getGlobalMiddlewares() {
-    //     return $this->globalMiddlewares;
-    // }
+    public function getGlobalMiddlewares() {
+        return $this->globalMiddlewares;
+    }
+
     /**
      * 分析 url 数据
      * like [:home/blog/index?arg1=1&arg2=2]
@@ -419,120 +411,11 @@ class Router implements IRouter
      */
     public function initRequest()
     {
-        $this->app = null;
-        $this->controller = null;
-        $this->action = null;
-        $this->matcheData = self::$matcheDataInit;
+        $this->matchedApp = null;
+        $this->matchedController = null;
+        $this->matchedAction = null;
+        $this->matchedData = self::$matcheDataInit;
     }
-
-    /**
-     * 取回应用名
-     *
-     * @return string
-     */
-    public function app()
-    {
-        if ($this->app) {
-            $app = $this->app;
-        } else {
-            if (($this->app = env('app_name'))) {
-                $app = $this->app;
-            } else {
-                $app = $this->app = $this->matcheData[static::APP];
-            }
-        }
-
-        return ucfirst($app);
-    }
-
-    /**
-     * 取回控制器名
-     *
-     * @return string
-     */
-    public function controller()
-    {
-        if ($this->controller) {
-            $controller = $this->controller;
-        } else {
-            if (($this->controller = env('controller_name'))) {
-                $controller = $this->controller;
-            } else {
-                $controller = $this->matcheData[static::CONTROLLER];
-            }
-        }
-
-        return ucfirst($controller);
-    }
-
-    /**
-     * 取回方法名
-     *
-     * @return string
-     */
-    public function action()
-    {
-        if ($this->action) {
-            $action = $this->action;
-        } else {
-            if (($this->action = env('action_name'))) {
-                $action = $this->action;
-            } else {
-                $action = $this->matcheData[static::ACTION];
-            }
-        }
-
-        if (strpos($action, '-') !== false) {
-            $action = str_replace('-', '_', $action);
-        } 
-
-        if (strpos($action, '_') !== false) {
-            $action = '_' . str_replace('_', ' ', $action);
-            $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
-        }
-
-        return $action;
-    }
-
-    /**
-     * 取回控制器前缀
-     *
-     * @return string
-     */
-    public function prefix()
-    {
-        return $this->matcheData[static::PREFIX] ?? '';
-    }
-
-    /**
-     * 取回匹配参数
-     *
-     * @return array
-     */
-    public function params()
-    {
-        return $this->matcheData[static::PARAMS] ?? [];
-    }
-
-    /**
-     * 取回匹配中间件
-     *
-     * @return array
-     */
-    public function middlewares()
-    {
-        return $this->matcheData[static::MIDDLEWARES] ?? [];
-    }
-
-    /**
-     * 取回匹配绑定
-     *
-     * @return array
-     */
-    public function bind()
-    {
-        return $this->matcheData[static::BIND];
-    }  
 
     /**
      * 路由匹配
@@ -542,25 +425,35 @@ class Router implements IRouter
      */
     protected function matchRouter()
     {
-echo 'xx';
-exit();
-
         if ($this->request->isCli()) {
             $data = (new CliMatch)->matche($this, $this->request);
-            $this->matcheData = array_merge(self::$matcheDataInit, $data);
+            $this->matchedData = array_merge(self::$matcheDataInit, $data);
+
+            $this->completeRequest();
+
             $bind = $this->parseDefaultBind();
             if ($bind === false) {
                 $this->nodeNotRegistered();
             }
         } else {
             // 默认 pathInfo 匹配
-            $data = (new PathInfoMatchMatch)->matche($this, $this->request);
-            $this->matcheData = array_merge(self::$matcheDataInit, $data);
+            $dataPathInfo = (new PathInfoMatch)->matche($this, $this->request);
+            $this->matchedData = array_merge(self::$matcheDataInit, $dataPathInfo);
+
+            $this->completeRequest();
+
             $bind = $this->parseDefaultBind();
 
             if ($bind === false) {
-                $data = (new UrlMatchMatch)->matche($this, $this->request);
-                $this->matcheData = array_merge(self::$matcheDataInit, $data);
+                $data = (new UrlMatch)->matche($this, $this->request);
+                if (! $data) {
+                    $data = $dataPathInfo;
+                } else {
+                    $this->initRequest();
+                }
+                $this->matchedData = array_merge(self::$matcheDataInit, $data);
+
+                $this->completeRequest();
 
                 $bind = $this->parseDefaultBind();
                 if ($bind === false) {
@@ -568,11 +461,6 @@ exit();
                 }
             }
         }
-
-        echo 'hello world';
-        exit();
-
-        $this->completeRequest();
 
         $this->bind = $bind;
     }
@@ -592,13 +480,14 @@ exit();
     /**
      * 生成节点资源
      *
-     * @param string $controller
-     * @param string $action
      * @return string
      */
-    protected function makeNode($controller, $action)
+    protected function makeNode()
     {
-        return $this->app() . '\\' . $this->parseControllerDir() . '\\' . $controller . '->' . $action . '()';
+        return $this->matchedApp() . '\\' . 
+            $this->parseControllerDir() . '\\' . 
+            $this->matchedController() . '->' . 
+            $this->matchedAction() . '()';
     }
 
     /**
@@ -610,8 +499,8 @@ exit();
     {
         $result = $this->getControllerDir();
 
-        if ($this->prefix()) {
-            $result = $result . '\\' . $this->prefix();
+        if ($this->matchedPrefix()) {
+            $result = $result . '\\' . $this->matchedPrefix();
         }
 
         return $result;
@@ -627,14 +516,14 @@ exit();
         $this->pathinfoRestful();
 
         foreach ([
-            'app',
-            'controller',
-            'action'
+            'App',
+            'Controller',
+            'Action'
         ] as $type) {
-            $this->request->{'set' . ucfirst($type)}($this->{$type}());
+            $this->request->{'set' . $type}($this->{'matched' . $type}());
         }
 
-        $this->request->params->replace($this->params());
+        $this->request->params->replace($this->matchedParams());
     }
 
     /**
@@ -645,27 +534,27 @@ exit();
      */
     protected function pathinfoRestful()
     {
-        if (isset($this->matcheData[static::ACTION])) {
+        if (isset($this->matchedData[static::ACTION])) {
             return;
         }
 
         switch ($this->request->getMethod()) {
             case 'GET':
-                if (! empty($this->matcheData[static::PARAMS])) {
-                    $this->matcheData[static::ACTION] = static::RESTFUL_SHOW;
+                if (! empty($this->matchedData[static::PARAMS])) {
+                    $this->matchedData[static::ACTION] = static::RESTFUL_SHOW;
                 }
                 break;
 
             case 'POST':
-                $this->matcheData[static::ACTION] = static::RESTFUL_STORE;
+                $this->matchedData[static::ACTION] = static::RESTFUL_STORE;
                 break;
 
             case 'PUT':
-                $this->matcheData[static::ACTION] = static::RESTFUL_UPDATE;
+                $this->matchedData[static::ACTION] = static::RESTFUL_UPDATE;
                 break;
 
             case 'DELETE':
-                $this->matcheData[static::ACTION] = static::RESTFUL_DESTROY;
+                $this->matchedData[static::ACTION] = static::RESTFUL_DESTROY;
                 break;
         }
     }
@@ -677,9 +566,9 @@ exit();
      */
     protected function parseDefaultBind()
     {
-        $app = $this->app();
-        $controller = $this->controller();
-        $action = $this->action();
+        $app = $this->matchedApp();
+        $controller = $this->matchedController();
+        $action = $this->matchedAction();
 
         // 尝试直接读取方法控制器类
         $controllerClass = $app . '\\' . $this->parseControllerDir() . '\\' . $controller . '\\' . $action;
@@ -715,45 +604,115 @@ exit();
     }
 
     /**
-     * 取得打包节点
+     * 获取绑定的中间件
+     * 暂时不做重复过滤，允许中间件多次执行
      *
-     * @param string $app
-     * @param string $controller
-     * @param string $action
-     * @return string
+     * @return array
      */
-    protected function packageNode($controller = null, $action = null, $app = null)
+    protected function parseMiddleware()
     {
-        return ':' . ($app ? : $this->app()) . '/' . ($controller ?  : $this->controller()) . '/' . ($action ?  : $this->action());
+        return [
+            'handle' => array_merge($this->globalMiddlewares['handle'], $this->matchedMiddlewares()['handle']),
+            'terminate' => array_merge($this->globalMiddlewares['terminate'], $this->matchedMiddlewares()['terminate'])
+        ];
     }
 
     /**
-     * 分析节点
+     * 取回应用名
      *
-     * @param string $app
-     * @return arrat
+     * @return string
      */
-    protected function parseNode($strNode)
+    protected function matchedApp()
     {
-        $controller = $action = $app = null;
-        $arrTemp = $this->parseNodeUrl($strNode);
-
-        if (! empty($arrTemp[static::APP]) && $arrTemp[static::APP] != '*') {
-            $app = $arrTemp[static::APP];
-        }
-        if (! empty($arrTemp[static::CONTROLLER]) && $arrTemp[static::CONTROLLER] != '*') {
-            $controller = $arrTemp[static::CONTROLLER];
-        }
-        if (! empty($arrTemp[static::ACTION]) && $arrTemp[static::ACTION] != '*') {
-            $action = $arrTemp[static::ACTION];
+        if ($this->matchedApp) {
+            $app = $this->matchedApp;
+        } else {
+            if (($this->matchedApp = env('app_name'))) {
+                $app = $this->matchedApp;
+            } else {
+                $app = $this->matchedApp = $this->matchedData[static::APP];
+            }
         }
 
-        unset($arrTemp);
+        return ucfirst($app);
+    }
 
-        return [
-            $controller ?  : $this->controller(),
-            $action ?  : $this->action(),
-            $app ?  : $this->app()
-        ];
+    /**
+     * 取回控制器名
+     *
+     * @return string
+     */
+    protected function matchedController()
+    {
+        if ($this->matchedController) {
+            $controller = $this->matchedController;
+        } else {
+            if (($this->matchedController = env('controller_name'))) {
+                $controller = $this->matchedController;
+            } else {
+                $controller = $this->matchedData[static::CONTROLLER];
+            }
+        }
+
+        return ucfirst($controller);
+    }
+
+    /**
+     * 取回方法名
+     *
+     * @return string
+     */
+    protected function matchedAction()
+    {
+        if ($this->matchedAction) {
+            $action = $this->matchedAction;
+        } else {
+            if (($this->matchedAction = env('action_name'))) {
+                $action = $this->matchedAction;
+            } else {
+                $action = $this->matchedData[static::ACTION];
+            }
+        }
+
+        if (strpos($action, '-') !== false) {
+            $action = str_replace('-', '_', $action);
+        } 
+
+        if (strpos($action, '_') !== false) {
+            $action = '_' . str_replace('_', ' ', $action);
+            $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
+        }
+
+        return $action;
+    }
+
+    /**
+     * 取回控制器前缀
+     *
+     * @return string|null
+     */
+    protected function matchedPrefix()
+    {
+        return $this->matchedData[static::PREFIX];
+    }
+
+    /**
+     * 取回匹配参数
+     *
+     * @return array
+     */
+    protected function matchedParams()
+    {
+        return $this->matchedData[static::PARAMS] ?? [];
+    }
+
+    /**
+     * 取回匹配中间件
+     *
+     * @return array
+     */
+    protected function matchedMiddlewares()
+    {
+        return $this->matchedData[static::MIDDLEWARES] ?? [];
     }
 }

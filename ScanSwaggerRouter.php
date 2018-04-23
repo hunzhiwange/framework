@@ -93,7 +93,7 @@ class ScanSwaggerRouter
      */
     protected function getTopDomain() 
     {
-        return option('top_domain');
+        return app()->appOption()['top_domain'];
     }
 
     /**

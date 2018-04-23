@@ -70,13 +70,6 @@ interface IRouter
     const PREFIX = '_prefix';
 
     /**
-     * 路由绑定
-     *
-     * @var string
-     */
-    const BIND = '_bind';
-
-    /**
      * 匹配基础路径
      *
      * @var string
@@ -117,6 +110,20 @@ interface IRouter
      * @var string
      */
     const DEFAULT_APP = 'app';
+
+    /**
+     * 默认首页控制器
+     *
+     * @var string
+     */
+    const DEFAULT_HOME_CONTROLLER = 'home';
+
+    /**
+     * 默认首页方法
+     *
+     * @var string
+     */
+    const DEFAULT_HOME_ACTION = 'handle';
 
     /**
      * 默认替换参数[字符串]

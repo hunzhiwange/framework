@@ -193,9 +193,6 @@ class Url
         // 中间件
         $result[Router::MIDDLEWARES] = $routers['middlewares'];
 
-        // 路由绑定
-        $result[Router::BIND] = $routers['bind'];
-
         return $result;
     }
 
@@ -225,7 +222,7 @@ class Url
         if ($routers['domain']) {
             //$host = $this->request->getHttpHost();
             $host = $this->request->getHost();
-
+            
             if ($routers['domain_regex']) {
                 if(! preg_match($routers['domain_regex'], $host, $matches)) {
                     return false;
