@@ -20,14 +20,13 @@ use ArrayAccess;
 use SplFileObject;
 use RuntimeException;
 use Leevel\{
-    Option\TClass,
     Support\TMacro,
     Support\IArray
 };
 
 /**
  * HTTP 请求
- * This class borrows heavily from the Symfony2 Framework and is part of the symfony package
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
  * 
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -37,8 +36,6 @@ use Leevel\{
  */
 class Request implements IRequest, IArray, ArrayAccess
 {
-    use TClass;
-
     use TMacro;
 
     /**
@@ -168,32 +165,6 @@ class Request implements IRequest, IArray, ArrayAccess
     protected $language;
 
     /**
-     * 配置
-     *
-     * @var array
-     */
-    protected $option = [
-        'var_method' => '_method',
-        'var_ajax' => '_ajax',
-        'var_pjax' => '_pjax',
-        'html_suffix' => '.html',
-        'rewrite' => false,
-        'public' => 'http://public.foo.bar'
-    ];
-
-    /**
-     * 服务器 url 重写支持 pathInfo
-     *
-     * Nginx
-     * location @rewrite {
-     *     rewrite ^/(.*)$ /index.php?_url=/$1;
-     * }
-     *
-     * @var string
-     */
-    const PATHINFO_URL = '_url';
-
-    /**
      * 构造函数
      * 
      * @param array $query
@@ -203,13 +174,11 @@ class Request implements IRequest, IArray, ArrayAccess
      * @param array $files
      * @param array $server
      * @param string $content
-     * @param array $option
      * @return void
      */
-    public function __construct(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null, array $option = [])
+    public function __construct(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
         $this->reset($query, $request, $params, $cookies, $files, $server, $content);
-        $this->options($option);
     }
 
     /**
@@ -222,7 +191,6 @@ class Request implements IRequest, IArray, ArrayAccess
      * @param array $files
      * @param array $server
      * @param string $content
-     * @param array $option
      * @return void
      */
     public function reset(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null)
@@ -250,12 +218,11 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 全局变量创建一个 Request
      *
-     * @param array $options
      * @return static
      */
-    public static function createFromGlobals(array $option = [])
+    public static function createFromGlobals()
     {
-        $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null, $option);
+        $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
 
         $request = static::normalizeRequestFromContent($request);
 
@@ -620,7 +587,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isAjax()
     {
-        $field = $this->getOption('var_ajax');
+        $field = static::VAR_AJAX;
 
         if ($this->request->has($field) || $this->query->has($field)) {
             return true;
@@ -656,7 +623,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isPjax()
     {
-        $field = $this->getOption('var_pjax');
+        $field = static::VAR_PJAX;
 
         if ($this->request->has($field) || $this->query->has($field)) {
             return true;
@@ -674,6 +641,106 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         return ! is_null($this->headers->get('X_PJAX'));
     }
+
+    /**
+     * 是否为 json 请求行为
+     *
+     * @return bool
+     */
+    public function isJson()
+    {
+        $field = static::VAR_JSON;
+
+        if ($this->request->has($field) || $this->query->has($field)) {
+            return true;
+        }
+
+        return $this->isRealJson();
+    }
+
+    /**
+     * 是否为 json 请求行为真实
+     *
+     * @return boolean
+     */
+    public function isRealJson()
+    {
+        $contentType = $this->headers->get('CONTENT_TYPE');
+
+        if (! $contentType) {
+            return false;
+        }
+
+        foreach (['/json', '+json'] as $item) {
+            if (strpos($contentType, $item) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 是否为接受 json 请求
+     *
+     * @return bool
+     */
+    public function isAcceptJson()
+    {
+        $field = static::VAR_ACCEPT_JSON;
+
+        if ($this->request->has($field) || $this->query->has($field)) {
+            return true;
+        }
+
+        if ($this->isAjax() && ! $this->isPjax() && $this->isAcceptAny()) {
+            return true;
+        }
+
+        return $this->isRealAcceptJson();
+    }
+
+    /**
+     * 是否为接受 json 请求真实
+     *
+     * @return boolean
+     */
+    public function isRealAcceptJson()
+    {
+        $accept = $this->headers->get('ACCEPT');
+
+        if (! $accept) {
+            return false;
+        }
+
+        foreach (['/json', '+json'] as $item) {
+            if (strpos($accept, $item) !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 是否为接受任何请求
+     *
+     * @return boolean
+     */
+    public function isAcceptAny()
+    {
+        $accept = $this->headers->get('ACCEPT');
+
+        if (! $accept) {
+            return true;
+        }
+
+        if (strpos($accept, '*') !== false) {
+            return true;
+        }
+
+        return false;
+    } 
 
     /**
      * 是否为手机访问
@@ -922,7 +989,7 @@ class Request implements IRequest, IArray, ArrayAccess
             if ($method = $this->headers->get('X-HTTP-METHOD-OVERRIDE')) {
                 $this->method = strtoupper($method);
             } else {
-                $field = $this->getOption('var_method');
+                $field = static::VAR_METHOD;
 
                 $this->method = strtoupper($this->request->get($field, $this->query->get($field, 'POST')));
             }
@@ -1106,11 +1173,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function getPublicUrl()
     {
-        if (! is_null($this->publicUrl)) {
-            return $this->publicUrl;
-        }
-
-        return $this->publicUrl = $this->getOption('public');
+        return $this->publicUrl;
     }
 
     /**
@@ -1148,10 +1211,6 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $scriptName = $this->getScriptName();
-
-        if ($this->getOption('rewrite') !== true) {
-            return $scriptName;
-        }
 
         $scriptName = dirname($scriptName);
         if ($scriptName == '\\') {
@@ -1491,9 +1550,12 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     protected function parsePathInfo($pathInfo)
     {
-        if ($pathInfo && $this->getOption('html_suffix')) {
-            $suffix = substr($this->getOption('html_suffix'), 1);
-            $pathInfo = preg_replace('/\.' . $suffix . '$/', '', $pathInfo);
+        // 自动清除后缀
+        if ($pathInfo) {
+            $ext = pathinfo($pathInfo, PATHINFO_EXTENSION);
+            if ($ext) {
+                $pathInfo = substr($pathInfo, 0, -strlen($ext) -1);
+            }
         }
 
         $pathInfo = empty($pathInfo) ? '/' : $pathInfo;
