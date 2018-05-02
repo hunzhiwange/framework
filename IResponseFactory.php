@@ -47,7 +47,7 @@ interface IResponseFactory
      * @param array $headers
      * @return \Leevel\Http\Response
      */
-    public function view($file = null, array $vars = [], string $ext = '', $status = 200, array $headers = []);
+    public function view(?string $file = null, array $vars = [], ?string $ext = null, $status = 200, array $headers = []);
 
     /**
      * 返回视图正确消息
@@ -184,17 +184,6 @@ interface IResponseFactory
     public function apiNoContent();
 
     /**
-     * 无法处理的实体
-     * 请求格式正确，但是由于含有语义错误，无法响应: 422
-     * 
-     * @param array $errors
-     * @param string $message
-     * @param string $text
-     * @return $this
-     */
-    public function apiUnprocessableEntity(array $errors = null, $message = null, $text = null);
-
-    /**
      * 错误请求
      * 服务器不理解请求的语法: 400
      * 
@@ -254,6 +243,17 @@ interface IResponseFactory
      * @return $this
      */
     public function apiMethodNotAllowed($message = null, $text = null);
+
+    /**
+     * 无法处理的实体
+     * 请求格式正确，但是由于含有语义错误，无法响应: 422
+     * 
+     * @param array $errors
+     * @param string $message
+     * @param string $text
+     * @return $this
+     */
+    public function apiUnprocessableEntity(?array $errors = null, $message = null, $text = null);
 
     /**
      * 太多请求

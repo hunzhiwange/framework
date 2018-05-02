@@ -99,7 +99,7 @@ class ResponseFactory implements IResponseFactory
      * @param array $headers
      * @return \Leevel\Http\Response
      */
-    public function view($file = null, array $vars = [], string $ext = '', $status = 200, array $headers = [])
+    public function view(?string $file = null, array $vars = [], ?string $ext = null, $status = 200, array $headers = [])
     {
         return $this->make($this->view->display($file, $vars, $ext), $status, $headers);
     }
@@ -294,21 +294,7 @@ class ResponseFactory implements IResponseFactory
     }
 
     /**
-     * 无法处理的实体
-     * 请求格式正确，但是由于含有语义错误，无法响应: 422
-     * 
-     * @param array $errors
-     * @param string $message
-     * @param string $text
-     * @return $this
-     */
-    public function apiUnprocessableEntity(array $errors = null, $message = null, $text = null) {
-        return $this->createApiResponse()->unprocessableEntity($errors, $message, $text);
-    }
-
-    /**
      * 错误请求
-     * 服务器不理解请求的语法: 400
      * 
      * @param string $message
      * @param string $message
@@ -377,6 +363,19 @@ class ResponseFactory implements IResponseFactory
      */
     public function apiMethodNotAllowed($message = null, $text = null) {
         return $this->createApiResponse()->methodNotAllowed($message, $text);
+    }
+
+    /**
+     * 无法处理的实体
+     * 请求格式正确，但是由于含有语义错误，无法响应: 422
+     * 
+     * @param array $errors
+     * @param string $message
+     * @param string $text
+     * @return $this
+     */
+    public function apiUnprocessableEntity(?array $errors = null, $message = null, $text = null) {
+        return $this->createApiResponse()->unprocessableEntity($errors, $message, $text);
     }
 
     /**
