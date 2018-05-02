@@ -16,7 +16,6 @@
  */
 namespace Leevel\Bootstrap\Bootstrap;
 
-use Leevel\Support\Facade;
 use Leevel\Bootstrap\Project;
 
 /**
@@ -37,8 +36,6 @@ class TraverseProvider
      * @return void
      */
     public function handle(Project $project) {
-        Facade::setContainer($project);
-
         $project->registerProviders();
 
         $project->bootstrapProviders();

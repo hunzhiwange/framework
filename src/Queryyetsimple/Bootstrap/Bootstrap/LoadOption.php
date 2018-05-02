@@ -18,6 +18,7 @@ namespace Leevel\Bootstrap\Bootstrap;
 
 use Leevel\Option\Load;
 use Leevel\Option\Option;
+use Leevel\Support\Facade;
 use Leevel\Bootstrap\Project;
 
 /**
@@ -49,6 +50,8 @@ class LoadOption
         }
 
         $project->instance('option', $option = new Option($data));
+
+        Facade::setContainer($project);
 
         $this->initialization($option);
     }

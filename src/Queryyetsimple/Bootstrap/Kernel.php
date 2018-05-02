@@ -17,9 +17,9 @@
 namespace Leevel\Bootstrap;
 
 use Exception;
-use Throwable;
 use Leevel\Http\Request;
 use Leevel\Router\Router;
+use Leevel\Http\IResponse;
 use Leevel\Bootstrap\Bootstrap\{
     LoadOption,
     RegisterRuntime,
@@ -83,10 +83,23 @@ abstract class Kernel implements IKernel
      */
     public function handle(Request $request)
     {
-        exit();
         $response = $this->getResponseWithRequest($request);
 
-        exit();
+        return $response;
+    }
+
+    /**
+     * 执行结束
+     *
+     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IResponse $response
+     * @return void
+     */
+    public function terminate(Request $request, IResponse $response)
+    {
+        $this->router->throughMiddleware($request, [
+            $response
+        ]);
     }
 
     /**
