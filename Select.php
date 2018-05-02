@@ -825,7 +825,7 @@ class Select
      */
     public function getCount($strField = '*', $sAlias = 'row_count', $bFlag = false)
     {
-        $arrRow = ( array ) $this->sql($bFlag, true)->asDefault()->count($strField, $sAlias)->get();
+        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->count($strField, $sAlias)->get();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -842,7 +842,7 @@ class Select
      */
     public function getAvg($strField, $sAlias = 'avg_value', $bFlag = false)
     {
-        $arrRow = ( array ) $this->sql($bFlag, true)->asDefault()->avg($strField, $sAlias)->get();
+        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->avg($strField, $sAlias)->get();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -859,7 +859,7 @@ class Select
      */
     public function getMax($strField, $sAlias = 'max_value', $bFlag = false)
     {
-        $arrRow = ( array ) $this->sql($bFlag, true)->asDefault()->max($strField, $sAlias)->get();
+        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->max($strField, $sAlias)->get();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -876,7 +876,7 @@ class Select
      */
     public function getMin($strField, $sAlias = 'min_value', $bFlag = false)
     {
-        $arrRow = ( array ) $this->sql($bFlag, true)->asDefault()->min($strField, $sAlias)->get();
+        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->min($strField, $sAlias)->get();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -893,7 +893,7 @@ class Select
      */
     public function getSum($strField, $sAlias = 'sum_value', $bFlag = false)
     {
-        $arrRow = ( array ) $this->sql($bFlag, true)->asDefault()->sum($strField, $sAlias)->get();
+        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->sum($strField, $sAlias)->get();
         if ($bFlag === true) {
             return $arrRow;
         }
@@ -1796,7 +1796,7 @@ class Select
         }
 
         if (! is_array($mixSelect)) {
-            $mixSelect = ( array ) $mixSelect;
+            $mixSelect = (array) $mixSelect;
         }
 
         foreach ($mixSelect as $mixTemp) {
@@ -2873,7 +2873,7 @@ class Select
                 if (isset($mixCond[2])) {
                     $booIsArray = true;
                     if (! is_array($mixCond[2])) {
-                        $mixCond[2] = ( array ) $mixCond[2];
+                        $mixCond[2] = (array) $mixCond[2];
                         $booIsArray = false;
                     }
 
@@ -3122,7 +3122,7 @@ class Select
 
                 // 处理字符串 "null"
                 if (is_scalar($arrTemp)) {
-                    $arrTemp = ( array ) $arrTemp;
+                    $arrTemp = (array) $arrTemp;
                 }
 
                 // 合并字段到数组
@@ -3633,7 +3633,7 @@ class Select
         }
 
         foreach ($arrData as &$mixTemp) {
-            $mixTemp = new $sClassName(( array ) $mixTemp);
+            $mixTemp = new $sClassName((array) $mixTemp);
         }
 
         // 创建一个单独的对象
