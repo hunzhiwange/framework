@@ -48,18 +48,18 @@ class Project extends Container implements IProject
     protected static $project;
 
     /**
-     * 项目配置
-     *
-     * @var array
-     */
-    protected $arrOption = [];
-
-    /**
      * 项目基础路径
      *
      * @var string
      */
     protected $path;
+
+    /**
+     * 应用路径
+     *
+     * @var string
+     */
+    protected $applicationPath;
 
     /**
      * 环境变量路径
@@ -76,32 +76,18 @@ class Project extends Container implements IProject
     protected $envFile;
 
     /**
-     * 项目 APP 基本配置
-     *
-     * @var array
-     */
-    protected $arrAppOption = [];
-
-    /**
-     * 系统所有环境变量
-     *
-     * @var array
-     */
-    protected $envs = [];
-
-    /**
      * 延迟载入服务提供者
      *
      * @var array
      */
-    protected $arrDeferredProviders = [];
+    protected $deferredProviders = [];
 
     /**
      * 服务提供者 bootstrap
      *
      * @var array
      */
-    protected $arrProviderBootstrap = [];
+    protected $providerBootstraps = [];
 
     /**
      * 构造函数
@@ -132,80 +118,17 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 执行项目
-     *
-     * @return $this
-     */
-    public function run()
-    {
-        $this->appInit();
-
-        $this->appRouter();
-
-        $this->appRun();
-
-        return $this;
-    }
-
-    /**
-     * 完成路由请求
-     *
-     * @return void
-     */
-    public function appRouter()
-    {
-        $this->router->run();
-    }
-    
-    /**
-     * 执行应用
-     *
-     * @param string $app
-     * @return void
-     */
-    public function appRun($app = null)
-    {
-        if (! $app) {
-            $app = $this->request->app();
-        }
-
-        $this->make(Application::class)->
-
-        bootstrap($app)->
-
-        run();
-    }
-
-    /**
      * 返回项目
      *
-     * @param array $arrOption
-     * @param boolean $autorun
      * @return static
      */
-    public static function singletons($arrOption = [], $autorun = true)
+    public static function singletons()
     {
         if (static::$project !== null) {
             return static::$project;
         } else {
-            static::$project = new static($arrOption);
-
-            if ($autorun === true) {
-                //static::$project->run();
-            }
-
-            return static::$project;
+            return static::$project = new static($arrOption);
         }
-    }
-
-    /**
-     * 是否以扩展方式运行
-     *
-     * @return boolean
-     */
-    public function runWithExtension()
-    {
-        return extension_loaded('leevel');
     }
 
     /**
@@ -219,27 +142,27 @@ class Project extends Container implements IProject
     }
 
     /**
-     * {@inheritdoc}
+     * 是否以扩展方式运行
+     *
+     * @return boolean
      */
-    public function make($strFactoryName, ?array $arrArgs = null)
+    public function runWithExtension()
     {
-        $strFactoryName = $this->getAlias($strFactoryName);
-
-        if (isset($this->arrDeferredProviders[$strFactoryName])) {
-            $this->registerDeferredProvider($strFactoryName);
-        }
-
-        return parent::make($strFactoryName, $arrArgs);
+        return extension_loaded('leevel');
     }
 
     /**
-     * 系统所有环境变量
-     *
-     * @return array
+     * {@inheritdoc}
      */
-    public function envs()
+    public function make($name, ?array $args = null)
     {
-        return $this->envs;
+        $name = $this->getAlias($name);
+
+        if (isset($this->deferredProviders[$name])) {
+            $this->registerDeferredProvider($name);
+        }
+
+        return parent::make($name, $args);
     }
 
     /**
@@ -276,7 +199,20 @@ class Project extends Container implements IProject
      */
     public function pathApplication()
     {
-        return $this->arrOption['path_application'] ?? $this->path . DIRECTORY_SEPARATOR . 'application';
+        return $this->applicationPath ?? $this->path . DIRECTORY_SEPARATOR . 'application';
+    }
+
+    /**
+     * 设置应用路径
+     *
+     * @param string $path
+     * @return $this
+     */
+    public function setPathApplication(string $path)
+    {
+        $this->applicationPath = $path;
+
+        return $this;
     }
 
     /**
@@ -553,7 +489,7 @@ class Project extends Container implements IProject
      */
     public function api()
     {
-        return $this->arrAppOption['default_response'] == 'api';
+        return $this['request']->isAcceptJson();;
     }
 
     /**
@@ -564,15 +500,6 @@ class Project extends Container implements IProject
     public function console()
     {
         return $this['request']->isCli();
-    }
-
-    /**
-     * 返回应用配置
-     *
-     * @return array
-     */
-    public function appOption() {
-        return $this->arrAppOption;
     }
 
     /**
@@ -617,58 +544,6 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置项目基础配置
-     *
-     * @param array $arrOption
-     * @return $this
-     */
-    protected function setOption($arrOption)
-    {
-        $this->arrOption = $arrOption;
-
-        return $this;
-    }
-
-    /**
-     * 载入 APP 配置
-     *
-     * @return $this
-     */
-    protected function loadApp()
-    {
-        $strCache = $this->appOptionCachePath();
-
-        $this->loadAppOption($strCache);
-
-        return $this;
-    }
-
-    /**
-     * 初始化处理
-     *
-     * @return $this
-     */
-    protected function initProject()
-    {
-        // if ($this->development()) {
-        //     error_reporting(E_ALL);
-        // } else {
-        //     error_reporting(E_ERROR | E_PARSE | E_STRICT);
-        // }
-
-        ini_set('default_charset', 'utf8');
-
-        
-
-        // 载入 project 引导文件
-        if (is_file(($strBootstrap = $this->pathCommon() . '/bootstrap.php'))) {
-            require_once $strBootstrap;
-        }
-
-        return $this;
-    }
-
-    /**
      * 框架基础提供者 register
      *
      * @return $this
@@ -679,7 +554,7 @@ class Project extends Container implements IProject
 
         $strCachePath = $this->defferProviderCachePath();
         if (! $this->development() && is_file($strCachePath)) {
-            list($this->arrDeferredProviders, $arrDeferredAlias) = include $strCachePath;
+            list($this->deferredProviders, $arrDeferredAlias) = include $strCachePath;
             $booCache = true;
         } else {
             $arrDeferredAlias = [];
@@ -701,7 +576,7 @@ class Project extends Container implements IProject
                     if (is_int($mixKey)) {
                         $mixKey = $mixAlias;
                     }
-                    $this->arrDeferredProviders[$mixKey] = $strProvider;
+                    $this->deferredProviders[$mixKey] = $strProvider;
                 }
                 $this->alias($arrProviders);
                 $arrDeferredAlias[$strProvider] = $arrProviders;
@@ -712,7 +587,7 @@ class Project extends Container implements IProject
             $objProvider->register();
 
             if (method_exists($objProvider, 'bootstrap')) {
-                $this->arrProviderBootstrap[] = $objProvider;
+                $this->providerBootstraps[] = $objProvider;
             }
         }
 
@@ -724,7 +599,7 @@ class Project extends Container implements IProject
         if ($this->development() || ! is_file($strCachePath)) {
             file_put_contents($strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
                 PHP_EOL . '<?' . 'php return ' . var_export([
-                $this->arrDeferredProviders,
+                $this->deferredProviders,
                 $arrDeferredAlias
             ], true) . '; ?' . '>');
 
@@ -741,7 +616,7 @@ class Project extends Container implements IProject
      */
     public function bootstrapProviders()
     {
-        foreach ($this->arrProviderBootstrap as $obj) {
+        foreach ($this->providerBootstraps as $obj) {
             $this->callProviderBootstrap($obj);
         }
 
@@ -790,12 +665,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * Register a service provider with the application.
+     * 注册服务提供者
      *
-     * @param  \Illuminate\Support\ServiceProvider|string  $provider
-     * @param  array  $options
-     * @param  bool   $force
-     * @return \Illuminate\Support\ServiceProvider
+     * @param \Leevel\Di\Provider|string $provider
+     * @return \Leevel\Di\Provider
      */
     public function register($provider)
     {
@@ -809,12 +682,9 @@ class Project extends Container implements IProject
 
         $this->alias($provider::providers());
 
-        // If the application has already booted, we will call this boot method on
-        // the provider class so it has an opportunity to do its boot logic and
-        // will be ready for any usage by this developer's application logic.
-        if ($this->booted) {
-           // $this->bootProvider($provider);
-        }
+        // if ($this->booted) {
+        //    $this->bootProvider($provider);
+        // }
 
         return $provider;
     }
@@ -827,18 +697,18 @@ class Project extends Container implements IProject
      */
     protected function registerDeferredProvider($strProvider)
     {
-        if (! isset($this->arrDeferredProviders[$strProvider])) {
+        if (! isset($this->deferredProviders[$strProvider])) {
             return;
         }
 
-        $objProvider = $this->makeProvider($this->arrDeferredProviders[$strProvider]);
+        $objProvider = $this->makeProvider($this->deferredProviders[$strProvider]);
         $objProvider->register();
 
         if (method_exists($objProvider, 'bootstrap')) {
             $this->callProviderBootstrap($objProvider);
         }
 
-        unset($this->arrDeferredProviders[$strProvider]);
+        unset($this->deferredProviders[$strProvider]);
     }
 
     /**
@@ -849,30 +719,5 @@ class Project extends Container implements IProject
     protected function defferProviderCachePath()
     {
         return $this->pathRuntime() . '/provider/deffer.php';
-    }
-
-    /**
-     * 载入 APP 配置
-     *
-     * @param string $strCache
-     * @return void
-     */
-    protected function loadAppOption($strCache)
-    {
-        if (is_file($strCache) && is_array($arrOption = include $strCache)) {
-            $this->arrAppOption = $arrOption['app'];
-        } else {
-            $this->arrAppOption = (array) include $this->pathCommon() . '/ui/option/app.php';
-        }
-    }
-
-    /**
-     * 系统缓存路径
-     *
-     * @return string
-     */
-    protected function appOptionCachePath()
-    {
-        return $this->pathApplicationCache('option') . '/' . Application::INIT_APP . '.php';
     }
 }

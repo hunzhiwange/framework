@@ -96,16 +96,6 @@ class Application
      */
     public function run()
     {
-        $response = $this->project['router']->doBind();
-        if (! ($response instanceof IResponse)) {
-            $response = $this->project['response']->make($response);
-        }
-
-        // 穿越中间件
-        $this->project['router']->throughMiddleware($this->project['request'], [
-            $response
-        ]);
-
         // 调试
         if ($this->project->debug()) {
             if (($response instanceof ApiResponse || $response instanceof JsonResponse || $response->isJson()) && 
@@ -120,53 +110,6 @@ class Application
 
         // 输出响应
         $response->send();
-    }
-
-    /**
-     * 初始化应用
-     *
-     * @param string $sApp
-     * @return $this
-     */
-    public function bootstrap($sApp = null)
-    {
-        if (! is_null($sApp)) {
-            $this->strApp = $sApp;
-        }
-
-        if (in_array($this->strApp, $this->loadedApp)) {
-            return $this;
-        }
-
-
-        if ($this->isInitApp()) {
-            //$this->loadOption();
-
-            $this->initialization();
-        } else {
-            $this->loadOption();
-
-            foreach ($this->arrEvent as $strEvent) {
-                $strEvent = $strEvent . 'Bootstrap';
-                $this->{$strEvent}();
-            }
-        }
-
-        $this->loadedApp[] = $this->strApp;
-        
-        return $this;
-    }
-
-    /**
-     * 载入 app 引导文件
-     *
-     * @return void
-     */
-    protected function loadBootstrapBootstrap()
-    {
-        if (is_file(($strBootstrap = env('app_bootstrap') ?  : $this->project->pathApplication() . '/' . $this->strApp . '/bootstrap.php'))) {
-            require_once $strBootstrap;
-        }
     }
 
     /**
@@ -222,52 +165,6 @@ class Application
         } else {
             $this->project['console.load']->setCachePath($sCachePath);
         }
-    }
-
-    /**
-     * 分析配置文件
-     *
-     * @return void
-     */
-    protected function loadOption()
-    {
-        $sCachePath = $this->getOptionCachePath();
-
-        if ($this->isInitApp()) {
-            if (! is_file($sCachePath) || !$this->project['option']->reset((array) include $sCachePath) || $this->project->development()) {
-                $this->cacheOption($sCachePath);
-            }
-        } else {
-            if (! $this->project->development() && is_file($sCachePath)) {
-                $this->project['option']->reset((array) include $sCachePath);
-            } else {
-                $this->cacheOption($sCachePath);
-            }
-        }
-    }
-
-    /**
-     * 返回 i18n 目录
-     *
-     * @param string $sI18nSet
-     * @return array
-     */
-    protected function getI18nDir()
-    {
-        $arrDir = [
-            $this->project->pathCommon() . '/ui/i18n',
-            $this->project->pathApplicationDir('i18n')
-        ];
-
-        if ($this->project['option']['i18n\extend']) {
-            if (is_array($this->project['option']['i18n\extend'])) {
-                $arrDir = array_merge($arrDir, $this->project['option']['i18n\extend']);
-            } else {
-                $arrDir[] = $this->project['option']['i18n\extend'];
-            }
-        }
-
-        return $arrDir;
     }
 
     /**
@@ -337,20 +234,6 @@ class Application
 
             loadData($this->extendOption())
         );
-    }
-
-    /**
-     * 额外的系统缓存配置
-     *
-     * @return array
-     */
-    protected function extendOption()
-    {
-        return [
-            'app' => [
-                '~envs~' => $this->project->envs()
-            ]
-        ];
     }
 
     /**

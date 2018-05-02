@@ -107,7 +107,7 @@ abstract class Kernel implements IKernel
      *
      * @return \Leevel\Bootstrap\IProject
      */
-    protected function getProject() {
+    public function getProject() {
         return $this->project;
     }
 

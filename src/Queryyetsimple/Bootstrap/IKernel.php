@@ -16,6 +16,9 @@
  */
 namespace Leevel\Bootstrap;
 
+use Leevel\Http\Request;
+use Leevel\Http\IResponse;
+
 /**
  * 内核执行接口
  *
@@ -27,4 +30,27 @@ namespace Leevel\Bootstrap;
 interface IKernel
 {
 
+    /**
+     * 响应 HTTP 请求
+     *
+     * @param \Leevel\Http\Request $request
+     * @return \Leevel\Http\IResponse
+     */
+    public function handle(Request $request);
+
+    /**
+     * 执行结束
+     *
+     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IResponse $response
+     * @return void
+     */
+    public function terminate(Request $request, IResponse $response);
+
+    /**
+     * 返回项目
+     *
+     * @return \Leevel\Bootstrap\IProject
+     */
+    public function getProject();
 }
