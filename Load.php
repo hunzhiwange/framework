@@ -16,11 +16,12 @@
  */
 namespace Leevel\Option;
 
+use Exception;
+use Dotenv\Dotenv;
 use RuntimeException;
-use Leevel\{
-    Support\Arr,
-    Filesystem\Fso
-};
+use Leevel\Bootstrap\IProject;
+use Dotenv\Exception\InvalidFileException;
+use Dotenv\Exception\InvalidPathException;
 
 /**
  * 配置工具类
@@ -32,20 +33,12 @@ use Leevel\{
  */
 class Load
 {
-
     /**
-     * 缓存路径
+     * 配置路径
      *
      * @var string
      */
-    protected $strCachePath;
-
-    /**
-     * 载入路径
-     *
-     * @var array
-     */
-    protected $arrDir = [];
+    protected $dir = [];
 
     /**
      * 已经载入数据
@@ -57,109 +50,86 @@ class Load
     /**
      * 构造函数
      *
-     * @param array $arrDir
+     * @param string $dir
      * @return void
      */
-    public function __construct(array $arrDir = [])
+    public function __construct(string $dir)
     {
-        $this->arrDir = $arrDir;
-    }
+        if (! is_string($dir)) {
+            throw new RuntimeException('Option load dir is not exits.');
+        }
 
-    /**
-     * 设置缓存路径
-     *
-     * @param string $strCachePath
-     * @return $this
-     */
-    public function setCachePath($strCachePath)
-    {
-        $this->strCachePath = $strCachePath;
-        return $this;
-    }
-
-    /**
-     * 设置目录
-     *
-     * @param array $arrDir
-     * @return $this
-     */
-    public function setDir(array $arrDir)
-    {
-        $this->arrDir = $arrDir;
-        return $this;
-    }
-
-    /**
-     * 添加目录
-     *
-     * @param array $arrDir
-     * @return $this
-     */
-    public function addDir(array $arrDir)
-    {
-        $this->arrDir = array_unique(array_merge($this->arrDir, $arrDir));
-        return $this;
+        $this->dir = $dir;
     }
 
     /**
      * 载入配置数据
      *
-     * @param array $arrExtendData
+     * @param \Leevel\Bootstrap\IProject $project
      * @return array
      */
-    public function loadData($arrExtendData = [])
+    public function loadData(IProject $project)
     {
         if ($this->loaded) {
             return $this->loaded;
         }
 
-        $arrData = $arrType = [];
+        $env = $this->loadEnvData($project);
 
-        foreach ($this->arrDir as $sDir) {
-            if (is_dir($sDir) && ($arrFile = Fso::lists($sDir, 'file', false, [], [
-                'php'
-            ]))) {
-                foreach ($arrFile as $strFile) {
-                    $strType = substr($strFile, 0, - 4);
-                    $arrType[] = $strType;
+        $data = $this->loadOptionData();
 
-                    if (! isset($arrData[$strType])) {
-                        $arrData[$strType] = [];
-                    }
-                    if (is_array($arrFoo = include $sDir . '/' . $strFile)) {
-                        $arrData[$strType] = array_merge($arrData[$strType], $arrFoo);
-                    }
-                }
+        $data['app']['_env'] = $env;
+
+        return $this->loaded = $data;
+    }
+
+    /**
+     * 载入环境变量数据
+     * 
+     * @param \Leevel\Bootstrap\IProject $project
+     * @return array
+     */
+    protected function loadEnvData(IProject $project)
+    {
+        try {
+            (new Dotenv($project->pathEnv(), $project->envFile()))->load();
+        } catch (InvalidPathException $e) {
+            exit($e->getMessage());
+        } catch (InvalidFileException $e) {
+            exit($e->getMessage());
+        }
+
+        return $_ENV;
+    }
+
+    /**
+     * 载入配置数据
+     *
+     * @return array
+     */
+    protected function loadOptionData()
+    {
+        $data = [];
+
+        $files = glob($this->dir . '/*.php');
+
+        $findApp = false;
+
+        foreach ($files as $file) {
+            $type = substr(basename($file), 0, -4);
+
+            if ($type == 'app') {
+                $findApp = true;
             }
+
+            $data[$type] = (array) include $file;
         }
 
-        foreach ($arrType as $sType) {
-            $arrData[$sType] = Arr::merge($arrData[$sType]);
+
+        if ($findApp === false) {
+            throw new Exception('Unable to load the app option file.');
         }
 
-        if ($arrExtendData) {
-            foreach ($arrExtendData as $sType => $arrTemp) {
-                if (isset($arrData[$sType])) {
-                    $arrData[$sType] = Arr::merge(array_merge($arrData[$sType], $arrTemp));
-                } else {
-                    $arrData[$sType] = $arrTemp;
-                }
-            }
-        }
-
-        $sCacheFile = $this->strCachePath;
-        $sDir = dirname($sCacheFile);
-        if (! is_dir($sDir)) {
-            mkdir($sDir, 0777, true);
-        }
-
-        if (! file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
-            PHP_EOL . '<?' . 'php return ' . var_export($arrData, true) . '; ?' . '>')) {
-            throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
-        }
-
-        chmod($sCacheFile, 0777);
-
-        return $this->loaded = $arrData;
+        return $data;
     }
 }
