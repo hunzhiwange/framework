@@ -185,7 +185,7 @@ class Router implements IRouter
      * 分发请求到路由
      *
      * @param \Leevel\Http\Request $request
-     * @return \Leevel\Http\Response
+     * @return \Leevel\Http\IResponse
      */
     public function dispatch(Request $request)
     {
@@ -498,7 +498,7 @@ class Router implements IRouter
      * 发送路由并返回响应
      *
      * @param \Leevel\Http\Request $request
-     * @return mixed
+     * @return \Leevel\Http\IResponse
      */
     protected function dispatchToRoute(Request $request)
     {
@@ -510,7 +510,7 @@ class Router implements IRouter
     /**
      * 运行路由
      *
-     * @return mixed
+     * @return \Leevel\Http\IResponse
      */
     protected function runRoute($request, $bind)
     {
@@ -519,7 +519,7 @@ class Router implements IRouter
         $response = $this->container->call($bind, $this->matchedVars());
 
         if (! ($response instanceof IResponse)) {
-            $response = new Response($response)
+            $response = new Response($response);
         }
 
         return $response;
@@ -773,7 +773,10 @@ class Router implements IRouter
      */
     protected function matchedMiddlewares()
     {
-        return $this->matchedData[static::MIDDLEWARES] ?? [];
+        return $this->matchedData[static::MIDDLEWARES] ?? [
+            'handle' => [],
+            'terminate' => []
+        ];
     }
 
     /**
