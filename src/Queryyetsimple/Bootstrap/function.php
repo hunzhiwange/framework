@@ -533,19 +533,6 @@ if (! function_exists('path_runtime')) {
     }
 }
 
-if (! function_exists('path_public')) {
-    /**
-     * 取得项目资源路径
-     *
-     * @param string $strPath
-     * @return string
-     */
-    function path_public($strPath = '')
-    {
-        return project()->pathPublic() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
-    }
-}
-
 if (! function_exists('path_storage')) {
     /**
      * 取得项目附件路径

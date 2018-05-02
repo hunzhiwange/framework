@@ -62,6 +62,20 @@ class Project extends Container implements IProject
     protected $applicationPath;
 
     /**
+     * 公共路径
+     *
+     * @var string
+     */
+    protected $commonPath;
+
+    /**
+     * 运行时路径
+     *
+     * @var string
+     */
+    protected $runtimePath;
+
+    /**
      * 环境变量路径
      *
      * @var string
@@ -244,13 +258,39 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 设置公共路径
+     *
+     * @param string $path
+     * @return $this
+     */
+    public function setPathCommon(string $path)
+    {
+        $this->commonPath = $path;
+
+        return $this;
+    }
+
+    /**
      * 公共路径
      *
      * @return string
      */
     public function pathCommon()
     {
-        return $this->arrOption['path_common'] ?? $this->path . DIRECTORY_SEPARATOR . 'common';
+        return $this->commonPath ?? $this->path . DIRECTORY_SEPARATOR . 'common';
+    }
+
+    /**
+     * 设置运行时路径
+     *
+     * @param string $path
+     * @return $this
+     */
+    public function setPathRuntime(string $path)
+    {
+        $this->runtimePath = $path;
+
+        return $this;
     }
 
     /**
@@ -260,17 +300,7 @@ class Project extends Container implements IProject
      */
     public function pathRuntime()
     {
-        return $this->arrOption['path_runtime'] ?? $this->path . DIRECTORY_SEPARATOR . 'runtime';
-    }
-
-    /**
-     * 资源路径
-     *
-     * @return string
-     */
-    public function pathPublic()
-    {
-        return $this->arrOption['path_public'] ?? $this->path . DIRECTORY_SEPARATOR . 'public';
+        return $this->pathRuntime ?? $this->path . DIRECTORY_SEPARATOR . 'runtime';
     }
 
     /**
