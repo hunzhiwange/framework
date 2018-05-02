@@ -65,10 +65,10 @@ class ThriftProcessor
 
     protected function process_call($seqid, $input, $output)
     {
-        $args = new Thrift_call_args();
+        $args = new ThriftCallArgs();
         $args->read($input);
         $input->readMessageEnd();
-        $result = new Thrift_call_result();
+        $result = new ThriftCallResult();
         $result->success = $this->handler_->call($args->request);
         $bin_accel = ($output instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
         if ($bin_accel) {

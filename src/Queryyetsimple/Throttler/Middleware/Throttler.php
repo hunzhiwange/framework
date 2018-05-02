@@ -21,7 +21,7 @@ use Leevel\{
     Http\Request,
     Http\Response,
     Throttler\IThrottler,
-    Mvc\TooManyRequestsHttp
+    Kernel\Exception\TooManyRequestsHttpException
 };
 
 /**
@@ -73,11 +73,11 @@ class Throttler
      */
     public function handle(Closure $next, Request $request, $limit = 60, $time = 60)
     {
-        $rateLimiter = $this->throttler->create(null, ( int ) $limit, ( int ) $time);
+        $rateLimiter = $this->throttler->create(null, (int)$limit, (int)$time);
 
         if ($rateLimiter->attempt()) {
             $this->header($rateLimiter);
-            throw new TooManyRequestsHttp('Too many attempts.');
+            throw new TooManyRequestsHttpException('Too many attempts.');
         } else {
             $this->header($rateLimiter);
         }

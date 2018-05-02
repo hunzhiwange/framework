@@ -88,8 +88,8 @@ return [
      * 这里为所有的视图的连接参数，每一种不同的驱动拥有不同的配置
      * 虽然有不同的驱动，但是在视图使用上却有着一致性
      */
-    '+connect' => [
-        '+html' => [
+    'connect' => [
+        'html' => [
             // driver
             'driver' => 'html',
 
@@ -100,7 +100,7 @@ return [
             'cache_lifetime' => 2592000
         ],
 
-        '+twig' => [
+        'twig' => [
             // driver
             'driver' => 'twig',
 
@@ -108,7 +108,7 @@ return [
             'suffix' => '.twig'
         ],
 
-        '+v8' => [
+        'v8' => [
             // driver
             'driver' => 'v8',
 
@@ -125,7 +125,7 @@ return [
             'art_path' => path('node_modules/art-template/lib/template-web.js')
         ],
 
-        '+phpui' => [
+        'phpui' => [
             // driver
             'driver' => 'phpui',
 

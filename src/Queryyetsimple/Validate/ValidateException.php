@@ -26,7 +26,7 @@ use Exception;
  * @since 2017.08.25
  * @version 1.0
  */
-class ValidateFailed extends Exception
+class ValidateException extends Exception
 {
 
     /**

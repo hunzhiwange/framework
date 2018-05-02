@@ -49,14 +49,21 @@ class Url
      * 
      * @var boolean
      */
-    protected $matcheUrl = false;
+    protected $matchedUrl = false;
 
     /**
      * 匹配基础路径
      * 
      * @var string
      */
-    protected $matcheBasepath;
+    protected $matchedBasepath;
+
+    /**
+     * 匹配变量
+     * 
+     * @var array
+     */
+    protected $matchedVars = [];
 
     /**
      * 匹配数据项
@@ -91,7 +98,7 @@ class Url
         foreach ($basepaths as $path) {
             if (strpos($pathInfo, $path) === 0) {
                 $pathInfo = substr($pathInfo, strlen($path));
-                $this->matcheBasepath = $path;
+                $this->matchedBasepath = $path;
                 break;
             }
         }
@@ -122,7 +129,7 @@ class Url
         }
 
         // 直接匹配成功
-        $pathInfo = $this->matcheBasepath . $pathInfo;
+        $pathInfo = $this->matchedBasepath . $pathInfo;
         if (isset($urlRouters[$pathInfo])) {
             $urlRouters = $urlRouters[$pathInfo];
             return $this->matcheSuccessed($urlRouters);
@@ -132,7 +139,7 @@ class Url
         foreach ($urlRouters as $routers) {
             $matcheVars = $this->matcheVariable($routers, $pathInfo);
 
-            if ($this->matcheUrl === true) {
+            if ($this->matchedUrl === true) {
                 $result = $this->matcheSuccessed($routers, $matcheVars);
                 break;
             }
@@ -185,13 +192,16 @@ class Url
         }
 
         // 基础路径匹配 /v1
-        $result['params'][Router::BASEPATH] = $this->matcheBasepath;
+        $result['params'][Router::BASEPATH] = $this->matchedBasepath;
 
         $result[Router::PARAMS] = $result['params'];
         unset($result['params']);
 
         // 中间件
         $result[Router::MIDDLEWARES] = $routers['middlewares'];
+
+        // 匹配的变量
+        $result[Router::VARS] = $this->matchedVars;
 
         return $result;
     }
@@ -265,7 +275,7 @@ class Url
                 $this->addVariable($var, $value);
             }
 
-            $this->matcheUrl = true;
+            $this->matchedUrl = true;
         }
 
         return $result;
@@ -280,6 +290,6 @@ class Url
      */
     protected function addVariable(string $name, $value)
     {
-        $this->router->addVariable($name, $value);
+        $this->matchedVars[$name] = $value;
     }
 }

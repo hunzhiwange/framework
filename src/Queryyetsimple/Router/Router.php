@@ -26,7 +26,7 @@ use Leevel\{
     Http\Request,
     Di\IContainer,
     Http\Response,
-    Option\TClass,
+    Http\IResponse,
     Support\TMacro,
     Mvc\IController,
     Pipeline\Pipeline
@@ -39,6 +39,7 @@ use Leevel\Router\Match\{
 
 /**
  * 路由解析
+ * 2018.04.10 开始进行一次重构系统路由架构
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
@@ -48,8 +49,6 @@ use Leevel\Router\Match\{
 class Router implements IRouter
 {
     use TMacro;
-
-    //use TClass;
 
     /**
      * IOC Container
@@ -73,25 +72,11 @@ class Router implements IRouter
     protected $globalMiddlewares = [];
 
     /**
-     * 路由绑定中间件
-     *
-     * @var array
-     */
-    protected $arrMiddlewares = [];
-
-    /**
      * 当前的中间件
      *
      * @var array
      */
     protected $currentMiddlewares;
-
-    /**
-     * 路由匹配变量
-     *
-     * @var array
-     */
-    protected $variables = [];
 
     /**
      * 路由匹配数据
@@ -101,26 +86,10 @@ class Router implements IRouter
     protected $matchedData = [];
 
     /**
-     * 应用名字
+     * 绑定
      *
-     * @var string
+     * @var callable
      */
-    protected $matchedApp;
-
-    /**
-     * 控制器名字
-     *
-     * @var string
-     */
-    protected $matchedController;
-
-    /**
-     * 方法名字
-     *
-     * @var string
-     */
-    protected $matchedAction;
-
     protected $bind;
 
     /**
@@ -134,13 +103,29 @@ class Router implements IRouter
         self::ACTION => null,
         self::PREFIX => null,
         self::PARAMS => null,
-        self::MIDDLEWARES => null
+        self::MIDDLEWARES => null,
+        self::VARS => null
     ];
 
+    /**
+     * 基础路径 
+     *
+     * @var array
+     */
     protected $basepaths = [];
 
+    /**
+     * 分组
+     *
+     * @var array
+     */
     protected $groups = [];
 
+    /**
+     * 路由 
+     *
+     * @var array
+     */
     protected $routers = [];
     
     /**
@@ -165,35 +150,61 @@ class Router implements IRouter
     protected $controllerDir = 'App\Controller';
 
     /**
+     * 匹配应用名字
+     *
+     * @var string
+     */
+    protected $matchedApp;
+
+    /**
+     * 匹配控制器名字
+     *
+     * @var string
+     */
+    protected $matchedController;
+
+    /**
+     * 匹配方法名字
+     *
+     * @var string
+     */
+    protected $matchedAction;
+
+    /**
      * 构造函数
      *
      * @param \Leevel\Di\IContainer $container
-     * @param \Leevel\Http\Request $request
-     * @param array $arrOption
      * @return void
      */
-    public function __construct(IContainer $container, request $request, array $arrOption = [])
+    public function __construct(IContainer $container)
     {
         $this->container = $container;
-        $this->request = $request;
-        //$this->options($arrOption);
     }
 
     /**
-     * 执行请求
+     * 分发请求到路由
      *
-     * @return $this
+     * @param \Leevel\Http\Request $request
+     * @return \Leevel\Http\Response
      */
-    public function run()
+    public function dispatch(Request $request)
     {
-        // 初始化
-        $this->initRequest();
+        $this->request = $request;
 
-        // 匹配路由
-        $this->matchRouter();
+        return $this->dispatchToRoute($request);
+    }
 
-        // 穿越中间件
-        $this->throughMiddleware($this->request);
+    /**
+     * 初始化请求
+     *
+     * @return void
+     */
+    public function initRequest()
+    {
+        $this->matchedApp = null;
+        $this->matchedController = null;
+        $this->matchedAction = null;
+        $this->matchedData = self::$matcheDataInit;
     }
 
     /**
@@ -203,7 +214,7 @@ class Router implements IRouter
      * @param array $passedExtend
      * @return void
      */
-    public function throughMiddleware(request $passed, array $passedExtend = [])
+    public function throughMiddleware(Request $passed, array $passedExtend = [])
     {
         if (is_null($this->currentMiddlewares)) {
             $this->currentMiddlewares = $this->parseMiddleware();
@@ -229,51 +240,6 @@ class Router implements IRouter
     }
 
     /**
-     * 执行绑定
-     *
-     * @return mixed|void
-     */
-    public function doBind()
-    {
-        return $this->container->call($this->bind, $this->variables);
-    }
-
-
-
-    /**
-     * 注册绑定中间件
-     *
-     * @param string $sMiddlewareName
-     * @param string|array $mixMiddleware
-     * @return void
-     */
-    public function middleware2($sMiddlewareName, $mixMiddleware)
-    {
-        if (! $mixMiddleware) {
-            throw new InvalidArgumentException(sprintf('Middleware %s disallowed empty.', $sMiddlewareName));
-        }
-
-        if (! isset($this->arrMiddlewares[$sMiddlewareName])) {
-            $this->arrMiddlewares[$sMiddlewareName] = [];
-        }
-
-        $this->arrMiddlewares[$sMiddlewareName] = array_merge($this->arrMiddlewares[$sMiddlewareName], $this->parseMiddlewares($mixMiddleware));
-    }
-
-    /**
-     * 批量注册绑定中间件
-     *
-     * @param array $arrMiddleware
-     * @return void
-     */
-    public function middlewares2222(array $arrMiddleware)
-    {
-        foreach ($arrMiddleware as $sMiddlewareName => $mixMiddleware) {
-            $this->middleware($sMiddlewareName, $mixMiddleware);
-        }
-    }
-
-    /**
      * 设置控制器相对目录
      *
      * @param string $controllerDir
@@ -295,15 +261,13 @@ class Router implements IRouter
     }
 
     /**
-     * 添加匹配变量
+     * 设置路由
      *
-     * @param string $name
-     * @param mixed $value
+     * @param array $routers
      * @return void
      */
-    public function addVariable($name, $value)
-    {
-        $this->variables[$name] = $value;
+    public function setRouters(array $routers) {
+        $this->routers = $routers;
     }
 
     /**
@@ -314,43 +278,120 @@ class Router implements IRouter
     public function getRouters() {
         return $this->routers;
     }
+
+    /**
+     * 设置基础路径
+     *
+     * @param array $basepaths
+     * @return void
+     */
+    public function setBasepaths(array $basepaths) {
+        $this->basepaths = $basepaths;
+    }
+
+    /**
+     * 添加基础路径
+     *
+     * @param array $basepaths
+     * @return void
+     */
+    public function addBasepaths(array $basepaths) {
+        $this->basepaths = array_unique(array_merge($this->basepaths, $basepaths));
+    }
+
+    /**
+     * 取得基础路径
+     *
+     * @return array
+     */
     public function getBasepaths() {
         return $this->basepaths;
     }
+
+    /**
+     * 设置路由分组
+     *
+     * @param array $groups
+     * @return void
+     */
+    public function setGroups(array $groups) {
+        $this->groups = $groups;
+    }
+
+    /**
+     * 添加路由分组
+     *
+     * @param array $groups
+     * @return void
+     */
+    public function addGroups(array $groups) {
+        $this->groups = array_unique(array_merge($this->groups, $groups));
+    }
+
+    /**
+     * 取得路由分组
+     *
+     * @return array
+     */
     public function getGroups() {
         return $this->groups;
     }
 
-    public function setRouters(array $routers) {
-        $this->routers = $routers;
-    }
-    public function setBasepaths(array $basepaths) {
-        $this->basepaths = $basepaths;
-    }
-    public function setGroups(array $groups) {
-        $this->groups = $groups;
-    }
+    /**
+     * 设置中间件分组
+     *
+     * @param array $middlewareGroups
+     * @return void
+     */
     public function setMiddlewareGroups(array $middlewareGroups) {
         $this->middlewareGroups = $middlewareGroups;
     }
     
-    public function setMiddlewareAlias(array $middlewareAlias) {
-        $this->middlewareAlias = $middlewareAlias;
-    }
-    
+    /**
+     * 取得中间件分组
+     *
+     * @return array
+     */
     public function getMiddlewareGroups() {
         return $this->middlewareGroups;
     }
-    
-    public function getMiddlewareAlias() {
-        return $this->middlewareAlias;
-    }
+
+    /**
+     * 设置全局中间件
+     *
+     * @param array $middlewares
+     * @return void
+     */
     public function setGlobalMiddlewares(array $middlewares) {
         $this->globalMiddlewares = $middlewares;
     }
 
+    /**
+     * 取得全局中间件
+     *
+     * @return array
+     */
     public function getGlobalMiddlewares() {
         return $this->globalMiddlewares;
+    }
+    
+    /**
+     * 设置中间件别名
+     *
+     * @param array $middlewareAlias
+     * @return void
+     */
+    public function setMiddlewareAlias(array $middlewareAlias) {
+        $this->middlewareAlias = $middlewareAlias;
+    }
+
+    /**
+     * 取得中间件别名
+     *
+     * @return array
+     */
+    public function getMiddlewareAlias() {
+        return $this->middlewareAlias;
     }
 
     /**
@@ -371,7 +412,7 @@ class Router implements IRouter
             if (!empty($tmp[1])) {
                 foreach (explode('&', $tmp[1]) as $strQuery) {
                     $strQuery = explode('=', $strQuery);
-                    $arrData['params'][$strQuery[0]] = $strQuery[1];
+                    $arrData[Router::PARAMS][$strQuery[0]] = $strQuery[1];
                 }
             }
         } else {
@@ -402,19 +443,6 @@ class Router implements IRouter
 
 
         return $arrData;
-    }
-
-    /**
-     * 初始化请求
-     *
-     * @return void
-     */
-    public function initRequest()
-    {
-        $this->matchedApp = null;
-        $this->matchedController = null;
-        $this->matchedAction = null;
-        $this->matchedData = self::$matcheDataInit;
     }
 
     /**
@@ -463,6 +491,38 @@ class Router implements IRouter
         }
 
         $this->bind = $bind;
+        return $bind;
+    }
+
+    /**
+     * 发送路由并返回响应
+     *
+     * @param \Leevel\Http\Request $request
+     * @return mixed
+     */
+    protected function dispatchToRoute(Request $request)
+    {
+        $this->initRequest();
+
+        return $this->runRoute($request, $this->matchRouter());
+    }
+
+    /**
+     * 运行路由
+     *
+     * @return mixed
+     */
+    protected function runRoute($request, $bind)
+    {
+        $this->throughMiddleware($this->request);
+
+        $response = $this->container->call($bind, $this->matchedVars());
+
+        if (! ($response instanceof IResponse)) {
+            $response = new Response($response)
+        }
+
+        return $response;
     }
 
     /**
@@ -528,7 +588,7 @@ class Router implements IRouter
 
     /**
      * 智能 restful 解析
-     * 路由匹配失败后尝试智能化解析
+     * 路由匹配如果没有匹配上方法器则系统会进入 restful 解析
      *
      * @return void
      */
@@ -714,5 +774,15 @@ class Router implements IRouter
     protected function matchedMiddlewares()
     {
         return $this->matchedData[static::MIDDLEWARES] ?? [];
+    }
+
+    /**
+     * 取回匹配变量
+     *
+     * @return array
+     */
+    protected function matchedVars()
+    {
+        return $this->matchedData[static::VARS] ?? [];
     }
 }

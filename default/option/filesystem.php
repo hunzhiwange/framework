@@ -42,8 +42,8 @@ return [
      * 这里为所有的 filesystem 驱动的连接参数，每一种不同的驱动拥有不同的配置
      * 虽然有不同的驱动，但是在使用上却有着一致性
      */
-    '+connect' => [
-        '+local' => [
+    'connect' => [
+        'local' => [
             // driver
             'driver' => 'local',
 
@@ -51,7 +51,7 @@ return [
             'path' => path_storage()
         ],
 
-        '+zip' => [
+        'zip' => [
             // driver
             'driver' => 'zip',
 
@@ -59,7 +59,7 @@ return [
             'path' => path_storage('filesystem.zip')
         ],
 
-        '+ftp' => [
+        'ftp' => [
             // driver
             'driver' => 'ftp',
 
@@ -88,7 +88,7 @@ return [
             'timeout' => 20
         ],
 
-        '+sftp' => [
+        'sftp' => [
             // driver
             'driver' => 'sftp',
 

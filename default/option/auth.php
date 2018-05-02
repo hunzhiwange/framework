@@ -60,8 +60,8 @@ return [
      * 这里为所有的 auth 的连接参数，每一种不同的驱动拥有不同的配置
      * 虽然有不同的驱动，但是在日志使用上却有着一致性
      */
-    '+connect' => [
-        '+session' => [
+    'connect' => [
+        'session' => [
             // driver
             'driver' => 'session',
 
@@ -78,7 +78,7 @@ return [
             'field' => 'id,name,nikename,email,mobile'
         ],
 
-        '+token' => [
+        'token' => [
             // driver
             'driver' => 'token',
 

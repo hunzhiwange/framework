@@ -17,7 +17,7 @@
 namespace Tests\Router;
 
 use Tests\TestCase;
-use Queryyetsimple\Http\Request;
+use Leevel\Http\Request;
 
 /**
  * Request test
@@ -411,6 +411,58 @@ class RequestTest extends TestCase
         $this->assertEquals('/', $request->getPathInfo());
     }
 
+    public function testIsJson() 
+    {
+        $request = new Request();
+
+        $this->assertFalse($request->isJson());
+        $this->assertFalse($request->isRealJson());
+
+        $request->query->set(Request::VAR_JSON, '1');
+        $this->assertTrue($request->isJson());
+        $this->assertFalse($request->isRealJson());
+    }
+
+    public function testIsAcceptAny()
+    {
+        $request = new Request();
+
+        $this->assertTrue($request->isAcceptAny());
+
+        $request->headers->set('accept', 'application/json');
+        $this->assertFalse($request->isAcceptAny());
+
+        $request->headers->set('accept', '*/*');
+        $this->assertTrue($request->isAcceptAny());
+    }
+
+    public function testIsAcceptJson() 
+    {
+        $request = new Request();
+
+        $this->assertFalse($request->isRealAcceptJson());
+        $this->assertFalse($request->isAcceptJson());
+
+        $request->headers->set('accept', 'application/json, text/plain, */*');
+        $this->assertTrue($request->isRealAcceptJson());
+        $this->assertTrue($request->isAcceptJson());
+        $request->headers->remove('accept');
+
+        $this->assertFalse($request->isRealAcceptJson());
+        $this->assertFalse($request->isAcceptJson());
+
+        // (isAjax && ! isPjax) && isAcceptAny
+        $request->request->set(Request::VAR_AJAX, 1);
+        $this->assertFalse($request->isRealAcceptJson());
+        $this->assertTrue($request->isAcceptJson());
+        $request->request->remove(Request::VAR_AJAX);
+
+        // 伪装
+        $request->query->set(Request::VAR_ACCEPT_JSON, '1');
+        $this->assertTrue($request->isAcceptJson());
+        $this->assertFalse($request->isRealAcceptJson());
+    }
+
     public function testGetParameterPrecedence()
     {
         $request = new Request();
@@ -461,17 +513,11 @@ class RequestContentProxy extends Request
     /**
      * 全局变量创建一个 Request
      *
-     * @param array $options
      * @return static
      */
-    public static function createFromGlobals(?array $option = NULL)
+    public static function createFromGlobals()
     {
-        // C 扩展版本兼容处理
-        if (! $option) {
-            $option = [];
-        }
-
-        $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null, $option);
+        $request = new static($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER, null);
 
         $request = static::normalizeRequestFromContent($request);
 

@@ -60,7 +60,7 @@ return [
      *
      * 随意自定义,其中 debug、info、notice、warning、error、critical、alert、emergency 和 sql 为系统内部使用
      */
-    '+level' => [
+    'level' => [
         'debug',
         'info',
         'notice',
@@ -89,8 +89,8 @@ return [
      * 这里为所有的日志的连接参数，每一种不同的驱动拥有不同的配置
      * 虽然有不同的驱动，但是在日志使用上却有着一致性
      */
-    '+connect' => [
-        '+file' => [
+    'connect' => [
+        'file' => [
             // driver
             'driver' => 'file',
 
@@ -104,7 +104,7 @@ return [
             'path' => path_log_cache()
         ],
 
-        '+monolog' => [
+        'monolog' => [
             // driver
             'driver' => 'monolog',
 

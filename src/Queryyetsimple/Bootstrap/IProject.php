@@ -31,14 +31,6 @@ use Leevel\{
  */
 interface IProject extends IContainer
 {
-    
-    /**
-     * QueryPHP 版本
-     *
-     * @var string
-     */
-    const VERSION = '1.0.0';
-    
     /**
      * 执行项目
      *
@@ -46,27 +38,27 @@ interface IProject extends IContainer
      */
     public function run();
 
-    /**
-     * 运行笑脸初始化应用
-     *
-     * @return void
-     */
-    public function appInit();
+    // /**
+    //  * 运行笑脸初始化应用
+    //  *
+    //  * @return void
+    //  */
+    // public function appInit();
 
-    /**
-     * 完成路由请求
-     *
-     * @return void
-     */
-    public function appRouter();
+    // /**
+    //  * 完成路由请求
+    //  *
+    //  * @return void
+    //  */
+    // public function appRouter();
     
-    /**
-     * 执行应用
-     *
-     * @param string $app
-     * @return void
-     */
-    public function appRun($app);
+    // /**
+    //  * 执行应用
+    //  *
+    //  * @param string $app
+    //  * @return void
+    //  */
+    // public function appRun($app);
 
     /**
      * 是否以扩展方式运行
@@ -92,20 +84,6 @@ interface IProject extends IContainer
     public function version();
 
     /**
-     * 系统所有应用
-     *
-     * @return array
-     */
-    public function apps();
-
-    /**
-     * 系统所有路由文件列表
-     *
-     * @return array
-     */
-    public function routers();
-
-    /**
      * 系统所有环境变量
      *
      * @return array
@@ -119,13 +97,6 @@ interface IProject extends IContainer
      */
     public function path();
 
-    /**
-     * 框架路径
-     *
-     * @return string
-     */
-    public function pathFramework();
-    
     /**
      * 应用路径
      *
@@ -257,4 +228,18 @@ interface IProject extends IContainer
      * @return void
      */
     public function callProviderBootstrap(Provider $objProvider);
+
+    /**
+     * QueryPHP 版本
+     *
+     * @var string
+     */
+    const VERSION = '1.0.0';
+    
+    /**
+     * 默认环境变量名字
+     *
+     * @var string
+     */
+    const DEFAULT_ENV = '.env';
 }

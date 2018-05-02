@@ -60,8 +60,8 @@ return [
      *
      * 在模型或者数据库连接中指定的连接
      */
-    '+connect' => [
-        '+mysql' => [
+    'connect' => [
+        'mysql' => [
             // driver
             'driver' => 'mysql',
 
@@ -84,7 +84,7 @@ return [
             'charset' => 'utf8',
 
             // 连接参数
-            '+options' => [
+            'options' => [
 
                 // 数据库是否支持长连接
                 PDO::ATTR_PERSISTENT => false

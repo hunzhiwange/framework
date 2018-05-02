@@ -66,8 +66,8 @@ return [
      * 这里为所有的 mail 驱动的连接参数，每一种不同的驱动拥有不同的配置
      * 虽然有不同的驱动，但是在使用上却有着一致性
      */
-    '+connect' => [
-        '+smtp' => [
+    'connect' => [
+        'smtp' => [
             // driver
             'driver' => 'smtp',
 
@@ -87,7 +87,7 @@ return [
             'encryption' => env('mail_encryption', 'ssl')
         ],
 
-        '+sendmail' => [
+        'sendmail' => [
             // driver
             'driver' => 'sendmail',
 

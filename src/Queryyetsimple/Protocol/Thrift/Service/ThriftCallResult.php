@@ -33,7 +33,7 @@ use Thrift\Exception\TApplicationException;
  * @since 2018.04.01
  * @version 1.0
  */
-class Thrift_call_result
+class ThriftCallResult
 {
     public static $_TSPEC;
 
@@ -62,7 +62,7 @@ class Thrift_call_result
 
     public function getName()
     {
-        return 'Thrift_call_result';
+        return 'ThriftCallResult';
     }
 
     public function read($input)
@@ -99,7 +99,7 @@ class Thrift_call_result
     public function write($output)
     {
         $xfer = 0;
-        $xfer += $output->writeStructBegin('Thrift_call_result');
+        $xfer += $output->writeStructBegin('ThriftCallResult');
         if ($this->success !== null) {
             if (!is_object($this->success)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);

@@ -47,7 +47,6 @@ class Register extends Provider
         $this->router();
         $this->url();
         $this->redirect();
-        $this->request();
         $this->response();
         $this->cookieResolver();
     }
@@ -79,9 +78,6 @@ class Register extends Provider
             'redirect' => [
                 'Leevel\Router\Redirect'
             ],
-            'request' => [
-                'Leevel\Http\Request'
-            ],
             'response' => [
                 'Leevel\Router\IResponseFactory',
                 'Leevel\Router\ResponseFactory'
@@ -97,35 +93,7 @@ class Register extends Provider
     protected function router()
     {
         $this->singleton('router', function ($project) {
-            $option = $project['option'];
-
-            $options = [];
-            foreach ([
-                'default_app',
-                'default_controller',
-                'default_action',
-                'middleware_group',
-                'middleware_alias',
-                'model',
-                'router_cache',
-                'router_strict',
-                'router_domain_on',
-                'router_domain_top',
-                'make_subdomain_on',
-                'pathinfo_restful',
-                'args_protected',
-                'args_regex',
-                'args_strict',
-                'middleware_strict',
-                'method_strict',
-                'controller_dir'
-            ] as $item) {
-                $options[$item] = $option->get($item);
-            }
-
-            $options['apps'] = $project->apps();
-
-            return new Router($project, $project['request'], $options);
+            return new Router($project);
         });
     }
 
@@ -182,18 +150,18 @@ class Register extends Provider
      */
     protected function request()
     {
-        $this->singleton('request', function ($project) {
-            $option = $project['option'];
+        // $this->singleton('request', function ($project) {
+        //     $option = $project['option'];
 
-            return Request::createFromGlobals([
-                'var_method' => $option['var_method'],
-                'var_ajax' => $option['var_ajax'],
-                'var_pjax' => $option['var_pjax'],
-                'html_suffix' => $option['html_suffix'],
-                'rewrite' => $option['rewrite'],
-                'public' => $option['public']
-            ]);
-        });
+        //     return Request::createFromGlobals([
+        //         'var_method' => $option['var_method'],
+        //         'var_ajax' => $option['var_ajax'],
+        //         'var_pjax' => $option['var_pjax'],
+        //         'html_suffix' => $option['html_suffix'],
+        //         'rewrite' => $option['rewrite'],
+        //         'public' => $option['public']
+        //     ]);
+        // });
     }
 
     /**

@@ -20,7 +20,7 @@ use Leevel\{
     Http\Response,
     Session\ISession,
     Validate\IValidate,
-    Validate\ValidateFailed,
+    Validate\ValidateException,
     Http\Request as HttpRequest
 };
 
@@ -61,7 +61,7 @@ trait Request
      */
     protected function throwValidateException(HttpRequest $oRequest, $oValidate)
     {
-        throw new ValidateFailed($oValidate, $this->validationResponse($oRequest, $this->validationErrors($oValidate)));
+        throw new ValidateException($oValidate, $this->validationResponse($oRequest, $this->validationErrors($oValidate)));
     }
 
     /**

@@ -14,51 +14,46 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Mvc;
+namespace Leevel\Bootstrap\Runtime;
 
 use Exception;
-use RuntimeException;
+use Leevel\Http\Request;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * HTTP 异常
+ * 异常接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.08.10
+ * @since 2018.04.25
  * @version 1.0
  */
-class HttpFailed extends RuntimeException
+interface IRuntime
 {
 
     /**
-     * HTTP 状态
+     * 异常上报
      *
-     * @var int
+     * @param \Exception $e
+     * @return mixed
      */
-    protected $intStatusCode;
+    public function report(Exception $e);
 
     /**
-     * 构造函数
+     * 异常渲染
      *
-     * @param int $intStatusCode
-     * @param string|null $strMessage
-     * @param integer $intCode
-     * @param \Exception $objPrevious
-     * @return void
+     * @param \Leevel\Http\Request $request
+     * @param \Exception $e
+     * @return \Leevel\Http\Response
      */
-    public function __construct($intStatusCode, $strMessage = null, $intCode = 0, Exception $objPrevious = null)
-    {
-        $this->intStatusCode = $intStatusCode;
-        parent::__construct($strMessage, $intCode, $objPrevious);
-    }
+    public function render(Request $request, Exception $e);
 
     /**
-     * HTTP 状态
-     *
+     * 命令行渲染
+     * 
+     * @param \sSymfony\Component\Console\Output\OutputInterface $output
+     * @param \Exception $e
      * @return void
      */
-    public function statusCode()
-    {
-        return $this->intStatusCode;
-    }
+    public function renderForConsole(OutputInterface $output, Exception $e);
 }

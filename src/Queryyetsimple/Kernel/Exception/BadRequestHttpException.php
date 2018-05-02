@@ -14,48 +14,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Mvc;
+namespace Leevel\Kernel\Exception;
 
-use RuntimeException;
+use Exception;
 
 /**
- * 模型未找到异常
+ * 错误请求
+ * 服务器不理解请求的语法: 400
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.07.10
+ * @since 2018.04.29
  * @version 1.0
  */
-class ModelNotFound extends RuntimeException
+class BadRequestHttpException extends HttpException
 {
 
     /**
-     * 模型名字
+     * 构造函数
      *
-     * @var string
+     * @param string|null $message
+     * @param integer $code
+     * @param \Exception $previous
+     * @return void
      */
-    protected $strModel;
-
-    /**
-     * 设置模型
-     *
-     * @param string $strModel
-     * @return $this
-     */
-    public function model($strModel)
+    public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        $this->strModel = $strModel;
-        $this->message = "Can not find {$strModel} data";
-        return $this;
-    }
-
-    /**
-     * 取回模型
-     *
-     * @return string
-     */
-    public function getModel()
-    {
-        return $this->strModel;
+        parent::__construct(400, $message, $code, $previous);
     }
 }

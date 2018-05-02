@@ -56,6 +56,13 @@ interface IRouter
     const PARAMS = '_params';
 
     /**
+     * 解析变量名
+     *
+     * @var string
+     */
+    const VARS = '_vars';
+
+    /**
      * 解析中间件名
      *
      * @var string

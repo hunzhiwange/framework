@@ -116,13 +116,13 @@ return [
      * 这里为所有的 session 驱动的连接参数，每一种不同的驱动拥有不同的配置
      * 虽然有不同的驱动，但是在使用上却有着一致性
      */
-    '+connect' => [
-        '+cookie' => [
+    'connect' => [
+        'cookie' => [
             // driver
             'driver' => 'cookie'
         ],
 
-        '+memcache' => [
+        'memcache' => [
             // driver
             'driver' => 'memcache',
 
@@ -148,7 +148,7 @@ return [
             'expire' => null
         ],
 
-        '+redis' => [
+        'redis' => [
             // driver
             'driver' => 'redis',
 

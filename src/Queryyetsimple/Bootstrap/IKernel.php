@@ -7,37 +7,24 @@
  *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
  *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
  *         \_\                /_/_/         /_/
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Bootstrap\Runtime;
+namespace Leevel\Bootstrap;
 
 /**
- * 致命错误消息
+ * 内核执行接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.04
+ * @since 2016.11.18
  * @version 1.0
  */
-class Shutdown extends Message
+interface IKernel
 {
-    
-    /**
-     * 构造函数
-     *
-     * @param \Leevel\Bootstrap\Project $project
-     * @return void
-     */
-    public function __construct($project)
-    {
-        $this->project = $project;
-        if (($arrError = error_get_last()) && ! empty($arrError['type'])) {
-            $this->strMessage = "[{$arrError['type']}]: {$arrError['message']} <br> File: {$arrError['file']} <br> Line: {$arrError['line']}";
-        }
-    }
+
 }

@@ -56,7 +56,7 @@ class ThriftClient implements \Leevel\Protocol\Thrift\Service\ThriftIf {
 
   public function send_call(\Leevel\Protocol\Thrift\Service\Request $request)
   {
-    $args = new \Leevel\Protocol\Thrift\Service\Thrift_call_args();
+    $args = new \Leevel\Protocol\Thrift\Service\ThriftCallArgs();
     $args->request = $request;
     $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
@@ -75,7 +75,7 @@ class ThriftClient implements \Leevel\Protocol\Thrift\Service\ThriftIf {
   public function recv_call()
   {
     $bin_accel = ($this->input_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_read_binary');
-    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\Leevel\Protocol\Thrift\Service\Thrift_call_result', $this->input_->isStrictRead());
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\Leevel\Protocol\Thrift\Service\ThriftCallResult', $this->input_->isStrictRead());
     else
     {
       $rseqid = 0;
@@ -89,7 +89,7 @@ class ThriftClient implements \Leevel\Protocol\Thrift\Service\ThriftIf {
         $this->input_->readMessageEnd();
         throw $x;
       }
-      $result = new \Leevel\Protocol\Thrift\Service\Thrift_call_result();
+      $result = new \Leevel\Protocol\Thrift\Service\ThriftCallResult();
       $result->read($this->input_);
       $this->input_->readMessageEnd();
     }
@@ -104,7 +104,7 @@ class ThriftClient implements \Leevel\Protocol\Thrift\Service\ThriftIf {
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class Thrift_call_args {
+class ThriftCallArgs {
   static $_TSPEC;
 
   /**
@@ -130,7 +130,7 @@ class Thrift_call_args {
   }
 
   public function getName() {
-    return 'Thrift_call_args';
+    return 'ThriftCallArgs';
   }
 
   public function read($input)
@@ -168,7 +168,7 @@ class Thrift_call_args {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('Thrift_call_args');
+    $xfer += $output->writeStructBegin('ThriftCallArgs');
     if ($this->request !== null) {
       if (!is_object($this->request)) {
         throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
@@ -184,7 +184,7 @@ class Thrift_call_args {
 
 }
 
-class Thrift_call_result {
+class ThriftCallResult {
   static $_TSPEC;
 
   /**
@@ -210,7 +210,7 @@ class Thrift_call_result {
   }
 
   public function getName() {
-    return 'Thrift_call_result';
+    return 'ThriftCallResult';
   }
 
   public function read($input)
@@ -248,7 +248,7 @@ class Thrift_call_result {
 
   public function write($output) {
     $xfer = 0;
-    $xfer += $output->writeStructBegin('Thrift_call_result');
+    $xfer += $output->writeStructBegin('ThriftCallResult');
     if ($this->success !== null) {
       if (!is_object($this->success)) {
         throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
@@ -292,10 +292,10 @@ class ThriftProcessor {
   }
 
   protected function process_call($seqid, $input, $output) {
-    $args = new \Leevel\Protocol\Thrift\Service\Thrift_call_args();
+    $args = new \Leevel\Protocol\Thrift\Service\ThriftCallArgs();
     $args->read($input);
     $input->readMessageEnd();
-    $result = new \Leevel\Protocol\Thrift\Service\Thrift_call_result();
+    $result = new \Leevel\Protocol\Thrift\Service\ThriftCallResult();
     $result->success = $this->handler_->call($args->request);
     $bin_accel = ($output instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)

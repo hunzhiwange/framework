@@ -22,9 +22,9 @@ use Leevel\{
     Mvc\IModel,
     Support\Str,
     Support\Arr,
-    Mvc\ModelNotFound,
     Collection\Collection,
     Mvc\Relation\Relation,
+    Mvc\ModelNotFoundException,
     Database\Select as DatabaseSelect
 };
 
@@ -210,7 +210,7 @@ class Select
             return $mixResult;
         }
 
-        throw (new ModelNotFound())->model(get_class($this->objModel));
+        throw (new ModelNotFoundException())->model(get_class($this->objModel));
     }
 
     /**
@@ -253,7 +253,7 @@ class Select
         if (! is_null(($objModel = $this->first($arrColumn)))) {
             return $objModel;
         }
-        throw (new ModelNotFound())->model(get_class($this->objModel));
+        throw (new ModelNotFoundException())->model(get_class($this->objModel));
     }
 
     /**
@@ -346,7 +346,7 @@ class Select
     public function softDestroy($mixId)
     {
         $intCount = 0;
-        $mixId = ( array ) $mixId;
+        $mixId = (array) $mixId;
         $objInstance = $this->objModel->newInstance();
         foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
             if ($objModel->softDelete()) {

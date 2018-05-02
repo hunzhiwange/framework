@@ -14,48 +14,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Event\Provider;
+namespace Leevel\Kernel\Exception;
 
-use Leevel\{
-    Di\Provider,
-    Event\Dispatch
-};
+use Exception;
 
 /**
- * event 服务提供者
+ * 服务器内部错误
+ * 服务器遇到错误，无法完成请求: 500
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2018.04.29
  * @version 1.0
  */
-class Register extends Provider
+class InternalServerErrorHttpException extends HttpException
 {
 
     /**
-     * 注册服务
+     * 构造函数
      *
+     * @param string|null $message
+     * @param integer $code
+     * @param \Exception $previous
      * @return void
      */
-    public function register()
+    public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        $this->singleton('event', function ($project) {
-            return new Dispatch($project);
-        });
-    }
-
-    /**
-     * 可用服务提供者
-     *
-     * @return array
-     */
-    public static function providers()
-    {
-        return [
-            'event' => [
-                'Leevel\Event\Dispatch',
-                'Leevel\Event\IDispatch'
-            ]
-        ];
+        parent::__construct(500, $message, $code, $previous);
     }
 }

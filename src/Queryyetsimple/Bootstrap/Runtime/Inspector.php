@@ -7,55 +7,33 @@
  *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
  *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
  *         \_\                /_/_/         /_/
- *
+ * 
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
- *
+ * 
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Event\Provider;
+namespace Leevel\Bootstrap\Runtime;
 
-use Leevel\{
-    Di\Provider,
-    Event\Dispatch
-};
+use Whoops\Exception\Inspector as BaseInspector;
 
 /**
- * event 服务提供者
+ * Inspector
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2018.05.01
  * @version 1.0
  */
-class Register extends Provider
+class Inspector extends BaseInspector
 {
 
     /**
-     * 注册服务
-     *
-     * @return void
+     * {@inheritdoc}
      */
-    public function register()
+    protected function getTrace($e)
     {
-        $this->singleton('event', function ($project) {
-            return new Dispatch($project);
-        });
-    }
-
-    /**
-     * 可用服务提供者
-     *
-     * @return array
-     */
-    public static function providers()
-    {
-        return [
-            'event' => [
-                'Leevel\Event\Dispatch',
-                'Leevel\Event\IDispatch'
-            ]
-        ];
+        return $e->getTrace();
     }
 }

@@ -494,19 +494,6 @@ if (! function_exists('path')) {
     }
 }
 
-if (! function_exists('path_framework')) {
-    /**
-     * 取得框架路径
-     *
-     * @param string $strPath
-     * @return string
-     */
-    function path_framework($strPath = '')
-    {
-        return project()->pathFramework() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
-    }
-}
-
 if (! function_exists('path_application')) {
     /**
      * 取得项目应用路径
@@ -572,6 +559,19 @@ if (! function_exists('path_storage')) {
     }
 }
 
+if (! function_exists('path_option')) {
+    /**
+     * 取得项目配置路径
+     *
+     * @param string $path
+     * @return string
+     */
+    function path_option($path = '')
+    {
+        return project()->pathOption() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+    }
+}
+
 if (! function_exists('path_application')) {
     /**
      * 取得项目当前应用路径
@@ -582,19 +582,6 @@ if (! function_exists('path_application')) {
     function path_application($strPath = '')
     {
         return project()->pathApplicationCurrent() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
-    }
-}
-
-if (! function_exists('path_option')) {
-    /**
-     * 取得项目当前应用配置路径
-     *
-     * @param string $strPath
-     * @return string
-     */
-    function path_option($strPath = '')
-    {
-        return project()->pathApplicationDir('option') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
     }
 }
 

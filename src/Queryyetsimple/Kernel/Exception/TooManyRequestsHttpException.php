@@ -14,33 +14,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Mvc;
+namespace Leevel\Kernel\Exception;
 
 use Exception;
 
 /**
  * 请求过于频繁异常
+ * 用户在给定的时间内发送了太多的请求: 429
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2017.08.10
  * @version 1.0
  */
-class TooManyRequestsHttp extends HttpFailed
+class TooManyRequestsHttpException extends HttpException
 {
 
     /**
      * 构造函数
      *
-     * @param int $intStatusCode
-     * @param string|null $strMessage
-     * @param \Exception $objPrevious
-     * @param array $arrHeader
-     * @param integer $intCode
+     * @param string|null $message
+     * @param integer $code
+     * @param \Exception $previous
      * @return void
      */
-    public function __construct($strMessage = null, $intCode = 0, Exception $objPrevious = null)
+    public function __construct($message = null, $code = 0, Exception $previous = null)
     {
-        parent::__construct(429, $strMessage, $intCode, $objPrevious);
+        parent::__construct(429, $message, $code, $previous);
     }
 }

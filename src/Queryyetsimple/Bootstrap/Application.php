@@ -138,11 +138,14 @@ class Application
             return $this;
         }
 
-        $this->loadOption();
 
         if ($this->isInitApp()) {
+            //$this->loadOption();
+
             $this->initialization();
         } else {
+            $this->loadOption();
+
             foreach ($this->arrEvent as $strEvent) {
                 $strEvent = $strEvent . 'Bootstrap';
                 $this->{$strEvent}();
@@ -152,28 +155,6 @@ class Application
         $this->loadedApp[] = $this->strApp;
         
         return $this;
-    }
-
-    /**
-     * 初始化处理
-     *
-     * @return void
-     */
-    protected function initialization()
-    {
-        if (function_exists('date_default_timezone_set')) {
-            date_default_timezone_set($this->project['option']['time_zone']);
-        }
-        
-        if(PHP_SAPI == 'cli') {
-            return;
-        }
-
-        if (function_exists('gz_handler') && $this->project['option']['start_gzip']) {
-            ob_start('gz_handler');
-        } else {
-            ob_start();
-        }
     }
 
     /**
@@ -237,7 +218,7 @@ class Application
         $sCachePath = $this->getConsoleCachePath();
 
         if (! $this->project->development() && is_file($sCachePath)) {
-            $this->project['console.load']->setData(( array ) include $sCachePath);
+            $this->project['console.load']->setData((array) include $sCachePath);
         } else {
             $this->project['console.load']->setCachePath($sCachePath);
         }
@@ -253,12 +234,12 @@ class Application
         $sCachePath = $this->getOptionCachePath();
 
         if ($this->isInitApp()) {
-            if (! is_file($sCachePath) || !$this->project['option']->reset(( array ) include $sCachePath) || $this->project->development()) {
+            if (! is_file($sCachePath) || !$this->project['option']->reset((array) include $sCachePath) || $this->project->development()) {
                 $this->cacheOption($sCachePath);
             }
         } else {
             if (! $this->project->development() && is_file($sCachePath)) {
-                $this->project['option']->reset(( array ) include $sCachePath);
+                $this->project['option']->reset((array) include $sCachePath);
             } else {
                 $this->cacheOption($sCachePath);
             }
@@ -367,9 +348,7 @@ class Application
     {
         return [
             'app' => [
-                '~apps~' => $this->project->apps(),
-                '~envs~' => $this->project->envs(),
-                '~routers~' => $this->project->routers()
+                '~envs~' => $this->project->envs()
             ]
         ];
     }

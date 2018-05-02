@@ -54,7 +54,7 @@ class ThriftClient implements ThriftIf
 
     public function send_call(Request $request)
     {
-        $args = new Thrift_call_args();
+        $args = new ThriftCallArgs();
         $args->request = $request;
         $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
         if ($bin_accel) {
@@ -71,7 +71,7 @@ class ThriftClient implements ThriftIf
     {
         $bin_accel = ($this->input_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_read_binary');
         if ($bin_accel) {
-            $result = thrift_protocol_read_binary($this->input_, '\Leevel\Protocol\Thrift\Service\Thrift_call_result', $this->input_->isStrictRead());
+            $result = thrift_protocol_read_binary($this->input_, '\Leevel\Protocol\Thrift\Service\ThriftCallResult', $this->input_->isStrictRead());
         } else {
             $rseqid = 0;
             $fname = null;
@@ -84,7 +84,7 @@ class ThriftClient implements ThriftIf
                 $this->input_->readMessageEnd();
                 throw $x;
             }
-            $result = new Thrift_call_result();
+            $result = new ThriftCallResult();
             $result->read($this->input_);
             $this->input_->readMessageEnd();
         }

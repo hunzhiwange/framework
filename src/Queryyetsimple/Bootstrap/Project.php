@@ -17,17 +17,16 @@
 namespace Leevel\Bootstrap;
 
 use Exception;
-use Dotenv\Dotenv;
 use RuntimeException;
-use NunoMaduro\Collision\Provider as CollisionProvider;
 use Leevel\{
     Psr4\Psr4,
     Di\Provider,
     Di\Container,
-    Support\Facade,
     Filesystem\Fso,
-    Bootstrap\Runtime\Runtime,
-    Bootstrap\Console\Provider\Register as ConsoleProvider
+    Bootstrap\Console\Provider\Register as ConsoleProvider,
+    Log\Provider\Register as LogProvider,
+    Event\Provider\Register as EventProvider,
+    Router\Provider\Register as RouterProvider
 };
 
 /**
@@ -44,7 +43,7 @@ class Project extends Container implements IProject
     /**
      * 当前项目实例
      *
-     * @var Leevel\Bootstrap\Project
+     * @var \Leevel\Bootstrap\Project
      */
     protected static $project;
 
@@ -56,18 +55,25 @@ class Project extends Container implements IProject
     protected $arrOption = [];
 
     /**
-     * 项目框架路径
-     *
-     * @var string
-     */
-    protected $strFrameworkPath;
-
-    /**
      * 项目基础路径
      *
      * @var string
      */
-    protected $strPath;
+    protected $path;
+
+    /**
+     * 环境变量路径
+     *
+     * @var string
+     */
+    protected $envPath;
+
+    /**
+     * 环境变量文件
+     *
+     * @var string
+     */
+    protected $envFile;
 
     /**
      * 项目 APP 基本配置
@@ -75,20 +81,6 @@ class Project extends Container implements IProject
      * @var array
      */
     protected $arrAppOption = [];
-
-    /**
-     * 项目应用列表
-     *
-     * @var array
-     */
-    protected $apps = [];
-
-    /**
-     * 项目路由文件列表
-     *
-     * @var array
-     */
-    protected $routers = [];
 
     /**
      * 系统所有环境变量
@@ -115,31 +107,18 @@ class Project extends Container implements IProject
      * 构造函数
      * 受保护的禁止外部通过 new 实例化，只能通过 singletons 生成单一实例
      *
-     * @param array $arrOption
+     * @param string $path
      * @return void
      */
-    protected function __construct($arrOption = [])
+    protected function __construct(?string $path = null)
     {
-        // 项目基础配置
-        $this->setOption($arrOption)->
+        if ($path) {
+            $this->setPath($path);
+        }
 
-        // 初始化项目路径
-        setPath()->
+        $this->registerBaseServices();
 
-        // 注册别名
-        registerAlias()->
-
-        // 载入 app 配置
-        loadApp()->
-
-        // 初始化项目
-        initProject()->
-
-        // 注册框架核心提供者
-        registerMvcProvider()->
-
-        // 注册基础提供者 register
-        registerBaseProvider();
+        $this->registerBaseProvider();
     }
 
     /**
@@ -159,10 +138,6 @@ class Project extends Container implements IProject
      */
     public function run()
     {
-        $this->registerRuntime();
-
-        $this->baseProviderBootstrap();
-
         $this->appInit();
 
         $this->appRouter();
@@ -170,18 +145,6 @@ class Project extends Container implements IProject
         $this->appRun();
 
         return $this;
-    }
-
-    /**
-     * 运行笑脸初始化应用
-     *
-     * @return void
-     */
-    public function appInit()
-    {
-        $this->make(Application::class, [
-            Application::INIT_APP
-        ])->bootstrap();
     }
 
     /**
@@ -228,7 +191,7 @@ class Project extends Container implements IProject
             static::$project = new static($arrOption);
 
             if ($autorun === true) {
-                static::$project->run();
+                //static::$project->run();
             }
 
             return static::$project;
@@ -270,26 +233,6 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 系统所有应用
-     *
-     * @return array
-     */
-    public function apps()
-    {
-        return $this->apps;
-    }
-
-    /**
-     * 系统所有路由文件列表
-     *
-     * @return array
-     */
-    public function routers()
-    {
-        return $this->routers;
-    }
-
-    /**
      * 系统所有环境变量
      *
      * @return array
@@ -300,23 +243,30 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 设置项目路径
+     *
+     * @param string $path
+     * @return void
+     */
+    public function setPath(string $path)
+    {
+        // 基础路径
+        $this->path = $path;
+
+        // 验证缓存路径
+        if (! is_writeable($this->pathRuntime())) {
+            throw new RuntimeException(sprintf('Runtime path %s is not writeable.', $this->pathRuntime()));
+        }
+    }
+
+    /**
      * 基础路径
      *
      * @return string
      */
     public function path()
     {
-        return $this->strPath;
-    }
-
-    /**
-     * 框架路径
-     *
-     * @return string
-     */
-    public function pathFramework()
-    {
-        return $this->strFrameworkPath;
+        return $this->path;
     }
 
     /**
@@ -326,7 +276,7 @@ class Project extends Container implements IProject
      */
     public function pathApplication()
     {
-        return $this->arrOption['path_application'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'application';
+        return $this->arrOption['path_application'] ?? $this->path . DIRECTORY_SEPARATOR . 'application';
     }
 
     /**
@@ -364,7 +314,7 @@ class Project extends Container implements IProject
      */
     public function pathCommon()
     {
-        return $this->arrOption['path_common'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'common';
+        return $this->arrOption['path_common'] ?? $this->path . DIRECTORY_SEPARATOR . 'common';
     }
 
     /**
@@ -374,7 +324,7 @@ class Project extends Container implements IProject
      */
     public function pathRuntime()
     {
-        return $this->arrOption['path_runtime'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'runtime';
+        return $this->arrOption['path_runtime'] ?? $this->path . DIRECTORY_SEPARATOR . 'runtime';
     }
 
     /**
@@ -384,7 +334,7 @@ class Project extends Container implements IProject
      */
     public function pathPublic()
     {
-        return $this->arrOption['path_public'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'public';
+        return $this->arrOption['path_public'] ?? $this->path . DIRECTORY_SEPARATOR . 'public';
     }
 
     /**
@@ -394,7 +344,73 @@ class Project extends Container implements IProject
      */
     public function pathStorage()
     {
-        return $this->arrOption['path_storage'] ?? $this->strPath . DIRECTORY_SEPARATOR . 'storage';
+        return $this->arrOption['path_storage'] ?? $this->path . DIRECTORY_SEPARATOR . 'storage';
+    }
+
+    /**
+     * 配置路径
+     *
+     * @return string
+     */
+    public function pathOption()
+    {
+        return $this->arrOption['path_option'] ?? $this->path . DIRECTORY_SEPARATOR . 'option';
+    }
+
+    /**
+     * 环境变量路径
+     *
+     * @return string
+     */
+    public function pathEnv()
+    {
+        return $this->envPath ?: $this->path;
+    }
+
+    /**
+     * 设置环境变量路径
+     *
+     * @param string $path
+     * @return $this
+     */
+    public function setPathEnv(string $path)
+    {
+        $this->envPath = $path;
+
+        return $this;
+    }
+
+    /**
+     * 设置环境变量文件
+     *
+     * @param string $file
+     * @return $this
+     */
+    public function setEnvFile($file)
+    {
+        $this->envFile = $file;
+
+        return $this;
+    }
+
+    /**
+     * 取得环境变量文件
+     *
+     * @return string
+     */
+    public function envFile()
+    {
+        return $this->envFile ?: static::DEFAULT_ENV;
+    }
+
+    /**
+     * 取得环境变量完整路径
+     *
+     * @return string
+     */
+    public function fullEnvPath()
+    {
+        return $this->pathEnv() . DIRECTORY_SEPARATOR . $this->envFile();
     }
 
     /**
@@ -443,7 +459,6 @@ class Project extends Container implements IProject
     public function pathApplicationDir($strType)
     {
         $arrType = [
-            'option',
             'theme',
             'i18n'
         ];
@@ -456,12 +471,30 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 返回缓存路径
+     * 
+     * @return 返回缓存路径
+     */
+    public function pathCacheOptionFile() {
+        return $this->pathRuntime() . '/cache/option.php';
+    }
+
+    /**
+     * 是否缓存配置
+     *
+     * @return boolean
+     */
+    public function isCachedOption() {
+        return is_file($this->pathCacheOptionFile());
+    }
+
+    /**
      * 取得 composer
      *
      * @return \Composer\Autoload\ClassLoader
      */
     public function composer() {
-        return require $this->strPath . '/vendor/autoload.php';
+        return require $this->path . '/vendor/autoload.php';
     }
 
     /**
@@ -490,7 +523,7 @@ class Project extends Container implements IProject
      */
     public function debug()
     {
-        return $this->arrAppOption['debug'] ?? false;
+        return $this->make('option')->get('debug');
     }
 
     /**
@@ -500,7 +533,7 @@ class Project extends Container implements IProject
      */
     public function development()
     {
-        return $this->arrAppOption['environment'] == 'development';
+        return $this->environment() === 'development';
     }
 
     /**
@@ -510,7 +543,7 @@ class Project extends Container implements IProject
      */
     public function environment()
     {
-        return $this->arrAppOption['environment'];
+        return $this->make('option')->get('environment');
     }
 
     /**
@@ -530,7 +563,7 @@ class Project extends Container implements IProject
      */
     public function console()
     {
-        return env('app_name') == 'frameworkconsole';
+        return $this['request']->isCli();
     }
 
     /**
@@ -546,7 +579,7 @@ class Project extends Container implements IProject
      * 创建服务提供者
      *
      * @param string $strProvider
-     * @return \leevel\Di\Provider
+     * @return \Leevel\Di\Provider
      */
     public function makeProvider($strProvider)
     {
@@ -556,7 +589,7 @@ class Project extends Container implements IProject
     /**
      * 执行 bootstrap
      *
-     * @param \leevel\Di\Provider $objProvider
+     * @param \Leevel\Di\Provider $objProvider
      * @return void
      */
     public function callProviderBootstrap(Provider $objProvider)
@@ -569,6 +602,18 @@ class Project extends Container implements IProject
             $objProvider,
             'bootstrap'
         ]);
+    }
+
+    /**
+     * 初始化项目
+     * 
+     * @param array $bootstraps
+     * @return void
+     */
+    public function bootstrap(array $bootstraps) {
+        foreach ($bootstraps as $value) {
+            (new $value)->handle($this);
+        }
     }
 
     /**
@@ -593,10 +638,6 @@ class Project extends Container implements IProject
     {
         $strCache = $this->appOptionCachePath();
 
-        if (is_file($strCache) && $this->checkEnv($strCache)) {
-            Fso::deleteDirectory(dirname($strCache), true);
-        }
-
         $this->loadAppOption($strCache);
 
         return $this;
@@ -609,15 +650,15 @@ class Project extends Container implements IProject
      */
     protected function initProject()
     {
-        if ($this->development()) {
-            error_reporting(E_ALL);
-        } else {
-            error_reporting(E_ERROR | E_PARSE | E_STRICT);
-        }
+        // if ($this->development()) {
+        //     error_reporting(E_ALL);
+        // } else {
+        //     error_reporting(E_ERROR | E_PARSE | E_STRICT);
+        // }
 
         ini_set('default_charset', 'utf8');
 
-        Facade::setContainer($this);
+        
 
         // 载入 project 引导文件
         if (is_file(($strBootstrap = $this->pathCommon() . '/bootstrap.php'))) {
@@ -632,7 +673,7 @@ class Project extends Container implements IProject
      *
      * @return $this
      */
-    protected function registerBaseProvider()
+    public function registerProviders()
     {
         $booCache = false;
 
@@ -644,7 +685,7 @@ class Project extends Container implements IProject
             $arrDeferredAlias = [];
         }
 
-        foreach ($this->arrAppOption['provider'] as $strProvider) {
+        foreach ($this->make('option')->get('provider', []) as $strProvider) {
             if ($booCache === true && isset($arrDeferredAlias[$strProvider])) {
                 $this->alias($arrDeferredAlias[$strProvider]);
                 continue;
@@ -698,7 +739,7 @@ class Project extends Container implements IProject
      *
      * @return $this
      */
-    protected function baseProviderBootstrap()
+    public function bootstrapProviders()
     {
         foreach ($this->arrProviderBootstrap as $obj) {
             $this->callProviderBootstrap($obj);
@@ -708,97 +749,74 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 框架 MVC 基础提供者
-     *
-     * @return $this
-     */
-    protected function registerMvcProvider()
-    {
-        // 注册本身
-        $this->instance('project', $this);
-
-        // 注册 Application
-        $this->singleton(Application::class, function ($container, $sApp) {
-            return new Application($container, $sApp);
-        });
-
-        // 注册 console
-        if ($this->console()) {
-            $this->makeProvider(ConsoleProvider::class)->register();
-        }
-
-        return $this;
-    }
-
-    /**
-     * 注册别名
+     * 注册基础服务
      *
      * @return void
      */
-    protected function registerAlias()
+    protected function registerBaseServices()
     {
+        $this->instance('project', $this);
+
         $this->alias([
             'project' => [
                 'Leevel\Bootstrap\Project',
                 'Leevel\Di\IContainer',
                 'Leevel\Bootstrap\IProject',
                 'app'
-            ]
+            ],
+            'request' => [
+                'Leevel\Http\IRequest',
+                'Leevel\Http\Request'
+            ],
+            'option' => [
+                'Leevel\Option\IOption',
+                'Leevel\Option\Option'
+            ],
         ]);
-
-        return $this;
     }
 
     /**
-     * QueryPHP 系统错误处理
+     * 注册基础服务提供者
      *
      * @return void
      */
-    protected function registerRuntime()
+    protected function registerBaseProvider()
     {
-        if (PHP_SAPI == 'cli') {
-            (new CollisionProvider)->register();
-            return;
-        }
+        $this->register(new EventProvider($this));
 
-        Runtime::container($this);
+        $this->register(new LogProvider($this));
 
-        register_shutdown_function([
-            'Leevel\Bootstrap\Runtime\Runtime', 
-            'shutdownHandle'
-        ]);
-        
-        set_error_handler([
-            'Leevel\Bootstrap\Runtime\Runtime', 
-            'errorHandle'
-        ]);
-        
-        set_exception_handler([
-            'Leevel\Bootstrap\Runtime\Runtime', 
-            'exceptionHandle'
-        ]);
+        $this->register(new RouterProvider($this));
     }
 
     /**
-     * 初始化项目路径
+     * Register a service provider with the application.
      *
-     * @param string $strPath
-     * @return $this
+     * @param  \Illuminate\Support\ServiceProvider|string  $provider
+     * @param  array  $options
+     * @param  bool   $force
+     * @return \Illuminate\Support\ServiceProvider
      */
-    protected function setPath()
+    public function register($provider)
     {
-        // 框架路径
-        $this->strFrameworkPath = dirname(__DIR__);
-
-        // 基础路径
-        $this->strPath = dirname(__DIR__, 6);
-
-        // 验证缓存路径
-        if (! is_writeable($this->pathRuntime())) {
-            throw new RuntimeException(sprintf('Runtime path %s is not writeable.', $this->pathRuntime()));
+        if (is_string($provider)) {
+            $provider = $this->makeProvider($provider);
         }
 
-        return $this;
+        if (method_exists($provider, 'register')) {
+            $provider->register();
+        }
+
+        $this->alias($provider::providers());
+
+        // If the application has already booted, we will call this boot method on
+        // the provider class so it has an opportunity to do its boot logic and
+        // will be ready for any usage by this developer's application logic.
+        if ($this->booted) {
+           // $this->bootProvider($provider);
+        }
+
+        return $provider;
     }
 
     /**
@@ -843,16 +861,8 @@ class Project extends Container implements IProject
     {
         if (is_file($strCache) && is_array($arrOption = include $strCache)) {
             $this->arrAppOption = $arrOption['app'];
-            $this->envs = $this->environmentVariables($this->arrAppOption['~envs~']);
-            $this->apps = $this->arrAppOption['~apps~'];
-            $this->routers = $this->arrAppOption['~routers~'];
         } else {
-            $this->arrAppOption = ( array ) include $this->pathCommon() . '/ui/option/app.php';
-            $this->envs = $this->environmentVariables();
-            $this->apps = Fso::lists($this->pathApplication());
-            $this->routers = Fso::lists($this->pathCommon() . '/ui/router', 'file', true, [], [
-                'php'
-            ]);
+            $this->arrAppOption = (array) include $this->pathCommon() . '/ui/option/app.php';
         }
     }
 
@@ -864,59 +874,5 @@ class Project extends Container implements IProject
     protected function appOptionCachePath()
     {
         return $this->pathApplicationCache('option') . '/' . Application::INIT_APP . '.php';
-    }
-
-    /**
-     * 验证环境变量是否变动
-     *
-     * @param string $strCache
-     * @return void
-     */
-    protected function checkEnv($strCache)
-    {
-        return filemtime($this->path() . '/.env') > filemtime($strCache);
-    }
-
-    /**
-     * 设置环境变量
-     *
-     * @param array $arrEnv
-     * @return array
-     */
-    protected function environmentVariables($arrEnv = [])
-    {
-        if ($arrEnv) {
-            foreach ($arrEnv as $strName => $strValue) {
-                $this->setEnvironmentVariable($strName, $strValue);
-            }
-
-            return $arrEnv;
-        } else {
-            $objDotenv = new Dotenv($this->path());
-            $objDotenv->load();
-            
-            return $_ENV;
-        }
-    }
-
-    /**
-     * 设置单个环境变量
-     *
-     * @param string $strName
-     * @param string|null $mixValue
-     * @return void
-     */
-    protected function setEnvironmentVariable($strName, $mixValue = null)
-    {
-        if (is_bool($mixValue)) {
-            putenv($strName . '=' . ($mixValue ? '(true)' : '(false)'));
-        } elseif (is_null($mixValue)) {
-            putenv($strName . '(null)');
-        } else {
-            putenv($strName . '=' . $mixValue);
-        }
-
-        $_ENV[$strName] = $mixValue;
-        $_SERVER[$strName] = $mixValue;
     }
 }

@@ -14,48 +14,48 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Event\Provider;
+namespace Leevel\Mvc;
 
-use Leevel\{
-    Di\Provider,
-    Event\Dispatch
-};
+use RuntimeException;
 
 /**
- * event 服务提供者
+ * 模型未找到异常
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.05.12
+ * @since 2017.07.10
  * @version 1.0
  */
-class Register extends Provider
+class ModelNotFoundException extends RuntimeException
 {
 
     /**
-     * 注册服务
+     * 模型名字
      *
-     * @return void
+     * @var string
      */
-    public function register()
+    protected $strModel;
+
+    /**
+     * 设置模型
+     *
+     * @param string $strModel
+     * @return $this
+     */
+    public function model($strModel)
     {
-        $this->singleton('event', function ($project) {
-            return new Dispatch($project);
-        });
+        $this->strModel = $strModel;
+        $this->message = "Can not find {$strModel} data";
+        return $this;
     }
 
     /**
-     * 可用服务提供者
+     * 取回模型
      *
-     * @return array
+     * @return string
      */
-    public static function providers()
+    public function getModel()
     {
-        return [
-            'event' => [
-                'Leevel\Event\Dispatch',
-                'Leevel\Event\IDispatch'
-            ]
-        ];
+        return $this->strModel;
     }
 }
