@@ -156,7 +156,7 @@ class Type
         }
 
         if (is_string($types)) {
-            $types = ( array ) $types;
+            $types = (array) $types;
         }
 
         // 类型检查
