@@ -163,7 +163,7 @@ class Container implements IContainer, ArrayAccess
                 $this->alias($key, $item);
             }
         } else {
-            $value = ( array ) $value;
+            $value = (array) $value;
             foreach ($value as $item) {
                 $this->alias[$item] = $alias;
             }
