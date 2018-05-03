@@ -132,8 +132,6 @@ class Load
                 }
 
                 $deferredAlias[$provider] = $providers;
-
-                continue;
             }
         }
 
