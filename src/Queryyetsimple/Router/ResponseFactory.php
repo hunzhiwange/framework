@@ -253,7 +253,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiOk($content = '', $text = null) {
+    public function apiOk($content = '', $text = null)
+    {
         return $this->createApiResponse()->ok($content, $text);
     }
 
@@ -301,7 +302,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiError($message, $statusCode, $text = null) {
+    public function apiError($message, $statusCode, $text = null)
+    {
         return $this->createApiResponse()->error($message, $statusCode, $text);
     }
 
@@ -313,7 +315,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiBadRequest($message = null, $text = null) {
+    public function apiBadRequest($message = null, $text = null)
+    {
         return $this->createApiResponse()->badRequest($message, $text);
     }
 
@@ -325,7 +328,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiUnauthorized($message = null, $text = null) {
+    public function apiUnauthorized($message = null, $text = null)
+    {
         return $this->createApiResponse()->unauthorized($message, $text);
     }
 
@@ -337,7 +341,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiForbidden($message = null, $text = null) {
+    public function apiForbidden($message = null, $text = null)
+    {
         return $this->createApiResponse()->forbidden($message, $text);
     }
 
@@ -349,7 +354,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiNotFound($message = null, $text = null) {
+    public function apiNotFound($message = null, $text = null)
+    {
         return $this->createApiResponse()->notFound($message, $text);
     }
 
@@ -361,7 +367,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiMethodNotAllowed($message = null, $text = null) {
+    public function apiMethodNotAllowed($message = null, $text = null)
+    {
         return $this->createApiResponse()->methodNotAllowed($message, $text);
     }
 
@@ -374,7 +381,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiUnprocessableEntity(?array $errors = null, $message = null, $text = null) {
+    public function apiUnprocessableEntity(?array $errors = null, $message = null, $text = null)
+    {
         return $this->createApiResponse()->unprocessableEntity($errors, $message, $text);
     }
 
@@ -386,7 +394,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiTooManyRequests($message = null, $text = null) {
+    public function apiTooManyRequests($message = null, $text = null)
+    {
         return $this->createApiResponse()->tooManyRequests($message, $text);
     }
 
@@ -398,7 +407,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $text
      * @return $this
      */
-    public function apiInternalServerError($message = null, $text = null) {
+    public function apiInternalServerError($message = null, $text = null)
+    {
         return $this->createApiResponse()->internalServerError($message, $text);
     }
 
@@ -408,7 +418,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $template
      * @return $this
      */
-    public function setViewSuccessTemplate(string $template) {
+    public function setViewSuccessTemplate(string $template)
+    {
         $this->viewSuccessTemplate = $template;
 
         return $this;
@@ -420,7 +431,8 @@ class ResponseFactory implements IResponseFactory
      * @param string $template
      * @return $this
      */
-    public function setViewFailTemplate(string $template) {
+    public function setViewFailTemplate(string $template)
+    {
         $this->viewFailTemplate = $template;
 
         return $this;
@@ -431,7 +443,8 @@ class ResponseFactory implements IResponseFactory
      * 
      * @return \Leevel\Http\ApiResponse
      */
-    protected function createApiResponse() {
+    protected function createApiResponse()
+    {
         return new ApiResponse();
     }
 }
