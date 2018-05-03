@@ -324,4 +324,12 @@ interface IProject extends IContainer
      * @return $this
      */
     public function bootstrapProviders();
+
+    /**
+     * 注册服务提供者
+     *
+     * @param \Leevel\Di\Provider|string $provider
+     * @return \Leevel\Di\Provider
+     */
+    public function register($provider);
 }

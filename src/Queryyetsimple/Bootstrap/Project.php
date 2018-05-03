@@ -592,60 +592,20 @@ class Project extends Container implements IProject
      */
     public function registerProviders()
     {
-        $isCached = false;
+        list($this->deferredProviders, $deferredAlias) = $this->make('option')->get('_providers', [[], []]);
 
-        $cachePath = $this->defferProviderCachePath();
-        if (! $this->development() && is_file($cachePath)) {
-            list($this->deferredProviders, $deferredAlias) = include $cachePath;
-            $isCached = true;
-        } else {
-            $deferredAlias = [];
+        foreach ($deferredAlias as $alias) {
+            $this->alias($alias);
         }
 
-        foreach ($this->make('option')->get('provider', []) as $provider) {
-            if ($isCached === true && isset($deferredAlias[$provider])) {
-                $this->alias($deferredAlias[$provider]);
-                continue;
-            }
+        $providers = $this->make('option')->get('provider', []);
 
-            if (! class_exists($provider)) {
-                continue;
-            }
-
-            if ($provider::isDeferred()) {
-                $providers = $provider::providers();
-                foreach ($providers as $key => $alias) {
-                    if (is_int($key)) {
-                        $key = $alias;
-                    }
-                    $this->deferredProviders[$key] = $provider;
-                }
-                $this->alias($providers);
-                $deferredAlias[$provider] = $providers;
-                continue;
-            }
-
-            $provider = $this->makeProvider($provider);
-            $provider->register();
+        foreach ($providers as $provider) {
+            $provider = $this->register($provider);
 
             if (method_exists($provider, 'bootstrap')) {
                 $this->providerBootstraps[] = $provider;
             }
-        }
-
-        $cacheDir = dirname($cachePath);
-        if (! is_dir($cacheDir)) {
-            mkdir($cacheDir, 0777, true);
-        }
-
-        if ($this->development() || ! is_file($cachePath)) {
-            file_put_contents($cachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
-                PHP_EOL . '<?' . 'php return ' . var_export([
-                $this->deferredProviders,
-                $deferredAlias
-            ], true) . '; ?' . '>');
-
-            chmod($cachePath, 0777);
         }
 
         return $this;
@@ -658,11 +618,30 @@ class Project extends Container implements IProject
      */
     public function bootstrapProviders()
     {
-        foreach ($this->providerBootstraps as $obj) {
-            $this->callProviderBootstrap($obj);
+        foreach ($this->providerBootstraps as $item) {
+            $this->callProviderBootstrap($item);
         }
 
         return $this;
+    }
+
+    /**
+     * 注册服务提供者
+     *
+     * @param \Leevel\Di\Provider|string $provider
+     * @return \Leevel\Di\Provider
+     */
+    public function register($provider)
+    {
+        if (is_string($provider)) {
+            $provider = $this->makeProvider($provider);
+        }
+
+        if (method_exists($provider, 'register')) {
+            $provider->register();
+        }
+
+        return $provider;
     }
 
     /**
@@ -707,27 +686,6 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 注册服务提供者
-     *
-     * @param \Leevel\Di\Provider|string $provider
-     * @return \Leevel\Di\Provider
-     */
-    public function register($provider)
-    {
-        if (is_string($provider)) {
-            $provider = $this->makeProvider($provider);
-        }
-
-        if (method_exists($provider, 'register')) {
-            $provider->register();
-        }
-
-        $this->alias($provider::providers());
-
-        return $provider;
-    }
-
-    /**
      * 注册延迟载入服务提供者
      *
      * @param string $provider
@@ -739,23 +697,12 @@ class Project extends Container implements IProject
             return;
         }
 
-        $provider = $this->makeProvider($this->deferredProviders[$provider]);
-        $provider->register();
+        $provider = $this->register($this->deferredProviders[$provider]);
 
         if (method_exists($provider, 'bootstrap')) {
             $this->callProviderBootstrap($provider);
         }
 
         unset($this->deferredProviders[$provider]);
-    }
-
-    /**
-     * 返回延迟服务提供者缓存路径
-     *
-     * @return string
-     */
-    protected function defferProviderCachePath()
-    {
-        return $this->pathRuntime() . '/provider/deffer.php';
     }
 }
