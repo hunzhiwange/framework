@@ -138,7 +138,8 @@ class SwaggerRouter
      * @param string|null $cachePath
      * @return array
      */
-    public function handle(string $cachePath = null) {
+    public function handle(string $cachePath = null)
+    {
         $swagger = $this->makeSwagger();
 
         list($basepaths, $basepathPrefix) = $this->parseBasepaths($swagger);
@@ -152,7 +153,7 @@ class SwaggerRouter
                     $method = $path->$m;
 
                     // 忽略已删除和带有忽略标记的路由
-                    if (! $method || $method->deprecated === true || $method->_ignore) {
+                    if (! $method || $method->deprecated === true || (property_exists($methods, '_ignore') && $method->_ignore)) {
                         continue;
                     }
 
@@ -243,7 +244,8 @@ class SwaggerRouter
      * @param \Swagger\Context $context
      * @return string|null
      */
-    protected function parseBindBySource(Context $context) {
+    protected function parseBindBySource(Context $context)
+    {
         if (! $context->class || ! $context->method) {
             return null;
         }
@@ -267,7 +269,8 @@ class SwaggerRouter
      * @param \Swagger\Annotations\Swagger
      * @return array
      */
-    protected function parseGroups(Swagger $swagger) {
+    protected function parseGroups(Swagger $swagger)
+    {
         $groups = [];
 
         if ($swagger->tags) {
@@ -403,7 +406,8 @@ class SwaggerRouter
      * @param \Swagger\Annotations\Swagger $swagger
      * @return array
      */
-    protected function parseBasepaths(Swagger $swagger) {
+    protected function parseBasepaths(Swagger $swagger)
+    {
         $basepaths = [];
         $basepathPrefix = '';
 
@@ -423,7 +427,8 @@ class SwaggerRouter
      * 
      * @return \Swagger\Annotations\Swagger
      */
-    protected function makeSwagger() {
+    protected function makeSwagger()
+    {
         return \Swagger\scan($this->swaggerScan);
     }
 }
