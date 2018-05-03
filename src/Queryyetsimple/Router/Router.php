@@ -86,13 +86,6 @@ class Router implements IRouter
     protected $matchedData = [];
 
     /**
-     * 绑定
-     *
-     * @var callable
-     */
-    protected $bind;
-
-    /**
      * 路由匹配初始化数据
      * 
      * @var array
@@ -490,7 +483,6 @@ class Router implements IRouter
             }
         }
 
-        $this->bind = $bind;
         return $bind;
     }
 
