@@ -78,7 +78,11 @@ class Load
 
         $data = $this->loadOptionData();
 
+        $providers = $this->loadDeferredProviderData($data['app']['provider']);
+
         $data['app']['_env'] = $env;
+
+        $data['app']['_providers'] = $providers;
 
         return $this->loaded = $data;
     }
@@ -100,6 +104,43 @@ class Load
         }
 
         return $_ENV;
+    }
+
+    /**
+     * 分析延迟加载服务提供者
+     * 
+     * @param array $providers
+     * @return array
+     */
+    protected function loadDeferredProviderData(array $providers)
+    {
+       $deferredProviders = $deferredAlias = [];
+
+       foreach ($providers as $provider) {
+            if (! class_exists($provider)) {
+                continue;
+            }
+
+            if ($provider::isDeferred()) {
+                $providers = $provider::providers();
+                foreach ($providers as $key => $alias) {
+                    if (is_int($key)) {
+                        $key = $alias;
+                    }
+
+                    $deferredProviders[$key] = $provider;
+                }
+
+                $deferredAlias[$provider] = $providers;
+
+                continue;
+            }
+        }
+
+        return [
+            $deferredProviders,
+            $deferredAlias
+        ];
     }
 
     /**
