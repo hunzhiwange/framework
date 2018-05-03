@@ -17,9 +17,14 @@
 namespace Leevel\Bootstrap;
 
 use Exception;
+use Leevel\Log\ILog;
 use Leevel\Http\Request;
 use Leevel\Router\Router;
 use Leevel\Http\IResponse;
+use Leevel\Http\ApiResponse;
+use Leevel\Http\JsonResponse;
+use Leevel\Http\RedirectResponse;
+use Leevel\Support\Debug\Console;
 use Leevel\Bootstrap\Bootstrap\{
     LoadOption,
     RegisterRuntime,
@@ -85,6 +90,8 @@ abstract class Kernel implements IKernel
     {
         $response = $this->getResponseWithRequest($request);
 
+        $response = $this->prepareTrace($response);
+
         return $response;
     }
 
@@ -107,7 +114,8 @@ abstract class Kernel implements IKernel
      *
      * @return \Leevel\Bootstrap\IProject
      */
-    public function getProject() {
+    public function getProject()
+    {
         return $this->project;
     }
 
@@ -117,7 +125,8 @@ abstract class Kernel implements IKernel
      * @param \Leevel\Http\Request $request
      * @return \Leevel\Http\IResponse
      */
-    protected function getResponseWithRequest(Request $request) {
+    protected function getResponseWithRequest(Request $request)
+    {
         $this->project->instance('request', $request);
 
         $this->bootstrap();
@@ -131,7 +140,8 @@ abstract class Kernel implements IKernel
      * @param \Leevel\Http\Request $request
      * @return \Leevel\Http\IResponse
      */
-    protected function dispatchRouter(Request $request) {
+    protected function dispatchRouter(Request $request)
+    {
         return $this->router->dispatch($request);
     }
 
@@ -140,7 +150,40 @@ abstract class Kernel implements IKernel
      *
      * @return void
      */
-    protected function bootstrap() {
+    protected function bootstrap()
+    {
         $this->project->bootstrap($this->bootstraps);
+    }
+
+    /**
+     * 调试信息
+     *
+     * @param \Leevel\Http\Response $response
+     * @return \Leevel\Http\IResponse
+     */
+    protected function prepareTrace(IResponse $response)
+    {
+        if (! $this->project->debug()) {
+            return $response;
+        }
+
+        $logs = $this->project[ILog::class]->get();
+
+        if ((
+                $response instanceof ApiResponse || 
+                $response instanceof JsonResponse || 
+                $response->isJson()
+            ) && 
+                is_array(($data = $response->getData()))) {
+            $data['_TRACE'] = Console::jsonTrace($logs);
+
+            $response->setData($data);
+        } elseif(! ($response instanceof RedirectResponse)) {
+            $data = Console::trace($logs);
+
+            $response->appendContent($data);
+        }
+
+        return $response;
     }
 }

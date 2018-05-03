@@ -38,14 +38,15 @@ class LoadOption
      * @param \Leevel\Bootstrap\IProject $project
      * @return void
      */
-    public function handle(Project $project) {
-        $load = new Load($project->pathOption());
-
+    public function handle(Project $project)
+    {
         if ($project->isCachedOption()) {
             $data = (array) include $project->pathCacheOptionFile();
 
             $this->setEnvs($data['app']['_env']);
         } else {
+            $load = new Load($project->pathOption());
+
             $data = $load->loadData($project);
         }
 

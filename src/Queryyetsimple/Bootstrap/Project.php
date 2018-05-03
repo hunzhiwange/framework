@@ -19,11 +19,8 @@ namespace Leevel\Bootstrap;
 use Exception;
 use RuntimeException;
 use Leevel\{
-    Psr4\Psr4,
     Di\Provider,
     Di\Container,
-    Filesystem\Fso,
-    Bootstrap\Console\Provider\Register as ConsoleProvider,
     Log\Provider\Register as LogProvider,
     Event\Provider\Register as EventProvider,
     Router\Provider\Register as RouterProvider
@@ -74,6 +71,20 @@ class Project extends Container implements IProject
      * @var string
      */
     protected $runtimePath;
+
+    /**
+     * 存储路径
+     *
+     * @var string
+     */
+    protected $storagePath;
+
+    /**
+     * 配置路径
+     *
+     * @var string
+     */
+    protected $optionPath;
 
     /**
      * 环境变量路径
@@ -134,14 +145,15 @@ class Project extends Container implements IProject
     /**
      * 返回项目
      *
+     * @param string $path
      * @return static
      */
-    public static function singletons()
+    public static function singletons(?string $path = null)
     {
         if (static::$project !== null) {
             return static::$project;
         } else {
-            return static::$project = new static($arrOption);
+            return static::$project = new static($path);
         }
     }
 
@@ -187,10 +199,8 @@ class Project extends Container implements IProject
      */
     public function setPath(string $path)
     {
-        // 基础路径
         $this->path = $path;
 
-        // 验证缓存路径
         if (! is_writeable($this->pathRuntime())) {
             throw new RuntimeException(sprintf('Runtime path %s is not writeable.', $this->pathRuntime()));
         }
@@ -227,34 +237,6 @@ class Project extends Container implements IProject
         $this->applicationPath = $path;
 
         return $this;
-    }
-
-    /**
-     * 系统错误、异常、调试和跳转模板路径
-     *
-     * @param string $type
-     * @return string
-     */
-    public function pathSystem($type)
-    {
-        $types = [
-            'error',
-            'exception',
-            'trace'
-        ];
-
-        if (! in_array($type, $types)) {
-            throw new Exception(sprintf('System type %s not support', $type));
-        }
-
-        $path = $this->arrAppOption['system_path'] ?? '';
-        $file = $this->arrAppOption['system_template'][$type] ?? $type . '.php';
-
-        if ( !is_dir($path)) {
-            $path = $this->path() . '/' . $path;
-        }
-
-        return $path . '/' . $file;
     }
 
     /**
@@ -300,7 +282,20 @@ class Project extends Container implements IProject
      */
     public function pathRuntime()
     {
-        return $this->pathRuntime ?? $this->path . DIRECTORY_SEPARATOR . 'runtime';
+        return $this->runtimePath ?? $this->path . DIRECTORY_SEPARATOR . 'runtime';
+    }
+
+    /**
+     * 设置存储路径
+     *
+     * @param string $path
+     * @return $this
+     */
+    public function setPathStorage(string $path)
+    {
+        $this->storagePath = $path;
+
+        return $this;
     }
 
     /**
@@ -310,7 +305,20 @@ class Project extends Container implements IProject
      */
     public function pathStorage()
     {
-        return $this->arrOption['path_storage'] ?? $this->path . DIRECTORY_SEPARATOR . 'storage';
+        return $this->storagePath ?? $this->path . DIRECTORY_SEPARATOR . 'storage';
+    }
+
+    /**
+     * 设置配置路径
+     *
+     * @param string $path
+     * @return $this
+     */
+    public function setPathOption(string $path)
+    {
+        $this->optionPath = $path;
+
+        return $this;
     }
 
     /**
@@ -320,7 +328,7 @@ class Project extends Container implements IProject
      */
     public function pathOption()
     {
-        return $this->arrOption['path_option'] ?? $this->path . DIRECTORY_SEPARATOR . 'option';
+        return $this->optionPath ?? $this->path . DIRECTORY_SEPARATOR . 'option';
     }
 
     /**
@@ -382,22 +390,23 @@ class Project extends Container implements IProject
     /**
      * 应用路径
      *
+     * @param string $app
      * @return string
      */
-    public function pathApplicationCurrent()
+    public function pathAnApplication(?string $app = null)
     {
-        return $this->pathApplication() . '/' . strtolower($this->request->app());
+        return $this->pathApplication() . '/' . strtolower($app ?: $this->request->app());
     }
 
     /**
      * 取得应用缓存目录
      *
-     * @param string $strType
+     * @param string $type
      * @return string
      */
-    public function pathApplicationCache($strType)
+    public function pathApplicationCache($type)
     {
-        $arrType = [
+        $types = [
             'file',
             'log',
             'table',
@@ -409,31 +418,31 @@ class Project extends Container implements IProject
             'swoole'
         ];
 
-        if (! in_array($strType, $arrType)) {
-            throw new Exception(sprintf('Application cache type %s not support', $strType));
+        if (! in_array($type, $types)) {
+            throw new Exception(sprintf('Application cache type %s not support', $type));
         }
 
-        return $this->pathRuntime() . '/' . $strType;
+        return $this->pathRuntime() . '/' . $type;
     }
 
     /**
      * 取得应用目录
      *
-     * @param string $strType
+     * @param string $type
      * @return string
      */
-    public function pathApplicationDir($strType)
+    public function pathApplicationDir($type)
     {
-        $arrType = [
+        $types = [
             'theme',
             'i18n'
         ];
 
-        if (! in_array($strType, $arrType)) {
-            throw new Exception(sprintf('Application dir type %s not support', $strType));
+        if (! in_array($type, $types)) {
+            throw new Exception(sprintf('Application dir type %s not support', $type));
         }
 
-        return $this->pathApplicationCurrent() . '/ui/' . $strType;
+        return $this->pathAnApplication() . '/ui/' . $type;
     }
 
     /**
@@ -441,7 +450,8 @@ class Project extends Container implements IProject
      * 
      * @return 返回缓存路径
      */
-    public function pathCacheOptionFile() {
+    public function pathCacheOptionFile()
+    {
         return $this->pathRuntime() . '/cache/option.php';
     }
 
@@ -450,7 +460,8 @@ class Project extends Container implements IProject
      *
      * @return boolean
      */
-    public function isCachedOption() {
+    public function isCachedOption()
+    {
         return is_file($this->pathCacheOptionFile());
     }
 
@@ -459,7 +470,8 @@ class Project extends Container implements IProject
      *
      * @return \Composer\Autoload\ClassLoader
      */
-    public function composer() {
+    public function composer()
+    {
         return require $this->path . '/vendor/autoload.php';
     }
 
@@ -535,28 +547,28 @@ class Project extends Container implements IProject
     /**
      * 创建服务提供者
      *
-     * @param string $strProvider
+     * @param string $provider
      * @return \Leevel\Di\Provider
      */
-    public function makeProvider($strProvider)
+    public function makeProvider($provider)
     {
-        return new $strProvider($this);
+        return new $provider($this);
     }
 
     /**
      * 执行 bootstrap
      *
-     * @param \Leevel\Di\Provider $objProvider
+     * @param \Leevel\Di\Provider $provider
      * @return void
      */
-    public function callProviderBootstrap(Provider $objProvider)
+    public function callProviderBootstrap(Provider $provider)
     {
-        if (! method_exists($objProvider, 'bootstrap')) {
+        if (! method_exists($provider, 'bootstrap')) {
             return;
         }
 
         $this->call([
-            $objProvider,
+            $provider,
             'bootstrap'
         ]);
     }
@@ -580,60 +592,60 @@ class Project extends Container implements IProject
      */
     public function registerProviders()
     {
-        $booCache = false;
+        $isCached = false;
 
-        $strCachePath = $this->defferProviderCachePath();
-        if (! $this->development() && is_file($strCachePath)) {
-            list($this->deferredProviders, $arrDeferredAlias) = include $strCachePath;
-            $booCache = true;
+        $cachePath = $this->defferProviderCachePath();
+        if (! $this->development() && is_file($cachePath)) {
+            list($this->deferredProviders, $deferredAlias) = include $cachePath;
+            $isCached = true;
         } else {
-            $arrDeferredAlias = [];
+            $deferredAlias = [];
         }
 
-        foreach ($this->make('option')->get('provider', []) as $strProvider) {
-            if ($booCache === true && isset($arrDeferredAlias[$strProvider])) {
-                $this->alias($arrDeferredAlias[$strProvider]);
+        foreach ($this->make('option')->get('provider', []) as $provider) {
+            if ($isCached === true && isset($deferredAlias[$provider])) {
+                $this->alias($deferredAlias[$provider]);
                 continue;
             }
 
-            if (! class_exists($strProvider)) {
+            if (! class_exists($provider)) {
                 continue;
             }
 
-            if ($strProvider::isDeferred()) {
-                $arrProviders = $strProvider::providers();
-                foreach ($arrProviders as $mixKey => $mixAlias) {
-                    if (is_int($mixKey)) {
-                        $mixKey = $mixAlias;
+            if ($provider::isDeferred()) {
+                $providers = $provider::providers();
+                foreach ($providers as $key => $alias) {
+                    if (is_int($key)) {
+                        $key = $alias;
                     }
-                    $this->deferredProviders[$mixKey] = $strProvider;
+                    $this->deferredProviders[$key] = $provider;
                 }
-                $this->alias($arrProviders);
-                $arrDeferredAlias[$strProvider] = $arrProviders;
+                $this->alias($providers);
+                $deferredAlias[$provider] = $providers;
                 continue;
             }
 
-            $objProvider = $this->makeProvider($strProvider);
-            $objProvider->register();
+            $provider = $this->makeProvider($provider);
+            $provider->register();
 
-            if (method_exists($objProvider, 'bootstrap')) {
-                $this->providerBootstraps[] = $objProvider;
+            if (method_exists($provider, 'bootstrap')) {
+                $this->providerBootstraps[] = $provider;
             }
         }
 
-        $cacheDir = dirname($strCachePath);
+        $cacheDir = dirname($cachePath);
         if (! is_dir($cacheDir)) {
             mkdir($cacheDir, 0777, true);
         }
 
-        if ($this->development() || ! is_file($strCachePath)) {
-            file_put_contents($strCachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
+        if ($this->development() || ! is_file($cachePath)) {
+            file_put_contents($cachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
                 PHP_EOL . '<?' . 'php return ' . var_export([
                 $this->deferredProviders,
-                $arrDeferredAlias
+                $deferredAlias
             ], true) . '; ?' . '>');
 
-            chmod($strCachePath, 0777);
+            chmod($cachePath, 0777);
         }
 
         return $this;
@@ -712,33 +724,29 @@ class Project extends Container implements IProject
 
         $this->alias($provider::providers());
 
-        // if ($this->booted) {
-        //    $this->bootProvider($provider);
-        // }
-
         return $provider;
     }
 
     /**
      * 注册延迟载入服务提供者
      *
-     * @param string $strProvider
+     * @param string $provider
      * @return void
      */
-    protected function registerDeferredProvider($strProvider)
+    protected function registerDeferredProvider($provider)
     {
-        if (! isset($this->deferredProviders[$strProvider])) {
+        if (! isset($this->deferredProviders[$provider])) {
             return;
         }
 
-        $objProvider = $this->makeProvider($this->deferredProviders[$strProvider]);
-        $objProvider->register();
+        $provider = $this->makeProvider($this->deferredProviders[$provider]);
+        $provider->register();
 
-        if (method_exists($objProvider, 'bootstrap')) {
-            $this->callProviderBootstrap($objProvider);
+        if (method_exists($provider, 'bootstrap')) {
+            $this->callProviderBootstrap($provider);
         }
 
-        unset($this->deferredProviders[$strProvider]);
+        unset($this->deferredProviders[$provider]);
     }
 
     /**

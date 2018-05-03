@@ -129,7 +129,8 @@ abstract class Runtime implements IRuntime
      * @param \Exception $e
      * @return void
      */
-    public function renderForConsole(OutputInterface $output, Exception $e) {
+    public function renderForConsole(OutputInterface $output, Exception $e)
+    {
         $handler = (new CollisionProvider)->
 
         register()->
@@ -168,7 +169,8 @@ abstract class Runtime implements IRuntime
      * @param Exception $e
      * @return \Leevel\Http\Response
      */
-    public function rendorWithHttpExceptionView(Exception $e) {
+    public function rendorWithHttpExceptionView(Exception $e)
+    {
         $filepath = $this->getHttpExceptionView($e);
 
         if (file_exists($filepath)) {

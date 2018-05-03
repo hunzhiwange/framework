@@ -485,12 +485,12 @@ if (! function_exists('path')) {
     /**
      * 取得项目路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path($strPath = '')
+    function path($path = '')
     {
-        return project()->path() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->path() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -498,12 +498,12 @@ if (! function_exists('path_application')) {
     /**
      * 取得项目应用路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_application($strPath = '')
+    function path_application($path = '')
     {
-        return project()->pathApplication() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathApplication() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -511,12 +511,12 @@ if (! function_exists('path_common')) {
     /**
      * 取得项目公共路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_common($strPath = '')
+    function path_common($path = '')
     {
-        return project()->pathCommon() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathCommon() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -524,12 +524,12 @@ if (! function_exists('path_runtime')) {
     /**
      * 取得项目缓存路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_runtime($strPath = '')
+    function path_runtime($path = '')
     {
-        return project()->pathRuntime() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathRuntime() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -537,12 +537,12 @@ if (! function_exists('path_storage')) {
     /**
      * 取得项目附件路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_storage($strPath = '')
+    function path_storage($path = '')
     {
-        return project()->pathStorage() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathStorage() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -563,12 +563,13 @@ if (! function_exists('path_application')) {
     /**
      * 取得项目当前应用路径
      *
-     * @param string $strPath
+     * @param string $path
+     * @param string $app
      * @return string
      */
-    function path_application($strPath = '')
+    function path_an_application(string $path = '', ?string $app = null)
     {
-        return project()->pathApplicationCurrent() . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathAnApplication($app) . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -576,12 +577,12 @@ if (! function_exists('path_theme')) {
     /**
      * 取得项目当前应用主题路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_theme($strPath = '')
+    function path_theme($path = '')
     {
-        return project()->pathApplicationDir('theme') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathApplicationDir('theme') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -589,12 +590,12 @@ if (! function_exists('path_i18n')) {
     /**
      * 取得项目当前应用国际化路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_i18n($strPath = '')
+    function path_i18n($path = '')
     {
-        return project()->pathApplicationDir('i18n') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathApplicationDir('i18n') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -602,12 +603,12 @@ if (! function_exists('path_file_cache')) {
     /**
      * 取得项目当前应用文件缓存路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_file_cache($strPath = '')
+    function path_file_cache($path = '')
     {
-        return project()->pathApplicationCache('file') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathApplicationCache('file') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -615,12 +616,12 @@ if (! function_exists('path_log_cache')) {
     /**
      * 取得项目当前应用日志缓存路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_log_cache($strPath = '')
+    function path_log_cache($path = '')
     {
-        return project()->pathApplicationCache('log') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathApplicationCache('log') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -628,12 +629,12 @@ if (! function_exists('path_swoole_cache')) {
     /**
      * 取得项目当前应用 swoole 缓存路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_swoole_cache($strPath = '')
+    function path_swoole_cache($path = '')
     {
-        return project()->pathApplicationCache('swoole') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathApplicationCache('swoole') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -641,12 +642,12 @@ if (! function_exists('path_table_cache')) {
     /**
      * 取得项目当前应用数据表缓存路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_table_cache($strPath = '')
+    function path_table_cache($path = '')
     {
-        return project()->pathApplicationCache('table') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathApplicationCache('table') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 
@@ -654,12 +655,12 @@ if (! function_exists('path_router_cache')) {
     /**
      * 取得项目当前应用路由缓存路径
      *
-     * @param string $strPath
+     * @param string $path
      * @return string
      */
-    function path_router_cache($strPath = 'router.php')
+    function path_router_cache($path = 'router.php')
     {
-        return project()->pathApplicationCache('router') . ($strPath ? DIRECTORY_SEPARATOR . $strPath : $strPath);
+        return project()->pathApplicationCache('router') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 

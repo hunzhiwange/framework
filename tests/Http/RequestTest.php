@@ -21,7 +21,7 @@ use Leevel\Http\Request;
 
 /**
  * Request test
- * This class borrows heavily from the Symfony2 Framework and is part of the symfony package
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
  * 
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
