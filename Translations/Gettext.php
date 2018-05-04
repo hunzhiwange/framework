@@ -85,7 +85,12 @@ class Gettext extends Translations implements IArray
         $func_body = "
             \$index = (int)($expression);
             return (\$index < $nplurals)? \$index : $nplurals - 1;";
-        return create_function('$n', $func_body);
+
+        $result = null;
+        $funcAll = '$result = function($n) { ' . $func_body . ' };';
+        eval($funcAll);
+
+        return $result;
     }
 
     /**
