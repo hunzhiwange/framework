@@ -133,8 +133,6 @@ abstract class Kernel implements IKernel
 
         $this->bootstrap();
 
-        throw new \Exception('xx');
-
         return $this->dispatchRouter($request);
     }
 
