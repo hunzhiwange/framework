@@ -264,12 +264,18 @@ if (! function_exists('__')) {
     /**
      * 语言包
      *
-     * array $arr
+     * @param array $arr
      * @return string
      */
     function __(...$arr)
     {
-        return project('i18n')->{'getText'}(...$arr);
+        static $i18n;
+
+        if (is_null($i18n)) {
+            $i18n = project('i18n');
+        }
+
+        return $i18n->{'getText'}(...$arr);
     }
 }
 

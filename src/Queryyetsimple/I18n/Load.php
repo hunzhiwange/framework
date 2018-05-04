@@ -17,7 +17,6 @@
 namespace Leevel\I18n;
 
 use RuntimeException;
-use Leevel\Filesystem\Fso;
 
 /**
  * 语言包工具类导入类
@@ -35,73 +34,54 @@ class Load
      *
      * @var string
      */
-    protected $strI18n = 'zh-cn';
-
-    /**
-     * 缓存路径
-     *
-     * @var string
-     */
-    protected $strCachePath;
+    protected $i18n = 'zh-cn';
 
     /**
      * 载入路径
      *
      * @var array
      */
-    protected $arrDir = [];
+    protected $dirs = [];
 
     /**
      * 已经载入数据
      *
      * @var array
      */
-    protected $arrLoad;
+    protected $loaded;
 
     /**
      * 构造函数
      *
-     * @param array $arrDir
+     * @param array $dirs
      * @return void
      */
-    public function __construct(array $arrDir = [])
+    public function __construct(array $dirs = [])
     {
-        $this->arrDir = $arrDir;
+        $this->dirs = $dirs;
     }
 
     /**
      * 设置当前语言包
      *
-     * @param string $strI18n
+     * @param string $i18n
      * @return $this
      */
-    public function setI18n($strI18n)
+    public function setI18n($i18n)
     {
-        $this->strI18n = $strI18n;
-        return $this;
-    }
-
-    /**
-     * 设置缓存路径
-     *
-     * @param string $strCachePath
-     * @return $this
-     */
-    public function setCachePath($strCachePath)
-    {
-        $this->strCachePath = $strCachePath;
+        $this->i18n = $i18n;
         return $this;
     }
 
     /**
      * 添加目录
      *
-     * @param array $arrDir
+     * @param array $dirs
      * @return $this
      */
-    public function addDir(array $arrDir)
+    public function addDir(array $dirs)
     {
-        $this->arrDir = array_unique(array_merge($this->arrDir, $arrDir));
+        $this->dirs = array_unique(array_merge($this->dirs, $dirs));
         return $this;
     }
 
@@ -114,79 +94,77 @@ class Load
      */
     public function loadData()
     {
-        if (! is_null($this->arrLoad)) {
-            return $this->arrLoad;
+        if (! is_null($this->loaded)) {
+            return $this->loaded;
         }
 
-        $arrFiles = $this->findMoFile($this->parseDir($this->arrDir));
-        $arrTexts = $this->parseMoData($arrFiles);
-        $sCacheFile = $this->strCachePath;
-        $sDir = dirname($sCacheFile);
-        if (! is_dir($sDir)) {
-            mkdir($sDir, 0777, true);
-        }
+        $files = $this->findMoFile($this->parseDir($this->dirs));
+        $texts = $this->parseMoData($files);
 
-        // 防止空数据无法写入
-        $arrTexts['Query Yet Simple'] = 'Query Yet Simple';
-        
-        if (! file_put_contents($sCacheFile, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
-            PHP_EOL . '<?' . 'php return ' . var_export($arrTexts, true) . '; ?' . '>')) {
-            throw new RuntimeException(sprintf('Dir %s do not have permission.', $sDir));
-        }
+        $texts['Query Yet Simple'] = '左手代码 右手年华 不忘初心 简单快乐';
 
-        chmod($sCacheFile, 0777);
-
-        return $this->arrLoad = $arrTexts;
+        return $this->loaded = $texts;
     }
 
     /**
      * 分析目录中的 PHP 语言包包含的文件
      *
-     * @param array $arrDir 文件地址
+     * @param array $dirs 文件地址
      * @author 小牛
      * @since 2016.11.27
      * @return array
      */
-    public function findMoFile(array $arrDir)
+    protected function findMoFile(array $dirs): array
     {
-        $arrFiles = [];
-        foreach ($arrDir as $sDir) {
-            if (! is_dir($sDir)) {
-                continue;
+        $files = [];
+
+        foreach ($dirs as $dir) {
+            if (! is_dir($dir)) {
+                throw new RuntimeException('I18n load dir is not exits.');
             }
 
-            $arrFiles = array_merge($arrFiles, Fso::lists($sDir, 'file', true, [], [
-                'mo'
-            ]));
+            $files = array_merge($files, $this->getMoFiles($dir));
         }
 
-        return $arrFiles;
+        return $files;
+    }
+
+    /**
+     * 获取目录中的 MO 文件
+     *
+     * @param string $dir
+     * @return array
+     */
+    protected function getMoFiles(string $dir): array
+    {
+        return glob($dir . '/*.mo');
     }
 
     /**
      * 分析 mo 文件语言包数据
      *
-     * @param array $arrFile 文件地址
+     * @param array $files 文件地址
      * @author 小牛
      * @since 2016.11.25
      * @return array
      */
-    public function parseMoData(array $arrFile)
+    protected function parseMoData(array $files): array
     {
-        return (new mo())->readToArray($arrFile);
+        return (new mo())->readToArray($files);
     }
 
     /**
      * 分析目录
      *
-     * @param array $arrDir
+     * @param array $dirs
      * @return array
      */
-    protected function parseDir(array $arrDir)
+    protected function parseDir(array $dirs): array
     {
-        $strI18n = $this->strI18n;
-        return array_map(function ($strDir) use ($strI18n) {
-            return $strDir . '/' . $strI18n;
-        }, $arrDir);
+        $i18n = $this->i18n;
+
+        return array_map(function ($dir) use ($i18n) {
+            return $dir . '/' . $i18n;
+        }, $dirs);
     }
 }

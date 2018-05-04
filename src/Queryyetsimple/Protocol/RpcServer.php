@@ -155,14 +155,16 @@ class RpcServer extends Servers
      * @link https://wiki.swoole.com/wiki/page/50.html
      * @return void
      */
-    public function onReceive(SwooleServer $objServer, int $intFd, int $intReactorId, string $strData) {
+    public function onReceive(SwooleServer $objServer, int $intFd, int $intReactorId, string $strData)
+    {
         parent::onReceive($objServer, $intFd, $intReactorId, $strData);
 
         $this->thriftServer->receive($objServer, $intFd, $intReactorId, $strData);
     }
 
 
-    protected function makeThriftServer() {
+    protected function makeThriftServer()
+    {
         $service = new ThriftHandler();
         $processor = new ThriftProcessor($service);
         $socketTranport = new TServerSocket($this->getOption('host'), $this->getOption('port'));

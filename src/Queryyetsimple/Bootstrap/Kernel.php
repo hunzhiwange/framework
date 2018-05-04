@@ -26,6 +26,7 @@ use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Support\Debug\Console;
 use Leevel\Bootstrap\Bootstrap\{
+    LoadI18n,
     LoadOption,
     RegisterRuntime,
     TraverseProvider
@@ -63,6 +64,7 @@ abstract class Kernel implements IKernel
      */
     protected $bootstraps = [
         LoadOption::class,
+        LoadI18n::class,
         RegisterRuntime::class,
         TraverseProvider::class
     ];
@@ -130,6 +132,8 @@ abstract class Kernel implements IKernel
         $this->project->instance('request', $request);
 
         $this->bootstrap();
+
+        throw new \Exception('xx');
 
         return $this->dispatchRouter($request);
     }

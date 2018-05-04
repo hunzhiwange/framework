@@ -163,6 +163,21 @@ interface IProject extends IContainer
     public function pathOption();
 
     /**
+     * 设置语言包路径
+     *
+     * @param string $path
+     * @return $this
+     */
+    public function setPathI18n(string $path);
+
+    /**
+     * 语言包路径
+     *
+     * @return string
+     */
+    public function pathI18n();
+
+    /**
      * 环境变量路径
      *
      * @return string
@@ -224,9 +239,25 @@ interface IProject extends IContainer
     public function pathApplicationDir($type);
 
     /**
+     * 返回语言包路径
+     * 
+     * @param string $i18n
+     * @return string
+     */
+    public function pathCacheI18nFile(string $i18n);
+
+    /**
+     * 是否缓存语言包
+     *
+     * @param string $i18n
+     * @return boolean
+     */
+    public function isCachedI18n(string $i18n): bool;
+
+    /**
      * 返回缓存路径
      * 
-     * @return 返回缓存路径
+     * @return string
      */
     public function pathCacheOptionFile();
 
@@ -235,7 +266,7 @@ interface IProject extends IContainer
      *
      * @return boolean
      */
-    public function isCachedOption();
+    public function isCachedOption(): bool;
 
     /**
      * 取得 composer

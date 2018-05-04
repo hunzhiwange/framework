@@ -87,6 +87,13 @@ class Project extends Container implements IProject
     protected $optionPath;
 
     /**
+     * 语言包路径
+     *
+     * @var string
+     */
+    protected $i18nPath;
+
+    /**
      * 环境变量路径
      *
      * @var string
@@ -332,6 +339,29 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 设置语言包路径
+     *
+     * @param string $path
+     * @return $this
+     */
+    public function setPathI18n(string $path)
+    {
+        $this->i18nPath = $path;
+
+        return $this;
+    }
+
+    /**
+     * 语言包路径
+     *
+     * @return string
+     */
+    public function pathI18n()
+    {
+        return $this->i18nPath ?? $this->path . DIRECTORY_SEPARATOR . 'i18n';
+    }
+
+    /**
      * 环境变量路径
      *
      * @return string
@@ -446,9 +476,31 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 返回语言包路径
+     * 
+     * @param string $i18n
+     * @return string
+     */
+    public function pathCacheI18nFile(string $i18n)
+    {
+        return $this->pathRuntime() . '/cache/i18n/' . $i18n . '.php';
+    }
+
+    /**
+     * 是否缓存语言包
+     *
+     * @param string $i18n
+     * @return boolean
+     */
+    public function isCachedI18n(string $i18n): bool
+    {
+        return is_file($this->pathCacheI18nFile($i18n));
+    }
+
+    /**
      * 返回缓存路径
      * 
-     * @return 返回缓存路径
+     * @return string
      */
     public function pathCacheOptionFile()
     {
@@ -460,7 +512,7 @@ class Project extends Container implements IProject
      *
      * @return boolean
      */
-    public function isCachedOption()
+    public function isCachedOption(): bool
     {
         return is_file($this->pathCacheOptionFile());
     }
@@ -667,6 +719,10 @@ class Project extends Container implements IProject
             'option' => [
                 'Leevel\Option\IOption',
                 'Leevel\Option\Option'
+            ],
+            'i18n' => [
+                'Leevel\I18n\I18n',
+                'Leevel\I18n\II18n'  
             ],
         ]);
     }

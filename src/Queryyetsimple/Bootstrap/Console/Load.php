@@ -136,6 +136,7 @@ class Load
     public function findConsoleFile(array $arrNamespace)
     {
         $arrFiles = [ ];
+        
         foreach ($arrNamespace as $sNamespace => $sDir) {
             if (! is_dir($sDir)) {
                 continue;
