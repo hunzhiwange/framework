@@ -29,6 +29,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
+        },
+        "leevel": {
+            "providers": [
+                "Leevel\\Router\\Provider\\Register"
+            ]
         }
     },
     "minimum-stability": "dev"
