@@ -37,20 +37,20 @@ class Application extends SymfonyApplication implements IApplication
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $project;
+    protected $container;
 
     /**
      * 创建一个命令行应用程序
      *
-     * @param \Leevel\Di\IContainer $project
+     * @param \Leevel\Di\IContainer $container
      * @param string $version
      * @return $this
      */
-    public function __construct(IContainer $project, ?string $version = null)
+    public function __construct(IContainer $container, string $version)
     {
-        $this->project = $project;
+        $this->container = $container;
 
-        parent::__construct($this->getLogo(), $version ?: $this->project->version());
+        parent::__construct($this->getLogo(), $version);
     }
 
     /**
@@ -62,7 +62,7 @@ class Application extends SymfonyApplication implements IApplication
     public function add(SymfonyCommand $command)
     {
         if ($command instanceof Command) {
-            $command->setContainer($this->project);
+            $command->setContainer($this->container);
         }
 
         return parent::add($command);
@@ -76,7 +76,7 @@ class Application extends SymfonyApplication implements IApplication
      */
     public function normalizeCommand(string $command)
     {
-        return $this->add($this->project->make($command));
+        return $this->add($this->container->make($command));
     }
 
     /**
@@ -99,8 +99,8 @@ class Application extends SymfonyApplication implements IApplication
      *
      * @return \Leevel\Di\Container
      */
-    public function getProject() {
-        return $this->project;
+    public function getContainer() {
+        return $this->container;
     }
 
     /**
