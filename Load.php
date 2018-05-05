@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -68,7 +68,7 @@ class Load
      * @param \Leevel\Bootstrap\IProject $project
      * @return array
      */
-    public function loadData(IProject $project)
+    public function loadData(IProject $project): array
     {
         if ($this->loaded) {
             return $this->loaded;
@@ -77,6 +77,8 @@ class Load
         $env = $this->loadEnvData($project);
 
         $data = $this->loadOptionData();
+
+        $composer = $this->loadComposerOption($project->path());
 
         $providers = $this->loadDeferredProviderData($data['app']['provider']);
 
@@ -93,7 +95,7 @@ class Load
      * @param \Leevel\Bootstrap\IProject $project
      * @return array
      */
-    protected function loadEnvData(IProject $project)
+    protected function loadEnvData(IProject $project): array
     {
         try {
             (new Dotenv($project->pathEnv(), $project->envFile()))->load();
@@ -112,7 +114,7 @@ class Load
      * @param array $providers
      * @return array
      */
-    protected function loadDeferredProviderData(array $providers)
+    protected function loadDeferredProviderData(array $providers): array
     {
        $deferredProviders = $deferredAlias = [];
 
@@ -142,11 +144,31 @@ class Load
     }
 
     /**
+     * 载入 Composer 配置数据
+     * 
+     * @param string $path
+     * @return array
+     */
+    protected function loadComposerOption(string $path): array
+    {
+        $data = [];
+
+        $composer = new ComposerOption($path);
+
+        $composer->loadData();
+
+        exit();
+
+
+        return $data;
+    }
+
+    /**
      * 载入配置数据
      *
      * @return array
      */
-    protected function loadOptionData()
+    protected function loadOptionData(): array
     {
         $data = [];
 
