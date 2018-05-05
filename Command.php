@@ -16,6 +16,7 @@
  */
 namespace Leevel\Console;
 
+use Leevel\Di\IContainer;
 use Symfony\Component\Console\{
     Helper\Table,
     Input\ArrayInput,
@@ -377,19 +378,24 @@ abstract class Command extends SymfonyCommand
     }
     
     /**
-     * 设置或者返回服务容器
+     * 设置服务容器
      *
      * @param \Leevel\Di\IContainer $container
      * @return void
      */
-    public function container($container = null)
+    public function setContainer(IContainer $container)
     {
-        if (is_null($container)) {
-            return $this->container;
-        } else {
-            $this->container = $container;
-            return $this;
-        }
+        $this->container = $container;
+    }
+
+    /**
+     * 返回服务容器
+     *
+     * @return \Leevel\Di\IContainer
+     */
+    public function getContainer(): IContainer
+    {
+        return $this->container;
     }
     
     /**
