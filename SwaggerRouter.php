@@ -194,7 +194,7 @@ class SwaggerRouter
                     // 解析域名
                     $routerTmp['domain'] = $this->normalizeDomain($routerTmp['domain'], $this->domain);
 
-                    if (strpos($routerTmp['domain'], '{') !== false) {
+                    if ($routerTmp['domain'] && strpos($routerTmp['domain'], '{') !== false) {
                         list($routerTmp['domain_regex'], $routerTmp['domain_var']) = $this->ruleRegex($routerTmp['domain'], $routerTmp);
                     } else {
                         list($routerTmp['domain_regex'], $routerTmp['domain_var']) = [null, null];
