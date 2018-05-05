@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -74,7 +74,7 @@ abstract class Provider
     public function registerAlias()
     {
         if (! static::isDeferred() && static::providers()) {
-            $this->alias(static::providers());
+            $this->container->alias(static::providers());
         }
     }
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 namespace Leevel\Protocol;
 
 use Leevel\Protocol\Thrift\Base\TNonblockingServer;

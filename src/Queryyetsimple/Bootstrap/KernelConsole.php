@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -55,7 +55,7 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected $bootstraps = [
         LoadOption::class,
-        LoadI18n::class
+        LoadI18n::class,
         RegisterRuntime::class,
         TraverseProvider::class
     ];

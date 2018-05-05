@@ -105,6 +105,14 @@
                 "Leevel\\Throttler\\Provider\\Register",
                 "Leevel\\Validate\\Provider\\Register",
                 "Leevel\\View\\Provider\\Register"
+            ],
+            "commands": [
+                "Leevel\\Database\\Console",
+                "Leevel\\I18n\\Console",
+                "Leevel\\Mvc\\Console",
+                "Leevel\\Queue\\Console",
+                "Leevel\\Router\\Console",
+                "Leevel\\Swoole\\Console"
             ]
         }
     },

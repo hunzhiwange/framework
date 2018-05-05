@@ -33,7 +33,8 @@
         "leevel": {
             "providers": [
                 "Leevel\\Router\\Provider\\Register"
-            ]
+            ],
+            "commands": "Leevel\\Router\\Console"
         }
     },
     "minimum-stability": "dev"

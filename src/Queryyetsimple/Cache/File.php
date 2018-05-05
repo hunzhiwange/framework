@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -39,14 +39,14 @@ class File extends Connect implements IConnect
      *
      * @var string
      */
-    const HEADER = '<?php die( %s ); ?>';
+    const HEADER = '<?php die(%s); ?>';
 
     /**
      * 缓存文件头部长度
      *
      * @var int
      */
-    const HEADER_LENGTH = 43;
+    const HEADER_LENGTH = 41;
 
     /**
      * 配置
@@ -92,7 +92,7 @@ class File extends Connect implements IConnect
         }
         flock($hFp, LOCK_SH);
 
-        // 头部的 43 个字节存储了安全代码
+        // 头部的 41 个字节存储了安全代码
         $nLen = filesize($sCachePath);
         fread($hFp, static::HEADER_LENGTH);
         $nLen -= static::HEADER_LENGTH;

@@ -32,7 +32,8 @@
         "leevel": {
             "providers": [
                 "Leevel\\Swoole\\Provider\\Register"
-            ]
+            ],
+            "commands": "Leevel\\Swoole\\Console"
         }
     },
     "minimum-stability": "dev"
