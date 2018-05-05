@@ -35,7 +35,8 @@
         "leevel": {
             "providers": [
                 "Leevel\\Database\\Provider\\Register"
-            ]
+            ],
+            "commands": "Leevel\\Database\\Console"
         }
     },
     "minimum-stability": "dev"
