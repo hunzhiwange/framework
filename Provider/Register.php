@@ -84,7 +84,7 @@ class Register extends Provider
      */
     protected function viewViews()
     {
-        $this->singleton('view.views', function ($project) {
+        $this->container->singleton('view.views', function ($project) {
             return new Manager($project);
         });
     }
@@ -96,7 +96,7 @@ class Register extends Provider
      */
     protected function viewView()
     {
-        $this->singleton('view.view', function ($project) {
+        $this->container->singleton('view.view', function ($project) {
             return $project['view.views']->connect();
         });
     }
@@ -108,7 +108,7 @@ class Register extends Provider
      */
     protected function viewCompiler()
     {
-        $this->singleton('view.compiler', function ($project) {
+        $this->container->singleton('view.compiler', function ($project) {
             return new Compiler();
         });
     }
@@ -120,7 +120,7 @@ class Register extends Provider
      */
     protected function viewParser()
     {
-        $this->singleton('view.parser', function ($project) {
+        $this->container->singleton('view.parser', function ($project) {
             return (new Parser($project['view.compiler']))->
 
             registerCompilers()->
@@ -136,7 +136,7 @@ class Register extends Provider
      */
     protected function viewTwigParser()
     {
-        $this->singleton('view.twig.parser', function ($project) {
+        $this->container->singleton('view.twig.parser', function ($project) {
             return new Twig_Environment(new Twig_Loader_Filesystem(), [
                 'auto_reload' => true,
                 'debug' => $project->development(),
