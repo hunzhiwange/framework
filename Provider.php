@@ -197,23 +197,15 @@ abstract class Provider
      */
     protected function loadCommand($namespaces)
     {
-        if (! $this->container->console()) {
-            return;
-        }
-
-        $result = [];
-
         if (! is_array($namespaces)) {
             $tmps = [$namespaces];
         } else {
             $tmps = $namespaces;
         }
 
-        foreach ($tmps as $item) {
-            $result[$item] = $this->container->getPathByNamespace($item);
-        }
+        $results = $this->container->getPathByNamespaces($tmps);
 
-        $this->container['console.load']->addNamespace($result);
+        $this->container['console.load']->addNamespace($results);
     }
 
     /**
