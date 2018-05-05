@@ -14,16 +14,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Leevel\Bootstrap;
 
 /**
- * qys 环境变量设置
+ * 命令行内核执行接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.28
+ * @since 2018.05.04
  * @version 1.0
  */
-putenv('app_name=frameworkconsole');
-putenv('controller_name=bootstrap');
-putenv('action_name=index');
-putenv('app_bootstrap=' . __DIR__ . '/bootstrap.php');
+interface IKernelConsole
+{
+}

@@ -44,16 +44,6 @@ class Register extends Provider
     }
 
     /**
-     * 载入命令包
-     *
-     * @return void
-     */
-    public function bootstrap()
-    {
-        $this->loadCommand('Leevel\Database\Console');
-    }
-
-    /**
      * 可用服务提供者
      *
      * @return array

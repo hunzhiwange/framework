@@ -123,13 +123,6 @@ class Request implements IRequest, IArray, ArrayAccess
     protected $method;
 
     /**
-     * public URL
-     *
-     * @var string
-     */
-    protected $publicUrl;
-
-    /**
      * pathInfo
      *
      * @var string
@@ -207,7 +200,6 @@ class Request implements IRequest, IArray, ArrayAccess
         $this->baseUrl = null;
         $this->requestUri = null;
         $this->method = null;
-        $this->publicUrl = null;
         $this->pathInfo = null;
         $this->app = null;
         $this->controller = null;
@@ -1164,29 +1156,6 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         return $this->content;
-    }
-
-    /**
-     * 返回网站公共文件目录
-     *
-     * @return string
-     */
-    public function getPublicUrl()
-    {
-        return $this->publicUrl;
-    }
-
-    /**
-     * 设置网站公共文件目录
-     *
-     * @param string $publicUrl
-     * @return $this
-     */
-    public function setPublicUrl($publicUrl)
-    {
-        $this->publicUrl = $publicUrl;
-
-        return $this;
     }
 
     /**

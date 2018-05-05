@@ -56,7 +56,6 @@ class Register extends Provider
     public function bootstrap(IDispatch $objEvent)
     {
         $this->eventDispatch($objEvent);
-        $this->console();
         $this->meta();
     }
 
@@ -84,16 +83,6 @@ class Register extends Provider
     protected function eventDispatch(IDispatch $objEvent)
     {
         Model::setEventDispatch($objEvent);
-    }
-
-    /**
-     * 载入命令包
-     *
-     * @return void
-     */
-    protected function console()
-    {
-        $this->loadCommand('Leevel\Mvc\Console');
     }
 
     /**

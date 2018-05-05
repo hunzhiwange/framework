@@ -35,7 +35,8 @@ class TraverseProvider
      * @param \Leevel\Bootstrap\IProject $project
      * @return void
      */
-    public function handle(Project $project) {
+    public function handle(Project $project)
+    {
         $project->registerProviders();
 
         $project->bootstrapProviders();

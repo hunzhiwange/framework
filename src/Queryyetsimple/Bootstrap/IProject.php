@@ -284,6 +284,14 @@ interface IProject extends IContainer
     public function getPathByNamespace($namespaces);
 
     /**
+     * 批量获取命名空间路径
+     *
+     * @param array $namespaces
+     * @return array
+     */
+    public function getPathByNamespaces(array $namespaces): array;
+
+    /**
      * 是否开启 debug
      *
      * @return boolean

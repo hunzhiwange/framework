@@ -37,17 +37,7 @@ class Register extends Provider
     public function register()
     {
     }
-
-    /**
-     * 载入命令包
-     *
-     * @return void
-     */
-    public function bootstrap()
-    {
-        $this->loadCommand('Leevel\Queue\Console');
-    }
-
+    
     /**
      * 可用服务提供者
      *

@@ -272,10 +272,27 @@ if (! function_exists('__')) {
         static $i18n;
 
         if (is_null($i18n)) {
-            $i18n = project('i18n');
+            $i18n = project::singletons()->make('i18n');
+        }
+
+        if ($i18n === false) {
+            return __sprintf(...$arr);
         }
 
         return $i18n->{'getText'}(...$arr);
+    }
+}
+
+if (! function_exists('__sprintf')) {
+    /**
+     * lang
+     *
+     * @param array $arr
+     * @return string
+     */
+    function __sprintf(...$arr)
+    {
+        return count($arr) == 0 ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
     }
 }
 

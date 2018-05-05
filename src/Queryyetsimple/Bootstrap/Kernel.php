@@ -64,7 +64,7 @@ abstract class Kernel implements IKernel
      */
     protected $bootstraps = [
         LoadOption::class,
-        LoadI18n::class,
+        LoadI18n::class
         RegisterRuntime::class,
         TraverseProvider::class
     ];
@@ -90,6 +90,8 @@ abstract class Kernel implements IKernel
      */
     public function handle(Request $request)
     {
+        $this->registerBaseService($request);
+
         $response = $this->getResponseWithRequest($request);
 
         $response = $this->prepareTrace($response);
@@ -122,6 +124,17 @@ abstract class Kernel implements IKernel
     }
 
     /**
+     * 注册基础服务
+     * 
+     * @param \Leevel\Http\Request $request
+     * @return void
+     */
+    protected function registerBaseService(Request $request)
+    {
+        $this->project->instance('request', $request);
+    }
+
+    /**
      * 根据请求返回响应
      *
      * @param \Leevel\Http\Request $request
@@ -129,8 +142,6 @@ abstract class Kernel implements IKernel
      */
     protected function getResponseWithRequest(Request $request)
     {
-        $this->project->instance('request', $request);
-
         $this->bootstrap();
 
         return $this->dispatchRouter($request);

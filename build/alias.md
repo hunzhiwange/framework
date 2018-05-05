@@ -10,6 +10,23 @@ git stpush Auth
 The code below need to be add.
 
 ```
+[core]
+    repositoryformatversion = 0
+    filemode = true
+    bare = false
+    logallrefupdates = true
+    ignorecase = true
+    precomposeunicode = true
+[remote "origin"]
+    url = git@github.com:hunzhiwange/framework.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+    remote = origin
+    merge = refs/heads/master
+[remote "origin"]
+    url = git@gitee.com:dyhb/framework.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+
 [remote "Auth"]
     url = git@github.com:queryyetsimple/auth.git
     fetch = +refs/heads/*:refs/remotes/Auth/*
@@ -151,3 +168,26 @@ The code below need to be add.
         && git subtree push --prefix=src/Queryyetsimple/$1 $1 master \
         && :
 ```
+
+## QueryPHP Git
+
+
+```
+[core]
+    repositoryformatversion = 0
+    filemode = true
+    bare = false
+    logallrefupdates = true
+    ignorecase = true
+    precomposeunicode = true
+[remote "origin"]
+    url = git@github.com:hunzhiwange/framework.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "master"]
+    remote = origin
+    merge = refs/heads/master
+[remote "origin"]
+    url = git@gitee.com:dyhb/framework.git
+    fetch = +refs/heads/*:refs/remotes/origin/*
+```
+

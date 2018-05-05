@@ -547,6 +547,23 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 批量获取命名空间路径
+     *
+     * @param array $namespaces
+     * @return array
+     */
+    public function getPathByNamespaces(array $namespaces): array
+    {
+        $result = [];
+
+        foreach ($namespaces as $item) {
+            $result[$item] = $this->getPathByNamespace($item);
+        }
+        
+        return $result;
+    }
+
+    /**
      * 是否开启 debug
      *
      * @return boolean
@@ -723,6 +740,10 @@ class Project extends Container implements IProject
             'i18n' => [
                 'Leevel\I18n\I18n',
                 'Leevel\I18n\II18n'  
+            ],
+            'leevel' => [
+                'Leevel\Console\Application',
+                'Leevel\Console\IApplication'  
             ],
         ]);
     }

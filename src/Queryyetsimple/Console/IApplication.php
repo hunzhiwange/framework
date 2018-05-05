@@ -14,19 +14,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use Leevel\{
-    Router,
-    Bootstrap\Console\Application
-};
+namespace Leevel\Console;
 
 /**
- * 命令行启动文件
+ * 命令行应用程序接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.04.17
+ * @since 2017.04.28
  * @version 1.0
  */
-router::bind(':Frameworkconsole/Bootstrap/index', function () {
-    return (new Application(project()))->run();
-});
+interface IApplication
+{
+}

@@ -25,6 +25,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
+        },
+        "leevel": {
+            "providers": [
+                "Leevel\\Validate\\Provider\\Register"
+            ]
         }
     },
     "minimum-stability": "dev"

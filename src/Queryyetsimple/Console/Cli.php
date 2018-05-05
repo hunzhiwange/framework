@@ -86,7 +86,8 @@ class Cli
      * 
      * @return void
      */
-    public function parse() {
+    public function parse()
+    {
         $argv = $this->argv;
 
         if ($argv) {
@@ -121,7 +122,8 @@ class Cli
      *
      * @return array
      */
-    public function data() {
+    public function data()
+    {
         return [
             $this->node, 
             $this->querys, 
@@ -134,7 +136,8 @@ class Cli
      *
      * @return string
      */
-    public function node() {
+    public function node()
+    {
         return $this->node;
     }
 
@@ -143,7 +146,8 @@ class Cli
      *
      * @return array
      */
-    public function querys() {
+    public function querys()
+    {
         return $this->querys;
     }
 
@@ -152,7 +156,8 @@ class Cli
      *
      * @return array
      */
-    public function options() {
+    public function options()
+    {
         return $this->options;
     }
 
@@ -241,7 +246,8 @@ eot;
      * @param array $argv
      * @return array
      */
-    protected function normalizeArgv(array $argv) {
+    protected function normalizeArgv(array $argv)
+    {
         $result = [];
         $special = ['=', '--'];
 

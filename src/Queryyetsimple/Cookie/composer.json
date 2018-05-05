@@ -23,6 +23,11 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
+        },        
+        "leevel": {
+            "providers": [
+                "Leevel\\Cookie\\Provider\\Register"
+            ]
         }
     },
     "minimum-stability": "dev"

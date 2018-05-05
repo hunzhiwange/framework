@@ -101,16 +101,3 @@ class Manager extends Managers
         return new token($this->container[$options['model']], $this->container['encryption'], $this->container['validate'], $this->container['cache'], $options);
     }
 }
-
-if (! function_exists('__')) {
-    /**
-     * lang
-     *
-     * @param array $arr
-     * @return string
-     */
-    function __(...$arr)
-    {
-        return count($arr) == 0 ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
-    }
-}

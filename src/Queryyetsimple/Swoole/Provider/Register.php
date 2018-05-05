@@ -47,17 +47,7 @@ class Register extends Provider
         $this->swooleWebsocketServer();
         $this->swooleRpcServer();
     }
-    
-    /**
-     * bootstrap
-     *
-     * @return void
-     */
-    public function bootstrap()
-    {
-        $this->console();
-    }
-    
+
     /**
      * 可用服务提供者
      *
@@ -130,15 +120,5 @@ class Register extends Provider
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\rpc_server']);
             return new RpcServer($arrOption);
         });
-    }
-
-    /**
-     * 载入命令包
-     *
-     * @return void
-     */
-    protected function console()
-    {
-        $this->loadCommand('Leevel\Swoole\Console');
     }
 }
