@@ -169,6 +169,9 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function getSystemCommandNamespaces()
     {
+
+        //print_r($this->project['option']->get('_composer.commands'));
+        exit();
         return [
             'Leevel\Database\Console',
             'Leevel\I18n\Console',

@@ -661,13 +661,13 @@ class Project extends Container implements IProject
      */
     public function registerProviders()
     {
-        list($this->deferredProviders, $deferredAlias) = $this->make('option')->get('_providers', [[], []]);
+        list($this->deferredProviders, $deferredAlias) = $this->make('option')->get('_deferred_providers', [[], []]);
 
         foreach ($deferredAlias as $alias) {
             $this->alias($alias);
         }
 
-        $providers = $this->make('option')->get('provider', []);
+        $providers = $this->make('option')->get('_composer.providers', []);
 
         foreach ($providers as $provider) {
             $provider = $this->register($provider);

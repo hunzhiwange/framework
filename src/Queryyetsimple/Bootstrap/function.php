@@ -142,7 +142,11 @@ if (! function_exists('env')) {
                 }
         }
 
-        switch (strtolower($strName)) {
+        if (is_string($strName)) {
+            $strName = strtolower($strName);
+        }
+
+        switch ($strName) {
             case 'true':
             case '(true)':
                 return true;
@@ -160,7 +164,7 @@ if (! function_exists('env')) {
                 return;
         }
 
-        if (strlen($strName) > 1 && $strName[0] == '"' && $strName[strlen($strName) - 1] == '"') {
+        if ($strName && strlen($strName) > 1 && $strName[0] == '"' && $strName[strlen($strName) - 1] == '"') {
             return substr($strName, 1, - 1);
         }
 

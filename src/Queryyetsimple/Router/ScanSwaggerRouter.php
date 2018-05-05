@@ -52,38 +52,11 @@ class ScanSwaggerRouter
     /**
      * 响应
      *
-     * @param bool $cacheRouters
      * @return array
      */
-    public function handle($cacheRouters = false)
+    public function handle()
     {
-        $result = $this->swaggerRouter->handle();
-
-        if ($cacheRouters) {
-            $this->cacheRouter($result);
-        }
-
-        return $result;
-    }
-
-    /**
-     * 缓存路由
-     *
-     * @param array $routers
-     * @return string
-     */
-    protected function cacheRouter(array $routers) 
-    {
-        $cachePath = $this->getCachePath();
-        $cacheDir = dirname($cachePath);
-        if (! is_dir($cacheDir)) {
-            mkdir($cacheDir, 0777, true);
-        }
-
-        file_put_contents($cachePath, '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
-            PHP_EOL . '<?' . 'php return ' . var_export($routers, true) . '; ?' . '>');
-
-        chmod($cachePath, 0777);
+        return $this->swaggerRouter->handle();
     }
 
     /**

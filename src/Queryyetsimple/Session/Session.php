@@ -110,7 +110,7 @@ class Session implements ISession
         }
 
         // 设置 session 不自动启动
-        ini_set('session.auto_start', 0);
+        ini_set('session.auto_start', '0');
 
         // 设置 session id
         if ($this->getOption('id')) {
@@ -682,7 +682,7 @@ class Session implements ISession
      */
     public function setCookieDomain(string $domain)
     {
-        ini_set("session.cookie_domain", $domain);
+        ini_set('session.cookie_domain', $domain);
     }
 
     /**
@@ -692,7 +692,7 @@ class Session implements ISession
      */
     public function getCookieDomain()
     {
-        return ini_get("session.cookie_domain");
+        return ini_get('session.cookie_domain');
     }
 
     /**
@@ -705,8 +705,8 @@ class Session implements ISession
     {
         $second = intval($second);
 
-        ini_set("session.gc_maxlifetime", $second);
-        ini_set("session.cookie_lifetime", $second);
+        ini_set('session.gc_maxlifetime', (string)$second);
+        ini_set('session.cookie_lifetime', (string)$second);
     }
 
     /**
@@ -716,8 +716,8 @@ class Session implements ISession
      */
     public function setUseCookies()
     {
-        ini_set("session.use_cookies", 1);
-        ini_set("session.use_trans_sid", 0);
+        ini_set('session.use_cookies', '1');
+        ini_set('session.use_trans_sid', '0');
     }
 
     /**
@@ -753,7 +753,7 @@ class Session implements ISession
         $probability = intval($probability);
 
         if ($probability >= 1 && $probability <= 100) {
-            ini_set("session.gc_probability", $probability);
+            ini_set('session.gc_probability', (string)$probability);
         }
     }
 
@@ -765,7 +765,7 @@ class Session implements ISession
      */
     public function getGcProbability()
     {
-        return ini_get("session.gc_probability");
+        return ini_get('session.gc_probability');
     }
 
     /**
