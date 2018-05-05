@@ -80,7 +80,7 @@ class Register extends Provider
      */
     protected function caches()
     {
-        $this->singleton('caches', function ($project) {
+        $this->container->singleton('caches', function ($project) {
             return new Manager($project);
         });
     }
@@ -92,7 +92,7 @@ class Register extends Provider
      */
     protected function cache()
     {
-        $this->singleton('cache', function ($project) {
+        $this->container->singleton('cache', function ($project) {
             return $project['caches']->connect();
         });
     }
@@ -104,7 +104,7 @@ class Register extends Provider
      */
     protected function cacheLoad()
     {
-        $this->singleton('cache.load', function ($project) {
+        $this->container->singleton('cache.load', function ($project) {
             return new Load($project, $project['cache']);
         });
     }
