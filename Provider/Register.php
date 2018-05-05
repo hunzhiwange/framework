@@ -68,7 +68,7 @@ class Register extends Provider
      */
     protected function auths()
     {
-        $this->singleton('auths', function ($project) {
+        $this->container->singleton('auths', function ($project) {
             return new Manager($project);
         });
     }
@@ -80,7 +80,7 @@ class Register extends Provider
      */
     protected function auth()
     {
-        $this->singleton('auth', function ($project) {
+        $this->container->singleton('auth', function ($project) {
             return $project['auths']->connect();
         });
     }
