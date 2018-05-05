@@ -22,6 +22,9 @@
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
+        },
+        "leevel": {
+            "commands": "Leevel\\I18n\\Console"
         }
     },
     "minimum-stability": "dev"
