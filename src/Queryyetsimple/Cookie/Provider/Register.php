@@ -39,7 +39,7 @@ class Register extends Provider
      */
     public function register()
     {
-        $this->singleton('cookie', function ($project) {
+        $this->container->singleton('cookie', function ($project) {
             return new Cookie($project['option']->get('cookie\\'));
         });
     }

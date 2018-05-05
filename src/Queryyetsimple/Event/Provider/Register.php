@@ -39,7 +39,7 @@ class Register extends Provider
      */
     public function register()
     {
-        $this->singleton('event', function ($project) {
+        $this->container->singleton('event', function ($project) {
             return new Dispatch($project);
         });
     }

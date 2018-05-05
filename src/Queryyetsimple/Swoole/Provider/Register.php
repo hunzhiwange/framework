@@ -78,7 +78,7 @@ class Register extends Provider
      */
     protected function swooleServer()
     {
-        $this->singleton('swoole.default.server', function ($project) {
+        $this->container->singleton('swoole.default.server', function ($project) {
             return new Server($project['option']['swoole\server']);
         });
     }
@@ -90,7 +90,7 @@ class Register extends Provider
      */
     protected function swooleHttpServer()
     {
-        $this->singleton('swoole.http.server', function ($project) {
+        $this->container->singleton('swoole.http.server', function ($project) {
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\http_server']);
             return new HttpServer($project['router'], $project['request'], $project['response'], $arrOption);
         });
@@ -103,7 +103,7 @@ class Register extends Provider
      */
     protected function swooleWebsocketServer()
     {
-        $this->singleton('swoole.websocket.server', function ($project) {
+        $this->container->singleton('swoole.websocket.server', function ($project) {
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\websocket_server']);
             return new WebsocketServer($project['router'], $project['request'], $project['response'], $arrOption);
         });
@@ -116,7 +116,7 @@ class Register extends Provider
      */
     protected function swooleRpcServer()
     {
-        $this->singleton('swoole.rpc.server', function ($project) {
+        $this->container->singleton('swoole.rpc.server', function ($project) {
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\rpc_server']);
             return new RpcServer($arrOption);
         });

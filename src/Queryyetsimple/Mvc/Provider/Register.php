@@ -42,7 +42,7 @@ class Register extends Provider
      */
     public function register()
     {
-        $this->singleton('view', function ($project) {
+        $this->container->singleton('view', function ($project) {
             return new view($project['view.view']);
         });
     }
