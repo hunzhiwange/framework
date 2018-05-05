@@ -73,7 +73,7 @@ class Register extends Provider
      */
     protected function throttler()
     {
-        $this->singleton('throttler', function ($project) {
+        $this->container->singleton('throttler', function ($project) {
             return (new Throttler($project['cache']->connect($project['option']['throttler\driver'])))->setRequest($project['request']);
         });
     }
@@ -85,6 +85,6 @@ class Register extends Provider
      */
     protected function middleware()
     {
-        $this->singleton('Leevel\Throttler\Middleware\Throttler');
+        $this->container->singleton('Leevel\Throttler\Middleware\Throttler');
     }
 }
