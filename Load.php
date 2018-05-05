@@ -76,15 +76,17 @@ class Load
 
         $env = $this->loadEnvData($project);
 
-        $data = $this->loadOptionData();
-
         $composer = $this->loadComposerOption($project->path());
 
-        $providers = $this->loadDeferredProviderData($data['app']['provider']);
+        $data = $this->loadOptionData();
+
+        $providers = $this->loadDeferredProviderData(array_diff($composer['providers'], $composer['ignores']));
 
         $data['app']['_env'] = $env;
 
-        $data['app']['_providers'] = $providers;
+        $data['app']['_composer'] = $composer;
+
+        $data['app']['_deferred_poviders'] = $providers;
 
         return $this->loaded = $data;
     }
@@ -151,16 +153,7 @@ class Load
      */
     protected function loadComposerOption(string $path): array
     {
-        $data = [];
-
-        $composer = new ComposerOption($path);
-
-        $composer->loadData();
-
-        exit();
-
-
-        return $data;
+        return (new ComposerOption($path))->loadData();
     }
 
     /**
