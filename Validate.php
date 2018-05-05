@@ -2509,16 +2509,3 @@ class Validate implements IValidate
         throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
     }
 }
-
-if (! function_exists('__')) {
-    /**
-     * lang
-     *
-     * @param array $arr
-     * @return string
-     */
-    function __(...$arr)
-    {
-        return count($arr) == 0 ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
-    }
-}
