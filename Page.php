@@ -104,16 +104,3 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
         return json_encode($this->jsonSerialize(), $option);
     }
 }
-
-if (! function_exists('__')) {
-    /**
-     * lang
-     *
-     * @param array $arr
-     * @return string
-     */
-    function __(...$arr)
-    {
-        return count($arr) == 0 ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
-    }
-}
