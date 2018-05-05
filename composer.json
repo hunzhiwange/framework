@@ -31,7 +31,8 @@
         "leevel": {
             "providers": [
                 "Leevel\\Queue\\Provider\\Register"
-            ]
+            ],
+            "commands": "Leevel\\Queue\\Console"
         }
     },
     "minimum-stability": "dev"
