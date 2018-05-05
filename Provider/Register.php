@@ -82,7 +82,7 @@ class Register extends Provider
      */
     protected function router()
     {
-        $this->singleton('router', function ($project) {
+        $this->container->singleton('router', function ($project) {
             return new Router($project);
         });
     }
@@ -94,7 +94,7 @@ class Register extends Provider
      */
     protected function url()
     {
-        $this->singleton('url', function ($project) {
+        $this->container->singleton('url', function ($project) {
             $option = $project['option'];
             $router = $project['router'];
 
@@ -122,7 +122,7 @@ class Register extends Provider
      */
     protected function redirect()
     {
-        $this->container['redirect'] = $this->share(function ($project) {
+        $this->container['redirect'] = $this->container->share(function ($project) {
             $redirect = new Redirect($project['url']);
 
             if (isset($project['session'])) {
@@ -140,7 +140,7 @@ class Register extends Provider
      */
     protected function response()
     {
-        $this->singleton('response', function ($project) {
+        $this->container->singleton('response', function ($project) {
             $option = $project['option'];
 
             return (new ResponseFactory($project['view'], $project['redirect']))->
