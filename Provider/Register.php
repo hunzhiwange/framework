@@ -68,7 +68,7 @@ class Register extends Provider
      */
     protected function databases()
     {
-        $this->singleton('databases', function ($project) {
+        $this->container->singleton('databases', function ($project) {
             return new Manager($project);
         });
     }
@@ -80,7 +80,7 @@ class Register extends Provider
      */
     protected function database()
     {
-        $this->singleton('database', function ($project) {
+        $this->container->singleton('database', function ($project) {
             return $project['databases']->connect();
         });
     }
