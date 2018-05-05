@@ -740,11 +740,7 @@ class Project extends Container implements IProject
             'i18n' => [
                 'Leevel\I18n\I18n',
                 'Leevel\I18n\II18n'  
-            ],
-            'leevel' => [
-                'Leevel\Console\Application',
-                'Leevel\Console\IApplication'  
-            ],
+            ]
         ]);
     }
 

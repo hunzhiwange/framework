@@ -49,6 +49,13 @@ abstract class KernelConsole implements IKernelConsole
     protected $project;
 
     /**
+     * 命令行应用
+     *
+     * @var \Leevel\Console\Application
+     */
+    protected $consoleApplication;
+
+    /**
      * 项目初始化执行
      *
      * @var array
@@ -117,7 +124,11 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function getConsoleApplication()
     {
-        return $this->project->make('leevel');
+        if ($this->consoleApplication) {
+            return $this->consoleApplication;
+        }
+
+        return $this->consoleApplication = new Application($this->project, $this->project->version());
     }
 
     /**
@@ -128,12 +139,6 @@ abstract class KernelConsole implements IKernelConsole
     protected function registerBaseService()
     {
         $this->project->instance('request', Request::createFromGlobals());
-
-        $this->project->instance('leevel', new Application($this->project, $this->project->version()));
-
-        $this->project->singleton('console.load', function () {
-            return new Load();
-        });
     }
 
    /**
@@ -153,13 +158,47 @@ abstract class KernelConsole implements IKernelConsole
      */
     protected function loadCommands()
     {
-        $namespaces = $this->getSystemCommandNamespaces();
+        $commands = $this->normalizeCommands($this->getCommands());
 
+        $this->getConsoleApplication()->normalizeCommands($commands);
+    }
+
+    /**
+     * 整理命令
+     *
+     * @param array $commands
+     * @return array
+     */
+    protected function normalizeCommands(array $commands): array
+    {
+        $result = $tmp = [];
+
+        foreach ($commands as $item) {
+            $tmp[class_exists($item) ? 'class' : 'namespace'][] = $item;
+        }
+
+        if (isset($tmp['class'])) {
+            $result = $tmp['class'];
+        }
+
+        if (isset($tmp['namespace'])) {
+            $result = array_merge($result, $this->getCommandsWithNamespace($tmp['namespace']));
+        }
+
+        return $result;
+    }
+
+    /**
+     * 整理命令
+     *
+     * @param array $namespaces
+     * @return array
+     */
+    protected function getCommandsWithNamespace(array $namespaces): array
+    {
         $namespaces = $this->project->getPathByNamespaces($namespaces);
 
-        $this->project['console.load']->addNamespace($namespaces);
-
-        $this->getConsoleApplication()->normalizeCommands($this->project['console.load']->loadData());
+        return (new Load())->addNamespace($namespaces)->loadData();
     }
 
     /**
@@ -167,18 +206,8 @@ abstract class KernelConsole implements IKernelConsole
      *
      * @return array
      */
-    protected function getSystemCommandNamespaces()
+    protected function getCommands(): array
     {
-
-        //print_r($this->project['option']->get('_composer.commands'));
-        exit();
-        return [
-            'Leevel\Database\Console',
-            'Leevel\I18n\Console',
-            'Leevel\Mvc\Console',
-            'Leevel\Queue\Console',
-            'Leevel\Router\Console',
-            'Leevel\Swoole\Console',
-        ];
+        return $this->project['option']->get('_composer.commands');
     }
 }
