@@ -703,7 +703,7 @@ class Session implements ISession
      */
     public function setCacheExpire(int $second)
     {
-        $second = intval($second);
+        $second = strval($second);
 
         ini_set('session.gc_maxlifetime', (string)$second);
         ini_set('session.cookie_lifetime', (string)$second);
@@ -750,10 +750,10 @@ class Session implements ISession
      */
     public function setGcProbability(int $probability)
     {
-        $probability = intval($probability);
+        $probability = strval($probability);
 
         if ($probability >= 1 && $probability <= 100) {
-            ini_set('session.gc_probability', (string)$probability);
+            ini_set('session.gc_probability', $probability);
         }
     }
 
