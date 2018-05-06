@@ -16,14 +16,13 @@
  */
 namespace Leevel\Router\Console;
 
-use Exception;
+use InvalidArgumentException;
 use Leevel\Console\{
     Option,
     Command,
     Argument
 };
-use Common\Infra\Provider\Router;
-use Leevel\Router\ScanSwaggerRouter;
+use Leevel\Router;
 
 /**
  * swagger 路由缓存 
@@ -48,7 +47,7 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $strDescription = 'Swagger as the router.';
+    protected $strDescription = 'Swagger as the router';
 
     /**
      * 响应命令
@@ -57,15 +56,43 @@ class Cache extends Command
      */
     public function handle()
     {
-        $this->line('Start to do convert swager to router.');
+        $this->line('Start to do cache router.');
 
-        try {
-            (new Router(app()))->getRouters(true);
+        $data = [
+            'basepaths' => Router::getBasepaths(),
+            'groups' => Router::getGroups(),
+            'routers' => Router::getRouters(),
+            'middlewares' => Router::getGlobalMiddlewares()
+        ];
 
-            $this->info(sprintf('Router file %s cache successed.', path_router_cache()));
-        } catch (Exception $e) {
-            $this->error($e->getmessage());
+        $cachePath = path_router_cache();
+
+        $this->writeCache($cachePath, $data);
+
+        $this->info(sprintf('Router file %s cache successed.', $cachePath));
+    }
+
+    /**
+     * 写入缓存
+     *
+     * @param string $cachePath
+     * @param array $data
+     * @return void
+     */
+    protected function writeCache(string $cachePath, array $data)
+    {
+        if (! is_dir(dirname($cachePath))) {
+            mkdir(dirname($cachePath), 0777, true);
         }
+
+        $content = '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
+            PHP_EOL . '<?' . 'php return ' . var_export($data, true) . '; ?' . '>';
+            
+        if(! file_put_contents($cachePath, $content)) {
+            throw new InvalidArgumentException(sprintf('Dir %s is not writeable', dirname($cachePath)));
+        }
+
+        chmod($cachePath, 0777);
     }
 
     /**
@@ -73,7 +100,7 @@ class Cache extends Command
      *
      * @return array
      */
-    protected function getArguments()
+    protected function getArguments(): array
     {
         return [];
     }
@@ -83,7 +110,7 @@ class Cache extends Command
      *
      * @return array
      */
-    protected function getOptions()
+    protected function getOptions(): array
     {
         return [];
     }

@@ -106,6 +106,8 @@ abstract class RouterProvider extends Provider
     {
         $routers = include $this->getRouterCachePath();
 
+        $this->setGlobalMiddlewares($routers['middlewares']);
+
         $this->setRoutersData($routers);
     }
 

@@ -18,6 +18,7 @@ namespace Leevel\Router\Match;
 
 use Leevel\Http\Request;
 use Leevel\Router\Router;
+use Leevel\Router\IRouter;
 use Leevel\Console\Cli as ConsoleCli;
  
 /**
@@ -52,7 +53,7 @@ class Cli
             $result = array_merge($result, $querys);
         }
 
-        $result[Router::PARAMS] = $options;
+        $result[IRouter::PARAMS] = $options;
 
         return $result;
     }

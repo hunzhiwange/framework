@@ -18,6 +18,7 @@ namespace Leevel\Router\Match;
 
 use Leevel\Http\Request;
 use Leevel\Router\Router;
+use Leevel\Router\IRouter;
 
 /**
  * 路由 pathInfo 匹配
@@ -59,8 +60,8 @@ class PathInfo
         // 首页
         if (! $pathInfo) {
             return [
-                Router::CONTROLLER => Router::DEFAULT_HOME_CONTROLLER,
-                Router::ACTION => Router::DEFAULT_HOME_ACTION
+                IRouter::CONTROLLER => IRouter::DEFAULT_HOME_CONTROLLER,
+                IRouter::ACTION => IRouter::DEFAULT_HOME_ACTION
             ];
         }
 
@@ -86,24 +87,24 @@ class PathInfo
 
         // 应用
         if ($paths && $this->findApp($paths[0])) {
-            $result[Router::APP] = substr(array_shift($paths), 1);
+            $result[IRouter::APP] = substr(array_shift($paths), 1);
         }
 
         list($pathInfos, $options) = $this->parseOptionsAndPathInfos($paths);
 
         if (count($pathInfos) == 1) {
-            $result[Router::CONTROLLER] = array_pop($pathInfos);
+            $result[IRouter::CONTROLLER] = array_pop($pathInfos);
         } else { 
             if ($pathInfos) {
-                $result[Router::ACTION] = array_pop($pathInfos);
+                $result[IRouter::ACTION] = array_pop($pathInfos);
             }
 
             if ($pathInfos) {
-                $result[Router::CONTROLLER] = array_pop($pathInfos);
+                $result[IRouter::CONTROLLER] = array_pop($pathInfos);
             }
 
             if ($pathInfos) {
-                $result[Router::PREFIX] = implode('\\', array_map(function($item) {
+                $result[IRouter::PREFIX] = implode('\\', array_map(function($item) {
                     if (strpos($item, '_') !== false) {
                         $item = str_replace('_', ' ', $item);
                         $item = str_replace(' ', '', ucwords($item));
@@ -116,9 +117,9 @@ class PathInfo
             }
         }
 
-        $result[Router::PARAMS] = $options;
+        $result[IRouter::PARAMS] = $options;
 
-        $result[Router::PARAMS][Router::BASEPATH] = $basepath ?: null;
+        $result[IRouter::PARAMS][IRouter::BASEPATH] = $basepath ?: null;
 
         return $result;
     }

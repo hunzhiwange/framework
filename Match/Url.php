@@ -18,6 +18,7 @@ namespace Leevel\Router\Match;
 
 use Leevel\Http\Request;
 use Leevel\Router\Router;
+use Leevel\Router\IRouter;
 
 /**
  * 路由 url 匹配
@@ -192,16 +193,16 @@ class Url
         }
 
         // 基础路径匹配 /v1
-        $result['params'][Router::BASEPATH] = $this->matchedBasepath;
+        $result['params'][IRouter::BASEPATH] = $this->matchedBasepath;
 
-        $result[Router::PARAMS] = $result['params'];
+        $result[IRouter::PARAMS] = $result['params'];
         unset($result['params']);
 
         // 中间件
-        $result[Router::MIDDLEWARES] = $routers['middlewares'];
+        $result[IRouter::MIDDLEWARES] = $routers['middlewares'];
 
         // 匹配的变量
-        $result[Router::VARS] = $this->matchedVars;
+        $result[IRouter::VARS] = $this->matchedVars;
 
         return $result;
     }
