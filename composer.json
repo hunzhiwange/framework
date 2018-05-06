@@ -113,7 +113,7 @@
                 "Leevel\\Option\\Console",
                 "Leevel\\Queue\\Console",
                 "Leevel\\Router\\Console",
-                "Leevel\\Swoole\\Console"
+                "Leevel\\Protocol\\Console"
             ]
         }
     },
