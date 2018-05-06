@@ -18,8 +18,8 @@ namespace Tests\Pipeline;
 
 use Closure;
 use Tests\TestCase;
-use Queryyetsimple\Di\Container;
-use Queryyetsimple\Pipeline\Pipeline;
+use Leevel\Di\Container;
+use Leevel\Pipeline\Pipeline;
 
 /**
  * pipeline 组件测试

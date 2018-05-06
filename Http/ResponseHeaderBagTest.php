@@ -17,7 +17,7 @@
 namespace Tests\Router;
 
 use Tests\TestCase;
-use Queryyetsimple\Http\ResponseHeaderBag;
+use Leevel\Http\ResponseHeaderBag;
 
 /**
  * ResponseHeaderBag test

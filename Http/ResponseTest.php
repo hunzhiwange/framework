@@ -21,9 +21,9 @@ use Tests\TestCase;
 use JsonSerializable;
 use ReflectionProperty;
 use InvalidArgumentException;
-use Queryyetsimple\Http\Response;
-use Queryyetsimple\Support\IJson;
-use Queryyetsimple\Support\IArray;
+use Leevel\Http\Response;
+use Leevel\Support\IJson;
+use Leevel\Support\IArray;
 
 /**
  * Response test
@@ -41,8 +41,8 @@ class ResponseTest extends TestCase
     public function testCreate()
     {
         $response = Response::create('foo', 301, array('Foo' => 'bar'));
-        $this->assertInstanceOf('Queryyetsimple\Http\IResponse', $response);
-        $this->assertInstanceOf('Queryyetsimple\Http\Response', $response);
+        $this->assertInstanceOf('Leevel\Http\IResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\Response', $response);
         $this->assertEquals(301, $response->getStatusCode());
         $this->assertEquals('bar', $response->headers->get('foo'));
     }
@@ -209,7 +209,7 @@ class ResponseTest extends TestCase
     public function testSetStatusCode($code, $text, $expectedText)
     {
         $response = new Response();
-        $response->setStatusCode($code, $text);
+        $response->setStatusCode((int)$code, $text);
         $statusText = new ReflectionProperty($response, 'statusText');
         $statusText->setAccessible(true);
         $this->assertEquals($expectedText, $statusText->getValue($response));

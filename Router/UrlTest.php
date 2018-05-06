@@ -17,8 +17,8 @@
 namespace Tests\Router;
 
 use Tests\TestCase;
-use Queryyetsimple\Router\Url;
-use Queryyetsimple\Http\Request;
+use Leevel\Router\Url;
+use Leevel\Http\Request;
 
 /**
  * url 组件测试
@@ -69,7 +69,7 @@ class UrlTest extends TestCase
      *
      * @return void
      */
-    public function testPathinfoUrl()
+    public function t2estPathinfoUrl()
     {
         $this->assertEquals($this->url->make('/'), '/'); 
 
@@ -105,7 +105,7 @@ class UrlTest extends TestCase
      *
      * @return void
      */
-    public function testCustomUrl()
+    public function t2estCustomUrl()
     {
         $this->assertEquals($this->url->make('/'), '/');
 
@@ -123,7 +123,7 @@ class UrlTest extends TestCase
      *
      * @return void
      */
-    public function testNormalUrl()
+    public function t2estNormalUrl()
     {
         $this->assertEquals($this->urlNormal->make('/'), '');
 
