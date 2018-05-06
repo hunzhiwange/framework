@@ -41,7 +41,7 @@ class Restart extends Command
      *
      * @var string
      */
-    protected $strDescription = 'Restart queue work after done it current job.';
+    protected $strDescription = 'Restart queue work after done it current job';
 
     /**
      * 响应命令

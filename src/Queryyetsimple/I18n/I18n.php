@@ -123,4 +123,14 @@ class I18n implements II18n
     {
         return $this->i18n;
     }
+
+    /**
+     * 返回所有语言包
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->text;
+    }
 }

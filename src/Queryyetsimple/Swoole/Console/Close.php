@@ -46,7 +46,7 @@ class Close extends Command
      *
      * @var string
      */
-    protected $strDescription = 'Close swoole service process.';
+    protected $strDescription = 'Close swoole service process';
 
     /**
      * 响应命令

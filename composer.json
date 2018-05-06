@@ -110,6 +110,7 @@
                 "Leevel\\Database\\Console",
                 "Leevel\\I18n\\Console",
                 "Leevel\\Mvc\\Console",
+                "Leevel\\Option\\Console",
                 "Leevel\\Queue\\Console",
                 "Leevel\\Router\\Console",
                 "Leevel\\Swoole\\Console"

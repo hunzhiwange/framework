@@ -46,7 +46,7 @@ class Stop extends Command
      *
      * @var string
      */
-    protected $strDescription = 'Stop swoole service process.';
+    protected $strDescription = 'Stop swoole service process';
 
     /**
      * 响应命令

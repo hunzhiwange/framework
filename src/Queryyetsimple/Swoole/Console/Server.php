@@ -45,7 +45,7 @@ class Server extends Command
      *
      * @var string
      */
-    protected $strDescription = 'Start swoole server.';
+    protected $strDescription = 'Start swoole server';
 
     /**
      * 响应命令

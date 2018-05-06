@@ -46,7 +46,7 @@ class Lists extends Command
      *
      * @var string
      */
-    protected $strDescription = 'List swoole http service process.';
+    protected $strDescription = 'List swoole http service process';
 
     /**
      * 响应命令

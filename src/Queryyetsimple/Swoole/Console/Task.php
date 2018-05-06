@@ -46,7 +46,7 @@ class Task extends Command
      *
      * @var string
      */
-    protected $strDescription = 'Start a task on swoole service process.';
+    protected $strDescription = 'Start a task on swoole service process';
 
     /**
      * 响应命令

@@ -46,7 +46,7 @@ class Restart extends Command
      *
      * @var string
      */
-    protected $strDescription = 'Restart swoole service.';
+    protected $strDescription = 'Restart swoole service';
 
     /**
      * 响应命令

@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Router\Console;
+namespace Leevel\I18n\Console;
 
 use InvalidArgumentException;
 use Leevel\Console\{
@@ -22,14 +22,15 @@ use Leevel\Console\{
     Command,
     Argument
 };
-use Leevel\Router;
+use Leevel\I18n;
+use Leevel\Option as Options;
 
 /**
- * swagger 路由缓存 
+ * 语言包缓存
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2018.04.11
+ * @since 2018.05.06
  * @version 1.0
  */
 class Cache extends Command
@@ -40,14 +41,14 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $strName = 'router:cache';
+    protected $strName = 'i18n:cache';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Swagger as the router';
+    protected $strDescription = 'Cache i18n to a file';
 
     /**
      * 响应命令
@@ -56,20 +57,17 @@ class Cache extends Command
      */
     public function handle()
     {
-        $this->line('Start to do cache router.');
+        $this->line('Start to cache i18n.');
 
-        $data = [
-            'basepaths' => Router::getBasepaths(),
-            'groups' => Router::getGroups(),
-            'routers' => Router::getRouters(),
-            'middlewares' => Router::getGlobalMiddlewares()
-        ];
+        $data = I18n::all();
 
-        $cachePath = path_router_cache();
+        $i18nDefault = Options::get('i18n\default');
+
+        $cachePath = app()->pathCacheI18nFile($i18nDefault);
 
         $this->writeCache($cachePath, $data);
 
-        $this->info(sprintf('Router file %s cache successed.', $cachePath));
+        $this->info(sprintf('I18n file %s cache successed.', $cachePath));
     }
 
     /**

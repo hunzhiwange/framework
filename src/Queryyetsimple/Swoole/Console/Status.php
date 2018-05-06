@@ -46,7 +46,7 @@ class Status extends Command
      *
      * @var string
      */
-    protected $strDescription = 'Status of swoole service process.';
+    protected $strDescription = 'Status of swoole service process';
 
     /**
      * 响应命令
