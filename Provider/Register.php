@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Swoole\Provider;
+namespace Leevel\Protocol\Provider;
 
 use Leevel\{
     Di\Provider,
@@ -57,13 +57,13 @@ class Register extends Provider
     {
         return [
             'swoole.default.server' => [
-                'Leevel\Swoole\Server'
+                'Leevel\Protocol\Server'
             ],
             'swoole.http.server' => [
-                'Leevel\Swoole\Http\Server'
+                'Leevel\Protocol\Http\Server'
             ],
             'swoole.websocket.server' => [
-                'Leevel\Swoole\Websocket\Server'
+                'Leevel\Protocol\Websocket\Server'
             ],
             'swoole.rpc.server' => [
                 'Leevel\Protocol\RpcServer'
