@@ -66,4 +66,11 @@ interface II18n
      * @return string
      */
     public function getI18n();
+
+    /**
+     * 返回所有语言包
+     *
+     * @return array
+     */
+    public function all(): array;
 }
