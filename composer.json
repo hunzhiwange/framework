@@ -1,6 +1,6 @@
 {
-    "name": "leevel/swoole",
-    "description": "The Leevel Swoole Package.",
+    "name": "leevel/protocol",
+    "description": "The Leevel Protocol Package.",
     "license": "MIT",
     "homepage": "http://queryphp.com",
     "support": {
@@ -14,15 +14,12 @@
     "require": {
         "php": "^7.1.3",
         "ext-swoole": "*",
-        "leevel/http": "1.0.*",
-        "leevel/router": "1.0.*",
-        "leevel/option": "1.0.*",
         "leevel/console": "1.0.*",
         "leric/php-thrift": "0.10.0"
     },
     "autoload": {
         "psr-4": {
-            "Leevel\\Swoole\\": ""
+            "Leevel\\Protocol\\": ""
         }
     },
     "extra": {
@@ -31,9 +28,9 @@
         },
         "leevel": {
             "providers": [
-                "Leevel\\Swoole\\Provider\\Register"
+                "Leevel\\Protocol\\Provider\\Register"
             ],
-            "commands": "Leevel\\Swoole\\Console"
+            "commands": "Leevel\\Protocol\\Console"
         }
     },
     "minimum-stability": "dev"
