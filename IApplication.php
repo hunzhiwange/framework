@@ -16,6 +16,8 @@
  */
 namespace Leevel\Console;
 
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
+
 /**
  * 命令行应用程序接口
  *
@@ -26,4 +28,35 @@ namespace Leevel\Console;
  */
 interface IApplication
 {
+
+    /**
+     * 添加一条命令
+     *
+     * @param \Symfony\Component\Console\Command\Command $command
+     * @return \Symfony\Component\Console\Command\Command
+     */
+    public function add(SymfonyCommand $command);
+
+    /**
+     * 格式化一个命令行
+     *
+     * @param string $command
+     * @return \Symfony\Component\Console\Command\Command
+     */
+    public function normalizeCommand(string $command);
+
+    /**
+     * 批量格式化命令行
+     *
+     * @param array $commands
+     * @return $this
+     */
+    public function normalizeCommands(array $commands);
+
+    /**
+     * 返回项目容器
+     *
+     * @return \Leevel\Di\Container
+     */
+    public function getContainer();
 }
