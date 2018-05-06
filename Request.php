@@ -1526,7 +1526,7 @@ class Request implements IRequest, IArray, ArrayAccess
         if ($pathInfo) {
             $ext = pathinfo($pathInfo, PATHINFO_EXTENSION);
             if ($ext) {
-                $pathInfo = substr($pathInfo, 0, -strlen($ext) -1);
+                $pathInfo = substr($pathInfo, 0, -(strlen($ext)+1));
             }
         }
 
