@@ -1387,7 +1387,7 @@ class Request implements IRequest, IArray, ArrayAccess
             return '';
         }
 
-        $filename = basename($this->server->get('SCRIPT_FILENAME'));
+        $filename = basename($this->server->get('SCRIPT_FILENAME', ''));
 
         if (basename($baseUrl) === $filename) {
             $basePath = dirname($baseUrl);
@@ -1416,13 +1416,13 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         // 兼容分析
-        $fileName = basename($this->server->get('SCRIPT_FILENAME'));
+        $fileName = basename($this->server->get('SCRIPT_FILENAME', ''));
 
-        if (basename($this->server->get('SCRIPT_NAME')) === $fileName) {
+        if (basename($this->server->get('SCRIPT_NAME', '')) === $fileName) {
             $url = $this->server->get('SCRIPT_NAME');
-        } elseif (basename($this->server->get('PHP_SELF')) === $fileName) {
+        } elseif (basename($this->server->get('PHP_SELF', '')) === $fileName) {
             $url = $this->server->get('PHP_SELF');
-        } elseif (basename($this->server->get('ORIG_SCRIPT_NAME')) === $fileName) {
+        } elseif (basename($this->server->get('ORIG_SCRIPT_NAME', '')) === $fileName) {
             $url = $this->server->get('ORIG_SCRIPT_NAME');
         } else {
             $path = $this->server->get('PHP_SELF');
@@ -1442,12 +1442,15 @@ class Request implements IRequest, IArray, ArrayAccess
         // 比对请求
         $requestUri = $this->getRequestUri();
 
+        $requestUri = (string)$requestUri;
+        $url = (string)$url;
+
         if ('' !== $requestUri && '/' !== substr($requestUri, 0, 1)) {
             $requestUri = '/' . $requestUri;
         }
 
         if ($url) {
-            $prefix = $this->getUrlencodedPrefix($requestUri, $url);
+            $prefix = $url && $requestUri ? $this->getUrlencodedPrefix($requestUri, $url) : false;
 
             if (false !== $prefix) {
                 return $this->baseUrl = $prefix;
@@ -1460,7 +1463,7 @@ class Request implements IRequest, IArray, ArrayAccess
             }
         }
 
-        $basename = basename($url);
+        $basename = $url ? basename($url) : '';
         if (empty($basename) || ! strpos(rawurldecode($requestUri), $basename)) {
             return $this->baseUrl = '';
         }

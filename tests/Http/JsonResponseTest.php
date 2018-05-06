@@ -19,9 +19,9 @@ namespace Tests\Http;
 use Tests\TestCase;
 use JsonSerializable;
 use InvalidArgumentException;
-use Queryyetsimple\Support\IJson;
-use Queryyetsimple\Support\IArray;
-use Queryyetsimple\Http\JsonResponse;
+use Leevel\Support\IJson;
+use Leevel\Support\IArray;
+use Leevel\Http\JsonResponse;
 
 /**
  * JsonResponseTest test
@@ -110,7 +110,7 @@ class JsonResponseTest extends TestCase
     public function testCreate()
     {
         $response = JsonResponse::create(array('foo' => 'bar'), 204);
-        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
         $this->assertEquals('{"foo":"bar"}', $response->getContent());
         $this->assertEquals(204, $response->getStatusCode());
     }
@@ -118,40 +118,40 @@ class JsonResponseTest extends TestCase
     public function testStaticCreateEmptyJsonObject()
     {
         $response = JsonResponse::create();
-        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
         $this->assertSame('{}', $response->getContent());
     }
 
     public function testStaticCreateJsonArray()
     {
         $response = JsonResponse::create(array(0, 1, 2, 3));
-        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
         $this->assertSame('[0,1,2,3]', $response->getContent());
     }
 
     public function testStaticCreateJsonObject()
     {
         $response = JsonResponse::create(array('foo' => 'bar'));
-        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
 
     public function testStaticCreateWithSimpleTypes()
     {
         $response = JsonResponse::create('foo');
-        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
         $this->assertSame('"foo"', $response->getContent());
 
         $response = JsonResponse::create(0);
-        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
         $this->assertSame('0', $response->getContent());
 
         $response = JsonResponse::create(0.1);
-        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
         $this->assertSame('0.1', $response->getContent());
 
         $response = JsonResponse::create(true);
-        $this->assertInstanceOf('Queryyetsimple\Http\JsonResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
         $this->assertSame('true', $response->getContent());
     }
 

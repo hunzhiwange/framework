@@ -17,7 +17,7 @@
 namespace Tests\Http;
 
 use Tests\TestCase;
-use Queryyetsimple\Http\HeaderBag;
+use Leevel\Http\HeaderBag;
     
 /**
  * HeaderBagTest test

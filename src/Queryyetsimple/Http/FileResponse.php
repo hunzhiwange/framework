@@ -141,7 +141,7 @@ class FileResponse extends Response
             return $this;
         }
 
-        $this->setLastModified(DateTime::createFromFormat('U', $this->file->getMTime()));
+        $this->setLastModified(DateTime::createFromFormat('U', (string)$this->file->getMTime()));
 
         return $this;
     }

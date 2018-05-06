@@ -17,8 +17,8 @@
 namespace Tests\Router;
 
 use Tests\TestCase;
-use Queryyetsimple\Session\Session;
-use Queryyetsimple\Http\RedirectResponse;
+use Leevel\Session\Session;
+use Leevel\Http\RedirectResponse;
 
 /**
  * RedirectResponse test
@@ -91,14 +91,14 @@ class RedirectResponseTest extends TestCase
     public function testCreate()
     {
         $response = RedirectResponse::create('foo', 301);
-        $this->assertInstanceOf('Queryyetsimple\Http\RedirectResponse', $response);
+        $this->assertInstanceOf('Leevel\Http\RedirectResponse', $response);
         $this->assertEquals(301, $response->getStatusCode());
     }
 
     public function testWith() {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWith());
-        $this->assertInstanceOf('Queryyetsimple\Session\Session', $response->getSession());
+        $this->assertInstanceOf('Leevel\Session\Session', $response->getSession());
 
         $response->with('foo', 'bar');
         $this->assertEquals($response->getSession()->getFlash('foo'), 'bar');
@@ -112,7 +112,7 @@ class RedirectResponseTest extends TestCase
     public function testWithError() {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWithError());
-        $this->assertInstanceOf('Queryyetsimple\Session\Session', $response->getSession());
+        $this->assertInstanceOf('Leevel\Session\Session', $response->getSession());
 
         $errorsDefault = [
             'name' => 'less than 6',

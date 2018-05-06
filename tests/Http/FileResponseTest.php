@@ -17,8 +17,8 @@
 namespace Tests\Http;
 
 use Tests\TestCase;
-use Queryyetsimple\Http\FileResponse;
-use Queryyetsimple\Http\ResponseHeaderBag;
+use Leevel\Http\FileResponse;
+use Leevel\Http\ResponseHeaderBag;
     
 /**
  * FileResponseTest test

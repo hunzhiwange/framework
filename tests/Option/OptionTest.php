@@ -17,7 +17,7 @@
 namespace Tests\Option;
 
 use Tests\TestCase;
-use Queryyetsimple\Option\Option;
+use Leevel\Option\Option;
 
 /**
  * option 组件测试

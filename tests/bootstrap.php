@@ -25,7 +25,7 @@
  */
 error_reporting(-1);
 
-ini_set('xdebug.max_nesting_level', 200);
+ini_set('xdebug.max_nesting_level', '200');
 
 ini_set('memory_limit', '512M');
 

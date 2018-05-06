@@ -33,7 +33,7 @@ class SwaggerRouteTest extends TestCase
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testAddSwaggerScanCheckDir() {
+    public function tes2tAddSwaggerScanCheckDir() {
         $swaggerRouter = new SwaggerRouter();
 
         $scanDir = dirname(__FILE__) . '/Petstore___';
@@ -41,7 +41,7 @@ class SwaggerRouteTest extends TestCase
         $swaggerRouter->addSwaggerScan($scanDir);
     }
 
-    public function testSwaggerHandle() {
+    public function tes2tSwaggerHandle() {
         $swaggerRouter = new SwaggerRouter('Router');
 
         $scanDir = dirname(__FILE__) . '/Petstore';

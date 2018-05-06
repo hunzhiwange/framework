@@ -191,7 +191,7 @@ class JsonResponse extends Response
      * @param int $depth
      * @return mixed
      */
-    public function getData($assoc = true, $depth = 512)
+    public function getData(bool $assoc = true, int $depth = 512)
     {
         return json_decode($this->data, $assoc, $depth);
     }
@@ -220,7 +220,7 @@ class JsonResponse extends Response
 
         $this->encodingOptions = (int) $encodingOptions;
 
-        return $this->setData($this->getData($this->data));
+        return $this->setData($this->getData());
     }
 
     /**

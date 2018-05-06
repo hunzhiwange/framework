@@ -17,8 +17,8 @@
 namespace Tests\Http;
 
 use Tests\TestCase;
-use Queryyetsimple\Http\FileBag;
-use Queryyetsimple\Http\UploadedFile;
+use Leevel\Http\FileBag;
+use Leevel\Http\UploadedFile;
     
 /**
  * FileBagTest test

@@ -17,7 +17,7 @@
 namespace Tests\Router;
 
 use Tests\TestCase;
-use Queryyetsimple\Http\Bag;
+use Leevel\Http\Bag;
 
 /**
  * Bag test
