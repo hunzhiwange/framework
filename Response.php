@@ -429,7 +429,7 @@ class Response implements IResponse
      * @param int $depth
      * @return mixed
      */
-    public function getData($assoc = true, $depth = 512)
+    public function getData(bool $assoc = true, int $depth = 512)
     {
         if ($this->isJson) {
             return json_decode($this->content, $assoc, $depth);
@@ -537,7 +537,7 @@ class Response implements IResponse
      * 设置相应状态码
      * 
      * @param int $code
-     * @param string $text
+     * @param mixed $text
      * @return $this
      */
     public function setStatusCode(int $code, $text = null)
