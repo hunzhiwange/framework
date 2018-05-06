@@ -83,6 +83,10 @@ The code below need to be add.
     url = git@github.com:queryyetsimple/i18n.git
     fetch = +refs/heads/*:refs/remotes/I18n/*
 
+[remote "Kernel"]
+    url = git@github.com:queryyetsimple/kernel.git
+    fetch = +refs/heads/*:refs/remotes/Kernel/*
+
 [remote "Log"]
     url = git@github.com:queryyetsimple/log.git
     fetch = +refs/heads/*:refs/remotes/Log/*

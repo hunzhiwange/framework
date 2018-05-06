@@ -99,7 +99,8 @@ class Application extends SymfonyApplication implements IApplication
      *
      * @return \Leevel\Di\Container
      */
-    public function getContainer() {
+    public function getContainer()
+    {
         return $this->container;
     }
 
