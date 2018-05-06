@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Swoole\Console;
+namespace Leevel\Protocol\Console;
 
 use Exception;
 use Leevel\{
@@ -22,7 +22,7 @@ use Leevel\{
     Console\Command,
     Console\Argument
 };
-use Leevel\Swoole\ToolKit\AutoReload as AutoReloads;
+use Leevel\Protocol\ToolKit\AutoReload as AutoReloads;
 
 /**
  * swoole 服务自动重启

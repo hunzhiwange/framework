@@ -20,7 +20,7 @@ use Exception;
 use Thrift\Server\TServerSocket;
 use Swoole\Server as SwooleServer;
 use Thrift\Factory\TBinaryProtocolFactory;
-use Leevel\Swoole\Server as Servers;
+use Leevel\Protocol\Server as Servers;
 use Leevel\Protocol\Thrift\{
     Base\ThriftServer,
     Service\ThriftHandler,

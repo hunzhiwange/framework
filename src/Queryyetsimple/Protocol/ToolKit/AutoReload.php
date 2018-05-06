@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Swoole\ToolKit;
+namespace Leevel\Protocol\ToolKit;
 
 /**
  * swoole 自动重启
@@ -92,7 +92,7 @@ class AutoReload
      * 
      * @param int $pid
      * @return void
-     * @throws \Leevel\Swoole\ToolKit\AutoReloadException
+     * @throws \Leevel\Protocol\ToolKit\AutoReloadException
      */
     public function __construct(int $pid)
     {
@@ -163,7 +163,7 @@ class AutoReload
      * @param string $dir
      * @param bool $root
      * @return bool
-     * @throws \Leevel\Swoole\ToolKit\AutoReloadException
+     * @throws \Leevel\Protocol\ToolKit\AutoReloadException
      */
     public function watch(string $dir, bool $root = true)
     {
