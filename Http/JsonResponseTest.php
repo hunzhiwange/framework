@@ -223,7 +223,7 @@ class JsonResponseTest extends TestCase
     public function testSetContent()
     {
         // json_encode("\xB1\x31") 会引发 PHP 内核提示 Segmentation fault (core dumped)
-        if (extension_loaded('queryyetsimple')) {
+        if (extension_loaded('leevel')) {
             throw new InvalidArgumentException('wow! error.');
         } else {
             JsonResponse::create("\xB1\x31");
