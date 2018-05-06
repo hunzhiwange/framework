@@ -1450,7 +1450,7 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         if ($url) {
-            $prefix = $url && $requestUri ? $this->getUrlencodedPrefix($requestUri, $url) : false;
+            $prefix = $this->getUrlencodedPrefix($requestUri, $url);
 
             if (false !== $prefix) {
                 return $this->baseUrl = $prefix;
@@ -1463,7 +1463,7 @@ class Request implements IRequest, IArray, ArrayAccess
             }
         }
 
-        $basename = $url ? basename($url) : '';
+        $basename = basename($url);
         if (empty($basename) || ! strpos(rawurldecode($requestUri), $basename)) {
             return $this->baseUrl = '';
         }
