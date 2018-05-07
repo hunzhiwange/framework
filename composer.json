@@ -101,7 +101,7 @@
                 "Leevel\\Page\\Provider\\Register",
                 "Leevel\\Queue\\Provider\\Register",
                 "Leevel\\Session\\Provider\\Register",
-                "Leevel\\Swoole\\Provider\\Register",
+                "Leevel\\Protocol\\Provider\\Register",
                 "Leevel\\Throttler\\Provider\\Register",
                 "Leevel\\Validate\\Provider\\Register",
                 "Leevel\\View\\Provider\\Register"

@@ -21,6 +21,7 @@ use Leevel\Console\{
     Option,
     Argument
 };
+use Leevel\Router;
 
 /**
  * 生成控制器
@@ -53,13 +54,17 @@ class Controller extends Make
      * @var string
      */
     protected $strHelp = <<<EOF
-The <info>%command.name%</info> command to make controller with default_app namespace:
+The <info>%command.name%</info> command to make controller with project namespace:
 
-  <info>php %command.full_name% name</info>
+  <info>php %command.full_name% name action</info>
 
 You can also by using the <comment>--namespace</comment> option:
 
-  <info>php %command.full_name% name --namespace=common</info>
+  <info>php %command.full_name% name action --namespace=common</info>
+
+You can also by using the <comment>--extend</comment> option:
+
+  <info>php %command.full_name% name action --extend=0</info>
 EOF;
 
     /**
@@ -73,16 +78,42 @@ EOF;
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(__DIR__ . '/template');
+        $this->setTemplatePath(__DIR__ . '/template/' . ($this->option('extend') ? 'controller' : 'controller_without_extend'));
+
+        $controllerNamespace = Router::getControllerDir();
+
+        $this->setCustomReplaceKeyValue('controller_dir', $controllerNamespace);
+
+        $this->setCustomReplaceKeyValue('action', $this->normalizeAction($this->argument('action')));
 
         // 保存路径
-        $this->setSaveFilePath($this->getNamespacePath() . 'application/controller/' . $this->argument('name') . '.php');
+        $this->setSaveFilePath($this->getNamespacePath() . str_replace('\\', '/', $controllerNamespace) . '/' . ucfirst($this->argument('name')) . '.php');
 
         // 设置类型
         $this->setMakeType('controller');
 
         // 执行
         parent::handle();
+    }
+
+    /**
+     * 格式化方法名
+     *
+     * @param string $action
+     * @return string
+     */
+    protected function normalizeAction(string $action)
+    {
+        if (strpos($action, '-') !== false) {
+            $action = str_replace('-', '_', $action);
+        } 
+
+        if (strpos($action, '_') !== false) {
+            $action = '_' . str_replace('_', ' ', $action);
+            $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
+        }
+
+        return $action;
     }
 
     /**
@@ -95,8 +126,14 @@ EOF;
         return [
             [
                 'name',
-                Argument::OPTIONAL,
+                Argument::REQUIRED,
                 'This is the controller name.'
+            ],
+            [
+                'action',
+                Argument::OPTIONAL,
+                'This is the action name.',
+                'index'
             ]
         ];
     }
@@ -113,9 +150,16 @@ EOF;
                 'namespace',
                 null,
                 option::VALUE_OPTIONAL,
-                'Namespace registered to system,default namespace is these (common,home,~_~)',
-                        'home'
-                ]
+                'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
+                'app'
+            ],
+            [
+                'extend',
+                null,
+                option::VALUE_OPTIONAL,
+                'Controller with the code that make it extends Leevel\Mvc\Controller',
+                1
+            ]
         ];
     }
 }

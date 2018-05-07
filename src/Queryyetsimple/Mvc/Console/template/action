@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 {{header_comment}}
-namespace {{namespace}}\application\controller\{{controller}};
+namespace {{namespace}}\{{controller_dir}}\{{controller}};
 
-use Leevel\Mvc\action;
+use Leevel\Mvc\Controller;
 
 {{file_comment}}
-class {{file_name}} extends action 
+class {{action}} extends Controller
 {
 
     /**

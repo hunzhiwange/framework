@@ -1,12 +1,11 @@
 <?php declare(strict_types=1);
 {{header_comment}}
-namespace {{namespace}}\{{controller_dir}};
-
-use Leevel\Mvc\Controller;
+namespace {{namespace}}\{{controller_dir}}\{{controller}};
 
 {{file_comment}}
-class {{file_name}} extends Controller 
+class {{action}}
 {
+
     /**
      * 构造函数
      *
@@ -17,11 +16,11 @@ class {{file_name}} extends Controller
     }
 
     /**
-     * 默认方法
+     * 执行入口
      *
      * @return void
      */
-    public function {{action}}() 
+    public function run() 
     {
     }
 }

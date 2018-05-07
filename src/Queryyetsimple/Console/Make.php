@@ -147,7 +147,7 @@ abstract class Make extends Command
      */
     protected function parseTemplateSource()
     {
-        $strTemplateSource = $this->getTemplatePath() . '/' . pathinfo(str_replace(':', '.', $this->getName()), PATHINFO_EXTENSION);
+        $strTemplateSource = $this->getTemplatePath();
         if (! is_file($strTemplateSource)) {
             throw new RuntimeException('Template not found.' . PHP_EOL . $this->formatFile($strTemplateSource));
         }
@@ -172,10 +172,12 @@ abstract class Make extends Command
     protected function parseSourceAndReplace()
     {
         $arrReplaceKeyValue = array_merge(option('console\template'), $this->getDefaultReplaceKeyValue());
+
         $arrSourceKey = array_map(function ($strItem) {
             return '{{' . $strItem . '}}';
         }, array_keys($arrReplaceKeyValue));
         $arrReplace = array_values($arrReplaceKeyValue);
+
         return [
             $arrSourceKey,
             $arrReplace
@@ -191,9 +193,9 @@ abstract class Make extends Command
     {
         return array_merge([
             'namespace' => $this->getNamespace(),
-            'file_name' => $this->argument('name'),
+            'file_name' => ucfirst($this->argument('name')),
             'date_y' => date('Y')
-        ], $this->getCustomReplaceKeyValue()); // 日期年
+        ], $this->getCustomReplaceKeyValue());
     }
 
     /**
@@ -224,8 +226,8 @@ abstract class Make extends Command
      */
     protected function getNamespacePath()
     {
-        if (($strNamespacePath = $this->project()->make('psr4')->namespaces($this->getNamespace()) . '/') != '/') {
-            $strNamespacePath = $this->project()->pathApplication() . '/' . $this->getNamespace() . '/';
+        if (($strNamespacePath = $this->getContainer()->getPathByNamespace($this->getNamespace()) . '/') != '/') {
+            $strNamespacePath = $this->getContainer()->pathAnApplication(lcfirst($this->getNamespace())) . '/';
         }
 
         return $strNamespacePath;
@@ -240,8 +242,11 @@ abstract class Make extends Command
     {
         $strNamespace = $this->option('namespace');
         if (empty($strNamespace)) {
-            $strNamespace = option('default_app');
+            $strNamespace = 'app';
         }
+
+        $strNamespace = ucfirst($strNamespace);
+
         $this->setNamespace($strNamespace);
     }
 

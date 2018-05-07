@@ -53,13 +53,17 @@ class Model extends Make
      * @var string
      */
     protected $strHelp = <<<EOF
-The <info>%command.name%</info> command to make model with default_app namespace:
+The <info>%command.name%</info> command to make model with project namespace:
 
   <info>php %command.full_name% name</info>
 
 You can also by using the <comment>--namespace</comment> option:
 
   <info>php %command.full_name% name --namespace=common</info>
+
+You can also by using the <comment>--extend</comment> option:
+
+  <info>php %command.full_name% name action --extend=0</info>
 EOF;
 
     /**
@@ -73,10 +77,10 @@ EOF;
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(__DIR__ . '/template');
+        $this->setTemplatePath(__DIR__ . '/template/' . ($this->option('extend') ? 'model' : 'model_without_extend'));
 
         // 保存路径
-        $this->setSaveFilePath($this->getNamespacePath() . 'domain/model/' . $this->argument('name') . '.php');
+        $this->setSaveFilePath($this->getNamespacePath() . 'Domain/Entity/' . ucfirst($this->argument('name')) . '.php');
 
         // 设置类型
         $this->setMakeType('model');
@@ -95,7 +99,7 @@ EOF;
         return [
             [
                 'name',
-                Argument::OPTIONAL,
+                Argument::REQUIRED,
                 'This is the model name.'
             ]
         ];
@@ -113,9 +117,16 @@ EOF;
                 'namespace',
                 null,
                 option::VALUE_OPTIONAL,
-                'Namespace registered to system,default namespace is these (common,home,~_~)',
-                        'home'
-                ]
+                'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
+                'app'
+            ],
+            [
+                'extend',
+                null,
+                option::VALUE_OPTIONAL,
+                'Model with the code that make it extends Leevel\Mvc\Model',
+                1
+            ]
         ];
     }
 }

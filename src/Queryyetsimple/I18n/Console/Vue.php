@@ -42,7 +42,7 @@ class Vue extends Command
      *
      * @var string
      */
-    protected $strName = 'vue:i18n';
+    protected $strName = 'i18n:vue';
 
     /**
      * 命令描述
@@ -71,21 +71,21 @@ EOF;
      *
      * @var string
      */
-    protected $strSourceDir;
+    protected $sourceDir;
 
     /**
      * 输出目录
      *
      * @var string
      */
-    protected $strOutputDir;
+    protected $outputDir;
 
     /**
      * 输出文件名
      *
      * @var string
      */
-    protected $strOutputFile;
+    protected $outputFile;
 
     /**
      * 响应命令
@@ -94,8 +94,8 @@ EOF;
      */
     public function handle()
     {
-        foreach ($this->paresLang() as $strLang) {
-            $this->makeI18nFile($strLang);
+        foreach ($this->paresLang() as $lang) {
+            $this->makeI18nFile($lang);
         }
     }
 
@@ -118,33 +118,33 @@ EOF;
     /**
      * 生成缓存文件
      *
-     * @param string $strLang
+     * @param string $lang
      * @return void
      */
-    protected function makeI18nFile($strLang)
+    protected function makeI18nFile($lang)
     {
-        $strSourceDir = $this->parseSourceDir() . '/' . $strLang;
-        $strOutputDir = $this->parseOutputDir() . '/' . $strLang;
-        $strOutputFile = $this->parseOutputFile();
+        $sourceDir = $this->parseSourceDir() . '/' . $lang;
+        $outputDir = $this->parseOutputDir() . '/' . $lang;
+        $outputFile = $this->parseOutputFile();
 
-        $arrMoFile = $this->findMoFile([
-            $strSourceDir
+        $moFiles = $this->findMoFile([
+            $sourceDir
         ]);
 
-        $arrData = $this->parseMoData($arrMoFile);
-        if (empty($arrData)) {
-            $arrData['Query Yet Simple'] = 'Query Yet Simple';
+        $result = $this->parseMoData($moFiles);
+        if (empty($result)) {
+            $result['Query Yet Simple'] = '左右代码 右手年华 不忘初心 简单快乐';
         }
 
-        if (! file_put_contents($strOutputDir . '/' . $strOutputFile, '/** ' . date('Y-m-d H:i:s') . ' */' . 
-            PHP_EOL . 'export default ' . json_encode($arrData, JSON_UNESCAPED_UNICODE) . ';')) {
-            throw new RuntimeException(sprintf('Dir %s do not have permission.', $strOutputDir));
+        if (! file_put_contents($outputDir . '/' . $outputFile, '/** ' . date('Y-m-d H:i:s') . ' */' . 
+            PHP_EOL . 'export default ' . json_encode($result, JSON_UNESCAPED_UNICODE) . ';')) {
+            throw new RuntimeException(sprintf('Dir %s do not have permission.', $outputDir));
         }
 
-        chmod($strOutputDir, 0777);
+        chmod($outputDir, 0777);
 
-        $this->info(sprintf('Vue lang file %s created successfully.', $strLang));
-        $this->comment($strOutputDir . '/' . $strOutputFile);
+        $this->info(sprintf('Vue lang file %s created successfully.', $lang));
+        $this->comment($outputDir . '/' . $outputFile);
     }
 
     /**
@@ -154,15 +154,16 @@ EOF;
      */
     protected function parseSourceDir()
     {
-        if (! is_null($this->strSourceDir)) {
-            return $this->strSourceDir;
+        if (! is_null($this->sourceDir)) {
+            return $this->sourceDir;
         }
 
-        $strSourceDir = $this->option('source');
-        if (empty($strSourceDir)) {
+        $sourceDir = $this->option('source');
+        if (empty($sourceDir)) {
             throw new RuntimeException('Source dir is not set');
         }
-        return $this->strSourceDir = $strSourceDir;
+
+        return $this->sourceDir = $sourceDir;
     }
 
     /**
@@ -172,15 +173,16 @@ EOF;
      */
     protected function parseOutputDir()
     {
-        if (! is_null($this->strOutputDir)) {
-            return $this->strOutputDir;
+        if (! is_null($this->outputDir)) {
+            return $this->outputDir;
         }
 
-        $strOutputDir = $this->option('output');
-        if (empty($strOutputDir)) {
-            $strOutputDir = $this->parseSourceDir();
+        $outputDir = $this->option('output');
+        if (empty($outputDir)) {
+            $outputDir = $this->parseSourceDir();
         }
-        return $this->strOutputDir = $strOutputDir;
+
+        return $this->outputDir = $outputDir;
     }
 
     /**
@@ -190,15 +192,16 @@ EOF;
      */
     protected function parseOutputFile()
     {
-        if (! is_null($this->strOutputFile)) {
-            return $this->strOutputFile;
+        if (! is_null($this->outputFile)) {
+            return $this->outputFile;
         }
 
-        $strOutputFile = $this->option('file');
-        if (empty($strOutputFile)) {
+        $outputFile = $this->option('file');
+        if (empty($outputFile)) {
             throw new RuntimeException('Output file is not set');
         }
-        return $this->strOutputFile = $strOutputFile;
+
+        return $this->outputFile = $outputFile;
     }
 
     /**
@@ -249,7 +252,8 @@ EOF;
             [
                 'lang',
                 Argument::OPTIONAL,
-                'This is the lang name like zh-cn, you also can set it all.'
+                'This is the lang name like zh-cn, you also can set it all.',
+                'all'
             ]
         ];
     }
