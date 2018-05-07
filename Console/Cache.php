@@ -65,9 +65,36 @@ class Cache extends Command
 
         $cachePath = app()->pathCacheI18nFile($i18nDefault);
 
+        if ($this->checkCacheExists($cachePath) === true) {
+            return false;
+        }
+
         $this->writeCache($cachePath, $data);
 
         $this->info(sprintf('I18n file %s cache successed.', $cachePath));
+    }
+
+    /**
+     * 验证缓存
+     *
+     * @param string $cachePath
+     * @return bool
+     */
+    protected function checkCacheExists(string $cachePath)
+    {
+        if (is_file($cachePath)) {
+            $this->warn(sprintf('I18n cache file %s is already exits.', $cachePath));
+            $result = $this->confirm('You must need to clear the cache file.', true);
+
+            if ($result) {
+                unlink($cachePath);
+                $this->warn('Please execute the command once more.');
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
