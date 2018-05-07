@@ -67,9 +67,36 @@ class Cache extends Command
 
         $cachePath = path_router_cache();
 
+        if ($this->checkCacheExists($cachePath) === true) {
+            return false;
+        }
+
         $this->writeCache($cachePath, $data);
 
         $this->info(sprintf('Router file %s cache successed.', $cachePath));
+    }
+
+    /**
+     * 验证缓存
+     *
+     * @param string $cachePath
+     * @return bool
+     */
+    protected function checkCacheExists(string $cachePath)
+    {
+        if (is_file($cachePath)) {
+            $this->warn(sprintf('Router cache file %s is already exits.', $cachePath));
+            $result = $this->confirm('You must need to clear the cache file.', true);
+
+            if ($result) {
+                unlink($cachePath);
+                $this->warn('Please execute the command once more.');
+            }
+
+            return true;
+        }
+
+        return false;
     }
 
     /**
