@@ -139,7 +139,7 @@ abstract class Controller implements IController
     public function display($file = null, array $vars = [], $ext = null)
     {
         $this->checkView();
-        return $this->view->display($file, $vars, $option);
+        return $this->view->display($file, $vars, $ext);
     }
 
     /**
