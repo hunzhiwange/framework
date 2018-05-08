@@ -80,12 +80,19 @@ class Load
 
         $data = $this->loadOptionData();
 
-        $providers = $this->loadDeferredProviderData(array_diff($composer['providers'], $composer['ignores']));
+        // 读取额外的配置
+        if ($composer['options']) {
+            $data = $this->mergeComposerOption($data, $project, $composer['options']);
+        }
 
+        // 环境变量
         $data['app']['_env'] = $env;
 
+        // composer 配置
         $data['app']['_composer'] = $composer;
 
+        // 延迟服务提供者
+        $providers = $this->loadDeferredProviderData(array_diff($composer['providers'], $composer['ignores']));
         $data['app']['_deferred_poviders'] = $providers;
 
         return $this->loaded = $data;
@@ -185,5 +192,48 @@ class Load
         }
 
         return $data;
+    }
+
+    /**
+     * 合并 composer 配置数据
+     *
+     * @param array $options
+     * @param \Leevel\Bootstrap\IProject $project
+     * @param array $optionFiles
+     * @return array
+     */
+    protected function mergeComposerOption(array $options, IProject $project, array $optionFiles): array
+    {
+        $data = [];
+
+        $path = $project->path();
+
+        foreach ($optionFiles as $key => $files) {
+            if (! is_array($files)) {
+                $files = [$files];
+            }
+
+            $optionData = [];
+
+            foreach ($files as $item) {
+                if (! is_file($item)) {
+                    $item = $path . '/' . $item;
+                }
+
+                if (! is_file($item)) {
+                    throw new Exception(sprintf('Option file %s is not exist.', $item));
+                }
+
+                $optionData = array_merge($optionData, include $item);
+            }
+
+            if (array_key_exists($key, $options)) {
+                $options[$key] = array_merge($options[$key], $optionData);
+            } else {
+                $options[$key] = $optionData;
+            }
+        }
+
+        return $options;
     }
 }
