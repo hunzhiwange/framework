@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Protocol\Http;
+namespace Leevel\Protocol;
 
 use Throwable;
 use Swoole\{
@@ -22,12 +22,10 @@ use Swoole\{
     Http\Request as SwooleHttpRequest,
     Http\Response as SwooleHttpResponse
 };
-use Leevel\{
-    Http\Request,
-    Router\Router,
-    Router\ResponseFactory,
-    Swoole\Server as Servers
-};
+use Leevel\Http\Request;
+use Leevel\Http\IResponse;
+use Leevel\Bootstrap\IKernel;
+use Leevel\Http\RedirectResponse;
 
 /**
  * swoole http 服务
@@ -37,15 +35,14 @@ use Leevel\{
  * @since 2017.12.25
  * @version 1.0
  */
-class Server extends Servers
+class HttpServer extends Server
 {
-    
     /**
-     * 路由
+     * 内核
      *
-     * @var \leevel\Router\Router
+     * @var \Leevel\Bootstrap\IKernel
      */
-    protected $objRouter;
+    protected $kernel;
     
     /**
      * 请求
@@ -53,13 +50,6 @@ class Server extends Servers
      * @var \Leevel\Http\Request
      */
     protected $request;
-    
-    /**
-     * 响应
-     *
-     * @var \Leevel\Http\Response
-     */
-    protected $response;
     
     /**
      * 配置
@@ -111,24 +101,23 @@ class Server extends Servers
     /**
      * 构造函数
      * 
-     * @param \leevel\Router\Router $objRouter
+     * @param \Leevel\Bootstrap\IKernel $kernel
      * @param \Leevel\Http\Request $request
-     * @param \Leevel\Router\ResponseFactory $response
      * @param array $option
      * @return void
      */
-    public function __construct(Router $objRouter, Request $request, ResponseFactory $response, array $option = [])
+    public function __construct(IKernel $kernel, Request $request, array $option = [])
     {
-        $this->objRouter = $objRouter;
+        $this->kernel = $kernel;
         $this->request = $request;
-        $this->response = $response;
         $this->options($option);
     }
 
     /**
      * 处理 http 请求
      * 浏览器连接服务器后, 页面上的每个请求均会执行一次
-     * 每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
+     * nginx 反向代理每次打开链接页面默认都是接收两个请求, 一个是正常的数据请求, 一个 favicon.ico 的请求
+     * 可以通过 nginx deny 屏蔽掉 favicon.ico 的请求，具体请 Google 或者百度
      * 
      * @param \Swoole\Http\Request $swooleRequest
      * @param \Swoole\Http\Response $swooleResponse
@@ -136,13 +125,59 @@ class Server extends Servers
      */
     public function onRequest(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse)
     {
-        // 请求过滤
+        // 请求过滤 favicon
         if ($swooleRequest->server['path_info'] == '/favicon.ico' || 
             $swooleRequest->server['request_uri'] == '/favicon.ico') {
             return $swooleResponse->end();
         }
 
-        // 设置请求数据
+        $request = $this->normalizeRequest($swooleRequest);
+
+        $response = $this->kernel->handle($request);
+
+        $swooleResponse = $this->normalizeResponse($response, $swooleResponse);
+
+        $this->kernel->terminate($request, $response);
+
+        $swooleResponse->end();
+    }
+
+    /**
+     * 格式化 QueryPHP 响应到 swoole 响应
+     * 
+     * @param \leevel\Http\Request $swooleRequest
+     * @param \Swoole\Http\Response $swooleResponse
+     * @return \Http\Response
+     */
+    protected function normalizeResponse(IResponse $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
+    {
+        foreach ($response->getCookies() as $item) {
+            call_user_func_array([$swooleResponse, 'cookie'], $item);
+        }
+
+        if ($response instanceof RedirectResponse && method_exists($swooleResponse, 'redirect')) {
+            $swooleResponse->redirect($response->getTargetUrl());
+        }
+
+        foreach ($response->headers->all() as $key => $value) {
+           $swooleResponse->header($key, $value);
+        }
+
+        $swooleResponse->status($response->getStatusCode());
+
+        $swooleResponse->write($response->getContent() ?: ' ');
+
+        return $swooleResponse;
+    }
+
+    /**
+     * 格式化 swoole 请求到 QueryPHP 请求
+     * 
+     * @param \Swoole\Http\Request $swooleRequest
+     * @return \Leevel\Http\Request
+     */
+    protected function normalizeRequest(SwooleHttpRequest $swooleRequest): Request
+    {
         $this->request->reset();
 
         $datas = [
@@ -184,30 +219,9 @@ class Server extends Servers
             if ($swooleRequest->{$key}) {
                 $this->request->{$item}->replace($swooleRequest->{$key});
             }
-        }
+        }  
 
-        try {
-            // 重置应用环境变量
-            // 不然系统会再次获取服务端命令行所在应用信息
-            putenv('app_name=null');
-            putenv('controller_name=null');
-            putenv('action_name=null');
-
-            // 完成路由请求
-            app()->appRouter();
-
-            //ob_start();
-            app()->appRun();
-
-            //$content = ob_get_contents();
-            //ob_end_clean();
-
-            //$swooleResponse->write($content ?: ' ');
-        } catch (Throwable $e) {
-            $swooleResponse->write($e->getMessage());
-        }
-        
-        $swooleResponse->end();
+        return $this->request;
     }
 
     /**
@@ -218,7 +232,7 @@ class Server extends Servers
     protected function createServer()
     {
         $this->deleteOption('task_worker_num');
-        $this->objServer = new SwooleHttpServer($this->getOption('host'), $this->getOption('port'));
+        $this->objServer = new SwooleHttpServer($this->getOption('host'), intval($this->getOption('port')));
         $this->initServer();
     }
 }

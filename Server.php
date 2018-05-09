@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Swoole;
+namespace Leevel\Protocol;
 
 use Exception;
 use RuntimeException;
@@ -669,7 +669,7 @@ class Server
      */
     protected function checkPort()
     {
-        $arrBind = $this->portBind($this->getOption('port'));
+        $arrBind = $this->portBind(intval($this->getOption('port')));
         if ($arrBind) {
             foreach ($arrBind as $sK => $arrVal) {
                 if ($arrVal['ip'] == '*' || $arrVal['ip'] == $this->getOption('host')) {
@@ -714,7 +714,7 @@ class Server
      */
     protected function createServer()
     {
-        $this->objServer = new SwooleServer($this->getOption('host'), $this->getOption('port'));
+        $this->objServer = new SwooleServer($this->getOption('host'), intval($this->getOption('port')));
         $this->initServer();
     }
     

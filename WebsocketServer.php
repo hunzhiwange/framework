@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Protocol\Websocket;
+namespace Leevel\Protocol;
 
 use Exception;
 use Swoole\{
@@ -22,7 +22,6 @@ use Swoole\{
     Websocket\Frame as SwooleWebsocketFrame,
     Websocket\Server as SwooleWebsocketServer
 };
-use Leevel\Protocol\Http\Server as Servers;
 
 /**
  * swoole websocket 服务
@@ -33,7 +32,7 @@ use Leevel\Protocol\Http\Server as Servers;
  * @link https://wiki.swoole.com/wiki/page/397.html
  * @version 1.0
  */
-class Server extends Servers
+class WebsocketServer extends HttpServer
 {
     
     /**
@@ -95,7 +94,8 @@ class Server extends Servers
      * @link https://wiki.swoole.com/wiki/page/401.html
      * @return void
      */
-    public function onOpen(SwooleWebsocketServer $objServer, SwooleHttpRequest $objRequest) {
+    public function onOpen(SwooleWebsocketServer $objServer, SwooleHttpRequest $objRequest)
+    {
         $this->line(sprintf('Server: handshake success with fd %s', $objRequest->fd));
     }
 
@@ -107,7 +107,8 @@ class Server extends Servers
      * @link https://wiki.swoole.com/wiki/page/397.html
      * @return void
      */
-    public function onMessage(SwooleWebsocketServer $objServer, SwooleWebsocketFrame $objFrame) {
+    public function onMessage(SwooleWebsocketServer $objServer, SwooleWebsocketFrame $objFrame)
+    {
         $this->line(sprintf('Receive from fd %d:%s,opcode:%d,fin:%d', $objFrame->fd, $objFrame->data, $objFrame->opcode, $objFrame->finish));
         $objServer->push($objFrame->fd, "I am from server.");
     }
@@ -119,7 +120,7 @@ class Server extends Servers
      */
     protected function createServer()
     {
-        $this->objServer = new SwooleWebsocketServer($this->getOption('host'), $this->getOption('port'));
+        $this->objServer = new SwooleWebsocketServer($this->getOption('host'), intval($this->getOption('port')));
         $this->initServer();
     }
 }
