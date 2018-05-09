@@ -61,6 +61,8 @@ git subtree add --prefix=src/Queryyetsimple/Support git@github.com:queryyetsimpl
 
 git subtree add --prefix=src/Queryyetsimple/Swoole git@github.com:queryyetsimple/swoole.git master
 
+git subtree add --prefix=src/Queryyetsimple/Task git@github.com:queryyetsimple/task.git master
+
 git subtree add --prefix=src/Queryyetsimple/Throttler git@github.com:queryyetsimple/throttler.git master
 
 git subtree add --prefix=src/Queryyetsimple/Tree git@github.com:queryyetsimple/tree.git master

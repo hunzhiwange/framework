@@ -147,6 +147,10 @@ The code below need to be add.
     url = git@github.com:queryyetsimple/swoole.git
     fetch = +refs/heads/*:refs/remotes/Swoole/*
 
+[remote "Task"]
+    url = git@github.com:queryyetsimple/task.git
+    fetch = +refs/heads/*:refs/remotes/Task/*
+
 [remote "Throttler"]
     url = git@github.com:queryyetsimple/throttler.git
     fetch = +refs/heads/*:refs/remotes/Throttler/*

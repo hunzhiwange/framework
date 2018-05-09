@@ -18,11 +18,12 @@ namespace Leevel\Protocol\Provider;
 
 use Leevel\{
     Di\Provider,
-    Swoole\Server,
-    Swoole\Http\Server as HttpServer,
-    Swoole\Websocket\Server as WebsocketServer,
+    Protocol\Server,
+    Protocol\HttpServer,
+    Protocol\WebsocketServer,
     Protocol\RpcServer
 };
+use Leevel\Bootstrap\IKernel;
 
 /**
  * swoole 服务提供者
@@ -92,7 +93,7 @@ class Register extends Provider
     {
         $this->container->singleton('swoole.http.server', function ($project) {
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\http_server']);
-            return new HttpServer($project['router'], $project['request'], $project['response'], $arrOption);
+            return new HttpServer($project->make(IKernel::class), $project['request'], $arrOption);
         });
     }
     
@@ -105,7 +106,7 @@ class Register extends Provider
     {
         $this->container->singleton('swoole.websocket.server', function ($project) {
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\websocket_server']);
-            return new WebsocketServer($project['router'], $project['request'], $project['response'], $arrOption);
+            return new WebsocketServer($project->make(IKernel::class), $project['request'], $arrOption);
         });
     }
 
