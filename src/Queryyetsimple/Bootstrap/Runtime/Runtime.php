@@ -256,6 +256,24 @@ abstract class Runtime implements IRuntime
     }
 
     /**
+     * Whoops 渲染异常
+     * 
+     * @param \Exception $e
+     * @return string
+     */
+    protected function renderExceptionWithWhoops(Exception $e)
+    {
+        $whoops = $this->makeWhoops();
+
+        $prettyPage = new PrettyPageHandler;
+        $prettyPage->handleUnconditionally(true);
+
+        $whoops->pushHandler($prettyPage);
+
+        return $whoops->handleException($e);
+    }
+
+    /**
      * 获取异常格式化变量
      * 
      * @param \Exception $e
@@ -295,20 +313,6 @@ abstract class Runtime implements IRuntime
     protected function normalizeHeaders(Exception $e)
     {
         return $this->isHttpException($e) ? $e->getHeaders() : [];
-    }
-
-    /**
-     * Whoops 渲染异常
-     * 
-     * @param \Exception $e
-     * @return string
-     */
-    protected function renderExceptionWithWhoops(Exception $e)
-    {
-        $whoops = $this->makeWhoops();
-        $whoops->pushHandler(new PrettyPageHandler);
-
-        return $whoops->handleException($e);
     }
 
     /**
