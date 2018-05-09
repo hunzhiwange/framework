@@ -33,10 +33,9 @@ interface IView
      * 切换视图
      *
      * @param \Leevel\View\IView $theme
-     * @param boolean $forever
      * @return $this
      */
-    public function switchView(ViewIView $theme, bool $forever = false);
+    public function switchView(ViewIView $theme);
 
     /**
      * 变量赋值
