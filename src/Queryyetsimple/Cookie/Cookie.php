@@ -45,6 +45,13 @@ class Cookie implements ICookie
     ];
 
     /**
+     * Cookie 设置数据
+     *
+     * @var array
+     */
+    protected $cookies = []; 
+
+    /**
      * 构造函数
      *
      * @param array $option
@@ -77,14 +84,6 @@ class Cookie implements ICookie
 
         $name = $option['prefix'] . $name;
 
-        if ($value === null || $option['expire'] < 0) {
-            if (isset($_COOKIE[$name])) {
-                unset($_COOKIE[$name]);
-            }
-        } else {
-            $_COOKIE[$name] = $value;
-        }
-
         if ($option["expire"] > 0) {
             $option["expire"] = time() + $option["expire"];
         } elseif ($option["expire"] < 0) {
@@ -98,7 +97,16 @@ class Cookie implements ICookie
             $isHttpSecure = true;
         }
 
-        setcookie($name, $value, $option['expire'], $option['path'], $option['domain'], $isHttpSecure, $option['httponly']);
+        // 对应 setcookie 的参数
+        $this->cookies[$name] = [
+            $name,
+            $value,
+            $option['expire'],
+            $option['path'],
+            $option['domain'],
+            $isHttpSecure,
+            $option['httponly']
+        ];
     }
 
     /**
@@ -224,11 +232,11 @@ class Cookie implements ICookie
         $option = $this->getOptions($option);
         $name = $option['prefix'] . $name;
 
-        if (isset($_COOKIE[$name])) {
-            if ($this->isJson($_COOKIE[$name])) {
-                return json_decode($_COOKIE[$name], true);
+        if (isset($this->cookies[$name])) {
+            if ($this->isJson($this->cookies[$name])) {
+                return json_decode($this->cookies[$name], true);
             }
-            return $_COOKIE[$name];
+            return $this->cookies[$name];
         } else {
             return $defaults;
         }
@@ -259,7 +267,7 @@ class Cookie implements ICookie
         $prefix = $option['prefix'];
         $option['prefix'] = '';
 
-        foreach ($_COOKIE as $key => $val) {
+        foreach ($this->cookies as $key => $val) {
             if ($deletePrefix === true && $prefix) {
                 if (strpos($key, $prefix) === 0) {
                     $this->delete($key, $option);
@@ -269,6 +277,16 @@ class Cookie implements ICookie
             }
         }
     }
+
+    /**
+     * 返回所有 cookie
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->cookies;
+    } 
 
     /**
      * 验证是否为正常的 JSON 字符串
