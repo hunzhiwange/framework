@@ -17,6 +17,7 @@
 namespace Leevel\Bootstrap;
 
 use Exception;
+use Throwable;
 use Leevel\Log\ILog;
 use Leevel\Http\Request;
 use Leevel\Router\Router;
@@ -31,6 +32,8 @@ use Leevel\Bootstrap\Bootstrap\{
     RegisterRuntime,
     TraverseProvider
 };
+use Leevel\Bootstrap\Runtime\IRuntime;
+use Leevel\Bootstrap\Runtime\FatalThrowableError;
 
 /**
  * 内核执行
@@ -90,13 +93,32 @@ abstract class Kernel implements IKernel
      */
     public function handle(Request $request)
     {
-        $this->registerBaseService($request);
+        try {
+            $this->registerBaseService($request);
 
-        $response = $this->getResponseWithRequest($request);
+            $response = $this->getResponseWithRequest($request);
 
-        $response = $this->prepareTrace($response);
+            $response = $this->prepareTrace($response);
+        } catch (Exception $e) {
+            $this->reportException($e);
+
+            $response = $this->renderException($request, $e);
+        } catch (Throwable $e) {
+            $this->reportException($e = new FatalThrowableError($e));
+
+            $response = $this->renderException($request, $e);
+        }
 
         return $response;
+    }
+
+    /**
+     * 返回运行处理器
+     * 
+     * @return \Leevel\Bootstrap\Runtime\IRuntime
+     */
+    protected function getRuntime() {
+        return $this->project->make(IRuntime::class);
     }
 
     /**
@@ -166,6 +188,29 @@ abstract class Kernel implements IKernel
     protected function bootstrap()
     {
         $this->project->bootstrap($this->bootstraps);
+    }
+
+    /**
+     * 上报错误
+     *
+     * @param \Exception $e
+     * @return void
+     */
+    protected function reportException(Exception $e)
+    {
+        $this->getRuntime()->report($e);
+    }
+
+    /**
+     * 渲染异常
+     *
+     * @param \Leevel\Http\Request $request
+     * @param \Exception $e
+     * @return \Leevel\Http\IResponse
+     */
+    protected function renderException(Request $request, Exception $e)
+    {
+        return $this->getRuntime()->render($request, $e);
     }
 
     /**

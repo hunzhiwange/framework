@@ -425,7 +425,7 @@ class Project extends Container implements IProject
      */
     public function pathAnApplication(?string $app = null)
     {
-        return $this->pathApplication() . '/' . strtolower($app ?: $this->request->app());
+        return $this->pathApplication() . '/' . strtolower($app ?: ($this->request->app() ?: 'App'));
     }
 
     /**
