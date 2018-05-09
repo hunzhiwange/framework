@@ -238,7 +238,8 @@ class Router implements IRouter
      * @param string $controllerDir
      * @return void
      */
-    public function setControllerDir(string $controllerDir) {
+    public function setControllerDir(string $controllerDir)
+    {
         $controllerDir = str_replace('/', '\\', $controllerDir);
         $this->controllerDir = $controllerDir;
     }
@@ -249,7 +250,8 @@ class Router implements IRouter
      * @param string $controllerDir
      * @return void
      */
-    public function getControllerDir() {
+    public function getControllerDir()
+    {
         return $this->controllerDir;
     }
 
@@ -259,7 +261,8 @@ class Router implements IRouter
      * @param array $routers
      * @return void
      */
-    public function setRouters(array $routers) {
+    public function setRouters(array $routers)
+    {
         $this->routers = $routers;
     }
 
@@ -268,7 +271,8 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getRouters() {
+    public function getRouters()
+    {
         return $this->routers;
     }
 
@@ -278,7 +282,8 @@ class Router implements IRouter
      * @param array $basepaths
      * @return void
      */
-    public function setBasepaths(array $basepaths) {
+    public function setBasepaths(array $basepaths)
+    {
         $this->basepaths = $basepaths;
     }
 
@@ -288,7 +293,8 @@ class Router implements IRouter
      * @param array $basepaths
      * @return void
      */
-    public function addBasepaths(array $basepaths) {
+    public function addBasepaths(array $basepaths)
+    {
         $this->basepaths = array_unique(array_merge($this->basepaths, $basepaths));
     }
 
@@ -297,7 +303,8 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getBasepaths() {
+    public function getBasepaths()
+    {
         return $this->basepaths;
     }
 
@@ -307,7 +314,8 @@ class Router implements IRouter
      * @param array $groups
      * @return void
      */
-    public function setGroups(array $groups) {
+    public function setGroups(array $groups)
+    {
         $this->groups = $groups;
     }
 
@@ -317,7 +325,8 @@ class Router implements IRouter
      * @param array $groups
      * @return void
      */
-    public function addGroups(array $groups) {
+    public function addGroups(array $groups)
+    {
         $this->groups = array_unique(array_merge($this->groups, $groups));
     }
 
@@ -326,7 +335,8 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getGroups() {
+    public function getGroups()
+    {
         return $this->groups;
     }
 
@@ -336,7 +346,8 @@ class Router implements IRouter
      * @param array $middlewareGroups
      * @return void
      */
-    public function setMiddlewareGroups(array $middlewareGroups) {
+    public function setMiddlewareGroups(array $middlewareGroups)
+    {
         $this->middlewareGroups = $middlewareGroups;
     }
     
@@ -345,7 +356,8 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getMiddlewareGroups() {
+    public function getMiddlewareGroups()
+    {
         return $this->middlewareGroups;
     }
 
@@ -355,7 +367,8 @@ class Router implements IRouter
      * @param array $middlewares
      * @return void
      */
-    public function setGlobalMiddlewares(array $middlewares) {
+    public function setGlobalMiddlewares(array $middlewares)
+    {
         $this->globalMiddlewares = $middlewares;
     }
 
@@ -364,7 +377,8 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getGlobalMiddlewares() {
+    public function getGlobalMiddlewares()
+    {
         return $this->globalMiddlewares;
     }
     
@@ -374,7 +388,8 @@ class Router implements IRouter
      * @param array $middlewareAlias
      * @return void
      */
-    public function setMiddlewareAlias(array $middlewareAlias) {
+    public function setMiddlewareAlias(array $middlewareAlias)
+    {
         $this->middlewareAlias = $middlewareAlias;
     }
 
@@ -383,7 +398,8 @@ class Router implements IRouter
      *
      * @return array
      */
-    public function getMiddlewareAlias() {
+    public function getMiddlewareAlias()
+    {
         return $this->middlewareAlias;
     }
 
