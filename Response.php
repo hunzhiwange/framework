@@ -27,8 +27,7 @@ use Leevel\{
     Support\IJson,
     Flow\TControl,
     Support\IArray,
-    Support\TMacro,
-    Cookie\ICookie
+    Support\TMacro
 };
 
 /**
@@ -258,6 +257,13 @@ class Response implements IResponse
         // 状态码
         header(sprintf('HTTP/%s %s %s', $this->protocolVersion, $this->statusCode, $this->statusText), true, $this->statusCode);
 
+        // cookie
+        $cookie = call_user_func(static::$cookieResolver);
+
+        foreach ($cookie->all() as $item) {
+            call_user_func_array('setcookie', $item);
+        }
+
         return $this;
     }
 
@@ -420,6 +426,17 @@ class Response implements IResponse
         }
 
         return $this;
+    }
+
+    /**
+     * 获取 COOKIE
+     *
+     * @return array
+     */
+    public function getCookies()
+    {
+        $cookie = call_user_func(static::$cookieResolver);
+        return $cookie->all();
     }
 
     /**
