@@ -20,17 +20,19 @@ use Exception;
 use Thrift\Base\TBase;
 use Thrift\Type\TType;
 use Thrift\Type\TMessageType;
+use Thrift\Protocol\TProtocol;
 use Thrift\Exception\TException;
 use Thrift\Exception\TProtocolException;
-use Thrift\Protocol\TProtocol;
-use Thrift\Protocol\TBinaryProtocolAccelerated;
 use Thrift\Exception\TApplicationException;
-use Leevel\Http\Request as HttpRequest;
-use Leevel\Bootstrap\IKernel;
-use Leevel\Http\IResponse;
-use Leevel\Http\RedirectResponse;
-use Leevel\Router\IRouter;
-use Leevel\Router;
+use Thrift\Protocol\TBinaryProtocolAccelerated;
+use Leevel\{
+    Router,
+    Http\IResponse,
+    Router\IRouter,
+    Bootstrap\IKernel,
+    Http\RedirectResponse,
+    Http\Request as HttpRequest
+};
 
 /**
  * thrift 默认服务调用响应
