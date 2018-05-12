@@ -23,7 +23,7 @@ use Leevel\{
     Protocol\WebsocketServer,
     Protocol\RpcServer
 };
-use Leevel\Bootstrap\IKernel;
+use Leevel\Kernel\IKernel;
 
 /**
  * swoole 服务提供者
