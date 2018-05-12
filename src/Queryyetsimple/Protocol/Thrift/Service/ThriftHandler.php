@@ -16,6 +16,7 @@
  */
 namespace Leevel\Protocol\Thrift\Service;
 
+use Exception;
 use Thrift\Base\TBase;
 use Thrift\Type\TType;
 use Thrift\Type\TMessageType;
@@ -24,6 +25,12 @@ use Thrift\Exception\TProtocolException;
 use Thrift\Protocol\TProtocol;
 use Thrift\Protocol\TBinaryProtocolAccelerated;
 use Thrift\Exception\TApplicationException;
+use Leevel\Http\Request as HttpRequest;
+use Leevel\Bootstrap\IKernel;
+use Leevel\Http\IResponse;
+use Leevel\Http\RedirectResponse;
+use Leevel\Router\IRouter;
+use Leevel\Router;
 
 /**
  * thrift 默认服务调用响应
@@ -42,15 +49,55 @@ class ThriftHandler implements ThriftIf
      * @param \Leevel\Protocol\Thrift\Service\Request $request
      * @return \Leevel\Protocol\Thrift\Service\Response
      */
-    public function call(Request $request)
+    public function call(Request $request): Response
     {
-        $data = [
-            'status' => 200,
-            'data' => '{"hello":"world"}'
-        ];
+        $httpRequest = $this->normalizeRequest($request);
 
-        dd($request);
+        $response = app(IKernel::class)->handle($httpRequest);
 
-        return new Response($data);
+        return $this->normalizeResponse($response);
+    }
+
+    /**
+     * 格式化 QueryPHP 响应到 Thrift RPC 响应
+     * 
+     * @param \Leevel\Http\Request $response
+     * @return \Leevel\Protocol\Thrift\Service\Response
+     */
+    protected function normalizeResponse(IResponse $response): Response
+    {   
+        if ($response instanceof RedirectResponse) {
+            $content = json_encode(['target_url' => $response->getTargetUrl()]);
+        } else {
+            $content = $response->getContent();
+        }
+
+        return new Response([
+            'status' => $response->getStatusCode(),
+            'data' => $content
+        ]);
+    }
+
+    /**
+     * 格式化 Thrift RPC 请求到 QueryPHP 请求
+     * 
+     * @param \Leevel\Protocol\Thrift\Service\Request $request
+     * @return \Leevel\Http\Request
+     */
+    protected function normalizeRequest(Request $request): HttpRequest
+    {
+        if (! $request->call) {
+            throw new Exception('Rpc call is not set.');
+        }
+
+        $matchedData = Router::parseNodeUrl($request->call);
+
+        $matchedData[IRouter::VARS] = $request->params ?: [];
+
+        $matchedData[IRouter::PARAMS] = $request->metas ?: [];
+
+        Router::setMatchedData($matchedData);
+
+        return HttpRequest::createFromGlobals();
     }
 }

@@ -60,7 +60,7 @@ class HttpServer extends Server
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
-        'host' => '127.0.0.1', 
+        'host' => '0.0.0.0', 
         
         // 监听端口
         // see https://wiki.swoole.com/wiki/page/p-server.html
@@ -123,12 +123,13 @@ class HttpServer extends Server
      * @param \Swoole\Http\Response $swooleResponse
      * @return void
      */
-    public function onRequest(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse)
+    public function onRequest(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse): void
     {
         // 请求过滤 favicon
         if ($swooleRequest->server['path_info'] == '/favicon.ico' || 
             $swooleRequest->server['request_uri'] == '/favicon.ico') {
-            return $swooleResponse->end();
+            $swooleResponse->end();
+            return;
         }
 
         $request = $this->normalizeRequest($swooleRequest);
@@ -145,9 +146,9 @@ class HttpServer extends Server
     /**
      * 格式化 QueryPHP 响应到 swoole 响应
      * 
-     * @param \leevel\Http\Request $swooleRequest
+     * @param \Leevel\Http\IResponse $response
      * @param \Swoole\Http\Response $swooleResponse
-     * @return \Http\Response
+     * @return \Swoole\Http\Response
      */
     protected function normalizeResponse(IResponse $response, SwooleHttpResponse $swooleResponse): SwooleHttpResponse
     {
