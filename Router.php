@@ -83,7 +83,7 @@ class Router implements IRouter
      * 
      * @var array
      */
-    protected $matchedData = [];
+    protected $matchedData;
 
     /**
      * 路由匹配初始化数据
@@ -197,7 +197,19 @@ class Router implements IRouter
         $this->matchedApp = null;
         $this->matchedController = null;
         $this->matchedAction = null;
-        $this->matchedData = self::$matcheDataInit;
+        $this->matchedData = null;
+    }
+
+    /**
+     * 设置匹配路由
+     * 绕过路由解析，可以用于高性能 RPC 快速匹配资源
+     *
+     * @param array $matchedData
+     * @return void
+     */
+    public function setMatchedData(array $matchedData): void
+    {
+        $this->matchedData = array_merge(self::$matcheDataInit, $matchedData);
     }
 
     /**
@@ -458,10 +470,23 @@ class Router implements IRouter
      * 路由匹配
      * 高效匹配，如果默认 pathInfo 路由能够匹配上则忽略 swagger 路由匹配
      *
-     * @return void
+     * @return mixed
      */
     protected function matchRouter()
     {
+        if (! is_null($this->matchedData)) {
+            $this->completeRequest();
+
+            $bind = $this->parseDefaultBind();
+            if ($bind === false) {
+                $this->nodeNotRegistered();
+            }
+
+            return $bind;
+        }
+
+        $this->initRequest();
+
         if ($this->request->isCli()) {
             $data = (new CliMatch)->matche($this, $this->request);
             $this->matchedData = array_merge(self::$matcheDataInit, $data);
@@ -510,8 +535,6 @@ class Router implements IRouter
      */
     protected function dispatchToRoute(Request $request)
     {
-        $this->initRequest();
-
         return $this->runRoute($request, $this->matchRouter());
     }
 
