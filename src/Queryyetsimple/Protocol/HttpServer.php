@@ -24,7 +24,7 @@ use Swoole\{
 };
 use Leevel\Http\Request;
 use Leevel\Http\IResponse;
-use Leevel\Bootstrap\IKernel;
+use Leevel\Kernel\IKernel;
 use Leevel\Http\RedirectResponse;
 
 /**
@@ -40,7 +40,7 @@ class HttpServer extends Server
     /**
      * 内核
      *
-     * @var \Leevel\Bootstrap\IKernel
+     * @var \Leevel\Kernel\IKernel
      */
     protected $kernel;
     
@@ -101,7 +101,7 @@ class HttpServer extends Server
     /**
      * 构造函数
      * 
-     * @param \Leevel\Bootstrap\IKernel $kernel
+     * @param \Leevel\Kernel\IKernel $kernel
      * @param \Leevel\Http\Request $request
      * @param array $option
      * @return void

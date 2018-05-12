@@ -19,7 +19,7 @@ namespace Leevel\Option;
 use Exception;
 use Dotenv\Dotenv;
 use RuntimeException;
-use Leevel\Bootstrap\IProject;
+use Leevel\Kernel\IProject;
 use Dotenv\Exception\InvalidFileException;
 use Dotenv\Exception\InvalidPathException;
 
@@ -65,7 +65,7 @@ class Load
     /**
      * 载入配置数据
      *
-     * @param \Leevel\Bootstrap\IProject $project
+     * @param \Leevel\Kernel\IProject $project
      * @return array
      */
     public function loadData(IProject $project): array
@@ -101,7 +101,7 @@ class Load
     /**
      * 载入环境变量数据
      * 
-     * @param \Leevel\Bootstrap\IProject $project
+     * @param \Leevel\Kernel\IProject $project
      * @return array
      */
     protected function loadEnvData(IProject $project): array
@@ -198,7 +198,7 @@ class Load
      * 合并 composer 配置数据
      *
      * @param array $options
-     * @param \Leevel\Bootstrap\IProject $project
+     * @param \Leevel\Kernel\IProject $project
      * @param array $optionFiles
      * @return array
      */

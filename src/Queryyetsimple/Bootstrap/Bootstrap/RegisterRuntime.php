@@ -18,7 +18,7 @@ namespace Leevel\Bootstrap\Bootstrap;
 
 use Exception;
 use ErrorException;
-use Leevel\Bootstrap\Project;
+use Leevel\Kernel\IProject;
 use Leevel\Bootstrap\Runtime\Runtime;
 use Leevel\Bootstrap\Runtime\IRuntime;
 use Leevel\Bootstrap\Runtime\FatalErrorException;
@@ -39,17 +39,17 @@ class RegisterRuntime
     /**
      * 容器
      *
-     * @var \Leevel\Di\Project
+     * @var \Leevel\Di\IProject
      */
     protected $project;
 
     /**
      * 响应
      * 
-     * @param \Leevel\Bootstrap\IProject $project
+     * @param \Leevel\Kernel\IProject $project
      * @return void
      */
-    public function handle(Project $project)
+    public function handle(IProject $project)
     {
         $this->project = $project;
 

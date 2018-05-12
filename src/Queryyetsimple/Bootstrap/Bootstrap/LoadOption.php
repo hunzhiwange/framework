@@ -19,7 +19,7 @@ namespace Leevel\Bootstrap\Bootstrap;
 use Leevel\Option\Load;
 use Leevel\Option\Option;
 use Leevel\Support\Facade;
-use Leevel\Bootstrap\Project;
+use Leevel\Kernel\IProject;
 
 /**
  * 读取配置
@@ -35,10 +35,10 @@ class LoadOption
     /**
      * 响应
      * 
-     * @param \Leevel\Bootstrap\IProject $project
+     * @param \Leevel\Kernel\IProject $project
      * @return void
      */
-    public function handle(Project $project)
+    public function handle(IProject $project)
     {
         if ($project->isCachedOption()) {
             $data = (array) include $project->pathCacheOptionFile();

@@ -14,45 +14,43 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Bootstrap\Console\Provider;
+namespace Leevel\Kernel;
 
-use Leevel\{
-    Di\Provider,
-    Bootstrap\Console\Load
-};
+use Leevel\Http\Request;
+use Leevel\Http\IResponse;
 
 /**
- * console 服务提供者
+ * 内核执行接口
  *
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2017.11.06
+ * @since 2016.11.18
  * @version 1.0
  */
-class Register extends Provider
+interface IKernel
 {
 
     /**
-     * 注册服务
+     * 响应 HTTP 请求
      *
-     * @return void
+     * @param \Leevel\Http\Request $request
+     * @return \Leevel\Http\IResponse
      */
-    public function register()
-    {
-        $this->singleton('console.load', function () {
-            return new Load();
-        });
-    }
+    public function handle(Request $request);
 
     /**
-     * 可用服务提供者
+     * 执行结束
      *
-     * @return array
+     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IResponse $response
+     * @return void
      */
-    public static function providers()
-    {
-        return [
-            'console.load' => 'Leevel\Bootstrap\Console\Load'
-        ];
-    }
+    public function terminate(Request $request, IResponse $response);
+
+    /**
+     * 返回项目
+     *
+     * @return \Leevel\Kernel\IProject
+     */
+    public function getProject();
 }

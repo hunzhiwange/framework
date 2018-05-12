@@ -19,7 +19,7 @@ namespace Leevel\Bootstrap\Bootstrap;
 use Leevel\I18n\Load;
 use Leevel\I18n\I18n;
 use Leevel\Support\Facade;
-use Leevel\Bootstrap\Project;
+use Leevel\Kernel\IProject;
 
 /**
  * 读取语言包
@@ -35,10 +35,10 @@ class LoadI18n
     /**
      * 响应
      * 
-     * @param \Leevel\Bootstrap\IProject $project
+     * @param \Leevel\Kernel\IProject $project
      * @return void
      */
-    public function handle(Project $project)
+    public function handle(IProject $project)
     {
         $i18nDefault = $project['option']['i18n\default'];
 

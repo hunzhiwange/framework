@@ -16,7 +16,7 @@
  */
 namespace Leevel\Bootstrap\Bootstrap;
 
-use Leevel\Bootstrap\Project;
+use Leevel\Kernel\IProject;
 
 /**
  * 遍历服务提供者
@@ -32,10 +32,10 @@ class TraverseProvider
     /**
      * 响应
      * 
-     * @param \Leevel\Bootstrap\IProject $project
+     * @param \Leevel\Kernel\IProject $project
      * @return void
      */
-    public function handle(Project $project)
+    public function handle(IProject $project)
     {
         $project->registerProviders();
 

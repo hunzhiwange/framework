@@ -19,8 +19,10 @@ namespace Leevel\Bootstrap;
 use Exception;
 use Leevel\Console\Load;
 use Leevel\Http\Request;
+use Leevel\Kernel\IProject;
 use Leevel\Console\Application;
 use Leevel\Support\Debug\Console;
+use Leevel\Kernel\IKernelConsole;
 use Leevel\Bootstrap\Bootstrap\{
     LoadI18n,
     LoadOption,
@@ -44,7 +46,7 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 项目
      *
-     * @var \Leevel\Bootstrap\IProject
+     * @var \Leevel\Kernel\IProject
      */
     protected $project;
 
@@ -70,7 +72,7 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 构造函数
      *
-     * @param \Leevel\Bootstrap\IProject $project
+     * @param \Leevel\Kernel\IProject $project
      * @return void
      */
     public function __construct(IProject $project)
@@ -110,7 +112,7 @@ abstract class KernelConsole implements IKernelConsole
     /**
      * 返回项目
      *
-     * @return \Leevel\Bootstrap\IProject
+     * @return \Leevel\Kernel\IProject
      */
     public function getProject()
     {

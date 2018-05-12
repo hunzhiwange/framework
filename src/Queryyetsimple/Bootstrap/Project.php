@@ -21,6 +21,7 @@ use RuntimeException;
 use Leevel\{
     Di\Provider,
     Di\Container,
+    Kernel\IProject,
     Log\Provider\Register as LogProvider,
     Event\Provider\Register as EventProvider,
     Router\Provider\Register as RouterProvider
@@ -40,7 +41,7 @@ class Project extends Container implements IProject
     /**
      * 当前项目实例
      *
-     * @var \Leevel\Bootstrap\Project
+     * @var static
      */
     protected static $project;
 
@@ -726,7 +727,7 @@ class Project extends Container implements IProject
             'project' => [
                 'Leevel\Bootstrap\Project',
                 'Leevel\Di\IContainer',
-                'Leevel\Bootstrap\IProject',
+                'Leevel\Kernel\IProject',
                 'app'
             ],
             'request' => [

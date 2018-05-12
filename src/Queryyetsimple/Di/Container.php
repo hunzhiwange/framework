@@ -308,6 +308,7 @@ class Container implements IContainer, ArrayAccess
 
                 $result[$item->name] = $data;
             } catch (ReflectionException $e) {
+                print_r($injection);
                 throw new InvalidArgumentException($e->getMessage());
             }
         }

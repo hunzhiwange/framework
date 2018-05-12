@@ -21,7 +21,9 @@ use Throwable;
 use Leevel\Log\ILog;
 use Leevel\Http\Request;
 use Leevel\Router\Router;
+use Leevel\Kernel\IKernel;
 use Leevel\Http\IResponse;
+use Leevel\Kernel\IProject;
 use Leevel\Http\ApiResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
@@ -49,7 +51,7 @@ abstract class Kernel implements IKernel
     /**
      * 项目
      *
-     * @var \Leevel\Bootstrap\IProject
+     * @var \Leevel\Kernel\IProject
      */
     protected $project;
 
@@ -75,7 +77,7 @@ abstract class Kernel implements IKernel
     /**
      * 构造函数
      *
-     * @param \Leevel\Bootstrap\IProject $project
+     * @param \Leevel\Kernel\IProject $project
      * @param \Leevel\Router\Router $router
      * @return void
      */
@@ -138,7 +140,7 @@ abstract class Kernel implements IKernel
     /**
      * 返回项目
      *
-     * @return \Leevel\Bootstrap\IProject
+     * @return \Leevel\Kernel\IProject
      */
     public function getProject()
     {

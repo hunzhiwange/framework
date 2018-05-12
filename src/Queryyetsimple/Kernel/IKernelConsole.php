@@ -14,7 +14,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Bootstrap;
+namespace Leevel\Kernel;
+
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * 命令行内核执行接口
@@ -26,4 +29,29 @@ namespace Leevel\Bootstrap;
  */
 interface IKernelConsole
 {
+
+    /**
+     * 响应命令行请求
+     *
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
+     * @return int
+     */
+    public function handle(InputInterface $input = null, OutputInterface $output = null);
+
+    /**
+     * 执行结束
+     *
+     * @param int $status
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @return void
+     */
+    public function terminate(int $status, InputInterface $input = null);
+
+    /**
+     * 返回项目
+     *
+     * @return \Leevel\Kernel\IProject
+     */
+    public function getProject();
 }
