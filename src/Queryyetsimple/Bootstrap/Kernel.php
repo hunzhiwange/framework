@@ -28,14 +28,14 @@ use Leevel\Http\ApiResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Support\Debug\Console;
+use Leevel\Kernel\Runtime\IRuntime;
+use Leevel\Kernel\Exception\FatalThrowableError;
 use Leevel\Bootstrap\Bootstrap\{
     LoadI18n,
     LoadOption,
     RegisterRuntime,
     TraverseProvider
 };
-use Leevel\Bootstrap\Runtime\IRuntime;
-use Leevel\Bootstrap\Runtime\FatalThrowableError;
 
 /**
  * 内核执行

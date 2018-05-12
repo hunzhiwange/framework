@@ -29,6 +29,7 @@ use Leevel\Http\Response;
 use Leevel\Di\IContainer;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
+use Leevel\Kernel\Runtime\IRuntime;
 use Leevel\Mvc\ModelNotFoundException;
 use Leevel\Kernel\Exception\HttpException;
 use Leevel\Kernel\Exception\NotFoundHttpException;

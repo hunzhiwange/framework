@@ -19,10 +19,10 @@ namespace Leevel\Bootstrap\Bootstrap;
 use Exception;
 use ErrorException;
 use Leevel\Kernel\IProject;
+use Leevel\Kernel\Runtime\IRuntime;
 use Leevel\Bootstrap\Runtime\Runtime;
-use Leevel\Bootstrap\Runtime\IRuntime;
-use Leevel\Bootstrap\Runtime\FatalErrorException;
-use Leevel\Bootstrap\Runtime\FatalThrowableError;
+use Leevel\Kernel\Exception\FatalErrorException;
+use Leevel\Kernel\Exception\FatalThrowableError;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
@@ -149,7 +149,7 @@ class RegisterRuntime
      *
      * @param array $error
      * @param int|null $traceOffset
-     * @return \Leevel\Bootstrap\Runtime\FatalErrorException
+     * @return \Leevel\Kernel\Exception\FatalErrorException
      */
     protected function formatFatalException(array $error, $traceOffset = null)
     {
@@ -161,7 +161,7 @@ class RegisterRuntime
     /**
      * 返回运行处理器
      * 
-     * @return \Leevel\Bootstrap\Runtime\IRuntime
+     * @return \Leevel\Kernel\Exception\IRuntime
      */
     protected function getRuntime() {
         return $this->project->make(IRuntime::class);

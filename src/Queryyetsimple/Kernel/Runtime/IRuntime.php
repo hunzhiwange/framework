@@ -14,7 +14,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Leevel\Bootstrap\Runtime;
+namespace Leevel\Kernel\Runtime;
 
 use Exception;
 use Leevel\Http\Request;
