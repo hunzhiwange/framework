@@ -16,6 +16,17 @@
  */
 namespace Leevel\Client;
 
+use Leevel\Protocol\Thrift\Service\Request;
+use Leevel\Protocol\Thrift\Service\Response;
+use Leevel\Protocol\Thrift\Service\ThriftClient;
+use Leevel\Http\IResponse;
+use Leevel\Http\Response as HttpResponse;
+use Thrift\Transport\TSocket;
+use Thrift\Transport\TFramedTransport;
+use Thrift\Protocol\TBinaryProtocol;
+use Leevel\Http\RedirectResponse;
+use Leevel\Http\JsonResponse;
+
 /**
  * Rpc 客户端 
  *
@@ -73,14 +84,107 @@ class Rpc
      */
     public static function instance($id = null) 
     {
-        $key = $id ?: self:DEFAULT_CONTEXT;
+        $key = $id ?: self::DEFAULT_CONTEXT;
 
         if (isset(static::$instances[$key])) {
             return static::$instances[$key];
         } else {
             return static::$instances[$key] = new static($key);
         }
-    }  
+    }
+
+    /**
+     * Rpc 调用
+     * 
+     * @param string $call
+     * @param array $params
+     * @param array $metas
+     * @return \Leevel\Http\IResponse
+     */
+    public function call(string $call, array $params = [], array $metas = []): IResponse
+    {
+        $transport = $this->makeTransport();
+        $protocol = new TBinaryProtocol($transport);
+        $transport->open();
+
+        $response = $this->getResponseWithProtocol($protocol, [
+            'call' => $call,
+            'params' => $params,
+            'metas' => $metas
+        ]);
+
+        $transport->close();
+
+        $response = $this->normalizeResponse($response);
+
+        return $response;
+    }
+
+    /**
+     * 格式化 Thrift Rpc 响应到 QueryPHP 响应
+     *
+     * @param \Leevel\Protocol\Thrift\Service\Response $response
+     * @return \Leevel\Http\IResponse
+     */
+    protected function normalizeResponse(Response $response): IResponse
+    {
+        if ($this->isJson($response->data)) {
+            $data = json_decode($response->data, true);
+
+            if (isset($data['target_url'])) {
+                return new RedirectResponse($data['target_url'], $response->status);
+            } else {
+                return JsonResponse::fromJsonString($response->data, $response->status);
+            }
+        } else {
+            return new HttpResponse($response->data, $response->status);
+        }
+    }
+
+    /**
+     * 创建传输层
+     *
+     * @return \Thrift\Transport\TFramedTransport
+     */
+    protected function makeTransport(): TFramedTransport
+    {
+        $socket = new TSocket("127.0.0.1", 1355);
+        
+        return new TFramedTransport($socket);
+    }
+
+    /**
+     * 根据协议返回响应
+     *
+     * @param \Thrift\Protocol\TBinaryProtocol $protocol
+     * @param array $data
+     * @return \Leevel\Protocol\Thrift\Service\Response
+     */
+    protected function getResponseWithProtocol(TBinaryProtocol $protocol, array $data): Response
+    {
+        $client = new ThriftClient($protocol);
+
+        $message = new Request($data);
+
+        return $client->call($message);
+    }
+
+    /**
+     * 验证是否为正常的 JSON 字符串
+     *
+     * @param mixed $data
+     * @return boolean
+     */
+    protected function isJson($data)
+    {
+        if (! is_scalar($data) && ! method_exists($data, '__toString')) {
+            return false;
+        }
+
+        json_decode($data);
+
+        return json_last_error() === JSON_ERROR_NONE;
+    }
 
     /**
      * 设置享元数据
@@ -121,4 +225,3 @@ class Rpc
         }
     }
 }
-
