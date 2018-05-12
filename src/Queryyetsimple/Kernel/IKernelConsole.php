@@ -53,5 +53,5 @@ interface IKernelConsole
      *
      * @return \Leevel\Kernel\IProject
      */
-    public function getProject();
+    public function getProject(): IProject;
 }

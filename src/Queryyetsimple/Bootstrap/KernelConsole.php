@@ -114,7 +114,7 @@ abstract class KernelConsole implements IKernelConsole
      *
      * @return \Leevel\Kernel\IProject
      */
-    public function getProject()
+    public function getProject(): IProject
     {
         return $this->project;
     }
