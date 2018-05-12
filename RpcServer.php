@@ -20,7 +20,6 @@ use Exception;
 use Thrift\Server\TServerSocket;
 use Swoole\Server as SwooleServer;
 use Thrift\Factory\TBinaryProtocolFactory;
-use Leevel\Protocol\Server as Servers;
 use Leevel\Protocol\Thrift\{
     Base\ThriftServer,
     Service\ThriftHandler,
@@ -37,7 +36,7 @@ use Leevel\Protocol\Thrift\{
  * @link https://wiki.swoole.com/wiki/page/287.html 
  * @version 1.0
  */
-class RpcServer extends Servers
+class RpcServer extends Server
 {
     
     /**
@@ -49,7 +48,7 @@ class RpcServer extends Servers
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
-        'host' => '127.0.0.1', 
+        'host' => '0.0.0.0', 
         
         // 监听端口
         // see https://wiki.swoole.com/wiki/page/p-server.html
@@ -119,6 +118,11 @@ class RpcServer extends Servers
         'close'
     ];
 
+    /**
+     * Thrift 服务
+     * 
+     * @var \Leevel\Protocol\Thrift\Base\ThriftServer
+     */
     protected $thriftServer;
 
     /**
@@ -134,17 +138,6 @@ class RpcServer extends Servers
         $this->thriftServer = $this->makeThriftServer();
     }
     
-    /**
-     * 创建 websocket server
-     * 
-     * @return void
-     */
-    //protected function createServer()
-    //{
-        //$this->objServer = new SwooleWebsocketServer($this->getOption('host'), $this->getOption('port'));
-        //$this->initServer();
-    //}
-
     /**                                                                                                 }
      * 监听数据发送事件
      * 
@@ -155,19 +148,23 @@ class RpcServer extends Servers
      * @link https://wiki.swoole.com/wiki/page/50.html
      * @return void
      */
-    public function onReceive(SwooleServer $objServer, int $intFd, int $intReactorId, string $strData)
+    public function onReceive(SwooleServer $objServer, int $intFd, int $intReactorId, string $strData): void
     {
         parent::onReceive($objServer, $intFd, $intReactorId, $strData);
 
         $this->thriftServer->receive($objServer, $intFd, $intReactorId, $strData);
     }
 
-
-    protected function makeThriftServer()
+    /**
+     * 创建 Thrift 服务
+     * 
+     * @return \Leevel\Protocol\Thrift\Base\ThriftServer
+     */
+    protected function makeThriftServer(): ThriftServer
     {
         $service = new ThriftHandler();
         $processor = new ThriftProcessor($service);
-        $socketTranport = new TServerSocket($this->getOption('host'), $this->getOption('port'));
+        $socketTranport = new TServerSocket($this->getOption('host'), intval($this->getOption('port')));
         $outFactory = $inFactory = new TFramedTransportFactory();
         $outProtocol = $inProtocol = new TBinaryProtocolFactory();
 

@@ -37,7 +37,7 @@ use Leevel\{
  * @link https://www.cnblogs.com/luojianqun/p/5355439.html
  * @version 1.0
  */
-class Server
+class Server implements IServer
 {
 
     use TClass;
@@ -65,7 +65,7 @@ class Server
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
-        'host' => '127.0.0.1', 
+        'host' => '0.0.0.0', 
         
         // 监听端口
         // see https://wiki.swoole.com/wiki/page/p-server.html
