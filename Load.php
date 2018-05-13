@@ -34,7 +34,7 @@ class Load
      *
      * @var string
      */
-    protected $i18n = 'zh-cn';
+    protected $i18n = 'zh-CN';
 
     /**
      * 载入路径
