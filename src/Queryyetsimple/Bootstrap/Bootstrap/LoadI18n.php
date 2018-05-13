@@ -16,8 +16,9 @@
  */
 namespace Leevel\Bootstrap\Bootstrap;
 
-use Leevel\I18n\Load;
+use Exception;
 use Leevel\I18n\I18n;
+use Leevel\I18n\Load;
 use Leevel\Support\Facade;
 use Leevel\Kernel\IProject;
 
@@ -45,14 +46,44 @@ class LoadI18n
         if ($project->isCachedI18n($i18nDefault)) {
             $data = (array) include $project->pathCacheI18nFile($i18nDefault);
         } else {
-            $load = (new Load([$project->pathI18n()]))->setI18n($i18nDefault);
+            $load = (new Load([$project->pathI18n()]))->
+
+            setI18n($i18nDefault)->
+
+            addDir($this->getExtend($project));
 
             $data = $load->loadData();
         }
 
-        
         $project->instance('i18n', $i18n = new I18n($i18nDefault));
 
         $i18n->addText($i18nDefault, $data);
+    }
+
+    /**
+     * 获取扩展语言包
+     * 
+     * @param \Leevel\Kernel\IProject $project
+     * @return array
+     */
+    protected function getExtend(IProject $project): array
+    {
+        $extend = $project['option']->get('_composer.i18ns', []);
+
+        $path = $project->path();
+
+        $extend = array_map(function(string $item) use($path) {
+            if (! is_file($item)) {
+                $item = $path . '/' . $item;
+            }
+
+            if (! is_dir($item)) {
+                throw new Exception(sprintf('I18n dir %s is not exist.', $item));
+            }
+
+            return $item;
+        }, $extend);
+
+        return $extend;
     }
 }
