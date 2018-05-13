@@ -95,7 +95,7 @@ class Url
         
         // 匹配基础路径
         $basepaths = $router->getBasepaths();
-        $pathInfo = $request->getPathInfo();
+        $pathInfoOld = $pathInfo = $request->getPathInfo();
         foreach ($basepaths as $path) {
             if (strpos($pathInfo, $path) === 0) {
                 $pathInfo = substr($pathInfo, strlen($path));
@@ -104,6 +104,13 @@ class Url
             }
         }
 
+        // 静态路由匹配
+        if (isset($urlRouters['static']) && isset($urlRouters['static'][$pathInfoOld])) {
+            $urlRouters = $urlRouters['static'][$pathInfoOld];
+
+            return $this->matcheSuccessed($urlRouters);
+        }
+        
         // 匹配首字母
         $firstLetter = $pathInfo[1];
         if (isset($urlRouters[$firstLetter])) {
@@ -127,13 +134,6 @@ class Url
 
         if ($matchGroup === false) {
             $urlRouters = $urlRouters['_'];
-        }
-
-        // 直接匹配成功
-        $pathInfo = $this->matchedBasepath . $pathInfo;
-        if (isset($urlRouters[$pathInfo])) {
-            $urlRouters = $urlRouters[$pathInfo];
-            return $this->matcheSuccessed($urlRouters);
         }
 
         // 匹配路由

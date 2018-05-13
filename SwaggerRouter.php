@@ -135,10 +135,9 @@ class SwaggerRouter
     /**
      * 处理 swagger 注解路由
      * 
-     * @param string|null $cachePath
      * @return array
      */
-    public function handle(string $cachePath = null)
+    public function handle()
     {
         $swagger = $this->makeSwagger();
 
@@ -201,14 +200,21 @@ class SwaggerRouter
                     }
  
                     // 解析路由正则
+                    $isStaticRoute = false;
+
                     $routerPath = $basepathPrefix . $routerPath;
                     if (strpos($routerPath, '{') !== false) { 
                         list($routerTmp['regex'], $routerTmp['var']) = $this->ruleRegex($routerPath, $routerTmp);
                     } else {
+                        $isStaticRoute = true;
                         list($routerTmp['regex'], $routerTmp['var']) = [null, null];
                     }
 
-                    $routers[$m][$prefix][$groupPrefix][$routerPath] = $routerTmp;
+                    if ($isStaticRoute === true) {
+                        $routers[$m]['static'][$routerPath] = $routerTmp;
+                    } else {
+                        $routers[$m][$prefix][$groupPrefix][$routerPath] = $routerTmp;
+                    }
                 }
             }
         }
@@ -218,22 +224,6 @@ class SwaggerRouter
             'groups' => $groups,
             'routers' => $routers
         ];
-
-        // 保存缓存
-        if ($cachePath) {
-            if (! is_dir(dirname($cachePath))) {
-                mkdir(dirname($cachePath), 0777, true);
-            }
-
-            $content = '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
-                PHP_EOL . '<?' . 'php return ' . var_export($result, true) . '; ?' . '>';
-                
-            if(! file_put_contents($cachePath, $content)) {
-                throw new InvalidArgumentException(sprintf('Dir %s is not writeable', dirname($cachePath)));
-            }
-
-            chmod($cachePath, 0777);
-        }
 
         return $result;
     }
