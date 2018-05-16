@@ -37,7 +37,7 @@ class Encryption extends Connect implements IEncryption
     public function __construct($strKey, $intExpiry = 0)
     {
         $this->strKey = ( string ) $strKey;
-        $this->intExpiry = ( int ) $intExpiry;
+        $this->intExpiry = (int) $intExpiry;
     }
 
     /**
