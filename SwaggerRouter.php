@@ -85,7 +85,6 @@ class SwaggerRouter
         'scheme',
         'domain',
         'params',
-        'where',
         'strict',
         'bind',
         'middlewares'
@@ -152,7 +151,7 @@ class SwaggerRouter
                     $method = $path->$m;
 
                     // 忽略已删除和带有忽略标记的路由
-                    if (! $method || $method->deprecated === true || (property_exists($methods, '_ignore') && $method->_ignore)) {
+                    if (! $method || $method->deprecated === true || (property_exists($method, '_ignore') && $method->_ignore)) {
                         continue;
                     }
 
@@ -194,7 +193,7 @@ class SwaggerRouter
                     $routerTmp['domain'] = $this->normalizeDomain($routerTmp['domain'], $this->domain);
 
                     if ($routerTmp['domain'] && strpos($routerTmp['domain'], '{') !== false) {
-                        list($routerTmp['domain_regex'], $routerTmp['domain_var']) = $this->ruleRegex($routerTmp['domain'], $routerTmp);
+                        list($routerTmp['domain_regex'], $routerTmp['domain_var']) = $this->ruleRegex($routerTmp['domain'], $routerTmp, true);
                     } else {
                         list($routerTmp['domain_regex'], $routerTmp['domain_var']) = [null, null];
                     }
@@ -203,7 +202,7 @@ class SwaggerRouter
                     $isStaticRoute = false;
 
                     $routerPath = $basepathPrefix . $routerPath;
-                    if (strpos($routerPath, '{') !== false) { 
+                    if (strpos($routerPath, '{') !== false) {
                         list($routerTmp['regex'], $routerTmp['var']) = $this->ruleRegex($routerPath, $routerTmp);
                     } else {
                         $isStaticRoute = true;
@@ -219,6 +218,8 @@ class SwaggerRouter
             }
         }
 
+        $routers = $this->normalizeFastRoute($routers);
+
         $result = [
             'basepaths' => $basepaths,
             'groups' => $groups,
@@ -226,6 +227,111 @@ class SwaggerRouter
         ];
 
         return $result;
+    }
+
+    /**
+     * 路由正则分组合并
+     * 
+     * @param array $routers
+     * @return array
+     */
+    protected function normalizeFastRoute(array $routers): array
+    {
+        // 我和同事毛飞我们讨论了这个，基于 FastRoute 背后技术原理构建 @ 2018.05
+        // 合并路由匹配规则提高匹配效率,10 个一分组
+        // http://nikic.github.io/2014/02/18/Fast-request-routing-using-regular-expressions.html
+        foreach ($routers as &$first) {
+            foreach ($first as $firstKey => &$second) {
+                if ($firstKey == 'static') {
+                    continue;
+                }
+
+                foreach ($second as $secondKey => &$three) {
+                    $groups = $this->parseToGroups($three);
+ 
+                    foreach ($groups as $groupKey => $groupThree) {
+                        list($three['regex'][$groupKey], $three['map'][$groupKey]) = $this->parseGroupRegex($groupThree);
+                    }
+                }
+            }
+        }
+
+        return $routers;
+    }
+
+    /**
+     * 将路由进行分组
+     *
+     * @param array $routers
+     * @return array
+     */
+    protected function parseToGroups(array &$routers): array
+    {
+        $groups = [];
+        $groupIndex = 0;
+
+        foreach ($routers as $key => &$item) {
+            $groups[intval($groupIndex/10)][$key] = $item;
+
+            unset($item['regex']);
+
+            $groupIndex++;
+        }
+
+        return $groups;
+    }
+
+    /**
+     * 解析分组路由正则
+     *
+     * @param array $routers
+     * @return array
+     */
+    protected function parseGroupRegex(array $routers): array
+    {
+        $minCount = $this->computeMinCountVar($routers);
+
+        $regex = [];
+        $ruleMap = [];
+        $ruleKey = 0;
+        $regex[] = '~^(?';
+
+        foreach ($routers as $key => $router) {
+            $countVar = $minCount + $ruleKey;
+            $emptyMatche = $countVar - count($router['var']);
+
+            $ruleMap[$countVar+1] = $key;
+
+            $regex[] = '|' . $router['regex'] . ($emptyMatche ? str_repeat('()', $emptyMatche) : '');
+       
+            $ruleKey++;
+        }
+
+        $regex[] = ')$~x';
+
+        return [
+            implode('', $regex),
+            $ruleMap
+        ];  
+    }
+
+    /**
+     * 计算初始最低的增长变量数量
+     *
+     * @param array $routers
+     * @return int
+     */
+    protected function computeMinCountVar(array $routers): int
+    {
+        $minCount = 1;
+
+        foreach ($routers as $item) {
+            if (($curCount = count($item['var'])) > $minCount) {
+                $minCount = $curCount;
+            }
+        }
+
+        return $minCount;
     }
 
     /**
@@ -249,6 +355,7 @@ class SwaggerRouter
             $tmp = explode($segmentation, $className);
             $router = ':' . ltrim($tmp[0], '\\') . '\\' . $tmp[1] . '\\' . $context->method;
             $method = str_replace('\\', '/', $router);
+
             return $method;
         }
     }
@@ -279,22 +386,49 @@ class SwaggerRouter
      *
      * @param string $rule
      * @param array $routers
-     * @return string
+     * @param bool $isSingleRouter
+     * @return array
      */
-    protected function ruleRegex(string $rule, array $routers)
+    protected function ruleRegex(string $rule, array $routers, bool $isSingleRouter = false): array
     {
         $routerVar = [];
         
-        $rule = $this->formatRegex($rule);
+        $mapRegex = [
+            'find' => [],
+            'replace' => []
+        ];
         
-        $rule = preg_replace_callback("/{(.+?)}/", function ($matches) use($routers, &$routerVar) {
-            $routerVar[] = $matches[1];
-            return '(' . ($routers['where'][$matches[1]] ?? Router::DEFAULT_REGEX) . 
-            ')';
+        $rule = preg_replace_callback("/{(.+?)}/", function ($matches) use($routers, &$routerVar, &$mapRegex) {
+            if (strpos($matches[1], ':') !== false) {
+                list($routerVar[], $regex) = explode(':', $matches[1]);
+            } else {
+                $routerVar[] = $matches[1];
+                $regex = Router::DEFAULT_REGEX;
+            }
+
+            $regex = '(' . $regex . ')';
+            $regexEncode = '#' . md5($regex) . '#';
+
+            $mapRegex['find'][] = $regexEncode;
+            $mapRegex['replace'][] = $regex;
+            
+            return $regexEncode;
         }, $rule);
-        
-        $strict = ($routers['strict'] ?? Router::DEFAULT_STRICT) ? '$' : '';
-        $rule = '/^' . $rule . $strict . '/';
+
+        if ($isSingleRouter === false) {
+            $rule = preg_quote($rule);
+        } else {
+            $rule = preg_quote($rule, '/');
+        }
+
+        if ($mapRegex['find']) {
+            $rule = str_replace($mapRegex['find'], $mapRegex['replace'], $rule);
+        }
+
+        if ($isSingleRouter === true) {
+            $strict = ($routers['strict'] ?? Router::DEFAULT_STRICT) ? '$' : '';
+            $rule = '/^' . $rule . $strict . '/';
+        }
         
         return [
             $rule, 
@@ -324,79 +458,12 @@ class SwaggerRouter
     }
 
     /**
-     * 格式化正则
-     *
-     * @param string $regex
-     * @return string
-     */
-    public function formatRegex($regex)
-    {
-        $regex = $this->escapeRegexCharacter($regex);
-
-        // 还原变量特殊标记
-        return str_replace([
-            '\{',
-            '\}'
-        ], [
-            '{',
-            '}'
-        ], $regex);
-    }
-
-    /**
-     * 转义正则表达式特殊字符
-     *
-     * @param string $txt
-     * @return string
-     */
-    protected function escapeRegexCharacter($txt)
-    {
-        $txt = str_replace([
-            '$',
-            '/',
-            '?',
-            '*',
-            '.',
-            '!',
-            '-',
-            '+',
-            '(',
-            ')',
-            '[',
-            ']',
-            ',',
-            '{',
-            '}',
-            '|'
-        ], [
-            '\$',
-            '\/',
-            '\\?',
-            '\\*',
-            '\\.',
-            '\\!',
-            '\\-',
-            '\\+',
-            '\\(',
-            '\\)',
-            '\\[',
-            '\\]',
-            '\\,',
-            '\\{',
-            '\\}',
-            '\\|'
-        ], $txt);
-
-        return $txt;
-    }
-
-    /**
      * 分析基础路径
      *
      * @param \Swagger\Annotations\Swagger $swagger
      * @return array
      */
-    protected function parseBasepaths(Swagger $swagger)
+    protected function parseBasepaths(Swagger $swagger): array
     {
         $basepaths = [];
         $basepathPrefix = '';
