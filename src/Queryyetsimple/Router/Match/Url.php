@@ -46,13 +46,6 @@ class Url
     protected $request;
 
     /**
-     * 是否匹配 URL
-     * 
-     * @var boolean
-     */
-    protected $matchedUrl = false;
-
-    /**
      * 匹配基础路径
      * 
      * @var string
@@ -95,7 +88,8 @@ class Url
         
         // 匹配基础路径
         $basepaths = $router->getBasepaths();
-        $pathInfoOld = $pathInfo = $request->getPathInfo();
+        $pathInfoSource = $pathInfo = $request->getPathInfo();
+
         foreach ($basepaths as $path) {
             if (strpos($pathInfo, $path) === 0) {
                 $pathInfo = substr($pathInfo, strlen($path));
@@ -105,8 +99,8 @@ class Url
         }
 
         // 静态路由匹配
-        if (isset($urlRouters['static']) && isset($urlRouters['static'][$pathInfoOld])) {
-            $urlRouters = $urlRouters['static'][$pathInfoOld];
+        if (isset($urlRouters['static']) && isset($urlRouters['static'][$pathInfoSource])) {
+            $urlRouters = $urlRouters['static'][$pathInfoSource];
 
             return $this->matcheSuccessed($urlRouters);
         }
@@ -136,17 +130,21 @@ class Url
             $urlRouters = $urlRouters['_'];
         }
 
-        // 匹配路由
-        foreach ($urlRouters as $routers) {
-            $matcheVars = $this->matcheVariable($routers, $pathInfo);
-
-            if ($this->matchedUrl === true) {
-                $result = $this->matcheSuccessed($routers, $matcheVars);
-                break;
+        // 路由匹配
+        foreach ($urlRouters['regex'] as $key => $regex) {
+            if (! preg_match($regex, $pathInfoSource, $matches)) {
+                continue;
             }
+
+            $matchedRouter = $urlRouters['map'][$key][count($matches)];
+            $routers = $urlRouters[$matchedRouter];
+
+            $matcheVars = $this->matcheVariable($routers, $matches);
+
+            return $this->matcheSuccessed($routers, $matcheVars);
         }
 
-        return $result ?: [];
+        return [];
     }
 
     /**
@@ -213,7 +211,8 @@ class Url
      * @param string $scheme
      * @return boolean
      */
-    protected function matcheScheme($scheme) {
+    protected function matcheScheme(?string $scheme): bool
+    {
         if ($scheme && $this->request->getScheme() !== $scheme) {
             return false;
         }
@@ -227,7 +226,8 @@ class Url
      * @param array $routers
      * @return boolean|array
      */
-    protected function matcheDomain(array $routers) {
+    protected function matcheDomain(array $routers)
+    {
         $domainVars = [];
 
         if ($routers['domain']) {
@@ -259,24 +259,20 @@ class Url
      * 变量匹配处理
      * 
      * @param array $routers
-     * @param string $pathInfo
+     * @param array $matches
      * @return array
      */
-    protected function matcheVariable(array $routers, string $pathInfo)
+    protected function matcheVariable(array $routers, array $matches): array
     {
         $result = [];
 
-        if (preg_match($routers['regex'], $pathInfo, $matches)) {
-            array_shift($matches);
+        array_shift($matches);
 
-            foreach ($routers['var'] as $var) {
-                $value = array_shift($matches);
+        foreach ($routers['var'] as $key => $var) {
+            $value = $matches[$key];
 
-                $result[$var] = $value;
-                $this->addVariable($var, $value);
-            }
-
-            $this->matchedUrl = true;
+            $result[$var] = $matches[$key];
+            $this->addVariable($var, $matches[$key]);
         }
 
         return $result;
@@ -289,7 +285,7 @@ class Url
      * @param mixed $value
      * @return void
      */
-    protected function addVariable(string $name, $value)
+    protected function addVariable(string $name, $value): void
     {
         $this->matchedVars[$name] = $value;
     }

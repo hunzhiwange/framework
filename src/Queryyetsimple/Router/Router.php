@@ -479,7 +479,7 @@ class Router implements IRouter
 
             $bind = $this->parseDefaultBind();
             if ($bind === false) {
-                $this->nodeNotRegistered();
+                $this->nodeNotFound();
             }
 
             return $bind;
@@ -495,7 +495,7 @@ class Router implements IRouter
 
             $bind = $this->parseDefaultBind();
             if ($bind === false) {
-                $this->nodeNotRegistered();
+                $this->nodeNotFound();
             }
         } else {
             // 默认 pathInfo 匹配
@@ -519,7 +519,7 @@ class Router implements IRouter
 
                 $bind = $this->parseDefaultBind();
                 if ($bind === false) {
-                    $this->nodeNotRegistered();
+                    $this->nodeNotFound();
                 }
             }
         }
@@ -540,10 +540,12 @@ class Router implements IRouter
 
     /**
      * 运行路由
-     *
+     * 
+     * @param \Leevel\Http\Request $request
+     * @param callable $bind
      * @return \Leevel\Http\IResponse
      */
-    protected function runRoute($request, $bind)
+    protected function runRoute(Request $request, callable $bind)
     {
         $this->throughMiddleware($this->request);
 
@@ -561,9 +563,9 @@ class Router implements IRouter
      *
      * @return void
      */
-    protected function nodeNotRegistered()
+    protected function nodeNotFound()
     {
-        $message = sprintf('The node %s is not registered.', $this->makeNode());
+        $message = sprintf('The node %s is not found.', $this->makeNode());
 
         throw new InvalidArgumentException($message);
     }
