@@ -113,7 +113,7 @@ class Memcache extends Connect implements IConnect
     {
         $arrOption = $this->getOptions($arrOption);
         $arrOption['expire'] = $this->cacheTime($sCacheName, $arrOption['expire']);
-        $this->hHandle->set($this->getCacheName($sCacheName, $arrOption['prefix']), $mixData, $arrOption['compressed'] ? MEMCACHE_COMPRESSED : 0, ( int ) $arrOption['expire'] <= 0 ? 0 : ( int ) $arrOption['expire']);
+        $this->hHandle->set($this->getCacheName($sCacheName, $arrOption['prefix']), $mixData, $arrOption['compressed'] ? MEMCACHE_COMPRESSED : 0, (int) $arrOption['expire'] <= 0 ? 0 : (int) $arrOption['expire']);
     }
 
     /**
