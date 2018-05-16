@@ -333,12 +333,12 @@ class Select
             'string',
             'null',
             'callback'
-        ]) && ! $mixData instanceof select) {
+        ]) && ! $mixData instanceof Select) {
             throw new Exception('Unsupported parameters.');
         }
 
         // 查询对象直接查询
-        if ($mixData instanceof select) {
+        if ($mixData instanceof Select) {
             return $mixData->select(null, $arrBind, $bFlag);
         }
 
@@ -2695,7 +2695,7 @@ class Select
             $nOptions = count($this->arrOption['union']);
             foreach ($this->arrOption['union'] as $nCnt => $arrUnion) {
                 list($mixUnion, $sType) = $arrUnion;
-                if ($mixUnion instanceof select) {
+                if ($mixUnion instanceof Select) {
                     $mixUnion = $mixUnion->makeSql();
                 }
                 if ($nCnt <= $nOptions - 1) {
@@ -2879,7 +2879,7 @@ class Select
 
                     foreach ($mixCond[2] as &$strTemp) {
                         // 对象子表达式支持
-                        if ($strTemp instanceof select) {
+                        if ($strTemp instanceof Select) {
                             $strTemp = $strTemp->makeSql(true);
                         }
 
@@ -3098,7 +3098,7 @@ class Select
                     throw new Exception('Having do not support [not] exists writing.');
                 }
 
-                if ($arrTemp instanceof select) {
+                if ($arrTemp instanceof Select) {
                     $arrTemp = $arrTemp->makeSql();
                 } elseif (! is_string($arrTemp) && is_callable($arrTemp)) {
                     $objSelect = new static($this->objConnect);
@@ -3302,7 +3302,7 @@ class Select
                 }
 
                 // 对象子表达式
-                if ($sTable instanceof select) {
+                if ($sTable instanceof Select) {
                     $sTable = $sTable->makeSql(true);
                     if (! $sAlias) {
                         $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
@@ -3332,7 +3332,7 @@ class Select
         }
 
         // 对象子表达式
-        elseif ($mixName instanceof select) {
+        elseif ($mixName instanceof Select) {
             $sTable = $mixName->makeSql(true);
             $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             $booParseSchema = false;
