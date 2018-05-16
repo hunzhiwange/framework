@@ -176,7 +176,7 @@ class File extends Connect implements IConnect
             return true;
         }
         $arrOption['expire'] = $this->cacheTime($sCacheName, $arrOption['expire']);
-        return ( int ) $arrOption['expire'] > 0 && filemtime($sFilePath) + ( int ) $arrOption['expire'] < time();
+        return (int) $arrOption['expire'] > 0 && filemtime($sFilePath) + (int) $arrOption['expire'] < time();
     }
 
     /**

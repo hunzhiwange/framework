@@ -77,7 +77,7 @@ class Work extends Command
      */
     public function sleep()
     {
-        return ( int ) $this->option('sleep');
+        return (int) $this->option('sleep');
     }
 
     /**
@@ -87,7 +87,7 @@ class Work extends Command
      */
     public function tries()
     {
-        return ( int ) $this->option('tries');
+        return (int) $this->option('tries');
     }
 
     /**

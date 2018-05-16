@@ -141,7 +141,8 @@ class V8 extends Connect implements IConnect
      * @param string $js
      * @return string
      */
-    public function select(string $js) {
+    public function select(string $js)
+    {
         try {
             ob_start();
             $this->v8js->executeString($js);
@@ -161,7 +162,8 @@ class V8 extends Connect implements IConnect
      * @param string $js
      * @return mixed
      */
-    public function execute(string $js) {
+    public function execute(string $js)
+    {
         try {
             return $this->v8js->executeString($js);
         } catch (V8JsException $e) {
@@ -179,7 +181,8 @@ class V8 extends Connect implements IConnect
      * @param callable $errorHandler
      * @return $this
      */
-    public function setErrorHandler(callable $errorHandler) {
+    public function setErrorHandler(callable $errorHandler)
+    {
         $this->errorHandler = $errorHandler;
         return $this;
     }
@@ -189,7 +192,8 @@ class V8 extends Connect implements IConnect
      * 
      * @return void
      */
-    protected function initBase() {
+    protected function initBase()
+    {
         $console = <<<'EOT'
 /*!
  * console.js v0.2.0 (https://github.com/yanhaijing/console.js)
@@ -302,7 +306,8 @@ EOT;
      * 
      * @return void
      */
-    protected function vuePackage() {
+    protected function vuePackage()
+    {
         $vue = $this->getOption('vue_path');
         $renderer = $this->getOption('vue_renderer');
 
@@ -326,7 +331,8 @@ EOT;
      * 
      * @return void
      */
-    protected function artPackage() {
+    protected function artPackage()
+    {
         $art = $this->getOption('art_path');
 
         if (! is_file($art)) {

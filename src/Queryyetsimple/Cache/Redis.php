@@ -119,8 +119,8 @@ class Redis extends Connect implements IConnect
 
         $arrOption['expire'] = $this->cacheTime($sCacheName, $arrOption['expire']);
 
-        if (( int ) $arrOption['expire']) {
-            $this->hHandle->setex($this->getCacheName($sCacheName, $arrOption['prefix']), ( int ) $arrOption['expire'], $mixData);
+        if ((int) $arrOption['expire']) {
+            $this->hHandle->setex($this->getCacheName($sCacheName, $arrOption['prefix']), (int) $arrOption['expire'], $mixData);
         } else {
             $this->hHandle->set($this->getCacheName($sCacheName, $arrOption['prefix']), $mixData);
         }
