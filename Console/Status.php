@@ -68,7 +68,8 @@ class Status extends Command
      *
      * @return array
      */
-    protected function parseOption() :array {
+    protected function parseOption():array
+    {
         $arrOption = [];
 
         foreach(['host', 'port', 'pid_path'] as $sKey) {
