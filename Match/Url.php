@@ -166,7 +166,7 @@ class Url
             return false;
         }
 
-        $result = $this->router->parseNodeUrl($routers['bind']);
+        $result = $this->router->matchePath($routers['bind']);
         $exendParams = $result['params'];
         $result['params'] = [];
 
