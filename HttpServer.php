@@ -128,7 +128,7 @@ class HttpServer extends Server
         // 请求过滤 favicon
         if ($swooleRequest->server['path_info'] == '/favicon.ico' || 
             $swooleRequest->server['request_uri'] == '/favicon.ico') {
-            $swooleResponse->end();
+            $swooleResponse->end(' ');
             return;
         }
 
