@@ -31,11 +31,6 @@ use Leevel\{
     Mvc\IController,
     Pipeline\Pipeline
 };
-use Leevel\Router\Match\{
-    Cli as CliMatch,
-    Url as UrlMatch,
-    PathInfo as PathInfoMatch
-};
 
 /**
  * 路由解析
@@ -470,61 +465,100 @@ class Router implements IRouter
      * 路由匹配
      * 高效匹配，如果默认 pathInfo 路由能够匹配上则忽略 swagger 路由匹配
      *
-     * @return mixed
+     * @return mixed|void
      */
     protected function matchRouter()
     {
         if (! is_null($this->matchedData)) {
-            $this->completeRequest();
-
-            $bind = $this->parseDefaultBind();
-            if ($bind === false) {
-                $this->nodeNotFound();
-            }
-
-            return $bind;
+            return $this->tryRouterBind();
         }
 
         $this->initRequest();
 
         if ($this->request->isCli()) {
-            $data = (new CliMatch)->matche($this, $this->request);
-            $this->matchedData = array_merge(self::$matcheDataInit, $data);
+            $this->resolveMatchedData($this->normalizeMatchedData('Cli'));
+            
+            return $this->tryRouterBind();
+        }
 
-            $this->completeRequest();
+        $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'));
 
-            $bind = $this->parseDefaultBind();
-            if ($bind === false) {
-                $this->nodeNotFound();
-            }
-        } else {
-            // 默认 pathInfo 匹配
-            $dataPathInfo = (new PathInfoMatch)->matche($this, $this->request);
-            $this->matchedData = array_merge(self::$matcheDataInit, $dataPathInfo);
-
-            $this->completeRequest();
-
-            $bind = $this->parseDefaultBind();
-
-            if ($bind === false) {
-                $data = (new UrlMatch)->matche($this, $this->request);
-                if (! $data) {
-                    $data = $dataPathInfo;
-                } else {
-                    $this->initRequest();
-                }
-                $this->matchedData = array_merge(self::$matcheDataInit, $data);
-
-                $this->completeRequest();
-
-                $bind = $this->parseDefaultBind();
-                if ($bind === false) {
-                    $this->nodeNotFound();
-                }
-            }
+        if (($bind = $this->normalizeRouterBind()) === false) {
+            $bind = $this->urlRouterBind($dataPathInfo);
         }
 
         return $bind;
+    }
+
+    /**
+     * URL 路由绑定
+     *
+     * @param array $dataPathInfo 
+     * @return mixed
+     */
+    protected function urlRouterBind(array $dataPathInfo)
+    {
+        $data = $this->normalizeMatchedData('Url');
+
+        if (! $data) {
+            $data = $dataPathInfo;
+        } else {
+            $this->initRequest();
+        }
+
+        $this->resolveMatchedData($data);
+
+        return $this->tryRouterBind();
+    }
+
+    /**
+     * 完成路由匹配数据
+     *
+     * @param array $data 
+     * @return void
+     */
+    protected function resolveMatchedData(array $data): void
+    {
+        $this->matchedData = array_merge(self::$matcheDataInit, $data);
+    }
+
+    /**
+     * 解析路由匹配数据
+     *
+     * @param string $match 
+     * @return array
+     */
+    protected function normalizeMatchedData(string $match): array
+    {
+        $match = 'Leevel\Router\Match\\' . $match;
+
+        return  (new $match)->matche($this, $this->request);
+    }
+
+    /**
+     * 尝试获取路由绑定
+     *
+     * @return callable|void
+     */
+    protected function tryRouterBind()
+    {
+        if (($bind = $this->normalizeRouterBind()) === false) {
+            $this->nodeNotFound();
+        }
+
+        return $bind;
+    }
+
+    /**
+     * 解析路由绑定
+     *
+     * @return mixed
+     */
+    protected function normalizeRouterBind()
+    {
+        $this->completeRequest();
+
+        return $this->parseDefaultBind();
     }
 
     /**
