@@ -240,15 +240,13 @@ if (! function_exists('url')) {
      *
      * @param string $url
      * @param array $params
-     * @param array $option
-     * @sub boolean suffix 是否包含后缀
-     * @sub boolean normal 是否为普通 url
-     * @sub string subdomain 子域名
+     * @param string $subdomain
+     * @param mixed $suffix
      * @return string
      */
-    function url($url, $params = [], $option = [])
+    function url($url, $params = [], $option = [], string $subdomain = 'www', $suffix = false): string
     {
-        return project('url')->make($url, $params, $option);
+        return project('url')->make($url, $params, $subdomain, $suffix);
     }
 }
 

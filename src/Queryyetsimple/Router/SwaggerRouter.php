@@ -220,13 +220,11 @@ class SwaggerRouter
 
         $routers = $this->normalizeFastRoute($routers);
 
-        $result = [
+        return [
             'basepaths' => $basepaths,
             'groups' => $groups,
             'routers' => $routers
         ];
-
-        return $result;
     }
 
     /**
@@ -386,10 +384,10 @@ class SwaggerRouter
      *
      * @param string $rule
      * @param array $routers
-     * @param bool $isSingleRouter
+     * @param bool $forSingleRegex
      * @return array
      */
-    protected function ruleRegex(string $rule, array $routers, bool $isSingleRouter = false): array
+    protected function ruleRegex(string $rule, array $routers, bool $forSingleRegex = false): array
     {
         $routerVar = [];
         
@@ -415,7 +413,7 @@ class SwaggerRouter
             return $regexEncode;
         }, $rule);
 
-        if ($isSingleRouter === false) {
+        if ($forSingleRegex === false) {
             $rule = preg_quote($rule);
         } else {
             $rule = preg_quote($rule, '/');
@@ -425,7 +423,7 @@ class SwaggerRouter
             $rule = str_replace($mapRegex['find'], $mapRegex['replace'], $rule);
         }
 
-        if ($isSingleRouter === true) {
+        if ($forSingleRegex === true) {
             $strict = ($routers['strict'] ?? Router::DEFAULT_STRICT) ? '$' : '';
             $rule = '/^' . $rule . $strict . '/';
         }

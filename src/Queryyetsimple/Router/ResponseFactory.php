@@ -219,17 +219,15 @@ class ResponseFactory implements IResponseFactory
      *
      * @param string $url
      * @param array $params
-     * @param array $option
-     * @sub boolean suffix 是否包含后缀
-     * @sub boolean normal 是否为普通 url
-     * @sub string subdomain 子域名
+     * @param string $subdomain
+     * @param mixed $suffix
      * @param int $status
      * @param array $headers
      * @return \Leevel\Http\RedirectResponse
      */
-    public function redirect(?string $url, $params = [], $option = [], int $status = 302, array $headers = [])
+    public function redirect(?string $url, array $params = [], string $subdomain = 'www', $suffix = false, int $status = 302, array $headers = [])
     {
-        return $this->redirector->url($url, $params, $option, $status, $headers);
+        return $this->redirector->url($url, $params, $subdomain, $suffix, $status, $headers);
     }
 
     /**

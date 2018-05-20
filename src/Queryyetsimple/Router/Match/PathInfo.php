@@ -52,7 +52,7 @@ class PathInfo
      * @param \Leevel\Http\Request $request
      * @return array
      */
-    public function matche(Router $router, Request $request)
+    public function matche(Router $router, Request $request): array
     {
         $pathInfo = $request->getPathInfo();
         $pathInfo = trim($pathInfo, '/');

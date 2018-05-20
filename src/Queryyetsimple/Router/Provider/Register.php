@@ -100,13 +100,9 @@ class Register extends Provider
 
             $options = [];
             foreach ([
-                'default_app',
-                'default_controller',
-                'default_action',
-                'model',
                 'html_suffix',
-                'router_domain_top',
-                'make_subdomain_on'
+                'domain_top',
+                'subdomain_on'
             ] as $item) {
                 $options[$item] = $option->get($item);
             }
