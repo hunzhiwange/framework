@@ -16,10 +16,7 @@
  */
 namespace Leevel\Router;
 
-use Leevel\{
-    Http\IRequest,
-    Option\TClass
-};
+use LeevelHttp\IRequest;
 
 /**
  * url 生成
@@ -31,8 +28,6 @@ use Leevel\{
  */
 class Url implements IUrl
 {
-    use TClass;
-
     /**
      * HTTP 请求
      * 
