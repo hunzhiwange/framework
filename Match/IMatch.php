@@ -37,5 +37,5 @@ interface IMatch
      * @param \Leevel\Http\Request $request
      * @return array
      */
-    public function matche(Router $router, Request $request);
+    public function matche(Router $router, Request $request): $arrayName = array('' => , );;
 }

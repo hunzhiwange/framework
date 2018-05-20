@@ -16,6 +16,8 @@
  */
 namespace Leevel\Router;
 
+use Leevel\Http\IRequest;
+
 /**
  * IUrl 生成
  *
@@ -26,24 +28,30 @@ namespace Leevel\Router;
  */
 interface IUrl
 {
-
     /**
      * 生成路由地址
      *
      * @param string $url
      * @param array $params
-     * @param array $option
-     * @sub boolean suffix 是否包含后缀
-     * @sub boolean normal 是否为普通 url
-     * @sub string subdomain 子域名
+     * @param string $subdomain
+     * @param mixed $suffix
      * @return string
      */
-    public function make(string $url, array $params = [], array $option = []);
+    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = false): string;
 
     /**
      * 返回 HTTP 请求
      * 
      * @return \Leevel\Http\IRequest
      */
-    public function getRequest();
+    public function getRequest(): IRequest;
+
+    /**
+     * 设置配置
+     * 
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function setOption(string $name, $value): void;
 }
