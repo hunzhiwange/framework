@@ -92,11 +92,13 @@ class ThriftHandler implements ThriftIf
             throw new Exception('Rpc call is not set.');
         }
 
-        $matchedData = Router::parseNodeUrl($request->call);
+        $matchedData = Router::matchePath($request->call);
 
         $matchedData[IRouter::VARS] = $request->params ?: [];
 
-        $matchedData[IRouter::PARAMS] = $request->metas ?: [];
+        if ($request->metas) {
+            $matchedData[IRouter::PARAMS] = array_merge($matchedData[IRouter::PARAMS], $request->metas);
+        }
 
         Router::setMatchedData($matchedData);
 
