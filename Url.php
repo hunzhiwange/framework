@@ -16,7 +16,7 @@
  */
 namespace Leevel\Router;
 
-use LeevelHttp\IRequest;
+use Leevel\Http\IRequest;
 
 /**
  * url 生成
