@@ -46,7 +46,7 @@ class Cli
         $result = [];
 
         if ($node) {
-            $result = $router->parseNodeUrl($node);
+            $result = $router->matchePath($node);
         }
 
         if ($querys) {

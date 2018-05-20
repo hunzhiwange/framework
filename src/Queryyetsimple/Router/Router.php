@@ -411,54 +411,113 @@ class Router implements IRouter
     }
 
     /**
-     * 分析 url 数据
-     * like [:home/blog/index?arg1=1&arg2=2]
+     * 匹配路径
      *
-     * @param string $sUrl
+     * @param string $path
      * @return array
      */
-    public function parseNodeUrl($sUrl)
+    public function matchePath(string $path): array
     {
-        $arrData = ['params' => []];
+        $result = [];
 
-        if (strpos($sUrl, '?') >= 0) {
-            $tmp = explode('?', $sUrl);
-
-            // 额外参数
-            if (!empty($tmp[1])) {
-                foreach (explode('&', $tmp[1]) as $strQuery) {
-                    $strQuery = explode('=', $strQuery);
-                    $arrData[Router::PARAMS][$strQuery[0]] = $strQuery[1];
+        if (strpos($path, '?') >= 0) {
+            list($path, $query) = explode('?', $path);
+   
+            if ($query) {
+                foreach (explode('&', $query) as $item) {
+                    $item = explode('=', $item);
+                    $result[static::PARAMS][$item[0]] = $item[1];
                 }
             }
-        } else {
-            $tmp = [$sUrl];
-        }   
-
-        $urls = explode('/',$tmp[0]);
-
-        if (strpos($urls[0], ':') === 0) {
-            $arrData[static::APP] = substr(array_shift($urls), 1);
         }
 
-        if (count($urls) == 1) {
-            $result[Router::CONTROLLER] = array_pop($urls);
+        // 匹配基础路径
+        $basepath = '';
+        foreach ($this->getBasepaths() as $item) {
+            if (strpos($path, $item) === 0) {
+                $path = substr($path, strlen($item) + 1);
+                $basepath = $item;
+                break;
+            }
+        }
+
+        $paths = explode('/', $path);
+
+        // 应用
+        if ($paths && $this->findApp($paths[0])) {
+            $result[static::APP] = substr(array_shift($paths), 1);
+        }
+
+        list($paths, $params) = $this->normalizePathsAndParams($paths);
+
+        if (count($paths) == 1) {
+            $result[static::CONTROLLER] = array_pop($paths);
         } else { 
-            if ($urls) {
-                $arrData[Router::ACTION] = array_pop($urls);
+            if ($paths) {
+                $result[static::ACTION] = array_pop($paths);
             }
 
-            if ($urls) {
-                $arrData[Router::CONTROLLER] = array_pop($urls);
+            if ($paths) {
+                $result[static::CONTROLLER] = array_pop($paths);
             }
 
-            if ($urls) {
-                $arrData[Router::PREFIX] = implode('\\', $urls);
+            if ($paths) {
+                $result[static::PREFIX] = implode('\\', array_map(function($item) {
+                    if (strpos($item, '_') !== false) {
+                        $item = str_replace('_', ' ', $item);
+                        $item = str_replace(' ', '', ucwords($item));
+                    } else {
+                        $item = ucfirst($item);
+                    }
+
+                    return $item;
+                },$paths));
             }
         }
 
+        $result[static::PARAMS] = array_merge($result[static::PARAMS] ?? [], $params);
 
-        return $arrData;
+        $result[static::PARAMS][static::BASEPATH] = $basepath ?: null;
+
+        return $result;
+    }
+
+    /**
+     * 是否找到 app
+     * 
+     * @param string $app
+     * @return boolean
+     */
+    protected function findApp($app)
+    {
+        return strpos($app, ':') === 0;
+    }
+
+    /**
+     * 解析路径和参数
+     * 
+     * @param array $data
+     * @return array
+     */
+    protected function normalizePathsAndParams(array $data): array
+    {
+        $paths = $params = [];
+
+        $k = 0;
+
+        foreach ($data as $item) {
+            if (is_numeric($item)) {
+                $params['_param' . $k] = $item;
+                $k++;
+            } else {
+                $paths[] = $item;
+            }
+        }
+
+        return [
+            $paths,
+            $params
+        ];
     }
 
     /**
@@ -477,7 +536,7 @@ class Router implements IRouter
 
         if ($this->request->isCli()) {
             $this->resolveMatchedData($this->normalizeMatchedData('Cli'));
-            
+
             return $this->tryRouterBind();
         }
 
