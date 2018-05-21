@@ -38,7 +38,7 @@ class LoadOption
      * @param \Leevel\Kernel\IProject $project
      * @return void
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         if ($project->isCachedOption()) {
             $data = (array) include $project->pathCacheOptionFile();
@@ -63,7 +63,7 @@ class LoadOption
      * @param array $env
      * @return void
      */
-    protected function setEnvs(array $env)
+    protected function setEnvs(array $env): void
     {
         foreach ($env as $name => $value) {
             $this->setEnvVar($name, $value);
@@ -77,7 +77,7 @@ class LoadOption
      * @param string|null $value
      * @return void
      */
-    protected function setEnvVar($name, $value = null)
+    protected function setEnvVar($name, $value = null): void
     {
         if (is_bool($value)) {
             putenv($name . '=' . ($value ? '(true)' : '(false)'));
@@ -97,7 +97,7 @@ class LoadOption
      * @param \Leevel\Option\Option $option
      * @return void
      */
-    protected function initialization(Option $option)
+    protected function initialization(Option $option): void
     {
         mb_internal_encoding('UTF-8');
 

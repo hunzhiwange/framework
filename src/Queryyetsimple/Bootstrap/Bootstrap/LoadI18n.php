@@ -19,7 +19,6 @@ namespace Leevel\Bootstrap\Bootstrap;
 use Exception;
 use Leevel\I18n\I18n;
 use Leevel\I18n\Load;
-use Leevel\Support\Facade;
 use Leevel\Kernel\IProject;
 
 /**
@@ -39,7 +38,7 @@ class LoadI18n
      * @param \Leevel\Kernel\IProject $project
      * @return void
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project): void
     {
         $i18nDefault = $project['option']['i18n\default'];
 
