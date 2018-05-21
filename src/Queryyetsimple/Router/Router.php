@@ -420,7 +420,7 @@ class Router implements IRouter
     {
         $result = [];
 
-        if (strpos($path, '?') >= 0) {
+        if (strpos($path, '?') !== false) {
             list($path, $query) = explode('?', $path);
    
             if ($query) {
