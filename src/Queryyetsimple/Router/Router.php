@@ -248,6 +248,7 @@ class Router implements IRouter
     public function setControllerDir(string $controllerDir)
     {
         $controllerDir = str_replace('/', '\\', $controllerDir);
+        
         $this->controllerDir = $controllerDir;
     }
 
@@ -441,6 +442,7 @@ class Router implements IRouter
             }
         }
 
+        $path = trim($path, '/');
         $paths = explode('/', $path);
 
         // 应用
@@ -584,14 +586,14 @@ class Router implements IRouter
     /**
      * 解析路由匹配数据
      *
-     * @param string $match 
+     * @param string $matche
      * @return array
      */
-    protected function normalizeMatchedData(string $match): array
+    protected function normalizeMatchedData(string $matche): array
     {
-        $match = 'Leevel\Router\Match\\' . $match;
+        $matche = 'Leevel\Router\Match\\' . $matche;
 
-        return  (new $match)->matche($this, $this->request);
+        return (new $matche)->matche($this, $this->request);
     }
 
     /**
@@ -757,7 +759,7 @@ class Router implements IRouter
         $action = $this->matchedAction();
 
         // 尝试直接读取方法控制器类
-        $controllerClass = $app . '\\' . $this->parseControllerDir() . '\\' . $controller . '\\' . $action;
+        $controllerClass = $app . '\\' . $this->parseControllerDir() . '\\' . $controller . '\\' . ucfirst($action);
 
         if (class_exists($controllerClass)) {
             $controller = $this->container->make($controllerClass);
