@@ -577,7 +577,7 @@ class Project extends Container implements IProject
     /**
      * 是否为开发环境
      *
-     * @return string
+     * @return boolean
      */
     public function development()
     {
@@ -765,16 +765,16 @@ class Project extends Container implements IProject
      * @param string $provider
      * @return void
      */
-    protected function registerDeferredProvider($provider)
+    protected function registerDeferredProvider(string $provider)
     {
         if (! isset($this->deferredProviders[$provider])) {
             return;
         }
 
-        $provider = $this->register($this->deferredProviders[$provider]);
+        $providerInstance = $this->register($this->deferredProviders[$provider]);
 
-        if (method_exists($provider, 'bootstrap')) {
-            $this->callProviderBootstrap($provider);
+        if (method_exists($providerInstance, 'bootstrap')) {
+            $this->callProviderBootstrap($providerInstance);
         }
 
         unset($this->deferredProviders[$provider]);
