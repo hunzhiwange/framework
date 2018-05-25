@@ -16,7 +16,7 @@
  */
 namespace Leevel\Log;
 
-use Psr\Log\LoggerInterface;
+//use Psr\Log\LoggerInterface;
 
 /**
  * ILog 接口
@@ -26,7 +26,7 @@ use Psr\Log\LoggerInterface;
  * @since 2017.04.11
  * @version 1.0
  */
-interface ILog extends LoggerInterface
+interface ILog /* extends LoggerInterface*/
 {
 
     /**
