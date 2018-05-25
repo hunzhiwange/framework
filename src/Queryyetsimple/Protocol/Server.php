@@ -222,7 +222,7 @@ class Server implements IServer
 
         $arrPid = explode("\n", file_get_contents($strPidFile));
 
-        $arrBind = $this->portBind($this->getOption('port'));
+        $arrBind = $this->portBind(intval($this->getOption('port')));
         if (empty($arrBind) || !isset($arrBind[$arrPid[0]])) {
             $this->error(sprintf('Specified port occupancy process does not exist,port:%d, pid:%d.', $this->getOption('port'), $arrPid[0]), true);
             return;
@@ -329,7 +329,7 @@ class Server implements IServer
 
         $arrPid = explode("\n", file_get_contents($strPidFile));
 
-        $arrBind = $this->portBind($this->getOption('port'));
+        $arrBind = $this->portBind(intval($this->getOption('port')));
         if (empty($arrBind) || !isset($arrBind[$arrPid[0]])) {
             $this->error(sprintf('Specified port occupancy process does not exist,port:%d, pid:%d.', $this->getOption('port'), $arrPid[0]), true);
             return;
