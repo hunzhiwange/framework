@@ -29,7 +29,7 @@ use Leevel\Console\Cli as ConsoleCli;
  * @since 2018.02.15
  * @version 1.0
  */
-class Cli
+class Cli implements IMatch
 {
 
     /**

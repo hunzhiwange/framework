@@ -28,7 +28,7 @@ use Leevel\Router\IRouter;
  * @since 2018.02.15
  * @version 1.0
  */
-class PathInfo
+class PathInfo implements IMatch
 {
 
     /**
