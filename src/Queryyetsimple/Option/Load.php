@@ -88,12 +88,13 @@ class Load
         // 环境变量
         $data['app']['_env'] = $env;
 
+        // 延迟服务提供者
+        $composer['providers'] = array_diff($composer['providers'], $composer['ignores']);
+        $providers = $this->loadDeferredProviderData($composer['providers']);
+        $data['app']['_deferred_providers'] = $providers;
+
         // composer 配置
         $data['app']['_composer'] = $composer;
-
-        // 延迟服务提供者
-        $providers = $this->loadDeferredProviderData(array_diff($composer['providers'], $composer['ignores']));
-        $data['app']['_deferred_poviders'] = $providers;
 
         return $this->loaded = $data;
     }
@@ -123,18 +124,20 @@ class Load
      * @param array $providers
      * @return array
      */
-    protected function loadDeferredProviderData(array $providers): array
+    protected function loadDeferredProviderData(array &$providers): array
     {
        $deferredProviders = $deferredAlias = [];
 
-       foreach ($providers as $provider) {
+       foreach ($providers as $k => $provider) {
             if (! class_exists($provider)) {
+                unset($providers[$key]);
                 continue;
             }
 
             if ($provider::isDeferred()) {
-                $providers = $provider::providers();
-                foreach ($providers as $key => $alias) {
+                $providerAlias = $provider::providers();
+
+                foreach ($providerAlias as $key => $alias) {
                     if (is_int($key)) {
                         $key = $alias;
                     }
@@ -142,9 +145,13 @@ class Load
                     $deferredProviders[$key] = $provider;
                 }
 
-                $deferredAlias[$provider] = $providers;
+                $deferredAlias[$provider] = $providerAlias;
+
+                unset($providers[$k]);
             }
         }
+
+        $providers = array_values($providers);
 
         return [
             $deferredProviders,
@@ -183,7 +190,7 @@ class Load
                 $findApp = true;
             }
 
-            $data[$type] = (array) include $file;
+            $data[$type] = (array)include $file;
         }
 
 
