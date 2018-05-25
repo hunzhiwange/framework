@@ -118,6 +118,20 @@ if (! function_exists('dd')) {
     }
 }
 
+if (! function_exists('dump')) {
+    /**
+     * 调试一个变量
+     *
+     * @param mixed $var
+     * @param boolean $simple
+     * @return mixed
+     */
+    function dump($var, $simple = false)
+    {
+        return dd($var, $simple);
+    }
+}
+
 if (! function_exists('env')) {
     /**
      * 取得项目的环境变量.支持 boolean, empty 和 null.
