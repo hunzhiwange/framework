@@ -116,11 +116,18 @@ class Project extends Container implements IProject
     protected $deferredProviders = [];
 
     /**
-     * 服务提供者 bootstrap
+     * 服务提供者引导
      *
      * @var array
      */
     protected $providerBootstraps = [];
+
+    /**
+     * 是否已经初始化引导
+     *
+     * @var bool
+     */
+    protected $isBootstrap = false;  
 
     /**
      * 构造函数
@@ -544,6 +551,7 @@ class Project extends Container implements IProject
         }
 
         $namespaces[0] = $prefix[$namespaces[0] . '\\'][0];
+        
         return implode('/', $namespaces);
     }
 
@@ -656,6 +664,16 @@ class Project extends Container implements IProject
     }
 
     /**
+     * 是否已经初始化引导
+     * 
+     * @return bool
+     */
+    public function isBootstrap(): bool
+    {
+        return $this->isBootstrap;
+    }
+
+    /**
      * 框架基础提供者 register
      *
      * @return $this
@@ -682,7 +700,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 执行框架基础提供者 bootstrap
+     * 执行框架基础提供者引导
      *
      * @return $this
      */
@@ -691,6 +709,8 @@ class Project extends Container implements IProject
         foreach ($this->providerBootstraps as $item) {
             $this->callProviderBootstrap($item);
         }
+
+        $this->isBootstrap = true;
 
         return $this;
     }
@@ -709,6 +729,10 @@ class Project extends Container implements IProject
 
         if (method_exists($provider, 'register')) {
             $provider->register();
+        }
+
+        if ($this->isBootstrap()) {
+            $this->callProviderBootstrap($provider);
         }
 
         return $provider;
@@ -773,9 +797,7 @@ class Project extends Container implements IProject
 
         $providerInstance = $this->register($this->deferredProviders[$provider]);
 
-        if (method_exists($providerInstance, 'bootstrap')) {
-            $this->callProviderBootstrap($providerInstance);
-        }
+        $this->callProviderBootstrap($providerInstance);
 
         unset($this->deferredProviders[$provider]);
     }
