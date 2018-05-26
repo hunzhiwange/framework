@@ -260,8 +260,10 @@ class Response implements IResponse
         // cookie
         $cookie = call_user_func(static::$cookieResolver);
 
-        foreach ($cookie->all() as $item) {
-            call_user_func_array('setcookie', $item);
+        if ($cookie) {
+            foreach ($cookie->all() as $item) {
+                call_user_func_array('setcookie', $item);
+            }
         }
 
         return $this;

@@ -351,6 +351,13 @@ interface IProject extends IContainer
     public function bootstrap(array $bootstraps);
 
     /**
+     * 是否已经初始化引导
+     * 
+     * @return bool
+     */
+    public function isBootstrap(): bool;
+
+    /**
      * 框架基础提供者 register
      *
      * @return $this
