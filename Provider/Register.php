@@ -100,6 +100,7 @@ class Register extends Provider
 
             $options = [];
             foreach ([
+                "with_suffix",
                 'html_suffix',
                 'domain_top',
                 'subdomain_on'
