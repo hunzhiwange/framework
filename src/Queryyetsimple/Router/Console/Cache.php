@@ -90,7 +90,7 @@ class Cache extends Command
 
             if ($result) {
                 unlink($cachePath);
-                $this->warn('Please execute the command once more.');
+                $this->warn('Please execute the command once again.');
             }
 
             return true;
