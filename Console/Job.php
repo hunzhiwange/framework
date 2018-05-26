@@ -45,14 +45,14 @@ class Job extends Command
      *
      * @var string
      */
-    protected $strName = 'queue:job';
+    protected $name = 'queue:job';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Add a new job on a queue';
+    protected $description = 'Add a new job on a queue';
 
     /**
      * 响应命令
@@ -63,42 +63,56 @@ class Job extends Command
     {
         $this->line($this->time('Adding job, please wating...'));
 
-        $booStatus = false;
+        $status = false;
+
         try {
             // 任务名字
-            $arrPayload = [
+            $payload = [
                 'job' => $this->argument('job')
             ];
 
             // 附加参数
-            $arrPayload['data'] = $this->option('data') ?  : [];
-            $arrPayload['attempts'] = 1;
+            $payload['data'] = $this->option('data') ?: [];
+            $payload['attempts'] = 1;
 
             // 注册处理的队列
-            $strConnect = 'Leevel\Queue\queues\\' . $this->argument('connect');
-            if (! class_exists($strConnect)) {
-                $this->error($this->time(sprintf('Connect %s not exits.', $strConnect)));
+            $connect = 'Leevel\Queue\queues\\' . $this->argument('connect');
+
+            if (! class_exists($connect)) {
+                $this->error($this->time(sprintf('Connect %s not exits.', $connect)));
                 return;
             }
+
             call_user_func_array([
-                $strConnect,
+                $connect,
                 'setQueue'
             ], [
                 $this->option('queue')
             ]);
 
             // 添加任务
-            $objQueue = Base::getQueue($this->argument('connect'));
-            $booStatus = Base::addJob($objQueue, $arrPayload);
-        } catch (Exception $oE) {
-            $this->error($this->time(sprintf("Job add error: %s\n", $oE->getMessage())));
-            throw $oE;
+            $queue = Base::getQueue($this->argument('connect'));
+            $status = Base::addJob($queue, $payload);
+        } catch (Exception $e) {
+            $this->error(
+                $this->time(sprintf("Job add error: %s\n", $e->getMessage()))
+            );
+
+            throw $e;
         }
 
-        if ($booStatus) {
-            $this->info($this->time(sprintf("%s add succeed.", $this->option('queue') . ':' . $this->argument('job'))));
+        if ($status) {
+            $this->info(
+                $this->time(
+                    sprintf("%s add succeed.", $this->option('queue') . ':' . $this->argument('job'))
+                )
+            );
         } else {
-            $this->error($this->time(sprintf("%s add failed.", $this->option('queue') . ':' . $this->argument('job'))));
+            $this->error(
+                $this->time(
+                    sprintf("%s add failed.", $this->option('queue') . ':' . $this->argument('job'))
+                )
+            );
         }
     }
 

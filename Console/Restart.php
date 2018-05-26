@@ -34,14 +34,14 @@ class Restart extends Command
      *
      * @var string
      */
-    protected $strName = 'queue:restart';
+    protected $name = 'queue:restart';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Restart queue work after done it current job';
+    protected $description = 'Restart queue work after done it current job';
 
     /**
      * 响应命令
@@ -53,6 +53,7 @@ class Restart extends Command
         cache()->set('queryphp.queue.restart', time(), [
             'expire' => 0
         ]);
+
         $this->info('Send queue restart signal.');
     }
 }
