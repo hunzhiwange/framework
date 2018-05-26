@@ -35,6 +35,13 @@ use Leevel\Kernel\IKernel;
  */
 class Register extends Provider
 {
+
+    /**
+     * 是否延迟载入
+     *
+     * @var boolean
+     */
+    public static $defer = true;
     
     /**
      * 注册服务
