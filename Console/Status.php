@@ -37,6 +37,7 @@ class Status extends PhinxStatus
     protected function configure()
     {
         parent::configure();
+        
         $this->setName('migrate:status');
     }
 }

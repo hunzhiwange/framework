@@ -43,6 +43,7 @@ class Init extends PhinxInit
     protected function configure()
     {
         parent::configure();
+        
         $this->setName('migrate:init');
     }
 

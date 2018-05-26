@@ -37,6 +37,7 @@ class Seedcreate extends PhinxSeedCreate
     protected function configure()
     {
         parent::configure();
+        
         $this->setName('migrate:seedcreate');
     }
 }

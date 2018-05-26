@@ -37,6 +37,7 @@ class Create extends PhinxCreate
     protected function configure()
     {
         parent::configure();
+        
         $this->setName('migrate:create');
     }
 }
