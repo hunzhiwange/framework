@@ -38,14 +38,14 @@ class Clear extends Command
      *
      * @var string
      */
-    protected $strName = 'router:clear';
+    protected $name = 'router:clear';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Clear cache of router';
+    protected $description = 'Clear cache of router';
 
     /**
      * 响应命令

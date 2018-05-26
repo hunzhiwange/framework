@@ -40,14 +40,14 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $strName = 'router:cache';
+    protected $name = 'router:cache';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Swagger as the router';
+    protected $description = 'Swagger as the router';
 
     /**
      * 响应命令
