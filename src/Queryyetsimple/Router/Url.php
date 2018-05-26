@@ -218,4 +218,3 @@ class Url implements IUrl
         return $enter . $url;
     }
 }
-
