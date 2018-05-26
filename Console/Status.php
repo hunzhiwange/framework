@@ -39,14 +39,14 @@ class Status extends Command
      *
      * @var string
      */
-    protected $strName = 'swoole:status';
+    protected $name = 'swoole:status';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Status of swoole service process';
+    protected $description = 'Status of swoole service process';
 
     /**
      * 响应命令
@@ -57,10 +57,10 @@ class Status extends Command
     {
         $this->warn($this->getVersion());
         
-        $objServer = app('swoole.' . $this->argument('type') . '.server');
-        $objServer->setCommand($this);
-        $objServer->options($this->parseOption());
-        $objServer->statusServer();
+        $server = app('swoole.' . $this->argument('type') . '.server');
+        $server->setCommand($this);
+        $server->options($this->parseOption());
+        $server->statusServer();
     }
 
     /**
@@ -70,15 +70,15 @@ class Status extends Command
      */
     protected function parseOption():array
     {
-        $arrOption = [];
+        $option = [];
 
-        foreach(['host', 'port', 'pid_path'] as $sKey) {
-            if(! is_null($this->option($sKey))) {
-                $arrOption[$sKey] = $this->option($sKey);
+        foreach(['host', 'port', 'pid_path'] as $key) {
+            if(! is_null($this->option($key))) {
+                $option[$key] = $this->option($key);
             }
         }
 
-        return $arrOption;
+        return $option;
     }
 
     /**
@@ -88,7 +88,10 @@ class Status extends Command
      */
     protected function getVersion()
     {
-        return 'The status of Swoole ' . ucfirst($this->argument('type')) . ' Server Version ' . app()->version() . PHP_EOL;
+        return 'The status of Swoole ' .
+            ucfirst($this->argument('type')) .
+            ' Server Version ' . app()->version() .
+            PHP_EOL;
     }
 
     /**

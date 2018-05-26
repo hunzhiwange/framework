@@ -39,14 +39,14 @@ class Task extends Command
      *
      * @var string
      */
-    protected $strName = 'swoole:task';
+    protected $name = 'swoole:task';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Start a task on swoole service process';
+    protected $description = 'Start a task on swoole service process';
 
     /**
      * 响应命令
@@ -57,10 +57,10 @@ class Task extends Command
     {
         $this->warn($this->getVersion());
         
-        $objServer = app('swoole.' . $this->argument('type') . '.server');
-        $objServer->setCommand($this);
-        $objServer->options($this->parseOption());
-        $objServer->taskServer();
+        $server = app('swoole.' . $this->argument('type') . '.server');
+        $server->setCommand($this);
+        $server->options($this->parseOption());
+        $server->taskServer();
     }
 
     /**
@@ -70,15 +70,15 @@ class Task extends Command
      */
     protected function parseOption():array
     {
-        $arrOption = [];
+        $option = [];
 
-        foreach(['host', 'port', 'pid_path'] as $sKey) {
-            if(! is_null($this->option($sKey))) {
-                $arrOption[$sKey] = $this->option($sKey);
+        foreach(['host', 'port', 'pid_path'] as $key) {
+            if(! is_null($this->option($key))) {
+                $option[$key] = $this->option($key);
             }
         }
 
-        return $arrOption;
+        return $option;
     }
 
     /**
@@ -88,7 +88,10 @@ class Task extends Command
      */
     protected function getVersion()
     {
-        return 'The Stop of Swoole ' . ucfirst($this->argument('type')) . ' Server Version ' . app()->version() . PHP_EOL;
+        return 'The Stop of Swoole ' .
+            ucfirst($this->argument('type')) .
+            ' Server Version ' . app()->version() .
+            PHP_EOL;
     }
 
     /**
