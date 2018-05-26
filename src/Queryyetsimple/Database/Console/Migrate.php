@@ -37,6 +37,7 @@ class Migrate extends PhinxMigrate
     protected function configure()
     {
         parent::configure();
+        
         $this->setName('migrate:migrate');
     }
 }

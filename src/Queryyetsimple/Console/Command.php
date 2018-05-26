@@ -57,28 +57,28 @@ abstract class Command extends SymfonyCommand
      *
      * @var string
      */
-    protected $strName;
+    protected $name;
     
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription;
+    protected $description;
     
     /**
      * 命令帮助
      *
      * @var string
      */
-    protected $strHelp = '';
+    protected $help;
     
     /**
      * 输出映射
      *
      * @var array
      */
-    protected static $arrVerbosityMap = [
+    protected static $verbosityMap = [
         'v' => OutputInterface::VERBOSITY_VERBOSE, 
         'vv' => OutputInterface::VERBOSITY_VERY_VERBOSE, 
         'vvv' => OutputInterface::VERBOSITY_DEBUG, 
@@ -91,21 +91,21 @@ abstract class Command extends SymfonyCommand
      *
      * @var int
      */
-    protected $intVerbosity = OutputInterface::VERBOSITY_NORMAL;
+    protected $verbosity = OutputInterface::VERBOSITY_NORMAL;
     
     /**
      * 输入接口
      *
      * @var object
      */
-    protected $objInput;
+    protected $input;
     
     /**
      * 输入接口
      *
      * @var object
      */
-    protected $objOutput;
+    protected $output;
     
     /**
      * 构造函数
@@ -114,24 +114,24 @@ abstract class Command extends SymfonyCommand
      */
     public function __construct()
     {
-        parent::__construct($this->getNames());
+        parent::__construct($this->name);
         
-        $this->setDescription($this->getDescriptions());
-        $this->setHelp($this->getHelps());
+        $this->setDescription($this->description);
+        $this->setHelp($this->help);
         $this->specifyParameters();
     }
     
     /**
      * 运行命令
      *
-     * @param \Symfony\Component\Console\Input\InputInterface $objInput
-     * @param \Symfony\Component\Console\Output\OutputInterface $objOutput
+     * @param \Symfony\Component\Console\Input\InputInterface $input
+     * @param \Symfony\Component\Console\Output\OutputInterface $output
      * @return int
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $this->objInput = $input;
-        $this->objOutput = new SymfonyStyle($input, $output);
+        $this->input = $input;
+        $this->output = new SymfonyStyle($input, $output);
 
         return parent::run($input, $output);
     }
@@ -141,7 +141,7 @@ abstract class Command extends SymfonyCommand
      *
      * @param object $input
      * @param object $output
-     * @return void
+     * @return mixed
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -154,14 +154,17 @@ abstract class Command extends SymfonyCommand
     /**
      * 调用其他命令
      *
-     * @param string $strCommand
-     * @param array $arrArguments
+     * @param string $command
+     * @param array $arguments
      * @return int
      */
-    public function call($strCommand, array $arrArguments = [])
+    public function call($command, array $arguments = [])
     {
-        $arrArguments['command'] = $strCommand;
-        return $this->container->make('command.' . $strCommand)->run(new ArrayInput($arrArguments), $this->objOutput);
+        $arguments['command'] = $command;
+
+        return $this->getApplication()->find($command)->run(
+            new ArrayInput($arguments), $this->output
+        );
     }
     
     /**
@@ -173,10 +176,10 @@ abstract class Command extends SymfonyCommand
     public function argument($key = null)
     {
         if (is_null($key)) {
-            return $this->objInput->getArguments();
+            return $this->input->getArguments();
         }
 
-        return $this->objInput->getArgument($key);
+        return $this->input->getArgument($key);
     }
     
     /**
@@ -188,183 +191,195 @@ abstract class Command extends SymfonyCommand
     public function option($key = null)
     {
         if (is_null($key)) {
-            return $this->objInput->getOptions();
+            return $this->input->getOptions();
         }
 
-        return $this->objInput->getOption($key);
+        return $this->input->getOption($key);
     }
     
     /**
      * 确认用户的问题
      *
-     * @param string $strQuestion
-     * @param bool $booDefault
+     * @param string $question
+     * @param bool $defaults
      * @return bool
      */
-    public function confirm($strQuestion, $booDefault = false)
+    public function confirm($question, $defaults = false)
     {
-        return $this->objOutput->confirm($strQuestion, $booDefault);
+        return $this->output->confirm($question, $defaults);
     }
     
     /**
      * 提示用户输入
      *
-     * @param string $strQuestion
-     * @param string $booDefault
+     * @param string $question
+     * @param string $defaults
      * @return string
      */
-    public function ask($strQuestion, $booDefault = null)
+    public function ask($question, $defaults = null)
     {
-        return $this->objOutput->ask($strQuestion, $booDefault);
+        return $this->output->ask($question, $defaults);
     }
     
     /**
      * 输出一个表格文本
      *
-     * @param array $arrHeaders
-     * @param array $arrRows
-     * @param string $strStyle
+     * @param array $headers
+     * @param array $rows
+     * @param string $style
      * @return void
      */
-    public function table(array $arrHeaders, array $arrRows, $strStyle = 'default')
+    public function table(array $headers, array $rows, $style = 'default')
     {
-        $objTable = new Table($this->objOutput);
-        $objTable->setHeaders($arrHeaders)->setRows($arrRows)->setStyle($strStyle)->render();
+        (new Table($this->output))->
+
+        setHeaders($headers)->
+
+        setRows($rows)->
+
+        setStyle($style)->
+
+        render();
     }
     
     /**
      * 输出一个一般信息
      *
-     * @param string $strMessage
-     * @param null|int|string $intVerbosity
+     * @param string $message
+     * @param null|int|string $verbosity
      * @return void
      */
-    public function info($strMessage, $intVerbosity = null)
+    public function info($message, $verbosity = null)
     {
-        $this->line($strMessage, 'info', $intVerbosity);
+        $this->line($message, 'info', $verbosity);
     }
     
     /**
      * 返回一个带有时间的消息
      *
-     * @param string $strMessage
-     * @param string $strFormat
+     * @param string $message
+     * @param string $format
      * @return string
      */
-    public function time($strMessage, $strFormat = 'H:i:s')
+    public function time($message, $format = 'H:i:s')
     {
-        return ($strFormat ? sprintf('[%s]', date($strFormat)) : '') . $strMessage;
+        return ($format ? sprintf('[%s]', date($format)) : '') . $message;
     }
     
     /**
      * 输出一个注释信息
      *
-     * @param string $strMessage
-     * @param null|int|string $intVerbosity
+     * @param string $message
+     * @param null|int|string $verbosity
      * @return void
      */
-    public function comment($strMessage, $intVerbosity = null)
+    public function comment($message, $verbosity = null)
     {
-        $this->line($strMessage, 'comment', $intVerbosity);
+        $this->line($message, 'comment', $verbosity);
     }
     
     /**
      * 输出一个问题信息
      *
-     * @param string $strMessage
-     * @param null|int|string $intVerbosity
+     * @param string $message
+     * @param null|int|string $verbosity
      * @return void
      */
-    public function question($strMessage, $intVerbosity = null)
+    public function question($message, $verbosity = null)
     {
-        $this->line($strMessage, 'question', $intVerbosity);
+        $this->line($message, 'question', $verbosity);
     }
     
     /**
      * 提示用户输入根据返回结果自动完成一些功能
      *
-     * @param string $strQuestion
-     * @param array $arrChoices
-     * @param string $strDefault
+     * @param string $question
+     * @param array $choices
+     * @param string $defaults
      * @return string
      */
-    public function askWithCompletion($strQuestion, array $arrChoices, $strDefault = null)
+    public function askWithCompletion($question, array $choices, $defaults = null)
     {
-        $strQuestion = new Question($strQuestion, $strDefault);
-        $strQuestion->setAutocompleterValues($arrChoices);
-        return $this->objOutput->askQuestion($strQuestion);
+        $question = new Question($question, $defaults);
+        $question->setAutocompleterValues($choices);
+
+        return $this->output->askQuestion($question);
     }
     
     /**
      * 提示用户输入但是控制台隐藏答案
      *
-     * @param string $strQuestion
-     * @param bool $booFallback
+     * @param string $question
+     * @param bool $fallback
      * @return string
      */
-    public function secret($strQuestion, $booFallback = true)
+    public function secret($question, $fallback = true)
     {
-        $strQuestion = new Question($strQuestion);
-        $strQuestion->setHidden(true)->setHiddenFallback($booFallback);
-        return $this->objOutput->askQuestion($strQuestion);
+        $question = new Question($question);
+        $question->setHidden(true)->setHiddenFallback($fallback);
+
+        return $this->output->askQuestion($question);
     }
     
     /**
      * 给用户一个问题组选择
      *
-     * @param string $strQuestion
-     * @param array $arrChoices
-     * @param string $strDefault
-     * @param mixed $mixAttempts
-     * @param bool $booMultiple
+     * @param string $question
+     * @param array $choices
+     * @param string $defaults
+     * @param mixed $attempts
+     * @param bool $multiple
      * @return string
      */
-    public function choice($strQuestion, array $arrChoices, $strDefault = null, $mixAttempts = null, $booMultiple = null)
+    public function choice($question, array $choices, $defaults = null, $attempts = null, $multiple = null)
     {
-        $strQuestion = new ChoiceQuestion($strQuestion, $arrChoices, $strDefault);
-        $strQuestion->setMaxAttempts($mixAttempts)->setMultiselect($booMultiple);
-        return $this->objOutput->askQuestion($strQuestion);
+        $question = new ChoiceQuestion($question, $choices, $defaults);
+        $question->setMaxAttempts($attempts)->setMultiselect($multiple);
+
+        return $this->output->askQuestion($question);
     }
     
     /**
      * 输出一个错误信息
      *
-     * @param string $strMessage
-     * @param null|int|string $intVerbosity
+     * @param string $message
+     * @param null|int|string $verbosity
      * @return void
      */
-    public function error($strMessage, $intVerbosity = null)
+    public function error($message, $verbosity = null)
     {
-        $this->line($strMessage, 'error', $intVerbosity);
+        $this->line($message, 'error', $verbosity);
     }
     
     /**
      * 输出一个警告信息
      *
-     * @param string $strMessage
-     * @param null|int|string $intVerbosity
+     * @param string $message
+     * @param null|int|string $verbosity
      * @return void
      */
-    public function warn($strMessage, $intVerbosity = null)
+    public function warn($message, $verbosity = null)
     {
-        if (! $this->objOutput->getFormatter()->hasStyle('warning')) {
-            $this->objOutput->getFormatter()->setStyle('warning', new OutputFormatterStyle('yellow'));
+        if (! $this->output->getFormatter()->hasStyle('warning')) {
+            $this->output->getFormatter()->setStyle('warning', new OutputFormatterStyle('yellow'));
         }
-        $this->line($strMessage, 'warning', $intVerbosity);
+
+        $this->line($message, 'warning', $verbosity);
     }
     
     /**
      * 输出一条独立的信息
      *
-     * @param string $strMessage
-     * @param string $strStyle
-     * @param null|int|string $intVerbosity
+     * @param string $message
+     * @param string $style
+     * @param null|int|string $verbosity
      * @return void
      */
-    public function line($strMessage, $strStyle = null, $intVerbosity = null)
+    public function line($message, $style = null, $verbosity = null)
     {
-        $strMessage = $strStyle ? "<{$strStyle}>{$strMessage}</{$strStyle}>" : $strMessage;
-        $this->objOutput->writeln($strMessage, $this->parseVerbosity($intVerbosity));
+        $message = $style ? "<{$style}>{$message}</{$style}>" : $message;
+
+        $this->output->writeln($message, $this->parseVerbosity($verbosity));
     }
     
     /**
@@ -374,7 +389,7 @@ abstract class Command extends SymfonyCommand
      */
     public function getOutput()
     {
-        return $this->objOutput;
+        return $this->output;
     }
     
     /**
@@ -421,12 +436,12 @@ abstract class Command extends SymfonyCommand
     /**
      * 设置默认输出级别
      *
-     * @param string|int $mixLevel
+     * @param string|int $level
      * @return void
      */
-    protected function setVerbosity($mixLevel)
+    protected function setVerbosity($level)
     {
-        $this->intVerbosity = $this->parseVerbosity($mixLevel);
+        $this->verbosity = $this->parseVerbosity($level);
     }
     
     /**
@@ -436,57 +451,23 @@ abstract class Command extends SymfonyCommand
      */
     protected function specifyParameters()
     {
-        foreach ($this->getArguments() as $arrArgument) {
-            $this->{'addArgument'}(...$arrArgument)
-            
-            ;
+        foreach ($this->getArguments() as $argument) {
+            $this->{'addArgument'}(...$argument);
         }
         
-        foreach ($this->getOptions() as $arrOption) {
-            $this->{'addOption'}(...$arrOption)
-            
-            ;
+        foreach ($this->getOptions() as $option) {
+            $this->{'addOption'}(...$option);
         }
     }
     
     /**
      * 获取输入信息级别
      *
-     * @param string|int $mixLevel
+     * @param string|int $level
      * @return int
      */
-    protected function parseVerbosity($mixLevel = null)
+    protected function parseVerbosity($level = null)
     {
-        return static::$arrVerbosityMap[$mixLevel] ?? (! is_int($mixLevel) ? $this->intVerbosity : $mixLevel);
-    }
-    
-    /**
-     * 返回命令名字
-     *
-     * @return string
-     */
-    protected function getNames()
-    {
-        return $this->strName;
-    }
-    
-    /**
-     * 返回命令描述
-     *
-     * @return string
-     */
-    protected function getDescriptions()
-    {
-        return $this->strDescription;
-    }
-    
-    /**
-     * 返回命令帮助
-     *
-     * @return string
-     */
-    protected function getHelps()
-    {
-        return $this->strHelp;
+        return static::$verbosityMap[$level] ?? (! is_int($level) ? $this->verbosity : $level);
     }
 }

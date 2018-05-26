@@ -37,6 +37,7 @@ class Seedrun extends PhinxSeedRun
     protected function configure()
     {
         parent::configure();
+        
         $this->setName('migrate:seedrun');
     }
 }

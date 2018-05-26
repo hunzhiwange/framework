@@ -39,21 +39,21 @@ class Controller extends Make
      *
      * @var string
      */
-    protected $strName = 'make:controller';
+    protected $name = 'make:controller';
 
     /**
      * 命令描述
      *
      * @var string
      */
-    protected $strDescription = 'Create a new controller';
+    protected $description = 'Create a new controller';
 
     /**
      * 命令帮助
      *
      * @var string
      */
-    protected $strHelp = <<<EOF
+    protected $help = <<<EOF
 The <info>%command.name%</info> command to make controller with project namespace:
 
   <info>php %command.full_name% name action</info>
@@ -78,7 +78,10 @@ EOF;
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(__DIR__ . '/template/' . ($this->option('extend') ? 'controller' : 'controller_without_extend'));
+        $this->setTemplatePath(
+            __DIR__ . '/template/' .
+            ($this->option('extend') ? 'controller' : 'controller_without_extend')
+        );
 
         $controllerNamespace = Router::getControllerDir();
 
@@ -87,7 +90,11 @@ EOF;
         $this->setCustomReplaceKeyValue('action', $this->normalizeAction($this->argument('action')));
 
         // 保存路径
-        $this->setSaveFilePath($this->getNamespacePath() . str_replace('\\', '/', $controllerNamespace) . '/' . ucfirst($this->argument('name')) . '.php');
+        $this->setSaveFilePath(
+            $this->getNamespacePath() .
+            str_replace('\\', '/', $controllerNamespace) . '/' .
+            ucfirst($this->argument('name')) . '.php'
+        );
 
         // 设置类型
         $this->setMakeType('controller');

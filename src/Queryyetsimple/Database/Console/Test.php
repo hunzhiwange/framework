@@ -37,6 +37,7 @@ class Test extends PhinxTest
     protected function configure()
     {
         parent::configure();
+        
         $this->setName('migrate:test');
     }
 }

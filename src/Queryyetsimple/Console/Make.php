@@ -34,42 +34,42 @@ abstract class Make extends Command
      *
      * @var string
      */
-    protected $strMakeType;
+    protected $makeType;
 
     /**
      * 文件保存路径
      *
      * @var string
      */
-    protected $strSaveFilePath;
+    protected $saveFilePath;
 
     /**
      * 模板路径
      *
      * @var string
      */
-    protected $strTemplatePath;
+    protected $templatePath;
 
     /**
      * 模板源码
      *
      * @var string
      */
-    protected $strTemplateSource;
+    protected $templateSource;
 
     /**
      * 保存的模板结果
      *
      * @var string
      */
-    protected $strTemplateResult;
+    protected $templateResult;
 
     /**
      * 自定义替换
      *
      * @var array
      */
-    protected $arrCustomReplaceKeyValue = [];
+    protected $customReplaceKeyValue = [];
 
     /**
      * 响应命令
@@ -100,12 +100,12 @@ abstract class Make extends Command
         $this->parseTemplateSource();
 
         // 获取替换变量
-        $arrSourceAndReplace = $this->parseSourceAndReplace();
+        $sourceAndReplace = $this->parseSourceAndReplace();
 
         // 第一次替换基本变量
         // 第二次替换基本变量中的变量
-        $strTemplateSource = str_replace($arrSourceAndReplace[0], $arrSourceAndReplace[1], $this->getTemplateSource()); 
-        $this->strTemplateResult = str_replace($arrSourceAndReplace[0], $arrSourceAndReplace[1], $strTemplateSource);
+        $templateSource = str_replace($sourceAndReplace[0], $sourceAndReplace[1], $this->getTemplateSource()); 
+        $this->templateResult = str_replace($sourceAndReplace[0], $sourceAndReplace[1], $templateSource);
     }
 
     /**
@@ -115,18 +115,24 @@ abstract class Make extends Command
      */
     protected function saveTemplateResult()
     {
-        $strSaveFilePath = $this->getSaveFilePath();
+        $saveFilePath = $this->getSaveFilePath();
 
-        if (! is_dir(dirname($strSaveFilePath))) {
-            mkdir(dirname($strSaveFilePath), 0777, true);
+        if (! is_dir(dirname($saveFilePath))) {
+            mkdir(dirname($saveFilePath), 0777, true);
         }
 
-        if (is_file($strSaveFilePath)) {
-            throw new RuntimeException('File is already exits.' . PHP_EOL . $this->formatFile($this->getSaveFilePath()));
+        if (is_file($saveFilePath)) {
+            throw new RuntimeException(
+                'File is already exits.' . PHP_EOL .
+                $this->formatFile($this->getSaveFilePath())
+            );
         }
 
-        if (! file_put_contents($strSaveFilePath, $this->getTemplateResult())) {
-            throw new RuntimeException('Can not write file.' . PHP_EOL . $this->formatFile($this->getSaveFilePath()));
+        if (! file_put_contents($saveFilePath, $this->getTemplateResult())) {
+            throw new RuntimeException(
+                'Can not write file.' . PHP_EOL .
+                $this->formatFile($this->getSaveFilePath())
+            );
         }
     }
 
@@ -137,7 +143,7 @@ abstract class Make extends Command
      */
     protected function getTemplateResult()
     {
-        return $this->strTemplateResult;
+        return $this->templateResult;
     }
 
     /**
@@ -147,11 +153,16 @@ abstract class Make extends Command
      */
     protected function parseTemplateSource()
     {
-        $strTemplateSource = $this->getTemplatePath();
-        if (! is_file($strTemplateSource)) {
-            throw new RuntimeException('Template not found.' . PHP_EOL . $this->formatFile($strTemplateSource));
+        $templateSource = $this->getTemplatePath();
+
+        if (! is_file($templateSource)) {
+            throw new RuntimeException(
+                'Template not found.' . PHP_EOL .
+                $this->formatFile($templateSource)
+            );
         }
-        $this->strTemplateSource = file_get_contents($strTemplateSource);
+
+        $this->templateSource = file_get_contents($templateSource);
     }
 
     /**
@@ -161,7 +172,7 @@ abstract class Make extends Command
      */
     protected function getTemplateSource()
     {
-        return $this->strTemplateSource;
+        return $this->templateSource;
     }
 
     /**
@@ -171,16 +182,17 @@ abstract class Make extends Command
      */
     protected function parseSourceAndReplace()
     {
-        $arrReplaceKeyValue = array_merge(option('console\template'), $this->getDefaultReplaceKeyValue());
+        $replaceKeyValue = array_merge(option('console\template'), $this->getDefaultReplaceKeyValue());
 
-        $arrSourceKey = array_map(function ($strItem) {
-            return '{{' . $strItem . '}}';
-        }, array_keys($arrReplaceKeyValue));
-        $arrReplace = array_values($arrReplaceKeyValue);
+        $sourceKey = array_map(function ($item) {
+            return '{{' . $item . '}}';
+        }, array_keys($replaceKeyValue));
+
+        $replace = array_values($replaceKeyValue);
 
         return [
-            $arrSourceKey,
-            $arrReplace
+            $sourceKey,
+            $replace
         ];
     }
 
@@ -201,12 +213,12 @@ abstract class Make extends Command
     /**
      * 设置文件保存路径
      *
-     * @param string $strSaveFilePath
+     * @param string $saveFilePath
      * @return void
      */
-    protected function setSaveFilePath($strSaveFilePath)
+    protected function setSaveFilePath($saveFilePath)
     {
-        $this->strSaveFilePath = $strSaveFilePath;
+        $this->saveFilePath = $saveFilePath;
     }
 
     /**
@@ -216,7 +228,7 @@ abstract class Make extends Command
      */
     protected function getSaveFilePath()
     {
-        return $this->strSaveFilePath;
+        return $this->saveFilePath;
     }
 
     /**
@@ -226,11 +238,11 @@ abstract class Make extends Command
      */
     protected function getNamespacePath()
     {
-        if (($strNamespacePath = $this->getContainer()->getPathByNamespace($this->getNamespace()) . '/') != '/') {
-            $strNamespacePath = $this->getContainer()->pathAnApplication(lcfirst($this->getNamespace())) . '/';
+        if (($namespacePath = $this->getContainer()->getPathByNamespace($this->getNamespace()) . '/') != '/') {
+            $namespacePath = $this->getContainer()->pathAnApplication(lcfirst($this->getNamespace())) . '/';
         }
 
-        return $strNamespacePath;
+        return $namespacePath;
     }
 
     /**
@@ -240,25 +252,25 @@ abstract class Make extends Command
      */
     protected function parseNamespace()
     {
-        $strNamespace = $this->option('namespace');
-        if (empty($strNamespace)) {
-            $strNamespace = 'app';
+        $namespace = $this->option('namespace');
+        if (empty($namespace)) {
+            $namespace = 'app';
         }
 
-        $strNamespace = ucfirst($strNamespace);
+        $namespace = ucfirst($namespace);
 
-        $this->setNamespace($strNamespace);
+        $this->setNamespace($namespace);
     }
 
     /**
      * 设置命名空间
      *
-     * @param string $strNamespace
+     * @param string $namespace
      * @return void
      */
-    protected function setNamespace($strNamespace)
+    protected function setNamespace($namespace)
     {
-        $this->strNamespace = $strNamespace;
+        $this->namespace = $namespace;
     }
 
     /**
@@ -268,18 +280,18 @@ abstract class Make extends Command
      */
     protected function getNamespace()
     {
-        return $this->strNamespace;
+        return $this->namespace;
     }
 
     /**
      * 设置创建类型
      *
-     * @param string $strMakeType
+     * @param string $makeType
      * @return void
      */
-    protected function setMakeType($strMakeType)
+    protected function setMakeType($makeType)
     {
-        $this->strMakeType = $strMakeType;
+        $this->makeType = $makeType;
     }
 
     /**
@@ -289,18 +301,18 @@ abstract class Make extends Command
      */
     protected function getMakeType()
     {
-        return $this->strMakeType;
+        return $this->makeType;
     }
 
     /**
      * 设置模板文件路径
      *
-     * @param string $strTemplatePath
+     * @param string $templatePath
      * @return void
      */
-    protected function setTemplatePath($strTemplatePath)
+    protected function setTemplatePath($templatePath)
     {
-        $this->strTemplatePath = $strTemplatePath;
+        $this->templatePath = $templatePath;
     }
 
     /**
@@ -310,44 +322,44 @@ abstract class Make extends Command
      */
     protected function getTemplatePath()
     {
-        return $this->strTemplatePath;
+        return $this->templatePath;
     }
 
     /**
      * 设置自定义变量替换
      *
-     * @param mixed $mixKey
-     * @param string $strValue
+     * @param mixed $key
+     * @param string $value
      * @return void
      */
-    protected function setCustomReplaceKeyValue($mixKey, $strValue)
+    protected function setCustomReplaceKeyValue($key, $value)
     {
-        if (is_array($mixKey)) {
-            $this->arrCustomReplaceKeyValue = array_merge($this->arrCustomReplaceKeyValue, $mixKey);
+        if (is_array($key)) {
+            $this->customReplaceKeyValue = array_merge($this->customReplaceKeyValue, $key);
         } else {
-            $this->arrCustomReplaceKeyValue[$mixKey] = $strValue;
+            $this->customReplaceKeyValue[$key] = $value;
         }
     }
 
     /**
      * 读取自定义变量替换
      *
-     * @param string $strMakeType
+     * @param string $makeType
      * @return array
      */
     protected function getCustomReplaceKeyValue()
     {
-        return $this->arrCustomReplaceKeyValue;
+        return $this->customReplaceKeyValue;
     }
 
     /**
      * 格式化文件路径
      *
-     * @param string $strFile
+     * @param string $file
      * @return string
      */
-    protected function formatFile($strFile)
+    protected function formatFile($file)
     {
-        return $strFile;
+        return $file;
     }
 }

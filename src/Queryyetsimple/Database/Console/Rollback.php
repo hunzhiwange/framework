@@ -37,6 +37,7 @@ class Rollback extends PhinxRollback
     protected function configure()
     {
         parent::configure();
+        
         $this->setName('migrate:rollback');
     }
 }

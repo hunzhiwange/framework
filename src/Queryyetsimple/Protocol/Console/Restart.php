@@ -39,14 +39,14 @@ class Restart extends Command
      *
      * @var string
      */
-    protected $strName = 'swoole:restart';
+    protected $name = 'swoole:restart';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Restart swoole service';
+    protected $description = 'Restart swoole service';
 
     /**
      * 响应命令
@@ -57,10 +57,10 @@ class Restart extends Command
     {
         $this->warn($this->getVersion());
         
-        $objServer = app('swoole.' . $this->argument('type') . '.server');
-        $objServer->setCommand($this);
-        $objServer->options($this->parseOption());
-        $objServer->restartServer();
+        $server = app('swoole.' . $this->argument('type') . '.server');
+        $server->setCommand($this);
+        $server->options($this->parseOption());
+        $server->restartServer();
     }
 
     /**
@@ -70,15 +70,15 @@ class Restart extends Command
      */
     protected function parseOption():array
     {
-        $arrOption = [];
+        $option = [];
 
-        foreach(['host', 'port', 'pid_path'] as $sKey) {
-            if(! is_null($this->option($sKey))) {
-                $arrOption[$sKey] = $this->option($sKey);
+        foreach(['host', 'port', 'pid_path'] as $key) {
+            if(! is_null($this->option($key))) {
+                $option[$key] = $this->option($key);
             }
         }
 
-        return $arrOption;
+        return $option;
     }
 
     /**
@@ -88,7 +88,10 @@ class Restart extends Command
      */
     protected function getVersion()
     {
-        return 'The Restart of Swoole ' . ucfirst($this->argument('type')) . ' Server Version ' . app()->version() . PHP_EOL;
+        return 'The Restart of Swoole ' .
+            ucfirst($this->argument('type')) .
+            ' Server Version ' . app()->version() .
+            PHP_EOL;
     }
 
     /**

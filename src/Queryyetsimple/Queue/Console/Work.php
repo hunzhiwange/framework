@@ -40,21 +40,21 @@ class Work extends Command
      *
      * @var string
      */
-    protected $strName = 'queue:work';
+    protected $name = 'queue:work';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Process the next job on a queue';
+    protected $description = 'Process the next job on a queue';
 
     /**
      * 当前进程启动时间
      *
      * @var int|false
      */
-    protected $mixRestart;
+    protected $restart;
 
     /**
      * 响应命令
@@ -77,7 +77,7 @@ class Work extends Command
      */
     public function sleep()
     {
-        return (int) $this->option('sleep');
+        return (int)$this->option('sleep');
     }
 
     /**
@@ -87,7 +87,7 @@ class Work extends Command
      */
     public function tries()
     {
-        return (int) $this->option('tries');
+        return (int)$this->option('tries');
     }
 
     /**
@@ -102,7 +102,7 @@ class Work extends Command
             $this->stop();
         }
 
-        if ($this->shouleRestart($this->mixRestart)) {
+        if ($this->shouleRestart($this->restart)) {
             $this->stop();
         }
     }
@@ -114,54 +114,66 @@ class Work extends Command
      */
     public function stop()
     {
-        $this->error($this->time(sprintf('%s has stoped.', $this->argument('connect') . ':' . $this->option('queue'))));
+        $this->error(
+            $this->time(
+                sprintf('%s has stoped.', $this->argument('connect') . ':' . $this->option('queue'))
+            )
+        );
+
         die();
     }
 
     /**
      * 设置消息队列
      *
-     * @param string $strConnect
-     * @param string $strQueue
+     * @param string $connect
+     * @param string $queue
      * @return void
      */
-    protected function setQueue($strConnect, $strQueue)
+    protected function setQueue($connect, $queue)
     {
-        $strConnect = 'Leevel\Queue\queues\\' . $strConnect;
-        if (! class_exists($strConnect)) {
-            $this->error($this->time(sprintf('connect %s not exits.', $strConnect)));
+        $connect = 'Leevel\Queue\queues\\' . $connect;
+
+        if (! class_exists($connect)) {
+            $this->error($this->time(sprintf('connect %s not exits.', $connect)));
             return;
         }
+
         call_user_func_array([
-            $strConnect,
+            $connect,
             'setQueue'
         ], [
-            $strQueue
+            $queue
         ]);
     }
 
     /**
      * 守候进程
      *
-     * @param string $strConnect
-     * @param string $strQueue
+     * @param string $connect
+     * @param string $queue
      * @return void
      */
-    protected function runWorker($strConnect, $strQueue)
+    protected function runWorker($connect, $queue)
     {
         // 验证运行器是否存在
-        $strRunner = 'Leevel\Queue\runners\\' . $strConnect;
-        if (! class_exists($strRunner)) {
-            $this->error($this->time(sprintf('runner %s not exits.', $strRunner)));
+        $runner = 'Leevel\Queue\runners\\' . $connect;
+
+        if (! class_exists($runner)) {
+            $this->error(
+                $this->time(sprintf('runner %s not exits.', $runner))
+            );
             return;
         }
 
-        $this->info($this->time(sprintf('%s is on working.', $strConnect . ':' . $strQueue)));
+        $this->info(
+            $this->time(sprintf('%s is on working.', $connect . ':' . $queue))
+        );
 
-        $this->mixRestart = $this->getRestart();
+        $this->restart = $this->getRestart();
 
         // 守候进程
-        (new $strRunner())->workCommand($this)->run();
+        (new $runner())->workCommand($this)->run();
     }
 
     /**
@@ -177,12 +189,12 @@ class Work extends Command
     /**
      * 检查是否要重启守候进程
      *
-     * @param int|false $mixRestart
+     * @param int|false $restart
      * @return bool
      */
-    protected function shouleRestart($mixRestart)
+    protected function shouleRestart($restart)
     {
-        return $this->getRestart() != $mixRestart;
+        return $this->getRestart() != $restart;
     }
 
     /**

@@ -42,21 +42,21 @@ class Vue extends Command
      *
      * @var string
      */
-    protected $strName = 'i18n:vue';
+    protected $name = 'i18n:vue';
 
     /**
      * 命令描述
      *
      * @var string
      */
-    protected $strDescription = 'Make vue i18n export module file with source mo file';
+    protected $description = 'Make vue i18n export module file with source mo file';
 
     /**
      * 命令帮助
      *
      * @var string
      */
-    protected $strHelp = <<<EOF
+    protected $help = <<<EOF
 The <info>%command.name%</info> command to make i18n export module file with source mo file:
 
   <info>php %command.full_name% zh-CN(en-Us|zh-TW|all)</info>

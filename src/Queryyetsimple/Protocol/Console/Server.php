@@ -38,14 +38,14 @@ class Server extends Command
      *
      * @var string
      */
-    protected $strName = 'swoole:server';
+    protected $name = 'swoole:server';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Start swoole server';
+    protected $description = 'Start swoole server';
 
     /**
      * 响应命令
@@ -57,10 +57,10 @@ class Server extends Command
         $this->info($this->getLogo());
         $this->warn($this->getVersion());
 
-        $objServer = app('swoole.' . $this->argument('type') . '.server');
-        $objServer->setCommand($this);
-        $objServer->options($this->parseOption());
-        $objServer->startServer();
+        $server = app('swoole.' . $this->argument('type') . '.server');
+        $server->setCommand($this);
+        $server->options($this->parseOption());
+        $server->startServer();
     }
 
     /**
@@ -70,15 +70,15 @@ class Server extends Command
      */
     protected function parseOption():array
     {
-        $arrOption = [];
+        $option = [];
 
-        foreach(['host', 'port', 'pid_path', 'worker_num', 'daemonize'] as $sKey) {
-            if(! is_null($this->option($sKey))) {
-                $arrOption[$sKey] = $this->option($sKey);
+        foreach(['host', 'port', 'pid_path', 'worker_num', 'daemonize'] as $key) {
+            if(! is_null($this->option($key))) {
+                $option[$key] = $this->option($key);
             }
         }
 
-        return $arrOption;
+        return $option;
     }
 
     /**
@@ -88,7 +88,9 @@ class Server extends Command
      */
     protected function getVersion()
     {
-        return 'Swoole ' . ucfirst($this->argument('type')) . ' Server Version ' . app()->version() . PHP_EOL;
+        return 'Swoole ' . ucfirst($this->argument('type')) .
+            ' Server Version ' . app()->version() .
+            PHP_EOL;
     }
 
     /**

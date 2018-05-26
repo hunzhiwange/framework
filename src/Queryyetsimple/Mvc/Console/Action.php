@@ -39,21 +39,21 @@ class Action extends Make
      *
      * @var string
      */
-    protected $strName = 'make:action';
+    protected $name = 'make:action';
 
     /**
      * 命令描述
      *
      * @var string
      */
-    protected $strDescription = 'Create a new action';
+    protected $description = 'Create a new action';
 
     /**
      * 命令帮助
      *
      * @var string
      */
-    protected $strHelp = <<<EOF
+    protected $help = <<<EOF
 The <info>%command.name%</info> command to make action with project namespace:
 
   <info>php %command.full_name% name action</info>
@@ -78,7 +78,10 @@ EOF;
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(__DIR__ . '/template/' . ($this->option('extend') ? 'action' : 'action_without_extend'));
+        $this->setTemplatePath(
+            __DIR__ . '/template/' .
+            ($this->option('extend') ? 'action' : 'action_without_extend')
+        );
 
         $controllerNamespace = Router::getControllerDir();
 
@@ -91,7 +94,11 @@ EOF;
         $this->setCustomReplaceKeyValue('action', $action);
 
         // 保存路径
-        $this->setSaveFilePath($this->getNamespacePath() . str_replace('\\', '/', $controllerNamespace) . '/' . $this->argument('controller') . '/' . $action . '.php');
+        $this->setSaveFilePath(
+            $this->getNamespacePath() .
+            str_replace('\\', '/', $controllerNamespace) . '/' .
+            $this->argument('controller') . '/' . $action . '.php'
+        );
 
         // 设置类型
         $this->setMakeType('action');

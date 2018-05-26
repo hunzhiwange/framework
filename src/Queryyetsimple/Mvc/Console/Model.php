@@ -38,21 +38,21 @@ class Model extends Make
      *
      * @var string
      */
-    protected $strName = 'make:model';
+    protected $name = 'make:model';
 
     /**
      * 命令描述
      *
      * @var string
      */
-    protected $strDescription = 'Create a new model';
+    protected $description = 'Create a new model';
 
     /**
      * 命令帮助
      *
      * @var string
      */
-    protected $strHelp = <<<EOF
+    protected $help = <<<EOF
 The <info>%command.name%</info> command to make model with project namespace:
 
   <info>php %command.full_name% name</info>
@@ -77,10 +77,17 @@ EOF;
         $this->parseNamespace();
 
         // 设置模板路径
-        $this->setTemplatePath(__DIR__ . '/template/' . ($this->option('extend') ? 'model' : 'model_without_extend'));
+        $this->setTemplatePath(
+            __DIR__ . '/template/' .
+            ($this->option('extend') ? 'model' : 'model_without_extend')
+        );
 
         // 保存路径
-        $this->setSaveFilePath($this->getNamespacePath() . 'Domain/Entity/' . ucfirst($this->argument('name')) . '.php');
+        $this->setSaveFilePath(
+            $this->getNamespacePath() .
+            'Domain/Entity/' .
+            ucfirst($this->argument('name')) . '.php'
+        );
 
         // 设置类型
         $this->setMakeType('model');

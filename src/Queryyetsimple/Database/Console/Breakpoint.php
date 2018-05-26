@@ -37,6 +37,7 @@ class Breakpoint extends PhinxBreakpoint
     protected function configure()
     {
         parent::configure();
+        
         $this->setName('migrate:breakpoint');
     }
 }

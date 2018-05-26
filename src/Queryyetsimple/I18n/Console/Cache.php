@@ -41,14 +41,14 @@ class Cache extends Command
      *
      * @var string
      */
-    protected $strName = 'i18n:cache';
+    protected $name = 'i18n:cache';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Cache i18n to a file';
+    protected $description = 'Cache i18n to a file';
 
     /**
      * 响应命令

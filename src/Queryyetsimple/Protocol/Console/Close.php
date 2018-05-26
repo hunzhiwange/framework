@@ -39,14 +39,14 @@ class Close extends Command
      *
      * @var string
      */
-    protected $strName = 'swoole:close';
+    protected $name = 'swoole:close';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Close swoole service process';
+    protected $description = 'Close swoole service process';
 
     /**
      * 响应命令
@@ -57,10 +57,10 @@ class Close extends Command
     {
         $this->warn($this->getVersion());
         
-        $objServer = app('swoole.' . $this->argument('type') . '.server');
-        $objServer->setCommand($this);
-        $objServer->options($this->parseOption());
-        $objServer->closeServer();
+        $server = app('swoole.' . $this->argument('type') . '.server');
+        $server->setCommand($this);
+        $server->options($this->parseOption());
+        $server->closeServer();
     }
 
     /**
@@ -70,15 +70,15 @@ class Close extends Command
      */
     protected function parseOption():array
     {
-        $arrOption = [];
+        $option = [];
 
-        foreach(['host', 'port', 'pid_path'] as $sKey) {
-            if(! is_null($this->option($sKey))) {
-                $arrOption[$sKey] = $this->option($sKey);
+        foreach(['host', 'port', 'pid_path'] as $key) {
+            if(! is_null($this->option($key))) {
+                $option[$key] = $this->option($key);
             }
         }
 
-        return $arrOption;
+        return $option;
     }
 
     /**
@@ -88,7 +88,10 @@ class Close extends Command
      */
     protected function getVersion()
     {
-        return 'The Close of Swoole ' . ucfirst($this->argument('type')) . ' Server Version ' . app()->version() . PHP_EOL;
+        return 'The Close of Swoole ' . 
+            ucfirst($this->argument('type')) .
+            ' Server Version ' . app()->version() .
+            PHP_EOL;
     }
 
     /**

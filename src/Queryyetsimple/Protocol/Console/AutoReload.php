@@ -42,14 +42,14 @@ class AutoReload extends Command
      *
      * @var string
      */
-    protected $strName = 'swoole:autoreload';
+    protected $name = 'swoole:autoreload';
 
     /**
      * 命令行描述
      *
      * @var string
      */
-    protected $strDescription = 'Reload swoole service process when source code file is update';
+    protected $description = 'Reload swoole service process when source code file is update';
 
     /**
      * 响应命令
@@ -139,7 +139,9 @@ class AutoReload extends Command
      */
     protected function getVersion()
     {
-        return 'The AutoReload of Swoole Version ' . app()->version() . PHP_EOL;
+        return 'The AutoReload of Swoole Version ' .
+            app()->version() .
+            PHP_EOL;
     }
 
     /**
