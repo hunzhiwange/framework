@@ -37,7 +37,7 @@ interface IUrl
      * @param mixed $suffix
      * @return string
      */
-    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = false): string;
+    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string;
 
     /**
      * 返回 HTTP 请求
