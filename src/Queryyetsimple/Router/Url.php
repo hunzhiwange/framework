@@ -48,6 +48,7 @@ class Url implements IUrl
      * @var array
      */
     protected $option = [
+        'with_suffix' => false,
         'html_suffix' => '.html',
         'domain_top' => '',
         'subdomain_on' => true
@@ -78,9 +79,9 @@ class Url implements IUrl
      * @param mixed $suffix
      * @return string
      */
-    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = false): string
+    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
     {
-        $url = $this->makeUrl($url, $params, $suffix);
+        $url = $this->makeUrl($url, $params, ! is_null($suffix) ? $suffix : $this->option['with_suffix']);
         $url = $this->withEnter($url);
         $url = $this->WithDomain($url, $subdomain);
         
