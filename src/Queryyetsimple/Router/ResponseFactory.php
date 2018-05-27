@@ -21,7 +21,8 @@ use Leevel\{
     Http\Response,
     Http\ApiResponse,
     Http\FileResponse,
-    Http\JsonResponse
+    Http\JsonResponse,
+    Http\ResponseHeaderBag
 };
 
 /**
@@ -190,10 +191,10 @@ class ResponseFactory implements IResponseFactory
      */
     public function download($file, string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true)
     {
-        $response = new FileResponse($file, $status, $headers, FileResponse::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
+        $response = new FileResponse($file, $status, $headers, ResponseHeaderBag::DISPOSITION_ATTACHMENT, $autoEtag, $autoLastModified);
 
         if (! is_null($name)) {
-            return $response->setContentDisposition(FileResponse::DISPOSITION_ATTACHMENT, $name);
+            return $response->setContentDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, $name);
         }
 
         return $response;
@@ -211,7 +212,7 @@ class ResponseFactory implements IResponseFactory
      */
     public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true)
     {
-        return new FileResponse($file, $status, $headers, FileResponse::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
+        return new FileResponse($file, $status, $headers, ResponseHeaderBag::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
     }
 
     /*
