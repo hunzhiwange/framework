@@ -110,6 +110,7 @@ class Container implements IContainer, ArrayAccess
         if (is_null($service)) {
             $service = $name;
         }
+
         $this->instances[$name] = $service;
 
         return $this;
@@ -163,7 +164,7 @@ class Container implements IContainer, ArrayAccess
                 $this->alias($key, $item);
             }
         } else {
-            $value = (array) $value;
+            $value = (array)$value;
             foreach ($value as $item) {
                 $this->alias[$item] = $alias;
             }
@@ -223,17 +224,78 @@ class Container implements IContainer, ArrayAccess
     /**
      * 实例回调自动注入
      *
-     * @param callable $callback
+     * @param callable|array|string $callback
      * @param array $args
      * @return mixed
      */
     public function call($callback, array $args = [])
     {
-        if (! $args) {
-            $args = $this->parseInjection($callback);
+        if (is_string($callback) && strpos($callback, '@') !== false) {
+            $callback = explode('@', $callback);
         }
 
+        $isStatic = false;
+
+        if (is_string($callback) && strpos($callback, '::') !== false) {
+            $callback = explode('::', $callback);
+            $isStatic = true;
+        }
+
+        if ($isStatic === false && is_array($callback)) {
+            if (! is_object($callback[0])) {
+                if (! is_string($callback[0])) {
+                    throw new InvalidArgumentException('The classname must be string.');
+                }
+
+                $callback[0] = $this->getInjectionObject($callback[0]);
+            }
+
+            if (empty($callback[1])) {
+                $callback[1] = method_exists($callback[0], 'handle') ? 'handle' : 'run';
+            }
+        }
+
+        $args = $this->normalizeInjectionArgs($callback, $args);
+
         return call_user_func_array($callback, $args);
+    }
+
+    /**
+     * 删除服务和实例
+     *
+     * @param string $name
+     * @return void
+     */
+    public function remove($name)
+    {
+        $name = $this->normalize($name);
+
+        $prop = [
+            'services',
+            'instances',
+            'singletons'
+        ];
+
+        foreach ($prop as $item) {
+            if (isset($this->{$item}[$name])) {
+                unset($this->{$item}[$name]);
+            }
+        }
+    }
+
+    /**
+     * 服务或者实例是否存在
+     *
+     * @param string $name
+     * @return bool
+     */
+    public function exists($name)
+    {
+        $name = $this->normalize($name);
+
+        $name = $this->getAlias($name);
+
+        return isset($this->services[$name]) || isset($this->instances[$name]);
     }
 
     /**
@@ -267,53 +329,102 @@ class Container implements IContainer, ArrayAccess
      */
     protected function getInjectionObject($classname, array $args = [])
     {
-        if (! class_exists($classname)) {
-            return false;
+        if (interface_exists($classname)) {
+            throw new NormalizeException(sprintf('Interface %s can not be normalize because not binded.', $classname));   
         }
 
-        if (! $args) {
-            $args = $this->parseInjection($classname);
+        if (! class_exists($classname)) {
+            return $classname;
         }
+
+        $args = $this->normalizeInjectionArgs($classname, $args);
 
         return $this->newInstanceArgs($classname, $args);
+    }
+
+    /**
+     * 格式化依赖参数
+     *
+     * @param mixed $value
+     * @param array $args
+     * @return array|void
+     */
+    protected function normalizeInjectionArgs($value, array $args)
+    {
+        list($args, $required) = $this->parseInjection($value, $args);
+
+        if (count($args) < $required) {
+            throw new NormalizeException(sprintf('There are %d required args,but %d gived.', $required, count($args)));
+        }
+
+        return $args;
     }
 
     /**
      * 分析自动依赖注入
      *
      * @param mixed $injection
+     * @param array $args
      * @return array
      */
-    protected function parseInjection($injection)
+    protected function parseInjection($injection, array $args = [])
     {
         $result = [];
+        $required = 0;
 
         $param = $this->parseReflection($injection);
 
         foreach ($param as $item) {
             try {
+                $isRequireBad = false;
+
                 switch (true) {
                     case $argsclass = $this->parseParameterClass($item):
-                        $data = $this->parseClassInstance($argsclass);
+                        if (array_key_exists($argsclass, $args)) {
+                            $data = $args[$argsclass];
+                        } elseif ($item->isDefaultValueAvailable()) {
+                            $data = $item->getDefaultValue();
+                        } else {
+                            $data = $this->parseClassInstance($argsclass);
+                        }
                         break;
 
                     case $item->isDefaultValueAvailable():
-                        $data = $item->getDefaultValue();
+                        $data = array_key_exists($item->name, $args) ? $args[$item->name] : $item->getDefaultValue();
                         break; 
 
                     default:
-                        $data = null;
+                        if (array_key_exists($item->name, $args)) {
+                            $data = $args[$item->name];
+                        } else {
+                            $isRequireBad = true;
+                            $required++;                  
+                        }
                         break;
                 }
 
-                $result[$item->name] = $data;
+                if ($isRequireBad === false) {
+                    $result[$item->name] = $data;
+                }
             } catch (ReflectionException $e) {
-                print_r($injection);
                 throw new InvalidArgumentException($e->getMessage());
             }
         }
 
-        return $result;
+        if ($args) {
+            $result = array_values($result);
+
+            foreach ($args as $k => $value) {
+                if (is_int($k)) {
+                    $result[$k] = $value;
+                }
+            }
+        }
+
+        return [
+            $result,
+            $required
+        ];
     }
 
     /**
@@ -522,7 +633,7 @@ class Container implements IContainer, ArrayAccess
      */
     public function offsetExists($offset)
     {
-        return isset($this->services[$this->normalize($offset)]);
+        return $this->exists($offset);
     }
 
     /**
@@ -556,19 +667,7 @@ class Container implements IContainer, ArrayAccess
      */
     public function offsetUnset($offset)
     {
-        $offset = $this->normalize($offset);
-
-        $prop = [
-            'services',
-            'instances',
-            'singletons'
-        ];
-
-        foreach ($prop as $item) {
-            if (isset($this->{$item}[$offset])) {
-                unset($this->{$item}[$offset]);
-            }
-        }
+        $this->remove($offset);
     }
 
     /**
@@ -592,6 +691,7 @@ class Container implements IContainer, ArrayAccess
     public function __set($key, $service)
     {
         $this[$key] = $service;
+
         return $this;
     }
 
