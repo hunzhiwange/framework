@@ -52,23 +52,14 @@ class Dispatch implements IDispatch
     protected $wildcards = [];
 
     /**
-     * 通配符是否严格匹配
-     *
-     * @var boolean
-     */
-    protected $strict = false;
-    
-    /**
      * 创建一个事件解析器
      *
      * @param \Leevel\Di\IContainer $container
-     * @param bool $event
      * @return void
      */
-    public function __construct(IContainer $container, bool $strict = false)
+    public function __construct(IContainer $container)
     {
         $this->container = $container;
-        $this->strict = $strict;
     }
 
     /**
@@ -117,7 +108,7 @@ class Dispatch implements IDispatch
      */
     public function listeners($event, $listener, int $priority = 500)
     {
-        $event = (array) $event;
+        $event = (array)$event;
         $priority = intval($priority);
 
         foreach ($event as $item) {
@@ -144,7 +135,7 @@ class Dispatch implements IDispatch
         }
 
         foreach ($this->wildcards as $key => $item) {
-            $key = $this->prepareRegexForWildcard($key, $this->strict);
+            $key = $this->prepareRegexForWildcard($key);
 
             if (preg_match($key, $event, $res)) {
                 foreach ($item as $priority => $value) {
@@ -189,18 +180,6 @@ class Dispatch implements IDispatch
     }
 
     /**
-     * 设置是否严格匹配事件
-     *
-     * @param bool $event
-     * @return $this
-     */
-    public function strict(bool $strict)
-    {
-        $this->strict = $strict;
-        return $this;
-    }
-
-    /**
      * 创建监听器观察者角色主体
      *
      * @param string $listeners
@@ -220,61 +199,14 @@ class Dispatch implements IDispatch
     /**
      * 通配符正则
      *
-     * @param string $strFoo
-     * @param bool $strict
+     * @param string $regex
      * @return string
      */
-    protected function prepareRegexForWildcard($regex, $strict = true)
+    protected function prepareRegexForWildcard($regex)
     {
-        return '/^' . str_replace('6084fef57e91a6ecb13fff498f9275a7', '(\S+)', $this->escapeRegexCharacter(str_replace('*', '6084fef57e91a6ecb13fff498f9275a7', $regex))) . ($strict ? '$' : '') . '/';
-    }
+        $regex = preg_quote($regex, '/');
+        $regex = '/^' . str_replace('\*', '(\S+)', $regex) . '$/';
 
-    /**
-     * 转义正则表达式特殊字符
-     *
-     * @param string $txt
-     * @return string
-     */
-    protected function escapeRegexCharacter($txt)
-    {
-        $txt = str_replace([
-            '$',
-            '/',
-            '?',
-            '*',
-            '.',
-            '!',
-            '-',
-            '+',
-            '(',
-            ')',
-            '[',
-            ']',
-            ',',
-            '{',
-            '}',
-            '|',
-            '\\'
-        ], [
-            '\$',
-            '\/',
-            '\\?',
-            '\\*',
-            '\\.',
-            '\\!',
-            '\\-',
-            '\\+',
-            '\\(',
-            '\\)',
-            '\\[',
-            '\\]',
-            '\\,',
-            '\\{',
-            '\\}',
-            '\\|',
-            '\\\\'
-        ], $txt);
-
-        return $txt;
+        return $regex;
     }
 }
