@@ -104,7 +104,7 @@ class Subject implements ISubject, SplSubject
     public function attachs($observer)
     {
         if (is_string($observer)) {
-            if (($observer = $this->container->make($observer)) === false) {
+            if (is_string($observer = $this->container->make($observer))) {
                 throw new InvalidArgumentException(sprintf('Observer is invalid.'));
             }
         }
