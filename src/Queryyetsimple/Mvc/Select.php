@@ -346,7 +346,7 @@ class Select
     public function softDestroy($mixId)
     {
         $intCount = 0;
-        $mixId = (array) $mixId;
+        $mixId = (array)$mixId;
         $objInstance = $this->objModel->newInstance();
         foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
             if ($objModel->softDelete()) {

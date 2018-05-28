@@ -41,7 +41,7 @@ class LoadOption
     public function handle(IProject $project): void
     {
         if ($project->isCachedOption()) {
-            $data = (array) include $project->pathCacheOptionFile();
+            $data = (array)include $project->pathCacheOptionFile();
 
             $this->setEnvs($data['app']['_env']);
         } else {

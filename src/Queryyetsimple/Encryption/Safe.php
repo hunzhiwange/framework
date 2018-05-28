@@ -84,7 +84,7 @@ class Safe
         $sSubject = ( string ) $sSubject;
         while ($bFound) {
             $bFound = false;
-            foreach ((array) $arrSearch as $sVal) {
+            foreach ((array)$arrSearch as $sVal) {
                 while (strpos($sSubject, $sVal) !== false) {
                     $bFound = true;
                     $sSubject = str_replace($sVal, '', $sSubject);
@@ -356,7 +356,7 @@ class Safe
     {
         if (! empty($mixLimitIp)) {
             if (is_string($mixLimitIp)) {
-                $mixLimitIp = (array) $mixLimitIp;
+                $mixLimitIp = (array)$mixLimitIp;
             }
 
             foreach ($mixLimitIp as $sIp) {
@@ -490,7 +490,7 @@ class Safe
     public static function htmlspecialchars($mixString)
     {
         if (! is_array($mixString)) {
-            $mixString = (array) $mixString;
+            $mixString = (array)$mixString;
         }
 
         $mixString = array_map(function ($sStr) {
@@ -515,7 +515,7 @@ class Safe
     public static function unHtmlSpecialchars($mixString)
     {
         if (! is_array($mixString)) {
-            $mixString = (array) $mixString;
+            $mixString = (array)$mixString;
         }
 
         $mixString = array_map(function ($sStr) {

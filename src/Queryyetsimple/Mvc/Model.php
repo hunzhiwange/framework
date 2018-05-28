@@ -575,7 +575,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     public function destroy($mixId)
     {
         $intCount = 0;
-        $mixId = (array) $mixId;
+        $mixId = (array)$mixId;
         $objInstance = new static();
         foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
             if ($objModel->delete()) {
@@ -1701,7 +1701,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrHidden = array_diff($this->arrHidden, (array) $mixProp);
+        $this->arrHidden = array_diff($this->arrHidden, (array)$mixProp);
         return $this;
     }
 
@@ -1757,7 +1757,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrVisible = array_diff($this->arrVisible, (array) $mixProp);
+        $this->arrVisible = array_diff($this->arrVisible, (array)$mixProp);
         return $this;
     }
 
@@ -1813,7 +1813,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrAppend = array_diff($this->arrAppend, (array) $mixProp);
+        $this->arrAppend = array_diff($this->arrAppend, (array)$mixProp);
         return $this;
     }
 
@@ -2013,7 +2013,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     public function hasConversion($strKey, $mixType = null)
     {
         if (array_key_exists($strKey, $this->getConversion())) {
-            return $mixType ? in_array($this->getConversionType($strKey), (array) $mixType, true) : true;
+            return $mixType ? in_array($this->getConversionType($strKey), (array)$mixType, true) : true;
         }
         return false;
     }
@@ -2049,7 +2049,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function newInstance($arrProp = [], $mixConnect = null, $strTable = null)
     {
-        return new static((array) $arrProp, $mixConnect, $strTable);
+        return new static((array)$arrProp, $mixConnect, $strTable);
     }
 
     /**
