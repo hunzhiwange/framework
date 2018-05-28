@@ -1851,7 +1851,7 @@ class Validate implements IValidate
             return;
         }
 
-        $mixRule = (array) $mixRule;
+        $mixRule = (array)$mixRule;
 
         foreach ($this->arrRule[$strField] as $strRule) {
             list($strRule, $arrParameter) = $this->parseRule($strRule);
@@ -2114,6 +2114,7 @@ class Validate implements IValidate
 
         $this->arrParsedDataKey = [];
         $this->parseDataKeyRecursion($this->getData());
+        
         return $this->arrParsedDataKey;
     }
 
@@ -2184,7 +2185,7 @@ class Validate implements IValidate
             return false;
         }
 
-        $mixRule = (array) $mixRule;
+        $mixRule = (array)$mixRule;
 
         foreach ($mixRule as $strRule) {
             if ($booStrict) {
