@@ -701,7 +701,7 @@ class Parser implements IParser
     protected function registerCompiler($sType, $mixName, $sTag)
     {
         if (! is_array($mixName)) {
-            $mixName = (array) $mixName;
+            $mixName = (array)$mixName;
         }
         foreach ($mixName as $sTemp) {
             $this->arrCompilers[$sType][$sTemp] = $sTag;
