@@ -230,15 +230,15 @@ class Container implements IContainer, ArrayAccess
      */
     public function call($callback, array $args = [])
     {
-        if (is_string($callback) && strpos($callback, '@') !== false) {
-            $callback = explode('@', $callback);
-        }
-
         $isStatic = false;
 
-        if (is_string($callback) && strpos($callback, '::') !== false) {
-            $callback = explode('::', $callback);
-            $isStatic = true;
+        if (is_string($callback)) {
+            if (strpos($callback, '@') !== false) {
+                $callback = explode('@', $callback);
+            } elseif (strpos($callback, '::') !== false) {
+                $callback = explode('::', $callback);
+                $isStatic = true;
+            }
         }
 
         if ($isStatic === false && is_array($callback)) {
