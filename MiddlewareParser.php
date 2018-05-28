@@ -60,7 +60,7 @@ class MiddlewareParser
 
         $result = [];
 
-        foreach ((array) $middlewares as $m) {
+        foreach ((array)$middlewares as $m) {
             if (! is_string($m)) {
                 throw new InvalidArgumentException('Middleware only allowed string.');
             }
@@ -68,7 +68,7 @@ class MiddlewareParser
             list($m, $params) = $this->parseMiddleware($m);
 
             if (isset($middlewareGroups[$m])) {
-                foreach ((array) $middlewareGroups[$m] as $item) {
+                foreach ((array)$middlewareGroups[$m] as $item) {
                     list($item, $params) = $this->parseMiddleware($item);
 
                     $result[] = $this->middlewareName($middlewareAlias[$item] ?? $item, $params);
