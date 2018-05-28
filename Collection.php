@@ -599,7 +599,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
             return $elements->jsonSerialize();
         }
 
-        return (array) $elements;
+        return (array)$elements;
     }
 
     /**
