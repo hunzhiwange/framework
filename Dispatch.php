@@ -72,22 +72,21 @@ class Dispatch implements IDispatch
     public function run($event, ...$params)
     {
         if (is_object($event)) {
-            $object = $event;
-            $event = get_class($event);
+            $name = get_class($event);
         } else {
-            $object = $this->container->make($event);
-            if (! is_object($object)) {
-                throw new RuntimeException(sprintf('Event %s is invalid.', $event));
-            }
+            $name = $event;
+
+            // This may return object or string
+            $event = $this->container->make($event);
         }
 
-        array_unshift($params, $object);
+        array_unshift($params, $event);
 
-        if (! $this->hasListeners($event)) {
+        if (! $this->hasListeners($name)) {
             return;
         }
 
-        $listeners = $this->getListeners($event);
+        $listeners = $this->getListeners($name);
         ksort($listeners);
 
         foreach($listeners as $items) {
@@ -101,17 +100,19 @@ class Dispatch implements IDispatch
     /**
      * 注册监听器
      *
-     * @param string|array $event
+     * @param string|array|object $event
      * @param mixed $listener
      * @param int $priority
      * @return void
      */
     public function listeners($event, $listener, int $priority = 500)
     {
-        $event = (array)$event;
+        $event = is_object($event) ? [$event] : (array)$event;
         $priority = intval($priority);
 
         foreach ($event as $item) {
+            $item = $this->normalizeEvent($item);
+
             if (strpos($item, '*') !== false) { 
                 $this->wildcards[$item][$priority][] = $listener;
             } else {
@@ -123,12 +124,14 @@ class Dispatch implements IDispatch
     /**
      * 获取一个事件监听器
      *
-     * @param string $event
+     * @param string|object $event
      * @return array
      */
     public function getListeners($event)
     {
         $listeners = [];
+
+        $event = $this->normalizeEvent($event);
 
         if (isset($this->listeners[$event])) {
             $listeners = $this->listeners[$event];
@@ -154,22 +157,26 @@ class Dispatch implements IDispatch
     /**
      * 判断事件监听器是否存在
      *
-     * @param string $event
+     * @param string|object $event
      * @return bool
      */
     public function hasListeners($event)
     {
+        $event = $this->normalizeEvent($event);
+
         return isset($this->listeners[$event]) || isset($this->wildcards[$event]);
     }
 
     /**
      * 删除一个事件所有监听器
      *
-     * @param string $event
+     * @param string|object $event
      * @return void
      */
     public function deleteListeners($event)
     {
+        $event = $this->normalizeEvent($event);
+
         if (isset($this->listeners[$event])) {
             unset($this->listeners[$event]);
         }
@@ -194,6 +201,17 @@ class Dispatch implements IDispatch
         }
 
         return $subject;
+    }
+
+    /**
+     * 格式化事件名字
+     *
+     * @param string|object $event
+     * @return void
+     */
+    protected function normalizeEvent($event)
+    {
+        return is_object($event) ? get_class($event) : $event;
     }
 
     /**
