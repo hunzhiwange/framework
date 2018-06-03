@@ -86,7 +86,7 @@ interface ICookie
      * @param array $option
      * @return void
      */
-    public function arrays($key, $keys, $value = null, array $option = []);
+    public function arr($key, $keys, $value = null, array $option = []);
 
     /**
      * 数组键值删除数据
@@ -95,7 +95,7 @@ interface ICookie
      * @param mixed $keys
      * @return void
      */
-    public function arraysDelete($key, $keys, array $option = []);
+    public function arrDelete($key, $keys, array $option = []);
 
     /**
      * 获取 cookie
