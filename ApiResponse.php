@@ -35,7 +35,8 @@ class ApiResponse extends JsonResponse
      * @param array $headers
      * @return static
      */
-    public static function create($data = '', int $status = 200, array $headers = []) {
+    public static function create($data = '', int $status = 200, array $headers = [])
+    {
         return new static($data, $status, $headers);
     }
 
@@ -47,7 +48,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function ok($content = '', $text = null) {
+    public function ok($content = '', $text = null)
+    {
         if ($this->checkTControl()) {
             return $this;
         }
@@ -128,7 +130,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function unprocessableEntity(array $errors = null, $message = null, $text = null) {
+    public function unprocessableEntity(array $errors = null, $message = null, $text = null)
+    {
         if ($this->checkTControl()) {
             return $this;
         }
@@ -150,7 +153,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function error($message, $statusCode, $text = null) {
+    public function error($message, $statusCode, $text = null)
+    {
         if ($this->checkTControl()) {
             return $this;
         }
@@ -168,7 +172,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function badRequest($message = null, $text = null) {
+    public function badRequest($message = null, $text = null)
+    {
         return $this->error($message, static::HTTP_BAD_REQUEST, $text);
     }
 
@@ -180,7 +185,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function unauthorized($message = null, $text = null) {
+    public function unauthorized($message = null, $text = null)
+    {
         return $this->error($message, static::HTTP_UNAUTHORIZED, $text);
     }
 
@@ -192,7 +198,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function forbidden($message = null, $text = null) {
+    public function forbidden($message = null, $text = null)
+    {
         return $this->error($message, static::HTTP_FORBIDDEN, $text);
     }
 
@@ -204,7 +211,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function notFound($message = null, $text = null) {
+    public function notFound($message = null, $text = null)
+    {
         return $this->error($message, static::HTTP_NOT_FOUND, $text);
     }
 
@@ -216,7 +224,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function methodNotAllowed($message = null, $text = null) {
+    public function methodNotAllowed($message = null, $text = null)
+    {
         return $this->error($message, static::HTTP_METHOD_NOT_ALLOWED, $text);
     }
 
@@ -228,7 +237,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function tooManyRequests($message = null, $text = null) {
+    public function tooManyRequests($message = null, $text = null)
+    {
         return $this->error($message, static::HTTP_TOO_MANY_REQUESTS, $text);
     }
 
@@ -240,7 +250,8 @@ class ApiResponse extends JsonResponse
      * @param string $text
      * @return $this
      */
-    public function internalServerError($message = null, $text = null) {
+    public function internalServerError($message = null, $text = null)
+    {
         return $this->error($message, static::HTTP_INTERNAL_SERVER_ERROR, $text);
     }
 
@@ -250,7 +261,8 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @return $this
      */
-    protected function normalizeErrorMessage($message = null, $text = null) {
+    protected function normalizeErrorMessage($message = null, $text = null)
+    {
         return $this->setData([
             'message' => $this->parseErrorMessage($message)
         ]);
@@ -262,7 +274,8 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @return string
      */
-    protected function parseErrorMessage($message = null) {
+    protected function parseErrorMessage($message = null)
+    {
         return $message ?: $this->statusText;
     }
 }
