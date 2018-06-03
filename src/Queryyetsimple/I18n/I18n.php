@@ -52,6 +52,8 @@ class I18n implements II18n
     public function __construct(string $i18n)
     {
         $this->i18n = $i18n;
+
+        $this->text[$i18n] = [];
     }
 
     /**
@@ -67,7 +69,7 @@ class I18n implements II18n
         }
 
         $value = $arr[0];
-        $value = $this->text[$this->getI18n()][$value] ?? $value;
+        $value = $this->text[$this->i18n][$value] ?? $value;
         if (count($arr) > 1) {
             $arr[0] = $value;
             $value = sprintf(...$arr);

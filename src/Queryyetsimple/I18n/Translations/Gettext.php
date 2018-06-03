@@ -165,19 +165,19 @@ class Gettext extends Translations implements IArray
     /**
      * 读取文件到数组
      *
-     * @param string|array $strFilename
+     * @param string|array $filename
      * @return array
      */
-    public function readToArray($mixFilename)
+    public function readToArray($filename)
     {
-        if (! is_array($mixFilename)) {
-            $mixFilename = [
-                $mixFilename
+        if (! is_array($filename)) {
+            $filename = [
+                $filename
             ];
         }
 
-        foreach ($mixFilename as $strFilename) {
-            $this->import_from_file($strFilename);
+        foreach ($filename as $item) {
+            $this->import_from_file($item);
         }
 
         return $this->toArray();
@@ -190,10 +190,12 @@ class Gettext extends Translations implements IArray
      */
     public function toArray()
     {
-        $arrData = [];
-        foreach ($this->entries as $strKey => $objEntry) {
-            $arrData[$strKey] = $objEntry->translations[0];
+        $data = [];
+
+        foreach ($this->entries as $key => $entry) {
+            $data[$key] = $entry->translations[0];
         }
-        return $arrData;
+
+        return $data;
     }
 }
