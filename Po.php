@@ -23,10 +23,10 @@ use Leevel\I18n\{
 };
 
 if (! defined('PO_MAX_LINE_LEN')) {
-    define('PO_MAX_LINE_LEN', 79);
+    define('PO_MAX_LINE_LEN', '79');
 }
 
-ini_set('auto_detect_line_endings', 1);
+ini_set('auto_detect_line_endings', '1');
 
 /**
  * 解析 po 文件
@@ -518,7 +518,7 @@ class Po extends Gettext
             return true;
         }
         $line = $use_last_line ? $last_line : fgets($f);
-        $line = ("\r\n" == substr($line, - 2)) ? rtrim($line, "\r\n") . "\n" : $line;
+        $line = ("\r\n" == substr($line ?: '', - 2)) ? rtrim($line, "\r\n") . "\n" : $line;
         $last_line = $line;
         $use_last_line = false;
         return $line;
