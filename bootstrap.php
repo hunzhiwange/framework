@@ -40,7 +40,7 @@ if (false === is_file($vendorDir . '/autoload.php')) {
 }
 
 spl_autoload_register(function($class) {
-    if (0 === strpos($class, 'Tests\\')) {
+    if (0 === stripos($class, 'Tests\\')) {
         $path = __DIR__ . '/' . strtr(substr($class, 5), '\\', '/') . '.php';
         
         if (is_file($path) === true && is_readable($path) === true) {
