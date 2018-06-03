@@ -180,7 +180,7 @@ class Cookie implements ICookie
      * @param array $option
      * @return void
      */
-    public function arrays($key, $keys, $value = null, array $option = [])
+    public function arr($key, $keys, $value = null, array $option = [])
     {
         $arr = $this->get($key, [], $option);
 
@@ -200,7 +200,7 @@ class Cookie implements ICookie
      * @param mixed $keys
      * @return void
      */
-    public function arraysDelete($key, $keys, array $option = [])
+    public function arrDelete($key, $keys, array $option = [])
     {
         $arr = $this->get($key, [], $option);
 
@@ -236,6 +236,7 @@ class Cookie implements ICookie
             if ($this->isJson($this->cookies[$name])) {
                 return json_decode($this->cookies[$name], true);
             }
+            
             return $this->cookies[$name];
         } else {
             return $defaults;
