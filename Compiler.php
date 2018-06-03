@@ -41,7 +41,8 @@ class Compiler implements ICompiler
         'php' => '~',
         'note' => '#',
         'variable' => '$',
-        'foreach' => 'list',  // foreach 和 for 冲突，foreach 改为 list
+        // foreach 和 for 冲突，foreach 改为 list
+        'foreach' => 'list',
         'echo' => ':',
         'endtag' => [
             '/list',
@@ -1417,7 +1418,8 @@ class Compiler implements ICompiler
             $sTxt = '';
         }
 
-        if ($bEsc) { // 转义
+        if ($bEsc) {
+            // 转义
             $sTxt = str_replace([
                 '\\\\',
                 "\\'",
@@ -1431,7 +1433,8 @@ class Compiler implements ICompiler
                 '~~{#!S!#}~~',
                 '~~{#!dot!#}~~'
             ], $sTxt);
-        } else { // 还原
+        } else {
+            // 还原
             $sTxt = str_replace([
                 '.',
                 "~~{#!`!#}~~",
