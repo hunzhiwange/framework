@@ -18,6 +18,7 @@ namespace Leevel\Bootstrap;
 
 use Exception;
 use Throwable;
+use ErrorException;
 use Leevel\Log\ILog;
 use Leevel\Http\Request;
 use Leevel\Router\Router;
@@ -29,7 +30,6 @@ use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Support\Debug\Console;
 use Leevel\Kernel\Runtime\IRuntime;
-use Leevel\Kernel\Exception\FatalThrowableError;
 use Leevel\Bootstrap\Bootstrap\{
     LoadI18n,
     LoadOption,
@@ -106,7 +106,16 @@ abstract class Kernel implements IKernel
 
             $response = $this->renderException($request, $e);
         } catch (Throwable $e) {
-            $this->reportException($e = new FatalThrowableError($e));
+            $e = new ErrorException(     
+                $e->getMessage(),
+                $e->getCode(),
+                E_ERROR,
+                $e->getFile(),
+                $e->getLine(),
+                $e->getPrevious()
+            );
+
+            $this->reportException($e);
 
             $response = $this->renderException($request, $e);
         }

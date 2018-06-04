@@ -21,8 +21,6 @@ use ErrorException;
 use Leevel\Kernel\IProject;
 use Leevel\Kernel\Runtime\IRuntime;
 use Leevel\Bootstrap\Runtime\Runtime;
-use Leevel\Kernel\Exception\FatalErrorException;
-use Leevel\Kernel\Exception\FatalThrowableError;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
@@ -94,7 +92,7 @@ class RegisterRuntime
     public function registerShutdownFunction()
     {
         if (($error = error_get_last()) && ! empty($error['type'])) {
-            $this->setExceptionHandler($this->formatFatalException($error));
+            $this->setExceptionHandler($this->formatErrorException($error));
         }
     }
 
@@ -107,7 +105,14 @@ class RegisterRuntime
     public function setExceptionHandler($e)
     {
         if (! $e instanceof Exception) {
-            $e = new FatalThrowableError($e);
+            $e = new ErrorException(     
+                $e->getMessage(),
+                $e->getCode(),
+                E_ERROR,
+                $e->getFile(),
+                $e->getLine(),
+                $e->getPrevious()
+            );
         }
 
         try {
@@ -148,13 +153,12 @@ class RegisterRuntime
      * 格式化致命错误信息
      *
      * @param array $error
-     * @param int|null $traceOffset
-     * @return \Leevel\Kernel\Exception\FatalErrorException
+     * @return \ErrorException
      */
-    protected function formatFatalException(array $error, $traceOffset = null)
+    protected function formatErrorException(array $error)
     {
-        return new FatalErrorException(
-            $error['message'], $error['type'], 0, $error['file'], $error['line'], $traceOffset
+        return new ErrorException(
+            $error['message'], $error['type'], 0, $error['file'], $error['line']
         );
     }
 
