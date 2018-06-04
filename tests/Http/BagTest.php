@@ -129,13 +129,13 @@ class BagTest extends TestCase
 
         $this->assertSame($bag->get('foo|substr=1|intval'), 1234);
 
-        $this->assertEquals($bag->get('foo|tests\Router\custom_func=hello,**,concact'), 'hello-- 1234-concact');
+        $this->assertEquals($bag->get('foo|Tests\Http\custom_func=hello,**,concact'), 'hello-- 1234-concact');
 
-        $this->assertEquals($bag->filter('foo|tests\Router\custom_func=hello,**,concact', null, 'substr=5'), '-- 1234-concact');
+        $this->assertEquals($bag->filter('foo|Tests\Http\custom_func=hello,**,concact', null, 'substr=5'), '-- 1234-concact');
 
-        $this->assertEquals($bag->filter('foo|substr=5', null, 'tests\Router\custom_func=hello,**,concact'), 'hello-4-concact');
+        $this->assertEquals($bag->filter('foo|substr=5', null, 'Tests\Http\custom_func=hello,**,concact'), 'hello-4-concact');
 
-        $this->assertEquals($bag->get('foo|tests\Router\custom_func=hello,**,MY_CONST'), 'hello-- 1234-hello const');
+        $this->assertEquals($bag->get('foo|Tests\Http\custom_func=hello,**,MY_CONST'), 'hello-- 1234-hello const');
 
         $this->assertEquals($bag->get('no|default=5'), '5');
         $this->assertEquals($bag->get('no|default=helloworld'), 'helloworld');
