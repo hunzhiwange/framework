@@ -32,36 +32,43 @@ abstract class Connect
      *
      * @var handle
      */
-    protected $hHandle;
+    protected $handle;
+
+    /**
+     * 配置
+     *
+     * @var array
+     */
+    protected $option = [];
 
     /**
      * 构造函数
      *
-     * @param array $arrOption
+     * @param array $option
      * @return void
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
-        $this->options($arrOption);
+        $this->option = array_merge($this->option, $option);
     }
 
     /**
      * 批量插入
      *
-     * @param string|array $mixKey
-     * @param mixed $mixValue
+     * @param string|array $keys
+     * @param mixed $value
      * @return void
      */
-    public function put($mixKey, $mixValue = null)
+    public function put($keys, $value = null)
     {
-        if (! is_array($mixKey)) {
-            $mixKey = [
-                $mixKey => $mixValue
+        if (! is_array($keys)) {
+            $keys = [
+                $keys => $value
             ];
         }
 
-        foreach ($mixKey as $strKey => $mixValue) {
-            $this->set($strKey, $mixValue);
+        foreach ($keys as $key => $value) {
+            $this->set($key, $value);
         }
     }
 
@@ -72,7 +79,7 @@ abstract class Connect
      */
     public function handle()
     {
-        return $this->hHandle;
+        return $this->handle;
     }
 
     /**
@@ -87,52 +94,63 @@ abstract class Connect
     /**
      * 获取缓存名字
      *
-     * @param string $sCacheName
-     * @param string $strPrefix
+     * @param string $name
+     * @param string $prefix
      * @return string
      */
-    protected function getCacheName($sCacheName, $strPrefix = '')
+    protected function getCacheName($name, $prefix = '')
     {
-        return $strPrefix . $sCacheName;
+        return $prefix . $name;
     }
 
     /**
      * 读取缓存时间配置
      *
-     * @param string $sId
-     * @param int $intDefaultTime
+     * @param string $id
+     * @param int $defaultTime
      * @return number
      */
-    protected function cacheTime($sId, $intDefaultTime = 0)
+    protected function cacheTime($id, $defaultTime = 0)
     {
-        if (! $this->arrOption['time_preset']) {
-            return $intDefaultTime;
+        if (! $this->option['time_preset']) {
+            return $defaultTime;
         }
 
-        if (isset($this->arrOption['time_preset'][$sId])) {
-            return $this->arrOption['time_preset'][$sId];
+        if (isset($this->option['time_preset'][$id])) {
+            return $this->option['time_preset'][$id];
         }
 
-        foreach ($this->arrOption['time_preset'] as $sKey => $nValue) {
-            $sKeyCache = '/^' . str_replace('*', '(\S+)', $sKey) . '$/';
-            if (preg_match($sKeyCache, $sId, $arrRes)) {
-                return $this->arrOption['time_preset'][$sKey];
+        foreach ($this->option['time_preset'] as $key => $value) {
+            if (preg_match($this->prepareRegexForWildcard($key), $id, $res)) {
+                return $this->option['time_preset'][$key];
             }
         }
 
-        return $intDefaultTime;
+        return $defaultTime;
     }
 
     /**
-     * 强制不启用缓存
+     * 通配符正则
      *
-     * @return boolean
+     * @param string $regex
+     * @return string
      */
-    protected function checkForce()
+    protected function prepareRegexForWildcard($regex)
     {
-        if (! empty($_REQUEST[$this->getOption('nocache_force')])) {
-            return true;
-        }
-        return false;
+        $regex = preg_quote($regex, '/');
+        $regex = '/^' . str_replace('\*', '(\S+)', $regex) . '$/';
+
+        return $regex;
+    }
+
+    /**
+     * 整理配置
+     *
+     * @param array $option
+     * @return array
+     */
+    protected function normalizeOptions(array $option = [])
+    {
+        return $option ? array_merge($this->option, $option) : $this->option;
     }
 }

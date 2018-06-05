@@ -18,7 +18,6 @@ namespace Leevel\Cache;
 
 use Redis as Rediss;
 use RuntimeException;
-use Leevel\Option\TClass;
 
 /**
  * redis 扩展缓存
@@ -30,15 +29,12 @@ use Leevel\Option\TClass;
  */
 class Redis extends Connect implements IConnect
 {
-    use TClass;
-
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [
-        'nocache_force' => '_nocache_force',
+    protected $option = [
         'time_preset' => [],
         'prefix' => '_',
         'expire' => 86400,
@@ -54,88 +50,105 @@ class Redis extends Connect implements IConnect
     /**
      * 构造函数
      *
-     * @param array $arrOption
+     * @param array $option
      * @return void
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
         if (! extension_loaded('redis')) {
             throw new RuntimeException('Redis extension must be loaded before use.');
         }
 
-        parent::__construct($arrOption);
+        parent::__construct($option);
 
-        $this->hHandle = $this->getRedis();
-        $this->hHandle->{$this->arrOption['persistent'] ? 'pconnect' : 'connect'}($this->arrOption['host'], $this->arrOption['port'], $this->arrOption['timeout']);
+        $this->handle = $this->getRedis();
 
-        if ($this->arrOption['password']) {
-            $this->hHandle->auth($this->arrOption['password']);
+        $this->handle->{$this->option['persistent'] ? 'pconnect' : 'connect'}(
+            $this->option['host'],
+            $this->option['port'],
+            $this->option['timeout']
+        );
+
+        if ($this->option['password']) {
+            $this->handle->auth($this->option['password']);
         }
 
-        if ($this->arrOption['select']) {
-            $this->hHandle->select($this->arrOption['select']);
+        if ($this->option['select']) {
+            $this->handle->select($this->option['select']);
         }
     }
 
     /**
      * 获取缓存
      *
-     * @param string $sCacheName
-     * @param mixed $mixDefault
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $defaults
+     * @param array $option
      * @return mixed
      */
-    public function get($sCacheName, $mixDefault = false, array $arrOption = [])
+    public function get($name, $defaults = false, array $option = [])
     {
-        if ($this->checkForce()) {
-            return $mixDefault;
+        $option = $this->normalizeOptions($option);
+
+        $data = $this->handle->get(
+            $this->getCacheName($name, $option['prefix'])
+        );
+
+        if (is_null($data)) {
+            return $defaults;
         }
 
-        $arrOption = $this->getOptions($arrOption);
-        $mixData = $this->hHandle->get($this->getCacheName($sCacheName, $arrOption['prefix']));
-        if (is_null($mixData)) {
-            return $mixDefault;
+        if ($option['serialize']) {
+            $data = unserialize($data);
         }
-        if ($arrOption['serialize']) {
-            $mixData = unserialize($mixData);
-        }
-        return $mixData;
+
+        return $data;
     }
 
     /**
      * 设置缓存
      *
-     * @param string $sCacheName
-     * @param mixed $mixData
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $data
+     * @param array $option
      * @return void
      */
-    public function set($sCacheName, $mixData, array $arrOption = [])
+    public function set($name, $data, array $option = [])
     {
-        $arrOption = $this->getOptions($arrOption);
-        if ($arrOption['serialize']) {
-            $mixData = serialize($mixData);
+        $option = $this->normalizeOptions($option);
+
+        if ($option['serialize']) {
+            $data = serialize($data);
         }
 
-        $arrOption['expire'] = $this->cacheTime($sCacheName, $arrOption['expire']);
+        $option['expire'] = $this->cacheTime($name, $option['expire']);
 
-        if ((int) $arrOption['expire']) {
-            $this->hHandle->setex($this->getCacheName($sCacheName, $arrOption['prefix']), (int) $arrOption['expire'], $mixData);
+        if ((int)$option['expire']) {
+            $this->handle->setex(
+                $this->getCacheName($name, $option['prefix']),
+                (int)$option['expire'],
+                $data
+            );
         } else {
-            $this->hHandle->set($this->getCacheName($sCacheName, $arrOption['prefix']), $mixData);
+            $this->handle->set(
+                $this->getCacheName($name, $option['prefix']),
+                $data
+            );
         }
     }
 
     /**
      * 清除缓存
      *
-     * @param string $sCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return void
      */
-    public function delele($sCacheName, array $arrOption = [])
+    public function delete($name, array $option = [])
     {
-        $this->hHandle->delete($this->getCacheName($sCacheName, $this->getOptions($arrOption)['prefix']));
+        $this->handle->delete(
+            $this->getCacheName($name, $this->normalizeOptions($option)['prefix'])
+        );
     }
 
     /**
@@ -145,8 +158,8 @@ class Redis extends Connect implements IConnect
      */
     public function close()
     {
-        $this->hHandle->close();
-        $this->hHandle = null;
+        $this->handle->close();
+        $this->handle = null;
     }
 
     /**

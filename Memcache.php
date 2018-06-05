@@ -18,7 +18,6 @@ namespace Leevel\Cache;
 
 use RuntimeException;
 use Memcache as Memcaches;
-use Leevel\Option\TClass;
 
 /**
  * memcache 扩展缓存
@@ -30,15 +29,12 @@ use Leevel\Option\TClass;
  */
 class Memcache extends Connect implements IConnect
 {
-    use TClass;
-
     /**
      * 配置
      *
      * @var array
      */
-    protected $arrOption = [
-        'nocache_force' => '_nocache_force',
+    protected $option = [
         'time_preset' => [],
         'prefix' => '_',
         'expire' => 86400,
@@ -52,31 +48,42 @@ class Memcache extends Connect implements IConnect
     /**
      * 构造函数
      *
-     * @param array $arrOption
+     * @param array $option
      * @return void
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
         if (! extension_loaded('memcache')) {
             throw new RuntimeException('Memcache extension must be loaded before use.');
         }
 
-        parent::__construct($arrOption);
+        parent::__construct($option);
 
-        if (empty($this->arrOption['servers'])) {
-            $this->arrOption['servers'][] = [
-                'host' => $this->getOption('host'),
-                'port' => $this->getOption('port')
+        if (empty($this->option['servers'])) {
+            $this->option['servers'][] = [
+                'host' => $this->option['host'],
+                'port' => $this->option['port']
             ];
         }
 
         // 连接缓存服务器
-        $this->hHandle = $this->getMemcache();
+        $this->handle = $this->getMemcache();
 
-        foreach ($this->arrOption['servers'] as $arrServer) {
-            $bResult = $this->hHandle->addServer($arrServer['host'], $arrServer['port'], $this->arrOption['persistent']);
-            if (! $bResult) {
-                throw new RuntimeException(sprintf('Unable to connect the memcached server [%s:%s] failed.', $arrServer['host'], $arrServer['port']));
+        foreach ($this->option['servers'] as $server) {
+            $result = $this->handle->addServer(
+                $server['host'],
+                $server['port'],
+                $this->option['persistent']
+            );
+
+            if (! $result) {
+                throw new RuntimeException(
+                    sprintf(
+                        'Unable to connect the memcached server [%s:%s] failed.',
+                        $server['host'],
+                        $server['port']
+                    )
+                );
             }
         }
     }
@@ -84,19 +91,18 @@ class Memcache extends Connect implements IConnect
     /**
      * 获取缓存
      *
-     * @param string $sCacheName
-     * @param mixed $mixDefault
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $defaults
+     * @param array $option
      * @return mixed
      */
-    public function get($sCacheName, $mixDefault = false, array $arrOption = [])
+    public function get($name, $defaults = false, array $option = [])
     {
-        if ($this->checkForce()) {
-            return $mixDefault;
-        }
+        $data = $this->handle->get(
+            $this->getCacheName($name, $this->normalizeOptions($option)['prefix'])
+        );
 
-        $mixData = $this->hHandle->get($this->getCacheName($sCacheName, $this->getOptions($arrOption)['prefix']));
-        return $mixData === false ? $mixDefault : $mixData;
+        return $data === false ? $defaults : $data;
     }
 
     /**
@@ -104,28 +110,36 @@ class Memcache extends Connect implements IConnect
      *
      * memcache 0 表示永不过期
      *
-     * @param string $sCacheName
-     * @param mixed $mixData
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $data
+     * @param array $option
      * @return void
      */
-    public function set($sCacheName, $mixData, array $arrOption = [])
+    public function set($name, $data, array $option = [])
     {
-        $arrOption = $this->getOptions($arrOption);
-        $arrOption['expire'] = $this->cacheTime($sCacheName, $arrOption['expire']);
-        $this->hHandle->set($this->getCacheName($sCacheName, $arrOption['prefix']), $mixData, $arrOption['compressed'] ? MEMCACHE_COMPRESSED : 0, (int) $arrOption['expire'] <= 0 ? 0 : (int) $arrOption['expire']);
+        $option = $this->normalizeOptions($option);
+        $option['expire'] = $this->cacheTime($name, $option['expire']);
+
+        $this->handle->set(
+            $this->getCacheName($name, $option['prefix']),
+            $data,
+            $option['compressed'] ? MEMCACHE_COMPRESSED : 0,
+            (int)$option['expire'] <= 0 ? 0 : (int)$option['expire']
+        );
     }
 
     /**
      * 清除缓存
      *
-     * @param string $sCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return void
      */
-    public function delele($sCacheName, array $arrOption = [])
+    public function delete($name, array $option = [])
     {
-        $this->hHandle->delete($this->getCacheName($sCacheName, $this->getOptions($arrOption)['prefix']));
+        $this->handle->delete(
+            $this->getCacheName($name, $this->normalizeOptions($option)['prefix'])
+        );
     }
 
     /**
@@ -135,8 +149,8 @@ class Memcache extends Connect implements IConnect
      */
     public function close()
     {
-        $this->hHandle->close();
-        $this->hHandle = null;
+        $this->handle->close();
+        $this->handle = null;
     }
 
     /**

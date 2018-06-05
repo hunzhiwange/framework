@@ -37,55 +37,55 @@ class Cache implements ICache
      *
      * @var \Leevel\Cache\IConnect
      */
-    protected $objConnect;
+    protected $connect;
 
     /**
      * 构造函数
      *
-     * @param \Leevel\Cache\IConnect $objConnect
+     * @param \Leevel\Cache\IConnect $connect
      * @return void
      */
-    public function __construct(IConnect $objConnect)
+    public function __construct(IConnect $connect)
     {
-        $this->objConnect = $objConnect;
+        $this->connect = $connect;
     }
 
     /**
      * 获取缓存
      *
-     * @param string $sCacheName
-     * @param mixed $mixDefault
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $defaults
+     * @param array $option
      * @return mixed
      */
-    public function get($sCacheName, $mixDefault = false, array $arrOption = [])
+    public function get($name, $defaults = false, array $option = [])
     {
-        return $this->objConnect->get($sCacheName, $mixDefault, $arrOption);
+        return $this->connect->get($name, $defaults, $option);
     }
 
     /**
      * 设置缓存
      *
-     * @param string $sCacheName
-     * @param mixed $mixData
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $data
+     * @param array $option
      * @return void
      */
-    public function set($sCacheName, $mixData, array $arrOption = [])
+    public function set($name, $data, array $option = [])
     {
-        $this->objConnect->set($sCacheName, $mixData, $arrOption);
+        $this->connect->set($name, $data, $option);
     }
 
     /**
      * 清除缓存
      *
-     * @param string $sCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return void
      */
-    public function delele($sCacheName, array $arrOption = [])
+    public function delete($name, array $option = [])
     {
-        $this->objConnect->delele($sCacheName, $arrOption);
+        $this->connect->delete($name, $option);
     }
 
     /**
@@ -95,7 +95,7 @@ class Cache implements ICache
      */
     public function handle()
     {
-        return $this->objConnect->handle();
+        return $this->connect->handle();
     }
 
     /**
@@ -105,22 +105,22 @@ class Cache implements ICache
      */
     public function close()
     {
-        $this->objConnect->close();
+        $this->connect->close();
     }
 
     /**
      * call 
      *
      * @param string $method
-     * @param array $arrArgs
+     * @param array $args
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
         if (static::hasMacro($method)) {
-            return $this->macroCall($method, $arrArgs);
+            return $this->macroCall($method, $args);
         }
 
-        return $this->objConnect->$method(...$arrArgs);
+        return $this->connect->$method(...$args);
     }
 }
