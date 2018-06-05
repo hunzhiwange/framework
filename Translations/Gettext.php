@@ -58,7 +58,7 @@ class Gettext extends Translations implements IArray
     public function nplurals_and_expression_from_header($header)
     {
         if (preg_match('/^\s*nplurals\s*=\s*(\d+)\s*;\s+plural\s*=\s*(.+)$/', $header, $matches)) {
-            $nplurals = (int) $matches[1];
+            $nplurals = (int)$matches[1];
             $expression = trim($this->parenthesize_plural_exression($matches[2]));
             return array(
                 $nplurals,
