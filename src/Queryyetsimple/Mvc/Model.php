@@ -2638,7 +2638,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         switch ($this->getConversionType($strKey)) {
             case 'int':
             case 'integer':
-                return (int) $mixValue;
+                return (int)$mixValue;
             case 'real':
             case 'float':
             case 'double':

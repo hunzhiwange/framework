@@ -218,7 +218,7 @@ class JsonResponse extends Response
             return $this;
         }
 
-        $this->encodingOptions = (int) $encodingOptions;
+        $this->encodingOptions = (int)$encodingOptions;
 
         return $this->setData($this->getData());
     }
