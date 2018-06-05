@@ -1579,7 +1579,7 @@ class Validate implements IValidate
             } else {
                 $intFoo = $mixData{$intIndex} * 2;
                 if ($intFoo > 9) {
-                    $intFoo = (int) ($intFoo / 10) + $intFoo % 10;
+                    $intFoo = (int)($intFoo / 10) + $intFoo % 10;
                 }
                 $intTotal += $intFoo;
             }
@@ -1637,7 +1637,7 @@ class Validate implements IValidate
     protected function validateStrlen($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
-        return strlen($mixData) == (int) $arrParameter[0];
+        return strlen($mixData) == (int)$arrParameter[0];
     }
 
     /**
@@ -1691,7 +1691,7 @@ class Validate implements IValidate
     protected function validateMinLength($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
-        return iconv_strlen($mixData, 'utf-8') >= (int) $arrParameter[0];
+        return iconv_strlen($mixData, 'utf-8') >= (int)$arrParameter[0];
     }
 
     /**
@@ -1705,7 +1705,7 @@ class Validate implements IValidate
     protected function validateMaxLength($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
-        return iconv_strlen($mixData, 'utf-8') <= (int) $arrParameter[0];
+        return iconv_strlen($mixData, 'utf-8') <= (int)$arrParameter[0];
     }
 
     /**
