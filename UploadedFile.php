@@ -169,7 +169,7 @@ class UploadedFile extends File
         } elseif (0 === strpos($max, '0')) {
             $max = intval($max, 8);
         } else {
-            $max = (int) $max;
+            $max = (int)$max;
         }
 
         switch (substr($iniMax, -1)) {
