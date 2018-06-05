@@ -150,16 +150,16 @@ class Mysql extends Connect implements IConnect
     public function parseLimitcount($mixLimitcount = null, $mixLimitoffset = null)
     {
         if (! is_null($mixLimitoffset)) {
-            $sSql = 'LIMIT ' . (int) $mixLimitoffset;
+            $sSql = 'LIMIT ' . (int)$mixLimitoffset;
             if (! is_null($mixLimitcount)) {
-                $sSql .= ',' . (int) $mixLimitcount;
+                $sSql .= ',' . (int)$mixLimitcount;
             } else {
                 $sSql .= ',999999999999';
             }
 
             return $sSql;
         } elseif (! is_null($mixLimitcount)) {
-            return 'LIMIT ' . (int) $mixLimitcount;
+            return 'LIMIT ' . (int)$mixLimitcount;
         }
     }
 
