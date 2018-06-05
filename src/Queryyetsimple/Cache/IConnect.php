@@ -30,40 +30,40 @@ interface IConnect
     /**
      * 获取缓存
      *
-     * @param string $sCacheName
-     * @param mixed $mixDefault
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $defaults
+     * @param array $option
      * @return mixed
      */
-    public function get($sCacheName, $mixDefault = false, array $arrOption = []);
+    public function get($name, $defaults = false, array $option = []);
 
     /**
      * 设置缓存
      *
-     * @param string $sCacheName
-     * @param mixed $mixData
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $data
+     * @param array $option
      * @return void
      */
-    public function set($sCacheName, $mixData, array $arrOption = []);
+    public function set($name, $data, array $option = []);
 
     /**
      * 清除缓存
      *
-     * @param string $sCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return void
      */
-    public function delele($sCacheName, array $arrOption = []);
+    public function delete($name, array $option = []);
 
     /**
      * 批量插入
      *
-     * @param string|array $mixKey
-     * @param mixed $mixValue
+     * @param string|array $keys
+     * @param mixed $value
      * @return void
      */
-    public function put($mixKey, $mixValue = null);
+    public function put($keys, $value = null);
 
     /**
      * 返回缓存句柄

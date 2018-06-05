@@ -35,44 +35,44 @@ class Load
      *
      * @var \Leevel\Di\IContainer
      */
-    protected $objContainer;
+    protected $container;
 
     /**
      * cache 仓储
      *
      * @var \Leevel\Cache\ICache
      */
-    protected $objCache;
+    protected $cache;
 
     /**
      * 已经载入的缓存数据
      *
      * @var array
      */
-    protected $arrCacheLoaded = [];
+    protected $cacheLoaded = [];
 
     /**
      * 构造函数
      *
-     * @param \Leevel\Di\IContainer $objContainer
-     * @param \Leevel\Cache\ICache $objCache
+     * @param \Leevel\Di\IContainer $container
+     * @param \Leevel\Cache\ICache $cache
      * @return void
      */
-    public function __construct(IContainer $objContainer, ICache $objCache)
+    public function __construct(IContainer $container, ICache $cache)
     {
-        $this->objContainer = $objContainer;
-        $this->objCache = $objCache;
+        $this->container = $container;
+        $this->cache = $cache;
     }
 
     /**
      * 切换缓存仓储
      *
-     * @param \Leevel\Cache\ICache $objCache
+     * @param \Leevel\Cache\ICache $cache
      * @return void
      */
-    public function switchCache(ICache $objCache)
+    public function switchCache(ICache $cache)
     {
-        $this->objCache = $objCache;
+        $this->cache = $cache;
     }
 
     /**
@@ -82,7 +82,7 @@ class Load
      */
     public function getCache()
     {
-        return $this->objCache;
+        return $this->cache;
     }
 
     /**
@@ -90,44 +90,47 @@ class Load
      * 系统自动存储缓存到内存，可重复执行不会重复载入数据
      * 获取缓存建议使用本函数
      *
-     * @param string|array $mixCacheName
-     * @param array $arrOption
-     * @param bool $booForce
+     * @param string|array $names
+     * @param array $option
+     * @param bool $force
      * @return array
      */
-    public function data($mixCacheName, array $arrOption = [], $booForce = false)
+    public function data($names, array $option = [], $force = false)
     {
-        $mixCacheName = is_array($mixCacheName) ? $mixCacheName : [
-            $mixCacheName
+        $names = is_array($names) ? $names : [
+            $names
         ];
 
-        foreach ($mixCacheName as $strCacheName) {
-            if (! isset($this->arrCacheLoaded[$strCacheName]) || $booForce) {
-                $this->arrCacheLoaded[$strCacheName] = $this->cache($strCacheName, $arrOption, $booForce);
+        foreach ($names as $name) {
+            if (! isset($this->cacheLoaded[$name]) || $force) {
+                $this->cacheLoaded[$name] = $this->cache($name, $option, $force);
             }
         }
 
-        $arrResult = [];
-        foreach ($mixCacheName as $strCacheName) {
-            $arrResult[$strCacheName] = $this->arrCacheLoaded[$strCacheName];
+        $result = [];
+
+        foreach ($names as $name) {
+            $result[$name] = $this->cacheLoaded[$name];
         }
-        return count($arrResult) > 1 ? $arrResult : reset($arrResult);
+
+        return count($result) > 1 ? $result : reset($result);
     }
 
     /**
      * 刷新缓存数据
      * 刷新缓存建议使用本函数
      *
-     * @param string|array $mixCacheName
-     * @param array $arrOption
+     * @param string|array $names
+     * @param array $option
      * @return void
      */
-    public function refresh($mixCacheName, array $arrOption = [])
+    public function refresh($names, array $option = [])
     {
-        $mixCacheName = is_array($mixCacheName) ? $mixCacheName : [
-            $mixCacheName
+        $names = is_array($names) ? $names : [
+            $names
         ];
-        $this->deletes($mixCacheName, $arrOption);
+
+        $this->deletes($names, $option);
     }
 
     /**
@@ -135,33 +138,38 @@ class Load
      * 不存在不用更新缓存，返回 false
      * 获取已载入缓存建议使用本函数
      *
-     * @param string|array $mixCacheName
+     * @param string|array $names
      * @return array
      */
-    public function dataLoaded($mixCacheName, array $arrOption = [], $booForce = false)
+    public function dataLoaded($names, array $option = [], $force = false)
     {
-        $arrResult = [];
-        $mixCacheName = is_array($mixCacheName) ? $mixCacheName : [
-            $mixCacheName
+        $result = [];
+
+        $names = is_array($names) ? $names : [
+            $names
         ];
-        foreach ($mixCacheName as $strCacheName) {
-            $arrResult[$strCacheName] = array_key_exists($strCacheName, $this->arrCacheLoaded) ? $this->arrCacheLoaded[$strCacheName] : false;
+
+        foreach ($names as $name) {
+            $result[$name] = array_key_exists($name, $this->cacheLoaded) ? 
+                $this->cacheLoaded[$name] :
+                false;
         }
-        return count($arrResult) > 1 ? $arrResult : reset($arrResult);
+
+        return count($result) > 1 ? $result : reset($result);
     }
 
     /**
      * 批量删除缓存数据
      * 不建议直接操作
      *
-     * @param array $arrCacheName
-     * @param array $arrOption
+     * @param array $names
+     * @param array $option
      * @return void
      */
-    public function deletes(array $arrCacheName, $arrOption = [])
+    public function deletes(array $names, array $option = [])
     {
-        foreach ($arrCacheName as $strCacheName) {
-            $this->delete($strCacheName, $arrOption);
+        foreach ($names as $name) {
+            $this->delete($name, $option);
         }
     }
 
@@ -169,158 +177,164 @@ class Load
      * 删除缓存数据
      * 不建议直接操作
      *
-     * @param string $strCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return void
      */
-    public function delete($strCacheName, $arrOptions = [])
+    public function delete($name, array $options = [])
     {
-        $this->delelePersistence($strCacheName, $arrOptions);
+        $this->deletePersistence($name, $options);
     }
 
     /**
      * 批量读取缓存数据
      * 不建议直接操作
      *
-     * @param array $arrCacheName
-     * @param array $arrOption
-     * @param boolean $booForce
+     * @param array $names
+     * @param array $option
+     * @param boolean $force
      * @return array
      */
-    public function caches(array $arrCacheName, $arrOption = [], $booForce = false)
+    public function caches(array $names, array $option = [], $force = false)
     {
-        $arrData = [];
-        foreach ($arrCacheName as $strCacheName) {
-            $arrData[$strCacheName] = $this->cache($strCacheName, $arrOption, $booForce);
+        $data = [];
+
+        foreach ($names as $name) {
+            $data[$name] = $this->cache($name, $option, $force);
         }
-        return $arrData;
+
+        return $data;
     }
 
     /**
      * 读取缓存数据
      * 不建议直接操作
      *
-     * @param string $strCacheName
-     * @param array $arrOption
-     * @param boolean $booForce
+     * @param string $name
+     * @param array $option
+     * @param boolean $force
      * @return mixed
      */
-    public function cache($strCacheName, $arrOption = [], $booForce = false)
+    public function cache($name, array $option = [], $force = false)
     {
-        if ($booForce === false) {
-            $mixData = $this->getPersistence($strCacheName, false, $arrOption);
+        if ($force === false) {
+            $data = $this->getPersistence($name, false, $option);
         } else {
-            $mixData = false;
+            $data = false;
         }
 
-        if ($mixData === false) {
-            $mixData = $this->update($strCacheName, $arrOption);
+        if ($data === false) {
+            $data = $this->update($name, $option);
         }
 
-        return $mixData;
+        return $data;
     }
 
     /**
      * 批量更新缓存数据
      * 不建议直接操作
      *
-     * @param array $arrCacheName
-     * @param array $arrOption
+     * @param array $names
+     * @param array $option
      * @return array
      */
-    public function updates(array $arrCacheName, $arrOption = [])
+    public function updates(array $names, array $option = [])
     {
-        $arrResult = [];
-        foreach ($arrCacheName as $strCacheName) {
-            $arrResult[$strCacheName] = $this->update($strCacheName, $arrOption);
+        $result = [];
+
+        foreach ($names as $name) {
+            $result[$name] = $this->update($name, $option);
         }
-        return $arrResult;
+
+        return $result;
     }
 
     /**
      * 更新缓存数据
      * 不建议直接操作
      *
-     * @param string $strCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return mixed
      */
-    public function update($strCacheName, $arrOption = [])
+    public function update($name, $option = [])
     {
-        $strCacheNameSource = $strCacheName;
-        list($strCacheName, $arrParams) = $this->parse($strCacheName);
+        $sourceName = $name;
 
-        if (strpos($strCacheName, '@') !== false) {
-            list($strCacheName, $strMethod) = explode('@', $strCacheName);
+        list($name, $params) = $this->parse($name);
+
+        if (strpos($name, '@') !== false) {
+            list($name, $method) = explode('@', $name);
         } else {
-            $strMethod = 'handle';
+            $method = 'handle';
         }
 
-        if (($objCache = $this->objContainer->make($strCacheName)) === false) {
-            throw new InvalidArgumentException(sprintf('Cache %s is not valid.', $strCacheName));
+        if (! is_object($cache = $this->container->make($name))) {
+            throw new InvalidArgumentException(sprintf('Cache %s is not valid.', $name));
         }
 
-        $mixSourceData = $objCache->$strMethod(...$arrParams);
+        $sourceData = $cache->$method(...$params);
 
-        $this->setPersistence($strCacheNameSource, $mixSourceData, $arrOption);
+        $this->setPersistence($sourceName, $sourceData, $option);
 
-        return $mixSourceData;
+        return $sourceData;
     }
 
     /**
      * 获取缓存
      *
-     * @param string $strCacheName
-     * @param mixed $mixDefault
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $defaults
+     * @param array $option
      * @return mixed
      */
-    protected function getPersistence($strCacheName, $mixDefault = false, array $arrOption = [])
+    protected function getPersistence($name, $defaults = false, array $option = [])
     {
-        return $this->objCache->get($strCacheName, $mixDefault, $arrOption);
+        return $this->cache->get($name, $defaults, $option);
     }
 
     /**
      * 设置缓存
      *
-     * @param string $strCacheName
-     * @param mixed $mixData
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $data
+     * @param array $option
      * @return void
      */
-    protected function setPersistence($strCacheName, $mixData, array $arrOption = [])
+    protected function setPersistence($name, $data, array $option = [])
     {
-        $this->objCache->set($strCacheName, $mixData, $arrOption);
+        $this->cache->set($name, $data, $option);
     }
 
     /**
      * 清除缓存
      *
-     * @param string $strCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return void
      */
-    protected function delelePersistence($strCacheName, array $arrOption = [])
+    protected function deletePersistence($name, array $option = [])
     {
-        $this->objCache->delele($strCacheName, $arrOption);
+        $this->cache->delete($name, $option);
     }
 
     /**
      * 解析缓存
      *
-     * @param string $strCacheName
+     * @param string $name
      * @return array
      */
-    protected function parse($strCacheName)
+    protected function parse($name)
     {
-        list($strName, $arrArgs) = array_pad(explode(':', $strCacheName, 2), 2, []);
-        if (is_string($arrArgs)) {
-            $arrArgs = explode(',', $arrArgs);
+        list($name, $args) = array_pad(explode(':', $name, 2), 2, []);
+
+        if (is_string($args)) {
+            $args = explode(',', $args);
         }
 
         return [
-            $strName,
-            $arrArgs
+            $name,
+            $args
         ];
     }
 }

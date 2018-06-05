@@ -17,10 +17,6 @@
 namespace Leevel\Cache;
 
 use InvalidArgumentException;
-use Leevel\{
-    Option\TClass,
-    Filesystem\Fso
-};
 
 /**
  * 文件缓存
@@ -32,8 +28,6 @@ use Leevel\{
  */
 class File extends Connect implements IConnect
 {
-    use TClass;
-
     /**
      * 缓存文件头部
      *
@@ -53,8 +47,7 @@ class File extends Connect implements IConnect
      *
      * @var array
      */
-    protected $arrOption = [
-        'nocache_force' => '_nocache_force',
+    protected $option = [
         'time_preset' => [],
         'prefix' => '_',
         'expire' => 86400,
@@ -65,176 +58,181 @@ class File extends Connect implements IConnect
     /**
      * 获取缓存
      *
-     * @param string $sCacheName
-     * @param mixed $mixDefault
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $defaults
+     * @param array $option
      * @return mixed
      */
-    public function get($sCacheName, $mixDefault = false, array $arrOption = [])
+    public function get($name, $defaults = false, array $option = [])
     {
-        if ($this->checkForce()) {
-            return $mixDefault;
-        }
-
-        $arrOption = $this->getOptions($arrOption);
-        $sCachePath = $this->getCachePath($sCacheName, $arrOption);
+        $option = $this->normalizeOptions($option);
+        $cachePath = $this->getCachePath($name, $option);
 
         // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php
         clearstatcache();
 
-        if (! is_file($sCachePath)) {
+        if (! is_file($cachePath)) {
             return false;
         }
 
-        $hFp = fopen($sCachePath, 'rb');
-        if (! $hFp) {
+        $fp = fopen($cachePath, 'rb');
+        if (! $fp) {
             return false;
         }
-        flock($hFp, LOCK_SH);
+        flock($fp, LOCK_SH);
 
         // 头部的 41 个字节存储了安全代码
-        $nLen = filesize($sCachePath);
-        fread($hFp, static::HEADER_LENGTH);
-        $nLen -= static::HEADER_LENGTH;
+        $len = filesize($cachePath);
+        fread($fp, static::HEADER_LENGTH);
+        $len -= static::HEADER_LENGTH;
 
         do {
             // 检查缓存是否已经过期
-            if ($this->isExpired($sCacheName, $arrOption)) {
-                $strData = false;
+            if ($this->isExpired($name, $option)) {
+                $data = false;
                 break;
             }
 
-            if ($nLen > 0) {
-                $strData = fread($hFp, $nLen);
+            if ($len > 0) {
+                $data = fread($fp, $len);
             } else {
-                $strData = false;
+                $data = false;
             }
         } while (false);
 
-        flock($hFp, LOCK_UN);
-        fclose($hFp);
+        flock($fp, LOCK_UN);
+        fclose($fp);
 
-        if ($strData === false) {
+        if ($data === false) {
             return false;
         }
 
         // 解码
-        if ($arrOption['serialize']) {
-            $strData = unserialize($strData);
+        if ($option['serialize']) {
+            $data = unserialize($data);
         }
 
-        return $strData;
+        return $data;
     }
 
     /**
      * 设置缓存
      *
-     * @param string $sCacheName
-     * @param mixed $mixData
-     * @param array $arrOption
+     * @param string $name
+     * @param mixed $data
+     * @param array $option
      * @return void
      */
-    public function set($sCacheName, $mixData, array $arrOption = [])
+    public function set($name, $data, array $option = [])
     {
-        $arrOption = $this->getOptions($arrOption);
-        if ($arrOption['serialize']) {
-            $mixData = serialize($mixData);
-        }
-        $mixData = sprintf(static::HEADER, '/* ' . date('Y-m-d H:i:s') . '  */') . $mixData;
+        $option = $this->normalizeOptions($option);
 
-        $sCachePath = $this->getCachePath($sCacheName, $arrOption);
-        $this->writeData($sCachePath, $mixData);
+        if ($option['serialize']) {
+            $data = serialize($data);
+        }
+        $data = sprintf(static::HEADER, '/* ' . date('Y-m-d H:i:s') . '  */') . $data;
+
+        $cachePath = $this->getCachePath($name, $option);
+        $this->writeData($cachePath, $data);
     }
 
     /**
      * 清除缓存
      *
-     * @param string $sCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return void
      */
-    public function delele($sCacheName, array $arrOption = [])
+    public function delete($name, array $option = [])
     {
-        $arrOption = $this->getOptions($arrOption);
-        $sCachePath = $this->getCachePath($sCacheName, $arrOption);
-        if ($this->exist($sCacheName, $arrOption)) {
-            @unlink($sCachePath);
+        $option = $this->normalizeOptions($option);
+
+        $cachePath = $this->getCachePath($name, $option);
+
+        if ($this->exist($name, $option)) {
+            @unlink($cachePath);
         }
     }
 
     /**
      * 验证缓存是否过期
      *
-     * @param string $sCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return boolean
      */
-    protected function isExpired($sCacheName, $arrOption)
+    protected function isExpired($name, $option)
     {
-        $sFilePath = $this->getCachePath($sCacheName, $arrOption);
-        if (! is_file($sFilePath)) {
+        $filePath = $this->getCachePath($name, $option);
+
+        if (! is_file($filePath)) {
             return true;
         }
-        $arrOption['expire'] = $this->cacheTime($sCacheName, $arrOption['expire']);
-        return (int) $arrOption['expire'] > 0 && filemtime($sFilePath) + (int) $arrOption['expire'] < time();
+
+        $option['expire'] = $this->cacheTime($name, $option['expire']);
+        
+        return (int)$option['expire'] > 0 && filemtime($filePath) + (int)$option['expire'] < time();
     }
 
     /**
      * 获取缓存路径
      *
-     * @param string $sCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return string
      */
-    protected function getCachePath($sCacheName, $arrOption)
+    protected function getCachePath($name, $option)
     {
-        if (! $arrOption['path']) {
+        if (! $option['path']) {
             throw new InvalidArgumentException('Cache path is not allowed empty.');
         }
 
-        if (! is_dir($arrOption['path'])) {
-            mkdir($arrOption['path'], 0777, true);
+        if (! is_dir($option['path'])) {
+            mkdir($option['path'], 0777, true);
         }
-        return $arrOption['path'] . '/' . $this->getCacheName($sCacheName, $arrOption['prefix']) . '.php';
+
+        return $option['path'] . '/' . $this->getCacheName($name, $option['prefix']) . '.php';
     }
 
     /**
      * 写入缓存数据
      *
-     * @param string $sFileName
-     * @param string $sData
+     * @param string $fileName
+     * @param string $data
      * @return void
      */
-    protected function writeData($sFileName, $sData)
+    protected function writeData($fileName, $data)
     {
-        ! is_dir(dirname($sFileName)) && mkdir(dirname($sFileName), 0777, true);
+        ! is_dir(dirname($fileName)) && mkdir(dirname($fileName), 0777, true);
 
-        file_put_contents($sFileName, $sData, LOCK_EX);
+        if (! file_put_contents($fileName, $data, LOCK_EX)) {
+            throw new InvalidArgumentException(sprintf('Dir %s is not writeable', dirname($fileName)));
+        }
 
-        chmod($sFileName, 0777);
+        chmod($fileName, 0777);
     }
 
     /**
      * 验证缓存是否存在
      *
-     * @param string $sCacheName
-     * @param array $arrOption
+     * @param string $name
+     * @param array $option
      * @return boolean
      */
-    protected function exist($sCacheName, $arrOption)
+    protected function exist($name, $option)
     {
-        return is_file($this->getCachePath($sCacheName, $arrOption));
+        return is_file($this->getCachePath($name, $option));
     }
 
     /**
      * 获取缓存名字
      * 去掉特殊缓存名字字符
      *
-     * @param string $sCacheName
-     * @param string $strPrefix
+     * @param string $name
+     * @param string $prefix
      * @return string
      */
-    protected function getCacheName($sCacheName, $strPrefix = '')
+    protected function getCacheName($name, $prefix = '')
     {
         return str_replace([
             '?',
@@ -246,6 +244,6 @@ class File extends Connect implements IConnect
             '\\',
             '/',
             '|'
-        ], '.', parent::getCacheName($sCacheName, $strPrefix));
+        ], '.', parent::getCacheName($name, $prefix));
     }
 }
