@@ -66,8 +66,8 @@ class Image
                     $nWidth = $nSrcWidth;
                     $nHeight = $nSrcHeight;
                 } else { // 缩略图尺寸
-                    $nWidth = (int) ($nSrcWidth * $nScale);
-                    $nHeight = (int) ($nSrcHeight * $nScale);
+                    $nWidth = (int)($nSrcWidth * $nScale);
+                    $nHeight = (int)($nSrcHeight * $nScale);
                 }
             }
 
