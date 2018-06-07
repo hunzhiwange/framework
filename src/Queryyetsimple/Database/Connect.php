@@ -158,6 +158,8 @@ abstract class Connect
         // 记录连接参数
         $this->arrOption = $arrOption;
 
+        return;
+
         // 尝试连接主服务器
         $this->writeConnect();
 
@@ -756,7 +758,13 @@ abstract class Connect
 
         try {
             $this->setCurrentOption($arrOption);
-            return $this->arrConnect[$nLinkid] = new PDO($this->parseDsn($arrOption), $arrOption['user'], $arrOption['password'], $arrOption['options']);
+            
+            return $this->arrConnect[$nLinkid] = new PDO(
+                $this->parseDsn($arrOption),
+                $arrOption['user'],
+                $arrOption['password'],
+                $arrOption['options']
+            );
         } catch (PDOException $oE) {
             if ($booThrowException === false) {
                 return false;

@@ -45,11 +45,11 @@ interface iparser
      * 执行编译
      *
      * @param string $sFile
-     * @param string $sCachePath
-     * @param boolean $bReturn
+     * @param string|null $sCachePath
+     * @param boolean $isContent
      * @return string
      */
-    public function doCombile($sFile, $sCachePath, $bReturn = false);
+    public function doCompile($sFile, $sCachePath = null, bool $isContent = false);
 
     /**
      * code 编译编码，后还原

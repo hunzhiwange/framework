@@ -166,6 +166,7 @@ class Parser implements IParser
         foreach ($this->objCompiler->getCompilers() as $arrCompiler) {
             $this->registerCompiler($arrCompiler[0], $arrCompiler[1], $arrCompiler[2]);
         }
+
         return $this;
     }
 
@@ -179,6 +180,7 @@ class Parser implements IParser
         foreach ($this->arrTag as $sKey => $arr) {
             $this->registerParser($sKey);
         }
+        
         return $this;
     }
 
@@ -186,26 +188,32 @@ class Parser implements IParser
      * 执行编译
      *
      * @param string $sFile
-     * @param string $sCachePath
-     * @param boolean $bReturn
+     * @param string|null $sCachePath
+     * @param boolean $isContent
      * @return string
      */
-    public function doCombile($sFile, $sCachePath, $bReturn = false)
+    public function doCompile($sFile, $sCachePath = null, bool $isContent = false)
     {
-        if (! is_file($sFile)) {
-            throw new InvalidArgumentException(printf('file %s is not exits', $sFile));
-        }
-
-        $this->strSourceFile = $sFile;
-        $this->strCachePath = $sCachePath;
-
         // 源码
-        $sCache = file_get_contents($sFile);
+        if ($isContent === false) {
+            $sCache = file_get_contents($sFile);
+
+            if (! is_file($sFile)) {
+                throw new InvalidArgumentException(printf('file %s is not exits', $sFile));
+            }
+
+            $this->strSourceFile = $sFile;
+            $this->strCachePath = $sCachePath;
+        } else {
+            $sCache = $sFile;
+        }
 
         // 逐个载入分析器编译模板
         foreach ($this->arrParses as $sParser) {
+
             // 清理对象 & 构建顶层树对象
             $this->clearThemeTree();
+
             $arrTheme = [
                 'source' => $sCache,
                 'content' => $sCache,
@@ -224,10 +232,10 @@ class Parser implements IParser
         }
 
         // 生成编译文件
-        if ($bReturn === false) {
+        if (! is_null($sCachePath)) {
             $this->makeCacheFile($sCachePath, $sCache);
         } else {
-            return $sCompiled;
+            return $sCache;
         }
     }
 

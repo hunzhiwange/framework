@@ -87,7 +87,7 @@ class Html extends Connect implements IConnect
         $cachepath = $this->getCachePath($file); // 编译文件路径
 
         if ($this->isCacheExpired($file, $cachepath)) { // 重新编译
-            $this->parser()->doCombile($file, $cachepath);
+            $this->parser()->doCompile($file, $cachepath);
         }
 
         // 返回类型

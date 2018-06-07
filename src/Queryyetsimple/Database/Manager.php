@@ -16,7 +16,6 @@
  */
 namespace Leevel\Database;
 
-use Leevel\Support\Arr;
 use Leevel\Manager\Manager as Managers;
 
 /**
@@ -43,49 +42,56 @@ class Manager extends Managers
     /**
      * 创建连接对象
      *
-     * @param object $objConnect
+     * @param object $connect
      * @return object
      */
-    protected function createConnect($objConnect)
+    protected function createConnect($connect)
     {
-        return new Database($objConnect);
+        return new Database($connect);
     }
 
     /**
      * 创建 mysql 连接
      *
-     * @param array $arrOption
+     * @param array $option
      * @return \Leevel\Database\mysql
      */
-    protected function makeConnectMysql($arrOption = [])
+    protected function makeConnectMysql($option = [])
     {
-        return new Mysql($this->objContainer['log'], $this->objContainer['cache'], $this->getOption('mysql', is_array($arrOption) ? $arrOption : []), $this->objContainer->development());
+        return new Mysql(
+            $this->container['log'],
+            $this->container['cache'],
+            $this->getOption('mysql', is_array($option) ? $option : []),
+            $this->container->development()
+        );
     }
 
     /**
      * 读取默认配置
      *
-     * @param string $strConnect
-     * @param array $arrExtendOption
+     * @param string $connect
+     * @param array $extendOption
      * @return array
      */
-    protected function getOption($strConnect, array $arrExtendOption = null)
+    protected function getOption($connect, array $extendOption = null)
     {
-        return $this->parseOption(parent::getOption($strConnect, $arrExtendOption));
+        return $this->parseOption(
+            parent::getOption($connect, $extendOption)
+        );
     }
 
     /**
      * 分析数据库配置参数
      *
-     * @param array $arrOption
+     * @param array $option
      * @return array
      */
-    protected function parseOption($arrOption)
+    protected function parseOption($option)
     {
-        $arrTemp = $arrOption;
+        $temp = $option;
 
-        foreach (array_keys($arrOption) as $strType) {
-            if (in_array($strType, [
+        foreach (array_keys($option) as $type) {
+            if (in_array($type, [
                 'distributed',
                 'readwrite_separate',
                 'driver',
@@ -94,12 +100,12 @@ class Manager extends Managers
                 'fetch',
                 'log'
             ])) {
-                if (isset($arrTemp[$strType])) {
-                    unset($arrTemp[$strType]);
+                if (isset($temp[$type])) {
+                    unset($temp[$type]);
                 }
             } else {
-                if (isset($arrOption[$strType])) {
-                    unset($arrOption[$strType]);
+                if (isset($option[$type])) {
+                    unset($option[$type]);
                 }
             }
         }
@@ -108,35 +114,33 @@ class Manager extends Managers
         foreach ([
             'master',
             'slave'
-        ] as $strType) {
-            if (! is_array($arrOption[$strType])) {
-                $arrOption[$strType] = [];
+        ] as $type) {
+            if (! is_array($option[$type])) {
+                $option[$type] = [];
             }
         }
 
         // 填充数据库服务器参数
-        $arrOption['master'] = array_merge($arrOption['master'], $arrTemp);
+        $option['master'] = array_merge($option['master'], $temp);
 
         // 是否采用分布式服务器，非分布式关闭附属服务器
-        if (! $arrOption['distributed']) {
-            $arrOption['slave'] = [];
-        } elseif ($arrOption['slave']) {
-            if (count($arrOption['slave']) == count($arrOption['slave'], COUNT_RECURSIVE)) {
-                $arrOption['slave'] = [
-                    $arrOption['slave']
+        if (! $option['distributed']) {
+            $option['slave'] = [];
+        } elseif ($option['slave']) {
+            if (count($option['slave']) == count($option['slave'], COUNT_RECURSIVE)) {
+                $option['slave'] = [
+                    $option['slave']
                 ];
             }
-            foreach ($arrOption['slave'] as &$arrSlave) {
-                $arrSlave = array_merge($arrSlave, $arrTemp);
+
+            foreach ($option['slave'] as &$slave) {
+                $slave = array_merge($slave, $temp);
             }
         }
 
-        // + 合并支持
-        $arrOption = Arr::merge($arrOption);
-
         // 返回结果
-        unset($arrTemp);
+        unset($temp);
         
-        return $arrOption;
+        return $option;
     }
 }
