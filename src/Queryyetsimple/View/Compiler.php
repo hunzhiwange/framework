@@ -520,7 +520,9 @@ class Compiler implements ICompiler
      */
     public function styleCodeCompiler(&$theme)
     {
-        $theme['content'] = $this->encodeContent('<style type="text/css">');
+        $theme['content'] = $this->encodeContent(
+            '<style type="text/css">'
+        );
     }
 
     /**
@@ -832,7 +834,7 @@ class Compiler implements ICompiler
         $attr['id'] === null && $attr['id'] = 'id';
         $attr['mod'] === null && $attr['mod'] = 2;
 
-        if (preg_match("/[^\d-.,]/", $attr['mod'])) {
+        if (preg_match("/[^\d-.,]/", strval($attr['mod']))) {
             $attr['mod'] = '$' . $attr['mod'];
         }
 
@@ -842,38 +844,42 @@ class Compiler implements ICompiler
         $attr['name'] = $this->parseContent($attr['name']);
 
         $compiled = [];
-        $compiled[] = $this->phpTagStart() . 'if (is_array(' .
-            $attr['name'] . ')): $' .
-            $attr['index'] . ' = 0;';
+
+        $tmp = 'if (is_array(' .
+            $attr['name'] . ')):' . PHP_EOL . '    $' .
+            $attr['index'] . ' = 0;' . PHP_EOL;
 
         if ('' != $attr['length']) {
-            $compiled[] = '$arrList = array_slice(' .
+            $tmp .= '    $tmp = array_slice(' .
                 $attr['name'] . ', ' .
                 $attr['offset'] . ', ' .
                 $attr['length'] . ');';
         } elseif ('' != $attr['offset']) {
-            $compiled[] = '$arrList = array_slice(' .
+            $tmp .= '    $tmp = array_slice(' .
                 $attr['name'] . ', ' .
                 $attr['offset'] . ');';
         } else {
-            $compiled[] = '$arrList = ' . $attr['name'] . ';';
+            $tmp .= '    $tmp = ' . $attr['name'] . ';';
         }
 
-        $compiled[] = 'if (count($arrList) == 0): echo  "' .$attr['empty'] . '";';
-        $compiled[] = 'else:';
-        $compiled[] = 'foreach ($arrList as $' . $attr['key'] .
+        $tmp .= PHP_EOL . '    if (count($tmp) == 0):' . PHP_EOL .
+            '        echo "' .$attr['empty'] . '";';
+        $tmp .= PHP_EOL . '    else:';
+        $tmp .= PHP_EOL . '        foreach ($tmp as $' . $attr['key'] .
             ' => $' . $attr['id'] . '):';
-        $compiled[] = '++$' . $attr['index'] . ';';
-        $compiled[] = '$mod = $' . $attr['index'] . ' % ' .
-            $attr['mod'] . ';' . $this->phpTagEnd();
+        $tmp .= PHP_EOL . '            ++$' . $attr['index'] . ';' . PHP_EOL;
+        $tmp .= '            ' . '$mod = $' . $attr['index'] . ' % ' .
+            $attr['mod'] . ';'; 
 
+        $compiled[] = $this->withPhpTag($tmp); 
         $compiled[] = $this->getNodeBody($theme);
-        $compiled[] = $this->withPhpTag(
-            'endforeach; endif; else: echo "' .
-            $attr['empty'] . '"; endif;'
+        $compiled[] = '        ' . $this->withPhpTag(
+            'endforeach;' . PHP_EOL . '    endif;' .
+            PHP_EOL . 'else:' . PHP_EOL . '    echo "' .
+            $attr['empty'] . '";' . PHP_EOL . 'endif;'
         );
 
-        $theme['content'] = implode(' ', $compiled);
+        $theme['content'] = implode('', $compiled);
     }
 
     /**
