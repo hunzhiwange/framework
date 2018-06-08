@@ -49,7 +49,7 @@ return [
      * ---------------------------------------------------------------
      *
      * 当前模板路径不存在的情况下默认路径的分析
-     * see view\theme::parseDefaultFile
+     * see \Leevel\View\Html::parseDefaultFile
      */
     'theme_path_default' => '',
 

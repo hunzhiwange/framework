@@ -55,6 +55,7 @@ abstract class Controller implements IController
     public function setView(IView $view)
     {
         $this->view = $view;
+
         return $this;
     }
 
@@ -68,6 +69,7 @@ abstract class Controller implements IController
     {
         $this->checkView();
         $this->view->switchView($theme);
+
         return $this;
     }
 
@@ -82,6 +84,7 @@ abstract class Controller implements IController
     {
         $this->checkView();
         $this->view->assign($name, $value);
+
         return $this;
     }
 
@@ -94,6 +97,7 @@ abstract class Controller implements IController
     public function getAssign($name = null)
     {
         $this->checkView();
+
         return $this->view->getAssign($name);
     }
 
@@ -124,6 +128,7 @@ abstract class Controller implements IController
     {
         $this->checkView();
         $this->view->clearAssign();
+
         return $this;
     }
 
@@ -138,6 +143,7 @@ abstract class Controller implements IController
     public function display($file = null, array $vars = [], $ext = null)
     {
         $this->checkView();
+        
         return $this->view->display($file, $vars, $ext);
     }
 

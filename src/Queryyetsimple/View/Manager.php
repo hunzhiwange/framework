@@ -104,6 +104,7 @@ class Manager extends Managers
     {
         $options = $this->getOption('phpui', $options);
         $options = array_merge($options, $this->viewOptionCommon());
+
         return new Phpui($options);
     }
 
@@ -117,6 +118,7 @@ class Manager extends Managers
     {
         $options = $this->getOption('v8', $options);
         $options = array_merge($options, $this->viewOptionCommon());
+
         return new V8($options);
     }
 
@@ -133,7 +135,7 @@ class Manager extends Managers
             'development' => $this->container->development(),
             'controller_name' => $request->controller(),
             'action_name' => $request->action(),
-            'theme_path' => $this->container->pathApplicationDir('theme') . '/' . $this->container['option']['view\theme_name'],
+            'theme_path' => $this->container->pathApplicationTheme(),
 
             // 仅 html 模板需要缓存路径
             'theme_cache_path' => $this->container->pathApplicationCache('theme') . '/' . strtolower($request->app())

@@ -124,6 +124,7 @@ class Html extends Connect implements IConnect
         if (! $this->parseResolver) {
             throw new RuntimeException('Html theme not set parse resolver');
         }
+
         return call_user_func($this->parseResolver);
     }
 
@@ -137,6 +138,7 @@ class Html extends Connect implements IConnect
         if (! is_null($this->parser)) {
             return $this->parser;
         }
+
         return $this->parser = $this->resolverParser();
     }
 
@@ -156,7 +158,8 @@ class Html extends Connect implements IConnect
         $file = str_replace('//', '/', str_replace('\\', '/', $file));
 
         // 统一缓存文件
-        $file = basename($file, '.' . pathinfo($file, PATHINFO_EXTENSION)) . '.' . md5($file) . '.php';
+        $file = basename($file, '.' . pathinfo($file, PATHINFO_EXTENSION)) .
+            '.' . md5($file) . '.php';
 
         // 返回真实路径
         return $this->getOption('theme_cache_path') . '/' . $file;

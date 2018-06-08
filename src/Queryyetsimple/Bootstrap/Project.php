@@ -464,23 +464,16 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 取得应用目录
+     * 取得应用主题目录
      *
-     * @param string $type
+     * @param string $app
      * @return string
      */
-    public function pathApplicationDir($type)
+    public function pathApplicationTheme(?string $app = null)
     {
-        $types = [
-            'theme',
-            'i18n'
-        ];
-
-        if (! in_array($type, $types)) {
-            throw new Exception(sprintf('Application dir type %s not support', $type));
-        }
-
-        return $this->pathAnApplication() . '/ui/' . $type;
+        return $this->pathAnApplication($app) .
+            '/ui/theme/' .
+            $this->make('option')->get('view\theme_name');
     }
 
     /**

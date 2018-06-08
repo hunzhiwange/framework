@@ -621,20 +621,7 @@ if (! function_exists('path_theme')) {
      */
     function path_theme($path = '')
     {
-        return project()->pathApplicationDir('theme') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
-    }
-}
-
-if (! function_exists('path_i18n')) {
-    /**
-     * 取得项目当前应用国际化路径
-     *
-     * @param string $path
-     * @return string
-     */
-    function path_i18n($path = '')
-    {
-        return project()->pathApplicationDir('i18n') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathApplicationTheme() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }
 

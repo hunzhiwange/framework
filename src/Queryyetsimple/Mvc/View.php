@@ -75,6 +75,7 @@ class View implements IView
     {
         $this->checkTheme();
         $this->theme->setVar($name, $value);
+
         return $this;
     }
 
@@ -87,6 +88,7 @@ class View implements IView
     public function getAssign($name = null)
     {
         $this->checkTheme();
+
         return $this->theme->getVar($name);
     }
 
@@ -116,6 +118,7 @@ class View implements IView
     {
         $this->checkTheme();
         $this->theme->clearVar();
+        
         return $this;
     }
 
