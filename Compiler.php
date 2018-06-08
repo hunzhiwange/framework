@@ -1086,10 +1086,10 @@ class Compiler implements ICompiler
         
         foreach (explode(' ', $content) as $sV) {
             if (strpos($sV, '.') > 0) {
-                $arrArgs = explode('.', $sV);
+                $args = explode('.', $sV);
 
                 // 以$hello->'hello1->'hello2'->'hello2'方式
-                $param[] = $arrArgs[0] . ($this->arrayHandler($arrArgs, 2, 1)); 
+                $param[] = $args[0] . ($this->arrayHandler($args, 2, 1)); 
             } else {
                 $param[] = $sV;
             }
@@ -1112,13 +1112,13 @@ class Compiler implements ICompiler
      */
     protected function parseJcontent($content)
     {
-        $arrVar = explode('|', $content);
-        $content = array_shift($arrVar);
+        $var = explode('|', $content);
+        $content = array_shift($var);
 
         $content = $this->parseExpression($content);
 
-        if (count($arrVar) > 0) {
-            return $this->parseJsFunction($content, $arrVar);
+        if (count($var) > 0) {
+            return $this->parseJsFunction($content, $var);
         }else {
             return $content;
         }
@@ -1212,12 +1212,12 @@ class Compiler implements ICompiler
      * 解析 JS 风格函数
      *
      * @param string $name
-     * @param array $arrVar
+     * @param array $var
      * @return string
      */
-    protected function parseJsFunction($name, $arrVar)
+    protected function parseJsFunction($name, $var)
     {
-        return $this->parseVarFunction($name, $arrVar, true);
+        return $this->parseVarFunction($name, $var, true);
     }
 
     /**
@@ -1230,25 +1230,25 @@ class Compiler implements ICompiler
     protected function parseContent($content, $booFunc = true)
     {
         // 以|分割字符串,数组第一位是变量名字符串,之后的都是函数参数&&函数{$hello|md5}
-        $arrVar = explode('|', $content);
+        $var = explode('|', $content);
 
         // 弹出第一个元素,也就是变量名
-        $sVar = array_shift($arrVar); 
+        $sVar = array_shift($var); 
 
         // 访问数组元素或者属性
         if (strpos($sVar, '.')) { 
-            $arrVars = explode('.', $sVar);
+            $vars = explode('.', $sVar);
 
             // 这里 . 作为字符连接符
-            if (($firstLetter = substr($arrVars[1], 0, 1)) == "'" or 
+            if (($firstLetter = substr($vars[1], 0, 1)) == "'" or 
                 $firstLetter == '"' or 
                 $firstLetter == "$") {
-                $name = '$' . $arrVars[0] . '.' . $arrVars[1] . ($this->arrayHandler($arrVars, 3));
+                $name = '$' . $vars[0] . '.' . $vars[1] . ($this->arrayHandler($vars, 3));
             } else {
-                $name = '$' . $arrVars[0] . '->' . $arrVars[1] . ($this->arrayHandler($arrVars, 2));
+                $name = '$' . $vars[0] . '->' . $vars[1] . ($this->arrayHandler($vars, 2));
             }
 
-            $sVar = $arrVars[0];
+            $sVar = $vars[0];
         }
 
         // $hello['demo'] 方式访问数组
@@ -1261,10 +1261,10 @@ class Compiler implements ICompiler
         }
 
         // 如果有使用函数
-        if ($booFunc === true && count($arrVar) > 0) {
+        if ($booFunc === true && count($var) > 0) {
 
             // 传入变量名,和函数参数继续解析,这里的变量名是上面的判断设置的值
-            $name = $this->parseVarFunction($name, $arrVar);
+            $name = $this->parseVarFunction($name, $var);
         }
 
         $name = str_replace('^', ':', $name);
@@ -1276,45 +1276,45 @@ class Compiler implements ICompiler
      * 解析函数
      *
      * @param string $name
-     * @param array $arrVar
+     * @param array $var
      * @param boolean $bJs 是否为 JS 风格变量解析
      * @return string
      */
-    protected function parseVarFunction($name, $arrVar, $bJs = false)
+    protected function parseVarFunction($name, $var, $bJs = false)
     {
-        $len = count($arrVar);
+        $len = count($var);
 
-        for ($nI = 0; $nI < $len; $nI ++) {
-            if (0 === stripos($arrVar[$nI], 'default=')) {
-                $arrArgs = explode('=', $arrVar[$nI], 2);
+        for ($index = 0; $index < $len; $index ++) {
+            if (0 === stripos($var[$index], 'default=')) {
+                $args = explode('=', $var[$index], 2);
             } else {
-                $arrArgs = explode('=', $arrVar[$nI]);
+                $args = explode('=', $var[$index]);
             }
 
-            $arrArgs[0] = trim($arrArgs[0]);
+            $args[0] = trim($args[0]);
 
-            if ($bJs === false && isset($arrArgs[1])) {
-                $arrArgs[1] = str_replace('->', ':', $arrArgs[1]);
+            if ($bJs === false && isset($args[1])) {
+                $args[1] = str_replace('->', ':', $args[1]);
             }
 
-            switch (strtolower($arrArgs[0])) {
+            switch (strtolower($args[0])) {
 
                 // 特殊模板函数
                 case 'default': 
-                    $name = $name . ' ?: ' . $arrArgs[1];
+                    $name = $name . ' ?: ' . $args[1];
                     break;
 
                 // 通用模板函数
                 default: 
-                    if (isset($arrArgs[1])) {
-                        if (strstr($arrArgs[1], '**')) {
-                            $arrArgs[1] = str_replace('**', $name, $arrArgs[1]);
-                            $name = "$arrArgs[0]($arrArgs[1])";
+                    if (isset($args[1])) {
+                        if (strstr($args[1], '**')) {
+                            $args[1] = str_replace('**', $name, $args[1]);
+                            $name = "$args[0]($args[1])";
                         } else {
-                            $name = "$arrArgs[0]($name, $arrArgs[1])";
+                            $name = "$args[0]($name, $args[1])";
                         }
-                    } elseif (! empty($arrArgs[0])) {
-                        $name = "$arrArgs[0]($name)";
+                    } elseif (! empty($args[0])) {
+                        $name = "$args[0]($name)";
                     }
             }
         }
@@ -1325,39 +1325,33 @@ class Compiler implements ICompiler
     /**
      * 数组格式
      *
-     * @param array $arrVars
-     * @param number $nType
-     * @param number $nGo
+     * @param array $vars
+     * @param number $type
+     * @param number $start
      * @return string
      */
-    protected function arrayHandler(&$arrVars, $nType = 1, $nGo = 2)
+    protected function arrayHandler(&$vars, $type = 1, $start = 2)
     {
-        $len = count($arrVars);
+        $len = count($vars);
+        $param = '';
 
-        $sParam = '';
+        for ($index = $start; $index < $len; $index++) {
+            if ($type == 1) {
 
-        // 类似 $hello['test']['test2']
-        if ($nType == 1) {
-            for ($nI = $nGo; $nI < $len; $nI ++) {
-                $sParam .= "['{$arrVars[$nI]}']";
-            }
-        } 
+                // 类似 $hello['test']['test2']
+                $param .= "['{$vars[$index]}']";
+            } elseif ($type == 2) {
 
-        // 类似 $hello->test1->test2
-        elseif ($nType == '2') { 
-            for ($nI = $nGo; $nI < $len; $nI ++) {
-                $sParam .= "->{$arrVars[$nI]}";
-            }
-        } 
+                // 类似 $hello->test1->test2
+                $param .= "->{$vars[$index]}";
+            } else {
 
-        // 类似 $hello.test1.test2
-        elseif ($nType == '3') { 
-            for ($nI = $nGo; $nI < $len; $nI ++) {
-                $sParam .= ".{$arrVars[$nI]}";
+                // 类似 $hello.test1.test2
+                $param .= ".{$vars[$index]}";
             }
         }
 
-        return $sParam;
+        return $param;
     }
 
     /**
@@ -1370,14 +1364,14 @@ class Compiler implements ICompiler
     protected function encodeContent($content, $type = '')
     {
         if ($type == 'global') {
-            $content = parser::globalEncode($content);
+            $content = Parser::globalEncode($content);
         } elseif (in_array($type, [
             'revert',
             'include'
         ])) {
             $content = base64_decode($content);
         } else {
-            $content = parser::revertEncode($content);
+            $content = Parser::revertEncode($content);
         }
 
         return $content;
@@ -1389,7 +1383,7 @@ class Compiler implements ICompiler
      * @param array $theme
      * @return boolean
      */
-    protected function checkNode($theme, $bJsNode = false)
+    protected function checkNode($theme, $jsNode = false)
     {
         $attribute = $theme['children'][0];
 
@@ -1399,15 +1393,21 @@ class Compiler implements ICompiler
         }
 
         // 验证必要属性
-        $tag = $bJsNode === true ? $this->jsTag : $this->nodeTag;
+        $tag = $jsNode === true ? $this->jsTag : $this->nodeTag;
+
         if (! isset($tag[$theme['name']])) {
-            throw new InvalidArgumentException(sprintf('The tag %s is undefined.', $theme['name']));
+            throw new InvalidArgumentException(
+                sprintf('The tag %s is undefined.', $theme['name'])
+            );
         }
 
         foreach ($tag[$theme['name']]['required'] as $name) {
             $name = strtolower($name);
+
             if (! isset($attribute['attribute_list'][$name])) {
-                throw new InvalidArgumentException(sprintf('The node %s lacks the required property: %s.', $theme['name'], $name));
+                throw new InvalidArgumentException(
+                    sprintf('The node %s lacks the required property: %s.', $theme['name'], $name)
+                );
             }
         }
 
@@ -1422,9 +1422,9 @@ class Compiler implements ICompiler
      */
     protected function getNodeAttribute($theme)
     {
-        foreach ($theme['children'] as $arrChild) {
-            if (isset($arrChild['is_attribute']) && $arrChild['is_attribute'] == 1) {
-                return $arrChild['attribute_list'];
+        foreach ($theme['children'] as $child) {
+            if (isset($child['is_attribute']) && $child['is_attribute'] == 1) {
+                return $child['attribute_list'];
             }
         }
 
@@ -1439,9 +1439,9 @@ class Compiler implements ICompiler
      */
     protected function getNodeBody($theme)
     {
-        foreach ($theme['children'] as $arrChild) {
-            if (isset($arrChild['is_body']) && $arrChild['is_body'] == 1) {
-                return $arrChild['content'];
+        foreach ($theme['children'] as $child) {
+            if (isset($child['is_body']) && $child['is_body'] == 1) {
+                return $child['content'];
             }
         }
 
