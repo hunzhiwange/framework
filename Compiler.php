@@ -352,7 +352,9 @@ class Compiler implements ICompiler
      */
     public function variableCodeCompiler(&$theme)
     {
-        $theme['content'] = ! empty($theme['content']) ? $this->parseContent($theme['content']) : null;
+        $theme['content'] = ! empty($theme['content']) ?
+            $this->parseContent($theme['content']) :
+            null;
 
         if ($theme['content'] !== null) {
             $theme['content'] = $this->withPhpTag('echo ' . $theme['content'] . ';');
@@ -791,8 +793,8 @@ class Compiler implements ICompiler
             'key',
             'value',
             'index'
-        ] as $sKey) {
-            $attr[$sKey] === null && $attr[$sKey] = '$' . $sKey;
+        ] as $key) {
+            $attr[$key] === null && $attr[$key] = '$' . $key;
         }
 
         foreach ([
@@ -800,12 +802,12 @@ class Compiler implements ICompiler
             'key',
             'value',
             'index'
-        ] as $sKey) {
-            if ('$' . $sKey == $attr[$sKey]) {
+        ] as $key) {
+            if ('$' . $key == $attr[$key]) {
                 continue;
             }
 
-            $attr[$sKey] = $this->parseContent($attr[$sKey]);
+            $attr[$key] = $this->parseContent($attr[$key]);
         }
 
         // 编译
@@ -1017,7 +1019,7 @@ class Compiler implements ICompiler
     public function attributeNodeCompiler(&$theme)
     {
         $source = trim($theme['content']);
-        $this->escapeRegexCharacter($source);
+        $source = $this->escapeRegexCharacter($source);
 
         if ($theme['is_js'] === true) {
             $tag = $this->jsTag;
@@ -1031,6 +1033,7 @@ class Compiler implements ICompiler
         $regexp = [];
 
         if (! $theme['is_js']) {
+
             // xxx="yyy" 或 "yyy" 格式
             $regexp[] = "/(([^=\s]+)=)?\"([^\"]+)\"/";
 
@@ -1056,17 +1059,17 @@ class Compiler implements ICompiler
                         $name = 'condition' . $defaultIdx;
                     }
 
-                    $sValue = $res[$valueIdx][$idx];
-                    $this->escapeRegexCharacter($sValue, false);
-                    $theme['attribute_list'][strtolower($name)] = $sValue;
+                    $value = $res[$valueIdx][$idx];
+                    $value = $this->escapeRegexCharacter($value, false);
+                    $theme['attribute_list'][strtolower($name)] = $value;
                 }
             }
         }
 
         // 补全节点其余参数
-        foreach ($allowedAttr as $str) {
-            if (! isset($theme['attribute_list'][$str])) {
-                $theme['attribute_list'][$str] = null;
+        foreach ($allowedAttr as $item) {
+            if (! isset($theme['attribute_list'][$item])) {
+                $theme['attribute_list'][$item] = null;
             }
         }
 
@@ -1084,14 +1087,14 @@ class Compiler implements ICompiler
     {
         $param = [];
         
-        foreach (explode(' ', $content) as $sV) {
-            if (strpos($sV, '.') > 0) {
-                $args = explode('.', $sV);
+        foreach (explode(' ', $content) as $value) {
+            if (strpos($value, '.') > 0) {
+                $args = explode('.', $value);
 
-                // 以$hello->'hello1->'hello2'->'hello2'方式
+                // 以 $hello->hello1->hello2->hello2 方式
                 $param[] = $args[0] . ($this->arrayHandler($args, 2, 1)); 
             } else {
-                $param[] = $sV;
+                $param[] = $value;
             }
         }
 
@@ -1177,6 +1180,7 @@ class Compiler implements ICompiler
                 if ($this->isVarExpression($temp)) {
                     $result[] = '$';
                 }
+
                 $findLogic = false;
             }
 
@@ -1186,9 +1190,12 @@ class Compiler implements ICompiler
         $content = implode('',$result);
 
         // 还原函数去掉开头的美元符号
-        $content = preg_replace_callback("/(\\$+?[a-z0-9\_]+?\s*?)\(.+?\)/", function ($match) {
-            return substr($match[0], 1);
-        }, $content);
+        $content = preg_replace_callback("/(\\$+?[a-z0-9\_]+?\s*?)\(.+?\)/",
+            function ($match) {
+                return substr($match[0], 1);
+            },
+            $content
+        );
 
         return $content;
     }
@@ -1224,20 +1231,20 @@ class Compiler implements ICompiler
      * 解析变量内容
      *
      * @param string $content
-     * @param bool $booFunc 是否允许解析函数
+     * @param bool $isFunc
      * @return string
      */
-    protected function parseContent($content, $booFunc = true)
+    protected function parseContent($content, $isFunc = true)
     {
         // 以|分割字符串,数组第一位是变量名字符串,之后的都是函数参数&&函数{$hello|md5}
         $var = explode('|', $content);
 
         // 弹出第一个元素,也就是变量名
-        $sVar = array_shift($var); 
+        $tmp = array_shift($var); 
 
         // 访问数组元素或者属性
-        if (strpos($sVar, '.')) { 
-            $vars = explode('.', $sVar);
+        if (strpos($tmp, '.')) { 
+            $vars = explode('.', $tmp);
 
             // 这里 . 作为字符连接符
             if (($firstLetter = substr($vars[1], 0, 1)) == "'" or 
@@ -1248,20 +1255,20 @@ class Compiler implements ICompiler
                 $name = '$' . $vars[0] . '->' . $vars[1] . ($this->arrayHandler($vars, 2));
             }
 
-            $sVar = $vars[0];
+            $tmp = $vars[0];
         }
 
         // $hello['demo'] 方式访问数组
-        elseif (strpos($sVar, '[')) {
-            $name = "$" . $sVar;
-            preg_match('/(.+?)\[(.+?)\]/is', $sVar, $matches);
-            $sVar = $matches[1];
+        elseif (strpos($tmp, '[')) {
+            $name = "$" . $tmp;
+            preg_match('/(.+?)\[(.+?)\]/is', $tmp, $matches);
+            $tmp = $matches[1];
         } else {
-            $name = "\$$sVar";
+            $name = "\$$tmp";
         }
 
         // 如果有使用函数
-        if ($booFunc === true && count($var) > 0) {
+        if ($isFunc === true && count($var) > 0) {
 
             // 传入变量名,和函数参数继续解析,这里的变量名是上面的判断设置的值
             $name = $this->parseVarFunction($name, $var);
@@ -1277,10 +1284,10 @@ class Compiler implements ICompiler
      *
      * @param string $name
      * @param array $var
-     * @param boolean $bJs 是否为 JS 风格变量解析
+     * @param boolean $isJavascript
      * @return string
      */
-    protected function parseVarFunction($name, $var, $bJs = false)
+    protected function parseVarFunction($name, $var, $isJavascript = false)
     {
         $len = count($var);
 
@@ -1293,7 +1300,7 @@ class Compiler implements ICompiler
 
             $args[0] = trim($args[0]);
 
-            if ($bJs === false && isset($args[1])) {
+            if ($isJavascript === false && isset($args[1])) {
                 $args[1] = str_replace('->', ':', $args[1]);
             }
 
@@ -1455,7 +1462,7 @@ class Compiler implements ICompiler
      * @param bool $esc
      * @return string
      */
-    protected function escapeRegexCharacter(&$txt, $esc = true)
+    protected function escapeRegexCharacter($txt, $esc = true)
     {
         $txt = $this->escapeCharacter($txt, $esc);
 
