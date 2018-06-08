@@ -42,12 +42,12 @@ abstract class Connect
     /**
      * 构造函数
      *
-     * @param array $arrOption
+     * @param array $option
      * @return void
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
-        $this->options($arrOption);
+        $this->options($option);
     }
 
     /**
@@ -77,6 +77,7 @@ abstract class Connect
         if (is_null($name)) {
             return $this->vars;
         }
+
         return $this->vars[$name] ?? null;
     }
 
@@ -89,11 +90,13 @@ abstract class Connect
     public function deleteVar($name)
     {
         $name = is_array($name) ? $name : func_get_args();
+
         foreach ($name as $item) {
             if (isset($this->vars[$item])) {
                 unset($this->vars[$item]);
             }
         }
+
         return $this;
     }
 
@@ -106,6 +109,7 @@ abstract class Connect
     public function clearVar()
     {
         $this->vars = [];
+
         return $this;
     }
 
@@ -147,7 +151,9 @@ abstract class Connect
         $tpl = trim(str_replace('->', '.', $tpl));
 
         // 完整路径或者变量
-        if (pathinfo($tpl, PATHINFO_EXTENSION) || strpos($tpl, '$') === 0 || strpos($tpl, '(') !== false) {
+        if (pathinfo($tpl, PATHINFO_EXTENSION) ||
+            strpos($tpl, '$') === 0 ||
+            strpos($tpl, '(') !== false) {
             return $this->formatFile($tpl);
         } else {
             if (! $this->getOption('theme_path')) {
@@ -156,7 +162,9 @@ abstract class Connect
 
             // 空取默认控制器和方法
             if ($tpl == '') {
-                $tpl = $this->getOption('controller_name') . $this->getOption('controlleraction_depr') . $this->getOption('action_name');
+                $tpl = $this->getOption('controller_name') .
+                    $this->getOption('controlleraction_depr') .
+                    $this->getOption('action_name');
             }
 
             if (strpos($tpl, '@') !== false) { // 分析主题
@@ -170,7 +178,9 @@ abstract class Connect
                 ':'
             ], $this->getOption('controlleraction_depr'), $tpl);
 
-            return dirname($this->getOption('theme_path')) . '/' . ($theme ?? $this->getOption('theme_name')) . '/' . $tpl . ($ext ?: $this->getOption('suffix'));
+            return dirname($this->getOption('theme_path')) . '/' .
+                ($theme ?? $this->getOption('theme_name')) . '/' .
+                $tpl . ($ext ?: $this->getOption('suffix'));
         }
     }
 
@@ -210,17 +220,25 @@ abstract class Connect
         $bak = $tpl;
 
         // 物理路径
-        if (strpos($tpl, ':') !== false || strpos($tpl, '/') === 0 || strpos($tpl, '\\') === 0) {
-            $tpl = str_replace(str_replace('\\', '/', $this->getOption('theme_path') . '/'), '', str_replace('\\', '/', ($tpl)));
+        if (strpos($tpl, ':') !== false ||
+            strpos($tpl, '/') === 0 ||
+            strpos($tpl, '\\') === 0) {
+            $tpl = str_replace(
+                str_replace('\\', '/', $this->getOption('theme_path') . '/'),
+                '',
+                str_replace('\\', '/', ($tpl))
+            );
         }
 
         // 备用地址
-        if ($this->getOption('theme_path_default') && is_file(($tempTpl = $this->getOption('theme_path_default') . '/' . $tpl))) {
+        if ($this->getOption('theme_path_default') &&
+            is_file(($tempTpl = $this->getOption('theme_path_default') . '/' . $tpl))) {
             return $tempTpl;
         }
 
         // default 主题
-        if ($this->getOption('theme_name') != 'default' && is_file(($tempTpl = dirname($this->getOption('theme_path')) . '/default/' . $tpl))) {
+        if ($this->getOption('theme_name') != 'default' &&
+            is_file(($tempTpl = dirname($this->getOption('theme_path')) . '/default/' . $tpl))) {
             return $tempTpl;
         }
 
