@@ -53,6 +53,18 @@ abstract class Connect
     }
 
     /**
+     * 设置配置
+     * 
+     * @param string $name
+     * @param mixed $value
+     * @return void
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
+    }
+
+    /**
      * 批量插入
      *
      * @param string|array $keys

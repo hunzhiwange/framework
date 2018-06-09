@@ -150,7 +150,7 @@ class Html extends Connect implements IConnect
      */
     protected function getCachePath(string $file)
     {
-        if (! $this->getOption('theme_cache_path')) {
+        if (! $this->option['theme_cache_path']) {
             throw new RuntimeException('Theme cache path must be set');
         }
 
@@ -162,7 +162,7 @@ class Html extends Connect implements IConnect
             '.' . md5($file) . '.php';
 
         // 返回真实路径
-        return $this->getOption('theme_cache_path') . '/' . $file;
+        return $this->option['theme_cache_path'] . '/' . $file;
     }
 
     /**
@@ -175,7 +175,7 @@ class Html extends Connect implements IConnect
     protected function isCacheExpired(string $file, string $cachepath)
     {
         // 开启调试
-        if ($this->getOption('development')) {
+        if ($this->option['development']) {
             return true;
         }
 
@@ -185,12 +185,12 @@ class Html extends Connect implements IConnect
         }
 
         // 编译过期时间为 <= 0 表示永不过期
-        if ($this->getOption('cache_lifetime') <= 0) {
+        if ($this->option['cache_lifetime'] <= 0) {
             return false;
         }
 
         // 缓存时间到期
-        if (filemtime($cachepath) + intval($this->getOption('cache_lifetime')) < time()) {
+        if (filemtime($cachepath) + intval($this->option['cache_lifetime']) < time()) {
             return true;
         }
 
