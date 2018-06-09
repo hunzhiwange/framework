@@ -62,6 +62,7 @@ class LinkedList extends SplDoublyLinkedList
         if ($this->isEmpty()) {
             return null;
         }
+
         return parent::pop();
     }
 
@@ -71,6 +72,7 @@ class LinkedList extends SplDoublyLinkedList
     public function add($index, $newval)
     {
         $this->validate($newval);
+
         parent::add($index, $newval);
     }
 
@@ -80,6 +82,7 @@ class LinkedList extends SplDoublyLinkedList
     public function offsetSet($index, $newval)
     {
         $this->validate($newval);
+
         parent::offsetSet($index, $newval);
     }
 
@@ -89,6 +92,7 @@ class LinkedList extends SplDoublyLinkedList
     public function push($value)
     {
         $this->validate($value);
+
         parent::push($value);
     }
 
@@ -98,6 +102,7 @@ class LinkedList extends SplDoublyLinkedList
     public function unshift($value)
     {
         $this->validate($value);
+        
         parent::unshift($value);
     }
 
@@ -110,7 +115,11 @@ class LinkedList extends SplDoublyLinkedList
     public function validate($value)
     {
         if (! $this->checkType($value)) {
-            throw new InvalidArgumentException(sprintf('The linkedlist element type verification failed, and the allowed type is %s.', implode(',', $this->type)));
+            throw new InvalidArgumentException(
+                sprintf('The linkedlist element type verification failed, and the allowed type is %s.',
+                    implode(',', $this->type)
+                )
+            );
         }
     }
 
