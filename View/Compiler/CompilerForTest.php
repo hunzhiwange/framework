@@ -76,6 +76,48 @@ eot;
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        $source = <<<'eot'
+{% for item in navigation %}
+    <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+{% /for %}
+eot;
+
+        $compiled = <<<'eot'
+<?php foreach ($navigation as $key => $item):?>
+    <li><a href="<?php echo $item->href;?>"><?php echo $item->caption;?></a></li>
+<?php endforeach;?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        $source = <<<'eot'
+{% for mykey,item in navigation %}
+    <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+{% /for %}
+eot;
+
+        $compiled = <<<'eot'
+<?php foreach ($navigation as $mykey => $item):?>
+    <li><a href="<?php echo $item->href;?>"><?php echo $item->caption;?></a></li>
+<?php endforeach;?>
+eot;
+
+       $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        $source = <<<'eot'
+{% for mykey item in navigation %}
+    <li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+{% /for %}
+eot;
+
+        $compiled = <<<'eot'
+<?php foreach ($navigation as $mykey => $item):?>
+    <li><a href="<?php echo $item->href;?>"><?php echo $item->caption;?></a></li>
+<?php endforeach;?>
+eot;
+
+       $this->assertEquals($compiled, $parser->doCompile($source, null, true));
     }
 
     protected function createParser()
