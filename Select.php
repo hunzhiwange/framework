@@ -1010,6 +1010,7 @@ class Select
             return $this;
         }
         $this->booOnlyMakeSql = ( bool ) $bFlag;
+
         return $this;
     }
 
@@ -1024,7 +1025,9 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrQueryParams['master'] = $booMaster;
+
         return $this;
     }
 
@@ -1040,6 +1043,7 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         if (is_array($mixType)) {
             $this->arrQueryParams['fetch_type'] = array_merge($this->arrQueryParams['fetch_type'], $mixType);
         } else {
@@ -1049,6 +1053,7 @@ class Select
                 $this->arrQueryParams['fetch_type'][$mixType] = $mixValue;
             }
         }
+
         return $this;
     }
 
@@ -1063,8 +1068,10 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrQueryParams['as_class'] = $sClassName;
         $this->arrQueryParams['as_default'] = false;
+
         return $this;
     }
 
@@ -1078,8 +1085,10 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrQueryParams['as_class'] = null;
         $this->arrQueryParams['as_default'] = true;
+
         return $this;
     }
 
@@ -1094,8 +1103,10 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrQueryParams['as_collection'] = $bAsCollection;
         $this->arrQueryParams['as_default'] = false;
+
         return $this;
     }
 
@@ -1110,11 +1121,13 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         if ($sOption == null) {
             $this->initOption();
         } elseif (array_key_exists($sOption, static::$arrOptionDefault)) {
             $this->arrOption[$sOption] = static::$arrOptionDefault[$sOption];
         }
+
         return $this;
     }
 
@@ -1129,7 +1142,9 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $mixPrefix = Arr::normalize($mixPrefix);
+
         foreach ($mixPrefix as $strValue) {
             $strValue = Arr::normalize($strValue);
             foreach ($strValue as $strTemp) {
@@ -1140,6 +1155,7 @@ class Select
                 $this->arrOption['prefix'][] = strtoupper($strTemp);
             }
         }
+
         return $this;
     }
 
@@ -1155,9 +1171,11 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->setIsTable(true);
         $this->addJoin('inner join', $mixTable, $mixCols);
         $this->setIsTable(false);
+
         return $this;
     }
 
@@ -1172,8 +1190,11 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $mixName = Arr::normalize($mixName);
+
         foreach ($mixName as $sAlias => $sTable) {
+
             // 字符串指定别名
             if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $sTable, $arrMatch)) {
                 $sAlias = $arrMatch[2];
@@ -1218,10 +1239,12 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         if (is_null($strTable)) {
             $strTable = $this->getCurrentTable();
         }
         $this->addCols($strTable, $mixCols);
+
         return $this;
     }
 
@@ -1237,11 +1260,14 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         if (is_null($strTable)) {
             $strTable = $this->getCurrentTable();
         }
+
         $this->arrOption['columns'] = [];
         $this->addCols($strTable, $mixCols);
+        
         return $this;
     }
 

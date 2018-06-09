@@ -66,12 +66,15 @@ class Mysql extends Connect implements IConnect
         }
         
         $strSql = 'SHOW TABLES FROM ' . $this->qualifyTableOrColumn($sDbName);
+
         $arrResult = [];
+        
         if (($arrTables = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
             foreach ($arrTables as $arrTable) {
                 $arrResult[] = reset($arrTable);
             }
         }
+
         unset($arrTables, $strSql);
 
         return $arrResult;
@@ -86,7 +89,9 @@ class Mysql extends Connect implements IConnect
      */
     public function getTableColumns($sTableName, $mixMaster = false)
     {
-        $strSql = 'SHOW FULL COLUMNS FROM ' . $this->qualifyTableOrColumn($sTableName);
+        $strSql = 'SHOW FULL COLUMNS FROM ' .
+            $this->qualifyTableOrColumn($sTableName);
+
         $arrResult = [
             'list' => [],
             'primary_key' => null,
@@ -95,9 +100,11 @@ class Mysql extends Connect implements IConnect
 
         if (($arrColumns = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
             foreach ($arrColumns as $arrColumn) {
+
                 // 处理字段
                 $arrTemp = [];
                 $arrTemp['name'] = $arrColumn['Field'];
+
                 if (preg_match('/(.+)\((.+)\)/', $arrColumn['Type'], $arrMatch)) {
                     $arrTemp['type'] = $arrMatch[1];
                     $arrTemp['length'] = $arrMatch[1];
@@ -105,8 +112,10 @@ class Mysql extends Connect implements IConnect
                     $arrTemp['type'] = $arrColumn['Type'];
                     $arrTemp['length'] = null;
                 }
+
                 $arrTemp['primary_key'] = strtolower($arrColumn['Key']) == 'pri';
                 $arrTemp['auto_increment'] = strpos($arrColumn['Extra'], 'auto_increment') !== false;
+
                 if (! is_null($arrColumn['Default']) && strtolower($arrColumn['Default']) != 'null') {
                     $arrTemp['default'] = $arrColumn['Default'];
                 } else {
@@ -115,9 +124,11 @@ class Mysql extends Connect implements IConnect
 
                 // 返回结果
                 $arrResult['list'][$arrTemp['name']] = $arrTemp;
+
                 if ($arrTemp['auto_increment']) {
                     $arrResult['auto_increment'] = $arrTemp['name'];
                 }
+
                 if ($arrTemp['primary_key']) {
                     if (! is_array($arrResult['primary_key'])) {
                         $arrResult['primary_key'] = [];
@@ -151,6 +162,7 @@ class Mysql extends Connect implements IConnect
     {
         if (! is_null($mixLimitoffset)) {
             $sSql = 'LIMIT ' . (int)$mixLimitoffset;
+
             if (! is_null($mixLimitcount)) {
                 $sSql .= ',' . (int)$mixLimitcount;
             } else {
