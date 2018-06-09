@@ -368,7 +368,9 @@ class Parser implements IParser
                 $arrTheme['position'] = $this->getPosition($sCompiled, $sSource, $nStartPos);
                 $nStartPos = $arrTheme['position']['end'] + 1;
                 $arrTheme = array_merge($this->arrThemeStruct, $arrTheme);
-                $this->addTheme($arrTheme); // 将模板数据加入到树结构中
+
+                // 将模板数据加入到树结构中
+                $this->addTheme($arrTheme);
             }
         }
     }
@@ -415,8 +417,6 @@ class Parser implements IParser
      */
     protected function revertParse(&$sCompiled)
     {
-        // 分析
-        $arrRes = []; 
         if (preg_match_all('/__##revert##START##\d+@(.+?)##END##revert##__/', $sCompiled, $arrRes)) {
             $nStartPos = 0;
             foreach ($arrRes[1] as $nIndex => $sEncode) {
@@ -449,8 +449,6 @@ class Parser implements IParser
      */
     protected function globalrevertParse(&$sCompiled)
     {
-        // 分析
-        $arrRes = []; 
         if (preg_match_all('/__##global##START##\d+@(.+?)##END##global##__/', $sCompiled, $arrRes)) {
             $nStartPos = 0;
 
@@ -592,7 +590,14 @@ class Parser implements IParser
             // 单标签节点
             if (! $arrTailTag or ! $this->findHeadTag($arrTag, $arrTailTag)) { 
                 if ($arrNodeTag[$arrTag['name']]['single'] !== true) {
-                    throw new InvalidArgumentException(sprintf('%s type nodes must be used in pairs, and no corresponding tail tags are found.', $arrTag['name']) . '<br />' . $this->getLocation($arrTag['position']));
+                    throw new InvalidArgumentException(
+                        sprintf(
+                            '%s type nodes must be used in pairs, and no corresponding tail tags are found.',
+                            $arrTag['name']
+                        ) .
+                        '<br />' .
+                        $this->getLocation($arrTag['position'])
+                    );
                 }
 
                 // 退回栈中
@@ -684,6 +689,7 @@ class Parser implements IParser
         if ($arrTailTag['type'] != 'tail') {
             throw new InvalidArgumentException(sprintf('The parameter must be a tail tag.'));
         }
+
         return preg_match("/^{$arrTailTag['name']}/i", $arrTag['name']);
     }
 
@@ -1143,7 +1149,15 @@ class Parser implements IParser
      */
     protected function getLocation($arrPosition)
     {
-        return sprintf('Line:%s; column:%s; file:%s.', $arrPosition['start_line'], $arrPosition['start_in'], $this->strSourceFile) . $this->getLocationSource($arrPosition);
+        return sprintf(
+                'Line:%s; column:%s; file:%s.',
+                $arrPosition['start_line'],
+                $arrPosition['start_in'],
+                $this->strSourceFile ?: null
+            ) .
+            ($this->strSourceFile ?
+                $this->getLocationSource($arrPosition) :
+                null);
     }
 
     /**
@@ -1154,8 +1168,23 @@ class Parser implements IParser
      */
     protected function getLocationSource($arrPosition)
     {
-        $arrLine = explode(PHP_EOL, htmlentities(substr(file_get_contents($this->strSourceFile), $arrPosition['start'], $arrPosition['end'])));
-        $arrLine[] = '<div class="key">' . array_pop($arrLine) . '</div>';
-        return '<pre><code>' . implode(PHP_EOL, $arrLine) . '</code></pre>';
+        $arrLine = explode(
+            PHP_EOL,
+            htmlentities(
+                substr(
+                    file_get_contents($this->strSourceFile),
+                    $arrPosition['start'],
+                    $arrPosition['end']
+                )
+            )
+        );
+
+        $arrLine[] = '<div class="key">' .
+            array_pop($arrLine) .
+            '</div>';
+
+        return '<pre><code>' .
+            implode(PHP_EOL, $arrLine) .
+            '</code></pre>';
     }
 }

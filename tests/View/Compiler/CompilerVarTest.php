@@ -49,6 +49,17 @@ eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
 
+        // JS 风格变量
+        $source = <<<'eot'
+{{ value }}
+eot;
+
+        $compiled = <<<'eot'
+<?php echo $value;?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
         // 数组支持
         $source = <<<'eot'
 我的梦想是写好”{$value['name']}“，我相信”{$value['description']}“。
@@ -56,6 +67,17 @@ eot;
 
         $compiled = <<<'eot'
 我的梦想是写好”<?php echo $value['name'];?>“，我相信”<?php echo $value['description'];?>“。
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        // JS 风格数组支持
+        $source = <<<'eot'
+{{ value['test'] }}
+eot;
+
+        $compiled = <<<'eot'
+<?php echo $value['test'];?>
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
@@ -69,15 +91,35 @@ eot;
 我的梦想是写好”<?php echo $demo->name;?>“，我相信”<?php echo $demo->description;?>“。
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));     
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
 
-        // 对象无限层级支持
-       $source = <<<'eot'
-我的梦想是写好”{$demo->name>->child->child->child}“，我相信”{$demo->description}“。
+        // JS 风格输出一个对象
+        // . 周围有空格表示变量
+        $source = <<<'eot'
+<li><a href="{{ item.href }}">{{ item.caption }}</a></li>
+eot;
+
+        $source = <<<'eot'
+{{ a.b }}
+{{ a . b }}
+{{ a->b }}
 eot;
 
         $compiled = <<<'eot'
-我的梦想是写好”<?php echo $demo->name>->child->child->child;?>“，我相信”<?php echo $demo->description;?>“。
+<?php echo $a->b;?>
+<?php echo $a . $b;?>
+<?php echo $a->b;?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+
+        // 对象无限层级支持
+       $source = <<<'eot'
+我的梦想是写好”{$demo->name->child->child->child}“，我相信”{$demo->description}“。
+eot;
+
+        $compiled = <<<'eot'
+我的梦想是写好”<?php echo $demo->name->child->child->child;?>“，我相信”<?php echo $demo->description;?>“。
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
@@ -148,6 +190,54 @@ eot;
 
         $compiled = <<<'eot'
 <?php echo $value3.'start - '.$value.$value2.'- end';?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+    }
+
+    public function testJsOperator()
+    {
+        $parser = $this->createParser();
+
+        // 变量之间的加减法运算
+        $source = <<<'eot'
+{{ value+value2 }}
+{{ value-value2 }}
+eot;
+
+        $compiled = <<<'eot'
+<?php echo $value+$value2;?>
+<?php echo $value-$value2;?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        // 变量之间的乘除余数
+        $source = <<<'eot'
+{{ value + 9 +10 }}
+{{ value * value2 * 10 }}
+{{ value / value2 }}
+{{ value3+list['key'] }}
+{{ value3%list['key'] }}
+eot;
+
+        $compiled = <<<'eot'
+<?php echo $value + 9 +10;?>
+<?php echo $value * $value2 * 10;?>
+<?php echo $value / $value2;?>
+<?php echo $value3+$list['key'];?>
+<?php echo $value3%$list['key'];?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+
+        // 变量之间的连接字符
+        $source = <<<'eot'
+{{ value3.'start - '. value. value2.'end' }}
+eot;
+
+        $compiled = <<<'eot'
+<?php echo $value3.'start - '. $value. $value2.'end';?>
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
@@ -273,6 +363,57 @@ eot;
 
 <?php $name='肯德基更配！';?>
 <?php echo $name ?: "Hello，我最爱的雪碧！";?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+    }
+
+    public function testJsFunction()
+    {
+        $parser = $this->createParser();
+
+        // 例 1
+        $source = <<<'eot'
+{{ var|escape }}
+{{ var|e }}
+eot;
+
+        $compiled = <<<'eot'
+<?php echo escape($var);?>
+<?php echo e($var);?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        // 例 2
+        $source = <<<'eot'
+{{ list|join=',' }}
+eot;
+
+        $compiled = <<<'eot'
+<?php echo join($list, ',');?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        // 例 3
+        $source = <<<'eot'
+{{ data|convert_encoding='iso-2022-jp', 'UTF-8') }}
+eot;
+
+        $compiled = <<<'eot'
+<?php echo convert_encoding($data, 'iso-2022-jp', 'UTF-8'));?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        // 例 4
+        $source = <<<'eot'
+{{ data|convert_encoding='iso-2022-jp', **, 'UTF-8') }}
+eot;
+
+        $compiled = <<<'eot'
+<?php echo convert_encoding('iso-2022-jp', $data, 'UTF-8'));?>
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
