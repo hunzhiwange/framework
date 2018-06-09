@@ -97,7 +97,7 @@ class V8 extends Connect implements IConnect
      *
      * @return \V8js
      */
-    public function getV8js(array $option = [])
+    public function getV8js()
     {
         return $this->v8js;
     }
@@ -310,8 +310,8 @@ EOT;
      */
     protected function vuePackage()
     {
-        $vue = $this->getOption('vue_path');
-        $renderer = $this->getOption('vue_renderer');
+        $vue = $this->option['vue_path'];
+        $renderer = $this->option['vue_renderer'];
 
         if (! is_file($vue)) {
             throw new RuntimeException(
@@ -341,7 +341,7 @@ EOT;
      */
     protected function artPackage()
     {
-        $art = $this->getOption('art_path');
+        $art = $this->option['art_path'];
 
         if (! is_file($art)) {
             throw new RuntimeException(
