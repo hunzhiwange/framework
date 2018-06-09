@@ -46,6 +46,18 @@ eot;
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        $source = <<<'eot'
+{% let foo = 'foo' %}
+{% let hello = hello . 'foo' %}
+eot;
+
+        $compiled = <<<'eot'
+<?php $foo = 'foo';?>
+<?php $hello = $hello . 'foo';?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
     }
 
     protected function createParser()
