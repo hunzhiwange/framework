@@ -56,6 +56,7 @@ class HttpException extends RuntimeException
     public function __construct($statusCode, $message = null, $code = 0, Exception $previous = null)
     {
         $this->statusCode = $statusCode;
+        
         parent::__construct($message, $code, $previous);
     }
 
