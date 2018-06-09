@@ -675,27 +675,29 @@ class Compiler implements ICompiler
     {
         $this->checkNode($theme, true);
         $attr = $this->getNodeAttribute($theme);
+        $attr = array_values($attr);
 
         if (! in_array('in', $attr)) {
-            throw new InvalidArgumentException('For tag need in separate.');
+           throw new InvalidArgumentException('For tag need “in“ separate.');
         }
 
         $key = 'key';
         $value = array_shift($attr);
-        $next = array_shift($attr);
 
-        if ($next == ',') {
-            $key = $value;
-            $value = array_shift($attr);
-        } elseif ($next != 'in') {
-            $key = $value;
-            $value = $next;
+        if (strpos($value, ',') !== false) {
+            list($key, $value) = explode(',', $value); 
         }
 
-        array_shift($attr);
+        $next = array_shift($attr);
+
+        if ($next != 'in') {
+            $key = $value;
+            $value = $next;
+            array_shift($attr);
+        }
 
         if (! $attr) {
-            throw new InvalidArgumentException('For tag need a var to be circulate.');
+            throw new InvalidArgumentException('For tag need a “var“ to be circulate.');
         }
 
         $attr = $this->parseExpression(implode(' ', $attr));
@@ -1170,8 +1172,30 @@ class Compiler implements ICompiler
             }
 
             if (in_array($temp, $logic)) {
-                $findLogic = true;
-                $result[] = $temp;
+
+                // . 语法作为对象连接符
+                if ($temp == '.' &&
+                    isset($content{$i+1}) &&
+                    $this->isVarExpression($content{$i+1}) &&
+                    ! in_array($content{$i+1}, [' ', '$'])) {
+                    $result[] = '->';
+                    $findLogic = false;
+                } 
+
+                // -> 语法原生对象连接符
+                elseif ($temp == '>' &&
+                    $i > 0 &&
+                    $content{$i-1} === '-' &&
+                    isset($content{$i+1}) &&
+                    ! in_array($content{$i+1}, [' ', '$'])) {
+                    $result[] = '>';
+                    $findLogic = false;
+                }
+
+                else {
+                    $findLogic = true;
+                    $result[] = $temp;
+                }
 
                 continue;
             }
@@ -1187,7 +1211,7 @@ class Compiler implements ICompiler
             $result[] = $temp;
         }
 
-        $content = implode('',$result);
+        $content = implode('', $result);
 
         // 还原函数去掉开头的美元符号
         $content = preg_replace_callback("/(\\$+?[a-z0-9\_]+?\s*?)\(.+?\)/",
