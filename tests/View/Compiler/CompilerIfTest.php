@@ -116,6 +116,28 @@ eot;
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+
+        $source = <<<'eot'
+{% if length(users) > 0 %}
+a
+{% elseif foo.bar > 0 %}
+b
+{% else %}
+c
+{% /if %}
+eot;
+
+        $compiled = <<<'eot'
+<?php if (length($users) > 0):?>
+a
+<?php elseif ($foo->bar > 0):?>
+b
+<?php else:?>
+c
+<?php endif;?>
+eot;
+
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
     }
 
     protected function createParser()

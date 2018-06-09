@@ -84,9 +84,10 @@ _____________                           _______________
    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
         \_\                /_/_/         /_/
-        
-composer install
-vendor/bin/phpunit tests
+  
+$cd /data/codes/queryphp/vendor/hunzhiwange/framework      
+$composer install
+$php vendor/bin/phpunit tests
 ```
 
 ## License
