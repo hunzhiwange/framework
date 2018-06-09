@@ -16,7 +16,6 @@
  */
 namespace Leevel\Event;
 
-use RuntimeException;
 use Leevel\Di\IContainer;
 
 /**
