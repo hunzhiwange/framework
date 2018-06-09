@@ -270,7 +270,9 @@ EOT;
             $package .= 'Package';
 
             if (! method_exists($this, $package)) {
-                throw new RuntimeException('Package is not preset, we just support vue and art.');
+                throw new RuntimeException(
+                    'Package is not preset, we just support vue and art.'
+                );
             }
 
             $this->$package();
@@ -312,14 +314,20 @@ EOT;
         $renderer = $this->getOption('vue_renderer');
 
         if (! is_file($vue)) {
-            throw new RuntimeException(sprintf('Vue path %s is not exits, please use npm install.', $vue));
+            throw new RuntimeException(
+                sprintf('Vue path %s is not exits, please use npm install.', $vue)
+            );
         }
 
         if (! is_file($renderer)) {
-            throw new RuntimeException(sprintf('Vue renderer %s is not exits, please use npm install.', $renderer));
+            throw new RuntimeException(
+                sprintf('Vue renderer %s is not exits, please use npm install.', $renderer)
+            );
         }
 
-        $this->execute('delete this.window; this.global = { process: { env: { VUE_ENV: "server", NODE_ENV: "production" } } };');
+        $this->execute(
+            'delete this.window; this.global = { process: { env: { VUE_ENV: "server", NODE_ENV: "production" } } };'
+        );
 
         $this->execute(file_get_contents($vue));
 
@@ -336,7 +344,9 @@ EOT;
         $art = $this->getOption('art_path');
 
         if (! is_file($art)) {
-            throw new RuntimeException(sprintf('Art path %s is not exits, please use npm install.', $art));
+            throw new RuntimeException(
+                sprintf('Art path %s is not exits, please use npm install.', $art)
+            );
         }
 
         $this->execute('this.window = null;');
