@@ -1,0 +1,397 @@
+
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `posts`.`title` AS `t`,`posts`.`name`,`posts`.`remark`,`posts`.`value` FROM `mydb`.`posts`',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` LIKE \'技术\' AND `test`.`value` <> \'结局\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)

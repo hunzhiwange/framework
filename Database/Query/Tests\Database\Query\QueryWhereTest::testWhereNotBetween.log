@@ -1,0 +1,61 @@
+
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` NOT BETWEEN 1 AND 10',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)

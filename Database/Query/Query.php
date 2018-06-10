@@ -43,7 +43,7 @@ trait Query
     {
         file_put_contents(
             __DIR__ . '/' . $method . '.log',
-            var_export($data, true),
+            PHP_EOL . var_export($data, true),
             FILE_APPEND
         );
 

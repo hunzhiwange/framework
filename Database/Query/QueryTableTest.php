@@ -52,7 +52,9 @@ eot;
         $this->assertEquals(
             $sql,
             $this->varExport(
-                $connect->table('posts')->getAll(true),
+                $connect->table('posts')->
+
+                getAll(true),
                 __METHOD__
             )
         );
@@ -75,7 +77,9 @@ eot;
         $this->assertEquals(
             $sql,
             $this->varExport(
-                $connect->table('mydb.posts')->getAll(true),
+                $connect->table('mydb.posts')->
+
+                getAll(true),
                 __METHOD__
             )
         );
@@ -98,7 +102,9 @@ eot;
         $this->assertEquals(
             $sql,
             $this->varExport(
-                $connect->table(['p' => 'mydb.posts'])->getAll(true),
+                $connect->table(['p' => 'mydb.posts'])->
+
+                getAll(true),
                 __METHOD__
             )
         );
@@ -127,7 +133,9 @@ eot;
         $this->assertEquals(
             $sql,
             $this->varExport(
-                $connect->table('posts','title,body')->getAll(true),
+                $connect->table('posts','title,body')->
+
+                getAll(true),
                 __METHOD__
             )
         );
@@ -150,9 +158,12 @@ eot;
         $this->assertEquals(
             $sql,
             $this->varExport(
-                $connect->table('mydb.posts',[
+                $connect->table(
+                    'mydb.posts',[
                     't'=> 'title','name','remark,value'
-                ])->getAll(true),
+                ])->
+
+                getAll(true),
                 __METHOD__
             )
         );
