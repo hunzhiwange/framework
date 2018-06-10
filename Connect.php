@@ -52,13 +52,22 @@ abstract class Connect
         $filedir = dirname($filepath);
 
         // 如果不是文件，则创建
-        if (! is_file($filepath) && ! is_dir($filedir) && ! mkdir($filedir, 0777, true)) {
-            throw new RuntimeException(sprintf('Unable to create log file：%s.', $filepath));
+        if (! is_file($filepath) &&
+            ! is_dir($filedir) &&
+            ! mkdir($filedir, 0777, true)) {
+            throw new RuntimeException(
+                sprintf('Unable to create log file：%s.', $filepath)
+            );
         }
 
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成
-        if (is_file($filepath) && floor($this->getOption('size')) <= filesize($filepath)) {
-            rename($filepath, $filedir . '/' . date('Y-m-d H.i.s') . '_' . basename($filepath));
+        if (is_file($filepath) &&
+            floor($this->getOption('size')) <= filesize($filepath)) {
+            rename(
+                $filepath, $filedir . '/' .
+                date('Y-m-d H.i.s') . '_' .
+                basename($filepath)
+            );
         }
     }
 
@@ -74,9 +83,15 @@ abstract class Connect
         // 不存在路径，则直接使用项目默认路径
         if (empty($filepath)) {
             if (! $this->getOption('path')) {
-                throw new RuntimeException('Default path for log has not specified.');
+                throw new RuntimeException(
+                    'Default path for log has not specified.'
+                );
             }
-            $filepath = $this->getOption('path') . '/' . ($level ? $level . '/' : '') . date($this->getOption('name')) . ".log";
+
+            $filepath = $this->getOption('path') . '/' .
+                ($level ? $level . '/' : '') .
+                date($this->getOption('name')) .
+                ".log";
         }
 
         return $filepath;
