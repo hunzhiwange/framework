@@ -61,7 +61,9 @@ class Observer implements SplObserver
         ];
 
         if (! is_callable($handle)) {
-            throw new RuntimeException(sprintf('Observer %s must has run method', get_class($this)));
+            throw new RuntimeException(
+                sprintf('Observer %s must has run method', get_class($this))
+            );
         }
 
         $subject->container->call($handle, $subject->notifyArgs);
