@@ -143,10 +143,6 @@ The code below need to be add.
     url = git@github.com:queryyetsimple/support.git
     fetch = +refs/heads/*:refs/remotes/Support/*
 
-[remote "Swoole"]
-    url = git@github.com:queryyetsimple/swoole.git
-    fetch = +refs/heads/*:refs/remotes/Swoole/*
-
 [remote "Task"]
     url = git@github.com:queryyetsimple/task.git
     fetch = +refs/heads/*:refs/remotes/Task/*
