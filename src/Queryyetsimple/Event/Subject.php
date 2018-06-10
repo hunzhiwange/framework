@@ -105,14 +105,18 @@ class Subject implements ISubject, SplSubject
     {
         if (is_string($observer)) {
             if (is_string($observer = $this->container->make($observer))) {
-                throw new InvalidArgumentException(sprintf('Observer is invalid.'));
+                throw new InvalidArgumentException(
+                    sprintf('Observer is invalid.')
+                );
             }
         }
 
         if ($observer instanceof SplObserver) {
             $this->observers->attach($observer);
         } else {
-            throw new InvalidArgumentException('Invalid observer argument because it not instanceof SplObserver');
+            throw new InvalidArgumentException(
+                'Invalid observer argument because it not instanceof SplObserver'
+            );
         }
     }
 }
