@@ -16,6 +16,7 @@
  */
 namespace Leevel\Log;
 
+use RuntimeException;
 use Leevel\Option\TClass;
 
 /**
