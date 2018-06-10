@@ -14,56 +14,44 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Tests\Stack;
+namespace Tests\View\Compiler;
 
 use Tests\TestCase;
-use Leevel\Stack\Stack;
+use Leevel\View\Parser;
+use Leevel\View\Compiler;
 
 /**
- * stack test
+ * 成对标签异常测试
  * 
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2018.06.10
+ * @since 2018.06.07
  * @version 1.0
  */
-class StackTest extends TestCase
+class CompilerPairedTagExceptionTest extends TestCase
 {
-
-    public function testBaseUse()
-    {
-        $stack = new Stack();
-
-        $this->assertEquals(0, $stack->count());
-
-        // 入栈 5
-        $stack->in(5);
-
-        $this->assertEquals(1, $stack->count());
-
-        // 入栈 6
-        $stack->in(6);
-
-        $this->assertEquals(2, $stack->count());
-
-        // 出栈，后进先出
-        $this->assertEquals(6, $stack->out());
-
-        $this->assertEquals(1, $stack->count());
-
-        // 出栈，后进先出
-        $this->assertEquals(5, $stack->out());
-
-        $this->assertEquals(0, $stack->count());
-    }
 
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function testValidateType()
+    public function testBaseUse()
     {
-        $stack = new Stack(['string']);
+        $parser = $this->createParser();
 
-        $stack->in(5);
+        $source = <<<'eot'
+<list for=list>
+</badend>
+eot;
+
+        $parser->doCompile($source, null, true);
+    }
+
+    protected function createParser()
+    {
+        return (new Parser(new Compiler))->
+
+        registerCompilers()->
+
+        registerParsers();
     }
 }
