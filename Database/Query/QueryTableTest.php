@@ -14,11 +14,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Tests\View\Compiler;
+namespace Tests\Database\Query;
 
 use Tests\TestCase;
-use Leevel\View\Parser;
-use Leevel\View\Compiler;
 
 /**
  * table test
@@ -30,57 +28,133 @@ use Leevel\View\Compiler;
  */
 class QueryTableTest extends TestCase
 {
+    use Query;
 
     public function testBaseUse()
     {
-        $parser = $this->createParser();
+        $connect = $this->createConnect();
 
-        $source = <<<'eot'
-<php>echo 'Hello,world!';</php>
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `posts`.* FROM `posts`',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
 eot;
 
-        $compiled = <<<'eot'
-<?php echo 'Hello,world!';?>
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('posts')->getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `posts`.* FROM `mydb`.`posts`',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('mydb.posts')->getAll(true),
+                __METHOD__
+            )
+        );
 
-        $source = <<<'eot'
-<?php echo 'Hello,world!';?>
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `p`.* FROM `mydb`.`posts`  `p`',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
 eot;
 
-        $compiled = <<<'eot'
-<?php echo 'Hello,world!';?>
-eot;
-
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
-
-        // 错误的写法
-        $source = <<<'eot'
-<php>
-    {if $hello == ''}
-        Yet !
-    {/if}
-</php>
-eot;
-
-        $compiled = <<<'eot'
-<?php 
-    <?php if ($hello == ''):?>
-        Yet !
-    <?php endif;?>
-?>
-eot;
-
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table(['p' => 'mydb.posts'])->getAll(true),
+                __METHOD__
+            )
+        );
     }
 
-    protected function createParser()
+
+    public function testField()
     {
-        return (new Parser(new Compiler))->
+        $connect = $this->createConnect();
 
-        registerCompilers()->
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `posts`.`title`,`posts`.`body` FROM `posts`',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
 
-        registerParsers();
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('posts','title,body')->getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `posts`.`title` AS `t`,`posts`.`name`,`posts`.`remark`,`posts`.`value` FROM `mydb`.`posts`',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('mydb.posts',[
+                    't'=> 'title','name','remark,value'
+                ])->getAll(true),
+                __METHOD__
+            )
+        );
     }
 }
