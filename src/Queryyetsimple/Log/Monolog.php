@@ -103,8 +103,12 @@ class Monolog extends Connect implements IConnect
      */
     public function file($path, $level = ILog::DEBUG)
     {
-        $handler = new StreamHandler($path, $this->parseMonologLevel($level));
+        $handler = new StreamHandler(
+            $path, $this->parseMonologLevel($level)
+        );
+
         $this->monolog->pushHandler($handler);
+        
         $handler->setFormatter($this->getDefaultFormatter());
     }
 
@@ -118,8 +122,12 @@ class Monolog extends Connect implements IConnect
      */
     public function dailyFile($path, $days = 0, $level = ILog::DEBUG)
     {
-        $handler = new RotatingFileHandler($path, $days, $this->parseMonologLevel($level));
+        $handler = new RotatingFileHandler(
+            $path, $days, $this->parseMonologLevel($level)
+        );
+
         $this->monolog->pushHandler($handler);
+
         $handler->setFormatter($this->getDefaultFormatter());
     }
 
@@ -133,6 +141,7 @@ class Monolog extends Connect implements IConnect
     public function syslog($name = 'queryphp', $level = ILog::DEBUG)
     {
         $handler = new SyslogHandler($name, LOG_USER, $level);
+
         return $this->monolog->pushHandler($handler);
     }
 
@@ -145,8 +154,12 @@ class Monolog extends Connect implements IConnect
      */
     public function errorLog($level = ILog::DEBUG, $messageType = ErrorLogHandler::OPERATING_SYSTEM)
     {
-        $handler = new ErrorLogHandler($messageType, $this->parseMonologLevel($level));
+        $handler = new ErrorLogHandler(
+            $messageType, $this->parseMonologLevel($level)
+        );
+
         $this->monolog->pushHandler($handler);
+
         $handler->setFormatter($this->getDefaultFormatter());
     }
 
@@ -191,6 +204,7 @@ class Monolog extends Connect implements IConnect
             if (! in_array($item[0], $level)) {
                 $item[0] = ILog::DEBUG;
             }
+
             $this->monolog->{$item[0]}($item[1], $item[2]);
         }
     }
@@ -203,6 +217,7 @@ class Monolog extends Connect implements IConnect
     protected function makeFileHandler()
     {
         $path = $this->getPath();
+
         $this->checkSize($path);
         $this->file($path);
     }
@@ -215,6 +230,7 @@ class Monolog extends Connect implements IConnect
     protected function makeDailyFileHandler()
     {
         $path = $this->getPath();
+
         $this->checkSize($this->getDailyFilePath($path));
         $this->dailyFile($path);
     }
@@ -248,10 +264,12 @@ class Monolog extends Connect implements IConnect
     protected function getDailyFilePath($path)
     {
         $ext = pathinfo($path, PATHINFO_EXTENSION);
+
         if ($ext) {
             $path = substr($path, 0, strrpos($path, '.' . $ext));
         }
-        return $path . date('-Y-m-d') . ($ext ? '.' . $ext : '');
+
+        return $path . date('-Y-m-d') .($ext ? '.' . $ext : '');
     }
 
     /**
@@ -276,6 +294,7 @@ class Monolog extends Connect implements IConnect
         if (isset($this->supportLevel[$level])) {
             return $this->supportLevel[$level];
         }
+
         return $this->supportLevel[ILog::DEBUG];
     }
 }
