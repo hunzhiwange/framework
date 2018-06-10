@@ -59,7 +59,7 @@ class Stack extends LinkedList implements IStackQueue
         if (! $this->checkType($value)) {
             throw new InvalidArgumentException(
                 sprintf('The stack element type verification failed, and the allowed type is %s.',
-                    implode(',', $this->arrType)
+                    implode(',', $this->type)
                 )
             );
         }
