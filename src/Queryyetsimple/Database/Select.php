@@ -2904,6 +2904,7 @@ class Select
                     }
 
                     foreach ($mixCond[2] as &$strTemp) {
+
                         // 对象子表达式支持
                         if ($strTemp instanceof Select) {
                             $strTemp = $strTemp->makeSql(true);
@@ -2924,11 +2925,11 @@ class Select
                         }
 
                         // 字符串子表达式支持
-                        elseif (strpos(trim($strTemp), '(') === 0) {
+                        elseif (is_string($strTemp) && strpos($strTemp, '(') === 0) {
                         }
 
                         // 表达式支持
-                        elseif (strpos($strTemp, '{') !== false && preg_match('/^{(.+?)}$/', $strTemp, $arrRes)) {
+                        elseif (is_string($strTemp) && strpos($strTemp, '{') !== false && preg_match('/^{(.+?)}$/', $strTemp, $arrRes)) {
                             $strTemp = $this->objConnect->qualifyExpression($arrRes[1], $strTable, $this->arrColumnsMapping);
                         } else {
                             // 自动格式化时间
