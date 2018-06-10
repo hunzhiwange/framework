@@ -17,9 +17,6 @@
 namespace Tests\View\Compiler;
 
 use Tests\TestCase;
-use Leevel\View\Parser;
-use Leevel\View\Compiler;
-
 /**
  * compiler php test
  * 
@@ -30,6 +27,7 @@ use Leevel\View\Compiler;
  */
 class CompilerPhpTest extends TestCase
 {
+    use Compiler;
 
     public function testBaseUse()
     {
@@ -73,14 +71,5 @@ eot;
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
-    }
-
-    protected function createParser()
-    {
-        return (new Parser(new Compiler))->
-
-        registerCompilers()->
-
-        registerParsers();
     }
 }

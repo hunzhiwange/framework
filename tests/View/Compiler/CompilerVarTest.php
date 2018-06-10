@@ -17,9 +17,6 @@
 namespace Tests\View\Compiler;
 
 use Tests\TestCase;
-use Leevel\View\Parser;
-use Leevel\View\IParser;
-use Leevel\View\Compiler;
 
 /**
  * compiler var test
@@ -31,12 +28,11 @@ use Leevel\View\Compiler;
  */
 class CompilerVarTest extends TestCase
 {
+    use Compiler;
 
     public function testBaseUse()
     {
         $parser = $this->createParser();
-
-        $this->assertInstanceOf(IParser::class, $parser);
 
         // 普通变量
         $source = <<<'eot'
@@ -417,14 +413,5 @@ eot;
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
-    }
-
-    protected function createParser()
-    {
-        return (new Parser(new Compiler))->
-
-        registerCompilers()->
-
-        registerParsers();
     }
 }

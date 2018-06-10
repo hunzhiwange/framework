@@ -21,7 +21,7 @@ use Throwable;
 use Exception;
 use PDOException;
 use Leevel\{
-    Log\Ilog,
+    Log\ILog,
     Cache\ICache,
     Support\Debug\Dump
 };
@@ -68,7 +68,7 @@ abstract class Connect
     /**
      * 日志仓储
      *
-     * @var \leevel\Log\Ilog
+     * @var \leevel\Log\ILog
      */
     protected $objLog;
 
@@ -138,13 +138,13 @@ abstract class Connect
     /**
      * 构造函数
      *
-     * @param \leevel\Log\Ilog $objLog
+     * @param \leevel\Log\ILog $objLog
      * @param \Leevel\Cache\ICache $objCache
      * @param array $arrOption
      * @param boolean $booDevelopment
      * @return void
      */
-    public function __construct(ilog $objLog, ICache $objCache, $arrOption, $booDevelopment = false)
+    public function __construct(ILog $objLog, ICache $objCache, $arrOption, $booDevelopment = false)
     {
         // 日志
         $this->objLog = $objLog;
@@ -216,7 +216,9 @@ abstract class Connect
             'select',
             'procedure'
         ])) {
-            $this->throwException('The query method only allows select SQL statements.');
+            $this->throwException(
+                'The query method only allows select SQL statements.'
+            );
         }
 
         // 预处理
@@ -237,7 +239,12 @@ abstract class Connect
         $this->intNumRows = $this->objPDOStatement->rowCount();
 
         // 返回结果
-        return $this->fetchResult($intFetchType, $mixFetchArgument, $arrCtorArgs, $strSqlType == 'procedure');
+        return $this->fetchResult(
+            $intFetchType,
+            $mixFetchArgument,
+            $arrCtorArgs,
+            $strSqlType == 'procedure'
+        );
     }
 
     /**
@@ -257,7 +264,9 @@ abstract class Connect
 
         // 验证 sql 类型
         if (($strSqlType = $this->getSqlType($strSql)) == 'select') {
-            $this->throwException('The execute method does not allow select SQL statements.');
+            $this->throwException(
+                'The execute method does not allow select SQL statements.'
+            );
         }
 
         // 预处理
@@ -297,14 +306,18 @@ abstract class Connect
     {
         // 事务过程
         $this->beginTransaction();
+
         try {
             $mixResult = call_user_func_array($calAction, [
                 $this
             ]);
+
             $this->commit();
+
             return $mixResult;
         } catch (Throwable $oE) {
             $this->rollBack();
+
             throw $oE;
         }
     }
@@ -440,16 +453,19 @@ abstract class Connect
     public function getTableColumnsCache($sTableName, $mixMaster = false)
     {
         $strCacheKey = sprintf('%s_%s', 'table_columns', $sTableName);
+
         if (isset(static::$arrTableColumnsCache[$strCacheKey])) {
             return static::$arrTableColumnsCache[$strCacheKey];
         }
 
         $arrTableColumns = $this->objCache->get($strCacheKey);
+
         if (! $this->booDevelopment && $arrTableColumns !== false) {
             return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
         } else {
             $arrTableColumns = $this->getTableColumns($sTableName, $mixMaster);
             $this->objCache->set($strCacheKey, $arrTableColumns);
+
             return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
         }
     }
@@ -468,36 +484,42 @@ abstract class Connect
             return '';
         }
 
-        $arrMatches = null;
         preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sSql, $arrMatches, PREG_OFFSET_CAPTURE);
         $arrMatches = reset($arrMatches);
+
         if (! is_array($arrMapping)) {
             $arrMapping = [];
         }
 
         $sOut = '';
         $nOffset = 0;
+
         foreach ($arrMatches as $arrM) {
             $nLen = strlen($arrM[0]);
             $sField = substr($arrM[0], 1, $nLen - 2);
             $arrArray = explode('.', $sField);
+
             switch (count($arrArray)) {
                 case 3:
                     $sF = ! empty($arrMapping[$arrArray[2]]) ? $arrMapping[$arrArray[2]] : $arrArray[2];
                     $sTable = "{$arrArray[0]}.{$arrArray[1]}";
                     break;
+
                 case 2:
                     $sF = ! empty($arrMapping[$arrArray[1]]) ? $arrMapping[$arrArray[1]] : $arrArray[1];
                     $sTable = $arrArray[0];
                     break;
+
                 default:
                     $sF = ! empty($arrMapping[$arrArray[0]]) ? $arrMapping[$arrArray[0]] : $arrArray[0];
                     $sTable = $sTableName;
             }
+
             $sField = $this->qualifyTableOrColumn("{$sTable}.{$sF}");
             $sOut .= substr($sSql, $nOffset, $arrM[1] - $nOffset) . $sField;
             $nOffset = $arrM[1] + $nLen;
         }
+
         $sOut .= substr($sSql, $nOffset);
 
         return $sOut;
@@ -513,11 +535,15 @@ abstract class Connect
      */
     public function qualifyTableOrColumn($sName, $sAlias = null, $sAs = null)
     {
-        $sName = str_replace('`', '', $sName); // 过滤'`'字符
-        if (strpos($sName, '.') === false) { // 不包含表名字
+        // 过滤'`'字符
+        $sName = str_replace('`', '', $sName);
+
+        // 不包含表名字
+        if (strpos($sName, '.') === false) {
             $sName = $this->identifierColumn($sName);
         } else {
             $arrArray = explode('.', $sName);
+
             foreach ($arrArray as $nOffset => $sName) {
                 if (empty($sName)) {
                     unset($arrArray[$nOffset]);
@@ -525,8 +551,10 @@ abstract class Connect
                     $arrArray[$nOffset] = $this->identifierColumn($sName);
                 }
             }
+
             $sName = implode('.', $arrArray);
         }
+
         if ($sAlias) {
             return "{$sName} {$sAs} " . $this->identifierColumn($sAlias);
         } else {
@@ -546,10 +574,12 @@ abstract class Connect
         if (strpos($sKey, '.')) {
             // 如果字段名带有 .，则需要分离出数据表名称和 schema
             $arrKey = explode('.', $sKey);
+
             switch (count($arrKey)) {
                 case 3:
                     $sField = $this->qualifyTableOrColumn("{$arrKey[0]}.{$arrKey[1]}.{$arrKey[2]}");
                     break;
+
                 case 2:
                     $sField = $this->qualifyTableOrColumn("{$arrKey[0]}.{$arrKey[1]}");
                     break;
@@ -557,6 +587,7 @@ abstract class Connect
         } else {
             $sField = $this->qualifyTableOrColumn("{$sTableName}.{$sKey}");
         }
+
         return $sField;
     }
 
@@ -569,10 +600,12 @@ abstract class Connect
      */
     public function qualifyColumnValue($mixValue, $booQuotationMark = true)
     {
-        if (is_array($mixValue)) { // 数组，递归
+        // 数组，递归
+        if (is_array($mixValue)) {
             foreach ($mixValue as $nOffset => $sV) {
                 $mixValue[$nOffset] = $this->qualifyColumnValue($sV);
             }
+
             return $mixValue;
         }
 
@@ -629,6 +662,7 @@ abstract class Connect
     public function getSqlType($strSql)
     {
         $strSql = trim($strSql);
+
         foreach ([
             'select',
             'show',
@@ -648,9 +682,11 @@ abstract class Connect
                 ])) {
                     $strType = 'procedure';
                 }
+
                 return $strType;
             }
         }
+
         return 'statement';
     }
 
@@ -793,7 +829,13 @@ abstract class Connect
             }
 
             if ($this->objPDOStatement->bindValue($mixKey, $mixVal, $strParam) === false) {
-                $this->throwException(sprintf('Parameter of sql %s binding failed: %s.', $this->strSql, Dump::dump($arrBindParams, true)));
+                $this->throwException(
+                    sprintf(
+                        'Parameter of sql %s binding failed: %s.',
+                        $this->strSql,
+                        Dump::dump($arrBindParams, true)
+                    )
+                );
             }
         }
     }
@@ -811,14 +853,20 @@ abstract class Connect
     {
         // 存储过程支持多个结果
         if ($booProcedure) {
-            return $this->fetchProcedureResult($intFetchType, $mixFetchArgument, $arrCtorArgs);
+            return $this->fetchProcedureResult(
+                $intFetchType,
+                $mixFetchArgument,
+                $arrCtorArgs
+            );
         }
 
         $arrArgs = [
             $intFetchType !== null ? $intFetchType : $this->arrOption['fetch']
         ];
+
         if ($mixFetchArgument) {
             $arrArgs[] = $mixFetchArgument;
+
             if ($arrCtorArgs) {
                 $arrArgs[] = $arrCtorArgs;
             }
@@ -838,11 +886,16 @@ abstract class Connect
     protected function fetchProcedureResult($intFetchType = null, $mixFetchArgument = null, $arrCtorArgs = [])
     {
         $arrResult = [];
+
         do {
-            if (($mixResult = $this->fetchResult($intFetchType, $mixFetchArgument, $arrCtorArgs))) {
+            if (($mixResult = $this->fetchResult(
+                $intFetchType,
+                $mixFetchArgument,
+                $arrCtorArgs))) {
                 $arrResult[] = $mixResult;
             }
         } while ($this->objPDOStatement->nextRowset());
+
         return $arrResult;
     }
 
@@ -884,6 +937,7 @@ abstract class Connect
 
         // 记录 SQL 日志
         $arrLastSql = $this->getLastSql(true);
+
         if ($this->arrOption['log']) {
             $this->objLog->log(ILog::SQL, $arrLastSql[0], $arrLastSql[1] ?  : []);
         }
@@ -900,6 +954,7 @@ abstract class Connect
         if ($this->objPDOStatement) {
             $arrTemp = $this->objPDOStatement->errorInfo();
             $strError = '(' . $arrTemp[1] . ')' . $arrTemp[2] . "\r\n" . $strError;
+
             throw new PDOException($strError);
         } else {
             throw new Exception($strError);

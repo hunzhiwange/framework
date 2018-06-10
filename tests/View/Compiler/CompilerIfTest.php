@@ -17,8 +17,6 @@
 namespace Tests\View\Compiler;
 
 use Tests\TestCase;
-use Leevel\View\Parser;
-use Leevel\View\Compiler;
 
 /**
  * compiler if test
@@ -30,7 +28,8 @@ use Leevel\View\Compiler;
  */
 class CompilerIfTest extends TestCase
 {
-
+    use Compiler;
+    
     public function testBaseUse()
     {
         $parser = $this->createParser();
@@ -138,14 +137,5 @@ c
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
-    }
-
-    protected function createParser()
-    {
-        return (new Parser(new Compiler))->
-
-        registerCompilers()->
-
-        registerParsers();
     }
 }
