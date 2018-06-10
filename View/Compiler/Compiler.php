@@ -16,32 +16,25 @@
  */
 namespace Tests\View\Compiler;
 
-use Tests\TestCase;
+use Leevel\View\Parser;
+use Leevel\View\Compiler as Compilers;
 
 /**
- * 成对标签异常测试
+ * compiler trait
  * 
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
  * @since 2018.06.07
  * @version 1.0
  */
-class CompilerPairedTagExceptionTest extends TestCase
+trait Compiler
 {
-    use Compiler;
-
-    /**
-     * @expectedException \InvalidArgumentException
-     */
-    public function testBaseUse()
+    protected function createParser()
     {
-        $parser = $this->createParser();
+        return (new Parser(new Compilers))->
 
-        $source = <<<'eot'
-<list for=list>
-</badend>
-eot;
+        registerCompilers()->
 
-        $parser->doCompile($source, null, true);
+        registerParsers();
     }
 }

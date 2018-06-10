@@ -17,81 +17,70 @@
 namespace Tests\View\Compiler;
 
 use Tests\TestCase;
+use Leevel\View\Parser;
+use Leevel\View\Compiler;
 
 /**
- * compiler list test
+ * table test
  * 
  * @author Xiangmin Liu <635750556@qq.com>
  * @package $$
- * @since 2018.06.07
+ * @since 2018.06.10
  * @version 1.0
  */
-class CompilerListTest extends TestCase
+class QueryTableTest extends TestCase
 {
-    use Compiler;
 
     public function testBaseUse()
     {
         $parser = $this->createParser();
 
         $source = <<<'eot'
-{list $list $key $value}
-    {$key} - {$value}
-{/list}
+<php>echo 'Hello,world!';</php>
 eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)): foreach($list as $key => $value):?>
-    <?php echo $key;?> - <?php echo $value;?>
-<?php endforeach; endif;?>
+<?php echo 'Hello,world!';?>
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
-{list $list $value}
-    {$value}
-{/list}
+<?php echo 'Hello,world!';?>
 eot;
 
         $compiled = <<<'eot'
-<?php if (is_array($list)): foreach($list as $value):?>
-    <?php echo $value;?>
-<?php endforeach; endif;?>
+<?php echo 'Hello,world!';?>
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
 
+        // 错误的写法
         $source = <<<'eot'
-<list for=list value=my_value key=my_key index=my_index>
-    {$my_index} {$my_key} {$my_value}
-</list>
+<php>
+    {if $hello == ''}
+        Yet !
+    {/if}
+</php>
 eot;
 
-       $compiled = <<<'eot'
-<?php $my_index = 1;?>
-<?php if (is_array($list)): foreach ($list as $my_key => $my_value):?>
-    <?php echo $my_index;?> <?php echo $my_key;?> <?php echo $my_value;?>
-<?php $my_index++;?>
-<?php endforeach; endif;?>
-eot;
-
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
-
-        $source = <<<'eot'
-<list for=list>
-    {$index} {$key} {$value}
-</list>
-eot;
-
-       $compiled = <<<'eot'
-<?php $index = 1;?>
-<?php if (is_array($list)): foreach ($list as $key => $value):?>
-    <?php echo $index;?> <?php echo $key;?> <?php echo $value;?>
-<?php $index++;?>
-<?php endforeach; endif;?>
+        $compiled = <<<'eot'
+<?php 
+    <?php if ($hello == ''):?>
+        Yet !
+    <?php endif;?>
+?>
 eot;
 
         $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+    }
+
+    protected function createParser()
+    {
+        return (new Parser(new Compiler))->
+
+        registerCompilers()->
+
+        registerParsers();
     }
 }
