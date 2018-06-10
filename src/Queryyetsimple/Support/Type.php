@@ -89,18 +89,20 @@ class Type
             case 'array':
                 if (! empty($tmp[1])) {
                     $tmp[1] = explode(',', $tmp[1]);
+                    
                     return static::arr($value, $tmp[1]);
                 } else {
                     return is_array($value);
                 }
 
             // 对象
-            case 'object': 
+            case 'obj':
+            case 'object':
                 return is_object($value);
 
             // null
             case 'null': 
-                return ($value === null);
+                return $value === null;
 
             // 回调函数
             case 'callback': 
@@ -115,7 +117,7 @@ class Type
     /**
      * 判断字符串是否为数字
      *
-     * @param string $strSearch
+     * @param string $value
      * @since bool
      */
     public static function num($value)
@@ -123,13 +125,14 @@ class Type
         if (is_numeric($value)) {
             return true;
         }
+
         return ! preg_match("/[^\d-.,]/", trim($value, '\''));
     }
 
     /**
      * 判断字符串是否为整数
      *
-     * @param string $strSearch
+     * @param string $value
      * @since bool
      */
     public static function ints($value)
@@ -137,6 +140,7 @@ class Type
         if (is_int($value)) {
             return true;
         }
+
         return ctype_digit(strval($value));
     }
 
@@ -152,7 +156,9 @@ class Type
         if (! static::vars($types, 'string') && ! static::arr($types, [
             'string'
         ])) {
-            throw new InvalidArgumentException('The parameter must be string or an array of string elements.');
+            throw new InvalidArgumentException(
+                'The parameter must be string or an array of string elements.'
+            );
         }
 
         if (is_string($types)) {
