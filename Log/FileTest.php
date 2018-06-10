@@ -16,7 +16,6 @@
  */
 namespace Tests\Log;
 
-use stdClass;
 use Tests\TestCase;
 use Leevel\Log\File;
 use Leevel\Filesystem\Fso;
