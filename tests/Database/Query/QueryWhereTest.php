@@ -30,7 +30,7 @@ class QueryWhereTest extends TestCase
 {
     use Query;
 
-    public function testBaseUse()
+    public function t2estBaseUse()
     {
         $connect = $this->createConnect();
 
@@ -121,7 +121,7 @@ eot;
         );
     }
 
-    public function testArray()
+    public function t2estArray()
     {
         $connect = $this->createConnect();
 
@@ -183,7 +183,7 @@ eot;
         );
     }
 
-    public function testOrWhere()
+    public function t2estOrWhere()
     {
         $connect = $this->createConnect();
 
@@ -217,7 +217,7 @@ eot;
         );
     }
 
-    public function testWhereBetween()
+    public function t2estWhereBetween()
     {
         $connect = $this->createConnect();
 
@@ -306,7 +306,7 @@ eot;
         );
     }
 
-    public function testWhereNotBetween()
+    public function t2estWhereNotBetween()
     {
         $connect = $this->createConnect();
 
@@ -358,6 +358,464 @@ eot;
                 $connect->table('test')->
 
                 where('id','not between', [1, 10])->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function t2estWhereIn()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` IN (2,50)',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                whereIn('id', [2, 50])->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` IN (\'1\',\'10\')',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where('id', 'in', '1,10')
+
+                ->getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` IN (2,50)',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where('id', 'in', [2, 50])
+
+                ->getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function t2estWhereNotIn()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` NOT IN (2,50)',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                whereNotIn('id', [2, 50])->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` NOT IN (\'1\',\'10\')',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where('id','not in', '1,10')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function t2estWhereNull()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` IS NULL',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                whereNull('id')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where('id','null')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function t2estWhereNotNull()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` IS NOT NULL',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                whereNotNull('id')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where('id','not null')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function t2estWhereLike()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` LIKE \'5\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                whereLike('id','5')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where('id','like', '5')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function t2estWhereNotLike()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` NOT LIKE \'5\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                whereNotLike('id','5')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where('id','not like', '5')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function testWhereExists()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                whereExists(
+                    function($select) {
+                        $select->table('subsql')->where('id', 1);
+                    }
+                )->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql`)',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $subSelect = $connect->table('subsql');
+
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where(
+                   [
+                      'exists__' => $subSelect
+                   ]
+                )->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE EXISTS (select *from d_sub)',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $subSelect = $connect->table('subsql');
+        
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where(
+                   [
+                      'exists__' => 'select *from d_sub'
+                   ]
+                )->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $subSelect = $connect->table('subsql');
+        
+        $this->assertEquals(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where(
+                   [
+                      'exists__' => function($select) {
+                          $select->table('subsql')->where('id', 1);
+                      }
+                   ]
+                )->
 
                 getAll(true),
                 __METHOD__

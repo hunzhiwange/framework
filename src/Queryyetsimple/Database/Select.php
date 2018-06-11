@@ -1560,9 +1560,7 @@ class Select
         }
 
         return $this->{'addConditions'}([
-            [
-                'exists__' => $mixExists
-            ]
+            'exists__' => $mixExists
         ]);
     }
 
@@ -3048,6 +3046,7 @@ class Select
                 $arrArgs
             ];
         } else {
+            
             // 一维数组统一成二维数组格式
             $booOneImension = false;
             foreach ($arrArgs[0] as $mixKey => $mixValue) {
@@ -3140,7 +3139,11 @@ class Select
                     }
                 }
 
-                $arrTemp = ($strKey == 'notexists__' ? 'NOT EXISTS ' : 'EXISTS ') . static::LOGIC_GROUP_LEFT . ' ' . $arrTemp . ' ' . static::LOGIC_GROUP_RIGHT;
+                $arrTemp = ($strKey == 'notexists__' ? 'NOT EXISTS ' : 'EXISTS ') .
+                    static::LOGIC_GROUP_LEFT  .
+                    $arrTemp .
+                    static::LOGIC_GROUP_RIGHT;
+                    
                 $this->setConditionItem($arrTemp, 'string__');
             }
 
