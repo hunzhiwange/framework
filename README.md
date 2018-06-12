@@ -96,6 +96,10 @@ $cd /data/codes/queryphp/vendor/hunzhiwange/framework
 $php-cs-fixer fix --config=.php_cs.dist
 ```
 
+## Travis CI Supported
+
+Let code poem.
+
 ## License
 
 The QueryPHP framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).
