@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\I18n;
 
-use Tests\TestCase;
-use Leevel\I18n\Po;
 use Leevel\I18n\Mo;
+use Leevel\I18n\Po;
+use Tests\TestCase;
 
 /**
  * po mo test.
@@ -32,6 +32,7 @@ use Leevel\I18n\Mo;
  * @since 2018.06.03
  *
  * @version 1.0
+ * @coversNothing
  */
 class PoMoTest extends TestCase
 {

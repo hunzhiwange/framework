@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ * @coversNothing
  */
 class CompilerQuickTest extends TestCase
 {
@@ -54,7 +55,7 @@ eot;
  
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 {~$value = 'Make QueryPHP greater !'}
@@ -66,7 +67,7 @@ eot;
 <?php echo $value;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 {:'Hello QueryPHP!'}
@@ -76,6 +77,6 @@ eot;
 <?php echo 'Hello QueryPHP!';?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

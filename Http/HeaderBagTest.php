@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
-use Tests\TestCase;
 use Leevel\Http\HeaderBag;
+use Tests\TestCase;
 
 /**
  * HeaderBagTest test
@@ -34,6 +34,7 @@ use Leevel\Http\HeaderBag;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ * @coversNothing
  */
 class HeaderBagTest extends TestCase
 {
@@ -46,53 +47,53 @@ class HeaderBagTest extends TestCase
     public function testToStringNull()
     {
         $bag = new HeaderBag();
-        $this->assertEquals('', $bag->__toString());
+        $this->assertSame('', $bag->__toString());
     }
 
     public function testToStringNotNull()
     {
         $bag = new HeaderBag(['foo' => 'bar']);
-        $this->assertEquals("Foo: bar\r\n", $bag->__toString());
+        $this->assertSame("Foo: bar\r\n", $bag->__toString());
     }
 
     public function testKeys()
     {
         $bag = new HeaderBag(['foo' => 'bar']);
         $keys = $bag->keys();
-        $this->assertEquals('foo', $keys[0]);
+        $this->assertSame('foo', $keys[0]);
     }
 
     public function testAll()
     {
         $bag = new HeaderBag(['foo' => 'bar']);
-        $this->assertEquals(['foo' => 'bar'], $bag->all(), '->all() gets all the input');
+        $this->assertSame(['foo' => 'bar'], $bag->all(), '->all() gets all the input');
 
         $bag = new HeaderBag(['FOO' => 'BAR']);
-        $this->assertEquals(['foo' => 'BAR'], $bag->all(), '->all() gets all the input key are lower case');
+        $this->assertSame(['foo' => 'BAR'], $bag->all(), '->all() gets all the input key are lower case');
     }
 
     public function testReplace()
     {
         $bag = new HeaderBag(['foo' => 'bar']);
         $bag->replace(['NOPE' => 'BAR']);
-        $this->assertEquals(['nope' => 'BAR'], $bag->all(), '->replace() replaces the input with the argument');
+        $this->assertSame(['nope' => 'BAR'], $bag->all(), '->replace() replaces the input with the argument');
         $this->assertFalse($bag->has('foo'), '->replace() overrides previously set the input');
     }
 
     public function testGet()
     {
         $bag = new HeaderBag(['foo' => 'bar', 'fuzz' => 'bizz']);
-        $this->assertEquals('bar', $bag->get('foo'), '->get return current value');
-        $this->assertEquals('bar', $bag->get('FoO'), '->get key in case insensitive');
-        $this->assertEquals('bar', $bag->get('foo', 'nope'), '->get return the value');
+        $this->assertSame('bar', $bag->get('foo'), '->get return current value');
+        $this->assertSame('bar', $bag->get('FoO'), '->get key in case insensitive');
+        $this->assertSame('bar', $bag->get('foo', 'nope'), '->get return the value');
 
         // defaults
         $this->assertNull($bag->get('none'), '->get unknown values returns null');
-        $this->assertEquals('default', $bag->get('none', 'default'), '->get unknown values returns default');
+        $this->assertSame('default', $bag->get('none', 'default'), '->get unknown values returns default');
 
         $bag->set('foo', 'bor');
-        $this->assertEquals('bor', $bag->get('foo'), '->get return a new value');
-        $this->assertEquals('bor', $bag->get('foo', 'nope'), '->get return');
+        $this->assertSame('bor', $bag->get('foo'), '->get return a new value');
+        $this->assertSame('bor', $bag->get('foo', 'nope'), '->get return');
     }
 
     public function testGetIterator()
@@ -104,10 +105,10 @@ class HeaderBagTest extends TestCase
         $i = 0;
         foreach ($headerBag as $key => $val) {
             ++$i;
-            $this->assertEquals($headers[$key], $val);
+            $this->assertSame($headers[$key], $val);
         }
 
-        $this->assertEquals(count($headers), $i);
+        $this->assertSame(count($headers), $i);
     }
 
     public function testCount()

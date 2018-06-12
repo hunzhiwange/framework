@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Event;
 
-use Tests\TestCase;
 use Leevel\Di\Container;
-use Leevel\Event\Observer;
 use Leevel\Event\Dispatch;
+use Leevel\Event\Observer;
+use Tests\TestCase;
 
 /**
  * dispatch test.
@@ -33,6 +33,7 @@ use Leevel\Event\Dispatch;
  * @since 2018.05.29
  *
  * @version 1.0
+ * @coversNothing
  */
 class DispatchTest extends TestCase
 {
@@ -52,8 +53,8 @@ class DispatchTest extends TestCase
 
         $dispatch->run('event');
 
-        $this->assertEquals($_SERVER['test'], 'hello');
-        $this->assertEquals($_SERVER['event_name'], 'event');
+        $this->assertSame($_SERVER['test'], 'hello');
+        $this->assertSame($_SERVER['event_name'], 'event');
 
         unset($_SERVER['test'], $_SERVER['event_name']);
     }
@@ -70,7 +71,7 @@ class DispatchTest extends TestCase
 
         $dispatch->run('event');
 
-        $this->assertEquals($_SERVER['test'], 'arg_foo');
+        $this->assertSame($_SERVER['test'], 'arg_foo');
 
         unset($_SERVER['test']);
     }
@@ -87,7 +88,7 @@ class DispatchTest extends TestCase
 
         $dispatch->run($event);
 
-        $this->assertEquals($_SERVER['test'], 'event_arg_foo');
+        $this->assertSame($_SERVER['test'], 'event_arg_foo');
 
         unset($_SERVER['test']);
     }
@@ -102,7 +103,7 @@ class DispatchTest extends TestCase
 
         $dispatch->run($event);
 
-        $this->assertEquals($_SERVER['test'], 'event_arg_foo');
+        $this->assertSame($_SERVER['test'], 'event_arg_foo');
 
         unset($_SERVER['test']);
     }
@@ -116,7 +117,7 @@ class DispatchTest extends TestCase
 
         $dispatch->run('foo');
 
-        $this->assertEquals($_SERVER['test'], 'l5');
+        $this->assertSame($_SERVER['test'], 'l5');
 
         $dispatch = new Dispatch(new Container());
 
@@ -126,7 +127,7 @@ class DispatchTest extends TestCase
 
         $dispatch->run('foo');
 
-        $this->assertEquals($_SERVER['test'], 'l4');
+        $this->assertSame($_SERVER['test'], 'l4');
         unset($_SERVER['test']);
     }
 }

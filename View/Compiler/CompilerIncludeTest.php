@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.08
  *
  * @version 1.0
+ * @coversNothing
  */
 class CompilerIncludeTest extends TestCase
 {
@@ -47,7 +48,7 @@ eot;
 <?php $this->display('application/app/ui/theme/default/header', [], '.html', true);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 {~$headTpl = app()->pathApplicationTheme() . '/' . '/header.html'}
@@ -59,7 +60,7 @@ eot;
 <?php $this->display($headTpl, [], '', true);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <include file="test" />
@@ -69,7 +70,7 @@ eot;
 <?php $this->display('test', [], '', true);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <include file="public+header" />
@@ -79,7 +80,7 @@ eot;
 <?php $this->display('public+header', [], '', true);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <include file="blue@blog+view" />
@@ -89,7 +90,7 @@ eot;
 <?php $this->display('blue@blog+view', [], '', true);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 放置 . 被替换加上 () 包裹起来
         $source = <<<'eot'
@@ -106,6 +107,6 @@ eot;
 <?php $this->display($hello->world('header'), [], '', true);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

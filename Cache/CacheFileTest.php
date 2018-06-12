@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Cache;
 
-use Tests\TestCase;
 use Leevel\Cache\File;
+use Tests\TestCase;
 
 /**
  * cache file test.
@@ -31,6 +31,7 @@ use Leevel\Cache\File;
  * @since 2018.06.05
  *
  * @version 1.0
+ * @coversNothing
  */
 class CacheFileTest extends TestCase
 {
@@ -50,7 +51,7 @@ class CacheFileTest extends TestCase
 
         $this->assertTrue(is_file($filePath));
 
-        $this->assertEquals('world', $file->get('hello'));
+        $this->assertSame('world', $file->get('hello'));
 
         $file->delete('hello');
 

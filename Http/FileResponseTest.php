@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
-use Tests\TestCase;
 use Leevel\Http\FileResponse;
 use Leevel\Http\ResponseHeaderBag;
+use Tests\TestCase;
 
 /**
  * FileResponseTest test
@@ -35,6 +35,7 @@ use Leevel\Http\ResponseHeaderBag;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ * @coversNothing
  */
 class FileResponseTest extends TestCase
 {
@@ -43,15 +44,15 @@ class FileResponseTest extends TestCase
         $file = __DIR__.'/../../README.md';
 
         $response = new FileResponse($file, 404, ['X-Header' => 'Foo'], null, true, true);
-        $this->assertEquals(404, $response->getStatusCode());
-        $this->assertEquals('Foo', $response->headers->get('X-Header'));
+        $this->assertSame(404, $response->getStatusCode());
+        $this->assertSame('Foo', $response->headers->get('X-Header'));
         $this->assertTrue($response->headers->has('ETag'));
         $this->assertTrue($response->headers->has('Last-Modified'));
         $this->assertFalse($response->headers->has('Content-Disposition'));
 
         $response = FileResponse::create($file, 404, [], ResponseHeaderBag::DISPOSITION_INLINE);
-        $this->assertEquals(404, $response->getStatusCode());
+        $this->assertSame(404, $response->getStatusCode());
         $this->assertFalse($response->headers->has('ETag'));
-        $this->assertEquals('inline; filename="README.md"', $response->headers->get('Content-Disposition'));
+        $this->assertSame('inline; filename="README.md"', $response->headers->get('Content-Disposition'));
     }
 }

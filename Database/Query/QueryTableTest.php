@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.10
  *
  * @version 1.0
+ * @coversNothing
  */
 class QueryTableTest extends TestCase
 {
@@ -54,7 +55,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('posts')->
@@ -79,7 +80,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('mydb.posts')->
@@ -104,7 +105,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table(['p' => 'mydb.posts'])->
@@ -134,7 +135,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('posts', 'title,body')->
@@ -159,13 +160,13 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table(
                     'mydb.posts', [
-                    't' => 'title', 'name', 'remark,value',
-                ])->
+                        't' => 'title', 'name', 'remark,value',
+                    ])->
 
                 getAll(true),
                 __METHOD__

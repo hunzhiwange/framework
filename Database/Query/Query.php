@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
-use Leevel\Log\ILog;
 use Leevel\Cache\ICache;
 use Leevel\Database\Mysql;
+use Leevel\Log\ILog;
 
 /**
  * query trait.

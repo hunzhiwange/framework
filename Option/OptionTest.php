@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Option;
 
-use Tests\TestCase;
 use Leevel\Option\Option;
+use Tests\TestCase;
 
 /**
  * option 组件测试.
@@ -31,6 +31,7 @@ use Leevel\Option\Option;
  * @since 2017.05.09
  *
  * @version 1.0
+ * @coversNothing
  */
 class OptionTest extends TestCase
 {
@@ -64,19 +65,19 @@ class OptionTest extends TestCase
 
         $option = new Option($data);
 
-        $this->assertEquals('testing', $option->get('app\environment'));
-        $this->assertEquals('testing', $option->get('environment'), 'Default namespace is app, so it equal app\testing.');
+        $this->assertSame('testing', $option->get('app\environment'));
+        $this->assertSame('testing', $option->get('environment'), 'Default namespace is app, so it equal app\testing.');
         $this->assertNull($option->get('hello'), 'The default namespace is app, so it equal app\hello');
         $this->assertNull($option->get('app\hello'), 'The default namespace is app, so it equal app\hello');
-        $this->assertEquals($option->get('hello\\'), 'world');
-        $this->assertEquals($option->get('hello\*'), 'world');
+        $this->assertSame($option->get('hello\\'), 'world');
+        $this->assertSame($option->get('hello\*'), 'world');
 
-        $this->assertEquals([
-                'environment' => 'testing',
-                'debug' => true,
-            ], $option->get('app\\'));
+        $this->assertSame([
+            'environment' => 'testing',
+            'debug' => true,
+        ], $option->get('app\\'));
 
-        $this->assertEquals([
+        $this->assertSame([
             'environment' => 'testing',
             'debug' => true,
         ], $option->get('app\*'));
@@ -87,7 +88,7 @@ class OptionTest extends TestCase
         ] === $option->get('app'), 'The default namespace is app, so it equal app\app');
 
         // namespace\sub.sub1.sub2
-        $this->assertEquals($option->get('cache\time_preset.foo'), 'bar');
+        $this->assertSame($option->get('cache\time_preset.foo'), 'bar');
         $this->assertNull($option->get('cache\time_preset.foo2'));
     }
 
@@ -135,12 +136,12 @@ class OptionTest extends TestCase
 
         // set app\environment value
         $option->set('environment', 'testing');
-        $this->assertEquals('testing', $option->get('app\environment'));
-        $this->assertEquals('testing', $option->get('environment'), 'Default namespace is app, so it equal app\testing.');
+        $this->assertSame('testing', $option->get('app\environment'));
+        $this->assertSame('testing', $option->get('environment'), 'Default namespace is app, so it equal app\testing.');
 
         $this->assertNull($option->get('hello'), 'The default namespace is app, so it equal app\hello');
         $option->set('hello', 'i am hello');
-        $this->assertEquals($option->get('hello'), 'i am hello', 'The default namespace is app, so it equal app\hello');
+        $this->assertSame($option->get('hello'), 'i am hello', 'The default namespace is app, so it equal app\hello');
 
         $this->assertSame($option->all(), [
             'app' => [
@@ -156,11 +157,11 @@ class OptionTest extends TestCase
 
         $option->set('hello\\', ['foo' => ['sub' => 'bar']]);
 
-        $this->assertEquals($option->get('hello\foo.sub'), 'bar');
+        $this->assertSame($option->get('hello\foo.sub'), 'bar');
 
         // namespace\sub.sub1.sub2
         $option->set('cache\time_preset.foo', 'bar');
-        $this->assertEquals($option->get('cache\time_preset.foo'), 'bar');
+        $this->assertSame($option->get('cache\time_preset.foo'), 'bar');
         $this->assertNull($option->get('cache\time_preset.foo2'));
     }
 
@@ -296,7 +297,7 @@ class OptionTest extends TestCase
         $option = new Option($data);
 
         // get
-        $this->assertEquals($option['cache\time_preset.foo'], 'bar');
+        $this->assertSame($option['cache\time_preset.foo'], 'bar');
 
         // remove
         unset($option['cache\time_preset.foo']);
@@ -304,7 +305,7 @@ class OptionTest extends TestCase
 
         // set
         $option['cache\foo'] = 'bar';
-        $this->assertEquals($option['cache\foo'], 'bar');
+        $this->assertSame($option['cache\foo'], 'bar');
 
         // has
         $this->assertTrue(isset($option['hello\\']));

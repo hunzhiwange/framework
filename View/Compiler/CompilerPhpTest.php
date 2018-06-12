@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ * @coversNothing
  */
 class CompilerPhpTest extends TestCase
 {
@@ -47,7 +48,7 @@ eot;
 <?php echo 'Hello,world!';?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <?php echo 'Hello,world!';?>
@@ -57,7 +58,7 @@ eot;
 <?php echo 'Hello,world!';?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 错误的写法
         $source = <<<'eot'
@@ -76,6 +77,6 @@ eot;
 ?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

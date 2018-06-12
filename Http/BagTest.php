@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
-use Tests\TestCase;
 use Leevel\Http\Bag;
+use Tests\TestCase;
 
 /**
  * Bag test
@@ -34,50 +34,51 @@ use Leevel\Http\Bag;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ * @coversNothing
  */
 class BagTest extends TestCase
 {
     public function testAll()
     {
         $bag = new Bag(['foo' => 'bar']);
-        $this->assertEquals(['foo' => 'bar'], $bag->all(), '->all() gets all the input');
+        $this->assertSame(['foo' => 'bar'], $bag->all(), '->all() gets all the input');
     }
 
     public function testKeys()
     {
         $bag = new Bag(['foo' => 'bar']);
-        $this->assertEquals(['foo'], $bag->keys());
+        $this->assertSame(['foo'], $bag->keys());
     }
 
     public function testAdd()
     {
         $bag = new Bag(['foo' => 'bar']);
         $bag->add(['bar' => 'bas']);
-        $this->assertEquals(['foo' => 'bar', 'bar' => 'bas'], $bag->all());
+        $this->assertSame(['foo' => 'bar', 'bar' => 'bas'], $bag->all());
     }
 
     public function testRemove()
     {
         $bag = new Bag(['foo' => 'bar']);
         $bag->add(['bar' => 'bas']);
-        $this->assertEquals(['foo' => 'bar', 'bar' => 'bas'], $bag->all());
+        $this->assertSame(['foo' => 'bar', 'bar' => 'bas'], $bag->all());
         $bag->remove('bar');
-        $this->assertEquals(['foo' => 'bar'], $bag->all());
+        $this->assertSame(['foo' => 'bar'], $bag->all());
     }
 
     public function testReplace()
     {
         $bag = new Bag(['foo' => 'bar']);
         $bag->replace(['FOO' => 'BAR']);
-        $this->assertEquals(['FOO' => 'BAR'], $bag->all(), '->replace() replaces the input with the argument');
+        $this->assertSame(['FOO' => 'BAR'], $bag->all(), '->replace() replaces the input with the argument');
         $this->assertFalse($bag->has('foo'), '->replace() overrides previously set the input');
     }
 
     public function testGet()
     {
         $bag = new Bag(['foo' => 'bar', 'null' => null]);
-        $this->assertEquals('bar', $bag->get('foo'), '->get() gets the value of a parameter');
-        $this->assertEquals('default', $bag->get('unknown', 'default'), '->get() returns second argument as default if a parameter is not defined');
+        $this->assertSame('bar', $bag->get('foo'), '->get() gets the value of a parameter');
+        $this->assertSame('default', $bag->get('unknown', 'default'), '->get() returns second argument as default if a parameter is not defined');
         $this->assertNull($bag->get('null', 'default'), '->get() returns null if null is set');
     }
 
@@ -85,9 +86,9 @@ class BagTest extends TestCase
     {
         $bag = new Bag([]);
         $bag->set('foo', 'bar');
-        $this->assertEquals('bar', $bag->get('foo'), '->set() sets the value of parameter');
+        $this->assertSame('bar', $bag->get('foo'), '->set() sets the value of parameter');
         $bag->set('foo', 'baz');
-        $this->assertEquals('baz', $bag->get('foo'), '->set() overrides previously set parameter');
+        $this->assertSame('baz', $bag->get('foo'), '->set() overrides previously set parameter');
     }
 
     public function testHas()
@@ -105,10 +106,10 @@ class BagTest extends TestCase
         $i = 0;
         foreach ($bag as $key => $val) {
             ++$i;
-            $this->assertEquals($parameters[$key], $val);
+            $this->assertSame($parameters[$key], $val);
         }
 
-        $this->assertEquals(count($parameters), $i);
+        $this->assertSame(count($parameters), $i);
     }
 
     public function testCount()
@@ -122,7 +123,7 @@ class BagTest extends TestCase
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
         $bag = new Bag($parameters);
-        $this->assertEquals($bag->toJson(), '{"foo":"bar","hello":"world"}');
+        $this->assertSame($bag->toJson(), '{"foo":"bar","hello":"world"}');
     }
 
     public function testFilter()
@@ -134,17 +135,17 @@ class BagTest extends TestCase
 
         $this->assertSame($bag->get('foo|substr=1|intval'), 1234);
 
-        $this->assertEquals($bag->get('foo|Tests\Http\custom_func=hello,**,concact'), 'hello-- 1234-concact');
+        $this->assertSame($bag->get('foo|Tests\Http\custom_func=hello,**,concact'), 'hello-- 1234-concact');
 
-        $this->assertEquals($bag->filter('foo|Tests\Http\custom_func=hello,**,concact', null, 'substr=5'), '-- 1234-concact');
+        $this->assertSame($bag->filter('foo|Tests\Http\custom_func=hello,**,concact', null, 'substr=5'), '-- 1234-concact');
 
-        $this->assertEquals($bag->filter('foo|substr=5', null, 'Tests\Http\custom_func=hello,**,concact'), 'hello-4-concact');
+        $this->assertSame($bag->filter('foo|substr=5', null, 'Tests\Http\custom_func=hello,**,concact'), 'hello-4-concact');
 
-        $this->assertEquals($bag->get('foo|Tests\Http\custom_func=hello,**,MY_CONST'), 'hello-- 1234-hello const');
+        $this->assertSame($bag->get('foo|Tests\Http\custom_func=hello,**,MY_CONST'), 'hello-- 1234-hello const');
 
-        $this->assertEquals($bag->get('no|default=5'), '5');
-        $this->assertEquals($bag->get('no|default=helloworld'), 'helloworld');
-        $this->assertEquals($bag->get('no|default=MY_CONST'), 'hello const');
+        $this->assertSame($bag->get('no|default=5'), '5');
+        $this->assertSame($bag->get('no|default=helloworld'), 'helloworld');
+        $this->assertSame($bag->get('no|default=MY_CONST'), 'hello const');
     }
 
     public function testGetPartData()
@@ -157,9 +158,9 @@ class BagTest extends TestCase
         ];
         $bag = new Bag($parameters);
 
-        $this->assertEquals($bag->get('foo\hello'), 'world');
-        $this->assertEquals($bag->get('foo\namepace.sub'), 'i am here');
-        $this->assertEquals($bag->get('foo\namepace.sub|substr=2'), 'am here');
+        $this->assertSame($bag->get('foo\hello'), 'world');
+        $this->assertSame($bag->get('foo\namepace.sub'), 'i am here');
+        $this->assertSame($bag->get('foo\namepace.sub|substr=2'), 'am here');
     }
 }
 
