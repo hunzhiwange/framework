@@ -37,7 +37,7 @@ class PoMoTest extends TestCase
 {
     public function testPo()
     {
-        $lang = (new Po())->readToArray([__DIR__ . '/page.po']);
+        $lang = (new Po())->readToArray([__DIR__.'/page.po']);
 
         $this->assertSame($lang, [
             '上一页' => 'Previous',
@@ -50,7 +50,7 @@ class PoMoTest extends TestCase
 
     public function testMo()
     {
-        $lang = (new Mo())->readToArray([__DIR__ . '/page.mo']);
+        $lang = (new Mo())->readToArray([__DIR__.'/page.mo']);
 
         $this->assertSame($lang, [
             '上一页' => 'Previous',

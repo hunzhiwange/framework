@@ -165,9 +165,9 @@ class BagTest extends TestCase
 
 function custom_func($arg1, $arg2, $arg3)
 {
-    return $arg1 . '-' . $arg2 . '-' . $arg3;
+    return $arg1.'-'.$arg2.'-'.$arg3;
 }
 
-if (! defined('MY_CONST')) {
+if (!defined('MY_CONST')) {
     define('MY_CONST', 'hello const');
 }

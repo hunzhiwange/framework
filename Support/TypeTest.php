@@ -74,7 +74,7 @@ class TypeTest extends TestCase
         $this->assertFalse(Type::vars(null, 'scalar'));
 
         // resource
-        $resource = fopen(__DIR__ . '/test.txt', 'r');
+        $resource = fopen(__DIR__.'/test.txt', 'r');
         $this->assertTrue(Type::vars($resource, 'handle'));
         $this->assertFalse(Type::vars(4, 'resource'));
         fclose($resource);

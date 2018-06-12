@@ -41,7 +41,7 @@ class FileTest extends TestCase
             'path' => __DIR__,
         ]);
 
-        $filePath = __DIR__ . '/info/' . date('Y-m-d H') . '.log';
+        $filePath = __DIR__.'/info/'.date('Y-m-d H').'.log';
 
         $data = [
             0 => [

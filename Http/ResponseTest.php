@@ -152,7 +152,7 @@ class ResponseTest extends TestCase
         $this->assertEquals($response->headers->get('Etag'), 'hello-world-etag');
 
         $date = new DateTime();
-        $date->modify('+' . 5 . 'minutes');
+        $date->modify('+'. 5 .'minutes');
 
         $response->setLastModified($date);
         $this->assertTrue($response->headers->has('Last-Modified'));

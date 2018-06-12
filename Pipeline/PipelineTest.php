@@ -56,7 +56,7 @@ class PipelineTest extends TestCase
     public function testPipelineWithThen()
     {
         $thenCallback = function (Closure $next, $send) {
-            $_SERVER['test.then'] = 'i am end and get the send:' . $send;
+            $_SERVER['test.then'] = 'i am end and get the send:'.$send;
         };
 
         $result = (new Pipeline(new Container()))->
@@ -83,7 +83,7 @@ class PipelineTest extends TestCase
 
             $this->assertEquals($result, 'return 2');
 
-            $_SERVER['test.1'] = '1 and get the send:' . $send;
+            $_SERVER['test.1'] = '1 and get the send:'.$send;
 
             return 'return 1';
         };
@@ -93,7 +93,7 @@ class PipelineTest extends TestCase
 
             $this->assertNull($result);
 
-            $_SERVER['test.2'] = '2 and get the send:' . $send;
+            $_SERVER['test.2'] = '2 and get the send:'.$send;
 
             return 'return 2';
         };
@@ -192,7 +192,7 @@ class PipelineTest extends TestCase
 
         $result = (new Pipeline(new Container()))->
 
-        through('Tests\Pipeline\WithArgs:' . implode(',', $parameters))->
+        through('Tests\Pipeline\WithArgs:'.implode(',', $parameters))->
 
         then();
 
@@ -206,7 +206,7 @@ class First
 {
     public function handle(Closure $next, $send)
     {
-        $_SERVER['test.first'] = 'i am in first handle and get the send:' . $send;
+        $_SERVER['test.first'] = 'i am in first handle and get the send:'.$send;
 
         $next($send);
     }
@@ -216,7 +216,7 @@ class Second
 {
     public function handle(Closure $next, $send)
     {
-        $_SERVER['test.second'] = 'i am in second handle and get the send:' . $send;
+        $_SERVER['test.second'] = 'i am in second handle and get the send:'.$send;
 
         $next($send);
     }
@@ -254,7 +254,7 @@ class DiConstruct
 
     public function handle(Closure $next, $send)
     {
-        $_SERVER['test.DiConstruct'] = 'get class:' . get_class($this->testClass);
+        $_SERVER['test.DiConstruct'] = 'get class:'.get_class($this->testClass);
 
         $next($send);
     }
