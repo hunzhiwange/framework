@@ -3,13 +3,11 @@
 <p align="center">
   <a href="https://github.styleci.io/repos/91284136"><img src="https://github.styleci.io/repos/91284136/shield?branch=master" alt="StyleCI"></a>
   <a href="https://github.com/hunzhiwange/framework/releases">
-    <img alt="Latest Version" src="https://img.shields.io/packagist/vpre/hunzhiwange/framework.svg" /></a>
+    <img alt="Latest Version" src="https://poser.pugx.org/hunzhiwange/framework/version" /></a>
   <a href="https://travis-ci.org/hunzhiwange/framework">
     <img alt="Build Status" src="https://img.shields.io/travis/hunzhiwange/framework.svg" /></a>
-  <a href="https://secure.php.net/">
-    <img alt="Php Version" src="https://img.shields.io/packagist/php-v/hunzhiwange/framework.svg" /></a>
   <a href="http://opensource.org/licenses/MIT">
-    <img alt="QueryPHP License" src="https://img.shields.io/packagist/l/hunzhiwange/framework.svg" /></a>
+    <img alt="QueryPHP License" src="https://poser.pugx.org/hunzhiwange/queryphp/license.svg" /></a>
 </p>
 
 # The QueryPHP Framework
