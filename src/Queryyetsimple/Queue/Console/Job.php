@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,18 +17,17 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Queue\Console;
 
 use Exception;
 use PHPQueue\Base;
-use Leevel\Console\{
-    Option,
-    Command,
-    Argument
-};
+use Leevel\Console\Option;
+use Leevel\Console\Command;
+use Leevel\Console\Argument;
 
 /**
- * 导入消息队列配置
+ * 导入消息队列配置.
  */
 require dirname(__DIR__) . '/config.php';
 
@@ -33,31 +35,29 @@ require dirname(__DIR__) . '/config.php';
  * 添加新的任务
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.11
+ *
  * @version 1.0
  */
 class Job extends Command
 {
-
     /**
-     * 命令名字
+     * 命令名字.
      *
      * @var string
      */
     protected $name = 'queue:job';
 
     /**
-     * 命令行描述
+     * 命令行描述.
      *
      * @var string
      */
     protected $description = 'Add a new job on a queue';
 
     /**
-     * 响应命令
-     *
-     * @return void
+     * 响应命令.
      */
     public function handle()
     {
@@ -68,7 +68,7 @@ class Job extends Command
         try {
             // 任务名字
             $payload = [
-                'job' => $this->argument('job')
+                'job' => $this->argument('job'),
             ];
 
             // 附加参数
@@ -80,14 +80,15 @@ class Job extends Command
 
             if (! class_exists($connect)) {
                 $this->error($this->time(sprintf('Connect %s not exits.', $connect)));
+
                 return;
             }
 
             call_user_func_array([
                 $connect,
-                'setQueue'
+                'setQueue',
             ], [
-                $this->option('queue')
+                $this->option('queue'),
             ]);
 
             // 添加任务
@@ -104,20 +105,20 @@ class Job extends Command
         if ($status) {
             $this->info(
                 $this->time(
-                    sprintf("%s add succeed.", $this->option('queue') . ':' . $this->argument('job'))
+                    sprintf('%s add succeed.', $this->option('queue') . ':' . $this->argument('job'))
                 )
             );
         } else {
             $this->error(
                 $this->time(
-                    sprintf("%s add failed.", $this->option('queue') . ':' . $this->argument('job'))
+                    sprintf('%s add failed.', $this->option('queue') . ':' . $this->argument('job'))
                 )
             );
         }
     }
 
     /**
-     * 命令参数
+     * 命令参数.
      *
      * @return array
      */
@@ -128,19 +129,19 @@ class Job extends Command
                 'job',
                 Argument::REQUIRED,
                 'The job name to add.',
-                null
+                null,
             ],
             [
                 'connect',
                 Argument::OPTIONAL,
                 'The name of connect. ',
-                option('quque\default', 'redis')
-            ]
+                option('quque\default', 'redis'),
+            ],
         ];
     }
 
     /**
-     * 命令配置
+     * 命令配置.
      *
      * @return array
      */
@@ -152,14 +153,14 @@ class Job extends Command
                 null,
                 option::VALUE_OPTIONAL,
                 'The queue to listen on.',
-                'default'
+                'default',
             ],
             [
                 'data',
                 null,
                 option::VALUE_OPTIONAL | option::VALUE_IS_ARRAY,
-                'The job json args.'
-            ]
+                'The job json args.',
+            ],
         ];
     }
 }

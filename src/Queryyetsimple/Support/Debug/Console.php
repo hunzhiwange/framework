@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,30 +17,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Support\Debug;
 
 /**
- * 调试
+ * 调试.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.05
+ *
  * @version 1.0
  */
 class Console
 {
-
     /**
      * 记录调试信息
-     * SQL 记录，加载文件等等
+     * SQL 记录，加载文件等等.
      *
      * @param array $log
+     *
      * @return string
      */
     public static function trace(array $log)
     {
         // swoole http server 可以调试
-        if (PHP_SAPI == 'cli' && ! (isset($_SERVER['SERVER_SOFTWARE']) && $_SERVER['SERVER_SOFTWARE'] == 'swoole-http-server')) {
+        if (PHP_SAPI == 'cli' && ! (isset($_SERVER['SERVER_SOFTWARE']) && 'swoole-http-server' == $_SERVER['SERVER_SOFTWARE'])) {
             return;
         }
 
@@ -56,9 +61,10 @@ class Console
 
     /**
      * JSON 记录调试信息
-     * SQL 记录，加载文件等等
+     * SQL 记录，加载文件等等.
      *
      * @param array $log
+     *
      * @return array
      */
     public static function jsonTrace(array $log)
@@ -72,9 +78,10 @@ class Console
     }
 
     /**
-     * 返回输出到浏览器
+     * 返回输出到浏览器.
      *
      * @param array $trace
+     *
      * @return string
      */
     protected static function getOutputToConsole(array $trace): string
@@ -87,7 +94,7 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
         foreach ($trace as $key => $item) {
             if (is_string($key)) {
                 $content[] = 'console.log(\'\');';
-                
+
                 $content[] = 'console.log(\'%c ' . $key . '\', \'color: blue; background: #045efc; color: #fff; padding: 8px 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px; border-radius: 15px;\');';
 
                 $content[] = 'console.log(\'\');';
@@ -104,12 +111,14 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
     }
 
     /**
-     * 格式化日志信息
+     * 格式化日志信息.
      *
      * @param array $log
+     *
      * @return array
      */
-    protected static function normalizeLog(array $log) {
+    protected static function normalizeLog(array $log)
+    {
         $result = [];
 
         foreach ($log as $type => $item) {
@@ -118,13 +127,14 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
             }, $item));
         }
 
-        return $result; 
+        return $result;
     }
 
     /**
-     * 格式化日志信息
+     * 格式化日志信息.
      *
      * @param array $item
+     *
      * @return string
      */
     protected static function formatMessage($item)

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,31 +17,31 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Bootstrap\auth;
 
-use Leevel\{
-    auth,
-    response,
-    Http\Request,
-    auth\LoginFailed
-};
+use Leevel\auth;
+use Leevel\response;
+use Leevel\Http\Request;
+use Leevel\auth\LoginFailed;
 
 /**
  * 登录验证
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.09
+ *
  * @version 1.0
  */
-trait login
+trait Login
 {
     use field;
 
     /**
-     * 是否已经登录
+     * 是否已经登录.
      *
-     * @return boolean
+     * @return bool
      */
     public function isLogin()
     {
@@ -46,7 +49,7 @@ trait login
     }
 
     /**
-     * 获取登录信息
+     * 获取登录信息.
      *
      * @return mixed
      */
@@ -56,7 +59,7 @@ trait login
     }
 
     /**
-     * 登录界面
+     * 登录界面.
      *
      * @return \Leevel\Http\Response
      */
@@ -66,7 +69,7 @@ trait login
     }
 
     /**
-     * 获取登录界面
+     * 获取登录界面.
      *
      * @return \Leevel\Http\Response
      */
@@ -79,6 +82,7 @@ trait login
      * 登录验证
      *
      * @param \Leevel\Http\Request $oRequest
+     *
      * @return \Leevel\Http\Response|array
      */
     public function checkLogin(request $oRequest)
@@ -91,7 +95,7 @@ trait login
                 'password|trim',
                 'remember_me|trim',
                 'remember_time|trim',
-                'remember_key|trim'
+                'remember_key|trim',
             ]);
 
             $this->setAuthField();
@@ -103,9 +107,10 @@ trait login
                 $aReturn['api_token'] = auth::getTokenName();
                 $aReturn['user'] = $oUser->toArray();
                 $aReturn['remember_key'] = auth::implodeTokenData($aInput['name'], $aInput['password']);
+
                 return $aReturn;
             } else {
-                return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?  : $oUser['name']));
+                return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name']));
             }
         } catch (LoginFailed $oE) {
             return $this->sendFailedLoginResponse($oE->getMessage());
@@ -115,7 +120,7 @@ trait login
     /**
      * 是否处于锁定状态
      *
-     * @return boolean
+     * @return bool
      */
     public function isLock()
     {
@@ -123,10 +128,9 @@ trait login
     }
 
     /**
-     * 锁定登录
+     * 锁定登录.
      *
      * @param mixed $mixLoginTime
-     * @return void
      */
     public function lock($mixLoginTime = null)
     {
@@ -137,24 +141,26 @@ trait login
      * 解锁
      *
      * @param \Leevel\Http\Request $oRequest
+     *
      * @return \Leevel\Http\Response|array
-     * @return void
      */
     public function unlock(request $oRequest)
     {
         $booValidate = false;
         $arrResult = $this->onlyValidate($oRequest, $booValidate);
-        if($booValidate === true) {
+        if (true === $booValidate) {
             auth::unlock();
         }
+
         return $arrResult;
     }
 
     /**
-     * 仅仅验证用户和密码是否正确
+     * 仅仅验证用户和密码是否正确.
      *
      * @param \Leevel\Http\Request $oRequest
-     * @param boolean $booValidate
+     * @param bool                 $booValidate
+     *
      * @return \Leevel\Http\Response|array
      */
     public function onlyValidate(request $oRequest, &$booValidate = false)
@@ -164,7 +170,7 @@ trait login
         try {
             $aInput = $oRequest->alls([
                 'name|trim',
-                'password|trim'
+                'password|trim',
             ]);
 
             $this->setAuthField();
@@ -174,21 +180,23 @@ trait login
             $booValidate = true;
 
             if ($this->isAjaxRequest()) {
-                return ['message' => $this->getLoginSucceededMessage($oUser['nikename'] ?  : $oUser['name'])];
+                return ['message' => $this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name'])];
             } else {
-                return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?  : $oUser['name']));
+                return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name']));
             }
         } catch (LoginFailed $oE) {
             $booValidate = false;
+
             return $this->sendFailedLoginResponse($oE->getMessage());
         }
     }
 
     /**
-     * 发送正确登录消息
+     * 发送正确登录消息.
      *
      * @param string $strSuccess
-     * @return \Leevel\Http\Response|boolean
+     *
+     * @return \Leevel\Http\Response|bool
      */
     protected function sendSucceededLoginResponse($strSuccess)
     {
@@ -196,22 +204,23 @@ trait login
     }
 
     /**
-     * 发送错误登录消息
+     * 发送错误登录消息.
      *
      * @param string $strError
-     * @return \Leevel\Http\Response|boolean
+     *
+     * @return \Leevel\Http\Response|bool
      */
     protected function sendFailedLoginResponse($strError)
     {
         if ($this->isAjaxRequest()) {
             return [
                 'code' => 400,
-                'message' => $strError
+                'message' => $strError,
             ];
         }
 
         return response::redirect($this->getLoginFailedRedirect())->withErrors([
-            'login_error' => $strError
+            'login_error' => $strError,
         ]);
     }
 
@@ -219,7 +228,6 @@ trait login
      * 验证登录请求
      *
      * @param \Leevel\Http\Request $oRequest
-     * @return void
      */
     protected function validateLogin(request $oRequest)
     {
@@ -227,7 +235,7 @@ trait login
     }
 
     /**
-     * 获取验证规则
+     * 获取验证规则.
      *
      * @return array
      */
@@ -235,12 +243,12 @@ trait login
     {
         return property_exists($this, 'strValidateLoginRule') ? $this->strValidateLoginRule : [
             'name' => 'required|max_length:50',
-            'password' => 'required|min_length:6'
+            'password' => 'required|min_length:6',
         ];
     }
 
     /**
-     * 获取登录验证规则消息
+     * 获取登录验证规则消息.
      *
      * @return array
      */
@@ -250,9 +258,10 @@ trait login
     }
 
     /**
-     * 获取登录消息
+     * 获取登录消息.
      *
      * @param string $strName
+     *
      * @return string
      */
     protected function getLoginSucceededMessage($strName)
@@ -261,7 +270,7 @@ trait login
     }
 
     /**
-     * 获取登录视图
+     * 获取登录视图.
      *
      * @return string
      */

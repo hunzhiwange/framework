@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,21 +17,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc;
 
 /**
- * 工作单元
+ * 工作单元.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.10.14
+ *
  * @version 1.0
  */
 class UnitOfWork implements IUnitOfWork
 {
-
     /**
-     * 基础仓储
+     * 基础仓储.
      *
      * @var \Leevel\Mvc\IRepository
      */
@@ -37,7 +41,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 是否提交事务
      *
-     * @var boolean
+     * @var bool
      */
     protected $booCommitted = false;
 
@@ -63,16 +67,17 @@ class UnitOfWork implements IUnitOfWork
     protected $arrDeletes = [];
 
     /**
-     * 注册对象数量
+     * 注册对象数量.
      *
      * @var int
      */
     protected $intCount = 0;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Mvc\IRepository $objRepository
+     *
      * @return $this
      */
     public function __construct(IRepository $objRepository)
@@ -81,9 +86,7 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 启动事物
-     *
-     * @return void
+     * 启动事物.
      */
     public function beginTransaction()
     {
@@ -92,9 +95,7 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 事务回滚
-     *
-     * @return void
+     * 事务回滚.
      */
     public function rollback()
     {
@@ -103,9 +104,7 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 事务自动提交
-     *
-     * @return void
+     * 事务自动提交.
      */
     public function commit()
     {
@@ -117,9 +116,10 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 事务回滚
+     * 事务回滚.
      *
      * @param callable $calAction
+     *
      * @return mixed
      */
     public function transaction($calAction)
@@ -128,13 +128,14 @@ class UnitOfWork implements IUnitOfWork
             return;
         }
         $this->booCommitted = true;
+
         return $this->objRepository->transaction($calAction);
     }
 
     /**
      * 是否已经提交事务
      *
-     * @return boolean
+     * @return bool
      */
     public function committed()
     {
@@ -142,13 +143,11 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 注册事务提交
-     *
-     * @return void
+     * 注册事务提交.
      */
     public function registerCommit()
     {
-        if ($this->booCommitted && $this->intCount == 0) {
+        if ($this->booCommitted && 0 == $this->intCount) {
             return;
         }
 
@@ -164,10 +163,11 @@ class UnitOfWork implements IUnitOfWork
     }
 
     /**
-     * 注册新建
+     * 注册新建.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
-     * @param \Leevel\Mvc\IRepository $objRepository
+     * @param \Leevel\Mvc\IRepository    $objRepository
+     *
      * @return $this
      */
     public function registerCreate(IAggregateRoot $objEntity, IRepository $objRepository)
@@ -176,19 +176,20 @@ class UnitOfWork implements IUnitOfWork
         if (! isset($this->arrCreates[$strHash])) {
             $this->arrCreates[$strHash] = [
                 $objEntity,
-                $objRepository
+                $objRepository,
             ];
-            $this->intCount ++;
+            ++$this->intCount;
         }
 
         return $this;
     }
 
     /**
-     * 注册更新
+     * 注册更新.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
-     * @param \Leevel\Mvc\IRepository $objRepository
+     * @param \Leevel\Mvc\IRepository    $objRepository
+     *
      * @return $this
      */
     public function registerUpdate(IAggregateRoot $objEntity, IRepository $objRepository)
@@ -198,19 +199,20 @@ class UnitOfWork implements IUnitOfWork
         if (! isset($this->arrUpdates[$strHash])) {
             $this->arrUpdates[$strHash] = [
                 $objEntity,
-                $objRepository
+                $objRepository,
             ];
-            $this->intCount ++;
+            ++$this->intCount;
         }
 
         return $this;
     }
 
     /**
-     * 注册删除
+     * 注册删除.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
-     * @param \Leevel\Mvc\IRepository $objRepository
+     * @param \Leevel\Mvc\IRepository    $objRepository
+     *
      * @return $this
      */
     public function registerDelete(IAggregateRoot $objEntity, IRepository $objRepository)
@@ -219,18 +221,16 @@ class UnitOfWork implements IUnitOfWork
         if (! isset($this->arrDeletes[$strHash])) {
             $this->arrDeletes[$strHash] = [
                 $objEntity,
-                $objRepository
+                $objRepository,
             ];
-            $this->intCount ++;
+            ++$this->intCount;
         }
 
         return $this;
     }
 
     /**
-     * 响应仓储
-     *
-     * @return void
+     * 响应仓储.
      */
     protected function handleRepository()
     {

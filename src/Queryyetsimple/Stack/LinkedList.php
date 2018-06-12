@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Stack;
 
 use SplDoublyLinkedList;
@@ -23,29 +27,28 @@ use Leevel\Support\Type;
 /**
  * 双向链表
  * 在 PHP 双向链表的基础上加上数据类型验证功能，不少业务场景中保证链表中数据一致性
- * 以及链表返回空数据时阻止抛出异常的默认行为
+ * 以及链表返回空数据时阻止抛出异常的默认行为.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.21
- * @link http://php.net/manual/zh/class.spldoublylinkedlist.php
+ * @see http://php.net/manual/zh/class.spldoublylinkedlist.php
+ *
  * @version 1.0
  */
 class LinkedList extends SplDoublyLinkedList
 {
-
     /**
-     * 允许的类型
+     * 允许的类型.
      *
      * @var array
      */
     protected $type = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $type
-     * @return void
      */
     public function __construct(array $type = null)
     {
@@ -102,15 +105,14 @@ class LinkedList extends SplDoublyLinkedList
     public function unshift($value)
     {
         $this->validate($value);
-        
+
         parent::unshift($value);
     }
 
     /**
-     * 验证类型是否正确遇到错误抛出异常
+     * 验证类型是否正确遇到错误抛出异常.
      *
      * @param mixed $value
-     * @return void
      */
     public function validate($value)
     {
@@ -124,9 +126,10 @@ class LinkedList extends SplDoublyLinkedList
     }
 
     /**
-     * 验证类型是否正确
+     * 验证类型是否正确.
      *
      * @param mixed $value
+     *
      * @return bool
      */
     protected function checkType($value)

@@ -1,131 +1,105 @@
 <?php /* 2018-04-11 10:00:03 */ ?>
-<?php return array (
-  'basepaths' => 
-  array (
+<?php return [
+  'basepaths' => [
     0 => '/v2',
-  ),
-  'groups' => 
-  array (
+  ],
+  'groups' => [
     0 => '/pet',
-  ),
-  'routers' => 
-  array (
-    'get' => 
-    array (
-      'p' => 
-      array (
-        '/pet' => 
-        array (
-          '/v2/pet/findByStatus' => 
-          array (
-            'scheme' => NULL,
+  ],
+  'routers' => [
+    'get' => [
+      'p' => [
+        '/pet' => [
+          '/v2/pet/findByStatus' => [
+            'scheme' => null,
             'domain' => '',
-            'params' => 
-            array (
+            'params' => [
               'args1' => 'hello',
               'args2' => 'world',
-            ),
-            'where' => 
-            array (
+            ],
+            'where' => [
               'hello' => '[0-9]+',
               'world' => '[A-Za-z]+',
-            ),
+            ],
             'strict' => true,
             'bind' => ':Tests\\Petstore\\Pet\\findByStatus',
             'regex' => '/^\\/v2\\/pet\\/findByStatus$/',
-            'var' => 
-            array (
-            ),
-          ),
-          '/v2/pet/{petId}' => 
-          array (
-            'scheme' => NULL,
-            'domain' => NULL,
-            'params' => NULL,
-            'where' => NULL,
-            'strict' => NULL,
+            'var' => [
+            ],
+          ],
+          '/v2/pet/{petId}' => [
+            'scheme' => null,
+            'domain' => null,
+            'params' => null,
+            'where' => null,
+            'strict' => null,
             'bind' => ':Tests\\Petstore\\Pet\\getPetById',
             'regex' => '/^\\/v2\\/pet\\/(\\S+)$/',
-            'var' => 
-            array (
+            'var' => [
               0 => 'petId',
-            ),
-          ),
-        ),
-      ),
-    ),
-    'delete' => 
-    array (
-      'p' => 
-      array (
-        '/pet' => 
-        array (
-          '/v2/pet/{petId}' => 
-          array (
-            'scheme' => NULL,
-            'domain' => NULL,
-            'params' => NULL,
-            'where' => NULL,
-            'strict' => NULL,
+            ],
+          ],
+        ],
+      ],
+    ],
+    'delete' => [
+      'p' => [
+        '/pet' => [
+          '/v2/pet/{petId}' => [
+            'scheme' => null,
+            'domain' => null,
+            'params' => null,
+            'where' => null,
+            'strict' => null,
             'bind' => ':Tests\\Petstore\\Pet\\deletePet',
             'regex' => '/^\\/v2\\/pet\\/(\\S+)$/',
-            'var' => 
-            array (
+            'var' => [
               0 => 'petId',
-            ),
-          ),
-        ),
-      ),
-    ),
-    'post' => 
-    array (
-      'p' => 
-      array (
-        '/pet' => 
-        array (
-          '/v2/pet/{petId}' => 
-          array (
-            'scheme' => NULL,
-            'domain' => NULL,
-            'params' => NULL,
-            'where' => NULL,
-            'strict' => NULL,
+            ],
+          ],
+        ],
+      ],
+    ],
+    'post' => [
+      'p' => [
+        '/pet' => [
+          '/v2/pet/{petId}' => [
+            'scheme' => null,
+            'domain' => null,
+            'params' => null,
+            'where' => null,
+            'strict' => null,
             'bind' => ':Tests\\Petstore\\Pet\\updatePetWithForm',
             'regex' => '/^\\/v2\\/pet\\/(\\S+)$/',
-            'var' => 
-            array (
+            'var' => [
               0 => 'petId',
-            ),
-          ),
-          '/v2/pet' => 
-          array (
-            'scheme' => NULL,
-            'domain' => NULL,
-            'params' => NULL,
-            'where' => NULL,
-            'strict' => NULL,
+            ],
+          ],
+          '/v2/pet' => [
+            'scheme' => null,
+            'domain' => null,
+            'params' => null,
+            'where' => null,
+            'strict' => null,
             'bind' => ':Tests\\Petstore\\Pet\\addPet',
             'regex' => '/^\\/v2\\/pet$/',
-            'var' => 
-            array (
-            ),
-          ),
-          '/v2/pet/{petId}/uploadImage' => 
-          array (
-            'scheme' => NULL,
-            'domain' => NULL,
-            'params' => NULL,
-            'where' => NULL,
-            'strict' => NULL,
+            'var' => [
+            ],
+          ],
+          '/v2/pet/{petId}/uploadImage' => [
+            'scheme' => null,
+            'domain' => null,
+            'params' => null,
+            'where' => null,
+            'strict' => null,
             'bind' => ':Tests\\Petstore\\Pet\\uploadFile',
             'regex' => '/^\\/v2\\/pet\\/(\\S+)\\/uploadImage$/',
-            'var' => 
-            array (
+            'var' => [
               0 => 'petId',
-            ),
-          ),
-        ),
-      ),
-    ),
-  ),
-); ?>
+            ],
+          ],
+        ],
+      ],
+    ],
+  ],
+]; ?>

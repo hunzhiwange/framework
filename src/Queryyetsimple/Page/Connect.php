@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Page;
 
 use RuntimeException;
@@ -21,11 +25,12 @@ use Leevel\Support\IHtml;
 use Leevel\Option\TClass;
 
 /**
- * 分页处理
+ * 分页处理.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.07.14
+ *
  * @version 1.0
  */
 abstract class Connect implements IHtml
@@ -33,14 +38,14 @@ abstract class Connect implements IHtml
     use TClass;
 
     /**
-     * 总记录数量
+     * 总记录数量.
      *
      * @var int
      */
     protected $intTotalRecord;
 
     /**
-     * 每页分页数量
+     * 每页分页数量.
      *
      * @var int
      */
@@ -54,28 +59,28 @@ abstract class Connect implements IHtml
     protected $intCurrentPage;
 
     /**
-     * 总页数
+     * 总页数.
      *
      * @var int
      */
     protected $intTotalPage;
 
     /**
-     * 分页开始位置
+     * 分页开始位置.
      *
      * @var int
      */
     protected $intPageStart;
 
     /**
-     * 分页结束位置
+     * 分页结束位置.
      *
      * @var int
      */
     protected $intPageEnd;
 
     /**
-     * 解析后参数变量
+     * 解析后参数变量.
      *
      * @var array
      */
@@ -89,42 +94,42 @@ abstract class Connect implements IHtml
     protected $strResolveUrl;
 
     /**
-     * 解析 url
+     * 解析 url.
      *
      * @var callable
      */
     protected static $calUrlResolver;
 
     /**
-     * 默认每页分页数量
+     * 默认每页分页数量.
      *
      * @var int
      */
     const PER_PAGE = 15;
 
     /**
-     * 无穷大记录数
+     * 无穷大记录数.
      *
      * @var int
      */
     const MACRO = 999999999;
 
     /**
-     * 默认分页渲染
+     * 默认分页渲染.
      *
      * @var int
      */
     const RENDER = 'defaults';
 
     /**
-     * 默认范围
+     * 默认范围.
      *
      * @var int
      */
     const RANGE = 2;
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -135,24 +140,25 @@ abstract class Connect implements IHtml
         'render_option' => [],
         'url' => null,
         'parameter' => [],
-        'fragment' => null
+        'fragment' => null,
     ];
 
     /**
-     * 转化输出 HTML
+     * 转化输出 HTML.
      *
      * @return string
      */
     public function toHtml()
     {
-        return ( string ) $this->render();
+        return (string) $this->render();
     }
 
     /**
-     * 追加分页条件
+     * 追加分页条件.
      *
      * @param string $strKey
      * @param string $strValue
+     *
      * @return $this
      */
     public function append($strKey, $strValue)
@@ -161,9 +167,10 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 批量追加分页条件
+     * 批量追加分页条件.
      *
      * @param array $arrValue
+     *
      * @return $this
      */
     public function appends(array $arrValue)
@@ -171,13 +178,15 @@ abstract class Connect implements IHtml
         foreach ($arrValue as $strKey => $strValue) {
             $this->addParameter($strKey, $strValue);
         }
+
         return $this;
     }
 
     /**
-     * 设置分页条件
+     * 设置分页条件.
      *
      * @param array $arrParameter
+     *
      * @return $this
      */
     public function parameter(array $arrParameter)
@@ -186,41 +195,45 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 添加分页条件
+     * 添加分页条件.
      *
      * @param string $strKey
      * @param string $strValue
+     *
      * @return $this
      */
     public function addParameter($strKey, $strValue)
     {
         if ($strKey !== $this->getPageName()) {
             $this->optionArray('parameter', [
-                $strKey => $strValue
+                $strKey => $strValue,
             ]);
         }
+
         return $this;
     }
 
     /**
-     * 设置渲染参数
+     * 设置渲染参数.
      *
      * @param string $strKey
      * @param string $strValue
+     *
      * @return $this
      */
     public function renderOption($strKey, $strValue)
     {
         return $this->optionArray('render_option', [
-            $strKey => $strValue
+            $strKey => $strValue,
         ]);
     }
 
     /**
-     * 批量设置渲染参数
+     * 批量设置渲染参数.
      *
      * @param string $strKey
      * @param string $strValue
+     *
      * @return $this
      */
     public function renderOptions(array $arrOption)
@@ -228,13 +241,15 @@ abstract class Connect implements IHtml
         foreach ($arrOption as $strKey => $strValue) {
             $this->renderOption($strKey, $strValue);
         }
+
         return $this;
     }
 
     /**
-     * 是否启用 CSS
+     * 是否启用 CSS.
      *
-     * @param boolean $booOn
+     * @param bool $booOn
+     *
      * @return $this
      */
     public function css($booOn = true)
@@ -243,7 +258,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 获取渲染参数
+     * 获取渲染参数.
      *
      * @return $this
      */
@@ -253,9 +268,10 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 设置 url
+     * 设置 url.
      *
      * @param string|null $mixUrl
+     *
      * @return $this
      */
     public function url($mixUrl = null)
@@ -264,9 +280,10 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 设置 render
+     * 设置 render.
      *
      * @param string|null $mixRender
+     *
      * @return $this
      */
     public function renders($mixRender = null)
@@ -275,19 +292,20 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 获取 render
+     * 获取 render.
      *
      * @return string|null
      */
     public function getRender()
     {
-        return $this->getOption('render') ?  : static::RENDER;
+        return $this->getOption('render') ?: static::RENDER;
     }
 
     /**
-     * 设置 range
+     * 设置 range.
      *
      * @param int|null $intRange
+     *
      * @return $this
      */
     public function range($mixRange = null)
@@ -296,19 +314,20 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 获取 range
+     * 获取 range.
      *
      * @return int
      */
     public function getRange()
     {
-        return $this->getOption('range') ? intval($this->getOption('range')) : static::RANGE;
+        return $this->getOption('range') ? (int) ($this->getOption('range')) : static::RANGE;
     }
 
     /**
-     * 设置 url 描点
+     * 设置 url 描点.
      *
      * @param string|null $mixFragment
+     *
      * @return $this
      */
     public function fragment($mixFragment = null)
@@ -317,7 +336,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 获取 url 描点
+     * 获取 url 描点.
      *
      * @return string|null
      */
@@ -327,9 +346,10 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 设置每页分页数量
+     * 设置每页分页数量.
      *
      * @param int intPerPage
+     *
      * @return $this
      */
     public function perPage($intPerPage)
@@ -338,22 +358,24 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 返回每页数量
+     * 返回每页数量.
      *
      * @return int
      */
     public function getPerPage()
     {
-        if (is_null($this->intPerPage)) {
+        if (null === $this->intPerPage) {
             $this->intPerPage = static::PER_PAGE;
         }
+
         return $this->intPerPage;
     }
 
     /**
-     * 设置分页名字
+     * 设置分页名字.
      *
      * @param string $strPageName
+     *
      * @return $this
      */
     public function pageName($strPageName)
@@ -362,7 +384,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 获取分页名字
+     * 获取分页名字.
      *
      * @return string
      */
@@ -372,19 +394,19 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 返回总记录数量
+     * 返回总记录数量.
      *
      * @return int
      */
     public function getTotalRecord()
     {
-        return $this->intTotalRecord === true ? static::MACRO : $this->intTotalRecord;
+        return true === $this->intTotalRecord ? static::MACRO : $this->intTotalRecord;
     }
 
     /**
-     * 是否为无限分页
+     * 是否为无限分页.
      *
-     * @return boolean
+     * @return bool
      */
     public function isTotalMacro()
     {
@@ -392,7 +414,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 取得第一个记录的编号
+     * 取得第一个记录的编号.
      *
      * @return int
      */
@@ -401,11 +423,12 @@ abstract class Connect implements IHtml
         if (! $this->canTotalRender()) {
             return;
         }
+
         return ($this->getCurrentPage() - 1) * $this->getPerPage() + 1;
     }
 
     /**
-     * 取得最后一个记录的编号
+     * 取得最后一个记录的编号.
      *
      * @return int
      */
@@ -414,19 +437,20 @@ abstract class Connect implements IHtml
         if (! $this->canTotalRender()) {
             return;
         }
+
         return $this->getFirstRecord() + $this->getTotalRecord() - 1;
     }
 
     /**
-     * 返回当前分页
+     * 返回当前分页.
      *
      * @return int
      */
     public function getCurrentPage()
     {
-        if (is_null($this->intCurrentPage)) {
+        if (null === $this->intCurrentPage) {
             if (isset($_GET[$this->getOption('page')])) {
-                $this->intCurrentPage = abs(intval($_GET[$this->getOption('page')]));
+                $this->intCurrentPage = abs((int) ($_GET[$this->getOption('page')]));
                 if ($this->intCurrentPage < 1) {
                     $this->intCurrentPage = 1;
                 }
@@ -445,7 +469,7 @@ abstract class Connect implements IHtml
      */
     public function getPageStart()
     {
-        if (is_null($this->intPageStart)) {
+        if (null === $this->intPageStart) {
             $this->intPageStart = $this->getCurrentPage() - $this->getRange();
             if ($this->intPageStart < $this->getRange() * 2) {
                 $this->intPageStart = 1;
@@ -462,9 +486,9 @@ abstract class Connect implements IHtml
      */
     public function getPageEnd()
     {
-        if (is_null($this->intPageEnd)) {
+        if (null === $this->intPageEnd) {
             $this->intPageEnd = $this->getCurrentPage() + $this->getRange();
-            if ($this->getPageStart() == 1) {
+            if (1 == $this->getPageStart()) {
                 $this->intPageEnd = $this->getRange() * 2 + 2;
             }
 
@@ -477,13 +501,13 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 返回总分页数量
+     * 返回总分页数量.
      *
      * @return int
      */
     public function getTotalPage()
     {
-        if (is_null($this->intTotalPage) && $this->getTotalRecord()) {
+        if (null === $this->intTotalPage && $this->getTotalRecord()) {
             $this->intTotalPage = ceil($this->getTotalRecord() / $this->getPerPage());
             if ($this->intTotalPage < 1) {
                 $this->intTotalPage = 1;
@@ -494,19 +518,19 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 是否渲染 total
+     * 是否渲染 total.
      *
-     * @return boolean
+     * @return bool
      */
     public function canTotalRender()
     {
-        return ! is_null($this->getTotalRecord()) && ! $this->isTotalMacro();
+        return null !== $this->getTotalRecord() && ! $this->isTotalMacro();
     }
 
     /**
-     * 是否渲染 first
+     * 是否渲染 first.
      *
-     * @return boolean
+     * @return bool
      */
     public function canFirstRender()
     {
@@ -514,7 +538,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 返回渲染 first.prev
+     * 返回渲染 first.prev.
      *
      * @return int
      */
@@ -524,17 +548,17 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 是否渲染 prev
+     * 是否渲染 prev.
      *
-     * @return boolean
+     * @return bool
      */
     public function canPrevRender()
     {
-        return (is_null($this->getTotalPage()) || $this->getTotalPage() > 1) && $this->getCurrentPage() != 1;
+        return (null === $this->getTotalPage() || $this->getTotalPage() > 1) && 1 != $this->getCurrentPage();
     }
 
     /**
-     * 返回渲染 prev.prev
+     * 返回渲染 prev.prev.
      *
      * @return int
      */
@@ -544,9 +568,9 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 是否渲染 main
+     * 是否渲染 main.
      *
-     * @return boolean
+     * @return bool
      */
     public function canMainRender()
     {
@@ -554,17 +578,17 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 是否渲染 next
+     * 是否渲染 next.
      *
      * @return string
      */
     public function canNextRender()
     {
-        return is_null($this->getTotalPage()) || ($this->getTotalPage() > 1 && $this->getCurrentPage() != $this->getTotalPage());
+        return null === $this->getTotalPage() || ($this->getTotalPage() > 1 && $this->getCurrentPage() != $this->getTotalPage());
     }
 
     /**
-     * 是否渲染 last
+     * 是否渲染 last.
      *
      * @return string
      */
@@ -574,7 +598,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 是否渲染 last
+     * 是否渲染 last.
      *
      * @return string
      */
@@ -584,7 +608,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 返回渲染 last.next
+     * 返回渲染 last.next.
      *
      * @return int
      */
@@ -594,11 +618,12 @@ abstract class Connect implements IHtml
         if (! $this->isTotalMacro() && $intNext > $this->getTotalPage()) {
             $intNext = $this->getTotalPage();
         }
+
         return $intNext;
     }
 
     /**
-     * 解析 url
+     * 解析 url.
      *
      * @return string
      */
@@ -607,14 +632,14 @@ abstract class Connect implements IHtml
         if (! static::$calUrlResolver) {
             throw new RuntimeException('Page not set url resolver');
         }
+
         return call_user_func_array(static::$calUrlResolver, func_get_args());
     }
 
     /**
-     * 设置 url 解析回调
+     * 设置 url 解析回调.
      *
      * @param callable $calUrlResolver
-     * @return void
      */
     public static function setUrlResolver(callable $calUrlResolver)
     {
@@ -622,16 +647,17 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 替换分页变量
+     * 替换分页变量.
      *
      * @param mixed $mixPage
+     *
      * @return string
      */
     public function pageReplace($mixPage)
     {
         return str_replace([
             urlencode('{page}'),
-            '{page}'
+            '{page}',
         ], $mixPage, $this->getUrl());
     }
 
@@ -641,6 +667,7 @@ abstract class Connect implements IHtml
      * {page} 表示自定义分页变量替换
      * 带有 @ 表示使用 url 函数进行二次解析
      * foo@ 表示具有子域名 subdomain@blog://list/{page},subdomain@blog://list/index
+     *
      * @/ 表示自定义域名格式 @/list-{page},@/list/index,subdomain@/list-{page}
      * 不带有 @ 表示不使用 url 进行二次解析
      * 空表示基于 $_GET 分析 url
@@ -649,16 +676,16 @@ abstract class Connect implements IHtml
      */
     protected function getUrl()
     {
-        if (! is_null($this->strResolveUrl)) {
+        if (null !== $this->strResolveUrl) {
             return $this->strResolveUrl;
         }
 
         $booWithUrl = false;
         $strSubdomain = 'www';
 
-        if (strpos($this->getOption('url'), '@') !== false) {
+        if (false !== strpos($this->getOption('url'), '@')) {
             $booWithUrl = true;
-            if (strpos($this->getOption('url'), '@') !== 0) {
+            if (0 !== strpos($this->getOption('url'), '@')) {
                 $arrTemp = explode('@', $this->getOption('url'));
                 $this->option('url', $arrTemp[1]);
                 $strSubdomain = $arrTemp[0];
@@ -670,29 +697,31 @@ abstract class Connect implements IHtml
         if (! empty($this->getOption('url'))) {
             if ($booWithUrl) {
                 $this->strResolveUrl = $this->resolverUrl($this->getOption('url'), $this->getDefaultPageParameter(false === strpos($this->getOption('url'), '{page}')), [
-                    'subdomain' => $strSubdomain
+                    'subdomain' => $strSubdomain,
                 ]);
             } else {
                 if (false === strpos($this->getOption('url'), '{page}')) {
-                    $this->strResolveUrl = (strpos($this->getOption('url'), '?') === false ? '?' : '&') . $this->getOption('page') . '={page}';
+                    $this->strResolveUrl = (false === strpos($this->getOption('url'), '?') ? '?' : '&') . $this->getOption('page') . '={page}';
                 }
             }
         } else {
             $this->strResolveUrl = $this->resolverUrl('', $this->getParseParameter(), [
-                'subdomain' => $strSubdomain
+                'subdomain' => $strSubdomain,
             ]);
         }
 
         $this->strResolveUrl = $this->strResolveUrl . $this->buildFragment();
 
         unset($booWithUrl, $strSubdomain);
+
         return $this->strResolveUrl;
     }
 
     /**
-     * 返回分析后的参数
+     * 返回分析后的参数.
      *
-     * @param boolean $booWithDefault
+     * @param bool $booWithDefault
+     *
      * @return array
      */
     protected function getParseParameter($booWithDefault = true)
@@ -701,27 +730,29 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 默认分页参数
+     * 默认分页参数.
      *
-     * @param boolean $booWithDefault
+     * @param bool $booWithDefault
+     *
      * @return array
      */
     protected function getDefaultPageParameter($booWithDefault = true)
     {
         return $booWithDefault ? [
-            $this->getOption('page') => '{page}'
+            $this->getOption('page') => '{page}',
         ] : [];
     }
 
     /**
-     * 解析参数
+     * 解析参数.
      *
      * @param array $arrExtend
+     *
      * @return array
      */
     protected function getParameter(array $arrExtend)
     {
-        if (is_null($this->arrResolveParameter)) {
+        if (null === $this->arrResolveParameter) {
             if ($this->getOption('parameter')) {
                 if (is_string($this->getOption('parameter'))) {
                     parse_str($this->getOption('parameter'), $this->arrResolveParameter);
@@ -732,11 +763,12 @@ abstract class Connect implements IHtml
                 $this->arrResolveParameter = $_GET;
             }
         }
+
         return array_merge($this->arrResolveParameter, $arrExtend);
     }
 
     /**
-     * 创建描点
+     * 创建描点.
      *
      * @return string
      */
@@ -746,7 +778,7 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 统计元素数量 count($obj)
+     * 统计元素数量 count($obj).
      *
      * @return int
      */
@@ -755,9 +787,10 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 实现 ArrayAccess::offsetExists
+     * 实现 ArrayAccess::offsetExists.
      *
      * @param string $offset
+     *
      * @return mixed
      */
     public function offsetExists($offset)
@@ -765,9 +798,10 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 实现 ArrayAccess::offsetGet
+     * 实现 ArrayAccess::offsetGet.
      *
      * @param string $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -775,33 +809,31 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 实现 ArrayAccess::offsetSet
+     * 实现 ArrayAccess::offsetSet.
      *
      * @param string $offset
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function offsetSet($offset, $value)
     {
     }
 
     /**
-     * 实现 ArrayAccess::offsetUnset
+     * 实现 ArrayAccess::offsetUnset.
      *
      * @param string $offset
-     * @return void
      */
     public function offsetUnset($offset)
     {
     }
 
     /**
-     * 转化为字符串
+     * 转化为字符串.
      *
      * @return string
      */
     public function __toString()
     {
-        return ( string ) $this->render();
+        return (string) $this->render();
     }
 }

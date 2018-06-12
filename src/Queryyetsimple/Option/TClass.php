@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,37 +17,41 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Option;
 
 /**
- * 类配置复用
+ * 类配置复用.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.13
+ *
  * @version 1.0
  */
 trait TClass
 {
-
     /**
-     * 修改单个配置
+     * 修改单个配置.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return $this
      */
     public function option(string $name, $value)
     {
         $this->option[$name] = $value;
+
         return $this;
     }
 
     /**
-     * 修改数组配置
+     * 修改数组配置.
      *
      * @param string $name
-     * @param array $value
+     * @param array  $value
+     *
      * @return $this
      */
     public function optionArray(string $name, array $value)
@@ -53,10 +60,11 @@ trait TClass
     }
 
     /**
-     * 修改多个配置
+     * 修改多个配置.
      *
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return $this
      */
     public function options(array $option = [])
@@ -67,14 +75,16 @@ trait TClass
         foreach ($option as $name => $value) {
             $this->option($name, $value);
         }
+
         return $this;
     }
 
     /**
-     * 获取单个配置
+     * 获取单个配置.
      *
      * @param string $name
-     * @param mixed $defaults
+     * @param mixed  $defaults
+     *
      * @return mixed
      */
     public function getOption(string $name, $defaults = null)
@@ -83,9 +93,10 @@ trait TClass
     }
 
     /**
-     * 获取所有配置
+     * 获取所有配置.
      *
      * @param array $option
+     *
      * @return mixed
      */
     public function getOptions(array $option = [])
@@ -94,23 +105,26 @@ trait TClass
     }
 
     /**
-     * 删除单个配置
+     * 删除单个配置.
      *
      * @param string $name
+     *
      * @return $this
      */
     public function deleteOption(string $name)
     {
-        if(isset($this->option[$name])) {
+        if (isset($this->option[$name])) {
             unset($this->option[$name]);
         }
+
         return $this;
     }
 
     /**
-     * 删除多个配置
+     * 删除多个配置.
      *
      * @param array $option
+     *
      * @return $this
      */
     public function deleteOptions(array $option = [])
@@ -122,7 +136,7 @@ trait TClass
         foreach ($option as $key) {
             $this->deleteOption($key);
         }
-        
+
         return $this;
     }
 }

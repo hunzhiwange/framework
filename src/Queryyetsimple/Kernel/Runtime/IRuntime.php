@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Kernel\Runtime;
 
 use Exception;
@@ -21,39 +25,40 @@ use Leevel\Http\Request;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * 异常接口
+ * 异常接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.25
+ *
  * @version 1.0
  */
 interface IRuntime
 {
-
     /**
-     * 异常上报
+     * 异常上报.
      *
      * @param \Exception $e
+     *
      * @return mixed
      */
     public function report(Exception $e);
 
     /**
-     * 异常渲染
+     * 异常渲染.
      *
      * @param \Leevel\Http\Request $request
-     * @param \Exception $e
+     * @param \Exception           $e
+     *
      * @return \Leevel\Http\Response
      */
     public function render(Request $request, Exception $e);
 
     /**
-     * 命令行渲染
-     * 
+     * 命令行渲染.
+     *
      * @param \sSymfony\Component\Console\Output\OutputInterface $output
-     * @param \Exception $e
-     * @return void
+     * @param \Exception                                         $e
      */
     public function renderForConsole(OutputInterface $output, Exception $e);
 }

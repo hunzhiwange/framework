@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Validate;
 
 use DateTime;
@@ -23,17 +27,16 @@ use BadMethodCallException;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Flow\TControl;
-use Leevel\Support\{
-    Str,
-    Arr
-};
+use Leevel\Support\Str;
+use Leevel\Support\Arr;
 
 /**
- * validate 数据验证器
+ * validate 数据验证器.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.02
+ *
  * @version 1.0
  */
 class Validate implements IValidate
@@ -41,63 +44,63 @@ class Validate implements IValidate
     use TControl;
 
     /**
-     * IOC 容器
+     * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
     protected $objContainer;
 
     /**
-     * 待验证数据
+     * 待验证数据.
      *
      * @var array
      */
     protected $arrData = [];
 
     /**
-     * 验证规则
+     * 验证规则.
      *
      * @var array
      */
     protected $arrRule = [];
 
     /**
-     * 默认验证提示信息
+     * 默认验证提示信息.
      *
      * @var array
      */
     protected static $arrDefaultMessage = [];
 
     /**
-     * 是否初始化默认验证提示信息
+     * 是否初始化默认验证提示信息.
      *
-     * @var boolean
+     * @var bool
      */
     protected static $booDefaultMessage = false;
 
     /**
-     * 验证提示信息
+     * 验证提示信息.
      *
      * @var array
      */
     protected $arrMessage = [];
 
     /**
-     * 字段名字
+     * 字段名字.
      *
      * @var array
      */
     protected $arrFieldName = [];
 
     /**
-     * 错误规则
+     * 错误规则.
      *
      * @var array
      */
     protected $arrFailedRules;
 
     /**
-     * 错误消息
+     * 错误消息.
      *
      * @var array
      */
@@ -113,28 +116,28 @@ class Validate implements IValidate
 
     /**
      * 分析数据键
-     * like this hello.world.foobar
+     * like this hello.world.foobar.
      *
      * @var array
      */
     protected $arrParsedDataKey;
 
     /**
-     * 扩展验证器
+     * 扩展验证器.
      *
      * @var array
      */
     protected $arrExtend = [];
 
     /**
-     * 验证后续事件
+     * 验证后续事件.
      *
      * @var array
      */
     protected $arrAfter = [];
 
     /**
-     * 验证别名
+     * 验证别名.
      *
      * @var array
      */
@@ -151,11 +154,11 @@ class Validate implements IValidate
         'eq' => 'equal',
         '=' => 'equal',
         'neq' => 'not_equal',
-        '!=' => 'not_equal'
+        '!=' => 'not_equal',
     ];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $arrData
      * @param array $arrRule
@@ -172,12 +175,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 初始化验证器
+     * 初始化验证器.
      *
      * @param array $arrData
      * @param array $arrRule
      * @param array $arrFieldName
      * @param array $arrMessage
+     *
      * @return \Leevel\Validate
      */
     public static function make(array $arrData = [], array $arrRule = [], array $arrFieldName = [], array $arrMessage = [])
@@ -200,7 +204,7 @@ class Validate implements IValidate
                     continue;
                 }
 
-                if ($this->doValidateItem($strField, $strRule) === false) {
+                if (false === $this->doValidateItem($strField, $strRule)) {
                     // 验证失败跳过剩余验证规则
                     if ($this->shouldSkipOther($strField)) {
                         break 2;
@@ -219,11 +223,11 @@ class Validate implements IValidate
             call_user_func($calAfter);
         }
 
-        return count($this->arrErrorMessages) === 0;
+        return 0 === count($this->arrErrorMessages);
     }
 
     /**
-     * 验证是否失败
+     * 验证是否失败.
      *
      * @return bool
      */
@@ -233,7 +237,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 返回所有错误消息
+     * 返回所有错误消息.
      *
      * @return array
      */
@@ -243,7 +247,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 返回验证数据
+     * 返回验证数据.
      *
      * @return array
      */
@@ -253,9 +257,10 @@ class Validate implements IValidate
     }
 
     /**
-     * 设置验证数据
+     * 设置验证数据.
      *
      * @param array $arrData
+     *
      * @return $this
      */
     public function data(array $arrData)
@@ -264,13 +269,15 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrData = $arrData;
+
         return $this;
     }
 
     /**
-     * 添加验证数据
+     * 添加验证数据.
      *
      * @param array $arrData
+     *
      * @return $this
      */
     public function addData(array $arrData)
@@ -279,14 +286,16 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrData = array_merge($this->arrData, $arrData);
+
         return $this;
     }
 
     /**
-     * 设置单个字段验证数据
+     * 设置单个字段验证数据.
      *
      * @param string $strField
-     * @param mixed $mixData
+     * @param mixed  $mixData
+     *
      * @return $this
      */
     public function fieldData($strField, $mixData)
@@ -295,11 +304,12 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrData[$strField] = $mixData;
+
         return $this;
     }
 
     /**
-     * 返回验证规则
+     * 返回验证规则.
      *
      * @return array
      */
@@ -309,9 +319,10 @@ class Validate implements IValidate
     }
 
     /**
-     * 设置验证规则
+     * 设置验证规则.
      *
      * @param array $arrRule
+     *
      * @return $this
      */
     public function rule(array $arrRule)
@@ -320,14 +331,16 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrRule = $this->arrayRule($arrRule);
+
         return $this;
     }
 
     /**
-     * 设置验证规则,带上条件
+     * 设置验证规则,带上条件.
      *
-     * @param array $arrRule
+     * @param array          $arrRule
      * @param callable|mixed $calCallback
+     *
      * @return $this
      */
     public function ruleIf(array $arrRule, $mixCallback)
@@ -338,13 +351,15 @@ class Validate implements IValidate
         if ($this->isCallbackValid($mixCallback)) {
             return $this->rule($arrRule);
         }
+
         return $this;
     }
 
     /**
-     * 添加验证规则
+     * 添加验证规则.
      *
      * @param array $arrRule
+     *
      * @return $this
      */
     public function addRule(array $arrRule)
@@ -353,14 +368,16 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrRule = array_merge($this->arrRule, $this->arrayRule($arrRule));
+
         return $this;
     }
 
     /**
-     * 添加验证规则,带上条件
+     * 添加验证规则,带上条件.
      *
-     * @param array $arrRule
+     * @param array          $arrRule
      * @param callable|mixed $calCallback
+     *
      * @return $this
      */
     public function addRuleIf(array $arrRule, $mixCallback)
@@ -371,14 +388,16 @@ class Validate implements IValidate
         if ($this->isCallbackValid($mixCallback)) {
             return $this->addRule($arrRule);
         }
+
         return $this;
     }
 
     /**
-     * 设置单个字段验证规则
+     * 设置单个字段验证规则.
      *
      * @param string $strField
-     * @param mixed $mixRule
+     * @param mixed  $mixRule
+     *
      * @return $this
      */
     public function fieldRule($strField, $mixRule)
@@ -391,15 +410,17 @@ class Validate implements IValidate
         }
 
         $this->arrRule[$strField] = $this->arrayRuleItem($mixRule);
+
         return $this;
     }
 
     /**
-     * 设置单个字段验证规则,带上条件
+     * 设置单个字段验证规则,带上条件.
      *
-     * @param string $strField
-     * @param mixed $mixRule
+     * @param string         $strField
+     * @param mixed          $mixRule
      * @param callable|mixed $calCallback
+     *
      * @return $this
      */
     public function fieldRuleIf($strField, $mixRule, $mixCallback)
@@ -410,14 +431,16 @@ class Validate implements IValidate
         if ($this->isCallbackValid($mixCallback)) {
             return $this->fieldRule($strField, $mixRule);
         }
+
         return $this;
     }
 
     /**
-     * 添加单个字段验证规则
+     * 添加单个字段验证规则.
      *
      * @param string $strField
-     * @param mixed $mixRule
+     * @param mixed  $mixRule
+     *
      * @return $this
      */
     public function addFieldRule($strField, $mixRule)
@@ -430,15 +453,17 @@ class Validate implements IValidate
         }
 
         $this->arrRule[$strField] = array_merge($this->arrRule[$strField], $this->arrayRuleItem($mixRule));
+
         return $this;
     }
 
     /**
-     * 添加单个字段验证规则,带上条件
+     * 添加单个字段验证规则,带上条件.
      *
-     * @param string $strField
-     * @param mixed $mixRule
+     * @param string         $strField
+     * @param mixed          $mixRule
      * @param callable|mixed $calCallback
+     *
      * @return $this
      */
     public function addFieldRuleIf($strField, $mixRule, $mixCallback)
@@ -449,13 +474,15 @@ class Validate implements IValidate
         if ($this->isCallbackValid($mixCallback)) {
             return $this->addFieldRule($strField, $mixRule);
         }
+
         return $this;
     }
 
     /**
-     * 获取单个字段验证规则
+     * 获取单个字段验证规则.
      *
      * @param string $strField
+     *
      * @return array
      */
     public function getFieldRule($strField)
@@ -468,9 +495,10 @@ class Validate implements IValidate
     }
 
     /**
-     * 获取单个字段验证规则，排除掉绕过的规则
+     * 获取单个字段验证规则，排除掉绕过的规则.
      *
      * @param string $strField
+     *
      * @return array
      */
     public function getFieldRuleWithoutSkip($strField)
@@ -479,7 +507,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 返回验证消息
+     * 返回验证消息.
      *
      * @return array
      */
@@ -489,9 +517,10 @@ class Validate implements IValidate
     }
 
     /**
-     * 设置验证消息
+     * 设置验证消息.
      *
      * @param array $arrMessage
+     *
      * @return $this
      */
     public function message(array $arrMessage)
@@ -500,13 +529,15 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrMessage = $arrMessage;
+
         return $this;
     }
 
     /**
-     * 添加验证消息
+     * 添加验证消息.
      *
      * @param array $arrMessage
+     *
      * @return $this
      */
     public function addMessage(array $arrMessage)
@@ -515,11 +546,12 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrMessage = array_merge($this->arrMessage, $this->arrayMessage($arrMessage));
+
         return $this;
     }
 
     /**
-     * 返回字段名字
+     * 返回字段名字.
      *
      * @return array
      */
@@ -529,9 +561,10 @@ class Validate implements IValidate
     }
 
     /**
-     * 设置字段名字
+     * 设置字段名字.
      *
      * @param array $arrFieldName
+     *
      * @return $this
      */
     public function fieldName(array $arrFieldName)
@@ -540,13 +573,15 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrFieldName = $arrFieldName;
+
         return $this;
     }
 
     /**
-     * 添加字段名字
+     * 添加字段名字.
      *
      * @param array $arrFieldName
+     *
      * @return $this
      */
     public function addFieldName(array $arrFieldName)
@@ -555,14 +590,16 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrFieldName = array_merge($this->arrFieldName, $this->arrayMessage($arrFieldName));
+
         return $this;
     }
 
     /**
-     * 设置单个字段验证消息
+     * 设置单个字段验证消息.
      *
      * @param string $strFieldRule
      * @param string $strMessage
+     *
      * @return $this
      */
     public function fieldRuleMessage($strFieldRule, $strMessage)
@@ -571,14 +608,16 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrMessage[$strFieldRule] = $strMessage;
+
         return $this;
     }
 
     /**
-     * 设置别名
+     * 设置别名.
      *
      * @param strKey $strAlias
      * @param strKey $strFor
+     *
      * @return $this
      */
     public function alias($strAlias, $strFor)
@@ -591,13 +630,15 @@ class Validate implements IValidate
         }
 
         $this->arrAlias[$strAlias] = $strFor;
+
         return $this;
     }
 
     /**
-     * 批量设置别名
+     * 批量设置别名.
      *
      * @param array $arrAlias
+     *
      * @return $this
      */
     public function aliasMany(array $arrAlias)
@@ -608,11 +649,12 @@ class Validate implements IValidate
         foreach ($arrAlias as $strAlias => $strFor) {
             $this->alias($strAlias, $strFor);
         }
+
         return $this;
     }
 
     /**
-     * 返回别名
+     * 返回别名.
      *
      * @return array
      */
@@ -622,9 +664,10 @@ class Validate implements IValidate
     }
 
     /**
-     * 设置验证后事件
+     * 设置验证后事件.
      *
      * @param callable|string $mixCallback
+     *
      * @return $this
      */
     public function after($mixCallback)
@@ -634,7 +677,7 @@ class Validate implements IValidate
         }
         $this->arrAfter[] = function () use ($mixCallback) {
             return call_user_func_array($mixCallback, [
-                $this
+                $this,
             ]);
         };
 
@@ -642,7 +685,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 返回所有验证后事件
+     * 返回所有验证后事件.
      *
      * @return array
      */
@@ -652,7 +695,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 返回所有自定义扩展
+     * 返回所有自定义扩展.
      *
      * @return array
      */
@@ -662,10 +705,11 @@ class Validate implements IValidate
     }
 
     /**
-     * 注册自定义扩展
+     * 注册自定义扩展.
      *
-     * @param string $rule
+     * @param string          $rule
      * @param callable|string $mixExtend
+     *
      * @return $this
      */
     public function extend($strRule, $mixExtend)
@@ -674,13 +718,15 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrExtend[strtolower($strRule)] = $mixExtend;
+
         return $this;
     }
 
     /**
-     * 批量注册自定义扩展
+     * 批量注册自定义扩展.
      *
      * @param array $arrExtend
+     *
      * @return $this
      */
     public function extendMany(array $arrExtend)
@@ -689,23 +735,26 @@ class Validate implements IValidate
             return $this;
         }
         $this->arrExtend = array_merge($this->arrExtend, $arrExtend);
+
         return $this;
     }
 
     /**
-     * 设置 IOC 容器
+     * 设置 IOC 容器.
      *
      * @param \Leevel\Di\IContainer $objContainer
+     *
      * @return $this
      */
     public function container(IContainer $objContainer)
     {
         $this->objContainer = $objContainer;
+
         return $this;
     }
 
     /**
-     * 获取需要跳过的验证规则
+     * 获取需要跳过的验证规则.
      *
      * @return array
      */
@@ -716,14 +765,12 @@ class Validate implements IValidate
             static::CONDITION_MUST,
             static::CONDITION_VALUE,
             static::SKIP_SELF,
-            static::SKIP_OTHER
+            static::SKIP_OTHER,
         ], $this->arrSkipRule);
     }
 
     /**
-     * 设置默认的消息
-     *
-     * @return void
+     * 设置默认的消息.
      */
     public static function defaultMessage()
     {
@@ -797,25 +844,26 @@ class Validate implements IValidate
             'allow_ip' => __('{field} 不允许的 IP 访问 {rule}'),
             'deny_ip' => __('{field} 禁止的 IP 访问 {rule}'),
             'method' => __('无效的请求类型 {rule}'),
-            'json' => __('{field} 不是有效的 JSON')
+            'json' => __('{field} 不是有效的 JSON'),
         ];
 
         static::$booDefaultMessage = true;
     }
 
     /**
-     * 不能为空
+     * 不能为空.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateRequired($strField, $mixData, $arrParameter)
     {
-        if (is_null($mixData)) {
+        if (null === $mixData) {
             return false;
-        } elseif (is_string($mixData) && trim($mixData) === '') {
+        } elseif (is_string($mixData) && '' === trim($mixData)) {
             return false;
         }
 
@@ -826,9 +874,10 @@ class Validate implements IValidate
      * 是否为日期
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateDate($strField, $mixData, $arrParameter)
     {
@@ -836,36 +885,40 @@ class Validate implements IValidate
             return true;
         }
 
-        if (strtotime($mixData) === false) {
+        if (false === strtotime($mixData)) {
             return false;
         }
 
         $mixData = date_parse($mixData);
+
         return checkdate($mixData['month'], $mixData['day'], $mixData['year']);
     }
 
     /**
-     * 是否为时间
+     * 是否为时间.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateDateFormat($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
         $arrParse = date_parse_from_format($arrParameter[0], $mixData);
-        return $arrParse['error_count'] === 0 && $arrParse['warning_count'] === 0;
+
+        return 0 === $arrParse['error_count'] && 0 === $arrParse['warning_count'];
     }
 
     /**
-     * 是否为正确的时区
+     * 是否为正确的时区.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateTimezone($strField, $mixData, $arrParameter)
     {
@@ -879,12 +932,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 验证在给定日期之后
+     * 验证在给定日期之后.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateAfter($strField, $mixData, $arrParameter)
     {
@@ -902,12 +956,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 验证在给定日期之前
+     * 验证在给定日期之前.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateBefore($strField, $mixData, $arrParameter)
     {
@@ -925,12 +980,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 检测字符串中的字符是否都是数字，负数和小数会检测不通过
+     * 检测字符串中的字符是否都是数字，负数和小数会检测不通过.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateDigit($strField, $mixData, $arrParameter)
     {
@@ -938,12 +994,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否双精度浮点数
+     * 是否双精度浮点数.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateDouble($strField, $mixData, $arrParameter)
     {
@@ -951,12 +1008,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否可接受的
+     * 是否可接受的.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateAccepted($strField, $mixData, $arrParameter)
     {
@@ -966,43 +1024,46 @@ class Validate implements IValidate
             '1',
             1,
             true,
-            'true'
+            'true',
         ], true);
     }
 
     /**
-     * 是否整型数字
+     * 是否整型数字.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateInteger($strField, $mixData, $arrParameter)
     {
-        return filter_var($mixData, FILTER_VALIDATE_INT) !== false;
+        return false !== filter_var($mixData, FILTER_VALIDATE_INT);
     }
 
     /**
-     * 验证是否为浮点数
+     * 验证是否为浮点数.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateFloat($strField, $mixData, $arrParameter)
     {
-        return filter_var($mixData, FILTER_VALIDATE_FLOAT) !== false;
+        return false !== filter_var($mixData, FILTER_VALIDATE_FLOAT);
     }
 
     /**
-     * 验证是否为数组
+     * 验证是否为数组.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateArray($strField, $mixData, $arrParameter)
     {
@@ -1013,9 +1074,10 @@ class Validate implements IValidate
      * 验证是否为布尔值
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateBoolean($strField, $mixData, $arrParameter)
     {
@@ -1025,17 +1087,18 @@ class Validate implements IValidate
             0,
             1,
             '0',
-            '1'
+            '1',
         ], true);
     }
 
     /**
-     * 是否为数字
+     * 是否为数字.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateNumber($strField, $mixData, $arrParameter)
     {
@@ -1043,26 +1106,29 @@ class Validate implements IValidate
     }
 
     /**
-     * 处于 between 范围，不包含等于
+     * 处于 between 范围，不包含等于.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateBetween($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 2);
+
         return $mixData > $arrParameter[0] && $mixData < $arrParameter[1];
     }
 
     /**
-     * 未处于 between 范围，不包含等于
+     * 未处于 between 范围，不包含等于.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateNotBetween($strField, $mixData, $arrParameter)
     {
@@ -1070,26 +1136,29 @@ class Validate implements IValidate
     }
 
     /**
-     * 处于 betweenEqual 范围，包含等于
+     * 处于 betweenEqual 范围，包含等于.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateBetweenEqual($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 2);
+
         return $mixData >= $arrParameter[0] && $mixData <= $arrParameter[1];
     }
 
     /**
-     * 未处于 betweenEqual 范围，包含等于
+     * 未处于 betweenEqual 范围，包含等于.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateNotBetweenEqual($strField, $mixData, $arrParameter)
     {
@@ -1097,26 +1166,29 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否处于某个范围
+     * 是否处于某个范围.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateIn($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return in_array($mixData, $arrParameter);
     }
 
     /**
-     * 是否不处于某个范围
+     * 是否不处于某个范围.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateNotIn($strField, $mixData, $arrParameter)
     {
@@ -1127,118 +1199,132 @@ class Validate implements IValidate
      * 是否为合法的 IP 地址
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateIp($strField, $mixData, $arrParameter)
     {
-        return filter_var($mixData, FILTER_VALIDATE_IP) !== false;
+        return false !== filter_var($mixData, FILTER_VALIDATE_IP);
     }
 
     /**
-     * 是否为 ipv4
+     * 是否为 ipv4.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateIpv4($strField, $mixData, $arrParameter)
     {
-        return filter_var($mixData, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false;
+        return false !== filter_var($mixData, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
     }
 
     /**
-     * 是否为 ipv6
+     * 是否为 ipv6.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateIpv6($strField, $mixData, $arrParameter)
     {
-        return filter_var($mixData, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) !== false;
+        return false !== filter_var($mixData, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
     }
 
     /**
-     * 大于
+     * 大于.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateGreaterThan($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return $mixData > $arrParameter[0];
     }
 
     /**
-     * 大于或者等于
+     * 大于或者等于.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateEqualGreaterThan($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return $mixData >= $arrParameter[0];
     }
 
     /**
-     * 小于
+     * 小于.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateLessThan($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return $mixData < $arrParameter[0];
     }
 
     /**
-     * 小于或者等于
+     * 小于或者等于.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateEqualLessThan($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return $mixData <= $arrParameter[0];
     }
 
     /**
-     * 两个值是否相同
+     * 两个值是否相同.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateEqual($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return $mixData == $arrParameter[0];
     }
 
     /**
-     * 两个值是否不相同
+     * 两个值是否不相同.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateNotEqual($strField, $mixData, $arrParameter)
     {
@@ -1246,26 +1332,29 @@ class Validate implements IValidate
     }
 
     /**
-     * 两个字段是否相同
+     * 两个字段是否相同.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateEqualTo($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return $mixData == $this->getFieldValue($arrParameter[0]);
     }
 
     /**
-     * 两个字段是否不同
+     * 两个字段是否不同.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateDifferent($strField, $mixData, $arrParameter)
     {
@@ -1273,26 +1362,29 @@ class Validate implements IValidate
     }
 
     /**
-     * 两个值是否完全相同
+     * 两个值是否完全相同.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateSame($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return $mixData === $arrParameter[0];
     }
 
     /**
-     * 两个值是否不完全相同
+     * 两个值是否不完全相同.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateNotSame($strField, $mixData, $arrParameter)
     {
@@ -1300,40 +1392,45 @@ class Validate implements IValidate
     }
 
     /**
-     * 验证值上限
+     * 验证值上限.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateMax($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return $mixData <= $arrParameter[0];
     }
 
     /**
-     * 验证值下限
+     * 验证值下限.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateMin($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return $mixData >= $arrParameter[0];
     }
 
     /**
-     * 值是否为空
+     * 值是否为空.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateEmpty($strField, $mixData, $arrParameter)
     {
@@ -1341,12 +1438,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 值是否不为空
+     * 值是否不为空.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateNotEmpty($strField, $mixData, $arrParameter)
     {
@@ -1354,25 +1452,27 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否为 null
+     * 是否为 null.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateNull($strField, $mixData, $arrParameter)
     {
-        return is_null($mixData);
+        return null === $mixData;
     }
 
     /**
-     * 是否不为 null
+     * 是否不为 null.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateNotNull($strField, $mixData, $arrParameter)
     {
@@ -1380,12 +1480,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否为英文字母
+     * 是否为英文字母.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateAlpha($strField, $mixData, $arrParameter)
     {
@@ -1393,12 +1494,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否为大写英文字母
+     * 是否为大写英文字母.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateAlphaUpper($strField, $mixData, $arrParameter)
     {
@@ -1406,12 +1508,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否为小写英文字母
+     * 是否为小写英文字母.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateAlphaLower($strField, $mixData, $arrParameter)
     {
@@ -1419,12 +1522,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 字符串是否为数字和字母
+     * 字符串是否为数字和字母.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateAlphaNum($strField, $mixData, $arrParameter)
     {
@@ -1432,12 +1536,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 字符串是否为数字、下划线、短横线和字母
+     * 字符串是否为数字、下划线、短横线和字母.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateAlphaDash($strField, $mixData, $arrParameter)
     {
@@ -1445,12 +1550,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否为中文
+     * 是否为中文.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateChinese($strField, $mixData, $arrParameter)
     {
@@ -1458,12 +1564,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否为中文、数字和字母
+     * 是否为中文、数字和字母.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateChineseAlphaNum($strField, $mixData, $arrParameter)
     {
@@ -1471,12 +1578,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 是否为中文、数字、下划线、短横线和字母
+     * 是否为中文、数字、下划线、短横线和字母.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateChineseAlphaDash($strField, $mixData, $arrParameter)
     {
@@ -1487,9 +1595,10 @@ class Validate implements IValidate
      * 是否为大陆身份证
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateIdCard($strField, $mixData, $arrParameter)
     {
@@ -1500,9 +1609,10 @@ class Validate implements IValidate
      * 是否为中国邮政编码
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateZipCode($strField, $mixData, $arrParameter)
     {
@@ -1513,9 +1623,10 @@ class Validate implements IValidate
      * 是否为 QQ 号码
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateQq($strField, $mixData, $arrParameter)
     {
@@ -1526,22 +1637,24 @@ class Validate implements IValidate
      * 值是否为电话号码或者手机号码
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validatePhone($strField, $mixData, $arrParameter)
     {
-        return ((strlen($mixData) == 11 && preg_match('/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/', $mixData)) || preg_match('/^\d{3,4}-?\d{7,9}$/', $mixData));
+        return (11 == strlen($mixData) && preg_match('/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/', $mixData)) || preg_match('/^\d{3,4}-?\d{7,9}$/', $mixData);
     }
 
     /**
      * 值是否为手机号码
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateMobile($strField, $mixData, $arrParameter)
     {
@@ -1552,9 +1665,10 @@ class Validate implements IValidate
      * 值是否为电话号码
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateTelephone($strField, $mixData, $arrParameter)
     {
@@ -1562,38 +1676,41 @@ class Validate implements IValidate
     }
 
     /**
-     * 值是否为银行卡等符合 luhn 算法
+     * 值是否为银行卡等符合 luhn 算法.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateLuhn($strField, $mixData, $arrParameter)
     {
         $intTotal = 0;
-        for ($intI = strlen($mixData); $intI >= 1; $intI --) {
+        for ($intI = strlen($mixData); $intI >= 1; --$intI) {
             $intIndex = $intI - 1;
-            if ($intI % 2 == 0) {
-                $intTotal += $mixData{$intIndex};
+            if (0 == $intI % 2) {
+                $intTotal += $mixData[$intIndex];
             } else {
-                $intFoo = $mixData{$intIndex} * 2;
+                $intFoo = $mixData[$intIndex] * 2;
                 if ($intFoo > 9) {
-                    $intFoo = (int)($intFoo / 10) + $intFoo % 10;
+                    $intFoo = (int) ($intFoo / 10) + $intFoo % 10;
                 }
                 $intTotal += $intFoo;
             }
         }
-        return ($intTotal % 10) == 0;
+
+        return 0 == ($intTotal % 10);
     }
 
     /**
      * 验证是否为有效的 url 或者 IP 地址
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateActiveUrl($strField, $mixData, $arrParameter)
     {
@@ -1604,63 +1721,70 @@ class Validate implements IValidate
      * 验证是否为 url 地址
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateUrl($strField, $mixData, $arrParameter)
     {
-        return filter_var($mixData, FILTER_VALIDATE_URL) !== false;
+        return false !== filter_var($mixData, FILTER_VALIDATE_URL);
     }
 
     /**
-     * 是否为电子邮件
+     * 是否为电子邮件.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateEmail($strField, $mixData, $arrParameter)
     {
-        return filter_var($mixData, FILTER_VALIDATE_EMAIL) !== false;
+        return false !== filter_var($mixData, FILTER_VALIDATE_EMAIL);
     }
 
     /**
      * 长度验证
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateStrlen($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
-        return strlen($mixData) == (int)$arrParameter[0];
+
+        return strlen($mixData) == (int) $arrParameter[0];
     }
 
     /**
      * 数据类型验证
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateType($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return gettype($mixData) === $arrParameter[0];
     }
 
     /**
-     * 验证是否都是小写
+     * 验证是否都是小写.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateLower($strField, $mixData, $arrParameter)
     {
@@ -1668,12 +1792,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 验证是否都是大写
+     * 验证是否都是大写.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateUpper($strField, $mixData, $arrParameter)
     {
@@ -1681,54 +1806,61 @@ class Validate implements IValidate
     }
 
     /**
-     * 验证数据最小长度
+     * 验证数据最小长度.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateMinLength($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
-        return iconv_strlen($mixData, 'utf-8') >= (int)$arrParameter[0];
+
+        return iconv_strlen($mixData, 'utf-8') >= (int) $arrParameter[0];
     }
 
     /**
-     * 验证数据最大长度
+     * 验证数据最大长度.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateMaxLength($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
-        return iconv_strlen($mixData, 'utf-8') <= (int)$arrParameter[0];
+
+        return iconv_strlen($mixData, 'utf-8') <= (int) $arrParameter[0];
     }
 
     /**
-     * 验证 IP 许可
+     * 验证 IP 许可.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateAllowIp($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
-        return in_array($mixData ?  : $_SERVER['REMOTE_ADDR'], $arrParameter);
+
+        return in_array($mixData ?: $_SERVER['REMOTE_ADDR'], $arrParameter);
     }
 
     /**
-     * 验证 IP 禁用
+     * 验证 IP 禁用.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateDenyIp($strField, $mixData, $arrParameter)
     {
@@ -1736,26 +1868,29 @@ class Validate implements IValidate
     }
 
     /**
-     * 验证请求类型
+     * 验证请求类型.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateMethod($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
-        return strtolower($mixData ?  : (PHP_SAPI == 'cli' ? 'GET' : $_SERVER['REQUEST_METHOD'])) == strtolower($arrParameter[0]);
+
+        return strtolower($mixData ?: (PHP_SAPI == 'cli' ? 'GET' : $_SERVER['REQUEST_METHOD'])) == strtolower($arrParameter[0]);
     }
 
     /**
-     * 验证是否为正常的 JSON 字符串
+     * 验证是否为正常的 JSON 字符串.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateJson($strField, $mixData, $arrParameter)
     {
@@ -1765,70 +1900,79 @@ class Validate implements IValidate
 
         json_decode($mixData);
 
-        return json_last_error() === JSON_ERROR_NONE;
+        return JSON_ERROR_NONE === json_last_error();
     }
 
     /**
-     * 数据是否满足正则条件
+     * 数据是否满足正则条件.
      *
      * @param string $strField
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function validateRegex($strField, $mixData, $arrParameter)
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
+
         return preg_match($arrParameter[0], $mixData) > 0;
     }
 
     /**
-     * 验证在给定日期之前
+     * 验证在给定日期之前.
      *
      * @param string $strFormat
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function doBeforeWithFormat($strFormat, $mixData, $arrParameter)
     {
-        $arrParameter[0] = $this->getFieldValue($arrParameter[0]) ?  : $arrParameter[0];
+        $arrParameter[0] = $this->getFieldValue($arrParameter[0]) ?: $arrParameter[0];
+
         return $this->doCheckBeforeAfter($strFormat, $mixData, $arrParameter[0]);
     }
 
     /**
-     * 验证在给定日期之后
+     * 验证在给定日期之后.
      *
      * @param string $strFormat
-     * @param mixed $mixData
-     * @param array $arrParameter
-     * @return boolean
+     * @param mixed  $mixData
+     * @param array  $arrParameter
+     *
+     * @return bool
      */
     protected function doAfterWithFormat($strFormat, $mixData, $arrParameter)
     {
-        $arrParameter[0] = $this->getFieldValue($arrParameter[0]) ?  : $arrParameter[0];
+        $arrParameter[0] = $this->getFieldValue($arrParameter[0]) ?: $arrParameter[0];
+
         return $this->doCheckBeforeAfter($strFormat, $arrParameter[0], $mixData);
     }
 
     /**
-     * 验证日期顺序
+     * 验证日期顺序.
      *
      * @param string $strFormat
      * @param string $strFoo
      * @param string $strBar
-     * @return boolean
+     *
+     * @return bool
      */
     protected function doCheckBeforeAfter($strFormat, $strFoo, $strBar)
     {
         $objBefore = $this->makeDateTimeFormat($strFormat, $strFoo);
         $objAfter = $this->makeDateTimeFormat($strFormat, $strBar);
+
         return $objBefore && $objAfter && $objBefore < $objAfter;
     }
 
     /**
-     * 获取时间格式化
+     * 获取时间格式化.
      *
      * @param string $strField
+     *
      * @return string|null
      */
     protected function getDateFormat($strField)
@@ -1839,10 +1983,11 @@ class Validate implements IValidate
     }
 
     /**
-     * 尝试读取格式化条件
+     * 尝试读取格式化条件.
      *
-     * @param string $strField
+     * @param string       $strField
      * @param string|array $mixRule
+     *
      * @return array|null
      */
     protected function getParseRule($strField, $mixRule)
@@ -1851,24 +1996,25 @@ class Validate implements IValidate
             return;
         }
 
-        $mixRule = (array)$mixRule;
+        $mixRule = (array) $mixRule;
 
         foreach ($this->arrRule[$strField] as $strRule) {
             list($strRule, $arrParameter) = $this->parseRule($strRule);
             if (in_array($strRule, $mixRule)) {
                 return [
                     $strRule,
-                    $arrParameter
+                    $arrParameter,
                 ];
             }
         }
     }
 
     /**
-     * 创建 DateTime 实例
+     * 创建 DateTime 实例.
      *
      * @param string $strFormat
      * @param string $strValue
+     *
      * @return \DateTime|null
      */
     protected function makeDateTimeFormat($strFormat, $strValue)
@@ -1886,12 +2032,13 @@ class Validate implements IValidate
     }
 
     /**
-     * 数据是否满足正则条件
+     * 数据是否满足正则条件.
      *
      * @param string $strField
-     * @param array $arrParameter
-     * @param int $intLimitLength
-     * @return boolean
+     * @param array  $arrParameter
+     * @param int    $intLimitLength
+     *
+     * @return bool
      */
     protected function checkParameterLength($strField, $arrParameter, $intLimitLength)
     {
@@ -1901,29 +2048,32 @@ class Validate implements IValidate
     }
 
     /**
-     * 转换消息为数组
+     * 转换消息为数组.
      *
      * @param array $arrMessage
+     *
      * @return array
      */
     protected function arrayMessage(array $arrMessage)
     {
         $arrResult = [];
         foreach ($arrMessage as $strField => $mixRule) {
-            if (strpos($strField, '*') === false) {
+            if (false === strpos($strField, '*')) {
                 $arrResult = array_merge($arrResult, $this->arrayMessageItem($strField, $mixRule));
             } else {
                 $arrResult = array_merge($arrResult, $this->wildcardMessageItem($strField, $mixRule));
             }
         }
+
         return $arrResult;
     }
 
     /**
-     * 分析通配符消息
+     * 分析通配符消息.
      *
      * @param string $strField
-     * @param mixed $mixMessage
+     * @param mixed  $mixMessage
+     *
      * @return array
      */
     protected function wildcardMessageItem($strField, $mixMessage)
@@ -1941,10 +2091,11 @@ class Validate implements IValidate
     }
 
     /**
-     * 通配符正则
+     * 通配符正则.
      *
      * @param string $strFoo
-     * @param bool $booStrict
+     * @param bool   $booStrict
+     *
      * @return string
      */
     protected function prepareRegexForWildcard($strRegex, $booStrict = true)
@@ -1953,9 +2104,10 @@ class Validate implements IValidate
     }
 
     /**
-     * 转义正则表达式特殊字符
+     * 转义正则表达式特殊字符.
      *
      * @param string $sTxt
+     *
      * @return string
      */
     protected function escapeRegexCharacter($sTxt)
@@ -1977,7 +2129,7 @@ class Validate implements IValidate
             '{',
             '}',
             '|',
-            '\\'
+            '\\',
         ], [
             '\$',
             '\/',
@@ -1995,17 +2147,18 @@ class Validate implements IValidate
             '\\{',
             '\\}',
             '\\|',
-            '\\\\'
+            '\\\\',
         ], $sTxt);
 
         return $sTxt;
     }
 
     /**
-     * 转换单条消息为数组
+     * 转换单条消息为数组.
      *
-     * @param string $strField
+     * @param string       $strField
      * @param array|string $mixMessage
+     *
      * @return array
      */
     protected function arrayMessageItem($strField, $mixMessage)
@@ -2026,16 +2179,17 @@ class Validate implements IValidate
     }
 
     /**
-     * 分析验证规则和参数
+     * 分析验证规则和参数.
      *
      * @param string $strRule
+     *
      * @return array
      */
     protected function parseRule($strRule)
     {
         $arrParameter = [];
 
-        if (strpos($strRule, ':') !== false) {
+        if (false !== strpos($strRule, ':')) {
             list($strRule, $arrParameter) = explode(':', $strRule, 2);
             if (isset($this->arrAlias[$strRule])) {
                 $strRule = $this->arrAlias[$strRule];
@@ -2045,34 +2199,37 @@ class Validate implements IValidate
 
         return [
             trim($strRule),
-            $arrParameter
+            $arrParameter,
         ];
     }
 
     /**
-     * 转换规则为数组
+     * 转换规则为数组.
      *
      * @param array $arrRule
+     *
      * @return array
      */
     protected function arrayRule(array $arrRule)
     {
         $arrResult = [];
         foreach ($arrRule as $strField => $mixRule) {
-            if (strpos($strField, '*') === false) {
+            if (false === strpos($strField, '*')) {
                 $arrResult[$strField] = $this->arrayRuleItem($mixRule);
             } else {
                 $arrResult = array_merge($arrResult, $this->wildcardRuleItem($strField, $mixRule));
             }
         }
+
         return $arrResult;
     }
 
     /**
-     * 转换单条规则为数组
+     * 转换单条规则为数组.
      *
      *
      * @param mixed $mixRule
+     *
      * @return array
      */
     protected function arrayRuleItem($mixRule)
@@ -2081,10 +2238,11 @@ class Validate implements IValidate
     }
 
     /**
-     * 分析通配符规则
+     * 分析通配符规则.
      *
      * @param string $strField
-     * @param mixed $mixRule
+     * @param mixed  $mixRule
+     *
      * @return array
      */
     protected function wildcardRuleItem($strField, $mixRule)
@@ -2102,26 +2260,24 @@ class Validate implements IValidate
     }
 
     /**
-     * 返回分析后的数据键
+     * 返回分析后的数据键.
      *
      * @return array
      */
     protected function parseDataKey()
     {
-        if (! is_null($this->arrParsedDataKey)) {
+        if (null !== $this->arrParsedDataKey) {
             return $this->arrParsedDataKey;
         }
 
         $this->arrParsedDataKey = [];
         $this->parseDataKeyRecursion($this->getData());
-        
+
         return $this->arrParsedDataKey;
     }
 
     /**
      * 清理分析数据键状态
-     *
-     * @return void
      */
     protected function resetDataKey()
     {
@@ -2129,11 +2285,10 @@ class Validate implements IValidate
     }
 
     /**
-     * 递归分析
+     * 递归分析.
      *
-     * @param array $arrData
+     * @param array  $arrData
      * @param string $strParentKey
-     * @return void
      */
     protected function parseDataKeyRecursion($arrData, $strParentKey = '')
     {
@@ -2150,10 +2305,11 @@ class Validate implements IValidate
 
     /**
      * 是否存在单个字段验证规则
-     * 不带条件的简单规则
+     * 不带条件的简单规则.
      *
      * @param string $strField
      * @param string $strRule
+     *
      * @return $this
      */
     protected function hasFieldRuleWithoutParameter($strField, $strRule)
@@ -2163,7 +2319,7 @@ class Validate implements IValidate
         if (! $booFoo && $strRule == static::DEFAULT_CONDITION) {
             return ! $this->hasFieldRuleWithoutParameterReal($strField, [
                 static::CONDITION_MUST,
-                static::CONDITION_VALUE
+                static::CONDITION_VALUE,
             ]);
         }
 
@@ -2172,11 +2328,12 @@ class Validate implements IValidate
 
     /**
      * 是否存在单个字段验证规则
-     * 不带条件的简单规则
+     * 不带条件的简单规则.
      *
      * @param string $strField
-     * @param mixed $mixRule
-     * @param boolean $booStrict
+     * @param mixed  $mixRule
+     * @param bool   $booStrict
+     *
      * @return $this
      */
     protected function hasFieldRuleWithoutParameterReal($strField, $mixRule, $booStrict = false)
@@ -2185,7 +2342,7 @@ class Validate implements IValidate
             return false;
         }
 
-        $mixRule = (array)$mixRule;
+        $mixRule = (array) $mixRule;
 
         foreach ($mixRule as $strRule) {
             if ($booStrict) {
@@ -2201,34 +2358,37 @@ class Validate implements IValidate
     }
 
     /**
-     * 解析变量
+     * 解析变量.
      *
      * @param string $strRule
      * @param string $strParameter
+     *
      * @return array
      */
     protected function parseParameters($strRule, $strParameter)
     {
-        if (strtolower($strRule) == 'regex') {
+        if ('regex' == strtolower($strRule)) {
             return [
-                $strParameter
+                $strParameter,
             ];
         }
+
         return explode(',', $strParameter);
     }
 
     /**
-     * 验证字段规则
+     * 验证字段规则.
      *
      * @param string $strField
      * @param string $strRule
-     * @return void|boolean
+     *
+     * @return void|bool
      */
     protected function doValidateItem($strField, $strRule)
     {
         list($strRule, $arrParameter) = $this->parseRule($strRule);
 
-        if ($strRule == '') {
+        if ('' == $strRule) {
             return;
         }
 
@@ -2246,9 +2406,11 @@ class Validate implements IValidate
 
         if (! $this->{'validate' . ucwords(Str::camelize($strRule))}($strField, $mixFieldValue, $arrParameter)) {
             $this->addFailure($strField, $strRule, $arrParameter);
+
             return false;
         }
         unset($mixFieldValue);
+
         return true;
     }
 
@@ -2256,7 +2418,8 @@ class Validate implements IValidate
      * 是否需要终止其他验证
      *
      * @param string $strField
-     * @return boolean
+     *
+     * @return bool
      */
     protected function shouldSkipOther($strField)
     {
@@ -2267,7 +2430,8 @@ class Validate implements IValidate
      * 是否需要终止自己其他验证
      *
      * @param string $strField
-     * @return boolean
+     *
+     * @return bool
      */
     protected function shouldSkipSelf($strField)
     {
@@ -2275,12 +2439,11 @@ class Validate implements IValidate
     }
 
     /**
-     * 添加错误规则和验证错误消息
+     * 添加错误规则和验证错误消息.
      *
      * @param string $strField
      * @param string $strRule
-     * @param array $arrParameter
-     * @return void
+     * @param array  $arrParameter
      */
     protected function addFailure($strField, $strRule, $arrParameter)
     {
@@ -2289,30 +2452,29 @@ class Validate implements IValidate
     }
 
     /**
-     * 添加验证错误消息
+     * 添加验证错误消息.
      *
      * @param string $strField
      * @param string $strRule
-     * @param array $arrParameter
-     * @return void
+     * @param array  $arrParameter
      */
     protected function addError($strField, $strRule, $arrParameter)
     {
         $strMessage = $this->getFieldRuleMessage($strField, $strRule);
 
         $arrReplace = [
-            'field' => $this->parseFieldName($strField)
+            'field' => $this->parseFieldName($strField),
         ];
 
         if (! $this->isImplodeRuleParameter($strRule)) {
             foreach ($arrParameter as $intKey => $mixParameter) {
-                $arrReplace['rule' . ($intKey ?  : '')] = $mixParameter;
+                $arrReplace['rule' . ($intKey ?: '')] = $mixParameter;
             }
         } else {
             $arrReplace['rule'] = implode(',', $arrParameter);
         }
 
-        $strMessage = preg_replace_callback("/{(.+?)}/", function ($arrMatche) use ($arrReplace) {
+        $strMessage = preg_replace_callback('/{(.+?)}/', function ($arrMatche) use ($arrReplace) {
             return $arrReplace[$arrMatche[1]] ?? $arrMatche[0];
         }, $strMessage);
 
@@ -2321,10 +2483,11 @@ class Validate implements IValidate
     }
 
     /**
-     * 获取验证消息
+     * 获取验证消息.
      *
      * @param string $strField
      * @param string $strRule
+     *
      * @return string
      */
     protected function getFieldRuleMessage($strField, $strRule)
@@ -2333,9 +2496,10 @@ class Validate implements IValidate
     }
 
     /**
-     * 获取字段名字
+     * 获取字段名字.
      *
      * @param string $strField
+     *
      * @return string
      */
     protected function parseFieldName($strField)
@@ -2347,11 +2511,12 @@ class Validate implements IValidate
      * 获取字段的值
      *
      * @param string $strRule
+     *
      * @return mixed
      */
     protected function getFieldValue($strRule)
     {
-        if (strpos($strRule, '.') === false) {
+        if (false === strpos($strRule, '.')) {
             if (isset($this->arrData[$strRule])) {
                 return $this->arrData[$strRule];
             }
@@ -2359,11 +2524,12 @@ class Validate implements IValidate
             $strRule = explode('.', $strRule);
 
             $strFoo = '$this->arrData';
-            for ($nI = 0; $nI < count($strRule); $nI ++) {
+            for ($nI = 0; $nI < count($strRule); ++$nI) {
                 $strFoo .= "['{$strRule[$nI]}']";
             }
 
             eval("\$strFoo = $strFoo ?? null;");
+
             return $strFoo;
         }
 
@@ -2374,7 +2540,8 @@ class Validate implements IValidate
      * 是否存在字段的值
      *
      * @param string $strRule
-     * @return boolean
+     *
+     * @return bool
      */
     protected function hasFieldValue($strRule)
     {
@@ -2382,10 +2549,11 @@ class Validate implements IValidate
     }
 
     /**
-     * 返回需要合并的规则参数
+     * 返回需要合并的规则参数.
      *
      * @param string $strRule
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isImplodeRuleParameter($strRule)
     {
@@ -2393,15 +2561,16 @@ class Validate implements IValidate
             'in',
             'not_in',
             'allow_ip',
-            'deny_ip'
+            'deny_ip',
         ]);
     }
 
     /**
-     * 调用自定义验证器类
+     * 调用自定义验证器类.
      *
      * @param string $strExtend
-     * @param array $arrParameter
+     * @param array  $arrParameter
+     *
      * @return bool
      */
     protected function callClassExtend($strExtend, array $arrParameter)
@@ -2410,33 +2579,34 @@ class Validate implements IValidate
             throw new Exception('Container has not set yet');
         }
 
-        if (strpos($strExtend, '@') === false) {
+        if (false === strpos($strExtend, '@')) {
             $strClass = $strExtend;
             $strMethod = 'handle';
         } else {
             list($strClass, $strMethod) = explode('@', $strExtend);
         }
 
-        if (($objExtend = $this->objContainer->make($strClass)) === false) {
+        if (false === ($objExtend = $this->objContainer->make($strClass))) {
             throw new InvalidArgumentException(sprintf('Extend class %s is not valid.', $strClass));
         }
 
-        $strMethod = method_exists($objExtend, $strMethod) ? $strMethod : ($strMethod != 'handle' && method_exists($objExtend, 'handle') ? 'handle' : 'run');
+        $strMethod = method_exists($objExtend, $strMethod) ? $strMethod : ('handle' != $strMethod && method_exists($objExtend, 'handle') ? 'handle' : 'run');
 
         $arrParameter[] = $this;
 
         return call_user_func_array([
             $objExtend,
-            $strMethod
+            $strMethod,
         ], $arrParameter);
     }
 
     /**
-     * 调用自定义验证器
+     * 调用自定义验证器.
      *
      * @param string $strRule
-     * @param array $arrParameter
-     * @return boolean|null
+     * @param array  $arrParameter
+     *
+     * @return bool|null
      */
     protected function callExtend($strRule, $arrParameter)
     {
@@ -2444,6 +2614,7 @@ class Validate implements IValidate
 
         if (is_callable($mixExtend)) {
             $arrParameter[] = $this;
+
             return call_user_func_array($mixExtend, $arrParameter);
         } elseif (is_string($mixExtend)) {
             return $this->callClassExtend($mixExtend, $arrParameter);
@@ -2451,10 +2622,11 @@ class Validate implements IValidate
     }
 
     /**
-     * 验证条件是否通过
+     * 验证条件是否通过.
      *
      * @param callable|mixed $calCallback
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isCallbackValid($mixCallback = null)
     {
@@ -2470,10 +2642,11 @@ class Validate implements IValidate
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $arrArgs
+     * @param array  $arrArgs
+     *
      * @return mixed
      */
     public function __call(string $method, array $arrArgs)
@@ -2491,7 +2664,7 @@ class Validate implements IValidate
             $sExtend = 'validate' . ucwords($method);
 
             $arrParameter = [
-                'foobar'
+                'foobar',
             ];
             $arrParameter[] = array_shift($arrArgs);
             $arrParameter[] = $arrArgs;

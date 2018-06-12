@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\View;
 
 use InvalidArgumentException;
@@ -22,138 +26,137 @@ use Leevel\Stack\Stack;
 /**
  * 分析模板
  * 模板引擎分析器和编译器实现技术原理来源于 Jecat 框架
- * This class borrows heavily from the JeCat Framework and is part of the JeCat package
+ * This class borrows heavily from the JeCat Framework and is part of the JeCat package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.19
+ *
  * @version 1.0
- * @link http://jecat.cn
+ *
+ * @see http://jecat.cn
  */
 class Parser implements IParser
 {
-
     /**
-     * 编译器
+     * 编译器.
      *
      * @var \Leevel\View\ICompiler
      */
     protected $compiler;
 
     /**
-     * 成对节点栈
+     * 成对节点栈.
      *
      * @var \Leevel\Stack\Stack
      */
     protected $nodeStack;
 
     /**
-     * js 风格 和 node 共用分析器
+     * js 风格 和 node 共用分析器.
      *
-     * @var boolean
+     * @var bool
      */
     protected $jsNode = false;
 
     /**
-     * 编译器
+     * 编译器.
      *
      * @var array
      */
     protected $compilers = [];
 
     /**
-     * 分析器
+     * 分析器.
      *
      * @var array
      */
     protected $parses = [];
 
     /**
-     * 分析器定界符
+     * 分析器定界符.
      *
      * @var array
      */
     protected $tags = [
-
         // 全局
         'global' => [
             'left' => '[<\{]',
-            'right' => '[\}>]'
+            'right' => '[\}>]',
         ],
 
         // js 风格代码
         'js' => [
             'left' => '{%',
-            'right' => '%}'
+            'right' => '%}',
         ],
 
         // js 风格变量代码
         'jsvar' => [
             'left' => '{{',
-            'right' => '}}'
+            'right' => '}}',
         ],
 
         // 代码
         'code' => [
             'left' => '{',
-            'right' => '}'
+            'right' => '}',
         ],
 
         // 节点
         'node' => [
             'left' => '<',
-            'right' => '>'
+            'right' => '>',
         ],
 
         // 反向
         'revert' => [],
 
         // 全局反向
-        'globalrevert' => []
+        'globalrevert' => [],
     ];
 
     /**
-     * 模板树结构
+     * 模板树结构.
      *
      * @var array
      */
     protected $themeTree = [];
 
     /**
-     * 模板项结构
+     * 模板项结构.
      *
      * @var array
      */
     protected static $themeStruct = [
         // 原模板
-        'source' => '',  
+        'source' => '',
         'content' => '',
 
         // 编译器
         'compiler' => null,
         'children' => [],
-        'position' => []
+        'position' => [],
     ];
 
     /**
-     * 当前编译源文件
+     * 当前编译源文件.
      *
      * @var string
      */
     protected $sourceFile;
 
     /**
-     * 当前编译缓存文件
+     * 当前编译缓存文件.
      *
      * @var string
      */
     protected $cachePath;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\View\ICompiler $compiler
-     * @return void
      */
     public function __construct(icompiler $compiler)
     {
@@ -161,7 +164,7 @@ class Parser implements IParser
     }
 
     /**
-     * 注册视图编译器
+     * 注册视图编译器.
      *
      * @return $this
      */
@@ -179,7 +182,7 @@ class Parser implements IParser
     }
 
     /**
-     * 注册视图分析器
+     * 注册视图分析器.
      *
      * @return $this
      */
@@ -188,22 +191,23 @@ class Parser implements IParser
         foreach ($this->tags as $key => $value) {
             $this->registerParser($key);
         }
-        
+
         return $this;
     }
 
     /**
-     * 执行编译
+     * 执行编译.
      *
-     * @param string $file
+     * @param string      $file
      * @param string|null $cachePath
-     * @param boolean $icontent
+     * @param bool        $icontent
+     *
      * @return string
      */
     public function doCompile($file, $cachePath = null, bool $icontent = false)
     {
         // 源码
-        if ($icontent === false) {
+        if (false === $icontent) {
             $cache = file_get_contents($file);
 
             if (! is_file($file)) {
@@ -220,14 +224,13 @@ class Parser implements IParser
 
         // 逐个载入分析器编译模板
         foreach ($this->parses as $parser) {
-
             // 清理对象 & 构建顶层树对象
             $this->clearThemeTree();
 
             $theme = [
                 'source' => $cache,
                 'content' => $cache,
-                'position' => $this->getPosition($cache, '', 0)
+                'position' => $this->getPosition($cache, '', 0),
             ];
 
             $theme = $this->normalizeThemeStruct($theme);
@@ -244,7 +247,7 @@ class Parser implements IParser
         }
 
         // 生成编译文件
-        if (! is_null($cachePath)) {
+        if (null !== $cachePath) {
             $this->makeCacheFile($cachePath, $cache);
         } else {
             return $cache;
@@ -255,6 +258,7 @@ class Parser implements IParser
      * code 编译编码，后还原
      *
      * @param string $content
+     *
      * @return string
      */
     public static function revertEncode($content)
@@ -270,6 +274,7 @@ class Parser implements IParser
      * tagself 编译编码，后还原
      *
      * @param string $content
+     *
      * @return string
      */
     public static function globalEncode($content)
@@ -282,10 +287,9 @@ class Parser implements IParser
     }
 
     /**
-     * 全局编译器 tagself
+     * 全局编译器 tagself.
      *
      * @param string $compiled
-     * @return void
      */
     protected function globalParse(&$compiled)
     {
@@ -307,7 +311,7 @@ class Parser implements IParser
 
                     // 编译器
                     'compiler' => 'global',
-                    'children' => []
+                    'children' => [],
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
@@ -321,10 +325,9 @@ class Parser implements IParser
     }
 
     /**
-     * js 风格 变量分析器
+     * js 风格 变量分析器.
      *
      * @param string $compiled
-     * @return void
      */
     protected function jsvarParse(&$compiled)
     {
@@ -345,7 +348,7 @@ class Parser implements IParser
 
                     // 编译器
                     'compiler' => 'jsvar',
-                    'children' => []
+                    'children' => [],
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
@@ -359,28 +362,26 @@ class Parser implements IParser
     }
 
     /**
-     * code 方式分析器
+     * code 方式分析器.
      *
      * @param string $compiled
-     * @return void
      */
     protected function codeParse(&$compiled)
     {
         foreach ($this->compilers['code'] as $compilers => $tag) {
-
             // 处理一些正则表达式中有特殊意义的符号
-            $names[] = $this->escapeRegexCharacter($compilers); 
+            $names[] = $this->escapeRegexCharacter($compilers);
         }
 
         // 没有任何编译器
-        if (! count($names)) { 
+        if (! count($names)) {
             return;
         }
 
         // 正则分析
         $tag = $this->getTag('code');
         $names = implode('|', $names);
-        $regex = "/" . $tag['left'] . "\s*({$names})(|.+?)" . $tag['right'] . "/s";
+        $regex = '/' . $tag['left'] . "\s*({$names})(|.+?)" . $tag['right'] . '/s';
 
         if (preg_match_all($regex, $compiled, $res)) {
             $startPos = 0;
@@ -397,7 +398,7 @@ class Parser implements IParser
 
                     // 编译器
                     'compiler' => $this->compilers['code'][$type] . 'Code',
-                    'children' => []
+                    'children' => [],
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
@@ -411,10 +412,9 @@ class Parser implements IParser
     }
 
     /**
-     * js 风格分析器 与 node 公用分析器
+     * js 风格分析器 与 node 公用分析器.
      *
      * @param string $compiled
-     * @return void
      */
     protected function jsParse(&$compiled)
     {
@@ -424,10 +424,9 @@ class Parser implements IParser
     }
 
     /**
-     * node 分析器
+     * node 分析器.
      *
      * @param string $compiled
-     * @return void
      */
     protected function nodeParse(&$compiled)
     {
@@ -437,25 +436,23 @@ class Parser implements IParser
     }
 
     /**
-     * 格式化 node 分析器
+     * 格式化 node 分析器.
      *
      * @param string $compiled
-     * @return void
      */
     protected function normalizeNodeParse(&$compiled)
     {
         // 查找分析 Node 的标签
-        $this->findNodeTag($compiled); 
+        $this->findNodeTag($compiled);
 
         // 用标签组装 Node
-        $this->packNode($compiled); 
+        $this->packNode($compiled);
     }
 
     /**
-     * code 还原分析器
+     * code 还原分析器.
      *
      * @param string $compiled
-     * @return void
      */
     protected function revertParse(&$compiled)
     {
@@ -473,8 +470,8 @@ class Parser implements IParser
                     'content' => $encode,
 
                     // 编译器
-                    'compiler' => 'revert',  
-                    'children' => []
+                    'compiler' => 'revert',
+                    'children' => [],
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
@@ -482,16 +479,15 @@ class Parser implements IParser
                 $theme = $this->normalizeThemeStruct($theme);
 
                 // 将模板数据加入到树结构中
-                $this->addTheme($theme); 
+                $this->addTheme($theme);
             }
         }
     }
 
     /**
-     * tagself 还原分析器
+     * tagself 还原分析器.
      *
      * @param string $compiled
-     * @return void
      */
     protected function globalrevertParse(&$compiled)
     {
@@ -510,8 +506,8 @@ class Parser implements IParser
                     'content' => $content,
 
                     // 编译器
-                    'compiler' => 'globalrevert',  
-                    'children' => []
+                    'compiler' => 'globalrevert',
+                    'children' => [],
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
@@ -519,16 +515,15 @@ class Parser implements IParser
                 $theme = $this->normalizeThemeStruct($theme);
 
                 // 将模板数据加入到树结构中
-                $this->addTheme($theme); 
+                $this->addTheme($theme);
             }
         }
     }
 
     /**
-     * 查找成对节点
+     * 查找成对节点.
      *
      * @param string $compiled
-     * @return void
      */
     protected function findNodeTag(&$compiled)
     {
@@ -536,17 +531,16 @@ class Parser implements IParser
         $this->nodeStack = new Stack(['array']);
 
         // 判断是那种编译器
-        $nodeType = $this->jsNode === true ? 'js' : 'node';
+        $nodeType = true === $this->jsNode ? 'js' : 'node';
 
         // 所有一级节点名称
-        foreach ($this->compilers[$nodeType] as $compilers => $tag) { 
-
+        foreach ($this->compilers[$nodeType] as $compilers => $tag) {
             // 处理一些正则表达式中有特殊意义的符号
-            $names[] = $this->escapeRegexCharacter($compilers); 
+            $names[] = $this->escapeRegexCharacter($compilers);
         }
 
         // 没有任何编译器
-        if (! count($names)) { 
+        if (! count($names)) {
             return;
         }
 
@@ -554,31 +548,31 @@ class Parser implements IParser
         $tag = $this->getTag($nodeType);
         $names = implode('|', $names);
         $regex = "/{$tag['left']}\s*(\/?)(({$names})(:[^\s" .
-            ($this->jsNode === true ? '' : "\>") .
+            (true === $this->jsNode ? '' : "\>") .
             "\}]+)?)(\s[^" .
-            ($this->jsNode === true ? '' : ">") .
+            (true === $this->jsNode ? '' : '>') .
             "\}]*?)?\/?{$tag['right']}/isx";
 
         // 标签名称位置
-        $nodeNameIndex = 2; 
+        $nodeNameIndex = 2;
 
         // 标签顶级名称位置
-        $nodeTopNameIndex = 3; 
+        $nodeTopNameIndex = 3;
 
         // 尾标签斜线位置
-        $tailSlasheIndex = 1; 
+        $tailSlasheIndex = 1;
 
         // 标签属性位置
-        $tagAttributeIndex = 5; 
+        $tagAttributeIndex = 5;
 
-        if ($this->jsNode === true) {
+        if (true === $this->jsNode) {
             $compiler = $this->compilers['js'];
         } else {
             $compiler = $this->compilers['node'];
         }
 
         // 依次创建标签对象
-        if (preg_match_all($regex, $compiled, $res)) { 
+        if (preg_match_all($regex, $compiled, $res)) {
             $startPos = 0;
 
             foreach ($res[0] as $index => &$tagSource) {
@@ -587,17 +581,17 @@ class Parser implements IParser
                 $nodeType = $res[$tailSlasheIndex][$index] === '/' ? 'tail' : 'head';
 
                 // 将节点名称统一为小写
-                $nodeName = strtolower($nodeName); 
+                $nodeName = strtolower($nodeName);
                 $nodeTopName = strtolower($nodeTopName);
 
                 $theme = [
                     'source' => $tagSource,
                     'name' => $compiler[$nodeTopName],
-                    'type' => $nodeType
+                    'type' => $nodeType,
                 ];
 
                 // 头标签的属性
-                if ($nodeType == 'head') {
+                if ('head' == $nodeType) {
                     $theme['attribute'] = $res[$tagAttributeIndex][$index];
                 } else {
                     $theme['attribute'] = '';
@@ -615,14 +609,13 @@ class Parser implements IParser
     }
 
     /**
-     * 装配节点
+     * 装配节点.
      *
      * @param string $compiled
-     * @return void
      */
     protected function packNode(&$compiled)
     {
-        if ($this->jsNode === true) {
+        if (true === $this->jsNode) {
             $nodeTag = $this->compiler->getJsTagHelp();
             $compiler = 'Js';
         } else {
@@ -634,20 +627,19 @@ class Parser implements IParser
         $tailStack = new Stack(['array']);
 
         // 载入节点属性分析器 & 依次处理所有标签
-        while (($tag = $this->nodeStack->out()) !== null) {
-            
+        while (null !== ($tag = $this->nodeStack->out())) {
             // 尾标签，加入到尾标签中
-            if ($tag['type'] == 'tail') {
+            if ('tail' == $tag['type']) {
                 $tailStack->in($tag);
 
                 continue;
             }
 
             // 从尾标签栈取出一项
-            $tailTag = $tailStack->out(); 
+            $tailTag = $tailStack->out();
 
             // 单标签节点
-            if (! $tailTag or ! $this->findHeadTag($tag, $tailTag)) { 
+            if (! $tailTag or ! $this->findHeadTag($tag, $tailTag)) {
                 if ($nodeTag[$tag['name']]['single'] !== true) {
                     throw new InvalidArgumentException(
                         sprintf(
@@ -660,7 +652,7 @@ class Parser implements IParser
                 }
 
                 // 退回栈中
-                if ($tailTag) { 
+                if ($tailTag) {
                     $tailStack->in($tailTag);
                 }
 
@@ -668,9 +660,9 @@ class Parser implements IParser
                     'content' => $tag['content'],
 
                     // 编译器
-                    'compiler' => $tag['name'] . $compiler,  
+                    'compiler' => $tag['name'] . $compiler,
                     'source' => $tag['source'],
-                    'name' => $tag['name']
+                    'name' => $tag['name'],
                 ];
 
                 $themeNode['position'] = $tag['position'];
@@ -679,7 +671,6 @@ class Parser implements IParser
 
             // 成对标签
             else {
-
                 // 头尾标签中间为整个标签内容
                 $start = $tag['position']['start'];
                 $len = $tailTag['position']['end'] - $start + 1;
@@ -689,9 +680,9 @@ class Parser implements IParser
                     'content' => $source,
 
                     // 编译器
-                    'compiler' => $tag['name'] . $compiler,  
+                    'compiler' => $tag['name'] . $compiler,
                     'source' => $source,
-                    'name' => $tag['name']
+                    'name' => $tag['name'],
                 ];
 
                 $themeNode['position'] = $this->getPosition($compiled, $source, $start);
@@ -708,9 +699,9 @@ class Parser implements IParser
                         'content' => $body,
 
                         // 编译器
-                        'compiler' => null,  
+                        'compiler' => null,
                         'source' => $body,
-                        'is_body' => 1
+                        'is_body' => 1,
                     ];
 
                     $themeBody['position'] = $this->getPosition($compiled, $body, $start);
@@ -724,12 +715,12 @@ class Parser implements IParser
                 'content' => $tag['content'],
 
                 // 编译器
-                'compiler' => 'attributeNode',  
+                'compiler' => 'attributeNode',
                 'source' => $tag['source'],
                 'attribute_list' => [],
                 'is_attribute' => true,
                 'parent_name' => $themeNode['name'],
-                'is_js' => $this->jsNode
+                'is_js' => $this->jsNode,
             ];
 
             $themeAttr['position'] = $this->getPosition($compiled, $tag['source'], 0);
@@ -737,20 +728,21 @@ class Parser implements IParser
             $themeNode = $this->addThemeTree($themeNode, $themeAttr);
 
             // 将模板数据加入到树结构中
-            $this->addTheme($themeNode); 
+            $this->addTheme($themeNode);
         }
     }
 
     /**
-     * 查找 node 标签
+     * 查找 node 标签.
      *
      * @param array $tag
      * @param array $tailTag
-     * @return boolean
+     *
+     * @return bool
      */
     protected function findHeadTag($tag, $tailTag)
     {
-        if ($tailTag['type'] != 'tail') {
+        if ('tail' != $tailTag['type']) {
             throw new InvalidArgumentException(
                 sprintf('The parameter must be a tail tag.')
             );
@@ -760,10 +752,9 @@ class Parser implements IParser
     }
 
     /**
-     * 注册分析器
+     * 注册分析器.
      *
      * @param string $tag
-     * @return void
      */
     protected function registerParser($tag)
     {
@@ -771,17 +762,16 @@ class Parser implements IParser
     }
 
     /**
-     * 注册编译器 code 和 node 编译器注册
+     * 注册编译器 code 和 node 编译器注册.
      *
      * @param string $type
      * @param string|array
      * @param array|string $Tag
-     * @return void
      */
     protected function registerCompiler($type, $name, $tag)
     {
         if (! is_array($name)) {
-            $name = (array)$name;
+            $name = (array) $name;
         }
 
         foreach ($name as $item) {
@@ -790,7 +780,7 @@ class Parser implements IParser
     }
 
     /**
-     * 逐个编译模板树
+     * 逐个编译模板树.
      *
      * @return string
      */
@@ -808,10 +798,9 @@ class Parser implements IParser
     }
 
     /**
-     * 分析模板调用编译器编译
+     * 分析模板调用编译器编译.
      *
      * @param array $theme 待编译的模板
-     * @return void
      */
     protected function compileTheme(&$theme)
     {
@@ -819,7 +808,7 @@ class Parser implements IParser
             $source = $value['source'];
 
             // 编译子对象
-            $this->compileTheme($value); 
+            $this->compileTheme($value);
             $theme['children'][$key] = $value;
 
             // 置换对象
@@ -842,11 +831,10 @@ class Parser implements IParser
     }
 
     /**
-     * 创建缓存文件
+     * 创建缓存文件.
      *
      * @param string $cachePath
      * @param string $compiled
-     * @return void
      */
     protected function makeCacheFile($cachePath, &$compiled)
     {
@@ -856,7 +844,7 @@ class Parser implements IParser
 
         if (! file_put_contents($cachePath,
             '<?' . 'php /* ' . date('Y-m-d H:i:s') .
-            ' */ ?' . '>' .PHP_EOL . $compiled)) {
+            ' */ ?' . '>' . PHP_EOL . $compiled)) {
             throw new InvalidArgumentException(
                 sprintf('Dir %s is not writeable', dirname($cachePath))
             );
@@ -866,9 +854,10 @@ class Parser implements IParser
     }
 
     /**
-     * 取得模板分析器定界符
+     * 取得模板分析器定界符.
      *
      * @param string $type
+     *
      * @return array
      */
     protected function getTag($type)
@@ -877,10 +866,9 @@ class Parser implements IParser
     }
 
     /**
-     * 将模板结构加入树结构中去
+     * 将模板结构加入树结构中去.
      *
      * @param array $theme
-     * @return void
      */
     protected function addTheme($theme)
     {
@@ -890,8 +878,6 @@ class Parser implements IParser
 
     /**
      * 清理模板树对象
-     *
-     * @return void
      */
     protected function clearThemeTree()
     {
@@ -902,7 +888,6 @@ class Parser implements IParser
      * 添加顶层树对象
      *
      * @param array $theme
-     * @return void
      */
     protected function topTheme($theme)
     {
@@ -910,10 +895,11 @@ class Parser implements IParser
     }
 
     /**
-     * 将新的模板加入到树结构中去
+     * 将新的模板加入到树结构中去.
      *
      * @param array $top 顶层模板
      * @param array $new 待加入的模板
+     *
      * @return array
      */
     protected function addThemeTree($top, $new)
@@ -925,8 +911,7 @@ class Parser implements IParser
                 $relative = $this->positionRelative($new['position'], $child['position']);
 
                 switch ($relative) {
-
-                    /**
+                    /*
                      * 新增的和上次处于平级关系直接加入上级的 children 容器中
                      * new 在前 child 在后面
                      */
@@ -936,7 +921,7 @@ class Parser implements IParser
                         $new = null;
                         break;
 
-                    /**
+                    /*
                      * 新增的和上次处于平级关系直接加入上级的 children 容器中
                      * child 在前 new 在后面
                      */
@@ -944,7 +929,7 @@ class Parser implements IParser
                         $result[] = $child;
                         break;
 
-                    /**
+                    /*
                      * new 处于 child 内部
                      * new 在 child 内部
                      */
@@ -954,7 +939,7 @@ class Parser implements IParser
                         $new = null;
                         break;
 
-                    /**
+                    /*
                      * child 处于 new 内部
                      * child 在 new 内部
                      */
@@ -977,11 +962,12 @@ class Parser implements IParser
     }
 
     /**
-     * 分析匹配标签的位置
+     * 分析匹配标签的位置.
      *
      * @param string $content 待编译的模板
-     * @param string $find 匹配的标签
-     * @param int $start 起始查找的位置
+     * @param string $find    匹配的标签
+     * @param int    $start   起始查找的位置
+     *
      * @return array start 标签开始的位置（字节数）
      * @note int end 标签结束的位置（字节数）
      * @notenote int start_line 标签开始的行（行数）
@@ -1015,12 +1001,12 @@ class Parser implements IParser
 
         // 空
         if (empty($find)) {
-            $data['start'] = - 1;
-            $data['end'] = - 1;
-            $data['start_line'] = - 1;
-            $data['end_line'] = - 1;
-            $data['start_in'] = - 1;
-            $data['end_in'] = - 1;
+            $data['start'] = -1;
+            $data['end'] = -1;
+            $data['start_line'] = -1;
+            $data['end_line'] = -1;
+            $data['start_in'] = -1;
+            $data['end_in'] = -1;
 
             return $data;
         }
@@ -1037,7 +1023,7 @@ class Parser implements IParser
 
         /**
          * 匹配模块范围圈（在这个字节里面的都是它的子模快）
-         * 找到开始和结束的地方就确定了这个模块所在区域范围
+         * 找到开始和结束的地方就确定了这个模块所在区域范围.
          */
 
         // 起点的行首换行位置 && 结束点的行首位置
@@ -1046,7 +1032,7 @@ class Parser implements IParser
         $startIn = $start - $lineStartFirst;
         $endIn = $end - $lineEndFirst;
 
-        /**
+        /*
          * 返回结果
          */
         $data['start'] = $start;
@@ -1062,10 +1048,11 @@ class Parser implements IParser
     /**
      * 对比两个模板相对位置
      * 这个和两个时间段之间的关系一样，其中交叉在模板引擎中是不被支持，因为无法实现
-     * 除掉交叉，剩下包含、被包含、前面和后面，通过位置组装成一颗树结构
+     * 除掉交叉，剩下包含、被包含、前面和后面，通过位置组装成一颗树结构.
      *
-     * @param array $value 待分析的第一个模板
+     * @param array $value  待分析的第一个模板
      * @param array $beyond 待分析的第二个模板
+     *
      * @return string
      * @note string front 第一个在第二个前面
      * @note string behind 第一个在第二个后面
@@ -1074,12 +1061,11 @@ class Parser implements IParser
      */
     protected function positionRelative($value, $beyond)
     {
-
-        /**
+        /*
          * 第一个匹配的标签在第二个前面
          * 条件：第一个结束字节位置 <= 第二个开始位置
          */
-        
+
         /*
          * ======= start =======
          *
@@ -1097,7 +1083,7 @@ class Parser implements IParser
             return 'front';
         }
 
-        /**
+        /*
          * 第一个匹配的标签在第二个后面
          * 条件：第一个开始字节位置 >= 第二个结束位置
          */
@@ -1119,7 +1105,7 @@ class Parser implements IParser
             return 'behind';
         }
 
-        /**
+        /*
          * 第一个匹配的标签在第二个里面
          * 条件：第一个开始字节位置 >= 第二个开始位置
          */
@@ -1142,7 +1128,7 @@ class Parser implements IParser
             return 'in';
         }
 
-        /**
+        /*
          * 第一个匹配的标签在第二个外面
          * 条件：第一个开始字节位置 <= 第二个开始位置
          */
@@ -1165,7 +1151,7 @@ class Parser implements IParser
             return 'out';
         }
 
-        /**
+        /*
          * 交叉（两个时间段相互关系）
          */
         throw new InvalidArgumentException(
@@ -1174,9 +1160,10 @@ class Parser implements IParser
     }
 
     /**
-     * 整理模板项结构
+     * 整理模板项结构.
      *
      * @param array $theme
+     *
      * @return array
      */
     protected function normalizeThemeStruct(array $theme)
@@ -1185,9 +1172,10 @@ class Parser implements IParser
     }
 
     /**
-     * 转义正则表达式特殊字符
+     * 转义正则表达式特殊字符.
      *
      * @param string $txt
+     *
      * @return string
      */
     protected function escapeRegexCharacter($txt)
@@ -1208,7 +1196,7 @@ class Parser implements IParser
             ',',
             '{',
             '}',
-            '|'
+            '|',
         ], [
             '\$',
             '\/',
@@ -1225,16 +1213,17 @@ class Parser implements IParser
             '\\,',
             '\\{',
             '\\}',
-            '\\|'
+            '\\|',
         ], $txt);
 
         return $txt;
     }
 
     /**
-     * 取得模板位置
+     * 取得模板位置.
      *
      * @param array $position
+     *
      * @return string
      */
     protected function getLocation($position)
@@ -1254,6 +1243,7 @@ class Parser implements IParser
      * 取得模板位置源码
      *
      * @param array $position
+     *
      * @return string
      */
     protected function getLocationSource($position)

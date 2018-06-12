@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,26 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Support;
 
 use ReflectionClass;
 use ReflectionProperty;
 
 /**
- * 对象序列化
+ * 对象序列化.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.04
+ *
  * @version 1.0
  */
 trait TSerialize
 {
-
     /**
-     * 序列化模型
-     *
-     * @return void
+     * 序列化模型.
      */
     public function __sleep()
     {
@@ -49,9 +51,7 @@ trait TSerialize
     }
 
     /**
-     * 反序列化模型
-     *
-     * @return void
+     * 反序列化模型.
      */
     public function __wakeup()
     {
@@ -61,9 +61,10 @@ trait TSerialize
     }
 
     /**
-     * 设置序列化的属性
+     * 设置序列化的属性.
      *
      * @param array $arrProp
+     *
      * @return array
      */
     protected function setAndReturnSerializeFilter($arrProp)
@@ -71,14 +72,16 @@ trait TSerialize
         if (($strMethod = 'setSerializeFilterProp') && method_exists($this, $strMethod)) {
             $this->$strMethod($arrProp);
         }
+
         return $arrProp;
     }
 
     /**
-     * 设置序列化的值并返回
+     * 设置序列化的值并返回.
      *
-     * @param mixed $mixValue
+     * @param mixed  $mixValue
      * @param string $strName
+     *
      * @return mixed
      */
     protected function setAndReturnSerializeProp($mixValue, $strName)
@@ -86,14 +89,16 @@ trait TSerialize
         if (($strMethod = 'setAndReturnSerializeProp' . ucwords($strName)) && method_exists($this, $strMethod)) {
             return $this->$strMethod($mixValue);
         }
+
         return $mixValue;
     }
 
     /**
      * 返回序列化的值
      *
-     * @param mixed $mixValue
+     * @param mixed  $mixValue
      * @param string $strName
+     *
      * @return mixed
      */
     protected function getSerializeProp($mixValue, $strName)
@@ -101,6 +106,7 @@ trait TSerialize
         if (($strMethod = 'getSerializeProp' . ucwords($strName)) && method_exists($this, $strMethod)) {
             return $this->$strMethod($mixValue);
         }
+
         return $mixValue;
     }
 
@@ -108,11 +114,13 @@ trait TSerialize
      * 取得属性值
      *
      * @param \ReflectionProperty $oProp
+     *
      * @return mixed
      */
     protected function getPropertySource(ReflectionProperty $oProp)
     {
         $oProp->setAccessible(true);
+
         return $oProp->getValue($this);
     }
 }

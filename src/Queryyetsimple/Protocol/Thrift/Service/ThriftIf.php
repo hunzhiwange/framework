@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Service;
 
 /**
- * 默认服务调用接口
+ * 默认服务调用接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.01
+ *
  * @version 1.0
  */
 interface ThriftIf
 {
-
     /**
-     * 定义一个响应包结构
+     * 定义一个响应包结构.
      *
      * @param \Leevel\Protocol\Thrift\Service\Request $request
+     *
      * @return \Leevel\Protocol\Thrift\Service\Response
      */
     public function call(Request $request);

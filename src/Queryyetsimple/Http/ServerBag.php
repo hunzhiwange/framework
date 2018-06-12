@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,21 +17,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 /**
- * server bag
+ * server bag.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.25
+ *
  * @version 1.0
  */
 class ServerBag extends Bag
 {
-
     /**
-     * 取回 HTTP HEADERS
+     * 取回 HTTP HEADERS.
      *
      * @return array
      */
@@ -37,9 +41,9 @@ class ServerBag extends Bag
         $result = [];
 
         $contentHeaders = [
-            'CONTENT_LENGTH', 
-            'CONTENT_MD5', 
-            'CONTENT_TYPE'
+            'CONTENT_LENGTH',
+            'CONTENT_MD5',
+            'CONTENT_TYPE',
         ];
 
         foreach ($this->elements as $key => $value) {

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router\Match;
 
 use Leevel\Http\Request;
@@ -21,35 +25,36 @@ use Leevel\Router\Router;
 use Leevel\Router\IRouter;
 
 /**
- * 路由 pathInfo 匹配
+ * 路由 pathInfo 匹配.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.15
+ *
  * @version 1.0
  */
 class PathInfo implements IMatch
 {
-
     /**
-     * Router
-     * 
+     * Router.
+     *
      * @var \Leevel\Router\Router
      */
     protected $router;
-    
-    /** 
-     * HTTP Request
-     * 
+
+    /**
+     * HTTP Request.
+     *
      * @var \Leevel\Http\Request
      */
     protected $request;
 
     /**
-     * 匹配数据项
+     * 匹配数据项.
      *
      * @param \Leevel\Router\Router $router
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\Request  $request
+     *
      * @return array
      */
     public function matche(Router $router, Request $request): array
@@ -61,7 +66,7 @@ class PathInfo implements IMatch
         if (! $pathInfo) {
             return [
                 IRouter::CONTROLLER => IRouter::DEFAULT_HOME_CONTROLLER,
-                IRouter::ACTION => IRouter::DEFAULT_HOME_ACTION
+                IRouter::ACTION => IRouter::DEFAULT_HOME_ACTION,
             ];
         }
 

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,7 +18,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * 消息队列默认配置文件
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -24,8 +27,7 @@
  * @version 1.0
  */
 return [
-
-    /**
+    /*
      * ---------------------------------------------------------------
      * 默认消息队列驱动
      * ---------------------------------------------------------------
@@ -34,7 +36,7 @@ return [
      */
     'default' => env('redis_driver', 'redis'),
 
-    /**
+    /*
      * ---------------------------------------------------------------
      * 消息队列连接
      * ---------------------------------------------------------------
@@ -49,9 +51,9 @@ return [
             'servers' => [
                 'host' => env('queue_redis_host', '127.0.0.1'),
                 'port' => env('queue_redis_port', 6379),
-                'password' => env('queue_redis_password', null)
+                'password' => env('queue_redis_password', null),
             ],
-            'options' => []
-        ]
-    ]
+            'options' => [],
+        ],
+    ],
 ];

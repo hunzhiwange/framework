@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,35 +17,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Filesystem\Provider;
 
-use Leevel\{
-    Di\Provider,
-    Filesystem\Manager
-};
+use Leevel\Di\Provider;
+use Leevel\Filesystem\Manager;
 
 /**
- * filesystem 服务提供者
+ * filesystem 服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.26
+ *
  * @version 1.0
  */
 class Register extends Provider
 {
-
     /**
-     * 是否延迟载入
+     * 是否延迟载入.
      *
-     * @var boolean
+     * @var bool
      */
     public static $defer = true;
 
     /**
      * 注册服务
-     *
-     * @return void
      */
     public function register()
     {
@@ -51,7 +51,7 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者
+     * 可用服务提供者.
      *
      * @return array
      */
@@ -59,19 +59,17 @@ class Register extends Provider
     {
         return [
             'filesystems' => [
-                'Leevel\Filesystem\Manager'
+                'Leevel\Filesystem\Manager',
             ],
             'filesystem' => [
                 'Leevel\Filesystem\Filesystem',
-                'Leevel\Filesystem\IFilesystem'
-            ]
+                'Leevel\Filesystem\IFilesystem',
+            ],
         ];
     }
 
     /**
      * 注册 filesystems 服务
-     *
-     * @return void
      */
     protected function filesystems()
     {
@@ -82,8 +80,6 @@ class Register extends Provider
 
     /**
      * 注册 filesystem 服务
-     *
-     * @return void
      */
     protected function filesystem()
     {

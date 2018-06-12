@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,16 +17,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Page;
 
 use Leevel\Option\TClass;
 
 /**
- * 默认分页渲染
+ * 默认分页渲染.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.07.14
+ *
  * @version 1.0
  */
 class Defaults implements IRender
@@ -31,29 +36,28 @@ class Defaults implements IRender
     use TClass;
 
     /**
-     * 分页
+     * 分页.
      *
      * @var \Leevel\Page\IPage
      */
     protected $objPage;
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
     protected $arrOption = [
         'small' => false,
         'template' => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
-        'css' => true
+        'css' => true,
     ];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Page\IPage $objPage
-     * @param array $arrOption
-     * @return void
+     * @param array              $arrOption
      */
     public function __construct(IPage $objPage, array $arrOption = [])
     {
@@ -65,19 +69,19 @@ class Defaults implements IRender
     }
 
     /**
-     * 渲染
+     * 渲染.
      *
      * @return string
      */
     public function render()
     {
-        return ($this->getOption('css') ? $this->css() : '') . preg_replace_callback("/{(.+?)}/", function ($arrMatche) {
+        return ($this->getOption('css') ? $this->css() : '') . preg_replace_callback('/{(.+?)}/', function ($arrMatche) {
             return $this->{'get' . ucwords($arrMatche[1]) . 'Render'}();
         }, $this->getOption('template'));
     }
 
     /**
-     * 返回渲染 CSS
+     * 返回渲染 CSS.
      *
      * @return string
      */
@@ -87,7 +91,7 @@ class Defaults implements IRender
     }
 
     /**
-     * 返回渲染 header
+     * 返回渲染 header.
      *
      * @return string
      */
@@ -97,7 +101,7 @@ class Defaults implements IRender
     }
 
     /**
-     * 返回渲染 pager.ul
+     * 返回渲染 pager.ul.
      *
      * @return string
      */
@@ -107,7 +111,7 @@ class Defaults implements IRender
     }
 
     /**
-     * 返回渲染 total
+     * 返回渲染 total.
      *
      * @return string
      */
@@ -116,11 +120,12 @@ class Defaults implements IRender
         if (! $this->objPage->canTotalRender()) {
             return;
         }
-        return sprintf('<span class="pagination-total">%s</span>', __('共 %d 条', $this->objPage->getTotalRecord() ?  : 0));
+
+        return sprintf('<span class="pagination-total">%s</span>', __('共 %d 条', $this->objPage->getTotalRecord() ?: 0));
     }
 
     /**
-     * 返回渲染 first
+     * 返回渲染 first.
      *
      * @return string
      */
@@ -129,11 +134,12 @@ class Defaults implements IRender
         if (! $this->objPage->canFirstRender()) {
             return;
         }
+
         return sprintf('<li class=""><a href="%s" >1</a></li><li onclick="window.location.href=\'%s\';" class="btn-quickprev" onmouseenter="this.innerHTML=\'&laquo;\';" onmouseleave="this.innerHTML=\'...\';">...</li>', $this->replace(1), $this->replace($this->objPage->parseFirstRenderPrev()));
     }
 
     /**
-     * 返回渲染 prev
+     * 返回渲染 prev.
      *
      * @return string
      */
@@ -147,7 +153,7 @@ class Defaults implements IRender
     }
 
     /**
-     * 返回渲染 main
+     * 返回渲染 main.
      *
      * @return string
      */
@@ -158,15 +164,16 @@ class Defaults implements IRender
         }
 
         $strMain = '';
-        for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); $nI ++) {
+        for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); ++$nI) {
             $booActive = $this->objPage->getCurrentPage() == $nI;
             $strMain .= sprintf('<li class="number%s"><a%s>%d</a></li>', $booActive ? ' active' : '', $booActive ? '' : sprintf(' href="%s"', $this->replace($nI)), $nI);
         }
+
         return $strMain;
     }
 
     /**
-     * 返回渲染 next
+     * 返回渲染 next.
      *
      * @return string
      */
@@ -180,7 +187,7 @@ class Defaults implements IRender
     }
 
     /**
-     * 返回渲染 last
+     * 返回渲染 last.
      *
      * @return string
      */
@@ -196,7 +203,7 @@ class Defaults implements IRender
     }
 
     /**
-     * 返回渲染 pager.endul
+     * 返回渲染 pager.endul.
      *
      * @return string
      */
@@ -206,7 +213,7 @@ class Defaults implements IRender
     }
 
     /**
-     * 返回渲染 jump
+     * 返回渲染 jump.
      *
      * @return string
      */
@@ -216,7 +223,7 @@ class Defaults implements IRender
     }
 
     /**
-     * 返回渲染 footer
+     * 返回渲染 footer.
      *
      * @return string
      */
@@ -226,9 +233,10 @@ class Defaults implements IRender
     }
 
     /**
-     * 替换分页变量
+     * 替换分页变量.
      *
      * @param mixed $mixPage
+     *
      * @return string
      */
     public function replace($mixPage)

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,34 +17,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Page;
 
 use Countable;
 use ArrayAccess;
 use JsonSerializable;
-use Leevel\Support\{
-    IJson,
-    IArray
-};
+use Leevel\Support\IJson;
+use Leevel\Support\IArray;
 
 /**
- * 分页处理
+ * 分页处理.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.07.14
+ *
  * @version 1.0
  */
 class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAccess, JsonSerializable
 {
-
     /**
-     * 构造函数
+     * 构造函数.
      *
-     * @param int $intPerPage
-     * @param int $intTotalRecord
+     * @param int   $intPerPage
+     * @param int   $intTotalRecord
      * @param array $arrOption
-     * @return void
      */
     public function __construct($intPerPage, $intTotalRecord = null, array $arrOption = [])
     {
@@ -51,22 +52,24 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
     }
 
     /**
-     * 渲染分页
+     * 渲染分页.
      *
      * @param \Leevel\Page\IRender $objRender
+     *
      * @return string
      */
     public function render(IRender $objRender = null)
     {
-        if (is_null($objRender)) {
+        if (null === $objRender) {
             $objRender = 'Leevel\Page\\' . $this->getRender();
             $objRender = new $objRender($this);
         }
+
         return $objRender->render();
     }
 
     /**
-     * 对象转数组
+     * 对象转数组.
      *
      * @return array
      */
@@ -79,14 +82,14 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
             'total_record' => $this->getTotalRecord(),
             'total_macro' => $this->isTotalMacro(),
             'from' => $this->getFirstRecord(),
-            'to' => $this->getLastRecord()
+            'to' => $this->getLastRecord(),
         ];
     }
 
     /**
-     * 实现 JsonSerializable::jsonSerialize
+     * 实现 JsonSerializable::jsonSerialize.
      *
-     * @return boolean
+     * @return bool
      */
     public function jsonSerialize()
     {
@@ -94,9 +97,10 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
     }
 
     /**
-     * 对象转 JSON
+     * 对象转 JSON.
      *
-     * @param integer $option
+     * @param int $option
+     *
      * @return string
      */
     public function toJson($option = JSON_UNESCAPED_UNICODE)

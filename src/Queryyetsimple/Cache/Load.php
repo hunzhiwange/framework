@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,49 +17,49 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Cache;
 
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
 /**
- * cache 快捷载入
+ * cache 快捷载入.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.11.20
+ *
  * @version 1.0
  */
 class Load
 {
-
     /**
-     * IOC Container
+     * IOC Container.
      *
      * @var \Leevel\Di\IContainer
      */
     protected $container;
 
     /**
-     * cache 仓储
+     * cache 仓储.
      *
      * @var \Leevel\Cache\ICache
      */
     protected $cache;
 
     /**
-     * 已经载入的缓存数据
+     * 已经载入的缓存数据.
      *
      * @var array
      */
     protected $cacheLoaded = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
-     * @param \Leevel\Cache\ICache $cache
-     * @return void
+     * @param \Leevel\Cache\ICache  $cache
      */
     public function __construct(IContainer $container, ICache $cache)
     {
@@ -65,10 +68,9 @@ class Load
     }
 
     /**
-     * 切换缓存仓储
+     * 切换缓存仓储.
      *
      * @param \Leevel\Cache\ICache $cache
-     * @return void
      */
     public function switchCache(ICache $cache)
     {
@@ -76,7 +78,7 @@ class Load
     }
 
     /**
-     * 返回缓存仓储
+     * 返回缓存仓储.
      *
      * @return \Leevel\Cache\ICache
      */
@@ -88,17 +90,18 @@ class Load
     /**
      * 载入缓存数据
      * 系统自动存储缓存到内存，可重复执行不会重复载入数据
-     * 获取缓存建议使用本函数
+     * 获取缓存建议使用本函数.
      *
      * @param string|array $names
-     * @param array $option
-     * @param bool $force
+     * @param array        $option
+     * @param bool         $force
+     *
      * @return array
      */
     public function data($names, array $option = [], $force = false)
     {
         $names = is_array($names) ? $names : [
-            $names
+            $names,
         ];
 
         foreach ($names as $name) {
@@ -118,16 +121,15 @@ class Load
 
     /**
      * 刷新缓存数据
-     * 刷新缓存建议使用本函数
+     * 刷新缓存建议使用本函数.
      *
      * @param string|array $names
-     * @param array $option
-     * @return void
+     * @param array        $option
      */
     public function refresh($names, array $option = [])
     {
         $names = is_array($names) ? $names : [
-            $names
+            $names,
         ];
 
         $this->deletes($names, $option);
@@ -136,9 +138,10 @@ class Load
     /**
      * 从载入缓存数据中获取
      * 不存在不用更新缓存，返回 false
-     * 获取已载入缓存建议使用本函数
+     * 获取已载入缓存建议使用本函数.
      *
      * @param string|array $names
+     *
      * @return array
      */
     public function dataLoaded($names, array $option = [], $force = false)
@@ -146,11 +149,11 @@ class Load
         $result = [];
 
         $names = is_array($names) ? $names : [
-            $names
+            $names,
         ];
 
         foreach ($names as $name) {
-            $result[$name] = array_key_exists($name, $this->cacheLoaded) ? 
+            $result[$name] = array_key_exists($name, $this->cacheLoaded) ?
                 $this->cacheLoaded[$name] :
                 false;
         }
@@ -160,11 +163,10 @@ class Load
 
     /**
      * 批量删除缓存数据
-     * 不建议直接操作
+     * 不建议直接操作.
      *
      * @param array $names
      * @param array $option
-     * @return void
      */
     public function deletes(array $names, array $option = [])
     {
@@ -175,11 +177,10 @@ class Load
 
     /**
      * 删除缓存数据
-     * 不建议直接操作
+     * 不建议直接操作.
      *
      * @param string $name
-     * @param array $option
-     * @return void
+     * @param array  $option
      */
     public function delete($name, array $options = [])
     {
@@ -188,11 +189,12 @@ class Load
 
     /**
      * 批量读取缓存数据
-     * 不建议直接操作
+     * 不建议直接操作.
      *
      * @param array $names
      * @param array $option
-     * @param boolean $force
+     * @param bool  $force
+     *
      * @return array
      */
     public function caches(array $names, array $option = [], $force = false)
@@ -208,22 +210,23 @@ class Load
 
     /**
      * 读取缓存数据
-     * 不建议直接操作
+     * 不建议直接操作.
      *
      * @param string $name
-     * @param array $option
-     * @param boolean $force
+     * @param array  $option
+     * @param bool   $force
+     *
      * @return mixed
      */
     public function cache($name, array $option = [], $force = false)
     {
-        if ($force === false) {
+        if (false === $force) {
             $data = $this->getPersistence($name, false, $option);
         } else {
             $data = false;
         }
 
-        if ($data === false) {
+        if (false === $data) {
             $data = $this->update($name, $option);
         }
 
@@ -232,10 +235,11 @@ class Load
 
     /**
      * 批量更新缓存数据
-     * 不建议直接操作
+     * 不建议直接操作.
      *
      * @param array $names
      * @param array $option
+     *
      * @return array
      */
     public function updates(array $names, array $option = [])
@@ -251,10 +255,11 @@ class Load
 
     /**
      * 更新缓存数据
-     * 不建议直接操作
+     * 不建议直接操作.
      *
      * @param string $name
-     * @param array $option
+     * @param array  $option
+     *
      * @return mixed
      */
     public function update($name, $option = [])
@@ -263,7 +268,7 @@ class Load
 
         list($name, $params) = $this->parse($name);
 
-        if (strpos($name, '@') !== false) {
+        if (false !== strpos($name, '@')) {
             list($name, $method) = explode('@', $name);
         } else {
             $method = 'handle';
@@ -281,11 +286,12 @@ class Load
     }
 
     /**
-     * 获取缓存
+     * 获取缓存.
      *
      * @param string $name
-     * @param mixed $defaults
-     * @param array $option
+     * @param mixed  $defaults
+     * @param array  $option
+     *
      * @return mixed
      */
     protected function getPersistence($name, $defaults = false, array $option = [])
@@ -294,12 +300,11 @@ class Load
     }
 
     /**
-     * 设置缓存
+     * 设置缓存.
      *
      * @param string $name
-     * @param mixed $data
-     * @param array $option
-     * @return void
+     * @param mixed  $data
+     * @param array  $option
      */
     protected function setPersistence($name, $data, array $option = [])
     {
@@ -307,11 +312,10 @@ class Load
     }
 
     /**
-     * 清除缓存
+     * 清除缓存.
      *
      * @param string $name
-     * @param array $option
-     * @return void
+     * @param array  $option
      */
     protected function deletePersistence($name, array $option = [])
     {
@@ -319,9 +323,10 @@ class Load
     }
 
     /**
-     * 解析缓存
+     * 解析缓存.
      *
      * @param string $name
+     *
      * @return array
      */
     protected function parse($name)
@@ -334,7 +339,7 @@ class Load
 
         return [
             $name,
-            $args
+            $args,
         ];
     }
 }

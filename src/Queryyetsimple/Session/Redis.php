@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,24 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Session;
 
 use SessionHandlerInterface;
 use Leevel\Cache\Redis as CacheRedis;
 
 /**
- * session.redis
+ * session.redis.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.06.05
+ *
  * @version 1.0
  */
 class Redis extends Connect implements SessionHandlerInterface
 {
-
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -44,7 +48,7 @@ class Redis extends Connect implements SessionHandlerInterface
         'persistent' => false,
         'serialize' => true,
         'prefix' => null,
-        'expire' => null
+        'expire' => null,
     ];
 
     /**
@@ -53,6 +57,7 @@ class Redis extends Connect implements SessionHandlerInterface
     public function open($savepath, $sessionname)
     {
         $this->cache = new CacheRedis($this->option);
+
         return true;
     }
 }

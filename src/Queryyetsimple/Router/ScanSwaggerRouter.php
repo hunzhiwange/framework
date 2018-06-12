@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router;
 
 use Leevel\Router;
@@ -29,17 +33,16 @@ use Leevel\Router;
 class ScanSwaggerRouter
 {
     /**
-     * swagger 路由分析
-     * 
+     * swagger 路由分析.
+     *
      * @var \Leevel\Router\SwaggerRouter
      */
     protected $swaggerRouter;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Router\MiddlewareParser $middlewareParser
-     * @return void
      */
     public function __construct(MiddlewareParser $middlewareParser)
     {
@@ -50,7 +53,7 @@ class ScanSwaggerRouter
     }
 
     /**
-     * 响应
+     * 响应.
      *
      * @return array
      */
@@ -60,42 +63,43 @@ class ScanSwaggerRouter
     }
 
     /**
-     * 获取顶级域名
-     * 
+     * 获取顶级域名.
+     *
      * @return string
      */
-    protected function getTopDomain() 
+    protected function getTopDomain()
     {
         return app()->make('option')->get('top_domain');
     }
 
     /**
-     * 获取控制器
-     * 
+     * 获取控制器.
+     *
      * @return string
      */
-    protected function getController() 
+    protected function getController()
     {
         return Router::getControllerDir();
     }
 
     /**
-     * 获取应用目录
-     * 
+     * 获取应用目录.
+     *
      * @param string $controller
+     *
      * @return string
      */
-    protected function getApplicationDir() 
+    protected function getApplicationDir()
     {
         return path_application();
     }
 
     /**
-     * 获取缓存路径
-     * 
+     * 获取缓存路径.
+     *
      * @return string
      */
-    protected function getCachePath() 
+    protected function getCachePath()
     {
         return path_router_cache();
     }

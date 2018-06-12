@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,39 +17,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Console;
 
 use RuntimeException;
 
 /**
- * 命令行工具类导入类
+ * 命令行工具类导入类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.11.06
+ *
  * @version 1.0
  */
 class Load
 {
     /**
-     * 载入命名空间
+     * 载入命名空间.
      *
      * @var array
      */
     protected $namespaces = [];
 
     /**
-     * 已经载入数据
+     * 已经载入数据.
      *
      * @var array
      */
     protected $loaded;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $namespaces
-     * @return void
      */
     public function __construct(array $namespaces = [])
     {
@@ -54,25 +58,27 @@ class Load
     }
 
     /**
-     * 添加命名空间
+     * 添加命名空间.
      *
      * @param array $namespaces
+     *
      * @return $this
      */
     public function addNamespace(array $namespaces)
     {
         $this->namespaces = array_merge($this->namespaces, $namespaces);
+
         return $this;
     }
 
     /**
-     * 载入命令行数据
+     * 载入命令行数据.
      *
      * @return array
      */
     public function loadData()
     {
-        if (! is_null($this->loaded)) {
+        if (null !== $this->loaded) {
             return $this->loaded;
         }
 
@@ -82,15 +88,16 @@ class Load
     }
 
     /**
-     * 分析目录中的 PHP 命令包包含的文件
+     * 分析目录中的 PHP 命令包包含的文件.
      *
      * @param array $namespaces
+     *
      * @return array
      */
     public function findConsoleFile(array $namespaces)
     {
-        $files = [ ];
-        
+        $files = [];
+
         foreach ($namespaces as $key => $dir) {
             if (! is_dir($dir)) {
                 throw new RuntimeException('Console load dir is not exits.');

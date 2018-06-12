@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,17 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Log;
 
 use RuntimeException;
 use Leevel\Option\TClass;
 
 /**
- * aconnect 驱动抽象类
+ * aconnect 驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.26
+ *
  * @version 1.0
  */
 abstract class Connect
@@ -32,10 +37,9 @@ abstract class Connect
     use TClass;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $option
-     * @return void
      */
     public function __construct(array $option = [])
     {
@@ -43,10 +47,9 @@ abstract class Connect
     }
 
     /**
-     * 验证日志文件大小
+     * 验证日志文件大小.
      *
      * @param string $filepath
-     * @return void
      */
     protected function checkSize($filepath)
     {
@@ -73,10 +76,11 @@ abstract class Connect
     }
 
     /**
-     * 获取日志路径
+     * 获取日志路径.
      *
      * @param string $level
      * @param string $filepath
+     *
      * @return string
      */
     protected function getPath($level = '')
@@ -92,7 +96,7 @@ abstract class Connect
             $filepath = $this->getOption('path') . '/' .
                 ($level ? $level . '/' : '') .
                 date($this->getOption('name')) .
-                ".log";
+                '.log';
         }
 
         return $filepath;

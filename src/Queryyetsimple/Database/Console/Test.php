@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,30 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Database\Console;
 
 use Phinx\Console\Command\Test as PhinxTest;
 
 /**
- * 数据库测试环境是否正常
+ * 数据库测试环境是否正常.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.09
+ *
  * @version 1.0
  */
 class Test extends PhinxTest
 {
-
     /**
      * Configures the current command.
-     *
-     * @return void
      */
     protected function configure()
     {
         parent::configure();
-        
+
         $this->setName('migrate:test');
     }
 }

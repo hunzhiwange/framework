@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,41 +17,33 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Service;
 
 use Exception;
-use Thrift\Base\TBase;
-use Thrift\Type\TType;
-use Thrift\Type\TMessageType;
-use Thrift\Protocol\TProtocol;
-use Thrift\Exception\TException;
-use Thrift\Exception\TProtocolException;
-use Thrift\Exception\TApplicationException;
-use Thrift\Protocol\TBinaryProtocolAccelerated;
-use Leevel\{
-    Router,
-    Http\IResponse,
-    Router\IRouter,
-    Bootstrap\IKernel,
-    Http\RedirectResponse,
-    Http\Request as HttpRequest
-};
+use Leevel\Router;
+use Leevel\Http\IResponse;
+use Leevel\Router\IRouter;
+use Leevel\Bootstrap\IKernel;
+use Leevel\Http\RedirectResponse;
+use Leevel\Http\Request as HttpRequest;
 
 /**
- * thrift 默认服务调用响应
+ * thrift 默认服务调用响应.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.01
+ *
  * @version 1.0
  */
 class ThriftHandler implements ThriftIf
 {
-
     /**
-     * 定义一个响应包结构
+     * 定义一个响应包结构.
      *
      * @param \Leevel\Protocol\Thrift\Service\Request $request
+     *
      * @return \Leevel\Protocol\Thrift\Service\Response
      */
     public function call(Request $request): Response
@@ -61,13 +56,14 @@ class ThriftHandler implements ThriftIf
     }
 
     /**
-     * 格式化 QueryPHP 响应到 Thrift RPC 响应
-     * 
+     * 格式化 QueryPHP 响应到 Thrift RPC 响应.
+     *
      * @param \Leevel\Http\Request $response
+     *
      * @return \Leevel\Protocol\Thrift\Service\Response
      */
     protected function normalizeResponse(IResponse $response): Response
-    {   
+    {
         if ($response instanceof RedirectResponse) {
             $content = json_encode(['target_url' => $response->getTargetUrl()]);
         } else {
@@ -76,14 +72,15 @@ class ThriftHandler implements ThriftIf
 
         return new Response([
             'status' => $response->getStatusCode(),
-            'data' => $content
+            'data' => $content,
         ]);
     }
 
     /**
      * 格式化 Thrift RPC 请求到 QueryPHP 请求
-     * 
+     *
      * @param \Leevel\Protocol\Thrift\Service\Request $request
+     *
      * @return \Leevel\Http\Request
      */
     protected function normalizeRequest(Request $request): HttpRequest

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,21 +17,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n\Streams;
 
 /**
  * 数据流 CachedIntFile
- * This class borrows heavily from the Wordpress and is part of the Wordpress package
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.18
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ *
  * @version 1.0
  */
 class CachedIntFile extends CachedFile
 {
-
     /**
      * PHP5 constructor.
      */

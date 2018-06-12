@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,35 +17,37 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n\Translations;
 
 use Leevel\I18n\Entry;
 
 /**
  * 翻译语言
- * This class borrows heavily from the Wordpress and is part of the Wordpress package
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.18
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ *
  * @version 1.0
  */
 abstract class Translations
 {
-
     /**
-     * prop
+     * prop.
      *
      * @var array
      */
-    public $entries = array();
-    public $headers = array();
+    public $entries = [];
+    public $headers = [];
 
     /**
-     * Add entry to the PO structure
+     * Add entry to the PO structure.
      *
      * @param array|Translation_Entry &$entry
+     *
      * @return bool true on success, false if the entry doesn't have a key
      */
     public function add_entry($entry)
@@ -55,12 +60,13 @@ abstract class Translations
             return false;
         }
         $this->entries[$key] = &$entry;
+
         return true;
     }
 
     /**
-     *
      * @param array|Translation_Entry $entry
+     *
      * @return bool
      */
     public function add_entry_or_merge($entry)
@@ -77,16 +83,17 @@ abstract class Translations
         } else {
             $this->entries[$key] = &$entry;
         }
+
         return true;
     }
 
     /**
      * Sets $header PO header to $value
      * If the header already exists, it will be overwritten
-     * TODO: this should be out of this class, it is gettext specific
+     * TODO: this should be out of this class, it is gettext specific.
      *
      * @param string $header header name, without trailing :
-     * @param string $value header value, without trailing \n
+     * @param string $value  header value, without trailing \n
      */
     public function set_header($header, $value)
     {
@@ -94,7 +101,6 @@ abstract class Translations
     }
 
     /**
-     *
      * @param array $headers
      */
     public function set_headers($headers)
@@ -105,7 +111,6 @@ abstract class Translations
     }
 
     /**
-     *
      * @param string $header
      */
     public function get_header($header)
@@ -114,33 +119,34 @@ abstract class Translations
     }
 
     /**
-     *
      * @param Translation_Entry $entry
      */
     public function translate_entry(&$entry)
     {
         $key = $entry->key();
+
         return $this->entries[$key] ?? false;
     }
 
     /**
-     *
      * @param string $singular
      * @param string $context
+     *
      * @return string
      */
     public function translate($singular, $context = null)
     {
-        $entry = new entry(array(
+        $entry = new entry([
             'singular' => $singular,
-            'context' => $context
-        ));
+            'context' => $context,
+        ]);
         $translated = $this->translate_entry($entry);
+
         return ($translated && ! empty($translated->translations)) ? $translated->translations[0] : $singular;
     }
 
     /**
-     * Given the number of items, returns the 0-based index of the plural form to use
+     * Given the number of items, returns the 0-based index of the plural form to use.
      *
      * Here, in the base Translations class, the common logic for English is implemented:
      * 0 if there is one element, 1 otherwise
@@ -148,7 +154,7 @@ abstract class Translations
      * This function should be overridden by the sub-classes. For example MO/PO can derive the logic
      * from their headers.
      *
-     * @param integer $count number of items
+     * @param int $count number of items
      */
     public function select_plural_form($count)
     {
@@ -156,7 +162,6 @@ abstract class Translations
     }
 
     /**
-     *
      * @return int
      */
     public function get_plural_forms_count()
@@ -165,19 +170,18 @@ abstract class Translations
     }
 
     /**
-     *
      * @param string $singular
      * @param string $plural
-     * @param int $count
+     * @param int    $count
      * @param string $context
      */
     public function translate_plural($singular, $plural, $count, $context = null)
     {
-        $entry = new entry(array(
+        $entry = new entry([
             'singular' => $singular,
             'plural' => $plural,
-            'context' => $context
-        ));
+            'context' => $context,
+        ]);
         $translated = $this->translate_entry($entry);
         $index = $this->select_plural_form($count);
         $total_plural_forms = $this->get_plural_forms_count();
@@ -191,9 +195,7 @@ abstract class Translations
     /**
      * Merge $other in the current object.
      *
-     * @param Object &$other Another Translation object, whose translations will be merged in this one
-     * @return void
-     *
+     * @param object &$other Another Translation object, whose translations will be merged in this one
      */
     public function merge_with(&$other)
     {
@@ -203,7 +205,6 @@ abstract class Translations
     }
 
     /**
-     *
      * @param object $other
      */
     public function merge_originals_with(&$other)

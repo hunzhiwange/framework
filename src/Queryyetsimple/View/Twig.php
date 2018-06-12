@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,37 +17,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\View;
 
 use RuntimeException;
 
 /**
- * twig 模板处理类
+ * twig 模板处理类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.01.15
+ *
  * @version 1.0
  */
 class Twig extends Connect implements IConnect
 {
-
     /**
-     * 视图分析器
+     * 视图分析器.
      *
      * @var \Leevel\View\IParser
      */
     protected $parser;
 
     /**
-     * 解析 parse
+     * 解析 parse.
      *
      * @var callable
      */
     protected $parseResolver;
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -56,16 +60,17 @@ class Twig extends Connect implements IConnect
         'theme_name' => 'default',
         'theme_path' => '',
         'theme_path_default' => '',
-        'suffix' => '.twig'
+        'suffix' => '.twig',
     ];
 
     /**
-     * 加载视图文件
+     * 加载视图文件.
      *
-     * @param string $file 视图文件地址
-     * @param array $vars
-     * @param string $ext 后缀
-     * @param boolean $display 是否显示
+     * @param string $file    视图文件地址
+     * @param array  $vars
+     * @param string $ext     后缀
+     * @param bool   $display 是否显示
+     *
      * @return string
      */
     public function display(?string $file = null, array $vars = [], ?string $ext = null, bool $display = true)
@@ -79,7 +84,7 @@ class Twig extends Connect implements IConnect
         }
 
         // 返回类型
-        if ($display === false) {
+        if (false === $display) {
             return $this->renderFile($file);
         } else {
             echo $this->renderFile($file);
@@ -87,10 +92,9 @@ class Twig extends Connect implements IConnect
     }
 
     /**
-     * 设置 parse 解析回调
+     * 设置 parse 解析回调.
      *
      * @param callable $parseResolver
-     * @return void
      */
     public function setParseResolver(callable $parseResolver)
     {
@@ -98,7 +102,7 @@ class Twig extends Connect implements IConnect
     }
 
     /**
-     * 解析 parse
+     * 解析 parse.
      *
      * @return \Leevel\View\IParser
      */
@@ -107,19 +111,21 @@ class Twig extends Connect implements IConnect
         if (! $this->parseResolver) {
             throw new RuntimeException('Twig theme not set parse resolver');
         }
+
         return call_user_func($this->parseResolver);
     }
 
     /**
-     * 获取分析器
+     * 获取分析器.
      *
      * @return \Leevel\View\IParser
      */
     public function parser()
     {
-        if (! is_null($this->parser)) {
+        if (null !== $this->parser) {
             return $this->parser;
         }
+
         return $this->parser = $this->resolverParser();
     }
 
@@ -127,6 +133,7 @@ class Twig extends Connect implements IConnect
      * 渲染模板
      *
      * @param string $file
+     *
      * @return string
      */
     protected function renderFile(string $file)

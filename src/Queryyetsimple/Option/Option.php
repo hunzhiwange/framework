@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,40 +17,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Option;
 
 use ArrayAccess;
 
 /**
- * 配置管理类
+ * 配置管理类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.02.13
+ *
  * @version 1.0
  */
 class Option implements IOption, ArrayAccess
 {
-
     /**
-     * 配置数据
+     * 配置数据.
      *
      * @var array
      */
     protected $option = [];
 
     /**
-     * 默认命名空间
+     * 默认命名空间.
      *
      * @var string
      */
     const DEFAUTL_NAMESPACE = 'app';
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $option
-     * @return void
      */
     public function __construct(array $option = [])
     {
@@ -55,9 +58,10 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 是否存在配置
+     * 是否存在配置.
      *
      * @param string $name 配置键值
+     *
      * @return string
      */
     public function has($name = 'app\\')
@@ -66,7 +70,7 @@ class Option implements IOption, ArrayAccess
         $namespaces = $name[0];
         $name = $name[1];
 
-        if ($name == '*') {
+        if ('*' == $name) {
             return isset($this->option[$namespaces]);
         }
 
@@ -87,10 +91,11 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 获取配置
+     * 获取配置.
      *
-     * @param string $name 配置键值
-     * @param mixed $defaults 配置默认值
+     * @param string $name     配置键值
+     * @param mixed  $defaults 配置默认值
+     *
      * @return string
      */
     public function get($name = 'app\\', $defaults = null)
@@ -99,7 +104,7 @@ class Option implements IOption, ArrayAccess
         $namespaces = $name[0];
         $name = $name[1];
 
-        if ($name == '*') {
+        if ('*' == $name) {
             return $this->option[$namespaces];
         }
 
@@ -120,7 +125,7 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 返回所有配置
+     * 返回所有配置.
      *
      * @return array
      */
@@ -130,10 +135,11 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 设置配置
+     * 设置配置.
      *
-     * @param mixed $name 配置键值
+     * @param mixed $name  配置键值
      * @param mixed $value 配置值
+     *
      * @return array
      */
     public function set($name, $value = null)
@@ -147,8 +153,9 @@ class Option implements IOption, ArrayAccess
             $namespaces = $name[0];
             $name = $name[1];
 
-            if ($name == '*') {
+            if ('*' == $name) {
                 $this->option[$namespaces] = $value;
+
                 return;
             }
 
@@ -158,7 +165,7 @@ class Option implements IOption, ArrayAccess
                 $parts = explode('.', $name);
                 $max = count($parts) - 1;
                 $option = &$this->option[$namespaces];
-                for ($i = 0; $i <= $max; $i ++) {
+                for ($i = 0; $i <= $max; ++$i) {
                     $part = $parts[$i];
                     if ($i < $max) {
                         if (! isset($option[$part])) {
@@ -174,9 +181,10 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 删除配置
+     * 删除配置.
      *
      * @param string $name 配置键值
+     *
      * @return string
      */
     public function delete($name)
@@ -185,8 +193,9 @@ class Option implements IOption, ArrayAccess
         $namespaces = $name[0];
         $name = $name[1];
 
-        if ($name == '*') {
+        if ('*' == $name) {
             $this->option[$namespaces] = [];
+
             return;
         }
 
@@ -198,7 +207,7 @@ class Option implements IOption, ArrayAccess
             $parts = explode('.', $name);
             $max = count($parts) - 1;
             $option = &$this->option[$namespaces];
-            for ($i = 0; $i <= $max; $i ++) {
+            for ($i = 0; $i <= $max; ++$i) {
                 $part = $parts[$i];
                 if ($i < $max) {
                     if (! isset($option[$part])) {
@@ -215,10 +224,11 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 初始化配置参数
+     * 初始化配置参数.
      *
      * @param mixed $namespaces
-     * @return boolean
+     *
+     * @return bool
      */
     public function reset($namespaces = null)
     {
@@ -234,9 +244,10 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetExists
+     * 实现 ArrayAccess::offsetExists.
      *
      * @param string $offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -245,9 +256,10 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetGet
+     * 实现 ArrayAccess::offsetGet.
      *
      * @param string $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -256,11 +268,10 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetSet
+     * 实现 ArrayAccess::offsetSet.
      *
      * @param string $offset
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function offsetSet($offset, $value)
     {
@@ -268,10 +279,9 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetUnset
+     * 实现 ArrayAccess::offsetUnset.
      *
      * @param string $offset
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -279,9 +289,10 @@ class Option implements IOption, ArrayAccess
     }
 
     /**
-     * 分析命名空间
+     * 分析命名空间.
      *
      * @param string $name
+     *
      * @return array
      */
     protected function parseNamespace($name)
@@ -303,7 +314,7 @@ class Option implements IOption, ArrayAccess
 
         return [
             $namespaces,
-            $name
+            $name,
         ];
     }
 }

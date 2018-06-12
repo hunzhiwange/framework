@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,38 +17,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Session\Middleware;
 
 use Closure;
-use Leevel\{
-    Http\Request,
-    Http\Response,
-    Session\Manager
-};
+use Leevel\Http\Request;
+use Leevel\Http\Response;
+use Leevel\Session\Manager;
 
 /**
- * Session 中间件
+ * Session 中间件.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.11.14
+ *
  * @version 1.0
  */
 class Session
 {
-
     /**
-     * session 管理
+     * session 管理.
      *
      * @var \Leevel\Session\Manager
      */
     protected $manager;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Session\Manager $manager
-     * @return void
      */
     public function __construct(Manager $manager)
     {
@@ -55,9 +56,8 @@ class Session
     /**
      * 请求
      *
-     * @param \Closure $next
+     * @param \Closure             $next
      * @param \Leevel\Http\Request $request
-     * @return void
      */
     public function handle(Closure $next, Request $request)
     {
@@ -66,12 +66,11 @@ class Session
     }
 
     /**
-     * 响应
+     * 响应.
      *
-     * @param \Closure $next
-     * @param \Leevel\Http\Request $request
+     * @param \Closure              $next
+     * @param \Leevel\Http\Request  $request
      * @param \Leevel\Http\Response $response
-     * @return void
      */
     public function terminate(Closure $next, Request $request, Response $response)
     {
@@ -81,9 +80,7 @@ class Session
     }
 
     /**
-     * 启动 session
-     *
-     * @return void
+     * 启动 session.
      */
     protected function startSession()
     {
@@ -91,9 +88,7 @@ class Session
     }
 
     /**
-     * 清理闪存
-     *
-     * @return void
+     * 清理闪存.
      */
     protected function unregisterFlash()
     {
@@ -101,10 +96,9 @@ class Session
     }
 
     /**
-     * 保存当期请求 URL
+     * 保存当期请求 URL.
      *
      * @param \Leevel\Http\Request $request
-     * @return void
      */
     protected function setPrevUrl(Request $request)
     {

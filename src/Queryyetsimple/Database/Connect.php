@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -7,45 +10,44 @@
  *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
  *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
  *         \_\                /_/_/         /_/
- *         
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Database;
 
 use PDO;
 use Throwable;
 use Exception;
 use PDOException;
-use Leevel\{
-    Log\ILog,
-    Cache\ICache,
-    Support\Debug\Dump
-};
+use Leevel\Log\ILog;
+use Leevel\Cache\ICache;
+use Leevel\Support\Debug\Dump;
 
 /**
  * 数据库连接抽象层
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.03.09
+ *
  * @version 1.0
  */
 abstract class Connect
 {
-
     /**
-     * 所有数据库连接
+     * 所有数据库连接.
      *
      * @var array
      */
     protected $arrConnect = [];
 
     /**
-     * 当前数据库连接
+     * 当前数据库连接.
      *
      * @var array
      */
@@ -59,49 +61,49 @@ abstract class Connect
     protected $objPDOStatement;
 
     /**
-     * 数据查询组件
+     * 数据查询组件.
      *
      * @var \Leevel\Database\Select
      */
     protected $objSelect;
 
     /**
-     * 日志仓储
+     * 日志仓储.
      *
      * @var \leevel\Log\ILog
      */
     protected $objLog;
 
     /**
-     * 缓存仓储
+     * 缓存仓储.
      *
      * @var \Leevel\Cache\ICache
      */
     protected $objCache;
 
     /**
-     * 开发模式
+     * 开发模式.
      *
-     * @var boolean
+     * @var bool
      */
     protected $booDevelopment = false;
 
     /**
-     * 字段缓存
+     * 字段缓存.
      *
      * @var array
      */
     protected static $arrTableColumnsCache = [];
 
     /**
-     * 数据库连接参数
+     * 数据库连接参数.
      *
      * @var array
      */
     protected $arrOption = [];
 
     /**
-     * 当前数据库连接参数
+     * 当前数据库连接参数.
      *
      * @var array
      */
@@ -129,20 +131,19 @@ abstract class Connect
     protected $intNumRows = 0;
 
     /**
-     * SQL 监听器
+     * SQL 监听器.
      *
      * @var callable
      */
     protected static $calSqlListen;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
-     * @param \leevel\Log\ILog $objLog
+     * @param \leevel\Log\ILog     $objLog
      * @param \Leevel\Cache\ICache $objCache
-     * @param array $arrOption
-     * @param boolean $booDevelopment
-     * @return void
+     * @param array                $arrOption
+     * @param bool                 $booDevelopment
      */
     public function __construct(ILog $objLog, ICache $objCache, $arrOption, $booDevelopment = false)
     {
@@ -164,7 +165,7 @@ abstract class Connect
         $this->writeConnect();
 
         // 连接分布式服务器
-        if ($arrOption['distributed'] === true) {
+        if (true === $arrOption['distributed']) {
             if (! $this->readConnect()) {
                 $this->throwException();
             }
@@ -172,17 +173,18 @@ abstract class Connect
     }
 
     /**
-     * 返回 Pdo 查询连接
+     * 返回 Pdo 查询连接.
      *
      * @param mixed $mixMaster
      * @paramnote boolean false (读服务器) true (写服务器)
      * @paramnote 其它 去对应服务器连接ID 0 表示主服务器
+     *
      * @return mixed
      */
     public function getPdo($mixMaster = false)
     {
         if (is_bool($mixMaster)) {
-            if ($mixMaster === false) {
+            if (false === $mixMaster) {
                 return $this->readConnect();
             } else {
                 return $this->writeConnect();
@@ -193,14 +195,15 @@ abstract class Connect
     }
 
     /**
-     * 查询数据记录
+     * 查询数据记录.
      *
-     * @param string $strSql sql 语句
-     * @param array $arrBindParams sql 参数绑定
-     * @param mixed $mixMaster
-     * @param int $intFetchType
-     * @param mixed $mixFetchArgument
-     * @param array $arrCtorArgs
+     * @param string $strSql           sql 语句
+     * @param array  $arrBindParams    sql 参数绑定
+     * @param mixed  $mixMaster
+     * @param int    $intFetchType
+     * @param mixed  $mixFetchArgument
+     * @param array  $arrCtorArgs
+     *
      * @return mixed
      */
     public function query($strSql, $arrBindParams = [], $mixMaster = false, $intFetchType = null, $mixFetchArgument = null, $arrCtorArgs = [])
@@ -214,7 +217,7 @@ abstract class Connect
         // 验证 sql 类型PROCEDURE
         if (! in_array(($strSqlType = $this->getSqlType($strSql)), [
             'select',
-            'procedure'
+            'procedure',
         ])) {
             $this->throwException(
                 'The query method only allows select SQL statements.'
@@ -228,7 +231,7 @@ abstract class Connect
         $this->bindParams($arrBindParams);
 
         // 执行 sql
-        if ($this->objPDOStatement->execute() === false) {
+        if (false === $this->objPDOStatement->execute()) {
             $this->throwException();
         }
 
@@ -243,15 +246,16 @@ abstract class Connect
             $intFetchType,
             $mixFetchArgument,
             $arrCtorArgs,
-            $strSqlType == 'procedure'
+            'procedure' == $strSqlType
         );
     }
 
     /**
-     * 执行 sql 语句
+     * 执行 sql 语句.
      *
-     * @param string $strSql sql 语句
-     * @param array $arrBindParams sql 参数绑定
+     * @param string $strSql        sql 语句
+     * @param array  $arrBindParams sql 参数绑定
+     *
      * @return int
      */
     public function execute($strSql, $arrBindParams = [])
@@ -263,7 +267,7 @@ abstract class Connect
         $this->setSqlBindParams($strSql, $arrBindParams);
 
         // 验证 sql 类型
-        if (($strSqlType = $this->getSqlType($strSql)) == 'select') {
+        if ('select' == ($strSqlType = $this->getSqlType($strSql))) {
             $this->throwException(
                 'The execute method does not allow select SQL statements.'
             );
@@ -276,7 +280,7 @@ abstract class Connect
         $this->bindParams($arrBindParams);
 
         // 执行 sql
-        if ($this->objPDOStatement->execute() === false) {
+        if (false === $this->objPDOStatement->execute()) {
             $this->throwException();
         }
 
@@ -288,7 +292,7 @@ abstract class Connect
 
         if (in_array($strSqlType, [
             'insert',
-            'replace'
+            'replace',
         ])) {
             return $this->lastInsertId();
         } else {
@@ -300,6 +304,7 @@ abstract class Connect
      * 执行数据库事务
      *
      * @param callable $calAction 事务回调
+     *
      * @return mixed
      */
     public function transaction(callable $calAction)
@@ -309,7 +314,7 @@ abstract class Connect
 
         try {
             $mixResult = call_user_func_array($calAction, [
-                $this
+                $this,
             ]);
 
             $this->commit();
@@ -324,8 +329,6 @@ abstract class Connect
 
     /**
      * 启动事务
-     *
-     * @return void
      */
     public function beginTransaction()
     {
@@ -333,9 +336,9 @@ abstract class Connect
     }
 
     /**
-     * 检查是否处于事务中
+     * 检查是否处于事务中.
      *
-     * @return boolean
+     * @return bool
      */
     public function inTransaction()
     {
@@ -343,9 +346,7 @@ abstract class Connect
     }
 
     /**
-     * 用于非自动提交状态下面的查询提交
-     *
-     * @return void
+     * 用于非自动提交状态下面的查询提交.
      */
     public function commit()
     {
@@ -353,9 +354,7 @@ abstract class Connect
     }
 
     /**
-     * 事务回滚
-     *
-     * @return void
+     * 事务回滚.
      */
     public function rollBack()
     {
@@ -363,9 +362,10 @@ abstract class Connect
     }
 
     /**
-     * 获取最后插入 ID 或者列
+     * 获取最后插入 ID 或者列.
      *
      * @param string $strName 自增序列名
+     *
      * @return string
      */
     public function lastInsertId($strName = null)
@@ -374,17 +374,18 @@ abstract class Connect
     }
 
     /**
-     * 获取最近一次查询的 sql 语句
+     * 获取最近一次查询的 sql 语句.
      *
      * @param bool $booWithBindParams 是否和绑定参数一起返回
+     *
      * @return string
      */
     public function getLastSql($booWithBindParams = false)
     {
-        if ($booWithBindParams === true) {
+        if (true === $booWithBindParams) {
             return [
                 $this->strSql,
-                $this->arrBindParams
+                $this->arrBindParams,
             ];
         } else {
             return $this->strSql;
@@ -392,7 +393,7 @@ abstract class Connect
     }
 
     /**
-     * 获取最近一次绑定参数
+     * 获取最近一次绑定参数.
      *
      * @return array
      */
@@ -402,7 +403,7 @@ abstract class Connect
     }
 
     /**
-     * 返回影响记录
+     * 返回影响记录.
      *
      * @return int
      */
@@ -412,10 +413,9 @@ abstract class Connect
     }
 
     /**
-     * 注册 SQL 监视器
+     * 注册 SQL 监视器.
      *
      * @param callable $calSqlListen
-     * @return void
      */
     public function registerListen(callable $calSqlListen)
     {
@@ -423,9 +423,7 @@ abstract class Connect
     }
 
     /**
-     * 释放 PDO 预处理查询
-     *
-     * @return void
+     * 释放 PDO 预处理查询.
      */
     public function freePDOStatement()
     {
@@ -433,9 +431,7 @@ abstract class Connect
     }
 
     /**
-     * 关闭数据库连接
-     *
-     * @return void
+     * 关闭数据库连接.
      */
     public function closeDatabase()
     {
@@ -444,10 +440,11 @@ abstract class Connect
     }
 
     /**
-     * 取得数据库表字段信息缓存
+     * 取得数据库表字段信息缓存.
      *
      * @param string $sTableName
-     * @param mixed $mixMaster
+     * @param mixed  $mixMaster
+     *
      * @return array
      */
     public function getTableColumnsCache($sTableName, $mixMaster = false)
@@ -460,7 +457,7 @@ abstract class Connect
 
         $arrTableColumns = $this->objCache->get($strCacheKey);
 
-        if (! $this->booDevelopment && $arrTableColumns !== false) {
+        if (! $this->booDevelopment && false !== $arrTableColumns) {
             return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
         } else {
             $arrTableColumns = $this->getTableColumns($sTableName, $mixMaster);
@@ -471,11 +468,12 @@ abstract class Connect
     }
 
     /**
-     * sql 表达式格式化
+     * sql 表达式格式化.
      *
      * @param string $sSql
      * @param string $sTableName
-     * @param array $arrMapping
+     * @param array  $arrMapping
+     *
      * @return string
      */
     public function qualifyExpression($sSql, $sTableName, array $arrMapping = null)
@@ -526,11 +524,12 @@ abstract class Connect
     }
 
     /**
-     * 表或者字段格式化（支持别名）
+     * 表或者字段格式化（支持别名）.
      *
      * @param string $sName
      * @param string $sAlias
      * @param string $sAs
+     *
      * @return string
      */
     public function qualifyTableOrColumn($sName, $sAlias = null, $sAs = null)
@@ -539,7 +538,7 @@ abstract class Connect
         $sName = str_replace('`', '', $sName);
 
         // 不包含表名字
-        if (strpos($sName, '.') === false) {
+        if (false === strpos($sName, '.')) {
             $sName = $this->identifierColumn($sName);
         } else {
             $arrArray = explode('.', $sName);
@@ -563,10 +562,11 @@ abstract class Connect
     }
 
     /**
-     * 字段格式化
+     * 字段格式化.
      *
      * @param string $sKey
      * @param string $sTableName
+     *
      * @return string
      */
     public function qualifyColumn($sKey, $sTableName)
@@ -592,10 +592,11 @@ abstract class Connect
     }
 
     /**
-     * 字段值格式化
+     * 字段值格式化.
      *
-     * @param boolean $booQuotationMark
+     * @param bool  $booQuotationMark
      * @param mixed $mixValue
+     *
      * @return mixed
      */
     public function qualifyColumnValue($mixValue, $booQuotationMark = true)
@@ -615,14 +616,14 @@ abstract class Connect
         if (is_bool($mixValue)) {
             return $mixValue ? true : false;
         }
-        if (is_null($mixValue)) {
+        if (null === $mixValue) {
             return null;
         }
 
         $mixValue = trim($mixValue);
 
         // 问号占位符
-        if ($mixValue == '[?]') {
+        if ('[?]' == $mixValue) {
             return '?';
         }
 
@@ -631,7 +632,7 @@ abstract class Connect
             return trim($arrMatche[0], '[]');
         }
 
-        if ($booQuotationMark === true) {
+        if (true === $booQuotationMark) {
             return "'" . addslashes($mixValue) . "'";
         } else {
             return $mixValue;
@@ -639,14 +640,15 @@ abstract class Connect
     }
 
     /**
-     * 返回当前配置连接信息（方便其他组件调用设置为 public）
+     * 返回当前配置连接信息（方便其他组件调用设置为 public）.
      *
      * @param string $strOptionName
+     *
      * @return array
      */
     public function getCurrentOption($strOptionName = null)
     {
-        if (is_null($strOptionName)) {
+        if (null === $strOptionName) {
             return $this->arrCurrentOption;
         } else {
             return $this->arrCurrentOption[$strOptionName] ?? null;
@@ -654,9 +656,10 @@ abstract class Connect
     }
 
     /**
-     * 分析 sql 类型数据
+     * 分析 sql 类型数据.
      *
      * @param string $strSql
+     *
      * @return string
      */
     public function getSqlType($strSql)
@@ -671,14 +674,14 @@ abstract class Connect
             'delete',
             'insert',
             'replace',
-            'update'
+            'update',
         ] as $strType) {
-            if (stripos($strSql, $strType) === 0) {
-                if ($strType == 'show') {
+            if (0 === stripos($strSql, $strType)) {
+                if ('show' == $strType) {
                     $strType = 'select';
                 } elseif (in_array($strType, [
                     'call',
-                    'exec'
+                    'exec',
                 ])) {
                     $strType = 'procedure';
                 }
@@ -691,10 +694,12 @@ abstract class Connect
     }
 
     /**
-     * 分析绑定参数类型数据
+     * 分析绑定参数类型数据.
      *
-     * @link http://php.net/manual/en/pdo.constants.php
+     * @see http://php.net/manual/en/pdo.constants.php
+     *
      * @param mixed $mixValue
+     *
      * @return string
      */
     public function getBindParamType($mixValue)
@@ -707,7 +712,7 @@ abstract class Connect
             case is_bool($mixValue):
                 return PDO::PARAM_BOOL;
                 break;
-            case is_null($mixValue):
+            case null === $mixValue:
                 return PDO::PARAM_NULL;
                 break;
             case is_string($mixValue):
@@ -720,7 +725,7 @@ abstract class Connect
     }
 
     /**
-     * 连接主服务器
+     * 连接主服务器.
      *
      * @return Pdo
      */
@@ -739,19 +744,19 @@ abstract class Connect
     }
 
     /**
-     * 连接读服务器
+     * 连接读服务器.
      *
      * @return Pdo
      */
     protected function readConnect()
     {
         // 未开启分布式服务器连接或则没有读服务器，直接连接写服务器
-        if ($this->arrOption['distributed'] === false || empty($this->arrOption['slave'])) {
+        if (false === $this->arrOption['distributed'] || empty($this->arrOption['slave'])) {
             return $this->writeConnect();
         }
 
         // 只有主服务器,主服务器必须先连接,未连接过附属服务器
-        if (count($this->arrConnect) == 1) {
+        if (1 == count($this->arrConnect)) {
             foreach ($this->arrOption['slave'] as $arrRead) {
                 $this->commonConnect($arrRead, null);
             }
@@ -764,7 +769,7 @@ abstract class Connect
 
         // 如果为读写分离,去掉主服务器
         $arrConnect = $this->arrConnect;
-        if ($this->arrOption['readwrite_separate'] === true) {
+        if (true === $this->arrOption['readwrite_separate']) {
             unset($arrConnect[0]);
         }
 
@@ -773,17 +778,18 @@ abstract class Connect
     }
 
     /**
-     * 连接数据库
+     * 连接数据库.
      *
-     * @param array $arrOption
+     * @param array  $arrOption
      * @param string $nLinkid
-     * @param boolean $booThrowException
+     * @param bool   $booThrowException
+     *
      * @return mixed
      */
     protected function commonConnect($arrOption = '', $nLinkid = null, $booThrowException = false)
     {
         // 数据库连接 ID
-        if ($nLinkid === null) {
+        if (null === $nLinkid) {
             $nLinkid = count($this->arrConnect);
         }
 
@@ -794,7 +800,7 @@ abstract class Connect
 
         try {
             $this->setCurrentOption($arrOption);
-            
+
             return $this->arrConnect[$nLinkid] = new PDO(
                 $this->parseDsn($arrOption),
                 $arrOption['user'],
@@ -802,7 +808,7 @@ abstract class Connect
                 $arrOption['options']
             );
         } catch (PDOException $oE) {
-            if ($booThrowException === false) {
+            if (false === $booThrowException) {
                 return false;
             } else {
                 throw $oE;
@@ -811,10 +817,9 @@ abstract class Connect
     }
 
     /**
-     * pdo　参数绑定
+     * pdo　参数绑定.
      *
      * @param array $arrBindParams 绑定参数
-     * @return void
      */
     protected function bindParams(array $arrBindParams = [])
     {
@@ -828,7 +833,7 @@ abstract class Connect
                 $strParam = PDO::PARAM_STR;
             }
 
-            if ($this->objPDOStatement->bindValue($mixKey, $mixVal, $strParam) === false) {
+            if (false === $this->objPDOStatement->bindValue($mixKey, $mixVal, $strParam)) {
                 $this->throwException(
                     sprintf(
                         'Parameter of sql %s binding failed: %s.',
@@ -841,12 +846,13 @@ abstract class Connect
     }
 
     /**
-     * 获得数据集
+     * 获得数据集.
      *
-     * @param int $intFetchType
+     * @param int   $intFetchType
      * @param mixed $mixFetchArgument
      * @param array $arrCtorArgs
-     * @param boolean $booProcedure
+     * @param bool  $booProcedure
+     *
      * @return array
      */
     protected function fetchResult($intFetchType = null, $mixFetchArgument = null, $arrCtorArgs = [], $booProcedure = false)
@@ -861,7 +867,7 @@ abstract class Connect
         }
 
         $arrArgs = [
-            $intFetchType !== null ? $intFetchType : $this->arrOption['fetch']
+            null !== $intFetchType ? $intFetchType : $this->arrOption['fetch'],
         ];
 
         if ($mixFetchArgument) {
@@ -876,11 +882,12 @@ abstract class Connect
     }
 
     /**
-     * 获得数据集
+     * 获得数据集.
      *
-     * @param int $intFetchType
+     * @param int   $intFetchType
      * @param mixed $mixFetchArgument
      * @param array $arrCtorArgs
+     *
      * @return array
      */
     protected function fetchProcedureResult($intFetchType = null, $mixFetchArgument = null, $arrCtorArgs = [])
@@ -900,9 +907,7 @@ abstract class Connect
     }
 
     /**
-     * 设置 sql 绑定参数
-     *
-     * @return void
+     * 设置 sql 绑定参数.
      */
     protected function setSqlBindParams($strSql, $arrBindParams = [])
     {
@@ -911,10 +916,9 @@ abstract class Connect
     }
 
     /**
-     * 设置当前数据库连接信息
+     * 设置当前数据库连接信息.
      *
      * @param array $arrOption
-     * @return void
      */
     protected function setCurrentOption($arrOption)
     {
@@ -922,16 +926,14 @@ abstract class Connect
     }
 
     /**
-     * 记录 SQL 日志
-     *
-     * @return void
+     * 记录 SQL 日志.
      */
     protected function recordSqlLog()
     {
         // SQL 监视器
-        if (static::$calSqlListen !== null) {
+        if (null !== static::$calSqlListen) {
             call_user_func_array(static::$calSqlListen, [
-                $this
+                $this,
             ]);
         }
 
@@ -939,15 +941,14 @@ abstract class Connect
         $arrLastSql = $this->getLastSql(true);
 
         if ($this->arrOption['log']) {
-            $this->objLog->log(ILog::SQL, $arrLastSql[0], $arrLastSql[1] ?  : []);
+            $this->objLog->log(ILog::SQL, $arrLastSql[0], $arrLastSql[1] ?: []);
         }
     }
 
     /**
-     * 数据查询异常，抛出错误
+     * 数据查询异常，抛出错误.
      *
      * @param string $strError 错误信息
-     * @return void
      */
     protected function throwException($strError = '')
     {
@@ -962,9 +963,7 @@ abstract class Connect
     }
 
     /**
-     * 初始化查询组件
-     *
-     * @return void
+     * 初始化查询组件.
      */
     protected function initSelect()
     {
@@ -972,10 +971,11 @@ abstract class Connect
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $arrArgs
+     * @param array  $arrArgs
+     *
      * @return mixed
      */
     public function __call(string $method, array $arrArgs)
@@ -986,11 +986,9 @@ abstract class Connect
         // 调用事件
         return $this->objSelect->$method(...$arrArgs);
     }
-    
+
     /**
-     * 析构方法
-     *
-     * @return void
+     * 析构方法.
      */
     public function __destruct()
     {

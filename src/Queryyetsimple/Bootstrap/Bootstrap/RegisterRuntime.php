@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -7,45 +10,44 @@
  *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
  *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
  *         \_\                /_/_/         /_/
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Bootstrap\Bootstrap;
 
 use Exception;
 use ErrorException;
 use Leevel\Kernel\IProject;
 use Leevel\Kernel\Runtime\IRuntime;
-use Leevel\Bootstrap\Runtime\Runtime;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
- * 注册运行时异常
+ * 注册运行时异常.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.25
+ *
  * @version 1.0
  */
 class RegisterRuntime
 {
-
     /**
-     * 容器
+     * 容器.
      *
      * @var \Leevel\Di\IProject
      */
     protected $project;
 
     /**
-     * 响应
-     * 
+     * 响应.
+     *
      * @param \Leevel\Kernel\IProject $project
-     * @return void
      */
     public function handle(IProject $project)
     {
@@ -54,25 +56,24 @@ class RegisterRuntime
         error_reporting(E_ALL);
 
         set_error_handler([$this, 'setErrorHandle']);
-        
+
         set_exception_handler([$this, 'setExceptionHandler']);
 
         register_shutdown_function([$this, 'registerShutdownFunction']);
 
-        if ($project->environment() === 'production') {
+        if ('production' === $project->environment()) {
             ini_set('display_errors', 'Off');
         }
     }
 
     /**
-     * 设置错误句柄
-     * 
-     * @param integer $code
-     * @param string $description
-     * @param string $file
+     * 设置错误句柄.
+     *
+     * @param int      $code
+     * @param string   $description
+     * @param string   $file
      * @param interger $line
-     * @param mixed $context
-     * @return void
+     * @param mixed    $context
      */
     public function setErrorHandle($code, $description, $file = null, $line = null, $context = null)
     {
@@ -85,9 +86,7 @@ class RegisterRuntime
     }
 
     /**
-     * 设置退出句柄
-     *
-     * @return void
+     * 设置退出句柄.
      */
     public function registerShutdownFunction()
     {
@@ -97,15 +96,14 @@ class RegisterRuntime
     }
 
     /**
-     * 响应异常
+     * 响应异常.
      *
      * @param \Throwable $e
-     * @return void
      */
     public function setExceptionHandler($e)
     {
         if (! $e instanceof Exception) {
-            $e = new ErrorException(     
+            $e = new ErrorException(
                 $e->getMessage(),
                 $e->getCode(),
                 E_ERROR,
@@ -121,28 +119,26 @@ class RegisterRuntime
         }
 
         if ($this->project->console()) {
-           $this->renderConsoleResponse($e);
+            $this->renderConsoleResponse($e);
         } else {
             $this->renderHttpResponse($e);
         }
     }
 
     /**
-     * 渲染命令行异常并输出
+     * 渲染命令行异常并输出.
      *
      * @param \Exception $e
-     * @return void
      */
     protected function renderConsoleResponse(Exception $e)
     {
-        $this->getRuntime()->renderForConsole(new ConsoleOutput, $e);
+        $this->getRuntime()->renderForConsole(new ConsoleOutput(), $e);
     }
 
     /**
-     * 渲染 HTTP 异常并输出
+     * 渲染 HTTP 异常并输出.
      *
      * @param \Exception $e
-     * @return void
      */
     protected function renderHttpResponse(Exception $e)
     {
@@ -150,9 +146,10 @@ class RegisterRuntime
     }
 
     /**
-     * 格式化致命错误信息
+     * 格式化致命错误信息.
      *
      * @param array $error
+     *
      * @return \ErrorException
      */
     protected function formatErrorException(array $error)
@@ -163,11 +160,12 @@ class RegisterRuntime
     }
 
     /**
-     * 返回运行处理器
-     * 
+     * 返回运行处理器.
+     *
      * @return \Leevel\Kernel\Exception\IRuntime
      */
-    protected function getRuntime() {
+    protected function getRuntime()
+    {
         return $this->project->make(IRuntime::class);
     }
 }

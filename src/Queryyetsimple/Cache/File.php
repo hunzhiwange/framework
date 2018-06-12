@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,36 +17,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Cache;
 
 use InvalidArgumentException;
 
 /**
- * 文件缓存
+ * 文件缓存.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.02.15
+ *
  * @version 1.0
  */
 class File extends Connect implements IConnect
 {
     /**
-     * 缓存文件头部
+     * 缓存文件头部.
      *
      * @var string
      */
     const HEADER = '<?php die(%s); ?>';
 
     /**
-     * 缓存文件头部长度
+     * 缓存文件头部长度.
      *
      * @var int
      */
     const HEADER_LENGTH = 41;
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -52,15 +57,16 @@ class File extends Connect implements IConnect
         'prefix' => '_',
         'expire' => 86400,
         'path' => '',
-        'serialize' => true
+        'serialize' => true,
     ];
 
     /**
-     * 获取缓存
+     * 获取缓存.
      *
      * @param string $name
-     * @param mixed $defaults
-     * @param array $option
+     * @param mixed  $defaults
+     * @param array  $option
+     *
      * @return mixed
      */
     public function get($name, $defaults = false, array $option = [])
@@ -103,7 +109,7 @@ class File extends Connect implements IConnect
         flock($fp, LOCK_UN);
         fclose($fp);
 
-        if ($data === false) {
+        if (false === $data) {
             return false;
         }
 
@@ -116,12 +122,11 @@ class File extends Connect implements IConnect
     }
 
     /**
-     * 设置缓存
+     * 设置缓存.
      *
      * @param string $name
-     * @param mixed $data
-     * @param array $option
-     * @return void
+     * @param mixed  $data
+     * @param array  $option
      */
     public function set($name, $data, array $option = [])
     {
@@ -137,11 +142,10 @@ class File extends Connect implements IConnect
     }
 
     /**
-     * 清除缓存
+     * 清除缓存.
      *
      * @param string $name
-     * @param array $option
-     * @return void
+     * @param array  $option
      */
     public function delete($name, array $option = [])
     {
@@ -158,8 +162,9 @@ class File extends Connect implements IConnect
      * 验证缓存是否过期
      *
      * @param string $name
-     * @param array $option
-     * @return boolean
+     * @param array  $option
+     *
+     * @return bool
      */
     protected function isExpired($name, $option)
     {
@@ -170,15 +175,16 @@ class File extends Connect implements IConnect
         }
 
         $option['expire'] = $this->cacheTime($name, $option['expire']);
-        
-        return (int)$option['expire'] > 0 && filemtime($filePath) + (int)$option['expire'] < time();
+
+        return (int) $option['expire'] > 0 && filemtime($filePath) + (int) $option['expire'] < time();
     }
 
     /**
-     * 获取缓存路径
+     * 获取缓存路径.
      *
      * @param string $name
-     * @param array $option
+     * @param array  $option
+     *
      * @return string
      */
     protected function getCachePath($name, $option)
@@ -195,11 +201,10 @@ class File extends Connect implements IConnect
     }
 
     /**
-     * 写入缓存数据
+     * 写入缓存数据.
      *
      * @param string $fileName
      * @param string $data
-     * @return void
      */
     protected function writeData($fileName, $data)
     {
@@ -213,11 +218,12 @@ class File extends Connect implements IConnect
     }
 
     /**
-     * 验证缓存是否存在
+     * 验证缓存是否存在.
      *
      * @param string $name
-     * @param array $option
-     * @return boolean
+     * @param array  $option
+     *
+     * @return bool
      */
     protected function exist($name, $option)
     {
@@ -226,10 +232,11 @@ class File extends Connect implements IConnect
 
     /**
      * 获取缓存名字
-     * 去掉特殊缓存名字字符
+     * 去掉特殊缓存名字字符.
      *
      * @param string $name
      * @param string $prefix
+     *
      * @return string
      */
     protected function getCacheName($name, $prefix = '')
@@ -243,7 +250,7 @@ class File extends Connect implements IConnect
             '>',
             '\\',
             '/',
-            '|'
+            '|',
         ], '.', parent::getCacheName($name, $prefix));
     }
 }

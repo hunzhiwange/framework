@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,29 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Bootstrap\auth;
 
-use Leevel\{
-    auth,
-    response,
-    Http\Request,
-    auth\change_password_failed
-};
+use Leevel\auth;
+use Leevel\response;
+use Leevel\Http\Request;
+use Leevel\auth\change_password_failed;
 
 /**
  * 修改密码
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.09
+ *
  * @version 1.0
  */
-trait change_password
+trait ChangePassword
 {
     use field;
 
     /**
-     * 修改密码界面
+     * 修改密码界面.
      *
      * @return \Leevel\Http\Response
      */
@@ -46,7 +49,7 @@ trait change_password
     }
 
     /**
-     * 获取修改密码界面
+     * 获取修改密码界面.
      *
      * @return \Leevel\Http\Response
      */
@@ -59,6 +62,7 @@ trait change_password
      * 执行修改密码
      *
      * @param \Leevel\Http\Request $oRequest
+     *
      * @return \Leevel\Http\Response|array
      */
     public function changeUserPassword(request $oRequest)
@@ -70,7 +74,7 @@ trait change_password
                 'id|trim',
                 'old_password|trim',
                 'password|trim',
-                'comfirm_password|trim'
+                'comfirm_password|trim',
             ]);
 
             $this->setAuthField();
@@ -79,10 +83,10 @@ trait change_password
 
             if ($this->isAjaxRequest()) {
                 return [
-                    'message' => $this->getChangePasswordSucceededMessage($aUser['nikename'] ?  : $aUser['name'])
+                    'message' => $this->getChangePasswordSucceededMessage($aUser['nikename'] ?: $aUser['name']),
                 ];
             } else {
-                return $this->sendSucceededChangePasswordResponse($this->getChangePasswordSucceededMessage($aUser['nikename'] ?  : $aUser['name']));
+                return $this->sendSucceededChangePasswordResponse($this->getChangePasswordSucceededMessage($aUser['nikename'] ?: $aUser['name']));
             }
         } catch (change_password_failed $oE) {
             return $this->sendFailedChangePasswordResponse($oE->getMessage());
@@ -90,9 +94,10 @@ trait change_password
     }
 
     /**
-     * 发送正确修改密码消息
+     * 发送正确修改密码消息.
      *
      * @param string $strSuccess
+     *
      * @return \Leevel\Http\Response
      */
     protected function sendSucceededChangePasswordResponse($strSuccess)
@@ -101,10 +106,11 @@ trait change_password
     }
 
     /**
-     * 发送错误修改密码消息
+     * 发送错误修改密码消息.
      *
      * @param \Leevel\Http\Request $oRequest
-     * @param string $strError
+     * @param string               $strError
+     *
      * @return \Leevel\Http\Response
      */
     protected function sendFailedChangePasswordResponse($strError)
@@ -112,12 +118,12 @@ trait change_password
         if ($this->isAjaxRequest()) {
             return [
                 'code' => 400,
-                'message' => $strError
+                'message' => $strError,
             ];
         }
 
         return response::redirect($this->getChangePasswordFailedRedirect())->withErrors([
-            'change_password_error' => $strError
+            'change_password_error' => $strError,
         ]);
     }
 
@@ -125,7 +131,6 @@ trait change_password
      * 验证登录修改密码请求
      *
      * @param \Leevel\Http\Request $oRequest
-     * @return void
      */
     protected function validateChangePassword(request $oRequest)
     {
@@ -133,7 +138,7 @@ trait change_password
     }
 
     /**
-     * 获取修改密码验证规则
+     * 获取修改密码验证规则.
      *
      * @return array
      */
@@ -142,12 +147,12 @@ trait change_password
         return property_exists($this, 'strValidateChangePasswordRule') ? $this->strValidateChangePasswordRule : [
             'old_password' => 'required|min_length:6',
             'password' => 'required|min_length:6',
-            'comfirm_password' => 'required|min_length:6|equal_to:password'
+            'comfirm_password' => 'required|min_length:6|equal_to:password',
         ];
     }
 
     /**
-     * 获取修改密码验证规则消息
+     * 获取修改密码验证规则消息.
      *
      * @return array
      */
@@ -157,9 +162,10 @@ trait change_password
     }
 
     /**
-     * 获取修改密码消息
+     * 获取修改密码消息.
      *
      * @param string $strName
+     *
      * @return string
      */
     protected function getChangePasswordSucceededMessage($strName)
@@ -168,7 +174,7 @@ trait change_password
     }
 
     /**
-     * 获取修改密码视图
+     * 获取修改密码视图.
      *
      * @return string
      */

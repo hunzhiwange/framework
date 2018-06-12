@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,33 +17,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router\Provider;
 
-use Leevel\{
-    Router\Url,
-    Di\Provider,
-    Http\Request,
-    Http\Response,
-    Router\Router,
-    Router\Redirect,
-    Router\ResponseFactory
-};
+use Leevel\Router\Url;
+use Leevel\Di\Provider;
+use Leevel\Http\Request;
+use Leevel\Http\Response;
+use Leevel\Router\Router;
+use Leevel\Router\Redirect;
+use Leevel\Router\ResponseFactory;
 
 /**
- * router 服务提供者
+ * router 服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.12
+ *
  * @version 1.0
  */
 class Register extends Provider
 {
-
     /**
      * 注册服务
-     *
-     * @return void
      */
     public function register()
     {
@@ -52,7 +52,7 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者
+     * 可用服务提供者.
      *
      * @return array
      */
@@ -60,25 +60,23 @@ class Register extends Provider
     {
         return [
             'router' => [
-                'Leevel\Router\Router'
+                'Leevel\Router\Router',
             ],
             'url' => [
-                'Leevel\Router\Url'
+                'Leevel\Router\Url',
             ],
             'redirect' => [
-                'Leevel\Router\Redirect'
+                'Leevel\Router\Redirect',
             ],
             'response' => [
                 'Leevel\Router\IResponseFactory',
-                'Leevel\Router\ResponseFactory'
-            ]
+                'Leevel\Router\ResponseFactory',
+            ],
         ];
     }
 
     /**
      * 注册 router 服务
-     *
-     * @return void
      */
     protected function router()
     {
@@ -89,8 +87,6 @@ class Register extends Provider
 
     /**
      * 注册 url 服务
-     *
-     * @return void
      */
     protected function url()
     {
@@ -100,10 +96,10 @@ class Register extends Provider
 
             $options = [];
             foreach ([
-                "with_suffix",
+                'with_suffix',
                 'html_suffix',
                 'domain_top',
-                'subdomain_on'
+                'subdomain_on',
             ] as $item) {
                 $options[$item] = $option->get($item);
             }
@@ -114,8 +110,6 @@ class Register extends Provider
 
     /**
      * 注册 redirect 服务
-     *
-     * @return void
      */
     protected function redirect()
     {
@@ -132,8 +126,6 @@ class Register extends Provider
 
     /**
      * 注册 response 服务
-     *
-     * @return void
      */
     protected function response()
     {
@@ -149,13 +141,11 @@ class Register extends Provider
     }
 
     /**
-     * 设置 COOKIE Resolver
-     *
-     * @return void
+     * 设置 COOKIE Resolver.
      */
     protected function cookieResolver()
     {
-        Response::setCookieResolver(function() {
+        Response::setCookieResolver(function () {
             return $this->container['cookie'];
         });
     }

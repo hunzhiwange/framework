@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,24 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n\Translations;
 
-use Exception;
 use Leevel\Support\IArray;
 
 /**
  * translations.gettext
- * This class borrows heavily from the Wordpress and is part of the Wordpress package
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.18
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ *
  * @version 1.0
  */
 class Gettext extends Translations implements IArray
 {
-
     /**
      * The gettext implementation of select_plural_form.
      *
@@ -42,41 +45,43 @@ class Gettext extends Translations implements IArray
      */
     public function gettext_select_plural_form($count)
     {
-        if (! isset($this->_gettext_select_plural_form) || is_null($this->_gettext_select_plural_form)) {
+        if (! isset($this->_gettext_select_plural_form) || null === $this->_gettext_select_plural_form) {
             list($nplurals, $expression) = $this->nplurals_and_expression_from_header($this->get_header('Plural-Forms'));
             $this->_nplurals = $nplurals;
             $this->_gettext_select_plural_form = $this->make_plural_form_function($nplurals, $expression);
         }
+
         return call_user_func($this->_gettext_select_plural_form, $count);
     }
 
     /**
-     *
      * @param string $header
+     *
      * @return array
      */
     public function nplurals_and_expression_from_header($header)
     {
         if (preg_match('/^\s*nplurals\s*=\s*(\d+)\s*;\s+plural\s*=\s*(.+)$/', $header, $matches)) {
-            $nplurals = (int)$matches[1];
+            $nplurals = (int) $matches[1];
             $expression = trim($this->parenthesize_plural_exression($matches[2]));
-            return array(
+
+            return [
                 $nplurals,
-                $expression
-            );
+                $expression,
+            ];
         } else {
-            return array(
+            return [
                 2,
-                'n != 1'
-            );
+                'n != 1',
+            ];
         }
     }
 
     /**
      * Makes a function, which will return the right translation index, according to the
-     * plural forms header
+     * plural forms header.
      *
-     * @param int $nplurals
+     * @param int    $nplurals
      * @param string $expression
      */
     public function make_plural_form_function($nplurals, $expression)
@@ -95,9 +100,10 @@ class Gettext extends Translations implements IArray
 
     /**
      * Adds parentheses to the inner parts of ternary operators in
-     * plural expressions, because PHP evaluates ternary oerators from left to right
+     * plural expressions, because PHP evaluates ternary oerators from left to right.
      *
      * @param string $expression the expression without parentheses
+     *
      * @return string the expression with parentheses added
      */
     public function parenthesize_plural_exression($expression)
@@ -105,12 +111,12 @@ class Gettext extends Translations implements IArray
         $expression .= ';';
         $res = '';
         $depth = 0;
-        for ($i = 0; $i < strlen($expression); ++ $i) {
+        for ($i = 0; $i < strlen($expression); ++$i) {
             $char = $expression[$i];
             switch ($char) {
                 case '?':
                     $res .= ' ? (';
-                    $depth ++;
+                    ++$depth;
                     break;
                 case ':':
                     $res .= ') : (';
@@ -123,17 +129,18 @@ class Gettext extends Translations implements IArray
                     $res .= $char;
             }
         }
+
         return rtrim($res, ';');
     }
 
     /**
-     *
      * @param string $translation
+     *
      * @return array
      */
     public function make_headers($translation)
     {
-        $headers = array();
+        $headers = [];
         // sometimes \ns are used instead of real new lines
         $translation = str_replace('\n', "\n", $translation);
         $lines = explode("\n", $translation);
@@ -144,11 +151,11 @@ class Gettext extends Translations implements IArray
             }
             $headers[trim($parts[0])] = trim($parts[1]);
         }
+
         return $headers;
     }
 
     /**
-     *
      * @param string $header
      * @param string $value
      */
@@ -163,16 +170,17 @@ class Gettext extends Translations implements IArray
     }
 
     /**
-     * 读取文件到数组
+     * 读取文件到数组.
      *
      * @param string|array $filename
+     *
      * @return array
      */
     public function readToArray($filename)
     {
         if (! is_array($filename)) {
             $filename = [
-                $filename
+                $filename,
             ];
         }
 
@@ -184,7 +192,7 @@ class Gettext extends Translations implements IArray
     }
 
     /**
-     * 对象转数组
+     * 对象转数组.
      *
      * @return array
      */

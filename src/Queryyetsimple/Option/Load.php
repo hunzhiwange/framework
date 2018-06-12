@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Option;
 
 use Exception;
@@ -24,34 +28,34 @@ use Dotenv\Exception\InvalidFileException;
 use Dotenv\Exception\InvalidPathException;
 
 /**
- * 配置工具类
+ * 配置工具类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.18
+ *
  * @version 1.0
  */
 class Load
 {
     /**
-     * 配置路径
+     * 配置路径.
      *
      * @var string
      */
     protected $dir = [];
 
     /**
-     * 已经载入数据
+     * 已经载入数据.
      *
      * @var array
      */
     protected $loaded = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param string $dir
-     * @return void
      */
     public function __construct(string $dir)
     {
@@ -63,9 +67,10 @@ class Load
     }
 
     /**
-     * 载入配置数据
+     * 载入配置数据.
      *
      * @param \Leevel\Kernel\IProject $project
+     *
      * @return array
      */
     public function loadData(IProject $project): array
@@ -100,9 +105,10 @@ class Load
     }
 
     /**
-     * 载入环境变量数据
-     * 
+     * 载入环境变量数据.
+     *
      * @param \Leevel\Kernel\IProject $project
+     *
      * @return array
      */
     protected function loadEnvData(IProject $project): array
@@ -119,16 +125,17 @@ class Load
     }
 
     /**
-     * 分析延迟加载服务提供者
-     * 
+     * 分析延迟加载服务提供者.
+     *
      * @param array $providers
+     *
      * @return array
      */
     protected function loadDeferredProviderData(array &$providers): array
     {
-       $deferredProviders = $deferredAlias = [];
+        $deferredProviders = $deferredAlias = [];
 
-       foreach ($providers as $k => $provider) {
+        foreach ($providers as $k => $provider) {
             if (! class_exists($provider)) {
                 unset($providers[$key]);
                 continue;
@@ -155,14 +162,15 @@ class Load
 
         return [
             $deferredProviders,
-            $deferredAlias
+            $deferredAlias,
         ];
     }
 
     /**
-     * 载入 Composer 配置数据
-     * 
+     * 载入 Composer 配置数据.
+     *
      * @param string $path
+     *
      * @return array
      */
     protected function loadComposerOption(string $path): array
@@ -171,7 +179,7 @@ class Load
     }
 
     /**
-     * 载入配置数据
+     * 载入配置数据.
      *
      * @return array
      */
@@ -186,15 +194,14 @@ class Load
         foreach ($files as $file) {
             $type = substr(basename($file), 0, -4);
 
-            if ($type == 'app') {
+            if ('app' == $type) {
                 $findApp = true;
             }
 
-            $data[$type] = (array)include $file;
+            $data[$type] = (array) include $file;
         }
 
-
-        if ($findApp === false) {
+        if (false === $findApp) {
             throw new Exception('Unable to load the app option file.');
         }
 
@@ -202,11 +209,12 @@ class Load
     }
 
     /**
-     * 合并 composer 配置数据
+     * 合并 composer 配置数据.
      *
-     * @param array $options
+     * @param array                   $options
      * @param \Leevel\Kernel\IProject $project
-     * @param array $optionFiles
+     * @param array                   $optionFiles
+     *
      * @return array
      */
     protected function mergeComposerOption(array $options, IProject $project, array $optionFiles): array

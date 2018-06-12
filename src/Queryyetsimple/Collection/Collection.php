@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,27 +17,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Collection;
 
 use Iterator;
 use Countable;
 use ArrayAccess;
 use JsonSerializable;
-use BadMethodCallException;
 use InvalidArgumentException;
-use Leevel\Support\{
-    Type,
-    IJson,
-    IArray,
-    TMacro
-};
+use Leevel\Support\Type;
+use Leevel\Support\IJson;
+use Leevel\Support\IArray;
+use Leevel\Support\TMacro;
 
 /**
- * 集合
+ * 集合.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.21
+ *
  * @version 1.0
  */
 class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, JsonSerializable
@@ -42,7 +44,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     use TMacro;
 
     /**
-     * 元素合集
+     * 元素合集.
      *
      * @var array
      */
@@ -51,29 +53,28 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     /**
      * 验证
      *
-     * @var boolean
+     * @var bool
      */
     protected $valid = true;
 
     /**
-     * 类型
+     * 类型.
      *
      * @var mixed
      */
     protected $type = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param mixed $elements
      * @param array $type
-     * @return void
      */
     public function __construct($elements = [], array $type = null)
     {
         if ($type) {
             $this->type = $type;
-        }        
+        }
 
         $elements = $this->getArrayElements($elements);
 
@@ -89,11 +90,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 创建一个集合
+     * 创建一个集合.
      *
      * @param mixed $elements
      * @param mixed $type
-     * @return void
      */
     public static function make($elements = [], $type = null)
     {
@@ -101,7 +101,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 当前元素
+     * 当前元素.
      *
      * @return mixed
      */
@@ -111,7 +111,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 当前 key
+     * 当前 key.
      *
      * @return mixed
      */
@@ -121,20 +121,16 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 下一个元素
-     *
-     * @return void
+     * 下一个元素.
      */
     public function next()
     {
         $next = next($this->elements);
-        $this->valid = $next !== false;
+        $this->valid = false !== $next;
     }
 
     /**
-     * 指针重置
-     *
-     * @return void
+     * 指针重置.
      */
     public function rewind()
     {
@@ -145,7 +141,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     /**
      * 验证
      *
-     * @return boolean
+     * @return bool
      */
     public function valid()
     {
@@ -153,9 +149,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 实现 ArrayAccess::offsetExists
+     * 实现 ArrayAccess::offsetExists.
      *
      * @param string $offset
+     *
      * @return mixed
      */
     public function offsetExists($offset)
@@ -164,9 +161,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 实现 ArrayAccess::offsetGet
+     * 实现 ArrayAccess::offsetGet.
      *
      * @param string $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -175,11 +173,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 实现 ArrayAccess::offsetSet
+     * 实现 ArrayAccess::offsetSet.
      *
      * @param string $offset
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function offsetSet($offset, $value)
     {
@@ -188,10 +185,9 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 实现 ArrayAccess::offsetUnset
+     * 实现 ArrayAccess::offsetUnset.
      *
      * @param string $offset
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -201,7 +197,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 统计元素数量 count($obj)
+     * 统计元素数量 count($obj).
      *
      * @return int
      */
@@ -211,7 +207,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 返回所有元素
+     * 返回所有元素.
      *
      * @return array
      */
@@ -221,7 +217,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 对象转数组
+     * 对象转数组.
      *
      * @return array
      */
@@ -233,7 +229,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 实现 JsonSerializable::jsonSerialize
+     * 实现 JsonSerializable::jsonSerialize.
      *
      * @return array
      */
@@ -253,9 +249,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 对象转 JSON
+     * 对象转 JSON.
      *
-     * @param integer $option
+     * @param int $option
+     *
      * @return string
      */
     public function toJson($option = JSON_UNESCAPED_UNICODE)
@@ -264,7 +261,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * __toString 魔术方法
+     * __toString 魔术方法.
      *
      * @return string
      */
@@ -274,15 +271,16 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.each
-     * 
+     * JQuery.each.
+     *
      * @param callable $callback
+     *
      * @return $this
      */
     public function each(callable $callback)
     {
         foreach ($this->elements as $key => $item) {
-            if ($callback($item, $key) === false) {
+            if (false === $callback($item, $key)) {
                 break;
             }
         }
@@ -291,7 +289,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.prev
+     * JQuery.prev.
      *
      * @return mixed
      */
@@ -305,7 +303,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.end
+     * JQuery.end.
      *
      * @return mixed
      */
@@ -319,9 +317,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.siblings
+     * JQuery.siblings.
      *
      * @param mixed $key
+     *
      * @return array
      */
     public function siblings($key = null)
@@ -342,9 +341,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.nextAll
+     * JQuery.nextAll.
      *
      * @param mixed $key
+     *
      * @return array
      */
     public function nextAll($key = null)
@@ -355,7 +355,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         $current = false;
 
         foreach ($this->elements as $k => $value) {
-            if ($current === false) {
+            if (false === $current) {
                 if ($k === $key) {
                     $current = true;
                 }
@@ -368,9 +368,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.prevAll
+     * JQuery.prevAll.
      *
      * @param mixed $key
+     *
      * @return array
      */
     public function prevAll($key = null)
@@ -392,15 +393,16 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.attr
+     * JQuery.attr.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return void|mixed
      */
     public function attr($key, $value = null)
     {
-        if ($value === null) {
+        if (null === $value) {
             return $this->offsetGet($key);
         } else {
             $this->offsetSet($key, $value);
@@ -408,9 +410,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.eq
+     * JQuery.eq.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function eq($key)
@@ -419,9 +422,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.get
+     * JQuery.get.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function get($key)
@@ -430,20 +434,21 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.index
+     * JQuery.index.
      *
      * @param mixed $value
-     * @param boolean $strict
+     * @param bool  $strict
+     *
      * @return mixed
      */
     public function index($value = null, bool $strict = true)
     {
-        if ($value === null) {
+        if (null === $value) {
             return $this->key();
         } else {
             $key = array_search($value, $this->elements, $strict);
 
-            if ($key === false) {
+            if (false === $key) {
                 return null;
             }
 
@@ -452,9 +457,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.find
+     * JQuery.find.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function find($key)
@@ -463,18 +469,19 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.first
+     * JQuery.first.
      *
      * @return mixed
      */
     public function first()
     {
         $this->rewind();
+
         return $this->current();
     }
 
     /**
-     * JQuery.last
+     * JQuery.last.
      *
      * @return mixed
      */
@@ -484,10 +491,11 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.is
+     * JQuery.is.
      *
      * @param string $key
-     * @return boolean
+     *
+     * @return bool
      */
     public function is($key)
     {
@@ -495,10 +503,11 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.slice
+     * JQuery.slice.
      *
      * @param int $selector
      * @param int $length
+     *
      * @return array
      */
     public function slice($selector, $length = null)
@@ -507,9 +516,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.not
+     * JQuery.not.
      *
      * @param string $key
+     *
      * @return array
      */
     public function not($key)
@@ -518,9 +528,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * JQuery.filter
+     * JQuery.filter.
      *
      * @param string $key
+     *
      * @return array
      */
     public function filter($key)
@@ -529,7 +540,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * jquer.size
+     * jquer.size.
      *
      * @return int
      */
@@ -539,9 +550,9 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 是否为空
+     * 是否为空.
      *
-     * @return boolean
+     * @return bool
      */
     public function isEmpty()
     {
@@ -549,10 +560,11 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 数据 map
+     * 数据 map.
      *
      * @param mixed $key
      * @param mixed $value
+     *
      * @return array
      */
     public function map($key, $value = null)
@@ -561,10 +573,9 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 验证类型
+     * 验证类型.
      *
      * @param mixed $value
-     * @return void
      */
     protected function checkType($value)
     {
@@ -580,9 +591,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 转换数据到数组
+     * 转换数据到数组.
      *
      * @param mixed $elements
+     *
      * @return array
      */
     protected function getArrayElements($elements)
@@ -599,17 +611,19 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
             return $elements->jsonSerialize();
         }
 
-        return (array)$elements;
+        return (array) $elements;
     }
 
     /**
-     * 分析 key
+     * 分析 key.
      *
      * @param mixed $key
+     *
      * @return mixed
      */
-    protected function parseKey($key = null){
-        if (is_null($key)) {
+    protected function parseKey($key = null)
+    {
+        if (null === $key) {
             $key = $this->key();
         }
 
@@ -617,9 +631,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * __get 魔术方法
+     * __get 魔术方法.
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function __get($key)
@@ -628,11 +643,10 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * __set 魔术方法
+     * __set 魔术方法.
      *
      * @param string $key
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function __set($key, $value)
     {

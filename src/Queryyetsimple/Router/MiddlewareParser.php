@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,32 +17,33 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router;
 
 use InvalidArgumentException;
 
 /**
- * 路由中间件分析
+ * 路由中间件分析.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.21
+ *
  * @version 1.0
  */
 class MiddlewareParser
 {
     /**
-     * 路由 
+     * 路由.
      *
      * @var \Leevel\Router\Router
      */
     protected $router;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Router\Router $router
-     * @return void
      */
     public function __construct(Router $router)
     {
@@ -51,6 +55,7 @@ class MiddlewareParser
      * 最多 2 个层级支持
      *
      * @param string|array $middlewares
+     *
      * @return array
      */
     public function handle($middlewares)
@@ -60,7 +65,7 @@ class MiddlewareParser
 
         $result = [];
 
-        foreach ((array)$middlewares as $m) {
+        foreach ((array) $middlewares as $m) {
             if (! is_string($m)) {
                 throw new InvalidArgumentException('Middleware only allowed string.');
             }
@@ -68,7 +73,7 @@ class MiddlewareParser
             list($m, $params) = $this->parseMiddleware($m);
 
             if (isset($middlewareGroups[$m])) {
-                foreach ((array)$middlewareGroups[$m] as $item) {
+                foreach ((array) $middlewareGroups[$m] as $item) {
                     list($item, $params) = $this->parseMiddleware($item);
 
                     $result[] = $this->middlewareName($middlewareAlias[$item] ?? $item, $params);
@@ -80,17 +85,18 @@ class MiddlewareParser
 
         $result = [
             'handle' => $this->normalizeMiddleware($result, 'handle'),
-            'terminate' => $this->normalizeMiddleware($result, 'terminate')
+            'terminate' => $this->normalizeMiddleware($result, 'terminate'),
         ];
 
         return $result;
     }
 
     /**
-     * 格式化中间件
+     * 格式化中间件.
      *
-     * @param array $middlewares
+     * @param array  $middlewares
      * @param string $method
+     *
      * @return array
      */
     protected function normalizeMiddleware(array $middlewares, string $method)
@@ -100,7 +106,7 @@ class MiddlewareParser
                 return '';
             }
 
-            if (strpos($item, ':') === false) {
+            if (false === strpos($item, ':')) {
                 return $item . '@' . $method;
             } else {
                 return str_replace(':', '@' . $method . ':', $item);
@@ -113,30 +119,32 @@ class MiddlewareParser
     }
 
     /**
-     * 分析中间件
+     * 分析中间件.
      *
      * @param string $middleware
+     *
      * @return array
      */
     protected function parseMiddleware($middleware)
     {
         $params = '';
 
-        if (strpos($middleware, ':') !== false) {
+        if (false !== strpos($middleware, ':')) {
             list($middleware, $params) = explode(':', $middleware);
         }
 
         return [
             $middleware,
-            $params
+            $params,
         ];
     }
 
     /**
-     * 中间件名字
+     * 中间件名字.
      *
      * @param string $middleware
      * @param string $params
+     *
      * @return string
      */
     protected function middlewareName($middleware, $params)

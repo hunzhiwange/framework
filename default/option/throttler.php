@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,7 +18,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * 请求频率默认配置文件
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -24,8 +27,7 @@
  * @version 1.0
  */
 return [
-
-    /**
+    /*
      * ---------------------------------------------------------------
      * 请求频率缓存驱动
      * ---------------------------------------------------------------
@@ -34,5 +36,5 @@ return [
      * 这里使用的缓存组件的中的配置
      * 系统为所有缓存提供了统一的接口，在使用上拥有一致性
      */
-    'driver' => env('throttler_driver', null)
+    'driver' => env('throttler_driver', null),
 ];

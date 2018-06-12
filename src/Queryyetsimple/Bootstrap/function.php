@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use Leevel\{
-    Log\Ilog,
-    Bootstrap\Project,
-    Support\Debug\Dump
-};
+
+use Leevel\Log\Ilog;
+use Leevel\Bootstrap\Project;
+use Leevel\Support\Debug\Dump;
 
 if (! function_exists('project')) {
     /**
-     * 返回项目容器或者注入
+     * 返回项目容器或者注入.
      *
      * @param string|null $sInstance
-     * @param array $arrArgs
+     * @param array       $arrArgs
+     *
      * @return \Leevel\Bootstrap\Project
      */
     function project($sInstance = null, $arrArgs = [])
     {
-        if ($sInstance === null) {
+        if (null === $sInstance) {
             return project::singletons();
         } else {
             if (($objInstance = project::singletons()->make($sInstance, $arrArgs))) {
@@ -44,10 +47,11 @@ if (! function_exists('project')) {
 if (! function_exists('app')) {
     /**
      * 返回项目容器或者注入
-     * project 别名函数
+     * project 别名函数.
      *
      * @param string|null $sInstance
-     * @param array $arrArgs
+     * @param array       $arrArgs
+     *
      * @return \Leevel\Bootstrap\Project
      */
     function app($sInstance = null, $arrArgs = [])
@@ -58,9 +62,9 @@ if (! function_exists('app')) {
 
 if (! function_exists('run_with_extension')) {
     /**
-     * 是否以扩展方式运行
+     * 是否以扩展方式运行.
      *
-     * @return boolean
+     * @return bool
      */
     function run_with_extension()
     {
@@ -70,9 +74,9 @@ if (! function_exists('run_with_extension')) {
 
 if (! function_exists('api')) {
     /**
-     * 是否为 API
+     * 是否为 API.
      *
-     * @return boolean
+     * @return bool
      */
     function api()
     {
@@ -82,21 +86,21 @@ if (! function_exists('api')) {
 
 if (! function_exists('phpui')) {
     /**
-     * 是否为 PHPUI
+     * 是否为 PHPUI.
      *
-     * @return boolean
+     * @return bool
      */
     function phpui()
     {
-        return env('app_mode', false) == 'phpui';
+        return 'phpui' == env('app_mode', false);
     }
 }
 
 if (! function_exists('console')) {
     /**
-     * 是否为 Console
+     * 是否为 Console.
      *
-     * @return boolean
+     * @return bool
      */
     function console()
     {
@@ -106,10 +110,11 @@ if (! function_exists('console')) {
 
 if (! function_exists('dd')) {
     /**
-     * 调试一个变量
+     * 调试一个变量.
      *
      * @param mixed $var
-     * @param boolean $simple
+     * @param bool  $simple
+     *
      * @return mixed
      */
     function dd($var, $simple = false)
@@ -120,10 +125,11 @@ if (! function_exists('dd')) {
 
 if (! function_exists('dump')) {
     /**
-     * 调试一个变量
+     * 调试一个变量.
      *
      * @param mixed $var
-     * @param boolean $simple
+     * @param bool  $simple
+     *
      * @return mixed
      */
     function dump($var, $simple = false)
@@ -137,7 +143,8 @@ if (! function_exists('env')) {
      * 取得项目的环境变量.支持 boolean, empty 和 null.
      *
      * @param string $strName
-     * @param mixed $mixDefault
+     * @param mixed  $mixDefault
+     *
      * @return mixed
      */
     function env($strName, $mixDefault = null)
@@ -151,7 +158,7 @@ if (! function_exists('env')) {
                 break;
             default:
                 $strName = getenv($strName);
-                if ($strName === false) {
+                if (false === $strName) {
                     $strName = value($mixDefault);
                 }
         }
@@ -178,8 +185,8 @@ if (! function_exists('env')) {
                 return;
         }
 
-        if ($strName && strlen($strName) > 1 && $strName[0] == '"' && $strName[strlen($strName) - 1] == '"') {
-            return substr($strName, 1, - 1);
+        if ($strName && strlen($strName) > 1 && '"' == $strName[0] && '"' == $strName[strlen($strName) - 1]) {
+            return substr($strName, 1, -1);
         }
 
         return $strName;
@@ -188,9 +195,10 @@ if (! function_exists('env')) {
 
 if (! function_exists('encrypt')) {
     /**
-     * 加密字符串
+     * 加密字符串.
      *
      * @param string $strValue
+     *
      * @return string
      */
     function encrypt($strValue)
@@ -201,9 +209,10 @@ if (! function_exists('encrypt')) {
 
 if (! function_exists('decrypt')) {
     /**
-     * 解密字符串
+     * 解密字符串.
      *
      * @param string $strValue
+     *
      * @return string
      */
     function decrypt($strValue)
@@ -217,12 +226,13 @@ if (! function_exists('session')) {
      * 设置或者获取 session 值
      *
      * @param array|string $mixKey
-     * @param mixed $mixDefault
+     * @param mixed        $mixDefault
+     *
      * @return mixed
      */
     function session($mixKey = null, $mixDefault = null)
     {
-        if (is_null($mixKey)) {
+        if (null === $mixKey) {
             return project('session');
         }
 
@@ -236,10 +246,11 @@ if (! function_exists('session')) {
 
 if (! function_exists('flash')) {
     /**
-     * 返回 flash
+     * 返回 flash.
      *
      * @param string $strKey
-     * @param mixed $mixDefault
+     * @param mixed  $mixDefault
+     *
      * @return mixed
      */
     function flash($strKey, $mixDefault = null)
@@ -253,9 +264,10 @@ if (! function_exists('url')) {
      * 生成路由地址
      *
      * @param string $url
-     * @param array $params
+     * @param array  $params
      * @param string $subdomain
-     * @param mixed $suffix
+     * @param mixed  $suffix
+     *
      * @return string
      */
     function url($url, $params = [], $option = [], string $subdomain = 'www', $suffix = false): string
@@ -272,26 +284,27 @@ if (! function_exists('prev_url')) {
      */
     function prev_url()
     {
-        return project('request')->header('referer') ?  : project('session')->prevUrl();
+        return project('request')->header('referer') ?: project('session')->prevUrl();
     }
 }
 
 if (! function_exists('__')) {
     /**
-     * 语言包
+     * 语言包.
      *
      * @param array $arr
+     *
      * @return string
      */
     function __(...$arr)
     {
         static $i18n;
 
-        if (is_null($i18n)) {
+        if (null === $i18n) {
             $i18n = project::singletons()->make('i18n');
         }
 
-        if ($i18n === false) {
+        if (false === $i18n) {
             return __sprintf(...$arr);
         }
 
@@ -301,22 +314,24 @@ if (! function_exists('__')) {
 
 if (! function_exists('__sprintf')) {
     /**
-     * lang
+     * lang.
      *
      * @param array $arr
+     *
      * @return string
      */
     function __sprintf(...$arr)
     {
-        return count($arr) == 0 ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
+        return 0 == count($arr) ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
     }
 }
 
 if (! function_exists('gettext')) {
     /**
-     * 语言包
+     * 语言包.
      *
      * @param array $arr
+     *
      * @return string
      */
     function gettext(...$arr)
@@ -330,25 +345,28 @@ if (! function_exists('value')) {
      * 返回默认值
      *
      * @param array $arr
+     *
      * @return mixed
      */
     function value(...$arr)
     {
-        if(count($arr) === 0) return;
+        if (0 === count($arr)) {
+            return;
+        }
         $mixValue = array_shift($arr);
+
         return ! is_string($mixValue) && is_callable($mixValue) ? call_user_func_array($mixValue, $arr) : $mixValue;
     }
 }
 
 if (! function_exists('log')) {
     /**
-     * 记录错误消息
+     * 记录错误消息.
      *
      * @param string $strLevel
-     * @param mixed $mixMessage
-     * @param array $arrContext
-     * @param boolean $booWrite
-     * @return void
+     * @param mixed  $mixMessage
+     * @param array  $arrContext
+     * @param bool   $booWrite
      */
     function log($strLevel, $mixMessage, array $arrContext = [], $booWrite = false)
     {
@@ -358,12 +376,11 @@ if (! function_exists('log')) {
 
 if (! function_exists('debug')) {
     /**
-     * 记录错误消息 debug
+     * 记录错误消息 debug.
      *
      * @param mixed $mixMessage
      * @param array $arrContext
-     * @param boolean $booWrite
-     * @return void
+     * @param bool  $booWrite
      */
     function debug($mixMessage, array $arrContext = [], $booWrite = false)
     {
@@ -373,12 +390,11 @@ if (! function_exists('debug')) {
 
 if (! function_exists('info')) {
     /**
-     * 记录错误消息 info
+     * 记录错误消息 info.
      *
      * @param mixed $mixMessage
      * @param array $arrContext
-     * @param boolean $booWrite
-     * @return void
+     * @param bool  $booWrite
      */
     function info($mixMessage, array $arrContext = [], $booWrite = false)
     {
@@ -388,12 +404,11 @@ if (! function_exists('info')) {
 
 if (! function_exists('notice')) {
     /**
-     * 记录错误消息 notice
+     * 记录错误消息 notice.
      *
      * @param mixed $mixMessage
      * @param array $arrContext
-     * @param boolean $booWrite
-     * @return void
+     * @param bool  $booWrite
      */
     function notice($mixMessage, array $arrContext = [], $booWrite = false)
     {
@@ -403,12 +418,11 @@ if (! function_exists('notice')) {
 
 if (! function_exists('warning')) {
     /**
-     * 记录错误消息 warning
+     * 记录错误消息 warning.
      *
      * @param mixed $mixMessage
      * @param array $arrContext
-     * @param boolean $booWrite
-     * @return void
+     * @param bool  $booWrite
      */
     function warning($mixMessage, array $arrContext = [], $booWrite = false)
     {
@@ -418,12 +432,11 @@ if (! function_exists('warning')) {
 
 if (! function_exists('error')) {
     /**
-     * 记录错误消息 error
+     * 记录错误消息 error.
      *
      * @param mixed $mixMessage
      * @param array $arrContext
-     * @param boolean $booWrite
-     * @return void
+     * @param bool  $booWrite
      */
     function error($mixMessage, array $arrContext = [], $booWrite = false)
     {
@@ -433,12 +446,11 @@ if (! function_exists('error')) {
 
 if (! function_exists('critical')) {
     /**
-     * 记录错误消息 critical
+     * 记录错误消息 critical.
      *
      * @param mixed $mixMessage
      * @param array $arrContext
-     * @param boolean $booWrite
-     * @return void
+     * @param bool  $booWrite
      */
     function critical($mixMessage, array $arrContext = [], $booWrite = false)
     {
@@ -448,12 +460,11 @@ if (! function_exists('critical')) {
 
 if (! function_exists('alert')) {
     /**
-     * 记录错误消息 alert
+     * 记录错误消息 alert.
      *
      * @param mixed $mixMessage
      * @param array $arrContext
-     * @param boolean $booWrite
-     * @return void
+     * @param bool  $booWrite
      */
     function alert($mixMessage, array $arrContext = [], $booWrite = false)
     {
@@ -463,12 +474,11 @@ if (! function_exists('alert')) {
 
 if (! function_exists('emergency')) {
     /**
-     * 记录错误消息 emergency
+     * 记录错误消息 emergency.
      *
      * @param mixed $mixMessage
      * @param array $arrContext
-     * @param boolean $booWrite
-     * @return void
+     * @param bool  $booWrite
      */
     function emergency($mixMessage, array $arrContext = [], $booWrite = false)
     {
@@ -481,12 +491,13 @@ if (! function_exists('option')) {
      * 设置或者获取 option 值
      *
      * @param array|string $mixKey
-     * @param mixed $mixDefault
+     * @param mixed        $mixDefault
+     *
      * @return mixed
      */
     function option($mixKey = null, $mixDefault = null)
     {
-        if (is_null($mixKey)) {
+        if (null === $mixKey) {
             return project('option');
         }
 
@@ -503,12 +514,13 @@ if (! function_exists('cache')) {
      * 设置或者获取 cache 值
      *
      * @param array|string $mixKey
-     * @param mixed $mixDefault
+     * @param mixed        $mixDefault
+     *
      * @return mixed
      */
     function cache($mixKey = null, $mixDefault = null)
     {
-        if (is_null($mixKey)) {
+        if (null === $mixKey) {
             return project('cache');
         }
 
@@ -522,9 +534,10 @@ if (! function_exists('cache')) {
 
 if (! function_exists('path')) {
     /**
-     * 取得项目路径
+     * 取得项目路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path($path = '')
@@ -535,9 +548,10 @@ if (! function_exists('path')) {
 
 if (! function_exists('path_application')) {
     /**
-     * 取得项目应用路径
+     * 取得项目应用路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_application($path = '')
@@ -548,9 +562,10 @@ if (! function_exists('path_application')) {
 
 if (! function_exists('path_common')) {
     /**
-     * 取得项目公共路径
+     * 取得项目公共路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_common($path = '')
@@ -561,9 +576,10 @@ if (! function_exists('path_common')) {
 
 if (! function_exists('path_runtime')) {
     /**
-     * 取得项目缓存路径
+     * 取得项目缓存路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_runtime($path = '')
@@ -574,9 +590,10 @@ if (! function_exists('path_runtime')) {
 
 if (! function_exists('path_storage')) {
     /**
-     * 取得项目附件路径
+     * 取得项目附件路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_storage($path = '')
@@ -587,9 +604,10 @@ if (! function_exists('path_storage')) {
 
 if (! function_exists('path_option')) {
     /**
-     * 取得项目配置路径
+     * 取得项目配置路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_option($path = '')
@@ -600,10 +618,11 @@ if (! function_exists('path_option')) {
 
 if (! function_exists('path_application')) {
     /**
-     * 取得项目当前应用路径
+     * 取得项目当前应用路径.
      *
      * @param string $path
      * @param string $app
+     *
      * @return string
      */
     function path_an_application(string $path = '', ?string $app = null)
@@ -614,9 +633,10 @@ if (! function_exists('path_application')) {
 
 if (! function_exists('path_theme')) {
     /**
-     * 取得项目当前应用主题路径
+     * 取得项目当前应用主题路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_theme($path = '')
@@ -627,9 +647,10 @@ if (! function_exists('path_theme')) {
 
 if (! function_exists('path_file_cache')) {
     /**
-     * 取得项目当前应用文件缓存路径
+     * 取得项目当前应用文件缓存路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_file_cache($path = '')
@@ -640,9 +661,10 @@ if (! function_exists('path_file_cache')) {
 
 if (! function_exists('path_log_cache')) {
     /**
-     * 取得项目当前应用日志缓存路径
+     * 取得项目当前应用日志缓存路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_log_cache($path = '')
@@ -653,9 +675,10 @@ if (! function_exists('path_log_cache')) {
 
 if (! function_exists('path_swoole_cache')) {
     /**
-     * 取得项目当前应用 swoole 缓存路径
+     * 取得项目当前应用 swoole 缓存路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_swoole_cache($path = '')
@@ -666,9 +689,10 @@ if (! function_exists('path_swoole_cache')) {
 
 if (! function_exists('path_table_cache')) {
     /**
-     * 取得项目当前应用数据表缓存路径
+     * 取得项目当前应用数据表缓存路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_table_cache($path = '')
@@ -679,9 +703,10 @@ if (! function_exists('path_table_cache')) {
 
 if (! function_exists('path_router_cache')) {
     /**
-     * 取得项目当前应用路由缓存路径
+     * 取得项目当前应用路由缓存路径.
      *
      * @param string $path
+     *
      * @return string
      */
     function path_router_cache($path = 'router.php')
@@ -694,7 +719,7 @@ if (! function_exists('is_ajax_request')) {
     /**
      * 是否为 ajax 请求
      *
-     * @return boolean
+     * @return bool
      */
     function is_ajax_request()
     {
@@ -702,6 +727,7 @@ if (! function_exists('is_ajax_request')) {
         if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
             return true;
         }
+
         return false;
     }
 }
@@ -710,14 +736,16 @@ if (! function_exists('set_ajax_request')) {
     /**
      * 强制设置是否为 ajax 请求
      *
-     * @param boolean $booStatus
-     * @return boolean
+     * @param bool $booStatus
+     *
+     * @return bool
      * @note 返回上一次是否为 ajax 请求
      */
     function set_ajax_request($booStatus = true)
     {
         $booOld = is_ajax_request();
         app('request')->setPost(app('option')->get('var_ajax'), $booStatus);
+
         return $booOld;
     }
 }

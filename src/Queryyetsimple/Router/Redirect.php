@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,43 +17,41 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router;
 
-use Leevel\{
-    Session\ISession,
-    Http\RedirectResponse
-};
+use Leevel\Session\ISession;
+use Leevel\Http\RedirectResponse;
 
 /**
- * Redirect
+ * Redirect.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.03.02
+ *
  * @version 1.0
  */
 class Redirect
 {
-
     /**
-     * URL 生成实例
+     * URL 生成实例.
      *
      * @var \Leevel\Router\Url
      */
     protected $url;
 
     /**
-     * SESSION 仓储
+     * SESSION 仓储.
      *
      * @var \Leevel\Session\ISession
      */
     protected $session;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Router\Url $url
-     * @return void
      */
     public function __construct(IUrl $url)
     {
@@ -58,16 +59,18 @@ class Redirect
     }
 
     /**
-     * 返回一个 URL 生成跳转响应
+     * 返回一个 URL 生成跳转响应.
      *
      * @param string $url
-     * @param array $params
-     * @param array $option
+     * @param array  $params
+     * @param array  $option
      * @sub boolean suffix 是否包含后缀
      * @sub boolean normal 是否为普通 url
      * @sub string subdomain 子域名
-     * @param int $status
+     *
+     * @param int   $status
      * @param array $headers
+     *
      * @return \Leevel\Http\RedirectResponse
      */
     public function url(?string $url, $params = [], $option = [], int $status = 302, array $headers = [])
@@ -78,11 +81,12 @@ class Redirect
     }
 
     /**
-     * 返回一个跳转响应
+     * 返回一个跳转响应.
      *
      * @param string $url
-     * @param int $status
-     * @param array $headers
+     * @param int    $status
+     * @param array  $headers
+     *
      * @return \Leevel\Http\RedirectResponse
      */
     public function raw(?string $url, int $status = 302, array $headers = [])
@@ -91,7 +95,7 @@ class Redirect
     }
 
     /**
-     * 取回 URL 生成实例
+     * 取回 URL 生成实例.
      *
      * @return \Leevel\Router\Url
      */
@@ -101,10 +105,9 @@ class Redirect
     }
 
     /**
-     * 设置 SESSION 仓储
+     * 设置 SESSION 仓储.
      *
      * @param \Leevel\Session\ISession $session
-     * @return void
      */
     public function setSession(ISession $session)
     {
@@ -112,11 +115,12 @@ class Redirect
     }
 
     /**
-     * 返回一个跳转响应
+     * 返回一个跳转响应.
      *
      * @param string $url
-     * @param int $status
-     * @param array $headers
+     * @param int    $status
+     * @param array  $headers
+     *
      * @return \Leevel\Http\RedirectResponse
      */
     protected function createRedirectResponse(?string $url, int $status = 302, array $headers = [])

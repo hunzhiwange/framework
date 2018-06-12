@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Base;
 
 use Thrift\Server\TServer;
@@ -21,19 +25,21 @@ use Thrift\Transport\TTransport;
 
 /**
  * 非阻塞服务
- * This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package
+ * This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.03
+ *
  * @version 1.0
+ *
  * @see swoole/thrift-rpc-server (https://github.com/swoole/thrift-rpc-server)
  */
 class TNonblockingServer extends TServer
 {
     public function serve()
     {
-        $this->transport_->setCallback(array($this, 'handleRequest'));
+        $this->transport_->setCallback([$this, 'handleRequest']);
         $this->transport_->listen();
     }
 

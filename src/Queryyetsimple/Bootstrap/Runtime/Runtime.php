@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -7,22 +10,20 @@
  *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
  *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
  *         \_\                /_/_/         /_/
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Bootstrap\Runtime;
 
 use Exception;
-use Throwable;
-use Whoops\{
-    Run,
-    Handler\PrettyPageHandler,
-    Handler\JsonResponseHandler
-};
+use Whoops\Run;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Handler\JsonResponseHandler;
 use Leevel\Log\ILog;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
@@ -37,28 +38,27 @@ use Symfony\Component\Console\Output\OutputInterface;
 use NunoMaduro\Collision\Provider as CollisionProvider;
 
 /**
- * 异常处理
+ * 异常处理.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.04
+ *
  * @version 1.0
  */
 abstract class Runtime implements IRuntime
 {
-
     /**
-     * 容器
+     * 容器.
      *
      * @var \Leevel\Di\IContainer
      */
     protected $container;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
-     * @return void
      */
     public function __construct(IContainer $container)
     {
@@ -66,9 +66,10 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 异常上报
+     * 异常上报.
      *
      * @param \Exception $e
+     *
      * @return mixed
      */
     public function report(Exception $e)
@@ -86,17 +87,18 @@ abstract class Runtime implements IRuntime
         $log->error(
             $e->getMessage(),
             [
-                'exception' => $e
+                'exception' => $e,
             ],
             true
         );
     }
 
     /**
-     * 异常渲染
+     * 异常渲染.
      *
      * @param \Leevel\Http\Request $request
-     * @param \Exception $e
+     * @param \Exception           $e
+     *
      * @return \Leevel\Http\Response
      */
     public function render(Request $request, Exception $e)
@@ -112,7 +114,6 @@ abstract class Runtime implements IRuntime
 
             return $response;
         }
-        
 
         $e = $this->prepareException($e);
 
@@ -124,15 +125,14 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 命令行渲染
-     * 
+     * 命令行渲染.
+     *
      * @param \sSymfony\Component\Console\Output\OutputInterface $output
-     * @param \Exception $e
-     * @return void
+     * @param \Exception                                         $e
      */
     public function renderForConsole(OutputInterface $output, Exception $e)
     {
-        $handler = (new CollisionProvider)->
+        $handler = (new CollisionProvider())->
 
         register()->
 
@@ -146,9 +146,10 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * HTTP 响应异常
-     * 
+     * HTTP 响应异常.
+     *
      * @param \Exception $e
+     *
      * @return \Leevel\Http\Response
      */
     protected function makeHttpResponse(Exception $e)
@@ -165,9 +166,10 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 尝试返回 HTTP 异常响应
-     * 
-     * @param Exception $e
+     * 尝试返回 HTTP 异常响应.
+     *
+     * @param \Exception $e
+     *
      * @return \Leevel\Http\Response
      */
     public function rendorWithHttpExceptionView(Exception $e)
@@ -190,9 +192,10 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * JSON 响应异常
+     * JSON 响应异常.
      *
      * @param \Exception $e
+     *
      * @return \Leevel\Http\Response
      */
     protected function makeJsonResponse(Exception $e)
@@ -214,9 +217,10 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 异常创建响应
+     * 异常创建响应.
      *
      * @param \Exception $e
+     *
      * @return \Leevel\Http\Response
      */
     protected function convertExceptionToResponse(Exception $e)
@@ -227,11 +231,12 @@ abstract class Runtime implements IRuntime
             $this->normalizeHeaders($e)
         );
     }
-  
+
     /**
-     * 取得异常默认渲染
+     * 取得异常默认渲染.
      *
      * @param \Exception $e
+     *
      * @return string
      */
     protected function renderExceptionContent(Exception $e)
@@ -244,9 +249,10 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 默认异常渲染
-     * 
+     * 默认异常渲染.
+     *
      * @param \Exception $e
+     *
      * @return string
      */
     protected function renderExceptionWithDefault(Exception $e)
@@ -257,16 +263,17 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * Whoops 渲染异常
-     * 
+     * Whoops 渲染异常.
+     *
      * @param \Exception $e
+     *
      * @return string
      */
     protected function renderExceptionWithWhoops(Exception $e)
     {
         $whoops = $this->makeWhoops();
 
-        $prettyPage = new PrettyPageHandler;
+        $prettyPage = new PrettyPageHandler();
         $prettyPage->handleUnconditionally(true);
 
         $whoops->pushHandler($prettyPage);
@@ -275,9 +282,10 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 获取异常格式化变量
-     * 
+     * 获取异常格式化变量.
+     *
      * @param \Exception $e
+     *
      * @return array
      */
     protected function getExceptionVars(Exception $e)
@@ -288,7 +296,7 @@ abstract class Runtime implements IRuntime
             'message' => $e->getMessage(),
             'type' => get_class($e),
             'file' => $this->filterPhysicalPath($e->getFile()),
-            'line' => $e->getLine()
+            'line' => $e->getLine(),
         ];
 
         return $vars;
@@ -296,8 +304,9 @@ abstract class Runtime implements IRuntime
 
     /**
      * 格式化 HTTP 状态码
-     * 
+     *
      * @param \Exception $e
+     *
      * @return int
      */
     protected function normalizeStatusCode(Exception $e)
@@ -306,9 +315,10 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 格式化响应头
-     * 
+     * 格式化响应头.
+     *
      * @param \Exception $e
+     *
      * @return array
      */
     protected function normalizeHeaders(Exception $e)
@@ -317,13 +327,13 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 创建 Whoops
-     * 
+     * 创建 Whoops.
+     *
      * @return \Whoops\Run
      */
     protected function makeWhoops()
     {
-        $whoops = new Run;
+        $whoops = new Run();
 
         $whoops->writeToOutput(false);
         $whoops->allowQuit(false);
@@ -332,19 +342,20 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 创建 JSON 响应句柄
-     * 
+     * 创建 JSON 响应句柄.
+     *
      * @return \Whoops\Handler\JsonResponseHandler
      */
     protected function makeJsonResponseHandler()
     {
-        return (new JsonResponseHandler)->addTraceToOutput($this->container->debug());
+        return (new JsonResponseHandler())->addTraceToOutput($this->container->debug());
     }
 
     /**
-     * 准备异常
+     * 准备异常.
      *
      * @param \Exception $e
+     *
      * @return \Throwable
      */
     protected function prepareException(Exception $e)
@@ -357,9 +368,10 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 是否为 HTTP 异常
+     * 是否为 HTTP 异常.
      *
      * @param \Exception $e
+     *
      * @return bool
      */
     protected function isHttpException(Exception $e)
@@ -368,10 +380,11 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * 通过模板渲染异常
-     * 
+     * 通过模板渲染异常.
+     *
      * @param string $filepath
-     * @param array $vars
+     * @param array  $vars
+     *
      * @return string
      */
     protected function renderWithFile(string $filepath, array $vars = [])
@@ -392,9 +405,10 @@ abstract class Runtime implements IRuntime
 
     /**
      * 过滤物理路径
-     * 基于安全考虑
+     * 基于安全考虑.
      *
      * @param string $path
+     *
      * @return string
      */
     protected function filterPhysicalPath(string $path)

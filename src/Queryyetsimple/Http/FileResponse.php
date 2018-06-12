@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 use DateTime;
@@ -24,34 +28,34 @@ use InvalidArgumentException;
 
 /**
  * FILE 响应请求
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.27
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class FileResponse extends Response
 {
-
     /**
-     * 文件
-     * 
+     * 文件.
+     *
      * @var \Leevel\Http\File
      */
     protected $file;
 
     /**
-     * 构造函数
-     * 
+     * 构造函数.
+     *
      * @param \SplFileObject|\SplFileInfo|string $file
-     * @param integer $status
-     * @param array $headers
-     * @param null|string $contentDisposition
-     * @param bool $autoEtag
-     * @param bool $autoLastModified
-     * @return void
+     * @param int                                $status
+     * @param array                              $headers
+     * @param null|string                        $contentDisposition
+     * @param bool                               $autoEtag
+     * @param bool                               $autoLastModified
      */
     public function __construct($file, int $status = 200, array $headers = [], string $contentDisposition = null, bool $autoEtag = false, bool $autoLastModified = true)
     {
@@ -61,14 +65,15 @@ class FileResponse extends Response
     }
 
     /**
-     * 创建一个文件响应
-     * 
+     * 创建一个文件响应.
+     *
      * @param \SplFileObject|\SplFileInfo|string $file
-     * @param integer $status
-     * @param array $headers
-     * @param null|string $contentDisposition
-     * @param bool $autoEtag
-     * @param bool $autoLastModified
+     * @param int                                $status
+     * @param array                              $headers
+     * @param null|string                        $contentDisposition
+     * @param bool                               $autoEtag
+     * @param bool                               $autoLastModified
+     *
      * @return static
      */
     public static function create($file = null, int $status = 200, array $headers = [], $contentDisposition = null, $autoEtag = false, $autoLastModified = true)
@@ -77,12 +82,13 @@ class FileResponse extends Response
     }
 
     /**
-     * 设置文件
+     * 设置文件.
      *
-     * @param \SplFileObject|\SplFileInfo|string $file 
-     * @param string $contentDisposition
-     * @param bool $autoEtag
-     * @param bool $autoLastModified
+     * @param \SplFileObject|\SplFileInfo|string $file
+     * @param string                             $contentDisposition
+     * @param bool                               $autoEtag
+     * @param bool                               $autoLastModified
+     *
      * @return $this
      */
     public function setFile($file, $contentDisposition = null, $autoEtag = false, $autoLastModified = true)
@@ -121,7 +127,7 @@ class FileResponse extends Response
     }
 
     /**
-     * 取回文件
+     * 取回文件.
      *
      * @return \Leevel\Http\File
      */
@@ -131,9 +137,7 @@ class FileResponse extends Response
     }
 
     /**
-     * 自动设置最后修改时间
-     *
-     * @return void
+     * 自动设置最后修改时间.
      */
     public function setAutoLastModified()
     {
@@ -141,15 +145,13 @@ class FileResponse extends Response
             return $this;
         }
 
-        $this->setLastModified(DateTime::createFromFormat('U', (string)$this->file->getMTime()));
+        $this->setLastModified(DateTime::createFromFormat('U', (string) $this->file->getMTime()));
 
         return $this;
     }
 
     /**
-     * 自动设置标记
-     *
-     * @return void
+     * 自动设置标记.
      */
     public function setAutoEtag()
     {
@@ -187,10 +189,11 @@ class FileResponse extends Response
     }
 
     /**
-     * 设置文件下载模式
+     * 设置文件下载模式.
      *
      * @param string $disposition
      * @param string $filename
+     *
      * @return $this
      */
     public function setContentDisposition($disposition, $filename = '')
@@ -204,8 +207,8 @@ class FileResponse extends Response
         }
 
         if (! in_array($disposition, [
-            ResponseHeaderBag::DISPOSITION_ATTACHMENT, 
-            ResponseHeaderBag::DISPOSITION_INLINE
+            ResponseHeaderBag::DISPOSITION_ATTACHMENT,
+            ResponseHeaderBag::DISPOSITION_INLINE,
         ])) {
             throw new InvalidArgumentException('The disposition type is invalid.');
         }

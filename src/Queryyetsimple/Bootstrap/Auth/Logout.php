@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,27 +17,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Bootstrap\auth;
 
-use Leevel\{
-    auth,
-    response
-};
+use Leevel\auth;
+use Leevel\response;
 
 /**
- * 退出登录
+ * 退出登录.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.09
+ *
  * @version 1.0
  */
-trait logout
+trait Logout
 {
     use field;
 
     /**
-     * 登录退出
+     * 登录退出.
      *
      * @return \Leevel\Http\Response
      */
@@ -44,7 +47,7 @@ trait logout
     }
 
     /**
-     * 登录退出
+     * 登录退出.
      *
      * @return \Leevel\Http\Response|array
      */
@@ -54,7 +57,7 @@ trait logout
 
         if ($this->isAjaxRequest()) {
             return [
-                'message' => $this->getLogoutMessage()
+                'message' => $this->getLogoutMessage(),
             ];
         }
 
@@ -62,7 +65,7 @@ trait logout
     }
 
     /**
-     * 获取退出登录消息
+     * 获取退出登录消息.
      *
      * @return string
      */

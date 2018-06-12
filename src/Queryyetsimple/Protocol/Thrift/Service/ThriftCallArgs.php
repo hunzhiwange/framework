@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Service;
 
-use Thrift\Base\TBase;
 use Thrift\Type\TType;
-use Thrift\Type\TMessageType;
-use Thrift\Protocol\TProtocol;
-use Thrift\Exception\TException;
 use Thrift\Exception\TProtocolException;
-use Thrift\Exception\TApplicationException;
-use Thrift\Protocol\TBinaryProtocolAccelerated;
 
 /**
- * thrift 默认服务调用参数
+ * thrift 默认服务调用参数.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.01
+ *
  * @version 1.0
  */
 class ThriftCallArgs
@@ -42,16 +41,16 @@ class ThriftCallArgs
      */
     public $request = null;
 
-    public function __construct($vals=null)
+    public function __construct($vals = null)
     {
-        if (!isset(self::$_TSPEC)) {
-            self::$_TSPEC = array(
-        1 => array(
+        if (! isset(self::$_TSPEC)) {
+            self::$_TSPEC = [
+        1 => [
           'var' => 'request',
           'type' => TType::STRUCT,
           'class' => '\Leevel\Protocol\Thrift\Service\Request',
-          ),
-        );
+          ],
+        ];
         }
         if (is_array($vals)) {
             if (isset($vals['request'])) {
@@ -74,12 +73,12 @@ class ThriftCallArgs
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-            if ($ftype == TType::STOP) {
+            if (TType::STOP == $ftype) {
                 break;
             }
             switch ($fid) {
         case 1:
-          if ($ftype == TType::STRUCT) {
+          if (TType::STRUCT == $ftype) {
               $this->request = new Request();
               $xfer += $this->request->read($input);
           } else {
@@ -93,6 +92,7 @@ class ThriftCallArgs
             $xfer += $input->readFieldEnd();
         }
         $xfer += $input->readStructEnd();
+
         return $xfer;
     }
 
@@ -100,8 +100,8 @@ class ThriftCallArgs
     {
         $xfer = 0;
         $xfer += $output->writeStructBegin('ThriftCallArgs');
-        if ($this->request !== null) {
-            if (!is_object($this->request)) {
+        if (null !== $this->request) {
+            if (! is_object($this->request)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
             }
             $xfer += $output->writeFieldBegin('request', TType::STRUCT, 1);
@@ -110,6 +110,7 @@ class ThriftCallArgs
         }
         $xfer += $output->writeFieldStop();
         $xfer += $output->writeStructEnd();
+
         return $xfer;
     }
 }

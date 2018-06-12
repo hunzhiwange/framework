@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,47 +17,51 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Console;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
- * 命令行应用程序接口
+ * 命令行应用程序接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.28
+ *
  * @version 1.0
  */
 interface IApplication
 {
-
     /**
-     * 添加一条命令
+     * 添加一条命令.
      *
      * @param \Symfony\Component\Console\Command\Command $command
+     *
      * @return \Symfony\Component\Console\Command\Command
      */
     public function add(SymfonyCommand $command);
 
     /**
-     * 格式化一个命令行
+     * 格式化一个命令行.
      *
      * @param string $command
+     *
      * @return \Symfony\Component\Console\Command\Command
      */
     public function normalizeCommand(string $command);
 
     /**
-     * 批量格式化命令行
+     * 批量格式化命令行.
      *
      * @param array $commands
+     *
      * @return $this
      */
     public function normalizeCommands(array $commands);
 
     /**
-     * 返回项目容器
+     * 返回项目容器.
      *
      * @return \Leevel\Di\Container
      */

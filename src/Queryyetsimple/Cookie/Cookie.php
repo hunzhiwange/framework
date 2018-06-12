@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,17 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Cookie;
 
 use Exception;
 use Leevel\Option\TClass;
 
 /**
- * cookie 封装
+ * cookie 封装.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.19
+ *
  * @version 1.0
  */
 class Cookie implements ICookie
@@ -32,7 +37,7 @@ class Cookie implements ICookie
     use TClass;
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -41,21 +46,20 @@ class Cookie implements ICookie
         'expire' => 86400,
         'domain' => '',
         'path' => '/',
-        'httponly' => false
+        'httponly' => false,
     ];
 
     /**
-     * Cookie 设置数据
+     * Cookie 设置数据.
      *
      * @var array
      */
-    protected $cookies = []; 
+    protected $cookies = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $option
-     * @return void
      */
     public function __construct(array $option = [])
     {
@@ -63,12 +67,11 @@ class Cookie implements ICookie
     }
 
     /**
-     * 设置 COOKIE
+     * 设置 COOKIE.
      *
      * @param string $name
      * @param string $value
-     * @param array $option
-     * @return void
+     * @param array  $option
      */
     public function set($name, $value = '', array $option = [])
     {
@@ -78,22 +81,22 @@ class Cookie implements ICookie
             $value = json_encode($value);
         }
 
-        if (! is_scalar($value) && ! is_null($value)) {
+        if (! is_scalar($value) && null !== $value) {
             throw new Exception('Cookie value must be scalar or null');
         }
 
         $name = $option['prefix'] . $name;
 
-        if ($option["expire"] > 0) {
-            $option["expire"] = time() + $option["expire"];
-        } elseif ($option["expire"] < 0) {
-            $option["expire"] = time() - 31536000;
+        if ($option['expire'] > 0) {
+            $option['expire'] = time() + $option['expire'];
+        } elseif ($option['expire'] < 0) {
+            $option['expire'] = time() - 31536000;
         } else {
-            $option["expire"] = 0;
+            $option['expire'] = 0;
         }
 
         $isHttpSecure = false;
-        if (! empty($_SERVER['HTTPS']) && strtoupper($_SERVER['HTTPS']) === 'ON') {
+        if (! empty($_SERVER['HTTPS']) && 'ON' === strtoupper($_SERVER['HTTPS'])) {
             $isHttpSecure = true;
         }
 
@@ -105,23 +108,22 @@ class Cookie implements ICookie
             $option['path'],
             $option['domain'],
             $isHttpSecure,
-            $option['httponly']
+            $option['httponly'],
         ];
     }
 
     /**
-     * 批量插入
+     * 批量插入.
      *
      * @param string|array $keys
-     * @param mixed $value
-     * @param array $option
-     * @return void
+     * @param mixed        $value
+     * @param array        $option
      */
     public function put($keys, $value = null, array $option = [])
     {
         if (! is_array($keys)) {
             $keys = [
-                $keys => $value
+                $keys => $value,
             ];
         }
 
@@ -131,12 +133,11 @@ class Cookie implements ICookie
     }
 
     /**
-     * 数组插入数据
+     * 数组插入数据.
      *
      * @param string $key
-     * @param mixed $value
-     * @param array $option
-     * @return void
+     * @param mixed  $value
+     * @param array  $option
      */
     public function push($key, $value, array $option = [])
     {
@@ -146,12 +147,11 @@ class Cookie implements ICookie
     }
 
     /**
-     * 合并元素
+     * 合并元素.
      *
      * @param string $key
-     * @param array $value
-     * @param array $option
-     * @return void
+     * @param array  $value
+     * @param array  $option
      */
     public function merge($key, array $value, array $option = [])
     {
@@ -159,12 +159,11 @@ class Cookie implements ICookie
     }
 
     /**
-     * 弹出元素
+     * 弹出元素.
      *
      * @param string $key
-     * @param mixed $value
-     * @param array $option
-     * @return void
+     * @param mixed  $value
+     * @param array  $option
      */
     public function pop($key, array $value, array $option = [])
     {
@@ -172,13 +171,12 @@ class Cookie implements ICookie
     }
 
     /**
-     * 数组插入键值对数据
+     * 数组插入键值对数据.
      *
      * @param string $key
-     * @param mixed $keys
-     * @param mixed $value
-     * @param array $option
-     * @return void
+     * @param mixed  $keys
+     * @param mixed  $value
+     * @param array  $option
      */
     public function arr($key, $keys, $value = null, array $option = [])
     {
@@ -194,11 +192,10 @@ class Cookie implements ICookie
     }
 
     /**
-     * 数组键值删除数据
+     * 数组键值删除数据.
      *
      * @param string $key
-     * @param mixed $keys
-     * @return void
+     * @param mixed  $keys
      */
     public function arrDelete($key, $keys, array $option = [])
     {
@@ -206,7 +203,7 @@ class Cookie implements ICookie
 
         if (! is_array($keys)) {
             $keys = [
-                $keys
+                $keys,
             ];
         }
 
@@ -220,11 +217,12 @@ class Cookie implements ICookie
     }
 
     /**
-     * 获取 cookie
+     * 获取 cookie.
      *
      * @param string $name
-     * @param mixed $defaults
-     * @param array $option
+     * @param mixed  $defaults
+     * @param array  $option
+     *
      * @return mixed
      */
     public function get($name, $defaults = null, array $option = [])
@@ -236,7 +234,7 @@ class Cookie implements ICookie
             if ($this->isJson($this->cookies[$name])) {
                 return json_decode($this->cookies[$name], true);
             }
-            
+
             return $this->cookies[$name];
         } else {
             return $defaults;
@@ -244,11 +242,10 @@ class Cookie implements ICookie
     }
 
     /**
-     * 删除 cookie
+     * 删除 cookie.
      *
      * @param string $name
-     * @param array $option
-     * @return void
+     * @param array  $option
      */
     public function delete($name, array $option = [])
     {
@@ -256,11 +253,10 @@ class Cookie implements ICookie
     }
 
     /**
-     * 清空 cookie
+     * 清空 cookie.
      *
-     * @param boolean $deletePrefix
+     * @param bool  $deletePrefix
      * @param array $option
-     * @return void
      */
     public function clear($deletePrefix = true, array $option = [])
     {
@@ -269,8 +265,8 @@ class Cookie implements ICookie
         $option['prefix'] = '';
 
         foreach ($this->cookies as $key => $val) {
-            if ($deletePrefix === true && $prefix) {
-                if (strpos($key, $prefix) === 0) {
+            if (true === $deletePrefix && $prefix) {
+                if (0 === strpos($key, $prefix)) {
                     $this->delete($key, $option);
                 }
             } else {
@@ -280,20 +276,21 @@ class Cookie implements ICookie
     }
 
     /**
-     * 返回所有 cookie
+     * 返回所有 cookie.
      *
      * @return array
      */
     public function all(): array
     {
         return $this->cookies;
-    } 
+    }
 
     /**
-     * 验证是否为正常的 JSON 字符串
+     * 验证是否为正常的 JSON 字符串.
      *
      * @param mixed $data
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isJson($data)
     {
@@ -303,6 +300,6 @@ class Cookie implements ICookie
 
         json_decode($data);
 
-        return json_last_error() === JSON_ERROR_NONE;
+        return JSON_ERROR_NONE === json_last_error();
     }
 }

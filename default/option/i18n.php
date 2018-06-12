@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,7 +18,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * 国际化默认配置文件
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -24,13 +27,12 @@
  * @version 1.0
  */
 return [
-
-    /**
+    /*
      * ---------------------------------------------------------------
      * 当前语言环境
      * ---------------------------------------------------------------
      *
      * 根据面向的客户设置当前的软件的语言
      */
-    'default' => env('i18n', 'zh-CN')
+    'default' => env('i18n', 'zh-CN'),
 ];

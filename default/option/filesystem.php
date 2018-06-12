@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,7 +18,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * filesystem 默认配置文件
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -24,8 +27,7 @@
  * @version 1.0
  */
 return [
-
-    /**
+    /*
      * ---------------------------------------------------------------
      * filesystem 驱动
      * ---------------------------------------------------------------
@@ -34,7 +36,7 @@ return [
      */
     'default' => env('filesystem_driver', 'local'),
 
-    /**
+    /*
      * ---------------------------------------------------------------
      * filesystem 驱动连接参数
      * ---------------------------------------------------------------
@@ -48,7 +50,7 @@ return [
             'driver' => 'local',
 
             // path
-            'path' => path_storage()
+            'path' => path_storage(),
         ],
 
         'zip' => [
@@ -56,7 +58,7 @@ return [
             'driver' => 'zip',
 
             // path
-            'path' => path_storage('filesystem.zip')
+            'path' => path_storage('filesystem.zip'),
         ],
 
         'ftp' => [
@@ -85,7 +87,7 @@ return [
             'ssl' => false,
 
             // 超时设置
-            'timeout' => 20
+            'timeout' => 20,
         ],
 
         'sftp' => [
@@ -111,7 +113,7 @@ return [
             'privateKey' => '',
 
             // 超时设置
-            'timeout' => 20
-        ]
-    ]
+            'timeout' => 20,
+        ],
+    ],
 ];

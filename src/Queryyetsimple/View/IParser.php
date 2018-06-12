@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,39 +17,41 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\View;
 
 /**
- * iparser 接口
+ * iparser 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.23
+ *
  * @version 1.0
  */
-interface iparser
+interface IParser
 {
-
     /**
-     * 注册视图编译器
+     * 注册视图编译器.
      *
      * @return $this
      */
     public function registerCompilers();
 
     /**
-     * 注册视图分析器
+     * 注册视图分析器.
      *
      * @return $this
      */
     public function registerParsers();
 
     /**
-     * 执行编译
+     * 执行编译.
      *
-     * @param string $sFile
+     * @param string      $sFile
      * @param string|null $sCachePath
-     * @param boolean $isContent
+     * @param bool        $isContent
+     *
      * @return string
      */
     public function doCompile($sFile, $sCachePath = null, bool $isContent = false);
@@ -55,6 +60,7 @@ interface iparser
      * code 编译编码，后还原
      *
      * @param string $sContent
+     *
      * @return string
      */
     public static function revertEncode($sContent);
@@ -63,6 +69,7 @@ interface iparser
      * tagself 编译编码，后还原
      *
      * @param string $sContent
+     *
      * @return string
      */
     public static function globalEncode($sContent);

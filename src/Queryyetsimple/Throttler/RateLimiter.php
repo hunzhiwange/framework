@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,28 +17,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Throttler;
 
 use Countable;
 use RuntimeException;
-use Leevel\{
-    Cache\ICache,
-    Support\IArray
-};
+use Leevel\Cache\ICache;
+use Leevel\Support\IArray;
 
 /**
- * RateLimiter 入口
+ * RateLimiter 入口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.07
+ *
  * @version 1.0
  */
 class RateLimiter implements IRateLimiter, IArray, Countable
 {
-
     /**
-     * 缓存接口
+     * 缓存接口.
      *
      * @var \Leevel\Cache\ICache
      */
@@ -49,56 +51,56 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     protected $strKey;
 
     /**
-     * 指定时间内允许的最大请求次数
+     * 指定时间内允许的最大请求次数.
      *
      * @var int
      */
     protected $intXRateLimitLimit = 60;
 
     /**
-     * 指定时间长度
+     * 指定时间长度.
      *
      * @var int
      */
     protected $intXRateLimitTime = 60;
 
     /**
-     * 距离下一次请求等待时间
+     * 距离下一次请求等待时间.
      *
      * @var int
      */
     protected $intXRateLimitRetryAfter;
 
     /**
-     * 指定时间内剩余请求次数
+     * 指定时间内剩余请求次数.
      *
      * @var int
      */
     protected $intXRateLimitRemaining;
 
     /**
-     * 请求返回 HEADER
+     * 请求返回 HEADER.
      *
      * @var array
      */
     protected $arrHeader;
 
     /**
-     * 当前请求次数
+     * 当前请求次数.
      *
      * @var int
      */
     protected $intCount;
 
     /**
-     * 下次重置时间
+     * 下次重置时间.
      *
      * @var int
      */
     protected $intEndTime;
 
     /**
-     * 缓存数据
+     * 缓存数据.
      *
      * @var array
      */
@@ -106,7 +108,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 距离下一次请求等待时间
-     * 实际，可能扣减为负数
+     * 实际，可能扣减为负数.
      *
      * @var int
      */
@@ -114,20 +116,19 @@ class RateLimiter implements IRateLimiter, IArray, Countable
 
     /**
      * 指定时间内剩余请求次数
-     * 实际，可能扣减为负数
+     * 实际，可能扣减为负数.
      *
      * @var int
      */
     protected $intXRateLimitRemainingReal;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Cache\ICache $objCache
-     * @param string $strKey
-     * @param string $intXRateLimitLimit
-     * @param string $intXRateLimitTime
-     * @return void
+     * @param string               $strKey
+     * @param string               $intXRateLimitLimit
+     * @param string               $intXRateLimitTime
      */
     public function __construct(ICache $objCache, $strKey, $intXRateLimitLimit = 60, $intXRateLimitTime = 60)
     {
@@ -140,18 +141,19 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     /**
      * 验证请求
      *
-     * @return boolean
+     * @return bool
      */
     public function attempt()
     {
         if (! ($boo = $this->tooManyAttempt())) {
             $this->hit();
         }
+
         return $boo;
     }
 
     /**
-     * 判断资源是否被耗尽
+     * 判断资源是否被耗尽.
      *
      * @return bool
      */
@@ -181,11 +183,12 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     {
         $this->intCount = $this->count() + 1;
         $this->saveData();
+
         return $this;
     }
 
     /**
-     * 清理记录
+     * 清理记录.
      *
      * @return $this
      */
@@ -193,30 +196,32 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     {
         $this->intEndTime = $this->getInitEndTime();
         $this->intCount = $this->getInitCount();
+
         return $this;
     }
 
     /**
-     * 下次重置时间
+     * 下次重置时间.
      *
      * @return $this
      */
     public function endTime()
     {
-        if (! is_null($this->intEndTime)) {
+        if (null !== $this->intEndTime) {
             return $this->intEndTime;
         }
+
         return $this->intEndTime = $this->getData()[0];
     }
 
     /**
-     * 请求返回 HEADER
+     * 请求返回 HEADER.
      *
      * @return array
      */
     public function header()
     {
-        if (! is_null($this->arrHeader)) {
+        if (null !== $this->arrHeader) {
             return $this->arrHeader;
         }
 
@@ -234,18 +239,18 @@ class RateLimiter implements IRateLimiter, IArray, Countable
             'X-RateLimit-RetryAfter' => $this->retryAfter(),
 
             // 下次重置时间
-            'X-RateLimit-Reset' => $this->intEndTime
+            'X-RateLimit-Reset' => $this->intEndTime,
         ];
     }
 
     /**
-     * 距离下一次请求等待时间
+     * 距离下一次请求等待时间.
      *
      * @return int
      */
     public function retryAfter()
     {
-        if (! is_null($this->intXRateLimitRetryAfter)) {
+        if (null !== $this->intXRateLimitRetryAfter) {
             return $this->intXRateLimitRetryAfter;
         }
 
@@ -253,44 +258,49 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 指定时间内剩余请求次数
+     * 指定时间内剩余请求次数.
      *
      * @return int
      */
     public function remaining()
     {
-        if (! is_null($this->intXRateLimitRemaining)) {
+        if (null !== $this->intXRateLimitRemaining) {
             return $this->intXRateLimitRemaining;
         }
+
         return $this->intXRateLimitRemaining = $this->remainingReal() > 0 ? $this->remainingReal() : 0;
     }
 
     /**
-     * 指定时间长度
+     * 指定时间长度.
      *
      * @param int $intXRateLimitLimit
+     *
      * @return $this
      */
     public function limitLimit($intXRateLimitLimit = 60)
     {
         $this->intXRateLimitLimit = $intXRateLimitLimit;
+
         return $this;
     }
 
     /**
-     * 指定时间内允许的最大请求次数
+     * 指定时间内允许的最大请求次数.
      *
      * @param int $intXRateLimitTime
+     *
      * @return $this
      */
     public function limitTime($intXRateLimitTime = 60)
     {
         $this->intXRateLimitTime = $intXRateLimitTime;
+
         return $this;
     }
 
     /**
-     * 返回缓存组件
+     * 返回缓存组件.
      *
      * @return \Leevel\Cache\ICache
      */
@@ -300,7 +310,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 对象转数组
+     * 对象转数组.
      *
      * @return array
      */
@@ -310,50 +320,51 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 请求次数
+     * 请求次数.
      *
      * @return int
      */
     public function count()
     {
-        if (! is_null($this->intCount)) {
+        if (null !== $this->intCount) {
             return $this->intCount;
         }
+
         return $this->intCount = $this->getData()[1];
     }
 
     /**
      * 距离下一次请求等待时间
-     * 实际，可能扣减为负数
+     * 实际，可能扣减为负数.
      *
      * @return int
      */
     protected function retryAfterReal()
     {
-        if (! is_null($this->intXRateLimitRetryAfterReal)) {
+        if (null !== $this->intXRateLimitRetryAfterReal) {
             return $this->intXRateLimitRetryAfterReal;
         }
+
         return $this->intXRateLimitRetryAfterReal = $this->endTime() - time();
     }
 
     /**
      * 指定时间内剩余请求次数
-     * 实际，可能扣减为负数
+     * 实际，可能扣减为负数.
      *
      * @return int
      */
     protected function remainingReal()
     {
-        if (! is_null($this->intXRateLimitRemainingReal)) {
+        if (null !== $this->intXRateLimitRemainingReal) {
             return $this->intXRateLimitRemainingReal;
         }
+
         return $this->intXRateLimitRemainingReal = $this->intXRateLimitLimit - $this->count();
     }
 
     /**
-     * 保存缓存数据
-     *
-     * @return void
+     * 保存缓存数据.
      */
     protected function saveData()
     {
@@ -361,13 +372,13 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 读取缓存数据
+     * 读取缓存数据.
      *
      * @return array
      */
     protected function getData()
     {
-        if (! is_null($this->arrData)) {
+        if (null !== $this->arrData) {
             return $this->arrData;
         }
 
@@ -376,17 +387,19 @@ class RateLimiter implements IRateLimiter, IArray, Countable
         } else {
             $this->arrData = [
                 $this->getInitEndTime(),
-                $this->getInitCount()
+                $this->getInitCount(),
             ];
         }
+
         return $this->arrData;
     }
 
     /**
-     * 组装缓存数据
+     * 组装缓存数据.
      *
      * @param int $intEndTime
      * @param int $intCount
+     *
      * @return string
      */
     protected function getImplodeData($intEndTime, $intCount)
@@ -395,9 +408,10 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 分隔缓存数据
+     * 分隔缓存数据.
      *
      * @param array $arrData
+     *
      * @return array
      */
     protected function getExplodeData($arrData)
@@ -406,7 +420,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 获取 key
+     * 获取 key.
      *
      * @return null|string
      */
@@ -415,11 +429,12 @@ class RateLimiter implements IRateLimiter, IArray, Countable
         if (! $this->strKey) {
             throw new RuntimeException('Key is not set');
         }
+
         return $this->strKey;
     }
 
     /**
-     * 初始化下一次重置时间
+     * 初始化下一次重置时间.
      *
      * @return int
      */
@@ -429,7 +444,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     }
 
     /**
-     * 初始化点击
+     * 初始化点击.
      *
      * @return int
      */

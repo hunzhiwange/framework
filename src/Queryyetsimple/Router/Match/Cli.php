@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,34 +17,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router\Match;
 
 use Leevel\Http\Request;
 use Leevel\Router\Router;
 use Leevel\Router\IRouter;
 use Leevel\Console\Cli as ConsoleCli;
- 
+
 /**
- * 路由命令行匹配
+ * 路由命令行匹配.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.15
+ *
  * @version 1.0
  */
 class Cli implements IMatch
 {
-
     /**
-     * 匹配路径
+     * 匹配路径.
      *
      * @param \Leevel\Router\Router $router
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\Request  $request
+     *
      * @return array
      */
     public function matche(Router $router, Request $request): array
-    { 
-        list($node, $querys, $options) = (new ConsoleCli)->parse();
+    {
+        list($node, $querys, $options) = (new ConsoleCli())->parse();
 
         $result = [];
 

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 /**
  * Api 响应请求
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.03.01
+ *
  * @version 1.0
  */
 class ApiResponse extends JsonResponse
 {
-
     /**
-     * 创建一个 API 响应
-     * 
+     * 创建一个 API 响应.
+     *
      * @param string $data
-     * @param integer $status
-     * @param array $headers
+     * @param int    $status
+     * @param array  $headers
+     *
      * @return static
      */
     public static function create($data = '', int $status = 200, array $headers = [])
@@ -42,10 +47,11 @@ class ApiResponse extends JsonResponse
 
     /**
      * 请求成功
-     * 一般用于GET与POST请求： 200
-     * 
-     * @param mixed $content
+     * 一般用于GET与POST请求： 200.
+     *
+     * @param mixed  $content
      * @param string $text
+     *
      * @return $this
      */
     public function ok($content = '', $text = null)
@@ -61,9 +67,10 @@ class ApiResponse extends JsonResponse
 
     /**
      * 已创建
-     * 成功请求并创建了新的资源: 201
+     * 成功请求并创建了新的资源: 201.
      *
      * @param null|string $location
+     *
      * @return $this
      */
     public function created($location = '', $content = '')
@@ -75,7 +82,7 @@ class ApiResponse extends JsonResponse
         $this->setData($content);
         $this->setStatusCode(static::HTTP_CREATED);
 
-        if ($location !== null) {
+        if (null !== $location) {
             $this->setHeader('Location', $location);
         }
 
@@ -84,10 +91,11 @@ class ApiResponse extends JsonResponse
 
     /**
      * 已接受
-     * 已经接受请求，但未处理完成: 202
+     * 已经接受请求，但未处理完成: 202.
      *
      * @param null|string $location
-     * @param mixed $content
+     * @param mixed       $content
+     *
      * @return $this
      */
     public function accepted($location = null, $content = '')
@@ -99,7 +107,7 @@ class ApiResponse extends JsonResponse
         $this->setData($content);
         $this->setStatusCode(static::HTTP_ACCEPTED);
 
-        if ($location !== null) {
+        if (null !== $location) {
             $this->setHeader('Location', $location);
         }
 
@@ -108,7 +116,7 @@ class ApiResponse extends JsonResponse
 
     /**
      * 无内容
-     * 服务器成功处理，但未返回内容: 204
+     * 服务器成功处理，但未返回内容: 204.
      *
      * @return $this
      */
@@ -123,11 +131,12 @@ class ApiResponse extends JsonResponse
 
     /**
      * 无法处理的实体
-     * 请求格式正确，但是由于含有语义错误，无法响应: 422
-     * 
-     * @param array $errors
+     * 请求格式正确，但是由于含有语义错误，无法响应: 422.
+     *
+     * @param array  $errors
      * @param string $message
      * @param string $text
+     *
      * @return $this
      */
     public function unprocessableEntity(array $errors = null, $message = null, $text = null)
@@ -140,17 +149,18 @@ class ApiResponse extends JsonResponse
 
         $this->setData([
             'message' => $this->parseErrorMessage($message),
-            'errors' => $errors ?: []
+            'errors' => $errors ?: [],
         ]);
     }
 
     /**
      * 错误请求
-     * 服务器不理解请求的语法: 400
-     * 
+     * 服务器不理解请求的语法: 400.
+     *
      * @param string $message
      * @param string $message
      * @param string $text
+     *
      * @return $this
      */
     public function error($message, $statusCode, $text = null)
@@ -166,10 +176,11 @@ class ApiResponse extends JsonResponse
 
     /**
      * 错误请求
-     * 服务器不理解请求的语法: 400
-     * 
+     * 服务器不理解请求的语法: 400.
+     *
      * @param string $message
      * @param string $text
+     *
      * @return $this
      */
     public function badRequest($message = null, $text = null)
@@ -179,10 +190,11 @@ class ApiResponse extends JsonResponse
 
     /**
      * 未授权
-     * 对于需要登录的网页，服务器可能返回此响应: 401
-     * 
+     * 对于需要登录的网页，服务器可能返回此响应: 401.
+     *
      * @param string $message
      * @param string $text
+     *
      * @return $this
      */
     public function unauthorized($message = null, $text = null)
@@ -192,10 +204,11 @@ class ApiResponse extends JsonResponse
 
     /**
      * 禁止
-     * 服务器拒绝请求: 403
-     * 
+     * 服务器拒绝请求: 403.
+     *
      * @param string $message
      * @param string $text
+     *
      * @return $this
      */
     public function forbidden($message = null, $text = null)
@@ -205,10 +218,11 @@ class ApiResponse extends JsonResponse
 
     /**
      * 未找到
-     * 用户发出的请求针对的是不存在的记录: 404
-     * 
+     * 用户发出的请求针对的是不存在的记录: 404.
+     *
      * @param string $message
      * @param string $text
+     *
      * @return $this
      */
     public function notFound($message = null, $text = null)
@@ -218,10 +232,11 @@ class ApiResponse extends JsonResponse
 
     /**
      * 方法禁用
-     * 禁用请求中指定的方法: 405
-     * 
+     * 禁用请求中指定的方法: 405.
+     *
      * @param string $message
      * @param string $text
+     *
      * @return $this
      */
     public function methodNotAllowed($message = null, $text = null)
@@ -231,10 +246,11 @@ class ApiResponse extends JsonResponse
 
     /**
      * 太多请求
-     * 用户在给定的时间内发送了太多的请求: 429
-     * 
+     * 用户在给定的时间内发送了太多的请求: 429.
+     *
      * @param string $message
      * @param string $text
+     *
      * @return $this
      */
     public function tooManyRequests($message = null, $text = null)
@@ -244,10 +260,11 @@ class ApiResponse extends JsonResponse
 
     /**
      * 服务器内部错误
-     * 服务器遇到错误，无法完成请求: 500
-     * 
+     * 服务器遇到错误，无法完成请求: 500.
+     *
      * @param string $message
      * @param string $text
+     *
      * @return $this
      */
     public function internalServerError($message = null, $text = null)
@@ -256,22 +273,24 @@ class ApiResponse extends JsonResponse
     }
 
     /**
-     * 格式化错误消息
-     *  
+     * 格式化错误消息.
+     *
      * @param string $message
+     *
      * @return $this
      */
     protected function normalizeErrorMessage($message = null, $text = null)
     {
         return $this->setData([
-            'message' => $this->parseErrorMessage($message)
+            'message' => $this->parseErrorMessage($message),
         ]);
     }
 
     /**
-     * 分析错误消息
-     *  
+     * 分析错误消息.
+     *
      * @param string $message
+     *
      * @return string
      */
     protected function parseErrorMessage($message = null)

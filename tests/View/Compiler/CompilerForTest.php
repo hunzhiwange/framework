@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,16 +17,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
 /**
- * compiler for test
- * 
+ * compiler for test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.07
+ *
  * @version 1.0
  */
 class CompilerForTest extends TestCase
@@ -102,7 +107,7 @@ eot;
 <?php endforeach;?>
 eot;
 
-       $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 {% for mykey item in navigation %}
@@ -116,6 +121,6 @@ eot;
 <?php endforeach;?>
 eot;
 
-       $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
     }
 }

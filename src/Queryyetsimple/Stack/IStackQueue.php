@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,39 +17,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Stack;
 
 /**
- * 栈和队列接口
+ * 栈和队列接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.11
+ *
  * @version 1.0
  */
 interface IStackQueue
 {
-
     /**
-     * 入
+     * 入.
      *
      * @param mixed $value
-     * @return void
      */
     public function in($value);
 
     /**
-     * 出
+     * 出.
      *
      * @return mixed
      */
     public function out();
 
     /**
-     * 验证类型是否正确遇到错误抛出异常
+     * 验证类型是否正确遇到错误抛出异常.
      *
      * @param mixed $value
-     * @return void
      */
     public function validate($value);
 }

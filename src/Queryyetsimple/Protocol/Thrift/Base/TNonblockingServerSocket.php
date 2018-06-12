@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,18 +17,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Base;
 
 use Thrift\Server\TServerTransport;
 
 /**
  * 非阻塞 socket 服务
- * This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package
+ * This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.03
+ *
  * @version 1.0
+ *
  * @see swoole/thrift-rpc-server (https://github.com/swoole/thrift-rpc-server)
  */
 class TNonblockingServerSocket extends TServerTransport
@@ -45,22 +51,22 @@ class TNonblockingServerSocket extends TServerTransport
     }
 
     /**
-     * Start listening
+     * Start listening.
      */
     public function listen()
     {
         $this->handle_ = stream_socket_server("tcp://{$this->host_}:{$this->port_}", $this->errno_, $this->errstr_);
-        
+
         // no blocking
-        stream_set_blocking($this->handle_, 0); 
+        stream_set_blocking($this->handle_, 0);
 
         $this->base_ = \event_base_new();
         $this->serverEvent_ = \event_new();
 
-        \event_set($this->serverEvent_, $this->handle_, EV_READ | EV_PERSIST, array(
+        \event_set($this->serverEvent_, $this->handle_, EV_READ | EV_PERSIST, [
             $this,
-            'onConnect'
-        ));
+            'onConnect',
+        ]);
         \event_base_set($this->serverEvent_, $this->base_);
         \event_add($this->serverEvent_);
         \event_base_loop($this->base_);
@@ -78,12 +84,12 @@ class TNonblockingServerSocket extends TServerTransport
         stream_set_blocking($clientSocket, 0);
         $clientEvent = event_new();
 
-        \event_set($clientEvent, $clientSocket, EV_READ | EV_PERSIST, array(
+        \event_set($clientEvent, $clientSocket, EV_READ | EV_PERSIST, [
             $this,
-            'onRequest'
-        ), array(
+            'onRequest',
+        ], [
             $clientEvent,
-        ));
+        ]);
         \event_base_set($clientEvent, $this->base_);
         event_add($clientEvent);
     }
@@ -101,6 +107,7 @@ class TNonblockingServerSocket extends TServerTransport
             // close socket
             @stream_socket_shutdown($clientSocket, STREAM_SHUT_RDWR);
             @fclose($clientSocket);
+
             return;
         }
     }

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,7 +18,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * 命令行相关配置文件
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -24,8 +27,7 @@
  * @version 1.0
  */
 return [
-
-    /**
+    /*
      * ---------------------------------------------------------------
      * 自定义命令行
      * ---------------------------------------------------------------
@@ -35,7 +37,7 @@ return [
      */
     'custom' => [],
 
-    /**
+    /*
      * ---------------------------------------------------------------
      * 通用模板注释和变量解析
      * ---------------------------------------------------------------
@@ -43,7 +45,6 @@ return [
      * 模板中支持 {{var}} 变量替换
      */
     'template' => [
-
         // 头部注释
         'header_comment' => '// (c) {{date_y}} {{product_homepage}} All rights reserved.',
 
@@ -68,6 +69,6 @@ return [
         'file_since' => date('Y.m.d'),
         'file_version' => '1.0',
         'file_package' => '$$',
-        'file_author' => 'Name Your <your@mail.com>'
-    ]
+        'file_author' => 'Name Your <your@mail.com>',
+    ],
 ];

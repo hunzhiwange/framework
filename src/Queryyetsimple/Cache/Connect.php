@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,38 +17,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Cache;
 
 /**
- * 缓存抽象类
+ * 缓存抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.02.15
+ *
  * @version 1.0
  */
 abstract class Connect
 {
-
     /**
-     * 缓存服务句柄
+     * 缓存服务句柄.
      *
      * @var handle
      */
     protected $handle;
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
     protected $option = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $option
-     * @return void
      */
     public function __construct(array $option = [])
     {
@@ -53,11 +56,10 @@ abstract class Connect
     }
 
     /**
-     * 设置配置
-     * 
+     * 设置配置.
+     *
      * @param string $name
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function setOption(string $name, $value): void
     {
@@ -65,17 +67,16 @@ abstract class Connect
     }
 
     /**
-     * 批量插入
+     * 批量插入.
      *
      * @param string|array $keys
-     * @param mixed $value
-     * @return void
+     * @param mixed        $value
      */
     public function put($keys, $value = null)
     {
         if (! is_array($keys)) {
             $keys = [
-                $keys => $value
+                $keys => $value,
             ];
         }
 
@@ -85,7 +86,7 @@ abstract class Connect
     }
 
     /**
-     * 返回缓存句柄
+     * 返回缓存句柄.
      *
      * @return mixed
      */
@@ -95,19 +96,18 @@ abstract class Connect
     }
 
     /**
-     * 关闭
-     *
-     * @return void
+     * 关闭.
      */
     public function close()
     {
     }
 
     /**
-     * 获取缓存名字
+     * 获取缓存名字.
      *
      * @param string $name
      * @param string $prefix
+     *
      * @return string
      */
     protected function getCacheName($name, $prefix = '')
@@ -116,10 +116,11 @@ abstract class Connect
     }
 
     /**
-     * 读取缓存时间配置
+     * 读取缓存时间配置.
      *
      * @param string $id
-     * @param int $defaultTime
+     * @param int    $defaultTime
+     *
      * @return number
      */
     protected function cacheTime($id, $defaultTime = 0)
@@ -142,9 +143,10 @@ abstract class Connect
     }
 
     /**
-     * 通配符正则
+     * 通配符正则.
      *
      * @param string $regex
+     *
      * @return string
      */
     protected function prepareRegexForWildcard($regex)
@@ -156,9 +158,10 @@ abstract class Connect
     }
 
     /**
-     * 整理配置
+     * 整理配置.
      *
      * @param array $option
+     *
      * @return array
      */
     protected function normalizeOptions(array $option = [])

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,32 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\View\Provider;
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
-use Leevel\{
-    Di\Provider,
-    View\Parser,
-    View\Manager,
-    View\Compiler
-};
+use Leevel\Di\Provider;
+use Leevel\View\Parser;
+use Leevel\View\Manager;
+use Leevel\View\Compiler;
 
 /**
- * view 服务提供者
+ * view 服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.12
+ *
  * @version 1.0
  */
 class Register extends Provider
 {
-
     /**
      * 注册服务
-     *
-     * @return void
      */
     public function register()
     {
@@ -51,7 +51,7 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者
+     * 可用服务提供者.
      *
      * @return array
      */
@@ -59,28 +59,26 @@ class Register extends Provider
     {
         return [
             'view.views' => [
-                'Leevel\View\Manager'
+                'Leevel\View\Manager',
             ],
             'view.view' => [
                 'Leevel\View\View',
-                'Leevel\View\IView'
+                'Leevel\View\IView',
             ],
             'view.compiler' => [
                 'Leevel\View\Compiler',
-                'Leevel\View\ICompiler'
+                'Leevel\View\ICompiler',
             ],
             'view.parser' => [
                 'Leevel\View\Parser',
-                'Leevel\View\IParser'
+                'Leevel\View\IParser',
             ],
-            'view.twig.parser'
+            'view.twig.parser',
         ];
     }
 
     /**
      * 注册 view.views 服务
-     *
-     * @return void
      */
     protected function viewViews()
     {
@@ -91,8 +89,6 @@ class Register extends Provider
 
     /**
      * 注册 view.view 服务
-     *
-     * @return void
      */
     protected function viewView()
     {
@@ -103,8 +99,6 @@ class Register extends Provider
 
     /**
      * 注册 view.compiler 服务
-     *
-     * @return void
      */
     protected function viewCompiler()
     {
@@ -115,8 +109,6 @@ class Register extends Provider
 
     /**
      * 注册 view.parser 服务
-     *
-     * @return void
      */
     protected function viewParser()
     {
@@ -131,8 +123,6 @@ class Register extends Provider
 
     /**
      * 注册 view.twig.parser 服务
-     *
-     * @return void
      */
     protected function viewTwigParser()
     {
@@ -140,7 +130,7 @@ class Register extends Provider
             return new Twig_Environment(new Twig_Loader_Filesystem(), [
                 'auto_reload' => true,
                 'debug' => $project->development(),
-                'cache' => $project->pathApplicationCache('theme') . '/' . $project['request']->app()
+                'cache' => $project->pathApplicationCache('theme') . '/' . $project['request']->app(),
             ]);
         });
     }

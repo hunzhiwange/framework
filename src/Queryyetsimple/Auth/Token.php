@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,27 +17,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Auth;
 
-use Leevel\{
-    Mvc\IModel,
-    Support\Str,
-    Cache\ICache,
-    Validate\IValidate,
-    Encryption\IEncryption
-};
+use Leevel\Mvc\IModel;
+use Leevel\Support\Str;
+use Leevel\Cache\ICache;
+use Leevel\Validate\IValidate;
+use Leevel\Encryption\IEncryption;
 
 /**
- * auth.token
+ * auth.token.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.07
+ *
  * @version 1.0
  */
 class Token extends Connect implements IConnect
 {
-
     /**
      * 验证
      *
@@ -43,14 +45,13 @@ class Token extends Connect implements IConnect
     protected $oCache;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
-     * @param \Leevel\Mvc\IModel $oUser
+     * @param \Leevel\Mvc\IModel             $oUser
      * @param \Leevel\Encryption\IEncryption $oEncryption
-     * @param \Leevel\Validate\IValidate $oValidate
-     * @param \Leevel\Cache\ICache $oCache
-     * @param array $arrOption
-     * @return void
+     * @param \Leevel\Validate\IValidate     $oValidate
+     * @param \Leevel\Cache\ICache           $oCache
+     * @param array                          $arrOption
      */
     public function __construct(IModel $oUser, IEncryption $oEncryption, IValidate $oValidate, ICache $oCache, array $arrOption = [])
     {
@@ -60,10 +61,9 @@ class Token extends Connect implements IConnect
     }
 
     /**
-     * 设置认证名字
+     * 设置认证名字.
      *
      * @param \Leevel\Mvc\IModel $oUser
-     * @return void
      */
     protected function setLoginTokenName($oUser)
     {
@@ -71,24 +71,24 @@ class Token extends Connect implements IConnect
     }
 
     /**
-     * 数据持久化
+     * 数据持久化.
      *
      * @param string $strKey
      * @param string $mixValue
-     * @param mixed $mixExpire
-     * @return void
+     * @param mixed  $mixExpire
      */
     protected function setPersistence($strKey, $mixValue, $mixExpire = null)
     {
         $this->oCache->set($strKey, $mixValue, [
-            'expire' => $mixExpire
+            'expire' => $mixExpire,
         ]);
     }
 
     /**
-     * 获取持久化数据
+     * 获取持久化数据.
      *
      * @param string $strKey
+     *
      * @return mixed
      */
     protected function getPersistence($strKey)
@@ -97,10 +97,9 @@ class Token extends Connect implements IConnect
     }
 
     /**
-     * 删除持久化数据
+     * 删除持久化数据.
      *
      * @param string $strKey
-     * @return void
      */
     protected function deletePersistence($strKey)
     {

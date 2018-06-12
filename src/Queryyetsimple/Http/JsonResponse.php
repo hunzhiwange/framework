@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,65 +17,64 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 use ArrayObject;
 use JsonSerializable;
 use InvalidArgumentException;
-use Leevel\{
-    Support\IJson,
-    Support\IArray
-};
+use Leevel\Support\IJson;
+use Leevel\Support\IArray;
 
 /**
  * JSON 响应请求
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.27
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class JsonResponse extends Response
 {
-
     /**
-     * 响应内容
-     * 
+     * 响应内容.
+     *
      * @var sting
      */
     protected $data;
 
     /**
-     * JSON 格式化参数
-     * 
+     * JSON 格式化参数.
+     *
      * @var int
      */
     protected $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
 
     /**
-     * JSONP 回调
-     * 
+     * JSONP 回调.
+     *
      * @var \callable
      */
     protected $callback;
 
     /**
-     * 默认 JSON 格式化参数 
-     *  
+     * 默认 JSON 格式化参数.
+     *
      * @var int
      */
     const DEFAULT_ENCODING_OPTIONS = 256;
 
     /**
-     * 构造函数
-     * 
+     * 构造函数.
+     *
      * @param string $data
-     * @param integer $status
-     * @param array $headers
-     * @param bool $json
-     * @return void
+     * @param int    $status
+     * @param array  $headers
+     * @param bool   $json
      */
     public function __construct($data = null, int $status = 200, array $headers = [], bool $json = false)
     {
@@ -88,23 +90,26 @@ class JsonResponse extends Response
     }
 
     /**
-     * 创建一个 JSON 响应
-     * 
+     * 创建一个 JSON 响应.
+     *
      * @param string $data
-     * @param integer $status
-     * @param array $headers
+     * @param int    $status
+     * @param array  $headers
+     *
      * @return static
      */
-    public static function create($data = null, int $status = 200, array $headers = []) {
+    public static function create($data = null, int $status = 200, array $headers = [])
+    {
         return new static($data, $status, $headers);
     }
 
     /**
-     * 从 JSON 字符串创建响应对象  
-     * 
+     * 从 JSON 字符串创建响应对象
+     *
      * @param string $data
-     * @param integer $status
-     * @param array $headers
+     * @param int    $status
+     * @param array  $headers
+     *
      * @return static
      */
     public static function fromJsonString($data = null, $status = 200, $headers = [])
@@ -113,9 +118,10 @@ class JsonResponse extends Response
     }
 
     /**
-     * 设置 JSONP 回调 
+     * 设置 JSONP 回调.
      *
      * @param string|null $callback
+     *
      * @return $this
      */
     public function setCallback($callback = null)
@@ -130,9 +136,10 @@ class JsonResponse extends Response
     }
 
     /**
-     * 设置原生 JSON 数据
+     * 设置原生 JSON 数据.
      *
      * @param string $json
+     *
      * @return $this
      */
     public function setJson($json)
@@ -151,10 +158,11 @@ class JsonResponse extends Response
     }
 
     /**
-     * 设置数据作为 JSON   
+     * 设置数据作为 JSON.
      *
      * @param mixed $data
-     * @param int $encodingOptions
+     * @param int   $encodingOptions
+     *
      * @return $this
      */
     public function setData($data = [], $encodingOptions = null)
@@ -163,8 +171,8 @@ class JsonResponse extends Response
             return $this;
         }
 
-        if ($encodingOptions !== null) {
-           $this->encodingOptions = $encodingOptions; 
+        if (null !== $encodingOptions) {
+            $this->encodingOptions = $encodingOptions;
         }
 
         if ($data instanceof IArray) {
@@ -185,10 +193,11 @@ class JsonResponse extends Response
     }
 
     /**
-     * 取回数据
+     * 取回数据.
      *
      * @param bool $assoc
-     * @param int $depth
+     * @param int  $depth
+     *
      * @return mixed
      */
     public function getData(bool $assoc = true, int $depth = 512)
@@ -197,7 +206,7 @@ class JsonResponse extends Response
     }
 
     /**
-     * 获取编码参数
+     * 获取编码参数.
      *
      * @return int
      */
@@ -207,9 +216,10 @@ class JsonResponse extends Response
     }
 
     /**
-     * 设置编码参数
+     * 设置编码参数.
      *
      * @param int $encodingOptions
+     *
      * @return $this
      */
     public function setEncodingOptions(int $encodingOptions)
@@ -218,16 +228,17 @@ class JsonResponse extends Response
             return $this;
         }
 
-        $this->encodingOptions = (int)$encodingOptions;
+        $this->encodingOptions = (int) $encodingOptions;
 
         return $this->setData($this->getData());
     }
 
     /**
-     * 验证是否为正常的 JSON 字符串
+     * 验证是否为正常的 JSON 字符串.
      *
      * @param mixed $data
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isJsonData($data)
     {
@@ -237,11 +248,11 @@ class JsonResponse extends Response
 
         json_decode($data);
 
-        return json_last_error() === JSON_ERROR_NONE;
+        return JSON_ERROR_NONE === json_last_error();
     }
 
     /**
-     * 更新响应内容
+     * 更新响应内容.
      *
      * @return $this
      */
@@ -249,6 +260,7 @@ class JsonResponse extends Response
     {
         if (null !== $this->callback) {
             $this->headers->set('Content-Type', 'text/javascript');
+
             return $this->setContent(sprintf(';%s(%s);', $this->callback, $this->data));
         }
 

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,16 +17,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
 /**
- * compiler list test
- * 
+ * compiler list test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.07
+ *
  * @version 1.0
  */
 class CompilerListTest extends TestCase
@@ -68,7 +73,7 @@ eot;
 </list>
 eot;
 
-       $compiled = <<<'eot'
+        $compiled = <<<'eot'
 <?php $my_index = 1;?>
 <?php if (is_array($list)): foreach ($list as $my_key => $my_value):?>
     <?php echo $my_index;?> <?php echo $my_key;?> <?php echo $my_value;?>
@@ -84,7 +89,7 @@ eot;
 </list>
 eot;
 
-       $compiled = <<<'eot'
+        $compiled = <<<'eot'
 <?php $index = 1;?>
 <?php if (is_array($list)): foreach ($list as $key => $value):?>
     <?php echo $index;?> <?php echo $key;?> <?php echo $value;?>

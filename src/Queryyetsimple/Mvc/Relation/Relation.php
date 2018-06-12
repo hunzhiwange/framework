@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,26 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc\Relation;
 
 use Closure;
 use Exception;
-use Leevel\{
-    Mvc\IModel,
-    Collection\Collection
-};
+use Leevel\Mvc\IModel;
+use Leevel\Collection\Collection;
 
 /**
- * 关联模型基类
+ * 关联模型基类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.28
+ *
  * @version 1.0
  */
 abstract class Relation
 {
-
     /**
      * 查询对象
      *
@@ -42,48 +44,47 @@ abstract class Relation
     protected $objSelect;
 
     /**
-     * 关联目标模型
+     * 关联目标模型.
      *
      * @var \Leevel\Mvc\IModel
      */
     protected $objTargetModel;
 
     /**
-     * 源模型
+     * 源模型.
      *
      * @var \Leevel\Mvc\IModel
      */
     protected $objSourceModel;
 
     /**
-     * 目标关联字段
+     * 目标关联字段.
      *
      * @var string
      */
     protected $strTargetKey;
 
     /**
-     * 源关联字段
+     * 源关联字段.
      *
      * @var string
      */
     protected $strSourceKey;
 
     /**
-     * 是否初始化查询
+     * 是否初始化查询.
      *
-     * @var boolean
+     * @var bool
      */
     protected static $booRelationCondition = true;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Mvc\IModel $objTargetModel
      * @param \Leevel\Mvc\IModel $objSourceModel
-     * @param string $strTargetKey
-     * @param string $strSourceKey
-     * @return void
+     * @param string             $strTargetKey
+     * @param string             $strSourceKey
      */
     public function __construct(IModel $objTargetModel, IModel $objSourceModel, $strTargetKey, $strSourceKey)
     {
@@ -97,7 +98,7 @@ abstract class Relation
     }
 
     /**
-     * 返回查询
+     * 返回查询.
      *
      * @return \Leevel\Database\Select
      */
@@ -107,7 +108,7 @@ abstract class Relation
     }
 
     /**
-     * 取得预载入关联模型
+     * 取得预载入关联模型.
      *
      * @return \Leevel\Collection\Collection
      */
@@ -117,7 +118,7 @@ abstract class Relation
     }
 
     /**
-     * 取得关联目标模型
+     * 取得关联目标模型.
      *
      * @return \Leevel\Mvc\IModel
      */
@@ -127,7 +128,7 @@ abstract class Relation
     }
 
     /**
-     * 取得源模型
+     * 取得源模型.
      *
      * @return \Leevel\Mvc\IModel
      */
@@ -137,7 +138,7 @@ abstract class Relation
     }
 
     /**
-     * 取得目标字段
+     * 取得目标字段.
      *
      * @return string
      */
@@ -147,7 +148,7 @@ abstract class Relation
     }
 
     /**
-     * 取得源字段
+     * 取得源字段.
      *
      * @return string
      */
@@ -160,6 +161,7 @@ abstract class Relation
      * 获取不带关联条件的关联对象
      *
      * @param \Closure $calReturnRelation
+     *
      * @return \leevel\Mvc\Relation\Relation
      */
     public static function withoutRelationCondition(Closure $calReturnRelation)
@@ -168,35 +170,34 @@ abstract class Relation
         static::$booRelationCondition = false;
 
         $objRelation = call_user_func($calReturnRelation);
-        if (! ($objRelation instanceof Relation)) {
+        if (! ($objRelation instanceof self)) {
             throw new Exception('The result must be relation.');
         }
 
         static::$booRelationCondition = $booOld;
+
         return $objRelation;
     }
 
     /**
-     * 关联基础查询条件
-     *
-     * @return void
+     * 关联基础查询条件.
      */
     abstract public function addRelationCondition();
 
     /**
-     * 设置预载入关联查询条件
+     * 设置预载入关联查询条件.
      *
      * @param \Leevel\Mvc\IModel[] $arrModel
-     * @return void
      */
     abstract public function preLoadCondition(array $arrModel);
 
     /**
-     * 匹配关联查询数据到模型 HasMany
+     * 匹配关联查询数据到模型 HasMany.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[]          $arrModel
      * @param \Leevel\Collection\Collection $objResult
-     * @param string $strRelation
+     * @param string                        $strRelation
+     *
      * @return array
      */
     abstract public function matchPreLoad(array $arrModel, collection $objResult, $strRelation);
@@ -209,10 +210,11 @@ abstract class Relation
     abstract public function sourceQuery();
 
     /**
-     * 返回模型的主键
+     * 返回模型的主键.
      *
      * @param \Leevel\Mvc\IModel[] $arrModel
-     * @param string $strKey
+     * @param string               $strKey
+     *
      * @return array
      */
     protected function getModelKey(array $arrModel, $strKey = null)
@@ -223,7 +225,7 @@ abstract class Relation
     }
 
     /**
-     * 从模型返回查询
+     * 从模型返回查询.
      *
      * @return \Leevel\Database\Select
      */
@@ -233,10 +235,11 @@ abstract class Relation
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $arrArgs
+     * @param array  $arrArgs
+     *
      * @return mixed
      */
     public function __call(string $method, array $arrArgs)

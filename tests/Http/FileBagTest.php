@@ -1,10 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
  *  ______/     \__  _____  ____  ______  / /_  _________
  *   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___
- *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__ 
+ *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
  *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
  *         \_\                /_/_/         /_/
  *
@@ -14,20 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Http;
 
 use Tests\TestCase;
 use Leevel\Http\FileBag;
 use Leevel\Http\UploadedFile;
-    
+
 /**
  * FileBagTest test
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
- * 
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.03.25
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class FileBagTest extends TestCase
@@ -37,52 +43,52 @@ class FileBagTest extends TestCase
      */
     public function testFileMustBeAnArrayOrUploadedFile()
     {
-        new FileBag(array('file' => 'foo'));
-    }    
-    
+        new FileBag(['file' => 'foo']);
+    }
+
     public function testShouldConvertsUploadedFiles()
     {
         $tmpFile = $this->createTempFile();
 
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
 
-        $bag = new FileBag(array(
-            'file' => array(
+        $bag = new FileBag([
+            'file' => [
                 'name' => basename($tmpFile),
                 'type' => 'text/plain',
                 'tmp_name' => $tmpFile,
                 'error' => 0,
                 'size' => null,
-        )));
-        
+        ], ]);
+
         $this->assertEquals($file, $bag->get('file'));
-    }    
+    }
 
     public function testShouldSetEmptyUploadedFilesToNull()
     {
-        $bag = new FileBag(array(
-            'file' => array(
+        $bag = new FileBag([
+            'file' => [
                 'name' => '',
                 'type' => '',
                 'tmp_name' => '',
                 'error' => UPLOAD_ERR_NO_FILE,
                 'size' => 0,
-        )));
+        ], ]);
 
         $this->assertNull($bag->get('file'));
     }
-    
+
     public function testShouldRemoveEmptyUploadedFilesForMultiUpload()
     {
-        $bag = new FileBag(array(
-            'files' => array(
-                'name' => array(''),
-                'type' => array(''),
-                'tmp_name' => array(''),
-                'error' => array(UPLOAD_ERR_NO_FILE),
-                'size' => array(0),
-            )
-        ));
+        $bag = new FileBag([
+            'files' => [
+                'name' => [''],
+                'type' => [''],
+                'tmp_name' => [''],
+                'error' => [UPLOAD_ERR_NO_FILE],
+                'size' => [0],
+            ],
+        ]);
 
         $this->assertNull($bag->get('files'));
         $this->assertSame($bag->getArr('files'), []);
@@ -90,43 +96,43 @@ class FileBagTest extends TestCase
 
     public function testShouldRemoveEmptyUploadedFilesForAssociativeArray()
     {
-        $bag = new FileBag(array(
-            'files' => array(
-                'name' => array('file1' => ''),
-                'type' => array('file1' => ''),
-                'tmp_name' => array('file1' => ''),
-                'error' => array('file1' => UPLOAD_ERR_NO_FILE),
-                'size' => array('file1' => 0),
-        )));
+        $bag = new FileBag([
+            'files' => [
+                'name' => ['file1' => ''],
+                'type' => ['file1' => ''],
+                'tmp_name' => ['file1' => ''],
+                'error' => ['file1' => UPLOAD_ERR_NO_FILE],
+                'size' => ['file1' => 0],
+        ], ]);
 
-        $this->assertSame(null, $bag->get('files'));
-        $this->assertSame(array(), $bag->getArr('files'));
+        $this->assertNull($bag->get('files'));
+        $this->assertSame([], $bag->getArr('files'));
     }
 
     public function testShouldConvertUploadedFilesWithPhpBug()
     {
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
-        
-        $bag = new FileBag(array(
-            'child' => array(
-                'name' => array(
+
+        $bag = new FileBag([
+            'child' => [
+                'name' => [
                     'file' => basename($tmpFile),
-                ),
-                'type' => array(
+                ],
+                'type' => [
                     'file' => 'text/plain',
-                ),
-                'tmp_name' => array(
+                ],
+                'tmp_name' => [
                     'file' => $tmpFile,
-                ),
-                'error' => array(
+                ],
+                'error' => [
                     'file' => 0,
-                ),
-                'size' => array(
+                ],
+                'size' => [
                     'file' => null,
-                ),
-            ),
-        ));
+                ],
+            ],
+        ]);
 
         $files = $bag->all();
         $this->assertEquals($file, $files['child\file']);
@@ -136,47 +142,47 @@ class FileBagTest extends TestCase
     {
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
-        
-        $bag = new FileBag(array(
-            'child' => array(
-                'name' => array(
-                    'sub' => array('file' => basename($tmpFile)),
-                ),
-                'type' => array(
-                    'sub' => array('file' => 'text/plain'),
-                ),
-                'tmp_name' => array(
-                    'sub' => array('file' => $tmpFile),
-                ),
-                'error' => array(
-                    'sub' => array('file' => 0),
-                ),
-                'size' => array(
-                    'sub' => array('file' => null),
-                ),
-            ),
-        ));
+
+        $bag = new FileBag([
+            'child' => [
+                'name' => [
+                    'sub' => ['file' => basename($tmpFile)],
+                ],
+                'type' => [
+                    'sub' => ['file' => 'text/plain'],
+                ],
+                'tmp_name' => [
+                    'sub' => ['file' => $tmpFile],
+                ],
+                'error' => [
+                    'sub' => ['file' => 0],
+                ],
+                'size' => [
+                    'sub' => ['file' => null],
+                ],
+            ],
+        ]);
 
         $files = $bag->all();
         $this->assertEquals($file, $files['child\sub\file']);
-    }    
+    }
 
     /**
      * @expectedException \InvalidArgumentException
-     */    
+     */
     public function testShouldNotConvertNestedUploadedFiles()
     {
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
-        $bag = new FileBag(array('image' => array('file' => $file)));
+        $bag = new FileBag(['image' => ['file' => $file]]);
     }
 
     public function testConvertUploadFileItem()
     {
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
-        $bag = new FileBag(array('image' => $file));
-        
+        $bag = new FileBag(['image' => $file]);
+
         $files = $bag->all();
         $this->assertEquals($file, $files['image']);
     }
@@ -207,4 +213,3 @@ class FileBagTest extends TestCase
         rmdir(sys_get_temp_dir() . '/form_test');
     }
 }
-

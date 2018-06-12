@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,17 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\View;
 
 use RuntimeException;
 use InvalidArgumentException;
 
 /**
- * 模板处理抽象类
+ * 模板处理抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.18
+ *
  * @version 1.0
  */
 abstract class Connect
@@ -37,17 +42,16 @@ abstract class Connect
     protected $vars = [];
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
     protected $option = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $option
-     * @return void
      */
     public function __construct(array $option = [])
     {
@@ -55,11 +59,10 @@ abstract class Connect
     }
 
     /**
-     * 设置配置
-     * 
+     * 设置配置.
+     *
      * @param string $name
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function setOption(string $name, $value): void
     {
@@ -67,11 +70,10 @@ abstract class Connect
     }
 
     /**
-     * 设置模板变量
+     * 设置模板变量.
      *
      * @param mixed $name
      * @param mixed $value
-     * @return void
      */
     public function setVar($name, $value = null)
     {
@@ -86,11 +88,12 @@ abstract class Connect
      * 获取变量值
      *
      * @param string|null $name
+     *
      * @return mixed
      */
     public function getVar(string $name = null)
     {
-        if (is_null($name)) {
+        if (null === $name) {
             return $this->vars;
         }
 
@@ -101,6 +104,7 @@ abstract class Connect
      * 删除变量值
      *
      * @param mixed $name
+     *
      * @return $this
      */
     public function deleteVar($name)
@@ -120,6 +124,7 @@ abstract class Connect
      * 清空变量值
      *
      * @param string|null $name
+     *
      * @return $this
      */
     public function clearVar()
@@ -130,10 +135,11 @@ abstract class Connect
     }
 
     /**
-     * 分析展示的视图文件
+     * 分析展示的视图文件.
      *
      * @param string $file 视图文件地址
-     * @param string $ext 后缀
+     * @param string $ext  后缀
+     *
      * @return string|void
      */
     protected function parseDisplayFile(?string $file = null, ?string $ext = '')
@@ -158,10 +164,11 @@ abstract class Connect
     }
 
     /**
-     * 分析模板真实路径
+     * 分析模板真实路径.
      *
      * @param string $tpl 文件地址
      * @param string $ext 扩展名
+     *
      * @return string
      */
     protected function parseFile(?string $tpl = null, ?string $ext = '')
@@ -170,8 +177,8 @@ abstract class Connect
 
         // 完整路径或者变量
         if (pathinfo($tpl, PATHINFO_EXTENSION) ||
-            strpos($tpl, '$') === 0 ||
-            strpos($tpl, '(') !== false) {
+            0 === strpos($tpl, '$') ||
+            false !== strpos($tpl, '(')) {
             return $this->formatFile($tpl);
         } else {
             if (! $this->option['theme_path']) {
@@ -179,14 +186,14 @@ abstract class Connect
             }
 
             // 空取默认控制器和方法
-            if ($tpl == '') {
+            if ('' == $tpl) {
                 $tpl = $this->option['controller_name'] .
                     $this->option['controlleraction_depr'] .
                     $this->option['action_name'];
             }
 
             // 分析主题
-            if (strpos($tpl, '@') !== false) {
+            if (false !== strpos($tpl, '@')) {
                 $arr = explode('@', $tpl);
                 $theme = array_shift($arr);
                 $tpl = array_shift($arr);
@@ -194,7 +201,7 @@ abstract class Connect
 
             $tpl = str_replace([
                 '+',
-                ':'
+                ':',
             ], $this->option['controlleraction_depr'], $tpl);
 
             return dirname($this->option['theme_path']) . '/' .
@@ -204,26 +211,28 @@ abstract class Connect
     }
 
     /**
-     * 格式化文件名
+     * 格式化文件名.
      *
      * @param string $content
+     *
      * @return string
      */
     protected function formatFile(string $content)
     {
         return str_replace([
-            ":",
-            "+"
+            ':',
+            '+',
         ], [
-            "->",
-            "::"
+            '->',
+            '::',
         ], $content);
     }
 
     /**
-     * 匹配默认地址（文件不存在）
+     * 匹配默认地址（文件不存在）.
      *
      * @param string $tpl 文件地址
+     *
      * @return string
      */
     protected function parseDefaultFile(?string $tpl = null)
@@ -239,9 +248,9 @@ abstract class Connect
         $source = $tpl;
 
         // 物理路径
-        if (strpos($tpl, ':') !== false ||
-            strpos($tpl, '/') === 0 ||
-            strpos($tpl, '\\') === 0) {
+        if (false !== strpos($tpl, ':') ||
+            0 === strpos($tpl, '/') ||
+            0 === strpos($tpl, '\\')) {
             $tpl = str_replace(
                 str_replace('\\', '/', $this->option['theme_path'] . '/'),
                 '',
@@ -256,7 +265,7 @@ abstract class Connect
         }
 
         // default 主题
-        if ($this->option['theme_name'] != 'default' &&
+        if ('default' != $this->option['theme_name'] &&
             is_file(($tempTpl = dirname($this->option['theme_path']) . '/default/' . $tpl))) {
             return $tempTpl;
         }

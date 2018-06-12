@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,35 +17,35 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Support;
 
 use Closure;
 use BadMethodCallException;
 
 /**
- * 实现类的无限扩展功能
+ * 实现类的无限扩展功能.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.04
+ *
  * @version 1.0
  */
 trait TMacro
 {
-
     /**
-     * 注册的动态扩展
+     * 注册的动态扩展.
      *
      * @var array
      */
     protected static $macro = [];
 
     /**
-     * 注册一个扩展
+     * 注册一个扩展.
      *
-     * @param string $name
+     * @param string   $name
      * @param callable $macro
-     * @return void
      */
     public static function macro($name, callable $macro)
     {
@@ -50,9 +53,10 @@ trait TMacro
     }
 
     /**
-     * 判断一个扩展是否注册
+     * 判断一个扩展是否注册.
      *
      * @param string $name
+     *
      * @return bool
      */
     public static function hasMacro($name)
@@ -64,10 +68,11 @@ trait TMacro
      * __callStatic 魔术方法隐射
      * 由于 zephir 对应的 C 扩展版本不支持对象内绑定 class
      * 即 Closure::bind($closures, null, get_called_class())
-     * 为保持功能一致，所以取消 PHP 版本的静态闭包绑定功能
+     * 为保持功能一致，所以取消 PHP 版本的静态闭包绑定功能.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public static function callStaticMacro(string $method, array $args)
@@ -83,10 +88,11 @@ trait TMacro
      * __call 魔术方法隐射
      * 由于 zephir 对应的 C 扩展版本不支持对象内绑定 class
      * 即 Closure::bind($closures, null, get_called_class())
-     * 为保持功能一致，所以绑定对象但是不绑定作用域，即可以使用 $this,只能访问 public 属性
-     * 
+     * 为保持功能一致，所以绑定对象但是不绑定作用域，即可以使用 $this,只能访问 public 属性.
+     *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public function callMacro(string $method, array $args)
@@ -103,10 +109,11 @@ trait TMacro
     }
 
     /**
-     * __callStatic 魔术方法 
+     * __callStatic 魔术方法.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -115,10 +122,11 @@ trait TMacro
     }
 
     /**
-     * __call 魔术方法 
+     * __call 魔术方法.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)

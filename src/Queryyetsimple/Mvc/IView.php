@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc;
 
 use Leevel\View\IView as ViewIView;
 
 /**
- * IView 接口
+ * IView 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.23
+ *
  * @version 1.0
  */
 interface IView
 {
-
     /**
-     * 切换视图
+     * 切换视图.
      *
      * @param \Leevel\View\IView $theme
+     *
      * @return $this
      */
     public function switchView(ViewIView $theme);
@@ -42,6 +47,7 @@ interface IView
      *
      * @param mixed $name
      * @param mixed $value
+     *
      * @return $this
      */
     public function assign($name, $value = null);
@@ -50,6 +56,7 @@ interface IView
      * 获取变量赋值
      *
      * @param string|null $name
+     *
      * @return mixed
      */
     public function getAssign($name = null);
@@ -58,6 +65,7 @@ interface IView
      * 删除变量值
      *
      * @param mixed $name
+     *
      * @return $this
      */
     public function deleteAssign($name);
@@ -70,11 +78,12 @@ interface IView
     public function clearAssign();
 
     /**
-     * 加载视图文件
+     * 加载视图文件.
      *
      * @param string $file
-     * @param array $vars
+     * @param array  $vars
      * @param string $ext
+     *
      * @return string
      */
     public function display($file = null, array $vars = [], $ext = null);

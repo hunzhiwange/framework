@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc;
 
 use Exception;
@@ -22,32 +26,31 @@ use Exception;
  * 仓储基础
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.10.14
+ *
  * @version 1.0
  */
 class Repository implements IRepository
 {
-
     /**
-     * 工作单元
+     * 工作单元.
      *
      * @var \Leevel\Mvc\IUnitOfWork
      */
     protected $objUnitOfWork;
 
     /**
-     * 聚合根
+     * 聚合根.
      *
      * @var \Leevel\Mvc\IAggregateRoot
      */
     protected $objAggregate;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objAggregate
-     * @return void
      */
     public function __construct(IAggregateRoot $objAggregate)
     {
@@ -56,10 +59,11 @@ class Repository implements IRepository
     }
 
     /**
-     * 取得一条数据
+     * 取得一条数据.
      *
-     * @param int $intId
+     * @param int   $intId
      * @param array $arrColumn
+     *
      * @return \Leevel\Mvc\IEntity
      */
     public function find($intId, $arrColumn = ['*'])
@@ -68,10 +72,11 @@ class Repository implements IRepository
     }
 
     /**
-     * 取得一条数据，未找到记录抛出异常
+     * 取得一条数据，未找到记录抛出异常.
      *
-     * @param int $intId
+     * @param int   $intId
      * @param array $arrColumn
+     *
      * @return \Leevel\Mvc\IEntity|void
      */
     public function findOrFail($intId, $arrColumn = ['*'])
@@ -80,9 +85,10 @@ class Repository implements IRepository
     }
 
     /**
-     * 取得所有记录
+     * 取得所有记录.
      *
-     * @param null|callback $mixCallback
+     * @param null|callable $mixCallback
+     *
      * @return \Leevel\Collection\Collection
      */
     public function count($mixSpecification = null)
@@ -97,9 +103,10 @@ class Repository implements IRepository
     }
 
     /**
-     * 取得所有记录
+     * 取得所有记录.
      *
-     * @param null|callback $mixCallback
+     * @param null|callable $mixCallback
+     *
      * @return \Leevel\Collection\Collection
      */
     public function all($mixSpecification = null)
@@ -114,9 +121,10 @@ class Repository implements IRepository
     }
 
     /**
-     * 保存数据
+     * 保存数据.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     *
      * @return \Leevel\Mvc\IAggregateRoot
      */
     public function create(IAggregateRoot $objEntity)
@@ -125,9 +133,10 @@ class Repository implements IRepository
     }
 
     /**
-     * 更新数据
+     * 更新数据.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     *
      * @return \Leevel\Mvc\IAggregateRoot
      */
     public function update(IAggregateRoot $objEntity)
@@ -136,9 +145,10 @@ class Repository implements IRepository
     }
 
     /**
-     * 删除数据
+     * 删除数据.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     *
      * @return int
      */
     public function delete(IAggregateRoot $objEntity)
@@ -147,45 +157,52 @@ class Repository implements IRepository
     }
 
     /**
-     * 注册保存数据
+     * 注册保存数据.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     *
      * @return \Leevel\Mvc\UnitOfWork
      */
     public function registerCreate(IAggregateRoot $objEntity)
     {
         $this->checkUnitOfWork();
+
         return $this->objUnitOfWork->registerCreate($objEntity, $this);
     }
 
     /**
-     * 注册更新数据
+     * 注册更新数据.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     *
      * @return \Leevel\Mvc\UnitOfWork
      */
     public function registerUpdate(IAggregateRoot $objEntity)
     {
         $this->checkUnitOfWork();
+
         return $this->objUnitOfWork->registerUpdate($objEntity, $this);
     }
 
     /**
-     * 注册删除数据
+     * 注册删除数据.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     *
      * @return \Leevel\Mvc\UnitOfWork
      */
     public function registerDelete(IAggregateRoot $objEntity)
     {
         $this->checkUnitOfWork();
+
         return $this->objUnitOfWork->registerDelete($objEntity, $this);
     }
 
     /**
-     * 响应新建
+     * 响应新建.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     *
      * @return \Leevel\Mvc\IAggregateRoot
      */
     public function handleCreate(IAggregateRoot $objEntity)
@@ -194,9 +211,10 @@ class Repository implements IRepository
     }
 
     /**
-     * 响应修改
+     * 响应修改.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     *
      * @return \Leevel\Mvc\IAggregateRoot
      */
     public function handleUpdate(IAggregateRoot $objEntity)
@@ -205,9 +223,10 @@ class Repository implements IRepository
     }
 
     /**
-     * 响应删除
+     * 响应删除.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     *
      * @return int
      */
     public function handleDelete(IAggregateRoot $objEntity)
@@ -216,9 +235,7 @@ class Repository implements IRepository
     }
 
     /**
-     * 启动事物
-     *
-     * @return void
+     * 启动事物.
      */
     public function beginTransaction()
     {
@@ -226,9 +243,7 @@ class Repository implements IRepository
     }
 
     /**
-     * 事务回滚
-     *
-     * @return void
+     * 事务回滚.
      */
     public function rollback()
     {
@@ -236,9 +251,7 @@ class Repository implements IRepository
     }
 
     /**
-     * 事务自动提交
-     *
-     * @return void
+     * 事务自动提交.
      */
     public function commit()
     {
@@ -249,6 +262,7 @@ class Repository implements IRepository
      * 执行数据库事务
      *
      * @param callable $calAction
+     *
      * @return mixed
      */
     public function transaction($calAction)
@@ -257,10 +271,9 @@ class Repository implements IRepository
     }
 
     /**
-     * 设置聚合根
+     * 设置聚合根.
      *
      * @param \Leevel\Mvc\IAggregateRoot $objAggregate
-     * @return void
      */
     public function setAggregate(IAggregateRoot $objAggregate)
     {
@@ -268,7 +281,7 @@ class Repository implements IRepository
     }
 
     /**
-     * 返回聚合根
+     * 返回聚合根.
      *
      * @return \Leevel\Mvc\IAggregateRoot
      */
@@ -278,7 +291,7 @@ class Repository implements IRepository
     }
 
     /**
-     * 返回工作单元
+     * 返回工作单元.
      *
      * @return \Leevel\Mvc\IUnitOfWork
      */
@@ -288,7 +301,7 @@ class Repository implements IRepository
     }
 
     /**
-     * 返回数据库仓储
+     * 返回数据库仓储.
      *
      * @return \Leevel\Database\IDatabase
      */
@@ -298,9 +311,7 @@ class Repository implements IRepository
     }
 
     /**
-     * 注册事务提交
-     *
-     * @return void
+     * 注册事务提交.
      */
     public function registerCommit()
     {
@@ -308,7 +319,7 @@ class Repository implements IRepository
     }
 
     /**
-     * 创建设计工作单元
+     * 创建设计工作单元.
      *
      * @return \Leevel\Mvc\IUnitOfWork
      */
@@ -318,9 +329,7 @@ class Repository implements IRepository
     }
 
     /**
-     * 验证是否设计工作单元
-     *
-     * @return void
+     * 验证是否设计工作单元.
      */
     protected function checkUnitOfWork()
     {
@@ -330,15 +339,16 @@ class Repository implements IRepository
     }
 
     /**
-     * 自定义规约处理
+     * 自定义规约处理.
      *
-     * @param callbable $mixCallback
+     * @param callbable      $mixCallback
      * @param callbable|null $mixSpecification
+     *
      * @return callbable
      */
     protected function specification($mixCallback, $mixSpecification = null)
     {
-        if (is_null($mixSpecification)) {
+        if (null === $mixSpecification) {
             $mixSpecification = function ($objSelect) use ($mixCallback) {
                 call_user_func($mixCallback, $objSelect);
             };
@@ -355,10 +365,11 @@ class Repository implements IRepository
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $arrArgs
+     * @param array  $arrArgs
+     *
      * @return mixed
      */
     public function __call(string $method, array $arrArgs)

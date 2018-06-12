@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,56 +17,57 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router;
 
 /**
- * 路由解析接口
+ * 路由解析接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.03.08
+ *
  * @version 1.0
  */
 interface IRouter
 {
-
     /**
-     * 应用参数名
+     * 应用参数名.
      *
      * @var string
      */
     const APP = '_app';
 
     /**
-     * 控制器参数名
+     * 控制器参数名.
      *
      * @var string
      */
     const CONTROLLER = '_c';
 
     /**
-     * 方法参数名
+     * 方法参数名.
      *
      * @var string
      */
     const ACTION = '_a';
 
     /**
-     * 解析参数名
+     * 解析参数名.
      *
      * @var string
      */
     const PARAMS = '_params';
 
     /**
-     * 解析变量名
+     * 解析变量名.
      *
      * @var string
      */
     const VARS = '_vars';
 
     /**
-     * 解析中间件名
+     * 解析中间件名.
      *
      * @var string
      */
@@ -77,70 +81,70 @@ interface IRouter
     const PREFIX = '_prefix';
 
     /**
-     * 匹配基础路径
+     * 匹配基础路径.
      *
      * @var string
      */
     const BASEPATH = '_basepath';
 
     /**
-     * restful show
+     * restful show.
      *
      * @var string
      */
     const RESTFUL_SHOW = 'show';
 
     /**
-     * restful store
+     * restful store.
      *
      * @var string
      */
     const RESTFUL_STORE = 'store';
 
     /**
-     * restful update
+     * restful update.
      *
      * @var string
      */
     const RESTFUL_UPDATE = 'update';
 
     /**
-     * restful destroy
+     * restful destroy.
      *
      * @var string
      */
     const RESTFUL_DESTROY = 'destroy';
 
     /**
-     * 默认应用
+     * 默认应用.
      *
      * @var string
      */
     const DEFAULT_APP = 'app';
 
     /**
-     * 默认首页控制器
+     * 默认首页控制器.
      *
      * @var string
      */
     const DEFAULT_HOME_CONTROLLER = 'home';
 
     /**
-     * 默认首页方法
+     * 默认首页方法.
      *
      * @var string
      */
     const DEFAULT_HOME_ACTION = 'handle';
 
     /**
-     * 默认替换参数[字符串]
+     * 默认替换参数[字符串].
      *
      * @var string
      */
     const DEFAULT_REGEX = '\S+';
 
     /**
-     * 默认严格匹配模式
+     * 默认严格匹配模式.
      *
      * @var string
      */

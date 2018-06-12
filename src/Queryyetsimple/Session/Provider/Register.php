@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,28 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Session\Provider;
 
-use Leevel\{
-    Di\Provider,
-    Session\Manager
-};
+use Leevel\Di\Provider;
+use Leevel\Session\Manager;
 
 /**
- * session 服务提供者
+ * session 服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.06.05
+ *
  * @version 1.0
  */
 class Register extends Provider
 {
-
     /**
      * 注册服务
-     *
-     * @return void
      */
     public function register()
     {
@@ -45,7 +45,7 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者
+     * 可用服务提供者.
      *
      * @return array
      */
@@ -53,20 +53,18 @@ class Register extends Provider
     {
         return [
             'sessions' => [
-                'Leevel\Session\Manager'
+                'Leevel\Session\Manager',
             ],
             'session' => [
                 'Leevel\Session\Session',
-                'Leevel\Session\ISession'
+                'Leevel\Session\ISession',
             ],
-            'Leevel\Session\Middleware\Session'
+            'Leevel\Session\Middleware\Session',
         ];
     }
 
     /**
      * 注册 sessions 服务
-     *
-     * @return void
      */
     protected function sessions()
     {
@@ -77,8 +75,6 @@ class Register extends Provider
 
     /**
      * 注册 session 服务
-     *
-     * @return void
      */
     protected function session()
     {
@@ -89,8 +85,6 @@ class Register extends Provider
 
     /**
      * 注册 middleware 服务
-     *
-     * @return void
      */
     protected function middleware()
     {

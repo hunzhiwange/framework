@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Manager;
 
 use Exception;
-use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
 /**
- * manager 入口
+ * manager 入口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.07
+ *
  * @version 1.0
  */
 abstract class Manager
 {
-
     /**
-     * IOC Container
+     * IOC Container.
      *
      * @var \Leevel\Di\IContainer
      */
@@ -46,10 +49,9 @@ abstract class Manager
     protected $connects;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
-     * @return void
      */
     public function __construct(IContainer $container)
     {
@@ -57,7 +59,7 @@ abstract class Manager
     }
 
     /**
-     * 返回 IOC 容器
+     * 返回 IOC 容器.
      *
      * @return \Leevel\Di\IContainer
      */
@@ -70,6 +72,7 @@ abstract class Manager
      * 连接 connect 并返回连接对象
      *
      * @param array|string|null $options
+     *
      * @return object
      */
     public function connect($options = null)
@@ -86,22 +89,23 @@ abstract class Manager
     }
 
     /**
-     * 重新连接
+     * 重新连接.
      *
      * @param array|string $options
+     *
      * @return object
      */
     public function reconnect($options = [])
     {
         $this->disconnect($options);
+
         return $this->connect($options);
     }
 
     /**
-     * 删除连接
+     * 删除连接.
      *
      * @param array|string $options
-     * @return void
      */
     public function disconnect($options = [])
     {
@@ -113,7 +117,7 @@ abstract class Manager
     }
 
     /**
-     * 取回所有连接
+     * 取回所有连接.
      *
      * @return object[]
      */
@@ -123,7 +127,7 @@ abstract class Manager
     }
 
     /**
-     * 返回默认驱动
+     * 返回默认驱动.
      *
      * @return string
      */
@@ -133,10 +137,9 @@ abstract class Manager
     }
 
     /**
-     * 设置默认驱动
+     * 设置默认驱动.
      *
      * @param string $name
-     * @return void
      */
     public function setDefaultDriver($name)
     {
@@ -144,7 +147,7 @@ abstract class Manager
     }
 
     /**
-     * 取得配置命名空间
+     * 取得配置命名空间.
      *
      * @return string
      */
@@ -154,14 +157,16 @@ abstract class Manager
      * 创建连接对象
      *
      * @param object $connect
+     *
      * @return object
      */
     abstract protected function createConnect($connect);
 
     /**
-     * 取得连接名字
+     * 取得连接名字.
      *
      * @param string $name
+     *
      * @return string
      */
     protected function getOptionName($name = null)
@@ -170,25 +175,28 @@ abstract class Manager
     }
 
     /**
-     * 创建连接
+     * 创建连接.
      *
      * @param string $connect
-     * @param array $options
+     * @param array  $options
+     *
      * @return object
      */
     protected function makeConnect($connect, array $options = [])
     {
-        if (is_null($this->container['option'][$this->getOptionName('connect.' . $connect)])) {
+        if (null === $this->container['option'][$this->getOptionName('connect.' . $connect)]) {
             throw new Exception(sprintf('Connect driver %s not exits', $connect));
         }
+
         return $this->createConnect($this->createConnectCommon($connect, $options));
     }
 
     /**
-     * 创建连接对象公共入口
+     * 创建连接对象公共入口.
      *
      * @param string $connect
-     * @param array $options
+     * @param array  $options
+     *
      * @return object
      */
     protected function createConnectCommon($connect, array $options = [])
@@ -200,25 +208,27 @@ abstract class Manager
      * 分析连接参数以及其唯一值
      *
      * @param array|string $options
+     *
      * @return array
      */
     protected function parseOptionAndUnique($options = [])
     {
         return [
             $options = $this->parseOptionParameter($options),
-            $this->getUnique($options)
+            $this->getUnique($options),
         ];
     }
 
     /**
-     * 分析连接参数
+     * 分析连接参数.
      *
      * @param array|string $options
+     *
      * @return array
      */
     protected function parseOptionParameter($options = [])
     {
-        if (is_null($options)) {
+        if (null === $options) {
             return [];
         }
 
@@ -233,6 +243,7 @@ abstract class Manager
      * 取得唯一值
      *
      * @param array $options
+     *
      * @return string
      */
     protected function getUnique($options)
@@ -241,10 +252,11 @@ abstract class Manager
     }
 
     /**
-     * 读取默认配置
+     * 读取默认配置.
      *
      * @param string $connect
-     * @param array $extendOption
+     * @param array  $extendOption
+     *
      * @return array
      */
     protected function getOption($connect, array $extendOption = [])
@@ -253,7 +265,7 @@ abstract class Manager
     }
 
     /**
-     * 读取连接全局配置
+     * 读取连接全局配置.
      *
      * @return array
      */
@@ -261,13 +273,15 @@ abstract class Manager
     {
         $options = $this->container['option'][$this->getOptionName()];
         $options = $this->filterOptionCommon($options);
+
         return $options;
     }
 
     /**
-     * 过滤全局配置
+     * 过滤全局配置.
      *
      * @param array $options
+     *
      * @return array
      */
     protected function filterOptionCommon(array $options)
@@ -282,7 +296,7 @@ abstract class Manager
     }
 
     /**
-     * 过滤全局配置项
+     * 过滤全局配置项.
      *
      * @return array
      */
@@ -290,14 +304,15 @@ abstract class Manager
     {
         return [
             'default',
-            'connect'
+            'connect',
         ];
     }
 
     /**
-     * 读取连接配置
+     * 读取连接配置.
      *
      * @param string $connect
+     *
      * @return array
      */
     protected function getOptionConnect($connect)
@@ -306,23 +321,25 @@ abstract class Manager
     }
 
     /**
-     * 清除配置 null
+     * 清除配置 null.
      *
      * @param array $options
+     *
      * @return array
      */
     protected function optionFilterNull(array $options)
     {
         return array_filter($options, function ($value) {
-            return ! is_null($value);
+            return null !== $value;
         });
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)

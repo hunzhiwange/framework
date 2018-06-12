@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,27 +17,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Stack;
 
 use InvalidArgumentException;
 
 /**
- * 队列，先进先出
+ * 队列，先进先出.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.21
- * @link http://php.net/manual/zh/class.splqueue.php
+ * @see http://php.net/manual/zh/class.splqueue.php
+ *
  * @version 1.0
  */
 class Queue extends LinkedList implements IStackQueue
 {
-
     /**
-     * 入对
+     * 入对.
      *
      * @param mixed $value
-     * @return void
      */
     public function in($value)
     {
@@ -42,7 +45,7 @@ class Queue extends LinkedList implements IStackQueue
     }
 
     /**
-     * 出对
+     * 出对.
      *
      * @return mixed
      */

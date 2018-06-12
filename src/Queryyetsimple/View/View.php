@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,31 +17,31 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\View;
 
 /**
- * view 仓储
+ * view 仓储.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.01.10
+ *
  * @version 1.0
  */
 class View implements IView
 {
-
     /**
-     * 连接驱动
+     * 连接驱动.
      *
      * @var \Leevel\View\IConnect
      */
     protected $connect;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\View\IConnect $connect
-     * @return void
      */
     public function __construct(IConnect $connect)
     {
@@ -46,10 +49,11 @@ class View implements IView
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,18 +17,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Filesystem;
 
 use Leevel\Option\TClass;
 use League\Flysystem\Filesystem as LeagueFilesystem;
 
 /**
- * connect 驱动抽象类
+ * connect 驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.29
- * @link https://flysystem.thephpleague.com/api/
+ * @see https://flysystem.thephpleague.com/api/
+ *
  * @version 1.0
  */
 abstract class Connect
@@ -33,17 +38,16 @@ abstract class Connect
     use TClass;
 
     /**
-     * Filesystem
+     * Filesystem.
      *
      * @var \League\Flysystem\Filesystem
      */
     protected $objFilesystem;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $arrOption
-     * @return void
      */
     public function __construct(array $arrOption = [])
     {
@@ -52,7 +56,7 @@ abstract class Connect
     }
 
     /**
-     * 返回 Filesystem
+     * 返回 Filesystem.
      *
      * @return \League\Flysystem\Filesystem
      */
@@ -62,7 +66,7 @@ abstract class Connect
     }
 
     /**
-     * 生成 Filesystem
+     * 生成 Filesystem.
      *
      * @return \League\Flysystem\Filesystem
      */
@@ -72,10 +76,11 @@ abstract class Connect
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $sMethod
-     * @param array $arrArgs
+     * @param array  $arrArgs
+     *
      * @return mixed
      */
     public function __call(string $sMethod, array $arrArgs)

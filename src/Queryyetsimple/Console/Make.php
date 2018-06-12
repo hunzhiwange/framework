@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,37 +17,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Console;
 
 use RuntimeException;
 
 /**
- * 生成器基类
+ * 生成器基类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.02
+ *
  * @version 1.0
  */
 abstract class Make extends Command
 {
-
     /**
-     * 创建类型
+     * 创建类型.
      *
      * @var string
      */
     protected $makeType;
 
     /**
-     * 文件保存路径
+     * 文件保存路径.
      *
      * @var string
      */
     protected $saveFilePath;
 
     /**
-     * 模板路径
+     * 模板路径.
      *
      * @var string
      */
@@ -58,23 +62,21 @@ abstract class Make extends Command
     protected $templateSource;
 
     /**
-     * 保存的模板结果
+     * 保存的模板结果.
      *
      * @var string
      */
     protected $templateResult;
 
     /**
-     * 自定义替换
+     * 自定义替换.
      *
      * @var array
      */
     protected $customReplaceKeyValue = [];
 
     /**
-     * 响应命令
-     *
-     * @return void
+     * 响应命令.
      */
     public function handle()
     {
@@ -90,7 +92,7 @@ abstract class Make extends Command
     }
 
     /**
-     * 替换模板变量
+     * 替换模板变量.
      *
      * @return string
      */
@@ -104,14 +106,12 @@ abstract class Make extends Command
 
         // 第一次替换基本变量
         // 第二次替换基本变量中的变量
-        $templateSource = str_replace($sourceAndReplace[0], $sourceAndReplace[1], $this->getTemplateSource()); 
+        $templateSource = str_replace($sourceAndReplace[0], $sourceAndReplace[1], $this->getTemplateSource());
         $this->templateResult = str_replace($sourceAndReplace[0], $sourceAndReplace[1], $templateSource);
     }
 
     /**
      * 保存模板
-     *
-     * @return void
      */
     protected function saveTemplateResult()
     {
@@ -137,7 +137,7 @@ abstract class Make extends Command
     }
 
     /**
-     * 获取模板编译结果
+     * 获取模板编译结果.
      *
      * @return string
      */
@@ -148,8 +148,6 @@ abstract class Make extends Command
 
     /**
      * 分析模板源码
-     *
-     * @return void
      */
     protected function parseTemplateSource()
     {
@@ -176,7 +174,7 @@ abstract class Make extends Command
     }
 
     /**
-     * 分析变量替换
+     * 分析变量替换.
      *
      * @return array
      */
@@ -192,12 +190,12 @@ abstract class Make extends Command
 
         return [
             $sourceKey,
-            $replace
+            $replace,
         ];
     }
 
     /**
-     * 取得系统的替换变量
+     * 取得系统的替换变量.
      *
      * @return array
      */
@@ -206,15 +204,14 @@ abstract class Make extends Command
         return array_merge([
             'namespace' => $this->getNamespace(),
             'file_name' => ucfirst($this->argument('name')),
-            'date_y' => date('Y')
+            'date_y' => date('Y'),
         ], $this->getCustomReplaceKeyValue());
     }
 
     /**
-     * 设置文件保存路径
+     * 设置文件保存路径.
      *
      * @param string $saveFilePath
-     * @return void
      */
     protected function setSaveFilePath($saveFilePath)
     {
@@ -222,7 +219,7 @@ abstract class Make extends Command
     }
 
     /**
-     * 读取文件保存路径
+     * 读取文件保存路径.
      *
      * @return string
      */
@@ -232,13 +229,13 @@ abstract class Make extends Command
     }
 
     /**
-     * 获取命名空间路径
+     * 获取命名空间路径.
      *
      * @return string
      */
     protected function getNamespacePath()
     {
-        if (($namespacePath = $this->getContainer()->getPathByNamespace($this->getNamespace()) . '/') != '/') {
+        if ('/' != ($namespacePath = $this->getContainer()->getPathByNamespace($this->getNamespace()) . '/')) {
             $namespacePath = $this->getContainer()->pathAnApplication(lcfirst($this->getNamespace())) . '/';
         }
 
@@ -246,9 +243,7 @@ abstract class Make extends Command
     }
 
     /**
-     * 分析命名空间
-     *
-     * @return void
+     * 分析命名空间.
      */
     protected function parseNamespace()
     {
@@ -263,10 +258,9 @@ abstract class Make extends Command
     }
 
     /**
-     * 设置命名空间
+     * 设置命名空间.
      *
      * @param string $namespace
-     * @return void
      */
     protected function setNamespace($namespace)
     {
@@ -274,7 +268,7 @@ abstract class Make extends Command
     }
 
     /**
-     * 读取命名空间
+     * 读取命名空间.
      *
      * @return string
      */
@@ -284,10 +278,9 @@ abstract class Make extends Command
     }
 
     /**
-     * 设置创建类型
+     * 设置创建类型.
      *
      * @param string $makeType
-     * @return void
      */
     protected function setMakeType($makeType)
     {
@@ -295,7 +288,7 @@ abstract class Make extends Command
     }
 
     /**
-     * 读取创建类型
+     * 读取创建类型.
      *
      * @return string
      */
@@ -305,10 +298,9 @@ abstract class Make extends Command
     }
 
     /**
-     * 设置模板文件路径
+     * 设置模板文件路径.
      *
      * @param string $templatePath
-     * @return void
      */
     protected function setTemplatePath($templatePath)
     {
@@ -316,7 +308,7 @@ abstract class Make extends Command
     }
 
     /**
-     * 读取模板文件路径
+     * 读取模板文件路径.
      *
      * @return string
      */
@@ -326,11 +318,10 @@ abstract class Make extends Command
     }
 
     /**
-     * 设置自定义变量替换
+     * 设置自定义变量替换.
      *
-     * @param mixed $key
+     * @param mixed  $key
      * @param string $value
-     * @return void
      */
     protected function setCustomReplaceKeyValue($key, $value)
     {
@@ -342,9 +333,10 @@ abstract class Make extends Command
     }
 
     /**
-     * 读取自定义变量替换
+     * 读取自定义变量替换.
      *
      * @param string $makeType
+     *
      * @return array
      */
     protected function getCustomReplaceKeyValue()
@@ -353,9 +345,10 @@ abstract class Make extends Command
     }
 
     /**
-     * 格式化文件路径
+     * 格式化文件路径.
      *
      * @param string $file
+     *
      * @return string
      */
     protected function formatFile($file)

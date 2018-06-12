@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router\Match;
 
 use Leevel\Http\Request;
@@ -21,49 +25,50 @@ use Leevel\Router\Router;
 use Leevel\Router\IRouter;
 
 /**
- * 路由 url 匹配
+ * 路由 url 匹配.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.15
+ *
  * @version 1.0
  */
 class Url implements IMatch
 {
-
     /**
-     * Router
-     * 
+     * Router.
+     *
      * @var \Leevel\Router\Router
      */
     protected $router;
-    
-    /** 
-     * HTTP Request
-     * 
+
+    /**
+     * HTTP Request.
+     *
      * @var \Leevel\Http\Request
      */
     protected $request;
 
     /**
-     * 匹配基础路径
-     * 
+     * 匹配基础路径.
+     *
      * @var string
      */
     protected $matchedBasepath;
 
     /**
-     * 匹配变量
-     * 
+     * 匹配变量.
+     *
      * @var array
      */
     protected $matchedVars = [];
 
     /**
-     * 匹配数据项
+     * 匹配数据项.
      *
      * @param \Leevel\Router\Router $router
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\Request  $request
+     *
      * @return array
      */
     public function matche(Router $router, Request $request): array
@@ -85,13 +90,13 @@ class Url implements IMatch
         $urlRouters = $urlRouters[$method];
 
         $result = [];
-        
+
         // 匹配基础路径
         $basepaths = $router->getBasepaths();
         $pathInfoSource = $pathInfo = $request->getPathInfo();
 
         foreach ($basepaths as $path) {
-            if (strpos($pathInfo, $path) === 0) {
+            if (0 === strpos($pathInfo, $path)) {
                 $pathInfo = substr($pathInfo, strlen($path));
                 $this->matchedBasepath = $path;
                 break;
@@ -104,7 +109,7 @@ class Url implements IMatch
 
             return $this->matcheSuccessed($urlRouters);
         }
-        
+
         // 匹配首字母
         $firstLetter = $pathInfo[1];
         if (isset($urlRouters[$firstLetter])) {
@@ -119,14 +124,14 @@ class Url implements IMatch
         $groups = $router->getGroups();
         $matchGroup = false;
         foreach ($groups as $group) {
-            if (strpos($pathInfo, $group) === 0) {
+            if (0 === strpos($pathInfo, $group)) {
                 $urlRouters = $urlRouters[$group];
                 $matchGroup = true;
                 break;
             }
         }
 
-        if ($matchGroup === false) {
+        if (false === $matchGroup) {
             $urlRouters = $urlRouters['_'];
         }
 
@@ -148,21 +153,22 @@ class Url implements IMatch
     }
 
     /**
-     * url 匹配成功处理
-     * 
+     * url 匹配成功处理.
+     *
      * @param array $routers
      * @param array $matcheVars
+     *
      * @return array|false
      */
     protected function matcheSuccessed(array $routers, array $matcheVars = [])
     {
         // 协议匹配
-        if ($this->matcheScheme($routers['scheme']) === false) {
+        if (false === $this->matcheScheme($routers['scheme'])) {
             return false;
         }
 
         // 域名匹配
-        if (($domainVars = $this->matcheDomain($routers)) === false) {
+        if (false === ($domainVars = $this->matcheDomain($routers))) {
             return false;
         }
 
@@ -206,10 +212,11 @@ class Url implements IMatch
     }
 
     /**
-     * 协议匹配
-     * 
+     * 协议匹配.
+     *
      * @param string $scheme
-     * @return boolean
+     *
+     * @return bool
      */
     protected function matcheScheme(?string $scheme): bool
     {
@@ -221,10 +228,11 @@ class Url implements IMatch
     }
 
     /**
-     * 域名匹配
-     * 
+     * 域名匹配.
+     *
      * @param array $routers
-     * @return boolean|array
+     *
+     * @return bool|array
      */
     protected function matcheDomain(array $routers)
     {
@@ -233,9 +241,9 @@ class Url implements IMatch
         if ($routers['domain']) {
             //$host = $this->request->getHttpHost();
             $host = $this->request->getHost();
-            
+
             if ($routers['domain_regex']) {
-                if(! preg_match($routers['domain_regex'], $host, $matches)) {
+                if (! preg_match($routers['domain_regex'], $host, $matches)) {
                     return false;
                 } else {
                     array_shift($matches);
@@ -256,10 +264,11 @@ class Url implements IMatch
     }
 
     /**
-     * 变量匹配处理
-     * 
+     * 变量匹配处理.
+     *
      * @param array $routers
      * @param array $matches
+     *
      * @return array
      */
     protected function matcheVariable(array $routers, array $matches): array
@@ -279,11 +288,10 @@ class Url implements IMatch
     }
 
     /**
-     * 添加解析变量
-     * 
+     * 添加解析变量.
+     *
      * @param string $name
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     protected function addVariable(string $name, $value): void
     {

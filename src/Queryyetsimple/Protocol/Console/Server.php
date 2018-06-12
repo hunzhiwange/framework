@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,43 +17,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Console;
 
-use Leevel\{
-    Console\Option,
-    Console\Command,
-    Console\Argument
-};
+use Leevel\Console\Option;
+use Leevel\Console\Command;
+use Leevel\Console\Argument;
 
 /**
- * swoole 服务启动
+ * swoole 服务启动.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.12.21
+ *
  * @version 1.0
  */
 class Server extends Command
 {
-
     /**
-     * 命令名字
+     * 命令名字.
      *
      * @var string
      */
     protected $name = 'swoole:server';
 
     /**
-     * 命令行描述
+     * 命令行描述.
      *
      * @var string
      */
     protected $description = 'Start swoole server';
 
     /**
-     * 响应命令
-     *
-     * @return void
+     * 响应命令.
      */
     public function handle()
     {
@@ -64,16 +64,16 @@ class Server extends Command
     }
 
     /**
-     * 分析参数
+     * 分析参数.
      *
      * @return array
      */
-    protected function parseOption():array
+    protected function parseOption(): array
     {
         $option = [];
 
-        foreach(['host', 'port', 'pid_path', 'worker_num', 'daemonize'] as $key) {
-            if(! is_null($this->option($key))) {
+        foreach (['host', 'port', 'pid_path', 'worker_num', 'daemonize'] as $key) {
+            if (null !== $this->option($key)) {
                 $option[$key] = $this->option($key);
             }
         }
@@ -82,7 +82,7 @@ class Server extends Command
     }
 
     /**
-     * 返回 QueryPHP Version
+     * 返回 QueryPHP Version.
      *
      * @return string
      */
@@ -94,7 +94,7 @@ class Server extends Command
     }
 
     /**
-     * 返回 QueryPHP Logo
+     * 返回 QueryPHP Logo.
      *
      * @return string
      */
@@ -111,7 +111,7 @@ queryphp;
     }
 
     /**
-     * 命令参数
+     * 命令参数.
      *
      * @return array
      */
@@ -122,13 +122,13 @@ queryphp;
                 'type',
                 Argument::OPTIONAL,
                 'The type of server,support default,http,websocket.',
-                app('option')['swoole\default']
-            ]
+                app('option')['swoole\default'],
+            ],
         ];
     }
 
     /**
-     * 命令配置
+     * 命令配置.
      *
      * @return array
      */
@@ -139,32 +139,32 @@ queryphp;
                 'host',
                 null,
                 Option::VALUE_OPTIONAL,
-                'The host to listen on'
+                'The host to listen on',
             ],
             [
                 'port',
                 null,
                 Option::VALUE_OPTIONAL,
-                'The port to listen on'
+                'The port to listen on',
             ],
             [
                 'pid_path',
                 null,
                 Option::VALUE_OPTIONAL,
-                'The save path of process'
+                'The save path of process',
             ],
             [
                 'worker_num',
                 null,
                 Option::VALUE_OPTIONAL,
-                'Set the number of worker processes'
+                'Set the number of worker processes',
             ],
             [
                 'daemonize',
                 null,
                 Option::VALUE_OPTIONAL,
-                'Daemon process'
-            ]
+                'Daemon process',
+            ],
         ];
     }
 }

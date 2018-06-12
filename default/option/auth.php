@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,7 +18,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * auth 默认配置文件
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -24,8 +27,7 @@
  * @version 1.0
  */
 return [
-
-    /**
+    /*
      * ---------------------------------------------------------------
      * 默认认证类型
      * ---------------------------------------------------------------
@@ -34,7 +36,7 @@ return [
      */
     'default' => 'web',
 
-    /**
+    /*
      * ---------------------------------------------------------------
      * 默认 WEB 驱动
      * ---------------------------------------------------------------
@@ -43,7 +45,7 @@ return [
      */
     'web_default' => 'session',
 
-    /**
+    /*
      * ---------------------------------------------------------------
      * 默认 API 驱动
      * ---------------------------------------------------------------
@@ -52,7 +54,7 @@ return [
      */
     'api_default' => 'token',
 
-    /**
+    /*
      * ---------------------------------------------------------------
      * auth 连接参数
      * ---------------------------------------------------------------
@@ -75,7 +77,7 @@ return [
             'token_persistence' => 'token_persistence',
 
             // 查询字段
-            'field' => 'id,name,nikename,email,mobile'
+            'field' => 'id,name,nikename,email,mobile',
         ],
 
         'token' => [
@@ -92,7 +94,7 @@ return [
             'token_persistence' => 'token_persistence',
 
             // 查询字段
-            'field' => 'id,name,nikename,email,mobile'
-        ]
-    ]
+            'field' => 'id,name,nikename,email,mobile',
+        ],
+    ],
 ];

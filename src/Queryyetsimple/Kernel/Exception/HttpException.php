@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,22 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Kernel\Exception;
 
 use Exception;
 use RuntimeException;
 
 /**
- * HTTP 异常
+ * HTTP 异常.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.10
+ *
  * @version 1.0
  */
 class HttpException extends RuntimeException
 {
-
     /**
      * HTTP 状态
      *
@@ -38,25 +42,24 @@ class HttpException extends RuntimeException
     protected $statusCode;
 
     /**
-     * Header
+     * Header.
      *
      * @var array
      */
     protected $headers = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
-     * @param int $statusCode
+     * @param int         $statusCode
      * @param string|null $message
-     * @param integer $code
-     * @param \Exception $previous
-     * @return void
+     * @param int         $code
+     * @param \Exception  $previous
      */
     public function __construct($statusCode, $message = null, $code = 0, Exception $previous = null)
     {
         $this->statusCode = $statusCode;
-        
+
         parent::__construct($message, $code, $previous);
     }
 
@@ -64,7 +67,6 @@ class HttpException extends RuntimeException
      * 设置 HTTP 状态
      *
      * @param int $statusCode
-     * @return void
      */
     public function setStatusCode(int $statusCode)
     {
@@ -74,7 +76,7 @@ class HttpException extends RuntimeException
     /**
      * 返回 HTTP 状态
      *
-     * @return integer
+     * @return int
      */
     public function getStatusCode(): int
     {
@@ -82,10 +84,9 @@ class HttpException extends RuntimeException
     }
 
     /**
-     * 设置 headers
+     * 设置 headers.
      *
      * @param array $headers
-     * @return void
      */
     public function setHeaders(array $headers)
     {
@@ -93,7 +94,7 @@ class HttpException extends RuntimeException
     }
 
     /**
-     * 返回 headers
+     * 返回 headers.
      *
      * @return array
      */

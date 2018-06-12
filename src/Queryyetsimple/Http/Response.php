@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 use Closure;
@@ -23,21 +27,21 @@ use DateTimeZone;
 use JsonSerializable;
 use InvalidArgumentException;
 use UnexpectedValueException;
-use Leevel\{
-    Support\IJson,
-    Flow\TControl,
-    Support\IArray,
-    Support\TMacro
-};
+use Leevel\Support\IJson;
+use Leevel\Flow\TControl;
+use Leevel\Support\IArray;
+use Leevel\Support\TMacro;
 
 /**
  * HTTP 响应
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.18
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class Response implements IResponse
@@ -47,64 +51,64 @@ class Response implements IResponse
     use TMacro;
 
     /**
-     * 响应头
-     * 
+     * 响应头.
+     *
      * @var \Leevel\Http\ResponseHeaderBag
      */
     public $headers;
 
     /**
-     * 原生响应内容
+     * 原生响应内容.
      *
      * @var mixed
      */
     public $original;
 
     /**
-     * 响应内容
-     * 
+     * 响应内容.
+     *
      * @var string
      */
     protected $content;
 
     /**
-     * HTTP 协议版本
-     * 
+     * HTTP 协议版本.
+     *
      * @var string
      */
     protected $protocolVersion;
 
     /**
      * 状态码
-     * 
+     *
      * @var int
      */
     protected $statusCode;
 
     /**
-     * 状态码内容
-     * 
+     * 状态码内容.
+     *
      * @var string
      */
     protected $statusText;
 
     /**
      * 字符编码
-     * 
+     *
      * @var string
      */
     protected $charset;
 
     /**
-     * 是否为 JSON
-     * 
-     * @var boolean
+     * 是否为 JSON.
+     *
+     * @var bool
      */
     protected $isJson = false;
 
     /**
-     * COOKIE Resolver
-     * 
+     * COOKIE Resolver.
+     *
      * @var \Closure
      */
     protected static $cookieResolver;
@@ -113,6 +117,7 @@ class Response implements IResponse
      * 状态码
      *
      * @see http://www.iana.org/assignments/http-status-codes/
+     *
      * @var array
      */
     public static $statusTexts = [
@@ -181,14 +186,14 @@ class Response implements IResponse
     ];
 
     /**
-     * 构造函数
-     * 
+     * 构造函数.
+     *
      * @param string $content
-     * @param integer $status
-     * @param array $headers
-     * @return void
+     * @param int    $status
+     * @param array  $headers
      */
-    public function __construct($content = '', int $status = 200, array $headers = []) {
+    public function __construct($content = '', int $status = 200, array $headers = [])
+    {
         $this->headers = new ResponseHeaderBag($headers);
         $this->setContent($content);
         $this->setStatusCode($status);
@@ -196,38 +201,40 @@ class Response implements IResponse
     }
 
     /**
-     * 创建一个响应
-     * 
+     * 创建一个响应.
+     *
      * @param string $content
-     * @param integer $status
-     * @param array $headers
+     * @param int    $status
+     * @param array  $headers
+     *
      * @return static
      */
-    public static function create($content = '', int $status = 200, array $headers = []) {
+    public static function create($content = '', int $status = 200, array $headers = [])
+    {
         return new static($content, $status, $headers);
     }
 
     /**
-     * 设置 COOKIE Resolver
-     * 
+     * 设置 COOKIE Resolver.
+     *
      * @param \Closure $cookieResolver
-     * @return void
      */
-    public static function setCookieResolver(Closure $cookieResolver = null) {
+    public static function setCookieResolver(Closure $cookieResolver = null)
+    {
         static::$cookieResolver = $cookieResolver;
     }
 
     /**
-     * 发送 HTTP 响应
+     * 发送 HTTP 响应.
      *
      * @return $this
      */
     public function send()
     {
         $this->sendHeaders();
-        
+
         $this->sendContent();
-        
+
         if (function_exists('fastcgi_finish_request')) {
             fastcgi_finish_request();
         }
@@ -236,7 +243,7 @@ class Response implements IResponse
     }
 
     /**
-     * 发送响应头
+     * 发送响应头.
      *
      * @return $this
      */
@@ -270,7 +277,7 @@ class Response implements IResponse
     }
 
     /**
-     * 发送响应内容
+     * 发送响应内容.
      *
      * @return $this
      */
@@ -286,9 +293,10 @@ class Response implements IResponse
     }
 
     /**
-     * 设置内容
+     * 设置内容.
      *
      * @param mixed $content
+     *
      * @return $this
      */
     public function setContent($content)
@@ -317,9 +325,10 @@ class Response implements IResponse
     }
 
     /**
-     * 附加内容
+     * 附加内容.
      *
      * @param string $content
+     *
      * @return $this
      */
     public function appendContent(string $content = null)
@@ -334,11 +343,12 @@ class Response implements IResponse
     }
 
     /**
-     * 设置响应头
+     * 设置响应头.
      *
      * @param string $key
      * @param string $value
-     * @param bool $replace
+     * @param bool   $replace
+     *
      * @return $this
      */
     public function setHeader($key, $value, $replace = true)
@@ -347,7 +357,7 @@ class Response implements IResponse
             return $this;
         }
 
-        if ($replace === true || ! $this->headers->has($key)) {
+        if (true === $replace || ! $this->headers->has($key)) {
             $this->headers->set($key, $value);
         }
 
@@ -355,9 +365,10 @@ class Response implements IResponse
     }
 
     /**
-     * 批量设置响应头
+     * 批量设置响应头.
      *
      * @param array $headers
+     *
      * @return $this
      */
     public function withHeaders(array $headers)
@@ -374,11 +385,12 @@ class Response implements IResponse
     }
 
     /**
-     * 设置 COOKIE 别名
+     * 设置 COOKIE 别名.
      *
      * @param string $name
      * @param string $value
-     * @param array $option
+     * @param array  $option
+     *
      * @return $this
      */
     public function cookie($name, $value = '', array $option = [])
@@ -387,11 +399,12 @@ class Response implements IResponse
     }
 
     /**
-     * 设置 COOKIE
+     * 设置 COOKIE.
      *
      * @param string $name
      * @param string $value
-     * @param array $option
+     * @param array  $option
+     *
      * @return $this
      */
     public function setCookie($name, $value = '', array $option = [])
@@ -401,7 +414,7 @@ class Response implements IResponse
         }
 
         if (! static::$cookieResolver) {
-            throw new InvalidArgumentException("Cookie resolver is not set.");
+            throw new InvalidArgumentException('Cookie resolver is not set.');
         }
 
         $cookie = call_user_func(static::$cookieResolver);
@@ -411,10 +424,11 @@ class Response implements IResponse
     }
 
     /**
-     * 批量设置 COOKIE
+     * 批量设置 COOKIE.
      *
      * @param array $cookies
      * @param array $option
+     *
      * @return $this
      */
     public function withCookies(array $cookies, array $option = [])
@@ -431,21 +445,23 @@ class Response implements IResponse
     }
 
     /**
-     * 获取 COOKIE
+     * 获取 COOKIE.
      *
      * @return array
      */
     public function getCookies()
     {
         $cookie = call_user_func(static::$cookieResolver);
+
         return $cookie->all();
     }
 
     /**
-     * 取回 JSON 数据
+     * 取回 JSON 数据.
      *
      * @param bool $assoc
-     * @param int $depth
+     * @param int  $depth
+     *
      * @return mixed
      */
     public function getData(bool $assoc = true, int $depth = 512)
@@ -458,10 +474,11 @@ class Response implements IResponse
     }
 
     /**
-     * 设置 JSON 数据
+     * 设置 JSON 数据.
      *
      * @param mixed $data
-     * @param int $encodingOptions
+     * @param int   $encodingOptions
+     *
      * @return $this
      */
     public function setData($data = [], $encodingOptions = null)
@@ -472,8 +489,8 @@ class Response implements IResponse
 
         $this->original = $data;
 
-        if ($encodingOptions === null) {
-           $encodingOptions = 256; 
+        if (null === $encodingOptions) {
+            $encodingOptions = 256;
         }
 
         if ($data instanceof IArray) {
@@ -496,7 +513,7 @@ class Response implements IResponse
     }
 
     /**
-     * 获取内容
+     * 获取内容.
      *
      * @return string
      */
@@ -506,7 +523,7 @@ class Response implements IResponse
     }
 
     /**
-     * 获取内容
+     * 获取内容.
      *
      * @return string
      */
@@ -516,7 +533,7 @@ class Response implements IResponse
     }
 
     /**
-     * 获取原始内容
+     * 获取原始内容.
      *
      * @return string
      */
@@ -529,6 +546,7 @@ class Response implements IResponse
      * 设置 HTTP 协议版本 (1.0 or 1.1).
      *
      * @param string $protocolVersion
+     *
      * @return $this
      */
     public function setProtocolVersion(string $protocolVersion)
@@ -543,7 +561,7 @@ class Response implements IResponse
     }
 
     /**
-     * 获取 HTTP 协议版本
+     * 获取 HTTP 协议版本.
      *
      * @final
      */
@@ -554,9 +572,10 @@ class Response implements IResponse
 
     /**
      * 设置相应状态码
-     * 
-     * @param int $code
+     *
+     * @param int   $code
      * @param mixed $text
+     *
      * @return $this
      */
     public function setStatusCode(int $code, $text = null)
@@ -573,11 +592,13 @@ class Response implements IResponse
 
         if (null === $text) {
             $this->statusText = self::$statusTexts[$code] ?? 'unknown status';
+
             return $this;
         }
 
         if (false === $text) {
             $this->statusText = '';
+
             return $this;
         }
 
@@ -607,9 +628,10 @@ class Response implements IResponse
     }
 
     /**
-     * 编码设置
+     * 编码设置.
      *
      * @param string $charset
+     *
      * @return $this
      */
     public function setCharset(string $charset)
@@ -618,9 +640,10 @@ class Response implements IResponse
     }
 
     /**
-     * 编码设置
+     * 编码设置.
      *
      * @param string $charset
+     *
      * @return $this
      */
     public function charset(string $charset)
@@ -645,9 +668,10 @@ class Response implements IResponse
     }
 
     /**
-     * 设置过期时间
+     * 设置过期时间.
      *
      * @param \DateTime $datetime
+     *
      * @return $this
      */
     public function setExpires(DateTime $datetime = null)
@@ -656,8 +680,9 @@ class Response implements IResponse
             return $this;
         }
 
-        if (is_null($datetime)) {
+        if (null === $datetime) {
             $this->headers->remove('Expires');
+
             return $this;
         }
 
@@ -667,9 +692,10 @@ class Response implements IResponse
     }
 
     /**
-     * 设置最后修改时间
+     * 设置最后修改时间.
      *
      * @param \DateTime $datetime
+     *
      * @return $this
      */
     public function setLastModified(DateTime $datetime = null)
@@ -678,8 +704,9 @@ class Response implements IResponse
             return $this;
         }
 
-        if (is_null($datetime)) {
+        if (null === $datetime) {
             $this->headers->remove('Last-Modified');
+
             return $this;
         }
 
@@ -689,9 +716,10 @@ class Response implements IResponse
     }
 
     /**
-     * 设置缓存
+     * 设置缓存.
      *
      * @param int $minutes
+     *
      * @return $this
      */
     public function setCache(int $minutes)
@@ -710,7 +738,7 @@ class Response implements IResponse
     }
 
     /**
-     * 设置响应未修改
+     * 设置响应未修改.
      *
      * @return $this
      */
@@ -726,10 +754,11 @@ class Response implements IResponse
     }
 
     /**
-     * 设置响应内容类型
+     * 设置响应内容类型.
      *
      * @param string $contentType
      * @param string $charset
+     *
      * @return $this
      */
     public function setContentType(string $contentType, $charset = null)
@@ -738,11 +767,11 @@ class Response implements IResponse
             return $this;
         }
 
-        if (is_null($charset)) {
+        if (null === $charset) {
             $charset = $this->getCharset();
         }
 
-        if ($charset === null) {
+        if (null === $charset) {
             $this->setHeader('Content-Type', $contentType);
         } else {
             $this->setHeader('Content-Type', $contentType . '; charset=' . $charset);
@@ -752,9 +781,10 @@ class Response implements IResponse
     }
 
     /**
-     * 设置响应内容长度
+     * 设置响应内容长度.
      *
      * @param int $contentLength
+     *
      * @return $this
      */
     public function setContentLength(int $contentLength)
@@ -769,13 +799,14 @@ class Response implements IResponse
     }
 
     /**
-     * 设置自定义标识符
+     * 设置自定义标识符.
      *
      * @param string $etag
+     *
      * @return $this
      */
     public function setEtag(string $etag)
-    {   
+    {
         if ($this->checkTControl()) {
             return $this;
         }
@@ -786,7 +817,7 @@ class Response implements IResponse
     }
 
     /**
-     * 响应是否为 JSON
+     * 响应是否为 JSON.
      *
      * @return bool
      */
@@ -796,7 +827,7 @@ class Response implements IResponse
     }
 
     /**
-     * 响应是否正确
+     * 响应是否正确.
      *
      * @return bool
      */
@@ -806,7 +837,7 @@ class Response implements IResponse
     }
 
     /**
-     * 是否为信息性响应
+     * 是否为信息性响应.
      *
      * @return bool
      */
@@ -816,7 +847,7 @@ class Response implements IResponse
     }
 
     /**
-     * 是否为正确响应
+     * 是否为正确响应.
      *
      * @return bool
      */
@@ -826,7 +857,7 @@ class Response implements IResponse
     }
 
     /**
-     * 是否为重定向响应
+     * 是否为重定向响应.
      *
      * @return bool
      */
@@ -836,7 +867,7 @@ class Response implements IResponse
     }
 
     /**
-     * 是否为客户端错误响应
+     * 是否为客户端错误响应.
      *
      * @return bool
      */
@@ -846,7 +877,7 @@ class Response implements IResponse
     }
 
     /**
-     * 是否为服务端错误响应
+     * 是否为服务端错误响应.
      *
      * @return bool
      */
@@ -856,7 +887,7 @@ class Response implements IResponse
     }
 
     /**
-     * 是否为正常响应
+     * 是否为正常响应.
      *
      * @return bool
      */
@@ -866,7 +897,7 @@ class Response implements IResponse
     }
 
     /**
-     * 是否为受限响应
+     * 是否为受限响应.
      *
      * @return bool
      */
@@ -876,7 +907,7 @@ class Response implements IResponse
     }
 
     /**
-     * 是否为 404 NOT FOUND
+     * 是否为 404 NOT FOUND.
      *
      * @return bool
      */
@@ -886,40 +917,41 @@ class Response implements IResponse
     }
 
     /**
-     * 是否为表单重定向响应
+     * 是否为表单重定向响应.
      *
      * @return bool
      */
     public function isRedirect(string $location = null): bool
     {
         return in_array($this->statusCode, [
-            201, 
-            301, 
-            302, 
-            303, 
-            307, 
-            308
-        ]) 
+            201,
+            301,
+            302,
+            303,
+            307,
+            308,
+        ])
             && (null === $location ?: $location == $this->headers->get('Location'));
     }
 
     /**
-     * 是否为空响应
+     * 是否为空响应.
      *
      * @return bool
      */
     public function isEmpty(): bool
     {
         return in_array($this->statusCode, [
-            204, 
-            304
+            204,
+            304,
         ]);
     }
 
     /**
-     * 格式化响应时间
+     * 格式化响应时间.
      *
      * @param \DateTime $datetime
+     *
      * @return string
      */
     protected function normalizeDateTime(DateTime $datetime)
@@ -932,9 +964,10 @@ class Response implements IResponse
     }
 
     /**
-     * 内容转换为 JSON
+     * 内容转换为 JSON.
      *
      * @param mixed $content
+     *
      * @return string
      */
     protected function contentToJson($content)
@@ -947,9 +980,10 @@ class Response implements IResponse
     }
 
     /**
-     * 可以转换为 JSON
+     * 可以转换为 JSON.
      *
      * @param mixed $content
+     *
      * @return bool
      */
     protected function contentShouldJson($content)

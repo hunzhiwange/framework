@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,24 +17,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Service;
 
-use Thrift\Base\TBase;
 use Thrift\Type\TType;
-use Thrift\Type\TMessageType;
-use Thrift\Protocol\TProtocol;
-use Thrift\Exception\TException;
 use Thrift\Exception\TProtocolException;
-use Thrift\Exception\TApplicationException;
-use Thrift\Protocol\TBinaryProtocolAccelerated;
 
 /**
  * 定义一个请求包结构
  * 约定请求数据包，方便只定义一个解构全自动调用 MVC 服务
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.02
+ *
  * @version 1.0
  */
 class Request
@@ -47,41 +46,41 @@ class Request
      * @var string[]
      */
     public $params = null;
-    
+
     /**
      * @var array
      */
     public $metas = null;
 
-    public function __construct($vals=null)
+    public function __construct($vals = null)
     {
-        if (!isset(self::$_TSPEC)) {
-            self::$_TSPEC = array(
-        1 => array(
+        if (! isset(self::$_TSPEC)) {
+            self::$_TSPEC = [
+        1 => [
           'var' => 'call',
           'type' => TType::STRING,
-          ),
-        2 => array(
+          ],
+        2 => [
           'var' => 'params',
           'type' => TType::LST,
           'etype' => TType::STRING,
-          'elem' => array(
+          'elem' => [
             'type' => TType::STRING,
-            ),
-          ),
-        3 => array(
+            ],
+          ],
+        3 => [
           'var' => 'metas',
           'type' => TType::MAP,
           'ktype' => TType::STRING,
           'vtype' => TType::STRING,
-          'key' => array(
+          'key' => [
             'type' => TType::STRING,
-          ),
-          'val' => array(
+          ],
+          'val' => [
             'type' => TType::STRING,
-            ),
-          ),
-        );
+            ],
+          ],
+        ];
         }
         if (is_array($vals)) {
             if (isset($vals['call'])) {
@@ -110,27 +109,27 @@ class Request
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-            if ($ftype == TType::STOP) {
+            if (TType::STOP == $ftype) {
                 break;
             }
             switch ($fid) {
         case 1:
-          if ($ftype == TType::STRING) {
+          if (TType::STRING == $ftype) {
               $xfer += $input->readString($this->call);
           } else {
               $xfer += $input->skip($ftype);
           }
           break;
         case 2:
-          if ($ftype == TType::LST) {
-              $this->params = array();
+          if (TType::LST == $ftype) {
+              $this->params = [];
               $_size0 = 0;
               $_etype3 = 0;
               $xfer += $input->readListBegin($_etype3, $_size0);
               for ($_i4 = 0; $_i4 < $_size0; ++$_i4) {
                   $elem5 = null;
                   $xfer += $input->readString($elem5);
-                  $this->params []= $elem5;
+                  $this->params[] = $elem5;
               }
               $xfer += $input->readListEnd();
           } else {
@@ -138,8 +137,8 @@ class Request
           }
           break;
         case 3:
-          if ($ftype == TType::MAP) {
-              $this->metas = array();
+          if (TType::MAP == $ftype) {
+              $this->metas = [];
               $_size6 = 0;
               $_ktype7 = 0;
               $_vtype8 = 0;
@@ -163,6 +162,7 @@ class Request
             $xfer += $input->readFieldEnd();
         }
         $xfer += $input->readStructEnd();
+
         return $xfer;
     }
 
@@ -170,46 +170,47 @@ class Request
     {
         $xfer = 0;
         $xfer += $output->writeStructBegin('Request');
-        if ($this->call !== null) {
+        if (null !== $this->call) {
             $xfer += $output->writeFieldBegin('call', TType::STRING, 1);
             $xfer += $output->writeString($this->call);
             $xfer += $output->writeFieldEnd();
         }
-        if ($this->params !== null) {
-            if (!is_array($this->params)) {
+        if (null !== $this->params) {
+            if (! is_array($this->params)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
             }
             $xfer += $output->writeFieldBegin('params', TType::LST, 2);
-            {
-        $output->writeListBegin(TType::STRING, count($this->params));
-        {
-          foreach ($this->params as $iter13) {
-              $xfer += $output->writeString($iter13);
-          }
-        }
-        $output->writeListEnd();
-      }
+
+            $output->writeListBegin(TType::STRING, count($this->params));
+
+            foreach ($this->params as $iter13) {
+                $xfer += $output->writeString($iter13);
+            }
+
+            $output->writeListEnd();
+
             $xfer += $output->writeFieldEnd();
         }
-        if ($this->metas !== null) {
-            if (!is_array($this->metas)) {
+        if (null !== $this->metas) {
+            if (! is_array($this->metas)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
             }
             $xfer += $output->writeFieldBegin('metas', TType::MAP, 3);
-            {
-        $output->writeMapBegin(TType::STRING, TType::STRING, count($this->metas));
-        {
-          foreach ($this->metas as $kiter14 => $viter15) {
-              $xfer += $output->writeString($kiter14);
-              $xfer += $output->writeString($viter15);
-          }
-        }
-        $output->writeMapEnd();
-      }
+
+            $output->writeMapBegin(TType::STRING, TType::STRING, count($this->metas));
+
+            foreach ($this->metas as $kiter14 => $viter15) {
+                $xfer += $output->writeString($kiter14);
+                $xfer += $output->writeString($viter15);
+            }
+
+            $output->writeMapEnd();
+
             $xfer += $output->writeFieldEnd();
         }
         $xfer += $output->writeFieldStop();
         $xfer += $output->writeStructEnd();
+
         return $xfer;
     }
 }

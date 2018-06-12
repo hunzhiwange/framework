@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,39 +17,36 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Provider;
 
-use Leevel\{
-    Di\Provider,
-    Protocol\Server,
-    Protocol\HttpServer,
-    Protocol\WebsocketServer,
-    Protocol\RpcServer
-};
+use Leevel\Di\Provider;
+use Leevel\Protocol\Server;
+use Leevel\Protocol\HttpServer;
+use Leevel\Protocol\WebsocketServer;
+use Leevel\Protocol\RpcServer;
 use Leevel\Kernel\IKernel;
 
 /**
- * swoole 服务提供者
+ * swoole 服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.12.21
+ *
  * @version 1.0
  */
 class Register extends Provider
 {
-
     /**
-     * 是否延迟载入
+     * 是否延迟载入.
      *
-     * @var boolean
+     * @var bool
      */
     public static $defer = true;
-    
+
     /**
      * 注册服务
-     *
-     * @return void
      */
     public function register()
     {
@@ -57,7 +57,7 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者
+     * 可用服务提供者.
      *
      * @return array
      */
@@ -65,24 +65,22 @@ class Register extends Provider
     {
         return [
             'swoole.default.server' => [
-                'Leevel\Protocol\Server'
+                'Leevel\Protocol\Server',
             ],
             'swoole.http.server' => [
-                'Leevel\Protocol\Http\Server'
+                'Leevel\Protocol\Http\Server',
             ],
             'swoole.websocket.server' => [
-                'Leevel\Protocol\Websocket\Server'
+                'Leevel\Protocol\Websocket\Server',
             ],
             'swoole.rpc.server' => [
-                'Leevel\Protocol\RpcServer'
-            ]
+                'Leevel\Protocol\RpcServer',
+            ],
         ];
     }
 
     /**
      * 注册 swoole 服务
-     *
-     * @return void
      */
     protected function swooleServer()
     {
@@ -93,39 +91,36 @@ class Register extends Provider
 
     /**
      * 注册 swoole http 服务
-     *
-     * @return void
      */
     protected function swooleHttpServer()
     {
         $this->container->singleton('swoole.http.server', function ($project) {
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\http_server']);
+
             return new HttpServer($project->make(IKernel::class), $project['request'], $arrOption);
         });
     }
-    
+
     /**
      * 注册 swoole websocket 服务
-     *
-     * @return void
      */
     protected function swooleWebsocketServer()
     {
         $this->container->singleton('swoole.websocket.server', function ($project) {
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\websocket_server']);
+
             return new WebsocketServer($project->make(IKernel::class), $project['request'], $arrOption);
         });
     }
 
     /**
      * 注册 swoole rpc 服务
-     *
-     * @return void
      */
     protected function swooleRpcServer()
     {
         $this->container->singleton('swoole.rpc.server', function ($project) {
             $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\rpc_server']);
+
             return new RpcServer($arrOption);
         });
     }

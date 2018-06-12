@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Filesystem;
 
 use Closure;
@@ -22,11 +26,12 @@ use DirectoryIterator;
 use Leevel\Support\TMacro;
 
 /**
- * File System Object 管理
+ * File System Object 管理.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.05
+ *
  * @version 1.0
  */
 class Fso
@@ -34,9 +39,10 @@ class Fso
     use TMacro;
 
     /**
-     * 取得文件内容
+     * 取得文件内容.
      *
      * @param string $strPath
+     *
      * @return string
      */
     public static function fileContents($strPath)
@@ -49,10 +55,11 @@ class Fso
     }
 
     /**
-     * 创建目录
+     * 创建目录.
      *
      * @param string $sDir
      * @param number $nMode
+     *
      * @return void|true
      */
     public static function createDirectory($sDir, $nMode = 0777)
@@ -67,11 +74,10 @@ class Fso
     }
 
     /**
-     * 删除目录
+     * 删除目录.
      *
      * @param string $sDir
-     * @param boolean $bRecursive
-     * @return void
+     * @param bool   $bRecursive
      */
     public static function deleteDirectory($sDir, $bRecursive = false)
     {
@@ -101,19 +107,18 @@ class Fso
     }
 
     /**
-     * 复制目录
+     * 复制目录.
      *
      * @param string $sSourcePath
      * @param string $sTargetPath
-     * @param array $arrFilter
-     * @return void
+     * @param array  $arrFilter
      */
     public static function copyDirectory($sSourcePath, $sTargetPath, $arrFilter = [])
     {
         if (! is_dir($sSourcePath)) {
             return;
         }
-        
+
         if (file_exists($sTargetPath)) {
             return;
         }
@@ -142,12 +147,11 @@ class Fso
     }
 
     /**
-     * 浏览目录
+     * 浏览目录.
      *
-     * @param string $sPath
+     * @param string   $sPath
      * @param \Closure $cal
-     * @param array $arrFilter
-     * @return void
+     * @param array    $arrFilter
      */
     public static function listDirectory($sPath, Closure $cal, $arrFilter = [])
     {
@@ -169,14 +173,15 @@ class Fso
     }
 
     /**
-     * 只读取一级目录
+     * 只读取一级目录.
      *
      * @param string $sDir
      * @param string $strReturnType
-     * @param boolean $booFullpath
-     * @param array $arrFilter
-     * @param array $arrAllowedExt
-     * @param array $arrFilterExt
+     * @param bool   $booFullpath
+     * @param array  $arrFilter
+     * @param array  $arrAllowedExt
+     * @param array  $arrFilterExt
+     *
      * @return array
      */
     public static function lists($sDir, $strReturnType = 'dir', $booFullpath = false, $arrFilter = [], $arrAllowedExt = [], $arrFilterExt = [])
@@ -185,12 +190,12 @@ class Fso
             '.svn',
             '.git',
             'node_modules',
-            '.gitkeep'
+            '.gitkeep',
         ], $arrFilter);
 
         $arrReturnData = [
             'file' => [],
-            'dir' => []
+            'dir' => [],
         ];
 
         if (is_dir($sDir)) {
@@ -204,7 +209,7 @@ class Fso
 
                 if ($objFile->isDir() && in_array($strReturnType, [
                     'dir',
-                    'both'
+                    'both',
                 ])) {
                     $arrReturnData['dir'][] = $booFullpath ? $objFile->getRealPath() : $objFile->getFilename();
                 }
@@ -213,15 +218,15 @@ class Fso
 
                 if ($objFile->isFile() && in_array($strReturnType, [
                     'file',
-                    'both'
+                    'both',
                 ]) && (! $arrFilterExt || ! in_array($strExt, $arrFilterExt)) && (! $arrAllowedExt || in_array($strExt, $arrAllowedExt))) {
                     $arrReturnData['file'][] = $booFullpath ? $objFile->getRealPath() : $objFile->getFilename();
                 }
             }
 
-            if ($strReturnType == 'file') {
+            if ('file' == $strReturnType) {
                 return $arrReturnData['file'];
-            } elseif ($strReturnType == 'dir') {
+            } elseif ('dir' == $strReturnType) {
                 return $arrReturnData['dir'];
             } else {
                 return $arrReturnData;
@@ -235,7 +240,8 @@ class Fso
      * 整理目录斜线风格
      *
      * @param string $sPath
-     * @param boolean $bUnix
+     * @param bool   $bUnix
+     *
      * @return string
      */
     public static function tidyPath($sPath, $bUnix = true)
@@ -246,6 +252,7 @@ class Fso
         if (! $bUnix) {
             $sPath = str_replace('/', '\\', $sPath);
         }
+
         return rtrim($sPath, '\\/');
     }
 
@@ -253,24 +260,27 @@ class Fso
      * 格式化文件或者目录为 Linux 风格
      *
      * @param string $strPath
-     * @param boolean $booWindowsWithLetter
+     * @param bool   $booWindowsWithLetter
+     *
      * @return string
      */
     public static function tidyPathLinux($strPath, $booWindowsWithLetter = false)
     {
         $strPath = ltrim(static::tidyPath($strPath, true), '//');
-        if (strpos($strPath, ':\\') !== false) {
+        if (false !== strpos($strPath, ':\\')) {
             $arrTemp = explode(':\\', $strPath);
-            $strPath = ($booWindowsWithLetter === true ? strtolower($arrTemp[0]) . '/' : '') . $arrTemp[1];
+            $strPath = (true === $booWindowsWithLetter ? strtolower($arrTemp[0]) . '/' : '') . $arrTemp[1];
         }
+
         return '/' . $strPath;
     }
 
     /**
-     * 判断是否为绝对路径
+     * 判断是否为绝对路径.
      *
      * @param string $sPath
-     * @return boolean
+     *
+     * @return bool
      */
     public static function isAbsolute($sPath)
     {
@@ -278,26 +288,28 @@ class Fso
     }
 
     /**
-     * 根据 ID 获取打散目录
+     * 根据 ID 获取打散目录.
      *
      * @param int $intDataId
+     *
      * @return array
      */
     public static function distributed($intDataId)
     {
-        $intDataId = abs(intval($intDataId));
-        $intDataId = sprintf("%09d", $intDataId); // 格式化为 9 位数，前面不够填充 0
+        $intDataId = abs((int) $intDataId);
+        $intDataId = sprintf('%09d', $intDataId); // 格式化为 9 位数，前面不够填充 0
         return [
             substr($intDataId, 0, 3) . '/' . substr($intDataId, 3, 2) . '/' . substr($intDataId, 5, 2) . '/',
-            substr($intDataId, - 2)
+            substr($intDataId, -2),
         ];
     }
 
     /**
-     * 新建文件
+     * 新建文件.
      *
      * @param $sPath string
      * @param $nMode=0766 int
+     *
      * @return bool
      */
     public static function createFile($sPath, $nMode = 0766)
@@ -314,6 +326,7 @@ class Fso
 
         if ($hFile = fopen($sPath, 'a')) {
             chmod($sPath, $nMode);
+
             return fclose($hFile);
         } else {
             throw new RuntimeException(sprint('Create file %s failed.', $sPath));
@@ -321,18 +334,19 @@ class Fso
     }
 
     /**
-     * 获取上传文件扩展名
+     * 获取上传文件扩展名.
      *
      * @param string $sFileName 文件名
-     * @param int $nCase 格式化参数 0 默认，1 转为大小 ，转为大小
+     * @param int    $nCase     格式化参数 0 默认，1 转为大小 ，转为大小
+     *
      * @return string
      */
     public static function getExtension($sFileName, $nCase = 0)
     {
         $sFileName = pathinfo($sFileName, PATHINFO_EXTENSION);
-        if ($nCase == 1) {
+        if (1 == $nCase) {
             return strtoupper($sFileName);
-        } elseif ($nCase == 2) {
+        } elseif (2 == $nCase) {
             return strtolower($sFileName);
         } else {
             return $sFileName;
@@ -340,9 +354,10 @@ class Fso
     }
 
     /**
-     * 获取文件名字
+     * 获取文件名字.
      *
      * @param string $strPath
+     *
      * @return string
      */
     public static function getName($strPath)
@@ -351,9 +366,10 @@ class Fso
     }
 
     /**
-     * 是否为目录
+     * 是否为目录.
      *
      * @param string $strDirectory
+     *
      * @return bool
      */
     public static function isDirectory($strDirectory)
@@ -362,9 +378,10 @@ class Fso
     }
 
     /**
-     * 是否可写
+     * 是否可写.
      *
      * @param string $strPath
+     *
      * @return bool
      */
     public static function isWritable($strPath)
@@ -373,9 +390,10 @@ class Fso
     }
 
     /**
-     * 是否为文件
+     * 是否为文件.
      *
      * @param string $strFile
+     *
      * @return bool
      */
     public static function isFile($strFile)

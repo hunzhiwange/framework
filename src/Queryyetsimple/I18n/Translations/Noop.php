@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,28 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n\Translations;
 
 /**
  * translations.noop
- * This class borrows heavily from the Wordpress and is part of the Wordpress package
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.18
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ *
  * @version 1.0
  */
 class Noop extends Translations
 {
-
     /**
-     * prop
+     * prop.
      *
      * @var array
      */
-    public $entries = array();
-    public $headers = array();
+    public $entries = [];
+    public $headers = [];
 
     /**
      * {@inheritdoc}
@@ -46,7 +50,6 @@ class Noop extends Translations
     }
 
     /**
-     *
      * @param string $header
      * @param string $value
      */
@@ -55,7 +58,6 @@ class Noop extends Translations
     }
 
     /**
-     *
      * @param array $headers
      */
     public function set_headers($headers)
@@ -63,8 +65,8 @@ class Noop extends Translations
     }
 
     /**
-     *
      * @param string $header
+     *
      * @return false
      */
     public function get_header($header)
@@ -73,8 +75,8 @@ class Noop extends Translations
     }
 
     /**
-     *
      * @param Translation_Entry $entry
+     *
      * @return false
      */
     public function translate_entry(&$entry)
@@ -83,7 +85,6 @@ class Noop extends Translations
     }
 
     /**
-     *
      * @param string $singular
      * @param string $context
      */
@@ -93,8 +94,8 @@ class Noop extends Translations
     }
 
     /**
-     *
      * @param int $count
+     *
      * @return bool
      */
     public function select_plural_form($count)
@@ -103,7 +104,6 @@ class Noop extends Translations
     }
 
     /**
-     *
      * @return int
      */
     public function get_plural_forms_count()
@@ -112,10 +112,9 @@ class Noop extends Translations
     }
 
     /**
-     *
      * @param string $singular
      * @param string $plural
-     * @param int $count
+     * @param int    $count
      * @param string $context
      */
     public function translate_plural($singular, $plural, $count, $context = null)
@@ -124,7 +123,6 @@ class Noop extends Translations
     }
 
     /**
-     *
      * @param object $other
      */
     public function merge_with(&$other)

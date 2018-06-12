@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Database;
 
 use Leevel\Manager\Manager as Managers;
 
 /**
- * database 入口
+ * database 入口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.02.15
+ *
  * @version 1.0
  */
 class Manager extends Managers
 {
-
     /**
-     * 取得配置命名空间
+     * 取得配置命名空间.
      *
      * @return string
      */
@@ -43,6 +47,7 @@ class Manager extends Managers
      * 创建连接对象
      *
      * @param object $connect
+     *
      * @return object
      */
     protected function createConnect($connect)
@@ -51,9 +56,10 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 mysql 连接
+     * 创建 mysql 连接.
      *
      * @param array $option
+     *
      * @return \Leevel\Database\mysql
      */
     protected function makeConnectMysql($option = [])
@@ -67,10 +73,11 @@ class Manager extends Managers
     }
 
     /**
-     * 读取默认配置
+     * 读取默认配置.
      *
      * @param string $connect
-     * @param array $extendOption
+     * @param array  $extendOption
+     *
      * @return array
      */
     protected function getOption($connect, array $extendOption = null)
@@ -81,9 +88,10 @@ class Manager extends Managers
     }
 
     /**
-     * 分析数据库配置参数
+     * 分析数据库配置参数.
      *
      * @param array $option
+     *
      * @return array
      */
     protected function parseOption($option)
@@ -98,7 +106,7 @@ class Manager extends Managers
                 'master',
                 'slave',
                 'fetch',
-                'log'
+                'log',
             ])) {
                 if (isset($temp[$type])) {
                     unset($temp[$type]);
@@ -113,7 +121,7 @@ class Manager extends Managers
         // 纠正数据库服务器参数
         foreach ([
             'master',
-            'slave'
+            'slave',
         ] as $type) {
             if (! is_array($option[$type])) {
                 $option[$type] = [];
@@ -129,7 +137,7 @@ class Manager extends Managers
         } elseif ($option['slave']) {
             if (count($option['slave']) == count($option['slave'], COUNT_RECURSIVE)) {
                 $option['slave'] = [
-                    $option['slave']
+                    $option['slave'],
                 ];
             }
 
@@ -140,7 +148,7 @@ class Manager extends Managers
 
         // 返回结果
         unset($temp);
-        
+
         return $option;
     }
 }

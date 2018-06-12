@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,32 +17,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc\Relation;
 
-use Leevel\{
-    Mvc\IModel,
-    Collection\Collection
-};
+use Leevel\Mvc\IModel;
+use Leevel\Collection\Collection;
 
 /**
- * 关联模型 HasMany
+ * 关联模型 HasMany.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.28
+ *
  * @version 1.0
  */
 class HasMany extends Relation
 {
-
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Mvc\IModel $objTargetModel
      * @param \Leevel\Mvc\IModel $objSourceModel
-     * @param string $strTargetKey
-     * @param string $strSourceKey
-     * @return void
+     * @param string             $strTargetKey
+     * @param string             $strSourceKey
      */
     public function __construct(IModel $objTargetModel, IModel $objSourceModel, $strTargetKey, $strSourceKey)
     {
@@ -47,9 +48,7 @@ class HasMany extends Relation
     }
 
     /**
-     * 关联基础查询条件
-     *
-     * @return void
+     * 关联基础查询条件.
      */
     public function addRelationCondition()
     {
@@ -60,10 +59,9 @@ class HasMany extends Relation
     }
 
     /**
-     * 设置预载入关联查询条件
+     * 设置预载入关联查询条件.
      *
      * @param \Leevel\Mvc\IModel[] $arrModel
-     * @return void
      */
     public function preLoadCondition(array $arrModel)
     {
@@ -71,11 +69,12 @@ class HasMany extends Relation
     }
 
     /**
-     * 匹配关联查询数据到模型 HasMany
+     * 匹配关联查询数据到模型 HasMany.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[]          $arrModel
      * @param \Leevel\Collection\Collection $objResult
-     * @param string $strRelation
+     * @param string                        $strRelation
+     *
      * @return array
      */
     public function matchPreLoad(array $arrModel, Collection $objResult, $strRelation)
@@ -84,7 +83,7 @@ class HasMany extends Relation
     }
 
     /**
-     * 取回源模型对应数据
+     * 取回源模型对应数据.
      *
      * @return mixed
      */
@@ -104,21 +103,24 @@ class HasMany extends Relation
     }
 
     /**
-     * 保存模型
+     * 保存模型.
      *
      * @param \Leevel\Mvc\IModel $objModel
+     *
      * @return \Leevel\Mvc\IModel
      */
     public function save(IModel $objModel)
     {
         $this->withSourceKeyValue($objModel);
+
         return $objModel->save();
     }
 
     /**
-     * 批量保存模型
+     * 批量保存模型.
      *
      * @param \Leevel\Collection\Collection|array $mixModel
+     *
      * @return \Leevel\Collection\Collection|array
      */
     public function saveMany($mixModel)
@@ -131,9 +133,10 @@ class HasMany extends Relation
     }
 
     /**
-     * 创建模型实例
+     * 创建模型实例.
      *
      * @param array $arrProp
+     *
      * @return \Leevel\Mvc\IModel
      */
     public function create(array $arrProp)
@@ -146,9 +149,10 @@ class HasMany extends Relation
     }
 
     /**
-     * 批量创建模型实例
+     * 批量创建模型实例.
      *
      * @param array $arrProps
+     *
      * @return array
      */
     public function createMany(array $arrProps)
@@ -162,9 +166,10 @@ class HasMany extends Relation
     }
 
     /**
-     * 更新关联模型的数据
+     * 更新关联模型的数据.
      *
      * @param array $arrProp
+     *
      * @return int
      */
     public function update(array $arrProp)
@@ -183,10 +188,9 @@ class HasMany extends Relation
     }
 
     /**
-     * 模型添加源字段数据
+     * 模型添加源字段数据.
      *
      * @param \Leevel\Mvc\IModel $objModel
-     * @return void
      */
     protected function withSourceKeyValue(IModel $objModel)
     {
@@ -194,12 +198,13 @@ class HasMany extends Relation
     }
 
     /**
-     * 匹配预载入数据
+     * 匹配预载入数据.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[]          $arrModel
      * @param \Leevel\Collection\Collection $objResult
-     * @param string $strRelation
-     * @param string $strType
+     * @param string                        $strRelation
+     * @param string                        $strType
+     *
      * @return array
      */
     protected function matchPreLoadOneOrMany(array $arrModel, collection $objResult, $strRelation, $strType)
@@ -218,23 +223,26 @@ class HasMany extends Relation
     }
 
     /**
-     * 取得关联模型数据
+     * 取得关联模型数据.
      *
-     * @param array $arrMap
+     * @param array  $arrMap
      * @param string $strKey
      * @param string $strType
+     *
      * @return mixed
      */
     protected function getRelationValue(array $arrMap, $strKey, $strType)
     {
         $arrValue = $arrMap[$strKey];
-        return $strType == 'one' ? reset($arrValue) : $this->objTargetModel->collection($arrValue);
+
+        return 'one' == $strType ? reset($arrValue) : $this->objTargetModel->collection($arrValue);
     }
 
     /**
-     * 模型隐射数据
+     * 模型隐射数据.
      *
      * @param \Leevel\Collection\Collection $objResult
+     *
      * @return array
      */
     protected function buildMap(collection $objResult)

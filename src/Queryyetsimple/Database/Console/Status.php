@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Database\Console;
 
 use Phinx\Console\Command\Status as PhinxStatus;
@@ -22,22 +26,20 @@ use Phinx\Console\Command\Status as PhinxStatus;
  * 数据库打印所有迁移脚本和他们的状态
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.09
+ *
  * @version 1.0
  */
 class Status extends PhinxStatus
 {
-
     /**
      * Configures the current command.
-     *
-     * @return void
      */
     protected function configure()
     {
         parent::configure();
-        
+
         $this->setName('migrate:status');
     }
 }

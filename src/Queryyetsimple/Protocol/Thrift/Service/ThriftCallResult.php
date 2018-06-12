@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Service;
 
-use Thrift\Base\TBase;
 use Thrift\Type\TType;
-use Thrift\Type\TMessageType;
-use Thrift\Protocol\TProtocol;
-use Thrift\Exception\TException;
 use Thrift\Exception\TProtocolException;
-use Thrift\Exception\TApplicationException;
-use Thrift\Protocol\TBinaryProtocolAccelerated;
 
 /**
- * thrift 默认服务响应结果参数
+ * thrift 默认服务响应结果参数.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.01
+ *
  * @version 1.0
  */
 class ThriftCallResult
@@ -42,16 +41,16 @@ class ThriftCallResult
      */
     public $success = null;
 
-    public function __construct($vals=null)
+    public function __construct($vals = null)
     {
-        if (!isset(self::$_TSPEC)) {
-            self::$_TSPEC = array(
-        0 => array(
+        if (! isset(self::$_TSPEC)) {
+            self::$_TSPEC = [
+        0 => [
           'var' => 'success',
           'type' => TType::STRUCT,
           'class' => '\Leevel\Protocol\Thrift\Service\Response',
-          ),
-        );
+          ],
+        ];
         }
         if (is_array($vals)) {
             if (isset($vals['success'])) {
@@ -74,12 +73,12 @@ class ThriftCallResult
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-            if ($ftype == TType::STOP) {
+            if (TType::STOP == $ftype) {
                 break;
             }
             switch ($fid) {
         case 0:
-          if ($ftype == TType::STRUCT) {
+          if (TType::STRUCT == $ftype) {
               $this->success = new Response();
               $xfer += $this->success->read($input);
           } else {
@@ -93,6 +92,7 @@ class ThriftCallResult
             $xfer += $input->readFieldEnd();
         }
         $xfer += $input->readStructEnd();
+
         return $xfer;
     }
 
@@ -100,8 +100,8 @@ class ThriftCallResult
     {
         $xfer = 0;
         $xfer += $output->writeStructBegin('ThriftCallResult');
-        if ($this->success !== null) {
-            if (!is_object($this->success)) {
+        if (null !== $this->success) {
+            if (! is_object($this->success)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
             }
             $xfer += $output->writeFieldBegin('success', TType::STRUCT, 0);
@@ -110,6 +110,7 @@ class ThriftCallResult
         }
         $xfer += $output->writeFieldStop();
         $xfer += $output->writeStructEnd();
+
         return $xfer;
     }
 }

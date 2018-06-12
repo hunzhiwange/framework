@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Base;
 
 use Thrift\Transport\TFramedTransport;
@@ -22,12 +26,14 @@ use Thrift\Exception\TTransportException;
 
 /**
  * Socket Transport
- * This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package
+ * This class borrows heavily from the swoole thrift-rpc-server and is part of the swoole package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.03
+ *
  * @version 1.0
+ *
  * @see swoole/thrift-rpc-server (https://github.com/swoole/thrift-rpc-server)
  */
 class Socket extends TFramedTransport
@@ -57,21 +63,21 @@ class Socket extends TFramedTransport
     public function _read($len)
     {
         if (strlen($this->buffer) - $this->offset < $len) {
-            throw new TTransportException('TSocket['.strlen($this->buffer).'] read '.$len.' bytes failed.');
+            throw new TTransportException('TSocket[' . strlen($this->buffer) . '] read ' . $len . ' bytes failed.');
         }
         $data = substr($this->buffer, $this->offset, $len);
         $this->offset += $len;
-        
+
         return $data;
     }
 
     public function read($len)
     {
-        if (!$this->read_) {
+        if (! $this->read_) {
             return $this->_read($len);
         }
 
-        if (TStringFuncFactory::create()->strlen($this->rBuf_) === 0) {
+        if (0 === TStringFuncFactory::create()->strlen($this->rBuf_)) {
             $this->readFrame();
         }
 
@@ -79,12 +85,14 @@ class Socket extends TFramedTransport
         if ($len >= TStringFuncFactory::create()->strlen($this->rBuf_)) {
             $out = $this->rBuf_;
             $this->rBuf_ = null;
+
             return $out;
         }
 
         // Return TStringFuncFactory::create()->substr
         $out = TStringFuncFactory::create()->substr($this->rBuf_, 0, $len);
         $this->rBuf_ = TStringFuncFactory::create()->substr($this->rBuf_, $len);
+
         return $out;
     }
 

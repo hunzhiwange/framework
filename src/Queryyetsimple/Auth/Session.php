@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,42 +17,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Auth;
 
-use Leevel\{
-    Mvc\IModel,
-    Session\ISession,
-    Validate\IValidate,
-    Encryption\IEncryption
-};
+use Leevel\Mvc\IModel;
+use Leevel\Session\ISession;
+use Leevel\Validate\IValidate;
+use Leevel\Encryption\IEncryption;
 
 /**
- * auth.session
+ * auth.session.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.07
+ *
  * @version 1.0
  */
 class Session extends Connect implements IConnect
 {
-
     /**
-     * session
+     * session.
      *
      * @var \Leevel\Session\ISession
      */
     protected $oSession;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
-     * @param \Leevel\Mvc\IModel $oUser
+     * @param \Leevel\Mvc\IModel             $oUser
      * @param \Leevel\Encryption\IEncryption $oEncryption
-     * @param \Leevel\Validate\IValidate $oValidate
-     * @param \Leevel\Session\ISession $oSession
-     * @param array $arrOption
-     * @return void
+     * @param \Leevel\Validate\IValidate     $oValidate
+     * @param \Leevel\Session\ISession       $oSession
+     * @param array                          $arrOption
      */
     public function __construct(IModel $oUser, IEncryption $oEncryption, IValidate $oValidate, ISession $oSession, array $arrOption = [])
     {
@@ -59,34 +60,33 @@ class Session extends Connect implements IConnect
     }
 
     /**
-     * 设置认证名字
+     * 设置认证名字.
      *
      * @param \Leevel\Mvc\IModel $oUser
-     * @return void
      */
     protected function setLoginTokenName($oUser)
     {
     }
 
     /**
-     * 数据持久化
+     * 数据持久化.
      *
      * @param string $strKey
      * @param string $mixValue
-     * @param mixed $mixExpire
-     * @return void
+     * @param mixed  $mixExpire
      */
     protected function setPersistence($strKey, $mixValue, $mixExpire = null)
     {
         $this->oSession->set($strKey, $mixValue, [
-            'expire' => $mixExpire
+            'expire' => $mixExpire,
         ]);
     }
 
     /**
-     * 获取持久化数据
+     * 获取持久化数据.
      *
      * @param string $strKey
+     *
      * @return mixed
      */
     protected function getPersistence($strKey)
@@ -95,10 +95,9 @@ class Session extends Connect implements IConnect
     }
 
     /**
-     * 删除持久化数据
+     * 删除持久化数据.
      *
      * @param string $strKey
-     * @return void
      */
     protected function deletePersistence($strKey)
     {

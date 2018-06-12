@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Log;
 
 use Leevel\Manager\Manager as Managers;
 
 /**
- * log 入口
+ * log 入口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.02.15
+ *
  * @version 1.0
  */
 class Manager extends Managers
 {
-
     /**
-     * 取得配置命名空间
+     * 取得配置命名空间.
      *
      * @return string
      */
@@ -43,6 +47,7 @@ class Manager extends Managers
      * 创建连接对象
      *
      * @param object $connect
+     *
      * @return object
      */
     protected function createConnect($connect)
@@ -51,9 +56,10 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 file 日志驱动
+     * 创建 file 日志驱动.
      *
      * @param array $options
+     *
      * @return \Leevel\Log\File
      */
     protected function makeConnectFile($options = [])
@@ -62,9 +68,10 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 monolog 日志驱动
+     * 创建 monolog 日志驱动.
      *
      * @param array $options
+     *
      * @return \Leevel\Log\Monolog
      */
     protected function makeConnectMonolog($options = [])

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Console;
 
 use Tests\TestCase;
@@ -23,19 +27,19 @@ use Leevel\Console\Application;
 use Leevel\Console\IApplication;
 
 /**
- * application test
- * 
+ * application test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.04
+ *
  * @version 1.0
  */
 class ApplicationTest extends TestCase
 {
-
     public function testBaseUse()
     {
-        $application = new Application(new Container, '1.0');
+        $application = new Application(new Container(), '1.0');
 
         $this->assertInstanceof(IApplication::class, $application);
 
@@ -43,14 +47,14 @@ class ApplicationTest extends TestCase
 
         $this->assertInstanceof(Container::class, $application->getContainer());
 
-        $application->add(new Test1);
+        $application->add(new Test1());
 
         $this->assertInstanceof(Test1::class, $application->get('test1'));
     }
 
     public function testNormalizeCommand()
     {
-        $application = new Application(new Container, '1.0');
+        $application = new Application(new Container(), '1.0');
 
         if (isset($_SERVER['test'])) {
             unset($_SERVER['test']);
@@ -66,7 +70,6 @@ class ApplicationTest extends TestCase
 
 class Test1 extends Command
 {
-
     protected $name = 'test1';
 
     protected $description = 'test1 for command';
@@ -78,7 +81,6 @@ class Test1 extends Command
 
 class Test2 extends Command
 {
-
     protected $name = 'test2';
 
     protected $description = 'test2 for command';
@@ -86,7 +88,7 @@ class Test2 extends Command
     public function __construct()
     {
         parent::__construct();
-        
+
         $_SERVER['test'] = '1';
     }
 

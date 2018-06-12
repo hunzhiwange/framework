@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Auth;
 
-use Exception;
-use InvalidArgumentException;
 use Leevel\Manager\Manager as Managers;
 
 /**
- * manager 入口
+ * manager 入口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.07
+ *
  * @version 1.0
  */
 class Manager extends Managers
 {
-
     /**
-     * 取得配置命名空间
+     * 取得配置命名空间.
      *
      * @return string
      */
@@ -45,6 +47,7 @@ class Manager extends Managers
      * 创建连接对象
      *
      * @param object $connect
+     *
      * @return object
      */
     protected function createConnect($connect)
@@ -53,7 +56,7 @@ class Manager extends Managers
     }
 
     /**
-     * 返回默认驱动
+     * 返回默认驱动.
      *
      * @return string
      */
@@ -61,14 +64,14 @@ class Manager extends Managers
     {
         $option = $this->container['option'][$this->getOptionName('default')];
         $option = $this->getOptionName($option . '_default');
+
         return $this->container['option'][$option];
     }
 
     /**
-     * 设置默认驱动
+     * 设置默认驱动.
      *
      * @param string $name
-     * @return void
      */
     public function setDefaultDriver($name)
     {
@@ -78,26 +81,30 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 session 连接
+     * 创建 session 连接.
      *
      * @param array $options
+     *
      * @return \Leevel\Auth\session
      */
     protected function makeConnectSession($options = [])
     {
         $options = array_merge($this->getOption('session', $options));
+
         return new session($this->container[$options['model']], $this->container['encryption'], $this->container['validate'], $this->container['session'], $options);
     }
 
     /**
-     * 创建 token 连接
+     * 创建 token 连接.
      *
      * @param array $options
+     *
      * @return \Leevel\Auth\token
      */
     protected function makeConnectToken($options = [])
     {
         $options = array_merge($this->getOption('token', $options));
+
         return new token($this->container[$options['model']], $this->container['encryption'], $this->container['validate'], $this->container['cache'], $options);
     }
 }

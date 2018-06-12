@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,47 +17,47 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n;
 
 use RuntimeException;
 
 /**
- * 语言包工具类导入类
+ * 语言包工具类导入类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.25
+ *
  * @version 1.0
  */
 class Load
 {
-
     /**
-     * 当前语言包
+     * 当前语言包.
      *
      * @var string
      */
     protected $i18n = 'zh-CN';
 
     /**
-     * 载入路径
+     * 载入路径.
      *
      * @var array
      */
     protected $dirs = [];
 
     /**
-     * 已经载入数据
+     * 已经载入数据.
      *
      * @var array
      */
     protected $loaded;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $dirs
-     * @return void
      */
     public function __construct(array $dirs = [])
     {
@@ -62,39 +65,45 @@ class Load
     }
 
     /**
-     * 设置当前语言包
+     * 设置当前语言包.
      *
      * @param string $i18n
+     *
      * @return $this
      */
     public function setI18n($i18n)
     {
         $this->i18n = $i18n;
+
         return $this;
     }
 
     /**
-     * 添加目录
+     * 添加目录.
      *
      * @param array $dirs
+     *
      * @return $this
      */
     public function addDir(array $dirs)
     {
         $this->dirs = array_unique(array_merge($this->dirs, $dirs));
+
         return $this;
     }
 
     /**
-     * 载入语言包数据
+     * 载入语言包数据.
      *
      * @author 小牛
+     *
      * @since 2016.11.27
+     *
      * @return array
      */
     public function loadData()
     {
-        if (! is_null($this->loaded)) {
+        if (null !== $this->loaded) {
             return $this->loaded;
         }
 
@@ -107,11 +116,14 @@ class Load
     }
 
     /**
-     * 分析目录中的 PHP 语言包包含的文件
+     * 分析目录中的 PHP 语言包包含的文件.
      *
      * @param array $dirs 文件地址
+     *
      * @author 小牛
+     *
      * @since 2016.11.27
+     *
      * @return array
      */
     protected function findMoFile(array $dirs): array
@@ -130,9 +142,10 @@ class Load
     }
 
     /**
-     * 获取目录中的 MO 文件
+     * 获取目录中的 MO 文件.
      *
      * @param string $dir
+     *
      * @return array
      */
     protected function getMoFiles(string $dir): array
@@ -141,11 +154,14 @@ class Load
     }
 
     /**
-     * 分析 mo 文件语言包数据
+     * 分析 mo 文件语言包数据.
      *
      * @param array $files 文件地址
+     *
      * @author 小牛
+     *
      * @since 2016.11.25
+     *
      * @return array
      */
     protected function parseMoData(array $files): array
@@ -154,9 +170,10 @@ class Load
     }
 
     /**
-     * 分析目录
+     * 分析目录.
      *
      * @param array $dirs
+     *
      * @return array
      */
     protected function parseDir(array $dirs): array

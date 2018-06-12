@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,32 +17,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc\Relation;
 
-use Leevel\{
-    Mvc\IModel,
-    Collection\Collection
-};
+use Leevel\Mvc\IModel;
+use Leevel\Collection\Collection;
 
 /**
- * 关联模型 BelongsTo
+ * 关联模型 BelongsTo.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.28
+ *
  * @version 1.0
  */
 class BelongsTo extends Relation
 {
-
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Mvc\IModel $objTargetModel
      * @param \Leevel\Mvc\IModel $objSourceModel
-     * @param string $strTargetKey
-     * @param string $strSourceKey
-     * @return void
+     * @param string             $strTargetKey
+     * @param string             $strSourceKey
      */
     public function __construct(IModel $objTargetModel, IModel $objSourceModel, $strTargetKey, $strSourceKey)
     {
@@ -47,9 +48,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 关联基础查询条件
-     *
-     * @return void
+     * 关联基础查询条件.
      */
     public function addRelationCondition()
     {
@@ -59,11 +58,12 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 匹配关联查询数据到模型
+     * 匹配关联查询数据到模型.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[]          $arrModel
      * @param \Leevel\Collection\Collection $objResult
-     * @param string $strRelation
+     * @param string                        $strRelation
+     *
      * @return array
      */
     public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
@@ -81,10 +81,9 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 设置预载入关联查询条件
+     * 设置预载入关联查询条件.
      *
      * @param \Leevel\Mvc\IModel[] $arrModel
-     * @return void
      */
     public function preLoadCondition(array $arrModel)
     {
@@ -92,7 +91,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 取回源模型对应数据
+     * 取回源模型对应数据.
      *
      * @return mixed
      */
@@ -112,9 +111,10 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 模型隐射数据
+     * 模型隐射数据.
      *
      * @param \Leevel\Collection\Collection $objResult
+     *
      * @return array
      */
     protected function buildMap(collection $objResult)
@@ -129,9 +129,10 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 分析预载入模型中对应的源数据
+     * 分析预载入模型中对应的源数据.
      *
      * @param \Leevel\Mvc\IModel[] $arrModel
+     *
      * @return array
      */
     protected function getPreLoadModelValue(array $arrModel)
@@ -139,14 +140,14 @@ class BelongsTo extends Relation
         $arr = [];
 
         foreach ($arrModel as $objModel) {
-            if (! is_null($mixTemp = $objModel->getProp($this->strSourceKey))) {
+            if (null !== ($mixTemp = $objModel->getProp($this->strSourceKey))) {
                 $arr[] = $mixTemp;
             }
         }
 
-        if (count($arr) == 0) {
+        if (0 == count($arr)) {
             return [
-                0
+                0,
             ];
         }
 

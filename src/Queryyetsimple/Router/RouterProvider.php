@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -7,37 +10,39 @@
  *    __/ / /  / /_/ /  __/ /  \  / /_/ / / / / /_/ /__
  *      \_\ \_/\____/\___/_/   / / .___/_/ /_/ .___/
  *         \_\                /_/_/         /_/
- * 
+ *
  * The PHP Framework For Code Poem As Free As Wind. <Query Yet Simple>
  * (c) 2010-2018 http://queryphp.com All rights reserved.
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router;
 
 use Leevel\Di\Provider;
 
 /**
- * 路由服务提供者
+ * 路由服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.17
+ *
  * @version 1.0
  */
 abstract class RouterProvider extends Provider
 {
     /**
-     * 控制器相对目录
-     * 
+     * 控制器相对目录.
+     *
      * @var string
      */
     protected $controllerDir;
 
     /**
      * 中间件分组
-     * 分组可以很方便地批量调用组件
+     * 分组可以很方便地批量调用组件.
      *
      * @var array
      */
@@ -46,16 +51,14 @@ abstract class RouterProvider extends Provider
     /**
      * 中间件别名
      * HTTP 中间件提供一个方便的机制来过滤进入应用程序的 HTTP 请求
-     * 例外在应用执行结束后响应环节也会调用 HTTP 中间件
+     * 例外在应用执行结束后响应环节也会调用 HTTP 中间件.
      *
      * @var array
      */
     protected $middlewareAlias;
-    
+
     /**
-     * bootstrap
-     *
-     * @return void
+     * bootstrap.
      */
     public function bootstrap()
     {
@@ -69,38 +72,36 @@ abstract class RouterProvider extends Provider
             $this->loadRouters();
         }
     }
-    
+
     /**
-     * 注册一个提供者
-     *
-     * @return void
+     * 注册一个提供者.
      */
     public function register()
     {
     }
 
     /**
-     * 返回路由
-     * 
+     * 返回路由.
+     *
      * @return array
      */
-    public function getRouters() {
+    public function getRouters()
+    {
         return [];
     }
 
     /**
-     * 全局中间件
+     * 全局中间件.
      *
      * @return array
      */
-    public function getMiddlewares() {
+    public function getMiddlewares()
+    {
         return [];
     }
 
     /**
-     * 导入路由缓存
-     *
-     * @return void
+     * 导入路由缓存.
      */
     protected function importCachedRouters()
     {
@@ -112,9 +113,7 @@ abstract class RouterProvider extends Provider
     }
 
     /**
-     * 注册路由
-     *
-     * @return void
+     * 注册路由.
      */
     protected function loadRouters()
     {
@@ -129,19 +128,19 @@ abstract class RouterProvider extends Provider
     }
 
     /**
-     * 生成中间件分析器
-     * 
+     * 生成中间件分析器.
+     *
      * @return \Leevel\Router\MiddlewareParser
      */
-    protected function makeMiddlewareParser() {
+    protected function makeMiddlewareParser()
+    {
         return new MiddlewareParser($this->container['router']);
     }
 
     /**
-     * 设置全局中间件数据
+     * 设置全局中间件数据.
      *
      * @param array $middlewares
-     * @return void
      */
     protected function setGlobalMiddlewares(array $middlewares)
     {
@@ -149,10 +148,9 @@ abstract class RouterProvider extends Provider
     }
 
     /**
-     * 设置路由数据
+     * 设置路由数据.
      *
      * @param array $routers
-     * @return void
      */
     protected function setRoutersData(array $routers)
     {
@@ -162,9 +160,9 @@ abstract class RouterProvider extends Provider
     }
 
     /**
-     * 路由是否已经缓存
+     * 路由是否已经缓存.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isRouterCached()
     {
@@ -182,29 +180,25 @@ abstract class RouterProvider extends Provider
     }
 
     /**
-     * 设置应用控制器目录
-     *
-     * @return void
+     * 设置应用控制器目录.
      */
     protected function setControllerDir()
     {
-        if (! is_null($this->controllerDir)) {
+        if (null !== $this->controllerDir) {
             $this->container['router']->setControllerDir($this->controllerDir);
         }
     }
 
     /**
-     * 设置中间件 
-     *
-     * @return void
+     * 设置中间件.
      */
     protected function setMiddleware()
     {
-        if (! is_null($this->middlewareGroups)) {
+        if (null !== $this->middlewareGroups) {
             $this->container['router']->setMiddlewareGroups($this->middlewareGroups);
         }
 
-        if (! is_null($this->middlewareAlias)) {
+        if (null !== $this->middlewareAlias) {
             $this->container['router']->setMiddlewareAlias($this->middlewareAlias);
         }
     }

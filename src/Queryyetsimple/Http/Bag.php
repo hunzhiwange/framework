@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,42 +17,41 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 use Countable;
 use ArrayIterator;
 use JsonSerializable;
 use IteratorAggregate;
-use Leevel\{
-    Support\IJson,
-    Support\IArray
-};
+use Leevel\Support\IJson;
+use Leevel\Support\IArray;
 
 /**
  * http bag
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.19
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializable
 {
-
     /**
-     * 元素合集
+     * 元素合集.
      *
      * @var array
      */
     protected $elements = [];
 
     /**
-     * 构造函数
-     * 
+     * 构造函数.
+     *
      * @param array $elements
-     * @return void 
      */
     public function __construct(array $elements = [])
     {
@@ -57,7 +59,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 取回元素
+     * 取回元素.
      *
      * @return array
      */
@@ -77,10 +79,9 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 替换当前所有元素
+     * 替换当前所有元素.
      *
      * @param array $elements
-     * @return void
      */
     public function replace(array $elements = [])
     {
@@ -88,10 +89,9 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 新增元素
+     * 新增元素.
      *
      * @param array $elements
-     * @return void
      */
     public function add(array $elements = [])
     {
@@ -102,7 +102,8 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 取回元素值
      *
      * @param string $key
-     * @param mixed $defaults
+     * @param mixed  $defaults
+     *
      * @return mixed
      */
     public function get($key, $defaults = null)
@@ -116,11 +117,10 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 设置元素值
      *
      * @param string $key
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function set($key, $value)
-    {   
+    {
         $key = $this->normalize($key);
 
         $this->elements[$key] = $value;
@@ -130,6 +130,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 判断是否存在元素值
      *
      * @param string $key
+     *
      * @return bool
      */
     public function has($key)
@@ -143,7 +144,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 删除元素值
      *
      * @param string $key
-     * @return void
      */
     public function remove($key)
     {
@@ -155,12 +155,13 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 获取过滤变量
+     * 获取过滤变量.
      *
-     * @param string $key
-     * @param mixed $defaults
+     * @param string          $key
+     * @param mixed           $defaults
      * @param array|sting|int $filter
-     * @param array $options
+     * @param array           $options
+     *
      * @return mixed
      */
     public function filter($key, $defaults = null, $filter = null, array $options = [])
@@ -172,7 +173,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         list($key, $filter) = $this->parseKeyFilter($key, $filter);
 
         $part = '';
-        if (strpos($key, '\\') !== false) {
+        if (false !== strpos($key, '\\')) {
             list($key, $part) = explode('\\', $key);
         }
 
@@ -192,7 +193,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 实现 Countable::count
+     * 实现 Countable::count.
      *
      * @return int
      */
@@ -202,7 +203,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 对象转数组
+     * 对象转数组.
      *
      * @return array
      */
@@ -212,7 +213,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 实现 JsonSerializable::jsonSerialize
+     * 实现 JsonSerializable::jsonSerialize.
      *
      * @return array
      */
@@ -222,9 +223,10 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 对象转 JSON
+     * 对象转 JSON.
      *
-     * @param integer $option
+     * @param int $option
+     *
      * @return string
      */
     public function toJson($option = JSON_UNESCAPED_UNICODE)
@@ -233,7 +235,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 实现 IteratorAggregate::getIterator
+     * 实现 IteratorAggregate::getIterator.
      *
      * @return \ArrayIterator
      */
@@ -243,7 +245,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 魔术方法 __toString
+     * 魔术方法 __toString.
      *
      * @return string
      */
@@ -253,15 +255,16 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 分析键值和过滤器
-     * 
+     * 分析键值和过滤器.
+     *
      * @param string $key
-     * @param array $filter
+     * @param array  $filter
+     *
      * @return array
      */
     protected function parseKeyFilter($key, array $filter)
     {
-        if (strpos($key, '|') !== false) {
+        if (false !== strpos($key, '|')) {
             $temp = explode('|', $key);
             $key = array_shift($temp);
             $filter = array_merge($temp, $filter);
@@ -271,14 +274,15 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 分析过滤器
+     * 分析过滤器.
      *
      * @param string|array $filter
+     *
      * @return array
      */
     protected function parseFilter($filter = null)
     {
-        if (is_null($filter)) {
+        if (null === $filter) {
             return [];
         }
 
@@ -292,12 +296,13 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * @param mixed $defaults
      * @param array $filters
      * @param array $options
+     *
      * @return mixed
      */
     protected function filterValue($value, $defaults, $filters, array $options = [])
     {
         foreach ($filters as $item) {
-            if (strpos($item, '=') !== false) {
+            if (false !== strpos($item, '=')) {
                 $value = $this->filterValueWithFunc($value, $item);
             } elseif (is_callable($item)) {
                 $value = $this->filterValueWithCallable($value, $item);
@@ -317,29 +322,30 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 使用函数过滤值
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $filter
+     *
      * @return mixed
      */
     protected function filterValueWithFunc($value, $filter)
     {
         list($filter, $extend) = explode('=', $filter);
 
-        if ($filter == 'default') {
+        if ('default' == $filter) {
             if (! is_numeric($extend) && ! preg_match('/^[A-Z\_]+$/', $extend)) {
                 $extend = "'" . $extend . "'";
             }
 
-            $evals = "\$value = '" . ($value ? '1' : '') . "' ?: " . $extend . ";";
+            $evals = "\$value = '" . ($value ? '1' : '') . "' ?: " . $extend . ';';
         } elseif ($extend) {
-            if (strpos($extend, ',') !== false) {
+            if (false !== strpos($extend, ',')) {
                 $tmp = explode(',', $extend);
                 $result = [];
 
-                foreach($tmp as $v) {
+                foreach ($tmp as $v) {
                     $v = trim($v);
 
-                    if ($v == '**' || is_numeric($v) || preg_match('/^[A-Z\_]+$/', $v)) {
+                    if ('**' == $v || is_numeric($v) || preg_match('/^[A-Z\_]+$/', $v)) {
                         $result[] = $v;
                     } else {
                         $result[] = "'" . $v . "'";
@@ -365,8 +371,9 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 使用回调过滤值
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $filter
+     *
      * @return mixed
      */
     protected function filterValueWithCallable($value, $filter)
@@ -382,7 +389,9 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * @param mixed $value
      * @param mixed $filter
      * @param array $options
+     *
      * @see http://php.net/manual/en/function.filter-var.php
+     *
      * @return mixed
      */
     protected function filterValueWithFilterVar($value, $filter, array $options)
@@ -393,9 +402,10 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 分析转换 filter_var 参数
+     * 分析转换 filter_var 参数.
      *
      * @param mixed $filter
+     *
      * @return int
      */
     protected function parseFilterId($filter)
@@ -406,9 +416,10 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 判断字符串是否为数字
+     * 判断字符串是否为数字.
      *
      * @param mixed $value
+     *
      * @since bool
      */
     protected function isInt($value)
@@ -417,21 +428,22 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
             return true;
         }
 
-        return ctype_digit(strval($value));
+        return ctype_digit((string) $value);
     }
 
     /**
-     * 格式化参数
+     * 格式化参数.
      *
      * @param mixed $value
      * @param mixed $options
+     *
      * @since array
      */
     protected function formatOptions($value, $options)
     {
         if (! is_array($options) && $options) {
             $options = [
-                'flags' => $options
+                'flags' => $options,
             ];
         }
 
@@ -443,10 +455,11 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 返回部分数组数据
+     * 返回部分数组数据.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
+     *
      * @return mixed
      */
     protected function getPartData($key, $value)
@@ -473,6 +486,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 格式化键值
      *
      * @param string $key
+     *
      * @return string
      */
     protected function normalize($key)

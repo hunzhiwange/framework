@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n\Streams;
 
 /**
  * 数据流 File
- * This class borrows heavily from the Wordpress and is part of the Wordpress package
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.18
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ *
  * @version 1.0
  */
 class File extends Reader
 {
-
     /**
-     *
      * @param string $filename
      */
     public function __construct($filename)
@@ -40,7 +43,6 @@ class File extends Reader
     }
 
     /**
-     *
      * @param int $bytes
      */
     public function read($bytes)
@@ -49,21 +51,21 @@ class File extends Reader
     }
 
     /**
-     *
      * @param int $pos
-     * @return boolean
+     *
+     * @return bool
      */
     public function seekto($pos)
     {
-        if (- 1 == fseek($this->_f, $pos, SEEK_SET)) {
+        if (-1 == fseek($this->_f, $pos, SEEK_SET)) {
             return false;
         }
         $this->_pos = $pos;
+
         return true;
     }
 
     /**
-     *
      * @return bool
      */
     public function is_resource()
@@ -72,7 +74,6 @@ class File extends Reader
     }
 
     /**
-     *
      * @return bool
      */
     public function feof()
@@ -81,7 +82,6 @@ class File extends Reader
     }
 
     /**
-     *
      * @return bool
      */
     public function close()
@@ -90,7 +90,6 @@ class File extends Reader
     }
 
     /**
-     *
      * @return string
      */
     public function read_all()
@@ -99,6 +98,7 @@ class File extends Reader
         while (! $this->feof()) {
             $all .= $this->read(4096);
         }
+
         return $all;
     }
 }

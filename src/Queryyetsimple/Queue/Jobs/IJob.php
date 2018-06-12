@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,70 +17,67 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Queue\Jobs;
 
 /**
- * 任务接口
+ * 任务接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.06.06
+ *
  * @version 1.0
  */
 interface IJob
 {
-
     /**
      * 执行任务
-     *
-     * @return void
      */
     public function handle();
 
     /**
-     * 调用任务的失败方法
-     *
-     * @return void
+     * 调用任务的失败方法.
      */
     public function failed();
 
     /**
-     * 取得 job 名字
+     * 取得 job 名字.
      *
      * @return string
      */
     public function getName();
 
     /**
-     * 取得 job 数据
+     * 取得 job 数据.
      *
      * @return string
      */
     public function getData();
 
     /**
-     * 返回任务执行次数
+     * 返回任务执行次数.
      *
      * @return int
      */
     public function getAttempts();
 
     /**
-     * 获取任务所属的消息队列
+     * 获取任务所属的消息队列.
      *
      * @return string
      */
     public function getQueue();
 
     /**
-     * 取得 worker
+     * 取得 worker.
      *
      * @return string
      */
     public function getWorker();
 
     /**
-     * 取得 job_id
+     * 取得 job_id.
      *
      * @return string
      */

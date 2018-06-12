@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Cache;
 
 use Redis as Rediss;
 use RuntimeException;
 
 /**
- * redis 扩展缓存
+ * redis 扩展缓存.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.06.05
+ *
  * @version 1.0
  */
 class Redis extends Connect implements IConnect
 {
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -44,14 +49,13 @@ class Redis extends Connect implements IConnect
         'select' => 0,
         'timeout' => 0,
         'persistent' => false,
-        'serialize' => true
+        'serialize' => true,
     ];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $option
-     * @return void
      */
     public function __construct(array $option = [])
     {
@@ -79,11 +83,12 @@ class Redis extends Connect implements IConnect
     }
 
     /**
-     * 获取缓存
+     * 获取缓存.
      *
      * @param string $name
-     * @param mixed $defaults
-     * @param array $option
+     * @param mixed  $defaults
+     * @param array  $option
+     *
      * @return mixed
      */
     public function get($name, $defaults = false, array $option = [])
@@ -94,7 +99,7 @@ class Redis extends Connect implements IConnect
             $this->getCacheName($name, $option['prefix'])
         );
 
-        if (is_null($data)) {
+        if (null === $data) {
             return $defaults;
         }
 
@@ -106,12 +111,11 @@ class Redis extends Connect implements IConnect
     }
 
     /**
-     * 设置缓存
+     * 设置缓存.
      *
      * @param string $name
-     * @param mixed $data
-     * @param array $option
-     * @return void
+     * @param mixed  $data
+     * @param array  $option
      */
     public function set($name, $data, array $option = [])
     {
@@ -123,10 +127,10 @@ class Redis extends Connect implements IConnect
 
         $option['expire'] = $this->cacheTime($name, $option['expire']);
 
-        if ((int)$option['expire']) {
+        if ((int) $option['expire']) {
             $this->handle->setex(
                 $this->getCacheName($name, $option['prefix']),
-                (int)$option['expire'],
+                (int) $option['expire'],
                 $data
             );
         } else {
@@ -138,11 +142,10 @@ class Redis extends Connect implements IConnect
     }
 
     /**
-     * 清除缓存
+     * 清除缓存.
      *
      * @param string $name
-     * @param array $option
-     * @return void
+     * @param array  $option
      */
     public function delete($name, array $option = [])
     {
@@ -152,9 +155,7 @@ class Redis extends Connect implements IConnect
     }
 
     /**
-     * 关闭 redis
-     *
-     * @return void
+     * 关闭 redis.
      */
     public function close()
     {

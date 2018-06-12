@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,41 +17,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc\Console;
 
-use Leevel\Console\{
-    Make,
-    Option,
-    Argument
-};
+use Leevel\Console\Make;
+use Leevel\Console\Option;
+use Leevel\Console\Argument;
 
 /**
- * 生成模型
+ * 生成模型.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.02
+ *
  * @version 1.0
  */
 class Model extends Make
 {
-
     /**
-     * 命令名字
+     * 命令名字.
      *
      * @var string
      */
     protected $name = 'make:model';
 
     /**
-     * 命令描述
+     * 命令描述.
      *
      * @var string
      */
     protected $description = 'Create a new model';
 
     /**
-     * 命令帮助
+     * 命令帮助.
      *
      * @var string
      */
@@ -67,9 +69,7 @@ You can also by using the <comment>--extend</comment> option:
 EOF;
 
     /**
-     * 响应命令
-     *
-     * @return void
+     * 响应命令.
      */
     public function handle()
     {
@@ -97,7 +97,7 @@ EOF;
     }
 
     /**
-     * 命令参数
+     * 命令参数.
      *
      * @return array
      */
@@ -107,13 +107,13 @@ EOF;
             [
                 'name',
                 Argument::REQUIRED,
-                'This is the model name.'
-            ]
+                'This is the model name.',
+            ],
         ];
     }
 
     /**
-     * 命令配置
+     * 命令配置.
      *
      * @return array
      */
@@ -125,15 +125,15 @@ EOF;
                 null,
                 option::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
-                'app'
+                'app',
             ],
             [
                 'extend',
                 null,
                 option::VALUE_OPTIONAL,
                 'Model with the code that make it extends Leevel\Mvc\Model',
-                1
-            ]
+                1,
+            ],
         ];
     }
 }

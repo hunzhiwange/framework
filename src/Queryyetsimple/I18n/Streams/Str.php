@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n\Streams;
 
 /**
  * 数据流 Str
- * This class borrows heavily from the Wordpress and is part of the Wordpress package
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.18
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ *
  * @version 1.0
  */
 class Str extends Reader
 {
-
     /**
-     * prop
+     * prop.
      *
      * @var string
      */
@@ -47,8 +51,8 @@ class Str extends Reader
     }
 
     /**
-     *
      * @param string $bytes
+     *
      * @return string
      */
     public function read($bytes)
@@ -58,12 +62,13 @@ class Str extends Reader
         if ($this->strlen($this->_str) < $this->_pos) {
             $this->_pos = $this->strlen($this->_str);
         }
+
         return $data;
     }
 
     /**
-     *
      * @param int $pos
+     *
      * @return int
      */
     public function seekto($pos)
@@ -72,11 +77,11 @@ class Str extends Reader
         if ($this->strlen($this->_str) < $this->_pos) {
             $this->_pos = $this->strlen($this->_str);
         }
+
         return $this->_pos;
     }
 
     /**
-     *
      * @return int
      */
     public function length()
@@ -85,7 +90,6 @@ class Str extends Reader
     }
 
     /**
-     *
      * @return string
      */
     public function read_all()

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,32 +17,34 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Filesystem;
 
 use RuntimeException;
 
 /**
- * 图像处理
+ * 图像处理.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.19
+ *
  * @version 1.0
  */
 class Image
 {
-
     /**
-     * 创建缩略图
+     * 创建缩略图.
      *
      * @param string $sImage
      * @param string $sThumbName
      * @param string $sType
      * @param number $nMaxWidth
      * @param number $nMaxHeight
-     * @param boolean $bInterlace
-     * @param boolean $bFixed
+     * @param bool   $bInterlace
+     * @param bool   $bFixed
      * @param number $nQuality
+     *
      * @return mixed
      */
     public static function thumb($sImage, $sThumbName, $sType = '', $nMaxWidth = 200, $nMaxHeight = 50, $bInterlace = true, $bFixed = false, $nQuality = 100)
@@ -47,7 +52,7 @@ class Image
         // 获取原图信息
         $arrInfo = static::getImageInfo($sImage);
 
-        if ($arrInfo !== false) {
+        if (false !== $arrInfo) {
             $nSrcWidth = $arrInfo['width'];
             $nSrcHeight = $arrInfo['height'];
             $sType = empty($sType) ? $arrInfo['type'] : $sType;
@@ -56,8 +61,7 @@ class Image
             unset($arrInfo);
             $nScale = min($nMaxWidth / $nSrcWidth, $nMaxHeight / $nSrcHeight); // 计算缩放比例
 
-
-            if ($bFixed === true) {
+            if (true === $bFixed) {
                 $nWidth = $nMaxWidth;
                 $nHeight = $nMaxHeight;
             } else {
@@ -66,23 +70,23 @@ class Image
                     $nWidth = $nSrcWidth;
                     $nHeight = $nSrcHeight;
                 } else { // 缩略图尺寸
-                    $nWidth = (int)($nSrcWidth * $nScale);
-                    $nHeight = (int)($nSrcHeight * $nScale);
+                    $nWidth = (int) ($nSrcWidth * $nScale);
+                    $nHeight = (int) ($nSrcHeight * $nScale);
                 }
             }
 
-            $sCreateFun = 'ImageCreateFrom' . ($sType == 'jpg' ? 'jpeg' : $sType); // 载入原图
+            $sCreateFun = 'ImageCreateFrom' . ('jpg' == $sType ? 'jpeg' : $sType); // 载入原图
             $oSrcImg = $sCreateFun($sImage);
 
             // 创建缩略图
-            if ($sType != 'gif' && function_exists('imagecreatetruecolor')) {
+            if ('gif' != $sType && function_exists('imagecreatetruecolor')) {
                 $oThumbImg = imagecreatetruecolor($nWidth, $nHeight);
             } else {
                 $oThumbImg = imagecreate($nWidth, $nHeight);
             }
 
             // 复制图片
-            if (function_exists("ImageCopyResampled")) {
+            if (function_exists('ImageCopyResampled')) {
                 imagecopyresampled($oThumbImg, $oSrcImg, 0, 0, 0, 0, $nWidth, $nHeight, $nSrcWidth, $nSrcHeight);
             } else {
                 imagecopyresized($oThumbImg, $oSrcImg, 0, 0, 0, 0, $nWidth, $nHeight, $nSrcWidth, $nSrcHeight);
@@ -99,14 +103,14 @@ class Image
                 imageinterlace($oThumbImg, $bInterlace);
             }
 
-            if ($sType == 'png') {
+            if ('png' == $sType) {
                 $nQuality = ceil($nQuality / 10) - 1;
                 if ($nQuality < 0) {
                     $nQuality = 0;
                 }
             }
 
-            $sImageFun = 'image' . ($sType == 'jpg' ? 'jpeg' : $sType); // 生成图片
+            $sImageFun = 'image' . ('jpg' == $sType ? 'jpeg' : $sType); // 生成图片
             $sImageFun($oThumbImg, $sThumbName, $nQuality);
             imagedestroy($oThumbImg);
             imagedestroy($oSrcImg);
@@ -118,12 +122,11 @@ class Image
     }
 
     /**
-     * 预览缩略图
+     * 预览缩略图.
      *
      * @param string $sTargetFile
      * @param number $nThumbWidth
      * @param number $nThumbHeight
-     * @return void
      */
     public static function thumbPreview($sTargetFile, $nThumbWidth, $nThumbHeight)
     {
@@ -163,18 +166,18 @@ class Image
                 }
 
                 $oThumbPhoto = imagecreatetruecolor($arrThumb['width'], $arrThumb['height']);
-                if ($arrAttachInfo['mime'] != 'image/jpeg') {
+                if ('image/jpeg' != $arrAttachInfo['mime']) {
                     $oAlpha = imagecolorallocatealpha($oThumbPhoto, 0, 0, 0, 127);
                     imagefill($oThumbPhoto, 0, 0, $oAlpha);
                 }
 
-                imageCopyreSampled($oThumbPhoto, $oAttachPhoto, 0, 0, 0, 0, $arrThumb['width'], $arrThumb['height'], $nImgW, $nImgH);
-                if ($arrAttachInfo['mime'] != 'image/jpeg') {
+                imagecopyresampled($oThumbPhoto, $oAttachPhoto, 0, 0, 0, 0, $arrThumb['width'], $arrThumb['height'], $nImgW, $nImgH);
+                if ('image/jpeg' != $arrAttachInfo['mime']) {
                     imagesavealpha($oThumbPhoto, true);
                 }
                 clearstatcache();
 
-                if ($arrAttachInfo['mime'] == 'image/jpeg') {
+                if ('image/jpeg' == $arrAttachInfo['mime']) {
                     $sImageFunc($oThumbPhoto, null, 90);
                 } else {
                     $sImageFunc($oThumbPhoto);
@@ -187,13 +190,14 @@ class Image
     }
 
     /**
-     * 图像加水印
+     * 图像加水印.
      *
      * @param string $sBackgroundPath
-     * @param array $arrWaterArgs
+     * @param array  $arrWaterArgs
      * @param number $nWaterPos
-     * @param boolean $bDeleteBackgroupPath
-     * @return boolean
+     * @param bool   $bDeleteBackgroupPath
+     *
+     * @return bool
      */
     public static function imageWaterMark($sBackgroundPath, $arrWaterArgs, $nWaterPos = 0, $bDeleteBackgroupPath = true)
     {
@@ -222,12 +226,12 @@ class Image
 
         imagealphablending($oBackgroundIm, true); // 设定图像的混色模式
         if (! empty($sBackgroundPath) && is_file($sBackgroundPath)) {
-            if ($arrWaterArgs['type'] == 'img' && ! empty($arrWaterArgs['path'])) {
+            if ('img' == $arrWaterArgs['type'] && ! empty($arrWaterArgs['path'])) {
                 $bIsWaterImage = true;
                 $nSet = 0;
 
                 $nOffset = ! empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 0;
-                if (strpos($arrWaterArgs, 'http://localhost/') == 0 || strpos($arrWaterArgs, 'https://localhost/') == 0) { // localhost 转127.0.0.1,否则将会错误
+                if (0 == strpos($arrWaterArgs, 'http://localhost/') || 0 == strpos($arrWaterArgs, 'https://localhost/')) { // localhost 转127.0.0.1,否则将会错误
                     $arrWaterArgs['path'] = str_replace('localhost', '127.0.0.1', $arrWaterArgs['path']);
                 }
 
@@ -247,7 +251,7 @@ class Image
                     default:
                         throw new RuntimeException('Wrong image format.');
                 }
-            } elseif ($arrWaterArgs['type'] === 'text' && $arrWaterArgs['content'] != '') {
+            } elseif ('text' === $arrWaterArgs['type'] && '' != $arrWaterArgs['content']) {
                 $sFontfileTemp = $sFontfile = $arrWaterArgs['textFile'] ?? 'Microsoft YaHei.ttf';
                 $sFontfile = (! empty($arrWaterArgs['textPath']) ? str_replace('\\', '/', $arrWaterArgs['textPath']) : 'C:\WINDOWS\Fonts') . '/' . $sFontfile;
                 if (! is_file($sFontfile)) {
@@ -317,12 +321,12 @@ class Image
                 break;
         }
 
-        if ($bIsWaterImage === true) { // 图片水印
+        if (true === $bIsWaterImage) { // 图片水印
             imagealphablending($oWaterIm, true);
             imagealphablending($oBackgroundIm, true);
             imagecopy($oBackgroundIm, $oWaterIm, $nPosX, $nPosY, 0, 0, $nWaterWidth, $nWaterHeight); // 拷贝水印到目标文件
         } else { // 文字水印
-            if (! empty($sTextColor) && (strlen($sTextColor) == 7)) {
+            if (! empty($sTextColor) && (7 == strlen($sTextColor))) {
                 $R = hexdec(substr($sTextColor, 1, 2));
                 $G = hexdec(substr($sTextColor, 3, 2));
                 $B = hexdec(substr($sTextColor, 5));
@@ -332,7 +336,7 @@ class Image
             imagettftext($oBackgroundIm, $nTextFont, 0, $nPosX, $nPosY, imagecolorallocate($oBackgroundIm, $R, $G, $B), $sFontfile, $sWaterText);
         }
 
-        if ($bDeleteBackgroupPath === true) { // 生成水印后的图片
+        if (true === $bDeleteBackgroupPath) { // 生成水印后的图片
             unlink($sBackgroundPath);
         }
 
@@ -359,16 +363,15 @@ class Image
     }
 
     /**
-     * 浏览器输出图像
+     * 浏览器输出图像.
      *
      * @param unknown $oImage
-     * @param string $sType
-     * @param string $sFilename
-     * @return void
+     * @param string  $sType
+     * @param string  $sFilename
      */
     public static function outputImage($oImage, $sType = 'png', $sFilename = '')
     {
-        header("Content-type: image/" . $sType);
+        header('Content-type: image/' . $sType);
 
         $sImageFun = 'image' . $sType;
         if (empty($sFilename)) {
@@ -381,15 +384,14 @@ class Image
     }
 
     /**
-     * 读取远程图片
+     * 读取远程图片.
      *
      * @param string $sUrl
      * @param string $sFilename
-     * @return void
      */
     public static function outerImage($sUrl, $sFilename)
     {
-        if ($sUrl == '' || $sFilename == '') {
+        if ('' == $sUrl || '' == $sFilename) {
             return false;
         }
 
@@ -409,11 +411,12 @@ class Image
     }
 
     /**
-     * 计算返回图片改变大小相对尺寸
+     * 计算返回图片改变大小相对尺寸.
      *
      * @param string $sImgPath
      * @param number $nMaxWidth
      * @param number $nMaxHeight
+     *
      * @return array
      */
     public static function returnChangeSize($sImgPath, $nMaxWidth, $nMaxHeight)
@@ -446,24 +449,26 @@ class Image
     }
 
     /**
-     * 取得图像信息
+     * 取得图像信息.
      *
      * @param string $sImagesPath
+     *
      * @return mixed
      */
     public static function getImageInfo($sImagesPath)
     {
         $arrImageInfo = getimagesize($sImagesPath);
 
-        if ($arrImageInfo !== false) {
+        if (false !== $arrImageInfo) {
             $sImageType = strtolower(substr(image_type_to_extension($arrImageInfo[2]), 1));
             $nImageSize = filesize($sImagesPath);
+
             return [
                 'width' => $arrImageInfo[0],
                 'height' => $arrImageInfo[1],
                 'type' => $sImageType,
                 'size' => $nImageSize,
-                'mime' => $arrImageInfo['mime']
+                'mime' => $arrImageInfo['mime'],
             ];
         } else {
             return false;

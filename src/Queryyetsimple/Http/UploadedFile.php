@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,45 +17,47 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 /**
  * 上传文件
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.26
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class UploadedFile extends File
 {
-
     /**
-     * 文件原始名字
-     * 
+     * 文件原始名字.
+     *
      * @var string
      */
     protected $originalName;
 
     /**
-     * 文件类型
-     * 
+     * 文件类型.
+     *
      * @var string
-     */ 
+     */
     protected $mimeType;
 
     /**
-     * 上传错误
-     * 
+     * 上传错误.
+     *
      * @var int|null
      */
     protected $error;
 
     /**
-     * 上传错误消息格式化
-     * 
+     * 上传错误消息格式化.
+     *
      * @var array
      */
     protected static $errors = [
@@ -67,13 +72,12 @@ class UploadedFile extends File
 
     /**
      * 构造函数
-     * $_FILES['foo'](tmp_name, name, type, error)
+     * $_FILES['foo'](tmp_name, name, type, error).
      *
-     * @param string $path
-     * @param string $originalName
+     * @param string      $path
+     * @param string      $originalName
      * @param string|null $mimeType
-     * @param int|null $error
-     * @return void
+     * @param int|null    $error
      */
     public function __construct(string $path, string $originalName, string $mimeType = null, int $error = null)
     {
@@ -85,7 +89,7 @@ class UploadedFile extends File
     }
 
     /**
-     * 返回文件原始名字
+     * 返回文件原始名字.
      *
      * @return string|null
      */
@@ -95,7 +99,7 @@ class UploadedFile extends File
     }
 
     /**
-     * 返回文件原始名字扩展
+     * 返回文件原始名字扩展.
      *
      * @return string
      */
@@ -105,7 +109,7 @@ class UploadedFile extends File
     }
 
     /**
-     * 返回文件类型
+     * 返回文件类型.
      *
      * @return string|null
      */
@@ -115,7 +119,7 @@ class UploadedFile extends File
     }
 
     /**
-     * 返回上传错误
+     * 返回上传错误.
      *
      * @return int
      */
@@ -133,7 +137,7 @@ class UploadedFile extends File
     {
         return UPLOAD_ERR_OK === $this->error && is_uploaded_file($this->getPathname());
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -169,17 +173,20 @@ class UploadedFile extends File
         } elseif (0 === strpos($max, '0')) {
             $max = intval($max, 8);
         } else {
-            $max = (int)$max;
+            $max = (int) $max;
         }
 
         switch (substr($iniMax, -1)) {
-            case 't': 
+            case 't':
                 $max *= 1024;
-            case 'g': 
+                // no break
+            case 'g':
                 $max *= 1024;
-            case 'm': 
+                // no break
+            case 'm':
                 $max *= 1024;
-            case 'k': 
+                // no break
+            case 'k':
                 $max *= 1024;
         }
 
@@ -187,7 +194,7 @@ class UploadedFile extends File
     }
 
     /**
-     * 上传错误
+     * 上传错误.
      *
      * @return string
      */

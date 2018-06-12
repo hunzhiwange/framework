@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,43 +17,46 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc;
 
 use RuntimeException;
 
 /**
- * 模型未找到异常
+ * 模型未找到异常.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.07.10
+ *
  * @version 1.0
  */
 class ModelNotFoundException extends RuntimeException
 {
-
     /**
-     * 模型名字
+     * 模型名字.
      *
      * @var string
      */
     protected $strModel;
 
     /**
-     * 设置模型
+     * 设置模型.
      *
      * @param string $strModel
+     *
      * @return $this
      */
     public function model($strModel)
     {
         $this->strModel = $strModel;
         $this->message = "Can not find {$strModel} data";
+
         return $this;
     }
 
     /**
-     * 取回模型
+     * 取回模型.
      *
      * @return string
      */

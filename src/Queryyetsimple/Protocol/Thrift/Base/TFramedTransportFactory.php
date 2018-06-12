@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Base;
 
 use Thrift\Transport\TTransport;
@@ -24,19 +28,22 @@ use Thrift\Transport\TFramedTransport;
  * 分帧传输工厂
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.03
+ *
  * @version 1.0
- * @link https://www.cnblogs.com/brucewoo/archive/2013/07/31/3226856.html
+ *
+ * @see https://www.cnblogs.com/brucewoo/archive/2013/07/31/3226856.html
  */
 class TFramedTransportFactory extends TTransportFactory
 {
-
-  /**
-   * @static
-   * @param \Thrift\Transport\TTransport $transport
-   * @return TTransport
-   */
+    /**
+     * @static
+     *
+     * @param \Thrift\Transport\TTransport $transport
+     *
+     * @return TTransport
+     */
     public static function getTransport(TTransport $transport)
     {
         return new TFramedTransport($transport);

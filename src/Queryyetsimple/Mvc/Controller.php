@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,42 +17,42 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc;
 
 use RuntimeException;
 use Leevel\View\IView as ViewIView;
 
 /**
- * 基类控制器
+ * 基类控制器.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.19
+ *
  * @version 1.0
  */
 abstract class Controller implements IController
 {
-
     /**
-     * 视图
+     * 视图.
      *
      * @var \leevel\Mvc\IView
      */
     protected $view;
 
     /**
-     * 构造函数
-     *
-     * @return void
+     * 构造函数.
      */
     public function __construct()
     {
     }
 
     /**
-     * 设置视图
+     * 设置视图.
      *
      * @param \leevel\Mvc\IView $view
+     *
      * @return $this
      */
     public function setView(IView $view)
@@ -60,9 +63,10 @@ abstract class Controller implements IController
     }
 
     /**
-     * 切换视图
+     * 切换视图.
      *
      * @param \Leevel\View\IView $theme
+     *
      * @return $this
      */
     public function switchView(ViewIView $theme)
@@ -78,6 +82,7 @@ abstract class Controller implements IController
      *
      * @param mixed $name
      * @param mixed $value
+     *
      * @return $this
      */
     public function assign($name, $value = null)
@@ -92,6 +97,7 @@ abstract class Controller implements IController
      * 获取变量赋值
      *
      * @param string|null $name
+     *
      * @return mixed
      */
     public function getAssign($name = null)
@@ -105,6 +111,7 @@ abstract class Controller implements IController
      * 删除变量值
      *
      * @param mixed $name
+     *
      * @return $this
      */
     public function deleteAssign($name)
@@ -113,9 +120,9 @@ abstract class Controller implements IController
 
         call_user_func_array([
             $this->view,
-            'deleteAssign'
+            'deleteAssign',
         ], func_get_args());
-        
+
         return $this;
     }
 
@@ -133,24 +140,23 @@ abstract class Controller implements IController
     }
 
     /**
-     * 加载视图文件
+     * 加载视图文件.
      *
      * @param string $file
-     * @param array $vars
+     * @param array  $vars
      * @param string $ext
+     *
      * @return string
      */
     public function display($file = null, array $vars = [], $ext = null)
     {
         $this->checkView();
-        
+
         return $this->view->display($file, $vars, $ext);
     }
 
     /**
-     * 验证 view
-     *
-     * @return void
+     * 验证 view.
      */
     protected function checkView()
     {
@@ -164,7 +170,6 @@ abstract class Controller implements IController
      *
      * @param mixed $key
      * @param mixed $value
-     * @return void
      */
     public function __set($key, $value)
     {
@@ -175,6 +180,7 @@ abstract class Controller implements IController
      * 获取值
      *
      * @param string $key
+     *
      * @return mixed
      */
     public function __get($key)

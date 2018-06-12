@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Support;
 
 /**
- * 数组辅助函数
+ * 数组辅助函数.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.05
+ *
  * @version 1.0
  */
 class Arr
 {
-
     /**
-     * 数组数据格式化
+     * 数组数据格式化.
      *
-     * @param mixed $mixInput
+     * @param mixed  $mixInput
      * @param string $sDelimiter
-     * @param boolean $bAllowedEmpty
+     * @param bool   $bAllowedEmpty
+     *
      * @return mixed
      */
     public static function normalize($mixInput, $sDelimiter = ',', $bAllowedEmpty = false)
@@ -43,10 +48,11 @@ class Arr
             }
 
             $mixInput = array_filter($mixInput); // 过滤null
-            if ($bAllowedEmpty === true) {
+            if (true === $bAllowedEmpty) {
                 return $mixInput;
             } else {
                 $mixInput = array_map('trim', $mixInput);
+
                 return array_filter($mixInput, 'strlen');
             }
         } else {
@@ -55,10 +61,11 @@ class Arr
     }
 
     /**
-     * 数组合并支持 + 算法
+     * 数组合并支持 + 算法.
      *
      * @param array $arrOption
-     * @param boolean $booRecursion
+     * @param bool  $booRecursion
+     *
      * @return array
      */
     public static function merge($arrOption, $booRecursion = true)
@@ -66,7 +73,7 @@ class Arr
         $arrExtend = [];
 
         foreach ($arrOption as $strKey => $mixTemp) {
-            if (strpos($strKey, '+') === 0) {
+            if (0 === strpos($strKey, '+')) {
                 $arrExtend[ltrim($strKey, '+')] = $mixTemp;
                 unset($arrOption[$strKey]);
             }
@@ -80,7 +87,7 @@ class Arr
             }
         }
 
-        if ($booRecursion === true) {
+        if (true === $booRecursion) {
             foreach ($arrOption as $strKey => $mixTemp) {
                 if (is_array($mixTemp)) {
                     $arrOption[$strKey] = static::merge($mixTemp);

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,39 +17,39 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 use InvalidArgumentException;
 
 /**
- * file bag
+ * file bag.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.25
+ *
  * @version 1.0
  */
 class FileBag extends Bag
 {
-
     /**
-     * 上传文件 keys
-     * 
+     * 上传文件 keys.
+     *
      * @var array
      */
     protected static $fileKeys = [
-        'error', 
-        'name', 
-        'size', 
-        'tmp_name', 
-        'type'
+        'error',
+        'name',
+        'size',
+        'tmp_name',
+        'type',
     ];
 
     /**
-     * 构造函数
-     * 
+     * 构造函数.
+     *
      * @param array $elements
-     * @return void 
      */
     public function __construct(array $elements = [])
     {
@@ -63,7 +66,7 @@ class FileBag extends Bag
         $this->elements = [];
 
         $elements = $this->normalizeArray($elements);
-        
+
         $this->add($elements);
     }
 
@@ -82,7 +85,7 @@ class FileBag extends Bag
     /**
      * {@inheritdoc}
      */
-    public function add(array $files = array())
+    public function add(array $files = [])
     {
         foreach ($files as $key => $file) {
             $this->set($key, $file);
@@ -91,17 +94,19 @@ class FileBag extends Bag
 
     /**
      * 取回文件数组
-     * 数组文件请在末尾加上反斜杆访问
+     * 数组文件请在末尾加上反斜杆访问.
      *
      * @param string $key
-     * @param array $defaults
+     * @param array  $defaults
+     *
      * @return mixed
      */
-    public function getArr($key, array $defaults = []) {
+    public function getArr($key, array $defaults = [])
+    {
         $files = [];
 
         foreach ($this->elements as $k => $value) {
-            if (strpos($k, $key) === 0 && ! is_null($value)) {
+            if (0 === strpos($k, $key) && null !== $value) {
                 $files[] = $value;
             }
         }
@@ -110,9 +115,10 @@ class FileBag extends Bag
     }
 
     /**
-     * 转换上传信息到文件实例 UploadedFile
+     * 转换上传信息到文件实例 UploadedFile.
      *
      * @param array|\Leevel\Http\UploadedFile $file
+     *
      * @return \Leevel\Http\UploadedFile|null
      */
     protected function convertFile($file)
@@ -122,7 +128,7 @@ class FileBag extends Bag
         }
 
         $file = $this->normalizeFile($file);
-        
+
         if (UPLOAD_ERR_NO_FILE == $file['error']) {
             $file = null;
         } else {
@@ -133,9 +139,10 @@ class FileBag extends Bag
     }
 
     /**
-     * 格式化 $_FILES 数组
+     * 格式化 $_FILES 数组.
      *
      * @param array $data
+     *
      * @return array
      */
     protected function normalizeFile(array $data)
@@ -158,9 +165,10 @@ class FileBag extends Bag
     }
 
     /**
-     * 格式化多维数组类文件为一维数组
+     * 格式化多维数组类文件为一维数组.
      *
      * @param array $elements
+     *
      * @return array
      */
     protected function normalizeArray(array $elements)
@@ -169,10 +177,10 @@ class FileBag extends Bag
 
         foreach ($elements as $key => $value) {
             if (is_array($value)) {
-                if (array_key_exists('name', $value) === false) {
+                if (false === array_key_exists('name', $value)) {
                     throw new InvalidArgumentException('An uploaded file must be contain key name.');
                 } elseif (isset($value['name']) && is_array($value['name'])) {
-                     foreach ($value['name'] as $index => $item) {
+                    foreach ($value['name'] as $index => $item) {
                         $element = [];
                         foreach (static::$fileKeys as $fileKey) {
                             if (! array_key_exists($index, $value[$fileKey])) {
@@ -198,12 +206,14 @@ class FileBag extends Bag
     }
 
     /**
-     * 格式化 keys
+     * 格式化 keys.
      *
      * @param array $data
+     *
      * @return array
      */
-    protected function normalizeKey(array $data) {
+    protected function normalizeKey(array $data)
+    {
         $keys = array_keys($data);
         sort($keys);
 

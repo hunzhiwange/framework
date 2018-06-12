@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,29 +17,30 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\I18n;
 
 use Tests\TestCase;
 use Leevel\I18n\I18n;
 
 /**
- * i18n test
- * 
+ * i18n test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.03
+ *
  * @version 1.0
  */
 class I18nTest extends TestCase
 {
-
     public function testBaseUse()
     {
         $i18n = new I18n('zh-CN');
 
         $this->assertEquals('zh-CN', $i18n->getI18n());
         $this->assertSame([
-            'zh-CN' => []
+            'zh-CN' => [],
         ], $i18n->all());
         $this->assertEquals('中国语言', $i18n->getText('中国语言'));
         $this->assertEquals('中国人语言', $i18n->__('中国%s语言', '人'));
@@ -51,7 +55,7 @@ class I18nTest extends TestCase
 
         $i18n->addText('en-US', [
             '世界你好' => 'hello world',
-            '胡巴 %s' => 'foo %s'
+            '胡巴 %s' => 'foo %s',
         ]);
 
         $this->assertEquals('hello world', $i18n->getText('世界你好'));
@@ -64,15 +68,15 @@ class I18nTest extends TestCase
 
         $i18n->addText('en-US', [
             '世界你好' => 'hello world',
-            '胡巴 %s' => 'foo %s'
+            '胡巴 %s' => 'foo %s',
         ]);
 
         $this->assertSame([
             'zh-CN' => [],
             'en-US' => [
                 '世界你好' => 'hello world',
-                '胡巴 %s' => 'foo %s'  
-            ]
+                '胡巴 %s' => 'foo %s',
+            ],
         ], $i18n->all());
     }
 

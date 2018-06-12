@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,42 +17,41 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc\Console;
 
-use Leevel\Console\{
-    Make,
-    Option,
-    Argument
-};
+use Leevel\Console\Make;
+use Leevel\Console\Option;
+use Leevel\Console\Argument;
 use Leevel\Router;
 
 /**
- * 生成方法器
+ * 生成方法器.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.03
+ *
  * @version 1.0
  */
 class Action extends Make
 {
-
     /**
-     * 命令名字
+     * 命令名字.
      *
      * @var string
      */
     protected $name = 'make:action';
 
     /**
-     * 命令描述
+     * 命令描述.
      *
      * @var string
      */
     protected $description = 'Create a new action';
 
     /**
-     * 命令帮助
+     * 命令帮助.
      *
      * @var string
      */
@@ -68,9 +70,7 @@ You can also by using the <comment>--extend</comment> option:
 EOF;
 
     /**
-     * 响应命令
-     *
-     * @return void
+     * 响应命令.
      */
     public function handle()
     {
@@ -108,18 +108,19 @@ EOF;
     }
 
     /**
-     * 格式化方法名
+     * 格式化方法名.
      *
      * @param string $action
+     *
      * @return string
      */
     protected function normalizeAction(string $action)
     {
-        if (strpos($action, '-') !== false) {
+        if (false !== strpos($action, '-')) {
             $action = str_replace('-', '_', $action);
-        } 
+        }
 
-        if (strpos($action, '_') !== false) {
+        if (false !== strpos($action, '_')) {
             $action = '_' . str_replace('_', ' ', $action);
             $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
         }
@@ -128,7 +129,7 @@ EOF;
     }
 
     /**
-     * 命令参数
+     * 命令参数.
      *
      * @return array
      */
@@ -138,18 +139,18 @@ EOF;
             [
                 'controller',
                 Argument::OPTIONAL,
-                'This is the parent controller name.'
+                'This is the parent controller name.',
             ],
             [
                 'name',
                 Argument::OPTIONAL,
-                'This is the action name.'
-            ]
+                'This is the action name.',
+            ],
         ];
     }
 
     /**
-     * 命令配置
+     * 命令配置.
      *
      * @return array
      */
@@ -161,15 +162,15 @@ EOF;
                 null,
                 option::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
-                'app'
+                'app',
             ],
             [
                 'extend',
                 null,
                 option::VALUE_OPTIONAL,
                 'Action with the code that make it extends Leevel\Mvc\Controller',
-                1
-            ]
+                1,
+            ],
         ];
     }
 }

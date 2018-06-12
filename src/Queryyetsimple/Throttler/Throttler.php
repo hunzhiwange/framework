@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,51 +17,49 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Throttler;
 
 use RuntimeException;
-use Leevel\{
-    Http\Request,
-    Cache\ICache
-};
+use Leevel\Http\Request;
+use Leevel\Cache\ICache;
 
 /**
- * throttler 入口
+ * throttler 入口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.07
+ *
  * @version 1.0
  */
 class Throttler implements IThrottler
 {
-
     /**
-     * 节流器实例
+     * 节流器实例.
      *
      * @var \Leevel\Throttler\RateLimiter[]
      */
     protected $arrRateLimiter = [];
 
     /**
-     * cache
+     * cache.
      *
      * @var \Leevel\Cache\ICache
      */
     protected $objCache;
 
     /**
-     * http request
+     * http request.
      *
      * @var \Leevel\Http\Request
      */
     protected $objRequest;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Cache\ICache $objCache
-     * @return void
      */
     public function __construct(ICache $objCache)
     {
@@ -66,11 +67,12 @@ class Throttler implements IThrottler
     }
 
     /**
-     * 创建一个节流器
+     * 创建一个节流器.
      *
      * @param string|null $strKey
-     * @param integer $intXRateLimitLimit
-     * @param integer $intXRateLimitTime
+     * @param int         $intXRateLimitLimit
+     * @param int         $intXRateLimitTime
+     *
      * @return \Leevel\Throttler\RateLimiter
      */
     public function create($strKey = null, $intXRateLimitLimit = 20, $intXRateLimitTime = 20)
@@ -84,21 +86,24 @@ class Throttler implements IThrottler
     }
 
     /**
-     * 设置 http request
+     * 设置 http request.
      *
      * @param \Leevel\Http\Request $objRequest
+     *
      * @return $this
      */
     public function setRequest(request $objRequest)
     {
         $this->objRequest = $objRequest;
+
         return $this;
     }
 
     /**
-     * 获取请求 key
+     * 获取请求 key.
      *
      * @param null|string $strKey
+     *
      * @return string
      */
     public function getRequestKey($strKey = null)
@@ -106,14 +111,16 @@ class Throttler implements IThrottler
         if (! $strKey && ! $this->objRequest) {
             throw new RuntimeException('Request is not set');
         }
-        return $strKey ?  : sha1($this->objRequest->getClientIp() . '@' . $this->objRequest->getNode());
+
+        return $strKey ?: sha1($this->objRequest->getClientIp() . '@' . $this->objRequest->getNode());
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $arrArgs
+     * @param array  $arrArgs
+     *
      * @return mixed
      */
     public function __call(string $method, array $arrArgs)

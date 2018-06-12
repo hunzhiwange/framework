@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,24 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Filesystem;
 
 use League\Flysystem\Adapter\Ftp as AdapterFtp;
 
 /**
- * filesystem.ftp
+ * filesystem.ftp.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.29
- * @link https://flysystem.thephpleague.com/adapter/ftp/
+ * @see https://flysystem.thephpleague.com/adapter/ftp/
+ *
  * @version 1.0
  */
 class Ftp extends Connect implements IConnect
 {
-
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -58,11 +62,11 @@ class Ftp extends Connect implements IConnect
         'ssl' => false,
 
         // 超时设置
-        'timeout' => 20
+        'timeout' => 20,
     ];
 
     /**
-     * 创建连接
+     * 创建连接.
      *
      * @return \League\Flysystem\AdapterInterface
      */

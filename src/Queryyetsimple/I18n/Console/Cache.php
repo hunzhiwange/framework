@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,46 +17,41 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n\Console;
 
 use InvalidArgumentException;
-use Leevel\Console\{
-    Option,
-    Command,
-    Argument
-};
+use Leevel\Console\Command;
 use Leevel\I18n;
 use Leevel\Option as Options;
 
 /**
- * 语言包缓存
+ * 语言包缓存.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.05.06
+ *
  * @version 1.0
  */
 class Cache extends Command
 {
-
     /**
-     * 命令名字
+     * 命令名字.
      *
      * @var string
      */
     protected $name = 'i18n:cache';
 
     /**
-     * 命令行描述
+     * 命令行描述.
      *
      * @var string
      */
     protected $description = 'Cache i18n to a file';
 
     /**
-     * 响应命令
-     *
-     * @return void
+     * 响应命令.
      */
     public function handle()
     {
@@ -65,7 +63,7 @@ class Cache extends Command
 
         $cachePath = app()->pathCacheI18nFile($i18nDefault);
 
-        if ($this->checkCacheExists($cachePath) === true) {
+        if (true === $this->checkCacheExists($cachePath)) {
             return false;
         }
 
@@ -75,9 +73,10 @@ class Cache extends Command
     }
 
     /**
-     * 验证缓存
+     * 验证缓存.
      *
      * @param string $cachePath
+     *
      * @return bool
      */
     protected function checkCacheExists(string $cachePath)
@@ -98,11 +97,10 @@ class Cache extends Command
     }
 
     /**
-     * 写入缓存
+     * 写入缓存.
      *
      * @param string $cachePath
-     * @param array $data
-     * @return void
+     * @param array  $data
      */
     protected function writeCache(string $cachePath, array $data)
     {
@@ -110,10 +108,10 @@ class Cache extends Command
             mkdir(dirname($cachePath), 0777, true);
         }
 
-        $content = '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' . 
+        $content = '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' .
             PHP_EOL . '<?' . 'php return ' . var_export($data, true) . '; ?' . '>';
-            
-        if(! file_put_contents($cachePath, $content)) {
+
+        if (! file_put_contents($cachePath, $content)) {
             throw new InvalidArgumentException(sprintf('Dir %s is not writeable', dirname($cachePath)));
         }
 
@@ -121,7 +119,7 @@ class Cache extends Command
     }
 
     /**
-     * 命令参数
+     * 命令参数.
      *
      * @return array
      */
@@ -131,7 +129,7 @@ class Cache extends Command
     }
 
     /**
-     * 命令配置
+     * 命令配置.
      *
      * @return array
      */

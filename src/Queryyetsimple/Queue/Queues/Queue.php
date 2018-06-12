@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,61 +17,60 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Queue\Queues;
 
-use PHPQueue\{
-    Logger,
-    JobQueue
-};
+use PHPQueue\Logger;
+use PHPQueue\JobQueue;
 
 /**
- * Queue 消息队列
+ * Queue 消息队列.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.11
+ *
  * @version 1.0
  */
 abstract class Queue extends JobQueue
 {
-
     /**
-     * 队列连接
+     * 队列连接.
      *
      * @var string
      */
     protected $strConnect;
 
     /**
-     * 默认执行队列
+     * 默认执行队列.
      *
      * @var string
      */
     protected static $strQueue = 'default';
 
     /**
-     * 消息队列日志路径
+     * 消息队列日志路径.
      *
      * @var string
      */
     protected static $strLogPath;
 
     /**
-     * 连接句柄
+     * 连接句柄.
      *
      * @var resource
      */
     protected $resDataSource;
 
     /**
-     * 连接配置
+     * 连接配置.
      *
      * @var array
      */
     protected $arrSourceConfig = [];
 
     /**
-     * 队列执行者
+     * 队列执行者.
      *
      * @var string
      */
@@ -82,9 +84,7 @@ abstract class Queue extends JobQueue
     protected $objResultLog;
 
     /**
-     * 构造函数
-     *
-     * @return void
+     * 构造函数.
      */
     public function __construct()
     {
@@ -103,10 +103,9 @@ abstract class Queue extends JobQueue
     }
 
     /**
-     * 设置消息队列
+     * 设置消息队列.
      *
      * @param string $strQueue
-     * @return void
      */
     public static function setQueue($strQueue = 'default')
     {
@@ -114,10 +113,9 @@ abstract class Queue extends JobQueue
     }
 
     /**
-     * 设置日志路径
+     * 设置日志路径.
      *
      * @param string $strLogPath
-     * @return void
      */
     public static function logPath($strLogPath)
     {
@@ -128,15 +126,17 @@ abstract class Queue extends JobQueue
      * 添加一个任务
      *
      * @param array|null $arrNewJob
-     * @return boolean
+     *
+     * @return bool
      */
     public function addJob($arrNewJob = null)
     {
         $arrFormattedData = [
             'worker' => $this->strQueueWorker,
-            'data' => $arrNewJob
+            'data' => $arrNewJob,
         ];
         $this->resDataSource->add($arrFormattedData);
+
         return true;
     }
 
@@ -144,6 +144,7 @@ abstract class Queue extends JobQueue
      * 获取一个任务
      *
      * @param string|null $strJobId
+     *
      * @return object
      */
     public function getJob($strJobId = null)
@@ -154,6 +155,7 @@ abstract class Queue extends JobQueue
         }
         $objNextJob = new $strJob($arrData, $this->resDataSource->last_job_id, static::$strQueue);
         $this->last_job_id = $this->resDataSource->last_job_id;
+
         return $objNextJob;
     }
 
@@ -161,8 +163,7 @@ abstract class Queue extends JobQueue
      * 更新任务
      *
      * @param string|null $strJobId
-     * @param array|null $arrResultData
-     * @return void
+     * @param array|null  $arrResultData
      */
     public function updateJob($strJobId = null, $arrResultData = null)
     {
@@ -176,7 +177,6 @@ abstract class Queue extends JobQueue
      * 删除任务
      *
      * @param string|null $strJobId
-     * @return void
      */
     public function clearJob($strJobId = null)
     {
@@ -187,7 +187,6 @@ abstract class Queue extends JobQueue
      * 重新发布任务
      *
      * @param string|null $strJobId
-     * @return void
      */
     public function releaseJob($strJobId = null)
     {
@@ -196,7 +195,7 @@ abstract class Queue extends JobQueue
 
     /**
      * 取得存储连接 key
-     * redis:email 表示 redis 邮件队列
+     * redis:email 表示 redis 邮件队列.
      *
      * @return string
      */

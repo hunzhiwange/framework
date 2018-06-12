@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Http;
 
 use DateTime;
@@ -27,20 +31,21 @@ use Leevel\Support\IArray;
 
 /**
  * Response test
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
- * 
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.03.13
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class ResponseTest extends TestCase
 {
-
     public function testCreate()
     {
-        $response = Response::create('foo', 301, array('Foo' => 'bar'));
+        $response = Response::create('foo', 301, ['Foo' => 'bar']);
         $this->assertInstanceOf('Leevel\Http\IResponse', $response);
         $this->assertInstanceOf('Leevel\Http\Response', $response);
         $this->assertEquals(301, $response->getStatusCode());
@@ -209,7 +214,7 @@ class ResponseTest extends TestCase
     public function testSetStatusCode($code, $text, $expectedText)
     {
         $response = new Response();
-        $response->setStatusCode((int)$code, $text);
+        $response->setStatusCode((int) $code, $text);
         $statusText = new ReflectionProperty($response, 'statusText');
         $statusText->setAccessible(true);
         $this->assertEquals($expectedText, $statusText->getValue($response));
@@ -217,14 +222,14 @@ class ResponseTest extends TestCase
 
     public function getStatusCodeFixtures()
     {
-        return array(
-            array('200', null, 'OK'),
-            array('200', false, ''),
-            array('200', 'foo', 'foo'),
-            array('199', null, 'unknown status'),
-            array('199', false, ''),
-            array('199', 'foo', 'foo'),
-        );
+        return [
+            ['200', null, 'OK'],
+            ['200', false, ''],
+            ['200', 'foo', 'foo'],
+            ['199', null, 'unknown status'],
+            ['199', false, ''],
+            ['199', 'foo', 'foo'],
+        ];
     }
 
     public function testIsInformational()
@@ -237,7 +242,7 @@ class ResponseTest extends TestCase
 
     public function testIsRedirectRedirection()
     {
-        foreach (array(301, 302, 303, 307) as $code) {
+        foreach ([301, 302, 303, 307] as $code) {
             $response = new Response('', $code);
             $this->assertTrue($response->isRedirection());
             $this->assertTrue($response->isRedirect());
@@ -255,7 +260,7 @@ class ResponseTest extends TestCase
         $this->assertFalse($response->isRedirection());
         $this->assertFalse($response->isRedirect());
 
-        $response = new Response('', 301, array('Location' => '/good-uri'));
+        $response = new Response('', 301, ['Location' => '/good-uri']);
         $this->assertFalse($response->isRedirect('/bad-uri'));
         $this->assertTrue($response->isRedirect('/good-uri'));
     }
@@ -270,7 +275,7 @@ class ResponseTest extends TestCase
 
     public function testIsEmpty()
     {
-        foreach (array(204, 304) as $code) {
+        foreach ([204, 304] as $code) {
             $response = new Response('', $code);
             $this->assertTrue($response->isEmpty());
         }
@@ -316,11 +321,11 @@ class ResponseTest extends TestCase
 
     public function validContentProvider()
     {
-        return array(
-            'obj' => array(new StringableObject()),
-            'string' => array('Foo'),
-            'int' => array(2),
-        );
+        return [
+            'obj' => [new StringableObject()],
+            'string' => ['Foo'],
+            'int' => [2],
+        ];
     }
 
     /**
@@ -335,40 +340,44 @@ class ResponseTest extends TestCase
 
     public function invalidContentProvider()
     {
-        return array(
-            'obj' => array(new \stdClass())
-        );
+        return [
+            'obj' => [new \stdClass()],
+        ];
     }
 }
 
-class MyArray implements IArray {
-
+class MyArray implements IArray
+{
     /**
-     * 对象转数组
+     * 对象转数组.
      *
      * @return array
      */
-    public function toArray() {
+    public function toArray()
+    {
         return ['hello' => 'IArray'];
     }
 }
 
-class MyJson implements IJson {
-
+class MyJson implements IJson
+{
     /**
-     * 对象转 JSON
+     * 对象转 JSON.
      *
-     * @param integer $option
+     * @param int $option
+     *
      * @return string
      */
-    public function toJson($option = JSON_UNESCAPED_UNICODE) {
+    public function toJson($option = JSON_UNESCAPED_UNICODE)
+    {
         return json_encode(['hello' => 'IJson'], $option);
     }
 }
 
-class MyJsonSerializable implements JsonSerializable {
-
-    public function jsonSerialize() {
+class MyJsonSerializable implements JsonSerializable
+{
+    public function jsonSerialize()
+    {
         return ['hello' => 'JsonSerializable'];
     }
 }

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,34 +17,32 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Bootstrap\validate;
 
-use Leevel\{
-    Http\Response,
-    Session\ISession,
-    Validate\IValidate,
-    Validate\ValidateException,
-    Http\Request as HttpRequest
-};
+use Leevel\Http\Response;
+use Leevel\Session\ISession;
+use Leevel\Validate\IValidate;
+use Leevel\Validate\ValidateException;
+use Leevel\Http\Request as HttpRequest;
 
 /**
  * 请求验证
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.25
+ *
  * @version 1.0
  */
 trait Request
 {
-
     /**
      * 验证请求
      *
      * @param \Leevel\Http\Request $oRequest
-     * @param array $arrRule
-     * @param array $arrMessage
-     * @return void
+     * @param array                $arrRule
+     * @param array                $arrMessage
      */
     public function validate(HttpRequest $oRequest, array $arrRule, array $arrMessage = [])
     {
@@ -53,11 +54,10 @@ trait Request
     }
 
     /**
-     * 验证失败异常
+     * 验证失败异常.
      *
-     * @param \Leevel\Http\Request $oRequest
+     * @param \Leevel\Http\Request       $oRequest
      * @param \Leevel\Validate\IValidate $oValidate
-     * @return void
      */
     protected function throwValidateException(HttpRequest $oRequest, $oValidate)
     {
@@ -65,10 +65,11 @@ trait Request
     }
 
     /**
-     * 错误验证响应
+     * 错误验证响应.
      *
      * @param \Leevel\Http\Request $oRequest
-     * @param array $arrErrors
+     * @param array                $arrErrors
+     *
      * @return \Leevel\Http\Response
      */
     protected function validationResponse(HttpRequest $oRequest, array $arrErrors)
@@ -82,7 +83,7 @@ trait Request
         getResponseComponent()->
 
         redirect($this->getRedirectUrl($oRequest), [
-            'make' => false
+            'make' => false,
         ])->
 
         clearErrors()->
@@ -93,9 +94,10 @@ trait Request
     }
 
     /**
-     * 返回错误消息
+     * 返回错误消息.
      *
      * @param \Leevel\Validate\IValidate $oValidate
+     *
      * @return array
      */
     protected function validationErrors(IValidate $oValidate)
@@ -104,18 +106,18 @@ trait Request
     }
 
     /**
-     * 返回前一个页面
+     * 返回前一个页面.
      *
      *
      * @return string
      */
     protected function getRedirectUrl($oRequest)
     {
-        return $oRequest->header('referer') ?  : $this->getSessionPrevUrl();
+        return $oRequest->header('referer') ?: $this->getSessionPrevUrl();
     }
 
     /**
-     * 返回 session 前一个页面
+     * 返回 session 前一个页面.
      *
      * @return string
      */
@@ -125,7 +127,7 @@ trait Request
     }
 
     /**
-     * 返回 validate 组件
+     * 返回 validate 组件.
      *
      * @return \Leevel\Validate\IValidate
      */
@@ -135,7 +137,7 @@ trait Request
     }
 
     /**
-     * 返回 session 组件
+     * 返回 session 组件.
      *
      * @return \Leevel\Session\ISession
      */
@@ -145,7 +147,7 @@ trait Request
     }
 
     /**
-     * 返回响应组件
+     * 返回响应组件.
      *
      * @return \Leevel\Http\Response
      */

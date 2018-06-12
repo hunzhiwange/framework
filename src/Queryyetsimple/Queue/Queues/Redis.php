@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,53 +17,51 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Queue\Queues;
 
-use PHPQueue\Base;
 use Leevel\Queue\Backend\Redis as BackendRedis;
 
 /**
- * redis 消息队列
+ * redis 消息队列.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.11
+ *
  * @version 1.0
  */
 class Redis extends Queue implements IQueue
 {
-
     /**
-     * 队列连接
+     * 队列连接.
      *
      * @var string
      */
     protected $strConnect = 'redis';
 
     /**
-     * 连接配置
+     * 连接配置.
      *
      * @var array
      */
     protected $arrSourceConfig = [
         'servers' => [
             'host' => '127.0.0.1',
-            'port' => 6379
+            'port' => 6379,
         ],
-        'redis_options' => []
+        'redis_options' => [],
     ];
 
     /**
-     * 队列执行者
+     * 队列执行者.
      *
      * @var string
      */
     protected $strQueueWorker = 'redis';
 
     /**
-     * 构造函数
-     *
-     * @return void
+     * 构造函数.
      */
     public function __construct()
     {
@@ -71,7 +72,7 @@ class Redis extends Queue implements IQueue
     }
 
     /**
-     * 取得消息队列长度
+     * 取得消息队列长度.
      *
      * @return int
      */
@@ -80,26 +81,27 @@ class Redis extends Queue implements IQueue
     }
 
     /**
-     * 获取 redis 服务器主机
+     * 获取 redis 服务器主机.
      *
      * @return array
      */
     protected function getServers()
     {
         $arrServers = option('queue\connect.redis.servers', $this->arrSourceConfig['servers']);
-        if (array_key_exists('password', $arrServers) && is_null($arrServers['password'])) {
+        if (array_key_exists('password', $arrServers) && null === $arrServers['password']) {
             unset($arrServers['password']);
         }
+
         return $arrServers;
     }
 
     /**
-     * 获取 redis 服务器参数
+     * 获取 redis 服务器参数.
      *
      * @return array
      */
     protected function getOptions()
     {
-        return option('queue\connect.redis.options', [ ]);
+        return option('queue\connect.redis.options', []);
     }
 }

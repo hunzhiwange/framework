@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,43 +17,42 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Support;
 
-use Closure;
-use Exception;
 use RuntimeException;
 use BadMethodCallException;
 use Leevel\Di\IContainer;
 
 /**
- * 实现类的静态访问门面
+ * 实现类的静态访问门面.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.04
- * @link https://github.com/domnikl/DesignPatternsPHP/tree/master/Structural/Facade
- * @link https://d.laravel-china.org/docs/5.5/facades
+ * @see https://github.com/domnikl/DesignPatternsPHP/tree/master/Structural/Facade
+ * @see https://d.laravel-china.org/docs/5.5/facades
+ *
  * @version 1.0
  */
 abstract class Facade
 {
-
     /**
-     * 项目容器
+     * 项目容器.
      *
      * @var \Leevel\Di\IContainer
      */
     protected static $container;
 
     /**
-     * 注入容器实例
+     * 注入容器实例.
      *
      * @var object
      */
     protected static $instances = [];
 
     /**
-     * 获取注册容器的实例
+     * 获取注册容器的实例.
      *
      * @return mixed
      */
@@ -70,7 +72,7 @@ abstract class Facade
     }
 
     /**
-     * 返回服务容器
+     * 返回服务容器.
      *
      * @return \Leevel\Di\IContainer
      */
@@ -80,10 +82,9 @@ abstract class Facade
     }
 
     /**
-     * 设置服务容器
+     * 设置服务容器.
      *
      * @param \Leevel\Di\IContainer $container
-     * @return void
      */
     public static function setContainer(IContainer $container): void
     {
@@ -91,19 +92,21 @@ abstract class Facade
     }
 
     /**
-     * 门面名字
+     * 门面名字.
      *
      * @return string
      */
-    protected static function name(): string {
+    protected static function name(): string
+    {
         return '';
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public static function __callStatic(string $method, array $args)
@@ -115,7 +118,7 @@ abstract class Facade
 
         $method = [
             $instance,
-            $method
+            $method,
         ];
         if (! is_callable($method)) {
             throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));

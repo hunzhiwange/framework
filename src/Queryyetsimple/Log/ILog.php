@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,137 +17,136 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Log;
 
 //use Psr\Log\LoggerInterface;
 
 /**
- * ILog 接口
+ * ILog 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.11
+ *
  * @version 1.0
  */
 interface ILog /* extends LoggerInterface*/
 {
-
     /**
-     * debug
+     * debug.
      *
      * @var string
      */
     const DEBUG = 'debug';
 
     /**
-     * info
+     * info.
      *
      * @var string
      */
     const INFO = 'info';
 
     /**
-     * notice
+     * notice.
      *
      * @var string
      */
     const NOTICE = 'notice';
 
     /**
-     * warning
+     * warning.
      *
      * @var string
      */
     const WARNING = 'warning';
 
     /**
-     * error
+     * error.
      *
      * @var string
      */
     const ERROR = 'error';
 
     /**
-     * critical
+     * critical.
      *
      * @var string
      */
     const CRITICAL = 'critical';
 
     /**
-     * alert
+     * alert.
      *
      * @var string
      */
     const ALERT = 'alert';
 
     /**
-     * emergency
+     * emergency.
      *
      * @var string
      */
     const EMERGENCY = 'emergency';
 
     /**
-     * sql
+     * sql.
      *
      * @var string
      */
     const SQL = 'sql';
 
     /**
-     * 记录错误消息并写入
+     * 记录错误消息并写入.
      *
-     * @param string $level 日志类型
+     * @param string $level   日志类型
      * @param string $message 应该被记录的错误信息
-     * @param array $context
-     * @return void
+     * @param array  $context
      */
     public function write($level, $message, array $context = []);
 
     /**
-     * 保存日志信息
-     *
-     * @return void
+     * 保存日志信息.
      */
     public function save();
 
     /**
-     * 注册日志过滤器
+     * 注册日志过滤器.
      *
      * @param callable $filter
-     * @return void
      */
     public function registerFilter(callable $filter);
 
     /**
-     * 注册日志处理器
+     * 注册日志处理器.
      *
      * @param callable $processor
-     * @return void
      */
     public function registerProcessor(callable $processor);
 
     /**
-     * 清理日志记录
+     * 清理日志记录.
      *
      * @param string $level
+     *
      * @return int
      */
     public function clear($level = null);
 
     /**
-     * 获取日志记录
+     * 获取日志记录.
      *
      * @param string $level
+     *
      * @return array
      */
     public function get($level = null);
 
     /**
-     * 获取日志记录数量
+     * 获取日志记录数量.
      *
      * @param string $level
+     *
      * @return int
      */
     public function count($level = null);

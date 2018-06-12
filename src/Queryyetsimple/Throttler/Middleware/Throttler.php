@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,47 +17,45 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Throttler\Middleware;
 
 use Closure;
-use Leevel\{
-    Http\Request,
-    Http\Response,
-    Throttler\IThrottler,
-    Kernel\Exception\TooManyRequestsHttpException
-};
+use Leevel\Http\Request;
+use Leevel\Http\Response;
+use Leevel\Throttler\IThrottler;
+use Leevel\Kernel\Exception\TooManyRequestsHttpException;
 
 /**
- * throttler 中间件
+ * throttler 中间件.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.10
+ *
  * @version 1.0
  */
 class Throttler
 {
-
     /**
-     * throttler
+     * throttler.
      *
      * @var \Leevel\Throttler\IThrottler
      */
     protected $throttler;
 
     /**
-     * HTTP Response
+     * HTTP Response.
      *
-     * @var \Leevel\Http\Response $response
+     * @var \Leevel\Http\Response
      */
     protected $response;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Throttler\IThrottler $throttler
-     * @param \Leevel\Http\Response $response
-     * @return void
+     * @param \Leevel\Http\Response        $response
      */
     public function __construct(IThrottler $throttler, Response $response)
     {
@@ -65,15 +66,14 @@ class Throttler
     /**
      * 请求
      *
-     * @param \Closure $next
+     * @param \Closure             $next
      * @param \Leevel\Http\Request $request
-     * @param int $limit
-     * @param int $time
-     * @return void
+     * @param int                  $limit
+     * @param int                  $time
      */
     public function handle(Closure $next, Request $request, $limit = 60, $time = 60)
     {
-        $rateLimiter = $this->throttler->create(null, (int)$limit, (int)$time);
+        $rateLimiter = $this->throttler->create(null, (int) $limit, (int) $time);
 
         if ($rateLimiter->attempt()) {
             $this->header($rateLimiter);
@@ -86,10 +86,9 @@ class Throttler
     }
 
     /**
-     * 发送 HEADER
+     * 发送 HEADER.
      *
      * @param \Leevel\Throttler\RateLimiter $rateLimiter
-     * @return void
      */
     protected function header($rateLimiter)
     {

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,36 +17,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router;
 
 use Leevel\Http\IRequest;
 
 /**
- * url 生成
+ * url 生成.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.01.10
+ *
  * @version 1.0
  */
 class Url implements IUrl
 {
     /**
      * HTTP 请求
-     * 
+     *
      * @var \Leevel\Http\IRequest
      */
     protected $request;
 
     /**
-     * URL 参数 
-     * 
-     * @var array 
+     * URL 参数.
+     *
+     * @var array
      */
     protected $params = [];
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -51,15 +56,14 @@ class Url implements IUrl
         'with_suffix' => false,
         'html_suffix' => '.html',
         'domain_top' => '',
-        'subdomain_on' => true
+        'subdomain_on' => true,
     ];
 
     /**
-     * 构造函数
-     * 
+     * 构造函数.
+     *
      * @param \Leevel\Http\IRequest $request
-     * @param array $option
-     * @return void
+     * @param array                 $option
      */
     public function __construct(IRequest $request, array $option = [])
     {
@@ -74,23 +78,24 @@ class Url implements IUrl
      * 生成路由地址
      *
      * @param string $url
-     * @param array $params
+     * @param array  $params
      * @param string $subdomain
-     * @param mixed $suffix
+     * @param mixed  $suffix
+     *
      * @return string
      */
     public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
     {
-        $url = $this->makeUrl($url, $params, ! is_null($suffix) ? $suffix : $this->option['with_suffix']);
+        $url = $this->makeUrl($url, $params, null !== $suffix ? $suffix : $this->option['with_suffix']);
         $url = $this->withEnter($url);
         $url = $this->WithDomain($url, $subdomain);
-        
+
         return $url;
     }
 
     /**
      * 返回 HTTP 请求
-     * 
+     *
      * @return \Leevel\Http\IRequest
      */
     public function getRequest(): IRequest
@@ -99,11 +104,10 @@ class Url implements IUrl
     }
 
     /**
-     * 设置配置
-     * 
+     * 设置配置.
+     *
      * @param string $name
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function setOption(string $name, $value): void
     {
@@ -111,23 +115,24 @@ class Url implements IUrl
     }
 
     /**
-     * 自定义 URL
-     * 
+     * 自定义 URL.
+     *
      * @param string $url
-     * @param array $params
-     * @param mixed $suffix
+     * @param array  $params
+     * @param mixed  $suffix
+     *
      * @return string
      */
     protected function makeUrl(string $url, array $params, $suffix): string
     {
-        $this->params = $params; 
+        $this->params = $params;
 
-        if (substr($url, 0, 1) !== '/') {
-           $url = '/' . $url; 
+        if ('/' !== substr($url, 0, 1)) {
+            $url = '/' . $url;
         }
 
-        if (strpos($url, '{') !== false) {
-            $url = preg_replace_callback("/{(.+?)}/", function ($matches) {
+        if (false !== strpos($url, '{')) {
+            $url = preg_replace_callback('/{(.+?)}/', function ($matches) {
                 if (isset($this->params[$matches[1]])) {
                     $value = $this->params[$matches[1]];
                     unset($this->params[$matches[1]]);
@@ -141,7 +146,7 @@ class Url implements IUrl
 
         if ($this->params) {
             $queryUrl = http_build_query($this->params);
-            $url .= (strpos($url, '?') !== false ? '&' : '?') . $queryUrl;
+            $url .= (false !== strpos($url, '?') ? '&' : '?') . $queryUrl;
         }
 
         $url = $this->withSuffix($url, $suffix);
@@ -154,26 +159,27 @@ class Url implements IUrl
      *
      * @param string $url
      * @param string $domain
+     *
      * @return string
      */
     protected function withDomain(string $url, string $domain): string
     {
-        if ($this->option['subdomain_on'] !== true || 
-            ! $this->option['domain_top'] || 
+        if (true !== $this->option['subdomain_on'] ||
+            ! $this->option['domain_top'] ||
             ! $domain) {
             return $url;
         }
 
         return $this->isSecure() ? 'https://' : 'http://' .
-            ($domain && $domain != '*' ? $domain . '.' : '') . 
-            $this->option['domain_top'] . 
+            ($domain && '*' != $domain ? $domain . '.' : '') .
+            $this->option['domain_top'] .
             $url;
     }
 
     /**
-     * 是否启用 https
+     * 是否启用 https.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isSecure(): bool
     {
@@ -182,21 +188,22 @@ class Url implements IUrl
 
     /**
      * url 带后缀
-     * 
-     * @param string $url
-     * @param string|boolean $suffix
+     *
+     * @param string      $url
+     * @param string|bool $suffix
+     *
      * @return string
      */
     protected function withSuffix(string $url, $suffix): string
     {
-        if ($url == '/' || strpos($url, '/?') === 0) {
+        if ('/' == $url || 0 === strpos($url, '/?')) {
             return $url;
         }
 
-        $suffix = $suffix === true ? $this->option['html_suffix'] : $suffix;
+        $suffix = true === $suffix ? $this->option['html_suffix'] : $suffix;
 
-        if (strpos($url, '?') !== false) {
-           $url = str_replace('?', $suffix . '?', $url); 
+        if (false !== strpos($url, '?')) {
+            $url = str_replace('?', $suffix . '?', $url);
         } else {
             $url .= $suffix;
         }
@@ -205,15 +212,16 @@ class Url implements IUrl
     }
 
     /**
-     * 带上入口文件
-     * 
+     * 带上入口文件.
+     *
      * @param string $url
+     *
      * @return string
      */
     protected function withEnter(string $url): string
     {
         $enter = $this->request->getEnter();
-        $enter = $enter !== '/' ? $enter : '';
+        $enter = '/' !== $enter ? $enter : '';
 
         return $enter . $url;
     }

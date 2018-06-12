@@ -90,6 +90,13 @@ $composer install
 $php vendor/bin/phpunit tests
 ```
 
+## Unified Code Style
+
+```
+$cd /data/codes/queryphp/vendor/hunzhiwange/framework
+$php-cs-fixer fix --config=.php_cs.dist
+```
+
 ## License
 
 The QueryPHP framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT).

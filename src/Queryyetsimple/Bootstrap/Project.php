@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,102 +17,101 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Bootstrap;
 
 use Exception;
 use RuntimeException;
-use Leevel\{
-    Di\Provider,
-    Di\Container,
-    Kernel\IProject,
-    Log\Provider\Register as LogProvider,
-    Event\Provider\Register as EventProvider,
-    Router\Provider\Register as RouterProvider
-};
+use Leevel\Di\Provider;
+use Leevel\Di\Container;
+use Leevel\Kernel\IProject;
+use Leevel\Log\Provider\Register as LogProvider;
+use Leevel\Event\Provider\Register as EventProvider;
+use Leevel\Router\Provider\Register as RouterProvider;
 
 /**
- * 项目管理
+ * 项目管理.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.01.14
+ *
  * @version 1.0
  */
 class Project extends Container implements IProject
 {
-
     /**
-     * 当前项目实例
+     * 当前项目实例.
      *
      * @var static
      */
     protected static $project;
 
     /**
-     * 项目基础路径
+     * 项目基础路径.
      *
      * @var string
      */
     protected $path;
 
     /**
-     * 应用路径
+     * 应用路径.
      *
      * @var string
      */
     protected $applicationPath;
 
     /**
-     * 公共路径
+     * 公共路径.
      *
      * @var string
      */
     protected $commonPath;
 
     /**
-     * 运行时路径
+     * 运行时路径.
      *
      * @var string
      */
     protected $runtimePath;
 
     /**
-     * 存储路径
+     * 存储路径.
      *
      * @var string
      */
     protected $storagePath;
 
     /**
-     * 配置路径
+     * 配置路径.
      *
      * @var string
      */
     protected $optionPath;
 
     /**
-     * 语言包路径
+     * 语言包路径.
      *
      * @var string
      */
     protected $i18nPath;
 
     /**
-     * 环境变量路径
+     * 环境变量路径.
      *
      * @var string
      */
     protected $envPath;
 
     /**
-     * 环境变量文件
+     * 环境变量文件.
      *
      * @var string
      */
     protected $envFile;
 
     /**
-     * 延迟载入服务提供者
+     * 延迟载入服务提供者.
      *
      * @var array
      */
@@ -127,14 +129,13 @@ class Project extends Container implements IProject
      *
      * @var bool
      */
-    protected $isBootstrap = false;  
+    protected $isBootstrap = false;
 
     /**
      * 构造函数
-     * 受保护的禁止外部通过 new 实例化，只能通过 singletons 生成单一实例
+     * 受保护的禁止外部通过 new 实例化，只能通过 singletons 生成单一实例.
      *
      * @param string $path
-     * @return void
      */
     protected function __construct(?string $path = null)
     {
@@ -148,9 +149,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 禁止克隆
-     *
-     * @return void
+     * 禁止克隆.
      */
     protected function __clone()
     {
@@ -158,14 +157,15 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 返回项目
+     * 返回项目.
      *
      * @param string $path
+     *
      * @return static
      */
     public static function singletons(?string $path = null)
     {
-        if (static::$project !== null) {
+        if (null !== static::$project) {
             return static::$project;
         } else {
             return static::$project = new static($path);
@@ -173,7 +173,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 程序版本
+     * 程序版本.
      *
      * @return string
      */
@@ -183,9 +183,9 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 是否以扩展方式运行
+     * 是否以扩展方式运行.
      *
-     * @return boolean
+     * @return bool
      */
     public function runWithExtension()
     {
@@ -207,22 +207,21 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置项目路径
+     * 设置项目路径.
      *
      * @param string $path
-     * @return void
      */
     public function setPath(string $path)
     {
         $this->path = $path;
 
-        if (! is_writeable($this->pathRuntime())) {
+        if (! is_writable($this->pathRuntime())) {
             throw new RuntimeException(sprintf('Runtime path %s is not writeable.', $this->pathRuntime()));
         }
     }
 
     /**
-     * 基础路径
+     * 基础路径.
      *
      * @return string
      */
@@ -232,7 +231,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 应用路径
+     * 应用路径.
      *
      * @return string
      */
@@ -242,9 +241,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置应用路径
+     * 设置应用路径.
      *
      * @param string $path
+     *
      * @return $this
      */
     public function setPathApplication(string $path)
@@ -255,9 +255,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置公共路径
+     * 设置公共路径.
      *
      * @param string $path
+     *
      * @return $this
      */
     public function setPathCommon(string $path)
@@ -268,7 +269,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 公共路径
+     * 公共路径.
      *
      * @return string
      */
@@ -278,9 +279,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置运行时路径
+     * 设置运行时路径.
      *
      * @param string $path
+     *
      * @return $this
      */
     public function setPathRuntime(string $path)
@@ -291,7 +293,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 运行路径
+     * 运行路径.
      *
      * @return string
      */
@@ -301,9 +303,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置存储路径
+     * 设置存储路径.
      *
      * @param string $path
+     *
      * @return $this
      */
     public function setPathStorage(string $path)
@@ -314,7 +317,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 附件路径
+     * 附件路径.
      *
      * @return string
      */
@@ -324,9 +327,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置配置路径
+     * 设置配置路径.
      *
      * @param string $path
+     *
      * @return $this
      */
     public function setPathOption(string $path)
@@ -337,7 +341,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 配置路径
+     * 配置路径.
      *
      * @return string
      */
@@ -347,9 +351,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置语言包路径
+     * 设置语言包路径.
      *
      * @param string $path
+     *
      * @return $this
      */
     public function setPathI18n(string $path)
@@ -360,7 +365,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 语言包路径
+     * 语言包路径.
      *
      * @return string
      */
@@ -370,7 +375,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 环境变量路径
+     * 环境变量路径.
      *
      * @return string
      */
@@ -380,9 +385,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置环境变量路径
+     * 设置环境变量路径.
      *
      * @param string $path
+     *
      * @return $this
      */
     public function setPathEnv(string $path)
@@ -393,9 +399,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 设置环境变量文件
+     * 设置环境变量文件.
      *
      * @param string $file
+     *
      * @return $this
      */
     public function setEnvFile($file)
@@ -406,7 +413,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 取得环境变量文件
+     * 取得环境变量文件.
      *
      * @return string
      */
@@ -416,7 +423,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 取得环境变量完整路径
+     * 取得环境变量完整路径.
      *
      * @return string
      */
@@ -426,9 +433,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 应用路径
+     * 应用路径.
      *
      * @param string $app
+     *
      * @return string
      */
     public function pathAnApplication(?string $app = null)
@@ -437,9 +445,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 取得应用缓存目录
+     * 取得应用缓存目录.
      *
      * @param string $type
+     *
      * @return string
      */
     public function pathApplicationCache($type)
@@ -453,7 +462,7 @@ class Project extends Container implements IProject
             'i18n',
             'router',
             'console',
-            'swoole'
+            'swoole',
         ];
 
         if (! in_array($type, $types)) {
@@ -464,9 +473,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 取得应用主题目录
+     * 取得应用主题目录.
      *
      * @param string $app
+     *
      * @return string
      */
     public function pathApplicationTheme(?string $app = null)
@@ -477,9 +487,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 返回语言包路径
-     * 
+     * 返回语言包路径.
+     *
      * @param string $i18n
+     *
      * @return string
      */
     public function pathCacheI18nFile(string $i18n)
@@ -488,10 +499,11 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 是否缓存语言包
+     * 是否缓存语言包.
      *
      * @param string $i18n
-     * @return boolean
+     *
+     * @return bool
      */
     public function isCachedI18n(string $i18n): bool
     {
@@ -499,8 +511,8 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 返回缓存路径
-     * 
+     * 返回缓存路径.
+     *
      * @return string
      */
     public function pathCacheOptionFile()
@@ -509,9 +521,9 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 是否缓存配置
+     * 是否缓存配置.
      *
-     * @return boolean
+     * @return bool
      */
     public function isCachedOption(): bool
     {
@@ -519,7 +531,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 取得 composer
+     * 取得 composer.
      *
      * @return \Composer\Autoload\ClassLoader
      */
@@ -529,9 +541,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 获取命名空间路径
+     * 获取命名空间路径.
      *
      * @param string $namespaces
+     *
      * @return string|null
      */
     public function getPathByNamespace($namespaces)
@@ -544,14 +557,15 @@ class Project extends Container implements IProject
         }
 
         $namespaces[0] = $prefix[$namespaces[0] . '\\'][0];
-        
+
         return implode('/', $namespaces);
     }
 
     /**
-     * 批量获取命名空间路径
+     * 批量获取命名空间路径.
      *
      * @param array $namespaces
+     *
      * @return array
      */
     public function getPathByNamespaces(array $namespaces): array
@@ -561,14 +575,14 @@ class Project extends Container implements IProject
         foreach ($namespaces as $item) {
             $result[$item] = $this->getPathByNamespace($item);
         }
-        
+
         return $result;
     }
 
     /**
-     * 是否开启 debug
+     * 是否开启 debug.
      *
-     * @return boolean
+     * @return bool
      */
     public function debug()
     {
@@ -576,19 +590,19 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 是否为开发环境
+     * 是否为开发环境.
      *
-     * @return boolean
+     * @return bool
      */
     public function development()
     {
-        return $this->environment() === 'development';
+        return 'development' === $this->environment();
     }
 
     /**
-     * 运行环境
+     * 运行环境.
      *
-     * @return boolean
+     * @return bool
      */
     public function environment()
     {
@@ -596,19 +610,19 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 是否为 API
+     * 是否为 API.
      *
-     * @return boolean
+     * @return bool
      */
     public function api()
     {
-        return $this['request']->isAcceptJson();;
+        return $this['request']->isAcceptJson();
     }
 
     /**
-     * 是否为 Console
+     * 是否为 Console.
      *
-     * @return boolean
+     * @return bool
      */
     public function console()
     {
@@ -616,9 +630,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 创建服务提供者
+     * 创建服务提供者.
      *
      * @param string $provider
+     *
      * @return \Leevel\Di\Provider
      */
     public function makeProvider($provider)
@@ -627,10 +642,9 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 执行 bootstrap
+     * 执行 bootstrap.
      *
      * @param \Leevel\Di\Provider $provider
-     * @return void
      */
     public function callProviderBootstrap(Provider $provider)
     {
@@ -640,25 +654,25 @@ class Project extends Container implements IProject
 
         $this->call([
             $provider,
-            'bootstrap'
+            'bootstrap',
         ]);
     }
 
     /**
-     * 初始化项目
-     * 
+     * 初始化项目.
+     *
      * @param array $bootstraps
-     * @return void
      */
-    public function bootstrap(array $bootstraps) {
+    public function bootstrap(array $bootstraps)
+    {
         foreach ($bootstraps as $value) {
-            (new $value)->handle($this);
+            (new $value())->handle($this);
         }
     }
 
     /**
      * 是否已经初始化引导
-     * 
+     *
      * @return bool
      */
     public function isBootstrap(): bool
@@ -667,7 +681,7 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 框架基础提供者 register
+     * 框架基础提供者 register.
      *
      * @return $this
      */
@@ -709,9 +723,10 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 注册服务提供者
+     * 注册服务提供者.
      *
      * @param \Leevel\Di\Provider|string $provider
+     *
      * @return \Leevel\Di\Provider
      */
     public function register($provider)
@@ -733,8 +748,6 @@ class Project extends Container implements IProject
 
     /**
      * 注册基础服务
-     *
-     * @return void
      */
     protected function registerBaseServices()
     {
@@ -745,27 +758,25 @@ class Project extends Container implements IProject
                 'Leevel\Bootstrap\Project',
                 'Leevel\Di\IContainer',
                 'Leevel\Kernel\IProject',
-                'app'
+                'app',
             ],
             'request' => [
                 'Leevel\Http\IRequest',
-                'Leevel\Http\Request'
+                'Leevel\Http\Request',
             ],
             'option' => [
                 'Leevel\Option\IOption',
-                'Leevel\Option\Option'
+                'Leevel\Option\Option',
             ],
             'i18n' => [
                 'Leevel\I18n\I18n',
-                'Leevel\I18n\II18n'  
-            ]
+                'Leevel\I18n\II18n',
+            ],
         ]);
     }
 
     /**
-     * 注册基础服务提供者
-     *
-     * @return void
+     * 注册基础服务提供者.
      */
     protected function registerBaseProvider()
     {
@@ -777,10 +788,9 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 注册延迟载入服务提供者
+     * 注册延迟载入服务提供者.
      *
      * @param string $provider
-     * @return void
      */
     protected function registerDeferredProvider(string $provider)
     {

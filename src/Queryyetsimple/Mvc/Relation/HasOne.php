@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,21 +17,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc\Relation;
 
 use Leevel\Collection\Collection;
 
 /**
- * 关联模型 HasOne
+ * 关联模型 HasOne.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.28
+ *
  * @version 1.0
  */
 class HasOne extends HasMany
 {
-
     /**
      * 查询关联对象
      *
@@ -40,11 +44,12 @@ class HasOne extends HasMany
     }
 
     /**
-     * 匹配关联查询数据到模型
+     * 匹配关联查询数据到模型.
      *
      * @param \Leevel\Mvc\IModel[] $arrModel
-     * @param \leevel\collection $objResult
-     * @param string $strRelation
+     * @param \leevel\collection   $objResult
+     * @param string               $strRelation
+     *
      * @return array
      */
     public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)

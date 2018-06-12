@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,21 +17,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Seccode;
 
 use Exception;
-use Leevel\{
-    Support\Str,
-    Option\TClass,
-    Filesystem\Fso
-};
+use Leevel\Support\Str;
+use Leevel\Option\TClass;
+use Leevel\Filesystem\Fso;
 
 /**
  * 验证码
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.07.27
+ *
  * @version 1.0
  */
 class Seccode implements ISeccode
@@ -38,54 +41,54 @@ class Seccode implements ISeccode
     /**
      * 验证码
      *
-     * @var str
+     * @var string
      */
     protected $strCode;
 
     /**
-     * 宽度
+     * 宽度.
      *
      * @var int
      */
     protected $intResolvedWidth;
 
     /**
-     * 高度
+     * 高度.
      *
      * @var int
      */
     protected $intResolvedHeight;
 
     /**
-     * 字体路径
+     * 字体路径.
      *
      * @var string
      */
     protected $strResolvedFontPath;
 
     /**
-     * 中文字体路径
+     * 中文字体路径.
      *
      * @var string
      */
     protected $strResolvedChineseFontPath;
 
     /**
-     * 背景路径
+     * 背景路径.
      *
      * @var string
      */
     protected $strResolvedBackgroundPath;
 
     /**
-     * 字体颜色
+     * 字体颜色.
      *
      * @var array
      */
     protected $arrFontColor = [];
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -121,14 +124,13 @@ class Seccode implements ISeccode
         'background_path' => '',
 
         // 启用背景图像
-        'background' => true
+        'background' => true,
     ];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $arrOption
-     * @return void
      */
     public function __construct(array $arrOption = [])
     {
@@ -138,9 +140,10 @@ class Seccode implements ISeccode
     /**
      * 设置验证码
      *
-     * @param mixed $mixCode
-     * @param boolean $booAutoCode
+     * @param mixed  $mixCode
+     * @param bool   $booAutoCode
      * @param string $strAutoType
+     *
      * @return $this
      */
     public function display($mixCode = null, $booAutoCode = true, $strAutoType = self::ALPHA_UPPERCASE)
@@ -174,11 +177,13 @@ class Seccode implements ISeccode
      * 设置验证码
      *
      * @param string $strCode
+     *
      * @return $this
      */
     public function code($strCode)
     {
         $this->strCode = $strCode;
+
         return $this;
     }
 
@@ -193,13 +198,13 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 返回宽度
+     * 返回宽度.
      *
      * @return int
      */
     public function getWidth()
     {
-        if (! is_null($this->intResolvedWidth)) {
+        if (null !== $this->intResolvedWidth) {
             return $this->intResolvedWidth;
         }
 
@@ -213,13 +218,13 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 返回高度
+     * 返回高度.
      *
      * @return int
      */
     public function getHeight()
     {
-        if (! is_null($this->intResolvedHeight)) {
+        if (null !== $this->intResolvedHeight) {
             return $this->intResolvedHeight;
         }
 
@@ -233,49 +238,49 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 返回英文字体路径
+     * 返回英文字体路径.
      *
      * @return string
      */
     public function getFontPath()
     {
-        if (! is_null($this->strResolvedFontPath)) {
+        if (null !== $this->strResolvedFontPath) {
             return $this->strResolvedFontPath;
         }
 
-        return $this->strResolvedFontPath = $this->getOption('font_path') ?  : $this->getDefaultFontPath();
+        return $this->strResolvedFontPath = $this->getOption('font_path') ?: $this->getDefaultFontPath();
     }
 
     /**
-     * 返回中文字体路径
+     * 返回中文字体路径.
      *
      * @return string
      */
     public function getChineseFontPath()
     {
-        if (! is_null($this->strResolvedChineseFontPath)) {
+        if (null !== $this->strResolvedChineseFontPath) {
             return $this->strResolvedChineseFontPath;
         }
 
-        return $this->strResolvedChineseFontPath = $this->getOption('chinese_font_path') ?  : $this->getDefaultChineseFontPath();
+        return $this->strResolvedChineseFontPath = $this->getOption('chinese_font_path') ?: $this->getDefaultChineseFontPath();
     }
 
     /**
-     * 返回背景图路径
+     * 返回背景图路径.
      *
      * @return string
      */
     public function getBackgroundPath()
     {
-        if (! is_null($this->strResolvedBackgroundPath)) {
+        if (null !== $this->strResolvedBackgroundPath) {
             return $this->strResolvedBackgroundPath;
         }
 
-        return $this->strResolvedBackgroundPath = $this->getOption('background_path') ?  : $this->getDefaultBackgroundPath();
+        return $this->strResolvedBackgroundPath = $this->getOption('background_path') ?: $this->getDefaultBackgroundPath();
     }
 
     /**
-     * 创建背景图像
+     * 创建背景图像.
      *
      * @return string
      */
@@ -284,7 +289,7 @@ class Seccode implements ISeccode
         $resFoo = imagecreatetruecolor($this->getWidth(), $this->getHeight());
         $resColor = imagecolorallocate($resFoo, 255, 255, 255);
 
-        if ($this->makeBackgroundWithImage($resFoo) === false) {
+        if (false === $this->makeBackgroundWithImage($resFoo)) {
             $this->makeBackgroundDefault($resFoo);
         }
 
@@ -303,10 +308,9 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 创建随机背景图形
+     * 创建随机背景图形.
      *
      * @param resource $resFoo
-     * @return void
      */
     protected function makeAdulterate(&$resFoo)
     {
@@ -315,7 +319,7 @@ class Seccode implements ISeccode
             return;
         }
 
-        for ($int = 0; $int <= $intLineNum; $int ++) {
+        for ($int = 0; $int <= $intLineNum; ++$int) {
             $resColor = $this->getOption('color') ? imagecolorallocate($resFoo, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255)) : imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
 
             $intX = $this->mtRand(0, $this->getWidth());
@@ -329,10 +333,9 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 创建字体信息
+     * 创建字体信息.
      *
      * @param resource $resFoo
-     * @return void
      */
     protected function makeTtfFont(&$resFoo)
     {
@@ -349,12 +352,12 @@ class Seccode implements ISeccode
         // 是否启用随机颜色
         ! $this->getOption('color') && $resTextColor = imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
 
-        for ($int = 0; $int < count($arrFont); $int ++) {
+        for ($int = 0; $int < count($arrFont); ++$int) {
             if ($this->getOption('color')) {
                 $this->arrFontColor = [
                     mt_rand(0, 255),
                     mt_rand(0, 255),
-                    mt_rand(0, 255)
+                    mt_rand(0, 255),
                 ];
                 $this->getOption('shadow') && $resTextShadowColor = imagecolorallocate($resFoo, 255 - $this->arrFontColor[0], 255 - $this->arrFontColor[1], 255 - $this->arrFontColor[2]);
                 $resTextColor = imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
@@ -364,14 +367,14 @@ class Seccode implements ISeccode
 
             $intY = $arrFont[0]['tilt'] > 0 ? $this->mtRand($arrFont[$int]['height'], $this->getHeight()) : $this->mtRand($arrFont[$int]['height'] - $arrFont[$int]['hd'], $this->getHeight() - $arrFont[$int]['hd']);
 
-            $this->getOption('shadow') && imagettftext($resFoo, $arrFont[$int]['size'], $arrFont[$int]['tilt'], $intX + 1, $intY + 1, $resTextShadowColor, $arrFont[$int]['font'], $strCode{$int});
-            imagettftext($resFoo, $arrFont[$int]['size'], $arrFont[$int]['tilt'], $intX, $intY, $resTextColor, $arrFont[$int]['font'], $strCode{$int});
+            $this->getOption('shadow') && imagettftext($resFoo, $arrFont[$int]['size'], $arrFont[$int]['tilt'], $intX + 1, $intY + 1, $resTextShadowColor, $arrFont[$int]['font'], $strCode[$int]);
+            imagettftext($resFoo, $arrFont[$int]['size'], $arrFont[$int]['tilt'], $intX, $intY, $resTextColor, $arrFont[$int]['font'], $strCode[$int]);
             $intX += $arrFont[$int]['width'];
         }
     }
 
     /**
-     * 返回字体参数
+     * 返回字体参数.
      *
      * @return array
      */
@@ -389,22 +392,22 @@ class Seccode implements ISeccode
 
         $arrFont = [];
         $intWidthTotal = 0;
-        for ($int = 0; $int < $intCodeLength; $int ++) {
+        for ($int = 0; $int < $intCodeLength; ++$int) {
             if (! isset($arrFont[$int])) {
                 $arrFont[$int] = [];
             }
 
             $arrFont[$int]['font'] = $arrTtf[array_rand($arrTtf)];
-            $arrFont[$int]['tilt'] = $this->getOption('tilt') ? mt_rand(- 30, 30) : 0;
+            $arrFont[$int]['tilt'] = $this->getOption('tilt') ? mt_rand(-30, 30) : 0;
             $arrFont[$int]['size'] = $this->getWidth() / 6;
 
             $this->getOption('size') and $arrFont[$int]['size'] = $this->mtRand($arrFont[$int]['size'] - $this->getWidth() / 40, $arrFont[$int]['size'] + $this->getWidth() / 20);
 
-            $resBox = imagettfbbox($arrFont[$int]['size'], 0, $arrFont[$int]['font'], $strCode{$int});
+            $resBox = imagettfbbox($arrFont[$int]['size'], 0, $arrFont[$int]['font'], $strCode[$int]);
 
             $arrFont[$int]['zheight'] = max($resBox[1], $resBox[3]) - min($resBox[5], $resBox[7]);
 
-            $resBox = imagettfbbox($arrFont[$int]['size'], $arrFont[$int]['tilt'], $arrFont[$int]['font'], $strCode{$int});
+            $resBox = imagettfbbox($arrFont[$int]['size'], $arrFont[$int]['tilt'], $arrFont[$int]['font'], $strCode[$int]);
 
             $arrFont[$int]['height'] = max($resBox[1], $resBox[3]) - min($resBox[5], $resBox[7]);
 
@@ -418,15 +421,16 @@ class Seccode implements ISeccode
         return [
             $arrFont,
             $strCode,
-            $intWidthTotal
+            $intWidthTotal,
         ];
     }
 
     /**
-     * 创建图片背景图像
+     * 创建图片背景图像.
      *
      * @param resource $resFoo
-     * @return boolean
+     *
+     * @return bool
      */
     protected function makeBackgroundWithImage(&$resFoo)
     {
@@ -449,7 +453,7 @@ class Seccode implements ISeccode
                 $arrColor[1] = $arrColor['green'];
                 $arrColor[2] = $arrColor['blue'];
 
-                imagecopymerge($resFoo, $resBackground, 0, 0, $this->mtRand(0, 200 - $this->getWidth()), $this->mtRand(0, 80 - $this->getHeight()), imageSX($resBackground), imageSY($resBackground), 100);
+                imagecopymerge($resFoo, $resBackground, 0, 0, $this->mtRand(0, 200 - $this->getWidth()), $this->mtRand(0, 80 - $this->getHeight()), imagesx($resBackground), imagesy($resBackground), 100);
                 imagedestroy($resBackground);
 
                 $booBackground = true;
@@ -461,23 +465,22 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 创建默认背景图像
+     * 创建默认背景图像.
      *
      * @param resource $resFoo
-     * @return void
      */
     protected function makeBackgroundDefault(&$resFoo)
     {
-        for ($int = 0; $int < 3; $int ++) {
+        for ($int = 0; $int < 3; ++$int) {
             $arrStart[$int] = mt_rand(200, 255);
             $arrEnd[$int] = mt_rand(100, 150);
             $arrStep[$int] = ($arrEnd[$int] - $arrStart[$int]) / $this->getWidth();
             $arrColor[$int] = $arrStart[$int];
         }
 
-        for ($int = 0; $int < $this->getWidth(); $int ++) {
+        for ($int = 0; $int < $this->getWidth(); ++$int) {
             $resColor = imagecolorallocate($resFoo, $arrColor[0], $arrColor[1], $arrColor[2]);
-            imageline($resFoo, $int, 0, $int - ($this->getOption('tilt') ? mt_rand(- 30, 30) : 0), $this->getHeight(), $resColor);
+            imageline($resFoo, $int, 0, $int - ($this->getOption('tilt') ? mt_rand(-30, 30) : 0), $this->getHeight(), $resColor);
             $arrColor[0] += $arrStep[0];
             $arrColor[1] += $arrStep[1];
             $arrColor[2] += $arrStep[2];
@@ -491,7 +494,7 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 返回验证字体
+     * 返回验证字体.
      *
      * @return array
      */
@@ -513,9 +516,10 @@ class Seccode implements ISeccode
     /**
      * 自动产生验证码
      *
-     * @param int $intSize
+     * @param int    $intSize
      * @param string $strAutoType
-     * @return boolean
+     *
+     * @return bool
      */
     protected function autoCode($intSize, $strAutoType = self::ALPHA_UPPERCASE)
     {
@@ -530,7 +534,7 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 返回允许自动验证码类型
+     * 返回允许自动验证码类型.
      *
      * @return array
      */
@@ -544,15 +548,16 @@ class Seccode implements ISeccode
             static::ALPHA_LOWERCASE,
             static::ALPHA_UPPERCASE,
             static::NUM,
-            static::CHINESE
+            static::CHINESE,
         ];
     }
 
     /**
-     * 是否为中文
+     * 是否为中文.
      *
      * @param string $strCode
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isChinese($strCode)
     {
@@ -563,6 +568,7 @@ class Seccode implements ISeccode
      * 文件后缀
      *
      * @param string $sFileName
+     *
      * @return string
      */
     protected function ext($sFileName)
@@ -571,7 +577,7 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 返回英文字体路径
+     * 返回英文字体路径.
      *
      * @return string
      */
@@ -581,7 +587,7 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 返回中文字体路径
+     * 返回中文字体路径.
      *
      * @return string
      */
@@ -591,7 +597,7 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 返回背景图路径
+     * 返回背景图路径.
      *
      * @return string
      */
@@ -601,10 +607,11 @@ class Seccode implements ISeccode
     }
 
     /**
-     * 生成随机数
+     * 生成随机数.
      *
      * @param int $numFoo
      * @param int $numBar
+     *
      * @return number
      */
     protected function mtRand($numFoo, $numBar)
@@ -615,6 +622,7 @@ class Seccode implements ISeccode
             $numFoo = $intTemp;
             unset($intTemp);
         }
+
         return mt_rand($numFoo, $numBar);
     }
 }

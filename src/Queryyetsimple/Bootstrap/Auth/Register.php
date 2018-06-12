@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,28 +17,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Bootstrap\auth;
 
-use Leevel\{
-    auth,
-    response,
-    Http\Request,
-    auth\RegisterFailed
-};
+use Leevel\auth;
+use Leevel\response;
+use Leevel\Http\Request;
+use Leevel\auth\RegisterFailed;
 
 /**
- * 用户注册
+ * 用户注册.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.09
+ *
  * @version 1.0
  */
-trait register
+trait Register
 {
-
     /**
-     * 注册界面
+     * 注册界面.
      *
      * @return \Leevel\Http\Response
      */
@@ -45,9 +47,10 @@ trait register
     }
 
     /**
-     * 注册用户
+     * 注册用户.
      *
      * @param \Leevel\Http\Request $oRequest
+     *
      * @return \Leevel\Http\Response
      */
     public function registerUser(request $oRequest)
@@ -61,21 +64,21 @@ trait register
                 'password|trim',
                 'comfirm_password|trim',
                 'email|trim',
-                'mobile|trim'
+                'mobile|trim',
             ]);
 
             $this->setAuthField();
 
             auth::registerUser($aPost['name'], $aPost['password'], $aPost['comfirm_password'], $aPost['nikename'], $oRequest->getClientIp(), $aPost['email'], $aPost['mobile']);
 
-            return $this->sendSucceededRegisterResponse($this->getRegisterSucceededMessage($aPost['nikename'] ?  : $aPost['name']));
+            return $this->sendSucceededRegisterResponse($this->getRegisterSucceededMessage($aPost['nikename'] ?: $aPost['name']));
         } catch (RegisterFailed $oE) {
             return $this->sendFailedRegisterResponse($oE->getMessage());
         }
     }
 
     /**
-     * 获取注册界面
+     * 获取注册界面.
      *
      * @return \Leevel\Http\Response
      */
@@ -85,9 +88,10 @@ trait register
     }
 
     /**
-     * 发送正确注册消息
+     * 发送正确注册消息.
      *
      * @param string $strSuccess
+     *
      * @return \Leevel\Http\Response
      */
     protected function sendSucceededRegisterResponse($strSuccess)
@@ -96,15 +100,16 @@ trait register
     }
 
     /**
-     * 发送错误注册消息
+     * 发送错误注册消息.
      *
      * @param string $strError
+     *
      * @return \Leevel\Http\Response
      */
     protected function sendFailedRegisterResponse($strError)
     {
         return response::redirect($this->getRegisterFailedRedirect())->withErrors([
-            'register_error' => $strError
+            'register_error' => $strError,
         ]);
     }
 
@@ -112,7 +117,6 @@ trait register
      * 验证注册请求
      *
      * @param \Leevel\Http\Request $oRequest
-     * @return void
      */
     protected function validateRegister(request $oRequest)
     {
@@ -120,7 +124,7 @@ trait register
     }
 
     /**
-     * 获取注册验证规则
+     * 获取注册验证规则.
      *
      * @return array
      */
@@ -132,12 +136,12 @@ trait register
             'password' => 'required|min_length:6',
             'comfirm_password' => 'required|min_length:6|equal_to:password',
             'email' => 'required|email',
-            'mobile' => 'value|mobile'
+            'mobile' => 'value|mobile',
         ];
     }
 
     /**
-     * 获取注册验证规则消息
+     * 获取注册验证规则消息.
      *
      * @return array
      */
@@ -147,9 +151,10 @@ trait register
     }
 
     /**
-     * 获取注册消息
+     * 获取注册消息.
      *
      * @param string $strName
+     *
      * @return string
      */
     protected function getRegisterSucceededMessage($strName)
@@ -158,7 +163,7 @@ trait register
     }
 
     /**
-     * 获取注册视图
+     * 获取注册视图.
      *
      * @return string
      */

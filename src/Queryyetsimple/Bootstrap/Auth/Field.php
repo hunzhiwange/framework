@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,28 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Bootstrap\auth;
 
-use Leevel\{
-    auth,
-    Http\Request
-};
+use Leevel\auth;
 
 /**
- * 登录字段设置
+ * 登录字段设置.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.09
+ *
  * @version 1.0
  */
-trait field
+trait Field
 {
-
     /**
-     * 设置字段
-     *
-     * @return void
+     * 设置字段.
      */
     public function setAuthField()
     {
@@ -43,7 +42,7 @@ trait field
     }
 
     /**
-     * 返回所有字段
+     * 返回所有字段.
      *
      * @return array
      */
@@ -61,12 +60,12 @@ trait field
             'login_time' => $this->authFieldLoginTime(),
             'login_ip' => $this->authFieldLoginIp(),
             'login_count' => $this->authFieldLoginCount(),
-            'status' => $this->authFieldStatus()
+            'status' => $this->authFieldStatus(),
         ];
     }
 
     /**
-     * 登录 ID 字段
+     * 登录 ID 字段.
      *
      * @return string
      */
@@ -76,7 +75,7 @@ trait field
     }
 
     /**
-     * 登录帐号字段
+     * 登录帐号字段.
      *
      * @return string
      */
@@ -86,7 +85,7 @@ trait field
     }
 
     /**
-     * 登录昵称字段
+     * 登录昵称字段.
      *
      * @return string
      */
@@ -96,7 +95,7 @@ trait field
     }
 
     /**
-     * 登录随机码字段
+     * 登录随机码字段.
      *
      * @return string
      */
@@ -106,7 +105,7 @@ trait field
     }
 
     /**
-     * 登录邮件字段
+     * 登录邮件字段.
      *
      * @return string
      */
@@ -116,7 +115,7 @@ trait field
     }
 
     /**
-     * 登录手机字段
+     * 登录手机字段.
      *
      * @return string
      */
@@ -126,7 +125,7 @@ trait field
     }
 
     /**
-     * 登录密码字段
+     * 登录密码字段.
      *
      * @return string
      */
@@ -136,7 +135,7 @@ trait field
     }
 
     /**
-     * 登录注册 IP 字段
+     * 登录注册 IP 字段.
      *
      * @return string
      */
@@ -146,7 +145,7 @@ trait field
     }
 
     /**
-     * 登录密码字段
+     * 登录密码字段.
      *
      * @return string
      */
@@ -156,7 +155,7 @@ trait field
     }
 
     /**
-     * 登录 IP 字段
+     * 登录 IP 字段.
      *
      * @return string
      */
@@ -166,7 +165,7 @@ trait field
     }
 
     /**
-     * 登录次数字段
+     * 登录次数字段.
      *
      * @return string
      */
@@ -176,7 +175,7 @@ trait field
     }
 
     /**
-     * 登录状态字段
+     * 登录状态字段.
      *
      * @return string
      */
@@ -186,9 +185,9 @@ trait field
     }
 
     /**
-     * 是否为 ajax
+     * 是否为 ajax.
      *
-     * @return boolean
+     * @return bool
      */
     protected function isAjaxRequest()
     {

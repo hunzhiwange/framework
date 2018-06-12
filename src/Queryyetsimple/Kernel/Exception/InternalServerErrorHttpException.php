@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,29 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Kernel\Exception;
 
 use Exception;
 
 /**
  * 服务器内部错误
- * 服务器遇到错误，无法完成请求: 500
+ * 服务器遇到错误，无法完成请求: 500.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.29
+ *
  * @version 1.0
  */
 class InternalServerErrorHttpException extends HttpException
 {
-
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param string|null $message
-     * @param integer $code
-     * @param \Exception $previous
-     * @return void
+     * @param int         $code
+     * @param \Exception  $previous
      */
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {

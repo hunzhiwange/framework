@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,67 +17,67 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Console;
 
 /**
- * 简单命令行参数解析
- * 
+ * 简单命令行参数解析.
+ *
  * 典型例子
  * php cli.php app://for/bar user = name hello world  -- queue = default
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.09
+ *
  * @version 1.0
  */
 class Cli
 {
-
     /**
-     * 待解析参数
-     * 
+     * 待解析参数.
+     *
      * @var array
      */
     protected $argv = [];
 
     /**
      * 节点参数
-     * like app://for/bar
-     * 
+     * like app://for/bar.
+     *
      * @var string
      */
     protected $node;
 
     /**
-     * 查询条件
-     * 
+     * 查询条件.
+     *
      * @var array
      */
     protected $querys = [];
 
     /**
-     * 配置参数
-     * 
+     * 配置参数.
+     *
      * @var array
      */
     protected $options = [];
 
     /**
-     * 版本
-     * 
+     * 版本.
+     *
      * @var string
      */
     const VERSION = '1.0';
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $argv
-     * @return void
      */
     public function __construct(array $argv = null)
     {
-        if (is_null($argv)) {
+        if (null === $argv) {
             $argv = $GLOBALS['argv'] ?? [];
         }
 
@@ -82,9 +85,7 @@ class Cli
     }
 
     /**
-     * 解析命令行参数
-     * 
-     * @return void
+     * 解析命令行参数.
      */
     public function parse()
     {
@@ -118,21 +119,21 @@ class Cli
     }
 
     /**
-     * 获取解析数据
+     * 获取解析数据.
      *
      * @return array
      */
     public function data()
     {
         return [
-            $this->node, 
-            $this->querys, 
-            $this->options
+            $this->node,
+            $this->querys,
+            $this->options,
         ];
     }
 
     /**
-     * 获取参数节点
+     * 获取参数节点.
      *
      * @return string
      */
@@ -142,7 +143,7 @@ class Cli
     }
 
     /**
-     * 获取查询参数
+     * 获取查询参数.
      *
      * @return array
      */
@@ -152,7 +153,7 @@ class Cli
     }
 
     /**
-     * 获取配置参数
+     * 获取配置参数.
      *
      * @return array
      */
@@ -162,13 +163,11 @@ class Cli
     }
 
     /**
-     * 短命令
-     *
-     * @return void
+     * 短命令.
      */
     protected function shortCommand()
     {
-        if ($this->node == '-h') {
+        if ('-h' == $this->node) {
             echo <<<'eot'
 Usage: php cli.php app://for/bar user=name hello world --option=default
 
@@ -176,17 +175,16 @@ Usage: php cli.php app://for/bar user=name hello world --option=default
 -v Version number
 eot;
             exit();
-        } elseif ($this->node == '-v') {
+        } elseif ('-v' == $this->node) {
             echo 'QueryPHP Console Cli ' . static::VERSION;
             exit();
         }
     }
 
     /**
-     * 解析配置参数
+     * 解析配置参数.
      *
      * @param string $token
-     * @return void
      */
     protected function parseOption($token)
     {
@@ -201,22 +199,20 @@ eot;
     }
 
     /**
-     * 添加配置匹配数据
+     * 添加配置匹配数据.
      *
      * @param string $name
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
-    protected function addOption($name, $value) 
+    protected function addOption($name, $value)
     {
         $this->options[$name] = $value;
     }
 
     /**
-     * 解析查询参数
+     * 解析查询参数.
      *
      * @param string $token
-     * @return void
      */
     protected function parseQuery($token)
     {
@@ -229,21 +225,21 @@ eot;
     }
 
     /**
-     * 添加查询匹配数据
+     * 添加查询匹配数据.
      *
      * @param string $name
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
-    protected function addQuery($name, $value) 
+    protected function addQuery($name, $value)
     {
         $this->querys[$name] = $value;
     }
 
     /**
-     * 格式化参数
-     * 
+     * 格式化参数.
+     *
      * @param array $argv
+     *
      * @return array
      */
     protected function normalizeArgv(array $argv)
@@ -252,7 +248,7 @@ eot;
         $special = ['=', '--'];
 
         foreach ($argv as $key => $token) {
-            if(! in_array($token, $special) && isset($argv[$key+1]) && $argv[$key+1] != '=') {
+            if (! in_array($token, $special) && isset($argv[$key + 1]) && '=' != $argv[$key + 1]) {
                 $token .= ' ';
             }
 
@@ -261,6 +257,6 @@ eot;
 
         $result = explode(' ', implode('', $result));
 
-        return $result; 
+        return $result;
     }
 }

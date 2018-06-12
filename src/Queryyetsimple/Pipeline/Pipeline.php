@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,26 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Pipeline;
 
-use Closure;
-use Generator;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
 /**
- * 管道实现类
+ * 管道实现类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.25
+ *
  * @version 1.0
  */
 class Pipeline implements IPipeline
 {
-
     /**
-     * 容器
+     * 容器.
      *
      * @var \Leevel\Di\IContainer
      */
@@ -47,24 +49,23 @@ class Pipeline implements IPipeline
     protected $passed = [];
 
     /**
-     * 管道中所有执行工序
+     * 管道中所有执行工序.
      *
      * @var array
      */
     protected $stage = [];
 
     /**
-     * 迭代器
+     * 迭代器.
      *
      * @var \Generator
      */
     protected $generator;
 
     /**
-     * 创建一个管道
+     * 创建一个管道.
      *
      * @param \Leevel\Di\IContainer $container
-     * @return void
      */
     public function __construct(IContainer $container)
     {
@@ -72,9 +73,10 @@ class Pipeline implements IPipeline
     }
 
     /**
-     * 将传输对象传入管道
+     * 将传输对象传入管道.
      *
      * @param mixed $passed
+     *
      * @return $this
      */
     public function send($passed)
@@ -89,9 +91,10 @@ class Pipeline implements IPipeline
     }
 
     /**
-     * 设置管道中的执行工序
+     * 设置管道中的执行工序.
      *
      * @param dynamic|array $stage
+     *
      * @return $this
      */
     public function through($stage)
@@ -106,16 +109,18 @@ class Pipeline implements IPipeline
     }
 
     /**
-     * 执行管道工序响应结果
+     * 执行管道工序响应结果.
      *
      * @param callable $end
+     *
      * @since 2018.01.03
+     *
      * @return mixed
      */
     public function then(callable $end = null)
     {
         $stage = $this->stage;
-        
+
         if ($end) {
             $stage[] = $end;
         }
@@ -125,18 +130,20 @@ class Pipeline implements IPipeline
     }
 
     /**
-     * 遍历迭代器
+     * 遍历迭代器.
      *
      * @since 2018.01.03
+     *
      * @return mixed
      */
-    protected function traverseGenerator() {
-        if(! $this->generator->valid() || $this->generator->next() || ! $this->generator->valid()) {
-           return;
+    protected function traverseGenerator()
+    {
+        if (! $this->generator->valid() || $this->generator->next() || ! $this->generator->valid()) {
+            return;
         }
 
         $args = func_get_args();
-        array_unshift($args, function() {
+        array_unshift($args, function () {
             return $this->traverseGenerator(...func_get_args());
         });
 
@@ -145,28 +152,31 @@ class Pipeline implements IPipeline
 
     /**
      * 工序迭代器
-     * 添加一个空的迭代器，第一次迭代 next 自动移除
+     * 添加一个空的迭代器，第一次迭代 next 自动移除.
      *
      * @param array $stage
+     *
      * @return \Generator
      */
-    protected function stageGenerator(array $stage) {
+    protected function stageGenerator(array $stage)
+    {
         array_unshift($stage, null);
-        
+
         foreach ($stage as $item) {
-           yield $this->stageCallback($item);
+            yield $this->stageCallback($item);
         }
     }
 
     /**
-     * 工序回调
+     * 工序回调.
      *
      * @param mixed $stages
+     *
      * @return null|callable
      */
     protected function stageCallback($stages)
-    {   
-        if (is_null($stages)) {
+    {
+        if (null === $stages) {
             return;
         }
 
@@ -175,40 +185,41 @@ class Pipeline implements IPipeline
         } else {
             list($stage, $params) = $this->parse($stages);
 
-            if (strpos($stage, '@') !== false) {
+            if (false !== strpos($stage, '@')) {
                 list($stage, $method) = explode('@', $stage);
             } else {
                 $method = 'handle';
             }
 
-            if (($stage = $this->container->make($stage, $params)) === false) {
+            if (false === ($stage = $this->container->make($stage, $params))) {
                 throw new InvalidArgumentException('Stage is invalid.');
             }
 
             return [
                 $stage,
-                $method
+                $method,
             ];
         }
     }
 
     /**
-     * 解析工序
+     * 解析工序.
      *
      * @param string $stage
+     *
      * @return array
      */
     protected function parse(string $stage)
     {
         list($name, $args) = array_pad(explode(':', $stage, 2), 2, []);
-        
+
         if (is_string($args)) {
             $args = explode(',', $args);
         }
 
         return [
             $name,
-            $args
+            $args,
         ];
     }
 }

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Session;
 
 use SessionHandlerInterface;
 use Leevel\Cache\Memcache as CacheMemcache;
 
 /**
- * session.memcache
+ * session.memcache.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.06.05
- * @link http://php.net/manual/zh/class.sessionhandlerinterface.php
+ * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
+ *
  * @version 1.0
  */
 class Memcache extends Connect implements SessionHandlerInterface
 {
-
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -43,7 +47,7 @@ class Memcache extends Connect implements SessionHandlerInterface
         'compressed' => false,
         'persistent' => false,
         'prefix' => null,
-        'expire' => null
+        'expire' => null,
     ];
 
     /**
@@ -52,6 +56,7 @@ class Memcache extends Connect implements SessionHandlerInterface
     public function open($savepath, $sessionname)
     {
         $this->cache = new CacheMemcache($this->option);
+
         return true;
     }
 }

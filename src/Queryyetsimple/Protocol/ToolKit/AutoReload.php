@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,95 +17,97 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\ToolKit;
 
 /**
  * swoole 自动重启
- * This class borrows heavily from the swoole auto_reload and is part of the swoole package
- * 
+ * This class borrows heavily from the swoole auto_reload and is part of the swoole package.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.03.31
+ *
  * @version 1.0
+ *
  * @see swoole/auto_reload (https://github.com/swoole/auto_reload)
  */
 class AutoReload
 {
-
     /**
-     * inotify
-     * 
+     * inotify.
+     *
      * @var resource
      */
     protected $inotify;
 
     /**
-     * 监听的进程 ID
-     * 
+     * 监听的进程 ID.
+     *
      * @var int
      */
     protected $pid;
 
     /**
-     * 监听文件类型
-     * 
+     * 监听文件类型.
+     *
      * @var array
      */
     protected $reloadFileTypes = [
-        '.php' => true
+        '.php' => true,
     ];
 
     /**
-     * 监听的文件
-     * 
+     * 监听的文件.
+     *
      * @var array
      */
     protected $watchFiles = [];
 
     /**
-     * 多少秒后重启
-     * 
-     * @var integer
+     * 多少秒后重启.
+     *
+     * @var int
      */
     protected $afterSeconds = 10;
 
     /**
-     * 正在 reload
+     * 正在 reload.
      *
      * @var bool
      */
     protected $reloading = false;
 
     /**
-     * 事件
-     * 
+     * 事件.
+     *
      * @var int
      */
     protected $events;
 
     /**
-     * 根目录
-     * 
+     * 根目录.
+     *
      * @var array
      */
     protected $rootDirs = [];
 
     /**
-     * 构造函数
-     * 
+     * 构造函数.
+     *
      * @param int $pid
-     * @return void
+     *
      * @throws \Leevel\Protocol\ToolKit\AutoReloadException
      */
     public function __construct(int $pid)
     {
         if (! extension_loaded('inotify')) {
-           throw new AutoReloadException('PHP extension inotify is not install.'); 
+            throw new AutoReloadException('PHP extension inotify is not install.');
         }
 
         $this->pid = $pid;
 
-        if (posix_getsid($pid) === false) {
+        if (false === posix_getsid($pid)) {
             throw new AutoReloadException(sprintf('Process %d was not found.', $pid));
         }
 
@@ -117,14 +122,14 @@ class AutoReload
             }
 
             foreach ($events as $ev) {
-                if ($ev['mask'] == IN_IGNORED) {
+                if (IN_IGNORED == $ev['mask']) {
                     continue;
                 } elseif (in_array($ev['mask'], [
                     IN_CREATE,
                     IN_DELETE,
                     IN_MODIFY,
                     IN_MOVED_TO,
-                    IN_MOVED_FROM
+                    IN_MOVED_FROM,
                 ])) {
                     $fileType = strrchr($ev['name'], '.');
 
@@ -148,9 +153,7 @@ class AutoReload
     }
 
     /**
-     * 执行句柄
-     * 
-     * @return void
+     * 执行句柄.
      */
     public function run()
     {
@@ -158,11 +161,13 @@ class AutoReload
     }
 
     /**
-     * 监听目录
-     * 
+     * 监听目录.
+     *
      * @param string $dir
-     * @param bool $root
+     * @param bool   $root
+     *
      * @return bool
+     *
      * @throws \Leevel\Protocol\ToolKit\AutoReloadException
      */
     public function watch(string $dir, bool $root = true)
@@ -187,7 +192,7 @@ class AutoReload
 
         $files = scandir($dir);
         foreach ($files as $f) {
-            if ($f == '.' or $f == '..') {
+            if ('.' == $f or '..' == $f) {
                 continue;
             }
 
@@ -211,10 +216,9 @@ class AutoReload
     }
 
     /**
-     * 添加文件类型
-     * 
+     * 添加文件类型.
+     *
      * @param string $type
-     * @return void
      */
     public function addFileType(string $type)
     {
@@ -223,10 +227,9 @@ class AutoReload
     }
 
     /**
-     * 设置多少秒后重启时间
-     * 
+     * 设置多少秒后重启时间.
+     *
      * @param int $seconds
-     * @return void
      */
     public function setAfterSeconds(int $seconds)
     {
@@ -234,10 +237,9 @@ class AutoReload
     }
 
     /**
-     * 添加事件
-     * 
+     * 添加事件.
+     *
      * @param int $inotifyEvent
-     * @return void
      */
     public function addEvent(int $inotifyEvent)
     {
@@ -245,9 +247,7 @@ class AutoReload
     }
 
     /**
-     * 清理所有 inotify 监听
-     *
-     * @return void
+     * 清理所有 inotify 监听.
      */
     public function clearWatch()
     {
@@ -259,9 +259,7 @@ class AutoReload
     }
 
     /**
-     * 重启
-     * 
-     * @return void
+     * 重启.
      */
     protected function reload()
     {
@@ -288,10 +286,9 @@ class AutoReload
     }
 
     /**
-     * 记录日志
-     * 
+     * 记录日志.
+     *
      * @param string $log
-     * @return void
      */
     protected function putLog(string $log)
     {

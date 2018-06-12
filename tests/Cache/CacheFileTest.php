@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,22 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Cache;
 
 use Tests\TestCase;
 use Leevel\Cache\File;
 
 /**
- * cache file test
- * 
+ * cache file test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.05
+ *
  * @version 1.0
  */
 class CacheFileTest extends TestCase
 {
-
     public function testBaseUse()
     {
         $filePath = __DIR__ . '/_hello.php';
@@ -39,7 +43,7 @@ class CacheFileTest extends TestCase
         }
 
         $file = new File([
-            'path' => __DIR__
+            'path' => __DIR__,
         ]);
 
         $file->set('hello', 'world');
@@ -58,7 +62,7 @@ class CacheFileTest extends TestCase
     public function testWithOption()
     {
         $file = new File([
-            'path' => __DIR__
+            'path' => __DIR__,
         ]);
 
         $filePath = __DIR__ . '/~@hello.php';
@@ -68,7 +72,7 @@ class CacheFileTest extends TestCase
         }
 
         $file->set('hello', 'world', [
-            'prefix' => '~@'
+            'prefix' => '~@',
         ]);
 
         $this->assertTrue(is_file($filePath));

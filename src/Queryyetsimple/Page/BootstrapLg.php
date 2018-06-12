@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Page;
 
 /**
- * BootstrapLg 分页渲染
+ * BootstrapLg 分页渲染.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.07.14
+ *
  * @version 1.0
  */
 class BootstrapLg extends Bootstrap
 {
-
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Page\IPage $objPage
-     * @param array $arrOption
-     * @return void
+     * @param array              $arrOption
      */
     public function __construct(IPage $objPage, array $arrOption = [])
     {

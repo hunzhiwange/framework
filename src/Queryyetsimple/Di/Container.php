@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Di;
 
 use Closure;
@@ -27,16 +31,16 @@ use BadMethodCallException;
 use InvalidArgumentException;
 
 /**
- * IOC 容器
+ * IOC 容器.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.13
+ *
  * @version 1.0
  */
 class Container implements IContainer, ArrayAccess
 {
-    
     /**
      * 注册服务
      *
@@ -45,14 +49,14 @@ class Container implements IContainer, ArrayAccess
     protected $services = [];
 
     /**
-     * 注册的实例
+     * 注册的实例.
      *
      * @var array
      */
     protected $instances = [];
 
     /**
-     * 单一实例
+     * 单一实例.
      *
      * @var array
      */
@@ -66,11 +70,12 @@ class Container implements IContainer, ArrayAccess
     protected $alias = [];
 
     /**
-     * 注册到容器
+     * 注册到容器.
      *
      * @param mixed $name
      * @param mixed $service
-     * @param boolean $share
+     * @param bool  $share
+     *
      * @return $this
      */
     public function bind($name, $service = null, bool $share = false)
@@ -80,7 +85,7 @@ class Container implements IContainer, ArrayAccess
             $this->alias($name, $alias);
         }
 
-        if (is_null($service)) {
+        if (null === $service) {
             $service = $name;
         }
 
@@ -94,10 +99,11 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 注册为实例
+     * 注册为实例.
      *
      * @param mixed $name
      * @param mixed $service
+     *
      * @return $this
      */
     public function instance($name, $service = null)
@@ -107,7 +113,7 @@ class Container implements IContainer, ArrayAccess
             $this->alias($name, $alias);
         }
 
-        if (is_null($service)) {
+        if (null === $service) {
             $service = $name;
         }
 
@@ -117,10 +123,11 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 注册单一实例
+     * 注册单一实例.
      *
      * @param scalar|array $name
-     * @param mixed $service
+     * @param mixed        $service
+     *
      * @return $this
      */
     public function singleton($name, $service = null)
@@ -129,9 +136,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 创建共享的闭包
+     * 创建共享的闭包.
      *
      * @param \Closure $closures
+     *
      * @return \Closure
      */
     public function share(Closure $closures)
@@ -139,7 +147,7 @@ class Container implements IContainer, ArrayAccess
         return function ($container) use ($closures) {
             static $obj;
 
-            if (is_null($obj)) {
+            if (null === $obj) {
                 $obj = $closures($container);
             }
 
@@ -148,10 +156,11 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 设置别名
+     * 设置别名.
      *
-     * @param array|string $alias
+     * @param array|string      $alias
      * @param string|null|array $value
+     *
      * @return $this
      */
     public function alias($alias, $value = null)
@@ -164,7 +173,7 @@ class Container implements IContainer, ArrayAccess
                 $this->alias($key, $item);
             }
         } else {
-            $value = (array)$value;
+            $value = (array) $value;
             foreach ($value as $item) {
                 $this->alias[$item] = $alias;
             }
@@ -177,7 +186,8 @@ class Container implements IContainer, ArrayAccess
      * 服务容器返回对象
      *
      * @param string $name
-     * @param array $args
+     * @param array  $args
+     *
      * @return object|false
      */
     public function make($name, ?array $args = null)
@@ -198,7 +208,7 @@ class Container implements IContainer, ArrayAccess
         if (! isset($this->services[$name])) {
             return $this->getInjectionObject($name, $args);
         }
- 
+
         if (! is_string($this->services[$name]) && is_callable($this->services[$name])) {
             array_unshift($args, $this);
             $instance = call_user_func_array($this->services[$name], $args);
@@ -222,10 +232,11 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 实例回调自动注入
+     * 实例回调自动注入.
      *
      * @param callable|array|string $callback
-     * @param array $args
+     * @param array                 $args
+     *
      * @return mixed
      */
     public function call($callback, array $args = [])
@@ -233,15 +244,15 @@ class Container implements IContainer, ArrayAccess
         $isStatic = false;
 
         if (is_string($callback)) {
-            if (strpos($callback, '@') !== false) {
+            if (false !== strpos($callback, '@')) {
                 $callback = explode('@', $callback);
-            } elseif (strpos($callback, '::') !== false) {
+            } elseif (false !== strpos($callback, '::')) {
                 $callback = explode('::', $callback);
                 $isStatic = true;
             }
         }
 
-        if ($isStatic === false && is_array($callback)) {
+        if (false === $isStatic && is_array($callback)) {
             if (! is_object($callback[0])) {
                 if (! is_string($callback[0])) {
                     throw new InvalidArgumentException('The classname must be string.');
@@ -261,10 +272,9 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 删除服务和实例
+     * 删除服务和实例.
      *
      * @param string $name
-     * @return void
      */
     public function remove($name)
     {
@@ -273,7 +283,7 @@ class Container implements IContainer, ArrayAccess
         $prop = [
             'services',
             'instances',
-            'singletons'
+            'singletons',
         ];
 
         foreach ($prop as $item) {
@@ -284,9 +294,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 服务或者实例是否存在
+     * 服务或者实例是否存在.
      *
      * @param string $name
+     *
      * @return bool
      */
     public function exists($name)
@@ -299,9 +310,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 统一去掉前面的斜杠
+     * 统一去掉前面的斜杠.
      *
      * @param string $name
+     *
      * @return mixed
      */
     protected function normalize($name)
@@ -310,9 +322,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 返回对象别名
+     * 返回对象别名.
      *
      * @param string $name
+     *
      * @return string
      */
     protected function getAlias($name)
@@ -321,16 +334,17 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 根据 class 名字创建实例
+     * 根据 class 名字创建实例.
      *
      * @param string $classname
-     * @param array $args
+     * @param array  $args
+     *
      * @return object
      */
     protected function getInjectionObject($classname, array $args = [])
     {
         if (interface_exists($classname)) {
-            throw new NormalizeException(sprintf('Interface %s can not be normalize because not binded.', $classname));   
+            throw new NormalizeException(sprintf('Interface %s can not be normalize because not binded.', $classname));
         }
 
         if (! class_exists($classname)) {
@@ -343,10 +357,11 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 格式化依赖参数
+     * 格式化依赖参数.
      *
      * @param mixed $value
      * @param array $args
+     *
      * @return array|void
      */
     protected function normalizeInjectionArgs($value, array $args)
@@ -361,10 +376,11 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 分析自动依赖注入
+     * 分析自动依赖注入.
      *
      * @param mixed $injection
      * @param array $args
+     *
      * @return array
      */
     protected function parseInjection($injection, array $args = [])
@@ -391,19 +407,19 @@ class Container implements IContainer, ArrayAccess
 
                     case $item->isDefaultValueAvailable():
                         $data = array_key_exists($item->name, $args) ? $args[$item->name] : $item->getDefaultValue();
-                        break; 
+                        break;
 
                     default:
                         if (array_key_exists($item->name, $args)) {
                             $data = $args[$item->name];
                         } else {
                             $isRequireBad = true;
-                            $required++;                  
+                            ++$required;
                         }
                         break;
                 }
 
-                if ($isRequireBad === false) {
+                if (false === $isRequireBad) {
                     $result[$item->name] = $data;
                 }
             } catch (ReflectionException $e) {
@@ -423,15 +439,16 @@ class Container implements IContainer, ArrayAccess
 
         return [
             $result,
-            $required
+            $required,
         ];
     }
 
     /**
-     * 分析反射参数的类
-     * 
+     * 分析反射参数的类.
+     *
      * @param \ReflectionParameter $param
-     * @return boolean|string
+     *
+     * @return bool|string
      */
     protected function parseParameterClass(ReflectionParameter $param)
     {
@@ -444,9 +461,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 解析反射参数类实例
-     * 
+     * 解析反射参数类实例.
+     *
      * @param string $argsclass
+     *
      * @return array
      */
     protected function parseClassInstance(string $argsclass)
@@ -467,15 +485,16 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 从服务容器中获取解析反射参数类实例
-     * 
+     * 从服务容器中获取解析反射参数类实例.
+     *
      * @param string $argsclass
-     * @return boolean|object
+     *
+     * @return bool|object
      */
     protected function parseClassFromContainer(string $argsclass)
     {
         $itemMake = $this->make($argsclass);
-        if ($itemMake === false) {
+        if (false === $itemMake) {
             return false;
         }
 
@@ -498,10 +517,11 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 独立类作为解析反射参数类实例
-     * 
+     * 独立类作为解析反射参数类实例.
+     *
      * @param string $argsclass
-     * @return boolean|object
+     *
+     * @return bool|object
      */
     protected function parseClassNotExists(string $argsclass)
     {
@@ -518,9 +538,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 不同的类型不同的反射
-     * 
+     * 不同的类型不同的反射.
+     *
      * @param mixed $injection
+     *
      * @return array
      */
     protected function parseReflection($injection)
@@ -534,16 +555,17 @@ class Container implements IContainer, ArrayAccess
 
             case is_string($injection):
                 return $this->parseClassReflection($injection);
-            
+
             default:
                 throw new InvalidArgumentException('Unsupported callback types.');
         }
     }
 
     /**
-     * 解析闭包反射参数
-     * 
+     * 解析闭包反射参数.
+     *
      * @param Closure $injection
+     *
      * @return array
      */
     protected function parseClosureReflection(Closure $injection)
@@ -557,9 +579,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 解析数组回调反射参数
-     * 
+     * 解析数组回调反射参数.
+     *
      * @param array&callback $injection
+     *
      * @return array
      */
     protected function parseMethodReflection($injection)
@@ -573,9 +596,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 解析类反射参数
-     * 
+     * 解析类反射参数.
+     *
      * @param string $injection
+     *
      * @return array
      */
     protected function parseClassReflection(string $injection)
@@ -599,7 +623,8 @@ class Container implements IContainer, ArrayAccess
      * 动态创建实例对象
      *
      * @param string $classname
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     protected function newInstanceArgs($classname, $args)
@@ -612,23 +637,25 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 解析注册容器对象别名
+     * 解析注册容器对象别名.
      *
      * @param array $name
+     *
      * @return array
      */
     protected function parseAlias(array $name)
     {
         return [
             key($name),
-            current($name)
+            current($name),
         ];
     }
 
     /**
-     * 实现 ArrayAccess::offsetExits
+     * 实现 ArrayAccess::offsetExits.
      *
      * @param string $offset
+     *
      * @return bool
      */
     public function offsetExists($offset)
@@ -637,9 +664,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetGet
+     * 实现 ArrayAccess::offsetGet.
      *
      * @param string $offset
+     *
      * @return mixed
      */
     public function offsetGet($offset)
@@ -648,11 +676,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetSet
+     * 实现 ArrayAccess::offsetSet.
      *
      * @param string $offset
-     * @param mixed $value
-     * @return void
+     * @param mixed  $value
      */
     public function offsetSet($offset, $value)
     {
@@ -660,10 +687,9 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 实现 ArrayAccess::offsetUnset
+     * 实现 ArrayAccess::offsetUnset.
      *
      * @param string $offset
-     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -671,9 +697,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 捕捉支持属性参数
+     * 捕捉支持属性参数.
      *
      * @param string $key
+     *
      * @return 设置项
      */
     public function __get($key)
@@ -682,11 +709,10 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * 设置支持属性参数
+     * 设置支持属性参数.
      *
      * @param string $key
-     * @param mixed $service
-     * @return void
+     * @param mixed  $service
      */
     public function __set($key, $service)
     {
@@ -696,10 +722,11 @@ class Container implements IContainer, ArrayAccess
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)

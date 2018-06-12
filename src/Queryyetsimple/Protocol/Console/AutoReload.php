@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,54 +17,50 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Console;
 
-use Exception;
-use Leevel\{
-    Console\Option,
-    Console\Command,
-    Console\Argument
-};
+use Leevel\Console\Option;
+use Leevel\Console\Command;
+use Leevel\Console\Argument;
 use Leevel\Protocol\ToolKit\AutoReload as AutoReloads;
 
 /**
  * swoole 服务自动重启
  * 使用 inotify 监听 PHP 源码目录
- * 程序文件更新时自动重启 swoole 服务端
+ * 程序文件更新时自动重启 swoole 服务端.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.03.31
+ *
  * @version 1.0
  */
 class AutoReload extends Command
 {
-
     /**
-     * 命令名字
+     * 命令名字.
      *
      * @var string
      */
     protected $name = 'swoole:autoreload';
 
     /**
-     * 命令行描述
+     * 命令行描述.
      *
      * @var string
      */
     protected $description = 'Reload swoole service process when source code file is update';
 
     /**
-     * 响应命令
-     *
-     * @return void
+     * 响应命令.
      */
     public function handle()
     {
         $this->warn($this->getVersion());
 
         // 设置服务器程序的 PID
-        $pid = intval($this->argument('pid'));
+        $pid = (int) ($this->argument('pid'));
         $autoReload = new AutoReloads($pid);
 
         // 设置要监听的源码目录
@@ -77,7 +76,7 @@ class AutoReload extends Command
         $this->info(sprintf('The listen pid is %d,ctrl + c can exit.', $pid));
 
         $this->table([
-            'Watch dirs'
+            'Watch dirs',
         ], array_map(function ($value) {
             return [$value];
         }, $watchDir));
@@ -87,7 +86,7 @@ class AutoReload extends Command
     }
 
     /**
-     * 获取监听目录
+     * 获取监听目录.
      *
      * @return array
      */
@@ -103,7 +102,7 @@ class AutoReload extends Command
     }
 
     /**
-     * 分析监听目录
+     * 分析监听目录.
      *
      * @return array
      */
@@ -111,8 +110,8 @@ class AutoReload extends Command
     {
         $appPath = app()->path();
 
-        $dirs = array_map(function($value) use($appPath) {
-            if (strpos($value, '/') !== 0) {
+        $dirs = array_map(function ($value) use ($appPath) {
+            if (0 !== strpos($value, '/')) {
                 $value = $appPath . '/' . $value;
             }
 
@@ -123,7 +122,7 @@ class AutoReload extends Command
     }
 
     /**
-     * 默认监听目录
+     * 默认监听目录.
      *
      * @return array
      */
@@ -133,7 +132,7 @@ class AutoReload extends Command
     }
 
     /**
-     * 返回 QueryPHP Version
+     * 返回 QueryPHP Version.
      *
      * @return string
      */
@@ -145,7 +144,7 @@ class AutoReload extends Command
     }
 
     /**
-     * 命令参数
+     * 命令参数.
      *
      * @return array
      */
@@ -155,18 +154,18 @@ class AutoReload extends Command
             [
                 'pid',
                 Argument::REQUIRED,
-                'The pid need to be watch,you can use the command swoole:lists to see it master pid.'
+                'The pid need to be watch,you can use the command swoole:lists to see it master pid.',
             ],
             [
                 'dirs',
                 Argument::IS_ARRAY,
-                'The dirs to be watch.'
-            ]
+                'The dirs to be watch.',
+            ],
         ];
     }
 
     /**
-     * 命令配置
+     * 命令配置.
      *
      * @return array
      */
@@ -178,8 +177,8 @@ class AutoReload extends Command
                 null,
                 Option::VALUE_REQUIRED,
                 'The after seconds reload the server when file updated.',
-                app('option')->get('swoole\autoreload_after_seconds')
-            ]
+                app('option')->get('swoole\autoreload_after_seconds'),
+            ],
         ];
     }
 }

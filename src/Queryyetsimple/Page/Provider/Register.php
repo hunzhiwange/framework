@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,45 +17,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Page\Provider;
 
-use Leevel\{
-    page\page,
-    Di\Provider,
-    Router\Router
-};
+use Leevel\page\page;
+use Leevel\Di\Provider;
+use Leevel\Router\Router;
 
 /**
- * page 服务提供者
+ * page 服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.07.19
+ *
  * @version 1.0
  */
 class Register extends Provider
 {
-
     /**
-     * 是否延迟载入
+     * 是否延迟载入.
      *
-     * @var boolean
+     * @var bool
      */
     public static $defer = true;
 
     /**
      * 注册服务
-     *
-     * @return void
      */
     public function register()
     {
     }
 
     /**
-     * bootstrap
-     *
-     * @return void
+     * bootstrap.
      */
     public function bootstrap()
     {
@@ -60,7 +58,7 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者
+     * 可用服务提供者.
      *
      * @return array
      */
@@ -70,16 +68,14 @@ class Register extends Provider
     }
 
     /**
-     * 分页路由 url 生成
-     *
-     * @return void
+     * 分页路由 url 生成.
      */
     protected function urlResolver()
     {
         page::setUrlResolver(function () {
             return call_user_func_array([
                 $this->container['router'],
-                'url'
+                'url',
             ], func_get_args());
         });
     }

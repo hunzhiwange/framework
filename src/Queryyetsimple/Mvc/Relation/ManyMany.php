@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,24 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc\Relation;
 
-use Leevel\{
-    Mvc\IModel,
-    Collection\Collection
-};
+use Leevel\Mvc\IModel;
+use Leevel\Collection\Collection;
 
 /**
- * 关联模型 ManyMany
+ * 关联模型 ManyMany.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.28
+ *
  * @version 1.0
  */
 class ManyMany extends Relation
 {
-
     /**
      * 中间表查询对象
      *
@@ -40,44 +42,43 @@ class ManyMany extends Relation
     protected $objMiddleSelect;
 
     /**
-     * 中间表模型
+     * 中间表模型.
      *
      * @var \Leevel\Mvc\IModel
      */
     protected $objMiddleModel;
 
     /**
-     * 目标中间表关联字段
+     * 目标中间表关联字段.
      *
      * @var string
      */
     protected $strMiddleTargetKey;
 
     /**
-     * 源中间表关联字段
+     * 源中间表关联字段.
      *
      * @var string
      */
     protected $strMiddleSourceKey;
 
     /**
-     * 中间表隐射数据
+     * 中间表隐射数据.
      *
      * @var array
      */
     protected $arrMiddleMap = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Mvc\IModel $objTargetModel
      * @param \Leevel\Mvc\IModel $objSourceModel
      * @param \Leevel\Mvc\IModel $objMiddleModel
-     * @param string $strTargetKey
-     * @param string $strSourceKey
-     * @param string $strMiddleTargetKey
-     * @param string $strMiddleSourceKey
-     * @return void
+     * @param string             $strTargetKey
+     * @param string             $strSourceKey
+     * @param string             $strMiddleTargetKey
+     * @param string             $strMiddleSourceKey
      */
     public function __construct(IModel $objTargetModel, IModel $objSourceModel, IModel $objMiddleModel, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey)
     {
@@ -89,9 +90,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 关联基础查询条件
-     *
-     * @return void
+     * 关联基础查询条件.
      */
     public function addRelationCondition()
     {
@@ -101,10 +100,9 @@ class ManyMany extends Relation
     }
 
     /**
-     * 设置预载入关联查询条件
+     * 设置预载入关联查询条件.
      *
      * @param \Leevel\Mvc\IModel[] $arrModel
-     * @return void
      */
     public function preLoadCondition(array $arrModel)
     {
@@ -113,11 +111,12 @@ class ManyMany extends Relation
     }
 
     /**
-     * 匹配关联查询数据到模型
+     * 匹配关联查询数据到模型.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Mvc\IModel[]          $arrModel
      * @param \Leevel\Collection\Collection $objResult
-     * @param string $strRelation
+     * @param string                        $strRelation
+     *
      * @return array
      */
     public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
@@ -135,23 +134,24 @@ class ManyMany extends Relation
     }
 
     /**
-     * 中间表查询回调处理
+     * 中间表查询回调处理.
      *
      * @param callable $calCallback
+     *
      * @return $this
      */
     public function middleCondition($calCallback)
     {
         call_user_func_array($calCallback, [
             $this->objMiddleSelect,
-            $this
+            $this,
         ]);
 
         return $this;
     }
 
     /**
-     * 取回源模型对应数据
+     * 取回源模型对应数据.
      *
      * @return mixed
      */
@@ -167,7 +167,7 @@ class ManyMany extends Relation
      */
     public function sourceQuery()
     {
-        if ($this->parseSelectCondition() === false) {
+        if (false === $this->parseSelectCondition()) {
             return new collection();
         } else {
             return $this->objSelect->getAll();
@@ -185,7 +185,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得中间表模型
+     * 取得中间表模型.
      *
      * @return \Leevel\Mvc\IModel
      */
@@ -195,7 +195,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得目标中间表关联字段
+     * 取得目标中间表关联字段.
      *
      * @return string
      */
@@ -205,7 +205,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得源中间表关联字段
+     * 取得源中间表关联字段.
      *
      * @return string
      */
@@ -215,7 +215,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得中间表隐射数据
+     * 取得中间表隐射数据.
      *
      * @return array
      */
@@ -235,9 +235,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 预载入关联基础查询条件
-     *
-     * @return void
+     * 预载入关联基础查询条件.
      */
     protected function preLoadRelationCondition(array $arrModel)
     {
@@ -245,7 +243,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取回源模型对应数据
+     * 取回源模型对应数据.
      *
      * @return mixed
      */
@@ -261,9 +259,10 @@ class ManyMany extends Relation
     }
 
     /**
-     * 模型隐射数据
+     * 模型隐射数据.
      *
      * @param \Leevel\Collection\Collection $objResult
+     *
      * @return array
      */
     protected function buildMap(collection $objResult)
@@ -283,7 +282,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 通过中间表获取目标 ID
+     * 通过中间表获取目标 ID.
      *
      * @return array
      */
@@ -291,8 +290,8 @@ class ManyMany extends Relation
     {
         $arrTargetId = $this->parseTargetId();
 
-        $this->objSelect->whereIn($this->strTargetKey, $arrTargetId ?  : [
-            0
+        $this->objSelect->whereIn($this->strTargetKey, $arrTargetId ?: [
+            0,
         ]);
 
         if (! $arrTargetId) {
@@ -301,7 +300,7 @@ class ManyMany extends Relation
     }
 
     /**
-     * 通过中间表获取目标 ID
+     * 通过中间表获取目标 ID.
      *
      * @return array
      */

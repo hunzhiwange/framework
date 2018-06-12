@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,55 +17,52 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Log;
 
-use RuntimeException;
-use InvalidArgumentException;
-use Monolog\{
-    Logger,
-    Handler\StreamHandler,
-    Handler\SyslogHandler,
-    Handler\ErrorLogHandler,
-    Formatter\LineFormatter,
-    Handler\RotatingFileHandler
-};
+use Monolog\Logger;
+use Monolog\Handler\StreamHandler;
+use Monolog\Handler\SyslogHandler;
+use Monolog\Handler\ErrorLogHandler;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\RotatingFileHandler;
 use Leevel\Support\Str;
 
 /**
- * log.monolog
+ * log.monolog.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.01
+ *
  * @version 1.0
  */
 class Monolog extends Connect implements IConnect
 {
-
     /**
-     * Monolog
+     * Monolog.
      *
      * @var \Monolog\Logger
      */
     protected $monolog;
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
     protected $option = [
         'type' => [
-            'file'
+            'file',
         ],
         'channel' => 'Q',
         'name' => 'Y-m-d H',
         'size' => 2097152,
-        'path' => ''
+        'path' => '',
     ];
 
     /**
-     * Monolog 支持日志级别
+     * Monolog 支持日志级别.
      *
      * @var array
      */
@@ -74,19 +74,18 @@ class Monolog extends Connect implements IConnect
         ILog::ERROR => Logger::ERROR,
         ILog::CRITICAL => Logger::CRITICAL,
         ILog::ALERT => Logger::ALERT,
-        ILog::EMERGENCY => Logger::EMERGENCY
+        ILog::EMERGENCY => Logger::EMERGENCY,
     ];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $option
-     * @return void
      */
     public function __construct(array $option = [])
     {
         parent::__construct($option);
-        
+
         $this->monolog = new Logger($this->getOption('channel'));
 
         foreach ($this->getOption('type') as $type) {
@@ -95,11 +94,10 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 注册文件 handler
+     * 注册文件 handler.
      *
      * @param string $path
      * @param string $level
-     * @return void
      */
     public function file($path, $level = ILog::DEBUG)
     {
@@ -108,17 +106,16 @@ class Monolog extends Connect implements IConnect
         );
 
         $this->monolog->pushHandler($handler);
-        
+
         $handler->setFormatter($this->getDefaultFormatter());
     }
 
     /**
-     * 注册每日文件 handler
+     * 注册每日文件 handler.
      *
      * @param string $path
-     * @param int $days
+     * @param int    $days
      * @param string $level
-     * @return void
      */
     public function dailyFile($path, $days = 0, $level = ILog::DEBUG)
     {
@@ -132,10 +129,11 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 注册系统 handler
+     * 注册系统 handler.
      *
      * @param string $name
      * @param string $level
+     *
      * @return \Psr\Log\LoggerInterface
      */
     public function syslog($name = 'queryphp', $level = ILog::DEBUG)
@@ -146,11 +144,10 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 注册 error_log handler
+     * 注册 error_log handler.
      *
      * @param string $level
-     * @param int $messageType
-     * @return void
+     * @param int    $messageType
      */
     public function errorLog($level = ILog::DEBUG, $messageType = ErrorLogHandler::OPERATING_SYSTEM)
     {
@@ -164,16 +161,17 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * monolog 回调
+     * monolog 回调.
      *
      * @param callable|null $callback
+     *
      * @return $this
      */
     public function monolog($callback = null)
     {
         if (is_callable($callback)) {
             call_user_func_array($callback, [
-                $this
+                $this,
             ]);
         }
 
@@ -181,7 +179,7 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 取得 Monolog
+     * 取得 Monolog.
      *
      * @return \Monolog\Logger
      */
@@ -191,10 +189,9 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 日志写入接口
+     * 日志写入接口.
      *
      * @param array $data
-     * @return void
      */
     public function save(array $data)
     {
@@ -210,9 +207,7 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 初始化文件 handler
-     *
-     * @return void
+     * 初始化文件 handler.
      */
     protected function makeFileHandler()
     {
@@ -223,9 +218,7 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 初始化每日文件 handler
-     *
-     * @return void
+     * 初始化每日文件 handler.
      */
     protected function makeDailyFileHandler()
     {
@@ -236,9 +229,7 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 初始化系统 handler
-     *
-     * @return void
+     * 初始化系统 handler.
      */
     protected function makeSyslogHandler()
     {
@@ -246,9 +237,7 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 初始化 error_log handler
-     *
-     * @return void
+     * 初始化 error_log handler.
      */
     protected function makeErrorLogHandler()
     {
@@ -256,10 +245,9 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
-     * 每日文件真实路径
+     * 每日文件真实路径.
      *
      * @param string $path
-     * @return void
      */
     protected function getDailyFilePath($path)
     {
@@ -269,11 +257,11 @@ class Monolog extends Connect implements IConnect
             $path = substr($path, 0, strrpos($path, '.' . $ext));
         }
 
-        return $path . date('-Y-m-d') .($ext ? '.' . $ext : '');
+        return $path . date('-Y-m-d') . ($ext ? '.' . $ext : '');
     }
 
     /**
-     * 默认格式化
+     * 默认格式化.
      *
      * @return \Monolog\Formatter\LineFormatter
      */
@@ -284,9 +272,10 @@ class Monolog extends Connect implements IConnect
 
     /**
      * 获取 Monolog 级别
-     * 不支持级别归并到 DEBUG
+     * 不支持级别归并到 DEBUG.
      *
      * @param string $level
+     *
      * @return int
      */
     protected function parseMonologLevel($level)

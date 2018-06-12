@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Event;
 
 use SplSubject;
@@ -23,43 +27,42 @@ use InvalidArgumentException;
 use Leevel\Di\IContainer;
 
 /**
- * 观察者目标角色 subject
+ * 观察者目标角色 subject.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.06.23
- * @link http://php.net/manual/zh/class.splsubject.php
+ * @see http://php.net/manual/zh/class.splsubject.php
+ *
  * @version 1.0
  */
 class Subject implements ISubject, SplSubject
 {
-
     /**
-     * 容器
+     * 容器.
      *
      * @var \Leevel\Di\IContainer
      */
     public $container;
 
     /**
-     * 观察者角色 observer
+     * 观察者角色 observer.
      *
      * @var \SplObjectStorage(\SplObserver)
      */
     protected $observers;
 
     /**
-     * 通知附加参数
+     * 通知附加参数.
      *
      * @var array
      */
     public $notifyArgs = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
-     * @return void
      */
     public function __construct(IContainer $container)
     {
@@ -96,9 +99,10 @@ class Subject implements ISubject, SplSubject
     }
 
     /**
-     * 添加一个观察者角色
+     * 添加一个观察者角色.
      *
      * @param \SplObserver|string $observer
+     *
      * @return $this
      */
     public function attachs($observer)

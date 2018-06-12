@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,21 +17,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Log;
 
 use RuntimeException;
 use Leevel\Option\TClass;
-use Leevel\Support\{
-    IJson,
-    IArray
-};
+use Leevel\Support\IJson;
+use Leevel\Support\IArray;
 
 /**
- * 日志仓储
+ * 日志仓储.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.03.03
+ *
  * @version 1.0
  */
 class Log implements ILog
@@ -43,28 +46,28 @@ class Log implements ILog
     protected $connect;
 
     /**
-     * 当前记录的日志信息
+     * 当前记录的日志信息.
      *
      * @var array
      */
     protected $logs = [];
 
     /**
-     * 日志过滤器
+     * 日志过滤器.
      *
      * @var callable
      */
     protected $filter;
 
     /**
-     * 日志处理器
+     * 日志处理器.
      *
      * @var callable
      */
     protected $processor;
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -79,17 +82,16 @@ class Log implements ILog
             self::CRITICAL,
             self::ALERT,
             self::EMERGENCY,
-            self::SQL
+            self::SQL,
         ],
-        'time_format' => '[Y-m-d H:i]'
+        'time_format' => '[Y-m-d H:i]',
     ];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Log\IConnect $connect
-     * @param array $option
-     * @return void
+     * @param array                $option
      */
     public function __construct(IConnect $connect, array $option = [])
     {
@@ -98,11 +100,12 @@ class Log implements ILog
     }
 
     /**
-     * 记录 emergency 日志
+     * 记录 emergency 日志.
      *
      * @param string $message
-     * @param array $context
-     * @param boolean $write
+     * @param array  $context
+     * @param bool   $write
+     *
      * @return array
      */
     public function emergency($message, array $context = [], $write = false)
@@ -111,11 +114,12 @@ class Log implements ILog
     }
 
     /**
-     * 记录 alert 日志
+     * 记录 alert 日志.
      *
      * @param string $message
-     * @param array $context
-     * @param boolean $write
+     * @param array  $context
+     * @param bool   $write
+     *
      * @return array
      */
     public function alert($message, array $context = [], $write = false)
@@ -124,11 +128,12 @@ class Log implements ILog
     }
 
     /**
-     * 记录 critical 日志
+     * 记录 critical 日志.
      *
      * @param string $message
-     * @param array $context
-     * @param boolean $write
+     * @param array  $context
+     * @param bool   $write
+     *
      * @return array
      */
     public function critical($message, array $context = [], $write = false)
@@ -137,11 +142,12 @@ class Log implements ILog
     }
 
     /**
-     * 记录 error 日志
+     * 记录 error 日志.
      *
      * @param string $message
-     * @param array $context
-     * @param boolean $write
+     * @param array  $context
+     * @param bool   $write
+     *
      * @return array
      */
     public function error($message, array $context = [], $write = false)
@@ -150,11 +156,12 @@ class Log implements ILog
     }
 
     /**
-     * 记录 warning 日志
+     * 记录 warning 日志.
      *
      * @param string $message
-     * @param array $context
-     * @param boolean $write
+     * @param array  $context
+     * @param bool   $write
+     *
      * @return array
      */
     public function warning($message, array $context = [], $write = false)
@@ -163,11 +170,12 @@ class Log implements ILog
     }
 
     /**
-     * 记录 notice 日志
+     * 记录 notice 日志.
      *
      * @param string $message
-     * @param array $context
-     * @param boolean $write
+     * @param array  $context
+     * @param bool   $write
+     *
      * @return array
      */
     public function notice($message, array $context = [], $write = false)
@@ -176,11 +184,12 @@ class Log implements ILog
     }
 
     /**
-     * 记录 info 日志
+     * 记录 info 日志.
      *
      * @param string $message
-     * @param array $context
-     * @param boolean $write
+     * @param array  $context
+     * @param bool   $write
+     *
      * @return array
      */
     public function info($message, array $context = [], $write = false)
@@ -189,11 +198,12 @@ class Log implements ILog
     }
 
     /**
-     * 记录 debug 日志
+     * 记录 debug 日志.
      *
      * @param string $message
-     * @param array $context
-     * @param boolean $write
+     * @param array  $context
+     * @param bool   $write
+     *
      * @return array
      */
     public function debug($message, array $context = [], $write = false)
@@ -202,11 +212,12 @@ class Log implements ILog
     }
 
     /**
-     * 记录日志
+     * 记录日志.
      *
      * @param string $level
-     * @param mixed $message
-     * @param array $context
+     * @param mixed  $message
+     * @param array  $context
+     *
      * @return array
      */
     public function log($level, $message, array $context = [])
@@ -226,11 +237,11 @@ class Log implements ILog
         $data = [
             $level,
             $message,
-            $context
+            $context,
         ];
 
         // 执行过滤器
-        if ($this->filter !== null && call_user_func_array($this->filter, $data) === false) {
+        if (null !== $this->filter && false === call_user_func_array($this->filter, $data)) {
             return;
         }
 
@@ -244,24 +255,21 @@ class Log implements ILog
     }
 
     /**
-     * 记录错误消息并写入
+     * 记录错误消息并写入.
      *
-     * @param string $level 日志类型
+     * @param string $level   日志类型
      * @param string $message 应该被记录的错误信息
-     * @param array $context
-     * @return void
+     * @param array  $context
      */
     public function write($level, $message, array $context = [])
     {
         $this->saveStore([
-            $this->log($level, $message, $context)
+            $this->log($level, $message, $context),
         ]);
     }
 
     /**
-     * 保存日志信息
-     *
-     * @return void
+     * 保存日志信息.
      */
     public function save()
     {
@@ -277,10 +285,9 @@ class Log implements ILog
     }
 
     /**
-     * 注册日志过滤器
+     * 注册日志过滤器.
      *
      * @param callable $filter
-     * @return void
      */
     public function registerFilter(callable $filter)
     {
@@ -288,10 +295,9 @@ class Log implements ILog
     }
 
     /**
-     * 注册日志处理器
+     * 注册日志处理器.
      *
      * @param callable $processor
-     * @return void
      */
     public function registerProcessor(callable $processor)
     {
@@ -299,9 +305,10 @@ class Log implements ILog
     }
 
     /**
-     * 清理日志记录
+     * 清理日志记录.
      *
      * @param string $level
+     *
      * @return int
      */
     public function clear($level = null)
@@ -318,9 +325,10 @@ class Log implements ILog
     }
 
     /**
-     * 获取日志记录
+     * 获取日志记录.
      *
      * @param string $level
+     *
      * @return array
      */
     public function get($level = null)
@@ -333,9 +341,10 @@ class Log implements ILog
     }
 
     /**
-     * 获取日志记录数量
+     * 获取日志记录数量.
      *
      * @param string $level
+     *
      * @return int
      */
     public function count($level = null)
@@ -348,24 +357,24 @@ class Log implements ILog
     }
 
     /**
-     * 存储日志
+     * 存储日志.
      *
      * @param array $data
-     * @return void
      */
     protected function saveStore($data)
     {
         // 执行处理器
-        if ($this->processor !== null) {
+        if (null !== $this->processor) {
             call_user_func_array($this->processor, $data);
         }
         $this->connect->save($data);
     }
 
     /**
-     * 格式化日志消息
+     * 格式化日志消息.
      *
      * @param mixed $message
+     *
      * @return mixed
      */
     protected function formatMessage($message)
@@ -384,10 +393,11 @@ class Log implements ILog
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)

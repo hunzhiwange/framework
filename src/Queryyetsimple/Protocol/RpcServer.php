@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,56 +17,54 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol;
 
-use Exception;
 use Thrift\Server\TServerSocket;
 use Swoole\Server as SwooleServer;
 use Thrift\Factory\TBinaryProtocolFactory;
-use Leevel\Protocol\Thrift\{
-    Base\ThriftServer,
-    Service\ThriftHandler,
-    Service\ThriftProcessor,
-    Base\TFramedTransportFactory
-};
+use Leevel\Protocol\Thrift\Base\ThriftServer;
+use Leevel\Protocol\Thrift\Service\ThriftHandler;
+use Leevel\Protocol\Thrift\Service\ThriftProcessor;
+use Leevel\Protocol\Thrift\Base\TFramedTransportFactory;
 
 /**
  * swoole rpc 服务
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.04
- * @link https://wiki.swoole.com/wiki/page/287.html 
+ * @see https://wiki.swoole.com/wiki/page/287.html
+ *
  * @version 1.0
  */
 class RpcServer extends Server
 {
-    
     /**
-     * 配置
-     * 
+     * 配置.
+     *
      * @var array
      */
     protected $option = [
         // 监听 IP 地址
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
-        'host' => '0.0.0.0', 
-        
+        'host' => '0.0.0.0',
+
         // 监听端口
         // see https://wiki.swoole.com/wiki/page/p-server.html
         // see https://wiki.swoole.com/wiki/page/327.html
-        'port' => '1355', 
-        
+        'port' => '1355',
+
         // swoole 进程名称
-        'process_name' => 'queryphp.swoole.rpc', 
-        
+        'process_name' => 'queryphp.swoole.rpc',
+
         // swoole 进程保存路径
-        'pid_path' => '', 
-        
+        'pid_path' => '',
+
         // 设置启动的 worker 进程数
         // see https://wiki.swoole.com/wiki/page/275.html
-        'worker_num' => 8, 
+        'worker_num' => 8,
 
         // 守护进程化
         // see https://wiki.swoole.com/wiki/page/278.html
@@ -74,13 +75,13 @@ class RpcServer extends Server
         // 3：抢占模式，系统会根据 worker 进程的闲置状态，只会投递给闲置的 worker 进程
         // https://wiki.swoole.com/wiki/page/277.html
         'dispatch_mode' => 1,
-        
+
         // 打开包长检测
         // 包体长度检测提供了固定包头和包体这种协议格式的检测。
         // 启用后可以保证 worker 进程 onReceive 每一次都收到完整的包
-        // https://wiki.swoole.com/wiki/page/287.html         
+        // https://wiki.swoole.com/wiki/page/287.html
         'open_length_check' => true,
-                                  
+
         // 最大请求包长度，8M
         // https://wiki.swoole.com/wiki/page/301.html
         'package_max_length' => 8192000,
@@ -88,48 +89,47 @@ class RpcServer extends Server
         // 长度的类型,参见 PHP 的 pack 函数
         // http://php.net/manual/zh/function.pack.php
         // https://wiki.swoole.com/wiki/page/463.html
-        'package_length_type' => 'N', 
-        
+        'package_length_type' => 'N',
+
         // 第 N 个字节是包长度的值
         // 如果未 0，表示整个包，包含包体和包头
         // https://wiki.swoole.com/wiki/page/287.html
         'package_length_offset' => 0,
-                                    
+
         // 从第几个字节计算长度
         // https://wiki.swoole.com/wiki/page/287.html
-        'package_body_offset' => 4
+        'package_body_offset' => 4,
     ];
 
     /**
-     * 服务回调事件
-     * 
+     * 服务回调事件.
+     *
      * @var array
      */
     protected $arrServerEvent = [
-        'start', 
-        'connect', 
-        'workerStart', 
-        'managerStart', 
+        'start',
+        'connect',
+        'workerStart',
+        'managerStart',
         'workerStop',
         'receive',
         'shutdown',
         'task',
         'finish',
-        'close'
+        'close',
     ];
 
     /**
      * Thrift 服务
-     * 
+     *
      * @var \Leevel\Protocol\Thrift\Base\ThriftServer
      */
     protected $thriftServer;
 
     /**
-     * 构造函数
-     * 
+     * 构造函数.
+     *
      * @param array $option
-     * @return void
      */
     public function __construct(array $option = [])
     {
@@ -137,16 +137,16 @@ class RpcServer extends Server
 
         $this->thriftServer = $this->makeThriftServer();
     }
-    
+
     /**                                                                                                 }
-     * 监听数据发送事件
-     * 
+     * 监听数据发送事件.
+     *
      * @param \Swoole\Server $objServer
-     * @param int $intFd
-     * @param int $intReactorId
-     * @param string $strData
-     * @link https://wiki.swoole.com/wiki/page/50.html
-     * @return void
+     * @param int            $intFd
+     * @param int            $intReactorId
+     * @param string         $strData
+     *
+     * @see https://wiki.swoole.com/wiki/page/50.html
      */
     public function onReceive(SwooleServer $objServer, int $intFd, int $intReactorId, string $strData): void
     {
@@ -157,19 +157,19 @@ class RpcServer extends Server
 
     /**
      * 创建 Thrift 服务
-     * 
+     *
      * @return \Leevel\Protocol\Thrift\Base\ThriftServer
      */
     protected function makeThriftServer(): ThriftServer
     {
         $service = new ThriftHandler();
         $processor = new ThriftProcessor($service);
-        $socketTranport = new TServerSocket($this->getOption('host'), intval($this->getOption('port')));
+        $socketTranport = new TServerSocket($this->getOption('host'), (int) ($this->getOption('port')));
         $outFactory = $inFactory = new TFramedTransportFactory();
         $outProtocol = $inProtocol = new TBinaryProtocolFactory();
 
         $server = new ThriftServer($processor, $socketTranport, $inFactory, $outFactory, $inProtocol, $outProtocol);
-        
+
         return $server;
     }
 }

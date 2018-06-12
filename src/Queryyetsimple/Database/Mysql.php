@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Database;
 
 use PDO;
 
 /**
- * mysql 数据库连接
+ * mysql 数据库连接.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.03.09
+ *
  * @version 1.0
  */
 class Mysql extends Connect implements IConnect
 {
-
     /**
-     * dsn 解析
+     * dsn 解析.
      *
      * @param array $arrOption
+     *
      * @return string
      */
     public function parseDsn($arrOption)
@@ -43,7 +48,7 @@ class Mysql extends Connect implements IConnect
             'Base',
             'Port',
             'Socket',
-            'Charset'
+            'Charset',
         ] as $strMethod) {
             $arrDsn[] = $this->{'get' . $strMethod}($arrOption);
         }
@@ -52,23 +57,24 @@ class Mysql extends Connect implements IConnect
     }
 
     /**
-     * 取得数据库表名列表
+     * 取得数据库表名列表.
      *
      * @param string $sDbName
-     * @param mixed $mixMaster
+     * @param mixed  $mixMaster
+     *
      * @return array
      */
     public function getTableNames($sDbName = null, $mixMaster = false)
     {
         // 确定数据库
-        if ($sDbName === null) {
+        if (null === $sDbName) {
             $sDbName = $this->getCurrentOption('name');
         }
-        
+
         $strSql = 'SHOW TABLES FROM ' . $this->qualifyTableOrColumn($sDbName);
 
         $arrResult = [];
-        
+
         if (($arrTables = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
             foreach ($arrTables as $arrTable) {
                 $arrResult[] = reset($arrTable);
@@ -81,10 +87,11 @@ class Mysql extends Connect implements IConnect
     }
 
     /**
-     * 取得数据库表字段信息
+     * 取得数据库表字段信息.
      *
      * @param string $sTableName
-     * @param mixed $mixMaster
+     * @param mixed  $mixMaster
+     *
      * @return array
      */
     public function getTableColumns($sTableName, $mixMaster = false)
@@ -95,12 +102,11 @@ class Mysql extends Connect implements IConnect
         $arrResult = [
             'list' => [],
             'primary_key' => null,
-            'auto_increment' => null
+            'auto_increment' => null,
         ];
 
         if (($arrColumns = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
             foreach ($arrColumns as $arrColumn) {
-
                 // 处理字段
                 $arrTemp = [];
                 $arrTemp['name'] = $arrColumn['Field'];
@@ -113,10 +119,10 @@ class Mysql extends Connect implements IConnect
                     $arrTemp['length'] = null;
                 }
 
-                $arrTemp['primary_key'] = strtolower($arrColumn['Key']) == 'pri';
-                $arrTemp['auto_increment'] = strpos($arrColumn['Extra'], 'auto_increment') !== false;
+                $arrTemp['primary_key'] = 'pri' == strtolower($arrColumn['Key']);
+                $arrTemp['auto_increment'] = false !== strpos($arrColumn['Extra'], 'auto_increment');
 
-                if (! is_null($arrColumn['Default']) && strtolower($arrColumn['Default']) != 'null') {
+                if (null !== $arrColumn['Default'] && 'null' != strtolower($arrColumn['Default'])) {
                     $arrTemp['default'] = $arrColumn['Default'];
                 } else {
                     $arrTemp['default'] = null;
@@ -138,47 +144,50 @@ class Mysql extends Connect implements IConnect
             }
         }
         unset($arrColumns, $strSql);
+
         return $arrResult;
     }
 
     /**
-     * sql 字段格式化
+     * sql 字段格式化.
      *
      * @return string
      */
     public function identifierColumn($sName)
     {
-        return $sName != '*' ? "`{$sName}`" : '*';
+        return '*' != $sName ? "`{$sName}`" : '*';
     }
 
     /**
-     * 分析 limit
+     * 分析 limit.
      *
      * @param mixed $mixLimitcount
      * @param mixed $mixLimitoffset
+     *
      * @return string
      */
     public function parseLimitcount($mixLimitcount = null, $mixLimitoffset = null)
     {
-        if (! is_null($mixLimitoffset)) {
-            $sSql = 'LIMIT ' . (int)$mixLimitoffset;
+        if (null !== $mixLimitoffset) {
+            $sSql = 'LIMIT ' . (int) $mixLimitoffset;
 
-            if (! is_null($mixLimitcount)) {
-                $sSql .= ',' . (int)$mixLimitcount;
+            if (null !== $mixLimitcount) {
+                $sSql .= ',' . (int) $mixLimitcount;
             } else {
                 $sSql .= ',999999999999';
             }
 
             return $sSql;
-        } elseif (! is_null($mixLimitcount)) {
-            return 'LIMIT ' . (int)$mixLimitcount;
+        } elseif (null !== $mixLimitcount) {
+            return 'LIMIT ' . (int) $mixLimitcount;
         }
     }
 
     /**
-     * 基本
+     * 基本.
      *
      * @param array $arrOption
+     *
      * @return string
      */
     protected function getBase($arrOption)
@@ -187,9 +196,10 @@ class Mysql extends Connect implements IConnect
     }
 
     /**
-     * 端口
+     * 端口.
      *
      * @param array $arrOption
+     *
      * @return string
      */
     protected function getPort($arrOption)
@@ -200,9 +210,10 @@ class Mysql extends Connect implements IConnect
     }
 
     /**
-     * 用 unix socket 加速 php-fpm、mysql、redis 连接
+     * 用 unix socket 加速 php-fpm、mysql、redis 连接.
      *
      * @param array $arrOption
+     *
      * @return string
      */
     protected function getSocket($arrOption)
@@ -216,6 +227,7 @@ class Mysql extends Connect implements IConnect
      * 编码
      *
      * @param array $arrOption
+     *
      * @return string
      */
     protected function getCharset($arrOption)

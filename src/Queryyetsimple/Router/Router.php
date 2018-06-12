@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,31 +17,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Router;
 
-use Closure;
-use Exception;
-use RuntimeException;
-use ReflectionMethod;
-use ReflectionException;
 use InvalidArgumentException;
-use Leevel\{
-    Http\Request,
-    Di\IContainer,
-    Http\Response,
-    Http\IResponse,
-    Support\TMacro,
-    Mvc\IController,
-    Pipeline\Pipeline
-};
+use Leevel\Http\Request;
+use Leevel\Di\IContainer;
+use Leevel\Http\Response;
+use Leevel\Http\IResponse;
+use Leevel\Support\TMacro;
+use Leevel\Mvc\IController;
+use Leevel\Pipeline\Pipeline;
 
 /**
  * 路由解析
- * 2018.04.10 开始进行一次重构系统路由架构
+ * 2018.04.10 开始进行一次重构系统路由架构.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.01.10
+ *
  * @version 1.0
  */
 class Router implements IRouter
@@ -46,7 +44,7 @@ class Router implements IRouter
     use TMacro;
 
     /**
-     * IOC Container
+     * IOC Container.
      *
      * @var \Leevel\Di\IContainer
      */
@@ -60,29 +58,29 @@ class Router implements IRouter
     protected $request;
 
     /**
-     * 全局路由绑定中间件
+     * 全局路由绑定中间件.
      *
      * @var array
      */
     protected $globalMiddlewares = [];
 
     /**
-     * 当前的中间件
+     * 当前的中间件.
      *
      * @var array
      */
     protected $currentMiddlewares;
 
     /**
-     * 路由匹配数据
-     * 
+     * 路由匹配数据.
+     *
      * @var array
      */
     protected $matchedData;
 
     /**
-     * 路由匹配初始化数据
-     * 
+     * 路由匹配初始化数据.
+     *
      * @var array
      */
     protected static $matcheDataInit = [
@@ -92,77 +90,76 @@ class Router implements IRouter
         self::PREFIX => null,
         self::PARAMS => null,
         self::MIDDLEWARES => null,
-        self::VARS => null
+        self::VARS => null,
     ];
 
     /**
-     * 基础路径 
+     * 基础路径.
      *
      * @var array
      */
     protected $basepaths = [];
 
     /**
-     * 分组
+     * 分组.
      *
      * @var array
      */
     protected $groups = [];
 
     /**
-     * 路由 
+     * 路由.
      *
      * @var array
      */
     protected $routers = [];
-    
+
     /**
-     * 中间件分组 
+     * 中间件分组.
      *
      * @var array
      */
     protected $middlewareGroups = [];
 
     /**
-     * 中间件别名 
+     * 中间件别名.
      *
      * @var array
      */
     protected $middlewareAlias = [];
 
     /**
-     * 控制器相对目录
-     * 
+     * 控制器相对目录.
+     *
      * @var string
      */
     protected $controllerDir = 'App\Controller';
 
     /**
-     * 匹配应用名字
+     * 匹配应用名字.
      *
      * @var string
      */
     protected $matchedApp;
 
     /**
-     * 匹配控制器名字
+     * 匹配控制器名字.
      *
      * @var string
      */
     protected $matchedController;
 
     /**
-     * 匹配方法名字
+     * 匹配方法名字.
      *
      * @var string
      */
     protected $matchedAction;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
-     * @return void
      */
     public function __construct(IContainer $container)
     {
@@ -170,9 +167,10 @@ class Router implements IRouter
     }
 
     /**
-     * 分发请求到路由
+     * 分发请求到路由.
      *
      * @param \Leevel\Http\Request $request
+     *
      * @return \Leevel\Http\IResponse
      */
     public function dispatch(Request $request)
@@ -184,8 +182,6 @@ class Router implements IRouter
 
     /**
      * 初始化请求
-     *
-     * @return void
      */
     public function initRequest()
     {
@@ -197,10 +193,9 @@ class Router implements IRouter
 
     /**
      * 设置匹配路由
-     * 绕过路由解析，可以用于高性能 RPC 快速匹配资源
+     * 绕过路由解析，可以用于高性能 RPC 快速匹配资源.
      *
      * @param array $matchedData
-     * @return void
      */
     public function setMatchedData(array $matchedData): void
     {
@@ -208,15 +203,14 @@ class Router implements IRouter
     }
 
     /**
-     * 穿越中间件
+     * 穿越中间件.
      *
      * @param \Leevel\Http\Request $passed
-     * @param array $passedExtend
-     * @return void
+     * @param array                $passedExtend
      */
     public function throughMiddleware(Request $passed, array $passedExtend = [])
     {
-        if (is_null($this->currentMiddlewares)) {
+        if (null === $this->currentMiddlewares) {
             $this->currentMiddlewares = $this->parseMiddleware();
         }
 
@@ -240,23 +234,21 @@ class Router implements IRouter
     }
 
     /**
-     * 设置控制器相对目录
+     * 设置控制器相对目录.
      *
      * @param string $controllerDir
-     * @return void
      */
     public function setControllerDir(string $controllerDir)
     {
         $controllerDir = str_replace('/', '\\', $controllerDir);
-        
+
         $this->controllerDir = $controllerDir;
     }
 
     /**
-     * 返回控制器相对目录
+     * 返回控制器相对目录.
      *
      * @param string $controllerDir
-     * @return void
      */
     public function getControllerDir()
     {
@@ -264,10 +256,9 @@ class Router implements IRouter
     }
 
     /**
-     * 设置路由
+     * 设置路由.
      *
      * @param array $routers
-     * @return void
      */
     public function setRouters(array $routers)
     {
@@ -275,7 +266,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得当前路由
+     * 取得当前路由.
      *
      * @return array
      */
@@ -285,10 +276,9 @@ class Router implements IRouter
     }
 
     /**
-     * 设置基础路径
+     * 设置基础路径.
      *
      * @param array $basepaths
-     * @return void
      */
     public function setBasepaths(array $basepaths)
     {
@@ -296,10 +286,9 @@ class Router implements IRouter
     }
 
     /**
-     * 添加基础路径
+     * 添加基础路径.
      *
      * @param array $basepaths
-     * @return void
      */
     public function addBasepaths(array $basepaths)
     {
@@ -307,7 +296,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得基础路径
+     * 取得基础路径.
      *
      * @return array
      */
@@ -317,10 +306,9 @@ class Router implements IRouter
     }
 
     /**
-     * 设置路由分组
+     * 设置路由分组.
      *
      * @param array $groups
-     * @return void
      */
     public function setGroups(array $groups)
     {
@@ -328,10 +316,9 @@ class Router implements IRouter
     }
 
     /**
-     * 添加路由分组
+     * 添加路由分组.
      *
      * @param array $groups
-     * @return void
      */
     public function addGroups(array $groups)
     {
@@ -339,7 +326,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得路由分组
+     * 取得路由分组.
      *
      * @return array
      */
@@ -349,18 +336,17 @@ class Router implements IRouter
     }
 
     /**
-     * 设置中间件分组
+     * 设置中间件分组.
      *
      * @param array $middlewareGroups
-     * @return void
      */
     public function setMiddlewareGroups(array $middlewareGroups)
     {
         $this->middlewareGroups = $middlewareGroups;
     }
-    
+
     /**
-     * 取得中间件分组
+     * 取得中间件分组.
      *
      * @return array
      */
@@ -370,10 +356,9 @@ class Router implements IRouter
     }
 
     /**
-     * 设置全局中间件
+     * 设置全局中间件.
      *
      * @param array $middlewares
-     * @return void
      */
     public function setGlobalMiddlewares(array $middlewares)
     {
@@ -381,7 +366,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得全局中间件
+     * 取得全局中间件.
      *
      * @return array
      */
@@ -389,12 +374,11 @@ class Router implements IRouter
     {
         return $this->globalMiddlewares;
     }
-    
+
     /**
-     * 设置中间件别名
+     * 设置中间件别名.
      *
      * @param array $middlewareAlias
-     * @return void
      */
     public function setMiddlewareAlias(array $middlewareAlias)
     {
@@ -402,7 +386,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取得中间件别名
+     * 取得中间件别名.
      *
      * @return array
      */
@@ -412,18 +396,19 @@ class Router implements IRouter
     }
 
     /**
-     * 匹配路径
+     * 匹配路径.
      *
      * @param string $path
+     *
      * @return array
      */
     public function matchePath(string $path): array
     {
         $result = [];
 
-        if (strpos($path, '?') !== false) {
+        if (false !== strpos($path, '?')) {
             list($path, $query) = explode('?', $path);
-   
+
             if ($query) {
                 foreach (explode('&', $query) as $item) {
                     $item = explode('=', $item);
@@ -435,7 +420,7 @@ class Router implements IRouter
         // 匹配基础路径
         $basepath = '';
         foreach ($this->getBasepaths() as $item) {
-            if (strpos($path, $item) === 0) {
+            if (0 === strpos($path, $item)) {
                 $path = substr($path, strlen($item) + 1);
                 $basepath = $item;
                 break;
@@ -452,9 +437,9 @@ class Router implements IRouter
 
         list($paths, $params) = $this->normalizePathsAndParams($paths);
 
-        if (count($paths) == 1) {
+        if (1 == count($paths)) {
             $result[static::CONTROLLER] = array_pop($paths);
-        } else { 
+        } else {
             if ($paths) {
                 $result[static::ACTION] = array_pop($paths);
             }
@@ -464,8 +449,8 @@ class Router implements IRouter
             }
 
             if ($paths) {
-                $result[static::PREFIX] = implode('\\', array_map(function($item) {
-                    if (strpos($item, '_') !== false) {
+                $result[static::PREFIX] = implode('\\', array_map(function ($item) {
+                    if (false !== strpos($item, '_')) {
                         $item = str_replace('_', ' ', $item);
                         $item = str_replace(' ', '', ucwords($item));
                     } else {
@@ -473,7 +458,7 @@ class Router implements IRouter
                     }
 
                     return $item;
-                },$paths));
+                }, $paths));
             }
         }
 
@@ -485,20 +470,22 @@ class Router implements IRouter
     }
 
     /**
-     * 是否找到 app
-     * 
+     * 是否找到 app.
+     *
      * @param string $app
-     * @return boolean
+     *
+     * @return bool
      */
     protected function findApp($app)
     {
-        return strpos($app, ':') === 0;
+        return 0 === strpos($app, ':');
     }
 
     /**
-     * 解析路径和参数
-     * 
+     * 解析路径和参数.
+     *
      * @param array $data
+     *
      * @return array
      */
     protected function normalizePathsAndParams(array $data): array
@@ -510,7 +497,7 @@ class Router implements IRouter
         foreach ($data as $item) {
             if (is_numeric($item)) {
                 $params['_param' . $k] = $item;
-                $k++;
+                ++$k;
             } else {
                 $paths[] = $item;
             }
@@ -518,19 +505,19 @@ class Router implements IRouter
 
         return [
             $paths,
-            $params
+            $params,
         ];
     }
 
     /**
      * 路由匹配
-     * 高效匹配，如果默认 pathInfo 路由能够匹配上则忽略 swagger 路由匹配
+     * 高效匹配，如果默认 pathInfo 路由能够匹配上则忽略 swagger 路由匹配.
      *
      * @return mixed|void
      */
     protected function matchRouter()
     {
-        if (! is_null($this->matchedData)) {
+        if (null !== $this->matchedData) {
             return $this->tryRouterBind();
         }
 
@@ -544,7 +531,7 @@ class Router implements IRouter
 
         $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'));
 
-        if (($bind = $this->normalizeRouterBind()) === false) {
+        if (false === ($bind = $this->normalizeRouterBind())) {
             $bind = $this->urlRouterBind($dataPathInfo);
         }
 
@@ -552,9 +539,10 @@ class Router implements IRouter
     }
 
     /**
-     * URL 路由绑定
+     * URL 路由绑定.
      *
-     * @param array $dataPathInfo 
+     * @param array $dataPathInfo
+     *
      * @return mixed
      */
     protected function urlRouterBind(array $dataPathInfo)
@@ -573,10 +561,9 @@ class Router implements IRouter
     }
 
     /**
-     * 完成路由匹配数据
+     * 完成路由匹配数据.
      *
-     * @param array $data 
-     * @return void
+     * @param array $data
      */
     protected function resolveMatchedData(array $data): void
     {
@@ -584,26 +571,27 @@ class Router implements IRouter
     }
 
     /**
-     * 解析路由匹配数据
+     * 解析路由匹配数据.
      *
      * @param string $matche
+     *
      * @return array
      */
     protected function normalizeMatchedData(string $matche): array
     {
         $matche = 'Leevel\Router\Match\\' . $matche;
 
-        return (new $matche)->matche($this, $this->request);
+        return (new $matche())->matche($this, $this->request);
     }
 
     /**
-     * 尝试获取路由绑定
+     * 尝试获取路由绑定.
      *
      * @return callable|void
      */
     protected function tryRouterBind()
     {
-        if (($bind = $this->normalizeRouterBind()) === false) {
+        if (false === ($bind = $this->normalizeRouterBind())) {
             $this->nodeNotFound();
         }
 
@@ -611,7 +599,7 @@ class Router implements IRouter
     }
 
     /**
-     * 解析路由绑定
+     * 解析路由绑定.
      *
      * @return mixed
      */
@@ -623,9 +611,10 @@ class Router implements IRouter
     }
 
     /**
-     * 发送路由并返回响应
+     * 发送路由并返回响应.
      *
      * @param \Leevel\Http\Request $request
+     *
      * @return \Leevel\Http\IResponse
      */
     protected function dispatchToRoute(Request $request)
@@ -634,10 +623,11 @@ class Router implements IRouter
     }
 
     /**
-     * 运行路由
-     * 
+     * 运行路由.
+     *
      * @param \Leevel\Http\Request $request
-     * @param callable $bind
+     * @param callable             $bind
+     *
      * @return \Leevel\Http\IResponse
      */
     protected function runRoute(Request $request, callable $bind)
@@ -654,9 +644,7 @@ class Router implements IRouter
     }
 
     /**
-     * 节点资源未注册异常
-     *
-     * @return void
+     * 节点资源未注册异常.
      */
     protected function nodeNotFound()
     {
@@ -666,20 +654,20 @@ class Router implements IRouter
     }
 
     /**
-     * 生成节点资源
+     * 生成节点资源.
      *
      * @return string
      */
     protected function makeNode()
     {
-        return $this->matchedApp() . '\\' . 
-            $this->parseControllerDir() . '\\' . 
-            $this->matchedController() . '->' . 
+        return $this->matchedApp() . '\\' .
+            $this->parseControllerDir() . '\\' .
+            $this->matchedController() . '->' .
             $this->matchedAction() . '()';
     }
 
     /**
-     * 取得控制器命名空间目录
+     * 取得控制器命名空间目录.
      *
      * @return string
      */
@@ -696,8 +684,6 @@ class Router implements IRouter
 
     /**
      * 完成请求
-     *
-     * @return void
      */
     protected function completeRequest()
     {
@@ -706,7 +692,7 @@ class Router implements IRouter
         foreach ([
             'App',
             'Controller',
-            'Action'
+            'Action',
         ] as $type) {
             $this->request->{'set' . $type}($this->{'matched' . $type}());
         }
@@ -716,9 +702,7 @@ class Router implements IRouter
 
     /**
      * 智能 restful 解析
-     * 路由匹配如果没有匹配上方法器则系统会进入 restful 解析
-     *
-     * @return void
+     * 路由匹配如果没有匹配上方法器则系统会进入 restful 解析.
      */
     protected function pathinfoRestful()
     {
@@ -748,7 +732,7 @@ class Router implements IRouter
     }
 
     /**
-     * 分析默认控制器
+     * 分析默认控制器.
      *
      * @return false|callable
      */
@@ -767,7 +751,7 @@ class Router implements IRouter
         }
 
         // 尝试读取默认控制器
-        else {  
+        else {
             $controllerClass = $app . '\\' . $this->parseControllerDir() . '\\' . $controller;
             if (! class_exists($controllerClass)) {
                 return false;
@@ -787,13 +771,13 @@ class Router implements IRouter
 
         return [
             $controller,
-            $method
+            $method,
         ];
     }
 
     /**
      * 获取绑定的中间件
-     * 暂时不做重复过滤，允许中间件多次执行
+     * 暂时不做重复过滤，允许中间件多次执行.
      *
      * @return array
      */
@@ -801,12 +785,12 @@ class Router implements IRouter
     {
         return [
             'handle' => array_merge($this->globalMiddlewares['handle'], $this->matchedMiddlewares()['handle']),
-            'terminate' => array_merge($this->globalMiddlewares['terminate'], $this->matchedMiddlewares()['terminate'])
+            'terminate' => array_merge($this->globalMiddlewares['terminate'], $this->matchedMiddlewares()['terminate']),
         ];
     }
 
     /**
-     * 取回应用名
+     * 取回应用名.
      *
      * @return string
      */
@@ -826,7 +810,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取回控制器名
+     * 取回控制器名.
      *
      * @return string
      */
@@ -846,7 +830,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取回方法名
+     * 取回方法名.
      *
      * @return string
      */
@@ -862,11 +846,11 @@ class Router implements IRouter
             }
         }
 
-        if (strpos($action, '-') !== false) {
+        if (false !== strpos($action, '-')) {
             $action = str_replace('-', '_', $action);
-        } 
+        }
 
-        if (strpos($action, '_') !== false) {
+        if (false !== strpos($action, '_')) {
             $action = '_' . str_replace('_', ' ', $action);
             $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
         }
@@ -885,7 +869,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取回匹配参数
+     * 取回匹配参数.
      *
      * @return array
      */
@@ -895,7 +879,7 @@ class Router implements IRouter
     }
 
     /**
-     * 取回匹配中间件
+     * 取回匹配中间件.
      *
      * @return array
      */
@@ -903,12 +887,12 @@ class Router implements IRouter
     {
         return $this->matchedData[static::MIDDLEWARES] ?? [
             'handle' => [],
-            'terminate' => []
+            'terminate' => [],
         ];
     }
 
     /**
-     * 取回匹配变量
+     * 取回匹配变量.
      *
      * @return array
      */

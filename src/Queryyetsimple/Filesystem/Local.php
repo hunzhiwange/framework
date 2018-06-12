@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Filesystem;
 
 use InvalidArgumentException;
 use League\Flysystem\Adapter\Local as AdapterLocal;
 
 /**
- * filesystem.local
+ * filesystem.local.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.29
- * @link https://flysystem.thephpleague.com/adapter/local/
+ * @see https://flysystem.thephpleague.com/adapter/local/
+ *
  * @version 1.0
  */
 class Local extends Connect implements IConnect
 {
-
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -40,11 +44,11 @@ class Local extends Connect implements IConnect
         'path' => '',
         'write_flags' => LOCK_EX,
         'link_handling' => AdapterLocal::DISALLOW_LINKS,
-        'permissions' => []
+        'permissions' => [],
     ];
 
     /**
-     * 创建连接
+     * 创建连接.
      *
      * @return \League\Flysystem\AdapterInterface
      */

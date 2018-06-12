@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,36 +17,33 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Cache\Provider;
 
-use Leevel\{
-    Cache\Load,
-    Di\Provider,
-    Cache\Manager
-};
+use Leevel\Cache\Load;
+use Leevel\Di\Provider;
+use Leevel\Cache\Manager;
 
 /**
- * cache 服务提供者
+ * cache 服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.06.03
+ *
  * @version 1.0
  */
 class Register extends Provider
 {
-
     /**
-     * 是否延迟载入
+     * 是否延迟载入.
      *
-     * @var boolean
+     * @var bool
      */
     public static $defer = true;
 
     /**
      * 注册服务
-     *
-     * @return void
      */
     public function register()
     {
@@ -53,7 +53,7 @@ class Register extends Provider
     }
 
     /**
-     * 可用服务提供者
+     * 可用服务提供者.
      *
      * @return array
      */
@@ -61,22 +61,20 @@ class Register extends Provider
     {
         return [
             'caches' => [
-                'Leevel\Cache\Manager'
+                'Leevel\Cache\Manager',
             ],
             'cache' => [
                 'Leevel\Cache\Cache',
-                'Leevel\Cache\ICache'
+                'Leevel\Cache\ICache',
             ],
             'cache.load' => [
-                'Leevel\Cache\Load'
-            ]
+                'Leevel\Cache\Load',
+            ],
         ];
     }
 
     /**
      * 注册 caches 服务
-     *
-     * @return void
      */
     protected function caches()
     {
@@ -87,8 +85,6 @@ class Register extends Provider
 
     /**
      * 注册 cache 服务
-     *
-     * @return void
      */
     protected function cache()
     {
@@ -99,8 +95,6 @@ class Register extends Provider
 
     /**
      * 注册 cache.load 服务
-     *
-     * @return void
      */
     protected function cacheLoad()
     {

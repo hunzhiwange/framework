@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,28 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Encryption;
 
 /**
- * 加密抽象类
+ * 加密抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.02.15
+ *
  * @version 1.0
  */
 abstract class Connect
 {
-
     /**
-     * 加密 key
+     * 加密 key.
      *
      * @var string
      */
     protected $strKey;
 
     /**
-     * 加密过期时间
+     * 加密过期时间.
      *
      * @var int
      */

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,42 +17,42 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Queue\Jobs;
 
 use PHPQueue\Job as PHPQueueJob;
 
 /**
- * 基类 job
+ * 基类 job.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.12
+ *
  * @version 1.0
  */
 abstract class Job extends PHPQueueJob
 {
-
     /**
-     * 任务所属的消息队列
+     * 任务所属的消息队列.
      *
      * @var string
      */
     protected $strQueue;
 
     /**
-     * 任务是否被删除
+     * 任务是否被删除.
      *
-     * @var boolean
+     * @var bool
      */
     protected $booDeleted = false;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
-     * @param array $arrData
+     * @param array  $arrData
      * @param string $strJobId
      * @param string $strQueue
-     * @return void
      */
     public function __construct($arrData = null, $strJobId = null, $strQueue = 'default')
     {
@@ -60,26 +63,22 @@ abstract class Job extends PHPQueueJob
 
     /**
      * 执行任务
-     *
-     * @return void
      */
     public function handle()
     {
         list($strJob, $strMethod) = $this->parseString($this->getName());
         $objJob = $this->getJob($strJob);
 
-        $strMethod = method_exists($objJob, $strMethod) ? $strMethod : ($strMethod != 'handle' && method_exists($objJob, 'handle') ? 'handle' : 'run');
+        $strMethod = method_exists($objJob, $strMethod) ? $strMethod : ('handle' != $strMethod && method_exists($objJob, 'handle') ? 'handle' : 'run');
 
         $this->dispatch([
             $objJob,
-            $strMethod
+            $strMethod,
         ]);
     }
 
     /**
-     * 调用任务的失败方法
-     *
-     * @return void
+     * 调用任务的失败方法.
      */
     public function failed()
     {
@@ -89,15 +88,13 @@ abstract class Job extends PHPQueueJob
         if ($objJob && method_exists($objJob, 'failed')) {
             $this->dispatch([
                 $objJob,
-                'failed'
+                'failed',
             ]);
         }
     }
 
     /**
-     * 标识任务删除
-     *
-     * @return void
+     * 标识任务删除.
      */
     public function delete()
     {
@@ -105,9 +102,9 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 任务是否被删除
+     * 任务是否被删除.
      *
-     * @return boolean
+     * @return bool
      */
     public function isDeleted()
     {
@@ -115,7 +112,7 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 取得 job 名字
+     * 取得 job 名字.
      *
      * @return string
      */
@@ -125,7 +122,7 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 取得 job 数据
+     * 取得 job 数据.
      *
      * @return string
      */
@@ -135,7 +132,7 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 返回任务执行次数
+     * 返回任务执行次数.
      *
      * @return int
      */
@@ -145,7 +142,7 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 获取任务所属的消息队列
+     * 获取任务所属的消息队列.
      *
      * @return string
      */
@@ -155,7 +152,7 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 取得 worker
+     * 取得 worker.
      *
      * @return string
      */
@@ -165,7 +162,7 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 取得 job_id
+     * 取得 job_id.
      *
      * @return string
      */
@@ -175,24 +172,27 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 分析任务名字
+     * 分析任务名字.
      *
      * @param string $strJob
+     *
      * @return array
      */
     protected function parseString($strJob)
     {
         $strJob = explode('@', $strJob);
+
         return ! empty($strJob[1]) ? $strJob : [
             $strJob[0],
-            'handle'
+            'handle',
         ];
     }
 
     /**
-     * 取得任务实例
+     * 取得任务实例.
      *
      * @param string $strJob
+     *
      * @return object
      */
     protected function getJob($strJob)
@@ -201,10 +201,9 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 调度回调方法
+     * 调度回调方法.
      *
      * @param callable $calFunc
-     * @return void
      */
     protected function dispatch($calFunc)
     {
@@ -212,7 +211,7 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 返回服务容器
+     * 返回服务容器.
      *
      * @return \Leevel\Di\IContainer
      */
@@ -222,7 +221,7 @@ abstract class Job extends PHPQueueJob
     }
 
     /**
-     * 获取任务调度参数
+     * 获取任务调度参数.
      *
      * @return array
      */
@@ -230,13 +229,12 @@ abstract class Job extends PHPQueueJob
     {
         $arrArgs = $this->getData();
         array_unshift($arrArgs, $this);
+
         return $arrArgs;
     }
 
     /**
-     * 初始化
-     *
-     * @return void
+     * 初始化.
      */
     protected function initialization()
     {

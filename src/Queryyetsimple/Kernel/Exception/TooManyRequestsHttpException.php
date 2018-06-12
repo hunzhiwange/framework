@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,29 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Kernel\Exception;
 
 use Exception;
 
 /**
  * 请求过于频繁异常
- * 用户在给定的时间内发送了太多的请求: 429
+ * 用户在给定的时间内发送了太多的请求: 429.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.10
+ *
  * @version 1.0
  */
 class TooManyRequestsHttpException extends HttpException
 {
-
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param string|null $message
-     * @param integer $code
-     * @param \Exception $previous
-     * @return void
+     * @param int         $code
+     * @param \Exception  $previous
      */
     public function __construct($message = null, $code = 0, Exception $previous = null)
     {

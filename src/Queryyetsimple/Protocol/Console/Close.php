@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,49 +17,45 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Console;
 
-use Exception;
-use Leevel\{
-    Console\Option,
-    Console\Command,
-    Console\Argument
-};
+use Leevel\Console\Option;
+use Leevel\Console\Command;
+use Leevel\Console\Argument;
 
 /**
- * swoole 服务关闭
+ * swoole 服务关闭.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.12.26
+ *
  * @version 1.0
  */
 class Close extends Command
 {
-
     /**
-     * 命令名字
+     * 命令名字.
      *
      * @var string
      */
     protected $name = 'swoole:close';
 
     /**
-     * 命令行描述
+     * 命令行描述.
      *
      * @var string
      */
     protected $description = 'Close swoole service process';
 
     /**
-     * 响应命令
-     *
-     * @return void
+     * 响应命令.
      */
     public function handle()
     {
         $this->warn($this->getVersion());
-        
+
         $server = app('swoole.' . $this->argument('type') . '.server');
         $server->setCommand($this);
         $server->options($this->parseOption());
@@ -64,16 +63,16 @@ class Close extends Command
     }
 
     /**
-     * 分析参数
+     * 分析参数.
      *
      * @return array
      */
-    protected function parseOption():array
+    protected function parseOption(): array
     {
         $option = [];
 
-        foreach(['host', 'port', 'pid_path'] as $key) {
-            if(! is_null($this->option($key))) {
+        foreach (['host', 'port', 'pid_path'] as $key) {
+            if (null !== $this->option($key)) {
                 $option[$key] = $this->option($key);
             }
         }
@@ -82,20 +81,20 @@ class Close extends Command
     }
 
     /**
-     * 返回 QueryPHP Version
+     * 返回 QueryPHP Version.
      *
      * @return string
      */
     protected function getVersion()
     {
-        return 'The Close of Swoole ' . 
+        return 'The Close of Swoole ' .
             ucfirst($this->argument('type')) .
             ' Server Version ' . app()->version() .
             PHP_EOL;
     }
 
     /**
-     * 命令参数
+     * 命令参数.
      *
      * @return array
      */
@@ -106,13 +105,13 @@ class Close extends Command
                 'type',
                 Argument::OPTIONAL,
                 'The type of server,support default,http,websocket.',
-                app('option')['swoole\default']
-            ]
+                app('option')['swoole\default'],
+            ],
         ];
     }
 
     /**
-     * 命令配置
+     * 命令配置.
      *
      * @return array
      */
@@ -123,20 +122,20 @@ class Close extends Command
                 'host',
                 null,
                 Option::VALUE_OPTIONAL,
-                'The host to listen on'
+                'The host to listen on',
             ],
             [
                 'port',
                 null,
                 Option::VALUE_OPTIONAL,
-                'The port to listen on'
+                'The port to listen on',
             ],
             [
                 'pid_path',
                 null,
                 Option::VALUE_OPTIONAL,
-                'The save path of process'
-            ]
+                'The save path of process',
+            ],
         ];
     }
 }

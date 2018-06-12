@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,29 +17,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n;
 
-use Leevel\I18n\{
-    Streams\File,
-    Streams\Reader,
-    Translations\Gettext
-};
+use Leevel\I18n\Streams\File;
+use Leevel\I18n\Streams\Reader;
+use Leevel\I18n\Translations\Gettext;
 
 /**
  * 解析 mo 文件
- * This class borrows heavily from the Wordpress and is part of the Wordpress package
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.18
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ *
  * @version 1.0
  */
 class Mo extends Gettext
 {
-
     /**
-     * prop
+     * prop.
      *
      * @var int
      */
@@ -52,7 +54,7 @@ class Mo extends Gettext
     /**
      * Returns the loaded MO file.
      *
-     * @return string The loaded MO file.
+     * @return string the loaded MO file
      */
     public function get_filename()
     {
@@ -60,7 +62,7 @@ class Mo extends Gettext
     }
 
     /**
-     * Fills up with the entries from MO file $filename
+     * Fills up with the entries from MO file $filename.
      *
      * @param string $filename MO file to load
      */
@@ -70,13 +72,14 @@ class Mo extends Gettext
         if (! $reader->is_resource()) {
             return false;
         }
-        $this->filename = ( string ) $filename;
+        $this->filename = (string) $filename;
+
         return $this->import_from_reader($reader);
     }
 
     /**
-     *
      * @param string $filename
+     *
      * @return bool
      */
     public function export_to_file($filename)
@@ -87,27 +90,28 @@ class Mo extends Gettext
         }
         $res = $this->export_to_file_handle($fh);
         fclose($fh);
+
         return $res;
     }
 
     /**
-     *
      * @return string|false
      */
     public function export()
     {
-        $tmp_fh = fopen("php://temp", 'r+');
+        $tmp_fh = fopen('php://temp', 'r+');
         if (! $tmp_fh) {
             return false;
         }
         $this->export_to_file_handle($tmp_fh);
         rewind($tmp_fh);
+
         return stream_get_contents($tmp_fh);
     }
 
     /**
-     *
      * @param Translation_Entry $entry
+     *
      * @return bool
      */
     public function is_entry_good_for_export($entry)
@@ -118,20 +122,21 @@ class Mo extends Gettext
         if (! array_filter($entry->translations)) {
             return false;
         }
+
         return true;
     }
 
     /**
-     *
      * @param resource $fh
+     *
      * @return true
      */
     public function export_to_file_handle($fh)
     {
-        $entries = array_filter($this->entries, array(
+        $entries = array_filter($this->entries, [
             $this,
-            'is_entry_good_for_export'
-        ));
+            'is_entry_good_for_export',
+        ]);
         ksort($entries);
         $magic = 0x950412de;
         $revision = 0;
@@ -145,7 +150,7 @@ class Mo extends Gettext
         fseek($fh, $originals_lenghts_addr);
         // headers' msgid is an empty string
         fwrite($fh, pack('VV', 0, $current_addr));
-        $current_addr ++;
+        ++$current_addr;
         $originals_table = chr(0);
         $reader = new reader();
         foreach ($entries as $entry) {
@@ -166,12 +171,13 @@ class Mo extends Gettext
         }
         fwrite($fh, $originals_table);
         fwrite($fh, $translations_table);
+
         return true;
     }
 
     /**
-     *
      * @param Translation_Entry $entry
+     *
      * @return string
      */
     public function export_original($entry)
@@ -184,12 +190,13 @@ class Mo extends Gettext
         if ($entry->context) {
             $exported = $entry->context . chr(4) . $exported;
         }
+
         return $exported;
     }
 
     /**
-     *
      * @param Translation_Entry $entry
+     *
      * @return string
      */
     public function export_translations($entry)
@@ -199,7 +206,6 @@ class Mo extends Gettext
     }
 
     /**
-     *
      * @return string
      */
     public function export_headers()
@@ -208,22 +214,23 @@ class Mo extends Gettext
         foreach ($this->headers as $header => $value) {
             $exported .= "$header: $value\n";
         }
+
         return $exported;
     }
 
     /**
-     *
      * @param int $magic
+     *
      * @return string|false
      */
     public function get_byteorder($magic)
     {
         // The magic is 0x950412de
         // bug in PHP 5.0.2, see https://savannah.nongnu.org/bugs/?func=detailitem&item_id=10565
-        $magic_little = (int)- 1794895138;
-        $magic_little_64 = (int)2500072158;
+        $magic_little = (int) -1794895138;
+        $magic_little_64 = (int) 2500072158;
         // 0xde120495
-        $magic_big = ((int)- 569244523) & 0xFFFFFFFF;
+        $magic_big = ((int) -569244523) & 0xFFFFFFFF;
         if ($magic_little == $magic || $magic_little_64 == $magic) {
             return 'little';
         } elseif ($magic_big == $magic) {
@@ -234,7 +241,6 @@ class Mo extends Gettext
     }
 
     /**
-     *
      * @param POMO_FileReader $reader
      */
     public function import_from_reader($reader)
@@ -246,7 +252,7 @@ class Mo extends Gettext
         $reader->setEndian($endian_string);
         $endian = ('big' == $endian_string) ? 'N' : 'V';
         $header = $reader->read(24);
-        if ($reader->strlen($header) != 24) {
+        if (24 != $reader->strlen($header)) {
             return false;
         }
         // parse header
@@ -255,14 +261,14 @@ class Mo extends Gettext
             return false;
         }
         // support revision 0 of MO format specs, only
-        if ($header['revision'] != 0) {
+        if (0 != $header['revision']) {
             return false;
         }
         // seek to data blocks
         $reader->seekto($header['originals_lenghts_addr']);
         // read originals' indices
         $originals_lengths_length = $header['translations_lenghts_addr'] - $header['originals_lenghts_addr'];
-        if ($originals_lengths_length != $header['total'] * 8) {
+        if ($header['total'] * 8 != $originals_lengths_length) {
             return false;
         }
         $originals = $reader->read($originals_lengths_length);
@@ -271,7 +277,7 @@ class Mo extends Gettext
         }
         // read translations' indices
         $translations_lenghts_length = $header['hash_addr'] - $header['translations_lenghts_addr'];
-        if ($translations_lenghts_length != $header['total'] * 8) {
+        if ($header['total'] * 8 != $translations_lenghts_length) {
             return false;
         }
         $translations = $reader->read($translations_lenghts_length);
@@ -286,7 +292,7 @@ class Mo extends Gettext
         $reader->seekto($strings_addr);
         $strings = $reader->read_all();
         $reader->close();
-        for ($i = 0; $i < $header['total']; $i ++) {
+        for ($i = 0; $i < $header['total']; ++$i) {
             $o = unpack("{$endian}length/{$endian}pos", $originals[$i]);
             $t = unpack("{$endian}length/{$endian}pos", $translations[$i]);
             if (! $o || ! $t) {
@@ -304,16 +310,18 @@ class Mo extends Gettext
                 $this->entries[$entry->key()] = &$entry;
             }
         }
+
         return true;
     }
 
     /**
      * Build a Translation_Entry from original string and translation strings,
-     * found in a MO file
+     * found in a MO file.
      *
      * @param string $original
      * @note original string to translate from MO file. Might contain
      * @note 0x04 as context separator or 0x00 as singular/plural separator
+     *
      * @param string $translation
      * @note translation string from MO file. Might contain
      * @note 0x00 as a plural translations separator
@@ -336,12 +344,13 @@ class Mo extends Gettext
         }
         // plural translations are also separated by \0
         $entry->translations = explode(chr(0), $translation);
+
         return $entry;
     }
 
     /**
-     *
      * @param int $count
+     *
      * @return string
      */
     public function select_plural_form($count)
@@ -350,7 +359,6 @@ class Mo extends Gettext
     }
 
     /**
-     *
      * @return int
      */
     public function get_plural_forms_count()

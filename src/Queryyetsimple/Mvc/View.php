@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,22 +17,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc;
 
 use RuntimeException;
 use Leevel\View\IView as ViewIView;
 
 /**
- * 视图
+ * 视图.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.19
+ *
  * @version 1.0
  */
 class View implements IView
 {
-
     /**
      * 视图模板
      *
@@ -38,10 +42,9 @@ class View implements IView
     protected $theme;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\View\IView $theme
-     * @return void
      */
     public function __construct(ViewIView $theme)
     {
@@ -49,9 +52,10 @@ class View implements IView
     }
 
     /**
-     * 切换视图
+     * 切换视图.
      *
      * @param \Leevel\View\IView $theme
+     *
      * @return $this
      */
     public function switchView(ViewIView $theme)
@@ -69,6 +73,7 @@ class View implements IView
      *
      * @param mixed $name
      * @param mixed $value
+     *
      * @return $this
      */
     public function assign($name, $value = null)
@@ -83,6 +88,7 @@ class View implements IView
      * 获取变量赋值
      *
      * @param string|null $name
+     *
      * @return mixed
      */
     public function getAssign($name = null)
@@ -96,6 +102,7 @@ class View implements IView
      * 删除变量值
      *
      * @param mixed $name
+     *
      * @return $this
      */
     public function deleteAssign($name)
@@ -112,22 +119,24 @@ class View implements IView
      * 清空变量值
      *
      * @param string|null $name
+     *
      * @return $this
      */
     public function clearAssign()
     {
         $this->checkTheme();
         $this->theme->clearVar();
-        
+
         return $this;
     }
 
     /**
-     * 加载视图文件
+     * 加载视图文件.
      *
      * @param string $file
-     * @param array $vars
+     * @param array  $vars
      * @param string $ext
+     *
      * @return string
      */
     public function display($file = null, array $vars = [], $ext = null)
@@ -138,9 +147,7 @@ class View implements IView
     }
 
     /**
-     * 验证 theme
-     *
-     * @return void
+     * 验证 theme.
      */
     protected function checkTheme()
     {

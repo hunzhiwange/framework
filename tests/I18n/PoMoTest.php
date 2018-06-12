@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\I18n;
 
 use Tests\TestCase;
 use Leevel\I18n\Po;
-Use Leevel\I18n\Mo;
+use Leevel\I18n\Mo;
 
 /**
- * po mo test
- * 
+ * po mo test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.03
+ *
  * @version 1.0
  */
 class PoMoTest extends TestCase
 {
-
     public function testPo()
     {
         $lang = (new Po())->readToArray([__DIR__ . '/page.po']);
@@ -40,7 +44,7 @@ class PoMoTest extends TestCase
             '下一页' => 'Next',
             '共 %d 条' => 'Total %d',
             '前往' => 'Go to',
-            '页' => 'Page'
+            '页' => 'Page',
         ]);
     }
 
@@ -53,7 +57,7 @@ class PoMoTest extends TestCase
             '下一页' => 'Next',
             '共 %d 条' => 'Total %d',
             '前往' => 'Go to',
-            '页' => 'Page'
+            '页' => 'Page',
         ]);
     }
 }

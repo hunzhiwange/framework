@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,37 +17,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\View;
 
 use RuntimeException;
 
 /**
- * html 模板处理类
+ * html 模板处理类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.18
+ *
  * @version 1.0
  */
 class Html extends Connect implements IConnect
 {
-
     /**
-     * 视图分析器
+     * 视图分析器.
      *
      * @var \Leevel\View\iparser
      */
     protected $parser;
 
     /**
-     * 解析 parse
+     * 解析 parse.
      *
      * @var callable
      */
     protected $parseResolver;
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -58,16 +62,17 @@ class Html extends Connect implements IConnect
         'theme_path_default' => '',
         'suffix' => '.html',
         'theme_cache_path' => '',
-        'cache_lifetime' => 2592000
+        'cache_lifetime' => 2592000,
     ];
 
     /**
-     * 加载视图文件
+     * 加载视图文件.
      *
-     * @param string $file 视图文件地址
-     * @param array $vars
-     * @param string $ext 后缀
-     * @param boolean $display 是否显示
+     * @param string $file    视图文件地址
+     * @param array  $vars
+     * @param string $ext     后缀
+     * @param bool   $display 是否显示
+     *
      * @return string
      */
     public function display(?string $file = null, array $vars = [], ?string $ext = null, bool $display = true)
@@ -79,7 +84,7 @@ class Html extends Connect implements IConnect
         if ($vars) {
             $this->setVar($vars);
         }
-        
+
         if (is_array($this->vars) && ! empty($this->vars)) {
             extract($this->vars, EXTR_PREFIX_SAME, 'q_');
         }
@@ -91,7 +96,7 @@ class Html extends Connect implements IConnect
         }
 
         // 返回类型
-        if ($display === false) {
+        if (false === $display) {
             ob_start();
             include $cachepath;
             $result = ob_get_contents();
@@ -104,10 +109,9 @@ class Html extends Connect implements IConnect
     }
 
     /**
-     * 设置 parse 解析回调
+     * 设置 parse 解析回调.
      *
      * @param callable $parseResolver
-     * @return void
      */
     public function setParseResolver(callable $parseResolver)
     {
@@ -115,7 +119,7 @@ class Html extends Connect implements IConnect
     }
 
     /**
-     * 解析 parse
+     * 解析 parse.
      *
      * @return \Leevel\View\IParser
      */
@@ -129,13 +133,13 @@ class Html extends Connect implements IConnect
     }
 
     /**
-     * 获取分析器
+     * 获取分析器.
      *
      * @return \Leevel\View\IParser
      */
     public function parser()
     {
-        if (! is_null($this->parser)) {
+        if (null !== $this->parser) {
             return $this->parser;
         }
 
@@ -143,9 +147,10 @@ class Html extends Connect implements IConnect
     }
 
     /**
-     * 获取编译路径
+     * 获取编译路径.
      *
      * @param string $file
+     *
      * @return string
      */
     protected function getCachePath(string $file)
@@ -170,7 +175,8 @@ class Html extends Connect implements IConnect
      *
      * @param string $file
      * @param string $cachepath
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isCacheExpired(string $file, string $cachepath)
     {
@@ -190,7 +196,7 @@ class Html extends Connect implements IConnect
         }
 
         // 缓存时间到期
-        if (filemtime($cachepath) + intval($this->option['cache_lifetime']) < time()) {
+        if (filemtime($cachepath) + (int) ($this->option['cache_lifetime']) < time()) {
             return true;
         }
 

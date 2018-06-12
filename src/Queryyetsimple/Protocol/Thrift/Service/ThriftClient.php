@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Protocol\Thrift\Service;
 
-use Thrift\Base\TBase;
-use Thrift\Type\TType;
 use Thrift\Type\TMessageType;
-use Thrift\Protocol\TProtocol;
-use Thrift\Exception\TException;
-use Thrift\Exception\TProtocolException;
 use Thrift\Exception\TApplicationException;
 use Thrift\Protocol\TBinaryProtocolAccelerated;
 
 /**
- * thrift 默认服务客户端
+ * thrift 默认服务客户端.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.01
+ *
  * @version 1.0
  */
 class ThriftClient implements ThriftIf
@@ -40,7 +40,7 @@ class ThriftClient implements ThriftIf
 
     protected $seqid_ = 0;
 
-    public function __construct($input, $output=null)
+    public function __construct($input, $output = null)
     {
         $this->input_ = $input;
         $this->output_ = $output ? $output : $input;
@@ -49,6 +49,7 @@ class ThriftClient implements ThriftIf
     public function call(Request $request)
     {
         $this->send_call($request);
+
         return $this->recv_call();
     }
 
@@ -78,7 +79,7 @@ class ThriftClient implements ThriftIf
             $mtype = 0;
 
             $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-            if ($mtype == TMessageType::EXCEPTION) {
+            if (TMessageType::EXCEPTION == $mtype) {
                 $x = new TApplicationException();
                 $x->read($this->input_);
                 $this->input_->readMessageEnd();
@@ -88,9 +89,9 @@ class ThriftClient implements ThriftIf
             $result->read($this->input_);
             $this->input_->readMessageEnd();
         }
-        if ($result->success !== null) {
+        if (null !== $result->success) {
             return $result->success;
         }
-        throw new \Exception("call failed: unknown result");
+        throw new \Exception('call failed: unknown result');
     }
 }

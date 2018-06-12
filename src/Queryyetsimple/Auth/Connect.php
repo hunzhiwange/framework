@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,22 +17,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Auth;
 
-use Leevel\{
-    Mvc\IModel,
-    Support\Str,
-    Option\TClass,
-    Validate\IValidate,
-    Encryption\IEncryption
-};
+use Leevel\Mvc\IModel;
+use Leevel\Support\Str;
+use Leevel\Option\TClass;
+use Leevel\Validate\IValidate;
+use Leevel\Encryption\IEncryption;
 
 /**
- * connect 驱动抽象类
+ * connect 驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.07
+ *
  * @version 1.0
  */
 abstract class Connect
@@ -44,7 +47,7 @@ abstract class Connect
     protected $oUser;
 
     /**
-     * 加密
+     * 加密.
      *
      * @var \Leevel\Encryption\IEncryption
      */
@@ -58,35 +61,35 @@ abstract class Connect
     protected $oValidate;
 
     /**
-     * 是否已经设置过登录字段
+     * 是否已经设置过登录字段.
      *
-     * @var boolean
+     * @var bool
      */
     protected $booSetField = false;
 
     /**
-     * 认证名字
+     * 认证名字.
      *
      * @var string
      */
     protected $strTokenName;
 
     /**
-     * 用户持久化名字
+     * 用户持久化名字.
      *
      * @return string
      */
     protected $strUserPersistenceName;
 
     /**
-     * 锁定名字
+     * 锁定名字.
      *
      * @return string
      */
     protected $strLockName;
 
     /**
-     * 登录字段设置
+     * 登录字段设置.
      *
      * @var array
      */
@@ -102,11 +105,11 @@ abstract class Connect
         'login_time' => 'login_time',
         'login_ip' => 'login_ip',
         'login_count' => 'login_count',
-        'status' => 'status'
+        'status' => 'status',
     ];
 
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -114,14 +117,13 @@ abstract class Connect
         'user_persistence' => 'user_persistence',
         'token_persistence' => 'token_persistence',
         'lock_persistence' => 'lock_persistence',
-        'field' => 'id,name,nikename,email,mobile'
+        'field' => 'id,name,nikename,email,mobile',
     ];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $arrOption
-     * @return void
      */
     public function __construct(IModel $oUser, IEncryption $oEncryption, IValidate $oValidate, array $arrOption = [])
     {
@@ -133,9 +135,9 @@ abstract class Connect
     }
 
     /**
-     * 用户是否已经登录
+     * 用户是否已经登录.
      *
-     * @return boolean
+     * @return bool
      */
     public function isLogin()
     {
@@ -143,7 +145,7 @@ abstract class Connect
     }
 
     /**
-     * 获取登录信息
+     * 获取登录信息.
      *
      * @return mixed
      */
@@ -152,13 +154,14 @@ abstract class Connect
         $sToken = $this->tokenData();
         list($nUserId, $sPassword) = $sToken ? $this->explodeTokenData($sToken) : [
             '',
-            ''
+            '',
         ];
 
         if ($nUserId && $sPassword) {
-            return $this->getPersistenceUser($nUserId, $sPassword) ?  : false;
+            return $this->getPersistenceUser($nUserId, $sPassword) ?: false;
         } else {
             $this->logout();
+
             return false;
         }
     }
@@ -166,9 +169,10 @@ abstract class Connect
     /**
      * 登录验证
      *
-     * @param mixed $mixName
+     * @param mixed  $mixName
      * @param string $sPassword
-     * @param mixed $mixLoginTime
+     * @param mixed  $mixLoginTime
+     *
      * @return \Leevel\Mvc\IModel|void
      */
     public function login($mixName, $sPassword, $mixLoginTime = null)
@@ -183,10 +187,11 @@ abstract class Connect
     }
 
     /**
-     * 仅仅验证登录用户和密码是否正确
+     * 仅仅验证登录用户和密码是否正确.
      *
-     * @param mixed $mixName
+     * @param mixed  $mixName
      * @param string $sPassword
+     *
      * @return \Leevel\Mvc\IModel|void
      */
     public function onlyValidate($mixName, $sPassword)
@@ -200,7 +205,7 @@ abstract class Connect
 
         $oUser = $this->oUser->where($this->parseLoginField($mixName), $mixName)->getOne();
 
-        if (empty($oUser->{$this->getField('id')}) || $oUser->{$this->getField('status')} != 'enable') {
+        if (empty($oUser->{$this->getField('id')}) || 'enable' != $oUser->{$this->getField('status')}) {
             throw new LoginFailed(__('帐号不存在或者未启用'));
         }
 
@@ -212,9 +217,7 @@ abstract class Connect
     }
 
     /**
-     * 登出
-     *
-     * @return void
+     * 登出.
      */
     public function logout()
     {
@@ -226,18 +229,17 @@ abstract class Connect
     /**
      * 是否处于锁定状态
      *
-     * @return boolean
+     * @return bool
      */
     public function isLock()
     {
-        return $this->getPersistence($this->getLockName()) == 'locked';
+        return 'locked' == $this->getPersistence($this->getLockName());
     }
 
     /**
-     * 锁定登录
+     * 锁定登录.
      *
      * @param mixed $mixLoginTime
-     * @return void
      */
     public function lock($mixLoginTime = null)
     {
@@ -246,8 +248,6 @@ abstract class Connect
 
     /**
      * 解锁
-     *
-     * @return void
      */
     public function unlock()
     {
@@ -257,11 +257,12 @@ abstract class Connect
     /**
      * 修改密码
      *
-     * @param mixed $mixName
+     * @param mixed  $mixName
      * @param string $sNewPassword
      * @param string $sConfirmPassword
      * @param string $sOldPassword
-     * @param boolean $bIgnoreOldPassword
+     * @param bool   $bIgnoreOldPassword
+     *
      * @return mixed
      */
     public function changePassword($mixName, $sNewPassword, $sConfirmPassword, $sOldPassword, $bIgnoreOldPassword = false)
@@ -270,7 +271,7 @@ abstract class Connect
             throw new ChangePasswordFailed(__('账号或者 ID 不能为空'));
         }
 
-        if ($bIgnoreOldPassword === false && $sOldPassword == '') {
+        if (false === $bIgnoreOldPassword && '' == $sOldPassword) {
             throw new ChangePasswordFailed(__('旧密码不能为空'));
         }
 
@@ -284,7 +285,7 @@ abstract class Connect
 
         $oUser = $this->oUser->where($this->parseChangePasswordField($mixName), $mixName)->setColumns('id,status,random,password')->getOne();
 
-        if (empty($oUser->{$this->getField('id')}) || $oUser->{$this->getField('status')} != 'enable') {
+        if (empty($oUser->{$this->getField('id')}) || 'enable' != $oUser->{$this->getField('status')}) {
             throw new ChangePasswordFailed(__('帐号不存在或者未启用'));
         }
 
@@ -303,7 +304,7 @@ abstract class Connect
     }
 
     /**
-     * 注册用户
+     * 注册用户.
      *
      * @param string $strName
      * @param string $strPassword
@@ -312,6 +313,7 @@ abstract class Connect
      * @param string $strIp
      * @param string $strEmail
      * @param string $strMobile
+     *
      * @return mixed
      */
     public function registerUser($strName, $strPassword, $strComfirmPassword, $strNikename = null, $strIp = null, $strEmail = null, $strMobile = null)
@@ -327,7 +329,7 @@ abstract class Connect
             throw new RegisterFailed(__('用户名不能为空或包含非法字符'));
         }
 
-        if (! $strPassword || $strPassword != addslashes($strPassword) || strpos($strPassword, "\n") !== false || strpos($strPassword, "\r") !== false || strpos($strPassword, "\t") !== false) {
+        if (! $strPassword || $strPassword != addslashes($strPassword) || false !== strpos($strPassword, "\n") || false !== strpos($strPassword, "\r") || false !== strpos($strPassword, "\t")) {
             throw new RegisterFailed(__('密码不能为空或包含非法字符'));
         }
 
@@ -340,17 +342,17 @@ abstract class Connect
 
             forceProp('name', $strName)->
 
-            ifs(! is_null($strNikename))->forceProp('nikename', $strNikename)->endIfs()->
+            ifs(null !== $strNikename)->forceProp('nikename', $strNikename)->endIfs()->
 
             forceProp('random', $strRandom = Str::randAlphaNum(6))->
 
             forceProp('password', $this->encodePassword($strPassword, $strRandom))->
 
-            ifs(! is_null($strEmail))->forceProp('email', $strEmail)->endIfs()->
+            ifs(null !== $strEmail)->forceProp('email', $strEmail)->endIfs()->
 
-            ifs(! is_null($strMobile))->forceProp('mobile', $strMobile)->endIfs()->
+            ifs(null !== $strMobile)->forceProp('mobile', $strMobile)->endIfs()->
 
-            ifs(! is_null($strIp))->forceProp('register_ip', $strIp)->endIfs()->
+            ifs(null !== $strIp)->forceProp('register_ip', $strIp)->endIfs()->
 
             create();
 
@@ -365,9 +367,10 @@ abstract class Connect
     }
 
     /**
-     * 设置认证名字
+     * 设置认证名字.
      *
      * @param string $strTokenName
+     *
      * @return string
      */
     public function setTokenName($strTokenName)
@@ -376,22 +379,24 @@ abstract class Connect
     }
 
     /**
-     * 取得认证名字
+     * 取得认证名字.
      *
      * @return string
      */
     public function getTokenName()
     {
-        if (! is_null($this->strTokenName)) {
+        if (null !== $this->strTokenName) {
             return $this->strTokenName;
         }
+
         return $this->strTokenName = $this->getOption('token_persistence');
     }
 
     /**
-     * 设置用户信息持久化名字
+     * 设置用户信息持久化名字.
      *
      * @param string $strUserPersistenceName
+     *
      * @return string
      */
     public function setUserPersistenceName($strUserPersistenceName)
@@ -400,22 +405,24 @@ abstract class Connect
     }
 
     /**
-     * 取得用户信息持久化名字
+     * 取得用户信息持久化名字.
      *
      * @return string
      */
     public function getUserPersistenceName()
     {
-        if (! is_null($this->strUserPersistenceName)) {
+        if (null !== $this->strUserPersistenceName) {
             return $this->strUserPersistenceName;
         }
+
         return $this->strUserPersistenceName = $this->getTokenName() . '@' . $this->getOption('user_persistence');
     }
 
     /**
-     * 设置锁定名字
+     * 设置锁定名字.
      *
      * @param string $strLockName
+     *
      * @return string
      */
     public function setLockName($strLockName)
@@ -424,28 +431,28 @@ abstract class Connect
     }
 
     /**
-     * 取得锁定名字
+     * 取得锁定名字.
      *
      * @return string
      */
     public function getLockName()
     {
-        if (! is_null($this->strLockName)) {
+        if (null !== $this->strLockName) {
             return $this->strLockName;
         }
+
         return $this->strLockName = $this->getTokenName() . '@' . $this->getOption('lock_persistence');
     }
 
     /**
-     * 设置字段
+     * 设置字段.
      *
      * @param array $arrField
-     * @param boolean $booForce
-     * @return void
+     * @param bool  $booForce
      */
     public function setField(array $arrField, $booForce = false)
     {
-        if ($booForce === false && $this->booSetField = true) {
+        if (false === $booForce && $this->booSetField = true) {
             return;
         }
 
@@ -458,9 +465,10 @@ abstract class Connect
     }
 
     /**
-     * 获取字段
+     * 获取字段.
      *
      * @param array $strField
+     *
      * @return mixed
      */
     public function getField($strField)
@@ -469,28 +477,31 @@ abstract class Connect
     }
 
     /**
-     * 批量获取字段
+     * 批量获取字段.
      *
      * @param array $arrField
-     * @param boolean $booFilterNull
+     * @param bool  $booFilterNull
+     *
      * @return array
      */
     public function getFields(array $arrField, $booFilterNull = true)
     {
         $arrData = [];
         foreach ($arrField as $strField) {
-            if (is_null($mixValue = $this->getField($strField)) && $booFilterNull === true) {
+            if (null === ($mixValue = $this->getField($strField)) && true === $booFilterNull) {
                 continue;
             }
             $arrData[] = $mixValue;
         }
+
         return $arrData;
     }
 
     /**
-     * 验证数据分离
+     * 验证数据分离.
      *
      * @param string $sAuth
+     *
      * @return mixed
      */
     public function explodeTokenData($sAuth)
@@ -499,14 +510,16 @@ abstract class Connect
             return false;
         }
         $sAuth = $this->oEncryption->decrypt($sAuth);
+
         return $sAuth ? explode("\t", $sAuth) : false;
     }
 
     /**
-     * 验证数据组合
+     * 验证数据组合.
      *
-     * @param mixed $maxIdentifier
+     * @param mixed  $maxIdentifier
      * @param string $strPassword
+     *
      * @return string
      */
     public function implodeTokenData($maxIdentifier, $strPassword)
@@ -515,12 +528,13 @@ abstract class Connect
     }
 
     /**
-     * 验证密码是否正确
+     * 验证密码是否正确.
      *
      * @param string $sSourcePassword
      * @param string $sPassword
      * @param string $sRandom
-     * @return boolean
+     *
+     * @return bool
      */
     protected function checkPassword($sSourcePassword, $sPassword, $sRandom)
     {
@@ -532,6 +546,7 @@ abstract class Connect
      *
      * @param string $sSourcePassword
      * @param string $sRandom
+     *
      * @return string
      */
     protected function encodePassword($sSourcePassword, $sRandom)
@@ -540,9 +555,10 @@ abstract class Connect
     }
 
     /**
-     * 解析登录字段
+     * 解析登录字段.
      *
      * @param string $sName
+     *
      * @return string
      */
     protected function parseLoginField($sName)
@@ -551,9 +567,10 @@ abstract class Connect
     }
 
     /**
-     * 解析修改密码字段
+     * 解析修改密码字段.
      *
      * @param string $sName
+     *
      * @return string
      */
     protected function parseChangePasswordField($sName)
@@ -562,7 +579,7 @@ abstract class Connect
     }
 
     /**
-     * 从持久化系统获取用户信息
+     * 从持久化系统获取用户信息.
      *
      * @return mixed
      */
@@ -572,23 +589,26 @@ abstract class Connect
     }
 
     /**
-     * 将用户信息保存至持久化
+     * 将用户信息保存至持久化.
      *
      * @param \Leevel\Mvc\IModel $oUser
+     *
      * @return array
      */
     protected function setUserToPersistence($oUser)
     {
         $oUser = $oUser->toArray();
         $this->setPersistence($this->getUserPersistenceName(), $oUser);
+
         return $oUser;
     }
 
     /**
-     * 从数据库获取用户信息
+     * 从数据库获取用户信息.
      *
-     * @param int $nUserId
+     * @param int    $nUserId
      * @param string $sPassword
+     *
      * @return \Leevel\Mvc\IModel
      */
     protected function getUserFromDatabase($nUserId, $sPassword)
@@ -607,10 +627,11 @@ abstract class Connect
     }
 
     /**
-     * 获取用户数据
+     * 获取用户数据.
      *
-     * @param int $nUserId
+     * @param int    $nUserId
      * @param string $sPassword
+     *
      * @return mixed
      */
     protected function getPersistenceUser($nUserId, $sPassword)
@@ -623,17 +644,17 @@ abstract class Connect
             return $this->setUserToPersistence($oUser);
         } else {
             $this->logout();
+
             return false;
         }
     }
 
     /**
-     * 认证信息持久化
+     * 认证信息持久化.
      *
-     * @param int $intId
+     * @param int    $intId
      * @param string $strPassword
-     * @param mixed $mixLoginTime
-     * @return void
+     * @param mixed  $mixLoginTime
      */
     protected function tokenPersistence($intId, $strPassword, $mixLoginTime = null)
     {
@@ -641,7 +662,7 @@ abstract class Connect
     }
 
     /**
-     * 认证信息获取
+     * 认证信息获取.
      *
      * @return string
      */
@@ -651,9 +672,7 @@ abstract class Connect
     }
 
     /**
-     * 认证信息删除
-     *
-     * @return void
+     * 认证信息删除.
      */
     protected function tokenDelete()
     {

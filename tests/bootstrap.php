@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,7 +18,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * 框架内部测试启动文件
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -39,11 +42,11 @@ if (false === is_file($vendorDir . '/autoload.php')) {
     include $vendorDir . '/autoload.php';
 }
 
-spl_autoload_register(function($class) {
+spl_autoload_register(function ($class) {
     if (0 === stripos($class, 'Tests\\')) {
         $path = __DIR__ . '/' . strtr(substr($class, 5), '\\', '/') . '.php';
-        
-        if (is_file($path) === true && is_readable($path) === true) {
+
+        if (true === is_file($path) && true === is_readable($path)) {
             require_once $path;
 
             return true;

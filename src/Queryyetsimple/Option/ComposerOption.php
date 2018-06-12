@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,39 +17,39 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Option;
 
 /**
  * 读取 composer 配置信息
- * 用于实现自动注册服务提供者、语言包、命令等核心配置
+ * 用于实现自动注册服务提供者、语言包、命令等核心配置.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.05.08
+ *
  * @version 1.0
  */
 class ComposerOption
 {
-
     /**
-     * 基础路径
+     * 基础路径.
      *
      * @var string
      */
     protected $path;
 
     /**
-     * 是否载入
+     * 是否载入.
      *
      * @var array
      */
     protected $loaded;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param string $path
-     * @return void
      */
     public function __construct(string $path)
     {
@@ -54,13 +57,13 @@ class ComposerOption
     }
 
     /**
-     * 读取配置信息
-     * 
+     * 读取配置信息.
+     *
      * @return array
      */
     public function loadData(): array
     {
-        if (! is_null($this->loaded)) {
+        if (null !== $this->loaded) {
             return $this->loaded;
         }
 
@@ -78,11 +81,11 @@ class ComposerOption
     }
 
     /**
-     * 获取包列表
-     * 
+     * 获取包列表.
+     *
      * @return array
      */
-    protected function getPackages(): array 
+    protected function getPackages(): array
     {
         $packages = [];
 
@@ -96,13 +99,14 @@ class ComposerOption
     }
 
     /**
-     * 合并配置信息
-     * 
+     * 合并配置信息.
+     *
      * @param array $olds
      * @param array $options
+     *
      * @return array
      */
-    protected function mergeOption(array $olds, array $options): array 
+    protected function mergeOption(array $olds, array $options): array
     {
         $result = [];
 
@@ -114,12 +118,13 @@ class ComposerOption
     }
 
     /**
-     * 获取一个包的 leevel 配置
-     * 
+     * 获取一个包的 leevel 配置.
+     *
      * @param array $package
+     *
      * @return array
      */
-    protected function getLeevelOption(array $package): array 
+    protected function getLeevelOption(array $package): array
     {
         $options = $package['extra']['leevel'] ?? [];
 
@@ -131,12 +136,13 @@ class ComposerOption
     }
 
     /**
-     * 格式化配置信息
-     * 
+     * 格式化配置信息.
+     *
      * @param array $options
+     *
      * @return array
      */
-    protected function normalizeOption(array $options): array 
+    protected function normalizeOption(array $options): array
     {
         $result = [];
 
@@ -153,7 +159,7 @@ class ComposerOption
     }
 
     /**
-     * 取得应用的 composer 配置
+     * 取得应用的 composer 配置.
      *
      * @return array
      */
@@ -169,9 +175,10 @@ class ComposerOption
     }
 
     /**
-     * 获取配置信息
-     * 
+     * 获取配置信息.
+     *
      * @param string $path
+     *
      * @return array
      */
     protected function getFileContent(string $path): array
@@ -181,8 +188,8 @@ class ComposerOption
 
     /**
      * 支持的配置项
-     * 其它信息将被过滤掉
-     * 
+     * 其它信息将被过滤掉.
+     *
      * @return array
      */
     protected function getSupportedOptions(): array
@@ -193,7 +200,7 @@ class ComposerOption
             'commands',
             'options',
             'i18ns',
-            'metas'
+            'metas',
         ];
     }
 }

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,38 +17,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n;
 
 /**
  * 解析出每一项语言数据
- * This class borrows heavily from the Wordpress and is part of the Wordpress package
+ * This class borrows heavily from the Wordpress and is part of the Wordpress package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.09.18
- * @link https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ *
  * @version 1.0
  */
 class Entry
 {
-
     /**
-     * Whether the entry contains a string and its plural form, default is false
+     * Whether the entry contains a string and its plural form, default is false.
      *
-     * @var boolean
+     * @var bool
      */
     public $is_plural = false;
     public $context;
     public $singular;
     public $plural;
-    public $translations = array();
+    public $translations = [];
     public $translator_comments = '';
     public $extracted_comments = '';
-    public $references = array();
-    public $flags = array();
+    public $references = [];
+    public $flags = [];
 
     /**
-     *
      * @param array $args associative array, support following keys:
      * @sub string singular the string to translate, if omitted and empty entry will be created
      * @sub string plural the plural form of the string, setting this will set {@see $is_plural} to true
@@ -56,7 +59,7 @@ class Entry
      * @sub array references places in the code this strings is used, in relative_to_root_path/file.php:linenum form
      * @sub array flags flags like php-format
      */
-    public function __construct($args = array())
+    public function __construct($args = [])
     {
         // if no singular -- empty object
         if (! isset($args['singular'])) {
@@ -70,18 +73,18 @@ class Entry
             $this->is_plural = true;
         }
         if (! is_array($this->translations)) {
-            $this->translations = array();
+            $this->translations = [];
         }
         if (! is_array($this->references)) {
-            $this->references = array();
+            $this->references = [];
         }
         if (! is_array($this->flags)) {
-            $this->flags = array();
+            $this->flags = [];
         }
     }
 
     /**
-     * Generates a unique key for this entry
+     * Generates a unique key for this entry.
      *
      * @return string|bool the key or false if the entry is empty
      */
@@ -93,15 +96,15 @@ class Entry
         // Prepend context and EOT, like in MO files
         $key = ! $this->context ? $this->singular : $this->context . chr(4) . $this->singular;
         // Standardize on \n line endings
-        $key = str_replace(array(
+        $key = str_replace([
             "\r\n",
-            "\r"
-        ), "\n", $key);
+            "\r",
+        ], "\n", $key);
+
         return $key;
     }
 
     /**
-     *
      * @param object $other
      */
     public function merge_with(&$other)

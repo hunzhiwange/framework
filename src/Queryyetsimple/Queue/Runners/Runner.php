@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,64 +17,63 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Queue\Runners;
 
 use Exception;
-use PHPQueue\{
-    Base,
-    Runner as PHPQueueRunner
-};
+use PHPQueue\Base;
+use PHPQueue\Runner as PHPQueueRunner;
 
 /**
- * 基类 Runner
+ * 基类 Runner.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.12
+ *
  * @version 1.0
  */
 abstract class Runner extends PHPQueueRunner
 {
-
     /**
-     * work 命令
+     * work 命令.
      *
      * @var \Leevel\Queue\Console\Work
      */
     protected $objWork;
 
     /**
-     * 消息队列
+     * 消息队列.
      *
      * @var \Leevel\Queue\Queues\IQueue
      */
     protected $objQueue;
 
     /**
-     * 任务不可用等待时间
+     * 任务不可用等待时间.
      *
      * @var int
      */
     protected $intSleep = 5;
 
     /**
-     * 任务最大尝试次数
+     * 任务最大尝试次数.
      *
      * @var int
      */
     protected $intTries = 0;
 
     /**
-     * work 命名
+     * work 命名.
      *
      * @param \Leevel\Queue\Console\Work $objWork
-     * @return void
      */
     public function workCommand($objWork)
     {
         $this->objWork = $objWork;
         $this->intTries = $objWork->tries();
         $this->intSleep = $objWork->sleep();
+
         return $this;
     }
 
@@ -91,14 +93,14 @@ abstract class Runner extends PHPQueueRunner
             $nSleepTime = self::RUN_USLEEP * $this->intSleep;
         }
         if (empty($obJNewJob)) {
-            $this->logger->addNotice("No Job found.");
+            $this->logger->addNotice('No Job found.');
 
             // 任务不可用等待时间
             $nSleepTime = self::RUN_USLEEP * $this->intSleep;
         } else {
             try {
                 if (empty($obJNewJob->worker)) {
-                    throw new Exception("No worker declared.");
+                    throw new Exception('No worker declared.');
                 }
 
                 // 验证任务最大尝试次数
@@ -109,7 +111,7 @@ abstract class Runner extends PHPQueueRunner
                 if (is_string($obJNewJob->worker)) {
                     $arrResultData = $this->processWorker($obJNewJob->worker, $obJNewJob);
                 } elseif (is_array($obJNewJob->worker)) {
-                    $this->logger->addInfo(sprintf("Running chained new job (%s) with workers", $obJNewJob->job_id), $obJNewJob->worker);
+                    $this->logger->addInfo(sprintf('Running chained new job (%s) with workers', $obJNewJob->job_id), $obJNewJob->worker);
                     foreach ($obJNewJob->worker as $strWorkerName) {
                         $arrResultData = $this->processWorker($strWorkerName, $obJNewJob);
                         $obJNewJob->data = $arrResultData;
@@ -154,7 +156,6 @@ abstract class Runner extends PHPQueueRunner
      * 记录错误任务
      *
      * @param \Leevel\Queue\jobs\ijob $objJob
-     * @return void
      */
     protected function failedJob($objJob)
     {
@@ -177,11 +178,13 @@ abstract class Runner extends PHPQueueRunner
     }
 
     /**
-     * 更新任务数据
+     * 更新任务数据.
      *
      * @param \Leevel\Queue\jobs\ijob $objJob
-     * @param mixed $mixResultData
+     * @param mixed                   $mixResultData
+     *
      * @return bool|void
+     *
      * @throws \Exception
      */
     protected function updateJob($objJob, $mixResultData = null)
@@ -207,9 +210,7 @@ abstract class Runner extends PHPQueueRunner
     }
 
     /**
-     * 验证是否需要重启
-     *
-     * @return void
+     * 验证是否需要重启.
      */
     protected function checkRestart()
     {

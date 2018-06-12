@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,22 +17,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
 /**
- * compiler tagself test
- * 
+ * compiler tagself test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.07
+ *
  * @version 1.0
  */
 class CompilerTagselfTest extends TestCase
 {
     use Compiler;
-    
+
     public function testBaseUse()
     {
         $parser = $this->createParser();

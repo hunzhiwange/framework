@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 use InvalidArgumentException;
@@ -21,20 +25,21 @@ use Leevel\Session\ISession;
 
 /**
  * Redirect 响应请求
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.28
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class RedirectResponse extends Response
 {
-
     /**
      * 目标 URL 地址
-     * 
+     *
      * @var string
      */
     protected $targetUrl;
@@ -47,19 +52,18 @@ class RedirectResponse extends Response
     protected $request;
 
     /**
-     * SESSION 仓储
+     * SESSION 仓储.
      *
      * @var \Leevel\Session\ISession
      */
     protected $session;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param string $url
-     * @param int $status
-     * @param array $headers
-     * @return void
+     * @param int    $status
+     * @param array  $headers
      */
     public function __construct(?string $url, int $status = 302, array $headers = [])
     {
@@ -77,11 +81,12 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 创建 URL 跳转响应
+     * 创建 URL 跳转响应.
      *
      * @param string $url
-     * @param int $status
-     * @param array $headers
+     * @param int    $status
+     * @param array  $headers
+     *
      * @return static
      */
     public static function create($url = '', int $status = 302, array $headers = [])
@@ -90,10 +95,11 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 闪存一个数据片段到 SESSION
+     * 闪存一个数据片段到 SESSION.
      *
      * @param string|array $key
-     * @param mixed $value
+     * @param mixed        $value
+     *
      * @return $this
      */
     public function with($key, $value = null)
@@ -103,7 +109,7 @@ class RedirectResponse extends Response
         }
 
         $key = is_array($key) ? $key : [
-            $key => $value
+            $key => $value,
         ];
 
         foreach ($key as $k => $v) {
@@ -114,9 +120,10 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 闪存输入信息
+     * 闪存输入信息.
      *
      * @param array $input
+     *
      * @return $this
      */
     public function withInput(array $input = null)
@@ -135,7 +142,7 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 闪存输入信息
+     * 闪存输入信息.
      *
      * @return $this
      */
@@ -150,12 +157,12 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 闪存输入信息
+     * 闪存输入信息.
      *
      * @return $this
      */
     public function exceptInput()
-    {  
+    {
         $args = func_get_args();
         if (! $args) {
             throw new InvalidArgumentException('Method exceptInput need an args.');
@@ -165,10 +172,11 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 闪存错误信息
+     * 闪存错误信息.
      *
-     * @param mixed $value
+     * @param mixed  $value
      * @param string $key
+     *
      * @return $this
      */
     public function withErrors($value, string $key = 'default')
@@ -199,6 +207,7 @@ class RedirectResponse extends Response
      * 设置目标 URL 地址
      *
      * @param string $url
+     *
      * @return $this
      */
     public function setTargetUrl($url)
@@ -245,7 +254,6 @@ class RedirectResponse extends Response
      * 设置 HTTP 请求
      *
      * @param \Leevel\Http\IRequest $request
-     * @return void
      */
     public function setRequest(IRequest $request)
     {
@@ -253,7 +261,7 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 获取 SESSION 仓储
+     * 获取 SESSION 仓储.
      *
      * @return \Leevel\Session\ISession|null
      */
@@ -263,10 +271,9 @@ class RedirectResponse extends Response
     }
 
     /**
-     * 设置 SESSION 仓储
+     * 设置 SESSION 仓储.
      *
      * @param \Leevel\Session\ISession $session
-     * @return void
      */
     public function setSession(ISession $session)
     {

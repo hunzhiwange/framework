@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,40 +17,38 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\I18n;
 
-use InvalidArgumentException;
-
 /**
- * 国际化组件
+ * 国际化组件.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2016.11.18
+ *
  * @version 1.0
  */
 class I18n implements II18n
 {
-
     /**
-     * 当前语言上下文
+     * 当前语言上下文.
      *
      * @var string
      */
     protected $i18n;
 
     /**
-     * 语言数据
+     * 语言数据.
      *
      * @var array
      */
     protected $text = [];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param string $i18n
-     * @return void
      */
     public function __construct(string $i18n)
     {
@@ -57,14 +58,15 @@ class I18n implements II18n
     }
 
     /**
-     * 获取语言 text
+     * 获取语言 text.
      *
      * @param array $arr
+     *
      * @return string
      */
     public function getText(...$arr)
     {
-        if(count($arr) == 0) {
+        if (0 == count($arr)) {
             return '';
         }
 
@@ -74,14 +76,15 @@ class I18n implements II18n
             $arr[0] = $value;
             $value = sprintf(...$arr);
         }
-        
+
         return $value;
     }
 
     /**
-     * 获取语言 text
+     * 获取语言 text.
      *
      * @param array $arr
+     *
      * @return string
      */
     public function __(...$arr)
@@ -90,11 +93,10 @@ class I18n implements II18n
     }
 
     /**
-     * 添加语言包语句
+     * 添加语言包语句.
      *
      * @param string $i18nName 语言名字
-     * @param array $data 语言包数据
-     * @return void
+     * @param array  $data     语言包数据
      */
     public function addText(string $i18n, array $data = [])
     {
@@ -106,10 +108,9 @@ class I18n implements II18n
     }
 
     /**
-     * 设置当前语言包
+     * 设置当前语言包.
      *
      * @param string $i18n
-     * @return void
      */
     public function setI18n(string $i18n)
     {
@@ -117,7 +118,7 @@ class I18n implements II18n
     }
 
     /**
-     * 获取当前语言包
+     * 获取当前语言包.
      *
      * @return string
      */
@@ -127,7 +128,7 @@ class I18n implements II18n
     }
 
     /**
-     * 返回所有语言包
+     * 返回所有语言包.
      *
      * @return array
      */

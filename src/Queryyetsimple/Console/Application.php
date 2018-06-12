@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,36 +17,37 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Console;
 
 use Leevel\Di\IContainer;
-
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Application as SymfonyApplication;
 
 /**
- * 命令行应用程序
+ * 命令行应用程序.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.28
+ *
  * @version 1.0
  */
 class Application extends SymfonyApplication implements IApplication
 {
-
     /**
-     * 项目容器
+     * 项目容器.
      *
      * @var \Leevel\Di\IContainer
      */
     protected $container;
 
     /**
-     * 创建一个命令行应用程序
+     * 创建一个命令行应用程序.
      *
      * @param \Leevel\Di\IContainer $container
-     * @param string $version
+     * @param string                $version
+     *
      * @return $this
      */
     public function __construct(IContainer $container, string $version)
@@ -54,9 +58,10 @@ class Application extends SymfonyApplication implements IApplication
     }
 
     /**
-     * 添加一条命令
+     * 添加一条命令.
      *
      * @param \Symfony\Component\Console\Command\Command $command
+     *
      * @return \Symfony\Component\Console\Command\Command
      */
     public function add(SymfonyCommand $command)
@@ -69,9 +74,10 @@ class Application extends SymfonyApplication implements IApplication
     }
 
     /**
-     * 格式化一个命令行
+     * 格式化一个命令行.
      *
      * @param string $command
+     *
      * @return \Symfony\Component\Console\Command\Command
      */
     public function normalizeCommand(string $command)
@@ -80,9 +86,10 @@ class Application extends SymfonyApplication implements IApplication
     }
 
     /**
-     * 批量格式化命令行
+     * 批量格式化命令行.
      *
      * @param array $commands
+     *
      * @return $this
      */
     public function normalizeCommands(array $commands)
@@ -95,7 +102,7 @@ class Application extends SymfonyApplication implements IApplication
     }
 
     /**
-     * 返回项目容器
+     * 返回项目容器.
      *
      * @return \Leevel\Di\Container
      */
@@ -105,7 +112,7 @@ class Application extends SymfonyApplication implements IApplication
     }
 
     /**
-     * 返回 QueryPHP Logo
+     * 返回 QueryPHP Logo.
      *
      * @return string
      */

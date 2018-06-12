@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Mvc;
 
 use Leevel\Database\Manager as DatabaseManager;
@@ -22,71 +26,71 @@ use Leevel\Database\Manager as DatabaseManager;
  * 数据库元对象
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.27
+ *
  * @version 1.0
  */
 class Meta
 {
-
     /**
-     * Database 管理
+     * Database 管理.
      *
      * @var array
      */
     protected static $objDatabaseManager;
 
     /**
-     * meta 对象实例
+     * meta 对象实例.
      *
      * @var array
      */
     protected static $arrInstances = [];
 
     /**
-     * 数据库仓储
+     * 数据库仓储.
      *
      * @var \Leevel\Database\IDatabase
      */
     protected $objConnect;
 
     /**
-     * 数据库查询的原生字段
+     * 数据库查询的原生字段.
      *
      * @var array
      */
     protected $arrFields = [];
 
     /**
-     * 数据库字段名字
+     * 数据库字段名字.
      *
      * @var array
      */
     protected $arrField = [];
 
     /**
-     * 主键
+     * 主键.
      *
      * @var array
      */
     protected $arrPrimaryKey = [];
 
     /**
-     * 自动增加 ID
+     * 自动增加 ID.
      *
      * @var string
      */
     protected $strAutoIncrement;
 
     /**
-     * 是否使用复合主键
+     * 是否使用复合主键.
      *
      * @var bool
      */
     protected $booCompositeId = false;
 
     /**
-     * 字段格式化类型
+     * 字段格式化类型.
      *
      * @var array
      */
@@ -95,27 +99,27 @@ class Meta
             'int',
             'integer',
             'smallint',
-            'serial'
+            'serial',
         ],
         'float' => [
             'float',
-            'number'
+            'number',
         ],
         'boolean' => [
             'bool',
-            'boolean'
-        ]
+            'boolean',
+        ],
     ];
 
     /**
-     * 元对象表
+     * 元对象表.
      *
      * @var string
      */
     protected $strTable;
 
     /**
-     * 表连接
+     * 表连接.
      *
      * @var mixed
      */
@@ -126,8 +130,7 @@ class Meta
      * 禁止直接访问构造函数，只能通过 instance 生成对象
      *
      * @param string $strTabe
-     * @param mixed $mixConnect
-     * @return void
+     * @param mixed  $mixConnect
      */
     protected function __construct($strTable, $mixConnect = null)
     {
@@ -140,13 +143,14 @@ class Meta
      * 返回数据库元对象
      *
      * @param string $strTable
-     * @param mixed $mixConnect
+     * @param mixed  $mixConnect
+     *
      * @return $this
      */
     public static function instance($strTable, $mixConnect = null)
     {
         $strUnique = static::getUnique($strTable, $mixConnect);
-        
+
         if (! isset(static::$arrInstances[$strUnique])) {
             return static::$arrInstances[$strUnique] = new static($strTable, $mixConnect);
         } else {
@@ -158,7 +162,6 @@ class Meta
      * 设置数据库管理对象
      *
      * @param \Leevel\Database\Manager $objDatabaseManager
-     * @return void
      */
     public static function setDatabaseManager(DatabaseManager $objDatabaseManager)
     {
@@ -166,10 +169,11 @@ class Meta
     }
 
     /**
-     * 字段强制过滤
+     * 字段强制过滤.
      *
      * @param string $strField
-     * @param mixed $mixValue
+     * @param mixed  $mixValue
+     *
      * @return array
      */
     public function fieldsProp($strField, $mixValue)
@@ -182,11 +186,11 @@ class Meta
 
         switch (true) {
             case in_array($strType, static::$arrFieldType['int']):
-                $mixValue = intval($mixValue);
+                $mixValue = (int) $mixValue;
                 break;
 
             case in_array($strType, static::$arrFieldType['float']):
-                $mixValue = floatval($mixValue);
+                $mixValue = (float) $mixValue;
                 break;
 
             case in_array($strType, static::$arrFieldType['boolean']):
@@ -194,48 +198,53 @@ class Meta
                 break;
 
             default:
-                if (! is_null($mixValue) && is_scalar($mixValue)) {
-                    $mixValue = ( string ) $mixValue;
+                if (null !== $mixValue && is_scalar($mixValue)) {
+                    $mixValue = (string) $mixValue;
                 }
         }
+
         return $mixValue;
     }
 
     /**
-     * 批量字段转属性
+     * 批量字段转属性.
      *
      * @param array $arrData
+     *
      * @return array
      */
     public function fieldsProps(array $arrData)
     {
         $arrResult = [];
         foreach ($arrData as $strField => $mixValue) {
-            if (! is_null(($mixValue = $this->fieldsProp($strField, $mixValue)))) {
+            if (null !== (($mixValue = $this->fieldsProp($strField, $mixValue)))) {
                 $arrResult[$strField] = $mixValue;
             }
         }
+
         return $arrResult;
     }
 
     /**
-     * 新增并返回数据
+     * 新增并返回数据.
      *
      * @param array $arrSaveData
+     *
      * @return array
      */
     public function insert(array $arrSaveData)
     {
         return [
-            $this->getAutoIncrement() ?  : 0 => $this->objConnect->table($this->strTable)->insert($arrSaveData)
+            $this->getAutoIncrement() ?: 0 => $this->objConnect->table($this->strTable)->insert($arrSaveData),
         ];
     }
 
     /**
-     * 更新并返回数据
+     * 更新并返回数据.
      *
      * @param array $arrCondition
      * @param array $arrSaveData
+     *
      * @return int
      */
     public function update(array $arrCondition, array $arrSaveData)
@@ -244,7 +253,7 @@ class Meta
     }
 
     /**
-     * 返回主键
+     * 返回主键.
      *
      * @return array
      */
@@ -254,9 +263,9 @@ class Meta
     }
 
     /**
-     * 是否为符合主键
+     * 是否为符合主键.
      *
-     * @return boolean
+     * @return bool
      */
     public function getCompositeId()
     {
@@ -264,7 +273,7 @@ class Meta
     }
 
     /**
-     * 返回自增 ID
+     * 返回自增 ID.
      *
      * @return string|null
      */
@@ -274,7 +283,7 @@ class Meta
     }
 
     /**
-     * 返回数据库查询的原生字段
+     * 返回数据库查询的原生字段.
      *
      * @return array
      */
@@ -284,7 +293,7 @@ class Meta
     }
 
     /**
-     * 返回字段名字
+     * 返回字段名字.
      *
      * @return array
      */
@@ -294,7 +303,7 @@ class Meta
     }
 
     /**
-     * 返回数据库仓储
+     * 返回数据库仓储.
      *
      * @return \Leevel\Database\IDatabase
      */
@@ -304,7 +313,7 @@ class Meta
     }
 
     /**
-     * 返回查询
+     * 返回查询.
      *
      * @var \Leevel\Database\IConnect
      */
@@ -317,7 +326,6 @@ class Meta
      * 初始化元对象
      *
      * @param string $strTable
-     * @return void
      */
     protected function initialization($strTable)
     {
@@ -336,7 +344,7 @@ class Meta
     }
 
     /**
-     * 连接数据库仓储
+     * 连接数据库仓储.
      *
      * @return \Leevel\Database\IDatabase
      */
@@ -349,7 +357,8 @@ class Meta
      * 取得唯一值
      *
      * @param string $strTabe
-     * @param mixed $mixConnect
+     * @param mixed  $mixConnect
+     *
      * @return string
      */
     protected static function getUnique($strTable, $mixConnect = null)

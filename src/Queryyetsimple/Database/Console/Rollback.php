@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,30 +17,29 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Database\Console;
 
 use Phinx\Console\Command\Rollback as PhinxRollback;
 
 /**
- * 数据库迁移回滚数据库脚本
+ * 数据库迁移回滚数据库脚本.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.09
+ *
  * @version 1.0
  */
 class Rollback extends PhinxRollback
 {
-
     /**
      * Configures the current command.
-     *
-     * @return void
      */
     protected function configure()
     {
         parent::configure();
-        
+
         $this->setName('migrate:rollback');
     }
 }

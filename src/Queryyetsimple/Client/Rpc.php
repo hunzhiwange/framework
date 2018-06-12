@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Client;
 
 use Leevel\Protocol\Thrift\Service\Request;
@@ -28,61 +32,62 @@ use Leevel\Http\RedirectResponse;
 use Leevel\Http\JsonResponse;
 
 /**
- * Rpc 客户端 
+ * Rpc 客户端.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.03
+ *
  * @version 1.0
  */
 class Rpc
 {
     /**
      * 正确响应为 200
-     * 对应 HTTP 状态码 
+     * 对应 HTTP 状态码
      *
      * @var int
      */
     const OK = 200;
 
     /**
-     * 默认上下文
+     * 默认上下文.
      *
      * @var string
      */
     const DEFAULT_CONTEXT = 'dafault';
 
     /**
-     * 对象实例
+     * 对象实例.
      *
      * @var array
      */
     protected static $instances = [];
-    
-    /**
-     * 服务端和客户端的享元数据
-     * 
-     * @var array
-     */
-    protected $metas = [];  
 
     /**
-     * 构造函数
+     * 服务端和客户端的享元数据.
+     *
+     * @var array
+     */
+    protected $metas = [];
+
+    /**
+     * 构造函数.
      *
      * @param string $id
      */
-    public function __construct($id = null) 
+    public function __construct($id = null)
     {
-        
     }
 
     /**
-     * 获取 RPC 客户端实例
+     * 获取 RPC 客户端实例.
      *
      * @param string $id
+     *
      * @return static
      */
-    public static function instance($id = null) 
+    public static function instance($id = null)
     {
         $key = $id ?: self::DEFAULT_CONTEXT;
 
@@ -94,11 +99,12 @@ class Rpc
     }
 
     /**
-     * Rpc 调用
-     * 
+     * Rpc 调用.
+     *
      * @param string $call
-     * @param array $params
-     * @param array $metas
+     * @param array  $params
+     * @param array  $metas
+     *
      * @return \Leevel\Http\IResponse
      */
     public function call(string $call, array $params = [], array $metas = []): IResponse
@@ -110,7 +116,7 @@ class Rpc
         $response = $this->getResponseWithProtocol($protocol, [
             'call' => $call,
             'params' => $params,
-            'metas' => $metas
+            'metas' => $metas,
         ]);
 
         $transport->close();
@@ -121,9 +127,10 @@ class Rpc
     }
 
     /**
-     * 格式化 Thrift Rpc 响应到 QueryPHP 响应
+     * 格式化 Thrift Rpc 响应到 QueryPHP 响应.
      *
      * @param \Leevel\Protocol\Thrift\Service\Response $response
+     *
      * @return \Leevel\Http\IResponse
      */
     protected function normalizeResponse(Response $response): IResponse
@@ -148,16 +155,17 @@ class Rpc
      */
     protected function makeTransport(): TFramedTransport
     {
-        $socket = new TSocket("127.0.0.1", 1355);
-        
+        $socket = new TSocket('127.0.0.1', 1355);
+
         return new TFramedTransport($socket);
     }
 
     /**
-     * 根据协议返回响应
+     * 根据协议返回响应.
      *
      * @param \Thrift\Protocol\TBinaryProtocol $protocol
-     * @param array $data
+     * @param array                            $data
+     *
      * @return \Leevel\Protocol\Thrift\Service\Response
      */
     protected function getResponseWithProtocol(TBinaryProtocol $protocol, array $data): Response
@@ -170,10 +178,11 @@ class Rpc
     }
 
     /**
-     * 验证是否为正常的 JSON 字符串
+     * 验证是否为正常的 JSON 字符串.
      *
      * @param mixed $data
-     * @return boolean
+     *
+     * @return bool
      */
     protected function isJson($data)
     {
@@ -183,22 +192,21 @@ class Rpc
 
         json_decode($data);
 
-        return json_last_error() === JSON_ERROR_NONE;
+        return JSON_ERROR_NONE === json_last_error();
     }
 
     /**
-     * 设置享元数据
+     * 设置享元数据.
      *
      * @param array $metas;
-     * @return void
      */
-    public function setMetas(array $metas) 
+    public function setMetas(array $metas)
     {
         $this->metas = $metas;
     }
-    
+
     /**
-     * 返回享元数据
+     * 返回享元数据.
      *
      * @return array
      */
@@ -208,16 +216,15 @@ class Rpc
     }
 
     /**
-     * 添加享元数据
+     * 添加享元数据.
      *
      * @param string|array $key
-     * @param mixed $value
-     * @return void
+     * @param mixed        $value
      */
     public function addMetas($key, $value = null)
     {
         $key = is_array($key) ? $key : [
-            $key => $value
+            $key => $value,
         ];
 
         foreach ($key as $k => $v) {

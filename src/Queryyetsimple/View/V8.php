@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\View;
 
 use V8Js;
@@ -22,18 +26,18 @@ use V8JsException;
 use RuntimeException;
 
 /**
- * v8 模板处理类
+ * v8 模板处理类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.01.10
+ *
  * @version 1.0
  */
 class V8 extends Connect implements IConnect
 {
-
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -53,29 +57,29 @@ class V8 extends Connect implements IConnect
         'vue_renderer' => '',
 
         // node_modules/art-template/lib/template-web.js
-        'art_path' => ''
+        'art_path' => '',
     ];
 
     /**
-     * v8js
-     * 
+     * v8js.
+     *
      * @var \V8Js
      */
-    protected  $v8js;
+    protected $v8js;
 
     /**
-     * 自定义错误
-     * 
+     * 自定义错误.
+     *
      * @var callable
      */
     protected $errorHandler;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $option
-     * @link http://php.net/manual/zh/book.v8js.php
-     * @return void
+     *
+     * @see http://php.net/manual/zh/book.v8js.php
      */
     public function __construct(array $option = [])
     {
@@ -87,13 +91,13 @@ class V8 extends Connect implements IConnect
 
         $this->v8js = new V8Js('$');
 
-        foreach(['base', 'dd', 'html', 'load', 'module'] as $item) {
+        foreach (['base', 'dd', 'html', 'load', 'module'] as $item) {
             $this->{'init' . ucwords($item)}();
         }
     }
 
     /**
-     * 返回 V8js
+     * 返回 V8js.
      *
      * @return \V8js
      */
@@ -103,12 +107,13 @@ class V8 extends Connect implements IConnect
     }
 
     /**
-     * 加载视图文件
+     * 加载视图文件.
      *
-     * @param string $file 视图文件地址
-     * @param array $vars
-     * @param string $ext 后缀
-     * @param boolean $display 是否显示
+     * @param string $file    视图文件地址
+     * @param array  $vars
+     * @param string $ext     后缀
+     * @param bool   $display 是否显示
+     *
      * @return string
      */
     public function display(?string $file = null, array $vars = [], ?string $ext = null, bool $display = true)
@@ -121,24 +126,25 @@ class V8 extends Connect implements IConnect
             $this->setVar($vars);
         }
 
-        foreach($this->vars as $key => $value) {
+        foreach ($this->vars as $key => $value) {
             $this->v8js->$key = $value;
         }
 
         $source = file_get_contents($file);
 
         // 返回类型
-        if ($display === false) {
+        if (false === $display) {
             return $this->select($source);
         } else {
             $this->execute($source);
         }
     }
-    
+
     /**
-     * 执行 js 并返回输入文本
+     * 执行 js 并返回输入文本.
      *
      * @param string $js
+     *
      * @return string
      */
     public function select(string $js)
@@ -146,6 +152,7 @@ class V8 extends Connect implements IConnect
         try {
             ob_start();
             $this->v8js->executeString($js);
+
             return ob_get_clean();
         } catch (V8JsException $e) {
             if ($this->errorHandler) {
@@ -157,9 +164,10 @@ class V8 extends Connect implements IConnect
     }
 
     /**
-     * 执行 js
+     * 执行 js.
      *
      * @param string $js
+     *
      * @return mixed
      */
     public function execute(string $js)
@@ -172,25 +180,25 @@ class V8 extends Connect implements IConnect
             } else {
                 throw $e;
             }
-        }  
+        }
     }
 
     /**
-     * 自定义异常
+     * 自定义异常.
      *
      * @param callable $errorHandler
+     *
      * @return $this
      */
     public function setErrorHandler(callable $errorHandler)
     {
         $this->errorHandler = $errorHandler;
+
         return $this;
     }
 
     /**
-     * initBase
-     * 
-     * @return void
+     * initBase.
      */
     protected function initBase()
     {
@@ -227,46 +235,41 @@ class V8 extends Connect implements IConnect
 EOT;
         $this->execute($console);
 
-        unset($console);  
+        unset($console);
     }
 
     /**
-     * initDd
-     *
-     * @return void
+     * initDd.
      */
     public function initDd()
     {
-        $this->v8js->{'$dd'} = function($message) {
+        $this->v8js->{'$dd'} = function ($message) {
             dd($message);
         };
 
-        $this->execute('this.dd = this.$dd = $.$dd;');   
+        $this->execute('this.dd = this.$dd = $.$dd;');
     }
 
     /**
-     * initHtml
-     *
-     * @return void
+     * initHtml.
      */
     public function initHtml()
     {
-        $this->v8js->{'$html'} = function($path, $ext = '.html') {
+        $this->v8js->{'$html'} = function ($path, $ext = '.html') {
             $file = $this->parseDisplayFile($path, $ext);
+
             return file_get_contents($file);
         };
 
-        $this->execute('this.html = this.$html = $.$html;');   
+        $this->execute('this.html = this.$html = $.$html;');
     }
 
     /**
-     * initLoad
-     *
-     * @return void
+     * initLoad.
      */
     public function initLoad()
     {
-        $this->v8js->{'$load'} = function($package) {
+        $this->v8js->{'$load'} = function ($package) {
             $package .= 'Package';
 
             if (! method_exists($this, $package)) {
@@ -278,35 +281,31 @@ EOT;
             $this->$package();
         };
 
-        $this->execute('this.load = this.$load = $.$load;');   
+        $this->execute('this.load = this.$load = $.$load;');
     }
 
     /**
-     * initModule
-     *
-     * @return void
+     * initModule.
      */
     public function initModule()
     {
-        $this->v8js->setModuleNormaliser(function($base, $module) {
+        $this->v8js->setModuleNormaliser(function ($base, $module) {
             try {
                 $module = $this->parseDisplayFile($module);
             } catch (Exception $e) {
-                $module = $this->parseDisplayFile($module.'/index');
+                $module = $this->parseDisplayFile($module . '/index');
             }
-            
+
             return ['', $module];
         });
 
-        $this->v8js->setModuleLoader(function($module) {
+        $this->v8js->setModuleLoader(function ($module) {
             return file_get_contents($module);
         });
     }
 
     /**
-     * 初始化 vue
-     * 
-     * @return void
+     * 初始化 vue.
      */
     protected function vuePackage()
     {
@@ -335,9 +334,7 @@ EOT;
     }
 
     /**
-     * 初始化 art
-     * 
-     * @return void
+     * 初始化 art.
      */
     protected function artPackage()
     {

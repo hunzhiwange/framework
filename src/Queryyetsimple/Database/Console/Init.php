@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,48 +17,45 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Database\Console;
 
 use RuntimeException;
 use InvalidArgumentException;
 use Phinx\Console\Command\Init as PhinxInit;
-use Symfony\Component\Console\{
-    Input\InputInterface,
-    Output\OutputInterface
-};
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * 数据库迁移初始化
+ * 数据库迁移初始化.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.09
+ *
  * @version 1.0
  */
 class Init extends PhinxInit
 {
-
     /**
      * Configures the current command.
-     *
-     * @return void
      */
     protected function configure()
     {
         parent::configure();
-        
+
         $this->setName('migrate:init');
     }
 
     /**
      * Initializes the application.
-     * 重写读取配置文件，个性化配置，例外默认配置文件有一个解析 BUG
+     * 重写读取配置文件，个性化配置，例外默认配置文件有一个解析 BUG.
      *
-     * @param InputInterface $input
+     * @param InputInterface  $input
      * @param OutputInterface $output
+     *
      * @throws RuntimeException
      * @throws InvalidArgumentException
-     * @return void
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -74,7 +74,7 @@ class Init extends PhinxInit
 
         // Compute the file path
         // TODO - maybe in the future we allow custom config names.
-        $fileName = 'phinx.yml'; 
+        $fileName = 'phinx.yml';
         $filePath = $path . DIRECTORY_SEPARATOR . $fileName;
 
         if (file_exists($filePath)) {

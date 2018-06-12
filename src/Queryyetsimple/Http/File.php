@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,43 +17,45 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Http;
 
 use SplFileObject;
 
 /**
  * 文件
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.02.26
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class File extends SplFileObject
 {
-
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param string $path
-     * @return void
      */
     public function __construct(string $path)
     {
         if (! is_file($path)) {
-           throw new FileNotFoundException($path);
+            throw new FileNotFoundException($path);
         }
 
         parent::__construct($path);
     }
 
     /**
-     * 移动文件
+     * 移动文件.
      *
      * @param string $directory
      * @param string $name
+     *
      * @return \Leevel\Http\File
      */
     public function move($directory, $name = null)
@@ -63,10 +68,11 @@ class File extends SplFileObject
     }
 
     /**
-     * 获取目标文件
+     * 获取目标文件.
      *
      * @param string $directory
      * @param string $name
+     *
      * @return string
      */
     protected function getTargetFile($directory, $name = null)
@@ -80,16 +86,15 @@ class File extends SplFileObject
         }
 
         $target = rtrim($directory, '/\\') . DIRECTORY_SEPARATOR . (null === $name ? $this->getBasename() : $name);
-    
+
         return $target;
     }
 
     /**
-     * 移动文件到目标文件
+     * 移动文件到目标文件.
      *
      * @param string $sourcePath
      * @param string $target
-     * @return void
      */
     protected function moveToTarget(string $sourcePath, string $target)
     {

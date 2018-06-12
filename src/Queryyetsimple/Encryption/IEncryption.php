@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,32 +17,35 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Encryption;
 
 /**
- * IEncryption 接口
+ * IEncryption 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.23
+ *
  * @version 1.0
  */
 interface IEncryption
 {
-
     /**
-     * 加密
+     * 加密.
      *
      * @param string $strValue
-     * @param int $intExpiry
+     * @param int    $intExpiry
+     *
      * @return string
      */
     public function encrypt($strValue, $intExpiry = null);
 
     /**
-     * 解密
+     * 解密.
      *
      * @param string $strValue
+     *
      * @return string
      */
     public function decrypt($strValue);

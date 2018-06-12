@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,22 +18,21 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Leevel\Page;
 
 /**
- * IRender 接口
+ * IRender 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.07.19
+ *
  * @version 1.0
  */
 interface IRender
 {
-
     /**
-     * 渲染
+     * 渲染.
      *
      * @return string
      */

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,7 +18,7 @@
  * file that was distributed with this source code.
  */
 
-/**
+/*
  * mail 默认配置文件
  *
  * @author Xiangmin Liu <635750556@qq.com>
@@ -24,8 +27,7 @@
  * @version 1.0
  */
 return [
-
-    /**
+    /*
      * ---------------------------------------------------------------
      * mail 驱动
      * ---------------------------------------------------------------
@@ -34,7 +36,7 @@ return [
      */
     'default' => env('mail_driver', 'smtp'),
 
-    /**
+    /*
      * ---------------------------------------------------------------
      * mail 发送地址
      * ---------------------------------------------------------------
@@ -43,10 +45,10 @@ return [
      */
     'global_from' => [
         'address' => null,
-        'name' => null
+        'name' => null,
     ],
 
-    /**
+    /*
      * ---------------------------------------------------------------
      * mail 全局接收地址
      * ---------------------------------------------------------------
@@ -55,10 +57,10 @@ return [
      */
     'global_to' => [
         'address' => null,
-        'name' => null
+        'name' => null,
     ],
 
-    /**
+    /*
      * ---------------------------------------------------------------
      * mail 驱动连接参数
      * ---------------------------------------------------------------
@@ -84,7 +86,7 @@ return [
             'password' => env('mail_password'),
 
             // 加密方式
-            'encryption' => env('mail_encryption', 'ssl')
+            'encryption' => env('mail_encryption', 'ssl'),
         ],
 
         'sendmail' => [
@@ -92,7 +94,7 @@ return [
             'driver' => 'sendmail',
 
             // 命令路径
-            'path' => '/usr/sbin/sendmail -bs'
-        ]
-    ]
+            'path' => '/usr/sbin/sendmail -bs',
+        ],
+    ],
 ];

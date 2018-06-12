@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,24 +17,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\View\Compiler;
 
 use Leevel\View\Parser;
 use Leevel\View\Compiler as Compilers;
 
 /**
- * compiler trait
- * 
+ * compiler trait.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.07
+ *
  * @version 1.0
  */
 trait Compiler
 {
     protected function createParser()
     {
-        return (new Parser(new Compilers))->
+        return (new Parser(new Compilers()))->
 
         registerCompilers()->
 

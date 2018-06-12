@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,24 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Filesystem;
 
 use League\Flysystem\Sftp\SftpAdapter;
 
 /**
- * filesystem.sftp
+ * filesystem.sftp.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.29
- * @link https://flysystem.thephpleague.com/adapter/sftp/
+ * @see https://flysystem.thephpleague.com/adapter/sftp/
+ *
  * @version 1.0
  */
 class Sftp extends Connect implements IConnect
 {
-
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -55,11 +59,11 @@ class Sftp extends Connect implements IConnect
         'privateKey' => '',
 
         // 超时设置
-        'timeout' => 20
+        'timeout' => 20,
     ];
 
     /**
-     * 创建连接
+     * 创建连接.
      *
      * @return \League\Flysystem\AdapterInterface
      */

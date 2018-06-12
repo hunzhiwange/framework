@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,21 +17,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\View;
 
 /**
- * phpui 模板处理类
+ * phpui 模板处理类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.11.21
+ *
  * @version 1.0
  */
 class Phpui extends Connect implements IConnect
 {
-
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -39,16 +43,17 @@ class Phpui extends Connect implements IConnect
         'theme_name' => 'default',
         'theme_path' => '',
         'theme_path_default' => '',
-        'suffix' => '.php'
+        'suffix' => '.php',
     ];
 
     /**
-     * 加载视图文件
+     * 加载视图文件.
      *
-     * @param string $file 视图文件地址
-     * @param array $vars
-     * @param string $ext 后缀
-     * @param boolean $display 是否显示
+     * @param string $file    视图文件地址
+     * @param array  $vars
+     * @param string $ext     后缀
+     * @param bool   $display 是否显示
+     *
      * @return string
      */
     public function display(?string $file = null, array $vars = [], ?string $ext = null, bool $display = true)
@@ -66,7 +71,7 @@ class Phpui extends Connect implements IConnect
         }
 
         // 返回类型
-        if ($display === false) {
+        if (false === $display) {
             return include $file;
         } else {
             include $file;

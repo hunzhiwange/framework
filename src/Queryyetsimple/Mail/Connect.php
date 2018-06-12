@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -15,7 +18,6 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Leevel\Mail;
 
 use Swift_Mailer;
@@ -25,11 +27,12 @@ use Swift_Events_EventListener;
 use Leevel\Option\TClass;
 
 /**
- * connect 驱动抽象类
+ * connect 驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.08.26
+ *
  * @version 1.0
  */
 abstract class Connect implements Swift_Transport
@@ -37,17 +40,16 @@ abstract class Connect implements Swift_Transport
     use TClass;
 
     /**
-     * swift mailer
+     * swift mailer.
      *
      * @var \Swift_Mailer
      */
     protected $objSwiftMailer;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $arrOption
-     * @return void
      */
     public function __construct(array $arrOption = [])
     {
@@ -95,7 +97,7 @@ abstract class Connect implements Swift_Transport
     }
 
     /**
-     * 返回 swift mailer
+     * 返回 swift mailer.
      *
      * @return \Swift_Mailer
      */
@@ -105,7 +107,7 @@ abstract class Connect implements Swift_Transport
     }
 
     /**
-     * 生成 swift mailer
+     * 生成 swift mailer.
      *
      * @return \Swift_Mailer
      */

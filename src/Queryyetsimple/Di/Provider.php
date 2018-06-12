@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,41 +17,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Di;
 
-use Closure;
 use BadMethodCallException;
 
 /**
- * 服务提供者
+ * 服务提供者.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.04.13
+ *
  * @version 1.0
  */
 abstract class Provider
 {
-
     /**
-     * 是否延迟载入
+     * 是否延迟载入.
      *
-     * @var boolean
+     * @var bool
      */
     public static $defer = false;
 
     /**
-     * IOC 容器
+     * IOC 容器.
      *
      * @var \Leevel\Di\IContainer
      */
     protected $container;
 
     /**
-     * 创建一个服务容器提供者实例
+     * 创建一个服务容器提供者实例.
      *
      * @param \Leevel\Di\IContainer $container
-     * @return void
      */
     public function __construct(IContainer $container)
     {
@@ -61,15 +63,11 @@ abstract class Provider
 
     /**
      * 注册服务
-     *
-     * @return void
      */
     abstract public function register();
 
     /**
-     * 注册服务别名
-     *
-     * @return void
+     * 注册服务别名.
      */
     public function registerAlias()
     {
@@ -79,7 +77,7 @@ abstract class Provider
     }
 
     /**
-     * 可用服务提供者
+     * 可用服务提供者.
      *
      * @return array
      */
@@ -89,9 +87,9 @@ abstract class Provider
     }
 
     /**
-     * 是否延迟载入
+     * 是否延迟载入.
      *
-     * @return boolean
+     * @return bool
      */
     public static function isDeferred()
     {
@@ -99,7 +97,7 @@ abstract class Provider
     }
 
     /**
-     * 返回 IOC 容器
+     * 返回 IOC 容器.
      *
      * @return \Leevel\Di\IContainer
      */
@@ -109,15 +107,16 @@ abstract class Provider
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)
     {
-        if ($method == 'bootstrap') {
+        if ('bootstrap' == $method) {
             return;
         }
 

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,23 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Cache;
 
 use RuntimeException;
 use Memcache as Memcaches;
 
 /**
- * memcache 扩展缓存
+ * memcache 扩展缓存.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.02.15
+ *
  * @version 1.0
  */
 class Memcache extends Connect implements IConnect
 {
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
@@ -42,14 +47,13 @@ class Memcache extends Connect implements IConnect
         'host' => '127.0.0.1',
         'port' => 11211,
         'compressed' => false,
-        'persistent' => false
+        'persistent' => false,
     ];
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param array $option
-     * @return void
      */
     public function __construct(array $option = [])
     {
@@ -62,7 +66,7 @@ class Memcache extends Connect implements IConnect
         if (empty($this->option['servers'])) {
             $this->option['servers'][] = [
                 'host' => $this->option['host'],
-                'port' => $this->option['port']
+                'port' => $this->option['port'],
             ];
         }
 
@@ -89,11 +93,12 @@ class Memcache extends Connect implements IConnect
     }
 
     /**
-     * 获取缓存
+     * 获取缓存.
      *
      * @param string $name
-     * @param mixed $defaults
-     * @param array $option
+     * @param mixed  $defaults
+     * @param array  $option
+     *
      * @return mixed
      */
     public function get($name, $defaults = false, array $option = [])
@@ -102,18 +107,17 @@ class Memcache extends Connect implements IConnect
             $this->getCacheName($name, $this->normalizeOptions($option)['prefix'])
         );
 
-        return $data === false ? $defaults : $data;
+        return false === $data ? $defaults : $data;
     }
 
     /**
-     * 设置缓存
+     * 设置缓存.
      *
      * memcache 0 表示永不过期
      *
      * @param string $name
-     * @param mixed $data
-     * @param array $option
-     * @return void
+     * @param mixed  $data
+     * @param array  $option
      */
     public function set($name, $data, array $option = [])
     {
@@ -124,16 +128,15 @@ class Memcache extends Connect implements IConnect
             $this->getCacheName($name, $option['prefix']),
             $data,
             $option['compressed'] ? MEMCACHE_COMPRESSED : 0,
-            (int)$option['expire'] <= 0 ? 0 : (int)$option['expire']
+            (int) $option['expire'] <= 0 ? 0 : (int) $option['expire']
         );
     }
 
     /**
-     * 清除缓存
+     * 清除缓存.
      *
      * @param string $name
-     * @param array $option
-     * @return void
+     * @param array  $option
      */
     public function delete($name, array $option = [])
     {
@@ -143,9 +146,7 @@ class Memcache extends Connect implements IConnect
     }
 
     /**
-     * 关闭 memcache
-     *
-     * @return void
+     * 关闭 memcache.
      */
     public function close()
     {

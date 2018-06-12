@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Event;
 
 use SplSubject;
@@ -21,28 +25,26 @@ use SplObserver;
 use RuntimeException;
 
 /**
- * 观察者角色 observer
+ * 观察者角色 observer.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.06.23
- * @link http://php.net/manual/zh/class.splobserver.php
+ * @see http://php.net/manual/zh/class.splobserver.php
+ *
  * @version 1.0
  */
 class Observer implements SplObserver
 {
-
     /**
-     * 观察者目标角色 subject
+     * 观察者目标角色 subject.
      *
      * @var \SplSubject
      */
     protected $subject;
 
     /**
-     * 构造函数
-     *
-     * @return void
+     * 构造函数.
      */
     public function __construct()
     {
@@ -57,7 +59,7 @@ class Observer implements SplObserver
 
         $handle = [
             $this,
-            $method
+            $method,
         ];
 
         if (! is_callable($handle)) {

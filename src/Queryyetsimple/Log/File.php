@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,37 +17,35 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Log;
 
-use RuntimeException;
-
 /**
- * log.file
+ * log.file.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.06.05
+ *
  * @version 1.0
  */
 class File extends Connect implements IConnect
 {
-
     /**
-     * 配置
+     * 配置.
      *
      * @var array
      */
     protected $option = [
         'name' => 'Y-m-d H',
         'size' => 2097152,
-        'path' => ''
+        'path' => '',
     ];
 
     /**
-     * 日志写入接口
+     * 日志写入接口.
      *
      * @param array $datas
-     * @return void
      */
     public function save(array $datas)
     {
@@ -54,7 +55,7 @@ class File extends Connect implements IConnect
         // 记录到系统
         foreach ($datas as $item) {
             error_log(
-                $this->formatMessage($item[1], $item[2]) .PHP_EOL,
+                $this->formatMessage($item[1], $item[2]) . PHP_EOL,
                 3,
                 $filepath
             );
@@ -62,10 +63,11 @@ class File extends Connect implements IConnect
     }
 
     /**
-     * 格式化日志信息
+     * 格式化日志信息.
      *
-     * @param string $message 应该被记录的错误信息
-     * @param array $contexts
+     * @param string $message  应该被记录的错误信息
+     * @param array  $contexts
+     *
      * @return string
      */
     protected function formatMessage($message, array $contexts = [])

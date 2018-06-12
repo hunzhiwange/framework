@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,19 +17,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Leevel\Auth;
 
 /**
- * auth 仓储
+ * auth 仓储.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.11.08
+ *
  * @version 1.0
  */
 class Auth implements IAuth
 {
-
     /**
      * auth 连接对象
      *
@@ -35,10 +39,9 @@ class Auth implements IAuth
     protected $connect;
 
     /**
-     * 构造函数
+     * 构造函数.
      *
      * @param \Leevel\Auth\IConnect $connect
-     * @return void
      */
     public function __construct(IConnect $connect)
     {
@@ -46,10 +49,11 @@ class Auth implements IAuth
     }
 
     /**
-     * call 
+     * call.
      *
      * @param string $method
-     * @param array $args
+     * @param array  $args
+     *
      * @return mixed
      */
     public function __call(string $method, array $args)
