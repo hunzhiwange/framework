@@ -141,7 +141,7 @@ class Listener1 extends Listener
     public function run($event)
     {
         $_SERVER['event_name'] = $event;
-        $_SERVER['test']       = 'hello';
+        $_SERVER['test'] = 'hello';
     }
 }
 

@@ -39,7 +39,7 @@ class UrlTest extends TestCase
     public function testMakeUrl()
     {
         $request = Request::createFromGlobals();
-        $url     = new Url($request);
+        $url = new Url($request);
 
         // 开始不带斜线，自动添加
         $this->assertSame($url->make('/'), '/');
@@ -71,7 +71,7 @@ class UrlTest extends TestCase
     public function testSetOption()
     {
         $request = Request::createFromGlobals();
-        $url     = new Url($request);
+        $url = new Url($request);
 
         $this->assertSame($url->make('hello/world'), '/hello/world');
 
