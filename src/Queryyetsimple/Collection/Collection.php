@@ -158,7 +158,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     public function next()
     {
-        $next        = next($this->elements);
+        $next = next($this->elements);
         $this->valid = false !== $next;
     }
 
@@ -376,7 +376,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     {
         $result = [];
 
-        $key     = $this->parseKey($key);
+        $key = $this->parseKey($key);
         $current = false;
 
         foreach ($this->elements as $k => $value) {
@@ -404,7 +404,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     {
         $result = [];
 
-        $key     = $this->parseKey($key);
+        $key = $this->parseKey($key);
         $current = false;
 
         foreach ($this->elements as $k => $value) {

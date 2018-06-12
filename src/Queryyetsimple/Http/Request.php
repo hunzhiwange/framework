@@ -213,23 +213,23 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function reset(array $query = [], array $request = [], array $params = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
-        $this->query   = new Bag($query);
+        $this->query = new Bag($query);
         $this->request = new Bag($request);
-        $this->params  = new Bag($params);
+        $this->params = new Bag($params);
         $this->cookies = new Bag($cookies);
-        $this->files   = new FileBag($files);
-        $this->server  = new ServerBag($server);
+        $this->files = new FileBag($files);
+        $this->server = new ServerBag($server);
         $this->headers = new HeaderBag($this->server->getHeaders());
 
-        $this->content    = $content;
-        $this->baseUrl    = null;
+        $this->content = $content;
+        $this->baseUrl = null;
         $this->requestUri = null;
-        $this->method     = null;
-        $this->pathInfo   = null;
-        $this->app        = null;
+        $this->method = null;
+        $this->pathInfo = null;
+        $this->app = null;
         $this->controller = null;
-        $this->action     = null;
-        $this->language   = null;
+        $this->action = null;
+        $this->language = null;
     }
 
     /**
@@ -256,7 +256,7 @@ class Request implements IRequest, IArray, ArrayAccess
     public static function normalizeRequestFromContent(self $request)
     {
         $contentType = $request->headers->get('CONTENT_TYPE');
-        $method      = strtoupper($request->server->get('REQUEST_METHOD', self::METHOD_GET));
+        $method = strtoupper($request->server->get('REQUEST_METHOD', self::METHOD_GET));
 
         if ($contentType && 0 === strpos($contentType, 'application/x-www-form-urlencoded') &&
             in_array($method, [
@@ -784,7 +784,7 @@ class Request implements IRequest, IArray, ArrayAccess
     public function isMobile()
     {
         $useAgent = $this->headers->get('USER_AGENT');
-        $allHttp  = $this->server->get('ALL_HTTP');
+        $allHttp = $this->server->get('ALL_HTTP');
 
         // Pre-final check to reset everything if the user is on Windows
         if (false !== strpos($useAgent, 'windows')) {
@@ -1273,7 +1273,7 @@ class Request implements IRequest, IArray, ArrayAccess
     public function getHttpHost()
     {
         $scheme = $this->getScheme();
-        $port   = $this->getPort();
+        $port = $this->getPort();
 
         if (('http' === $scheme && 80 === $port) || ('https' === $scheme && 443 === $port)) {
             return $this->getHost();
@@ -1477,10 +1477,10 @@ class Request implements IRequest, IArray, ArrayAccess
         } elseif (basename($this->server->get('ORIG_SCRIPT_NAME', '')) === $fileName) {
             $url = $this->server->get('ORIG_SCRIPT_NAME');
         } else {
-            $path     = $this->server->get('PHP_SELF');
-            $segs     = explode('/', trim($fileName, '/'));
-            $segs     = array_reverse($segs);
-            $index    = 0;
+            $path = $this->server->get('PHP_SELF');
+            $segs = explode('/', trim($fileName, '/'));
+            $segs = array_reverse($segs);
+            $index = 0;
             $maxCount = count($segs);
 
             $url = '';
@@ -1495,7 +1495,7 @@ class Request implements IRequest, IArray, ArrayAccess
         $requestUri = $this->getRequestUri();
 
         $requestUri = (string) $requestUri;
-        $url        = (string) $url;
+        $url = (string) $url;
 
         if ('' !== $requestUri && '/' !== substr($requestUri, 0, 1)) {
             $requestUri = '/'.$requestUri;

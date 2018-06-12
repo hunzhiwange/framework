@@ -99,7 +99,7 @@ trait TControl
      */
     public function setTControl($inFlowControl, $isFlowControlTrue)
     {
-        $this->inFlowControl     = $inFlowControl;
+        $this->inFlowControl = $inFlowControl;
         $this->isFlowControlTrue = $isFlowControlTrue;
 
         return $this;

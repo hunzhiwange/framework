@@ -72,7 +72,7 @@ class Job extends Command
             ];
 
             // 附加参数
-            $payload['data']     = $this->option('data') ?: [];
+            $payload['data'] = $this->option('data') ?: [];
             $payload['attempts'] = 1;
 
             // 注册处理的队列
@@ -92,7 +92,7 @@ class Job extends Command
             ]);
 
             // 添加任务
-            $queue  = Base::getQueue($this->argument('connect'));
+            $queue = Base::getQueue($this->argument('connect'));
             $status = Base::addJob($queue, $payload);
         } catch (Exception $e) {
             $this->error(

@@ -74,7 +74,7 @@ class ResponseFactory implements IResponseFactory
      */
     public function __construct(IView $view, Redirect $redirector)
     {
-        $this->view       = $view;
+        $this->view = $view;
         $this->redirector = $redirector;
     }
 

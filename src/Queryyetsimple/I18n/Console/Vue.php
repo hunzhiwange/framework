@@ -122,8 +122,8 @@ EOF;
      */
     protected function makeI18nFile($lang)
     {
-        $sourceDir  = $this->parseSourceDir().'/'.$lang;
-        $outputDir  = $this->parseOutputDir().'/'.$lang;
+        $sourceDir = $this->parseSourceDir().'/'.$lang;
+        $outputDir = $this->parseOutputDir().'/'.$lang;
         $outputFile = $this->parseOutputFile();
 
         $moFiles = $this->findMoFile([

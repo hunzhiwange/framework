@@ -162,11 +162,11 @@ class RpcServer extends Server
      */
     protected function makeThriftServer(): ThriftServer
     {
-        $service        = new ThriftHandler();
-        $processor      = new ThriftProcessor($service);
+        $service = new ThriftHandler();
+        $processor = new ThriftProcessor($service);
         $socketTranport = new TServerSocket($this->getOption('host'), (int) ($this->getOption('port')));
-        $outFactory     = $inFactory     = new TFramedTransportFactory();
-        $outProtocol    = $inProtocol    = new TBinaryProtocolFactory();
+        $outFactory = $inFactory = new TFramedTransportFactory();
+        $outProtocol = $inProtocol = new TBinaryProtocolFactory();
 
         $server = new ThriftServer($processor, $socketTranport, $inFactory, $outFactory, $inProtocol, $outProtocol);
 

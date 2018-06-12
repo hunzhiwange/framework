@@ -53,30 +53,30 @@ class Image
         $arrInfo = static::getImageInfo($sImage);
 
         if (false !== $arrInfo) {
-            $nSrcWidth  = $arrInfo['width'];
+            $nSrcWidth = $arrInfo['width'];
             $nSrcHeight = $arrInfo['height'];
-            $sType      = empty($sType) ? $arrInfo['type'] : $sType;
-            $sType      = strtolower($sType);
+            $sType = empty($sType) ? $arrInfo['type'] : $sType;
+            $sType = strtolower($sType);
             $bInterlace = $bInterlace ? 1 : 0;
             unset($arrInfo);
             $nScale = min($nMaxWidth / $nSrcWidth, $nMaxHeight / $nSrcHeight); // 计算缩放比例
 
             if (true === $bFixed) {
-                $nWidth  = $nMaxWidth;
+                $nWidth = $nMaxWidth;
                 $nHeight = $nMaxHeight;
             } else {
                 // 超过原图大小不再缩略
                 if ($nScale >= 1) {
-                    $nWidth  = $nSrcWidth;
+                    $nWidth = $nSrcWidth;
                     $nHeight = $nSrcHeight;
                 } else { // 缩略图尺寸
-                    $nWidth  = (int) ($nSrcWidth * $nScale);
+                    $nWidth = (int) ($nSrcWidth * $nScale);
                     $nHeight = (int) ($nSrcHeight * $nScale);
                 }
             }
 
             $sCreateFun = 'ImageCreateFrom'.('jpg' === $sType ? 'jpeg' : $sType); // 载入原图
-            $oSrcImg    = $sCreateFun($sImage);
+            $oSrcImg = $sCreateFun($sImage);
 
             // 创建缩略图
             if ('gif' !== $sType && function_exists('imagecreatetruecolor')) {
@@ -140,17 +140,17 @@ class Image
                 switch ($arrAttachInfo['mime']) {
                     case 'image/jpeg':
                         $sImageCreateFromFunc = function_exists('imagecreatefromjpeg') ? 'imagecreatefromjpeg' : '';
-                        $sImageFunc           = function_exists('imagejpeg') ? 'imagejpeg' : '';
+                        $sImageFunc = function_exists('imagejpeg') ? 'imagejpeg' : '';
 
                         break;
                     case 'image/gif':
                         $sImageCreateFromFunc = function_exists('imagecreatefromgif') ? 'imagecreatefromgif' : '';
-                        $sImageFunc           = function_exists('imagegif') ? 'imagegif' : '';
+                        $sImageFunc = function_exists('imagegif') ? 'imagegif' : '';
 
                         break;
                     case 'image/png':
                         $sImageCreateFromFunc = function_exists('imagecreatefrompng') ? 'imagecreatefrompng' : '';
-                        $sImageFunc           = function_exists('imagepng') ? 'imagepng' : '';
+                        $sImageFunc = function_exists('imagepng') ? 'imagepng' : '';
 
                         break;
                 }
@@ -162,9 +162,9 @@ class Image
 
                 if (($nXRatio * $nImgH) < $nThumbHeight) {
                     $arrThumb['height'] = ceil($nXRatio * $nImgH);
-                    $arrThumb['width']  = $nThumbWidth;
+                    $arrThumb['width'] = $nThumbWidth;
                 } else {
-                    $arrThumb['width']  = ceil($nYRatio * $nImgW);
+                    $arrThumb['width'] = ceil($nYRatio * $nImgW);
                     $arrThumb['height'] = $nThumbHeight;
                 }
 
@@ -208,8 +208,8 @@ class Image
 
         if (!empty($sBackgroundPath) && is_file($sBackgroundPath)) { // 读取背景图片
             $arrBackgroundInfo = getimagesize($sBackgroundPath);
-            $nGroundWidth      = $arrBackgroundInfo[0]; // 取得背景图片的宽
-            $nGroundHeight     = $arrBackgroundInfo[1]; // 取得背景图片的高
+            $nGroundWidth = $arrBackgroundInfo[0]; // 取得背景图片的宽
+            $nGroundHeight = $arrBackgroundInfo[1]; // 取得背景图片的高
             switch ($arrBackgroundInfo[2]) { // 取得背景图片的格式
                 case 1:
                     $oBackgroundIm = imagecreatefromgif($sBackgroundPath);
@@ -234,7 +234,7 @@ class Image
         if (!empty($sBackgroundPath) && is_file($sBackgroundPath)) {
             if ('img' === $arrWaterArgs['type'] && !empty($arrWaterArgs['path'])) {
                 $bIsWaterImage = true;
-                $nSet          = 0;
+                $nSet = 0;
 
                 $nOffset = !empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 0;
                 if (0 === strpos($arrWaterArgs, 'http://localhost/') || 0 === strpos($arrWaterArgs, 'https://localhost/')) { // localhost 转127.0.0.1,否则将会错误
@@ -242,7 +242,7 @@ class Image
                 }
 
                 $arrWaterInfo = getimagesize($arrWaterArgs['path']);
-                $nWaterWidth  = $arrWaterInfo[0]; // 取得水印图片的宽
+                $nWaterWidth = $arrWaterInfo[0]; // 取得水印图片的宽
                 $nWaterHeight = $arrWaterInfo[1]; // 取得水印图片的高
                 switch ($arrWaterInfo[2]) { // 取得水印图片的格式
                     case 1:
@@ -262,18 +262,18 @@ class Image
                 }
             } elseif ('text' === $arrWaterArgs['type'] && '' !== $arrWaterArgs['content']) {
                 $sFontfileTemp = $sFontfile = $arrWaterArgs['textFile'] ?? 'Microsoft YaHei.ttf';
-                $sFontfile     = (!empty($arrWaterArgs['textPath']) ? str_replace('\\', '/', $arrWaterArgs['textPath']) : 'C:\WINDOWS\Fonts').'/'.$sFontfile;
+                $sFontfile = (!empty($arrWaterArgs['textPath']) ? str_replace('\\', '/', $arrWaterArgs['textPath']) : 'C:\WINDOWS\Fonts').'/'.$sFontfile;
                 if (!is_file($sFontfile)) {
                     throw new RuntimeException(sprintf('The font file %s cannot be found.', $sFontfile));
                 }
 
-                $sWaterText   = $arrWaterArgs['content'];
-                $nSet         = 1;
-                $nOffset      = !empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 5;
-                $sTextColor   = empty($arrWaterArgs['textColor']) ? '#FF0000' : $arrWaterArgs['textColor'];
-                $nTextFont    = $arrWaterArgs['textFont'] ?? 20;
-                $arrTemp      = imagettfbbox(ceil($nTextFont), 0, $sFontfile, $sWaterText); // 取得使用 TrueType 字体的文本的范围
-                $nWaterWidth  = $arrTemp[2] - $arrTemp[6];
+                $sWaterText = $arrWaterArgs['content'];
+                $nSet = 1;
+                $nOffset = !empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 5;
+                $sTextColor = empty($arrWaterArgs['textColor']) ? '#FF0000' : $arrWaterArgs['textColor'];
+                $nTextFont = $arrWaterArgs['textFont'] ?? 20;
+                $arrTemp = imagettfbbox(ceil($nTextFont), 0, $sFontfile, $sWaterText); // 取得使用 TrueType 字体的文本的范围
+                $nWaterWidth = $arrTemp[2] - $arrTemp[6];
                 $nWaterHeight = $arrTemp[3] - $arrTemp[7];
                 unset($arrTemp);
             } else {

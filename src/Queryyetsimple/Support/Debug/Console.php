@@ -53,7 +53,7 @@ class Console
 
         $trace = static::normalizeLog($log);
 
-        $include                                       = get_included_files();
+        $include = get_included_files();
         $trace['LOADED.FILE'.' ('.count($include).')'] = implode('\n', $include);
 
         return static::getOutputToConsole($trace);
@@ -71,7 +71,7 @@ class Console
     {
         $trace = static::normalizeLog($log);
 
-        $include                                       = get_included_files();
+        $include = get_included_files();
         $trace['LOADED.FILE'.' ('.count($include).')'] = $include;
 
         return $trace;

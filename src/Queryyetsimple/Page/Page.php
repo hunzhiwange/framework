@@ -46,7 +46,7 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
      */
     public function __construct($intPerPage, $intTotalRecord = null, array $arrOption = [])
     {
-        $this->intPerPage     = $intPerPage;
+        $this->intPerPage = $intPerPage;
         $this->intTotalRecord = $intTotalRecord;
         $this->options($arrOption);
     }

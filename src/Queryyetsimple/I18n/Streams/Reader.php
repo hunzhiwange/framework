@@ -39,7 +39,7 @@ class Reader
      * @var string
      */
     public $endian = 'little';
-    public $_post  = '';
+    public $_post = '';
 
     /**
      * PHP5 constructor.
@@ -47,7 +47,7 @@ class Reader
     public function __construct()
     {
         $this->is_overloaded = (0 !== (ini_get('mbstring.func_overload') & 2)) && function_exists('mb_substr');
-        $this->_pos          = 0;
+        $this->_pos = 0;
     }
 
     /**
@@ -73,7 +73,7 @@ class Reader
             return false;
         }
         $endian_letter = ('big' === $this->endian) ? 'N' : 'V';
-        $int           = unpack($endian_letter, $bytes);
+        $int = unpack($endian_letter, $bytes);
 
         return reset($int);
     }
@@ -137,7 +137,7 @@ class Reader
     {
         if (!function_exists('str_split')) {
             $length = $this->strlen($string);
-            $out    = [];
+            $out = [];
             for ($i = 0; $i < $length; $i += $chunk_size) {
                 $out[] = $this->substr($string, $i, $chunk_size);
             }

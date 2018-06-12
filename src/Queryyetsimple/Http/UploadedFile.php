@@ -82,8 +82,8 @@ class UploadedFile extends File
     public function __construct(string $path, string $originalName, string $mimeType = null, int $error = null)
     {
         $this->originalName = $originalName;
-        $this->mimeType     = $mimeType ?: 'application/octet-stream';
-        $this->error        = $error ?: UPLOAD_ERR_OK;
+        $this->mimeType = $mimeType ?: 'application/octet-stream';
+        $this->error = $error ?: UPLOAD_ERR_OK;
 
         parent::__construct($path);
     }
@@ -200,7 +200,7 @@ class UploadedFile extends File
      */
     public function getErrorMessage()
     {
-        $errorCode   = $this->error;
+        $errorCode = $this->error;
         $maxFilesize = UPLOAD_ERR_INI_SIZE === $errorCode ? self::getMaxFilesize() / 1024 : 0;
 
         $message = isset(self::$errors[$errorCode]) ? self::$errors[$errorCode] : 'The file %s was not uploaded due to an unknown error.';

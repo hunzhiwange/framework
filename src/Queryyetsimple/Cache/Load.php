@@ -64,7 +64,7 @@ class Load
     public function __construct(IContainer $container, ICache $cache)
     {
         $this->container = $container;
-        $this->cache     = $cache;
+        $this->cache = $cache;
     }
 
     /**

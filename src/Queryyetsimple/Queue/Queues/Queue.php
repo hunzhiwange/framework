@@ -153,7 +153,7 @@ abstract class Queue extends JobQueue
         if (!class_exists($strJob = '\Leevel\Queue\jobs\\'.$this->strConnect)) {
             $strJob = '\PHPQueue\Job';
         }
-        $objNextJob        = new $strJob($arrData, $this->resDataSource->last_job_id, static::$strQueue);
+        $objNextJob = new $strJob($arrData, $this->resDataSource->last_job_id, static::$strQueue);
         $this->last_job_id = $this->resDataSource->last_job_id;
 
         return $objNextJob;

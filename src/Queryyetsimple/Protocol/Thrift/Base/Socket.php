@@ -55,7 +55,7 @@ class Socket extends TFramedTransport
     {
         $buf = $this->_read(4);
         $val = unpack('N', $buf);
-        $sz  = $val[1];
+        $sz = $val[1];
 
         $this->rBuf_ = $this->_read($sz);
     }
@@ -83,14 +83,14 @@ class Socket extends TFramedTransport
 
         // Just return full buff
         if ($len >= TStringFuncFactory::create()->strlen($this->rBuf_)) {
-            $out         = $this->rBuf_;
+            $out = $this->rBuf_;
             $this->rBuf_ = null;
 
             return $out;
         }
 
         // Return TStringFuncFactory::create()->substr
-        $out         = TStringFuncFactory::create()->substr($this->rBuf_, 0, $len);
+        $out = TStringFuncFactory::create()->substr($this->rBuf_, 0, $len);
         $this->rBuf_ = TStringFuncFactory::create()->substr($this->rBuf_, $len);
 
         return $out;

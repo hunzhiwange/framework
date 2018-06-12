@@ -696,8 +696,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function destroy($mixId)
     {
-        $intCount    = 0;
-        $mixId       = (array) $mixId;
+        $intCount = 0;
+        $mixId = (array) $mixId;
         $objInstance = new static();
         foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
             if ($objModel->delete()) {
@@ -1064,7 +1064,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function hasOne($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
-        $objModel     = new $strRelatedModel();
+        $objModel = new $strRelatedModel();
         $strTargetKey = $strTargetKey ?: $this->getTargetKey();
         $strSourceKey = $strSourceKey ?: $this->getPrimaryKeyNameForQuery();
 
@@ -1117,7 +1117,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function hasMany($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
-        $objModel     = new $strRelatedModel();
+        $objModel = new $strRelatedModel();
         $strTargetKey = $strTargetKey ?: $this->getTargetKey();
         $strSourceKey = $strSourceKey ?: $this->getPrimaryKeyNameForQuery();
 
@@ -1151,10 +1151,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $strMiddleModel = $strMiddleModel ?: $this->getMiddleModel($objModel);
         $objMiddleModel = new $strMiddleModel();
 
-        $strTargetKey       = $strTargetKey ?: $objModel->getPrimaryKeyNameForQuery();
+        $strTargetKey = $strTargetKey ?: $objModel->getPrimaryKeyNameForQuery();
         $strMiddleTargetKey = $strMiddleTargetKey ?: $objModel->getTargetKey();
 
-        $strSourceKey       = $strSourceKey ?: $this->getPrimaryKeyNameForQuery();
+        $strSourceKey = $strSourceKey ?: $this->getPrimaryKeyNameForQuery();
         $strMiddleSourceKey = $strMiddleSourceKey ?: $this->getTargetKey();
 
         if (!$objModel->hasField($strTargetKey)) {
@@ -1849,7 +1849,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp         = is_array($mixProp) ? $mixProp : func_get_args();
+        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
         $this->arrHidden = array_merge($this->arrHidden, $mixProp);
 
         return $this;
@@ -1911,7 +1911,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp          = is_array($mixProp) ? $mixProp : func_get_args();
+        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
         $this->arrVisible = array_merge($this->arrVisible, $mixProp);
 
         return $this;
@@ -1973,7 +1973,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp         = is_array($mixProp) ? $mixProp : func_get_args();
+        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
         $this->arrAppend = array_merge($this->arrAppend, $mixProp);
 
         return $this;
@@ -2129,7 +2129,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp       = is_array($mixProp) ? $mixProp : func_get_args();
+        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
         $this->arrDate = array_merge($this->arrDate, $mixProp);
 
         return $this;
@@ -2410,8 +2410,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected function parseTableByClass()
     {
         if (!$this->strTable) {
-            $strTable       = $this->getCalledClass();
-            $strTable       = explode('\\', $strTable);
+            $strTable = $this->getCalledClass();
+            $strTable = explode('\\', $strTable);
             $this->strTable = array_pop($strTable);
         }
     }
@@ -2512,7 +2512,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $this->runEvent(static::BEFORE_CREATE_EVENT, $arrSaveData);
 
         $arrLastInsertId = $this->meta()->insert($arrSaveData);
-        $this->arrProp   = array_merge($this->arrProp, $arrLastInsertId);
+        $this->arrProp = array_merge($this->arrProp, $arrLastInsertId);
         $this->clearChanged();
 
         $this->runEvent(static::AFTER_CREATE_EVENT, $arrSaveData);
@@ -2558,7 +2558,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
             if (!empty($arrSaveData) && !empty($arrCondition)) {
                 $this->runEvent(static::BEFORE_UPDATE_EVENT, $arrSaveData, $arrCondition);
-                $intNum    = $this->meta()->update($arrCondition, $arrSaveData);
+                $intNum = $this->meta()->update($arrCondition, $arrSaveData);
                 $booChange = true;
             }
         }
@@ -2620,7 +2620,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
                 foreach ($this->meta()->fieldsProps($arrValue) as $strField => $mixValue) {
                     if (!in_array($strField, $this->arrChangedProp, true)) {
                         $this->arrProp[$strField] = trim($mixValue);
-                        $this->arrChangedProp[]   = $strField;
+                        $this->arrChangedProp[] = $strField;
                     }
                 }
             }
@@ -2650,7 +2650,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
         foreach ($arrFill as $mixKey => $mixValue) {
             if (is_int($mixKey)) {
-                $mixKey   = $mixValue;
+                $mixKey = $mixValue;
                 $mixValue = null;
             }
             $this->forceProp($mixKey, $mixValue);

@@ -194,9 +194,9 @@ abstract class Connect
 
         // 分析主题
         if (false !== strpos($tpl, '@')) {
-            $arr   = explode('@', $tpl);
+            $arr = explode('@', $tpl);
             $theme = array_shift($arr);
-            $tpl   = array_shift($arr);
+            $tpl = array_shift($arr);
         }
 
         $tpl = str_replace([

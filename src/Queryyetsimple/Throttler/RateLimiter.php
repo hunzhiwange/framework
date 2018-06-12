@@ -132,10 +132,10 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      */
     public function __construct(ICache $objCache, $strKey, $intXRateLimitLimit = 60, $intXRateLimitTime = 60)
     {
-        $this->objCache           = $objCache;
-        $this->strKey             = $strKey;
+        $this->objCache = $objCache;
+        $this->strKey = $strKey;
         $this->intXRateLimitLimit = $intXRateLimitLimit;
-        $this->intXRateLimitTime  = $intXRateLimitTime;
+        $this->intXRateLimitTime = $intXRateLimitTime;
     }
 
     /**
@@ -195,7 +195,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
     public function clear()
     {
         $this->intEndTime = $this->getInitEndTime();
-        $this->intCount   = $this->getInitCount();
+        $this->intCount = $this->getInitCount();
 
         return $this;
     }

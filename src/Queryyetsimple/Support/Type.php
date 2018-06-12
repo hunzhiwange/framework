@@ -45,7 +45,7 @@ class Type
     public static function vars($value, $type)
     {
         // 整理参数，以支持 array:ini 格式
-        $tmp  = explode(':', $type);
+        $tmp = explode(':', $type);
         $type = strtolower($tmp[0]);
 
         switch ($type) {

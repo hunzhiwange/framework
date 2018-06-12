@@ -121,7 +121,7 @@ class Memcache extends Connect implements IConnect
      */
     public function set($name, $data, array $option = [])
     {
-        $option           = $this->normalizeOptions($option);
+        $option = $this->normalizeOptions($option);
         $option['expire'] = $this->cacheTime($name, $option['expire']);
 
         $this->handle->set(

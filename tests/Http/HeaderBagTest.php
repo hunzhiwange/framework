@@ -58,7 +58,7 @@ class HeaderBagTest extends TestCase
 
     public function testKeys()
     {
-        $bag  = new HeaderBag(['foo' => 'bar']);
+        $bag = new HeaderBag(['foo' => 'bar']);
         $keys = $bag->keys();
         $this->assertSame('foo', $keys[0]);
     }
@@ -113,7 +113,7 @@ class HeaderBagTest extends TestCase
 
     public function testCount()
     {
-        $headers   = ['foo' => 'bar', 'HELLO' => 'WORLD'];
+        $headers = ['foo' => 'bar', 'HELLO' => 'WORLD'];
         $headerBag = new HeaderBag($headers);
         $this->assertCount(count($headers), $headerBag);
     }

@@ -516,27 +516,27 @@ abstract class Connect
             $arrMapping = [];
         }
 
-        $sOut    = '';
+        $sOut = '';
         $nOffset = 0;
 
         foreach ($arrMatches as $arrM) {
-            $nLen     = strlen($arrM[0]);
-            $sField   = substr($arrM[0], 1, $nLen - 2);
+            $nLen = strlen($arrM[0]);
+            $sField = substr($arrM[0], 1, $nLen - 2);
             $arrArray = explode('.', $sField);
 
             switch (count($arrArray)) {
                 case 3:
-                    $sF     = !empty($arrMapping[$arrArray[2]]) ? $arrMapping[$arrArray[2]] : $arrArray[2];
+                    $sF = !empty($arrMapping[$arrArray[2]]) ? $arrMapping[$arrArray[2]] : $arrArray[2];
                     $sTable = "{$arrArray[0]}.{$arrArray[1]}";
 
                     break;
                 case 2:
-                    $sF     = !empty($arrMapping[$arrArray[1]]) ? $arrMapping[$arrArray[1]] : $arrArray[1];
+                    $sF = !empty($arrMapping[$arrArray[1]]) ? $arrMapping[$arrArray[1]] : $arrArray[1];
                     $sTable = $arrArray[0];
 
                     break;
                 default:
-                    $sF     = !empty($arrMapping[$arrArray[0]]) ? $arrMapping[$arrArray[0]] : $arrArray[0];
+                    $sF = !empty($arrMapping[$arrArray[0]]) ? $arrMapping[$arrArray[0]] : $arrArray[0];
                     $sTable = $sTableName;
             }
 
@@ -856,7 +856,7 @@ abstract class Connect
 
             if (is_array($mixVal)) {
                 $strParam = $mixVal[1];
-                $mixVal   = $mixVal[0];
+                $mixVal = $mixVal[0];
             } else {
                 $strParam = PDO::PARAM_STR;
             }
@@ -942,7 +942,7 @@ abstract class Connect
      */
     protected function setSqlBindParams($strSql, $arrBindParams = [])
     {
-        $this->strSql        = $strSql;
+        $this->strSql = $strSql;
         $this->arrBindParams = $arrBindParams;
     }
 
@@ -984,7 +984,7 @@ abstract class Connect
     protected function throwException($strError = '')
     {
         if ($this->objPDOStatement) {
-            $arrTemp  = $this->objPDOStatement->errorInfo();
+            $arrTemp = $this->objPDOStatement->errorInfo();
             $strError = '('.$arrTemp[1].')'.$arrTemp[2]."\r\n".$strError;
 
             throw new PDOException($strError);

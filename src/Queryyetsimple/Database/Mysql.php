@@ -108,18 +108,18 @@ class Mysql extends Connect implements IConnect
         if (($arrColumns = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
             foreach ($arrColumns as $arrColumn) {
                 // 处理字段
-                $arrTemp         = [];
+                $arrTemp = [];
                 $arrTemp['name'] = $arrColumn['Field'];
 
                 if (preg_match('/(.+)\((.+)\)/', $arrColumn['Type'], $arrMatch)) {
-                    $arrTemp['type']   = $arrMatch[1];
+                    $arrTemp['type'] = $arrMatch[1];
                     $arrTemp['length'] = $arrMatch[1];
                 } else {
-                    $arrTemp['type']   = $arrColumn['Type'];
+                    $arrTemp['type'] = $arrColumn['Type'];
                     $arrTemp['length'] = null;
                 }
 
-                $arrTemp['primary_key']    = 'pri' === strtolower($arrColumn['Key']);
+                $arrTemp['primary_key'] = 'pri' === strtolower($arrColumn['Key']);
                 $arrTemp['auto_increment'] = false !== strpos($arrColumn['Extra'], 'auto_increment');
 
                 if (null !== $arrColumn['Default'] && 'null' !== strtolower($arrColumn['Default'])) {

@@ -94,8 +94,8 @@ class Load
         $data['app']['_env'] = $env;
 
         // 延迟服务提供者
-        $composer['providers']              = array_diff($composer['providers'], $composer['ignores']);
-        $providers                          = $this->loadDeferredProviderData($composer['providers']);
+        $composer['providers'] = array_diff($composer['providers'], $composer['ignores']);
+        $providers = $this->loadDeferredProviderData($composer['providers']);
         $data['app']['_deferred_providers'] = $providers;
 
         // composer 配置

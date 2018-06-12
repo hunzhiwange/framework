@@ -217,7 +217,7 @@ class Parser implements IParser
             }
 
             $this->sourceFile = $file;
-            $this->cachePath  = $cachePath;
+            $this->cachePath = $cachePath;
         } else {
             $cache = $file;
         }
@@ -302,7 +302,7 @@ class Parser implements IParser
             $startPos = 0;
 
             foreach ($res[1] as $index => $encode) {
-                $source  = trim($res[0][$index]);
+                $source = trim($res[0][$index]);
                 $content = trim($res[1][$index]);
 
                 $theme = [
@@ -315,8 +315,8 @@ class Parser implements IParser
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
-                $startPos          = $theme['position']['end'] + 1;
-                $theme             = $this->normalizeThemeStruct($theme);
+                $startPos = $theme['position']['end'] + 1;
+                $theme = $this->normalizeThemeStruct($theme);
 
                 // 将模板数据加入到树结构中
                 $this->addTheme($theme);
@@ -339,7 +339,7 @@ class Parser implements IParser
             $startPos = 0;
 
             foreach ($res[1] as $index => $encode) {
-                $source  = trim($res[0][$index]);
+                $source = trim($res[0][$index]);
                 $content = trim($res[1][$index]);
 
                 $theme = [
@@ -352,8 +352,8 @@ class Parser implements IParser
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
-                $startPos          = $theme['position']['end'] + 1;
-                $theme             = $this->normalizeThemeStruct($theme);
+                $startPos = $theme['position']['end'] + 1;
+                $theme = $this->normalizeThemeStruct($theme);
 
                 // 将模板数据加入到树结构中
                 $this->addTheme($theme);
@@ -379,7 +379,7 @@ class Parser implements IParser
         }
 
         // 正则分析
-        $tag   = $this->getTag('code');
+        $tag = $this->getTag('code');
         $names = implode('|', $names);
         $regex = '/'.$tag['left']."\\s*({$names})(|.+?)".$tag['right'].'/s';
 
@@ -387,7 +387,7 @@ class Parser implements IParser
             $startPos = 0;
 
             foreach ($res[0] as $index => &$source) {
-                $type           = trim($res[1][$index]);
+                $type = trim($res[1][$index]);
                 !$type && $type = '/';
 
                 $content = trim($res[2][$index]);
@@ -402,8 +402,8 @@ class Parser implements IParser
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
-                $startPos          = $theme['position']['end'] + 1;
-                $theme             = $this->normalizeThemeStruct($theme);
+                $startPos = $theme['position']['end'] + 1;
+                $theme = $this->normalizeThemeStruct($theme);
 
                 // 将模板数据加入到树结构中
                 $this->addTheme($theme);
@@ -475,8 +475,8 @@ class Parser implements IParser
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
-                $startPos          = $theme['position']['end'] + 1;
-                $theme             = $this->normalizeThemeStruct($theme);
+                $startPos = $theme['position']['end'] + 1;
+                $theme = $this->normalizeThemeStruct($theme);
 
                 // 将模板数据加入到树结构中
                 $this->addTheme($theme);
@@ -498,7 +498,7 @@ class Parser implements IParser
             $startPos = 0;
 
             foreach ($res[1] as $index => $encode) {
-                $source  = $res[0][$index];
+                $source = $res[0][$index];
                 $content = $res[1][$index];
 
                 $theme = [
@@ -511,8 +511,8 @@ class Parser implements IParser
                 ];
 
                 $theme['position'] = $this->getPosition($compiled, $source, $startPos);
-                $startPos          = $theme['position']['end'] + 1;
-                $theme             = $this->normalizeThemeStruct($theme);
+                $startPos = $theme['position']['end'] + 1;
+                $theme = $this->normalizeThemeStruct($theme);
 
                 // 将模板数据加入到树结构中
                 $this->addTheme($theme);
@@ -545,7 +545,7 @@ class Parser implements IParser
         }
 
         // 正则分析
-        $tag   = $this->getTag($nodeType);
+        $tag = $this->getTag($nodeType);
         $names = implode('|', $names);
         $regex = "/{$tag['left']}\\s*(\\/?)(({$names})(:[^\\s".
             (true === $this->jsNode ? '' : '\\>').
@@ -576,12 +576,12 @@ class Parser implements IParser
             $startPos = 0;
 
             foreach ($res[0] as $index => &$tagSource) {
-                $nodeName    = $res[$nodeNameIndex][$index];
+                $nodeName = $res[$nodeNameIndex][$index];
                 $nodeTopName = $res[$nodeTopNameIndex][$index];
-                $nodeType    = $res[$tailSlasheIndex][$index] === '/' ? 'tail' : 'head';
+                $nodeType = $res[$tailSlasheIndex][$index] === '/' ? 'tail' : 'head';
 
                 // 将节点名称统一为小写
-                $nodeName    = strtolower($nodeName);
+                $nodeName = strtolower($nodeName);
                 $nodeTopName = strtolower($nodeTopName);
 
                 $theme = [
@@ -597,10 +597,10 @@ class Parser implements IParser
                     $theme['attribute'] = '';
                 }
 
-                $theme['content']  = $theme['attribute'];
+                $theme['content'] = $theme['attribute'];
                 $theme['position'] = $this->getPosition($compiled, $tagSource, $startPos);
-                $startPos          = $theme['position']['end'] + 1;
-                $theme             = $this->normalizeThemeStruct($theme);
+                $startPos = $theme['position']['end'] + 1;
+                $theme = $this->normalizeThemeStruct($theme);
 
                 // 加入到标签栈
                 $this->nodeStack->in($theme);
@@ -616,10 +616,10 @@ class Parser implements IParser
     protected function packNode(&$compiled)
     {
         if (true === $this->jsNode) {
-            $nodeTag  = $this->compiler->getJsTagHelp();
+            $nodeTag = $this->compiler->getJsTagHelp();
             $compiler = 'Js';
         } else {
-            $nodeTag  = $this->compiler->getNodeTagHelp();
+            $nodeTag = $this->compiler->getNodeTagHelp();
             $compiler = 'Node';
         }
 
@@ -666,14 +666,14 @@ class Parser implements IParser
                 ];
 
                 $themeNode['position'] = $tag['position'];
-                $themeNode             = $this->normalizeThemeStruct($themeNode);
+                $themeNode = $this->normalizeThemeStruct($themeNode);
             }
 
             // 成对标签
             else {
                 // 头尾标签中间为整个标签内容
-                $start  = $tag['position']['start'];
-                $len    = $tailTag['position']['end'] - $start + 1;
+                $start = $tag['position']['start'];
+                $len = $tailTag['position']['end'] - $start + 1;
                 $source = substr($compiled, $start, $len);
 
                 $themeNode = [
@@ -686,11 +686,11 @@ class Parser implements IParser
                 ];
 
                 $themeNode['position'] = $this->getPosition($compiled, $source, $start);
-                $themeNode             = $this->normalizeThemeStruct($themeNode);
+                $themeNode = $this->normalizeThemeStruct($themeNode);
 
                 // 标签body
                 $start = $tag['position']['end'] + 1;
-                $len   = $tailTag['position']['start'] - $start;
+                $len = $tailTag['position']['start'] - $start;
 
                 if ($len > 0) {
                     $body = substr($compiled, $start, $len);
@@ -705,8 +705,8 @@ class Parser implements IParser
                     ];
 
                     $themeBody['position'] = $this->getPosition($compiled, $body, $start);
-                    $themeBody             = $this->normalizeThemeStruct($themeBody);
-                    $themeNode             = $this->addThemeTree($themeNode, $themeBody);
+                    $themeBody = $this->normalizeThemeStruct($themeBody);
+                    $themeNode = $this->addThemeTree($themeNode, $themeBody);
                 }
             }
 
@@ -724,8 +724,8 @@ class Parser implements IParser
             ];
 
             $themeAttr['position'] = $this->getPosition($compiled, $tag['source'], 0);
-            $themeAttr             = $this->normalizeThemeStruct($themeAttr);
-            $themeNode             = $this->addThemeTree($themeNode, $themeAttr);
+            $themeAttr = $this->normalizeThemeStruct($themeAttr);
+            $themeNode = $this->addThemeTree($themeNode, $themeAttr);
 
             // 将模板数据加入到树结构中
             $this->addTheme($themeNode);
@@ -815,7 +815,7 @@ class Parser implements IParser
 
             // 置换对象
             $start = strpos($theme['content'], $source);
-            $len   = $value['position']['end'] - $value['position']['start'] + 1;
+            $len = $value['position']['end'] - $value['position']['start'] + 1;
 
             $theme['content'] = substr_replace(
                 $theme['content'],
@@ -920,7 +920,7 @@ class Parser implements IParser
                     case 'front':
                         $result[] = $new;
                         $result[] = $child;
-                        $new      = null;
+                        $new = null;
 
                         break;
                     /*
@@ -936,9 +936,9 @@ class Parser implements IParser
                      * new 在 child 内部
                      */
                     case 'in':
-                        $child    = $this->addThemeTree($child, $new);
+                        $child = $this->addThemeTree($child, $new);
                         $result[] = $child;
-                        $new      = null;
+                        $new = null;
 
                         break;
                     /*
@@ -1004,12 +1004,12 @@ class Parser implements IParser
 
         // 空
         if (empty($find)) {
-            $data['start']      = -1;
-            $data['end']        = -1;
+            $data['start'] = -1;
+            $data['end'] = -1;
             $data['start_line'] = -1;
-            $data['end_line']   = -1;
-            $data['start_in']   = -1;
-            $data['end_in']     = -1;
+            $data['end_line'] = -1;
+            $data['start_in'] = -1;
+            $data['end_in'] = -1;
 
             return $data;
         }
@@ -1018,11 +1018,11 @@ class Parser implements IParser
 
         // 起止字节位置
         $start = strpos($content, $find, $start);
-        $end   = $start + strlen($find) - 1;
+        $end = $start + strlen($find) - 1;
 
         // 起止行数
         $startLine = $start <= 0 ? 0 : substr_count($content, "\n", 0, $start);
-        $endLine   = $end <= 0 ? 0 : substr_count($content, "\n", 0, $end);
+        $endLine = $end <= 0 ? 0 : substr_count($content, "\n", 0, $end);
 
         /**
          * 匹配模块范围圈（在这个字节里面的都是它的子模快）
@@ -1031,17 +1031,17 @@ class Parser implements IParser
 
         // 起点的行首换行位置 && 结束点的行首位置
         $lineStartFirst = strrpos(substr($content, 0, $start), "\n") + 1;
-        $lineEndFirst   = strrpos(substr($content, 0, $end), "\n") + 1;
-        $startIn        = $start - $lineStartFirst;
-        $endIn          = $end - $lineEndFirst;
+        $lineEndFirst = strrpos(substr($content, 0, $end), "\n") + 1;
+        $startIn = $start - $lineStartFirst;
+        $endIn = $end - $lineEndFirst;
 
         // 返回结果
-        $data['start']      = $start;
-        $data['end']        = $end;
+        $data['start'] = $start;
+        $data['end'] = $end;
         $data['start_line'] = $startLine;
-        $data['end_line']   = $endLine;
-        $data['start_in']   = $startIn;
-        $data['end_in']     = $endIn;
+        $data['end_line'] = $endLine;
+        $data['start_in'] = $startIn;
+        $data['end_in'] = $endIn;
 
         return $data;
     }

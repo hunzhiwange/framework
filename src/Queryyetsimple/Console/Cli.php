@@ -244,7 +244,7 @@ eot;
      */
     protected function normalizeArgv(array $argv)
     {
-        $result  = [];
+        $result = [];
         $special = ['=', '--'];
 
         foreach ($argv as $key => $token) {

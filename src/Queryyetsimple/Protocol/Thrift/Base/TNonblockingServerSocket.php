@@ -40,7 +40,7 @@ class TNonblockingServerSocket extends TServerTransport
     protected $port_ = 0;
     protected $host_ = '0.0.0.0';
     protected $handle_;
-    protected $errno_  = 0;
+    protected $errno_ = 0;
     protected $errstr_ = '';
     protected $base_;
     protected $serverEvent_;
@@ -60,7 +60,7 @@ class TNonblockingServerSocket extends TServerTransport
         // no blocking
         stream_set_blocking($this->handle_, 0);
 
-        $this->base_        = \event_base_new();
+        $this->base_ = \event_base_new();
         $this->serverEvent_ = \event_new();
 
         \event_set($this->serverEvent_, $this->handle_, EV_READ | EV_PERSIST, [

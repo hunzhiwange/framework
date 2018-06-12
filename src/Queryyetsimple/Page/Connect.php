@@ -742,7 +742,7 @@ abstract class Connect implements IHtml
             return $this->strResolveUrl;
         }
 
-        $booWithUrl   = false;
+        $booWithUrl = false;
         $strSubdomain = 'www';
 
         if (false !== strpos($this->getOption('url'), '@')) {

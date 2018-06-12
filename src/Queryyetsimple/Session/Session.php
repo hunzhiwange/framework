@@ -196,7 +196,7 @@ class Session implements ISession
     {
         $this->checkStart();
 
-        $name            = $this->getNormalizeName($name);
+        $name = $this->getNormalizeName($name);
         $_SESSION[$name] = $value;
     }
 
@@ -229,7 +229,7 @@ class Session implements ISession
      */
     public function push($key, $value)
     {
-        $arr   = $this->get($key, []);
+        $arr = $this->get($key, []);
         $arr[] = $value;
 
         $this->set($key, $arr);

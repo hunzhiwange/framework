@@ -102,10 +102,10 @@ class Request
 
     public function read($input)
     {
-        $xfer  = 0;
+        $xfer = 0;
         $fname = null;
         $ftype = 0;
-        $fid   = 0;
+        $fid = 0;
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);
@@ -124,8 +124,8 @@ class Request
         case 2:
           if (TType::LST === $ftype) {
               $this->params = [];
-              $_size0       = 0;
-              $_etype3      = 0;
+              $_size0 = 0;
+              $_etype3 = 0;
               $xfer += $input->readListBegin($_etype3, $_size0);
               for ($_i4 = 0; $_i4 < $_size0; ++$_i4) {
                   $elem5 = null;
@@ -141,9 +141,9 @@ class Request
         case 3:
           if (TType::MAP === $ftype) {
               $this->metas = [];
-              $_size6      = 0;
-              $_ktype7     = 0;
-              $_vtype8     = 0;
+              $_size6 = 0;
+              $_ktype7 = 0;
+              $_vtype8 = 0;
               $xfer += $input->readMapBegin($_ktype7, $_vtype8, $_size6);
               for ($_i10 = 0; $_i10 < $_size6; ++$_i10) {
                   $key11 = '';

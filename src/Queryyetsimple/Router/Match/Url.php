@@ -80,7 +80,7 @@ class Url implements IMatch
         }
 
         $this->request = $request;
-        $this->router  = $router;
+        $this->router = $router;
 
         // 验证是否存在请求方法
         $method = strtolower($request->getMethod());
@@ -92,12 +92,12 @@ class Url implements IMatch
         $result = [];
 
         // 匹配基础路径
-        $basepaths      = $router->getBasepaths();
+        $basepaths = $router->getBasepaths();
         $pathInfoSource = $pathInfo = $request->getPathInfo();
 
         foreach ($basepaths as $path) {
             if (0 === strpos($pathInfo, $path)) {
-                $pathInfo              = substr($pathInfo, strlen($path));
+                $pathInfo = substr($pathInfo, strlen($path));
                 $this->matchedBasepath = $path;
 
                 break;
@@ -122,7 +122,7 @@ class Url implements IMatch
         }
 
         // 匹配分组
-        $groups     = $router->getGroups();
+        $groups = $router->getGroups();
         $matchGroup = false;
         foreach ($groups as $group) {
             if (0 === strpos($pathInfo, $group)) {
@@ -144,7 +144,7 @@ class Url implements IMatch
             }
 
             $matchedRouter = $urlRouters['map'][$key][count($matches)];
-            $routers       = $urlRouters[$matchedRouter];
+            $routers = $urlRouters[$matchedRouter];
 
             $matcheVars = $this->matcheVariable($routers, $matches);
 
@@ -174,8 +174,8 @@ class Url implements IMatch
             return false;
         }
 
-        $result           = $this->router->matchePath($routers['bind']);
-        $exendParams      = $result['params'];
+        $result = $this->router->matchePath($routers['bind']);
+        $exendParams = $result['params'];
         $result['params'] = [];
 
         // 域名匹配参数 {subdomain}.{domain}

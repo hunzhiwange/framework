@@ -110,7 +110,7 @@ class SwaggerRouter
         }
 
         if ($controllerDir) {
-            $controllerDir       = str_replace('/', '\\', $controllerDir);
+            $controllerDir = str_replace('/', '\\', $controllerDir);
             $this->controllerDir = $controllerDir;
         }
 
@@ -143,7 +143,7 @@ class SwaggerRouter
         $swagger = $this->makeSwagger();
 
         list($basepaths, $basepathPrefix) = $this->parseBasepaths($swagger);
-        $groups                           = $this->parseGroups($swagger);
+        $groups = $this->parseGroups($swagger);
 
         $routers = [];
 
@@ -161,7 +161,7 @@ class SwaggerRouter
 
                     // 支持的自定义路由字段
                     foreach ($this->routerField as $f) {
-                        $field         = '_'.$f;
+                        $field = '_'.$f;
                         $routerTmp[$f] = property_exists($method, $field) ? $method->{$field} : null;
                     }
 
@@ -208,7 +208,7 @@ class SwaggerRouter
                     if (false !== strpos($routerPath, '{')) {
                         list($routerTmp['regex'], $routerTmp['var']) = $this->ruleRegex($routerPath, $routerTmp);
                     } else {
-                        $isStaticRoute                               = true;
+                        $isStaticRoute = true;
                         list($routerTmp['regex'], $routerTmp['var']) = [null, null];
                     }
 
@@ -270,7 +270,7 @@ class SwaggerRouter
      */
     protected function parseToGroups(array &$routers): array
     {
-        $groups     = [];
+        $groups = [];
         $groupIndex = 0;
 
         foreach ($routers as $key => &$item) {
@@ -295,13 +295,13 @@ class SwaggerRouter
     {
         $minCount = $this->computeMinCountVar($routers);
 
-        $regex   = [];
+        $regex = [];
         $ruleMap = [];
         $ruleKey = 0;
         $regex[] = '~^(?';
 
         foreach ($routers as $key => $router) {
-            $countVar    = $minCount + $ruleKey;
+            $countVar = $minCount + $ruleKey;
             $emptyMatche = $countVar - count($router['var']);
 
             $ruleMap[$countVar + 1] = $key;
@@ -352,13 +352,13 @@ class SwaggerRouter
             return null;
         }
 
-        $className    = $context->fullyQualifiedName($context->class);
+        $className = $context->fullyQualifiedName($context->class);
         $segmentation = '\\'.$this->controllerDir.'\\';
 
         if (strpos($className, $segmentation) < 1) {
             return null;
         }
-        $tmp    = explode($segmentation, $className);
+        $tmp = explode($segmentation, $className);
         $router = ':'.ltrim($tmp[0], '\\').'\\'.$tmp[1].'\\'.$context->method;
         $method = str_replace('\\', '/', $router);
 
@@ -434,7 +434,7 @@ class SwaggerRouter
 
         if (true === $forSingleRegex) {
             $strict = ($routers['strict'] ?? Router::DEFAULT_STRICT) ? '$' : '';
-            $rule   = '/^'.$rule.$strict.'/';
+            $rule = '/^'.$rule.$strict.'/';
         }
 
         return [
@@ -474,11 +474,11 @@ class SwaggerRouter
      */
     protected function parseBasepaths(Swagger $swagger): array
     {
-        $basepaths      = [];
+        $basepaths = [];
         $basepathPrefix = '';
 
         if ($swagger->basePath) {
-            $basepaths[]    = $swagger->basePath;
+            $basepaths[] = $swagger->basePath;
             $basepathPrefix = $swagger->basePath;
         }
 

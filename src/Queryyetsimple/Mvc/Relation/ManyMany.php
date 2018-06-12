@@ -82,7 +82,7 @@ class ManyMany extends Relation
      */
     public function __construct(IModel $objTargetModel, IModel $objSourceModel, IModel $objMiddleModel, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey)
     {
-        $this->objMiddleModel     = $objMiddleModel;
+        $this->objMiddleModel = $objMiddleModel;
         $this->strMiddleTargetKey = $strMiddleTargetKey;
         $this->strMiddleSourceKey = $strMiddleSourceKey;
 
@@ -310,7 +310,7 @@ class ManyMany extends Relation
 
         foreach ($this->objMiddleSelect->getAll() as $objMiddleModel) {
             $arr[$objMiddleModel->{$this->strMiddleTargetKey}][] = $objMiddleModel->{$this->strMiddleSourceKey};
-            $arrTargetId[]                                       = $objMiddleModel->{$this->strMiddleTargetKey};
+            $arrTargetId[] = $objMiddleModel->{$this->strMiddleTargetKey};
         }
 
         $this->arrMiddleMap = $arr;

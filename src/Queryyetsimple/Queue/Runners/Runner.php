@@ -70,7 +70,7 @@ abstract class Runner extends PHPQueueRunner
      */
     public function workCommand($objWork)
     {
-        $this->objWork  = $objWork;
+        $this->objWork = $objWork;
         $this->intTries = $objWork->tries();
         $this->intSleep = $objWork->sleep();
 
@@ -83,7 +83,7 @@ abstract class Runner extends PHPQueueRunner
     public function workJob()
     {
         $nSleepTime = self::RUN_USLEEP;
-        $obJNewJob  = null;
+        $obJNewJob = null;
 
         try {
             $obJNewJob = Base::getJob($this->objQueue);
@@ -114,7 +114,7 @@ abstract class Runner extends PHPQueueRunner
                 } elseif (is_array($obJNewJob->worker)) {
                     $this->logger->addInfo(sprintf('Running chained new job (%s) with workers', $obJNewJob->job_id), $obJNewJob->worker);
                     foreach ($obJNewJob->worker as $strWorkerName) {
-                        $arrResultData   = $this->processWorker($strWorkerName, $obJNewJob);
+                        $arrResultData = $this->processWorker($strWorkerName, $obJNewJob);
                         $obJNewJob->data = $arrResultData;
                     }
                 }

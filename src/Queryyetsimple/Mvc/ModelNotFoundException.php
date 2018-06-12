@@ -50,7 +50,7 @@ class ModelNotFoundException extends RuntimeException
     public function model($strModel)
     {
         $this->strModel = $strModel;
-        $this->message  = "Can not find {$strModel} data";
+        $this->message = "Can not find {$strModel} data";
 
         return $this;
     }

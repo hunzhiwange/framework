@@ -343,7 +343,7 @@ class Select
      */
     public function softDelete()
     {
-        $objSelect                                     = $this->objSelect->where($this->objModel->getKeyConditionForQuery());
+        $objSelect = $this->objSelect->where($this->objModel->getKeyConditionForQuery());
         $this->objModel->{$this->getDeletedAtColumn()} = $objTime = $this->objModel->carbon();
         $this->objModel->addDate($this->getDeletedAtColumn());
 
@@ -368,8 +368,8 @@ class Select
      */
     public function softDestroy($mixId)
     {
-        $intCount    = 0;
-        $mixId       = (array) $mixId;
+        $intCount = 0;
+        $mixId = (array) $mixId;
         $objInstance = $this->objModel->newInstance();
         foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
             if ($objModel->softDelete()) {
@@ -390,7 +390,7 @@ class Select
         $this->objModel->runEvent(model::BEFORE_SOFT_RESTORE_EVENT);
 
         $this->objModel->{$this->getDeletedAtColumn()} = null;
-        $intNum                                        = $this->objModel->update();
+        $intNum = $this->objModel->update();
 
         $this->objModel->runEvent(model::AFTER_SOFT_RESTORE_EVENT);
 
@@ -598,7 +598,7 @@ class Select
                 ];
             }
 
-            $arr           = $this->parseNestedWith($mixName, $arr);
+            $arr = $this->parseNestedWith($mixName, $arr);
             $arr[$mixName] = $mixCondition;
         }
 
@@ -645,7 +645,7 @@ class Select
                 $arr[] = $objModel;
             }
             $mixResult = $arr;
-            $strType   = 'collection';
+            $strType = 'collection';
         } elseif ($mixResult instanceof IModel) {
             $mixResult = [
                 $mixResult,

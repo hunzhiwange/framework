@@ -185,10 +185,10 @@ class Router implements IRouter
      */
     public function initRequest()
     {
-        $this->matchedApp        = null;
+        $this->matchedApp = null;
         $this->matchedController = null;
-        $this->matchedAction     = null;
-        $this->matchedData       = null;
+        $this->matchedAction = null;
+        $this->matchedData = null;
     }
 
     /**
@@ -411,7 +411,7 @@ class Router implements IRouter
 
             if ($query) {
                 foreach (explode('&', $query) as $item) {
-                    $item                             = explode('=', $item);
+                    $item = explode('=', $item);
                     $result[static::PARAMS][$item[0]] = $item[1];
                 }
             }
@@ -421,14 +421,14 @@ class Router implements IRouter
         $basepath = '';
         foreach ($this->getBasepaths() as $item) {
             if (0 === strpos($path, $item)) {
-                $path     = substr($path, strlen($item) + 1);
+                $path = substr($path, strlen($item) + 1);
                 $basepath = $item;
 
                 break;
             }
         }
 
-        $path  = trim($path, '/');
+        $path = trim($path, '/');
         $paths = explode('/', $path);
 
         // 应用
@@ -740,16 +740,16 @@ class Router implements IRouter
      */
     protected function parseDefaultBind()
     {
-        $app        = $this->matchedApp();
+        $app = $this->matchedApp();
         $controller = $this->matchedController();
-        $action     = $this->matchedAction();
+        $action = $this->matchedAction();
 
         // 尝试直接读取方法控制器类
         $controllerClass = $app.'\\'.$this->parseControllerDir().'\\'.$controller.'\\'.ucfirst($action);
 
         if (class_exists($controllerClass)) {
             $controller = $this->container->make($controllerClass);
-            $method     = method_exists($controller, 'handle') ? 'handle' : 'run';
+            $method = method_exists($controller, 'handle') ? 'handle' : 'run';
         }
 
         // 尝试读取默认控制器
@@ -760,7 +760,7 @@ class Router implements IRouter
             }
 
             $controller = $this->container->make($controllerClass);
-            $method     = $action;
+            $method = $action;
         }
 
         if ($controller instanceof IController) {

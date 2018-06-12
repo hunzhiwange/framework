@@ -130,7 +130,7 @@ class FileBagTest extends TestCase
     public function testShouldConvertUploadedFilesWithPhpBug()
     {
         $tmpFile = $this->createTempFile();
-        $file    = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
 
         $bag = new FileBag([
             'child' => [
@@ -159,7 +159,7 @@ class FileBagTest extends TestCase
     public function testShouldConvertNestedUploadedFilesWithPhpBug()
     {
         $tmpFile = $this->createTempFile();
-        $file    = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
 
         $bag = new FileBag([
             'child' => [
@@ -190,15 +190,15 @@ class FileBagTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
 
         $tmpFile = $this->createTempFile();
-        $file    = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
-        $bag     = new FileBag(['image' => ['file' => $file]]);
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+        $bag = new FileBag(['image' => ['file' => $file]]);
     }
 
     public function testConvertUploadFileItem()
     {
         $tmpFile = $this->createTempFile();
-        $file    = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
-        $bag     = new FileBag(['image' => $file]);
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+        $bag = new FileBag(['image' => $file]);
 
         $files = $bag->all();
         $this->assertSame($file, $files['image']);

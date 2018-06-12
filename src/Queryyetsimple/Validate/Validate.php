@@ -2011,7 +2011,7 @@ class Validate implements IValidate
     protected function doCheckBeforeAfter($strFormat, $strFoo, $strBar)
     {
         $objBefore = $this->makeDateTimeFormat($strFormat, $strFoo);
-        $objAfter  = $this->makeDateTimeFormat($strFormat, $strBar);
+        $objAfter = $this->makeDateTimeFormat($strFormat, $strBar);
 
         return $objBefore && $objAfter && $objBefore < $objAfter;
     }
@@ -2629,7 +2629,7 @@ class Validate implements IValidate
         }
 
         if (false === strpos($strExtend, '@')) {
-            $strClass  = $strExtend;
+            $strClass = $strExtend;
             $strMethod = 'handle';
         } else {
             list($strClass, $strMethod) = explode('@', $strExtend);

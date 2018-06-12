@@ -100,7 +100,7 @@ return PhpCsFixer\Config::create()
         'yoda_style'                  => true,
 
         // new
-        'binary_operator_spaces' => ['align_double_arrow' => true, 'align_equals' => true],
+        'binary_operator_spaces' => ['align_double_arrow' => true],
     ])
     ->setRiskyAllowed(true)
     ->setFinder(

@@ -286,7 +286,7 @@ class Seccode implements ISeccode
      */
     protected function makeBackground()
     {
-        $resFoo   = imagecreatetruecolor($this->getWidth(), $this->getHeight());
+        $resFoo = imagecreatetruecolor($this->getWidth(), $this->getHeight());
         $resColor = imagecolorallocate($resFoo, 255, 255, 255);
 
         if (false === $this->makeBackgroundWithImage($resFoo)) {
@@ -360,7 +360,7 @@ class Seccode implements ISeccode
                     mt_rand(0, 255),
                 ];
                 $this->getOption('shadow') && $resTextShadowColor = imagecolorallocate($resFoo, 255 - $this->arrFontColor[0], 255 - $this->arrFontColor[1], 255 - $this->arrFontColor[2]);
-                $resTextColor                                     = imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
+                $resTextColor = imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
             } elseif ($this->getOption('shadow')) {
                 $resTextShadowColor = imagecolorallocate($resFoo, 255 - $this->arrFontColor[0], 255 - $this->arrFontColor[1], 255 - $this->arrFontColor[2]);
             }
@@ -381,16 +381,16 @@ class Seccode implements ISeccode
     protected function getFontOption()
     {
         $strCode = $this->getCode();
-        $arrTtf  = $this->getTtf();
+        $arrTtf = $this->getTtf();
 
         if ($this->isChinese($strCode)) {
-            $strCode       = str_split($strCode, 3);
+            $strCode = str_split($strCode, 3);
             $intCodeLength = count($strCode);
         } else {
             $intCodeLength = strlen($strCode);
         }
 
-        $arrFont       = [];
+        $arrFont = [];
         $intWidthTotal = 0;
         for ($int = 0; $int < $intCodeLength; ++$int) {
             if (!isset($arrFont[$int])) {
@@ -445,7 +445,7 @@ class Seccode implements ISeccode
             if ($arrBackground) {
                 $resBackground = imagecreatefromjpeg($arrBackground[array_rand($arrBackground)]);
                 $resColorIndex = imagecolorat($resBackground, 0, 0);
-                $arrColor      = imagecolorsforindex($resBackground, $resColorIndex);
+                $arrColor = imagecolorsforindex($resBackground, $resColorIndex);
                 $resColorIndex = imagecolorat($resBackground, 1, 0);
                 imagesetpixel($resBackground, 0, 0, $resColorIndex);
 
@@ -456,7 +456,7 @@ class Seccode implements ISeccode
                 imagecopymerge($resFoo, $resBackground, 0, 0, $this->mtRand(0, 200 - $this->getWidth()), $this->mtRand(0, 80 - $this->getHeight()), imagesx($resBackground), imagesy($resBackground), 100);
                 imagedestroy($resBackground);
 
-                $booBackground      = true;
+                $booBackground = true;
                 $this->arrFontColor = $arrColor;
             }
         }
@@ -473,8 +473,8 @@ class Seccode implements ISeccode
     {
         for ($int = 0; $int < 3; ++$int) {
             $arrStart[$int] = mt_rand(200, 255);
-            $arrEnd[$int]   = mt_rand(100, 150);
-            $arrStep[$int]  = ($arrEnd[$int] - $arrStart[$int]) / $this->getWidth();
+            $arrEnd[$int] = mt_rand(100, 150);
+            $arrStep[$int] = ($arrEnd[$int] - $arrStart[$int]) / $this->getWidth();
             $arrColor[$int] = $arrStart[$int];
         }
 
@@ -618,8 +618,8 @@ class Seccode implements ISeccode
     {
         if ($numFoo > $numBar) {
             $intTemp = $numBar;
-            $numBar  = $numFoo;
-            $numFoo  = $intTemp;
+            $numBar = $numFoo;
+            $numFoo = $intTemp;
             unset($intTemp);
         }
 

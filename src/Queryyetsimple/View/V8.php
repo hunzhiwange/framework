@@ -308,7 +308,7 @@ EOT;
      */
     protected function vuePackage()
     {
-        $vue      = $this->option['vue_path'];
+        $vue = $this->option['vue_path'];
         $renderer = $this->option['vue_renderer'];
 
         if (!is_file($vue)) {

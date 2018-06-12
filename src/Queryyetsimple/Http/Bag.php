@@ -265,8 +265,8 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     protected function parseKeyFilter($key, array $filter)
     {
         if (false !== strpos($key, '|')) {
-            $temp   = explode('|', $key);
-            $key    = array_shift($temp);
+            $temp = explode('|', $key);
+            $key = array_shift($temp);
             $filter = array_merge($temp, $filter);
         }
 
@@ -340,7 +340,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
             $evals = "\$value = '".($value ? '1' : '')."' ?: ".$extend.';';
         } elseif ($extend) {
             if (false !== strpos($extend, ',')) {
-                $tmp    = explode(',', $extend);
+                $tmp = explode(',', $extend);
                 $result = [];
 
                 foreach ($tmp as $v) {
@@ -358,7 +358,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
             if (strstr($extend, '**')) {
                 $extend = str_replace('**', '$value', $extend);
-                $evals  = "\$value = {$filter}({$extend});";
+                $evals = "\$value = {$filter}({$extend});";
             } else {
                 $evals = "\$value = {$filter}(\$value, {$extend});";
             }
@@ -470,7 +470,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         }
 
         $defaults = $value;
-        $parts    = explode('.', $key);
+        $parts = explode('.', $key);
 
         foreach ($parts as $item) {
             if (!is_array($value) || !isset($value[$item])) {

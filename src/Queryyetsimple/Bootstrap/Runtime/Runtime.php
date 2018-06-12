@@ -204,10 +204,10 @@ abstract class Runtime implements IRuntime
         $whoops->pushHandler($this->makeJsonResponseHandler());
 
         // JSON 响应结果的物理路径做安全处理
-        $json                  = $whoops->handleException($e);
-        $json                  = json_decode($json, true);
+        $json = $whoops->handleException($e);
+        $json = json_decode($json, true);
         $json['error']['file'] = $this->filterPhysicalPath($json['error']['file']);
-        $json                  = json_encode($json);
+        $json = json_encode($json);
 
         return JsonResponse::fromJsonString(
             $json,

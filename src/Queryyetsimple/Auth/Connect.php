@@ -127,9 +127,9 @@ abstract class Connect
      */
     public function __construct(IModel $oUser, IEncryption $oEncryption, IValidate $oValidate, array $arrOption = [])
     {
-        $this->oUser       = $oUser;
+        $this->oUser = $oUser;
         $this->oEncryption = $oEncryption;
-        $this->oValidate   = $oValidate;
+        $this->oValidate = $oValidate;
 
         $this->options($arrOption);
     }
@@ -151,7 +151,7 @@ abstract class Connect
      */
     public function getLogin()
     {
-        $sToken                    = $this->tokenData();
+        $sToken = $this->tokenData();
         list($nUserId, $sPassword) = $sToken ? $this->explodeTokenData($sToken) : [
             '',
             '',
@@ -195,7 +195,7 @@ abstract class Connect
      */
     public function onlyValidate($mixName, $sPassword)
     {
-        $mixName   = trim($mixName);
+        $mixName = trim($mixName);
         $sPassword = trim($sPassword);
 
         if (!$mixName || !$sPassword) {
@@ -317,12 +317,12 @@ abstract class Connect
      */
     public function registerUser($strName, $strPassword, $strComfirmPassword, $strNikename = null, $strIp = null, $strEmail = null, $strMobile = null)
     {
-        $strName            = trim($strName);
-        $strNikename        = trim($strNikename);
-        $strPassword        = trim($strPassword);
+        $strName = trim($strName);
+        $strNikename = trim($strNikename);
+        $strPassword = trim($strPassword);
         $strComfirmPassword = trim($strComfirmPassword);
-        $strEmail           = trim($strEmail);
-        $strMobile          = trim($strMobile);
+        $strEmail = trim($strEmail);
+        $strMobile = trim($strMobile);
 
         if (!$strName || $strName !== addslashes($strName)) {
             throw new RegisterFailed(__('用户名不能为空或包含非法字符'));

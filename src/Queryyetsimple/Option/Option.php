@@ -65,9 +65,9 @@ class Option implements IOption, ArrayAccess
      */
     public function has($name = 'app\\')
     {
-        $name       = $this->parseNamespace($name);
+        $name = $this->parseNamespace($name);
         $namespaces = $name[0];
-        $name       = $name[1];
+        $name = $name[1];
 
         if ('*' === $name) {
             return isset($this->option[$namespaces]);
@@ -77,7 +77,7 @@ class Option implements IOption, ArrayAccess
             return array_key_exists($name, $this->option[$namespaces]);
         }
 
-        $parts  = explode('.', $name);
+        $parts = explode('.', $name);
         $option = $this->option[$namespaces];
         foreach ($parts as $part) {
             if (!isset($option[$part])) {
@@ -99,9 +99,9 @@ class Option implements IOption, ArrayAccess
      */
     public function get($name = 'app\\', $defaults = null)
     {
-        $name       = $this->parseNamespace($name);
+        $name = $this->parseNamespace($name);
         $namespaces = $name[0];
-        $name       = $name[1];
+        $name = $name[1];
 
         if ('*' === $name) {
             return $this->option[$namespaces];
@@ -111,7 +111,7 @@ class Option implements IOption, ArrayAccess
             return array_key_exists($name, $this->option[$namespaces]) ? $this->option[$namespaces][$name] : $defaults;
         }
 
-        $parts  = explode('.', $name);
+        $parts = explode('.', $name);
         $option = $this->option[$namespaces];
         foreach ($parts as $part) {
             if (!isset($option[$part])) {
@@ -148,9 +148,9 @@ class Option implements IOption, ArrayAccess
                 $this->set($key, $value);
             }
         } else {
-            $name       = $this->parseNamespace($name);
+            $name = $this->parseNamespace($name);
             $namespaces = $name[0];
-            $name       = $name[1];
+            $name = $name[1];
 
             if ('*' === $name) {
                 $this->option[$namespaces] = $value;
@@ -161,8 +161,8 @@ class Option implements IOption, ArrayAccess
             if (!strpos($name, '.')) {
                 $this->option[$namespaces][$name] = $value;
             } else {
-                $parts  = explode('.', $name);
-                $max    = count($parts) - 1;
+                $parts = explode('.', $name);
+                $max = count($parts) - 1;
                 $option = &$this->option[$namespaces];
                 for ($i = 0; $i <= $max; ++$i) {
                     $part = $parts[$i];
@@ -188,9 +188,9 @@ class Option implements IOption, ArrayAccess
      */
     public function delete($name)
     {
-        $name       = $this->parseNamespace($name);
+        $name = $this->parseNamespace($name);
         $namespaces = $name[0];
-        $name       = $name[1];
+        $name = $name[1];
 
         if ('*' === $name) {
             $this->option[$namespaces] = [];
@@ -203,8 +203,8 @@ class Option implements IOption, ArrayAccess
                 unset($this->option[$namespaces][$name]);
             }
         } else {
-            $parts  = explode('.', $name);
-            $max    = count($parts) - 1;
+            $parts = explode('.', $name);
+            $max = count($parts) - 1;
             $option = &$this->option[$namespaces];
             for ($i = 0; $i <= $max; ++$i) {
                 $part = $parts[$i];
@@ -301,7 +301,7 @@ class Option implements IOption, ArrayAccess
             if (empty($namespaces[1])) {
                 $namespaces[1] = '*';
             }
-            $name       = $namespaces[1];
+            $name = $namespaces[1];
             $namespaces = $namespaces[0];
         } else {
             $namespaces = static::DEFAUTL_NAMESPACE;

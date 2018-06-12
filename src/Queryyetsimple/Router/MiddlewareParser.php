@@ -61,7 +61,7 @@ class MiddlewareParser
     public function handle($middlewares)
     {
         $middlewareGroups = $this->router->getMiddlewareGroups();
-        $middlewareAlias  = $this->router->getMiddlewareAlias();
+        $middlewareAlias = $this->router->getMiddlewareAlias();
 
         $result = [];
 
