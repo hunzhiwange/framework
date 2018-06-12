@@ -2,8 +2,12 @@ language: php
 
 preset: symfony
 
-concat_space:
-    - spacing=one
+enabled:
+    - short_array_syntax
+    - concat_with_spaces
+
+disabled:
+    - long_array_syntax
 
 env:
   global:
