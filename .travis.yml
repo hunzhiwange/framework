@@ -1,5 +1,10 @@
 language: php
 
+preset: symfony
+
+concat_space:
+    - spacing=none
+
 env:
   global:
     - MIN_PHP=7.1.3
