@@ -119,11 +119,11 @@ class CollectionTest extends TestCase
         $this->assertSame($collection->toArray(), $data);
 
         $collection[1] = 'world';
-        $data[1] = 'world';
+        $data[1]       = 'world';
         $this->assertSame($collection->toArray(), $data);
 
         $collection[2] = 'foo';
-        $data[2] = 'foo';
+        $data[2]       = 'foo';
         $this->assertSame($collection->toArray(), $data);
 
         unset($collection[1]);

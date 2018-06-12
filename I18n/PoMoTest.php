@@ -41,11 +41,11 @@ class PoMoTest extends TestCase
         $lang = (new Po())->readToArray([__DIR__.'/page.po']);
 
         $this->assertSame($lang, [
-            '上一页' => 'Previous',
-            '下一页' => 'Next',
+            '上一页'    => 'Previous',
+            '下一页'    => 'Next',
             '共 %d 条' => 'Total %d',
-            '前往' => 'Go to',
-            '页' => 'Page',
+            '前往'     => 'Go to',
+            '页'      => 'Page',
         ]);
     }
 
@@ -54,11 +54,11 @@ class PoMoTest extends TestCase
         $lang = (new Mo())->readToArray([__DIR__.'/page.mo']);
 
         $this->assertSame($lang, [
-            '上一页' => 'Previous',
-            '下一页' => 'Next',
+            '上一页'    => 'Previous',
+            '下一页'    => 'Next',
             '共 %d 条' => 'Total %d',
-            '前往' => 'Go to',
-            '页' => 'Page',
+            '前往'     => 'Go to',
+            '页'      => 'Page',
         ]);
     }
 }

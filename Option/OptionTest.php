@@ -38,7 +38,7 @@ class OptionTest extends TestCase
     public function testAll()
     {
         $data = [
-            'hello' => 'world',
+            'hello'      => 'world',
             'test\child' => ['foo' => 'bar'],
         ];
 
@@ -52,10 +52,10 @@ class OptionTest extends TestCase
         $data = [
             'app' => [
                 'environment' => 'testing',
-                'debug' => true,
+                'debug'       => true,
             ],
             'cache' => [
-                'expire' => 86400,
+                'expire'      => 86400,
                 'time_preset' => [
                     'foo' => 'bar',
                 ],
@@ -74,17 +74,17 @@ class OptionTest extends TestCase
 
         $this->assertSame([
             'environment' => 'testing',
-            'debug' => true,
+            'debug'       => true,
         ], $option->get('app\\'));
 
         $this->assertSame([
             'environment' => 'testing',
-            'debug' => true,
+            'debug'       => true,
         ], $option->get('app\*'));
 
         $this->assertFalse([
             'environment' => 'testing',
-            'debug' => true,
+            'debug'       => true,
         ] === $option->get('app'), 'The default namespace is app, so it equal app\app');
 
         // namespace\sub.sub1.sub2
@@ -97,10 +97,10 @@ class OptionTest extends TestCase
         $data = [
             'app' => [
                 'environment' => 'testing',
-                'debug' => true,
+                'debug'       => true,
             ],
             'cache' => [
-                'expire' => 86400,
+                'expire'      => 86400,
                 'time_preset' => [
                     'foo' => 'bar',
                 ],
@@ -146,7 +146,7 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), [
             'app' => [
                 'environment' => 'testing',
-                'hello' => 'i am hello',
+                'hello'       => 'i am hello',
             ],
         ]);
 
@@ -170,10 +170,10 @@ class OptionTest extends TestCase
         $data = [
             'app' => [
                 'environment' => 'testing',
-                'debug' => true,
+                'debug'       => true,
             ],
             'cache' => [
-                'expire' => 86400,
+                'expire'      => 86400,
                 'time_preset' => [
                     'foo' => 'bar',
                 ],
@@ -190,7 +190,7 @@ class OptionTest extends TestCase
                 'environment' => 'testing',
             ],
             'cache' => [
-                'expire' => 86400,
+                'expire'      => 86400,
                 'time_preset' => [
                     'foo' => 'bar',
                 ],
@@ -205,7 +205,7 @@ class OptionTest extends TestCase
                 'environment' => 'testing',
             ],
             'cache' => [
-                'expire' => 86400,
+                'expire'      => 86400,
                 'time_preset' => [
                 ],
             ],
@@ -220,7 +220,7 @@ class OptionTest extends TestCase
                 'environment' => 'testing',
             ],
             'cache' => [
-                'expire' => 86400,
+                'expire'      => 86400,
                 'time_preset' => [
                 ],
             ],
@@ -234,7 +234,7 @@ class OptionTest extends TestCase
                 'environment' => 'testing',
             ],
             'cache' => [
-                'expire' => 86400,
+                'expire'      => 86400,
                 'time_preset' => [
                 ],
             ],
@@ -269,7 +269,7 @@ class OptionTest extends TestCase
 
         $option->reset('foo2');
         $this->assertSame($option->all(), [
-            'foo' => [],
+            'foo'  => [],
             'foo2' => [],
         ]);
 
@@ -283,10 +283,10 @@ class OptionTest extends TestCase
         $data = [
             'app' => [
                 'environment' => 'testing',
-                'debug' => true,
+                'debug'       => true,
             ],
             'cache' => [
-                'expire' => 86400,
+                'expire'      => 86400,
                 'time_preset' => [
                     'foo' => 'bar',
                 ],

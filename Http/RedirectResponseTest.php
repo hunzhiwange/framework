@@ -121,7 +121,7 @@ class RedirectResponseTest extends TestCase
 
         $errorsDefault = [
             'name' => 'less than 6',
-            'age' => 'must be 18',
+            'age'  => 'must be 18',
         ];
 
         $errorsCustom = [
@@ -133,7 +133,7 @@ class RedirectResponseTest extends TestCase
 
         $this->assertSame($response->getSession()->getFlash('errors'), [
             'default' => $errorsDefault,
-            'custom' => $errorsCustom,
+            'custom'  => $errorsCustom,
         ]);
     }
 
@@ -192,7 +192,7 @@ class RedirectResponseTest extends TestCase
         willReturn([
             'default' => [
                 'name' => 'less than 6',
-                'age' => 'must be 18',
+                'age'  => 'must be 18',
             ],
             'custom' => [
                 'foo' => 'bar is error',

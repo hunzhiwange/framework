@@ -56,7 +56,7 @@ class ResponseTest extends TestCase
     public function testSendHeaders()
     {
         $response = new Response();
-        $headers = $response->sendHeaders();
+        $headers  = $response->sendHeaders();
         $this->assertObjectHasAttribute('headers', $headers);
         $this->assertObjectHasAttribute('content', $headers);
         $this->assertObjectHasAttribute('protocolVersion', $headers);
@@ -67,7 +67,7 @@ class ResponseTest extends TestCase
 
     public function testSend()
     {
-        $response = new Response();
+        $response     = new Response();
         $responseSend = $response->send();
         $this->assertObjectHasAttribute('headers', $responseSend);
         $this->assertObjectHasAttribute('content', $responseSend);
@@ -79,7 +79,7 @@ class ResponseTest extends TestCase
 
     public function testGetCharset()
     {
-        $response = new Response();
+        $response      = new Response();
         $charsetOrigin = 'UTF-8';
         $response->setCharset($charsetOrigin);
         $charset = $response->getCharset();
@@ -329,9 +329,9 @@ class ResponseTest extends TestCase
     public function validContentProvider()
     {
         return [
-            'obj' => [new StringableObject()],
+            'obj'    => [new StringableObject()],
             'string' => ['Foo'],
-            'int' => [2],
+            'int'    => [2],
         ];
     }
 

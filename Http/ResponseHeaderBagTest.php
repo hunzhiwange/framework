@@ -41,12 +41,12 @@ class ResponseHeaderBagTest extends TestCase
     public function testAll()
     {
         $headers = [
-            'fOo' => 'BAR',
-            'ETag' => 'xyzzy',
-            'Content-MD5' => 'Q2hlY2sgSW50ZWdyaXR5IQ==',
-            'P3P' => 'CP="CAO PSA OUR"',
+            'fOo'              => 'BAR',
+            'ETag'             => 'xyzzy',
+            'Content-MD5'      => 'Q2hlY2sgSW50ZWdyaXR5IQ==',
+            'P3P'              => 'CP="CAO PSA OUR"',
             'WWW-Authenticate' => 'Basic realm="WallyWorld"',
-            'X-UA-Compatible' => 'IE=edge,chrome=1',
+            'X-UA-Compatible'  => 'IE=edge,chrome=1',
             'X-XSS-Protection' => '1; mode=block',
         ];
 
