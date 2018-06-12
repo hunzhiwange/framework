@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Router\Match;
 
 use Leevel\Http\Request;
-use Leevel\Router\Router;
 use Leevel\Router\IRouter;
+use Leevel\Router\Router;
 
 /**
  * 路由 pathInfo 匹配.

@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Throttler;
 
-use RuntimeException;
-use Leevel\Http\Request;
 use Leevel\Cache\ICache;
+use Leevel\Http\Request;
+use RuntimeException;
 
 /**
  * throttler 入口.
@@ -67,9 +67,22 @@ class Throttler implements IThrottler
     }
 
     /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        return $this->{'create'}(...$arrArgs)->{$method}();
+    }
+
+    /**
      * 创建一个节流器.
      *
-     * @param string|null $strKey
+     * @param null|string $strKey
      * @param int         $intXRateLimitLimit
      * @param int         $intXRateLimitTime
      *
@@ -113,18 +126,5 @@ class Throttler implements IThrottler
         }
 
         return $strKey ?: sha1($this->objRequest->getClientIp().'@'.$this->objRequest->getNode());
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $arrArgs)
-    {
-        return $this->{'create'}(...$arrArgs)->$method();
     }
 }

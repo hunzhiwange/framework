@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Thrift\Service;
 
-use Thrift\Type\TType;
 use Thrift\Exception\TProtocolException;
+use Thrift\Type\TType;
 
 /**
  * thrift 默认服务响应结果参数.
@@ -39,18 +39,18 @@ class ThriftCallResult
     /**
      * @var \Leevel\Protocol\Thrift\Service\Response
      */
-    public $success = null;
+    public $success;
 
     public function __construct($vals = null)
     {
         if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
-        0 => [
-          'var' => 'success',
-          'type' => TType::STRUCT,
-          'class' => '\Leevel\Protocol\Thrift\Service\Response',
-          ],
-        ];
+                0 => [
+                    'var' => 'success',
+                    'type' => TType::STRUCT,
+                    'class' => '\Leevel\Protocol\Thrift\Service\Response',
+                ],
+            ];
         }
         if (is_array($vals)) {
             if (isset($vals['success'])) {
@@ -73,20 +73,22 @@ class ThriftCallResult
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-            if (TType::STOP == $ftype) {
+            if (TType::STOP === $ftype) {
                 break;
             }
             switch ($fid) {
         case 0:
-          if (TType::STRUCT == $ftype) {
+          if (TType::STRUCT === $ftype) {
               $this->success = new Response();
               $xfer += $this->success->read($input);
           } else {
               $xfer += $input->skip($ftype);
           }
+
           break;
         default:
           $xfer += $input->skip($ftype);
+
           break;
       }
             $xfer += $input->readFieldEnd();

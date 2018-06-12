@@ -116,7 +116,7 @@ class Safe
     public static function escUrl($sUrl, $arrProtocols = null, $booShow = true)
     {
         $sOriginalUrl = $sUrl;
-        if ('' == trim($sUrl)) {
+        if ('' === trim($sUrl)) {
             return $sUrl;
         }
 
@@ -131,7 +131,7 @@ class Safe
         $sUrl = str_replace(';//', '://', $sUrl); // 防止拼写错误
 
         // 加上 http:// ，防止导入一个脚本如 php，从而引发安全问题
-        if (false === strpos($sUrl, ':') && '/' != substr($sUrl, 0, 1) && '#' != substr($sUrl, 0, 1) && !preg_match('/^[a-z0-9-]+?\.php/i', $sUrl)) {
+        if (false === strpos($sUrl, ':') && '/' !== substr($sUrl, 0, 1) && '#' !== substr($sUrl, 0, 1) && !preg_match('/^[a-z0-9-]+?\.php/i', $sUrl)) {
             $sUrl = 'http://'.$sUrl;
         }
 
@@ -175,8 +175,8 @@ class Safe
         return preg_replace([
             '/<\s*script/',
             '/<\s*\/\s*script\s*>/',
-            "/<\?/",
-            "/\?>/",
+            '/<\\?/',
+            '/\\?>/',
         ], [
             '&lt;script',
             '&lt;/script&gt;',
@@ -194,7 +194,7 @@ class Safe
      */
     public static function cleanHex($sInput)
     {
-        return preg_replace("![\][xX]([A-Fa-f0-9]{1,3})!", '', $sInput);
+        return preg_replace('![\\][xX]([A-Fa-f0-9]{1,3})!', '', $sInput);
     }
 
     /**
@@ -215,8 +215,8 @@ class Safe
             '  ',
             '%',
             '&',
-            "\(",
-            "\)",
+            '\\(',
+            '\\)',
         ], '', $sStr);
     }
 
@@ -304,16 +304,16 @@ class Safe
      */
     public static function intArrayFilter($mixIdStr)
     {
-        if ('' != $mixIdStr) {
+        if ('' !== $mixIdStr) {
             if (!is_array($mixIdStr)) {
                 $mixIdStr = explode(',', $mixIdStr);
             }
             $mixIdStr = array_map('intval', $mixIdStr);
 
             return implode(',', $mixIdStr);
-        } else {
-            return 0;
         }
+
+        return 0;
     }
 
     /**
@@ -333,7 +333,7 @@ class Safe
             return safe::fieldsFilter(sqlFilter);
         }, $mixStrOrArray);
         foreach ($StrOrArray as $sVal) {
-            if ('' != $sVal) {
+            if ('' !== $sVal) {
                 $sResult .= "'".$sVal."',";
             }
         }
@@ -454,7 +454,7 @@ class Safe
             if ($arrWhite) {
                 $arrTemp = [];
                 foreach ($arrBlack as $sType) {
-                    if (!in_array($sType, $arrWhite)) {
+                    if (!in_array($sType, $arrWhite, true)) {
                         $arrTemp[] = $sType;
                     }
                 }
@@ -529,7 +529,7 @@ class Safe
             return $sStr;
         }, $mixString);
 
-        if (1 == count($mixString)) {
+        if (1 === count($mixString)) {
             $mixString = reset($mixString);
         }
 
@@ -555,7 +555,7 @@ class Safe
             return $sStr;
         }, $mixString);
 
-        if (1 == count($mixString)) {
+        if (1 === count($mixString)) {
             $mixString = reset($mixString);
         }
 
@@ -574,11 +574,11 @@ class Safe
     {
         $sStr = self::lengthLimit($sStr, $nMaxLength);
         $sStr = str_replace([
-            "\'",
+            "\\'",
             '\\',
             '#',
         ], '', $sStr);
-        if ('' != $sStr) {
+        if ('' !== $sStr) {
             $sStr = static::htmlspecialchars($sStr);
         }
 
@@ -596,7 +596,7 @@ class Safe
     public static function longCheck($sPost, $nMaxLength = 3000)
     {
         $sPost = static::lengthLimit($sPost, $nMaxLength);
-        $sPost = str_replace("\'", '’', $sPost);
+        $sPost = str_replace("\\'", '’', $sPost);
         $sPost = static::htmlspecialchars($sPost);
         $sPost = nl2br($sPost);
 
@@ -614,7 +614,7 @@ class Safe
     public static function bigCheck($sPost, $nMaxLength = 20000)
     {
         $sPost = self::lengthLimit($sPost, $nMaxLength);
-        $sPost = str_replace("\'", '’', $sPost);
+        $sPost = str_replace("\\'", '’', $sPost);
         $sPost = str_replace('<script ', '', $sPost);
         $sPost = str_replace('</script ', '', $sPost);
 
@@ -633,8 +633,8 @@ class Safe
     {
         if (isset($sStr[$nMaxSlen])) {
             return ' ';
-        } else {
-            return $sStr;
         }
+
+        return $sStr;
     }
 }

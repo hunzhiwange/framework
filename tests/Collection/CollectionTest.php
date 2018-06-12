@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Collection;
 
-use Tests\TestCase;
 use Leevel\Collection\Collection;
+use Tests\TestCase;
 
 /**
  * collection test.
@@ -31,6 +31,7 @@ use Leevel\Collection\Collection;
  * @since 2018.06.03
  *
  * @version 1.0
+ * @coversNothing
  */
 class CollectionTest extends TestCase
 {
@@ -45,19 +46,20 @@ class CollectionTest extends TestCase
         foreach ($collection as $key => $val) {
             switch ($key) {
                 case 0:
-                    $this->assertEquals($val, 'hello');
-                    break;
+                    $this->assertSame($val, 'hello');
 
+                    break;
                 case 1:
-                    $this->assertEquals($val, 'world');
-                    break;
+                    $this->assertSame($val, 'world');
 
+                    break;
                 case 2:
-                    $this->assertEquals($val, 'foo');
-                    break;
+                    $this->assertSame($val, 'foo');
 
+                    break;
                 case 3:
-                    $this->assertEquals($val, 'bar');
+                    $this->assertSame($val, 'bar');
+
                     break;
             }
         }
@@ -71,19 +73,19 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($data);
 
-        $this->assertEquals('hello', $collection->current());
-        $this->assertEquals(0, $collection->key());
+        $this->assertSame('hello', $collection->current());
+        $this->assertSame(0, $collection->key());
 
         $this->assertNull($collection->next());
 
-        $this->assertEquals('world', $collection->current());
-        $this->assertEquals(1, $collection->key());
+        $this->assertSame('world', $collection->current());
+        $this->assertSame(1, $collection->key());
 
         $this->assertNull($collection->next());
         $this->assertNull($collection->next());
 
-        $this->assertEquals('bar', $collection->current());
-        $this->assertEquals(3, $collection->key());
+        $this->assertSame('bar', $collection->current());
+        $this->assertSame(3, $collection->key());
 
         $collection->next();
 
@@ -91,8 +93,8 @@ class CollectionTest extends TestCase
         $this->assertNull($collection->key());
 
         $collection->rewind();
-        $this->assertEquals(0, $collection->key());
-        $this->assertEquals('hello', $collection->current());
+        $this->assertSame(0, $collection->key());
+        $this->assertSame('hello', $collection->current());
     }
 
     public function testCountable()
@@ -103,7 +105,7 @@ class CollectionTest extends TestCase
 
         $collection = new Collection($data);
 
-        $this->assertEquals(4, count($collection));
+        $this->assertSame(4, count($collection));
     }
 
     public function testArrayAccess()

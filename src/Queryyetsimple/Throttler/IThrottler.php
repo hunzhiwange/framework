@@ -36,7 +36,7 @@ interface IThrottler
     /**
      * 创建一个节流器.
      *
-     * @param string|null $strKey
+     * @param null|string $strKey
      * @param int         $intXRateLimitLimit
      * @param int         $intXRateLimitTime
      *

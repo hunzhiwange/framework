@@ -22,8 +22,8 @@ namespace Leevel\Mvc\Relation;
 
 use Closure;
 use Exception;
-use Leevel\Mvc\IModel;
 use Leevel\Collection\Collection;
+use Leevel\Mvc\IModel;
 
 /**
  * 关联模型基类.
@@ -95,6 +95,25 @@ abstract class Relation
 
         $this->getSelectFromModel();
         $this->addRelationCondition();
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        $objSelect = $this->objSelect->{$method}(...$arrArgs);
+
+        if ($this->getSelect() === $objSelect) {
+            return $this;
+        }
+
+        return $objSelect;
     }
 
     /**
@@ -232,24 +251,5 @@ abstract class Relation
     protected function getSelectFromModel()
     {
         $this->objSelect = $this->objTargetModel->getClassCollectionQuery();
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $arrArgs)
-    {
-        $objSelect = $this->objSelect->$method(...$arrArgs);
-
-        if ($this->getSelect() === $objSelect) {
-            return $this;
-        }
-
-        return $objSelect;
     }
 }

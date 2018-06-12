@@ -122,15 +122,16 @@ class AutoReload
             }
 
             foreach ($events as $ev) {
-                if (IN_IGNORED == $ev['mask']) {
+                if (IN_IGNORED === $ev['mask']) {
                     continue;
-                } elseif (in_array($ev['mask'], [
+                }
+                if (in_array($ev['mask'], [
                     IN_CREATE,
                     IN_DELETE,
                     IN_MODIFY,
                     IN_MOVED_TO,
                     IN_MOVED_FROM,
-                ])) {
+                ], true)) {
                     $fileType = strrchr($ev['name'], '.');
 
                     // 非重启类型
@@ -166,9 +167,9 @@ class AutoReload
      * @param string $dir
      * @param bool   $root
      *
-     * @return bool
-     *
      * @throws \Leevel\Protocol\ToolKit\AutoReloadException
+     *
+     * @return bool
      */
     public function watch(string $dir, bool $root = true)
     {
@@ -192,7 +193,7 @@ class AutoReload
 
         $files = scandir($dir);
         foreach ($files as $f) {
-            if ('.' == $f or '..' == $f) {
+            if ('.' === $f or '..' === $f) {
                 continue;
             }
 

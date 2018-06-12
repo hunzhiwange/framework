@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Event;
 
-use SplSubject;
-use SplObserver;
 use RuntimeException;
+use SplObserver;
+use SplSubject;
 
 /**
  * 观察者角色 observer.

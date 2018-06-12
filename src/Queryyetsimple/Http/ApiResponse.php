@@ -70,6 +70,7 @@ class ApiResponse extends JsonResponse
      * 成功请求并创建了新的资源: 201.
      *
      * @param null|string $location
+     * @param mixed       $content
      *
      * @return $this
      */
@@ -160,6 +161,7 @@ class ApiResponse extends JsonResponse
      * @param string $message
      * @param string $message
      * @param string $text
+     * @param mixed  $statusCode
      *
      * @return $this
      */
@@ -275,7 +277,8 @@ class ApiResponse extends JsonResponse
     /**
      * 格式化错误消息.
      *
-     * @param string $message
+     * @param string     $message
+     * @param null|mixed $text
      *
      * @return $this
      */

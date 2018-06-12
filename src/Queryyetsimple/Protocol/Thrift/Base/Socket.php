@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Thrift\Base;
 
-use Thrift\Transport\TFramedTransport;
-use Thrift\Factory\TStringFuncFactory;
 use Thrift\Exception\TTransportException;
+use Thrift\Factory\TStringFuncFactory;
+use Thrift\Transport\TFramedTransport;
 
 /**
  * Socket Transport

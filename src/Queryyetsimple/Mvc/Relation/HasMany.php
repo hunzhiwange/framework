@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc\Relation;
 
-use Leevel\Mvc\IModel;
 use Leevel\Collection\Collection;
+use Leevel\Mvc\IModel;
 
 /**
  * 关联模型 HasMany.
@@ -119,9 +119,9 @@ class HasMany extends Relation
     /**
      * 批量保存模型.
      *
-     * @param \Leevel\Collection\Collection|array $mixModel
+     * @param array|\Leevel\Collection\Collection $mixModel
      *
-     * @return \Leevel\Collection\Collection|array
+     * @return array|\Leevel\Collection\Collection
      */
     public function saveMany($mixModel)
     {
@@ -235,7 +235,7 @@ class HasMany extends Relation
     {
         $arrValue = $arrMap[$strKey];
 
-        return 'one' == $strType ? reset($arrValue) : $this->objTargetModel->collection($arrValue);
+        return 'one' === $strType ? reset($arrValue) : $this->objTargetModel->collection($arrValue);
     }
 
     /**

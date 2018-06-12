@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Swoole\Http\Server as SwooleHttpServer;
+use Leevel\Http\IResponse;
+use Leevel\Http\RedirectResponse;
+use Leevel\Http\Request;
+use Leevel\Kernel\IKernel;
 use Swoole\Http\Request as SwooleHttpRequest;
 use Swoole\Http\Response as SwooleHttpResponse;
-use Leevel\Http\Request;
-use Leevel\Http\IResponse;
-use Leevel\Kernel\IKernel;
-use Leevel\Http\RedirectResponse;
+use Swoole\Http\Server as SwooleHttpServer;
 
 /**
  * swoole http 服务
@@ -126,8 +126,8 @@ class HttpServer extends Server
     public function onRequest(SwooleHttpRequest $swooleRequest, SwooleHttpResponse $swooleResponse): void
     {
         // 请求过滤 favicon
-        if ('/favicon.ico' == $swooleRequest->server['path_info'] ||
-            '/favicon.ico' == $swooleRequest->server['request_uri']) {
+        if ('/favicon.ico' === $swooleRequest->server['path_info'] ||
+            '/favicon.ico' === $swooleRequest->server['request_uri']) {
             $swooleResponse->end(' ');
 
             return;

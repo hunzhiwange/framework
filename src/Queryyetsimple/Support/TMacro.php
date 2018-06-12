@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use Closure;
 use BadMethodCallException;
+use Closure;
 
 /**
  * 实现类的无限扩展功能.
@@ -40,6 +40,32 @@ trait TMacro
      * @var array
      */
     protected static $macro = [];
+
+    /**
+     * __callStatic 魔术方法.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args)
+    {
+        return static::callStaticMacro($method, $args);
+    }
+
+    /**
+     * __call 魔术方法.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        return $this->callMacro($method, $args);
+    }
 
     /**
      * 注册一个扩展.
@@ -100,37 +126,11 @@ trait TMacro
         if (static::hasMacro($method)) {
             if (static::$macro[$method] instanceof Closure) {
                 return call_user_func_array(static::$macro[$method]->bindTo($this), $args);
-            } else {
-                return call_user_func_array(static::$macro[$method], $args);
             }
+
+            return call_user_func_array(static::$macro[$method], $args);
         }
 
         throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
-    }
-
-    /**
-     * __callStatic 魔术方法.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return static::callStaticMacro($method, $args);
-    }
-
-    /**
-     * __call 魔术方法.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        return $this->callMacro($method, $args);
     }
 }

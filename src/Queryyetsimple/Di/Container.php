@@ -20,15 +20,15 @@ declare(strict_types=1);
 
 namespace Leevel\Di;
 
-use Closure;
 use ArrayAccess;
-use ReflectionClass;
-use ReflectionMethod;
-use ReflectionFunction;
-use ReflectionException;
-use ReflectionParameter;
 use BadMethodCallException;
+use Closure;
 use InvalidArgumentException;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionFunction;
+use ReflectionMethod;
+use ReflectionParameter;
 
 /**
  * IOC 容器.
@@ -68,6 +68,44 @@ class Container implements IContainer, ArrayAccess
      * @var array
      */
     protected $alias = [];
+
+    /**
+     * 捕捉支持属性参数.
+     *
+     * @param string $key
+     *
+     * @return 设置项
+     */
+    public function __get($key)
+    {
+        return $this[$key];
+    }
+
+    /**
+     * 设置支持属性参数.
+     *
+     * @param string $key
+     * @param mixed  $service
+     */
+    public function __set($key, $service)
+    {
+        $this[$key] = $service;
+
+        return $this;
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+    }
 
     /**
      * 注册到容器.
@@ -125,7 +163,7 @@ class Container implements IContainer, ArrayAccess
     /**
      * 注册单一实例.
      *
-     * @param scalar|array $name
+     * @param array|scalar $name
      * @param mixed        $service
      *
      * @return $this
@@ -159,7 +197,7 @@ class Container implements IContainer, ArrayAccess
      * 设置别名.
      *
      * @param array|string      $alias
-     * @param string|null|array $value
+     * @param null|array|string $value
      *
      * @return $this
      */
@@ -188,7 +226,7 @@ class Container implements IContainer, ArrayAccess
      * @param string $name
      * @param array  $args
      *
-     * @return object|false
+     * @return false|object
      */
     public function make($name, ?array $args = null)
     {
@@ -221,20 +259,19 @@ class Container implements IContainer, ArrayAccess
         }
 
         // 单一实例
-        if (in_array($name, $this->singletons)) {
+        if (in_array($name, $this->singletons, true)) {
             return $this->instances[$name] = $instance;
         }
 
         // 多个实例
-        else {
-            return $instance;
-        }
+
+        return $instance;
     }
 
     /**
      * 实例回调自动注入.
      *
-     * @param callable|array|string $callback
+     * @param array|callable|string $callback
      * @param array                 $args
      *
      * @return mixed
@@ -307,6 +344,51 @@ class Container implements IContainer, ArrayAccess
         $name = $this->getAlias($name);
 
         return isset($this->services[$name]) || isset($this->instances[$name]);
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetExits.
+     *
+     * @param string $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return $this->exists($offset);
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetGet.
+     *
+     * @param string $offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->make($offset);
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetSet.
+     *
+     * @param string $offset
+     * @param mixed  $value
+     */
+    public function offsetSet($offset, $value)
+    {
+        return $this->bind($offset, $value);
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetUnset.
+     *
+     * @param string $offset
+     */
+    public function offsetUnset($offset)
+    {
+        $this->remove($offset);
     }
 
     /**
@@ -403,12 +485,12 @@ class Container implements IContainer, ArrayAccess
                         } else {
                             $data = $this->parseClassInstance($argsclass);
                         }
-                        break;
 
+                        break;
                     case $item->isDefaultValueAvailable():
                         $data = array_key_exists($item->name, $args) ? $args[$item->name] : $item->getDefaultValue();
-                        break;
 
+                        break;
                     default:
                         if (array_key_exists($item->name, $args)) {
                             $data = $args[$item->name];
@@ -416,6 +498,7 @@ class Container implements IContainer, ArrayAccess
                             $isRequireBad = true;
                             ++$required;
                         }
+
                         break;
                 }
 
@@ -472,10 +555,8 @@ class Container implements IContainer, ArrayAccess
         switch (true) {
             case $result = $this->parseClassFromContainer($argsclass):
                 break;
-
             case $result = $this->parseClassNotExists($argsclass):
                 break;
-
             default:
                 throw new InvalidArgumentException(sprintf('Class or interface %s is not register in container', $argsclass));
                 break;
@@ -549,13 +630,10 @@ class Container implements IContainer, ArrayAccess
         switch (true) {
             case $injection instanceof Closure:
                 return $this->parseClosureReflection($injection);
-
             case !is_string($injection) && is_callable($injection):
                 return $this->parseMethodReflection($injection);
-
             case is_string($injection):
                 return $this->parseClassReflection($injection);
-
             default:
                 throw new InvalidArgumentException('Unsupported callback types.');
         }
@@ -649,88 +727,5 @@ class Container implements IContainer, ArrayAccess
             key($name),
             current($name),
         ];
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetExits.
-     *
-     * @param string $offset
-     *
-     * @return bool
-     */
-    public function offsetExists($offset)
-    {
-        return $this->exists($offset);
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetGet.
-     *
-     * @param string $offset
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-        return $this->make($offset);
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetSet.
-     *
-     * @param string $offset
-     * @param mixed  $value
-     */
-    public function offsetSet($offset, $value)
-    {
-        return $this->bind($offset, $value);
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param string $offset
-     */
-    public function offsetUnset($offset)
-    {
-        $this->remove($offset);
-    }
-
-    /**
-     * 捕捉支持属性参数.
-     *
-     * @param string $key
-     *
-     * @return 设置项
-     */
-    public function __get($key)
-    {
-        return $this[$key];
-    }
-
-    /**
-     * 设置支持属性参数.
-     *
-     * @param string $key
-     * @param mixed  $service
-     */
-    public function __set($key, $service)
-    {
-        $this[$key] = $service;
-
-        return $this;
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
     }
 }

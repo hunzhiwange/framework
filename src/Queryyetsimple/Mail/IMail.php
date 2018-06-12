@@ -35,7 +35,7 @@ interface IMail
      * 设置邮件发送来源.
      *
      * @param string      $strAddress
-     * @param string|null $mixName
+     * @param null|string $mixName
      *
      * @return $this
      */
@@ -45,7 +45,7 @@ interface IMail
      * 设置邮件发送地址
      *
      * @param string      $strAddress
-     * @param string|null $mixName
+     * @param null|string $mixName
      *
      * @return $this
      */
@@ -102,7 +102,7 @@ interface IMail
      * 添加附件.
      *
      * @param string        $strFile
-     * @param callable|null $mixCallback
+     * @param null|callable $mixCallback
      *
      * @return $this
      */
@@ -114,7 +114,7 @@ interface IMail
      *
      * @param string        $strData
      * @param string        $strName
-     * @param callable|null $mixCallback
+     * @param null|callable $mixCallback
      *
      * @return $this
      */
@@ -124,6 +124,7 @@ interface IMail
      * 图片嵌入邮件.
      *
      * @param string $file
+     * @param mixed  $strFile
      *
      * @return string
      */
@@ -134,7 +135,8 @@ interface IMail
      *
      * @param string      $strData
      * @param string      $strName
-     * @param string|null $contentType
+     * @param null|string $contentType
+     * @param null|mixed  $strContentType
      *
      * @return string
      */

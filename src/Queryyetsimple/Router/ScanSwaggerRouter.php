@@ -22,12 +22,13 @@ namespace Leevel\Router;
 
 use Leevel\Router;
 
-/*
- * Swagger 路由扫描
+/**
+ * Swagger 路由扫描.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.18
+ *
  * @version 1.0
  */
 class ScanSwaggerRouter

@@ -55,7 +55,7 @@ interface IView
     /**
      * 获取变量赋值
      *
-     * @param string|null $name
+     * @param null|string $name
      *
      * @return mixed
      */

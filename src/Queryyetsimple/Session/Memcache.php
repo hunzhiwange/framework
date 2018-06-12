@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use SessionHandlerInterface;
 use Leevel\Cache\Memcache as CacheMemcache;
+use SessionHandlerInterface;
 
 /**
  * session.memcache.

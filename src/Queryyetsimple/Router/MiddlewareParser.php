@@ -54,7 +54,7 @@ class MiddlewareParser
      * 解析中间件
      * 最多 2 个层级支持
      *
-     * @param string|array $middlewares
+     * @param array|string $middlewares
      *
      * @return array
      */
@@ -108,9 +108,9 @@ class MiddlewareParser
 
             if (false === strpos($item, ':')) {
                 return $item.'@'.$method;
-            } else {
-                return str_replace(':', '@'.$method.':', $item);
             }
+
+            return str_replace(':', '@'.$method.':', $item);
         }, $middlewares);
 
         $middlewares = array_filter($middlewares);

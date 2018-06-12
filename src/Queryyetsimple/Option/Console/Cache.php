@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Option\Console;
 
 use InvalidArgumentException;
-use Leevel\Console\Option;
 use Leevel\Console\Command;
+use Leevel\Console\Option;
 use Leevel\Option as Options;
 
 /**

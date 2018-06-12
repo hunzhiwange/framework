@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Stack;
 
-use Tests\TestCase;
 use Leevel\Stack\Stack;
+use Tests\TestCase;
 
 /**
  * stack test.
@@ -31,6 +31,7 @@ use Leevel\Stack\Stack;
  * @since 2018.06.10
  *
  * @version 1.0
+ * @coversNothing
  */
 class StackTest extends TestCase
 {
@@ -38,34 +39,33 @@ class StackTest extends TestCase
     {
         $stack = new Stack();
 
-        $this->assertEquals(0, $stack->count());
+        $this->assertSame(0, $stack->count());
 
         // 入栈 5
         $stack->in(5);
 
-        $this->assertEquals(1, $stack->count());
+        $this->assertSame(1, $stack->count());
 
         // 入栈 6
         $stack->in(6);
 
-        $this->assertEquals(2, $stack->count());
+        $this->assertSame(2, $stack->count());
 
         // 出栈，后进先出
-        $this->assertEquals(6, $stack->out());
+        $this->assertSame(6, $stack->out());
 
-        $this->assertEquals(1, $stack->count());
+        $this->assertSame(1, $stack->count());
 
         // 出栈，后进先出
-        $this->assertEquals(5, $stack->out());
+        $this->assertSame(5, $stack->out());
 
-        $this->assertEquals(0, $stack->count());
+        $this->assertSame(0, $stack->count());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidateType()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $stack = new Stack(['string']);
 
         $stack->in(5);

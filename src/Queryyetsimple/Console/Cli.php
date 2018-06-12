@@ -35,6 +35,12 @@ namespace Leevel\Console;
 class Cli
 {
     /**
+     * 版本.
+     *
+     * @var string
+     */
+    const VERSION = '1.0';
+    /**
      * 待解析参数.
      *
      * @var array
@@ -62,13 +68,6 @@ class Cli
      * @var array
      */
     protected $options = [];
-
-    /**
-     * 版本.
-     *
-     * @var string
-     */
-    const VERSION = '1.0';
 
     /**
      * 构造函数.
@@ -167,7 +166,7 @@ class Cli
      */
     protected function shortCommand()
     {
-        if ('-h' == $this->node) {
+        if ('-h' === $this->node) {
             echo <<<'eot'
 Usage: php cli.php app://for/bar user=name hello world --option=default
 
@@ -175,7 +174,8 @@ Usage: php cli.php app://for/bar user=name hello world --option=default
 -v Version number
 eot;
             exit();
-        } elseif ('-v' == $this->node) {
+        }
+        if ('-v' === $this->node) {
             echo 'QueryPHP Console Cli '.static::VERSION;
             exit();
         }
@@ -248,7 +248,7 @@ eot;
         $special = ['=', '--'];
 
         foreach ($argv as $key => $token) {
-            if (!in_array($token, $special) && isset($argv[$key + 1]) && '=' != $argv[$key + 1]) {
+            if (!in_array($token, $special, true) && isset($argv[$key + 1]) && '=' !== $argv[$key + 1]) {
                 $token .= ' ';
             }
 

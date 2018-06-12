@@ -20,18 +20,19 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Swagger\Context;
 use InvalidArgumentException;
 use Swagger\Annotations\Swagger;
+use Swagger\Context;
 
-/*
+/**
  * Swagger 注解路由
  * 1:忽略已删除的路由 deprecated 和带有 _ignore 的路由
- * 2:如果没有绑定路由参数 _bind,系统会尝试自动解析注解所在控制器方法
+ * 2:如果没有绑定路由参数 _bind,系统会尝试自动解析注解所在控制器方法.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.10
+ *
  * @version 1.0
  */
 class SwaggerRouter
@@ -149,7 +150,7 @@ class SwaggerRouter
         if ($swagger->paths) {
             foreach ($swagger->paths as $path) {
                 foreach ($this->methods as $m) {
-                    $method = $path->$m;
+                    $method = $path->{$m};
 
                     // 忽略已删除和带有忽略标记的路由
                     if (!$method || true === $method->deprecated || (property_exists($method, '_ignore') && $method->_ignore)) {
@@ -161,7 +162,7 @@ class SwaggerRouter
                     // 支持的自定义路由字段
                     foreach ($this->routerField as $f) {
                         $field = '_'.$f;
-                        $routerTmp[$f] = property_exists($method, $field) ? $method->$field : null;
+                        $routerTmp[$f] = property_exists($method, $field) ? $method->{$field} : null;
                     }
 
                     // 根据源代码生成绑定
@@ -186,6 +187,7 @@ class SwaggerRouter
                     foreach ($groups as $g) {
                         if (0 === strpos($routerPath, $g)) {
                             $groupPrefix = $g;
+
                             break;
                         }
                     }
@@ -242,7 +244,7 @@ class SwaggerRouter
         // http://nikic.github.io/2014/02/18/Fast-request-routing-using-regular-expressions.html
         foreach ($routers as &$first) {
             foreach ($first as $firstKey => &$second) {
-                if ('static' == $firstKey) {
+                if ('static' === $firstKey) {
                     continue;
                 }
 
@@ -342,7 +344,7 @@ class SwaggerRouter
      *
      * @param \Swagger\Context $context
      *
-     * @return string|null
+     * @return null|string
      */
     protected function parseBindBySource(Context $context)
     {
@@ -355,13 +357,12 @@ class SwaggerRouter
 
         if (strpos($className, $segmentation) < 1) {
             return null;
-        } else {
-            $tmp = explode($segmentation, $className);
-            $router = ':'.ltrim($tmp[0], '\\').'\\'.$tmp[1].'\\'.$context->method;
-            $method = str_replace('\\', '/', $router);
-
-            return $method;
         }
+        $tmp = explode($segmentation, $className);
+        $router = ':'.ltrim($tmp[0], '\\').'\\'.$tmp[1].'\\'.$context->method;
+        $method = str_replace('\\', '/', $router);
+
+        return $method;
     }
 
     /**
@@ -442,12 +443,13 @@ class SwaggerRouter
         ];
     }
 
-    /*
+    /**
      * 格式化域名
-     * 如果没有设置域名，则加上顶级域名
+     * 如果没有设置域名，则加上顶级域名.
      *
      * @param string $domain
      * @param string $topDomain
+     *
      * @return string
      */
     protected function normalizeDomain(?string $domain, ?string $topDomain)

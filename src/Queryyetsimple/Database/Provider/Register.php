@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Provider;
 
-use Leevel\Di\Provider;
 use Leevel\Database\Manager;
+use Leevel\Di\Provider;
 
 /**
  * database 服务提供者.

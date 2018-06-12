@@ -35,6 +35,8 @@ class CachedIntFile extends CachedFile
 {
     /**
      * PHP5 constructor.
+     *
+     * @param mixed $filename
      */
     public function __construct($filename)
     {

@@ -69,7 +69,7 @@ abstract class Job extends PHPQueueJob
         list($strJob, $strMethod) = $this->parseString($this->getName());
         $objJob = $this->getJob($strJob);
 
-        $strMethod = method_exists($objJob, $strMethod) ? $strMethod : ('handle' != $strMethod && method_exists($objJob, 'handle') ? 'handle' : 'run');
+        $strMethod = method_exists($objJob, $strMethod) ? $strMethod : ('handle' !== $strMethod && method_exists($objJob, 'handle') ? 'handle' : 'run');
 
         $this->dispatch([
             $objJob,

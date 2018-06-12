@@ -100,6 +100,7 @@ class File extends SplFileObject
     {
         if (!move_uploaded_file($sourcePath, $target)) {
             $error = error_get_last();
+
             throw new FileException(sprintf('Could not move the file %s to %s (%s)', $sourcePath, $target, strip_tags($error['message'])));
         }
     }

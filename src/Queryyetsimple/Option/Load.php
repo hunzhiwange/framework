@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Option;
 
-use Exception;
 use Dotenv\Dotenv;
-use RuntimeException;
-use Leevel\Kernel\IProject;
 use Dotenv\Exception\InvalidFileException;
 use Dotenv\Exception\InvalidPathException;
+use Exception;
+use Leevel\Kernel\IProject;
+use RuntimeException;
 
 /**
  * 配置工具类.
@@ -138,6 +138,7 @@ class Load
         foreach ($providers as $k => $provider) {
             if (!class_exists($provider)) {
                 unset($providers[$key]);
+
                 continue;
             }
 
@@ -194,7 +195,7 @@ class Load
         foreach ($files as $file) {
             $type = substr(basename($file), 0, -4);
 
-            if ('app' == $type) {
+            if ('app' === $type) {
                 $findApp = true;
             }
 

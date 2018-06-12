@@ -34,18 +34,17 @@ use ArrayAccess;
 class Option implements IOption, ArrayAccess
 {
     /**
-     * 配置数据.
-     *
-     * @var array
-     */
-    protected $option = [];
-
-    /**
      * 默认命名空间.
      *
      * @var string
      */
     const DEFAUTL_NAMESPACE = 'app';
+    /**
+     * 配置数据.
+     *
+     * @var array
+     */
+    protected $option = [];
 
     /**
      * 构造函数.
@@ -70,7 +69,7 @@ class Option implements IOption, ArrayAccess
         $namespaces = $name[0];
         $name = $name[1];
 
-        if ('*' == $name) {
+        if ('*' === $name) {
             return isset($this->option[$namespaces]);
         }
 
@@ -104,7 +103,7 @@ class Option implements IOption, ArrayAccess
         $namespaces = $name[0];
         $name = $name[1];
 
-        if ('*' == $name) {
+        if ('*' === $name) {
             return $this->option[$namespaces];
         }
 
@@ -153,7 +152,7 @@ class Option implements IOption, ArrayAccess
             $namespaces = $name[0];
             $name = $name[1];
 
-            if ('*' == $name) {
+            if ('*' === $name) {
                 $this->option[$namespaces] = $value;
 
                 return;
@@ -193,7 +192,7 @@ class Option implements IOption, ArrayAccess
         $namespaces = $name[0];
         $name = $name[1];
 
-        if ('*' == $name) {
+        if ('*' === $name) {
             $this->option[$namespaces] = [];
 
             return;

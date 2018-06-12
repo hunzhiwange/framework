@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Tests\Pipeline;
 
 use Closure;
-use Tests\TestCase;
 use Leevel\Di\Container;
 use Leevel\Pipeline\Pipeline;
+use Tests\TestCase;
 
 /**
  * pipeline 组件测试.
@@ -33,6 +33,7 @@ use Leevel\Pipeline\Pipeline;
  * @since 2017.05.27
  *
  * @version 1.0
+ * @coversNothing
  */
 class PipelineTest extends TestCase
 {
@@ -46,11 +47,10 @@ class PipelineTest extends TestCase
 
         then();
 
-        $this->assertEquals('i am in first handle and get the send:hello world', $_SERVER['test.first']);
-        $this->assertEquals('i am in second handle and get the send:hello world', $_SERVER['test.second']);
+        $this->assertSame('i am in first handle and get the send:hello world', $_SERVER['test.first']);
+        $this->assertSame('i am in second handle and get the send:hello world', $_SERVER['test.second']);
 
-        unset($_SERVER['test.first']);
-        unset($_SERVER['test.second']);
+        unset($_SERVER['test.first'], $_SERVER['test.second']);
     }
 
     public function testPipelineWithThen()
@@ -67,13 +67,11 @@ class PipelineTest extends TestCase
 
         then($thenCallback);
 
-        $this->assertEquals('i am in first handle and get the send:foo bar', $_SERVER['test.first']);
-        $this->assertEquals('i am in second handle and get the send:foo bar', $_SERVER['test.second']);
-        $this->assertEquals('i am end and get the send:foo bar', $_SERVER['test.then']);
+        $this->assertSame('i am in first handle and get the send:foo bar', $_SERVER['test.first']);
+        $this->assertSame('i am in second handle and get the send:foo bar', $_SERVER['test.second']);
+        $this->assertSame('i am end and get the send:foo bar', $_SERVER['test.then']);
 
-        unset($_SERVER['test.first']);
-        unset($_SERVER['test.second']);
-        unset($_SERVER['test.then']);
+        unset($_SERVER['test.first'], $_SERVER['test.second'], $_SERVER['test.then']);
     }
 
     public function testPipelineWithReturn()
@@ -81,7 +79,7 @@ class PipelineTest extends TestCase
         $pipe1 = function (Closure $next, $send) {
             $result = $next($send);
 
-            $this->assertEquals($result, 'return 2');
+            $this->assertSame($result, 'return 2');
 
             $_SERVER['test.1'] = '1 and get the send:'.$send;
 
@@ -106,11 +104,10 @@ class PipelineTest extends TestCase
 
         then();
 
-        $this->assertEquals('1 and get the send:return test', $_SERVER['test.1']);
-        $this->assertEquals('2 and get the send:return test', $_SERVER['test.2']);
+        $this->assertSame('1 and get the send:return test', $_SERVER['test.1']);
+        $this->assertSame('2 and get the send:return test', $_SERVER['test.2']);
 
-        unset($_SERVER['test.1']);
-        unset($_SERVER['test.2']);
+        unset($_SERVER['test.1'], $_SERVER['test.2']);
     }
 
     public function testPipelineWithDiConstruct()
@@ -123,7 +120,7 @@ class PipelineTest extends TestCase
 
         then();
 
-        $this->assertEquals('get class:Tests\Pipeline\TestClass', $_SERVER['test.DiConstruct']);
+        $this->assertSame('get class:Tests\Pipeline\TestClass', $_SERVER['test.DiConstruct']);
 
         unset($_SERVER['test.DiConstruct']);
     }
@@ -131,7 +128,7 @@ class PipelineTest extends TestCase
     public function testPipelineWithSendNoneParams()
     {
         $pipe = function (Closure $next) {
-            $this->assertEquals(1, count(func_get_args()));
+            $this->assertSame(1, count(func_get_args()));
         };
 
         $result = (new Pipeline(new Container()))->
@@ -144,10 +141,10 @@ class PipelineTest extends TestCase
     public function testPipelineWithSendMoreParams()
     {
         $pipe = function (Closure $next, $send1, $send2, $send3, $send4) {
-            $this->assertEquals($send1, 'hello world');
-            $this->assertEquals($send2, 'foo');
-            $this->assertEquals($send3, 'bar');
-            $this->assertEquals($send4, 'wow');
+            $this->assertSame($send1, 'hello world');
+            $this->assertSame($send2, 'foo');
+            $this->assertSame($send3, 'bar');
+            $this->assertSame($send4, 'wow');
         };
 
         $result = (new Pipeline(new Container()))->
@@ -181,7 +178,7 @@ class PipelineTest extends TestCase
 
         then();
 
-        $this->assertEquals(6, $_SERVER['test.Through.count']);
+        $this->assertSame(6, $_SERVER['test.Through.count']);
 
         unset($_SERVER['test.Through.count']);
     }
@@ -196,7 +193,7 @@ class PipelineTest extends TestCase
 
         then();
 
-        $this->assertEquals($parameters, $_SERVER['test.WithArgs']);
+        $this->assertSame($parameters, $_SERVER['test.WithArgs']);
 
         unset($_SERVER['test.WithArgs']);
     }

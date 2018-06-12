@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel;
 
-use Leevel\Http\Request;
 use Leevel\Http\IResponse;
+use Leevel\Http\Request;
 
 /**
  * 内核执行接口.

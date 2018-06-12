@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Console;
 
 use Leevel\Di\IContainer;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * 命令行应用程序.
@@ -118,7 +118,7 @@ class Application extends SymfonyApplication implements IApplication
      */
     protected function getLogo()
     {
-        return <<<queryphp
+        return <<<'queryphp'
 _____________                           _______________
  ______/     \__  _____  ____  ______  / /_  _________
   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___

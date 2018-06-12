@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Auth\Provider;
 
-use Leevel\Di\Provider;
 use Leevel\Auth\Manager;
+use Leevel\Di\Provider;
 
 /**
  * auth 服务提供者.

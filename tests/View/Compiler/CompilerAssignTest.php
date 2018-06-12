@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ * @coversNothing
  */
 class CompilerAssignTest extends TestCase
 {
@@ -49,7 +50,7 @@ eot;
 <?php $test->hello='hello';?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 {% let foo = 'foo' %}
@@ -61,6 +62,6 @@ eot;
 <?php $hello = $hello . 'foo';?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

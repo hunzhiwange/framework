@@ -69,12 +69,12 @@ class Gettext extends Translations implements IArray
                 $nplurals,
                 $expression,
             ];
-        } else {
-            return [
-                2,
-                'n != 1',
-            ];
         }
+
+        return [
+            2,
+            'n != 1',
+        ];
     }
 
     /**
@@ -88,8 +88,8 @@ class Gettext extends Translations implements IArray
     {
         $expression = str_replace('n', '$n', $expression);
         $func_body = "
-            \$index = (int)($expression);
-            return (\$index < $nplurals)? \$index : $nplurals - 1;";
+            \$index = (int)(${expression});
+            return (\$index < ${nplurals})? \$index : ${nplurals} - 1;";
 
         $result = null;
         $funcAll = '$result = function($n) { '.$func_body.' };';
@@ -117,13 +117,16 @@ class Gettext extends Translations implements IArray
                 case '?':
                     $res .= ' ? (';
                     ++$depth;
+
                     break;
                 case ':':
                     $res .= ') : (';
+
                     break;
                 case ';':
                     $res .= str_repeat(')', $depth).';';
                     $depth = 0;
+
                     break;
                 default:
                     $res .= $char;
@@ -162,7 +165,7 @@ class Gettext extends Translations implements IArray
     public function set_header($header, $value)
     {
         parent::set_header($header, $value);
-        if ('Plural-Forms' == $header) {
+        if ('Plural-Forms' === $header) {
             list($nplurals, $expression) = $this->nplurals_and_expression_from_header($this->get_header('Plural-Forms'));
             $this->_nplurals = $nplurals;
             $this->_gettext_select_plural_form = $this->make_plural_form_function($nplurals, $expression);
@@ -172,7 +175,7 @@ class Gettext extends Translations implements IArray
     /**
      * 读取文件到数组.
      *
-     * @param string|array $filename
+     * @param array|string $filename
      *
      * @return array
      */

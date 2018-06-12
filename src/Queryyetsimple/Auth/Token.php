@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
+use Leevel\Cache\ICache;
+use Leevel\Encryption\IEncryption;
 use Leevel\Mvc\IModel;
 use Leevel\Support\Str;
-use Leevel\Cache\ICache;
 use Leevel\Validate\IValidate;
-use Leevel\Encryption\IEncryption;
 
 /**
  * auth.token.

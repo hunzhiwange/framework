@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
+use Leevel\Encryption\IEncryption;
 use Leevel\Mvc\IModel;
 use Leevel\Session\ISession;
 use Leevel\Validate\IValidate;
-use Leevel\Encryption\IEncryption;
 
 /**
  * auth.session.

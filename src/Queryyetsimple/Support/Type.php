@@ -53,41 +53,33 @@ class Type
             case 'str':
             case 'string':
                 return is_string($value);
-
             // 整数
             case 'int':
             case 'integer':
                 return is_int($value);
-
             // 浮点
             case 'float':
             case 'double':
                 return is_float($value);
-
             // 布尔
             case 'bool':
             case 'boolean':
                 return is_bool($value);
-
             // 数字
             case 'num':
             case 'numeric':
                 return is_numeric($value);
-
             // 标量（所有基础类型）
             case 'base':
             case 'scalar':
                 return is_scalar($value);
-
             // 外部资源
             case 'handle':
             case 'resource':
                 return is_resource($value);
-
             // 闭包
             case 'closure':
                 return $value instanceof Closure;
-
             // 数组
             case 'arr':
             case 'array':
@@ -95,24 +87,19 @@ class Type
                     $tmp[1] = explode(',', $tmp[1]);
 
                     return static::arr($value, $tmp[1]);
-                } else {
-                    return is_array($value);
                 }
 
+                    return is_array($value);
             // 对象
-            // no break
             case 'obj':
             case 'object':
                 return is_object($value);
-
             // null
             case 'null':
                 return null === $value;
-
             // 回调函数
             case 'callback':
                 return is_callable($value, false);
-
             // 类或者接口检验
             default:
                 return $value instanceof $type;
@@ -132,7 +119,7 @@ class Type
             return true;
         }
 
-        return !preg_match("/[^\d-.,]/", trim($value, '\''));
+        return !preg_match('/[^\\d-.,]/', trim($value, '\''));
     }
 
     /**
@@ -205,6 +192,7 @@ class Type
             foreach ($types as $item) {
                 if (static::vars($value, $item)) {
                     $ret = true;
+
                     break;
                 }
             }

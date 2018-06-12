@@ -37,7 +37,7 @@ class MethodNotAllowedHttpException extends HttpException
     /**
      * 构造函数.
      *
-     * @param string|null $message
+     * @param null|string $message
      * @param int         $code
      * @param \Exception  $previous
      */

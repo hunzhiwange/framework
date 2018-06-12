@@ -21,15 +21,15 @@ declare(strict_types=1);
 namespace Leevel\Console;
 
 use Leevel\Di\IContainer;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Question\Question;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ChoiceQuestion;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * 命令抽象类
@@ -136,22 +136,6 @@ abstract class Command extends SymfonyCommand
     }
 
     /**
-     * 响应命令.
-     *
-     * @param object $input
-     * @param object $output
-     *
-     * @return mixed
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        return $this->container->call([
-            $this,
-            'handle',
-        ]);
-    }
-
-    /**
      * 调用其他命令.
      *
      * @param string $command
@@ -173,7 +157,7 @@ abstract class Command extends SymfonyCommand
      *
      * @param string $key
      *
-     * @return string|array
+     * @return array|string
      */
     public function argument($key = null)
     {
@@ -189,7 +173,7 @@ abstract class Command extends SymfonyCommand
      *
      * @param string $key
      *
-     * @return string|array
+     * @return array|string
      */
     public function option($key = null)
     {
@@ -415,6 +399,22 @@ abstract class Command extends SymfonyCommand
     }
 
     /**
+     * 响应命令.
+     *
+     * @param object $input
+     * @param object $output
+     *
+     * @return mixed
+     */
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        return $this->container->call([
+            $this,
+            'handle',
+        ]);
+    }
+
+    /**
      * 命令参数.
      *
      * @return array
@@ -437,7 +437,7 @@ abstract class Command extends SymfonyCommand
     /**
      * 设置默认输出级别.
      *
-     * @param string|int $level
+     * @param int|string $level
      */
     protected function setVerbosity($level)
     {
@@ -461,7 +461,7 @@ abstract class Command extends SymfonyCommand
     /**
      * 获取输入信息级别.
      *
-     * @param string|int $level
+     * @param int|string $level
      *
      * @return int
      */

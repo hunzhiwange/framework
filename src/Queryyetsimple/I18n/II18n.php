@@ -38,7 +38,7 @@ interface II18n
      *
      * @return string
      */
-    public function getText(...$arr);
+    public function __(...$arr);
 
     /**
      * 获取语言 text.
@@ -47,7 +47,7 @@ interface II18n
      *
      * @return string
      */
-    public function __(...$arr);
+    public function getText(...$arr);
 
     /**
      * 添加语言包.

@@ -21,13 +21,13 @@ declare(strict_types=1);
 namespace Leevel\Router;
 
 use InvalidArgumentException;
-use Leevel\Http\Request;
 use Leevel\Di\IContainer;
-use Leevel\Http\Response;
 use Leevel\Http\IResponse;
-use Leevel\Support\TMacro;
+use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Mvc\IController;
 use Leevel\Pipeline\Pipeline;
+use Leevel\Support\TMacro;
 
 /**
  * 路由解析
@@ -423,6 +423,7 @@ class Router implements IRouter
             if (0 === strpos($path, $item)) {
                 $path = substr($path, strlen($item) + 1);
                 $basepath = $item;
+
                 break;
             }
         }
@@ -437,7 +438,7 @@ class Router implements IRouter
 
         list($paths, $params) = $this->normalizePathsAndParams($paths);
 
-        if (1 == count($paths)) {
+        if (1 === count($paths)) {
             $result[static::CONTROLLER] = array_pop($paths);
         } else {
             if ($paths) {
@@ -715,18 +716,19 @@ class Router implements IRouter
                 if (!empty($this->matchedData[static::PARAMS])) {
                     $this->matchedData[static::ACTION] = static::RESTFUL_SHOW;
                 }
-                break;
 
+                break;
             case 'POST':
                 $this->matchedData[static::ACTION] = static::RESTFUL_STORE;
-                break;
 
+                break;
             case 'PUT':
                 $this->matchedData[static::ACTION] = static::RESTFUL_UPDATE;
-                break;
 
+                break;
             case 'DELETE':
                 $this->matchedData[static::ACTION] = static::RESTFUL_DESTROY;
+
                 break;
         }
     }
@@ -734,7 +736,7 @@ class Router implements IRouter
     /**
      * 分析默认控制器.
      *
-     * @return false|callable
+     * @return callable|false
      */
     protected function parseDefaultBind()
     {
@@ -861,7 +863,7 @@ class Router implements IRouter
     /**
      * 取回控制器前缀
      *
-     * @return string|null
+     * @return null|string
      */
     protected function matchedPrefix()
     {

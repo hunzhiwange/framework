@@ -67,7 +67,7 @@ class Entry
         }
         // get member variable values from args hash
         foreach ($args as $varname => $value) {
-            $this->$varname = $value;
+            $this->{$varname} = $value;
         }
         if (isset($args['plural']) && $args['plural']) {
             $this->is_plural = true;
@@ -86,7 +86,7 @@ class Entry
     /**
      * Generates a unique key for this entry.
      *
-     * @return string|bool the key or false if the entry is empty
+     * @return bool|string the key or false if the entry is empty
      */
     public function key()
     {
@@ -111,7 +111,7 @@ class Entry
     {
         $this->flags = array_unique(array_merge($this->flags, $other->flags));
         $this->references = array_unique(array_merge($this->references, $other->references));
-        if ($this->extracted_comments != $other->extracted_comments) {
+        if ($this->extracted_comments !== $other->extracted_comments) {
             $this->extracted_comments .= $other->extracted_comments;
         }
     }

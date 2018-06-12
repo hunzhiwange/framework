@@ -48,7 +48,7 @@ interface IQueue
     /**
      * 添加一个任务
      *
-     * @param array|null $arrNewJob
+     * @param null|array $arrNewJob
      *
      * @return bool
      */
@@ -57,7 +57,7 @@ interface IQueue
     /**
      * 获取一个任务
      *
-     * @param string|null $strJobId
+     * @param null|string $strJobId
      *
      * @return object
      */
@@ -66,22 +66,22 @@ interface IQueue
     /**
      * 更新任务
      *
-     * @param string|null $strJobId
-     * @param array|null  $arrResultData
+     * @param null|string $strJobId
+     * @param null|array  $arrResultData
      */
     public function updateJob($strJobId = null, $arrResultData = null);
 
     /**
      * 删除任务
      *
-     * @param string|null $strJobId
+     * @param null|string $strJobId
      */
     public function clearJob($strJobId = null);
 
     /**
      * 重新发布任务
      *
-     * @param string|null $strJobId
+     * @param null|string $strJobId
      */
     public function releaseJob($strJobId = null);
 

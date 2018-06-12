@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Thrift\Service;
 
-use Thrift\Type\TType;
-use Thrift\Type\TMessageType;
 use Thrift\Exception\TApplicationException;
 use Thrift\Protocol\TBinaryProtocolAccelerated;
+use Thrift\Type\TMessageType;
+use Thrift\Type\TType;
 
 /**
  * thrift 默认服务端调用逻辑.
@@ -36,7 +36,7 @@ use Thrift\Protocol\TBinaryProtocolAccelerated;
  */
 class ThriftProcessor
 {
-    protected $handler_ = null;
+    protected $handler_;
 
     public function __construct($handler)
     {
@@ -62,7 +62,7 @@ class ThriftProcessor
 
             return;
         }
-        $this->$methodname($rseqid, $input, $output);
+        $this->{$methodname}($rseqid, $input, $output);
 
         return true;
     }

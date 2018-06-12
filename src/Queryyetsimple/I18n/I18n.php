@@ -64,9 +64,21 @@ class I18n implements II18n
      *
      * @return string
      */
+    public function __(...$arr)
+    {
+        return $this->{'getText'}(...$arr);
+    }
+
+    /**
+     * 获取语言 text.
+     *
+     * @param array $arr
+     *
+     * @return string
+     */
     public function getText(...$arr)
     {
-        if (0 == count($arr)) {
+        if (0 === count($arr)) {
             return '';
         }
 
@@ -78,18 +90,6 @@ class I18n implements II18n
         }
 
         return $value;
-    }
-
-    /**
-     * 获取语言 text.
-     *
-     * @param array $arr
-     *
-     * @return string
-     */
-    public function __(...$arr)
-    {
-        return $this->{'getText'}(...$arr);
     }
 
     /**

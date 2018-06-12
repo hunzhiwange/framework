@@ -96,6 +96,7 @@ class File extends Connect implements IConnect
             // 检查缓存是否已经过期
             if ($this->isExpired($name, $option)) {
                 $data = false;
+
                 break;
             }
 

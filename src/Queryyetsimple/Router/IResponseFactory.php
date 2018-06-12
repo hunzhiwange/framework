@@ -109,7 +109,7 @@ interface IResponseFactory
     /**
      * 返回下载响应.
      *
-     * @param \SplFileObject|\SplFileInfo|string $file
+     * @param \SplFileInfo|\SplFileObject|string $file
      * @param string                             $name
      * @param int                                $status
      * @param array                              $headers
@@ -123,7 +123,7 @@ interface IResponseFactory
     /**
      * 返回文件响应.
      *
-     * @param \SplFileObject|\SplFileInfo|string $file
+     * @param \SplFileInfo|\SplFileObject|string $file
      * @param int                                $status
      * @param array                              $headers
      * @param bool                               $autoEtag
@@ -133,15 +133,16 @@ interface IResponseFactory
      */
     public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true);
 
-    /*
-     * 返回一个 URL 生成跳转响应
+    /**
+     * 返回一个 URL 生成跳转响应.
      *
      * @param string $url
-     * @param array $params
+     * @param array  $params
      * @param string $subdomain
-     * @param mixed $suffix
-     * @param int $status
-     * @param array $headers
+     * @param mixed  $suffix
+     * @param int    $status
+     * @param array  $headers
+     *
      * @return \Leevel\Http\RedirectResponse
      */
     public function redirect(?string $url, array $params = [], string $subdomain = 'www', $suffix = false, int $status = 302, array $headers = []);
@@ -173,6 +174,7 @@ interface IResponseFactory
      * 成功请求并创建了新的资源: 201.
      *
      * @param null|string $location
+     * @param mixed       $content
      *
      * @return $this
      */
@@ -204,6 +206,7 @@ interface IResponseFactory
      * @param string $message
      * @param string $message
      * @param string $text
+     * @param mixed  $statusCode
      *
      * @return $this
      */

@@ -55,6 +55,7 @@ interface IRepository
      * 取得所有记录.
      *
      * @param null|callable $mixCallback
+     * @param null|mixed    $mixSpecification
      *
      * @return \Leevel\Collection\Collection
      */
@@ -64,6 +65,7 @@ interface IRepository
      * 取得所有记录.
      *
      * @param null|callable $mixCallback
+     * @param null|mixed    $mixSpecification
      *
      * @return \Leevel\Collection\Collection
      */

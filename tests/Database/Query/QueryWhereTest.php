@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.10
  *
  * @version 1.0
+ * @coversNothing
  */
 class QueryWhereTest extends TestCase
 {
@@ -55,7 +56,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -82,7 +83,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -109,7 +110,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -145,7 +146,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -172,14 +173,14 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
 
                 where([
-                  ['name', 'like', '技术'],
-                  ['value', '<>', '结局'],
+                    ['name', 'like', '技术'],
+                    ['value', '<>', '结局'],
                 ])->
 
                 getAll(true),
@@ -207,7 +208,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -241,7 +242,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -268,7 +269,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -295,14 +296,14 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
 
                 whereBetween([
-                  ['id', [1, 100]],
-                  ['name', [5, 22]],
+                    ['id', [1, 100]],
+                    ['name', [5, 22]],
                 ])->
 
                 getAll(true),
@@ -330,7 +331,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -357,7 +358,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -389,7 +390,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -416,14 +417,13 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
 
                 where('id', 'in', '1,10')
-
-                ->getAll(true),
+                    ->getAll(true),
                 __METHOD__
             )
         );
@@ -443,14 +443,13 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
 
                 where('id', 'in', [2, 50])
-
-                ->getAll(true),
+                    ->getAll(true),
                 __METHOD__
             )
         );
@@ -475,7 +474,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -502,7 +501,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -534,7 +533,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -546,7 +545,7 @@ eot;
             )
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -578,7 +577,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -590,7 +589,7 @@ eot;
             )
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -622,7 +621,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -634,7 +633,7 @@ eot;
             )
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -666,7 +665,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -678,7 +677,7 @@ eot;
             )
         );
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -710,7 +709,7 @@ array (
 )
 eot;
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
@@ -743,14 +742,14 @@ eot;
 
         $subSelect = $connect->table('subsql');
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
 
                 where(
                    [
-                      'exists__' => $subSelect,
+                       'exists__' => $subSelect,
                    ]
                 )->
 
@@ -776,14 +775,14 @@ eot;
 
         $subSelect = $connect->table('subsql');
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
 
                 where(
                    [
-                      'exists__' => 'select *from d_sub',
+                       'exists__' => 'select *from d_sub',
                    ]
                 )->
 
@@ -809,16 +808,16 @@ eot;
 
         $subSelect = $connect->table('subsql');
 
-        $this->assertEquals(
+        $this->assertSame(
             $sql,
             $this->varExport(
                 $connect->table('test')->
 
                 where(
                    [
-                      'exists__' => function ($select) {
-                          $select->table('subsql')->where('id', 1);
-                      },
+                       'exists__' => function ($select) {
+                           $select->table('subsql')->where('id', 1);
+                       },
                    ]
                 )->
 

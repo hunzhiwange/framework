@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Support;
 
-use RuntimeException;
 use BadMethodCallException;
 use Leevel\Di\IContainer;
+use RuntimeException;
 
 /**
  * 实现类的静态访问门面.
@@ -50,6 +50,32 @@ abstract class Facade
      * @var object
      */
     protected static $instances = [];
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $args)
+    {
+        $instance = static::facades();
+        if (!$instance) {
+            throw new RuntimeException('Can not find instance from container.');
+        }
+
+        $method = [
+            $instance,
+            $method,
+        ];
+        if (!is_callable($method)) {
+            throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        }
+
+        return call_user_func_array($method, $args);
+    }
 
     /**
      * 获取注册容器的实例.
@@ -99,31 +125,5 @@ abstract class Facade
     protected static function name(): string
     {
         return '';
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        $instance = static::facades();
-        if (!$instance) {
-            throw new RuntimeException('Can not find instance from container.');
-        }
-
-        $method = [
-            $instance,
-            $method,
-        ];
-        if (!is_callable($method)) {
-            throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
-        }
-
-        return call_user_func_array($method, $args);
     }
 }

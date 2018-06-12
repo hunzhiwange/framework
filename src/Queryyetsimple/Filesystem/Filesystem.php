@@ -58,6 +58,6 @@ class Filesystem implements IFilesystem
      */
     public function __call(string $method, array $arrArgs)
     {
-        return $this->oConnect->$method(...$arrArgs);
+        return $this->oConnect->{$method}(...$arrArgs);
     }
 }

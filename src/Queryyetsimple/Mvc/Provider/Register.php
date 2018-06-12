@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc\Provider;
 
-use Leevel\Mvc\View;
-use Leevel\Mvc\Meta;
-use Leevel\Mvc\Model;
 use Leevel\Di\Provider;
 use Leevel\Event\IDispatch;
+use Leevel\Mvc\Meta;
+use Leevel\Mvc\Model;
+use Leevel\Mvc\View;
 
 /**
  * mvc 服务提供者.

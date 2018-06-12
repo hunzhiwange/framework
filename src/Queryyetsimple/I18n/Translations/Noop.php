@@ -100,7 +100,7 @@ class Noop extends Translations
      */
     public function select_plural_form($count)
     {
-        return 1 == $count ? 0 : 1;
+        return 1 === $count ? 0 : 1;
     }
 
     /**
@@ -119,7 +119,7 @@ class Noop extends Translations
      */
     public function translate_plural($singular, $plural, $count, $context = null)
     {
-        return 1 == $count ? $singular : $plural;
+        return 1 === $count ? $singular : $plural;
     }
 
     /**

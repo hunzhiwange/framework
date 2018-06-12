@@ -20,16 +20,16 @@ declare(strict_types=1);
 
 namespace Leevel\Client;
 
+use Leevel\Http\IResponse;
+use Leevel\Http\JsonResponse;
+use Leevel\Http\RedirectResponse;
+use Leevel\Http\Response as HttpResponse;
 use Leevel\Protocol\Thrift\Service\Request;
 use Leevel\Protocol\Thrift\Service\Response;
 use Leevel\Protocol\Thrift\Service\ThriftClient;
-use Leevel\Http\IResponse;
-use Leevel\Http\Response as HttpResponse;
-use Thrift\Transport\TSocket;
-use Thrift\Transport\TFramedTransport;
 use Thrift\Protocol\TBinaryProtocol;
-use Leevel\Http\RedirectResponse;
-use Leevel\Http\JsonResponse;
+use Thrift\Transport\TFramedTransport;
+use Thrift\Transport\TSocket;
 
 /**
  * Rpc 客户端.
@@ -93,9 +93,9 @@ class Rpc
 
         if (isset(static::$instances[$key])) {
             return static::$instances[$key];
-        } else {
-            return static::$instances[$key] = new static($key);
         }
+
+        return static::$instances[$key] = new static($key);
     }
 
     /**
@@ -127,6 +127,43 @@ class Rpc
     }
 
     /**
+     * 设置享元数据.
+     *
+     * @param array $metas;
+     */
+    public function setMetas(array $metas)
+    {
+        $this->metas = $metas;
+    }
+
+    /**
+     * 返回享元数据.
+     *
+     * @return array
+     */
+    public function getMetas()
+    {
+        return $this->metas;
+    }
+
+    /**
+     * 添加享元数据.
+     *
+     * @param array|string $key
+     * @param mixed        $value
+     */
+    public function addMetas($key, $value = null)
+    {
+        $key = is_array($key) ? $key : [
+            $key => $value,
+        ];
+
+        foreach ($key as $k => $v) {
+            $this->metas[$k] = $v;
+        }
+    }
+
+    /**
      * 格式化 Thrift Rpc 响应到 QueryPHP 响应.
      *
      * @param \Leevel\Protocol\Thrift\Service\Response $response
@@ -140,12 +177,12 @@ class Rpc
 
             if (isset($data['target_url'])) {
                 return new RedirectResponse($data['target_url'], $response->status);
-            } else {
-                return JsonResponse::fromJsonString($response->data, $response->status);
             }
-        } else {
-            return new HttpResponse($response->data, $response->status);
+
+            return JsonResponse::fromJsonString($response->data, $response->status);
         }
+
+        return new HttpResponse($response->data, $response->status);
     }
 
     /**
@@ -193,42 +230,5 @@ class Rpc
         json_decode($data);
 
         return JSON_ERROR_NONE === json_last_error();
-    }
-
-    /**
-     * 设置享元数据.
-     *
-     * @param array $metas;
-     */
-    public function setMetas(array $metas)
-    {
-        $this->metas = $metas;
-    }
-
-    /**
-     * 返回享元数据.
-     *
-     * @return array
-     */
-    public function getMetas()
-    {
-        return $this->metas;
-    }
-
-    /**
-     * 添加享元数据.
-     *
-     * @param string|array $key
-     * @param mixed        $value
-     */
-    public function addMetas($key, $value = null)
-    {
-        $key = is_array($key) ? $key : [
-            $key => $value,
-        ];
-
-        foreach ($key as $k => $v) {
-            $this->metas[$k] = $v;
-        }
     }
 }

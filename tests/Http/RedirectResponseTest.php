@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Tests\TestCase;
-use Leevel\Session\Session;
 use Leevel\Http\RedirectResponse;
+use Leevel\Session\Session;
+use Tests\TestCase;
 
 /**
  * RedirectResponse test
@@ -35,6 +35,7 @@ use Leevel\Http\RedirectResponse;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ * @coversNothing
  */
 class RedirectResponseTest extends TestCase
 {
@@ -42,25 +43,23 @@ class RedirectResponseTest extends TestCase
     {
         $response = new RedirectResponse('foo.bar');
 
-        $this->assertEquals(1, preg_match(
+        $this->assertSame(1, preg_match(
             '#<meta http-equiv="refresh" content="\d+;url=foo\.bar" />#',
             preg_replace(['/\s+/', '/\'/'], [' ', '"'], $response->getContent())
         ));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testRedirectResponseConstructorNullUrl()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $response = new RedirectResponse(null);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testRedirectResponseConstructorWrongStatusCode()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $response = new RedirectResponse('foo.bar', 404);
     }
 
@@ -68,27 +67,26 @@ class RedirectResponseTest extends TestCase
     {
         $response = new RedirectResponse('foo.bar');
         $this->assertTrue($response->headers->has('Location'));
-        $this->assertEquals('foo.bar', $response->headers->get('Location'));
+        $this->assertSame('foo.bar', $response->headers->get('Location'));
     }
 
     public function testGetTargetUrl()
     {
         $response = new RedirectResponse('foo.bar');
-        $this->assertEquals('foo.bar', $response->getTargetUrl());
+        $this->assertSame('foo.bar', $response->getTargetUrl());
     }
 
     public function testSetTargetUrl()
     {
         $response = new RedirectResponse('foo.bar');
         $response->setTargetUrl('baz.beep');
-        $this->assertEquals('baz.beep', $response->getTargetUrl());
+        $this->assertSame('baz.beep', $response->getTargetUrl());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSetTargetUrlNull()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $response = new RedirectResponse('foo.bar');
         $response->setTargetUrl(null);
     }
@@ -97,7 +95,7 @@ class RedirectResponseTest extends TestCase
     {
         $response = RedirectResponse::create('foo', 301);
         $this->assertInstanceOf('Leevel\Http\RedirectResponse', $response);
-        $this->assertEquals(301, $response->getStatusCode());
+        $this->assertSame(301, $response->getStatusCode());
     }
 
     public function testWith()
@@ -107,12 +105,12 @@ class RedirectResponseTest extends TestCase
         $this->assertInstanceOf('Leevel\Session\Session', $response->getSession());
 
         $response->with('foo', 'bar');
-        $this->assertEquals($response->getSession()->getFlash('foo'), 'bar');
+        $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
 
         $data = ['myinput', 'world'];
         $response->setSession($this->mokeSessionArrayForWith());
         $response->withInput($data);
-        $this->assertEquals($response->getSession()->getFlash('inputs'), $data);
+        $this->assertSame($response->getSession()->getFlash('inputs'), $data);
     }
 
     public function testWithError()
@@ -133,7 +131,7 @@ class RedirectResponseTest extends TestCase
         $response->withErrors($errorsDefault);
         $response->withErrors($errorsCustom, 'custom');
 
-        $this->assertEquals($response->getSession()->getFlash('errors'), [
+        $this->assertSame($response->getSession()->getFlash('errors'), [
             'default' => $errorsDefault,
             'custom' => $errorsCustom,
         ]);
@@ -193,13 +191,13 @@ class RedirectResponseTest extends TestCase
 
         willReturn([
             'default' => [
-                    'name' => 'less than 6',
-                    'age' => 'must be 18',
-                ],
+                'name' => 'less than 6',
+                'age' => 'must be 18',
+            ],
             'custom' => [
-                    'foo' => 'bar is error',
-                ],
-            ]
+                'foo' => 'bar is error',
+            ],
+        ]
         );
 
         return $session;

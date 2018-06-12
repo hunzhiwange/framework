@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Console;
 
-use RuntimeException;
 use InvalidArgumentException;
 use Phinx\Console\Command\Init as PhinxInit;
+use RuntimeException;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 

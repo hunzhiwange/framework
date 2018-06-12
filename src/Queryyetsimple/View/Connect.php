@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
-use RuntimeException;
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * 模板处理抽象类.
@@ -87,7 +87,7 @@ abstract class Connect
     /**
      * 获取变量值
      *
-     * @param string|null $name
+     * @param null|string $name
      *
      * @return mixed
      */
@@ -123,7 +123,7 @@ abstract class Connect
     /**
      * 清空变量值
      *
-     * @param string|null $name
+     * @param null|string $name
      *
      * @return $this
      */
@@ -180,34 +180,33 @@ abstract class Connect
             0 === strpos($tpl, '$') ||
             false !== strpos($tpl, '(')) {
             return $this->formatFile($tpl);
-        } else {
-            if (!$this->option['theme_path']) {
-                throw new RuntimeException('Theme path must be set');
-            }
+        }
+        if (!$this->option['theme_path']) {
+            throw new RuntimeException('Theme path must be set');
+        }
 
-            // 空取默认控制器和方法
-            if ('' == $tpl) {
-                $tpl = $this->option['controller_name'].
+        // 空取默认控制器和方法
+        if ('' === $tpl) {
+            $tpl = $this->option['controller_name'].
                     $this->option['controlleraction_depr'].
                     $this->option['action_name'];
-            }
+        }
 
-            // 分析主题
-            if (false !== strpos($tpl, '@')) {
-                $arr = explode('@', $tpl);
-                $theme = array_shift($arr);
-                $tpl = array_shift($arr);
-            }
+        // 分析主题
+        if (false !== strpos($tpl, '@')) {
+            $arr = explode('@', $tpl);
+            $theme = array_shift($arr);
+            $tpl = array_shift($arr);
+        }
 
-            $tpl = str_replace([
-                '+',
-                ':',
-            ], $this->option['controlleraction_depr'], $tpl);
+        $tpl = str_replace([
+            '+',
+            ':',
+        ], $this->option['controlleraction_depr'], $tpl);
 
-            return dirname($this->option['theme_path']).'/'.
+        return dirname($this->option['theme_path']).'/'.
                 ($theme ?? $this->option['theme_name']).'/'.
                 $tpl.($ext ?: $this->option['suffix']);
-        }
     }
 
     /**
@@ -265,7 +264,7 @@ abstract class Connect
         }
 
         // default 主题
-        if ('default' != $this->option['theme_name'] &&
+        if ('default' !== $this->option['theme_name'] &&
             is_file(($tempTpl = dirname($this->option['theme_path']).'/default/'.$tpl))) {
             return $tempTpl;
         }

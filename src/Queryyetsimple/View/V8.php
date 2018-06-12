@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
-use V8Js;
 use Exception;
-use V8JsException;
 use RuntimeException;
+use V8Js;
+use V8JsException;
 
 /**
  * v8 模板处理类.
@@ -127,7 +127,7 @@ class V8 extends Connect implements IConnect
         }
 
         foreach ($this->vars as $key => $value) {
-            $this->v8js->$key = $value;
+            $this->v8js->{$key} = $value;
         }
 
         $source = file_get_contents($file);
@@ -135,9 +135,8 @@ class V8 extends Connect implements IConnect
         // 返回类型
         if (false === $display) {
             return $this->select($source);
-        } else {
-            $this->execute($source);
         }
+        $this->execute($source);
     }
 
     /**
@@ -198,47 +197,6 @@ class V8 extends Connect implements IConnect
     }
 
     /**
-     * initBase.
-     */
-    protected function initBase()
-    {
-        $console = <<<'EOT'
-/*!
- * console.js v0.2.0 (https://github.com/yanhaijing/console.js)
- * Copyright 2013 yanhaijing. All Rights Reserved
- * Licensed under MIT (https://github.com/yanhaijing/console.js/blob/master/MIT-LICENSE.txt)
- */
-;(function(g) {
-    'use strict';
-    var _console = g.console || {};
-    var methods = ['assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'exception', 'error', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'profile', 'profileEnd', 'table', 'time', 'timeEnd', 'timeStamp', 'trace', 'warn'];
-
-    var console = {version: '0.2.0'};
-    var key;
-    for(var i = 0, len = methods.length; i < len; i++) {
-        key = methods[i];
-        console[key] = function (key) {
-            var method = key;
-            return function () {
-                if (method == 'log') {
-                    $.$dd(arguments[0]);
-                } else {
-                    print(arguments[0]);
-                    print('<br />');
-                }
-            };           
-        }(key);
-    }
-    
-    g.console = console;
-}(this));
-EOT;
-        $this->execute($console);
-
-        unset($console);
-    }
-
-    /**
      * initDd.
      */
     public function initDd()
@@ -278,7 +236,7 @@ EOT;
                 );
             }
 
-            $this->$package();
+            $this->{$package}();
         };
 
         $this->execute('this.load = this.$load = $.$load;');
@@ -302,6 +260,47 @@ EOT;
         $this->v8js->setModuleLoader(function ($module) {
             return file_get_contents($module);
         });
+    }
+
+    /**
+     * initBase.
+     */
+    protected function initBase()
+    {
+        $console = <<<'EOT'
+/*!
+ * console.js v0.2.0 (https://github.com/yanhaijing/console.js)
+ * Copyright 2013 yanhaijing. All Rights Reserved
+ * Licensed under MIT (https://github.com/yanhaijing/console.js/blob/master/MIT-LICENSE.txt)
+ */
+;(function(g) {
+    'use strict';
+    var _console = g.console || {};
+    var methods = ['assert', 'clear', 'count', 'debug', 'dir', 'dirxml', 'exception', 'error', 'group', 'groupCollapsed', 'groupEnd', 'info', 'log', 'profile', 'profileEnd', 'table', 'time', 'timeEnd', 'timeStamp', 'trace', 'warn'];
+
+    var console = {version: '0.2.0'};
+    var key;
+    for(var i = 0, len = methods.length; i < len; i++) {
+        key = methods[i];
+        console[key] = function (key) {
+            var method = key;
+            return function () {
+                if (method == 'log') {
+                    $.$dd(arguments[0]);
+                } else {
+                    print(arguments[0]);
+                    print('<br />');
+                }
+            };           
+        }(key);
+    }
+    
+    g.console = console;
+}(this));
+EOT;
+        $this->execute($console);
+
+        unset($console);
     }
 
     /**

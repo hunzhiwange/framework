@@ -30,6 +30,7 @@ use Phinx\Console\Command\Test as PhinxTest;
  * @since 2017.05.09
  *
  * @version 1.0
+ * @coversNothing
  */
 class Test extends PhinxTest
 {

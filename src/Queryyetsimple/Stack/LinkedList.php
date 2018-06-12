@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Stack;
 
-use SplDoublyLinkedList;
 use InvalidArgumentException;
 use Leevel\Support\Type;
+use SplDoublyLinkedList;
 
 /**
  * 双向链表

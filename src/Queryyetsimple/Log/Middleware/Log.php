@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Log\Middleware;
 
 use Closure;
-use Leevel\Log\Manager;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
+use Leevel\Log\Manager;
 
 /**
  * Log 中间件.

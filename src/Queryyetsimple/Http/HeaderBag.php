@@ -42,26 +42,6 @@ class HeaderBag extends Bag
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function replace(array $elements = [])
-    {
-        $this->elements = [];
-
-        $this->add($elements);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function add(array $elements = [])
-    {
-        foreach ($elements as $key => $value) {
-            $this->set($key, $value);
-        }
-    }
-
-    /**
      * 格式化 header 字符串.
      *
      * @return string
@@ -81,6 +61,26 @@ class HeaderBag extends Bag
         }
 
         return $content;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function replace(array $elements = [])
+    {
+        $this->elements = [];
+
+        $this->add($elements);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function add(array $elements = [])
+    {
+        foreach ($elements as $key => $value) {
+            $this->set($key, $value);
+        }
     }
 
     /**

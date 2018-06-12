@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc\Relation;
 
-use Leevel\Mvc\IModel;
 use Leevel\Collection\Collection;
+use Leevel\Mvc\IModel;
 
 /**
  * 关联模型 BelongsTo.
@@ -145,7 +145,7 @@ class BelongsTo extends Relation
             }
         }
 
-        if (0 == count($arr)) {
+        if (0 === count($arr)) {
             return [
                 0,
             ];

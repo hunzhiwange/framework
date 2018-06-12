@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Filesystem;
 
 use Closure;
-use RuntimeException;
 use DirectoryIterator;
 use Leevel\Support\TMacro;
+use RuntimeException;
 
 /**
  * File System Object 管理.
@@ -60,7 +60,7 @@ class Fso
      * @param string $sDir
      * @param number $nMode
      *
-     * @return void|true
+     * @return true|void
      */
     public static function createDirectory($sDir, $nMode = 0777)
     {
@@ -125,7 +125,7 @@ class Fso
 
         $objDir = new DirectoryIterator($sSourcePath);
         foreach ($objDir as $objFile) {
-            if ($objFile->isDot() || in_array($objFile->getFilename(), $arrFilter)) {
+            if ($objFile->isDot() || in_array($objFile->getFilename(), $arrFilter, true)) {
                 continue;
             }
 
@@ -161,7 +161,7 @@ class Fso
 
         $objDir = new DirectoryIterator($sPath);
         foreach ($objDir as $objFile) {
-            if ($objFile->isDot() || in_array($objFile->getFilename(), $arrFilter)) {
+            if ($objFile->isDot() || in_array($objFile->getFilename(), $arrFilter, true)) {
                 continue;
             }
 
@@ -203,14 +203,14 @@ class Fso
 
             $objDir = new DirectoryIterator($sDir);
             foreach ($objDir as $objFile) {
-                if ($objFile->isDot() || in_array($objFile->getFilename(), $arrFilter)) {
+                if ($objFile->isDot() || in_array($objFile->getFilename(), $arrFilter, true)) {
                     continue;
                 }
 
                 if ($objFile->isDir() && in_array($strReturnType, [
                     'dir',
                     'both',
-                ])) {
+                ], true)) {
                     $arrReturnData['dir'][] = $booFullpath ? $objFile->getRealPath() : $objFile->getFilename();
                 }
 
@@ -219,21 +219,22 @@ class Fso
                 if ($objFile->isFile() && in_array($strReturnType, [
                     'file',
                     'both',
-                ]) && (!$arrFilterExt || !in_array($strExt, $arrFilterExt)) && (!$arrAllowedExt || in_array($strExt, $arrAllowedExt))) {
+                ], true) && (!$arrFilterExt || !in_array($strExt, $arrFilterExt, true)) && (!$arrAllowedExt || in_array($strExt, $arrAllowedExt, true))) {
                     $arrReturnData['file'][] = $booFullpath ? $objFile->getRealPath() : $objFile->getFilename();
                 }
             }
 
-            if ('file' == $strReturnType) {
+            if ('file' === $strReturnType) {
                 return $arrReturnData['file'];
-            } elseif ('dir' == $strReturnType) {
-                return $arrReturnData['dir'];
-            } else {
-                return $arrReturnData;
             }
-        } else {
-            return [];
+            if ('dir' === $strReturnType) {
+                return $arrReturnData['dir'];
+            }
+
+            return $arrReturnData;
         }
+
+        return [];
     }
 
     /**
@@ -328,9 +329,9 @@ class Fso
             chmod($sPath, $nMode);
 
             return fclose($hFile);
-        } else {
-            throw new RuntimeException(sprint('Create file %s failed.', $sPath));
         }
+
+        throw new RuntimeException(sprint('Create file %s failed.', $sPath));
     }
 
     /**
@@ -344,13 +345,14 @@ class Fso
     public static function getExtension($sFileName, $nCase = 0)
     {
         $sFileName = pathinfo($sFileName, PATHINFO_EXTENSION);
-        if (1 == $nCase) {
+        if (1 === $nCase) {
             return strtoupper($sFileName);
-        } elseif (2 == $nCase) {
-            return strtolower($sFileName);
-        } else {
-            return $sFileName;
         }
+        if (2 === $nCase) {
+            return strtolower($sFileName);
+        }
+
+        return $sFileName;
     }
 
     /**

@@ -93,7 +93,7 @@ class Pipeline implements IPipeline
     /**
      * 设置管道中的执行工序.
      *
-     * @param dynamic|array $stage
+     * @param array|dynamic $stage
      *
      * @return $this
      */
@@ -182,24 +182,23 @@ class Pipeline implements IPipeline
 
         if (is_callable($stages)) {
             return $stages;
-        } else {
-            list($stage, $params) = $this->parse($stages);
-
-            if (false !== strpos($stage, '@')) {
-                list($stage, $method) = explode('@', $stage);
-            } else {
-                $method = 'handle';
-            }
-
-            if (false === ($stage = $this->container->make($stage, $params))) {
-                throw new InvalidArgumentException('Stage is invalid.');
-            }
-
-            return [
-                $stage,
-                $method,
-            ];
         }
+        list($stage, $params) = $this->parse($stages);
+
+        if (false !== strpos($stage, '@')) {
+            list($stage, $method) = explode('@', $stage);
+        } else {
+            $method = 'handle';
+        }
+
+        if (false === ($stage = $this->container->make($stage, $params))) {
+            throw new InvalidArgumentException('Stage is invalid.');
+        }
+
+        return [
+            $stage,
+            $method,
+        ];
     }
 
     /**

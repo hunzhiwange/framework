@@ -29,7 +29,7 @@ use Leevel\Manager\Manager as Managers;
  * @method false|string                          read(string $path)
  * @method false|resource                        readStream(string $path)
  * @method array                                 listContents(string $directory = '', bool $recursive = false)
- * @method false|array                           getMetadata(string $path)
+ * @method array|false                           getMetadata(string $path)
  * @method false|int                             getSize(string $path)
  * @method false|string                          getMimetype(string $path)
  * @method false|int                             getTimestamp(string $path)

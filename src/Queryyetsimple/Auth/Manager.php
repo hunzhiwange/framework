@@ -34,28 +34,6 @@ use Leevel\Manager\Manager as Managers;
 class Manager extends Managers
 {
     /**
-     * 取得配置命名空间.
-     *
-     * @return string
-     */
-    protected function getOptionNamespace()
-    {
-        return 'auth';
-    }
-
-    /**
-     * 创建连接对象
-     *
-     * @param object $connect
-     *
-     * @return object
-     */
-    protected function createConnect($connect)
-    {
-        return new auth($connect);
-    }
-
-    /**
      * 返回默认驱动.
      *
      * @return string
@@ -78,6 +56,28 @@ class Manager extends Managers
         $option = $this->container['option'][$this->getOptionName('default')];
         $option = $this->getOptionName($option.'_default');
         $this->container['option'][$option] = $name;
+    }
+
+    /**
+     * 取得配置命名空间.
+     *
+     * @return string
+     */
+    protected function getOptionNamespace()
+    {
+        return 'auth';
+    }
+
+    /**
+     * 创建连接对象
+     *
+     * @param object $connect
+     *
+     * @return object
+     */
+    protected function createConnect($connect)
+    {
+        return new auth($connect);
     }
 
     /**

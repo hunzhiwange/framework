@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Tests\TestCase;
 use Leevel\Router\SwaggerRouter;
+use Tests\TestCase;
 
 /**
  * swagger 生成注解路由组件测试.
@@ -31,14 +31,14 @@ use Leevel\Router\SwaggerRouter;
  * @since 2018.04.10
  *
  * @version 1.0
+ * @coversNothing
  */
 class SwaggerRouterTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function tes2tAddSwaggerScanCheckDir()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $swaggerRouter = new SwaggerRouter();
 
         $scanDir = __DIR__.'/Petstore___';
@@ -55,6 +55,6 @@ class SwaggerRouterTest extends TestCase
         $swaggerRouter->addSwaggerScan($scanDir);
         $result = $swaggerRouter->handle();
 
-        $this->assertEquals($result, include $scanDir.'/cache.php');
+        $this->assertSame($result, include $scanDir.'/cache.php');
     }
 }

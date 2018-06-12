@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use Countable;
 use ArrayAccess;
+use Countable;
 use JsonSerializable;
-use Leevel\Support\IJson;
 use Leevel\Support\IArray;
+use Leevel\Support\IJson;
 
 /**
  * 分页处理.

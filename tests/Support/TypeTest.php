@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Support;
 
+use Leevel\Support\Type;
 use stdClass;
 use Tests\TestCase;
-use Leevel\Support\Type;
 
 /**
  * type test.
@@ -32,6 +32,7 @@ use Leevel\Support\Type;
  * @since 2018.06.10
  *
  * @version 1.0
+ * @coversNothing
  */
 class TypeTest extends TestCase
 {
@@ -133,11 +134,10 @@ class TypeTest extends TestCase
         $this->assertTrue(Type::these(1, ['string', 'int']));
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testTheseException()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $this->assertTrue(Type::these('foo', [[]]));
     }
 

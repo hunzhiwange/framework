@@ -30,16 +30,16 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ * @coversNothing
  */
 class CompilerPairedTagExceptionTest extends TestCase
 {
     use Compiler;
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testBaseUse()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $parser = $this->createParser();
 
         $source = <<<'eot'

@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Cache\Provider;
 
 use Leevel\Cache\Load;
-use Leevel\Di\Provider;
 use Leevel\Cache\Manager;
+use Leevel\Di\Provider;
 
 /**
  * cache 服务提供者.

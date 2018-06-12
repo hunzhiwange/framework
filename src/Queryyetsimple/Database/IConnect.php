@@ -247,6 +247,8 @@ interface IConnect
     /**
      * sql 字段格式化.
      *
+     * @param mixed $sName
+     *
      * @return string
      */
     public function identifierColumn($sName);

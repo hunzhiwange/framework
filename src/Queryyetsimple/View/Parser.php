@@ -199,7 +199,7 @@ class Parser implements IParser
      * 执行编译.
      *
      * @param string      $file
-     * @param string|null $cachePath
+     * @param null|string $cachePath
      * @param bool        $icontent
      *
      * @return string
@@ -296,7 +296,7 @@ class Parser implements IParser
         $tag = $this->getTag('global');
 
         if (preg_match_all(
-            "/{$tag['left']}tagself{$tag['right']}(.+?){$tag['left']}\/tagself{$tag['right']}/isx",
+            "/{$tag['left']}tagself{$tag['right']}(.+?){$tag['left']}\\/tagself{$tag['right']}/isx",
             $compiled,
             $res)) {
             $startPos = 0;
@@ -381,7 +381,7 @@ class Parser implements IParser
         // 正则分析
         $tag = $this->getTag('code');
         $names = implode('|', $names);
-        $regex = '/'.$tag['left']."\s*({$names})(|.+?)".$tag['right'].'/s';
+        $regex = '/'.$tag['left']."\\s*({$names})(|.+?)".$tag['right'].'/s';
 
         if (preg_match_all($regex, $compiled, $res)) {
             $startPos = 0;
@@ -547,11 +547,11 @@ class Parser implements IParser
         // 正则分析
         $tag = $this->getTag($nodeType);
         $names = implode('|', $names);
-        $regex = "/{$tag['left']}\s*(\/?)(({$names})(:[^\s".
-            (true === $this->jsNode ? '' : "\>").
-            "\}]+)?)(\s[^".
+        $regex = "/{$tag['left']}\\s*(\\/?)(({$names})(:[^\\s".
+            (true === $this->jsNode ? '' : '\\>').
+            '\\}]+)?)(\\s[^'.
             (true === $this->jsNode ? '' : '>').
-            "\}]*?)?\/?{$tag['right']}/isx";
+            "\\}]*?)?\\/?{$tag['right']}/isx";
 
         // 标签名称位置
         $nodeNameIndex = 2;
@@ -591,7 +591,7 @@ class Parser implements IParser
                 ];
 
                 // 头标签的属性
-                if ('head' == $nodeType) {
+                if ('head' === $nodeType) {
                     $theme['attribute'] = $res[$tagAttributeIndex][$index];
                 } else {
                     $theme['attribute'] = '';
@@ -629,7 +629,7 @@ class Parser implements IParser
         // 载入节点属性分析器 & 依次处理所有标签
         while (null !== ($tag = $this->nodeStack->out())) {
             // 尾标签，加入到尾标签中
-            if ('tail' == $tag['type']) {
+            if ('tail' === $tag['type']) {
                 $tailStack->in($tag);
 
                 continue;
@@ -742,7 +742,7 @@ class Parser implements IParser
      */
     protected function findHeadTag($tag, $tailTag)
     {
-        if ('tail' != $tailTag['type']) {
+        if ('tail' !== $tailTag['type']) {
             throw new InvalidArgumentException(
                 sprintf('The parameter must be a tail tag.')
             );
@@ -765,8 +765,10 @@ class Parser implements IParser
      * 注册编译器 code 和 node 编译器注册.
      *
      * @param string $type
-     * @param string|array
+     * @param array|string
      * @param array|string $Tag
+     * @param mixed        $name
+     * @param mixed        $tag
      */
     protected function registerCompiler($type, $name, $tag)
     {
@@ -919,16 +921,16 @@ class Parser implements IParser
                         $result[] = $new;
                         $result[] = $child;
                         $new = null;
-                        break;
 
+                        break;
                     /*
                      * 新增的和上次处于平级关系直接加入上级的 children 容器中
                      * child 在前 new 在后面
                      */
                     case 'behind':
                         $result[] = $child;
-                        break;
 
+                        break;
                     /*
                      * new 处于 child 内部
                      * new 在 child 内部
@@ -937,14 +939,15 @@ class Parser implements IParser
                         $child = $this->addThemeTree($child, $new);
                         $result[] = $child;
                         $new = null;
-                        break;
 
+                        break;
                     /*
                      * child 处于 new 内部
                      * child 在 new 内部
                      */
                     case 'out':
                         $new = $this->addThemeTree($new, $child);
+
                         break;
                 }
             } else {
@@ -1032,9 +1035,7 @@ class Parser implements IParser
         $startIn = $start - $lineStartFirst;
         $endIn = $end - $lineEndFirst;
 
-        /*
-         * 返回结果
-         */
+        // 返回结果
         $data['start'] = $start;
         $data['end'] = $end;
         $data['start_line'] = $startLine;
@@ -1151,9 +1152,7 @@ class Parser implements IParser
             return 'out';
         }
 
-        /*
-         * 交叉（两个时间段相互关系）
-         */
+        // 交叉（两个时间段相互关系）
         throw new InvalidArgumentException(
             'Template engine tag library does not support cross.'
         );

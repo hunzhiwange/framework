@@ -75,7 +75,7 @@ class RedirectResponse extends Response
             throw new InvalidArgumentException(sprintf('The HTTP status code is not a redirect ("%s" given).', $status));
         }
 
-        if (301 == $status && !array_key_exists('cache-control', $headers)) {
+        if (301 === $status && !array_key_exists('cache-control', $headers)) {
             $this->headers->remove('cache-control');
         }
     }
@@ -97,7 +97,7 @@ class RedirectResponse extends Response
     /**
      * 闪存一个数据片段到 SESSION.
      *
-     * @param string|array $key
+     * @param array|string $key
      * @param mixed        $value
      *
      * @return $this
@@ -243,7 +243,7 @@ class RedirectResponse extends Response
     /**
      * 获取 HTTP 请求
      *
-     * @return \Leevel\Http\IRequest|null
+     * @return null|\Leevel\Http\IRequest
      */
     public function getRequest()
     {
@@ -263,7 +263,7 @@ class RedirectResponse extends Response
     /**
      * 获取 SESSION 仓储.
      *
-     * @return \Leevel\Session\ISession|null
+     * @return null|\Leevel\Session\ISession
      */
     public function getSession()
     {

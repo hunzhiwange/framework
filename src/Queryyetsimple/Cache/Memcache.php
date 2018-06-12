@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
-use RuntimeException;
 use Memcache as Memcaches;
+use RuntimeException;
 
 /**
  * memcache 扩展缓存.

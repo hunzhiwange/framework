@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Tests\TestCase;
 use Leevel\Http\ServerBag;
+use Tests\TestCase;
 
 /**
  * ServerBag test
@@ -34,6 +34,7 @@ use Leevel\Http\ServerBag;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ * @coversNothing
  */
 class ServerBagTest extends TestCase
 {
@@ -50,7 +51,7 @@ class ServerBagTest extends TestCase
 
         $bag = new ServerBag($server);
 
-        $this->assertEquals([
+        $this->assertSame([
             'CONTENT_TYPE' => 'text/html',
             'CONTENT_LENGTH' => '0',
             'ETAG' => 'asdf',

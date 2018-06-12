@@ -119,7 +119,8 @@ interface ITree
     /**
      * 取得节点的值
      *
-     * @param int $nId
+     * @param int        $nId
+     * @param null|mixed $mixDefault
      *
      * @return mixed
      */

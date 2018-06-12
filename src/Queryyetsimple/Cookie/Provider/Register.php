@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Cookie\Provider;
 
-use Leevel\Di\Provider;
 use Leevel\Cookie\Cookie;
+use Leevel\Di\Provider;
 
 /**
  * cookie 服务提供者.

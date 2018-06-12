@@ -20,14 +20,14 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use PDO;
-use Exception;
 use BadMethodCallException;
-use Leevel\Support\Arr;
-use Leevel\Support\Type;
+use Exception;
+use Leevel\Collection\Collection;
 use Leevel\Flow\TControl;
 use Leevel\Page\PageWithoutTotal;
-use Leevel\Collection\Collection;
+use Leevel\Support\Arr;
+use Leevel\Support\Type;
+use PDO;
 
 /**
  * 数据库查询器
@@ -44,6 +44,48 @@ use Leevel\Collection\Collection;
 class Select
 {
     use TControl;
+
+    /**
+     * And 逻辑运算符.
+     *
+     * @var string
+     */
+    const LOGIC_AND = 'and';
+
+    /**
+     * Or 逻辑运算符.
+     *
+     * @var string
+     */
+    const LOGIC_OR = 'or';
+
+    /**
+     * 逻辑分组左符号.
+     *
+     * @var string
+     */
+    const LOGIC_GROUP_LEFT = '(';
+
+    /**
+     * 逻辑分组右符号.
+     *
+     * @var string
+     */
+    const LOGIC_GROUP_RIGHT = ')';
+
+    /**
+     * 子表达式默认别名.
+     *
+     * @var string
+     */
+    const DEFAULT_SUBEXPRESSION_ALIAS = 'a';
+
+    /**
+     * 条件逻辑连接符.
+     *
+     * @var string
+     */
+    public $strConditionLogic = 'and';
 
     /**
      * 数据库连接.
@@ -185,41 +227,6 @@ class Select
     protected $strNativeSql = 'select';
 
     /**
-     * And 逻辑运算符.
-     *
-     * @var string
-     */
-    const LOGIC_AND = 'and';
-
-    /**
-     * Or 逻辑运算符.
-     *
-     * @var string
-     */
-    const LOGIC_OR = 'or';
-
-    /**
-     * 逻辑分组左符号.
-     *
-     * @var string
-     */
-    const LOGIC_GROUP_LEFT = '(';
-
-    /**
-     * 逻辑分组右符号.
-     *
-     * @var string
-     */
-    const LOGIC_GROUP_RIGHT = ')';
-
-    /**
-     * 条件逻辑连接符.
-     *
-     * @var string
-     */
-    public $strConditionLogic = 'and';
-
-    /**
      * 条件逻辑类型.
      *
      * @var string
@@ -239,13 +246,6 @@ class Select
      * @var bool
      */
     protected $booIsTable = false;
-
-    /**
-     * 子表达式默认别名.
-     *
-     * @var string
-     */
-    const DEFAULT_SUBEXPRESSION_ALIAS = 'a';
 
     /**
      * 不查询直接返回 SQL.
@@ -284,6 +284,61 @@ class Select
     {
         $this->objConnect = $objConnect;
         $this->initOption();
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        if ($this->placeholderTControl($method)) {
+            return $this;
+        }
+
+        // 动态查询支持
+        if (0 === strncasecmp($method, 'get', 3)) {
+            $method = substr($method, 3);
+            if (false !== strpos(strtolower($method), 'start')) { // support get10start3 etc.
+                $arrValue = explode('start', strtolower($method));
+                $nNum = (int) (array_shift($arrValue));
+                $nOffset = (int) (array_shift($arrValue));
+
+                return $this->limit($nOffset, $nNum)->get();
+            }
+            if (0 === strncasecmp($method, 'By', 2)) { // support getByName getByNameAndSex etc.
+                $method = substr($method, 2);
+                $arrKeys = explode('And', $method);
+                if (count($arrKeys) !== count($arrArgs)) {
+                    throw new Exception('Parameter quantity does not correspond.');
+                }
+
+                return $this->where(array_combine($arrKeys, $arrArgs))->getOne();
+            }
+            if (0 === strncasecmp($method, 'AllBy', 5)) { // support getAllByNameAndSex etc.
+                $method = substr($method, 5);
+                $arrKeys = explode('And', $method);
+                if (count($arrKeys) !== count($arrArgs)) {
+                    throw new Exception('Parameter quantity does not correspond.');
+                }
+
+                return $this->where(array_combine($arrKeys, $arrArgs))->getAll();
+            }
+
+            return $this->top((int) (substr($method, 3)));
+        }
+
+        // 查询组件
+        if (!$this->objCallSelect) {
+            throw new Exception(sprintf('Select do not implement magic method %s.', $method));
+        }
+
+        // 调用事件
+        return $this->objCallSelect->{$method}(...$arrArgs);
     }
 
     /**
@@ -326,7 +381,7 @@ class Select
     /**
      * 原生 sql 查询数据 select.
      *
-     * @param string|null|callable|select $mixData
+     * @param null|callable|select|string $mixData
      * @param array                       $arrBind
      * @param bool                        $bFlag   指示是否不做任何操作只返回 SQL
      *
@@ -348,7 +403,7 @@ class Select
         }
 
         // 回调
-        elseif (!is_string($mixData) && is_callable($mixData)) {
+        if (!is_string($mixData) && is_callable($mixData)) {
             call_user_func_array($mixData, [
                 &$this,
             ]);
@@ -706,9 +761,9 @@ class Select
     {
         if ($this->arrOption['limitquery']) {
             return $this->sql($bFlag, true)->query();
-        } else {
-            return $this->sql($bFlag, true)->all()->query();
         }
+
+        return $this->sql($bFlag, true)->all()->query();
     }
 
     /**
@@ -723,9 +778,9 @@ class Select
     {
         if (null !== $nNum) {
             return $this->sql($bFlag, true)->top($nNum)->query();
-        } else {
-            return $this->sql($bFlag, true)->query();
         }
+
+        return $this->sql($bFlag, true)->query();
     }
 
     /**
@@ -773,11 +828,12 @@ class Select
         foreach ($this->sql($bFlag, true)->asDefault()->setColumns($arrField)->getAll() as $arrTemp) {
             if (true === $bFlag) {
                 $arrResult[] = $arrTemp;
+
                 continue;
             }
 
             $arrTemp = $arrTemp;
-            if (1 == count($arrTemp)) {
+            if (1 === count($arrTemp)) {
                 $arrResult[] = reset($arrTemp);
             } else {
                 $mixValue = array_shift($arrTemp);
@@ -1012,7 +1068,7 @@ class Select
             'month',
             'year',
             'day',
-        ]) ? $arrArgs[0] : null);
+        ], true) ? $arrArgs[0] : null);
     }
 
     /**
@@ -1160,7 +1216,7 @@ class Select
             return $this;
         }
 
-        if (null == $sOption) {
+        if (null === $sOption) {
             $this->initOption();
         } elseif (array_key_exists($sOption, static::$arrOptionDefault)) {
             $this->arrOption[$sOption] = static::$arrOptionDefault[$sOption];
@@ -1172,7 +1228,7 @@ class Select
     /**
      * prefix 查询.
      *
-     * @param string|array $mixPrefix
+     * @param array|string $mixPrefix
      *
      * @return $this
      */
@@ -1202,7 +1258,7 @@ class Select
      * 添加一个要查询的表及其要查询的字段.
      *
      * @param mixed        $mixTable
-     * @param string|array $mixCols
+     * @param array|string $mixCols
      *
      * @return $this
      */
@@ -1222,7 +1278,7 @@ class Select
     /**
      * 添加一个 using 用于删除操作.
      *
-     * @param string|array $mixName
+     * @param array|string $mixName
      *
      * @return $this
      */
@@ -1317,7 +1373,7 @@ class Select
      * 设置一个或多个字段的映射名，如果 $sMappingTo 为 null，则取消对指定字段的映射.
      *
      * @param array|string $mixName
-     * @param string|null  $sMappingTo
+     * @param null|string  $sMappingTo
      *
      * @return $this
      */
@@ -1682,7 +1738,7 @@ class Select
     /**
      * index 强制索引（或者忽略索引）.
      *
-     * @param string|array $mixIndex
+     * @param array|string $mixIndex
      * @param string       $sType
      *
      * @return $this
@@ -1717,7 +1773,7 @@ class Select
     /**
      * index 忽略索引.
      *
-     * @param string|array $mixIndex
+     * @param array|string $mixIndex
      *
      * @return $this
      */
@@ -1730,12 +1786,12 @@ class Select
      * join 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param string|array $mixCols  同 table $mixCols
+     * @param array|string $mixCols  同 table $mixCols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function join($mixTable, $mixCols = '*', $mixCond)
+    public function join($mixTable, $mixCols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1751,12 +1807,12 @@ class Select
      * innerJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param string|array $mixCols  同 table $mixCols
+     * @param array|string $mixCols  同 table $mixCols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function innerJoin($mixTable, $mixCols = '*', $mixCond)
+    public function innerJoin($mixTable, $mixCols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1772,12 +1828,12 @@ class Select
      * leftJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param string|array $mixCols  同 table $mixCols
+     * @param array|string $mixCols  同 table $mixCols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function leftJoin($mixTable, $mixCols = '*', $mixCond)
+    public function leftJoin($mixTable, $mixCols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1793,12 +1849,12 @@ class Select
      * rightJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param string|array $mixCols  同 table $mixCols
+     * @param array|string $mixCols  同 table $mixCols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function rightJoin($mixTable, $mixCols = '*', $mixCond)
+    public function rightJoin($mixTable, $mixCols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1814,12 +1870,12 @@ class Select
      * fullJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param string|array $mixCols  同 table $mixCols
+     * @param array|string $mixCols  同 table $mixCols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function fullJoin($mixTable, $mixCols = '*', $mixCond)
+    public function fullJoin($mixTable, $mixCols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1835,12 +1891,12 @@ class Select
      * crossJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param string|array $mixCols  同 table $mixCols
+     * @param array|string $mixCols  同 table $mixCols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function crossJoin($mixTable, $mixCols = '*', $mixCond)
+    public function crossJoin($mixTable, $mixCols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1856,12 +1912,12 @@ class Select
      * naturalJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param string|array $mixCols  同 table $mixCols
+     * @param array|string $mixCols  同 table $mixCols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function naturalJoin($mixTable, $mixCols = '*', $mixCond)
+    public function naturalJoin($mixTable, $mixCols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1876,7 +1932,7 @@ class Select
     /**
      * 添加一个 UNION 查询.
      *
-     * @param array|string|callable $mixSelect
+     * @param array|callable|string $mixSelect
      * @param string                $sType
      *
      * @return $this
@@ -1908,7 +1964,7 @@ class Select
     /**
      * 添加一个 UNION ALL 查询.
      *
-     * @param array|string|callable $mixSelect
+     * @param array|callable|string $mixSelect
      *
      * @return $this
      */
@@ -1924,7 +1980,7 @@ class Select
     /**
      * 指定 GROUP BY 子句.
      *
-     * @param string|array $mixExpr
+     * @param array|string $mixExpr
      *
      * @return $this
      */
@@ -2248,7 +2304,7 @@ class Select
     /**
      * 添加排序.
      *
-     * @param string|array $mixExpr
+     * @param array|string $mixExpr
      * @param string       $sOrderDefault
      *
      * @return $this
@@ -2519,11 +2575,10 @@ class Select
         }
         if (null === $nCount) {
             return $this->top($nOffset);
-        } else {
-            $this->arrOption['limitcount'] = abs((int) $nCount);
-            $this->arrOption['limitoffset'] = abs((int) $nOffset);
-            $this->arrOption['limitquery'] = true;
         }
+        $this->arrOption['limitcount'] = abs((int) $nCount);
+        $this->arrOption['limitoffset'] = abs((int) $nOffset);
+        $this->arrOption['limitquery'] = true;
 
         return $this;
     }
@@ -2559,21 +2614,21 @@ class Select
         ];
 
         foreach (array_keys($this->arrOption) as $sOption) {
-            if ('from' == $sOption) {
+            if ('from' === $sOption) {
                 $arrSql['from'] = '';
-            } elseif ('union' == $sOption) {
+            } elseif ('union' === $sOption) {
                 continue;
             } else {
                 $method = 'parse'.ucfirst($sOption);
                 if (method_exists($this, $method)) {
-                    $arrSql[$sOption] = $this->$method();
+                    $arrSql[$sOption] = $this->{$method}();
                 }
             }
         }
 
         $arrSql['from'] = $this->parseFrom();
         foreach ($arrSql as $nOffset => $sOption) { // 删除空元素
-            if ('' == trim($sOption)) {
+            if ('' === trim($sOption)) {
                 unset($arrSql[$nOffset]);
             }
         }
@@ -2583,9 +2638,9 @@ class Select
 
         if (true === $booWithLogicGroup) {
             return static::LOGIC_GROUP_LEFT.$sLastSql.static::LOGIC_GROUP_RIGHT;
-        } else {
-            return $sLastSql;
         }
+
+        return $sLastSql;
     }
 
     /**
@@ -2638,7 +2693,7 @@ class Select
                 if (isset($this->arrColumnsMapping[$sCol])) {
                     $sCol = $this->arrColumnsMapping[$sCol];
                 }
-                if ('*' != $sCol && $sAlias) {
+                if ('*' !== $sCol && $sAlias) {
                     $arrColumns[] = $this->objConnect->qualifyTableOrColumn("{$sTableName}.{$sCol}", $sAlias, 'AS');
                 } else {
                     $arrColumns[] = $this->objConnect->qualifyTableOrColumn("{$sTableName}.{$sCol}");
@@ -2695,7 +2750,7 @@ class Select
             // 表名子表达式支持
             if (false !== strpos($arrTable['table_name'], '(')) {
                 $sTmp .= $arrTable['table_name'].' '.$sAlias;
-            } elseif ($sAlias == $arrTable['table_name']) {
+            } elseif ($sAlias === $arrTable['table_name']) {
                 $sTmp .= $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}");
             } else {
                 $sTmp .= $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
@@ -2710,9 +2765,9 @@ class Select
 
         if (!empty($arrFrom)) {
             return 'FROM '.implode(' ', $arrFrom);
-        } else {
-            return '';
         }
+
+        return '';
     }
 
     /**
@@ -2730,25 +2785,23 @@ class Select
         }
 
         // 如果为删除,没有 join 则返回为空
-        if (true === $booForDelete && 1 == count($this->arrOption['from'])) {
+        if (true === $booForDelete && 1 === count($this->arrOption['from'])) {
             return '';
         }
 
         foreach ($this->arrOption['from'] as $sAlias => $arrTable) {
-            if ($sAlias == $arrTable['table_name']) {
+            if ($sAlias === $arrTable['table_name']) {
                 return $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}");
-            } else {
-                if (true === $booOnlyAlias) {
-                    return $sAlias;
-                } else {
-                    // 表名子表达式支持
-                    if (false !== strpos($arrTable['table_name'], '(')) {
-                        return $arrTable['table_name'].' '.$sAlias;
-                    } else {
-                        return $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
-                    }
-                }
             }
+            if (true === $booOnlyAlias) {
+                return $sAlias;
+            }
+            // 表名子表达式支持
+            if (false !== strpos($arrTable['table_name'], '(')) {
+                return $arrTable['table_name'].' '.$sAlias;
+            }
+
+            return $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
             break;
         }
     }
@@ -2771,11 +2824,12 @@ class Select
         $arrOptionUsing = $this->arrOption['using'];
         foreach ($this->arrOption['from'] as $sAlias => $arrTable) { // table 自动加入
             $arrOptionUsing[$sAlias] = $arrTable;
+
             break;
         }
 
         foreach ($arrOptionUsing as $sAlias => $arrTable) {
-            if ($sAlias == $arrTable['table_name']) {
+            if ($sAlias === $arrTable['table_name']) {
                 $arrUsing[] = $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}");
             } else {
                 $arrUsing[] = $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
@@ -2968,8 +3022,9 @@ class Select
             if (in_array($mixCond, [
                 static::LOGIC_AND,
                 static::LOGIC_OR,
-            ])) {
+            ], true)) {
                 $arrSqlCond[] = strtoupper($mixCond);
+
                 continue;
             }
 
@@ -2977,7 +3032,7 @@ class Select
             if (is_string($sKey)) {
                 if (in_array($sKey, [
                     'string__',
-                ])) {
+                ], true)) {
                     $arrSqlCond[] = implode(' AND ', $mixCond);
                 }
             } elseif (is_array($mixCond)) {
@@ -3013,6 +3068,7 @@ class Select
                         if (0 === stripos($mixCond[1], '@'.$strTimeType)) {
                             $strFindTime = $strTimeType;
                             $mixCond[1] = ltrim(substr($mixCond[1], strlen($strTimeType) + 1));
+
                             break;
                         }
                     }
@@ -3065,7 +3121,7 @@ class Select
                         }
                     }
 
-                    if (false === $booIsArray || (1 == count($mixCond[2]) && 0 === strpos(trim($mixCond[2][0]), '('))) {
+                    if (false === $booIsArray || (1 === count($mixCond[2]) && 0 === strpos(trim($mixCond[2][0]), '('))) {
                         $mixCond[2] = reset($mixCond[2]);
                     }
                 }
@@ -3074,17 +3130,17 @@ class Select
                 if (in_array($mixCond[1], [
                     'null',
                     'not null',
-                ])) {
+                ], true)) {
                     $arrSqlCond[] = $mixCond[0].' IS '.strtoupper($mixCond[1]);
                 } elseif (in_array($mixCond[1], [
                     'in',
                     'not in',
-                ])) {
+                ], true)) {
                     $arrSqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.(is_array($mixCond[2]) ? '('.implode(',', $mixCond[2]).')' : $mixCond[2]);
                 } elseif (in_array($mixCond[1], [
                     'between',
                     'not between',
-                ])) {
+                ], true)) {
                     if (!is_array($mixCond[2]) || count($mixCond[2]) < 2) {
                         throw new Exception('The [not] between parameter value must be an array of not less than two elements.');
                     }
@@ -3153,13 +3209,12 @@ class Select
             $this->setConditionItem(static::LOGIC_GROUP_LEFT.$strTemp.static::LOGIC_GROUP_RIGHT, 'string__');
 
             return $this;
-        } else {
-            $arrArgs = func_get_args();
-            array_shift($arrArgs);
-            array_shift($arrArgs);
-
-            return $this->{'addConditions'}(...$arrArgs);
         }
+        $arrArgs = func_get_args();
+        array_shift($arrArgs);
+        array_shift($arrArgs);
+
+        return $this->{'addConditions'}(...$arrArgs);
     }
 
     /**
@@ -3184,6 +3239,7 @@ class Select
                 if (is_int($mixKey) && !is_array($mixValue)) {
                     $booOneImension = true;
                 }
+
                 break;
             }
 
@@ -3201,7 +3257,7 @@ class Select
             }
 
             // 字符串表达式
-            if (is_string($strKey) && 'string__' == $strKey) {
+            if (is_string($strKey) && 'string__' === $strKey) {
                 // 不符合规则抛出异常
                 if (!is_string($arrTemp)) {
                     throw new Exception('String__ type only supports string.');
@@ -3218,7 +3274,7 @@ class Select
             elseif (is_string($strKey) && in_array($strKey, [
                 'subor__',
                 'suband__',
-            ])) {
+            ], true)) {
                 $arrTypeAndLogic = $this->getTypeAndLogic();
 
                 $objSelect = new static($this->objConnect);
@@ -3227,7 +3283,7 @@ class Select
 
                 // 逻辑表达式
                 if (isset($arrTemp['logic__'])) {
-                    if (strtolower($arrTemp['logic__']) == static::LOGIC_OR) {
+                    if (strtolower($arrTemp['logic__']) === static::LOGIC_OR) {
                         $objSelect->setTypeAndLogic(null, static::LOGIC_OR);
                     }
                     unset($arrTemp['logic__']);
@@ -3249,9 +3305,9 @@ class Select
             elseif (is_string($strKey) && in_array($strKey, [
                 'exists__',
                 'notexists__',
-            ])) {
+            ], true)) {
                 // having 不支持 [not] exists
-                if ('having' == $this->getTypeAndLogic()[0]) {
+                if ('having' === $this->getTypeAndLogic()[0]) {
                     throw new Exception('Having do not support [not] exists writing.');
                 }
 
@@ -3270,7 +3326,7 @@ class Select
                     }
                 }
 
-                $arrTemp = ('notexists__' == $strKey ? 'NOT EXISTS ' : 'EXISTS ').
+                $arrTemp = ('notexists__' === $strKey ? 'NOT EXISTS ' : 'EXISTS ').
                     static::LOGIC_GROUP_LEFT.
                     $arrTemp.
                     static::LOGIC_GROUP_RIGHT;
@@ -3310,7 +3366,7 @@ class Select
                     'not in',
                     'null',
                     'not null',
-                ])) {
+                ], true)) {
                     if (isset($arrTemp[2]) && is_string($arrTemp[2])) {
                         $arrTemp[2] = explode(',', $arrTemp[2]);
                     }
@@ -3429,7 +3485,8 @@ class Select
      * @param string     $sJoinType
      * @param mixed      $mixName
      * @param mixed      $mixCols
-     * @param array|null $arrCondArgs
+     * @param null|array $arrCondArgs
+     * @param null|mixed $mixCond
      *
      * @return $this
      */
@@ -3487,6 +3544,7 @@ class Select
                     }
                     $booParseSchema = false;
                 }
+
                 break;
             }
         }
@@ -3692,12 +3750,12 @@ class Select
             if (isset($this->arrColumnsMapping[$strField])) {
                 $strField = $this->arrColumnsMapping[$strField];
             }
-            if ('*' == $strField) {
+            if ('*' === $strField) {
                 $strTableName = '';
             }
             $strField = $this->objConnect->qualifyColumn($strField, $strTableName);
         }
-        $strField = "{$sType}($strField)";
+        $strField = "{$sType}(${strField})";
 
         $this->arrOption['aggregate'][] = [
             $sType,
@@ -3821,13 +3879,14 @@ class Select
         // 空参数返回当前对象
         if (null === $mixData) {
             return $this;
-        } elseif (is_string($mixData)) {
+        }
+        if (is_string($mixData)) {
             // 验证参数
             $strSqlType = $this->objConnect->getSqlType($mixData);
-            if ('procedure' == $strSqlType) {
+            if ('procedure' === $strSqlType) {
                 $strSqlType = 'select';
             }
-            if ($strSqlType != $strNativeSql) {
+            if ($strSqlType !== $strNativeSql) {
                 throw new Exception('Unsupported parameters.');
             }
 
@@ -3838,10 +3897,10 @@ class Select
                 return $arrArgs;
             }
 
-            return $this->objConnect->{'select' == $strNativeSql ? 'query' : 'execute'}(...$arrArgs);
-        } else {
-            throw new Exception('Unsupported parameters.');
+            return $this->objConnect->{'select' === $strNativeSql ? 'query' : 'execute'}(...$arrArgs);
         }
+
+        throw new Exception('Unsupported parameters.');
     }
 
     /**
@@ -3867,7 +3926,8 @@ class Select
     /**
      * 返回参数绑定.
      *
-     * @param mixed $strBind
+     * @param mixed      $strBind
+     * @param null|mixed $mixName
      *
      * @return array
      */
@@ -3875,9 +3935,9 @@ class Select
     {
         if (null === $mixName) {
             return $this->arrBindParams;
-        } else {
-            return $this->arrBindParams[$mixName] ?? null;
         }
+
+        return $this->arrBindParams[$mixName] ?? null;
     }
 
     /**
@@ -3937,7 +3997,7 @@ class Select
                 $arrValue[] = $mixValue;
             } else {
                 // 转换 ? 占位符至 : 占位符
-                if ('?' == $mixValue && isset($arrBind[$intQuestionMark])) {
+                if ('?' === $mixValue && isset($arrBind[$intQuestionMark])) {
                     $sKey = 'questionmark_'.$intQuestionMark;
                     $mixValue = $arrBind[$intQuestionMark];
                     unset($arrBind[$intQuestionMark]);
@@ -4034,7 +4094,7 @@ class Select
                 $sField = $this->arrColumnsMapping[$sField];
             }
         }
-        if ('*' == $sField) {
+        if ('*' === $sField) {
             return '';
         }
         if (!isset($arrColumns[$strTable])) {
@@ -4045,18 +4105,22 @@ class Select
         switch ($strType) {
             case 'day':
                 $mixValue = mktime(0, 0, 0, $arrDate['mon'], (int) $mixValue, $arrDate['year']);
+
                 break;
             case 'month':
                 $mixValue = mktime(0, 0, 0, (int) $mixValue, 1, $arrDate['year']);
+
                 break;
             case 'year':
                 $mixValue = mktime(0, 0, 0, 1, 1, (int) $mixValue);
+
                 break;
             case 'date':
                 $mixValue = strtotime($mixValue);
                 if (false === $mixValue) {
                     throw new Exception('Please enter a right time of strtotime.');
                 }
+
                 break;
             default:
                 throw new Exception(sprintf('Unsupported time formatting type %s.', $strType));
@@ -4069,11 +4133,11 @@ class Select
             if (in_array($strFieldType, [
                 'datetime',
                 'timestamp',
-            ])) {
+            ], true)) {
                 $mixValue = date('Y-m-d H:i:s', $mixValue);
-            } elseif ('date' == $strFieldType) {
+            } elseif ('date' === $strFieldType) {
                 $mixValue = date('Y-m-d', $mixValue);
-            } elseif ('time' == $strFieldType) {
+            } elseif ('time' === $strFieldType) {
                 $mixValue = date('H:i:s', $mixValue);
             } elseif (0 === strpos($strFieldType, 'year')) {
                 $mixValue = date('Y', $mixValue);
@@ -4122,7 +4186,7 @@ class Select
     /**
      * 返回当前是否处于时间条件状态
      *
-     * @return string|null
+     * @return null|string
      */
     protected function getInTimeCondition()
     {
@@ -4157,58 +4221,5 @@ class Select
         $this->arrOption['aggregate'] = $this->arrBackupPage['aggregate'];
         $this->arrQueryParams = $this->arrBackupPage['query_params'];
         $this->arrOption['columns'] = $this->arrBackupPage['columns'];
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $arrArgs)
-    {
-        if ($this->placeholderTControl($method)) {
-            return $this;
-        }
-
-        // 动态查询支持
-        if (0 === strncasecmp($method, 'get', 3)) {
-            $method = substr($method, 3);
-            if (false !== strpos(strtolower($method), 'start')) { // support get10start3 etc.
-                $arrValue = explode('start', strtolower($method));
-                $nNum = (int) (array_shift($arrValue));
-                $nOffset = (int) (array_shift($arrValue));
-
-                return $this->limit($nOffset, $nNum)->get();
-            } elseif (0 === strncasecmp($method, 'By', 2)) { // support getByName getByNameAndSex etc.
-                $method = substr($method, 2);
-                $arrKeys = explode('And', $method);
-                if (count($arrKeys) != count($arrArgs)) {
-                    throw new Exception('Parameter quantity does not correspond.');
-                }
-
-                return $this->where(array_combine($arrKeys, $arrArgs))->getOne();
-            } elseif (0 === strncasecmp($method, 'AllBy', 5)) { // support getAllByNameAndSex etc.
-                $method = substr($method, 5);
-                $arrKeys = explode('And', $method);
-                if (count($arrKeys) != count($arrArgs)) {
-                    throw new Exception('Parameter quantity does not correspond.');
-                }
-
-                return $this->where(array_combine($arrKeys, $arrArgs))->getAll();
-            }
-
-            return $this->top((int) (substr($method, 3)));
-        }
-
-        // 查询组件
-        if (!$this->objCallSelect) {
-            throw new Exception(sprintf('Select do not implement magic method %s.', $method));
-        }
-
-        // 调用事件
-        return $this->objCallSelect->$method(...$arrArgs);
     }
 }

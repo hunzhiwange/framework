@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel;
 
-use Leevel\Di\Provider;
 use Leevel\Di\IContainer;
+use Leevel\Di\Provider;
 
 /**
  * IProject 接口.
@@ -296,7 +296,7 @@ interface IProject extends IContainer
      *
      * @param string $namespaces
      *
-     * @return string|null
+     * @return null|string
      */
     public function getPathByNamespace($namespaces);
 

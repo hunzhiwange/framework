@@ -49,7 +49,7 @@ interface ISession
     /**
      * 批量插入.
      *
-     * @param string|array $keys
+     * @param array|string $keys
      * @param mixed        $value
      */
     public function put($keys, $value = null);
@@ -206,7 +206,7 @@ interface ISession
     /**
      * 获取前一个请求地址
      *
-     * @return string|null
+     * @return null|string
      */
     public function prevUrl();
 

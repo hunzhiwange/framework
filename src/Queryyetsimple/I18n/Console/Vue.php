@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\I18n\Console;
 
-use RuntimeException;
-use Leevel\I18n\Mo;
-use Leevel\Filesystem\Fso;
-use Leevel\Console\Option;
-use Leevel\Console\Command;
 use Leevel\Console\Argument;
+use Leevel\Console\Command;
+use Leevel\Console\Option;
+use Leevel\Filesystem\Fso;
+use Leevel\I18n\Mo;
+use RuntimeException;
 
 /**
  * Vue mo 语言包转 export module
@@ -58,7 +58,7 @@ class Vue extends Command
      *
      * @var string
      */
-    protected $help = <<<EOF
+    protected $help = <<<'EOF'
 The <info>%command.name%</info> command to make i18n export module file with source mo file:
 
   <info>php %command.full_name% zh-CN(en-Us|zh-TW|all)</info>
@@ -106,13 +106,13 @@ EOF;
      */
     protected function paresLang()
     {
-        if ('all' == $this->argument('lang')) {
+        if ('all' === $this->argument('lang')) {
             return Fso::lists($this->parseSourceDir(), 'dir');
-        } else {
-            return [
-                $this->argument('lang'),
-            ];
         }
+
+        return [
+            $this->argument('lang'),
+        ];
     }
 
     /**

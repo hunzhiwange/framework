@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Bootstrap\auth;
 
 use Leevel\auth;
-use Leevel\response;
-use Leevel\Http\Request;
 use Leevel\auth\LoginFailed;
+use Leevel\Http\Request;
+use Leevel\response;
 
 /**
  * 登录验证
@@ -83,7 +83,7 @@ trait Login
      *
      * @param \Leevel\Http\Request $oRequest
      *
-     * @return \Leevel\Http\Response|array
+     * @return array|\Leevel\Http\Response
      */
     public function checkLogin(request $oRequest)
     {
@@ -109,9 +109,9 @@ trait Login
                 $aReturn['remember_key'] = auth::implodeTokenData($aInput['name'], $aInput['password']);
 
                 return $aReturn;
-            } else {
-                return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name']));
             }
+
+            return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name']));
         } catch (LoginFailed $oE) {
             return $this->sendFailedLoginResponse($oE->getMessage());
         }
@@ -142,7 +142,7 @@ trait Login
      *
      * @param \Leevel\Http\Request $oRequest
      *
-     * @return \Leevel\Http\Response|array
+     * @return array|\Leevel\Http\Response
      */
     public function unlock(request $oRequest)
     {
@@ -161,7 +161,7 @@ trait Login
      * @param \Leevel\Http\Request $oRequest
      * @param bool                 $booValidate
      *
-     * @return \Leevel\Http\Response|array
+     * @return array|\Leevel\Http\Response
      */
     public function onlyValidate(request $oRequest, &$booValidate = false)
     {
@@ -181,9 +181,9 @@ trait Login
 
             if ($this->isAjaxRequest()) {
                 return ['message' => $this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name'])];
-            } else {
-                return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name']));
             }
+
+            return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name']));
         } catch (LoginFailed $oE) {
             $booValidate = false;
 
@@ -196,7 +196,7 @@ trait Login
      *
      * @param string $strSuccess
      *
-     * @return \Leevel\Http\Response|bool
+     * @return bool|\Leevel\Http\Response
      */
     protected function sendSucceededLoginResponse($strSuccess)
     {
@@ -208,7 +208,7 @@ trait Login
      *
      * @param string $strError
      *
-     * @return \Leevel\Http\Response|bool
+     * @return bool|\Leevel\Http\Response
      */
     protected function sendFailedLoginResponse($strError)
     {

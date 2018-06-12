@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use SessionHandlerInterface;
 use Leevel\Cache\Redis as CacheRedis;
+use SessionHandlerInterface;
 
 /**
  * session.redis.

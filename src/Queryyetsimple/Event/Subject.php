@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Event;
 
-use SplSubject;
-use SplObserver;
-use SplObjectStorage;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
+use SplObjectStorage;
+use SplObserver;
+use SplSubject;
 
 /**
  * 观察者目标角色 subject.
@@ -46,18 +46,18 @@ class Subject implements ISubject, SplSubject
     public $container;
 
     /**
-     * 观察者角色 observer.
-     *
-     * @var \SplObjectStorage(\SplObserver)
-     */
-    protected $observers;
-
-    /**
      * 通知附加参数.
      *
      * @var array
      */
     public $notifyArgs = [];
+
+    /**
+     * 观察者角色 observer.
+     *
+     * @var \SplObjectStorage(\SplObserver)
+     */
+    protected $observers;
 
     /**
      * 构造函数.

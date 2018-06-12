@@ -51,7 +51,7 @@ class UploadedFile extends File
     /**
      * 上传错误.
      *
-     * @var int|null
+     * @var null|int
      */
     protected $error;
 
@@ -76,8 +76,8 @@ class UploadedFile extends File
      *
      * @param string      $path
      * @param string      $originalName
-     * @param string|null $mimeType
-     * @param int|null    $error
+     * @param null|string $mimeType
+     * @param null|int    $error
      */
     public function __construct(string $path, string $originalName, string $mimeType = null, int $error = null)
     {
@@ -91,7 +91,7 @@ class UploadedFile extends File
     /**
      * 返回文件原始名字.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getOriginalName()
     {
@@ -111,7 +111,7 @@ class UploadedFile extends File
     /**
      * 返回文件类型.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getMimeType()
     {

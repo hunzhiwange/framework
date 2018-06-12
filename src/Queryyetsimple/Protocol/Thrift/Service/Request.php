@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Thrift\Service;
 
-use Thrift\Type\TType;
 use Thrift\Exception\TProtocolException;
+use Thrift\Type\TType;
 
 /**
  * 定义一个请求包结构
@@ -40,47 +40,47 @@ class Request
     /**
      * @var string
      */
-    public $call = null;
+    public $call;
 
     /**
      * @var string[]
      */
-    public $params = null;
+    public $params;
 
     /**
      * @var array
      */
-    public $metas = null;
+    public $metas;
 
     public function __construct($vals = null)
     {
         if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
-        1 => [
-          'var' => 'call',
-          'type' => TType::STRING,
-          ],
-        2 => [
-          'var' => 'params',
-          'type' => TType::LST,
-          'etype' => TType::STRING,
-          'elem' => [
-            'type' => TType::STRING,
-            ],
-          ],
-        3 => [
-          'var' => 'metas',
-          'type' => TType::MAP,
-          'ktype' => TType::STRING,
-          'vtype' => TType::STRING,
-          'key' => [
-            'type' => TType::STRING,
-          ],
-          'val' => [
-            'type' => TType::STRING,
-            ],
-          ],
-        ];
+                1 => [
+                    'var' => 'call',
+                    'type' => TType::STRING,
+                ],
+                2 => [
+                    'var' => 'params',
+                    'type' => TType::LST,
+                    'etype' => TType::STRING,
+                    'elem' => [
+                        'type' => TType::STRING,
+                    ],
+                ],
+                3 => [
+                    'var' => 'metas',
+                    'type' => TType::MAP,
+                    'ktype' => TType::STRING,
+                    'vtype' => TType::STRING,
+                    'key' => [
+                        'type' => TType::STRING,
+                    ],
+                    'val' => [
+                        'type' => TType::STRING,
+                    ],
+                ],
+            ];
         }
         if (is_array($vals)) {
             if (isset($vals['call'])) {
@@ -109,19 +109,20 @@ class Request
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-            if (TType::STOP == $ftype) {
+            if (TType::STOP === $ftype) {
                 break;
             }
             switch ($fid) {
         case 1:
-          if (TType::STRING == $ftype) {
+          if (TType::STRING === $ftype) {
               $xfer += $input->readString($this->call);
           } else {
               $xfer += $input->skip($ftype);
           }
+
           break;
         case 2:
-          if (TType::LST == $ftype) {
+          if (TType::LST === $ftype) {
               $this->params = [];
               $_size0 = 0;
               $_etype3 = 0;
@@ -135,9 +136,10 @@ class Request
           } else {
               $xfer += $input->skip($ftype);
           }
+
           break;
         case 3:
-          if (TType::MAP == $ftype) {
+          if (TType::MAP === $ftype) {
               $this->metas = [];
               $_size6 = 0;
               $_ktype7 = 0;
@@ -154,9 +156,11 @@ class Request
           } else {
               $xfer += $input->skip($ftype);
           }
+
           break;
         default:
           $xfer += $input->skip($ftype);
+
           break;
       }
             $xfer += $input->readFieldEnd();

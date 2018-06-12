@@ -21,13 +21,13 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use DateTime;
-use Tests\TestCase;
-use JsonSerializable;
-use ReflectionProperty;
 use InvalidArgumentException;
+use JsonSerializable;
 use Leevel\Http\Response;
-use Leevel\Support\IJson;
 use Leevel\Support\IArray;
+use Leevel\Support\IJson;
+use ReflectionProperty;
+use Tests\TestCase;
 
 /**
  * Response test
@@ -40,6 +40,7 @@ use Leevel\Support\IArray;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ * @coversNothing
  */
 class ResponseTest extends TestCase
 {
@@ -48,8 +49,8 @@ class ResponseTest extends TestCase
         $response = Response::create('foo', 301, ['Foo' => 'bar']);
         $this->assertInstanceOf('Leevel\Http\IResponse', $response);
         $this->assertInstanceOf('Leevel\Http\Response', $response);
-        $this->assertEquals(301, $response->getStatusCode());
-        $this->assertEquals('bar', $response->headers->get('foo'));
+        $this->assertSame(301, $response->getStatusCode());
+        $this->assertSame('bar', $response->headers->get('foo'));
     }
 
     public function testSendHeaders()
@@ -82,7 +83,7 @@ class ResponseTest extends TestCase
         $charsetOrigin = 'UTF-8';
         $response->setCharset($charsetOrigin);
         $charset = $response->getCharset();
-        $this->assertEquals($charsetOrigin, $charset);
+        $this->assertSame($charsetOrigin, $charset);
     }
 
     public function testSetNotModified()
@@ -95,7 +96,7 @@ class ResponseTest extends TestCase
         $this->assertObjectHasAttribute('statusCode', $modified);
         $this->assertObjectHasAttribute('statusText', $modified);
         $this->assertObjectHasAttribute('charset', $modified);
-        $this->assertEquals(304, $modified->getStatusCode());
+        $this->assertSame(304, $modified->getStatusCode());
     }
 
     public function testIsSuccessful()
@@ -107,32 +108,32 @@ class ResponseTest extends TestCase
     public function testGetSetProtocolVersion()
     {
         $response = new Response();
-        $this->assertEquals('1.0', $response->getProtocolVersion());
+        $this->assertSame('1.0', $response->getProtocolVersion());
         $response->setProtocolVersion('1.1');
-        $this->assertEquals('1.1', $response->getProtocolVersion());
+        $this->assertSame('1.1', $response->getProtocolVersion());
     }
 
     public function testContentTypeCharset()
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'text/css');
-        $this->assertEquals('text/css', $response->headers->get('Content-Type'));
+        $this->assertSame('text/css', $response->headers->get('Content-Type'));
         $response->headers->remove('Content-Type');
         $this->assertNull($response->headers->get('Content-Type'));
 
         $response->setContentType('text/css');
-        $this->assertEquals('text/css', $response->headers->get('Content-Type'));
+        $this->assertSame('text/css', $response->headers->get('Content-Type'));
         $response->headers->remove('Content-Type');
         $this->assertNull($response->headers->get('Content-Type'));
 
         $response->setContentType('text/css', 'UTF-8');
-        $this->assertEquals('text/css; charset=UTF-8', $response->headers->get('Content-Type'));
+        $this->assertSame('text/css; charset=UTF-8', $response->headers->get('Content-Type'));
         $response->headers->remove('Content-Type');
         $this->assertNull($response->headers->get('Content-Type'));
 
         $response->setCharset('GBK');
         $response->setContentType('text/css');
-        $this->assertEquals('text/css; charset=GBK', $response->headers->get('Content-Type'));
+        $this->assertSame('text/css; charset=GBK', $response->headers->get('Content-Type'));
         $response->headers->remove('Content-Type');
         $this->assertNull($response->headers->get('Content-Type'));
     }
@@ -143,13 +144,13 @@ class ResponseTest extends TestCase
 
         $response->setCache(5);
         $this->assertTrue($response->headers->has('expires'));
-        $this->assertEquals($response->headers->get('cache-control'), 'max-age=300');
+        $this->assertSame($response->headers->get('cache-control'), 'max-age=300');
 
         $response->setExpires(null);
         $this->assertNull($response->headers->get('Expires'), '->setExpires() remove the header when passed null');
 
         $response->setEtag('hello-world-etag');
-        $this->assertEquals($response->headers->get('Etag'), 'hello-world-etag');
+        $this->assertSame($response->headers->get('Etag'), 'hello-world-etag');
 
         $date = new DateTime();
         $date->modify('+'. 5 .'minutes');
@@ -174,16 +175,16 @@ class ResponseTest extends TestCase
     {
         $response = new Response();
         $response->setData(['foo' => 'bar']);
-        $this->assertEquals('{"foo":"bar"}', $response->getContent());
+        $this->assertSame('{"foo":"bar"}', $response->getContent());
 
         $response->setData(new MyArray());
-        $this->assertEquals('{"hello":"IArray"}', $response->getContent());
+        $this->assertSame('{"hello":"IArray"}', $response->getContent());
 
         $response->setData(new MyJson());
-        $this->assertEquals('{"hello":"IJson"}', $response->getContent());
+        $this->assertSame('{"hello":"IJson"}', $response->getContent());
 
         $response->setData(new MyJsonSerializable());
-        $this->assertEquals('{"hello":"JsonSerializable"}', $response->getContent());
+        $this->assertSame('{"hello":"JsonSerializable"}', $response->getContent());
     }
 
     public function testIsInvalid()
@@ -210,6 +211,10 @@ class ResponseTest extends TestCase
 
     /**
      * @dataProvider getStatusCodeFixtures
+     *
+     * @param mixed $code
+     * @param mixed $text
+     * @param mixed $expectedText
      */
     public function testSetStatusCode($code, $text, $expectedText)
     {
@@ -217,7 +222,7 @@ class ResponseTest extends TestCase
         $response->setStatusCode((int) $code, $text);
         $statusText = new ReflectionProperty($response, 'statusText');
         $statusText->setAccessible(true);
-        $this->assertEquals($expectedText, $statusText->getValue($response));
+        $this->assertSame($expectedText, $statusText->getValue($response));
     }
 
     public function getStatusCodeFixtures()
@@ -311,12 +316,14 @@ class ResponseTest extends TestCase
 
     /**
      * @dataProvider validContentProvider
+     *
+     * @param mixed $content
      */
     public function testSetContent($content)
     {
         $response = new Response();
         $response->setContent($content);
-        $this->assertEquals((string) $content, $response->getContent());
+        $this->assertSame((string) $content, $response->getContent());
     }
 
     public function validContentProvider()
@@ -329,11 +336,14 @@ class ResponseTest extends TestCase
     }
 
     /**
-     * @expectedException \UnexpectedValueException
      * @dataProvider invalidContentProvider
+     *
+     * @param mixed $content
      */
     public function testSetContentInvalid($content)
     {
+        $this->expectException(\UnexpectedValueException::class);
+
         $response = new Response();
         $response->setContent($content);
     }

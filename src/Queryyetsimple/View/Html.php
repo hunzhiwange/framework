@@ -103,9 +103,8 @@ class Html extends Connect implements IConnect
             ob_end_clean();
 
             return $result;
-        } else {
-            include $cachepath;
         }
+        include $cachepath;
     }
 
     /**

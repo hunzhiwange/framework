@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol;
 
-use Thrift\Server\TServerSocket;
-use Swoole\Server as SwooleServer;
-use Thrift\Factory\TBinaryProtocolFactory;
+use Leevel\Protocol\Thrift\Base\TFramedTransportFactory;
 use Leevel\Protocol\Thrift\Base\ThriftServer;
 use Leevel\Protocol\Thrift\Service\ThriftHandler;
 use Leevel\Protocol\Thrift\Service\ThriftProcessor;
-use Leevel\Protocol\Thrift\Base\TFramedTransportFactory;
+use Swoole\Server as SwooleServer;
+use Thrift\Factory\TBinaryProtocolFactory;
+use Thrift\Server\TServerSocket;
 
 /**
  * swoole rpc 服务

@@ -171,7 +171,7 @@ class Url implements IUrl
         }
 
         return $this->isSecure() ? 'https://' : 'http://'.
-            ($domain && '*' != $domain ? $domain.'.' : '').
+            ($domain && '*' !== $domain ? $domain.'.' : '').
             $this->option['domain_top'].
             $url;
     }
@@ -190,13 +190,13 @@ class Url implements IUrl
      * url 带后缀
      *
      * @param string      $url
-     * @param string|bool $suffix
+     * @param bool|string $suffix
      *
      * @return string
      */
     protected function withSuffix(string $url, $suffix): string
     {
-        if ('/' == $url || 0 === strpos($url, '/?')) {
+        if ('/' === $url || 0 === strpos($url, '/?')) {
             return $url;
         }
 

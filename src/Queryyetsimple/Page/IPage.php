@@ -108,7 +108,7 @@ interface IPage
     /**
      * 设置 url.
      *
-     * @param string|null $mixUrl
+     * @param null|string $mixUrl
      *
      * @return $this
      */
@@ -117,7 +117,7 @@ interface IPage
     /**
      * 设置 render.
      *
-     * @param string|null $mixRender
+     * @param null|string $mixRender
      *
      * @return $this
      */
@@ -126,14 +126,15 @@ interface IPage
     /**
      * 获取 render.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRender();
 
     /**
      * 设置 range.
      *
-     * @param int|null $intRange
+     * @param null|int   $intRange
+     * @param null|mixed $mixRange
      *
      * @return $this
      */
@@ -149,7 +150,7 @@ interface IPage
     /**
      * 设置 url 描点.
      *
-     * @param string|null $mixFragment
+     * @param null|string $mixFragment
      *
      * @return $this
      */
@@ -158,7 +159,7 @@ interface IPage
     /**
      * 获取 url 描点.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getFragment();
 

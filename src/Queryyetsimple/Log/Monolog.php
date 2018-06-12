@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use Monolog\Logger;
+use Leevel\Support\Str;
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\ErrorLogHandler;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogHandler;
-use Monolog\Handler\ErrorLogHandler;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\RotatingFileHandler;
-use Leevel\Support\Str;
+use Monolog\Logger;
 
 /**
  * log.monolog.
@@ -163,7 +163,7 @@ class Monolog extends Connect implements IConnect
     /**
      * monolog 回调.
      *
-     * @param callable|null $callback
+     * @param null|callable $callback
      *
      * @return $this
      */
@@ -198,7 +198,7 @@ class Monolog extends Connect implements IConnect
         $level = array_keys($this->supportLevel);
 
         foreach ($data as $item) {
-            if (!in_array($item[0], $level)) {
+            if (!in_array($item[0], $level, true)) {
                 $item[0] = ILog::DEBUG;
             }
 

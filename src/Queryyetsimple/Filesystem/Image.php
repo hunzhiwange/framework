@@ -75,11 +75,11 @@ class Image
                 }
             }
 
-            $sCreateFun = 'ImageCreateFrom'.('jpg' == $sType ? 'jpeg' : $sType); // 载入原图
+            $sCreateFun = 'ImageCreateFrom'.('jpg' === $sType ? 'jpeg' : $sType); // 载入原图
             $oSrcImg = $sCreateFun($sImage);
 
             // 创建缩略图
-            if ('gif' != $sType && function_exists('imagecreatetruecolor')) {
+            if ('gif' !== $sType && function_exists('imagecreatetruecolor')) {
                 $oThumbImg = imagecreatetruecolor($nWidth, $nHeight);
             } else {
                 $oThumbImg = imagecreate($nWidth, $nHeight);
@@ -92,25 +92,25 @@ class Image
                 imagecopyresized($oThumbImg, $oSrcImg, 0, 0, 0, 0, $nWidth, $nHeight, $nSrcWidth, $nSrcHeight);
             }
 
-            if ('gif' == $sType || 'png' == $sType) {
+            if ('gif' === $sType || 'png' === $sType) {
                 imagealphablending($oThumbImg, false); // 取消默认的混色模式
                 $oBackgroundColor = imagecolorallocate($oThumbImg, 0, 255, 0); // 指派一个绿色
                 imagecolortransparent($oThumbImg, $oBackgroundColor); // 设置为透明色，若注释掉该行则输出绿色的图
             }
 
             // 对jpeg图形设置隔行扫描
-            if ('jpg' == $sType || 'jpeg' == $sType) {
+            if ('jpg' === $sType || 'jpeg' === $sType) {
                 imageinterlace($oThumbImg, $bInterlace);
             }
 
-            if ('png' == $sType) {
+            if ('png' === $sType) {
                 $nQuality = ceil($nQuality / 10) - 1;
                 if ($nQuality < 0) {
                     $nQuality = 0;
                 }
             }
 
-            $sImageFun = 'image'.('jpg' == $sType ? 'jpeg' : $sType); // 生成图片
+            $sImageFun = 'image'.('jpg' === $sType ? 'jpeg' : $sType); // 生成图片
             $sImageFun($oThumbImg, $sThumbName, $nQuality);
             imagedestroy($oThumbImg);
             imagedestroy($oSrcImg);
@@ -141,14 +141,17 @@ class Image
                     case 'image/jpeg':
                         $sImageCreateFromFunc = function_exists('imagecreatefromjpeg') ? 'imagecreatefromjpeg' : '';
                         $sImageFunc = function_exists('imagejpeg') ? 'imagejpeg' : '';
+
                         break;
                     case 'image/gif':
                         $sImageCreateFromFunc = function_exists('imagecreatefromgif') ? 'imagecreatefromgif' : '';
                         $sImageFunc = function_exists('imagegif') ? 'imagegif' : '';
+
                         break;
                     case 'image/png':
                         $sImageCreateFromFunc = function_exists('imagecreatefrompng') ? 'imagecreatefrompng' : '';
                         $sImageFunc = function_exists('imagepng') ? 'imagepng' : '';
+
                         break;
                 }
 
@@ -166,18 +169,18 @@ class Image
                 }
 
                 $oThumbPhoto = imagecreatetruecolor($arrThumb['width'], $arrThumb['height']);
-                if ('image/jpeg' != $arrAttachInfo['mime']) {
+                if ('image/jpeg' !== $arrAttachInfo['mime']) {
                     $oAlpha = imagecolorallocatealpha($oThumbPhoto, 0, 0, 0, 127);
                     imagefill($oThumbPhoto, 0, 0, $oAlpha);
                 }
 
                 imagecopyresampled($oThumbPhoto, $oAttachPhoto, 0, 0, 0, 0, $arrThumb['width'], $arrThumb['height'], $nImgW, $nImgH);
-                if ('image/jpeg' != $arrAttachInfo['mime']) {
+                if ('image/jpeg' !== $arrAttachInfo['mime']) {
                     imagesavealpha($oThumbPhoto, true);
                 }
                 clearstatcache();
 
-                if ('image/jpeg' == $arrAttachInfo['mime']) {
+                if ('image/jpeg' === $arrAttachInfo['mime']) {
                     $sImageFunc($oThumbPhoto, null, 90);
                 } else {
                     $sImageFunc($oThumbPhoto);
@@ -210,12 +213,15 @@ class Image
             switch ($arrBackgroundInfo[2]) { // 取得背景图片的格式
                 case 1:
                     $oBackgroundIm = imagecreatefromgif($sBackgroundPath);
+
                     break;
                 case 2:
                     $oBackgroundIm = imagecreatefromjpeg($sBackgroundPath);
+
                     break;
                 case 3:
                     $oBackgroundIm = imagecreatefrompng($sBackgroundPath);
+
                     break;
                 default:
                     throw new RuntimeException('Wrong image format.');
@@ -226,12 +232,12 @@ class Image
 
         imagealphablending($oBackgroundIm, true); // 设定图像的混色模式
         if (!empty($sBackgroundPath) && is_file($sBackgroundPath)) {
-            if ('img' == $arrWaterArgs['type'] && !empty($arrWaterArgs['path'])) {
+            if ('img' === $arrWaterArgs['type'] && !empty($arrWaterArgs['path'])) {
                 $bIsWaterImage = true;
                 $nSet = 0;
 
                 $nOffset = !empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 0;
-                if (0 == strpos($arrWaterArgs, 'http://localhost/') || 0 == strpos($arrWaterArgs, 'https://localhost/')) { // localhost 转127.0.0.1,否则将会错误
+                if (0 === strpos($arrWaterArgs, 'http://localhost/') || 0 === strpos($arrWaterArgs, 'https://localhost/')) { // localhost 转127.0.0.1,否则将会错误
                     $arrWaterArgs['path'] = str_replace('localhost', '127.0.0.1', $arrWaterArgs['path']);
                 }
 
@@ -241,17 +247,20 @@ class Image
                 switch ($arrWaterInfo[2]) { // 取得水印图片的格式
                     case 1:
                         $oWaterIm = imagecreatefromgif($arrWaterArgs['path']);
+
                         break;
                     case 2:
                         $oWaterIm = imagecreatefromjpeg($arrWaterArgs['path']);
+
                         break;
                     case 3:
                         $oWaterIm = imagecreatefrompng($arrWaterArgs['path']);
+
                         break;
                     default:
                         throw new RuntimeException('Wrong image format.');
                 }
-            } elseif ('text' === $arrWaterArgs['type'] && '' != $arrWaterArgs['content']) {
+            } elseif ('text' === $arrWaterArgs['type'] && '' !== $arrWaterArgs['content']) {
                 $sFontfileTemp = $sFontfile = $arrWaterArgs['textFile'] ?? 'Microsoft YaHei.ttf';
                 $sFontfile = (!empty($arrWaterArgs['textPath']) ? str_replace('\\', '/', $arrWaterArgs['textPath']) : 'C:\WINDOWS\Fonts').'/'.$sFontfile;
                 if (!is_file($sFontfile)) {
@@ -282,42 +291,52 @@ class Image
             case 1: // 1 为顶端居左
                 $nPosX = $nOffset * $nSet;
                 $nPosY = ($nWaterHeight + $nOffset) * $nSet;
+
                 break;
             case 2: // 2 为顶端居中
                 $nPosX = ($nGroundWidth - $nWaterWidth) / 2;
                 $nPosY = ($nWaterHeight + $nOffset) * $nSet;
+
                 break;
             case 3: // 3 为顶端居右
                 $nPosX = $nGroundWidth - $nWaterWidth - $nOffset * $nSet;
                 $nPosY = ($nWaterHeight + $nOffset) * $nSet;
+
                 break;
             case 4: // 4 为中部居左
                 $nPosX = $nOffset * $nSet;
                 $nPosY = ($nGroundHeight - $nWaterHeight) / 2;
+
                 break;
             case 5: // 5 为中部居中
                 $nPosX = ($nGroundWidth - $nWaterWidth) / 2;
                 $nPosY = ($nGroundHeight - $nWaterHeight) / 2;
+
                 break;
             case 6: // 6 为中部居右
                 $nPosX = $nGroundWidth - $nWaterWidth - $nOffset * $nSet;
                 $nPosY = ($nGroundHeight - $nWaterHeight) / 2;
+
                 break;
             case 7: // 7 为底端居左
                 $nPosX = $nOffset * $nSet;
                 $nPosY = $nGroundHeight - $nWaterHeight;
+
                 break;
             case 8: // 8 为底端居中
                 $nPosX = ($nGroundWidth - $nWaterWidth) / 2;
                 $nPosY = $nGroundHeight - $nWaterHeight;
+
                 break;
             case 9: // 9为底端居右
                 $nPosX = $nGroundWidth - $nWaterWidth - $nOffset * $nSet;
                 $nPosY = $nGroundHeight - $nWaterHeight;
+
                 break;
             default: // 随机
                 $nPosX = rand(0, ($nGroundWidth - $nWaterWidth));
                 $nPosY = rand(0, ($nGroundHeight - $nWaterHeight));
+
                 break;
         }
 
@@ -326,7 +345,7 @@ class Image
             imagealphablending($oBackgroundIm, true);
             imagecopy($oBackgroundIm, $oWaterIm, $nPosX, $nPosY, 0, 0, $nWaterWidth, $nWaterHeight); // 拷贝水印到目标文件
         } else { // 文字水印
-            if (!empty($sTextColor) && (7 == strlen($sTextColor))) {
+            if (!empty($sTextColor) && (7 === strlen($sTextColor))) {
                 $R = hexdec(substr($sTextColor, 1, 2));
                 $G = hexdec(substr($sTextColor, 3, 2));
                 $B = hexdec(substr($sTextColor, 5));
@@ -343,12 +362,15 @@ class Image
         switch ($arrBackgroundInfo[2]) { // 取得背景图片的格式
             case 1:
                 imagegif($oBackgroundIm, $sBackgroundPath);
+
                 break;
             case 2:
                 imagejpeg($oBackgroundIm, $sBackgroundPath);
+
                 break;
             case 3:
                 imagepng($oBackgroundIm, $sBackgroundPath);
+
                 break;
             default:
                 throw new RuntimeException('Wrong image format.');
@@ -391,7 +413,7 @@ class Image
      */
     public static function outerImage($sUrl, $sFilename)
     {
-        if ('' == $sUrl || '' == $sFilename) {
+        if ('' === $sUrl || '' === $sFilename) {
             return false;
         }
 
@@ -470,8 +492,8 @@ class Image
                 'size' => $nImageSize,
                 'mime' => $arrImageInfo['mime'],
             ];
-        } else {
-            return false;
         }
+
+        return false;
     }
 }

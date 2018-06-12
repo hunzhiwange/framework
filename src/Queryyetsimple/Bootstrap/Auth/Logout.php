@@ -49,7 +49,7 @@ trait Logout
     /**
      * 登录退出.
      *
-     * @return \Leevel\Http\Response|array
+     * @return array|\Leevel\Http\Response
      */
     public function displayLoginout()
     {

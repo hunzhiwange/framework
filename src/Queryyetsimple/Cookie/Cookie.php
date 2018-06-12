@@ -115,7 +115,7 @@ class Cookie implements ICookie
     /**
      * 批量插入.
      *
-     * @param string|array $keys
+     * @param array|string $keys
      * @param mixed        $value
      * @param array        $option
      */
@@ -236,9 +236,9 @@ class Cookie implements ICookie
             }
 
             return $this->cookies[$name];
-        } else {
-            return $defaults;
         }
+
+        return $defaults;
     }
 
     /**

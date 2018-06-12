@@ -67,7 +67,7 @@ class Dispatch implements IDispatch
     /**
      * 执行一个事件.
      *
-     * @param string|object $event
+     * @param object|string $event
      * @param array         $params
      */
     public function run($event, ...$params)
@@ -101,7 +101,7 @@ class Dispatch implements IDispatch
     /**
      * 注册监听器.
      *
-     * @param string|array|object $event
+     * @param array|object|string $event
      * @param mixed               $listener
      * @param int                 $priority
      */
@@ -124,7 +124,7 @@ class Dispatch implements IDispatch
     /**
      * 获取一个事件监听器.
      *
-     * @param string|object $event
+     * @param object|string $event
      *
      * @return array
      */
@@ -158,7 +158,7 @@ class Dispatch implements IDispatch
     /**
      * 判断事件监听器是否存在.
      *
-     * @param string|object $event
+     * @param object|string $event
      *
      * @return bool
      */
@@ -172,7 +172,7 @@ class Dispatch implements IDispatch
     /**
      * 删除一个事件所有监听器.
      *
-     * @param string|object $event
+     * @param object|string $event
      */
     public function deleteListeners($event)
     {
@@ -208,7 +208,7 @@ class Dispatch implements IDispatch
     /**
      * 格式化事件名字.
      *
-     * @param string|object $event
+     * @param object|string $event
      */
     protected function normalizeEvent($event)
     {

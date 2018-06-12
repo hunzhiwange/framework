@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ * @coversNothing
  */
 class CompilerIfTest extends TestCase
 {
@@ -59,7 +60,7 @@ eot;
 <?php endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 {if $a->name == 1}
@@ -81,7 +82,7 @@ eot;
 <?php endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <if condition="($id eq 1) OR ($id gt 100)">one
@@ -97,7 +98,7 @@ eot;
 <?php endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <if condition="$a.name == 1">
@@ -119,7 +120,7 @@ eot;
 <?php endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 {% if length(users) > 0 %}
@@ -141,6 +142,6 @@ c
 <?php endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

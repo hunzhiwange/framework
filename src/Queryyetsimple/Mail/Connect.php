@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Mail;
 
-use Swift_Mailer;
-use Swift_Transport;
-use Swift_Mime_Message;
-use Swift_Events_EventListener;
 use Leevel\Option\TClass;
+use Swift_Events_EventListener;
+use Swift_Mailer;
+use Swift_Mime_Message;
+use Swift_Transport;
 
 /**
  * connect 驱动抽象类.

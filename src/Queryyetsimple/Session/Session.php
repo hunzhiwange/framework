@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use RuntimeException;
 use BadMethodCallException;
-use SessionHandlerInterface;
 use Leevel\Option\TClass;
+use RuntimeException;
+use SessionHandlerInterface;
 
 /**
  * session 仓储.
@@ -39,9 +39,30 @@ class Session implements ISession
     use TClass;
 
     /**
+     * session 状态启用.
+     *
+     * @var int
+     */
+    const SESSION_ACTIVE = 2;
+
+    /**
+     * session 状态未运行.
+     *
+     * @var int
+     */
+    const SESSION_NONE = 1;
+
+    /**
+     * session 状态关闭.
+     *
+     * @var int
+     */
+    const SESSION_DISABLED = 0;
+
+    /**
      * session handler.
      *
-     * @var \SessionHandlerInterface|null
+     * @var null|\SessionHandlerInterface
      */
     protected $connect;
 
@@ -70,36 +91,32 @@ class Session implements ISession
     ];
 
     /**
-     * session 状态启用.
-     *
-     * @var int
-     */
-    const SESSION_ACTIVE = 2;
-
-    /**
-     * session 状态未运行.
-     *
-     * @var int
-     */
-    const SESSION_NONE = 1;
-
-    /**
-     * session 状态关闭.
-     *
-     * @var int
-     */
-    const SESSION_DISABLED = 0;
-
-    /**
      * 构造函数.
      *
-     * @param \SessionHandlerInterface|null $connect
+     * @param null|\SessionHandlerInterface $connect
      * @param array                         $option
      */
     public function __construct(SessionHandlerInterface $connect = null, array $option = [])
     {
         $this->connect = $connect;
         $this->options($option);
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        if (null === $this->connect) {
+            throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        }
+
+        return $this->connect->{$method}(...$args);
     }
 
     /**
@@ -186,7 +203,7 @@ class Session implements ISession
     /**
      * 批量插入.
      *
-     * @param string|array $keys
+     * @param array|string $keys
      * @param mixed        $value
      */
     public function put($keys, $value = null)
@@ -384,17 +401,16 @@ class Session implements ISession
     {
         if (null === $value) {
             return $this->getFlash($key);
-        } else {
-            $this->set($this->flashDataKey($key), $value);
-
-            $this->mergeNewFlash([
-                $key,
-            ]);
-
-            $this->popOldFlash([
-                $key,
-            ]);
         }
+        $this->set($this->flashDataKey($key), $value);
+
+        $this->mergeNewFlash([
+            $key,
+        ]);
+
+        $this->popOldFlash([
+            $key,
+        ]);
     }
 
     /**
@@ -457,9 +473,9 @@ class Session implements ISession
     {
         if (false !== strpos($key, '\\')) {
             return $this->getPartData($key, $defaults, 'flash');
-        } else {
-            return $this->get($this->flashDataKey($key), $defaults);
         }
+
+        return $this->get($this->flashDataKey($key), $defaults);
     }
 
     /**
@@ -512,7 +528,7 @@ class Session implements ISession
     /**
      * 获取前一个请求地址
      *
-     * @return string|null
+     * @return null|string
      */
     public function prevUrl()
     {
@@ -579,7 +595,6 @@ class Session implements ISession
         switch ($status) {
             case PHP_SESSION_DISABLED:
                 return self::SESSION_DISABLED;
-
             case PHP_SESSION_ACTIVE:
                 return self::SESSION_ACTIVE;
         }
@@ -825,7 +840,7 @@ class Session implements ISession
     protected function getPartData($key, $defaults = null, string $type = null)
     {
         list($key, $name) = explode('\\', $key);
-        if ('flash' == $type) {
+        if ('flash' === $type) {
             $key = $this->flashDataKey($key);
         }
         $value = $this->get($key);
@@ -844,9 +859,9 @@ class Session implements ISession
             }
 
             return $value;
-        } else {
-            return $defaults;
         }
+
+        return $defaults;
     }
 
     /**
@@ -889,22 +904,5 @@ class Session implements ISession
     protected function prevUrlKey()
     {
         return 'prev.url.key';
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        if (null === $this->connect) {
-            throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
-        }
-
-        return $this->connect->$method(...$args);
     }
 }

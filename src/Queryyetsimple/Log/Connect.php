@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use RuntimeException;
 use Leevel\Option\TClass;
+use RuntimeException;
 
 /**
  * aconnect 驱动抽象类.

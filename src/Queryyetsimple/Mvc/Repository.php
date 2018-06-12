@@ -59,6 +59,19 @@ class Repository implements IRepository
     }
 
     /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        return $this->objAggregate->{$method}(...$arrArgs);
+    }
+
+    /**
      * 取得一条数据.
      *
      * @param int   $intId
@@ -88,6 +101,7 @@ class Repository implements IRepository
      * 取得所有记录.
      *
      * @param null|callable $mixCallback
+     * @param null|mixed    $mixSpecification
      *
      * @return \Leevel\Collection\Collection
      */
@@ -106,6 +120,7 @@ class Repository implements IRepository
      * 取得所有记录.
      *
      * @param null|callable $mixCallback
+     * @param null|mixed    $mixSpecification
      *
      * @return \Leevel\Collection\Collection
      */
@@ -342,7 +357,7 @@ class Repository implements IRepository
      * 自定义规约处理.
      *
      * @param callbable      $mixCallback
-     * @param callbable|null $mixSpecification
+     * @param null|callbable $mixSpecification
      *
      * @return callbable
      */
@@ -362,18 +377,5 @@ class Repository implements IRepository
         }
 
         return $mixSpecification;
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $arrArgs)
-    {
-        return $this->objAggregate->$method(...$arrArgs);
     }
 }

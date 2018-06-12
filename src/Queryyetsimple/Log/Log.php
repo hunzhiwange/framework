@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use RuntimeException;
 use Leevel\Option\TClass;
-use Leevel\Support\IJson;
 use Leevel\Support\IArray;
+use Leevel\Support\IJson;
+use RuntimeException;
 
 /**
  * 日志仓储.
@@ -97,6 +97,19 @@ class Log implements ILog
     {
         $this->connect = $connect;
         $this->options($option);
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        return $this->connect->{$method}(...$args);
     }
 
     /**
@@ -228,7 +241,7 @@ class Log implements ILog
         }
 
         // 只记录系统允许的日志级别
-        if (!in_array($level, $this->getOption('level'))) {
+        if (!in_array($level, $this->getOption('level'), true)) {
             return;
         }
 
@@ -335,9 +348,9 @@ class Log implements ILog
     {
         if ($level && isset($this->logs[$level])) {
             return $this->logs[$level];
-        } else {
-            return $this->logs;
         }
+
+        return $this->logs;
     }
 
     /**
@@ -351,9 +364,9 @@ class Log implements ILog
     {
         if ($level && isset($this->logs[$level])) {
             return count($this->logs[$level]);
-        } else {
-            return count($this->logs);
         }
+
+        return count($this->logs);
     }
 
     /**
@@ -381,27 +394,17 @@ class Log implements ILog
     {
         if (is_array($message)) {
             return var_export($message, true);
-        } elseif ($message instanceof IJson) {
+        }
+        if ($message instanceof IJson) {
             return $message->toJson();
-        } elseif ($message instanceof IArray) {
+        }
+        if ($message instanceof IArray) {
             return var_export($message->toArray(), true);
-        } elseif (is_scalar($message)) {
+        }
+        if (is_scalar($message)) {
             return $message;
         }
 
         throw new RuntimeException('Message is invalid.');
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        return $this->connect->$method(...$args);
     }
 }

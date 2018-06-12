@@ -81,6 +81,18 @@ class Defaults implements IRender
     }
 
     /**
+     * 替换分页变量.
+     *
+     * @param mixed $mixPage
+     *
+     * @return string
+     */
+    public function replace($mixPage)
+    {
+        return $this->objPage->pageReplace($mixPage);
+    }
+
+    /**
      * 返回渲染 CSS.
      *
      * @return string
@@ -147,9 +159,9 @@ class Defaults implements IRender
     {
         if ($this->objPage->canPrevRender()) {
             return sprintf('<button class="btn-prev" onclick="window.location.href=\'%s\';">&#8249;</button>', $this->replace($this->objPage->parsePrevRenderPrev()));
-        } else {
-            return '<button class="btn-prev disabled">&#8249;</button>';
         }
+
+        return '<button class="btn-prev disabled">&#8249;</button>';
     }
 
     /**
@@ -165,7 +177,7 @@ class Defaults implements IRender
 
         $strMain = '';
         for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); ++$nI) {
-            $booActive = $this->objPage->getCurrentPage() == $nI;
+            $booActive = $this->objPage->getCurrentPage() === $nI;
             $strMain .= sprintf('<li class="number%s"><a%s>%d</a></li>', $booActive ? ' active' : '', $booActive ? '' : sprintf(' href="%s"', $this->replace($nI)), $nI);
         }
 
@@ -181,9 +193,9 @@ class Defaults implements IRender
     {
         if ($this->objPage->canNextRender()) {
             return sprintf('<button class="btn-next" onclick="window.location.href=\'%s\';">&#8250;</button>', $this->replace($this->objPage->getCurrentPage() + 1));
-        } else {
-            return '<button class="btn-next disabled">&#8250;</button>';
         }
+
+        return '<button class="btn-next disabled">&#8250;</button>';
     }
 
     /**
@@ -230,17 +242,5 @@ class Defaults implements IRender
     protected function getFooterRender()
     {
         return '</div>';
-    }
-
-    /**
-     * 替换分页变量.
-     *
-     * @param mixed $mixPage
-     *
-     * @return string
-     */
-    public function replace($mixPage)
-    {
-        return $this->objPage->pageReplace($mixPage);
     }
 }

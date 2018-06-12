@@ -59,6 +59,19 @@ abstract class Manager
     }
 
     /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        return $this->connect()->{$method}(...$args);
+    }
+
+    /**
      * 返回 IOC 容器.
      *
      * @return \Leevel\Di\IContainer
@@ -71,7 +84,7 @@ abstract class Manager
     /**
      * 连接 connect 并返回连接对象
      *
-     * @param array|string|null $options
+     * @param null|array|string $options
      *
      * @return object
      */
@@ -332,18 +345,5 @@ abstract class Manager
         return array_filter($options, function ($value) {
             return null !== $value;
         });
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        return $this->connect()->$method(...$args);
     }
 }

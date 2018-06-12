@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Http;
 
 use ArrayAccess;
-use SplFileObject;
-use Leevel\Support\TMacro;
 use Leevel\Support\IArray;
+use Leevel\Support\TMacro;
+use SplFileObject;
 
 /**
  * HTTP 请求
@@ -93,7 +93,7 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 内容.
      *
-     * @var string|resource|false|null
+     * @var null|false|resource|string
      */
     protected $content;
 
@@ -177,6 +177,30 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
+     * 是否存在输入值
+     *
+     * @param string $key
+     *
+     * @return bool
+     */
+    public function __isset($key)
+    {
+        return null !== $this->__get($key);
+    }
+
+    /**
+     * 获取输入值
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->get($key);
+    }
+
+    /**
      * 重置或者初始化.
      *
      * @param array  $query
@@ -239,7 +263,7 @@ class Request implements IRequest, IArray, ArrayAccess
                 static::METHOD_PUT,
                 static::METHOD_DELETE,
                 static::METHOD_PATCH,
-            ])
+            ], true)
         ) {
             parse_str($request->getContent(), $data);
             $request->request = new Bag($data);
@@ -262,15 +286,15 @@ class Request implements IRequest, IArray, ArrayAccess
 
         if (array_key_exists($key, $all)) {
             return $all[$key];
-        } else {
-            return $this->params->get($key, $defaults);
         }
+
+        return $this->params->get($key, $defaults);
     }
 
     /**
      * 请求是否包含给定的 key.
      *
-     * @param string|array $key
+     * @param array|string $key
      *
      * @return bool
      */
@@ -292,7 +316,7 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 请求是否包含非空.
      *
-     * @param string|array $key
+     * @param array|string $key
      *
      * @return bool
      */
@@ -367,7 +391,7 @@ class Request implements IRequest, IArray, ArrayAccess
      * 获取输入数据.
      *
      * @param string            $key
-     * @param string|array|null $defaults
+     * @param null|array|string $defaults
      *
      * @return mixed
      */
@@ -386,9 +410,9 @@ class Request implements IRequest, IArray, ArrayAccess
      * 取回 query.
      *
      * @param string            $key
-     * @param string|array|null $defaults
+     * @param null|array|string $defaults
      *
-     * @return string|array
+     * @return array|string
      */
     public function query($key = null, $defaults = null)
     {
@@ -411,9 +435,9 @@ class Request implements IRequest, IArray, ArrayAccess
      * 取回 cookie.
      *
      * @param string            $key
-     * @param string|array|null $defaults
+     * @param null|array|string $defaults
      *
-     * @return string|array
+     * @return array|string
      */
     public function cookie($key = null, $defaults = null)
     {
@@ -437,15 +461,15 @@ class Request implements IRequest, IArray, ArrayAccess
      * @param string $key
      * @param mixed  $defaults
      *
-     * @return \Leevel\Http\UploadedFile|array|null
+     * @return null|array|\Leevel\Http\UploadedFile
      */
     public function file($key = null, $defaults = null)
     {
         if (false === strpos($key, '\\')) {
             return $this->getItem('files', $key, $defaults);
-        } else {
-            return $this->files->getArr($key, $defaults);
         }
+
+        return $this->files->getArr($key, $defaults);
     }
 
     /**
@@ -482,16 +506,16 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isValidFile($file)
     {
-        return $file instanceof SplFileObject && '' != $file->getPath();
+        return $file instanceof SplFileObject && '' !== $file->getPath();
     }
 
     /**
      * 取回 header.
      *
      * @param string            $key
-     * @param string|array|null $defaults
+     * @param null|array|string $defaults
      *
-     * @return string|array
+     * @return array|string
      */
     public function header($key = null, $defaults = null)
     {
@@ -502,9 +526,9 @@ class Request implements IRequest, IArray, ArrayAccess
      * 取回 server.
      *
      * @param string            $key
-     * @param string|array|null $defaults
+     * @param null|array|string $defaults
      *
-     * @return string|array
+     * @return array|string
      */
     public function server($key = null, $defaults = null)
     {
@@ -516,17 +540,17 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @param string            $source
      * @param string            $key
-     * @param string|array|null $defaults
+     * @param null|array|string $defaults
      *
-     * @return string|array
+     * @return array|string
      */
     public function getItem($source, $key, $defaults)
     {
         if (null === $key) {
-            return $this->$source->all();
+            return $this->{$source}->all();
         }
 
-        return $this->$source->get($key, $defaults);
+        return $this->{$source}->get($key, $defaults);
     }
 
     /**
@@ -559,7 +583,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isCli()
     {
-        if ('swoole-http-server' == $this->server->get('SERVER_SOFTWARE')) {
+        if ('swoole-http-server' === $this->server->get('SERVER_SOFTWARE')) {
             return false;
         }
 
@@ -575,7 +599,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isRealCli()
     {
-        return PHP_SAPI == 'cli';
+        return PHP_SAPI === 'cli';
     }
 
     /**
@@ -587,7 +611,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isCgi()
     {
-        return 'cgi' == substr(PHP_SAPI, 0, 3);
+        return 'cgi' === substr(PHP_SAPI, 0, 3);
     }
 
     /**
@@ -866,7 +890,7 @@ class Request implements IRequest, IArray, ArrayAccess
             'winw',
             'xda',
             'xda-',
-        ])) {
+        ], true)) {
             return true;
         }
 
@@ -889,7 +913,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isHead()
     {
-        return $this->getMethod() == static::METHOD_HEAD;
+        return $this->getMethod() === static::METHOD_HEAD;
     }
 
     /**
@@ -899,7 +923,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isGet()
     {
-        return $this->getMethod() == static::METHOD_GET;
+        return $this->getMethod() === static::METHOD_GET;
     }
 
     /**
@@ -909,7 +933,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isPost()
     {
-        return $this->getMethod() == static::METHOD_POST;
+        return $this->getMethod() === static::METHOD_POST;
     }
 
     /**
@@ -919,7 +943,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isPut()
     {
-        return $this->getMethod() == static::METHOD_PUT;
+        return $this->getMethod() === static::METHOD_PUT;
     }
 
     /**
@@ -929,7 +953,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isPatch()
     {
-        return $this->getMethod() == static::METHOD_PATCH;
+        return $this->getMethod() === static::METHOD_PATCH;
     }
 
     /**
@@ -939,7 +963,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isPurge()
     {
-        return $this->getMethod() == static::METHOD_PURGE;
+        return $this->getMethod() === static::METHOD_PURGE;
     }
 
     /**
@@ -949,7 +973,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isOptions()
     {
-        return $this->getMethod() == static::METHOD_OPTIONS;
+        return $this->getMethod() === static::METHOD_OPTIONS;
     }
 
     /**
@@ -959,7 +983,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isTrace()
     {
-        return $this->getMethod() == static::METHOD_TRACE;
+        return $this->getMethod() === static::METHOD_TRACE;
     }
 
     /**
@@ -969,7 +993,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isConnect()
     {
-        return $this->getMethod() == static::METHOD_CONNECT;
+        return $this->getMethod() === static::METHOD_CONNECT;
     }
 
     /**
@@ -1130,7 +1154,7 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 返回当前的语言
      *
-     * @return string|null
+     * @return null|string
      */
     public function language()
     {
@@ -1140,7 +1164,7 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 返回当前的语言
      *
-     * @return string|null
+     * @return null|string
      */
     public function getLanguage()
     {
@@ -1164,7 +1188,7 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 取得请求内容.
      *
-     * @return string|resource
+     * @return resource|string
      */
     public function getContent()
     {
@@ -1207,7 +1231,7 @@ class Request implements IRequest, IArray, ArrayAccess
         $scriptName = $this->getScriptName();
 
         $scriptName = dirname($scriptName);
-        if ('\\' == $scriptName) {
+        if ('\\' === $scriptName) {
             $scriptName = '/';
         }
 
@@ -1231,9 +1255,10 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function isSecure()
     {
-        if (in_array($this->server->get('HTTPS'), ['1', 'on'])) {
+        if (in_array($this->server->get('HTTPS'), ['1', 'on'], true)) {
             return true;
-        } elseif ('443' == $this->server->get('SERVER_PORT')) {
+        }
+        if ('443' === $this->server->get('SERVER_PORT')) {
             return true;
         }
 
@@ -1250,7 +1275,7 @@ class Request implements IRequest, IArray, ArrayAccess
         $scheme = $this->getScheme();
         $port = $this->getPort();
 
-        if (('http' == $scheme && 80 == $port) || ('https' == $scheme && 443 == $port)) {
+        if (('http' === $scheme && 80 === $port) || ('https' === $scheme && 443 === $port)) {
             return $this->getHost();
         }
 
@@ -1330,7 +1355,7 @@ class Request implements IRequest, IArray, ArrayAccess
     /**
      * 取回查询参数.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getQueryString()
     {
@@ -1527,117 +1552,6 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 判断字符串是否为数字.
-     *
-     * @param mixed $value
-     *
-     * @since bool
-     */
-    protected function isInt($value)
-    {
-        if (is_int($value)) {
-            return true;
-        }
-
-        return ctype_digit((string) $value);
-    }
-
-    /**
-     * pathinfo 处理.
-     *
-     * @param string $pathInfo
-     *
-     * @return string
-     */
-    protected function parsePathInfo($pathInfo)
-    {
-        // 自动清除后缀
-        if ($pathInfo) {
-            $ext = pathinfo($pathInfo, PATHINFO_EXTENSION);
-            if ($ext) {
-                $pathInfo = substr($pathInfo, 0, -(strlen($ext) + 1));
-            }
-        }
-
-        $pathInfo = empty($pathInfo) ? '/' : $pathInfo;
-
-        return $pathInfo;
-    }
-
-    /**
-     * 格式化查询参数.
-     *
-     * @param string $queryString
-     *
-     * @return string
-     */
-    protected function normalizeQueryString($queryString)
-    {
-        if ('' == $queryString) {
-            return '';
-        }
-
-        $parts = [];
-
-        foreach (explode('&', $queryString) as $item) {
-            if ('' === $item || 0 === strpos($item, static::PATHINFO_URL.'=')) {
-                continue;
-            }
-
-            $parts[] = $item;
-        }
-
-        return implode('&', $parts);
-    }
-
-    /**
-     * 取得请求输入源.
-     *
-     * @return \Leevel\Http\Bag
-     */
-    protected function getInputSource()
-    {
-        return $this->getMethod() == static::METHOD_GET ? $this->query : $this->request;
-    }
-
-    /**
-     * 是否为空字符串.
-     *
-     * @param string $key
-     *
-     * @return bool
-     */
-    protected function isEmptyString($key)
-    {
-        $value = $this->input($key);
-
-        return is_string($value) && '' === trim($value);
-    }
-
-    /**
-     * URL 前缀编码
-     *
-     * @param string $strings
-     * @param string $prefix
-     *
-     * @return string|bool
-     */
-    protected function getUrlencodedPrefix(string $strings, string $prefix)
-    {
-        if (0 !== strpos(rawurldecode($strings), $prefix)) {
-            return false;
-        }
-
-        $len = strlen($prefix);
-
-        if (preg_match(sprintf('#^(%%[[:xdigit:]]{2}|.){%d}#', $len), $strings, $matches)) {
-            return $matches[0];
-        }
-
-        return false;
-    }
-
-    /**
      * 对象转数组.
      *
      * @return array
@@ -1695,26 +1609,113 @@ class Request implements IRequest, IArray, ArrayAccess
     }
 
     /**
-     * 是否存在输入值
+     * 判断字符串是否为数字.
+     *
+     * @param mixed $value
+     *
+     * @since bool
+     */
+    protected function isInt($value)
+    {
+        if (is_int($value)) {
+            return true;
+        }
+
+        return ctype_digit((string) $value);
+    }
+
+    /**
+     * pathinfo 处理.
+     *
+     * @param string $pathInfo
+     *
+     * @return string
+     */
+    protected function parsePathInfo($pathInfo)
+    {
+        // 自动清除后缀
+        if ($pathInfo) {
+            $ext = pathinfo($pathInfo, PATHINFO_EXTENSION);
+            if ($ext) {
+                $pathInfo = substr($pathInfo, 0, -(strlen($ext) + 1));
+            }
+        }
+
+        $pathInfo = empty($pathInfo) ? '/' : $pathInfo;
+
+        return $pathInfo;
+    }
+
+    /**
+     * 格式化查询参数.
+     *
+     * @param string $queryString
+     *
+     * @return string
+     */
+    protected function normalizeQueryString($queryString)
+    {
+        if ('' === $queryString) {
+            return '';
+        }
+
+        $parts = [];
+
+        foreach (explode('&', $queryString) as $item) {
+            if ('' === $item || 0 === strpos($item, static::PATHINFO_URL.'=')) {
+                continue;
+            }
+
+            $parts[] = $item;
+        }
+
+        return implode('&', $parts);
+    }
+
+    /**
+     * 取得请求输入源.
+     *
+     * @return \Leevel\Http\Bag
+     */
+    protected function getInputSource()
+    {
+        return $this->getMethod() === static::METHOD_GET ? $this->query : $this->request;
+    }
+
+    /**
+     * 是否为空字符串.
      *
      * @param string $key
      *
      * @return bool
      */
-    public function __isset($key)
+    protected function isEmptyString($key)
     {
-        return null !== $this->__get($key);
+        $value = $this->input($key);
+
+        return is_string($value) && '' === trim($value);
     }
 
     /**
-     * 获取输入值
+     * URL 前缀编码
      *
-     * @param string $key
+     * @param string $strings
+     * @param string $prefix
      *
-     * @return mixed
+     * @return bool|string
      */
-    public function __get($key)
+    protected function getUrlencodedPrefix(string $strings, string $prefix)
     {
-        return $this->get($key);
+        if (0 !== strpos(rawurldecode($strings), $prefix)) {
+            return false;
+        }
+
+        $len = strlen($prefix);
+
+        if (preg_match(sprintf('#^(%%[[:xdigit:]]{2}|.){%d}#', $len), $strings, $matches)) {
+            return $matches[0];
+        }
+
+        return false;
     }
 }

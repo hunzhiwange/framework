@@ -236,33 +236,34 @@ class Str
             return $mixContents;
         }
 
-        $sFromChar = 'utf8' == strtolower($sFromChar) ? 'utf-8' : strtolower($sFromChar);
-        $sToChar = 'utf8' == strtolower($sToChar) ? 'utf-8' : strtolower($sToChar);
-        if ($sFromChar == $sToChar || (is_scalar($mixContents) && !is_string($mixContents))) {
+        $sFromChar = 'utf8' === strtolower($sFromChar) ? 'utf-8' : strtolower($sFromChar);
+        $sToChar = 'utf8' === strtolower($sToChar) ? 'utf-8' : strtolower($sToChar);
+        if ($sFromChar === $sToChar || (is_scalar($mixContents) && !is_string($mixContents))) {
             return $mixContents;
         }
 
         if (is_string($mixContents)) {
             if (function_exists('iconv')) {
                 return iconv($sFromChar, $sToChar.'//IGNORE', $mixContents);
-            } elseif (function_exists('mb_convert_encoding')) {
-                return mb_convert_encoding($mixContents, $sToChar, $sFromChar);
-            } else {
-                return $mixContents;
             }
+            if (function_exists('mb_convert_encoding')) {
+                return mb_convert_encoding($mixContents, $sToChar, $sFromChar);
+            }
+
+            return $mixContents;
         } elseif (is_array($mixContents)) {
             foreach ($mixContents as $sKey => $sVal) {
                 $sKeyTwo = static::gbkToUtf8($sKey, $sFromChar, $sToChar);
                 $mixContents[$sKeyTwo] = static::stringEncoding($sVal, $sFromChar, $sToChar);
-                if ($sKey != $sKeyTwo) {
+                if ($sKey !== $sKeyTwo) {
                     unset($mixContents[$sKeyTwo]);
                 }
             }
 
             return $mixContents;
-        } else {
-            return $mixContents;
         }
+
+        return $mixContents;
     }
 
     /**
@@ -293,7 +294,8 @@ class Str
         // 对系统的字符串函数进行判断
         if (function_exists('mb_substr')) {
             return mb_substr($sStr, $nStart, $nLength, $sCharset);
-        } elseif (function_exists('iconv_substr')) {
+        }
+        if (function_exists('iconv_substr')) {
             return iconv_substr($sStr, $nStart, $nLength, $sCharset);
         }
 
@@ -329,9 +331,9 @@ class Str
 
         $nSec = time() - $nDateTemp;
         $nHover = floor($nSec / 3600);
-        if (0 == $nHover) {
+        if (0 === $nHover) {
             $nMin = floor($nSec / 60);
-            if (0 == $nMin) {
+            if (0 === $nMin) {
                 $sReturn = $nSec.' '.($arrLang['seconds'] ?? 'seconds ago');
             } else {
                 $sReturn = $nMin.' '.($arrLang['minutes'] ?? 'minutes ago');
@@ -406,7 +408,7 @@ class Str
      */
     public static function startsWith($strToSearched, $strSearch)
     {
-        if ('' != $strSearch && 0 === strpos($strToSearched, $strSearch)) {
+        if ('' !== $strSearch && 0 === strpos($strToSearched, $strSearch)) {
             return true;
         }
 
@@ -440,7 +442,7 @@ class Str
      */
     public static function contains($strToSearched, $strSearch)
     {
-        if ('' != $strSearch && false !== strpos($strToSearched, $strSearch)) {
+        if ('' !== $strSearch && false !== strpos($strToSearched, $strSearch)) {
             return true;
         }
 

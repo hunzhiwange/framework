@@ -55,6 +55,23 @@ class Cache implements ICache
     }
 
     /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        if (static::hasMacro($method)) {
+            return $this->macroCall($method, $args);
+        }
+
+        return $this->connect->{$method}(...$args);
+    }
+
+    /**
      * 获取缓存.
      *
      * @param string $name
@@ -107,22 +124,5 @@ class Cache implements ICache
     public function close()
     {
         $this->connect->close();
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        if (static::hasMacro($method)) {
-            return $this->macroCall($method, $args);
-        }
-
-        return $this->connect->$method(...$args);
     }
 }

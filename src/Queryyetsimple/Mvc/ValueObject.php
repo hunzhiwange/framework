@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Leevel\Mvc;
 
 use ArrayAccess;
-use JsonSerializable;
 use BadMethodCallException;
+use JsonSerializable;
 use Leevel\Flow\TControl;
-use Leevel\Support\Str;
-use Leevel\Support\IJson;
 use Leevel\Support\IArray;
+use Leevel\Support\IJson;
+use Leevel\Support\Str;
 use Leevel\Support\TSerialize;
 
 /**
@@ -99,6 +99,85 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
+     * 魔术方法获取.
+     *
+     * @param string $sName
+     * @param mixed  $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->getData($this->getUnCamelizeKey($key));
+    }
+
+    /**
+     * 强制更新属性值
+     *
+     * @param string $sName
+     * @param mixed  $mixValue
+     * @param mixed  $key
+     *
+     * @return $this
+     */
+    public function __set($key, $mixValue)
+    {
+        return $this->set($this->getUnCamelizeKey($key), $mixValue);
+    }
+
+    /**
+     * 是否存在属性.
+     *
+     * @param string $sName
+     *
+     * @return bool
+     */
+    public function __isset($sName)
+    {
+        return $this->has($this->getUnCamelizeKey($sName));
+    }
+
+    /**
+     * 删除属性.
+     *
+     * @param string $sName
+     *
+     * @return bool
+     */
+    public function __unset($sName)
+    {
+        return $this->delete($this->getUnCamelizeKey($sName));
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        if ($this->placeholderTControl($method)) {
+            return $this;
+        }
+
+        switch (true) {
+            case 'get' === substr($method, 0, 3):
+                return $this->__get(substr($method, 3), $arrArgs[0] ?? null);
+            case 'set' === substr($method, 0, 3):
+                return $this->__set(substr($method, 3), $arrArgs[0] ?? null);
+            case 'delete' === substr($method, 0, 5):
+                return $this->__unset(substr($method, 5));
+            case 'has' === substr($method, 0, 3):
+                return $this->__isset(substr($method, 3));
+        }
+
+        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+    }
+
+    /**
      * 设置值对象
      *
      * @param string $sName
@@ -112,7 +191,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 批量插入.
      *
-     * @param string|array $mixKey
+     * @param array|string $mixKey
      * @param mixed        $mixValue
      */
     public function put($mixKey, $mixValue = null)
@@ -274,9 +353,9 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         if (false !== strpos($sName, '\\')) {
             return $this->getPartData($sName, $mixDefault);
-        } else {
-            return $this->get($sName, $mixDefault);
         }
+
+        return $this->get($sName, $mixDefault);
     }
 
     /**
@@ -321,7 +400,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 批量插入源数据.
      *
-     * @param string|array $mixKey
+     * @param array|string $mixKey
      * @param mixed        $mixValue
      */
     public function putSource($mixKey, $mixValue = null)
@@ -475,7 +554,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      * 取回值对象源数据.
      *
      * @param string           $sName
-     * @param mixed|string|int $mixDefault
+     * @param int|mixed|string $mixDefault
      *
      * @return mixed
      */
@@ -483,9 +562,9 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     {
         if (false !== strpos($sName, '\\')) {
             return $this->getSourcePartData($sName, $mixDefault);
-        } else {
-            return $this->getSource($sName, $mixDefault);
         }
+
+        return $this->getSource($sName, $mixDefault);
     }
 
     /**
@@ -529,7 +608,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
         $mixNewData = $this->getData($sName);
         $mixSourceData = $this->getSourceData($sName);
 
-        return (false === $booStrict && $mixNewData != $mixSourceData) || (true === $booStrict && $mixNewData !== $mixSourceData);
+        return (false === $booStrict && $mixNewData !== $mixSourceData) || (true === $booStrict && $mixNewData !== $mixSourceData);
     }
 
     /**
@@ -704,7 +783,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 添加转换追加属性.
      *
-     * @param array|string|null $mixProp
+     * @param null|array|string $mixProp
      *
      * @return $this
      */
@@ -717,126 +796,6 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
         $this->arrAppend = array_merge($this->arrAppend, $mixProp);
 
         return $this;
-    }
-
-    /**
-     * 返回部分闪存数据.
-     *
-     * @param string $sName
-     * @param mixed  $mixDefault
-     *
-     * @return mixed
-     */
-    protected function getPartData($sName, $mixDefault = null)
-    {
-        return $this->getTypePartData($sName, $mixDefault);
-    }
-
-    /**
-     * 返回部分闪存源数据.
-     *
-     * @param string $sName
-     * @param mixed  $mixDefault
-     *
-     * @return mixed
-     */
-    protected function getSourcePartData($sName, $mixDefault = null)
-    {
-        return $this->getTypePartData($sName, $mixDefault, 'source');
-    }
-
-    /**
-     * 返回部分闪存源数据.
-     *
-     * @param string $sName
-     * @param mixed  $mixDefault
-     * @param string $strType
-     *
-     * @return mixed
-     */
-    protected function getTypePartData($sName, $mixDefault = null, $strType = '')
-    {
-        list($sName, $strName) = explode('\\', $sName);
-        $mixValue = $this->{'get'.($strType ? ucwords($strType) : '')}($sName);
-
-        if (is_array($mixValue)) {
-            $arrParts = explode('.', $strName);
-            foreach ($arrParts as $sPart) {
-                if (!isset($mixValue[$sPart])) {
-                    return $mixDefault;
-                }
-                $mixValue = $mixValue[$sPart];
-            }
-
-            return $mixValue;
-        } else {
-            return $mixDefault;
-        }
-    }
-
-    /**
-     * 返回下划线式命名.
-     *
-     * @param string $strKey
-     *
-     * @return string
-     */
-    protected function getUnCamelizeKey($strKey)
-    {
-        if (isset(static::$arrUnCamelize[$strKey])) {
-            return static::$arrUnCamelize[$strKey];
-        }
-
-        return static::$arrUnCamelize[$strKey] = Str::unCamelize($strKey);
-    }
-
-    /**
-     * 魔术方法获取.
-     *
-     * @param string $sName
-     *
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        return $this->getData($this->getUnCamelizeKey($key));
-    }
-
-    /**
-     * 强制更新属性值
-     *
-     * @param string $sName
-     * @param mixed  $mixValue
-     *
-     * @return $this
-     */
-    public function __set($key, $mixValue)
-    {
-        return $this->set($this->getUnCamelizeKey($key), $mixValue);
-    }
-
-    /**
-     * 是否存在属性.
-     *
-     * @param string $sName
-     *
-     * @return bool
-     */
-    public function __isset($sName)
-    {
-        return $this->has($this->getUnCamelizeKey($sName));
-    }
-
-    /**
-     * 删除属性.
-     *
-     * @param string $sName
-     *
-     * @return bool
-     */
-    public function __unset($sName)
-    {
-        return $this->delete($this->getUnCamelizeKey($sName));
     }
 
     /**
@@ -941,30 +900,73 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     }
 
     /**
-     * call.
+     * 返回部分闪存数据.
      *
-     * @param string $method
-     * @param array  $arrArgs
+     * @param string $sName
+     * @param mixed  $mixDefault
      *
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    protected function getPartData($sName, $mixDefault = null)
     {
-        if ($this->placeholderTControl($method)) {
-            return $this;
+        return $this->getTypePartData($sName, $mixDefault);
+    }
+
+    /**
+     * 返回部分闪存源数据.
+     *
+     * @param string $sName
+     * @param mixed  $mixDefault
+     *
+     * @return mixed
+     */
+    protected function getSourcePartData($sName, $mixDefault = null)
+    {
+        return $this->getTypePartData($sName, $mixDefault, 'source');
+    }
+
+    /**
+     * 返回部分闪存源数据.
+     *
+     * @param string $sName
+     * @param mixed  $mixDefault
+     * @param string $strType
+     *
+     * @return mixed
+     */
+    protected function getTypePartData($sName, $mixDefault = null, $strType = '')
+    {
+        list($sName, $strName) = explode('\\', $sName);
+        $mixValue = $this->{'get'.($strType ? ucwords($strType) : '')}($sName);
+
+        if (is_array($mixValue)) {
+            $arrParts = explode('.', $strName);
+            foreach ($arrParts as $sPart) {
+                if (!isset($mixValue[$sPart])) {
+                    return $mixDefault;
+                }
+                $mixValue = $mixValue[$sPart];
+            }
+
+            return $mixValue;
         }
 
-        switch (true) {
-            case 'get' == substr($method, 0, 3):
-                return $this->__get(substr($method, 3), $arrArgs[0] ?? null);
-            case 'set' == substr($method, 0, 3):
-                return $this->__set(substr($method, 3), $arrArgs[0] ?? null);
-            case 'delete' == substr($method, 0, 5):
-                return $this->__unset(substr($method, 5));
-            case 'has' == substr($method, 0, 3):
-                return $this->__isset(substr($method, 3));
+        return $mixDefault;
+    }
+
+    /**
+     * 返回下划线式命名.
+     *
+     * @param string $strKey
+     *
+     * @return string
+     */
+    protected function getUnCamelizeKey($strKey)
+    {
+        if (isset(static::$arrUnCamelize[$strKey])) {
+            return static::$arrUnCamelize[$strKey];
         }
 
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        return static::$arrUnCamelize[$strKey] = Str::unCamelize($strKey);
     }
 }

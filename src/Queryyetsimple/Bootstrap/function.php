@@ -18,15 +18,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Leevel\Log\Ilog;
 use Leevel\Bootstrap\Project;
+use Leevel\Log\Ilog;
 use Leevel\Support\Debug\Dump;
 
 if (!function_exists('project')) {
     /**
      * 返回项目容器或者注入.
      *
-     * @param string|null $sInstance
+     * @param null|string $sInstance
      * @param array       $arrArgs
      *
      * @return \Leevel\Bootstrap\Project
@@ -35,12 +35,12 @@ if (!function_exists('project')) {
     {
         if (null === $sInstance) {
             return project::singletons();
-        } else {
-            if (($objInstance = project::singletons()->make($sInstance, $arrArgs))) {
-                return $objInstance;
-            }
-            throw new BadMethodCallException(sprintf('%s is not found in ioc container. ', $sInstance));
         }
+        if (($objInstance = project::singletons()->make($sInstance, $arrArgs))) {
+            return $objInstance;
+        }
+
+        throw new BadMethodCallException(sprintf('%s is not found in ioc container. ', $sInstance));
     }
 }
 
@@ -49,7 +49,7 @@ if (!function_exists('app')) {
      * 返回项目容器或者注入
      * project 别名函数.
      *
-     * @param string|null $sInstance
+     * @param null|string $sInstance
      * @param array       $arrArgs
      *
      * @return \Leevel\Bootstrap\Project
@@ -92,7 +92,7 @@ if (!function_exists('phpui')) {
      */
     function phpui()
     {
-        return 'phpui' == env('app_mode', false);
+        return 'phpui' === env('app_mode', false);
     }
 }
 
@@ -152,9 +152,11 @@ if (!function_exists('env')) {
         switch (true) {
             case array_key_exists($strName, $_ENV):
                 $strName = $_ENV[$strName];
+
                 break;
             case array_key_exists($strName, $_SERVER):
                 $strName = $_SERVER[$strName];
+
                 break;
             default:
                 $strName = getenv($strName);
@@ -171,21 +173,18 @@ if (!function_exists('env')) {
             case 'true':
             case '(true)':
                 return true;
-
             case 'false':
             case '(false)':
                 return false;
-
             case 'empty':
             case '(empty)':
                 return '';
-
             case 'null':
             case '(null)':
                 return;
         }
 
-        if ($strName && strlen($strName) > 1 && '"' == $strName[0] && '"' == $strName[strlen($strName) - 1]) {
+        if ($strName && strlen($strName) > 1 && '"' === $strName[0] && '"' === $strName[strlen($strName) - 1]) {
             return substr($strName, 1, -1);
         }
 
@@ -267,6 +266,7 @@ if (!function_exists('url')) {
      * @param array  $params
      * @param string $subdomain
      * @param mixed  $suffix
+     * @param mixed  $option
      *
      * @return string
      */
@@ -322,7 +322,7 @@ if (!function_exists('__sprintf')) {
      */
     function __sprintf(...$arr)
     {
-        return 0 == count($arr) ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
+        return 0 === count($arr) ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
     }
 }
 

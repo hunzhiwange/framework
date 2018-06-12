@@ -119,7 +119,7 @@ class FileBag extends Bag
      *
      * @param array|\Leevel\Http\UploadedFile $file
      *
-     * @return \Leevel\Http\UploadedFile|null
+     * @return null|\Leevel\Http\UploadedFile
      */
     protected function convertFile($file)
     {
@@ -129,7 +129,7 @@ class FileBag extends Bag
 
         $file = $this->normalizeFile($file);
 
-        if (UPLOAD_ERR_NO_FILE == $file['error']) {
+        if (UPLOAD_ERR_NO_FILE === $file['error']) {
             $file = null;
         } else {
             $file = new UploadedFile($file['tmp_name'], $file['name'], $file['type'], $file['error']);
@@ -150,7 +150,7 @@ class FileBag extends Bag
         $result = [];
 
         foreach ($data as $key => $value) {
-            if (in_array($key, static::$fileKeys)) {
+            if (in_array($key, static::$fileKeys, true)) {
                 $result[$key] = $value;
             }
         }
@@ -179,7 +179,8 @@ class FileBag extends Bag
             if (is_array($value)) {
                 if (false === array_key_exists('name', $value)) {
                     throw new InvalidArgumentException('An uploaded file must be contain key name.');
-                } elseif (isset($value['name']) && is_array($value['name'])) {
+                }
+                if (isset($value['name']) && is_array($value['name'])) {
                     foreach ($value['name'] as $index => $item) {
                         $element = [];
                         foreach (static::$fileKeys as $fileKey) {

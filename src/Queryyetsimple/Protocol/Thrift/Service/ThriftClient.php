@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Thrift\Service;
 
-use Thrift\Type\TMessageType;
 use Thrift\Exception\TApplicationException;
 use Thrift\Protocol\TBinaryProtocolAccelerated;
+use Thrift\Type\TMessageType;
 
 /**
  * thrift 默认服务客户端.
@@ -35,8 +35,8 @@ use Thrift\Protocol\TBinaryProtocolAccelerated;
  */
 class ThriftClient implements ThriftIf
 {
-    protected $input_ = null;
-    protected $output_ = null;
+    protected $input_;
+    protected $output_;
 
     protected $seqid_ = 0;
 
@@ -79,10 +79,11 @@ class ThriftClient implements ThriftIf
             $mtype = 0;
 
             $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-            if (TMessageType::EXCEPTION == $mtype) {
+            if (TMessageType::EXCEPTION === $mtype) {
                 $x = new TApplicationException();
                 $x->read($this->input_);
                 $this->input_->readMessageEnd();
+
                 throw $x;
             }
             $result = new ThriftCallResult();
@@ -92,6 +93,7 @@ class ThriftClient implements ThriftIf
         if (null !== $result->success) {
             return $result->success;
         }
+
         throw new \Exception('call failed: unknown result');
     }
 }

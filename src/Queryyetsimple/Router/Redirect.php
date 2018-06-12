@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Session\ISession;
 use Leevel\Http\RedirectResponse;
+use Leevel\Session\ISession;
 
 /**
  * Redirect.

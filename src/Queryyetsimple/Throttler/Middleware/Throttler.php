@@ -23,8 +23,8 @@ namespace Leevel\Throttler\Middleware;
 use Closure;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
-use Leevel\Throttler\IThrottler;
 use Leevel\Kernel\Exception\TooManyRequestsHttpException;
+use Leevel\Throttler\IThrottler;
 
 /**
  * throttler 中间件.
@@ -77,10 +77,10 @@ class Throttler
 
         if ($rateLimiter->attempt()) {
             $this->header($rateLimiter);
+
             throw new TooManyRequestsHttpException('Too many attempts.');
-        } else {
-            $this->header($rateLimiter);
         }
+        $this->header($rateLimiter);
 
         $next($request);
     }

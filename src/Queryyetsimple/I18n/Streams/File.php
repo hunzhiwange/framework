@@ -57,7 +57,7 @@ class File extends Reader
      */
     public function seekto($pos)
     {
-        if (-1 == fseek($this->_f, $pos, SEEK_SET)) {
+        if (-1 === fseek($this->_f, $pos, SEEK_SET)) {
             return false;
         }
         $this->_pos = $pos;

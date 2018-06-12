@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
-use Leevel\Mvc\IModel;
-use Leevel\Support\Str;
-use Leevel\Option\TClass;
-use Leevel\Validate\IValidate;
 use Leevel\Encryption\IEncryption;
+use Leevel\Mvc\IModel;
+use Leevel\Option\TClass;
+use Leevel\Support\Str;
+use Leevel\Validate\IValidate;
 
 /**
  * connect 驱动抽象类.
@@ -159,11 +159,10 @@ abstract class Connect
 
         if ($nUserId && $sPassword) {
             return $this->getPersistenceUser($nUserId, $sPassword) ?: false;
-        } else {
-            $this->logout();
-
-            return false;
         }
+        $this->logout();
+
+        return false;
     }
 
     /**
@@ -205,7 +204,7 @@ abstract class Connect
 
         $oUser = $this->oUser->where($this->parseLoginField($mixName), $mixName)->getOne();
 
-        if (empty($oUser->{$this->getField('id')}) || 'enable' != $oUser->{$this->getField('status')}) {
+        if (empty($oUser->{$this->getField('id')}) || 'enable' !== $oUser->{$this->getField('status')}) {
             throw new LoginFailed(__('帐号不存在或者未启用'));
         }
 
@@ -233,7 +232,7 @@ abstract class Connect
      */
     public function isLock()
     {
-        return 'locked' == $this->getPersistence($this->getLockName());
+        return 'locked' === $this->getPersistence($this->getLockName());
     }
 
     /**
@@ -271,7 +270,7 @@ abstract class Connect
             throw new ChangePasswordFailed(__('账号或者 ID 不能为空'));
         }
 
-        if (false === $bIgnoreOldPassword && '' == $sOldPassword) {
+        if (false === $bIgnoreOldPassword && '' === $sOldPassword) {
             throw new ChangePasswordFailed(__('旧密码不能为空'));
         }
 
@@ -279,13 +278,13 @@ abstract class Connect
             throw new ChangePasswordFailed(__('新密码不能为空'));
         }
 
-        if ($sConfirmPassword != $sNewPassword) {
+        if ($sConfirmPassword !== $sNewPassword) {
             throw new ChangePasswordFailed(__('两次输入的密码不一致'));
         }
 
         $oUser = $this->oUser->where($this->parseChangePasswordField($mixName), $mixName)->setColumns('id,status,random,password')->getOne();
 
-        if (empty($oUser->{$this->getField('id')}) || 'enable' != $oUser->{$this->getField('status')}) {
+        if (empty($oUser->{$this->getField('id')}) || 'enable' !== $oUser->{$this->getField('status')}) {
             throw new ChangePasswordFailed(__('帐号不存在或者未启用'));
         }
 
@@ -325,15 +324,15 @@ abstract class Connect
         $strEmail = trim($strEmail);
         $strMobile = trim($strMobile);
 
-        if (!$strName || $strName != addslashes($strName)) {
+        if (!$strName || $strName !== addslashes($strName)) {
             throw new RegisterFailed(__('用户名不能为空或包含非法字符'));
         }
 
-        if (!$strPassword || $strPassword != addslashes($strPassword) || false !== strpos($strPassword, "\n") || false !== strpos($strPassword, "\r") || false !== strpos($strPassword, "\t")) {
+        if (!$strPassword || $strPassword !== addslashes($strPassword) || false !== strpos($strPassword, "\n") || false !== strpos($strPassword, "\r") || false !== strpos($strPassword, "\t")) {
             throw new RegisterFailed(__('密码不能为空或包含非法字符'));
         }
 
-        if ($strPassword != $strComfirmPassword) {
+        if ($strPassword !== $strComfirmPassword) {
             throw new RegisterFailed(__('两次输入的密码不一致'));
         }
 
@@ -538,7 +537,7 @@ abstract class Connect
      */
     protected function checkPassword($sSourcePassword, $sPassword, $sRandom)
     {
-        return $this->encodePassword($sSourcePassword, $sRandom) == $sPassword;
+        return $this->encodePassword($sSourcePassword, $sRandom) === $sPassword;
     }
 
     /**
@@ -614,7 +613,6 @@ abstract class Connect
     protected function getUserFromDatabase($nUserId, $sPassword)
     {
         return $this->oUser->
-
         where($this->getField('id'), $nUserId)->
 
         where($this->getField('password'), $sPassword)->
@@ -642,11 +640,10 @@ abstract class Connect
 
         if ($oUser = $this->getUserFromDatabase($nUserId, $sPassword)) {
             return $this->setUserToPersistence($oUser);
-        } else {
-            $this->logout();
-
-            return false;
         }
+        $this->logout();
+
+        return false;
     }
 
     /**

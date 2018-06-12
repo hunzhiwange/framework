@@ -20,15 +20,15 @@ declare(strict_types=1);
 
 namespace Leevel\Validate;
 
-use DateTime;
-use Exception;
-use DateTimeZone;
 use BadMethodCallException;
+use DateTime;
+use DateTimeZone;
+use Exception;
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
 use Leevel\Flow\TControl;
-use Leevel\Support\Str;
 use Leevel\Support\Arr;
+use Leevel\Support\Str;
 
 /**
  * validate 数据验证器.
@@ -175,6 +175,48 @@ class Validate implements IValidate
     }
 
     /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        if ($this->placeholderTControl($method)) {
+            return $this;
+        }
+
+        $sExtend = Str::unCamelize(substr($method, 8));
+        if (isset($this->arrExtend[$sExtend])) {
+            return $this->callExtend($sExtend, $arrArgs);
+        }
+
+        if (count($arrArgs) > 0) {
+            $sExtend = 'validate'.ucwords($method);
+
+            $arrParameter = [
+                'foobar',
+            ];
+            $arrParameter[] = array_shift($arrArgs);
+            $arrParameter[] = $arrArgs;
+            unset($arrArgs);
+
+            if (method_exists($this, $sExtend)) {
+                return $this->{$sExtend}(...$arrParameter);
+            }
+
+            $sExtend = Str::unCamelize($method);
+            if (isset($this->arrExtend[$sExtend])) {
+                return $this->callExtend($sExtend, $arrParameter);
+            }
+        }
+
+        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+    }
+
+    /**
      * 初始化验证器.
      *
      * @param array $arrData
@@ -200,7 +242,7 @@ class Validate implements IValidate
 
         foreach ($this->arrRule as $strField => $arrRule) {
             foreach ($arrRule as $strRule) {
-                if (in_array($strRule, $arrSkipRule)) {
+                if (in_array($strRule, $arrSkipRule, true)) {
                     continue;
                 }
 
@@ -211,7 +253,7 @@ class Validate implements IValidate
                     }
 
                     // 验证失败跳过自身剩余验证规则
-                    elseif ($this->shouldSkipSelf($strField)) {
+                    if ($this->shouldSkipSelf($strField)) {
                         break;
                     }
                 }
@@ -340,6 +382,7 @@ class Validate implements IValidate
      *
      * @param array          $arrRule
      * @param callable|mixed $calCallback
+     * @param mixed          $mixCallback
      *
      * @return $this
      */
@@ -377,6 +420,7 @@ class Validate implements IValidate
      *
      * @param array          $arrRule
      * @param callable|mixed $calCallback
+     * @param mixed          $mixCallback
      *
      * @return $this
      */
@@ -420,6 +464,7 @@ class Validate implements IValidate
      * @param string         $strField
      * @param mixed          $mixRule
      * @param callable|mixed $calCallback
+     * @param mixed          $mixCallback
      *
      * @return $this
      */
@@ -463,6 +508,7 @@ class Validate implements IValidate
      * @param string         $strField
      * @param mixed          $mixRule
      * @param callable|mixed $calCallback
+     * @param mixed          $mixCallback
      *
      * @return $this
      */
@@ -625,7 +671,7 @@ class Validate implements IValidate
         if ($this->checkTControl()) {
             return $this;
         }
-        if (in_array($strAlias, $this->getSkipRule())) {
+        if (in_array($strAlias, $this->getSkipRule(), true)) {
             throw new Exception(spintf('You cannot set alias for skip rule %s', $strAlias));
         }
 
@@ -709,6 +755,7 @@ class Validate implements IValidate
      *
      * @param string          $rule
      * @param callable|string $mixExtend
+     * @param mixed           $strRule
      *
      * @return $this
      */
@@ -863,7 +910,8 @@ class Validate implements IValidate
     {
         if (null === $mixData) {
             return false;
-        } elseif (is_string($mixData) && '' === trim($mixData)) {
+        }
+        if (is_string($mixData) && '' === trim($mixData)) {
             return false;
         }
 
@@ -1178,7 +1226,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
 
-        return in_array($mixData, $arrParameter);
+        return in_array($mixData, $arrParameter, true);
     }
 
     /**
@@ -1314,7 +1362,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
 
-        return $mixData == $arrParameter[0];
+        return $mixData === $arrParameter[0];
     }
 
     /**
@@ -1344,7 +1392,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
 
-        return $mixData == $this->getFieldValue($arrParameter[0]);
+        return $mixData === $this->getFieldValue($arrParameter[0]);
     }
 
     /**
@@ -1644,7 +1692,7 @@ class Validate implements IValidate
      */
     protected function validatePhone($strField, $mixData, $arrParameter)
     {
-        return (11 == strlen($mixData) && preg_match('/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/', $mixData)) || preg_match('/^\d{3,4}-?\d{7,9}$/', $mixData);
+        return (11 === strlen($mixData) && preg_match('/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/', $mixData)) || preg_match('/^\d{3,4}-?\d{7,9}$/', $mixData);
     }
 
     /**
@@ -1689,7 +1737,7 @@ class Validate implements IValidate
         $intTotal = 0;
         for ($intI = strlen($mixData); $intI >= 1; --$intI) {
             $intIndex = $intI - 1;
-            if (0 == $intI % 2) {
+            if (0 === $intI % 2) {
                 $intTotal += $mixData[$intIndex];
             } else {
                 $intFoo = $mixData[$intIndex] * 2;
@@ -1700,7 +1748,7 @@ class Validate implements IValidate
             }
         }
 
-        return 0 == ($intTotal % 10);
+        return 0 === ($intTotal % 10);
     }
 
     /**
@@ -1758,7 +1806,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
 
-        return strlen($mixData) == (int) $arrParameter[0];
+        return strlen($mixData) === (int) $arrParameter[0];
     }
 
     /**
@@ -1850,7 +1898,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
 
-        return in_array($mixData ?: $_SERVER['REMOTE_ADDR'], $arrParameter);
+        return in_array($mixData ?: $_SERVER['REMOTE_ADDR'], $arrParameter, true);
     }
 
     /**
@@ -1880,7 +1928,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($strField, $arrParameter, 1);
 
-        return strtolower($mixData ?: (PHP_SAPI == 'cli' ? 'GET' : $_SERVER['REQUEST_METHOD'])) == strtolower($arrParameter[0]);
+        return strtolower($mixData ?: (PHP_SAPI === 'cli' ? 'GET' : $_SERVER['REQUEST_METHOD'])) === strtolower($arrParameter[0]);
     }
 
     /**
@@ -1973,7 +2021,7 @@ class Validate implements IValidate
      *
      * @param string $strField
      *
-     * @return string|null
+     * @return null|string
      */
     protected function getDateFormat($strField)
     {
@@ -1986,9 +2034,9 @@ class Validate implements IValidate
      * 尝试读取格式化条件.
      *
      * @param string       $strField
-     * @param string|array $mixRule
+     * @param array|string $mixRule
      *
-     * @return array|null
+     * @return null|array
      */
     protected function getParseRule($strField, $mixRule)
     {
@@ -2000,7 +2048,7 @@ class Validate implements IValidate
 
         foreach ($this->arrRule[$strField] as $strRule) {
             list($strRule, $arrParameter) = $this->parseRule($strRule);
-            if (in_array($strRule, $mixRule)) {
+            if (in_array($strRule, $mixRule, true)) {
                 return [
                     $strRule,
                     $arrParameter,
@@ -2015,7 +2063,7 @@ class Validate implements IValidate
      * @param string $strFormat
      * @param string $strValue
      *
-     * @return \DateTime|null
+     * @return null|\DateTime
      */
     protected function makeDateTimeFormat($strFormat, $strValue)
     {
@@ -2095,6 +2143,7 @@ class Validate implements IValidate
      *
      * @param string $strFoo
      * @param bool   $booStrict
+     * @param mixed  $strRegex
      *
      * @return string
      */
@@ -2316,7 +2365,7 @@ class Validate implements IValidate
     {
         $booFoo = $this->hasFieldRuleWithoutParameterReal($strField, $strRule);
 
-        if (!$booFoo && $strRule == static::DEFAULT_CONDITION) {
+        if (!$booFoo && $strRule === static::DEFAULT_CONDITION) {
             return !$this->hasFieldRuleWithoutParameterReal($strField, [
                 static::CONDITION_MUST,
                 static::CONDITION_VALUE,
@@ -2346,10 +2395,10 @@ class Validate implements IValidate
 
         foreach ($mixRule as $strRule) {
             if ($booStrict) {
-                if (!in_array($strRule, $this->arrRule[$strField])) {
+                if (!in_array($strRule, $this->arrRule[$strField], true)) {
                     return false;
                 }
-            } elseif (in_array($strRule, $this->arrRule[$strField])) {
+            } elseif (in_array($strRule, $this->arrRule[$strField], true)) {
                 return true;
             }
         }
@@ -2367,7 +2416,7 @@ class Validate implements IValidate
      */
     protected function parseParameters($strRule, $strParameter)
     {
-        if ('regex' == strtolower($strRule)) {
+        if ('regex' === strtolower($strRule)) {
             return [
                 $strParameter,
             ];
@@ -2382,13 +2431,13 @@ class Validate implements IValidate
      * @param string $strField
      * @param string $strRule
      *
-     * @return void|bool
+     * @return bool|void
      */
     protected function doValidateItem($strField, $strRule)
     {
         list($strRule, $arrParameter) = $this->parseRule($strRule);
 
-        if ('' == $strRule) {
+        if ('' === $strRule) {
             return;
         }
 
@@ -2528,7 +2577,7 @@ class Validate implements IValidate
                 $strFoo .= "['{$strRule[$nI]}']";
             }
 
-            eval("\$strFoo = $strFoo ?? null;");
+            eval("\$strFoo = ${strFoo} ?? null;");
 
             return $strFoo;
         }
@@ -2562,7 +2611,7 @@ class Validate implements IValidate
             'not_in',
             'allow_ip',
             'deny_ip',
-        ]);
+        ], true);
     }
 
     /**
@@ -2590,7 +2639,7 @@ class Validate implements IValidate
             throw new InvalidArgumentException(sprintf('Extend class %s is not valid.', $strClass));
         }
 
-        $strMethod = method_exists($objExtend, $strMethod) ? $strMethod : ('handle' != $strMethod && method_exists($objExtend, 'handle') ? 'handle' : 'run');
+        $strMethod = method_exists($objExtend, $strMethod) ? $strMethod : ('handle' !== $strMethod && method_exists($objExtend, 'handle') ? 'handle' : 'run');
 
         $arrParameter[] = $this;
 
@@ -2606,7 +2655,7 @@ class Validate implements IValidate
      * @param string $strRule
      * @param array  $arrParameter
      *
-     * @return bool|null
+     * @return null|bool
      */
     protected function callExtend($strRule, $arrParameter)
     {
@@ -2616,7 +2665,8 @@ class Validate implements IValidate
             $arrParameter[] = $this;
 
             return call_user_func_array($mixExtend, $arrParameter);
-        } elseif (is_string($mixExtend)) {
+        }
+        if (is_string($mixExtend)) {
             return $this->callClassExtend($mixExtend, $arrParameter);
         }
     }
@@ -2625,6 +2675,7 @@ class Validate implements IValidate
      * 验证条件是否通过.
      *
      * @param callable|mixed $calCallback
+     * @param null|mixed     $mixCallback
      *
      * @return bool
      */
@@ -2639,47 +2690,5 @@ class Validate implements IValidate
         }
 
         return $booFoo;
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $arrArgs)
-    {
-        if ($this->placeholderTControl($method)) {
-            return $this;
-        }
-
-        $sExtend = Str::unCamelize(substr($method, 8));
-        if (isset($this->arrExtend[$sExtend])) {
-            return $this->callExtend($sExtend, $arrArgs);
-        }
-
-        if (count($arrArgs) > 0) {
-            $sExtend = 'validate'.ucwords($method);
-
-            $arrParameter = [
-                'foobar',
-            ];
-            $arrParameter[] = array_shift($arrArgs);
-            $arrParameter[] = $arrArgs;
-            unset($arrArgs);
-
-            if (method_exists($this, $sExtend)) {
-                return $this->$sExtend(...$arrParameter);
-            }
-
-            $sExtend = Str::unCamelize($method);
-            if (isset($this->arrExtend[$sExtend])) {
-                return $this->callExtend($sExtend, $arrParameter);
-            }
-        }
-
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
     }
 }

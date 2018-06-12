@@ -58,6 +58,6 @@ class Database implements IDatabase
      */
     public function __call(string $method, array $arrArgs)
     {
-        return $this->objConnect->$method(...$arrArgs);
+        return $this->objConnect->{$method}(...$arrArgs);
     }
 }

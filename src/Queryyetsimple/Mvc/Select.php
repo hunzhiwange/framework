@@ -22,11 +22,11 @@ namespace Leevel\Mvc;
 
 use Closure;
 use Exception;
-use Leevel\Support\Str;
-use Leevel\Support\Arr;
 use Leevel\Collection\Collection;
-use Leevel\Mvc\Relation\Relation;
 use Leevel\Database\Select as DatabaseSelect;
+use Leevel\Mvc\Relation\Relation;
+use Leevel\Support\Arr;
+use Leevel\Support\Str;
 
 /**
  * 模型查询.
@@ -81,7 +81,7 @@ class Select
     public function __call(string $method, array $arrArgs)
     {
         if (method_exists($this->objSelect, $method)) {
-            $mixResult = $this->objSelect->$method(...$arrArgs);
+            $mixResult = $this->objSelect->{$method}(...$arrArgs);
 
             $mixResult = $this->preLoadResult($mixResult);
 
@@ -93,6 +93,8 @@ class Select
 
     /**
      * 获取模型.
+     *
+     * @param mixed $objModel
      *
      * @return \Leevel\Mvc\IModel
      */
@@ -153,9 +155,9 @@ class Select
 
         if (is_array($mixResult)) {
             $mixResult = $this->preLoadRelation($mixResult);
-            if ('model' == $strType) {
+            if ('model' === $strType) {
                 $mixResult = reset($mixResult);
-            } elseif ('collection' == $strType) {
+            } elseif ('collection' === $strType) {
                 $mixResult = new collection($mixResult);
             }
         }
@@ -169,7 +171,7 @@ class Select
      * @param mixed $mixId
      * @param array $arrColumn
      *
-     * @return \Leevel\Mvc\IModel|\Leevel\Collection\Collection|null
+     * @return null|\Leevel\Collection\Collection|\Leevel\Mvc\IModel
      */
     public function find($mixId, $arrColumn = ['*'])
     {
@@ -203,14 +205,14 @@ class Select
      * @param mixed $mixId
      * @param array $arrColumn
      *
-     * @return \Leevel\Mvc\IModel|\Leevel\Collection\Collection
+     * @return \Leevel\Collection\Collection|\Leevel\Mvc\IModel
      */
     public function findOrFail($mixId, $arrColumn = ['*'])
     {
         $mixResult = $this->find($mixId, $arrColumn);
 
         if (is_array($mixId)) {
-            if (count($mixResult) == count(array_unique($mixId))) {
+            if (count($mixResult) === count(array_unique($mixId))) {
                 return $mixResult;
             }
         } elseif (null !== $mixResult) {
@@ -244,8 +246,9 @@ class Select
      * 查找第一个结果.
      *
      * @param array $columns
+     * @param mixed $arrColumn
      *
-     * @return \Leevel\Mvc\IModel|static|null
+     * @return null|\Leevel\Mvc\IModel|static
      */
     public function first($arrColumn = ['*'])
     {
@@ -264,6 +267,7 @@ class Select
         if (null !== (($objModel = $this->first($arrColumn)))) {
             return $objModel;
         }
+
         throw (new ModelNotFoundException())->model(get_class($this->objModel));
     }
 
@@ -358,6 +362,7 @@ class Select
      * 根据主键 ID 删除模型.
      *
      * @param array|int $ids
+     * @param mixed     $mixId
      *
      * @return int
      */
@@ -378,7 +383,7 @@ class Select
     /**
      * 恢复软删除的模型.
      *
-     * @return bool|null
+     * @return null|bool
      */
     public function softRestore()
     {
@@ -522,13 +527,14 @@ class Select
      * 取得关联模型.
      *
      * @param string $name
+     * @param mixed  $strName
      *
      * @return \leevel\Mvc\Relation\Relation
      */
     protected function getRelation($strName)
     {
         $objRelation = Relation::withoutRelationCondition(function () use ($strName) {
-            return $this->objModel->$strName();
+            return $this->objModel->{$strName}();
         });
 
         $arrNested = $this->nestedRelation($strName);
@@ -676,7 +682,7 @@ class Select
      *
      * @param array $arrProp
      *
-     * @return \Leevel\Mvc\IModel|null
+     * @return null|\Leevel\Mvc\IModel
      */
     protected function getFirstByProp(array $arrProp)
     {

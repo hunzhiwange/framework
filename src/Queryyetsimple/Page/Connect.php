@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use RuntimeException;
-use Leevel\Support\IHtml;
 use Leevel\Option\TClass;
+use Leevel\Support\IHtml;
+use RuntimeException;
 
 /**
  * 分页处理.
@@ -36,6 +36,34 @@ use Leevel\Option\TClass;
 abstract class Connect implements IHtml
 {
     use TClass;
+
+    /**
+     * 默认每页分页数量.
+     *
+     * @var int
+     */
+    const PER_PAGE = 15;
+
+    /**
+     * 无穷大记录数.
+     *
+     * @var int
+     */
+    const MACRO = 999999999;
+
+    /**
+     * 默认分页渲染.
+     *
+     * @var int
+     */
+    const RENDER = 'defaults';
+
+    /**
+     * 默认范围.
+     *
+     * @var int
+     */
+    const RANGE = 2;
 
     /**
      * 总记录数量.
@@ -101,34 +129,6 @@ abstract class Connect implements IHtml
     protected static $calUrlResolver;
 
     /**
-     * 默认每页分页数量.
-     *
-     * @var int
-     */
-    const PER_PAGE = 15;
-
-    /**
-     * 无穷大记录数.
-     *
-     * @var int
-     */
-    const MACRO = 999999999;
-
-    /**
-     * 默认分页渲染.
-     *
-     * @var int
-     */
-    const RENDER = 'defaults';
-
-    /**
-     * 默认范围.
-     *
-     * @var int
-     */
-    const RANGE = 2;
-
-    /**
      * 配置.
      *
      * @var array
@@ -142,6 +142,16 @@ abstract class Connect implements IHtml
         'parameter' => [],
         'fragment' => null,
     ];
+
+    /**
+     * 转化为字符串.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return (string) $this->render();
+    }
 
     /**
      * 转化输出 HTML.
@@ -270,7 +280,7 @@ abstract class Connect implements IHtml
     /**
      * 设置 url.
      *
-     * @param string|null $mixUrl
+     * @param null|string $mixUrl
      *
      * @return $this
      */
@@ -282,7 +292,7 @@ abstract class Connect implements IHtml
     /**
      * 设置 render.
      *
-     * @param string|null $mixRender
+     * @param null|string $mixRender
      *
      * @return $this
      */
@@ -294,7 +304,7 @@ abstract class Connect implements IHtml
     /**
      * 获取 render.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getRender()
     {
@@ -304,7 +314,8 @@ abstract class Connect implements IHtml
     /**
      * 设置 range.
      *
-     * @param int|null $intRange
+     * @param null|int   $intRange
+     * @param null|mixed $mixRange
      *
      * @return $this
      */
@@ -326,7 +337,7 @@ abstract class Connect implements IHtml
     /**
      * 设置 url 描点.
      *
-     * @param string|null $mixFragment
+     * @param null|string $mixFragment
      *
      * @return $this
      */
@@ -338,7 +349,7 @@ abstract class Connect implements IHtml
     /**
      * 获取 url 描点.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getFragment()
     {
@@ -349,6 +360,7 @@ abstract class Connect implements IHtml
      * 设置每页分页数量.
      *
      * @param int intPerPage
+     * @param mixed $intPerPage
      *
      * @return $this
      */
@@ -488,7 +500,7 @@ abstract class Connect implements IHtml
     {
         if (null === $this->intPageEnd) {
             $this->intPageEnd = $this->getCurrentPage() + $this->getRange();
-            if (1 == $this->getPageStart()) {
+            if (1 === $this->getPageStart()) {
                 $this->intPageEnd = $this->getRange() * 2 + 2;
             }
 
@@ -554,7 +566,7 @@ abstract class Connect implements IHtml
      */
     public function canPrevRender()
     {
-        return (null === $this->getTotalPage() || $this->getTotalPage() > 1) && 1 != $this->getCurrentPage();
+        return (null === $this->getTotalPage() || $this->getTotalPage() > 1) && 1 !== $this->getCurrentPage();
     }
 
     /**
@@ -584,7 +596,7 @@ abstract class Connect implements IHtml
      */
     public function canNextRender()
     {
-        return null === $this->getTotalPage() || ($this->getTotalPage() > 1 && $this->getCurrentPage() != $this->getTotalPage());
+        return null === $this->getTotalPage() || ($this->getTotalPage() > 1 && $this->getCurrentPage() !== $this->getTotalPage());
     }
 
     /**
@@ -594,7 +606,7 @@ abstract class Connect implements IHtml
      */
     public function canLastRender()
     {
-        return $this->getTotalPage() > 1 && $this->getCurrentPage() != $this->getTotalPage() && $this->getTotalPage() > $this->getPageEnd();
+        return $this->getTotalPage() > 1 && $this->getCurrentPage() !== $this->getTotalPage() && $this->getTotalPage() > $this->getPageEnd();
     }
 
     /**
@@ -659,6 +671,56 @@ abstract class Connect implements IHtml
             urlencode('{page}'),
             '{page}',
         ], $mixPage, $this->getUrl());
+    }
+
+    /**
+     * 统计元素数量 count($obj).
+     *
+     * @return int
+     */
+    public function count()
+    {
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetExists.
+     *
+     * @param string $offset
+     *
+     * @return mixed
+     */
+    public function offsetExists($offset)
+    {
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetGet.
+     *
+     * @param string $offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetSet.
+     *
+     * @param string $offset
+     * @param mixed  $value
+     */
+    public function offsetSet($offset, $value)
+    {
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetUnset.
+     *
+     * @param string $offset
+     */
+    public function offsetUnset($offset)
+    {
     }
 
     /**
@@ -775,65 +837,5 @@ abstract class Connect implements IHtml
     protected function buildFragment()
     {
         return $this->getFragment() ? '#'.$this->getFragment() : '';
-    }
-
-    /**
-     * 统计元素数量 count($obj).
-     *
-     * @return int
-     */
-    public function count()
-    {
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetExists.
-     *
-     * @param string $offset
-     *
-     * @return mixed
-     */
-    public function offsetExists($offset)
-    {
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetGet.
-     *
-     * @param string $offset
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetSet.
-     *
-     * @param string $offset
-     * @param mixed  $value
-     */
-    public function offsetSet($offset, $value)
-    {
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param string $offset
-     */
-    public function offsetUnset($offset)
-    {
-    }
-
-    /**
-     * 转化为字符串.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return (string) $this->render();
     }
 }

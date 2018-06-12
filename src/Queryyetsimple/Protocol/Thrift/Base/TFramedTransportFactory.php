@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Thrift\Base;
 
-use Thrift\Transport\TTransport;
 use Thrift\Factory\TTransportFactory;
 use Thrift\Transport\TFramedTransport;
+use Thrift\Transport\TTransport;
 
 /**
  * 分帧传输工厂

@@ -21,13 +21,13 @@ declare(strict_types=1);
 namespace Leevel\Bootstrap;
 
 use Exception;
-use RuntimeException;
-use Leevel\Di\Provider;
 use Leevel\Di\Container;
+use Leevel\Di\Provider;
+use Leevel\Event\Provider\Register as EventProvider;
 use Leevel\Kernel\IProject;
 use Leevel\Log\Provider\Register as LogProvider;
-use Leevel\Event\Provider\Register as EventProvider;
 use Leevel\Router\Provider\Register as RouterProvider;
+use RuntimeException;
 
 /**
  * 项目管理.
@@ -167,9 +167,9 @@ class Project extends Container implements IProject
     {
         if (null !== static::$project) {
             return static::$project;
-        } else {
-            return static::$project = new static($path);
         }
+
+        return static::$project = new static($path);
     }
 
     /**
@@ -465,7 +465,7 @@ class Project extends Container implements IProject
             'swoole',
         ];
 
-        if (!in_array($type, $types)) {
+        if (!in_array($type, $types, true)) {
             throw new Exception(sprintf('Application cache type %s not support', $type));
         }
 
@@ -545,7 +545,7 @@ class Project extends Container implements IProject
      *
      * @param string $namespaces
      *
-     * @return string|null
+     * @return null|string
      */
     public function getPathByNamespace($namespaces)
     {

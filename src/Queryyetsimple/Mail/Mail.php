@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Mail;
 
-use Swift_Image;
-use Swift_Message;
-use Swift_Attachment;
 use InvalidArgumentException;
+use Leevel\Flow\TControl;
 use Leevel\Mvc\IView;
 use Leevel\Option\TClass;
-use Leevel\Flow\TControl;
+use Swift_Attachment;
+use Swift_Image;
+use Swift_Message;
 
 /**
  * mail 存储.
@@ -60,7 +60,7 @@ class Mail implements IMail
     /**
      * 事件.
      *
-     * @var \Leevel\Event\IDispatch|null
+     * @var null|\Leevel\Event\IDispatch
      */
     protected $objEvent;
 
@@ -109,7 +109,7 @@ class Mail implements IMail
      *
      * @param \Leevel\Mail\IConnect        $oConnect
      * @param \leevel\Mvc\IView            $objView
-     * @param \Leevel\Event\IDispatch|null $objEvent
+     * @param null|\Leevel\Event\IDispatch $objEvent
      * @param array                        $arrOption
      */
     public function __construct(IConnect $oConnect, IView $objView, $objEvent = null, array $arrOption = [])
@@ -121,10 +121,27 @@ class Mail implements IMail
     }
 
     /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        if ($this->placeholderTControl($method)) {
+            return $this;
+        }
+
+        return $this->oConnect->{$method}(...$arrArgs);
+    }
+
+    /**
      * 设置邮件发送来源.
      *
      * @param string      $strAddress
-     * @param string|null $mixName
+     * @param null|string $mixName
      *
      * @return $this
      */
@@ -139,7 +156,7 @@ class Mail implements IMail
      * 设置邮件发送地址
      *
      * @param string      $strAddress
-     * @param string|null $mixName
+     * @param null|string $mixName
      *
      * @return $this
      */
@@ -248,7 +265,7 @@ class Mail implements IMail
      * 添加附件.
      *
      * @param string        $strFile
-     * @param callable|null $mixCallback
+     * @param null|callable $mixCallback
      *
      * @return $this
      */
@@ -265,7 +282,7 @@ class Mail implements IMail
      *
      * @param string        $strData
      * @param string        $strName
-     * @param callable|null $mixCallback
+     * @param null|callable $mixCallback
      *
      * @return $this
      */
@@ -280,6 +297,7 @@ class Mail implements IMail
      * 图片嵌入邮件.
      *
      * @param string $file
+     * @param mixed  $strFile
      *
      * @return string
      */
@@ -295,7 +313,8 @@ class Mail implements IMail
      *
      * @param string      $strData
      * @param string      $strName
-     * @param string|null $contentType
+     * @param null|string $contentType
+     * @param null|mixed  $strContentType
      *
      * @return string
      */
@@ -369,7 +388,6 @@ class Mail implements IMail
     protected function getViewData($strFile, array $arrData)
     {
         return $this->objView->
-
         clearAssign()->
 
         assign('objMail', $this)->
@@ -405,7 +423,7 @@ class Mail implements IMail
                     $strMethod = 'addPart';
                 }
 
-                $this->objMessage->$strMethod(is_array($mixView) ? $this->getViewData($mixView['file'], $mixView['data']) : $mixView, 'text/html');
+                $this->objMessage->{$strMethod}(is_array($mixView) ? $this->getViewData($mixView['file'], $mixView['data']) : $mixView, 'text/html');
             }
         }
 
@@ -418,7 +436,7 @@ class Mail implements IMail
                     $strMethod = 'addPart';
                 }
 
-                $this->objMessage->$strMethod(is_array($mixView) ? $this->getViewData($mixView['file'], $mixView['data']) : $mixView, 'text/plain');
+                $this->objMessage->{$strMethod}(is_array($mixView) ? $this->getViewData($mixView['file'], $mixView['data']) : $mixView, 'text/plain');
             }
         }
     }
@@ -489,7 +507,7 @@ class Mail implements IMail
                 throw new InvalidArgumentException(sprintf('Message callback %s is not valid', $arrCallback[0]));
             }
 
-            $strMethod = method_exists($mixCallback, $arrCallback[1]) ? $arrCallback[1] : ('handle' != $arrCallback[1] && method_exists($mixCallback, 'handle') ? 'handle' : 'run');
+            $strMethod = method_exists($mixCallback, $arrCallback[1]) ? $arrCallback[1] : ('handle' !== $arrCallback[1] && method_exists($mixCallback, 'handle') ? 'handle' : 'run');
 
             return call_user_func_array([
                 $mixCallback,
@@ -532,7 +550,7 @@ class Mail implements IMail
      * 邮件附件消息回调处理.
      *
      * @param \Swift_Attachment $objAttachment
-     * @param callable|null     $mixCallback
+     * @param null|callable     $mixCallback
      *
      * @return $this
      */
@@ -547,22 +565,5 @@ class Mail implements IMail
         }
 
         return $this;
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $arrArgs)
-    {
-        if ($this->placeholderTControl($method)) {
-            return $this;
-        }
-
-        return $this->oConnect->$method(...$arrArgs);
     }
 }

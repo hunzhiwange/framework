@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.06
  *
  * @version 1.0
+ * @coversNothing
  */
 class CompilerVarTest extends TestCase
 {
@@ -48,7 +49,7 @@ eot;
 <?php echo $name;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // JS 风格变量
         $source = <<<'eot'
@@ -59,7 +60,7 @@ eot;
 <?php echo $value;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 数组支持
         $source = <<<'eot'
@@ -70,7 +71,7 @@ eot;
 我的梦想是写好”<?php echo $value['name'];?>“，我相信”<?php echo $value['description'];?>“。
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // JS 风格数组支持
         $source = <<<'eot'
@@ -81,7 +82,7 @@ eot;
 <?php echo $value['test'];?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 输出一个对象
         $source = <<<'eot'
@@ -92,7 +93,7 @@ eot;
 我的梦想是写好”<?php echo $demo->name;?>“，我相信”<?php echo $demo->description;?>“。
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // JS 风格输出一个对象
         // . 周围有空格表示变量
@@ -112,7 +113,7 @@ eot;
 <?php echo $a->b;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 对象无限层级支持
         $source = <<<'eot'
@@ -123,7 +124,7 @@ eot;
 我的梦想是写好”<?php echo $demo->name->child->child->child;?>“，我相信”<?php echo $demo->description;?>“。
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 对象数组点语法支持
         $source = <<<'eot'
@@ -134,7 +135,7 @@ eot;
 我的梦想是写好”<?php echo $demo->name;?>“，我相信”<?php echo $demo->description;?>“。
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 支持无限级对象属性
         $source = <<<'eot'
@@ -145,7 +146,7 @@ eot;
 我的梦想是写好”<?php echo $demo->name->one->two->three->four;?>“，我相信”<?php echo $demo->description->one->two->three->four;?>“。
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testOperator()
@@ -163,7 +164,7 @@ eot;
 <?php echo $value-$value2;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 变量之间的乘除余数
         $source = <<<'eot'
@@ -182,7 +183,7 @@ eot;
 <?php echo $value3%$list['key'];?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 变量之间的连接字符
         $source = <<<'eot'
@@ -193,7 +194,7 @@ eot;
 <?php echo $value3.'start - '.$value.$value2.'- end';?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testJsOperator()
@@ -211,7 +212,7 @@ eot;
 <?php echo $value-$value2;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 变量之间的乘除余数
         $source = <<<'eot'
@@ -230,7 +231,7 @@ eot;
 <?php echo $value3%$list['key'];?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 变量之间的连接字符
         $source = <<<'eot'
@@ -241,7 +242,7 @@ eot;
 <?php echo $value3.'start - '. $value. $value2.'end';?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testFunction()
@@ -257,7 +258,7 @@ eot;
 <?php echo function2(arg1,arg2,function1($varName));?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 模板中如果不加 ** 的格式为
         $source = <<<'eot'
@@ -268,7 +269,7 @@ eot;
 <?php echo function2(function1($varName), arg1,arg2);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 1
         $source = <<<'eot'
@@ -279,7 +280,7 @@ eot;
 <?php echo substr(strtoupper($content), 0,3);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 2
         $source = <<<'eot'
@@ -290,7 +291,7 @@ eot;
 <?php echo date("Y-m-d",$date);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 3
         $source = <<<'eot'
@@ -301,7 +302,7 @@ eot;
 <?php echo function1($var);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 静态方法
         $source = <<<'eot'
@@ -314,7 +315,7 @@ eot;
 <?php echo \Leevel\Support\Str::smartDate($currentTime);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 执行方法但不输出
         $source = <<<'eot'
@@ -325,7 +326,7 @@ eot;
 <?php function1($var);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 1
         $source = <<<'eot'
@@ -336,7 +337,7 @@ eot;
 <?php echo('Hello world!');?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 对象方法
         $source = <<<'eot'
@@ -347,7 +348,7 @@ eot;
 <?php echo $demo->test();?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 三元运算符
         $source = <<<'eot'
@@ -366,7 +367,7 @@ eot;
 <?php echo $name ?: "Hello，我最爱的雪碧！";?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testJsFunction()
@@ -384,7 +385,7 @@ eot;
 <?php echo e($var);?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 2
         $source = <<<'eot'
@@ -395,7 +396,7 @@ eot;
 <?php echo join($list, ',');?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 3
         $source = <<<'eot'
@@ -406,7 +407,7 @@ eot;
 <?php echo convert_encoding($data, 'iso-2022-jp', 'UTF-8'));?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         // 例 4
         $source = <<<'eot'
@@ -417,6 +418,6 @@ eot;
 <?php echo convert_encoding('iso-2022-jp', $data, 'UTF-8'));?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

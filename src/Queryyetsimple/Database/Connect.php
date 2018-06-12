@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Database;
 
-use PDO;
-use Throwable;
 use Exception;
-use PDOException;
-use Leevel\Log\ILog;
 use Leevel\Cache\ICache;
+use Leevel\Log\ILog;
 use Leevel\Support\Debug\Dump;
+use PDO;
+use PDOException;
+use Throwable;
 
 /**
  * 数据库连接抽象层
@@ -109,22 +109,22 @@ abstract class Connect
      */
     protected $arrCurrentOption = [];
 
-    /*
-     * sql 最后查询语句
+    /**
+     * sql 最后查询语句.
      *
      * @var string
      */
     protected $strSql;
 
-    /*
-     * sql 绑定参数
+    /**
+     * sql 绑定参数.
      *
      * @var array
      */
     protected $arrBindParams = [];
 
-    /*
-     * sql 影响记录数量
+    /**
+     * sql 影响记录数量.
      *
      * @var int
      */
@@ -160,7 +160,6 @@ abstract class Connect
         $this->arrOption = $arrOption;
 
         return;
-
         // 尝试连接主服务器
         $this->writeConnect();
 
@@ -170,6 +169,35 @@ abstract class Connect
                 $this->throwException();
             }
         }
+    }
+
+    /**
+     * 析构方法.
+     */
+    public function __destruct()
+    {
+        // 释放 PDO 预处理查询
+        $this->freePDOStatement();
+
+        // 关闭数据库连接
+        $this->closeDatabase();
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        // 查询组件
+        $this->initSelect();
+
+        // 调用事件
+        return $this->objSelect->{$method}(...$arrArgs);
     }
 
     /**
@@ -186,12 +214,12 @@ abstract class Connect
         if (is_bool($mixMaster)) {
             if (false === $mixMaster) {
                 return $this->readConnect();
-            } else {
-                return $this->writeConnect();
             }
-        } else {
-            return $this->arrConnect[$mixMaster] ?? null;
+
+            return $this->writeConnect();
         }
+
+        return $this->arrConnect[$mixMaster] ?? null;
     }
 
     /**
@@ -218,7 +246,7 @@ abstract class Connect
         if (!in_array(($strSqlType = $this->getSqlType($strSql)), [
             'select',
             'procedure',
-        ])) {
+        ], true)) {
             $this->throwException(
                 'The query method only allows select SQL statements.'
             );
@@ -246,7 +274,7 @@ abstract class Connect
             $intFetchType,
             $mixFetchArgument,
             $arrCtorArgs,
-            'procedure' == $strSqlType
+            'procedure' === $strSqlType
         );
     }
 
@@ -267,7 +295,7 @@ abstract class Connect
         $this->setSqlBindParams($strSql, $arrBindParams);
 
         // 验证 sql 类型
-        if ('select' == ($strSqlType = $this->getSqlType($strSql))) {
+        if ('select' === ($strSqlType = $this->getSqlType($strSql))) {
             $this->throwException(
                 'The execute method does not allow select SQL statements.'
             );
@@ -293,11 +321,11 @@ abstract class Connect
         if (in_array($strSqlType, [
             'insert',
             'replace',
-        ])) {
+        ], true)) {
             return $this->lastInsertId();
-        } else {
-            return $this->intNumRows;
         }
+
+        return $this->intNumRows;
     }
 
     /**
@@ -387,9 +415,9 @@ abstract class Connect
                 $this->strSql,
                 $this->arrBindParams,
             ];
-        } else {
-            return $this->strSql;
         }
+
+        return $this->strSql;
     }
 
     /**
@@ -459,12 +487,11 @@ abstract class Connect
 
         if (!$this->booDevelopment && false !== $arrTableColumns) {
             return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
-        } else {
-            $arrTableColumns = $this->getTableColumns($sTableName, $mixMaster);
-            $this->objCache->set($strCacheKey, $arrTableColumns);
-
-            return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
         }
+        $arrTableColumns = $this->getTableColumns($sTableName, $mixMaster);
+        $this->objCache->set($strCacheKey, $arrTableColumns);
+
+        return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
     }
 
     /**
@@ -501,13 +528,13 @@ abstract class Connect
                 case 3:
                     $sF = !empty($arrMapping[$arrArray[2]]) ? $arrMapping[$arrArray[2]] : $arrArray[2];
                     $sTable = "{$arrArray[0]}.{$arrArray[1]}";
-                    break;
 
+                    break;
                 case 2:
                     $sF = !empty($arrMapping[$arrArray[1]]) ? $arrMapping[$arrArray[1]] : $arrArray[1];
                     $sTable = $arrArray[0];
-                    break;
 
+                    break;
                 default:
                     $sF = !empty($arrMapping[$arrArray[0]]) ? $arrMapping[$arrArray[0]] : $arrArray[0];
                     $sTable = $sTableName;
@@ -556,9 +583,9 @@ abstract class Connect
 
         if ($sAlias) {
             return "{$sName} {$sAs} ".$this->identifierColumn($sAlias);
-        } else {
-            return $sName;
         }
+
+        return $sName;
     }
 
     /**
@@ -578,10 +605,11 @@ abstract class Connect
             switch (count($arrKey)) {
                 case 3:
                     $sField = $this->qualifyTableOrColumn("{$arrKey[0]}.{$arrKey[1]}.{$arrKey[2]}");
-                    break;
 
+                    break;
                 case 2:
                     $sField = $this->qualifyTableOrColumn("{$arrKey[0]}.{$arrKey[1]}");
+
                     break;
             }
         } else {
@@ -623,7 +651,7 @@ abstract class Connect
         $mixValue = trim($mixValue);
 
         // 问号占位符
-        if ('[?]' == $mixValue) {
+        if ('[?]' === $mixValue) {
             return '?';
         }
 
@@ -634,9 +662,9 @@ abstract class Connect
 
         if (true === $booQuotationMark) {
             return "'".addslashes($mixValue)."'";
-        } else {
-            return $mixValue;
         }
+
+        return $mixValue;
     }
 
     /**
@@ -650,9 +678,9 @@ abstract class Connect
     {
         if (null === $strOptionName) {
             return $this->arrCurrentOption;
-        } else {
-            return $this->arrCurrentOption[$strOptionName] ?? null;
         }
+
+        return $this->arrCurrentOption[$strOptionName] ?? null;
     }
 
     /**
@@ -677,12 +705,12 @@ abstract class Connect
             'update',
         ] as $strType) {
             if (0 === stripos($strSql, $strType)) {
-                if ('show' == $strType) {
+                if ('show' === $strType) {
                     $strType = 'select';
                 } elseif (in_array($strType, [
                     'call',
                     'exec',
-                ])) {
+                ], true)) {
                     $strType = 'procedure';
                 }
 
@@ -756,7 +784,7 @@ abstract class Connect
         }
 
         // 只有主服务器,主服务器必须先连接,未连接过附属服务器
-        if (1 == count($this->arrConnect)) {
+        if (1 === count($this->arrConnect)) {
             foreach ($this->arrOption['slave'] as $arrRead) {
                 $this->commonConnect($arrRead, null);
             }
@@ -810,9 +838,9 @@ abstract class Connect
         } catch (PDOException $oE) {
             if (false === $booThrowException) {
                 return false;
-            } else {
-                throw $oE;
             }
+
+            throw $oE;
         }
     }
 
@@ -908,6 +936,9 @@ abstract class Connect
 
     /**
      * 设置 sql 绑定参数.
+     *
+     * @param mixed $strSql
+     * @param mixed $arrBindParams
      */
     protected function setSqlBindParams($strSql, $arrBindParams = [])
     {
@@ -957,9 +988,9 @@ abstract class Connect
             $strError = '('.$arrTemp[1].')'.$arrTemp[2]."\r\n".$strError;
 
             throw new PDOException($strError);
-        } else {
-            throw new Exception($strError);
         }
+
+        throw new Exception($strError);
     }
 
     /**
@@ -968,34 +999,5 @@ abstract class Connect
     protected function initSelect()
     {
         $this->objSelect = new select($this);
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $arrArgs)
-    {
-        // 查询组件
-        $this->initSelect();
-
-        // 调用事件
-        return $this->objSelect->$method(...$arrArgs);
-    }
-
-    /**
-     * 析构方法.
-     */
-    public function __destruct()
-    {
-        // 释放 PDO 预处理查询
-        $this->freePDOStatement();
-
-        // 关闭数据库连接
-        $this->closeDatabase();
     }
 }

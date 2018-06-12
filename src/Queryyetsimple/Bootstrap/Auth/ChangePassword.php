@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Bootstrap\auth;
 
 use Leevel\auth;
-use Leevel\response;
-use Leevel\Http\Request;
 use Leevel\auth\change_password_failed;
+use Leevel\Http\Request;
+use Leevel\response;
 
 /**
  * 修改密码
@@ -63,7 +63,7 @@ trait ChangePassword
      *
      * @param \Leevel\Http\Request $oRequest
      *
-     * @return \Leevel\Http\Response|array
+     * @return array|\Leevel\Http\Response
      */
     public function changeUserPassword(request $oRequest)
     {
@@ -85,9 +85,9 @@ trait ChangePassword
                 return [
                     'message' => $this->getChangePasswordSucceededMessage($aUser['nikename'] ?: $aUser['name']),
                 ];
-            } else {
-                return $this->sendSucceededChangePasswordResponse($this->getChangePasswordSucceededMessage($aUser['nikename'] ?: $aUser['name']));
             }
+
+            return $this->sendSucceededChangePasswordResponse($this->getChangePasswordSucceededMessage($aUser['nikename'] ?: $aUser['name']));
         } catch (change_password_failed $oE) {
             return $this->sendFailedChangePasswordResponse($oE->getMessage());
         }

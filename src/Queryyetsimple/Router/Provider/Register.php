@@ -20,13 +20,13 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Provider;
 
-use Leevel\Router\Url;
 use Leevel\Di\Provider;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
-use Leevel\Router\Router;
 use Leevel\Router\Redirect;
 use Leevel\Router\ResponseFactory;
+use Leevel\Router\Router;
+use Leevel\Router\Url;
 
 /**
  * router 服务提供者.
@@ -133,7 +133,6 @@ class Register extends Provider
             $option = $project['option'];
 
             return (new ResponseFactory($project['view'], $project['redirect']))->
-
             setViewSuccessTemplate($option->get('view\action_success'))->
 
             setViewFailTemplate($option->get('view\action_fail'));

@@ -164,6 +164,7 @@ interface IValidate
      *
      * @param array          $arrRule
      * @param callable|mixed $calCallback
+     * @param mixed          $mixCallback
      *
      * @return $this
      */
@@ -183,6 +184,7 @@ interface IValidate
      *
      * @param array          $arrRule
      * @param callable|mixed $calCallback
+     * @param mixed          $mixCallback
      *
      * @return $this
      */
@@ -204,6 +206,7 @@ interface IValidate
      * @param string         $strField
      * @param mixed          $mixRule
      * @param callable|mixed $calCallback
+     * @param mixed          $mixCallback
      *
      * @return $this
      */
@@ -225,6 +228,7 @@ interface IValidate
      * @param string         $strField
      * @param mixed          $mixRule
      * @param callable|mixed $calCallback
+     * @param mixed          $mixCallback
      *
      * @return $this
      */
@@ -362,6 +366,7 @@ interface IValidate
      *
      * @param string          $rule
      * @param callable|string $mixExtend
+     * @param mixed           $strRule
      *
      * @return $this
      */

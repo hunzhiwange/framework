@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Cookie;
 
-use Tests\TestCase;
 use Leevel\Cookie\Cookie;
 use Leevel\Cookie\ICookie;
+use Tests\TestCase;
 
 /**
  * cookie test.
@@ -32,6 +32,7 @@ use Leevel\Cookie\ICookie;
  * @since 2018.06.03
  *
  * @version 1.0
+ * @coversNothing
  */
 class CookieTest extends TestCase
 {
@@ -62,7 +63,7 @@ class CookieTest extends TestCase
 
         $cookie->set('foo', 'bar');
 
-        $this->assertEquals([
+        $this->assertSame([
             'q_foo',
             'bar',
             time() + 86400,
@@ -74,7 +75,7 @@ class CookieTest extends TestCase
 
         $cookie->delete('foo');
 
-        $this->assertEquals([
+        $this->assertSame([
             'q_foo',
             null,
             time() + 86400,

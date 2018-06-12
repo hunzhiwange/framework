@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Bootstrap\Bootstrap;
 
-use Exception;
 use ErrorException;
+use Exception;
 use Leevel\Kernel\IProject;
 use Leevel\Kernel\Runtime\IRuntime;
 use Symfony\Component\Console\Output\ConsoleOutput;

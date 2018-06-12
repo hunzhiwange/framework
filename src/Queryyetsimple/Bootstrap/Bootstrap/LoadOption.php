@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Bootstrap\Bootstrap;
 
+use Leevel\Kernel\IProject;
 use Leevel\Option\Load;
 use Leevel\Option\Option;
 use Leevel\Support\Facade;
-use Leevel\Kernel\IProject;
 
 /**
  * 读取配置.
@@ -76,7 +76,7 @@ class LoadOption
      * 设置环境变量.
      *
      * @param string      $name
-     * @param string|null $value
+     * @param null|string $value
      */
     protected function setEnvVar($name, $value = null): void
     {
@@ -105,7 +105,7 @@ class LoadOption
             date_default_timezone_set($option->get('time_zone', 'UTC'));
         }
 
-        if (PHP_SAPI == 'cli') {
+        if (PHP_SAPI === 'cli') {
             return;
         }
 

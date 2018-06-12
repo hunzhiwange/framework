@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Stack;
 
-use Tests\TestCase;
 use Leevel\Stack\Queue;
+use Tests\TestCase;
 
 /**
  * queue test.
@@ -31,6 +31,7 @@ use Leevel\Stack\Queue;
  * @since 2018.06.10
  *
  * @version 1.0
+ * @coversNothing
  */
 class QueueTest extends TestCase
 {
@@ -38,34 +39,33 @@ class QueueTest extends TestCase
     {
         $queue = new Queue();
 
-        $this->assertEquals(0, $queue->count());
+        $this->assertSame(0, $queue->count());
 
         // 入对 5
         $queue->in(5);
 
-        $this->assertEquals(1, $queue->count());
+        $this->assertSame(1, $queue->count());
 
         // 入对 6
         $queue->in(6);
 
-        $this->assertEquals(2, $queue->count());
+        $this->assertSame(2, $queue->count());
 
         // 出对，先进先出
-        $this->assertEquals(5, $queue->out());
+        $this->assertSame(5, $queue->out());
 
-        $this->assertEquals(1, $queue->count());
+        $this->assertSame(1, $queue->count());
 
         // 出对，先进先出
-        $this->assertEquals(6, $queue->out());
+        $this->assertSame(6, $queue->out());
 
-        $this->assertEquals(0, $queue->count());
+        $this->assertSame(0, $queue->count());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testValidateType()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $queue = new Queue(['string']);
 
         $queue->in(5);

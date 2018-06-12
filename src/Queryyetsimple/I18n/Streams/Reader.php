@@ -46,7 +46,7 @@ class Reader
      */
     public function __construct()
     {
-        $this->is_overloaded = (0 != (ini_get('mbstring.func_overload') & 2)) && function_exists('mb_substr');
+        $this->is_overloaded = (0 !== (ini_get('mbstring.func_overload') & 2)) && function_exists('mb_substr');
         $this->_pos = 0;
     }
 
@@ -69,10 +69,10 @@ class Reader
     public function readint32()
     {
         $bytes = $this->read(4);
-        if (4 != $this->strlen($bytes)) {
+        if (4 !== $this->strlen($bytes)) {
             return false;
         }
-        $endian_letter = ('big' == $this->endian) ? 'N' : 'V';
+        $endian_letter = ('big' === $this->endian) ? 'N' : 'V';
         $int = unpack($endian_letter, $bytes);
 
         return reset($int);
@@ -82,16 +82,17 @@ class Reader
      * Reads an array of 32-bit Integers from the Stream.
      *
      * @param int count How many elements should be read
+     * @param mixed $count
      *
      * @return mixed Array of integers or false if there isn't enough data or on error
      */
     public function readint32array($count)
     {
         $bytes = $this->read(4 * $count);
-        if (4 * $count != $this->strlen($bytes)) {
+        if (4 * $count !== $this->strlen($bytes)) {
             return false;
         }
-        $endian_letter = ('big' == $this->endian) ? 'N' : 'V';
+        $endian_letter = ('big' === $this->endian) ? 'N' : 'V';
 
         return unpack($endian_letter.$count, $bytes);
     }
@@ -107,9 +108,9 @@ class Reader
     {
         if ($this->is_overloaded) {
             return mb_substr($string, $start, $length, 'ascii');
-        } else {
-            return substr($string, $start, $length);
         }
+
+        return substr($string, $start, $length);
     }
 
     /**
@@ -121,9 +122,9 @@ class Reader
     {
         if ($this->is_overloaded) {
             return mb_strlen($string, 'ascii');
-        } else {
-            return strlen($string);
         }
+
+        return strlen($string);
     }
 
     /**
@@ -142,9 +143,9 @@ class Reader
             }
 
             return $out;
-        } else {
-            return str_split($string, $chunk_size);
         }
+
+        return str_split($string, $chunk_size);
     }
 
     /**

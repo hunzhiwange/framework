@@ -39,26 +39,26 @@ class Response
     /**
      * @var int
      */
-    public $status = null;
+    public $status;
 
     /**
      * @var string
      */
-    public $data = null;
+    public $data;
 
     public function __construct($vals = null)
     {
         if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
-        1 => [
-          'var' => 'status',
-          'type' => TType::I16,
-          ],
-        2 => [
-          'var' => 'data',
-          'type' => TType::STRING,
-          ],
-        ];
+                1 => [
+                    'var' => 'status',
+                    'type' => TType::I16,
+                ],
+                2 => [
+                    'var' => 'data',
+                    'type' => TType::STRING,
+                ],
+            ];
         }
         if (is_array($vals)) {
             if (isset($vals['status'])) {
@@ -84,26 +84,29 @@ class Response
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-            if (TType::STOP == $ftype) {
+            if (TType::STOP === $ftype) {
                 break;
             }
             switch ($fid) {
         case 1:
-          if (TType::I16 == $ftype) {
+          if (TType::I16 === $ftype) {
               $xfer += $input->readI16($this->status);
           } else {
               $xfer += $input->skip($ftype);
           }
+
           break;
         case 2:
-          if (TType::STRING == $ftype) {
+          if (TType::STRING === $ftype) {
               $xfer += $input->readString($this->data);
           } else {
               $xfer += $input->skip($ftype);
           }
+
           break;
         default:
           $xfer += $input->skip($ftype);
+
           break;
       }
             $xfer += $input->readFieldEnd();

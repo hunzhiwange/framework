@@ -62,6 +62,23 @@ abstract class Provider
     }
 
     /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $args)
+    {
+        if ('bootstrap' === $method) {
+            return;
+        }
+
+        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+    }
+
+    /**
      * 注册服务
      */
     abstract public function register();
@@ -104,22 +121,5 @@ abstract class Provider
     public function container()
     {
         return $this->container;
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        if ('bootstrap' == $method) {
-            return;
-        }
-
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
     }
 }

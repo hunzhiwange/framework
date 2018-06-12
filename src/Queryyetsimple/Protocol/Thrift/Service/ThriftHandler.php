@@ -21,12 +21,12 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Thrift\Service;
 
 use Exception;
-use Leevel\Router;
-use Leevel\Http\IResponse;
-use Leevel\Router\IRouter;
 use Leevel\Bootstrap\IKernel;
+use Leevel\Http\IResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Request as HttpRequest;
+use Leevel\Router;
+use Leevel\Router\IRouter;
 
 /**
  * thrift 默认服务调用响应.

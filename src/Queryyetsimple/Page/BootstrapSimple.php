@@ -71,10 +71,10 @@ class BootstrapSimple extends Bootstrap
     protected function getPrevRender()
     {
         if ($this->objPage->canPrevRender()) {
-            return sprintf('<li class="%s"><a aria-label="Previous" href="%s"><span aria-hidden="true">%s</span></a></li>', 'justify' == $this->getOption('align') ? 'previous' : '', $this->replace($this->objPage->parsePrevRenderPrev()), __('上一页'));
-        } else {
-            return sprintf('<li class="disabled%s"><a aria-label="Previous"><span aria-hidden="true">%s</span></a></li>', 'justify' == $this->getOption('align') ? ' previous' : '', __('上一页'));
+            return sprintf('<li class="%s"><a aria-label="Previous" href="%s"><span aria-hidden="true">%s</span></a></li>', 'justify' === $this->getOption('align') ? 'previous' : '', $this->replace($this->objPage->parsePrevRenderPrev()), __('上一页'));
         }
+
+        return sprintf('<li class="disabled%s"><a aria-label="Previous"><span aria-hidden="true">%s</span></a></li>', 'justify' === $this->getOption('align') ? ' previous' : '', __('上一页'));
     }
 
     /**
@@ -85,10 +85,10 @@ class BootstrapSimple extends Bootstrap
     protected function getNextRender()
     {
         if ($this->objPage->canNextRender()) {
-            return sprintf('<li class="%s"><a aria-label="Next" href="%s"><span aria-hidden="true">%s</span></a></li>', 'justify' == $this->getOption('align') ? 'next' : '', $this->replace($this->objPage->getCurrentPage() + 1), __('下一页'));
-        } else {
-            return sprintf('<li class="disabled%s"><a aria-label="Next"><span aria-hidden="true">%s</span></a></li>', 'justify' == $this->getOption('align') ? ' next' : '', __('下一页'));
+            return sprintf('<li class="%s"><a aria-label="Next" href="%s"><span aria-hidden="true">%s</span></a></li>', 'justify' === $this->getOption('align') ? 'next' : '', $this->replace($this->objPage->getCurrentPage() + 1), __('下一页'));
         }
+
+        return sprintf('<li class="disabled%s"><a aria-label="Next"><span aria-hidden="true">%s</span></a></li>', 'justify' === $this->getOption('align') ? ' next' : '', __('下一页'));
     }
 
     /**

@@ -43,7 +43,7 @@ class ValidateException extends Exception
     /**
      * 响应组件.
      *
-     * @var \Leevel\Http\Response|null
+     * @var null|\Leevel\Http\Response
      */
     public $objResponse;
 

@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Option\Console;
 
-use Leevel\Console\Option;
 use Leevel\Console\Command;
+use Leevel\Console\Option;
 
 /**
  * 配置缓存清理.

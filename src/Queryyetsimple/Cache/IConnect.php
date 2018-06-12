@@ -62,7 +62,7 @@ interface IConnect
     /**
      * 批量插入.
      *
-     * @param string|array $keys
+     * @param array|string $keys
      * @param mixed        $value
      */
     public function put($keys, $value = null);

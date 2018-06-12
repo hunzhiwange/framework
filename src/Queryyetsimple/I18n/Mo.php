@@ -95,7 +95,7 @@ class Mo extends Gettext
     }
 
     /**
-     * @return string|false
+     * @return false|string
      */
     public function export()
     {
@@ -212,7 +212,7 @@ class Mo extends Gettext
     {
         $exported = '';
         foreach ($this->headers as $header => $value) {
-            $exported .= "$header: $value\n";
+            $exported .= "${header}: ${value}\n";
         }
 
         return $exported;
@@ -221,7 +221,7 @@ class Mo extends Gettext
     /**
      * @param int $magic
      *
-     * @return string|false
+     * @return false|string
      */
     public function get_byteorder($magic)
     {
@@ -231,13 +231,14 @@ class Mo extends Gettext
         $magic_little_64 = (int) 2500072158;
         // 0xde120495
         $magic_big = ((int) -569244523) & 0xFFFFFFFF;
-        if ($magic_little == $magic || $magic_little_64 == $magic) {
+        if ($magic_little === $magic || $magic_little_64 === $magic) {
             return 'little';
-        } elseif ($magic_big == $magic) {
-            return 'big';
-        } else {
-            return false;
         }
+        if ($magic_big === $magic) {
+            return 'big';
+        }
+
+        return false;
     }
 
     /**
@@ -250,9 +251,9 @@ class Mo extends Gettext
             return false;
         }
         $reader->setEndian($endian_string);
-        $endian = ('big' == $endian_string) ? 'N' : 'V';
+        $endian = ('big' === $endian_string) ? 'N' : 'V';
         $header = $reader->read(24);
-        if (24 != $reader->strlen($header)) {
+        if (24 !== $reader->strlen($header)) {
             return false;
         }
         // parse header
@@ -261,27 +262,27 @@ class Mo extends Gettext
             return false;
         }
         // support revision 0 of MO format specs, only
-        if (0 != $header['revision']) {
+        if (0 !== $header['revision']) {
             return false;
         }
         // seek to data blocks
         $reader->seekto($header['originals_lenghts_addr']);
         // read originals' indices
         $originals_lengths_length = $header['translations_lenghts_addr'] - $header['originals_lenghts_addr'];
-        if ($header['total'] * 8 != $originals_lengths_length) {
+        if ($header['total'] * 8 !== $originals_lengths_length) {
             return false;
         }
         $originals = $reader->read($originals_lengths_length);
-        if ($reader->strlen($originals) != $originals_lengths_length) {
+        if ($reader->strlen($originals) !== $originals_lengths_length) {
             return false;
         }
         // read translations' indices
         $translations_lenghts_length = $header['hash_addr'] - $header['translations_lenghts_addr'];
-        if ($header['total'] * 8 != $translations_lenghts_length) {
+        if ($header['total'] * 8 !== $translations_lenghts_length) {
             return false;
         }
         $translations = $reader->read($translations_lenghts_length);
-        if ($reader->strlen($translations) != $translations_lenghts_length) {
+        if ($reader->strlen($translations) !== $translations_lenghts_length) {
             return false;
         }
         // transform raw data into set of indices

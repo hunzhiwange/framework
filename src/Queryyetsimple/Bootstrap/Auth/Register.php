@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Bootstrap\auth;
 
 use Leevel\auth;
-use Leevel\response;
-use Leevel\Http\Request;
 use Leevel\auth\RegisterFailed;
+use Leevel\Http\Request;
+use Leevel\response;
 
 /**
  * 用户注册.

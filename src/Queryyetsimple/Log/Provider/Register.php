@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Log\Provider;
 
-use Leevel\Log\Manager;
 use Leevel\Di\Provider;
+use Leevel\Log\Manager;
 
 /**
  * log 服务提供者.

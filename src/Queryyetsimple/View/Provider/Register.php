@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\View\Provider;
 
+use Leevel\Di\Provider;
+use Leevel\View\Compiler;
+use Leevel\View\Manager;
+use Leevel\View\Parser;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
-use Leevel\Di\Provider;
-use Leevel\View\Parser;
-use Leevel\View\Manager;
-use Leevel\View\Compiler;
 
 /**
  * view 服务提供者.
@@ -114,7 +114,6 @@ class Register extends Provider
     {
         $this->container->singleton('view.parser', function ($project) {
             return (new Parser($project['view.compiler']))->
-
             registerCompilers()->
 
             registerParsers();

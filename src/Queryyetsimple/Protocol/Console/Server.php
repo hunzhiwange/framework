@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
-use Leevel\Console\Option;
-use Leevel\Console\Command;
 use Leevel\Console\Argument;
+use Leevel\Console\Command;
+use Leevel\Console\Option;
 
 /**
  * swoole 服务启动.
@@ -100,7 +100,7 @@ class Server extends Command
      */
     protected function getLogo()
     {
-        return <<<queryphp
+        return <<<'queryphp'
 _____________                           _______________
  ______/     \__  _____  ____  ______  / /_  _________
   ____/ __   / / / / _ \/ __`\/ / __ \/ __ \/ __ \___

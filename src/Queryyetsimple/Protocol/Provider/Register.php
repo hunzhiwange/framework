@@ -21,11 +21,11 @@ declare(strict_types=1);
 namespace Leevel\Protocol\Provider;
 
 use Leevel\Di\Provider;
-use Leevel\Protocol\Server;
-use Leevel\Protocol\HttpServer;
-use Leevel\Protocol\WebsocketServer;
-use Leevel\Protocol\RpcServer;
 use Leevel\Kernel\IKernel;
+use Leevel\Protocol\HttpServer;
+use Leevel\Protocol\RpcServer;
+use Leevel\Protocol\Server;
+use Leevel\Protocol\WebsocketServer;
 
 /**
  * swoole 服务提供者.

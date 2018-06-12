@@ -73,7 +73,7 @@ interface IContainer
      * 设置别名.
      *
      * @param array|string      $alias
-     * @param string|null|array $value
+     * @param null|array|string $value
      */
     public function alias($alias, $value = null);
 
@@ -83,14 +83,14 @@ interface IContainer
      * @param string $name
      * @param array  $args
      *
-     * @return object|false
+     * @return false|object
      */
     public function make($name, ?array $args = null);
 
     /**
      * 实例回调自动注入.
      *
-     * @param callable|array|string $callback
+     * @param array|callable|string $callback
      * @param array                 $args
      *
      * @return mixed

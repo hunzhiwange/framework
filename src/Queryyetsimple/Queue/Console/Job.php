@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Queue\Console;
 
 use Exception;
-use PHPQueue\Base;
-use Leevel\Console\Option;
-use Leevel\Console\Command;
 use Leevel\Console\Argument;
+use Leevel\Console\Command;
+use Leevel\Console\Option;
+use PHPQueue\Base;
 
 /**
  * 导入消息队列配置.

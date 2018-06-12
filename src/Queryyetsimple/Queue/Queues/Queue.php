@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Queue\Queues;
 
-use PHPQueue\Logger;
 use PHPQueue\JobQueue;
+use PHPQueue\Logger;
 
 /**
  * Queue 消息队列.
@@ -125,7 +125,7 @@ abstract class Queue extends JobQueue
     /**
      * 添加一个任务
      *
-     * @param array|null $arrNewJob
+     * @param null|array $arrNewJob
      *
      * @return bool
      */
@@ -143,7 +143,7 @@ abstract class Queue extends JobQueue
     /**
      * 获取一个任务
      *
-     * @param string|null $strJobId
+     * @param null|string $strJobId
      *
      * @return object
      */
@@ -162,8 +162,8 @@ abstract class Queue extends JobQueue
     /**
      * 更新任务
      *
-     * @param string|null $strJobId
-     * @param array|null  $arrResultData
+     * @param null|string $strJobId
+     * @param null|array  $arrResultData
      */
     public function updateJob($strJobId = null, $arrResultData = null)
     {
@@ -176,7 +176,7 @@ abstract class Queue extends JobQueue
     /**
      * 删除任务
      *
-     * @param string|null $strJobId
+     * @param null|string $strJobId
      */
     public function clearJob($strJobId = null)
     {
@@ -186,7 +186,7 @@ abstract class Queue extends JobQueue
     /**
      * 重新发布任务
      *
-     * @param string|null $strJobId
+     * @param null|string $strJobId
      */
     public function releaseJob($strJobId = null)
     {

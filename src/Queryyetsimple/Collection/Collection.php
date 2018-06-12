@@ -20,15 +20,15 @@ declare(strict_types=1);
 
 namespace Leevel\Collection;
 
-use Iterator;
-use Countable;
 use ArrayAccess;
-use JsonSerializable;
+use Countable;
 use InvalidArgumentException;
-use Leevel\Support\Type;
-use Leevel\Support\IJson;
+use Iterator;
+use JsonSerializable;
 use Leevel\Support\IArray;
+use Leevel\Support\IJson;
 use Leevel\Support\TMacro;
+use Leevel\Support\Type;
 
 /**
  * 集合.
@@ -87,6 +87,39 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         }
 
         unset($elements);
+    }
+
+    /**
+     * __toString 魔术方法.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toJson();
+    }
+
+    /**
+     * __get 魔术方法.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->offsetGet($key);
+    }
+
+    /**
+     * __set 魔术方法.
+     *
+     * @param string $key
+     * @param mixed  $value
+     */
+    public function __set($key, $value)
+    {
+        $this->offsetSet($key, $value);
     }
 
     /**
@@ -238,13 +271,15 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         return array_map(function ($value) {
             if ($value instanceof JsonSerializable) {
                 return $value->jsonSerialize();
-            } elseif ($value instanceof IJson) {
-                return json_decode($value->toJson(), true);
-            } elseif ($value instanceof IArray) {
-                return $value->toArray();
-            } else {
-                return $value;
             }
+            if ($value instanceof IJson) {
+                return json_decode($value->toJson(), true);
+            }
+            if ($value instanceof IArray) {
+                return $value->toArray();
+            }
+
+            return $value;
         }, $this->elements);
     }
 
@@ -258,16 +293,6 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     public function toJson($option = JSON_UNESCAPED_UNICODE)
     {
         return json_encode($this->jsonSerialize(), $option);
-    }
-
-    /**
-     * __toString 魔术方法.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->toJson();
     }
 
     /**
@@ -359,6 +384,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
                 if ($k === $key) {
                     $current = true;
                 }
+
                 continue;
             }
             $result[$k] = $value;
@@ -384,6 +410,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         foreach ($this->elements as $k => $value) {
             if ($k === $key) {
                 $current = true;
+
                 break;
             }
             $result[$k] = $value;
@@ -398,15 +425,14 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      * @param string $key
      * @param mixed  $value
      *
-     * @return void|mixed
+     * @return mixed|void
      */
     public function attr($key, $value = null)
     {
         if (null === $value) {
             return $this->offsetGet($key);
-        } else {
-            $this->offsetSet($key, $value);
         }
+        $this->offsetSet($key, $value);
     }
 
     /**
@@ -445,15 +471,14 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     {
         if (null === $value) {
             return $this->key();
-        } else {
-            $key = array_search($value, $this->elements, $strict);
-
-            if (false === $key) {
-                return null;
-            }
-
-            return $key;
         }
+        $key = array_search($value, $this->elements, $strict);
+
+        if (false === $key) {
+            return null;
+        }
+
+        return $key;
     }
 
     /**
@@ -601,13 +626,17 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     {
         if (is_array($elements)) {
             return $elements;
-        } elseif ($elements instanceof self) {
+        }
+        if ($elements instanceof self) {
             return $elements->all();
-        } elseif ($elements instanceof IArray) {
+        }
+        if ($elements instanceof IArray) {
             return $elements->toArray();
-        } elseif ($elements instanceof IJson) {
+        }
+        if ($elements instanceof IJson) {
             return json_decode($elements->toJson(), true);
-        } elseif ($elements instanceof JsonSerializable) {
+        }
+        if ($elements instanceof JsonSerializable) {
             return $elements->jsonSerialize();
         }
 
@@ -628,28 +657,5 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         }
 
         return $key;
-    }
-
-    /**
-     * __get 魔术方法.
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        return $this->offsetGet($key);
-    }
-
-    /**
-     * __set 魔术方法.
-     *
-     * @param string $key
-     * @param mixed  $value
-     */
-    public function __set($key, $value)
-    {
-        $this->offsetSet($key, $value);
     }
 }

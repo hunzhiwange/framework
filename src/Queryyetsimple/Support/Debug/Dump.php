@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Support\Debug;
 
-use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
+use Symfony\Component\VarDumper\Dumper\CliDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 /**
@@ -41,7 +41,7 @@ class Dump
      * @param mixed $var
      * @param bool  $simple
      *
-     * @return void|string
+     * @return string|void
      */
     public static function dump($var, $simple = false)
     {
@@ -79,7 +79,7 @@ class Dump
         $output = ob_get_clean();
 
         if (!extension_loaded('xdebug')) {
-            $output = preg_replace("/\]\=\>\n(\s+)/m", '] => ', $output);
+            $output = preg_replace("/\\]\\=\\>\n(\\s+)/m", '] => ', $output);
             $output = 'cli' === PHP_SAPI ? $output : '<pre>'.htmlspecialchars($output, ENT_COMPAT, 'UTF-8').'</pre>';
         }
 

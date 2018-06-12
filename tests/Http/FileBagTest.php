@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
-use Tests\TestCase;
 use Leevel\Http\FileBag;
 use Leevel\Http\UploadedFile;
+use Tests\TestCase;
 
 /**
  * FileBagTest test
@@ -35,14 +35,32 @@ use Leevel\Http\UploadedFile;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ * @coversNothing
  */
 class FileBagTest extends TestCase
 {
-    /**
-     * @expectedException \InvalidArgumentException
-     */
+    protected function setUp()
+    {
+        $dir = sys_get_temp_dir().'/form_test';
+
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+    }
+
+    protected function tearDown()
+    {
+        foreach (glob(sys_get_temp_dir().'/form_test/*') as $file) {
+            unlink($file);
+        }
+
+        rmdir(sys_get_temp_dir().'/form_test');
+    }
+
     public function testFileMustBeAnArrayOrUploadedFile()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         new FileBag(['file' => 'foo']);
     }
 
@@ -59,9 +77,9 @@ class FileBagTest extends TestCase
                 'tmp_name' => $tmpFile,
                 'error' => 0,
                 'size' => null,
-        ], ]);
+            ], ]);
 
-        $this->assertEquals($file, $bag->get('file'));
+        $this->assertSame($file, $bag->get('file'));
     }
 
     public function testShouldSetEmptyUploadedFilesToNull()
@@ -73,7 +91,7 @@ class FileBagTest extends TestCase
                 'tmp_name' => '',
                 'error' => UPLOAD_ERR_NO_FILE,
                 'size' => 0,
-        ], ]);
+            ], ]);
 
         $this->assertNull($bag->get('file'));
     }
@@ -103,7 +121,7 @@ class FileBagTest extends TestCase
                 'tmp_name' => ['file1' => ''],
                 'error' => ['file1' => UPLOAD_ERR_NO_FILE],
                 'size' => ['file1' => 0],
-        ], ]);
+            ], ]);
 
         $this->assertNull($bag->get('files'));
         $this->assertSame([], $bag->getArr('files'));
@@ -135,7 +153,7 @@ class FileBagTest extends TestCase
         ]);
 
         $files = $bag->all();
-        $this->assertEquals($file, $files['child\file']);
+        $this->assertSame($file, $files['child\file']);
     }
 
     public function testShouldConvertNestedUploadedFilesWithPhpBug()
@@ -164,14 +182,13 @@ class FileBagTest extends TestCase
         ]);
 
         $files = $bag->all();
-        $this->assertEquals($file, $files['child\sub\file']);
+        $this->assertSame($file, $files['child\sub\file']);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testShouldNotConvertNestedUploadedFiles()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
         $bag = new FileBag(['image' => ['file' => $file]]);
@@ -184,7 +201,7 @@ class FileBagTest extends TestCase
         $bag = new FileBag(['image' => $file]);
 
         $files = $bag->all();
-        $this->assertEquals($file, $files['image']);
+        $this->assertSame($file, $files['image']);
     }
 
     protected function createTempFile()
@@ -193,23 +210,5 @@ class FileBagTest extends TestCase
         file_put_contents($tempFile, '1');
 
         return $tempFile;
-    }
-
-    protected function setUp()
-    {
-        $dir = sys_get_temp_dir().'/form_test';
-
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-    }
-
-    protected function tearDown()
-    {
-        foreach (glob(sys_get_temp_dir().'/form_test/*') as $file) {
-            unlink($file);
-        }
-
-        rmdir(sys_get_temp_dir().'/form_test');
     }
 }

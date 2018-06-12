@@ -20,17 +20,17 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
+use ArrayObject;
 use Closure;
 use DateTime;
-use ArrayObject;
 use DateTimeZone;
-use JsonSerializable;
 use InvalidArgumentException;
-use UnexpectedValueException;
-use Leevel\Support\IJson;
+use JsonSerializable;
 use Leevel\Flow\TControl;
 use Leevel\Support\IArray;
+use Leevel\Support\IJson;
 use Leevel\Support\TMacro;
+use UnexpectedValueException;
 
 /**
  * HTTP 响应
@@ -63,55 +63,6 @@ class Response implements IResponse
      * @var mixed
      */
     public $original;
-
-    /**
-     * 响应内容.
-     *
-     * @var string
-     */
-    protected $content;
-
-    /**
-     * HTTP 协议版本.
-     *
-     * @var string
-     */
-    protected $protocolVersion;
-
-    /**
-     * 状态码
-     *
-     * @var int
-     */
-    protected $statusCode;
-
-    /**
-     * 状态码内容.
-     *
-     * @var string
-     */
-    protected $statusText;
-
-    /**
-     * 字符编码
-     *
-     * @var string
-     */
-    protected $charset;
-
-    /**
-     * 是否为 JSON.
-     *
-     * @var bool
-     */
-    protected $isJson = false;
-
-    /**
-     * COOKIE Resolver.
-     *
-     * @var \Closure
-     */
-    protected static $cookieResolver;
 
     /**
      * 状态码
@@ -184,6 +135,55 @@ class Response implements IResponse
         510 => 'Not Extended', // RFC2774
         511 => 'Network Authentication Required', // RFC6585
     ];
+
+    /**
+     * 响应内容.
+     *
+     * @var string
+     */
+    protected $content;
+
+    /**
+     * HTTP 协议版本.
+     *
+     * @var string
+     */
+    protected $protocolVersion;
+
+    /**
+     * 状态码
+     *
+     * @var int
+     */
+    protected $statusCode;
+
+    /**
+     * 状态码内容.
+     *
+     * @var string
+     */
+    protected $statusText;
+
+    /**
+     * 字符编码
+     *
+     * @var string
+     */
+    protected $charset;
+
+    /**
+     * 是否为 JSON.
+     *
+     * @var bool
+     */
+    protected $isJson = false;
+
+    /**
+     * COOKIE Resolver.
+     *
+     * @var \Closure
+     */
+    protected static $cookieResolver;
 
     /**
      * 构造函数.
@@ -930,8 +930,8 @@ class Response implements IResponse
             303,
             307,
             308,
-        ])
-            && (null === $location ?: $location == $this->headers->get('Location'));
+        ], true)
+            && (null === $location ?: $location === $this->headers->get('Location'));
     }
 
     /**
@@ -944,7 +944,7 @@ class Response implements IResponse
         return in_array($this->statusCode, [
             204,
             304,
-        ]);
+        ], true);
     }
 
     /**

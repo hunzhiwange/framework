@@ -107,7 +107,7 @@ class Manager extends Managers
                 'slave',
                 'fetch',
                 'log',
-            ])) {
+            ], true)) {
                 if (isset($temp[$type])) {
                     unset($temp[$type]);
                 }
@@ -135,7 +135,7 @@ class Manager extends Managers
         if (!$option['distributed']) {
             $option['slave'] = [];
         } elseif ($option['slave']) {
-            if (count($option['slave']) == count($option['slave'], COUNT_RECURSIVE)) {
+            if (count($option['slave']) === count($option['slave'], COUNT_RECURSIVE)) {
                 $option['slave'] = [
                     $option['slave'],
                 ];

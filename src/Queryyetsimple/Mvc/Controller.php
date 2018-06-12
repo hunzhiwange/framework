@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc;
 
-use RuntimeException;
 use Leevel\View\IView as ViewIView;
+use RuntimeException;
 
 /**
  * 基类控制器.
@@ -46,6 +46,29 @@ abstract class Controller implements IController
      */
     public function __construct()
     {
+    }
+
+    /**
+     * 赋值
+     *
+     * @param mixed $key
+     * @param mixed $value
+     */
+    public function __set($key, $value)
+    {
+        $this->assign($key, $value);
+    }
+
+    /**
+     * 获取值
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->getAssign($key);
     }
 
     /**
@@ -96,7 +119,7 @@ abstract class Controller implements IController
     /**
      * 获取变量赋值
      *
-     * @param string|null $name
+     * @param null|string $name
      *
      * @return mixed
      */
@@ -163,28 +186,5 @@ abstract class Controller implements IController
         if (!$this->view) {
             throw new RuntimeException('View is not set in controller');
         }
-    }
-
-    /**
-     * 赋值
-     *
-     * @param mixed $key
-     * @param mixed $value
-     */
-    public function __set($key, $value)
-    {
-        $this->assign($key, $value);
-    }
-
-    /**
-     * 获取值
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        return $this->getAssign($key);
     }
 }

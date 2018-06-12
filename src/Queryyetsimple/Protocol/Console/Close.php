@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Protocol\Console;
 
-use Leevel\Console\Option;
-use Leevel\Console\Command;
 use Leevel\Console\Argument;
+use Leevel\Console\Command;
+use Leevel\Console\Option;
 
 /**
  * swoole 服务关闭.

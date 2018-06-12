@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Tests\Console;
 
-use Tests\TestCase;
-use Leevel\Di\Container;
-use Leevel\Console\Command;
 use Leevel\Console\Application;
+use Leevel\Console\Command;
 use Leevel\Console\IApplication;
+use Leevel\Di\Container;
+use Tests\TestCase;
 
 /**
  * application test.
@@ -34,6 +34,7 @@ use Leevel\Console\IApplication;
  * @since 2018.06.04
  *
  * @version 1.0
+ * @coversNothing
  */
 class ApplicationTest extends TestCase
 {
@@ -43,7 +44,7 @@ class ApplicationTest extends TestCase
 
         $this->assertInstanceof(IApplication::class, $application);
 
-        $this->assertEquals($application->getVersion(), '1.0');
+        $this->assertSame($application->getVersion(), '1.0');
 
         $this->assertInstanceof(Container::class, $application->getContainer());
 
@@ -62,7 +63,7 @@ class ApplicationTest extends TestCase
 
         $application->normalizeCommand(Test2::class);
 
-        $this->assertEquals($_SERVER['test'], '1');
+        $this->assertSame($_SERVER['test'], '1');
 
         unset($_SERVER['test']);
     }

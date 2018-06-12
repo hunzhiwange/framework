@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Bootstrap\validate;
 
+use Leevel\Http\Request as HttpRequest;
 use Leevel\Http\Response;
 use Leevel\Session\ISession;
 use Leevel\Validate\IValidate;
 use Leevel\Validate\ValidateException;
-use Leevel\Http\Request as HttpRequest;
 
 /**
  * 请求验证
@@ -79,7 +79,6 @@ trait Request
         }
 
         return $this->
-
         getResponseComponent()->
 
         redirect($this->getRedirectUrl($oRequest), [
@@ -108,6 +107,8 @@ trait Request
     /**
      * 返回前一个页面.
      *
+     *
+     * @param mixed $oRequest
      *
      * @return string
      */

@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Tests\Http;
 
-use Tests\TestCase;
-use JsonSerializable;
 use InvalidArgumentException;
-use Leevel\Support\IJson;
-use Leevel\Support\IArray;
+use JsonSerializable;
 use Leevel\Http\JsonResponse;
+use Leevel\Support\IArray;
+use Leevel\Support\IJson;
+use Tests\TestCase;
 
 /**
  * JsonResponseTest test
@@ -38,6 +38,7 @@ use Leevel\Http\JsonResponse;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ * @coversNothing
  */
 class JsonResponseTest extends TestCase
 {
@@ -103,22 +104,22 @@ class JsonResponseTest extends TestCase
     public function testSetJson()
     {
         $response = new JsonResponse('1', 200, [], true);
-        $this->assertEquals('1', $response->getContent());
+        $this->assertSame('1', $response->getContent());
 
         $response = new JsonResponse('[1]', 200, [], true);
-        $this->assertEquals('[1]', $response->getContent());
+        $this->assertSame('[1]', $response->getContent());
 
         $response = new JsonResponse(null, 200, []);
         $response->setJson('true');
-        $this->assertEquals('true', $response->getContent());
+        $this->assertSame('true', $response->getContent());
     }
 
     public function testCreate()
     {
         $response = JsonResponse::create(['foo' => 'bar'], 204);
         $this->assertInstanceOf('Leevel\Http\JsonResponse', $response);
-        $this->assertEquals('{"foo":"bar"}', $response->getContent());
-        $this->assertEquals(204, $response->getStatusCode());
+        $this->assertSame('{"foo":"bar"}', $response->getContent());
+        $this->assertSame(204, $response->getStatusCode());
     }
 
     public function testStaticCreateEmptyJsonObject()
@@ -190,31 +191,31 @@ class JsonResponseTest extends TestCase
     public function testSetCallback()
     {
         $response = JsonResponse::create(['foo' => 'bar'])->setCallback('callback');
-        $this->assertEquals(';callback({"foo":"bar"});', $response->getContent());
-        $this->assertEquals('text/javascript', $response->headers->get('Content-Type'));
+        $this->assertSame(';callback({"foo":"bar"});', $response->getContent());
+        $this->assertSame('text/javascript', $response->headers->get('Content-Type'));
     }
 
     public function testJsonEncodeFlags()
     {
         $response = new JsonResponse('<>\'&"');
-        $this->assertEquals("\"<>'&\\\"\"", $response->getContent());
+        $this->assertSame("\"<>'&\\\"\"", $response->getContent());
     }
 
     public function testGetEncodingOptions()
     {
         $response = new JsonResponse();
 
-        $this->assertEquals(JSON_UNESCAPED_UNICODE, $response->getEncodingOptions());
+        $this->assertSame(JSON_UNESCAPED_UNICODE, $response->getEncodingOptions());
     }
 
     public function testSetEncodingOptions()
     {
         $response = new JsonResponse();
         $response->setData([[1, 2, 3]]);
-        $this->assertEquals('[[1,2,3]]', $response->getContent());
+        $this->assertSame('[[1,2,3]]', $response->getContent());
 
         $response->setEncodingOptions(JSON_FORCE_OBJECT);
-        $this->assertEquals('{"0":{"0":1,"1":2,"2":3}}', $response->getContent());
+        $this->assertSame('{"0":{"0":1,"1":2,"2":3}}', $response->getContent());
     }
 
     public function testItAcceptsJsonAsString()
@@ -223,40 +224,38 @@ class JsonResponseTest extends TestCase
         $this->assertSame('{"foo":"bar"}', $response->getContent());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testSetContent()
     {
+        $this->expectException(\InvalidArgumentException::class);
+
         // json_encode("\xB1\x31") 会引发 PHP 内核提示 Segmentation fault (core dumped)
         if (extension_loaded('leevel')) {
             throw new InvalidArgumentException('wow! error.');
-        } else {
-            JsonResponse::create("\xB1\x31");
         }
+        JsonResponse::create("\xB1\x31");
     }
 
     public function testSetContentJsonObject()
     {
         $response = new JsonResponse();
         $response->setData(['foo' => 'bar']);
-        $this->assertEquals('{"foo":"bar"}', $response->getContent());
+        $this->assertSame('{"foo":"bar"}', $response->getContent());
 
         $response->setData(new JsonResponseMyArray());
-        $this->assertEquals('{"hello":"IArray"}', $response->getContent());
+        $this->assertSame('{"hello":"IArray"}', $response->getContent());
 
         $response->setData(new JsonResponseMyJson());
-        $this->assertEquals('{"hello":"IJson"}', $response->getContent());
+        $this->assertSame('{"hello":"IJson"}', $response->getContent());
 
         $response->setData(new JsonResponseMyJsonSerializable());
-        $this->assertEquals('{"hello":"JsonSerializable"}', $response->getContent());
+        $this->assertSame('{"hello":"JsonSerializable"}', $response->getContent());
     }
 
     public function testSetComplexCallback()
     {
         $response = JsonResponse::create(['foo' => 'bar']);
         $response->setCallback('ಠ_ಠ["foo"].bar[0]');
-        $this->assertEquals(';ಠ_ಠ["foo"].bar[0]({"foo":"bar"});', $response->getContent());
+        $this->assertSame(';ಠ_ಠ["foo"].bar[0]({"foo":"bar"});', $response->getContent());
     }
 }
 

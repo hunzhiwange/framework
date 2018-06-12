@@ -131,6 +131,7 @@ class Meta
      *
      * @param string $strTabe
      * @param mixed  $mixConnect
+     * @param mixed  $strTable
      */
     protected function __construct($strTable, $mixConnect = null)
     {
@@ -153,9 +154,9 @@ class Meta
 
         if (!isset(static::$arrInstances[$strUnique])) {
             return static::$arrInstances[$strUnique] = new static($strTable, $mixConnect);
-        } else {
-            return static::$arrInstances[$strUnique];
         }
+
+        return static::$arrInstances[$strUnique];
     }
 
     /**
@@ -178,25 +179,25 @@ class Meta
      */
     public function fieldsProp($strField, $mixValue)
     {
-        if (!in_array($strField, $this->arrField)) {
+        if (!in_array($strField, $this->arrField, true)) {
             return $mixValue;
         }
 
         $strType = $this->arrFields[$strField]['type'];
 
         switch (true) {
-            case in_array($strType, static::$arrFieldType['int']):
+            case in_array($strType, static::$arrFieldType['int'], true):
                 $mixValue = (int) $mixValue;
-                break;
 
-            case in_array($strType, static::$arrFieldType['float']):
+                break;
+            case in_array($strType, static::$arrFieldType['float'], true):
                 $mixValue = (float) $mixValue;
-                break;
 
-            case in_array($strType, static::$arrFieldType['boolean']):
+                break;
+            case in_array($strType, static::$arrFieldType['boolean'], true):
                 $mixValue = $mixValue ? true : false;
-                break;
 
+                break;
             default:
                 if (null !== $mixValue && is_scalar($mixValue)) {
                     $mixValue = (string) $mixValue;
@@ -275,7 +276,7 @@ class Meta
     /**
      * 返回自增 ID.
      *
-     * @return string|null
+     * @return null|string
      */
     public function getAutoIncrement()
     {
@@ -358,6 +359,7 @@ class Meta
      *
      * @param string $strTabe
      * @param mixed  $mixConnect
+     * @param mixed  $strTable
      *
      * @return string
      */

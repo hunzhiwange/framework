@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Router\Match;
 
 use Leevel\Http\Request;
-use Leevel\Router\Router;
 use Leevel\Router\IRouter;
+use Leevel\Router\Router;
 
 /**
  * 路由 url 匹配.
@@ -99,12 +99,13 @@ class Url implements IMatch
             if (0 === strpos($pathInfo, $path)) {
                 $pathInfo = substr($pathInfo, strlen($path));
                 $this->matchedBasepath = $path;
+
                 break;
             }
         }
 
         // 静态路由匹配
-        if (isset($urlRouters['static']) && isset($urlRouters['static'][$pathInfoSource])) {
+        if (isset($urlRouters['static'], $urlRouters['static'][$pathInfoSource])) {
             $urlRouters = $urlRouters['static'][$pathInfoSource];
 
             return $this->matcheSuccessed($urlRouters);
@@ -127,6 +128,7 @@ class Url implements IMatch
             if (0 === strpos($pathInfo, $group)) {
                 $urlRouters = $urlRouters[$group];
                 $matchGroup = true;
+
                 break;
             }
         }
@@ -232,7 +234,7 @@ class Url implements IMatch
      *
      * @param array $routers
      *
-     * @return bool|array
+     * @return array|bool
      */
     protected function matcheDomain(array $routers)
     {
@@ -245,15 +247,14 @@ class Url implements IMatch
             if ($routers['domain_regex']) {
                 if (!preg_match($routers['domain_regex'], $host, $matches)) {
                     return false;
-                } else {
-                    array_shift($matches);
+                }
+                array_shift($matches);
 
-                    foreach ($routers['domain_var'] as $var) {
-                        $value = array_shift($matches);
+                foreach ($routers['domain_var'] as $var) {
+                    $value = array_shift($matches);
 
-                        $domainVars[$var] = $value;
-                        $this->addVariable($var, $value);
-                    }
+                    $domainVars[$var] = $value;
+                    $this->addVariable($var, $value);
                 }
             } elseif ($host !== $routers['domain']) {
                 return false;

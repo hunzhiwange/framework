@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Seccode;
 
 use Exception;
-use Leevel\Support\Str;
-use Leevel\Option\TClass;
 use Leevel\Filesystem\Fso;
+use Leevel\Option\TClass;
+use Leevel\Support\Str;
 
 /**
  * 验证码
@@ -527,7 +527,7 @@ class Seccode implements ISeccode
             throw new Exception(sprintf('Code must be greater than %d', 0));
         }
 
-        if (!in_array($strAutoType, $this->getAllowedAutoType())) {
+        if (!in_array($strAutoType, $this->getAllowedAutoType(), true)) {
             throw new Exception(sprintf('Code type must be these %s', implode(',', $this->getAllowedAutoType())));
         }
         $this->code(Str::{'rand'.ucwords(Str::camelize($strAutoType))}($intSize));

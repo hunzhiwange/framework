@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc\Console;
 
+use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
-use Leevel\Console\Argument;
 
 /**
  * 生成模型.
@@ -54,7 +54,7 @@ class Model extends Make
      *
      * @var string
      */
-    protected $help = <<<EOF
+    protected $help = <<<'EOF'
 The <info>%command.name%</info> command to make model with project namespace:
 
   <info>php %command.full_name% name</info>

@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Filesystem;
 
-use Leevel\Option\TClass;
 use League\Flysystem\Filesystem as LeagueFilesystem;
+use Leevel\Option\TClass;
 
 /**
  * connect 驱动抽象类.
@@ -56,6 +56,19 @@ abstract class Connect
     }
 
     /**
+     * call.
+     *
+     * @param string $sMethod
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $sMethod, array $arrArgs)
+    {
+        return $this->objFilesystem->{$sMethod}(...$arrArgs);
+    }
+
+    /**
      * 返回 Filesystem.
      *
      * @return \League\Flysystem\Filesystem
@@ -73,18 +86,5 @@ abstract class Connect
     protected function filesystem()
     {
         return $this->objFilesystem = new LeagueFilesystem($this->makeConnect(), $this->getOptions());
-    }
-
-    /**
-     * call.
-     *
-     * @param string $sMethod
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public function __call(string $sMethod, array $arrArgs)
-    {
-        return $this->objFilesystem->$sMethod(...$arrArgs);
     }
 }

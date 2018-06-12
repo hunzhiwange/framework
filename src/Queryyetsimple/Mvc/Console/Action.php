@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc\Console;
 
+use Leevel\Console\Argument;
 use Leevel\Console\Make;
 use Leevel\Console\Option;
-use Leevel\Console\Argument;
 use Leevel\Router;
 
 /**
@@ -55,7 +55,7 @@ class Action extends Make
      *
      * @var string
      */
-    protected $help = <<<EOF
+    protected $help = <<<'EOF'
 The <info>%command.name%</info> command to make action with project namespace:
 
   <info>php %command.full_name% name action</info>

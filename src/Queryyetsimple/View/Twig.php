@@ -86,9 +86,8 @@ class Twig extends Connect implements IConnect
         // 返回类型
         if (false === $display) {
             return $this->renderFile($file);
-        } else {
-            echo $this->renderFile($file);
         }
+        echo $this->renderFile($file);
     }
 
     /**

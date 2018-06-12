@@ -119,10 +119,10 @@ class Mysql extends Connect implements IConnect
                     $arrTemp['length'] = null;
                 }
 
-                $arrTemp['primary_key'] = 'pri' == strtolower($arrColumn['Key']);
+                $arrTemp['primary_key'] = 'pri' === strtolower($arrColumn['Key']);
                 $arrTemp['auto_increment'] = false !== strpos($arrColumn['Extra'], 'auto_increment');
 
-                if (null !== $arrColumn['Default'] && 'null' != strtolower($arrColumn['Default'])) {
+                if (null !== $arrColumn['Default'] && 'null' !== strtolower($arrColumn['Default'])) {
                     $arrTemp['default'] = $arrColumn['Default'];
                 } else {
                     $arrTemp['default'] = null;
@@ -151,11 +151,13 @@ class Mysql extends Connect implements IConnect
     /**
      * sql 字段格式化.
      *
+     * @param mixed $sName
+     *
      * @return string
      */
     public function identifierColumn($sName)
     {
-        return '*' != $sName ? "`{$sName}`" : '*';
+        return '*' !== $sName ? "`{$sName}`" : '*';
     }
 
     /**
@@ -178,7 +180,8 @@ class Mysql extends Connect implements IConnect
             }
 
             return $sSql;
-        } elseif (null !== $mixLimitcount) {
+        }
+        if (null !== $mixLimitcount) {
             return 'LIMIT '.(int) $mixLimitcount;
         }
     }

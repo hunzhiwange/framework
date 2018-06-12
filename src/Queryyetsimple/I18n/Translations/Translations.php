@@ -158,7 +158,7 @@ abstract class Translations
      */
     public function select_plural_form($count)
     {
-        return 1 == $count ? 0 : 1;
+        return 1 === $count ? 0 : 1;
     }
 
     /**
@@ -187,9 +187,9 @@ abstract class Translations
         $total_plural_forms = $this->get_plural_forms_count();
         if ($translated && 0 <= $index && $index < $total_plural_forms && is_array($translated->translations) && isset($translated->translations[$index])) {
             return $translated->translations[$index];
-        } else {
-            return 1 == $count ? $singular : $plural;
         }
+
+        return 1 === $count ? $singular : $plural;
     }
 
     /**

@@ -42,6 +42,8 @@ class Str extends Reader
 
     /**
      * PHP5 constructor.
+     *
+     * @param mixed $str
      */
     public function __construct($str = '')
     {

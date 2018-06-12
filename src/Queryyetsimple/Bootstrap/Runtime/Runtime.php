@@ -21,21 +21,21 @@ declare(strict_types=1);
 namespace Leevel\Bootstrap\Runtime;
 
 use Exception;
-use Whoops\Run;
-use Whoops\Handler\PrettyPageHandler;
-use Whoops\Handler\JsonResponseHandler;
-use Leevel\Log\ILog;
-use Leevel\Http\Request;
-use Leevel\Http\Response;
 use Leevel\Di\IContainer;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
-use Leevel\Kernel\Runtime\IRuntime;
-use Leevel\Mvc\ModelNotFoundException;
+use Leevel\Http\Request;
+use Leevel\Http\Response;
 use Leevel\Kernel\Exception\HttpException;
 use Leevel\Kernel\Exception\NotFoundHttpException;
-use Symfony\Component\Console\Output\OutputInterface;
+use Leevel\Kernel\Runtime\IRuntime;
+use Leevel\Log\ILog;
+use Leevel\Mvc\ModelNotFoundException;
 use NunoMaduro\Collision\Provider as CollisionProvider;
+use Symfony\Component\Console\Output\OutputInterface;
+use Whoops\Handler\JsonResponseHandler;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
 
 /**
  * 异常处理.
@@ -119,9 +119,9 @@ abstract class Runtime implements IRuntime
 
         if ($request->isAcceptJson()) {
             return $this->makeJsonResponse($e);
-        } else {
-            return $this->makeHttpResponse($e);
         }
+
+        return $this->makeHttpResponse($e);
     }
 
     /**
@@ -146,26 +146,6 @@ abstract class Runtime implements IRuntime
     }
 
     /**
-     * HTTP 响应异常.
-     *
-     * @param \Exception $e
-     *
-     * @return \Leevel\Http\Response
-     */
-    protected function makeHttpResponse(Exception $e)
-    {
-        if (!$this->isHttpException($e) && $this->container->debug()) {
-            return $this->convertExceptionToResponse($e);
-        }
-
-        if (!$this->isHttpException($e)) {
-            $e = new HttpException(500, $e->getMessage());
-        }
-
-        return $this->rendorWithHttpExceptionView($e);
-    }
-
-    /**
      * 尝试返回 HTTP 异常响应.
      *
      * @param \Exception $e
@@ -186,9 +166,29 @@ abstract class Runtime implements IRuntime
                 $e->getStatusCode(),
                 $e->getHeaders()
             );
-        } else {
+        }
+
+        return $this->convertExceptionToResponse($e);
+    }
+
+    /**
+     * HTTP 响应异常.
+     *
+     * @param \Exception $e
+     *
+     * @return \Leevel\Http\Response
+     */
+    protected function makeHttpResponse(Exception $e)
+    {
+        if (!$this->isHttpException($e) && $this->container->debug()) {
             return $this->convertExceptionToResponse($e);
         }
+
+        if (!$this->isHttpException($e)) {
+            $e = new HttpException(500, $e->getMessage());
+        }
+
+        return $this->rendorWithHttpExceptionView($e);
     }
 
     /**
@@ -243,9 +243,9 @@ abstract class Runtime implements IRuntime
     {
         if ($this->container->debug()) {
             return $this->renderExceptionWithWhoops($e);
-        } else {
-            return $this->renderExceptionWithDefault($e);
         }
+
+        return $this->renderExceptionWithDefault($e);
     }
 
     /**

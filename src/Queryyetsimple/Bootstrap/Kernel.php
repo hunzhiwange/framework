@@ -20,24 +20,24 @@ declare(strict_types=1);
 
 namespace Leevel\Bootstrap;
 
-use Exception;
-use Throwable;
 use ErrorException;
-use Leevel\Log\ILog;
-use Leevel\Http\Request;
-use Leevel\Router\Router;
-use Leevel\Kernel\IKernel;
-use Leevel\Http\IResponse;
-use Leevel\Kernel\IProject;
-use Leevel\Http\ApiResponse;
-use Leevel\Http\JsonResponse;
-use Leevel\Http\RedirectResponse;
-use Leevel\Support\Debug\Console;
-use Leevel\Kernel\Runtime\IRuntime;
+use Exception;
 use Leevel\Bootstrap\Bootstrap\LoadI18n;
 use Leevel\Bootstrap\Bootstrap\LoadOption;
 use Leevel\Bootstrap\Bootstrap\RegisterRuntime;
 use Leevel\Bootstrap\Bootstrap\TraverseProvider;
+use Leevel\Http\ApiResponse;
+use Leevel\Http\IResponse;
+use Leevel\Http\JsonResponse;
+use Leevel\Http\RedirectResponse;
+use Leevel\Http\Request;
+use Leevel\Kernel\IKernel;
+use Leevel\Kernel\IProject;
+use Leevel\Kernel\Runtime\IRuntime;
+use Leevel\Log\ILog;
+use Leevel\Router\Router;
+use Leevel\Support\Debug\Console;
+use Throwable;
 
 /**
  * 内核执行.
@@ -126,16 +126,6 @@ abstract class Kernel implements IKernel
     }
 
     /**
-     * 返回运行处理器.
-     *
-     * @return \Leevel\Bootstrap\Runtime\IRuntime
-     */
-    protected function getRuntime()
-    {
-        return $this->project->make(IRuntime::class);
-    }
-
-    /**
      * 执行结束
      *
      * @param \Leevel\Http\Request   $request
@@ -156,6 +146,16 @@ abstract class Kernel implements IKernel
     public function getProject(): IProject
     {
         return $this->project;
+    }
+
+    /**
+     * 返回运行处理器.
+     *
+     * @return \Leevel\Bootstrap\Runtime\IRuntime
+     */
+    protected function getRuntime()
+    {
+        return $this->project->make(IRuntime::class);
     }
 
     /**

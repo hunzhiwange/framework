@@ -84,6 +84,7 @@ abstract class Runner extends PHPQueueRunner
     {
         $nSleepTime = self::RUN_USLEEP;
         $obJNewJob = null;
+
         try {
             $obJNewJob = Base::getJob($this->objQueue);
         } catch (Exception $oEx) {
@@ -183,13 +184,14 @@ abstract class Runner extends PHPQueueRunner
      * @param \Leevel\Queue\jobs\ijob $objJob
      * @param mixed                   $mixResultData
      *
-     * @return bool|void
-     *
      * @throws \Exception
+     *
+     * @return bool|void
      */
     protected function updateJob($objJob, $mixResultData = null)
     {
         $booStatus = false;
+
         try {
             $this->objQueue->beforeUpdate();
             $this->objQueue->updateJob($obJJob->job_id, $mixResultData);

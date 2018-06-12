@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc\Relation;
 
-use Leevel\Mvc\IModel;
 use Leevel\Collection\Collection;
+use Leevel\Mvc\IModel;
 
 /**
  * 关联模型 ManyMany.
@@ -169,9 +169,9 @@ class ManyMany extends Relation
     {
         if (false === $this->parseSelectCondition()) {
             return new collection();
-        } else {
-            return $this->objSelect->getAll();
         }
+
+        return $this->objSelect->getAll();
     }
 
     /**

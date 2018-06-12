@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Match;
 
-use Leevel\Http\Request;
-use Leevel\Router\Router;
-use Leevel\Router\IRouter;
 use Leevel\Console\Cli as ConsoleCli;
+use Leevel\Http\Request;
+use Leevel\Router\IRouter;
+use Leevel\Router\Router;
 
 /**
  * 路由命令行匹配.

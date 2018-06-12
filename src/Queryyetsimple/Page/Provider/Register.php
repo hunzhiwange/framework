@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Page\Provider;
 
-use Leevel\page\page;
 use Leevel\Di\Provider;
+use Leevel\page\page;
 use Leevel\Router\Router;
 
 /**

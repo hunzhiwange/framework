@@ -21,9 +21,9 @@ declare(strict_types=1);
 namespace Leevel\Throttler;
 
 use Countable;
-use RuntimeException;
 use Leevel\Cache\ICache;
 use Leevel\Support\IArray;
+use RuntimeException;
 
 /**
  * RateLimiter 入口.

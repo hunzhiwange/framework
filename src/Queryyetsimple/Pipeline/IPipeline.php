@@ -43,7 +43,7 @@ interface IPipeline
     /**
      * 设置管道中的执行工序.
      *
-     * @param dynamic|array $stage
+     * @param array|dynamic $stage
      *
      * @return $this
      */

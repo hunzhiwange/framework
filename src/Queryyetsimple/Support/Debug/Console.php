@@ -42,12 +42,12 @@ class Console
     public static function trace(array $log)
     {
         // swoole http server 可以调试
-        if (PHP_SAPI == 'cli' && !(isset($_SERVER['SERVER_SOFTWARE']) && 'swoole-http-server' == $_SERVER['SERVER_SOFTWARE'])) {
+        if (PHP_SAPI === 'cli' && !(isset($_SERVER['SERVER_SOFTWARE']) && 'swoole-http-server' === $_SERVER['SERVER_SOFTWARE'])) {
             return;
         }
 
         // ajax 不调试
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' == strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' === strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             return;
         }
 

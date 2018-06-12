@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Tree;
 
-use Leevel\Support\IJson;
 use Leevel\Support\IArray;
+use Leevel\Support\IJson;
 
 /**
  * 树数据处理.
@@ -99,7 +99,7 @@ class Tree implements ITree, IJson, IArray
     {
         $arrChildren = [];
         foreach ($this->arrMap as $nChild => $nParent) {
-            if ($nParent == $nId) {
+            if ($nParent === $nId) {
                 $arrChildren[$nChild] = $this->getChildrenTree($nChild);
             }
         }
@@ -118,7 +118,7 @@ class Tree implements ITree, IJson, IArray
     {
         $arrChild = [];
         foreach ($this->arrMap as $nChild => $nParent) {
-            if ($nParent == $nId) {
+            if ($nParent === $nId) {
                 $arrChild[$nChild] = $nChild;
             }
         }
@@ -241,7 +241,8 @@ class Tree implements ITree, IJson, IArray
     /**
      * 取得节点的值
      *
-     * @param int $nId
+     * @param int        $nId
+     * @param null|mixed $mixDefault
      *
      * @return mixed
      */

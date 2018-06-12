@@ -140,6 +140,6 @@ trait TControl
         return in_array($method, [
             'placeholder',
             'foobar',
-        ]);
+        ], true);
     }
 }

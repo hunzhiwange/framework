@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
-use Countable;
 use ArrayIterator;
-use JsonSerializable;
+use Countable;
 use IteratorAggregate;
-use Leevel\Support\IJson;
+use JsonSerializable;
 use Leevel\Support\IArray;
+use Leevel\Support\IJson;
 
 /**
  * http bag
@@ -56,6 +56,16 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     public function __construct(array $elements = [])
     {
         $this->elements = $elements;
+    }
+
+    /**
+     * 魔术方法 __toString.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toJson();
     }
 
     /**
@@ -159,7 +169,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @param string          $key
      * @param mixed           $defaults
-     * @param array|sting|int $filter
+     * @param array|int|sting $filter
      * @param array           $options
      *
      * @return mixed
@@ -245,16 +255,6 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     }
 
     /**
-     * 魔术方法 __toString.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->toJson();
-    }
-
-    /**
      * 分析键值和过滤器.
      *
      * @param string $key
@@ -276,7 +276,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     /**
      * 分析过滤器.
      *
-     * @param string|array $filter
+     * @param array|string $filter
      *
      * @return array
      */
@@ -311,6 +311,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
 
                 if (false === $value) {
                     $value = $defaults;
+
                     break;
                 }
             }
@@ -331,7 +332,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
     {
         list($filter, $extend) = explode('=', $filter);
 
-        if ('default' == $filter) {
+        if ('default' === $filter) {
             if (!is_numeric($extend) && !preg_match('/^[A-Z\_]+$/', $extend)) {
                 $extend = "'".$extend."'";
             }
@@ -345,7 +346,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
                 foreach ($tmp as $v) {
                     $v = trim($v);
 
-                    if ('**' == $v || is_numeric($v) || preg_match('/^[A-Z\_]+$/', $v)) {
+                    if ('**' === $v || is_numeric($v) || preg_match('/^[A-Z\_]+$/', $v)) {
                         $result[] = $v;
                     } else {
                         $result[] = "'".$v."'";

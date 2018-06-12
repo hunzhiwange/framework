@@ -31,7 +31,7 @@ namespace Leevel\Log;
  *
  * @version 1.0
  */
-interface ILog /* extends LoggerInterface*/
+interface ILog // extends LoggerInterface
 {
     /**
      * debug.

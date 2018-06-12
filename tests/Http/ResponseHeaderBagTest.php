@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Router;
 
-use Tests\TestCase;
 use Leevel\Http\ResponseHeaderBag;
+use Tests\TestCase;
 
 /**
  * ResponseHeaderBag test
@@ -34,6 +34,7 @@ use Leevel\Http\ResponseHeaderBag;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
+ * @coversNothing
  */
 class ResponseHeaderBagTest extends TestCase
 {

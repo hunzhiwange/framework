@@ -92,7 +92,7 @@ class Load
      * 系统自动存储缓存到内存，可重复执行不会重复载入数据
      * 获取缓存建议使用本函数.
      *
-     * @param string|array $names
+     * @param array|string $names
      * @param array        $option
      * @param bool         $force
      *
@@ -123,7 +123,7 @@ class Load
      * 刷新缓存数据
      * 刷新缓存建议使用本函数.
      *
-     * @param string|array $names
+     * @param array|string $names
      * @param array        $option
      */
     public function refresh($names, array $option = [])
@@ -140,7 +140,8 @@ class Load
      * 不存在不用更新缓存，返回 false
      * 获取已载入缓存建议使用本函数.
      *
-     * @param string|array $names
+     * @param array|string $names
+     * @param mixed        $force
      *
      * @return array
      */
@@ -278,7 +279,7 @@ class Load
             throw new InvalidArgumentException(sprintf('Cache %s is not valid.', $name));
         }
 
-        $sourceData = $cache->$method(...$params);
+        $sourceData = $cache->{$method}(...$params);
 
         $this->setPersistence($sourceName, $sourceData, $option);
 

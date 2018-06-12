@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Http;
 
 use ArrayObject;
-use JsonSerializable;
 use InvalidArgumentException;
-use Leevel\Support\IJson;
+use JsonSerializable;
 use Leevel\Support\IArray;
+use Leevel\Support\IJson;
 
 /**
  * JSON 响应请求
@@ -40,6 +40,12 @@ use Leevel\Support\IArray;
  */
 class JsonResponse extends Response
 {
+    /**
+     * 默认 JSON 格式化参数.
+     *
+     * @var int
+     */
+    const DEFAULT_ENCODING_OPTIONS = 256;
     /**
      * 响应内容.
      *
@@ -60,13 +66,6 @@ class JsonResponse extends Response
      * @var \callable
      */
     protected $callback;
-
-    /**
-     * 默认 JSON 格式化参数.
-     *
-     * @var int
-     */
-    const DEFAULT_ENCODING_OPTIONS = 256;
 
     /**
      * 构造函数.
@@ -120,7 +119,7 @@ class JsonResponse extends Response
     /**
      * 设置 JSONP 回调.
      *
-     * @param string|null $callback
+     * @param null|string $callback
      *
      * @return $this
      */

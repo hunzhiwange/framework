@@ -147,7 +147,7 @@ class UnitOfWork implements IUnitOfWork
      */
     public function registerCommit()
     {
-        if ($this->booCommitted && 0 == $this->intCount) {
+        if ($this->booCommitted && 0 === $this->intCount) {
             return;
         }
 

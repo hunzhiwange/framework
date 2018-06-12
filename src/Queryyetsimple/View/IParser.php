@@ -49,7 +49,7 @@ interface IParser
      * 执行编译.
      *
      * @param string      $sFile
-     * @param string|null $sCachePath
+     * @param null|string $sCachePath
      * @param bool        $isContent
      *
      * @return string

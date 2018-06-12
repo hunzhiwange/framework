@@ -20,9 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Log;
 
-use Tests\TestCase;
-use Leevel\Log\File;
 use Leevel\Filesystem\Fso;
+use Leevel\Log\File;
+use Tests\TestCase;
 
 /**
  * file test.
@@ -32,6 +32,7 @@ use Leevel\Filesystem\Fso;
  * @since 2018.06.10
  *
  * @version 1.0
+ * @coversNothing
  */
 class FileTest extends TestCase
 {

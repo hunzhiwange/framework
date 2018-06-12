@@ -54,7 +54,7 @@ interface IConnect
     /**
      * 获取变量值
      *
-     * @param string|null $name
+     * @param null|string $name
      *
      * @return mixed
      */

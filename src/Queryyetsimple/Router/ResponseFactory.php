@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Mvc\IView;
-use Leevel\Http\Response;
 use Leevel\Http\ApiResponse;
 use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
+use Leevel\Http\Response;
 use Leevel\Http\ResponseHeaderBag;
+use Leevel\Mvc\IView;
 
 /**
  * 响应工厂
@@ -181,14 +181,13 @@ class ResponseFactory implements IResponseFactory
     public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false)
     {
         return $this->json($data, $status, $headers, $json)->
-
         setCallback($callback);
     }
 
     /**
      * 返回下载响应.
      *
-     * @param \SplFileObject|\SplFileInfo|string $file
+     * @param \SplFileInfo|\SplFileObject|string $file
      * @param string                             $name
      * @param int                                $status
      * @param array                              $headers
@@ -211,7 +210,7 @@ class ResponseFactory implements IResponseFactory
     /**
      * 返回文件响应.
      *
-     * @param \SplFileObject|\SplFileInfo|string $file
+     * @param \SplFileInfo|\SplFileObject|string $file
      * @param int                                $status
      * @param array                              $headers
      * @param bool                               $autoEtag
@@ -224,15 +223,16 @@ class ResponseFactory implements IResponseFactory
         return new FileResponse($file, $status, $headers, ResponseHeaderBag::DISPOSITION_INLINE, $autoEtag, $autoLastModified);
     }
 
-    /*
-     * 返回一个 URL 生成跳转响应
+    /**
+     * 返回一个 URL 生成跳转响应.
      *
      * @param string $url
-     * @param array $params
+     * @param array  $params
      * @param string $subdomain
-     * @param mixed $suffix
-     * @param int $status
-     * @param array $headers
+     * @param mixed  $suffix
+     * @param int    $status
+     * @param array  $headers
+     *
      * @return \Leevel\Http\RedirectResponse
      */
     public function redirect(?string $url, array $params = [], string $subdomain = 'www', $suffix = false, int $status = 302, array $headers = [])
@@ -273,6 +273,7 @@ class ResponseFactory implements IResponseFactory
      * 成功请求并创建了新的资源: 201.
      *
      * @param null|string $location
+     * @param mixed       $content
      *
      * @return $this
      */
@@ -312,6 +313,7 @@ class ResponseFactory implements IResponseFactory
      * @param string $message
      * @param string $message
      * @param string $text
+     * @param mixed  $statusCode
      *
      * @return $this
      */

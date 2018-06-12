@@ -20,26 +20,26 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc;
 
-use DateTime;
-use Exception;
 use ArrayAccess;
-use Carbon\Carbon;
-use JsonSerializable;
-use DateTimeInterface;
 use BadMethodCallException;
-use Leevel\Support\Str;
-use Leevel\Support\Arr;
-use Leevel\Flow\TControl;
-use Leevel\Support\IJson;
-use Leevel\Support\IArray;
-use Leevel\Support\TMacro;
-use Leevel\Event\IDispatch;
-use Leevel\Support\TSerialize;
+use Carbon\Carbon;
+use DateTime;
+use DateTimeInterface;
+use Exception;
+use JsonSerializable;
 use Leevel\Collection\Collection;
-use Leevel\Mvc\Relation\HasMany;
-use Leevel\Mvc\Relation\Relation;
-use Leevel\Mvc\Relation\ManyMany;
+use Leevel\Event\IDispatch;
+use Leevel\Flow\TControl;
 use Leevel\Mvc\Relation\BelongsTo;
+use Leevel\Mvc\Relation\HasMany;
+use Leevel\Mvc\Relation\ManyMany;
+use Leevel\Mvc\Relation\Relation;
+use Leevel\Support\Arr;
+use Leevel\Support\IArray;
+use Leevel\Support\IJson;
+use Leevel\Support\Str;
+use Leevel\Support\TMacro;
+use Leevel\Support\TSerialize;
 
 /**
  * 模型 Object Relational Mapping.
@@ -365,7 +365,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 构造函数.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      * @param mixed      $mixConnect
      * @param string     $strTable
      */
@@ -393,9 +393,109 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
+     * 魔术方法获取.
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->getProp($key);
+    }
+
+    /**
+     * 强制更新属性值
+     *
+     * @param string $key
+     * @param mixed  $mixValue
+     *
+     * @return $this
+     */
+    public function __set($key, $mixValue)
+    {
+        return $this->forceProp($key, $mixValue);
+    }
+
+    /**
+     * 是否存在属性.
+     *
+     * @param string $sPropName
+     *
+     * @return bool
+     */
+    public function __isset($sPropName)
+    {
+        return $this->hasProp($sPropName);
+    }
+
+    /**
+     * call.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public function __call(string $method, array $arrArgs)
+    {
+        if ($this->placeholderTControl($method)) {
+            return $this;
+        }
+
+        // 作用域
+        if (method_exists($this, 'scope'.ucwords($method))) {
+            array_unshift($arrArgs, $method);
+
+            return $this->{'scope'}(...$arrArgs);
+        }
+
+        try {
+            // 调用 trait __call 实现扩展方法
+            return $this->macroCall($method, $arrArgs);
+        } catch (BadMethodCallException $oE) {
+            $this->runEvent(static::BEFORE_FIND_EVENT);
+            $this->runEvent(static::BEFORE_SELECT_EVENT);
+
+            $mixData = $this->getClassCollectionQuery()->{$method}(...$arrArgs);
+
+            if ($mixData instanceof Collection) {
+                $this->runEvent(static::AFTER_SELECT_EVENT, $mixData);
+            } else {
+                $this->runEvent(static::AFTER_FIND_EVENT, $mixData);
+            }
+
+            return $mixData;
+        }
+    }
+
+    /**
+     * call static.
+     *
+     * @param string $method
+     * @param array  $arrArgs
+     *
+     * @return mixed
+     */
+    public static function __callStatic(string $method, array $arrArgs)
+    {
+        return (new static())->{$method}(...$arrArgs);
+    }
+
+    /**
+     * 将模型转化为 JSON.
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->toJson();
+    }
+
+    /**
      * 自动判断快捷方式.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return $this
      */
@@ -409,7 +509,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 新增快捷方式.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return $this
      */
@@ -423,7 +523,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 更新快捷方式.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return $this
      */
@@ -437,7 +537,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * replace 快捷方式.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return $this
      */
@@ -451,7 +551,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 自动判断快捷方式返回主键或者响应记录.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return mixed
      */
@@ -463,7 +563,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 新增快捷方式返回主键.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return mixed
      */
@@ -475,7 +575,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 更新快捷方式返回响应记录.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return int
      */
@@ -487,7 +587,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * replace 快捷方式返回主键或者响应记录.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return mixed
      */
@@ -499,7 +599,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 自动判断快捷方式生成模型.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return $this
      */
@@ -514,7 +614,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 新增快捷方式生成模型.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return $this
      */
@@ -529,7 +629,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 更新快捷方式生成模型.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return $this
      */
@@ -544,7 +644,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * replace 快捷方式生成模型.
      *
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return $this
      */
@@ -590,6 +690,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 根据主键 ID 删除模型.
      *
      * @param array|int $ids
+     * @param mixed     $mixId
      *
      * @return int
      */
@@ -654,7 +755,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
                 continue;
             }
             if (true === $booUpdateChange) {
-                if (!in_array($sPrimaryKey, $this->arrChangedProp)) {
+                if (!in_array($sPrimaryKey, $this->arrChangedProp, true)) {
                     $arrPrimaryData[$sPrimaryKey] = $this->arrProp[$sPrimaryKey];
                 }
             } else {
@@ -663,19 +764,19 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         // 复合主键，但是数据不完整则忽略
-        if (count($arrPrimaryKey) > 1 && count($arrPrimaryKey) != count($arrPrimaryData)) {
+        if (count($arrPrimaryKey) > 1 && count($arrPrimaryKey) !== count($arrPrimaryData)) {
             return null;
         }
 
-        if (1 == count($arrPrimaryData)) {
+        if (1 === count($arrPrimaryData)) {
             $arrPrimaryData = reset($arrPrimaryData);
         }
 
         if (!empty($arrPrimaryData)) {
             return $arrPrimaryData;
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     /**
@@ -685,6 +786,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      *
      * @param mixed $mixProp
      * @param mixed $mixValue
+     * @param mixed $strProp
      *
      * @return $this
      */
@@ -697,17 +799,17 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $mixValue = $this->meta()->fieldsProp($strProp, $mixValue);
 
         if (null === $mixValue && ($strCamelize = 'set'.$this->getCamelizeProp($strProp).'Prop') && method_exists($this, $strCamelize)) {
-            if (null === (($mixValue = $this->$strCamelize($this->getProp($strProp))))) {
+            if (null === (($mixValue = $this->{$strCamelize}($this->getProp($strProp))))) {
                 $mixValue = $this->getProp($strProp);
             }
-        } elseif ($mixValue && (in_array($strProp, $this->getDate()) || $this->isDateConversion($strProp))) {
+        } elseif ($mixValue && (in_array($strProp, $this->getDate(), true) || $this->isDateConversion($strProp))) {
             $mixValue = $this->fromDateTime($mixValue);
         } elseif ($this->isJsonConversion($strProp) && null !== $mixValue) {
             $mixValue = $this->asJson($mixValue);
         }
 
         $this->arrProp[$strProp] = $mixValue;
-        if ($this->getForceProp() && !in_array($strProp, $this->arrReadonly) && !in_array($strProp, $this->arrChangedProp)) {
+        if ($this->getForceProp() && !in_array($strProp, $this->arrReadonly, true) && !in_array($strProp, $this->arrChangedProp, true)) {
             $this->arrChangedProp[] = $strProp;
         }
 
@@ -799,18 +901,17 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if (!isset($this->arrProp[$strPropName])) {
             if (method_exists($this, $strPropName)) {
                 return $this->loadRelationProp($strPropName);
-            } else {
-                if (!$this->hasField($strPropName)) {
-                    throw new Exception(sprintf('Model %s database table %s has no field %s', $this->getCalledClass(), $this->getTable(), $strPropName));
-                }
-                $mixValue = null;
             }
+            if (!$this->hasField($strPropName)) {
+                throw new Exception(sprintf('Model %s database table %s has no field %s', $this->getCalledClass(), $this->getTable(), $strPropName));
+            }
+            $mixValue = null;
         } else {
             $mixValue = $this->arrProp[$strPropName];
         }
 
         if (($strCamelize = 'get'.$this->getCamelizeProp($strPropName).'Prop') && method_exists($this, $strCamelize)) {
-            $mixValue = $this->$strCamelize($mixValue);
+            $mixValue = $this->{$strCamelize}($mixValue);
         }
 
         if ($this->hasConversion($strPropName)) {
@@ -959,7 +1060,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strTargetKey
      * @param string $strSourceKey
      *
-     * @return void|\Leevel\Mvc\Relation\HasOne
+     * @return \Leevel\Mvc\Relation\HasOne|void
      */
     public function hasOne($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
@@ -985,7 +1086,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strTargetKey
      * @param string $strSourceKey
      *
-     * @return void|\Leevel\Mvc\Relation\BelongsTo
+     * @return \Leevel\Mvc\Relation\BelongsTo|void
      */
     public function belongsTo($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
@@ -1012,7 +1113,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strTargetKey
      * @param string $strSourceKey
      *
-     * @return void|\Leevel\Mvc\Relation\HasMany
+     * @return \Leevel\Mvc\Relation\HasMany|void
      */
     public function hasMany($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
@@ -1041,7 +1142,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strMiddleTargetKey
      * @param string $strMiddleSourceKey
      *
-     * @return void|\Leevel\Mvc\Relation\HasMany
+     * @return \Leevel\Mvc\Relation\HasMany|void
      */
     public function manyMany($strRelatedModel, $strMiddleModel = null, $strTargetKey = null, $strSourceKey = null, $strMiddleTargetKey = null, $strMiddleSourceKey = null)
     {
@@ -1311,7 +1412,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     {
         if (isset(static::$objDispatch)) {
             static::isSupportEvent($strEvent);
-            static::$objDispatch->listener("model.{$strEvent}:".get_called_class(), $mixListener);
+            static::$objDispatch->listener("model.{$strEvent}:".static::class, $mixListener);
         }
     }
 
@@ -1351,12 +1452,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 验证事件是否受支持
      *
      * @param string $event
+     * @param mixed  $strEvent
      *
      * @return bool
      */
     public static function isSupportEvent($strEvent)
     {
-        if (!in_array($strEvent, static::getSupportEvent())) {
+        if (!in_array($strEvent, static::getSupportEvent(), true)) {
             throw new Exception(sprintf('Event %s do not support'));
         }
     }
@@ -1451,13 +1553,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 返回主键字段.
      *
-     * @return array|string|null
+     * @return null|array|string
      */
     public function getPrimaryKeyName()
     {
         $arrKey = $this->getPrimaryKeyNameSource();
 
-        return 1 == count($arrKey) ? reset($arrKey) : $arrKey;
+        return 1 === count($arrKey) ? reset($arrKey) : $arrKey;
     }
 
     /**
@@ -1488,12 +1590,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 是否存在字段.
      *
      * @param string $strFiled
+     * @param mixed  $strField
      *
      * @return array
      */
     public function hasField($strField)
     {
-        return in_array($strField, $this->getField());
+        return in_array($strField, $this->getField(), true);
     }
 
     /**
@@ -1640,7 +1743,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function getAutoPost($strType = 'create')
     {
-        return 'create' == $strType ? $this->booCreateAutoPost : $this->booUpdateAutoPost;
+        return 'create' === $strType ? $this->booCreateAutoPost : $this->booUpdateAutoPost;
     }
 
     /**
@@ -1704,7 +1807,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function getAutoFill($strType = 'create')
     {
-        return 'create' == $strType ? $this->booCreateAutoFill : $this->booUpdateAutoFill;
+        return 'create' === $strType ? $this->booCreateAutoFill : $this->booUpdateAutoFill;
     }
 
     /**
@@ -1861,7 +1964,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 添加转换追加属性.
      *
-     * @param array|string|null $mixProp
+     * @param null|array|string $mixProp
      *
      * @return $this
      */
@@ -2093,7 +2196,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 是否存在转换类型.
      *
      * @param string            $strKey
-     * @param array|string|null $mixType
+     * @param null|array|string $mixType
      *
      * @return bool
      */
@@ -2177,6 +2280,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 设置查询 select.
      *
+     * @param mixed $objSelectForQuery
+     *
      * @return $this
      */
     public function setSelectForQuery($objSelectForQuery)
@@ -2241,6 +2346,55 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
+     * 实现 ArrayAccess::offsetExists.
+     *
+     * @param string $offset
+     *
+     * @return bool
+     */
+    public function offsetExists($offset)
+    {
+        return $this->hasProp($offset);
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetSet.
+     *
+     * @param string $offset
+     * @param mixed  $value
+     *
+     * @return $this
+     */
+    public function offsetSet($offset, $value)
+    {
+        return $this->forceProp($offset, $value);
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetGet.
+     *
+     * @param string $offset
+     *
+     * @return mixed
+     */
+    public function offsetGet($offset)
+    {
+        return $this->getProp($offset);
+    }
+
+    /**
+     * 实现 ArrayAccess::offsetUnset.
+     *
+     * @param string $offset
+     *
+     * @return $this
+     */
+    public function offsetUnset($offset)
+    {
+        return $this->deleteProp($offset);
+    }
+
+    /**
      * 初始化字段名字.
      */
     protected function initField()
@@ -2266,7 +2420,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 保存统一入口.
      *
      * @param strint     $sSaveMethod
-     * @param array|null $arrData
+     * @param null|array $arrData
      *
      * @return mixed
      */
@@ -2286,12 +2440,15 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         switch (strtolower($sSaveMethod)) {
             case 'create':
                 $mixResult = $this->createReal();
+
                 break;
             case 'update':
                 $mixResult = $this->updateReal();
+
                 break;
             case 'replace':
                 $mixResult = $this->replaceReal();
+
                 break;
             case 'save':
             default:
@@ -2310,6 +2467,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
                         $mixResult = $this->updateReal();
                     }
                 }
+
                 break;
         }
 
@@ -2335,7 +2493,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
         $arrSaveData = [];
         foreach ($this->arrProp as $sPropName => $mixValue) {
-            if (null === $mixValue || !in_array($sPropName, $arrPropKey)) {
+            if (null === $mixValue || !in_array($sPropName, $arrPropKey, true)) {
                 continue;
             }
             $arrSaveData[$sPropName] = $mixValue;
@@ -2379,7 +2537,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
         $arrSaveData = [];
         foreach ($this->arrProp as $sPropName => $mixValue) {
-            if (!in_array($sPropName, $this->arrChangedProp) || !in_array($sPropName, $arrPropKey)) {
+            if (!in_array($sPropName, $this->arrChangedProp, true) || !in_array($sPropName, $arrPropKey, true)) {
                 continue;
             }
             $arrSaveData[$sPropName] = $mixValue;
@@ -2443,7 +2601,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
         $arrPost = $this->whiteAndBlack(array_keys($_POST), $this->arrPostWhite, $this->arrPostBlack);
         if ($arrPost) {
-            if ('create' == $strType) {
+            if ('create' === $strType) {
                 $arrPost = $this->whiteAndBlack($arrPost, $this->arrCreatePostWhite, $this->arrCreatePostBlack);
             } else {
                 $arrPost = $this->whiteAndBlack($arrPost, $this->arrUpdatePostWhite, $this->arrUpdatePostBlack);
@@ -2453,14 +2611,14 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($arrPost) {
             $arrValue = [];
             foreach ($_POST as $strKey => $mixValue) {
-                if (in_array($strKey, $arrPost)) {
+                if (in_array($strKey, $arrPost, true)) {
                     $arrTemp[$strKey] = $mixValue;
                 }
             }
 
             if ($arrValue) {
                 foreach ($this->meta()->fieldsProps($arrValue) as $strField => $mixValue) {
-                    if (!in_array($strField, $this->arrChangedProp)) {
+                    if (!in_array($strField, $this->arrChangedProp, true)) {
                         $this->arrProp[$strField] = trim($mixValue);
                         $this->arrChangedProp[] = $strField;
                     }
@@ -2480,7 +2638,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             return;
         }
 
-        if ('create' == $strType) {
+        if ('create' === $strType) {
             $arrFill = array_merge($this->arrAutoFill, $this->arrCreateFill);
         } else {
             $arrFill = array_merge($this->arrAutoFill, $this->arrUpdateFill);
@@ -2508,7 +2666,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function parseDataFromRelation($strPropName)
     {
-        $oRelation = $this->$strPropName();
+        $oRelation = $this->{$strPropName}();
         if (!($oRelation instanceof Relation)) {
             throw new Exception(sprintf('Relation prop must return a type of %s', 'Leevel\Mvc\Relation\Relation'));
         }
@@ -2829,7 +2987,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function getCalledClass()
     {
-        return get_called_class();
+        return static::class;
     }
 
     /**
@@ -2846,154 +3004,5 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         return static::$arrCamelizeProp[$strProp] = ucwords(Str::camelize($strProp));
-    }
-
-    /**
-     * 魔术方法获取.
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        return $this->getProp($key);
-    }
-
-    /**
-     * 强制更新属性值
-     *
-     * @param string $key
-     * @param mixed  $mixValue
-     *
-     * @return $this
-     */
-    public function __set($key, $mixValue)
-    {
-        return $this->forceProp($key, $mixValue);
-    }
-
-    /**
-     * 是否存在属性.
-     *
-     * @param string $sPropName
-     *
-     * @return bool
-     */
-    public function __isset($sPropName)
-    {
-        return $this->hasProp($sPropName);
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetExists.
-     *
-     * @param string $offset
-     *
-     * @return bool
-     */
-    public function offsetExists($offset)
-    {
-        return $this->hasProp($offset);
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetSet.
-     *
-     * @param string $offset
-     * @param mixed  $value
-     *
-     * @return $this
-     */
-    public function offsetSet($offset, $value)
-    {
-        return $this->forceProp($offset, $value);
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetGet.
-     *
-     * @param string $offset
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-        return $this->getProp($offset);
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param string $offset
-     *
-     * @return $this
-     */
-    public function offsetUnset($offset)
-    {
-        return $this->deleteProp($offset);
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $arrArgs)
-    {
-        if ($this->placeholderTControl($method)) {
-            return $this;
-        }
-
-        // 作用域
-        if (method_exists($this, 'scope'.ucwords($method))) {
-            array_unshift($arrArgs, $method);
-
-            return $this->{'scope'}(...$arrArgs);
-        }
-
-        try {
-            // 调用 trait __call 实现扩展方法
-            return $this->macroCall($method, $arrArgs);
-        } catch (BadMethodCallException $oE) {
-            $this->runEvent(static::BEFORE_FIND_EVENT);
-            $this->runEvent(static::BEFORE_SELECT_EVENT);
-
-            $mixData = $this->getClassCollectionQuery()->$method(...$arrArgs);
-
-            if ($mixData instanceof Collection) {
-                $this->runEvent(static::AFTER_SELECT_EVENT, $mixData);
-            } else {
-                $this->runEvent(static::AFTER_FIND_EVENT, $mixData);
-            }
-
-            return $mixData;
-        }
-    }
-
-    /**
-     * call static.
-     *
-     * @param string $method
-     * @param array  $arrArgs
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $arrArgs)
-    {
-        return (new static())->$method(...$arrArgs);
-    }
-
-    /**
-     * 将模型转化为 JSON.
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->toJson();
     }
 }

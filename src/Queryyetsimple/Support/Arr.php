@@ -50,14 +50,13 @@ class Arr
             $mixInput = array_filter($mixInput); // 过滤null
             if (true === $bAllowedEmpty) {
                 return $mixInput;
-            } else {
-                $mixInput = array_map('trim', $mixInput);
-
-                return array_filter($mixInput, 'strlen');
             }
-        } else {
-            return $mixInput;
+            $mixInput = array_map('trim', $mixInput);
+
+            return array_filter($mixInput, 'strlen');
         }
+
+        return $mixInput;
     }
 
     /**

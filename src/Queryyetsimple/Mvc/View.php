@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc;
 
-use RuntimeException;
 use Leevel\View\IView as ViewIView;
+use RuntimeException;
 
 /**
  * 视图.
@@ -87,7 +87,7 @@ class View implements IView
     /**
      * 获取变量赋值
      *
-     * @param string|null $name
+     * @param null|string $name
      *
      * @return mixed
      */
@@ -118,7 +118,7 @@ class View implements IView
     /**
      * 清空变量值
      *
-     * @param string|null $name
+     * @param null|string $name
      *
      * @return $this
      */

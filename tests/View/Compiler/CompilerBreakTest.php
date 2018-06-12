@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ * @coversNothing
  */
 class CompilerBreakTest extends TestCase
 {
@@ -59,7 +60,7 @@ eot;
 <?php endforeach; endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <list for=list>
@@ -81,6 +82,6 @@ eot;
 <?php endforeach; endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

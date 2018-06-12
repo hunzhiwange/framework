@@ -58,6 +58,6 @@ class View implements IView
      */
     public function __call(string $method, array $args)
     {
-        return $this->connect->$method(...$args);
+        return $this->connect->{$method}(...$args);
     }
 }

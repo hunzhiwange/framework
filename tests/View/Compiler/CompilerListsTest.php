@@ -30,6 +30,7 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
+ * @coversNothing
  */
 class CompilerListsTest extends TestCase
 {
@@ -63,7 +64,7 @@ else:
 endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <lists name="list" id="vo" offset="2" length='4'>
@@ -89,7 +90,7 @@ else:
 endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <lists name="list" id="vo" mod="2">
@@ -119,7 +120,7 @@ else:
 endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <lists name="list" id="vo" mod="2">
@@ -149,7 +150,7 @@ else:
 endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <lists name="list" id="vo" mod="2">
@@ -181,7 +182,7 @@ else:
 endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <lists name="list" id="vo" mod="2">
@@ -213,7 +214,7 @@ else:
 endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <lists name="list" id="vo" index="k">
@@ -239,7 +240,7 @@ else:
 endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
 
         $source = <<<'eot'
 <lists name="list" id="vo">
@@ -265,6 +266,6 @@ else:
 endif;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
 }

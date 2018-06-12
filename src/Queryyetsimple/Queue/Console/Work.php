@@ -20,10 +20,10 @@ declare(strict_types=1);
 
 namespace Leevel\Queue\Console;
 
-use PHPQueue\Runner;
-use Leevel\Console\Option;
-use Leevel\Console\Command;
 use Leevel\Console\Argument;
+use Leevel\Console\Command;
+use Leevel\Console\Option;
+use PHPQueue\Runner;
 
 /**
  * 运行任务
@@ -53,7 +53,7 @@ class Work extends Command
     /**
      * 当前进程启动时间.
      *
-     * @var int|false
+     * @var false|int
      */
     protected $restart;
 
@@ -174,7 +174,7 @@ class Work extends Command
     /**
      * 获取上次重启时间.
      *
-     * @return int|false
+     * @return false|int
      */
     protected function getRestart()
     {
@@ -184,13 +184,13 @@ class Work extends Command
     /**
      * 检查是否要重启守候进程.
      *
-     * @param int|false $restart
+     * @param false|int $restart
      *
      * @return bool
      */
     protected function shouleRestart($restart)
     {
-        return $this->getRestart() != $restart;
+        return $this->getRestart() !== $restart;
     }
 
     /**

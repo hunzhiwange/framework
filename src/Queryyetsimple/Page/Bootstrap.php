@@ -82,6 +82,18 @@ class Bootstrap implements IRender
     }
 
     /**
+     * 替换分页变量.
+     *
+     * @param mixed $mixPage
+     *
+     * @return string
+     */
+    public function replace($mixPage)
+    {
+        return $this->objPage->pageReplace($mixPage);
+    }
+
+    /**
      * 返回渲染 CSS.
      *
      * @return string
@@ -134,9 +146,9 @@ class Bootstrap implements IRender
     {
         if ($this->objPage->canPrevRender()) {
             return sprintf('<li><a aria-label="Previous" href="%s"><span aria-hidden="true">&laquo;</span></a></li>', $this->replace($this->objPage->parsePrevRenderPrev()));
-        } else {
-            return '<li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
         }
+
+        return '<li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
     }
 
     /**
@@ -152,7 +164,7 @@ class Bootstrap implements IRender
 
         $strMain = '';
         for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); ++$nI) {
-            $booActive = $this->objPage->getCurrentPage() == $nI;
+            $booActive = $this->objPage->getCurrentPage() === $nI;
             $strMain .= sprintf('<li class="%s"><a%s>%d</a></li>', $booActive ? ' active' : '', $booActive ? '' : sprintf(' href="%s"', $this->replace($nI)), $nI);
         }
 
@@ -168,9 +180,9 @@ class Bootstrap implements IRender
     {
         if ($this->objPage->canNextRender()) {
             return sprintf('<li><a aria-label="Next" href="%s"><span aria-hidden="true">&raquo;</span></a></li>', $this->replace($this->objPage->getCurrentPage() + 1));
-        } else {
-            return '<li class="disabled"><a aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
         }
+
+        return '<li class="disabled"><a aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
     }
 
     /**
@@ -207,17 +219,5 @@ class Bootstrap implements IRender
     protected function getFooterRender()
     {
         return '</nav>';
-    }
-
-    /**
-     * 替换分页变量.
-     *
-     * @param mixed $mixPage
-     *
-     * @return string
-     */
-    public function replace($mixPage)
-    {
-        return $this->objPage->pageReplace($mixPage);
     }
 }
