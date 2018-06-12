@@ -475,7 +475,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         $key = array_search($value, $this->elements, $strict);
 
         if (false === $key) {
-            return null;
+            return;
         }
 
         return $key;

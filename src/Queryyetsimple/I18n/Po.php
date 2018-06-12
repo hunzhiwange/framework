@@ -402,7 +402,7 @@ class Po extends Gettext
                     if (self::is_final($context)) {
                         break;
                     } elseif (!$context) { // we haven't read a line and eof came
-                        return null;
+                        return;
                     } else {
                         return false;
                     }

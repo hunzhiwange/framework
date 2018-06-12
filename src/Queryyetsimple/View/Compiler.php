@@ -1449,7 +1449,7 @@ class Compiler implements ICompiler
             }
         }
 
-        return null;
+        return;
     }
 
     /**

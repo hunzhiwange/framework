@@ -553,7 +553,7 @@ class Project extends Container implements IProject
 
         $prefix = $this->composer()->getPrefixesPsr4();
         if (!isset($prefix[$namespaces[0].'\\'])) {
-            return null;
+            return;
         }
 
         $namespaces[0] = $prefix[$namespaces[0].'\\'][0];

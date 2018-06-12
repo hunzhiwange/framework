@@ -349,14 +349,14 @@ class SwaggerRouter
     protected function parseBindBySource(Context $context)
     {
         if (!$context->class || !$context->method) {
-            return null;
+            return;
         }
 
         $className = $context->fullyQualifiedName($context->class);
         $segmentation = '\\'.$this->controllerDir.'\\';
 
         if (strpos($className, $segmentation) < 1) {
-            return null;
+            return;
         }
         $tmp = explode($segmentation, $className);
         $router = ':'.ltrim($tmp[0], '\\').'\\'.$tmp[1].'\\'.$context->method;

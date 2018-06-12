@@ -2582,7 +2582,7 @@ class Validate implements IValidate
             return $strFoo;
         }
 
-        return null;
+        return;
     }
 
     /**

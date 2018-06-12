@@ -689,7 +689,5 @@ class Select
         if (null !== ($objModel = $this->objSelect->where($arrProp)->getOne())) {
             return $objModel;
         }
-
-        return null;
     }
 }

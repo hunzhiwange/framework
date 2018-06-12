@@ -645,7 +645,7 @@ abstract class Connect
             return $mixValue ? true : false;
         }
         if (null === $mixValue) {
-            return null;
+            return;
         }
 
         $mixValue = trim($mixValue);

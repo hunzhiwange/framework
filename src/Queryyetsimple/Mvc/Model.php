@@ -765,7 +765,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
         // 复合主键，但是数据不完整则忽略
         if (count($arrPrimaryKey) > 1 && count($arrPrimaryKey) !== count($arrPrimaryData)) {
-            return null;
+            return;
         }
 
         if (1 === count($arrPrimaryData)) {
@@ -775,8 +775,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if (!empty($arrPrimaryData)) {
             return $arrPrimaryData;
         }
-
-        return null;
     }
 
     /**
