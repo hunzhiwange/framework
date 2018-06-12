@@ -3,9 +3,9 @@ language: php
 preset: symfony
 
 enabled:
-    - short_array_syntax
-    - concat_with_spaces
-    - not_operator_with_successor_space
+  - short_array_syntax
+  - concat_with_spaces
+  - not_operator_with_successor_space
 
 env:
   global:
@@ -13,14 +13,14 @@ env:
     - setup=stable
 
 matrix:
-    include:
-        - php: 7.1.3
-        - php: 7.1
-          env: deps=high
-        - php: 7.2
-          env: deps=low
+  include:
+    - php: 7.1.3
+    - php: 7.1
+      env: deps=high
+    - php: 7.2
+      env: deps=low
 
-    fast_finish: true
+  fast_finish: true
 
 sudo: false
 
