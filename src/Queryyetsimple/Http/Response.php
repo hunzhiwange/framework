@@ -47,7 +47,6 @@ use UnexpectedValueException;
 class Response implements IResponse
 {
     use TControl;
-
     use TMacro;
 
     /**

@@ -864,7 +864,7 @@ class Select
             ])) {
                 return false;
             }
-            ++$intPage;
+            $intPage++;
             $mixResult = $this->forPage($intPage, $intCount)->getAll();
         }
 
@@ -3619,7 +3619,7 @@ class Select
         // 查询条件
         $arrArgs = func_get_args();
         if (count($arrArgs) > 3) {
-            for ($nI = 0; $nI <= 2; ++$nI) {
+            for ($nI = 0; $nI <= 2; $nI++) {
                 array_shift($arrArgs);
             }
             $objSelect = new static($this->objConnect);
@@ -4002,7 +4002,7 @@ class Select
                     $mixValue = $arrBind[$intQuestionMark];
                     unset($arrBind[$intQuestionMark]);
                     $this->deleteBindParams($intQuestionMark);
-                    ++$intQuestionMark;
+                    $intQuestionMark++;
                 }
 
                 if ($intIndex > 0) {
@@ -4166,7 +4166,7 @@ class Select
             $nDot = strrpos($mixName, '.');
             $strAliasReturn = false === $nDot ? $mixName : substr($mixName, $nDot + 1);
         }
-        for ($nI = 2; array_key_exists($strAliasReturn, $this->arrOption['from']); ++$nI) {
+        for ($nI = 2; array_key_exists($strAliasReturn, $this->arrOption['from']); $nI++) {
             $strAliasReturn = $mixName.'_'.(string) $nI;
         }
 

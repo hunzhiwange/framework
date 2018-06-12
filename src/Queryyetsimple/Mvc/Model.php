@@ -701,7 +701,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $objInstance = new static();
         foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
             if ($objModel->delete()) {
-                ++$intCount;
+                $intCount++;
             }
         }
 

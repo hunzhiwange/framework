@@ -40,7 +40,6 @@ use Swift_Message;
 class Mail implements IMail
 {
     use TClass;
-
     use TControl;
 
     /**

@@ -278,7 +278,7 @@ class SwaggerRouter
 
             unset($item['regex']);
 
-            ++$groupIndex;
+            $groupIndex++;
         }
 
         return $groups;
@@ -308,7 +308,7 @@ class SwaggerRouter
 
             $regex[] = '|'.$router['regex'].($emptyMatche ? str_repeat('()', $emptyMatche) : '');
 
-            ++$ruleKey;
+            $ruleKey++;
         }
 
         $regex[] = ')$~x';

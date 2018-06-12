@@ -111,12 +111,12 @@ class Gettext extends Translations implements IArray
         $expression .= ';';
         $res = '';
         $depth = 0;
-        for ($i = 0; $i < strlen($expression); ++$i) {
+        for ($i = 0; $i < strlen($expression); $i++) {
             $char = $expression[$i];
             switch ($char) {
                 case '?':
                     $res .= ' ? (';
-                    ++$depth;
+                    $depth++;
 
                     break;
                 case ':':

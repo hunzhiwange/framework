@@ -52,7 +52,7 @@ class Redis extends Predis
             if (empty($strJobData['data']['attempts'])) {
                 $strJobData['data']['attempts'] = 1;
             } else {
-                ++$strJobData['data']['attempts'];
+                $strJobData['data']['attempts']++;
             }
             $strJobData = json_encode($strJobData);
         }

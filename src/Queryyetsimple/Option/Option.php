@@ -164,7 +164,7 @@ class Option implements IOption, ArrayAccess
                 $parts = explode('.', $name);
                 $max = count($parts) - 1;
                 $option = &$this->option[$namespaces];
-                for ($i = 0; $i <= $max; ++$i) {
+                for ($i = 0; $i <= $max; $i++) {
                     $part = $parts[$i];
                     if ($i < $max) {
                         if (!isset($option[$part])) {
@@ -206,7 +206,7 @@ class Option implements IOption, ArrayAccess
             $parts = explode('.', $name);
             $max = count($parts) - 1;
             $option = &$this->option[$namespaces];
-            for ($i = 0; $i <= $max; ++$i) {
+            for ($i = 0; $i <= $max; $i++) {
                 $part = $parts[$i];
                 if ($i < $max) {
                     if (!isset($option[$part])) {

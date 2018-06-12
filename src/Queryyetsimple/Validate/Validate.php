@@ -2573,7 +2573,7 @@ class Validate implements IValidate
             $strRule = explode('.', $strRule);
 
             $strFoo = '$this->arrData';
-            for ($nI = 0; $nI < count($strRule); ++$nI) {
+            for ($nI = 0; $nI < count($strRule); $nI++) {
                 $strFoo .= "['{$strRule[$nI]}']";
             }
 

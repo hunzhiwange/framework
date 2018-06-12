@@ -319,7 +319,7 @@ class Seccode implements ISeccode
             return;
         }
 
-        for ($int = 0; $int <= $intLineNum; ++$int) {
+        for ($int = 0; $int <= $intLineNum; $int++) {
             $resColor = $this->getOption('color') ? imagecolorallocate($resFoo, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255)) : imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
 
             $intX = $this->mtRand(0, $this->getWidth());
@@ -352,7 +352,7 @@ class Seccode implements ISeccode
         // 是否启用随机颜色
         !$this->getOption('color') && $resTextColor = imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
 
-        for ($int = 0; $int < count($arrFont); ++$int) {
+        for ($int = 0; $int < count($arrFont); $int++) {
             if ($this->getOption('color')) {
                 $this->arrFontColor = [
                     mt_rand(0, 255),
@@ -392,7 +392,7 @@ class Seccode implements ISeccode
 
         $arrFont = [];
         $intWidthTotal = 0;
-        for ($int = 0; $int < $intCodeLength; ++$int) {
+        for ($int = 0; $int < $intCodeLength; $int++) {
             if (!isset($arrFont[$int])) {
                 $arrFont[$int] = [];
             }
@@ -471,14 +471,14 @@ class Seccode implements ISeccode
      */
     protected function makeBackgroundDefault(&$resFoo)
     {
-        for ($int = 0; $int < 3; ++$int) {
+        for ($int = 0; $int < 3; $int++) {
             $arrStart[$int] = mt_rand(200, 255);
             $arrEnd[$int] = mt_rand(100, 150);
             $arrStep[$int] = ($arrEnd[$int] - $arrStart[$int]) / $this->getWidth();
             $arrColor[$int] = $arrStart[$int];
         }
 
-        for ($int = 0; $int < $this->getWidth(); ++$int) {
+        for ($int = 0; $int < $this->getWidth(); $int++) {
             $resColor = imagecolorallocate($resFoo, $arrColor[0], $arrColor[1], $arrColor[2]);
             imageline($resFoo, $int, 0, $int - ($this->getOption('tilt') ? mt_rand(-30, 30) : 0), $this->getHeight(), $resColor);
             $arrColor[0] += $arrStep[0];

@@ -176,7 +176,7 @@ class Defaults implements IRender
         }
 
         $strMain = '';
-        for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); ++$nI) {
+        for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); $nI++) {
             $booActive = $this->objPage->getCurrentPage() === $nI;
             $strMain .= sprintf('<li class="number%s"><a%s>%d</a></li>', $booActive ? ' active' : '', $booActive ? '' : sprintf(' href="%s"', $this->replace($nI)), $nI);
         }

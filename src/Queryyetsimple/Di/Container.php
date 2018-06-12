@@ -496,7 +496,7 @@ class Container implements IContainer, ArrayAccess
                             $data = $args[$item->name];
                         } else {
                             $isRequireBad = true;
-                            ++$required;
+                            $required++;
                         }
 
                         break;

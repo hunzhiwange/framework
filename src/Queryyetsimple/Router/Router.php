@@ -498,7 +498,7 @@ class Router implements IRouter
         foreach ($data as $item) {
             if (is_numeric($item)) {
                 $params['_param'.$k] = $item;
-                ++$k;
+                $k++;
             } else {
                 $paths[] = $item;
             }

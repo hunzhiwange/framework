@@ -127,7 +127,7 @@ class Request
               $_size0 = 0;
               $_etype3 = 0;
               $xfer += $input->readListBegin($_etype3, $_size0);
-              for ($_i4 = 0; $_i4 < $_size0; ++$_i4) {
+              for ($_i4 = 0; $_i4 < $_size0; $_i4++) {
                   $elem5 = null;
                   $xfer += $input->readString($elem5);
                   $this->params[] = $elem5;
@@ -145,7 +145,7 @@ class Request
               $_ktype7 = 0;
               $_vtype8 = 0;
               $xfer += $input->readMapBegin($_ktype7, $_vtype8, $_size6);
-              for ($_i10 = 0; $_i10 < $_size6; ++$_i10) {
+              for ($_i10 = 0; $_i10 < $_size6; $_i10++) {
                   $key11 = '';
                   $val12 = '';
                   $xfer += $input->readString($key11);

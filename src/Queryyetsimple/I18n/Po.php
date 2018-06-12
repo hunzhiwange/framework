@@ -151,7 +151,7 @@ class Po extends Gettext
         $replaces = [
             "$slash" => "$slash$slash",
             "$quote" => "$slash$quote",
-            "\t" => '\t',
+            "\t"     => '\t',
         ];
         $string = str_replace(array_keys($replaces), array_values($replaces), $string);
         $po = $quote.implode("${slash}n$quote$newline$quote", explode($newline, $string)).$quote;
@@ -175,9 +175,9 @@ class Po extends Gettext
     public static function unpoify($string)
     {
         $escapes = [
-            't' => "\t",
-            'n' => "\n",
-            'r' => "\r",
+            't'  => "\t",
+            'n'  => "\n",
+            'r'  => "\r",
             '\\' => '\\',
         ];
         $lines = array_map('trim', explode("\n", $string));
@@ -395,7 +395,7 @@ class Po extends Gettext
         $context = '';
         $msgstr_index = 0;
         while (true) {
-            ++$lineno;
+            $lineno++;
             $line = static::read_line($f);
             if (!$line) {
                 if (feof($f)) {
@@ -418,7 +418,7 @@ class Po extends Gettext
                 // the comment is the start of a new entry
                 if (self::is_final($context)) {
                     static::read_line($f, 'put-back');
-                    --$lineno;
+                    $lineno--;
                     break;
                 }
                 // comments have to be at the beginning
@@ -430,7 +430,7 @@ class Po extends Gettext
             } elseif (preg_match('/^msgctxt\s+(".*")/', $line, $m)) {
                 if (self::is_final($context)) {
                     static::read_line($f, 'put-back');
-                    --$lineno;
+                    $lineno--;
                     break;
                 }
                 if ($context && 'comment' != $context) {
@@ -441,7 +441,7 @@ class Po extends Gettext
             } elseif (preg_match('/^msgid\s+(".*")/', $line, $m)) {
                 if (self::is_final($context)) {
                     static::read_line($f, 'put-back');
-                    --$lineno;
+                    $lineno--;
                     break;
                 }
                 if ($context && 'msgctxt' != $context && 'comment' != $context) {
@@ -508,7 +508,7 @@ class Po extends Gettext
         }
 
         return [
-            'entry' => $entry,
+            'entry'  => $entry,
             'lineno' => $lineno,
         ];
     }

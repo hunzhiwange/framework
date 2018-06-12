@@ -373,7 +373,7 @@ class Select
         $objInstance = $this->objModel->newInstance();
         foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
             if ($objModel->softDelete()) {
-                ++$intCount;
+                $intCount++;
             }
         }
 

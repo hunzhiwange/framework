@@ -196,7 +196,7 @@ class Str
         }
 
         $sRet = '';
-        for ($int = 0; $int < $nLength; ++$int) {
+        for ($int = 0; $int < $nLength; $int++) {
             $sRet .= static::subString($sCharBox, floor(mt_rand(0, mb_strlen($sCharBox, 'utf-8') - 1)), 1);
         }
         unset($sCharBox);

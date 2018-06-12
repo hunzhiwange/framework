@@ -1484,10 +1484,11 @@ class Request implements IRequest, IArray, ArrayAccess
             $maxCount = count($segs);
 
             $url = '';
+            
             do {
                 $seg = $segs[$index];
                 $url = '/'.$seg.$url;
-                ++$index;
+                $index++;
             } while (($maxCount > $index) && (false !== ($pos = strpos($path, $url))) && (0 !== $pos));
         }
 

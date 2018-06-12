@@ -178,7 +178,7 @@ class UnitOfWork implements IUnitOfWork
                 $objEntity,
                 $objRepository,
             ];
-            ++$this->intCount;
+            $this->intCount++;
         }
 
         return $this;
@@ -201,7 +201,7 @@ class UnitOfWork implements IUnitOfWork
                 $objEntity,
                 $objRepository,
             ];
-            ++$this->intCount;
+            $this->intCount++;
         }
 
         return $this;
@@ -223,7 +223,7 @@ class UnitOfWork implements IUnitOfWork
                 $objEntity,
                 $objRepository,
             ];
-            ++$this->intCount;
+            $this->intCount++;
         }
 
         return $this;

@@ -150,7 +150,7 @@ class Mo extends Gettext
         fseek($fh, $originals_lenghts_addr);
         // headers' msgid is an empty string
         fwrite($fh, pack('VV', 0, $current_addr));
-        ++$current_addr;
+        $current_addr++;
         $originals_table = chr(0);
         $reader = new reader();
         foreach ($entries as $entry) {
@@ -293,7 +293,7 @@ class Mo extends Gettext
         $reader->seekto($strings_addr);
         $strings = $reader->read_all();
         $reader->close();
-        for ($i = 0; $i < $header['total']; ++$i) {
+        for ($i = 0; $i < $header['total']; $i++) {
             $o = unpack("{$endian}length/{$endian}pos", $originals[$i]);
             $t = unpack("{$endian}length/{$endian}pos", $translations[$i]);
             if (!$o || !$t) {
