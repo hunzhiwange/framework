@@ -41,7 +41,6 @@ use Leevel\Support\TSerialize;
 class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
 {
     use TSerialize;
-
     use TControl;
 
     /**

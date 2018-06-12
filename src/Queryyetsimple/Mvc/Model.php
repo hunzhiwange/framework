@@ -53,12 +53,10 @@ use Leevel\Support\TSerialize;
 abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAccess
 {
     use TSerialize;
-
     use TMacro {
         __callStatic as macroCallStatic;
         __call as macroCall;
     }
-
     use TControl;
 
     /**

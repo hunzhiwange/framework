@@ -1735,7 +1735,7 @@ class Validate implements IValidate
     protected function validateLuhn($strField, $mixData, $arrParameter)
     {
         $intTotal = 0;
-        for ($intI = strlen($mixData); $intI >= 1; --$intI) {
+        for ($intI = strlen($mixData); $intI >= 1; $intI--) {
             $intIndex = $intI - 1;
             if (0 === $intI % 2) {
                 $intTotal += $mixData[$intIndex];
