@@ -134,13 +134,13 @@ abstract class Connect implements IHtml
      * @var array
      */
     protected $arrOption = [
-        'page' => 'page',
-        'range' => 2,
-        'render' => 'defaults',
+        'page'          => 'page',
+        'range'         => 2,
+        'render'        => 'defaults',
         'render_option' => [],
-        'url' => null,
-        'parameter' => [],
-        'fragment' => null,
+        'url'           => null,
+        'parameter'     => [],
+        'fragment'      => null,
     ];
 
     /**
@@ -742,7 +742,7 @@ abstract class Connect implements IHtml
             return $this->strResolveUrl;
         }
 
-        $booWithUrl = false;
+        $booWithUrl   = false;
         $strSubdomain = 'www';
 
         if (false !== strpos($this->getOption('url'), '@')) {

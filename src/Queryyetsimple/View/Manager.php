@@ -141,10 +141,10 @@ class Manager extends Managers
         $request = $this->container['request'];
 
         $options = [
-            'development' => $this->container->development(),
+            'development'     => $this->container->development(),
             'controller_name' => $request->controller(),
-            'action_name' => $request->action(),
-            'theme_path' => $this->container->pathApplicationTheme(),
+            'action_name'     => $request->action(),
+            'theme_path'      => $this->container->pathApplicationTheme(),
 
             // 仅 html 模板需要缓存路径
             'theme_cache_path' => $this->container->pathApplicationCache('theme').'/'.strtolower($request->app()),

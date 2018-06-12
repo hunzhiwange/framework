@@ -59,16 +59,16 @@ return [
  */',
 
         // 产品信息
-        'product_homepage' => 'http://your.domain.com',
-        'product_name' => 'Your.Product',
+        'product_homepage'    => 'http://your.domain.com',
+        'product_name'        => 'Your.Product',
         'product_description' => 'This project can help people to do things very funny.',
-        'product_slogan' => 'To make the world better',
+        'product_slogan'      => 'To make the world better',
 
         // 文件头部替换
-        'file_name' => '',
-        'file_since' => date('Y.m.d'),
+        'file_name'    => '',
+        'file_since'   => date('Y.m.d'),
         'file_version' => '1.0',
         'file_package' => '$$',
-        'file_author' => 'Name Your <your@mail.com>',
+        'file_author'  => 'Name Your <your@mail.com>',
     ],
 ];

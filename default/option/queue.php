@@ -49,8 +49,8 @@ return [
         // 分别对应 new \Predis\Client($arrServers, $arrOptions) 构造器两个参数
         'redis' => [
             'servers' => [
-                'host' => env('queue_redis_host', '127.0.0.1'),
-                'port' => env('queue_redis_port', 6379),
+                'host'     => env('queue_redis_host', '127.0.0.1'),
+                'port'     => env('queue_redis_port', 6379),
                 'password' => env('queue_redis_password', null),
             ],
             'options' => [],

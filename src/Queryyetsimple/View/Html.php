@@ -53,16 +53,16 @@ class Html extends Connect implements IConnect
      * @var array
      */
     protected $option = [
-        'development' => false,
-        'controller_name' => 'index',
-        'action_name' => 'index',
+        'development'           => false,
+        'controller_name'       => 'index',
+        'action_name'           => 'index',
         'controlleraction_depr' => '_',
-        'theme_name' => 'default',
-        'theme_path' => '',
-        'theme_path_default' => '',
-        'suffix' => '.html',
-        'theme_cache_path' => '',
-        'cache_lifetime' => 2592000,
+        'theme_name'            => 'default',
+        'theme_path'            => '',
+        'theme_path_default'    => '',
+        'suffix'                => '.html',
+        'theme_cache_path'      => '',
+        'cache_lifetime'        => 2592000,
     ];
 
     /**

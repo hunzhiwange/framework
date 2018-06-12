@@ -150,7 +150,7 @@ class ApiResponse extends JsonResponse
 
         $this->setData([
             'message' => $this->parseErrorMessage($message),
-            'errors' => $errors ?: [],
+            'errors'  => $errors ?: [],
         ]);
     }
 

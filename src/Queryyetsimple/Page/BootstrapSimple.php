@@ -38,9 +38,9 @@ class BootstrapSimple extends Bootstrap
      */
     protected $arrOption = [
         // center,justify
-        'align' => 'center',
+        'align'    => 'center',
         'template' => '{header} {ul} {prev} {next} {endul} {footer}',
-        'css' => true,
+        'css'      => true,
     ];
 
     /**

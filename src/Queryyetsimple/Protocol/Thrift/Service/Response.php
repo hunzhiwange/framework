@@ -51,11 +51,11 @@ class Response
         if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
                 1 => [
-                    'var' => 'status',
+                    'var'  => 'status',
                     'type' => TType::I16,
                 ],
                 2 => [
-                    'var' => 'data',
+                    'var'  => 'data',
                     'type' => TType::STRING,
                 ],
             ];
@@ -77,10 +77,10 @@ class Response
 
     public function read($input)
     {
-        $xfer = 0;
+        $xfer  = 0;
         $fname = null;
         $ftype = 0;
-        $fid = 0;
+        $fid   = 0;
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);

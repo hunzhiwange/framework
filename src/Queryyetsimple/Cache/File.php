@@ -54,10 +54,10 @@ class File extends Connect implements IConnect
      */
     protected $option = [
         'time_preset' => [],
-        'prefix' => '_',
-        'expire' => 86400,
-        'path' => '',
-        'serialize' => true,
+        'prefix'      => '_',
+        'expire'      => 86400,
+        'path'        => '',
+        'serialize'   => true,
     ];
 
     /**
@@ -71,7 +71,7 @@ class File extends Connect implements IConnect
      */
     public function get($name, $defaults = false, array $option = [])
     {
-        $option = $this->normalizeOptions($option);
+        $option    = $this->normalizeOptions($option);
         $cachePath = $this->getCachePath($name, $option);
 
         // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php

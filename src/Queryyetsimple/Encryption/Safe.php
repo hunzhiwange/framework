@@ -89,13 +89,13 @@ class Safe
      */
     public static function deepReplace($arrSearch, $sSubject)
     {
-        $bFound = true;
+        $bFound   = true;
         $sSubject = (string) $sSubject;
         while ($bFound) {
             $bFound = false;
             foreach ((array) $arrSearch as $sVal) {
                 while (false !== strpos($sSubject, $sVal)) {
-                    $bFound = true;
+                    $bFound   = true;
                     $sSubject = str_replace($sVal, '', $sSubject);
                 }
             }
@@ -120,7 +120,7 @@ class Safe
             return $sUrl;
         }
 
-        $sUrl = preg_replace('|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\\x80-\\xff]|i', '', $sUrl);
+        $sUrl     = preg_replace('|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\\x80-\\xff]|i', '', $sUrl);
         $arrStrip = [
             '%0d',
             '%0a',

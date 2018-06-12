@@ -110,13 +110,13 @@ class Rpc
     public function call(string $call, array $params = [], array $metas = []): IResponse
     {
         $transport = $this->makeTransport();
-        $protocol = new TBinaryProtocol($transport);
+        $protocol  = new TBinaryProtocol($transport);
         $transport->open();
 
         $response = $this->getResponseWithProtocol($protocol, [
-            'call' => $call,
+            'call'   => $call,
             'params' => $params,
-            'metas' => $metas,
+            'metas'  => $metas,
         ]);
 
         $transport->close();

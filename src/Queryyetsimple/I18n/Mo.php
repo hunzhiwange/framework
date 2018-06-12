@@ -138,21 +138,21 @@ class Mo extends Gettext
             'is_entry_good_for_export',
         ]);
         ksort($entries);
-        $magic = 0x950412de;
-        $revision = 0;
-        $total = count($entries) + 1; // all the headers are one entry
-        $originals_lenghts_addr = 28;
+        $magic                     = 0x950412de;
+        $revision                  = 0;
+        $total                     = count($entries) + 1; // all the headers are one entry
+        $originals_lenghts_addr    = 28;
         $translations_lenghts_addr = $originals_lenghts_addr + 8 * $total;
-        $size_of_hash = 0;
-        $hash_addr = $translations_lenghts_addr + 8 * $total;
-        $current_addr = $hash_addr;
+        $size_of_hash              = 0;
+        $hash_addr                 = $translations_lenghts_addr + 8 * $total;
+        $current_addr              = $hash_addr;
         fwrite($fh, pack('V*', $magic, $revision, $total, $originals_lenghts_addr, $translations_lenghts_addr, $size_of_hash, $hash_addr));
         fseek($fh, $originals_lenghts_addr);
         // headers' msgid is an empty string
         fwrite($fh, pack('VV', 0, $current_addr));
         ++$current_addr;
         $originals_table = chr(0);
-        $reader = new reader();
+        $reader          = new reader();
         foreach ($entries as $entry) {
             $originals_table .= $this->export_original($entry).chr(0);
             $length = $reader->strlen($this->export_original($entry));
@@ -227,7 +227,7 @@ class Mo extends Gettext
     {
         // The magic is 0x950412de
         // bug in PHP 5.0.2, see https://savannah.nongnu.org/bugs/?func=detailitem&item_id=10565
-        $magic_little = (int) -1794895138;
+        $magic_little    = (int) -1794895138;
         $magic_little_64 = (int) 2500072158;
         // 0xde120495
         $magic_big = ((int) -569244523) & 0xFFFFFFFF;
@@ -286,7 +286,7 @@ class Mo extends Gettext
             return false;
         }
         // transform raw data into set of indices
-        $originals = $reader->str_split($originals, 8);
+        $originals    = $reader->str_split($originals, 8);
         $translations = $reader->str_split($translations, 8);
         // skip hash table
         $strings_addr = $header['hash_addr'] + $header['hash_length'] * 4;
@@ -302,12 +302,12 @@ class Mo extends Gettext
             // adjust offset due to reading strings to separate space before
             $o['pos'] -= $strings_addr;
             $t['pos'] -= $strings_addr;
-            $original = $reader->substr($strings, $o['pos'], $o['length']);
+            $original    = $reader->substr($strings, $o['pos'], $o['length']);
             $translation = $reader->substr($strings, $t['pos'], $t['length']);
             if ('' === $original) {
                 $this->set_headers($this->make_headers($translation));
             } else {
-                $entry = &$this->make_entry($original, $translation);
+                $entry                        = &$this->make_entry($original, $translation);
                 $this->entries[$entry->key()] = &$entry;
             }
         }
@@ -333,15 +333,15 @@ class Mo extends Gettext
         // look for context
         $parts = explode(chr(4), $original);
         if (isset($parts[1])) {
-            $original = $parts[1];
+            $original       = $parts[1];
             $entry->context = $parts[0];
         }
         // look for plural original
-        $parts = explode(chr(0), $original);
+        $parts           = explode(chr(0), $original);
         $entry->singular = $parts[0];
         if (isset($parts[1])) {
             $entry->is_plural = true;
-            $entry->plural = $parts[1];
+            $entry->plural    = $parts[1];
         }
         // plural translations are also separated by \0
         $entry->translations = explode(chr(0), $translation);

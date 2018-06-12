@@ -39,10 +39,10 @@ class Smtp extends Connect implements IConnect
      * @var array
      */
     protected $arrOption = [
-        'host' => 'smtp.qq.com',
-        'port' => 465,
-        'username' => null,
-        'password' => '',
+        'host'       => 'smtp.qq.com',
+        'port'       => 465,
+        'username'   => null,
+        'password'   => '',
         'encryption' => 'ssl',
     ];
 

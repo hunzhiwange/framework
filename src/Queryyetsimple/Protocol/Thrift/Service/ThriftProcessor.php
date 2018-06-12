@@ -46,8 +46,8 @@ class ThriftProcessor
     public function process($input, $output)
     {
         $rseqid = 0;
-        $fname = null;
-        $mtype = 0;
+        $fname  = null;
+        $mtype  = 0;
 
         $input->readMessageBegin($fname, $mtype, $rseqid);
         $methodname = 'process_'.$fname;
@@ -72,9 +72,9 @@ class ThriftProcessor
         $args = new ThriftCallArgs();
         $args->read($input);
         $input->readMessageEnd();
-        $result = new ThriftCallResult();
+        $result          = new ThriftCallResult();
         $result->success = $this->handler_->call($args->request);
-        $bin_accel = ($output instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
+        $bin_accel       = ($output instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
         if ($bin_accel) {
             thrift_protocol_write_binary($output, 'call', TMessageType::REPLY, $result, $seqid, $output->isStrictWrite());
         } else {

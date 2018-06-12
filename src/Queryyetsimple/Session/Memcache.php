@@ -41,13 +41,13 @@ class Memcache extends Connect implements SessionHandlerInterface
      * @var array
      */
     protected $option = [
-        'servers' => [],
-        'host' => '127.0.0.1',
-        'port' => 11211,
+        'servers'    => [],
+        'host'       => '127.0.0.1',
+        'port'       => 11211,
         'compressed' => false,
         'persistent' => false,
-        'prefix' => null,
-        'expire' => null,
+        'prefix'     => null,
+        'expire'     => null,
     ];
 
     /**

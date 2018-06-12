@@ -236,8 +236,8 @@ class Server implements IServer
             return;
         }
 
-        $arrCmd = [];
-        $strCmd = "kill {$arrPid[0]}";
+        $arrCmd   = [];
+        $strCmd   = "kill {$arrPid[0]}";
         $arrCmd[] = $strCmd;
         exec($strCmd);
         do {
@@ -269,7 +269,7 @@ class Server implements IServer
         $this->info('Restart swoole service...', true, '');
 
         try {
-            $objCient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
+            $objCient  = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
             $booResult = $objCient->connect($this->getOption('host'), $this->getOption('port'));
 
             if (empty($booResult)) {
@@ -294,7 +294,7 @@ class Server implements IServer
         $this->info('Close swoole service...', true, '');
 
         try {
-            $objCient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
+            $objCient  = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
             $booResult = $objCient->connect($this->getOption('host'), $this->getOption('port'));
 
             if (empty($booResult)) {
@@ -339,7 +339,7 @@ class Server implements IServer
             return;
         }
 
-        $objCient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
+        $objCient  = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
         $booResult = $objCient->connect($this->getOption('host'), $this->getOption('port'));
 
         if (empty($booResult)) {
@@ -349,7 +349,7 @@ class Server implements IServer
         }
         $objCient->send(json_encode(['action' => 'status']));
 
-        $strOut = $objCient->recv();
+        $strOut    = $objCient->recv();
         $arrResult = json_decode($strOut);
 
         // see https://wiki.swoole.com/wiki/page/288.html
@@ -379,7 +379,7 @@ class Server implements IServer
         $this->info('Stask swoole service...', true, '');
 
         try {
-            $objCient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
+            $objCient  = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
             $booResult = $objCient->connect($this->getOption('host'), $this->getOption('port'));
 
             if (empty($booResult)) {
@@ -522,7 +522,7 @@ class Server implements IServer
                 default:
                     // 耗时任务放入 task
                     $arrResult['querytask_meta'] = [
-                        'fd' => $intReactorId,
+                        'fd'         => $intReactorId,
                         'reactor_id' => $intReactorId,
                     ];
                     $objServer->task(json_encode($arrResult));
@@ -531,10 +531,10 @@ class Server implements IServer
             }
         } else {
             // 耗时任务放入 task
-            $arrResult = [];
-            $arrResult['data'] = $strData;
+            $arrResult                   = [];
+            $arrResult['data']           = $strData;
             $arrResult['querytask_meta'] = [
-                'fd' => $intReactorId,
+                'fd'         => $intReactorId,
                 'reactor_id' => $intReactorId,
             ];
             $objServer->task(json_encode($arrResult));
@@ -693,11 +693,11 @@ class Server implements IServer
 
         if (!empty($arrOut)) {
             foreach ($arrOut as $sOut) {
-                $arrTemp = explode(' ', $sOut);
-                list($sIp, $nP) = explode(':', $arrTemp[2]);
+                $arrTemp             = explode(' ', $sOut);
+                list($sIp, $nP)      = explode(':', $arrTemp[2]);
                 $arrRet[$arrTemp[1]] = [
-                    'cmd' => $arrTemp[0],
-                    'ip' => $sIp,
+                    'cmd'  => $arrTemp[0],
+                    'ip'   => $sIp,
                     'port' => $nP,
                 ];
             }

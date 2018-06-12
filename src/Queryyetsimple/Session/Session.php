@@ -79,14 +79,14 @@ class Session implements ISession
      * @var array
      */
     protected $option = [
-        'default' => null,
-        'prefix' => 'q_',
-        'id' => null,
-        'name' => null,
-        'cookie_domain' => null,
-        'cache_limiter' => null,
-        'expire' => 86400,
-        'save_path' => null,
+        'default'        => null,
+        'prefix'         => 'q_',
+        'id'             => null,
+        'name'           => null,
+        'cookie_domain'  => null,
+        'cache_limiter'  => null,
+        'expire'         => 86400,
+        'save_path'      => null,
         'gc_probability' => null,
     ];
 
@@ -196,7 +196,7 @@ class Session implements ISession
     {
         $this->checkStart();
 
-        $name = $this->getNormalizeName($name);
+        $name            = $this->getNormalizeName($name);
         $_SESSION[$name] = $value;
     }
 
@@ -229,7 +229,7 @@ class Session implements ISession
      */
     public function push($key, $value)
     {
-        $arr = $this->get($key, []);
+        $arr   = $this->get($key, []);
         $arr[] = $value;
 
         $this->set($key, $arr);

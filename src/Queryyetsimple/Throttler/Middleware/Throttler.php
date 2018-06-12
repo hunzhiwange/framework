@@ -60,7 +60,7 @@ class Throttler
     public function __construct(IThrottler $throttler, Response $response)
     {
         $this->throttler = $throttler;
-        $this->response = $response;
+        $this->response  = $response;
     }
 
     /**

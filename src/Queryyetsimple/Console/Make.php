@@ -106,7 +106,7 @@ abstract class Make extends Command
 
         // 第一次替换基本变量
         // 第二次替换基本变量中的变量
-        $templateSource = str_replace($sourceAndReplace[0], $sourceAndReplace[1], $this->getTemplateSource());
+        $templateSource       = str_replace($sourceAndReplace[0], $sourceAndReplace[1], $this->getTemplateSource());
         $this->templateResult = str_replace($sourceAndReplace[0], $sourceAndReplace[1], $templateSource);
     }
 
@@ -204,7 +204,7 @@ abstract class Make extends Command
         return array_merge([
             'namespace' => $this->getNamespace(),
             'file_name' => ucfirst($this->argument('name')),
-            'date_y' => date('Y'),
+            'date_y'    => date('Y'),
         ], $this->getCustomReplaceKeyValue());
     }
 

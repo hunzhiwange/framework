@@ -41,15 +41,15 @@ class Redis extends Connect implements IConnect
      */
     protected $option = [
         'time_preset' => [],
-        'prefix' => '_',
-        'expire' => 86400,
-        'host' => '127.0.0.1',
-        'port' => 6379,
-        'password' => '',
-        'select' => 0,
-        'timeout' => 0,
-        'persistent' => false,
-        'serialize' => true,
+        'prefix'      => '_',
+        'expire'      => 86400,
+        'host'        => '127.0.0.1',
+        'port'        => 6379,
+        'password'    => '',
+        'select'      => 0,
+        'timeout'     => 0,
+        'persistent'  => false,
+        'serialize'   => true,
     ];
 
     /**

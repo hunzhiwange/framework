@@ -49,7 +49,7 @@ class Dump
 
         if (false === $simple && class_exists(CliDumper::class)) {
             if (!$dump) {
-                $dump = ('cli' === PHP_SAPI ? new CliDumper() : new HtmlDumper());
+                $dump      = ('cli' === PHP_SAPI ? new CliDumper() : new HtmlDumper());
                 $varCloner = new VarCloner();
             }
 

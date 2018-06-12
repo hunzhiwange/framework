@@ -237,7 +237,7 @@ class Str
         }
 
         $sFromChar = 'utf8' === strtolower($sFromChar) ? 'utf-8' : strtolower($sFromChar);
-        $sToChar = 'utf8' === strtolower($sToChar) ? 'utf-8' : strtolower($sToChar);
+        $sToChar   = 'utf8' === strtolower($sToChar) ? 'utf-8' : strtolower($sToChar);
         if ($sFromChar === $sToChar || (is_scalar($mixContents) && !is_string($mixContents))) {
             return $mixContents;
         }
@@ -251,9 +251,10 @@ class Str
             }
 
             return $mixContents;
-        } elseif (is_array($mixContents)) {
+        }
+        if (is_array($mixContents)) {
             foreach ($mixContents as $sKey => $sVal) {
-                $sKeyTwo = static::gbkToUtf8($sKey, $sFromChar, $sToChar);
+                $sKeyTwo               = static::gbkToUtf8($sKey, $sFromChar, $sToChar);
                 $mixContents[$sKeyTwo] = static::stringEncoding($sVal, $sFromChar, $sToChar);
                 if ($sKey !== $sKeyTwo) {
                     unset($mixContents[$sKeyTwo]);
@@ -300,10 +301,10 @@ class Str
         }
 
         // 常用几种字符串正则表达式
-        $arrRe['utf-8'] = "/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xff][\x80-\xbf]{3}/";
+        $arrRe['utf-8']  = "/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xff][\x80-\xbf]{3}/";
         $arrRe['gb2312'] = "/[\x01-\x7f]|[\xb0-\xf7][\xa0-\xfe]/";
-        $arrRe['gbk'] = "/[\x01-\x7f]|[\x81-\xfe][\x40-\xfe]/";
-        $arrRe['big5'] = "/[\x01-\x7f]|[\x81-\xfe]([\x40-\x7e]|\xa1-\xfe])/";
+        $arrRe['gbk']    = "/[\x01-\x7f]|[\x81-\xfe][\x40-\xfe]/";
+        $arrRe['big5']   = "/[\x01-\x7f]|[\x81-\xfe]([\x40-\x7e]|\xa1-\xfe])/";
 
         // 匹配
         preg_match_all($arrRe[$sCharset], $sStr, $arrMatch);
@@ -329,7 +330,7 @@ class Str
     {
         $sReturn = '';
 
-        $nSec = time() - $nDateTemp;
+        $nSec   = time() - $nDateTemp;
         $nHover = floor($nSec / 3600);
         if (0 === $nHover) {
             $nMin = floor($nSec / 60);

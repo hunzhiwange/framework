@@ -128,8 +128,8 @@ class Register extends Provider
         $this->container->singleton('view.twig.parser', function ($project) {
             return new Twig_Environment(new Twig_Loader_Filesystem(), [
                 'auto_reload' => true,
-                'debug' => $project->development(),
-                'cache' => $project->pathApplicationCache('theme').'/'.$project['request']->app(),
+                'debug'       => $project->development(),
+                'cache'       => $project->pathApplicationCache('theme').'/'.$project['request']->app(),
             ]);
         });
     }

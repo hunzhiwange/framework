@@ -66,9 +66,9 @@ class Redis extends Queue implements IQueue
     public function __construct()
     {
         parent::__construct();
-        $this->arrSourceConfig['servers'] = $this->getServers();
+        $this->arrSourceConfig['servers']       = $this->getServers();
         $this->arrSourceConfig['redis_options'] = $this->getOptions();
-        $this->resDataSource = new BackendRedis($this->arrSourceConfig);
+        $this->resDataSource                    = new BackendRedis($this->arrSourceConfig);
     }
 
     /**

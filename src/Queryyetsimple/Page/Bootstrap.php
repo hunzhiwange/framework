@@ -49,9 +49,9 @@ class Bootstrap implements IRender
      */
     protected $arrOption = [
         // lg sm
-        'size' => '',
+        'size'     => '',
         'template' => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',
-        'css' => true,
+        'css'      => true,
     ];
 
     /**

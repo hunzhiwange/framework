@@ -22,20 +22,20 @@
                             'world' => '[A-Za-z]+',
                         ],
                         'strict' => true,
-                        'bind' => ':Tests\\Petstore\\Pet\\findByStatus',
-                        'regex' => '/^\\/v2\\/pet\\/findByStatus$/',
-                        'var' => [
+                        'bind'   => ':Tests\\Petstore\\Pet\\findByStatus',
+                        'regex'  => '/^\\/v2\\/pet\\/findByStatus$/',
+                        'var'    => [
                         ],
                     ],
                     '/v2/pet/{petId}' => [
                         'scheme' => null,
                         'domain' => null,
                         'params' => null,
-                        'where' => null,
+                        'where'  => null,
                         'strict' => null,
-                        'bind' => ':Tests\\Petstore\\Pet\\getPetById',
-                        'regex' => '/^\\/v2\\/pet\\/(\\S+)$/',
-                        'var' => [
+                        'bind'   => ':Tests\\Petstore\\Pet\\getPetById',
+                        'regex'  => '/^\\/v2\\/pet\\/(\\S+)$/',
+                        'var'    => [
                             0 => 'petId',
                         ],
                     ],
@@ -49,11 +49,11 @@
                         'scheme' => null,
                         'domain' => null,
                         'params' => null,
-                        'where' => null,
+                        'where'  => null,
                         'strict' => null,
-                        'bind' => ':Tests\\Petstore\\Pet\\deletePet',
-                        'regex' => '/^\\/v2\\/pet\\/(\\S+)$/',
-                        'var' => [
+                        'bind'   => ':Tests\\Petstore\\Pet\\deletePet',
+                        'regex'  => '/^\\/v2\\/pet\\/(\\S+)$/',
+                        'var'    => [
                             0 => 'petId',
                         ],
                     ],
@@ -67,11 +67,11 @@
                         'scheme' => null,
                         'domain' => null,
                         'params' => null,
-                        'where' => null,
+                        'where'  => null,
                         'strict' => null,
-                        'bind' => ':Tests\\Petstore\\Pet\\updatePetWithForm',
-                        'regex' => '/^\\/v2\\/pet\\/(\\S+)$/',
-                        'var' => [
+                        'bind'   => ':Tests\\Petstore\\Pet\\updatePetWithForm',
+                        'regex'  => '/^\\/v2\\/pet\\/(\\S+)$/',
+                        'var'    => [
                             0 => 'petId',
                         ],
                     ],
@@ -79,22 +79,22 @@
                         'scheme' => null,
                         'domain' => null,
                         'params' => null,
-                        'where' => null,
+                        'where'  => null,
                         'strict' => null,
-                        'bind' => ':Tests\\Petstore\\Pet\\addPet',
-                        'regex' => '/^\\/v2\\/pet$/',
-                        'var' => [
+                        'bind'   => ':Tests\\Petstore\\Pet\\addPet',
+                        'regex'  => '/^\\/v2\\/pet$/',
+                        'var'    => [
                         ],
                     ],
                     '/v2/pet/{petId}/uploadImage' => [
                         'scheme' => null,
                         'domain' => null,
                         'params' => null,
-                        'where' => null,
+                        'where'  => null,
                         'strict' => null,
-                        'bind' => ':Tests\\Petstore\\Pet\\uploadFile',
-                        'regex' => '/^\\/v2\\/pet\\/(\\S+)\\/uploadImage$/',
-                        'var' => [
+                        'bind'   => ':Tests\\Petstore\\Pet\\uploadFile',
+                        'regex'  => '/^\\/v2\\/pet\\/(\\S+)\\/uploadImage$/',
+                        'var'    => [
                             0 => 'petId',
                         ],
                     ],

@@ -41,20 +41,20 @@ class ServerBagTest extends TestCase
     public function testShouldExtractHeadersFromServerArray()
     {
         $server = [
-            'SOME_SERVER_VARIABLE' => 'value',
+            'SOME_SERVER_VARIABLE'  => 'value',
             'SOME_SERVER_VARIABLE2' => 'value',
-            'ROOT' => 'value',
-            'HTTP_CONTENT_TYPE' => 'text/html',
-            'HTTP_CONTENT_LENGTH' => '0',
-            'HTTP_ETAG' => 'asdf',
+            'ROOT'                  => 'value',
+            'HTTP_CONTENT_TYPE'     => 'text/html',
+            'HTTP_CONTENT_LENGTH'   => '0',
+            'HTTP_ETAG'             => 'asdf',
         ];
 
         $bag = new ServerBag($server);
 
         $this->assertSame([
-            'CONTENT_TYPE' => 'text/html',
+            'CONTENT_TYPE'   => 'text/html',
             'CONTENT_LENGTH' => '0',
-            'ETAG' => 'asdf',
+            'ETAG'           => 'asdf',
         ], $bag->getHeaders());
     }
 }

@@ -61,7 +61,7 @@ class MiddlewareParser
     public function handle($middlewares)
     {
         $middlewareGroups = $this->router->getMiddlewareGroups();
-        $middlewareAlias = $this->router->getMiddlewareAlias();
+        $middlewareAlias  = $this->router->getMiddlewareAlias();
 
         $result = [];
 
@@ -84,7 +84,7 @@ class MiddlewareParser
         }
 
         $result = [
-            'handle' => $this->normalizeMiddleware($result, 'handle'),
+            'handle'    => $this->normalizeMiddleware($result, 'handle'),
             'terminate' => $this->normalizeMiddleware($result, 'terminate'),
         ];
 

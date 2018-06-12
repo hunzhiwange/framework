@@ -48,9 +48,9 @@ class Defaults implements IRender
      * @var array
      */
     protected $arrOption = [
-        'small' => false,
+        'small'    => false,
         'template' => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
-        'css' => true,
+        'css'      => true,
     ];
 
     /**

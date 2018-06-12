@@ -41,13 +41,13 @@ class Memcache extends Connect implements IConnect
      */
     protected $option = [
         'time_preset' => [],
-        'prefix' => '_',
-        'expire' => 86400,
-        'servers' => [],
-        'host' => '127.0.0.1',
-        'port' => 11211,
-        'compressed' => false,
-        'persistent' => false,
+        'prefix'      => '_',
+        'expire'      => 86400,
+        'servers'     => [],
+        'host'        => '127.0.0.1',
+        'port'        => 11211,
+        'compressed'  => false,
+        'persistent'  => false,
     ];
 
     /**
@@ -121,7 +121,7 @@ class Memcache extends Connect implements IConnect
      */
     public function set($name, $data, array $option = [])
     {
-        $option = $this->normalizeOptions($option);
+        $option           = $this->normalizeOptions($option);
         $option['expire'] = $this->cacheTime($name, $option['expire']);
 
         $this->handle->set(

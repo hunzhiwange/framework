@@ -46,7 +46,7 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
      */
     public function __construct($intPerPage, $intTotalRecord = null, array $arrOption = [])
     {
-        $this->intPerPage = $intPerPage;
+        $this->intPerPage     = $intPerPage;
         $this->intTotalRecord = $intTotalRecord;
         $this->options($arrOption);
     }
@@ -76,13 +76,13 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
     public function toArray()
     {
         return [
-            'per_page' => $this->getPerPage(),
+            'per_page'     => $this->getPerPage(),
             'current_page' => $this->getCurrentPage(),
-            'total_page' => $this->getTotalPage(),
+            'total_page'   => $this->getTotalPage(),
             'total_record' => $this->getTotalRecord(),
-            'total_macro' => $this->isTotalMacro(),
-            'from' => $this->getFirstRecord(),
-            'to' => $this->getLastRecord(),
+            'total_macro'  => $this->isTotalMacro(),
+            'from'         => $this->getFirstRecord(),
+            'to'           => $this->getLastRecord(),
         ];
     }
 

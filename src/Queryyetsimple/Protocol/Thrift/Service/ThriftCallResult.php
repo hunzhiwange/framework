@@ -46,8 +46,8 @@ class ThriftCallResult
         if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
                 0 => [
-                    'var' => 'success',
-                    'type' => TType::STRUCT,
+                    'var'   => 'success',
+                    'type'  => TType::STRUCT,
                     'class' => '\Leevel\Protocol\Thrift\Service\Response',
                 ],
             ];
@@ -66,10 +66,10 @@ class ThriftCallResult
 
     public function read($input)
     {
-        $xfer = 0;
+        $xfer  = 0;
         $fname = null;
         $ftype = 0;
-        $fid = 0;
+        $fid   = 0;
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);

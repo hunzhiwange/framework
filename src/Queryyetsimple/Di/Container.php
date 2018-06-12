@@ -467,7 +467,7 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseInjection($injection, array $args = [])
     {
-        $result = [];
+        $result   = [];
         $required = 0;
 
         $param = $this->parseReflection($injection);

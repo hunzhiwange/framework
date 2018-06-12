@@ -70,7 +70,7 @@ class Tree implements ITree, IJson, IArray
      */
     public function setNode($nId, $nParent, $mixValue, $booPriority = false)
     {
-        $nParent = $nParent ? $nParent : 0;
+        $nParent             = $nParent ? $nParent : 0;
         $this->arrData[$nId] = $mixValue;
 
         if ($booPriority) {
@@ -138,7 +138,7 @@ class Tree implements ITree, IJson, IArray
         $arrChild = [];
         foreach ($this->getChild($nId) as $nChild) {
             $arrChild[] = $nChild;
-            $arrChild = array_merge($arrChild, $this->getChildren($nChild));
+            $arrChild   = array_merge($arrChild, $this->getChildren($nChild));
         }
 
         return $arrChild;
@@ -279,7 +279,7 @@ class Tree implements ITree, IJson, IArray
         foreach ($this->getChild($nId) as $nValue) {
             $arrItem = [
                 $arrKey['value'] ?? 'value' => $nValue,
-                $arrKey['data'] ?? 'data' => $this->arrData[$nValue],
+                $arrKey['data'] ?? 'data'   => $this->arrData[$nValue],
             ];
 
             if (is_callable($mixCallable)) {
@@ -346,7 +346,7 @@ class Tree implements ITree, IJson, IArray
         $arrParent = [];
         if (array_key_exists($this->arrMap[$nId], $this->arrMap)) {
             $arrParent[] = $this->arrMap[$nId];
-            $arrParent = array_merge($arrParent, $this->getParentsReal($this->arrMap[$nId]));
+            $arrParent   = array_merge($arrParent, $this->getParentsReal($this->arrMap[$nId]));
         }
 
         return $arrParent;

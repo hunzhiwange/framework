@@ -40,15 +40,15 @@ class Redis extends Connect implements SessionHandlerInterface
      * @var array
      */
     protected $option = [
-        'host' => '127.0.0.1',
-        'port' => 6379,
-        'password' => '',
-        'select' => 0,
-        'timeout' => 0,
+        'host'       => '127.0.0.1',
+        'port'       => 6379,
+        'password'   => '',
+        'select'     => 0,
+        'timeout'    => 0,
         'persistent' => false,
-        'serialize' => true,
-        'prefix' => null,
-        'expire' => null,
+        'serialize'  => true,
+        'prefix'     => null,
+        'expire'     => null,
     ];
 
     /**

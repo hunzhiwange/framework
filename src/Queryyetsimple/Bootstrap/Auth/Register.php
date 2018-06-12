@@ -131,12 +131,12 @@ trait Register
     protected function getValidateRegisterRule()
     {
         return property_exists($this, 'strValidateRegisterRule') ? $this->strValidateRegisterRule : [
-            'name' => 'required|max_length:50',
-            'nikename' => 'required|max_length:50',
-            'password' => 'required|min_length:6',
+            'name'             => 'required|max_length:50',
+            'nikename'         => 'required|max_length:50',
+            'password'         => 'required|min_length:6',
             'comfirm_password' => 'required|min_length:6|equal_to:password',
-            'email' => 'required|email',
-            'mobile' => 'value|mobile',
+            'email'            => 'required|email',
+            'mobile'           => 'value|mobile',
         ];
     }
 

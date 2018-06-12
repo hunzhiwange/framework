@@ -135,7 +135,7 @@ class Meta
      */
     protected function __construct($strTable, $mixConnect = null)
     {
-        $this->strTable = $strTable;
+        $this->strTable   = $strTable;
         $this->mixConnect = $mixConnect;
         $this->initialization($strTable);
     }
@@ -332,9 +332,9 @@ class Meta
     {
         $this->initConnect();
 
-        $arrColumnInfo = $this->objConnect->getTableColumnsCache($strTable);
-        $this->arrFields = $arrColumnInfo['list'];
-        $this->arrPrimaryKey = $arrColumnInfo['primary_key'];
+        $arrColumnInfo          = $this->objConnect->getTableColumnsCache($strTable);
+        $this->arrFields        = $arrColumnInfo['list'];
+        $this->arrPrimaryKey    = $arrColumnInfo['primary_key'];
         $this->strAutoIncrement = $arrColumnInfo['auto_increment'];
 
         if (count($this->arrPrimaryKey) > 1) {

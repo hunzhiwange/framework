@@ -53,9 +53,9 @@ class Url implements IUrl
      * @var array
      */
     protected $option = [
-        'with_suffix' => false,
-        'html_suffix' => '.html',
-        'domain_top' => '',
+        'with_suffix'  => false,
+        'html_suffix'  => '.html',
+        'domain_top'   => '',
         'subdomain_on' => true,
     ];
 

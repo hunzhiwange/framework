@@ -195,7 +195,7 @@ class Fso
 
         $arrReturnData = [
             'file' => [],
-            'dir' => [],
+            'dir'  => [],
         ];
 
         if (is_dir($sDir)) {

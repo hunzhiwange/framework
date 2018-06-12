@@ -56,9 +56,9 @@ class Monolog extends Connect implements IConnect
             'file',
         ],
         'channel' => 'Q',
-        'name' => 'Y-m-d H',
-        'size' => 2097152,
-        'path' => '',
+        'name'    => 'Y-m-d H',
+        'size'    => 2097152,
+        'path'    => '',
     ];
 
     /**
@@ -67,13 +67,13 @@ class Monolog extends Connect implements IConnect
      * @var array
      */
     protected $supportLevel = [
-        ILog::DEBUG => Logger::DEBUG,
-        ILog::INFO => Logger::INFO,
-        ILog::NOTICE => Logger::NOTICE,
-        ILog::WARNING => Logger::WARNING,
-        ILog::ERROR => Logger::ERROR,
-        ILog::CRITICAL => Logger::CRITICAL,
-        ILog::ALERT => Logger::ALERT,
+        ILog::DEBUG     => Logger::DEBUG,
+        ILog::INFO      => Logger::INFO,
+        ILog::NOTICE    => Logger::NOTICE,
+        ILog::WARNING   => Logger::WARNING,
+        ILog::ERROR     => Logger::ERROR,
+        ILog::CRITICAL  => Logger::CRITICAL,
+        ILog::ALERT     => Logger::ALERT,
         ILog::EMERGENCY => Logger::EMERGENCY,
     ];
 

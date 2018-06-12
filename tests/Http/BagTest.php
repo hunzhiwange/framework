@@ -101,7 +101,7 @@ class BagTest extends TestCase
     public function testGetIterator()
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
-        $bag = new Bag($parameters);
+        $bag        = new Bag($parameters);
 
         $i = 0;
         foreach ($bag as $key => $val) {
@@ -115,21 +115,21 @@ class BagTest extends TestCase
     public function testCount()
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
-        $bag = new Bag($parameters);
+        $bag        = new Bag($parameters);
         $this->assertCount(count($parameters), $bag);
     }
 
     public function testToJson()
     {
         $parameters = ['foo' => 'bar', 'hello' => 'world'];
-        $bag = new Bag($parameters);
+        $bag        = new Bag($parameters);
         $this->assertSame($bag->toJson(), '{"foo":"bar","hello":"world"}');
     }
 
     public function testFilter()
     {
         $parameters = ['foo' => '- 1234', 'hello' => 'world', 'number' => ' 12.11'];
-        $bag = new Bag($parameters);
+        $bag        = new Bag($parameters);
         $this->assertSame($bag->filter('foo|intval'), 0);
         $this->assertSame($bag->get('number|intval'), 12);
 
@@ -152,7 +152,7 @@ class BagTest extends TestCase
     {
         $parameters = [
             'foo' => [
-                'hello' => 'world',
+                'hello'    => 'world',
                 'namepace' => ['sub' => 'i am here'],
             ],
         ];

@@ -42,13 +42,13 @@ class V8 extends Connect implements IConnect
      * @var array
      */
     protected $option = [
-        'controller_name' => 'index',
-        'action_name' => 'index',
+        'controller_name'       => 'index',
+        'action_name'           => 'index',
         'controlleraction_depr' => '_',
-        'theme_name' => 'default',
-        'theme_path' => '',
-        'theme_path_default' => '',
-        'suffix' => '.js',
+        'theme_name'            => 'default',
+        'theme_path'            => '',
+        'theme_path_default'    => '',
+        'suffix'                => '.js',
 
         // node_modules/vue/dist/vue.js
         'vue_path' => '',
@@ -308,7 +308,7 @@ EOT;
      */
     protected function vuePackage()
     {
-        $vue = $this->option['vue_path'];
+        $vue      = $this->option['vue_path'];
         $renderer = $this->option['vue_renderer'];
 
         if (!is_file($vue)) {

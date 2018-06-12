@@ -66,7 +66,7 @@ class PathInfo implements IMatch
         if (!$pathInfo) {
             return [
                 IRouter::CONTROLLER => IRouter::DEFAULT_HOME_CONTROLLER,
-                IRouter::ACTION => IRouter::DEFAULT_HOME_ACTION,
+                IRouter::ACTION     => IRouter::DEFAULT_HOME_ACTION,
             ];
         }
 

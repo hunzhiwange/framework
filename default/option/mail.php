@@ -45,7 +45,7 @@ return [
      */
     'global_from' => [
         'address' => null,
-        'name' => null,
+        'name'    => null,
     ],
 
     /*
@@ -57,7 +57,7 @@ return [
      */
     'global_to' => [
         'address' => null,
-        'name' => null,
+        'name'    => null,
     ],
 
     /*

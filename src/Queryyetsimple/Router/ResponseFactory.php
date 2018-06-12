@@ -74,7 +74,7 @@ class ResponseFactory implements IResponseFactory
      */
     public function __construct(IView $view, Redirect $redirector)
     {
-        $this->view = $view;
+        $this->view       = $view;
         $this->redirector = $redirector;
     }
 
@@ -123,8 +123,8 @@ class ResponseFactory implements IResponseFactory
     {
         $vars = [
             'message' => $message ?: 'Succeed',
-            'url' => $url,
-            'time' => $time,
+            'url'     => $url,
+            'time'    => $time,
         ];
 
         return $this->view($this->viewSuccessTemplate, $vars, '', $status, $headers);
@@ -145,8 +145,8 @@ class ResponseFactory implements IResponseFactory
     {
         $vars = [
             'message' => $message ?: 'Failed',
-            'url' => $url,
-            'time' => $time,
+            'url'     => $url,
+            'time'    => $time,
         ];
 
         return $this->view($this->viewFailTemplate, $vars, '', $status, $headers);

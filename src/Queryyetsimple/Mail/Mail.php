@@ -84,7 +84,7 @@ class Mail implements IMail
      * @var array
      */
     protected $arrMessageData = [
-        'html' => [],
+        'html'  => [],
         'plain' => [],
     ];
 
@@ -96,11 +96,11 @@ class Mail implements IMail
     protected $arrOption = [
         'global_from' => [
             'address' => null,
-            'name' => null,
+            'name'    => null,
         ],
         'global_to' => [
             'address' => null,
-            'name' => null,
+            'name'    => null,
         ],
     ];
 
@@ -115,7 +115,7 @@ class Mail implements IMail
     public function __construct(IConnect $oConnect, IView $objView, $objEvent = null, array $arrOption = [])
     {
         $this->oConnect = $oConnect;
-        $this->objView = $objView;
+        $this->objView  = $objView;
         $this->objEvent = $objEvent;
         $this->options($arrOption);
     }
@@ -418,7 +418,7 @@ class Mail implements IMail
             foreach ($arrMessageData['html'] as $mixView) {
                 if (false === $booFind) {
                     $strMethod = 'setBody';
-                    $booFind = true;
+                    $booFind   = true;
                 } else {
                     $strMethod = 'addPart';
                 }
@@ -431,7 +431,7 @@ class Mail implements IMail
             foreach ($arrMessageData['plain'] as $mixView) {
                 if (false === $booFind) {
                     $strMethod = 'setBody';
-                    $booFind = true;
+                    $booFind   = true;
                 } else {
                     $strMethod = 'addPart';
                 }

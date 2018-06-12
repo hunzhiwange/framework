@@ -112,7 +112,7 @@ class AutoReload
         }
 
         $this->inotify = inotify_init();
-        $this->events = IN_MODIFY | IN_DELETE | IN_CREATE | IN_MOVE;
+        $this->events  = IN_MODIFY | IN_DELETE | IN_CREATE | IN_MOVE;
 
         swoole_event_add($this->inotify, function ($ifd) {
             $events = inotify_read($this->inotify);
@@ -188,7 +188,7 @@ class AutoReload
             $this->rootDirs[] = $dir;
         }
 
-        $wd = inotify_add_watch($this->inotify, $dir, $this->events);
+        $wd                     = inotify_add_watch($this->inotify, $dir, $this->events);
         $this->watchFiles[$dir] = $wd;
 
         $files = scandir($dir);
@@ -208,7 +208,7 @@ class AutoReload
             $fileType = strrchr($f, '.');
 
             if (isset($this->reloadFileTypes[$fileType])) {
-                $wd = inotify_add_watch($this->inotify, $path, $this->events);
+                $wd                      = inotify_add_watch($this->inotify, $path, $this->events);
                 $this->watchFiles[$path] = $wd;
             }
         }
@@ -223,7 +223,7 @@ class AutoReload
      */
     public function addFileType(string $type)
     {
-        $type = trim($type, '.');
+        $type                             = trim($type, '.');
         $this->reloadFileTypes['.'.$type] = true;
     }
 

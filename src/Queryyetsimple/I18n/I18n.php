@@ -86,7 +86,7 @@ class I18n implements II18n
         $value = $this->text[$this->i18n][$value] ?? $value;
         if (count($arr) > 1) {
             $arr[0] = $value;
-            $value = sprintf(...$arr);
+            $value  = sprintf(...$arr);
         }
 
         return $value;

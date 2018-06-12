@@ -86,16 +86,16 @@ class RequestTest extends TestCase
         // Standard Request on non default PORT
         // http://host:8080/index.php/path/info?query=string
 
-        $server['HTTP_HOST'] = 'host:8080';
+        $server['HTTP_HOST']   = 'host:8080';
         $server['SERVER_NAME'] = 'servername';
         $server['SERVER_PORT'] = '8080';
 
-        $server['QUERY_STRING'] = 'query=string';
-        $server['REQUEST_URI'] = '/index.php/path/info?query=string';
-        $server['SCRIPT_NAME'] = '/index.php';
-        $server['PATH_INFO'] = '/path/info';
+        $server['QUERY_STRING']    = 'query=string';
+        $server['REQUEST_URI']     = '/index.php/path/info?query=string';
+        $server['SCRIPT_NAME']     = '/index.php';
+        $server['PATH_INFO']       = '/path/info';
         $server['PATH_TRANSLATED'] = 'redirect:/index.php/path/info';
-        $server['PHP_SELF'] = '/index_dev.php/path/info';
+        $server['PHP_SELF']        = '/index_dev.php/path/info';
         $server['SCRIPT_FILENAME'] = '/some/where/index.php';
 
         $request = new Request();
@@ -104,7 +104,7 @@ class RequestTest extends TestCase
         $this->assertSame('http://host:8080/index.php/path/info?query=string', $request->getUri(), '->getUri() with non default port');
 
         // Use std port number
-        $server['HTTP_HOST'] = 'host';
+        $server['HTTP_HOST']   = 'host';
         $server['SERVER_NAME'] = 'servername';
         $server['SERVER_PORT'] = '80';
 
@@ -125,19 +125,19 @@ class RequestTest extends TestCase
         //   RewriteCond %{REQUEST_FILENAME} !-f
         //   RewriteRule ^(.*)$ index.php [QSA,L]
         // http://host:8080/path/info?query=string
-        $server = [];
-        $server['HTTP_HOST'] = 'host:8080';
+        $server                = [];
+        $server['HTTP_HOST']   = 'host:8080';
         $server['SERVER_NAME'] = 'servername';
         $server['SERVER_PORT'] = '8080';
 
         $server['REDIRECT_QUERY_STRING'] = 'query=string';
-        $server['REDIRECT_URL'] = '/path/info';
-        $server['SCRIPT_NAME'] = '/index.php';
-        $server['QUERY_STRING'] = 'query=string';
-        $server['REQUEST_URI'] = '/path/info?toto=test&1=1';
-        $server['SCRIPT_NAME'] = '/index.php';
-        $server['PHP_SELF'] = '/index.php';
-        $server['SCRIPT_FILENAME'] = '/some/where/index.php';
+        $server['REDIRECT_URL']          = '/path/info';
+        $server['SCRIPT_NAME']           = '/index.php';
+        $server['QUERY_STRING']          = 'query=string';
+        $server['REQUEST_URI']           = '/path/info?toto=test&1=1';
+        $server['SCRIPT_NAME']           = '/index.php';
+        $server['PHP_SELF']              = '/index.php';
+        $server['SCRIPT_FILENAME']       = '/some/where/index.php';
 
         $request->reset([], [], [], [], [], $server);
 
@@ -145,7 +145,7 @@ class RequestTest extends TestCase
 
         // Use std port number
         //  http://host/path/info?query=string
-        $server['HTTP_HOST'] = 'host';
+        $server['HTTP_HOST']   = 'host';
         $server['SERVER_NAME'] = 'servername';
         $server['SERVER_PORT'] = '80';
 
@@ -164,14 +164,14 @@ class RequestTest extends TestCase
 
         // With encoded characters
         $server = [
-            'HTTP_HOST' => 'host:8080',
-            'SERVER_NAME' => 'servername',
-            'SERVER_PORT' => '8080',
-            'QUERY_STRING' => 'query=string',
-            'REQUEST_URI' => '/ba%20se/index_dev.php/foo%20bar/in+fo?query=string',
-            'SCRIPT_NAME' => '/ba se/index_dev.php',
+            'HTTP_HOST'       => 'host:8080',
+            'SERVER_NAME'     => 'servername',
+            'SERVER_PORT'     => '8080',
+            'QUERY_STRING'    => 'query=string',
+            'REQUEST_URI'     => '/ba%20se/index_dev.php/foo%20bar/in+fo?query=string',
+            'SCRIPT_NAME'     => '/ba se/index_dev.php',
             'PATH_TRANSLATED' => 'redirect:/index.php/foo bar/in+fo',
-            'PHP_SELF' => '/ba se/index_dev.php/path/info',
+            'PHP_SELF'        => '/ba se/index_dev.php/path/info',
             'SCRIPT_FILENAME' => '/some/where/ba se/index_dev.php',
         ];
 
@@ -190,7 +190,7 @@ class RequestTest extends TestCase
     {
         $request = new Request();
 
-        $server = [];
+        $server                = [];
         $server['SERVER_NAME'] = 'servername';
         $server['SERVER_PORT'] = '90';
 
@@ -269,7 +269,7 @@ class RequestTest extends TestCase
     {
         $request = new Request([], [], [], [], [], [
             'HTTP_X_FORWARDED_PROTO' => 'https',
-            'HTTP_X_FORWARDED_PORT' => '443',
+            'HTTP_X_FORWARDED_PORT'  => '443',
         ]);
         $port = $request->getPort();
         $this->assertSame(80, $port, 'Without trusted proxies FORWARDED_PROTO and FORWARDED_PORT are ignored.');
@@ -320,11 +320,11 @@ class RequestTest extends TestCase
     public function testCreateFromGlobals($method)
     {
         $normalizedMethod = strtoupper($method);
-        $_GET['foo1'] = 'bar1';
-        $_POST['foo2'] = 'bar2';
-        $_COOKIE['foo3'] = 'bar3';
-        $_SERVER['foo5'] = 'bar5';
-        $request = Request::createFromGlobals();
+        $_GET['foo1']     = 'bar1';
+        $_POST['foo2']    = 'bar2';
+        $_COOKIE['foo3']  = 'bar3';
+        $_SERVER['foo5']  = 'bar5';
+        $request          = Request::createFromGlobals();
 
         $this->assertSame('bar1', $request->query->get('foo1'), '::fromGlobals() uses values from $_GET');
         $this->assertSame('bar2', $request->request->get('foo2'), '::fromGlobals() uses values from $_POST');
@@ -333,7 +333,7 @@ class RequestTest extends TestCase
 
         unset($_GET['foo1'], $_POST['foo2'], $_COOKIE['foo3'], $_SERVER['foo5']);
         $_SERVER['REQUEST_METHOD'] = $method;
-        $_SERVER['CONTENT_TYPE'] = 'application/x-www-form-urlencoded';
+        $_SERVER['CONTENT_TYPE']   = 'application/x-www-form-urlencoded';
 
         $request = RequestContentProxy::createFromGlobals();
         $this->assertSame($normalizedMethod, $request->getMethod());
@@ -347,18 +347,18 @@ class RequestTest extends TestCase
         $request = new Request();
         $this->assertSame('', $request->getScriptName());
 
-        $server = [];
+        $server                = [];
         $server['SCRIPT_NAME'] = '/index.php';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('/index.php', $request->getScriptName());
 
-        $server = [];
+        $server                     = [];
         $server['ORIG_SCRIPT_NAME'] = '/frontend.php';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('/frontend.php', $request->getScriptName());
 
-        $server = [];
-        $server['SCRIPT_NAME'] = '/index.php';
+        $server                     = [];
+        $server['SCRIPT_NAME']      = '/index.php';
         $server['ORIG_SCRIPT_NAME'] = '/frontend.php';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('/index.php', $request->getScriptName());
@@ -369,25 +369,25 @@ class RequestTest extends TestCase
         $request = new Request();
         $this->assertSame('', $request->getBasePath());
 
-        $server = [];
+        $server                    = [];
         $server['SCRIPT_FILENAME'] = '/some/where/index.php';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('', $request->getBasePath());
 
-        $server = [];
+        $server                    = [];
         $server['SCRIPT_FILENAME'] = '/some/where/index.php';
-        $server['SCRIPT_NAME'] = '/index.php';
+        $server['SCRIPT_NAME']     = '/index.php';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('', $request->getBasePath());
 
-        $server = [];
+        $server                    = [];
         $server['SCRIPT_FILENAME'] = '/some/where/index.php';
-        $server['PHP_SELF'] = '/index.php';
+        $server['PHP_SELF']        = '/index.php';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('', $request->getBasePath());
 
-        $server = [];
-        $server['SCRIPT_FILENAME'] = '/some/where/index.php';
+        $server                     = [];
+        $server['SCRIPT_FILENAME']  = '/some/where/index.php';
         $server['ORIG_SCRIPT_NAME'] = '/index.php';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('', $request->getBasePath());
@@ -398,17 +398,17 @@ class RequestTest extends TestCase
         $request = new Request();
         $this->assertSame('/', $request->getPathInfo());
 
-        $server = [];
+        $server                = [];
         $server['REQUEST_URI'] = '/path/info';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('/path/info', $request->getPathInfo());
 
-        $server = [];
+        $server                = [];
         $server['REQUEST_URI'] = '/path%20test/info';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('/path%20test/info', $request->getPathInfo());
 
-        $server = [];
+        $server                = [];
         $server['REQUEST_URI'] = '?a=b';
         $request->reset([], [], [], [], [], $server);
         $this->assertSame('/', $request->getPathInfo());

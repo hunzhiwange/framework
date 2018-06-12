@@ -42,11 +42,11 @@ class Entry
     public $context;
     public $singular;
     public $plural;
-    public $translations = [];
+    public $translations        = [];
     public $translator_comments = '';
-    public $extracted_comments = '';
-    public $references = [];
-    public $flags = [];
+    public $extracted_comments  = '';
+    public $references          = [];
+    public $flags               = [];
 
     /**
      * @param array $args associative array, support following keys:
@@ -109,7 +109,7 @@ class Entry
      */
     public function merge_with(&$other)
     {
-        $this->flags = array_unique(array_merge($this->flags, $other->flags));
+        $this->flags      = array_unique(array_merge($this->flags, $other->flags));
         $this->references = array_unique(array_merge($this->references, $other->references));
         if ($this->extracted_comments !== $other->extracted_comments) {
             $this->extracted_comments .= $other->extracted_comments;

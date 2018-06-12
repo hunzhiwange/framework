@@ -94,7 +94,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function __construct($arrData = [], $arrSourceData = [])
     {
-        $this->arrData = $arrData;
+        $this->arrData       = $arrData;
         $this->arrSourceData = $arrSourceData;
     }
 
@@ -215,7 +215,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function push($strKey, $mixValue)
     {
-        $arr = $this->get($strKey, []);
+        $arr   = $this->get($strKey, []);
         $arr[] = $mixValue;
         $this->set($strKey, $arr);
     }
@@ -424,7 +424,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function pushSource($strKey, $mixValue)
     {
-        $arr = $this->getSource($strKey, []);
+        $arr   = $this->getSource($strKey, []);
         $arr[] = $mixValue;
         $this->setSource($strKey, $arr);
     }
@@ -605,7 +605,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function hasChange($sName, $booStrict = false)
     {
-        $mixNewData = $this->getData($sName);
+        $mixNewData    = $this->getData($sName);
         $mixSourceData = $this->getSourceData($sName);
 
         return (false === $booStrict && $mixNewData !== $mixSourceData) || (true === $booStrict && $mixNewData !== $mixSourceData);
@@ -702,7 +702,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
+        $mixProp         = is_array($mixProp) ? $mixProp : func_get_args();
         $this->arrHidden = array_merge($this->arrHidden, $mixProp);
 
         return $this;
@@ -747,7 +747,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
+        $mixProp          = is_array($mixProp) ? $mixProp : func_get_args();
         $this->arrVisible = array_merge($this->arrVisible, $mixProp);
 
         return $this;
@@ -792,7 +792,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
+        $mixProp         = is_array($mixProp) ? $mixProp : func_get_args();
         $this->arrAppend = array_merge($this->arrAppend, $mixProp);
 
         return $this;
@@ -937,7 +937,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     protected function getTypePartData($sName, $mixDefault = null, $strType = '')
     {
         list($sName, $strName) = explode('\\', $sName);
-        $mixValue = $this->{'get'.($strType ? ucwords($strType) : '')}($sName);
+        $mixValue              = $this->{'get'.($strType ? ucwords($strType) : '')}($sName);
 
         if (is_array($mixValue)) {
             $arrParts = explode('.', $strName);

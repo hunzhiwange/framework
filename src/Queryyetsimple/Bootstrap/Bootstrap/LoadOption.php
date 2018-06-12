@@ -88,7 +88,7 @@ class LoadOption
             putenv($name.'='.$value);
         }
 
-        $_ENV[$name] = $value;
+        $_ENV[$name]    = $value;
         $_SERVER[$name] = $value;
     }
 

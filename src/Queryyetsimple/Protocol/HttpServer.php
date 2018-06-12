@@ -109,7 +109,7 @@ class HttpServer extends Server
      */
     public function __construct(IKernel $kernel, Request $request, array $option = [])
     {
-        $this->kernel = $kernel;
+        $this->kernel  = $kernel;
         $this->request = $request;
         $this->options($option);
     }
@@ -188,9 +188,9 @@ class HttpServer extends Server
             'header' => 'headers',
             'server' => 'server',
             'cookie' => 'cookies',
-            'get' => 'query',
-            'files' => 'files',
-            'post' => 'request',
+            'get'    => 'query',
+            'files'  => 'files',
+            'post'   => 'request',
         ];
 
         $servers = [];
@@ -199,21 +199,21 @@ class HttpServer extends Server
             $tmp = $tmpHeader = [];
 
             foreach ($swooleRequest->header as $key => $value) {
-                $key = strtoupper(str_replace('-', '_', $key));
+                $key             = strtoupper(str_replace('-', '_', $key));
                 $tmpHeader[$key] = $value;
 
-                $key = 'HTTP_'.$key;
+                $key       = 'HTTP_'.$key;
                 $tmp[$key] = $value;
             }
 
-            $servers = $tmp;
+            $servers               = $tmp;
             $swooleRequest->header = $tmpHeader;
         }
 
         if ($swooleRequest->server) {
             $swooleRequest->server = array_change_key_case($swooleRequest->server, CASE_UPPER);
 
-            $servers = array_merge($servers, $swooleRequest->server);
+            $servers               = array_merge($servers, $swooleRequest->server);
             $swooleRequest->server = $servers;
         } else {
             $swooleRequest->server = $servers ?: null;

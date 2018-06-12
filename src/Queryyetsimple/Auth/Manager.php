@@ -53,8 +53,8 @@ class Manager extends Managers
      */
     public function setDefaultDriver($name)
     {
-        $option = $this->container['option'][$this->getOptionName('default')];
-        $option = $this->getOptionName($option.'_default');
+        $option                             = $this->container['option'][$this->getOptionName('default')];
+        $option                             = $this->getOptionName($option.'_default');
         $this->container['option'][$option] = $name;
     }
 

@@ -46,8 +46,8 @@ class Gettext extends Translations implements IArray
     public function gettext_select_plural_form($count)
     {
         if (!isset($this->_gettext_select_plural_form) || null === $this->_gettext_select_plural_form) {
-            list($nplurals, $expression) = $this->nplurals_and_expression_from_header($this->get_header('Plural-Forms'));
-            $this->_nplurals = $nplurals;
+            list($nplurals, $expression)       = $this->nplurals_and_expression_from_header($this->get_header('Plural-Forms'));
+            $this->_nplurals                   = $nplurals;
             $this->_gettext_select_plural_form = $this->make_plural_form_function($nplurals, $expression);
         }
 
@@ -62,7 +62,7 @@ class Gettext extends Translations implements IArray
     public function nplurals_and_expression_from_header($header)
     {
         if (preg_match('/^\s*nplurals\s*=\s*(\d+)\s*;\s+plural\s*=\s*(.+)$/', $header, $matches)) {
-            $nplurals = (int) $matches[1];
+            $nplurals   = (int) $matches[1];
             $expression = trim($this->parenthesize_plural_exression($matches[2]));
 
             return [
@@ -87,11 +87,11 @@ class Gettext extends Translations implements IArray
     public function make_plural_form_function($nplurals, $expression)
     {
         $expression = str_replace('n', '$n', $expression);
-        $func_body = "
+        $func_body  = "
             \$index = (int)(${expression});
             return (\$index < ${nplurals})? \$index : ${nplurals} - 1;";
 
-        $result = null;
+        $result  = null;
         $funcAll = '$result = function($n) { '.$func_body.' };';
         eval($funcAll);
 
@@ -109,7 +109,7 @@ class Gettext extends Translations implements IArray
     public function parenthesize_plural_exression($expression)
     {
         $expression .= ';';
-        $res = '';
+        $res   = '';
         $depth = 0;
         for ($i = 0; $i < strlen($expression); ++$i) {
             $char = $expression[$i];
@@ -146,7 +146,7 @@ class Gettext extends Translations implements IArray
         $headers = [];
         // sometimes \ns are used instead of real new lines
         $translation = str_replace('\n', "\n", $translation);
-        $lines = explode("\n", $translation);
+        $lines       = explode("\n", $translation);
         foreach ($lines as $line) {
             $parts = explode(':', $line, 2);
             if (!isset($parts[1])) {
@@ -166,8 +166,8 @@ class Gettext extends Translations implements IArray
     {
         parent::set_header($header, $value);
         if ('Plural-Forms' === $header) {
-            list($nplurals, $expression) = $this->nplurals_and_expression_from_header($this->get_header('Plural-Forms'));
-            $this->_nplurals = $nplurals;
+            list($nplurals, $expression)       = $this->nplurals_and_expression_from_header($this->get_header('Plural-Forms'));
+            $this->_nplurals                   = $nplurals;
             $this->_gettext_select_plural_form = $this->make_plural_form_function($nplurals, $expression);
         }
     }

@@ -96,7 +96,7 @@ class JsonResponseTest extends TestCase
 
     public function testConstructorWithCustomContentType()
     {
-        $headers = ['Content-Type' => 'application/vnd.acme.blog-v1+json'];
+        $headers  = ['Content-Type' => 'application/vnd.acme.blog-v1+json'];
         $response = new JsonResponse([], 200, $headers);
         $this->assertSame('application/vnd.acme.blog-v1+json', $response->headers->get('Content-Type'));
     }
@@ -183,7 +183,7 @@ class JsonResponseTest extends TestCase
 
     public function testStaticCreateWithCustomContentType()
     {
-        $headers = ['Content-Type' => 'application/vnd.acme.blog-v1+json'];
+        $headers  = ['Content-Type' => 'application/vnd.acme.blog-v1+json'];
         $response = JsonResponse::create([], 200, $headers);
         $this->assertSame('application/vnd.acme.blog-v1+json', $response->headers->get('Content-Type'));
     }

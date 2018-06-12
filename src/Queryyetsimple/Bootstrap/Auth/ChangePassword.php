@@ -117,7 +117,7 @@ trait ChangePassword
     {
         if ($this->isAjaxRequest()) {
             return [
-                'code' => 400,
+                'code'    => 400,
                 'message' => $strError,
             ];
         }
@@ -145,8 +145,8 @@ trait ChangePassword
     protected function getValidateChangePasswordRule()
     {
         return property_exists($this, 'strValidateChangePasswordRule') ? $this->strValidateChangePasswordRule : [
-            'old_password' => 'required|min_length:6',
-            'password' => 'required|min_length:6',
+            'old_password'     => 'required|min_length:6',
+            'password'         => 'required|min_length:6',
             'comfirm_password' => 'required|min_length:6|equal_to:password',
         ];
     }

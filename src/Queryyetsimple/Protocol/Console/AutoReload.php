@@ -60,7 +60,7 @@ class AutoReload extends Command
         $this->warn($this->getVersion());
 
         // 设置服务器程序的 PID
-        $pid = (int) ($this->argument('pid'));
+        $pid        = (int) ($this->argument('pid'));
         $autoReload = new AutoReloads($pid);
 
         // 设置要监听的源码目录

@@ -40,7 +40,7 @@ class PageWithTotal extends Page
      */
     public function __construct($intPerPage, $intTotalRecord, array $arrOption = [])
     {
-        $this->intPerPage = $intPerPage;
+        $this->intPerPage     = $intPerPage;
         $this->intTotalRecord = $intTotalRecord;
         $this->options($arrOption);
     }

@@ -43,16 +43,16 @@ class ThriftServer extends TNonblockingServer
     public function receive($serv, $fd, $fromId, $data)
     {
         $processorClass = '\Leevel\Protocol\Thrift\Service\\'.$this->serviceName.'Processor';
-        $handlerClass = '\Leevel\Protocol\Thrift\service\\'.$this->serviceName.'Handler';
+        $handlerClass   = '\Leevel\Protocol\Thrift\service\\'.$this->serviceName.'Handler';
 
-        $handler = new $handlerClass();
+        $handler         = new $handlerClass();
         $this->processor = new $processorClass($handler);
 
         $socket = new Socket();
         $socket->setHandle($fd);
         $socket->buffer = $data;
         $socket->server = $serv;
-        $protocol = new TBinaryProtocol($socket, false, false);
+        $protocol       = new TBinaryProtocol($socket, false, false);
 
         try {
             $protocol->fname = $this->serviceName;

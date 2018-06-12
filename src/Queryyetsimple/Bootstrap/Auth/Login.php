@@ -103,9 +103,9 @@ trait Login
             $oUser = auth::login($aInput['name'], $aInput['password'], $aInput['remember_me'] ? $aInput['remember_time'] : null);
 
             if ($this->isAjaxRequest()) {
-                $aReturn = [];
-                $aReturn['api_token'] = auth::getTokenName();
-                $aReturn['user'] = $oUser->toArray();
+                $aReturn                 = [];
+                $aReturn['api_token']    = auth::getTokenName();
+                $aReturn['user']         = $oUser->toArray();
                 $aReturn['remember_key'] = auth::implodeTokenData($aInput['name'], $aInput['password']);
 
                 return $aReturn;
@@ -147,7 +147,7 @@ trait Login
     public function unlock(request $oRequest)
     {
         $booValidate = false;
-        $arrResult = $this->onlyValidate($oRequest, $booValidate);
+        $arrResult   = $this->onlyValidate($oRequest, $booValidate);
         if (true === $booValidate) {
             auth::unlock();
         }
@@ -214,7 +214,7 @@ trait Login
     {
         if ($this->isAjaxRequest()) {
             return [
-                'code' => 400,
+                'code'    => 400,
                 'message' => $strError,
             ];
         }
@@ -242,7 +242,7 @@ trait Login
     protected function getValidateLoginRule()
     {
         return property_exists($this, 'strValidateLoginRule') ? $this->strValidateLoginRule : [
-            'name' => 'required|max_length:50',
+            'name'     => 'required|max_length:50',
             'password' => 'required|min_length:6',
         ];
     }

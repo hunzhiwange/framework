@@ -28,5 +28,5 @@ use PHPQueue\Base;
  * @since 2017.05.11
  * @version 1.0
  */
-Base::$queue_namespace = 'Leevel\Queue\Queues';
+Base::$queue_namespace  = 'Leevel\Queue\Queues';
 Base::$worker_namespace = 'Leevel\Queue\Workers';

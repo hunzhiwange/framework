@@ -79,10 +79,10 @@ abstract class Command extends SymfonyCommand
      * @var array
      */
     protected static $verbosityMap = [
-        'v' => OutputInterface::VERBOSITY_VERBOSE,
-        'vv' => OutputInterface::VERBOSITY_VERY_VERBOSE,
-        'vvv' => OutputInterface::VERBOSITY_DEBUG,
-        'quiet' => OutputInterface::VERBOSITY_QUIET,
+        'v'      => OutputInterface::VERBOSITY_VERBOSE,
+        'vv'     => OutputInterface::VERBOSITY_VERY_VERBOSE,
+        'vvv'    => OutputInterface::VERBOSITY_DEBUG,
+        'quiet'  => OutputInterface::VERBOSITY_QUIET,
         'normal' => OutputInterface::VERBOSITY_NORMAL,
     ];
 
@@ -129,7 +129,7 @@ abstract class Command extends SymfonyCommand
      */
     public function run(InputInterface $input, OutputInterface $output)
     {
-        $this->input = $input;
+        $this->input  = $input;
         $this->output = new SymfonyStyle($input, $output);
 
         return parent::run($input, $output);

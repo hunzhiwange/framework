@@ -42,10 +42,10 @@ class Cookie implements ICookie
      * @var array
      */
     protected $option = [
-        'prefix' => 'q_',
-        'expire' => 86400,
-        'domain' => '',
-        'path' => '/',
+        'prefix'   => 'q_',
+        'expire'   => 86400,
+        'domain'   => '',
+        'path'     => '/',
         'httponly' => false,
     ];
 
@@ -141,7 +141,7 @@ class Cookie implements ICookie
      */
     public function push($key, $value, array $option = [])
     {
-        $arr = $this->get($key, [], $option);
+        $arr   = $this->get($key, [], $option);
         $arr[] = $value;
         $this->set($key, $arr, $option);
     }
@@ -228,7 +228,7 @@ class Cookie implements ICookie
     public function get($name, $defaults = null, array $option = [])
     {
         $option = $this->getOptions($option);
-        $name = $option['prefix'].$name;
+        $name   = $option['prefix'].$name;
 
         if (isset($this->cookies[$name])) {
             if ($this->isJson($this->cookies[$name])) {
@@ -260,8 +260,8 @@ class Cookie implements ICookie
      */
     public function clear($deletePrefix = true, array $option = [])
     {
-        $option = $this->getOptions($option);
-        $prefix = $option['prefix'];
+        $option           = $this->getOptions($option);
+        $prefix           = $option['prefix'];
         $option['prefix'] = '';
 
         foreach ($this->cookies as $key => $val) {

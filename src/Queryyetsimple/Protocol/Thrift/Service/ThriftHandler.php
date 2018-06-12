@@ -72,7 +72,7 @@ class ThriftHandler implements ThriftIf
 
         return new Response([
             'status' => $response->getStatusCode(),
-            'data' => $content,
+            'data'   => $content,
         ]);
     }
 

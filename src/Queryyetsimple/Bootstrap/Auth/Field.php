@@ -49,18 +49,18 @@ trait Field
     public function authField()
     {
         return [
-            'id' => $this->authFieldId(),
-            'name' => $this->authFieldName(),
-            'nikename' => $this->authFieldNikename(),
-            'random' => $this->authFieldRandom(),
-            'email' => $this->authFieldEmail(),
-            'mobile' => $this->authFieldMobile(),
-            'password' => $this->authFieldPassword(),
+            'id'          => $this->authFieldId(),
+            'name'        => $this->authFieldName(),
+            'nikename'    => $this->authFieldNikename(),
+            'random'      => $this->authFieldRandom(),
+            'email'       => $this->authFieldEmail(),
+            'mobile'      => $this->authFieldMobile(),
+            'password'    => $this->authFieldPassword(),
             'register_ip' => $this->authFieldRegisterIp(),
-            'login_time' => $this->authFieldLoginTime(),
-            'login_ip' => $this->authFieldLoginIp(),
+            'login_time'  => $this->authFieldLoginTime(),
+            'login_ip'    => $this->authFieldLoginIp(),
             'login_count' => $this->authFieldLoginCount(),
-            'status' => $this->authFieldStatus(),
+            'status'      => $this->authFieldStatus(),
         ];
     }
 

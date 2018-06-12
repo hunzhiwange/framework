@@ -85,7 +85,7 @@ abstract class Kernel implements IKernel
     public function __construct(IProject $project, Router $router)
     {
         $this->project = $project;
-        $this->router = $router;
+        $this->router  = $router;
     }
 
     /**

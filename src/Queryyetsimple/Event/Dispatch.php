@@ -107,7 +107,7 @@ class Dispatch implements IDispatch
      */
     public function listeners($event, $listener, int $priority = 500)
     {
-        $event = is_object($event) ? [$event] : (array) $event;
+        $event    = is_object($event) ? [$event] : (array) $event;
         $priority = (int) $priority;
 
         foreach ($event as $item) {

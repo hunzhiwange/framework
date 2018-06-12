@@ -57,9 +57,9 @@ class Cache extends Command
         $this->line('Start to do cache router.');
 
         $data = [
-            'basepaths' => Router::getBasepaths(),
-            'groups' => Router::getGroups(),
-            'routers' => Router::getRouters(),
+            'basepaths'   => Router::getBasepaths(),
+            'groups'      => Router::getGroups(),
+            'routers'     => Router::getRouters(),
             'middlewares' => Router::getGlobalMiddlewares(),
         ];
 

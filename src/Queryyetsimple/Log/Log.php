@@ -73,7 +73,7 @@ class Log implements ILog
      */
     protected $option = [
         'enabled' => true,
-        'level' => [
+        'level'   => [
             self::DEBUG,
             self::INFO,
             self::NOTICE,
@@ -327,10 +327,10 @@ class Log implements ILog
     public function clear($level = null)
     {
         if ($level && isset($this->logs[$level])) {
-            $count = count($this->logs[$level]);
+            $count              = count($this->logs[$level]);
             $this->logs[$level] = [];
         } else {
-            $count = count($this->logs);
+            $count      = count($this->logs);
             $this->logs = [];
         }
 

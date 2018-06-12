@@ -90,8 +90,8 @@ abstract class Relation
     {
         $this->objTargetModel = $objTargetModel;
         $this->objSourceModel = $objSourceModel;
-        $this->strTargetKey = $strTargetKey;
-        $this->strSourceKey = $strSourceKey;
+        $this->strTargetKey   = $strTargetKey;
+        $this->strSourceKey   = $strSourceKey;
 
         $this->getSelectFromModel();
         $this->addRelationCondition();
@@ -185,7 +185,7 @@ abstract class Relation
      */
     public static function withoutRelationCondition(Closure $calReturnRelation)
     {
-        $booOld = static::$booRelationCondition;
+        $booOld                       = static::$booRelationCondition;
         static::$booRelationCondition = false;
 
         $objRelation = call_user_func($calReturnRelation);

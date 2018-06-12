@@ -185,7 +185,7 @@ class RedirectResponse extends Response
             return $this;
         }
 
-        $errors = $this->session->getFlash('errors', []);
+        $errors       = $this->session->getFlash('errors', []);
         $errors[$key] = $value;
 
         $this->session->flash('errors', $errors);

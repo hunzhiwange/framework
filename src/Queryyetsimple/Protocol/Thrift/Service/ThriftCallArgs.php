@@ -46,8 +46,8 @@ class ThriftCallArgs
         if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
                 1 => [
-                    'var' => 'request',
-                    'type' => TType::STRUCT,
+                    'var'   => 'request',
+                    'type'  => TType::STRUCT,
                     'class' => '\Leevel\Protocol\Thrift\Service\Request',
                 ],
             ];
@@ -66,10 +66,10 @@ class ThriftCallArgs
 
     public function read($input)
     {
-        $xfer = 0;
+        $xfer  = 0;
         $fname = null;
         $ftype = 0;
-        $fid = 0;
+        $fid   = 0;
         $xfer += $input->readStructBegin($fname);
         while (true) {
             $xfer += $input->readFieldBegin($fname, $ftype, $fid);
