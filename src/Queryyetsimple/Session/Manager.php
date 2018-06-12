@@ -62,7 +62,6 @@ class Manager extends Managers
      */
     protected function makeConnectCookie($options = [])
     {
-        return;
     }
 
     /**

@@ -2,12 +2,6 @@ language: php
 
 preset: symfony
 
-enabled:
-  - short_array_syntax
-  - concat_with_spaces
-  - not_operator_with_successor_space
-  - unalign_double_arrow
-
 env:
   global:
     - MIN_PHP=7.1.3

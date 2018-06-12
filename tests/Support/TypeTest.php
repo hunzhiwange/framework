@@ -81,7 +81,8 @@ class TypeTest extends TestCase
         fclose($resource);
 
         // closure
-        $this->assertTrue(Type::vars(function () {}, 'closure'));
+        $this->assertTrue(Type::vars(function () {
+        }, 'closure'));
         $this->assertFalse(Type::vars(true, 'closure'));
 
         // array
@@ -99,7 +100,8 @@ class TypeTest extends TestCase
         $this->assertFalse(Type::vars(1, 'null'));
 
         // callback
-        $this->assertTrue(Type::vars(function () {}, 'callback'));
+        $this->assertTrue(Type::vars(function () {
+        }, 'callback'));
         $this->assertTrue(Type::vars('md5', 'callback'));
         $this->assertTrue(Type::vars([new Callback1(), 'test'], 'callback'));
         $this->assertTrue(Type::vars([Callback1::class, 'test2'], 'callback'));

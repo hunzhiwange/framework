@@ -104,7 +104,7 @@ class HeaderBagTest extends TestCase
 
         $i = 0;
         foreach ($headerBag as $key => $val) {
-            ++$i;
+            $i++;
             $this->assertSame($headers[$key], $val);
         }
 

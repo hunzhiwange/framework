@@ -42,10 +42,9 @@ class Compiler implements ICompiler
         'php'      => '~',
         'note'     => '#',
         'variable' => '$',
-        // foreach 和 for 冲突，foreach 改为 list
-        'foreach' => 'list',
-        'echo'    => ':',
-        'endtag'  => [
+        'foreach'  => 'list', // foreach 和 for 冲突，foreach 改为 list
+        'echo'     => ':',
+        'endtag'   => [
             '/list',
             '/for',
             '/while',
@@ -1024,7 +1023,7 @@ class Compiler implements ICompiler
                     $name = $res[$nameIdx][$idx];
 
                     if (empty($name)) {
-                        ++$defaultIdx;
+                        $defaultIdx++;
                         $name = 'condition'.$defaultIdx;
                     }
 
@@ -1134,7 +1133,7 @@ class Compiler implements ICompiler
         // 单逻辑
         $findLogic = false;
 
-        for ($i = 0; $i < strlen($content); ++$i) {
+        for ($i = 0; $i < strlen($content); $i++) {
             $temp = $content[$i];
 
             if (0 === $i && $this->isVarExpression($temp)) {
@@ -1285,7 +1284,7 @@ class Compiler implements ICompiler
     {
         $len = count($var);
 
-        for ($index = 0; $index < $len; ++$index) {
+        for ($index = 0; $index < $len; $index++) {
             if (0 === stripos($var[$index], 'default=')) {
                 $args = explode('=', $var[$index], 2);
             } else {
@@ -1336,7 +1335,7 @@ class Compiler implements ICompiler
         $len = count($vars);
         $param = '';
 
-        for ($index = $start; $index < $len; ++$index) {
+        for ($index = $start; $index < $len; $index++) {
             if (1 === $type) {
                 // 类似 $hello['test']['test2']
                 $param .= "['{$vars[$index]}']";
@@ -1448,8 +1447,6 @@ class Compiler implements ICompiler
                 return $child['content'];
             }
         }
-
-        return;
     }
 
     /**

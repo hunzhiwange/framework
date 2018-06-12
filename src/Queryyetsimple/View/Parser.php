@@ -306,11 +306,9 @@ class Parser implements IParser
                 $content = trim($res[1][$index]);
 
                 $theme = [
-                    'source'  => $source,
-                    'content' => $content,
-
-                    // 编译器
-                    'compiler' => 'global',
+                    'source'   => $source,
+                    'content'  => $content,
+                    'compiler' => 'global', // 编译器
                     'children' => [],
                 ];
 
@@ -343,11 +341,9 @@ class Parser implements IParser
                 $content = trim($res[1][$index]);
 
                 $theme = [
-                    'source'  => $source,
-                    'content' => $content,
-
-                    // 编译器
-                    'compiler' => 'jsvar',
+                    'source'   => $source,
+                    'content'  => $content,
+                    'compiler' => 'jsvar', // 编译器
                     'children' => [],
                 ];
 
@@ -393,11 +389,9 @@ class Parser implements IParser
                 $content = trim($res[2][$index]);
 
                 $theme = [
-                    'source'  => $source,
-                    'content' => $content,
-
-                    // 编译器
-                    'compiler' => $this->compilers['code'][$type].'Code',
+                    'source'   => $source,
+                    'content'  => $content,
+                    'compiler' => $this->compilers['code'][$type].'Code', // 编译器
                     'children' => [],
                 ];
 
@@ -466,11 +460,9 @@ class Parser implements IParser
                 $source = $res[0][$index];
 
                 $theme = [
-                    'source'  => $source,
-                    'content' => $encode,
-
-                    // 编译器
-                    'compiler' => 'revert',
+                    'source'   => $source,
+                    'content'  => $encode,
+                    'compiler' => 'revert', // 编译器
                     'children' => [],
                 ];
 
@@ -502,11 +494,9 @@ class Parser implements IParser
                 $content = $res[1][$index];
 
                 $theme = [
-                    'source'  => $source,
-                    'content' => $content,
-
-                    // 编译器
-                    'compiler' => 'globalrevert',
+                    'source'   => $source,
+                    'content'  => $content,
+                    'compiler' => 'globalrevert', // 编译器
                     'children' => [],
                 ];
 
@@ -657,10 +647,8 @@ class Parser implements IParser
                 }
 
                 $themeNode = [
-                    'content' => $tag['content'],
-
-                    // 编译器
-                    'compiler' => $tag['name'].$compiler,
+                    'content'  => $tag['content'],
+                    'compiler' => $tag['name'].$compiler, // 编译器
                     'source'   => $tag['source'],
                     'name'     => $tag['name'],
                 ];
@@ -677,10 +665,8 @@ class Parser implements IParser
                 $source = substr($compiled, $start, $len);
 
                 $themeNode = [
-                    'content' => $source,
-
-                    // 编译器
-                    'compiler' => $tag['name'].$compiler,
+                    'content'  => $source,
+                    'compiler' => $tag['name'].$compiler, // 编译器
                     'source'   => $source,
                     'name'     => $tag['name'],
                 ];
@@ -696,10 +682,8 @@ class Parser implements IParser
                     $body = substr($compiled, $start, $len);
 
                     $themeBody = [
-                        'content' => $body,
-
-                        // 编译器
-                        'compiler' => null,
+                        'content'  => $body,
+                        'compiler' => null, // 编译器
                         'source'   => $body,
                         'is_body'  => 1,
                     ];
@@ -712,10 +696,8 @@ class Parser implements IParser
 
             // 标签属性
             $themeAttr = [
-                'content' => $tag['content'],
-
-                // 编译器
-                'compiler'       => 'attributeNode',
+                'content'        => $tag['content'],
+                'compiler'       => 'attributeNode', // 编译器
                 'source'         => $tag['source'],
                 'attribute_list' => [],
                 'is_attribute'   => true,
