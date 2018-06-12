@@ -163,7 +163,7 @@ class PipelineTest extends TestCase
         $_SERVER['test.Through.count'] = 0;
 
         $pipe = function (Closure $next) {
-            ++$_SERVER['test.Through.count'];
+            $_SERVER['test.Through.count']++;
 
             $next();
         };

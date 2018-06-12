@@ -105,7 +105,7 @@ class BagTest extends TestCase
 
         $i = 0;
         foreach ($bag as $key => $val) {
-            ++$i;
+            $i++;
             $this->assertSame($parameters[$key], $val);
         }
 
