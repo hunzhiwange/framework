@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Cookie;
 
 use Tests\TestCase;
@@ -21,16 +25,16 @@ use Leevel\Cookie\Cookie;
 use Leevel\Cookie\ICookie;
 
 /**
- * cookie test
- * 
+ * cookie test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.03
+ *
  * @version 1.0
  */
 class CookieTest extends TestCase
 {
-
     public function testBaseUse()
     {
         $cookie = new Cookie();
@@ -47,8 +51,8 @@ class CookieTest extends TestCase
                 '/',
                 '',
                 false,
-                false
-            ]
+                false,
+            ],
         ], $cookie->all());
     }
 
@@ -65,7 +69,7 @@ class CookieTest extends TestCase
             '/',
             '',
             false,
-            false
+            false,
         ], $cookie->get('foo'));
 
         $cookie->delete('foo');
@@ -77,7 +81,7 @@ class CookieTest extends TestCase
             '/',
             '',
             false,
-            false
+            false,
         ], $cookie->get('foo'));
     }
 
@@ -96,7 +100,7 @@ class CookieTest extends TestCase
                 '/',
                 '',
                 false,
-                false
+                false,
             ],
             'q_foo' => [
                 'q_foo',
@@ -105,8 +109,8 @@ class CookieTest extends TestCase
                 '/',
                 '',
                 false,
-                false
-            ]
+                false,
+            ],
         ], $cookie->all());
 
         $cookie->clear();
@@ -119,7 +123,7 @@ class CookieTest extends TestCase
                 '/',
                 '',
                 false,
-                false
+                false,
             ],
             'q_foo' => [
                 'q_foo',
@@ -128,8 +132,8 @@ class CookieTest extends TestCase
                 '/',
                 '',
                 false,
-                false
-            ]
+                false,
+            ],
         ], $cookie->all());
     }
 }

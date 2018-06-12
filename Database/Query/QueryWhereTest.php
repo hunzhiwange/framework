@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,16 +17,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Database\Query;
 
 use Tests\TestCase;
 
 /**
- * where test
- * 
+ * where test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.10
+ *
  * @version 1.0
  */
 class QueryWhereTest extends TestCase
@@ -145,7 +150,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where(['name','like', '技术'])->
+                where(['name', 'like', '技术'])->
 
                 getAll(true),
                 __METHOD__
@@ -172,9 +177,9 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where ([
-                  ['name','like', '技术'],
-                  ['value','<>', '结局']
+                where([
+                  ['name', 'like', '技术'],
+                  ['value', '<>', '结局'],
                 ])->
 
                 getAll(true),
@@ -207,9 +212,9 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('name','like', '技术')->
+                where('name', 'like', '技术')->
 
-                orWhere('value','<>', '结局')->
+                orWhere('value', '<>', '结局')->
 
                 getAll(true),
                 __METHOD__
@@ -268,7 +273,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('id','between', [1, 10])->
+                where('id', 'between', [1, 10])->
 
                 getAll(true),
                 __METHOD__
@@ -297,7 +302,7 @@ eot;
 
                 whereBetween([
                   ['id', [1, 100]],
-                  ['name', [5, 22]]
+                  ['name', [5, 22]],
                 ])->
 
                 getAll(true),
@@ -357,7 +362,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('id','not between', [1, 10])->
+                where('id', 'not between', [1, 10])->
 
                 getAll(true),
                 __METHOD__
@@ -502,7 +507,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('id','not in', '1,10')->
+                where('id', 'not in', '1,10')->
 
                 getAll(true),
                 __METHOD__
@@ -546,7 +551,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('id','null')->
+                where('id', 'null')->
 
                 getAll(true),
                 __METHOD__
@@ -590,7 +595,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('id','not null')->
+                where('id', 'not null')->
 
                 getAll(true),
                 __METHOD__
@@ -622,7 +627,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                whereLike('id','5')->
+                whereLike('id', '5')->
 
                 getAll(true),
                 __METHOD__
@@ -634,7 +639,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('id','like', '5')->
+                where('id', 'like', '5')->
 
                 getAll(true),
                 __METHOD__
@@ -666,7 +671,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                whereNotLike('id','5')->
+                whereNotLike('id', '5')->
 
                 getAll(true),
                 __METHOD__
@@ -678,7 +683,7 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('id','not like', '5')->
+                where('id', 'not like', '5')->
 
                 getAll(true),
                 __METHOD__
@@ -711,7 +716,7 @@ eot;
                 $connect->table('test')->
 
                 whereExists(
-                    function($select) {
+                    function ($select) {
                         $select->table('subsql')->where('id', 1);
                     }
                 )->
@@ -745,7 +750,7 @@ eot;
 
                 where(
                    [
-                      'exists__' => $subSelect
+                      'exists__' => $subSelect,
                    ]
                 )->
 
@@ -770,7 +775,7 @@ array (
 eot;
 
         $subSelect = $connect->table('subsql');
-        
+
         $this->assertEquals(
             $sql,
             $this->varExport(
@@ -778,7 +783,7 @@ eot;
 
                 where(
                    [
-                      'exists__' => 'select *from d_sub'
+                      'exists__' => 'select *from d_sub',
                    ]
                 )->
 
@@ -803,7 +808,7 @@ array (
 eot;
 
         $subSelect = $connect->table('subsql');
-        
+
         $this->assertEquals(
             $sql,
             $this->varExport(
@@ -811,9 +816,9 @@ eot;
 
                 where(
                    [
-                      'exists__' => function($select) {
+                      'exists__' => function ($select) {
                           $select->table('subsql')->where('id', 1);
-                      }
+                      },
                    ]
                 )->
 

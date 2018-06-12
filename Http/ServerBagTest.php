@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Router;
 
 use Tests\TestCase;
@@ -21,34 +25,35 @@ use Leevel\Http\ServerBag;
 
 /**
  * ServerBag test
- * This class borrows heavily from the Symfony4 Framework and is part of the symfony package
- * 
+ * This class borrows heavily from the Symfony4 Framework and is part of the symfony package.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.03.14
+ *
  * @version 1.0
+ *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
  */
 class ServerBagTest extends TestCase
 {
-
     public function testShouldExtractHeadersFromServerArray()
     {
-        $server = array(
+        $server = [
             'SOME_SERVER_VARIABLE' => 'value',
             'SOME_SERVER_VARIABLE2' => 'value',
             'ROOT' => 'value',
             'HTTP_CONTENT_TYPE' => 'text/html',
             'HTTP_CONTENT_LENGTH' => '0',
             'HTTP_ETAG' => 'asdf',
-        );
+        ];
 
         $bag = new ServerBag($server);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'CONTENT_TYPE' => 'text/html',
             'CONTENT_LENGTH' => '0',
-            'ETAG' => 'asdf'
-        ), $bag->getHeaders());
+            'ETAG' => 'asdf',
+        ], $bag->getHeaders());
     }
 }

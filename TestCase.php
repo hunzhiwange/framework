@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,52 +17,45 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests;
 
 use PHPUnit\Framework\TestCase as TestCases;
 
 /**
- * phpunit 测试用例
+ * phpunit 测试用例.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.09
+ *
  * @version 1.0
  */
 abstract class TestCase extends TestCases
 {
-
     /**
-     * setUpBeforeClass
-     *
-     * @return void
+     * setUpBeforeClass.
      */
     public static function setUpBeforeClass()
     {
     }
 
     /**
-     * tearDownAfterClass
-     *
-     * @return void
+     * tearDownAfterClass.
      */
     public static function tearDownAfterClass()
     {
     }
 
     /**
-     * setUp
-     *
-     * @return void
+     * setUp.
      */
     protected function setUp()
     {
     }
 
     /**
-     * tearDown
-     *
-     * @return void
+     * tearDown.
      */
     protected function tearDown()
     {

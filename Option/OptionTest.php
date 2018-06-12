@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,27 +17,28 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Option;
 
 use Tests\TestCase;
 use Leevel\Option\Option;
 
 /**
- * option 组件测试
+ * option 组件测试.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.09
+ *
  * @version 1.0
  */
 class OptionTest extends TestCase
 {
-
     public function testAll()
     {
         $data = [
             'hello' => 'world',
-            'test\child' => ['foo' => 'bar']
+            'test\child' => ['foo' => 'bar'],
         ];
 
         $option = new Option($data);
@@ -49,13 +53,13 @@ class OptionTest extends TestCase
                 'environment' => 'testing',
                 'debug' => true,
             ],
-            'cache' => array (
+            'cache' => [
                 'expire' => 86400,
-                'time_preset' => array (
-                    'foo' => 'bar'
-                ),
-            ),
-            'hello' => 'world'
+                'time_preset' => [
+                    'foo' => 'bar',
+                ],
+            ],
+            'hello' => 'world',
         ];
 
         $option = new Option($data);
@@ -94,13 +98,13 @@ class OptionTest extends TestCase
                 'environment' => 'testing',
                 'debug' => true,
             ],
-            'cache' => array (
+            'cache' => [
                 'expire' => 86400,
-                'time_preset' => array (
-                    'foo' => 'bar'
-                ),
-            ),
-            'hello' => 'world'
+                'time_preset' => [
+                    'foo' => 'bar',
+                ],
+            ],
+            'hello' => 'world',
         ];
 
         $option = new Option($data);
@@ -138,11 +142,11 @@ class OptionTest extends TestCase
         $option->set('hello', 'i am hello');
         $this->assertEquals($option->get('hello'), 'i am hello', 'The default namespace is app, so it equal app\hello');
 
-        $this->assertSame($option->all(), [ 
+        $this->assertSame($option->all(), [
             'app' => [
                 'environment' => 'testing',
-                'hello' => 'i am hello'
-            ]
+                'hello' => 'i am hello',
+            ],
         ]);
 
         // 当我们获取一个不存在的配置命名空间时，返回一个初始化的空数组
@@ -167,102 +171,103 @@ class OptionTest extends TestCase
                 'environment' => 'testing',
                 'debug' => true,
             ],
-            'cache' => array (
+            'cache' => [
                 'expire' => 86400,
-                'time_preset' => array (
-                    'foo' => 'bar'
-                ),
-            ),
-            'hello' => 'world'
+                'time_preset' => [
+                    'foo' => 'bar',
+                ],
+            ],
+            'hello' => 'world',
         ];
 
         $option = new Option($data);
 
         $option->delete('debug');
 
-        $this->assertSame($option->all(), [ 
+        $this->assertSame($option->all(), [
             'app' => [
                 'environment' => 'testing',
             ],
-            'cache' => array (
+            'cache' => [
                 'expire' => 86400,
-                'time_preset' => array (
-                    'foo' => 'bar'
-                ),
-            ),
-            'hello' => 'world'
+                'time_preset' => [
+                    'foo' => 'bar',
+                ],
+            ],
+            'hello' => 'world',
         ]);
 
         $option->delete('cache\time_preset.foo');
 
-        $this->assertSame($option->all(), [ 
+        $this->assertSame($option->all(), [
             'app' => [
                 'environment' => 'testing',
             ],
-            'cache' => array (
+            'cache' => [
                 'expire' => 86400,
-                'time_preset' => array (
-                ),
-            ),
-            'hello' => 'world'
+                'time_preset' => [
+                ],
+            ],
+            'hello' => 'world',
         ]);
 
         // 删除命令空间会初始化该命名空间为空数组，不存在会创建一个空数组
         $option->delete('hello\\');
 
-        $this->assertSame($option->all(), [ 
+        $this->assertSame($option->all(), [
             'app' => [
                 'environment' => 'testing',
             ],
-            'cache' => array (
+            'cache' => [
                 'expire' => 86400,
-                'time_preset' => array (
-                ),
-            ),
-            'hello' => []
+                'time_preset' => [
+                ],
+            ],
+            'hello' => [],
         ]);
 
         $option->delete('world\\');
 
-        $this->assertSame($option->all(), [ 
+        $this->assertSame($option->all(), [
             'app' => [
                 'environment' => 'testing',
             ],
-            'cache' => array (
+            'cache' => [
                 'expire' => 86400,
-                'time_preset' => array (
-                ),
-            ),
+                'time_preset' => [
+                ],
+            ],
             'hello' => [],
             'world' => [],
         ]);
     }
 
-    public function testReset() {
+    public function testReset()
+    {
         $data = [
-            'hello' => 'world'
+            'hello' => 'world',
         ];
 
         $option = new Option($data);
 
-        $this->assertSame($option->all(), [ 
-            'hello' => 'world'
+        $this->assertSame($option->all(), [
+            'hello' => 'world',
         ]);
 
         // array
         $option->reset(['foo' => 'bar']);
-        $this->assertSame($option->all(), [ 
-            'foo' => 'bar'
+        $this->assertSame($option->all(), [
+            'foo' => 'bar',
         ]);
 
         // set a namespace
         $option->reset('foo');
-        $this->assertSame($option->all(), [ 
-            'foo' => []
+        $this->assertSame($option->all(), [
+            'foo' => [],
         ]);
 
         $option->reset('foo2');
-        $this->assertSame($option->all(), [ 
+        $this->assertSame($option->all(), [
             'foo' => [],
             'foo2' => [],
         ]);
@@ -272,19 +277,20 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), []);
     }
 
-    public function testArrayAccess() {
+    public function testArrayAccess()
+    {
         $data = [
             'app' => [
                 'environment' => 'testing',
                 'debug' => true,
             ],
-            'cache' => array (
+            'cache' => [
                 'expire' => 86400,
-                'time_preset' => array (
-                    'foo' => 'bar'
-                ),
-            ),
-            'hello' => 'world'
+                'time_preset' => [
+                    'foo' => 'bar',
+                ],
+            ],
+            'hello' => 'world',
         ];
 
         $option = new Option($data);

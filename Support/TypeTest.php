@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Support;
 
 use stdClass;
@@ -21,16 +25,16 @@ use Tests\TestCase;
 use Leevel\Support\Type;
 
 /**
- * type test
- * 
+ * type test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.10
+ *
  * @version 1.0
  */
 class TypeTest extends TestCase
 {
-
     public function testBaseUse()
     {
         // string
@@ -76,17 +80,17 @@ class TypeTest extends TestCase
         fclose($resource);
 
         // closure
-        $this->assertTrue(Type::vars(function() {}, 'closure'));
-        $this->assertFalse(Type::vars(true, 'closure')); 
-        
+        $this->assertTrue(Type::vars(function () {}, 'closure'));
+        $this->assertFalse(Type::vars(true, 'closure'));
+
         // array
         $this->assertTrue(Type::vars([], 'arr'));
         $this->assertTrue(Type::vars([], 'array'));
         $this->assertFalse(Type::vars(null, 'arr'));
 
         // object
-        $this->assertTrue(Type::vars(new stdClass, 'obj'));
-        $this->assertTrue(Type::vars(new stdClass, 'object'));
+        $this->assertTrue(Type::vars(new stdClass(), 'obj'));
+        $this->assertTrue(Type::vars(new stdClass(), 'object'));
         $this->assertFalse(Type::vars(null, 'object'));
 
         // null
@@ -94,16 +98,16 @@ class TypeTest extends TestCase
         $this->assertFalse(Type::vars(1, 'null'));
 
         // callback
-        $this->assertTrue(Type::vars(function() {}, 'callback'));
+        $this->assertTrue(Type::vars(function () {}, 'callback'));
         $this->assertTrue(Type::vars('md5', 'callback'));
-        $this->assertTrue(Type::vars([new Callback1, 'test'], 'callback'));
+        $this->assertTrue(Type::vars([new Callback1(), 'test'], 'callback'));
         $this->assertTrue(Type::vars([Callback1::class, 'test2'], 'callback'));
         $this->assertFalse(Type::vars(1, 'callback'));
 
         // instance
-        $this->assertTrue(Type::vars(new stdClass, stdClass::class));
-        $this->assertTrue(Type::vars(new Callback1, Callback1::class));
-        $this->assertTrue(Type::vars(new Callback2, IInterface::class));
+        $this->assertTrue(Type::vars(new stdClass(), stdClass::class));
+        $this->assertTrue(Type::vars(new Callback1(), Callback1::class));
+        $this->assertTrue(Type::vars(new Callback2(), IInterface::class));
         $this->assertFalse(Type::vars(1, 'callback'));
     }
 

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,25 +17,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Event;
 
-use stdClass;
 use Tests\TestCase;
 use Leevel\Di\Container;
 use Leevel\Event\Observer;
 use Leevel\Event\Dispatch;
 
 /**
- * dispatch test
- * 
+ * dispatch test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.05.29
+ *
  * @version 1.0
  */
 class DispatchTest extends TestCase
 {
-
     public function testBaseUse()
     {
         if (isset($_SERVER['test'])) {
@@ -43,7 +46,7 @@ class DispatchTest extends TestCase
             unset($_SERVER['event_name']);
         }
 
-        $dispatch = new Dispatch(new Container);
+        $dispatch = new Dispatch(new Container());
 
         $dispatch->listeners('event', Listener1::class);
 
@@ -61,7 +64,7 @@ class DispatchTest extends TestCase
             unset($_SERVER['test']);
         }
 
-        $dispatch = new Dispatch(new Container);
+        $dispatch = new Dispatch(new Container());
 
         $dispatch->listeners('event', new Listener2('arg_foo'));
 
@@ -78,7 +81,7 @@ class DispatchTest extends TestCase
             unset($_SERVER['test']);
         }
 
-        $dispatch = new Dispatch(new Container);
+        $dispatch = new Dispatch(new Container());
 
         $dispatch->listeners($event = new Event1('event_arg_foo'), Listener3::class);
 
@@ -91,7 +94,7 @@ class DispatchTest extends TestCase
 
     public function testEventAsArray()
     {
-        $dispatch = new Dispatch(new Container);
+        $dispatch = new Dispatch(new Container());
 
         $event = new Event1('event_arg_foo');
 
@@ -106,7 +109,7 @@ class DispatchTest extends TestCase
 
     public function testPriority()
     {
-        $dispatch = new Dispatch(new Container);
+        $dispatch = new Dispatch(new Container());
 
         $dispatch->listeners('foo', Listener4::class);
         $dispatch->listeners('foo', Listener5::class);
@@ -115,7 +118,7 @@ class DispatchTest extends TestCase
 
         $this->assertEquals($_SERVER['test'], 'l5');
 
-        $dispatch = new Dispatch(new Container);
+        $dispatch = new Dispatch(new Container());
 
         // 第三个参数标识优先级，越小越靠前执行，默认为 500
         $dispatch->listeners('foo', Listener4::class, 5);
@@ -130,13 +133,12 @@ class DispatchTest extends TestCase
 
 abstract class Listener extends Observer
 {
-
 }
 
 class Listener1 extends Listener
 {
     public function run($event)
-    {  
+    {
         $_SERVER['event_name'] = $event;
         $_SERVER['test'] = 'hello';
     }
@@ -152,7 +154,7 @@ class Listener2 extends Listener
     }
 
     public function run()
-    {  
+    {
         $_SERVER['test'] = $this->arg1;
     }
 }
@@ -160,7 +162,7 @@ class Listener2 extends Listener
 class Listener3 extends Listener
 {
     public function run($event)
-    {  
+    {
         $_SERVER['test'] = $event->arg1;
     }
 }
@@ -168,7 +170,7 @@ class Listener3 extends Listener
 class Listener4 extends Listener
 {
     public function run($event)
-    {  
+    {
         $_SERVER['test'] = 'l4';
     }
 }
@@ -176,7 +178,7 @@ class Listener4 extends Listener
 class Listener5 extends Listener
 {
     public function run($event)
-    {  
+    {
         $_SERVER['test'] = 'l5';
     }
 }

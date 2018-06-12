@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,37 +17,40 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Router;
 
 use Tests\TestCase;
 use Leevel\Router\SwaggerRouter;
 
 /**
- * swagger 生成注解路由组件测试
+ * swagger 生成注解路由组件测试.
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.04.10
+ *
  * @version 1.0
  */
-class SwaggerRouteTest extends TestCase
+class SwaggerRouterTest extends TestCase
 {
-
     /**
      * @expectedException \InvalidArgumentException
      */
-    public function tes2tAddSwaggerScanCheckDir() {
+    public function tes2tAddSwaggerScanCheckDir()
+    {
         $swaggerRouter = new SwaggerRouter();
 
-        $scanDir = dirname(__FILE__) . '/Petstore___';
+        $scanDir = __DIR__ . '/Petstore___';
 
         $swaggerRouter->addSwaggerScan($scanDir);
     }
 
-    public function tes2tSwaggerHandle() {
+    public function tes2tSwaggerHandle()
+    {
         $swaggerRouter = new SwaggerRouter('Router');
 
-        $scanDir = dirname(__FILE__) . '/Petstore';
+        $scanDir = __DIR__ . '/Petstore';
 
         $swaggerRouter->addSwaggerScan($scanDir);
         $result = $swaggerRouter->handle();

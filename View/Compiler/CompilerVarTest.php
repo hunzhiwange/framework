@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,16 +17,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\View\Compiler;
 
 use Tests\TestCase;
 
 /**
- * compiler var test
- * 
+ * compiler var test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.06
+ *
  * @version 1.0
  */
 class CompilerVarTest extends TestCase
@@ -107,10 +112,10 @@ eot;
 <?php echo $a->b;?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
 
         // 对象无限层级支持
-       $source = <<<'eot'
+        $source = <<<'eot'
 我的梦想是写好”{$demo->name->child->child->child}“，我相信”{$demo->description}“。
 eot;
 
@@ -129,7 +134,7 @@ eot;
 我的梦想是写好”<?php echo $demo->name;?>“，我相信”<?php echo $demo->description;?>“。
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
 
         // 支持无限级对象属性
         $source = <<<'eot'
@@ -140,7 +145,7 @@ eot;
 我的梦想是写好”<?php echo $demo->name->one->two->three->four;?>“，我相信”<?php echo $demo->description->one->two->three->four;?>“。
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testOperator()
@@ -177,7 +182,7 @@ eot;
 <?php echo $value3%$list['key'];?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
 
         // 变量之间的连接字符
         $source = <<<'eot'
@@ -188,7 +193,7 @@ eot;
 <?php echo $value3.'start - '.$value.$value2.'- end';?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testJsOperator()
@@ -225,7 +230,7 @@ eot;
 <?php echo $value3%$list['key'];?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
 
         // 变量之间的连接字符
         $source = <<<'eot'
@@ -236,7 +241,7 @@ eot;
 <?php echo $value3.'start - '. $value. $value2.'end';?>
 eot;
 
-        $this->assertEquals($compiled, $parser->doCompile($source, null, true)); 
+        $this->assertEquals($compiled, $parser->doCompile($source, null, true));
     }
 
     public function testFunction()

@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,26 +17,27 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Collection;
 
 use Tests\TestCase;
 use Leevel\Collection\Collection;
 
 /**
- * collection test
- * 
+ * collection test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.03
+ *
  * @version 1.0
  */
 class CollectionTest extends TestCase
 {
-
     public function testBaseUse()
     {
         $data = [
-            'hello', 'world', 'foo', 'bar'
+            'hello', 'world', 'foo', 'bar',
         ];
 
         $collection = new Collection($data);
@@ -46,11 +50,11 @@ class CollectionTest extends TestCase
 
                 case 1:
                     $this->assertEquals($val, 'world');
-                    break;                
+                    break;
 
                 case 2:
                     $this->assertEquals($val, 'foo');
-                    break;              
+                    break;
 
                 case 3:
                     $this->assertEquals($val, 'bar');
@@ -62,7 +66,7 @@ class CollectionTest extends TestCase
     public function testIterator()
     {
         $data = [
-            'hello', 'world', 'foo', 'bar'
+            'hello', 'world', 'foo', 'bar',
         ];
 
         $collection = new Collection($data);
@@ -94,7 +98,7 @@ class CollectionTest extends TestCase
     public function testCountable()
     {
         $data = [
-            'hello', 'world', 'foo', 'bar'
+            'hello', 'world', 'foo', 'bar',
         ];
 
         $collection = new Collection($data);
@@ -105,7 +109,7 @@ class CollectionTest extends TestCase
     public function testArrayAccess()
     {
         $data = [
-            'hello'
+            'hello',
         ];
 
         $collection = new Collection($data);
@@ -124,7 +128,7 @@ class CollectionTest extends TestCase
 
         $this->assertSame($collection->toArray(), [
             0 => 'hello',
-            2 => 'foo'
+            2 => 'foo',
         ]);
     }
 }

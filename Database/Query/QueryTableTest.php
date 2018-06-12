@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,16 +17,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Database\Query;
 
 use Tests\TestCase;
 
 /**
- * table test
- * 
+ * table test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.06.10
+ *
  * @version 1.0
  */
 class QueryTableTest extends TestCase
@@ -110,7 +115,6 @@ eot;
         );
     }
 
-
     public function testField()
     {
         $connect = $this->createConnect();
@@ -133,7 +137,7 @@ eot;
         $this->assertEquals(
             $sql,
             $this->varExport(
-                $connect->table('posts','title,body')->
+                $connect->table('posts', 'title,body')->
 
                 getAll(true),
                 __METHOD__
@@ -159,8 +163,8 @@ eot;
             $sql,
             $this->varExport(
                 $connect->table(
-                    'mydb.posts',[
-                    't'=> 'title','name','remark,value'
+                    'mydb.posts', [
+                    't' => 'title', 'name', 'remark,value',
                 ])->
 
                 getAll(true),

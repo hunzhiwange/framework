@@ -1,4 +1,7 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 /*
  * This file is part of the ************************ package.
  * _____________                           _______________
@@ -14,6 +17,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Tests\Di;
 
 use stdClass;
@@ -21,21 +25,21 @@ use Tests\TestCase;
 use Leevel\Di\Container;
 
 /**
- * container test
- * 
+ * container test.
+ *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.05.27
+ *
  * @version 1.0
  */
 class ContainerTest extends TestCase
 {
-
     public function testBindClosure()
     {
-        $container = new Container;
+        $container = new Container();
 
-        $container->bind('foo', function() {
+        $container->bind('foo', function () {
             return 'bar';
         });
 
@@ -44,9 +48,9 @@ class ContainerTest extends TestCase
 
     public function testSingletonClosure()
     {
-        $container = new Container;
+        $container = new Container();
 
-        $singleton = new stdClass;
+        $singleton = new stdClass();
 
         $container->singleton('singleton', function () use ($singleton) {
             return $singleton;
@@ -58,14 +62,14 @@ class ContainerTest extends TestCase
 
     public function testClass()
     {
-        $container = new Container;
+        $container = new Container();
 
         $this->assertInstanceOf(Test1::class, $container->make(Test1::class));
     }
 
     public function testSingletonClass()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container->singleton(Test1::class);
 
@@ -74,7 +78,7 @@ class ContainerTest extends TestCase
 
     public function testInterface()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container->bind(ITest2::class, Test2::class);
 
@@ -84,7 +88,7 @@ class ContainerTest extends TestCase
 
     public function testInterface2()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container->bind(ITest2::class, Test2::class);
 
@@ -93,7 +97,7 @@ class ContainerTest extends TestCase
 
     public function testInterface3()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container->bind(ITest2::class, Test2::class);
 
@@ -105,7 +109,7 @@ class ContainerTest extends TestCase
 
     public function testContainerAsFirstArgs()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container->bind('test', function ($container) {
             return $container;
@@ -116,7 +120,7 @@ class ContainerTest extends TestCase
 
     public function testArrayAccess()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container['foo'] = function () {
             return 'bar';
@@ -130,7 +134,7 @@ class ContainerTest extends TestCase
 
     public function testAliases()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container['foo'] = 'bar';
 
@@ -150,12 +154,12 @@ class ContainerTest extends TestCase
 
     public function testMakeWithArgs()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container['foo'] = function ($container, $arg1, $arg2) {
             return [
                 $arg1,
-                $arg2
+                $arg2,
             ];
         };
 
@@ -164,7 +168,7 @@ class ContainerTest extends TestCase
 
     public function testOverridden()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container['foo'] = 'bar';
         $this->assertEquals('bar', $container['foo']);
@@ -175,9 +179,9 @@ class ContainerTest extends TestCase
 
     public function testInstance()
     {
-        $container = new Container;
+        $container = new Container();
 
-        $instance = new stdClass;
+        $instance = new stdClass();
 
         $container->instance('foo', $instance);
 
@@ -186,7 +190,7 @@ class ContainerTest extends TestCase
 
     public function testDefaultArgs()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container->bind(ITest2::class, Test2::class);
         $container->bind('foo', Test5::class);
@@ -199,7 +203,7 @@ class ContainerTest extends TestCase
 
     public function testUnsetInstances()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container->instance('foo', 'bar');
         $container->alias('foo', 'foo2');
@@ -221,7 +225,7 @@ class ContainerTest extends TestCase
      */
     public function testArgsRequiredNormalizeException()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container->make(Test6::class, []);
     }
@@ -231,14 +235,14 @@ class ContainerTest extends TestCase
      */
     public function testInterfaceNormalizeException()
     {
-        $container = new Container;
+        $container = new Container();
 
         $container->make(ITest2::class, []);
     }
 
     public function testCall()
     {
-        $container = new Container;
+        $container = new Container();
 
         $result = $container->call(function (Test7 $arg1, array $arg2 = []) {
             return func_get_args();
@@ -255,7 +259,7 @@ class ContainerTest extends TestCase
         $this->assertEquals([], $result[1]);
         $this->assertEquals('hello', $result[2]);
 
-        $test7 = new Test7;
+        $test7 = new Test7();
 
         $result = $container->call(function (Test7 $arg1, $arg2 = 'hello') {
             return func_get_args();
@@ -263,9 +267,8 @@ class ContainerTest extends TestCase
 
         $this->assertSame($test7, $result[0]);
         $this->assertEquals('hello world', $result[1]);
-        
 
-        $test8 = new Test8;
+        $test8 = new Test8();
 
         $result = $container->call(function ($arg1, $arg2 = 'hello', $arg3 = 'world', ITest8 $arg4 = null, Test8 $arg5) {
             return func_get_args();
@@ -283,14 +286,14 @@ class ContainerTest extends TestCase
      */
     public function testCallNotFoundClass()
     {
-        $container = new Container;
+        $container = new Container();
 
         $result = $container->call('Test8');
     }
 
     public function testCallWithArrayOrString()
     {
-        $container = new Container;
+        $container = new Container();
 
         $result = $container->call([Test8::class, 'func1'], ['foo', 'bar']);
         $this->assertEquals(['foo', 'bar'], $result);
@@ -319,9 +322,9 @@ class ContainerTest extends TestCase
 
     public function testCallWithCallableArray()
     {
-        $container = new Container;
+        $container = new Container();
 
-        $test8 = new Test8;
+        $test8 = new Test8();
 
         $result = $container->call([$test8, 'func1'], ['foo', 'bar']);
 
@@ -330,7 +333,7 @@ class ContainerTest extends TestCase
 
     public function testCallStatic()
     {
-        $container = new Container;
+        $container = new Container();
 
         $result = $container->call(Test8::class . '::staticFunc3', ['hello', 'world']);
         $this->assertEquals(['hello', 'world'], $result);
@@ -338,9 +341,9 @@ class ContainerTest extends TestCase
 
     public function testRemove()
     {
-        $container = new Container;
+        $container = new Container();
 
-        $test8 = new Test8;
+        $test8 = new Test8();
         $container->instance(Test8::class, $test8);
         $this->assertTrue($container->exists(Test8::class));
 
@@ -351,7 +354,6 @@ class ContainerTest extends TestCase
 
 class Test1
 {
-
 }
 
 interface ITest2
@@ -360,7 +362,6 @@ interface ITest2
 
 class Test2 implements ITest2
 {
-
 }
 
 interface ITest3
@@ -369,7 +370,6 @@ interface ITest3
 
 class Test3 implements ITest3
 {
-
     public $arg1;
 
     public function __construct(ITest2 $arg1)
@@ -380,7 +380,6 @@ class Test3 implements ITest3
 
 class Test4 implements ITest3
 {
-
     public $arg1;
 
     public function __construct(Test3 $arg1)
@@ -391,7 +390,6 @@ class Test4 implements ITest3
 
 class Test5 implements ITest3
 {
-
     public $arg1;
 
     public $arg2;
@@ -421,17 +419,14 @@ class Test6
 
 class Test7
 {
-
 }
 
 interface ITest8
 {
-
 }
 
 class Test8 implements ITest8
 {
-
     public function func1()
     {
         return func_get_args();
