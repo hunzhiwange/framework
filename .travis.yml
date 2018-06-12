@@ -2,8 +2,7 @@ language: php
 
 preset: symfony
 
-risky
-  concat_space:
+concat_space:
     - spacing=one
 
 env:
