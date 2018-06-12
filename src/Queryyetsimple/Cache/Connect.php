@@ -74,7 +74,7 @@ abstract class Connect
      */
     public function put($keys, $value = null)
     {
-        if (! is_array($keys)) {
+        if (!is_array($keys)) {
             $keys = [
                 $keys => $value,
             ];
@@ -112,7 +112,7 @@ abstract class Connect
      */
     protected function getCacheName($name, $prefix = '')
     {
-        return $prefix . $name;
+        return $prefix.$name;
     }
 
     /**
@@ -125,7 +125,7 @@ abstract class Connect
      */
     protected function cacheTime($id, $defaultTime = 0)
     {
-        if (! $this->option['time_preset']) {
+        if (!$this->option['time_preset']) {
             return $defaultTime;
         }
 
@@ -152,7 +152,7 @@ abstract class Connect
     protected function prepareRegexForWildcard($regex)
     {
         $regex = preg_quote($regex, '/');
-        $regex = '/^' . str_replace('\*', '(\S+)', $regex) . '$/';
+        $regex = '/^'.str_replace('\*', '(\S+)', $regex).'$/';
 
         return $regex;
     }

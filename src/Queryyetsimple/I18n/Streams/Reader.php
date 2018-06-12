@@ -93,7 +93,7 @@ class Reader
         }
         $endian_letter = ('big' == $this->endian) ? 'N' : 'V';
 
-        return unpack($endian_letter . $count, $bytes);
+        return unpack($endian_letter.$count, $bytes);
     }
 
     /**
@@ -134,7 +134,7 @@ class Reader
      */
     public function str_split($string, $chunk_size)
     {
-        if (! function_exists('str_split')) {
+        if (!function_exists('str_split')) {
             $length = $this->strlen($string);
             $out = [];
             for ($i = 0; $i < $length; $i += $chunk_size) {

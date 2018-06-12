@@ -97,7 +97,7 @@ class FileResponse extends Response
             return $this;
         }
 
-        if (! $file instanceof File) {
+        if (!$file instanceof File) {
             if ($file instanceof SplFileInfo || $file instanceof SplFileObject) {
                 $file = new File($file->getPathname());
             } else {
@@ -105,7 +105,7 @@ class FileResponse extends Response
             }
         }
 
-        if (! $file->isReadable()) {
+        if (!$file->isReadable()) {
             throw new FileException('File must be readable.');
         }
 
@@ -206,7 +206,7 @@ class FileResponse extends Response
             $filename = $this->file->getFilename();
         }
 
-        if (! in_array($disposition, [
+        if (!in_array($disposition, [
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             ResponseHeaderBag::DISPOSITION_INLINE,
         ])) {
@@ -227,7 +227,7 @@ class FileResponse extends Response
             return $this;
         }
 
-        if (! $this->isSuccessful()) {
+        if (!$this->isSuccessful()) {
             return parent::sendContent();
         }
 

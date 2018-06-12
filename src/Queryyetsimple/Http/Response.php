@@ -258,7 +258,7 @@ class Response implements IResponse
         }
 
         foreach ($this->headers->all() as $name => $value) {
-            header($name . ': ' . $value, false, $this->statusCode);
+            header($name.': '.$value, false, $this->statusCode);
         }
 
         // 状态码
@@ -315,7 +315,7 @@ class Response implements IResponse
             $content = $this->contentToJson($content);
         }
 
-        if (null !== $content && ! is_scalar($content) && ! is_callable([$content, '__toString'])) {
+        if (null !== $content && !is_scalar($content) && !is_callable([$content, '__toString'])) {
             throw new UnexpectedValueException(sprintf('The Response content must be a scalar or object implementing __toString(), %s given.', gettype($content)));
         }
 
@@ -337,7 +337,7 @@ class Response implements IResponse
             return $this;
         }
 
-        $this->content = $this->getContent() . $content;
+        $this->content = $this->getContent().$content;
 
         return $this;
     }
@@ -357,7 +357,7 @@ class Response implements IResponse
             return $this;
         }
 
-        if (true === $replace || ! $this->headers->has($key)) {
+        if (true === $replace || !$this->headers->has($key)) {
             $this->headers->set($key, $value);
         }
 
@@ -413,7 +413,7 @@ class Response implements IResponse
             return $this;
         }
 
-        if (! static::$cookieResolver) {
+        if (!static::$cookieResolver) {
             throw new InvalidArgumentException('Cookie resolver is not set.');
         }
 
@@ -729,10 +729,10 @@ class Response implements IResponse
         }
 
         $date = new DateTime();
-        $date->modify('+' . $minutes . 'minutes');
+        $date->modify('+'.$minutes.'minutes');
 
         $this->setExpires($date);
-        $this->setHeader('Cache-Control', 'max-age=' . ($minutes * 60));
+        $this->setHeader('Cache-Control', 'max-age='.($minutes * 60));
 
         return $this;
     }
@@ -774,7 +774,7 @@ class Response implements IResponse
         if (null === $charset) {
             $this->setHeader('Content-Type', $contentType);
         } else {
-            $this->setHeader('Content-Type', $contentType . '; charset=' . $charset);
+            $this->setHeader('Content-Type', $contentType.'; charset='.$charset);
         }
 
         return $this;
@@ -960,7 +960,7 @@ class Response implements IResponse
 
         $date->setTimezone(new DateTimeZone('UTC'));
 
-        return $date->format('D, d M Y H:i:s') . ' GMT';
+        return $date->format('D, d M Y H:i:s').' GMT';
     }
 
     /**

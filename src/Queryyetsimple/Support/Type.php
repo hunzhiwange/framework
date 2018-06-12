@@ -91,7 +91,7 @@ class Type
             // 数组
             case 'arr':
             case 'array':
-                if (! empty($tmp[1])) {
+                if (!empty($tmp[1])) {
                     $tmp[1] = explode(',', $tmp[1]);
 
                     return static::arr($value, $tmp[1]);
@@ -132,7 +132,7 @@ class Type
             return true;
         }
 
-        return ! preg_match("/[^\d-.,]/", trim($value, '\''));
+        return !preg_match("/[^\d-.,]/", trim($value, '\''));
     }
 
     /**
@@ -161,7 +161,7 @@ class Type
      */
     public static function these($value, $types)
     {
-        if (! static::vars($types, 'string') && ! static::arr($types, [
+        if (!static::vars($types, 'string') && !static::arr($types, [
             'string',
         ])) {
             throw new InvalidArgumentException(
@@ -194,7 +194,7 @@ class Type
     public static function arr($arr, array $types)
     {
         // 不是数组直接返回
-        if (! is_array($arr)) {
+        if (!is_array($arr)) {
             return false;
         }
 
@@ -209,7 +209,7 @@ class Type
                 }
             }
 
-            if (! $ret) {
+            if (!$ret) {
                 return false;
             }
         }

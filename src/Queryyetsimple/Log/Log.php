@@ -223,16 +223,16 @@ class Log implements ILog
     public function log($level, $message, array $context = [])
     {
         // 是否开启日志
-        if (! $this->getOption('enabled')) {
+        if (!$this->getOption('enabled')) {
             return;
         }
 
         // 只记录系统允许的日志级别
-        if (! in_array($level, $this->getOption('level'))) {
+        if (!in_array($level, $this->getOption('level'))) {
             return;
         }
 
-        $message = date($this->getOption('time_format')) . $this->formatMessage($message);
+        $message = date($this->getOption('time_format')).$this->formatMessage($message);
 
         $data = [
             $level,
@@ -246,7 +246,7 @@ class Log implements ILog
         }
 
         // 记录到内存方便后期调用
-        if (! isset($this->logs[$level])) {
+        if (!isset($this->logs[$level])) {
             $this->logs[$level] = [];
         }
         $this->logs[$level][] = $data;
@@ -273,7 +273,7 @@ class Log implements ILog
      */
     public function save()
     {
-        if (! $this->logs) {
+        if (!$this->logs) {
             return;
         }
 

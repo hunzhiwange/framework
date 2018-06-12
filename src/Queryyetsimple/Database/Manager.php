@@ -123,7 +123,7 @@ class Manager extends Managers
             'master',
             'slave',
         ] as $type) {
-            if (! is_array($option[$type])) {
+            if (!is_array($option[$type])) {
                 $option[$type] = [];
             }
         }
@@ -132,7 +132,7 @@ class Manager extends Managers
         $option['master'] = array_merge($option['master'], $temp);
 
         // 是否采用分布式服务器，非分布式关闭附属服务器
-        if (! $option['distributed']) {
+        if (!$option['distributed']) {
             $option['slave'] = [];
         } elseif ($option['slave']) {
             if (count($option['slave']) == count($option['slave'], COUNT_RECURSIVE)) {

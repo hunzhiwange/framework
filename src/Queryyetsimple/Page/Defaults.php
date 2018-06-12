@@ -75,8 +75,8 @@ class Defaults implements IRender
      */
     public function render()
     {
-        return ($this->getOption('css') ? $this->css() : '') . preg_replace_callback('/{(.+?)}/', function ($arrMatche) {
-            return $this->{'get' . ucwords($arrMatche[1]) . 'Render'}();
+        return ($this->getOption('css') ? $this->css() : '').preg_replace_callback('/{(.+?)}/', function ($arrMatche) {
+            return $this->{'get'.ucwords($arrMatche[1]).'Render'}();
         }, $this->getOption('template'));
     }
 
@@ -87,7 +87,7 @@ class Defaults implements IRender
      */
     protected function css()
     {
-        return sprintf('<style type="text/css">%s</style>', file_get_contents(__DIR__ . '/defaults.css'));
+        return sprintf('<style type="text/css">%s</style>', file_get_contents(__DIR__.'/defaults.css'));
     }
 
     /**
@@ -117,7 +117,7 @@ class Defaults implements IRender
      */
     protected function getTotalRender()
     {
-        if (! $this->objPage->canTotalRender()) {
+        if (!$this->objPage->canTotalRender()) {
             return;
         }
 
@@ -131,7 +131,7 @@ class Defaults implements IRender
      */
     protected function getFirstRender()
     {
-        if (! $this->objPage->canFirstRender()) {
+        if (!$this->objPage->canFirstRender()) {
             return;
         }
 
@@ -159,7 +159,7 @@ class Defaults implements IRender
      */
     protected function getMainRender()
     {
-        if (! $this->objPage->canMainRender()) {
+        if (!$this->objPage->canMainRender()) {
             return;
         }
 
@@ -198,7 +198,7 @@ class Defaults implements IRender
         }
 
         if ($this->objPage->canLastRender()) {
-            return ($this->objPage->canLastRenderNext() ? sprintf('<li class="btn-quicknext" onclick="window.location.href=\'%s\';" onmouseenter="this.innerHTML=\'&raquo;\';" onmouseleave="this.innerHTML=\'...\';">...</li>', $this->replace($this->objPage->parseLastRenderNext())) : '') . sprintf('<li><a href="%s">%d</a></li>', $this->replace($this->objPage->getTotalPage()), $this->objPage->getTotalPage());
+            return ($this->objPage->canLastRenderNext() ? sprintf('<li class="btn-quicknext" onclick="window.location.href=\'%s\';" onmouseenter="this.innerHTML=\'&raquo;\';" onmouseleave="this.innerHTML=\'...\';">...</li>', $this->replace($this->objPage->parseLastRenderNext())) : '').sprintf('<li><a href="%s">%d</a></li>', $this->replace($this->objPage->getTotalPage()), $this->objPage->getTotalPage());
         }
     }
 

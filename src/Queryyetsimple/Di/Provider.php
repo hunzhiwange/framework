@@ -56,7 +56,7 @@ abstract class Provider
     {
         $this->container = $container;
 
-        if (! static::isDeferred()) {
+        if (!static::isDeferred()) {
             $this->registerAlias();
         }
     }
@@ -71,7 +71,7 @@ abstract class Provider
      */
     public function registerAlias()
     {
-        if (! static::isDeferred() && static::providers()) {
+        if (!static::isDeferred() && static::providers()) {
             $this->container->alias(static::providers());
         }
     }

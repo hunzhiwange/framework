@@ -81,11 +81,11 @@ class Fso
      */
     public static function deleteDirectory($sDir, $bRecursive = false)
     {
-        if (! file_exists($sDir) || ! is_dir($sDir)) {
+        if (!file_exists($sDir) || !is_dir($sDir)) {
             return;
         }
 
-        if (! $bRecursive) {
+        if (!$bRecursive) {
             rmdir($sDir);
         } else {
             $objDir = new DirectoryIterator($sDir);
@@ -95,7 +95,7 @@ class Fso
                 }
 
                 if ($objFile->isFile()) {
-                    if (! unlink($objFile->getRealPath())) {
+                    if (!unlink($objFile->getRealPath())) {
                         return;
                     }
                 } elseif ($objFile->isDir()) {
@@ -115,7 +115,7 @@ class Fso
      */
     public static function copyDirectory($sSourcePath, $sTargetPath, $arrFilter = [])
     {
-        if (! is_dir($sSourcePath)) {
+        if (!is_dir($sSourcePath)) {
             return;
         }
 
@@ -129,17 +129,17 @@ class Fso
                 continue;
             }
 
-            $sNewPath = $sTargetPath . '/' . $objFile->getFilename();
+            $sNewPath = $sTargetPath.'/'.$objFile->getFilename();
 
             if ($objFile->isFile()) {
-                if (! is_dir($sNewPath)) {
+                if (!is_dir($sNewPath)) {
                     static::createDirectory(dirname($sNewPath));
                 }
-                if (! copy($objFile->getRealPath(), $sNewPath)) {
+                if (!copy($objFile->getRealPath(), $sNewPath)) {
                     return;
                 }
             } elseif ($objFile->isDir()) {
-                if (! static::copyDirectory($objFile->getRealPath(), $sNewPath)) {
+                if (!static::copyDirectory($objFile->getRealPath(), $sNewPath)) {
                     return;
                 }
             }
@@ -155,7 +155,7 @@ class Fso
      */
     public static function listDirectory($sPath, Closure $cal, $arrFilter = [])
     {
-        if (! is_dir($sPath)) {
+        if (!is_dir($sPath)) {
             return;
         }
 
@@ -167,7 +167,7 @@ class Fso
 
             call_user_func($cal, $objFile);
             if ($objFile->isDir()) {
-                static::listDirectory($objFile->getPath() . '/' . $objFile->getFilename(), $cal, $arrFilter);
+                static::listDirectory($objFile->getPath().'/'.$objFile->getFilename(), $cal, $arrFilter);
             }
         }
     }
@@ -219,7 +219,7 @@ class Fso
                 if ($objFile->isFile() && in_array($strReturnType, [
                     'file',
                     'both',
-                ]) && (! $arrFilterExt || ! in_array($strExt, $arrFilterExt)) && (! $arrAllowedExt || in_array($strExt, $arrAllowedExt))) {
+                ]) && (!$arrFilterExt || !in_array($strExt, $arrFilterExt)) && (!$arrAllowedExt || in_array($strExt, $arrAllowedExt))) {
                     $arrReturnData['file'][] = $booFullpath ? $objFile->getRealPath() : $objFile->getFilename();
                 }
             }
@@ -249,7 +249,7 @@ class Fso
         $sPath = str_replace('\\', '/', $sPath);
         $sPath = preg_replace('|/+|', '/', $sPath);
         $sPath = str_replace(':/', ':\\', $sPath);
-        if (! $bUnix) {
+        if (!$bUnix) {
             $sPath = str_replace('/', '\\', $sPath);
         }
 
@@ -269,10 +269,10 @@ class Fso
         $strPath = ltrim(static::tidyPath($strPath, true), '//');
         if (false !== strpos($strPath, ':\\')) {
             $arrTemp = explode(':\\', $strPath);
-            $strPath = (true === $booWindowsWithLetter ? strtolower($arrTemp[0]) . '/' : '') . $arrTemp[1];
+            $strPath = (true === $booWindowsWithLetter ? strtolower($arrTemp[0]).'/' : '').$arrTemp[1];
         }
 
-        return '/' . $strPath;
+        return '/'.$strPath;
     }
 
     /**
@@ -299,7 +299,7 @@ class Fso
         $intDataId = abs((int) $intDataId);
         $intDataId = sprintf('%09d', $intDataId); // 格式化为 9 位数，前面不够填充 0
         return [
-            substr($intDataId, 0, 3) . '/' . substr($intDataId, 3, 2) . '/' . substr($intDataId, 5, 2) . '/',
+            substr($intDataId, 0, 3).'/'.substr($intDataId, 3, 2).'/'.substr($intDataId, 5, 2).'/',
             substr($intDataId, -2),
         ];
     }
@@ -320,7 +320,7 @@ class Fso
             throw new InvalidArgumentException('Dir cannot be a file.');
         }
 
-        if (! file_exists($sDir) && static::createDirectory($sDir)) {
+        if (!file_exists($sDir) && static::createDirectory($sDir)) {
             throw new RuntimeException(sprint('Create dir %s failed.', $sDir));
         }
 

@@ -104,7 +104,7 @@ abstract class Runtime implements IRuntime
     public function render(Request $request, Exception $e)
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
-            if (! ($response instanceof IResponse)) {
+            if (!($response instanceof IResponse)) {
                 $response = new Response(
                     $response,
                     $this->normalizeStatusCode($e),
@@ -154,11 +154,11 @@ abstract class Runtime implements IRuntime
      */
     protected function makeHttpResponse(Exception $e)
     {
-        if (! $this->isHttpException($e) && $this->container->debug()) {
+        if (!$this->isHttpException($e) && $this->container->debug()) {
             return $this->convertExceptionToResponse($e);
         }
 
-        if (! $this->isHttpException($e)) {
+        if (!$this->isHttpException($e)) {
             $e = new HttpException(500, $e->getMessage());
         }
 
@@ -389,7 +389,7 @@ abstract class Runtime implements IRuntime
      */
     protected function renderWithFile(string $filepath, array $vars = [])
     {
-        if (! is_file($filepath)) {
+        if (!is_file($filepath)) {
             throw new Exception(sprintf('Exception file %s is not extis.', $filepath));
         }
 
@@ -413,6 +413,6 @@ abstract class Runtime implements IRuntime
      */
     protected function filterPhysicalPath(string $path)
     {
-        return str_replace($this->container->path() . '/', '', $path);
+        return str_replace($this->container->path().'/', '', $path);
     }
 }

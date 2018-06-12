@@ -61,7 +61,7 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
     public function render(IRender $objRender = null)
     {
         if (null === $objRender) {
-            $objRender = 'Leevel\Page\\' . $this->getRender();
+            $objRender = 'Leevel\Page\\'.$this->getRender();
             $objRender = new $objRender($this);
         }
 

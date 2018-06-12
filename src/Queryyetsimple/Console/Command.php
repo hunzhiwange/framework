@@ -267,7 +267,7 @@ abstract class Command extends SymfonyCommand
      */
     public function time($message, $format = 'H:i:s')
     {
-        return ($format ? sprintf('[%s]', date($format)) : '') . $message;
+        return ($format ? sprintf('[%s]', date($format)) : '').$message;
     }
 
     /**
@@ -363,7 +363,7 @@ abstract class Command extends SymfonyCommand
      */
     public function warn($message, $verbosity = null)
     {
-        if (! $this->output->getFormatter()->hasStyle('warning')) {
+        if (!$this->output->getFormatter()->hasStyle('warning')) {
             $this->output->getFormatter()->setStyle('warning', new OutputFormatterStyle('yellow'));
         }
 
@@ -467,6 +467,6 @@ abstract class Command extends SymfonyCommand
      */
     protected function parseVerbosity($level = null)
     {
-        return static::$verbosityMap[$level] ?? (! is_int($level) ? $this->verbosity : $level);
+        return static::$verbosityMap[$level] ?? (!is_int($level) ? $this->verbosity : $level);
     }
 }

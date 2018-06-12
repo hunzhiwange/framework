@@ -29,4 +29,4 @@ declare(strict_types=1);
 putenv('app_name=phpunittesting');
 putenv('controller_name=bootstrap');
 putenv('action_name=index');
-putenv('app_bootstrap=' . __DIR__ . '/bootstrap.php');
+putenv('app_bootstrap='.__DIR__.'/bootstrap.php');

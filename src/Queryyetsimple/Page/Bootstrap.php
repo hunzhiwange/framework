@@ -76,8 +76,8 @@ class Bootstrap implements IRender
      */
     public function render()
     {
-        return ($this->getOption('css') ? $this->css() : '') . preg_replace_callback('/{(.+?)}/', function ($arrMatche) {
-            return $this->{'get' . ucwords($arrMatche[1]) . 'Render'}();
+        return ($this->getOption('css') ? $this->css() : '').preg_replace_callback('/{(.+?)}/', function ($arrMatche) {
+            return $this->{'get'.ucwords($arrMatche[1]).'Render'}();
         }, $this->getOption('template'));
     }
 
@@ -108,7 +108,7 @@ class Bootstrap implements IRender
      */
     protected function getUlRender()
     {
-        return sprintf('<ul class="pagination%s">', $this->getOption('size') ? ' pagination-' . $this->getOption('size') : '');
+        return sprintf('<ul class="pagination%s">', $this->getOption('size') ? ' pagination-'.$this->getOption('size') : '');
     }
 
     /**
@@ -118,7 +118,7 @@ class Bootstrap implements IRender
      */
     protected function getFirstRender()
     {
-        if (! $this->objPage->canFirstRender()) {
+        if (!$this->objPage->canFirstRender()) {
             return;
         }
 
@@ -146,7 +146,7 @@ class Bootstrap implements IRender
      */
     protected function getMainRender()
     {
-        if (! $this->objPage->canMainRender()) {
+        if (!$this->objPage->canMainRender()) {
             return;
         }
 
@@ -185,7 +185,7 @@ class Bootstrap implements IRender
         }
 
         if ($this->objPage->canLastRender()) {
-            return ($this->objPage->canLastRenderNext() ? sprintf('<li><a href="%s">...</a></li>', $this->replace($this->objPage->parseLastRenderNext())) : '') . sprintf('<li><a href="%s">%d</a></li>', $this->replace($this->objPage->getTotalPage()), $this->objPage->getTotalPage());
+            return ($this->objPage->canLastRenderNext() ? sprintf('<li><a href="%s">...</a></li>', $this->replace($this->objPage->parseLastRenderNext())) : '').sprintf('<li><a href="%s">%d</a></li>', $this->replace($this->objPage->getTotalPage()), $this->objPage->getTotalPage());
         }
     }
 

@@ -54,7 +54,7 @@ class Request
 
     public function __construct($vals = null)
     {
-        if (! isset(self::$_TSPEC)) {
+        if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
         1 => [
           'var' => 'call',
@@ -176,7 +176,7 @@ class Request
             $xfer += $output->writeFieldEnd();
         }
         if (null !== $this->params) {
-            if (! is_array($this->params)) {
+            if (!is_array($this->params)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
             }
             $xfer += $output->writeFieldBegin('params', TType::LST, 2);
@@ -192,7 +192,7 @@ class Request
             $xfer += $output->writeFieldEnd();
         }
         if (null !== $this->metas) {
-            if (! is_array($this->metas)) {
+            if (!is_array($this->metas)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
             }
             $xfer += $output->writeFieldBegin('metas', TType::MAP, 3);

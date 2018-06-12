@@ -50,11 +50,11 @@ class ThriftProcessor
         $mtype = 0;
 
         $input->readMessageBegin($fname, $mtype, $rseqid);
-        $methodname = 'process_' . $fname;
-        if (! method_exists($this, $methodname)) {
+        $methodname = 'process_'.$fname;
+        if (!method_exists($this, $methodname)) {
             $input->skip(TType::STRUCT);
             $input->readMessageEnd();
-            $x = new TApplicationException('Function ' . $fname . ' not implemented.', TApplicationException::UNKNOWN_METHOD);
+            $x = new TApplicationException('Function '.$fname.' not implemented.', TApplicationException::UNKNOWN_METHOD);
             $output->writeMessageBegin($fname, TMessageType::EXCEPTION, $rseqid);
             $x->write($output);
             $output->writeMessageEnd();

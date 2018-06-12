@@ -47,7 +47,7 @@ abstract class Worker extends PHPQueueWorker
 
         $objJob->handle();
 
-        $this->formatMessage(sprintf('Job %s is done.' . '', $objJob->getName()));
+        $this->formatMessage(sprintf('Job %s is done.'.'', $objJob->getName()));
         $this->formatMessage('Starting the next. ');
 
         $this->result_data = $objJob->data;
@@ -62,6 +62,6 @@ abstract class Worker extends PHPQueueWorker
      */
     protected function formatMessage($strMessage)
     {
-        Console::stdout(sprintf('[%s]', date('H:i:s')) . $strMessage . PHP_EOL);
+        Console::stdout(sprintf('[%s]', date('H:i:s')).$strMessage.PHP_EOL);
     }
 }

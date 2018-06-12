@@ -117,20 +117,20 @@ abstract class Make extends Command
     {
         $saveFilePath = $this->getSaveFilePath();
 
-        if (! is_dir(dirname($saveFilePath))) {
+        if (!is_dir(dirname($saveFilePath))) {
             mkdir(dirname($saveFilePath), 0777, true);
         }
 
         if (is_file($saveFilePath)) {
             throw new RuntimeException(
-                'File is already exits.' . PHP_EOL .
+                'File is already exits.'.PHP_EOL.
                 $this->formatFile($this->getSaveFilePath())
             );
         }
 
-        if (! file_put_contents($saveFilePath, $this->getTemplateResult())) {
+        if (!file_put_contents($saveFilePath, $this->getTemplateResult())) {
             throw new RuntimeException(
-                'Can not write file.' . PHP_EOL .
+                'Can not write file.'.PHP_EOL.
                 $this->formatFile($this->getSaveFilePath())
             );
         }
@@ -153,9 +153,9 @@ abstract class Make extends Command
     {
         $templateSource = $this->getTemplatePath();
 
-        if (! is_file($templateSource)) {
+        if (!is_file($templateSource)) {
             throw new RuntimeException(
-                'Template not found.' . PHP_EOL .
+                'Template not found.'.PHP_EOL.
                 $this->formatFile($templateSource)
             );
         }
@@ -183,7 +183,7 @@ abstract class Make extends Command
         $replaceKeyValue = array_merge(option('console\template'), $this->getDefaultReplaceKeyValue());
 
         $sourceKey = array_map(function ($item) {
-            return '{{' . $item . '}}';
+            return '{{'.$item.'}}';
         }, array_keys($replaceKeyValue));
 
         $replace = array_values($replaceKeyValue);
@@ -235,8 +235,8 @@ abstract class Make extends Command
      */
     protected function getNamespacePath()
     {
-        if ('/' != ($namespacePath = $this->getContainer()->getPathByNamespace($this->getNamespace()) . '/')) {
-            $namespacePath = $this->getContainer()->pathAnApplication(lcfirst($this->getNamespace())) . '/';
+        if ('/' != ($namespacePath = $this->getContainer()->getPathByNamespace($this->getNamespace()).'/')) {
+            $namespacePath = $this->getContainer()->pathAnApplication(lcfirst($this->getNamespace())).'/';
         }
 
         return $namespacePath;

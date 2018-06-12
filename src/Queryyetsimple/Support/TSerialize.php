@@ -86,7 +86,7 @@ trait TSerialize
      */
     protected function setAndReturnSerializeProp($mixValue, $strName)
     {
-        if (($strMethod = 'setAndReturnSerializeProp' . ucwords($strName)) && method_exists($this, $strMethod)) {
+        if (($strMethod = 'setAndReturnSerializeProp'.ucwords($strName)) && method_exists($this, $strMethod)) {
             return $this->$strMethod($mixValue);
         }
 
@@ -103,7 +103,7 @@ trait TSerialize
      */
     protected function getSerializeProp($mixValue, $strName)
     {
-        if (($strMethod = 'getSerializeProp' . ucwords($strName)) && method_exists($this, $strMethod)) {
+        if (($strMethod = 'getSerializeProp'.ucwords($strName)) && method_exists($this, $strMethod)) {
             return $this->$strMethod($mixValue);
         }
 

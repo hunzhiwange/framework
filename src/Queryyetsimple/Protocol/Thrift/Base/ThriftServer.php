@@ -42,8 +42,8 @@ class ThriftServer extends TNonblockingServer
 
     public function receive($serv, $fd, $fromId, $data)
     {
-        $processorClass = '\Leevel\Protocol\Thrift\Service\\' . $this->serviceName . 'Processor';
-        $handlerClass = '\Leevel\Protocol\Thrift\service\\' . $this->serviceName . 'Handler';
+        $processorClass = '\Leevel\Protocol\Thrift\Service\\'.$this->serviceName.'Processor';
+        $handlerClass = '\Leevel\Protocol\Thrift\service\\'.$this->serviceName.'Handler';
 
         $handler = new $handlerClass();
         $this->processor = new $processorClass($handler);
@@ -58,7 +58,7 @@ class ThriftServer extends TNonblockingServer
             $protocol->fname = $this->serviceName;
             $this->processor->process($protocol, $protocol);
         } catch (Exception $e) {
-            $this->log('CODE:' . $e->getCode() . ' MESSAGE:' . $e->getMessage() . "\n" . $e->getTraceAsString());
+            $this->log('CODE:'.$e->getCode().' MESSAGE:'.$e->getMessage()."\n".$e->getTraceAsString());
         }
     }
 

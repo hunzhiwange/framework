@@ -579,7 +579,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
      */
     protected function checkType($value)
     {
-        if (! $this->type) {
+        if (!$this->type) {
             return;
         }
 

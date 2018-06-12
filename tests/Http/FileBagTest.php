@@ -189,7 +189,7 @@ class FileBagTest extends TestCase
 
     protected function createTempFile()
     {
-        $tempFile = sys_get_temp_dir() . '/form_test/' . md5(time() . rand()) . '.tmp';
+        $tempFile = sys_get_temp_dir().'/form_test/'.md5(time().rand()).'.tmp';
         file_put_contents($tempFile, '1');
 
         return $tempFile;
@@ -197,19 +197,19 @@ class FileBagTest extends TestCase
 
     protected function setUp()
     {
-        $dir = sys_get_temp_dir() . '/form_test';
+        $dir = sys_get_temp_dir().'/form_test';
 
-        if (! is_dir($dir)) {
+        if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
     }
 
     protected function tearDown()
     {
-        foreach (glob(sys_get_temp_dir() . '/form_test/*') as $file) {
+        foreach (glob(sys_get_temp_dir().'/form_test/*') as $file) {
             unlink($file);
         }
 
-        rmdir(sys_get_temp_dir() . '/form_test');
+        rmdir(sys_get_temp_dir().'/form_test');
     }
 }

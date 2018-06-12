@@ -76,11 +76,11 @@ class LoadI18n
         $path = $project->path();
 
         $extend = array_map(function (string $item) use ($path) {
-            if (! is_file($item)) {
-                $item = $path . '/' . $item;
+            if (!is_file($item)) {
+                $item = $path.'/'.$item;
             }
 
-            if (! is_dir($item)) {
+            if (!is_dir($item)) {
                 throw new Exception(sprintf('I18n dir %s is not exist.', $item));
             }
 

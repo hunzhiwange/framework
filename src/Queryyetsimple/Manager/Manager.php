@@ -83,7 +83,7 @@ abstract class Manager
             return $this->connects[$unique];
         }
 
-        $driver = ! empty($options['driver']) ? $options['driver'] : $this->getDefaultDriver();
+        $driver = !empty($options['driver']) ? $options['driver'] : $this->getDefaultDriver();
 
         return $this->connects[$unique] = $this->makeConnect($driver, $options);
     }
@@ -171,7 +171,7 @@ abstract class Manager
      */
     protected function getOptionName($name = null)
     {
-        return $this->getOptionNamespace() . '\\' . $name;
+        return $this->getOptionNamespace().'\\'.$name;
     }
 
     /**
@@ -184,7 +184,7 @@ abstract class Manager
      */
     protected function makeConnect($connect, array $options = [])
     {
-        if (null === $this->container['option'][$this->getOptionName('connect.' . $connect)]) {
+        if (null === $this->container['option'][$this->getOptionName('connect.'.$connect)]) {
             throw new Exception(sprintf('Connect driver %s not exits', $connect));
         }
 
@@ -201,7 +201,7 @@ abstract class Manager
      */
     protected function createConnectCommon($connect, array $options = [])
     {
-        return $this->{'makeConnect' . ucwords($connect)}($options);
+        return $this->{'makeConnect'.ucwords($connect)}($options);
     }
 
     /**
@@ -232,7 +232,7 @@ abstract class Manager
             return [];
         }
 
-        if (is_string($options) && ! is_array(($options = $this->container['option'][$this->getOptionName('connect.' . $options)]))) {
+        if (is_string($options) && !is_array(($options = $this->container['option'][$this->getOptionName('connect.'.$options)]))) {
             $options = [];
         }
 
@@ -317,7 +317,7 @@ abstract class Manager
      */
     protected function getOptionConnect($connect)
     {
-        return $this->container['option'][$this->getOptionName('connect.' . $connect)];
+        return $this->container['option'][$this->getOptionName('connect.'.$connect)];
     }
 
     /**

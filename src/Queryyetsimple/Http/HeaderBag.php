@@ -68,7 +68,7 @@ class HeaderBag extends Bag
      */
     public function __toString()
     {
-        if (! $headers = $this->all()) {
+        if (!$headers = $this->all()) {
             return '';
         }
 
@@ -77,7 +77,7 @@ class HeaderBag extends Bag
         $content = '';
         foreach ($headers as $name => $value) {
             $name = ucwords($name, '-');
-            $content .= $name . ': ' . $value . "\r\n";
+            $content .= $name.': '.$value."\r\n";
         }
 
         return $content;

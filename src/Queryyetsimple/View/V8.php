@@ -83,7 +83,7 @@ class V8 extends Connect implements IConnect
      */
     public function __construct(array $option = [])
     {
-        if (! extension_loaded('v8js')) {
+        if (!extension_loaded('v8js')) {
             throw new RuntimeException('Please install php v8js extension.');
         }
 
@@ -92,7 +92,7 @@ class V8 extends Connect implements IConnect
         $this->v8js = new V8Js('$');
 
         foreach (['base', 'dd', 'html', 'load', 'module'] as $item) {
-            $this->{'init' . ucwords($item)}();
+            $this->{'init'.ucwords($item)}();
         }
     }
 
@@ -272,7 +272,7 @@ EOT;
         $this->v8js->{'$load'} = function ($package) {
             $package .= 'Package';
 
-            if (! method_exists($this, $package)) {
+            if (!method_exists($this, $package)) {
                 throw new RuntimeException(
                     'Package is not preset, we just support vue and art.'
                 );
@@ -293,7 +293,7 @@ EOT;
             try {
                 $module = $this->parseDisplayFile($module);
             } catch (Exception $e) {
-                $module = $this->parseDisplayFile($module . '/index');
+                $module = $this->parseDisplayFile($module.'/index');
             }
 
             return ['', $module];
@@ -312,13 +312,13 @@ EOT;
         $vue = $this->option['vue_path'];
         $renderer = $this->option['vue_renderer'];
 
-        if (! is_file($vue)) {
+        if (!is_file($vue)) {
             throw new RuntimeException(
                 sprintf('Vue path %s is not exits, please use npm install.', $vue)
             );
         }
 
-        if (! is_file($renderer)) {
+        if (!is_file($renderer)) {
             throw new RuntimeException(
                 sprintf('Vue renderer %s is not exits, please use npm install.', $renderer)
             );
@@ -340,7 +340,7 @@ EOT;
     {
         $art = $this->option['art_path'];
 
-        if (! is_file($art)) {
+        if (!is_file($art)) {
             throw new RuntimeException(
                 sprintf('Art path %s is not exits, please use npm install.', $art)
             );

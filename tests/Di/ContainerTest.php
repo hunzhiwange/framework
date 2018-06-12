@@ -298,24 +298,24 @@ class ContainerTest extends TestCase
         $result = $container->call([Test8::class, 'func1'], ['foo', 'bar']);
         $this->assertEquals(['foo', 'bar'], $result);
 
-        $result = $container->call(Test8::class . '@func1', ['foo', 'bar']);
+        $result = $container->call(Test8::class.'@func1', ['foo', 'bar']);
         $this->assertEquals(['foo', 'bar'], $result);
 
         $result = $container->call([Test8::class], ['foo', 'bar']);
         $this->assertEquals(['call handle'], $result);
 
-        $result = $container->call(Test8::class . '@', ['foo', 'bar']);
+        $result = $container->call(Test8::class.'@', ['foo', 'bar']);
         $this->assertEquals(['call handle'], $result);
 
-        $result = $container->call(Test8::class . '@func2');
+        $result = $container->call(Test8::class.'@func2');
         $this->assertEquals('hello', $result[0]);
 
-        $result = $container->call(Test8::class . '@func2', ['world', 'foo', 'bar']);
+        $result = $container->call(Test8::class.'@func2', ['world', 'foo', 'bar']);
         $this->assertEquals('world', $result[0]);
         $this->assertEquals('foo', $result[1]);
         $this->assertEquals('bar', $result[2]);
 
-        $result = $container->call(Test8::class . '@func2', ['world', 'arg1' => 'foo', 'bar']);
+        $result = $container->call(Test8::class.'@func2', ['world', 'arg1' => 'foo', 'bar']);
         $this->assertEquals('world', $result[0]);
         $this->assertEquals('bar', $result[1]);
     }
@@ -335,7 +335,7 @@ class ContainerTest extends TestCase
     {
         $container = new Container();
 
-        $result = $container->call(Test8::class . '::staticFunc3', ['hello', 'world']);
+        $result = $container->call(Test8::class.'::staticFunc3', ['hello', 'world']);
         $this->assertEquals(['hello', 'world'], $result);
     }
 

@@ -56,7 +56,7 @@ class Lists extends Command
     {
         $this->warn($this->getVersion());
 
-        $server = app('swoole.' . $this->argument('type') . '.server');
+        $server = app('swoole.'.$this->argument('type').'.server');
         $server->setCommand($this);
         $server->options($this->parseOption());
         $server->listsServer();
@@ -87,9 +87,9 @@ class Lists extends Command
      */
     protected function getVersion()
     {
-        return 'The Lists of Swoole ' .
-            ucfirst($this->argument('type')) .
-            ' Server Version ' . app()->version() .
+        return 'The Lists of Swoole '.
+            ucfirst($this->argument('type')).
+            ' Server Version '.app()->version().
             PHP_EOL;
     }
 

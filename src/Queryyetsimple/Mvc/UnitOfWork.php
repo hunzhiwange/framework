@@ -173,7 +173,7 @@ class UnitOfWork implements IUnitOfWork
     public function registerCreate(IAggregateRoot $objEntity, IRepository $objRepository)
     {
         $strHash = spl_object_hash($objEntity);
-        if (! isset($this->arrCreates[$strHash])) {
+        if (!isset($this->arrCreates[$strHash])) {
             $this->arrCreates[$strHash] = [
                 $objEntity,
                 $objRepository,
@@ -196,7 +196,7 @@ class UnitOfWork implements IUnitOfWork
     {
         $strHash = spl_object_hash($objEntity);
 
-        if (! isset($this->arrUpdates[$strHash])) {
+        if (!isset($this->arrUpdates[$strHash])) {
             $this->arrUpdates[$strHash] = [
                 $objEntity,
                 $objRepository,
@@ -218,7 +218,7 @@ class UnitOfWork implements IUnitOfWork
     public function registerDelete(IAggregateRoot $objEntity, IRepository $objRepository)
     {
         $strHash = spl_object_hash($objEntity);
-        if (! isset($this->arrDeletes[$strHash])) {
+        if (!isset($this->arrDeletes[$strHash])) {
             $this->arrDeletes[$strHash] = [
                 $objEntity,
                 $objRepository,

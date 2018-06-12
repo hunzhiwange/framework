@@ -41,7 +41,7 @@ class Redis extends Predis
     {
         $this->beforeRelease($jobId);
 
-        if (! $this->hasQueue()) {
+        if (!$this->hasQueue()) {
             throw new BackendException('No queue specified.');
         }
         $strJobData = $this->open_items[$jobId];
@@ -58,7 +58,7 @@ class Redis extends Predis
         }
 
         $booStatus = $this->getConnection()->rpush($this->queue_name, $strJobData);
-        if (! $booStatus) {
+        if (!$booStatus) {
             throw new BackendException('Unable to save data.');
         }
         $this->last_job_id = $jobId;

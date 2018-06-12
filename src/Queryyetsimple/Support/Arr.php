@@ -43,7 +43,7 @@ class Arr
     public static function normalize($mixInput, $sDelimiter = ',', $bAllowedEmpty = false)
     {
         if (is_array($mixInput) || is_string($mixInput)) {
-            if (! is_array($mixInput)) {
+            if (!is_array($mixInput)) {
                 $mixInput = explode($sDelimiter, $mixInput);
             }
 

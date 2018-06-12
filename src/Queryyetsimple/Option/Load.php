@@ -59,7 +59,7 @@ class Load
      */
     public function __construct(string $dir)
     {
-        if (! is_string($dir)) {
+        if (!is_string($dir)) {
             throw new RuntimeException('Option load dir is not exits.');
         }
 
@@ -136,7 +136,7 @@ class Load
         $deferredProviders = $deferredAlias = [];
 
         foreach ($providers as $k => $provider) {
-            if (! class_exists($provider)) {
+            if (!class_exists($provider)) {
                 unset($providers[$key]);
                 continue;
             }
@@ -187,7 +187,7 @@ class Load
     {
         $data = [];
 
-        $files = glob($this->dir . '/*.php');
+        $files = glob($this->dir.'/*.php');
 
         $findApp = false;
 
@@ -224,18 +224,18 @@ class Load
         $path = $project->path();
 
         foreach ($optionFiles as $key => $files) {
-            if (! is_array($files)) {
+            if (!is_array($files)) {
                 $files = [$files];
             }
 
             $optionData = [];
 
             foreach ($files as $item) {
-                if (! is_file($item)) {
-                    $item = $path . '/' . $item;
+                if (!is_file($item)) {
+                    $item = $path.'/'.$item;
                 }
 
-                if (! is_file($item)) {
+                if (!is_file($item)) {
                     throw new Exception(sprintf('Option file %s is not exist.', $item));
                 }
 

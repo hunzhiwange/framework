@@ -148,7 +148,7 @@ class JsonResponse extends Response
             return $this;
         }
 
-        if (! $this->isJsonData($json)) {
+        if (!$this->isJsonData($json)) {
             throw new InvalidArgumentException('The method setJson need a json data.');
         }
 
@@ -242,7 +242,7 @@ class JsonResponse extends Response
      */
     protected function isJsonData($data)
     {
-        if (! is_scalar($data) && ! method_exists($data, '__toString')) {
+        if (!is_scalar($data) && !method_exists($data, '__toString')) {
             return false;
         }
 
@@ -264,7 +264,7 @@ class JsonResponse extends Response
             return $this->setContent(sprintf(';%s(%s);', $this->callback, $this->data));
         }
 
-        if (! $this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
+        if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
             $this->headers->set('Content-Type', 'application/json');
         }
 

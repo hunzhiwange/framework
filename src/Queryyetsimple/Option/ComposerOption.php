@@ -89,7 +89,7 @@ class ComposerOption
     {
         $packages = [];
 
-        $installedJson = $this->path . '/vendor/composer/installed.json';
+        $installedJson = $this->path.'/vendor/composer/installed.json';
 
         if (is_file($installedJson)) {
             $packages = $this->getFileContent($installedJson);
@@ -148,7 +148,7 @@ class ComposerOption
 
         foreach ($this->getSupportedOptions() as $item) {
             $tmp = $options[$item] ?? [];
-            if (! is_array($tmp)) {
+            if (!is_array($tmp)) {
                 $tmp = [$tmp];
             }
 
@@ -165,9 +165,9 @@ class ComposerOption
      */
     protected function getAppComposerOption(): array
     {
-        $path = $this->path . '/composer.json';
+        $path = $this->path.'/composer.json';
 
-        if (! is_file($path)) {
+        if (!is_file($path)) {
             return [];
         }
 

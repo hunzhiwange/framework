@@ -122,8 +122,8 @@ EOF;
      */
     protected function makeI18nFile($lang)
     {
-        $sourceDir = $this->parseSourceDir() . '/' . $lang;
-        $outputDir = $this->parseOutputDir() . '/' . $lang;
+        $sourceDir = $this->parseSourceDir().'/'.$lang;
+        $outputDir = $this->parseOutputDir().'/'.$lang;
         $outputFile = $this->parseOutputFile();
 
         $moFiles = $this->findMoFile([
@@ -135,15 +135,15 @@ EOF;
             $result['Query Yet Simple'] = '左右代码 右手年华 不忘初心 简单快乐';
         }
 
-        if (! file_put_contents($outputDir . '/' . $outputFile, '/** ' . date('Y-m-d H:i:s') . ' */' .
-            PHP_EOL . 'export default ' . json_encode($result, JSON_UNESCAPED_UNICODE) . ';')) {
+        if (!file_put_contents($outputDir.'/'.$outputFile, '/** '.date('Y-m-d H:i:s').' */'.
+            PHP_EOL.'export default '.json_encode($result, JSON_UNESCAPED_UNICODE).';')) {
             throw new RuntimeException(sprintf('Dir %s do not have permission.', $outputDir));
         }
 
         chmod($outputDir, 0777);
 
         $this->info(sprintf('Vue lang file %s created successfully.', $lang));
-        $this->comment($outputDir . '/' . $outputFile);
+        $this->comment($outputDir.'/'.$outputFile);
     }
 
     /**
@@ -234,7 +234,7 @@ EOF;
     {
         $arrFiles = [];
         foreach ($arrDir as $sDir) {
-            if (! is_dir($sDir)) {
+            if (!is_dir($sDir)) {
                 continue;
             }
 

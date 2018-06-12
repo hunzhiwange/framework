@@ -71,11 +71,11 @@ class RedirectResponse extends Response
 
         $this->setTargetUrl($url);
 
-        if (! $this->isRedirect()) {
+        if (!$this->isRedirect()) {
             throw new InvalidArgumentException(sprintf('The HTTP status code is not a redirect ("%s" given).', $status));
         }
 
-        if (301 == $status && ! array_key_exists('cache-control', $headers)) {
+        if (301 == $status && !array_key_exists('cache-control', $headers)) {
             $this->headers->remove('cache-control');
         }
     }
@@ -149,7 +149,7 @@ class RedirectResponse extends Response
     public function onlyInput()
     {
         $args = func_get_args();
-        if (! $args) {
+        if (!$args) {
             throw new InvalidArgumentException('Method onlyInput need an args.');
         }
 
@@ -164,7 +164,7 @@ class RedirectResponse extends Response
     public function exceptInput()
     {
         $args = func_get_args();
-        if (! $args) {
+        if (!$args) {
             throw new InvalidArgumentException('Method exceptInput need an args.');
         }
 

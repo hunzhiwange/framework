@@ -339,7 +339,7 @@ class Seccode implements ISeccode
      */
     protected function makeTtfFont(&$resFoo)
     {
-        if (! function_exists('imagettftext')) {
+        if (!function_exists('imagettftext')) {
             throw new Exception('Function imagettftext is not exits');
         }
 
@@ -350,7 +350,7 @@ class Seccode implements ISeccode
         $intX = $this->mtRand($arrFont[0]['tilt'] > 0 ? cos(deg2rad(90 - $arrFont[0]['tilt'])) * $arrFont[0]['zheight'] : 1, $this->getWidth() - $intWidthTotal);
 
         // 是否启用随机颜色
-        ! $this->getOption('color') && $resTextColor = imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
+        !$this->getOption('color') && $resTextColor = imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
 
         for ($int = 0; $int < count($arrFont); ++$int) {
             if ($this->getOption('color')) {
@@ -393,7 +393,7 @@ class Seccode implements ISeccode
         $arrFont = [];
         $intWidthTotal = 0;
         for ($int = 0; $int < $intCodeLength; ++$int) {
-            if (! isset($arrFont[$int])) {
+            if (!isset($arrFont[$int])) {
                 $arrFont[$int] = [];
             }
 
@@ -436,7 +436,7 @@ class Seccode implements ISeccode
     {
         $booBackground = false;
         if ($this->getOption('background') && function_exists('imagecreatefromjpeg') && function_exists('imagecolorat') && function_exists('imagecopymerge') && function_exists('imagesetpixel') && function_exists('imageSX') && function_exists('imageSY')) {
-            if (! is_dir($this->getBackgroundPath())) {
+            if (!is_dir($this->getBackgroundPath())) {
                 throw new Exception(sprintf('Background path %s is not exists.', $this->getBackgroundPath()));
             }
 
@@ -501,7 +501,7 @@ class Seccode implements ISeccode
     protected function getTtf()
     {
         $strFontPath = $this->isChinese($this->getCode()) ? $this->getChineseFontPath() : $this->getFontPath();
-        if (! is_dir($strFontPath)) {
+        if (!is_dir($strFontPath)) {
             throw new Exception(sprintf('Font path %s is not exits', $strFontPath));
         }
 
@@ -527,10 +527,10 @@ class Seccode implements ISeccode
             throw new Exception(sprintf('Code must be greater than %d', 0));
         }
 
-        if (! in_array($strAutoType, $this->getAllowedAutoType())) {
+        if (!in_array($strAutoType, $this->getAllowedAutoType())) {
             throw new Exception(sprintf('Code type must be these %s', implode(',', $this->getAllowedAutoType())));
         }
-        $this->code(Str::{'rand' . ucwords(Str::camelize($strAutoType))}($intSize));
+        $this->code(Str::{'rand'.ucwords(Str::camelize($strAutoType))}($intSize));
     }
 
     /**
@@ -583,7 +583,7 @@ class Seccode implements ISeccode
      */
     protected function getDefaultFontPath()
     {
-        return __DIR__ . '/font';
+        return __DIR__.'/font';
     }
 
     /**
@@ -603,7 +603,7 @@ class Seccode implements ISeccode
      */
     protected function getDefaultBackgroundPath()
     {
-        return __DIR__ . '/background';
+        return __DIR__.'/background';
     }
 
     /**

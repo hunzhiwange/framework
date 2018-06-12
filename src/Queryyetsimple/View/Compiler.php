@@ -262,7 +262,7 @@ class Compiler implements ICompiler
 
             $method = substr($method, 0, -8);
 
-            if (! in_array($method, [
+            if (!in_array($method, [
                 'global',
                 'jsvar',
                 'globalrevert',
@@ -351,12 +351,12 @@ class Compiler implements ICompiler
      */
     public function variableCodeCompiler(&$theme)
     {
-        $theme['content'] = ! empty($theme['content']) ?
+        $theme['content'] = !empty($theme['content']) ?
             $this->parseContent($theme['content']) :
             null;
 
         if (null !== $theme['content']) {
-            $theme['content'] = $this->withPhpTag('echo ' . $theme['content'] . ';');
+            $theme['content'] = $this->withPhpTag('echo '.$theme['content'].';');
         }
 
         $theme['content'] = $this->encodeContent($theme['content']);
@@ -371,7 +371,7 @@ class Compiler implements ICompiler
     {
         $theme['content'] = $this->parseContentIf($theme['content']);
         $theme['content'] = $this->encodeContent(
-            $this->withPhpTag($theme['content'] . ':')
+            $this->withPhpTag($theme['content'].':')
         );
     }
 
@@ -384,7 +384,7 @@ class Compiler implements ICompiler
     {
         $theme['content'] = $this->parseContentIf($theme['content'], 'else');
         $theme['content'] = $this->encodeContent(
-            $this->withPhpTag($theme['content'] . ':')
+            $this->withPhpTag($theme['content'].':')
         );
     }
 
@@ -430,7 +430,7 @@ class Compiler implements ICompiler
         );
 
         $theme['content'] = $this->encodeContent(
-            $this->withPhpTag($theme['content'] . ':')
+            $this->withPhpTag($theme['content'].':')
         );
     }
 
@@ -442,7 +442,7 @@ class Compiler implements ICompiler
     public function forCodeCompiler(&$theme)
     {
         $theme['content'] = $this->encodeContent(
-            $this->withPhpTag('for (' . $theme['content'] . '):')
+            $this->withPhpTag('for ('.$theme['content'].'):')
         );
     }
 
@@ -454,7 +454,7 @@ class Compiler implements ICompiler
     public function whileCodeCompiler(&$theme)
     {
         $theme['content'] = $this->encodeContent(
-            $this->withPhpTag('while (' . $theme['content'] . '):')
+            $this->withPhpTag('while ('.$theme['content'].'):')
         );
     }
 
@@ -466,7 +466,7 @@ class Compiler implements ICompiler
     public function phpCodeCompiler(&$theme)
     {
         $theme['content'] = $this->encodeContent(
-            $this->withPhpTag($theme['content'] . ';')
+            $this->withPhpTag($theme['content'].';')
         );
     }
 
@@ -488,7 +488,7 @@ class Compiler implements ICompiler
     public function echoCodeCompiler(&$theme)
     {
         $theme['content'] = $this->encodeContent(
-            $this->withPhpTag('echo ' . $theme['content'] . ';')
+            $this->withPhpTag('echo '.$theme['content'].';')
         );
     }
 
@@ -574,7 +574,7 @@ class Compiler implements ICompiler
     public function jsvarCompiler(&$theme)
     {
         $theme['content'] = $this->withPhpTag(
-            'echo ' . $this->parseJcontent($theme['content']) . ';'
+            'echo '.$this->parseJcontent($theme['content']).';'
         );
     }
 
@@ -595,13 +595,13 @@ class Compiler implements ICompiler
             array_unshift($attr, $equal);
         }
 
-        if (! $attr) {
+        if (!$attr) {
             $value = 'null';
         } else {
             $value = $this->parseExpression(implode(' ', $attr));
         }
 
-        $theme['content'] = $this->withPhpTag("\${$name} = " . $value . ';');
+        $theme['content'] = $this->withPhpTag("\${$name} = ".$value.';');
     }
 
     /**
@@ -658,7 +658,7 @@ class Compiler implements ICompiler
         $attr = $this->getNodeAttribute($theme);
         $attr = array_values($attr);
 
-        if (! in_array('in', $attr)) {
+        if (!in_array('in', $attr)) {
             throw new InvalidArgumentException('For tag need “in“ separate.');
         }
 
@@ -677,7 +677,7 @@ class Compiler implements ICompiler
             array_shift($attr);
         }
 
-        if (! $attr) {
+        if (!$attr) {
             throw new InvalidArgumentException('For tag need a “var“ to be circulate.');
         }
 
@@ -706,13 +706,13 @@ class Compiler implements ICompiler
             if ('$' == substr($attr['value'], 0, 1)) {
                 $attr['value'] = $this->parseContent(substr($attr['value'], 1));
             } else {
-                $attr['value'] = '\'' . $attr['value'] . '\'';
+                $attr['value'] = '\''.$attr['value'].'\'';
             }
         }
 
         // 编译
         $theme['content'] = $this->withPhpTag(
-            $attr['name'] . '=' . $attr['value'] . ';'
+            $attr['name'].'='.$attr['value'].';'
         );
     }
 
@@ -727,8 +727,8 @@ class Compiler implements ICompiler
         $attr = $this->getNodeAttribute($theme);
 
         $attr['condition'] = $this->parseContentIf($attr['condition'], false);
-        $theme['content'] = $this->withPhpTag('if (' . $attr['condition'] . '):') .
-            $this->getNodeBody($theme) .
+        $theme['content'] = $this->withPhpTag('if ('.$attr['condition'].'):').
+            $this->getNodeBody($theme).
             $this->withPhpTag('endif;');
     }
 
@@ -743,7 +743,7 @@ class Compiler implements ICompiler
         $attr = $this->getNodeAttribute($theme);
 
         $attr['condition'] = $this->parseContentIf($attr['condition'], false);
-        $theme['content'] = $this->withPhpTag('elseif (' . $attr['condition'] . '):');
+        $theme['content'] = $this->withPhpTag('elseif ('.$attr['condition'].'):');
     }
 
     /**
@@ -772,7 +772,7 @@ class Compiler implements ICompiler
             'value',
             'index',
         ] as $key) {
-            null === $attr[$key] && $attr[$key] = '$' . $key;
+            null === $attr[$key] && $attr[$key] = '$'.$key;
         }
 
         foreach ([
@@ -781,7 +781,7 @@ class Compiler implements ICompiler
             'value',
             'index',
         ] as $key) {
-            if ('$' . $key == $attr[$key]) {
+            if ('$'.$key == $attr[$key]) {
                 continue;
             }
 
@@ -789,14 +789,14 @@ class Compiler implements ICompiler
         }
 
         // 编译
-        $theme['content'] = $this->withPhpTag($attr['index'] . ' = 1;') . PHP_EOL .
+        $theme['content'] = $this->withPhpTag($attr['index'].' = 1;').PHP_EOL.
             $this->withPhpTag(
-                'if (is_array(' . $attr['for'] . ')): foreach (' . $attr['for'] .
-                ' as ' . $attr['key'] . ' => ' .
-                $attr['value'] . '):'
-            ) .
-            $this->getNodeBody($theme) .
-            $this->withPhpTag($attr['index'] . '++;') . PHP_EOL .
+                'if (is_array('.$attr['for'].')): foreach ('.$attr['for'].
+                ' as '.$attr['key'].' => '.
+                $attr['value'].'):'
+            ).
+            $this->getNodeBody($theme).
+            $this->withPhpTag($attr['index'].'++;').PHP_EOL.
             $this->withPhpTag('endforeach; endif;');
     }
 
@@ -816,7 +816,7 @@ class Compiler implements ICompiler
         null === $attr['mod'] && $attr['mod'] = 2;
 
         if (preg_match("/[^\d-.,]/", (string) ($attr['mod']))) {
-            $attr['mod'] = '$' . $attr['mod'];
+            $attr['mod'] = '$'.$attr['mod'];
         }
 
         null === $attr['empty'] && $attr['empty'] = '';
@@ -826,38 +826,38 @@ class Compiler implements ICompiler
 
         $compiled = [];
 
-        $tmp = 'if (is_array(' .
-            $attr['name'] . ')):' . PHP_EOL . '    $' .
-            $attr['index'] . ' = 0;' . PHP_EOL;
+        $tmp = 'if (is_array('.
+            $attr['name'].')):'.PHP_EOL.'    $'.
+            $attr['index'].' = 0;'.PHP_EOL;
 
         if ('' != $attr['length']) {
-            $tmp .= '    $tmp = array_slice(' .
-                $attr['name'] . ', ' .
-                $attr['offset'] . ', ' .
-                $attr['length'] . ');';
+            $tmp .= '    $tmp = array_slice('.
+                $attr['name'].', '.
+                $attr['offset'].', '.
+                $attr['length'].');';
         } elseif ('' != $attr['offset']) {
-            $tmp .= '    $tmp = array_slice(' .
-                $attr['name'] . ', ' .
-                $attr['offset'] . ');';
+            $tmp .= '    $tmp = array_slice('.
+                $attr['name'].', '.
+                $attr['offset'].');';
         } else {
-            $tmp .= '    $tmp = ' . $attr['name'] . ';';
+            $tmp .= '    $tmp = '.$attr['name'].';';
         }
 
-        $tmp .= PHP_EOL . '    if (count($tmp) == 0):' . PHP_EOL .
-            '        echo "' . $attr['empty'] . '";';
-        $tmp .= PHP_EOL . '    else:';
-        $tmp .= PHP_EOL . '        foreach ($tmp as $' . $attr['key'] .
-            ' => $' . $attr['id'] . '):';
-        $tmp .= PHP_EOL . '            ++$' . $attr['index'] . ';' . PHP_EOL;
-        $tmp .= '            ' . '$mod = $' . $attr['index'] . ' % ' .
-            $attr['mod'] . ';';
+        $tmp .= PHP_EOL.'    if (count($tmp) == 0):'.PHP_EOL.
+            '        echo "'.$attr['empty'].'";';
+        $tmp .= PHP_EOL.'    else:';
+        $tmp .= PHP_EOL.'        foreach ($tmp as $'.$attr['key'].
+            ' => $'.$attr['id'].'):';
+        $tmp .= PHP_EOL.'            ++$'.$attr['index'].';'.PHP_EOL;
+        $tmp .= '            '.'$mod = $'.$attr['index'].' % '.
+            $attr['mod'].';';
 
         $compiled[] = $this->withPhpTag($tmp);
         $compiled[] = $this->getNodeBody($theme);
-        $compiled[] = '        ' . $this->withPhpTag(
-            'endforeach;' . PHP_EOL . '    endif;' .
-            PHP_EOL . 'else:' . PHP_EOL . '    echo "' .
-            $attr['empty'] . '";' . PHP_EOL . 'endif;'
+        $compiled[] = '        '.$this->withPhpTag(
+            'endforeach;'.PHP_EOL.'    endif;'.
+            PHP_EOL.'else:'.PHP_EOL.'    echo "'.
+            $attr['empty'].'";'.PHP_EOL.'endif;'
         );
 
         $theme['content'] = implode('', $compiled);
@@ -875,22 +875,22 @@ class Compiler implements ICompiler
 
         if (false === strpos($attr['file'], '(')) {
             // 后缀由主模板提供
-            if (! $attr['ext'] && false !== strpos($attr['file'], '.')) {
+            if (!$attr['ext'] && false !== strpos($attr['file'], '.')) {
                 $temp = explode('.', $attr['file']);
-                $attr['ext'] = '.' . array_pop($temp);
+                $attr['ext'] = '.'.array_pop($temp);
                 $attr['file'] = implode('.', $temp);
             }
 
             if (0 !== strpos($attr['file'], '$')) {
-                $attr['file'] = (0 === strpos($attr['file'], '$') ? '' : '\'') . $attr['file'] . '\'';
+                $attr['file'] = (0 === strpos($attr['file'], '$') ? '' : '\'').$attr['file'].'\'';
             }
         }
 
         $attr['file'] = $this->parseContentIf($attr['file'], false);
 
         $theme['content'] = $this->withPhpTag(
-            '$this->display(' . $attr['file'] .
-            ', [], \'' . ($attr['ext'] ?: '') .
+            '$this->display('.$attr['file'].
+            ', [], \''.($attr['ext'] ?: '').
             '\', true);'
         );
     }
@@ -909,7 +909,7 @@ class Compiler implements ICompiler
         null === $attr['start'] && $attr['start'] = '0';
         null === $attr['end'] && $attr['end'] = '0';
         null === $attr['var'] && $attr['var'] = 'var';
-        $attr['var'] = '$' . $attr['var'];
+        $attr['var'] = '$'.$attr['var'];
 
         if ('-' == $attr['type']) {
             $comparison = ' >= ';
@@ -921,10 +921,10 @@ class Compiler implements ICompiler
 
         $compiled = [];
         $compiled[] = $this->withPhpTag(
-            'for (' . $attr['var'] .
-            ' = ' . $attr['start'] . '; ' .
-            $attr['var'] . $comparison . $attr['end'] . '; ' .
-            $attr['var'] . $minusPlus . $attr['step'] . '):'
+            'for ('.$attr['var'].
+            ' = '.$attr['start'].'; '.
+            $attr['var'].$comparison.$attr['end'].'; '.
+            $attr['var'].$minusPlus.$attr['step'].'):'
         );
         $compiled[] = $this->getNodeBody($theme);
         $compiled[] = $this->withPhpTag('endfor;');
@@ -942,8 +942,8 @@ class Compiler implements ICompiler
         $this->checkNode($theme);
         $attr = $this->getNodeAttribute($theme);
 
-        $theme['content'] = $this->withPhpTag('while(' . $attr['condition'] . '):') .
-            $this->getNodeBody($theme) .
+        $theme['content'] = $this->withPhpTag('while('.$attr['condition'].'):').
+            $this->getNodeBody($theme).
             $this->withPhpTag('endwhile;');
     }
 
@@ -1001,7 +1001,7 @@ class Compiler implements ICompiler
         // 正则匹配
         $regexp = [];
 
-        if (! $theme['is_js']) {
+        if (!$theme['is_js']) {
             // xxx="yyy" 或 "yyy" 格式
             $regexp[] = "/(([^=\s]+)=)?\"([^\"]+)\"/";
 
@@ -1024,7 +1024,7 @@ class Compiler implements ICompiler
 
                     if (empty($name)) {
                         ++$defaultIdx;
-                        $name = 'condition' . $defaultIdx;
+                        $name = 'condition'.$defaultIdx;
                     }
 
                     $value = $res[$valueIdx][$idx];
@@ -1036,7 +1036,7 @@ class Compiler implements ICompiler
 
         // 补全节点其余参数
         foreach ($allowedAttr as $item) {
-            if (! isset($theme['attribute_list'][$item])) {
+            if (!isset($theme['attribute_list'][$item])) {
                 $theme['attribute_list'][$item] = null;
             }
         }
@@ -1061,7 +1061,7 @@ class Compiler implements ICompiler
                 $args = explode('.', $value);
 
                 // 以 $hello->hello1->hello2->hello2 方式
-                $param[] = $args[0] . ($this->arrayHandler($args, 2, 1));
+                $param[] = $args[0].($this->arrayHandler($args, 2, 1));
             } else {
                 $param[] = $value;
             }
@@ -1073,7 +1073,7 @@ class Compiler implements ICompiler
             return $result;
         }
 
-        return $type . "if ({$result})";
+        return $type."if ({$result})";
     }
 
     /**
@@ -1145,7 +1145,7 @@ class Compiler implements ICompiler
                 if ('.' == $temp &&
                     isset($content[$i + 1]) &&
                     $this->isVarExpression($content[$i + 1]) &&
-                    ! in_array($content[$i + 1], [' ', '$'])) {
+                    !in_array($content[$i + 1], [' ', '$'])) {
                     $result[] = '->';
                     $findLogic = false;
                 }
@@ -1155,7 +1155,7 @@ class Compiler implements ICompiler
                     $i > 0 &&
                     '-' === $content[$i - 1] &&
                     isset($content[$i + 1]) &&
-                    ! in_array($content[$i + 1], [' ', '$'])) {
+                    !in_array($content[$i + 1], [' ', '$'])) {
                     $result[] = '>';
                     $findLogic = false;
                 } else {
@@ -1199,11 +1199,11 @@ class Compiler implements ICompiler
      */
     protected function isVarExpression($char)
     {
-        return ! in_array($char, [
+        return !in_array($char, [
             '"',
             '\'',
             '(',
-        ]) && ! is_numeric($char);
+        ]) && !is_numeric($char);
     }
 
     /**
@@ -1243,9 +1243,9 @@ class Compiler implements ICompiler
             if ("'" == ($firstLetter = substr($vars[1], 0, 1)) or
                 '"' == $firstLetter or
                 '$' == $firstLetter) {
-                $name = '$' . $vars[0] . '.' . $vars[1] . ($this->arrayHandler($vars, 3));
+                $name = '$'.$vars[0].'.'.$vars[1].($this->arrayHandler($vars, 3));
             } else {
-                $name = '$' . $vars[0] . '->' . $vars[1] . ($this->arrayHandler($vars, 2));
+                $name = '$'.$vars[0].'->'.$vars[1].($this->arrayHandler($vars, 2));
             }
 
             $tmp = $vars[0];
@@ -1253,7 +1253,7 @@ class Compiler implements ICompiler
 
         // $hello['demo'] 方式访问数组
         elseif (strpos($tmp, '[')) {
-            $name = '$' . $tmp;
+            $name = '$'.$tmp;
             preg_match('/(.+?)\[(.+?)\]/is', $tmp, $matches);
             $tmp = $matches[1];
         } else {
@@ -1300,7 +1300,7 @@ class Compiler implements ICompiler
             switch (strtolower($args[0])) {
                 // 特殊模板函数
                 case 'default':
-                    $name = $name . ' ?: ' . $args[1];
+                    $name = $name.' ?: '.$args[1];
                     break;
 
                 // 通用模板函数
@@ -1312,7 +1312,7 @@ class Compiler implements ICompiler
                         } else {
                             $name = "$args[0]($name, $args[1])";
                         }
-                    } elseif (! empty($args[0])) {
+                    } elseif (!empty($args[0])) {
                         $name = "$args[0]($name)";
                     }
             }
@@ -1394,7 +1394,7 @@ class Compiler implements ICompiler
         // 验证必要属性
         $tag = true === $jsNode ? $this->jsTag : $this->nodeTag;
 
-        if (! isset($tag[$theme['name']])) {
+        if (!isset($tag[$theme['name']])) {
             throw new InvalidArgumentException(
                 sprintf('The tag %s is undefined.', $theme['name'])
             );
@@ -1403,7 +1403,7 @@ class Compiler implements ICompiler
         foreach ($tag[$theme['name']]['required'] as $name) {
             $name = strtolower($name);
 
-            if (! isset($attribute['attribute_list'][$name])) {
+            if (!isset($attribute['attribute_list'][$name])) {
                 throw new InvalidArgumentException(
                     sprintf('The node %s lacks the required property: %s.', $theme['name'], $name)
                 );
@@ -1461,7 +1461,7 @@ class Compiler implements ICompiler
     {
         $txt = $this->escapeCharacter($txt, $esc);
 
-        if (! $esc) {
+        if (!$esc) {
             $txt = str_replace([
                 ' band ',
                 ' bxor ',
@@ -1562,7 +1562,7 @@ class Compiler implements ICompiler
      */
     protected function withPhpTag($content)
     {
-        return $this->phpTagStart() . $content . $this->phpTagEnd();
+        return $this->phpTagStart().$content.$this->phpTagEnd();
     }
 
     /**
@@ -1572,7 +1572,7 @@ class Compiler implements ICompiler
      */
     protected function phpTagStart()
     {
-        return '<?' . 'php ';
+        return '<?'.'php ';
     }
 
     /**
@@ -1582,6 +1582,6 @@ class Compiler implements ICompiler
      */
     protected function phpTagEnd()
     {
-        return '?' . '>';
+        return '?'.'>';
     }
 }

@@ -63,7 +63,7 @@ class Socket extends TFramedTransport
     public function _read($len)
     {
         if (strlen($this->buffer) - $this->offset < $len) {
-            throw new TTransportException('TSocket[' . strlen($this->buffer) . '] read ' . $len . ' bytes failed.');
+            throw new TTransportException('TSocket['.strlen($this->buffer).'] read '.$len.' bytes failed.');
         }
         $data = substr($this->buffer, $this->offset, $len);
         $this->offset += $len;
@@ -73,7 +73,7 @@ class Socket extends TFramedTransport
 
     public function read($len)
     {
-        if (! $this->read_) {
+        if (!$this->read_) {
             return $this->_read($len);
         }
 

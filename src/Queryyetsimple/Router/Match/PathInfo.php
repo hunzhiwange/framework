@@ -63,14 +63,14 @@ class PathInfo implements IMatch
         $pathInfo = trim($pathInfo, '/');
 
         // 首页
-        if (! $pathInfo) {
+        if (!$pathInfo) {
             return [
                 IRouter::CONTROLLER => IRouter::DEFAULT_HOME_CONTROLLER,
                 IRouter::ACTION => IRouter::DEFAULT_HOME_ACTION,
             ];
         }
 
-        $pathInfo = '/' . $pathInfo;
+        $pathInfo = '/'.$pathInfo;
 
         return $router->matchePath($pathInfo);
     }

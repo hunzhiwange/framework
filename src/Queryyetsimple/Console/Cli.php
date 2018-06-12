@@ -101,7 +101,7 @@ class Cli
             $this->shortCommand();
         }
 
-        if (! $argv) {
+        if (!$argv) {
             return $this->data();
         }
 
@@ -176,7 +176,7 @@ Usage: php cli.php app://for/bar user=name hello world --option=default
 eot;
             exit();
         } elseif ('-v' == $this->node) {
-            echo 'QueryPHP Console Cli ' . static::VERSION;
+            echo 'QueryPHP Console Cli '.static::VERSION;
             exit();
         }
     }
@@ -248,7 +248,7 @@ eot;
         $special = ['=', '--'];
 
         foreach ($argv as $key => $token) {
-            if (! in_array($token, $special) && isset($argv[$key + 1]) && '=' != $argv[$key + 1]) {
+            if (!in_array($token, $special) && isset($argv[$key + 1]) && '=' != $argv[$key + 1]) {
                 $token .= ' ';
             }
 

@@ -69,7 +69,7 @@ trait TClass
      */
     public function options(array $option = [])
     {
-        if (! $option) {
+        if (!$option) {
             return $this;
         }
         foreach ($option as $name => $value) {
@@ -129,7 +129,7 @@ trait TClass
      */
     public function deleteOptions(array $option = [])
     {
-        if (! $option) {
+        if (!$option) {
             return $this;
         }
 

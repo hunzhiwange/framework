@@ -75,7 +75,7 @@ class Image
                 }
             }
 
-            $sCreateFun = 'ImageCreateFrom' . ('jpg' == $sType ? 'jpeg' : $sType); // 载入原图
+            $sCreateFun = 'ImageCreateFrom'.('jpg' == $sType ? 'jpeg' : $sType); // 载入原图
             $oSrcImg = $sCreateFun($sImage);
 
             // 创建缩略图
@@ -110,7 +110,7 @@ class Image
                 }
             }
 
-            $sImageFun = 'image' . ('jpg' == $sType ? 'jpeg' : $sType); // 生成图片
+            $sImageFun = 'image'.('jpg' == $sType ? 'jpeg' : $sType); // 生成图片
             $sImageFun($oThumbImg, $sThumbName, $nQuality);
             imagedestroy($oThumbImg);
             imagedestroy($oSrcImg);
@@ -133,7 +133,7 @@ class Image
         $arrAttachInfo = getimagesize($sTargetFile);
 
         list($nImgW, $nImgH) = $arrAttachInfo;
-        header('Content-type:' . $arrAttachInfo['mime']);
+        header('Content-type:'.$arrAttachInfo['mime']);
 
         if ($nImgW >= $nThumbWidth || $nImgH >= $nThumbHeight) {
             if (function_exists('imagecreatetruecolor') && function_exists('imagecopyresampled') && function_exists('imagejpeg')) {
@@ -203,7 +203,7 @@ class Image
     {
         $bIsWaterImage = false;
 
-        if (! empty($sBackgroundPath) && is_file($sBackgroundPath)) { // 读取背景图片
+        if (!empty($sBackgroundPath) && is_file($sBackgroundPath)) { // 读取背景图片
             $arrBackgroundInfo = getimagesize($sBackgroundPath);
             $nGroundWidth = $arrBackgroundInfo[0]; // 取得背景图片的宽
             $nGroundHeight = $arrBackgroundInfo[1]; // 取得背景图片的高
@@ -225,12 +225,12 @@ class Image
         }
 
         imagealphablending($oBackgroundIm, true); // 设定图像的混色模式
-        if (! empty($sBackgroundPath) && is_file($sBackgroundPath)) {
-            if ('img' == $arrWaterArgs['type'] && ! empty($arrWaterArgs['path'])) {
+        if (!empty($sBackgroundPath) && is_file($sBackgroundPath)) {
+            if ('img' == $arrWaterArgs['type'] && !empty($arrWaterArgs['path'])) {
                 $bIsWaterImage = true;
                 $nSet = 0;
 
-                $nOffset = ! empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 0;
+                $nOffset = !empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 0;
                 if (0 == strpos($arrWaterArgs, 'http://localhost/') || 0 == strpos($arrWaterArgs, 'https://localhost/')) { // localhost 转127.0.0.1,否则将会错误
                     $arrWaterArgs['path'] = str_replace('localhost', '127.0.0.1', $arrWaterArgs['path']);
                 }
@@ -253,14 +253,14 @@ class Image
                 }
             } elseif ('text' === $arrWaterArgs['type'] && '' != $arrWaterArgs['content']) {
                 $sFontfileTemp = $sFontfile = $arrWaterArgs['textFile'] ?? 'Microsoft YaHei.ttf';
-                $sFontfile = (! empty($arrWaterArgs['textPath']) ? str_replace('\\', '/', $arrWaterArgs['textPath']) : 'C:\WINDOWS\Fonts') . '/' . $sFontfile;
-                if (! is_file($sFontfile)) {
+                $sFontfile = (!empty($arrWaterArgs['textPath']) ? str_replace('\\', '/', $arrWaterArgs['textPath']) : 'C:\WINDOWS\Fonts').'/'.$sFontfile;
+                if (!is_file($sFontfile)) {
                     throw new RuntimeException(sprintf('The font file %s cannot be found.', $sFontfile));
                 }
 
                 $sWaterText = $arrWaterArgs['content'];
                 $nSet = 1;
-                $nOffset = ! empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 5;
+                $nOffset = !empty($arrWaterArgs['offset']) ? $arrWaterArgs['offset'] : 5;
                 $sTextColor = empty($arrWaterArgs['textColor']) ? '#FF0000' : $arrWaterArgs['textColor'];
                 $nTextFont = $arrWaterArgs['textFont'] ?? 20;
                 $arrTemp = imagettfbbox(ceil($nTextFont), 0, $sFontfile, $sWaterText); // 取得使用 TrueType 字体的文本的范围
@@ -326,7 +326,7 @@ class Image
             imagealphablending($oBackgroundIm, true);
             imagecopy($oBackgroundIm, $oWaterIm, $nPosX, $nPosY, 0, 0, $nWaterWidth, $nWaterHeight); // 拷贝水印到目标文件
         } else { // 文字水印
-            if (! empty($sTextColor) && (7 == strlen($sTextColor))) {
+            if (!empty($sTextColor) && (7 == strlen($sTextColor))) {
                 $R = hexdec(substr($sTextColor, 1, 2));
                 $G = hexdec(substr($sTextColor, 3, 2));
                 $B = hexdec(substr($sTextColor, 5));
@@ -371,9 +371,9 @@ class Image
      */
     public static function outputImage($oImage, $sType = 'png', $sFilename = '')
     {
-        header('Content-type: image/' . $sType);
+        header('Content-type: image/'.$sType);
 
-        $sImageFun = 'image' . $sType;
+        $sImageFun = 'image'.$sType;
         if (empty($sFilename)) {
             $sImageFun($oImage);
         } else {
@@ -396,7 +396,7 @@ class Image
         }
 
         // 创建文件
-        if (! is_dir(dirname($sFilename))) {
+        if (!is_dir(dirname($sFilename))) {
             mkdir(dirname($sFilename), 0777, true);
         }
 

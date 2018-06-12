@@ -86,9 +86,9 @@ class Encryption extends Connect implements IEncryption
         $keyb = md5(substr($key, 16, 16));
         $keyc = $ckey_length ? (true === $operation ? substr($string, 0, $ckey_length) : substr(md5(microtime()), -$ckey_length)) : '';
 
-        $cryptkey = $keya . md5($keya . $keyc);
+        $cryptkey = $keya.md5($keya.$keyc);
         $key_length = strlen($cryptkey);
-        $string = true === $operation ? base64_decode(substr($string, $ckey_length)) : sprintf('%010d', $expiry ? $expiry + time() : 0) . substr(md5($string . $keyb), 0, 16) . $string;
+        $string = true === $operation ? base64_decode(substr($string, $ckey_length)) : sprintf('%010d', $expiry ? $expiry + time() : 0).substr(md5($string.$keyb), 0, 16).$string;
         $string_length = strlen($string);
 
         $result = '';
@@ -115,13 +115,13 @@ class Encryption extends Connect implements IEncryption
         }
 
         if (true === $operation) {
-            if ((0 == substr($result, 0, 10) || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26) . $keyb), 0, 16)) {
+            if ((0 == substr($result, 0, 10) || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) {
                 return substr($result, 26);
             } else {
                 return '';
             }
         } else {
-            return $keyc . str_replace('=', '', base64_encode($result));
+            return $keyc.str_replace('=', '', base64_encode($result));
         }
     }
 }

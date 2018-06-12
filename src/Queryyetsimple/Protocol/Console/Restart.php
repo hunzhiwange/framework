@@ -56,7 +56,7 @@ class Restart extends Command
     {
         $this->warn($this->getVersion());
 
-        $server = app('swoole.' . $this->argument('type') . '.server');
+        $server = app('swoole.'.$this->argument('type').'.server');
         $server->setCommand($this);
         $server->options($this->parseOption());
         $server->restartServer();
@@ -87,9 +87,9 @@ class Restart extends Command
      */
     protected function getVersion()
     {
-        return 'The Restart of Swoole ' .
-            ucfirst($this->argument('type')) .
-            ' Server Version ' . app()->version() .
+        return 'The Restart of Swoole '.
+            ucfirst($this->argument('type')).
+            ' Server Version '.app()->version().
             PHP_EOL;
     }
 

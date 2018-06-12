@@ -41,7 +41,7 @@ class SwaggerRouterTest extends TestCase
     {
         $swaggerRouter = new SwaggerRouter();
 
-        $scanDir = __DIR__ . '/Petstore___';
+        $scanDir = __DIR__.'/Petstore___';
 
         $swaggerRouter->addSwaggerScan($scanDir);
     }
@@ -50,11 +50,11 @@ class SwaggerRouterTest extends TestCase
     {
         $swaggerRouter = new SwaggerRouter('Router');
 
-        $scanDir = __DIR__ . '/Petstore';
+        $scanDir = __DIR__.'/Petstore';
 
         $swaggerRouter->addSwaggerScan($scanDir);
         $result = $swaggerRouter->handle();
 
-        $this->assertEquals($result, include $scanDir . '/cache.php');
+        $this->assertEquals($result, include $scanDir.'/cache.php');
     }
 }

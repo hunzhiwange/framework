@@ -81,11 +81,11 @@ class Cookie implements ICookie
             $value = json_encode($value);
         }
 
-        if (! is_scalar($value) && null !== $value) {
+        if (!is_scalar($value) && null !== $value) {
             throw new Exception('Cookie value must be scalar or null');
         }
 
-        $name = $option['prefix'] . $name;
+        $name = $option['prefix'].$name;
 
         if ($option['expire'] > 0) {
             $option['expire'] = time() + $option['expire'];
@@ -96,7 +96,7 @@ class Cookie implements ICookie
         }
 
         $isHttpSecure = false;
-        if (! empty($_SERVER['HTTPS']) && 'ON' === strtoupper($_SERVER['HTTPS'])) {
+        if (!empty($_SERVER['HTTPS']) && 'ON' === strtoupper($_SERVER['HTTPS'])) {
             $isHttpSecure = true;
         }
 
@@ -121,7 +121,7 @@ class Cookie implements ICookie
      */
     public function put($keys, $value = null, array $option = [])
     {
-        if (! is_array($keys)) {
+        if (!is_array($keys)) {
             $keys = [
                 $keys => $value,
             ];
@@ -201,7 +201,7 @@ class Cookie implements ICookie
     {
         $arr = $this->get($key, [], $option);
 
-        if (! is_array($keys)) {
+        if (!is_array($keys)) {
             $keys = [
                 $keys,
             ];
@@ -228,7 +228,7 @@ class Cookie implements ICookie
     public function get($name, $defaults = null, array $option = [])
     {
         $option = $this->getOptions($option);
-        $name = $option['prefix'] . $name;
+        $name = $option['prefix'].$name;
 
         if (isset($this->cookies[$name])) {
             if ($this->isJson($this->cookies[$name])) {
@@ -294,7 +294,7 @@ class Cookie implements ICookie
      */
     protected function isJson($data)
     {
-        if (! is_scalar($data) && ! method_exists($data, '__toString')) {
+        if (!is_scalar($data) && !method_exists($data, '__toString')) {
             return false;
         }
 

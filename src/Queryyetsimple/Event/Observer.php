@@ -62,7 +62,7 @@ class Observer implements SplObserver
             $method,
         ];
 
-        if (! is_callable($handle)) {
+        if (!is_callable($handle)) {
             throw new RuntimeException(
                 sprintf('Observer %s must has run method', get_class($this))
             );

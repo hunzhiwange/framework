@@ -71,7 +71,7 @@ class Clear extends Command
      */
     protected function clearCache(string $cachePath)
     {
-        if (! is_file($cachePath)) {
+        if (!is_file($cachePath)) {
             $this->warn('I18n cache files have been cleaned up.');
 
             return;

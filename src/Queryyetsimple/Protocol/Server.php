@@ -150,7 +150,7 @@ class Server implements IServer
     {
         $this->info('List swoole service process', true, '');
 
-        $strCmd = 'ps aux|grep ' . $this->getOption('process_name') . "|grep -v grep|awk '{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}'";
+        $strCmd = 'ps aux|grep '.$this->getOption('process_name')."|grep -v grep|awk '{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}'";
         exec($strCmd, $arrOut);
         if (empty($arrOut)) {
             $this->warn('No swoole service process was found', true);
@@ -208,7 +208,7 @@ class Server implements IServer
 
         $strPidFile = $this->getOption('pid_path');
 
-        if (! is_file($strPidFile)) {
+        if (!is_file($strPidFile)) {
             $this->error(sprintf('Swoole pid file %s not exists.', $strPidFile), true);
 
             return;
@@ -217,7 +217,7 @@ class Server implements IServer
         $arrPid = explode("\n", file_get_contents($strPidFile));
 
         $arrBind = $this->portBind((int) ($this->getOption('port')));
-        if (empty($arrBind) || ! isset($arrBind[$arrPid[0]])) {
+        if (empty($arrBind) || !isset($arrBind[$arrPid[0]])) {
             $this->error(sprintf('Specified port occupancy process does not exist,port:%d, pid:%d.', $this->getOption('port'), $arrPid[0]), true);
 
             return;
@@ -313,7 +313,7 @@ class Server implements IServer
 
         $strPidFile = $this->getOption('pid_path');
 
-        if (! is_file($strPidFile)) {
+        if (!is_file($strPidFile)) {
             $this->error(sprintf('Swoole pid file %s not exists.', $strPidFile), true);
 
             return;
@@ -322,7 +322,7 @@ class Server implements IServer
         $arrPid = explode("\n", file_get_contents($strPidFile));
 
         $arrBind = $this->portBind((int) ($this->getOption('port')));
-        if (empty($arrBind) || ! isset($arrBind[$arrPid[0]])) {
+        if (empty($arrBind) || !isset($arrBind[$arrPid[0]])) {
             $this->error(sprintf('Specified port occupancy process does not exist,port:%d, pid:%d.', $this->getOption('port'), $arrPid[0]), true);
 
             return;
@@ -410,10 +410,10 @@ class Server implements IServer
 
         $this->info('Swoole server master worker start', true);
 
-        $this->setProcessName($this->option['process_name'] . '-master');
+        $this->setProcessName($this->option['process_name'].'-master');
 
-        $strPid = $objServer->master_pid . "\n" . $objServer->manager_pid;
-        if (! file_put_contents($this->getOption('pid_path'), $strPid)) {
+        $strPid = $objServer->master_pid."\n".$objServer->manager_pid;
+        if (!file_put_contents($this->getOption('pid_path'), $strPid)) {
             $this->warn('Swoole pid saved failed', true);
         }
 
@@ -448,9 +448,9 @@ class Server implements IServer
     public function onWorkerStart(SwooleServer $objServer, int $intWorkeId)
     {
         if ($intWorkeId >= $this->getOption('worker_num')) {
-            $this->setProcessName($this->getOption('process_name') . '-task');
+            $this->setProcessName($this->getOption('process_name').'-task');
         } else {
-            $this->setProcessName($this->getOption('process_name') . '-event');
+            $this->setProcessName($this->getOption('process_name').'-event');
         }
     }
 
@@ -465,7 +465,7 @@ class Server implements IServer
     public function onManagerStart(SwooleServer $objServer)
     {
         $this->info('Swoole server manager worker start', true);
-        $this->setProcessName($this->option['process_name'] . '-manager');
+        $this->setProcessName($this->option['process_name'].'-manager');
         $this->showStartOption($objServer);
     }
 
@@ -611,18 +611,18 @@ class Server implements IServer
      */
     protected function checkPidPath()
     {
-        if (! $this->getOption('pid_path')) {
+        if (!$this->getOption('pid_path')) {
             throw new Exception('Pid path is not set');
         }
 
         $strDir = dirname($this->getOption('pid_path'));
 
-        if (! is_dir($strDir)) {
+        if (!is_dir($strDir)) {
             mkdir($strDir, 0777, true);
         }
 
-        if (! is_writable($strDir)) {
-            throw new Exception(sprintf('swoole pid dir is not writable' . $strDir));
+        if (!is_writable($strDir)) {
+            throw new Exception(sprintf('swoole pid dir is not writable'.$strDir));
         }
     }
 
@@ -639,12 +639,12 @@ class Server implements IServer
             $sCmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$arrPid[0]}$\"";
             exec($sCmd, $arrOut);
 
-            if (! empty($arrOut)) {
+            if (!empty($arrOut)) {
                 throw new Exception(sprintf('Swoole pid file %s is already exists,pid is %d', $strFile, $arrPid[0]));
             } else {
-                $this->warn(sprintf('Warning:swoole pid file is already exists.', $strFile) . PHP_EOL .
-                    'It is possible that the swoole service was last unusual exited.' . PHP_EOL .
-                    'The non daemon mode ctrl+c termination is the most possible.' . PHP_EOL);
+                $this->warn(sprintf('Warning:swoole pid file is already exists.', $strFile).PHP_EOL.
+                    'It is possible that the swoole service was last unusual exited.'.PHP_EOL.
+                    'The non daemon mode ctrl+c termination is the most possible.'.PHP_EOL);
                 unlink($strFile);
             }
         }
@@ -679,7 +679,7 @@ class Server implements IServer
         $sCmd = "lsof -i :{$intPort}|awk '$1 != \"COMMAND\"  {print $1, $2, $9}'";
         exec($sCmd, $arrOut);
 
-        if (! empty($arrOut)) {
+        if (!empty($arrOut)) {
             foreach ($arrOut as $sOut) {
                 $arrTemp = explode(' ', $sOut);
                 list($sIp, $nP) = explode(':', $arrTemp[2]);
@@ -719,7 +719,7 @@ class Server implements IServer
         foreach ($this->arrServerEvent as $sEvent) {
             $this->objServer->on($sEvent, [
                 $this,
-                'on' . ucfirst($sEvent),
+                'on'.ucfirst($sEvent),
             ]);
         }
     }
@@ -786,7 +786,7 @@ class Server implements IServer
      */
     protected function daemonize()
     {
-        return ! $this->getOption('daemonize');
+        return !$this->getOption('daemonize');
     }
 
     /**
@@ -844,7 +844,7 @@ class Server implements IServer
      */
     protected function messageAll(string $strType, string $sMessage, bool $booForce = false, string $strFormatTime = 'H:i:s')
     {
-        if (! $booForce && ! $this->daemonize()) {
+        if (!$booForce && !$this->daemonize()) {
             return;
         }
 
@@ -873,7 +873,7 @@ class Server implements IServer
      */
     protected function isJson($mixData)
     {
-        if (! is_scalar($mixData) && ! method_exists($mixData, '__toString')) {
+        if (!is_scalar($mixData) && !method_exists($mixData, '__toString')) {
             return false;
         }
 
@@ -897,7 +897,7 @@ class Server implements IServer
      */
     protected function checkSwooleInstalled(): void
     {
-        if (! extension_loaded('swoole')) {
+        if (!extension_loaded('swoole')) {
             throw new RuntimeException('Swoole is not installed.');
         }
     }

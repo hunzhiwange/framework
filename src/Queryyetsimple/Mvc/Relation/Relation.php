@@ -170,7 +170,7 @@ abstract class Relation
         static::$booRelationCondition = false;
 
         $objRelation = call_user_func($calReturnRelation);
-        if (! ($objRelation instanceof self)) {
+        if (!($objRelation instanceof self)) {
             throw new Exception('The result must be relation.');
         }
 

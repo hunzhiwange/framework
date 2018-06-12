@@ -36,7 +36,7 @@ class CacheFileTest extends TestCase
 {
     public function testBaseUse()
     {
-        $filePath = __DIR__ . '/_hello.php';
+        $filePath = __DIR__.'/_hello.php';
 
         if (is_file($filePath)) {
             unlink($filePath);
@@ -65,7 +65,7 @@ class CacheFileTest extends TestCase
             'path' => __DIR__,
         ]);
 
-        $filePath = __DIR__ . '/~@hello.php';
+        $filePath = __DIR__.'/~@hello.php';
 
         if (is_file($filePath)) {
             unlink($filePath);

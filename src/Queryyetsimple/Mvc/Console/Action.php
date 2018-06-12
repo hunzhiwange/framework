@@ -79,7 +79,7 @@ EOF;
 
         // 设置模板路径
         $this->setTemplatePath(
-            __DIR__ . '/template/' .
+            __DIR__.'/template/'.
             ($this->option('extend') ? 'action' : 'action_without_extend')
         );
 
@@ -95,9 +95,9 @@ EOF;
 
         // 保存路径
         $this->setSaveFilePath(
-            $this->getNamespacePath() .
-            str_replace('\\', '/', $controllerNamespace) . '/' .
-            $this->argument('controller') . '/' . $action . '.php'
+            $this->getNamespacePath().
+            str_replace('\\', '/', $controllerNamespace).'/'.
+            $this->argument('controller').'/'.$action.'.php'
         );
 
         // 设置类型
@@ -121,7 +121,7 @@ EOF;
         }
 
         if (false !== strpos($action, '_')) {
-            $action = '_' . str_replace('_', ' ', $action);
+            $action = '_'.str_replace('_', ' ', $action);
             $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
         }
 

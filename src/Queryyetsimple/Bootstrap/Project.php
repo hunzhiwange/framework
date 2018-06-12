@@ -215,7 +215,7 @@ class Project extends Container implements IProject
     {
         $this->path = $path;
 
-        if (! is_writable($this->pathRuntime())) {
+        if (!is_writable($this->pathRuntime())) {
             throw new RuntimeException(sprintf('Runtime path %s is not writeable.', $this->pathRuntime()));
         }
     }
@@ -237,7 +237,7 @@ class Project extends Container implements IProject
      */
     public function pathApplication()
     {
-        return $this->applicationPath ?? $this->path . DIRECTORY_SEPARATOR . 'application';
+        return $this->applicationPath ?? $this->path.DIRECTORY_SEPARATOR.'application';
     }
 
     /**
@@ -275,7 +275,7 @@ class Project extends Container implements IProject
      */
     public function pathCommon()
     {
-        return $this->commonPath ?? $this->path . DIRECTORY_SEPARATOR . 'common';
+        return $this->commonPath ?? $this->path.DIRECTORY_SEPARATOR.'common';
     }
 
     /**
@@ -299,7 +299,7 @@ class Project extends Container implements IProject
      */
     public function pathRuntime()
     {
-        return $this->runtimePath ?? $this->path . DIRECTORY_SEPARATOR . 'runtime';
+        return $this->runtimePath ?? $this->path.DIRECTORY_SEPARATOR.'runtime';
     }
 
     /**
@@ -323,7 +323,7 @@ class Project extends Container implements IProject
      */
     public function pathStorage()
     {
-        return $this->storagePath ?? $this->path . DIRECTORY_SEPARATOR . 'storage';
+        return $this->storagePath ?? $this->path.DIRECTORY_SEPARATOR.'storage';
     }
 
     /**
@@ -347,7 +347,7 @@ class Project extends Container implements IProject
      */
     public function pathOption()
     {
-        return $this->optionPath ?? $this->path . DIRECTORY_SEPARATOR . 'option';
+        return $this->optionPath ?? $this->path.DIRECTORY_SEPARATOR.'option';
     }
 
     /**
@@ -371,7 +371,7 @@ class Project extends Container implements IProject
      */
     public function pathI18n()
     {
-        return $this->i18nPath ?? $this->path . DIRECTORY_SEPARATOR . 'i18n';
+        return $this->i18nPath ?? $this->path.DIRECTORY_SEPARATOR.'i18n';
     }
 
     /**
@@ -429,7 +429,7 @@ class Project extends Container implements IProject
      */
     public function fullEnvPath()
     {
-        return $this->pathEnv() . DIRECTORY_SEPARATOR . $this->envFile();
+        return $this->pathEnv().DIRECTORY_SEPARATOR.$this->envFile();
     }
 
     /**
@@ -441,7 +441,7 @@ class Project extends Container implements IProject
      */
     public function pathAnApplication(?string $app = null)
     {
-        return $this->pathApplication() . '/' . strtolower($app ?: ($this->request->app() ?: 'App'));
+        return $this->pathApplication().'/'.strtolower($app ?: ($this->request->app() ?: 'App'));
     }
 
     /**
@@ -465,11 +465,11 @@ class Project extends Container implements IProject
             'swoole',
         ];
 
-        if (! in_array($type, $types)) {
+        if (!in_array($type, $types)) {
             throw new Exception(sprintf('Application cache type %s not support', $type));
         }
 
-        return $this->pathRuntime() . '/' . $type;
+        return $this->pathRuntime().'/'.$type;
     }
 
     /**
@@ -481,8 +481,8 @@ class Project extends Container implements IProject
      */
     public function pathApplicationTheme(?string $app = null)
     {
-        return $this->pathAnApplication($app) .
-            '/ui/theme/' .
+        return $this->pathAnApplication($app).
+            '/ui/theme/'.
             $this->make('option')->get('view\theme_name');
     }
 
@@ -495,7 +495,7 @@ class Project extends Container implements IProject
      */
     public function pathCacheI18nFile(string $i18n)
     {
-        return $this->pathRuntime() . '/cache/i18n/' . $i18n . '.php';
+        return $this->pathRuntime().'/cache/i18n/'.$i18n.'.php';
     }
 
     /**
@@ -517,7 +517,7 @@ class Project extends Container implements IProject
      */
     public function pathCacheOptionFile()
     {
-        return $this->pathRuntime() . '/cache/option.php';
+        return $this->pathRuntime().'/cache/option.php';
     }
 
     /**
@@ -537,7 +537,7 @@ class Project extends Container implements IProject
      */
     public function composer()
     {
-        return require $this->path . '/vendor/autoload.php';
+        return require $this->path.'/vendor/autoload.php';
     }
 
     /**
@@ -552,11 +552,11 @@ class Project extends Container implements IProject
         $namespaces = explode('\\', $namespaces);
 
         $prefix = $this->composer()->getPrefixesPsr4();
-        if (! isset($prefix[$namespaces[0] . '\\'])) {
+        if (!isset($prefix[$namespaces[0].'\\'])) {
             return null;
         }
 
-        $namespaces[0] = $prefix[$namespaces[0] . '\\'][0];
+        $namespaces[0] = $prefix[$namespaces[0].'\\'][0];
 
         return implode('/', $namespaces);
     }
@@ -648,7 +648,7 @@ class Project extends Container implements IProject
      */
     public function callProviderBootstrap(Provider $provider)
     {
-        if (! method_exists($provider, 'bootstrap')) {
+        if (!method_exists($provider, 'bootstrap')) {
             return;
         }
 
@@ -794,7 +794,7 @@ class Project extends Container implements IProject
      */
     protected function registerDeferredProvider(string $provider)
     {
-        if (! isset($this->deferredProviders[$provider])) {
+        if (!isset($this->deferredProviders[$provider])) {
             return;
         }
 

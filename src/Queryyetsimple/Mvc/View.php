@@ -151,7 +151,7 @@ class View implements IView
      */
     protected function checkTheme()
     {
-        if (! $this->theme) {
+        if (!$this->theme) {
             throw new RuntimeException('Theme is not set in view');
         }
     }

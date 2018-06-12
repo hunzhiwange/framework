@@ -111,7 +111,7 @@ class Work extends Command
     {
         $this->error(
             $this->time(
-                sprintf('%s has stoped.', $this->argument('connect') . ':' . $this->option('queue'))
+                sprintf('%s has stoped.', $this->argument('connect').':'.$this->option('queue'))
             )
         );
 
@@ -126,9 +126,9 @@ class Work extends Command
      */
     protected function setQueue($connect, $queue)
     {
-        $connect = 'Leevel\Queue\queues\\' . $connect;
+        $connect = 'Leevel\Queue\queues\\'.$connect;
 
-        if (! class_exists($connect)) {
+        if (!class_exists($connect)) {
             $this->error($this->time(sprintf('connect %s not exits.', $connect)));
 
             return;
@@ -151,9 +151,9 @@ class Work extends Command
     protected function runWorker($connect, $queue)
     {
         // 验证运行器是否存在
-        $runner = 'Leevel\Queue\runners\\' . $connect;
+        $runner = 'Leevel\Queue\runners\\'.$connect;
 
-        if (! class_exists($runner)) {
+        if (!class_exists($runner)) {
             $this->error(
                 $this->time(sprintf('runner %s not exits.', $runner))
             );
@@ -162,7 +162,7 @@ class Work extends Command
         }
 
         $this->info(
-            $this->time(sprintf('%s is on working.', $connect . ':' . $queue))
+            $this->time(sprintf('%s is on working.', $connect.':'.$queue))
         );
 
         $this->restart = $this->getRestart();

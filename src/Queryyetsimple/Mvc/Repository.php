@@ -95,7 +95,7 @@ class Repository implements IRepository
     {
         $objSelect = $this->objAggregate->selfQuerySelect();
 
-        if (! is_string($mixSpecification) && is_callable($mixSpecification)) {
+        if (!is_string($mixSpecification) && is_callable($mixSpecification)) {
             call_user_func($mixSpecification, $objSelect);
         }
 
@@ -113,7 +113,7 @@ class Repository implements IRepository
     {
         $objSelect = $this->objAggregate->selfQuerySelect();
 
-        if (! is_string($mixSpecification) && is_callable($mixSpecification)) {
+        if (!is_string($mixSpecification) && is_callable($mixSpecification)) {
             call_user_func($mixSpecification, $objSelect);
         }
 
@@ -333,7 +333,7 @@ class Repository implements IRepository
      */
     protected function checkUnitOfWork()
     {
-        if (! $this->objUnitOfWork || ! ($this->objUnitOfWork instanceof IUnitOfWork)) {
+        if (!$this->objUnitOfWork || !($this->objUnitOfWork instanceof IUnitOfWork)) {
             throw new Exception('UnitOfWork is not set,please use parent::__construct( IAggregateRoot $objAggregate ) to set.');
         }
     }
@@ -355,7 +355,7 @@ class Repository implements IRepository
         } else {
             $mixSpecification = function ($objSelect) use ($mixCallback, $mixSpecification) {
                 call_user_func($mixCallback, $objSelect);
-                if (! is_string($mixSpecification) && is_callable($mixSpecification)) {
+                if (!is_string($mixSpecification) && is_callable($mixSpecification)) {
                     call_user_func($mixSpecification, $objSelect);
                 }
             };

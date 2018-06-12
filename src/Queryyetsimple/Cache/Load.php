@@ -105,7 +105,7 @@ class Load
         ];
 
         foreach ($names as $name) {
-            if (! isset($this->cacheLoaded[$name]) || $force) {
+            if (!isset($this->cacheLoaded[$name]) || $force) {
                 $this->cacheLoaded[$name] = $this->cache($name, $option, $force);
             }
         }
@@ -274,7 +274,7 @@ class Load
             $method = 'handle';
         }
 
-        if (! is_object($cache = $this->container->make($name))) {
+        if (!is_object($cache = $this->container->make($name))) {
             throw new InvalidArgumentException(sprintf('Cache %s is not valid.', $name));
         }
 

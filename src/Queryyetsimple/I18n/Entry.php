@@ -62,7 +62,7 @@ class Entry
     public function __construct($args = [])
     {
         // if no singular -- empty object
-        if (! isset($args['singular'])) {
+        if (!isset($args['singular'])) {
             return;
         }
         // get member variable values from args hash
@@ -72,13 +72,13 @@ class Entry
         if (isset($args['plural']) && $args['plural']) {
             $this->is_plural = true;
         }
-        if (! is_array($this->translations)) {
+        if (!is_array($this->translations)) {
             $this->translations = [];
         }
-        if (! is_array($this->references)) {
+        if (!is_array($this->references)) {
             $this->references = [];
         }
-        if (! is_array($this->flags)) {
+        if (!is_array($this->flags)) {
             $this->flags = [];
         }
     }
@@ -94,7 +94,7 @@ class Entry
             return false;
         }
         // Prepend context and EOT, like in MO files
-        $key = ! $this->context ? $this->singular : $this->context . chr(4) . $this->singular;
+        $key = !$this->context ? $this->singular : $this->context.chr(4).$this->singular;
         // Standardize on \n line endings
         $key = str_replace([
             "\r\n",

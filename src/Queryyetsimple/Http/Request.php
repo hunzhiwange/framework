@@ -281,7 +281,7 @@ class Request implements IRequest, IArray, ArrayAccess
         $input = $this->all();
 
         foreach ($keys as $value) {
-            if (! array_key_exists($value, $input)) {
+            if (!array_key_exists($value, $input)) {
                 return false;
             }
         }
@@ -460,7 +460,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $files = $this->file($key);
 
-        if (! is_array($files)) {
+        if (!is_array($files)) {
             $files = [$files];
         }
 
@@ -677,7 +677,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $contentType = $this->headers->get('CONTENT_TYPE');
 
-        if (! $contentType) {
+        if (!$contentType) {
             return false;
         }
 
@@ -703,7 +703,7 @@ class Request implements IRequest, IArray, ArrayAccess
             return true;
         }
 
-        if ($this->isAjax() && ! $this->isPjax() && $this->isAcceptAny()) {
+        if ($this->isAjax() && !$this->isPjax() && $this->isAcceptAny()) {
             return true;
         }
 
@@ -719,7 +719,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $accept = $this->headers->get('ACCEPT');
 
-        if (! $accept) {
+        if (!$accept) {
             return false;
         }
 
@@ -741,7 +741,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $accept = $this->headers->get('ACCEPT');
 
-        if (! $accept) {
+        if (!$accept) {
             return true;
         }
 
@@ -1082,7 +1082,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function getNode()
     {
-        return $this->app() . '://' . $this->controller() . '/' . $this->action();
+        return $this->app().'://'.$this->controller().'/'.$this->action();
     }
 
     /**
@@ -1190,7 +1190,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function getRoot()
     {
-        return rtrim($this->getSchemeAndHttpHost() . $this->getBaseUrl(), '/');
+        return rtrim($this->getSchemeAndHttpHost().$this->getBaseUrl(), '/');
     }
 
     /**
@@ -1254,7 +1254,7 @@ class Request implements IRequest, IArray, ArrayAccess
             return $this->getHost();
         }
 
-        return $this->getHost() . ':' . $port;
+        return $this->getHost().':'.$port;
     }
 
     /**
@@ -1266,7 +1266,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $host = $this->headers->get('X_FORWARDED_HOST', $this->headers->get('HOST', ''));
 
-        if (! $host) {
+        if (!$host) {
             $host = $this->server->get('SERVER_NAME', $this->server->get('SERVER_ADDR', ''));
         }
 
@@ -1284,7 +1284,7 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     public function getSchemeAndHttpHost()
     {
-        return $this->getScheme() . '://' . $this->getHttpHost();
+        return $this->getScheme().'://'.$this->getHttpHost();
     }
 
     /**
@@ -1295,10 +1295,10 @@ class Request implements IRequest, IArray, ArrayAccess
     public function getUri()
     {
         if (null !== $queryString = $this->getQueryString()) {
-            $queryString = '?' . $queryString;
+            $queryString = '?'.$queryString;
         }
 
-        return $this->getSchemeAndHttpHost() . $this->getBaseUrl() . $this->getPathInfo() . $queryString;
+        return $this->getSchemeAndHttpHost().$this->getBaseUrl().$this->getPathInfo().$queryString;
     }
 
     /**
@@ -1310,7 +1310,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $port = $this->server->get('SERVER_PORT');
 
-        if (! $port) {
+        if (!$port) {
             $port = 'https' === $this->getScheme() ? 443 : 80;
         }
 
@@ -1461,7 +1461,7 @@ class Request implements IRequest, IArray, ArrayAccess
             $url = '';
             do {
                 $seg = $segs[$index];
-                $url = '/' . $seg . $url;
+                $url = '/'.$seg.$url;
                 ++$index;
             } while (($maxCount > $index) && (false !== ($pos = strpos($path, $url))) && (0 !== $pos));
         }
@@ -1473,7 +1473,7 @@ class Request implements IRequest, IArray, ArrayAccess
         $url = (string) $url;
 
         if ('' !== $requestUri && '/' !== substr($requestUri, 0, 1)) {
-            $requestUri = '/' . $requestUri;
+            $requestUri = '/'.$requestUri;
         }
 
         if ($url) {
@@ -1486,12 +1486,12 @@ class Request implements IRequest, IArray, ArrayAccess
             $prefix = $this->getUrlencodedPrefix($requestUri, dirname($url));
 
             if (false !== $prefix) {
-                return $this->baseUrl = rtrim($prefix, '/') . '/';
+                return $this->baseUrl = rtrim($prefix, '/').'/';
             }
         }
 
         $basename = basename($url);
-        if (empty($basename) || ! strpos(rawurldecode($requestUri), $basename)) {
+        if (empty($basename) || !strpos(rawurldecode($requestUri), $basename)) {
             return $this->baseUrl = '';
         }
 
@@ -1499,7 +1499,7 @@ class Request implements IRequest, IArray, ArrayAccess
             $url = substr($requestUri, 0, $pos + strlen($url));
         }
 
-        return $this->baseUrl = rtrim($url, '/') . '/';
+        return $this->baseUrl = rtrim($url, '/').'/';
     }
 
     /**
@@ -1515,11 +1515,11 @@ class Request implements IRequest, IArray, ArrayAccess
 
         $requestUri = $this->headers->get('X_REWRITE_URL', $this->server->get('REQUEST_URI', ''));
 
-        if (! $requestUri) {
+        if (!$requestUri) {
             $requestUri = $this->server->get('ORIG_PATH_INFO');
 
             if ($this->server->get('QUERY_STRING')) {
-                $requestUri .= '?' . $this->server->get('QUERY_STRING');
+                $requestUri .= '?'.$this->server->get('QUERY_STRING');
             }
         }
 
@@ -1580,7 +1580,7 @@ class Request implements IRequest, IArray, ArrayAccess
         $parts = [];
 
         foreach (explode('&', $queryString) as $item) {
-            if ('' === $item || 0 === strpos($item, static::PATHINFO_URL . '=')) {
+            if ('' === $item || 0 === strpos($item, static::PATHINFO_URL.'=')) {
                 continue;
             }
 

@@ -29,7 +29,7 @@ use Leevel\Console\Argument;
 /**
  * 导入消息队列配置.
  */
-require dirname(__DIR__) . '/config.php';
+require dirname(__DIR__).'/config.php';
 
 /**
  * 添加新的任务
@@ -76,9 +76,9 @@ class Job extends Command
             $payload['attempts'] = 1;
 
             // 注册处理的队列
-            $connect = 'Leevel\Queue\queues\\' . $this->argument('connect');
+            $connect = 'Leevel\Queue\queues\\'.$this->argument('connect');
 
-            if (! class_exists($connect)) {
+            if (!class_exists($connect)) {
                 $this->error($this->time(sprintf('Connect %s not exits.', $connect)));
 
                 return;
@@ -105,13 +105,13 @@ class Job extends Command
         if ($status) {
             $this->info(
                 $this->time(
-                    sprintf('%s add succeed.', $this->option('queue') . ':' . $this->argument('job'))
+                    sprintf('%s add succeed.', $this->option('queue').':'.$this->argument('job'))
                 )
             );
         } else {
             $this->error(
                 $this->time(
-                    sprintf('%s add failed.', $this->option('queue') . ':' . $this->argument('job'))
+                    sprintf('%s add failed.', $this->option('queue').':'.$this->argument('job'))
                 )
             );
         }

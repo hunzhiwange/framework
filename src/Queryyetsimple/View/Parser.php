@@ -210,7 +210,7 @@ class Parser implements IParser
         if (false === $icontent) {
             $cache = file_get_contents($file);
 
-            if (! is_file($file)) {
+            if (!is_file($file)) {
                 throw new InvalidArgumentException(
                     printf('file %s is not exits', $file)
                 );
@@ -237,7 +237,7 @@ class Parser implements IParser
             $this->topTheme($theme);
 
             // 分析模板生成模板树
-            $parser = $parser . 'Parse';
+            $parser = $parser.'Parse';
 
             // 分析
             $this->{$parser}($cache);
@@ -265,8 +265,8 @@ class Parser implements IParser
     {
         $rand = rand(1000000, 9999999);
 
-        return "__##revert##START##{$rand}@" .
-            base64_encode($content) .
+        return "__##revert##START##{$rand}@".
+            base64_encode($content).
             '##END##revert##__';
     }
 
@@ -281,8 +281,8 @@ class Parser implements IParser
     {
         $rand = rand(1000000, 9999999);
 
-        return "__##global##START##{$rand}@" .
-            base64_encode($content) .
+        return "__##global##START##{$rand}@".
+            base64_encode($content).
             '##END##global##__';
     }
 
@@ -374,21 +374,21 @@ class Parser implements IParser
         }
 
         // 没有任何编译器
-        if (! count($names)) {
+        if (!count($names)) {
             return;
         }
 
         // 正则分析
         $tag = $this->getTag('code');
         $names = implode('|', $names);
-        $regex = '/' . $tag['left'] . "\s*({$names})(|.+?)" . $tag['right'] . '/s';
+        $regex = '/'.$tag['left']."\s*({$names})(|.+?)".$tag['right'].'/s';
 
         if (preg_match_all($regex, $compiled, $res)) {
             $startPos = 0;
 
             foreach ($res[0] as $index => &$source) {
                 $type = trim($res[1][$index]);
-                ! $type && $type = '/';
+                !$type && $type = '/';
 
                 $content = trim($res[2][$index]);
 
@@ -397,7 +397,7 @@ class Parser implements IParser
                     'content' => $content,
 
                     // 编译器
-                    'compiler' => $this->compilers['code'][$type] . 'Code',
+                    'compiler' => $this->compilers['code'][$type].'Code',
                     'children' => [],
                 ];
 
@@ -540,17 +540,17 @@ class Parser implements IParser
         }
 
         // 没有任何编译器
-        if (! count($names)) {
+        if (!count($names)) {
             return;
         }
 
         // 正则分析
         $tag = $this->getTag($nodeType);
         $names = implode('|', $names);
-        $regex = "/{$tag['left']}\s*(\/?)(({$names})(:[^\s" .
-            (true === $this->jsNode ? '' : "\>") .
-            "\}]+)?)(\s[^" .
-            (true === $this->jsNode ? '' : '>') .
+        $regex = "/{$tag['left']}\s*(\/?)(({$names})(:[^\s".
+            (true === $this->jsNode ? '' : "\>").
+            "\}]+)?)(\s[^".
+            (true === $this->jsNode ? '' : '>').
             "\}]*?)?\/?{$tag['right']}/isx";
 
         // 标签名称位置
@@ -639,14 +639,14 @@ class Parser implements IParser
             $tailTag = $tailStack->out();
 
             // 单标签节点
-            if (! $tailTag or ! $this->findHeadTag($tag, $tailTag)) {
+            if (!$tailTag or !$this->findHeadTag($tag, $tailTag)) {
                 if ($nodeTag[$tag['name']]['single'] !== true) {
                     throw new InvalidArgumentException(
                         sprintf(
                             '%s type nodes must be used in pairs, and no corresponding tail tags are found.',
                             $tag['name']
-                        ) .
-                        '<br />' .
+                        ).
+                        '<br />'.
                         $this->getLocation($tag['position'])
                     );
                 }
@@ -660,7 +660,7 @@ class Parser implements IParser
                     'content' => $tag['content'],
 
                     // 编译器
-                    'compiler' => $tag['name'] . $compiler,
+                    'compiler' => $tag['name'].$compiler,
                     'source' => $tag['source'],
                     'name' => $tag['name'],
                 ];
@@ -680,7 +680,7 @@ class Parser implements IParser
                     'content' => $source,
 
                     // 编译器
-                    'compiler' => $tag['name'] . $compiler,
+                    'compiler' => $tag['name'].$compiler,
                     'source' => $source,
                     'name' => $tag['name'],
                 ];
@@ -770,7 +770,7 @@ class Parser implements IParser
      */
     protected function registerCompiler($type, $name, $tag)
     {
-        if (! is_array($name)) {
+        if (!is_array($name)) {
             $name = (array) $name;
         }
 
@@ -825,7 +825,7 @@ class Parser implements IParser
 
         // 编译自身
         if ($theme['compiler']) {
-            $compilers = $theme['compiler'] . 'Compiler';
+            $compilers = $theme['compiler'].'Compiler';
             $this->compiler->{$compilers}($theme);
         }
     }
@@ -838,13 +838,13 @@ class Parser implements IParser
      */
     protected function makeCacheFile($cachePath, &$compiled)
     {
-        ! is_file($cachePath) &&
-            ! is_dir(dirname($cachePath)) &&
+        !is_file($cachePath) &&
+            !is_dir(dirname($cachePath)) &&
             mkdir(dirname($cachePath), 0777, true);
 
-        if (! file_put_contents($cachePath,
-            '<?' . 'php /* ' . date('Y-m-d H:i:s') .
-            ' */ ?' . '>' . PHP_EOL . $compiled)) {
+        if (!file_put_contents($cachePath,
+            '<?'.'php /* '.date('Y-m-d H:i:s').
+            ' */ ?'.'>'.PHP_EOL.$compiled)) {
             throw new InvalidArgumentException(
                 sprintf('Dir %s is not writeable', dirname($cachePath))
             );
@@ -1233,7 +1233,7 @@ class Parser implements IParser
                 $position['start_line'],
                 $position['start_in'],
                 $this->sourceFile ?: null
-            ) .
+            ).
             ($this->sourceFile ?
                 $this->getLocationSource($position) :
                 null);
@@ -1259,12 +1259,12 @@ class Parser implements IParser
             )
         );
 
-        $line[] = '<div class="key">' .
-            array_pop($line) .
+        $line[] = '<div class="key">'.
+            array_pop($line).
             '</div>';
 
-        return '<pre><code>' .
-            implode(PHP_EOL, $line) .
+        return '<pre><code>'.
+            implode(PHP_EOL, $line).
             '</code></pre>';
     }
 }

@@ -151,7 +151,7 @@ class Meta
     {
         $strUnique = static::getUnique($strTable, $mixConnect);
 
-        if (! isset(static::$arrInstances[$strUnique])) {
+        if (!isset(static::$arrInstances[$strUnique])) {
             return static::$arrInstances[$strUnique] = new static($strTable, $mixConnect);
         } else {
             return static::$arrInstances[$strUnique];
@@ -178,7 +178,7 @@ class Meta
      */
     public function fieldsProp($strField, $mixValue)
     {
-        if (! in_array($strField, $this->arrField)) {
+        if (!in_array($strField, $this->arrField)) {
             return $mixValue;
         }
 
@@ -363,6 +363,6 @@ class Meta
      */
     protected static function getUnique($strTable, $mixConnect = null)
     {
-        return $strTable . '.' . md5(serialize($mixConnect));
+        return $strTable.'.'.md5(serialize($mixConnect));
     }
 }

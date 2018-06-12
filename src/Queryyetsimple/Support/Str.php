@@ -43,7 +43,7 @@ class Str
      */
     public static function randAlphaNum($nLength, $sCharBox = null)
     {
-        if (! $nLength) {
+        if (!$nLength) {
             return false;
         }
         if (null === $sCharBox) {
@@ -63,7 +63,7 @@ class Str
      */
     public static function randAlphaNumLowercase($nLength, $sCharBox = null)
     {
-        if (! $nLength) {
+        if (!$nLength) {
             return false;
         }
         if (null === $sCharBox) {
@@ -83,7 +83,7 @@ class Str
      */
     public static function randAlphaNumUppercase($nLength, $sCharBox = null)
     {
-        if (! $nLength) {
+        if (!$nLength) {
             return false;
         }
         if (null === $sCharBox) {
@@ -103,7 +103,7 @@ class Str
      */
     public static function randAlpha($nLength, $sCharBox = null)
     {
-        if (! $nLength) {
+        if (!$nLength) {
             return false;
         }
         if (null === $sCharBox) {
@@ -123,7 +123,7 @@ class Str
      */
     public static function randAlphaLowercase($nLength, $sCharBox = null)
     {
-        if (! $nLength) {
+        if (!$nLength) {
             return false;
         }
         if (null === $sCharBox) {
@@ -145,7 +145,7 @@ class Str
      */
     public static function randAlphaUppercase($nLength, $sCharBox = null)
     {
-        if (! $nLength) {
+        if (!$nLength) {
             return false;
         }
         if (null === $sCharBox) {
@@ -167,7 +167,7 @@ class Str
      */
     public static function randNum($nLength, $sCharBox = null)
     {
-        if (! $nLength) {
+        if (!$nLength) {
             return false;
         }
         if (null === $sCharBox) {
@@ -187,7 +187,7 @@ class Str
      */
     public static function randChinese($nLength, $sCharBox = null)
     {
-        if (! $nLength) {
+        if (!$nLength) {
             return false;
         }
 
@@ -214,7 +214,7 @@ class Str
      */
     public static function randSting($nLength, $sCharBox)
     {
-        if (! $nLength || ! $sCharBox) {
+        if (!$nLength || !$sCharBox) {
             return false;
         }
 
@@ -238,13 +238,13 @@ class Str
 
         $sFromChar = 'utf8' == strtolower($sFromChar) ? 'utf-8' : strtolower($sFromChar);
         $sToChar = 'utf8' == strtolower($sToChar) ? 'utf-8' : strtolower($sToChar);
-        if ($sFromChar == $sToChar || (is_scalar($mixContents) && ! is_string($mixContents))) {
+        if ($sFromChar == $sToChar || (is_scalar($mixContents) && !is_string($mixContents))) {
             return $mixContents;
         }
 
         if (is_string($mixContents)) {
             if (function_exists('iconv')) {
-                return iconv($sFromChar, $sToChar . '//IGNORE', $mixContents);
+                return iconv($sFromChar, $sToChar.'//IGNORE', $mixContents);
             } elseif (function_exists('mb_convert_encoding')) {
                 return mb_convert_encoding($mixContents, $sToChar, $sFromChar);
             } else {
@@ -308,7 +308,7 @@ class Str
         $sSlice = implode('', array_slice($arrMatch[0], $nStart, $nLength));
 
         if ($bSuffix) {
-            return $sSlice . '…';
+            return $sSlice.'…';
         }
 
         return $sSlice;
@@ -332,12 +332,12 @@ class Str
         if (0 == $nHover) {
             $nMin = floor($nSec / 60);
             if (0 == $nMin) {
-                $sReturn = $nSec . ' ' . ($arrLang['seconds'] ?? 'seconds ago');
+                $sReturn = $nSec.' '.($arrLang['seconds'] ?? 'seconds ago');
             } else {
-                $sReturn = $nMin . ' ' . ($arrLang['minutes'] ?? 'minutes ago');
+                $sReturn = $nMin.' '.($arrLang['minutes'] ?? 'minutes ago');
             }
         } elseif ($nHover < 24) {
-            $sReturn = $nHover . ' ' . ($arrLang['hour'] ?? 'hour ago');
+            $sReturn = $nHover.' '.($arrLang['hour'] ?? 'hour ago');
         } else {
             $sReturn = date($sDateFormat, $nDateTemp);
         }
@@ -356,13 +356,13 @@ class Str
     public static function formatBytes($nFileSize, $booUnit = true)
     {
         if ($nFileSize >= 1073741824) {
-            $nFileSize = round($nFileSize / 1073741824, 2) . ($booUnit ? 'G' : '');
+            $nFileSize = round($nFileSize / 1073741824, 2).($booUnit ? 'G' : '');
         } elseif ($nFileSize >= 1048576) {
-            $nFileSize = round($nFileSize / 1048576, 2) . ($booUnit ? 'M' : '');
+            $nFileSize = round($nFileSize / 1048576, 2).($booUnit ? 'M' : '');
         } elseif ($nFileSize >= 1024) {
-            $nFileSize = round($nFileSize / 1024, 2) . ($booUnit ? 'K' : '');
+            $nFileSize = round($nFileSize / 1024, 2).($booUnit ? 'K' : '');
         } else {
-            $nFileSize = $nFileSize . ($booUnit ? 'B' : '');
+            $nFileSize = $nFileSize.($booUnit ? 'B' : '');
         }
 
         return $nFileSize;
@@ -378,7 +378,7 @@ class Str
      */
     public static function camelize($strValue, $strSeparator = '_')
     {
-        $strValue = $strSeparator . str_replace($strSeparator, ' ', strtolower($strValue));
+        $strValue = $strSeparator.str_replace($strSeparator, ' ', strtolower($strValue));
 
         return ltrim(str_replace(' ', '', ucwords($strValue)), $strSeparator);
     }
@@ -393,7 +393,7 @@ class Str
      */
     public static function unCamelize($strValue, $strSeparator = '_')
     {
-        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1' . $strSeparator . '$2', $strValue));
+        return strtolower(preg_replace('/([a-z])([A-Z])/', '$1'.$strSeparator.'$2', $strValue));
     }
 
     /**

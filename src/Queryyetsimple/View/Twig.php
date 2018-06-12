@@ -108,7 +108,7 @@ class Twig extends Connect implements IConnect
      */
     public function resolverParser()
     {
-        if (! $this->parseResolver) {
+        if (!$this->parseResolver) {
             throw new RuntimeException('Twig theme not set parse resolver');
         }
 

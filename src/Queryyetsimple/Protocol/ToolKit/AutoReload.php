@@ -101,7 +101,7 @@ class AutoReload
      */
     public function __construct(int $pid)
     {
-        if (! extension_loaded('inotify')) {
+        if (!extension_loaded('inotify')) {
             throw new AutoReloadException('PHP extension inotify is not install.');
         }
 
@@ -117,7 +117,7 @@ class AutoReload
         swoole_event_add($this->inotify, function ($ifd) {
             $events = inotify_read($this->inotify);
 
-            if (! $events) {
+            if (!$events) {
                 return;
             }
 
@@ -134,13 +134,13 @@ class AutoReload
                     $fileType = strrchr($ev['name'], '.');
 
                     // 非重启类型
-                    if (! isset($this->reloadFileTypes[$fileType])) {
+                    if (!isset($this->reloadFileTypes[$fileType])) {
                         continue;
                     }
                 }
 
                 // 正在 reload，不再接受任何事件，冻结 10 秒
-                if (! $this->reloading) {
+                if (!$this->reloading) {
                     $this->putLog('After 10 seconds reload the server');
 
                     // 有事件发生了，进行重启
@@ -173,7 +173,7 @@ class AutoReload
     public function watch(string $dir, bool $root = true)
     {
         // 目录不存在
-        if (! is_dir($dir)) {
+        if (!is_dir($dir)) {
             throw new AutoReloadException(sprintf('%s is not a directory.', $dir));
         }
 
@@ -196,7 +196,7 @@ class AutoReload
                 continue;
             }
 
-            $path = $dir . '/' . $f;
+            $path = $dir.'/'.$f;
 
             // 递归目录
             if (is_dir($path)) {
@@ -223,7 +223,7 @@ class AutoReload
     public function addFileType(string $type)
     {
         $type = trim($type, '.');
-        $this->reloadFileTypes['.' . $type] = true;
+        $this->reloadFileTypes['.'.$type] = true;
     }
 
     /**
@@ -292,6 +292,6 @@ class AutoReload
      */
     protected function putLog(string $log)
     {
-        fwrite(STDOUT, $log . PHP_EOL);
+        fwrite(STDOUT, $log.PHP_EOL);
     }
 }

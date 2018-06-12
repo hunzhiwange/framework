@@ -64,7 +64,7 @@ abstract class Facade
             return self::$instances[$unique];
         }
 
-        if (! is_object(self::$instances[$unique] = self::container()->make($unique))) {
+        if (!is_object(self::$instances[$unique] = self::container()->make($unique))) {
             throw new RuntimeException(sprintf('Services %s was not found in the IOC container.', $unique));
         }
 
@@ -112,7 +112,7 @@ abstract class Facade
     public static function __callStatic(string $method, array $args)
     {
         $instance = static::facades();
-        if (! $instance) {
+        if (!$instance) {
             throw new RuntimeException('Can not find instance from container.');
         }
 
@@ -120,7 +120,7 @@ abstract class Facade
             $instance,
             $method,
         ];
-        if (! is_callable($method)) {
+        if (!is_callable($method)) {
             throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
         }
 

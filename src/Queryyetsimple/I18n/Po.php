@@ -23,7 +23,7 @@ namespace Leevel\I18n;
 use Leevel\I18n\Streams\File;
 use Leevel\I18n\Translations\Gettext;
 
-if (! defined('PO_MAX_LINE_LEN')) {
+if (!defined('PO_MAX_LINE_LEN')) {
     define('PO_MAX_LINE_LEN', '79');
 }
 
@@ -62,7 +62,7 @@ class Po extends Gettext
         }
         $poified = static::poify($header_string);
         if ($this->comments_before_headers) {
-            $before_headers = $this->prepend_each_line(rtrim($this->comments_before_headers) . "\n", '# ');
+            $before_headers = $this->prepend_each_line(rtrim($this->comments_before_headers)."\n", '# ');
         } else {
             $before_headers = '';
         }
@@ -154,9 +154,9 @@ class Po extends Gettext
             "\t" => '\t',
         ];
         $string = str_replace(array_keys($replaces), array_values($replaces), $string);
-        $po = $quote . implode("${slash}n$quote$newline$quote", explode($newline, $string)) . $quote;
+        $po = $quote.implode("${slash}n$quote$newline$quote", explode($newline, $string)).$quote;
         // add empty string on first line for readbility
-        if (false !== strpos($string, $newline) && (substr_count($string, $newline) > 1 || ! ($newline === substr($string, -strlen($newline))))) {
+        if (false !== strpos($string, $newline) && (substr_count($string, $newline) > 1 || !($newline === substr($string, -strlen($newline))))) {
             $po = "$quote$quote$newline$po";
         }
         // remove empty strings
@@ -191,7 +191,7 @@ class Po extends Gettext
             preg_match_all('/./u', $line, $chars);
             $chars = $chars[0];
             foreach ($chars as $char) {
-                if (! $previous_is_backslash) {
+                if (!$previous_is_backslash) {
                     if ('\\' == $char) {
                         $previous_is_backslash = true;
                     } else {
@@ -231,11 +231,11 @@ class Po extends Gettext
             $append = "\n";
         }
         foreach ($lines as &$line) {
-            $line = $with . $line;
+            $line = $with.$line;
         }
         unset($line);
 
-        return implode("\n", $lines) . $append;
+        return implode("\n", $lines).$append;
     }
 
     /**
@@ -267,35 +267,35 @@ class Po extends Gettext
             return false;
         }
         $po = [];
-        if (! empty($entry->translator_comments)) {
+        if (!empty($entry->translator_comments)) {
             $po[] = static::comment_block($entry->translator_comments);
         }
-        if (! empty($entry->extracted_comments)) {
+        if (!empty($entry->extracted_comments)) {
             $po[] = static::comment_block($entry->extracted_comments, '.');
         }
-        if (! empty($entry->references)) {
+        if (!empty($entry->references)) {
             $po[] = static::comment_block(implode(' ', $entry->references), ':');
         }
-        if (! empty($entry->flags)) {
+        if (!empty($entry->flags)) {
             $po[] = static::comment_block(implode(', ', $entry->flags), ',');
         }
         if ($entry->context) {
-            $po[] = 'msgctxt ' . static::poify($entry->context);
+            $po[] = 'msgctxt '.static::poify($entry->context);
         }
-        $po[] = 'msgid ' . static::poify($entry->singular);
-        if (! $entry->is_plural) {
+        $po[] = 'msgid '.static::poify($entry->singular);
+        if (!$entry->is_plural) {
             $translation = empty($entry->translations) ? '' : $entry->translations[0];
             $translation = static::match_begin_and_end_newlines($translation, $entry->singular);
-            $po[] = 'msgstr ' . static::poify($translation);
+            $po[] = 'msgstr '.static::poify($translation);
         } else {
-            $po[] = 'msgid_plural ' . static::poify($entry->plural);
+            $po[] = 'msgid_plural '.static::poify($entry->plural);
             $translations = empty($entry->translations) ? [
                 '',
                 '',
             ] : $entry->translations;
             foreach ($translations as $i => $translation) {
                 $translation = static::match_begin_and_end_newlines($translation, $entry->plural);
-                $po[] = "msgstr[$i] " . static::poify($translation);
+                $po[] = "msgstr[$i] ".static::poify($translation);
             }
         }
 
@@ -318,14 +318,14 @@ class Po extends Gettext
         $translation_begin = "\n" === substr($translation, 0, 1);
         $translation_end = "\n" === substr($translation, -1);
         if ($original_begin) {
-            if (! $translation_begin) {
-                $translation = "\n" . $translation;
+            if (!$translation_begin) {
+                $translation = "\n".$translation;
             }
         } elseif ($translation_begin) {
             $translation = ltrim($translation, "\n");
         }
         if ($original_end) {
-            if (! $translation_end) {
+            if (!$translation_end) {
                 $translation .= "\n";
             }
         } elseif ($translation_end) {
@@ -343,13 +343,13 @@ class Po extends Gettext
     public function import_from_file($filename)
     {
         $f = fopen($filename, 'r');
-        if (! $f) {
+        if (!$f) {
             return false;
         }
         $lineno = 0;
         while (true) {
             $res = $this->read_entry($f, $lineno);
-            if (! $res) {
+            if (!$res) {
                 break;
             }
             if ('' == $res['entry']->singular) {
@@ -362,7 +362,7 @@ class Po extends Gettext
         if (false === $res) {
             return false;
         }
-        if (! $this->headers && ! $this->entries) {
+        if (!$this->headers && !$this->entries) {
             return false;
         }
 
@@ -397,11 +397,11 @@ class Po extends Gettext
         while (true) {
             ++$lineno;
             $line = static::read_line($f);
-            if (! $line) {
+            if (!$line) {
                 if (feof($f)) {
                     if (self::is_final($context)) {
                         break;
-                    } elseif (! $context) { // we haven't read a line and eof came
+                    } elseif (!$context) { // we haven't read a line and eof came
                         return null;
                     } else {
                         return false;
@@ -537,7 +537,7 @@ class Po extends Gettext
             return true;
         }
         $line = $use_last_line ? $last_line : fgets($f);
-        $line = ("\r\n" == substr($line ?: '', -2)) ? rtrim($line, "\r\n") . "\n" : $line;
+        $line = ("\r\n" == substr($line ?: '', -2)) ? rtrim($line, "\r\n")."\n" : $line;
         $last_line = $line;
         $use_last_line = false;
 
@@ -555,11 +555,11 @@ class Po extends Gettext
         if ('#:' == $first_two) {
             $entry->references = array_merge($entry->references, preg_split('/\s+/', $comment));
         } elseif ('#.' == $first_two) {
-            $entry->extracted_comments = trim($entry->extracted_comments . "\n" . $comment);
+            $entry->extracted_comments = trim($entry->extracted_comments."\n".$comment);
         } elseif ('#,' == $first_two) {
             $entry->flags = array_merge($entry->flags, preg_split('/,\s*/', $comment));
         } else {
-            $entry->translator_comments = trim($entry->translator_comments . "\n" . $comment);
+            $entry->translator_comments = trim($entry->translator_comments."\n".$comment);
         }
     }
 

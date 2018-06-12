@@ -40,7 +40,7 @@ class FileResponseTest extends TestCase
 {
     public function testConstruction()
     {
-        $file = __DIR__ . '/../../README.md';
+        $file = __DIR__.'/../../README.md';
 
         $response = new FileResponse($file, 404, ['X-Header' => 'Foo'], null, true, true);
         $this->assertEquals(404, $response->getStatusCode());

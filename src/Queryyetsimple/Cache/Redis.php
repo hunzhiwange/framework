@@ -59,7 +59,7 @@ class Redis extends Connect implements IConnect
      */
     public function __construct(array $option = [])
     {
-        if (! extension_loaded('redis')) {
+        if (!extension_loaded('redis')) {
             throw new RuntimeException('Redis extension must be loaded before use.');
         }
 

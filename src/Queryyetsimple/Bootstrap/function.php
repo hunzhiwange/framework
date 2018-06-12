@@ -22,7 +22,7 @@ use Leevel\Log\Ilog;
 use Leevel\Bootstrap\Project;
 use Leevel\Support\Debug\Dump;
 
-if (! function_exists('project')) {
+if (!function_exists('project')) {
     /**
      * 返回项目容器或者注入.
      *
@@ -44,7 +44,7 @@ if (! function_exists('project')) {
     }
 }
 
-if (! function_exists('app')) {
+if (!function_exists('app')) {
     /**
      * 返回项目容器或者注入
      * project 别名函数.
@@ -60,7 +60,7 @@ if (! function_exists('app')) {
     }
 }
 
-if (! function_exists('run_with_extension')) {
+if (!function_exists('run_with_extension')) {
     /**
      * 是否以扩展方式运行.
      *
@@ -72,7 +72,7 @@ if (! function_exists('run_with_extension')) {
     }
 }
 
-if (! function_exists('api')) {
+if (!function_exists('api')) {
     /**
      * 是否为 API.
      *
@@ -84,7 +84,7 @@ if (! function_exists('api')) {
     }
 }
 
-if (! function_exists('phpui')) {
+if (!function_exists('phpui')) {
     /**
      * 是否为 PHPUI.
      *
@@ -96,7 +96,7 @@ if (! function_exists('phpui')) {
     }
 }
 
-if (! function_exists('console')) {
+if (!function_exists('console')) {
     /**
      * 是否为 Console.
      *
@@ -108,7 +108,7 @@ if (! function_exists('console')) {
     }
 }
 
-if (! function_exists('dd')) {
+if (!function_exists('dd')) {
     /**
      * 调试一个变量.
      *
@@ -123,7 +123,7 @@ if (! function_exists('dd')) {
     }
 }
 
-if (! function_exists('dump')) {
+if (!function_exists('dump')) {
     /**
      * 调试一个变量.
      *
@@ -138,7 +138,7 @@ if (! function_exists('dump')) {
     }
 }
 
-if (! function_exists('env')) {
+if (!function_exists('env')) {
     /**
      * 取得项目的环境变量.支持 boolean, empty 和 null.
      *
@@ -193,7 +193,7 @@ if (! function_exists('env')) {
     }
 }
 
-if (! function_exists('encrypt')) {
+if (!function_exists('encrypt')) {
     /**
      * 加密字符串.
      *
@@ -207,7 +207,7 @@ if (! function_exists('encrypt')) {
     }
 }
 
-if (! function_exists('decrypt')) {
+if (!function_exists('decrypt')) {
     /**
      * 解密字符串.
      *
@@ -221,7 +221,7 @@ if (! function_exists('decrypt')) {
     }
 }
 
-if (! function_exists('session')) {
+if (!function_exists('session')) {
     /**
      * 设置或者获取 session 值
      *
@@ -244,7 +244,7 @@ if (! function_exists('session')) {
     }
 }
 
-if (! function_exists('flash')) {
+if (!function_exists('flash')) {
     /**
      * 返回 flash.
      *
@@ -259,7 +259,7 @@ if (! function_exists('flash')) {
     }
 }
 
-if (! function_exists('url')) {
+if (!function_exists('url')) {
     /**
      * 生成路由地址
      *
@@ -276,7 +276,7 @@ if (! function_exists('url')) {
     }
 }
 
-if (! function_exists('prev_url')) {
+if (!function_exists('prev_url')) {
     /**
      * 上一次访问 URL 地址
      *
@@ -288,7 +288,7 @@ if (! function_exists('prev_url')) {
     }
 }
 
-if (! function_exists('__')) {
+if (!function_exists('__')) {
     /**
      * 语言包.
      *
@@ -312,7 +312,7 @@ if (! function_exists('__')) {
     }
 }
 
-if (! function_exists('__sprintf')) {
+if (!function_exists('__sprintf')) {
     /**
      * lang.
      *
@@ -326,7 +326,7 @@ if (! function_exists('__sprintf')) {
     }
 }
 
-if (! function_exists('gettext')) {
+if (!function_exists('gettext')) {
     /**
      * 语言包.
      *
@@ -340,7 +340,7 @@ if (! function_exists('gettext')) {
     }
 }
 
-if (! function_exists('value')) {
+if (!function_exists('value')) {
     /**
      * 返回默认值
      *
@@ -355,11 +355,11 @@ if (! function_exists('value')) {
         }
         $mixValue = array_shift($arr);
 
-        return ! is_string($mixValue) && is_callable($mixValue) ? call_user_func_array($mixValue, $arr) : $mixValue;
+        return !is_string($mixValue) && is_callable($mixValue) ? call_user_func_array($mixValue, $arr) : $mixValue;
     }
 }
 
-if (! function_exists('log')) {
+if (!function_exists('log')) {
     /**
      * 记录错误消息.
      *
@@ -374,7 +374,7 @@ if (! function_exists('log')) {
     }
 }
 
-if (! function_exists('debug')) {
+if (!function_exists('debug')) {
     /**
      * 记录错误消息 debug.
      *
@@ -388,7 +388,7 @@ if (! function_exists('debug')) {
     }
 }
 
-if (! function_exists('info')) {
+if (!function_exists('info')) {
     /**
      * 记录错误消息 info.
      *
@@ -402,7 +402,7 @@ if (! function_exists('info')) {
     }
 }
 
-if (! function_exists('notice')) {
+if (!function_exists('notice')) {
     /**
      * 记录错误消息 notice.
      *
@@ -416,7 +416,7 @@ if (! function_exists('notice')) {
     }
 }
 
-if (! function_exists('warning')) {
+if (!function_exists('warning')) {
     /**
      * 记录错误消息 warning.
      *
@@ -430,7 +430,7 @@ if (! function_exists('warning')) {
     }
 }
 
-if (! function_exists('error')) {
+if (!function_exists('error')) {
     /**
      * 记录错误消息 error.
      *
@@ -444,7 +444,7 @@ if (! function_exists('error')) {
     }
 }
 
-if (! function_exists('critical')) {
+if (!function_exists('critical')) {
     /**
      * 记录错误消息 critical.
      *
@@ -458,7 +458,7 @@ if (! function_exists('critical')) {
     }
 }
 
-if (! function_exists('alert')) {
+if (!function_exists('alert')) {
     /**
      * 记录错误消息 alert.
      *
@@ -472,7 +472,7 @@ if (! function_exists('alert')) {
     }
 }
 
-if (! function_exists('emergency')) {
+if (!function_exists('emergency')) {
     /**
      * 记录错误消息 emergency.
      *
@@ -486,7 +486,7 @@ if (! function_exists('emergency')) {
     }
 }
 
-if (! function_exists('option')) {
+if (!function_exists('option')) {
     /**
      * 设置或者获取 option 值
      *
@@ -509,7 +509,7 @@ if (! function_exists('option')) {
     }
 }
 
-if (! function_exists('cache')) {
+if (!function_exists('cache')) {
     /**
      * 设置或者获取 cache 值
      *
@@ -532,7 +532,7 @@ if (! function_exists('cache')) {
     }
 }
 
-if (! function_exists('path')) {
+if (!function_exists('path')) {
     /**
      * 取得项目路径.
      *
@@ -542,11 +542,11 @@ if (! function_exists('path')) {
      */
     function path($path = '')
     {
-        return project()->path() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->path().($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_application')) {
+if (!function_exists('path_application')) {
     /**
      * 取得项目应用路径.
      *
@@ -556,11 +556,11 @@ if (! function_exists('path_application')) {
      */
     function path_application($path = '')
     {
-        return project()->pathApplication() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathApplication().($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_common')) {
+if (!function_exists('path_common')) {
     /**
      * 取得项目公共路径.
      *
@@ -570,11 +570,11 @@ if (! function_exists('path_common')) {
      */
     function path_common($path = '')
     {
-        return project()->pathCommon() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathCommon().($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_runtime')) {
+if (!function_exists('path_runtime')) {
     /**
      * 取得项目缓存路径.
      *
@@ -584,11 +584,11 @@ if (! function_exists('path_runtime')) {
      */
     function path_runtime($path = '')
     {
-        return project()->pathRuntime() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathRuntime().($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_storage')) {
+if (!function_exists('path_storage')) {
     /**
      * 取得项目附件路径.
      *
@@ -598,11 +598,11 @@ if (! function_exists('path_storage')) {
      */
     function path_storage($path = '')
     {
-        return project()->pathStorage() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathStorage().($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_option')) {
+if (!function_exists('path_option')) {
     /**
      * 取得项目配置路径.
      *
@@ -612,11 +612,11 @@ if (! function_exists('path_option')) {
      */
     function path_option($path = '')
     {
-        return project()->pathOption() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathOption().($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_application')) {
+if (!function_exists('path_application')) {
     /**
      * 取得项目当前应用路径.
      *
@@ -627,11 +627,11 @@ if (! function_exists('path_application')) {
      */
     function path_an_application(string $path = '', ?string $app = null)
     {
-        return project()->pathAnApplication($app) . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathAnApplication($app).($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_theme')) {
+if (!function_exists('path_theme')) {
     /**
      * 取得项目当前应用主题路径.
      *
@@ -641,11 +641,11 @@ if (! function_exists('path_theme')) {
      */
     function path_theme($path = '')
     {
-        return project()->pathApplicationTheme() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathApplicationTheme().($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_file_cache')) {
+if (!function_exists('path_file_cache')) {
     /**
      * 取得项目当前应用文件缓存路径.
      *
@@ -655,11 +655,11 @@ if (! function_exists('path_file_cache')) {
      */
     function path_file_cache($path = '')
     {
-        return project()->pathApplicationCache('file') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathApplicationCache('file').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_log_cache')) {
+if (!function_exists('path_log_cache')) {
     /**
      * 取得项目当前应用日志缓存路径.
      *
@@ -669,11 +669,11 @@ if (! function_exists('path_log_cache')) {
      */
     function path_log_cache($path = '')
     {
-        return project()->pathApplicationCache('log') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathApplicationCache('log').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_swoole_cache')) {
+if (!function_exists('path_swoole_cache')) {
     /**
      * 取得项目当前应用 swoole 缓存路径.
      *
@@ -683,11 +683,11 @@ if (! function_exists('path_swoole_cache')) {
      */
     function path_swoole_cache($path = '')
     {
-        return project()->pathApplicationCache('swoole') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathApplicationCache('swoole').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_table_cache')) {
+if (!function_exists('path_table_cache')) {
     /**
      * 取得项目当前应用数据表缓存路径.
      *
@@ -697,11 +697,11 @@ if (! function_exists('path_table_cache')) {
      */
     function path_table_cache($path = '')
     {
-        return project()->pathApplicationCache('table') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathApplicationCache('table').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('path_router_cache')) {
+if (!function_exists('path_router_cache')) {
     /**
      * 取得项目当前应用路由缓存路径.
      *
@@ -711,11 +711,11 @@ if (! function_exists('path_router_cache')) {
      */
     function path_router_cache($path = 'router.php')
     {
-        return project()->pathApplicationCache('router') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+        return project()->pathApplicationCache('router').($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
-if (! function_exists('is_ajax_request')) {
+if (!function_exists('is_ajax_request')) {
     /**
      * 是否为 ajax 请求
      *
@@ -724,7 +724,7 @@ if (! function_exists('is_ajax_request')) {
     function is_ajax_request()
     {
         $oRequest = app('request');
-        if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
+        if ($oRequest->isAjax() && !$oRequest->isPjax()) {
             return true;
         }
 
@@ -732,7 +732,7 @@ if (! function_exists('is_ajax_request')) {
     }
 }
 
-if (! function_exists('set_ajax_request')) {
+if (!function_exists('set_ajax_request')) {
     /**
      * 强制设置是否为 ajax 请求
      *

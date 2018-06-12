@@ -68,14 +68,14 @@ class Init extends PhinxInit
 
         $path = realpath($path);
 
-        if (! is_writable($path)) {
+        if (!is_writable($path)) {
             throw new InvalidArgumentException(sprintf('The directory "%s" is not writable', $path));
         }
 
         // Compute the file path
         // TODO - maybe in the future we allow custom config names.
         $fileName = 'phinx.yml';
-        $filePath = $path . DIRECTORY_SEPARATOR . $fileName;
+        $filePath = $path.DIRECTORY_SEPARATOR.$fileName;
 
         if (file_exists($filePath)) {
             throw new InvalidArgumentException(sprintf('The file "%s" already exists', $filePath));
@@ -83,12 +83,12 @@ class Init extends PhinxInit
 
         // load the config template
         // 自定义 migrate.yml 文件
-        $contents = file_get_contents(__DIR__ . '/yml/migrate.yml');
+        $contents = file_get_contents(__DIR__.'/yml/migrate.yml');
 
         if (false === file_put_contents($filePath, $contents)) {
             throw new RuntimeException(sprintf('The file "%s" could not be written to', $path));
         }
 
-        $output->writeln('<info>created</info> .' . str_replace(getcwd(), '', $filePath));
+        $output->writeln('<info>created</info> .'.str_replace(getcwd(), '', $filePath));
     }
 }

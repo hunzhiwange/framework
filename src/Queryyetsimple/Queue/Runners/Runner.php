@@ -124,7 +124,7 @@ abstract class Runner extends PHPQueueRunner
                 $this->logger->addInfo(sprintf('Releasing job (%s).', $obJNewJob->job_id));
 
                 // 删除了就不能重新发布
-                if (! $obJNewJob->isDeleted()) {
+                if (!$obJNewJob->isDeleted()) {
                     $this->objQueue->releaseJob($obJNewJob->job_id);
                 }
 
@@ -133,7 +133,7 @@ abstract class Runner extends PHPQueueRunner
         }
 
         if ($nSleepTime) {
-            $this->logger->addInfo('Sleeping ' . ceil($nSleepTime / 1000000) . ' seconds.');
+            $this->logger->addInfo('Sleeping '.ceil($nSleepTime / 1000000).' seconds.');
             usleep($nSleepTime);
         }
 
@@ -161,7 +161,7 @@ abstract class Runner extends PHPQueueRunner
     {
         $booStatus = false;
 
-        if (! $objJob->isDeleted()) {
+        if (!$objJob->isDeleted()) {
             try {
                 $objJob->delete();
                 $objJob->failed();
@@ -199,7 +199,7 @@ abstract class Runner extends PHPQueueRunner
             $this->objQueue->onError($oEx);
 
             // 删除了就不能重新发布
-            if (! $obJJob->isDeleted()) {
+            if (!$obJJob->isDeleted()) {
                 $this->objQueue->releaseJob($obJJob->job_id);
             }
 

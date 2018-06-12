@@ -233,7 +233,7 @@ class Validate implements IValidate
      */
     public function fail()
     {
-        return ! $this->success();
+        return !$this->success();
     }
 
     /**
@@ -405,7 +405,7 @@ class Validate implements IValidate
         if ($this->checkTControl()) {
             return $this;
         }
-        if (! isset($this->arrRule[$strField])) {
+        if (!isset($this->arrRule[$strField])) {
             $this->arrRule[$strField] = [];
         }
 
@@ -448,7 +448,7 @@ class Validate implements IValidate
         if ($this->checkTControl()) {
             return $this;
         }
-        if (! isset($this->arrRule[$strField])) {
+        if (!isset($this->arrRule[$strField])) {
             $this->arrRule[$strField] = [];
         }
 
@@ -948,7 +948,7 @@ class Validate implements IValidate
             return $this->doAfterWithFormat($strFormat, $mixData, $arrParameter);
         }
 
-        if (! ($intTime = strtotime($arrParameter[0]))) {
+        if (!($intTime = strtotime($arrParameter[0]))) {
             return strtotime($mixData) > strtotime($this->getFieldValue($arrParameter[0]));
         }
 
@@ -972,7 +972,7 @@ class Validate implements IValidate
             return $this->doBeforeWithFormat($strFormat, $mixData, $arrParameter);
         }
 
-        if (! ($intTime = strtotime($arrParameter[0]))) {
+        if (!($intTime = strtotime($arrParameter[0]))) {
             return strtotime($mixData) < strtotime($this->getFieldValue($arrParameter[0]));
         }
 
@@ -1132,7 +1132,7 @@ class Validate implements IValidate
      */
     protected function validateNotBetween($strField, $mixData, $arrParameter)
     {
-        return ! $this->validateBetweenEqual($strField, $mixData, $arrParameter);
+        return !$this->validateBetweenEqual($strField, $mixData, $arrParameter);
     }
 
     /**
@@ -1162,7 +1162,7 @@ class Validate implements IValidate
      */
     protected function validateNotBetweenEqual($strField, $mixData, $arrParameter)
     {
-        return ! $this->validateBetween($strField, $mixData, $arrParameter);
+        return !$this->validateBetween($strField, $mixData, $arrParameter);
     }
 
     /**
@@ -1192,7 +1192,7 @@ class Validate implements IValidate
      */
     protected function validateNotIn($strField, $mixData, $arrParameter)
     {
-        return ! $this->validateIn($strField, $mixData, $arrParameter);
+        return !$this->validateIn($strField, $mixData, $arrParameter);
     }
 
     /**
@@ -1328,7 +1328,7 @@ class Validate implements IValidate
      */
     protected function validateNotEqual($strField, $mixData, $arrParameter)
     {
-        return ! $this->validateEqual($strField, $mixData, $arrParameter);
+        return !$this->validateEqual($strField, $mixData, $arrParameter);
     }
 
     /**
@@ -1388,7 +1388,7 @@ class Validate implements IValidate
      */
     protected function validateNotSame($strField, $mixData, $arrParameter)
     {
-        return ! $this->validateSame($strField, $mixData, $arrParameter);
+        return !$this->validateSame($strField, $mixData, $arrParameter);
     }
 
     /**
@@ -1448,7 +1448,7 @@ class Validate implements IValidate
      */
     protected function validateNotEmpty($strField, $mixData, $arrParameter)
     {
-        return ! $this->validateEmpty($strField, $mixData, $arrParameter);
+        return !$this->validateEmpty($strField, $mixData, $arrParameter);
     }
 
     /**
@@ -1476,7 +1476,7 @@ class Validate implements IValidate
      */
     protected function validateNotNull($strField, $mixData, $arrParameter)
     {
-        return ! $this->validateNull($strField, $mixData, $arrParameter);
+        return !$this->validateNull($strField, $mixData, $arrParameter);
     }
 
     /**
@@ -1864,7 +1864,7 @@ class Validate implements IValidate
      */
     protected function validateDenyIp($strField, $mixData, $arrParameter)
     {
-        return ! $this->validateAllowIp($strField, $mixData, $arrParameter);
+        return !$this->validateAllowIp($strField, $mixData, $arrParameter);
     }
 
     /**
@@ -1894,7 +1894,7 @@ class Validate implements IValidate
      */
     protected function validateJson($strField, $mixData, $arrParameter)
     {
-        if (! is_scalar($mixData) && ! method_exists($mixData, '__toString')) {
+        if (!is_scalar($mixData) && !method_exists($mixData, '__toString')) {
             return false;
         }
 
@@ -1992,7 +1992,7 @@ class Validate implements IValidate
      */
     protected function getParseRule($strField, $mixRule)
     {
-        if (! array_key_exists($strField, $this->arrRule)) {
+        if (!array_key_exists($strField, $this->arrRule)) {
             return;
         }
 
@@ -2100,7 +2100,7 @@ class Validate implements IValidate
      */
     protected function prepareRegexForWildcard($strRegex, $booStrict = true)
     {
-        return '/^' . str_replace('6084fef57e91a6ecb13fff498f9275a7', '(\S+)', $this->escapeRegexCharacter(str_replace('*', '6084fef57e91a6ecb13fff498f9275a7', $strRegex))) . ($booStrict ? '$' : '') . '/';
+        return '/^'.str_replace('6084fef57e91a6ecb13fff498f9275a7', '(\S+)', $this->escapeRegexCharacter(str_replace('*', '6084fef57e91a6ecb13fff498f9275a7', $strRegex))).($booStrict ? '$' : '').'/';
     }
 
     /**
@@ -2167,11 +2167,11 @@ class Validate implements IValidate
 
         if (is_array($mixMessage)) {
             foreach ($mixMessage as $strKey => $strMessage) {
-                $arrResult[$strField . '.' . $strKey] = $strMessage;
+                $arrResult[$strField.'.'.$strKey] = $strMessage;
             }
         } else {
             foreach ($this->getFieldRuleWithoutSkip($strField) as $strRule) {
-                $arrResult[$strField . '.' . $strRule] = $mixMessage;
+                $arrResult[$strField.'.'.$strRule] = $mixMessage;
             }
         }
 
@@ -2293,7 +2293,7 @@ class Validate implements IValidate
     protected function parseDataKeyRecursion($arrData, $strParentKey = '')
     {
         foreach ($arrData as $strKey => $mixData) {
-            $strFoo = ($strParentKey ? $strParentKey . '.' : '') . $strKey;
+            $strFoo = ($strParentKey ? $strParentKey.'.' : '').$strKey;
 
             if (is_array($mixData)) {
                 $this->parseDataKeyRecursion($mixData, $strFoo);
@@ -2316,8 +2316,8 @@ class Validate implements IValidate
     {
         $booFoo = $this->hasFieldRuleWithoutParameterReal($strField, $strRule);
 
-        if (! $booFoo && $strRule == static::DEFAULT_CONDITION) {
-            return ! $this->hasFieldRuleWithoutParameterReal($strField, [
+        if (!$booFoo && $strRule == static::DEFAULT_CONDITION) {
+            return !$this->hasFieldRuleWithoutParameterReal($strField, [
                 static::CONDITION_MUST,
                 static::CONDITION_VALUE,
             ]);
@@ -2338,7 +2338,7 @@ class Validate implements IValidate
      */
     protected function hasFieldRuleWithoutParameterReal($strField, $mixRule, $booStrict = false)
     {
-        if (! isset($this->arrRule[$strField])) {
+        if (!isset($this->arrRule[$strField])) {
             return false;
         }
 
@@ -2346,7 +2346,7 @@ class Validate implements IValidate
 
         foreach ($mixRule as $strRule) {
             if ($booStrict) {
-                if (! in_array($strRule, $this->arrRule[$strField])) {
+                if (!in_array($strRule, $this->arrRule[$strField])) {
                     return false;
                 }
             } elseif (in_array($strRule, $this->arrRule[$strField])) {
@@ -2395,7 +2395,7 @@ class Validate implements IValidate
         $mixFieldValue = $this->getFieldValue($strField);
 
         // 默认情况下存在即验证，没有设置字段则跳过
-        if (! $this->hasFieldValue($strField) && $this->hasFieldRuleWithoutParameter($strField, static::CONDITION_EXISTS)) {
+        if (!$this->hasFieldValue($strField) && $this->hasFieldRuleWithoutParameter($strField, static::CONDITION_EXISTS)) {
             return;
         }
 
@@ -2404,7 +2404,7 @@ class Validate implements IValidate
             return;
         }
 
-        if (! $this->{'validate' . ucwords(Str::camelize($strRule))}($strField, $mixFieldValue, $arrParameter)) {
+        if (!$this->{'validate'.ucwords(Str::camelize($strRule))}($strField, $mixFieldValue, $arrParameter)) {
             $this->addFailure($strField, $strRule, $arrParameter);
 
             return false;
@@ -2466,9 +2466,9 @@ class Validate implements IValidate
             'field' => $this->parseFieldName($strField),
         ];
 
-        if (! $this->isImplodeRuleParameter($strRule)) {
+        if (!$this->isImplodeRuleParameter($strRule)) {
             foreach ($arrParameter as $intKey => $mixParameter) {
-                $arrReplace['rule' . ($intKey ?: '')] = $mixParameter;
+                $arrReplace['rule'.($intKey ?: '')] = $mixParameter;
             }
         } else {
             $arrReplace['rule'] = implode(',', $arrParameter);
@@ -2492,7 +2492,7 @@ class Validate implements IValidate
      */
     protected function getFieldRuleMessage($strField, $strRule)
     {
-        return $this->arrMessage[$strField . '.' . $strRule] ?? $this->arrMessage[$strRule] ?? static::$arrDefaultMessage[$strRule] ?? '';
+        return $this->arrMessage[$strField.'.'.$strRule] ?? $this->arrMessage[$strRule] ?? static::$arrDefaultMessage[$strRule] ?? '';
     }
 
     /**
@@ -2575,7 +2575,7 @@ class Validate implements IValidate
      */
     protected function callClassExtend($strExtend, array $arrParameter)
     {
-        if (! $this->objContainer) {
+        if (!$this->objContainer) {
             throw new Exception('Container has not set yet');
         }
 
@@ -2632,7 +2632,7 @@ class Validate implements IValidate
     {
         $booFoo = false;
 
-        if (! is_string($mixCallback) && is_callable($mixCallback)) {
+        if (!is_string($mixCallback) && is_callable($mixCallback)) {
             $booFoo = call_user_func($mixCallback, $this->getData());
         } else {
             $booFoo = $mixCallback;
@@ -2661,7 +2661,7 @@ class Validate implements IValidate
         }
 
         if (count($arrArgs) > 0) {
-            $sExtend = 'validate' . ucwords($method);
+            $sExtend = 'validate'.ucwords($method);
 
             $arrParameter = [
                 'foobar',

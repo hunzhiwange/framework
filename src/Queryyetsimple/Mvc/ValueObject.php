@@ -117,7 +117,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function put($mixKey, $mixValue = null)
     {
-        if (! is_array($mixKey)) {
+        if (!is_array($mixKey)) {
             $mixKey = [
                 $mixKey => $mixValue,
             ];
@@ -190,7 +190,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     public function arraysDelete($strKey, $mixKey)
     {
         $arr = $this->get($strKey, []);
-        if (! is_array($mixKey)) {
+        if (!is_array($mixKey)) {
             $mixKey = [
                 $mixKey,
             ];
@@ -326,7 +326,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function putSource($mixKey, $mixValue = null)
     {
-        if (! is_array($mixKey)) {
+        if (!is_array($mixKey)) {
             $mixKey = [
                 $mixKey => $mixValue,
             ];
@@ -399,7 +399,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     public function arraysDeleteSource($strKey, $mixKey)
     {
         $arr = $this->getSource($strKey, []);
-        if (! is_array($mixKey)) {
+        if (!is_array($mixKey)) {
             $mixKey = [
                 $mixKey,
             ];
@@ -757,12 +757,12 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     protected function getTypePartData($sName, $mixDefault = null, $strType = '')
     {
         list($sName, $strName) = explode('\\', $sName);
-        $mixValue = $this->{'get' . ($strType ? ucwords($strType) : '')}($sName);
+        $mixValue = $this->{'get'.($strType ? ucwords($strType) : '')}($sName);
 
         if (is_array($mixValue)) {
             $arrParts = explode('.', $strName);
             foreach ($arrParts as $sPart) {
-                if (! isset($mixValue[$sPart])) {
+                if (!isset($mixValue[$sPart])) {
                     return $mixDefault;
                 }
                 $mixValue = $mixValue[$sPart];
@@ -902,9 +902,9 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
             $arrVisible = $this->arrVisible;
         }
 
-        if (! empty($arrVisible)) {
+        if (!empty($arrVisible)) {
             $arrData = array_intersect_key($this->arrData, array_flip($arrVisible));
-        } elseif (! empty($this->arrHidden)) {
+        } elseif (!empty($this->arrHidden)) {
             $arrData = array_diff_key($this->arrData, array_flip($this->arrHidden));
         } else {
             $arrData = $this->arrData;

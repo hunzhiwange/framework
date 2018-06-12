@@ -78,15 +78,15 @@ EOF;
 
         // 设置模板路径
         $this->setTemplatePath(
-            __DIR__ . '/template/' .
+            __DIR__.'/template/'.
             ($this->option('extend') ? 'model' : 'model_without_extend')
         );
 
         // 保存路径
         $this->setSaveFilePath(
-            $this->getNamespacePath() .
-            'Domain/Entity/' .
-            ucfirst($this->argument('name')) . '.php'
+            $this->getNamespacePath().
+            'Domain/Entity/'.
+            ucfirst($this->argument('name')).'.php'
         );
 
         // 设置类型

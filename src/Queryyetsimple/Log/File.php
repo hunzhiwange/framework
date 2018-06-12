@@ -55,7 +55,7 @@ class File extends Connect implements IConnect
         // 记录到系统
         foreach ($datas as $item) {
             error_log(
-                $this->formatMessage($item[1], $item[2]) . PHP_EOL,
+                $this->formatMessage($item[1], $item[2]).PHP_EOL,
                 3,
                 $filepath
             );
@@ -72,7 +72,7 @@ class File extends Connect implements IConnect
      */
     protected function formatMessage($message, array $contexts = [])
     {
-        return $message . ' ' .
+        return $message.' '.
             json_encode($contexts, JSON_UNESCAPED_UNICODE);
     }
 }

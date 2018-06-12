@@ -125,7 +125,7 @@ class SwaggerRouter
      */
     public function addSwaggerScan(string $dir)
     {
-        if (! is_dir($dir)) {
+        if (!is_dir($dir)) {
             throw new InvalidArgumentException('Dir is exits.');
         }
 
@@ -152,7 +152,7 @@ class SwaggerRouter
                     $method = $path->$m;
 
                     // 忽略已删除和带有忽略标记的路由
-                    if (! $method || true === $method->deprecated || (property_exists($method, '_ignore') && $method->_ignore)) {
+                    if (!$method || true === $method->deprecated || (property_exists($method, '_ignore') && $method->_ignore)) {
                         continue;
                     }
 
@@ -160,12 +160,12 @@ class SwaggerRouter
 
                     // 支持的自定义路由字段
                     foreach ($this->routerField as $f) {
-                        $field = '_' . $f;
+                        $field = '_'.$f;
                         $routerTmp[$f] = property_exists($method, $field) ? $method->$field : null;
                     }
 
                     // 根据源代码生成绑定
-                    if (! $routerTmp['bind']) {
+                    if (!$routerTmp['bind']) {
                         $routerTmp['bind'] = $this->parseBindBySource($method->_context);
                     }
 
@@ -202,7 +202,7 @@ class SwaggerRouter
                     // 解析路由正则
                     $isStaticRoute = false;
 
-                    $routerPath = $basepathPrefix . $routerPath;
+                    $routerPath = $basepathPrefix.$routerPath;
                     if (false !== strpos($routerPath, '{')) {
                         list($routerTmp['regex'], $routerTmp['var']) = $this->ruleRegex($routerPath, $routerTmp);
                     } else {
@@ -304,7 +304,7 @@ class SwaggerRouter
 
             $ruleMap[$countVar + 1] = $key;
 
-            $regex[] = '|' . $router['regex'] . ($emptyMatche ? str_repeat('()', $emptyMatche) : '');
+            $regex[] = '|'.$router['regex'].($emptyMatche ? str_repeat('()', $emptyMatche) : '');
 
             ++$ruleKey;
         }
@@ -346,18 +346,18 @@ class SwaggerRouter
      */
     protected function parseBindBySource(Context $context)
     {
-        if (! $context->class || ! $context->method) {
+        if (!$context->class || !$context->method) {
             return null;
         }
 
         $className = $context->fullyQualifiedName($context->class);
-        $segmentation = '\\' . $this->controllerDir . '\\';
+        $segmentation = '\\'.$this->controllerDir.'\\';
 
         if (strpos($className, $segmentation) < 1) {
             return null;
         } else {
             $tmp = explode($segmentation, $className);
-            $router = ':' . ltrim($tmp[0], '\\') . '\\' . $tmp[1] . '\\' . $context->method;
+            $router = ':'.ltrim($tmp[0], '\\').'\\'.$tmp[1].'\\'.$context->method;
             $method = str_replace('\\', '/', $router);
 
             return $method;
@@ -378,7 +378,7 @@ class SwaggerRouter
         if ($swagger->tags) {
             foreach ($swagger->tags as $tag) {
                 if (property_exists($tag, '_group')) {
-                    $groups[] = '/' . $tag->_group;
+                    $groups[] = '/'.$tag->_group;
                 }
             }
         }
@@ -412,8 +412,8 @@ class SwaggerRouter
                 $regex = Router::DEFAULT_REGEX;
             }
 
-            $regex = '(' . $regex . ')';
-            $regexEncode = '#' . md5($regex) . '#';
+            $regex = '('.$regex.')';
+            $regexEncode = '#'.md5($regex).'#';
 
             $mapRegex['find'][] = $regexEncode;
             $mapRegex['replace'][] = $regex;
@@ -433,7 +433,7 @@ class SwaggerRouter
 
         if (true === $forSingleRegex) {
             $strict = ($routers['strict'] ?? Router::DEFAULT_STRICT) ? '$' : '';
-            $rule = '/^' . $rule . $strict . '/';
+            $rule = '/^'.$rule.$strict.'/';
         }
 
         return [
@@ -452,12 +452,12 @@ class SwaggerRouter
      */
     protected function normalizeDomain(?string $domain, ?string $topDomain)
     {
-        if (! $domain || ! $this->domain) {
+        if (!$domain || !$this->domain) {
             return $domain;
         }
 
         if ($topDomain !== substr($domain, -strlen($topDomain))) {
-            $domain .= '.' . $topDomain;
+            $domain .= '.'.$topDomain;
         }
 
         return $domain;

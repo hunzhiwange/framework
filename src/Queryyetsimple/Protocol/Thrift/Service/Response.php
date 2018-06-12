@@ -48,7 +48,7 @@ class Response
 
     public function __construct($vals = null)
     {
-        if (! isset(self::$_TSPEC)) {
+        if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
         1 => [
           'var' => 'status',

@@ -66,7 +66,7 @@ class MiddlewareParser
         $result = [];
 
         foreach ((array) $middlewares as $m) {
-            if (! is_string($m)) {
+            if (!is_string($m)) {
                 throw new InvalidArgumentException('Middleware only allowed string.');
             }
 
@@ -102,14 +102,14 @@ class MiddlewareParser
     protected function normalizeMiddleware(array $middlewares, string $method)
     {
         $middlewares = array_map(function ($item) use ($method) {
-            if (! class_exists($item) || ! method_exists($item, $method)) {
+            if (!class_exists($item) || !method_exists($item, $method)) {
                 return '';
             }
 
             if (false === strpos($item, ':')) {
-                return $item . '@' . $method;
+                return $item.'@'.$method;
             } else {
-                return str_replace(':', '@' . $method . ':', $item);
+                return str_replace(':', '@'.$method.':', $item);
             }
         }, $middlewares);
 
@@ -149,6 +149,6 @@ class MiddlewareParser
      */
     protected function middlewareName($middleware, $params)
     {
-        return $middleware . ($params ? ':' . $params : '');
+        return $middleware.($params ? ':'.$params : '');
     }
 }

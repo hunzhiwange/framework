@@ -74,7 +74,7 @@ trait Request
      */
     protected function validationResponse(HttpRequest $oRequest, array $arrErrors)
     {
-        if ($oRequest->isAjax() && ! $oRequest->isPjax()) {
+        if ($oRequest->isAjax() && !$oRequest->isPjax()) {
             return $this->getResponseComponent()->api($arrErrors);
         }
 

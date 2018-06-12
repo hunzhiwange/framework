@@ -95,10 +95,10 @@ abstract class Queue extends JobQueue
 
         // 记录日志
         if (self::$strLogPath) {
-            if (! is_dir(self::$strLogPath)) {
+            if (!is_dir(self::$strLogPath)) {
                 mkdir(self::$strLogPath, 0777, true);
             }
-            $this->objResultLog = Logger::createLogger($this->strConnect, Logger::INFO, self::$strLogPath . '/' . $this->strConnect . '.log');
+            $this->objResultLog = Logger::createLogger($this->strConnect, Logger::INFO, self::$strLogPath.'/'.$this->strConnect.'.log');
         }
     }
 
@@ -150,7 +150,7 @@ abstract class Queue extends JobQueue
     public function getJob($strJobId = null)
     {
         $arrData = $this->resDataSource->get();
-        if (! class_exists($strJob = '\Leevel\Queue\jobs\\' . $this->strConnect)) {
+        if (!class_exists($strJob = '\Leevel\Queue\jobs\\'.$this->strConnect)) {
             $strJob = '\PHPQueue\Job';
         }
         $objNextJob = new $strJob($arrData, $this->resDataSource->last_job_id, static::$strQueue);
@@ -167,10 +167,10 @@ abstract class Queue extends JobQueue
      */
     public function updateJob($strJobId = null, $arrResultData = null)
     {
-        if (! $this->objResultLog) {
+        if (!$this->objResultLog) {
             return;
         }
-        $this->arrResultLog->addInfo('Result: ID=' . $strJobId, $arrResultData);
+        $this->arrResultLog->addInfo('Result: ID='.$strJobId, $arrResultData);
     }
 
     /**
@@ -201,6 +201,6 @@ abstract class Queue extends JobQueue
      */
     public function makeSourceKey()
     {
-        return $this->strConnect . ':' . static::$strQueue;
+        return $this->strConnect.':'.static::$strQueue;
     }
 }

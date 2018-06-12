@@ -145,16 +145,16 @@ abstract class Connect
     protected function parseDisplayFile(?string $file = null, ?string $ext = '')
     {
         // 加载视图文件
-        if (! is_file($file)) {
+        if (!is_file($file)) {
             $file = $this->parseFile($file, $ext);
         }
 
         // 分析默认视图文件
-        if (! is_file($file)) {
+        if (!is_file($file)) {
             $file = $this->parseDefaultFile($file);
         }
 
-        if (! is_file($file)) {
+        if (!is_file($file)) {
             throw new InvalidArgumentException(
                 sprintf('Template file %s does not exist.', $file)
             );
@@ -181,14 +181,14 @@ abstract class Connect
             false !== strpos($tpl, '(')) {
             return $this->formatFile($tpl);
         } else {
-            if (! $this->option['theme_path']) {
+            if (!$this->option['theme_path']) {
                 throw new RuntimeException('Theme path must be set');
             }
 
             // 空取默认控制器和方法
             if ('' == $tpl) {
-                $tpl = $this->option['controller_name'] .
-                    $this->option['controlleraction_depr'] .
+                $tpl = $this->option['controller_name'].
+                    $this->option['controlleraction_depr'].
                     $this->option['action_name'];
             }
 
@@ -204,9 +204,9 @@ abstract class Connect
                 ':',
             ], $this->option['controlleraction_depr'], $tpl);
 
-            return dirname($this->option['theme_path']) . '/' .
-                ($theme ?? $this->option['theme_name']) . '/' .
-                $tpl . ($ext ?: $this->option['suffix']);
+            return dirname($this->option['theme_path']).'/'.
+                ($theme ?? $this->option['theme_name']).'/'.
+                $tpl.($ext ?: $this->option['suffix']);
         }
     }
 
@@ -241,7 +241,7 @@ abstract class Connect
             return $tpl;
         }
 
-        if (! $this->option['theme_path']) {
+        if (!$this->option['theme_path']) {
             throw new RuntimeException('Theme path must be set');
         }
 
@@ -252,7 +252,7 @@ abstract class Connect
             0 === strpos($tpl, '/') ||
             0 === strpos($tpl, '\\')) {
             $tpl = str_replace(
-                str_replace('\\', '/', $this->option['theme_path'] . '/'),
+                str_replace('\\', '/', $this->option['theme_path'].'/'),
                 '',
                 str_replace('\\', '/', ($tpl))
             );
@@ -260,13 +260,13 @@ abstract class Connect
 
         // 备用地址
         if ($this->option['theme_path_default'] &&
-            is_file(($tempTpl = $this->option['theme_path_default'] . '/' . $tpl))) {
+            is_file(($tempTpl = $this->option['theme_path_default'].'/'.$tpl))) {
             return $tempTpl;
         }
 
         // default 主题
         if ('default' != $this->option['theme_name'] &&
-            is_file(($tempTpl = dirname($this->option['theme_path']) . '/default/' . $tpl))) {
+            is_file(($tempTpl = dirname($this->option['theme_path']).'/default/'.$tpl))) {
             return $tempTpl;
         }
 

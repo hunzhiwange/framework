@@ -166,7 +166,7 @@ abstract class Connect
 
         // 连接分布式服务器
         if (true === $arrOption['distributed']) {
-            if (! $this->readConnect()) {
+            if (!$this->readConnect()) {
                 $this->throwException();
             }
         }
@@ -215,7 +215,7 @@ abstract class Connect
         $this->setSqlBindParams($strSql, $arrBindParams);
 
         // 验证 sql 类型PROCEDURE
-        if (! in_array(($strSqlType = $this->getSqlType($strSql)), [
+        if (!in_array(($strSqlType = $this->getSqlType($strSql)), [
             'select',
             'procedure',
         ])) {
@@ -457,7 +457,7 @@ abstract class Connect
 
         $arrTableColumns = $this->objCache->get($strCacheKey);
 
-        if (! $this->booDevelopment && false !== $arrTableColumns) {
+        if (!$this->booDevelopment && false !== $arrTableColumns) {
             return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
         } else {
             $arrTableColumns = $this->getTableColumns($sTableName, $mixMaster);
@@ -485,7 +485,7 @@ abstract class Connect
         preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sSql, $arrMatches, PREG_OFFSET_CAPTURE);
         $arrMatches = reset($arrMatches);
 
-        if (! is_array($arrMapping)) {
+        if (!is_array($arrMapping)) {
             $arrMapping = [];
         }
 
@@ -499,22 +499,22 @@ abstract class Connect
 
             switch (count($arrArray)) {
                 case 3:
-                    $sF = ! empty($arrMapping[$arrArray[2]]) ? $arrMapping[$arrArray[2]] : $arrArray[2];
+                    $sF = !empty($arrMapping[$arrArray[2]]) ? $arrMapping[$arrArray[2]] : $arrArray[2];
                     $sTable = "{$arrArray[0]}.{$arrArray[1]}";
                     break;
 
                 case 2:
-                    $sF = ! empty($arrMapping[$arrArray[1]]) ? $arrMapping[$arrArray[1]] : $arrArray[1];
+                    $sF = !empty($arrMapping[$arrArray[1]]) ? $arrMapping[$arrArray[1]] : $arrArray[1];
                     $sTable = $arrArray[0];
                     break;
 
                 default:
-                    $sF = ! empty($arrMapping[$arrArray[0]]) ? $arrMapping[$arrArray[0]] : $arrArray[0];
+                    $sF = !empty($arrMapping[$arrArray[0]]) ? $arrMapping[$arrArray[0]] : $arrArray[0];
                     $sTable = $sTableName;
             }
 
             $sField = $this->qualifyTableOrColumn("{$sTable}.{$sF}");
-            $sOut .= substr($sSql, $nOffset, $arrM[1] - $nOffset) . $sField;
+            $sOut .= substr($sSql, $nOffset, $arrM[1] - $nOffset).$sField;
             $nOffset = $arrM[1] + $nLen;
         }
 
@@ -555,7 +555,7 @@ abstract class Connect
         }
 
         if ($sAlias) {
-            return "{$sName} {$sAs} " . $this->identifierColumn($sAlias);
+            return "{$sName} {$sAs} ".$this->identifierColumn($sAlias);
         } else {
             return $sName;
         }
@@ -633,7 +633,7 @@ abstract class Connect
         }
 
         if (true === $booQuotationMark) {
-            return "'" . addslashes($mixValue) . "'";
+            return "'".addslashes($mixValue)."'";
         } else {
             return $mixValue;
         }
@@ -732,7 +732,7 @@ abstract class Connect
     protected function writeConnect()
     {
         // 判断是否已经连接
-        if (! empty($this->arrConnect[0])) {
+        if (!empty($this->arrConnect[0])) {
             return $this->objConnect = $this->arrConnect[0];
         }
 
@@ -794,7 +794,7 @@ abstract class Connect
         }
 
         // 已经存在连接
-        if (! empty($this->arrConnect[$nLinkid])) {
+        if (!empty($this->arrConnect[$nLinkid])) {
             return $this->arrConnect[$nLinkid];
         }
 
@@ -824,7 +824,7 @@ abstract class Connect
     protected function bindParams(array $arrBindParams = [])
     {
         foreach ($arrBindParams as $mixKey => $mixVal) {
-            $mixKey = is_numeric($mixKey) ? $mixKey + 1 : ':' . $mixKey;
+            $mixKey = is_numeric($mixKey) ? $mixKey + 1 : ':'.$mixKey;
 
             if (is_array($mixVal)) {
                 $strParam = $mixVal[1];
@@ -954,7 +954,7 @@ abstract class Connect
     {
         if ($this->objPDOStatement) {
             $arrTemp = $this->objPDOStatement->errorInfo();
-            $strError = '(' . $arrTemp[1] . ')' . $arrTemp[2] . "\r\n" . $strError;
+            $strError = '('.$arrTemp[1].')'.$arrTemp[2]."\r\n".$strError;
 
             throw new PDOException($strError);
         } else {

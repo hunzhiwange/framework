@@ -43,7 +43,7 @@ class ThriftCallArgs
 
     public function __construct($vals = null)
     {
-        if (! isset(self::$_TSPEC)) {
+        if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
         1 => [
           'var' => 'request',
@@ -101,7 +101,7 @@ class ThriftCallArgs
         $xfer = 0;
         $xfer += $output->writeStructBegin('ThriftCallArgs');
         if (null !== $this->request) {
-            if (! is_object($this->request)) {
+            if (!is_object($this->request)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
             }
             $xfer += $output->writeFieldBegin('request', TType::STRUCT, 1);

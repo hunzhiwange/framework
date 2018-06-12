@@ -45,7 +45,7 @@ class Gettext extends Translations implements IArray
      */
     public function gettext_select_plural_form($count)
     {
-        if (! isset($this->_gettext_select_plural_form) || null === $this->_gettext_select_plural_form) {
+        if (!isset($this->_gettext_select_plural_form) || null === $this->_gettext_select_plural_form) {
             list($nplurals, $expression) = $this->nplurals_and_expression_from_header($this->get_header('Plural-Forms'));
             $this->_nplurals = $nplurals;
             $this->_gettext_select_plural_form = $this->make_plural_form_function($nplurals, $expression);
@@ -92,7 +92,7 @@ class Gettext extends Translations implements IArray
             return (\$index < $nplurals)? \$index : $nplurals - 1;";
 
         $result = null;
-        $funcAll = '$result = function($n) { ' . $func_body . ' };';
+        $funcAll = '$result = function($n) { '.$func_body.' };';
         eval($funcAll);
 
         return $result;
@@ -122,7 +122,7 @@ class Gettext extends Translations implements IArray
                     $res .= ') : (';
                     break;
                 case ';':
-                    $res .= str_repeat(')', $depth) . ';';
+                    $res .= str_repeat(')', $depth).';';
                     $depth = 0;
                     break;
                 default:
@@ -146,7 +146,7 @@ class Gettext extends Translations implements IArray
         $lines = explode("\n", $translation);
         foreach ($lines as $line) {
             $parts = explode(':', $line, 2);
-            if (! isset($parts[1])) {
+            if (!isset($parts[1])) {
                 continue;
             }
             $headers[trim($parts[0])] = trim($parts[1]);
@@ -178,7 +178,7 @@ class Gettext extends Translations implements IArray
      */
     public function readToArray($filename)
     {
-        if (! is_array($filename)) {
+        if (!is_array($filename)) {
             $filename = [
                 $filename,
             ];

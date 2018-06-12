@@ -104,6 +104,6 @@ abstract class Connect
      */
     protected function getSessionName($sessionid)
     {
-        return $this->option['prefix'] . $sessionid;
+        return $this->option['prefix'].$sessionid;
     }
 }

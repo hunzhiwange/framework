@@ -69,7 +69,7 @@ class Sftp extends Connect implements IConnect
      */
     public function makeConnect()
     {
-        if (! class_exists('League\Flysystem\Sftp\SftpAdapter')) {
+        if (!class_exists('League\Flysystem\Sftp\SftpAdapter')) {
             throw new InvalidArgumentException('Please run composer require league/flysystem-sftp');
         }
 

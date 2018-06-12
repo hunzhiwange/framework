@@ -85,7 +85,7 @@ class ThriftHandler implements ThriftIf
      */
     protected function normalizeRequest(Request $request): HttpRequest
     {
-        if (! $request->call) {
+        if (!$request->call) {
             throw new Exception('Rpc call is not set.');
         }
 

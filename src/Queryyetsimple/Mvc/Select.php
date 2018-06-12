@@ -429,13 +429,13 @@ class Select
      */
     public function getDeletedAtColumn()
     {
-        if (defined(get_class($this->objModel) . '::DELETED_AT')) {
-            eval('$strDeleteAt = ' . get_class($this->objModel) . '::DELETED_AT;');
+        if (defined(get_class($this->objModel).'::DELETED_AT')) {
+            eval('$strDeleteAt = '.get_class($this->objModel).'::DELETED_AT;');
         } else {
             $strDeleteAt = 'deleted_at';
         }
 
-        if (! $this->objModel->hasField($strDeleteAt)) {
+        if (!$this->objModel->hasField($strDeleteAt)) {
             throw new Exception(sprintf('Model %s do not have soft delete field [%s]', get_class($this->objModel), $strDeleteAt));
         }
 
@@ -449,7 +449,7 @@ class Select
      */
     public function getFullDeletedAtColumn()
     {
-        return $this->objModel->getTable() . '.' . $this->getDeletedAtColumn();
+        return $this->objModel->getTable().'.'.$this->getDeletedAtColumn();
     }
 
     /**
@@ -480,7 +480,7 @@ class Select
             $this->objModel->setSelectForQuery($objSelect);
         } else {
             foreach (Arr::normalize($mixScope) as $strScope) {
-                $strScope = 'scope' . ucwords($strScope);
+                $strScope = 'scope'.ucwords($strScope);
                 if (method_exists($this->objModel, $strScope)) {
                     $mixResultCallback = call_user_func_array([
                         $this->objModel,
@@ -552,7 +552,7 @@ class Select
 
         foreach ($this->arrPreLoad as $strName => $calCondition) {
             if ($this->isNested($strName, $strRelation)) {
-                $arrNested[substr($strName, strlen($strRelation . '.'))] = $calCondition;
+                $arrNested[substr($strName, strlen($strRelation.'.'))] = $calCondition;
             }
         }
 
@@ -569,7 +569,7 @@ class Select
      */
     protected function isNested($strName, $strRelation)
     {
-        return Str::contains($strName, '.') && Str::startsWith($strName, $strRelation . '.');
+        return Str::contains($strName, '.') && Str::startsWith($strName, $strRelation.'.');
     }
 
     /**
@@ -613,7 +613,7 @@ class Select
 
         foreach (explode('.', $strName) as $strSegment) {
             $arrProgress[] = $strSegment;
-            if (! isset($arrResult[$strLast = implode('.', $arrProgress)])) {
+            if (!isset($arrResult[$strLast = implode('.', $arrProgress)])) {
                 $arrResult[$strLast] = function () {
                 };
             }

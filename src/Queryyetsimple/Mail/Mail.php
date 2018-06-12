@@ -317,10 +317,10 @@ class Mail implements IMail
     {
         $strExt = pathinfo($strFile, PATHINFO_EXTENSION);
         if ($strExt) {
-            $strFile = substr($strFile, 0, strrpos($strFile, '.' . $strExt));
+            $strFile = substr($strFile, 0, strrpos($strFile, '.'.$strExt));
         }
 
-        return '=?UTF-8?B?' . base64_encode($strFile) . '?=' . ($strExt ? '.' . $strExt : '');
+        return '=?UTF-8?B?'.base64_encode($strFile).'?='.($strExt ? '.'.$strExt : '');
     }
 
     /**
@@ -341,7 +341,7 @@ class Mail implements IMail
             $this->message($mixCallback);
         }
 
-        if (! empty($this->getOption('global_to')['address'])) {
+        if (!empty($this->getOption('global_to')['address'])) {
             $this->objMessage->addTo($this->getOption('global_to')['address'], $this->getOption('global_to')['name']);
         }
 
@@ -392,11 +392,11 @@ class Mail implements IMail
 
         $arrMessageData = $this->arrMessageData;
 
-        if (! empty($arrMessageData['html']) && ! empty($arrMessageData['plain'])) {
+        if (!empty($arrMessageData['html']) && !empty($arrMessageData['plain'])) {
             unset($arrMessageData[true === $booHtmlPriority ? 'plain' : 'html']);
         }
 
-        if (! empty($arrMessageData['html'])) {
+        if (!empty($arrMessageData['html'])) {
             foreach ($arrMessageData['html'] as $mixView) {
                 if (false === $booFind) {
                     $strMethod = 'setBody';
@@ -409,7 +409,7 @@ class Mail implements IMail
             }
         }
 
-        if (! empty($arrMessageData['plain'])) {
+        if (!empty($arrMessageData['plain'])) {
             foreach ($arrMessageData['plain'] as $mixView) {
                 if (false === $booFind) {
                     $strMethod = 'setBody';
@@ -448,7 +448,7 @@ class Mail implements IMail
 
         $oMessage = new Swift_Message();
 
-        if (! empty($this->getOption('global_from')['address'])) {
+        if (!empty($this->getOption('global_from')['address'])) {
             $oMessage->setFrom($this->getOption('global_from')['address'], $this->getOption('global_from')['name']);
         }
 
@@ -465,7 +465,7 @@ class Mail implements IMail
      */
     protected function callbackMessage($mixCallback, Swift_Message $objMessage)
     {
-        if (! is_string($mixCallback) && is_callable($mixCallback)) {
+        if (!is_string($mixCallback) && is_callable($mixCallback)) {
             return call_user_func_array($mixCallback, [
                 $objMessage,
                 $this,
@@ -538,7 +538,7 @@ class Mail implements IMail
      */
     protected function callbackAttachment($objAttachment, $mixCallback = null)
     {
-        if (! is_string($mixCallback) && is_callable($mixCallback)) {
+        if (!is_string($mixCallback) && is_callable($mixCallback)) {
             call_user_func_array($mixCallback, [
                 $objAttachment,
                 $this,

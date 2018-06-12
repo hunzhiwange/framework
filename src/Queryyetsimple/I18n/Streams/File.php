@@ -95,7 +95,7 @@ class File extends Reader
     public function read_all()
     {
         $all = '';
-        while (! $this->feof()) {
+        while (!$this->feof()) {
             $all .= $this->read(4096);
         }
 

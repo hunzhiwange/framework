@@ -85,7 +85,7 @@ class Html extends Connect implements IConnect
             $this->setVar($vars);
         }
 
-        if (is_array($this->vars) && ! empty($this->vars)) {
+        if (is_array($this->vars) && !empty($this->vars)) {
             extract($this->vars, EXTR_PREFIX_SAME, 'q_');
         }
 
@@ -125,7 +125,7 @@ class Html extends Connect implements IConnect
      */
     public function resolverParser()
     {
-        if (! $this->parseResolver) {
+        if (!$this->parseResolver) {
             throw new RuntimeException('Html theme not set parse resolver');
         }
 
@@ -155,7 +155,7 @@ class Html extends Connect implements IConnect
      */
     protected function getCachePath(string $file)
     {
-        if (! $this->option['theme_cache_path']) {
+        if (!$this->option['theme_cache_path']) {
             throw new RuntimeException('Theme cache path must be set');
         }
 
@@ -163,11 +163,11 @@ class Html extends Connect implements IConnect
         $file = str_replace('//', '/', str_replace('\\', '/', $file));
 
         // 统一缓存文件
-        $file = basename($file, '.' . pathinfo($file, PATHINFO_EXTENSION)) .
-            '.' . md5($file) . '.php';
+        $file = basename($file, '.'.pathinfo($file, PATHINFO_EXTENSION)).
+            '.'.md5($file).'.php';
 
         // 返回真实路径
-        return $this->option['theme_cache_path'] . '/' . $file;
+        return $this->option['theme_cache_path'].'/'.$file;
     }
 
     /**
@@ -186,7 +186,7 @@ class Html extends Connect implements IConnect
         }
 
         // 缓存文件不存在过期
-        if (! is_file($cachepath)) {
+        if (!is_file($cachepath)) {
             return true;
         }
 

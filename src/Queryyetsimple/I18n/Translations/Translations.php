@@ -142,7 +142,7 @@ abstract class Translations
         ]);
         $translated = $this->translate_entry($entry);
 
-        return ($translated && ! empty($translated->translations)) ? $translated->translations[0] : $singular;
+        return ($translated && !empty($translated->translations)) ? $translated->translations[0] : $singular;
     }
 
     /**
@@ -210,7 +210,7 @@ abstract class Translations
     public function merge_originals_with(&$other)
     {
         foreach ($other->entries as $entry) {
-            if (! isset($this->entries[$entry->key()])) {
+            if (!isset($this->entries[$entry->key()])) {
                 $this->entries[$entry->key()] = $entry;
             } else {
                 $this->entries[$entry->key()]->merge_with($entry);

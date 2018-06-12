@@ -75,7 +75,7 @@ class Url implements IMatch
     {
         $urlRouters = $router->getRouters();
 
-        if (! $urlRouters) {
+        if (!$urlRouters) {
             return [];
         }
 
@@ -84,7 +84,7 @@ class Url implements IMatch
 
         // 验证是否存在请求方法
         $method = strtolower($request->getMethod());
-        if (! isset($urlRouters[$method])) {
+        if (!isset($urlRouters[$method])) {
             return [];
         }
         $urlRouters = $urlRouters[$method];
@@ -137,7 +137,7 @@ class Url implements IMatch
 
         // 路由匹配
         foreach ($urlRouters['regex'] as $key => $regex) {
-            if (! preg_match($regex, $pathInfoSource, $matches)) {
+            if (!preg_match($regex, $pathInfoSource, $matches)) {
                 continue;
             }
 
@@ -243,7 +243,7 @@ class Url implements IMatch
             $host = $this->request->getHost();
 
             if ($routers['domain_regex']) {
-                if (! preg_match($routers['domain_regex'], $host, $matches)) {
+                if (!preg_match($routers['domain_regex'], $host, $matches)) {
                     return false;
                 } else {
                     array_shift($matches);

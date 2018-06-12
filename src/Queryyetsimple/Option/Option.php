@@ -74,14 +74,14 @@ class Option implements IOption, ArrayAccess
             return isset($this->option[$namespaces]);
         }
 
-        if (! strpos($name, '.')) {
+        if (!strpos($name, '.')) {
             return array_key_exists($name, $this->option[$namespaces]);
         }
 
         $parts = explode('.', $name);
         $option = $this->option[$namespaces];
         foreach ($parts as $part) {
-            if (! isset($option[$part])) {
+            if (!isset($option[$part])) {
                 return false;
             }
             $option = $option[$part];
@@ -108,14 +108,14 @@ class Option implements IOption, ArrayAccess
             return $this->option[$namespaces];
         }
 
-        if (! strpos($name, '.')) {
+        if (!strpos($name, '.')) {
             return array_key_exists($name, $this->option[$namespaces]) ? $this->option[$namespaces][$name] : $defaults;
         }
 
         $parts = explode('.', $name);
         $option = $this->option[$namespaces];
         foreach ($parts as $part) {
-            if (! isset($option[$part])) {
+            if (!isset($option[$part])) {
                 return $defaults;
             }
             $option = $option[$part];
@@ -159,7 +159,7 @@ class Option implements IOption, ArrayAccess
                 return;
             }
 
-            if (! strpos($name, '.')) {
+            if (!strpos($name, '.')) {
                 $this->option[$namespaces][$name] = $value;
             } else {
                 $parts = explode('.', $name);
@@ -168,7 +168,7 @@ class Option implements IOption, ArrayAccess
                 for ($i = 0; $i <= $max; ++$i) {
                     $part = $parts[$i];
                     if ($i < $max) {
-                        if (! isset($option[$part])) {
+                        if (!isset($option[$part])) {
                             $option[$part] = [];
                         }
                         $option = &$option[$part];
@@ -199,7 +199,7 @@ class Option implements IOption, ArrayAccess
             return;
         }
 
-        if (! strpos($name, '.')) {
+        if (!strpos($name, '.')) {
             if (isset($this->option[$namespaces][$name])) {
                 unset($this->option[$namespaces][$name]);
             }
@@ -210,7 +210,7 @@ class Option implements IOption, ArrayAccess
             for ($i = 0; $i <= $max; ++$i) {
                 $part = $parts[$i];
                 if ($i < $max) {
-                    if (! isset($option[$part])) {
+                    if (!isset($option[$part])) {
                         break;
                     }
                     $option = &$option[$part];
@@ -308,7 +308,7 @@ class Option implements IOption, ArrayAccess
             $namespaces = static::DEFAUTL_NAMESPACE;
         }
 
-        if (! isset($this->option[$namespaces])) {
+        if (!isset($this->option[$namespaces])) {
             $this->option[$namespaces] = [];
         }
 

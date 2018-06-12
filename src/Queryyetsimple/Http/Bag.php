@@ -306,7 +306,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
                 $value = $this->filterValueWithFunc($value, $item);
             } elseif (is_callable($item)) {
                 $value = $this->filterValueWithCallable($value, $item);
-            } elseif (is_scalar($value) && ! empty($item)) {
+            } elseif (is_scalar($value) && !empty($item)) {
                 $value = $this->filterValueWithFilterVar($value, $item, $options);
 
                 if (false === $value) {
@@ -332,11 +332,11 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         list($filter, $extend) = explode('=', $filter);
 
         if ('default' == $filter) {
-            if (! is_numeric($extend) && ! preg_match('/^[A-Z\_]+$/', $extend)) {
-                $extend = "'" . $extend . "'";
+            if (!is_numeric($extend) && !preg_match('/^[A-Z\_]+$/', $extend)) {
+                $extend = "'".$extend."'";
             }
 
-            $evals = "\$value = '" . ($value ? '1' : '') . "' ?: " . $extend . ';';
+            $evals = "\$value = '".($value ? '1' : '')."' ?: ".$extend.';';
         } elseif ($extend) {
             if (false !== strpos($extend, ',')) {
                 $tmp = explode(',', $extend);
@@ -348,7 +348,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
                     if ('**' == $v || is_numeric($v) || preg_match('/^[A-Z\_]+$/', $v)) {
                         $result[] = $v;
                     } else {
-                        $result[] = "'" . $v . "'";
+                        $result[] = "'".$v."'";
                     }
                 }
 
@@ -441,13 +441,13 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      */
     protected function formatOptions($value, $options)
     {
-        if (! is_array($options) && $options) {
+        if (!is_array($options) && $options) {
             $options = [
                 'flags' => $options,
             ];
         }
 
-        if (is_array($value) && ! isset($options['flags'])) {
+        if (is_array($value) && !isset($options['flags'])) {
             $options['flags'] = FILTER_REQUIRE_ARRAY;
         }
 
@@ -464,7 +464,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      */
     protected function getPartData($key, $value)
     {
-        if (! is_array($value)) {
+        if (!is_array($value)) {
             return $value;
         }
 
@@ -472,7 +472,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         $parts = explode('.', $key);
 
         foreach ($parts as $item) {
-            if (! is_array($value) || ! isset($value[$item])) {
+            if (!is_array($value) || !isset($value[$item])) {
                 return $defaults;
             }
 

@@ -182,7 +182,7 @@ abstract class Job extends PHPQueueJob
     {
         $strJob = explode('@', $strJob);
 
-        return ! empty($strJob[1]) ? $strJob : [
+        return !empty($strJob[1]) ? $strJob : [
             $strJob[0],
             'handle',
         ];
@@ -238,11 +238,11 @@ abstract class Job extends PHPQueueJob
      */
     protected function initialization()
     {
-        if (! isset($this->data['data'])) {
+        if (!isset($this->data['data'])) {
             $this->data['data'] = [];
         }
 
-        if (! isset($this->data['attempts'])) {
+        if (!isset($this->data['attempts'])) {
             $this->data['attempts'] = 1;
         }
     }

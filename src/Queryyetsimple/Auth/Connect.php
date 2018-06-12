@@ -199,7 +199,7 @@ abstract class Connect
         $mixName = trim($mixName);
         $sPassword = trim($sPassword);
 
-        if (! $mixName || ! $sPassword) {
+        if (!$mixName || !$sPassword) {
             throw new LoginFailed(__('帐号或者密码不能为空'));
         }
 
@@ -209,7 +209,7 @@ abstract class Connect
             throw new LoginFailed(__('帐号不存在或者未启用'));
         }
 
-        if (! $this->checkPassword($sPassword, $oUser->{$this->getField('password')}, $oUser->{$this->getField('random')})) {
+        if (!$this->checkPassword($sPassword, $oUser->{$this->getField('password')}, $oUser->{$this->getField('random')})) {
             throw new LoginFailed(__('账号或者密码错误'));
         }
 
@@ -267,7 +267,7 @@ abstract class Connect
      */
     public function changePassword($mixName, $sNewPassword, $sConfirmPassword, $sOldPassword, $bIgnoreOldPassword = false)
     {
-        if (! $mixName) {
+        if (!$mixName) {
             throw new ChangePasswordFailed(__('账号或者 ID 不能为空'));
         }
 
@@ -275,7 +275,7 @@ abstract class Connect
             throw new ChangePasswordFailed(__('旧密码不能为空'));
         }
 
-        if (! $sNewPassword) {
+        if (!$sNewPassword) {
             throw new ChangePasswordFailed(__('新密码不能为空'));
         }
 
@@ -289,7 +289,7 @@ abstract class Connect
             throw new ChangePasswordFailed(__('帐号不存在或者未启用'));
         }
 
-        if (! $bIgnoreOldPassword && ! $this->checkPassword($sOldPassword, $oUser->{$this->getField('password')}, $oUser->{$this->getField('random')})) {
+        if (!$bIgnoreOldPassword && !$this->checkPassword($sOldPassword, $oUser->{$this->getField('password')}, $oUser->{$this->getField('random')})) {
             throw new ChangePasswordFailed(__('用户输入的旧密码错误'));
         }
 
@@ -325,11 +325,11 @@ abstract class Connect
         $strEmail = trim($strEmail);
         $strMobile = trim($strMobile);
 
-        if (! $strName || $strName != addslashes($strName)) {
+        if (!$strName || $strName != addslashes($strName)) {
             throw new RegisterFailed(__('用户名不能为空或包含非法字符'));
         }
 
-        if (! $strPassword || $strPassword != addslashes($strPassword) || false !== strpos($strPassword, "\n") || false !== strpos($strPassword, "\r") || false !== strpos($strPassword, "\t")) {
+        if (!$strPassword || $strPassword != addslashes($strPassword) || false !== strpos($strPassword, "\n") || false !== strpos($strPassword, "\r") || false !== strpos($strPassword, "\t")) {
             throw new RegisterFailed(__('密码不能为空或包含非法字符'));
         }
 
@@ -415,7 +415,7 @@ abstract class Connect
             return $this->strUserPersistenceName;
         }
 
-        return $this->strUserPersistenceName = $this->getTokenName() . '@' . $this->getOption('user_persistence');
+        return $this->strUserPersistenceName = $this->getTokenName().'@'.$this->getOption('user_persistence');
     }
 
     /**
@@ -441,7 +441,7 @@ abstract class Connect
             return $this->strLockName;
         }
 
-        return $this->strLockName = $this->getTokenName() . '@' . $this->getOption('lock_persistence');
+        return $this->strLockName = $this->getTokenName().'@'.$this->getOption('lock_persistence');
     }
 
     /**
@@ -506,7 +506,7 @@ abstract class Connect
      */
     public function explodeTokenData($sAuth)
     {
-        if (! $sAuth) {
+        if (!$sAuth) {
             return false;
         }
         $sAuth = $this->oEncryption->decrypt($sAuth);
@@ -524,7 +524,7 @@ abstract class Connect
      */
     public function implodeTokenData($maxIdentifier, $strPassword)
     {
-        return $this->oEncryption->encrypt($maxIdentifier . "\t" . $strPassword);
+        return $this->oEncryption->encrypt($maxIdentifier."\t".$strPassword);
     }
 
     /**
@@ -551,7 +551,7 @@ abstract class Connect
      */
     protected function encodePassword($sSourcePassword, $sRandom)
     {
-        return md5(md5($sSourcePassword) . $sRandom);
+        return md5(md5($sSourcePassword).$sRandom);
     }
 
     /**

@@ -66,7 +66,7 @@ class Phpui extends Connect implements IConnect
             $this->setVar($vars);
         }
 
-        if (is_array($this->vars) && ! empty($this->vars)) {
+        if (is_array($this->vars) && !empty($this->vars)) {
             extract($this->vars, EXTR_PREFIX_SAME, 'q_');
         }
 

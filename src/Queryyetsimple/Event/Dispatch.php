@@ -83,7 +83,7 @@ class Dispatch implements IDispatch
 
         array_unshift($params, $event);
 
-        if (! $this->hasListeners($name)) {
+        if (!$this->hasListeners($name)) {
             return;
         }
 
@@ -143,7 +143,7 @@ class Dispatch implements IDispatch
 
             if (preg_match($key, $event, $res)) {
                 foreach ($item as $priority => $value) {
-                    if (! isset($listeners[$priority])) {
+                    if (!isset($listeners[$priority])) {
                         $listeners[$priority] = [];
                     }
 
@@ -225,7 +225,7 @@ class Dispatch implements IDispatch
     protected function prepareRegexForWildcard($regex)
     {
         $regex = preg_quote($regex, '/');
-        $regex = '/^' . str_replace('\*', '(\S+)', $regex) . '$/';
+        $regex = '/^'.str_replace('\*', '(\S+)', $regex).'$/';
 
         return $regex;
     }

@@ -69,7 +69,7 @@ class Mo extends Gettext
     public function import_from_file($filename)
     {
         $reader = new file($filename);
-        if (! $reader->is_resource()) {
+        if (!$reader->is_resource()) {
             return false;
         }
         $this->filename = (string) $filename;
@@ -85,7 +85,7 @@ class Mo extends Gettext
     public function export_to_file($filename)
     {
         $fh = fopen($filename, 'wb');
-        if (! $fh) {
+        if (!$fh) {
             return false;
         }
         $res = $this->export_to_file_handle($fh);
@@ -100,7 +100,7 @@ class Mo extends Gettext
     public function export()
     {
         $tmp_fh = fopen('php://temp', 'r+');
-        if (! $tmp_fh) {
+        if (!$tmp_fh) {
             return false;
         }
         $this->export_to_file_handle($tmp_fh);
@@ -119,7 +119,7 @@ class Mo extends Gettext
         if (empty($entry->translations)) {
             return false;
         }
-        if (! array_filter($entry->translations)) {
+        if (!array_filter($entry->translations)) {
             return false;
         }
 
@@ -154,7 +154,7 @@ class Mo extends Gettext
         $originals_table = chr(0);
         $reader = new reader();
         foreach ($entries as $entry) {
-            $originals_table .= $this->export_original($entry) . chr(0);
+            $originals_table .= $this->export_original($entry).chr(0);
             $length = $reader->strlen($this->export_original($entry));
             fwrite($fh, pack('VV', $length, $current_addr));
             $current_addr += $length + 1; // account for the NULL byte after
@@ -162,9 +162,9 @@ class Mo extends Gettext
         $exported_headers = $this->export_headers();
         fwrite($fh, pack('VV', $reader->strlen($exported_headers), $current_addr));
         $current_addr += strlen($exported_headers) + 1;
-        $translations_table = $exported_headers . chr(0);
+        $translations_table = $exported_headers.chr(0);
         foreach ($entries as $entry) {
-            $translations_table .= $this->export_translations($entry) . chr(0);
+            $translations_table .= $this->export_translations($entry).chr(0);
             $length = $reader->strlen($this->export_translations($entry));
             fwrite($fh, pack('VV', $length, $current_addr));
             $current_addr += $length + 1;
@@ -185,10 +185,10 @@ class Mo extends Gettext
         // TODO: warnings for control characters
         $exported = $entry->singular;
         if ($entry->is_plural) {
-            $exported .= chr(0) . $entry->plural;
+            $exported .= chr(0).$entry->plural;
         }
         if ($entry->context) {
-            $exported = $entry->context . chr(4) . $exported;
+            $exported = $entry->context.chr(4).$exported;
         }
 
         return $exported;
@@ -257,7 +257,7 @@ class Mo extends Gettext
         }
         // parse header
         $header = unpack("{$endian}revision/{$endian}total/{$endian}originals_lenghts_addr/{$endian}translations_lenghts_addr/{$endian}hash_length/{$endian}hash_addr", $header);
-        if (! is_array($header)) {
+        if (!is_array($header)) {
             return false;
         }
         // support revision 0 of MO format specs, only
@@ -295,7 +295,7 @@ class Mo extends Gettext
         for ($i = 0; $i < $header['total']; ++$i) {
             $o = unpack("{$endian}length/{$endian}pos", $originals[$i]);
             $t = unpack("{$endian}length/{$endian}pos", $translations[$i]);
-            if (! $o || ! $t) {
+            if (!$o || !$t) {
                 return false;
             }
             // adjust offset due to reading strings to separate space before

@@ -43,7 +43,7 @@ class ThriftCallResult
 
     public function __construct($vals = null)
     {
-        if (! isset(self::$_TSPEC)) {
+        if (!isset(self::$_TSPEC)) {
             self::$_TSPEC = [
         0 => [
           'var' => 'success',
@@ -101,7 +101,7 @@ class ThriftCallResult
         $xfer = 0;
         $xfer += $output->writeStructBegin('ThriftCallResult');
         if (null !== $this->success) {
-            if (! is_object($this->success)) {
+            if (!is_object($this->success)) {
                 throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
             }
             $xfer += $output->writeFieldBegin('success', TType::STRUCT, 0);

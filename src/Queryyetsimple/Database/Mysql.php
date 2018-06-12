@@ -50,7 +50,7 @@ class Mysql extends Connect implements IConnect
             'Socket',
             'Charset',
         ] as $strMethod) {
-            $arrDsn[] = $this->{'get' . $strMethod}($arrOption);
+            $arrDsn[] = $this->{'get'.$strMethod}($arrOption);
         }
 
         return implode('', $arrDsn);
@@ -71,7 +71,7 @@ class Mysql extends Connect implements IConnect
             $sDbName = $this->getCurrentOption('name');
         }
 
-        $strSql = 'SHOW TABLES FROM ' . $this->qualifyTableOrColumn($sDbName);
+        $strSql = 'SHOW TABLES FROM '.$this->qualifyTableOrColumn($sDbName);
 
         $arrResult = [];
 
@@ -96,7 +96,7 @@ class Mysql extends Connect implements IConnect
      */
     public function getTableColumns($sTableName, $mixMaster = false)
     {
-        $strSql = 'SHOW FULL COLUMNS FROM ' .
+        $strSql = 'SHOW FULL COLUMNS FROM '.
             $this->qualifyTableOrColumn($sTableName);
 
         $arrResult = [
@@ -136,7 +136,7 @@ class Mysql extends Connect implements IConnect
                 }
 
                 if ($arrTemp['primary_key']) {
-                    if (! is_array($arrResult['primary_key'])) {
+                    if (!is_array($arrResult['primary_key'])) {
                         $arrResult['primary_key'] = [];
                     }
                     $arrResult['primary_key'][] = $arrTemp['name'];
@@ -169,17 +169,17 @@ class Mysql extends Connect implements IConnect
     public function parseLimitcount($mixLimitcount = null, $mixLimitoffset = null)
     {
         if (null !== $mixLimitoffset) {
-            $sSql = 'LIMIT ' . (int) $mixLimitoffset;
+            $sSql = 'LIMIT '.(int) $mixLimitoffset;
 
             if (null !== $mixLimitcount) {
-                $sSql .= ',' . (int) $mixLimitcount;
+                $sSql .= ','.(int) $mixLimitcount;
             } else {
                 $sSql .= ',999999999999';
             }
 
             return $sSql;
         } elseif (null !== $mixLimitcount) {
-            return 'LIMIT ' . (int) $mixLimitcount;
+            return 'LIMIT '.(int) $mixLimitcount;
         }
     }
 
@@ -192,7 +192,7 @@ class Mysql extends Connect implements IConnect
      */
     protected function getBase($arrOption)
     {
-        return 'mysql:dbname=' . $arrOption['name'] . ';host=' . $arrOption['host'];
+        return 'mysql:dbname='.$arrOption['name'].';host='.$arrOption['host'];
     }
 
     /**
@@ -204,8 +204,8 @@ class Mysql extends Connect implements IConnect
      */
     protected function getPort($arrOption)
     {
-        if (! empty($arrOption['port'])) {
-            return ';port=' . $arrOption['port'];
+        if (!empty($arrOption['port'])) {
+            return ';port='.$arrOption['port'];
         }
     }
 
@@ -218,8 +218,8 @@ class Mysql extends Connect implements IConnect
      */
     protected function getSocket($arrOption)
     {
-        if (! empty($arrOption['socket'])) {
-            return ';unix_socket=' . $arrOption['socket'];
+        if (!empty($arrOption['socket'])) {
+            return ';unix_socket='.$arrOption['socket'];
         }
     }
 
@@ -232,8 +232,8 @@ class Mysql extends Connect implements IConnect
      */
     protected function getCharset($arrOption)
     {
-        if (! empty($arrOption['charset'])) {
-            return ';charset=' . $arrOption['charset'];
+        if (!empty($arrOption['charset'])) {
+            return ';charset='.$arrOption['charset'];
         }
     }
 }

@@ -200,16 +200,16 @@ class Container implements IContainer, ArrayAccess
             return $this->instances[$name];
         }
 
-        if (! $args) {
+        if (!$args) {
             $args = [];
         }
 
         // 生成实例
-        if (! isset($this->services[$name])) {
+        if (!isset($this->services[$name])) {
             return $this->getInjectionObject($name, $args);
         }
 
-        if (! is_string($this->services[$name]) && is_callable($this->services[$name])) {
+        if (!is_string($this->services[$name]) && is_callable($this->services[$name])) {
             array_unshift($args, $this);
             $instance = call_user_func_array($this->services[$name], $args);
         } else {
@@ -253,8 +253,8 @@ class Container implements IContainer, ArrayAccess
         }
 
         if (false === $isStatic && is_array($callback)) {
-            if (! is_object($callback[0])) {
-                if (! is_string($callback[0])) {
+            if (!is_object($callback[0])) {
+                if (!is_string($callback[0])) {
                     throw new InvalidArgumentException('The classname must be string.');
                 }
 
@@ -347,7 +347,7 @@ class Container implements IContainer, ArrayAccess
             throw new NormalizeException(sprintf('Interface %s can not be normalize because not binded.', $classname));
         }
 
-        if (! class_exists($classname)) {
+        if (!class_exists($classname)) {
             return $classname;
         }
 
@@ -453,7 +453,7 @@ class Container implements IContainer, ArrayAccess
     protected function parseParameterClass(ReflectionParameter $param)
     {
         $classObject = $param->getClass();
-        if (! $classObject || ! ($classObject instanceof ReflectionClass)) {
+        if (!$classObject || !($classObject instanceof ReflectionClass)) {
             return false;
         }
 
@@ -506,7 +506,7 @@ class Container implements IContainer, ArrayAccess
         // 接口绑定实现
         if (class_exists($itemMake)) {
             $result = $this->make($itemMake);
-            if (! is_object($result)) {
+            if (!is_object($result)) {
                 throw new InvalidArgumentException(sprintf('Class or interface %s is register in container is not object.', $argsclass));
             }
 
@@ -525,12 +525,12 @@ class Container implements IContainer, ArrayAccess
      */
     protected function parseClassNotExists(string $argsclass)
     {
-        if (! class_exists($argsclass)) {
+        if (!class_exists($argsclass)) {
             return false;
         }
 
         $result = $this->make($argsclass);
-        if (! is_object($result)) {
+        if (!is_object($result)) {
             throw new InvalidArgumentException(sprintf('Class or interface %s is register in container is not object.', $argsclass));
         }
 
@@ -550,7 +550,7 @@ class Container implements IContainer, ArrayAccess
             case $injection instanceof Closure:
                 return $this->parseClosureReflection($injection);
 
-            case ! is_string($injection) && is_callable($injection):
+            case !is_string($injection) && is_callable($injection):
                 return $this->parseMethodReflection($injection);
 
             case is_string($injection):
@@ -571,7 +571,7 @@ class Container implements IContainer, ArrayAccess
     protected function parseClosureReflection(Closure $injection)
     {
         $reflection = new ReflectionFunction($injection);
-        if (! ($param = $reflection->getParameters())) {
+        if (!($param = $reflection->getParameters())) {
             $param = [];
         }
 
@@ -588,7 +588,7 @@ class Container implements IContainer, ArrayAccess
     protected function parseMethodReflection($injection)
     {
         $reflection = new ReflectionMethod($injection[0], $injection[1]);
-        if (! ($param = $reflection->getParameters())) {
+        if (!($param = $reflection->getParameters())) {
             $param = [];
         }
 
@@ -606,7 +606,7 @@ class Container implements IContainer, ArrayAccess
     {
         $reflection = new ReflectionClass($injection);
 
-        if (! $reflection->isInstantiable()) {
+        if (!$reflection->isInstantiable()) {
             throw new InvalidArgumentException(sprintf('Class %s is not instantiable.', $injection));
         }
 

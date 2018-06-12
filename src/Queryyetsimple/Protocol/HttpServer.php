@@ -202,7 +202,7 @@ class HttpServer extends Server
                 $key = strtoupper(str_replace('-', '_', $key));
                 $tmpHeader[$key] = $value;
 
-                $key = 'HTTP_' . $key;
+                $key = 'HTTP_'.$key;
                 $tmp[$key] = $value;
             }
 

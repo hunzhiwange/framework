@@ -147,7 +147,7 @@ class Manager extends Managers
             'theme_path' => $this->container->pathApplicationTheme(),
 
             // 仅 html 模板需要缓存路径
-            'theme_cache_path' => $this->container->pathApplicationCache('theme') . '/' . strtolower($request->app()),
+            'theme_cache_path' => $this->container->pathApplicationCache('theme').'/'.strtolower($request->app()),
         ];
 
         return $options;

@@ -104,14 +104,14 @@ class Cache extends Command
      */
     protected function writeCache(string $cachePath, array $data)
     {
-        if (! is_dir(dirname($cachePath))) {
+        if (!is_dir(dirname($cachePath))) {
             mkdir(dirname($cachePath), 0777, true);
         }
 
-        $content = '<?' . 'php /* ' . date('Y-m-d H:i:s') . ' */ ?' . '>' .
-            PHP_EOL . '<?' . 'php return ' . var_export($data, true) . '; ?' . '>';
+        $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>'.
+            PHP_EOL.'<?'.'php return '.var_export($data, true).'; ?'.'>';
 
-        if (! file_put_contents($cachePath, $content)) {
+        if (!file_put_contents($cachePath, $content)) {
             throw new InvalidArgumentException(sprintf('Dir %s is not writeable', dirname($cachePath)));
         }
 

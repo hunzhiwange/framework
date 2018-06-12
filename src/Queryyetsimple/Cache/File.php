@@ -77,12 +77,12 @@ class File extends Connect implements IConnect
         // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php
         clearstatcache();
 
-        if (! is_file($cachePath)) {
+        if (!is_file($cachePath)) {
             return false;
         }
 
         $fp = fopen($cachePath, 'rb');
-        if (! $fp) {
+        if (!$fp) {
             return false;
         }
         flock($fp, LOCK_SH);
@@ -135,7 +135,7 @@ class File extends Connect implements IConnect
         if ($option['serialize']) {
             $data = serialize($data);
         }
-        $data = sprintf(static::HEADER, '/* ' . date('Y-m-d H:i:s') . '  */') . $data;
+        $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
 
         $cachePath = $this->getCachePath($name, $option);
         $this->writeData($cachePath, $data);
@@ -170,7 +170,7 @@ class File extends Connect implements IConnect
     {
         $filePath = $this->getCachePath($name, $option);
 
-        if (! is_file($filePath)) {
+        if (!is_file($filePath)) {
             return true;
         }
 
@@ -189,15 +189,15 @@ class File extends Connect implements IConnect
      */
     protected function getCachePath($name, $option)
     {
-        if (! $option['path']) {
+        if (!$option['path']) {
             throw new InvalidArgumentException('Cache path is not allowed empty.');
         }
 
-        if (! is_dir($option['path'])) {
+        if (!is_dir($option['path'])) {
             mkdir($option['path'], 0777, true);
         }
 
-        return $option['path'] . '/' . $this->getCacheName($name, $option['prefix']) . '.php';
+        return $option['path'].'/'.$this->getCacheName($name, $option['prefix']).'.php';
     }
 
     /**
@@ -208,9 +208,9 @@ class File extends Connect implements IConnect
      */
     protected function writeData($fileName, $data)
     {
-        ! is_dir(dirname($fileName)) && mkdir(dirname($fileName), 0777, true);
+        !is_dir(dirname($fileName)) && mkdir(dirname($fileName), 0777, true);
 
-        if (! file_put_contents($fileName, $data, LOCK_EX)) {
+        if (!file_put_contents($fileName, $data, LOCK_EX)) {
             throw new InvalidArgumentException(sprintf('Dir %s is not writeable', dirname($fileName)));
         }
 

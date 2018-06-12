@@ -131,8 +131,8 @@ class Safe
         $sUrl = str_replace(';//', '://', $sUrl); // 防止拼写错误
 
         // 加上 http:// ，防止导入一个脚本如 php，从而引发安全问题
-        if (false === strpos($sUrl, ':') && '/' != substr($sUrl, 0, 1) && '#' != substr($sUrl, 0, 1) && ! preg_match('/^[a-z0-9-]+?\.php/i', $sUrl)) {
-            $sUrl = 'http://' . $sUrl;
+        if (false === strpos($sUrl, ':') && '/' != substr($sUrl, 0, 1) && '#' != substr($sUrl, 0, 1) && !preg_match('/^[a-z0-9-]+?\.php/i', $sUrl)) {
+            $sUrl = 'http://'.$sUrl;
         }
 
         if (true === $booShow) {
@@ -141,7 +141,7 @@ class Safe
         }
 
         // 协议检查
-        if (! is_array($arrProtocols)) {
+        if (!is_array($arrProtocols)) {
             $arrProtocols = [
                 'http',
                 'https',
@@ -229,7 +229,7 @@ class Safe
      */
     public static function fieldsFilter($mixFields)
     {
-        if (! is_array($mixFields)) {
+        if (!is_array($mixFields)) {
             $mixFields = explode(',', $mixFields);
         }
         $mixFields = array_map(function ($str) {
@@ -305,7 +305,7 @@ class Safe
     public static function intArrayFilter($mixIdStr)
     {
         if ('' != $mixIdStr) {
-            if (! is_array($mixIdStr)) {
+            if (!is_array($mixIdStr)) {
                 $mixIdStr = explode(',', $mixIdStr);
             }
             $mixIdStr = array_map('intval', $mixIdStr);
@@ -326,7 +326,7 @@ class Safe
     public static function strArrayFilter($mixStrOrArray)
     {
         $sResult = '';
-        if (! is_array($mixStrOrArray)) {
+        if (!is_array($mixStrOrArray)) {
             $mixStrOrArray = explode(',', $mixStrOrArray);
         }
         $mixStrOrArray = array_map(function ($str) {
@@ -334,7 +334,7 @@ class Safe
         }, $mixStrOrArray);
         foreach ($StrOrArray as $sVal) {
             if ('' != $sVal) {
-                $sResult .= "'" . $sVal . "',";
+                $sResult .= "'".$sVal."',";
             }
         }
 
@@ -375,7 +375,7 @@ class Safe
      */
     public static function limitIp($sVisitorIp, $mixLimitIp)
     {
-        if (! empty($mixLimitIp)) {
+        if (!empty($mixLimitIp)) {
             if (is_string($mixLimitIp)) {
                 $mixLimitIp = (array) $mixLimitIp;
             }
@@ -417,7 +417,7 @@ class Safe
             $sText = str_replace($arrMat[0], $arrMat[1], $sText);
         }
         while (preg_match('/(<[^><]+)(window\.|javascript:|js:|about:|file:|document\.|vbs:|cookie)([^><]*)/i', $sText, $arrMat)) {
-            $sText = str_replace($arrMat[0], $arrMat[1] . $arrMat[3], $sText);
+            $sText = str_replace($arrMat[0], $arrMat[1].$arrMat[3], $sText);
         }
 
         return $sText;
@@ -454,7 +454,7 @@ class Safe
             if ($arrWhite) {
                 $arrTemp = [];
                 foreach ($arrBlack as $sType) {
-                    if (! in_array($sType, $arrWhite)) {
+                    if (!in_array($sType, $arrWhite)) {
                         $arrTemp[] = $sType;
                     }
                 }
@@ -517,7 +517,7 @@ class Safe
      */
     public static function htmlspecialchars($mixString)
     {
-        if (! is_array($mixString)) {
+        if (!is_array($mixString)) {
             $mixString = (array) $mixString;
         }
 
@@ -545,7 +545,7 @@ class Safe
      */
     public static function unHtmlSpecialchars($mixString)
     {
-        if (! is_array($mixString)) {
+        if (!is_array($mixString)) {
             $mixString = (array) $mixString;
         }
 

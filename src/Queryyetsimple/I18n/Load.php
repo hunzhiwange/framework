@@ -131,7 +131,7 @@ class Load
         $files = [];
 
         foreach ($dirs as $dir) {
-            if (! is_dir($dir)) {
+            if (!is_dir($dir)) {
                 throw new RuntimeException('I18n load dir is not exits.');
             }
 
@@ -150,7 +150,7 @@ class Load
      */
     protected function getMoFiles(string $dir): array
     {
-        return glob($dir . '/*.mo');
+        return glob($dir.'/*.mo');
     }
 
     /**
@@ -181,7 +181,7 @@ class Load
         $i18n = $this->i18n;
 
         return array_map(function ($dir) use ($i18n) {
-            return $dir . '/' . $i18n;
+            return $dir.'/'.$i18n;
         }, $dirs);
     }
 }

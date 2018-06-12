@@ -130,7 +130,7 @@ class Register extends Provider
             return new Twig_Environment(new Twig_Loader_Filesystem(), [
                 'auto_reload' => true,
                 'debug' => $project->development(),
-                'cache' => $project->pathApplicationCache('theme') . '/' . $project['request']->app(),
+                'cache' => $project->pathApplicationCache('theme').'/'.$project['request']->app(),
             ]);
         });
     }

@@ -99,13 +99,13 @@ class Load
         $files = [];
 
         foreach ($namespaces as $key => $dir) {
-            if (! is_dir($dir)) {
+            if (!is_dir($dir)) {
                 throw new RuntimeException('Console load dir is not exits.');
             }
 
             $files = array_merge($files, array_map(function ($item) use ($key) {
-                return $key . '\\' . basename($item, '.php');
-            }, glob($dir . '/*.php')));
+                return $key.'\\'.basename($item, '.php');
+            }, glob($dir.'/*.php')));
         }
 
         return $files;

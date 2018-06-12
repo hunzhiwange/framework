@@ -48,7 +48,7 @@ class Dump
         static $dump, $varCloner;
 
         if (false === $simple && class_exists(CliDumper::class)) {
-            if (! $dump) {
+            if (!$dump) {
                 $dump = ('cli' === PHP_SAPI ? new CliDumper() : new HtmlDumper());
                 $varCloner = new VarCloner();
             }
@@ -78,9 +78,9 @@ class Dump
         var_dump($var);
         $output = ob_get_clean();
 
-        if (! extension_loaded('xdebug')) {
+        if (!extension_loaded('xdebug')) {
             $output = preg_replace("/\]\=\>\n(\s+)/m", '] => ', $output);
-            $output = 'cli' === PHP_SAPI ? $output : '<pre>' . htmlspecialchars($output, ENT_COMPAT, 'UTF-8') . '</pre>';
+            $output = 'cli' === PHP_SAPI ? $output : '<pre>'.htmlspecialchars($output, ENT_COMPAT, 'UTF-8').'</pre>';
         }
 
         if ($echo) {

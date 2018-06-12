@@ -334,11 +334,11 @@ class Select
      */
     public function select($mixData = null, $arrBind = [], $bFlag = false)
     {
-        if (! Type::these($mixData, [
+        if (!Type::these($mixData, [
             'string',
             'null',
             'callback',
-        ]) && ! $mixData instanceof self) {
+        ]) && !$mixData instanceof self) {
             throw new Exception('Unsupported parameters.');
         }
 
@@ -348,7 +348,7 @@ class Select
         }
 
         // 回调
-        elseif (! is_string($mixData) && is_callable($mixData)) {
+        elseif (!is_string($mixData) && is_callable($mixData)) {
             call_user_func_array($mixData, [
                 &$this,
             ]);
@@ -380,7 +380,7 @@ class Select
      */
     public function insert($mixData, $arrBind = [], $booReplace = false, $bFlag = false)
     {
-        if (! Type::these($mixData, [
+        if (!Type::these($mixData, [
             'string',
             'array',
         ])) {
@@ -405,11 +405,11 @@ class Select
             // 构造 insert 语句
             if ($arrValue) {
                 $arrSql = [];
-                $arrSql[] = ($booReplace ? 'REPLACE' : 'INSERT') . ' INTO';
+                $arrSql[] = ($booReplace ? 'REPLACE' : 'INSERT').' INTO';
                 $arrSql[] = $this->parseTable();
-                $arrSql[] = '(' . implode(',', $arrField) . ')';
+                $arrSql[] = '('.implode(',', $arrField).')';
                 $arrSql[] = 'VALUES';
-                $arrSql[] = '(' . implode(',', $arrValue) . ')';
+                $arrSql[] = '('.implode(',', $arrValue).')';
                 $mixData = implode(' ', $arrSql);
                 unset($arrBindData, $arrField, $arrValue, $arrSql);
             }
@@ -437,7 +437,7 @@ class Select
      */
     public function insertAll($arrData, $arrBind = [], $booReplace = false, $bFlag = false)
     {
-        if (! is_array($arrData)) {
+        if (!is_array($arrData)) {
             throw new Exception('Unsupported parameters.');
         }
 
@@ -450,7 +450,7 @@ class Select
             $intQuestionMark = 0;
             $sTableName = $this->getCurrentTable();
             foreach ($arrData as $intKey => $arrTemp) {
-                if (! is_array($arrTemp)) {
+                if (!is_array($arrTemp)) {
                     continue;
                 }
                 $arrBindData = $this->getBindData($arrTemp, $arrBind, $intQuestionMark, $intKey);
@@ -462,16 +462,16 @@ class Select
                 }
                 $arrValue = $arrBindData[1];
                 if ($arrValue) {
-                    $arrDataResult[] = '(' . implode(',', $arrValue) . ')';
+                    $arrDataResult[] = '('.implode(',', $arrValue).')';
                 }
             }
 
             // 构造 insertAll 语句
             if ($arrDataResult) {
                 $arrSql = [];
-                $arrSql[] = ($booReplace ? 'REPLACE' : 'INSERT') . ' INTO';
+                $arrSql[] = ($booReplace ? 'REPLACE' : 'INSERT').' INTO';
                 $arrSql[] = $this->parseTable();
-                $arrSql[] = '(' . implode(',', $arrField) . ')';
+                $arrSql[] = '('.implode(',', $arrField).')';
                 $arrSql[] = 'VALUES';
                 $arrSql[] = implode(',', $arrDataResult);
                 $mixData = implode(' ', $arrSql);
@@ -500,7 +500,7 @@ class Select
      */
     public function update($mixData, $arrBind = [], $bFlag = false)
     {
-        if (! Type::these($mixData, [
+        if (!Type::these($mixData, [
             'string',
             'array',
         ])) {
@@ -522,7 +522,7 @@ class Select
             $arrSetData = [];
             foreach ($arrField as $intKey => $strField) {
                 $strField = $this->qualifyOneColumn($strField, $sTableName);
-                $arrSetData[] = $strField . ' = ' . $arrValue[$intKey];
+                $arrSetData[] = $strField.' = '.$arrValue[$intKey];
             }
 
             // 构造 update 语句
@@ -530,7 +530,7 @@ class Select
                 $arrSql = [];
                 $arrSql[] = 'UPDATE';
                 $arrSql[] = ltrim($this->parseFrom(), 'FROM ');
-                $arrSql[] = 'SET ' . implode(',', $arrSetData);
+                $arrSql[] = 'SET '.implode(',', $arrSetData);
                 $arrSql[] = $this->parseWhere();
                 $arrSql[] = $this->parseOrder();
                 $arrSql[] = $this->parseLimitcount();
@@ -561,7 +561,7 @@ class Select
      */
     public function updateColumn($strColumn, $mixValue, $arrBind = [], $bFlag = false)
     {
-        if (! is_string($strColumn)) {
+        if (!is_string($strColumn)) {
             throw new Exception('Unsupported parameters.');
         }
 
@@ -582,7 +582,7 @@ class Select
      */
     public function updateIncrease($strColumn, $intStep = 1, $arrBind = [], $bFlag = false)
     {
-        return $this->sql($bFlag)->updateColumn($strColumn, '{[' . $strColumn . ']+' . $intStep . '}', $arrBind);
+        return $this->sql($bFlag)->updateColumn($strColumn, '{['.$strColumn.']+'.$intStep.'}', $arrBind);
     }
 
     /**
@@ -597,7 +597,7 @@ class Select
      */
     public function updateDecrease($strColumn, $intStep = 1, $arrBind = [], $bFlag = false)
     {
-        return $this->sql($bFlag)->updateColumn($strColumn, '{[' . $strColumn . ']-' . $intStep . '}', $arrBind);
+        return $this->sql($bFlag)->updateColumn($strColumn, '{['.$strColumn.']-'.$intStep.'}', $arrBind);
     }
 
     /**
@@ -611,7 +611,7 @@ class Select
      */
     public function delete($mixData = null, $arrBind = [], $bFlag = false)
     {
-        if (! Type::these($mixData, [
+        if (!Type::these($mixData, [
             'string',
             'null',
         ])) {
@@ -627,7 +627,7 @@ class Select
                 $arrSql[] = $this->parseTable(true, true);
                 $arrSql[] = $this->parseFrom();
             } else { // using 方式关联删除
-                $arrSql[] = 'FROM ' . $this->parseTable(true);
+                $arrSql[] = 'FROM '.$this->parseTable(true);
                 $arrSql[] = $this->parseUsing(true);
             }
             $arrSql[] = $this->parseWhere();
@@ -1241,7 +1241,7 @@ class Select
                 $sTable = $arrMatch[1];
             }
 
-            if (! is_string($sAlias)) {
+            if (!is_string($sAlias)) {
                 $sAlias = $sTable;
             }
 
@@ -1658,7 +1658,7 @@ class Select
         }
         if (is_array($mixName)) {
             foreach ($mixName as $mixKey => $mixValue) {
-                if (! is_array($mixValue)) {
+                if (!is_array($mixValue)) {
                     $mixValue = [
                         $mixValue,
                         $intType,
@@ -1667,7 +1667,7 @@ class Select
                 $this->arrBindParams[$mixKey] = $mixValue;
             }
         } else {
-            if (! is_array($mixValue)) {
+            if (!is_array($mixValue)) {
                 $mixValue = [
                     $mixValue,
                     $intType,
@@ -1692,7 +1692,7 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
-        if (! isset(static::$arrIndexTypes[$sType])) {
+        if (!isset(static::$arrIndexTypes[$sType])) {
             throw new Exception(sprintf('Invalid Index type %s.', $sType));
         }
         $sType = strtoupper($sType);
@@ -1887,11 +1887,11 @@ class Select
             return $this;
         }
 
-        if (! isset(static::$arrUnionTypes[$sType])) {
+        if (!isset(static::$arrUnionTypes[$sType])) {
             throw new Exception(sprintf('Invalid UNION type %s.', $sType));
         }
 
-        if (! is_array($mixSelect)) {
+        if (!is_array($mixSelect)) {
             $mixSelect = (array) $mixSelect;
         }
 
@@ -1939,9 +1939,9 @@ class Select
         }
         $mixExpr = Arr::normalize($mixExpr);
         // 还原
-        if (! empty($arrRes)) {
+        if (!empty($arrRes)) {
             foreach ($arrRes[1] as $strTemp) {
-                $mixExpr[array_search('{' . base64_encode($strTemp) . '}', $mixExpr, true)] = '{' . $strTemp . '}';
+                $mixExpr[array_search('{'.base64_encode($strTemp).'}', $mixExpr, true)] = '{'.$strTemp.'}';
             }
         }
 
@@ -1953,9 +1953,9 @@ class Select
             }
             $strValue = Arr::normalize($strValue);
             // 还原
-            if (! empty($arrResTwo)) {
+            if (!empty($arrResTwo)) {
                 foreach ($arrResTwo[1] as $strTemp) {
-                    $strValue[array_search('{' . base64_encode($strTemp) . '}', $strValue, true)] = '{' . $strTemp . '}';
+                    $strValue[array_search('{'.base64_encode($strTemp).'}', $strValue, true)] = '{'.$strTemp.'}';
                 }
             }
 
@@ -2267,9 +2267,9 @@ class Select
         }
         $mixExpr = Arr::normalize($mixExpr);
         // 还原
-        if (! empty($arrRes)) {
+        if (!empty($arrRes)) {
             foreach ($arrRes[1] as $strTemp) {
-                $mixExpr[array_search('{' . base64_encode($strTemp) . '}', $mixExpr, true)] = '{' . $strTemp . '}';
+                $mixExpr[array_search('{'.base64_encode($strTemp).'}', $mixExpr, true)] = '{'.$strTemp.'}';
             }
         }
 
@@ -2281,9 +2281,9 @@ class Select
             }
             $strValue = Arr::normalize($strValue);
             // 还原
-            if (! empty($arrResTwo)) {
+            if (!empty($arrResTwo)) {
                 foreach ($arrResTwo[1] as $strTemp) {
-                    $strValue[array_search('{' . base64_encode($strTemp) . '}', $strValue, true)] = '{' . $strTemp . '}';
+                    $strValue[array_search('{'.base64_encode($strTemp).'}', $strValue, true)] = '{'.$strTemp.'}';
                 }
             }
             foreach ($strValue as $strTemp) {
@@ -2295,22 +2295,22 @@ class Select
                 // 表达式支持
                 if (false !== strpos($strTemp, '{') && preg_match('/^{(.+?)}$/', $strTemp, $arrResThree)) {
                     $strTemp = $this->objConnect->qualifyExpression($arrResThree[1], $strTableName, $this->arrColumnsMapping);
-                    if (preg_match('/(.*\W)(' . 'ASC' . '|' . 'DESC' . ')\b/si', $strTemp, $arrMatch)) {
+                    if (preg_match('/(.*\W)('.'ASC'.'|'.'DESC'.')\b/si', $strTemp, $arrMatch)) {
                         $strTemp = trim($arrMatch[1]);
                         $sSort = strtoupper($arrMatch[2]);
                     } else {
                         $sSort = $sOrderDefault;
                     }
-                    $this->arrOption['order'][] = $strTemp . ' ' . $sSort;
+                    $this->arrOption['order'][] = $strTemp.' '.$sSort;
                 } else {
                     $sCurrentTableName = $strTableName;
                     $sSort = $sOrderDefault;
-                    if (preg_match('/(.*\W)(' . 'ASC' . '|' . 'DESC' . ')\b/si', $strTemp, $arrMatch)) {
+                    if (preg_match('/(.*\W)('.'ASC'.'|'.'DESC'.')\b/si', $strTemp, $arrMatch)) {
                         $strTemp = trim($arrMatch[1]);
                         $sSort = strtoupper($arrMatch[2]);
                     }
 
-                    if (! preg_match('/\(.*\)/', $strTemp)) {
+                    if (!preg_match('/\(.*\)/', $strTemp)) {
                         if (preg_match('/(.+)\.(.+)/', $strTemp, $arrMatch)) {
                             $sCurrentTableName = $arrMatch[1];
                             $strTemp = $arrMatch[2];
@@ -2320,7 +2320,7 @@ class Select
                         }
                         $strTemp = $this->objConnect->qualifyTableOrColumn("{$sCurrentTableName}.{$strTemp}");
                     }
-                    $this->arrOption['order'][] = $strTemp . ' ' . $sSort;
+                    $this->arrOption['order'][] = $strTemp.' '.$sSort;
                 }
             }
         }
@@ -2564,7 +2564,7 @@ class Select
             } elseif ('union' == $sOption) {
                 continue;
             } else {
-                $method = 'parse' . ucfirst($sOption);
+                $method = 'parse'.ucfirst($sOption);
                 if (method_exists($this, $method)) {
                     $arrSql[$sOption] = $this->$method();
                 }
@@ -2582,7 +2582,7 @@ class Select
         $sLastSql = trim(implode(' ', $arrSql));
 
         if (true === $booWithLogicGroup) {
-            return static::LOGIC_GROUP_LEFT . $sLastSql . static::LOGIC_GROUP_RIGHT;
+            return static::LOGIC_GROUP_LEFT.$sLastSql.static::LOGIC_GROUP_RIGHT;
         } else {
             return $sLastSql;
         }
@@ -2609,7 +2609,7 @@ class Select
      */
     protected function parseDistinct()
     {
-        if (! $this->arrOption['distinct']) {
+        if (!$this->arrOption['distinct']) {
             return '';
         }
 
@@ -2664,7 +2664,7 @@ class Select
         foreach ($this->arrOption['aggregate'] as $arrAggregate) {
             list(, $sField, $sAlias) = $arrAggregate;
             if ($sAlias) {
-                $arrColumns[] = $sField . ' AS ' . $sAlias;
+                $arrColumns[] = $sField.' AS '.$sAlias;
             } else {
                 $arrColumns[] = $sField;
             }
@@ -2688,13 +2688,13 @@ class Select
         foreach ($this->arrOption['from'] as $sAlias => $arrTable) {
             $sTmp = '';
             // 如果不是第一个 FROM，则添加 JOIN
-            if (! empty($arrFrom)) {
-                $sTmp .= ' ' . strtoupper($arrTable['join_type']) . ' ';
+            if (!empty($arrFrom)) {
+                $sTmp .= ' '.strtoupper($arrTable['join_type']).' ';
             }
 
             // 表名子表达式支持
             if (false !== strpos($arrTable['table_name'], '(')) {
-                $sTmp .= $arrTable['table_name'] . ' ' . $sAlias;
+                $sTmp .= $arrTable['table_name'].' '.$sAlias;
             } elseif ($sAlias == $arrTable['table_name']) {
                 $sTmp .= $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}");
             } else {
@@ -2702,14 +2702,14 @@ class Select
             }
 
             // 添加 JOIN 查询条件
-            if (! empty($arrFrom) && ! empty($arrTable['join_cond'])) {
-                $sTmp .= ' ON ' . $arrTable['join_cond'];
+            if (!empty($arrFrom) && !empty($arrTable['join_cond'])) {
+                $sTmp .= ' ON '.$arrTable['join_cond'];
             }
             $arrFrom[] = $sTmp;
         }
 
-        if (! empty($arrFrom)) {
-            return 'FROM ' . implode(' ', $arrFrom);
+        if (!empty($arrFrom)) {
+            return 'FROM '.implode(' ', $arrFrom);
         } else {
             return '';
         }
@@ -2743,7 +2743,7 @@ class Select
                 } else {
                     // 表名子表达式支持
                     if (false !== strpos($arrTable['table_name'], '(')) {
-                        return $arrTable['table_name'] . ' ' . $sAlias;
+                        return $arrTable['table_name'].' '.$sAlias;
                     } else {
                         return $this->objConnect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
                     }
@@ -2782,7 +2782,7 @@ class Select
             }
         }
 
-        return 'USING ' . implode(',', array_unique($arrUsing));
+        return 'USING '.implode(',', array_unique($arrUsing));
     }
 
     /**
@@ -2800,7 +2800,7 @@ class Select
             if (empty($this->arrOption['index'][$sType])) {
                 continue;
             }
-            $strIndex .= ($strIndex ? ' ' : '') . $sType . ' INDEX ( ' . implode(',', $this->arrOption['index'][$sType]) . ' )';
+            $strIndex .= ($strIndex ? ' ' : '').$sType.' INDEX ( '.implode(',', $this->arrOption['index'][$sType]).' )';
         }
 
         return $strIndex;
@@ -2842,7 +2842,7 @@ class Select
                     $mixUnion = $mixUnion->makeSql();
                 }
                 if ($nCnt <= $nOptions - 1) {
-                    $sSql .= "\n" . $sType . ' ' . $mixUnion;
+                    $sSql .= "\n".$sType.' '.$mixUnion;
                 }
             }
         }
@@ -2863,11 +2863,11 @@ class Select
             return '';
         }
         // 删除存在 join, order 无效
-        if (true === $booForDelete && (count($this->arrOption['from']) > 1 || ! empty($this->arrOption['using']))) {
+        if (true === $booForDelete && (count($this->arrOption['from']) > 1 || !empty($this->arrOption['using']))) {
             return '';
         }
 
-        return 'ORDER BY ' . implode(',', array_unique($this->arrOption['order']));
+        return 'ORDER BY '.implode(',', array_unique($this->arrOption['order']));
     }
 
     /**
@@ -2881,7 +2881,7 @@ class Select
             return '';
         }
 
-        return 'GROUP BY ' . implode(',', $this->arrOption['group']);
+        return 'GROUP BY '.implode(',', $this->arrOption['group']);
     }
 
     /**
@@ -2911,7 +2911,7 @@ class Select
     protected function parseLimitcount($booNullLimitOffset = false, $booForDelete = false)
     {
         // 删除存在 join, limit 无效
-        if (true === $booForDelete && (count($this->arrOption['from']) > 1 || ! empty($this->arrOption['using']))) {
+        if (true === $booForDelete && (count($this->arrOption['from']) > 1 || !empty($this->arrOption['using']))) {
             return '';
         }
 
@@ -2940,7 +2940,7 @@ class Select
      */
     protected function parseForUpdate()
     {
-        if (! $this->arrOption['forupdate']) {
+        if (!$this->arrOption['forupdate']) {
             return '';
         }
 
@@ -2957,7 +2957,7 @@ class Select
      */
     protected function analyseCondition($sCondType, $booChild = false)
     {
-        if (! $this->arrOption[$sCondType]) {
+        if (!$this->arrOption[$sCondType]) {
             return '';
         }
 
@@ -3010,7 +3010,7 @@ class Select
                         'day',
                         'year',
                     ] as $strTimeType) {
-                        if (0 === stripos($mixCond[1], '@' . $strTimeType)) {
+                        if (0 === stripos($mixCond[1], '@'.$strTimeType)) {
                             $strFindTime = $strTimeType;
                             $mixCond[1] = ltrim(substr($mixCond[1], strlen($strTimeType) + 1));
                             break;
@@ -3024,7 +3024,7 @@ class Select
                 // 格式化字段值，支持数组
                 if (isset($mixCond[2])) {
                     $booIsArray = true;
-                    if (! is_array($mixCond[2])) {
+                    if (!is_array($mixCond[2])) {
                         $mixCond[2] = (array) $mixCond[2];
                         $booIsArray = false;
                     }
@@ -3036,7 +3036,7 @@ class Select
                         }
 
                         // 回调方法子表达式支持
-                        elseif (! is_string($strTemp) && is_callable($strTemp)) {
+                        elseif (!is_string($strTemp) && is_callable($strTemp)) {
                             $objSelect = new static($this->objConnect);
                             $objSelect->setCurrentTable($this->getCurrentTable());
                             $mixResultCallback = call_user_func_array($strTemp, [
@@ -3075,24 +3075,24 @@ class Select
                     'null',
                     'not null',
                 ])) {
-                    $arrSqlCond[] = $mixCond[0] . ' IS ' . strtoupper($mixCond[1]);
+                    $arrSqlCond[] = $mixCond[0].' IS '.strtoupper($mixCond[1]);
                 } elseif (in_array($mixCond[1], [
                     'in',
                     'not in',
                 ])) {
-                    $arrSqlCond[] = $mixCond[0] . ' ' . strtoupper($mixCond[1]) . ' ' . (is_array($mixCond[2]) ? '(' . implode(',', $mixCond[2]) . ')' : $mixCond[2]);
+                    $arrSqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.(is_array($mixCond[2]) ? '('.implode(',', $mixCond[2]).')' : $mixCond[2]);
                 } elseif (in_array($mixCond[1], [
                     'between',
                     'not between',
                 ])) {
-                    if (! is_array($mixCond[2]) || count($mixCond[2]) < 2) {
+                    if (!is_array($mixCond[2]) || count($mixCond[2]) < 2) {
                         throw new Exception('The [not] between parameter value must be an array of not less than two elements.');
                     }
-                    $arrSqlCond[] = $mixCond[0] . ' ' . strtoupper($mixCond[1]) . ' ' . $mixCond[2][0] . ' AND ' . $mixCond[2][1];
+                    $arrSqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.$mixCond[2][0].' AND '.$mixCond[2][1];
                 } elseif (is_scalar($mixCond[2])) {
-                    $arrSqlCond[] = $mixCond[0] . ' ' . strtoupper($mixCond[1]) . ' ' . $mixCond[2];
+                    $arrSqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.$mixCond[2];
                 } elseif (null === $mixCond[2]) {
-                    $arrSqlCond[] = $mixCond[0] . ' IS NULL';
+                    $arrSqlCond[] = $mixCond[0].' IS NULL';
                 }
             }
         }
@@ -3100,7 +3100,7 @@ class Select
         // 剔除第一个逻辑符
         array_shift($arrSqlCond);
 
-        return (false === $booChild ? strtoupper($sCondType) . ' ' : '') . implode(' ', $arrSqlCond);
+        return (false === $booChild ? strtoupper($sCondType).' ' : '').implode(' ', $arrSqlCond);
     }
 
     /**
@@ -3113,7 +3113,7 @@ class Select
      */
     protected function aliasCondition($strConditionType, $mixCond)
     {
-        if (! is_array($mixCond)) {
+        if (!is_array($mixCond)) {
             $arrArgs = func_get_args();
             $this->addConditions($arrArgs[1], $strConditionType, $arrArgs[2] ?? null);
         } else {
@@ -3138,19 +3138,19 @@ class Select
     {
         $this->setTypeAndLogic($strType, $strLogic);
 
-        if (! is_string($mixCond) && is_callable($mixCond)) {
+        if (!is_string($mixCond) && is_callable($mixCond)) {
             $objSelect = new static($this->objConnect);
             $objSelect->setCurrentTable($this->getCurrentTable());
             $mixResultCallback = call_user_func_array($mixCond, [
                 &$objSelect,
             ]);
             if (null === $mixResultCallback) {
-                $strParseType = 'parse' . ucwords($strType);
+                $strParseType = 'parse'.ucwords($strType);
                 $strTemp = $objSelect->{$strParseType}(true);
             } else {
                 $strTemp = $mixResultCallback;
             }
-            $this->setConditionItem(static::LOGIC_GROUP_LEFT . $strTemp . static::LOGIC_GROUP_RIGHT, 'string__');
+            $this->setConditionItem(static::LOGIC_GROUP_LEFT.$strTemp.static::LOGIC_GROUP_RIGHT, 'string__');
 
             return $this;
         } else {
@@ -3173,7 +3173,7 @@ class Select
         $strTable = $this->getCurrentTable();
 
         // 整理多个参数到二维数组
-        if (! is_array($arrArgs[0])) {
+        if (!is_array($arrArgs[0])) {
             $arrArgs[0] = [
                 $arrArgs,
             ];
@@ -3181,7 +3181,7 @@ class Select
             // 一维数组统一成二维数组格式
             $booOneImension = false;
             foreach ($arrArgs[0] as $mixKey => $mixValue) {
-                if (is_int($mixKey) && ! is_array($mixValue)) {
+                if (is_int($mixKey) && !is_array($mixValue)) {
                     $booOneImension = true;
                 }
                 break;
@@ -3196,14 +3196,14 @@ class Select
 
         // 遍历数组拼接结果
         foreach ($arrArgs[0] as $strKey => $arrTemp) {
-            if (! is_int($strKey)) {
+            if (!is_int($strKey)) {
                 $strKey = trim($strKey);
             }
 
             // 字符串表达式
             if (is_string($strKey) && 'string__' == $strKey) {
                 // 不符合规则抛出异常
-                if (! is_string($arrTemp)) {
+                if (!is_string($arrTemp)) {
                     throw new Exception('String__ type only supports string.');
                 }
 
@@ -3238,10 +3238,10 @@ class Select
                 ]);
 
                 // 解析结果
-                $strParseType = 'parse' . ucwords($arrTypeAndLogic[0]);
+                $strParseType = 'parse'.ucwords($arrTypeAndLogic[0]);
                 $strOldLogic = $arrTypeAndLogic[1];
                 $this->setTypeAndLogic(null, 'subor__' ? static::LOGIC_OR : static::LOGIC_AND);
-                $this->setConditionItem(static::LOGIC_GROUP_LEFT . $objSelect->{$strParseType}(true) . static::LOGIC_GROUP_RIGHT, 'string__');
+                $this->setConditionItem(static::LOGIC_GROUP_LEFT.$objSelect->{$strParseType}(true).static::LOGIC_GROUP_RIGHT, 'string__');
                 $this->setTypeAndLogic(null, $strOldLogic);
             }
 
@@ -3257,7 +3257,7 @@ class Select
 
                 if ($arrTemp instanceof self) {
                     $arrTemp = $arrTemp->makeSql();
-                } elseif (! is_string($arrTemp) && is_callable($arrTemp)) {
+                } elseif (!is_string($arrTemp) && is_callable($arrTemp)) {
                     $objSelect = new static($this->objConnect);
                     $objSelect->setCurrentTable($this->getCurrentTable());
                     $mixResultCallback = call_user_func_array($arrTemp, [
@@ -3270,9 +3270,9 @@ class Select
                     }
                 }
 
-                $arrTemp = ('notexists__' == $strKey ? 'NOT EXISTS ' : 'EXISTS ') .
-                    static::LOGIC_GROUP_LEFT .
-                    $arrTemp .
+                $arrTemp = ('notexists__' == $strKey ? 'NOT EXISTS ' : 'EXISTS ').
+                    static::LOGIC_GROUP_LEFT.
+                    $arrTemp.
                     static::LOGIC_GROUP_RIGHT;
 
                 $this->setConditionItem($arrTemp, 'string__');
@@ -3291,7 +3291,7 @@ class Select
                 }
 
                 // 处理默认 “=” 的类型
-                if (2 === count($arrTemp) && ! in_array($arrTemp[1], [
+                if (2 === count($arrTemp) && !in_array($arrTemp[1], [
                     'null',
                     'not null',
                 ], true)) {
@@ -3350,7 +3350,7 @@ class Select
         } else {
             // 格式化时间
             if (($strInTimeCondition = $this->getInTimeCondition())) {
-                $arrItem[1] = '@' . $strInTimeCondition . ' ' . $arrItem[1];
+                $arrItem[1] = '@'.$strInTimeCondition.' '.$arrItem[1];
             }
             $this->arrOption[$arrTypeAndLogic[0]][] = $arrTypeAndLogic[1];
             $this->arrOption[$arrTypeAndLogic[0]][] = $arrItem;
@@ -3407,7 +3407,7 @@ class Select
 
         if (false !== strpos($strField, '{') && preg_match('/^{(.+?)}$/', $strField, $arrRes)) {
             $strField = $this->objConnect->qualifyExpression($arrRes[1], $sTableName, $this->arrColumnsMapping);
-        } elseif (! preg_match('/\(.*\)/', $strField)) {
+        } elseif (!preg_match('/\(.*\)/', $strField)) {
             if (preg_match('/(.+)\.(.+)/', $strField, $arrMatch)) {
                 $sCurrentTableName = $arrMatch[1];
                 $strTemp = $arrMatch[2];
@@ -3436,7 +3436,7 @@ class Select
     protected function addJoin($sJoinType, $mixName, $mixCols, $mixCond = null)
     {
         // 验证 join 类型
-        if (! isset(static::$arrJoinTypes[$sJoinType])) {
+        if (!isset(static::$arrJoinTypes[$sJoinType])) {
             throw new Exception(sprintf('Invalid JOIN type %s.', $sJoinType));
         }
 
@@ -3457,21 +3457,21 @@ class Select
         // $mixName 为数组配置
         elseif (is_array($mixName)) {
             foreach ($mixName as $sAlias => $sTable) {
-                if (! is_string($sAlias)) {
+                if (!is_string($sAlias)) {
                     $sAlias = '';
                 }
 
                 // 对象子表达式
                 if ($sTable instanceof self) {
                     $sTable = $sTable->makeSql(true);
-                    if (! $sAlias) {
+                    if (!$sAlias) {
                         $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                     }
                     $booParseSchema = false;
                 }
 
                 // 回调方法子表达式
-                elseif (! is_string($sTable) && is_callable($sTable)) {
+                elseif (!is_string($sTable) && is_callable($sTable)) {
                     $objSelect = new static($this->objConnect);
                     $objSelect->setCurrentTable($this->getCurrentTable());
                     $mixResultCallback = call_user_func_array($sTable, [
@@ -3482,7 +3482,7 @@ class Select
                     } else {
                         $sTable = $mixResultCallback;
                     }
-                    if (! $sAlias) {
+                    if (!$sAlias) {
                         $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                     }
                     $booParseSchema = false;
@@ -3499,7 +3499,7 @@ class Select
         }
 
         // 回调方法
-        elseif (! is_string($mixName) && is_callable($mixName)) {
+        elseif (!is_string($mixName) && is_callable($mixName)) {
             $objSelect = new static($this->objConnect);
             $objSelect->setCurrentTable($this->getCurrentTable());
             $mixResultCallback = call_user_func_array($mixName, [
@@ -3555,7 +3555,7 @@ class Select
 
         // 只有表操作才设置当前表
         if ($this->getIsTable()) {
-            $this->setCurrentTable(($sSchema ? $sSchema . '.' : '') . $sAlias);
+            $this->setCurrentTable(($sSchema ? $sSchema.'.' : '').$sAlias);
         }
 
         // 查询条件
@@ -3601,9 +3601,9 @@ class Select
         }
         $mixCols = Arr::normalize($mixCols);
         // 还原
-        if (! empty($arrRes)) {
+        if (!empty($arrRes)) {
             foreach ($arrRes[1] as $strTemp) {
-                $mixCols[array_search('{' . base64_encode($strTemp) . '}', $mixCols, true)] = '{' . $strTemp . '}';
+                $mixCols[array_search('{'.base64_encode($strTemp).'}', $mixCols, true)] = '{'.$strTemp.'}';
             }
         }
 
@@ -3625,9 +3625,9 @@ class Select
                 $mixCol = Arr::normalize($mixCol);
 
                 // 还原
-                if (! empty($arrResTwo)) {
+                if (!empty($arrResTwo)) {
                     foreach ($arrResTwo[1] as $strTemp) {
-                        $mixCol[array_search('{' . base64_encode($strTemp) . '}', $mixCol, true)] = '{' . $strTemp . '}';
+                        $mixCol[array_search('{'.base64_encode($strTemp).'}', $mixCol, true)] = '{'.$strTemp.'}';
                     }
                 }
 
@@ -3636,7 +3636,7 @@ class Select
                     $strThisTableName = $sTableName;
 
                     // 检查是不是 "字段名 AS 别名"这样的形式
-                    if (preg_match('/^(.+)\s+' . 'AS' . '\s+(.+)$/i', $sCol, $arrMatch)) {
+                    if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $sCol, $arrMatch)) {
                         $sCol = $arrMatch[1];
                         $sAlias = $arrMatch[2];
                     }
@@ -3753,7 +3753,7 @@ class Select
     protected function queryDefault(&$arrData)
     {
         if (empty($arrData)) {
-            if (! $this->arrOption['limitquery']) {
+            if (!$this->arrOption['limitquery']) {
                 $arrData = null;
             }
 
@@ -3761,7 +3761,7 @@ class Select
         }
 
         // 返回一条记录
-        if (! $this->arrOption['limitquery']) {
+        if (!$this->arrOption['limitquery']) {
             $arrData = reset($arrData) ?: null;
         }
     }
@@ -3774,7 +3774,7 @@ class Select
     protected function queryClass(&$arrData)
     {
         if (empty($arrData)) {
-            if (! $this->arrOption['limitquery']) {
+            if (!$this->arrOption['limitquery']) {
                 $arrData = null;
             } else {
                 if ($this->arrQueryParams['as_collection']) {
@@ -3787,7 +3787,7 @@ class Select
 
         // 模型类不存在，直接以数组结果返回
         $sClassName = $this->arrQueryParams['as_class'];
-        if ($sClassName && ! class_exists($sClassName)) {
+        if ($sClassName && !class_exists($sClassName)) {
             $this->queryDefault($arrData);
 
             return;
@@ -3798,7 +3798,7 @@ class Select
         }
 
         // 创建一个单独的对象
-        if (! $this->arrOption['limitquery']) {
+        if (!$this->arrOption['limitquery']) {
             $arrData = reset($arrData) ?: null;
         } else {
             if ($this->arrQueryParams['as_collection']) {
@@ -3933,12 +3933,12 @@ class Select
                 $arrField[] = $sKey;
             }
 
-            if (0 === strpos($mixValue, ':') || ! empty($arrRes)) {
+            if (0 === strpos($mixValue, ':') || !empty($arrRes)) {
                 $arrValue[] = $mixValue;
             } else {
                 // 转换 ? 占位符至 : 占位符
                 if ('?' == $mixValue && isset($arrBind[$intQuestionMark])) {
-                    $sKey = 'questionmark_' . $intQuestionMark;
+                    $sKey = 'questionmark_'.$intQuestionMark;
                     $mixValue = $arrBind[$intQuestionMark];
                     unset($arrBind[$intQuestionMark]);
                     $this->deleteBindParams($intQuestionMark);
@@ -3946,9 +3946,9 @@ class Select
                 }
 
                 if ($intIndex > 0) {
-                    $sKey = $sKey . '_' . $intIndex;
+                    $sKey = $sKey.'_'.$intIndex;
                 }
-                $arrValue[] = ':' . $sKey;
+                $arrValue[] = ':'.$sKey;
 
                 $this->bind($sKey, $mixValue, $this->objConnect->getBindParamType($mixValue));
             }
@@ -4025,7 +4025,7 @@ class Select
         }
         $sField = str_replace('`', '', $sField);
         $strTable = $this->getCurrentTable();
-        if (! preg_match('/\(.*\)/', $sField)) {
+        if (!preg_match('/\(.*\)/', $sField)) {
             if (preg_match('/(.+)\.(.+)/', $sField, $arrMatch)) {
                 $strTable = $arrMatch[1];
                 $sField = $arrMatch[2];
@@ -4037,7 +4037,7 @@ class Select
         if ('*' == $sField) {
             return '';
         }
-        if (! isset($arrColumns[$strTable])) {
+        if (!isset($arrColumns[$strTable])) {
             $arrColumns[$strTable] = $this->objConnect->getTableColumnsCache($strTable)['list'];
         }
 
@@ -4064,7 +4064,7 @@ class Select
         }
 
         // 自动格式化时间
-        if (! empty($arrColumns[$strTable][$sField])) {
+        if (!empty($arrColumns[$strTable][$sField])) {
             $strFieldType = $arrColumns[$strTable][$sField]['type'];
             if (in_array($strFieldType, [
                 'datetime',
@@ -4103,7 +4103,7 @@ class Select
             $strAliasReturn = false === $nDot ? $mixName : substr($mixName, $nDot + 1);
         }
         for ($nI = 2; array_key_exists($strAliasReturn, $this->arrOption['from']); ++$nI) {
-            $strAliasReturn = $mixName . '_' . (string) $nI;
+            $strAliasReturn = $mixName.'_'.(string) $nI;
         }
 
         return $strAliasReturn;
@@ -4204,7 +4204,7 @@ class Select
         }
 
         // 查询组件
-        if (! $this->objCallSelect) {
+        if (!$this->objCallSelect) {
             throw new Exception(sprintf('Select do not implement magic method %s.', $method));
         }
 

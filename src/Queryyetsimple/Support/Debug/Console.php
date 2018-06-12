@@ -42,7 +42,7 @@ class Console
     public static function trace(array $log)
     {
         // swoole http server 可以调试
-        if (PHP_SAPI == 'cli' && ! (isset($_SERVER['SERVER_SOFTWARE']) && 'swoole-http-server' == $_SERVER['SERVER_SOFTWARE'])) {
+        if (PHP_SAPI == 'cli' && !(isset($_SERVER['SERVER_SOFTWARE']) && 'swoole-http-server' == $_SERVER['SERVER_SOFTWARE'])) {
             return;
         }
 
@@ -54,7 +54,7 @@ class Console
         $trace = static::normalizeLog($log);
 
         $include = get_included_files();
-        $trace['LOADED.FILE' . ' (' . count($include) . ')'] = implode('\n', $include);
+        $trace['LOADED.FILE'.' ('.count($include).')'] = implode('\n', $include);
 
         return static::getOutputToConsole($trace);
     }
@@ -72,7 +72,7 @@ class Console
         $trace = static::normalizeLog($log);
 
         $include = get_included_files();
-        $trace['LOADED.FILE' . ' (' . count($include) . ')'] = $include;
+        $trace['LOADED.FILE'.' ('.count($include).')'] = $include;
 
         return $trace;
     }
@@ -95,13 +95,13 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
             if (is_string($key)) {
                 $content[] = 'console.log(\'\');';
 
-                $content[] = 'console.log(\'%c ' . $key . '\', \'color: blue; background: #045efc; color: #fff; padding: 8px 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px; border-radius: 15px;\');';
+                $content[] = 'console.log(\'%c '.$key.'\', \'color: blue; background: #045efc; color: #fff; padding: 8px 15px; -moz-border-radius: 15px; -webkit-border-radius: 15px; border-radius: 15px;\');';
 
                 $content[] = 'console.log(\'\');';
             }
 
             if ($item) {
-                $content[] = 'console.log(\'%c' . $item . '\', \'color: gray;\');';
+                $content[] = 'console.log(\'%c'.$item.'\', \'color: gray;\');';
             }
         }
 
@@ -122,7 +122,7 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
         $result = [];
 
         foreach ($log as $type => $item) {
-            $result[strtoupper($type) . '.LOG' . ' (' . count($item) . ')'] = implode('\n', array_map(function ($item) {
+            $result[strtoupper($type).'.LOG'.' ('.count($item).')'] = implode('\n', array_map(function ($item) {
                 return static::formatMessage($item);
             }, $item));
         }
@@ -139,6 +139,6 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
      */
     protected static function formatMessage($item)
     {
-        return addslashes($item[0] . ' ' . json_encode($item[1], JSON_UNESCAPED_UNICODE));
+        return addslashes($item[0].' '.json_encode($item[1], JSON_UNESCAPED_UNICODE));
     }
 }

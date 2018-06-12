@@ -145,7 +145,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      */
     public function attempt()
     {
-        if (! ($boo = $this->tooManyAttempt())) {
+        if (!($boo = $this->tooManyAttempt())) {
             $this->hit();
         }
 
@@ -404,7 +404,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      */
     protected function getImplodeData($intEndTime, $intCount)
     {
-        return $intEndTime . static::SEPARATE . $intCount;
+        return $intEndTime.static::SEPARATE.$intCount;
     }
 
     /**
@@ -426,7 +426,7 @@ class RateLimiter implements IRateLimiter, IArray, Countable
      */
     protected function getKey()
     {
-        if (! $this->strKey) {
+        if (!$this->strKey) {
             throw new RuntimeException('Key is not set');
         }
 

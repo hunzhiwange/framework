@@ -155,12 +155,12 @@ class Session implements ISession
         }
 
         // 驱动
-        if ($this->connect && ! session_set_save_handler($this->connect)) {
+        if ($this->connect && !session_set_save_handler($this->connect)) {
             throw new RuntimeException(sprintf('Session drive %s settings failed.', get_class($this->connect)));
         }
 
         // 启动 session
-        if (! session_start()) {
+        if (!session_start()) {
             throw new RuntimeException('Session start failed');
         }
 
@@ -193,7 +193,7 @@ class Session implements ISession
     {
         $this->checkStart();
 
-        if (! is_array($keys)) {
+        if (!is_array($keys)) {
             $keys = [
                 $keys => $value,
             ];
@@ -270,7 +270,7 @@ class Session implements ISession
     {
         $arr = $this->get($key, []);
 
-        if (! is_array($keys)) {
+        if (!is_array($keys)) {
             $keys = [
                 $keys,
             ];
@@ -760,7 +760,7 @@ class Session implements ISession
      */
     protected function getNormalizeName($name)
     {
-        return $this->getOption('prefix') . $name;
+        return $this->getOption('prefix').$name;
     }
 
     /**
@@ -768,7 +768,7 @@ class Session implements ISession
      */
     protected function checkStart()
     {
-        if (! $this->isStart()) {
+        if (!$this->isStart()) {
             throw new RuntimeException('Session is not start yet');
         }
     }
@@ -831,13 +831,13 @@ class Session implements ISession
         $value = $this->get($key);
 
         if (is_array($value)) {
-            if (! strpos($name, '.')) {
+            if (!strpos($name, '.')) {
                 return array_key_exists($name, $value) ? $value[$name] : $defaults;
             }
 
             $parts = explode('.', $name);
             foreach ($parts as $part) {
-                if (! isset($value[$part])) {
+                if (!isset($value[$part])) {
                     return $defaults;
                 }
                 $value = $value[$part];
@@ -858,7 +858,7 @@ class Session implements ISession
      */
     protected function flashDataKey($key)
     {
-        return 'flash.data.' . $key;
+        return 'flash.data.'.$key;
     }
 
     /**

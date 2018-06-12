@@ -234,7 +234,7 @@ abstract class Kernel implements IKernel
      */
     protected function prepareTrace(IResponse $response)
     {
-        if (! $this->project->debug()) {
+        if (!$this->project->debug()) {
             return $response;
         }
 
@@ -249,7 +249,7 @@ abstract class Kernel implements IKernel
             $data['_TRACE'] = Console::jsonTrace($logs);
 
             $response->setData($data);
-        } elseif (! ($response instanceof RedirectResponse)) {
+        } elseif (!($response instanceof RedirectResponse)) {
             $data = Console::trace($logs);
 
             $response->appendContent($data);

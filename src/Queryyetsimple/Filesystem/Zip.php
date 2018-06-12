@@ -55,7 +55,7 @@ class Zip extends Connect implements IConnect
             throw new InvalidArgumentException('The zip requires path option');
         }
 
-        if (! class_exists('League\Flysystem\ZipArchive\ZipArchiveAdapter')) {
+        if (!class_exists('League\Flysystem\ZipArchive\ZipArchiveAdapter')) {
             throw new InvalidArgumentException('Please run composer require league/flysystem-ziparchive');
         }
 

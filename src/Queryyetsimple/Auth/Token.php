@@ -67,7 +67,7 @@ class Token extends Connect implements IConnect
      */
     protected function setLoginTokenName($oUser)
     {
-        $this->setTokenName(md5($oUser->{$this->getField('name')} . $oUser->{$this->getField('password')} . Str::randAlphaNum(5)));
+        $this->setTokenName(md5($oUser->{$this->getField('name')}.$oUser->{$this->getField('password')}.Str::randAlphaNum(5)));
     }
 
     /**

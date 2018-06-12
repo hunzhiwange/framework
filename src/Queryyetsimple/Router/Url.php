@@ -128,7 +128,7 @@ class Url implements IUrl
         $this->params = $params;
 
         if ('/' !== substr($url, 0, 1)) {
-            $url = '/' . $url;
+            $url = '/'.$url;
         }
 
         if (false !== strpos($url, '{')) {
@@ -146,7 +146,7 @@ class Url implements IUrl
 
         if ($this->params) {
             $queryUrl = http_build_query($this->params);
-            $url .= (false !== strpos($url, '?') ? '&' : '?') . $queryUrl;
+            $url .= (false !== strpos($url, '?') ? '&' : '?').$queryUrl;
         }
 
         $url = $this->withSuffix($url, $suffix);
@@ -165,14 +165,14 @@ class Url implements IUrl
     protected function withDomain(string $url, string $domain): string
     {
         if (true !== $this->option['subdomain_on'] ||
-            ! $this->option['domain_top'] ||
-            ! $domain) {
+            !$this->option['domain_top'] ||
+            !$domain) {
             return $url;
         }
 
-        return $this->isSecure() ? 'https://' : 'http://' .
-            ($domain && '*' != $domain ? $domain . '.' : '') .
-            $this->option['domain_top'] .
+        return $this->isSecure() ? 'https://' : 'http://'.
+            ($domain && '*' != $domain ? $domain.'.' : '').
+            $this->option['domain_top'].
             $url;
     }
 
@@ -203,7 +203,7 @@ class Url implements IUrl
         $suffix = true === $suffix ? $this->option['html_suffix'] : $suffix;
 
         if (false !== strpos($url, '?')) {
-            $url = str_replace('?', $suffix . '?', $url);
+            $url = str_replace('?', $suffix.'?', $url);
         } else {
             $url .= $suffix;
         }
@@ -223,6 +223,6 @@ class Url implements IUrl
         $enter = $this->request->getEnter();
         $enter = '/' !== $enter ? $enter : '';
 
-        return $enter . $url;
+        return $enter.$url;
     }
 }

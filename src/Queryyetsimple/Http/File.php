@@ -43,7 +43,7 @@ class File extends SplFileObject
      */
     public function __construct(string $path)
     {
-        if (! is_file($path)) {
+        if (!is_file($path)) {
             throw new FileNotFoundException($path);
         }
 
@@ -77,15 +77,15 @@ class File extends SplFileObject
      */
     protected function getTargetFile($directory, $name = null)
     {
-        if (! is_dir($directory)) {
-            if (false === mkdir($directory, 0777, true) && ! is_dir($directory)) {
+        if (!is_dir($directory)) {
+            if (false === mkdir($directory, 0777, true) && !is_dir($directory)) {
                 throw new FileException(sprintf('Unable to create the %s directory', $directory));
             }
-        } elseif (! is_writable($directory)) {
+        } elseif (!is_writable($directory)) {
             throw new FileException(sprintf('Unable to write in the %s directory', $directory));
         }
 
-        $target = rtrim($directory, '/\\') . DIRECTORY_SEPARATOR . (null === $name ? $this->getBasename() : $name);
+        $target = rtrim($directory, '/\\').DIRECTORY_SEPARATOR.(null === $name ? $this->getBasename() : $name);
 
         return $target;
     }
@@ -98,7 +98,7 @@ class File extends SplFileObject
      */
     protected function moveToTarget(string $sourcePath, string $target)
     {
-        if (! move_uploaded_file($sourcePath, $target)) {
+        if (!move_uploaded_file($sourcePath, $target)) {
             $error = error_get_last();
             throw new FileException(sprintf('Could not move the file %s to %s (%s)', $sourcePath, $target, strip_tags($error['message'])));
         }

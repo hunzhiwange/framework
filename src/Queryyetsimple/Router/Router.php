@@ -214,9 +214,9 @@ class Router implements IRouter
             $this->currentMiddlewares = $this->parseMiddleware();
         }
 
-        $method = ! $passedExtend ? 'handle' : 'terminate';
+        $method = !$passedExtend ? 'handle' : 'terminate';
 
-        if (! $this->currentMiddlewares[$method]) {
+        if (!$this->currentMiddlewares[$method]) {
             return;
         }
 
@@ -496,7 +496,7 @@ class Router implements IRouter
 
         foreach ($data as $item) {
             if (is_numeric($item)) {
-                $params['_param' . $k] = $item;
+                $params['_param'.$k] = $item;
                 ++$k;
             } else {
                 $paths[] = $item;
@@ -549,7 +549,7 @@ class Router implements IRouter
     {
         $data = $this->normalizeMatchedData('Url');
 
-        if (! $data) {
+        if (!$data) {
             $data = $dataPathInfo;
         } else {
             $this->initRequest();
@@ -579,7 +579,7 @@ class Router implements IRouter
      */
     protected function normalizeMatchedData(string $matche): array
     {
-        $matche = 'Leevel\Router\Match\\' . $matche;
+        $matche = 'Leevel\Router\Match\\'.$matche;
 
         return (new $matche())->matche($this, $this->request);
     }
@@ -636,7 +636,7 @@ class Router implements IRouter
 
         $response = $this->container->call($bind, $this->matchedVars());
 
-        if (! ($response instanceof IResponse)) {
+        if (!($response instanceof IResponse)) {
             $response = new Response($response);
         }
 
@@ -660,10 +660,10 @@ class Router implements IRouter
      */
     protected function makeNode()
     {
-        return $this->matchedApp() . '\\' .
-            $this->parseControllerDir() . '\\' .
-            $this->matchedController() . '->' .
-            $this->matchedAction() . '()';
+        return $this->matchedApp().'\\'.
+            $this->parseControllerDir().'\\'.
+            $this->matchedController().'->'.
+            $this->matchedAction().'()';
     }
 
     /**
@@ -676,7 +676,7 @@ class Router implements IRouter
         $result = $this->getControllerDir();
 
         if ($this->matchedPrefix()) {
-            $result = $result . '\\' . $this->matchedPrefix();
+            $result = $result.'\\'.$this->matchedPrefix();
         }
 
         return $result;
@@ -694,7 +694,7 @@ class Router implements IRouter
             'Controller',
             'Action',
         ] as $type) {
-            $this->request->{'set' . $type}($this->{'matched' . $type}());
+            $this->request->{'set'.$type}($this->{'matched'.$type}());
         }
 
         $this->request->params->replace($this->matchedParams());
@@ -712,7 +712,7 @@ class Router implements IRouter
 
         switch ($this->request->getMethod()) {
             case 'GET':
-                if (! empty($this->matchedData[static::PARAMS])) {
+                if (!empty($this->matchedData[static::PARAMS])) {
                     $this->matchedData[static::ACTION] = static::RESTFUL_SHOW;
                 }
                 break;
@@ -743,7 +743,7 @@ class Router implements IRouter
         $action = $this->matchedAction();
 
         // 尝试直接读取方法控制器类
-        $controllerClass = $app . '\\' . $this->parseControllerDir() . '\\' . $controller . '\\' . ucfirst($action);
+        $controllerClass = $app.'\\'.$this->parseControllerDir().'\\'.$controller.'\\'.ucfirst($action);
 
         if (class_exists($controllerClass)) {
             $controller = $this->container->make($controllerClass);
@@ -752,8 +752,8 @@ class Router implements IRouter
 
         // 尝试读取默认控制器
         else {
-            $controllerClass = $app . '\\' . $this->parseControllerDir() . '\\' . $controller;
-            if (! class_exists($controllerClass)) {
+            $controllerClass = $app.'\\'.$this->parseControllerDir().'\\'.$controller;
+            if (!class_exists($controllerClass)) {
                 return false;
             }
 
@@ -765,7 +765,7 @@ class Router implements IRouter
             $controller->setView($this->container['view']);
         }
 
-        if (! method_exists($controller, $method)) {
+        if (!method_exists($controller, $method)) {
             return false;
         }
 
@@ -851,7 +851,7 @@ class Router implements IRouter
         }
 
         if (false !== strpos($action, '_')) {
-            $action = '_' . str_replace('_', ' ', $action);
+            $action = '_'.str_replace('_', ' ', $action);
             $action = ltrim(str_replace(' ', '', ucwords($action)), '_');
         }
 

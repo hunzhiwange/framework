@@ -420,7 +420,7 @@ abstract class Connect implements IHtml
      */
     public function getFirstRecord()
     {
-        if (! $this->canTotalRender()) {
+        if (!$this->canTotalRender()) {
             return;
         }
 
@@ -434,7 +434,7 @@ abstract class Connect implements IHtml
      */
     public function getLastRecord()
     {
-        if (! $this->canTotalRender()) {
+        if (!$this->canTotalRender()) {
             return;
         }
 
@@ -524,7 +524,7 @@ abstract class Connect implements IHtml
      */
     public function canTotalRender()
     {
-        return null !== $this->getTotalRecord() && ! $this->isTotalMacro();
+        return null !== $this->getTotalRecord() && !$this->isTotalMacro();
     }
 
     /**
@@ -615,7 +615,7 @@ abstract class Connect implements IHtml
     public function parseLastRenderNext()
     {
         $intNext = $this->getCurrentPage() + $this->getRange() * 2 + 1;
-        if (! $this->isTotalMacro() && $intNext > $this->getTotalPage()) {
+        if (!$this->isTotalMacro() && $intNext > $this->getTotalPage()) {
             $intNext = $this->getTotalPage();
         }
 
@@ -629,7 +629,7 @@ abstract class Connect implements IHtml
      */
     public function resolverUrl()
     {
-        if (! static::$calUrlResolver) {
+        if (!static::$calUrlResolver) {
             throw new RuntimeException('Page not set url resolver');
         }
 
@@ -694,14 +694,14 @@ abstract class Connect implements IHtml
         }
 
         // 当前URL分析
-        if (! empty($this->getOption('url'))) {
+        if (!empty($this->getOption('url'))) {
             if ($booWithUrl) {
                 $this->strResolveUrl = $this->resolverUrl($this->getOption('url'), $this->getDefaultPageParameter(false === strpos($this->getOption('url'), '{page}')), [
                     'subdomain' => $strSubdomain,
                 ]);
             } else {
                 if (false === strpos($this->getOption('url'), '{page}')) {
-                    $this->strResolveUrl = (false === strpos($this->getOption('url'), '?') ? '?' : '&') . $this->getOption('page') . '={page}';
+                    $this->strResolveUrl = (false === strpos($this->getOption('url'), '?') ? '?' : '&').$this->getOption('page').'={page}';
                 }
             }
         } else {
@@ -710,7 +710,7 @@ abstract class Connect implements IHtml
             ]);
         }
 
-        $this->strResolveUrl = $this->strResolveUrl . $this->buildFragment();
+        $this->strResolveUrl = $this->strResolveUrl.$this->buildFragment();
 
         unset($booWithUrl, $strSubdomain);
 
@@ -774,7 +774,7 @@ abstract class Connect implements IHtml
      */
     protected function buildFragment()
     {
-        return $this->getFragment() ? '#' . $this->getFragment() : '';
+        return $this->getFragment() ? '#'.$this->getFragment() : '';
     }
 
     /**

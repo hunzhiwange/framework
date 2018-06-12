@@ -95,7 +95,7 @@ return [
         'process_name' => 'queryphp.swoole.default',
 
         // swoole 进程保存路径
-        'pid_path' => path_swoole_cache('pid') . '/default.pid',
+        'pid_path' => path_swoole_cache('pid').'/default.pid',
     ],
 
     /*
@@ -117,7 +117,7 @@ return [
         'process_name' => 'queryphp.swoole.http',
 
         // swoole 进程保存路径
-        'pid_path' => path_swoole_cache('pid') . '/http.pid',
+        'pid_path' => path_swoole_cache('pid').'/http.pid',
     ],
 
     /*
@@ -149,7 +149,7 @@ return [
         'process_name' => 'queryphp.swoole.websocket',
 
         // swoole 进程保存路径
-        'pid_path' => path_swoole_cache('pid') . '/websocket.pid',
+        'pid_path' => path_swoole_cache('pid').'/websocket.pid',
     ],
 
     /*
@@ -211,6 +211,6 @@ return [
         'process_name' => 'queryphp.swoole.rpc',
 
         // swoole 进程保存路径
-        'pid_path' => path_swoole_cache('pid') . 'rpc.pid',
+        'pid_path' => path_swoole_cache('pid').'rpc.pid',
     ],
 ];

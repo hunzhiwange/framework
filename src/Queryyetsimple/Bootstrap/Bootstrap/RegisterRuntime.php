@@ -78,7 +78,7 @@ class RegisterRuntime
     public function setErrorHandle($code, $description, $file = null, $line = null, $context = null)
     {
         // 根据 error_reporing 等级来确定是否抛出错误
-        if (! (error_reporting() & $code)) {
+        if (!(error_reporting() & $code)) {
             return;
         }
 
@@ -90,7 +90,7 @@ class RegisterRuntime
      */
     public function registerShutdownFunction()
     {
-        if (($error = error_get_last()) && ! empty($error['type'])) {
+        if (($error = error_get_last()) && !empty($error['type'])) {
             $this->setExceptionHandler($this->formatErrorException($error));
         }
     }
@@ -102,7 +102,7 @@ class RegisterRuntime
      */
     public function setExceptionHandler($e)
     {
-        if (! $e instanceof Exception) {
+        if (!$e instanceof Exception) {
             $e = new ErrorException(
                 $e->getMessage(),
                 $e->getCode(),

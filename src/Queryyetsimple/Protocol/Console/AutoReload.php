@@ -92,7 +92,7 @@ class AutoReload extends Command
      */
     protected function getWatchDir()
     {
-        if (! $this->argument('dirs')) {
+        if (!$this->argument('dirs')) {
             $dirs = $this->getDefaultWatchDir();
         } else {
             $dirs = $this->parseWatchDir();
@@ -112,7 +112,7 @@ class AutoReload extends Command
 
         $dirs = array_map(function ($value) use ($appPath) {
             if (0 !== strpos($value, '/')) {
-                $value = $appPath . '/' . $value;
+                $value = $appPath.'/'.$value;
             }
 
             return $value;
@@ -138,8 +138,8 @@ class AutoReload extends Command
      */
     protected function getVersion()
     {
-        return 'The AutoReload of Swoole Version ' .
-            app()->version() .
+        return 'The AutoReload of Swoole Version '.
+            app()->version().
             PHP_EOL;
     }
 

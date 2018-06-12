@@ -81,11 +81,11 @@ class LoadOption
     protected function setEnvVar($name, $value = null): void
     {
         if (is_bool($value)) {
-            putenv($name . '=' . ($value ? '(true)' : '(false)'));
+            putenv($name.'='.($value ? '(true)' : '(false)'));
         } elseif (null === $value) {
-            putenv($name . '(null)');
+            putenv($name.'(null)');
         } else {
-            putenv($name . '=' . $value);
+            putenv($name.'='.$value);
         }
 
         $_ENV[$name] = $value;

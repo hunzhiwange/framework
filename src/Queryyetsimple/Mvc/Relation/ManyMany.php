@@ -294,7 +294,7 @@ class ManyMany extends Relation
             0,
         ]);
 
-        if (! $arrTargetId) {
+        if (!$arrTargetId) {
             return false;
         }
     }

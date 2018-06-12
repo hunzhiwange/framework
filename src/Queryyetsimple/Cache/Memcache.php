@@ -57,7 +57,7 @@ class Memcache extends Connect implements IConnect
      */
     public function __construct(array $option = [])
     {
-        if (! extension_loaded('memcache')) {
+        if (!extension_loaded('memcache')) {
             throw new RuntimeException('Memcache extension must be loaded before use.');
         }
 
@@ -80,7 +80,7 @@ class Memcache extends Connect implements IConnect
                 $this->option['persistent']
             );
 
-            if (! $result) {
+            if (!$result) {
                 throw new RuntimeException(
                     sprintf(
                         'Unable to connect the memcached server [%s:%s] failed.',

@@ -160,7 +160,7 @@ abstract class Controller implements IController
      */
     protected function checkView()
     {
-        if (! $this->view) {
+        if (!$this->view) {
             throw new RuntimeException('View is not set in controller');
         }
     }

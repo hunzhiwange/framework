@@ -89,7 +89,7 @@ class Monolog extends Connect implements IConnect
         $this->monolog = new Logger($this->getOption('channel'));
 
         foreach ($this->getOption('type') as $type) {
-            $this->{'make' . ucwords(Str::camelize($type)) . 'Handler'}();
+            $this->{'make'.ucwords(Str::camelize($type)).'Handler'}();
         }
     }
 
@@ -198,7 +198,7 @@ class Monolog extends Connect implements IConnect
         $level = array_keys($this->supportLevel);
 
         foreach ($data as $item) {
-            if (! in_array($item[0], $level)) {
+            if (!in_array($item[0], $level)) {
                 $item[0] = ILog::DEBUG;
             }
 
@@ -254,10 +254,10 @@ class Monolog extends Connect implements IConnect
         $ext = pathinfo($path, PATHINFO_EXTENSION);
 
         if ($ext) {
-            $path = substr($path, 0, strrpos($path, '.' . $ext));
+            $path = substr($path, 0, strrpos($path, '.'.$ext));
         }
 
-        return $path . date('-Y-m-d') . ($ext ? '.' . $ext : '');
+        return $path.date('-Y-m-d').($ext ? '.'.$ext : '');
     }
 
     /**

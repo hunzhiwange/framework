@@ -57,7 +57,7 @@ class Server extends Command
         $this->info($this->getLogo());
         $this->warn($this->getVersion());
 
-        $server = app('swoole.' . $this->argument('type') . '.server');
+        $server = app('swoole.'.$this->argument('type').'.server');
         $server->setCommand($this);
         $server->options($this->parseOption());
         $server->startServer();
@@ -88,8 +88,8 @@ class Server extends Command
      */
     protected function getVersion()
     {
-        return 'Swoole ' . ucfirst($this->argument('type')) .
-            ' Server Version ' . app()->version() .
+        return 'Swoole '.ucfirst($this->argument('type')).
+            ' Server Version '.app()->version().
             PHP_EOL;
     }
 

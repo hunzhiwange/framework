@@ -75,7 +75,7 @@ class FileBag extends Bag
      */
     public function set($key, $value)
     {
-        if (! is_array($value) && ! $value instanceof UploadedFile) {
+        if (!is_array($value) && !$value instanceof UploadedFile) {
             throw new InvalidArgumentException('An uploaded file must be an array or an instance of UploadedFile.');
         }
 
@@ -183,14 +183,14 @@ class FileBag extends Bag
                     foreach ($value['name'] as $index => $item) {
                         $element = [];
                         foreach (static::$fileKeys as $fileKey) {
-                            if (! array_key_exists($index, $value[$fileKey])) {
+                            if (!array_key_exists($index, $value[$fileKey])) {
                                 throw new InvalidArgumentException(sprintf('An uploaded file must be contain key %s.', $fileKey));
                             }
 
                             $element[$fileKey] = $value[$fileKey][$index] ?? '';
                         }
 
-                        $result[$key . '\\' . $index] = $element;
+                        $result[$key.'\\'.$index] = $element;
 
                         $result = $this->normalizeArray($result);
                     }
