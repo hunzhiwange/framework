@@ -33,7 +33,7 @@ use Tests\TestCase;
  * @version 1.0
  * @coversNothing
  */
-class SwaggerRouterTest extends TestCase
+class SwaggerRouterHello extends TestCase
 {
     public function tes2tAddSwaggerScanCheckDir()
     {
