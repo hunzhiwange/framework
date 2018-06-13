@@ -1275,7 +1275,7 @@ class Request implements IRequest, IArray, ArrayAccess
         $scheme = $this->getScheme();
         $port = $this->getPort();
 
-        if (('http' === $scheme && 80 === $port) || ('https' === $scheme && 443 === $port)) {
+        if (('http' === $scheme && '80' === $port) || ('https' === $scheme && '443' === $port)) {
             return $this->getHost();
         }
 
@@ -1361,7 +1361,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $queryString = $this->normalizeQueryString($this->server->get('QUERY_STRING'));
 
-        return '' === $queryString ? null : $queryString;
+        return '' === $queryString && $queryString !== '0' ? null : $queryString;
     }
 
     /**
@@ -1655,14 +1655,14 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     protected function normalizeQueryString($queryString)
     {
-        if ('' === $queryString) {
+        if (!$queryString && $queryString !== '0') {
             return '';
         }
 
         $parts = [];
 
         foreach (explode('&', $queryString) as $item) {
-            if ('' === $item || 0 === strpos($item, static::PATHINFO_URL.'=')) {
+            if (('' === $item && $item !== '0') || 0 === strpos($item, static::PATHINFO_URL.'=')) {
                 continue;
             }
 
@@ -1693,7 +1693,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $value = $this->input($key);
 
-        return is_string($value) && '' === trim($value);
+        return is_string($value) && '' === trim($value) && $value !== '0';
     }
 
     /**

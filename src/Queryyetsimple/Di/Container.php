@@ -448,10 +448,16 @@ class Container implements IContainer, ArrayAccess
      */
     protected function normalizeInjectionArgs($value, array $args)
     {
-        list($args, $required) = $this->parseInjection($value, $args);
+        list($args, $required, $validArgs) = $this->parseInjection($value, $args);
 
-        if (count($args) < $required) {
-            throw new NormalizeException(sprintf('There are %d required args,but %d gived.', $required, count($args)));
+        if ($validArgs < $required) {
+            throw new NormalizeException(
+                sprintf(
+                    'There are %d required args,but %d gived.',
+                    $required,
+                    $validArgs
+                )
+            );
         }
 
         return $args;
@@ -471,11 +477,10 @@ class Container implements IContainer, ArrayAccess
         $required = 0;
 
         $param = $this->parseReflection($injection);
+        $validArgs = count($param);
 
-        foreach ($param as $item) {
+        foreach ($param as $key => $item) {
             try {
-                $isRequireBad = false;
-
                 switch (true) {
                     case $argsclass = $this->parseParameterClass($item):
                         if (array_key_exists($argsclass, $args)) {
@@ -486,25 +491,29 @@ class Container implements IContainer, ArrayAccess
                             $data = $this->parseClassInstance($argsclass);
                         }
 
+                        $required++;
+                        $validArgs++;
+
                         break;
                     case $item->isDefaultValueAvailable():
                         $data = array_key_exists($item->name, $args) ? $args[$item->name] : $item->getDefaultValue();
 
                         break;
                     default:
+                        $required++;
+
                         if (array_key_exists($item->name, $args)) {
                             $data = $args[$item->name];
+                            $validArgs++;
                         } else {
-                            $isRequireBad = true;
-                            $required++;
+                            $validArgs--;
+                            $data = null;
                         }
 
                         break;
                 }
 
-                if (false === $isRequireBad) {
-                    $result[$item->name] = $data;
-                }
+                $result[$item->name] = $data;
             } catch (ReflectionException $e) {
                 throw new InvalidArgumentException($e->getMessage());
             }
@@ -516,6 +525,7 @@ class Container implements IContainer, ArrayAccess
             foreach ($args as $k => $value) {
                 if (is_int($k)) {
                     $result[$k] = $value;
+                    $validArgs++;
                 }
             }
         }
@@ -523,6 +533,7 @@ class Container implements IContainer, ArrayAccess
         return [
             $result,
             $required,
+            $validArgs
         ];
     }
 

@@ -143,7 +143,7 @@ class BagTest extends TestCase
 
         $this->assertSame($bag->get('foo|Tests\Http\custom_func=hello,**,MY_CONST'), 'hello-- 1234-hello const');
 
-        $this->assertSame($bag->get('no|default=5'), '5');
+        $this->assertSame($bag->get('no|default=5'), 5);
         $this->assertSame($bag->get('no|default=helloworld'), 'helloworld');
         $this->assertSame($bag->get('no|default=MY_CONST'), 'hello const');
     }

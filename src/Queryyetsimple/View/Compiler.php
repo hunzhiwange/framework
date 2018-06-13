@@ -1425,7 +1425,7 @@ class Compiler implements ICompiler
     protected function getNodeAttribute($theme)
     {
         foreach ($theme['children'] as $child) {
-            if (isset($child['is_attribute']) && 1 === $child['is_attribute']) {
+            if (isset($child['is_attribute']) && true === $child['is_attribute']) {
                 return $child['attribute_list'];
             }
         }

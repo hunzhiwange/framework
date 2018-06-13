@@ -269,12 +269,12 @@ class ContainerTest extends TestCase
 
         $test8 = new Test8();
 
-        $result = $container->call(function ($arg1, $arg2, $arg3, ITest8 $arg4 = null, Test8 $arg5) {
+        $result = $container->call(function ($arg1, $arg2, $arg3, ITest8 $arg4 = null, Test8 $arg5 = null) {
             return func_get_args();
         }, ['arg1' => 'foo', 'arg3' => 'world2', Test8::class => $test8]);
 
         $this->assertSame('foo', $result[0]);
-        $this->assertSame('hello', $result[1]);
+        $this->assertNull($result[1]);
         $this->assertSame('world2', $result[2]);
         $this->assertNull($result[3]);
         $this->assertSame($result[4], $test8);
