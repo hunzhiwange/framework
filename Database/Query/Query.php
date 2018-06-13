@@ -46,13 +46,11 @@ trait Query
 
     protected function varExport(array $data, string $method)
     {
-        /*
         file_put_contents(
             __DIR__.'/'.$method.'.log',
             PHP_EOL.var_export($data, true),
             FILE_APPEND
         );
-        */
 
         return var_export($data, true);
     }
