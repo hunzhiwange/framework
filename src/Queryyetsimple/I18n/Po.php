@@ -389,7 +389,7 @@ class Po extends Gettext
      */
     public function read_entry($f, $lineno = 0)
     {
-        $entry = new entry();
+        $entry = new Entry();
         // where were we in the last step
         // can be: comment, msgctxt, msgid, msgid_plural, msgstr, msgstr_plural
         $context = '';

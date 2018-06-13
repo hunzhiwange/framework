@@ -329,7 +329,7 @@ class Mo extends Gettext
      */
     public function &make_entry($original, $translation)
     {
-        $entry = new entry();
+        $entry = new Entry();
         // look for context
         $parts = explode(chr(4), $original);
         if (isset($parts[1])) {

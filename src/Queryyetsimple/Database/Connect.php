@@ -160,6 +160,7 @@ abstract class Connect
         $this->arrOption = $arrOption;
 
         return;
+
         // 尝试连接主服务器
         $this->writeConnect();
 
@@ -998,6 +999,6 @@ abstract class Connect
      */
     protected function initSelect()
     {
-        $this->objSelect = new select($this);
+        $this->objSelect = new Select($this);
     }
 }
