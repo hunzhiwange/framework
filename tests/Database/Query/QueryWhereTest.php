@@ -36,7 +36,7 @@ class QueryWhereTest extends TestCase
 {
     use Query;
 
-    public function t2estBaseUse()
+    public function testBaseUse()
     {
         $connect = $this->createConnect();
 
@@ -127,7 +127,7 @@ eot;
         );
     }
 
-    public function t2estArray()
+    public function testArray()
     {
         $connect = $this->createConnect();
 
@@ -189,7 +189,7 @@ eot;
         );
     }
 
-    public function t2estOrWhere()
+    public function testOrWhere()
     {
         $connect = $this->createConnect();
 
@@ -223,7 +223,7 @@ eot;
         );
     }
 
-    public function t2estWhereBetween()
+    public function testWhereBetween()
     {
         $connect = $this->createConnect();
 
@@ -312,7 +312,7 @@ eot;
         );
     }
 
-    public function t2estWhereNotBetween()
+    public function testWhereNotBetween()
     {
         $connect = $this->createConnect();
 
@@ -371,7 +371,7 @@ eot;
         );
     }
 
-    public function t2estWhereIn()
+    public function testWhereIn()
     {
         $connect = $this->createConnect();
 
@@ -455,7 +455,7 @@ eot;
         );
     }
 
-    public function t2estWhereNotIn()
+    public function testWhereNotIn()
     {
         $connect = $this->createConnect();
 
@@ -514,7 +514,7 @@ eot;
         );
     }
 
-    public function t2estWhereNull()
+    public function testWhereNull()
     {
         $connect = $this->createConnect();
 
@@ -558,7 +558,7 @@ eot;
         );
     }
 
-    public function t2estWhereNotNull()
+    public function testWhereNotNull()
     {
         $connect = $this->createConnect();
 
@@ -602,7 +602,7 @@ eot;
         );
     }
 
-    public function t2estWhereLike()
+    public function testWhereLike()
     {
         $connect = $this->createConnect();
 
@@ -646,7 +646,7 @@ eot;
         );
     }
 
-    public function t2estWhereNotLike()
+    public function testWhereNotLike()
     {
         $connect = $this->createConnect();
 
@@ -819,6 +819,297 @@ eot;
                            $select->table('subsql')->where('id', 1);
                        },
                    ]
+                )->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function testWhereNotExists()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE NOT EXISTS (SELECT `subsql`.* FROM `subsql` WHERE `subsql`.`id` = 1)',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                whereNotExists(
+                    function ($select) {
+                        $select->table('subsql')->where('id', 1);
+                    }
+                )->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function testWhereGroup()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 5 OR (`test`.`votes` > 100 AND `test`.`title` <> \'Admin\')',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where('id', 5)->
+
+                orWhere(function ($select) {
+                    $select->where('votes', '>', 100)->where('title', '<>', 'Admin');
+                })->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = 5 OR `test`.`name` = \'小牛\' AND (`test`.`votes` > 100 OR `test`.`title` <> \'Admin\')',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where('id', 5)->
+
+                orWhere('name', '小牛')->
+
+                where(function ($select) {
+                    $select->where('votes', '>', 100)->orWhere('title', '<>', 'Admin');
+                })->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function testConditionalExpression()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.`post`,`test`.`value`,concat("tt_",`test`.`id`) FROM `test` WHERE concat("hello_",`test`.`posts`) = `test`.`id`',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->table('test', 'post,value,{concat("tt_",[id])}')->
+
+                where('{concat("hello_",[posts])}', '=', '{[id]}')->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function testArrayKeyAsField()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`id` = \'故事\' AND `test`.`name` IN (1,2,3) AND `test`.`weidao` BETWEEN \'40\' AND \'100\' AND `test`.`value` IS NULL AND `test`.`remark` IS NOT NULL AND `test`.`goods` = \'东亚商品\' AND `test`.`hello` = \'world\'',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where([
+                    'id'     => ['=', '故事'],
+                    'name'   => ['in', [1, 2, 3]],
+                    'weidao' => ['between', '40,100'],
+                    'value'  => 'null',
+                    'remark' => ['not null'],
+                    'goods'  => '东亚商品',
+                    'hello'  => ['world'],
+                ])->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function testSupportString()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`name` = 11 and `post`.`value` = 22 and concat("tt_",`test`.`id`)',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where(
+                   ['string__' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
+                )->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+    }
+
+    public function testSupportSubandSubor()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`hello` = \'world\' OR (`test`.`id` LIKE \'你好\')',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where(
+                    [
+                        'hello'   => 'world',
+                        'subor__' => ['id', 'like', '你好'],
+                    ]
+                )->
+
+                getAll(true),
+                __METHOD__
+            )
+        );
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`hello` = \'111\' OR (`test`.`id` LIKE \'你好\' AND `test`.`value` = \'helloworld\') AND (`test`.`id2` LIKE \'你好2\' OR `test`.`value2` = \'helloworld2\' OR (`test`.`child_one` > \'123\' AND `test`.`child_two` LIKE \'123\'))',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->table('test')->
+
+                where(
+                    [
+                        'hello'   => '111',
+                        'subor__' => [
+                            ['id', 'like', '你好'],
+                            ['value', '=', 'helloworld'],
+                        ],
+                        'suband__' => [
+                            'logic__' => 'or',
+                            ['id2', 'like', '你好2'],
+                            ['value2', '=', 'helloworld2'],
+                            'subor__' => [
+                                ['child_one', '>', '123'],
+                                ['child_two', 'like', '123'],
+                            ],
+                        ],
+                    ]
                 )->
 
                 getAll(true),

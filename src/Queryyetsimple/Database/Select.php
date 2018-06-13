@@ -1692,9 +1692,7 @@ class Select
         }
 
         return $this->{'addConditions'}([
-            [
-                'notexists__' => $mixExists,
-            ],
+            'notexists__' => $mixExists,
         ]);
     }
 
@@ -3229,12 +3227,13 @@ class Select
 
         // 整理多个参数到二维数组
         if (!is_array($arrArgs[0])) {
-            $arrArgs[0] = [
+            $conditions = [
                 $arrArgs,
             ];
         } else {
             // 一维数组统一成二维数组格式
             $booOneImension = false;
+
             foreach ($arrArgs[0] as $mixKey => $mixValue) {
                 if (is_int($mixKey) && !is_array($mixValue)) {
                     $booOneImension = true;
@@ -3244,14 +3243,16 @@ class Select
             }
 
             if (true === $booOneImension) {
-                $arrArgs[0] = [
+                $conditions = [
                     $arrArgs[0],
                 ];
+            } else {
+                $conditions = $arrArgs[0];
             }
         }
 
         // 遍历数组拼接结果
-        foreach ($arrArgs[0] as $strKey => $arrTemp) {
+        foreach ($conditions as $strKey => $arrTemp) {
             if (!is_int($strKey)) {
                 $strKey = trim($strKey);
             }
@@ -3289,9 +3290,9 @@ class Select
                     unset($arrTemp['logic__']);
                 }
 
-                $objSelect = $objSelect->{'addConditions'}([
-                    $arrTemp,
-                ]);
+                $objSelect = $objSelect->addConditions(
+                    $arrTemp
+                );
 
                 // 解析结果
                 $strParseType = 'parse'.ucwords($arrTypeAndLogic[0]);

@@ -160,7 +160,6 @@ abstract class Connect
         $this->arrOption = $arrOption;
 
         return;
-
         // 尝试连接主服务器
         $this->writeConnect();
 
