@@ -79,7 +79,7 @@ class FileBagTest extends TestCase
                 'size'     => null,
             ], ]);
 
-        $this->assertSame($file, $bag->get('file'));
+        $this->assertEquals($file, $bag->get('file'));
     }
 
     public function testShouldSetEmptyUploadedFilesToNull()
@@ -153,7 +153,7 @@ class FileBagTest extends TestCase
         ]);
 
         $files = $bag->all();
-        $this->assertSame($file, $files['child\file']);
+        $this->assertEquals($file, $files['child\file']);
     }
 
     public function testShouldConvertNestedUploadedFilesWithPhpBug()
@@ -182,7 +182,8 @@ class FileBagTest extends TestCase
         ]);
 
         $files = $bag->all();
-        $this->assertSame($file, $files['child\sub\file']);
+
+        $this->assertEquals($file, $files['child\sub\file']);
     }
 
     public function testShouldNotConvertNestedUploadedFiles()
