@@ -206,7 +206,7 @@ class UploadedFile extends File
         $message = isset(self::$errors[$errorCode]) ?
             self::$errors[$errorCode] :
             'The file %s was not uploaded due to an unknown error.';
-            
+
         $message = sprintf($message, $this->getOriginalName(), $maxFilesize);
 
         return $message;

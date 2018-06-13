@@ -533,7 +533,7 @@ class Container implements IContainer, ArrayAccess
         return [
             $result,
             $required,
-            $validArgs
+            $validArgs,
         ];
     }
 
