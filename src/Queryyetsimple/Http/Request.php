@@ -1361,7 +1361,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $queryString = $this->normalizeQueryString($this->server->get('QUERY_STRING'));
 
-        return '' === $queryString && $queryString !== '0' ? null : $queryString;
+        return '' === $queryString && '0' !== $queryString ? null : $queryString;
     }
 
     /**
@@ -1655,14 +1655,14 @@ class Request implements IRequest, IArray, ArrayAccess
      */
     protected function normalizeQueryString($queryString)
     {
-        if (!$queryString && $queryString !== '0') {
+        if (!$queryString && '0' !== $queryString) {
             return '';
         }
 
         $parts = [];
 
         foreach (explode('&', $queryString) as $item) {
-            if (('' === $item && $item !== '0') || 0 === strpos($item, static::PATHINFO_URL.'=')) {
+            if (('' === $item && '0' !== $item) || 0 === strpos($item, static::PATHINFO_URL.'=')) {
                 continue;
             }
 
@@ -1693,7 +1693,7 @@ class Request implements IRequest, IArray, ArrayAccess
     {
         $value = $this->input($key);
 
-        return is_string($value) && '' === trim($value) && $value !== '0';
+        return is_string($value) && '' === trim($value) && '0' !== $value;
     }
 
     /**
