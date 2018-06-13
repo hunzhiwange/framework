@@ -99,6 +99,7 @@ return PhpCsFixer\Config::create()
         'string_line_ending'                    => true,
         'yoda_style'                            => true,
         'binary_operator_spaces'                => ['align_double_arrow' => true], // 自动对齐数组
+        'increment_style'                       => ['style' => 'post'], // 自增自减操作符位置
     ])
     ->setRiskyAllowed(true)
     ->setFinder(
