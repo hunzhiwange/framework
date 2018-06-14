@@ -1,6 +1,8 @@
 # QueryPHP Framework Subtree
 
 ```
+git subtree add --prefix=tests git@github.com:queryyetsimple/tests.git master
+
 git subtree add --prefix=src/Queryyetsimple/Auth git@github.com:queryyetsimple/auth.git master
 
 git subtree add --prefix=src/Queryyetsimple/Cache git@github.com:queryyetsimple/cache.git master

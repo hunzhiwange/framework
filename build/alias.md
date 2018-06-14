@@ -27,6 +27,10 @@ The code below need to be add.
     url = git@gitee.com:dyhb/framework.git
     fetch = +refs/heads/*:refs/remotes/origin/*
 
+[remote "tests"]
+    url = git@github.com:queryyetsimple/tests.git
+    fetch = +refs/heads/*:refs/remotes/tests/*
+
 [remote "Auth"]
     url = git@github.com:queryyetsimple/auth.git
     fetch = +refs/heads/*:refs/remotes/Auth/*
@@ -170,6 +174,13 @@ The code below need to be add.
 
     stpush = !git subtree split --rejoin --prefix=src/Queryyetsimple/$1 master \
         && git subtree push --prefix=src/Queryyetsimple/$1 $1 master \
+        && :
+
+    testspull = !git subtree pull --prefix=tests tests master \
+        && :
+
+    testspush = !git subtree split --rejoin --prefix=tests master \
+        && git subtree push --prefix=tests test master \
         && :
 ```
 
