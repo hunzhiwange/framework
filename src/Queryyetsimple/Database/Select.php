@@ -2845,7 +2845,7 @@ class Select
     protected function parseIndex()
     {
         $strIndex = '';
-        
+
         foreach ([
             'FORCE',
             'IGNORE',
