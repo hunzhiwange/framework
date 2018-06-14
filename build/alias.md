@@ -180,7 +180,7 @@ The code below need to be add.
         && :
 
     testspush = !git subtree split --rejoin --prefix=tests master \
-        && git subtree push --prefix=tests test master \
+        && git subtree push --prefix=tests tests master \
         && :
 ```
 
