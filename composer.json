@@ -64,7 +64,6 @@
         "leevel/stack": "self.version",
         "leevel/support": "self.version",
         "leevel/task": "self.version",
-        "leevel/swoole": "self.version",
         "leevel/throttler": "self.version",
         "leevel/tree": "self.version",
         "leevel/validate": "self.version",
