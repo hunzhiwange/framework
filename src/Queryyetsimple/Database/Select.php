@@ -2845,6 +2845,7 @@ class Select
     protected function parseIndex()
     {
         $strIndex = '';
+        
         foreach ([
             'FORCE',
             'IGNORE',
@@ -2852,7 +2853,7 @@ class Select
             if (empty($this->arrOption['index'][$sType])) {
                 continue;
             }
-            $strIndex .= ($strIndex ? ' ' : '').$sType.' INDEX ( '.implode(',', $this->arrOption['index'][$sType]).' )';
+            $strIndex .= ($strIndex ? ' ' : '').$sType.' INDEX('.implode(',', $this->arrOption['index'][$sType]).')';
         }
 
         return $strIndex;
