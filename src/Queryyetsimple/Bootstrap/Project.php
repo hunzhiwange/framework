@@ -691,6 +691,10 @@ class Project extends Container implements IProject
      */
     public function registerProviders()
     {
+        if ($this->isBootstrap) {
+            return;
+        }
+
         list($this->deferredProviders, $deferredAlias) = $this->make('option')->get('_deferred_providers', [[], []]);
 
         foreach ($deferredAlias as $alias) {
@@ -717,6 +721,10 @@ class Project extends Container implements IProject
      */
     public function bootstrapProviders()
     {
+        if ($this->isBootstrap) {
+            return;
+        }
+
         foreach ($this->providerBootstraps as $item) {
             $this->callProviderBootstrap($item);
         }
