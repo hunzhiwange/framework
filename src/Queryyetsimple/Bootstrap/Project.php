@@ -665,6 +665,10 @@ class Project extends Container implements IProject
      */
     public function bootstrap(array $bootstraps)
     {
+        if ($this->isBootstrap) {
+            return;
+        }
+
         foreach ($bootstraps as $value) {
             (new $value())->handle($this);
         }

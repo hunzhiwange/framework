@@ -86,6 +86,8 @@ abstract class Kernel implements IKernel
     {
         $this->project = $project;
         $this->router = $router;
+
+        $this->bootstrap();
     }
 
     /**
@@ -177,8 +179,6 @@ abstract class Kernel implements IKernel
      */
     protected function getResponseWithRequest(Request $request)
     {
-        $this->bootstrap();
-
         return $this->dispatchRouter($request);
     }
 

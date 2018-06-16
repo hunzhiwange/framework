@@ -47,7 +47,7 @@ class HttpServer extends Server
     protected $kernel;
 
     /**
-     * 请求
+     * 请求.
      *
      * @var \Leevel\Http\Request
      */

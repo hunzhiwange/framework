@@ -77,6 +77,8 @@ abstract class KernelConsole implements IKernelConsole
     public function __construct(IProject $project)
     {
         $this->project = $project;
+
+        $this->bootstrap();
     }
 
     /**
@@ -90,8 +92,6 @@ abstract class KernelConsole implements IKernelConsole
     public function handle(InputInterface $input = null, OutputInterface $output = null)
     {
         $this->registerBaseService();
-
-        $this->bootstrap();
 
         $this->loadCommands();
 
