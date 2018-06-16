@@ -165,7 +165,7 @@ class OptionTest extends TestCase
         $this->assertNull($option->get('cache\time_preset.foo2'));
     }
 
-    public function t2estDelete()
+    public function testDelete()
     {
         $data = [
             'app' => [
