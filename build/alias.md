@@ -5,6 +5,9 @@ modify this file ../.git/config add alias and remote,then using git stpull and s
 ```
 git stpull Auth
 git stpush Auth
+
+git testspull
+git testspush
 ```
 
 The code below need to be add.
