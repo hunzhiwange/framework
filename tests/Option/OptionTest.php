@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class OptionTest extends TestCase
 {
-    public function t2estAll()
+    public function testAll()
     {
         $data = [
             'hello'      => 'world',
@@ -47,7 +47,7 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), $data);
     }
 
-    public function t2estGet()
+    public function testGet()
     {
         $data = [
             'app' => [
@@ -92,7 +92,7 @@ class OptionTest extends TestCase
         $this->assertNull($option->get('cache\time_preset.foo2'));
     }
 
-    public function t2estHas()
+    public function testHas()
     {
         $data = [
             'app' => [
@@ -128,7 +128,7 @@ class OptionTest extends TestCase
         $this->assertFalse($option->has('cache\time_preset.foo2'));
     }
 
-    public function t2estSet()
+    public function testSet()
     {
         $data = [];
 
@@ -184,8 +184,6 @@ class OptionTest extends TestCase
         $option = new Option($data);
 
         $option->delete('debug');
-
-        dd($option->all());
 
         $this->assertSame($option->all(), [
             'app' => [
@@ -245,7 +243,7 @@ class OptionTest extends TestCase
         ]);
     }
 
-    public function t2estReset()
+    public function testReset()
     {
         $data = [
             'hello' => 'world',
@@ -280,7 +278,7 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), []);
     }
 
-    public function t2estArrayAccess()
+    public function testArrayAccess()
     {
         $data = [
             'app' => [
