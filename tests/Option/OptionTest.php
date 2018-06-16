@@ -35,7 +35,7 @@ use Tests\TestCase;
  */
 class OptionTest extends TestCase
 {
-    public function testAll()
+    public function t2estAll()
     {
         $data = [
             'hello'      => 'world',
@@ -47,7 +47,7 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), $data);
     }
 
-    public function testGet()
+    public function t2estGet()
     {
         $data = [
             'app' => [
@@ -92,7 +92,7 @@ class OptionTest extends TestCase
         $this->assertNull($option->get('cache\time_preset.foo2'));
     }
 
-    public function testHas()
+    public function t2estHas()
     {
         $data = [
             'app' => [
@@ -128,7 +128,7 @@ class OptionTest extends TestCase
         $this->assertFalse($option->has('cache\time_preset.foo2'));
     }
 
-    public function testSet()
+    public function t2estSet()
     {
         $data = [];
 
@@ -165,7 +165,7 @@ class OptionTest extends TestCase
         $this->assertNull($option->get('cache\time_preset.foo2'));
     }
 
-    public function testDelete()
+    public function t2estDelete()
     {
         $data = [
             'app' => [
@@ -184,6 +184,8 @@ class OptionTest extends TestCase
         $option = new Option($data);
 
         $option->delete('debug');
+
+        dd($option->all());
 
         $this->assertSame($option->all(), [
             'app' => [
@@ -243,7 +245,7 @@ class OptionTest extends TestCase
         ]);
     }
 
-    public function testReset()
+    public function t2estReset()
     {
         $data = [
             'hello' => 'world',
@@ -278,7 +280,7 @@ class OptionTest extends TestCase
         $this->assertSame($option->all(), []);
     }
 
-    public function testArrayAccess()
+    public function t2estArrayAccess()
     {
         $data = [
             'app' => [
