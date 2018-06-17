@@ -1705,20 +1705,21 @@ class Select
      *
      * @return $this
      */
-    public function bind($mixName, $mixValue, $intType = PDO::PARAM_STR)
+    public function bind($mixName, $mixValue = null, $intType = PDO::PARAM_STR)
     {
         if ($this->checkTControl()) {
             return $this;
         }
+
         if (is_array($mixName)) {
-            foreach ($mixName as $mixKey => $mixValue) {
-                if (!is_array($mixValue)) {
-                    $mixValue = [
-                        $mixValue,
+            foreach ($mixName as $mixKey => $item) {
+                if (!is_array($item)) {
+                    $item = [
+                        $item,
                         $intType,
                     ];
                 }
-                $this->arrBindParams[$mixKey] = $mixValue;
+                $this->arrBindParams[$mixKey] = $item;
             }
         } else {
             if (!is_array($mixValue)) {
