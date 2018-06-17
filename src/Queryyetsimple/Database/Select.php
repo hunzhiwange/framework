@@ -1891,11 +1891,10 @@ class Select
      *
      * @param mixed        $mixTable 同 table $mixTable
      * @param array|string $mixCols  同 table $mixCols
-     * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function crossJoin($mixTable, $mixCols, $mixCond)
+    public function crossJoin($mixTable, $mixCols)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1912,11 +1911,10 @@ class Select
      *
      * @param mixed        $mixTable 同 table $mixTable
      * @param array|string $mixCols  同 table $mixCols
-     * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function naturalJoin($mixTable, $mixCols, $mixCond)
+    public function naturalJoin($mixTable, $mixCols)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -2743,7 +2741,7 @@ class Select
             $sTmp = '';
             // 如果不是第一个 FROM，则添加 JOIN
             if (!empty($arrFrom)) {
-                $sTmp .= ' '.strtoupper($arrTable['join_type']).' ';
+                $sTmp .= strtoupper($arrTable['join_type']).' ';
             }
 
             // 表名子表达式支持
