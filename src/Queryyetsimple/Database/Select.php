@@ -2990,13 +2990,15 @@ class Select
         }
 
         if (method_exists($this->objConnect, 'parseLimitcount')) {
-            return $this->objConnect->{'parseLimitcount'}([
+            return $this->objConnect->{'parseLimitcount'}(
                 $this->arrOption['limitcount'],
-                $this->arrOption['limitoffset'],
-            ]);
+                $this->arrOption['limitoffset']
+            );
         }
 
-        throw new BadMethodCallException(sprintf('Connect method %s is not exits', 'parseLimitcount'));
+        throw new BadMethodCallException(
+            sprintf('Connect method %s is not exits', 'parseLimitcount')
+        );
     }
 
     /**
