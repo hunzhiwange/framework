@@ -1949,7 +1949,9 @@ class Select
         }
 
         if (!is_array($mixSelect)) {
-            $mixSelect = (array) $mixSelect;
+            $mixSelect = [
+                $mixSelect
+            ];
         }
 
         foreach ($mixSelect as $mixTemp) {
