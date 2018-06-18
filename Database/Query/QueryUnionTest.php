@@ -58,7 +58,7 @@ UNION SELECT `yyyyy`.`yid` AS `id`,`yyyyy`.`name` AS `value` FROM `yyyyy` WHERE 
 )
 eot;
 
-        $union1 = $connect->table('yyyyy', 'yid as id,name as value' )->where('first_name', '=', '222');
+        $union1 = $connect->table('yyyyy', 'yid as id,name as value')->where('first_name', '=', '222');
         $union2 = 'SELECT id,value FROM test2';
 
         $this->assertSame(
