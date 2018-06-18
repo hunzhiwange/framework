@@ -200,7 +200,7 @@ eot;
 
                 havingBetween([
                     ['name', [1, 100]],
-                    ['tname', [5, 22]]
+                    ['tname', [5, 22]],
                 ])->
 
                 getAll(true),
@@ -559,14 +559,14 @@ eot;
 
                 groupBy('id')->
 
-                having([ 
-                    'id' => ['=','故事'],
-                    'name' => ['in', [1, 2, 3]],
+                having([
+                    'id'     => ['=', '故事'],
+                    'name'   => ['in', [1, 2, 3]],
                     'weidao' => ['between', '40,100'],
-                    'value' => 'null',
+                    'value'  => 'null',
                     'remark' => ['not null'],
-                    'goods' => '东亚商品',
-                    'hello' => ['world']
+                    'goods'  => '东亚商品',
+                    'hello'  => ['world'],
                 ])->
 
                 getAll(true),
@@ -601,7 +601,7 @@ eot;
 
                 groupBy('id')->
 
-                having (
+                having(
                     ['string__' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
                 )->
 
@@ -636,10 +636,10 @@ eot;
 
                 groupBy('id')->
 
-                having (
+                having(
                     [
-                        'hello' => 'world',
-                        'subor__' => ['id', 'like', '你好']
+                        'hello'   => 'world',
+                        'subor__' => ['id', 'like', '你好'],
                     ]
                 )->
 
@@ -672,10 +672,10 @@ eot;
 
                 having(
                     [
-                        'hello' => '111',
+                        'hello'   => '111',
                         'subor__' => [
                             ['id', 'like', '你好'],
-                            ['value', '=', 'helloworld']
+                            ['value', '=', 'helloworld'],
                         ],
                         'suband__' => [
                             'logic__' => 'or',
@@ -684,8 +684,8 @@ eot;
                             'subor__' => [
                                 ['child_one', '>', '123'],
                                 ['child_two', 'like', '123'],
-                            ]
-                        ]
+                            ],
+                        ],
                     ]
                 )->
 

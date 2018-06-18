@@ -62,13 +62,13 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                ifs($id == 1)->where('id', 1)->
+                ifs(1 === $id)->where('id', 1)->
 
-                elseIfs($id == 2)->where('id', 2)->orderBy('name DESC')->
+                elseIfs(2 === $id)->where('id', 2)->orderBy('name DESC')->
 
-                elseIfs($id == 3)->where('id', 3)->where('id', 1111)->
+                elseIfs(3 === $id)->where('id', 3)->where('id', 1111)->
 
-                elseIfs($id == 4)->where('id', 4)->
+                elseIfs(4 === $id)->where('id', 4)->
 
                 endIfs()->
 
@@ -99,13 +99,13 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                ifs($id == 1)->where('id', 1)->
+                ifs(1 === $id)->where('id', 1)->
 
-                elseIfs($id == 2)->where('id', 2)->orderBy('name DESC')->
+                elseIfs(2 === $id)->where('id', 2)->orderBy('name DESC')->
 
-                elseIfs($id == 3)->where('id', 3)->where('id', 1111)->
+                elseIfs(3 === $id)->where('id', 3)->where('id', 1111)->
 
-                elseIfs($id == 4)->where('id', 4)->
+                elseIfs(4 === $id)->where('id', 4)->
 
                 endIfs()->
 
@@ -136,13 +136,13 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                ifs($id == 1)->where('id', 1)->
+                ifs(1 === $id)->where('id', 1)->
 
-                elseIfs($id == 2)->where('id', 2)->orderBy('name DESC')->
+                elseIfs(2 === $id)->where('id', 2)->orderBy('name DESC')->
 
-                elseIfs($id == 3)->where('id', 3)->where('id', 1111)->
+                elseIfs(3 === $id)->where('id', 3)->where('id', 1111)->
 
-                elseIfs($id == 4)->where('id', 4)->
+                elseIfs(4 === $id)->where('id', 4)->
 
                 endIfs()->
 
@@ -173,13 +173,13 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                ifs($id == 1)->where('id', 1)->
+                ifs(1 === $id)->where('id', 1)->
 
-                elseIfs($id == 2)->where('id', 2)->orderBy('name DESC')->
+                elseIfs(2 === $id)->where('id', 2)->orderBy('name DESC')->
 
-                elseIfs($id == 3)->where('id', 3)->where('id', 1111)->
+                elseIfs(3 === $id)->where('id', 3)->where('id', 1111)->
 
-                elseIfs($id == 4)->where('id', 4)->
+                elseIfs(4 === $id)->where('id', 4)->
 
                 endIfs()->
 
@@ -215,11 +215,11 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                ifs($id == 1)->where('id', 1)->
+                ifs(1 === $id)->where('id', 1)->
 
-                elseIfs($id == 2)->where('id', 2)->orderBy('name DESC')->
+                elseIfs(2 === $id)->where('id', 2)->orderBy('name DESC')->
 
-                elseIfs($id == 3)->where('id', 3)->where('id', 1111)->
+                elseIfs(3 === $id)->where('id', 3)->where('id', 1111)->
 
                 // elses 仅仅能记忆上一次 ifs,elseIfs 的结果，上一次的反向结果就是 elses 的条件值
                 // 其等价于 elseIfs($id != 3)
@@ -254,11 +254,11 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                ifs($id == 1)->where('id', 1)->
+                ifs(1 === $id)->where('id', 1)->
 
-                elseIfs($id == 2)->where('id', 2)->orderBy('name DESC')->
+                elseIfs(2 === $id)->where('id', 2)->orderBy('name DESC')->
 
-                elseIfs($id == 3)->where('id', 3)->where('id', 1111)->
+                elseIfs(3 === $id)->where('id', 3)->where('id', 1111)->
 
                 // elses 仅仅能记忆上一次 ifs,elseIfs 的结果，上一次的反向结果就是 elses 的条件值
                 // 其等价于 elseIfs($id != 3)
@@ -293,11 +293,11 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                ifs($id == 1)->where('id', 1)->
+                ifs(1 === $id)->where('id', 1)->
 
-                elseIfs($id == 2)->where('id', 2)->orderBy('name DESC')->
+                elseIfs(2 === $id)->where('id', 2)->orderBy('name DESC')->
 
-                elseIfs($id == 3)->where('id', 3)->where('id', 1111)->
+                elseIfs(3 === $id)->where('id', 3)->where('id', 1111)->
 
                 // elses 仅仅能记忆上一次 ifs,elseIfs 的结果，上一次的反向结果就是 elses 的条件值
                 // 其等价于 elseIfs($id != 3)
