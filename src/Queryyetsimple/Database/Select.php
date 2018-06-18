@@ -2004,7 +2004,7 @@ class Select
             }
         }
 
-        $strTableName = $this->getCurrentTable();
+        $sCurrentTableName = $this->getCurrentTable();
         foreach ($mixExpr as $strValue) {
             // 处理条件表达式
             if (is_string($strValue) && false !== strpos($strValue, ',') && false !== strpos($strValue, '{') && preg_match_all('/{(.+?)}/', $strValue, $arrResTwo)) {
@@ -2024,8 +2024,16 @@ class Select
                     continue;
                 }
 
+                if (preg_match('/(.+)\.(.+)/', $strTemp, $arrMatch)) {
+                    $sCurrentTableName = $arrMatch[1];
+                    $strTemp = $arrMatch[2];
+                }
+                if (isset($this->arrColumnsMapping[$strTemp])) {
+                    $strTemp = $this->arrColumnsMapping[$strTemp];
+                }
+
                 // 表达式支持
-                $strTemp = $this->qualifyOneColumn($strTemp, $strTableName);
+                $strTemp = $this->qualifyOneColumn($strTemp, $sCurrentTableName);
                 $this->arrOption['group'][] = $strTemp;
             }
         }
