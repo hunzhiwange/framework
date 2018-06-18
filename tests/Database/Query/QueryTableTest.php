@@ -92,7 +92,7 @@ eot;
 
         $sql = <<<'eot'
 array (
-  0 => 'SELECT `p`.* FROM `mydb`.`posts`  `p`',
+  0 => 'SELECT `p`.* FROM `mydb`.`posts` `p`',
   1 => 
   array (
   ),
