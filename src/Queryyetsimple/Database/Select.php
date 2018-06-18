@@ -32,6 +32,9 @@ use PDO;
 /**
  * 数据库查询器
  * This class borrows heavily from the QeePHP Framework and is part of the QeePHP package.
+ * 查询器主体方法来自于早年 QeePHP 数据库查询 Api,这个 10 年前的作品设计理念非常先进.
+ * 在这个思想下大量进行了重构，在查询 API 用法上我们将一些与 Laravel 的用法习惯靠拢，实现了大量语法糖.
+ * 也支持 ThinkPHP 这种的数组方式传入查询，查询构造器非常复杂，为保证结果符合预期这里编写了大量的单元测试.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -40,6 +43,7 @@ use PDO;
  * @version 1.0
  *
  * @see http://qeephp.com
+ * @see http://qeephp.cn/docs/qeephp-manual/
  */
 class Select
 {
