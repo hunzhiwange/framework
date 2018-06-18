@@ -144,7 +144,7 @@ eot;
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy('{SUM([num]) ASC}')->
-                
+
                 getAll(true),
                 __METHOD__
             )
@@ -171,7 +171,7 @@ eot;
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy("title,id,{concat('1234',[id],'ttt') desc}")->
-                
+
                 getAll(true),
                 __METHOD__
             )
@@ -198,7 +198,7 @@ eot;
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy(['title,id,ttt', 'value desc'])->
-                
+
                 getAll(true),
                 __METHOD__
             )
@@ -225,7 +225,7 @@ eot;
                 $connect->table('test', 'tid as id,tname as value')->
 
                 orderBy(['title,id,ttt asc', 'value'], 'desc')->
-                
+
                 getAll(true),
                 __METHOD__
             )
