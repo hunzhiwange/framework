@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Tests\Database\Query;
 
-use PDO;
 use Tests\TestCase;
 
 /**
@@ -142,9 +141,9 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                join('hello', 'name,value', function($select) {
+                join('hello', 'name,value', function ($select) {
                     $select->where('id', '<', 5)->where('name', 'like', 'hello');
-                } )->
+                })->
 
                 getAll(true),
                 __METHOD__
