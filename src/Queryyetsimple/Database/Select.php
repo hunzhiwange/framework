@@ -1950,7 +1950,7 @@ class Select
 
         if (!is_array($mixSelect)) {
             $mixSelect = [
-                $mixSelect
+                $mixSelect,
             ];
         }
 
