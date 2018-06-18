@@ -582,7 +582,7 @@ abstract class Connect
         }
 
         if ($sAlias) {
-            return "{$sName} ".($sAs ? $sAs.' ': '').$this->identifierColumn($sAlias);
+            return "{$sName} ".($sAs ? $sAs.' ' : '').$this->identifierColumn($sAlias);
         }
 
         return $sName;
