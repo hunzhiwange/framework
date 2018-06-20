@@ -120,13 +120,6 @@ class Select
     protected $arrQueryParams = [];
 
     /**
-     * 字段映射.
-     *
-     * @var array
-     */
-    protected $arrColumnsMapping = [];
-
-    /**
      * 支持的聚合类型.
      *
      * @var array
@@ -1374,35 +1367,6 @@ class Select
     }
 
     /**
-     * 设置一个或多个字段的映射名，如果 $sMappingTo 为 null，则取消对指定字段的映射.
-     *
-     * @param array|string $mixName
-     * @param null|string  $sMappingTo
-     *
-     * @return $this
-     */
-    public function columnsMapping($mixName, $sMappingTo = null)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        if (is_array($mixName)) {
-            $this->arrColumnsMapping = array_merge($this->arrColumnsMapping, $mixName);
-        } else {
-            if (empty($sMappingTo)) {
-                if (isset($this->arrColumnsMapping[$mixName])) {
-                    unset($this->arrColumnsMapping[$mixName]);
-                }
-            } else {
-                $this->arrColumnsMapping[$mixName] = $sMappingTo;
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * where 查询条件.
      *
      * @param array $arr
@@ -2028,9 +1992,6 @@ class Select
                     $sCurrentTableName = $arrMatch[1];
                     $strTemp = $arrMatch[2];
                 }
-                if (isset($this->arrColumnsMapping[$strTemp])) {
-                    $strTemp = $this->arrColumnsMapping[$strTemp];
-                }
 
                 // 表达式支持
                 $strTemp = $this->qualifyOneColumn($strTemp, $sCurrentTableName);
@@ -2361,7 +2322,7 @@ class Select
 
                 // 表达式支持
                 if (false !== strpos($strTemp, '{') && preg_match('/^{(.+?)}$/', $strTemp, $arrResThree)) {
-                    $strTemp = $this->objConnect->qualifyExpression($arrResThree[1], $strTableName, $this->arrColumnsMapping);
+                    $strTemp = $this->objConnect->qualifyExpression($arrResThree[1], $strTableName);
                     if (preg_match('/(.*\W)('.'ASC'.'|'.'DESC'.')\b/si', $strTemp, $arrMatch)) {
                         $strTemp = trim($arrMatch[1]);
                         $sSort = strtoupper($arrMatch[2]);
@@ -2381,9 +2342,6 @@ class Select
                         if (preg_match('/(.+)\.(.+)/', $strTemp, $arrMatch)) {
                             $sCurrentTableName = $arrMatch[1];
                             $strTemp = $arrMatch[2];
-                        }
-                        if (isset($this->arrColumnsMapping[$strTemp])) {
-                            $strTemp = $this->arrColumnsMapping[$strTemp];
                         }
                         $strTemp = $this->objConnect->qualifyTableOrColumn("{$sCurrentTableName}.{$strTemp}");
                     }
@@ -2699,11 +2657,8 @@ class Select
 
             // 表达式支持
             if (false !== strpos($sCol, '{') && preg_match('/^{(.+?)}$/', $sCol, $arrRes)) {
-                $arrColumns[] = $this->objConnect->qualifyExpression($arrRes[1], $sTableName, $this->arrColumnsMapping);
+                $arrColumns[] = $this->objConnect->qualifyExpression($arrRes[1], $sTableName);
             } else {
-                if (isset($this->arrColumnsMapping[$sCol])) {
-                    $sCol = $this->arrColumnsMapping[$sCol];
-                }
                 if ('*' !== $sCol && $sAlias) {
                     $arrColumns[] = $this->objConnect->qualifyTableOrColumn("{$sTableName}.{$sCol}", $sAlias, 'AS');
                 } else {
@@ -3052,7 +3007,7 @@ class Select
             } elseif (is_array($mixCond)) {
                 // 表达式支持
                 if (false !== strpos($mixCond[0], '{') && preg_match('/^{(.+?)}$/', $mixCond[0], $arrRes)) {
-                    $mixCond[0] = $this->objConnect->qualifyExpression($arrRes[1], $strTable, $this->arrColumnsMapping);
+                    $mixCond[0] = $this->objConnect->qualifyExpression($arrRes[1], $strTable);
                 } else {
                     // 字段处理
                     if (false !== strpos($mixCond[0], ',')) {
@@ -3061,10 +3016,6 @@ class Select
                         $strCurrentTable = $mixCond[0];
                     } else {
                         $strCurrentTable = $strTable;
-                    }
-
-                    if (isset($this->arrColumnsMapping[$mixCond[0]])) {
-                        $mixCond[0] = $this->arrColumnsMapping[$mixCond[0]];
                     }
 
                     $mixCond[0] = $this->objConnect->qualifyColumn($mixCond[0], $strCurrentTable);
@@ -3125,7 +3076,7 @@ class Select
 
                         // 表达式支持
                         elseif (is_string($strTemp) && false !== strpos($strTemp, '{') && preg_match('/^{(.+?)}$/', $strTemp, $arrRes)) {
-                            $strTemp = $this->objConnect->qualifyExpression($arrRes[1], $strTable, $this->arrColumnsMapping);
+                            $strTemp = $this->objConnect->qualifyExpression($arrRes[1], $strTable);
                         } else {
                             // 自动格式化时间
                             if (null !== $strFindTime) {
@@ -3282,7 +3233,7 @@ class Select
 
                 // 表达式支持
                 if (false !== strpos($arrTemp, '{') && preg_match('/^{(.+?)}$/', $arrTemp, $arrRes)) {
-                    $arrTemp = $this->objConnect->qualifyExpression($arrRes[1], $strTable, $this->arrColumnsMapping);
+                    $arrTemp = $this->objConnect->qualifyExpression($arrRes[1], $strTable);
                 }
                 $this->setConditionItem($arrTemp, 'string__');
             }
@@ -3479,16 +3430,13 @@ class Select
         }
 
         if (false !== strpos($strField, '{') && preg_match('/^{(.+?)}$/', $strField, $arrRes)) {
-            $strField = $this->objConnect->qualifyExpression($arrRes[1], $sTableName, $this->arrColumnsMapping);
+            $strField = $this->objConnect->qualifyExpression($arrRes[1], $sTableName);
         } elseif (!preg_match('/\(.*\)/', $strField)) {
             if (preg_match('/(.+)\.(.+)/', $strField, $arrMatch)) {
                 $sCurrentTableName = $arrMatch[1];
                 $strTemp = $arrMatch[2];
             } else {
                 $sCurrentTableName = $sTableName;
-            }
-            if (isset($this->arrColumnsMapping[$strField])) {
-                $strField = $this->arrColumnsMapping[$strField];
             }
             $strField = $this->objConnect->qualifyTableOrColumn("{$sCurrentTableName}.{$strField}");
         }
@@ -3722,10 +3670,6 @@ class Select
                         $sCol = $arrMatch[2];
                     }
 
-                    if (isset($this->arrColumnsMapping[$sCol])) {
-                        $sCol = $this->arrColumnsMapping[$sCol];
-                    }
-
                     $this->arrOption['columns'][] = [
                         $strThisTableName,
                         $sCol,
@@ -3758,14 +3702,13 @@ class Select
 
         // 表达式支持
         if (false !== strpos($strField, '{') && preg_match('/^{(.+?)}$/', $strField, $arrRes)) {
-            $strField = $this->objConnect->qualifyExpression($arrRes[1], $strTableName, $this->arrColumnsMapping);
+            $strField = $this->objConnect->qualifyExpression($arrRes[1], $strTableName);
         } else {
-            if (preg_match('/(.+)\.(.+)/', $strField, $arrMatch)) { // 检查字段名是否包含表名称
+
+            // 检查字段名是否包含表名称
+            if (preg_match('/(.+)\.(.+)/', $strField, $arrMatch)) {
                 $strTableName = $arrMatch[1];
                 $strField = $arrMatch[2];
-            }
-            if (isset($this->arrColumnsMapping[$strField])) {
-                $strField = $this->arrColumnsMapping[$strField];
             }
             if ('*' === $strField) {
                 $strTableName = '';
@@ -4000,7 +3943,7 @@ class Select
             // 表达式支持
             $arrRes = null;
             if (false !== strpos($mixValue, '{') && preg_match('/^{(.+?)}$/', $mixValue, $arrRes)) {
-                $mixValue = $this->objConnect->qualifyExpression($arrRes[1], $strTableName, $this->arrColumnsMapping);
+                $mixValue = $this->objConnect->qualifyExpression($arrRes[1], $strTableName);
             } else {
                 $mixValue = $this->objConnect->qualifyColumnValue($mixValue, false);
             }
@@ -4106,9 +4049,6 @@ class Select
             if (preg_match('/(.+)\.(.+)/', $sField, $arrMatch)) {
                 $strTable = $arrMatch[1];
                 $sField = $arrMatch[2];
-            }
-            if (isset($this->arrColumnsMapping[$sField])) {
-                $sField = $this->arrColumnsMapping[$sField];
             }
         }
         if ('*' === $sField) {

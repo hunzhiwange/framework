@@ -499,11 +499,10 @@ abstract class Connect
      *
      * @param string $sSql
      * @param string $sTableName
-     * @param array  $arrMapping
      *
      * @return string
      */
-    public function qualifyExpression($sSql, $sTableName, array $arrMapping = null)
+    public function qualifyExpression($sSql, $sTableName)
     {
         if (empty($sSql)) {
             return '';
@@ -511,10 +510,6 @@ abstract class Connect
 
         preg_match_all('/\[[a-z][a-z0-9_\.]*\]|\[\*\]/i', $sSql, $arrMatches, PREG_OFFSET_CAPTURE);
         $arrMatches = reset($arrMatches);
-
-        if (!is_array($arrMapping)) {
-            $arrMapping = [];
-        }
 
         $sOut = '';
         $nOffset = 0;
@@ -526,17 +521,17 @@ abstract class Connect
 
             switch (count($arrArray)) {
                 case 3:
-                    $sF = !empty($arrMapping[$arrArray[2]]) ? $arrMapping[$arrArray[2]] : $arrArray[2];
+                    $sF = $arrArray[2];
                     $sTable = "{$arrArray[0]}.{$arrArray[1]}";
 
                     break;
                 case 2:
-                    $sF = !empty($arrMapping[$arrArray[1]]) ? $arrMapping[$arrArray[1]] : $arrArray[1];
+                    $sF = $arrArray[1];
                     $sTable = $arrArray[0];
 
                     break;
                 default:
-                    $sF = !empty($arrMapping[$arrArray[0]]) ? $arrMapping[$arrArray[0]] : $arrArray[0];
+                    $sF = $arrArray[0];
                     $sTable = $sTableName;
             }
 

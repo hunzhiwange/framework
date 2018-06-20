@@ -151,11 +151,10 @@ interface IConnect
      *
      * @param string $sSql
      * @param string $sTableName
-     * @param array  $arrMapping
      *
      * @return string
      */
-    public function qualifyExpression($sSql, $sTableName, array $arrMapping = null);
+    public function qualifyExpression($sSql, $sTableName);
 
     /**
      * 表或者字段格式化（支持别名）.
