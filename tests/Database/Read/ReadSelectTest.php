@@ -112,7 +112,7 @@ eot;
 
                 table('test')->
 
-                select(function($select) {
+                select(function ($select) {
                     $select->where('id', 1);
                 }),
                 __METHOD__
