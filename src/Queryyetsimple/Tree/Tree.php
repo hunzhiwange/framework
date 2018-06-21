@@ -22,6 +22,7 @@ namespace Leevel\Tree;
 
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
+use RuntimeException;
 
 /**
  * 树数据处理.
@@ -53,9 +54,13 @@ class Tree implements ITree, IJson, IArray
      *
      * @param array $arrNodes
      */
-    public function __construct($arrNodes = [])
+    public function __construct(array $arrNodes = [])
     {
         foreach ($arrNodes as $arrNode) {
+            if (!is_array($arrNode) || 3 !== count($arrNode)) {
+                throw new RuntimeException('The node must be an array of three elements.');
+            }
+
             $this->setNode($arrNode[0], $arrNode[1], $arrNode[2]);
         }
     }
@@ -68,7 +73,7 @@ class Tree implements ITree, IJson, IArray
      * @param mixed $mixValue
      * @param bool  $booPriority
      */
-    public function setNode($nId, $nParent, $mixValue, $booPriority = false)
+    public function setNode($nId, $nParent, $mixValue, bool $booPriority = false)
     {
         $nParent = $nParent ? $nParent : 0;
         $this->arrData[$nId] = $mixValue;
@@ -81,7 +86,9 @@ class Tree implements ITree, IJson, IArray
             foreach ($this->arrMap as $intK => $intV) {
                 $arr[$intK] = $intV;
             }
+
             $this->arrMap = $arr;
+
             unset($arr);
         } else {
             $this->arrMap[$nId] = $nParent;
@@ -95,9 +102,10 @@ class Tree implements ITree, IJson, IArray
      *
      * @return array
      */
-    public function getChildrenTree($nId = 0)
+    public function getChildrenTree($nId = 0): array
     {
         $arrChildren = [];
+
         foreach ($this->arrMap as $nChild => $nParent) {
             if ($nParent === $nId) {
                 $arrChildren[$nChild] = $this->getChildrenTree($nChild);
@@ -114,9 +122,10 @@ class Tree implements ITree, IJson, IArray
      *
      * @return array
      */
-    public function getChild($nId)
+    public function getChild($nId): array
     {
         $arrChild = [];
+
         foreach ($this->arrMap as $nChild => $nParent) {
             if ($nParent === $nId) {
                 $arrChild[$nChild] = $nChild;
@@ -133,9 +142,10 @@ class Tree implements ITree, IJson, IArray
      *
      * @return array
      */
-    public function getChildren($nId = 0)
+    public function getChildren($nId = 0): array
     {
         $arrChild = [];
+
         foreach ($this->getChild($nId) as $nChild) {
             $arrChild[] = $nChild;
             $arrChild = array_merge($arrChild, $this->getChildren($nChild));
@@ -151,7 +161,7 @@ class Tree implements ITree, IJson, IArray
      *
      * @return bool
      */
-    public function hasChild($nId)
+    public function hasChild($nId): bool
     {
         return count($this->getChild($nId)) > 0;
     }
@@ -165,7 +175,7 @@ class Tree implements ITree, IJson, IArray
      *
      * @return bool
      */
-    public function hasChildren($intId, array $arrCheckChildren = [], $booStrict = true)
+    public function hasChildren($intId, array $arrCheckChildren = [], bool $booStrict = true): bool
     {
         if (empty($arrCheckChildren)) {
             return false;
@@ -192,9 +202,10 @@ class Tree implements ITree, IJson, IArray
      *
      * @return array
      */
-    public function getParent($nId, $booWithItSelf = false)
+    public function getParent($nId, bool $booWithItSelf = false): array
     {
         $arrParent = [];
+
         if (array_key_exists($this->arrMap[$nId], $this->arrMap)) {
             $arrParent[] = $this->arrMap[$nId];
         }
@@ -214,7 +225,7 @@ class Tree implements ITree, IJson, IArray
      *
      * @return array
      */
-    public function getParents($nId, $booWithItSelf = true)
+    public function getParents($nId, bool $booWithItSelf = true): array
     {
         $arrParent = $this->getParentsReal($nId);
         sort($arrParent);
@@ -231,9 +242,9 @@ class Tree implements ITree, IJson, IArray
      *
      * @param int $nId
      *
-     * @return string
+     * @return int
      */
-    public function getLevel($nId)
+    public function getLevel($nId): int
     {
         return count($this->getParentsReal($nId));
     }
@@ -273,9 +284,10 @@ class Tree implements ITree, IJson, IArray
      *
      * @return array
      */
-    public function treeToArray($mixCallable = null, $arrKey = [], $nId = 0)
+    public function treeToArray($mixCallable = null, array $arrKey = [], $nId = 0): array
     {
         $arrData = [];
+
         foreach ($this->getChild($nId) as $nValue) {
             $arrItem = [
                 $arrKey['value'] ?? 'value' => $nValue,
@@ -341,9 +353,10 @@ class Tree implements ITree, IJson, IArray
      *
      * @return array
      */
-    protected function getParentsReal($nId)
+    protected function getParentsReal($nId): array
     {
         $arrParent = [];
+
         if (array_key_exists($this->arrMap[$nId], $this->arrMap)) {
             $arrParent[] = $this->arrMap[$nId];
             $arrParent = array_merge($arrParent, $this->getParentsReal($this->arrMap[$nId]));

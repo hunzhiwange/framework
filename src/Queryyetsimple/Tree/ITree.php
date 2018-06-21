@@ -47,7 +47,7 @@ interface ITree
      *
      * @return array
      */
-    public function getChildrenTree($nId = 0);
+    public function getChildrenTree($nId = 0): array;
 
     /**
      * 取得给定 ID 一级子树 ID.
@@ -56,7 +56,7 @@ interface ITree
      *
      * @return array
      */
-    public function getChild($nId);
+    public function getChild($nId): array;
 
     /**
      * 取得给定 ID 所有子树 ID.
@@ -65,7 +65,7 @@ interface ITree
      *
      * @return array
      */
-    public function getChildren($nId = 0);
+    public function getChildren($nId = 0): array;
 
     /**
      * 取得给定 ID 是否包含子树.
@@ -74,7 +74,7 @@ interface ITree
      *
      * @return bool
      */
-    public function hasChild($nId);
+    public function hasChild($nId): bool;
 
     /**
      * 验证是否存在子菜单.
@@ -85,7 +85,7 @@ interface ITree
      *
      * @return bool
      */
-    public function hasChildren($intId, array $arrCheckChildren = [], $booStrict = true);
+    public function hasChildren($intId, array $arrCheckChildren = [], bool $booStrict = true): bool;
 
     /**
      * 取得给定 ID 上级父级 ID.
@@ -95,7 +95,7 @@ interface ITree
      *
      * @return array
      */
-    public function getParent($nId, $booWithItSelf = false);
+    public function getParent($nId, bool $booWithItSelf = false): array;
 
     /**
      * 取得给定 ID 所有父级 ID.
@@ -105,7 +105,7 @@ interface ITree
      *
      * @return array
      */
-    public function getParents($nId, $booWithItSelf = true);
+    public function getParents($nId, bool $booWithItSelf = true): array;
 
     /**
      * 判断级别.
@@ -143,5 +143,5 @@ interface ITree
      *
      * @return array
      */
-    public function treeToArray($mixCallable = null, $arrKey = [], $nId = 0);
+    public function treeToArray($mixCallable = null, array $arrKey = [], $nId = 0): array;
 }
