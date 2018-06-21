@@ -396,7 +396,7 @@ class Select
 
         // 查询对象直接查询
         if ($mixData instanceof self) {
-            return $mixData->select(null, $arrBind, $bFlag);
+            return $mixData->get(null, $this->booOnlyMakeSql);
         }
 
         // 回调
