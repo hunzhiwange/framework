@@ -617,9 +617,13 @@ class Select
             throw new Exception('Unsupported parameters.');
         }
 
-        return $this->sql($bFlag)->update([
-            $strColumn => $mixValue,
-        ], $arrBind);
+        return $this->update(
+            [
+                $strColumn => $mixValue,
+            ],
+            $arrBind,
+            $bFlag
+        );
     }
 
     /**
@@ -634,7 +638,12 @@ class Select
      */
     public function updateIncrease($strColumn, $intStep = 1, $arrBind = [], $bFlag = false)
     {
-        return $this->sql($bFlag)->updateColumn($strColumn, '{['.$strColumn.']+'.$intStep.'}', $arrBind);
+        return $this->updateColumn(
+            $strColumn,
+            '{['.$strColumn.']+'.$intStep.'}',
+            $arrBind,
+            $bFlag
+        );
     }
 
     /**
@@ -649,7 +658,12 @@ class Select
      */
     public function updateDecrease($strColumn, $intStep = 1, $arrBind = [], $bFlag = false)
     {
-        return $this->sql($bFlag)->updateColumn($strColumn, '{['.$strColumn.']-'.$intStep.'}', $arrBind);
+        return $this->updateColumn(
+            $strColumn,
+            '{['.$strColumn.']-'.$intStep.'}',
+            $arrBind,
+            $bFlag
+        );
     }
 
     /**
