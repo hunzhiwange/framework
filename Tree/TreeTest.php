@@ -42,7 +42,7 @@ class TreeTest extends TestCase
             [2, 1, 'world'],
         ]);
 
-$json = <<<'eot'
+        $json = <<<'eot'
 [{"value":1,"data":"hello","children":[{"value":2,"data":"world"}]}]
 eot;
 
