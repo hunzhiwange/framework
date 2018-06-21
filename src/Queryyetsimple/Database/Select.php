@@ -412,9 +412,9 @@ class Select
             return $this->get(null, $bFlag);
         }
 
-        $this->sql($bFlag)->setNativeSql('select');
+        $this->safeSql($bFlag)->setNativeSql('select');
 
-        return $this->{'runNativeSql'}([
+        return $this->{'runNativeSql'}(...[
             $mixData,
             $arrBind,
         ]);
@@ -469,9 +469,9 @@ class Select
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
         // 执行查询
-        $this->sql($bFlag)->setNativeSql(false === $booReplace ? 'insert' : 'replace');
+        $this->safeSql($bFlag)->setNativeSql(false === $booReplace ? 'insert' : 'replace');
 
-        return $this->{'runNativeSql'}([
+        return $this->{'runNativeSql'}(...[
             $mixData,
             $arrBind,
         ]);
@@ -533,9 +533,9 @@ class Select
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
         // 执行查询
-        $this->sql($bFlag)->setNativeSql(false === $booReplace ? 'insert' : 'replace');
+        $this->safeSql($bFlag)->setNativeSql(false === $booReplace ? 'insert' : 'replace');
 
-        return $this->{'runNativeSql'}([
+        return $this->{'runNativeSql'}(...[
             $mixData,
             $arrBind,
         ]);
@@ -593,9 +593,9 @@ class Select
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
-        $this->sql($bFlag)->setNativeSql('update');
+        $this->safeSql($bFlag)->setNativeSql('update');
 
-        return $this->{'runNativeSql'}([
+        return $this->{'runNativeSql'}(...[
             $mixData,
             $arrBind,
         ]);
@@ -690,9 +690,9 @@ class Select
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
-        $this->sql($bFlag)->setNativeSql('delete');
+        $this->safeSql($bFlag)->setNativeSql('delete');
 
-        return $this->{'runNativeSql'}([
+        return $this->{'runNativeSql'}(...[
             $mixData,
             $arrBind,
         ]);
@@ -711,9 +711,9 @@ class Select
         $arrSql[] = $this->parseTable(true);
         $arrSql = implode(' ', $arrSql);
 
-        $this->sql($bFlag)->setNativeSql('statement');
+        $this->safeSql($bFlag)->setNativeSql('statement');
 
-        return $this->{'runNativeSql'}([
+        return $this->{'runNativeSql'}(...[
             $arrSql,
         ]);
     }
@@ -727,9 +727,9 @@ class Select
      */
     public function statement(string $strData, $arrBind = [], $bFlag = false)
     {
-        $this->sql($bFlag)->setNativeSql('statement');
+        $this->safeSql($bFlag)->setNativeSql('statement');
 
-        return $this->{'runNativeSql'}([
+        return $this->{'runNativeSql'}(...[
             $strData,
             $arrBind,
         ]);
@@ -744,7 +744,7 @@ class Select
      */
     public function getOne($bFlag = false)
     {
-        return $this->sql($bFlag, true)->one()->query();
+        return $this->safeSql($bFlag)->one()->query();
     }
 
     /**
@@ -757,10 +757,10 @@ class Select
     public function getAll($bFlag = false)
     {
         if ($this->arrOption['limitquery']) {
-            return $this->sql($bFlag, true)->query();
+            return $this->safeSql($bFlag)->query();
         }
 
-        return $this->sql($bFlag, true)->all()->query();
+        return $this->safeSql($bFlag)->all()->query();
     }
 
     /**
@@ -774,10 +774,10 @@ class Select
     public function get($nNum = null, $bFlag = false)
     {
         if (null !== $nNum) {
-            return $this->sql($bFlag, true)->top($nNum)->query();
+            return $this->safeSql($bFlag)->top($nNum)->query();
         }
 
-        return $this->sql($bFlag, true)->query();
+        return $this->safeSql($bFlag)->query();
     }
 
     /**
@@ -790,7 +790,7 @@ class Select
      */
     public function value($strField, $bFlag = false)
     {
-        $arrRow = $this->sql($bFlag, true)->asDefault()->setColumns($strField)->getOne();
+        $arrRow = $this->safeSql($bFlag)->asDefault()->setColumns($strField)->getOne();
         if (true === $bFlag) {
             return $arrRow;
         }
@@ -822,7 +822,7 @@ class Select
 
         // 解析结果
         $arrResult = [];
-        foreach ($this->sql($bFlag, true)->asDefault()->setColumns($arrField)->getAll() as $arrTemp) {
+        foreach ($this->safeSql($bFlag)->asDefault()->setColumns($arrField)->getAll() as $arrTemp) {
             if (true === $bFlag) {
                 $arrResult[] = $arrTemp;
 
@@ -898,7 +898,7 @@ class Select
      */
     public function getCount($strField = '*', $sAlias = 'row_count', $bFlag = false)
     {
-        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->count($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->count($strField, $sAlias)->get();
         if (true === $bFlag) {
             return $arrRow;
         }
@@ -917,7 +917,7 @@ class Select
      */
     public function getAvg($strField, $sAlias = 'avg_value', $bFlag = false)
     {
-        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->avg($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->avg($strField, $sAlias)->get();
         if (true === $bFlag) {
             return $arrRow;
         }
@@ -936,7 +936,7 @@ class Select
      */
     public function getMax($strField, $sAlias = 'max_value', $bFlag = false)
     {
-        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->max($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->max($strField, $sAlias)->get();
         if (true === $bFlag) {
             return $arrRow;
         }
@@ -955,7 +955,7 @@ class Select
      */
     public function getMin($strField, $sAlias = 'min_value', $bFlag = false)
     {
-        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->min($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->min($strField, $sAlias)->get();
         if (true === $bFlag) {
             return $arrRow;
         }
@@ -974,7 +974,7 @@ class Select
      */
     public function getSum($strField, $sAlias = 'sum_value', $bFlag = false)
     {
-        $arrRow = (array) $this->sql($bFlag, true)->asDefault()->sum($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->sum($strField, $sAlias)->get();
         if (true === $bFlag) {
             return $arrRow;
         }
@@ -1082,19 +1082,16 @@ class Select
     /**
      * 指定返回 SQL 不做任何操作.
      *
-     * @param bool $bFlag     指示是否不做任何操作只返回 SQL
-     * @param bool $bQuickSql 如果快捷为 true,而原来的 $booOnlyMakeSql 为 true，则不做任何修改，只能通过手动方式修改
+     * @param bool $bFlag 指示是否不做任何操作只返回 SQL
      *
      * @return $this
      */
-    public function sql($bFlag = true, $bQuickSql = false)
+    public function sql($bFlag = true)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        if (false === $bFlag && true === $bQuickSql && true === $this->booOnlyMakeSql) { // 优先级最高 $this->sql(true, false)
-            return $this;
-        }
+
         $this->booOnlyMakeSql = (bool) $bFlag;
 
         return $this;
@@ -2610,6 +2607,24 @@ class Select
         }
 
         return $sLastSql;
+    }
+
+    /**
+     * 安全格式指定返回 SQL 不做任何操作.
+     *
+     * @param bool $bFlag 指示是否不做任何操作只返回 SQL
+     *
+     * @return $this
+     */
+    protected function safeSql($bFlag = true)
+    {
+        if (true === $this->booOnlyMakeSql) {
+            return $this;
+        }
+
+        $this->booOnlyMakeSql = (bool) $bFlag;
+
+        return $this;
     }
 
     /**
