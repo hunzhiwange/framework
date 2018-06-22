@@ -85,7 +85,7 @@ interface ITree
      *
      * @return bool
      */
-    public function hasChildren($intId, array $arrCheckChildren = [], bool $booStrict = true): bool;
+    public function hasChildren($intId, array $arrCheckChildren, bool $booStrict = true): bool;
 
     /**
      * 取得给定 ID 上级父级 ID.
@@ -105,7 +105,7 @@ interface ITree
      *
      * @return array
      */
-    public function getParents($nId, bool $booWithItSelf = true): array;
+    public function getParents($nId, bool $booWithItSelf = false): array;
 
     /**
      * 判断级别.
@@ -143,5 +143,5 @@ interface ITree
      *
      * @return array
      */
-    public function treeToArray($mixCallable = null, array $arrKey = [], $nId = 0): array;
+    public function normalize($mixCallable = null, array $arrKey = [], $nId = 0): array;
 }
