@@ -62,8 +62,7 @@ eot;
 
                 join('hello', 'name,value', 'name', '=', '小牛')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -89,8 +88,7 @@ eot;
 
                 join(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -116,8 +114,7 @@ eot;
 
                 join('hello', 'name,value', ['hello' => 'world', ['test', '>', '{[name]}']])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -145,8 +142,7 @@ eot;
                     $select->where('id', '<', 5)->where('name', 'like', 'hello');
                 })->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -177,8 +173,7 @@ eot;
 
                 innerJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -209,8 +204,7 @@ eot;
 
                 rightJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -241,8 +235,7 @@ eot;
 
                 fullJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'], 'name', '=', '小牛')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -273,8 +266,7 @@ eot;
 
                 crossJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -305,8 +297,7 @@ eot;
 
                 naturalJoin(['t' => 'hello'], ['name as nikename', 'tt' => 'value'])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

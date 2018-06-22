@@ -72,8 +72,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
 
@@ -109,8 +108,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
 
@@ -146,8 +144,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
 
@@ -183,8 +180,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
     }
@@ -227,8 +223,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
 
@@ -266,8 +261,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
 
@@ -305,8 +299,7 @@ eot;
 
                 endIfs()->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
     }

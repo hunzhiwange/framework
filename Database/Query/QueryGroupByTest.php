@@ -64,8 +64,7 @@ eot;
 
                 groupBy('name')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -91,8 +90,7 @@ eot;
 
                 groupBy('post.id')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -118,8 +116,7 @@ eot;
 
                 groupBy('{SUM([num])}')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -145,8 +142,7 @@ eot;
 
                 groupBy("title,id,{concat('1234',[id],'ttt')}")->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -172,8 +168,7 @@ eot;
 
                 groupBy(['title,id,ttt', 'value'])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

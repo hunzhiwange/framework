@@ -63,8 +63,7 @@ eot;
 
                 table('test')->
 
-                getOne(),
-                __METHOD__
+                getOne()
             )
         );
 
@@ -77,8 +76,7 @@ eot;
 
                 one()->
 
-                get(),
-                __METHOD__
+                get()
             )
         );
     }

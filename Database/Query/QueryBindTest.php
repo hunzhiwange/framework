@@ -70,8 +70,7 @@ eot;
 
                 where('id', '=', '[:id]')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -104,8 +103,7 @@ eot;
 
                 where('id', '=', '[:id]')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -138,8 +136,7 @@ eot;
 
                 where('id', '=', '[:id]')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -179,8 +176,7 @@ eot;
 
                 where('hello', 'like', '[:name]')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -220,8 +216,7 @@ eot;
 
                 where('hello', 'like', '[?]')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

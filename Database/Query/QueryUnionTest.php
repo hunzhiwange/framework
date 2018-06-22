@@ -72,8 +72,7 @@ eot;
 
                 union($union1)->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -84,8 +83,7 @@ eot;
 
                 union([$union1, $union2, $union1])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -119,8 +117,7 @@ eot;
 
                 unionAll($union1)->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

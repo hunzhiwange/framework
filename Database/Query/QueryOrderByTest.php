@@ -64,8 +64,7 @@ eot;
 
                 orderBy('name')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -91,8 +90,7 @@ eot;
 
                 orderBy('test.id DESC')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -118,8 +116,7 @@ eot;
 
                 orderBy('{SUM([num]) ASC}')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -145,8 +142,7 @@ eot;
 
                 orderBy('{SUM([num]) ASC}')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -172,8 +168,7 @@ eot;
 
                 orderBy("title,id,{concat('1234',[id],'ttt') desc}")->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -199,8 +194,7 @@ eot;
 
                 orderBy(['title,id,ttt', 'value desc'])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -226,8 +220,7 @@ eot;
 
                 orderBy(['title,id,ttt asc', 'value'], 'desc')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -258,8 +251,7 @@ eot;
 
                 latest()->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -285,8 +277,7 @@ eot;
 
                 latest('foo')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -312,8 +303,7 @@ eot;
 
                 oldest()->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -339,8 +329,7 @@ eot;
 
                 oldest('bar')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

@@ -64,8 +64,7 @@ eot;
 
                 latest()->
 
-                getOne(),
-                __METHOD__
+                getOne()
             )
         );
 
@@ -84,8 +83,7 @@ eot;
             $this->varExport(
                 $connect->sql(true)->
 
-                delete('delete from test where id = ?', [22]),
-                __METHOD__
+                delete('delete from test where id = ?', [22])
             )
         );
 
@@ -111,8 +109,7 @@ eot;
 
                 latest()->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
     }

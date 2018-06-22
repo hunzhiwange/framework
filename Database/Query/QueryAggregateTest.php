@@ -62,8 +62,7 @@ eot;
 
                 count()->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
 
@@ -89,8 +88,7 @@ eot;
 
                 count('id')->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
 
@@ -116,8 +114,7 @@ eot;
 
                 count('id', 'count1')->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
 
@@ -143,8 +140,7 @@ eot;
 
                 count('{[id]*50}', 'count1')->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
     }
@@ -175,8 +171,7 @@ eot;
 
                 avg('id')->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
     }
@@ -207,8 +202,7 @@ eot;
 
                 max('num')->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
     }
@@ -239,8 +233,7 @@ eot;
 
                 min('num')->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
     }
@@ -271,8 +264,7 @@ eot;
 
                 sum('num')->
 
-                getOne(true),
-                __METHOD__
+                getOne(true)
             )
         );
     }

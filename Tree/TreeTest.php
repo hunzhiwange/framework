@@ -47,5 +47,29 @@ class TreeTest extends TestCase
 eot;
 
         $this->assertSame($json, $tree->toJson());
+
+        $tree->setNode(5, 1, 'foo');
+
+        $json = <<<'eot'
+[{"value":1,"data":"hello","children":[{"value":2,"data":"world"},{"value":5,"data":"foo"}]}]
+eot;
+
+        $this->assertSame($json, $tree->toJson());
+
+        $tree->setNode(6, 1, 'bar', true);
+
+        $json = <<<'eot'
+[{"value":1,"data":"hello","children":[{"value":6,"data":"bar"},{"value":2,"data":"world"},{"value":5,"data":"foo"}]}]
+eot;
+
+        $this->assertSame($json, $tree->toJson());
+
+        $tree->setNode(8, 6, 'subbar');
+
+        $json = <<<'eot'
+[{"value":1,"data":"hello","children":[{"value":6,"data":"bar","children":[{"value":8,"data":"subbar"}]},{"value":2,"data":"world"},{"value":5,"data":"foo"}]}]
+eot;
+
+        $this->assertSame($json, $tree->toJson());
     }
 }

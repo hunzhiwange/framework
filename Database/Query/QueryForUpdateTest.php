@@ -62,8 +62,7 @@ eot;
 
                 forUpdate()->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -91,8 +90,7 @@ eot;
 
                 forUpdate(false)->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

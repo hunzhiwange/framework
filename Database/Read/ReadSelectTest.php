@@ -58,8 +58,7 @@ eot;
 
                 table('test')->
 
-                select('select *from test where id = ?', [1]),
-                __METHOD__
+                select('select *from test where id = ?', [1])
             )
         );
 
@@ -85,8 +84,7 @@ eot;
 
                 table('test')->
 
-                select(),
-                __METHOD__
+                select()
             )
         );
 
@@ -114,8 +112,7 @@ eot;
 
                 select(function ($select) {
                     $select->where('id', 1);
-                }),
-                __METHOD__
+                })
             )
         );
 
@@ -143,8 +140,7 @@ eot;
             $this->varExport(
                 $connect->sql()->
 
-                select($select),
-                __METHOD__
+                select($select)
             )
         );
     }

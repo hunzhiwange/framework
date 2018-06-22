@@ -60,8 +60,7 @@ eot;
             $this->varExport(
                 $connect->table('posts')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -85,8 +84,7 @@ eot;
             $this->varExport(
                 $connect->table('mydb.posts')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -110,8 +108,7 @@ eot;
             $this->varExport(
                 $connect->table(['p' => 'mydb.posts'])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -140,8 +137,7 @@ eot;
             $this->varExport(
                 $connect->table('posts', 'title,body')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -168,8 +164,7 @@ eot;
                         't' => 'title', 'name', 'remark,value',
                     ])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

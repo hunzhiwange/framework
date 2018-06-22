@@ -62,8 +62,7 @@ eot;
 
                 distinct()->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -91,8 +90,7 @@ eot;
 
                 distinct(false)->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

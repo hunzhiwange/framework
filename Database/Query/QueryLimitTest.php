@@ -62,8 +62,7 @@ eot;
 
                 limit(5, 10)->
 
-                get(null, true),
-                __METHOD__
+                get(null, true)
             )
         );
 
@@ -89,8 +88,7 @@ eot;
 
                 one()->
 
-                get(null, true),
-                __METHOD__
+                get(null, true)
             )
         );
 
@@ -116,8 +114,7 @@ eot;
 
                 all()->
 
-                get(null, true),
-                __METHOD__
+                get(null, true)
             )
         );
 
@@ -143,8 +140,7 @@ eot;
 
                 top(15)->
 
-                get(null, true),
-                __METHOD__
+                get(null, true)
             )
         );
     }

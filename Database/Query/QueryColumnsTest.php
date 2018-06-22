@@ -64,8 +64,7 @@ eot;
 
                 columns('name,value')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -100,8 +99,7 @@ eot;
 
                 setColumns('remark')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
