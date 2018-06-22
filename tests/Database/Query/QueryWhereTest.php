@@ -63,8 +63,7 @@ eot;
 
                 where('id', '=', 1)->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -90,8 +89,7 @@ eot;
 
                 where('id', 2)->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -121,8 +119,7 @@ eot;
 
                 where('value', 'like', '小鸭子')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -153,8 +150,7 @@ eot;
 
                 where(['name', 'like', '技术'])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -183,8 +179,7 @@ eot;
                     ['value', '<>', '结局'],
                 ])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -217,8 +212,7 @@ eot;
 
                 orWhere('value', '<>', '结局')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -249,8 +243,7 @@ eot;
 
                 whereBetween('id', [1, 100])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -276,8 +269,7 @@ eot;
 
                 where('id', 'between', [1, 10])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -306,8 +298,7 @@ eot;
                     ['name', [5, 22]],
                 ])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -338,8 +329,7 @@ eot;
 
                 whereNotBetween('id', [1, 10])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -365,8 +355,7 @@ eot;
 
                 where('id', 'not between', [1, 10])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -397,8 +386,7 @@ eot;
 
                 whereIn('id', [2, 50])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -422,9 +410,9 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('id', 'in', '1,10')
-                    ->getAll(true),
-                __METHOD__
+                where('id', 'in', '1,10')->
+
+                getAll(true)
             )
         );
 
@@ -448,9 +436,9 @@ eot;
             $this->varExport(
                 $connect->table('test')->
 
-                where('id', 'in', [2, 50])
-                    ->getAll(true),
-                __METHOD__
+                where('id', 'in', [2, 50])->
+
+                getAll(true)
             )
         );
     }
@@ -481,8 +469,7 @@ eot;
 
                 whereNotIn('id', [2, 50])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -508,8 +495,7 @@ eot;
 
                 where('id', 'not in', '1,10')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -540,8 +526,7 @@ eot;
 
                 whereNull('id')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -552,8 +537,7 @@ eot;
 
                 where('id', 'null')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -584,8 +568,7 @@ eot;
 
                 whereNotNull('id')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -596,8 +579,7 @@ eot;
 
                 where('id', 'not null')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -628,8 +610,7 @@ eot;
 
                 whereLike('id', '5')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -640,8 +621,7 @@ eot;
 
                 where('id', 'like', '5')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -672,8 +652,7 @@ eot;
 
                 whereNotLike('id', '5')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -684,8 +663,7 @@ eot;
 
                 where('id', 'not like', '5')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -720,8 +698,7 @@ eot;
                     }
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -753,8 +730,7 @@ eot;
                    ]
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -786,8 +762,7 @@ eot;
                    ]
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -821,8 +796,7 @@ eot;
                    ]
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -857,8 +831,7 @@ eot;
                     }
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -893,8 +866,7 @@ eot;
                     $select->where('votes', '>', 100)->where('title', '<>', 'Admin');
                 })->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -926,8 +898,7 @@ eot;
                     $select->where('votes', '>', 100)->orWhere('title', '<>', 'Admin');
                 })->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -958,8 +929,7 @@ eot;
 
                 where('{concat("hello_",[posts])}', '=', '{[id]}')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -998,8 +968,7 @@ eot;
                     'hello'  => ['world'],
                 ])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -1032,8 +1001,7 @@ eot;
                    ['string__' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -1068,8 +1036,7 @@ eot;
                     ]
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -1112,8 +1079,7 @@ eot;
                     ]
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

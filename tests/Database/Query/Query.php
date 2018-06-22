@@ -43,14 +43,4 @@ trait Query
 
         return new Mysql($log, $cache, []);
     }
-
-    protected function varExport(array $data, string $method)
-    {
-        file_put_contents(
-            __DIR__.'/../'.$method.'.log',
-            PHP_EOL.var_export($data, true)
-        );
-
-        return var_export($data, true);
-    }
 }

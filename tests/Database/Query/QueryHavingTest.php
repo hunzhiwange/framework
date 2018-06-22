@@ -65,8 +65,7 @@ eot;
 
                 having('tid', '>', 5)->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -99,8 +98,7 @@ eot;
 
                 having(['name', 'like', '技术'])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -135,8 +133,7 @@ eot;
 
                 orHaving(['tname', 'like', '技术'])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -171,8 +168,7 @@ eot;
 
                 havingBetween('id', [1, 100])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -203,8 +199,7 @@ eot;
                     ['tname', [5, 22]],
                 ])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -239,8 +234,7 @@ eot;
 
                 havingNotBetween('id', [1, 100])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -275,8 +269,7 @@ eot;
 
                 havingIn('num', [2, 50])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -311,8 +304,7 @@ eot;
 
                 havingNotIn('num', [2, 50])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -347,8 +339,7 @@ eot;
 
                 havingNull('num')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -383,8 +374,7 @@ eot;
 
                 havingNotNull('num')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -419,8 +409,7 @@ eot;
 
                 havingLike('num', '55')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -455,8 +444,7 @@ eot;
 
                 havingNotLike('num', '55')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -493,8 +481,7 @@ eot;
                     $select->having('votes', '>', 100)->having('title', '<>', 'Admin');
                 })->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -527,8 +514,7 @@ eot;
 
                 having('{concat("hello_",[posts])}', '=', '{[id]}')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -569,8 +555,7 @@ eot;
                     'hello'  => ['world'],
                 ])->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -605,8 +590,7 @@ eot;
                     ['string__' => '{[name] = 11 and [post.value] = 22 and concat("tt_",[id])}']
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
@@ -643,8 +627,7 @@ eot;
                     ]
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -689,8 +672,7 @@ eot;
                     ]
                 )->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

@@ -70,8 +70,7 @@ eot;
 
                 where('new', '=', 'world')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
 
@@ -105,8 +104,7 @@ eot;
 
                 where('new', 'like', 'new')->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }

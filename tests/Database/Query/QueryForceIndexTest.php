@@ -66,8 +66,7 @@ eot;
 
                 where('id', '=', 5)->
 
-                getAll(true),
-                __METHOD__
+                getAll(true)
             )
         );
     }
