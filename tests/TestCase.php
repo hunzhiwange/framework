@@ -60,4 +60,14 @@ abstract class TestCase extends TestCases
     protected function tearDown()
     {
     }
+
+    protected function varExport(array $data)
+    {
+        file_put_contents(
+            __DIR__.'/logs/'.get_called_class().'.log',
+            PHP_EOL.var_export($data, true)
+        );
+
+        return var_export($data, true);
+    }
 }
