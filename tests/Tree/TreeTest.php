@@ -548,7 +548,7 @@ eot;
             $this->varExport(
                 $tree->normalize(null, [
                     'value' => 'value1',
-                    'data' => 'data1',
+                    'data'  => 'data1',
                 ])
             )
         );
@@ -617,7 +617,7 @@ eot;
         $this->expectException(\RuntimeException::class);
 
         $tree = new Tree([
-            1
+            1,
         ]);
     }
 
