@@ -300,30 +300,45 @@ class Select
         // 动态查询支持
         if (0 === strncasecmp($method, 'get', 3)) {
             $method = substr($method, 3);
-            if (false !== strpos(strtolower($method), 'start')) { // support get10start3 etc.
+
+            // support get10start3 etc.
+            if (false !== strpos(strtolower($method), 'start')) {
                 $arrValue = explode('start', strtolower($method));
                 $nNum = (int) (array_shift($arrValue));
                 $nOffset = (int) (array_shift($arrValue));
 
                 return $this->limit($nOffset, $nNum)->get();
             }
-            if (0 === strncasecmp($method, 'By', 2)) { // support getByName getByNameAndSex etc.
-                $method = substr($method, 2);
+
+            // support getByName getByNameAndSex etc.
+            // support getAllByNameAndSex etc.
+            if (0 === strncasecmp($method, 'By', 2) || 0 === strncasecmp($method, 'AllBy', 5)) {
+                $method = substr(
+                    $method,
+                    ($isOne = 0 === strncasecmp($method, 'By', 2)) ? 2 : 5
+                );
+                $isKeep = false;
+
+                if (substr($method, -1) === '_') {
+                    $isKeep = true;
+                    $method = substr($method, 0, -1);
+                }
+
                 $arrKeys = explode('And', $method);
+
                 if (count($arrKeys) !== count($arrArgs)) {
                     throw new Exception('Parameter quantity does not correspond.');
                 }
 
-                return $this->where(array_combine($arrKeys, $arrArgs))->getOne();
-            }
-            if (0 === strncasecmp($method, 'AllBy', 5)) { // support getAllByNameAndSex etc.
-                $method = substr($method, 5);
-                $arrKeys = explode('And', $method);
-                if (count($arrKeys) !== count($arrArgs)) {
-                    throw new Exception('Parameter quantity does not correspond.');
+                if (!$isKeep) {
+                    $arrKeys = array_map(function ($item) {
+                        return $this->unCamelize($item);
+                    }, $arrKeys);
                 }
 
-                return $this->where(array_combine($arrKeys, $arrArgs))->getAll();
+                return $this->where(
+                    array_combine($arrKeys, $arrArgs)
+                )->{'get'.($isOne ? 'One' : 'All')}();
             }
 
             return $this->top((int) (substr($method, 3)));
@@ -331,7 +346,12 @@ class Select
 
         // 查询组件
         if (!$this->objCallSelect) {
-            throw new Exception(sprintf('Select do not implement magic method %s.', $method));
+            throw new Exception(
+                sprintf(
+                    'Select do not implement magic method %s.',
+                    $method
+                )
+            );
         }
 
         // 调用事件
@@ -4207,5 +4227,24 @@ class Select
         $this->arrOption['aggregate'] = $this->arrBackupPage['aggregate'];
         $this->arrQueryParams = $this->arrBackupPage['query_params'];
         $this->arrOption['columns'] = $this->arrBackupPage['columns'];
+    }
+
+    /**
+     * 驼峰转下划线
+     *
+     * @param string $strValue
+     * @param string $strSeparator
+     *
+     * @return string
+     */
+    protected function unCamelize($strValue, $strSeparator = '_')
+    {
+        return strtolower(
+            preg_replace(
+                '/([a-z])([A-Z])/',
+                '$1'.$strSeparator.'$2',
+                $strValue
+            )
+        );
     }
 }
