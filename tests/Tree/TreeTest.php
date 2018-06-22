@@ -578,6 +578,7 @@ eot;
             $this->varExport(
                 $tree->normalize(function ($item) {
                     $item['label'] = $item['data'];
+
                     return $item;
                 })
             )
