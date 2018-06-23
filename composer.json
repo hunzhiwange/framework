@@ -70,6 +70,7 @@
         "leevel/view": "self.version"
     },
     "require-dev": {
+        "satooshi/php-coveralls":"^2.0",
         "fzaninotto/faker": "^1.6",
         "phpunit/phpunit": "~7.0"
     },
