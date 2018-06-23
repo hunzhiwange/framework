@@ -33,7 +33,6 @@ use Tests\TestCase;
  * @since 2017.05.27
  *
  * @version 1.0
- * @coversNothing
  */
 class PipelineTest extends TestCase
 {

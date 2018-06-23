@@ -30,7 +30,6 @@ use Tests\TestCase;
  * @since 2018.06.07
  *
  * @version 1.0
- * @coversNothing
  */
 class CompilerTagselfTest extends TestCase
 {

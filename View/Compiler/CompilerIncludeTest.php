@@ -30,7 +30,6 @@ use Tests\TestCase;
  * @since 2018.06.08
  *
  * @version 1.0
- * @coversNothing
  */
 class CompilerIncludeTest extends TestCase
 {

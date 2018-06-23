@@ -34,7 +34,6 @@ use Tests\TestCase;
  * @since 2018.06.04
  *
  * @version 1.0
- * @coversNothing
  */
 class ApplicationTest extends TestCase
 {

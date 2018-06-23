@@ -32,7 +32,6 @@ use Tests\TestCase;
  * @since 2018.06.10
  *
  * @version 1.0
- * @coversNothing
  */
 class FileTest extends TestCase
 {

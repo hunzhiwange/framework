@@ -31,7 +31,6 @@ use Tests\TestCase;
  * @since 2017.05.09
  *
  * @version 1.0
- * @coversNothing
  */
 class OptionTest extends TestCase
 {

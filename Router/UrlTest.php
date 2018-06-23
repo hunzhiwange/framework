@@ -32,7 +32,6 @@ use Tests\TestCase;
  * @since 2018.02.06
  *
  * @version 1.0
- * @coversNothing
  */
 class UrlTest extends TestCase
 {

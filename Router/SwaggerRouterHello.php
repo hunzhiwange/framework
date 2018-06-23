@@ -31,7 +31,6 @@ use Tests\TestCase;
  * @since 2018.04.10
  *
  * @version 1.0
- * @coversNothing
  */
 class SwaggerRouterHello extends TestCase
 {
