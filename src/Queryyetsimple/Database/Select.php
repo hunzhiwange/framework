@@ -825,11 +825,25 @@ class Select
     public function value($strField, $bFlag = false)
     {
         $arrRow = $this->safeSql($bFlag)->asDefault()->setColumns($strField)->getOne();
-        if (true === $bFlag) {
+
+        if (true === $this->booOnlyMakeSql) {
             return $arrRow;
         }
 
         return $arrRow[$strField] ?? null;
+    }
+
+    /**
+     * 返回一个字段的值(别名)
+     *
+     * @param string $strField
+     * @param bool   $bFlag    指示是否不做任何操作只返回 SQL
+     *
+     * @return mixed
+     */
+    public function pull($strField, $bFlag = false)
+    {
+        return $this->value($strField, $bFlag);
     }
 
     /**
@@ -845,25 +859,33 @@ class Select
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $arrField = [];
+
         if (is_array($mixFieldValue)) {
             $arrField = $mixFieldValue;
         } else {
             $arrField[] = $mixFieldValue;
         }
+
         if (is_string($strFieldKey)) {
             $arrField[] = $strFieldKey;
         }
 
+        $tmps = $this->safeSql($bFlag)->
+
+        asDefault()->
+
+        setColumns($arrField)->
+
+        getAll();
+
+        if (true === $this->booOnlyMakeSql) {
+            return $tmps;
+        }
+
         // 解析结果
         $arrResult = [];
-        foreach ($this->safeSql($bFlag)->asDefault()->setColumns($arrField)->getAll() as $arrTemp) {
-            if (true === $bFlag) {
-                $arrResult[] = $arrTemp;
 
-                continue;
-            }
-
-            $arrTemp = $arrTemp;
+        foreach ($tmps as $arrTemp) {
             if (1 === count($arrTemp)) {
                 $arrResult[] = reset($arrTemp);
             } else {
@@ -933,7 +955,8 @@ class Select
     public function getCount($strField = '*', $sAlias = 'row_count', $bFlag = false)
     {
         $arrRow = (array) $this->safeSql($bFlag)->asDefault()->count($strField, $sAlias)->get();
-        if (true === $bFlag) {
+
+        if (true === $this->booOnlyMakeSql) {
             return $arrRow;
         }
 
@@ -952,7 +975,8 @@ class Select
     public function getAvg($strField, $sAlias = 'avg_value', $bFlag = false)
     {
         $arrRow = (array) $this->safeSql($bFlag)->asDefault()->avg($strField, $sAlias)->get();
-        if (true === $bFlag) {
+
+        if (true === $this->booOnlyMakeSql) {
             return $arrRow;
         }
 
@@ -971,7 +995,8 @@ class Select
     public function getMax($strField, $sAlias = 'max_value', $bFlag = false)
     {
         $arrRow = (array) $this->safeSql($bFlag)->asDefault()->max($strField, $sAlias)->get();
-        if (true === $bFlag) {
+
+        if (true === $this->booOnlyMakeSql) {
             return $arrRow;
         }
 
@@ -990,7 +1015,8 @@ class Select
     public function getMin($strField, $sAlias = 'min_value', $bFlag = false)
     {
         $arrRow = (array) $this->safeSql($bFlag)->asDefault()->min($strField, $sAlias)->get();
-        if (true === $bFlag) {
+
+        if (true === $this->booOnlyMakeSql) {
             return $arrRow;
         }
 
@@ -1009,7 +1035,8 @@ class Select
     public function getSum($strField, $sAlias = 'sum_value', $bFlag = false)
     {
         $arrRow = (array) $this->safeSql($bFlag)->asDefault()->sum($strField, $sAlias)->get();
-        if (true === $bFlag) {
+
+        if (true === $this->booOnlyMakeSql) {
             return $arrRow;
         }
 
