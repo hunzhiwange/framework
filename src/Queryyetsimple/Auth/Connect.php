@@ -613,7 +613,6 @@ abstract class Connect
     protected function getUserFromDatabase($nUserId, $sPassword)
     {
         return $this->oUser->
-
         where($this->getField('id'), $nUserId)->
 
         where($this->getField('password'), $sPassword)->

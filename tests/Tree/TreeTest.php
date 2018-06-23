@@ -31,7 +31,6 @@ use Tests\TestCase;
  * @since 2018.06.21
  *
  * @version 1.0
- * @coversNothing
  */
 class TreeTest extends TestCase
 {

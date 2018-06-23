@@ -33,7 +33,6 @@ use Tests\TestCase;
  * @since 2018.05.29
  *
  * @version 1.0
- * @coversNothing
  */
 class DispatchTest extends TestCase
 {

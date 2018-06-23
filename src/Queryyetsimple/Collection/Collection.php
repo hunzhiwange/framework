@@ -172,7 +172,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
     }
 
     /**
-     * 验证
+     * 验证.
      *
      * @return bool
      */

@@ -319,7 +319,7 @@ class Select
                 );
                 $isKeep = false;
 
-                if (substr($method, -1) === '_') {
+                if ('_' === substr($method, -1)) {
                     $isKeep = true;
                     $method = substr($method, 0, -1);
                 }
@@ -3780,7 +3780,6 @@ class Select
         if (false !== strpos($strField, '{') && preg_match('/^{(.+?)}$/', $strField, $arrRes)) {
             $strField = $this->objConnect->qualifyExpression($arrRes[1], $strTableName);
         } else {
-
             // 检查字段名是否包含表名称
             if (preg_match('/(.+)\.(.+)/', $strField, $arrMatch)) {
                 $strTableName = $arrMatch[1];
@@ -4257,7 +4256,7 @@ class Select
     }
 
     /**
-     * 驼峰转下划线
+     * 驼峰转下划线.
      *
      * @param string $strValue
      * @param string $strSeparator

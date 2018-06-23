@@ -34,7 +34,6 @@ use Tests\TestCase;
  * @version 1.0
  *
  * @see Symfony\Component\HttpFoundation (https://github.com/symfony/symfony)
- * @coversNothing
  */
 class BagTest extends TestCase
 {

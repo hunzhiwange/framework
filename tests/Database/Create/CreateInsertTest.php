@@ -18,21 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Read;
+namespace Tests\Database\Create;
 
 use Tests\Database\Query\Query;
 use Tests\TestCase;
 
 /**
- * read getdynamics test.
+ * create insert test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.06.22
+ * @since 2018.06.23
  *
  * @version 1.0
  */
-class ReadGetDynamicsTest extends TestCase
+class CreateInsertTest extends TestCase
 {
     use Query;
 
@@ -42,18 +42,24 @@ class ReadGetDynamicsTest extends TestCase
 
         $sql = <<<'eot'
 array (
-  0 => 'SELECT `test`.* FROM `test` LIMIT 3,10',
+  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)',
   1 => 
   array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
+    'name' => 
+    array (
+      0 => '小鸭子',
+      1 => 2,
+    ),
+    'value' => 
+    array (
+      0 => '吃饭饭',
+      1 => 2,
+    ),
   ),
 )
 eot;
+
+        $data = ['name' => '小鸭子', 'value' => '吃饭饭'];
 
         $this->assertSame(
             $sql,
@@ -62,24 +68,63 @@ eot;
 
                 table('test')->
 
-                get10start3()
+                insert($data)
+            )
+        );
+    }
+
+    public function testBind()
+    {
+        $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)',
+  1 => 
+  array (
+    'name' => 
+    array (
+      0 => '小鸭子',
+      1 => 2,
+    ),
+    'questionmark_0' => 
+    array (
+      0 => '吃肉',
+      1 => 2,
+    ),
+  ),
+)
+eot;
+
+        $data = ['name' => '小鸭子', 'value' => '[?]'];
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->sql()->
+
+                table('test')->
+
+                insert($data, ['吃肉'])
             )
         );
 
         $sql = <<<'eot'
 array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`user_name` = \'1111\' LIMIT 1',
+  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)',
   1 => 
   array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
+    'name' => 
+    array (
+      0 => '小鸭子',
+      1 => 2,
+    ),
+    'value' => '呱呱呱',
   ),
 )
 eot;
+
+        $data = ['name' => '小鸭子', 'value' => '[:value]'];
 
         $this->assertSame(
             $sql,
@@ -88,24 +133,35 @@ eot;
 
                 table('test')->
 
-                getByUserName('1111')
+                insert($data, ['value' => '呱呱呱'])
             )
         );
+    }
+
+    public function testWithBindFunction()
+    {
+        $connect = $this->createConnect();
 
         $sql = <<<'eot'
 array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`UserName` = \'1111\' LIMIT 1',
+  0 => 'INSERT INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:questionmark_0)',
   1 => 
   array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
+    'name' => 
+    array (
+      0 => '小鸭子',
+      1 => 2,
+    ),
+    'questionmark_0' => 
+    array (
+      0 => '吃鱼',
+      1 => 2,
+    ),
   ),
 )
 eot;
+
+        $data = ['name' => '小鸭子', 'value' => '[?]'];
 
         $this->assertSame(
             $sql,
@@ -114,24 +170,33 @@ eot;
 
                 table('test')->
 
-                getByUserName_('1111')
+                bind(['吃鱼'])->
+
+                insert($data)
             )
         );
+    }
+
+    public function testReplace()
+    {
+        $connect = $this->createConnect();
 
         $sql = <<<'eot'
 array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`user_name` = \'1111\' AND `test`.`sex` = \'222\'',
+  0 => 'REPLACE INTO `test` (`test`.`name`,`test`.`value`) VALUES (:name,:value)',
   1 => 
   array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
+    'name' => 
+    array (
+      0 => '小鸭子',
+      1 => 2,
+    ),
+    'value' => '呱呱呱',
   ),
 )
 eot;
+
+        $data = ['name' => '小鸭子', 'value' => '[:value]'];
 
         $this->assertSame(
             $sql,
@@ -140,33 +205,7 @@ eot;
 
                 table('test')->
 
-                getAllByUserNameAndSex('1111', '222')
-            )
-        );
-
-        $sql = <<<'eot'
-array (
-  0 => 'SELECT `test`.* FROM `test` WHERE `test`.`UserName` = \'1111\' AND `test`.`Sex` = \'222\'',
-  1 => 
-  array (
-  ),
-  2 => false,
-  3 => NULL,
-  4 => NULL,
-  5 => 
-  array (
-  ),
-)
-eot;
-
-        $this->assertSame(
-            $sql,
-            $this->varExport(
-                $connect->sql()->
-
-                table('test')->
-
-                getAllByUserNameAndSex_('1111', '222')
+                insert($data, ['value' => '呱呱呱'], true)
             )
         );
     }

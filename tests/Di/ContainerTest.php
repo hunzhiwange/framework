@@ -32,7 +32,6 @@ use Tests\TestCase;
  * @since 2018.05.27
  *
  * @version 1.0
- * @coversNothing
  */
 class ContainerTest extends TestCase
 {

@@ -30,7 +30,6 @@ use Tests\TestCase;
  * @since 2018.06.18
  *
  * @version 1.0
- * @coversNothing
  */
 class QueryGroupByTest extends TestCase
 {

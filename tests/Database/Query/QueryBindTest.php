@@ -31,7 +31,6 @@ use Tests\TestCase;
  * @since 2018.06.17
  *
  * @version 1.0
- * @coversNothing
  */
 class QueryBindTest extends TestCase
 {
