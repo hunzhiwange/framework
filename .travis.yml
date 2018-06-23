@@ -40,17 +40,9 @@ install:
 
 before_script:
   - gem install coveralls-lcov
-  - vendor/bin/ion info .
-  - vendor/bin/ion build . --prepare --make --coverage --debug
-  - vendor/bin/ion --debug desc .
 
 script:
   - vendor/bin/phpunit
-  - vendor/bin/ion --debug test .
-
-# Run tests
-script: vendor/bin/ion --debug test .
-#script: bin/ionizer.php --test --gdb
 
 # Send code coverage
 after_success:
