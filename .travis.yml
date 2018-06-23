@@ -27,7 +27,7 @@ before_install:
 
 install:
   - mkdir -p build/logs
-  - mv ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ${HOME}/xdebug.ini || return 0
+  # - mv ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ${HOME}/xdebug.ini || return 0
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
   # Some debug info is located here
@@ -36,9 +36,9 @@ install:
   - $(phpenv which php) -m
 
 script: 
-  - cp ${HOME}/xdebug.ini ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
+  # - cp ${HOME}/xdebug.ini ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
   - php vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/logs/clover.xml
-  - rm ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
+  # - rm ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
 
 after_success:
   - travis_retry php vendor/bin/php-coveralls
