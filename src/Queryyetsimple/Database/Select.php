@@ -834,7 +834,7 @@ class Select
     }
 
     /**
-     * 返回一个字段的值(别名)
+     * 返回一个字段的值(别名).
      *
      * @param string $strField
      * @param bool   $bFlag    指示是否不做任何操作只返回 SQL
