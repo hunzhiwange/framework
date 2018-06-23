@@ -4,6 +4,7 @@
   <a href="https://github.styleci.io/repos/91284136"><img src="https://github.styleci.io/repos/91284136/shield?branch=master" alt="StyleCI"></a>
   <a href="https://travis-ci.org/hunzhiwange/framework">
     <img alt="Build Status" src="https://img.shields.io/travis/hunzhiwange/framework.svg" /></a>
+  <a href='https://coveralls.io/github/hunzhiwange/framework?branch=master'><img src='https://coveralls.io/repos/github/hunzhiwange/framework/badge.svg?branch=master' alt='Coverage Status' /></a>
   <a href="https://github.com/hunzhiwange/framework/releases">
     <img alt="Latest Version" src="https://poser.pugx.org/hunzhiwange/framework/version" /></a>
   <a href="http://opensource.org/licenses/MIT">
