@@ -7,6 +7,10 @@ env:
     - MIN_PHP=7.1.3
     - setup=stable
 
+notifications:
+  email:
+    on_failure: change
+
 matrix:
   include:
     - php: 7.1.3
@@ -17,6 +21,11 @@ matrix:
   fast_finish: true
 
 sudo: false
+
+addons:
+  apt:
+    packages:
+      - lcov
 
 cache:
   directories:
