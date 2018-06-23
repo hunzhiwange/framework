@@ -7,10 +7,6 @@ env:
     - MIN_PHP=7.1.3
     - setup=stable
 
-notifications:
-  email:
-    on_failure: change
-
 matrix:
   include:
     - php: 7.1.3
@@ -21,11 +17,6 @@ matrix:
   fast_finish: true
 
 sudo: false
-
-addons:
-  apt:
-    packages:
-      - lcov
 
 cache:
   directories:
@@ -38,17 +29,4 @@ install:
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
 
-before_script:
-  - gem install coveralls-lcov
-
-script:
-  - vendor/bin/phpunit
-
-# Send code coverage
-after_success:
-  # capture coverage info
-  - lcov --directory . --capture --output-file coverage.info
-  # debug before upload
-  - lcov --list coverage.info
-  # uploads to coveralls
-  - coveralls-lcov coverage.info
+script: vendor/bin/phpunit
