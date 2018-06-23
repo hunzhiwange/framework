@@ -30,6 +30,10 @@ install:
   - mv ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini ${HOME}/xdebug.ini || return 0
   - if [[ $setup = 'stable' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-stable --no-suggest; fi
   - if [[ $setup = 'lowest' ]]; then travis_retry composer update --prefer-dist --no-interaction --prefer-lowest --prefer-stable --no-suggest; fi
+  # Some debug info is located here
+  - ls -al `$(phpenv which php-config) --extension-dir`
+  - $(phpenv which php) -v
+  - $(phpenv which php) -m
 
 script: 
   - cp ${HOME}/xdebug.ini ${HOME}/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini || return 0
