@@ -236,7 +236,7 @@ eot;
 
                 update(
                     [
-                        'name' => '[:hello]',
+                        'name'  => '[:hello]',
                         'value' => '[?]',
                     ],
                     [
