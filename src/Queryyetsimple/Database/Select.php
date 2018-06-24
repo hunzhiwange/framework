@@ -607,6 +607,7 @@ class Select
                 $arrSql[] = $this->parseOrder();
                 $arrSql[] = $this->parseLimitcount();
                 $arrSql[] = $this->parseForUpdate();
+                $arrSql = array_filter($arrSql);
                 $mixData = implode(' ', $arrSql);
                 unset($arrBindData, $arrField, $arrValue, $arrSetData, $arrSql);
             }
@@ -4016,7 +4017,6 @@ class Select
 
         foreach ($arrData as $sKey => $mixValue) {
             // 表达式支持
-            $arrRes = null;
             if (false !== strpos($mixValue, '{') && preg_match('/^{(.+?)}$/', $mixValue, $arrRes)) {
                 $mixValue = $this->objConnect->qualifyExpression($arrRes[1], $strTableName);
             } else {
