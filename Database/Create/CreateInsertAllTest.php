@@ -90,10 +90,10 @@ array (
 eot;
 
         $data = [
-            ['name' => '小鸭子1', 'value' => '呱呱呱1',],
-            ['name' => '小鸭子2', 'value' => '呱呱呱2',],
-            ['name' => '小鸭子3', 'value' => '呱呱呱3',],
-            ['name' => '小鸭子4', 'value' => '呱呱呱4',],
+            ['name' => '小鸭子1', 'value' => '呱呱呱1'],
+            ['name' => '小鸭子2', 'value' => '呱呱呱2'],
+            ['name' => '小鸭子3', 'value' => '呱呱呱3'],
+            ['name' => '小鸭子4', 'value' => '呱呱呱4'],
         ];
 
         $this->assertSame(
@@ -162,10 +162,10 @@ array (
 eot;
 
         $data = [
-            ['name' => '小鸭子1', 'value' => '呱呱呱1',],
-            ['name' => '小鸭子2', 'value' => '[?]',],
-            ['name' => '小鸭子3', 'value' => '呱呱呱3',],
-            ['name' => '小鸭子4', 'value' => '[?]',],
+            ['name' => '小鸭子1', 'value' => '呱呱呱1'],
+            ['name' => '小鸭子2', 'value' => '[?]'],
+            ['name' => '小鸭子3', 'value' => '呱呱呱3'],
+            ['name' => '小鸭子4', 'value' => '[?]'],
         ];
 
         $this->assertSame(
@@ -175,7 +175,7 @@ eot;
 
                 table('test')->
 
-                insertAll($data, ['吃肉1', '吃肉2',])
+                insertAll($data, ['吃肉1', '吃肉2'])
             )
         );
 
@@ -224,7 +224,7 @@ eot;
             ['name' => '小鸭子1', 'value' => '呱呱呱1'],
             ['name' => '小鸭子2', 'value' => '[:hello]'],
             ['name' => '小鸭子3', 'value' => '呱呱呱3'],
-            ['name' => '小鸭子4', 'value' => '[:world]']
+            ['name' => '小鸭子4', 'value' => '[:world]'],
         ];
 
         $this->assertSame(
@@ -234,7 +234,7 @@ eot;
 
                 table('test')->
 
-                insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤',])
+                insertAll($data, ['hello' => 'hello 吃肉', 'world' => 'world 喝汤'])
             )
         );
     }
@@ -293,10 +293,10 @@ array (
 eot;
 
         $data = [
-            ['name' => '小鸭子1', 'value' => '呱呱呱1',],
-            ['name' => '小鸭子2', 'value' => '[?]',],
-            ['name' => '小鸭子3', 'value' => '呱呱呱3',],
-            ['name' => '小鸭子4', 'value' => '[?]',],
+            ['name' => '小鸭子1', 'value' => '呱呱呱1'],
+            ['name' => '小鸭子2', 'value' => '[?]'],
+            ['name' => '小鸭子3', 'value' => '呱呱呱3'],
+            ['name' => '小鸭子4', 'value' => '[?]'],
         ];
 
         $this->assertSame(
@@ -367,10 +367,10 @@ array (
 eot;
 
         $data = [
-            ['name' => '小鸭子1', 'value' => '呱呱呱1',],
-            ['name' => '小鸭子2', 'value' => '[?]',],
-            ['name' => '小鸭子3', 'value' => '呱呱呱3',],
-            ['name' => '小鸭子4', 'value' => '[?]',],
+            ['name' => '小鸭子1', 'value' => '呱呱呱1'],
+            ['name' => '小鸭子2', 'value' => '[?]'],
+            ['name' => '小鸭子3', 'value' => '呱呱呱3'],
+            ['name' => '小鸭子4', 'value' => '[?]'],
         ];
 
         $this->assertSame(
