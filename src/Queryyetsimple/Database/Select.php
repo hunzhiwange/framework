@@ -865,7 +865,7 @@ class Select
      */
     public function value($field, $flag = false)
     {
-        $arrRow = $this->safeSql($flag)->
+        $row = $this->safeSql($flag)->
 
         asDefault()->
 
@@ -874,10 +874,10 @@ class Select
         getOne();
 
         if (true === $this->onlyMakeSql) {
-            return $arrRow;
+            return $row;
         }
 
-        return $arrRow[$field] ?? null;
+        return $row[$field] ?? null;
     }
 
     /**
@@ -1002,13 +1002,19 @@ class Select
      */
     public function getCount($field = '*', $alias = 'row_count', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->count($field, $alias)->get();
+        $row = (array) $this->safeSql($flag)->
+
+        asDefault()->
+
+        count($field, $alias)->
+
+        get();
 
         if (true === $this->onlyMakeSql) {
-            return $arrRow;
+            return $row;
         }
 
-        return (int) ($arrRow[$alias]);
+        return (int) ($row[$alias]);
     }
 
     /**
@@ -1022,13 +1028,19 @@ class Select
      */
     public function getAvg($field, $alias = 'avg_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->avg($field, $alias)->get();
+        $row = (array) $this->safeSql($flag)->
+
+        asDefault()->
+
+        avg($field, $alias)->
+
+        get();
 
         if (true === $this->onlyMakeSql) {
-            return $arrRow;
+            return $row;
         }
 
-        return (float) $arrRow[$alias];
+        return (float) $row[$alias];
     }
 
     /**
@@ -1042,13 +1054,19 @@ class Select
      */
     public function getMax($field, $alias = 'max_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->max($field, $alias)->get();
+        $row = (array) $this->safeSql($flag)->
+
+        asDefault()->
+
+        max($field, $alias)->
+
+        get();
 
         if (true === $this->onlyMakeSql) {
-            return $arrRow;
+            return $row;
         }
 
-        return (float) $arrRow[$alias];
+        return (float) $row[$alias];
     }
 
     /**
@@ -1062,13 +1080,19 @@ class Select
      */
     public function getMin($field, $alias = 'min_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->min($field, $alias)->get();
+        $row = (array) $this->safeSql($flag)->
+
+        asDefault()->
+
+        min($field, $alias)->
+
+        get();
 
         if (true === $this->onlyMakeSql) {
-            return $arrRow;
+            return $row;
         }
 
-        return (float) $arrRow[$alias];
+        return (float) $row[$alias];
     }
 
     /**
@@ -1082,31 +1106,46 @@ class Select
      */
     public function getSum($field, $alias = 'sum_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->sum($field, $alias)->get();
+        $row = (array) $this->safeSql($flag)->
+
+        asDefault()->
+
+        sum($field, $alias)->
+
+        get();
 
         if (true === $this->onlyMakeSql) {
-            return $arrRow;
+            return $row;
         }
 
-        return $arrRow[$alias];
+        return $row[$alias];
     }
 
     /**
      * 分页查询.
      *
      * @param int   $intPerPage
-     * @param mixed $mixCols
+     * @param mixed $cols
      * @param array $arrOption
      *
      * @return array
      */
-    public function paginate($intPerPage = 10, $mixCols = '*', array $arrOption = [])
+    public function paginate($intPerPage = 10, $cols = '*', array $arrOption = [])
     {
-        $objPage = new page_with_total($intPerPage, $this->getPaginateCount($mixCols), $arrOption);
+        $page = new page_with_total(
+            $intPerPage,
+            $this->getPaginateCount($cols),
+            $arrOption
+        );
 
         return [
-            $objPage,
-            $this->limit($objPage->getFirstRecord(), $intPerPage)->getAll(),
+            $page,
+            $this->limit(
+                $page->getFirstRecord(),
+                $intPerPage
+            )->
+
+            getAll(),
         ];
     }
 
@@ -1114,32 +1153,44 @@ class Select
      * 简单分页查询.
      *
      * @param int   $intPerPage
-     * @param mixed $mixCols
+     * @param mixed $cols
      * @param array $arrOption
      *
      * @return array
      */
-    public function simplePaginate($intPerPage = 10, $mixCols = '*', array $arrOption = [])
+    public function simplePaginate($intPerPage = 10, $cols = '*', array $arrOption = [])
     {
-        $objPage = new PageWithoutTotal($intPerPage, $arrOption);
+        $page = new PageWithoutTotal(
+            $intPerPage,
+            $arrOption
+        );
 
         return [
-            $objPage,
-            $this->limit($objPage->getFirstRecord(), $intPerPage)->getAll(),
+            $page,
+            $this->limit(
+                $page->getFirstRecord(),
+                $intPerPage
+            )->
+
+            getAll(),
         ];
     }
 
     /**
      * 取得分页查询记录数量.
      *
-     * @param mixed $mixCols
+     * @param mixed $cols
      *
      * @return int
      */
-    public function getPaginateCount($mixCols = '*')
+    public function getPaginateCount($cols = '*')
     {
         $this->backupPaginateArgs();
-        $count = $this->getCount(is_array($mixCols) ? reset($mixCols) : $mixCols);
+
+        $count = $this->getCount(
+            is_array($cols) ? reset($cols) : $cols
+        );
+
         $this->restorePaginateArgs();
 
         return $count;
@@ -1254,17 +1305,17 @@ class Select
     /**
      * 设置以类返会结果.
      *
-     * @param string $sClassName
+     * @param string $className
      *
      * @return $this
      */
-    public function asClass($sClassName)
+    public function asClass($className)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->queryParams['as_class'] = $sClassName;
+        $this->queryParams['as_class'] = $className;
         $this->queryParams['as_default'] = false;
 
         return $this;
@@ -1361,18 +1412,18 @@ class Select
      * 添加一个要查询的表及其要查询的字段.
      *
      * @param mixed        $mixTable
-     * @param array|string $mixCols
+     * @param array|string $cols
      *
      * @return $this
      */
-    public function table($mixTable, $mixCols = '*')
+    public function table($mixTable, $cols = '*')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
         $this->setIsTable(true);
-        $this->addJoin('inner join', $mixTable, $mixCols);
+        $this->addJoin('inner join', $mixTable, $cols);
         $this->setIsTable(false);
 
         return $this;
@@ -1429,12 +1480,12 @@ class Select
     /**
      * 添加字段.
      *
-     * @param mixed  $mixCols
+     * @param mixed  $cols
      * @param string $strTable
      *
      * @return $this
      */
-    public function columns($mixCols = '*', $strTable = null)
+    public function columns($cols = '*', $strTable = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1443,7 +1494,7 @@ class Select
         if (null === $strTable) {
             $strTable = $this->getCurrentTable();
         }
-        $this->addCols($strTable, $mixCols);
+        $this->addCols($strTable, $cols);
 
         return $this;
     }
@@ -1451,12 +1502,12 @@ class Select
     /**
      * 设置字段.
      *
-     * @param mixed  $mixCols
+     * @param mixed  $cols
      * @param string $strTable
      *
      * @return $this
      */
-    public function setColumns($mixCols = '*', $strTable = null)
+    public function setColumns($cols = '*', $strTable = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1467,7 +1518,7 @@ class Select
         }
 
         $this->arrOption['columns'] = [];
-        $this->addCols($strTable, $mixCols);
+        $this->addCols($strTable, $cols);
 
         return $this;
     }
@@ -1859,12 +1910,12 @@ class Select
      * join 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param array|string $mixCols  同 table $mixCols
+     * @param array|string $cols  同 table $cols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function join($mixTable, $mixCols, $mixCond)
+    public function join($mixTable, $cols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1880,12 +1931,12 @@ class Select
      * innerJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param array|string $mixCols  同 table $mixCols
+     * @param array|string $cols  同 table $cols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function innerJoin($mixTable, $mixCols, $mixCond)
+    public function innerJoin($mixTable, $cols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1901,12 +1952,12 @@ class Select
      * leftJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param array|string $mixCols  同 table $mixCols
+     * @param array|string $cols  同 table $cols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function leftJoin($mixTable, $mixCols, $mixCond)
+    public function leftJoin($mixTable, $cols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1922,12 +1973,12 @@ class Select
      * rightJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param array|string $mixCols  同 table $mixCols
+     * @param array|string $cols  同 table $cols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function rightJoin($mixTable, $mixCols, $mixCond)
+    public function rightJoin($mixTable, $cols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1943,12 +1994,12 @@ class Select
      * fullJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param array|string $mixCols  同 table $mixCols
+     * @param array|string $cols  同 table $cols
      * @param mixed        $mixCond  同 where $mixCond
      *
      * @return $this
      */
-    public function fullJoin($mixTable, $mixCols, $mixCond)
+    public function fullJoin($mixTable, $cols, $mixCond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1964,11 +2015,11 @@ class Select
      * crossJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param array|string $mixCols  同 table $mixCols
+     * @param array|string $cols  同 table $cols
      *
      * @return $this
      */
-    public function crossJoin($mixTable, $mixCols)
+    public function crossJoin($mixTable, $cols)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1984,11 +2035,11 @@ class Select
      * naturalJoin 查询.
      *
      * @param mixed        $mixTable 同 table $mixTable
-     * @param array|string $mixCols  同 table $mixCols
+     * @param array|string $cols  同 table $cols
      *
      * @return $this
      */
-    public function naturalJoin($mixTable, $mixCols)
+    public function naturalJoin($mixTable, $cols)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -3573,13 +3624,13 @@ class Select
      *
      * @param string     $sJoinType
      * @param mixed      $mixName
-     * @param mixed      $mixCols
+     * @param mixed      $cols
      * @param null|array $arrCondArgs
      * @param null|mixed $mixCond
      *
      * @return $this
      */
-    protected function addJoin($sJoinType, $mixName, $mixCols, $mixCond = null)
+    protected function addJoin($sJoinType, $mixName, $cols, $mixCond = null)
     {
         // 验证 join 类型
         if (!isset(static::$joinTypes[$sJoinType])) {
@@ -3729,7 +3780,7 @@ class Select
         ];
 
         // 添加查询字段
-        $this->addCols($alias, $mixCols);
+        $this->addCols($alias, $cols);
 
         return $this;
     }
@@ -3738,19 +3789,33 @@ class Select
      * 添加字段.
      *
      * @param string $sTableName
-     * @param mixed  $mixCols
+     * @param mixed  $cols
      */
-    protected function addCols($sTableName, $mixCols)
+    protected function addCols($sTableName, $cols)
     {
         // 处理条件表达式
-        if (is_string($mixCols) && false !== strpos($mixCols, ',') && false !== strpos($mixCols, '{') && preg_match_all('/{(.+?)}/', $mixCols, $arrRes)) {
-            $mixCols = str_replace($arrRes[1][0], base64_encode($arrRes[1][0]), $mixCols);
+        if (is_string($cols) && false !== strpos($cols, ',') && 
+            false !== strpos($cols, '{') && 
+            preg_match_all('/{(.+?)}/', $cols, $arrRes)) {
+            $cols = str_replace(
+                $arrRes[1][0],
+                base64_encode($arrRes[1][0]),
+                $cols
+            );
         }
-        $mixCols = Arr::normalize($mixCols);
+
+        $cols = Arr::normalize($cols);
+
         // 还原
         if (!empty($arrRes)) {
             foreach ($arrRes[1] as $strTemp) {
-                $mixCols[array_search('{'.base64_encode($strTemp).'}', $mixCols, true)] = '{'.$strTemp.'}';
+                $cols[
+                    array_search(
+                        '{'.base64_encode($strTemp).'}',
+                        $cols,
+                        true
+                    )
+                ] = '{'.$strTemp.'}';
             }
         }
 
@@ -3759,22 +3824,35 @@ class Select
         }
 
         // 没有字段则退出
-        if (empty($mixCols)) {
+        if (empty($cols)) {
             return;
         }
 
-        foreach ($mixCols as $alias => $mixCol) {
+        foreach ($cols as $alias => $mixCol) {
             if (is_string($mixCol)) {
                 // 处理条件表达式
-                if (is_string($mixCol) && false !== strpos($mixCol, ',') && false !== strpos($mixCol, '{') && preg_match_all('/{(.+?)}/', $mixCol, $arrResTwo)) {
-                    $mixCol = str_replace($arrResTwo[1][0], base64_encode($arrResTwo[1][0]), $mixCol);
+                if (is_string($mixCol) && 
+                    false !== strpos($mixCol, ',') && 
+                    false !== strpos($mixCol, '{') && 
+                    preg_match_all('/{(.+?)}/', $mixCol, $arrResTwo)) {
+                    $mixCol = str_replace(
+                        $arrResTwo[1][0],
+                        base64_encode($arrResTwo[1][0]),
+                        $mixCol
+                    );
                 }
                 $mixCol = Arr::normalize($mixCol);
 
                 // 还原
                 if (!empty($arrResTwo)) {
                     foreach ($arrResTwo[1] as $strTemp) {
-                        $mixCol[array_search('{'.base64_encode($strTemp).'}', $mixCol, true)] = '{'.$strTemp.'}';
+                        $mixCol[
+                            array_search(
+                                '{'.base64_encode($strTemp).'}',
+                                $mixCol,
+                                true
+                            )
+                        ] = '{'.$strTemp.'}';
                     }
                 }
 
@@ -3825,7 +3903,8 @@ class Select
         $strTableName = $this->getCurrentTable();
 
         // 表达式支持
-        if (false !== strpos($field, '{') && preg_match('/^{(.+?)}$/', $field, $arrRes)) {
+        if (false !== strpos($field, '{') && 
+            preg_match('/^{(.+?)}$/', $field, $arrRes)) {
             $field = $this->connect->qualifyExpression($arrRes[1], $strTableName);
         } else {
             // 检查字段名是否包含表名称
@@ -3833,11 +3912,14 @@ class Select
                 $strTableName = $arrMatch[1];
                 $field = $arrMatch[2];
             }
+
             if ('*' === $field) {
                 $strTableName = '';
             }
+
             $field = $this->connect->qualifyColumn($field, $strTableName);
         }
+
         $field = "{$sType}(${field})";
 
         $this->arrOption['aggregate'][] = [
@@ -3927,15 +4009,16 @@ class Select
         }
 
         // 模型类不存在，直接以数组结果返回
-        $sClassName = $this->queryParams['as_class'];
-        if ($sClassName && !class_exists($sClassName)) {
+        $className = $this->queryParams['as_class'];
+
+        if ($className && !class_exists($className)) {
             $this->queryDefault($arrData);
 
             return;
         }
 
         foreach ($arrData as &$mixTemp) {
-            $mixTemp = new $sClassName((array) $mixTemp);
+            $mixTemp = new $className((array) $mixTemp);
         }
 
         // 创建一个单独的对象
@@ -3943,7 +4026,7 @@ class Select
             $arrData = reset($arrData) ?: null;
         } else {
             if ($this->queryParams['as_collection']) {
-                $arrData = new Collection($arrData, [$sClassName]);
+                $arrData = new Collection($arrData, [$className]);
             }
         }
     }
