@@ -930,42 +930,43 @@ class Select
         }
 
         // 解析结果
-        $arrResult = [];
+        $result = [];
 
         foreach ($tmps as $arrTemp) {
             if (1 === count($arrTemp)) {
-                $arrResult[] = reset($arrTemp);
+                $result[] = reset($arrTemp);
             } else {
                 $mixValue = array_shift($arrTemp);
                 $mixKey = array_shift($arrTemp);
-                $arrResult[$mixKey] = $mixValue;
+                $result[$mixKey] = $mixValue;
             }
         }
 
-        return $arrResult;
+        return $result;
     }
 
     /**
      * 数据分块处理.
      *
-     * @param int      $intCount
+     * @param int      $count
      * @param callable $calCallback
      *
      * @return bool
      */
-    public function chunk($intCount, callable $calCallback)
+    public function chunk($count, callable $calCallback)
     {
-        $mixResult = $this->forPage($intPage = 1, $intCount)->getAll();
+        $result = $this->forPage($page = 1, $count)->getAll();
 
-        while (count($mixResult) > 0) {
+        while (count($result) > 0) {
             if (false === call_user_func_array($calCallback, [
-                $mixResult,
-                $intPage,
+                $result,
+                $page,
             ])) {
                 return false;
             }
-            $intPage++;
-            $mixResult = $this->forPage($intPage, $intCount)->getAll();
+
+            $page++;
+            $result = $this->forPage($page, $count)->getAll();
         }
 
         return true;
@@ -974,16 +975,16 @@ class Select
     /**
      * 数据分块处理依次回调.
      *
-     * @param int      $intCount
+     * @param int      $count
      * @param callable $calCallback
      *
      * @return bool
      */
-    public function each($intCount, callable $calCallback)
+    public function each($count, callable $calCallback)
     {
-        return $this->chunk($intCount, function ($mixResult, $intPage) use ($calCallback) {
-            foreach ($mixResult as $key => $mixValue) {
-                if (false === $calCallback($mixValue, $key, $intPage)) {
+        return $this->chunk($count, function ($result, $page) use ($calCallback) {
+            foreach ($result as $key => $mixValue) {
+                if (false === $calCallback($mixValue, $key, $page)) {
                     return false;
                 }
             }
@@ -1138,23 +1139,23 @@ class Select
     public function getPaginateCount($mixCols = '*')
     {
         $this->backupPaginateArgs();
-        $intCount = $this->getCount(is_array($mixCols) ? reset($mixCols) : $mixCols);
+        $count = $this->getCount(is_array($mixCols) ? reset($mixCols) : $mixCols);
         $this->restorePaginateArgs();
 
-        return $intCount;
+        return $count;
     }
 
     /**
      * 根据分页设置条件.
      *
-     * @param int $intPage
+     * @param int $page
      * @param int $intPerPage
      *
      * @return $this
      */
-    public function forPage($intPage, $intPerPage = 15)
+    public function forPage($page, $intPerPage = 15)
     {
-        return $this->limit(($intPage - 1) * $intPerPage, $intPerPage);
+        return $this->limit(($page - 1) * $intPerPage, $intPerPage);
     }
 
     /**
@@ -3183,13 +3184,13 @@ class Select
                         elseif (!is_string($strTemp) && is_callable($strTemp)) {
                             $objSelect = new static($this->connect);
                             $objSelect->setCurrentTable($this->getCurrentTable());
-                            $mixResultCallback = call_user_func_array($strTemp, [
+                            $resultCallback = call_user_func_array($strTemp, [
                                 &$objSelect,
                             ]);
-                            if (null === $mixResultCallback) {
+                            if (null === $resultCallback) {
                                 $strTemp = $objSelect->makeSql(true);
                             } else {
-                                $strTemp = $mixResultCallback;
+                                $strTemp = $resultCallback;
                             }
                         }
 
@@ -3285,14 +3286,14 @@ class Select
         if (!is_string($mixCond) && is_callable($mixCond)) {
             $objSelect = new static($this->connect);
             $objSelect->setCurrentTable($this->getCurrentTable());
-            $mixResultCallback = call_user_func_array($mixCond, [
+            $resultCallback = call_user_func_array($mixCond, [
                 &$objSelect,
             ]);
-            if (null === $mixResultCallback) {
+            if (null === $resultCallback) {
                 $strParseType = 'parse'.ucwords($strType);
                 $strTemp = $objSelect->{$strParseType}(true);
             } else {
-                $strTemp = $mixResultCallback;
+                $strTemp = $resultCallback;
             }
             $this->setConditionItem(static::LOGIC_GROUP_LEFT.$strTemp.static::LOGIC_GROUP_RIGHT, 'string__');
 
@@ -3407,13 +3408,13 @@ class Select
                 } elseif (!is_string($arrTemp) && is_callable($arrTemp)) {
                     $objSelect = new static($this->connect);
                     $objSelect->setCurrentTable($this->getCurrentTable());
-                    $mixResultCallback = call_user_func_array($arrTemp, [
+                    $resultCallback = call_user_func_array($arrTemp, [
                         &$objSelect,
                     ]);
-                    if (null === $mixResultCallback) {
+                    if (null === $resultCallback) {
                         $strTemp = $arrTemp = $objSelect->makeSql();
                     } else {
-                        $strTemp = $mixResultCallback;
+                        $strTemp = $resultCallback;
                     }
                 }
 
@@ -3619,13 +3620,13 @@ class Select
                 elseif (!is_string($sTable) && is_callable($sTable)) {
                     $objSelect = new static($this->connect);
                     $objSelect->setCurrentTable($this->getCurrentTable());
-                    $mixResultCallback = call_user_func_array($sTable, [
+                    $resultCallback = call_user_func_array($sTable, [
                         &$objSelect,
                     ]);
-                    if (null === $mixResultCallback) {
+                    if (null === $resultCallback) {
                         $sTable = $objSelect->makeSql(true);
                     } else {
-                        $sTable = $mixResultCallback;
+                        $sTable = $resultCallback;
                     }
                     if (!$sAlias) {
                         $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
@@ -3648,13 +3649,13 @@ class Select
         elseif (!is_string($mixName) && is_callable($mixName)) {
             $objSelect = new static($this->connect);
             $objSelect->setCurrentTable($this->getCurrentTable());
-            $mixResultCallback = call_user_func_array($mixName, [
+            $resultCallback = call_user_func_array($mixName, [
                 &$objSelect,
             ]);
-            if (null === $mixResultCallback) {
+            if (null === $resultCallback) {
                 $sTable = $objSelect->makeSql(true);
             } else {
-                $sTable = $mixResultCallback;
+                $sTable = $resultCallback;
             }
             $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             $booParseSchema = false;
