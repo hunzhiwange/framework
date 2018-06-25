@@ -466,9 +466,9 @@ class Select
         // 构造数据插入
         if (is_array($mixData)) {
             $questionMark = 0;
-            $arrBindData = $this->getBindData($mixData, $arrBind, $questionMark);
-            $arrField = $arrBindData[0];
-            $arrValue = $arrBindData[1];
+            $bindData = $this->getBindData($mixData, $arrBind, $questionMark);
+            $arrField = $bindData[0];
+            $arrValue = $bindData[1];
             $sTableName = $this->getCurrentTable();
 
             foreach ($arrField as &$field) {
@@ -477,21 +477,23 @@ class Select
 
             // 构造 insert 语句
             if ($arrValue) {
-                $arrSql = [];
-                $arrSql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
-                $arrSql[] = $this->parseTable();
-                $arrSql[] = '('.implode(',', $arrField).')';
-                $arrSql[] = 'VALUES';
-                $arrSql[] = '('.implode(',', $arrValue).')';
-                $mixData = implode(' ', $arrSql);
+                $sql = [];
+                $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
+                $sql[] = $this->parseTable();
+                $sql[] = '('.implode(',', $arrField).')';
+                $sql[] = 'VALUES';
+                $sql[] = '('.implode(',', $arrValue).')';
+                $mixData = implode(' ', $sql);
 
-                unset($arrBindData, $arrField, $arrValue, $arrSql);
+                unset($bindData, $arrField, $arrValue, $sql);
             }
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
         // 执行查询
-        $this->safeSql($flag)->setNativeSql(false === $replace ? 'insert' : 'replace');
+        $this->safeSql($flag)->setNativeSql(
+            false === $replace ? 'insert' : 'replace'
+        );
 
         return $this->{'runNativeSql'}(...[
             $mixData,
@@ -520,39 +522,45 @@ class Select
 
         // 构造数据批量插入
         if (is_array($arrData)) {
-            $arrDataResult = [];
+            $dataResult = [];
             $questionMark = 0;
             $sTableName = $this->getCurrentTable();
-            foreach ($arrData as $intKey => $arrTemp) {
+
+            foreach ($arrData as $key => $arrTemp) {
                 if (!is_array($arrTemp)) {
                     continue;
                 }
-                $arrBindData = $this->getBindData($arrTemp, $arrBind, $questionMark, $intKey);
-                if (0 === $intKey) {
-                    $arrField = $arrBindData[0];
+
+                $bindData = $this->getBindData($arrTemp, $arrBind, $questionMark, $key);
+                
+                if (0 === $key) {
+                    $arrField = $bindData[0];
                     foreach ($arrField as &$field) {
                         $field = $this->qualifyOneColumn($field, $sTableName);
                     }
                 }
-                $arrValue = $arrBindData[1];
+
+                $arrValue = $bindData[1];
+
                 if ($arrValue) {
-                    $arrDataResult[] = '('.implode(',', $arrValue).')';
+                    $dataResult[] = '('.implode(',', $arrValue).')';
                 }
             }
 
             // 构造 insertAll 语句
-            if ($arrDataResult) {
-                $arrSql = [];
-                $arrSql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
-                $arrSql[] = $this->parseTable();
-                $arrSql[] = '('.implode(',', $arrField).')';
-                $arrSql[] = 'VALUES';
-                $arrSql[] = implode(',', $arrDataResult);
-                $mixData = implode(' ', $arrSql);
+            if ($dataResult) {
+                $sql = [];
+                $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
+                $sql[] = $this->parseTable();
+                $sql[] = '('.implode(',', $arrField).')';
+                $sql[] = 'VALUES';
+                $sql[] = implode(',', $dataResult);
+                $mixData = implode(' ', $sql);
 
-                unset($arrField, $arrValue, $arrSql, $arrDataResult);
+                unset($arrField, $arrValue, $sql, $dataResult);
             }
         }
+
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
         // 执行查询
@@ -590,33 +598,33 @@ class Select
         // 构造数据更新
         if (is_array($mixData)) {
             $questionMark = 0;
-            $arrBindData = $this->getBindData($mixData, $arrBind, $questionMark);
-            $arrField = $arrBindData[0];
-            $arrValue = $arrBindData[1];
+            $bindData = $this->getBindData($mixData, $arrBind, $questionMark);
+            $arrField = $bindData[0];
+            $arrValue = $bindData[1];
             $sTableName = $this->getCurrentTable();
 
             // SET 语句
             $arrSetData = [];
 
-            foreach ($arrField as $intKey => $field) {
+            foreach ($arrField as $key => $field) {
                 $field = $this->qualifyOneColumn($field, $sTableName);
-                $arrSetData[] = $field.' = '.$arrValue[$intKey];
+                $arrSetData[] = $field.' = '.$arrValue[$key];
             }
 
             // 构造 update 语句
             if ($arrValue) {
-                $arrSql = [];
-                $arrSql[] = 'UPDATE';
-                $arrSql[] = ltrim($this->parseFrom(), 'FROM ');
-                $arrSql[] = 'SET '.implode(',', $arrSetData);
-                $arrSql[] = $this->parseWhere();
-                $arrSql[] = $this->parseOrder();
-                $arrSql[] = $this->parseLimitcount();
-                $arrSql[] = $this->parseForUpdate();
-                $arrSql = array_filter($arrSql);
-                $mixData = implode(' ', $arrSql);
+                $sql = [];
+                $sql[] = 'UPDATE';
+                $sql[] = ltrim($this->parseFrom(), 'FROM ');
+                $sql[] = 'SET '.implode(',', $arrSetData);
+                $sql[] = $this->parseWhere();
+                $sql[] = $this->parseOrder();
+                $sql[] = $this->parseLimitcount();
+                $sql[] = $this->parseForUpdate();
+                $sql = array_filter($sql);
+                $mixData = implode(' ', $sql);
 
-                unset($arrBindData, $arrField, $arrValue, $arrSetData, $arrSql);
+                unset($bindData, $arrField, $arrValue, $arrSetData, $sql);
             }
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
@@ -715,22 +723,22 @@ class Select
         // 构造数据删除
         if (null === $mixData) {
             // 构造 delete 语句
-            $arrSql = [];
-            $arrSql[] = 'DELETE';
+            $sql = [];
+            $sql[] = 'DELETE';
             if (empty($this->arrOption['using'])) { // join 方式关联删除
-                $arrSql[] = $this->parseTable(true, true);
-                $arrSql[] = $this->parseFrom();
+                $sql[] = $this->parseTable(true, true);
+                $sql[] = $this->parseFrom();
             } else { // using 方式关联删除
-                $arrSql[] = 'FROM '.$this->parseTable(true);
-                $arrSql[] = $this->parseUsing(true);
+                $sql[] = 'FROM '.$this->parseTable(true);
+                $sql[] = $this->parseUsing(true);
             }
-            $arrSql[] = $this->parseWhere();
-            $arrSql[] = $this->parseOrder(true);
-            $arrSql[] = $this->parseLimitcount(true, true);
-            $arrSql = array_filter($arrSql);
-            $mixData = implode(' ', $arrSql);
+            $sql[] = $this->parseWhere();
+            $sql[] = $this->parseOrder(true);
+            $sql[] = $this->parseLimitcount(true, true);
+            $sql = array_filter($sql);
+            $mixData = implode(' ', $sql);
 
-            unset($arrSql);
+            unset($sql);
         }
 
         $arrBind = array_merge($this->getBindParams(), $arrBind);
@@ -751,15 +759,15 @@ class Select
     public function truncate($flag = false)
     {
         // 构造 truncate 语句
-        $arrSql = [];
-        $arrSql[] = 'TRUNCATE TABLE';
-        $arrSql[] = $this->parseTable(true);
-        $arrSql = implode(' ', $arrSql);
+        $sql = [];
+        $sql[] = 'TRUNCATE TABLE';
+        $sql[] = $this->parseTable(true);
+        $sql = implode(' ', $sql);
 
         $this->safeSql($flag)->setNativeSql('statement');
 
         return $this->{'runNativeSql'}(...[
-            $arrSql,
+            $sql,
         ]);
     }
 
@@ -952,8 +960,8 @@ class Select
     public function each($intCount, callable $calCallback)
     {
         return $this->chunk($intCount, function ($mixResult, $intPage) use ($calCallback) {
-            foreach ($mixResult as $intKey => $mixValue) {
-                if (false === $calCallback($mixValue, $intKey, $intPage)) {
+            foreach ($mixResult as $key => $mixValue) {
+                if (false === $calCallback($mixValue, $key, $intPage)) {
                     return false;
                 }
             }
@@ -2653,32 +2661,32 @@ class Select
      */
     public function makeSql($booWithLogicGroup = false)
     {
-        $arrSql = [
+        $sql = [
             'SELECT',
         ];
 
         foreach (array_keys($this->arrOption) as $sOption) {
             if ('from' === $sOption) {
-                $arrSql['from'] = '';
+                $sql['from'] = '';
             } elseif ('union' === $sOption) {
                 continue;
             } else {
                 $method = 'parse'.ucfirst($sOption);
                 if (method_exists($this, $method)) {
-                    $arrSql[$sOption] = $this->{$method}();
+                    $sql[$sOption] = $this->{$method}();
                 }
             }
         }
 
-        $arrSql['from'] = $this->parseFrom();
-        foreach ($arrSql as $offset => $sOption) { // 删除空元素
+        $sql['from'] = $this->parseFrom();
+        foreach ($sql as $offset => $sOption) { // 删除空元素
             if ('' === trim($sOption)) {
-                unset($arrSql[$offset]);
+                unset($sql[$offset]);
             }
         }
 
-        $arrSql[] = $this->parseUnion();
-        $sLastSql = trim(implode(' ', $arrSql));
+        $sql[] = $this->parseUnion();
+        $sLastSql = trim(implode(' ', $sql));
 
         if (true === $booWithLogicGroup) {
             return static::LOGIC_GROUP_LEFT.$sLastSql.static::LOGIC_GROUP_RIGHT;
@@ -3077,7 +3085,7 @@ class Select
             return '';
         }
 
-        $arrSqlCond = [];
+        $sqlCond = [];
         $strTable = $this->getCurrentTable();
         foreach ($this->arrOption[$sCondType] as $sKey => $mixCond) {
             // 逻辑连接符
@@ -3085,7 +3093,7 @@ class Select
                 static::LOGIC_AND,
                 static::LOGIC_OR,
             ], true)) {
-                $arrSqlCond[] = strtoupper($mixCond);
+                $sqlCond[] = strtoupper($mixCond);
 
                 continue;
             }
@@ -3095,7 +3103,7 @@ class Select
                 if (in_array($sKey, [
                     'string__',
                 ], true)) {
-                    $arrSqlCond[] = implode(' AND ', $mixCond);
+                    $sqlCond[] = implode(' AND ', $mixCond);
                 }
             } elseif (is_array($mixCond)) {
                 // 表达式支持
@@ -3189,12 +3197,12 @@ class Select
                     'null',
                     'not null',
                 ], true)) {
-                    $arrSqlCond[] = $mixCond[0].' IS '.strtoupper($mixCond[1]);
+                    $sqlCond[] = $mixCond[0].' IS '.strtoupper($mixCond[1]);
                 } elseif (in_array($mixCond[1], [
                     'in',
                     'not in',
                 ], true)) {
-                    $arrSqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.(is_array($mixCond[2]) ? '('.implode(',', $mixCond[2]).')' : $mixCond[2]);
+                    $sqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.(is_array($mixCond[2]) ? '('.implode(',', $mixCond[2]).')' : $mixCond[2]);
                 } elseif (in_array($mixCond[1], [
                     'between',
                     'not between',
@@ -3202,19 +3210,19 @@ class Select
                     if (!is_array($mixCond[2]) || count($mixCond[2]) < 2) {
                         throw new Exception('The [not] between parameter value must be an array of not less than two elements.');
                     }
-                    $arrSqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.$mixCond[2][0].' AND '.$mixCond[2][1];
+                    $sqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.$mixCond[2][0].' AND '.$mixCond[2][1];
                 } elseif (is_scalar($mixCond[2])) {
-                    $arrSqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.$mixCond[2];
+                    $sqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.$mixCond[2];
                 } elseif (null === $mixCond[2]) {
-                    $arrSqlCond[] = $mixCond[0].' IS NULL';
+                    $sqlCond[] = $mixCond[0].' IS NULL';
                 }
             }
         }
 
         // 剔除第一个逻辑符
-        array_shift($arrSqlCond);
+        array_shift($sqlCond);
 
-        return (false === $booChild ? strtoupper($sCondType).' ' : '').implode(' ', $arrSqlCond);
+        return (false === $booChild ? strtoupper($sCondType).' ' : '').implode(' ', $sqlCond);
     }
 
     /**
