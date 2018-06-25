@@ -309,13 +309,12 @@ class Select
                 $offset = (int) (array_shift($values));
 
                 return $this->limit($offset, $num)->
-
                 get();
             }
 
             // support getByName getByNameAndSex etc.
             // support getAllByNameAndSex etc.
-            if (0 === strncasecmp($method, 'By', 2) || 
+            if (0 === strncasecmp($method, 'By', 2) ||
                 0 === strncasecmp($method, 'AllBy', 5)) {
                 $method = substr(
                     $method,
@@ -408,7 +407,7 @@ class Select
      *
      * @param null|callable|select|string $data
      * @param array                       $bind
-     * @param bool                        $flag   指示是否不做任何操作只返回 SQL
+     * @param bool                        $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -456,7 +455,7 @@ class Select
      * @param array|string $data
      * @param array        $bind
      * @param bool         $replace
-     * @param bool         $flag      指示是否不做任何操作只返回 SQL
+     * @param bool         $flag    指示是否不做任何操作只返回 SQL
      *
      * @return int 最后插入ID
      */
@@ -522,7 +521,7 @@ class Select
      * @param array $data
      * @param array $bind
      * @param bool  $replace
-     * @param bool  $flag      指示是否不做任何操作只返回 SQL
+     * @param bool  $flag    指示是否不做任何操作只返回 SQL
      *
      * @return int 最后插入ID
      */
@@ -547,7 +546,7 @@ class Select
                 }
 
                 $bindData = $this->getBindData($tmp, $bind, $questionMark, $key);
-                
+
                 if (0 === $key) {
                     $fields = $bindData[0];
 
@@ -597,7 +596,7 @@ class Select
      *
      * @param array|string $data
      * @param array        $bind
-     * @param bool         $flag   指示是否不做任何操作只返回 SQL
+     * @param bool         $flag 指示是否不做任何操作只返回 SQL
      *
      * @return int 影响记录
      */
@@ -664,7 +663,7 @@ class Select
      * @param string $column
      * @param mixed  $value
      * @param array  $bind
-     * @param bool   $flag     指示是否不做任何操作只返回 SQL
+     * @param bool   $flag   指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
@@ -689,7 +688,7 @@ class Select
      * @param string $column
      * @param int    $step
      * @param array  $bind
-     * @param bool   $flag     指示是否不做任何操作只返回 SQL
+     * @param bool   $flag   指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
@@ -709,7 +708,7 @@ class Select
      * @param string $column
      * @param int    $step
      * @param array  $bind
-     * @param bool   $flag     指示是否不做任何操作只返回 SQL
+     * @param bool   $flag   指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
@@ -728,7 +727,7 @@ class Select
      *
      * @param null|string $data
      * @param array       $bind
-     * @param bool        $flag   指示是否不做任何操作只返回 SQL
+     * @param bool        $flag 指示是否不做任何操作只返回 SQL
      *
      * @return int 影响记录
      */
@@ -748,10 +747,10 @@ class Select
             $sql[] = 'DELETE';
 
             // join 方式关联删除
-            if (empty($this->options['using'])) { 
+            if (empty($this->options['using'])) {
                 $sql[] = $this->parseTable(true, true);
                 $sql[] = $this->parseFrom();
-            } 
+            }
 
             // using 方式关联删除
             else {
@@ -807,7 +806,7 @@ class Select
      *
      * @param string $data
      * @param array  $bind
-     * @param bool   $flag   指示是否不做任何操作只返回 SQL
+     * @param bool   $flag 指示是否不做任何操作只返回 SQL
      */
     public function statement(string $data, $bind = [], $flag = false)
     {
@@ -831,7 +830,6 @@ class Select
     public function getOne($flag = false)
     {
         return $this->safeSql($flag)->
-
         one()->
 
         query();
@@ -848,12 +846,10 @@ class Select
     {
         if ($this->options['limitquery']) {
             return $this->safeSql($flag)->
-
             query();
         }
 
         return $this->safeSql($flag)->
-
         all()->
 
         query();
@@ -871,14 +867,12 @@ class Select
     {
         if (null !== $num) {
             return $this->safeSql($flag)->
-
             top($num)->
 
             query();
         }
 
         return $this->safeSql($flag)->
-
         query();
     }
 
@@ -886,7 +880,7 @@ class Select
      * 返回一个字段的值
      *
      * @param string $field
-     * @param bool   $flag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -911,7 +905,7 @@ class Select
      * 返回一个字段的值(别名).
      *
      * @param string $field
-     * @param bool   $flag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
@@ -925,7 +919,7 @@ class Select
      *
      * @param mixed  $fieldValue
      * @param string $fieldKey
-     * @param bool   $flag         指示是否不做任何操作只返回 SQL
+     * @param bool   $flag       指示是否不做任何操作只返回 SQL
      *
      * @return array
      */
@@ -1028,7 +1022,7 @@ class Select
      *
      * @param string $field
      * @param string $alias
-     * @param bool   $flag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
@@ -1054,7 +1048,7 @@ class Select
      *
      * @param string $field
      * @param string $alias
-     * @param bool   $flag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
@@ -1080,7 +1074,7 @@ class Select
      *
      * @param string $field
      * @param string $alias
-     * @param bool   $flag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
@@ -1106,7 +1100,7 @@ class Select
      *
      * @param string $field
      * @param string $alias
-     * @param bool   $flag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
@@ -1132,7 +1126,7 @@ class Select
      *
      * @param string $field
      * @param string $alias
-     * @param bool   $flag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag  指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
@@ -1253,9 +1247,9 @@ class Select
         $args = func_get_args();
 
         $this->setInTimeCondition(
-            isset($args[0]) && 
+            isset($args[0]) &&
             in_array(
-                $args[0], 
+                $args[0],
                 [
                     'date',
                     'month',
@@ -1263,8 +1257,8 @@ class Select
                     'day',
                 ],
                 true
-            ) ? 
-            $args[0] : 
+            ) ?
+            $args[0] :
             null
         );
     }
@@ -2175,9 +2169,9 @@ class Select
             return $this;
         }
 
-        if (is_string($expression) && 
-            false !== strpos($expression, ',') && 
-            false !== strpos($expression, '{') && 
+        if (is_string($expression) &&
+            false !== strpos($expression, ',') &&
+            false !== strpos($expression, '{') &&
             preg_match_all('/{(.+?)}/', $expression, $matches)) {
             $expression = str_replace(
                 $matches[1][0],
@@ -2193,8 +2187,8 @@ class Select
             foreach ($matches[1] as $tmp) {
                 $expression[
                     array_search(
-                        '{'.base64_encode($tmp).'}', 
-                        $expression, 
+                        '{'.base64_encode($tmp).'}',
+                        $expression,
                         true
                     )
                 ] = '{'.$tmp.'}';
@@ -2205,13 +2199,13 @@ class Select
 
         foreach ($expression as $value) {
             // 处理条件表达式
-            if (is_string($value) && 
-                false !== strpos($value, ',') && 
-                false !== strpos($value, '{') && 
+            if (is_string($value) &&
+                false !== strpos($value, ',') &&
+                false !== strpos($value, '{') &&
                 preg_match_all('/{(.+?)}/', $value, $subMatches)) {
                 $value = str_replace(
-                    $subMatches[1][0], 
-                    base64_encode($subMatches[1][0]), 
+                    $subMatches[1][0],
+                    base64_encode($subMatches[1][0]),
                     $value
                 );
             }
@@ -2223,7 +2217,7 @@ class Select
                 foreach ($subMatches[1] as $tmp) {
                     $value[
                         array_search(
-                            '{'.base64_encode($tmp).'}', 
+                            '{'.base64_encode($tmp).'}',
                             $value,
                             true
                         )
@@ -2542,12 +2536,12 @@ class Select
         }
 
         // 格式化为大写
-        $orderDefault = strtoupper($orderDefault); 
+        $orderDefault = strtoupper($orderDefault);
 
         // 处理条件表达式
-        if (is_string($expression) && 
-            false !== strpos($expression, ',') && 
-            false !== strpos($expression, '{') && 
+        if (is_string($expression) &&
+            false !== strpos($expression, ',') &&
+            false !== strpos($expression, '{') &&
             preg_match_all('/{(.+?)}/', $expression, $matches)) {
             $expression = str_replace(
                 $matches[1][0],
@@ -2563,8 +2557,8 @@ class Select
             foreach ($matches[1] as $tmp) {
                 $expression[
                     array_search(
-                        '{'.base64_encode($tmp).'}', 
-                        $expression, 
+                        '{'.base64_encode($tmp).'}',
+                        $expression,
                         true
                     )
                 ] = '{'.$tmp.'}';
@@ -2575,13 +2569,13 @@ class Select
 
         foreach ($expression as $value) {
             // 处理条件表达式
-            if (is_string($value) && 
-                false !== strpos($value, ',') && 
-                false !== strpos($value, '{') && 
+            if (is_string($value) &&
+                false !== strpos($value, ',') &&
+                false !== strpos($value, '{') &&
                 preg_match_all('/{(.+?)}/', $value, $subMatches)) {
                 $value = str_replace(
-                    $subMatches[1][0], 
-                    base64_encode($subMatches[1][0]), 
+                    $subMatches[1][0],
+                    base64_encode($subMatches[1][0]),
                     $value
                 );
             }
@@ -2593,8 +2587,8 @@ class Select
                 foreach ($subMatches[1] as $tmp) {
                     $value[
                         array_search(
-                            '{'.base64_encode($tmp).'}', 
-                            $value, 
+                            '{'.base64_encode($tmp).'}',
+                            $value,
                             true
                         )
                     ] = '{'.$tmp.'}';
@@ -2609,7 +2603,7 @@ class Select
                 }
 
                 // 表达式支持
-                if (false !== strpos($tmp, '{') && 
+                if (false !== strpos($tmp, '{') &&
                     preg_match('/^{(.+?)}$/', $tmp, $threeMatches)) {
                     $tmp = $this->connect->qualifyExpression(
                         $threeMatches[1], $tableName
@@ -2984,7 +2978,7 @@ class Select
             list($tableName, $col, $alias) = $item;
 
             // 表达式支持
-            if (false !== strpos($col, '{') && 
+            if (false !== strpos($col, '{') &&
                 preg_match('/^{(.+?)}$/', $col, $matches)) {
                 $columns[] = $this->connect->qualifyExpression(
                     $matches[1],
@@ -2993,8 +2987,8 @@ class Select
             } else {
                 if ('*' !== $col && $alias) {
                     $columns[] = $this->connect->qualifyTableOrColumn(
-                        "{$tableName}.{$col}", 
-                        $alias, 
+                        "{$tableName}.{$col}",
+                        $alias,
                         'AS'
                     );
                 } else {
@@ -3099,7 +3093,7 @@ class Select
         }
 
         // 如果为删除,没有 join 则返回为空
-        if (true === $forDelete && 
+        if (true === $forDelete &&
             1 === count($this->options['from'])) {
             return '';
         }
@@ -3137,7 +3131,7 @@ class Select
     protected function parseUsing($forDelete = false)
     {
         // parse using 只支持删除操作
-        if (false === $forDelete || 
+        if (false === $forDelete ||
             empty($this->options['using'])) {
             return '';
         }
@@ -3148,6 +3142,7 @@ class Select
         // table 自动加入
         foreach ($this->options['from'] as $alias => $value) {
             $optionsUsing[$alias] = $value;
+
             break;
         }
 
@@ -3255,8 +3250,8 @@ class Select
         }
 
         // 删除存在 join, order 无效
-        if (true === $forDelete && 
-            (count($this->options['from']) > 1 || 
+        if (true === $forDelete &&
+            (count($this->options['from']) > 1 ||
                 !empty($this->options['using']))) {
             return '';
         }
@@ -3307,8 +3302,8 @@ class Select
     protected function parseLimitcount($nullLimitOffset = false, $forDelete = false)
     {
         // 删除存在 join, limit 无效
-        if (true === $forDelete && 
-            (count($this->options['from']) > 1 || 
+        if (true === $forDelete &&
+            (count($this->options['from']) > 1 ||
                 !empty($this->options['using']))) {
             return '';
         }
@@ -3317,7 +3312,7 @@ class Select
             $this->options['limitoffset'] = null;
         }
 
-        if (null === $this->options['limitoffset'] && 
+        if (null === $this->options['limitoffset'] &&
             null === $this->options['limitcount']) {
             return '';
         }
@@ -3375,6 +3370,7 @@ class Select
                 static::LOGIC_OR,
             ], true)) {
                 $sqlCond[] = strtoupper($cond);
+
                 continue;
             }
 
@@ -3387,7 +3383,7 @@ class Select
                 }
             } elseif (is_array($cond)) {
                 // 表达式支持
-                if (false !== strpos($cond[0], '{') && 
+                if (false !== strpos($cond[0], '{') &&
                     preg_match('/^{(.+?)}$/', $cond[0], $matches)) {
                     $cond[0] = $this->connect->qualifyExpression(
                         $matches[1],
@@ -3422,6 +3418,7 @@ class Select
                         if (0 === stripos($cond[1], '@'.$timeType)) {
                             $findTime = $timeType;
                             $cond[1] = ltrim(substr($cond[1], strlen($timeType) + 1));
+
                             break;
                         }
                     }
@@ -3467,8 +3464,8 @@ class Select
                         }
 
                         // 表达式支持
-                        elseif (is_string($tmp) && 
-                            false !== strpos($tmp, '{') && 
+                        elseif (is_string($tmp) &&
+                            false !== strpos($tmp, '{') &&
                             preg_match('/^{(.+?)}$/', $tmp, $matches)) {
                             $tmp = $this->connect->qualifyExpression(
                                 $matches[1],
@@ -3484,8 +3481,8 @@ class Select
                         }
                     }
 
-                    if (false === $isArray || 
-                        (1 === count($cond[2]) && 
+                    if (false === $isArray ||
+                        (1 === count($cond[2]) &&
                             0 === strpos(trim($cond[2][0]), '('))) {
                         $cond[2] = reset($cond[2]);
                     }
@@ -3504,8 +3501,8 @@ class Select
                     $sqlCond[] = $cond[0].' '.
                         strtoupper($cond[1]).' '.
                         (
-                            is_array($cond[2]) ? 
-                            '('.implode(',', $cond[2]).')' : 
+                            is_array($cond[2]) ?
+                            '('.implode(',', $cond[2]).')' :
                             $cond[2]
                         );
                 } elseif (in_array($cond[1], [
@@ -3657,7 +3654,7 @@ class Select
                 }
 
                 // 表达式支持
-                if (false !== strpos($tmp, '{') && 
+                if (false !== strpos($tmp, '{') &&
                     preg_match('/^{(.+?)}$/', $tmp, $matches)) {
                     $tmp = $this->connect->qualifyExpression(
                         $matches[1],
@@ -3697,15 +3694,15 @@ class Select
                 $oldLogic = $typeAndLogic[1];
 
                 $this->setTypeAndLogic(
-                    null, 'subor__' ? 
-                    static::LOGIC_OR : 
+                    null, 'subor__' ?
+                    static::LOGIC_OR :
                     static::LOGIC_AND
                 );
 
                 $this->setConditioitem(
                     static::LOGIC_GROUP_LEFT.
                     $select->{$parseType}(true).
-                    static::LOGIC_GROUP_RIGHT, 
+                    static::LOGIC_GROUP_RIGHT,
                     'string__'
                 );
 
@@ -3882,7 +3879,7 @@ class Select
             $tableName = $this->getCurrentTable();
         }
 
-        if (false !== strpos($field, '{') && 
+        if (false !== strpos($field, '{') &&
             preg_match('/^{(.+?)}$/', $field, $matches)) {
             $field = $this->connect->qualifyExpression(
                 $matches[1],
@@ -3959,7 +3956,7 @@ class Select
                 }
 
                 // 回调方法子表达式
-                elseif (!is_string($table) && 
+                elseif (!is_string($table) &&
                     is_callable($table)) {
                     $select = new static($this->connect);
                     $select->setCurrentTable($this->getCurrentTable());
@@ -4101,9 +4098,9 @@ class Select
     protected function addCols($tableName, $cols)
     {
         // 处理条件表达式
-        if (is_string($cols) && 
-            false !== strpos($cols, ',') && 
-            false !== strpos($cols, '{') && 
+        if (is_string($cols) &&
+            false !== strpos($cols, ',') &&
+            false !== strpos($cols, '{') &&
             preg_match_all('/{(.+?)}/', $cols, $matches)) {
             $cols = str_replace(
                 $matches[1][0],
@@ -4139,9 +4136,9 @@ class Select
         foreach ($cols as $alias => $col) {
             if (is_string($col)) {
                 // 处理条件表达式
-                if (is_string($col) && 
-                    false !== strpos($col, ',') && 
-                    false !== strpos($col, '{') && 
+                if (is_string($col) &&
+                    false !== strpos($col, ',') &&
+                    false !== strpos($col, '{') &&
                     preg_match_all('/{(.+?)}/', $col, $subMatches)) {
                     $col = str_replace(
                         $subMatches[1][0],
@@ -4200,9 +4197,9 @@ class Select
     /**
      * 添加一个集合查询.
      *
-     * @param string $type    类型
+     * @param string $type  类型
      * @param string $field 字段
-     * @param string $alias   别名
+     * @param string $alias 别名
      *
      * @return $this
      */
@@ -4212,7 +4209,7 @@ class Select
         $tableName = $this->getCurrentTable();
 
         // 表达式支持
-        if (false !== strpos($field, '{') && 
+        if (false !== strpos($field, '{') &&
             preg_match('/^{(.+?)}$/', $field, $matches)) {
             $field = $this->connect->qualifyExpression(
                 $matches[1],
@@ -4328,6 +4325,7 @@ class Select
 
         if ($className && !class_exists($className)) {
             $this->queryDefault($data);
+
             return;
         }
 
@@ -4466,7 +4464,7 @@ class Select
 
         foreach ($data as $key => $value) {
             // 表达式支持
-            if (false !== strpos($value, '{') && 
+            if (false !== strpos($value, '{') &&
                 preg_match('/^{(.+?)}$/', $value, $matches)) {
                 $value = $this->connect->qualifyExpression(
                     $matches[1],
@@ -4607,16 +4605,16 @@ class Select
         switch ($type) {
             case 'day':
                 $value = mktime(0, 0, 0, $date['mon'], (int) $value, $date['year']);
-                break;
 
+                break;
             case 'month':
                 $value = mktime(0, 0, 0, (int) $value, 1, $date['year']);
-                break;
 
+                break;
             case 'year':
                 $value = mktime(0, 0, 0, 1, 1, (int) $value);
-                break;
 
+                break;
             case 'date':
                 $value = strtotime($value);
                 if (false === $value) {
@@ -4624,8 +4622,8 @@ class Select
                         'Please enter a right time of strtotime.'
                     );
                 }
-                break;
 
+                break;
             default:
                 throw new Exception(
                     sprintf(
@@ -4633,6 +4631,7 @@ class Select
                         $type
                     )
                 );
+
                 break;
         }
 
@@ -4678,8 +4677,8 @@ class Select
         // 字符串
         else {
             $dot = strrpos($names, '.');
-            $result = false === $dot ? 
-                $names : 
+            $result = false === $dot ?
+                $names :
                 substr($names, $dot + 1);
         }
 
@@ -4716,7 +4715,7 @@ class Select
     protected function initOption()
     {
         $this->options = static::$optionsDefault;
-        
+
         $this->queryParams = static::$queryParamsDefault;
     }
 
