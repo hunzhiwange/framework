@@ -1492,32 +1492,32 @@ class Select
 
         $names = Arr::normalize($names);
 
-        foreach ($names as $alias => $sTable) {
+        foreach ($names as $alias => $table) {
             // 字符串指定别名
-            if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $sTable, $matches)) {
+            if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $table, $matches)) {
                 $alias = $matches[2];
-                $sTable = $matches[1];
+                $table = $matches[1];
             }
 
             if (!is_string($alias)) {
-                $alias = $sTable;
+                $alias = $table;
             }
 
             // 确定 table_name 和 schema
-            $tmp = explode('.', $sTable);
+            $tmp = explode('.', $table);
             if (isset($tmp[1])) {
                 $sSchema = $tmp[0];
                 $tableName = $tmp[1];
             } else {
                 $sSchema = null;
-                $tableName = $sTable;
+                $tableName = $table;
             }
 
             // 获得一个唯一的别名
             $alias = $this->uniqueAlias(empty($alias) ? $tableName : $alias);
 
             $this->options['using'][$alias] = [
-                'table_name' => $sTable,
+                'table_name' => $table,
                 'schema'     => $sSchema,
             ];
         }
@@ -1836,36 +1836,36 @@ class Select
     /**
      * exists 方法支持
      *
-     * @param mixed $mixExists
+     * @param mixed $exists
      *
      * @return $this
      */
-    public function whereExists($mixExists)
+    public function whereExists($exists)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
         return $this->{'addConditions'}([
-            'exists__' => $mixExists,
+            'exists__' => $exists,
         ]);
     }
 
     /**
      * not exists 方法支持
      *
-     * @param mixed $mixExists
+     * @param mixed $exists
      *
      * @return $this
      */
-    public function whereNotExists($mixExists)
+    public function whereNotExists($exists)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
         return $this->{'addConditions'}([
-            'notexists__' => $mixExists,
+            'notexists__' => $exists,
         ]);
     }
 
@@ -1874,11 +1874,11 @@ class Select
      *
      * @param mixed $names
      * @param mixed $value
-     * @param int   $intType
+     * @param int   $type
      *
      * @return $this
      */
-    public function bind($names, $value = null, $intType = PDO::PARAM_STR)
+    public function bind($names, $value = null, $type = PDO::PARAM_STR)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1889,18 +1889,20 @@ class Select
                 if (!is_array($item)) {
                     $item = [
                         $item,
-                        $intType,
+                        $type,
                     ];
                 }
+
                 $this->bindParams[$key] = $item;
             }
         } else {
             if (!is_array($value)) {
                 $value = [
                     $value,
-                    $intType,
+                    $type,
                 ];
             }
+
             $this->bindParams[$names] = $value;
         }
 
@@ -1920,21 +1922,29 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         if (!isset(static::$indexTypes[$sType])) {
-            throw new Exception(sprintf('Invalid Index type %s.', $sType));
+            throw new Exception(
+                sprintf('Invalid Index type %s.', $sType)
+            );
         }
+
         $sType = strtoupper($sType);
         $mixIndex = Arr::normalize($mixIndex);
+
         foreach ($mixIndex as $value) {
             $value = Arr::normalize($value);
             foreach ($value as $tmp) {
                 $tmp = trim($tmp);
+
                 if (empty($tmp)) {
                     continue;
                 }
+
                 if (empty($this->options['index'][$sType])) {
                     $this->options['index'][$sType] = [];
                 }
+                
                 $this->options['index'][$sType][] = $tmp;
             }
         }
@@ -3835,20 +3845,20 @@ class Select
 
         // 没有指定表，获取默认表
         if (empty($names)) {
-            $sTable = $this->getCurrentTable();
+            $table = $this->getCurrentTable();
             $alias = '';
         }
 
         // $names 为数组配置
         elseif (is_array($names)) {
-            foreach ($names as $alias => $sTable) {
+            foreach ($names as $alias => $table) {
                 if (!is_string($alias)) {
                     $alias = '';
                 }
 
                 // 对象子表达式
-                if ($sTable instanceof self) {
-                    $sTable = $sTable->makeSql(true);
+                if ($table instanceof self) {
+                    $table = $table->makeSql(true);
                     if (!$alias) {
                         $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                     }
@@ -3856,16 +3866,16 @@ class Select
                 }
 
                 // 回调方法子表达式
-                elseif (!is_string($sTable) && is_callable($sTable)) {
+                elseif (!is_string($table) && is_callable($table)) {
                     $select = new static($this->connect);
                     $select->setCurrentTable($this->getCurrentTable());
-                    $resultCallback = call_user_func_array($sTable, [
+                    $resultCallback = call_user_func_array($table, [
                         &$select,
                     ]);
                     if (null === $resultCallback) {
-                        $sTable = $select->makeSql(true);
+                        $table = $select->makeSql(true);
                     } else {
-                        $sTable = $resultCallback;
+                        $table = $resultCallback;
                     }
                     if (!$alias) {
                         $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
@@ -3879,7 +3889,7 @@ class Select
 
         // 对象子表达式
         elseif ($names instanceof self) {
-            $sTable = $names->makeSql(true);
+            $table = $names->makeSql(true);
             $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             $booParseSchema = false;
         }
@@ -3892,9 +3902,9 @@ class Select
                 &$select,
             ]);
             if (null === $resultCallback) {
-                $sTable = $select->makeSql(true);
+                $table = $select->makeSql(true);
             } else {
-                $sTable = $resultCallback;
+                $table = $resultCallback;
             }
             $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             $booParseSchema = false;
@@ -3903,37 +3913,37 @@ class Select
         // 字符串子表达式
         elseif (0 === strpos(trim($names), '(')) {
             if (false !== ($intAsPosition = strripos($names, 'as'))) {
-                $sTable = trim(substr($names, 0, $intAsPosition - 1));
+                $table = trim(substr($names, 0, $intAsPosition - 1));
                 $alias = trim(substr($names, $intAsPosition + 2));
             } else {
-                $sTable = $names;
+                $table = $names;
                 $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             }
             $booParseSchema = false;
         } else {
             // 字符串指定别名
             if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $names, $matches)) {
-                $sTable = $matches[1];
+                $table = $matches[1];
                 $alias = $matches[2];
             } else {
-                $sTable = $names;
+                $table = $names;
                 $alias = '';
             }
         }
 
         // 确定 table_name 和 schema
         if (true === $booParseSchema) {
-            $tmp = explode('.', $sTable);
+            $tmp = explode('.', $table);
             if (isset($tmp[1])) {
                 $sSchema = $tmp[0];
                 $tableName = $tmp[1];
             } else {
                 $sSchema = null;
-                $tableName = $sTable;
+                $tableName = $table;
             }
         } else {
             $sSchema = null;
-            $tableName = $sTable;
+            $tableName = $table;
         }
 
         // 获得一个唯一的别名
