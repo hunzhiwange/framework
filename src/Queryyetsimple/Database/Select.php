@@ -504,16 +504,16 @@ class Select
     /**
      * 批量插入数据 insertAll.
      *
-     * @param array $arrData
+     * @param array $data
      * @param array $bind
      * @param bool  $replace
      * @param bool  $flag      指示是否不做任何操作只返回 SQL
      *
      * @return int 最后插入ID
      */
-    public function insertAll($arrData, $bind = [], $replace = false, $flag = false)
+    public function insertAll($data, $bind = [], $replace = false, $flag = false)
     {
-        if (!is_array($arrData)) {
+        if (!is_array($data)) {
             throw new Exception('Unsupported parameters.');
         }
 
@@ -521,12 +521,12 @@ class Select
         $bind = array_merge($this->getBindParams(), $bind);
 
         // 构造数据批量插入
-        if (is_array($arrData)) {
+        if (is_array($data)) {
             $dataResult = [];
             $questionMark = 0;
             $sTableName = $this->getCurrentTable();
 
-            foreach ($arrData as $key => $arrTemp) {
+            foreach ($data as $key => $arrTemp) {
                 if (!is_array($arrTemp)) {
                     continue;
                 }
@@ -3957,27 +3957,27 @@ class Select
             return $args;
         }
 
-        $arrData = $this->connect->{'query'}(...$args);
+        $data = $this->connect->{'query'}(...$args);
 
         if ($this->queryParams['as_default']) {
-            $this->queryDefault($arrData);
+            $this->queryDefault($data);
         } else {
-            $this->queryClass($arrData);
+            $this->queryClass($data);
         }
 
-        return $arrData;
+        return $data;
     }
 
     /**
      * 以数组返回结果.
      *
-     * @param array $arrData
+     * @param array $data
      */
-    protected function queryDefault(&$arrData)
+    protected function queryDefault(&$data)
     {
-        if (empty($arrData)) {
+        if (empty($data)) {
             if (!$this->arrOption['limitquery']) {
-                $arrData = null;
+                $data = null;
             }
 
             return;
@@ -3985,23 +3985,23 @@ class Select
 
         // 返回一条记录
         if (!$this->arrOption['limitquery']) {
-            $arrData = reset($arrData) ?: null;
+            $data = reset($data) ?: null;
         }
     }
 
     /**
      * 以 class 返回结果.
      *
-     * @param array $arrData
+     * @param array $data
      */
-    protected function queryClass(&$arrData)
+    protected function queryClass(&$data)
     {
-        if (empty($arrData)) {
+        if (empty($data)) {
             if (!$this->arrOption['limitquery']) {
-                $arrData = null;
+                $data = null;
             } else {
                 if ($this->queryParams['as_collection']) {
-                    $arrData = new Collection();
+                    $data = new Collection();
                 }
             }
 
@@ -4012,21 +4012,21 @@ class Select
         $className = $this->queryParams['as_class'];
 
         if ($className && !class_exists($className)) {
-            $this->queryDefault($arrData);
+            $this->queryDefault($data);
 
             return;
         }
 
-        foreach ($arrData as &$mixTemp) {
+        foreach ($data as &$mixTemp) {
             $mixTemp = new $className((array) $mixTemp);
         }
 
         // 创建一个单独的对象
         if (!$this->arrOption['limitquery']) {
-            $arrData = reset($arrData) ?: null;
+            $data = reset($data) ?: null;
         } else {
             if ($this->queryParams['as_collection']) {
-                $arrData = new Collection($arrData, [$className]);
+                $data = new Collection($data, [$className]);
             }
         }
     }
@@ -4135,17 +4135,17 @@ class Select
     /**
      * 分析绑定参数数据.
      *
-     * @param array $arrData
+     * @param array $data
      * @param array $bind
      * @param int   $questionMark
      * @param int   $intIndex
      */
-    protected function getBindData($arrData, &$bind = [], &$questionMark = 0, $intIndex = 0)
+    protected function getBindData($data, &$bind = [], &$questionMark = 0, $intIndex = 0)
     {
         $arrField = $arrValue = [];
         $strTableName = $this->getCurrentTable();
 
-        foreach ($arrData as $sKey => $value) {
+        foreach ($data as $sKey => $value) {
             // 表达式支持
             if (false !== strpos($value, '{') && preg_match('/^{(.+?)}$/', $value, $arrRes)) {
                 $value = $this->connect->qualifyExpression($arrRes[1], $strTableName);
