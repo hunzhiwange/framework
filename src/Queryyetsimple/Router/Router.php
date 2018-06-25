@@ -94,6 +94,13 @@ class Router implements IRouter
     ];
 
     /**
+     * 是否已经进行匹配.
+     *
+     * @var bool
+     */
+    protected $isMatched;
+
+    /**
      * 基础路径.
      *
      * @var array
@@ -200,6 +207,8 @@ class Router implements IRouter
     public function setMatchedData(array $matchedData): void
     {
         $this->matchedData = array_merge(self::$matcheDataInit, $matchedData);
+
+        $this->isMatched = true;
     }
 
     /**
@@ -518,7 +527,7 @@ class Router implements IRouter
      */
     protected function matchRouter()
     {
-        if (null !== $this->matchedData) {
+        if (true === $this->isMatched && null !== $this->matchedData) {
             return $this->tryRouterBind();
         }
 
