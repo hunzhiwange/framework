@@ -1587,7 +1587,7 @@ class Select
         array_unshift($arr, static::LOGIC_AND);
         array_unshift($arr, 'where');
 
-        return $this->{'aliasTypeAndLogic'}(...$arr);
+        return $this->{'aliatypeAndLogic'}(...$arr);
     }
 
     /**
@@ -1830,7 +1830,7 @@ class Select
         array_unshift($arr, static::LOGIC_OR);
         array_unshift($arr, 'where');
 
-        return $this->{'aliasTypeAndLogic'}(...$arr);
+        return $this->{'aliatypeAndLogic'}(...$arr);
     }
 
     /**
@@ -1912,28 +1912,29 @@ class Select
     /**
      * index 强制索引（或者忽略索引）.
      *
-     * @param array|string $mixIndex
-     * @param string       $sType
+     * @param array|string $indexs
+     * @param string       $type
      *
      * @return $this
      */
-    public function forceIndex($mixIndex, $sType = 'FORCE')
+    public function forceIndex($indexs, $type = 'FORCE')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if (!isset(static::$indexTypes[$sType])) {
+        if (!isset(static::$indexTypes[$type])) {
             throw new Exception(
-                sprintf('Invalid Index type %s.', $sType)
+                sprintf('Invalid Index type %s.', $type)
             );
         }
 
-        $sType = strtoupper($sType);
-        $mixIndex = Arr::normalize($mixIndex);
+        $type = strtoupper($type);
+        $indexs = Arr::normalize($indexs);
 
-        foreach ($mixIndex as $value) {
+        foreach ($indexs as $value) {
             $value = Arr::normalize($value);
+
             foreach ($value as $tmp) {
                 $tmp = trim($tmp);
 
@@ -1941,11 +1942,11 @@ class Select
                     continue;
                 }
 
-                if (empty($this->options['index'][$sType])) {
-                    $this->options['index'][$sType] = [];
+                if (empty($this->options['index'][$type])) {
+                    $this->options['index'][$type] = [];
                 }
-                
-                $this->options['index'][$sType][] = $tmp;
+
+                $this->options['index'][$type][] = $tmp;
             }
         }
 
@@ -1955,13 +1956,13 @@ class Select
     /**
      * index 忽略索引.
      *
-     * @param array|string $mixIndex
+     * @param array|string $indexs
      *
      * @return $this
      */
-    public function ignoreIndex($mixIndex)
+    public function ignoreIndex($indexs)
     {
-        return $this->forceIndex($mixIndex, 'IGNORE');
+        return $this->forceIndex($indexs, 'IGNORE');
     }
 
     /**
@@ -2112,31 +2113,33 @@ class Select
     /**
      * 添加一个 UNION 查询.
      *
-     * @param array|callable|string $mixSelect
-     * @param string                $sType
+     * @param array|callable|string $selects
+     * @param string                $type
      *
      * @return $this
      */
-    public function union($mixSelect, $sType = 'UNION')
+    public function union($selects, $type = 'UNION')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if (!isset(static::$unionTypes[$sType])) {
-            throw new Exception(sprintf('Invalid UNION type %s.', $sType));
+        if (!isset(static::$unionTypes[$type])) {
+            throw new Exception(
+                sprintf('Invalid UNION type %s.', $type)
+            );
         }
 
-        if (!is_array($mixSelect)) {
-            $mixSelect = [
-                $mixSelect,
+        if (!is_array($selects)) {
+            $selects = [
+                $selects,
             ];
         }
 
-        foreach ($mixSelect as $mixTemp) {
+        foreach ($selects as $tmp) {
             $this->options['union'][] = [
-                $mixTemp,
-                $sType,
+                $tmp,
+                $type,
             ];
         }
 
@@ -2146,61 +2149,69 @@ class Select
     /**
      * 添加一个 UNION ALL 查询.
      *
-     * @param array|callable|string $mixSelect
+     * @param array|callable|string $selects
      *
      * @return $this
      */
-    public function unionAll($mixSelect)
+    public function unionAll($selects)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->union($mixSelect, 'UNION ALL');
+        return $this->union($selects, 'UNION ALL');
     }
 
     /**
      * 指定 GROUP BY 子句.
      *
-     * @param array|string $mixExpr
+     * @param array|string $expression
      *
      * @return $this
      */
-    public function groupBy($mixExpr)
+    public function groupBy($expression)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if (is_string($mixExpr) && false !== strpos($mixExpr, ',') && false !== strpos($mixExpr, '{') && preg_match_all('/{(.+?)}/', $mixExpr, $arrRes)) {
-            $mixExpr = str_replace($arrRes[1][0], base64_encode($arrRes[1][0]), $mixExpr);
+        if (is_string($expression) && 
+            false !== strpos($expression, ',') && 
+            false !== strpos($expression, '{') && 
+            preg_match_all('/{(.+?)}/', $expression, $matches)) {
+            $expression = str_replace(
+                $matches[1][0],
+                base64_encode($matches[1][0]),
+                $expression
+            );
         }
 
-        $mixExpr = Arr::normalize($mixExpr);
+        $expression = Arr::normalize($expression);
 
         // 还原
-        if (!empty($arrRes)) {
-            foreach ($arrRes[1] as $tmp) {
-                $mixExpr[
+        if (!empty($matches)) {
+            foreach ($matches[1] as $tmp) {
+                $expression[
                     array_search(
                         '{'.base64_encode($tmp).'}', 
-                        $mixExpr, 
+                        $expression, 
                         true
                     )
                 ] = '{'.$tmp.'}';
             }
         }
 
-        $sCurrentTableName = $this->getCurrentTable();
-        foreach ($mixExpr as $value) {
+        $currentTableName = $this->getCurrentTable();
+
+        foreach ($expression as $value) {
             // 处理条件表达式
             if (is_string($value) && 
                 false !== strpos($value, ',') && 
                 false !== strpos($value, '{') && 
-                preg_match_all('/{(.+?)}/', $value, $arrResTwo)) {
+                preg_match_all('/{(.+?)}/', $value, $subMatches)) {
                 $value = str_replace(
-                    $arrResTwo[1][0], 
-                    base64_encode($arrResTwo[1][0]), 
+                    $subMatches[1][0], 
+                    base64_encode($subMatches[1][0]), 
                     $value
                 );
             }
@@ -2208,8 +2219,8 @@ class Select
             $value = Arr::normalize($value);
 
             // 还原
-            if (!empty($arrResTwo)) {
-                foreach ($arrResTwo[1] as $tmp) {
+            if (!empty($subMatches)) {
+                foreach ($subMatches[1] as $tmp) {
                     $value[
                         array_search(
                             '{'.base64_encode($tmp).'}', 
@@ -2228,12 +2239,16 @@ class Select
                 }
 
                 if (preg_match('/(.+)\.(.+)/', $tmp, $matches)) {
-                    $sCurrentTableName = $matches[1];
+                    $currentTableName = $matches[1];
                     $tmp = $matches[2];
                 }
 
                 // 表达式支持
-                $tmp = $this->qualifyOneColumn($tmp, $sCurrentTableName);
+                $tmp = $this->qualifyOneColumn(
+                    $tmp,
+                    $currentTableName
+                );
+
                 $this->options['group'][] = $tmp;
             }
         }
@@ -2258,7 +2273,7 @@ class Select
         array_unshift($arr, static::LOGIC_AND);
         array_unshift($arr, 'having');
 
-        return $this->{'aliasTypeAndLogic'}(...$arr);
+        return $this->{'aliatypeAndLogic'}(...$arr);
     }
 
     /**
@@ -2509,37 +2524,47 @@ class Select
         array_unshift($arr, static::LOGIC_OR);
         array_unshift($arr, 'having');
 
-        return $this->{'aliasTypeAndLogic'}(...$arr);
+        return $this->{'aliatypeAndLogic'}(...$arr);
     }
 
     /**
      * 添加排序.
      *
-     * @param array|string $mixExpr
-     * @param string       $sOrderDefault
+     * @param array|string $expression
+     * @param string       $orderDefault
      *
      * @return $this
      */
-    public function orderBy($mixExpr, $sOrderDefault = 'ASC')
+    public function orderBy($expression, $orderDefault = 'ASC')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $sOrderDefault = strtoupper($sOrderDefault); // 格式化为大写
+        // 格式化为大写
+        $orderDefault = strtoupper($orderDefault); 
 
         // 处理条件表达式
-        if (is_string($mixExpr) && false !== strpos($mixExpr, ',') && false !== strpos($mixExpr, '{') && preg_match_all('/{(.+?)}/', $mixExpr, $arrRes)) {
-            $mixExpr = str_replace($arrRes[1][0], base64_encode($arrRes[1][0]), $mixExpr);
+        if (is_string($expression) && 
+            false !== strpos($expression, ',') && 
+            false !== strpos($expression, '{') && 
+            preg_match_all('/{(.+?)}/', $expression, $matches)) {
+            $expression = str_replace(
+                $matches[1][0],
+                base64_encode($matches[1][0]),
+                $expression
+            );
         }
-        $mixExpr = Arr::normalize($mixExpr);
+
+        $expression = Arr::normalize($expression);
+
         // 还原
-        if (!empty($arrRes)) {
-            foreach ($arrRes[1] as $tmp) {
-                $mixExpr[
+        if (!empty($matches)) {
+            foreach ($matches[1] as $tmp) {
+                $expression[
                     array_search(
                         '{'.base64_encode($tmp).'}', 
-                        $mixExpr, 
+                        $expression, 
                         true
                     )
                 ] = '{'.$tmp.'}';
@@ -2547,15 +2572,16 @@ class Select
         }
 
         $tableName = $this->getCurrentTable();
-        foreach ($mixExpr as $value) {
+
+        foreach ($expression as $value) {
             // 处理条件表达式
             if (is_string($value) && 
                 false !== strpos($value, ',') && 
                 false !== strpos($value, '{') && 
-                preg_match_all('/{(.+?)}/', $value, $arrResTwo)) {
+                preg_match_all('/{(.+?)}/', $value, $subMatches)) {
                 $value = str_replace(
-                    $arrResTwo[1][0], 
-                    base64_encode($arrResTwo[1][0]), 
+                    $subMatches[1][0], 
+                    base64_encode($subMatches[1][0]), 
                     $value
                 );
             }
@@ -2563,8 +2589,8 @@ class Select
             $value = Arr::normalize($value);
 
             // 还原
-            if (!empty($arrResTwo)) {
-                foreach ($arrResTwo[1] as $tmp) {
+            if (!empty($subMatches)) {
+                foreach ($subMatches[1] as $tmp) {
                     $value[
                         array_search(
                             '{'.base64_encode($tmp).'}', 
@@ -2577,46 +2603,47 @@ class Select
 
             foreach ($value as $tmp) {
                 $tmp = trim($tmp);
+
                 if (empty($tmp)) {
                     continue;
                 }
 
                 // 表达式支持
                 if (false !== strpos($tmp, '{') && 
-                    preg_match('/^{(.+?)}$/', $tmp, $arrResThree)) {
+                    preg_match('/^{(.+?)}$/', $tmp, $threeMatches)) {
                     $tmp = $this->connect->qualifyExpression(
-                        $arrResThree[1], $tableName
+                        $threeMatches[1], $tableName
                     );
 
                     if (preg_match('/(.*\W)('.'ASC'.'|'.'DESC'.')\b/si', $tmp, $matches)) {
                         $tmp = trim($matches[1]);
-                        $sSort = strtoupper($matches[2]);
+                        $sort = strtoupper($matches[2]);
                     } else {
-                        $sSort = $sOrderDefault;
+                        $sort = $orderDefault;
                     }
 
-                    $this->options['order'][] = $tmp.' '.$sSort;
+                    $this->options['order'][] = $tmp.' '.$sort;
                 } else {
-                    $sCurrentTableName = $tableName;
-                    $sSort = $sOrderDefault;
+                    $currentTableName = $tableName;
+                    $sort = $orderDefault;
 
                     if (preg_match('/(.*\W)('.'ASC'.'|'.'DESC'.')\b/si', $tmp, $matches)) {
                         $tmp = trim($matches[1]);
-                        $sSort = strtoupper($matches[2]);
+                        $sort = strtoupper($matches[2]);
                     }
 
                     if (!preg_match('/\(.*\)/', $tmp)) {
                         if (preg_match('/(.+)\.(.+)/', $tmp, $matches)) {
-                            $sCurrentTableName = $matches[1];
+                            $currentTableName = $matches[1];
                             $tmp = $matches[2];
                         }
 
                         $tmp = $this->connect->qualifyTableOrColumn(
-                            "{$sCurrentTableName}.{$tmp}"
+                            "{$currentTableName}.{$tmp}"
                         );
                     }
 
-                    $this->options['order'][] = $tmp.' '.$sSort;
+                    $this->options['order'][] = $tmp.' '.$sort;
                 }
             }
         }
@@ -2951,9 +2978,9 @@ class Select
 
             // 表达式支持
             if (false !== strpos($sCol, '{') && 
-                preg_match('/^{(.+?)}$/', $sCol, $arrRes)) {
+                preg_match('/^{(.+?)}$/', $sCol, $matches)) {
                 $arrColumns[] = $this->connect->qualifyExpression(
-                    $arrRes[1],
+                    $matches[1],
                     $tableName
                 );
             } else {
@@ -3143,14 +3170,14 @@ class Select
         foreach ([
             'FORCE',
             'IGNORE',
-        ] as $sType) {
-            if (empty($this->options['index'][$sType])) {
+        ] as $type) {
+            if (empty($this->options['index'][$type])) {
                 continue;
             }
 
             $strIndex .= ($strIndex ? ' ' : '').
-                $sType.' INDEX('.
-                implode(',', $this->options['index'][$sType]).
+                $type.' INDEX('.
+                implode(',', $this->options['index'][$type]).
                 ')';
         }
 
@@ -3190,14 +3217,14 @@ class Select
             $nOptions = count($this->options['union']);
 
             foreach ($this->options['union'] as $nCnt => $arrUnion) {
-                list($mixUnion, $sType) = $arrUnion;
+                list($mixUnion, $type) = $arrUnion;
 
                 if ($mixUnion instanceof self) {
                     $mixUnion = $mixUnion->makeSql();
                 }
 
                 if ($nCnt <= $nOptions - 1) {
-                    $sSql .= "\n".$sType.' '.$mixUnion;
+                    $sSql .= "\n".$type.' '.$mixUnion;
                 }
             }
         }
@@ -3347,9 +3374,9 @@ class Select
             } elseif (is_array($cond)) {
                 // 表达式支持
                 if (false !== strpos($cond[0], '{') && 
-                    preg_match('/^{(.+?)}$/', $cond[0], $arrRes)) {
+                    preg_match('/^{(.+?)}$/', $cond[0], $matches)) {
                     $cond[0] = $this->connect->qualifyExpression(
-                        $arrRes[1],
+                        $matches[1],
                         $table
                     );
                 } else {
@@ -3428,9 +3455,9 @@ class Select
                         // 表达式支持
                         elseif (is_string($tmp) && 
                             false !== strpos($tmp, '{') && 
-                            preg_match('/^{(.+?)}$/', $tmp, $arrRes)) {
+                            preg_match('/^{(.+?)}$/', $tmp, $matches)) {
                             $tmp = $this->connect->qualifyExpression(
-                                $arrRes[1],
+                                $matches[1],
                                 $table
                             );
                         } else {
@@ -3528,7 +3555,7 @@ class Select
      *
      * @return $this
      */
-    protected function aliasTypeAndLogic($strType, $strLogic, $cond)
+    protected function aliatypeAndLogic($strType, $strLogic, $cond)
     {
         $this->setTypeAndLogic($strType, $strLogic);
 
@@ -3605,8 +3632,8 @@ class Select
                 }
 
                 // 表达式支持
-                if (false !== strpos($tmp, '{') && preg_match('/^{(.+?)}$/', $tmp, $arrRes)) {
-                    $tmp = $this->connect->qualifyExpression($arrRes[1], $table);
+                if (false !== strpos($tmp, '{') && preg_match('/^{(.+?)}$/', $tmp, $matches)) {
+                    $tmp = $this->connect->qualifyExpression($matches[1], $table);
                 }
                 $this->setConditionItem($tmp, 'string__');
             }
@@ -3802,16 +3829,16 @@ class Select
             $tableName = $this->getCurrentTable();
         }
 
-        if (false !== strpos($field, '{') && preg_match('/^{(.+?)}$/', $field, $arrRes)) {
-            $field = $this->connect->qualifyExpression($arrRes[1], $tableName);
+        if (false !== strpos($field, '{') && preg_match('/^{(.+?)}$/', $field, $matches)) {
+            $field = $this->connect->qualifyExpression($matches[1], $tableName);
         } elseif (!preg_match('/\(.*\)/', $field)) {
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
-                $sCurrentTableName = $matches[1];
+                $currentTableName = $matches[1];
                 $tmp = $matches[2];
             } else {
-                $sCurrentTableName = $tableName;
+                $currentTableName = $tableName;
             }
-            $field = $this->connect->qualifyTableOrColumn("{$sCurrentTableName}.{$field}");
+            $field = $this->connect->qualifyTableOrColumn("{$currentTableName}.{$field}");
         }
 
         return $field;
@@ -3994,10 +4021,10 @@ class Select
         // 处理条件表达式
         if (is_string($cols) && false !== strpos($cols, ',') && 
             false !== strpos($cols, '{') && 
-            preg_match_all('/{(.+?)}/', $cols, $arrRes)) {
+            preg_match_all('/{(.+?)}/', $cols, $matches)) {
             $cols = str_replace(
-                $arrRes[1][0],
-                base64_encode($arrRes[1][0]),
+                $matches[1][0],
+                base64_encode($matches[1][0]),
                 $cols
             );
         }
@@ -4005,8 +4032,8 @@ class Select
         $cols = Arr::normalize($cols);
 
         // 还原
-        if (!empty($arrRes)) {
-            foreach ($arrRes[1] as $tmp) {
+        if (!empty($matches)) {
+            foreach ($matches[1] as $tmp) {
                 $cols[
                     array_search(
                         '{'.base64_encode($tmp).'}',
@@ -4032,18 +4059,18 @@ class Select
                 if (is_string($mixCol) && 
                     false !== strpos($mixCol, ',') && 
                     false !== strpos($mixCol, '{') && 
-                    preg_match_all('/{(.+?)}/', $mixCol, $arrResTwo)) {
+                    preg_match_all('/{(.+?)}/', $mixCol, $subMatches)) {
                     $mixCol = str_replace(
-                        $arrResTwo[1][0],
-                        base64_encode($arrResTwo[1][0]),
+                        $subMatches[1][0],
+                        base64_encode($subMatches[1][0]),
                         $mixCol
                     );
                 }
                 $mixCol = Arr::normalize($mixCol);
 
                 // 还原
-                if (!empty($arrResTwo)) {
-                    foreach ($arrResTwo[1] as $tmp) {
+                if (!empty($subMatches)) {
+                    foreach ($subMatches[1] as $tmp) {
                         $mixCol[
                             array_search(
                                 '{'.base64_encode($tmp).'}',
@@ -4089,21 +4116,21 @@ class Select
     /**
      * 添加一个集合查询.
      *
-     * @param string $sType    类型
+     * @param string $type    类型
      * @param string $field 字段
      * @param string $alias   别名
      *
      * @return $this
      */
-    protected function addAggregate($sType, $field, $alias)
+    protected function addAggregate($type, $field, $alias)
     {
         $this->options['columns'] = [];
         $tableName = $this->getCurrentTable();
 
         // 表达式支持
         if (false !== strpos($field, '{') && 
-            preg_match('/^{(.+?)}$/', $field, $arrRes)) {
-            $field = $this->connect->qualifyExpression($arrRes[1], $tableName);
+            preg_match('/^{(.+?)}$/', $field, $matches)) {
+            $field = $this->connect->qualifyExpression($matches[1], $tableName);
         } else {
             // 检查字段名是否包含表名称
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
@@ -4118,10 +4145,10 @@ class Select
             $field = $this->connect->qualifyColumn($field, $tableName);
         }
 
-        $field = "{$sType}(${field})";
+        $field = "{$type}(${field})";
 
         $this->options['aggregate'][] = [
-            $sType,
+            $type,
             $field,
             $alias,
         ];
@@ -4215,8 +4242,8 @@ class Select
             return;
         }
 
-        foreach ($data as &$mixTemp) {
-            $mixTemp = new $className((array) $mixTemp);
+        foreach ($data as &$tmp) {
+            $tmp = new $className((array) $tmp);
         }
 
         // 创建一个单独的对象
@@ -4346,8 +4373,8 @@ class Select
         foreach ($data as $key => $value) {
             // 表达式支持
             if (false !== strpos($value, '{') && 
-                preg_match('/^{(.+?)}$/', $value, $arrRes)) {
-                $value = $this->connect->qualifyExpression($arrRes[1], $tableName);
+                preg_match('/^{(.+?)}$/', $value, $matches)) {
+                $value = $this->connect->qualifyExpression($matches[1], $tableName);
             } else {
                 $value = $this->connect->qualifyColumnValue($value, false);
             }
@@ -4357,7 +4384,7 @@ class Select
                 $fields[] = $key;
             }
 
-            if (0 === strpos($value, ':') || !empty($arrRes)) {
+            if (0 === strpos($value, ':') || !empty($matches)) {
                 $values[] = $value;
             } else {
                 // 转换 ? 占位符至 : 占位符
