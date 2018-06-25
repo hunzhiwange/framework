@@ -995,100 +995,100 @@ class Select
      * 总记录数.
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
-    public function getCount($field = '*', $sAlias = 'row_count', $flag = false)
+    public function getCount($field = '*', $alias = 'row_count', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->count($field, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->count($field, $alias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
         }
 
-        return (int) ($arrRow[$sAlias]);
+        return (int) ($arrRow[$alias]);
     }
 
     /**
      * 平均数.
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
-    public function getAvg($field, $sAlias = 'avg_value', $flag = false)
+    public function getAvg($field, $alias = 'avg_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->avg($field, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->avg($field, $alias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
         }
 
-        return (float) $arrRow[$sAlias];
+        return (float) $arrRow[$alias];
     }
 
     /**
      * 最大值
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
-    public function getMax($field, $sAlias = 'max_value', $flag = false)
+    public function getMax($field, $alias = 'max_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->max($field, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->max($field, $alias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
         }
 
-        return (float) $arrRow[$sAlias];
+        return (float) $arrRow[$alias];
     }
 
     /**
      * 最小值
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
-    public function getMin($field, $sAlias = 'min_value', $flag = false)
+    public function getMin($field, $alias = 'min_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->min($field, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->min($field, $alias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
         }
 
-        return (float) $arrRow[$sAlias];
+        return (float) $arrRow[$alias];
     }
 
     /**
      * 合计
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
-    public function getSum($field, $sAlias = 'sum_value', $flag = false)
+    public function getSum($field, $alias = 'sum_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($flag)->asDefault()->sum($field, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->sum($field, $alias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
         }
 
-        return $arrRow[$sAlias];
+        return $arrRow[$alias];
     }
 
     /**
@@ -1393,15 +1393,15 @@ class Select
 
         $mixName = Arr::normalize($mixName);
 
-        foreach ($mixName as $sAlias => $sTable) {
+        foreach ($mixName as $alias => $sTable) {
             // 字符串指定别名
             if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $sTable, $arrMatch)) {
-                $sAlias = $arrMatch[2];
+                $alias = $arrMatch[2];
                 $sTable = $arrMatch[1];
             }
 
-            if (!is_string($sAlias)) {
-                $sAlias = $sTable;
+            if (!is_string($alias)) {
+                $alias = $sTable;
             }
 
             // 确定 table_name 和 schema
@@ -1415,9 +1415,9 @@ class Select
             }
 
             // 获得一个唯一的别名
-            $sAlias = $this->uniqueAlias(empty($sAlias) ? $sTableName : $sAlias);
+            $alias = $this->uniqueAlias(empty($alias) ? $sTableName : $alias);
 
-            $this->arrOption['using'][$sAlias] = [
+            $this->arrOption['using'][$alias] = [
                 'table_name' => $sTable,
                 'schema'     => $sSchema,
             ];
@@ -2504,85 +2504,85 @@ class Select
      * 总记录数.
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      *
      * @return $this
      */
-    public function count($field = '*', $sAlias = 'row_count')
+    public function count($field = '*', $alias = 'row_count')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('COUNT', $field, $sAlias);
+        return $this->addAggregate('COUNT', $field, $alias);
     }
 
     /**
      * 平均数.
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      *
      * @return $this
      */
-    public function avg($field, $sAlias = 'avg_value')
+    public function avg($field, $alias = 'avg_value')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('AVG', $field, $sAlias);
+        return $this->addAggregate('AVG', $field, $alias);
     }
 
     /**
      * 最大值
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      *
      * @return $this
      */
-    public function max($field, $sAlias = 'max_value')
+    public function max($field, $alias = 'max_value')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('MAX', $field, $sAlias);
+        return $this->addAggregate('MAX', $field, $alias);
     }
 
     /**
      * 最小值
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      *
      * @return $this
      */
-    public function min($field, $sAlias = 'min_value')
+    public function min($field, $alias = 'min_value')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('MIN', $field, $sAlias);
+        return $this->addAggregate('MIN', $field, $alias);
     }
 
     /**
      * 合计
      *
      * @param string $field
-     * @param string $sAlias
+     * @param string $alias
      *
      * @return $this
      */
-    public function sum($field, $sAlias = 'sum_value')
+    public function sum($field, $alias = 'sum_value')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('SUM', $field, $sAlias);
+        return $this->addAggregate('SUM', $field, $alias);
     }
 
     /**
@@ -2777,14 +2777,14 @@ class Select
 
         $arrColumns = [];
         foreach ($this->arrOption['columns'] as $arrEntry) {
-            list($sTableName, $sCol, $sAlias) = $arrEntry;
+            list($sTableName, $sCol, $alias) = $arrEntry;
 
             // 表达式支持
             if (false !== strpos($sCol, '{') && preg_match('/^{(.+?)}$/', $sCol, $arrRes)) {
                 $arrColumns[] = $this->connect->qualifyExpression($arrRes[1], $sTableName);
             } else {
-                if ('*' !== $sCol && $sAlias) {
-                    $arrColumns[] = $this->connect->qualifyTableOrColumn("{$sTableName}.{$sCol}", $sAlias, 'AS');
+                if ('*' !== $sCol && $alias) {
+                    $arrColumns[] = $this->connect->qualifyTableOrColumn("{$sTableName}.{$sCol}", $alias, 'AS');
                 } else {
                     $arrColumns[] = $this->connect->qualifyTableOrColumn("{$sTableName}.{$sCol}");
                 }
@@ -2807,9 +2807,9 @@ class Select
 
         $arrColumns = [];
         foreach ($this->arrOption['aggregate'] as $arrAggregate) {
-            list(, $sField, $sAlias) = $arrAggregate;
-            if ($sAlias) {
-                $arrColumns[] = $sField.' AS '.$sAlias;
+            list(, $sField, $alias) = $arrAggregate;
+            if ($alias) {
+                $arrColumns[] = $sField.' AS '.$alias;
             } else {
                 $arrColumns[] = $sField;
             }
@@ -2830,7 +2830,7 @@ class Select
         }
 
         $arrFrom = [];
-        foreach ($this->arrOption['from'] as $sAlias => $arrTable) {
+        foreach ($this->arrOption['from'] as $alias => $arrTable) {
             $sTmp = '';
             // 如果不是第一个 FROM，则添加 JOIN
             if (!empty($arrFrom)) {
@@ -2839,11 +2839,11 @@ class Select
 
             // 表名子表达式支持
             if (false !== strpos($arrTable['table_name'], '(')) {
-                $sTmp .= $arrTable['table_name'].' '.$sAlias;
-            } elseif ($sAlias === $arrTable['table_name']) {
+                $sTmp .= $arrTable['table_name'].' '.$alias;
+            } elseif ($alias === $arrTable['table_name']) {
                 $sTmp .= $this->connect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}");
             } else {
-                $sTmp .= $this->connect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
+                $sTmp .= $this->connect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $alias);
             }
 
             // 添加 JOIN 查询条件
@@ -2879,19 +2879,19 @@ class Select
             return '';
         }
 
-        foreach ($this->arrOption['from'] as $sAlias => $arrTable) {
-            if ($sAlias === $arrTable['table_name']) {
+        foreach ($this->arrOption['from'] as $alias => $arrTable) {
+            if ($alias === $arrTable['table_name']) {
                 return $this->connect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}");
             }
             if (true === $booOnlyAlias) {
-                return $sAlias;
+                return $alias;
             }
             // 表名子表达式支持
             if (false !== strpos($arrTable['table_name'], '(')) {
-                return $arrTable['table_name'].' '.$sAlias;
+                return $arrTable['table_name'].' '.$alias;
             }
 
-            return $this->connect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
+            return $this->connect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $alias);
             break;
         }
     }
@@ -2912,17 +2912,17 @@ class Select
 
         $arrUsing = [];
         $arrOptionUsing = $this->arrOption['using'];
-        foreach ($this->arrOption['from'] as $sAlias => $arrTable) { // table 自动加入
-            $arrOptionUsing[$sAlias] = $arrTable;
+        foreach ($this->arrOption['from'] as $alias => $arrTable) { // table 自动加入
+            $arrOptionUsing[$alias] = $arrTable;
 
             break;
         }
 
-        foreach ($arrOptionUsing as $sAlias => $arrTable) {
-            if ($sAlias === $arrTable['table_name']) {
+        foreach ($arrOptionUsing as $alias => $arrTable) {
+            if ($alias === $arrTable['table_name']) {
                 $arrUsing[] = $this->connect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}");
             } else {
-                $arrUsing[] = $this->connect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $sAlias);
+                $arrUsing[] = $this->connect->qualifyTableOrColumn("{$arrTable['schema']}.{$arrTable['table_name']}", $alias);
             }
         }
 
@@ -3597,21 +3597,21 @@ class Select
         // 没有指定表，获取默认表
         if (empty($mixName)) {
             $sTable = $this->getCurrentTable();
-            $sAlias = '';
+            $alias = '';
         }
 
         // $mixName 为数组配置
         elseif (is_array($mixName)) {
-            foreach ($mixName as $sAlias => $sTable) {
-                if (!is_string($sAlias)) {
-                    $sAlias = '';
+            foreach ($mixName as $alias => $sTable) {
+                if (!is_string($alias)) {
+                    $alias = '';
                 }
 
                 // 对象子表达式
                 if ($sTable instanceof self) {
                     $sTable = $sTable->makeSql(true);
-                    if (!$sAlias) {
-                        $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
+                    if (!$alias) {
+                        $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                     }
                     $booParseSchema = false;
                 }
@@ -3628,8 +3628,8 @@ class Select
                     } else {
                         $sTable = $resultCallback;
                     }
-                    if (!$sAlias) {
-                        $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
+                    if (!$alias) {
+                        $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                     }
                     $booParseSchema = false;
                 }
@@ -3641,7 +3641,7 @@ class Select
         // 对象子表达式
         elseif ($mixName instanceof self) {
             $sTable = $mixName->makeSql(true);
-            $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
+            $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             $booParseSchema = false;
         }
 
@@ -3657,7 +3657,7 @@ class Select
             } else {
                 $sTable = $resultCallback;
             }
-            $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
+            $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             $booParseSchema = false;
         }
 
@@ -3665,20 +3665,20 @@ class Select
         elseif (0 === strpos(trim($mixName), '(')) {
             if (false !== ($intAsPosition = strripos($mixName, 'as'))) {
                 $sTable = trim(substr($mixName, 0, $intAsPosition - 1));
-                $sAlias = trim(substr($mixName, $intAsPosition + 2));
+                $alias = trim(substr($mixName, $intAsPosition + 2));
             } else {
                 $sTable = $mixName;
-                $sAlias = static::DEFAULT_SUBEXPRESSION_ALIAS;
+                $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             }
             $booParseSchema = false;
         } else {
             // 字符串指定别名
             if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $mixName, $arrMatch)) {
                 $sTable = $arrMatch[1];
-                $sAlias = $arrMatch[2];
+                $alias = $arrMatch[2];
             } else {
                 $sTable = $mixName;
-                $sAlias = '';
+                $alias = '';
             }
         }
 
@@ -3698,11 +3698,11 @@ class Select
         }
 
         // 获得一个唯一的别名
-        $sAlias = $this->uniqueAlias(empty($sAlias) ? $sTableName : $sAlias);
+        $alias = $this->uniqueAlias(empty($alias) ? $sTableName : $alias);
 
         // 只有表操作才设置当前表
         if ($this->getIsTable()) {
-            $this->setCurrentTable(($sSchema ? $sSchema.'.' : '').$sAlias);
+            $this->setCurrentTable(($sSchema ? $sSchema.'.' : '').$alias);
         }
 
         // 查询条件
@@ -3712,7 +3712,7 @@ class Select
                 array_shift($args);
             }
             $objSelect = new static($this->connect);
-            $objSelect->setCurrentTable($sAlias);
+            $objSelect->setCurrentTable($alias);
             call_user_func_array([
                 $objSelect,
                 'where',
@@ -3721,7 +3721,7 @@ class Select
         }
 
         // 添加一个要查询的数据表
-        $this->arrOption['from'][$sAlias] = [
+        $this->arrOption['from'][$alias] = [
             'join_type'  => $sJoinType,
             'table_name' => $sTableName,
             'schema'     => $sSchema,
@@ -3729,7 +3729,7 @@ class Select
         ];
 
         // 添加查询字段
-        $this->addCols($sAlias, $mixCols);
+        $this->addCols($alias, $mixCols);
 
         return $this;
     }
@@ -3763,7 +3763,7 @@ class Select
             return;
         }
 
-        foreach ($mixCols as $sAlias => $mixCol) {
+        foreach ($mixCols as $alias => $mixCol) {
             if (is_string($mixCol)) {
                 // 处理条件表达式
                 if (is_string($mixCol) && false !== strpos($mixCol, ',') && false !== strpos($mixCol, '{') && preg_match_all('/{(.+?)}/', $mixCol, $arrResTwo)) {
@@ -3785,7 +3785,7 @@ class Select
                     // 检查是不是 "字段名 AS 别名"这样的形式
                     if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $sCol, $arrMatch)) {
                         $sCol = $arrMatch[1];
-                        $sAlias = $arrMatch[2];
+                        $alias = $arrMatch[2];
                     }
 
                     // 检查字段名是否包含表名称
@@ -3797,14 +3797,14 @@ class Select
                     $this->arrOption['columns'][] = [
                         $strThisTableName,
                         $sCol,
-                        is_string($sAlias) ? $sAlias : null,
+                        is_string($alias) ? $alias : null,
                     ];
                 }
             } else {
                 $this->arrOption['columns'][] = [
                     $sTableName,
                     $mixCol,
-                    is_string($sAlias) ? $sAlias : null,
+                    is_string($alias) ? $alias : null,
                 ];
             }
         }
@@ -3815,11 +3815,11 @@ class Select
      *
      * @param string $sType    类型
      * @param string $field 字段
-     * @param string $sAlias   别名
+     * @param string $alias   别名
      *
      * @return $this
      */
-    protected function addAggregate($sType, $field, $sAlias)
+    protected function addAggregate($sType, $field, $alias)
     {
         $this->arrOption['columns'] = [];
         $strTableName = $this->getCurrentTable();
@@ -3843,7 +3843,7 @@ class Select
         $this->arrOption['aggregate'][] = [
             $sType,
             $field,
-            $sAlias,
+            $alias,
         ];
 
         $this->one();
@@ -4120,8 +4120,8 @@ class Select
     protected function getCurrentTable()
     {
         if (is_array($this->currentTable)) { // 数组
-            while ((list($sAlias) = each($this->currentTable)) !== false) {
-                return $this->currentTable = $sAlias;
+            while ((list($alias) = each($this->currentTable)) !== false) {
+                return $this->currentTable = $alias;
             }
         } else {
             return $this->currentTable;
