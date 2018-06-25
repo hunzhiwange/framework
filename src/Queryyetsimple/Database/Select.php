@@ -280,6 +280,7 @@ class Select
     public function __construct($connect)
     {
         $this->connect = $connect;
+
         $this->initOption();
     }
 
@@ -307,16 +308,20 @@ class Select
                 $num = (int) (array_shift($values));
                 $offset = (int) (array_shift($values));
 
-                return $this->limit($offset, $num)->get();
+                return $this->limit($offset, $num)->
+
+                get();
             }
 
             // support getByName getByNameAndSex etc.
             // support getAllByNameAndSex etc.
-            if (0 === strncasecmp($method, 'By', 2) || 0 === strncasecmp($method, 'AllBy', 5)) {
+            if (0 === strncasecmp($method, 'By', 2) || 
+                0 === strncasecmp($method, 'AllBy', 5)) {
                 $method = substr(
                     $method,
                     ($isOne = 0 === strncasecmp($method, 'By', 2)) ? 2 : 5
                 );
+
                 $isKeep = false;
 
                 if ('_' === substr($method, -1)) {
@@ -327,7 +332,9 @@ class Select
                 $keys = explode('And', $method);
 
                 if (count($keys) !== count($args)) {
-                    throw new Exception('Parameter quantity does not correspond.');
+                    throw new Exception(
+                        'Parameter quantity does not correspond.'
+                    );
                 }
 
                 if (!$isKeep) {
@@ -469,11 +476,11 @@ class Select
         if (is_array($data)) {
             $questionMark = 0;
             $bindData = $this->getBindData($data, $bind, $questionMark);
-            $arrField = $bindData[0];
+            $fields = $bindData[0];
             $values = $bindData[1];
             $sTableName = $this->getCurrentTable();
 
-            foreach ($arrField as &$field) {
+            foreach ($fields as &$field) {
                 $field = $this->qualifyOneColumn($field, $sTableName);
             }
 
@@ -482,12 +489,12 @@ class Select
                 $sql = [];
                 $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
                 $sql[] = $this->parseTable();
-                $sql[] = '('.implode(',', $arrField).')';
+                $sql[] = '('.implode(',', $fields).')';
                 $sql[] = 'VALUES';
                 $sql[] = '('.implode(',', $values).')';
                 $data = implode(' ', $sql);
 
-                unset($bindData, $arrField, $values, $sql);
+                unset($bindData, $fields, $values, $sql);
             }
         }
         $bind = array_merge($this->getBindParams(), $bind);
@@ -538,8 +545,8 @@ class Select
                 $bindData = $this->getBindData($arrTemp, $bind, $questionMark, $key);
                 
                 if (0 === $key) {
-                    $arrField = $bindData[0];
-                    foreach ($arrField as &$field) {
+                    $fields = $bindData[0];
+                    foreach ($fields as &$field) {
                         $field = $this->qualifyOneColumn($field, $sTableName);
                     }
                 }
@@ -556,12 +563,12 @@ class Select
                 $sql = [];
                 $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
                 $sql[] = $this->parseTable();
-                $sql[] = '('.implode(',', $arrField).')';
+                $sql[] = '('.implode(',', $fields).')';
                 $sql[] = 'VALUES';
                 $sql[] = implode(',', $dataResult);
                 $data = implode(' ', $sql);
 
-                unset($arrField, $values, $sql, $dataResult);
+                unset($fields, $values, $sql, $dataResult);
             }
         }
 
@@ -605,14 +612,14 @@ class Select
         if (is_array($data)) {
             $questionMark = 0;
             $bindData = $this->getBindData($data, $bind, $questionMark);
-            $arrField = $bindData[0];
+            $fields = $bindData[0];
             $values = $bindData[1];
             $sTableName = $this->getCurrentTable();
 
             // SET 语句
             $setData = [];
 
-            foreach ($arrField as $key => $field) {
+            foreach ($fields as $key => $field) {
                 $field = $this->qualifyOneColumn($field, $sTableName);
                 $setData[] = $field.' = '.$values[$key];
             }
@@ -630,7 +637,7 @@ class Select
                 $sql = array_filter($sql);
                 $data = implode(' ', $sql);
 
-                unset($bindData, $arrField, $values, $setData, $sql);
+                unset($bindData, $fields, $values, $setData, $sql);
             }
         }
 
@@ -920,23 +927,23 @@ class Select
     public function lists($fieldValue, $fieldKey = null, $flag = false)
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
-        $arrField = [];
+        $fields = [];
 
         if (is_array($fieldValue)) {
-            $arrField = $fieldValue;
+            $fields = $fieldValue;
         } else {
-            $arrField[] = $fieldValue;
+            $fields[] = $fieldValue;
         }
 
         if (is_string($fieldKey)) {
-            $arrField[] = $fieldKey;
+            $fields[] = $fieldKey;
         }
 
         $tmps = $this->safeSql($flag)->
 
         asDefault()->
 
-        setColumns($arrField)->
+        setColumns($fields)->
 
         getAll();
 
@@ -4305,7 +4312,7 @@ class Select
      */
     protected function getBindData($data, &$bind = [], &$questionMark = 0, $intIndex = 0)
     {
-        $arrField = $values = [];
+        $fields = $values = [];
         $tableName = $this->getCurrentTable();
 
         foreach ($data as $key => $value) {
@@ -4319,7 +4326,7 @@ class Select
 
             // 字段
             if (0 === $intIndex) {
-                $arrField[] = $key;
+                $fields[] = $key;
             }
 
             if (0 === strpos($value, ':') || !empty($arrRes)) {
@@ -4347,7 +4354,7 @@ class Select
         }
 
         return [
-            $arrField,
+            $fields,
             $values,
         ];
     }
