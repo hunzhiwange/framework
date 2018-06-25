@@ -303,9 +303,9 @@ class Select
 
             // support get10start3 etc.
             if (false !== strpos(strtolower($method), 'start')) {
-                $arrValue = explode('start', strtolower($method));
-                $num = (int) (array_shift($arrValue));
-                $offset = (int) (array_shift($arrValue));
+                $values = explode('start', strtolower($method));
+                $num = (int) (array_shift($values));
+                $offset = (int) (array_shift($values));
 
                 return $this->limit($offset, $num)->get();
             }
@@ -324,20 +324,20 @@ class Select
                     $method = substr($method, 0, -1);
                 }
 
-                $arrKeys = explode('And', $method);
+                $keys = explode('And', $method);
 
-                if (count($arrKeys) !== count($args)) {
+                if (count($keys) !== count($args)) {
                     throw new Exception('Parameter quantity does not correspond.');
                 }
 
                 if (!$isKeep) {
-                    $arrKeys = array_map(function ($item) {
+                    $keys = array_map(function ($item) {
                         return $this->unCamelize($item);
-                    }, $arrKeys);
+                    }, $keys);
                 }
 
                 return $this->where(
-                    array_combine($arrKeys, $args)
+                    array_combine($keys, $args)
                 )->{'get'.($isOne ? 'One' : 'All')}();
             }
 
@@ -468,7 +468,7 @@ class Select
             $questionMark = 0;
             $bindData = $this->getBindData($data, $bind, $questionMark);
             $arrField = $bindData[0];
-            $arrValue = $bindData[1];
+            $values = $bindData[1];
             $sTableName = $this->getCurrentTable();
 
             foreach ($arrField as &$field) {
@@ -476,16 +476,16 @@ class Select
             }
 
             // 构造 insert 语句
-            if ($arrValue) {
+            if ($values) {
                 $sql = [];
                 $sql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
                 $sql[] = $this->parseTable();
                 $sql[] = '('.implode(',', $arrField).')';
                 $sql[] = 'VALUES';
-                $sql[] = '('.implode(',', $arrValue).')';
+                $sql[] = '('.implode(',', $values).')';
                 $data = implode(' ', $sql);
 
-                unset($bindData, $arrField, $arrValue, $sql);
+                unset($bindData, $arrField, $values, $sql);
             }
         }
         $bind = array_merge($this->getBindParams(), $bind);
@@ -540,10 +540,10 @@ class Select
                     }
                 }
 
-                $arrValue = $bindData[1];
+                $values = $bindData[1];
 
-                if ($arrValue) {
-                    $dataResult[] = '('.implode(',', $arrValue).')';
+                if ($values) {
+                    $dataResult[] = '('.implode(',', $values).')';
                 }
             }
 
@@ -557,7 +557,7 @@ class Select
                 $sql[] = implode(',', $dataResult);
                 $data = implode(' ', $sql);
 
-                unset($arrField, $arrValue, $sql, $dataResult);
+                unset($arrField, $values, $sql, $dataResult);
             }
         }
 
@@ -600,7 +600,7 @@ class Select
             $questionMark = 0;
             $bindData = $this->getBindData($data, $bind, $questionMark);
             $arrField = $bindData[0];
-            $arrValue = $bindData[1];
+            $values = $bindData[1];
             $sTableName = $this->getCurrentTable();
 
             // SET 语句
@@ -608,11 +608,11 @@ class Select
 
             foreach ($arrField as $key => $field) {
                 $field = $this->qualifyOneColumn($field, $sTableName);
-                $arrSetData[] = $field.' = '.$arrValue[$key];
+                $arrSetData[] = $field.' = '.$values[$key];
             }
 
             // 构造 update 语句
-            if ($arrValue) {
+            if ($values) {
                 $sql = [];
                 $sql[] = 'UPDATE';
                 $sql[] = ltrim($this->parseFrom(), 'FROM ');
@@ -624,7 +624,7 @@ class Select
                 $sql = array_filter($sql);
                 $data = implode(' ', $sql);
 
-                unset($bindData, $arrField, $arrValue, $arrSetData, $sql);
+                unset($bindData, $arrField, $values, $arrSetData, $sql);
             }
         }
         $bind = array_merge($this->getBindParams(), $bind);
@@ -4142,12 +4142,13 @@ class Select
      */
     protected function getBindData($data, &$bind = [], &$questionMark = 0, $intIndex = 0)
     {
-        $arrField = $arrValue = [];
+        $arrField = $values = [];
         $strTableName = $this->getCurrentTable();
 
         foreach ($data as $sKey => $value) {
             // 表达式支持
-            if (false !== strpos($value, '{') && preg_match('/^{(.+?)}$/', $value, $arrRes)) {
+            if (false !== strpos($value, '{') && 
+                preg_match('/^{(.+?)}$/', $value, $arrRes)) {
                 $value = $this->connect->qualifyExpression($arrRes[1], $strTableName);
             } else {
                 $value = $this->connect->qualifyColumnValue($value, false);
@@ -4159,21 +4160,24 @@ class Select
             }
 
             if (0 === strpos($value, ':') || !empty($arrRes)) {
-                $arrValue[] = $value;
+                $values[] = $value;
             } else {
                 // 转换 ? 占位符至 : 占位符
                 if ('?' === $value && isset($bind[$questionMark])) {
                     $sKey = 'questionmark_'.$questionMark;
                     $value = $bind[$questionMark];
                     unset($bind[$questionMark]);
+
                     $this->deleteBindParams($questionMark);
+
                     $questionMark++;
                 }
 
                 if ($intIndex > 0) {
                     $sKey = $sKey.'_'.$intIndex;
                 }
-                $arrValue[] = ':'.$sKey;
+
+                $values[] = ':'.$sKey;
 
                 $this->bind($sKey, $value, $this->connect->getBindParamType($value));
             }
@@ -4181,7 +4185,7 @@ class Select
 
         return [
             $arrField,
-            $arrValue,
+            $values,
         ];
     }
 
