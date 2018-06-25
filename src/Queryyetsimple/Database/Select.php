@@ -400,12 +400,12 @@ class Select
      * 原生 sql 查询数据 select.
      *
      * @param null|callable|select|string $mixData
-     * @param array                       $arrBind
+     * @param array                       $bind
      * @param bool                        $flag   指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
-    public function select($mixData = null, $arrBind = [], $flag = false)
+    public function select($mixData = null, $bind = [], $flag = false)
     {
         if (!Type::these($mixData, [
             'string',
@@ -437,7 +437,7 @@ class Select
 
         return $this->{'runNativeSql'}(...[
             $mixData,
-            $arrBind,
+            $bind,
         ]);
     }
 
@@ -445,13 +445,13 @@ class Select
      * 插入数据 insert (支持原生 sql).
      *
      * @param array|string $mixData
-     * @param array        $arrBind
+     * @param array        $bind
      * @param bool         $replace
      * @param bool         $flag      指示是否不做任何操作只返回 SQL
      *
      * @return int 最后插入ID
      */
-    public function insert($mixData, $arrBind = [], $replace = false, $flag = false)
+    public function insert($mixData, $bind = [], $replace = false, $flag = false)
     {
         if (!Type::these($mixData, [
             'string',
@@ -461,12 +461,12 @@ class Select
         }
 
         // 绑定参数
-        $arrBind = array_merge($this->getBindParams(), $arrBind);
+        $bind = array_merge($this->getBindParams(), $bind);
 
         // 构造数据插入
         if (is_array($mixData)) {
             $questionMark = 0;
-            $bindData = $this->getBindData($mixData, $arrBind, $questionMark);
+            $bindData = $this->getBindData($mixData, $bind, $questionMark);
             $arrField = $bindData[0];
             $arrValue = $bindData[1];
             $sTableName = $this->getCurrentTable();
@@ -488,7 +488,7 @@ class Select
                 unset($bindData, $arrField, $arrValue, $sql);
             }
         }
-        $arrBind = array_merge($this->getBindParams(), $arrBind);
+        $bind = array_merge($this->getBindParams(), $bind);
 
         // 执行查询
         $this->safeSql($flag)->setNativeSql(
@@ -497,7 +497,7 @@ class Select
 
         return $this->{'runNativeSql'}(...[
             $mixData,
-            $arrBind,
+            $bind,
         ]);
     }
 
@@ -505,20 +505,20 @@ class Select
      * 批量插入数据 insertAll.
      *
      * @param array $arrData
-     * @param array $arrBind
+     * @param array $bind
      * @param bool  $replace
      * @param bool  $flag      指示是否不做任何操作只返回 SQL
      *
      * @return int 最后插入ID
      */
-    public function insertAll($arrData, $arrBind = [], $replace = false, $flag = false)
+    public function insertAll($arrData, $bind = [], $replace = false, $flag = false)
     {
         if (!is_array($arrData)) {
             throw new Exception('Unsupported parameters.');
         }
 
         // 绑定参数
-        $arrBind = array_merge($this->getBindParams(), $arrBind);
+        $bind = array_merge($this->getBindParams(), $bind);
 
         // 构造数据批量插入
         if (is_array($arrData)) {
@@ -531,7 +531,7 @@ class Select
                     continue;
                 }
 
-                $bindData = $this->getBindData($arrTemp, $arrBind, $questionMark, $key);
+                $bindData = $this->getBindData($arrTemp, $bind, $questionMark, $key);
                 
                 if (0 === $key) {
                     $arrField = $bindData[0];
@@ -561,7 +561,7 @@ class Select
             }
         }
 
-        $arrBind = array_merge($this->getBindParams(), $arrBind);
+        $bind = array_merge($this->getBindParams(), $bind);
 
         // 执行查询
         $this->safeSql($flag)->
@@ -570,7 +570,7 @@ class Select
 
         return $this->{'runNativeSql'}(...[
             $mixData,
-            $arrBind,
+            $bind,
         ]);
     }
 
@@ -578,12 +578,12 @@ class Select
      * 更新数据 update (支持原生 sql).
      *
      * @param array|string $mixData
-     * @param array        $arrBind
+     * @param array        $bind
      * @param bool         $flag   指示是否不做任何操作只返回 SQL
      *
      * @return int 影响记录
      */
-    public function update($mixData, $arrBind = [], $flag = false)
+    public function update($mixData, $bind = [], $flag = false)
     {
         if (!Type::these($mixData, [
             'string',
@@ -593,12 +593,12 @@ class Select
         }
 
         // 绑定参数
-        $arrBind = array_merge($this->getBindParams(), $arrBind);
+        $bind = array_merge($this->getBindParams(), $bind);
 
         // 构造数据更新
         if (is_array($mixData)) {
             $questionMark = 0;
-            $bindData = $this->getBindData($mixData, $arrBind, $questionMark);
+            $bindData = $this->getBindData($mixData, $bind, $questionMark);
             $arrField = $bindData[0];
             $arrValue = $bindData[1];
             $sTableName = $this->getCurrentTable();
@@ -627,13 +627,13 @@ class Select
                 unset($bindData, $arrField, $arrValue, $arrSetData, $sql);
             }
         }
-        $arrBind = array_merge($this->getBindParams(), $arrBind);
+        $bind = array_merge($this->getBindParams(), $bind);
 
         $this->safeSql($flag)->setNativeSql('update');
 
         return $this->{'runNativeSql'}(...[
             $mixData,
-            $arrBind,
+            $bind,
         ]);
     }
 
@@ -642,12 +642,12 @@ class Select
      *
      * @param string $column
      * @param mixed  $mixValue
-     * @param array  $arrBind
+     * @param array  $bind
      * @param bool   $flag     指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
-    public function updateColumn($column, $mixValue, $arrBind = [], $flag = false)
+    public function updateColumn($column, $mixValue, $bind = [], $flag = false)
     {
         if (!is_string($column)) {
             throw new Exception('Unsupported parameters.');
@@ -657,7 +657,7 @@ class Select
             [
                 $column => $mixValue,
             ],
-            $arrBind,
+            $bind,
             $flag
         );
     }
@@ -667,17 +667,17 @@ class Select
      *
      * @param string $column
      * @param int    $step
-     * @param array  $arrBind
+     * @param array  $bind
      * @param bool   $flag     指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
-    public function updateIncrease($column, $step = 1, $arrBind = [], $flag = false)
+    public function updateIncrease($column, $step = 1, $bind = [], $flag = false)
     {
         return $this->updateColumn(
             $column,
             '{['.$column.']+'.$step.'}',
-            $arrBind,
+            $bind,
             $flag
         );
     }
@@ -687,17 +687,17 @@ class Select
      *
      * @param string $column
      * @param int    $step
-     * @param array  $arrBind
+     * @param array  $bind
      * @param bool   $flag     指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
-    public function updateDecrease($column, $step = 1, $arrBind = [], $flag = false)
+    public function updateDecrease($column, $step = 1, $bind = [], $flag = false)
     {
         return $this->updateColumn(
             $column,
             '{['.$column.']-'.$step.'}',
-            $arrBind,
+            $bind,
             $flag
         );
     }
@@ -706,12 +706,12 @@ class Select
      * 删除数据 delete (支持原生 sql).
      *
      * @param null|string $mixData
-     * @param array       $arrBind
+     * @param array       $bind
      * @param bool        $flag   指示是否不做任何操作只返回 SQL
      *
      * @return int 影响记录
      */
-    public function delete($mixData = null, $arrBind = [], $flag = false)
+    public function delete($mixData = null, $bind = [], $flag = false)
     {
         if (!Type::these($mixData, [
             'string',
@@ -741,13 +741,13 @@ class Select
             unset($sql);
         }
 
-        $arrBind = array_merge($this->getBindParams(), $arrBind);
+        $bind = array_merge($this->getBindParams(), $bind);
 
         $this->safeSql($flag)->setNativeSql('delete');
 
         return $this->{'runNativeSql'}(...[
             $mixData,
-            $arrBind,
+            $bind,
         ]);
     }
 
@@ -775,16 +775,16 @@ class Select
      * 声明 statement 运行一般 sql,无返回.
      *
      * @param string $strData
-     * @param array  $arrBind
+     * @param array  $bind
      * @param bool   $flag   指示是否不做任何操作只返回 SQL
      */
-    public function statement(string $strData, $arrBind = [], $flag = false)
+    public function statement(string $strData, $bind = [], $flag = false)
     {
         $this->safeSql($flag)->setNativeSql('statement');
 
         return $this->{'runNativeSql'}(...[
             $strData,
-            $arrBind,
+            $bind,
         ]);
     }
 
@@ -4030,11 +4030,11 @@ class Select
      * 分析绑定参数数据.
      *
      * @param array $arrData
-     * @param array $arrBind
+     * @param array $bind
      * @param int   $questionMark
      * @param int   $intIndex
      */
-    protected function getBindData($arrData, &$arrBind = [], &$questionMark = 0, $intIndex = 0)
+    protected function getBindData($arrData, &$bind = [], &$questionMark = 0, $intIndex = 0)
     {
         $arrField = $arrValue = [];
         $strTableName = $this->getCurrentTable();
@@ -4056,10 +4056,10 @@ class Select
                 $arrValue[] = $mixValue;
             } else {
                 // 转换 ? 占位符至 : 占位符
-                if ('?' === $mixValue && isset($arrBind[$questionMark])) {
+                if ('?' === $mixValue && isset($bind[$questionMark])) {
                     $sKey = 'questionmark_'.$questionMark;
-                    $mixValue = $arrBind[$questionMark];
-                    unset($arrBind[$questionMark]);
+                    $mixValue = $bind[$questionMark];
+                    unset($bind[$questionMark]);
                     $this->deleteBindParams($questionMark);
                     $questionMark++;
                 }
