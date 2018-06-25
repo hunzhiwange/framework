@@ -1506,10 +1506,10 @@ class Select
             // 确定 table_name 和 schema
             $tmp = explode('.', $table);
             if (isset($tmp[1])) {
-                $sSchema = $tmp[0];
+                $schema = $tmp[0];
                 $tableName = $tmp[1];
             } else {
-                $sSchema = null;
+                $schema = null;
                 $tableName = $table;
             }
 
@@ -1518,7 +1518,7 @@ class Select
 
             $this->options['using'][$alias] = [
                 'table_name' => $table,
-                'schema'     => $sSchema,
+                'schema'     => $schema,
             ];
         }
 
@@ -3253,6 +3253,7 @@ class Select
         if (empty($this->options['order'])) {
             return '';
         }
+
         // 删除存在 join, order 无效
         if (true === $forDelete && 
             (count($this->options['from']) > 1 || 
@@ -3275,7 +3276,8 @@ class Select
             return '';
         }
 
-        return 'GROUP BY '.implode(',', $this->options['group']);
+        return 'GROUP BY '.
+            implode(',', $this->options['group']);
     }
 
     /**
@@ -3297,12 +3299,12 @@ class Select
     /**
      * 解析 limit 分析结果.
      *
-     * @param bool $booNullLimitOffset
+     * @param bool $nullLimitOffset
      * @param bool $forDelete
      *
      * @return string
      */
-    protected function parseLimitcount($booNullLimitOffset = false, $forDelete = false)
+    protected function parseLimitcount($nullLimitOffset = false, $forDelete = false)
     {
         // 删除存在 join, limit 无效
         if (true === $forDelete && 
@@ -3311,7 +3313,7 @@ class Select
             return '';
         }
 
-        if (true === $booNullLimitOffset) {
+        if (true === $nullLimitOffset) {
             $this->options['limitoffset'] = null;
         }
 
@@ -3328,7 +3330,10 @@ class Select
         }
 
         throw new BadMethodCallException(
-            sprintf('Connect method %s is not exits', 'parseLimitcount')
+            sprintf(
+                'Connect method %s is not exits',
+                'parseLimitcount'
+            )
         );
     }
 
@@ -3413,10 +3418,10 @@ class Select
                         'month',
                         'day',
                         'year',
-                    ] as $strTimeType) {
-                        if (0 === stripos($cond[1], '@'.$strTimeType)) {
-                            $findTime = $strTimeType;
-                            $cond[1] = ltrim(substr($cond[1], strlen($strTimeType) + 1));
+                    ] as $timeType) {
+                        if (0 === stripos($cond[1], '@'.$timeType)) {
+                            $findTime = $timeType;
+                            $cond[1] = ltrim(substr($cond[1], strlen($timeType) + 1));
                             break;
                         }
                     }
@@ -3429,11 +3434,11 @@ class Select
 
                 // 格式化字段值，支持数组
                 if (isset($cond[2])) {
-                    $booIsArray = true;
+                    $isArray = true;
 
                     if (!is_array($cond[2])) {
                         $cond[2] = (array) $cond[2];
-                        $booIsArray = false;
+                        $isArray = false;
                     }
 
                     foreach ($cond[2] as &$tmp) {
@@ -3479,7 +3484,7 @@ class Select
                         }
                     }
 
-                    if (false === $booIsArray || 
+                    if (false === $isArray || 
                         (1 === count($cond[2]) && 
                             0 === strpos(trim($cond[2][0]), '('))) {
                         $cond[2] = reset($cond[2]);
@@ -3513,6 +3518,7 @@ class Select
                             'an array of not less than two elements.'
                         );
                     }
+
                     $sqlCond[] = $cond[0].' '.
                         strtoupper($cond[1]).' '.
                         $cond[2][0].' AND '.$cond[2][1];
@@ -3545,6 +3551,7 @@ class Select
     {
         if (!is_array($cond)) {
             $args = func_get_args();
+
             $this->addConditions($args[1], $conditionType, $args[2] ?? null);
         } else {
             foreach ($cond as $tmp) {
@@ -3558,15 +3565,15 @@ class Select
     /**
      * 别名类型和逻辑.
      *
-     * @param string $strType
-     * @param string $strLogic
+     * @param string $type
+     * @param string $logic
      * @param mixed  $cond
      *
      * @return $this
      */
-    protected function aliatypeAndLogic($strType, $strLogic, $cond)
+    protected function aliatypeAndLogic($type, $logic, $cond)
     {
-        $this->setTypeAndLogic($strType, $strLogic);
+        $this->setTypeAndLogic($type, $logic);
 
         if (!is_string($cond) && is_callable($cond)) {
             $select = new static($this->connect);
@@ -3574,16 +3581,23 @@ class Select
             $resultCallback = call_user_func_array($cond, [
                 &$select,
             ]);
+
             if (null === $resultCallback) {
-                $strParseType = 'parse'.ucwords($strType);
-                $tmp = $select->{$strParseType}(true);
+                $tmp = $select->{'parse'.ucwords($type)}(true);
             } else {
                 $tmp = $resultCallback;
             }
-            $this->setConditionItem(static::LOGIC_GROUP_LEFT.$tmp.static::LOGIC_GROUP_RIGHT, 'string__');
+
+            $this->setConditioitem(
+                static::LOGIC_GROUP_LEFT.
+                $tmp.
+                static::LOGIC_GROUP_RIGHT,
+                'string__'
+            );
 
             return $this;
         }
+
         $args = func_get_args();
         array_shift($args);
         array_shift($args);
@@ -3608,17 +3622,17 @@ class Select
             ];
         } else {
             // 一维数组统一成二维数组格式
-            $booOneImension = false;
+            $oneImension = false;
 
             foreach ($args[0] as $key => $value) {
                 if (is_int($key) && !is_array($value)) {
-                    $booOneImension = true;
+                    $oneImension = true;
                 }
 
                 break;
             }
 
-            if (true === $booOneImension) {
+            if (true === $oneImension) {
                 $conditions = [
                     $args[0],
                 ];
@@ -3628,41 +3642,49 @@ class Select
         }
 
         // 遍历数组拼接结果
-        foreach ($conditions as $strKey => $tmp) {
-            if (!is_int($strKey)) {
-                $strKey = trim($strKey);
+        foreach ($conditions as $key => $tmp) {
+            if (!is_int($key)) {
+                $key = trim($key);
             }
 
             // 字符串表达式
-            if (is_string($strKey) && 'string__' === $strKey) {
+            if (is_string($key) && 'string__' === $key) {
                 // 不符合规则抛出异常
                 if (!is_string($tmp)) {
-                    throw new Exception('String__ type only supports string.');
+                    throw new Exception(
+                        'String__ type only supports string.'
+                    );
                 }
 
                 // 表达式支持
-                if (false !== strpos($tmp, '{') && preg_match('/^{(.+?)}$/', $tmp, $matches)) {
-                    $tmp = $this->connect->qualifyExpression($matches[1], $table);
+                if (false !== strpos($tmp, '{') && 
+                    preg_match('/^{(.+?)}$/', $tmp, $matches)) {
+                    $tmp = $this->connect->qualifyExpression(
+                        $matches[1],
+                        $table
+                    );
                 }
-                $this->setConditionItem($tmp, 'string__');
+
+                $this->setConditioitem($tmp, 'string__');
             }
 
             // 子表达式
-            elseif (is_string($strKey) && in_array($strKey, [
+            elseif (is_string($key) && in_array($key, [
                 'subor__',
                 'suband__',
             ], true)) {
-                $arrTypeAndLogic = $this->getTypeAndLogic();
+                $typeAndLogic = $this->getTypeAndLogic();
 
                 $select = new static($this->connect);
                 $select->setCurrentTable($this->getCurrentTable());
-                $select->setTypeAndLogic($arrTypeAndLogic[0]);
+                $select->setTypeAndLogic($typeAndLogic[0]);
 
                 // 逻辑表达式
                 if (isset($tmp['logic__'])) {
                     if (strtolower($tmp['logic__']) === static::LOGIC_OR) {
                         $select->setTypeAndLogic(null, static::LOGIC_OR);
                     }
+
                     unset($tmp['logic__']);
                 }
 
@@ -3671,21 +3693,35 @@ class Select
                 );
 
                 // 解析结果
-                $strParseType = 'parse'.ucwords($arrTypeAndLogic[0]);
-                $strOldLogic = $arrTypeAndLogic[1];
-                $this->setTypeAndLogic(null, 'subor__' ? static::LOGIC_OR : static::LOGIC_AND);
-                $this->setConditionItem(static::LOGIC_GROUP_LEFT.$select->{$strParseType}(true).static::LOGIC_GROUP_RIGHT, 'string__');
-                $this->setTypeAndLogic(null, $strOldLogic);
+                $parseType = 'parse'.ucwords($typeAndLogic[0]);
+                $oldLogic = $typeAndLogic[1];
+
+                $this->setTypeAndLogic(
+                    null, 'subor__' ? 
+                    static::LOGIC_OR : 
+                    static::LOGIC_AND
+                );
+
+                $this->setConditioitem(
+                    static::LOGIC_GROUP_LEFT.
+                    $select->{$parseType}(true).
+                    static::LOGIC_GROUP_RIGHT, 
+                    'string__'
+                );
+
+                $this->setTypeAndLogic(null, $oldLogic);
             }
 
             // exists 支持
-            elseif (is_string($strKey) && in_array($strKey, [
+            elseif (is_string($key) && in_array($key, [
                 'exists__',
                 'notexists__',
             ], true)) {
                 // having 不支持 [not] exists
                 if ('having' === $this->getTypeAndLogic()[0]) {
-                    throw new Exception('Having do not support [not] exists writing.');
+                    throw new Exception(
+                        'Having do not support [not] exists writing.'
+                    );
                 }
 
                 if ($tmp instanceof self) {
@@ -3693,9 +3729,11 @@ class Select
                 } elseif (!is_string($tmp) && is_callable($tmp)) {
                     $select = new static($this->connect);
                     $select->setCurrentTable($this->getCurrentTable());
+
                     $resultCallback = call_user_func_array($tmp, [
                         &$select,
                     ]);
+
                     if (null === $resultCallback) {
                         $tmp = $tmp = $select->makeSql();
                     } else {
@@ -3703,12 +3741,12 @@ class Select
                     }
                 }
 
-                $tmp = ('notexists__' === $strKey ? 'NOT EXISTS ' : 'EXISTS ').
+                $tmp = ('notexists__' === $key ? 'NOT EXISTS ' : 'EXISTS ').
                     static::LOGIC_GROUP_LEFT.
                     $tmp.
                     static::LOGIC_GROUP_RIGHT;
 
-                $this->setConditionItem($tmp, 'string__');
+                $this->setConditioitem($tmp, 'string__');
             }
 
             // 其它
@@ -3719,8 +3757,8 @@ class Select
                 }
 
                 // 合并字段到数组
-                if (is_string($strKey)) {
-                    array_unshift($tmp, $strKey);
+                if (is_string($key)) {
+                    array_unshift($tmp, $key);
                 }
 
                 // 处理默认 “=” 的类型
@@ -3747,7 +3785,8 @@ class Select
                     if (isset($tmp[2]) && is_string($tmp[2])) {
                         $tmp[2] = explode(',', $tmp[2]);
                     }
-                    $this->setConditionItem([
+
+                    $this->setConditioitem([
                         $tmp[0],
                         $tmp[1],
                         $tmp[2] ?? null,
@@ -3756,7 +3795,7 @@ class Select
 
                 // 普通类型
                 else {
-                    $this->setConditionItem($tmp);
+                    $this->setConditioitem($tmp);
                 }
             }
         }
@@ -3767,42 +3806,46 @@ class Select
     /**
      * 设置条件的一项.
      *
-     * @param array  $arrItem
-     * @param string $strType
+     * @param array  $items
+     * @param string $type
      */
-    protected function setConditionItem($arrItem, $strType = '')
+    protected function setConditioitem($items, $type = '')
     {
-        $arrTypeAndLogic = $this->getTypeAndLogic();
+        $typeAndLogic = $this->getTypeAndLogic();
+
         // 字符串类型
-        if ($strType) {
-            if (empty($this->options[$arrTypeAndLogic[0]][$strType])) {
-                $this->options[$arrTypeAndLogic[0]][] = $arrTypeAndLogic[1];
-                $this->options[$arrTypeAndLogic[0]][$strType] = [];
+        if ($type) {
+            if (empty($this->options[$typeAndLogic[0]][$type])) {
+                $this->options[$typeAndLogic[0]][] = $typeAndLogic[1];
+                $this->options[$typeAndLogic[0]][$type] = [];
             }
-            $this->options[$arrTypeAndLogic[0]][$strType][] = $arrItem;
+
+            $this->options[$typeAndLogic[0]][$type][] = $items;
         } else {
             // 格式化时间
             if (($inTimeCondition = $this->getInTimeCondition())) {
-                $arrItem[1] = '@'.$inTimeCondition.' '.$arrItem[1];
+                $items[1] = '@'.$inTimeCondition.' '.$items[1];
             }
-            $this->options[$arrTypeAndLogic[0]][] = $arrTypeAndLogic[1];
-            $this->options[$arrTypeAndLogic[0]][] = $arrItem;
+
+            $this->options[$typeAndLogic[0]][] = $typeAndLogic[1];
+            $this->options[$typeAndLogic[0]][] = $items;
         }
     }
 
     /**
      * 设置条件的逻辑和类型.
      *
-     * @param string $strType
-     * @param string $strLogic
+     * @param string $type
+     * @param string $logic
      */
-    protected function setTypeAndLogic($strType = null, $strLogic = null)
+    protected function setTypeAndLogic($type = null, $logic = null)
     {
-        if (null !== $strType) {
-            $this->conditionType = $strType;
+        if (null !== $type) {
+            $this->conditionType = $type;
         }
-        if (null !== $strLogic) {
-            $this->conditionLogic = $strLogic;
+
+        if (null !== $logic) {
+            $this->conditionLogic = $logic;
         }
     }
 
@@ -3830,6 +3873,7 @@ class Select
     protected function qualifyOneColumn($field, $tableName = null)
     {
         $field = trim($field);
+
         if (empty($field)) {
             return '';
         }
@@ -3838,8 +3882,12 @@ class Select
             $tableName = $this->getCurrentTable();
         }
 
-        if (false !== strpos($field, '{') && preg_match('/^{(.+?)}$/', $field, $matches)) {
-            $field = $this->connect->qualifyExpression($matches[1], $tableName);
+        if (false !== strpos($field, '{') && 
+            preg_match('/^{(.+?)}$/', $field, $matches)) {
+            $field = $this->connect->qualifyExpression(
+                $matches[1],
+                $tableName
+            );
         } elseif (!preg_match('/\(.*\)/', $field)) {
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
                 $currentTableName = $matches[1];
@@ -3847,7 +3895,10 @@ class Select
             } else {
                 $currentTableName = $tableName;
             }
-            $field = $this->connect->qualifyTableOrColumn("{$currentTableName}.{$field}");
+
+            $field = $this->connect->qualifyTableOrColumn(
+                "{$currentTableName}.{$field}"
+            );
         }
 
         return $field;
@@ -3856,7 +3907,7 @@ class Select
     /**
      * 连表 join 操作.
      *
-     * @param string     $sJoinType
+     * @param string     $joinType
      * @param mixed      $names
      * @param mixed      $cols
      * @param null|array $arrCondArgs
@@ -3864,20 +3915,24 @@ class Select
      *
      * @return $this
      */
-    protected function addJoin($sJoinType, $names, $cols, $cond = null)
+    protected function addJoin($joinType, $names, $cols, $cond = null)
     {
         // 验证 join 类型
-        if (!isset(static::$joinTypes[$sJoinType])) {
-            throw new Exception(sprintf('Invalid JOIN type %s.', $sJoinType));
+        if (!isset(static::$joinTypes[$joinType])) {
+            throw new Exception(
+                sprintf('Invalid JOIN type %s.', $joinType)
+            );
         }
 
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
         if (count($this->options['union'])) {
-            throw new Exception('JOIN queries cannot be used while using UNION queries.');
+            throw new Exception(
+                'JOIN queries cannot be used while using UNION queries.'
+            );
         }
 
         // 是否分析 schema，子表达式不支持
-        $booParseSchema = true;
+        $parseSchema = true;
 
         // 没有指定表，获取默认表
         if (empty($names)) {
@@ -3895,28 +3950,34 @@ class Select
                 // 对象子表达式
                 if ($table instanceof self) {
                     $table = $table->makeSql(true);
+
                     if (!$alias) {
                         $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                     }
-                    $booParseSchema = false;
+
+                    $parseSchema = false;
                 }
 
                 // 回调方法子表达式
-                elseif (!is_string($table) && is_callable($table)) {
+                elseif (!is_string($table) && 
+                    is_callable($table)) {
                     $select = new static($this->connect);
                     $select->setCurrentTable($this->getCurrentTable());
                     $resultCallback = call_user_func_array($table, [
                         &$select,
                     ]);
+
                     if (null === $resultCallback) {
                         $table = $select->makeSql(true);
                     } else {
                         $table = $resultCallback;
                     }
+
                     if (!$alias) {
                         $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
                     }
-                    $booParseSchema = false;
+
+                    $parseSchema = false;
                 }
 
                 break;
@@ -3927,7 +3988,7 @@ class Select
         elseif ($names instanceof self) {
             $table = $names->makeSql(true);
             $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
-            $booParseSchema = false;
+            $parseSchema = false;
         }
 
         // 回调方法
@@ -3937,25 +3998,28 @@ class Select
             $resultCallback = call_user_func_array($names, [
                 &$select,
             ]);
+
             if (null === $resultCallback) {
                 $table = $select->makeSql(true);
             } else {
                 $table = $resultCallback;
             }
+
             $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
-            $booParseSchema = false;
+            $parseSchema = false;
         }
 
         // 字符串子表达式
         elseif (0 === strpos(trim($names), '(')) {
-            if (false !== ($intAsPosition = strripos($names, 'as'))) {
-                $table = trim(substr($names, 0, $intAsPosition - 1));
-                $alias = trim(substr($names, $intAsPosition + 2));
+            if (false !== ($position = strripos($names, 'as'))) {
+                $table = trim(substr($names, 0, $position - 1));
+                $alias = trim(substr($names, $position + 2));
             } else {
                 $table = $names;
                 $alias = static::DEFAULT_SUBEXPRESSION_ALIAS;
             }
-            $booParseSchema = false;
+
+            $parseSchema = false;
         } else {
             // 字符串指定别名
             if (preg_match('/^(.+)\s+AS\s+(.+)$/i', $names, $matches)) {
@@ -3968,48 +4032,57 @@ class Select
         }
 
         // 确定 table_name 和 schema
-        if (true === $booParseSchema) {
+        if (true === $parseSchema) {
             $tmp = explode('.', $table);
+
             if (isset($tmp[1])) {
-                $sSchema = $tmp[0];
+                $schema = $tmp[0];
                 $tableName = $tmp[1];
             } else {
-                $sSchema = null;
+                $schema = null;
                 $tableName = $table;
             }
         } else {
-            $sSchema = null;
+            $schema = null;
             $tableName = $table;
         }
 
         // 获得一个唯一的别名
-        $alias = $this->uniqueAlias(empty($alias) ? $tableName : $alias);
+        $alias = $this->uniqueAlias(
+            empty($alias) ? $tableName : $alias
+        );
 
         // 只有表操作才设置当前表
         if ($this->getIsTable()) {
-            $this->setCurrentTable(($sSchema ? $sSchema.'.' : '').$alias);
+            $this->setCurrentTable(
+                ($schema ? $schema.'.' : '').$alias
+            );
         }
 
         // 查询条件
         $args = func_get_args();
+
         if (count($args) > 3) {
-            for ($nI = 0; $nI <= 2; $nI++) {
+            for ($i = 0; $i <= 2; $i++) {
                 array_shift($args);
             }
+
             $select = new static($this->connect);
             $select->setCurrentTable($alias);
+
             call_user_func_array([
                 $select,
                 'where',
             ], $args);
+
             $cond = $select->parseWhere(true);
         }
 
         // 添加一个要查询的数据表
         $this->options['from'][$alias] = [
-            'join_type'  => $sJoinType,
+            'join_type'  => $joinType,
             'table_name' => $tableName,
-            'schema'     => $sSchema,
+            'schema'     => $schema,
             'join_cond'  => $cond,
         ];
 
@@ -4028,7 +4101,8 @@ class Select
     protected function addCols($tableName, $cols)
     {
         // 处理条件表达式
-        if (is_string($cols) && false !== strpos($cols, ',') && 
+        if (is_string($cols) && 
+            false !== strpos($cols, ',') && 
             false !== strpos($cols, '{') && 
             preg_match_all('/{(.+?)}/', $cols, $matches)) {
             $cols = str_replace(
@@ -4062,28 +4136,29 @@ class Select
             return;
         }
 
-        foreach ($cols as $alias => $mixCol) {
-            if (is_string($mixCol)) {
+        foreach ($cols as $alias => $col) {
+            if (is_string($col)) {
                 // 处理条件表达式
-                if (is_string($mixCol) && 
-                    false !== strpos($mixCol, ',') && 
-                    false !== strpos($mixCol, '{') && 
-                    preg_match_all('/{(.+?)}/', $mixCol, $subMatches)) {
-                    $mixCol = str_replace(
+                if (is_string($col) && 
+                    false !== strpos($col, ',') && 
+                    false !== strpos($col, '{') && 
+                    preg_match_all('/{(.+?)}/', $col, $subMatches)) {
+                    $col = str_replace(
                         $subMatches[1][0],
                         base64_encode($subMatches[1][0]),
-                        $mixCol
+                        $col
                     );
                 }
-                $mixCol = Arr::normalize($mixCol);
+
+                $col = Arr::normalize($col);
 
                 // 还原
                 if (!empty($subMatches)) {
                     foreach ($subMatches[1] as $tmp) {
-                        $mixCol[
+                        $col[
                             array_search(
                                 '{'.base64_encode($tmp).'}',
-                                $mixCol,
+                                $col,
                                 true
                             )
                         ] = '{'.$tmp.'}';
@@ -4091,7 +4166,7 @@ class Select
                 }
 
                 // 将包含多个字段的字符串打散
-                foreach (Arr::normalize($mixCol) as $col) {
+                foreach (Arr::normalize($col) as $col) {
                     $currentTableName = $tableName;
 
                     // 检查是不是 "字段名 AS 别名"这样的形式
@@ -4115,7 +4190,7 @@ class Select
             } else {
                 $this->options['columns'][] = [
                     $tableName,
-                    $mixCol,
+                    $col,
                     is_string($alias) ? $alias : null,
                 ];
             }
@@ -4139,7 +4214,10 @@ class Select
         // 表达式支持
         if (false !== strpos($field, '{') && 
             preg_match('/^{(.+?)}$/', $field, $matches)) {
-            $field = $this->connect->qualifyExpression($matches[1], $tableName);
+            $field = $this->connect->qualifyExpression(
+                $matches[1],
+                $tableName
+            );
         } else {
             // 检查字段名是否包含表名称
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
@@ -4151,7 +4229,10 @@ class Select
                 $tableName = '';
             }
 
-            $field = $this->connect->qualifyColumn($field, $tableName);
+            $field = $this->connect->qualifyColumn(
+                $field,
+                $tableName
+            );
         }
 
         $field = "{$type}(${field})";
@@ -4175,10 +4256,10 @@ class Select
      */
     protected function query()
     {
-        $strSql = $this->makeSql();
+        $sql = $this->makeSql();
 
         $args = [
-            $strSql,
+            $sql,
             $this->getBindParams(),
             $this->queryParams['master'],
             $this->queryParams['fetch_type']['fetch_type'],
@@ -4247,7 +4328,6 @@ class Select
 
         if ($className && !class_exists($className)) {
             $this->queryDefault($data);
-
             return;
         }
 
@@ -4280,13 +4360,16 @@ class Select
         if (null === $data) {
             return $this;
         }
+
         if (is_string($data)) {
             // 验证参数
-            $strSqlType = $this->connect->getSqlType($data);
-            if ('procedure' === $strSqlType) {
-                $strSqlType = 'select';
+            $sqlType = $this->connect->getSqlType($data);
+
+            if ('procedure' === $sqlType) {
+                $sqlType = 'select';
             }
-            if ($strSqlType !== $nativeSql) {
+
+            if ($sqlType !== $nativeSql) {
                 throw new Exception('Unsupported parameters.');
             }
 
@@ -4297,7 +4380,9 @@ class Select
                 return $args;
             }
 
-            return $this->connect->{'select' === $nativeSql ? 'query' : 'execute'}(...$args);
+            return $this->connect->{
+                'select' === $nativeSql ? 'query' : 'execute'
+            }(...$args);
         }
 
         throw new Exception('Unsupported parameters.');
@@ -4372,9 +4457,9 @@ class Select
      * @param array $data
      * @param array $bind
      * @param int   $questionMark
-     * @param int   $intIndex
+     * @param int   $index
      */
-    protected function getBindData($data, &$bind = [], &$questionMark = 0, $intIndex = 0)
+    protected function getBindData($data, &$bind = [], &$questionMark = 0, $index = 0)
     {
         $fields = $values = [];
         $tableName = $this->getCurrentTable();
@@ -4383,13 +4468,19 @@ class Select
             // 表达式支持
             if (false !== strpos($value, '{') && 
                 preg_match('/^{(.+?)}$/', $value, $matches)) {
-                $value = $this->connect->qualifyExpression($matches[1], $tableName);
+                $value = $this->connect->qualifyExpression(
+                    $matches[1],
+                    $tableName
+                );
             } else {
-                $value = $this->connect->qualifyColumnValue($value, false);
+                $value = $this->connect->qualifyColumnValue(
+                    $value,
+                    false
+                );
             }
 
             // 字段
-            if (0 === $intIndex) {
+            if (0 === $index) {
                 $fields[] = $key;
             }
 
@@ -4407,13 +4498,17 @@ class Select
                     $questionMark++;
                 }
 
-                if ($intIndex > 0) {
-                    $key = $key.'_'.$intIndex;
+                if ($index > 0) {
+                    $key = $key.'_'.$index;
                 }
 
                 $values[] = ':'.$key;
 
-                $this->bind($key, $value, $this->connect->getBindParamType($value));
+                $this->bind(
+                    $key,
+                    $value,
+                    $this->connect->getBindParamType($value)
+                );
             }
         }
 
@@ -4440,7 +4535,8 @@ class Select
      */
     protected function getCurrentTable()
     {
-        if (is_array($this->currentTable)) { // 数组
+        // 数组
+        if (is_array($this->currentTable)) {
             while ((list($alias) = each($this->currentTable)) !== false) {
                 return $this->currentTable = $alias;
             }
@@ -4474,62 +4570,76 @@ class Select
      *
      * @param string $field
      * @param mixed  $value
-     * @param string $strType
+     * @param string $type
      *
      * @return mixed
      */
-    protected function parseTime($field, $value, $strType)
+    protected function parseTime($field, $value, $type)
     {
-        static $arrDate = null, $columns = [];
+        static $date = null, $columns = [];
 
         // 获取时间和字段信息
-        if (null === $arrDate) {
-            $arrDate = getdate();
+        if (null === $date) {
+            $date = getdate();
         }
+
         $field = str_replace('`', '', $field);
         $table = $this->getCurrentTable();
+
         if (!preg_match('/\(.*\)/', $field)) {
             if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
                 $table = $matches[1];
                 $field = $matches[2];
             }
         }
+
         if ('*' === $field) {
             return '';
         }
+
         if (!isset($columns[$table])) {
-            $columns[$table] = $this->connect->getTableColumnsCache($table)['list'];
+            $columns[$table] = $this->connect->getTableColumnsCache(
+                $table
+            )['list'];
         }
 
         // 支持类型
-        switch ($strType) {
+        switch ($type) {
             case 'day':
-                $value = mktime(0, 0, 0, $arrDate['mon'], (int) $value, $arrDate['year']);
-
+                $value = mktime(0, 0, 0, $date['mon'], (int) $value, $date['year']);
                 break;
+
             case 'month':
-                $value = mktime(0, 0, 0, (int) $value, 1, $arrDate['year']);
-
+                $value = mktime(0, 0, 0, (int) $value, 1, $date['year']);
                 break;
+
             case 'year':
                 $value = mktime(0, 0, 0, 1, 1, (int) $value);
-
                 break;
+
             case 'date':
                 $value = strtotime($value);
                 if (false === $value) {
-                    throw new Exception('Please enter a right time of strtotime.');
+                    throw new Exception(
+                        'Please enter a right time of strtotime.'
+                    );
                 }
-
                 break;
+
             default:
-                throw new Exception(sprintf('Unsupported time formatting type %s.', $strType));
+                throw new Exception(
+                    sprintf(
+                        'Unsupported time formatting type %s.',
+                        $type
+                    )
+                );
                 break;
         }
 
         // 自动格式化时间
         if (!empty($columns[$table][$field])) {
             $fieldType = $columns[$table][$field]['type'];
+
             if (in_array($fieldType, [
                 'datetime',
                 'timestamp',
@@ -4560,17 +4670,24 @@ class Select
             return '';
         }
 
-        if (is_array($names)) { // 数组，返回最后一个元素
-            $strAliasReturn = end($names);
-        } else { // 字符串
-            $nDot = strrpos($names, '.');
-            $strAliasReturn = false === $nDot ? $names : substr($names, $nDot + 1);
-        }
-        for ($nI = 2; array_key_exists($strAliasReturn, $this->options['from']); $nI++) {
-            $strAliasReturn = $names.'_'.(string) $nI;
+        // 数组，返回最后一个元素
+        if (is_array($names)) {
+            $result = end($names);
         }
 
-        return $strAliasReturn;
+        // 字符串
+        else {
+            $dot = strrpos($names, '.');
+            $result = false === $dot ? 
+                $names : 
+                substr($names, $dot + 1);
+        }
+
+        for ($i = 2; array_key_exists($result, $this->options['from']); $i++) {
+            $result = $names.'_'.(string) $i;
+        }
+
+        return $result;
     }
 
     /**
@@ -4599,6 +4716,7 @@ class Select
     protected function initOption()
     {
         $this->options = static::$optionsDefault;
+        
         $this->queryParams = static::$queryParamsDefault;
     }
 
