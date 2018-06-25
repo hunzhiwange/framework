@@ -478,10 +478,13 @@ class Select
             $bindData = $this->getBindData($data, $bind, $questionMark);
             $fields = $bindData[0];
             $values = $bindData[1];
-            $sTableName = $this->getCurrentTable();
+            $tableName = $this->getCurrentTable();
 
             foreach ($fields as &$field) {
-                $field = $this->qualifyOneColumn($field, $sTableName);
+                $field = $this->qualifyOneColumn(
+                    $field,
+                    $tableName
+                );
             }
 
             // 构造 insert 语句
@@ -535,7 +538,7 @@ class Select
         if (is_array($data)) {
             $dataResult = [];
             $questionMark = 0;
-            $sTableName = $this->getCurrentTable();
+            $tableName = $this->getCurrentTable();
 
             foreach ($data as $key => $arrTemp) {
                 if (!is_array($arrTemp)) {
@@ -547,7 +550,7 @@ class Select
                 if (0 === $key) {
                     $fields = $bindData[0];
                     foreach ($fields as &$field) {
-                        $field = $this->qualifyOneColumn($field, $sTableName);
+                        $field = $this->qualifyOneColumn($field, $tableName);
                     }
                 }
 
@@ -614,13 +617,13 @@ class Select
             $bindData = $this->getBindData($data, $bind, $questionMark);
             $fields = $bindData[0];
             $values = $bindData[1];
-            $sTableName = $this->getCurrentTable();
+            $tableName = $this->getCurrentTable();
 
             // SET 语句
             $setData = [];
 
             foreach ($fields as $key => $field) {
-                $field = $this->qualifyOneColumn($field, $sTableName);
+                $field = $this->qualifyOneColumn($field, $tableName);
                 $setData[] = $field.' = '.$values[$key];
             }
 
@@ -1492,14 +1495,14 @@ class Select
             $arrTemp = explode('.', $sTable);
             if (isset($arrTemp[1])) {
                 $sSchema = $arrTemp[0];
-                $sTableName = $arrTemp[1];
+                $tableName = $arrTemp[1];
             } else {
                 $sSchema = null;
-                $sTableName = $sTable;
+                $tableName = $sTable;
             }
 
             // 获得一个唯一的别名
-            $alias = $this->uniqueAlias(empty($alias) ? $sTableName : $alias);
+            $alias = $this->uniqueAlias(empty($alias) ? $tableName : $alias);
 
             $this->options['using'][$alias] = [
                 'table_name' => $sTable,
@@ -2919,25 +2922,25 @@ class Select
 
         $arrColumns = [];
         foreach ($this->options['columns'] as $arrEntry) {
-            list($sTableName, $sCol, $alias) = $arrEntry;
+            list($tableName, $sCol, $alias) = $arrEntry;
 
             // 表达式支持
             if (false !== strpos($sCol, '{') && 
                 preg_match('/^{(.+?)}$/', $sCol, $arrRes)) {
                 $arrColumns[] = $this->connect->qualifyExpression(
                     $arrRes[1],
-                    $sTableName
+                    $tableName
                 );
             } else {
                 if ('*' !== $sCol && $alias) {
                     $arrColumns[] = $this->connect->qualifyTableOrColumn(
-                        "{$sTableName}.{$sCol}", 
+                        "{$tableName}.{$sCol}", 
                         $alias, 
                         'AS'
                     );
                 } else {
                     $arrColumns[] = $this->connect->qualifyTableOrColumn(
-                        "{$sTableName}.{$sCol}"
+                        "{$tableName}.{$sCol}"
                     );
                 }
             }
@@ -3759,29 +3762,29 @@ class Select
      * 格式化一个字段.
      *
      * @param string $field
-     * @param string $sTableName
+     * @param string $tableName
      *
      * @return string
      */
-    protected function qualifyOneColumn($field, $sTableName = null)
+    protected function qualifyOneColumn($field, $tableName = null)
     {
         $field = trim($field);
         if (empty($field)) {
             return '';
         }
 
-        if (null === $sTableName) {
-            $sTableName = $this->getCurrentTable();
+        if (null === $tableName) {
+            $tableName = $this->getCurrentTable();
         }
 
         if (false !== strpos($field, '{') && preg_match('/^{(.+?)}$/', $field, $arrRes)) {
-            $field = $this->connect->qualifyExpression($arrRes[1], $sTableName);
+            $field = $this->connect->qualifyExpression($arrRes[1], $tableName);
         } elseif (!preg_match('/\(.*\)/', $field)) {
             if (preg_match('/(.+)\.(.+)/', $field, $arrMatch)) {
                 $sCurrentTableName = $arrMatch[1];
                 $tmp = $arrMatch[2];
             } else {
-                $sCurrentTableName = $sTableName;
+                $sCurrentTableName = $tableName;
             }
             $field = $this->connect->qualifyTableOrColumn("{$sCurrentTableName}.{$field}");
         }
@@ -3908,18 +3911,18 @@ class Select
             $arrTemp = explode('.', $sTable);
             if (isset($arrTemp[1])) {
                 $sSchema = $arrTemp[0];
-                $sTableName = $arrTemp[1];
+                $tableName = $arrTemp[1];
             } else {
                 $sSchema = null;
-                $sTableName = $sTable;
+                $tableName = $sTable;
             }
         } else {
             $sSchema = null;
-            $sTableName = $sTable;
+            $tableName = $sTable;
         }
 
         // 获得一个唯一的别名
-        $alias = $this->uniqueAlias(empty($alias) ? $sTableName : $alias);
+        $alias = $this->uniqueAlias(empty($alias) ? $tableName : $alias);
 
         // 只有表操作才设置当前表
         if ($this->getIsTable()) {
@@ -3944,7 +3947,7 @@ class Select
         // 添加一个要查询的数据表
         $this->options['from'][$alias] = [
             'join_type'  => $sJoinType,
-            'table_name' => $sTableName,
+            'table_name' => $tableName,
             'schema'     => $sSchema,
             'join_cond'  => $cond,
         ];
@@ -3958,10 +3961,10 @@ class Select
     /**
      * 添加字段.
      *
-     * @param string $sTableName
+     * @param string $tableName
      * @param mixed  $cols
      */
-    protected function addCols($sTableName, $cols)
+    protected function addCols($tableName, $cols)
     {
         // 处理条件表达式
         if (is_string($cols) && false !== strpos($cols, ',') && 
@@ -3989,8 +3992,8 @@ class Select
             }
         }
 
-        if (null === $sTableName) {
-            $sTableName = '';
+        if (null === $tableName) {
+            $tableName = '';
         }
 
         // 没有字段则退出
@@ -4028,7 +4031,7 @@ class Select
 
                 // 将包含多个字段的字符串打散
                 foreach (Arr::normalize($mixCol) as $sCol) {
-                    $strThisTableName = $sTableName;
+                    $currentTableName = $tableName;
 
                     // 检查是不是 "字段名 AS 别名"这样的形式
                     if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $sCol, $arrMatch)) {
@@ -4038,19 +4041,19 @@ class Select
 
                     // 检查字段名是否包含表名称
                     if (preg_match('/(.+)\.(.+)/', $sCol, $arrMatch)) {
-                        $strThisTableName = $arrMatch[1];
+                        $currentTableName = $arrMatch[1];
                         $sCol = $arrMatch[2];
                     }
 
                     $this->options['columns'][] = [
-                        $strThisTableName,
+                        $currentTableName,
                         $sCol,
                         is_string($alias) ? $alias : null,
                     ];
                 }
             } else {
                 $this->options['columns'][] = [
-                    $sTableName,
+                    $tableName,
                     $mixCol,
                     is_string($alias) ? $alias : null,
                 ];
