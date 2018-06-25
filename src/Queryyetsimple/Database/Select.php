@@ -1386,17 +1386,17 @@ class Select
     /**
      * 设置是否以集合返回.
      *
-     * @param string $asCollection
+     * @param string $acollection
      *
      * @return $this
      */
-    public function asCollection($asCollection = true)
+    public function acollection($acollection = true)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->queryParams['as_collection'] = $asCollection;
+        $this->queryParams['as_collection'] = $acollection;
         $this->queryParams['as_default'] = false;
 
         return $this;
@@ -2654,25 +2654,25 @@ class Select
     /**
      * 最近排序数据.
      *
-     * @param string $mixField
+     * @param string $field
      *
      * @return $this
      */
-    public function latest($mixField = 'create_at')
+    public function latest($field = 'create_at')
     {
-        return $this->orderBy($mixField, 'DESC');
+        return $this->orderBy($field, 'DESC');
     }
 
     /**
      * 最早排序数据.
      *
-     * @param string $mixField
+     * @param string $field
      *
      * @return $this
      */
-    public function oldest($mixField = 'create_at')
+    public function oldest($field = 'create_at')
     {
-        return $this->orderBy($mixField, 'ASC');
+        return $this->orderBy($field, 'ASC');
     }
 
     /**
@@ -2687,6 +2687,7 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->options['distinct'] = (bool) $flag;
 
         return $this;
@@ -2787,6 +2788,7 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->options['limitcount'] = 1;
         $this->options['limitoffset'] = null;
         $this->options['limitquery'] = false;
@@ -2804,6 +2806,7 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->options['limitcount'] = null;
         $this->options['limitoffset'] = null;
         $this->options['limitquery'] = true;
@@ -2814,36 +2817,38 @@ class Select
     /**
      * 查询几条记录.
      *
-     * @param number $nCount
+     * @param number $count
      *
      * @return $this
      */
-    public function top($nCount = 30)
+    public function top($count = 30)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->limit(0, $nCount);
+        return $this->limit(0, $count);
     }
 
     /**
      * limit 限制条数.
      *
      * @param number $offset
-     * @param number $nCount
+     * @param number $count
      *
      * @return $this
      */
-    public function limit($offset = 0, $nCount = null)
+    public function limit($offset = 0, $count = null)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        if (null === $nCount) {
+
+        if (null === $count) {
             return $this->top($offset);
         }
-        $this->options['limitcount'] = abs((int) $nCount);
+
+        $this->options['limitcount'] = abs((int) $count);
         $this->options['limitoffset'] = abs((int) $offset);
         $this->options['limitquery'] = true;
 
@@ -2862,6 +2867,7 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->options['forupdate'] = (bool) $flag;
 
         return $this;
@@ -2870,11 +2876,11 @@ class Select
     /**
      * 获得查询字符串.
      *
-     * @param $booWithLogicGroup
+     * @param $withLogicGroup
      *
      * @return string
      */
-    public function makeSql($booWithLogicGroup = false)
+    public function makeSql($withLogicGroup = false)
     {
         $sql = [
             'SELECT',
@@ -2904,15 +2910,16 @@ class Select
         }
 
         $sql[] = $this->parseUnion();
-        $sLastSql = trim(implode(' ', $sql));
 
-        if (true === $booWithLogicGroup) {
+        $result = trim(implode(' ', $sql));
+
+        if (true === $withLogicGroup) {
             return static::LOGIC_GROUP_LEFT.
-                $sLastSql.
+                $result.
                 static::LOGIC_GROUP_RIGHT;
         }
 
-        return $sLastSql;
+        return $result;
     }
 
     /**
@@ -2972,33 +2979,33 @@ class Select
             return '';
         }
 
-        $arrColumns = [];
-        foreach ($this->options['columns'] as $arrEntry) {
-            list($tableName, $sCol, $alias) = $arrEntry;
+        $columns = [];
+        foreach ($this->options['columns'] as $item) {
+            list($tableName, $col, $alias) = $item;
 
             // 表达式支持
-            if (false !== strpos($sCol, '{') && 
-                preg_match('/^{(.+?)}$/', $sCol, $matches)) {
-                $arrColumns[] = $this->connect->qualifyExpression(
+            if (false !== strpos($col, '{') && 
+                preg_match('/^{(.+?)}$/', $col, $matches)) {
+                $columns[] = $this->connect->qualifyExpression(
                     $matches[1],
                     $tableName
                 );
             } else {
-                if ('*' !== $sCol && $alias) {
-                    $arrColumns[] = $this->connect->qualifyTableOrColumn(
-                        "{$tableName}.{$sCol}", 
+                if ('*' !== $col && $alias) {
+                    $columns[] = $this->connect->qualifyTableOrColumn(
+                        "{$tableName}.{$col}", 
                         $alias, 
                         'AS'
                     );
                 } else {
-                    $arrColumns[] = $this->connect->qualifyTableOrColumn(
-                        "{$tableName}.{$sCol}"
+                    $columns[] = $this->connect->qualifyTableOrColumn(
+                        "{$tableName}.{$col}"
                     );
                 }
             }
         }
 
-        return implode(',', $arrColumns);
+        return implode(',', $columns);
     }
 
     /**
@@ -3012,19 +3019,19 @@ class Select
             return '';
         }
 
-        $arrColumns = [];
+        $columns = [];
 
-        foreach ($this->options['aggregate'] as $arrAggregate) {
-            list(, $sField, $alias) = $arrAggregate;
+        foreach ($this->options['aggregate'] as $item) {
+            list(, $field, $alias) = $item;
 
             if ($alias) {
-                $arrColumns[] = $sField.' AS '.$alias;
+                $columns[] = $field.' AS '.$alias;
             } else {
-                $arrColumns[] = $sField;
+                $columns[] = $field;
             }
         }
 
-        return (empty($arrColumns)) ? '' : implode(',', $arrColumns);
+        return empty($columns) ? '' : implode(',', $columns);
     }
 
     /**
@@ -3038,12 +3045,13 @@ class Select
             return '';
         }
 
-        $arrFrom = [];
+        $from = [];
+
         foreach ($this->options['from'] as $alias => $arrTable) {
             $sTmp = '';
 
             // 如果不是第一个 FROM，则添加 JOIN
-            if (!empty($arrFrom)) {
+            if (!empty($from)) {
                 $sTmp .= strtoupper($arrTable['join_type']).' ';
             }
 
@@ -3062,15 +3070,15 @@ class Select
             }
 
             // 添加 JOIN 查询条件
-            if (!empty($arrFrom) && !empty($arrTable['join_cond'])) {
+            if (!empty($from) && !empty($arrTable['join_cond'])) {
                 $sTmp .= ' ON '.$arrTable['join_cond'];
             }
 
-            $arrFrom[] = $sTmp;
+            $from[] = $sTmp;
         }
 
-        if (!empty($arrFrom)) {
-            return 'FROM '.implode(' ', $arrFrom);
+        if (!empty($from)) {
+            return 'FROM '.implode(' ', $from);
         }
 
         return '';
@@ -4082,24 +4090,24 @@ class Select
                 }
 
                 // 将包含多个字段的字符串打散
-                foreach (Arr::normalize($mixCol) as $sCol) {
+                foreach (Arr::normalize($mixCol) as $col) {
                     $currentTableName = $tableName;
 
                     // 检查是不是 "字段名 AS 别名"这样的形式
-                    if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $sCol, $matches)) {
-                        $sCol = $matches[1];
+                    if (preg_match('/^(.+)\s+'.'AS'.'\s+(.+)$/i', $col, $matches)) {
+                        $col = $matches[1];
                         $alias = $matches[2];
                     }
 
                     // 检查字段名是否包含表名称
-                    if (preg_match('/(.+)\.(.+)/', $sCol, $matches)) {
+                    if (preg_match('/(.+)\.(.+)/', $col, $matches)) {
                         $currentTableName = $matches[1];
-                        $sCol = $matches[2];
+                        $col = $matches[2];
                     }
 
                     $this->options['columns'][] = [
                         $currentTableName,
-                        $sCol,
+                        $col,
                         is_string($alias) ? $alias : null,
                     ];
                 }
@@ -4463,33 +4471,33 @@ class Select
     /**
      * 解析时间信息.
      *
-     * @param string $sField
+     * @param string $field
      * @param mixed  $value
      * @param string $strType
      *
      * @return mixed
      */
-    protected function parseTime($sField, $value, $strType)
+    protected function parseTime($field, $value, $strType)
     {
-        static $arrDate = null, $arrColumns = [];
+        static $arrDate = null, $columns = [];
 
         // 获取时间和字段信息
         if (null === $arrDate) {
             $arrDate = getdate();
         }
-        $sField = str_replace('`', '', $sField);
+        $field = str_replace('`', '', $field);
         $table = $this->getCurrentTable();
-        if (!preg_match('/\(.*\)/', $sField)) {
-            if (preg_match('/(.+)\.(.+)/', $sField, $matches)) {
+        if (!preg_match('/\(.*\)/', $field)) {
+            if (preg_match('/(.+)\.(.+)/', $field, $matches)) {
                 $table = $matches[1];
-                $sField = $matches[2];
+                $field = $matches[2];
             }
         }
-        if ('*' === $sField) {
+        if ('*' === $field) {
             return '';
         }
-        if (!isset($arrColumns[$table])) {
-            $arrColumns[$table] = $this->connect->getTableColumnsCache($table)['list'];
+        if (!isset($columns[$table])) {
+            $columns[$table] = $this->connect->getTableColumnsCache($table)['list'];
         }
 
         // 支持类型
@@ -4519,8 +4527,8 @@ class Select
         }
 
         // 自动格式化时间
-        if (!empty($arrColumns[$table][$sField])) {
-            $fieldType = $arrColumns[$table][$sField]['type'];
+        if (!empty($columns[$table][$field])) {
+            $fieldType = $columns[$table][$field]['type'];
             if (in_array($fieldType, [
                 'datetime',
                 'timestamp',
