@@ -780,16 +780,16 @@ class Select
     /**
      * 声明 statement 运行一般 sql,无返回.
      *
-     * @param string $strData
+     * @param string $data
      * @param array  $bind
      * @param bool   $flag   指示是否不做任何操作只返回 SQL
      */
-    public function statement(string $strData, $bind = [], $flag = false)
+    public function statement(string $data, $bind = [], $flag = false)
     {
         $this->safeSql($flag)->setNativeSql('statement');
 
         return $this->{'runNativeSql'}(...[
-            $strData,
+            $data,
             $bind,
         ]);
     }
@@ -803,7 +803,11 @@ class Select
      */
     public function getOne($flag = false)
     {
-        return $this->safeSql($flag)->one()->query();
+        return $this->safeSql($flag)->
+
+        one()->
+
+        query();
     }
 
     /**
@@ -816,10 +820,16 @@ class Select
     public function getAll($flag = false)
     {
         if ($this->arrOption['limitquery']) {
-            return $this->safeSql($flag)->query();
+            return $this->safeSql($flag)->
+
+            query();
         }
 
-        return $this->safeSql($flag)->all()->query();
+        return $this->safeSql($flag)->
+
+        all()->
+
+        query();
     }
 
     /**
@@ -833,10 +843,16 @@ class Select
     public function get($num = null, $flag = false)
     {
         if (null !== $num) {
-            return $this->safeSql($flag)->top($num)->query();
+            return $this->safeSql($flag)->
+
+            top($num)->
+
+            query();
         }
 
-        return $this->safeSql($flag)->query();
+        return $this->safeSql($flag)->
+
+        query();
     }
 
     /**
@@ -880,21 +896,21 @@ class Select
     /**
      * 返回一列数据.
      *
-     * @param mixed  $mixFieldValue
+     * @param mixed  $fieldValue
      * @param string $fieldKey
      * @param bool   $flag         指示是否不做任何操作只返回 SQL
      *
      * @return array
      */
-    public function lists($mixFieldValue, $fieldKey = null, $flag = false)
+    public function lists($fieldValue, $fieldKey = null, $flag = false)
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $arrField = [];
 
-        if (is_array($mixFieldValue)) {
-            $arrField = $mixFieldValue;
+        if (is_array($fieldValue)) {
+            $arrField = $fieldValue;
         } else {
-            $arrField[] = $mixFieldValue;
+            $arrField[] = $fieldValue;
         }
 
         if (is_string($fieldKey)) {
