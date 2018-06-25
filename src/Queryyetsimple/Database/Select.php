@@ -641,13 +641,13 @@ class Select
      * 更新某个字段的值
      *
      * @param string $column
-     * @param mixed  $mixValue
+     * @param mixed  $value
      * @param array  $bind
      * @param bool   $flag     指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
-    public function updateColumn($column, $mixValue, $bind = [], $flag = false)
+    public function updateColumn($column, $value, $bind = [], $flag = false)
     {
         if (!is_string($column)) {
             throw new Exception('Unsupported parameters.');
@@ -655,7 +655,7 @@ class Select
 
         return $this->update(
             [
-                $column => $mixValue,
+                $column => $value,
             ],
             $bind,
             $flag
@@ -936,9 +936,9 @@ class Select
             if (1 === count($arrTemp)) {
                 $result[] = reset($arrTemp);
             } else {
-                $mixValue = array_shift($arrTemp);
+                $value = array_shift($arrTemp);
                 $mixKey = array_shift($arrTemp);
-                $result[$mixKey] = $mixValue;
+                $result[$mixKey] = $value;
             }
         }
 
@@ -983,8 +983,8 @@ class Select
     public function each($count, callable $calCallback)
     {
         return $this->chunk($count, function ($result, $page) use ($calCallback) {
-            foreach ($result as $key => $mixValue) {
-                if (false === $calCallback($mixValue, $key, $page)) {
+            foreach ($result as $key => $value) {
+                if (false === $calCallback($value, $key, $page)) {
                     return false;
                 }
             }
@@ -1228,11 +1228,11 @@ class Select
      * 设置查询结果类型.
      *
      * @param mixed $mixType
-     * @param mixed $mixValue
+     * @param mixed $value
      *
      * @return $this
      */
-    public function asFetchType($mixType, $mixValue = null)
+    public function asFetchType($mixType, $value = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1241,10 +1241,10 @@ class Select
         if (is_array($mixType)) {
             $this->queryParams['fetch_type'] = array_merge($this->queryParams['fetch_type'], $mixType);
         } else {
-            if (null === $mixValue) {
+            if (null === $value) {
                 $this->queryParams['fetch_type']['fetch_type'] = $mixType;
             } else {
-                $this->queryParams['fetch_type'][$mixType] = $mixValue;
+                $this->queryParams['fetch_type'][$mixType] = $value;
             }
         }
 
@@ -1774,12 +1774,12 @@ class Select
      * 参数绑定支持
      *
      * @param mixed $mixName
-     * @param mixed $mixValue
+     * @param mixed $value
      * @param int   $intType
      *
      * @return $this
      */
-    public function bind($mixName, $mixValue = null, $intType = PDO::PARAM_STR)
+    public function bind($mixName, $value = null, $intType = PDO::PARAM_STR)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1796,13 +1796,13 @@ class Select
                 $this->bindParams[$mixKey] = $item;
             }
         } else {
-            if (!is_array($mixValue)) {
-                $mixValue = [
-                    $mixValue,
+            if (!is_array($value)) {
+                $value = [
+                    $value,
                     $intType,
                 ];
             }
-            $this->bindParams[$mixName] = $mixValue;
+            $this->bindParams[$mixName] = $value;
         }
 
         return $this;
@@ -3325,8 +3325,8 @@ class Select
             // 一维数组统一成二维数组格式
             $booOneImension = false;
 
-            foreach ($args[0] as $mixKey => $mixValue) {
-                if (is_int($mixKey) && !is_array($mixValue)) {
+            foreach ($args[0] as $mixKey => $value) {
+                if (is_int($mixKey) && !is_array($value)) {
                     $booOneImension = true;
                 }
 
@@ -4062,12 +4062,12 @@ class Select
         $arrField = $arrValue = [];
         $strTableName = $this->getCurrentTable();
 
-        foreach ($arrData as $sKey => $mixValue) {
+        foreach ($arrData as $sKey => $value) {
             // 表达式支持
-            if (false !== strpos($mixValue, '{') && preg_match('/^{(.+?)}$/', $mixValue, $arrRes)) {
-                $mixValue = $this->connect->qualifyExpression($arrRes[1], $strTableName);
+            if (false !== strpos($value, '{') && preg_match('/^{(.+?)}$/', $value, $arrRes)) {
+                $value = $this->connect->qualifyExpression($arrRes[1], $strTableName);
             } else {
-                $mixValue = $this->connect->qualifyColumnValue($mixValue, false);
+                $value = $this->connect->qualifyColumnValue($value, false);
             }
 
             // 字段
@@ -4075,13 +4075,13 @@ class Select
                 $arrField[] = $sKey;
             }
 
-            if (0 === strpos($mixValue, ':') || !empty($arrRes)) {
-                $arrValue[] = $mixValue;
+            if (0 === strpos($value, ':') || !empty($arrRes)) {
+                $arrValue[] = $value;
             } else {
                 // 转换 ? 占位符至 : 占位符
-                if ('?' === $mixValue && isset($bind[$questionMark])) {
+                if ('?' === $value && isset($bind[$questionMark])) {
                     $sKey = 'questionmark_'.$questionMark;
-                    $mixValue = $bind[$questionMark];
+                    $value = $bind[$questionMark];
                     unset($bind[$questionMark]);
                     $this->deleteBindParams($questionMark);
                     $questionMark++;
@@ -4092,7 +4092,7 @@ class Select
                 }
                 $arrValue[] = ':'.$sKey;
 
-                $this->bind($sKey, $mixValue, $this->connect->getBindParamType($mixValue));
+                $this->bind($sKey, $value, $this->connect->getBindParamType($value));
             }
         }
 
@@ -4152,12 +4152,12 @@ class Select
      * 解析时间信息.
      *
      * @param string $sField
-     * @param mixed  $mixValue
+     * @param mixed  $value
      * @param string $strType
      *
      * @return mixed
      */
-    protected function parseTime($sField, $mixValue, $strType)
+    protected function parseTime($sField, $value, $strType)
     {
         static $arrDate = null, $arrColumns = [];
 
@@ -4183,20 +4183,20 @@ class Select
         // 支持类型
         switch ($strType) {
             case 'day':
-                $mixValue = mktime(0, 0, 0, $arrDate['mon'], (int) $mixValue, $arrDate['year']);
+                $value = mktime(0, 0, 0, $arrDate['mon'], (int) $value, $arrDate['year']);
 
                 break;
             case 'month':
-                $mixValue = mktime(0, 0, 0, (int) $mixValue, 1, $arrDate['year']);
+                $value = mktime(0, 0, 0, (int) $value, 1, $arrDate['year']);
 
                 break;
             case 'year':
-                $mixValue = mktime(0, 0, 0, 1, 1, (int) $mixValue);
+                $value = mktime(0, 0, 0, 1, 1, (int) $value);
 
                 break;
             case 'date':
-                $mixValue = strtotime($mixValue);
-                if (false === $mixValue) {
+                $value = strtotime($value);
+                if (false === $value) {
                     throw new Exception('Please enter a right time of strtotime.');
                 }
 
@@ -4213,17 +4213,17 @@ class Select
                 'datetime',
                 'timestamp',
             ], true)) {
-                $mixValue = date('Y-m-d H:i:s', $mixValue);
+                $value = date('Y-m-d H:i:s', $value);
             } elseif ('date' === $fieldType) {
-                $mixValue = date('Y-m-d', $mixValue);
+                $value = date('Y-m-d', $value);
             } elseif ('time' === $fieldType) {
-                $mixValue = date('H:i:s', $mixValue);
+                $value = date('H:i:s', $value);
             } elseif (0 === strpos($fieldType, 'year')) {
-                $mixValue = date('Y', $mixValue);
+                $value = date('Y', $value);
             }
         }
 
-        return $mixValue;
+        return $value;
     }
 
     /**
