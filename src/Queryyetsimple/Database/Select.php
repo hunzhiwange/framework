@@ -433,7 +433,9 @@ class Select
             return $this->get(null, $flag);
         }
 
-        $this->safeSql($flag)->setNativeSql('select');
+        $this->safeSql($flag)->
+
+        setNativeSql('select');
 
         return $this->{'runNativeSql'}(...[
             $data,
@@ -491,7 +493,9 @@ class Select
         $bind = array_merge($this->getBindParams(), $bind);
 
         // 执行查询
-        $this->safeSql($flag)->setNativeSql(
+        $this->safeSql($flag)->
+
+        setNativeSql(
             false === $replace ? 'insert' : 'replace'
         );
 
@@ -566,7 +570,9 @@ class Select
         // 执行查询
         $this->safeSql($flag)->
 
-        setNativeSql(false === $replace ? 'insert' : 'replace');
+        setNativeSql(
+            false === $replace ? 'insert' : 'replace'
+        );
 
         return $this->{'runNativeSql'}(...[
             $data,
@@ -604,11 +610,11 @@ class Select
             $sTableName = $this->getCurrentTable();
 
             // SET 语句
-            $arrSetData = [];
+            $setData = [];
 
             foreach ($arrField as $key => $field) {
                 $field = $this->qualifyOneColumn($field, $sTableName);
-                $arrSetData[] = $field.' = '.$values[$key];
+                $setData[] = $field.' = '.$values[$key];
             }
 
             // 构造 update 语句
@@ -616,7 +622,7 @@ class Select
                 $sql = [];
                 $sql[] = 'UPDATE';
                 $sql[] = ltrim($this->parseFrom(), 'FROM ');
-                $sql[] = 'SET '.implode(',', $arrSetData);
+                $sql[] = 'SET '.implode(',', $setData);
                 $sql[] = $this->parseWhere();
                 $sql[] = $this->parseOrder();
                 $sql[] = $this->parseLimitcount();
@@ -624,12 +630,15 @@ class Select
                 $sql = array_filter($sql);
                 $data = implode(' ', $sql);
 
-                unset($bindData, $arrField, $values, $arrSetData, $sql);
+                unset($bindData, $arrField, $values, $setData, $sql);
             }
         }
+
         $bind = array_merge($this->getBindParams(), $bind);
 
-        $this->safeSql($flag)->setNativeSql('update');
+        $this->safeSql($flag)->
+
+        setNativeSql('update');
 
         return $this->{'runNativeSql'}(...[
             $data,
@@ -749,7 +758,9 @@ class Select
 
         $bind = array_merge($this->getBindParams(), $bind);
 
-        $this->safeSql($flag)->setNativeSql('delete');
+        $this->safeSql($flag)->
+
+        setNativeSql('delete');
 
         return $this->{'runNativeSql'}(...[
             $data,
@@ -770,7 +781,9 @@ class Select
         $sql[] = $this->parseTable(true);
         $sql = implode(' ', $sql);
 
-        $this->safeSql($flag)->setNativeSql('statement');
+        $this->safeSql($flag)->
+
+        setNativeSql('statement');
 
         return $this->{'runNativeSql'}(...[
             $sql,
@@ -786,7 +799,9 @@ class Select
      */
     public function statement(string $data, $bind = [], $flag = false)
     {
-        $this->safeSql($flag)->setNativeSql('statement');
+        $this->safeSql($flag)->
+
+        setNativeSql('statement');
 
         return $this->{'runNativeSql'}(...[
             $data,
@@ -1124,16 +1139,16 @@ class Select
     /**
      * 分页查询.
      *
-     * @param int   $intPerPage
+     * @param int   $perPage
      * @param mixed $cols
      * @param array $arrOption
      *
      * @return array
      */
-    public function paginate($intPerPage = 10, $cols = '*', array $arrOption = [])
+    public function paginate($perPage = 10, $cols = '*', array $arrOption = [])
     {
         $page = new page_with_total(
-            $intPerPage,
+            $perPage,
             $this->getPaginateCount($cols),
             $arrOption
         );
@@ -1142,7 +1157,7 @@ class Select
             $page,
             $this->limit(
                 $page->getFirstRecord(),
-                $intPerPage
+                $perPage
             )->
 
             getAll(),
@@ -1152,16 +1167,16 @@ class Select
     /**
      * 简单分页查询.
      *
-     * @param int   $intPerPage
+     * @param int   $perPage
      * @param mixed $cols
      * @param array $arrOption
      *
      * @return array
      */
-    public function simplePaginate($intPerPage = 10, $cols = '*', array $arrOption = [])
+    public function simplePaginate($perPage = 10, $cols = '*', array $arrOption = [])
     {
         $page = new PageWithoutTotal(
-            $intPerPage,
+            $perPage,
             $arrOption
         );
 
@@ -1169,7 +1184,7 @@ class Select
             $page,
             $this->limit(
                 $page->getFirstRecord(),
-                $intPerPage
+                $perPage
             )->
 
             getAll(),
@@ -1200,13 +1215,13 @@ class Select
      * 根据分页设置条件.
      *
      * @param int $page
-     * @param int $intPerPage
+     * @param int $perPage
      *
      * @return $this
      */
-    public function forPage($page, $intPerPage = 15)
+    public function forPage($page, $perPage = 15)
     {
-        return $this->limit(($page - 1) * $intPerPage, $intPerPage);
+        return $this->limit(($page - 1) * $perPage, $perPage);
     }
 
     /**
@@ -1220,12 +1235,16 @@ class Select
 
         $args = func_get_args();
 
-        $this->setInTimeCondition(isset($args[0]) && in_array($args[0], [
-            'date',
-            'month',
-            'year',
-            'day',
-        ], true) ? $args[0] : null);
+        $this->setInTimeCondition(
+            isset($args[0]) && in_array($args[0], [
+                'date',
+                'month',
+                'year',
+                'day',
+            ], true) ? 
+            $args[0] : 
+            null
+        );
     }
 
     /**
@@ -1236,6 +1255,7 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->setInTimeCondition(null);
     }
 
@@ -1260,17 +1280,17 @@ class Select
     /**
      * 设置是否查询主服务器.
      *
-     * @param bool $booMaster
+     * @param bool $master
      *
      * @return $this
      */
-    public function asMaster($booMaster = false)
+    public function asMaster($master = false)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->queryParams['master'] = $booMaster;
+        $this->queryParams['master'] = $master;
 
         return $this;
     }
@@ -1278,24 +1298,27 @@ class Select
     /**
      * 设置查询结果类型.
      *
-     * @param mixed $mixType
+     * @param mixed $type
      * @param mixed $value
      *
      * @return $this
      */
-    public function asFetchType($mixType, $value = null)
+    public function asFetchType($type, $value = null)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if (is_array($mixType)) {
-            $this->queryParams['fetch_type'] = array_merge($this->queryParams['fetch_type'], $mixType);
+        if (is_array($type)) {
+            $this->queryParams['fetch_type'] = array_merge(
+                $this->queryParams['fetch_type'],
+                $type
+            );
         } else {
             if (null === $value) {
-                $this->queryParams['fetch_type']['fetch_type'] = $mixType;
+                $this->queryParams['fetch_type']['fetch_type'] = $type;
             } else {
-                $this->queryParams['fetch_type'][$mixType] = $value;
+                $this->queryParams['fetch_type'][$type] = $value;
             }
         }
 
@@ -1341,17 +1364,17 @@ class Select
     /**
      * 设置是否以集合返回.
      *
-     * @param string $bAsCollection
+     * @param string $asCollection
      *
      * @return $this
      */
-    public function asCollection($bAsCollection = true)
+    public function asCollection($asCollection = true)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->queryParams['as_collection'] = $bAsCollection;
+        $this->queryParams['as_collection'] = $asCollection;
         $this->queryParams['as_default'] = false;
 
         return $this;
@@ -1396,11 +1419,14 @@ class Select
 
         foreach ($mixPrefix as $strValue) {
             $strValue = Arr::normalize($strValue);
+            
             foreach ($strValue as $strTemp) {
                 $strTemp = trim($strTemp);
+
                 if (empty($strTemp)) {
                     continue;
                 }
+
                 $this->arrOption['prefix'][] = strtoupper($strTemp);
             }
         }
