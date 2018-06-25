@@ -3278,20 +3278,21 @@ class Select
     /**
      * 解析 condition　条件（包括 where,having）.
      *
-     * @param string $sCondType
+     * @param string $condType
      * @param bool   $booChild
      *
      * @return string
      */
-    protected function analyseCondition($sCondType, $booChild = false)
+    protected function analyseCondition($condType, $booChild = false)
     {
-        if (!$this->arrOption[$sCondType]) {
+        if (!$this->arrOption[$condType]) {
             return '';
         }
 
         $sqlCond = [];
         $strTable = $this->getCurrentTable();
-        foreach ($this->arrOption[$sCondType] as $sKey => $mixCond) {
+        
+        foreach ($this->arrOption[$condType] as $sKey => $mixCond) {
             // 逻辑连接符
             if (in_array($mixCond, [
                 static::LOGIC_AND,
@@ -3333,7 +3334,8 @@ class Select
                 }
 
                 // 分析是否存在自动格式化时间标识
-                $strFindTime = null;
+                $findTime = null;
+
                 if (0 === strpos($mixCond[1], '@')) {
                     foreach ([
                         'date',
@@ -3342,13 +3344,12 @@ class Select
                         'year',
                     ] as $strTimeType) {
                         if (0 === stripos($mixCond[1], '@'.$strTimeType)) {
-                            $strFindTime = $strTimeType;
+                            $findTime = $strTimeType;
                             $mixCond[1] = ltrim(substr($mixCond[1], strlen($strTimeType) + 1));
-
                             break;
                         }
                     }
-                    if (null === $strFindTime) {
+                    if (null === $findTime) {
                         throw new Exception(
                             'You are trying to an unsupported time processing grammar.'
                         );
@@ -3399,8 +3400,8 @@ class Select
                             );
                         } else {
                             // 自动格式化时间
-                            if (null !== $strFindTime) {
-                                $tmp = $this->parseTime($mixCond[0], $tmp, $strFindTime);
+                            if (null !== $findTime) {
+                                $tmp = $this->parseTime($mixCond[0], $tmp, $findTime);
                             }
 
                             $tmp = $this->connect->qualifyColumnValue($tmp);
@@ -3457,7 +3458,7 @@ class Select
         // 剔除第一个逻辑符
         array_shift($sqlCond);
 
-        return (false === $booChild ? strtoupper($sCondType).' ' : '').
+        return (false === $booChild ? strtoupper($condType).' ' : '').
             implode(' ', $sqlCond);
     }
 
