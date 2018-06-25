@@ -3372,14 +3372,14 @@ class Select
 
                         // 回调方法子表达式支持
                         elseif (!is_string($tmp) && is_callable($tmp)) {
-                            $objSelect = new static($this->connect);
-                            $objSelect->setCurrentTable($this->getCurrentTable());
+                            $select = new static($this->connect);
+                            $select->setCurrentTable($this->getCurrentTable());
                             $resultCallback = call_user_func_array($tmp, [
-                                &$objSelect,
+                                &$select,
                             ]);
 
                             if (null === $resultCallback) {
-                                $tmp = $objSelect->makeSql(true);
+                                $tmp = $select->makeSql(true);
                             } else {
                                 $tmp = $resultCallback;
                             }
@@ -3424,17 +3424,30 @@ class Select
                     'in',
                     'not in',
                 ], true)) {
-                    $sqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.(is_array($mixCond[2]) ? '('.implode(',', $mixCond[2]).')' : $mixCond[2]);
+                    $sqlCond[] = $mixCond[0].' '.
+                        strtoupper($mixCond[1]).' '.
+                        (
+                            is_array($mixCond[2]) ? 
+                            '('.implode(',', $mixCond[2]).')' : 
+                            $mixCond[2]
+                        );
                 } elseif (in_array($mixCond[1], [
                     'between',
                     'not between',
                 ], true)) {
                     if (!is_array($mixCond[2]) || count($mixCond[2]) < 2) {
-                        throw new Exception('The [not] between parameter value must be an array of not less than two elements.');
+                        throw new Exception(
+                            'The [not] between parameter value must be '.
+                            'an array of not less than two elements.'
+                        );
                     }
-                    $sqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.$mixCond[2][0].' AND '.$mixCond[2][1];
+                    $sqlCond[] = $mixCond[0].' '.
+                        strtoupper($mixCond[1]).' '.
+                        $mixCond[2][0].' AND '.$mixCond[2][1];
                 } elseif (is_scalar($mixCond[2])) {
-                    $sqlCond[] = $mixCond[0].' '.strtoupper($mixCond[1]).' '.$mixCond[2];
+                    $sqlCond[] = $mixCond[0].' '.
+                        strtoupper($mixCond[1]).' '.
+                        $mixCond[2];
                 } elseif (null === $mixCond[2]) {
                     $sqlCond[] = $mixCond[0].' IS NULL';
                 }
@@ -3444,7 +3457,8 @@ class Select
         // 剔除第一个逻辑符
         array_shift($sqlCond);
 
-        return (false === $booChild ? strtoupper($sCondType).' ' : '').implode(' ', $sqlCond);
+        return (false === $booChild ? strtoupper($sCondType).' ' : '').
+            implode(' ', $sqlCond);
     }
 
     /**
@@ -3483,14 +3497,14 @@ class Select
         $this->setTypeAndLogic($strType, $strLogic);
 
         if (!is_string($mixCond) && is_callable($mixCond)) {
-            $objSelect = new static($this->connect);
-            $objSelect->setCurrentTable($this->getCurrentTable());
+            $select = new static($this->connect);
+            $select->setCurrentTable($this->getCurrentTable());
             $resultCallback = call_user_func_array($mixCond, [
-                &$objSelect,
+                &$select,
             ]);
             if (null === $resultCallback) {
                 $strParseType = 'parse'.ucwords($strType);
-                $tmp = $objSelect->{$strParseType}(true);
+                $tmp = $select->{$strParseType}(true);
             } else {
                 $tmp = $resultCallback;
             }
@@ -3568,19 +3582,19 @@ class Select
             ], true)) {
                 $arrTypeAndLogic = $this->getTypeAndLogic();
 
-                $objSelect = new static($this->connect);
-                $objSelect->setCurrentTable($this->getCurrentTable());
-                $objSelect->setTypeAndLogic($arrTypeAndLogic[0]);
+                $select = new static($this->connect);
+                $select->setCurrentTable($this->getCurrentTable());
+                $select->setTypeAndLogic($arrTypeAndLogic[0]);
 
                 // 逻辑表达式
                 if (isset($arrTemp['logic__'])) {
                     if (strtolower($arrTemp['logic__']) === static::LOGIC_OR) {
-                        $objSelect->setTypeAndLogic(null, static::LOGIC_OR);
+                        $select->setTypeAndLogic(null, static::LOGIC_OR);
                     }
                     unset($arrTemp['logic__']);
                 }
 
-                $objSelect = $objSelect->addConditions(
+                $select = $select->addConditions(
                     $arrTemp
                 );
 
@@ -3588,7 +3602,7 @@ class Select
                 $strParseType = 'parse'.ucwords($arrTypeAndLogic[0]);
                 $strOldLogic = $arrTypeAndLogic[1];
                 $this->setTypeAndLogic(null, 'subor__' ? static::LOGIC_OR : static::LOGIC_AND);
-                $this->setConditionItem(static::LOGIC_GROUP_LEFT.$objSelect->{$strParseType}(true).static::LOGIC_GROUP_RIGHT, 'string__');
+                $this->setConditionItem(static::LOGIC_GROUP_LEFT.$select->{$strParseType}(true).static::LOGIC_GROUP_RIGHT, 'string__');
                 $this->setTypeAndLogic(null, $strOldLogic);
             }
 
@@ -3605,13 +3619,13 @@ class Select
                 if ($arrTemp instanceof self) {
                     $arrTemp = $arrTemp->makeSql();
                 } elseif (!is_string($arrTemp) && is_callable($arrTemp)) {
-                    $objSelect = new static($this->connect);
-                    $objSelect->setCurrentTable($this->getCurrentTable());
+                    $select = new static($this->connect);
+                    $select->setCurrentTable($this->getCurrentTable());
                     $resultCallback = call_user_func_array($arrTemp, [
-                        &$objSelect,
+                        &$select,
                     ]);
                     if (null === $resultCallback) {
-                        $tmp = $arrTemp = $objSelect->makeSql();
+                        $tmp = $arrTemp = $select->makeSql();
                     } else {
                         $tmp = $resultCallback;
                     }
@@ -3817,13 +3831,13 @@ class Select
 
                 // 回调方法子表达式
                 elseif (!is_string($sTable) && is_callable($sTable)) {
-                    $objSelect = new static($this->connect);
-                    $objSelect->setCurrentTable($this->getCurrentTable());
+                    $select = new static($this->connect);
+                    $select->setCurrentTable($this->getCurrentTable());
                     $resultCallback = call_user_func_array($sTable, [
-                        &$objSelect,
+                        &$select,
                     ]);
                     if (null === $resultCallback) {
-                        $sTable = $objSelect->makeSql(true);
+                        $sTable = $select->makeSql(true);
                     } else {
                         $sTable = $resultCallback;
                     }
@@ -3846,13 +3860,13 @@ class Select
 
         // 回调方法
         elseif (!is_string($mixName) && is_callable($mixName)) {
-            $objSelect = new static($this->connect);
-            $objSelect->setCurrentTable($this->getCurrentTable());
+            $select = new static($this->connect);
+            $select->setCurrentTable($this->getCurrentTable());
             $resultCallback = call_user_func_array($mixName, [
-                &$objSelect,
+                &$select,
             ]);
             if (null === $resultCallback) {
-                $sTable = $objSelect->makeSql(true);
+                $sTable = $select->makeSql(true);
             } else {
                 $sTable = $resultCallback;
             }
@@ -3910,13 +3924,13 @@ class Select
             for ($nI = 0; $nI <= 2; $nI++) {
                 array_shift($args);
             }
-            $objSelect = new static($this->connect);
-            $objSelect->setCurrentTable($alias);
+            $select = new static($this->connect);
+            $select->setCurrentTable($alias);
             call_user_func_array([
-                $objSelect,
+                $select,
                 'where',
             ], $args);
-            $mixCond = $objSelect->parseWhere(true);
+            $mixCond = $select->parseWhere(true);
         }
 
         // 添加一个要查询的数据表
