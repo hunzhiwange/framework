@@ -110,7 +110,7 @@ class Select
      *
      * @var array
      */
-    protected $arrOption = [];
+    protected $options = [];
 
     /**
      * 查询类型.
@@ -171,7 +171,7 @@ class Select
      *
      * @var array
      */
-    protected static $optionDefault = [
+    protected static $optionsDefault = [
         'prefix'      => [],
         'distinct'    => false,
         'columns'     => [],
@@ -736,7 +736,7 @@ class Select
             $sql[] = 'DELETE';
 
             // join 方式关联删除
-            if (empty($this->arrOption['using'])) { 
+            if (empty($this->options['using'])) { 
                 $sql[] = $this->parseTable(true, true);
                 $sql[] = $this->parseFrom();
             } 
@@ -834,7 +834,7 @@ class Select
      */
     public function getAll($flag = false)
     {
-        if ($this->arrOption['limitquery']) {
+        if ($this->options['limitquery']) {
             return $this->safeSql($flag)->
 
             query();
@@ -1141,16 +1141,16 @@ class Select
      *
      * @param int   $perPage
      * @param mixed $cols
-     * @param array $arrOption
+     * @param array $options
      *
      * @return array
      */
-    public function paginate($perPage = 10, $cols = '*', array $arrOption = [])
+    public function paginate($perPage = 10, $cols = '*', array $options = [])
     {
         $page = new page_with_total(
             $perPage,
             $this->getPaginateCount($cols),
-            $arrOption
+            $options
         );
 
         return [
@@ -1169,15 +1169,15 @@ class Select
      *
      * @param int   $perPage
      * @param mixed $cols
-     * @param array $arrOption
+     * @param array $options
      *
      * @return array
      */
-    public function simplePaginate($perPage = 10, $cols = '*', array $arrOption = [])
+    public function simplePaginate($perPage = 10, $cols = '*', array $options = [])
     {
         $page = new PageWithoutTotal(
             $perPage,
-            $arrOption
+            $options
         );
 
         return [
@@ -1395,8 +1395,8 @@ class Select
 
         if (null === $sOption) {
             $this->initOption();
-        } elseif (array_key_exists($sOption, static::$optionDefault)) {
-            $this->arrOption[$sOption] = static::$optionDefault[$sOption];
+        } elseif (array_key_exists($sOption, static::$optionsDefault)) {
+            $this->options[$sOption] = static::$optionsDefault[$sOption];
         }
 
         return $this;
@@ -1427,7 +1427,7 @@ class Select
                     continue;
                 }
 
-                $this->arrOption['prefix'][] = strtoupper($tmp);
+                $this->options['prefix'][] = strtoupper($tmp);
             }
         }
 
@@ -1494,7 +1494,7 @@ class Select
             // 获得一个唯一的别名
             $alias = $this->uniqueAlias(empty($alias) ? $sTableName : $alias);
 
-            $this->arrOption['using'][$alias] = [
+            $this->options['using'][$alias] = [
                 'table_name' => $sTable,
                 'schema'     => $sSchema,
             ];
@@ -1543,7 +1543,7 @@ class Select
             $table = $this->getCurrentTable();
         }
 
-        $this->arrOption['columns'] = [];
+        $this->options['columns'] = [];
         $this->addCols($table, $cols);
 
         return $this;
@@ -1910,10 +1910,10 @@ class Select
                 if (empty($tmp)) {
                     continue;
                 }
-                if (empty($this->arrOption['index'][$sType])) {
-                    $this->arrOption['index'][$sType] = [];
+                if (empty($this->options['index'][$sType])) {
+                    $this->options['index'][$sType] = [];
                 }
-                $this->arrOption['index'][$sType][] = $tmp;
+                $this->options['index'][$sType][] = $tmp;
             }
         }
 
@@ -2102,7 +2102,7 @@ class Select
         }
 
         foreach ($mixSelect as $mixTemp) {
-            $this->arrOption['union'][] = [
+            $this->options['union'][] = [
                 $mixTemp,
                 $sType,
             ];
@@ -2199,7 +2199,7 @@ class Select
 
                 // 表达式支持
                 $tmp = $this->qualifyOneColumn($tmp, $sCurrentTableName);
-                $this->arrOption['group'][] = $tmp;
+                $this->options['group'][] = $tmp;
             }
         }
 
@@ -2560,7 +2560,7 @@ class Select
                         $sSort = $sOrderDefault;
                     }
 
-                    $this->arrOption['order'][] = $tmp.' '.$sSort;
+                    $this->options['order'][] = $tmp.' '.$sSort;
                 } else {
                     $sCurrentTableName = $tableName;
                     $sSort = $sOrderDefault;
@@ -2581,7 +2581,7 @@ class Select
                         );
                     }
 
-                    $this->arrOption['order'][] = $tmp.' '.$sSort;
+                    $this->options['order'][] = $tmp.' '.$sSort;
                 }
             }
         }
@@ -2625,7 +2625,7 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrOption['distinct'] = (bool) $flag;
+        $this->options['distinct'] = (bool) $flag;
 
         return $this;
     }
@@ -2725,9 +2725,9 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrOption['limitcount'] = 1;
-        $this->arrOption['limitoffset'] = null;
-        $this->arrOption['limitquery'] = false;
+        $this->options['limitcount'] = 1;
+        $this->options['limitoffset'] = null;
+        $this->options['limitquery'] = false;
 
         return $this;
     }
@@ -2742,9 +2742,9 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrOption['limitcount'] = null;
-        $this->arrOption['limitoffset'] = null;
-        $this->arrOption['limitquery'] = true;
+        $this->options['limitcount'] = null;
+        $this->options['limitoffset'] = null;
+        $this->options['limitquery'] = true;
 
         return $this;
     }
@@ -2781,9 +2781,9 @@ class Select
         if (null === $nCount) {
             return $this->top($offset);
         }
-        $this->arrOption['limitcount'] = abs((int) $nCount);
-        $this->arrOption['limitoffset'] = abs((int) $offset);
-        $this->arrOption['limitquery'] = true;
+        $this->options['limitcount'] = abs((int) $nCount);
+        $this->options['limitoffset'] = abs((int) $offset);
+        $this->options['limitquery'] = true;
 
         return $this;
     }
@@ -2800,7 +2800,7 @@ class Select
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrOption['forupdate'] = (bool) $flag;
+        $this->options['forupdate'] = (bool) $flag;
 
         return $this;
     }
@@ -2818,7 +2818,7 @@ class Select
             'SELECT',
         ];
 
-        foreach (array_keys($this->arrOption) as $sOption) {
+        foreach (array_keys($this->options) as $sOption) {
             if ('from' === $sOption) {
                 $sql['from'] = '';
             } elseif ('union' === $sOption) {
@@ -2878,11 +2878,11 @@ class Select
      */
     protected function parsePrefix()
     {
-        if (empty($this->arrOption['prefix'])) {
+        if (empty($this->options['prefix'])) {
             return '';
         }
 
-        return implode(' ', $this->arrOption['prefix']);
+        return implode(' ', $this->options['prefix']);
     }
 
     /**
@@ -2892,7 +2892,7 @@ class Select
      */
     protected function parseDistinct()
     {
-        if (!$this->arrOption['distinct']) {
+        if (!$this->options['distinct']) {
             return '';
         }
 
@@ -2906,12 +2906,12 @@ class Select
      */
     protected function parseColumns()
     {
-        if (empty($this->arrOption['columns'])) {
+        if (empty($this->options['columns'])) {
             return '';
         }
 
         $arrColumns = [];
-        foreach ($this->arrOption['columns'] as $arrEntry) {
+        foreach ($this->options['columns'] as $arrEntry) {
             list($sTableName, $sCol, $alias) = $arrEntry;
 
             // 表达式支持
@@ -2946,13 +2946,13 @@ class Select
      */
     protected function parseAggregate()
     {
-        if (empty($this->arrOption['aggregate'])) {
+        if (empty($this->options['aggregate'])) {
             return '';
         }
 
         $arrColumns = [];
 
-        foreach ($this->arrOption['aggregate'] as $arrAggregate) {
+        foreach ($this->options['aggregate'] as $arrAggregate) {
             list(, $sField, $alias) = $arrAggregate;
 
             if ($alias) {
@@ -2972,12 +2972,12 @@ class Select
      */
     protected function parseFrom()
     {
-        if (empty($this->arrOption['from'])) {
+        if (empty($this->options['from'])) {
             return '';
         }
 
         $arrFrom = [];
-        foreach ($this->arrOption['from'] as $alias => $arrTable) {
+        foreach ($this->options['from'] as $alias => $arrTable) {
             $sTmp = '';
 
             // 如果不是第一个 FROM，则添加 JOIN
@@ -3024,16 +3024,16 @@ class Select
      */
     protected function parseTable($booOnlyAlias = true, $booForDelete = false)
     {
-        if (empty($this->arrOption['from'])) {
+        if (empty($this->options['from'])) {
             return '';
         }
 
         // 如果为删除,没有 join 则返回为空
-        if (true === $booForDelete && 1 === count($this->arrOption['from'])) {
+        if (true === $booForDelete && 1 === count($this->options['from'])) {
             return '';
         }
 
-        foreach ($this->arrOption['from'] as $alias => $arrTable) {
+        foreach ($this->options['from'] as $alias => $arrTable) {
             if ($alias === $arrTable['table_name']) {
                 return $this->connect->qualifyTableOrColumn(
                     "{$arrTable['schema']}.{$arrTable['table_name']}"
@@ -3066,21 +3066,21 @@ class Select
     protected function parseUsing($booForDelete = false)
     {
         // parse using 只支持删除操作
-        if (false === $booForDelete || empty($this->arrOption['using'])) {
+        if (false === $booForDelete || empty($this->options['using'])) {
             return '';
         }
 
         $arrUsing = [];
-        $arrOptionUsing = $this->arrOption['using'];
+        $optionsUsing = $this->options['using'];
 
         // table 自动加入
-        foreach ($this->arrOption['from'] as $alias => $arrTable) {
-            $arrOptionUsing[$alias] = $arrTable;
+        foreach ($this->options['from'] as $alias => $arrTable) {
+            $optionsUsing[$alias] = $arrTable;
 
             break;
         }
 
-        foreach ($arrOptionUsing as $alias => $arrTable) {
+        foreach ($optionsUsing as $alias => $arrTable) {
             if ($alias === $arrTable['table_name']) {
                 $arrUsing[] = $this->connect->qualifyTableOrColumn(
                     "{$arrTable['schema']}.{$arrTable['table_name']}"
@@ -3109,13 +3109,13 @@ class Select
             'FORCE',
             'IGNORE',
         ] as $sType) {
-            if (empty($this->arrOption['index'][$sType])) {
+            if (empty($this->options['index'][$sType])) {
                 continue;
             }
 
             $strIndex .= ($strIndex ? ' ' : '').
                 $sType.' INDEX('.
-                implode(',', $this->arrOption['index'][$sType]).
+                implode(',', $this->options['index'][$sType]).
                 ')';
         }
 
@@ -3131,7 +3131,7 @@ class Select
      */
     protected function parseWhere($booChild = false)
     {
-        if (empty($this->arrOption['where'])) {
+        if (empty($this->options['where'])) {
             return '';
         }
 
@@ -3145,16 +3145,16 @@ class Select
      */
     protected function parseUnion()
     {
-        if (empty($this->arrOption['union'])) {
+        if (empty($this->options['union'])) {
             return '';
         }
 
         $sSql = '';
 
-        if ($this->arrOption['union']) {
-            $nOptions = count($this->arrOption['union']);
+        if ($this->options['union']) {
+            $nOptions = count($this->options['union']);
 
-            foreach ($this->arrOption['union'] as $nCnt => $arrUnion) {
+            foreach ($this->options['union'] as $nCnt => $arrUnion) {
                 list($mixUnion, $sType) = $arrUnion;
 
                 if ($mixUnion instanceof self) {
@@ -3179,18 +3179,18 @@ class Select
      */
     protected function parseOrder($booForDelete = false)
     {
-        if (empty($this->arrOption['order'])) {
+        if (empty($this->options['order'])) {
             return '';
         }
         // 删除存在 join, order 无效
         if (true === $booForDelete && 
-            (count($this->arrOption['from']) > 1 || 
-                !empty($this->arrOption['using']))) {
+            (count($this->options['from']) > 1 || 
+                !empty($this->options['using']))) {
             return '';
         }
 
         return 'ORDER BY '.
-            implode(',', array_unique($this->arrOption['order']));
+            implode(',', array_unique($this->options['order']));
     }
 
     /**
@@ -3200,11 +3200,11 @@ class Select
      */
     protected function parseGroup()
     {
-        if (empty($this->arrOption['group'])) {
+        if (empty($this->options['group'])) {
             return '';
         }
 
-        return 'GROUP BY '.implode(',', $this->arrOption['group']);
+        return 'GROUP BY '.implode(',', $this->options['group']);
     }
 
     /**
@@ -3216,7 +3216,7 @@ class Select
      */
     protected function parseHaving($booChild = false)
     {
-        if (empty($this->arrOption['having'])) {
+        if (empty($this->options['having'])) {
             return '';
         }
 
@@ -3235,24 +3235,24 @@ class Select
     {
         // 删除存在 join, limit 无效
         if (true === $booForDelete && 
-            (count($this->arrOption['from']) > 1 || 
-                !empty($this->arrOption['using']))) {
+            (count($this->options['from']) > 1 || 
+                !empty($this->options['using']))) {
             return '';
         }
 
         if (true === $booNullLimitOffset) {
-            $this->arrOption['limitoffset'] = null;
+            $this->options['limitoffset'] = null;
         }
 
-        if (null === $this->arrOption['limitoffset'] && 
-            null === $this->arrOption['limitcount']) {
+        if (null === $this->options['limitoffset'] && 
+            null === $this->options['limitcount']) {
             return '';
         }
 
         if (method_exists($this->connect, 'parseLimitcount')) {
             return $this->connect->{'parseLimitcount'}(
-                $this->arrOption['limitcount'],
-                $this->arrOption['limitoffset']
+                $this->options['limitcount'],
+                $this->options['limitoffset']
             );
         }
 
@@ -3268,7 +3268,7 @@ class Select
      */
     protected function parseForUpdate()
     {
-        if (!$this->arrOption['forupdate']) {
+        if (!$this->options['forupdate']) {
             return '';
         }
 
@@ -3285,14 +3285,14 @@ class Select
      */
     protected function analyseCondition($condType, $booChild = false)
     {
-        if (!$this->arrOption[$condType]) {
+        if (!$this->options[$condType]) {
             return '';
         }
 
         $sqlCond = [];
         $table = $this->getCurrentTable();
 
-        foreach ($this->arrOption[$condType] as $sKey => $cond) {
+        foreach ($this->options[$condType] as $key => $cond) {
             // 逻辑连接符
             if (in_array($cond, [
                 static::LOGIC_AND,
@@ -3303,8 +3303,8 @@ class Select
             }
 
             // 特殊处理
-            if (is_string($sKey)) {
-                if (in_array($sKey, [
+            if (is_string($key)) {
+                if (in_array($key, [
                     'string__',
                 ], true)) {
                     $sqlCond[] = implode(' AND ', $cond);
@@ -3704,18 +3704,18 @@ class Select
         $arrTypeAndLogic = $this->getTypeAndLogic();
         // 字符串类型
         if ($strType) {
-            if (empty($this->arrOption[$arrTypeAndLogic[0]][$strType])) {
-                $this->arrOption[$arrTypeAndLogic[0]][] = $arrTypeAndLogic[1];
-                $this->arrOption[$arrTypeAndLogic[0]][$strType] = [];
+            if (empty($this->options[$arrTypeAndLogic[0]][$strType])) {
+                $this->options[$arrTypeAndLogic[0]][] = $arrTypeAndLogic[1];
+                $this->options[$arrTypeAndLogic[0]][$strType] = [];
             }
-            $this->arrOption[$arrTypeAndLogic[0]][$strType][] = $arrItem;
+            $this->options[$arrTypeAndLogic[0]][$strType][] = $arrItem;
         } else {
             // 格式化时间
             if (($inTimeCondition = $this->getInTimeCondition())) {
                 $arrItem[1] = '@'.$inTimeCondition.' '.$arrItem[1];
             }
-            $this->arrOption[$arrTypeAndLogic[0]][] = $arrTypeAndLogic[1];
-            $this->arrOption[$arrTypeAndLogic[0]][] = $arrItem;
+            $this->options[$arrTypeAndLogic[0]][] = $arrTypeAndLogic[1];
+            $this->options[$arrTypeAndLogic[0]][] = $arrItem;
         }
     }
 
@@ -3801,7 +3801,7 @@ class Select
         }
 
         // 不能在使用 UNION 查询的同时使用 JOIN 查询
-        if (count($this->arrOption['union'])) {
+        if (count($this->options['union'])) {
             throw new Exception('JOIN queries cannot be used while using UNION queries.');
         }
 
@@ -3935,7 +3935,7 @@ class Select
         }
 
         // 添加一个要查询的数据表
-        $this->arrOption['from'][$alias] = [
+        $this->options['from'][$alias] = [
             'join_type'  => $sJoinType,
             'table_name' => $sTableName,
             'schema'     => $sSchema,
@@ -4035,14 +4035,14 @@ class Select
                         $sCol = $arrMatch[2];
                     }
 
-                    $this->arrOption['columns'][] = [
+                    $this->options['columns'][] = [
                         $strThisTableName,
                         $sCol,
                         is_string($alias) ? $alias : null,
                     ];
                 }
             } else {
-                $this->arrOption['columns'][] = [
+                $this->options['columns'][] = [
                     $sTableName,
                     $mixCol,
                     is_string($alias) ? $alias : null,
@@ -4062,7 +4062,7 @@ class Select
      */
     protected function addAggregate($sType, $field, $alias)
     {
-        $this->arrOption['columns'] = [];
+        $this->options['columns'] = [];
         $tableName = $this->getCurrentTable();
 
         // 表达式支持
@@ -4085,7 +4085,7 @@ class Select
 
         $field = "{$sType}(${field})";
 
-        $this->arrOption['aggregate'][] = [
+        $this->options['aggregate'][] = [
             $sType,
             $field,
             $alias,
@@ -4139,7 +4139,7 @@ class Select
     protected function queryDefault(&$data)
     {
         if (empty($data)) {
-            if (!$this->arrOption['limitquery']) {
+            if (!$this->options['limitquery']) {
                 $data = null;
             }
 
@@ -4147,7 +4147,7 @@ class Select
         }
 
         // 返回一条记录
-        if (!$this->arrOption['limitquery']) {
+        if (!$this->options['limitquery']) {
             $data = reset($data) ?: null;
         }
     }
@@ -4160,7 +4160,7 @@ class Select
     protected function queryClass(&$data)
     {
         if (empty($data)) {
-            if (!$this->arrOption['limitquery']) {
+            if (!$this->options['limitquery']) {
                 $data = null;
             } else {
                 if ($this->queryParams['as_collection']) {
@@ -4185,7 +4185,7 @@ class Select
         }
 
         // 创建一个单独的对象
-        if (!$this->arrOption['limitquery']) {
+        if (!$this->options['limitquery']) {
             $data = reset($data) ?: null;
         } else {
             if ($this->queryParams['as_collection']) {
@@ -4308,7 +4308,7 @@ class Select
         $arrField = $values = [];
         $tableName = $this->getCurrentTable();
 
-        foreach ($data as $sKey => $value) {
+        foreach ($data as $key => $value) {
             // 表达式支持
             if (false !== strpos($value, '{') && 
                 preg_match('/^{(.+?)}$/', $value, $arrRes)) {
@@ -4319,7 +4319,7 @@ class Select
 
             // 字段
             if (0 === $intIndex) {
-                $arrField[] = $sKey;
+                $arrField[] = $key;
             }
 
             if (0 === strpos($value, ':') || !empty($arrRes)) {
@@ -4327,7 +4327,7 @@ class Select
             } else {
                 // 转换 ? 占位符至 : 占位符
                 if ('?' === $value && isset($bind[$questionMark])) {
-                    $sKey = 'questionmark_'.$questionMark;
+                    $key = 'questionmark_'.$questionMark;
                     $value = $bind[$questionMark];
                     unset($bind[$questionMark]);
 
@@ -4337,12 +4337,12 @@ class Select
                 }
 
                 if ($intIndex > 0) {
-                    $sKey = $sKey.'_'.$intIndex;
+                    $key = $key.'_'.$intIndex;
                 }
 
-                $values[] = ':'.$sKey;
+                $values[] = ':'.$key;
 
-                $this->bind($sKey, $value, $this->connect->getBindParamType($value));
+                $this->bind($key, $value, $this->connect->getBindParamType($value));
             }
         }
 
@@ -4495,7 +4495,7 @@ class Select
             $nDot = strrpos($mixName, '.');
             $strAliasReturn = false === $nDot ? $mixName : substr($mixName, $nDot + 1);
         }
-        for ($nI = 2; array_key_exists($strAliasReturn, $this->arrOption['from']); $nI++) {
+        for ($nI = 2; array_key_exists($strAliasReturn, $this->options['from']); $nI++) {
             $strAliasReturn = $mixName.'_'.(string) $nI;
         }
 
@@ -4527,7 +4527,7 @@ class Select
      */
     protected function initOption()
     {
-        $this->arrOption = static::$optionDefault;
+        $this->options = static::$optionsDefault;
         $this->queryParams = static::$queryParamsDefault;
     }
 
@@ -4537,9 +4537,9 @@ class Select
     protected function backupPaginateArgs()
     {
         $this->backupPage = [];
-        $this->backupPage['aggregate'] = $this->arrOption['aggregate'];
+        $this->backupPage['aggregate'] = $this->options['aggregate'];
         $this->backupPage['query_params'] = $this->queryParams;
-        $this->backupPage['columns'] = $this->arrOption['columns'];
+        $this->backupPage['columns'] = $this->options['columns'];
     }
 
     /**
@@ -4547,9 +4547,9 @@ class Select
      */
     protected function restorePaginateArgs()
     {
-        $this->arrOption['aggregate'] = $this->backupPage['aggregate'];
+        $this->options['aggregate'] = $this->backupPage['aggregate'];
         $this->queryParams = $this->backupPage['query_params'];
-        $this->arrOption['columns'] = $this->backupPage['columns'];
+        $this->options['columns'] = $this->backupPage['columns'];
     }
 
     /**
