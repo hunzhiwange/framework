@@ -720,9 +720,11 @@ class Select
             $arrSql[] = $this->parseWhere();
             $arrSql[] = $this->parseOrder(true);
             $arrSql[] = $this->parseLimitcount(true, true);
+            $arrSql = array_filter($arrSql);
             $mixData = implode(' ', $arrSql);
             unset($arrSql);
         }
+
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
         $this->safeSql($bFlag)->setNativeSql('delete');
