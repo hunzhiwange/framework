@@ -1759,7 +1759,7 @@ class Select
     /**
      * whereDay 查询条件.
      *
-     * @param mixed $mixCond
+     * @param mixed $cond
      *
      * @return $this
      */
@@ -1937,11 +1937,11 @@ class Select
      *
      * @param mixed        $table 同 table $table
      * @param array|string $cols  同 table $cols
-     * @param mixed        $mixCond  同 where $mixCond
+     * @param mixed        $cond  同 where $cond
      *
      * @return $this
      */
-    public function join($table, $cols, $mixCond)
+    public function join($table, $cols, $cond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1958,11 +1958,11 @@ class Select
      *
      * @param mixed        $table 同 table $table
      * @param array|string $cols  同 table $cols
-     * @param mixed        $mixCond  同 where $mixCond
+     * @param mixed        $cond  同 where $cond
      *
      * @return $this
      */
-    public function innerJoin($table, $cols, $mixCond)
+    public function innerJoin($table, $cols, $cond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -1979,11 +1979,11 @@ class Select
      *
      * @param mixed        $table 同 table $table
      * @param array|string $cols  同 table $cols
-     * @param mixed        $mixCond  同 where $mixCond
+     * @param mixed        $cond  同 where $cond
      *
      * @return $this
      */
-    public function leftJoin($table, $cols, $mixCond)
+    public function leftJoin($table, $cols, $cond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -2000,11 +2000,11 @@ class Select
      *
      * @param mixed        $table 同 table $table
      * @param array|string $cols  同 table $cols
-     * @param mixed        $mixCond  同 where $mixCond
+     * @param mixed        $cond  同 where $cond
      *
      * @return $this
      */
-    public function rightJoin($table, $cols, $mixCond)
+    public function rightJoin($table, $cols, $cond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -2021,11 +2021,11 @@ class Select
      *
      * @param mixed        $table 同 table $table
      * @param array|string $cols  同 table $cols
-     * @param mixed        $mixCond  同 where $mixCond
+     * @param mixed        $cond  同 where $cond
      *
      * @return $this
      */
-    public function fullJoin($table, $cols, $mixCond)
+    public function fullJoin($table, $cols, $cond)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -3292,13 +3292,13 @@ class Select
         $sqlCond = [];
         $table = $this->getCurrentTable();
 
-        foreach ($this->arrOption[$condType] as $sKey => $mixCond) {
+        foreach ($this->arrOption[$condType] as $sKey => $cond) {
             // 逻辑连接符
-            if (in_array($mixCond, [
+            if (in_array($cond, [
                 static::LOGIC_AND,
                 static::LOGIC_OR,
             ], true)) {
-                $sqlCond[] = strtoupper($mixCond);
+                $sqlCond[] = strtoupper($cond);
                 continue;
             }
 
@@ -3307,28 +3307,28 @@ class Select
                 if (in_array($sKey, [
                     'string__',
                 ], true)) {
-                    $sqlCond[] = implode(' AND ', $mixCond);
+                    $sqlCond[] = implode(' AND ', $cond);
                 }
-            } elseif (is_array($mixCond)) {
+            } elseif (is_array($cond)) {
                 // 表达式支持
-                if (false !== strpos($mixCond[0], '{') && 
-                    preg_match('/^{(.+?)}$/', $mixCond[0], $arrRes)) {
-                    $mixCond[0] = $this->connect->qualifyExpression(
+                if (false !== strpos($cond[0], '{') && 
+                    preg_match('/^{(.+?)}$/', $cond[0], $arrRes)) {
+                    $cond[0] = $this->connect->qualifyExpression(
                         $arrRes[1],
                         $table
                     );
                 } else {
                     // 字段处理
-                    if (false !== strpos($mixCond[0], ',')) {
-                        $arrTemp = explode(',', $mixCond[0]);
-                        $mixCond[0] = $arrTemp[1];
-                        $currentTable = $mixCond[0];
+                    if (false !== strpos($cond[0], ',')) {
+                        $arrTemp = explode(',', $cond[0]);
+                        $cond[0] = $arrTemp[1];
+                        $currentTable = $cond[0];
                     } else {
                         $currentTable = $table;
                     }
 
-                    $mixCond[0] = $this->connect->qualifyColumn(
-                        $mixCond[0],
+                    $cond[0] = $this->connect->qualifyColumn(
+                        $cond[0],
                         $currentTable
                     );
                 }
@@ -3336,16 +3336,16 @@ class Select
                 // 分析是否存在自动格式化时间标识
                 $findTime = null;
 
-                if (0 === strpos($mixCond[1], '@')) {
+                if (0 === strpos($cond[1], '@')) {
                     foreach ([
                         'date',
                         'month',
                         'day',
                         'year',
                     ] as $strTimeType) {
-                        if (0 === stripos($mixCond[1], '@'.$strTimeType)) {
+                        if (0 === stripos($cond[1], '@'.$strTimeType)) {
                             $findTime = $strTimeType;
-                            $mixCond[1] = ltrim(substr($mixCond[1], strlen($strTimeType) + 1));
+                            $cond[1] = ltrim(substr($cond[1], strlen($strTimeType) + 1));
                             break;
                         }
                     }
@@ -3357,15 +3357,15 @@ class Select
                 }
 
                 // 格式化字段值，支持数组
-                if (isset($mixCond[2])) {
+                if (isset($cond[2])) {
                     $booIsArray = true;
 
-                    if (!is_array($mixCond[2])) {
-                        $mixCond[2] = (array) $mixCond[2];
+                    if (!is_array($cond[2])) {
+                        $cond[2] = (array) $cond[2];
                         $booIsArray = false;
                     }
 
-                    foreach ($mixCond[2] as &$tmp) {
+                    foreach ($cond[2] as &$tmp) {
                         // 对象子表达式支持
                         if ($tmp instanceof self) {
                             $tmp = $tmp->makeSql(true);
@@ -3401,7 +3401,7 @@ class Select
                         } else {
                             // 自动格式化时间
                             if (null !== $findTime) {
-                                $tmp = $this->parseTime($mixCond[0], $tmp, $findTime);
+                                $tmp = $this->parseTime($cond[0], $tmp, $findTime);
                             }
 
                             $tmp = $this->connect->qualifyColumnValue($tmp);
@@ -3409,48 +3409,48 @@ class Select
                     }
 
                     if (false === $booIsArray || 
-                        (1 === count($mixCond[2]) && 
-                            0 === strpos(trim($mixCond[2][0]), '('))) {
-                        $mixCond[2] = reset($mixCond[2]);
+                        (1 === count($cond[2]) && 
+                            0 === strpos(trim($cond[2][0]), '('))) {
+                        $cond[2] = reset($cond[2]);
                     }
                 }
 
                 // 拼接结果
-                if (in_array($mixCond[1], [
+                if (in_array($cond[1], [
                     'null',
                     'not null',
                 ], true)) {
-                    $sqlCond[] = $mixCond[0].' IS '.strtoupper($mixCond[1]);
-                } elseif (in_array($mixCond[1], [
+                    $sqlCond[] = $cond[0].' IS '.strtoupper($cond[1]);
+                } elseif (in_array($cond[1], [
                     'in',
                     'not in',
                 ], true)) {
-                    $sqlCond[] = $mixCond[0].' '.
-                        strtoupper($mixCond[1]).' '.
+                    $sqlCond[] = $cond[0].' '.
+                        strtoupper($cond[1]).' '.
                         (
-                            is_array($mixCond[2]) ? 
-                            '('.implode(',', $mixCond[2]).')' : 
-                            $mixCond[2]
+                            is_array($cond[2]) ? 
+                            '('.implode(',', $cond[2]).')' : 
+                            $cond[2]
                         );
-                } elseif (in_array($mixCond[1], [
+                } elseif (in_array($cond[1], [
                     'between',
                     'not between',
                 ], true)) {
-                    if (!is_array($mixCond[2]) || count($mixCond[2]) < 2) {
+                    if (!is_array($cond[2]) || count($cond[2]) < 2) {
                         throw new Exception(
                             'The [not] between parameter value must be '.
                             'an array of not less than two elements.'
                         );
                     }
-                    $sqlCond[] = $mixCond[0].' '.
-                        strtoupper($mixCond[1]).' '.
-                        $mixCond[2][0].' AND '.$mixCond[2][1];
-                } elseif (is_scalar($mixCond[2])) {
-                    $sqlCond[] = $mixCond[0].' '.
-                        strtoupper($mixCond[1]).' '.
-                        $mixCond[2];
-                } elseif (null === $mixCond[2]) {
-                    $sqlCond[] = $mixCond[0].' IS NULL';
+                    $sqlCond[] = $cond[0].' '.
+                        strtoupper($cond[1]).' '.
+                        $cond[2][0].' AND '.$cond[2][1];
+                } elseif (is_scalar($cond[2])) {
+                    $sqlCond[] = $cond[0].' '.
+                        strtoupper($cond[1]).' '.
+                        $cond[2];
+                } elseif (null === $cond[2]) {
+                    $sqlCond[] = $cond[0].' IS NULL';
                 }
             }
         }
@@ -3466,17 +3466,17 @@ class Select
      * 别名条件.
      *
      * @param string $conditionType
-     * @param mixed  $mixCond
+     * @param mixed  $cond
      *
      * @return $this
      */
-    protected function aliasCondition($conditionType, $mixCond)
+    protected function aliasCondition($conditionType, $cond)
     {
-        if (!is_array($mixCond)) {
+        if (!is_array($cond)) {
             $args = func_get_args();
             $this->addConditions($args[1], $conditionType, $args[2] ?? null);
         } else {
-            foreach ($mixCond as $arrTemp) {
+            foreach ($cond as $arrTemp) {
                 $this->addConditions($arrTemp[0], $conditionType, $arrTemp[1]);
             }
         }
@@ -3489,18 +3489,18 @@ class Select
      *
      * @param string $strType
      * @param string $strLogic
-     * @param mixed  $mixCond
+     * @param mixed  $cond
      *
      * @return $this
      */
-    protected function aliasTypeAndLogic($strType, $strLogic, $mixCond)
+    protected function aliasTypeAndLogic($strType, $strLogic, $cond)
     {
         $this->setTypeAndLogic($strType, $strLogic);
 
-        if (!is_string($mixCond) && is_callable($mixCond)) {
+        if (!is_string($cond) && is_callable($cond)) {
             $select = new static($this->connect);
             $select->setCurrentTable($this->getCurrentTable());
-            $resultCallback = call_user_func_array($mixCond, [
+            $resultCallback = call_user_func_array($cond, [
                 &$select,
             ]);
             if (null === $resultCallback) {
@@ -3789,11 +3789,11 @@ class Select
      * @param mixed      $mixName
      * @param mixed      $cols
      * @param null|array $arrCondArgs
-     * @param null|mixed $mixCond
+     * @param null|mixed $cond
      *
      * @return $this
      */
-    protected function addJoin($sJoinType, $mixName, $cols, $mixCond = null)
+    protected function addJoin($sJoinType, $mixName, $cols, $cond = null)
     {
         // 验证 join 类型
         if (!isset(static::$joinTypes[$sJoinType])) {
@@ -3931,7 +3931,7 @@ class Select
                 $select,
                 'where',
             ], $args);
-            $mixCond = $select->parseWhere(true);
+            $cond = $select->parseWhere(true);
         }
 
         // 添加一个要查询的数据表
@@ -3939,7 +3939,7 @@ class Select
             'join_type'  => $sJoinType,
             'table_name' => $sTableName,
             'schema'     => $sSchema,
-            'join_cond'  => $mixCond,
+            'join_cond'  => $cond,
         ];
 
         // 添加查询字段
