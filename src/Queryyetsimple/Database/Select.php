@@ -401,11 +401,11 @@ class Select
      *
      * @param null|callable|select|string $mixData
      * @param array                       $arrBind
-     * @param bool                        $bFlag   指示是否不做任何操作只返回 SQL
+     * @param bool                        $flag   指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
-    public function select($mixData = null, $arrBind = [], $bFlag = false)
+    public function select($mixData = null, $arrBind = [], $flag = false)
     {
         if (!Type::these($mixData, [
             'string',
@@ -430,10 +430,10 @@ class Select
 
         // 调用查询
         if (null === $mixData) {
-            return $this->get(null, $bFlag);
+            return $this->get(null, $flag);
         }
 
-        $this->safeSql($bFlag)->setNativeSql('select');
+        $this->safeSql($flag)->setNativeSql('select');
 
         return $this->{'runNativeSql'}(...[
             $mixData,
@@ -446,12 +446,12 @@ class Select
      *
      * @param array|string $mixData
      * @param array        $arrBind
-     * @param bool         $booReplace
-     * @param bool         $bFlag      指示是否不做任何操作只返回 SQL
+     * @param bool         $replace
+     * @param bool         $flag      指示是否不做任何操作只返回 SQL
      *
      * @return int 最后插入ID
      */
-    public function insert($mixData, $arrBind = [], $booReplace = false, $bFlag = false)
+    public function insert($mixData, $arrBind = [], $replace = false, $flag = false)
     {
         if (!Type::these($mixData, [
             'string',
@@ -465,32 +465,33 @@ class Select
 
         // 构造数据插入
         if (is_array($mixData)) {
-            $intQuestionMark = 0;
-            $arrBindData = $this->getBindData($mixData, $arrBind, $intQuestionMark);
+            $questionMark = 0;
+            $arrBindData = $this->getBindData($mixData, $arrBind, $questionMark);
             $arrField = $arrBindData[0];
             $arrValue = $arrBindData[1];
             $sTableName = $this->getCurrentTable();
 
-            foreach ($arrField as &$strField) {
-                $strField = $this->qualifyOneColumn($strField, $sTableName);
+            foreach ($arrField as &$field) {
+                $field = $this->qualifyOneColumn($field, $sTableName);
             }
 
             // 构造 insert 语句
             if ($arrValue) {
                 $arrSql = [];
-                $arrSql[] = ($booReplace ? 'REPLACE' : 'INSERT').' INTO';
+                $arrSql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
                 $arrSql[] = $this->parseTable();
                 $arrSql[] = '('.implode(',', $arrField).')';
                 $arrSql[] = 'VALUES';
                 $arrSql[] = '('.implode(',', $arrValue).')';
                 $mixData = implode(' ', $arrSql);
+
                 unset($arrBindData, $arrField, $arrValue, $arrSql);
             }
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
         // 执行查询
-        $this->safeSql($bFlag)->setNativeSql(false === $booReplace ? 'insert' : 'replace');
+        $this->safeSql($flag)->setNativeSql(false === $replace ? 'insert' : 'replace');
 
         return $this->{'runNativeSql'}(...[
             $mixData,
@@ -503,12 +504,12 @@ class Select
      *
      * @param array $arrData
      * @param array $arrBind
-     * @param bool  $booReplace
-     * @param bool  $bFlag      指示是否不做任何操作只返回 SQL
+     * @param bool  $replace
+     * @param bool  $flag      指示是否不做任何操作只返回 SQL
      *
      * @return int 最后插入ID
      */
-    public function insertAll($arrData, $arrBind = [], $booReplace = false, $bFlag = false)
+    public function insertAll($arrData, $arrBind = [], $replace = false, $flag = false)
     {
         if (!is_array($arrData)) {
             throw new Exception('Unsupported parameters.');
@@ -520,17 +521,17 @@ class Select
         // 构造数据批量插入
         if (is_array($arrData)) {
             $arrDataResult = [];
-            $intQuestionMark = 0;
+            $questionMark = 0;
             $sTableName = $this->getCurrentTable();
             foreach ($arrData as $intKey => $arrTemp) {
                 if (!is_array($arrTemp)) {
                     continue;
                 }
-                $arrBindData = $this->getBindData($arrTemp, $arrBind, $intQuestionMark, $intKey);
+                $arrBindData = $this->getBindData($arrTemp, $arrBind, $questionMark, $intKey);
                 if (0 === $intKey) {
                     $arrField = $arrBindData[0];
-                    foreach ($arrField as &$strField) {
-                        $strField = $this->qualifyOneColumn($strField, $sTableName);
+                    foreach ($arrField as &$field) {
+                        $field = $this->qualifyOneColumn($field, $sTableName);
                     }
                 }
                 $arrValue = $arrBindData[1];
@@ -542,19 +543,22 @@ class Select
             // 构造 insertAll 语句
             if ($arrDataResult) {
                 $arrSql = [];
-                $arrSql[] = ($booReplace ? 'REPLACE' : 'INSERT').' INTO';
+                $arrSql[] = ($replace ? 'REPLACE' : 'INSERT').' INTO';
                 $arrSql[] = $this->parseTable();
                 $arrSql[] = '('.implode(',', $arrField).')';
                 $arrSql[] = 'VALUES';
                 $arrSql[] = implode(',', $arrDataResult);
                 $mixData = implode(' ', $arrSql);
+
                 unset($arrField, $arrValue, $arrSql, $arrDataResult);
             }
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
         // 执行查询
-        $this->safeSql($bFlag)->setNativeSql(false === $booReplace ? 'insert' : 'replace');
+        $this->safeSql($flag)->
+
+        setNativeSql(false === $replace ? 'insert' : 'replace');
 
         return $this->{'runNativeSql'}(...[
             $mixData,
@@ -567,11 +571,11 @@ class Select
      *
      * @param array|string $mixData
      * @param array        $arrBind
-     * @param bool         $bFlag   指示是否不做任何操作只返回 SQL
+     * @param bool         $flag   指示是否不做任何操作只返回 SQL
      *
      * @return int 影响记录
      */
-    public function update($mixData, $arrBind = [], $bFlag = false)
+    public function update($mixData, $arrBind = [], $flag = false)
     {
         if (!Type::these($mixData, [
             'string',
@@ -585,17 +589,18 @@ class Select
 
         // 构造数据更新
         if (is_array($mixData)) {
-            $intQuestionMark = 0;
-            $arrBindData = $this->getBindData($mixData, $arrBind, $intQuestionMark);
+            $questionMark = 0;
+            $arrBindData = $this->getBindData($mixData, $arrBind, $questionMark);
             $arrField = $arrBindData[0];
             $arrValue = $arrBindData[1];
             $sTableName = $this->getCurrentTable();
 
             // SET 语句
             $arrSetData = [];
-            foreach ($arrField as $intKey => $strField) {
-                $strField = $this->qualifyOneColumn($strField, $sTableName);
-                $arrSetData[] = $strField.' = '.$arrValue[$intKey];
+
+            foreach ($arrField as $intKey => $field) {
+                $field = $this->qualifyOneColumn($field, $sTableName);
+                $arrSetData[] = $field.' = '.$arrValue[$intKey];
             }
 
             // 构造 update 语句
@@ -610,12 +615,13 @@ class Select
                 $arrSql[] = $this->parseForUpdate();
                 $arrSql = array_filter($arrSql);
                 $mixData = implode(' ', $arrSql);
+
                 unset($arrBindData, $arrField, $arrValue, $arrSetData, $arrSql);
             }
         }
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
-        $this->safeSql($bFlag)->setNativeSql('update');
+        $this->safeSql($flag)->setNativeSql('update');
 
         return $this->{'runNativeSql'}(...[
             $mixData,
@@ -626,65 +632,65 @@ class Select
     /**
      * 更新某个字段的值
      *
-     * @param string $strColumn
+     * @param string $column
      * @param mixed  $mixValue
      * @param array  $arrBind
-     * @param bool   $bFlag     指示是否不做任何操作只返回 SQL
+     * @param bool   $flag     指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
-    public function updateColumn($strColumn, $mixValue, $arrBind = [], $bFlag = false)
+    public function updateColumn($column, $mixValue, $arrBind = [], $flag = false)
     {
-        if (!is_string($strColumn)) {
+        if (!is_string($column)) {
             throw new Exception('Unsupported parameters.');
         }
 
         return $this->update(
             [
-                $strColumn => $mixValue,
+                $column => $mixValue,
             ],
             $arrBind,
-            $bFlag
+            $flag
         );
     }
 
     /**
      * 字段递增.
      *
-     * @param string $strColumn
-     * @param int    $intStep
+     * @param string $column
+     * @param int    $step
      * @param array  $arrBind
-     * @param bool   $bFlag     指示是否不做任何操作只返回 SQL
+     * @param bool   $flag     指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
-    public function updateIncrease($strColumn, $intStep = 1, $arrBind = [], $bFlag = false)
+    public function updateIncrease($column, $step = 1, $arrBind = [], $flag = false)
     {
         return $this->updateColumn(
-            $strColumn,
-            '{['.$strColumn.']+'.$intStep.'}',
+            $column,
+            '{['.$column.']+'.$step.'}',
             $arrBind,
-            $bFlag
+            $flag
         );
     }
 
     /**
      * 字段减少.
      *
-     * @param string $strColumn
-     * @param int    $intStep
+     * @param string $column
+     * @param int    $step
      * @param array  $arrBind
-     * @param bool   $bFlag     指示是否不做任何操作只返回 SQL
+     * @param bool   $flag     指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
-    public function updateDecrease($strColumn, $intStep = 1, $arrBind = [], $bFlag = false)
+    public function updateDecrease($column, $step = 1, $arrBind = [], $flag = false)
     {
         return $this->updateColumn(
-            $strColumn,
-            '{['.$strColumn.']-'.$intStep.'}',
+            $column,
+            '{['.$column.']-'.$step.'}',
             $arrBind,
-            $bFlag
+            $flag
         );
     }
 
@@ -693,11 +699,11 @@ class Select
      *
      * @param null|string $mixData
      * @param array       $arrBind
-     * @param bool        $bFlag   指示是否不做任何操作只返回 SQL
+     * @param bool        $flag   指示是否不做任何操作只返回 SQL
      *
      * @return int 影响记录
      */
-    public function delete($mixData = null, $arrBind = [], $bFlag = false)
+    public function delete($mixData = null, $arrBind = [], $flag = false)
     {
         if (!Type::these($mixData, [
             'string',
@@ -723,12 +729,13 @@ class Select
             $arrSql[] = $this->parseLimitcount(true, true);
             $arrSql = array_filter($arrSql);
             $mixData = implode(' ', $arrSql);
+
             unset($arrSql);
         }
 
         $arrBind = array_merge($this->getBindParams(), $arrBind);
 
-        $this->safeSql($bFlag)->setNativeSql('delete');
+        $this->safeSql($flag)->setNativeSql('delete');
 
         return $this->{'runNativeSql'}(...[
             $mixData,
@@ -739,9 +746,9 @@ class Select
     /**
      * 清空表重置自增 ID.
      *
-     * @param bool $bFlag 指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      */
-    public function truncate($bFlag = false)
+    public function truncate($flag = false)
     {
         // 构造 truncate 语句
         $arrSql = [];
@@ -749,7 +756,7 @@ class Select
         $arrSql[] = $this->parseTable(true);
         $arrSql = implode(' ', $arrSql);
 
-        $this->safeSql($bFlag)->setNativeSql('statement');
+        $this->safeSql($flag)->setNativeSql('statement');
 
         return $this->{'runNativeSql'}(...[
             $arrSql,
@@ -761,11 +768,11 @@ class Select
      *
      * @param string $strData
      * @param array  $arrBind
-     * @param bool   $bFlag   指示是否不做任何操作只返回 SQL
+     * @param bool   $flag   指示是否不做任何操作只返回 SQL
      */
-    public function statement(string $strData, $arrBind = [], $bFlag = false)
+    public function statement(string $strData, $arrBind = [], $flag = false)
     {
-        $this->safeSql($bFlag)->setNativeSql('statement');
+        $this->safeSql($flag)->setNativeSql('statement');
 
         return $this->{'runNativeSql'}(...[
             $strData,
@@ -776,90 +783,96 @@ class Select
     /**
      * 返回一条记录.
      *
-     * @param bool $bFlag 指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
-    public function getOne($bFlag = false)
+    public function getOne($flag = false)
     {
-        return $this->safeSql($bFlag)->one()->query();
+        return $this->safeSql($flag)->one()->query();
     }
 
     /**
      * 返回所有记录.
      *
-     * @param bool $bFlag 指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
-    public function getAll($bFlag = false)
+    public function getAll($flag = false)
     {
         if ($this->arrOption['limitquery']) {
-            return $this->safeSql($bFlag)->query();
+            return $this->safeSql($flag)->query();
         }
 
-        return $this->safeSql($bFlag)->all()->query();
+        return $this->safeSql($flag)->all()->query();
     }
 
     /**
      * 返回最后几条记录.
      *
      * @param mixed $num
-     * @param bool  $bFlag 指示是否不做任何操作只返回 SQL
+     * @param bool  $flag 指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
-    public function get($num = null, $bFlag = false)
+    public function get($num = null, $flag = false)
     {
         if (null !== $num) {
-            return $this->safeSql($bFlag)->top($num)->query();
+            return $this->safeSql($flag)->top($num)->query();
         }
 
-        return $this->safeSql($bFlag)->query();
+        return $this->safeSql($flag)->query();
     }
 
     /**
      * 返回一个字段的值
      *
-     * @param string $strField
-     * @param bool   $bFlag    指示是否不做任何操作只返回 SQL
+     * @param string $field
+     * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
-    public function value($strField, $bFlag = false)
+    public function value($field, $flag = false)
     {
-        $arrRow = $this->safeSql($bFlag)->asDefault()->setColumns($strField)->getOne();
+        $arrRow = $this->safeSql($flag)->
+
+        asDefault()->
+
+        setColumns($field)->
+
+        getOne();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
         }
 
-        return $arrRow[$strField] ?? null;
+        return $arrRow[$field] ?? null;
     }
 
     /**
      * 返回一个字段的值(别名).
      *
-     * @param string $strField
-     * @param bool   $bFlag    指示是否不做任何操作只返回 SQL
+     * @param string $field
+     * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return mixed
      */
-    public function pull($strField, $bFlag = false)
+    public function pull($field, $flag = false)
     {
-        return $this->value($strField, $bFlag);
+        return $this->value($field, $flag);
     }
 
     /**
      * 返回一列数据.
      *
      * @param mixed  $mixFieldValue
-     * @param string $strFieldKey
-     * @param bool   $bFlag         指示是否不做任何操作只返回 SQL
+     * @param string $fieldKey
+     * @param bool   $flag         指示是否不做任何操作只返回 SQL
      *
      * @return array
      */
-    public function lists($mixFieldValue, $strFieldKey = null, $bFlag = false)
+    public function lists($mixFieldValue, $fieldKey = null, $flag = false)
     {
         // 纵然有弱水三千，我也只取一瓢 (第一个字段为值，第二个字段为键值，多余的字段丢弃)
         $arrField = [];
@@ -870,11 +883,11 @@ class Select
             $arrField[] = $mixFieldValue;
         }
 
-        if (is_string($strFieldKey)) {
-            $arrField[] = $strFieldKey;
+        if (is_string($fieldKey)) {
+            $arrField[] = $fieldKey;
         }
 
-        $tmps = $this->safeSql($bFlag)->
+        $tmps = $this->safeSql($flag)->
 
         asDefault()->
 
@@ -950,15 +963,15 @@ class Select
     /**
      * 总记录数.
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
-     * @param bool   $bFlag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return int
      */
-    public function getCount($strField = '*', $sAlias = 'row_count', $bFlag = false)
+    public function getCount($field = '*', $sAlias = 'row_count', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->count($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->count($field, $sAlias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
@@ -970,15 +983,15 @@ class Select
     /**
      * 平均数.
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
-     * @param bool   $bFlag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
-    public function getAvg($strField, $sAlias = 'avg_value', $bFlag = false)
+    public function getAvg($field, $sAlias = 'avg_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->avg($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->avg($field, $sAlias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
@@ -990,15 +1003,15 @@ class Select
     /**
      * 最大值
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
-     * @param bool   $bFlag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
-    public function getMax($strField, $sAlias = 'max_value', $bFlag = false)
+    public function getMax($field, $sAlias = 'max_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->max($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->max($field, $sAlias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
@@ -1010,15 +1023,15 @@ class Select
     /**
      * 最小值
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
-     * @param bool   $bFlag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
-    public function getMin($strField, $sAlias = 'min_value', $bFlag = false)
+    public function getMin($field, $sAlias = 'min_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->min($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->min($field, $sAlias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
@@ -1030,15 +1043,15 @@ class Select
     /**
      * 合计
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
-     * @param bool   $bFlag    指示是否不做任何操作只返回 SQL
+     * @param bool   $flag    指示是否不做任何操作只返回 SQL
      *
      * @return number
      */
-    public function getSum($strField, $sAlias = 'sum_value', $bFlag = false)
+    public function getSum($field, $sAlias = 'sum_value', $flag = false)
     {
-        $arrRow = (array) $this->safeSql($bFlag)->asDefault()->sum($strField, $sAlias)->get();
+        $arrRow = (array) $this->safeSql($flag)->asDefault()->sum($field, $sAlias)->get();
 
         if (true === $this->onlyMakeSql) {
             return $arrRow;
@@ -1147,17 +1160,17 @@ class Select
     /**
      * 指定返回 SQL 不做任何操作.
      *
-     * @param bool $bFlag 指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return $this
      */
-    public function sql($bFlag = true)
+    public function sql($flag = true)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->onlyMakeSql = (bool) $bFlag;
+        $this->onlyMakeSql = (bool) $flag;
 
         return $this;
     }
@@ -2442,16 +2455,16 @@ class Select
     /**
      * 创建一个 SELECT DISTINCT 查询.
      *
-     * @param bool $bFlag 指示是否是一个 SELECT DISTINCT 查询（默认 true）
+     * @param bool $flag 指示是否是一个 SELECT DISTINCT 查询（默认 true）
      *
      * @return $this
      */
-    public function distinct($bFlag = true)
+    public function distinct($flag = true)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrOption['distinct'] = (bool) $bFlag;
+        $this->arrOption['distinct'] = (bool) $flag;
 
         return $this;
     }
@@ -2459,86 +2472,86 @@ class Select
     /**
      * 总记录数.
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
      *
      * @return $this
      */
-    public function count($strField = '*', $sAlias = 'row_count')
+    public function count($field = '*', $sAlias = 'row_count')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('COUNT', $strField, $sAlias);
+        return $this->addAggregate('COUNT', $field, $sAlias);
     }
 
     /**
      * 平均数.
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
      *
      * @return $this
      */
-    public function avg($strField, $sAlias = 'avg_value')
+    public function avg($field, $sAlias = 'avg_value')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('AVG', $strField, $sAlias);
+        return $this->addAggregate('AVG', $field, $sAlias);
     }
 
     /**
      * 最大值
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
      *
      * @return $this
      */
-    public function max($strField, $sAlias = 'max_value')
+    public function max($field, $sAlias = 'max_value')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('MAX', $strField, $sAlias);
+        return $this->addAggregate('MAX', $field, $sAlias);
     }
 
     /**
      * 最小值
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
      *
      * @return $this
      */
-    public function min($strField, $sAlias = 'min_value')
+    public function min($field, $sAlias = 'min_value')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('MIN', $strField, $sAlias);
+        return $this->addAggregate('MIN', $field, $sAlias);
     }
 
     /**
      * 合计
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sAlias
      *
      * @return $this
      */
-    public function sum($strField, $sAlias = 'sum_value')
+    public function sum($field, $sAlias = 'sum_value')
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        return $this->addAggregate('SUM', $strField, $sAlias);
+        return $this->addAggregate('SUM', $field, $sAlias);
     }
 
     /**
@@ -2617,16 +2630,16 @@ class Select
     /**
      * 是否构造一个 FOR UPDATE 查询.
      *
-     * @param bool $bFlag
+     * @param bool $flag
      *
      * @return $this
      */
-    public function forUpdate($bFlag = true)
+    public function forUpdate($flag = true)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrOption['forupdate'] = (bool) $bFlag;
+        $this->arrOption['forupdate'] = (bool) $flag;
 
         return $this;
     }
@@ -2677,17 +2690,17 @@ class Select
     /**
      * 安全格式指定返回 SQL 不做任何操作.
      *
-     * @param bool $bFlag 指示是否不做任何操作只返回 SQL
+     * @param bool $flag 指示是否不做任何操作只返回 SQL
      *
      * @return $this
      */
-    protected function safeSql($bFlag = true)
+    protected function safeSql($flag = true)
     {
         if (true === $this->onlyMakeSql) {
             return $this;
         }
 
-        $this->onlyMakeSql = (bool) $bFlag;
+        $this->onlyMakeSql = (bool) $flag;
 
         return $this;
     }
@@ -3493,15 +3506,15 @@ class Select
     /**
      * 格式化一个字段.
      *
-     * @param string $strField
+     * @param string $field
      * @param string $sTableName
      *
      * @return string
      */
-    protected function qualifyOneColumn($strField, $sTableName = null)
+    protected function qualifyOneColumn($field, $sTableName = null)
     {
-        $strField = trim($strField);
-        if (empty($strField)) {
+        $field = trim($field);
+        if (empty($field)) {
             return '';
         }
 
@@ -3509,19 +3522,19 @@ class Select
             $sTableName = $this->getCurrentTable();
         }
 
-        if (false !== strpos($strField, '{') && preg_match('/^{(.+?)}$/', $strField, $arrRes)) {
-            $strField = $this->connect->qualifyExpression($arrRes[1], $sTableName);
-        } elseif (!preg_match('/\(.*\)/', $strField)) {
-            if (preg_match('/(.+)\.(.+)/', $strField, $arrMatch)) {
+        if (false !== strpos($field, '{') && preg_match('/^{(.+?)}$/', $field, $arrRes)) {
+            $field = $this->connect->qualifyExpression($arrRes[1], $sTableName);
+        } elseif (!preg_match('/\(.*\)/', $field)) {
+            if (preg_match('/(.+)\.(.+)/', $field, $arrMatch)) {
                 $sCurrentTableName = $arrMatch[1];
                 $strTemp = $arrMatch[2];
             } else {
                 $sCurrentTableName = $sTableName;
             }
-            $strField = $this->connect->qualifyTableOrColumn("{$sCurrentTableName}.{$strField}");
+            $field = $this->connect->qualifyTableOrColumn("{$sCurrentTableName}.{$field}");
         }
 
-        return $strField;
+        return $field;
     }
 
     /**
@@ -3770,35 +3783,35 @@ class Select
      * 添加一个集合查询.
      *
      * @param string $sType    类型
-     * @param string $strField 字段
+     * @param string $field 字段
      * @param string $sAlias   别名
      *
      * @return $this
      */
-    protected function addAggregate($sType, $strField, $sAlias)
+    protected function addAggregate($sType, $field, $sAlias)
     {
         $this->arrOption['columns'] = [];
         $strTableName = $this->getCurrentTable();
 
         // 表达式支持
-        if (false !== strpos($strField, '{') && preg_match('/^{(.+?)}$/', $strField, $arrRes)) {
-            $strField = $this->connect->qualifyExpression($arrRes[1], $strTableName);
+        if (false !== strpos($field, '{') && preg_match('/^{(.+?)}$/', $field, $arrRes)) {
+            $field = $this->connect->qualifyExpression($arrRes[1], $strTableName);
         } else {
             // 检查字段名是否包含表名称
-            if (preg_match('/(.+)\.(.+)/', $strField, $arrMatch)) {
+            if (preg_match('/(.+)\.(.+)/', $field, $arrMatch)) {
                 $strTableName = $arrMatch[1];
-                $strField = $arrMatch[2];
+                $field = $arrMatch[2];
             }
-            if ('*' === $strField) {
+            if ('*' === $field) {
                 $strTableName = '';
             }
-            $strField = $this->connect->qualifyColumn($strField, $strTableName);
+            $field = $this->connect->qualifyColumn($field, $strTableName);
         }
-        $strField = "{$sType}(${strField})";
+        $field = "{$sType}(${field})";
 
         $this->arrOption['aggregate'][] = [
             $sType,
-            $strField,
+            $field,
             $sAlias,
         ];
 
@@ -4010,10 +4023,10 @@ class Select
      *
      * @param array $arrData
      * @param array $arrBind
-     * @param int   $intQuestionMark
+     * @param int   $questionMark
      * @param int   $intIndex
      */
-    protected function getBindData($arrData, &$arrBind = [], &$intQuestionMark = 0, $intIndex = 0)
+    protected function getBindData($arrData, &$arrBind = [], &$questionMark = 0, $intIndex = 0)
     {
         $arrField = $arrValue = [];
         $strTableName = $this->getCurrentTable();
@@ -4035,12 +4048,12 @@ class Select
                 $arrValue[] = $mixValue;
             } else {
                 // 转换 ? 占位符至 : 占位符
-                if ('?' === $mixValue && isset($arrBind[$intQuestionMark])) {
-                    $sKey = 'questionmark_'.$intQuestionMark;
-                    $mixValue = $arrBind[$intQuestionMark];
-                    unset($arrBind[$intQuestionMark]);
-                    $this->deleteBindParams($intQuestionMark);
-                    $intQuestionMark++;
+                if ('?' === $mixValue && isset($arrBind[$questionMark])) {
+                    $sKey = 'questionmark_'.$questionMark;
+                    $mixValue = $arrBind[$questionMark];
+                    unset($arrBind[$questionMark]);
+                    $this->deleteBindParams($questionMark);
+                    $questionMark++;
                 }
 
                 if ($intIndex > 0) {
@@ -4164,17 +4177,17 @@ class Select
 
         // 自动格式化时间
         if (!empty($arrColumns[$strTable][$sField])) {
-            $strFieldType = $arrColumns[$strTable][$sField]['type'];
-            if (in_array($strFieldType, [
+            $fieldType = $arrColumns[$strTable][$sField]['type'];
+            if (in_array($fieldType, [
                 'datetime',
                 'timestamp',
             ], true)) {
                 $mixValue = date('Y-m-d H:i:s', $mixValue);
-            } elseif ('date' === $strFieldType) {
+            } elseif ('date' === $fieldType) {
                 $mixValue = date('Y-m-d', $mixValue);
-            } elseif ('time' === $strFieldType) {
+            } elseif ('time' === $fieldType) {
                 $mixValue = date('H:i:s', $mixValue);
-            } elseif (0 === strpos($strFieldType, 'year')) {
+            } elseif (0 === strpos($fieldType, 'year')) {
                 $mixValue = date('Y', $mixValue);
             }
         }
