@@ -3047,34 +3047,34 @@ class Select
 
         $from = [];
 
-        foreach ($this->options['from'] as $alias => $arrTable) {
-            $sTmp = '';
+        foreach ($this->options['from'] as $alias => $value) {
+            $tmp = '';
 
             // 如果不是第一个 FROM，则添加 JOIN
             if (!empty($from)) {
-                $sTmp .= strtoupper($arrTable['join_type']).' ';
+                $tmp .= strtoupper($value['join_type']).' ';
             }
 
             // 表名子表达式支持
-            if (false !== strpos($arrTable['table_name'], '(')) {
-                $sTmp .= $arrTable['table_name'].' '.$alias;
-            } elseif ($alias === $arrTable['table_name']) {
-                $sTmp .= $this->connect->qualifyTableOrColumn(
-                    "{$arrTable['schema']}.{$arrTable['table_name']}"
+            if (false !== strpos($value['table_name'], '(')) {
+                $tmp .= $value['table_name'].' '.$alias;
+            } elseif ($alias === $value['table_name']) {
+                $tmp .= $this->connect->qualifyTableOrColumn(
+                    "{$value['schema']}.{$value['table_name']}"
                 );
             } else {
-                $sTmp .= $this->connect->qualifyTableOrColumn(
-                    "{$arrTable['schema']}.{$arrTable['table_name']}",
+                $tmp .= $this->connect->qualifyTableOrColumn(
+                    "{$value['schema']}.{$value['table_name']}",
                     $alias
                 );
             }
 
             // 添加 JOIN 查询条件
-            if (!empty($from) && !empty($arrTable['join_cond'])) {
-                $sTmp .= ' ON '.$arrTable['join_cond'];
+            if (!empty($from) && !empty($value['join_cond'])) {
+                $tmp .= ' ON '.$value['join_cond'];
             }
 
-            $from[] = $sTmp;
+            $from[] = $tmp;
         }
 
         if (!empty($from)) {
@@ -3087,40 +3087,41 @@ class Select
     /**
      * 解析 table 分析结果.
      *
-     * @param bool $booOnlyAlias
-     * @param bool $booForDelete
+     * @param bool $onlyAlias
+     * @param bool $forDelete
      *
      * @return string
      */
-    protected function parseTable($booOnlyAlias = true, $booForDelete = false)
+    protected function parseTable($onlyAlias = true, $forDelete = false)
     {
         if (empty($this->options['from'])) {
             return '';
         }
 
         // 如果为删除,没有 join 则返回为空
-        if (true === $booForDelete && 1 === count($this->options['from'])) {
+        if (true === $forDelete && 
+            1 === count($this->options['from'])) {
             return '';
         }
 
-        foreach ($this->options['from'] as $alias => $arrTable) {
-            if ($alias === $arrTable['table_name']) {
+        foreach ($this->options['from'] as $alias => $value) {
+            if ($alias === $value['table_name']) {
                 return $this->connect->qualifyTableOrColumn(
-                    "{$arrTable['schema']}.{$arrTable['table_name']}"
+                    "{$value['schema']}.{$value['table_name']}"
                 );
             }
 
-            if (true === $booOnlyAlias) {
+            if (true === $onlyAlias) {
                 return $alias;
             }
 
             // 表名子表达式支持
-            if (false !== strpos($arrTable['table_name'], '(')) {
-                return $arrTable['table_name'].' '.$alias;
+            if (false !== strpos($value['table_name'], '(')) {
+                return $value['table_name'].' '.$alias;
             }
 
             return $this->connect->qualifyTableOrColumn(
-                "{$arrTable['schema']}.{$arrTable['table_name']}",
+                "{$value['schema']}.{$value['table_name']}",
                 $alias
             );
         }
@@ -3129,41 +3130,41 @@ class Select
     /**
      * 解析 using 分析结果.
      *
-     * @param bool $booForDelete
+     * @param bool $forDelete
      *
      * @return string
      */
-    protected function parseUsing($booForDelete = false)
+    protected function parseUsing($forDelete = false)
     {
         // parse using 只支持删除操作
-        if (false === $booForDelete || empty($this->options['using'])) {
+        if (false === $forDelete || 
+            empty($this->options['using'])) {
             return '';
         }
 
-        $arrUsing = [];
+        $using = [];
         $optionsUsing = $this->options['using'];
 
         // table 自动加入
-        foreach ($this->options['from'] as $alias => $arrTable) {
-            $optionsUsing[$alias] = $arrTable;
-
+        foreach ($this->options['from'] as $alias => $value) {
+            $optionsUsing[$alias] = $value;
             break;
         }
 
-        foreach ($optionsUsing as $alias => $arrTable) {
-            if ($alias === $arrTable['table_name']) {
-                $arrUsing[] = $this->connect->qualifyTableOrColumn(
-                    "{$arrTable['schema']}.{$arrTable['table_name']}"
+        foreach ($optionsUsing as $alias => $value) {
+            if ($alias === $value['table_name']) {
+                $using[] = $this->connect->qualifyTableOrColumn(
+                    "{$value['schema']}.{$value['table_name']}"
                 );
             } else {
-                $arrUsing[] = $this->connect->qualifyTableOrColumn(
-                    "{$arrTable['schema']}.{$arrTable['table_name']}",
+                $using[] = $this->connect->qualifyTableOrColumn(
+                    "{$value['schema']}.{$value['table_name']}",
                     $alias
                 );
             }
         }
 
-        return 'USING '.implode(',', array_unique($arrUsing));
+        return 'USING '.implode(',', array_unique($using));
     }
 
     /**
@@ -3173,7 +3174,7 @@ class Select
      */
     protected function parseIndex()
     {
-        $strIndex = '';
+        $index = '';
 
         foreach ([
             'FORCE',
@@ -3183,29 +3184,29 @@ class Select
                 continue;
             }
 
-            $strIndex .= ($strIndex ? ' ' : '').
+            $index .= ($index ? ' ' : '').
                 $type.' INDEX('.
                 implode(',', $this->options['index'][$type]).
                 ')';
         }
 
-        return $strIndex;
+        return $index;
     }
 
     /**
      * 解析 where 分析结果.
      *
-     * @param bool $booChild
+     * @param bool $child
      *
      * @return string
      */
-    protected function parseWhere($booChild = false)
+    protected function parseWhere($child = false)
     {
         if (empty($this->options['where'])) {
             return '';
         }
 
-        return $this->analyseCondition('where', $booChild);
+        return $this->analyseCondition('where', $child);
     }
 
     /**
@@ -3219,41 +3220,41 @@ class Select
             return '';
         }
 
-        $sSql = '';
+        $sql = '';
 
         if ($this->options['union']) {
-            $nOptions = count($this->options['union']);
+            $options = count($this->options['union']);
 
-            foreach ($this->options['union'] as $nCnt => $arrUnion) {
-                list($mixUnion, $type) = $arrUnion;
+            foreach ($this->options['union'] as $index => $value) {
+                list($union, $type) = $value;
 
-                if ($mixUnion instanceof self) {
-                    $mixUnion = $mixUnion->makeSql();
+                if ($union instanceof self) {
+                    $union = $union->makeSql();
                 }
 
-                if ($nCnt <= $nOptions - 1) {
-                    $sSql .= "\n".$type.' '.$mixUnion;
+                if ($index <= $options - 1) {
+                    $sql .= "\n".$type.' '.$union;
                 }
             }
         }
 
-        return $sSql;
+        return $sql;
     }
 
     /**
      * 解析 order 分析结果.
      *
-     * @param bool $booForDelete
+     * @param bool $forDelete
      *
      * @return string
      */
-    protected function parseOrder($booForDelete = false)
+    protected function parseOrder($forDelete = false)
     {
         if (empty($this->options['order'])) {
             return '';
         }
         // 删除存在 join, order 无效
-        if (true === $booForDelete && 
+        if (true === $forDelete && 
             (count($this->options['from']) > 1 || 
                 !empty($this->options['using']))) {
             return '';
@@ -3280,31 +3281,31 @@ class Select
     /**
      * 解析 having 分析结果.
      *
-     * @param bool $booChild
+     * @param bool $child
      *
      * @return string
      */
-    protected function parseHaving($booChild = false)
+    protected function parseHaving($child = false)
     {
         if (empty($this->options['having'])) {
             return '';
         }
 
-        return $this->analyseCondition('having', $booChild);
+        return $this->analyseCondition('having', $child);
     }
 
     /**
      * 解析 limit 分析结果.
      *
      * @param bool $booNullLimitOffset
-     * @param bool $booForDelete
+     * @param bool $forDelete
      *
      * @return string
      */
-    protected function parseLimitcount($booNullLimitOffset = false, $booForDelete = false)
+    protected function parseLimitcount($booNullLimitOffset = false, $forDelete = false)
     {
         // 删除存在 join, limit 无效
-        if (true === $booForDelete && 
+        if (true === $forDelete && 
             (count($this->options['from']) > 1 || 
                 !empty($this->options['using']))) {
             return '';
@@ -3349,11 +3350,11 @@ class Select
      * 解析 condition　条件（包括 where,having）.
      *
      * @param string $condType
-     * @param bool   $booChild
+     * @param bool   $child
      *
      * @return string
      */
-    protected function analyseCondition($condType, $booChild = false)
+    protected function analyseCondition($condType, $child = false)
     {
         if (!$this->options[$condType]) {
             return '';
@@ -3528,7 +3529,7 @@ class Select
         // 剔除第一个逻辑符
         array_shift($sqlCond);
 
-        return (false === $booChild ? strtoupper($condType).' ' : '').
+        return (false === $child ? strtoupper($condType).' ' : '').
             implode(' ', $sqlCond);
     }
 
