@@ -35,6 +35,6 @@
     <logging>
         <log type="coverage-clover" target="build/logs/clover.xml"/>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="true"/>
-        <log type="coverage-html" target="tests/logs/report"/>
+        <log type="coverage-html" target="logs/report"/>
     </logging>
 </phpunit>

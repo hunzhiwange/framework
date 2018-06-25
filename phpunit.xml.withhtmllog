@@ -33,6 +33,6 @@
         <env name="QUEUE_DRIVER" value="sync"/>
     </php>
     <logging>
-        <log type="coverage-html" target="tests/logs/report"/>
+        <log type="coverage-html" target="logs/report"/>
     </logging>
 </phpunit>
