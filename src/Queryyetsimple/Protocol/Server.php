@@ -270,7 +270,7 @@ class Server implements IServer
 
         try {
             $objCient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
-            $booResult = $objCient->connect($this->getOption('host'), $this->getOption('port'));
+            $booResult = $objCient->connect((string) $this->getOption('host'), (int) $this->getOption('port'));
 
             if (empty($booResult)) {
                 $this->error(sprintf('%s:%d swoole service does not exist or has been closed.', $this->getOption('host'), $this->getOption('port')), true);
