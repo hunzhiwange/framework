@@ -1507,20 +1507,20 @@ class Select
      * 添加字段.
      *
      * @param mixed  $cols
-     * @param string $strTable
+     * @param string $table
      *
      * @return $this
      */
-    public function columns($cols = '*', $strTable = null)
+    public function columns($cols = '*', $table = null)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if (null === $strTable) {
-            $strTable = $this->getCurrentTable();
+        if (null === $table) {
+            $table = $this->getCurrentTable();
         }
-        $this->addCols($strTable, $cols);
+        $this->addCols($table, $cols);
 
         return $this;
     }
@@ -1529,22 +1529,22 @@ class Select
      * 设置字段.
      *
      * @param mixed  $cols
-     * @param string $strTable
+     * @param string $table
      *
      * @return $this
      */
-    public function setColumns($cols = '*', $strTable = null)
+    public function setColumns($cols = '*', $table = null)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if (null === $strTable) {
-            $strTable = $this->getCurrentTable();
+        if (null === $table) {
+            $table = $this->getCurrentTable();
         }
 
         $this->arrOption['columns'] = [];
-        $this->addCols($strTable, $cols);
+        $this->addCols($table, $cols);
 
         return $this;
     }
@@ -2511,7 +2511,7 @@ class Select
             }
         }
 
-        $strTableName = $this->getCurrentTable();
+        $tableName = $this->getCurrentTable();
         foreach ($mixExpr as $strValue) {
             // 处理条件表达式
             if (is_string($strValue) && 
@@ -2550,7 +2550,7 @@ class Select
                 if (false !== strpos($tmp, '{') && 
                     preg_match('/^{(.+?)}$/', $tmp, $arrResThree)) {
                     $tmp = $this->connect->qualifyExpression(
-                        $arrResThree[1], $strTableName
+                        $arrResThree[1], $tableName
                     );
 
                     if (preg_match('/(.*\W)('.'ASC'.'|'.'DESC'.')\b/si', $tmp, $arrMatch)) {
@@ -2562,7 +2562,7 @@ class Select
 
                     $this->arrOption['order'][] = $tmp.' '.$sSort;
                 } else {
-                    $sCurrentTableName = $strTableName;
+                    $sCurrentTableName = $tableName;
                     $sSort = $sOrderDefault;
 
                     if (preg_match('/(.*\W)('.'ASC'.'|'.'DESC'.')\b/si', $tmp, $arrMatch)) {
@@ -3290,8 +3290,8 @@ class Select
         }
 
         $sqlCond = [];
-        $strTable = $this->getCurrentTable();
-        
+        $table = $this->getCurrentTable();
+
         foreach ($this->arrOption[$condType] as $sKey => $mixCond) {
             // 逻辑连接符
             if (in_array($mixCond, [
@@ -3315,7 +3315,7 @@ class Select
                     preg_match('/^{(.+?)}$/', $mixCond[0], $arrRes)) {
                     $mixCond[0] = $this->connect->qualifyExpression(
                         $arrRes[1],
-                        $strTable
+                        $table
                     );
                 } else {
                     // 字段处理
@@ -3324,7 +3324,7 @@ class Select
                         $mixCond[0] = $arrTemp[1];
                         $currentTable = $mixCond[0];
                     } else {
-                        $currentTable = $strTable;
+                        $currentTable = $table;
                     }
 
                     $mixCond[0] = $this->connect->qualifyColumn(
@@ -3396,7 +3396,7 @@ class Select
                             preg_match('/^{(.+?)}$/', $tmp, $arrRes)) {
                             $tmp = $this->connect->qualifyExpression(
                                 $arrRes[1],
-                                $strTable
+                                $table
                             );
                         } else {
                             // 自动格式化时间
@@ -3528,7 +3528,7 @@ class Select
     protected function addConditions()
     {
         $args = func_get_args();
-        $strTable = $this->getCurrentTable();
+        $table = $this->getCurrentTable();
 
         // 整理多个参数到二维数组
         if (!is_array($args[0])) {
@@ -3571,7 +3571,7 @@ class Select
 
                 // 表达式支持
                 if (false !== strpos($arrTemp, '{') && preg_match('/^{(.+?)}$/', $arrTemp, $arrRes)) {
-                    $arrTemp = $this->connect->qualifyExpression($arrRes[1], $strTable);
+                    $arrTemp = $this->connect->qualifyExpression($arrRes[1], $table);
                 }
                 $this->setConditionItem($arrTemp, 'string__');
             }
@@ -4063,24 +4063,24 @@ class Select
     protected function addAggregate($sType, $field, $alias)
     {
         $this->arrOption['columns'] = [];
-        $strTableName = $this->getCurrentTable();
+        $tableName = $this->getCurrentTable();
 
         // 表达式支持
         if (false !== strpos($field, '{') && 
             preg_match('/^{(.+?)}$/', $field, $arrRes)) {
-            $field = $this->connect->qualifyExpression($arrRes[1], $strTableName);
+            $field = $this->connect->qualifyExpression($arrRes[1], $tableName);
         } else {
             // 检查字段名是否包含表名称
             if (preg_match('/(.+)\.(.+)/', $field, $arrMatch)) {
-                $strTableName = $arrMatch[1];
+                $tableName = $arrMatch[1];
                 $field = $arrMatch[2];
             }
 
             if ('*' === $field) {
-                $strTableName = '';
+                $tableName = '';
             }
 
-            $field = $this->connect->qualifyColumn($field, $strTableName);
+            $field = $this->connect->qualifyColumn($field, $tableName);
         }
 
         $field = "{$sType}(${field})";
@@ -4306,13 +4306,13 @@ class Select
     protected function getBindData($data, &$bind = [], &$questionMark = 0, $intIndex = 0)
     {
         $arrField = $values = [];
-        $strTableName = $this->getCurrentTable();
+        $tableName = $this->getCurrentTable();
 
         foreach ($data as $sKey => $value) {
             // 表达式支持
             if (false !== strpos($value, '{') && 
                 preg_match('/^{(.+?)}$/', $value, $arrRes)) {
-                $value = $this->connect->qualifyExpression($arrRes[1], $strTableName);
+                $value = $this->connect->qualifyExpression($arrRes[1], $tableName);
             } else {
                 $value = $this->connect->qualifyColumnValue($value, false);
             }
@@ -4416,18 +4416,18 @@ class Select
             $arrDate = getdate();
         }
         $sField = str_replace('`', '', $sField);
-        $strTable = $this->getCurrentTable();
+        $table = $this->getCurrentTable();
         if (!preg_match('/\(.*\)/', $sField)) {
             if (preg_match('/(.+)\.(.+)/', $sField, $arrMatch)) {
-                $strTable = $arrMatch[1];
+                $table = $arrMatch[1];
                 $sField = $arrMatch[2];
             }
         }
         if ('*' === $sField) {
             return '';
         }
-        if (!isset($arrColumns[$strTable])) {
-            $arrColumns[$strTable] = $this->connect->getTableColumnsCache($strTable)['list'];
+        if (!isset($arrColumns[$table])) {
+            $arrColumns[$table] = $this->connect->getTableColumnsCache($table)['list'];
         }
 
         // 支持类型
@@ -4457,8 +4457,8 @@ class Select
         }
 
         // 自动格式化时间
-        if (!empty($arrColumns[$strTable][$sField])) {
-            $fieldType = $arrColumns[$strTable][$sField]['type'];
+        if (!empty($arrColumns[$table][$sField])) {
+            $fieldType = $arrColumns[$table][$sField]['type'];
             if (in_array($fieldType, [
                 'datetime',
                 'timestamp',
