@@ -500,6 +500,7 @@ class Select
                 unset($bindData, $fields, $values, $sql);
             }
         }
+
         $bind = array_merge($this->getBindParams(), $bind);
 
         // 执行查询
@@ -540,15 +541,16 @@ class Select
             $questionMark = 0;
             $tableName = $this->getCurrentTable();
 
-            foreach ($data as $key => $arrTemp) {
-                if (!is_array($arrTemp)) {
+            foreach ($data as $key => $tmp) {
+                if (!is_array($tmp)) {
                     continue;
                 }
 
-                $bindData = $this->getBindData($arrTemp, $bind, $questionMark, $key);
+                $bindData = $this->getBindData($tmp, $bind, $questionMark, $key);
                 
                 if (0 === $key) {
                     $fields = $bindData[0];
+
                     foreach ($fields as &$field) {
                         $field = $this->qualifyOneColumn($field, $tableName);
                     }
@@ -957,13 +959,13 @@ class Select
         // 解析结果
         $result = [];
 
-        foreach ($tmps as $arrTemp) {
-            if (1 === count($arrTemp)) {
-                $result[] = reset($arrTemp);
+        foreach ($tmps as $tmp) {
+            if (1 === count($tmp)) {
+                $result[] = reset($tmp);
             } else {
-                $value = array_shift($arrTemp);
-                $mixKey = array_shift($arrTemp);
-                $result[$mixKey] = $value;
+                $value = array_shift($tmp);
+                $key = array_shift($tmp);
+                $result[$key] = $value;
             }
         }
 
@@ -1492,10 +1494,10 @@ class Select
             }
 
             // 确定 table_name 和 schema
-            $arrTemp = explode('.', $sTable);
-            if (isset($arrTemp[1])) {
-                $sSchema = $arrTemp[0];
-                $tableName = $arrTemp[1];
+            $tmp = explode('.', $sTable);
+            if (isset($tmp[1])) {
+                $sSchema = $tmp[0];
+                $tableName = $tmp[1];
             } else {
                 $sSchema = null;
                 $tableName = $sTable;
@@ -1873,14 +1875,14 @@ class Select
         }
 
         if (is_array($mixName)) {
-            foreach ($mixName as $mixKey => $item) {
+            foreach ($mixName as $key => $item) {
                 if (!is_array($item)) {
                     $item = [
                         $item,
                         $intType,
                     ];
                 }
-                $this->bindParams[$mixKey] = $item;
+                $this->bindParams[$key] = $item;
             }
         } else {
             if (!is_array($value)) {
@@ -3330,8 +3332,8 @@ class Select
                 } else {
                     // 字段处理
                     if (false !== strpos($cond[0], ',')) {
-                        $arrTemp = explode(',', $cond[0]);
-                        $cond[0] = $arrTemp[1];
+                        $tmp = explode(',', $cond[0]);
+                        $cond[0] = $tmp[1];
                         $currentTable = $cond[0];
                     } else {
                         $currentTable = $table;
@@ -3486,8 +3488,8 @@ class Select
             $args = func_get_args();
             $this->addConditions($args[1], $conditionType, $args[2] ?? null);
         } else {
-            foreach ($cond as $arrTemp) {
-                $this->addConditions($arrTemp[0], $conditionType, $arrTemp[1]);
+            foreach ($cond as $tmp) {
+                $this->addConditions($tmp[0], $conditionType, $tmp[1]);
             }
         }
 
@@ -3549,8 +3551,8 @@ class Select
             // 一维数组统一成二维数组格式
             $booOneImension = false;
 
-            foreach ($args[0] as $mixKey => $value) {
-                if (is_int($mixKey) && !is_array($value)) {
+            foreach ($args[0] as $key => $value) {
+                if (is_int($key) && !is_array($value)) {
                     $booOneImension = true;
                 }
 
@@ -3567,7 +3569,7 @@ class Select
         }
 
         // 遍历数组拼接结果
-        foreach ($conditions as $strKey => $arrTemp) {
+        foreach ($conditions as $strKey => $tmp) {
             if (!is_int($strKey)) {
                 $strKey = trim($strKey);
             }
@@ -3575,15 +3577,15 @@ class Select
             // 字符串表达式
             if (is_string($strKey) && 'string__' === $strKey) {
                 // 不符合规则抛出异常
-                if (!is_string($arrTemp)) {
+                if (!is_string($tmp)) {
                     throw new Exception('String__ type only supports string.');
                 }
 
                 // 表达式支持
-                if (false !== strpos($arrTemp, '{') && preg_match('/^{(.+?)}$/', $arrTemp, $arrRes)) {
-                    $arrTemp = $this->connect->qualifyExpression($arrRes[1], $table);
+                if (false !== strpos($tmp, '{') && preg_match('/^{(.+?)}$/', $tmp, $arrRes)) {
+                    $tmp = $this->connect->qualifyExpression($arrRes[1], $table);
                 }
-                $this->setConditionItem($arrTemp, 'string__');
+                $this->setConditionItem($tmp, 'string__');
             }
 
             // 子表达式
@@ -3598,15 +3600,15 @@ class Select
                 $select->setTypeAndLogic($arrTypeAndLogic[0]);
 
                 // 逻辑表达式
-                if (isset($arrTemp['logic__'])) {
-                    if (strtolower($arrTemp['logic__']) === static::LOGIC_OR) {
+                if (isset($tmp['logic__'])) {
+                    if (strtolower($tmp['logic__']) === static::LOGIC_OR) {
                         $select->setTypeAndLogic(null, static::LOGIC_OR);
                     }
-                    unset($arrTemp['logic__']);
+                    unset($tmp['logic__']);
                 }
 
                 $select = $select->addConditions(
-                    $arrTemp
+                    $tmp
                 );
 
                 // 解析结果
@@ -3627,55 +3629,55 @@ class Select
                     throw new Exception('Having do not support [not] exists writing.');
                 }
 
-                if ($arrTemp instanceof self) {
-                    $arrTemp = $arrTemp->makeSql();
-                } elseif (!is_string($arrTemp) && is_callable($arrTemp)) {
+                if ($tmp instanceof self) {
+                    $tmp = $tmp->makeSql();
+                } elseif (!is_string($tmp) && is_callable($tmp)) {
                     $select = new static($this->connect);
                     $select->setCurrentTable($this->getCurrentTable());
-                    $resultCallback = call_user_func_array($arrTemp, [
+                    $resultCallback = call_user_func_array($tmp, [
                         &$select,
                     ]);
                     if (null === $resultCallback) {
-                        $tmp = $arrTemp = $select->makeSql();
+                        $tmp = $tmp = $select->makeSql();
                     } else {
                         $tmp = $resultCallback;
                     }
                 }
 
-                $arrTemp = ('notexists__' === $strKey ? 'NOT EXISTS ' : 'EXISTS ').
+                $tmp = ('notexists__' === $strKey ? 'NOT EXISTS ' : 'EXISTS ').
                     static::LOGIC_GROUP_LEFT.
-                    $arrTemp.
+                    $tmp.
                     static::LOGIC_GROUP_RIGHT;
 
-                $this->setConditionItem($arrTemp, 'string__');
+                $this->setConditionItem($tmp, 'string__');
             }
 
             // 其它
             else {
                 // 处理字符串 "null"
-                if (is_scalar($arrTemp)) {
-                    $arrTemp = (array) $arrTemp;
+                if (is_scalar($tmp)) {
+                    $tmp = (array) $tmp;
                 }
 
                 // 合并字段到数组
                 if (is_string($strKey)) {
-                    array_unshift($arrTemp, $strKey);
+                    array_unshift($tmp, $strKey);
                 }
 
                 // 处理默认 “=” 的类型
-                if (2 === count($arrTemp) && !in_array($arrTemp[1], [
+                if (2 === count($tmp) && !in_array($tmp[1], [
                     'null',
                     'not null',
                 ], true)) {
-                    $arrTemp[2] = $arrTemp[1];
-                    $arrTemp[1] = '=';
+                    $tmp[2] = $tmp[1];
+                    $tmp[1] = '=';
                 }
 
                 // 字段
-                $arrTemp[1] = trim($arrTemp[1]);
+                $tmp[1] = trim($tmp[1]);
 
                 // 特殊类型
-                if (in_array($arrTemp[1], [
+                if (in_array($tmp[1], [
                     'between',
                     'not between',
                     'in',
@@ -3683,19 +3685,19 @@ class Select
                     'null',
                     'not null',
                 ], true)) {
-                    if (isset($arrTemp[2]) && is_string($arrTemp[2])) {
-                        $arrTemp[2] = explode(',', $arrTemp[2]);
+                    if (isset($tmp[2]) && is_string($tmp[2])) {
+                        $tmp[2] = explode(',', $tmp[2]);
                     }
                     $this->setConditionItem([
-                        $arrTemp[0],
-                        $arrTemp[1],
-                        $arrTemp[2] ?? null,
+                        $tmp[0],
+                        $tmp[1],
+                        $tmp[2] ?? null,
                     ]);
                 }
 
                 // 普通类型
                 else {
-                    $this->setConditionItem($arrTemp);
+                    $this->setConditionItem($tmp);
                 }
             }
         }
@@ -3908,10 +3910,10 @@ class Select
 
         // 确定 table_name 和 schema
         if (true === $booParseSchema) {
-            $arrTemp = explode('.', $sTable);
-            if (isset($arrTemp[1])) {
-                $sSchema = $arrTemp[0];
-                $tableName = $arrTemp[1];
+            $tmp = explode('.', $sTable);
+            if (isset($tmp[1])) {
+                $sSchema = $tmp[0];
+                $tableName = $tmp[1];
             } else {
                 $sSchema = null;
                 $tableName = $sTable;
