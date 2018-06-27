@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Mvc\Console;
+namespace Leevel\Database\Console;
 
 use Leevel\Console\Argument;
 use Leevel\Console\Make;
@@ -131,7 +131,7 @@ EOF;
                 'extend',
                 null,
                 option::VALUE_OPTIONAL,
-                'Model with the code that make it extends Leevel\Mvc\Model',
+                'Model with the code that make it extends Leevel\Database\Ddd\Model',
                 1,
             ],
         ];

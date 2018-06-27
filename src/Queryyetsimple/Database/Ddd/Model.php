@@ -28,12 +28,12 @@ use DateTimeInterface;
 use Exception;
 use JsonSerializable;
 use Leevel\Collection\Collection;
+use Leevel\Database\Ddd\Relation\BelongsTo;
+use Leevel\Database\Ddd\Relation\HasMany;
+use Leevel\Database\Ddd\Relation\ManyMany;
+use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Event\IDispatch;
 use Leevel\Flow\TControl;
-use Leevel\Mvc\Relation\BelongsTo;
-use Leevel\Mvc\Relation\HasMany;
-use Leevel\Mvc\Relation\ManyMany;
-use Leevel\Mvc\Relation\Relation;
 use Leevel\Support\Arr;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -1038,7 +1038,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      *
      * @param array|string $mixRelation
      *
-     * @return \Leevel\Mvc\select
+     * @return \Leevel\Database\Ddd\select
      */
     public static function with($mixRelation)
     {
@@ -1056,7 +1056,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strTargetKey
      * @param string $strSourceKey
      *
-     * @return \Leevel\Mvc\Relation\HasOne|void
+     * @return \Leevel\Database\Ddd\Relation\HasOne|void
      */
     public function hasOne($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
@@ -1082,7 +1082,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strTargetKey
      * @param string $strSourceKey
      *
-     * @return \Leevel\Mvc\Relation\BelongsTo|void
+     * @return \Leevel\Database\Ddd\Relation\BelongsTo|void
      */
     public function belongsTo($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
@@ -1109,7 +1109,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strTargetKey
      * @param string $strSourceKey
      *
-     * @return \Leevel\Mvc\Relation\HasMany|void
+     * @return \Leevel\Database\Ddd\Relation\HasMany|void
      */
     public function hasMany($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
     {
@@ -1138,7 +1138,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strMiddleTargetKey
      * @param string $strMiddleSourceKey
      *
-     * @return \Leevel\Mvc\Relation\HasMany|void
+     * @return \Leevel\Database\Ddd\Relation\HasMany|void
      */
     public function manyMany($strRelatedModel, $strMiddleModel = null, $strTargetKey = null, $strSourceKey = null, $strMiddleTargetKey = null, $strMiddleSourceKey = null)
     {
@@ -1175,7 +1175,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 中间表带命名空间完整名字.
      *
-     * @param \Leevel\Mvc\IModel $objRelatedModel
+     * @param \Leevel\Database\Ddd\IModel $objRelatedModel
      *
      * @return string
      */
@@ -1191,7 +1191,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 取得中间表名字.
      *
-     * @param \Leevel\Mvc\IModel $objRelatedModel
+     * @param \Leevel\Database\Ddd\IModel $objRelatedModel
      *
      * @return string
      */
@@ -2664,7 +2664,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     {
         $oRelation = $this->{$strPropName}();
         if (!($oRelation instanceof Relation)) {
-            throw new Exception(sprintf('Relation prop must return a type of %s', 'Leevel\Mvc\Relation\Relation'));
+            throw new Exception(sprintf('Relation prop must return a type of %s', 'Leevel\Database\Ddd\Relation\Relation'));
         }
 
         return $this->arrRelationProp[$strPropName] = $oRelation->sourceQuery();

@@ -37,7 +37,7 @@ interface IRepository
      * @param int   $intId
      * @param array $arrColumn
      *
-     * @return \Leevel\Mvc\IEntity
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function find($intId, $arrColumn = ['*']);
 
@@ -47,7 +47,7 @@ interface IRepository
      * @param int   $intId
      * @param array $arrColumn
      *
-     * @return \Leevel\Mvc\IEntity|void
+     * @return \Leevel\Database\Ddd\IEntity|void
      */
     public function findOrFail($intId, $arrColumn = ['*']);
 
@@ -74,25 +74,25 @@ interface IRepository
     /**
      * 保存数据.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
      *
-     * @return \Leevel\Mvc\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IAggregateRoot
      */
     public function create(IAggregateRoot $objEntity);
 
     /**
      * 更新数据.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
      *
-     * @return \Leevel\Mvc\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IAggregateRoot
      */
     public function update(IAggregateRoot $objEntity);
 
     /**
      * 删除数据.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
      *
      * @return int
      */
@@ -101,52 +101,52 @@ interface IRepository
     /**
      * 注册保存数据.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
      *
-     * @return \Leevel\Mvc\UnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function registerCreate(IAggregateRoot $objEntity);
 
     /**
      * 注册更新数据.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
      *
-     * @return \Leevel\Mvc\UnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function registerUpdate(IAggregateRoot $objEntity);
 
     /**
      * 注册删除数据.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
      *
-     * @return \Leevel\Mvc\UnitOfWork
+     * @return \Leevel\Database\Ddd\UnitOfWork
      */
     public function registerDelete(IAggregateRoot $objEntity);
 
     /**
      * 响应新建.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
      *
-     * @return \Leevel\Mvc\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IAggregateRoot
      */
     public function handleCreate(IAggregateRoot $objEntity);
 
     /**
      * 响应修改.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
      *
-     * @return \Leevel\Mvc\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IAggregateRoot
      */
     public function handleUpdate(IAggregateRoot $objEntity);
 
     /**
      * 响应删除.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
      *
      * @return int
      */
@@ -179,21 +179,21 @@ interface IRepository
     /**
      * 设置聚合根.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objAggregate
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objAggregate
      */
     public function setAggregate(IAggregateRoot $objAggregate);
 
     /**
      * 返回聚合根.
      *
-     * @return \Leevel\Mvc\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IAggregateRoot
      */
     public function aggregate();
 
     /**
      * 返回工作单元.
      *
-     * @return \Leevel\Mvc\IUnitOfWork
+     * @return \Leevel\Database\Ddd\IUnitOfWork
      */
     public function unitOfWork();
 

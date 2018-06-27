@@ -21,9 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Mvc\Provider;
 
 use Leevel\Di\Provider;
-use Leevel\Event\IDispatch;
-use Leevel\Mvc\Meta;
-use Leevel\Mvc\Model;
 use Leevel\Mvc\View;
 
 /**
@@ -55,17 +52,6 @@ class Register extends Provider
     }
 
     /**
-     * bootstrap.
-     *
-     * @param \Leevel\Event\IDispatch $objEvent
-     */
-    public function bootstrap(IDispatch $objEvent)
-    {
-        $this->eventDispatch($objEvent);
-        $this->meta();
-    }
-
-    /**
      * 可用服务提供者.
      *
      * @return array
@@ -78,23 +64,5 @@ class Register extends Provider
                 'leevel\Mvc\IView',
             ],
         ];
-    }
-
-    /**
-     * 设置模型事件.
-     *
-     * @param \Leevel\Event\IDispatch $objEvent
-     */
-    protected function eventDispatch(IDispatch $objEvent)
-    {
-        Model::setEventDispatch($objEvent);
-    }
-
-    /**
-     * Meta 设置数据库管理.
-     */
-    protected function meta()
-    {
-        Meta::setDatabaseManager($this->container['databases']);
     }
 }

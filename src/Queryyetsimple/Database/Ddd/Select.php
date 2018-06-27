@@ -23,8 +23,8 @@ namespace Leevel\Database\Ddd;
 use Closure;
 use Exception;
 use Leevel\Collection\Collection;
+use Leevel\Database\Ddd\Relation\Relation;
 use Leevel\Database\Select as DatabaseSelect;
-use Leevel\Mvc\Relation\Relation;
 use Leevel\Support\Arr;
 use Leevel\Support\Str;
 
@@ -42,7 +42,7 @@ class Select
     /**
      * 模型.
      *
-     * @var \Leevel\Mvc\IModel
+     * @var \Leevel\Database\Ddd\IModel
      */
     protected $objModel;
 
@@ -63,7 +63,7 @@ class Select
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mvc\IModel $objModel
+     * @param \Leevel\Database\Ddd\IModel $objModel
      */
     public function __construct($objModel)
     {
@@ -96,7 +96,7 @@ class Select
      *
      * @param mixed $objModel
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function getModel($objModel)
     {
@@ -171,7 +171,7 @@ class Select
      * @param mixed $mixId
      * @param array $arrColumn
      *
-     * @return null|\Leevel\Collection\Collection|\Leevel\Mvc\IModel
+     * @return null|\Leevel\Collection\Collection|\Leevel\Database\Ddd\IModel
      */
     public function find($mixId, $arrColumn = ['*'])
     {
@@ -205,7 +205,7 @@ class Select
      * @param mixed $mixId
      * @param array $arrColumn
      *
-     * @return \Leevel\Collection\Collection|\Leevel\Mvc\IModel
+     * @return \Leevel\Collection\Collection|\Leevel\Database\Ddd\IModel
      */
     public function findOrFail($mixId, $arrColumn = ['*'])
     {
@@ -231,7 +231,7 @@ class Select
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function findOrNew($mixId, $arrColumn = ['*'], $arrData = null, $mixConnect = null, $strTable = null)
     {
@@ -248,7 +248,7 @@ class Select
      * @param array $columns
      * @param mixed $arrColumn
      *
-     * @return null|\Leevel\Mvc\IModel|static
+     * @return null|\Leevel\Database\Ddd\IModel|static
      */
     public function first($arrColumn = ['*'])
     {
@@ -260,7 +260,7 @@ class Select
      *
      * @param array $arrColumn
      *
-     * @return \Leevel\Mvc\IModel|static
+     * @return \Leevel\Database\Ddd\IModel|static
      */
     public function firstOrFail($arrColumn = ['*'])
     {
@@ -278,7 +278,7 @@ class Select
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function firstOrNew(array $arrProp, $mixConnect = null, $strTable = null)
     {
@@ -296,7 +296,7 @@ class Select
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function firstOrCreate(array $arrProp, $mixConnect = null, $strTable = null)
     {
@@ -315,7 +315,7 @@ class Select
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function updateOrCreate(array $arrProp, array $arrData = [], $mixConnect = null, $strTable = null)
     {
@@ -329,7 +329,7 @@ class Select
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function onlyCreate(array $arrProp = [], $mixConnect = null, $strTable = null)
     {
@@ -462,7 +462,7 @@ class Select
      *
      * @param mixed $mixScope
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function scope($mixScope)
     {
@@ -508,7 +508,7 @@ class Select
     /**
      * 预载入模型.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      *
      * @return array
      */
@@ -662,9 +662,9 @@ class Select
     /**
      * 关联数据设置到模型上.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
-     * @param string               $strName
-     * @param callable             $calCondition
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
+     * @param string                        $strName
+     * @param callable                      $calCondition
      *
      * @return array
      */
@@ -682,7 +682,7 @@ class Select
      *
      * @param array $arrProp
      *
-     * @return null|\Leevel\Mvc\IModel
+     * @return null|\Leevel\Database\Ddd\IModel
      */
     protected function getFirstByProp(array $arrProp)
     {

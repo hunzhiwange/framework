@@ -34,7 +34,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 基础仓储.
      *
-     * @var \Leevel\Mvc\IRepository
+     * @var \Leevel\Database\Ddd\IRepository
      */
     protected $objRepository;
 
@@ -76,7 +76,7 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mvc\IRepository $objRepository
+     * @param \Leevel\Database\Ddd\IRepository $objRepository
      *
      * @return $this
      */
@@ -165,8 +165,8 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册新建.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
-     * @param \Leevel\Mvc\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IRepository    $objRepository
      *
      * @return $this
      */
@@ -187,8 +187,8 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册更新.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
-     * @param \Leevel\Mvc\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IRepository    $objRepository
      *
      * @return $this
      */
@@ -210,8 +210,8 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
-     * @param \Leevel\Mvc\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IRepository    $objRepository
      *
      * @return $this
      */

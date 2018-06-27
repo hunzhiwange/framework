@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Bootstrap\Runtime;
 
 use Exception;
+use Leevel\Database\Ddd\ModelNotFoundException;
 use Leevel\Di\IContainer;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
@@ -30,7 +31,6 @@ use Leevel\Kernel\Exception\HttpException;
 use Leevel\Kernel\Exception\NotFoundHttpException;
 use Leevel\Kernel\Runtime\IRuntime;
 use Leevel\Log\ILog;
-use Leevel\Mvc\ModelNotFoundException;
 use NunoMaduro\Collision\Provider as CollisionProvider;
 use Symfony\Component\Console\Output\OutputInterface;
 use Whoops\Handler\JsonResponseHandler;

@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Mvc\IModel;
+use Leevel\Database\Ddd\IModel;
 
 /**
  * 关联模型 BelongsTo.
@@ -37,10 +37,10 @@ class BelongsTo extends Relation
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mvc\IModel $objTargetModel
-     * @param \Leevel\Mvc\IModel $objSourceModel
-     * @param string             $strTargetKey
-     * @param string             $strSourceKey
+     * @param \Leevel\Database\Ddd\IModel $objTargetModel
+     * @param \Leevel\Database\Ddd\IModel $objSourceModel
+     * @param string                      $strTargetKey
+     * @param string                      $strSourceKey
      */
     public function __construct(IModel $objTargetModel, IModel $objSourceModel, $strTargetKey, $strSourceKey)
     {
@@ -60,7 +60,7 @@ class BelongsTo extends Relation
     /**
      * 匹配关联查询数据到模型.
      *
-     * @param \Leevel\Mvc\IModel[]          $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      * @param \Leevel\Collection\Collection $objResult
      * @param string                        $strRelation
      *
@@ -83,7 +83,7 @@ class BelongsTo extends Relation
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      */
     public function preLoadCondition(array $arrModel)
     {
@@ -131,7 +131,7 @@ class BelongsTo extends Relation
     /**
      * 分析预载入模型中对应的源数据.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      *
      * @return array
      */

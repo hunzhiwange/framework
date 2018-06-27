@@ -2,7 +2,7 @@
 {{header_comment}}
 namespace {{namespace}}\Domain\Entity;
 
-use Leevel\Mvc\Model;
+use Leevel\Database\Ddd\Model;
 
 {{file_comment}}
 class {{file_name}} extends Model

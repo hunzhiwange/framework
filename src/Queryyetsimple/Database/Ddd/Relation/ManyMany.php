@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Mvc\IModel;
+use Leevel\Database\Ddd\IModel;
 
 /**
  * 关联模型 ManyMany.
@@ -44,7 +44,7 @@ class ManyMany extends Relation
     /**
      * 中间表模型.
      *
-     * @var \Leevel\Mvc\IModel
+     * @var \Leevel\Database\Ddd\IModel
      */
     protected $objMiddleModel;
 
@@ -72,13 +72,13 @@ class ManyMany extends Relation
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mvc\IModel $objTargetModel
-     * @param \Leevel\Mvc\IModel $objSourceModel
-     * @param \Leevel\Mvc\IModel $objMiddleModel
-     * @param string             $strTargetKey
-     * @param string             $strSourceKey
-     * @param string             $strMiddleTargetKey
-     * @param string             $strMiddleSourceKey
+     * @param \Leevel\Database\Ddd\IModel $objTargetModel
+     * @param \Leevel\Database\Ddd\IModel $objSourceModel
+     * @param \Leevel\Database\Ddd\IModel $objMiddleModel
+     * @param string                      $strTargetKey
+     * @param string                      $strSourceKey
+     * @param string                      $strMiddleTargetKey
+     * @param string                      $strMiddleSourceKey
      */
     public function __construct(IModel $objTargetModel, IModel $objSourceModel, IModel $objMiddleModel, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey)
     {
@@ -102,7 +102,7 @@ class ManyMany extends Relation
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      */
     public function preLoadCondition(array $arrModel)
     {
@@ -113,7 +113,7 @@ class ManyMany extends Relation
     /**
      * 匹配关联查询数据到模型.
      *
-     * @param \Leevel\Mvc\IModel[]          $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      * @param \Leevel\Collection\Collection $objResult
      * @param string                        $strRelation
      *
@@ -187,7 +187,7 @@ class ManyMany extends Relation
     /**
      * 取得中间表模型.
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function getMiddleModel()
     {

@@ -20,8 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Provider;
 
+use Leevel\Database\Ddd\Meta;
+use Leevel\Database\Ddd\Model;
 use Leevel\Database\Manager;
 use Leevel\Di\Provider;
+use Leevel\Event\IDispatch;
 
 /**
  * database 服务提供者.
@@ -48,6 +51,17 @@ class Register extends Provider
     {
         $this->databases();
         $this->database();
+    }
+
+    /**
+     * bootstrap.
+     *
+     * @param \Leevel\Event\IDispatch $objEvent
+     */
+    public function bootstrap(IDispatch $objEvent)
+    {
+        $this->eventDispatch($objEvent);
+        $this->meta();
     }
 
     /**
@@ -86,5 +100,23 @@ class Register extends Provider
         $this->container->singleton('database', function ($project) {
             return $project['databases']->connect();
         });
+    }
+
+    /**
+     * 设置模型事件.
+     *
+     * @param \Leevel\Event\IDispatch $objEvent
+     */
+    protected function eventDispatch(IDispatch $objEvent)
+    {
+        Model::setEventDispatch($objEvent);
+    }
+
+    /**
+     * Meta 设置数据库管理.
+     */
+    protected function meta()
+    {
+        Meta::setDatabaseManager($this->container['databases']);
     }
 }

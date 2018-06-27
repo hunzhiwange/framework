@@ -70,8 +70,8 @@ interface IUnitOfWork
     /**
      * 注册新建.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
-     * @param \Leevel\Mvc\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IRepository    $objRepository
      *
      * @return $this
      */
@@ -80,8 +80,8 @@ interface IUnitOfWork
     /**
      * 注册更新.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
-     * @param \Leevel\Mvc\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IRepository    $objRepository
      *
      * @return $this
      */
@@ -90,8 +90,8 @@ interface IUnitOfWork
     /**
      * 注册删除.
      *
-     * @param \Leevel\Mvc\IAggregateRoot $objEntity
-     * @param \Leevel\Mvc\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IRepository    $objRepository
      *
      * @return $this
      */

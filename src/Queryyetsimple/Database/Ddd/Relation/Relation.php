@@ -23,7 +23,7 @@ namespace Leevel\Database\Ddd\Relation;
 use Closure;
 use Exception;
 use Leevel\Collection\Collection;
-use Leevel\Mvc\IModel;
+use Leevel\Database\Ddd\IModel;
 
 /**
  * 关联模型基类.
@@ -46,14 +46,14 @@ abstract class Relation
     /**
      * 关联目标模型.
      *
-     * @var \Leevel\Mvc\IModel
+     * @var \Leevel\Database\Ddd\IModel
      */
     protected $objTargetModel;
 
     /**
      * 源模型.
      *
-     * @var \Leevel\Mvc\IModel
+     * @var \Leevel\Database\Ddd\IModel
      */
     protected $objSourceModel;
 
@@ -81,10 +81,10 @@ abstract class Relation
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mvc\IModel $objTargetModel
-     * @param \Leevel\Mvc\IModel $objSourceModel
-     * @param string             $strTargetKey
-     * @param string             $strSourceKey
+     * @param \Leevel\Database\Ddd\IModel $objTargetModel
+     * @param \Leevel\Database\Ddd\IModel $objSourceModel
+     * @param string                      $strTargetKey
+     * @param string                      $strSourceKey
      */
     public function __construct(IModel $objTargetModel, IModel $objSourceModel, $strTargetKey, $strSourceKey)
     {
@@ -139,7 +139,7 @@ abstract class Relation
     /**
      * 取得关联目标模型.
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function getTargetModel()
     {
@@ -149,7 +149,7 @@ abstract class Relation
     /**
      * 取得源模型.
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function getSourceModel()
     {
@@ -206,14 +206,14 @@ abstract class Relation
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      */
     abstract public function preLoadCondition(array $arrModel);
 
     /**
      * 匹配关联查询数据到模型 HasMany.
      *
-     * @param \Leevel\Mvc\IModel[]          $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      * @param \Leevel\Collection\Collection $objResult
      * @param string                        $strRelation
      *
@@ -231,8 +231,8 @@ abstract class Relation
     /**
      * 返回模型的主键.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
-     * @param string               $strKey
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
+     * @param string                        $strKey
      *
      * @return array
      */

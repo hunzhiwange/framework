@@ -46,9 +46,9 @@ class HasOne extends HasMany
     /**
      * 匹配关联查询数据到模型.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
-     * @param \leevel\collection   $objResult
-     * @param string               $strRelation
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
+     * @param \leevel\collection            $objResult
+     * @param string                        $strRelation
      *
      * @return array
      */

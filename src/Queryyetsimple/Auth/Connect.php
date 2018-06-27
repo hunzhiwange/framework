@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
+use Leevel\Database\Ddd\IModel;
 use Leevel\Encryption\IEncryption;
-use Leevel\Mvc\IModel;
 use Leevel\Option\TClass;
 use Leevel\Support\Str;
 use Leevel\Validate\IValidate;
@@ -42,7 +42,7 @@ abstract class Connect
     /**
      * user 对象
      *
-     * @var \Leevel\Mvc\IModel
+     * @var \Leevel\Database\Ddd\IModel
      */
     protected $oUser;
 
@@ -172,7 +172,7 @@ abstract class Connect
      * @param string $sPassword
      * @param mixed  $mixLoginTime
      *
-     * @return \Leevel\Mvc\IModel|void
+     * @return \Leevel\Database\Ddd\IModel|void
      */
     public function login($mixName, $sPassword, $mixLoginTime = null)
     {
@@ -191,7 +191,7 @@ abstract class Connect
      * @param mixed  $mixName
      * @param string $sPassword
      *
-     * @return \Leevel\Mvc\IModel|void
+     * @return \Leevel\Database\Ddd\IModel|void
      */
     public function onlyValidate($mixName, $sPassword)
     {
@@ -590,7 +590,7 @@ abstract class Connect
     /**
      * 将用户信息保存至持久化.
      *
-     * @param \Leevel\Mvc\IModel $oUser
+     * @param \Leevel\Database\Ddd\IModel $oUser
      *
      * @return array
      */
@@ -608,7 +608,7 @@ abstract class Connect
      * @param int    $nUserId
      * @param string $sPassword
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     protected function getUserFromDatabase($nUserId, $sPassword)
     {

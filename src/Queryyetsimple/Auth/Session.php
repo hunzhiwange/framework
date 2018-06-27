@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
+use Leevel\Database\Ddd\IModel;
 use Leevel\Encryption\IEncryption;
-use Leevel\Mvc\IModel;
 use Leevel\Session\ISession;
 use Leevel\Validate\IValidate;
 
@@ -46,7 +46,7 @@ class Session extends Connect implements IConnect
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mvc\IModel             $oUser
+     * @param \Leevel\Database\Ddd\IModel    $oUser
      * @param \Leevel\Encryption\IEncryption $oEncryption
      * @param \Leevel\Validate\IValidate     $oValidate
      * @param \Leevel\Session\ISession       $oSession
@@ -62,7 +62,7 @@ class Session extends Connect implements IConnect
     /**
      * 设置认证名字.
      *
-     * @param \Leevel\Mvc\IModel $oUser
+     * @param \Leevel\Database\Ddd\IModel $oUser
      */
     protected function setLoginTokenName($oUser)
     {

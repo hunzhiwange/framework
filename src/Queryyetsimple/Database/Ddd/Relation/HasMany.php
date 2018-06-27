@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Mvc\IModel;
+use Leevel\Database\Ddd\IModel;
 
 /**
  * 关联模型 HasMany.
@@ -37,10 +37,10 @@ class HasMany extends Relation
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mvc\IModel $objTargetModel
-     * @param \Leevel\Mvc\IModel $objSourceModel
-     * @param string             $strTargetKey
-     * @param string             $strSourceKey
+     * @param \Leevel\Database\Ddd\IModel $objTargetModel
+     * @param \Leevel\Database\Ddd\IModel $objSourceModel
+     * @param string                      $strTargetKey
+     * @param string                      $strSourceKey
      */
     public function __construct(IModel $objTargetModel, IModel $objSourceModel, $strTargetKey, $strSourceKey)
     {
@@ -61,7 +61,7 @@ class HasMany extends Relation
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Mvc\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      */
     public function preLoadCondition(array $arrModel)
     {
@@ -71,7 +71,7 @@ class HasMany extends Relation
     /**
      * 匹配关联查询数据到模型 HasMany.
      *
-     * @param \Leevel\Mvc\IModel[]          $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      * @param \Leevel\Collection\Collection $objResult
      * @param string                        $strRelation
      *
@@ -105,9 +105,9 @@ class HasMany extends Relation
     /**
      * 保存模型.
      *
-     * @param \Leevel\Mvc\IModel $objModel
+     * @param \Leevel\Database\Ddd\IModel $objModel
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function save(IModel $objModel)
     {
@@ -137,7 +137,7 @@ class HasMany extends Relation
      *
      * @param array $arrProp
      *
-     * @return \Leevel\Mvc\IModel
+     * @return \Leevel\Database\Ddd\IModel
      */
     public function create(array $arrProp)
     {
@@ -190,7 +190,7 @@ class HasMany extends Relation
     /**
      * 模型添加源字段数据.
      *
-     * @param \Leevel\Mvc\IModel $objModel
+     * @param \Leevel\Database\Ddd\IModel $objModel
      */
     protected function withSourceKeyValue(IModel $objModel)
     {
@@ -200,7 +200,7 @@ class HasMany extends Relation
     /**
      * 匹配预载入数据.
      *
-     * @param \Leevel\Mvc\IModel[]          $arrModel
+     * @param \Leevel\Database\Ddd\IModel[] $arrModel
      * @param \Leevel\Collection\Collection $objResult
      * @param string                        $strRelation
      * @param string                        $strType
