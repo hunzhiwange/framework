@@ -36,7 +36,7 @@ class ReadGetDynamicsTest extends TestCase
 {
     use Query;
 
-    public function testBaseUse()
+    public function t2estBaseUse()
     {
         $connect = $this->createConnect();
 
