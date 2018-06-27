@@ -35,7 +35,7 @@ class QueryFlowTest extends TestCase
 {
     use Query;
 
-    public function t2estBaseUse()
+    public function testBaseUse()
     {
         $connect = $this->createConnect();
 

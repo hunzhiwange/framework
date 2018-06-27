@@ -36,9 +36,35 @@ class ReadGetDynamicsTest extends TestCase
 {
     use Query;
 
-    public function t2estBaseUse()
+    public function testBaseUse()
     {
         $connect = $this->createConnect();
+
+        $sql = <<<'eot'
+array (
+  0 => 'SELECT `test`.* FROM `test` LIMIT 0,10',
+  1 => 
+  array (
+  ),
+  2 => false,
+  3 => NULL,
+  4 => NULL,
+  5 => 
+  array (
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $sql,
+            $this->varExport(
+                $connect->sql()->
+
+                table('test')->
+
+                get10()
+            )
+        );
 
         $sql = <<<'eot'
 array (
