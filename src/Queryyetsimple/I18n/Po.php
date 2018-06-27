@@ -58,7 +58,7 @@ class Po extends Gettext
     {
         $header_string = '';
         foreach ($this->headers as $header => $value) {
-            $header_string .= "$header: $value\n";
+            $header_string .= "${header}: ${value}\n";
         }
         $poified = static::poify($header_string);
         if ($this->comments_before_headers) {
@@ -67,7 +67,7 @@ class Po extends Gettext
             $before_headers = '';
         }
 
-        return rtrim("{$before_headers}msgid \"\"\nmsgstr $poified");
+        return rtrim("{$before_headers}msgid \"\"\nmsgstr ${poified}");
     }
 
     /**
@@ -130,6 +130,8 @@ class Po extends Gettext
      * Text to include as a comment before the start of the PO contents.
      *
      * Doesn't need to include # in the beginning of lines, these are added automatically
+     *
+     * @param mixed $text
      */
     public function set_comment_before_headers($text)
     {
@@ -149,18 +151,18 @@ class Po extends Gettext
         $slash = '\\';
         $newline = "\n";
         $replaces = [
-            "$slash" => "$slash$slash",
-            "$quote" => "$slash$quote",
+            $slash   => $slash.$slash,
+            $quote   => $slash.$quote,
             "\t"     => '\t',
         ];
         $string = str_replace(array_keys($replaces), array_values($replaces), $string);
-        $po = $quote.implode("${slash}n$quote$newline$quote", explode($newline, $string)).$quote;
+        $po = $quote.implode("${slash}n{$quote}{$newline}{$quote}", explode($newline, $string)).$quote;
         // add empty string on first line for readbility
         if (false !== strpos($string, $newline) && (substr_count($string, $newline) > 1 || !($newline === substr($string, -strlen($newline))))) {
-            $po = "$quote$quote$newline$po";
+            $po = $quote.$quote.$newline.$po;
         }
         // remove empty strings
-        $po = str_replace("$newline$quote$quote", '', $po);
+        $po = str_replace($newline.$quote.$quote, '', $po);
 
         return $po;
     }
@@ -192,7 +194,7 @@ class Po extends Gettext
             $chars = $chars[0];
             foreach ($chars as $char) {
                 if (!$previous_is_backslash) {
-                    if ('\\' == $char) {
+                    if ('\\' === $char) {
                         $previous_is_backslash = true;
                     } else {
                         $unpoified .= $char;
@@ -251,7 +253,7 @@ class Po extends Gettext
     {
         $text = wordwrap($text, PO_MAX_LINE_LEN - 3);
 
-        return static::prepend_each_line($text, "#$char ");
+        return static::prepend_each_line($text, "#${char} ");
     }
 
     /**
@@ -295,7 +297,7 @@ class Po extends Gettext
             ] : $entry->translations;
             foreach ($translations as $i => $translation) {
                 $translation = static::match_begin_and_end_newlines($translation, $entry->plural);
-                $po[] = "msgstr[$i] ".static::poify($translation);
+                $po[] = "msgstr[${i}] ".static::poify($translation);
             }
         }
 
@@ -352,7 +354,7 @@ class Po extends Gettext
             if (!$res) {
                 break;
             }
-            if ('' == $res['entry']->singular) {
+            if ('' === $res['entry']->singular) {
                 $this->set_headers($this->make_headers($res['entry']->translations[0]));
             } else {
                 $this->add_entry($res['entry']);
@@ -370,22 +372,10 @@ class Po extends Gettext
     }
 
     /**
-     * Helper function for read_entry.
-     *
-     * @param string $context
-     *
-     * @return bool
-     */
-    protected static function is_final($context)
-    {
-        return ('msgstr' === $context) || ('msgstr_plural' === $context);
-    }
-
-    /**
      * @param resource $f
      * @param int      $lineno
      *
-     * @return null|false|array
+     * @return null|array|false
      */
     public function read_entry($f, $lineno = 0)
     {
@@ -401,16 +391,17 @@ class Po extends Gettext
                 if (feof($f)) {
                     if (self::is_final($context)) {
                         break;
-                    } elseif (!$context) { // we haven't read a line and eof came
-                        return;
-                    } else {
-                        return false;
                     }
-                } else {
+                    if (!$context) { // we haven't read a line and eof came
+                        return;
+                    }
+
                     return false;
                 }
+
+                return false;
             }
-            if ("\n" == $line) {
+            if ("\n" === $line) {
                 continue;
             }
             $line = trim($line);
@@ -419,10 +410,11 @@ class Po extends Gettext
                 if (self::is_final($context)) {
                     static::read_line($f, 'put-back');
                     $lineno--;
+
                     break;
                 }
                 // comments have to be at the beginning
-                if ($context && 'comment' != $context) {
+                if ($context && 'comment' !== $context) {
                     return false;
                 }
                 // add comment
@@ -431,9 +423,10 @@ class Po extends Gettext
                 if (self::is_final($context)) {
                     static::read_line($f, 'put-back');
                     $lineno--;
+
                     break;
                 }
-                if ($context && 'comment' != $context) {
+                if ($context && 'comment' !== $context) {
                     return false;
                 }
                 $context = 'msgctxt';
@@ -442,22 +435,23 @@ class Po extends Gettext
                 if (self::is_final($context)) {
                     static::read_line($f, 'put-back');
                     $lineno--;
+
                     break;
                 }
-                if ($context && 'msgctxt' != $context && 'comment' != $context) {
+                if ($context && 'msgctxt' !== $context && 'comment' !== $context) {
                     return false;
                 }
                 $context = 'msgid';
                 $entry->singular .= static::unpoify($m[1]);
             } elseif (preg_match('/^msgid_plural\s+(".*")/', $line, $m)) {
-                if ('msgid' != $context) {
+                if ('msgid' !== $context) {
                     return false;
                 }
                 $context = 'msgid_plural';
                 $entry->is_plural = true;
                 $entry->plural .= static::unpoify($m[1]);
             } elseif (preg_match('/^msgstr\s+(".*")/', $line, $m)) {
-                if ('msgid' != $context) {
+                if ('msgid' !== $context) {
                     return false;
                 }
                 $context = 'msgstr';
@@ -465,7 +459,7 @@ class Po extends Gettext
                     static::unpoify($m[1]),
                 ];
             } elseif (preg_match('/^msgstr\[(\d+)\]\s+(".*")/', $line, $m)) {
-                if ('msgid_plural' != $context && 'msgstr_plural' != $context) {
+                if ('msgid_plural' !== $context && 'msgstr_plural' !== $context) {
                     return false;
                 }
                 $context = 'msgstr_plural';
@@ -476,18 +470,23 @@ class Po extends Gettext
                 switch ($context) {
                     case 'msgid':
                         $entry->singular .= $unpoified;
+
                         break;
                     case 'msgctxt':
                         $entry->context .= $unpoified;
+
                         break;
                     case 'msgid_plural':
                         $entry->plural .= $unpoified;
+
                         break;
                     case 'msgstr':
                         $entry->translations[0] .= $unpoified;
+
                         break;
                     case 'msgstr_plural':
                         $entry->translations[$msgstr_index] .= $unpoified;
+
                         break;
                     default:
                         return false;
@@ -500,6 +499,7 @@ class Po extends Gettext
         foreach ($entry->translations as $t) {
             if ($t || ('0' === $t)) {
                 $have_translations = true;
+
                 break;
             }
         }
@@ -526,18 +526,18 @@ class Po extends Gettext
     {
         static $last_line = '';
         static $use_last_line = false;
-        if ('clear' == $action) {
+        if ('clear' === $action) {
             $last_line = '';
 
             return true;
         }
-        if ('put-back' == $action) {
+        if ('put-back' === $action) {
             $use_last_line = true;
 
             return true;
         }
         $line = $use_last_line ? $last_line : fgets($f);
-        $line = ("\r\n" == substr($line ?: '', -2)) ? rtrim($line, "\r\n")."\n" : $line;
+        $line = ("\r\n" === substr($line ?: '', -2)) ? rtrim($line, "\r\n")."\n" : $line;
         $last_line = $line;
         $use_last_line = false;
 
@@ -552,11 +552,11 @@ class Po extends Gettext
     {
         $first_two = substr($po_comment_line, 0, 2);
         $comment = trim(substr($po_comment_line, 2));
-        if ('#:' == $first_two) {
+        if ('#:' === $first_two) {
             $entry->references = array_merge($entry->references, preg_split('/\s+/', $comment));
-        } elseif ('#.' == $first_two) {
+        } elseif ('#.' === $first_two) {
             $entry->extracted_comments = trim($entry->extracted_comments."\n".$comment);
-        } elseif ('#,' == $first_two) {
+        } elseif ('#,' === $first_two) {
             $entry->flags = array_merge($entry->flags, preg_split('/,\s*/', $comment));
         } else {
             $entry->translator_comments = trim($entry->translator_comments."\n".$comment);
@@ -570,13 +570,25 @@ class Po extends Gettext
      */
     public static function trim_quotes($s)
     {
-        if ('"' == substr($s, 0, 1)) {
+        if ('"' === substr($s, 0, 1)) {
             $s = substr($s, 1);
         }
-        if ('"' == substr($s, -1, 1)) {
+        if ('"' === substr($s, -1, 1)) {
             $s = substr($s, 0, -1);
         }
 
         return $s;
+    }
+
+    /**
+     * Helper function for read_entry.
+     *
+     * @param string $context
+     *
+     * @return bool
+     */
+    protected static function is_final($context)
+    {
+        return ('msgstr' === $context) || ('msgstr_plural' === $context);
     }
 }
