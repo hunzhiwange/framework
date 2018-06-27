@@ -488,6 +488,7 @@ abstract class Connect
         if (!$this->booDevelopment && false !== $arrTableColumns) {
             return static::$arrTableColumnsCache[$strCacheKey] = $arrTableColumns;
         }
+
         $arrTableColumns = $this->getTableColumns($sTableName, $mixMaster);
         $this->objCache->set($strCacheKey, $arrTableColumns);
 
