@@ -23,7 +23,7 @@ namespace Leevel\Database;
 use BadMethodCallException;
 use Exception;
 use Leevel\Collection\Collection;
-use Leevel\Page\PageWithoutTotal;
+use Leevel\Flow\TControl;
 use Leevel\Support\Arr;
 use Leevel\Support\Type;
 use PDO;
@@ -40,6 +40,8 @@ use PDO;
  */
 class Condition
 {
+    use TControl;
+
     /**
      * And 逻辑运算符.
      *
@@ -202,25 +204,11 @@ class Condition
     protected $isTable = false;
 
     /**
-     * 不查询直接返回 SQL.
-     *
-     * @var bool
-     */
-    protected $onlyMakeSql = false;
-
-    /**
      * 是否处于时间功能状态
      *
      * @var string
      */
     protected $inTimeCondition;
-
-    /**
-     * 分页查询条件备份.
-     *
-     * @var array
-     */
-    protected $backupPage = [];
 
     /**
      * 构造函数.
@@ -244,15 +232,13 @@ class Condition
      */
     public function __call(string $method, array $args)
     {
-        if (!in_array($method, [
-            'ifs', 'elseIfs', 'elses', 'endIfs',
-            'setTControl', 'getTControl',
-            'checkTControl', 'placeholderTControl',
-        ], true)) {
-            throw new ConditionNotFoundException(
-                sprintf('Condition method %s not found.', $method)
-            );
+        if ($this->placeholderTControl($method)) {
+            return $this;
         }
+
+        throw new ConditionNotFoundException(
+            sprintf('Condition method %s not found.', $method)
+        );
     }
 
     /**
@@ -446,65 +432,6 @@ class Condition
     }
 
     /**
-     * 更新某个字段的值
-     *
-     * @param string $column
-     * @param mixed  $value
-     * @param array  $bind
-     *
-     * @return null|array
-     */
-    public function updateColumn($column, $value, $bind = [])
-    {
-        if (!is_string($column)) {
-            throw new Exception('Unsupported parameters.');
-        }
-
-        return $this->update(
-            [
-                $column => $value,
-            ],
-            $bind
-        );
-    }
-
-    /**
-     * 字段递增.
-     *
-     * @param string $column
-     * @param int    $step
-     * @param array  $bind
-     *
-     * @return null|array
-     */
-    public function updateIncrease($column, $step = 1, $bind = [])
-    {
-        return $this->updateColumn(
-            $column,
-            '{['.$column.']+'.$step.'}',
-            $bind
-        );
-    }
-
-    /**
-     * 字段减少.
-     *
-     * @param string $column
-     * @param int    $step
-     * @param array  $bind
-     *
-     * @return null|array
-     */
-    public function updateDecrease($column, $step = 1, $bind = [])
-    {
-        return $this->updateColumn(
-            $column,
-            '{['.$column.']-'.$step.'}',
-            $bind
-        );
-    }
-
-    /**
      * 删除数据 delete (支持原生 sql).
      *
      * @param null|string $data
@@ -596,16 +523,6 @@ class Condition
     }
 
     /**
-     * 返回一条记录.
-     *
-     * @return $this
-     */
-    public function getOne()
-    {
-        return $this->one();
-    }
-
-    /**
      * 返回所有记录.
      *
      * @return mixed
@@ -617,244 +534,6 @@ class Condition
         }
 
         return $this->all();
-    }
-
-    /**
-     * 返回最后几条记录.
-     *
-     * @param mixed $num
-     *
-     * @return $this
-     */
-    public function get($num = null)
-    {
-        if (null !== $num) {
-            return $this->top($num);
-        }
-
-        return $this;
-    }
-
-    /**
-     * 返回一个字段的值
-     *
-     * @param string $field
-     *
-     * @return $this
-     */
-    public function value($field)
-    {
-        return $this->
-        setColumns($field)->
-
-        getOne();
-    }
-
-    /**
-     * 返回一列数据.
-     *
-     * @param array $fields
-     *
-     * @return $this
-     */
-    public function lists(array $fields)
-    {
-        $this->setColumns($fields);
-
-        return $this;
-    }
-
-    /**
-     * 数据分块处理.
-     *
-     * @param int      $count
-     * @param callable $calCallback
-     *
-     * @return bool
-     */
-    public function chunk($count, callable $calCallback)
-    {
-        $result = $this->forPage($page = 1, $count)->
-
-        getAll();
-
-        while (count($result) > 0) {
-            if (false === call_user_func_array($calCallback, [
-                $result,
-                $page,
-            ])) {
-                return false;
-            }
-
-            $page++;
-
-            $result = $this->forPage($page, $count)->
-
-            getAll();
-        }
-
-        return true;
-    }
-
-    /**
-     * 数据分块处理依次回调.
-     *
-     * @param int      $count
-     * @param callable $calCallback
-     *
-     * @return bool
-     */
-    public function each($count, callable $calCallback)
-    {
-        return $this->chunk($count, function ($result, $page) use ($calCallback) {
-            foreach ($result as $key => $value) {
-                if (false === $calCallback($value, $key, $page)) {
-                    return false;
-                }
-            }
-        });
-    }
-
-    /**
-     * 总记录数.
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return $this
-     */
-    public function getCount($field = '*', $alias = 'row_count')
-    {
-        return $this->count($field, $alias);
-    }
-
-    /**
-     * 平均数.
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return $this
-     */
-    public function getAvg($field, $alias = 'avg_value')
-    {
-        return $this->avg($field, $alias);
-    }
-
-    /**
-     * 最大值
-     *
-     * @param string $field
-     * @param string $alias
-     *
-     * @return $this
-     */
-    public function getMax($field, $alias = 'max_value')
-    {
-        return $this->max($field, $alias);
-    }
-
-    /**
-     * 最小值
-     *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return number
-     */
-    public function getMin($field, $alias = 'min_value', $flag = false)
-    {
-        return $this->min($field, $alias);
-    }
-
-    /**
-     * 合计
-     *
-     * @param string $field
-     * @param string $alias
-     * @param bool   $flag  指示是否不做任何操作只返回 SQL
-     *
-     * @return number
-     */
-    public function getSum($field, $alias = 'sum_value', $flag = false)
-    {
-        return $this->sum($field, $alias);
-    }
-
-    /**
-     * 分页查询.
-     *
-     * @param int   $perPage
-     * @param mixed $cols
-     * @param array $options
-     *
-     * @return array
-     */
-    public function paginate($perPage = 10, $cols = '*', array $options = [])
-    {
-        $page = new page_with_total(
-            $perPage,
-            $this->getPaginateCount($cols),
-            $options
-        );
-
-        return [
-            $page,
-            $this->limit(
-                $page->getFirstRecord(),
-                $perPage
-            )->
-
-            getAll(),
-        ];
-    }
-
-    /**
-     * 简单分页查询.
-     *
-     * @param int   $perPage
-     * @param mixed $cols
-     * @param array $options
-     *
-     * @return array
-     */
-    public function simplePaginate($perPage = 10, $cols = '*', array $options = [])
-    {
-        $page = new PageWithoutTotal(
-            $perPage,
-            $options
-        );
-
-        return [
-            $page,
-            $this->limit(
-                $page->getFirstRecord(),
-                $perPage
-            )->
-
-            getAll(),
-        ];
-    }
-
-    /**
-     * 取得分页查询记录数量.
-     *
-     * @param mixed $cols
-     *
-     * @return int
-     */
-    public function getPaginateCount($cols = '*')
-    {
-        $this->backupPaginateArgs();
-
-        $count = $this->getCount(
-            is_array($cols) ? reset($cols) : $cols
-        );
-
-        $this->restorePaginateArgs();
-
-        return $count;
     }
 
     /**
@@ -2439,24 +2118,6 @@ class Condition
     public function getBindParamsAll()
     {
         return $this->bindParams;
-    }
-
-    /**
-     * 安全格式指定返回 SQL 不做任何操作.
-     *
-     * @param bool $flag 指示是否不做任何操作只返回 SQL
-     *
-     * @return $this
-     */
-    protected function safeSql($flag = true)
-    {
-        if (true === $this->onlyMakeSql) {
-            return $this;
-        }
-
-        $this->onlyMakeSql = (bool) $flag;
-
-        return $this;
     }
 
     /**
@@ -4162,45 +3823,5 @@ class Condition
     protected function initOption()
     {
         $this->options = static::$optionsDefault;
-    }
-
-    /**
-     * 备份分页查询条件.
-     */
-    protected function backupPaginateArgs()
-    {
-        $this->backupPage = [];
-        $this->backupPage['aggregate'] = $this->options['aggregate'];
-        $this->backupPage['query_params'] = $this->queryParams;
-        $this->backupPage['columns'] = $this->options['columns'];
-    }
-
-    /**
-     * 恢复分页查询条件.
-     */
-    protected function restorePaginateArgs()
-    {
-        $this->options['aggregate'] = $this->backupPage['aggregate'];
-        $this->queryParams = $this->backupPage['query_params'];
-        $this->options['columns'] = $this->backupPage['columns'];
-    }
-
-    /**
-     * 驼峰转下划线.
-     *
-     * @param string $value
-     * @param string $separator
-     *
-     * @return string
-     */
-    protected function unCamelize($value, $separator = '_')
-    {
-        return strtolower(
-            preg_replace(
-                '/([a-z])([A-Z])/',
-                '$1'.$separator.'$2',
-                $value
-            )
-        );
     }
 }

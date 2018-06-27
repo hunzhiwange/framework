@@ -22,7 +22,6 @@ namespace Leevel\Database;
 
 use Exception;
 use Leevel\Collection\Collection;
-use Leevel\Flow\TControl;
 use Leevel\Page\PageWithoutTotal;
 use Leevel\Support\Type;
 use PDO;
@@ -45,8 +44,6 @@ use PDO;
  */
 class Select
 {
-    //use TControl;
-
     /**
      * 数据库连接.
      *
@@ -153,13 +150,9 @@ class Select
             return;
         }
 
-        if ($this->placeholderTControl($method)) {
-            return $this;
-        }
-
         // 动态查询支持
         if (0 === strncasecmp($method, 'get', 3)) {
-            /*$method = substr($method, 3);
+            $method = substr($method, 3);
 
             // support get10start3 etc.
             if (false !== strpos(strtolower($method), 'start')) {
@@ -206,8 +199,8 @@ class Select
                 )->{'get'.($isOne ? 'One' : 'All')}();
             }
 
-            return $this->top((int) (substr($method, 3)));
-            */
+            return $this->top((int) ($method))->
+            get();
         }
 
         // 查询组件
@@ -493,13 +486,14 @@ class Select
      *
      * @return int
      */
-    public function updateColumn($column, $value, $bind = [], $flag = false)
+    public function updateColumn(string $column, $value, $bind = [], $flag = false)
     {
-        return $this->safeSql($flag)->
-        runNativeSql(
-            ...$this->condition->
-
-            updateColumn($column, $value, $bind)
+        return $this->update(
+            [
+                $column => $value,
+            ],
+            $bind,
+            $flag
         );
     }
 
@@ -513,13 +507,13 @@ class Select
      *
      * @return int
      */
-    public function updateIncrease($column, $step = 1, $bind = [], $flag = false)
+    public function updateIncrease(string $column, $step = 1, $bind = [], $flag = false)
     {
-        return $this->safeSql($flag)->
-        runNativeSql(
-            ...$this->condition->
-
-            updateIncrease($column, $step, $bind)
+        return $this->updateColumn(
+            $column,
+            '{['.$column.']+'.$step.'}',
+            $bind,
+            $flag
         );
     }
 
@@ -533,13 +527,13 @@ class Select
      *
      * @return int
      */
-    public function updateDecrease($column, $step = 1, $bind = [], $flag = false)
+    public function updateDecrease(string $column, $step = 1, $bind = [], $flag = false)
     {
-        return $this->safeSql($flag)->
-        runNativeSql(
-            ...$this->condition->
-
-            updateDecrease($column, $step, $bind)
+        return $this->updateColumn(
+            $column,
+            '{['.$column.']-'.$step.'}',
+            $bind,
+            $flag
         );
     }
 
@@ -605,7 +599,7 @@ class Select
      */
     public function getOne($flag = false)
     {
-        $this->condition->getOne();
+        $this->condition->one();
 
         return $this->safeSql($flag)->
         query();
@@ -636,7 +630,9 @@ class Select
      */
     public function get($num = null, $flag = false)
     {
-        $this->condition->get($num);
+        if (null !== $num) {
+            $this->condition->top($num);
+        }
 
         return $this->safeSql($flag)->
         query();
@@ -652,7 +648,9 @@ class Select
      */
     public function value($field, $flag = false)
     {
-        $this->condition->value($field);
+        $this->condition->setColumns($field)->
+
+        one();
 
         $result = $this->safeSql($flag)->
 
@@ -704,7 +702,7 @@ class Select
             $fields[] = $fieldKey;
         }
 
-        $this->condition->lists($fields);
+        $this->condition->setColumns($fields);
 
         $tmps = $this->safeSql($flag)->
 
@@ -794,7 +792,7 @@ class Select
      */
     public function getCount($field = '*', $alias = 'row_count', $flag = false)
     {
-        return $this->getAggregateResult('getCount', $field, $alias, $flag);
+        return $this->getAggregateResult('count', $field, $alias, $flag);
     }
 
     /**
@@ -808,7 +806,7 @@ class Select
      */
     public function getAvg($field, $alias = 'avg_value', $flag = false)
     {
-        return $this->getAggregateResult('getAvg', $field, $alias, $flag);
+        return $this->getAggregateResult('avg', $field, $alias, $flag);
     }
 
     /**
@@ -822,7 +820,7 @@ class Select
      */
     public function getMax($field, $alias = 'max_value', $flag = false)
     {
-        return $this->getAggregateResult('getMax', $field, $alias, $flag);
+        return $this->getAggregateResult('max', $field, $alias, $flag);
     }
 
     /**
@@ -836,7 +834,7 @@ class Select
      */
     public function getMin($field, $alias = 'min_value', $flag = false)
     {
-        return $this->getAggregateResult('getMin', $field, $alias, $flag);
+        return $this->getAggregateResult('min', $field, $alias, $flag);
     }
 
     /**
@@ -850,7 +848,7 @@ class Select
      */
     public function getSum($field, $alias = 'sum_value', $flag = false)
     {
-        return $this->getAggregateResult('getSum', $field, $alias, $flag);
+        return $this->getAggregateResult('sum', $field, $alias, $flag);
     }
 
     /**
