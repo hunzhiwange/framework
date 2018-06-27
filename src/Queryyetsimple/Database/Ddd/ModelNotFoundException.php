@@ -18,23 +18,50 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Mvc;
+namespace Leevel\Database\Ddd;
+
+use RuntimeException;
 
 /**
- * 实体基础接口.
+ * 模型未找到异常.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.10.14
+ * @since 2017.07.10
  *
  * @version 1.0
  */
-interface IEntity
+class ModelNotFoundException extends RuntimeException
 {
     /**
-     * 唯一标识符.
+     * 模型名字.
      *
-     * @return mixed
+     * @var string
      */
-    public function id();
+    protected $strModel;
+
+    /**
+     * 设置模型.
+     *
+     * @param string $strModel
+     *
+     * @return $this
+     */
+    public function model($strModel)
+    {
+        $this->strModel = $strModel;
+        $this->message = "Can not find {$strModel} data";
+
+        return $this;
+    }
+
+    /**
+     * 取回模型.
+     *
+     * @return string
+     */
+    public function getModel()
+    {
+        return $this->strModel;
+    }
 }

@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Mvc\Relation;
+namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
 
