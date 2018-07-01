@@ -190,11 +190,11 @@ eot;
 
     public function testUpdateReadonly()
     {
-        $this->expectException(\BadMethodCallException::class);
-        $this->expectExceptionMessage('Entity Tests\Database\Ddd\TestReadonlyUpdateEntity field name is a read-only property.');
-
         $entity = new TestReadonlyUpdateEntity();
 
         $entity->name = 'foo';
+        $entity->description = 'bar';
+
+        $this->assertSame(['description'], $entity->getChanged());
     }
 }
