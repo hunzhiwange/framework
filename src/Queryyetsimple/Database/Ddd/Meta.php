@@ -135,6 +135,7 @@ class Meta
      */
     protected function __construct($strTable, $mixConnect = null)
     {
+        return;
         $this->strTable = $strTable;
         $this->mixConnect = $mixConnect;
         $this->initialization($strTable);
@@ -235,9 +236,14 @@ class Meta
      */
     public function insert(array $arrSaveData)
     {
-        return [
-            $this->getAutoIncrement() ?: 0 => $this->objConnect->table($this->strTable)->insert($arrSaveData),
-        ];
+        return $this->objConnect->
+        table($this->strTable)->
+
+        insert($arrSaveData);
+        //return [
+            //$this->getAutoIncrement() ?: 0 => $this->objConnect->table($this->strTable)->insert($arrSaveData),
+            //$this->getAutoIncrement() ?: 0 => $this->objConnect->table($this->strTable)->insert($arrSaveData),
+        //];
     }
 
     /**
@@ -250,7 +256,12 @@ class Meta
      */
     public function update(array $arrCondition, array $arrSaveData)
     {
-        return $this->objConnect->table($this->strTable)->where($arrCondition)->update($arrSaveData);
+        return $this->objConnect->
+        table($this->strTable)->
+
+        where($arrCondition)->
+
+        update($arrSaveData);
     }
 
     /**
@@ -333,6 +344,8 @@ class Meta
         $this->initConnect();
 
         $arrColumnInfo = $this->objConnect->getTableColumnsCache($strTable);
+        //dd($strTable);
+        //dd($arrColumnInfo);
         $this->arrFields = $arrColumnInfo['list'];
         $this->arrPrimaryKey = $arrColumnInfo['primary_key'];
         $this->strAutoIncrement = $arrColumnInfo['auto_increment'];
@@ -351,7 +364,7 @@ class Meta
      */
     protected function initConnect()
     {
-        $this->objConnect = static::$objDatabaseManager->connect($this->mixConnect);
+        //$this->objConnect = static::$objDatabaseManager->connect($this->mixConnect);
     }
 
     /**

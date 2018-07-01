@@ -1007,7 +1007,7 @@ class Select
     protected function queryDefault(&$data)
     {
         if (empty($data)) {
-            if (!$this->options['limitquery']) {
+            if (!$this->condition->getLimitQuery()) {
                 $data = null;
             }
 
@@ -1015,7 +1015,7 @@ class Select
         }
 
         // 返回一条记录
-        if (!$this->options['limitquery']) {
+        if (!$this->condition->getLimitQuery()) {
             $data = reset($data) ?: null;
         }
     }
@@ -1028,7 +1028,7 @@ class Select
     protected function queryClass(&$data)
     {
         if (empty($data)) {
-            if (!$this->options['limitquery']) {
+            if (!$this->condition->getLimitQuery()) {
                 $data = null;
             } else {
                 if ($this->queryParams['as_collection']) {
@@ -1053,7 +1053,7 @@ class Select
         }
 
         // 创建一个单独的对象
-        if (!$this->options['limitquery']) {
+        if (!$this->condition->getLimitQuery()) {
             $data = reset($data) ?: null;
         } else {
             if ($this->queryParams['as_collection']) {

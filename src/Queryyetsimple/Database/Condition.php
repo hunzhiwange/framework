@@ -22,7 +22,6 @@ namespace Leevel\Database;
 
 use BadMethodCallException;
 use Exception;
-use Leevel\Collection\Collection;
 use Leevel\Flow\TControl;
 use Leevel\Support\Arr;
 use Leevel\Support\Type;
@@ -2115,9 +2114,19 @@ class Condition
      *
      * @return array
      */
-    public function getBindParamsAll()
+    public function getBindParamsAll(): array
     {
         return $this->bindParams;
+    }
+
+    /**
+     * 返回查询限制.
+     *
+     * @return bool
+     */
+    public function getLimitQuery(): bool
+    {
+        return $this->options['limitquery'];
     }
 
     /**
@@ -3432,69 +3441,6 @@ class Condition
     }
 
     /**
-     * 以数组返回结果.
-     *
-     * @param array $data
-     */
-    protected function queryDefault(&$data)
-    {
-        if (empty($data)) {
-            if (!$this->options['limitquery']) {
-                $data = null;
-            }
-
-            return;
-        }
-
-        // 返回一条记录
-        if (!$this->options['limitquery']) {
-            $data = reset($data) ?: null;
-        }
-    }
-
-    /**
-     * 以 class 返回结果.
-     *
-     * @param array $data
-     */
-    protected function queryClass(&$data)
-    {
-        if (empty($data)) {
-            if (!$this->options['limitquery']) {
-                $data = null;
-            } else {
-                if ($this->queryParams['as_collection']) {
-                    $data = new Collection();
-                }
-            }
-
-            return;
-        }
-
-        // 模型类不存在，直接以数组结果返回
-        $className = $this->queryParams['as_class'];
-
-        if ($className && !class_exists($className)) {
-            $this->queryDefault($data);
-
-            return;
-        }
-
-        foreach ($data as &$tmp) {
-            $tmp = new $className((array) $tmp);
-        }
-
-        // 创建一个单独的对象
-        if (!$this->options['limitquery']) {
-            $data = reset($data) ?: null;
-        } else {
-            if ($this->queryParams['as_collection']) {
-                $data = new Collection($data, [$className]);
-            }
-        }
-    }
-
-    /**
      * 设置原生 sql 类型.
      *
      * @param string $nativeSql
@@ -3572,7 +3518,8 @@ class Condition
 
         foreach ($data as $key => $value) {
             // 表达式支持
-            if (false !== strpos($value, '{') &&
+            if ($value &&
+                false !== strpos($value, '{') &&
                 preg_match('/^{(.+?)}$/', $value, $matches)) {
                 $value = $this->connect->qualifyExpression(
                     $matches[1],
@@ -3590,7 +3537,8 @@ class Condition
                 $fields[] = $key;
             }
 
-            if (0 === strpos($value, ':') || !empty($matches)) {
+            if (($value && 0 === strpos($value, ':')) ||
+                !empty($matches)) {
                 $values[] = $value;
             } else {
                 // 转换 ? 占位符至 : 占位符

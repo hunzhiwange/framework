@@ -23,9 +23,11 @@ namespace Leevel\Database\Ddd;
 use ArrayAccess;
 use BadMethodCallException;
 use Carbon\Carbon;
+use Closure;
 use DateTime;
 use DateTimeInterface;
 use Exception;
+use InvalidArgumentException;
 use JsonSerializable;
 use Leevel\Collection\Collection;
 use Leevel\Database\Ddd\Relation\BelongsTo;
@@ -60,13 +62,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     use TControl;
 
     /**
-     * 与模型关联的数据表.
-     *
-     * @var string
-     */
-    protected $strTable;
-
-    /**
      * 此模型的连接名称.
      *
      * @var mixed
@@ -81,6 +76,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected $arrProp = [];
 
     /**
+     * 需要保存的模型属性.
+     *
+     * @var array
+     */
+    protected $arrCreatedProp = [];
+
+    /**
      * 改变的模型属性.
      *
      * @var array
@@ -88,60 +90,28 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected $arrChangedProp = [];
 
     /**
-     * 构造器初始化数据黑名单.
+     * 黑白名单.
      *
      * @var array
      */
-    protected $arrConstructBlack = [];
-
-    /**
-     * 构造器初始化数据白名单.
-     *
-     * @var array
-     */
-    protected $arrConstructWhite = [];
-
-    /**
-     * 数据赋值黑名单.
-     *
-     * @var array
-     */
-    protected $arrFillBlack = [];
-
-    /**
-     * 数据赋值白名单.
-     *
-     * @var array
-     */
-    protected $arrFillWhite = [];
-
-    /**
-     * 数据赋值写入黑名单.
-     *
-     * @var array
-     */
-    protected $arrCreateFillBlack = [];
-
-    /**
-     * 数据赋值写入白名单.
-     *
-     * @var array
-     */
-    protected $arrCreateFillWhite = [];
-
-    /**
-     * 数据赋值更新黑名单.
-     *
-     * @var array
-     */
-    protected $arrUpdateFillBlack = [];
-
-    /**
-     * 数据赋值更新白名单.
-     *
-     * @var array
-     */
-    protected $arrUpdateFillWhite = [];
+    protected $blackWhites = [
+        'construct' => [
+            'white' => [],
+            'black' => [],
+        ],
+        'fill' => [
+            'white' => [],
+            'black' => [],
+        ],
+        'create_fill' => [
+            'white' => [],
+            'black' => [],
+        ],
+        'update_fill' => [
+            'white' => [],
+            'black' => [],
+        ],
+    ];
 
     /**
      * 只读属性.
@@ -319,20 +289,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected $arrRelationProp = [];
 
     /**
-     * 模型字段.
-     *
-     * @var array
-     */
-    protected $arrField;
-
-    /**
-     * 模型主键字段.
-     *
-     * @var array
-     */
-    protected $arrPrimaryKey;
-
-    /**
      * 最后插入记录.
      *
      * @var mixed
@@ -361,28 +317,66 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected $booForceProp = false;
 
     /**
+     * 持久化基础层
+     *
+     * @var \Closure
+     */
+    protected $flush;
+
+    /**
+     * 即将持久化数据.
+     *
+     * @var array
+     */
+    protected $flushData;
+
+    /**
      * 构造函数.
      *
      * @param null|array $arrData
      * @param mixed      $mixConnect
-     * @param string     $strTable
      */
-    public function __construct($arrData = null, $mixConnect = null, $strTable = null)
+    public function __construct($arrData = null, $mixConnect = null)
     {
+        $className = get_class($this);
+
+        foreach ([
+            'TABLE', 'PRIMARY_KEY',
+            'AUTO_INCREMENT', 'STRUCT',
+        ] as $item) {
+            if (!defined($className.'::'.$item)) {
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'The entity const %s is not defined.',
+                        $item
+                    )
+                );
+            }
+        }
+
+        foreach (static::STRUCT as $field => $v) {
+            foreach ([
+                'construct', 'fill',
+                'create_fill', 'update_fill',
+            ] as $type) {
+                foreach (['black', 'white'] as $bw) {
+                    if (!empty($v[$type.'_'.$bw])) {
+                        $this->blackWhites[$type][$bw][] = $field;
+                    }
+                }
+            }
+        }
+
         if (null !== $mixConnect) {
             $this->mixConnect = $mixConnect;
         }
 
-        if (null !== $strTable) {
-            $this->strTable = $strTable;
-        } else {
-            $this->parseTableByClass();
-        }
-
-        $this->initField();
-
         if (is_array($arrData) && $arrData) {
-            foreach ($this->whiteAndBlack(array_keys($arrData), $this->arrConstructWhite, $this->arrConstructBlack) as $strProp) {
+            foreach (
+                $this->normalizeBlackAndWhite(
+                    $arrData,
+                    'construct'
+                ) as $strProp => $value) {
                 if (array_key_exists($strProp, $arrData)) {
                     $this->prop($strProp, $arrData[$strProp]);
                 }
@@ -727,6 +721,61 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
+     * 数据持久化数据.
+     *
+     * @return mixed
+     */
+    public function flush()
+    {
+        $result = call_user_func_array($this->flush, $this->flushData);
+
+        $this->setFlush(null);
+        $this->setFlushData(null);
+
+        return $result;
+    }
+
+    /**
+     * 设置持久化基础层
+     *
+     * @param null|\Closure $flush
+     */
+    public function setFlush(?Closure $flush)
+    {
+        $this->flush = $flush;
+    }
+
+    /**
+     * 设置数据持久化数据.
+     *
+     * @param null|array $data
+     */
+    public function setFlushData(?array $data)
+    {
+        $this->flushData = $data;
+    }
+
+    /**
+     * 数据持久化数据.
+     *
+     * @return null|\Closure
+     */
+    public function getFlush()
+    {
+        return $this->flush;
+    }
+
+    /**
+     * 获取数据持久化数据.
+     *
+     * @return null|array
+     */
+    public function getFlushData()
+    {
+        return $this->flushData;
+    }
+
+    /**
      * 唯一标识符.
      *
      * @return mixed
@@ -748,21 +797,24 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $arrPrimaryData = [];
 
         $arrPrimaryKey = $this->getPrimaryKeyNameSource();
+
         foreach ($arrPrimaryKey as $sPrimaryKey) {
-            if (!isset($this->arrProp[$sPrimaryKey])) {
+            if (!$this->{$this->normalizeCamelizeProp($sPrimaryKey)}) {
                 continue;
             }
+
             if (true === $booUpdateChange) {
                 if (!in_array($sPrimaryKey, $this->arrChangedProp, true)) {
-                    $arrPrimaryData[$sPrimaryKey] = $this->arrProp[$sPrimaryKey];
+                    $arrPrimaryData[$sPrimaryKey] = $this->{$this->normalizeCamelizeProp($sPrimaryKey)};
                 }
             } else {
-                $arrPrimaryData[$sPrimaryKey] = $this->arrProp[$sPrimaryKey];
+                $arrPrimaryData[$sPrimaryKey] = $this->{$this->normalizeCamelizeProp($sPrimaryKey)};
             }
         }
 
         // 复合主键，但是数据不完整则忽略
-        if (count($arrPrimaryKey) > 1 && count($arrPrimaryKey) !== count($arrPrimaryData)) {
+        if (count($arrPrimaryKey) > 1 &&
+            count($arrPrimaryKey) !== count($arrPrimaryData)) {
             return;
         }
 
@@ -792,20 +844,51 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             return $this;
         }
 
+        if (!$this->hasField($strProp)) {
+            throw new BadMethodCallException(
+                sprintf(
+                    'Entity %s field %s do not exist.',
+                    get_class($this),
+                    $strProp
+                )
+            );
+        }
+
         $mixValue = $this->meta()->fieldsProp($strProp, $mixValue);
 
-        if (null === $mixValue && ($strCamelize = 'set'.$this->getCamelizeProp($strProp).'Prop') && method_exists($this, $strCamelize)) {
+        if (null === $mixValue &&
+            ($strCamelize = 'set'.ucfirst($this->normalizeCamelizeProp($strProp)).'Prop') &&
+                method_exists($this, $strCamelize)) {
             if (null === (($mixValue = $this->{$strCamelize}($this->getProp($strProp))))) {
                 $mixValue = $this->getProp($strProp);
             }
-        } elseif ($mixValue && (in_array($strProp, $this->getDate(), true) || $this->isDateConversion($strProp))) {
+        } elseif ($mixValue &&
+            (in_array($strProp, $this->getDate(), true) ||
+                $this->isDateConversion($strProp))) {
             $mixValue = $this->fromDateTime($mixValue);
-        } elseif ($this->isJsonConversion($strProp) && null !== $mixValue) {
+        } elseif ($this->isJsonConversion($strProp) &&
+            null !== $mixValue) {
             $mixValue = $this->asJson($mixValue);
         }
 
-        $this->arrProp[$strProp] = $mixValue;
-        if ($this->getForceProp() && !in_array($strProp, $this->arrReadonly, true) && !in_array($strProp, $this->arrChangedProp, true)) {
+        $this->{$this->normalizeCamelizeProp($strProp)} = $mixValue;
+
+        if (!in_array($strProp, $this->arrCreatedProp, true)) {
+            $this->arrCreatedProp[] = $strProp;
+        }
+
+        if ($this->getForceProp() &&
+            !in_array($strProp, $this->arrChangedProp, true)) {
+            if (!empty(static::STRUCT[$strProp]['readonly'])) {
+                throw new BadMethodCallException(
+                    sprintf(
+                        'Entity %s field %s is a read-only property.',
+                        get_class($this),
+                        $strProp
+                    )
+                );
+            }
+
             $this->arrChangedProp[] = $strProp;
         }
 
@@ -826,6 +909,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         foreach ($arrProp as $strProp => $mixValue) {
             $this->prop($strProp, $mixValue);
         }
@@ -848,6 +932,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         $this->setForceProp(true);
+
         call_user_func_array([
             $this,
             'prop',
@@ -855,6 +940,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             $strPropName,
             $mixValue,
         ]);
+
         $this->setForceProp(false);
 
         return $this;
@@ -894,19 +980,27 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function getProp($strPropName)
     {
-        if (!isset($this->arrProp[$strPropName])) {
-            if (method_exists($this, $strPropName)) {
-                return $this->loadRelationProp($strPropName);
-            }
-            if (!$this->hasField($strPropName)) {
-                throw new Exception(sprintf('Model %s database table %s has no field %s', $this->getCalledClass(), $this->getTable(), $strPropName));
-            }
-            $mixValue = null;
-        } else {
-            $mixValue = $this->arrProp[$strPropName];
+        if (!$this->hasField($strPropName)) {
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $this->getCalledClass(),
+                    $this->getTable(),
+                    $strPropName
+                )
+            );
         }
 
-        if (($strCamelize = 'get'.$this->getCamelizeProp($strPropName).'Prop') && method_exists($this, $strCamelize)) {
+        if (in_array($strPropName, $this->arrCreatedProp, true)) {
+            $mixValue = $this->{$this->normalizeCamelizeProp($strPropName)};
+        } elseif (method_exists($this, $strPropName.'pp')) {
+            return $this->loadRelationProp($strPropName);
+        } else {
+            $mixValue = null;
+        }
+
+        if (($strCamelize = 'get'.ucfirst($this->normalizeCamelizeProp($strPropName)).'Prop') &&
+            method_exists($this, $strCamelize)) {
             $mixValue = $this->{$strCamelize}($mixValue);
         }
 
@@ -1487,11 +1581,21 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 返回改变.
+     * 返回已经创建.
      *
      * @return array
      */
-    public function getChanged()
+    public function getCreated(): array
+    {
+        return $this->arrCreatedProp;
+    }
+
+    /**
+     * 返回已经改变.
+     *
+     * @return array
+     */
+    public function getChanged(): array
     {
         return $this->arrChangedProp;
     }
@@ -1565,11 +1669,17 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function getPrimaryKeyNameSource()
     {
-        if (null !== $this->arrPrimaryKey) {
-            return $this->arrPrimaryKey;
-        }
+        return static::PRIMARY_KEY;
+    }
 
-        return $this->arrPrimaryKey = $this->meta()->getPrimaryKey() ?: [];
+    /**
+     * 返回自动增长字段.
+     *
+     * @return string
+     */
+    public function getAutoIncrement()
+    {
+        return static::AUTO_INCREMENT;
     }
 
     /**
@@ -1577,9 +1687,9 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      *
      * @return array
      */
-    public function getField()
+    public function getField(): array
     {
-        return $this->arrField;
+        return static::STRUCT;
     }
 
     /**
@@ -1588,11 +1698,11 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string $strFiled
      * @param mixed  $strField
      *
-     * @return array
+     * @return bool
      */
-    public function hasField($strField)
+    public function hasField($strField): bool
     {
-        return in_array($strField, $this->getField(), true);
+        return array_key_exists($strField, $this->getField());
     }
 
     /**
@@ -1625,30 +1735,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 设置表.
-     *
-     * @param string $strTable
-     *
-     * @return $this
-     */
-    public function table($strTable)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->strTable = $strTable;
-
-        return $this;
-    }
-
-    /**
      * 返回设置表.
      *
      * @return string
      */
     public function getTable()
     {
-        return $this->strTable;
+        return static::TABLE;
     }
 
     /**
@@ -2230,15 +2323,14 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 创建新的实例.
      *
-     * @param array  $arrProp
-     * @param mixed  $mixConnect
-     * @param string $strTable
+     * @param array $arrProp
+     * @param mixed $mixConnect
      *
      * @return static
      */
-    public function newInstance($arrProp = [], $mixConnect = null, $strTable = null)
+    public function newInstance($arrProp = [], $mixConnect = null)
     {
-        return new static((array) $arrProp, $mixConnect, $strTable);
+        return new static((array) $arrProp, $mixConnect);
     }
 
     /**
@@ -2338,7 +2430,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function meta()
     {
-        return meta::instance($this->strTable, $this->mixConnect);
+        return Meta::instance(static::TABLE, $this->mixConnect);
     }
 
     /**
@@ -2391,31 +2483,9 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 初始化字段名字.
-     */
-    protected function initField()
-    {
-        $this->arrField = $this->meta()->getField();
-    }
-
-    /**
-     * 分析默认模型表.
-     *
-     * @return string
-     */
-    protected function parseTableByClass()
-    {
-        if (!$this->strTable) {
-            $strTable = $this->getCalledClass();
-            $strTable = explode('\\', $strTable);
-            $this->strTable = array_pop($strTable);
-        }
-    }
-
-    /**
      * 保存统一入口.
      *
-     * @param strint     $sSaveMethod
+     * @param string     $sSaveMethod
      * @param null|array $arrData
      *
      * @return mixed
@@ -2448,7 +2518,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
                 break;
             case 'save':
             default:
-                $arrPrimaryData = $this->primaryKey(true);
+                $arrPrimaryData = $this->primaryKey(/*true*/);
 
                 // 复合主键的情况下，则使用 replace 方式
                 if (is_array($arrPrimaryData)) {
@@ -2475,29 +2545,42 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 添加数据.
      *
-     * @return mixed
+     * @return $this
      */
     protected function createReal()
     {
         $this->parseAutoPost('create');
         $this->parseAutoFill('create');
 
-        $arrPropKey = $this->whiteAndBlack(array_keys($this->arrProp), $this->arrFillWhite, $this->arrFillBlack);
+        $arrPropKey = $this->normalizeBlackAndWhite(
+            array_flip($this->arrCreatedProp),
+            'fill'
+        );
+
         if ($arrPropKey) {
-            $arrPropKey = $this->whiteAndBlack($arrPropKey, $this->arrCreateFillWhite, $this->arrCreateFillBlack);
+            $arrPropKey = $this->normalizeBlackAndWhite(
+                $arrPropKey,
+                'create_fill'
+            );
         }
 
         $arrSaveData = [];
-        foreach ($this->arrProp as $sPropName => $mixValue) {
-            if (null === $mixValue || !in_array($sPropName, $arrPropKey, true)) {
+
+        foreach ($this->arrCreatedProp as $prop) {
+            if (!array_key_exists($prop, $arrPropKey)) {
                 continue;
             }
-            $arrSaveData[$sPropName] = $mixValue;
+
+            $arrSaveData[$prop] = $this->{$this->normalizeCamelizeProp($prop)};
         }
 
         if (!$arrSaveData) {
             if (null === (($arrPrimaryKey = $this->getPrimaryKeyNameSource()))) {
-                throw new Exception(sprintf('Model %s has no primary key', $this->getCalledClass()));
+                throw new Exception(
+                    sprintf(
+                        'Model %s has no primary key', $this->getCalledClass()
+                    )
+                );
             }
 
             foreach ($arrPrimaryKey as $strPrimaryKey) {
@@ -2505,69 +2588,113 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             }
         }
 
-        $this->runEvent(static::BEFORE_CREATE_EVENT, $arrSaveData);
+        $this->prepareFlush(
+            function ($arrSaveData) {
+                $this->runEvent(
+                    static::BEFORE_CREATE_EVENT,
+                    $arrSaveData
+                );
 
-        $arrLastInsertId = $this->meta()->insert($arrSaveData);
-        $this->arrProp = array_merge($this->arrProp, $arrLastInsertId);
-        $this->clearChanged();
+                $intLastInsertId = $this->meta()->insert($arrSaveData);
 
-        $this->runEvent(static::AFTER_CREATE_EVENT, $arrSaveData);
+                $this->{$this->getAutoIncrement()} = $intLastInsertId;
 
-        return $this->mixLastInsertIdOrRowCount = $this->mixLastInsertId = reset($arrLastInsertId);
+                $this->clearChanged();
+
+                $this->runEvent(
+                    static::AFTER_CREATE_EVENT,
+                    $arrSaveData
+                );
+
+                return $this->mixLastInsertIdOrRowCount =
+                    $this->mixLastInsertId =
+                    $intLastInsertId;
+            }, [$arrSaveData]);
+
+        return $this;
     }
 
     /**
      * 更新数据.
      *
-     * @return int
+     * @return $this
      */
     protected function updateReal()
     {
         $this->parseAutoPost('update');
         $this->parseAutoFill('update');
 
-        $arrPropKey = $this->whiteAndBlack(array_keys($this->arrProp), $this->arrFillWhite, $this->arrFillBlack);
+        $arrPropKey = $this->normalizeBlackAndWhite(
+            array_flip($this->arrChangedProp),
+            'fill'
+        );
+
         if ($arrPropKey) {
-            $arrPropKey = $this->whiteAndBlack($arrPropKey, $this->arrUpdateFillWhite, $this->arrUpdateFillBlack);
+            $arrPropKey = $this->normalizeBlackAndWhite(
+                $arrPropKey,
+                'update_fill'
+            );
         }
 
         $arrSaveData = [];
-        foreach ($this->arrProp as $sPropName => $mixValue) {
-            if (!in_array($sPropName, $this->arrChangedProp, true) || !in_array($sPropName, $arrPropKey, true)) {
+
+        foreach ($this->arrChangedProp as $prop) {
+            if (!array_key_exists($prop, $arrPropKey)) {
                 continue;
             }
-            $arrSaveData[$sPropName] = $mixValue;
+
+            $arrSaveData[$prop] = $this->{$this->normalizeCamelizeProp($prop)};
         }
 
-        $booChange = false;
+        if (!$arrSaveData) {
+            return $this;
+        }
 
-        if ($arrSaveData) {
-            $arrCondition = [];
-            foreach ($this->getPrimaryKeyNameSource() as $sFieldName) {
-                if (isset($arrSaveData[$sFieldName])) {
-                    unset($arrSaveData[$sFieldName]);
-                }
-                if (!empty($this->arrProp[$sFieldName])) {
-                    $arrCondition[$sFieldName] = $this->arrProp[$sFieldName];
-                }
+        $arrCondition = [];
+
+        foreach ($this->getPrimaryKeyNameSource() as $sFieldName) {
+            if (isset($arrSaveData[$sFieldName])) {
+                unset($arrSaveData[$sFieldName]);
             }
 
-            if (!empty($arrSaveData) && !empty($arrCondition)) {
-                $this->runEvent(static::BEFORE_UPDATE_EVENT, $arrSaveData, $arrCondition);
-                $intNum = $this->meta()->update($arrCondition, $arrSaveData);
-                $booChange = true;
+            if ($value = $this->{$this->normalizeCamelizeProp($sFieldName)}) {
+                $arrCondition[$sFieldName] = $value;
             }
         }
 
-        if (!$booChange) {
-            $this->runEvent(static::BEFORE_UPDATE_EVENT, null, null);
+        if (empty($arrCondition) || empty($arrSaveData)) {
+            return $this;
         }
 
-        $this->clearChanged();
+        $this->prepareFlush(
+            function ($arrCondition, $arrSaveData) {
+                $this->runEvent(
+                    static::BEFORE_UPDATE_EVENT,
+                    $arrSaveData,
+                    $arrCondition
+                );
 
-        $this->runEvent(static::AFTER_UPDATE_EVENT);
+                $intNum = $this->meta()->update(
+                    $arrCondition,
+                    $arrSaveData
+                );
 
-        return $this->mixLastInsertIdOrRowCount = $this->intRowCount = isset($intNum) ? $intNum : 0;
+                $this->runEvent(
+                    static::BEFORE_UPDATE_EVENT,
+                    null,
+                    null
+                );
+
+                $this->clearChanged();
+
+                $this->runEvent(static::AFTER_UPDATE_EVENT);
+
+                return $this->mixLastInsertIdOrRowCount =
+                    $this->intRowCount =
+                    isset($intNum) ? $intNum : 0;
+            }, [$arrCondition, $arrSaveData]);
+
+        return $this;
     }
 
     /**
@@ -2579,9 +2706,22 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     {
         try {
             return $this->createReal();
-        } catch (Exception $oE) {
+        } catch (Exception $e) {
             return $this->updateReal();
         }
+    }
+
+    /**
+     * 准备即将进行持久化的数据.
+     *
+     * @param \Closure $strType
+     * @param array    $data
+     */
+    protected function prepareFlush(Closure $flush, array $data)
+    {
+        $this->setFlush($flush);
+
+        $this->setFlushData($data);
     }
 
     /**
@@ -2668,6 +2808,23 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         return $this->arrRelationProp[$strPropName] = $oRelation->sourceQuery();
+    }
+
+    /**
+     * 格式化黑白名单数据.
+     *
+     * @param array  $arrKey
+     * @param string $type
+     *
+     * @return array
+     */
+    protected function normalizeBlackAndWhite(array $arrKey, string $type): array
+    {
+        return $this->whiteAndBlack(
+            $arrKey,
+            $this->blackWhites[$type]['white'],
+            $this->blackWhites[$type]['black']
+        );
     }
 
     /**
@@ -2973,7 +3130,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function deleteModelByKey()
     {
-        return $this->getQuery()->where($this->getKeyConditionForQuery())->delete();
+        return $this->getQuery()->
+        where($this->getKeyConditionForQuery())->
+
+        delete();
     }
 
     /**
@@ -2993,12 +3153,12 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      *
      * @return string
      */
-    protected function getCamelizeProp($strProp)
+    protected function normalizeCamelizeProp($strProp)
     {
         if (isset(static::$arrCamelizeProp[$strProp])) {
             return static::$arrCamelizeProp[$strProp];
         }
 
-        return static::$arrCamelizeProp[$strProp] = ucwords(Str::camelize($strProp));
+        return static::$arrCamelizeProp[$strProp] = Str::camelize($strProp);
     }
 }
