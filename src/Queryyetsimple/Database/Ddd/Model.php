@@ -128,27 +128,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected $booUpdateAutoFill = true;
 
     /**
-     * 自动填充.
-     *
-     * @var array
-     */
-    protected $arrAutoFill = [];
-
-    /**
-     * 创建自动填充.
-     *
-     * @var array
-     */
-    protected $arrCreateFill = [];
-
-    /**
-     * 更新自动填充.
-     *
-     * @var array
-     */
-    protected $arrUpdateFill = [];
-
-    /**
      * 数据类型.
      *
      * @var array
@@ -1809,6 +1788,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     public function getPrimaryKeyNameForQuery()
     {
         $mixKey = $this->getPrimaryKeyName();
+
         if (!is_string($mixKey)) {
             throw new Exception(
                 sprintf(
@@ -1856,6 +1836,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->mixConnect = $mixConnect;
 
         return $this;
@@ -1883,6 +1864,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->booCreateAutoFill = $booAutoFill;
         $this->booUpdateAutoFill = $booAutoFill;
 
@@ -1901,6 +1883,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->booCreateAutoFill = $booAutoFill;
 
         return $this;
@@ -1918,6 +1901,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->booUpdateAutoFill = $booAutoFill;
 
         return $this;
@@ -1947,6 +1931,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrHidden = $arrHidden;
 
         return $this;
@@ -1974,6 +1959,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
         $this->arrHidden = array_merge($this->arrHidden, $mixProp);
 
@@ -1992,6 +1978,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrHidden = array_diff($this->arrHidden, (array) $mixProp);
 
         return $this;
@@ -2009,6 +1996,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrVisible = $arrVisible;
 
         return $this;
@@ -2036,6 +2024,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
         $this->arrVisible = array_merge($this->arrVisible, $mixProp);
 
@@ -2054,6 +2043,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrVisible = array_diff($this->arrVisible, (array) $mixProp);
 
         return $this;
@@ -2071,6 +2061,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrAppend = $arrAppend;
 
         return $this;
@@ -2627,6 +2618,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function createReal()
     {
+        $this->parseAutoFill('create');
+
         $arrPropKey = $this->normalizeBlackAndWhite(
             array_flip($this->arrCreatedProp),
             'fill'
@@ -2696,6 +2689,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function updateReal()
     {
+        $this->parseAutoFill('update');
+
         $arrPropKey = $this->normalizeBlackAndWhite(
             array_flip($this->arrChangedProp),
             'fill'
@@ -2803,33 +2798,21 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function parseAutoFill($strType = 'create')
     {
-        if (false === $this->getAutoFill($strType)) {
+        if (('create' === $strType && !$this->booCreateAutoFill) ||
+            ('update' === $strType && !$this->booUpdateAutoFill)) {
             return;
         }
 
-        if ('create' === $strType) {
-            $arrFill = array_merge(
-                $this->arrAutoFill,
-                $this->arrCreateFill
-            );
-        } else {
-            $arrFill = array_merge(
-                $this->arrAutoFill,
-                $this->arrUpdateFill
-            );
-        }
+        foreach (static::STRUCT as $prop => $value) {
+            if (array_key_exists($strType.'_fill', $value)) {
+                $this->forceProp($prop, $value[$strType.'_fill']);
 
-        if (!$arrFill) {
-            return;
-        }
-
-        foreach ($arrFill as $mixKey => $mixValue) {
-            if (is_int($mixKey)) {
-                $mixKey = $mixValue;
-                $mixValue = null;
+                continue;
             }
 
-            $this->forceProp($mixKey, $mixValue);
+            if (array_key_exists('auto_fill', $value)) {
+                $this->forceProp($prop, $value['auto_fill']);
+            }
         }
     }
 

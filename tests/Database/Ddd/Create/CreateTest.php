@@ -24,6 +24,7 @@ use Closure;
 use Leevel\Database\Ddd\Model as Entity;
 use Tests\Database\Ddd\TestConstructBlackEntity;
 use Tests\Database\Ddd\TestConstructWhiteEntity;
+use Tests\Database\Ddd\TestCreateAutoFillEntity;
 use Tests\Database\Ddd\TestCreateFillWhiteEntity;
 use Tests\Database\Ddd\TestEntity;
 use Tests\Database\Ddd\TestFillBlackEntity;
@@ -190,5 +191,32 @@ eot;
         $entity = new TestEntity();
 
         $entity->notExists = 'hello';
+    }
+
+    public function testAutoFile()
+    {
+        $entity = new TestCreateAutoFillEntity();
+
+        $entity->save();
+
+        $data = <<<'eot'
+array (
+  0 => 
+  array (
+    'name' => 'name for create_fill',
+    'description' => 'set description.',
+    'address' => 'address is set now.',
+    'foo_bar' => 'foo bar.',
+    'hello' => 'hello field.',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->getFlushData()
+            )
+        );
     }
 }

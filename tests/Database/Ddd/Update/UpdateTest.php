@@ -26,6 +26,7 @@ use Tests\Database\Ddd\TestEntity;
 use Tests\Database\Ddd\TestFillBlackEntity;
 use Tests\Database\Ddd\TestFillWhiteEntity;
 use Tests\Database\Ddd\TestReadonlyUpdateEntity;
+use Tests\Database\Ddd\TestUpdateAutoFillEntity;
 use Tests\Database\Ddd\TestUpdateFillWhiteEntity;
 use Tests\TestCase;
 
@@ -196,5 +197,38 @@ eot;
         $entity->description = 'bar';
 
         $this->assertSame(['description'], $entity->getChanged());
+    }
+
+    public function testAutoFile()
+    {
+        $entity = new TestUpdateAutoFillEntity();
+
+        $entity->id = 5;
+
+        $entity->save();
+
+        $data = <<<'eot'
+array (
+  0 => 
+  array (
+    'id' => 5,
+  ),
+  1 => 
+  array (
+    'name' => 'name for update_fill',
+    'description' => 'set description.',
+    'address' => 'address is set now.',
+    'foo_bar' => 'foo bar.',
+    'hello' => 'hello field.',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->getFlushData()
+            )
+        );
     }
 }
