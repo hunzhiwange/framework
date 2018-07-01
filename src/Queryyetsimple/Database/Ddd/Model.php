@@ -114,69 +114,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     ];
 
     /**
-     * 只读属性.
-     *
-     * @var array
-     */
-    protected $arrReadonly = [];
-
-    /**
-     * 写入是否自动提交 POST 数据.
-     *
-     * @var bool
-     */
-    protected $booCreateAutoPost = false;
-
-    /**
-     * 更新是否自动提交 POST 数据.
-     *
-     * @var bool
-     */
-    protected $booUpdateAutoPost = false;
-
-    /**
-     * 自动提交 POST 数据白名单.
-     *
-     * @var array
-     */
-    protected $arrPostWhite = [];
-
-    /**
-     * 自动提交 POST 数据黑名单.
-     *
-     * @var array
-     */
-    protected $arrPostBlack = [];
-
-    /**
-     * 自动提交 POST 数据写入白名单.
-     *
-     * @var array
-     */
-    protected $arrCreatePostWhite = [];
-
-    /**
-     * 自动提交 POST 数据写入黑名单.
-     *
-     * @var array
-     */
-    protected $arrCreatePostBlack = [];
-
-    /**
-     * 自动提交 POST 数据更新白名单.
-     *
-     * @var array
-     */
-    protected $arrUpdatePostWhite = [];
-
-    /**
-     * 自动提交 POST 数据更新黑名单.
-     *
-     * @var array
-     */
-    protected $arrUpdatePostBlack = [];
-
-    /**
      * 写入是否自动填充.
      *
      * @var bool
@@ -708,7 +645,12 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     public function delete()
     {
         if (null === $this->getPrimaryKeyName()) {
-            throw new Exception(sprintf('Model %s has no primary key', $this->getCalledClass()));
+            throw new Exception(
+                sprintf(
+                    'Model %s has no primary key',
+                    $this->getCalledClass()
+                )
+            );
         }
 
         $this->runEvent(static::BEFORE_DELETE_EVENT);
@@ -878,17 +820,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         if ($this->getForceProp() &&
-            !in_array($strProp, $this->arrChangedProp, true)) {
-            if (!empty(static::STRUCT[$strProp]['readonly'])) {
-                throw new BadMethodCallException(
-                    sprintf(
-                        'Entity %s field %s is a read-only property.',
-                        get_class($this),
-                        $strProp
-                    )
-                );
-            }
-
+            !in_array($strProp, $this->arrChangedProp, true) &&
+            empty(static::STRUCT[$strProp]['readonly'])) {
             $this->arrChangedProp[] = $strProp;
         }
 
@@ -960,12 +893,14 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         $this->setForceProp(true);
+
         call_user_func_array([
             $this,
             'props',
         ], [
             $arrProp,
         ]);
+
         $this->setForceProp(false);
 
         return $this;
@@ -1051,6 +986,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         if (!isset($this->arrProp[$sPropName])) {
             unset($this->arrProp[$sPropName]);
         }
@@ -1077,7 +1013,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function getRelationProp($sPropName)
     {
-        return $this->hasRelationProp($sPropName) ? $this->arrRelationProp[$sPropName] : null;
+        return $this->hasRelationProp($sPropName) ?
+        $this->arrRelationProp[$sPropName] :
+
+        null;
     }
 
     /**
@@ -1105,6 +1044,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrRelationProp[$sPropName] = $mixValue;
 
         return $this;
@@ -1122,6 +1062,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrRelationProp = $arrRelationProp;
 
         return $this;
@@ -1140,7 +1081,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             $mixRelation = func_get_args();
         }
 
-        return (new static())->getClassCollectionQuery()->with($mixRelation);
+        return (new static())->
+        getClassCollectionQuery()->
+
+        with($mixRelation);
     }
 
     /**
@@ -1159,14 +1103,33 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $strSourceKey = $strSourceKey ?: $this->getPrimaryKeyNameForQuery();
 
         if (!$objModel->hasField($strTargetKey)) {
-            throw new Exception(sprintf('Model %s database table %s has no field %s', $strRelatedModel, $objModel->getTable(), $strTargetKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $strRelatedModel,
+                    $objModel->getTable(),
+                    $strTargetKey
+                )
+            );
         }
 
         if (!$this->hasField($strSourceKey)) {
-            throw new Exception(sprintf('Model %s database table %s has no field %s', $this->getCalledClass(), $this->getTable(), $strSourceKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $this->getCalledClass(),
+                    $this->getTable(),
+                    $strSourceKey
+                )
+            );
         }
 
-        return new HasOne($objModel, $this, $strTargetKey, $strSourceKey);
+        return new HasOne(
+            $objModel,
+            $this,
+            $strTargetKey,
+            $strSourceKey
+        );
     }
 
     /**
@@ -1186,14 +1149,33 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $strSourceKey = $strSourceKey ?: $objModel->getTargetKey();
 
         if (!$objModel->hasField($strTargetKey)) {
-            throw new Exception(sprintf('Model %s has no field %sModel %s database table %s has no field %s', $strRelatedModel, $objModel->getTable(), $strTargetKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s has no field %sModel %s database table %s has no field %s',
+                    $strRelatedModel,
+                    $objModel->getTable(),
+                    $strTargetKey
+                )
+            );
         }
 
         if (!$this->hasField($strSourceKey)) {
-            throw new Exception(sprintf('Model %s database table %s has no field %s', $this->getCalledClass(), $this->getTable(), $strSourceKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $this->getCalledClass(),
+                    $this->getTable(),
+                    $strSourceKey
+                )
+            );
         }
 
-        return new BelongsTo($objModel, $this, $strTargetKey, $strSourceKey);
+        return new BelongsTo(
+            $objModel,
+            $this,
+            $strTargetKey,
+            $strSourceKey
+        );
     }
 
     /**
@@ -1212,14 +1194,33 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $strSourceKey = $strSourceKey ?: $this->getPrimaryKeyNameForQuery();
 
         if (!$objModel->hasField($strTargetKey)) {
-            throw new Exception(sprintf('Model %s database table %s has no field %s', $strRelatedModel, $objModel->getTable(), $strTargetKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $strRelatedModel,
+                    $objModel->getTable(),
+                    $strTargetKey
+                )
+            );
         }
 
         if (!$this->hasField($strSourceKey)) {
-            throw new Exception(sprintf('Model %s database table %s has no field %s', $this->getCalledClass(), $this->getTable(), $strSourceKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $this->getCalledClass(),
+                    $this->getTable(),
+                    $strSourceKey
+                )
+            );
         }
 
-        return new HasMany($objModel, $this, $strTargetKey, $strSourceKey);
+        return new HasMany(
+            $objModel,
+            $this,
+            $strTargetKey,
+            $strSourceKey
+        );
     }
 
     /**
@@ -1248,22 +1249,58 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $strMiddleSourceKey = $strMiddleSourceKey ?: $this->getTargetKey();
 
         if (!$objModel->hasField($strTargetKey)) {
-            throw new Exception(sprintf('Model %s database table %s has no field %s', $strRelatedModel, $objModel->getTable(), $strTargetKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $strRelatedModel,
+                    $objModel->getTable(),
+                    $strTargetKey
+                )
+            );
         }
 
         if (!$objMiddleModel->hasField($strMiddleTargetKey)) {
-            throw new Exception(sprintf('Model %s database table %s has no field %s', $strMiddleModel, $objMiddleModel->getTable(), $strMiddleTargetKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $strMiddleModel,
+                    $objMiddleModel->getTable(),
+                    $strMiddleTargetKey
+                )
+            );
         }
 
         if (!$this->hasField($strSourceKey)) {
-            throw new Exception(sprintf('Model %s database table %s has no field %s', $this->getCalledClass(), $this->getTable(), $strSourceKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $this->getCalledClass(),
+                    $this->getTable(),
+                    $strSourceKey
+                )
+            );
         }
 
         if (!$objMiddleModel->hasField($strMiddleSourceKey)) {
-            throw new Exception(sprintf('Model %s database table %s has no field %s', $strMiddleModel, $objMiddleModel->getTable(), $strMiddleSourceKey));
+            throw new Exception(
+                sprintf(
+                    'Model %s database table %s has no field %s',
+                    $strMiddleModel,
+                    $objMiddleModel->getTable(),
+                    $strMiddleSourceKey
+                )
+            );
         }
 
-        return new ManyMany($objModel, $this, $objMiddleModel, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey);
+        return new ManyMany(
+            $objModel,
+            $this,
+            $objMiddleModel,
+            $strTargetKey,
+            $strSourceKey,
+            $strMiddleTargetKey,
+            $strMiddleSourceKey
+        );
     }
 
     /**
@@ -1311,7 +1348,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function selecting($mixListener)
     {
-        static::registerEvent(static::BEFORE_SELECT_EVENT, $mixListener);
+        static::registerEvent(
+            static::BEFORE_SELECT_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1321,7 +1361,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function selected($mixListener)
     {
-        static::registerEvent(static::AFTER_SELECT_EVENT, $mixListener);
+        static::registerEvent(
+            static::AFTER_SELECT_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1331,7 +1374,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function finding($mixListener)
     {
-        static::registerEvent(static::BEFORE_FIND_EVENT, $mixListener);
+        static::registerEvent(
+            static::BEFORE_FIND_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1341,7 +1387,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function finded($mixListener)
     {
-        static::registerEvent(static::AFTER_FIND_EVENT, $mixListener);
+        static::registerEvent(
+            static::AFTER_FIND_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1351,7 +1400,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function saveing($mixListener)
     {
-        static::registerEvent(static::BEFORE_SAVE_EVENT, $mixListener);
+        static::registerEvent(
+            static::BEFORE_SAVE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1361,7 +1413,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function saved($mixListener)
     {
-        static::registerEvent(static::AFTER_SAVE_EVENT, $mixListener);
+        static::registerEvent(
+            static::AFTER_SAVE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1371,7 +1426,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function creating($mixListener)
     {
-        static::registerEvent(static::BEFORE_CREATE_EVENT, $mixListener);
+        static::registerEvent(
+            static::BEFORE_CREATE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1381,7 +1439,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function created($mixListener)
     {
-        static::registerEvent(static::AFTER_CREATE_EVENT, $mixListener);
+        static::registerEvent(
+            static::AFTER_CREATE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1391,7 +1452,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function updating($mixListener)
     {
-        static::registerEvent(static::BEFORE_UPDATE_EVENT, $mixListener);
+        static::registerEvent(
+            static::BEFORE_UPDATE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1401,7 +1465,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function updated($mixListener)
     {
-        static::registerEvent(static::AFTER_UPDATE_EVENT, $mixListener);
+        static::registerEvent(
+            static::AFTER_UPDATE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1411,7 +1478,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function deleting($mixListener)
     {
-        static::registerEvent(static::BEFORE_DELETE_EVENT, $mixListener);
+        static::registerEvent(
+            static::BEFORE_DELETE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1421,7 +1491,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function deleted($mixListener)
     {
-        static::registerEvent(static::AFTER_DELETE_EVENT, $mixListener);
+        static::registerEvent(
+            static::AFTER_DELETE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1431,7 +1504,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function softDeleting($mixListener)
     {
-        static::registerEvent(static::BEFORE_SOFT_DELETE_EVENT, $mixListener);
+        static::registerEvent(
+            static::BEFORE_SOFT_DELETE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1441,7 +1517,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function softDeleted($mixListener)
     {
-        static::registerEvent(static::AFTER_SOFT_DELETE_EVENT, $mixListener);
+        static::registerEvent(
+            static::AFTER_SOFT_DELETE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1451,7 +1530,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function softRestoring($mixListener)
     {
-        static::registerEvent(static::BEFORE_SOFT_RESTORE_EVENT, $mixListener);
+        static::registerEvent(
+            static::BEFORE_SOFT_RESTORE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1461,7 +1543,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public static function softRestored($mixListener)
     {
-        static::registerEvent(static::AFTER_SOFT_RESTORE_EVENT, $mixListener);
+        static::registerEvent(
+            static::AFTER_SOFT_RESTORE_EVENT,
+            $mixListener
+        );
     }
 
     /**
@@ -1502,7 +1587,11 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     {
         if (isset(static::$objDispatch)) {
             static::isSupportEvent($strEvent);
-            static::$objDispatch->listener("model.{$strEvent}:".static::class, $mixListener);
+
+            static::$objDispatch->listener(
+                "model.{$strEvent}:".static::class,
+                $mixListener
+            );
         }
     }
 
@@ -1535,6 +1624,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             static::$objDispatch,
             'run',
         ], $arrArgs);
+
         unset($arrArgs);
     }
 
@@ -1549,7 +1639,9 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     public static function isSupportEvent($strEvent)
     {
         if (!in_array($strEvent, static::getSupportEvent(), true)) {
-            throw new Exception(sprintf('Event %s do not support'));
+            throw new Exception(
+                sprintf('Event %s do not support.')
+            );
         }
     }
 
@@ -1615,6 +1707,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         $arrPropsName = Arr::normalize($sPropsName);
+
         foreach ($arrPropsName as $sPropName) {
             if (isset($this->arrChangedProp[$sPropName])) {
                 return true;
@@ -1636,10 +1729,12 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         if (null === $mixProp) {
             $this->arrChangedProp = [];
         } else {
             $mixProp = Arr::normalize($mixProp);
+
             foreach ($mixProp as $sProp) {
                 if (isset($this->arrChangedProp[$sProp])) {
                     unset($this->arrChangedProp[$sProp]);
@@ -1715,7 +1810,12 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     {
         $mixKey = $this->getPrimaryKeyName();
         if (!is_string($mixKey)) {
-            throw new Exception(sprintf('Model %s do not have primary key or composite id not supported', $this->getCalledClass()));
+            throw new Exception(
+                sprintf(
+                    'Model %s do not have primary key or composite id not supported',
+                    $this->getCalledClass()
+                )
+            );
         }
 
         return $mixKey;
@@ -1769,70 +1869,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     public function getConnect()
     {
         return $this->mixConnect;
-    }
-
-    /**
-     * 是否自动提交表单数据.
-     *
-     * @param bool $booAutoPost
-     *
-     * @return $this
-     */
-    public function autoPost($booAutoPost = true)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->booCreateAutoPost = $booAutoPost;
-        $this->booUpdateAutoPost = $booAutoPost;
-
-        return $this;
-    }
-
-    /**
-     * 写入是否自动提交表单数据.
-     *
-     * @param bool $booAutoPost
-     *
-     * @return $this
-     */
-    public function createAutoPost($booAutoPost = true)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->booCreateAutoPost = $booAutoPost;
-
-        return $this;
-    }
-
-    /**
-     * 更新是否自动提交表单数据.
-     *
-     * @param bool $booAutoPost
-     *
-     * @return $this
-     */
-    public function updateAutoPost($booAutoPost = true)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-        $this->booUpdateAutoPost = $booAutoPost;
-
-        return $this;
-    }
-
-    /**
-     * 返回是否自动提交表单数据.
-     *
-     * @param string $strType
-     *
-     * @return bool
-     */
-    public function getAutoPost($strType = 'create')
-    {
-        return 'create' === $strType ? $this->booCreateAutoPost : $this->booUpdateAutoPost;
     }
 
     /**
@@ -2062,7 +2098,9 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
+
         $this->arrAppend = array_merge($this->arrAppend, $mixProp);
 
         return $this;
@@ -2080,7 +2118,11 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrAppend = array_diff($this->arrAppend, (array) $mixProp);
+
+        $this->arrAppend = array_diff(
+            $this->arrAppend,
+            (array) $mixProp
+        );
 
         return $this;
     }
@@ -2097,6 +2139,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->strDateFormat = $strDateFormat;
 
         return $this;
@@ -2109,9 +2152,17 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function toArray()
     {
-        $arrProp = $this->whiteAndBlack($this->arrProp, $this->arrVisible, $this->arrHidden);
+        $arrProp = $this->whiteAndBlack(
+            $this->arrProp,
+            $this->arrVisible,
+            $this->arrHidden
+        );
 
-        $arrProp = array_merge($arrProp, $this->arrAppend ? array_flip($this->arrAppend) : []);
+        $arrProp = array_merge(
+            $arrProp,
+            $this->arrAppend ? array_flip($this->arrAppend) : []
+        );
+
         foreach ($arrProp as $strProp => &$mixValue) {
             $mixValue = $this->getProp($strProp);
         }
@@ -2120,7 +2171,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             if (!isset($arrProp[$strProp])) {
                 continue;
             }
-            $arrProp[$strProp] = $this->serializeDate($this->asDateTime($arrProp[$strProp]));
+
+            $arrProp[$strProp] = $this->serializeDate(
+                $this->asDateTime($arrProp[$strProp])
+            );
         }
 
         return $arrProp;
@@ -2138,9 +2192,15 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     public function whiteAndBlack(array $arrKey, array $arrWhite, array $arrBlack)
     {
         if (!empty($arrWhite)) {
-            $arrKey = array_intersect_key($arrKey, array_flip($arrWhite));
+            $arrKey = array_intersect_key(
+                $arrKey,
+                array_flip($arrWhite)
+            );
         } elseif (!empty($arrBlack)) {
-            $arrKey = array_diff_key($arrKey, array_flip($arrBlack));
+            $arrKey = array_diff_key(
+                $arrKey,
+                array_flip($arrBlack)
+            );
         }
 
         return $arrKey;
@@ -2201,6 +2261,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $this->arrDate = $arrDate;
 
         return $this;
@@ -2218,7 +2279,9 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if ($this->checkTControl()) {
             return $this;
         }
+
         $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
+
         $this->arrDate = array_merge($this->arrDate, $mixProp);
 
         return $this;
@@ -2292,7 +2355,9 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     public function hasConversion($strKey, $mixType = null)
     {
         if (array_key_exists($strKey, $this->getConversion())) {
-            return $mixType ? in_array($this->getConversionType($strKey), (array) $mixType, true) : true;
+            return $mixType ?
+                in_array($this->getConversionType($strKey), (array) $mixType, true) :
+                true;
         }
 
         return false;
@@ -2342,7 +2407,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function fromDateTime($mixValue)
     {
-        return $this->asDateTime($mixValue)->format($this->getDateFormat());
+        return $this->asDateTime($mixValue)->
+        format($this->getDateFormat());
     }
 
     /**
@@ -2353,7 +2419,12 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     public function getKeyConditionForQuery()
     {
         if (null === (($arrPrimaryData = $this->primaryKey()))) {
-            throw new Exception(sprintf('Model %s has no primary key data', $this->getCalledClass()));
+            throw new Exception(
+                sprintf(
+                    'Model %s has no primary key data',
+                    $this->getCalledClass()
+                )
+            );
         }
 
         if (!is_array($arrPrimaryData)) {
@@ -2400,7 +2471,14 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function getClassCollectionQuerySource()
     {
-        return $this->getQuery()->asClass($this->getCalledClass())->asCollection()->registerCallSelect(new select($this));
+        return $this->getQuery()->
+        asClass($this->getCalledClass())->
+
+        asCollection()->
+
+        registerCallSelect(
+            new Select($this)
+        );
     }
 
     /**
@@ -2549,9 +2627,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function createReal()
     {
-        $this->parseAutoPost('create');
-        $this->parseAutoFill('create');
-
         $arrPropKey = $this->normalizeBlackAndWhite(
             array_flip($this->arrCreatedProp),
             'fill'
@@ -2621,9 +2696,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function updateReal()
     {
-        $this->parseAutoPost('update');
-        $this->parseAutoFill('update');
-
         $arrPropKey = $this->normalizeBlackAndWhite(
             array_flip($this->arrChangedProp),
             'fill'
@@ -2725,45 +2797,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 自动提交表单数据.
-     *
-     * @param string $strType
-     */
-    protected function parseAutoPost($strType = 'create')
-    {
-        if (false === $this->getAutoPost($strType) || empty($_POST)) {
-            return;
-        }
-
-        $arrPost = $this->whiteAndBlack(array_keys($_POST), $this->arrPostWhite, $this->arrPostBlack);
-        if ($arrPost) {
-            if ('create' === $strType) {
-                $arrPost = $this->whiteAndBlack($arrPost, $this->arrCreatePostWhite, $this->arrCreatePostBlack);
-            } else {
-                $arrPost = $this->whiteAndBlack($arrPost, $this->arrUpdatePostWhite, $this->arrUpdatePostBlack);
-            }
-        }
-
-        if ($arrPost) {
-            $arrValue = [];
-            foreach ($_POST as $strKey => $mixValue) {
-                if (in_array($strKey, $arrPost, true)) {
-                    $arrTemp[$strKey] = $mixValue;
-                }
-            }
-
-            if ($arrValue) {
-                foreach ($this->meta()->fieldsProps($arrValue) as $strField => $mixValue) {
-                    if (!in_array($strField, $this->arrChangedProp, true)) {
-                        $this->arrProp[$strField] = trim($mixValue);
-                        $this->arrChangedProp[] = $strField;
-                    }
-                }
-            }
-        }
-    }
-
-    /**
      * 自动填充.
      *
      * @param string $strType
@@ -2775,9 +2808,15 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         if ('create' === $strType) {
-            $arrFill = array_merge($this->arrAutoFill, $this->arrCreateFill);
+            $arrFill = array_merge(
+                $this->arrAutoFill,
+                $this->arrCreateFill
+            );
         } else {
-            $arrFill = array_merge($this->arrAutoFill, $this->arrUpdateFill);
+            $arrFill = array_merge(
+                $this->arrAutoFill,
+                $this->arrUpdateFill
+            );
         }
 
         if (!$arrFill) {
@@ -2789,6 +2828,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
                 $mixKey = $mixValue;
                 $mixValue = null;
             }
+
             $this->forceProp($mixKey, $mixValue);
         }
     }
@@ -2803,8 +2843,14 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected function parseDataFromRelation($strPropName)
     {
         $oRelation = $this->{$strPropName}();
+
         if (!($oRelation instanceof Relation)) {
-            throw new Exception(sprintf('Relation prop must return a type of %s', 'Leevel\Database\Ddd\Relation\Relation'));
+            throw new Exception(
+                sprintf(
+                    'Relation prop must return a type of %s',
+                    'Leevel\Database\Ddd\Relation\Relation'
+                )
+            );
         }
 
         return $this->arrRelationProp[$strPropName] = $oRelation->sourceQuery();
@@ -3075,7 +3121,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         if ($mixValue instanceof DateTimeInterface) {
-            return new Carbon($mixValue->format('Y-m-d H:i:s.u'), $mixValue->getTimeZone());
+            return new Carbon(
+                $mixValue->format('Y-m-d H:i:s.u'),
+                $mixValue->getTimeZone()
+            );
         }
 
         if (is_numeric($mixValue)) {
@@ -3083,10 +3132,14 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         if (preg_match('/^(\d{4})-(\d{1,2})-(\d{1,2})$/', $mixValue)) {
-            return Carbon::createFromFormat('Y-m-d', $mixValue)->startOfDay();
+            return Carbon::createFromFormat('Y-m-d', $mixValue)->
+            startOfDay();
         }
 
-        return Carbon::createFromFormat($this->getDateFormat(), $mixValue);
+        return Carbon::createFromFormat(
+            $this->getDateFormat(),
+            $mixValue
+        );
     }
 
     /**
