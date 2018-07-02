@@ -18,12 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Ddd;
+namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Model as Entity;
 
 /**
- * TestConstructBlackEntity.
+ * TestFillBlackEntity.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,7 +31,7 @@ use Leevel\Database\Ddd\Model as Entity;
  *
  * @version 1.0
  */
-class TestConstructBlackEntity extends Entity
+class TestFillBlackEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -48,13 +48,12 @@ class TestConstructBlackEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'name'            => 'id', // database
-            'type'            => 'int', // database
-            'length'          => 11, // database
-            'primary_key'     => true, // database
-            'auto_increment'  => true, // database
-            'default'         => null, // database
-            'construct_black' => true,
+            'name'           => 'id', // database
+            'type'           => 'int', // database
+            'length'         => 11, // database
+            'primary_key'    => true, // database
+            'auto_increment' => true, // database
+            'default'        => null, // database
         ],
         'name' => [
             'name'           => 'name',
@@ -63,9 +62,20 @@ class TestConstructBlackEntity extends Entity
             'primary_key'    => false,
             'auto_increment' => false,
             'default'        => null,
+            'fill_black'     => true,
+        ],
+        'description' => [
+            'name'           => 'description',
+            'type'           => 'varchar',
+            'length'         => 225,
+            'primary_key'    => false,
+            'auto_increment' => false,
+            'default'        => null,
         ],
     ];
     protected $id;
 
     protected $name;
+
+    protected $description;
 }

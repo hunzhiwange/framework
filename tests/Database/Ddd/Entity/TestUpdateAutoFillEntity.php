@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Ddd;
+namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Model as Entity;
 

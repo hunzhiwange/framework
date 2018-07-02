@@ -18,20 +18,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Ddd;
+namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Model as Entity;
 
 /**
- * TestConstructWhiteEntity.
+ * TestCreateFillWhiteEntity.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.06.30
+ * @since 2018.07.01
  *
  * @version 1.0
  */
-class TestConstructWhiteEntity extends Entity
+class TestCreateFillWhiteEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -48,18 +48,26 @@ class TestConstructWhiteEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'name'            => 'id', // database
-            'type'            => 'int', // database
-            'length'          => 11, // database
-            'primary_key'     => true, // database
-            'auto_increment'  => true, // database
-            'default'         => null, // database
-            'construct_white' => true,
+            'name'           => 'id', // database
+            'type'           => 'int', // database
+            'length'         => 11, // database
+            'primary_key'    => true, // database
+            'auto_increment' => true, // database
+            'default'        => null, // database
         ],
         'name' => [
-            'name'           => 'name',
+            'name'              => 'name',
+            'type'              => 'varchar',
+            'length'            => 45,
+            'primary_key'       => false,
+            'auto_increment'    => false,
+            'default'           => null,
+            'create_fill_white' => true,
+        ],
+        'description' => [
+            'name'           => 'description',
             'type'           => 'varchar',
-            'length'         => 45,
+            'length'         => 225,
             'primary_key'    => false,
             'auto_increment' => false,
             'default'        => null,
@@ -68,4 +76,6 @@ class TestConstructWhiteEntity extends Entity
     protected $id;
 
     protected $name;
+
+    protected $description;
 }
