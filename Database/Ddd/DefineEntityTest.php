@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd;
 
 use Leevel\Database\Ddd\Model as Entity;
+use Tests\Database\Ddd\Entity\TestEntity;
 use Tests\TestCase;
 
 /**

@@ -22,12 +22,12 @@ namespace Tests\Database\Ddd\Update;
 
 use Closure;
 use Leevel\Database\Ddd\Model as Entity;
-use Tests\Database\Ddd\TestEntity;
-use Tests\Database\Ddd\TestFillBlackEntity;
-use Tests\Database\Ddd\TestFillWhiteEntity;
-use Tests\Database\Ddd\TestReadonlyUpdateEntity;
-use Tests\Database\Ddd\TestUpdateAutoFillEntity;
-use Tests\Database\Ddd\TestUpdateFillWhiteEntity;
+use Tests\Database\Ddd\Entity\TestEntity;
+use Tests\Database\Ddd\Entity\TestFillBlackEntity;
+use Tests\Database\Ddd\Entity\TestFillWhiteEntity;
+use Tests\Database\Ddd\Entity\TestReadonlyUpdateEntity;
+use Tests\Database\Ddd\Entity\TestUpdateAutoFillEntity;
+use Tests\Database\Ddd\Entity\TestUpdateFillWhiteEntity;
 use Tests\TestCase;
 
 /**
@@ -230,5 +230,28 @@ eot;
                 $entity->getFlushData()
             )
         );
+    }
+
+    public function testSetAutoFile()
+    {
+        $entity = new TestUpdateAutoFillEntity();
+
+        $entity->id = 5;
+
+        $entity->autoFill(false);
+
+        $entity->save();
+
+        $this->assertNull($entity->getFlushData());
+
+        $entity = new TestUpdateAutoFillEntity();
+
+        $entity->id = 5;
+
+        $entity->UpdateFill(false);
+
+        $entity->save();
+
+        $this->assertNull($entity->getFlushData());
     }
 }

@@ -18,20 +18,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Ddd;
+namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Model as Entity;
 
 /**
- * TestReadonlyUpdateEntity.
+ * TestEntity.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.07.01
+ * @since 2018.06.30
  *
  * @version 1.0
  */
-class TestReadonlyUpdateEntity extends Entity
+class TestEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -62,20 +62,9 @@ class TestReadonlyUpdateEntity extends Entity
             'primary_key'    => false,
             'auto_increment' => false,
             'default'        => null,
-            'readonly'       => true,
-        ],
-        'description' => [
-            'name'           => 'description',
-            'type'           => 'varchar',
-            'length'         => 225,
-            'primary_key'    => false,
-            'auto_increment' => false,
-            'default'        => null,
         ],
     ];
     protected $id;
 
     protected $name;
-
-    protected $description;
 }

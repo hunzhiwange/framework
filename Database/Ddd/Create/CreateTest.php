@@ -22,13 +22,13 @@ namespace Tests\Database\Ddd\Create;
 
 use Closure;
 use Leevel\Database\Ddd\Model as Entity;
-use Tests\Database\Ddd\TestConstructBlackEntity;
-use Tests\Database\Ddd\TestConstructWhiteEntity;
-use Tests\Database\Ddd\TestCreateAutoFillEntity;
-use Tests\Database\Ddd\TestCreateFillWhiteEntity;
-use Tests\Database\Ddd\TestEntity;
-use Tests\Database\Ddd\TestFillBlackEntity;
-use Tests\Database\Ddd\TestFillWhiteEntity;
+use Tests\Database\Ddd\Entity\TestConstructBlackEntity;
+use Tests\Database\Ddd\Entity\TestConstructWhiteEntity;
+use Tests\Database\Ddd\Entity\TestCreateAutoFillEntity;
+use Tests\Database\Ddd\Entity\TestCreateFillWhiteEntity;
+use Tests\Database\Ddd\Entity\TestEntity;
+use Tests\Database\Ddd\Entity\TestFillBlackEntity;
+use Tests\Database\Ddd\Entity\TestFillWhiteEntity;
 use Tests\TestCase;
 
 /**
@@ -208,6 +208,53 @@ array (
     'address' => 'address is set now.',
     'foo_bar' => 'foo bar.',
     'hello' => 'hello field.',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->getFlushData()
+            )
+        );
+    }
+
+    public function testSetAutoFile()
+    {
+        $entity = new TestCreateAutoFillEntity();
+
+        $entity->autoFill(false);
+
+        $entity->save();
+
+        $data = <<<'eot'
+array (
+  0 => 
+  array (
+    'id' => NULL,
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->getFlushData()
+            )
+        );
+
+        $entity = new TestCreateAutoFillEntity();
+
+        $entity->createFill(false);
+
+        $entity->save();
+
+        $data = <<<'eot'
+array (
+  0 => 
+  array (
+    'id' => NULL,
   ),
 )
 eot;

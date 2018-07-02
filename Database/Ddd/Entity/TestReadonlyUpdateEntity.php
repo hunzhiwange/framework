@@ -18,12 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Database\Ddd;
+namespace Tests\Database\Ddd\Entity;
 
 use Leevel\Database\Ddd\Model as Entity;
 
 /**
- * TestUpdateFillWhiteEntity.
+ * TestReadonlyUpdateEntity.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,7 +31,7 @@ use Leevel\Database\Ddd\Model as Entity;
  *
  * @version 1.0
  */
-class TestUpdateFillWhiteEntity extends Entity
+class TestReadonlyUpdateEntity extends Entity
 {
     const TABLE = 'test';
 
@@ -48,22 +48,21 @@ class TestUpdateFillWhiteEntity extends Entity
 
     const STRUCT = [
         'id' => [
-            'name'              => 'id', // database
-            'type'              => 'int', // database
-            'length'            => 11, // database
-            'primary_key'       => true, // database
-            'auto_increment'    => true, // database
-            'default'           => null, // database
-            'update_fill_white' => true,
+            'name'           => 'id', // database
+            'type'           => 'int', // database
+            'length'         => 11, // database
+            'primary_key'    => true, // database
+            'auto_increment' => true, // database
+            'default'        => null, // database
         ],
         'name' => [
-            'name'              => 'name',
-            'type'              => 'varchar',
-            'length'            => 45,
-            'primary_key'       => false,
-            'auto_increment'    => false,
-            'default'           => null,
-            'update_fill_white' => true,
+            'name'           => 'name',
+            'type'           => 'varchar',
+            'length'         => 45,
+            'primary_key'    => false,
+            'auto_increment' => false,
+            'default'        => null,
+            'readonly'       => true,
         ],
         'description' => [
             'name'           => 'description',
