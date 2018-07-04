@@ -776,7 +776,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             );
         }
 
-        $mixValue = $this->meta()->fieldsProp($strProp, $mixValue);
+        //$mixValue = $this->meta()->fieldsProp($strProp, $mixValue);
 
         if (null === $mixValue &&
             ($strCamelize = 'set'.ucfirst($this->normalizeCamelizeProp($strProp)).'Prop') &&
@@ -788,9 +788,27 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             (in_array($strProp, $this->getDate(), true) ||
                 $this->isDateConversion($strProp))) {
             $mixValue = $this->fromDateTime($mixValue);
-        } elseif ($this->isJsonConversion($strProp) &&
-            null !== $mixValue) {
-            $mixValue = $this->asJson($mixValue);
+        } elseif (null !== $mixValue &&
+            $this->isJsonConversion($strProp)) {
+            $needJson = true;
+            $isObject = $this->isObjectConversion($strProp);
+
+            if (is_string($mixValue)) {
+                // 将类似于 ["hello","world"] 字符串先转数组
+                // 便于通过 JSON_FORCE_OBJECT 强制编码为对象 JSON
+                if ($isObject) {
+                    $mixValue = $this->fromJson($mixValue, true);
+                } else {
+                    $needJson = false;
+                }
+            }
+
+            if ($needJson) {
+                $mixValue = $this->asJson(
+                    $mixValue,
+                    $isObject ? JSON_FORCE_OBJECT : 0
+                );
+            }
         }
 
         $this->{$this->normalizeCamelizeProp($strProp)} = $mixValue;
@@ -2378,23 +2396,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function hasConversion($strKey, $mixType = null)
     {
-        if (array_key_exists($strKey, $this->getConversion())) {
+        if (array_key_exists('conversion', static::STRUCT[$strKey])) {
             return $mixType ?
                 in_array($this->getConversionType($strKey), (array) $mixType, true) :
                 true;
         }
 
         return false;
-    }
-
-    /**
-     * 获取转换类型.
-     *
-     * @return array
-     */
-    public function getConversion()
-    {
-        return $this->arrConversion;
     }
 
     /**
@@ -3024,7 +3032,9 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function getConversionType($strKey)
     {
-        return trim(strtolower($this->getConversion()[$strKey]));
+        return strtolower(
+            static::STRUCT[$strKey]['conversion']
+        );
     }
 
     /**
@@ -3039,6 +3049,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         return $this->hasConversion($strProp, [
             'date',
             'datetime',
+            'time',
+            'timestamp',
         ]);
     }
 
@@ -3052,10 +3064,28 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected function isJsonConversion($strProp)
     {
         return $this->hasConversion($strProp, [
+            'arr',
             'array',
             'json',
+            'obj',
             'object',
+            'coll',
             'collection',
+        ]);
+    }
+
+    /**
+     * 属性是否可以转换为对象.
+     *
+     * @param string $strProp
+     *
+     * @return bool
+     */
+    protected function isObjectConversion($strProp)
+    {
+        return $this->hasConversion($strProp, [
+            'obj',
+            'object',
         ]);
     }
 
@@ -3063,12 +3093,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 将变量转为 JSON.
      *
      * @param mixed $mixValue
+     * @param int   $option
      *
      * @return string
      */
-    protected function asJson($mixValue)
+    protected function asJson($mixValue, int $option = 0)
     {
-        return json_encode($mixValue);
+        return json_encode($mixValue, $option);
     }
 
     /**
@@ -3093,21 +3124,26 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             case 'float':
             case 'double':
                 return (float) $mixValue;
+            case 'str':
             case 'string':
                 return (string) $mixValue;
             case 'bool':
             case 'boolean':
                 return (bool) $mixValue;
+            case 'obj':
             case 'object':
                 return $this->fromJson($mixValue, true);
+            case 'arr':
             case 'array':
             case 'json':
                 return $this->fromJson($mixValue);
+            case 'coll':
             case 'collection':
                 return new Collection($this->fromJson($mixValue));
             case 'date':
             case 'datetime':
                 return $this->asDateTime($mixValue);
+            case 'time':
             case 'timestamp':
                 return $this->asTimeStamp($mixValue);
             default:
@@ -3144,7 +3180,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      *
      * @return \Carbon\Carbon
      */
-    protected function asDateTime($mixValue)
+    protected function asDateTime($mixValue): Carbon
     {
         if ($mixValue instanceof Carbon) {
             return $mixValue;
@@ -3181,7 +3217,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     protected function asTimeStamp($mixValue)
     {
-        return $this->asDateTime($mixValue)->getTimestamp();
+        return $this->asDateTime($mixValue)->
+        getTimestamp();
     }
 
     /**
