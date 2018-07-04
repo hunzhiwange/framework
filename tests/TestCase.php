@@ -21,9 +21,12 @@ declare(strict_types=1);
 namespace Tests;
 
 use PHPUnit\Framework\TestCase as TestCases;
+use ReflectionClass;
+use ReflectionMethod;
+use ReflectionProperty;
 
 /**
- * phpunit 测试用例.
+ * phpunit 基础测试类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -33,32 +36,56 @@ use PHPUnit\Framework\TestCase as TestCases;
  */
 abstract class TestCase extends TestCases
 {
-    /**
-     * setUpBeforeClass.
-     */
-    public static function setUpBeforeClass()
+    protected function invokeTestMethod($classObj, string $method, array $args = [])
     {
+        $method = $this->parseTestMethod($classObj, $method);
+
+        if ($args) {
+            return $this->invokeArgs($classObj, $args);
+        }
+
+        return $this->invoke($classObj);
     }
 
-    /**
-     * tearDownAfterClass.
-     */
-    public static function tearDownAfterClass()
+    protected function invokeTestStaticMethod($classOrObject, string $method, array $args = [])
     {
+        $method = $this->parseTestMethod($classOrObject, $method);
+
+        if ($args) {
+            return $this->invokeArgs($classObj, $args);
+        }
+
+        return $this->invoke($classObj);
     }
 
-    /**
-     * setUp.
-     */
-    protected function setUp()
+    protected function getTestProperty($classOrObject, string $prop)
     {
+        return $this->parseTestProperty($classOrObject, $prop)->
+        getValue($classOrObject);
     }
 
-    /**
-     * tearDown.
-     */
-    protected function tearDown()
+    protected function setTestProperty($classOrObject, string $prop, $value)
     {
+        $this->parseTestProperty($classOrObject, $prop)->
+
+        setValue($value);
+    }
+
+    protected function parseTestProperty($classOrObject, string $prop): ReflectionProperty
+    {
+        $reflected = new ReflectionClass($classOrObject);
+        $property = $reflected->getProperty($prop);
+        $property->setAccessible(true);
+
+        return $property;
+    }
+
+    protected function parseTestMethod($classOrObject, string $method): ReflectionMethod
+    {
+        $method = new ReflectionMethod($classOrObject, $method);
+        $method->setAccessible(true);
+
+        return $method;
     }
 
     protected function varExport(array $data)
