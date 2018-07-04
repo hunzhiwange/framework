@@ -61,6 +61,23 @@ eot;
     {
         $entity = $this->makeEntity();
 
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'description' => 'goods name',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
         $entity->append('append1');
 
         $this->assertSame(
@@ -133,6 +150,23 @@ eot;
     {
         $entity = $this->makeEntity();
 
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'description' => 'goods name',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
         $entity->addAppend('append1');
 
         $data = <<<'eot'
@@ -201,6 +235,23 @@ eot;
     public function testWithRemoveAppend()
     {
         $entity = $this->makeEntity();
+
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'description' => 'goods name',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
 
         $entity->addAppend(['append2', 'append1']);
 
@@ -307,6 +358,23 @@ eot;
     {
         $entity = $this->makeEntity();
 
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'description' => 'goods name',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
         $entity->visible('name');
 
         $this->assertSame(
@@ -376,6 +444,23 @@ eot;
     {
         $entity = $this->makeEntity();
 
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'description' => 'goods name',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
         $entity->addVisible('name');
 
         $data = <<<'eot'
@@ -430,6 +515,23 @@ eot;
     public function testWithRemoveVisible()
     {
         $entity = $this->makeEntity();
+
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'description' => 'goods name',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
 
         $entity->addVisible(['name', 'description', 'hello']);
 
@@ -501,6 +603,172 @@ eot;
         $data = <<<'eot'
 array (
   'name' => '实体名字',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+    }
+
+    public function testWithHidden()
+    {
+        $entity = $this->makeEntity();
+
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'description' => 'goods name',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
+        $entity->hidden('description');
+
+        $this->assertSame(
+            ['description'],
+            $entity->getHidden()
+        );
+
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
+        // 第二种方式
+        $entity->hidden('foo_bar', 'hello');
+
+        $this->assertSame(
+            ['foo_bar', 'hello'],
+            $entity->getHidden()
+        );
+
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'description' => 'goods name',
+  'address' => '四川成都',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
+        // 数组方式
+        $entity->hidden(['name', 'address']);
+
+        $this->assertSame(
+            ['name', 'address'],
+            $entity->getHidden()
+        );
+
+        $data = <<<'eot'
+array (
+  'description' => 'goods name',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+    }
+
+    public function testWithAddHidden()
+    {
+        $entity = $this->makeEntity();
+
+        $data = <<<'eot'
+array (
+  'name' => '实体名字',
+  'description' => 'goods name',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
+        $entity->addHidden('name');
+
+        $data = <<<'eot'
+array (
+  'description' => 'goods name',
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
+        $entity->addHidden(['description']);
+
+        $data = <<<'eot'
+array (
+  'address' => '四川成都',
+  'foo_bar' => 'foo',
+  'hello' => 'hello world',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $entity->toArray()
+            )
+        );
+
+        $entity = $this->makeEntity();
+
+        $entity->addHidden('foo_bar', 'name', 'address');
+
+        $data = <<<'eot'
+array (
+  'description' => 'goods name',
   'hello' => 'hello world',
 )
 eot;
