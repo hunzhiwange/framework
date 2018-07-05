@@ -205,25 +205,11 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected $arrRelationProp = [];
 
     /**
-     * 最后插入记录.
-     *
-     * @var mixed
-     */
-    protected $mixLastInsertId;
-
-    /**
-     * 响应记录.
-     *
-     * @var int
-     */
-    protected $intRowCount;
-
-    /**
      * 最后插入记录或者响应记录.
      *
      * @var mixed
      */
-    protected $mixLastInsertIdOrRowCount;
+    protected $lastResult;
 
     /**
      * 是否处于强制改变属性中.
@@ -457,141 +443,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 自动判断快捷方式返回主键或者响应记录.
-     *
-     * @param null|array $arrData
-     *
-     * @return mixed
-     */
-    public function saveResult($arrData = null)
-    {
-        return $this->saveEntry('save', $arrData);
-    }
-
-    /**
-     * 新增快捷方式返回主键.
-     *
-     * @param null|array $arrData
-     *
-     * @return mixed
-     */
-    public function createResult($arrData = null)
-    {
-        return $this->saveEntry('create', $arrData);
-    }
-
-    /**
-     * 更新快捷方式返回响应记录.
-     *
-     * @param null|array $arrData
-     *
-     * @return int
-     */
-    public function updateResult($arrData = null)
-    {
-        return $this->saveEntry('update', $arrData);
-    }
-
-    /**
-     * replace 快捷方式返回主键或者响应记录.
-     *
-     * @param null|array $arrData
-     *
-     * @return mixed
-     */
-    public function replaceResult($arrData = null)
-    {
-        return $this->saveEntry('replace', $arrData);
-    }
-
-    /**
-     * 自动判断快捷方式生成模型.
-     *
-     * @param null|array $arrData
-     *
-     * @return $this
-     */
-    public static function saveNew($arrData = null)
-    {
-        $objModel = new static($arrData);
-        $objModel->save();
-
-        return $objModel;
-    }
-
-    /**
-     * 新增快捷方式生成模型.
-     *
-     * @param null|array $arrData
-     *
-     * @return $this
-     */
-    public static function createNew($arrData = null)
-    {
-        $objModel = new static($arrData);
-        $objModel->create();
-
-        return $objModel;
-    }
-
-    /**
-     * 更新快捷方式生成模型.
-     *
-     * @param null|array $arrData
-     *
-     * @return $this
-     */
-    public static function updateNew($arrData = null)
-    {
-        $objModel = new static($arrData);
-        $objModel->update();
-
-        return $objModel;
-    }
-
-    /**
-     * replace 快捷方式生成模型.
-     *
-     * @param null|array $arrData
-     *
-     * @return $this
-     */
-    public static function replaceNew($arrData = null)
-    {
-        $objModel = new static($arrData);
-        $objModel->replace();
-
-        return $objModel;
-    }
-
-    /**
-     * 返回最后插入记录.
-     *
-     * @return mixed
-     */
-    public function lastInsertId()
-    {
-        return $this->mixLastInsertId;
-    }
-
-    /**
-     * 返回响应记录.
-     *
-     * @return int
-     */
-    public function rowCount()
-    {
-        return $this->intRowCount;
-    }
-
-    /**
      * 返回最后插入记录或者响应记录.
      *
      * @return mixed
      */
-    public function lastInsertIdOrRowCount()
+    public function lastResult()
     {
-        return $this->mixLastInsertIdOrRowCount;
+        return $this->lastResult;
     }
 
     /**
@@ -2602,7 +2460,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * @param string     $sSaveMethod
      * @param null|array $arrData
      *
-     * @return mixed
+     * @return $this
      */
     protected function saveEntry($sSaveMethod = 'save', $arrData = null)
     {
@@ -2619,15 +2477,15 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         // 程序通过内置方法统一实现
         switch (strtolower($sSaveMethod)) {
             case 'create':
-                $mixResult = $this->createReal();
+                $this->createReal();
 
                 break;
             case 'update':
-                $mixResult = $this->updateReal();
+                $this->updateReal();
 
                 break;
             case 'replace':
-                $mixResult = $this->replaceReal();
+                $this->replaceReal();
 
                 break;
             case 'save':
@@ -2636,15 +2494,15 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
                 // 复合主键的情况下，则使用 replace 方式
                 if (is_array($arrPrimaryData)) {
-                    $mixResult = $this->replaceReal();
+                    $this->replaceReal();
                 }
 
                 // 单一主键
                 else {
                     if (empty($arrPrimaryData)) {
-                        $mixResult = $this->createReal();
+                        $this->createReal();
                     } else {
-                        $mixResult = $this->updateReal();
+                        $this->updateReal();
                     }
                 }
 
@@ -2653,7 +2511,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
         $this->runEvent(static::AFTER_SAVE_EVENT);
 
-        return $mixResult;
+        return $this;
     }
 
     /**
@@ -2719,9 +2577,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
                     $arrSaveData
                 );
 
-                return $this->mixLastInsertIdOrRowCount =
-                    $this->mixLastInsertId =
-                    $intLastInsertId;
+                return $this->lastResult = $intLastInsertId;
             }, [$arrSaveData]);
 
         return $this;
@@ -2801,9 +2657,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
                 $this->runEvent(static::AFTER_UPDATE_EVENT);
 
-                return $this->mixLastInsertIdOrRowCount =
-                    $this->intRowCount =
-                    isset($intNum) ? $intNum : 0;
+                return $this->lastResult = isset($intNum) ? $intNum : 0;
             }, [$arrCondition, $arrSaveData]);
 
         return $this;
