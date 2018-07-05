@@ -2396,6 +2396,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function hasConversion($strKey, $mixType = null)
     {
+        if (!isset(static::STRUCT[$strKey])) {
+            return false;
+        }
+
         if (array_key_exists('conversion', static::STRUCT[$strKey])) {
             return $mixType ?
                 in_array($this->getConversionType($strKey), (array) $mixType, true) :
