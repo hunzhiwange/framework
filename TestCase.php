@@ -52,10 +52,10 @@ abstract class TestCase extends TestCases
         $method = $this->parseTestMethod($classOrObject, $method);
 
         if ($args) {
-            return $this->invokeArgs($classObj, $args);
+            return $this->invokeArgs(null, $args);
         }
 
-        return $this->invoke($classObj);
+        return $this->invoke(null);
     }
 
     protected function getTestProperty($classOrObject, string $prop)
