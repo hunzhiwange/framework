@@ -466,6 +466,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         $mixId = (array) $mixId;
 
         $objInstance = new static();
+
         foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
             if ($objModel->delete()) {
                 $intCount++;
@@ -507,10 +508,16 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function flush()
     {
+        if (!$this->flush) {
+            return 0;
+        }
+
         $result = call_user_func_array($this->flush, $this->flushData);
 
         $this->setFlush(null);
         $this->setFlushData(null);
+
+        $this->runEvent(static::AFTER_SAVE_EVENT);
 
         return $result;
     }
@@ -1455,15 +1462,9 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      * 执行模型事件.
      *
      * @param string $strEvent
-     *
-     * @return mixed
      */
     public function runEvent($strEvent)
     {
-        if (!isset(static::$objDispatch)) {
-            return true;
-        }
-
         $this->isSupportEvent($strEvent);
 
         $arrArgs = func_get_args();
@@ -1471,17 +1472,21 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         array_unshift($arrArgs, "model.{$strEvent}:".get_class($this));
         array_unshift($arrArgs, $this);
 
-        call_user_func_array([
-            $this,
-            'runEvent'.ucwords($strEvent),
-        ], $arrArgs);
+        if (method_exists($this, $eventInner = 'runEvent'.ucwords($strEvent))) {
+            call_user_func_array([
+                $this,
+                $eventInner,
+            ], $arrArgs);
+        }
+
+        if (!isset(static::$objDispatch)) {
+            return;
+        }
 
         call_user_func_array([
             static::$objDispatch,
             'run',
         ], $arrArgs);
-
-        unset($arrArgs);
     }
 
     /**
@@ -2398,9 +2403,9 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 返回模型类的 meta 对象
      *
-     * @return Meta
+     * @return \Leevel\Database\Ddd\IMeta
      */
-    public function meta()
+    public function meta(): IMeta
     {
         return Meta::instance(static::TABLE, $this->mixConnect);
     }
@@ -2508,8 +2513,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
                 break;
         }
-
-        $this->runEvent(static::AFTER_SAVE_EVENT);
 
         return $this;
     }
@@ -2767,118 +2770,6 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         return is_array($data) ?
             $data :
             func_get_args();
-    }
-
-    /**
-     * 模型快捷事件 selecting.
-     */
-    protected function runEventSelecting()
-    {
-    }
-
-    /**
-     * 模型快捷事件 selected.
-     */
-    protected function runEventSelected()
-    {
-    }
-
-    /**
-     * 模型快捷事件 finding.
-     */
-    protected function runEventFinding()
-    {
-    }
-
-    /**
-     * 模型快捷事件 finded.
-     */
-    protected function runEventFinded()
-    {
-    }
-
-    /**
-     * 模型快捷事件 saveing.
-     */
-    protected function runEventSaveing()
-    {
-    }
-
-    /**
-     * 模型快捷事件 saved.
-     */
-    protected function runEventSaved()
-    {
-    }
-
-    /**
-     * 模型快捷事件 creating.
-     */
-    protected function runEventCreating()
-    {
-    }
-
-    /**
-     * 模型快捷事件 created.
-     */
-    protected function runEventCreated()
-    {
-    }
-
-    /**
-     * 模型快捷事件 updating.
-     */
-    protected function runEventUpdating()
-    {
-    }
-
-    /**
-     * 模型快捷事件 updated.
-     */
-    protected function runEventUpdated()
-    {
-    }
-
-    /**
-     * 模型快捷事件 deleting.
-     */
-    protected function runEventDeleting()
-    {
-    }
-
-    /**
-     * 模型快捷事件 deleted.
-     */
-    protected function runEventDeleted()
-    {
-    }
-
-    /**
-     * 模型快捷事件 softDeleting.
-     */
-    protected function runEventSoftDeleting()
-    {
-    }
-
-    /**
-     * 模型快捷事件 softDeleted.
-     */
-    protected function runEventSoftDeleted()
-    {
-    }
-
-    /**
-     * 模型快捷事件 softRestoring.
-     */
-    protected function runEventSoftRestoring()
-    {
-    }
-
-    /**
-     * 模型快捷事件 softRestored.
-     */
-    protected function runEventSoftRestored()
-    {
     }
 
     /**

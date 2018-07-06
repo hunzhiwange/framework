@@ -31,7 +31,7 @@ use Leevel\Database\Manager as DatabaseManager;
  *
  * @version 1.0
  */
-class Meta
+class Meta implements IMeta
 {
     /**
      * Database 管理.
