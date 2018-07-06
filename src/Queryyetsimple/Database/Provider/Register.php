@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Provider;
 
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\Meta;
-use Leevel\Database\Ddd\Model;
 use Leevel\Database\Manager;
 use Leevel\Di\Provider;
 use Leevel\Event\IDispatch;
@@ -103,13 +103,13 @@ class Register extends Provider
     }
 
     /**
-     * 设置模型事件.
+     * 设置模型实体事件.
      *
      * @param \Leevel\Event\IDispatch $objEvent
      */
     protected function eventDispatch(IDispatch $objEvent)
     {
-        Model::setEventDispatch($objEvent);
+        Entity::setEventDispatch($objEvent);
     }
 
     /**

@@ -35,7 +35,7 @@ use ReflectionProperty;
 trait TSerialize
 {
     /**
-     * 序列化模型.
+     * 序列化模型实体.
      */
     public function __sleep()
     {
@@ -51,7 +51,7 @@ trait TSerialize
     }
 
     /**
-     * 反序列化模型.
+     * 反序列化模型实体.
      */
     public function __wakeup()
     {

@@ -1,11 +1,13 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
+
 {{header_comment}}
 namespace {{namespace}}\{{controller_dir}}\{{controller}};
 
 {{file_comment}}
 class {{action}}
 {
-
     /**
      * 构造函数
      *

@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IModel;
+use Leevel\Database\Ddd\IEntity;
 
 /**
- * 关联模型 BelongsTo.
+ * 关联模型实体 BelongsTo.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -37,14 +37,14 @@ class BelongsTo extends Relation
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IModel $objTargetModel
-     * @param \Leevel\Database\Ddd\IModel $objSourceModel
-     * @param string                      $strTargetKey
-     * @param string                      $strSourceKey
+     * @param \Leevel\Database\Ddd\IEntity $objTargetEntity
+     * @param \Leevel\Database\Ddd\IEntity $objSourceEntity
+     * @param string                       $strTargetKey
+     * @param string                       $strSourceKey
      */
-    public function __construct(IModel $objTargetModel, IModel $objSourceModel, $strTargetKey, $strSourceKey)
+    public function __construct(IEntity $objTargetEntity, IEntity $objSourceEntity, $strTargetKey, $strSourceKey)
     {
-        parent::__construct($objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey);
+        parent::__construct($objTargetEntity, $objSourceEntity, $strTargetKey, $strSourceKey);
     }
 
     /**
@@ -58,46 +58,46 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 匹配关联查询数据到模型.
+     * 匹配关联查询数据到模型实体.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
-     * @param \Leevel\Collection\Collection $objResult
-     * @param string                        $strRelation
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param \Leevel\Collection\Collection  $objResult
+     * @param string                         $strRelation
      *
      * @return array
      */
-    public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
+    public function matchPreLoad(array $arrEntity, collection $objResult, $strRelation)
     {
         $arrMap = $this->buildMap($objResult);
 
-        foreach ($arrModel as &$objModel) {
-            $mixKey = $objModel->getProp($this->strSourceKey);
+        foreach ($arrEntity as &$objEntity) {
+            $mixKey = $objEntity->getProp($this->strSourceKey);
             if (isset($arrMap[$mixKey])) {
-                $objModel->setRelationProp($strRelation, $arrMap[$mixKey]);
+                $objEntity->setRelationProp($strRelation, $arrMap[$mixKey]);
             }
         }
 
-        return $arrModel;
+        return $arrEntity;
     }
 
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
      */
-    public function preLoadCondition(array $arrModel)
+    public function preLoadCondition(array $arrEntity)
     {
-        $this->objSelect->whereIn($this->strTargetKey, $this->getPreLoadModelValue($arrModel));
+        $this->objSelect->whereIn($this->strTargetKey, $this->getPreLoadEntityValue($arrEntity));
     }
 
     /**
-     * 取回源模型对应数据.
+     * 取回源模型实体对应数据.
      *
      * @return mixed
      */
     public function getSourceValue()
     {
-        return $this->objSourceModel->getProp($this->strSourceKey);
+        return $this->objSourceEntity->getProp($this->strSourceKey);
     }
 
     /**
@@ -111,7 +111,7 @@ class BelongsTo extends Relation
     }
 
     /**
-     * 模型隐射数据.
+     * 模型实体隐射数据.
      *
      * @param \Leevel\Collection\Collection $objResult
      *
@@ -121,26 +121,26 @@ class BelongsTo extends Relation
     {
         $arrMap = [];
 
-        foreach ($objResult as $objResultModel) {
-            $arrMap[$objResultModel->getProp($this->strTargetKey)] = $objResultModel;
+        foreach ($objResult as $objResultEntity) {
+            $arrMap[$objResultEntity->getProp($this->strTargetKey)] = $objResultEntity;
         }
 
         return $arrMap;
     }
 
     /**
-     * 分析预载入模型中对应的源数据.
+     * 分析预载入模型实体中对应的源数据.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
      *
      * @return array
      */
-    protected function getPreLoadModelValue(array $arrModel)
+    protected function getPreLoadEntityValue(array $arrEntity)
     {
         $arr = [];
 
-        foreach ($arrModel as $objModel) {
-            if (null !== ($mixTemp = $objModel->getProp($this->strSourceKey))) {
+        foreach ($arrEntity as $objEntity) {
+            if (null !== ($mixTemp = $objEntity->getProp($this->strSourceKey))) {
                 $arr[] = $mixTemp;
             }
         }

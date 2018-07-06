@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Auth;
 
 use Leevel\Cache\ICache;
-use Leevel\Database\Ddd\IModel;
+use Leevel\Database\Ddd\IEntity;
 use Leevel\Encryption\IEncryption;
 use Leevel\Support\Str;
 use Leevel\Validate\IValidate;
@@ -47,13 +47,13 @@ class Token extends Connect implements IConnect
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IModel    $oUser
+     * @param \Leevel\Database\Ddd\IEntity   $oUser
      * @param \Leevel\Encryption\IEncryption $oEncryption
      * @param \Leevel\Validate\IValidate     $oValidate
      * @param \Leevel\Cache\ICache           $oCache
      * @param array                          $arrOption
      */
-    public function __construct(IModel $oUser, IEncryption $oEncryption, IValidate $oValidate, ICache $oCache, array $arrOption = [])
+    public function __construct(IEntity $oUser, IEncryption $oEncryption, IValidate $oValidate, ICache $oCache, array $arrOption = [])
     {
         $this->oCache = $oCache;
 
@@ -63,7 +63,7 @@ class Token extends Connect implements IConnect
     /**
      * 设置认证名字.
      *
-     * @param \Leevel\Database\Ddd\IModel $oUser
+     * @param \Leevel\Database\Ddd\IEntity $oUser
      */
     protected function setLoginTokenName($oUser)
     {

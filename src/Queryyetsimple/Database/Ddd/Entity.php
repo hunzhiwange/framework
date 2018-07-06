@@ -44,7 +44,7 @@ use Leevel\Support\TMacro;
 use Leevel\Support\TSerialize;
 
 /**
- * 模型 Object Relational Mapping.
+ * 模型实体 Object Relational Mapping.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -52,7 +52,7 @@ use Leevel\Support\TSerialize;
  *
  * @version 1.0
  */
-abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAccess
+abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, ArrayAccess
 {
     use TSerialize;
     use TMacro {
@@ -62,28 +62,28 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     use TControl;
 
     /**
-     * 此模型的连接名称.
+     * 此模型实体的连接名称.
      *
      * @var mixed
      */
     protected $mixConnect;
 
     /**
-     * 模型属性.
+     * 模型实体属性.
      *
      * @var array
      */
     protected $arrProp = [];
 
     /**
-     * 需要保存的模型属性.
+     * 需要保存的模型实体属性.
      *
      * @var array
      */
     protected $arrCreatedProp = [];
 
     /**
-     * 改变的模型属性.
+     * 改变的模型实体属性.
      *
      * @var array
      */
@@ -156,7 +156,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected $append = [];
 
     /**
-     * 模型的日期字段保存格式.
+     * 模型实体的日期字段保存格式.
      *
      * @var string
      */
@@ -184,7 +184,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     protected $objSelectForQuery;
 
     /**
-     * 模型事件处理器.
+     * 模型实体事件处理器.
      *
      * @var \Leevel\Event\IDispatch
      */
@@ -377,7 +377,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 将模型转化为 JSON.
+     * 将模型实体转化为 JSON.
      *
      * @return string
      */
@@ -453,7 +453,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 根据主键 ID 删除模型.
+     * 根据主键 ID 删除模型实体.
      *
      * @param array|int $ids
      * @param mixed     $mixId
@@ -467,8 +467,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
         $objInstance = new static();
 
-        foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
-            if ($objModel->delete()) {
+        foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objEntity) {
+            if ($objEntity->delete()) {
                 $intCount++;
             }
         }
@@ -477,7 +477,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 删除模型.
+     * 删除模型实体.
      *
      * @return int
      */
@@ -486,7 +486,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if (null === $this->getPrimaryKeyName()) {
             throw new Exception(
                 sprintf(
-                    'Model %s has no primary key',
+                    'Entity %s has no primary key',
                     $this->getCalledClass()
                 )
             );
@@ -494,7 +494,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
         $this->runEvent(static::BEFORE_DELETE_EVENT);
 
-        $intNum = $this->deleteModelByKey();
+        $intNum = $this->deleteEntityByKey();
 
         $this->runEvent(static::AFTER_DELETE_EVENT);
 
@@ -563,23 +563,14 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
+     * 获取主键
      * 唯一标识符.
      *
-     * @return mixed
-     */
-    public function id()
-    {
-        return $this->primaryKey();
-    }
-
-    /**
-     * 获取主键.
-     *
-     * @param bool $booUpdateChange
+     * @param bool $update
      *
      * @return mixed
      */
-    public function primaryKey($booUpdateChange = false)
+    public function id(bool $update = false)
     {
         $arrPrimaryData = [];
 
@@ -590,7 +581,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
                 continue;
             }
 
-            if (true === $booUpdateChange) {
+            if (true === $update) {
                 if (!in_array($sPrimaryKey, $this->arrChangedProp, true)) {
                     $arrPrimaryData[$sPrimaryKey] = $this->{$this->normalizeCamelizeProp($sPrimaryKey)};
                 }
@@ -781,7 +772,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if (!$this->hasField($strPropName)) {
             // throw new Exception(
             //     sprintf(
-            //         'Model %s database table %s has no field %s',
+            //         'Entity %s database table %s has no field %s',
             //         $this->getCalledClass(),
             //         $this->getTable(),
             //         $strPropName
@@ -868,7 +859,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 取得模型数据.
+     * 取得模型实体数据.
      *
      * @param string $sPropName
      *
@@ -883,7 +874,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 关联模型数据是否载入.
+     * 关联模型实体数据是否载入.
      *
      * @param string $sPropName
      *
@@ -953,24 +944,24 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 一对一关联.
      *
-     * @param string $strRelatedModel
+     * @param string $strRelatedEntity
      * @param string $strTargetKey
      * @param string $strSourceKey
      *
      * @return \Leevel\Database\Ddd\Relation\HasOne|void
      */
-    public function hasOne($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
+    public function hasOne($strRelatedEntity, $strTargetKey = null, $strSourceKey = null)
     {
-        $objModel = new $strRelatedModel();
+        $objEntity = new $strRelatedEntity();
         $strTargetKey = $strTargetKey ?: $this->getTargetKey();
         $strSourceKey = $strSourceKey ?: $this->getPrimaryKeyNameForQuery();
 
-        if (!$objModel->hasField($strTargetKey)) {
+        if (!$objEntity->hasField($strTargetKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s database table %s has no field %s',
-                    $strRelatedModel,
-                    $objModel->getTable(),
+                    'Entity %s database table %s has no field %s',
+                    $strRelatedEntity,
+                    $objEntity->getTable(),
                     $strTargetKey
                 )
             );
@@ -979,7 +970,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if (!$this->hasField($strSourceKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s database table %s has no field %s',
+                    'Entity %s database table %s has no field %s',
                     $this->getCalledClass(),
                     $this->getTable(),
                     $strSourceKey
@@ -988,7 +979,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         return new HasOne(
-            $objModel,
+            $objEntity,
             $this,
             $strTargetKey,
             $strSourceKey
@@ -998,25 +989,25 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 定义从属关系.
      *
-     * @param string $strRelatedModel
+     * @param string $strRelatedEntity
      * @param string $strTargetKey
      * @param string $strSourceKey
      *
      * @return \Leevel\Database\Ddd\Relation\BelongsTo|void
      */
-    public function belongsTo($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
+    public function belongsTo($strRelatedEntity, $strTargetKey = null, $strSourceKey = null)
     {
-        $objModel = new $strRelatedModel();
+        $objEntity = new $strRelatedEntity();
 
-        $strTargetKey = $strTargetKey ?: $objModel->getPrimaryKeyNameForQuery();
-        $strSourceKey = $strSourceKey ?: $objModel->getTargetKey();
+        $strTargetKey = $strTargetKey ?: $objEntity->getPrimaryKeyNameForQuery();
+        $strSourceKey = $strSourceKey ?: $objEntity->getTargetKey();
 
-        if (!$objModel->hasField($strTargetKey)) {
+        if (!$objEntity->hasField($strTargetKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s has no field %sModel %s database table %s has no field %s',
-                    $strRelatedModel,
-                    $objModel->getTable(),
+                    'Entity %s has no field %sEntity %s database table %s has no field %s',
+                    $strRelatedEntity,
+                    $objEntity->getTable(),
                     $strTargetKey
                 )
             );
@@ -1025,7 +1016,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if (!$this->hasField($strSourceKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s database table %s has no field %s',
+                    'Entity %s database table %s has no field %s',
                     $this->getCalledClass(),
                     $this->getTable(),
                     $strSourceKey
@@ -1034,7 +1025,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         return new BelongsTo(
-            $objModel,
+            $objEntity,
             $this,
             $strTargetKey,
             $strSourceKey
@@ -1044,24 +1035,24 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 一对多关联.
      *
-     * @param string $strRelatedModel
+     * @param string $strRelatedEntity
      * @param string $strTargetKey
      * @param string $strSourceKey
      *
      * @return \Leevel\Database\Ddd\Relation\HasMany|void
      */
-    public function hasMany($strRelatedModel, $strTargetKey = null, $strSourceKey = null)
+    public function hasMany($strRelatedEntity, $strTargetKey = null, $strSourceKey = null)
     {
-        $objModel = new $strRelatedModel();
+        $objEntity = new $strRelatedEntity();
         $strTargetKey = $strTargetKey ?: $this->getTargetKey();
         $strSourceKey = $strSourceKey ?: $this->getPrimaryKeyNameForQuery();
 
-        if (!$objModel->hasField($strTargetKey)) {
+        if (!$objEntity->hasField($strTargetKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s database table %s has no field %s',
-                    $strRelatedModel,
-                    $objModel->getTable(),
+                    'Entity %s database table %s has no field %s',
+                    $strRelatedEntity,
+                    $objEntity->getTable(),
                     $strTargetKey
                 )
             );
@@ -1070,7 +1061,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if (!$this->hasField($strSourceKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s database table %s has no field %s',
+                    'Entity %s database table %s has no field %s',
                     $this->getCalledClass(),
                     $this->getTable(),
                     $strSourceKey
@@ -1079,7 +1070,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         }
 
         return new HasMany(
-            $objModel,
+            $objEntity,
             $this,
             $strTargetKey,
             $strSourceKey
@@ -1089,8 +1080,8 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 多对多关联.
      *
-     * @param string $strRelatedModel
-     * @param string $strMiddleModel
+     * @param string $strRelatedEntity
+     * @param string $strMiddleEntity
      * @param string $strTargetKey
      * @param string $strSourceKey
      * @param string $strMiddleTargetKey
@@ -1098,36 +1089,36 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      *
      * @return \Leevel\Database\Ddd\Relation\HasMany|void
      */
-    public function manyMany($strRelatedModel, $strMiddleModel = null, $strTargetKey = null, $strSourceKey = null, $strMiddleTargetKey = null, $strMiddleSourceKey = null)
+    public function manyMany($strRelatedEntity, $strMiddleEntity = null, $strTargetKey = null, $strSourceKey = null, $strMiddleTargetKey = null, $strMiddleSourceKey = null)
     {
-        $objModel = new $strRelatedModel();
+        $objEntity = new $strRelatedEntity();
 
-        $strMiddleModel = $strMiddleModel ?: $this->getMiddleModel($objModel);
-        $objMiddleModel = new $strMiddleModel();
+        $strMiddleEntity = $strMiddleEntity ?: $this->getMiddleEntity($objEntity);
+        $objMiddleEntity = new $strMiddleEntity();
 
-        $strTargetKey = $strTargetKey ?: $objModel->getPrimaryKeyNameForQuery();
-        $strMiddleTargetKey = $strMiddleTargetKey ?: $objModel->getTargetKey();
+        $strTargetKey = $strTargetKey ?: $objEntity->getPrimaryKeyNameForQuery();
+        $strMiddleTargetKey = $strMiddleTargetKey ?: $objEntity->getTargetKey();
 
         $strSourceKey = $strSourceKey ?: $this->getPrimaryKeyNameForQuery();
         $strMiddleSourceKey = $strMiddleSourceKey ?: $this->getTargetKey();
 
-        if (!$objModel->hasField($strTargetKey)) {
+        if (!$objEntity->hasField($strTargetKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s database table %s has no field %s',
-                    $strRelatedModel,
-                    $objModel->getTable(),
+                    'Entity %s database table %s has no field %s',
+                    $strRelatedEntity,
+                    $objEntity->getTable(),
                     $strTargetKey
                 )
             );
         }
 
-        if (!$objMiddleModel->hasField($strMiddleTargetKey)) {
+        if (!$objMiddleEntity->hasField($strMiddleTargetKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s database table %s has no field %s',
-                    $strMiddleModel,
-                    $objMiddleModel->getTable(),
+                    'Entity %s database table %s has no field %s',
+                    $strMiddleEntity,
+                    $objMiddleEntity->getTable(),
                     $strMiddleTargetKey
                 )
             );
@@ -1136,7 +1127,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if (!$this->hasField($strSourceKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s database table %s has no field %s',
+                    'Entity %s database table %s has no field %s',
                     $this->getCalledClass(),
                     $this->getTable(),
                     $strSourceKey
@@ -1144,21 +1135,21 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             );
         }
 
-        if (!$objMiddleModel->hasField($strMiddleSourceKey)) {
+        if (!$objMiddleEntity->hasField($strMiddleSourceKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s database table %s has no field %s',
-                    $strMiddleModel,
-                    $objMiddleModel->getTable(),
+                    'Entity %s database table %s has no field %s',
+                    $strMiddleEntity,
+                    $objMiddleEntity->getTable(),
                     $strMiddleSourceKey
                 )
             );
         }
 
         return new ManyMany(
-            $objModel,
+            $objEntity,
             $this,
-            $objMiddleModel,
+            $objMiddleEntity,
             $strTargetKey,
             $strSourceKey,
             $strMiddleTargetKey,
@@ -1169,15 +1160,15 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 中间表带命名空间完整名字.
      *
-     * @param \Leevel\Database\Ddd\IModel $objRelatedModel
+     * @param \Leevel\Database\Ddd\IEntity $objRelatedEntity
      *
      * @return string
      */
-    public function getMiddleModel($objRelatedModel)
+    public function getMiddleEntity($objRelatedEntity)
     {
         $arrClass = explode('\\', $this->getCalledClass());
         array_pop($arrClass);
-        $arrClass[] = $this->getMiddleTable($objRelatedModel);
+        $arrClass[] = $this->getMiddleTable($objRelatedEntity);
 
         return implode('\\', $arrClass);
     }
@@ -1185,13 +1176,13 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     /**
      * 取得中间表名字.
      *
-     * @param \Leevel\Database\Ddd\IModel $objRelatedModel
+     * @param \Leevel\Database\Ddd\IEntity $objRelatedEntity
      *
      * @return string
      */
-    public function getMiddleTable($objRelatedModel)
+    public function getMiddleTable($objRelatedEntity)
     {
-        return $this->getTable().'_'.$objRelatedModel->getTable();
+        return $this->getTable().'_'.$objRelatedEntity->getTable();
     }
 
     /**
@@ -1205,7 +1196,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 selecting.
+     * 注册模型实体事件 selecting.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1218,7 +1209,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 selected.
+     * 注册模型实体事件 selected.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1231,7 +1222,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 finding.
+     * 注册模型实体事件 finding.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1244,7 +1235,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 finded.
+     * 注册模型实体事件 finded.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1257,7 +1248,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 saveing.
+     * 注册模型实体事件 saveing.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1270,7 +1261,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 saved.
+     * 注册模型实体事件 saved.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1283,7 +1274,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 creating.
+     * 注册模型实体事件 creating.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1296,7 +1287,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 created.
+     * 注册模型实体事件 created.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1309,7 +1300,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 updating.
+     * 注册模型实体事件 updating.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1322,7 +1313,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 updated.
+     * 注册模型实体事件 updated.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1335,7 +1326,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 deleting.
+     * 注册模型实体事件 deleting.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1348,7 +1339,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 deleted.
+     * 注册模型实体事件 deleted.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1361,7 +1352,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 softDeleting.
+     * 注册模型实体事件 softDeleting.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1374,7 +1365,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 softDeleted.
+     * 注册模型实体事件 softDeleted.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1387,7 +1378,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 softRestoring.
+     * 注册模型实体事件 softRestoring.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1400,7 +1391,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件 softRestored.
+     * 注册模型实体事件 softRestored.
      *
      * @param \leevel\event\observer|string $mixListener
      */
@@ -1413,7 +1404,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 返回模型事件处理器.
+     * 返回模型实体事件处理器.
      *
      * @return \Leevel\Event\IDispatch
      */
@@ -1423,7 +1414,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 设置模型事件处理器.
+     * 设置模型实体事件处理器.
      *
      * @param \Leevel\Event\IDispatch $objDispatch
      */
@@ -1433,7 +1424,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注销模型事件.
+     * 注销模型实体事件.
      */
     public static function unsetEventDispatch()
     {
@@ -1441,7 +1432,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 注册模型事件.
+     * 注册模型实体事件.
      *
      * @param string                        $strEvent
      * @param \leevel\event\observer|string $mixListener
@@ -1452,14 +1443,14 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             static::isSupportEvent($strEvent);
 
             static::$objDispatch->listener(
-                "model.{$strEvent}:".static::class,
+                "entity.{$strEvent}:".static::class,
                 $mixListener
             );
         }
     }
 
     /**
-     * 执行模型事件.
+     * 执行模型实体事件.
      *
      * @param string $strEvent
      */
@@ -1469,7 +1460,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
 
         $arrArgs = func_get_args();
         array_shift($arrArgs);
-        array_unshift($arrArgs, "model.{$strEvent}:".get_class($this));
+        array_unshift($arrArgs, "entity.{$strEvent}:".get_class($this));
         array_unshift($arrArgs, $this);
 
         if (method_exists($this, $eventInner = 'runEvent'.ucwords($strEvent))) {
@@ -1674,7 +1665,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
         if (!is_string($mixKey)) {
             throw new Exception(
                 sprintf(
-                    'Model %s do not have primary key or composite id not supported',
+                    'Entity %s do not have primary key or composite id not supported',
                     $this->getCalledClass()
                 )
             );
@@ -1693,7 +1684,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     {
         $this->getPrimaryKeyNameForQuery();
 
-        return $this->primaryKey();
+        return $this->id();
     }
 
     /**
@@ -2031,7 +2022,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 设置模型时间格式化.
+     * 设置模型实体时间格式化.
      *
      * @param string $strDateFormat
      *
@@ -2273,15 +2264,15 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 创建一个模型集合.
+     * 创建一个模型实体集合.
      *
-     * @param array $arrModel
+     * @param array $arrEntity
      *
      * @return \Leevel\Collection\Collection
      */
-    public function collection(array $arrModel = [])
+    public function collection(array $arrEntity = [])
     {
-        return new Collection($arrModel);
+        return new Collection($arrEntity);
     }
 
     /**
@@ -2317,10 +2308,10 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
      */
     public function getKeyConditionForQuery()
     {
-        if (null === (($arrPrimaryData = $this->primaryKey()))) {
+        if (null === (($arrPrimaryData = $this->id()))) {
             throw new Exception(
                 sprintf(
-                    'Model %s has no primary key data',
+                    'Entity %s has no primary key data',
                     $this->getCalledClass()
                 )
             );
@@ -2401,7 +2392,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 返回模型类的 meta 对象
+     * 返回模型实体类的 meta 对象
      *
      * @return \Leevel\Database\Ddd\IMeta
      */
@@ -2495,7 +2486,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
                 break;
             case 'save':
             default:
-                $arrPrimaryData = $this->primaryKey(/*true*/);
+                $arrPrimaryData = $this->id(/*true*/);
 
                 // 复合主键的情况下，则使用 replace 方式
                 if (is_array($arrPrimaryData)) {
@@ -2552,7 +2543,7 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
             if (null === (($arrPrimaryKey = $this->getPrimaryKeyNameSource()))) {
                 throw new Exception(
                     sprintf(
-                        'Model %s has no primary key', $this->getCalledClass()
+                        'Entity %s has no primary key', $this->getCalledClass()
                     )
                 );
             }
@@ -2993,11 +2984,11 @@ abstract class Model implements IModel, IArray, IJson, JsonSerializable, ArrayAc
     }
 
     /**
-     * 删除模型.
+     * 删除模型实体.
      *
      * @return int
      */
-    protected function deleteModelByKey()
+    protected function deleteEntityByKey()
     {
         return $this->getQuery()->
         where($this->getKeyConditionForQuery())->

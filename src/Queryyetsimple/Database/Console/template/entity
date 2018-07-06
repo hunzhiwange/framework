@@ -2,8 +2,9 @@
 {{header_comment}}
 namespace {{namespace}}\Domain\Entity;
 
-{{file_comment}}
-class {{file_name}}
-{
+use Leevel\Database\Ddd\Entity;
 
+{{file_comment}}
+class {{file_name}} extends Entity
+{
 }

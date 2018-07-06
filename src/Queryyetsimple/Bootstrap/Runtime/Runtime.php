@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Bootstrap\Runtime;
 
 use Exception;
-use Leevel\Database\Ddd\ModelNotFoundException;
+use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Di\IContainer;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
@@ -360,7 +360,7 @@ abstract class Runtime implements IRuntime
      */
     protected function prepareException(Exception $e)
     {
-        if ($e instanceof ModelNotFoundException) {
+        if ($e instanceof EntityNotFoundException) {
             $e = new NotFoundHttpException($e->getMessage(), $e);
         }
 

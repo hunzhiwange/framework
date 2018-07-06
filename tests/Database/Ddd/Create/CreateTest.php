@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Tests\Database\Ddd\Create;
 
 use Closure;
-use Leevel\Database\Ddd\Model as Entity;
+use Leevel\Database\Ddd\Entity;
 use Tests\Database\Ddd\Entity\TestConstructBlackEntity;
 use Tests\Database\Ddd\Entity\TestConstructWhiteEntity;
 use Tests\Database\Ddd\Entity\TestCreateAutoFillEntity;

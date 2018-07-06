@@ -25,7 +25,7 @@ use Leevel\Console\Make;
 use Leevel\Console\Option;
 
 /**
- * 生成模型.
+ * 生成模型实体.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -33,21 +33,21 @@ use Leevel\Console\Option;
  *
  * @version 1.0
  */
-class Model extends Make
+class Entity extends Make
 {
     /**
      * 命令名字.
      *
      * @var string
      */
-    protected $name = 'make:model';
+    protected $name = 'make:entity';
 
     /**
      * 命令描述.
      *
      * @var string
      */
-    protected $description = 'Create a new model';
+    protected $description = 'Create a new entity';
 
     /**
      * 命令帮助.
@@ -55,7 +55,7 @@ class Model extends Make
      * @var string
      */
     protected $help = <<<'EOF'
-The <info>%command.name%</info> command to make model with project namespace:
+The <info>%command.name%</info> command to make entity with project namespace:
 
   <info>php %command.full_name% name</info>
 
@@ -79,7 +79,7 @@ EOF;
         // 设置模板路径
         $this->setTemplatePath(
             __DIR__.'/template/'.
-            ($this->option('extend') ? 'model' : 'model_without_extend')
+            ($this->option('extend') ? 'entity' : 'entity_without_extend')
         );
 
         // 保存路径
@@ -90,7 +90,7 @@ EOF;
         );
 
         // 设置类型
-        $this->setMakeType('model');
+        $this->setMakeType('entity');
 
         // 执行
         parent::handle();
@@ -107,7 +107,7 @@ EOF;
             [
                 'name',
                 Argument::REQUIRED,
-                'This is the model name.',
+                'This is the entity name.',
             ],
         ];
     }
@@ -131,7 +131,7 @@ EOF;
                 'extend',
                 null,
                 option::VALUE_OPTIONAL,
-                'Model with the code that make it extends Leevel\Database\Ddd\Model',
+                'Entity with the code that make it extends Leevel\Database\Ddd\Entity',
                 1,
             ],
         ];

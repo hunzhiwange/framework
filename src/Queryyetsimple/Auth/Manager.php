@@ -91,7 +91,7 @@ class Manager extends Managers
     {
         $options = array_merge($this->getOption('session', $options));
 
-        return new session($this->container[$options['model']], $this->container['encryption'], $this->container['validate'], $this->container['session'], $options);
+        return new session($this->container[$options['entity']], $this->container['encryption'], $this->container['validate'], $this->container['session'], $options);
     }
 
     /**

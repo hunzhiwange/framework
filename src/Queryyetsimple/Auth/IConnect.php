@@ -52,7 +52,7 @@ interface IConnect
      * @param string $sPassword
      * @param mixed  $mixLoginTime
      *
-     * @return \Leevel\Database\Ddd\IModel|void
+     * @return \Leevel\Database\Ddd\IEntity|void
      */
     public function login($mixName, $sPassword, $mixLoginTime = null);
 
@@ -62,7 +62,7 @@ interface IConnect
      * @param mixed  $mixName
      * @param string $sPassword
      *
-     * @return \Leevel\Database\Ddd\IModel|void
+     * @return \Leevel\Database\Ddd\IEntity|void
      */
     public function onlyValidate($mixName, $sPassword);
 

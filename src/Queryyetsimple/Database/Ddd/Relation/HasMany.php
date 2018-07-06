@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IModel;
+use Leevel\Database\Ddd\IEntity;
 
 /**
- * 关联模型 HasMany.
+ * 关联模型实体 HasMany.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -37,14 +37,14 @@ class HasMany extends Relation
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IModel $objTargetModel
-     * @param \Leevel\Database\Ddd\IModel $objSourceModel
-     * @param string                      $strTargetKey
-     * @param string                      $strSourceKey
+     * @param \Leevel\Database\Ddd\IEntity $objTargetEntity
+     * @param \Leevel\Database\Ddd\IEntity $objSourceEntity
+     * @param string                       $strTargetKey
+     * @param string                       $strSourceKey
      */
-    public function __construct(IModel $objTargetModel, IModel $objSourceModel, $strTargetKey, $strSourceKey)
+    public function __construct(IEntity $objTargetEntity, IEntity $objSourceEntity, $strTargetKey, $strSourceKey)
     {
-        parent::__construct($objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey);
+        parent::__construct($objTargetEntity, $objSourceEntity, $strTargetKey, $strSourceKey);
     }
 
     /**
@@ -61,35 +61,35 @@ class HasMany extends Relation
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
      */
-    public function preLoadCondition(array $arrModel)
+    public function preLoadCondition(array $arrEntity)
     {
-        $this->objSelect->whereIn($this->strTargetKey, $this->getModelKey($arrModel, $this->strSourceKey));
+        $this->objSelect->whereIn($this->strTargetKey, $this->getEntityKey($arrEntity, $this->strSourceKey));
     }
 
     /**
-     * 匹配关联查询数据到模型 HasMany.
+     * 匹配关联查询数据到模型实体 HasMany.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
-     * @param \Leevel\Collection\Collection $objResult
-     * @param string                        $strRelation
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param \Leevel\Collection\Collection  $objResult
+     * @param string                         $strRelation
      *
      * @return array
      */
-    public function matchPreLoad(array $arrModel, Collection $objResult, $strRelation)
+    public function matchPreLoad(array $arrEntity, Collection $objResult, $strRelation)
     {
-        return $this->matchPreLoadOneOrMany($arrModel, $objResult, $strRelation, 'many');
+        return $this->matchPreLoadOneOrMany($arrEntity, $objResult, $strRelation, 'many');
     }
 
     /**
-     * 取回源模型对应数据.
+     * 取回源模型实体对应数据.
      *
      * @return mixed
      */
     public function getSourceValue()
     {
-        return $this->objSourceModel->getProp($this->strSourceKey);
+        return $this->objSourceEntity->getProp($this->strSourceKey);
     }
 
     /**
@@ -103,53 +103,53 @@ class HasMany extends Relation
     }
 
     /**
-     * 保存模型.
+     * 保存模型实体.
      *
-     * @param \Leevel\Database\Ddd\IModel $objModel
+     * @param \Leevel\Database\Ddd\IEntity $objEntity
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function save(IModel $objModel)
+    public function save(IEntity $objEntity)
     {
-        $this->withSourceKeyValue($objModel);
+        $this->withSourceKeyValue($objEntity);
 
-        return $objModel->save();
+        return $objEntity->save();
     }
 
     /**
-     * 批量保存模型.
+     * 批量保存模型实体.
      *
-     * @param array|\Leevel\Collection\Collection $mixModel
+     * @param array|\Leevel\Collection\Collection $mixEntity
      *
      * @return array|\Leevel\Collection\Collection
      */
-    public function saveMany($mixModel)
+    public function saveMany($mixEntity)
     {
-        foreach ($mixModel as $objModel) {
-            $this->save($objModel);
+        foreach ($mixEntity as $objEntity) {
+            $this->save($objEntity);
         }
 
-        return $mixModel;
+        return $mixEntity;
     }
 
     /**
-     * 创建模型实例.
+     * 创建模型实体实例.
      *
      * @param array $arrProp
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function create(array $arrProp)
     {
-        $objModel = $this->objTargetModel->newInstance($arrProp);
-        $this->withSourceKeyValue($objModel);
-        $objModel->save();
+        $objEntity = $this->objTargetEntity->newInstance($arrProp);
+        $this->withSourceKeyValue($objEntity);
+        $objEntity->save();
 
-        return $objModel;
+        return $objEntity;
     }
 
     /**
-     * 批量创建模型实例.
+     * 批量创建模型实体实例.
      *
      * @param array $arrProps
      *
@@ -157,16 +157,16 @@ class HasMany extends Relation
      */
     public function createMany(array $arrProps)
     {
-        $arrModels = [];
+        $arrEntitys = [];
         foreach ($arrProps as $arrProp) {
-            $arrModels[] = $this->create($arrProp);
+            $arrEntitys[] = $this->create($arrProp);
         }
 
-        return $arrModels;
+        return $arrEntitys;
     }
 
     /**
-     * 更新关联模型的数据.
+     * 更新关联模型实体的数据.
      *
      * @param array $arrProp
      *
@@ -184,46 +184,46 @@ class HasMany extends Relation
      */
     public function getSourceKeyValue()
     {
-        return $this->objSourceModel->getProp($this->strSourceKey);
+        return $this->objSourceEntity->getProp($this->strSourceKey);
     }
 
     /**
-     * 模型添加源字段数据.
+     * 模型实体添加源字段数据.
      *
-     * @param \Leevel\Database\Ddd\IModel $objModel
+     * @param \Leevel\Database\Ddd\IEntity $objEntity
      */
-    protected function withSourceKeyValue(IModel $objModel)
+    protected function withSourceKeyValue(IEntity $objEntity)
     {
-        $objModel->forceProp($this->strTargetKey, $this->getSourceKeyValue());
+        $objEntity->forceProp($this->strTargetKey, $this->getSourceKeyValue());
     }
 
     /**
      * 匹配预载入数据.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
-     * @param \Leevel\Collection\Collection $objResult
-     * @param string                        $strRelation
-     * @param string                        $strType
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param \Leevel\Collection\Collection  $objResult
+     * @param string                         $strRelation
+     * @param string                         $strType
      *
      * @return array
      */
-    protected function matchPreLoadOneOrMany(array $arrModel, collection $objResult, $strRelation, $strType)
+    protected function matchPreLoadOneOrMany(array $arrEntity, collection $objResult, $strRelation, $strType)
     {
         $arrMap = $this->buildMap($objResult);
 
-        foreach ($arrModel as &$objModel) {
-            $mixKey = $objModel->getProp($this->strSourceKey);
+        foreach ($arrEntity as &$objEntity) {
+            $mixKey = $objEntity->getProp($this->strSourceKey);
 
             if (isset($arrMap[$mixKey])) {
-                $objModel->setRelationProp($strRelation, $this->getRelationValue($arrMap, $mixKey, $strType));
+                $objEntity->setRelationProp($strRelation, $this->getRelationValue($arrMap, $mixKey, $strType));
             }
         }
 
-        return $arrModel;
+        return $arrEntity;
     }
 
     /**
-     * 取得关联模型数据.
+     * 取得关联模型实体数据.
      *
      * @param array  $arrMap
      * @param string $strKey
@@ -235,11 +235,11 @@ class HasMany extends Relation
     {
         $arrValue = $arrMap[$strKey];
 
-        return 'one' === $strType ? reset($arrValue) : $this->objTargetModel->collection($arrValue);
+        return 'one' === $strType ? reset($arrValue) : $this->objTargetEntity->collection($arrValue);
     }
 
     /**
-     * 模型隐射数据.
+     * 模型实体隐射数据.
      *
      * @param \Leevel\Collection\Collection $objResult
      *
@@ -249,8 +249,8 @@ class HasMany extends Relation
     {
         $arrMap = [];
 
-        foreach ($objResult as $objResultModel) {
-            $arrMap[$objResultModel->getProp($this->strTargetKey)][] = $objResultModel;
+        foreach ($objResult as $objResultEntity) {
+            $arrMap[$objResultEntity->getProp($this->strTargetKey)][] = $objResultEntity;
         }
 
         return $arrMap;

@@ -20,15 +20,48 @@ declare(strict_types=1);
 
 namespace Leevel\Database\Ddd;
 
+use RuntimeException;
+
 /**
- * 聚合根基础接口.
+ * 模型实体未找到异常.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.10.14
+ * @since 2017.07.10
  *
  * @version 1.0
  */
-interface IAggregateRoot extends IEntity
+class EntityNotFoundException extends RuntimeException
 {
+    /**
+     * 模型实体名字.
+     *
+     * @var string
+     */
+    protected $entity;
+
+    /**
+     * 设置模型实体.
+     *
+     * @param string $entity
+     *
+     * @return $this
+     */
+    public function entity($entity)
+    {
+        $this->entity = $entity;
+        $this->message = "Can not find {$entity} data";
+
+        return $this;
+    }
+
+    /**
+     * 取回模型实体.
+     *
+     * @return string
+     */
+    public function getEntity()
+    {
+        return $this->entity;
+    }
 }

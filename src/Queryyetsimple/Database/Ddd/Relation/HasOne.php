@@ -23,7 +23,7 @@ namespace Leevel\Database\Ddd\Relation;
 use Leevel\Collection\Collection;
 
 /**
- * 关联模型 HasOne.
+ * 关联模型实体 HasOne.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -44,16 +44,16 @@ class HasOne extends HasMany
     }
 
     /**
-     * 匹配关联查询数据到模型.
+     * 匹配关联查询数据到模型实体.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
-     * @param \leevel\collection            $objResult
-     * @param string                        $strRelation
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param \leevel\collection             $objResult
+     * @param string                         $strRelation
      *
      * @return array
      */
-    public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
+    public function matchPreLoad(array $arrEntity, collection $objResult, $strRelation)
     {
-        return $this->matchPreLoadOneOrMany($arrModel, $objResult, $strRelation, 'one');
+        return $this->matchPreLoadOneOrMany($arrEntity, $objResult, $strRelation, 'one');
     }
 }

@@ -67,8 +67,8 @@ return [
             // driver
             'driver' => 'session',
 
-            // 模型
-            'model' => common\domain\entity\user::class,
+            // 模型实体
+            'entity' => common\domain\entity\user::class,
 
             // 用户信息持久化名字
             'user_persistence' => 'user_persistence',
@@ -84,8 +84,8 @@ return [
             // driver
             'driver' => 'token',
 
-            // 模型
-            'model' => common\domain\entity\user::class,
+            // 模型实体
+            'entity' => common\domain\entity\user::class,
 
             // 用户信息持久化名字
             'user_persistence' => 'user_persistence',

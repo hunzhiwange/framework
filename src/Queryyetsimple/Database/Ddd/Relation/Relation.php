@@ -23,10 +23,10 @@ namespace Leevel\Database\Ddd\Relation;
 use Closure;
 use Exception;
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IModel;
+use Leevel\Database\Ddd\IEntity;
 
 /**
- * 关联模型基类.
+ * 关联模型实体基类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -44,18 +44,18 @@ abstract class Relation
     protected $objSelect;
 
     /**
-     * 关联目标模型.
+     * 关联目标模型实体.
      *
-     * @var \Leevel\Database\Ddd\IModel
+     * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $objTargetModel;
+    protected $objTargetEntity;
 
     /**
-     * 源模型.
+     * 源模型实体.
      *
-     * @var \Leevel\Database\Ddd\IModel
+     * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $objSourceModel;
+    protected $objSourceEntity;
 
     /**
      * 目标关联字段.
@@ -81,19 +81,19 @@ abstract class Relation
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IModel $objTargetModel
-     * @param \Leevel\Database\Ddd\IModel $objSourceModel
-     * @param string                      $strTargetKey
-     * @param string                      $strSourceKey
+     * @param \Leevel\Database\Ddd\IEntity $objTargetEntity
+     * @param \Leevel\Database\Ddd\IEntity $objSourceEntity
+     * @param string                       $strTargetKey
+     * @param string                       $strSourceKey
      */
-    public function __construct(IModel $objTargetModel, IModel $objSourceModel, $strTargetKey, $strSourceKey)
+    public function __construct(IEntity $objTargetEntity, IEntity $objSourceEntity, $strTargetKey, $strSourceKey)
     {
-        $this->objTargetModel = $objTargetModel;
-        $this->objSourceModel = $objSourceModel;
+        $this->objTargetEntity = $objTargetEntity;
+        $this->objSourceEntity = $objSourceEntity;
         $this->strTargetKey = $strTargetKey;
         $this->strSourceKey = $strSourceKey;
 
-        $this->getSelectFromModel();
+        $this->getSelectFromEntity();
         $this->addRelationCondition();
     }
 
@@ -127,7 +127,7 @@ abstract class Relation
     }
 
     /**
-     * 取得预载入关联模型.
+     * 取得预载入关联模型实体.
      *
      * @return \Leevel\Collection\Collection
      */
@@ -137,23 +137,23 @@ abstract class Relation
     }
 
     /**
-     * 取得关联目标模型.
+     * 取得关联目标模型实体.
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function getTargetModel()
+    public function getTargetEntity()
     {
-        return $this->objTargetModel;
+        return $this->objTargetEntity;
     }
 
     /**
-     * 取得源模型.
+     * 取得源模型实体.
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function getSourceModel()
+    public function getSourceEntity()
     {
-        return $this->objSourceModel;
+        return $this->objSourceEntity;
     }
 
     /**
@@ -206,20 +206,20 @@ abstract class Relation
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
      */
-    abstract public function preLoadCondition(array $arrModel);
+    abstract public function preLoadCondition(array $arrEntity);
 
     /**
-     * 匹配关联查询数据到模型 HasMany.
+     * 匹配关联查询数据到模型实体 HasMany.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
-     * @param \Leevel\Collection\Collection $objResult
-     * @param string                        $strRelation
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param \Leevel\Collection\Collection  $objResult
+     * @param string                         $strRelation
      *
      * @return array
      */
-    abstract public function matchPreLoad(array $arrModel, collection $objResult, $strRelation);
+    abstract public function matchPreLoad(array $arrEntity, collection $objResult, $strRelation);
 
     /**
      * 查询关联对象
@@ -229,27 +229,27 @@ abstract class Relation
     abstract public function sourceQuery();
 
     /**
-     * 返回模型的主键.
+     * 返回模型实体的主键.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
-     * @param string                        $strKey
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param string                         $strKey
      *
      * @return array
      */
-    protected function getModelKey(array $arrModel, $strKey = null)
+    protected function getEntityKey(array $arrEntity, $strKey = null)
     {
-        return array_unique(array_values(array_map(function ($objModel) use ($strKey) {
-            return $strKey ? $objModel->getProp($strKey) : $objModel->getPrimaryKeyForQuery();
-        }, $arrModel)));
+        return array_unique(array_values(array_map(function ($objEntity) use ($strKey) {
+            return $strKey ? $objEntity->getProp($strKey) : $objEntity->getPrimaryKeyForQuery();
+        }, $arrEntity)));
     }
 
     /**
-     * 从模型返回查询.
+     * 从模型实体返回查询.
      *
      * @return \Leevel\Database\Select
      */
-    protected function getSelectFromModel()
+    protected function getSelectFromEntity()
     {
-        $this->objSelect = $this->objTargetModel->getClassCollectionQuery();
+        $this->objSelect = $this->objTargetEntity->getClassCollectionQuery();
     }
 }

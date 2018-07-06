@@ -21,10 +21,10 @@ declare(strict_types=1);
 namespace Leevel\Database\Ddd\Relation;
 
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\IModel;
+use Leevel\Database\Ddd\IEntity;
 
 /**
- * 关联模型 ManyMany.
+ * 关联模型实体 ManyMany.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -42,11 +42,11 @@ class ManyMany extends Relation
     protected $objMiddleSelect;
 
     /**
-     * 中间表模型.
+     * 中间表模型实体.
      *
-     * @var \Leevel\Database\Ddd\IModel
+     * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $objMiddleModel;
+    protected $objMiddleEntity;
 
     /**
      * 目标中间表关联字段.
@@ -72,21 +72,21 @@ class ManyMany extends Relation
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IModel $objTargetModel
-     * @param \Leevel\Database\Ddd\IModel $objSourceModel
-     * @param \Leevel\Database\Ddd\IModel $objMiddleModel
-     * @param string                      $strTargetKey
-     * @param string                      $strSourceKey
-     * @param string                      $strMiddleTargetKey
-     * @param string                      $strMiddleSourceKey
+     * @param \Leevel\Database\Ddd\IEntity $objTargetEntity
+     * @param \Leevel\Database\Ddd\IEntity $objSourceEntity
+     * @param \Leevel\Database\Ddd\IEntity $objMiddleEntity
+     * @param string                       $strTargetKey
+     * @param string                       $strSourceKey
+     * @param string                       $strMiddleTargetKey
+     * @param string                       $strMiddleSourceKey
      */
-    public function __construct(IModel $objTargetModel, IModel $objSourceModel, IModel $objMiddleModel, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey)
+    public function __construct(IEntity $objTargetEntity, IEntity $objSourceEntity, IEntity $objMiddleEntity, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey)
     {
-        $this->objMiddleModel = $objMiddleModel;
+        $this->objMiddleEntity = $objMiddleEntity;
         $this->strMiddleTargetKey = $strMiddleTargetKey;
         $this->strMiddleSourceKey = $strMiddleSourceKey;
 
-        parent::__construct($objTargetModel, $objSourceModel, $strTargetKey, $strSourceKey);
+        parent::__construct($objTargetEntity, $objSourceEntity, $strTargetKey, $strSourceKey);
     }
 
     /**
@@ -95,42 +95,42 @@ class ManyMany extends Relation
     public function addRelationCondition()
     {
         if (static::$booRelationCondition) {
-            $this->objMiddleSelect = $this->objMiddleModel->where($this->strMiddleSourceKey, $this->getSourceValue());
+            $this->objMiddleSelect = $this->objMiddleEntity->where($this->strMiddleSourceKey, $this->getSourceValue());
         }
     }
 
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
      */
-    public function preLoadCondition(array $arrModel)
+    public function preLoadCondition(array $arrEntity)
     {
-        $this->preLoadRelationCondition($arrModel);
+        $this->preLoadRelationCondition($arrEntity);
         $this->parseSelectCondition();
     }
 
     /**
-     * 匹配关联查询数据到模型.
+     * 匹配关联查询数据到模型实体.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
-     * @param \Leevel\Collection\Collection $objResult
-     * @param string                        $strRelation
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param \Leevel\Collection\Collection  $objResult
+     * @param string                         $strRelation
      *
      * @return array
      */
-    public function matchPreLoad(array $arrModel, collection $objResult, $strRelation)
+    public function matchPreLoad(array $arrEntity, collection $objResult, $strRelation)
     {
         $arrMap = $this->buildMap($objResult);
 
-        foreach ($arrModel as &$objModel) {
-            $mixKey = $objModel->getProp($this->strSourceKey);
+        foreach ($arrEntity as &$objEntity) {
+            $mixKey = $objEntity->getProp($this->strSourceKey);
             if (isset($arrMap[$mixKey])) {
-                $objModel->setRelationProp($strRelation, $this->objTargetModel->collection($arrMap[$mixKey]));
+                $objEntity->setRelationProp($strRelation, $this->objTargetEntity->collection($arrMap[$mixKey]));
             }
         }
 
-        return $arrModel;
+        return $arrEntity;
     }
 
     /**
@@ -151,13 +151,13 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取回源模型对应数据.
+     * 取回源模型实体对应数据.
      *
      * @return mixed
      */
     public function getSourceValue()
     {
-        return $this->objSourceModel->getProp($this->strSourceKey);
+        return $this->objSourceEntity->getProp($this->strSourceKey);
     }
 
     /**
@@ -185,13 +185,13 @@ class ManyMany extends Relation
     }
 
     /**
-     * 取得中间表模型.
+     * 取得中间表模型实体.
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function getMiddleModel()
+    public function getMiddleEntity()
     {
-        return $this->objMiddleModel;
+        return $this->objMiddleEntity;
     }
 
     /**
@@ -231,35 +231,35 @@ class ManyMany extends Relation
      */
     public function getSourceKeyValue()
     {
-        return $this->objSourceModel->getProp($this->strSourceKey);
+        return $this->objSourceEntity->getProp($this->strSourceKey);
     }
 
     /**
      * 预载入关联基础查询条件.
      */
-    protected function preLoadRelationCondition(array $arrModel)
+    protected function preLoadRelationCondition(array $arrEntity)
     {
-        $this->objMiddleSelect = $this->objMiddleModel->whereIn($this->strMiddleSourceKey, $this->getPreLoadSourceValue($arrModel));
+        $this->objMiddleSelect = $this->objMiddleEntity->whereIn($this->strMiddleSourceKey, $this->getPreLoadSourceValue($arrEntity));
     }
 
     /**
-     * 取回源模型对应数据.
+     * 取回源模型实体对应数据.
      *
      * @return mixed
      */
-    protected function getPreLoadSourceValue(array $arrModel)
+    protected function getPreLoadSourceValue(array $arrEntity)
     {
         $arr = [];
 
-        foreach ($arrModel as $objSourceModel) {
-            $arr[] = $objSourceModel->{$this->strSourceKey};
+        foreach ($arrEntity as $objSourceEntity) {
+            $arr[] = $objSourceEntity->{$this->strSourceKey};
         }
 
         return $arr;
     }
 
     /**
-     * 模型隐射数据.
+     * 模型实体隐射数据.
      *
      * @param \Leevel\Collection\Collection $objResult
      *
@@ -269,11 +269,11 @@ class ManyMany extends Relation
     {
         $arrMap = [];
 
-        foreach ($objResult as $objResultModel) {
-            $mixKey = $objResultModel->getProp($this->strTargetKey);
+        foreach ($objResult as $objResultEntity) {
+            $mixKey = $objResultEntity->getProp($this->strTargetKey);
             if (isset($this->arrMiddleMap[$mixKey])) {
                 foreach ($this->arrMiddleMap[$mixKey] as $mixValue) {
-                    $arrMap[$mixValue][] = $objResultModel;
+                    $arrMap[$mixValue][] = $objResultEntity;
                 }
             }
         }
@@ -308,9 +308,9 @@ class ManyMany extends Relation
     {
         $arr = $arrTargetId = [];
 
-        foreach ($this->objMiddleSelect->getAll() as $objMiddleModel) {
-            $arr[$objMiddleModel->{$this->strMiddleTargetKey}][] = $objMiddleModel->{$this->strMiddleSourceKey};
-            $arrTargetId[] = $objMiddleModel->{$this->strMiddleTargetKey};
+        foreach ($this->objMiddleSelect->getAll() as $objMiddleEntity) {
+            $arr[$objMiddleEntity->{$this->strMiddleTargetKey}][] = $objMiddleEntity->{$this->strMiddleSourceKey};
+            $arrTargetId[] = $objMiddleEntity->{$this->strMiddleTargetKey};
         }
 
         $this->arrMiddleMap = $arr;

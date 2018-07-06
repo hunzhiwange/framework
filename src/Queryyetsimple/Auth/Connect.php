@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Auth;
 
-use Leevel\Database\Ddd\IModel;
+use Leevel\Database\Ddd\IEntity;
 use Leevel\Encryption\IEncryption;
 use Leevel\Option\TClass;
 use Leevel\Support\Str;
@@ -42,7 +42,7 @@ abstract class Connect
     /**
      * user 对象
      *
-     * @var \Leevel\Database\Ddd\IModel
+     * @var \Leevel\Database\Ddd\IEntity
      */
     protected $oUser;
 
@@ -125,7 +125,7 @@ abstract class Connect
      *
      * @param array $arrOption
      */
-    public function __construct(IModel $oUser, IEncryption $oEncryption, IValidate $oValidate, array $arrOption = [])
+    public function __construct(IEntity $oUser, IEncryption $oEncryption, IValidate $oValidate, array $arrOption = [])
     {
         $this->oUser = $oUser;
         $this->oEncryption = $oEncryption;
@@ -172,7 +172,7 @@ abstract class Connect
      * @param string $sPassword
      * @param mixed  $mixLoginTime
      *
-     * @return \Leevel\Database\Ddd\IModel|void
+     * @return \Leevel\Database\Ddd\IEntity|void
      */
     public function login($mixName, $sPassword, $mixLoginTime = null)
     {
@@ -191,7 +191,7 @@ abstract class Connect
      * @param mixed  $mixName
      * @param string $sPassword
      *
-     * @return \Leevel\Database\Ddd\IModel|void
+     * @return \Leevel\Database\Ddd\IEntity|void
      */
     public function onlyValidate($mixName, $sPassword)
     {
@@ -590,7 +590,7 @@ abstract class Connect
     /**
      * 将用户信息保存至持久化.
      *
-     * @param \Leevel\Database\Ddd\IModel $oUser
+     * @param \Leevel\Database\Ddd\IEntity $oUser
      *
      * @return array
      */
@@ -608,7 +608,7 @@ abstract class Connect
      * @param int    $nUserId
      * @param string $sPassword
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
     protected function getUserFromDatabase($nUserId, $sPassword)
     {

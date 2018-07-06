@@ -23,7 +23,7 @@ namespace Tests\Database\Ddd;
 use Carbon\Carbon;
 use DateTime;
 use Leevel\Collection\Collection;
-use Leevel\Database\Ddd\Model as Entity;
+use Leevel\Database\Ddd\Entity;
 use Tests\Database\Ddd\Entity\TestConversionEntity;
 use Tests\TestCase;
 

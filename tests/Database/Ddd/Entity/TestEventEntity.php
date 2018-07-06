@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Database\Ddd\Entity;
 
+use Leevel\Database\Ddd\Entity;
 use Leevel\Database\Ddd\IMeta;
-use Leevel\Database\Ddd\Model as Entity;
 
 /**
  * TestEventEntity.

@@ -1039,7 +1039,7 @@ class Select
             return;
         }
 
-        // 模型类不存在，直接以数组结果返回
+        // 模型实体类不存在，直接以数组结果返回
         $className = $this->queryParams['as_class'];
 
         if ($className && !class_exists($className)) {

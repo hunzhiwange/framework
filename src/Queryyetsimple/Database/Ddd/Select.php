@@ -29,7 +29,7 @@ use Leevel\Support\Arr;
 use Leevel\Support\Str;
 
 /**
- * 模型查询.
+ * 模型实体查询.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -40,11 +40,11 @@ use Leevel\Support\Str;
 class Select
 {
     /**
-     * 模型.
+     * 模型实体.
      *
-     * @var \Leevel\Database\Ddd\IModel
+     * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $objModel;
+    protected $objEntity;
 
     /**
      * 查询.
@@ -63,11 +63,11 @@ class Select
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IModel $objModel
+     * @param \Leevel\Database\Ddd\IEntity $objEntity
      */
-    public function __construct($objModel)
+    public function __construct($objEntity)
     {
-        $this->objModel = $objModel;
+        $this->objEntity = $objEntity;
     }
 
     /**
@@ -92,15 +92,15 @@ class Select
     }
 
     /**
-     * 获取模型.
+     * 获取模型实体.
      *
-     * @param mixed $objModel
+     * @param mixed $objEntity
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function getModel($objModel)
+    public function getEntity($objEntity)
     {
-        return $this->objModel;
+        return $this->objEntity;
     }
 
     /**
@@ -151,11 +151,12 @@ class Select
      */
     public function preLoadResult($mixResult)
     {
-        list($mixResult, $strType) = $this->conversionToModels($mixResult);
+        list($mixResult, $strType) = $this->conversionToEntitys($mixResult);
 
         if (is_array($mixResult)) {
             $mixResult = $this->preLoadRelation($mixResult);
-            if ('model' === $strType) {
+
+            if ('entity' === $strType) {
                 $mixResult = reset($mixResult);
             } elseif ('collection' === $strType) {
                 $mixResult = new collection($mixResult);
@@ -166,12 +167,12 @@ class Select
     }
 
     /**
-     * 通过主键查找模型.
+     * 通过主键查找模型实体.
      *
      * @param mixed $mixId
      * @param array $arrColumn
      *
-     * @return null|\Leevel\Collection\Collection|\Leevel\Database\Ddd\IModel
+     * @return null|\Leevel\Collection\Collection|\Leevel\Database\Ddd\IEntity
      */
     public function find($mixId, $arrColumn = ['*'])
     {
@@ -179,11 +180,11 @@ class Select
             return $this->findMany($mixId, $arrColumn);
         }
 
-        return $this->objSelect->where($this->objModel->getPrimaryKeyNameForQuery(), '=', $mixId)->setColumns($arrColumn)->getOne();
+        return $this->objSelect->where($this->objEntity->getPrimaryKeyNameForQuery(), '=', $mixId)->setColumns($arrColumn)->getOne();
     }
 
     /**
-     * 根据主键查找模型.
+     * 根据主键查找模型实体.
      *
      * @param array $arrId
      * @param array $arrColumn
@@ -193,19 +194,19 @@ class Select
     public function findMany($arrId, $arrColumn = ['*'])
     {
         if (empty($arrId)) {
-            return $this->objModel->collection();
+            return $this->objEntity->collection();
         }
 
-        return $this->objSelect->whereIn($this->objModel->getPrimaryKeyNameForQuery(), $arrId)->setColumns($arrColumn)->getAll();
+        return $this->objSelect->whereIn($this->objEntity->getPrimaryKeyNameForQuery(), $arrId)->setColumns($arrColumn)->getAll();
     }
 
     /**
-     * 通过主键查找模型，未找到则抛出异常.
+     * 通过主键查找模型实体，未找到则抛出异常.
      *
      * @param mixed $mixId
      * @param array $arrColumn
      *
-     * @return \Leevel\Collection\Collection|\Leevel\Database\Ddd\IModel
+     * @return \Leevel\Collection\Collection|\Leevel\Database\Ddd\IEntity
      */
     public function findOrFail($mixId, $arrColumn = ['*'])
     {
@@ -219,11 +220,11 @@ class Select
             return $mixResult;
         }
 
-        throw (new ModelNotFoundException())->model(get_class($this->objModel));
+        throw (new EntityNotFoundException())->entity(get_class($this->objEntity));
     }
 
     /**
-     * 通过主键查找模型，未找到初始化一个新的模型.
+     * 通过主键查找模型实体，未找到初始化一个新的模型实体.
      *
      * @param mixed  $mixId
      * @param array  $arrColumn
@@ -231,15 +232,15 @@ class Select
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function findOrNew($mixId, $arrColumn = ['*'], $arrData = null, $mixConnect = null, $strTable = null)
     {
-        if (null !== ($objModel = $this->find($mixId, $arrColumn))) {
-            return $objModel;
+        if (null !== ($objEntity = $this->find($mixId, $arrColumn))) {
+            return $objEntity;
         }
 
-        return $this->objModel->newInstance($arrData, $mixConnect ?: $this->objModel->getConnect(), $strTable ?: $this->objModel->getTable());
+        return $this->objEntity->newInstance($arrData, $mixConnect ?: $this->objEntity->getConnect(), $strTable ?: $this->objEntity->getTable());
     }
 
     /**
@@ -248,7 +249,7 @@ class Select
      * @param array $columns
      * @param mixed $arrColumn
      *
-     * @return null|\Leevel\Database\Ddd\IModel|static
+     * @return null|\Leevel\Database\Ddd\IEntity|static
      */
     public function first($arrColumn = ['*'])
     {
@@ -260,62 +261,62 @@ class Select
      *
      * @param array $arrColumn
      *
-     * @return \Leevel\Database\Ddd\IModel|static
+     * @return \Leevel\Database\Ddd\IEntity|static
      */
     public function firstOrFail($arrColumn = ['*'])
     {
-        if (null !== (($objModel = $this->first($arrColumn)))) {
-            return $objModel;
+        if (null !== (($objEntity = $this->first($arrColumn)))) {
+            return $objEntity;
         }
 
-        throw (new ModelNotFoundException())->model(get_class($this->objModel));
+        throw (new EntityNotFoundException())->entity(get_class($this->objEntity));
     }
 
     /**
-     * 查找第一个结果，未找到则初始化一个新的模型.
+     * 查找第一个结果，未找到则初始化一个新的模型实体.
      *
      * @param array  $arrProp
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function firstOrNew(array $arrProp, $mixConnect = null, $strTable = null)
     {
-        if (null !== (($objModel = $this->getFirstByProp($arrProp)))) {
-            return $objModel;
+        if (null !== (($objEntity = $this->getFirstByProp($arrProp)))) {
+            return $objEntity;
         }
 
-        return $this->objModel->newInstance($arrProp, $mixConnect ?: $this->objModel->getConnect(), $strTable ?: $this->objModel->getTable());
+        return $this->objEntity->newInstance($arrProp, $mixConnect ?: $this->objEntity->getConnect(), $strTable ?: $this->objEntity->getTable());
     }
 
     /**
-     * 尝试根据属性查找一个模型，未找到则新建一个模型.
+     * 尝试根据属性查找一个模型实体，未找到则新建一个模型实体.
      *
      * @param array  $arrProp
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function firstOrCreate(array $arrProp, $mixConnect = null, $strTable = null)
     {
-        if (null !== (($objModel = $this->getFirstByProp($arrProp)))) {
-            return $objModel;
+        if (null !== (($objEntity = $this->getFirstByProp($arrProp)))) {
+            return $objEntity;
         }
 
-        return $this->objModel->newInstance($arrProp, $mixConnect ?: $this->objModel->getConnect(), $strTable ?: $this->objModel->getTable())->create();
+        return $this->objEntity->newInstance($arrProp, $mixConnect ?: $this->objEntity->getConnect(), $strTable ?: $this->objEntity->getTable())->create();
     }
 
     /**
-     * 尝试根据属性查找一个模型，未找到则新建或者更新一个模型.
+     * 尝试根据属性查找一个模型实体，未找到则新建或者更新一个模型实体.
      *
      * @param array  $arrProp
      * @param array  $arrData
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function updateOrCreate(array $arrProp, array $arrData = [], $mixConnect = null, $strTable = null)
     {
@@ -323,43 +324,43 @@ class Select
     }
 
     /**
-     * 新建一个模型.
+     * 新建一个模型实体.
      *
      * @param array  $arrProp
      * @param mixed  $mixConnect
      * @param string $strTable
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function onlyCreate(array $arrProp = [], $mixConnect = null, $strTable = null)
     {
-        return $this->objModel->newInstance($arrProp, $mixConnect ?: $this->objModel->getConnect(), $strTable ?: $this->objModel->getTable())->save();
+        return $this->objEntity->newInstance($arrProp, $mixConnect ?: $this->objEntity->getConnect(), $strTable ?: $this->objEntity->getTable())->save();
     }
 
     /**
-     * 从模型中软删除数据.
+     * 从模型实体中软删除数据.
      *
      * @return int
      */
     public function softDelete()
     {
-        $objSelect = $this->objSelect->where($this->objModel->getKeyConditionForQuery());
-        $this->objModel->{$this->getDeletedAtColumn()} = $objTime = $this->objModel->carbon();
-        $this->objModel->addDate($this->getDeletedAtColumn());
+        $objSelect = $this->objSelect->where($this->objEntity->getKeyConditionForQuery());
+        $this->objEntity->{$this->getDeletedAtColumn()} = $objTime = $this->objEntity->carbon();
+        $this->objEntity->addDate($this->getDeletedAtColumn());
 
-        $this->objModel->runEvent(model::BEFORE_SOFT_DELETE_EVENT);
+        $this->objEntity->runEvent(Entity::BEFORE_SOFT_DELETE_EVENT);
 
         $intNum = $objSelect->update([
-            $this->getDeletedAtColumn() => $this->objModel->fromDateTime($objTime),
+            $this->getDeletedAtColumn() => $this->objEntity->fromDateTime($objTime),
         ]);
 
-        $this->objModel->runEvent(model::AFTER_SOFT_DELETE_EVENT);
+        $this->objEntity->runEvent(Entity::AFTER_SOFT_DELETE_EVENT);
 
         return $intNum;
     }
 
     /**
-     * 根据主键 ID 删除模型.
+     * 根据主键 ID 删除模型实体.
      *
      * @param array|int $ids
      * @param mixed     $mixId
@@ -370,9 +371,9 @@ class Select
     {
         $intCount = 0;
         $mixId = (array) $mixId;
-        $objInstance = $this->objModel->newInstance();
-        foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objModel) {
-            if ($objModel->softDelete()) {
+        $objInstance = $this->objEntity->newInstance();
+        foreach ($objInstance->whereIn($objInstance->getPrimaryKeyNameForQuery(), $mixId)->getAll() as $objEntity) {
+            if ($objEntity->softDelete()) {
                 $intCount++;
             }
         }
@@ -381,18 +382,18 @@ class Select
     }
 
     /**
-     * 恢复软删除的模型.
+     * 恢复软删除的模型实体.
      *
      * @return null|bool
      */
     public function softRestore()
     {
-        $this->objModel->runEvent(model::BEFORE_SOFT_RESTORE_EVENT);
+        $this->objEntity->runEvent(Entity::BEFORE_SOFT_RESTORE_EVENT);
 
-        $this->objModel->{$this->getDeletedAtColumn()} = null;
-        $intNum = $this->objModel->update();
+        $this->objEntity->{$this->getDeletedAtColumn()} = null;
+        $intNum = $this->objEntity->update();
 
-        $this->objModel->runEvent(model::AFTER_SOFT_RESTORE_EVENT);
+        $this->objEntity->runEvent(Entity::AFTER_SOFT_RESTORE_EVENT);
 
         return $intNum;
     }
@@ -418,13 +419,13 @@ class Select
     }
 
     /**
-     * 检查模型是否已经被软删除了.
+     * 检查模型实体是否已经被软删除了.
      *
      * @return bool
      */
     public function softDeleted()
     {
-        return null !== $this->objModel->{$this->getDeletedAtColumn()};
+        return null !== $this->objEntity->{$this->getDeletedAtColumn()};
     }
 
     /**
@@ -434,14 +435,14 @@ class Select
      */
     public function getDeletedAtColumn()
     {
-        if (defined(get_class($this->objModel).'::DELETED_AT')) {
-            eval('$strDeleteAt = '.get_class($this->objModel).'::DELETED_AT;');
+        if (defined(get_class($this->objEntity).'::DELETED_AT')) {
+            eval('$strDeleteAt = '.get_class($this->objEntity).'::DELETED_AT;');
         } else {
             $strDeleteAt = 'deleted_at';
         }
 
-        if (!$this->objModel->hasField($strDeleteAt)) {
-            throw new Exception(sprintf('Model %s do not have soft delete field [%s]', get_class($this->objModel), $strDeleteAt));
+        if (!$this->objEntity->hasField($strDeleteAt)) {
+            throw new Exception(sprintf('Entity %s do not have soft delete field [%s]', get_class($this->objEntity), $strDeleteAt));
         }
 
         return $strDeleteAt;
@@ -454,7 +455,7 @@ class Select
      */
     public function getFullDeletedAtColumn()
     {
-        return $this->objModel->getTable().'.'.$this->getDeletedAtColumn();
+        return $this->objEntity->getTable().'.'.$this->getDeletedAtColumn();
     }
 
     /**
@@ -462,7 +463,7 @@ class Select
      *
      * @param mixed $mixScope
      *
-     * @return \Leevel\Database\Ddd\IModel
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function scope($mixScope)
     {
@@ -482,49 +483,49 @@ class Select
                 $objSelect = $mixResultCallback;
             }
             unset($mixResultCallback);
-            $this->objModel->setSelectForQuery($objSelect);
+            $this->objEntity->setSelectForQuery($objSelect);
         } else {
             foreach (Arr::normalize($mixScope) as $strScope) {
                 $strScope = 'scope'.ucwords($strScope);
-                if (method_exists($this->objModel, $strScope)) {
+                if (method_exists($this->objEntity, $strScope)) {
                     $mixResultCallback = call_user_func_array([
-                        $this->objModel,
+                        $this->objEntity,
                         $strScope,
                     ], $arrArgs);
                     if ($mixResultCallback instanceof DatabaseSelect) {
                         $objSelect = $mixResultCallback;
                     }
                     unset($mixResultCallback);
-                    $this->objModel->setSelectForQuery($objSelect);
+                    $this->objEntity->setSelectForQuery($objSelect);
                 }
             }
         }
 
         unset($objSelect, $arrArgs, $mixScope);
 
-        return $this->objModel;
+        return $this->objEntity;
     }
 
     /**
-     * 预载入模型.
+     * 预载入模型实体.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
      *
      * @return array
      */
-    protected function preLoadRelation(array $arrModel)
+    protected function preLoadRelation(array $arrEntity)
     {
         foreach ($this->arrPreLoad as $strName => $calCondition) {
             if (false === strpos($strName, '.')) {
-                $arrModel = $this->loadRelation($arrModel, $strName, $calCondition);
+                $arrEntity = $this->loadRelation($arrEntity, $strName, $calCondition);
             }
         }
 
-        return $arrModel;
+        return $arrEntity;
     }
 
     /**
-     * 取得关联模型.
+     * 取得关联模型实体.
      *
      * @param string $name
      * @param mixed  $strName
@@ -534,7 +535,7 @@ class Select
     protected function getRelation($strName)
     {
         $objRelation = Relation::withoutRelationCondition(function () use ($strName) {
-            return $this->objModel->{$strName}();
+            return $this->objEntity->{$strName}();
         });
 
         $arrNested = $this->nestedRelation($strName);
@@ -629,28 +630,29 @@ class Select
     }
 
     /**
-     * 转换结果到模型类型.
+     * 转换结果到模型实体类型.
      *
      * @param mixed $mixResult
      *
      * @return array
      */
-    protected function conversionToModels($mixResult)
+    protected function conversionToEntitys($mixResult)
     {
         $strType = '';
 
         if ($mixResult instanceof collection) {
             $arr = [];
-            foreach ($mixResult as $objModel) {
-                $arr[] = $objModel;
+            foreach ($mixResult as $objEntity) {
+                $arr[] = $objEntity;
             }
             $mixResult = $arr;
             $strType = 'collection';
-        } elseif ($mixResult instanceof IModel) {
+        } elseif ($mixResult instanceof IEntity) {
             $mixResult = [
                 $mixResult,
             ];
-            $strType = 'model';
+
+            $strType = 'entity';
         }
 
         return [
@@ -660,34 +662,34 @@ class Select
     }
 
     /**
-     * 关联数据设置到模型上.
+     * 关联数据设置到模型实体上.
      *
-     * @param \Leevel\Database\Ddd\IModel[] $arrModel
-     * @param string                        $strName
-     * @param callable                      $calCondition
+     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param string                         $strName
+     * @param callable                       $calCondition
      *
      * @return array
      */
-    protected function loadRelation(array $arrModel, $strName, callable $calCondition)
+    protected function loadRelation(array $arrEntity, $strName, callable $calCondition)
     {
         $objRelation = $this->getRelation($strName);
-        $objRelation->preLoadCondition($arrModel);
+        $objRelation->preLoadCondition($arrEntity);
         call_user_func($calCondition, $objRelation);
 
-        return $objRelation->matchPreLoad($arrModel, $objRelation->getPreLoad(), $strName);
+        return $objRelation->matchPreLoad($arrEntity, $objRelation->getPreLoad(), $strName);
     }
 
     /**
-     * 尝试根据属性查找一个模型.
+     * 尝试根据属性查找一个模型实体.
      *
      * @param array $arrProp
      *
-     * @return null|\Leevel\Database\Ddd\IModel
+     * @return null|\Leevel\Database\Ddd\IEntity
      */
     protected function getFirstByProp(array $arrProp)
     {
-        if (null !== ($objModel = $this->objSelect->where($arrProp)->getOne())) {
-            return $objModel;
+        if (null !== ($objEntity = $this->objSelect->where($arrProp)->getOne())) {
+            return $objEntity;
         }
     }
 }
