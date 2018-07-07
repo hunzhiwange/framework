@@ -36,7 +36,7 @@ if (!function_exists('project')) {
         if (null === $instance) {
             return Project::singletons();
         }
-        
+
         if (($instance = Project::singletons()->make($instance, $args))) {
             return $instance;
         }
@@ -327,10 +327,10 @@ if (!function_exists('__sprintf')) {
      */
     function __sprintf(...$arr)
     {
-        return 0 === count($arr) ? 
-            '' : 
-            (count($arr) > 1 ? 
-                sprintf(...$arr) : 
+        return 0 === count($arr) ?
+            '' :
+            (count($arr) > 1 ?
+                sprintf(...$arr) :
                 $arr[0]);
     }
 }
@@ -365,8 +365,8 @@ if (!function_exists('value')) {
 
         $value = array_shift($arr);
 
-        return !is_string($value) && is_callable($value) ? 
-            call_user_func_array($value, $arr) : 
+        return !is_string($value) && is_callable($value) ?
+            call_user_func_array($value, $arr) :
             $value;
     }
 }
