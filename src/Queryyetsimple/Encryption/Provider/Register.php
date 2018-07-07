@@ -47,7 +47,10 @@ class Register extends Provider
     public function register()
     {
         $this->container->singleton('encryption', function ($project) {
-            return new Encryption($project['option']['auth_key'], $project['option']['auth_expiry']);
+            return new Encryption(
+                $project['option']['auth_key'],
+                $project['option']['auth_expiry']
+            );
         });
     }
 

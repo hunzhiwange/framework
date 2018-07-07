@@ -34,19 +34,19 @@ interface IEncryption
     /**
      * 加密.
      *
-     * @param string $strValue
-     * @param int    $intExpiry
+     * @param string $value
+     * @param int    $expiry
      *
      * @return string
      */
-    public function encrypt($strValue, $intExpiry = null);
+    public function encrypt($value, $expiry = null);
 
     /**
      * 解密.
      *
-     * @param string $strValue
+     * @param string $value
      *
      * @return string
      */
-    public function decrypt($strValue);
+    public function decrypt($value);
 }

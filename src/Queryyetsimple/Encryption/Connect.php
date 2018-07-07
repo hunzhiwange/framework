@@ -36,12 +36,12 @@ abstract class Connect
      *
      * @var string
      */
-    protected $strKey;
+    protected $key;
 
     /**
      * 加密过期时间.
      *
      * @var int
      */
-    protected $intExpiry = 0;
+    protected $expiry = 0;
 }

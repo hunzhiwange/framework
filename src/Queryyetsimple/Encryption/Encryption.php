@@ -34,69 +34,86 @@ class Encryption extends Connect implements IEncryption
     /**
      * 创建一个加密应用.
      *
-     * @param string $strKey
-     * @param int    $intExpiry
+     * @param string $key
+     * @param int    $expiry
      */
-    public function __construct($strKey, $intExpiry = 0)
+    public function __construct($key, $expiry = 0)
     {
-        $this->strKey = (string) $strKey;
-        $this->intExpiry = (int) $intExpiry;
+        $this->key = (string) $key;
+        $this->expiry = (int) $expiry;
     }
 
     /**
      * 加密.
      *
-     * @param string     $strValue
-     * @param null|mixed $intExpiry
+     * @param string     $value
+     * @param null|mixed $expiry
      *
      * @return string
      */
-    public function encrypt($strValue, $intExpiry = null)
+    public function encrypt($value, $expiry = null)
     {
-        return $this->authcode($strValue, false, $this->strKey, null !== $intExpiry ? $intExpiry : $this->intExpiry);
+        return $this->authcode(
+            $value,
+            false,
+            $this->key,
+            null !== $expiry ? $expiry : $this->expiry
+        );
     }
 
     /**
      * 解密.
      *
-     * @param string $strValue
+     * @param string $value
      *
      * @return string
      */
-    public function decrypt($strValue)
+    public function decrypt($value)
     {
-        return $this->authcode($strValue, true, $this->strKey);
+        return $this->authcode(
+            $value,
+            true,
+            $this->key
+        );
     }
 
     /**
      * 来自 Discuz 经典 PHP 加密算法.
      *
-     * @param string $string
+     * @param string $strings
      * @param bool   $operation
      * @param string $key
      * @param number $expiry
      *
      * @return string
      */
-    protected function authcode($string, $operation = true, $key = null, $expiry = 0)
+    protected function authcode($strings, $operation = true, $key = null, $expiry = 0)
     {
-        $ckey_length = 4;
+        $ckeyLength = 4;
 
         $key = md5($key);
         $keya = md5(substr($key, 0, 16));
         $keyb = md5(substr($key, 16, 16));
-        $keyc = $ckey_length ? (true === $operation ? substr($string, 0, $ckey_length) : substr(md5(microtime()), -$ckey_length)) : '';
+
+        $keyc = $ckeyLength ?
+            (true === $operation ? substr($strings, 0, $ckeyLength) :
+            substr(md5(microtime()), -$ckeyLength)) : '';
 
         $cryptkey = $keya.md5($keya.$keyc);
-        $key_length = strlen($cryptkey);
-        $string = true === $operation ? base64_decode(substr($string, $ckey_length), true) : sprintf('%010d', $expiry ? $expiry + time() : 0).substr(md5($string.$keyb), 0, 16).$string;
-        $string_length = strlen($string);
+        $keyLength = strlen($cryptkey);
+        $strings = true === $operation ?
+            base64_decode(substr($strings, $ckeyLength), true) :
+            sprintf('%010d', $expiry ? $expiry + time() : 0).
+                substr(md5($strings.$keyb), 0, 16).
+                $strings;
+        $stringsLength = strlen($strings);
 
         $result = '';
         $box = range(0, 255);
         $rndkey = [];
+
         for ($i = 0; $i <= 255; $i++) {
-            $rndkey[$i] = ord($cryptkey[$i % $key_length]);
+            $rndkey[$i] = ord($cryptkey[$i % $keyLength]);
         }
 
         for ($j = $i = 0; $i < 256; $i++) {
@@ -106,17 +123,19 @@ class Encryption extends Connect implements IEncryption
             $box[$j] = $tmp;
         }
 
-        for ($a = $j = $i = 0; $i < $string_length; $i++) {
+        for ($a = $j = $i = 0; $i < $stringsLength; $i++) {
             $a = ($a + 1) % 256;
             $j = ($j + $box[$a]) % 256;
             $tmp = $box[$a];
             $box[$a] = $box[$j];
             $box[$j] = $tmp;
-            $result .= chr(ord($string[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
+            $result .= chr(ord($strings[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
         }
 
         if (true === $operation) {
-            if ((0 === substr($result, 0, 10) || substr($result, 0, 10) - time() > 0) && substr($result, 10, 16) === substr(md5(substr($result, 26).$keyb), 0, 16)) {
+            if ((0 === substr($result, 0, 10) ||
+                substr($result, 0, 10) - time() > 0) &&
+                substr($result, 10, 16) === substr(md5(substr($result, 26).$keyb), 0, 16)) {
                 return substr($result, 26);
             }
 
