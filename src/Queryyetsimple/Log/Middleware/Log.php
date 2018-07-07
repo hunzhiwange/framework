@@ -63,6 +63,7 @@ class Log
     public function terminate(Closure $next, Request $request, Response $response)
     {
         $this->saveLog();
+
         $next($request, $response);
     }
 

@@ -80,6 +80,7 @@ class Throttler
 
             throw new TooManyRequestsHttpException('Too many attempts.');
         }
+
         $this->header($rateLimiter);
 
         $next($request);
