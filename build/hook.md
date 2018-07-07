@@ -37,7 +37,7 @@ if [ "$FILES" != "" ]
 then 
     echo "Running Code Sniffer..." 
     
-    isCheck = ""
+    isCheck=""
 
     for FILE in $SFILES 
     do 

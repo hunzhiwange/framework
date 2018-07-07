@@ -50,7 +50,7 @@ class Mysql extends Connect implements IConnect
             'Socket',
             'Charset',
         ] as $strMethod) {
-            $arrDsn[] = $this->{'get'.$strMethod}($arrOption);
+            $arrDsn[] = $this->{'parse'.$strMethod}($arrOption);
         }
 
         return implode('', $arrDsn);
@@ -193,7 +193,7 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    protected function getBase($arrOption)
+    protected function parseBase($arrOption)
     {
         return 'mysql:dbname='.$arrOption['name'].';host='.$arrOption['host'];
     }
@@ -205,7 +205,7 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    protected function getPort($arrOption)
+    protected function parsePort($arrOption)
     {
         if (!empty($arrOption['port'])) {
             return ';port='.$arrOption['port'];
@@ -219,7 +219,7 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    protected function getSocket($arrOption)
+    protected function parseSocket($arrOption)
     {
         if (!empty($arrOption['socket'])) {
             return ';unix_socket='.$arrOption['socket'];
@@ -233,7 +233,7 @@ class Mysql extends Connect implements IConnect
      *
      * @return string
      */
-    protected function getCharset($arrOption)
+    protected function parseCharset($arrOption)
     {
         if (!empty($arrOption['charset'])) {
             return ';charset='.$arrOption['charset'];
