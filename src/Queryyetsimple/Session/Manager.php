@@ -52,7 +52,10 @@ class Manager extends Managers
      */
     protected function createConnect($connect)
     {
-        return new Session($connect, $this->getOptionCommon());
+        return new Session(
+            $connect,
+            $this->getOptionCommon()
+        );
     }
 
     /**
@@ -73,7 +76,9 @@ class Manager extends Managers
      */
     protected function makeConnectMemcache($options = [])
     {
-        return new Memcache($this->getOption('memcache', $options));
+        return new Memcache(
+            $this->getOption('memcache', $options)
+        );
     }
 
     /**
@@ -85,7 +90,9 @@ class Manager extends Managers
      */
     protected function makeConnectRedis($options = [])
     {
-        return new Redis($this->getOption('redis', $options));
+        return new Redis(
+            $this->getOption('redis', $options)
+        );
     }
 
     /**
@@ -97,6 +104,8 @@ class Manager extends Managers
      */
     protected function getOptionConnect($connect)
     {
-        return $this->optionFilterNull(parent::getOptionConnect($connect));
+        return $this->optionFilterNull(
+            parent::getOptionConnect($connect)
+        );
     }
 }

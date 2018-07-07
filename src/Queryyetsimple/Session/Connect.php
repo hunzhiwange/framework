@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Option\TClass;
-
 /**
  * aconnect 驱动抽象类.
  *
@@ -33,8 +31,6 @@ use Leevel\Option\TClass;
  */
 abstract class Connect
 {
-    use TClass;
-
     /**
      * 缓存仓储.
      *
@@ -43,18 +39,22 @@ abstract class Connect
     protected $cache;
 
     /**
+     * 配置.
+     *
+     * @var array
+     */
+    protected $option = [];
+
+    /**
      * 构造函数.
      *
      * @param array $option
      */
     public function __construct(array $option = [])
     {
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function close()
     {
         $this->gc(ini_get('session.gc_maxlifetime'));
@@ -63,33 +63,28 @@ abstract class Connect
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function read($sessionid)
     {
-        return $this->cache->get($this->getSessionName($sessionid));
+        return $this->cache->get(
+            $this->getSessionName($sessionid)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function write($sessionid, $sessiondata)
     {
-        $this->cache->set($this->getSessionName($sessionid), $sessiondata);
+        $this->cache->set(
+            $this->getSessionName($sessionid),
+            $sessiondata
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function destroy($sessionid)
     {
-        $this->cache->delele($this->getSessionName($sessionid));
+        $this->cache->delele(
+            $this->getSessionName($sessionid)
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function gc($maxlifetime)
     {
         return true;
