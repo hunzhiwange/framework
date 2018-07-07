@@ -38,27 +38,27 @@ class ValidateException extends Exception
      *
      * @var \Leevel\Validate\IValidate
      */
-    public $objValidate;
+    public $validate;
 
     /**
      * 响应组件.
      *
      * @var null|\Leevel\Http\Response
      */
-    public $objResponse;
+    public $response;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Validate\IValidate $objValidate
-     * @param \Leevel\Http\Response      $objResponse
+     * @param \Leevel\Validate\IValidate $validate
+     * @param \Leevel\Http\Response      $response
      */
-    public function __construct($objValidate, $objResponse = null)
+    public function __construct($validate, $response = null)
     {
         parent::__construct('Validate failed');
 
-        $this->objResponse = $objResponse;
-        $this->objValidate = $objValidate;
+        $this->response = $response;
+        $this->validate = $validate;
     }
 
     /**
@@ -68,7 +68,7 @@ class ValidateException extends Exception
      */
     public function getResponse()
     {
-        return $this->objResponse;
+        return $this->response;
     }
 
     /**
@@ -78,6 +78,6 @@ class ValidateException extends Exception
      */
     public function getValidate()
     {
-        return $this->objValidate;
+        return $this->validate;
     }
 }

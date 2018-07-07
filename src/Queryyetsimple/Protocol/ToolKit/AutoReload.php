@@ -102,13 +102,17 @@ class AutoReload
     public function __construct(int $pid)
     {
         if (!extension_loaded('inotify')) {
-            throw new AutoReloadException('PHP extension inotify is not install.');
+            throw new AutoReloadException(
+                'PHP extension inotify is not install.'
+            );
         }
 
         $this->pid = $pid;
 
         if (false === posix_getsid($pid)) {
-            throw new AutoReloadException(sprintf('Process %d was not found.', $pid));
+            throw new AutoReloadException(
+                sprintf('Process %d was not found.', $pid)
+            );
         }
 
         $this->inotify = inotify_init();
@@ -268,6 +272,7 @@ class AutoReload
 
         // 向主进程发送信号
         $result = posix_kill($this->pid, SIGUSR1);
+
         if ($result) {
             $this->putLog('The swoole reload success.');
         } else {

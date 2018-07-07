@@ -78,14 +78,14 @@ interface IValidate
     /**
      * 初始化验证器.
      *
-     * @param array $arrData
-     * @param array $arrRule
-     * @param array $arrFieldName
-     * @param array $arrMessage
+     * @param array $datas
+     * @param array $rules
+     * @param array $fieldName
+     * @param array $message
      *
      * @return \Leevel\Validate
      */
-    public static function make(array $arrData = [], array $arrRule = [], array $arrFieldName = [], array $arrMessage = []);
+    public static function make(array $datas = [], array $rules = [], array $fieldName = [], array $message = []);
 
     /**
      * 验证是否成功
@@ -118,30 +118,30 @@ interface IValidate
     /**
      * 设置验证数据.
      *
-     * @param array $arrData
+     * @param array $datas
      *
      * @return $this
      */
-    public function data(array $arrData);
+    public function data(array $datas);
 
     /**
      * 添加验证数据.
      *
-     * @param array $arrData
+     * @param array $datas
      *
      * @return $this
      */
-    public function addData(array $arrData);
+    public function addData(array $datas);
 
     /**
      * 设置单个字段验证数据.
      *
-     * @param string $strField
-     * @param mixed  $mixData
+     * @param string $field
+     * @param mixed  $datas
      *
      * @return $this
      */
-    public function fieldData($strField, $mixData);
+    public function fieldData($field, $datas);
 
     /**
      * 返回验证规则.
@@ -153,104 +153,104 @@ interface IValidate
     /**
      * 设置验证规则.
      *
-     * @param array $arrRule
+     * @param array $rules
      *
      * @return $this
      */
-    public function rule(array $arrRule);
+    public function rule(array $rules);
 
     /**
      * 设置验证规则,带上条件.
      *
-     * @param array          $arrRule
+     * @param array          $rules
      * @param callable|mixed $calCallback
-     * @param mixed          $mixCallback
+     * @param mixed          $callbacks
      *
      * @return $this
      */
-    public function ruleIf(array $arrRule, $mixCallback);
+    public function ruleIf(array $rules, $callbacks);
 
     /**
      * 添加验证规则.
      *
-     * @param array $arrRule
+     * @param array $rules
      *
      * @return $this
      */
-    public function addRule(array $arrRule);
+    public function addRule(array $rules);
 
     /**
      * 添加验证规则,带上条件.
      *
-     * @param array          $arrRule
+     * @param array          $rules
      * @param callable|mixed $calCallback
-     * @param mixed          $mixCallback
+     * @param mixed          $callbacks
      *
      * @return $this
      */
-    public function addRuleIf(array $arrRule, $mixCallback);
+    public function addRuleIf(array $rules, $callbacks);
 
     /**
      * 设置单个字段验证规则.
      *
-     * @param string $strField
-     * @param mixed  $mixRule
+     * @param string $field
+     * @param mixed  $rules
      *
      * @return $this
      */
-    public function fieldRule($strField, $mixRule);
+    public function fieldRule($field, $rules);
 
     /**
      * 设置单个字段验证规则,带上条件.
      *
-     * @param string         $strField
-     * @param mixed          $mixRule
+     * @param string         $field
+     * @param mixed          $rules
      * @param callable|mixed $calCallback
-     * @param mixed          $mixCallback
+     * @param mixed          $callbacks
      *
      * @return $this
      */
-    public function fieldRuleIf($strField, $mixRule, $mixCallback);
+    public function fieldRuleIf($field, $rules, $callbacks);
 
     /**
      * 添加单个字段验证规则.
      *
-     * @param string $strField
-     * @param mixed  $mixRule
+     * @param string $field
+     * @param mixed  $rules
      *
      * @return $this
      */
-    public function addFieldRule($strField, $mixRule);
+    public function addFieldRule($field, $rules);
 
     /**
      * 添加单个字段验证规则,带上条件.
      *
-     * @param string         $strField
-     * @param mixed          $mixRule
+     * @param string         $field
+     * @param mixed          $rules
      * @param callable|mixed $calCallback
-     * @param mixed          $mixCallback
+     * @param mixed          $callbacks
      *
      * @return $this
      */
-    public function addFieldRuleIf($strField, $mixRule, $mixCallback);
+    public function addFieldRuleIf($field, $rules, $callbacks);
 
     /**
      * 获取单个字段验证规则.
      *
-     * @param string $strField
+     * @param string $field
      *
      * @return array
      */
-    public function getFieldRule($strField);
+    public function getFieldRule($field);
 
     /**
      * 获取单个字段验证规则，排除掉绕过的规则.
      *
-     * @param string $strField
+     * @param string $field
      *
      * @return array
      */
-    public function getFieldRuleWithoutSkip($strField);
+    public function getFieldRuleWithoutSkip($field);
 
     /**
      * 返回验证消息.
@@ -262,20 +262,20 @@ interface IValidate
     /**
      * 设置验证消息.
      *
-     * @param array $arrMessage
+     * @param array $message
      *
      * @return $this
      */
-    public function message(array $arrMessage);
+    public function message(array $message);
 
     /**
      * 添加验证消息.
      *
-     * @param array $arrMessage
+     * @param array $message
      *
      * @return $this
      */
-    public function addMessage(array $arrMessage);
+    public function addMessage(array $message);
 
     /**
      * 返回字段名字.
@@ -287,49 +287,49 @@ interface IValidate
     /**
      * 设置字段名字.
      *
-     * @param array $arrFieldName
+     * @param array $fieldName
      *
      * @return $this
      */
-    public function fieldName(array $arrFieldName);
+    public function fieldName(array $fieldName);
 
     /**
      * 添加字段名字.
      *
-     * @param array $arrFieldName
+     * @param array $fieldName
      *
      * @return $this
      */
-    public function addFieldName(array $arrFieldName);
+    public function addFieldName(array $fieldName);
 
     /**
      * 设置单个字段验证消息.
      *
-     * @param string $strFieldRule
-     * @param string $strMessage
+     * @param string $fieldRule
+     * @param string $message
      *
      * @return $this
      */
-    public function fieldRuleMessage($strFieldRule, $strMessage);
+    public function fieldRuleMessage($fieldRule, $message);
 
     /**
      * 设置别名.
      *
-     * @param strKey $strAlias
-     * @param strKey $strFor
+     * @param strKey $alias
+     * @param strKey $for
      *
      * @return $this
      */
-    public function alias($strAlias, $strFor);
+    public function alias($alias, $for);
 
     /**
      * 批量设置别名.
      *
-     * @param array $arrAlias
+     * @param array $alias
      *
      * @return $this
      */
-    public function aliasMany(array $arrAlias);
+    public function aliasMany(array $alias);
 
     /**
      * 返回别名.
@@ -341,11 +341,11 @@ interface IValidate
     /**
      * 设置验证后事件.
      *
-     * @param callable|string $mixCallback
+     * @param callable|string $callbacks
      *
      * @return $this
      */
-    public function after($mixCallback);
+    public function after($callbacks);
 
     /**
      * 返回所有验证后事件.
@@ -365,30 +365,30 @@ interface IValidate
      * 注册自定义扩展.
      *
      * @param string          $rule
-     * @param callable|string $mixExtend
-     * @param mixed           $strRule
+     * @param callable|string $extends
+     * @param mixed           $rule
      *
      * @return $this
      */
-    public function extend($strRule, $mixExtend);
+    public function extend($rule, $extends);
 
     /**
      * 批量注册自定义扩展.
      *
-     * @param array $arrExtend
+     * @param array $extends
      *
      * @return $this
      */
-    public function extendMany(array $arrExtend);
+    public function extendMany(array $extends);
 
     /**
      * 设置 ioc 容器.
      *
-     * @param \Leevel\Di\IContainer $objContainer
+     * @param \Leevel\Di\IContainer $container
      *
      * @return $this
      */
-    public function container(IContainer $objContainer);
+    public function container(IContainer $container);
 
     /**
      * 获取需要跳过的验证规则.
