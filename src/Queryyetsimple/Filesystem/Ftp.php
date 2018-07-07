@@ -39,7 +39,7 @@ class Ftp extends Connect implements IConnect
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         // 主机
         'host' => 'ftp.example.com',
 

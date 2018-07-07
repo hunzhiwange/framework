@@ -42,30 +42,31 @@ abstract class Connect
      *
      * @var \League\Flysystem\Filesystem
      */
-    protected $objFilesystem;
+    protected $filesystem;
 
     /**
      * 构造函数.
      *
-     * @param array $arrOption
+     * @param array $option
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
-        $this->options($arrOption);
+        $this->options($option);
+
         $this->filesystem();
     }
 
     /**
      * call.
      *
-     * @param string $sMethod
-     * @param array  $arrArgs
+     * @param string $method
+     * @param array  $args
      *
      * @return mixed
      */
-    public function __call(string $sMethod, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        return $this->objFilesystem->{$sMethod}(...$arrArgs);
+        return $this->filesystem->{$method}(...$args);
     }
 
     /**
@@ -75,7 +76,7 @@ abstract class Connect
      */
     public function getFilesystem()
     {
-        return $this->objFilesystem;
+        return $this->filesystem;
     }
 
     /**
@@ -85,6 +86,9 @@ abstract class Connect
      */
     protected function filesystem()
     {
-        return $this->objFilesystem = new LeagueFilesystem($this->makeConnect(), $this->getOptions());
+        return $this->filesystem = new LeagueFilesystem(
+            $this->makeConnect(),
+            $this->getOptions()
+        );
     }
 }

@@ -39,7 +39,7 @@ class Sftp extends Connect implements IConnect
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         // 主机
         'host' => 'sftp.example.com',
 
@@ -70,7 +70,9 @@ class Sftp extends Connect implements IConnect
     public function makeConnect()
     {
         if (!class_exists('League\Flysystem\Sftp\SftpAdapter')) {
-            throw new InvalidArgumentException('Please run composer require league/flysystem-sftp');
+            throw new InvalidArgumentException(
+                'Please run composer require league/flysystem-sftp'
+            );
         }
 
         return new SftpAdapter($this->getOptions());

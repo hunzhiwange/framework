@@ -40,7 +40,7 @@ class Zip extends Connect implements IConnect
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'path' => '',
     ];
 
@@ -52,11 +52,15 @@ class Zip extends Connect implements IConnect
     public function makeConnect()
     {
         if (empty($this->getOption('path'))) {
-            throw new InvalidArgumentException('The zip requires path option');
+            throw new InvalidArgumentException(
+                'The zip requires path option'
+            );
         }
 
         if (!class_exists('League\Flysystem\ZipArchive\ZipArchiveAdapter')) {
-            throw new InvalidArgumentException('Please run composer require league/flysystem-ziparchive');
+            throw new InvalidArgumentException(
+                'Please run composer require league/flysystem-ziparchive'
+            );
         }
 
         return new ZipArchiveAdapter($this->getOption('path'));

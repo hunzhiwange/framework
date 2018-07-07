@@ -36,28 +36,28 @@ class Filesystem implements IFilesystem
      *
      * @var \Leevel\Filesystem\IConnect
      */
-    protected $oConnect;
+    protected $connect;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Filesystem\IConnect $oConnect
+     * @param \Leevel\Filesystem\IConnect $connect
      */
-    public function __construct(IConnect $oConnect)
+    public function __construct(IConnect $connect)
     {
-        $this->oConnect = $oConnect;
+        $this->connect = $connect;
     }
 
     /**
      * call.
      *
      * @param string $method
-     * @param array  $arrArgs
+     * @param array  $args
      *
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        return $this->oConnect->{$method}(...$arrArgs);
+        return $this->connect->{$method}(...$args);
     }
 }
