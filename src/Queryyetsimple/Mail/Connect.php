@@ -44,16 +44,17 @@ abstract class Connect implements Swift_Transport
      *
      * @var \Swift_Mailer
      */
-    protected $objSwiftMailer;
+    protected $swiftMailer;
 
     /**
      * 构造函数.
      *
-     * @param array $arrOption
+     * @param array $option
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
-        $this->options($arrOption);
+        $this->options($option);
+
         $this->swiftMailer();
     }
 
@@ -103,7 +104,7 @@ abstract class Connect implements Swift_Transport
      */
     public function getSwiftMailer()
     {
-        return $this->objSwiftMailer;
+        return $this->swiftMailer;
     }
 
     /**
@@ -113,6 +114,6 @@ abstract class Connect implements Swift_Transport
      */
     protected function swiftMailer()
     {
-        return $this->objSwiftMailer = new Swift_Mailer($this->makeTransport());
+        return $this->swiftMailer = new Swift_Mailer($this->makeTransport());
     }
 }

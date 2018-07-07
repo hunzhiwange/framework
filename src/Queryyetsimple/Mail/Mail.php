@@ -47,42 +47,42 @@ class Mail implements IMail
      *
      * @var \Leevel\Mail\IConnect
      */
-    protected $oConnect;
+    protected $connect;
 
     /**
      * 视图.
      *
      * @var \leevel\Mvc\IView
      */
-    protected $objView;
+    protected $view;
 
     /**
      * 事件.
      *
      * @var null|\Leevel\Event\IDispatch
      */
-    protected $objEvent;
+    protected $event;
 
     /**
      * 邮件错误消息.
      *
      * @var array
      */
-    protected $arrFailedRecipients = [];
+    protected $failedRecipients = [];
 
     /**
      * 消息.
      *
      * @var \Leevel\Mail\Message
      */
-    protected $objMessage;
+    protected $message;
 
     /**
      * 消息配置.
      *
      * @var array
      */
-    protected $arrMessageData = [
+    protected $messageData = [
         'html'  => [],
         'plain' => [],
     ];
@@ -92,7 +92,7 @@ class Mail implements IMail
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'global_from' => [
             'address' => null,
             'name'    => null,
@@ -106,47 +106,48 @@ class Mail implements IMail
     /**
      * 构造函数.
      *
-     * @param \Leevel\Mail\IConnect        $oConnect
-     * @param \leevel\Mvc\IView            $objView
-     * @param null|\Leevel\Event\IDispatch $objEvent
-     * @param array                        $arrOption
+     * @param \Leevel\Mail\IConnect        $connect
+     * @param \leevel\Mvc\IView            $view
+     * @param null|\Leevel\Event\IDispatch $event
+     * @param array                        $option
      */
-    public function __construct(IConnect $oConnect, IView $objView, $objEvent = null, array $arrOption = [])
+    public function __construct(IConnect $connect, IView $view, $event = null, array $option = [])
     {
-        $this->oConnect = $oConnect;
-        $this->objView = $objView;
-        $this->objEvent = $objEvent;
-        $this->options($arrOption);
+        $this->connect = $connect;
+        $this->view = $view;
+        $this->event = $event;
+
+        $this->options($option);
     }
 
     /**
      * call.
      *
      * @param string $method
-     * @param array  $arrArgs
+     * @param array  $args
      *
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
         if ($this->placeholderTControl($method)) {
             return $this;
         }
 
-        return $this->oConnect->{$method}(...$arrArgs);
+        return $this->connect->{$method}(...$args);
     }
 
     /**
      * 设置邮件发送来源.
      *
-     * @param string      $strAddress
-     * @param null|string $mixName
+     * @param string      $address
+     * @param null|string $name
      *
      * @return $this
      */
-    public function globalFrom($strAddress, $mixName = null)
+    public function globalFrom($address, $name = null)
     {
-        $this->option('global_from', compact('strAddress', 'mixName'));
+        $this->option('global_from', compact('address', 'name'));
 
         return $this;
     }
@@ -154,14 +155,14 @@ class Mail implements IMail
     /**
      * 设置邮件发送地址
      *
-     * @param string      $strAddress
-     * @param null|string $mixName
+     * @param string      $address
+     * @param null|string $name
      *
      * @return $this
      */
-    public function globalTo($strAddress, $mixName = null)
+    public function globalTo($address, $name = null)
     {
-        $this->option('global_to', compact('strAddress', 'mixName'));
+        $this->option('global_to', compact('address', 'name'));
 
         return $this;
     }
@@ -169,20 +170,20 @@ class Mail implements IMail
     /**
      * 视图 html 邮件内容.
      *
-     * @param string $sFile
-     * @param array  $arrData
+     * @param string $file
+     * @param array  $data
      *
      * @return $this
      */
-    public function view($sFile, array $arrData = [])
+    public function view($file, array $data = [])
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->arrMessageData['html'][] = [
-            'file' => $sFile,
-            'data' => $arrData,
+        $this->messageData['html'][] = [
+            'file' => $file,
+            'data' => $data,
         ];
 
         return $this;
@@ -191,17 +192,17 @@ class Mail implements IMail
     /**
      * html 邮件内容.
      *
-     * @param string $strContent
+     * @param string $content
      *
      * @return $this
      */
-    public function html($strContent)
+    public function html($content)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->arrMessageData['html'][] = $strContent;
+        $this->messageData['html'][] = $content;
 
         return $this;
     }
@@ -209,17 +210,17 @@ class Mail implements IMail
     /**
      * 纯文本邮件内容.
      *
-     * @param string $strContent
+     * @param string $content
      *
      * @return $this
      */
-    public function plain($strContent)
+    public function plain($content)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->arrMessageData['plain'][] = $strContent;
+        $this->messageData['plain'][] = $content;
 
         return $this;
     }
@@ -227,20 +228,20 @@ class Mail implements IMail
     /**
      * 视图纯文本邮件内容.
      *
-     * @param string $sFile
-     * @param array  $arrData
+     * @param string $file
+     * @param array  $data
      *
      * @return $this
      */
-    public function viewPlain($sFile, array $arrData = [])
+    public function viewPlain($file, array $data = [])
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->arrMessageData['plain'][] = [
-            'file' => $sFile,
-            'data' => $arrData,
+        $this->messageData['plain'][] = [
+            'file' => $file,
+            'data' => $data,
         ];
 
         return $this;
@@ -249,13 +250,13 @@ class Mail implements IMail
     /**
      * 消息回调处理.
      *
-     * @param callable|string $mixCallback
+     * @param callable|string $callbacks
      *
      * @return $this
      */
-    public function message($mixCallback)
+    public function message($callbacks)
     {
-        $this->callbackMessage($mixCallback, $this->makeMessage());
+        $this->callbackMessage($callbacks, $this->makeMessage());
 
         return $this;
     }
@@ -263,107 +264,119 @@ class Mail implements IMail
     /**
      * 添加附件.
      *
-     * @param string        $strFile
-     * @param null|callable $mixCallback
+     * @param string        $file
+     * @param null|callable $callbacks
      *
      * @return $this
      */
-    public function attach($strFile, $mixCallback = null)
+    public function attach($file, $callbacks = null)
     {
         $this->makeMessage();
 
-        return $this->callbackAttachment($this->createPathAttachment($strFile), $mixCallback);
+        return $this->callbackAttachment(
+            $this->createPathAttachment($file),
+            $callbacks
+        );
     }
 
     /**
      * 添加内存内容附件
      * file_get_content( path ).
      *
-     * @param string        $strData
-     * @param string        $strName
-     * @param null|callable $mixCallback
+     * @param string        $data
+     * @param string        $name
+     * @param null|callable $callbacks
      *
      * @return $this
      */
-    public function attachData($strData, $strName, $mixCallback = null)
+    public function attachData($data, $name, $callbacks = null)
     {
         $this->makeMessage();
 
-        return $this->callbackAttachment($this->createDataAttachment($strData, $strName), $mixCallback);
+        return $this->callbackAttachment(
+            $this->createDataAttachment($data, $name),
+            $callbacks
+        );
     }
 
     /**
      * 图片嵌入邮件.
      *
      * @param string $file
-     * @param mixed  $strFile
+     * @param mixed  $file
      *
      * @return string
      */
-    public function attachView($strFile)
+    public function attachView($file)
     {
         $this->makeMessage();
 
-        return $this->objMessage->embed(Swift_Image::fromPath($strFile));
+        return $this->message->embed(Swift_Image::fromPath($file));
     }
 
     /**
      * 内存内容图片嵌入邮件.
      *
-     * @param string      $strData
-     * @param string      $strName
+     * @param string      $data
+     * @param string      $name
      * @param null|string $contentType
-     * @param null|mixed  $strContentType
+     * @param null|mixed  $contentType
      *
      * @return string
      */
-    public function attachDataView($strData, $strName, $strContentType = null)
+    public function attachDataView($data, $name, $contentType = null)
     {
         $this->makeMessage();
 
-        return $this->objMessage->embed(Swift_Image::newInstance($strData, $strName, $strContentType));
+        return $this->message->embed(
+            Swift_Image::newInstance($data, $name, $contentType)
+        );
     }
 
     /**
      * 格式化中文附件名字.
      *
-     * @param string $strFile
+     * @param string $file
      *
      * @return string
      */
-    public function attachChinese($strFile)
+    public function attachChinese($file)
     {
-        $strExt = pathinfo($strFile, PATHINFO_EXTENSION);
-        if ($strExt) {
-            $strFile = substr($strFile, 0, strrpos($strFile, '.'.$strExt));
+        $ext = pathinfo($file, PATHINFO_EXTENSION);
+
+        if ($ext) {
+            $file = substr($file, 0, strrpos($file, '.'.$ext));
         }
 
-        return '=?UTF-8?B?'.base64_encode($strFile).'?='.($strExt ? '.'.$strExt : '');
+        return '=?UTF-8?B?'.base64_encode($file).'?='.($ext ? '.'.$ext : '');
     }
 
     /**
      * 发送邮件.
      *
-     * @param callable|string $mixCallback
-     * @param bool            $booHtmlPriority
+     * @param callable|string $callbacks
+     * @param bool            $htmlPriority
      *
      * @return int
      */
-    public function send($mixCallback = null, $booHtmlPriority = true)
+    public function send($callbacks = null, $htmlPriority = true)
     {
         $this->makeMessage();
 
-        $this->parseMailContent($booHtmlPriority);
+        $this->parseMailContent($htmlPriority);
 
-        if ($mixCallback) {
-            $this->message($mixCallback);
+        if ($callbacks) {
+            $this->message($callbacks);
         }
 
         if (!empty($this->getOption('global_to')['address'])) {
-            $this->objMessage->addTo($this->getOption('global_to')['address'], $this->getOption('global_to')['name']);
+            $this->message->addTo(
+                $this->getOption('global_to')['address'],
+                $this->getOption('global_to')['name']
+            );
         }
 
-        return $this->sendMessage($this->objMessage);
+        return $this->sendMessage($this->message);
     }
 
     /**
@@ -373,27 +386,27 @@ class Mail implements IMail
      */
     public function failedRecipients()
     {
-        return $this->arrFailedRecipients;
+        return $this->failedRecipients;
     }
 
     /**
      * 试图渲染数据.
      *
-     * @param string $strFile
-     * @param array  $arrData
+     * @param string $file
+     * @param array  $data
      *
      * @return string
      */
-    protected function getViewData($strFile, array $arrData)
+    protected function getViewData($file, array $data)
     {
-        return $this->objView->
+        return $this->view->
         clearAssign()->
 
         assign('objMail', $this)->
 
-        assign($arrData)->
+        assign($data)->
 
-        display($strFile, [], [
+        display($file, [], [
             'return' => true,
         ]);
     }
@@ -401,41 +414,51 @@ class Mail implements IMail
     /**
      * 解析邮件内容.
      *
-     * @param bool $booHtmlPriority
+     * @param bool $htmlPriority
      */
-    protected function parseMailContent($booHtmlPriority = true)
+    protected function parseMailContent($htmlPriority = true)
     {
-        $booFind = false;
+        $findBody = false;
 
-        $arrMessageData = $this->arrMessageData;
+        $messageData = $this->messageData;
 
-        if (!empty($arrMessageData['html']) && !empty($arrMessageData['plain'])) {
-            unset($arrMessageData[true === $booHtmlPriority ? 'plain' : 'html']);
+        if (!empty($messageData['html']) && !empty($messageData['plain'])) {
+            unset($messageData[true === $htmlPriority ? 'plain' : 'html']);
         }
 
-        if (!empty($arrMessageData['html'])) {
-            foreach ($arrMessageData['html'] as $mixView) {
-                if (false === $booFind) {
-                    $strMethod = 'setBody';
-                    $booFind = true;
+        if (!empty($messageData['html'])) {
+            foreach ($messageData['html'] as $view) {
+                if (false === $findBody) {
+                    $method = 'setBody';
+                    $findBody = true;
                 } else {
-                    $strMethod = 'addPart';
+                    $method = 'addPart';
                 }
 
-                $this->objMessage->{$strMethod}(is_array($mixView) ? $this->getViewData($mixView['file'], $mixView['data']) : $mixView, 'text/html');
+                $this->message->{$method}(
+                    is_array($view) ?
+                        $this->getViewData($view['file'], $view['data']) :
+                        $view,
+                    'text/html'
+                );
             }
         }
 
-        if (!empty($arrMessageData['plain'])) {
-            foreach ($arrMessageData['plain'] as $mixView) {
-                if (false === $booFind) {
-                    $strMethod = 'setBody';
-                    $booFind = true;
+        if (!empty($messageData['plain'])) {
+            foreach ($messageData['plain'] as $view) {
+                if (false === $findBody) {
+                    $method = 'setBody';
+                    $findBody = true;
                 } else {
-                    $strMethod = 'addPart';
+                    $method = 'addPart';
                 }
 
-                $this->objMessage->{$strMethod}(is_array($mixView) ? $this->getViewData($mixView['file'], $mixView['data']) : $mixView, 'text/plain');
+                $this->message->{$method}(
+                    is_array($view) ?
+                        $this->getViewData($view['file'], $view['data']) :
+                        $view,
+                    'text/plain'
+                );
             }
         }
     }
@@ -443,13 +466,13 @@ class Mail implements IMail
     /**
      * 发送消息对象
      *
-     * @param \Swift_Message $objMessage
+     * @param \Swift_Message $message
      *
      * @return int
      */
-    protected function sendMessage(Swift_Message $objMessage)
+    protected function sendMessage(Swift_Message $message)
     {
-        return $this->oConnect->send($objMessage, $this->arrFailedRecipients);
+        return $this->connect->send($message, $this->failedRecipients);
     }
 
     /**
@@ -459,60 +482,72 @@ class Mail implements IMail
      */
     protected function makeMessage()
     {
-        if (null !== $this->objMessage) {
-            return $this->objMessage;
+        if (null !== $this->message) {
+            return $this->message;
         }
 
-        $oMessage = new Swift_Message();
+        $message = new Swift_Message();
 
         if (!empty($this->getOption('global_from')['address'])) {
-            $oMessage->setFrom($this->getOption('global_from')['address'], $this->getOption('global_from')['name']);
+            $message->setFrom(
+                $this->getOption('global_from')['address'],
+                $this->getOption('global_from')['name']
+            );
         }
 
-        return $this->objMessage = $oMessage;
+        return $this->message = $message;
     }
 
     /**
      * 邮件消息回调处理.
      *
-     * @param callable|string $mixCallback
-     * @param \Swift_Message  $objMessage
+     * @param callable|string $callbacks
+     * @param \Swift_Message  $message
      *
      * @return mixed
      */
-    protected function callbackMessage($mixCallback, Swift_Message $objMessage)
+    protected function callbackMessage($callbacks, Swift_Message $message)
     {
-        if (!is_string($mixCallback) && is_callable($mixCallback)) {
-            return call_user_func_array($mixCallback, [
-                $objMessage,
+        if (!is_string($callbacks) && is_callable($callbacks)) {
+            return call_user_func_array($callbacks, [
+                $message,
                 $this,
             ]);
         }
 
-        if (is_string($mixCallback)) {
-            if (false !== strpos($mixCallback, '@')) {
-                $arrCallback = explode('@', $mixCallback);
-                if (empty($arrCallback[1])) {
-                    $arrCallback[1] = 'handle';
+        if (is_string($callbacks)) {
+            if (false !== strpos($callbacks, '@')) {
+                $callbacks = explode('@', $callbacks);
+
+                if (empty($callbacks[1])) {
+                    $callbacks[1] = 'handle';
                 }
             } else {
-                $arrCallback = [
-                    $mixCallback,
+                $callbacks = [
+                    $callbacks,
                     'handle',
                 ];
             }
 
-            if (false === ($mixCallback = $this->objContainer->make($arrCallback[0]))) {
-                throw new InvalidArgumentException(sprintf('Message callback %s is not valid', $arrCallback[0]));
+            if (false === ($callbacks = $this->objContainer->make($callbacks[0]))) {
+                throw new InvalidArgumentException(
+                    sprintf('Message callback %s is not valid', $callbacks[0])
+                );
             }
 
-            $strMethod = method_exists($mixCallback, $arrCallback[1]) ? $arrCallback[1] : ('handle' !== $arrCallback[1] && method_exists($mixCallback, 'handle') ? 'handle' : 'run');
+            $method = method_exists($callbacks, $callbacks[1]) ?
+                $callbacks[1] :
+                ('handle' !== $callbacks[1] &&
+                    method_exists($callbacks, 'handle') ?
+                    'handle' :
+                    'run'
+                );
 
             return call_user_func_array([
-                $mixCallback,
-                $strMethod,
+                $callbacks,
+                $method,
             ], [
-                $objMessage,
+                $message,
                 $this,
             ]);
         }
@@ -523,44 +558,45 @@ class Mail implements IMail
     /**
      * 路径创建 Swift_Attachment.
      *
-     * @param string $strFile
+     * @param string $file
      *
      * @return \Swift_Attachment
      */
-    protected function createPathAttachment($strFile)
+    protected function createPathAttachment($file)
     {
-        return Swift_Attachment::fromPath($strFile);
+        return Swift_Attachment::fromPath($file);
     }
 
     /**
      * 内存内容创建 Swift_Attachment.
      *
-     * @param string $strData
-     * @param string $strName
+     * @param string $data
+     * @param string $name
      *
      * @return \Swift_Attachment
      */
-    protected function createDataAttachment($strData, $strName)
+    protected function createDataAttachment($data, $name)
     {
-        return Swift_Attachment::newInstance($strData, $strName);
+        return Swift_Attachment::newInstance($data, $name);
     }
 
     /**
      * 邮件附件消息回调处理.
      *
-     * @param \Swift_Attachment $objAttachment
-     * @param null|callable     $mixCallback
+     * @param \Swift_Attachment $attachment
+     * @param null|callable     $callbacks
      *
      * @return $this
      */
-    protected function callbackAttachment($objAttachment, $mixCallback = null)
+    protected function callbackAttachment($attachment, $callbacks = null)
     {
-        if (!is_string($mixCallback) && is_callable($mixCallback)) {
-            call_user_func_array($mixCallback, [
-                $objAttachment,
+        if (!is_string($callbacks) && is_callable($callbacks)) {
+            call_user_func_array($callbacks, [
+                $attachment,
                 $this,
             ]);
-            $this->objMessage->attach($objAttachment);
+
+            $this->message->attach($attachment);
         }
 
         return $this;

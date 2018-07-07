@@ -38,7 +38,7 @@ class Smtp extends Connect implements IConnect
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'host'       => 'smtp.qq.com',
         'port'       => 465,
         'username'   => null,
@@ -53,17 +53,20 @@ class Smtp extends Connect implements IConnect
      */
     public function makeTransport()
     {
-        $objTransport = Swift_SmtpTransport::newInstance($this->getOption('host'), $this->getOption('port'));
+        $transport = Swift_SmtpTransport::newInstance(
+            $this->getOption('host'),
+            $this->getOption('port')
+        );
 
         if (null !== $this->getOption('encryption')) {
-            $objTransport->setEncryption($this->getOption('encryption'));
+            $transport->setEncryption($this->getOption('encryption'));
         }
 
         if (null !== $this->getOption('username')) {
-            $objTransport->setUsername($this->getOption('username'));
-            $objTransport->setPassword($this->getOption('password'));
+            $transport->setUsername($this->getOption('username'));
+            $transport->setPassword($this->getOption('password'));
         }
 
-        return $objTransport;
+        return $transport;
     }
 }

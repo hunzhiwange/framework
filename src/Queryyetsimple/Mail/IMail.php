@@ -34,132 +34,132 @@ interface IMail
     /**
      * 设置邮件发送来源.
      *
-     * @param string      $strAddress
-     * @param null|string $mixName
+     * @param string      $address
+     * @param null|string $name
      *
      * @return $this
      */
-    public function globalFrom($strAddress, $mixName = null);
+    public function globalFrom($address, $name = null);
 
     /**
      * 设置邮件发送地址
      *
-     * @param string      $strAddress
-     * @param null|string $mixName
+     * @param string      $address
+     * @param null|string $name
      *
      * @return $this
      */
-    public function globalTo($strAddress, $mixName = null);
+    public function globalTo($address, $name = null);
 
     /**
      * 视图 html 邮件内容.
      *
-     * @param string $sFile
-     * @param array  $arrData
+     * @param string $file
+     * @param array  $data
      *
      * @return $this
      */
-    public function view($sFile, array $arrData = []);
+    public function view($file, array $data = []);
 
     /**
      * html 邮件内容.
      *
-     * @param string $strContent
+     * @param string $content
      *
      * @return $this
      */
-    public function html($strContent);
+    public function html($content);
 
     /**
      * 纯文本邮件内容.
      *
-     * @param string $strContent
+     * @param string $content
      *
      * @return $this
      */
-    public function plain($strContent);
+    public function plain($content);
 
     /**
      * 视图纯文本邮件内容.
      *
-     * @param string $sFile
-     * @param array  $arrData
+     * @param string $file
+     * @param array  $data
      *
      * @return $this
      */
-    public function viewPlain($sFile, array $arrData = []);
+    public function viewPlain($file, array $data = []);
 
     /**
      * 消息回调处理.
      *
-     * @param callable|string $mixCallback
+     * @param callable|string $callbacks
      *
      * @return $this
      */
-    public function message($mixCallback);
+    public function message($callbacks);
 
     /**
      * 添加附件.
      *
-     * @param string        $strFile
-     * @param null|callable $mixCallback
+     * @param string        $file
+     * @param null|callable $callbacks
      *
      * @return $this
      */
-    public function attach($strFile, $mixCallback = null);
+    public function attach($file, $callbacks = null);
 
     /**
      * 添加内存内容附件
      * file_get_content( path ).
      *
-     * @param string        $strData
-     * @param string        $strName
-     * @param null|callable $mixCallback
+     * @param string        $data
+     * @param string        $name
+     * @param null|callable $callbacks
      *
      * @return $this
      */
-    public function attachData($strData, $strName, $mixCallback = null);
+    public function attachData($data, $name, $callbacks = null);
 
     /**
      * 图片嵌入邮件.
      *
      * @param string $file
-     * @param mixed  $strFile
+     * @param mixed  $file
      *
      * @return string
      */
-    public function attachView($strFile);
+    public function attachView($file);
 
     /**
      * 内存内容图片嵌入邮件.
      *
-     * @param string      $strData
-     * @param string      $strName
+     * @param string      $data
+     * @param string      $name
      * @param null|string $contentType
-     * @param null|mixed  $strContentType
+     * @param null|mixed  $contentType
      *
      * @return string
      */
-    public function attachDataView($strData, $strName, $strContentType = null);
+    public function attachDataView($data, $name, $contentType = null);
 
     /**
      * 格式化中文附件名字.
      *
-     * @param string $strFile
+     * @param string $file
      *
      * @return string
      */
-    public function attachChinese($strFile);
+    public function attachChinese($file);
 
     /**
      * 发送邮件.
      *
-     * @param callable|string $mixCallback
-     * @param bool            $booHtmlPriority
+     * @param callable|string $callbacks
+     * @param bool            $htmlPriority
      *
      * @return int
      */
-    public function send($mixCallback = null, $booHtmlPriority = true);
+    public function send($callbacks = null, $htmlPriority = true);
 
     /**
      * 错误消息.

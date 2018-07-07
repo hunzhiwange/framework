@@ -38,7 +38,7 @@ class Sendmail extends Connect implements IConnect
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'path' => '/usr/sbin/sendmail -bs',
     ];
 
