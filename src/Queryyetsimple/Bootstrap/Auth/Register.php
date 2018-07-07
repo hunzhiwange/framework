@@ -18,12 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap\auth;
+namespace Leevel\Bootstrap\Auth;
 
-use Leevel\auth;
-use Leevel\auth\RegisterFailed;
+use Leevel\Auth;
+use Leevel\Auth\RegisterFailed;
 use Leevel\Http\Request;
-use Leevel\response;
+use Leevel\Response;
 
 /**
  * 用户注册.
@@ -49,16 +49,16 @@ trait Register
     /**
      * 注册用户.
      *
-     * @param \Leevel\Http\Request $oRequest
+     * @param \Leevel\Http\Request $request
      *
      * @return \Leevel\Http\Response
      */
-    public function registerUser(request $oRequest)
+    public function registerUser(Request $request)
     {
-        $this->validateRegister($oRequest);
+        $this->validateRegister($request);
 
         try {
-            $aPost = $oRequest->posts([
+            $post = $request->posts([
                 'name|trim',
                 'nikename|trim',
                 'password|trim',
@@ -69,11 +69,25 @@ trait Register
 
             $this->setAuthField();
 
-            auth::registerUser($aPost['name'], $aPost['password'], $aPost['comfirm_password'], $aPost['nikename'], $oRequest->getClientIp(), $aPost['email'], $aPost['mobile']);
+            Auth::registerUser(
+                $post['name'],
+                $post['password'],
+                $post['comfirm_password'],
+                $post['nikename'],
+                $request->getClientIp(),
+                $post['email'],
+                $post['mobile']
+            );
 
-            return $this->sendSucceededRegisterResponse($this->getRegisterSucceededMessage($aPost['nikename'] ?: $aPost['name']));
-        } catch (RegisterFailed $oE) {
-            return $this->sendFailedRegisterResponse($oE->getMessage());
+            return $this->sendSucceededRegisterResponse(
+                $this->getRegisterSucceededMessage(
+                    $post['nikename'] ?: $post['name']
+                )
+            );
+        } catch (RegisterFailed $e) {
+            return $this->sendFailedRegisterResponse(
+                $e->getMessage()
+            );
         }
     }
 
@@ -84,43 +98,57 @@ trait Register
      */
     public function displayRegisterForm()
     {
-        return response::view($this->getRegisterView());
+        return Response::view(
+            $this->getRegisterView()
+        );
     }
 
     /**
      * 发送正确注册消息.
      *
-     * @param string $strSuccess
+     * @param string $success
      *
      * @return \Leevel\Http\Response
      */
-    protected function sendSucceededRegisterResponse($strSuccess)
+    protected function sendSucceededRegisterResponse($success)
     {
-        return response::redirect($this->getRegisterSucceededRedirect())->with('register_succeeded', $strSuccess);
+        return Response::redirect(
+            $this->getRegisterSucceededRedirect()
+        )->
+
+        with('register_succeeded', $success);
     }
 
     /**
      * 发送错误注册消息.
      *
-     * @param string $strError
+     * @param string $error
      *
      * @return \Leevel\Http\Response
      */
-    protected function sendFailedRegisterResponse($strError)
+    protected function sendFailedRegisterResponse($error)
     {
-        return response::redirect($this->getRegisterFailedRedirect())->withErrors([
-            'register_error' => $strError,
+        return Response::redirect(
+            $this->getRegisterFailedRedirect()
+        )->
+
+        withErrors([
+            'register_error' => $error,
         ]);
     }
 
     /**
      * 验证注册请求
      *
-     * @param \Leevel\Http\Request $oRequest
+     * @param \Leevel\Http\Request $request
      */
-    protected function validateRegister(request $oRequest)
+    protected function validateRegister(Request $request)
     {
-        $this->validate($oRequest, $this->getValidateRegisterRule(), $this->getValidateRegisterMessage());
+        $this->validate(
+            $request,
+            $this->getValidateRegisterRule(),
+            $this->getValidateRegisterMessage()
+        );
     }
 
     /**
@@ -130,14 +158,16 @@ trait Register
      */
     protected function getValidateRegisterRule()
     {
-        return property_exists($this, 'strValidateRegisterRule') ? $this->strValidateRegisterRule : [
-            'name'             => 'required|max_length:50',
-            'nikename'         => 'required|max_length:50',
-            'password'         => 'required|min_length:6',
-            'comfirm_password' => 'required|min_length:6|equal_to:password',
-            'email'            => 'required|email',
-            'mobile'           => 'value|mobile',
-        ];
+        return property_exists($this, 'validateRegisterRule') ?
+            $this->validateRegisterRule :
+            [
+                'name'             => 'required|max_length:50',
+                'nikename'         => 'required|max_length:50',
+                'password'         => 'required|min_length:6',
+                'comfirm_password' => 'required|min_length:6|equal_to:password',
+                'email'            => 'required|email',
+                'mobile'           => 'value|mobile',
+            ];
     }
 
     /**
@@ -147,19 +177,21 @@ trait Register
      */
     protected function getValidateRegisterMessage()
     {
-        return property_exists($this, 'strValidateRegisterMessage') ? $this->strValidateRegisterMessage : [];
+        return property_exists($this, 'validateRegisterMessage') ?
+            $this->validateRegisterMessage :
+            [];
     }
 
     /**
      * 获取注册消息.
      *
-     * @param string $strName
+     * @param string $name
      *
      * @return string
      */
-    protected function getRegisterSucceededMessage($strName)
+    protected function getRegisterSucceededMessage($name)
     {
-        return __('%s 注册成功', $strName);
+        return __('%s 注册成功', $name);
     }
 
     /**
@@ -169,7 +201,9 @@ trait Register
      */
     protected function getRegisterView()
     {
-        return property_exists($this, 'strRegisterView') ? $this->strRegisterView : '';
+        return property_exists($this, 'registerView') ?
+            $this->registerView :
+            '';
     }
 
     /**
@@ -179,7 +213,9 @@ trait Register
      */
     protected function getRegisterSucceededRedirect()
     {
-        return property_exists($this, 'strRegisterSucceededRedirect') ? $this->strRegisterSucceededRedirect : 'auth/login';
+        return property_exists($this, 'registerSucceededRedirect') ?
+            $this->registerSucceededRedirect :
+            'auth/login';
     }
 
     /**
@@ -189,6 +225,8 @@ trait Register
      */
     protected function getRegisterFailedRedirect()
     {
-        return property_exists($this, 'strRegisterFailedRedirect') ? $this->strRegisterFailedRedirect : 'auth/register';
+        return property_exists($this, 'registerFailedRedirect') ?
+            $this->registerFailedRedirect :
+            'auth/register';
     }
 }

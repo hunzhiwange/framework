@@ -18,12 +18,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap\auth;
+namespace Leevel\Bootstrap\Auth;
 
-use Leevel\auth;
-use Leevel\auth\change_password_failed;
+use Leevel\Auth;
 use Leevel\Http\Request;
-use Leevel\response;
+use Leevel\Response;
 
 /**
  * 修改密码
@@ -55,22 +54,24 @@ trait ChangePassword
      */
     public function displayChangePasswordForm()
     {
-        return response::view($this->getChangePasswordView());
+        return Response::view(
+            $this->getChangePasswordView()
+        );
     }
 
     /**
      * 执行修改密码
      *
-     * @param \Leevel\Http\Request $oRequest
+     * @param \Leevel\Http\Request $request
      *
      * @return array|\Leevel\Http\Response
      */
-    public function changeUserPassword(request $oRequest)
+    public function changeUserPassword(Request $request)
     {
-        //$this->validateChangePassword($oRequest);
+        //$this->validateChangePassword($request);
 
         try {
-            $aInput = $oRequest->alls([
+            $input = $request->alls([
                 'id|trim',
                 'old_password|trim',
                 'password|trim',
@@ -79,62 +80,86 @@ trait ChangePassword
 
             $this->setAuthField();
 
-            $aUser = auth::changePassword($aInput['id'], $aInput['password'], $aInput['comfirm_password'], $aInput['old_password']);
+            $user = Auth::changePassword(
+                $input['id'],
+                $input['password'],
+                $input['comfirm_password'],
+                $input['old_password']
+            );
 
             if ($this->isAjaxRequest()) {
                 return [
-                    'message' => $this->getChangePasswordSucceededMessage($aUser['nikename'] ?: $aUser['name']),
+                    'message' => $this->getChangePasswordSucceededMessage(
+                        $user['nikename'] ?: $user['name']
+                    ),
                 ];
             }
 
-            return $this->sendSucceededChangePasswordResponse($this->getChangePasswordSucceededMessage($aUser['nikename'] ?: $aUser['name']));
-        } catch (change_password_failed $oE) {
-            return $this->sendFailedChangePasswordResponse($oE->getMessage());
+            return $this->sendSucceededChangePasswordResponse(
+                $this->getChangePasswordSucceededMessage(
+                    $user['nikename'] ?: $user['name']
+                )
+            );
+        } catch (change_password_failed $e) {
+            return $this->sendFailedChangePasswordResponse(
+                $e->getMessage()
+            );
         }
     }
 
     /**
      * 发送正确修改密码消息.
      *
-     * @param string $strSuccess
+     * @param string $success
      *
      * @return \Leevel\Http\Response
      */
-    protected function sendSucceededChangePasswordResponse($strSuccess)
+    protected function sendSucceededChangePasswordResponse($success)
     {
-        return response::redirect($this->getChangePasswordSucceededRedirect())->with('change_password_succeeded', $strSuccess);
+        return Response::redirect(
+            $this->getChangePasswordSucceededRedirect()
+        )->
+
+        with('change_password_succeeded', $success);
     }
 
     /**
      * 发送错误修改密码消息.
      *
-     * @param \Leevel\Http\Request $oRequest
-     * @param string               $strError
+     * @param string $error
      *
      * @return \Leevel\Http\Response
      */
-    protected function sendFailedChangePasswordResponse($strError)
+    protected function sendFailedChangePasswordResponse($error)
     {
         if ($this->isAjaxRequest()) {
             return [
                 'code'    => 400,
-                'message' => $strError,
+                'message' => $error,
             ];
         }
 
-        return response::redirect($this->getChangePasswordFailedRedirect())->withErrors([
-            'change_password_error' => $strError,
+        return Response::redirect(
+            $this->getChangePasswordFailedRedirect()
+        )->
+
+        withErrors([
+            'change_password_error' => $error,
         ]);
     }
 
     /**
      * 验证登录修改密码请求
      *
-     * @param \Leevel\Http\Request $oRequest
+     * @param \Leevel\Http\Request $request
      */
-    protected function validateChangePassword(request $oRequest)
+    protected function validateChangePassword(Request $request)
     {
-        $this->validate($oRequest, $this->getValidateChangePasswordRule(), $this->getValidateChangePasswordMessage());
+        $this->validate(
+            $request,
+            $this->getValidateChangePasswordRule(),
+            $this->getValidateChangePasswordMessage()
+        );
     }
 
     /**
@@ -144,11 +169,13 @@ trait ChangePassword
      */
     protected function getValidateChangePasswordRule()
     {
-        return property_exists($this, 'strValidateChangePasswordRule') ? $this->strValidateChangePasswordRule : [
-            'old_password'     => 'required|min_length:6',
-            'password'         => 'required|min_length:6',
-            'comfirm_password' => 'required|min_length:6|equal_to:password',
-        ];
+        return property_exists($this, 'validateChangePasswordRule') ?
+            $this->validateChangePasswordRule :
+            [
+                'old_password'     => 'required|min_length:6',
+                'password'         => 'required|min_length:6',
+                'comfirm_password' => 'required|min_length:6|equal_to:password',
+            ];
     }
 
     /**
@@ -158,19 +185,21 @@ trait ChangePassword
      */
     protected function getValidateChangePasswordMessage()
     {
-        return property_exists($this, 'strValidateChangePasswordMessage') ? $this->strValidateChangePasswordMessage : [];
+        return property_exists($this, 'validateChangePasswordMessage') ?
+            $this->validateChangePasswordMessage :
+            [];
     }
 
     /**
      * 获取修改密码消息.
      *
-     * @param string $strName
+     * @param string $name
      *
      * @return string
      */
-    protected function getChangePasswordSucceededMessage($strName)
+    protected function getChangePasswordSucceededMessage($name)
     {
-        return __('%s 修改密码成功', $strName);
+        return __('%s 修改密码成功', $name);
     }
 
     /**
@@ -180,7 +209,9 @@ trait ChangePassword
      */
     protected function getChangePasswordView()
     {
-        return property_exists($this, 'strChangePasswordView') ? $this->strChangePasswordView : '';
+        return property_exists($this, 'changePasswordView') ?
+            $this->changePasswordView :
+            '';
     }
 
     /**
@@ -190,7 +221,9 @@ trait ChangePassword
      */
     protected function getChangePasswordSucceededRedirect()
     {
-        return property_exists($this, 'strChangePasswordSucceededRedirect') ? $this->strChangePasswordSucceededRedirect : 'auth/login';
+        return property_exists($this, 'changePasswordSucceededRedirect') ?
+            $this->changePasswordSucceededRedirect :
+            'auth/login';
     }
 
     /**
@@ -200,6 +233,8 @@ trait ChangePassword
      */
     protected function getChangePasswordFailedRedirect()
     {
-        return property_exists($this, 'strChangePasswordFailedRedirect') ? $this->strChangePasswordFailedRedirect : 'auth/changePassword';
+        return property_exists($this, 'changePasswordFailedRedirect') ?
+            $this->changePasswordFailedRedirect :
+            'auth/changePassword';
     }
 }

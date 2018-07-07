@@ -18,9 +18,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap\auth;
+namespace Leevel\Bootstrap\Auth;
 
-use Leevel\auth;
+use Leevel\Auth;
 
 /**
  * 登录字段设置.
@@ -38,7 +38,7 @@ trait Field
      */
     public function setAuthField()
     {
-        auth::setField($this->authField());
+        Auth::setField($this->authField());
     }
 
     /**
@@ -71,7 +71,9 @@ trait Field
      */
     public function authFieldId()
     {
-        return property_exists($this, 'strFieldId') ? $this->strFieldId : 'id';
+        return property_exists($this, 'fieldId') ?
+            $this->fieldId :
+            'id';
     }
 
     /**
@@ -81,7 +83,9 @@ trait Field
      */
     public function authFieldName()
     {
-        return property_exists($this, 'strFieldName') ? $this->strFieldName : 'name';
+        return property_exists($this, 'fieldName') ?
+            $this->fieldName :
+            'name';
     }
 
     /**
@@ -91,7 +95,9 @@ trait Field
      */
     public function authFieldNikename()
     {
-        return property_exists($this, 'strFieldNikename') ? $this->strFieldNikename : 'nikename';
+        return property_exists($this, 'fieldNikename') ?
+            $this->fieldNikename :
+            'nikename';
     }
 
     /**
@@ -101,7 +107,9 @@ trait Field
      */
     public function authFieldRandom()
     {
-        return property_exists($this, 'strFieldRandom') ? $this->strFieldRandom : 'random';
+        return property_exists($this, 'fieldRandom') ?
+            $this->fieldRandom :
+            'random';
     }
 
     /**
@@ -111,7 +119,9 @@ trait Field
      */
     public function authFieldEmail()
     {
-        return property_exists($this, 'strFieldEmail') ? $this->strFieldEmail : 'email';
+        return property_exists($this, 'fieldEmail') ?
+            $this->fieldEmail :
+            'email';
     }
 
     /**
@@ -121,7 +131,9 @@ trait Field
      */
     public function authFieldMobile()
     {
-        return property_exists($this, 'strFieldMobile') ? $this->strFieldMobile : 'mobile';
+        return property_exists($this, 'fieldMobile') ?
+            $this->fieldMobile :
+            'mobile';
     }
 
     /**
@@ -131,7 +143,9 @@ trait Field
      */
     public function authFieldPassword()
     {
-        return property_exists($this, 'strFieldPassword') ? $this->strFieldPassword : 'password';
+        return property_exists($this, 'fieldPassword') ?
+            $this->fieldPassword :
+            'password';
     }
 
     /**
@@ -141,7 +155,9 @@ trait Field
      */
     public function authFieldRegisterIp()
     {
-        return property_exists($this, 'strFieldRegisterIp') ? $this->strFieldRegisterIp : 'register_ip';
+        return property_exists($this, 'fieldRegisterIp') ?
+            $this->fieldRegisterIp :
+            'register_ip';
     }
 
     /**
@@ -151,7 +167,9 @@ trait Field
      */
     public function authFieldLoginTime()
     {
-        return property_exists($this, 'strFieldLoginTime') ? $this->strFieldLoginTime : 'login_time';
+        return property_exists($this, 'fieldLoginTime') ?
+            $this->fieldLoginTime :
+            'login_time';
     }
 
     /**
@@ -161,7 +179,9 @@ trait Field
      */
     public function authFieldLoginIp()
     {
-        return property_exists($this, 'strFieldLoginIp') ? $this->strFieldLoginIp : 'login_ip';
+        return property_exists($this, 'fieldLoginIp') ?
+            $this->fieldLoginIp :
+            'login_ip';
     }
 
     /**
@@ -171,7 +191,9 @@ trait Field
      */
     public function authFieldLoginCount()
     {
-        return property_exists($this, 'strFieldLoginCount') ? $this->strFieldLoginCount : 'login_count';
+        return property_exists($this, 'fieldLoginCount') ?
+            $this->fieldLoginCount :
+            'login_count';
     }
 
     /**
@@ -181,7 +203,9 @@ trait Field
      */
     public function authFieldStatus()
     {
-        return property_exists($this, 'strFieldStatus') ? $this->strFieldStatus : 'status';
+        return property_exists($this, 'fieldStatus') ?
+            $this->fieldStatus :
+            'status';
     }
 
     /**

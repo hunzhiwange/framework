@@ -18,10 +18,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap\auth;
+namespace Leevel\Bootstrap\Auth;
 
-use Leevel\auth;
-use Leevel\response;
+use Leevel\Auth;
+use Leevel\Response;
 
 /**
  * 退出登录.
@@ -53,7 +53,7 @@ trait Logout
      */
     public function displayLoginout()
     {
-        auth::logout();
+        Auth::logout();
 
         if ($this->isAjaxRequest()) {
             return [
@@ -61,7 +61,11 @@ trait Logout
             ];
         }
 
-        return response::redirect($this->getLogoutRedirect())->with('login_out', $this->getLogoutMessage());
+        return Response::redirect(
+            $this->getLogoutRedirect()
+        )->
+
+        with('login_out', $this->getLogoutMessage());
     }
 
     /**
@@ -81,6 +85,8 @@ trait Logout
      */
     protected function getLogoutRedirect()
     {
-        return property_exists($this, 'strLogoutRedirect') ? $this->strLogoutRedirect : 'auth/index';
+        return property_exists($this, 'logoutRedirect') ?
+            $this->logoutRedirect :
+            'auth/index';
     }
 }

@@ -18,12 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap\auth;
+namespace Leevel\Bootstrap\Auth;
 
-use Leevel\auth;
+use Leevel\Auth;
 use Leevel\auth\LoginFailed;
 use Leevel\Http\Request;
-use Leevel\response;
+use Leevel\Response;
 
 /**
  * 登录验证
@@ -45,7 +45,7 @@ trait Login
      */
     public function isLogin()
     {
-        return auth::isLogin();
+        return Auth::isLogin();
     }
 
     /**
@@ -55,7 +55,7 @@ trait Login
      */
     public function getLogin()
     {
-        return auth::getLogin();
+        return Auth::getLogin();
     }
 
     /**
@@ -75,22 +75,24 @@ trait Login
      */
     public function displayLoginForm()
     {
-        return response::view($this->getLoginView());
+        return Response::view(
+            $this->getLoginView()
+        );
     }
 
     /**
      * 登录验证
      *
-     * @param \Leevel\Http\Request $oRequest
+     * @param \Leevel\Http\Request $request
      *
      * @return array|\Leevel\Http\Response
      */
-    public function checkLogin(request $oRequest)
+    public function checkLogin(Request $request)
     {
-        //$this->validateLogin($oRequest);
+        //$this->validateLogin($request);
 
         try {
-            $aInput = $oRequest->alls([
+            $input = $request->alls([
                 'name|trim',
                 'password|trim',
                 'remember_me|trim',
@@ -100,20 +102,33 @@ trait Login
 
             $this->setAuthField();
 
-            $oUser = auth::login($aInput['name'], $aInput['password'], $aInput['remember_me'] ? $aInput['remember_time'] : null);
+            $user = Auth::login(
+                $input['name'],
+                $input['password'],
+                $input['remember_me'] ? $input['remember_time'] : null
+            );
 
             if ($this->isAjaxRequest()) {
-                $aReturn = [];
-                $aReturn['api_token'] = auth::getTokenName();
-                $aReturn['user'] = $oUser->toArray();
-                $aReturn['remember_key'] = auth::implodeTokenData($aInput['name'], $aInput['password']);
+                $return = [];
+                $return['api_token'] = Auth::getTokenName();
+                $return['user'] = $user->toArray();
+                $return['remember_key'] = Auth::implodeTokenData(
+                    $input['name'],
+                    $input['password']
+                );
 
-                return $aReturn;
+                return $return;
             }
 
-            return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name']));
-        } catch (LoginFailed $oE) {
-            return $this->sendFailedLoginResponse($oE->getMessage());
+            return $this->sendSucceededLoginResponse(
+                $this->getLoginSucceededMessage(
+                    $user['nikename'] ?: $user['name']
+                )
+            );
+        } catch (LoginFailed $e) {
+            return $this->sendFailedLoginResponse(
+                $e->getMessage()
+            );
         }
     }
 
@@ -124,114 +139,141 @@ trait Login
      */
     public function isLock()
     {
-        return auth::isLock();
+        return Auth::isLock();
     }
 
     /**
      * 锁定登录.
      *
-     * @param mixed $mixLoginTime
+     * @param mixed $loginTime
      */
-    public function lock($mixLoginTime = null)
+    public function lock($loginTime = null)
     {
-        auth::lock($mixLoginTime);
+        Auth::lock($loginTime);
     }
 
     /**
      * 解锁
      *
-     * @param \Leevel\Http\Request $oRequest
+     * @param \Leevel\Http\Request $request
      *
      * @return array|\Leevel\Http\Response
      */
-    public function unlock(request $oRequest)
+    public function unlock(Request $request)
     {
-        $booValidate = false;
-        $arrResult = $this->onlyValidate($oRequest, $booValidate);
-        if (true === $booValidate) {
-            auth::unlock();
+        $validate = false;
+
+        $result = $this->onlyValidate($request, $validate);
+
+        if (true === $validate) {
+            Auth::unlock();
         }
 
-        return $arrResult;
+        return $result;
     }
 
     /**
      * 仅仅验证用户和密码是否正确.
      *
-     * @param \Leevel\Http\Request $oRequest
-     * @param bool                 $booValidate
+     * @param \Leevel\Http\Request $request
+     * @param bool                 $validate
      *
      * @return array|\Leevel\Http\Response
      */
-    public function onlyValidate(request $oRequest, &$booValidate = false)
+    public function onlyValidate(Request $request, &$validate = false)
     {
-        //$this->validateLogin($oRequest);
+        //$this->validateLogin($request);
 
         try {
-            $aInput = $oRequest->alls([
+            $input = $request->alls([
                 'name|trim',
                 'password|trim',
             ]);
 
             $this->setAuthField();
 
-            $oUser = auth::onlyValidate($aInput['name'], $aInput['password']);
+            $user = Auth::onlyValidate(
+                $input['name'],
+                $input['password']
+            );
 
-            $booValidate = true;
+            $validate = true;
 
             if ($this->isAjaxRequest()) {
-                return ['message' => $this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name'])];
+                return [
+                    'message' => $this->getLoginSucceededMessage(
+                        $user['nikename'] ?: $user['name']
+                    ),
+                ];
             }
 
-            return $this->sendSucceededLoginResponse($this->getLoginSucceededMessage($oUser['nikename'] ?: $oUser['name']));
-        } catch (LoginFailed $oE) {
-            $booValidate = false;
+            return $this->sendSucceededLoginResponse(
+                $this->getLoginSucceededMessage(
+                    $user['nikename'] ?: $user['name']
+                )
+            );
+        } catch (LoginFailed $e) {
+            $validate = false;
 
-            return $this->sendFailedLoginResponse($oE->getMessage());
+            return $this->sendFailedLoginResponse(
+                $e->getMessage()
+            );
         }
     }
 
     /**
      * 发送正确登录消息.
      *
-     * @param string $strSuccess
+     * @param string $success
      *
      * @return bool|\Leevel\Http\Response
      */
-    protected function sendSucceededLoginResponse($strSuccess)
+    protected function sendSucceededLoginResponse($success)
     {
-        return response::redirect($this->getLoginSucceededRedirect())->with('login_succeeded', $strSuccess);
+        return Response::redirect(
+            $this->getLoginSucceededRedirect()
+        )->
+
+        with('login_succeeded', $success);
     }
 
     /**
      * 发送错误登录消息.
      *
-     * @param string $strError
+     * @param string $error
      *
      * @return bool|\Leevel\Http\Response
      */
-    protected function sendFailedLoginResponse($strError)
+    protected function sendFailedLoginResponse($error)
     {
         if ($this->isAjaxRequest()) {
             return [
                 'code'    => 400,
-                'message' => $strError,
+                'message' => $error,
             ];
         }
 
-        return response::redirect($this->getLoginFailedRedirect())->withErrors([
-            'login_error' => $strError,
+        return Response::redirect(
+            $this->getLoginFailedRedirect()
+        )->
+
+        withErrors([
+            'login_error' => $error,
         ]);
     }
 
     /**
      * 验证登录请求
      *
-     * @param \Leevel\Http\Request $oRequest
+     * @param \Leevel\Http\Request $request
      */
-    protected function validateLogin(request $oRequest)
+    protected function validateLogin(Request $request)
     {
-        $this->validate($oRequest, $this->getValidateLoginRule(), $this->getValidateLoginMessage());
+        $this->validate(
+            $request,
+            $this->getValidateLoginRule(),
+            $this->getValidateLoginMessage()
+        );
     }
 
     /**
@@ -241,10 +283,12 @@ trait Login
      */
     protected function getValidateLoginRule()
     {
-        return property_exists($this, 'strValidateLoginRule') ? $this->strValidateLoginRule : [
-            'name'     => 'required|max_length:50',
-            'password' => 'required|min_length:6',
-        ];
+        return property_exists($this, 'validateLoginRule') ?
+            $this->validateLoginRule :
+            [
+                'name'     => 'required|max_length:50',
+                'password' => 'required|min_length:6',
+            ];
     }
 
     /**
@@ -254,19 +298,21 @@ trait Login
      */
     protected function getValidateLoginMessage()
     {
-        return property_exists($this, 'strValidateLoginMessage') ? $this->strValidateLoginMessage : [];
+        return property_exists($this, 'validateLoginMessage') ?
+            $this->validateLoginMessage :
+            [];
     }
 
     /**
      * 获取登录消息.
      *
-     * @param string $strName
+     * @param string $name
      *
      * @return string
      */
-    protected function getLoginSucceededMessage($strName)
+    protected function getLoginSucceededMessage($name)
     {
-        return __('%s 登录成功', $strName);
+        return __('%s 登录成功', $name);
     }
 
     /**
@@ -276,7 +322,9 @@ trait Login
      */
     protected function getLoginView()
     {
-        return property_exists($this, 'strLoginView') ? $this->strLoginView : '';
+        return property_exists($this, 'loginView') ?
+            $this->loginView :
+            '';
     }
 
     /**
@@ -286,7 +334,9 @@ trait Login
      */
     protected function getLoginSucceededRedirect()
     {
-        return property_exists($this, 'strLoginSucceededRedirect') ? $this->strLoginSucceededRedirect : 'auth/index';
+        return property_exists($this, 'loginSucceededRedirect') ?
+            $this->loginSucceededRedirect :
+            'auth/index';
     }
 
     /**
@@ -296,6 +346,8 @@ trait Login
      */
     protected function getLoginFailedRedirect()
     {
-        return property_exists($this, 'strLoginFailedRedirect') ? $this->strLoginFailedRedirect : 'auth/login';
+        return property_exists($this, 'loginFailedRedirect') ?
+            $this->loginFailedRedirect :
+            'auth/login';
     }
 }
