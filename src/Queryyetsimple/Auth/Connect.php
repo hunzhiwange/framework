@@ -44,56 +44,56 @@ abstract class Connect
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $oUser;
+    protected $user;
 
     /**
      * 加密.
      *
      * @var \Leevel\Encryption\IEncryption
      */
-    protected $oEncryption;
+    protected $encryption;
 
     /**
      * 验证
      *
      * @var \Leevel\Validate\IValidate
      */
-    protected $oValidate;
+    protected $validate;
 
     /**
      * 是否已经设置过登录字段.
      *
      * @var bool
      */
-    protected $booSetField = false;
+    protected $setField = false;
 
     /**
      * 认证名字.
      *
      * @var string
      */
-    protected $strTokenName;
+    protected $tokenName;
 
     /**
      * 用户持久化名字.
      *
      * @return string
      */
-    protected $strUserPersistenceName;
+    protected $userPersistenceName;
 
     /**
      * 锁定名字.
      *
      * @return string
      */
-    protected $strLockName;
+    protected $lockName;
 
     /**
      * 登录字段设置.
      *
      * @var array
      */
-    protected $arrField = [
+    protected $fields = [
         'id'          => 'id',
         'name'        => 'name',
         'nikename'    => 'nikename',
@@ -113,7 +113,7 @@ abstract class Connect
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'user_persistence'  => 'user_persistence',
         'token_persistence' => 'token_persistence',
         'lock_persistence'  => 'lock_persistence',
@@ -123,15 +123,15 @@ abstract class Connect
     /**
      * 构造函数.
      *
-     * @param array $arrOption
+     * @param array $option
      */
-    public function __construct(IEntity $oUser, IEncryption $oEncryption, IValidate $oValidate, array $arrOption = [])
+    public function __construct(IEntity $user, IEncryption $encryption, IValidate $validate, array $option = [])
     {
-        $this->oUser = $oUser;
-        $this->oEncryption = $oEncryption;
-        $this->oValidate = $oValidate;
+        $this->user = $user;
+        $this->encryption = $encryption;
+        $this->validate = $validate;
 
-        $this->options($arrOption);
+        $this->options($option);
     }
 
     /**
@@ -151,15 +151,17 @@ abstract class Connect
      */
     public function getLogin()
     {
-        $sToken = $this->tokenData();
-        list($nUserId, $sPassword) = $sToken ? $this->explodeTokenData($sToken) : [
+        $token = $this->tokenData();
+
+        list($userId, $password) = $token ? $this->explodeTokenData($token) : [
             '',
             '',
         ];
 
-        if ($nUserId && $sPassword) {
-            return $this->getPersistenceUser($nUserId, $sPassword) ?: false;
+        if ($userId && $password) {
+            return $this->getPersistenceUser($userId, $password) ?: false;
         }
+
         $this->logout();
 
         return false;
@@ -168,51 +170,62 @@ abstract class Connect
     /**
      * 登录验证
      *
-     * @param mixed  $mixName
-     * @param string $sPassword
-     * @param mixed  $mixLoginTime
+     * @param mixed  $name
+     * @param string $password
+     * @param mixed  $loginTime
      *
      * @return \Leevel\Database\Ddd\IEntity|void
      */
-    public function login($mixName, $sPassword, $mixLoginTime = null)
+    public function login($name, $password, $loginTime = null)
     {
-        $oUser = $this->onlyValidate($mixName, $sPassword);
+        $user = $this->onlyValidate($name, $password);
 
-        $this->setLoginTokenName($oUser);
+        $this->setLoginTokenName($user);
 
-        $this->tokenPersistence($oUser->{$this->getField('id')}, $oUser->{$this->getField('password')}, $mixLoginTime);
+        $this->tokenPersistence(
+            $user->{$this->getField('id')},
+            $user->{$this->getField('password')},
+            $loginTime
+        );
 
-        return $oUser;
+        return $user;
     }
 
     /**
      * 仅仅验证登录用户和密码是否正确.
      *
-     * @param mixed  $mixName
-     * @param string $sPassword
+     * @param mixed  $name
+     * @param string $password
      *
      * @return \Leevel\Database\Ddd\IEntity|void
      */
-    public function onlyValidate($mixName, $sPassword)
+    public function onlyValidate($name, $password)
     {
-        $mixName = trim($mixName);
-        $sPassword = trim($sPassword);
+        $name = trim($name);
+        $password = trim($password);
 
-        if (!$mixName || !$sPassword) {
+        if (!$name || !$password) {
             throw new LoginFailed(__('帐号或者密码不能为空'));
         }
 
-        $oUser = $this->oUser->where($this->parseLoginField($mixName), $mixName)->getOne();
+        $user = $this->user->where(
+            $this->parseLoginField($name),
+            $name
+        )->getOne();
 
-        if (empty($oUser->{$this->getField('id')}) || 'enable' !== $oUser->{$this->getField('status')}) {
+        if (empty($user->{$this->getField('id')}) ||
+            'enable' !== $user->{$this->getField('status')}) {
             throw new LoginFailed(__('帐号不存在或者未启用'));
         }
 
-        if (!$this->checkPassword($sPassword, $oUser->{$this->getField('password')}, $oUser->{$this->getField('random')})) {
+        if (!$this->checkPassword(
+            $password,
+            $user->{$this->getField('password')},
+            $user->{$this->getField('random')})) {
             throw new LoginFailed(__('账号或者密码错误'));
         }
 
-        return $oUser;
+        return $user;
     }
 
     /**
@@ -220,9 +233,17 @@ abstract class Connect
      */
     public function logout()
     {
-        $this->deletePersistence($this->getUserPersistenceName());
-        $this->deletePersistence($this->getTokenName());
-        $this->deletePersistence($this->getLockName());
+        $this->deletePersistence(
+            $this->getUserPersistenceName()
+        );
+
+        $this->deletePersistence(
+            $this->getTokenName()
+        );
+
+        $this->deletePersistence(
+            $this->getLockName()
+        );
     }
 
     /**
@@ -238,11 +259,15 @@ abstract class Connect
     /**
      * 锁定登录.
      *
-     * @param mixed $mixLoginTime
+     * @param mixed $loginTime
      */
-    public function lock($mixLoginTime = null)
+    public function lock($loginTime = null)
     {
-        $this->setPersistence($this->getLockName(), 'locked', $mixLoginTime);
+        $this->setPersistence(
+            $this->getLockName(),
+            'locked',
+            $loginTime
+        );
     }
 
     /**
@@ -256,125 +281,141 @@ abstract class Connect
     /**
      * 修改密码
      *
-     * @param mixed  $mixName
-     * @param string $sNewPassword
-     * @param string $sConfirmPassword
-     * @param string $sOldPassword
-     * @param bool   $bIgnoreOldPassword
+     * @param mixed  $name
+     * @param string $newPassword
+     * @param string $confirmPassword
+     * @param string $oldPassword
+     * @param bool   $ignoreOldPassword
      *
      * @return mixed
      */
-    public function changePassword($mixName, $sNewPassword, $sConfirmPassword, $sOldPassword, $bIgnoreOldPassword = false)
+    public function changePassword($name, $newPassword, $confirmPassword, $oldPassword, $ignoreOldPassword = false)
     {
-        if (!$mixName) {
+        if (!$name) {
             throw new ChangePasswordFailed(__('账号或者 ID 不能为空'));
         }
 
-        if (false === $bIgnoreOldPassword && '' === $sOldPassword) {
+        if (false === $ignoreOldPassword && '' === $oldPassword) {
             throw new ChangePasswordFailed(__('旧密码不能为空'));
         }
 
-        if (!$sNewPassword) {
+        if (!$newPassword) {
             throw new ChangePasswordFailed(__('新密码不能为空'));
         }
 
-        if ($sConfirmPassword !== $sNewPassword) {
+        if ($confirmPassword !== $newPassword) {
             throw new ChangePasswordFailed(__('两次输入的密码不一致'));
         }
 
-        $oUser = $this->oUser->where($this->parseChangePasswordField($mixName), $mixName)->setColumns('id,status,random,password')->getOne();
+        $user = $this->user->
 
-        if (empty($oUser->{$this->getField('id')}) || 'enable' !== $oUser->{$this->getField('status')}) {
+        where($this->parseChangePasswordField($name), $name)->
+
+        setColumns('id,status,random,password')->
+
+        getOne();
+
+        if (empty($user->{$this->getField('id')}) ||
+            'enable' !== $user->{$this->getField('status')}) {
             throw new ChangePasswordFailed(__('帐号不存在或者未启用'));
         }
 
-        if (!$bIgnoreOldPassword && !$this->checkPassword($sOldPassword, $oUser->{$this->getField('password')}, $oUser->{$this->getField('random')})) {
+        if (!$ignoreOldPassword &&
+            !$this->checkPassword(
+                $oldPassword,
+                $user->{$this->getField('password')},
+                $user->{$this->getField('random')})) {
             throw new ChangePasswordFailed(__('用户输入的旧密码错误'));
         }
 
         try {
-            $oUser->password = $this->encodePassword($sNewPassword, $oUser->random);
-            $oUser->update();
+            $user->password = $this->encodePassword($newPassword, $user->random);
+            $user->update();
 
-            return $oUser;
-        } catch (Exception $oE) {
-            throw new ChangePasswordFailed($oE->getMessage());
+            return $user;
+        } catch (Exception $e) {
+            throw new ChangePasswordFailed($e->getMessage());
         }
     }
 
     /**
      * 注册用户.
      *
-     * @param string $strName
-     * @param string $strPassword
-     * @param string $strComfirmPassword
-     * @param string $strNikename
-     * @param string $strIp
-     * @param string $strEmail
-     * @param string $strMobile
+     * @param string $name
+     * @param string $password
+     * @param string $comfirmPassword
+     * @param string $nikename
+     * @param string $ip
+     * @param string $email
+     * @param string $mobile
      *
      * @return mixed
      */
-    public function registerUser($strName, $strPassword, $strComfirmPassword, $strNikename = null, $strIp = null, $strEmail = null, $strMobile = null)
+    public function registerUser($name, $password, $comfirmPassword, $nikename = null, $ip = null, $email = null, $mobile = null)
     {
-        $strName = trim($strName);
-        $strNikename = trim($strNikename);
-        $strPassword = trim($strPassword);
-        $strComfirmPassword = trim($strComfirmPassword);
-        $strEmail = trim($strEmail);
-        $strMobile = trim($strMobile);
+        $name = trim($name);
+        $nikename = trim($nikename);
+        $password = trim($password);
+        $comfirmPassword = trim($comfirmPassword);
+        $email = trim($email);
+        $mobile = trim($mobile);
 
-        if (!$strName || $strName !== addslashes($strName)) {
+        if (!$name ||
+            $name !== addslashes($name)) {
             throw new RegisterFailed(__('用户名不能为空或包含非法字符'));
         }
 
-        if (!$strPassword || $strPassword !== addslashes($strPassword) || false !== strpos($strPassword, "\n") || false !== strpos($strPassword, "\r") || false !== strpos($strPassword, "\t")) {
+        if (!$password ||
+            $password !== addslashes($password) ||
+            false !== strpos($password, "\n") ||
+            false !== strpos($password, "\r") ||
+            false !== strpos($password, "\t")) {
             throw new RegisterFailed(__('密码不能为空或包含非法字符'));
         }
 
-        if ($strPassword !== $strComfirmPassword) {
+        if ($password !== $comfirmPassword) {
             throw new RegisterFailed(__('两次输入的密码不一致'));
         }
 
         try {
-            $oUser = $this->oUser->
+            $user = $this->user->
 
-            forceProp('name', $strName)->
+            forceProp('name', $name)->
 
-            ifs(null !== $strNikename)->forceProp('nikename', $strNikename)->endIfs()->
+            ifs(null !== $nikename)->forceProp('nikename', $nikename)->endIfs()->
 
-            forceProp('random', $strRandom = Str::randAlphaNum(6))->
+            forceProp('random', $random = Str::randAlphaNum(6))->
 
-            forceProp('password', $this->encodePassword($strPassword, $strRandom))->
+            forceProp('password', $this->encodePassword($password, $random))->
 
-            ifs(null !== $strEmail)->forceProp('email', $strEmail)->endIfs()->
+            ifs(null !== $email)->forceProp('email', $email)->endIfs()->
 
-            ifs(null !== $strMobile)->forceProp('mobile', $strMobile)->endIfs()->
+            ifs(null !== $mobile)->forceProp('mobile', $mobile)->endIfs()->
 
-            ifs(null !== $strIp)->forceProp('register_ip', $strIp)->endIfs()->
+            ifs(null !== $ip)->forceProp('register_ip', $ip)->endIfs()->
 
             create();
 
-            if (empty($oUser->id)) {
+            if (empty($user->id)) {
                 throw new RegisterFailed(__('注册失败'));
             }
 
-            return $oUser;
-        } catch (Exception $oE) {
-            throw new RegisterFailed($oE->getMessage());
+            return $user;
+        } catch (Exception $e) {
+            throw new RegisterFailed($e->getMessage());
         }
     }
 
     /**
      * 设置认证名字.
      *
-     * @param string $strTokenName
+     * @param string $tokenName
      *
      * @return string
      */
-    public function setTokenName($strTokenName)
+    public function setTokenName($tokenName)
     {
-        return $this->strTokenName = $strTokenName;
+        return $this->tokenName = $tokenName;
     }
 
     /**
@@ -384,23 +425,23 @@ abstract class Connect
      */
     public function getTokenName()
     {
-        if (null !== $this->strTokenName) {
-            return $this->strTokenName;
+        if (null !== $this->tokenName) {
+            return $this->tokenName;
         }
 
-        return $this->strTokenName = $this->getOption('token_persistence');
+        return $this->tokenName = $this->getOption('token_persistence');
     }
 
     /**
      * 设置用户信息持久化名字.
      *
-     * @param string $strUserPersistenceName
+     * @param string $userPersistenceName
      *
      * @return string
      */
-    public function setUserPersistenceName($strUserPersistenceName)
+    public function setUserPersistenceName($userPersistenceName)
     {
-        return $this->strUserPersistenceName = $strUserPersistenceName;
+        return $this->userPersistenceName = $userPersistenceName;
     }
 
     /**
@@ -410,23 +451,24 @@ abstract class Connect
      */
     public function getUserPersistenceName()
     {
-        if (null !== $this->strUserPersistenceName) {
-            return $this->strUserPersistenceName;
+        if (null !== $this->userPersistenceName) {
+            return $this->userPersistenceName;
         }
 
-        return $this->strUserPersistenceName = $this->getTokenName().'@'.$this->getOption('user_persistence');
+        return $this->userPersistenceName = $this->getTokenName().'@'.
+            $this->getOption('user_persistence');
     }
 
     /**
      * 设置锁定名字.
      *
-     * @param string $strLockName
+     * @param string $lockName
      *
      * @return string
      */
-    public function setLockName($strLockName)
+    public function setLockName($lockName)
     {
-        return $this->strLockName = $strLockName;
+        return $this->lockName = $lockName;
     }
 
     /**
@@ -436,29 +478,31 @@ abstract class Connect
      */
     public function getLockName()
     {
-        if (null !== $this->strLockName) {
-            return $this->strLockName;
+        if (null !== $this->lockName) {
+            return $this->lockName;
         }
 
-        return $this->strLockName = $this->getTokenName().'@'.$this->getOption('lock_persistence');
+        return $this->lockName = $this->getTokenName().'@'.
+            $this->getOption('lock_persistence');
     }
 
     /**
      * 设置字段.
      *
-     * @param array $arrField
-     * @param bool  $booForce
+     * @param array $fields
+     * @param bool  $force
      */
-    public function setField(array $arrField, $booForce = false)
+    public function setField(array $fields, $force = false)
     {
-        if (false === $booForce && $this->booSetField = true) {
+        if (false === $force && $this->setField = true) {
             return;
         }
 
-        $this->booSetField = true;
-        foreach ($arrField as $strKey => $strField) {
-            if (isset($this->arrField[$strKey])) {
-                $this->arrField[$strKey] = $strField;
+        $this->setField = true;
+
+        foreach ($fields as $key => $field) {
+            if (isset($this->fields[$key])) {
+                $this->fields[$key] = $field;
             }
         }
     }
@@ -466,115 +510,127 @@ abstract class Connect
     /**
      * 获取字段.
      *
-     * @param array $strField
+     * @param array $field
      *
      * @return mixed
      */
-    public function getField($strField)
+    public function getField($field)
     {
-        return $this->arrField[$strField] ?? null;
+        return $this->fields[$field] ?? null;
     }
 
     /**
      * 批量获取字段.
      *
-     * @param array $arrField
-     * @param bool  $booFilterNull
+     * @param array $fields
+     * @param bool  $filterNull
      *
      * @return array
      */
-    public function getFields(array $arrField, $booFilterNull = true)
+    public function getFields(array $fields, $filterNull = true)
     {
-        $arrData = [];
-        foreach ($arrField as $strField) {
-            if (null === ($mixValue = $this->getField($strField)) && true === $booFilterNull) {
+        $data = [];
+
+        foreach ($fields as $field) {
+            if (null === ($value = $this->getField($field)) &&
+                true === $filterNull) {
                 continue;
             }
-            $arrData[] = $mixValue;
+
+            $data[] = $value;
         }
 
-        return $arrData;
+        return $data;
     }
 
     /**
      * 验证数据分离.
      *
-     * @param string $sAuth
+     * @param string $auth
      *
      * @return mixed
      */
-    public function explodeTokenData($sAuth)
+    public function explodeTokenData($auth)
     {
-        if (!$sAuth) {
+        if (!$auth) {
             return false;
         }
-        $sAuth = $this->oEncryption->decrypt($sAuth);
 
-        return $sAuth ? explode("\t", $sAuth) : false;
+        $auth = $this->encryption->decrypt($auth);
+
+        return $auth ? explode("\t", $auth) : false;
     }
 
     /**
      * 验证数据组合.
      *
-     * @param mixed  $maxIdentifier
-     * @param string $strPassword
+     * @param mixed  $identifier
+     * @param string $password
      *
      * @return string
      */
-    public function implodeTokenData($maxIdentifier, $strPassword)
+    public function implodeTokenData($identifier, $password)
     {
-        return $this->oEncryption->encrypt($maxIdentifier."\t".$strPassword);
+        return $this->encryption->encrypt(
+            $identifier."\t".$password
+        );
     }
 
     /**
      * 验证密码是否正确.
      *
-     * @param string $sSourcePassword
-     * @param string $sPassword
-     * @param string $sRandom
+     * @param string $sourcePassword
+     * @param string $password
+     * @param string $random
      *
      * @return bool
      */
-    protected function checkPassword($sSourcePassword, $sPassword, $sRandom)
+    protected function checkPassword($sourcePassword, $password, $random)
     {
-        return $this->encodePassword($sSourcePassword, $sRandom) === $sPassword;
+        return $this->encodePassword($sourcePassword, $random) === $password;
     }
 
     /**
      * 加密密码
      *
-     * @param string $sSourcePassword
-     * @param string $sRandom
+     * @param string $sourcePassword
+     * @param string $random
      *
      * @return string
      */
-    protected function encodePassword($sSourcePassword, $sRandom)
+    protected function encodePassword($sourcePassword, $random)
     {
-        return md5(md5($sSourcePassword).$sRandom);
+        return md5(md5($sourcePassword).$random);
     }
 
     /**
      * 解析登录字段.
      *
-     * @param string $sName
+     * @param string $name
      *
      * @return string
      */
-    protected function parseLoginField($sName)
+    protected function parseLoginField($name)
     {
-        return $this->oValidate->email($sName) ? $this->getField('email') : ($this->oValidate->mobile($sName) ? $this->getField('mobile') : $this->getField('name'));
+        return $this->validate->email($name) ?
+            $this->getField('email') :
+            ($this->validate->mobile($name) ?
+                $this->getField('mobile') :
+                $this->getField('name'));
     }
 
     /**
      * 解析修改密码字段.
      *
-     * @param string $sName
+     * @param string $name
      *
      * @return string
      */
-    protected function parseChangePasswordField($sName)
+    protected function parseChangePasswordField($name)
     {
-        return is_numeric($sName) ? $this->getField('id') : $this->getField('name');
+        return is_numeric($name) ?
+            $this->getField('id') :
+            $this->getField('name');
     }
 
     /**
@@ -584,38 +640,44 @@ abstract class Connect
      */
     protected function getUserFromPersistence()
     {
-        return $this->getPersistence($this->getUserPersistenceName());
+        return $this->getPersistence(
+            $this->getUserPersistenceName()
+        );
     }
 
     /**
      * 将用户信息保存至持久化.
      *
-     * @param \Leevel\Database\Ddd\IEntity $oUser
+     * @param \Leevel\Database\Ddd\IEntity $user
      *
      * @return array
      */
-    protected function setUserToPersistence($oUser)
+    protected function setUserToPersistence($user)
     {
-        $oUser = $oUser->toArray();
-        $this->setPersistence($this->getUserPersistenceName(), $oUser);
+        $user = $user->toArray();
 
-        return $oUser;
+        $this->setPersistence(
+            $this->getUserPersistenceName(),
+            $user
+        );
+
+        return $user;
     }
 
     /**
      * 从数据库获取用户信息.
      *
-     * @param int    $nUserId
-     * @param string $sPassword
+     * @param int    $userId
+     * @param string $password
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    protected function getUserFromDatabase($nUserId, $sPassword)
+    protected function getUserFromDatabase($userId, $password)
     {
-        return $this->oUser->
-        where($this->getField('id'), $nUserId)->
+        return $this->user->
+        where($this->getField('id'), $userId)->
 
-        where($this->getField('password'), $sPassword)->
+        where($this->getField('password'), $password)->
 
         where($this->getField('status'), 'enable')->
 
@@ -627,20 +689,21 @@ abstract class Connect
     /**
      * 获取用户数据.
      *
-     * @param int    $nUserId
-     * @param string $sPassword
+     * @param int    $userId
+     * @param string $password
      *
      * @return mixed
      */
-    protected function getPersistenceUser($nUserId, $sPassword)
+    protected function getPersistenceUser($userId, $password)
     {
-        if ($arrUser = $this->getUserFromPersistence()) {
-            return $arrUser;
+        if ($user = $this->getUserFromPersistence()) {
+            return $user;
         }
 
-        if ($oUser = $this->getUserFromDatabase($nUserId, $sPassword)) {
-            return $this->setUserToPersistence($oUser);
+        if ($user = $this->getUserFromDatabase($userId, $password)) {
+            return $this->setUserToPersistence($user);
         }
+
         $this->logout();
 
         return false;
@@ -649,13 +712,17 @@ abstract class Connect
     /**
      * 认证信息持久化.
      *
-     * @param int    $intId
-     * @param string $strPassword
-     * @param mixed  $mixLoginTime
+     * @param int    $id
+     * @param string $password
+     * @param mixed  $loginTime
      */
-    protected function tokenPersistence($intId, $strPassword, $mixLoginTime = null)
+    protected function tokenPersistence($id, $password, $loginTime = null)
     {
-        $this->setPersistence($this->getTokenName(), $this->implodeTokenData($intId, $strPassword), $mixLoginTime);
+        $this->setPersistence(
+            $this->getTokenName(),
+            $this->implodeTokenData($id, $password),
+            $loginTime
+        );
     }
 
     /**
@@ -665,7 +732,9 @@ abstract class Connect
      */
     protected function tokenData()
     {
-        return $this->getPersistence($this->getTokenName());
+        return $this->getPersistence(
+            $this->getTokenName()
+        );
     }
 
     /**
@@ -673,6 +742,8 @@ abstract class Connect
      */
     protected function tokenDelete()
     {
-        $this->deletePersistence($this->getTokenName());
+        $this->deletePersistence(
+            $this->getTokenName()
+        );
     }
 }

@@ -41,66 +41,66 @@ class Session extends Connect implements IConnect
      *
      * @var \Leevel\Session\ISession
      */
-    protected $oSession;
+    protected $session;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IEntity   $oUser
-     * @param \Leevel\Encryption\IEncryption $oEncryption
-     * @param \Leevel\Validate\IValidate     $oValidate
-     * @param \Leevel\Session\ISession       $oSession
-     * @param array                          $arrOption
+     * @param \Leevel\Database\Ddd\IEntity   $user
+     * @param \Leevel\Encryption\IEncryption $encryption
+     * @param \Leevel\Validate\IValidate     $validate
+     * @param \Leevel\Session\ISession       $session
+     * @param array                          $option
      */
-    public function __construct(IEntity $oUser, IEncryption $oEncryption, IValidate $oValidate, ISession $oSession, array $arrOption = [])
+    public function __construct(IEntity $user, IEncryption $encryption, IValidate $validate, ISession $session, array $option = [])
     {
-        $this->oSession = $oSession;
+        $this->session = $session;
 
-        parent::__construct($oUser, $oEncryption, $oValidate, $arrOption);
+        parent::__construct($user, $encryption, $validate, $option);
     }
 
     /**
      * 设置认证名字.
      *
-     * @param \Leevel\Database\Ddd\IEntity $oUser
+     * @param \Leevel\Database\Ddd\IEntity $user
      */
-    protected function setLoginTokenName($oUser)
+    protected function setLoginTokenName($user)
     {
     }
 
     /**
      * 数据持久化.
      *
-     * @param string $strKey
-     * @param string $mixValue
-     * @param mixed  $mixExpire
+     * @param string $key
+     * @param string $value
+     * @param mixed  $expire
      */
-    protected function setPersistence($strKey, $mixValue, $mixExpire = null)
+    protected function setPersistence($key, $value, $expire = null)
     {
-        $this->oSession->set($strKey, $mixValue, [
-            'expire' => $mixExpire,
+        $this->session->set($key, $value, [
+            'expire' => $expire,
         ]);
     }
 
     /**
      * 获取持久化数据.
      *
-     * @param string $strKey
+     * @param string $key
      *
      * @return mixed
      */
-    protected function getPersistence($strKey)
+    protected function getPersistence($key)
     {
-        return $this->oSession->get($strKey);
+        return $this->session->get($key);
     }
 
     /**
      * 删除持久化数据.
      *
-     * @param string $strKey
+     * @param string $key
      */
-    protected function deletePersistence($strKey)
+    protected function deletePersistence($key)
     {
-        $this->oSession->delele($strKey);
+        $this->session->delele($key);
     }
 }

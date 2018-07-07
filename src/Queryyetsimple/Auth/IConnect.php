@@ -48,23 +48,23 @@ interface IConnect
     /**
      * 登录验证
      *
-     * @param mixed  $mixName
-     * @param string $sPassword
-     * @param mixed  $mixLoginTime
+     * @param mixed  $name
+     * @param string $password
+     * @param mixed  $loginTime
      *
      * @return \Leevel\Database\Ddd\IEntity|void
      */
-    public function login($mixName, $sPassword, $mixLoginTime = null);
+    public function login($name, $password, $loginTime = null);
 
     /**
      * 仅仅验证登录用户和密码是否正确.
      *
-     * @param mixed  $mixName
-     * @param string $sPassword
+     * @param mixed  $name
+     * @param string $password
      *
      * @return \Leevel\Database\Ddd\IEntity|void
      */
-    public function onlyValidate($mixName, $sPassword);
+    public function onlyValidate($name, $password);
 
     /**
      * 登出.
@@ -81,9 +81,9 @@ interface IConnect
     /**
      * 锁定登录.
      *
-     * @param mixed $mixLoginTime
+     * @param mixed $loginTime
      */
-    public function lock($mixLoginTime = null);
+    public function lock($loginTime = null);
 
     /**
      * 解锁
@@ -93,39 +93,39 @@ interface IConnect
     /**
      * 修改密码
      *
-     * @param mixed  $mixName
-     * @param string $sNewPassword
-     * @param string $sConfirmPassword
-     * @param string $sOldPassword
-     * @param bool   $bIgnoreOldPassword
+     * @param mixed  $name
+     * @param string $newPassword
+     * @param string $confirmPassword
+     * @param string $oldPassword
+     * @param bool   $ignoreOldPassword
      *
      * @return mixed
      */
-    public function changePassword($mixName, $sNewPassword, $sConfirmPassword, $sOldPassword, $bIgnoreOldPassword = false);
+    public function changePassword($name, $newPassword, $confirmPassword, $oldPassword, $ignoreOldPassword = false);
 
     /**
      * 注册用户.
      *
-     * @param string $strName
-     * @param string $strPassword
-     * @param string $strComfirmPassword
-     * @param string $strNikename
-     * @param string $strIp
-     * @param string $strEmail
-     * @param string $strMobile
+     * @param string $name
+     * @param string $password
+     * @param string $comfirmPassword
+     * @param string $nikename
+     * @param string $ip
+     * @param string $email
+     * @param string $mobile
      *
      * @return mixed
      */
-    public function registerUser($strName, $strPassword, $strComfirmPassword, $strNikename = null, $strIp = null, $strEmail = null, $strMobile = null);
+    public function registerUser($name, $password, $comfirmPassword, $nikename = null, $ip = null, $email = null, $mobile = null);
 
     /**
      * 设置认证名字.
      *
-     * @param string $strTokenName
+     * @param string $tokenName
      *
      * @return string
      */
-    public function setTokenName($strTokenName);
+    public function setTokenName($tokenName);
 
     /**
      * 取得认证名字.
@@ -137,11 +137,11 @@ interface IConnect
     /**
      * 设置用户信息持久化名字.
      *
-     * @param string $strUserPersistenceName
+     * @param string $userPersistenceName
      *
      * @return string
      */
-    public function setUserPersistenceName($strUserPersistenceName);
+    public function setUserPersistenceName($userPersistenceName);
 
     /**
      * 取得用户信息持久化名字.
@@ -153,46 +153,46 @@ interface IConnect
     /**
      * 设置字段.
      *
-     * @param array $arrField
-     * @param bool  $booForce
+     * @param array $fields
+     * @param bool  $force
      */
-    public function setField(array $arrField, $booForce = false);
+    public function setField(array $fields, $force = false);
 
     /**
      * 获取字段.
      *
-     * @param array $strField
+     * @param array $field
      *
      * @return mixed
      */
-    public function getField($strField);
+    public function getField($field);
 
     /**
      * 批量获取字段.
      *
-     * @param array $arrField
-     * @param bool  $booFilterNull
+     * @param array $fields
+     * @param bool  $filterNull
      *
      * @return array
      */
-    public function getFields(array $arrField, $booFilterNull = true);
+    public function getFields(array $fields, $filterNull = true);
 
     /**
      * 验证数据分离.
      *
-     * @param string $sAuth
+     * @param string $auth
      *
      * @return mixed
      */
-    public function explodeTokenData($sAuth);
+    public function explodeTokenData($auth);
 
     /**
      * 验证数据组合.
      *
-     * @param mixed  $maxIdentifier
-     * @param string $strPassword
+     * @param mixed  $identifier
+     * @param string $password
      *
      * @return string
      */
-    public function implodeTokenData($maxIdentifier, $strPassword);
+    public function implodeTokenData($identifier, $password);
 }

@@ -40,69 +40,75 @@ class Token extends Connect implements IConnect
     /**
      * 验证
      *
-     * @var \Leevel\Validate\IValidate
+     * @var \Leevel\Cache\ICache
      */
-    protected $oCache;
+    protected $cache;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IEntity   $oUser
-     * @param \Leevel\Encryption\IEncryption $oEncryption
-     * @param \Leevel\Validate\IValidate     $oValidate
-     * @param \Leevel\Cache\ICache           $oCache
-     * @param array                          $arrOption
+     * @param \Leevel\Database\Ddd\IEntity   $user
+     * @param \Leevel\Encryption\IEncryption $encryption
+     * @param \Leevel\Validate\IValidate     $validate
+     * @param \Leevel\Cache\ICache           $cache
+     * @param array                          $option
      */
-    public function __construct(IEntity $oUser, IEncryption $oEncryption, IValidate $oValidate, ICache $oCache, array $arrOption = [])
+    public function __construct(IEntity $user, IEncryption $encryption, IValidate $validate, ICache $cache, array $option = [])
     {
-        $this->oCache = $oCache;
+        $this->cache = $cache;
 
-        parent::__construct($oUser, $oEncryption, $oValidate, $arrOption);
+        parent::__construct($user, $encryption, $validate, $option);
     }
 
     /**
      * 设置认证名字.
      *
-     * @param \Leevel\Database\Ddd\IEntity $oUser
+     * @param \Leevel\Database\Ddd\IEntity $user
      */
-    protected function setLoginTokenName($oUser)
+    protected function setLoginTokenName($user)
     {
-        $this->setTokenName(md5($oUser->{$this->getField('name')}.$oUser->{$this->getField('password')}.Str::randAlphaNum(5)));
+        $this->setTokenName(
+            md5(
+                $user->{$this->getField('name')}.
+                $user->{$this->getField('password')}.
+                Str::randAlphaNum(5)
+            )
+        );
     }
 
     /**
      * 数据持久化.
      *
-     * @param string $strKey
-     * @param string $mixValue
-     * @param mixed  $mixExpire
+     * @param string $key
+     * @param string $value
+     * @param mixed  $expire
      */
-    protected function setPersistence($strKey, $mixValue, $mixExpire = null)
+    protected function setPersistence($key, $value, $expire = null)
     {
-        $this->oCache->set($strKey, $mixValue, [
-            'expire' => $mixExpire,
+        $this->cache->set($key, $value, [
+            'expire' => $expire,
         ]);
     }
 
     /**
      * 获取持久化数据.
      *
-     * @param string $strKey
+     * @param string $key
      *
      * @return mixed
      */
-    protected function getPersistence($strKey)
+    protected function getPersistence($key)
     {
-        return $this->oCache->get($strKey);
+        return $this->cache->get($key);
     }
 
     /**
      * 删除持久化数据.
      *
-     * @param string $strKey
+     * @param string $key
      */
-    protected function deletePersistence($strKey)
+    protected function deletePersistence($key)
     {
-        $this->oCache->delele($strKey);
+        $this->cache->delele($key);
     }
 }
