@@ -46,9 +46,7 @@ then
         if [ "$result" != "" ]
         then
             echo $result
-
             isCheck=$result
-
         fi
     done 
     
