@@ -216,7 +216,12 @@ class Project extends Container implements IProject
         $this->path = $path;
 
         if (!is_writable($this->pathRuntime())) {
-            throw new RuntimeException(sprintf('Runtime path %s is not writeable.', $this->pathRuntime()));
+            throw new RuntimeException(
+                sprintf(
+                    'Runtime path %s is not writeable.',
+                    $this->pathRuntime()
+                )
+            );
         }
     }
 

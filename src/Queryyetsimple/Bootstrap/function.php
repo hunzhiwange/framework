@@ -19,28 +19,31 @@ declare(strict_types=1);
  */
 
 use Leevel\Bootstrap\Project;
-use Leevel\Log\Ilog;
+use Leevel\Log\ILog;
 use Leevel\Support\Debug\Dump;
 
 if (!function_exists('project')) {
     /**
      * 返回项目容器或者注入.
      *
-     * @param null|string $sInstance
-     * @param array       $arrArgs
+     * @param null|string $instance
+     * @param array       $args
      *
      * @return \Leevel\Bootstrap\Project
      */
-    function project($sInstance = null, $arrArgs = [])
+    function project($instance = null, $args = [])
     {
-        if (null === $sInstance) {
-            return project::singletons();
+        if (null === $instance) {
+            return Project::singletons();
         }
-        if (($objInstance = project::singletons()->make($sInstance, $arrArgs))) {
-            return $objInstance;
+        
+        if (($instance = Project::singletons()->make($instance, $args))) {
+            return $instance;
         }
 
-        throw new BadMethodCallException(sprintf('%s is not found in ioc container. ', $sInstance));
+        throw new BadMethodCallException(
+            sprintf('%s is not found in ioc container. ', $instance)
+        );
     }
 }
 
@@ -49,14 +52,14 @@ if (!function_exists('app')) {
      * 返回项目容器或者注入
      * project 别名函数.
      *
-     * @param null|string $sInstance
-     * @param array       $arrArgs
+     * @param null|string $instance
+     * @param array       $args
      *
      * @return \Leevel\Bootstrap\Project
      */
-    function app($sInstance = null, $arrArgs = [])
+    function app($instance = null, $args = [])
     {
-        return project($sInstance, $arrArgs);
+        return project($instance, $args);
     }
 }
 
@@ -142,34 +145,34 @@ if (!function_exists('env')) {
     /**
      * 取得项目的环境变量.支持 boolean, empty 和 null.
      *
-     * @param string $strName
-     * @param mixed  $mixDefault
+     * @param string $name
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    function env($strName, $mixDefault = null)
+    function env($name, $defaults = null)
     {
         switch (true) {
-            case array_key_exists($strName, $_ENV):
-                $strName = $_ENV[$strName];
+            case array_key_exists($name, $_ENV):
+                $name = $_ENV[$name];
 
                 break;
-            case array_key_exists($strName, $_SERVER):
-                $strName = $_SERVER[$strName];
+            case array_key_exists($name, $_SERVER):
+                $name = $_SERVER[$name];
 
                 break;
             default:
-                $strName = getenv($strName);
-                if (false === $strName) {
-                    $strName = value($mixDefault);
+                $name = getenv($name);
+                if (false === $name) {
+                    $name = value($defaults);
                 }
         }
 
-        if (is_string($strName)) {
-            $strName = strtolower($strName);
+        if (is_string($name)) {
+            $name = strtolower($name);
         }
 
-        switch ($strName) {
+        switch ($name) {
             case 'true':
             case '(true)':
                 return true;
@@ -184,11 +187,13 @@ if (!function_exists('env')) {
                 return;
         }
 
-        if ($strName && strlen($strName) > 1 && '"' === $strName[0] && '"' === $strName[strlen($strName) - 1]) {
-            return substr($strName, 1, -1);
+        if ($name && strlen($name) > 1 &&
+            '"' === $name[0] &&
+            '"' === $name[strlen($name) - 1]) {
+            return substr($name, 1, -1);
         }
 
-        return $strName;
+        return $name;
     }
 }
 
@@ -196,13 +201,13 @@ if (!function_exists('encrypt')) {
     /**
      * 加密字符串.
      *
-     * @param string $strValue
+     * @param string $value
      *
      * @return string
      */
-    function encrypt($strValue)
+    function encrypt($value)
     {
-        return project('encryption')->encrypt($strValue);
+        return project('encryption')->encrypt($value);
     }
 }
 
@@ -210,13 +215,13 @@ if (!function_exists('decrypt')) {
     /**
      * 解密字符串.
      *
-     * @param string $strValue
+     * @param string $value
      *
      * @return string
      */
-    function decrypt($strValue)
+    function decrypt($value)
     {
-        return project('encryption')->decrypt($strValue);
+        return project('encryption')->decrypt($value);
     }
 }
 
@@ -224,22 +229,22 @@ if (!function_exists('session')) {
     /**
      * 设置或者获取 session 值
      *
-     * @param array|string $mixKey
-     * @param mixed        $mixDefault
+     * @param array|string $key
+     * @param mixed        $defaults
      *
      * @return mixed
      */
-    function session($mixKey = null, $mixDefault = null)
+    function session($key = null, $defaults = null)
     {
-        if (null === $mixKey) {
+        if (null === $key) {
             return project('session');
         }
 
-        if (is_array($mixKey)) {
-            return project('session')->put($mixKey);
+        if (is_array($key)) {
+            return project('session')->put($key);
         }
 
-        return project('session')->get($mixKey, $mixDefault);
+        return project('session')->get($key, $defaults);
     }
 }
 
@@ -247,14 +252,14 @@ if (!function_exists('flash')) {
     /**
      * 返回 flash.
      *
-     * @param string $strKey
-     * @param mixed  $mixDefault
+     * @param string $key
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    function flash($strKey, $mixDefault = null)
+    function flash($key, $defaults = null)
     {
-        return project('session')->getFlash($strKey, $mixDefault);
+        return project('session')->getFlash($key, $defaults);
     }
 }
 
@@ -322,7 +327,11 @@ if (!function_exists('__sprintf')) {
      */
     function __sprintf(...$arr)
     {
-        return 0 === count($arr) ? '' : (count($arr) > 1 ? sprintf(...$arr) : $arr[0]);
+        return 0 === count($arr) ? 
+            '' : 
+            (count($arr) > 1 ? 
+                sprintf(...$arr) : 
+                $arr[0]);
     }
 }
 
@@ -353,9 +362,12 @@ if (!function_exists('value')) {
         if (0 === count($arr)) {
             return;
         }
-        $mixValue = array_shift($arr);
 
-        return !is_string($mixValue) && is_callable($mixValue) ? call_user_func_array($mixValue, $arr) : $mixValue;
+        $value = array_shift($arr);
+
+        return !is_string($value) && is_callable($value) ? 
+            call_user_func_array($value, $arr) : 
+            $value;
     }
 }
 
@@ -363,14 +375,14 @@ if (!function_exists('log')) {
     /**
      * 记录错误消息.
      *
-     * @param string $strLevel
-     * @param mixed  $mixMessage
-     * @param array  $arrContext
-     * @param bool   $booWrite
+     * @param string $level
+     * @param mixed  $message
+     * @param array  $context
+     * @param bool   $write
      */
-    function log($strLevel, $mixMessage, array $arrContext = [], $booWrite = false)
+    function log($level, $message, array $context = [], $write = false)
     {
-        project('log')->{$booWrite ? 'write' : 'log'}($strLevel, $mixMessage, $arrContext);
+        project('log')->{$write ? 'write' : 'log'}($level, $message, $context);
     }
 }
 
@@ -378,13 +390,13 @@ if (!function_exists('debug')) {
     /**
      * 记录错误消息 debug.
      *
-     * @param mixed $mixMessage
-     * @param array $arrContext
-     * @param bool  $booWrite
+     * @param mixed $message
+     * @param array $context
+     * @param bool  $write
      */
-    function debug($mixMessage, array $arrContext = [], $booWrite = false)
+    function debug($message, array $context = [], $write = false)
     {
-        log(ILog::DEBUG, $mixMessage, $arrContext, $booWrite);
+        log(ILog::DEBUG, $message, $context, $write);
     }
 }
 
@@ -392,13 +404,13 @@ if (!function_exists('info')) {
     /**
      * 记录错误消息 info.
      *
-     * @param mixed $mixMessage
-     * @param array $arrContext
-     * @param bool  $booWrite
+     * @param mixed $message
+     * @param array $context
+     * @param bool  $write
      */
-    function info($mixMessage, array $arrContext = [], $booWrite = false)
+    function info($message, array $context = [], $write = false)
     {
-        log(ILog::INFO, $mixMessage, $arrContext, $booWrite);
+        log(ILog::INFO, $message, $context, $write);
     }
 }
 
@@ -406,13 +418,13 @@ if (!function_exists('notice')) {
     /**
      * 记录错误消息 notice.
      *
-     * @param mixed $mixMessage
-     * @param array $arrContext
-     * @param bool  $booWrite
+     * @param mixed $message
+     * @param array $context
+     * @param bool  $write
      */
-    function notice($mixMessage, array $arrContext = [], $booWrite = false)
+    function notice($message, array $context = [], $write = false)
     {
-        log(ILog::NOTICE, $mixMessage, $arrContext, $booWrite);
+        log(ILog::NOTICE, $message, $context, $write);
     }
 }
 
@@ -420,13 +432,13 @@ if (!function_exists('warning')) {
     /**
      * 记录错误消息 warning.
      *
-     * @param mixed $mixMessage
-     * @param array $arrContext
-     * @param bool  $booWrite
+     * @param mixed $message
+     * @param array $context
+     * @param bool  $write
      */
-    function warning($mixMessage, array $arrContext = [], $booWrite = false)
+    function warning($message, array $context = [], $write = false)
     {
-        log(ILog::WARNING, $mixMessage, $arrContext, $booWrite);
+        log(ILog::WARNING, $message, $context, $write);
     }
 }
 
@@ -434,13 +446,13 @@ if (!function_exists('error')) {
     /**
      * 记录错误消息 error.
      *
-     * @param mixed $mixMessage
-     * @param array $arrContext
-     * @param bool  $booWrite
+     * @param mixed $message
+     * @param array $context
+     * @param bool  $write
      */
-    function error($mixMessage, array $arrContext = [], $booWrite = false)
+    function error($message, array $context = [], $write = false)
     {
-        log(ILog::ERROR, $mixMessage, $arrContext, $booWrite);
+        log(ILog::ERROR, $message, $context, $write);
     }
 }
 
@@ -448,13 +460,13 @@ if (!function_exists('critical')) {
     /**
      * 记录错误消息 critical.
      *
-     * @param mixed $mixMessage
-     * @param array $arrContext
-     * @param bool  $booWrite
+     * @param mixed $message
+     * @param array $context
+     * @param bool  $write
      */
-    function critical($mixMessage, array $arrContext = [], $booWrite = false)
+    function critical($message, array $context = [], $write = false)
     {
-        log(ILog::CRITICAL, $mixMessage, $arrContext, $booWrite);
+        log(ILog::CRITICAL, $message, $context, $write);
     }
 }
 
@@ -462,13 +474,13 @@ if (!function_exists('alert')) {
     /**
      * 记录错误消息 alert.
      *
-     * @param mixed $mixMessage
-     * @param array $arrContext
-     * @param bool  $booWrite
+     * @param mixed $message
+     * @param array $context
+     * @param bool  $write
      */
-    function alert($mixMessage, array $arrContext = [], $booWrite = false)
+    function alert($message, array $context = [], $write = false)
     {
-        log(ILog::ALERT, $mixMessage, $arrContext, $booWrite);
+        log(ILog::ALERT, $message, $context, $write);
     }
 }
 
@@ -476,13 +488,13 @@ if (!function_exists('emergency')) {
     /**
      * 记录错误消息 emergency.
      *
-     * @param mixed $mixMessage
-     * @param array $arrContext
-     * @param bool  $booWrite
+     * @param mixed $message
+     * @param array $context
+     * @param bool  $write
      */
-    function emergency($mixMessage, array $arrContext = [], $booWrite = false)
+    function emergency($message, array $context = [], $write = false)
     {
-        log(ILog::EMERGENCY, $mixMessage, $arrContext, $booWrite);
+        log(ILog::EMERGENCY, $message, $context, $write);
     }
 }
 
@@ -490,22 +502,22 @@ if (!function_exists('option')) {
     /**
      * 设置或者获取 option 值
      *
-     * @param array|string $mixKey
-     * @param mixed        $mixDefault
+     * @param array|string $key
+     * @param mixed        $defaults
      *
      * @return mixed
      */
-    function option($mixKey = null, $mixDefault = null)
+    function option($key = null, $defaults = null)
     {
-        if (null === $mixKey) {
+        if (null === $key) {
             return project('option');
         }
 
-        if (is_array($mixKey)) {
-            return project('option')->set($mixKey);
+        if (is_array($key)) {
+            return project('option')->set($key);
         }
 
-        return project('option')->get($mixKey, $mixDefault);
+        return project('option')->get($key, $defaults);
     }
 }
 
@@ -513,22 +525,22 @@ if (!function_exists('cache')) {
     /**
      * 设置或者获取 cache 值
      *
-     * @param array|string $mixKey
-     * @param mixed        $mixDefault
+     * @param array|string $key
+     * @param mixed        $defaults
      *
      * @return mixed
      */
-    function cache($mixKey = null, $mixDefault = null)
+    function cache($key = null, $defaults = null)
     {
-        if (null === $mixKey) {
+        if (null === $key) {
             return project('cache');
         }
 
-        if (is_array($mixKey)) {
-            return project('cache')->put($mixKey);
+        if (is_array($key)) {
+            return project('cache')->put($key);
         }
 
-        return project('cache')->get($mixKey, $mixDefault);
+        return project('cache')->get($key, $defaults);
     }
 }
 
@@ -542,7 +554,8 @@ if (!function_exists('path')) {
      */
     function path($path = '')
     {
-        return project()->path().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->path().
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -556,7 +569,8 @@ if (!function_exists('path_application')) {
      */
     function path_application($path = '')
     {
-        return project()->pathApplication().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathApplication().
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -570,7 +584,8 @@ if (!function_exists('path_common')) {
      */
     function path_common($path = '')
     {
-        return project()->pathCommon().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathCommon().
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -584,7 +599,8 @@ if (!function_exists('path_runtime')) {
      */
     function path_runtime($path = '')
     {
-        return project()->pathRuntime().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathRuntime().
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -598,7 +614,8 @@ if (!function_exists('path_storage')) {
      */
     function path_storage($path = '')
     {
-        return project()->pathStorage().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathStorage().
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -612,7 +629,8 @@ if (!function_exists('path_option')) {
      */
     function path_option($path = '')
     {
-        return project()->pathOption().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathOption().
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -627,7 +645,8 @@ if (!function_exists('path_application')) {
      */
     function path_an_application(string $path = '', ?string $app = null)
     {
-        return project()->pathAnApplication($app).($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathAnApplication($app).
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -641,7 +660,8 @@ if (!function_exists('path_theme')) {
      */
     function path_theme($path = '')
     {
-        return project()->pathApplicationTheme().($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathApplicationTheme().
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -655,7 +675,8 @@ if (!function_exists('path_file_cache')) {
      */
     function path_file_cache($path = '')
     {
-        return project()->pathApplicationCache('file').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathApplicationCache('file').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -669,7 +690,8 @@ if (!function_exists('path_log_cache')) {
      */
     function path_log_cache($path = '')
     {
-        return project()->pathApplicationCache('log').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathApplicationCache('log').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -683,7 +705,8 @@ if (!function_exists('path_swoole_cache')) {
      */
     function path_swoole_cache($path = '')
     {
-        return project()->pathApplicationCache('swoole').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathApplicationCache('swoole').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -697,7 +720,8 @@ if (!function_exists('path_table_cache')) {
      */
     function path_table_cache($path = '')
     {
-        return project()->pathApplicationCache('table').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathApplicationCache('table').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -711,7 +735,8 @@ if (!function_exists('path_router_cache')) {
      */
     function path_router_cache($path = 'router.php')
     {
-        return project()->pathApplicationCache('router').($path ? DIRECTORY_SEPARATOR.$path : $path);
+        return project()->pathApplicationCache('router').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 }
 
@@ -723,8 +748,9 @@ if (!function_exists('is_ajax_request')) {
      */
     function is_ajax_request()
     {
-        $oRequest = app('request');
-        if ($oRequest->isAjax() && !$oRequest->isPjax()) {
+        $request = app('request');
+
+        if ($request->isAjax() && !$request->isPjax()) {
             return true;
         }
 
@@ -736,16 +762,17 @@ if (!function_exists('set_ajax_request')) {
     /**
      * 强制设置是否为 ajax 请求
      *
-     * @param bool $booStatus
+     * @param bool $status
      *
      * @return bool
      * @note 返回上一次是否为 ajax 请求
      */
-    function set_ajax_request($booStatus = true)
+    function set_ajax_request($status = true)
     {
-        $booOld = is_ajax_request();
-        app('request')->setPost(app('option')->get('var_ajax'), $booStatus);
+        $old = is_ajax_request();
 
-        return $booOld;
+        app('request')->setPost(app('option')->get('var_ajax'), $status);
+
+        return $old;
     }
 }

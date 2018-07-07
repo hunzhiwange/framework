@@ -18,7 +18,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Bootstrap\validate;
+namespace Leevel\Bootstrap\Validate;
 
 use Leevel\Http\Request as HttpRequest;
 use Leevel\Http\Response;
@@ -40,81 +40,88 @@ trait Request
     /**
      * 验证请求
      *
-     * @param \Leevel\Http\Request $oRequest
-     * @param array                $arrRule
-     * @param array                $arrMessage
+     * @param \Leevel\Http\Request $request
+     * @param array                $rules
+     * @param array                $messages
      */
-    public function validate(HttpRequest $oRequest, array $arrRule, array $arrMessage = [])
+    public function validate(HttpRequest $request, array $rules, array $messages = [])
     {
-        $oValidate = $this->getValidateComponent()->make($oRequest->allAll(), $arrRule, $arrMessage);
+        $validate = $this->getValidateComponent()->
 
-        if ($oValidate->fail()) {
-            return $this->throwValidateException($oRequest, $oValidate);
+        make($request->allAll(), $rules, $messages);
+
+        if ($validate->fail()) {
+            return $this->throwValidateException($request, $validate);
         }
     }
 
     /**
      * 验证失败异常.
      *
-     * @param \Leevel\Http\Request       $oRequest
-     * @param \Leevel\Validate\IValidate $oValidate
+     * @param \Leevel\Http\Request       $request
+     * @param \Leevel\Validate\IValidate $validate
      */
-    protected function throwValidateException(HttpRequest $oRequest, $oValidate)
+    protected function throwValidateException(HttpRequest $request, $validate)
     {
-        throw new ValidateException($oValidate, $this->validationResponse($oRequest, $this->validationErrors($oValidate)));
+        throw new ValidateException(
+            $validate,
+            $this->validationResponse(
+                $request, $this->validationErrors($validate)
+            )
+        );
     }
 
     /**
      * 错误验证响应.
      *
-     * @param \Leevel\Http\Request $oRequest
-     * @param array                $arrErrors
+     * @param \Leevel\Http\Request $request
+     * @param array                $errors
      *
      * @return \Leevel\Http\Response
      */
-    protected function validationResponse(HttpRequest $oRequest, array $arrErrors)
+    protected function validationResponse(HttpRequest $request, array $errors)
     {
-        if ($oRequest->isAjax() && !$oRequest->isPjax()) {
-            return $this->getResponseComponent()->api($arrErrors);
+        if ($request->isAjax() && !$request->isPjax()) {
+            return $this->getResponseComponent()->api($errors);
         }
 
         return $this->
         getResponseComponent()->
 
-        redirect($this->getRedirectUrl($oRequest), [
+        redirect($this->getRedirectUrl($request), [
             'make' => false,
         ])->
 
         clearErrors()->
 
-        withErrors($arrErrors)->
+        withErrors($errors)->
 
-        withInputs($oRequest->allAll());
+        withInputs($request->allAll());
     }
 
     /**
      * 返回错误消息.
      *
-     * @param \Leevel\Validate\IValidate $oValidate
+     * @param \Leevel\Validate\IValidate $validate
      *
      * @return array
      */
-    protected function validationErrors(IValidate $oValidate)
+    protected function validationErrors(IValidate $validate)
     {
-        return $oValidate->error();
+        return $validate->error();
     }
 
     /**
      * 返回前一个页面.
      *
      *
-     * @param mixed $oRequest
+     * @param mixed $request
      *
      * @return string
      */
-    protected function getRedirectUrl($oRequest)
+    protected function getRedirectUrl($request)
     {
-        return $oRequest->header('referer') ?: $this->getSessionPrevUrl();
+        return $request->header('referer') ?: $this->getSessionPrevUrl();
     }
 
     /**
@@ -154,6 +161,6 @@ trait Request
      */
     protected function getResponseComponent()
     {
-        return project(response::class);
+        return project(Response::class);
     }
 }

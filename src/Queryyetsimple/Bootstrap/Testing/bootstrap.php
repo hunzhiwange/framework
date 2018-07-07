@@ -28,6 +28,6 @@ use Leevel\Router;
  * @since 2017.05.08
  * @version 1.0
  */
-router::bind('phpunittesting://bootstrap/index', function () {
+Router::bind('phpunittesting://bootstrap/index', function () {
     return (new Application())->run();
 });
