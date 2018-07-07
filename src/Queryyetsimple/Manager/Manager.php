@@ -96,9 +96,13 @@ abstract class Manager
             return $this->connects[$unique];
         }
 
-        $driver = !empty($options['driver']) ? $options['driver'] : $this->getDefaultDriver();
+        $driver = !empty($options['driver']) ?
+            $options['driver'] :
+            $this->getDefaultDriver();
 
-        return $this->connects[$unique] = $this->makeConnect($driver, $options);
+        return $this->connects[$unique] = $this->makeConnect(
+            $driver, $options
+        );
     }
 
     /**
@@ -146,7 +150,7 @@ abstract class Manager
      */
     public function getDefaultDriver()
     {
-        return $this->container['option'][$this->getOptionName('default')];
+        return $this->getContainerOption('default');
     }
 
     /**
@@ -154,9 +158,9 @@ abstract class Manager
      *
      * @param string $name
      */
-    public function setDefaultDriver($name)
+    public function setDefaultDriver($name): void
     {
-        $this->container['option'][$this->getOptionName('default')] = $name;
+        $this->setContainerOption('default', $name);
     }
 
     /**
@@ -164,7 +168,7 @@ abstract class Manager
      *
      * @return string
      */
-    abstract protected function getOptionNamespace();
+    abstract protected function normalizeOptionNamespace();
 
     /**
      * 创建连接对象
@@ -182,9 +186,9 @@ abstract class Manager
      *
      * @return string
      */
-    protected function getOptionName($name = null)
+    protected function normalizeOptionName($name = null)
     {
-        return $this->getOptionNamespace().'\\'.$name;
+        return $this->normalizeOptionNamespace().'\\'.$name;
     }
 
     /**
@@ -197,11 +201,17 @@ abstract class Manager
      */
     protected function makeConnect($connect, array $options = [])
     {
-        if (null === $this->container['option'][$this->getOptionName('connect.'.$connect)]) {
-            throw new Exception(sprintf('Connect driver %s not exits', $connect));
+        if (null === $this->getContainerOption('connect.'.$connect)) {
+            throw new Exception(
+                sprintf(
+                    'Connect driver %s not exits', $connect
+                )
+            );
         }
 
-        return $this->createConnect($this->createConnectCommon($connect, $options));
+        return $this->createConnect(
+            $this->createConnectCommon($connect, $options)
+        );
     }
 
     /**
@@ -224,11 +234,11 @@ abstract class Manager
      *
      * @return array
      */
-    protected function parseOptionAndUnique($options = [])
+    protected function parseOptionAndUnique($options = []): array
     {
         return [
             $options = $this->parseOptionParameter($options),
-            $this->getUnique($options),
+            $this->normalizeUnique($options),
         ];
     }
 
@@ -239,17 +249,21 @@ abstract class Manager
      *
      * @return array
      */
-    protected function parseOptionParameter($options = [])
+    protected function parseOptionParameter($options = []): array
     {
         if (null === $options) {
             return [];
         }
 
-        if (is_string($options) && !is_array(($options = $this->container['option'][$this->getOptionName('connect.'.$options)]))) {
-            $options = [];
+        if (is_string($options)) {
+            $option = $this->getContainerOption('connect.'.$options);
+
+            if (!is_array($options)) {
+                return [];
+            }
         }
 
-        return $options;
+        return $option;
     }
 
     /**
@@ -259,22 +273,26 @@ abstract class Manager
      *
      * @return string
      */
-    protected function getUnique($options)
+    protected function normalizeUnique($options)
     {
         return md5(serialize($options));
     }
 
     /**
-     * 读取默认配置.
+     * 整理连接配置.
      *
      * @param string $connect
      * @param array  $extendOption
      *
      * @return array
      */
-    protected function getOption($connect, array $extendOption = [])
+    protected function normalizeConnectOption($connect, array $extendOption = [])
     {
-        return array_merge($this->getOptionConnect($connect), $this->getOptionCommon(), $extendOption);
+        return array_merge(
+            $this->getConnectOption($connect),
+            $this->getCommonOption(),
+            $extendOption
+        );
     }
 
     /**
@@ -282,12 +300,11 @@ abstract class Manager
      *
      * @return array
      */
-    protected function getOptionCommon()
+    protected function getCommonOption()
     {
-        $options = $this->container['option'][$this->getOptionName()];
-        $options = $this->filterOptionCommon($options);
-
-        return $options;
+        return $this->filterCommonOption(
+            $this->getContainerOption()
+        );
     }
 
     /**
@@ -297,9 +314,9 @@ abstract class Manager
      *
      * @return array
      */
-    protected function filterOptionCommon(array $options)
+    protected function filterCommonOption(array $options)
     {
-        foreach ($this->filterOptionCommonItem() as $item) {
+        foreach ($this->defaultCommonOption() as $item) {
             if (isset($options[$item])) {
                 unset($options[$item]);
             }
@@ -313,7 +330,7 @@ abstract class Manager
      *
      * @return array
      */
-    protected function filterOptionCommonItem()
+    protected function defaultCommonOption()
     {
         return [
             'default',
@@ -322,15 +339,15 @@ abstract class Manager
     }
 
     /**
-     * 读取连接配置.
+     * 分析连接配置.
      *
      * @param string $connect
      *
      * @return array
      */
-    protected function getOptionConnect($connect)
+    protected function getConnectOption($connect)
     {
-        return $this->container['option'][$this->getOptionName('connect.'.$connect)];
+        return $this->getContainerOption('connect.'.$connect);
     }
 
     /**
@@ -340,10 +357,37 @@ abstract class Manager
      *
      * @return array
      */
-    protected function optionFilterNull(array $options)
+    protected function filterNullOfOption(array $options)
     {
         return array_filter($options, function ($value) {
             return null !== $value;
         });
+    }
+
+    /**
+     * 获取容器配置值.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    protected function getContainerOption(?string $name = null)
+    {
+        $name = $this->normalizeOptionName($name);
+
+        return $this->container['option'][$name];
+    }
+
+    /**
+     * 设置容器配置值.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    protected function setContainerOption(string $name, $value): void
+    {
+        $name = $this->normalizeOptionName($name);
+
+        $this->container['option'][$name] = $value;
     }
 }

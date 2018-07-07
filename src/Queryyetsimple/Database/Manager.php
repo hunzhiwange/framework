@@ -38,7 +38,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function getOptionNamespace()
+    protected function normalizeOptionNamespace()
     {
         return 'database';
     }
@@ -67,7 +67,7 @@ class Manager extends Managers
         return new Mysql(
             $this->container['log'],
             $this->container['cache'],
-            $this->getOption('mysql', is_array($option) ? $option : []),
+            $this->normalizeConnectOption('mysql', is_array($option) ? $option : []),
             $this->container->development()
         );
     }
@@ -80,10 +80,10 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function getOption($connect, array $extendOption = null)
+    protected function normalizeConnectOption($connect, array $extendOption = null)
     {
-        return $this->parseOption(
-            parent::getOption($connect, $extendOption)
+        return $this->parseDatabaseOption(
+            parent::normalizeConnectOption($connect, $extendOption)
         );
     }
 
@@ -94,7 +94,7 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function parseOption($option)
+    protected function parseDatabaseOption($option)
     {
         $temp = $option;
 

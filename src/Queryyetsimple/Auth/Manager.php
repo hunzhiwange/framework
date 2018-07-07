@@ -40,10 +40,9 @@ class Manager extends Managers
      */
     public function getDefaultDriver()
     {
-        $option = $this->container['option'][$this->getOptionName('default')];
-        $option = $this->getOptionName($option.'_default');
+        $option = $this->getContainerOption('default');
 
-        return $this->container['option'][$option];
+        return $this->getContainerOption($option.'_default');
     }
 
     /**
@@ -53,9 +52,9 @@ class Manager extends Managers
      */
     public function setDefaultDriver($name)
     {
-        $option = $this->container['option'][$this->getOptionName('default')];
-        $option = $this->getOptionName($option.'_default');
-        $this->container['option'][$option] = $name;
+        $option = $this->getContainerOption('default');
+
+        $this->setContainerOption($option.'_default', $name);
     }
 
     /**
@@ -63,7 +62,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function getOptionNamespace()
+    protected function normalizeOptionNamespace()
     {
         return 'auth';
     }
@@ -77,7 +76,7 @@ class Manager extends Managers
      */
     protected function createConnect($connect)
     {
-        return new auth($connect);
+        return new Auth($connect);
     }
 
     /**
@@ -85,13 +84,21 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\Auth\session
+     * @return \Leevel\Auth\Session
      */
     protected function makeConnectSession($options = [])
     {
-        $options = array_merge($this->getOption('session', $options));
+        $options = array_merge(
+            $this->normalizeConnectOption('session', $options)
+        );
 
-        return new session($this->container[$options['entity']], $this->container['encryption'], $this->container['validate'], $this->container['session'], $options);
+        return new Session(
+            $this->container[$options['entity']],
+            $this->container['encryption'],
+            $this->container['validate'],
+            $this->container['session'],
+            $options
+        );
     }
 
     /**
@@ -99,12 +106,20 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\Auth\token
+     * @return \Leevel\Auth\Token
      */
     protected function makeConnectToken($options = [])
     {
-        $options = array_merge($this->getOption('token', $options));
+        $options = array_merge(
+            $this->normalizeConnectOption('token', $options)
+        );
 
-        return new token($this->container[$options['model']], $this->container['encryption'], $this->container['validate'], $this->container['cache'], $options);
+        return new Token(
+            $this->container[$options['model']],
+            $this->container['encryption'],
+            $this->container['validate'],
+            $this->container['cache'],
+            $options
+        );
     }
 }

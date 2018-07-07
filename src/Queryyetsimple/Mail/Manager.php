@@ -38,7 +38,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function getOptionNamespace()
+    protected function normalizeOptionNamespace()
     {
         return 'mail';
     }
@@ -52,7 +52,12 @@ class Manager extends Managers
      */
     protected function createConnect($connect)
     {
-        return new Mail($connect, $this->container['view'], $this->container['event'], $this->getOptionCommon());
+        return new Mail(
+            $connect,
+            $this->container['view'],
+            $this->container['event'],
+            $this->getCommonOption()
+        );
     }
 
     /**
@@ -64,7 +69,9 @@ class Manager extends Managers
      */
     protected function makeConnectSmtp($options = [])
     {
-        return new Smtp($this->getOption('smtp', $options));
+        return new Smtp(
+            $this->normalizeConnectOption('smtp', $options)
+        );
     }
 
     /**
@@ -76,7 +83,9 @@ class Manager extends Managers
      */
     protected function makeConnectSendmail($options = [])
     {
-        return new Sendmail($this->getOption('sendmail', $options));
+        return new Sendmail(
+            $this->normalizeConnectOption('sendmail', $options)
+        );
     }
 
     /**

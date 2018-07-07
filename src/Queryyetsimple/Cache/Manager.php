@@ -38,7 +38,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function getOptionNamespace()
+    protected function normalizeOptionNamespace()
     {
         return 'cache';
     }
@@ -64,7 +64,9 @@ class Manager extends Managers
      */
     protected function makeConnectFile($options = [])
     {
-        return new File($this->getOption('file', $options));
+        return new File(
+            $this->normalizeConnectOption('file', $options)
+        );
     }
 
     /**
@@ -76,7 +78,9 @@ class Manager extends Managers
      */
     protected function makeConnectMemcache($options = [])
     {
-        return new Memcache($this->getOption('memcache', $options));
+        return new Memcache(
+            $this->normalizeConnectOption('memcache', $options)
+        );
     }
 
     /**
@@ -88,18 +92,22 @@ class Manager extends Managers
      */
     protected function makeConnectRedis($options = [])
     {
-        return new Redis($this->getOption('redis', $options));
+        return new Redis(
+            $this->normalizeConnectOption('redis', $options)
+        );
     }
 
     /**
-     * 读取连接配置.
+     * 分析连接配置.
      *
      * @param string $connect
      *
      * @return array
      */
-    protected function getOptionConnect($connect)
+    protected function getConnectOption($connect)
     {
-        return $this->optionFilterNull(parent::getOptionConnect($connect));
+        return $this->filterNullOfOption(
+            parent::getConnectOption($connect)
+        );
     }
 }

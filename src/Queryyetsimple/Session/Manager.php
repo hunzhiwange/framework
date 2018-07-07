@@ -38,7 +38,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function getOptionNamespace()
+    protected function normalizeOptionNamespace()
     {
         return 'session';
     }
@@ -54,7 +54,7 @@ class Manager extends Managers
     {
         return new Session(
             $connect,
-            $this->getOptionCommon()
+            $this->getCommonOption()
         );
     }
 
@@ -77,7 +77,7 @@ class Manager extends Managers
     protected function makeConnectMemcache($options = [])
     {
         return new Memcache(
-            $this->getOption('memcache', $options)
+            $this->normalizeConnectOption('memcache', $options)
         );
     }
 
@@ -91,21 +91,21 @@ class Manager extends Managers
     protected function makeConnectRedis($options = [])
     {
         return new Redis(
-            $this->getOption('redis', $options)
+            $this->normalizeConnectOption('redis', $options)
         );
     }
 
     /**
-     * 读取连接配置.
+     * 分析连接配置.
      *
      * @param string $connect
      *
      * @return array
      */
-    protected function getOptionConnect($connect)
+    protected function getConnectOption($connect)
     {
-        return $this->optionFilterNull(
-            parent::getOptionConnect($connect)
+        return $this->filterNullOfOption(
+            parent::getConnectOption($connect)
         );
     }
 }

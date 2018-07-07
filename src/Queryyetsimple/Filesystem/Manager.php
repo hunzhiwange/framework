@@ -63,7 +63,7 @@ class Manager extends Managers
      *
      * @return string
      */
-    protected function getOptionNamespace()
+    protected function normalizeOptionNamespace()
     {
         return 'filesystem';
     }
@@ -89,7 +89,9 @@ class Manager extends Managers
      */
     protected function makeConnectLocal($options = [])
     {
-        return new Local($this->getOption('local', $options));
+        return new Local(
+            $this->normalizeConnectOption('local', $options)
+        );
     }
 
     /**
@@ -101,7 +103,9 @@ class Manager extends Managers
      */
     protected function makeConnectFtp($options = [])
     {
-        return new Ftp($this->getOption('ftp', $options));
+        return new Ftp(
+            $this->normalizeConnectOption('ftp', $options)
+        );
     }
 
     /**
@@ -113,7 +117,9 @@ class Manager extends Managers
      */
     protected function makeConnectSftp($options = [])
     {
-        return new Sftp($this->getOption('sftp', $options));
+        return new Sftp(
+            $this->normalizeConnectOption('sftp', $options)
+        );
     }
 
     /**
@@ -125,6 +131,8 @@ class Manager extends Managers
      */
     protected function makeConnectZip($options = [])
     {
-        return new Zip($this->getOption('zip', $options));
+        return new Zip(
+            $this->normalizeConnectOption('zip', $options)
+        );
     }
 }
