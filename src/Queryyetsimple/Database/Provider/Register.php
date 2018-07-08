@@ -56,11 +56,12 @@ class Register extends Provider
     /**
      * bootstrap.
      *
-     * @param \Leevel\Event\IDispatch $objEvent
+     * @param \Leevel\Event\IDispatch $event
      */
-    public function bootstrap(IDispatch $objEvent)
+    public function bootstrap(IDispatch $event)
     {
-        $this->eventDispatch($objEvent);
+        $this->eventDispatch($event);
+
         $this->meta();
     }
 
@@ -105,11 +106,11 @@ class Register extends Provider
     /**
      * 设置模型实体事件.
      *
-     * @param \Leevel\Event\IDispatch $objEvent
+     * @param \Leevel\Event\IDispatch $event
      */
-    protected function eventDispatch(IDispatch $objEvent)
+    protected function eventDispatch(IDispatch $event)
     {
-        Entity::setEventDispatch($objEvent);
+        Entity::setEventDispatch($event);
     }
 
     /**
