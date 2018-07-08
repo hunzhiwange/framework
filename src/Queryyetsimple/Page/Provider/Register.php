@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Page\Provider;
 
 use Leevel\Di\Provider;
-use Leevel\page\page;
+use Leevel\Page\Page;
 use Leevel\Router\Router;
 
 /**
@@ -72,7 +72,7 @@ class Register extends Provider
      */
     protected function urlResolver()
     {
-        page::setUrlResolver(function () {
+        Page::setUrlResolver(function () {
             return call_user_func_array([
                 $this->container['router'],
                 'url',

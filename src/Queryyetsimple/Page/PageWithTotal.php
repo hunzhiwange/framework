@@ -34,14 +34,15 @@ class PageWithTotal extends Page
     /**
      * 构造函数.
      *
-     * @param int   $intPerPage
-     * @param int   $intTotalRecord
-     * @param array $arrOption
+     * @param int   $perPage
+     * @param int   $totalRecord
+     * @param array $option
      */
-    public function __construct($intPerPage, $intTotalRecord, array $arrOption = [])
+    public function __construct($perPage, $totalRecord, array $option = [])
     {
-        $this->intPerPage = $intPerPage;
-        $this->intTotalRecord = $intTotalRecord;
-        $this->options($arrOption);
+        $this->perPage = $perPage;
+        $this->totalRecord = $totalRecord;
+
+        $this->options($option);
     }
 }

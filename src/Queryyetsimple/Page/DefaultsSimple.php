@@ -34,12 +34,13 @@ class DefaultsSimple extends Defaults
     /**
      * 构造函数.
      *
-     * @param \Leevel\Page\IPage $objPage
-     * @param array              $arrOption
+     * @param \Leevel\Page\IPage $page
+     * @param array              $option
      */
-    public function __construct(IPage $objPage, array $arrOption = [])
+    public function __construct(IPage $page, array $option = [])
     {
-        parent::__construct($objPage, $arrOption);
+        parent::__construct($page, $option);
+
         $this->option('template', '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}');
     }
 }

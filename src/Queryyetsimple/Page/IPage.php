@@ -34,69 +34,69 @@ interface IPage
     /**
      * 追加分页条件.
      *
-     * @param string $strKey
-     * @param string $strValue
+     * @param string $key
+     * @param string $value
      *
      * @return $this
      */
-    public function append($strKey, $strValue);
+    public function append($key, $value);
 
     /**
      * 批量追加分页条件.
      *
-     * @param array $arrValue
+     * @param array $value
      *
      * @return $this
      */
-    public function appends(array $arrValue);
+    public function appends(array $value);
 
     /**
      * 设置分页条件.
      *
-     * @param array $arrParameter
+     * @param array $parameter
      *
      * @return $this
      */
-    public function parameter(array $arrParameter);
+    public function parameter(array $parameter);
 
     /**
      * 添加分页条件.
      *
-     * @param string $strKey
-     * @param string $strValue
+     * @param string $key
+     * @param string $value
      *
      * @return $this
      */
-    public function addParameter($strKey, $strValue);
+    public function addParameter($key, $value);
 
     /**
      * 设置渲染参数.
      *
-     * @param string $strKey
-     * @param string $strValue
+     * @param string $key
+     * @param string $value
      *
      * @return $this
      */
-    public function renderOption($strKey, $strValue);
+    public function renderOption($key, $value);
 
     /**
      * 批量设置渲染参数.
      *
-     * @param string $strKey
-     * @param string $strValue
+     * @param string $key
+     * @param string $value
      *
      * @return $this
      */
-    public function renderOptions(array $arrOption);
+    public function renderOptions(array $option);
 
     /**
      * 是否启用 CSS.
      *
-     * @param bool $booOn
+     * @param bool $on
      *
      * @return $this
      */
-    public function css($booOn = true);
+    public function css(bool $on = true);
 
     /**
      * 获取渲染参数.
@@ -108,20 +108,20 @@ interface IPage
     /**
      * 设置 url.
      *
-     * @param null|string $mixUrl
+     * @param null|string $url
      *
      * @return $this
      */
-    public function url($mixUrl = null);
+    public function url(?string $url = null);
 
     /**
      * 设置 render.
      *
-     * @param null|string $mixRender
+     * @param null|string $render
      *
      * @return $this
      */
-    public function renders($mixRender = null);
+    public function renders(?string $render = null);
 
     /**
      * 获取 render.
@@ -133,12 +133,11 @@ interface IPage
     /**
      * 设置 range.
      *
-     * @param null|int   $intRange
-     * @param null|mixed $mixRange
+     * @param null|int $range
      *
      * @return $this
      */
-    public function range($mixRange = null);
+    public function range(?int $range = null);
 
     /**
      * 获取 range.
@@ -150,11 +149,11 @@ interface IPage
     /**
      * 设置 url 描点.
      *
-     * @param null|string $mixFragment
+     * @param null|string $fragment
      *
      * @return $this
      */
-    public function fragment($mixFragment = null);
+    public function fragment(?string $fragment = null);
 
     /**
      * 获取 url 描点.
@@ -166,27 +165,27 @@ interface IPage
     /**
      * 设置每页分页数量.
      *
-     * @param string $strPageName
+     * @param int $perPage
      *
      * @return $this
      */
-    public function perPage($strPageName);
+    public function perPage(int $perPage);
 
     /**
      * 返回每页数量.
      *
      * @return int
      */
-    public function getPerPage();
+    public function getPerPage(): int;
 
     /**
      * 设置分页名字.
      *
-     * @param string $strPageName
+     * @param string $pageName
      *
      * @return $this
      */
-    public function pageName($strPageName);
+    public function pageName(string $pageName);
 
     /**
      * 获取分页名字.
@@ -200,14 +199,14 @@ interface IPage
      *
      * @return int
      */
-    public function getTotalRecord();
+    public function getTotalRecord(): int;
 
     /**
      * 是否为无限分页.
      *
      * @return bool
      */
-    public function isTotalMacro();
+    public function isTotalMacro(): bool;
 
     /**
      * 取得第一个记录的编号.
@@ -331,16 +330,16 @@ interface IPage
     /**
      * 设置 url 解析回调.
      *
-     * @param callable $calUrlResolver
+     * @param callable $urlResolver
      */
-    public static function setUrlResolver(callable $calUrlResolver);
+    public static function setUrlResolver(callable $urlResolver);
 
     /**
      * 替换分页变量.
      *
-     * @param mixed $mixPage
+     * @param mixed $page
      *
      * @return string
      */
-    public function pageReplace($mixPage);
+    public function pageReplace($page);
 }

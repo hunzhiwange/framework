@@ -40,14 +40,14 @@ class Bootstrap implements IRender
      *
      * @var \Leevel\Page\IPage
      */
-    protected $objPage;
+    protected $page;
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         // lg sm
         'size'     => '',
         'template' => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',
@@ -57,15 +57,17 @@ class Bootstrap implements IRender
     /**
      * 构造函数.
      *
-     * @param \Leevel\Page\IPage $objPage
-     * @param array              $arrOption
+     * @param \Leevel\Page\IPage $page
+     * @param array              $option
      */
-    public function __construct(IPage $objPage, array $arrOption = [])
+    public function __construct(IPage $page, array $option = [])
     {
-        $this->objPage = $objPage;
-        $this->options($arrOption);
-        if ($this->objPage->getRenderOption()) {
-            $this->options($this->objPage->getRenderOption('render'));
+        $this->page = $page;
+
+        $this->options($option);
+
+        if ($this->page->getRenderOption()) {
+            $this->options($this->page->getRenderOption('render'));
         }
     }
 
@@ -76,21 +78,26 @@ class Bootstrap implements IRender
      */
     public function render()
     {
-        return ($this->getOption('css') ? $this->css() : '').preg_replace_callback('/{(.+?)}/', function ($arrMatche) {
-            return $this->{'get'.ucwords($arrMatche[1]).'Render'}();
-        }, $this->getOption('template'));
+        return ($this->getOption('css') ? $this->css() : '').
+            preg_replace_callback(
+                '/{(.+?)}/',
+                function ($matches) {
+                    return $this->{'get'.ucwords($matches[1]).'Render'}();
+                },
+                $this->getOption('template')
+            );
     }
 
     /**
      * 替换分页变量.
      *
-     * @param mixed $mixPage
+     * @param mixed $page
      *
      * @return string
      */
-    public function replace($mixPage)
+    public function replace($page)
     {
-        return $this->objPage->pageReplace($mixPage);
+        return $this->page->pageReplace($page);
     }
 
     /**
@@ -100,7 +107,8 @@ class Bootstrap implements IRender
      */
     protected function css()
     {
-        return '<link href="http://v3.bootcss.com/dist/css/bootstrap.min.css" rel="stylesheet">';
+        return '<link href="http://v3.bootcss.com/dist/'.
+            'css/bootstrap.min.css" rel="stylesheet">';
     }
 
     /**
@@ -120,7 +128,12 @@ class Bootstrap implements IRender
      */
     protected function getUlRender()
     {
-        return sprintf('<ul class="pagination%s">', $this->getOption('size') ? ' pagination-'.$this->getOption('size') : '');
+        return sprintf(
+            '<ul class="pagination%s">',
+            $this->getOption('size') ?
+                ' pagination-'.$this->getOption('size') :
+                ''
+        );
     }
 
     /**
@@ -130,11 +143,16 @@ class Bootstrap implements IRender
      */
     protected function getFirstRender()
     {
-        if (!$this->objPage->canFirstRender()) {
+        if (!$this->page->canFirstRender()) {
             return;
         }
 
-        return sprintf('<li class=""><a href="%s" >1</a></li><li><a href="%s">...</a></li>', $this->replace(1), $this->replace($this->objPage->parseFirstRenderPrev()));
+        return sprintf(
+            '<li class=""><a href="%s" >1</a></li>'.
+                '<li><a href="%s">...</a></li>',
+            $this->replace(1),
+            $this->replace($this->page->parseFirstRenderPrev())
+        );
     }
 
     /**
@@ -144,11 +162,16 @@ class Bootstrap implements IRender
      */
     protected function getPrevRender()
     {
-        if ($this->objPage->canPrevRender()) {
-            return sprintf('<li><a aria-label="Previous" href="%s"><span aria-hidden="true">&laquo;</span></a></li>', $this->replace($this->objPage->parsePrevRenderPrev()));
+        if ($this->page->canPrevRender()) {
+            return sprintf(
+                '<li><a aria-label="Previous" href="%s">'.
+                    '<span aria-hidden="true">&laquo;</span></a></li>',
+                $this->replace($this->page->parsePrevRenderPrev())
+            );
         }
 
-        return '<li class="disabled"><a aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>';
+        return '<li class="disabled"><a aria-label="Previous">'.
+            '<span aria-hidden="true">&laquo;</span></a></li>';
     }
 
     /**
@@ -158,17 +181,26 @@ class Bootstrap implements IRender
      */
     protected function getMainRender()
     {
-        if (!$this->objPage->canMainRender()) {
+        if (!$this->page->canMainRender()) {
             return;
         }
 
-        $strMain = '';
-        for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); $nI++) {
-            $booActive = $this->objPage->getCurrentPage() === $nI;
-            $strMain .= sprintf('<li class="%s"><a%s>%d</a></li>', $booActive ? ' active' : '', $booActive ? '' : sprintf(' href="%s"', $this->replace($nI)), $nI);
+        $result = '';
+
+        for ($i = $this->page->getPageStart();
+            $i <= $this->page->getPageEnd();
+            $i++) {
+            $active = $this->page->getCurrentPage() === $i;
+
+            $result .= sprintf(
+                '<li class="%s"><a%s>%d</a></li>',
+                $active ? ' active' : '',
+                $active ? '' : sprintf(' href="%s"', $this->replace($i)),
+                $i
+            );
         }
 
-        return $strMain;
+        return $result;
     }
 
     /**
@@ -178,11 +210,16 @@ class Bootstrap implements IRender
      */
     protected function getNextRender()
     {
-        if ($this->objPage->canNextRender()) {
-            return sprintf('<li><a aria-label="Next" href="%s"><span aria-hidden="true">&raquo;</span></a></li>', $this->replace($this->objPage->getCurrentPage() + 1));
+        if ($this->page->canNextRender()) {
+            return sprintf(
+                '<li><a aria-label="Next" href="%s">'.
+                    '<span aria-hidden="true">&raquo;</span></a></li>',
+                $this->replace($this->page->getCurrentPage() + 1)
+            );
         }
 
-        return '<li class="disabled"><a aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>';
+        return '<li class="disabled"><a aria-label="Next">'.
+            '<span aria-hidden="true">&raquo;</span></a></li>';
     }
 
     /**
@@ -192,12 +229,25 @@ class Bootstrap implements IRender
      */
     protected function getLastRender()
     {
-        if ($this->objPage->isTotalMacro()) {
-            return sprintf('<li><a href="%s">...</a></li>', $this->replace($this->objPage->parseLastRenderNext()));
+        if ($this->page->isTotalMacro()) {
+            return sprintf(
+                '<li><a href="%s">...</a></li>',
+                $this->replace($this->page->parseLastRenderNext())
+            );
         }
 
-        if ($this->objPage->canLastRender()) {
-            return ($this->objPage->canLastRenderNext() ? sprintf('<li><a href="%s">...</a></li>', $this->replace($this->objPage->parseLastRenderNext())) : '').sprintf('<li><a href="%s">%d</a></li>', $this->replace($this->objPage->getTotalPage()), $this->objPage->getTotalPage());
+        if ($this->page->canLastRender()) {
+            return ($this->page->canLastRenderNext() ?
+                    sprintf(
+                        '<li><a href="%s">...</a></li>',
+                        $this->replace($this->page->parseLastRenderNext())
+                    ) :
+                    '').
+                sprintf(
+                    '<li><a href="%s">%d</a></li>',
+                    $this->replace($this->page->getTotalPage()),
+                    $this->page->getTotalPage()
+                );
         }
     }
 

@@ -40,14 +40,14 @@ class Defaults implements IRender
      *
      * @var \Leevel\Page\IPage
      */
-    protected $objPage;
+    protected $page;
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         'small'    => false,
         'template' => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
         'css'      => true,
@@ -56,15 +56,19 @@ class Defaults implements IRender
     /**
      * 构造函数.
      *
-     * @param \Leevel\Page\IPage $objPage
-     * @param array              $arrOption
+     * @param \Leevel\Page\IPage $page
+     * @param array              $option
      */
-    public function __construct(IPage $objPage, array $arrOption = [])
+    public function __construct(IPage $page, array $option = [])
     {
-        $this->objPage = $objPage;
-        $this->options($arrOption);
-        if ($this->objPage->getRenderOption()) {
-            $this->options($this->objPage->getRenderOption('render'));
+        $this->page = $page;
+
+        $this->options($option);
+
+        if ($this->page->getRenderOption()) {
+            $this->options(
+                $this->page->getRenderOption('render')
+            );
         }
     }
 
@@ -75,21 +79,26 @@ class Defaults implements IRender
      */
     public function render()
     {
-        return ($this->getOption('css') ? $this->css() : '').preg_replace_callback('/{(.+?)}/', function ($arrMatche) {
-            return $this->{'get'.ucwords($arrMatche[1]).'Render'}();
-        }, $this->getOption('template'));
+        return ($this->getOption('css') ? $this->css() : '').
+            preg_replace_callback(
+                '/{(.+?)}/',
+                function ($matches) {
+                    return $this->{'get'.ucwords($matches[1]).'Render'}();
+                },
+                $this->getOption('template')
+            );
     }
 
     /**
      * 替换分页变量.
      *
-     * @param mixed $mixPage
+     * @param mixed $page
      *
      * @return string
      */
-    public function replace($mixPage)
+    public function replace($page)
     {
-        return $this->objPage->pageReplace($mixPage);
+        return $this->page->pageReplace($page);
     }
 
     /**
@@ -99,7 +108,10 @@ class Defaults implements IRender
      */
     protected function css()
     {
-        return sprintf('<style type="text/css">%s</style>', file_get_contents(__DIR__.'/defaults.css'));
+        return sprintf(
+            '<style type="text/css">%s</style>',
+            file_get_contents(__DIR__.'/defaults.css')
+        );
     }
 
     /**
@@ -109,7 +121,10 @@ class Defaults implements IRender
      */
     protected function getHeaderRender()
     {
-        return sprintf('<div class="pagination%s">', $this->getOption('small') ? ' pagination-small' : '');
+        return sprintf(
+            '<div class="pagination%s">',
+            $this->getOption('small') ? ' pagination-small' : ''
+        );
     }
 
     /**
@@ -129,11 +144,14 @@ class Defaults implements IRender
      */
     protected function getTotalRender()
     {
-        if (!$this->objPage->canTotalRender()) {
+        if (!$this->page->canTotalRender()) {
             return;
         }
 
-        return sprintf('<span class="pagination-total">%s</span>', __('共 %d 条', $this->objPage->getTotalRecord() ?: 0));
+        return sprintf(
+            '<span class="pagination-total">%s</span>',
+            __('共 %d 条', $this->page->getTotalRecord() ?: 0)
+        );
     }
 
     /**
@@ -143,11 +161,20 @@ class Defaults implements IRender
      */
     protected function getFirstRender()
     {
-        if (!$this->objPage->canFirstRender()) {
+        if (!$this->page->canFirstRender()) {
             return;
         }
 
-        return sprintf('<li class=""><a href="%s" >1</a></li><li onclick="window.location.href=\'%s\';" class="btn-quickprev" onmouseenter="this.innerHTML=\'&laquo;\';" onmouseleave="this.innerHTML=\'...\';">...</li>', $this->replace(1), $this->replace($this->objPage->parseFirstRenderPrev()));
+        return sprintf(
+            '<li class=""><a href="%s" >1</a></li>'.
+                '<li onclick="window.location.href=\'%s\';" '.
+                'class="btn-quickprev" onmouseenter="this.innerHTML=\'&laquo;\';" '.
+                'onmouseleave="this.innerHTML=\'...\';">...</li>',
+            $this->replace(1),
+            $this->replace(
+                $this->page->parseFirstRenderPrev()
+            )
+        );
     }
 
     /**
@@ -157,11 +184,18 @@ class Defaults implements IRender
      */
     protected function getPrevRender()
     {
-        if ($this->objPage->canPrevRender()) {
-            return sprintf('<button class="btn-prev" onclick="window.location.href=\'%s\';">&#8249;</button>', $this->replace($this->objPage->parsePrevRenderPrev()));
+        if ($this->page->canPrevRender()) {
+            return sprintf(
+                '<button class="btn-prev" '.
+                    'onclick="window.location.href=\'%s\';">&#8249;</button>',
+                $this->replace(
+                    $this->page->parsePrevRenderPrev()
+                )
+            );
         }
 
-        return '<button class="btn-prev disabled">&#8249;</button>';
+        return '<button class="btn-prev disabled">'.
+            '&#8249;</button>';
     }
 
     /**
@@ -171,17 +205,26 @@ class Defaults implements IRender
      */
     protected function getMainRender()
     {
-        if (!$this->objPage->canMainRender()) {
+        if (!$this->page->canMainRender()) {
             return;
         }
 
-        $strMain = '';
-        for ($nI = $this->objPage->getPageStart(); $nI <= $this->objPage->getPageEnd(); $nI++) {
-            $booActive = $this->objPage->getCurrentPage() === $nI;
-            $strMain .= sprintf('<li class="number%s"><a%s>%d</a></li>', $booActive ? ' active' : '', $booActive ? '' : sprintf(' href="%s"', $this->replace($nI)), $nI);
+        $result = '';
+
+        for ($i = $this->page->getPageStart();
+            $i <= $this->page->getPageEnd();
+            $i++) {
+            $active = $this->page->getCurrentPage() === $i;
+
+            $result .= sprintf(
+                '<li class="number%s"><a%s>%d</a></li>',
+                $active ? ' active' : '',
+                $active ? '' : sprintf(' href="%s"', $this->replace($i)),
+                $i
+            );
         }
 
-        return $strMain;
+        return $result;
     }
 
     /**
@@ -191,11 +234,16 @@ class Defaults implements IRender
      */
     protected function getNextRender()
     {
-        if ($this->objPage->canNextRender()) {
-            return sprintf('<button class="btn-next" onclick="window.location.href=\'%s\';">&#8250;</button>', $this->replace($this->objPage->getCurrentPage() + 1));
+        if ($this->page->canNextRender()) {
+            return sprintf(
+                '<button class="btn-next" '.
+                    'onclick="window.location.href=\'%s\';">&#8250;</button>',
+                $this->replace($this->page->getCurrentPage() + 1)
+            );
         }
 
-        return '<button class="btn-next disabled">&#8250;</button>';
+        return '<button class="btn-next disabled">'.
+            '&#8250;</button>';
     }
 
     /**
@@ -205,12 +253,35 @@ class Defaults implements IRender
      */
     protected function getLastRender()
     {
-        if ($this->objPage->isTotalMacro()) {
-            return sprintf('<li class="btn-quicknext" onclick="window.location.href=\'%s\';" onmouseenter="this.innerHTML=\'&raquo;\';" onmouseleave="this.innerHTML=\'...\';">...</li>', $this->replace($this->objPage->parseLastRenderNext()));
+        if ($this->page->isTotalMacro()) {
+            return sprintf(
+                '<li class="btn-quicknext" '.
+                    'onclick="window.location.href=\'%s\';" '.
+                    'onmouseenter="this.innerHTML=\'&raquo;\';" '.
+                    'onmouseleave="this.innerHTML=\'...\';">...</li>',
+                $this->replace(
+                    $this->page->parseLastRenderNext()
+                )
+            );
         }
 
-        if ($this->objPage->canLastRender()) {
-            return ($this->objPage->canLastRenderNext() ? sprintf('<li class="btn-quicknext" onclick="window.location.href=\'%s\';" onmouseenter="this.innerHTML=\'&raquo;\';" onmouseleave="this.innerHTML=\'...\';">...</li>', $this->replace($this->objPage->parseLastRenderNext())) : '').sprintf('<li><a href="%s">%d</a></li>', $this->replace($this->objPage->getTotalPage()), $this->objPage->getTotalPage());
+        if ($this->page->canLastRender()) {
+            return ($this->page->canLastRenderNext() ?
+                    sprintf(
+                        '<li class="btn-quicknext" '.
+                            'onclick="window.location.href=\'%s\';" '.
+                            'onmouseenter="this.innerHTML=\'&raquo;\';" '.
+                            'onmouseleave="this.innerHTML=\'...\';">...</li>',
+                        $this->replace(
+                            $this->page->parseLastRenderNext()
+                        )
+                    ) :
+                    '').
+                sprintf(
+                    '<li><a href="%s">%d</a></li>',
+                    $this->replace($this->page->getTotalPage()),
+                    $this->page->getTotalPage()
+                );
         }
     }
 
@@ -231,7 +302,18 @@ class Defaults implements IRender
      */
     protected function getJumpRender()
     {
-        return sprintf('<span class="pagination-jump">%s<input type="number" link="%s" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute(\'link\').replace( \'{jump}\', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">%s</span>', __('前往'), $this->replace('{jump}'), __('页'));
+        return sprintf(
+            '<span class="pagination-jump">%s'.
+                '<input type="number" link="%s" '.
+                'onkeydown="var event = event || window.event; '.
+                'if (event.keyCode == 13) { window.location.href = '.
+                'this.getAttribute(\'link\').replace( \'{jump}\', this.value); }" '.
+                'onfocus="this.select();" min="1" value="1" number="true" '.
+                'class="pagination-editor">%s</span>',
+            __('前往'),
+            $this->replace('{jump}'),
+            __('页')
+        );
     }
 
     /**

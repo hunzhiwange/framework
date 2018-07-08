@@ -34,14 +34,15 @@ class PageWithoutTotal extends Page
     /**
      * 构造函数.
      *
-     * @param int   $intPerPage
-     * @param int   $intTotalRecord
-     * @param array $arrOption
+     * @param int   $perPage
+     * @param int   $totalRecord
+     * @param array $option
      */
-    public function __construct($intPerPage, array $arrOption = [])
+    public function __construct($perPage, array $option = [])
     {
-        $this->intPerPage = $intPerPage;
-        $this->intTotalRecord = true;
-        $this->options($arrOption);
+        $this->perPage = $perPage;
+        $this->totalRecord = true;
+
+        $this->options($option);
     }
 }

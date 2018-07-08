@@ -40,32 +40,33 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
     /**
      * 构造函数.
      *
-     * @param int   $intPerPage
-     * @param int   $intTotalRecord
-     * @param array $arrOption
+     * @param int   $perPage
+     * @param int   $totalRecord
+     * @param array $option
      */
-    public function __construct($intPerPage, $intTotalRecord = null, array $arrOption = [])
+    public function __construct($perPage, $totalRecord = null, array $option = [])
     {
-        $this->intPerPage = $intPerPage;
-        $this->intTotalRecord = $intTotalRecord;
-        $this->options($arrOption);
+        $this->perPage = $perPage;
+        $this->totalRecord = $totalRecord;
+
+        $this->options($option);
     }
 
     /**
      * 渲染分页.
      *
-     * @param \Leevel\Page\IRender $objRender
+     * @param \Leevel\Page\IRender $render
      *
      * @return string
      */
-    public function render(IRender $objRender = null)
+    public function render(IRender $render = null)
     {
-        if (null === $objRender) {
-            $objRender = 'Leevel\Page\\'.$this->getRender();
-            $objRender = new $objRender($this);
+        if (null === $render) {
+            $render = 'Leevel\Page\\'.$this->getRender();
+            $render = new $render($this);
         }
 
-        return $objRender->render();
+        return $render->render();
     }
 
     /**
