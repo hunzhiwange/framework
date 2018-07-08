@@ -34,46 +34,46 @@ interface IConnect
     /**
      * 返回 Pdo 查询连接.
      *
-     * @param mixed $mixMaster
+     * @param mixed $master
      * @note boolean false (读服务器) true (写服务器)
      * @note 其它 去对应服务器连接ID 0 表示主服务器
      *
      * @return mixed
      */
-    public function getPdo($mixMaster = false);
+    public function getPdo($master = false);
 
     /**
      * 查询数据记录.
      *
-     * @param string $strSql           sql 语句
-     * @param array  $arrBindParams    sql 参数绑定
-     * @param mixed  $mixMaster
-     * @param int    $intFetchType
-     * @param mixed  $mixFetchArgument
-     * @param array  $arrCtorArgs
+     * @param string $sql           sql 语句
+     * @param array  $bindParams    sql 参数绑定
+     * @param mixed  $master
+     * @param int    $fetchType
+     * @param mixed  $fetchArgument
+     * @param array  $ctorArgs
      *
      * @return mixed
      */
-    public function query($strSql, $arrBindParams = [], $mixMaster = false, $intFetchType = PDO::FETCH_OBJ, $mixFetchArgument = null, $arrCtorArgs = []);
+    public function query(string $sql, array $bindParams = [], $master = false, int $fetchType = PDO::FETCH_OBJ, $fetchArgument = null, array $ctorArgs = []);
 
     /**
      * 执行 sql 语句.
      *
-     * @param string $strSql        sql 语句
-     * @param array  $arrBindParams sql 参数绑定
+     * @param string $sql        sql 语句
+     * @param array  $bindParams sql 参数绑定
      *
      * @return int
      */
-    public function execute($strSql, $arrBindParams = []);
+    public function execute(string $sql, array $bindParams = []);
 
     /**
      * 执行数据库事务
      *
-     * @param callable $calAction 事务回调
+     * @param callable $action 事务回调
      *
      * @return mixed
      */
-    public function transaction(callable $calAction);
+    public function transaction(callable $action);
 
     /**
      * 启动事务
@@ -100,20 +100,20 @@ interface IConnect
     /**
      * 获取最后插入 ID 或者列.
      *
-     * @param string $strName 自增序列名
+     * @param string $name 自增序列名
      *
      * @return string
      */
-    public function lastInsertId($strName = null);
+    public function lastInsertId(?string $name = null);
 
     /**
      * 获取最近一次查询的 sql 语句.
      *
-     * @param bool $booWithBindParams 是否和绑定参数一起返回
+     * @param bool $withBindParams 是否和绑定参数一起返回
      *
      * @return string
      */
-    public function getLastSql($booWithBindParams = false);
+    public function getLastSql(bool $withBindParams = false);
 
     /**
      * 获取最近一次绑定参数.
@@ -132,9 +132,9 @@ interface IConnect
     /**
      * 注册 SQL 监视器.
      *
-     * @param callable $calSqlListen
+     * @param callable $sqlListen
      */
-    public function registerListen(callable $calSqlListen);
+    public function registerListen(callable $sqlListen);
 
     /**
      * 释放 PDO 预处理查询.
@@ -147,118 +147,128 @@ interface IConnect
     public function closeDatabase();
 
     /**
+     * 取得数据库表字段信息缓存.
+     *
+     * @param string $tableName
+     * @param mixed  $master
+     *
+     * @return array
+     */
+    public function getTableColumnsCache(string $tableName, $master = false);
+
+    /**
      * sql 表达式格式化.
      *
-     * @param string $sSql
-     * @param string $sTableName
+     * @param string $sql
+     * @param string $tableName
      *
      * @return string
      */
-    public function qualifyExpression($sSql, $sTableName);
+    public function qualifyExpression(string $sql, string $tableName);
 
     /**
      * 表或者字段格式化（支持别名）.
      *
-     * @param string $sName
-     * @param string $sAlias
-     * @param string $sAs
+     * @param string $name
+     * @param string $alias
+     * @param string $as
      *
      * @return string
      */
-    public function qualifyTableOrColumn($sName, $sAlias = null, $sAs = null);
+    public function qualifyTableOrColumn(string $name, ?string $alias = null, string $as = null);
 
     /**
      * 字段格式化.
      *
-     * @param string $sKey
-     * @param string $sTableName
+     * @param string $key
+     * @param string $tableName
      *
      * @return string
      */
-    public function qualifyColumn($sKey, $sTableName);
+    public function qualifyColumn(string $key, string $tableName);
 
     /**
      * 字段值格式化.
      *
-     * @param bool  $booQuotationMark
-     * @param mixed $mixValue
+     * @param mixed $value
+     * @param bool  $quotationMark
      *
      * @return mixed
      */
-    public function qualifyColumnValue($mixValue, $booQuotationMark = true);
+    public function qualifyColumnValue($value, bool $quotationMark = true);
 
     /**
      * 返回当前配置连接信息（方便其他组件调用设置为 public）.
      *
-     * @param string $strOptionName
+     * @param string $optionName
      *
      * @return array
      */
-    public function getCurrentOption($strOptionName = null);
+    public function getCurrentOption(?string $optionName = null);
 
     /**
      * 分析 sql 类型数据.
      *
-     * @param string $strSql
+     * @param string $sql
      *
      * @return string
      */
-    public function getSqlType($strSql);
+    public function getSqlType(string $sql);
 
     /**
      * 分析绑定参数类型数据.
      *
-     * @param mixed $mixValue
+     * @param mixed $value
      *
      * @return string
      */
-    public function getBindParamType($mixValue);
+    public function getBindParamType($value);
 
     /**
      * dsn 解析.
      *
-     * @param array $arrOption
+     * @param array $option
      *
      * @return string
      */
-    public function parseDsn($arrOption);
+    public function parseDsn(array $option);
 
     /**
      * 取得数据库表名列表.
      *
-     * @param string $sDbName
-     * @param mixed  $mixMaster
+     * @param string $dbName
+     * @param mixed  $master
      *
      * @return array
      */
-    public function getTableNames($sDbName = null, $mixMaster = false);
+    public function getTableNames(?string $dbName = null, $master = false);
 
     /**
      * 取得数据库表字段信息.
      *
-     * @param string $sTableName
-     * @param mixed  $mixMaster
+     * @param string $tableName
+     * @param mixed  $master
      *
      * @return array
      */
-    public function getTableColumns($sTableName, $mixMaster = false);
+    public function getTableColumns(string $tableName, $master = false);
 
     /**
      * sql 字段格式化.
      *
-     * @param mixed $sName
+     * @param mixed $name
      *
      * @return string
      */
-    public function identifierColumn($sName);
+    public function identifierColumn($name);
 
     /**
      * 分析 limit.
      *
-     * @param mixed $mixLimitcount
-     * @param mixed $mixLimitoffset
+     * @param null|int $limitcount
+     * @param null|int $limitoffset
      *
      * @return string
      */
-    public function parseLimitcount($mixLimitcount = null, $mixLimitoffset = null);
+    public function parseLimitcount(?int $limitcount = null, ?int $limitoffset = null);
 }

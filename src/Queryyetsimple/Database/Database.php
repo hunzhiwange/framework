@@ -36,28 +36,28 @@ class Database implements IDatabase
      *
      * @var \Leevel\Database\IConnect
      */
-    protected $objConnect;
+    protected $connect;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\IConnect $objConnect
+     * @param \Leevel\Database\IConnect $connect
      */
-    public function __construct(IConnect $objConnect)
+    public function __construct(IConnect $connect)
     {
-        $this->objConnect = $objConnect;
+        $this->connect = $connect;
     }
 
     /**
      * call.
      *
      * @param string $method
-     * @param array  $arrArgs
+     * @param array  $args
      *
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        return $this->objConnect->{$method}(...$arrArgs);
+        return $this->connect->{$method}(...$args);
     }
 }

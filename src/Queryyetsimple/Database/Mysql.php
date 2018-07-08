@@ -36,207 +36,212 @@ class Mysql extends Connect implements IConnect
     /**
      * dsn 解析.
      *
-     * @param array $arrOption
+     * @param array $option
      *
      * @return string
      */
-    public function parseDsn($arrOption)
+    public function parseDsn(array $option)
     {
-        $arrDsn = [];
+        $dsn = [];
 
         foreach ([
             'Base',
             'Port',
             'Socket',
             'Charset',
-        ] as $strMethod) {
-            $arrDsn[] = $this->{'parse'.$strMethod}($arrOption);
+        ] as $method) {
+            $dsn[] = $this->{'parse'.$method}($option);
         }
 
-        return implode('', $arrDsn);
+        return implode('', $dsn);
     }
 
     /**
      * 取得数据库表名列表.
      *
-     * @param string $sDbName
-     * @param mixed  $mixMaster
+     * @param string $dbName
+     * @param mixed  $master
      *
      * @return array
      */
-    public function getTableNames($sDbName = null, $mixMaster = false)
+    public function getTableNames(?string $dbName = null, $master = false)
     {
         // 确定数据库
-        if (null === $sDbName) {
-            $sDbName = $this->getCurrentOption('name');
+        if (null === $dbName) {
+            $dbName = $this->getCurrentOption('name');
         }
 
-        $strSql = 'SHOW TABLES FROM '.$this->qualifyTableOrColumn($sDbName);
+        $sql = 'SHOW TABLES FROM '.$this->qualifyTableOrColumn($dbName);
 
-        $arrResult = [];
+        $result = [];
 
-        if (($arrTables = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
-            foreach ($arrTables as $arrTable) {
-                $arrResult[] = reset($arrTable);
+        if (($tables = $this->query($sql, [], $master, PDO::FETCH_ASSOC))) {
+            foreach ($tables as $v) {
+                $result[] = reset($v);
             }
         }
 
-        unset($arrTables, $strSql);
+        unset($tables, $sql);
 
-        return $arrResult;
+        return $result;
     }
 
     /**
      * 取得数据库表字段信息.
      *
-     * @param string $sTableName
-     * @param mixed  $mixMaster
+     * @param string $tableName
+     * @param mixed  $master
      *
      * @return array
      */
-    public function getTableColumns($sTableName, $mixMaster = false)
+    public function getTableColumns(string $tableName, $master = false)
     {
-        $strSql = 'SHOW FULL COLUMNS FROM '.
-            $this->qualifyTableOrColumn($sTableName);
+        $sql = 'SHOW FULL COLUMNS FROM '.
+            $this->qualifyTableOrColumn($tableName);
 
-        $arrResult = [
+        $result = [
             'list'           => [],
             'primary_key'    => null,
             'auto_increment' => null,
         ];
 
-        if (($arrColumns = $this->query($strSql, [], $mixMaster, PDO::FETCH_ASSOC))) {
-            foreach ($arrColumns as $arrColumn) {
+        if (($columns = $this->query($sql, [], $master, PDO::FETCH_ASSOC))) {
+            foreach ($columns as $column) {
                 // 处理字段
-                $arrTemp = [];
-                $arrTemp['name'] = $arrColumn['Field'];
+                $tmp = [];
+                $tmp['name'] = $column['Field'];
 
-                if (preg_match('/(.+)\((.+)\)/', $arrColumn['Type'], $arrMatch)) {
-                    $arrTemp['type'] = $arrMatch[1];
-                    $arrTemp['length'] = $arrMatch[1];
+                if (preg_match('/(.+)\((.+)\)/', $column['Type'], $matche)) {
+                    $tmp['type'] = $matche[1];
+                    $tmp['length'] = $matche[1];
                 } else {
-                    $arrTemp['type'] = $arrColumn['Type'];
-                    $arrTemp['length'] = null;
+                    $tmp['type'] = $column['Type'];
+                    $tmp['length'] = null;
                 }
 
-                $arrTemp['primary_key'] = 'pri' === strtolower($arrColumn['Key']);
-                $arrTemp['auto_increment'] = false !== strpos($arrColumn['Extra'], 'auto_increment');
+                $tmp['primary_key'] = 'pri' === strtolower($column['Key']);
+                $tmp['auto_increment'] = false !== strpos($column['Extra'], 'auto_increment');
 
-                if (null !== $arrColumn['Default'] && 'null' !== strtolower($arrColumn['Default'])) {
-                    $arrTemp['default'] = $arrColumn['Default'];
+                if (null !== $column['Default'] &&
+                    'null' !== strtolower($column['Default'])) {
+                    $tmp['default'] = $column['Default'];
                 } else {
-                    $arrTemp['default'] = null;
+                    $tmp['default'] = null;
                 }
 
                 // 返回结果
-                $arrResult['list'][$arrTemp['name']] = $arrTemp;
+                $result['list'][$tmp['name']] = $tmp;
 
-                if ($arrTemp['auto_increment']) {
-                    $arrResult['auto_increment'] = $arrTemp['name'];
+                if ($tmp['auto_increment']) {
+                    $result['auto_increment'] = $tmp['name'];
                 }
 
-                if ($arrTemp['primary_key']) {
-                    if (!is_array($arrResult['primary_key'])) {
-                        $arrResult['primary_key'] = [];
+                if ($tmp['primary_key']) {
+                    if (!is_array($result['primary_key'])) {
+                        $result['primary_key'] = [];
                     }
-                    $arrResult['primary_key'][] = $arrTemp['name'];
+
+                    $result['primary_key'][] = $tmp['name'];
                 }
             }
         }
-        unset($arrColumns, $strSql);
 
-        return $arrResult;
+        unset($columns, $sql);
+
+        return $result;
     }
 
     /**
      * sql 字段格式化.
      *
-     * @param mixed $sName
+     * @param mixed $name
      *
      * @return string
      */
-    public function identifierColumn($sName)
+    public function identifierColumn($name)
     {
-        return '*' !== $sName ? "`{$sName}`" : '*';
+        return '*' !== $name ? "`{$name}`" : '*';
     }
 
     /**
      * 分析 limit.
      *
-     * @param mixed $mixLimitcount
-     * @param mixed $mixLimitoffset
+     * @param null|int $limitcount
+     * @param null|int $limitoffset
      *
      * @return string
      */
-    public function parseLimitcount($mixLimitcount = null, $mixLimitoffset = null)
+    public function parseLimitcount(?int $limitcount = null, ?int $limitoffset = null)
     {
-        if (null !== $mixLimitoffset) {
-            $sSql = 'LIMIT '.(int) $mixLimitoffset;
+        if (null !== $limitoffset) {
+            $sql = 'LIMIT '.(int) $limitoffset;
 
-            if (null !== $mixLimitcount) {
-                $sSql .= ','.(int) $mixLimitcount;
+            if (null !== $limitcount) {
+                $sql .= ','.(int) $limitcount;
             } else {
-                $sSql .= ',999999999999';
+                $sql .= ',999999999999';
             }
 
-            return $sSql;
+            return $sql;
         }
-        if (null !== $mixLimitcount) {
-            return 'LIMIT '.(int) $mixLimitcount;
+
+        if (null !== $limitcount) {
+            return 'LIMIT '.(int) $limitcount;
         }
     }
 
     /**
      * 基本.
      *
-     * @param array $arrOption
+     * @param array $option
      *
      * @return string
      */
-    protected function parseBase($arrOption)
+    protected function parseBase(array $option)
     {
-        return 'mysql:dbname='.$arrOption['name'].';host='.$arrOption['host'];
+        return 'mysql:dbname='.$option['name'].
+            ';host='.$option['host'];
     }
 
     /**
      * 端口.
      *
-     * @param array $arrOption
+     * @param array $option
      *
      * @return string
      */
-    protected function parsePort($arrOption)
+    protected function parsePort(array $option)
     {
-        if (!empty($arrOption['port'])) {
-            return ';port='.$arrOption['port'];
+        if (!empty($option['port'])) {
+            return ';port='.$option['port'];
         }
     }
 
     /**
      * 用 unix socket 加速 php-fpm、mysql、redis 连接.
      *
-     * @param array $arrOption
+     * @param array $option
      *
      * @return string
      */
-    protected function parseSocket($arrOption)
+    protected function parseSocket(array $option)
     {
-        if (!empty($arrOption['socket'])) {
-            return ';unix_socket='.$arrOption['socket'];
+        if (!empty($option['socket'])) {
+            return ';unix_socket='.$option['socket'];
         }
     }
 
     /**
      * 编码
      *
-     * @param array $arrOption
+     * @param array $option
      *
      * @return string
      */
-    protected function parseCharset($arrOption)
+    protected function parseCharset(array $option)
     {
-        if (!empty($arrOption['charset'])) {
-            return ';charset='.$arrOption['charset'];
+        if (!empty($option['charset'])) {
+            return ';charset='.$option['charset'];
         }
     }
 }
