@@ -118,22 +118,22 @@ interface ISeccode
     /**
      * 设置验证码
      *
-     * @param mixed  $mixCode
-     * @param string $strAutoType
-     * @param bool   $booAutoCode
+     * @param mixed  $code
+     * @param string $autoType
+     * @param bool   $autoCode
      *
      * @return $this
      */
-    public function display($mixCode = null, $strAutoType = self::ALPHA_UPPERCASE, $booAutoCode = true);
+    public function display($code = null, $autoType = self::ALPHA_UPPERCASE, $autoCode = true);
 
     /**
      * 设置验证码
      *
-     * @param string $strCode
+     * @param string $code
      *
      * @return $this
      */
-    public function code($strCode);
+    public function code($code);
 
     /**
      * 返回验证码

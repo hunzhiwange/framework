@@ -43,56 +43,56 @@ class Seccode implements ISeccode
      *
      * @var string
      */
-    protected $strCode;
+    protected $code;
 
     /**
      * 宽度.
      *
      * @var int
      */
-    protected $intResolvedWidth;
+    protected $resolvedWidth;
 
     /**
      * 高度.
      *
      * @var int
      */
-    protected $intResolvedHeight;
+    protected $resolvedHeight;
 
     /**
      * 字体路径.
      *
      * @var string
      */
-    protected $strResolvedFontPath;
+    protected $resolvedFontPath;
 
     /**
      * 中文字体路径.
      *
      * @var string
      */
-    protected $strResolvedChineseFontPath;
+    protected $resolvedChineseFontPath;
 
     /**
      * 背景路径.
      *
      * @var string
      */
-    protected $strResolvedBackgroundPath;
+    protected $resolvedBackgroundPath;
 
     /**
      * 字体颜色.
      *
      * @var array
      */
-    protected $arrFontColor = [];
+    protected $fontColor = [];
 
     /**
      * 配置.
      *
      * @var array
      */
-    protected $arrOption = [
+    protected $option = [
         // 验证码宽度
         'width' => 160,
 
@@ -130,59 +130,59 @@ class Seccode implements ISeccode
     /**
      * 构造函数.
      *
-     * @param array $arrOption
+     * @param array $option
      */
-    public function __construct(array $arrOption = [])
+    public function __construct(array $option = [])
     {
-        $this->options($arrOption);
+        $this->options($option);
     }
 
     /**
      * 设置验证码
      *
-     * @param mixed  $mixCode
-     * @param bool   $booAutoCode
-     * @param string $strAutoType
+     * @param mixed  $code
+     * @param bool   $autoCode
+     * @param string $autoType
      *
      * @return $this
      */
-    public function display($mixCode = null, $booAutoCode = true, $strAutoType = self::ALPHA_UPPERCASE)
+    public function display($code = null, $autoCode = true, $autoType = self::ALPHA_UPPERCASE)
     {
-        if (is_int($mixCode) && $booAutoCode) {
-            $this->autoCode($mixCode, $strAutoType);
+        if (is_int($code) && $autoCode) {
+            $this->autoCode($code, $autoType);
         } else {
-            $mixCode && $this->code($mixCode);
+            $code && $this->code($code);
         }
 
-        $resFoo = imagecreatefromstring($this->makeBackground());
+        $resImage = imagecreatefromstring($this->makeBackground());
 
         if ($this->getOption('adulterate')) {
-            $this->makeAdulterate($resFoo);
+            $this->makeAdulterate($resImage);
         }
 
-        $this->makeTtfFont($resFoo);
+        $this->makeTtfFont($resImage);
 
         if (function_exists('imagepng')) {
             header('Content-type: image/png');
-            imagepng($resFoo);
+            imagepng($resImage);
         } else {
             header('Content-type: image/jpeg');
-            imagejpeg($resFoo, '', 100);
+            imagejpeg($resImage, '', 100);
         }
 
-        imagedestroy($resFoo);
+        imagedestroy($resImage);
     }
 
     /**
      * 设置验证码
      *
-     * @param string $strCode
+     * @param string $code
      *
      * @return $this
      */
-    public function code($strCode)
+    public function code($code): self
     {
-        $this->strCode = $strCode;
+        $this->code = $code;
 
         return $this;
     }
@@ -194,7 +194,7 @@ class Seccode implements ISeccode
      */
     public function getCode()
     {
-        return $this->strCode;
+        return $this->code;
     }
 
     /**
@@ -204,8 +204,8 @@ class Seccode implements ISeccode
      */
     public function getWidth()
     {
-        if (null !== $this->intResolvedWidth) {
-            return $this->intResolvedWidth;
+        if (null !== $this->resolvedWidth) {
+            return $this->resolvedWidth;
         }
 
         if ($this->getOption('width') < static::MIN_WIDTH) {
@@ -214,7 +214,7 @@ class Seccode implements ISeccode
             $this->option('width', static::MAX_WIDTH);
         }
 
-        return $this->intResolvedWidth = $this->getOption('width');
+        return $this->resolvedWidth = $this->getOption('width');
     }
 
     /**
@@ -224,8 +224,8 @@ class Seccode implements ISeccode
      */
     public function getHeight()
     {
-        if (null !== $this->intResolvedHeight) {
-            return $this->intResolvedHeight;
+        if (null !== $this->resolvedHeight) {
+            return $this->resolvedHeight;
         }
 
         if ($this->getOption('height') < static::MIN_HEIGHT) {
@@ -234,7 +234,7 @@ class Seccode implements ISeccode
             $this->option('height', static::MAX_HEIGHT);
         }
 
-        return $this->intResolvedHeight = $this->getOption('height');
+        return $this->resolvedHeight = $this->getOption('height');
     }
 
     /**
@@ -244,11 +244,12 @@ class Seccode implements ISeccode
      */
     public function getFontPath()
     {
-        if (null !== $this->strResolvedFontPath) {
-            return $this->strResolvedFontPath;
+        if (null !== $this->resolvedFontPath) {
+            return $this->resolvedFontPath;
         }
 
-        return $this->strResolvedFontPath = $this->getOption('font_path') ?: $this->getDefaultFontPath();
+        return $this->resolvedFontPath = $this->getOption('font_path') ?:
+            $this->getDefaultFontPath();
     }
 
     /**
@@ -258,11 +259,12 @@ class Seccode implements ISeccode
      */
     public function getChineseFontPath()
     {
-        if (null !== $this->strResolvedChineseFontPath) {
-            return $this->strResolvedChineseFontPath;
+        if (null !== $this->resolvedChineseFontPath) {
+            return $this->resolvedChineseFontPath;
         }
 
-        return $this->strResolvedChineseFontPath = $this->getOption('chinese_font_path') ?: $this->getDefaultChineseFontPath();
+        return $this->resolvedChineseFontPath = $this->getOption('chinese_font_path') ?:
+            $this->getDefaultChineseFontPath();
     }
 
     /**
@@ -272,11 +274,12 @@ class Seccode implements ISeccode
      */
     public function getBackgroundPath()
     {
-        if (null !== $this->strResolvedBackgroundPath) {
-            return $this->strResolvedBackgroundPath;
+        if (null !== $this->resolvedBackgroundPath) {
+            return $this->resolvedBackgroundPath;
         }
 
-        return $this->strResolvedBackgroundPath = $this->getOption('background_path') ?: $this->getDefaultBackgroundPath();
+        return $this->resolvedBackgroundPath = $this->getOption('background_path') ?:
+            $this->getDefaultBackgroundPath();
     }
 
     /**
@@ -286,48 +289,80 @@ class Seccode implements ISeccode
      */
     protected function makeBackground()
     {
-        $resFoo = imagecreatetruecolor($this->getWidth(), $this->getHeight());
-        $resColor = imagecolorallocate($resFoo, 255, 255, 255);
+        $resImage = imagecreatetruecolor($this->getWidth(), $this->getHeight());
+        $resColor = imagecolorallocate($resImage, 255, 255, 255);
 
-        if (false === $this->makeBackgroundWithImage($resFoo)) {
-            $this->makeBackgroundDefault($resFoo);
+        if (false === $this->makeBackgroundWithImage($resImage)) {
+            $this->makeBackgroundDefault($resImage);
         }
 
         ob_start();
+
         if (function_exists('imagepng')) {
-            imagepng($resFoo);
+            imagepng($resImage);
         } else {
-            imagejpeg($resFoo, '', 100);
+            imagejpeg($resImage, '', 100);
         }
 
-        imagedestroy($resFoo);
-        $strBackground = ob_get_contents();
+        imagedestroy($resImage);
+        $background = ob_get_contents();
+
         ob_end_clean();
 
-        return $strBackground;
+        return $background;
     }
 
     /**
      * 创建随机背景图形.
      *
-     * @param resource $resFoo
+     * @param resource $resImage
      */
-    protected function makeAdulterate(&$resFoo)
+    protected function makeAdulterate(&$resImage)
     {
-        $intLineNum = $this->getHeight() / 10;
-        if ($intLineNum < 1) {
+        $lineNum = $this->getHeight() / 10;
+
+        if ($lineNum < 1) {
             return;
         }
 
-        for ($int = 0; $int <= $intLineNum; $int++) {
-            $resColor = $this->getOption('color') ? imagecolorallocate($resFoo, mt_rand(0, 255), mt_rand(0, 255), mt_rand(0, 255)) : imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
+        for ($i = 0; $i <= $lineNum; $i++) {
+            $resColor = $this->getOption('color') ?
+                imagecolorallocate(
+                    $resImage,
+                    mt_rand(0, 255),
+                    mt_rand(0, 255),
+                    mt_rand(0, 255)
+                ) :
+                imagecolorallocate(
+                    $resImage,
+                    $this->fontColor[0],
+                    $this->fontColor[1],
+                    $this->fontColor[2]
+                );
 
-            $intX = $this->mtRand(0, $this->getWidth());
-            $intY = $this->mtRand(0, $this->getHeight());
+            $x = $this->mtRand(0, $this->getWidth());
+            $y = $this->mtRand(0, $this->getHeight());
+
             if (mt_rand(0, 1)) {
-                imagearc($resFoo, $intX, $intY, $this->mtRand(0, $this->getWidth()), $this->mtRand(0, $this->getHeight()), mt_rand(0, 360), mt_rand(0, 360), $resColor);
+                imagearc(
+                    $resImage,
+                    $x,
+                    $y,
+                    $this->mtRand(0, $this->getWidth()),
+                    $this->mtRand(0, $this->getHeight()),
+                    mt_rand(0, 360),
+                    mt_rand(0, 360),
+                    $resColor
+                );
             } else {
-                imageline($resFoo, $intX, $intY, 0 + mt_rand(0, 0), 0 + $this->mtRand(0, $this->mtRand($this->getHeight(), $this->getWidth())), $resColor);
+                imageline(
+                    $resImage,
+                    $x,
+                    $y,
+                    0 + mt_rand(0, 0),
+                    0 + $this->mtRand(0, $this->mtRand($this->getHeight(), $this->getWidth())),
+                    $resColor
+                );
             }
         }
     }
@@ -335,41 +370,100 @@ class Seccode implements ISeccode
     /**
      * 创建字体信息.
      *
-     * @param resource $resFoo
+     * @param resource $resImage
      */
-    protected function makeTtfFont(&$resFoo)
+    protected function makeTtfFont(&$resImage)
     {
         if (!function_exists('imagettftext')) {
-            throw new Exception('Function imagettftext is not exits');
+            throw new Exception(
+                'Function imagettftext is not exits.'
+            );
         }
 
-        list($arrFont, $strCode, $intWidthTotal) = $this->getFontOption();
+        list($font, $code, $widthTotal) = $this->getFontOption();
 
         // deg2rad() 函数将角度转换为弧度 cos 是 cosine 的简写
         // 表示余弦函数
-        $intX = $this->mtRand($arrFont[0]['tilt'] > 0 ? cos(deg2rad(90 - $arrFont[0]['tilt'])) * $arrFont[0]['zheight'] : 1, $this->getWidth() - $intWidthTotal);
+        $x = $this->mtRand(
+            $font[0]['tilt'] > 0 ?
+                cos(deg2rad(90 - $font[0]['tilt'])) * $font[0]['zheight'] :
+                1,
+            $this->getWidth() - $widthTotal
+        );
 
         // 是否启用随机颜色
-        !$this->getOption('color') && $resTextColor = imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
+        !$this->getOption('color') &&
+            $resTextColor = imagecolorallocate(
+                $resImage,
+                $this->fontColor[0],
+                $this->fontColor[1],
+                $this->fontColor[2]
+            );
 
-        for ($int = 0; $int < count($arrFont); $int++) {
+        for ($i = 0; $i < count($font); $i++) {
             if ($this->getOption('color')) {
-                $this->arrFontColor = [
+                $this->fontColor = [
                     mt_rand(0, 255),
                     mt_rand(0, 255),
                     mt_rand(0, 255),
                 ];
-                $this->getOption('shadow') && $resTextShadowColor = imagecolorallocate($resFoo, 255 - $this->arrFontColor[0], 255 - $this->arrFontColor[1], 255 - $this->arrFontColor[2]);
-                $resTextColor = imagecolorallocate($resFoo, $this->arrFontColor[0], $this->arrFontColor[1], $this->arrFontColor[2]);
+
+                $this->getOption('shadow') &&
+                    $resTextShadowColor = imagecolorallocate(
+                        $resImage,
+                        255 - $this->fontColor[0],
+                        255 - $this->fontColor[1],
+                        255 - $this->fontColor[2]
+                    );
+
+                $resTextColor = imagecolorallocate(
+                    $resImage,
+                    $this->fontColor[0],
+                    $this->fontColor[1],
+                    $this->fontColor[2]
+                );
             } elseif ($this->getOption('shadow')) {
-                $resTextShadowColor = imagecolorallocate($resFoo, 255 - $this->arrFontColor[0], 255 - $this->arrFontColor[1], 255 - $this->arrFontColor[2]);
+                $resTextShadowColor = imagecolorallocate(
+                    $resImage,
+                    255 - $this->fontColor[0],
+                    255 - $this->fontColor[1],
+                    255 - $this->fontColor[2]
+                );
             }
 
-            $intY = $arrFont[0]['tilt'] > 0 ? $this->mtRand($arrFont[$int]['height'], $this->getHeight()) : $this->mtRand($arrFont[$int]['height'] - $arrFont[$int]['hd'], $this->getHeight() - $arrFont[$int]['hd']);
+            $y = $font[0]['tilt'] > 0 ?
+                $this->mtRand(
+                    $font[$i]['height'],
+                    $this->getHeight()
+                ) :
+                $this->mtRand(
+                    $font[$i]['height'] - $font[$i]['hd'],
+                    $this->getHeight() - $font[$i]['hd']
+                );
 
-            $this->getOption('shadow') && imagettftext($resFoo, $arrFont[$int]['size'], $arrFont[$int]['tilt'], $intX + 1, $intY + 1, $resTextShadowColor, $arrFont[$int]['font'], $strCode[$int]);
-            imagettftext($resFoo, $arrFont[$int]['size'], $arrFont[$int]['tilt'], $intX, $intY, $resTextColor, $arrFont[$int]['font'], $strCode[$int]);
-            $intX += $arrFont[$int]['width'];
+            $this->getOption('shadow') &&
+                imagettftext(
+                    $resImage,
+                    $font[$i]['size'],
+                    $font[$i]['tilt'],
+                    $x + 1,
+                    $y + 1,
+                    $resTextShadowColor,
+                    $font[$i]['font'],
+                    $code[$i]
+                );
+
+            imagettftext($resImage,
+                $font[$i]['size'],
+                $font[$i]['tilt'],
+                $x,
+                $y,
+                $resTextColor,
+                $font[$i]['font'],
+                $code[$i]
+            );
+
+            $x += $font[$i]['width'];
         }
     }
 
@@ -380,117 +474,182 @@ class Seccode implements ISeccode
      */
     protected function getFontOption()
     {
-        $strCode = $this->getCode();
-        $arrTtf = $this->getTtf();
+        $code = $this->getCode();
+        $ttf = $this->getTtf();
 
-        if ($this->isChinese($strCode)) {
-            $strCode = str_split($strCode, 3);
-            $intCodeLength = count($strCode);
+        if ($this->isChinese($code)) {
+            $code = str_split($code, 3);
+            $codeLength = count($code);
         } else {
-            $intCodeLength = strlen($strCode);
+            $codeLength = strlen($code);
         }
 
-        $arrFont = [];
-        $intWidthTotal = 0;
-        for ($int = 0; $int < $intCodeLength; $int++) {
-            if (!isset($arrFont[$int])) {
-                $arrFont[$int] = [];
+        $font = [];
+        $widthTotal = 0;
+
+        for ($i = 0; $i < $codeLength; $i++) {
+            if (!isset($font[$i])) {
+                $font[$i] = [];
             }
 
-            $arrFont[$int]['font'] = $arrTtf[array_rand($arrTtf)];
-            $arrFont[$int]['tilt'] = $this->getOption('tilt') ? mt_rand(-30, 30) : 0;
-            $arrFont[$int]['size'] = $this->getWidth() / 6;
+            $font[$i]['font'] = $ttf[array_rand($ttf)];
+            $font[$i]['tilt'] = $this->getOption('tilt') ? mt_rand(-30, 30) : 0;
+            $font[$i]['size'] = $this->getWidth() / 6;
 
-            $this->getOption('size') and $arrFont[$int]['size'] = $this->mtRand($arrFont[$int]['size'] - $this->getWidth() / 40, $arrFont[$int]['size'] + $this->getWidth() / 20);
+            $this->getOption('size') &&
+                $font[$i]['size'] = $this->mtRand(
+                    $font[$i]['size'] - $this->getWidth() / 40,
+                    $font[$i]['size'] + $this->getWidth() / 20
+                );
 
-            $resBox = imagettfbbox($arrFont[$int]['size'], 0, $arrFont[$int]['font'], $strCode[$int]);
+            $resBox = imagettfbbox(
+                $font[$i]['size'],
+                0,
+                $font[$i]['font'],
+                $code[$i]
+            );
 
-            $arrFont[$int]['zheight'] = max($resBox[1], $resBox[3]) - min($resBox[5], $resBox[7]);
+            $font[$i]['zheight'] = max($resBox[1], $resBox[3]) -
+                min($resBox[5], $resBox[7]);
 
-            $resBox = imagettfbbox($arrFont[$int]['size'], $arrFont[$int]['tilt'], $arrFont[$int]['font'], $strCode[$int]);
+            $resBox = imagettfbbox(
+                $font[$i]['size'],
+                $font[$i]['tilt'],
+                $font[$i]['font'],
+                $code[$i]
+            );
 
-            $arrFont[$int]['height'] = max($resBox[1], $resBox[3]) - min($resBox[5], $resBox[7]);
+            $font[$i]['height'] = max($resBox[1], $resBox[3]) -
+                min($resBox[5], $resBox[7]);
 
-            $arrFont[$int]['hd'] = $arrFont[$int]['height'] - $arrFont[$int]['zheight'];
+            $font[$i]['hd'] = $font[$i]['height'] - $font[$i]['zheight'];
 
-            $arrFont[$int]['width'] = (max($resBox[2], $resBox[4]) - min($resBox[0], $resBox[6])) + mt_rand(0, $this->getWidth() / 8);
-            $arrFont[$int]['width'] = $arrFont[$int]['width'] > $this->getWidth() / $intCodeLength ? $this->getWidth() / $intCodeLength : $arrFont[$int]['width'];
-            $intWidthTotal += $arrFont[$int]['width'];
+            $font[$i]['width'] =
+                (max($resBox[2], $resBox[4]) - min($resBox[0], $resBox[6])) +
+                mt_rand(0, $this->getWidth() / 8);
+
+            $font[$i]['width'] =
+                $font[$i]['width'] > $this->getWidth() / $codeLength ?
+                $this->getWidth() / $codeLength :
+                $font[$i]['width'];
+
+            $widthTotal += $font[$i]['width'];
         }
 
         return [
-            $arrFont,
-            $strCode,
-            $intWidthTotal,
+            $font,
+            $code,
+            $widthTotal,
         ];
     }
 
     /**
      * 创建图片背景图像.
      *
-     * @param resource $resFoo
+     * @param resource $resImage
      *
      * @return bool
      */
-    protected function makeBackgroundWithImage(&$resFoo)
+    protected function makeBackgroundWithImage(&$resImage)
     {
-        $booBackground = false;
-        if ($this->getOption('background') && function_exists('imagecreatefromjpeg') && function_exists('imagecolorat') && function_exists('imagecopymerge') && function_exists('imagesetpixel') && function_exists('imageSX') && function_exists('imageSY')) {
+        $background = false;
+
+        if ($this->getOption('background') &&
+            function_exists('imagecreatefromjpeg') &&
+            function_exists('imagecolorat') &&
+            function_exists('imagecopymerge') &&
+            function_exists('imagesetpixel') &&
+            function_exists('imageSX') &&
+            function_exists('imageSY')) {
             if (!is_dir($this->getBackgroundPath())) {
-                throw new Exception(sprintf('Background path %s is not exists.', $this->getBackgroundPath()));
+                throw new Exception(
+                    sprintf(
+                        'Background path %s is not exists.',
+                        $this->getBackgroundPath()
+                    )
+                );
             }
 
-            $arrBackground = Fso::lists($this->getBackgroundPath(), 'file', true);
+            $background = Fso::lists($this->getBackgroundPath(), 'file', true);
 
-            if ($arrBackground) {
-                $resBackground = imagecreatefromjpeg($arrBackground[array_rand($arrBackground)]);
+            if ($background) {
+                $resBackground = imagecreatefromjpeg($background[array_rand($background)]);
                 $resColorIndex = imagecolorat($resBackground, 0, 0);
-                $arrColor = imagecolorsforindex($resBackground, $resColorIndex);
+                $color = imagecolorsforindex($resBackground, $resColorIndex);
                 $resColorIndex = imagecolorat($resBackground, 1, 0);
+
                 imagesetpixel($resBackground, 0, 0, $resColorIndex);
 
-                $arrColor[0] = $arrColor['red'];
-                $arrColor[1] = $arrColor['green'];
-                $arrColor[2] = $arrColor['blue'];
+                $color[0] = $color['red'];
+                $color[1] = $color['green'];
+                $color[2] = $color['blue'];
 
-                imagecopymerge($resFoo, $resBackground, 0, 0, $this->mtRand(0, 200 - $this->getWidth()), $this->mtRand(0, 80 - $this->getHeight()), imagesx($resBackground), imagesy($resBackground), 100);
+                imagecopymerge(
+                    $resImage,
+                    $resBackground,
+                    0,
+                    0,
+                    $this->mtRand(0, 200 - $this->getWidth()),
+                    $this->mtRand(0, 80 - $this->getHeight()),
+                    imagesx($resBackground),
+                    imagesy($resBackground),
+                    100
+                );
+
                 imagedestroy($resBackground);
 
-                $booBackground = true;
-                $this->arrFontColor = $arrColor;
+                $background = true;
+
+                $this->fontColor = $color;
             }
         }
 
-        return $booBackground;
+        return $background;
     }
 
     /**
      * 创建默认背景图像.
      *
-     * @param resource $resFoo
+     * @param resource $resImage
      */
-    protected function makeBackgroundDefault(&$resFoo)
+    protected function makeBackgroundDefault(&$resImage)
     {
-        for ($int = 0; $int < 3; $int++) {
-            $arrStart[$int] = mt_rand(200, 255);
-            $arrEnd[$int] = mt_rand(100, 150);
-            $arrStep[$int] = ($arrEnd[$int] - $arrStart[$int]) / $this->getWidth();
-            $arrColor[$int] = $arrStart[$int];
+        for ($i = 0; $i < 3; $i++) {
+            $start[$i] = mt_rand(200, 255);
+            $end[$i] = mt_rand(100, 150);
+            $step[$i] = ($end[$i] - $start[$i]) / $this->getWidth();
+            $color[$i] = $start[$i];
         }
 
-        for ($int = 0; $int < $this->getWidth(); $int++) {
-            $resColor = imagecolorallocate($resFoo, $arrColor[0], $arrColor[1], $arrColor[2]);
-            imageline($resFoo, $int, 0, $int - ($this->getOption('tilt') ? mt_rand(-30, 30) : 0), $this->getHeight(), $resColor);
-            $arrColor[0] += $arrStep[0];
-            $arrColor[1] += $arrStep[1];
-            $arrColor[2] += $arrStep[2];
+        for ($i = 0; $i < $this->getWidth(); $i++) {
+            $resColor = imagecolorallocate(
+                $resImage,
+                $color[0],
+                $color[1],
+                $color[2]
+            );
+
+            imageline(
+                $resImage,
+                $i,
+                0,
+                $i - ($this->getOption('tilt') ? mt_rand(-30, 30) : 0),
+                $this->getHeight(),
+                $resColor
+            );
+
+            $color[0] += $step[0];
+            $color[1] += $step[1];
+            $color[2] += $step[2];
         }
 
-        $arrColor[0] -= 20;
-        $arrColor[1] -= 20;
-        $arrColor[2] -= 20;
-        $this->arrFontColor = $arrColor;
-        unset($arrColor);
+        $color[0] -= 20;
+        $color[1] -= 20;
+        $color[2] -= 20;
+
+        $this->fontColor = $color;
+
+        unset($color);
     }
 
     /**
@@ -500,37 +659,53 @@ class Seccode implements ISeccode
      */
     protected function getTtf()
     {
-        $strFontPath = $this->isChinese($this->getCode()) ? $this->getChineseFontPath() : $this->getFontPath();
-        if (!is_dir($strFontPath)) {
-            throw new Exception(sprintf('Font path %s is not exits', $strFontPath));
+        $fontPath = $this->isChinese($this->getCode()) ?
+            $this->getChineseFontPath() :
+            $this->getFontPath();
+
+        if (!is_dir($fontPath)) {
+            throw new Exception(
+                sprintf('Font path %s is not exits', $fontPath)
+            );
         }
 
-        $arrTtf = Fso::lists($strFontPath, 'file', true);
-        if (empty($arrTtf)) {
+        $ttf = Fso::lists($fontPath, 'file', true);
+
+        if (empty($ttf)) {
             throw new Exception('Font not found');
         }
 
-        return $arrTtf;
+        return $ttf;
     }
 
     /**
      * 自动产生验证码
      *
-     * @param int    $intSize
-     * @param string $strAutoType
+     * @param int    $size
+     * @param string $autoType
      *
      * @return bool
      */
-    protected function autoCode($intSize, $strAutoType = self::ALPHA_UPPERCASE)
+    protected function autoCode($size, $autoType = self::ALPHA_UPPERCASE)
     {
-        if ($intSize < 1) {
-            throw new Exception(sprintf('Code must be greater than %d', 0));
+        if ($size < 1) {
+            throw new Exception(
+                sprintf('Code must be greater than %d', 0)
+            );
         }
 
-        if (!in_array($strAutoType, $this->getAllowedAutoType(), true)) {
-            throw new Exception(sprintf('Code type must be these %s', implode(',', $this->getAllowedAutoType())));
+        if (!in_array($autoType, $this->getAllowedAutoType(), true)) {
+            throw new Exception(
+                sprintf(
+                    'Code type must be these %s',
+                    implode(',', $this->getAllowedAutoType())
+                )
+            );
         }
-        $this->code(Str::{'rand'.ucwords(Str::camelize($strAutoType))}($intSize));
+
+        $this->code(
+            Str::{'rand'.ucwords(Str::camelize($autoType))}($size)
+        );
     }
 
     /**
@@ -555,25 +730,25 @@ class Seccode implements ISeccode
     /**
      * 是否为中文.
      *
-     * @param string $strCode
+     * @param string $code
      *
      * @return bool
      */
-    protected function isChinese($strCode)
+    protected function isChinese($code)
     {
-        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $strCode);
+        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $code);
     }
 
     /**
      * 文件后缀
      *
-     * @param string $sFileName
+     * @param string $fileName
      *
      * @return string
      */
-    protected function ext($sFileName)
+    protected function ext($fileName)
     {
-        return trim(substr(strrchr($sFileName, '.'), 1, 10));
+        return trim(substr(strrchr($fileName, '.'), 1, 10));
     }
 
     /**
@@ -609,20 +784,17 @@ class Seccode implements ISeccode
     /**
      * 生成随机数.
      *
-     * @param int $numFoo
-     * @param int $numBar
+     * @param int $numFirst
+     * @param int $numSecond
      *
-     * @return number
+     * @return int
      */
-    protected function mtRand($numFoo, $numBar)
+    protected function mtRand(int $numFirst, int $numSecond): int
     {
-        if ($numFoo > $numBar) {
-            $intTemp = $numBar;
-            $numBar = $numFoo;
-            $numFoo = $intTemp;
-            unset($intTemp);
+        if ($numFirst > $numSecond) {
+            list($numSecond, $numFirst) = [$numFirst, $numSecond];
         }
 
-        return mt_rand($numFoo, $numBar);
+        return mt_rand($numFirst, $numSecond);
     }
 }
