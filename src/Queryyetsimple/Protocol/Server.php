@@ -47,14 +47,14 @@ class Server implements IServer
      *
      * @var \Swoole\Server
      */
-    protected $objServer;
+    protected $server;
 
     /**
      * 命令行工具.
      *
      * @var \leevel\Console\Command
      */
-    protected $objCommand;
+    protected $command;
 
     /**
      * 配置.
@@ -96,7 +96,7 @@ class Server implements IServer
      *
      * @var array
      */
-    protected $arrServerEvent = [
+    protected $serverEvent = [
         'start',
         'connect',
         'workerStart',
@@ -123,24 +123,24 @@ class Server implements IServer
      * call.
      *
      * @param string $method
-     * @param array  $arrArgs
+     * @param array  $args
      *
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        return $this->objServer->{$method}(...$arrArgs);
+        return $this->server->{$method}(...$args);
     }
 
     /**
      * 设置命名行
      * 实现友好的屏幕信息输出.
      *
-     * @param leevel\Console\Command $objCommand
+     * @param leevel\Console\Command $command
      */
-    public function setCommand(command $objCommand)
+    public function setCommand(Command $command)
     {
-        $this->objCommand = $objCommand;
+        $this->command = $command;
     }
 
     /**
@@ -163,19 +163,23 @@ class Server implements IServer
     {
         $this->info('List swoole service process', true, '');
 
-        $strCmd = 'ps aux|grep '.$this->getOption('process_name')."|grep -v grep|awk '{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}'";
-        exec($strCmd, $arrOut);
-        if (empty($arrOut)) {
+        $cmd = 'ps aux|grep '.
+            $this->getOption('process_name').
+            "|grep -v grep|awk '{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}'";
+
+        exec($cmd, $out);
+
+        if (empty($out)) {
             $this->warn('No swoole service process was found', true);
         }
 
-        foreach ($arrOut as &$sV) {
-            $sV = explode(' ', $sV);
+        foreach ($out as &$v) {
+            $v = explode(' ', $v);
         }
 
-        $this->info($strCmd, true);
+        $this->info($cmd, true);
 
-        $this->objCommand->table([
+        $this->command->table([
             // 进程的用户
             'USER',
 
@@ -208,7 +212,7 @@ class Server implements IServer
 
             // 命令的名称和参数
             'COMMAND',
-        ], $arrOut);
+        ], $out);
     }
 
     /**
@@ -219,45 +223,64 @@ class Server implements IServer
     {
         $this->info('Stop swoole service process...', true, '');
 
-        $strPidFile = $this->getOption('pid_path');
+        $pidFile = $this->getOption('pid_path');
 
-        if (!is_file($strPidFile)) {
-            $this->error(sprintf('Swoole pid file %s not exists.', $strPidFile), true);
-
-            return;
-        }
-
-        $arrPid = explode("\n", file_get_contents($strPidFile));
-
-        $arrBind = $this->portBind((int) ($this->getOption('port')));
-        if (empty($arrBind) || !isset($arrBind[$arrPid[0]])) {
-            $this->error(sprintf('Specified port occupancy process does not exist,port:%d, pid:%d.', $this->getOption('port'), $arrPid[0]), true);
+        if (!is_file($pidFile)) {
+            $this->error(
+                sprintf('Swoole pid file %s not exists.', $pidFile),
+                true
+            );
 
             return;
         }
 
-        $arrCmd = [];
-        $strCmd = "kill {$arrPid[0]}";
-        $arrCmd[] = $strCmd;
-        exec($strCmd);
+        $pid = explode("\n", file_get_contents($pidFile));
+
+        $bind = $this->portBind((int) ($this->getOption('port')));
+
+        if (empty($bind) || !isset($bind[$pid[0]])) {
+            $this->error(
+                sprintf(
+                    'Specified port occupancy process does not exist,port:%d, pid:%d.',
+                    $this->getOption('port'),
+                    $pid[0]),
+                true
+            );
+
+            return;
+        }
+
+        $cmds = [];
+        $cmd = "kill {$pid[0]}";
+        $cmds[] = $cmd;
+        exec($cmd);
+
         do {
-            $arrOut = [];
-            $strCmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$arrPid[0]}$\"";
-            exec($strCmd, $arrOut);
-            $arrCmd[] = $strCmd;
-            if (empty($arrOut)) {
+            $out = [];
+            $cmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$pid[0]}$\"";
+            exec($cmd, $out);
+            $cmds[] = $cmd;
+
+            if (empty($out)) {
                 break;
             }
         } while (true);
 
-        if (is_file($strPidFile)) {
-            unlink($strPidFile);
+        if (is_file($pidFile)) {
+            unlink($pidFile);
         }
 
-        $this->info(sprintf('Execution command stop succeeds,port %s:%d process ends', $this->getOption('host'), $this->getOption('port')), true);
+        $this->info(
+            sprintf(
+                'Execution command stop succeeds,port %s:%d process ends',
+                $this->getOption('host'),
+                $this->getOption('port')
+            ),
+            true
+        );
 
-        foreach ($arrCmd as $strCmd) {
-            $this->info($strCmd, true);
+        foreach ($cmds as $cmd) {
+            $this->info($cmd, true);
         }
     }
 
@@ -269,20 +292,39 @@ class Server implements IServer
         $this->info('Restart swoole service...', true, '');
 
         try {
-            $objCient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
-            $booResult = $objCient->connect((string) $this->getOption('host'), (int) $this->getOption('port'));
+            $cient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
 
-            if (empty($booResult)) {
-                $this->error(sprintf('%s:%d swoole service does not exist or has been closed.', $this->getOption('host'), $this->getOption('port')), true);
+            $result = $cient->connect(
+                (string) $this->getOption('host'),
+                (int) $this->getOption('port')
+            );
+
+            if (empty($result)) {
+                $this->error(
+                    sprintf(
+                        '%s:%d swoole service does not exist or has been closed.',
+                        $this->getOption('host'),
+                        $this->getOption('port')
+                    ),
+                    true
+                );
 
                 return;
             }
-            $objCient->send(json_encode(['action' => 'reload']));
 
-            $this->info(sprintf('Execution command reload success, port %s:%d process has restarted.', $this->getOption('host'), $this->getOption('port')), true);
-        } catch (Exception $oE) {
-            $this->error($oE->getMessage(), true);
-            $this->error($oE->getTraceAsString(), true);
+            $cient->send(json_encode(['action' => 'reload']));
+
+            $this->info(
+                sprintf(
+                    'Execution command reload success, port %s:%d process has restarted.',
+                    $this->getOption('host'),
+                    $this->getOption('port')
+                ),
+                true
+            );
+        } catch (Exception $e) {
+            $this->error($e->getMessage(), true);
+            $this->error($e->getTraceAsString(), true);
         }
     }
 
@@ -294,24 +336,43 @@ class Server implements IServer
         $this->info('Close swoole service...', true, '');
 
         try {
-            $objCient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
-            $booResult = $objCient->connect($this->getOption('host'), $this->getOption('port'));
+            $cient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
 
-            if (empty($booResult)) {
-                $this->error(sprintf('%s:%d swoole service does not exist or has been closed.', $this->getOption('host'), $this->getOption('port')), true);
+            $result = $cient->connect(
+                $this->getOption('host'),
+                $this->getOption('port')
+            );
+
+            if (empty($result)) {
+                $this->error(
+                    sprintf(
+                        '%s:%d swoole service does not exist or has been closed.',
+                        $this->getOption('host'),
+                        $this->getOption('port')
+                    ),
+                    true
+                );
 
                 return;
             }
-            $objCient->send(json_encode(['action' => 'close']));
+
+            $cient->send(json_encode(['action' => 'close']));
 
             if (is_file($this->getOption('pid_path'))) {
                 unlink($this->getOption('pid_path'));
             }
 
-            $this->info(sprintf('Execution command close success, port %s:%d process has closed.', $this->getOption('host'), $this->getOption('port')), true);
-        } catch (Exception $oE) {
-            $this->error($oE->getMessage(), true);
-            $this->error($oE->getTraceAsString(), true);
+            $this->info(
+                sprintf(
+                    'Execution command close success, port %s:%d process has closed.',
+                    $this->getOption('host'),
+                    $this->getOption('port')
+                ),
+                true
+            );
+        } catch (Exception $e) {
+            $this->error($e->getMessage(), true);
+            $this->error($e->getTraceAsString(), true);
         }
     }
 
@@ -322,53 +383,77 @@ class Server implements IServer
     {
         $this->info('Status of swoole service...', true, '');
 
-        $strPidFile = $this->getOption('pid_path');
+        $pidFile = $this->getOption('pid_path');
 
-        if (!is_file($strPidFile)) {
-            $this->error(sprintf('Swoole pid file %s not exists.', $strPidFile), true);
-
-            return;
-        }
-
-        $arrPid = explode("\n", file_get_contents($strPidFile));
-
-        $arrBind = $this->portBind((int) ($this->getOption('port')));
-        if (empty($arrBind) || !isset($arrBind[$arrPid[0]])) {
-            $this->error(sprintf('Specified port occupancy process does not exist,port:%d, pid:%d.', $this->getOption('port'), $arrPid[0]), true);
+        if (!is_file($pidFile)) {
+            $this->error(
+                sprintf('Swoole pid file %s not exists.', $pidFile),
+                true
+            );
 
             return;
         }
 
-        $objCient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
-        $booResult = $objCient->connect($this->getOption('host'), $this->getOption('port'));
+        $pid = explode("\n", file_get_contents($pidFile));
 
-        if (empty($booResult)) {
-            $this->error(sprintf('%s:%d swoole service does not exist or has been closed.', $this->getOption('host'), $this->getOption('port')), true);
+        $bind = $this->portBind((int) ($this->getOption('port')));
+
+        if (empty($bind) || !isset($bind[$pid[0]])) {
+            $this->error(
+                sprintf(
+                    'Specified port occupancy process does not exist,port:%d, pid:%d.',
+                    $this->getOption('port'),
+                    $pid[0]
+                ),
+                true
+            );
 
             return;
         }
-        $objCient->send(json_encode(['action' => 'status']));
 
-        $strOut = $objCient->recv();
-        $arrResult = json_decode($strOut);
+        $cient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
+
+        $result = $cient->connect(
+            $this->getOption('host'),
+            $this->getOption('port')
+        );
+
+        if (empty($result)) {
+            $this->error(
+                sprintf(
+                    '%s:%d swoole service does not exist or has been closed.',
+                    $this->getOption('host'),
+                    $this->getOption('port')
+                ),
+                true
+            );
+
+            return;
+        }
+
+        $cient->send(json_encode(['action' => 'status']));
+
+        $out = $cient->recv();
+        $result = json_decode($out);
 
         // see https://wiki.swoole.com/wiki/page/288.html
-        $arrDetail = [];
-        foreach ($arrResult as $strKey => $mixVal) {
-            if ('start_time' === $strKey) {
-                $mixVal = date('Y-m-d H:i:s', $mixVal);
+        $detail = [];
+
+        foreach ($result as $key => $val) {
+            if ('start_time' === $key) {
+                $val = date('Y-m-d H:i:s', $val);
             }
 
-            $arrDetail[] = [
-                $strKey,
-                $mixVal,
+            $detail[] = [
+                $key,
+                $val,
             ];
         }
 
-        $this->objCommand->table([
+        $this->command->table([
             'Item',
             'Value',
-        ], $arrDetail);
+        ], $detail);
     }
 
     /**
@@ -379,19 +464,31 @@ class Server implements IServer
         $this->info('Stask swoole service...', true, '');
 
         try {
-            $objCient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
-            $booResult = $objCient->connect($this->getOption('host'), $this->getOption('port'));
+            $cient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
 
-            if (empty($booResult)) {
-                $this->error(sprintf('%s:%d swoole service does not exist or has been closed.', $this->getOption('host'), $this->getOption('port')), true);
+            $result = $cient->connect(
+                $this->getOption('host'),
+                $this->getOption('port')
+            );
+
+            if (empty($result)) {
+                $this->error(
+                    sprintf(
+                        '%s:%d swoole service does not exist or has been closed.',
+                        $this->getOption('host'),
+                        $this->getOption('port')
+                    ),
+                    true
+                );
 
                 return;
             }
+
             // 发送数据
-                // $objCient->send('test');
-        } catch (Exception $oE) {
-            $this->error($oE->getMessage(), true);
-            $this->error($oE->getTraceAsString(), true);
+            // $cient->send('test');
+        } catch (Exception $e) {
+            $this->error($e->getMessage(), true);
+            $this->error($e->getTraceAsString(), true);
         }
     }
 
@@ -402,27 +499,36 @@ class Server implements IServer
      */
     public function getServer()
     {
-        return $this->objServer;
+        return $this->server;
     }
 
     /**
      * 主进程的主线程
      * 记录进程 id,脚本实现自动重启.
      *
-     * @param \Swoole\Server $objServer
+     * @param \Swoole\Server $server
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onStart.html
      */
-    public function onStart(SwooleServer $objServer)
+    public function onStart(SwooleServer $server)
     {
-        $this->info(sprintf('Swoole server is started at %s:%d', $this->getOption('host'), $this->getOption('port')), true, '');
+        $this->info(
+            sprintf(
+                'Swoole server is started at %s:%d',
+                $this->getOption('host'),
+                $this->getOption('port')
+            ),
+            true,
+            ''
+        );
 
         $this->info('Swoole server master worker start', true);
 
-        $this->setProcessName($this->option['process_name'].'-master');
+        $this->setProcesname($this->option['process_name'].'-master');
 
-        $strPid = $objServer->master_pid."\n".$objServer->manager_pid;
-        if (!file_put_contents($this->getOption('pid_path'), $strPid)) {
+        $pid = $server->master_pid."\n".$server->manager_pid;
+
+        if (!file_put_contents($this->getOption('pid_path'), $pid)) {
             $this->warn('Swoole pid saved failed', true);
         }
 
@@ -433,15 +539,21 @@ class Server implements IServer
      * 新的连接进入时
      * 每次连接时(相当于每个浏览器第一次打开页面时)执行一次, reload 时连接不会断开, 也就不会再次触发该事件.
      *
-     * @param \Swoole\Server $objServer
-     * @param int            $intFd
-     * @param int            $intReactorId
+     * @param \Swoole\Server $server
+     * @param int            $fd
+     * @param int            $reactorId
      *
      * @see https://wiki.swoole.com/wiki/page/49.html
      */
-    public function onConnect(SwooleServer $objServer, int $intFd, int $intReactorId)
+    public function onConnect(SwooleServer $server, int $fd, int $reactorId)
     {
-        $this->line(sprintf('Swoole server connect, fd %d, reactorId %d.', $intFd, $intReactorId));
+        $this->line(
+            sprintf(
+                'Swoole server connect, fd %d, reactorId %d.',
+                $fd,
+                $reactorId
+            )
+        );
     }
 
     /**
@@ -449,17 +561,21 @@ class Server implements IServer
      * 由于服务端命令行也采用 QueryPHP,无需再次引入 QueryPHP
      * 每个 Worker 进程启动或重启时都会执行.
      *
-     * @param \Swoole\Server $objServer
-     * @param int            $intWorkeId
+     * @param \Swoole\Server $server
+     * @param int            $workeId
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onWorkerStart.html
      */
-    public function onWorkerStart(SwooleServer $objServer, int $intWorkeId)
+    public function onWorkerStart(SwooleServer $server, int $workeId)
     {
-        if ($intWorkeId >= $this->getOption('worker_num')) {
-            $this->setProcessName($this->getOption('process_name').'-task');
+        if ($workeId >= $this->getOption('worker_num')) {
+            $this->setProcesname(
+                $this->getOption('process_name').'-task'
+            );
         } else {
-            $this->setProcessName($this->getOption('process_name').'-event');
+            $this->setProcesname(
+                $this->getOption('process_name').'-event'
+            );
         }
     }
 
@@ -467,124 +583,147 @@ class Server implements IServer
      * 当管理进程启动时调用
      * 服务器启动时执行一次
      *
-     * @param \Swoole\Server $objServer
+     * @param \Swoole\Server $server
      *
      * @see https://wiki.swoole.com/wiki/page/190.html
      */
-    public function onManagerStart(SwooleServer $objServer)
+    public function onManagerStart(SwooleServer $server)
     {
         $this->info('Swoole server manager worker start', true);
-        $this->setProcessName($this->option['process_name'].'-manager');
-        $this->showStartOption($objServer);
+
+        $this->setProcesname(
+            $this->option['process_name'].'-manager'
+        );
+
+        $this->showStartOption($server);
     }
 
     /**
      * worker进程终止时发生
      *
-     * @param \Swoole\Server $objServer
-     * @param int            $intWorkerId
+     * @param \Swoole\Server $server
+     * @param int            $workerId
      */
-    public function onWorkerStop(SwooleServer $objServer, int $intWorkerId)
+    public function onWorkerStop(SwooleServer $server, int $workerId)
     {
-        $this->error(sprintf('Swoole server %s worker %d shutdown', $objServer->setting['process_name'], $intWorkerId));
+        $this->error(
+            sprintf(
+                'Swoole server %s worker %d shutdown',
+                $server->setting['process_name'],
+                $workerId
+            )
+        );
     }
 
     /**
      * 监听数据发送事件.
      *
-     * @param \Swoole\Server $objServer
-     * @param int            $intFd
-     * @param int            $intReactorId
-     * @param string         $strData
+     * @param \Swoole\Server $server
+     * @param int            $fd
+     * @param int            $reactorId
+     * @param string         $data
      *
      * @see https://wiki.swoole.com/wiki/page/50.html
      */
-    public function onReceive(SwooleServer $objServer, int $intFd, int $intReactorId, string $strData)
+    public function onReceive(SwooleServer $server, int $fd, int $reactorId, string $data)
     {
-        $this->line(sprintf('Get message from client %d:%s.', $intFd, $strData));
+        $this->line(
+            sprintf('Get message from client %d:%s.', $fd, $data)
+        );
 
-        if ($this->isJson($strData)) {
-            $arrResult = json_decode($strData, true);
-            switch ($arrResult['action']) {
+        if ($this->isJson($data)) {
+            $result = json_decode($data, true);
+
+            switch ($result['action']) {
                 case 'reload': // 重启
-                    $objServer->reload();
+                    $server->reload();
 
                     break;
                 case 'close': // 关闭
-                    $objServer->shutdown();
+                    $server->shutdown();
 
                     break;
                 case 'status': // 状态
                     // see https://wiki.swoole.com/wiki/page/288.html
-                    $objServer->send($intFd, json_encode($objServer->stats()));
+                    $server->send($fd, json_encode($server->stats()));
 
                     break;
                 default:
                     // 耗时任务放入 task
-                    $arrResult['querytask_meta'] = [
-                        'fd'         => $intReactorId,
-                        'reactor_id' => $intReactorId,
+                    $result['querytask_meta'] = [
+                        'fd'         => $reactorId,
+                        'reactor_id' => $reactorId,
                     ];
-                    $objServer->task(json_encode($arrResult));
+                    $server->task(json_encode($result));
 
                     break;
             }
         } else {
             // 耗时任务放入 task
-            $arrResult = [];
-            $arrResult['data'] = $strData;
-            $arrResult['querytask_meta'] = [
-                'fd'         => $intReactorId,
-                'reactor_id' => $intReactorId,
+            $result = [];
+            $result['data'] = $data;
+            $result['querytask_meta'] = [
+                'fd'         => $reactorId,
+                'reactor_id' => $reactorId,
             ];
-            $objServer->task(json_encode($arrResult));
+
+            $server->task(json_encode($result));
         }
     }
 
     /**
      * 监听连接 Finish 事件.
      *
-     * @param \Swoole\Server $objServer
-     * @param int            $intTaskId
-     * @param string         $strData
+     * @param \Swoole\Server $server
+     * @param int            $taskId
+     * @param string         $data
      *
      * @see https://wiki.swoole.com/wiki/page/136.html
      */
-    public function onFinish(SwooleServer $objServer, int $intTaskId, string $strData)
+    public function onFinish(SwooleServer $server, int $taskId, string $data)
     {
-        $this->info(sprintf('Task %d finish, the result is %s', $intTaskId, $strData));
+        $this->info(
+            sprintf('Task %d finish, the result is %s', $taskId, $data)
+        );
     }
 
     /**
      * 监听连接 task 事件.
      *
-     * @param \Swoole\Server $objServer
-     * @param int            $intTaskId
-     * @param int            $intFromId
-     * @param string         $strData
+     * @param \Swoole\Server $server
+     * @param int            $taskId
+     * @param int            $fromId
+     * @param string         $data
      *
      * @see https://wiki.swoole.com/wiki/page/134.html
      */
-    public function onTask(SwooleServer $objServer, int $intTaskId, int $intFromId, string $strData)
+    public function onTask(SwooleServer $server, int $taskId, int $fromId, string $data)
     {
-        $this->info(sprintf('Task %d form workder %d, the result is %s', $intTaskId, $intFromId, $strData));
+        $this->info(
+            sprintf(
+                'Task %d form workder %d, the result is %s',
+                $taskId,
+                $fromId,
+                $data
+            )
+        );
 
-        $arrResult = json_decode($strData, true);
+        $result = json_decode($data, true);
 
         // task 实际执行功能
 
-        $objServer->finish($strData);
+        $server->finish($data);
     }
 
     /**
      * Server 正常结束时发生
      * 服务器关闭时执行一次
      *
-     * @param \Swoole\Server $objServer
+     * @param \Swoole\Server $server
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onShutdown.html
      */
-    public function onShutdown(SwooleServer $objServer)
+    public function onShutdown(SwooleServer $server)
     {
         if (is_file($this->getOption('pid_path'))) {
             unlink($this->getOption('pid_path'));
@@ -597,15 +736,21 @@ class Server implements IServer
      * 监听连接关闭事件
      * 每个浏览器连接关闭时执行一次, reload 时连接不会断开, 也就不会触发该事件.
      *
-     * @param \Swoole\Server $objServer
-     * @param int            $intFd
-     * @param int            $intReactorId
+     * @param \Swoole\Server $server
+     * @param int            $fd
+     * @param int            $reactorId
      *
      * @see https://wiki.swoole.com/wiki/page/p-event/onClose.html
      */
-    public function onClose(SwooleServer $objServer, int $intFd, int $intReactorId)
+    public function onClose(SwooleServer $server, int $fd, int $reactorId)
     {
-        $this->line(sprintf('Swoole server close, fd %d, reactorId %d.', $intFd, $intReactorId));
+        $this->line(
+            sprintf(
+                'Swoole server close, fd %d, reactorId %d.',
+                $fd,
+                $reactorId
+            )
+        );
     }
 
     /**
@@ -628,14 +773,16 @@ class Server implements IServer
             throw new Exception('Pid path is not set');
         }
 
-        $strDir = dirname($this->getOption('pid_path'));
+        $dir = dirname($this->getOption('pid_path'));
 
-        if (!is_dir($strDir)) {
-            mkdir($strDir, 0777, true);
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
         }
 
-        if (!is_writable($strDir)) {
-            throw new Exception(sprintf('swoole pid dir is not writable'.$strDir));
+        if (!is_writable($dir)) {
+            throw new Exception(
+                sprintf('swoole pid dir is not writable'.$dir)
+            );
         }
     }
 
@@ -644,21 +791,37 @@ class Server implements IServer
      */
     protected function checkService()
     {
-        $strFile = $this->getOption('pid_path');
+        $file = $this->getOption('pid_path');
 
-        if (is_file($strFile)) {
-            $arrPid = explode("\n", file_get_contents($strFile));
+        if (is_file($file)) {
+            $pid = explode("\n", file_get_contents($file));
 
-            $sCmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$arrPid[0]}$\"";
-            exec($sCmd, $arrOut);
+            $cmd = "ps ax | awk '{ print $1 }' | grep -e \"^{$pid[0]}$\"";
+            exec($cmd, $out);
 
-            if (!empty($arrOut)) {
-                throw new Exception(sprintf('Swoole pid file %s is already exists,pid is %d', $strFile, $arrPid[0]));
+            if (!empty($out)) {
+                throw new Exception(
+                    sprintf(
+                        'Swoole pid file %s is already exists,pid is %d',
+                        $file,
+                        $pid[0]
+                    )
+                );
             }
-            $this->warn(sprintf('Warning:swoole pid file is already exists.', $strFile).PHP_EOL.
-                    'It is possible that the swoole service was last unusual exited.'.PHP_EOL.
-                    'The non daemon mode ctrl+c termination is the most possible.'.PHP_EOL);
-            unlink($strFile);
+
+            $this->warn(
+                sprintf(
+                    'Warning:swoole pid file is already exists.',
+                    $file
+                ).
+                PHP_EOL.
+                'It is possible that the swoole service was last unusual exited.'.
+                PHP_EOL.
+                'The non daemon mode ctrl+c termination is the most possible.'.
+                PHP_EOL
+            );
+
+            unlink($file);
         }
     }
 
@@ -667,11 +830,22 @@ class Server implements IServer
      */
     protected function checkPort()
     {
-        $arrBind = $this->portBind((int) ($this->getOption('port')));
-        if ($arrBind) {
-            foreach ($arrBind as $sK => $arrVal) {
-                if ('*' === $arrVal['ip'] || $arrVal['ip'] === $this->getOption('host')) {
-                    throw new Exception(sprintf('The port has been used %s:%s,the port process ID is %s', $arrVal['ip'], $arrVal['port'], $sK));
+        $bind = $this->portBind(
+            (int) ($this->getOption('port'))
+        );
+
+        if ($bind) {
+            foreach ($bind as $k => $val) {
+                if ('*' === $val['ip'] ||
+                    $val['ip'] === $this->getOption('host')) {
+                    throw new Exception(
+                        sprintf(
+                            'The port has been used %s:%s,the port process ID is %s',
+                            $val['ip'],
+                            $val['port'],
+                            $k
+                        )
+                    );
                 }
             }
         }
@@ -680,30 +854,31 @@ class Server implements IServer
     /**
      * 获取端口占用情况.
      *
-     * @param int $intPort
+     * @param int $port
      *
      * @return array
      */
-    protected function portBind(int $intPort)
+    protected function portBind(int $port)
     {
-        $arrRet = [];
+        $result = [];
 
-        $sCmd = "lsof -i :{$intPort}|awk '$1 != \"COMMAND\"  {print $1, $2, $9}'";
-        exec($sCmd, $arrOut);
+        $cmd = "lsof -i :{$port}|awk '$1 != \"COMMAND\"  {print $1, $2, $9}'";
+        exec($cmd, $out);
 
-        if (!empty($arrOut)) {
-            foreach ($arrOut as $sOut) {
-                $arrTemp = explode(' ', $sOut);
-                list($sIp, $nP) = explode(':', $arrTemp[2]);
-                $arrRet[$arrTemp[1]] = [
-                    'cmd'  => $arrTemp[0],
-                    'ip'   => $sIp,
-                    'port' => $nP,
+        if (!empty($out)) {
+            foreach ($out as $val) {
+                $tmp = explode(' ', $val);
+                list($ip, $p) = explode(':', $tmp[2]);
+
+                $result[$tmp[1]] = [
+                    'cmd'  => $tmp[0],
+                    'ip'   => $ip,
+                    'port' => $p,
                 ];
             }
         }
 
-        return $arrRet;
+        return $result;
     }
 
     /**
@@ -711,7 +886,11 @@ class Server implements IServer
      */
     protected function createServer()
     {
-        $this->objServer = new SwooleServer($this->getOption('host'), (int) ($this->getOption('port')));
+        $this->server = new SwooleServer(
+            $this->getOption('host'),
+            (int) ($this->getOption('port'))
+        );
+
         $this->initServer();
     }
 
@@ -720,7 +899,7 @@ class Server implements IServer
      */
     protected function initServer()
     {
-        $this->objServer->set($this->option);
+        $this->server->set($this->option);
     }
 
     /**
@@ -728,10 +907,10 @@ class Server implements IServer
      */
     protected function eventServer()
     {
-        foreach ($this->arrServerEvent as $sEvent) {
-            $this->objServer->on($sEvent, [
+        foreach ($this->serverEvent as $event) {
+            $this->server->on($event, [
                 $this,
-                'on'.ucfirst($sEvent),
+                'on'.ucfirst($event),
             ]);
         }
     }
@@ -741,30 +920,31 @@ class Server implements IServer
      */
     protected function startSwooleServer()
     {
-        $this->objServer->start();
+        $this->server->start();
     }
 
     /**
      * 显示服务启动配置
      * 服务器启动时执行一次
      *
-     * @param \Swoole\Server $objServer
+     * @param \Swoole\Server $server
      */
-    protected function showStartOption(SwooleServer $objServer)
+    protected function showStartOption(SwooleServer $server)
     {
         $option = [];
-        foreach ($objServer->setting as $sKey => $mixVal) {
-            if ('pid_path' === $sKey) {
-                $mixVal = str_replace(path_swoole_cache(), 'runtime/swoole', $mixVal);
+
+        foreach ($server->setting as $key => $val) {
+            if ('pid_path' === $key) {
+                $val = str_replace(path_swoole_cache(), 'runtime/swoole', $val);
             }
 
             $option[] = [
-                $sKey,
-                $mixVal,
+                $key,
+                $val,
             ];
         }
 
-        $this->objCommand->table([
+        $this->command->table([
             'Item',
             'Value',
         ], $option);
@@ -773,20 +953,22 @@ class Server implements IServer
     /**
      * 设置 swoole 进程名称.
      *
-     * @param string $sName
+     * @param string $name
      *
      * @see http://php.net/manual/zh/function.cli-set-process-title.php
      * @see https://wiki.swoole.com/wiki/page/125.html
      */
-    protected function setProcessName(string $sName)
+    protected function setProcesname(string $name)
     {
         if (function_exists('cli_set_process_title')) {
-            cli_set_process_title($sName);
+            cli_set_process_title($name);
         } else {
             if (function_exists('swoole_set_process_name')) {
-                swoole_set_process_name($sName);
+                swoole_set_process_name($name);
             } else {
-                throw new Exception('Require cli_set_process_title or swoole_set_process_name.');
+                throw new Exception(
+                    'Require cli_set_process_title or swoole_set_process_name.'
+                );
             }
         }
     }
@@ -804,92 +986,95 @@ class Server implements IServer
     /**
      * 屏幕消息输出.
      *
-     * @param string $sMessage
-     * @param bool   $booForce
-     * @param string $strFormatTime
+     * @param string $message
+     * @param bool   $force
+     * @param string $formatTime
      */
-    protected function info(string $sMessage, bool $booForce = false, string $strFormatTime = 'H:i:s')
+    protected function info(string $message, bool $force = false, string $formatTime = 'H:i:s')
     {
-        $this->messageAll('info', $sMessage, $booForce, $strFormatTime);
+        $this->messageAll('info', $message, $force, $formatTime);
     }
 
     /**
      * 屏幕消息输出普通消息.
      *
-     * @param string $sMessage
-     * @param bool   $booForce
-     * @param string $strFormatTime
+     * @param string $message
+     * @param bool   $force
+     * @param string $formatTime
      */
-    protected function line(string $sMessage, bool $booForce = false, string $strFormatTime = 'H:i:s')
+    protected function line(string $message, bool $force = false, string $formatTime = 'H:i:s')
     {
-        $this->messageAll('line', $sMessage, $booForce, $strFormatTime);
+        $this->messageAll('line', $message, $force, $formatTime);
     }
 
     /**
      * 屏幕消息输出警告.
      *
-     * @param string $sMessage
-     * @param string $strFormatTime
+     * @param string $message
+     * @param string $formatTime
      */
-    protected function warn(string $sMessage, bool $booForce = false, string $strFormatTime = '')
+    protected function warn(string $message, bool $force = false, string $formatTime = '')
     {
-        $this->messageAll('warn', $sMessage, $booForce, $strFormatTime);
+        $this->messageAll('warn', $message, $force, $formatTime);
     }
 
     /**
      * 屏幕消息输出错误.
      *
-     * @param string $sMessage
-     * @param string $strFormatTime
+     * @param string $message
+     * @param string $formatTime
      */
-    protected function error(string $sMessage, bool $booForce = false, string $strFormatTime = '')
+    protected function error(string $message, bool $force = false, string $formatTime = '')
     {
-        $this->messageAll('error', $sMessage, $booForce, $strFormatTime);
+        $this->messageAll('error', $message, $force, $formatTime);
     }
 
     /**
      * 消息输入统一处理.
      *
      * @param string $strType
-     * @param string $sMessage
-     * @param string $strFormatTime
+     * @param string $message
+     * @param string $formatTime
      */
-    protected function messageAll(string $strType, string $sMessage, bool $booForce = false, string $strFormatTime = 'H:i:s')
+    protected function messageAll(string $strType, string $message, bool $force = false, string $formatTime = 'H:i:s')
     {
-        if (!$booForce && !$this->daemonize()) {
+        if (!$force && !$this->daemonize()) {
             return;
         }
 
-        $this->objCommand->{$strType}($this->messageTime($sMessage, $strFormatTime));
+        $this->command->{$strType}(
+            $this->messageTime($message, $formatTime)
+        );
     }
 
     /**
      * 屏幕消息时间.
      *
-     * @param string $sMessage
-     * @param string $strFormatTime
+     * @param string $message
+     * @param string $formatTime
      *
      * @return string
      */
-    protected function messageTime(string $sMessage, string $strFormatTime = '')
+    protected function messageTime(string $message, string $formatTime = '')
     {
-        return $this->objCommand->time($sMessage, $strFormatTime);
+        return $this->command->time($message, $formatTime);
     }
 
     /**
      * 验证是否为正常的 JSON 字符串.
      *
-     * @param mixed $mixData
+     * @param mixed $data
      *
      * @return bool
      */
-    protected function isJson($mixData)
+    protected function isJson($data): bool
     {
-        if (!is_scalar($mixData) && !method_exists($mixData, '__toString')) {
+        if (!is_scalar($data) &&
+            !method_exists($data, '__toString')) {
             return false;
         }
 
-        json_decode($mixData);
+        json_decode($data);
 
         return JSON_ERROR_NONE === json_last_error();
     }

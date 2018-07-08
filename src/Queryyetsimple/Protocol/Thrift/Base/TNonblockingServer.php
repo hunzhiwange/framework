@@ -54,6 +54,7 @@ class TNonblockingServer extends TServer
         $outputTransport = $this->outputTransportFactory_->getTransport($transport);
         $inputProtocol = $this->inputProtocolFactory_->getProtocol($inputTransport);
         $outputProtocol = $this->outputProtocolFactory_->getProtocol($outputTransport);
+
         $this->processor_->process($inputProtocol, $outputProtocol);
 
         // $protocol = new TBinaryProtocol($transport, true, true);

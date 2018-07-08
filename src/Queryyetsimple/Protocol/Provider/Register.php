@@ -85,7 +85,9 @@ class Register extends Provider
     protected function swooleServer()
     {
         $this->container->singleton('swoole.default.server', function ($project) {
-            return new Server($project['option']['swoole\server']);
+            return new Server(
+                $project['option']['swoole\server']
+            );
         });
     }
 
@@ -95,9 +97,14 @@ class Register extends Provider
     protected function swooleHttpServer()
     {
         $this->container->singleton('swoole.http.server', function ($project) {
-            $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\http_server']);
-
-            return new HttpServer($project->make(IKernel::class), $project['request'], $arrOption);
+            return new HttpServer(
+                $project->make(IKernel::class),
+                $project['request'],
+                array_merge(
+                    $project['option']['swoole\server'],
+                    $project['option']['swoole\http_server']
+                )
+            );
         });
     }
 
@@ -107,9 +114,14 @@ class Register extends Provider
     protected function swooleWebsocketServer()
     {
         $this->container->singleton('swoole.websocket.server', function ($project) {
-            $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\websocket_server']);
-
-            return new WebsocketServer($project->make(IKernel::class), $project['request'], $arrOption);
+            return new WebsocketServer(
+                $project->make(IKernel::class),
+                $project['request'],
+                array_merge(
+                    $project['option']['swoole\server'],
+                    $project['option']['swoole\websocket_server']
+                )
+            );
         });
     }
 
@@ -119,9 +131,12 @@ class Register extends Provider
     protected function swooleRpcServer()
     {
         $this->container->singleton('swoole.rpc.server', function ($project) {
-            $arrOption = array_merge($project['option']['swoole\server'], $project['option']['swoole\rpc_server']);
-
-            return new RpcServer($arrOption);
+            return new RpcServer(
+                array_merge(
+                    $project['option']['swoole\server'],
+                    $project['option']['swoole\rpc_server']
+                )
+            );
         });
     }
 }

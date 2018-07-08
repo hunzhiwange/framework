@@ -89,7 +89,7 @@ class HttpServer extends Server
      *
      * @var array
      */
-    protected $arrServerEvent = [
+    protected $serverEvent = [
         'start',
         'connect',
         'workerStart',
@@ -111,6 +111,7 @@ class HttpServer extends Server
     {
         $this->kernel = $kernel;
         $this->request = $request;
+
         $this->options($option);
     }
 
@@ -158,7 +159,8 @@ class HttpServer extends Server
             call_user_func_array([$swooleResponse, 'cookie'], $item);
         }
 
-        if ($response instanceof RedirectResponse && method_exists($swooleResponse, 'redirect')) {
+        if ($response instanceof RedirectResponse &&
+            method_exists($swooleResponse, 'redirect')) {
             $swooleResponse->redirect($response->getTargetUrl());
         }
 
@@ -211,7 +213,10 @@ class HttpServer extends Server
         }
 
         if ($swooleRequest->server) {
-            $swooleRequest->server = array_change_key_case($swooleRequest->server, CASE_UPPER);
+            $swooleRequest->server = array_change_key_case(
+                $swooleRequest->server,
+                CASE_UPPER
+            );
 
             $servers = array_merge($servers, $swooleRequest->server);
             $swooleRequest->server = $servers;
@@ -234,7 +239,12 @@ class HttpServer extends Server
     protected function createServer()
     {
         $this->deleteOption('task_worker_num');
-        $this->objServer = new SwooleHttpServer($this->getOption('host'), (int) ($this->getOption('port')));
+
+        $this->server = new SwooleHttpServer(
+            $this->getOption('host'),
+            (int) ($this->getOption('port'))
+        );
+
         $this->initServer();
     }
 }

@@ -106,7 +106,7 @@ class RpcServer extends Server
      *
      * @var array
      */
-    protected $arrServerEvent = [
+    protected $serverEvent = [
         'start',
         'connect',
         'workerStart',
@@ -141,18 +141,23 @@ class RpcServer extends Server
     /**                                                                                                 }
      * 监听数据发送事件.
      *
-     * @param \Swoole\Server $objServer
-     * @param int            $intFd
-     * @param int            $intReactorId
-     * @param string         $strData
+     * @param \Swoole\Server $server
+     * @param int            $fd
+     * @param int            $reactorId
+     * @param string         $data
      *
      * @see https://wiki.swoole.com/wiki/page/50.html
      */
-    public function onReceive(SwooleServer $objServer, int $intFd, int $intReactorId, string $strData): void
+    public function onReceive(SwooleServer $server, int $fd, int $reactorId, string $data): void
     {
-        parent::onReceive($objServer, $intFd, $intReactorId, $strData);
+        parent::onReceive($server, $fd, $reactorId, $data);
 
-        $this->thriftServer->receive($objServer, $intFd, $intReactorId, $strData);
+        $this->thriftServer->receive(
+            $server,
+            $fd,
+            $reactorId,
+            $data
+        );
     }
 
     /**
@@ -164,11 +169,23 @@ class RpcServer extends Server
     {
         $service = new ThriftHandler();
         $processor = new ThriftProcessor($service);
-        $socketTranport = new TServerSocket($this->getOption('host'), (int) ($this->getOption('port')));
+
+        $socketTranport = new TServerSocket(
+            $this->getOption('host'),
+            (int) ($this->getOption('port'))
+        );
+
         $outFactory = $inFactory = new TFramedTransportFactory();
         $outProtocol = $inProtocol = new TBinaryProtocolFactory();
 
-        $server = new ThriftServer($processor, $socketTranport, $inFactory, $outFactory, $inProtocol, $outProtocol);
+        $server = new ThriftServer(
+            $processor,
+            $socketTranport,
+            $inFactory,
+            $outFactory,
+            $inProtocol,
+            $outProtocol
+        );
 
         return $server;
     }

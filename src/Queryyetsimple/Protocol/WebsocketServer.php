@@ -72,7 +72,7 @@ class WebsocketServer extends HttpServer
      *
      * @var array
      */
-    protected $arrServerEvent = [
+    protected $serverEvent = [
         'start',
         'connect',
         'workerStart',
@@ -90,28 +90,41 @@ class WebsocketServer extends HttpServer
     /**
      * WebSocket客户端与服务器建立连接并完成握手后.
      *
-     * @param \Swoole\Websocket\Server $objServer
-     * @param \Swoole\Http\Request     $objRequest
+     * @param \Swoole\Websocket\Server $server
+     * @param \Swoole\Http\Request     $request
      *
      * @see https://wiki.swoole.com/wiki/page/401.html
      */
-    public function onOpen(SwooleWebsocketServer $objServer, SwooleHttpRequest $objRequest)
+    public function onOpen(SwooleWebsocketServer $server, SwooleHttpRequest $request)
     {
-        $this->line(sprintf('Server: handshake success with fd %s', $objRequest->fd));
+        $this->line(
+            sprintf(
+                'Server: handshake success with fd %s', $request->fd
+            )
+        );
     }
 
     /**
      * 监听服务器收到来自客户端的数据帧.
      *
-     * @param \Swoole\Websocket\Server $objServer
-     * @param \Swoole\Websocket\Frame  $objFrame
+     * @param \Swoole\Websocket\Server $server
+     * @param \Swoole\Websocket\Frame  $frame
      *
      * @see https://wiki.swoole.com/wiki/page/397.html
      */
-    public function onMessage(SwooleWebsocketServer $objServer, SwooleWebsocketFrame $objFrame)
+    public function onMessage(SwooleWebsocketServer $server, SwooleWebsocketFrame $frame)
     {
-        $this->line(sprintf('Receive from fd %d:%s,opcode:%d,fin:%d', $objFrame->fd, $objFrame->data, $objFrame->opcode, $objFrame->finish));
-        $objServer->push($objFrame->fd, 'I am from server.');
+        $this->line(
+            sprintf(
+                'Receive from fd %d:%s,opcode:%d,fin:%d',
+                $frame->fd,
+                $frame->data,
+                $frame->opcode,
+                $frame->finish
+            )
+        );
+
+        $server->push($frame->fd, 'I am from server.');
     }
 
     /**
@@ -119,7 +132,11 @@ class WebsocketServer extends HttpServer
      */
     protected function createServer()
     {
-        $this->objServer = new SwooleWebsocketServer($this->getOption('host'), (int) ($this->getOption('port')));
+        $this->server = new SwooleWebsocketServer(
+            $this->getOption('host'),
+            (int) ($this->getOption('port'))
+        );
+
         $this->initServer();
     }
 }
