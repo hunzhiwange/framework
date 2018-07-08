@@ -97,20 +97,20 @@ interface IRateLimiter
     /**
      * 指定时间长度.
      *
-     * @param int $intXRateLimitLimit
+     * @param int $xRateLimitLimit
      *
      * @return $this
      */
-    public function limitLimit($intXRateLimitLimit = 60);
+    public function limitLimit($xRateLimitLimit = 60);
 
     /**
      * 指定时间内允许的最大请求次数.
      *
-     * @param int $intXRateLimitTime
+     * @param int $xRateLimitTime
      *
      * @return $this
      */
-    public function limitTime($intXRateLimitTime = 60);
+    public function limitTime($xRateLimitTime = 60);
 
     /**
      * 返回缓存组件.

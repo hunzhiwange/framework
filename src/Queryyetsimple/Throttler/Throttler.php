@@ -40,74 +40,83 @@ class Throttler implements IThrottler
      *
      * @var \Leevel\Throttler\RateLimiter[]
      */
-    protected $arrRateLimiter = [];
+    protected $rateLimiter = [];
 
     /**
      * cache.
      *
      * @var \Leevel\Cache\ICache
      */
-    protected $objCache;
+    protected $cache;
 
     /**
      * http request.
      *
      * @var \Leevel\Http\Request
      */
-    protected $objRequest;
+    protected $request;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Cache\ICache $objCache
+     * @param \Leevel\Cache\ICache $cache
      */
-    public function __construct(ICache $objCache)
+    public function __construct(ICache $cache)
     {
-        $this->objCache = $objCache;
+        $this->cache = $cache;
     }
 
     /**
      * call.
      *
      * @param string $method
-     * @param array  $arrArgs
+     * @param array  $args
      *
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        return $this->{'create'}(...$arrArgs)->{$method}();
+        return $this->{'create'}(...$args)->{$method}();
     }
 
     /**
      * 创建一个节流器.
      *
-     * @param null|string $strKey
-     * @param int         $intXRateLimitLimit
-     * @param int         $intXRateLimitTime
+     * @param null|string $key
+     * @param int         $xRateLimitLimit
+     * @param int         $xRateLimitTime
      *
      * @return \Leevel\Throttler\RateLimiter
      */
-    public function create($strKey = null, $intXRateLimitLimit = 20, $intXRateLimitTime = 20)
+    public function create($key = null, $xRateLimitLimit = 20, $xRateLimitTime = 20): RateLimiter
     {
-        $strKey = $this->getRequestKey($strKey);
-        if (isset($this->arrRateLimiter[$strKey])) {
-            return $this->arrRateLimiter[$strKey]->limitLimit($intXRateLimitLimit)->limitTime($intXRateLimitTime);
+        $key = $this->getRequestKey($key);
+
+        if (isset($this->rateLimiter[$key])) {
+            return $this->rateLimiter[$key]->
+            limitLimit($xRateLimitLimit)->
+
+            limitTime($xRateLimitTime);
         }
 
-        return $this->arrRateLimiter[$strKey] = new RateLimiter($this->objCache, $strKey, $intXRateLimitLimit, $intXRateLimitTime);
+        return $this->rateLimiter[$key] = new RateLimiter(
+            $this->cache,
+            $key,
+            $xRateLimitLimit,
+            $xRateLimitTime
+        );
     }
 
     /**
      * 设置 http request.
      *
-     * @param \Leevel\Http\Request $objRequest
+     * @param \Leevel\Http\Request $request
      *
      * @return $this
      */
-    public function setRequest(request $objRequest)
+    public function setRequest(Request $request): self
     {
-        $this->objRequest = $objRequest;
+        $this->request = $request;
 
         return $this;
     }
@@ -115,16 +124,21 @@ class Throttler implements IThrottler
     /**
      * 获取请求 key.
      *
-     * @param null|string $strKey
+     * @param null|string $key
      *
      * @return string
      */
-    public function getRequestKey($strKey = null)
+    public function getRequestKey($key = null)
     {
-        if (!$strKey && !$this->objRequest) {
+        if (!$key && !$this->request) {
             throw new RuntimeException('Request is not set');
         }
 
-        return $strKey ?: sha1($this->objRequest->getClientIp().'@'.$this->objRequest->getNode());
+        return $key ?:
+            sha1(
+                $this->request->getClientIp().
+                '@'.
+                $this->request->getNode()
+            );
     }
 }

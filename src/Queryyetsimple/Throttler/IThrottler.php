@@ -36,29 +36,29 @@ interface IThrottler
     /**
      * 创建一个节流器.
      *
-     * @param null|string $strKey
-     * @param int         $intXRateLimitLimit
-     * @param int         $intXRateLimitTime
+     * @param null|string $key
+     * @param int         $xRateLimitLimit
+     * @param int         $xRateLimitTime
      *
      * @return \Leevel\Throttler\RateLimiter
      */
-    public function create($strKey = null, $intXRateLimitLimit = 20, $intXRateLimitTime = 20);
+    public function create($key = null, $xRateLimitLimit = 20, $xRateLimitTime = 20);
 
     /**
      * 设置 http request.
      *
-     * @param \Leevel\Http\Request $objRequest
+     * @param \Leevel\Http\Request $request
      *
      * @return $this
      */
-    public function setRequest(Request $objRequest);
+    public function setRequest(Request $request);
 
     /**
      * 获取请求 key.
      *
-     * @param null|string $strKey
+     * @param null|string $key
      *
      * @return string
      */
-    public function getRequestKey($strKey = null);
+    public function getRequestKey($key = null);
 }
