@@ -40,39 +40,39 @@ abstract class Runner extends PHPQueueRunner
      *
      * @var \Leevel\Queue\Console\Work
      */
-    protected $objWork;
+    protected $work;
 
     /**
      * 消息队列.
      *
      * @var \Leevel\Queue\Queues\IQueue
      */
-    protected $objQueue;
+    protected $queue;
 
     /**
      * 任务不可用等待时间.
      *
      * @var int
      */
-    protected $intSleep = 5;
+    protected $sleep = 5;
 
     /**
      * 任务最大尝试次数.
      *
      * @var int
      */
-    protected $intTries = 0;
+    protected $tries = 0;
 
     /**
      * work 命名.
      *
-     * @param \Leevel\Queue\Console\Work $objWork
+     * @param \Leevel\Queue\Console\Work $work
      */
-    public function workCommand($objWork)
+    public function workCommand($work)
     {
-        $this->objWork = $objWork;
-        $this->intTries = $objWork->tries();
-        $this->intSleep = $objWork->sleep();
+        $this->work = $work;
+        $this->tries = $work->tries();
+        $this->sleep = $work->sleep();
 
         return $this;
     }
@@ -82,60 +82,68 @@ abstract class Runner extends PHPQueueRunner
      */
     public function workJob()
     {
-        $nSleepTime = self::RUN_USLEEP;
-        $obJNewJob = null;
+        $sleepTime = self::RUN_USLEEP;
+        $newJob = null;
 
         try {
-            $obJNewJob = Base::getJob($this->objQueue);
-        } catch (Exception $oEx) {
-            $this->logger->addError($oEx->getMessage());
+            $newJob = Base::getJob($this->queue);
+        } catch (Exception $e) {
+            $this->logger->addError($e->getMessage());
 
             // 任务不可用等待时间
-            $nSleepTime = self::RUN_USLEEP * $this->intSleep;
+            $sleepTime = self::RUN_USLEEP * $this->sleep;
         }
-        if (empty($obJNewJob)) {
+        if (empty($newJob)) {
             $this->logger->addNotice('No Job found.');
 
             // 任务不可用等待时间
-            $nSleepTime = self::RUN_USLEEP * $this->intSleep;
+            $sleepTime = self::RUN_USLEEP * $this->sleep;
         } else {
             try {
-                if (empty($obJNewJob->worker)) {
+                if (empty($newJob->worker)) {
                     throw new Exception('No worker declared.');
                 }
 
                 // 验证任务最大尝试次数
-                if ($this->intTries > 0 && $obJNewJob->getAttempts() > $this->intTries) {
-                    return $this->failedJob($obJNewJob);
+                if ($this->tries > 0 && $newJob->getAttempts() > $this->tries) {
+                    return $this->failedJob($newJob);
                 }
 
-                if (is_string($obJNewJob->worker)) {
-                    $arrResultData = $this->processWorker($obJNewJob->worker, $obJNewJob);
-                } elseif (is_array($obJNewJob->worker)) {
-                    $this->logger->addInfo(sprintf('Running chained new job (%s) with workers', $obJNewJob->job_id), $obJNewJob->worker);
-                    foreach ($obJNewJob->worker as $strWorkerName) {
-                        $arrResultData = $this->processWorker($strWorkerName, $obJNewJob);
-                        $obJNewJob->data = $arrResultData;
+                if (is_string($newJob->worker)) {
+                    $resultData = $this->processWorker($newJob->worker, $newJob);
+                } elseif (is_array($newJob->worker)) {
+                    $this->logger->addInfo(
+                        sprintf(
+                            'Running chained new job (%s) with workers',
+                            $newJob->job_id
+                        ),
+                        $newJob->worker
+                    );
+
+                    foreach ($newJob->worker as $workerName) {
+                        $resultData = $this->processWorker($workerName, $newJob);
+                        $newJob->data = $resultData;
                     }
                 }
 
-                return $this->updateJob($obJNewJob, $arrResultData);
-            } catch (Exception $oEx) {
-                $this->logger->addError($oEx->getMessage());
-                $this->logger->addInfo(sprintf('Releasing job (%s).', $obJNewJob->job_id));
+                return $this->updateJob($newJob, $resultData);
+            } catch (Exception $e) {
+                $this->logger->addError($e->getMessage());
+                $this->logger->addInfo(sprintf('Releasing job (%s).', $newJob->job_id));
 
                 // 删除了就不能重新发布
-                if (!$obJNewJob->isDeleted()) {
-                    $this->objQueue->releaseJob($obJNewJob->job_id);
+                if (!$newJob->isDeleted()) {
+                    $this->queue->releaseJob($newJob->job_id);
                 }
 
-                $nSleepTime = self::RUN_USLEEP * 1;
+                $sleepTime = self::RUN_USLEEP * 1;
             }
         }
 
-        if ($nSleepTime) {
-            $this->logger->addInfo('Sleeping '.ceil($nSleepTime / 1000000).' seconds.');
-            usleep($nSleepTime);
+        if ($sleepTime) {
+            $this->logger->addInfo('Sleeping '.ceil($sleepTime / 1000000).' seconds.');
+
+            usleep($sleepTime);
         }
 
         // 验证是否需要重启
@@ -150,65 +158,71 @@ abstract class Runner extends PHPQueueRunner
         if (empty($this->queue_name)) {
             throw new Exception('Queue name is invalid');
         }
-        $this->objQueue = Base::getQueue($this->queue_name);
+
+        $this->queue = Base::getQueue($this->queue_name);
     }
 
     /**
      * 记录错误任务
      *
-     * @param \Leevel\Queue\jobs\ijob $objJob
+     * @param \Leevel\Queue\Jobs\IJob $job
      */
-    protected function failedJob($objJob)
+    protected function failedJob(IJob $job)
     {
-        $booStatus = false;
+        $status = false;
 
-        if (!$objJob->isDeleted()) {
+        if (!$job->isDeleted()) {
             try {
-                $objJob->delete();
-                $objJob->failed();
-                $objJob->onError();
-                $this->objQueue->beforeUpdate();
-                $this->objQueue->updateJob($objJob->job_id, $objJob->data);
-                $booStatus = $this->objQueue->clearJob($objJob->job_id);
-                $this->objQueue->afterUpdate();
+                $job->delete();
+                $job->failed();
+                $job->onError();
+
+                $this->queue->beforeUpdate();
+                $this->queue->updateJob($job->job_id, $job->data);
+
+                $status = $this->queue->clearJob($job->job_id);
+
+                $this->queue->afterUpdate();
             } finally {
             }
         }
 
-        return $booStatus;
+        return $status;
     }
 
     /**
      * 更新任务数据.
      *
-     * @param \Leevel\Queue\jobs\ijob $objJob
-     * @param mixed                   $mixResultData
+     * @param \Leevel\Queue\Jobs\IJob $job
+     * @param mixed                   $resultData
      *
      * @throws \Exception
      *
      * @return bool|void
      */
-    protected function updateJob($objJob, $mixResultData = null)
+    protected function updateJob(IJob $job, $resultData = null)
     {
-        $booStatus = false;
+        $status = false;
 
         try {
-            $this->objQueue->beforeUpdate();
-            $this->objQueue->updateJob($obJJob->job_id, $mixResultData);
-            $booStatus = $this->objQueue->clearJob($obJJob->job_id);
-            $this->objQueue->afterUpdate();
-        } catch (Exception $oEx) {
-            $this->objQueue->onError($oEx);
+            $this->queue->beforeUpdate();
+            $this->queue->updateJob($job->job_id, $resultData);
+
+            $status = $this->queue->clearJob($job->job_id);
+
+            $this->queue->afterUpdate();
+        } catch (Exception $e) {
+            $this->queue->onError($e);
 
             // 删除了就不能重新发布
-            if (!$obJJob->isDeleted()) {
-                $this->objQueue->releaseJob($obJJob->job_id);
+            if (!$job->isDeleted()) {
+                $this->queue->releaseJob($job->job_id);
             }
 
-            throw $oEx;
+            throw $e;
         }
 
-        return $booStatus;
+        return $status;
     }
 
     /**
@@ -216,6 +230,6 @@ abstract class Runner extends PHPQueueRunner
      */
     protected function checkRestart()
     {
-        $this->objWork->checkRestart();
+        $this->work->checkRestart();
     }
 }

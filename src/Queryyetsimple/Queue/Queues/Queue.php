@@ -39,21 +39,21 @@ abstract class Queue extends JobQueue
      *
      * @var string
      */
-    protected $strConnect;
+    protected $connect;
 
     /**
      * 默认执行队列.
      *
      * @var string
      */
-    protected static $strQueue = 'default';
+    protected static $queue = 'default';
 
     /**
      * 消息队列日志路径.
      *
      * @var string
      */
-    protected static $strLogPath;
+    protected static $logPath;
 
     /**
      * 连接句柄.
@@ -67,21 +67,21 @@ abstract class Queue extends JobQueue
      *
      * @var array
      */
-    protected $arrSourceConfig = [];
+    protected $sourceConfig = [];
 
     /**
      * 队列执行者.
      *
      * @var string
      */
-    protected $strQueueWorker;
+    protected $queueWorker;
 
     /**
      * 日志对象
      *
      * @var array
      */
-    protected $objResultLog;
+    protected $resultLog;
 
     /**
      * 构造函数.
@@ -91,51 +91,57 @@ abstract class Queue extends JobQueue
         parent::__construct();
 
         // 存储队列
-        $this->arrSourceConfig['queue'] = $this->makeSourceKey();
+        $this->sourceConfig['queue'] = $this->makeSourceKey();
 
         // 记录日志
-        if (self::$strLogPath) {
-            if (!is_dir(self::$strLogPath)) {
-                mkdir(self::$strLogPath, 0777, true);
+        if (self::$logPath) {
+            if (!is_dir(self::$logPath)) {
+                mkdir(self::$logPath, 0777, true);
             }
-            $this->objResultLog = Logger::createLogger($this->strConnect, Logger::INFO, self::$strLogPath.'/'.$this->strConnect.'.log');
+
+            $this->resultLog = Logger::createLogger(
+                $this->connect,
+                Logger::INFO,
+                self::$logPath.'/'.$this->connect.'.log'
+            );
         }
     }
 
     /**
      * 设置消息队列.
      *
-     * @param string $strQueue
+     * @param string $queue
      */
-    public static function setQueue($strQueue = 'default')
+    public static function setQueue(string $queue = 'default')
     {
-        static::$strQueue = $strQueue;
+        static::$queue = $queue;
     }
 
     /**
      * 设置日志路径.
      *
-     * @param string $strLogPath
+     * @param string $logPath
      */
-    public static function logPath($strLogPath)
+    public static function logPath(string $logPath)
     {
-        static::$strLogPath = $strLogPath;
+        static::$logPath = $logPath;
     }
 
     /**
      * 添加一个任务
      *
-     * @param null|array $arrNewJob
+     * @param null|array $newJob
      *
      * @return bool
      */
-    public function addJob($arrNewJob = null)
+    public function addJob(?array $newJob = null): bool
     {
-        $arrFormattedData = [
-            'worker' => $this->strQueueWorker,
-            'data'   => $arrNewJob,
+        $formattedData = [
+            'worker' => $this->queueWorker,
+            'data'   => $newJob,
         ];
-        $this->resDataSource->add($arrFormattedData);
+
+        $this->resDataSource->add($formattedData);
 
         return true;
     }
@@ -143,54 +149,65 @@ abstract class Queue extends JobQueue
     /**
      * 获取一个任务
      *
-     * @param null|string $strJobId
+     * @param null|string $jobId
      *
      * @return object
      */
-    public function getJob($strJobId = null)
+    public function getJob(?string $jobId = null)
     {
-        $arrData = $this->resDataSource->get();
-        if (!class_exists($strJob = '\Leevel\Queue\jobs\\'.$this->strConnect)) {
-            $strJob = '\PHPQueue\Job';
+        $data = $this->resDataSource->get();
+
+        if (!class_exists($job = '\Leevel\Queue\jobs\\'.$this->connect)) {
+            $job = '\PHPQueue\Job';
         }
-        $objNextJob = new $strJob($arrData, $this->resDataSource->last_job_id, static::$strQueue);
+
+        $nextJob = new $job(
+            $data,
+            $this->resDataSource->last_job_id,
+            static::$queue
+        );
+
         $this->last_job_id = $this->resDataSource->last_job_id;
 
-        return $objNextJob;
+        return $nextJob;
     }
 
     /**
      * 更新任务
      *
-     * @param null|string $strJobId
+     * @param null|string $jobId
      * @param null|array  $arrResultData
      */
-    public function updateJob($strJobId = null, $arrResultData = null)
+    public function updateJob($jobId = null, $arrResultData = null)
     {
-        if (!$this->objResultLog) {
+        if (!$this->resultLog) {
             return;
         }
-        $this->arrResultLog->addInfo('Result: ID='.$strJobId, $arrResultData);
+
+        $this->arrResultLog->addInfo(
+            'Result: ID='.$jobId,
+            $arrResultData
+        );
     }
 
     /**
      * 删除任务
      *
-     * @param null|string $strJobId
+     * @param null|string $jobId
      */
-    public function clearJob($strJobId = null)
+    public function clearJob($jobId = null)
     {
-        $this->resDataSource->clear($strJobId);
+        $this->resDataSource->clear($jobId);
     }
 
     /**
      * 重新发布任务
      *
-     * @param null|string $strJobId
+     * @param null|string $jobId
      */
-    public function releaseJob($strJobId = null)
+    public function releaseJob($jobId = null)
     {
-        $this->resDataSource->release($strJobId);
+        $this->resDataSource->release($jobId);
     }
 
     /**
@@ -201,6 +218,6 @@ abstract class Queue extends JobQueue
      */
     public function makeSourceKey()
     {
-        return $this->strConnect.':'.static::$strQueue;
+        return $this->connect.':'.static::$queue;
     }
 }

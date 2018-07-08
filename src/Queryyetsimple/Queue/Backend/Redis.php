@@ -44,23 +44,28 @@ class Redis extends Predis
         if (!$this->hasQueue()) {
             throw new BackendException('No queue specified.');
         }
-        $strJobData = $this->open_items[$jobId];
+
+        $jobData = $this->open_items[$jobId];
 
         // 加入执行次数
-        $strJobData = json_decode($strJobData, true);
-        if ($strJobData) {
-            if (empty($strJobData['data']['attempts'])) {
-                $strJobData['data']['attempts'] = 1;
+        $jobData = json_decode($jobData, true);
+
+        if ($jobData) {
+            if (empty($jobData['data']['attempts'])) {
+                $jobData['data']['attempts'] = 1;
             } else {
-                $strJobData['data']['attempts']++;
+                $jobData['data']['attempts']++;
             }
-            $strJobData = json_encode($strJobData);
+
+            $jobData = json_encode($jobData);
         }
 
-        $booStatus = $this->getConnection()->rpush($this->queue_name, $strJobData);
-        if (!$booStatus) {
+        $status = $this->getConnection()->rpush($this->queue_name, $jobData);
+
+        if (!$status) {
             throw new BackendException('Unable to save data.');
         }
+
         $this->last_job_id = $jobId;
 
         $this->afterClearRelease();

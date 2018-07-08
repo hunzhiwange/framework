@@ -34,7 +34,7 @@ interface IWorker
     /**
      * 运行任务
      *
-     * @param \PHPQueue\Job $objJob
+     * @param \PHPQueue\Job $job
      */
-    public function runJob($objJob);
+    public function runJob($job);
 }

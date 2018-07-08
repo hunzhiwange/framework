@@ -34,9 +34,7 @@ interface IRunner
     /**
      * work 命名.
      *
-     * @param \Leevel\Queue\console\work $objWork
+     * @param \Leevel\Queue\Console\Work $work
      */
-    public function workCommand($objWork);
-
-    public function workJob();
+    public function workCommand($work);
 }

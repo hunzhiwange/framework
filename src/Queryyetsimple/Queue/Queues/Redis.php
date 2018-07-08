@@ -38,14 +38,14 @@ class Redis extends Queue implements IQueue
      *
      * @var string
      */
-    protected $strConnect = 'redis';
+    protected $connect = 'redis';
 
     /**
      * 连接配置.
      *
      * @var array
      */
-    protected $arrSourceConfig = [
+    protected $sourceConfig = [
         'servers' => [
             'host' => '127.0.0.1',
             'port' => 6379,
@@ -58,7 +58,7 @@ class Redis extends Queue implements IQueue
      *
      * @var string
      */
-    protected $strQueueWorker = 'redis';
+    protected $queueWorker = 'redis';
 
     /**
      * 构造函数.
@@ -66,9 +66,11 @@ class Redis extends Queue implements IQueue
     public function __construct()
     {
         parent::__construct();
-        $this->arrSourceConfig['servers'] = $this->getServers();
-        $this->arrSourceConfig['redis_options'] = $this->getOptions();
-        $this->resDataSource = new BackendRedis($this->arrSourceConfig);
+
+        $this->sourceConfig['servers'] = $this->getServers();
+        $this->sourceConfig['redis_options'] = $this->getOptions();
+
+        $this->resDataSource = new BackendRedis($this->sourceConfig);
     }
 
     /**
@@ -87,12 +89,17 @@ class Redis extends Queue implements IQueue
      */
     protected function getServers()
     {
-        $arrServers = option('queue\connect.redis.servers', $this->arrSourceConfig['servers']);
-        if (array_key_exists('password', $arrServers) && null === $arrServers['password']) {
-            unset($arrServers['password']);
+        $servers = option(
+            'queue\connect.redis.servers',
+            $this->sourceConfig['servers']
+        );
+
+        if (array_key_exists('password', $servers) &&
+            null === $servers['password']) {
+            unset($servers['password']);
         }
 
-        return $arrServers;
+        return $servers;
     }
 
     /**

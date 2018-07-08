@@ -38,26 +38,27 @@ abstract class Job extends PHPQueueJob
      *
      * @var string
      */
-    protected $strQueue;
+    protected $queue;
 
     /**
      * 任务是否被删除.
      *
      * @var bool
      */
-    protected $booDeleted = false;
+    protected $deleted = false;
 
     /**
      * 构造函数.
      *
-     * @param array  $arrData
-     * @param string $strJobId
-     * @param string $strQueue
+     * @param array  $data
+     * @param string $jobId
+     * @param string $queue
      */
-    public function __construct($arrData = null, $strJobId = null, $strQueue = 'default')
+    public function __construct($data = null, $jobId = null, $queue = 'default')
     {
-        parent::__construct($arrData, $strJobId);
-        $this->strQueue = $strQueue;
+        parent::__construct($data, $jobId);
+
+        $this->queue = $queue;
         $this->initialization();
     }
 
@@ -66,14 +67,19 @@ abstract class Job extends PHPQueueJob
      */
     public function handle()
     {
-        list($strJob, $strMethod) = $this->parseString($this->getName());
-        $objJob = $this->getJob($strJob);
+        list($job, $method) = $this->parseString($this->getName());
 
-        $strMethod = method_exists($objJob, $strMethod) ? $strMethod : ('handle' !== $strMethod && method_exists($objJob, 'handle') ? 'handle' : 'run');
+        $jobInstance = $this->getJob($job);
+
+        $method = method_exists($jobInstance, $method) ?
+            $method :
+            ('handle' !== $method && method_exists($jobInstance, 'handle') ?
+                'handle' :
+                'run');
 
         $this->dispatch([
-            $objJob,
-            $strMethod,
+            $jobInstance,
+            $method,
         ]);
     }
 
@@ -82,12 +88,13 @@ abstract class Job extends PHPQueueJob
      */
     public function failed()
     {
-        list($strJob, $strMethod) = $this->parseString($this->getName());
-        $objJob = $this->getJob($strJob);
+        list($job, $method) = $this->parseString($this->getName());
 
-        if ($objJob && method_exists($objJob, 'failed')) {
+        $jobInstance = $this->getJob($job);
+
+        if ($jobInstance && method_exists($jobInstance, 'failed')) {
             $this->dispatch([
-                $objJob,
+                $jobInstance,
                 'failed',
             ]);
         }
@@ -98,7 +105,7 @@ abstract class Job extends PHPQueueJob
      */
     public function delete()
     {
-        $this->booDeleted = true;
+        $this->deleted = true;
     }
 
     /**
@@ -108,7 +115,7 @@ abstract class Job extends PHPQueueJob
      */
     public function isDeleted()
     {
-        return $this->booDeleted;
+        return $this->deleted;
     }
 
     /**
@@ -148,7 +155,7 @@ abstract class Job extends PHPQueueJob
      */
     public function getQueue()
     {
-        return $this->strQueue;
+        return $this->queue;
     }
 
     /**
@@ -174,16 +181,16 @@ abstract class Job extends PHPQueueJob
     /**
      * 分析任务名字.
      *
-     * @param string $strJob
+     * @param string $job
      *
      * @return array
      */
-    protected function parseString($strJob)
+    protected function parseString($job)
     {
-        $strJob = explode('@', $strJob);
+        $job = explode('@', $job);
 
-        return !empty($strJob[1]) ? $strJob : [
-            $strJob[0],
+        return !empty($job[1]) ? $job : [
+            $job[0],
             'handle',
         ];
     }
@@ -191,13 +198,13 @@ abstract class Job extends PHPQueueJob
     /**
      * 取得任务实例.
      *
-     * @param string $strJob
+     * @param string $job
      *
      * @return object
      */
-    protected function getJob($strJob)
+    protected function getJob($job)
     {
-        return $this->container()->make($strJob);
+        return $this->container()->make($job);
     }
 
     /**
@@ -225,12 +232,13 @@ abstract class Job extends PHPQueueJob
      *
      * @return array
      */
-    protected function args()
+    protected function args(): array
     {
-        $arrArgs = $this->getData();
-        array_unshift($arrArgs, $this);
+        $args = $this->getData();
 
-        return $arrArgs;
+        array_unshift($args, $this);
+
+        return $args;
     }
 
     /**

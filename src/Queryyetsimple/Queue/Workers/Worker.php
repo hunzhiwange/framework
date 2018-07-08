@@ -37,31 +37,33 @@ abstract class Worker extends PHPQueueWorker
     /**
      * 运行任务
      *
-     * @param \Leevel\Queue\Jobs\IJob $objJob
+     * @param \Leevel\Queue\Jobs\IJob $job
      */
-    public function runJob($objJob)
+    public function runJob($job)
     {
-        parent::runJob($objJob);
+        parent::runJob($job);
 
-        $this->formatMessage(sprintf('Trying do run job %s.', $objJob->getName()));
+        $this->formatMessage(sprintf('Trying do run job %s.', $job->getName()));
 
-        $objJob->handle();
+        $job->handle();
 
-        $this->formatMessage(sprintf('Job %s is done.'.'', $objJob->getName()));
+        $this->formatMessage(sprintf('Job %s is done.'.'', $job->getName()));
         $this->formatMessage('Starting the next. ');
 
-        $this->result_data = $objJob->data;
+        $this->result_data = $job->data;
     }
 
     /**
      * 格式化输出消息.
      *
-     * @param string $strMessage
+     * @param string $message
      *
      * @return string
      */
-    protected function formatMessage($strMessage)
+    protected function formatMessage($message)
     {
-        Console::stdout(sprintf('[%s]', date('H:i:s')).$strMessage.PHP_EOL);
+        Console::stdout(
+            sprintf('[%s]', date('H:i:s')).$message.PHP_EOL
+        );
     }
 }

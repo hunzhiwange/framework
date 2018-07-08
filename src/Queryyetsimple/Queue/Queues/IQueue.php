@@ -34,56 +34,56 @@ interface IQueue
     /**
      * 设置消息队列.
      *
-     * @param string $strQueue
+     * @param string $queue
      */
-    public static function setQueue($strQueue = 'default');
+    public static function setQueue(string $queue = 'default');
 
     /**
      * 设置日志路径.
      *
-     * @param string $strLogPath
+     * @param string $logPath
      */
-    public static function logPath($strLogPath);
+    public static function logPath(string $logPath);
 
     /**
      * 添加一个任务
      *
-     * @param null|array $arrNewJob
+     * @param null|array $newJob
      *
      * @return bool
      */
-    public function addJob($arrNewJob = null);
+    public function addJob(?array $newJob = null);
 
     /**
      * 获取一个任务
      *
-     * @param null|string $strJobId
+     * @param null|string $jobId
      *
      * @return object
      */
-    public function getJob($strJobId = null);
+    public function getJob(?string $jobId = null);
 
     /**
      * 更新任务
      *
-     * @param null|string $strJobId
-     * @param null|array  $arrResultData
+     * @param null|string $jobId
+     * @param null|array  $resultData
      */
-    public function updateJob($strJobId = null, $arrResultData = null);
+    public function updateJob(?string $jobId = null, ?array $resultData = null);
 
     /**
      * 删除任务
      *
-     * @param null|string $strJobId
+     * @param null|string $jobId
      */
-    public function clearJob($strJobId = null);
+    public function clearJob(?string $jobId = null);
 
     /**
      * 重新发布任务
      *
-     * @param null|string $strJobId
+     * @param null|string $jobId
      */
-    public function releaseJob($strJobId = null);
+    public function releaseJob(?string $jobId = null);
 
     /**
      * 取得存储连接 key
