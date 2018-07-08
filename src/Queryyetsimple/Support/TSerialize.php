@@ -39,15 +39,21 @@ trait TSerialize
      */
     public function __sleep()
     {
-        $arrProps = (new ReflectionClass($this))->getProperties();
+        $props = (new ReflectionClass($this))->getProperties();
 
-        foreach ($arrProps as $oProp) {
-            $oProp->setValue($this, $this->setAndReturnSerializeProp($this->getPropertySource($oProp), $oProp->getName()));
+        foreach ($props as $prop) {
+            $prop->setValue(
+                $this,
+                $this->setAndReturnSerializeProp(
+                    $this->getPropertySource($prop),
+                    $prop->getName()
+                )
+            );
         }
 
-        return $this->setAndReturnSerializeFilter(array_map(function ($oProp) {
-            return $oProp->getName();
-        }, $arrProps));
+        return $this->setAndReturnSerializeFilter(array_map(function ($prop) {
+            return $prop->getName();
+        }, $props));
     }
 
     /**
@@ -55,72 +61,81 @@ trait TSerialize
      */
     public function __wakeup()
     {
-        foreach ((new ReflectionClass($this))->getProperties() as $oProp) {
-            $oProp->setValue($this, $this->getSerializeProp($this->getPropertySource($oProp), $oProp->getName()));
+        foreach ((new ReflectionClass($this))->getProperties() as $prop) {
+            $prop->setValue(
+                $this,
+                $this->getSerializeProp(
+                    $this->getPropertySource($prop),
+                    $prop->getName()
+                )
+            );
         }
     }
 
     /**
      * 设置序列化的属性.
      *
-     * @param array $arrProp
+     * @param array $prop
      *
      * @return array
      */
-    protected function setAndReturnSerializeFilter($arrProp)
+    protected function setAndReturnSerializeFilter(array $prop)
     {
-        if (($strMethod = 'setSerializeFilterProp') && method_exists($this, $strMethod)) {
-            $this->{$strMethod}($arrProp);
+        if (($method = 'setSerializeFilterProp') &&
+            method_exists($this, $method)) {
+            $this->{$method}($prop);
         }
 
-        return $arrProp;
+        return $prop;
     }
 
     /**
      * 设置序列化的值并返回.
      *
-     * @param mixed  $mixValue
-     * @param string $strName
+     * @param mixed  $value
+     * @param string $name
      *
      * @return mixed
      */
-    protected function setAndReturnSerializeProp($mixValue, $strName)
+    protected function setAndReturnSerializeProp($value, $name)
     {
-        if (($strMethod = 'setAndReturnSerializeProp'.ucwords($strName)) && method_exists($this, $strMethod)) {
-            return $this->{$strMethod}($mixValue);
+        if (($method = 'setAndReturnSerializeProp'.ucwords($name)) &&
+            method_exists($this, $method)) {
+            return $this->{$method}($value);
         }
 
-        return $mixValue;
+        return $value;
     }
 
     /**
      * 返回序列化的值
      *
-     * @param mixed  $mixValue
-     * @param string $strName
+     * @param mixed  $value
+     * @param string $name
      *
      * @return mixed
      */
-    protected function getSerializeProp($mixValue, $strName)
+    protected function getSerializeProp($value, $name)
     {
-        if (($strMethod = 'getSerializeProp'.ucwords($strName)) && method_exists($this, $strMethod)) {
-            return $this->{$strMethod}($mixValue);
+        if (($method = 'getSerializeProp'.ucwords($name)) &&
+            method_exists($this, $method)) {
+            return $this->{$method}($value);
         }
 
-        return $mixValue;
+        return $value;
     }
 
     /**
      * 取得属性值
      *
-     * @param \ReflectionProperty $oProp
+     * @param \ReflectionProperty $prop
      *
      * @return mixed
      */
-    protected function getPropertySource(ReflectionProperty $oProp)
+    protected function getPropertySource(ReflectionProperty $prop)
     {
-        $oProp->setAccessible(true);
+        $prop->setAccessible(true);
 
-        return $oProp->getValue($this);
+        return $prop->getValue($this);
     }
 }

@@ -67,7 +67,7 @@ class Console
      *
      * @return array
      */
-    public static function jsonTrace(array $log)
+    public static function jsonTrace(array $log): array
     {
         $trace = static::normalizeLog($log);
 
@@ -117,7 +117,7 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
      *
      * @return array
      */
-    protected static function normalizeLog(array $log)
+    protected static function normalizeLog(array $log): array
     {
         $result = [];
 

@@ -34,66 +34,70 @@ class Arr
     /**
      * 数组数据格式化.
      *
-     * @param mixed  $mixInput
-     * @param string $sDelimiter
-     * @param bool   $bAllowedEmpty
+     * @param mixed  $inputs
+     * @param string $delimiter
+     * @param bool   $allowedEmpty
      *
      * @return mixed
      */
-    public static function normalize($mixInput, $sDelimiter = ',', $bAllowedEmpty = false)
+    public static function normalize($inputs, $delimiter = ',', bool $allowedEmpty = false)
     {
-        if (is_array($mixInput) || is_string($mixInput)) {
-            if (!is_array($mixInput)) {
-                $mixInput = explode($sDelimiter, $mixInput);
+        if (is_array($inputs) || is_string($inputs)) {
+            if (!is_array($inputs)) {
+                $inputs = explode($delimiter, $inputs);
             }
 
-            $mixInput = array_filter($mixInput); // 过滤null
-            if (true === $bAllowedEmpty) {
-                return $mixInput;
-            }
-            $mixInput = array_map('trim', $mixInput);
+            $inputs = array_filter($inputs); // 过滤null
 
-            return array_filter($mixInput, 'strlen');
+            if (true === $allowedEmpty) {
+                return $inputs;
+            }
+
+            $inputs = array_map('trim', $inputs);
+
+            return array_filter($inputs, 'strlen');
         }
 
-        return $mixInput;
+        return $inputs;
     }
 
     /**
      * 数组合并支持 + 算法.
      *
-     * @param array $arrOption
-     * @param bool  $booRecursion
+     * @param array $option
+     * @param bool  $recursion
      *
      * @return array
      */
-    public static function merge($arrOption, $booRecursion = true)
+    public static function merge(array $option, bool $recursion = true): array
     {
-        $arrExtend = [];
+        $extend = [];
 
-        foreach ($arrOption as $strKey => $mixTemp) {
-            if (0 === strpos($strKey, '+')) {
-                $arrExtend[ltrim($strKey, '+')] = $mixTemp;
-                unset($arrOption[$strKey]);
+        foreach ($option as $key => $value) {
+            if (0 === strpos($key, '+')) {
+                $extend[ltrim($key, '+')] = $value;
+                unset($option[$key]);
             }
         }
 
-        foreach ($arrExtend as $strKey => $mixTemp) {
-            if (isset($arrOption[$strKey]) && is_array($arrOption[$strKey]) && is_array($mixTemp)) {
-                $arrOption[$strKey] = array_merge($arrOption[$strKey], $mixTemp);
+        foreach ($extend as $key => $value) {
+            if (isset($option[$key]) &&
+                is_array($option[$key]) &&
+                is_array($value)) {
+                $option[$key] = array_merge($option[$key], $value);
             } else {
-                $arrOption[$strKey] = $mixTemp;
+                $option[$key] = $value;
             }
         }
 
-        if (true === $booRecursion) {
-            foreach ($arrOption as $strKey => $mixTemp) {
-                if (is_array($mixTemp)) {
-                    $arrOption[$strKey] = static::merge($mixTemp);
+        if (true === $recursion) {
+            foreach ($option as $key => $value) {
+                if (is_array($value)) {
+                    $option[$key] = static::merge($value);
                 }
             }
         }
 
-        return $arrOption;
+        return $option;
     }
 }

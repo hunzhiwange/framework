@@ -43,7 +43,7 @@ class Dump
      *
      * @return string|void
      */
-    public static function dump($var, $simple = false)
+    public static function dump($var, bool $simple = false)
     {
         static $dump, $varCloner;
 
@@ -72,7 +72,7 @@ class Dump
      *
      * @return mixed
      */
-    public static function varDump($var, $echo = true)
+    public static function varDump($var, bool $echo = true)
     {
         ob_start();
         var_dump($var);
