@@ -38,63 +38,63 @@ class Meta implements IMeta
      *
      * @var array
      */
-    protected static $objDatabaseManager;
+    protected static $databaseManager;
 
     /**
      * meta 对象实例.
      *
      * @var array
      */
-    protected static $arrInstances = [];
+    protected static $instances = [];
 
     /**
      * 数据库仓储.
      *
-     * @var \Leevel\Database\IDatabase
+     * @var \Leevel\Database\IConnect
      */
-    protected $objConnect;
+    protected $connects;
 
     /**
      * 数据库查询的原生字段.
      *
      * @var array
      */
-    protected $arrFields = [];
+    protected $fields = [];
 
     /**
      * 数据库字段名字.
      *
      * @var array
      */
-    protected $arrField = [];
+    protected $field = [];
 
     /**
      * 主键.
      *
      * @var array
      */
-    protected $arrPrimaryKey = [];
+    protected $primaryKey = [];
 
     /**
      * 自动增加 ID.
      *
      * @var string
      */
-    protected $strAutoIncrement;
+    protected $autoIncrement;
 
     /**
      * 是否使用复合主键.
      *
      * @var bool
      */
-    protected $booCompositeId = false;
+    protected $compositeId = false;
 
     /**
      * 字段格式化类型.
      *
      * @var array
      */
-    protected static $arrFieldType = [
+    protected static $fieldType = [
         'int' => [
             'int',
             'integer',
@@ -116,152 +116,155 @@ class Meta implements IMeta
      *
      * @var string
      */
-    protected $strTable;
+    protected $table;
 
     /**
      * 表连接.
      *
      * @var mixed
      */
-    protected $mixConnect;
+    protected $tableConnect;
 
     /**
      * 构造函数
      * 禁止直接访问构造函数，只能通过 instance 生成对象
      *
      * @param string $strTabe
-     * @param mixed  $mixConnect
-     * @param mixed  $strTable
+     * @param mixed  $tableConnect
+     * @param mixed  $table
      */
-    protected function __construct($strTable, $mixConnect = null)
+    protected function __construct($table, $tableConnect = null)
     {
         return;
-        $this->strTable = $strTable;
-        $this->mixConnect = $mixConnect;
-        $this->initialization($strTable);
+        $this->table = $table;
+        $this->tableConnect = $tableConnect;
+
+        $this->initialization($table);
     }
 
     /**
      * 返回数据库元对象
      *
-     * @param string $strTable
-     * @param mixed  $mixConnect
+     * @param string $table
+     * @param mixed  $tableConnect
      *
      * @return $this
      */
-    public static function instance($strTable, $mixConnect = null)
+    public static function instance($table, $tableConnect = null)
     {
-        $strUnique = static::getUnique($strTable, $mixConnect);
+        $unique = static::getUnique($table, $tableConnect);
 
-        if (!isset(static::$arrInstances[$strUnique])) {
-            return static::$arrInstances[$strUnique] = new static($strTable, $mixConnect);
+        if (!isset(static::$instances[$unique])) {
+            return static::$instances[$unique] = new static($table, $tableConnect);
         }
 
-        return static::$arrInstances[$strUnique];
+        return static::$instances[$unique];
     }
 
     /**
      * 设置数据库管理对象
      *
-     * @param \Leevel\Database\Manager $objDatabaseManager
+     * @param \Leevel\Database\Manager $databaseManager
      */
-    public static function setDatabaseManager(DatabaseManager $objDatabaseManager)
+    public static function setDatabaseManager(DatabaseManager $databaseManager)
     {
-        static::$objDatabaseManager = $objDatabaseManager;
+        static::$databaseManager = $databaseManager;
     }
 
     /**
      * 字段强制过滤.
      *
-     * @param string $strField
-     * @param mixed  $mixValue
+     * @param string $field
+     * @param mixed  $value
      *
      * @return array
      */
-    public function fieldsProp($strField, $mixValue)
+    public function fieldsProp($field, $value)
     {
-        if (!in_array($strField, $this->arrField, true)) {
-            return $mixValue;
+        if (!in_array($field, $this->field, true)) {
+            return $value;
         }
 
-        $strType = $this->arrFields[$strField]['type'];
+        $type = $this->fields[$field]['type'];
 
         switch (true) {
-            case in_array($strType, static::$arrFieldType['int'], true):
-                $mixValue = (int) $mixValue;
+            case in_array($type, static::$fieldType['int'], true):
+                $value = (int) $value;
 
                 break;
-            case in_array($strType, static::$arrFieldType['float'], true):
-                $mixValue = (float) $mixValue;
+            case in_array($type, static::$fieldType['float'], true):
+                $value = (float) $value;
 
                 break;
-            case in_array($strType, static::$arrFieldType['boolean'], true):
-                $mixValue = $mixValue ? true : false;
+            case in_array($type, static::$fieldType['boolean'], true):
+                $value = $value ? true : false;
 
                 break;
             default:
-                if (null !== $mixValue && is_scalar($mixValue)) {
-                    $mixValue = (string) $mixValue;
+                if (null !== $value && is_scalar($value)) {
+                    $value = (string) $value;
                 }
         }
 
-        return $mixValue;
+        return $value;
     }
 
     /**
      * 批量字段转属性.
      *
-     * @param array $arrData
+     * @param array $data
      *
      * @return array
      */
-    public function fieldsProps(array $arrData)
+    public function fieldsProps(array $data)
     {
-        $arrResult = [];
-        foreach ($arrData as $strField => $mixValue) {
-            if (null !== (($mixValue = $this->fieldsProp($strField, $mixValue)))) {
-                $arrResult[$strField] = $mixValue;
+        $result = [];
+
+        foreach ($data as $field => $value) {
+            if (null !== (($value = $this->fieldsProp($field, $value)))) {
+                $result[$field] = $value;
             }
         }
 
-        return $arrResult;
+        return $result;
     }
 
     /**
      * 新增并返回数据.
      *
-     * @param array $arrSaveData
+     * @param array $saveData
      *
      * @return array
      */
-    public function insert(array $arrSaveData)
+    public function insert(array $saveData)
     {
-        return $this->objConnect->
-        table($this->strTable)->
+        return $this->connect->
+        table($this->table)->
 
-        insert($arrSaveData);
+        insert($saveData);
+
         //return [
-            //$this->getAutoIncrement() ?: 0 => $this->objConnect->table($this->strTable)->insert($arrSaveData),
-            //$this->getAutoIncrement() ?: 0 => $this->objConnect->table($this->strTable)->insert($arrSaveData),
+            //$this->getAutoIncrement() ?: 0 => $this->connect->table($this->table)->insert($saveData),
+            //$this->getAutoIncrement() ?: 0 => $this->connect->table($this->table)->insert($saveData),
         //];
     }
 
     /**
      * 更新并返回数据.
      *
-     * @param array $arrCondition
-     * @param array $arrSaveData
+     * @param array $condition
+     * @param array $saveData
      *
      * @return int
      */
-    public function update(array $arrCondition, array $arrSaveData)
+    public function update(array $condition, array $saveData)
     {
-        return $this->objConnect->
-        table($this->strTable)->
+        return $this->connect->
+        table($this->table)->
 
-        where($arrCondition)->
+        where($condition)->
 
-        update($arrSaveData);
+        update($saveData);
     }
 
     /**
@@ -271,7 +274,7 @@ class Meta implements IMeta
      */
     public function getPrimaryKey()
     {
-        return $this->arrPrimaryKey;
+        return $this->primaryKey;
     }
 
     /**
@@ -281,7 +284,7 @@ class Meta implements IMeta
      */
     public function getCompositeId()
     {
-        return $this->booCompositeId;
+        return $this->compositeId;
     }
 
     /**
@@ -291,7 +294,7 @@ class Meta implements IMeta
      */
     public function getAutoIncrement()
     {
-        return $this->strAutoIncrement;
+        return $this->autoIncrement;
     }
 
     /**
@@ -301,7 +304,7 @@ class Meta implements IMeta
      */
     public function getFields()
     {
-        return $this->arrFields;
+        return $this->fields;
     }
 
     /**
@@ -311,7 +314,7 @@ class Meta implements IMeta
      */
     public function getField()
     {
-        return $this->arrField;
+        return $this->field;
     }
 
     /**
@@ -321,7 +324,7 @@ class Meta implements IMeta
      */
     public function getConnect()
     {
-        return $this->objConnect;
+        return $this->connect;
     }
 
     /**
@@ -331,30 +334,29 @@ class Meta implements IMeta
      */
     public function getSelect()
     {
-        return $this->objConnect->table($this->strTable);
+        return $this->connect->table($this->table);
     }
 
     /**
      * 初始化元对象
      *
-     * @param string $strTable
+     * @param string $table
      */
-    protected function initialization($strTable)
+    protected function initialization($table)
     {
         $this->initConnect();
 
-        $arrColumnInfo = $this->objConnect->getTableColumnsCache($strTable);
-        //dd($strTable);
-        //dd($arrColumnInfo);
-        $this->arrFields = $arrColumnInfo['list'];
-        $this->arrPrimaryKey = $arrColumnInfo['primary_key'];
-        $this->strAutoIncrement = $arrColumnInfo['auto_increment'];
+        $columnInfo = $this->connect->getTableColumnsCache($table);
 
-        if (count($this->arrPrimaryKey) > 1) {
-            $this->booCompositeId = true;
+        $this->fields = $columnInfo['list'];
+        $this->primaryKey = $columnInfo['primary_key'];
+        $this->autoIncrement = $columnInfo['auto_increment'];
+
+        if (count($this->primaryKey) > 1) {
+            $this->compositeId = true;
         }
 
-        $this->arrField = array_keys($arrColumnInfo['list']);
+        $this->field = array_keys($columnInfo['list']);
     }
 
     /**
@@ -364,20 +366,20 @@ class Meta implements IMeta
      */
     protected function initConnect()
     {
-        //$this->objConnect = static::$objDatabaseManager->connect($this->mixConnect);
+        //$this->connect = static::$databaseManager->connect($this->tableConnect);
     }
 
     /**
      * 取得唯一值
      *
-     * @param string $strTabe
-     * @param mixed  $mixConnect
-     * @param mixed  $strTable
+     * @param string $table
+     * @param mixed  $tableConnect
+     * @param mixed  $table
      *
      * @return string
      */
-    protected static function getUnique($strTable, $mixConnect = null)
+    protected static function getUnique($table, $tableConnect = null)
     {
-        return $strTable.'.'.md5(serialize($mixConnect));
+        return $table.'.'.md5(serialize($tableConnect));
     }
 }

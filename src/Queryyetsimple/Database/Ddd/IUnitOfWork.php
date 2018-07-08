@@ -49,11 +49,11 @@ interface IUnitOfWork
     /**
      * 事务回滚.
      *
-     * @param callable $calAction
+     * @param callable $action
      *
      * @return mixed
      */
-    public function transaction($calAction);
+    public function transaction(callable $action);
 
     /**
      * 是否已经提交事务
@@ -70,30 +70,30 @@ interface IUnitOfWork
     /**
      * 注册新建.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
-     * @param \Leevel\Database\Ddd\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IEntity     $entity
+     * @param \Leevel\Database\Ddd\IRepository $repository
      *
      * @return $this
      */
-    public function registerCreate(IAggregateRoot $objEntity, IRepository $objRepository);
+    public function registerCreate(IEntity $entity, IRepository $repository);
 
     /**
      * 注册更新.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
-     * @param \Leevel\Database\Ddd\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IEntity     $entity
+     * @param \Leevel\Database\Ddd\IRepository $repository
      *
      * @return $this
      */
-    public function registerUpdate(IAggregateRoot $objEntity, IRepository $objRepository);
+    public function registerUpdate(IEntity $entity, IRepository $repository);
 
     /**
      * 注册删除.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
-     * @param \Leevel\Database\Ddd\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IEntity     $entity
+     * @param \Leevel\Database\Ddd\IRepository $repository
      *
      * @return $this
      */
-    public function registerDelete(IAggregateRoot $objEntity, IRepository $objRepository);
+    public function registerDelete(IEntity $entity, IRepository $repository);
 }

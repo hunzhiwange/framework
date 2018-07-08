@@ -34,123 +34,122 @@ interface IRepository
     /**
      * 取得一条数据.
      *
-     * @param int   $intId
-     * @param array $arrColumn
+     * @param int   $id
+     * @param array $column
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function find($intId, $arrColumn = ['*']);
+    public function find($id, $column = ['*']);
 
     /**
      * 取得一条数据，未找到记录抛出异常.
      *
-     * @param int   $intId
-     * @param array $arrColumn
+     * @param int   $id
+     * @param array $column
      *
      * @return \Leevel\Database\Ddd\IEntity|void
      */
-    public function findOrFail($intId, $arrColumn = ['*']);
+    public function findOrFail($id, $column = ['*']);
+
+    /**
+     * 取得记录数量.
+     *
+     * @param null|mixed $specification
+     *
+     * @return int
+     */
+    public function count($specification = null);
 
     /**
      * 取得所有记录.
      *
      * @param null|callable $mixCallback
-     * @param null|mixed    $mixSpecification
+     * @param null|mixed    $specification
      *
      * @return \Leevel\Collection\Collection
      */
-    public function count($mixSpecification = null);
-
-    /**
-     * 取得所有记录.
-     *
-     * @param null|callable $mixCallback
-     * @param null|mixed    $mixSpecification
-     *
-     * @return \Leevel\Collection\Collection
-     */
-    public function all($mixSpecification = null);
+    public function all($specification = null);
 
     /**
      * 保存数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function create(IAggregateRoot $objEntity);
+    public function create(IEntity $entity);
 
     /**
      * 更新数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function update(IAggregateRoot $objEntity);
+    public function update(IEntity $entity);
 
     /**
      * 删除数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return int
      */
-    public function delete(IAggregateRoot $objEntity);
+    public function delete(IEntity $entity);
 
     /**
      * 注册保存数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function registerCreate(IAggregateRoot $objEntity);
+    public function registerCreate(IEntity $entity);
 
     /**
      * 注册更新数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function registerUpdate(IAggregateRoot $objEntity);
+    public function registerUpdate(IEntity $entity);
 
     /**
      * 注册删除数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function registerDelete(IAggregateRoot $objEntity);
+    public function registerDelete(IEntity $entity);
 
     /**
      * 响应新建.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function handleCreate(IAggregateRoot $objEntity);
+    public function handleCreate(IEntity $entity);
 
     /**
      * 响应修改.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function handleUpdate(IAggregateRoot $objEntity);
+    public function handleUpdate(IEntity $entity);
 
     /**
      * 响应删除.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return int
      */
-    public function handleDelete(IAggregateRoot $objEntity);
+    public function handleDelete(IEntity $entity);
 
     /**
      * 启动事物.
@@ -170,23 +169,23 @@ interface IRepository
     /**
      * 执行数据库事务
      *
-     * @param callable $calAction
+     * @param callable $action
      *
      * @return mixed
      */
-    public function transaction($calAction);
+    public function transaction(callable $action);
 
     /**
      * 设置聚合根.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objAggregate
+     * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    public function setAggregate(IAggregateRoot $objAggregate);
+    public function setAggregate(IEntity $entity);
 
     /**
      * 返回聚合根.
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
     public function aggregate();
 

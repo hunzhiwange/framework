@@ -38,23 +38,24 @@ class Repository implements IRepository
      *
      * @var \Leevel\Database\Ddd\IUnitOfWork
      */
-    protected $objUnitOfWork;
+    protected $unitOfWork;
 
     /**
      * 聚合根.
      *
-     * @var \Leevel\Database\Ddd\IAggregateRoot
+     * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $objAggregate;
+    protected $entity;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objAggregate
+     * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    public function __construct(IAggregateRoot $objAggregate)
+    public function __construct(IEntity $entity)
     {
-        $this->setAggregate($objAggregate);
+        $this->setAggregate($entity);
+
         $this->createUnitOfWork();
     }
 
@@ -62,191 +63,191 @@ class Repository implements IRepository
      * call.
      *
      * @param string $method
-     * @param array  $arrArgs
+     * @param array  $args
      *
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        return $this->objAggregate->{$method}(...$arrArgs);
+        return $this->entity->{$method}(...$args);
     }
 
     /**
      * 取得一条数据.
      *
-     * @param int   $intId
-     * @param array $arrColumn
+     * @param int   $id
+     * @param array $column
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function find($intId, $arrColumn = ['*'])
+    public function find($id, $column = ['*'])
     {
-        return $this->objAggregate->find($intId, $arrColumn);
+        return $this->entity->find($id, $column);
     }
 
     /**
      * 取得一条数据，未找到记录抛出异常.
      *
-     * @param int   $intId
-     * @param array $arrColumn
+     * @param int   $id
+     * @param array $column
      *
      * @return \Leevel\Database\Ddd\IEntity|void
      */
-    public function findOrFail($intId, $arrColumn = ['*'])
+    public function findOrFail($id, $column = ['*'])
     {
-        return $this->objAggregate->findOrFail($intId, $arrColumn);
+        return $this->entity->findOrFail($id, $column);
+    }
+
+    /**
+     * 取得记录数量.
+     *
+     * @param null|callable $callbacks
+     * @param null|mixed    $specification
+     *
+     * @return int
+     */
+    public function count($specification = null)
+    {
+        $select = $this->entity->selfQuerySelect();
+
+        if (!is_string($specification) && is_callable($specification)) {
+            call_user_func($specification, $select);
+        }
+
+        return $select->getCount();
     }
 
     /**
      * 取得所有记录.
      *
-     * @param null|callable $mixCallback
-     * @param null|mixed    $mixSpecification
+     * @param null|callable $callbacks
+     * @param null|mixed    $specification
      *
      * @return \Leevel\Collection\Collection
      */
-    public function count($mixSpecification = null)
+    public function all($specification = null)
     {
-        $objSelect = $this->objAggregate->selfQuerySelect();
+        $select = $this->entity->selfQuerySelect();
 
-        if (!is_string($mixSpecification) && is_callable($mixSpecification)) {
-            call_user_func($mixSpecification, $objSelect);
+        if (!is_string($specification) && is_callable($specification)) {
+            call_user_func($specification, $select);
         }
 
-        return $objSelect->getCount();
-    }
-
-    /**
-     * 取得所有记录.
-     *
-     * @param null|callable $mixCallback
-     * @param null|mixed    $mixSpecification
-     *
-     * @return \Leevel\Collection\Collection
-     */
-    public function all($mixSpecification = null)
-    {
-        $objSelect = $this->objAggregate->selfQuerySelect();
-
-        if (!is_string($mixSpecification) && is_callable($mixSpecification)) {
-            call_user_func($mixSpecification, $objSelect);
-        }
-
-        return $objSelect->getAll();
+        return $select->getAll();
     }
 
     /**
      * 保存数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function create(IAggregateRoot $objEntity)
+    public function create(IEntity $entity)
     {
-        return $this->handleCreate($objEntity);
+        return $this->handleCreate($entity);
     }
 
     /**
      * 更新数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function update(IAggregateRoot $objEntity)
+    public function update(IEntity $entity)
     {
-        return $this->handleUpdate($objEntity);
+        return $this->handleUpdate($entity);
     }
 
     /**
      * 删除数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return int
      */
-    public function delete(IAggregateRoot $objEntity)
+    public function delete(IEntity $entity)
     {
-        return $this->handleDelete($objEntity);
+        return $this->handleDelete($entity);
     }
 
     /**
      * 注册保存数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function registerCreate(IAggregateRoot $objEntity)
+    public function registerCreate(IEntity $entity)
     {
         $this->checkUnitOfWork();
 
-        return $this->objUnitOfWork->registerCreate($objEntity, $this);
+        return $this->unitOfWork->registerCreate($entity, $this);
     }
 
     /**
      * 注册更新数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function registerUpdate(IAggregateRoot $objEntity)
+    public function registerUpdate(IEntity $entity)
     {
         $this->checkUnitOfWork();
 
-        return $this->objUnitOfWork->registerUpdate($objEntity, $this);
+        return $this->unitOfWork->registerUpdate($entity, $this);
     }
 
     /**
      * 注册删除数据.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return \Leevel\Database\Ddd\UnitOfWork
      */
-    public function registerDelete(IAggregateRoot $objEntity)
+    public function registerDelete(IEntity $entity)
     {
         $this->checkUnitOfWork();
 
-        return $this->objUnitOfWork->registerDelete($objEntity, $this);
+        return $this->unitOfWork->registerDelete($entity, $this);
     }
 
     /**
      * 响应新建.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function handleCreate(IAggregateRoot $objEntity)
+    public function handleCreate(IEntity $entity)
     {
-        return $objEntity->create();
+        return $entity->create();
     }
 
     /**
      * 响应修改.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function handleUpdate(IAggregateRoot $objEntity)
+    public function handleUpdate(IEntity $entity)
     {
-        return $objEntity->update();
+        return $entity->update();
     }
 
     /**
      * 响应删除.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return int
      */
-    public function handleDelete(IAggregateRoot $objEntity)
+    public function handleDelete(IEntity $entity)
     {
-        return $objEntity->delete();
+        return $entity->delete();
     }
 
     /**
@@ -276,33 +277,33 @@ class Repository implements IRepository
     /**
      * 执行数据库事务
      *
-     * @param callable $calAction
+     * @param callable $action
      *
      * @return mixed
      */
-    public function transaction($calAction)
+    public function transaction(callable $action)
     {
-        return $this->databaseConnect()->transaction($calAction);
+        return $this->databaseConnect()->transaction($action);
     }
 
     /**
      * 设置聚合根.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objAggregate
+     * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    public function setAggregate(IAggregateRoot $objAggregate)
+    public function setAggregate(IEntity $entity)
     {
-        return $this->objAggregate = $objAggregate;
+        return $this->entity = $entity;
     }
 
     /**
      * 返回聚合根.
      *
-     * @return \Leevel\Database\Ddd\IAggregateRoot
+     * @return \Leevel\Database\Ddd\IEntity
      */
-    public function aggregate()
+    public function entity()
     {
-        return $this->objAggregate;
+        return $this->entity;
     }
 
     /**
@@ -312,7 +313,7 @@ class Repository implements IRepository
      */
     public function unitOfWork()
     {
-        return $this->objUnitOfWork;
+        return $this->unitOfWork;
     }
 
     /**
@@ -322,7 +323,7 @@ class Repository implements IRepository
      */
     public function databaseConnect()
     {
-        return $this->objAggregate->databaseConnect();
+        return $this->entity->databaseConnect();
     }
 
     /**
@@ -330,7 +331,7 @@ class Repository implements IRepository
      */
     public function registerCommit()
     {
-        return $this->objUnitOfWork->registerCommit();
+        return $this->unitOfWork->registerCommit();
     }
 
     /**
@@ -340,7 +341,7 @@ class Repository implements IRepository
      */
     protected function createUnitOfWork()
     {
-        return $this->objUnitOfWork = new UnitOfWork($this);
+        return $this->unitOfWork = new UnitOfWork($this);
     }
 
     /**
@@ -348,9 +349,11 @@ class Repository implements IRepository
      */
     protected function checkUnitOfWork()
     {
-        if (!$this->objUnitOfWork || !($this->objUnitOfWork instanceof IUnitOfWork)) {
+        if (!$this->unitOfWork ||
+            !($this->unitOfWork instanceof IUnitOfWork)) {
             throw new Exception(
-                'UnitOfWork is not set,please use parent::__construct( IAggregateRoot $objAggregate ) to set.'
+                'UnitOfWork is not set,please use '.
+                    'parent::__construct( IEntity $entity ) to set.'
             );
         }
     }
@@ -358,27 +361,27 @@ class Repository implements IRepository
     /**
      * 自定义规约处理.
      *
-     * @param callbable      $mixCallback
-     * @param null|callbable $mixSpecification
+     * @param callbable      $callbacks
+     * @param null|callbable $specification
      *
      * @return callbable
      */
-    protected function specification($mixCallback, $mixSpecification = null)
+    protected function specification($callbacks, $specification = null)
     {
-        if (null === $mixSpecification) {
-            $mixSpecification = function ($objSelect) use ($mixCallback) {
-                call_user_func($mixCallback, $objSelect);
+        if (null === $specification) {
+            $specification = function ($select) use ($callbacks) {
+                call_user_func($callbacks, $select);
             };
         } else {
-            $mixSpecification = function ($objSelect) use ($mixCallback, $mixSpecification) {
-                call_user_func($mixCallback, $objSelect);
+            $specification = function ($select) use ($callbacks, $specification) {
+                call_user_func($callbacks, $select);
 
-                if (!is_string($mixSpecification) && is_callable($mixSpecification)) {
-                    call_user_func($mixSpecification, $objSelect);
+                if (!is_string($specification) && is_callable($specification)) {
+                    call_user_func($specification, $select);
                 }
             };
         }
 
-        return $mixSpecification;
+        return $specification;
     }
 }

@@ -36,53 +36,53 @@ class UnitOfWork implements IUnitOfWork
      *
      * @var \Leevel\Database\Ddd\IRepository
      */
-    protected $objRepository;
+    protected $repository;
 
     /**
      * 是否提交事务
      *
      * @var bool
      */
-    protected $booCommitted = false;
+    protected $committed = false;
 
     /**
      * 新建对象
      *
      * @var array
      */
-    protected $arrCreates = [];
+    protected $creates = [];
 
     /**
      * 更新对象
      *
      * @var array
      */
-    protected $arrUpdates = [];
+    protected $updates = [];
 
     /**
      * 删除对象
      *
      * @var array
      */
-    protected $arrDeletes = [];
+    protected $deletes = [];
 
     /**
      * 注册对象数量.
      *
      * @var int
      */
-    protected $intCount = 0;
+    protected $count = 0;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IRepository $objRepository
+     * @param \Leevel\Database\Ddd\IRepository $repository
      *
      * @return $this
      */
-    public function __construct(IRepository $objRepository)
+    public function __construct(IRepository $repository)
     {
-        $this->objRepository = $objRepository;
+        $this->repository = $repository;
     }
 
     /**
@@ -90,8 +90,9 @@ class UnitOfWork implements IUnitOfWork
      */
     public function beginTransaction()
     {
-        $this->objRepository->beginTransaction();
-        $this->booCommitted = false;
+        $this->repository->beginTransaction();
+
+        $this->committed = false;
     }
 
     /**
@@ -99,8 +100,9 @@ class UnitOfWork implements IUnitOfWork
      */
     public function rollback()
     {
-        $this->objRepository->rollback();
-        $this->booCommitted = false;
+        $this->repository->rollback();
+
+        $this->committed = false;
     }
 
     /**
@@ -108,28 +110,31 @@ class UnitOfWork implements IUnitOfWork
      */
     public function commit()
     {
-        if ($this->booCommitted) {
+        if ($this->committed) {
             return;
         }
-        $this->objRepository->commit();
-        $this->booCommitted = true;
+
+        $this->repository->commit();
+
+        $this->committed = true;
     }
 
     /**
      * 事务回滚.
      *
-     * @param callable $calAction
+     * @param callable $action
      *
      * @return mixed
      */
-    public function transaction($calAction)
+    public function transaction(callable $action)
     {
-        if ($this->booCommitted) {
+        if ($this->committed) {
             return;
         }
-        $this->booCommitted = true;
 
-        return $this->objRepository->transaction($calAction);
+        $this->committed = true;
+
+        return $this->repository->transaction($action);
     }
 
     /**
@@ -139,7 +144,7 @@ class UnitOfWork implements IUnitOfWork
      */
     public function committed()
     {
-        return $this->booCommitted;
+        return $this->committed;
     }
 
     /**
@@ -147,11 +152,11 @@ class UnitOfWork implements IUnitOfWork
      */
     public function registerCommit()
     {
-        if ($this->booCommitted && 0 === $this->intCount) {
+        if ($this->committed && 0 === $this->count) {
             return;
         }
 
-        if ($this->intCount > 1) {
+        if ($this->count > 1) {
             $this->transaction(function () {
                 $this->handleRepository();
             });
@@ -159,26 +164,28 @@ class UnitOfWork implements IUnitOfWork
             $this->handleRepository();
         }
 
-        $this->booCommitted = true;
+        $this->committed = true;
     }
 
     /**
      * 注册新建.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
-     * @param \Leevel\Database\Ddd\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IEntity     $entity
+     * @param \Leevel\Database\Ddd\IRepository $repository
      *
      * @return $this
      */
-    public function registerCreate(IAggregateRoot $objEntity, IRepository $objRepository)
+    public function registerCreate(IEntity $entity, IRepository $repository)
     {
-        $strHash = spl_object_hash($objEntity);
-        if (!isset($this->arrCreates[$strHash])) {
-            $this->arrCreates[$strHash] = [
-                $objEntity,
-                $objRepository,
+        $hash = spl_object_hash($entity);
+
+        if (!isset($this->creates[$hash])) {
+            $this->creates[$hash] = [
+                $entity,
+                $repository,
             ];
-            $this->intCount++;
+
+            $this->count++;
         }
 
         return $this;
@@ -187,21 +194,22 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册更新.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
-     * @param \Leevel\Database\Ddd\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IEntity     $entity
+     * @param \Leevel\Database\Ddd\IRepository $repository
      *
      * @return $this
      */
-    public function registerUpdate(IAggregateRoot $objEntity, IRepository $objRepository)
+    public function registerUpdate(IEntity $entity, IRepository $repository)
     {
-        $strHash = spl_object_hash($objEntity);
+        $hash = spl_object_hash($entity);
 
-        if (!isset($this->arrUpdates[$strHash])) {
-            $this->arrUpdates[$strHash] = [
-                $objEntity,
-                $objRepository,
+        if (!isset($this->updates[$hash])) {
+            $this->updates[$hash] = [
+                $entity,
+                $repository,
             ];
-            $this->intCount++;
+
+            $this->count++;
         }
 
         return $this;
@@ -210,20 +218,22 @@ class UnitOfWork implements IUnitOfWork
     /**
      * 注册删除.
      *
-     * @param \Leevel\Database\Ddd\IAggregateRoot $objEntity
-     * @param \Leevel\Database\Ddd\IRepository    $objRepository
+     * @param \Leevel\Database\Ddd\IEntity     $entity
+     * @param \Leevel\Database\Ddd\IRepository $repository
      *
      * @return $this
      */
-    public function registerDelete(IAggregateRoot $objEntity, IRepository $objRepository)
+    public function registerDelete(IEntity $entity, IRepository $repository)
     {
-        $strHash = spl_object_hash($objEntity);
-        if (!isset($this->arrDeletes[$strHash])) {
-            $this->arrDeletes[$strHash] = [
-                $objEntity,
-                $objRepository,
+        $hash = spl_object_hash($entity);
+
+        if (!isset($this->deletes[$hash])) {
+            $this->deletes[$hash] = [
+                $entity,
+                $repository,
             ];
-            $this->intCount++;
+
+            $this->count++;
         }
 
         return $this;
@@ -234,19 +244,22 @@ class UnitOfWork implements IUnitOfWork
      */
     protected function handleRepository()
     {
-        foreach ($this->arrCreates as $arrCreate) {
-            list($objEntity, $objRepository) = $arrCreate;
-            $objRepository->handleCreate($objEntity);
+        foreach ($this->creates as $create) {
+            list($entity, $repository) = $create;
+
+            $repository->handleCreate($entity);
         }
 
-        foreach ($this->arrUpdates as $arrUpdate) {
-            list($objEntity, $objRepository) = $arrUpdate;
-            $objRepository->handleUpdate($objEntity);
+        foreach ($this->updates as $update) {
+            list($entity, $repository) = $update;
+
+            $repository->handleUpdate($entity);
         }
 
-        foreach ($this->arrDeletes as $arrDelete) {
-            list($objEntity, $objRepository) = $arrDelete;
-            $objRepository->handleDelete($objEntity);
+        foreach ($this->deletes as $delete) {
+            list($entity, $repository) = $delete;
+
+            $repository->handleDelete($entity);
         }
     }
 }

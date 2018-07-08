@@ -48,59 +48,59 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      *
      * @var array
      */
-    protected $arrData = [];
+    protected $datas = [];
 
     /**
      * 值对象源数据.
      *
      * @var array
      */
-    protected $arrSourceData = [];
+    protected $sourceDatas = [];
 
     /**
      * 转换隐藏的属性.
      *
      * @var array
      */
-    protected $arrHidden = [];
+    protected $hidden = [];
 
     /**
      * 转换显示的属性.
      *
      * @var array
      */
-    protected $arrVisible = [];
+    protected $visible = [];
 
     /**
      * 追加.
      *
      * @var array
      */
-    protected $arrAppend = [];
+    protected $append = [];
 
     /**
      * 缓存驼峰法命名属性到下划线
      *
      * @var array
      */
-    protected static $arrUnCamelize = [];
+    protected static $unCamelize = [];
 
     /**
      * 构造函数.
      *
-     * @param array $arrData
-     * @param array $arrSourceData
+     * @param array $datas
+     * @param array $sourceDatas
      */
-    public function __construct($arrData = [], $arrSourceData = [])
+    public function __construct($datas = [], $sourceDatas = [])
     {
-        $this->arrData = $arrData;
-        $this->arrSourceData = $arrSourceData;
+        $this->datas = $datas;
+        $this->sourceDatas = $sourceDatas;
     }
 
     /**
      * 魔术方法获取.
      *
-     * @param string $sName
+     * @param string $name
      * @param mixed  $key
      *
      * @return mixed
@@ -113,50 +113,50 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 强制更新属性值
      *
-     * @param string $sName
-     * @param mixed  $mixValue
+     * @param string $name
+     * @param mixed  $value
      * @param mixed  $key
      *
      * @return $this
      */
-    public function __set($key, $mixValue)
+    public function __set($key, $value)
     {
-        return $this->set($this->getUnCamelizeKey($key), $mixValue);
+        return $this->set($this->getUnCamelizeKey($key), $value);
     }
 
     /**
      * 是否存在属性.
      *
-     * @param string $sName
+     * @param string $name
      *
      * @return bool
      */
-    public function __isset($sName)
+    public function __isset($name)
     {
-        return $this->has($this->getUnCamelizeKey($sName));
+        return $this->has($this->getUnCamelizeKey($name));
     }
 
     /**
      * 删除属性.
      *
-     * @param string $sName
+     * @param string $name
      *
      * @return bool
      */
-    public function __unset($sName)
+    public function __unset($name)
     {
-        return $this->delete($this->getUnCamelizeKey($sName));
+        return $this->delete($this->getUnCamelizeKey($name));
     }
 
     /**
      * call.
      *
      * @param string $method
-     * @param array  $arrArgs
+     * @param array  $args
      *
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
         if ($this->placeholderTControl($method)) {
             return $this;
@@ -164,147 +164,162 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
 
         switch (true) {
             case 'get' === substr($method, 0, 3):
-                return $this->__get(substr($method, 3), $arrArgs[0] ?? null);
+                return $this->__get(substr($method, 3), $args[0] ?? null);
             case 'set' === substr($method, 0, 3):
-                return $this->__set(substr($method, 3), $arrArgs[0] ?? null);
+                return $this->__set(substr($method, 3), $args[0] ?? null);
             case 'delete' === substr($method, 0, 5):
                 return $this->__unset(substr($method, 5));
             case 'has' === substr($method, 0, 3):
                 return $this->__isset(substr($method, 3));
         }
 
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        throw new BadMethodCallException(
+            sprintf('Method %s is not exits.', $method)
+        );
     }
 
     /**
      * 设置值对象
      *
-     * @param string $sName
-     * @param mxied  $mixValue
+     * @param string $name
+     * @param mxied  $value
      */
-    public function set($sName, $mixValue)
+    public function set($name, $value)
     {
-        $this->arrData[$sName] = $mixValue;
+        $this->datas[$name] = $value;
     }
 
     /**
      * 批量插入.
      *
-     * @param array|string $mixKey
-     * @param mixed        $mixValue
+     * @param array|string $keys
+     * @param mixed        $value
      */
-    public function put($mixKey, $mixValue = null)
+    public function put($keys, $value = null)
     {
-        if (!is_array($mixKey)) {
-            $mixKey = [
-                $mixKey => $mixValue,
+        if (!is_array($keys)) {
+            $keys = [
+                $keys => $value,
             ];
         }
 
-        foreach ($mixKey as $strKey => $mixValue) {
-            $this->set($strKey, $mixValue);
+        foreach ($keys as $key => $value) {
+            $this->set($key, $value);
         }
     }
 
     /**
      * 数组插入数据.
      *
-     * @param string $strKey
-     * @param mixed  $mixValue
+     * @param string $key
+     * @param mixed  $value
      */
-    public function push($strKey, $mixValue)
+    public function push($key, $value)
     {
-        $arr = $this->get($strKey, []);
-        $arr[] = $mixValue;
-        $this->set($strKey, $arr);
+        $arr = $this->get($key, []);
+
+        $arr[] = $value;
+
+        $this->set($key, $arr);
     }
 
     /**
      * 合并元素.
      *
-     * @param string $strKey
-     * @param array  $arrValue
+     * @param string $key
+     * @param array  $value
      */
-    public function merge($strKey, array $arrValue)
+    public function merge($key, array $value)
     {
-        $this->set($strKey, array_unique(array_merge($this->get($strKey, []), $arrValue)));
+        $this->set(
+            $key,
+            array_unique(array_merge($this->get($key, []), $value))
+        );
     }
 
     /**
      * 弹出元素.
      *
-     * @param string $strKey
-     * @param mixed  $mixValue
+     * @param string $key
+     * @param mixed  $value
      */
-    public function pop($strKey, array $arrValue)
+    public function pop($key, array $value)
     {
-        $this->set($strKey, array_diff($this->get($strKey, []), $arrValue));
+        $this->set(
+            $key,
+            array_diff($this->get($key, []), $value)
+        );
     }
 
     /**
      * 数组插入键值对数据.
      *
-     * @param string $strKey
-     * @param mixed  $mixKey
-     * @param mixed  $mixValue
+     * @param string $key
+     * @param mixed  $keys
+     * @param mixed  $value
      */
-    public function arrays($strKey, $mixKey, $mixValue = null)
+    public function arrays($key, $keys, $value = null)
     {
-        $arr = $this->get($strKey, []);
-        if (is_string($mixKey)) {
-            $arr[$mixKey] = $mixValue;
-        } elseif (is_array($mixKey)) {
-            $arr = array_merge($arr, $mixKey);
+        $arr = $this->get($key, []);
+
+        if (is_string($keys)) {
+            $arr[$keys] = $value;
+        } elseif (is_array($keys)) {
+            $arr = array_merge($arr, $keys);
         }
-        $this->set($strKey, $arr);
+
+        $this->set($key, $arr);
     }
 
     /**
      * 数组键值删除数据.
      *
-     * @param string $strKey
-     * @param mixed  $mixKey
+     * @param string $key
+     * @param mixed  $keys
      */
-    public function arraysDelete($strKey, $mixKey)
+    public function arraysDelete($key, $keys)
     {
-        $arr = $this->get($strKey, []);
-        if (!is_array($mixKey)) {
-            $mixKey = [
-                $mixKey,
+        $arr = $this->get($key, []);
+
+        if (!is_array($keys)) {
+            $keys = [
+                $keys,
             ];
         }
-        foreach ($mixKey as $strFoo) {
-            if (isset($arr[$strFoo])) {
-                unset($arr[$strFoo]);
+
+        foreach ($keys as $value) {
+            if (isset($arr[$value])) {
+                unset($arr[$value]);
             }
         }
-        $this->set($strKey, $arr);
+
+        $this->set($key, $arr);
     }
 
     /**
      * 取回值对象
      *
-     * @param string $sName
-     * @param mixed  $mixValue
+     * @param string $name
+     * @param mixed  $value
      *
      * @return mxied
      */
-    public function get($sName, $mixValue = null)
+    public function get($name, $value = null)
     {
-        return $this->arrData[$sName] ?? $mixValue;
+        return $this->datas[$name] ?? $value;
     }
 
     /**
      * 删除值对象
      *
-     * @param string $sName
+     * @param string $name
      *
      * @return bool
      */
-    public function delete($sName)
+    public function delete($name)
     {
-        if (isset($this->arrData[$sName])) {
-            unset($this->arrData[$sName]);
+        if (isset($this->datas[$name])) {
+            unset($this->datas[$name]);
         }
 
         return true;
@@ -313,13 +328,13 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 是否存在值对象
      *
-     * @param string $sName
+     * @param string $name
      *
      * @return bool
      */
-    public function has($sName)
+    public function has($name)
     {
-        return isset($this->arrData[$sName]);
+        return isset($this->datas[$name]);
     }
 
     /**
@@ -327,7 +342,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function clear()
     {
-        $this->arrData = [];
+        $this->datas = [];
     }
 
     /**
@@ -337,39 +352,40 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function isEmpty()
     {
-        return empty($this->arrData);
+        return empty($this->datas);
     }
 
     /**
      * 取回值对象数据.
      *
-     * @param string $sName
-     * @param mixed  $mixDefault
+     * @param string $name
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    public function getData($sName, $mixDefault = null)
+    public function getData($name, $defaults = null)
     {
-        if (false !== strpos($sName, '\\')) {
-            return $this->getPartData($sName, $mixDefault);
+        if (false !== strpos($name, '\\')) {
+            return $this->getPartData($name, $defaults);
         }
 
-        return $this->get($sName, $mixDefault);
+        return $this->get($name, $defaults);
     }
 
     /**
      * 批量取回值对象数据.
      *
-     * @param array $arrName
-     * @param mixed $mixDefault
+     * @param array $names
+     * @param mixed $defaults
      *
      * @return array
      */
-    public function getDatas(array $arrName, $mixDefault)
+    public function getDatas(array $names, $defaults)
     {
         $arr = [];
-        foreach ($arrName as $strName) {
-            $arr[$strName] = $this->getData($strName, $mixDefault);
+
+        foreach ($names as $name) {
+            $arr[$name] = $this->getData($name, $defaults);
         }
 
         return $arr;
@@ -382,138 +398,151 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function getDataAll()
     {
-        return $this->arrData;
+        return $this->datas;
     }
 
     /**
      * 设置值对象源数据.
      *
-     * @param string $sName
-     * @param mxied  $mixValue
+     * @param string $name
+     * @param mxied  $value
      */
-    public function setSource($sName, $mixValue)
+    public function setSource($name, $value)
     {
-        $this->arrSourceData[$sName] = $mixValue;
+        $this->sourceDatas[$name] = $value;
     }
 
     /**
      * 批量插入源数据.
      *
-     * @param array|string $mixKey
-     * @param mixed        $mixValue
+     * @param array|string $keys
+     * @param mixed        $value
      */
-    public function putSource($mixKey, $mixValue = null)
+    public function putSource($keys, $value = null)
     {
-        if (!is_array($mixKey)) {
-            $mixKey = [
-                $mixKey => $mixValue,
+        if (!is_array($keys)) {
+            $keys = [
+                $keys => $value,
             ];
         }
 
-        foreach ($mixKey as $strKey => $mixValue) {
-            $this->setSource($strKey, $mixValue);
+        foreach ($keys as $key => $value) {
+            $this->setSource($key, $value);
         }
     }
 
     /**
      * 数组插入源数据.
      *
-     * @param string $strKey
-     * @param mixed  $mixValue
+     * @param string $key
+     * @param mixed  $value
      */
-    public function pushSource($strKey, $mixValue)
+    public function pushSource($key, $value)
     {
-        $arr = $this->getSource($strKey, []);
-        $arr[] = $mixValue;
-        $this->setSource($strKey, $arr);
+        $arr = $this->getSource($key, []);
+
+        $arr[] = $value;
+
+        $this->setSource($key, $arr);
     }
 
     /**
      * 合并源数据元素.
      *
-     * @param string $strKey
-     * @param array  $arrValue
+     * @param string $key
+     * @param array  $value
      */
-    public function mergeSource($strKey, array $arrValue)
+    public function mergeSource($key, array $value)
     {
-        $this->setSource($strKey, array_unique(array_merge($this->getSource($strKey, []), $arrValue)));
+        $this->setSource(
+            $key,
+            array_unique(array_merge($this->getSource($key, []), $value))
+        );
     }
 
     /**
      * 弹出源数据元素.
      *
-     * @param string $strKey
-     * @param mixed  $mixValue
+     * @param string $key
+     * @param mixed  $value
      */
-    public function popSource($strKey, array $arrValue)
+    public function popSource($key, array $value)
     {
-        $this->setSource($strKey, array_diff($this->getSource($strKey, []), $arrValue));
+        $this->setSource(
+            $key,
+            array_diff($this->getSource($key, []), $value)
+        );
     }
 
     /**
      * 数组插入键值对源数据.
      *
-     * @param string $strKey
-     * @param mixed  $mixKey
-     * @param mixed  $mixValue
+     * @param string $key
+     * @param mixed  $keys
+     * @param mixed  $value
      */
-    public function arraysSource($strKey, $mixKey, $mixValue = null)
+    public function arraysSource($key, $keys, $value = null)
     {
-        $arr = $this->getSource($strKey, []);
-        if (is_string($mixKey)) {
-            $arr[$mixKey] = $mixValue;
-        } elseif (is_array($mixKey)) {
-            $arr = array_merge($arr, $mixKey);
+        $arr = $this->getSource($key, []);
+
+        if (is_string($keys)) {
+            $arr[$keys] = $value;
+        } elseif (is_array($keys)) {
+            $arr = array_merge($arr, $keys);
         }
-        $this->setSource($strKey, $arr);
+
+        $this->setSource($key, $arr);
     }
 
     /**
      * 数组键值删除源数据.
      *
-     * @param string $strKey
-     * @param mixed  $mixKey
+     * @param string $key
+     * @param mixed  $keys
      */
-    public function arraysDeleteSource($strKey, $mixKey)
+    public function arraysDeleteSource($key, $keys)
     {
-        $arr = $this->getSource($strKey, []);
-        if (!is_array($mixKey)) {
-            $mixKey = [
-                $mixKey,
+        $arr = $this->getSource($key, []);
+
+        if (!is_array($keys)) {
+            $keys = [
+                $keys,
             ];
         }
-        foreach ($mixKey as $strFoo) {
-            if (isset($arr[$strFoo])) {
-                unset($arr[$strFoo]);
+
+        foreach ($keys as $value) {
+            if (isset($arr[$value])) {
+                unset($arr[$value]);
             }
         }
-        $this->setSource($strKey, $arr);
+
+        $this->setSource($key, $arr);
     }
 
     /**
      * 取回源数据值对象
      *
-     * @param string $sName
-     * @param mixed  $mixValue
+     * @param string $name
+     * @param mixed  $value
      *
      * @return mxied
      */
-    public function getSource($sName, $mixValue = null)
+    public function getSource($name, $value = null)
     {
-        return $this->arrSourceData[$sName] ?? $mixValue;
+        return $this->sourceDatas[$name] ?? $value;
     }
 
     /**
      * 删除值对象源数据.
      *
-     * @param string $sName
+     * @param string $name
      *
      * @return bool
      */
-    public function deleteSource($sName)
+    public function deleteSource($name)
     {
-        if (isset($this->arrSourceData[$sName])) {
-            unset($this->arrSourceData[$sName]);
+        if (isset($this->sourceDatas[$name])) {
+            unset($this->sourceDatas[$name]);
         }
 
         return true;
@@ -522,13 +551,13 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 是否存在值对象源数据.
      *
-     * @param string $sName
+     * @param string $name
      *
      * @return bool
      */
-    public function hasSource($sName)
+    public function hasSource($name)
     {
-        return isset($this->arrSourceData[$sName]);
+        return isset($this->sourceDatas[$name]);
     }
 
     /**
@@ -536,7 +565,7 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function clearSource()
     {
-        $this->arrSourceData = [];
+        $this->sourceDatas = [];
     }
 
     /**
@@ -546,39 +575,40 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function isEmptySource()
     {
-        return empty($this->arrSourceData);
+        return empty($this->sourceDatas);
     }
 
     /**
      * 取回值对象源数据.
      *
-     * @param string           $sName
-     * @param int|mixed|string $mixDefault
+     * @param string           $name
+     * @param int|mixed|string $defaults
      *
      * @return mixed
      */
-    public function getSourceData($sName, $mixDefault = null)
+    public function getSourceData($name, $defaults = null)
     {
-        if (false !== strpos($sName, '\\')) {
-            return $this->getSourcePartData($sName, $mixDefault);
+        if (false !== strpos($name, '\\')) {
+            return $this->getSourcePartData($name, $defaults);
         }
 
-        return $this->getSource($sName, $mixDefault);
+        return $this->getSource($name, $defaults);
     }
 
     /**
      * 批量取回值对象源数据.
      *
-     * @param array $arrName
-     * @param mixed $mixDefault
+     * @param array $names
+     * @param mixed $defaults
      *
      * @return array
      */
-    public function getSourceDatas(array $arrName, $mixDefault)
+    public function getSourceDatas(array $names, $defaults)
     {
         $arr = [];
-        foreach ($arrName as $strName) {
-            $arr[$strName] = $this->getSourceData($strName, $mixDefault);
+
+        foreach ($names as $name) {
+            $arr[$name] = $this->getSourceData($name, $defaults);
         }
 
         return $arr;
@@ -591,38 +621,40 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function getSourceDataAll()
     {
-        return $this->arrSourceData;
+        return $this->sourceDatas;
     }
 
     /**
      * 比较数据是否变更.
      *
-     * @param string $sName
-     * @param bool   $booStrict
+     * @param string $name
+     * @param bool   $strict
      *
      * @return bool
      */
-    public function hasChange($sName, $booStrict = false)
+    public function hasChange($name, $strict = false)
     {
-        $mixNewData = $this->getData($sName);
-        $mixSourceData = $this->getSourceData($sName);
+        $newData = $this->getData($name);
+        $sourceData = $this->getSourceData($name);
 
-        return (false === $booStrict && $mixNewData !== $mixSourceData) || (true === $booStrict && $mixNewData !== $mixSourceData);
+        return (false === $strict && $newData !== $sourceData) ||
+            (true === $strict && $newData !== $sourceData);
     }
 
     /**
      * 批量比较数据是否变更.
      *
-     * @param array $arrName
-     * @param bool  $booStrict
+     * @param array $names
+     * @param bool  $strict
      *
      * @return bool
      */
-    public function hasChanges($arrName, $booStrict = false)
+    public function hasChanges($names, $strict = false)
     {
         $arr = [];
-        foreach ($arrName as $strName) {
-            $arr[$strName] = $this->hasChange($strName, $booStrict);
+
+        foreach ($names as $name) {
+            $arr[$name] = $this->hasChange($name, $strict);
         }
 
         return $arr;
@@ -631,15 +663,16 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 依据新数据比较数据是否变更.
      *
-     * @param bool $booStrict
+     * @param bool $strict
      *
      * @return array
      */
-    public function hasChangeNew($booStrict = false)
+    public function hasChangeNew($strict = false)
     {
         $arr = [];
-        foreach (array_keys($this->arrData) as $strName) {
-            $arr[$strName] = $this->hasChange($strName, $booStrict);
+
+        foreach (array_keys($this->datas) as $name) {
+            $arr[$name] = $this->hasChange($name, $strict);
         }
 
         return $arr;
@@ -648,15 +681,16 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 依据源数据比较数据是否变更.
      *
-     * @param bool $booStrict
+     * @param bool $strict
      *
      * @return array
      */
-    public function hasChangeSource($booStrict = false)
+    public function hasChangeSource($strict = false)
     {
         $arr = [];
-        foreach (array_keys($this->arrSourceData) as $strName) {
-            $arr[$strName] = $this->hasChange($strName, $booStrict);
+
+        foreach (array_keys($this->sourceDatas) as $name) {
+            $arr[$name] = $this->hasChange($name, $strict);
         }
 
         return $arr;
@@ -665,16 +699,17 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 设置转换隐藏属性.
      *
-     * @param array $arrHidden
+     * @param array $hidden
      *
      * @return $this
      */
-    public function hidden(array $arrHidden)
+    public function hidden(array $hidden)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrHidden = $arrHidden;
+
+        $this->hidden = $hidden;
 
         return $this;
     }
@@ -686,23 +721,25 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function getHidden()
     {
-        return $this->arrHidden;
+        return $this->hidden;
     }
 
     /**
      * 添加转换隐藏属性.
      *
-     * @param array|string $mixProp
+     * @param array|string $props
      *
      * @return $this
      */
-    public function addHidden($mixProp)
+    public function addHidden($props)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
-        $this->arrHidden = array_merge($this->arrHidden, $mixProp);
+
+        $props = is_array($props) ? $props : func_get_args();
+
+        $this->hidden = array_merge($this->hidden, $props);
 
         return $this;
     }
@@ -710,16 +747,17 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 设置转换显示属性.
      *
-     * @param array $arrVisible
+     * @param array $visible
      *
      * @return $this
      */
-    public function visible(array $arrVisible)
+    public function visible(array $visible)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrVisible = $arrVisible;
+
+        $this->visible = $visible;
 
         return $this;
     }
@@ -731,23 +769,25 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function getVisible()
     {
-        return $this->arrVisible;
+        return $this->visible;
     }
 
     /**
      * 添加转换显示属性.
      *
-     * @param array|string $mixProp
+     * @param array|string $props
      *
      * @return $this
      */
-    public function addVisible($mixProp)
+    public function addVisible($props)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
-        $this->arrVisible = array_merge($this->arrVisible, $mixProp);
+
+        $props = is_array($props) ? $props : func_get_args();
+
+        $this->visible = array_merge($this->visible, $props);
 
         return $this;
     }
@@ -755,16 +795,17 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 设置转换追加属性.
      *
-     * @param array $arrAppend
+     * @param array $append
      *
      * @return $this
      */
-    public function append(array $arrAppend)
+    public function append(array $append)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $this->arrAppend = $arrAppend;
+
+        $this->append = $append;
 
         return $this;
     }
@@ -776,23 +817,25 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function getAppend()
     {
-        return $this->arrAppend;
+        return $this->append;
     }
 
     /**
      * 添加转换追加属性.
      *
-     * @param null|array|string $mixProp
+     * @param null|array|string $props
      *
      * @return $this
      */
-    public function addAppend($mixProp = null)
+    public function addAppend($props = null)
     {
         if ($this->checkTControl()) {
             return $this;
         }
-        $mixProp = is_array($mixProp) ? $mixProp : func_get_args();
-        $this->arrAppend = array_merge($this->arrAppend, $mixProp);
+
+        $props = is_array($props) ? $props : func_get_args();
+
+        $this->append = array_merge($this->append, $props);
 
         return $this;
     }
@@ -853,27 +896,43 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
      */
     public function toArray()
     {
-        $arrArgs = func_get_args();
-        if ($arrArgs) {
-            $arrVisible = array_unique(array_merge($this->arrVisible, is_array($arrArgs[0]) ? $arrArgs[0] : $arrArgs));
+        $args = func_get_args();
+
+        if ($args) {
+            $visible = array_unique(
+                array_merge(
+                    $this->visible,
+                    is_array($args[0]) ? $args[0] : $args
+                )
+            );
         } else {
-            $arrVisible = $this->arrVisible;
+            $visible = $this->visible;
         }
 
-        if (!empty($arrVisible)) {
-            $arrData = array_intersect_key($this->arrData, array_flip($arrVisible));
-        } elseif (!empty($this->arrHidden)) {
-            $arrData = array_diff_key($this->arrData, array_flip($this->arrHidden));
+        if (!empty($visible)) {
+            $datas = array_intersect_key(
+                $this->datas,
+                array_flip($visible)
+            );
+        } elseif (!empty($this->hidden)) {
+            $datas = array_diff_key(
+                $this->datas,
+                array_flip($this->hidden)
+            );
         } else {
-            $arrData = $this->arrData;
+            $datas = $this->datas;
         }
 
-        $arrData = array_merge($arrData, $this->arrAppend ? array_flip($this->arrAppend) : []);
-        foreach ($arrData as $strKey => &$mixValue) {
-            $mixValue = $this->getData($strKey);
+        $datas = array_merge(
+            $datas,
+            $this->append ? array_flip($this->append) : []
+        );
+
+        foreach ($datas as $key => &$value) {
+            $value = $this->getData($key);
         }
 
-        return $arrData;
+        return $datas;
     }
 
     /**
@@ -901,71 +960,74 @@ class ValueObject implements IArray, IJson, JsonSerializable, ArrayAccess
     /**
      * 返回部分闪存数据.
      *
-     * @param string $sName
-     * @param mixed  $mixDefault
+     * @param string $name
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    protected function getPartData($sName, $mixDefault = null)
+    protected function getPartData($name, $defaults = null)
     {
-        return $this->getTypePartData($sName, $mixDefault);
+        return $this->getTypePartData($name, $defaults);
     }
 
     /**
      * 返回部分闪存源数据.
      *
-     * @param string $sName
-     * @param mixed  $mixDefault
+     * @param string $name
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    protected function getSourcePartData($sName, $mixDefault = null)
+    protected function getSourcePartData($name, $defaults = null)
     {
-        return $this->getTypePartData($sName, $mixDefault, 'source');
+        return $this->getTypePartData($name, $defaults, 'source');
     }
 
     /**
      * 返回部分闪存源数据.
      *
-     * @param string $sName
-     * @param mixed  $mixDefault
-     * @param string $strType
+     * @param string $name
+     * @param mixed  $defaults
+     * @param string $type
      *
      * @return mixed
      */
-    protected function getTypePartData($sName, $mixDefault = null, $strType = '')
+    protected function getTypePartData($name, $defaults = null, $type = '')
     {
-        list($sName, $strName) = explode('\\', $sName);
-        $mixValue = $this->{'get'.($strType ? ucwords($strType) : '')}($sName);
+        list($name, $tmp) = explode('\\', $name);
 
-        if (is_array($mixValue)) {
-            $arrParts = explode('.', $strName);
-            foreach ($arrParts as $sPart) {
-                if (!isset($mixValue[$sPart])) {
-                    return $mixDefault;
+        $value = $this->{'get'.($type ? ucwords($type) : '')}($name);
+
+        if (is_array($value)) {
+            $parts = explode('.', $tmp);
+
+            foreach ($parts as $part) {
+                if (!isset($value[$part])) {
+                    return $defaults;
                 }
-                $mixValue = $mixValue[$sPart];
+
+                $value = $value[$part];
             }
 
-            return $mixValue;
+            return $value;
         }
 
-        return $mixDefault;
+        return $defaults;
     }
 
     /**
      * 返回下划线式命名.
      *
-     * @param string $strKey
+     * @param string $key
      *
      * @return string
      */
-    protected function getUnCamelizeKey($strKey)
+    protected function getUnCamelizeKey($key)
     {
-        if (isset(static::$arrUnCamelize[$strKey])) {
-            return static::$arrUnCamelize[$strKey];
+        if (isset(static::$unCamelize[$key])) {
+            return static::$unCamelize[$key];
         }
 
-        return static::$arrUnCamelize[$strKey] = Str::unCamelize($strKey);
+        return static::$unCamelize[$key] = Str::unCamelize($key);
     }
 }
