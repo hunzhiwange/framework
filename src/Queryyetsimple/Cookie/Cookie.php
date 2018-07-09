@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Cookie;
 
 use Exception;
-use Leevel\Option\TClass;
 
 /**
  * cookie 封装.
@@ -34,8 +33,6 @@ use Leevel\Option\TClass;
  */
 class Cookie implements ICookie
 {
-    use TClass;
-
     /**
      * 配置.
      *
@@ -63,7 +60,18 @@ class Cookie implements ICookie
      */
     public function __construct(array $option = [])
     {
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
     }
 
     /**
@@ -75,7 +83,7 @@ class Cookie implements ICookie
      */
     public function set($name, $value = '', array $option = [])
     {
-        $option = $this->getOptions($option);
+        $option = $this->normalizeOptions($option);
 
         if (is_array($value)) {
             $value = json_encode($value);
@@ -227,7 +235,7 @@ class Cookie implements ICookie
      */
     public function get($name, $defaults = null, array $option = [])
     {
-        $option = $this->getOptions($option);
+        $option = $this->normalizeOptions($option);
         $name = $option['prefix'].$name;
 
         if (isset($this->cookies[$name])) {
@@ -260,7 +268,7 @@ class Cookie implements ICookie
      */
     public function clear($deletePrefix = true, array $option = [])
     {
-        $option = $this->getOptions($option);
+        $option = $this->normalizeOptions($option);
         $prefix = $option['prefix'];
         $option['prefix'] = '';
 
@@ -283,6 +291,18 @@ class Cookie implements ICookie
     public function all(): array
     {
         return $this->cookies;
+    }
+
+    /**
+     * 整理配置.
+     *
+     * @param array $option
+     *
+     * @return array
+     */
+    protected function normalizeOptions(array $option = [])
+    {
+        return $option ? array_merge($this->option, $option) : $this->option;
     }
 
     /**

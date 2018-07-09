@@ -32,6 +32,14 @@ namespace Leevel\Cookie;
 interface ICookie
 {
     /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void;
+
+    /**
      * 设置 COOKIE.
      *
      * @param string $name
