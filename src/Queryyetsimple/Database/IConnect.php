@@ -164,7 +164,7 @@ interface IConnect
      *
      * @return string
      */
-    public function qualifyExpression(string $sql, string $tableName);
+    public function normalizeExpression(string $sql, string $tableName);
 
     /**
      * 表或者字段格式化（支持别名）.
@@ -175,7 +175,7 @@ interface IConnect
      *
      * @return string
      */
-    public function qualifyTableOrColumn(string $name, ?string $alias = null, string $as = null);
+    public function normalizeTableOrColumn(string $name, ?string $alias = null, string $as = null);
 
     /**
      * 字段格式化.
@@ -185,7 +185,7 @@ interface IConnect
      *
      * @return string
      */
-    public function qualifyColumn(string $key, string $tableName);
+    public function normalizeColumn(string $key, string $tableName);
 
     /**
      * 字段值格式化.
@@ -195,7 +195,25 @@ interface IConnect
      *
      * @return mixed
      */
-    public function qualifyColumnValue($value, bool $quotationMark = true);
+    public function normalizeColumnValue($value, bool $quotationMark = true);
+
+    /**
+     * 分析 sql 类型数据.
+     *
+     * @param string $sql
+     *
+     * @return string
+     */
+    public function normalizeSqlType(string $sql);
+
+    /**
+     * 分析绑定参数类型数据.
+     *
+     * @param mixed $value
+     *
+     * @return string
+     */
+    public function normalizeBindParamType($value);
 
     /**
      * 返回当前配置连接信息（方便其他组件调用设置为 public）.
@@ -205,24 +223,6 @@ interface IConnect
      * @return array
      */
     public function getCurrentOption(?string $optionName = null);
-
-    /**
-     * 分析 sql 类型数据.
-     *
-     * @param string $sql
-     *
-     * @return string
-     */
-    public function getSqlType(string $sql);
-
-    /**
-     * 分析绑定参数类型数据.
-     *
-     * @param mixed $value
-     *
-     * @return string
-     */
-    public function getBindParamType($value);
 
     /**
      * dsn 解析.

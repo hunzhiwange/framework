@@ -243,7 +243,7 @@ abstract class Connect
         $this->setSqlBindParams($sql, $bindParams);
 
         // 验证 sql 类型PROCEDURE
-        if (!in_array(($sqlType = $this->getSqlType($sql)), [
+        if (!in_array(($sqlType = $this->normalizeSqlType($sql)), [
             'select',
             'procedure',
         ], true)) {
@@ -295,7 +295,7 @@ abstract class Connect
         $this->setSqlBindParams($sql, $bindParams);
 
         // 验证 sql 类型
-        if ('select' === ($sqlType = $this->getSqlType($sql))) {
+        if ('select' === ($sqlType = $this->normalizeSqlType($sql))) {
             $this->throwException(
                 'The execute method does not allow select SQL statements.'
             );
@@ -504,7 +504,7 @@ abstract class Connect
      *
      * @return string
      */
-    public function qualifyExpression(string $sql, string $tableName)
+    public function normalizeExpression(string $sql, string $tableName)
     {
         if (empty($sql)) {
             return '';
@@ -543,7 +543,7 @@ abstract class Connect
                     $table = $tableName;
             }
 
-            $field = $this->qualifyTableOrColumn("{$table}.{$field}");
+            $field = $this->normalizeTableOrColumn("{$table}.{$field}");
             $out .= substr($sql, $offset, $value[1] - $offset).$field;
             $offset = $value[1] + $length;
         }
@@ -562,7 +562,7 @@ abstract class Connect
      *
      * @return string
      */
-    public function qualifyTableOrColumn(string $name, ?string $alias = null, ?string $as = null)
+    public function normalizeTableOrColumn(string $name, ?string $alias = null, ?string $as = null)
     {
         // 过滤'`'字符
         $name = str_replace('`', '', $name);
@@ -600,7 +600,7 @@ abstract class Connect
      *
      * @return string
      */
-    public function qualifyColumn(string $key, string $tableName)
+    public function normalizeColumn(string $key, string $tableName)
     {
         if (strpos($key, '.')) {
             // 如果字段名带有 .，则需要分离出数据表名称和 schema
@@ -608,16 +608,16 @@ abstract class Connect
 
             switch (count($tmp)) {
                 case 3:
-                    $field = $this->qualifyTableOrColumn("{$tmp[0]}.{$tmp[1]}.{$tmp[2]}");
+                    $field = $this->normalizeTableOrColumn("{$tmp[0]}.{$tmp[1]}.{$tmp[2]}");
 
                     break;
                 case 2:
-                    $field = $this->qualifyTableOrColumn("{$tmp[0]}.{$tmp[1]}");
+                    $field = $this->normalizeTableOrColumn("{$tmp[0]}.{$tmp[1]}");
 
                     break;
             }
         } else {
-            $field = $this->qualifyTableOrColumn("{$tableName}.{$key}");
+            $field = $this->normalizeTableOrColumn("{$tableName}.{$key}");
         }
 
         return $field;
@@ -631,12 +631,12 @@ abstract class Connect
      *
      * @return mixed
      */
-    public function qualifyColumnValue($value, bool $quotationMark = true)
+    public function normalizeColumnValue($value, bool $quotationMark = true)
     {
         // 数组，递归
         if (is_array($value)) {
             foreach ($value as $offset => $v) {
-                $value[$offset] = $this->qualifyColumnValue($v);
+                $value[$offset] = $this->normalizeColumnValue($v);
             }
 
             return $value;
@@ -674,29 +674,13 @@ abstract class Connect
     }
 
     /**
-     * 返回当前配置连接信息（方便其他组件调用设置为 public）.
-     *
-     * @param string $optionName
-     *
-     * @return array
-     */
-    public function getCurrentOption(?string $optionName = null)
-    {
-        if (null === $optionName) {
-            return $this->currentOption;
-        }
-
-        return $this->currentOption[$optionName] ?? null;
-    }
-
-    /**
      * 分析 sql 类型数据.
      *
      * @param string $sql
      *
      * @return string
      */
-    public function getSqlType(string $sql)
+    public function normalizeSqlType(string $sql)
     {
         $sql = trim($sql);
 
@@ -736,7 +720,7 @@ abstract class Connect
      *
      * @return string
      */
-    public function getBindParamType($value)
+    public function normalizeBindParamType($value)
     {
         // 参数
         switch (true) {
@@ -756,6 +740,22 @@ abstract class Connect
                 return PDO::PARAM_STMT;
                 break;
         }
+    }
+
+    /**
+     * 返回当前配置连接信息（方便其他组件调用设置为 public）.
+     *
+     * @param string $optionName
+     *
+     * @return array
+     */
+    public function getCurrentOption(?string $optionName = null)
+    {
+        if (null === $optionName) {
+            return $this->currentOption;
+        }
+
+        return $this->currentOption[$optionName] ?? null;
     }
 
     /**

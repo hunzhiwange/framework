@@ -1798,7 +1798,7 @@ class Condition
                 // 表达式支持
                 if (false !== strpos($tmp, '{') &&
                     preg_match('/^{(.+?)}$/', $tmp, $threeMatches)) {
-                    $tmp = $this->connect->qualifyExpression(
+                    $tmp = $this->connect->normalizeExpression(
                         $threeMatches[1], $tableName
                     );
 
@@ -1825,7 +1825,7 @@ class Condition
                             $tmp = $matches[2];
                         }
 
-                        $tmp = $this->connect->qualifyTableOrColumn(
+                        $tmp = $this->connect->normalizeTableOrColumn(
                             "{$currentTableName}.{$tmp}"
                         );
                     }
@@ -2175,19 +2175,19 @@ class Condition
             // 表达式支持
             if (false !== strpos($col, '{') &&
                 preg_match('/^{(.+?)}$/', $col, $matches)) {
-                $columns[] = $this->connect->qualifyExpression(
+                $columns[] = $this->connect->normalizeExpression(
                     $matches[1],
                     $tableName
                 );
             } else {
                 if ('*' !== $col && $alias) {
-                    $columns[] = $this->connect->qualifyTableOrColumn(
+                    $columns[] = $this->connect->normalizeTableOrColumn(
                         "{$tableName}.{$col}",
                         $alias,
                         'AS'
                     );
                 } else {
-                    $columns[] = $this->connect->qualifyTableOrColumn(
+                    $columns[] = $this->connect->normalizeTableOrColumn(
                         "{$tableName}.{$col}"
                     );
                 }
@@ -2248,11 +2248,11 @@ class Condition
             if (false !== strpos($value['table_name'], '(')) {
                 $tmp .= $value['table_name'].' '.$alias;
             } elseif ($alias === $value['table_name']) {
-                $tmp .= $this->connect->qualifyTableOrColumn(
+                $tmp .= $this->connect->normalizeTableOrColumn(
                     "{$value['schema']}.{$value['table_name']}"
                 );
             } else {
-                $tmp .= $this->connect->qualifyTableOrColumn(
+                $tmp .= $this->connect->normalizeTableOrColumn(
                     "{$value['schema']}.{$value['table_name']}",
                     $alias
                 );
@@ -2295,7 +2295,7 @@ class Condition
 
         foreach ($this->options['from'] as $alias => $value) {
             if ($alias === $value['table_name']) {
-                return $this->connect->qualifyTableOrColumn(
+                return $this->connect->normalizeTableOrColumn(
                     "{$value['schema']}.{$value['table_name']}"
                 );
             }
@@ -2309,7 +2309,7 @@ class Condition
                 return $value['table_name'].' '.$alias;
             }
 
-            return $this->connect->qualifyTableOrColumn(
+            return $this->connect->normalizeTableOrColumn(
                 "{$value['schema']}.{$value['table_name']}",
                 $alias
             );
@@ -2343,11 +2343,11 @@ class Condition
 
         foreach ($optionsUsing as $alias => $value) {
             if ($alias === $value['table_name']) {
-                $using[] = $this->connect->qualifyTableOrColumn(
+                $using[] = $this->connect->normalizeTableOrColumn(
                     "{$value['schema']}.{$value['table_name']}"
                 );
             } else {
-                $using[] = $this->connect->qualifyTableOrColumn(
+                $using[] = $this->connect->normalizeTableOrColumn(
                     "{$value['schema']}.{$value['table_name']}",
                     $alias
                 );
@@ -2580,7 +2580,7 @@ class Condition
                 // 表达式支持
                 if (false !== strpos($cond[0], '{') &&
                     preg_match('/^{(.+?)}$/', $cond[0], $matches)) {
-                    $cond[0] = $this->connect->qualifyExpression(
+                    $cond[0] = $this->connect->normalizeExpression(
                         $matches[1],
                         $table
                     );
@@ -2594,7 +2594,7 @@ class Condition
                         $currentTable = $table;
                     }
 
-                    $cond[0] = $this->connect->qualifyColumn(
+                    $cond[0] = $this->connect->normalizeColumn(
                         $cond[0],
                         $currentTable
                     );
@@ -2662,7 +2662,7 @@ class Condition
                         elseif (is_string($tmp) &&
                             false !== strpos($tmp, '{') &&
                             preg_match('/^{(.+?)}$/', $tmp, $matches)) {
-                            $tmp = $this->connect->qualifyExpression(
+                            $tmp = $this->connect->normalizeExpression(
                                 $matches[1],
                                 $table
                             );
@@ -2672,7 +2672,7 @@ class Condition
                                 $tmp = $this->parseTime($cond[0], $tmp, $findTime);
                             }
 
-                            $tmp = $this->connect->qualifyColumnValue($tmp);
+                            $tmp = $this->connect->normalizeColumnValue($tmp);
                         }
                     }
 
@@ -2851,7 +2851,7 @@ class Condition
                 // 表达式支持
                 if (false !== strpos($tmp, '{') &&
                     preg_match('/^{(.+?)}$/', $tmp, $matches)) {
-                    $tmp = $this->connect->qualifyExpression(
+                    $tmp = $this->connect->normalizeExpression(
                         $matches[1],
                         $table
                     );
@@ -3076,7 +3076,7 @@ class Condition
 
         if (false !== strpos($field, '{') &&
             preg_match('/^{(.+?)}$/', $field, $matches)) {
-            $field = $this->connect->qualifyExpression(
+            $field = $this->connect->normalizeExpression(
                 $matches[1],
                 $tableName
             );
@@ -3088,7 +3088,7 @@ class Condition
                 $currentTableName = $tableName;
             }
 
-            $field = $this->connect->qualifyTableOrColumn(
+            $field = $this->connect->normalizeTableOrColumn(
                 "{$currentTableName}.{$field}"
             );
         }
@@ -3406,7 +3406,7 @@ class Condition
         // 表达式支持
         if (false !== strpos($field, '{') &&
             preg_match('/^{(.+?)}$/', $field, $matches)) {
-            $field = $this->connect->qualifyExpression(
+            $field = $this->connect->normalizeExpression(
                 $matches[1],
                 $tableName
             );
@@ -3421,7 +3421,7 @@ class Condition
                 $tableName = '';
             }
 
-            $field = $this->connect->qualifyColumn(
+            $field = $this->connect->normalizeColumn(
                 $field,
                 $tableName
             );
@@ -3521,12 +3521,12 @@ class Condition
             if ($value &&
                 false !== strpos($value, '{') &&
                 preg_match('/^{(.+?)}$/', $value, $matches)) {
-                $value = $this->connect->qualifyExpression(
+                $value = $this->connect->normalizeExpression(
                     $matches[1],
                     $tableName
                 );
             } else {
-                $value = $this->connect->qualifyColumnValue(
+                $value = $this->connect->normalizeColumnValue(
                     $value,
                     false
                 );
@@ -3561,7 +3561,7 @@ class Condition
                 $this->bind(
                     $key,
                     $value,
-                    $this->connect->getBindParamType($value)
+                    $this->connect->normalizeBindParamType($value)
                 );
             }
         }

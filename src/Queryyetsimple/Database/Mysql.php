@@ -71,7 +71,7 @@ class Mysql extends Connect implements IConnect
             $dbName = $this->getCurrentOption('name');
         }
 
-        $sql = 'SHOW TABLES FROM '.$this->qualifyTableOrColumn($dbName);
+        $sql = 'SHOW TABLES FROM '.$this->normalizeTableOrColumn($dbName);
 
         $result = [];
 
@@ -97,7 +97,7 @@ class Mysql extends Connect implements IConnect
     public function getTableColumns(string $tableName, $master = false)
     {
         $sql = 'SHOW FULL COLUMNS FROM '.
-            $this->qualifyTableOrColumn($tableName);
+            $this->normalizeTableOrColumn($tableName);
 
         $result = [
             'list'           => [],

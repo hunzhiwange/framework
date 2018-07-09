@@ -1106,7 +1106,7 @@ class Select
 
         if (is_string($data)) {
             // 验证参数
-            $sqlType = $this->connect->getSqlType($data);
+            $sqlType = $this->connect->normalizeSqlType($data);
 
             if ('procedure' === $sqlType) {
                 $sqlType = 'select';
