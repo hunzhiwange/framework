@@ -116,6 +116,14 @@ interface ISeccode
     const CHINESE = 'chinese';
 
     /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void;
+
+    /**
      * 设置验证码
      *
      * @param mixed  $code

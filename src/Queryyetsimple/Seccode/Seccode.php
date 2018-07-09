@@ -22,7 +22,6 @@ namespace Leevel\Seccode;
 
 use Exception;
 use Leevel\Filesystem\Fso;
-use Leevel\Option\TClass;
 use Leevel\Support\Str;
 
 /**
@@ -36,8 +35,6 @@ use Leevel\Support\Str;
  */
 class Seccode implements ISeccode
 {
-    use TClass;
-
     /**
      * 验证码
      *
@@ -134,7 +131,18 @@ class Seccode implements ISeccode
      */
     public function __construct(array $option = [])
     {
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
     }
 
     /**
@@ -156,7 +164,7 @@ class Seccode implements ISeccode
 
         $resImage = imagecreatefromstring($this->makeBackground());
 
-        if ($this->getOption('adulterate')) {
+        if ($this->option['adulterate']) {
             $this->makeAdulterate($resImage);
         }
 
@@ -208,13 +216,13 @@ class Seccode implements ISeccode
             return $this->resolvedWidth;
         }
 
-        if ($this->getOption('width') < static::MIN_WIDTH) {
-            $this->option('width', static::MIN_WIDTH);
-        } elseif ($this->getOption('width') > static::MAX_WIDTH) {
-            $this->option('width', static::MAX_WIDTH);
+        if ($this->option['width'] < static::MIN_WIDTH) {
+            $this->setOption('width', static::MIN_WIDTH);
+        } elseif ($this->option['width'] > static::MAX_WIDTH) {
+            $this->setOption('width', static::MAX_WIDTH);
         }
 
-        return $this->resolvedWidth = $this->getOption('width');
+        return $this->resolvedWidth = $this->option['width'];
     }
 
     /**
@@ -228,13 +236,13 @@ class Seccode implements ISeccode
             return $this->resolvedHeight;
         }
 
-        if ($this->getOption('height') < static::MIN_HEIGHT) {
-            $this->option('height', static::MIN_HEIGHT);
-        } elseif ($this->getOption('height') > static::MAX_HEIGHT) {
-            $this->option('height', static::MAX_HEIGHT);
+        if ($this->option['height'] < static::MIN_HEIGHT) {
+            $this->setOption('height', static::MIN_HEIGHT);
+        } elseif ($this->option['height'] > static::MAX_HEIGHT) {
+            $this->setOption('height', static::MAX_HEIGHT);
         }
 
-        return $this->resolvedHeight = $this->getOption('height');
+        return $this->resolvedHeight = $this->option['height'];
     }
 
     /**
@@ -248,7 +256,7 @@ class Seccode implements ISeccode
             return $this->resolvedFontPath;
         }
 
-        return $this->resolvedFontPath = $this->getOption('font_path') ?:
+        return $this->resolvedFontPath = $this->option['font_path'] ?:
             $this->getDefaultFontPath();
     }
 
@@ -263,7 +271,7 @@ class Seccode implements ISeccode
             return $this->resolvedChineseFontPath;
         }
 
-        return $this->resolvedChineseFontPath = $this->getOption('chinese_font_path') ?:
+        return $this->resolvedChineseFontPath = $this->option['chinese_font_path'] ?:
             $this->getDefaultChineseFontPath();
     }
 
@@ -278,7 +286,7 @@ class Seccode implements ISeccode
             return $this->resolvedBackgroundPath;
         }
 
-        return $this->resolvedBackgroundPath = $this->getOption('background_path') ?:
+        return $this->resolvedBackgroundPath = $this->option['background_path'] ?:
             $this->getDefaultBackgroundPath();
     }
 
@@ -326,7 +334,7 @@ class Seccode implements ISeccode
         }
 
         for ($i = 0; $i <= $lineNum; $i++) {
-            $resColor = $this->getOption('color') ?
+            $resColor = $this->option['color'] ?
                 imagecolorallocate(
                     $resImage,
                     mt_rand(0, 255),
@@ -392,7 +400,7 @@ class Seccode implements ISeccode
         );
 
         // 是否启用随机颜色
-        !$this->getOption('color') &&
+        !$this->option['color'] &&
             $resTextColor = imagecolorallocate(
                 $resImage,
                 $this->fontColor[0],
@@ -401,14 +409,14 @@ class Seccode implements ISeccode
             );
 
         for ($i = 0; $i < count($font); $i++) {
-            if ($this->getOption('color')) {
+            if ($this->option['color']) {
                 $this->fontColor = [
                     mt_rand(0, 255),
                     mt_rand(0, 255),
                     mt_rand(0, 255),
                 ];
 
-                $this->getOption('shadow') &&
+                $this->option['shadow'] &&
                     $resTextShadowColor = imagecolorallocate(
                         $resImage,
                         255 - $this->fontColor[0],
@@ -422,7 +430,7 @@ class Seccode implements ISeccode
                     $this->fontColor[1],
                     $this->fontColor[2]
                 );
-            } elseif ($this->getOption('shadow')) {
+            } elseif ($this->option['shadow']) {
                 $resTextShadowColor = imagecolorallocate(
                     $resImage,
                     255 - $this->fontColor[0],
@@ -441,7 +449,7 @@ class Seccode implements ISeccode
                     $this->getHeight() - $font[$i]['hd']
                 );
 
-            $this->getOption('shadow') &&
+            $this->option['shadow'] &&
                 imagettftext(
                     $resImage,
                     $font[$i]['size'],
@@ -493,10 +501,10 @@ class Seccode implements ISeccode
             }
 
             $font[$i]['font'] = $ttf[array_rand($ttf)];
-            $font[$i]['tilt'] = $this->getOption('tilt') ? mt_rand(-30, 30) : 0;
+            $font[$i]['tilt'] = $this->option['tilt'] ? mt_rand(-30, 30) : 0;
             $font[$i]['size'] = $this->getWidth() / 6;
 
-            $this->getOption('size') &&
+            $this->option['size'] &&
                 $font[$i]['size'] = $this->mtRand(
                     $font[$i]['size'] - $this->getWidth() / 40,
                     $font[$i]['size'] + $this->getWidth() / 20
@@ -554,7 +562,7 @@ class Seccode implements ISeccode
     {
         $background = false;
 
-        if ($this->getOption('background') &&
+        if ($this->option['background'] &&
             function_exists('imagecreatefromjpeg') &&
             function_exists('imagecolorat') &&
             function_exists('imagecopymerge') &&
@@ -633,7 +641,7 @@ class Seccode implements ISeccode
                 $resImage,
                 $i,
                 0,
-                $i - ($this->getOption('tilt') ? mt_rand(-30, 30) : 0),
+                $i - ($this->option['tilt'] ? mt_rand(-30, 30) : 0),
                 $this->getHeight(),
                 $resColor
             );

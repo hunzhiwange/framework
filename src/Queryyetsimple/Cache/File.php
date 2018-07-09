@@ -155,7 +155,7 @@ class File extends Connect implements IConnect
         $cachePath = $this->getCachePath($name, $option);
 
         if ($this->exist($name, $option)) {
-            @unlink($cachePath);
+            unlink($cachePath);
         }
     }
 
