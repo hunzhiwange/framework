@@ -696,7 +696,7 @@ abstract class Connect
      *
      * @return string
      */
-    public function getSqlType($sql)
+    public function getSqlType(string $sql)
     {
         $sql = trim($sql);
 
