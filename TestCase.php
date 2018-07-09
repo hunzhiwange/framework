@@ -91,7 +91,8 @@ abstract class TestCase extends TestCases
     protected function varExport(array $data)
     {
         file_put_contents(
-            dirname(__DIR__).'/logs/'.static::class.'.log',
+            // dirname(__DIR__).'/logs/'.static::class.'.log',
+            dirname(__DIR__).'/logs/trace.log',
             var_export($data, true)
         );
 
