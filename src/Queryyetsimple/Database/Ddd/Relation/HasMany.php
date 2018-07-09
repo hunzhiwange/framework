@@ -37,14 +37,14 @@ class HasMany extends Relation
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IEntity $objTargetEntity
-     * @param \Leevel\Database\Ddd\IEntity $objSourceEntity
-     * @param string                       $strTargetKey
-     * @param string                       $strSourceKey
+     * @param \Leevel\Database\Ddd\IEntity $targetEntity
+     * @param \Leevel\Database\Ddd\IEntity $sourceEntity
+     * @param string                       $targetKey
+     * @param string                       $sourceKey
      */
-    public function __construct(IEntity $objTargetEntity, IEntity $objSourceEntity, $strTargetKey, $strSourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, $targetKey, $sourceKey)
     {
-        parent::__construct($objTargetEntity, $objSourceEntity, $strTargetKey, $strSourceKey);
+        parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
     }
 
     /**
@@ -53,33 +53,47 @@ class HasMany extends Relation
     public function addRelationCondition()
     {
         if (static::$booRelationCondition) {
-            $this->objSelect->where($this->strTargetKey, $this->getSourceValue());
-            $this->objSelect->whereNotNull($this->strTargetKey);
+            $this->select->where(
+                $this->targetKey,
+                $this->getSourceValue()
+            );
+
+            $this->select->whereNotNull(
+                $this->targetKey
+            );
         }
     }
 
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
      */
-    public function preLoadCondition(array $arrEntity)
+    public function preLoadCondition(array $entitys)
     {
-        $this->objSelect->whereIn($this->strTargetKey, $this->getEntityKey($arrEntity, $this->strSourceKey));
+        $this->select->whereIn(
+            $this->targetKey,
+            $this->getEntityKey($entitys, $this->sourceKey)
+        );
     }
 
     /**
      * 匹配关联查询数据到模型实体 HasMany.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
-     * @param \Leevel\Collection\Collection  $objResult
-     * @param string                         $strRelation
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Collection\Collection  $result
+     * @param string                         $relation
      *
      * @return array
      */
-    public function matchPreLoad(array $arrEntity, Collection $objResult, $strRelation)
+    public function matchPreLoad(array $entitys, Collection $result, $relation)
     {
-        return $this->matchPreLoadOneOrMany($arrEntity, $objResult, $strRelation, 'many');
+        return $this->matchPreLoadOneOrMany(
+            $entitys,
+            $result,
+            $relation,
+            'many'
+        );
     }
 
     /**
@@ -89,7 +103,7 @@ class HasMany extends Relation
      */
     public function getSourceValue()
     {
-        return $this->objSourceEntity->getProp($this->strSourceKey);
+        return $this->sourceEntity->getProp($this->sourceKey);
     }
 
     /**
@@ -99,82 +113,85 @@ class HasMany extends Relation
      */
     public function sourceQuery()
     {
-        return $this->objSelect->getAll();
+        return $this->select->getAll();
     }
 
     /**
      * 保存模型实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function save(IEntity $objEntity)
+    public function save(IEntity $entity)
     {
-        $this->withSourceKeyValue($objEntity);
+        $this->withSourceKeyValue($entity);
 
-        return $objEntity->save();
+        return $entity->save();
     }
 
     /**
      * 批量保存模型实体.
      *
-     * @param array|\Leevel\Collection\Collection $mixEntity
+     * @param array|\Leevel\Collection\Collection $entitys
      *
      * @return array|\Leevel\Collection\Collection
      */
-    public function saveMany($mixEntity)
+    public function saveMany($entitys)
     {
-        foreach ($mixEntity as $objEntity) {
-            $this->save($objEntity);
+        foreach ($entitys as $entity) {
+            $this->save($entity);
         }
 
-        return $mixEntity;
+        return $entitys;
     }
 
     /**
      * 创建模型实体实例.
      *
-     * @param array $arrProp
+     * @param array $props
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function create(array $arrProp)
+    public function create(array $props)
     {
-        $objEntity = $this->objTargetEntity->newInstance($arrProp);
-        $this->withSourceKeyValue($objEntity);
-        $objEntity->save();
+        $entity = $this->targetEntity->newInstance($props);
 
-        return $objEntity;
+        $this->withSourceKeyValue($entity);
+
+        $entity->save();
+
+        return $entity;
     }
 
     /**
      * 批量创建模型实体实例.
      *
-     * @param array $arrProps
+     * @param array $props
      *
      * @return array
      */
-    public function createMany(array $arrProps)
+    public function createMany(array $props)
     {
-        $arrEntitys = [];
-        foreach ($arrProps as $arrProp) {
-            $arrEntitys[] = $this->create($arrProp);
+        $entitys = [];
+
+        foreach ($props as $value) {
+            $entitys[] = $this->create($value);
         }
 
-        return $arrEntitys;
+        return $entitys;
     }
 
     /**
      * 更新关联模型实体的数据.
      *
-     * @param array $arrProp
+     * @param array $props
      *
      * @return int
      */
-    public function update(array $arrProp)
+    public function update(array $props)
     {
-        return $this->objSelect->update($arrProp);
+        return $this->select->update($props);
     }
 
     /**
@@ -184,75 +201,83 @@ class HasMany extends Relation
      */
     public function getSourceKeyValue()
     {
-        return $this->objSourceEntity->getProp($this->strSourceKey);
+        return $this->sourceEntity->getProp($this->sourceKey);
     }
 
     /**
      * 模型实体添加源字段数据.
      *
-     * @param \Leevel\Database\Ddd\IEntity $objEntity
+     * @param \Leevel\Database\Ddd\IEntity $entity
      */
-    protected function withSourceKeyValue(IEntity $objEntity)
+    protected function withSourceKeyValue(IEntity $entity)
     {
-        $objEntity->forceProp($this->strTargetKey, $this->getSourceKeyValue());
+        $entity->forceProp(
+            $this->targetKey,
+            $this->getSourceKeyValue()
+        );
     }
 
     /**
      * 匹配预载入数据.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
-     * @param \Leevel\Collection\Collection  $objResult
-     * @param string                         $strRelation
-     * @param string                         $strType
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Collection\Collection  $result
+     * @param string                         $relation
+     * @param string                         $type
      *
      * @return array
      */
-    protected function matchPreLoadOneOrMany(array $arrEntity, collection $objResult, $strRelation, $strType)
+    protected function matchPreLoadOneOrMany(array $entitys, Collection $result, $relation, $type)
     {
-        $arrMap = $this->buildMap($objResult);
+        $maps = $this->buildMap($result);
 
-        foreach ($arrEntity as &$objEntity) {
-            $mixKey = $objEntity->getProp($this->strSourceKey);
+        foreach ($entitys as &$entity) {
+            $key = $entity->getProp($this->sourceKey);
 
-            if (isset($arrMap[$mixKey])) {
-                $objEntity->setRelationProp($strRelation, $this->getRelationValue($arrMap, $mixKey, $strType));
+            if (isset($maps[$key])) {
+                $entity->setRelationProp(
+                    $relation,
+                    $this->getRelationValue($maps, $key, $type)
+                );
             }
         }
 
-        return $arrEntity;
+        return $entitys;
     }
 
     /**
      * 取得关联模型实体数据.
      *
-     * @param array  $arrMap
-     * @param string $strKey
-     * @param string $strType
+     * @param array  $maps
+     * @param string $key
+     * @param string $type
      *
      * @return mixed
      */
-    protected function getRelationValue(array $arrMap, $strKey, $strType)
+    protected function getRelationValue(array $maps, $key, $type)
     {
-        $arrValue = $arrMap[$strKey];
+        $value = $maps[$key];
 
-        return 'one' === $strType ? reset($arrValue) : $this->objTargetEntity->collection($arrValue);
+        return 'one' === $type ?
+            reset($value) :
+            $this->targetEntity->collection($value);
     }
 
     /**
      * 模型实体隐射数据.
      *
-     * @param \Leevel\Collection\Collection $objResult
+     * @param \Leevel\Collection\Collection $result
      *
      * @return array
      */
-    protected function buildMap(collection $objResult)
+    protected function buildMap(Collection $result)
     {
-        $arrMap = [];
+        $maps = [];
 
-        foreach ($objResult as $objResultEntity) {
-            $arrMap[$objResultEntity->getProp($this->strTargetKey)][] = $objResultEntity;
+        foreach ($result as $value) {
+            $maps[$value->getProp($this->targetKey)][] = $value;
         }
 
-        return $arrMap;
+        return $maps;
     }
 }

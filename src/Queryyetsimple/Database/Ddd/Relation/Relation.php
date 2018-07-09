@@ -41,57 +41,57 @@ abstract class Relation
      *
      * @var \Leevel\Database\Select
      */
-    protected $objSelect;
+    protected $select;
 
     /**
      * 关联目标模型实体.
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $objTargetEntity;
+    protected $targetEntity;
 
     /**
      * 源模型实体.
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $objSourceEntity;
+    protected $sourceEntity;
 
     /**
      * 目标关联字段.
      *
      * @var string
      */
-    protected $strTargetKey;
+    protected $targetKey;
 
     /**
      * 源关联字段.
      *
      * @var string
      */
-    protected $strSourceKey;
+    protected $sourceKey;
 
     /**
      * 是否初始化查询.
      *
      * @var bool
      */
-    protected static $booRelationCondition = true;
+    protected static $relationCondition = true;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IEntity $objTargetEntity
-     * @param \Leevel\Database\Ddd\IEntity $objSourceEntity
-     * @param string                       $strTargetKey
-     * @param string                       $strSourceKey
+     * @param \Leevel\Database\Ddd\IEntity $targetEntity
+     * @param \Leevel\Database\Ddd\IEntity $sourceEntity
+     * @param string                       $targetKey
+     * @param string                       $sourceKey
      */
-    public function __construct(IEntity $objTargetEntity, IEntity $objSourceEntity, $strTargetKey, $strSourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, $targetKey, $sourceKey)
     {
-        $this->objTargetEntity = $objTargetEntity;
-        $this->objSourceEntity = $objSourceEntity;
-        $this->strTargetKey = $strTargetKey;
-        $this->strSourceKey = $strSourceKey;
+        $this->targetEntity = $targetEntity;
+        $this->sourceEntity = $sourceEntity;
+        $this->targetKey = $targetKey;
+        $this->sourceKey = $sourceKey;
 
         $this->getSelectFromEntity();
         $this->addRelationCondition();
@@ -101,19 +101,19 @@ abstract class Relation
      * call.
      *
      * @param string $method
-     * @param array  $arrArgs
+     * @param array  $args
      *
      * @return mixed
      */
-    public function __call(string $method, array $arrArgs)
+    public function __call(string $method, array $args)
     {
-        $objSelect = $this->objSelect->{$method}(...$arrArgs);
+        $select = $this->select->{$method}(...$args);
 
-        if ($this->getSelect() === $objSelect) {
+        if ($this->getSelect() === $select) {
             return $this;
         }
 
-        return $objSelect;
+        return $select;
     }
 
     /**
@@ -123,7 +123,7 @@ abstract class Relation
      */
     public function getSelect()
     {
-        return $this->objSelect;
+        return $this->select;
     }
 
     /**
@@ -133,7 +133,10 @@ abstract class Relation
      */
     public function getPreLoad()
     {
-        return $this->querySelelct()->preLoadResult($this->getAll());
+        return $this->querySelelct()->
+        preLoadResult(
+            $this->getAll()
+        );
     }
 
     /**
@@ -143,7 +146,7 @@ abstract class Relation
      */
     public function getTargetEntity()
     {
-        return $this->objTargetEntity;
+        return $this->targetEntity;
     }
 
     /**
@@ -153,7 +156,7 @@ abstract class Relation
      */
     public function getSourceEntity()
     {
-        return $this->objSourceEntity;
+        return $this->sourceEntity;
     }
 
     /**
@@ -163,7 +166,7 @@ abstract class Relation
      */
     public function getTargetKey()
     {
-        return $this->strTargetKey;
+        return $this->targetKey;
     }
 
     /**
@@ -173,29 +176,30 @@ abstract class Relation
      */
     public function getSourceKey()
     {
-        return $this->strSourceKey;
+        return $this->sourceKey;
     }
 
     /**
      * 获取不带关联条件的关联对象
      *
-     * @param \Closure $calReturnRelation
+     * @param \Closure $returnRelation
      *
      * @return \leevel\Mvc\Relation\Relation
      */
-    public static function withoutRelationCondition(Closure $calReturnRelation)
+    public static function withoutRelationCondition(Closure $returnRelation)
     {
-        $booOld = static::$booRelationCondition;
-        static::$booRelationCondition = false;
+        $old = static::$relationCondition;
+        static::$relationCondition = false;
 
-        $objRelation = call_user_func($calReturnRelation);
-        if (!($objRelation instanceof self)) {
+        $relation = call_user_func($returnRelation);
+
+        if (!($relation instanceof self)) {
             throw new Exception('The result must be relation.');
         }
 
-        static::$booRelationCondition = $booOld;
+        static::$relationCondition = $old;
 
-        return $objRelation;
+        return $relation;
     }
 
     /**
@@ -206,20 +210,20 @@ abstract class Relation
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
      */
-    abstract public function preLoadCondition(array $arrEntity);
+    abstract public function preLoadCondition(array $entitys);
 
     /**
      * 匹配关联查询数据到模型实体 HasMany.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
-     * @param \Leevel\Collection\Collection  $objResult
-     * @param string                         $strRelation
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Collection\Collection  $result
+     * @param string                         $relation
      *
      * @return array
      */
-    abstract public function matchPreLoad(array $arrEntity, collection $objResult, $strRelation);
+    abstract public function matchPreLoad(array $entitys, collection $result, $relation);
 
     /**
      * 查询关联对象
@@ -231,16 +235,22 @@ abstract class Relation
     /**
      * 返回模型实体的主键.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
-     * @param string                         $strKey
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param string                         $key
      *
      * @return array
      */
-    protected function getEntityKey(array $arrEntity, $strKey = null)
+    protected function getEntityKey(array $entitys, $key = null)
     {
-        return array_unique(array_values(array_map(function ($objEntity) use ($strKey) {
-            return $strKey ? $objEntity->getProp($strKey) : $objEntity->getPrimaryKeyForQuery();
-        }, $arrEntity)));
+        return array_unique(
+            array_values(
+                array_map(function ($entity) use ($key) {
+                    return $key ?
+                        $entity->getProp($key) :
+                        $entity->getPrimaryKeyForQuery();
+                }, $entitys)
+            )
+        );
     }
 
     /**
@@ -250,6 +260,6 @@ abstract class Relation
      */
     protected function getSelectFromEntity()
     {
-        $this->objSelect = $this->objTargetEntity->getClassCollectionQuery();
+        $this->select = $this->targetEntity->getClassCollectionQuery();
     }
 }

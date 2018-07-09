@@ -40,20 +40,20 @@ class HasOne extends HasMany
      */
     public function sourceQuery()
     {
-        return $this->objSelect->getOne();
+        return $this->select->getOne();
     }
 
     /**
      * 匹配关联查询数据到模型实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
-     * @param \leevel\collection             $objResult
-     * @param string                         $strRelation
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Collection\Collection  $result
+     * @param string                         $relation
      *
      * @return array
      */
-    public function matchPreLoad(array $arrEntity, collection $objResult, $strRelation)
+    public function matchPreLoad(array $entitys, Collection $result, $relation)
     {
-        return $this->matchPreLoadOneOrMany($arrEntity, $objResult, $strRelation, 'one');
+        return $this->matchPreLoadOneOrMany($entitys, $result, $relation, 'one');
     }
 }

@@ -39,54 +39,54 @@ class ManyMany extends Relation
      *
      * @var \Leevel\Database\Select
      */
-    protected $objMiddleSelect;
+    protected $middleSelect;
 
     /**
      * 中间表模型实体.
      *
      * @var \Leevel\Database\Ddd\IEntity
      */
-    protected $objMiddleEntity;
+    protected $middleEntity;
 
     /**
      * 目标中间表关联字段.
      *
      * @var string
      */
-    protected $strMiddleTargetKey;
+    protected $middleTargetKey;
 
     /**
      * 源中间表关联字段.
      *
      * @var string
      */
-    protected $strMiddleSourceKey;
+    protected $middleSourceKey;
 
     /**
      * 中间表隐射数据.
      *
      * @var array
      */
-    protected $arrMiddleMap = [];
+    protected $middleMaps = [];
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\Database\Ddd\IEntity $objTargetEntity
-     * @param \Leevel\Database\Ddd\IEntity $objSourceEntity
-     * @param \Leevel\Database\Ddd\IEntity $objMiddleEntity
-     * @param string                       $strTargetKey
-     * @param string                       $strSourceKey
-     * @param string                       $strMiddleTargetKey
-     * @param string                       $strMiddleSourceKey
+     * @param \Leevel\Database\Ddd\IEntity $targetEntity
+     * @param \Leevel\Database\Ddd\IEntity $sourceEntity
+     * @param \Leevel\Database\Ddd\IEntity $middleEntity
+     * @param string                       $targetKey
+     * @param string                       $sourceKey
+     * @param string                       $middleTargetKey
+     * @param string                       $middleSourceKey
      */
-    public function __construct(IEntity $objTargetEntity, IEntity $objSourceEntity, IEntity $objMiddleEntity, $strTargetKey, $strSourceKey, $strMiddleTargetKey, $strMiddleSourceKey)
+    public function __construct(IEntity $targetEntity, IEntity $sourceEntity, IEntity $middleEntity, $targetKey, $sourceKey, $middleTargetKey, $middleSourceKey)
     {
-        $this->objMiddleEntity = $objMiddleEntity;
-        $this->strMiddleTargetKey = $strMiddleTargetKey;
-        $this->strMiddleSourceKey = $strMiddleSourceKey;
+        $this->middleEntity = $middleEntity;
+        $this->middleTargetKey = $middleTargetKey;
+        $this->middleSourceKey = $middleSourceKey;
 
-        parent::__construct($objTargetEntity, $objSourceEntity, $strTargetKey, $strSourceKey);
+        parent::__construct($targetEntity, $sourceEntity, $targetKey, $sourceKey);
     }
 
     /**
@@ -95,55 +95,62 @@ class ManyMany extends Relation
     public function addRelationCondition()
     {
         if (static::$booRelationCondition) {
-            $this->objMiddleSelect = $this->objMiddleEntity->where($this->strMiddleSourceKey, $this->getSourceValue());
+            $this->middleSelect = $this->middleEntity->where(
+                $this->middleSourceKey,
+                $this->getSourceValue()
+            );
         }
     }
 
     /**
      * 设置预载入关联查询条件.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
      */
-    public function preLoadCondition(array $arrEntity)
+    public function preLoadCondition(array $entitys)
     {
-        $this->preLoadRelationCondition($arrEntity);
+        $this->preLoadRelationCondition($entitys);
         $this->parseSelectCondition();
     }
 
     /**
      * 匹配关联查询数据到模型实体.
      *
-     * @param \Leevel\Database\Ddd\IEntity[] $arrEntity
-     * @param \Leevel\Collection\Collection  $objResult
-     * @param string                         $strRelation
+     * @param \Leevel\Database\Ddd\IEntity[] $entitys
+     * @param \Leevel\Collection\Collection  $result
+     * @param string                         $relation
      *
      * @return array
      */
-    public function matchPreLoad(array $arrEntity, collection $objResult, $strRelation)
+    public function matchPreLoad(array $entitys, collection $result, $relation)
     {
-        $arrMap = $this->buildMap($objResult);
+        $maps = $this->buildMap($result);
 
-        foreach ($arrEntity as &$objEntity) {
-            $mixKey = $objEntity->getProp($this->strSourceKey);
-            if (isset($arrMap[$mixKey])) {
-                $objEntity->setRelationProp($strRelation, $this->objTargetEntity->collection($arrMap[$mixKey]));
+        foreach ($entitys as &$entity) {
+            $key = $entity->getProp($this->sourceKey);
+
+            if (isset($maps[$key])) {
+                $entity->setRelationProp(
+                    $relation,
+                    $this->targetEntity->collection($maps[$key])
+                );
             }
         }
 
-        return $arrEntity;
+        return $entitys;
     }
 
     /**
      * 中间表查询回调处理.
      *
-     * @param callable $calCallback
+     * @param callable $callbacks
      *
      * @return $this
      */
-    public function middleCondition($calCallback)
+    public function middleCondition(callable $callbacks)
     {
-        call_user_func_array($calCallback, [
-            $this->objMiddleSelect,
+        call_user_func_array($callbacks, [
+            $this->middleSelect,
             $this,
         ]);
 
@@ -157,7 +164,7 @@ class ManyMany extends Relation
      */
     public function getSourceValue()
     {
-        return $this->objSourceEntity->getProp($this->strSourceKey);
+        return $this->sourceEntity->getProp($this->sourceKey);
     }
 
     /**
@@ -168,10 +175,10 @@ class ManyMany extends Relation
     public function sourceQuery()
     {
         if (false === $this->parseSelectCondition()) {
-            return new collection();
+            return new Collection();
         }
 
-        return $this->objSelect->getAll();
+        return $this->select->getAll();
     }
 
     /**
@@ -181,7 +188,7 @@ class ManyMany extends Relation
      */
     public function getMiddleSelect()
     {
-        return $this->objMiddleSelect;
+        return $this->middleSelect;
     }
 
     /**
@@ -191,7 +198,7 @@ class ManyMany extends Relation
      */
     public function getMiddleEntity()
     {
-        return $this->objMiddleEntity;
+        return $this->middleEntity;
     }
 
     /**
@@ -201,7 +208,7 @@ class ManyMany extends Relation
      */
     public function getTargetKey()
     {
-        return $this->strMiddleTargetKey;
+        return $this->middleTargetKey;
     }
 
     /**
@@ -211,7 +218,7 @@ class ManyMany extends Relation
      */
     public function getSourceKey()
     {
-        return $this->strMiddleSourceKey;
+        return $this->middleSourceKey;
     }
 
     /**
@@ -221,7 +228,7 @@ class ManyMany extends Relation
      */
     public function getMiddleMap()
     {
-        return $this->arrMiddleMap;
+        return $this->middleMaps;
     }
 
     /**
@@ -231,15 +238,15 @@ class ManyMany extends Relation
      */
     public function getSourceKeyValue()
     {
-        return $this->objSourceEntity->getProp($this->strSourceKey);
+        return $this->sourceEntity->getProp($this->sourceKey);
     }
 
     /**
      * 预载入关联基础查询条件.
      */
-    protected function preLoadRelationCondition(array $arrEntity)
+    protected function preLoadRelationCondition(array $entitys)
     {
-        $this->objMiddleSelect = $this->objMiddleEntity->whereIn($this->strMiddleSourceKey, $this->getPreLoadSourceValue($arrEntity));
+        $this->middleSelect = $this->middleEntity->whereIn($this->middleSourceKey, $this->getPreLoadSourceValue($entitys));
     }
 
     /**
@@ -247,12 +254,12 @@ class ManyMany extends Relation
      *
      * @return mixed
      */
-    protected function getPreLoadSourceValue(array $arrEntity)
+    protected function getPreLoadSourceValue(array $entitys)
     {
         $arr = [];
 
-        foreach ($arrEntity as $objSourceEntity) {
-            $arr[] = $objSourceEntity->{$this->strSourceKey};
+        foreach ($entitys as $sourceEntity) {
+            $arr[] = $sourceEntity->{$this->sourceKey};
         }
 
         return $arr;
@@ -261,24 +268,25 @@ class ManyMany extends Relation
     /**
      * 模型实体隐射数据.
      *
-     * @param \Leevel\Collection\Collection $objResult
+     * @param \Leevel\Collection\Collection $result
      *
      * @return array
      */
-    protected function buildMap(collection $objResult)
+    protected function buildMap(Collection $result)
     {
-        $arrMap = [];
+        $maps = [];
 
-        foreach ($objResult as $objResultEntity) {
-            $mixKey = $objResultEntity->getProp($this->strTargetKey);
-            if (isset($this->arrMiddleMap[$mixKey])) {
-                foreach ($this->arrMiddleMap[$mixKey] as $mixValue) {
-                    $arrMap[$mixValue][] = $objResultEntity;
+        foreach ($result as $entity) {
+            $key = $entity->getProp($this->targetKey);
+
+            if (isset($this->middleMaps[$key])) {
+                foreach ($this->middleMaps[$key] as $value) {
+                    $maps[$value][] = $entity;
                 }
             }
         }
 
-        return $arrMap;
+        return $maps;
     }
 
     /**
@@ -288,13 +296,13 @@ class ManyMany extends Relation
      */
     protected function parseSelectCondition()
     {
-        $arrTargetId = $this->parseTargetId();
+        $targetId = $this->parseTargetId();
 
-        $this->objSelect->whereIn($this->strTargetKey, $arrTargetId ?: [
+        $this->select->whereIn($this->targetKey, $targetId ?: [
             0,
         ]);
 
-        if (!$arrTargetId) {
+        if (!$targetId) {
             return false;
         }
     }
@@ -306,15 +314,15 @@ class ManyMany extends Relation
      */
     protected function parseTargetId()
     {
-        $arr = $arrTargetId = [];
+        $arr = $targetId = [];
 
-        foreach ($this->objMiddleSelect->getAll() as $objMiddleEntity) {
-            $arr[$objMiddleEntity->{$this->strMiddleTargetKey}][] = $objMiddleEntity->{$this->strMiddleSourceKey};
-            $arrTargetId[] = $objMiddleEntity->{$this->strMiddleTargetKey};
+        foreach ($this->middleSelect->getAll() as $entity) {
+            $arr[$entity->{$this->middleTargetKey}][] = $entity->{$this->middleSourceKey};
+            $targetId[] = $entity->{$this->middleTargetKey};
         }
 
-        $this->arrMiddleMap = $arr;
+        $this->middleMaps = $arr;
 
-        return array_unique($arrTargetId);
+        return array_unique($targetId);
     }
 }
