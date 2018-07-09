@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Session;
 
 use Leevel\Cache\Redis as CacheRedis;
-use SessionHandlerInterface;
 
 /**
  * session.redis.
@@ -32,7 +31,7 @@ use SessionHandlerInterface;
  *
  * @version 1.0
  */
-class Redis extends Connect implements SessionHandlerInterface
+class Redis extends Connect
 {
     /**
      * 配置.

@@ -20,16 +20,19 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
+use SessionHandlerInterface;
+
 /**
  * aconnect 驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.06.06
+ * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
  *
  * @version 1.0
  */
-abstract class Connect
+abstract class Connect implements SessionHandlerInterface
 {
     /**
      * 缓存仓储.
@@ -55,6 +58,9 @@ abstract class Connect
         $this->option = array_merge($this->option, $option);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function close()
     {
         $this->gc(ini_get('session.gc_maxlifetime'));
@@ -63,6 +69,9 @@ abstract class Connect
         return true;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function read($sessionid)
     {
         return $this->cache->get(
@@ -70,6 +79,9 @@ abstract class Connect
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function write($sessionid, $sessiondata)
     {
         $this->cache->set(
@@ -78,6 +90,9 @@ abstract class Connect
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function destroy($sessionid)
     {
         $this->cache->delele(
@@ -85,6 +100,9 @@ abstract class Connect
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function gc($maxlifetime)
     {
         return true;

@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Session;
 
 use Leevel\Cache\Memcache as CacheMemcache;
-use SessionHandlerInterface;
 
 /**
  * session.memcache.
@@ -29,11 +28,10 @@ use SessionHandlerInterface;
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.06.05
- * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
  *
  * @version 1.0
  */
-class Memcache extends Connect implements SessionHandlerInterface
+class Memcache extends Connect
 {
     /**
      * 配置.
