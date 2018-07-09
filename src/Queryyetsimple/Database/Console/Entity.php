@@ -123,14 +123,14 @@ EOF;
             [
                 'namespace',
                 null,
-                option::VALUE_OPTIONAL,
+                Option::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
                 'app',
             ],
             [
                 'extend',
                 null,
-                option::VALUE_OPTIONAL,
+                Option::VALUE_OPTIONAL,
                 'Entity with the code that make it extends Leevel\Database\Ddd\Entity',
                 1,
             ],

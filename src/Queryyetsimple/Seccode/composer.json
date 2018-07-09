@@ -13,8 +13,7 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "leevel/support": "1.0.*",
-        "leevel/filesystem": "1.0.*"
+        "leevel/support": "1.0.*"
     },
     "autoload": {
         "psr-4": {

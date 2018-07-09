@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Seccode;
 
 use Exception;
-use Leevel\Filesystem\Fso;
 use Leevel\Support\Str;
 
 /**
@@ -578,7 +577,7 @@ class Seccode implements ISeccode
                 );
             }
 
-            $background = Fso::lists($this->getBackgroundPath(), 'file', true);
+            $background = glob($this->getBackgroundPath().'/*.*');
 
             if ($background) {
                 $resBackground = imagecreatefromjpeg($background[array_rand($background)]);
@@ -677,7 +676,7 @@ class Seccode implements ISeccode
             );
         }
 
-        $ttf = Fso::lists($fontPath, 'file', true);
+        $ttf = glob($fontPath.'/*.*');
 
         if (empty($ttf)) {
             throw new Exception('Font not found');

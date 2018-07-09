@@ -151,14 +151,14 @@ class Job extends Command
             [
                 'queue',
                 null,
-                option::VALUE_OPTIONAL,
+                Option::VALUE_OPTIONAL,
                 'The queue to listen on.',
                 'default',
             ],
             [
                 'data',
                 null,
-                option::VALUE_OPTIONAL | option::VALUE_IS_ARRAY,
+                Option::VALUE_OPTIONAL | Option::VALUE_IS_ARRAY,
                 'The job json args.',
             ],
         ];

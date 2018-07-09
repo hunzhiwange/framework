@@ -47,7 +47,7 @@ class Fso
      */
     public static function fileContents($path)
     {
-        if (static::isFile($path)) {
+        if (is_file($path)) {
             return file_get_contents($path);
         }
 
@@ -81,7 +81,7 @@ class Fso
      * @param string $dir
      * @param bool   $recursive
      */
-    public static function deleteDirectory($dir, $recursive = false)
+    public static function deleteDirectory($dir, bool $recursive = false)
     {
         if (!file_exists($dir) || !is_dir($dir)) {
             return;
@@ -117,7 +117,7 @@ class Fso
      * @param string $targetPath
      * @param array  $filter
      */
-    public static function copyDirectory($sourcePath, $targetPath, $filter = [])
+    public static function copyDirectory($sourcePath, $targetPath, array $filter = [])
     {
         if (!is_dir($sourcePath)) {
             return;
@@ -157,10 +157,11 @@ class Fso
      * 浏览目录.
      *
      * @param string   $path
+     * @param bool     $recursive
      * @param \Closure $cal
      * @param array    $filter
      */
-    public static function listDirectory($path, Closure $cal, array $filter = [])
+    public static function listDirectory($path, bool $recursive, Closure $cal, array $filter = [])
     {
         if (!is_dir($path)) {
             return;
@@ -176,89 +177,15 @@ class Fso
 
             call_user_func($cal, $file);
 
-            if ($file->idir()) {
+            if (true === $recursive && $file->idir()) {
                 static::listDirectory(
                     $file->getPath().'/'.$file->getFilename(),
+                    true,
                     $cal,
                     $filter
                 );
             }
         }
-    }
-
-    /**
-     * 只读取一级目录.
-     *
-     * @param string $dir
-     * @param string $returnType
-     * @param bool   $fullpath
-     * @param array  $filter
-     * @param array  $allowedExt
-     * @param array  $filterExt
-     *
-     * @return array
-     */
-    public static function lists($dir, $returnType = 'dir', bool $fullpath = false, array $filter = [], array $allowedExt = [], array $filterExt = [])
-    {
-        $filter = array_merge([
-            '.svn',
-            '.git',
-            'node_modules',
-            '.gitkeep',
-        ], $filter);
-
-        $returnData = [
-            'file' => [],
-            'dir'  => [],
-        ];
-
-        if (is_dir($dir)) {
-            $arrFiles = [];
-
-            $instance = new DirectoryIterator($dir);
-
-            foreach ($instance as $file) {
-                if ($file->isDot() ||
-                    in_array($file->getFilename(), $filter, true)) {
-                    continue;
-                }
-
-                if ($file->idir() && in_array($returnType, [
-                    'dir',
-                    'both',
-                ], true)) {
-                    $returnData['dir'][] = $fullpath ?
-                        $file->getRealPath() :
-                        $file->getFilename();
-                }
-
-                $ext = static::getExtension($file->getFilename(), 2);
-
-                if ($file->isFile() &&
-                    in_array($returnType, [
-                        'file',
-                        'both',
-                    ], true) &&
-                    (!$filterExt || !in_array($ext, $filterExt, true)) &&
-                    (!$allowedExt || in_array($ext, $allowedExt, true))) {
-                    $returnData['file'][] = $fullpath ?
-                        $file->getRealPath() :
-                        $file->getFilename();
-                }
-            }
-
-            if ('file' === $returnType) {
-                return $returnData['file'];
-            }
-
-            if ('dir' === $returnType) {
-                return $returnData['dir'];
-            }
-
-            return $returnData;
-        }
-
-        return [];
     }
 
     /**

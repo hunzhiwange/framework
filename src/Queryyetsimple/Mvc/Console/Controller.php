@@ -157,14 +157,14 @@ EOF;
             [
                 'namespace',
                 null,
-                option::VALUE_OPTIONAL,
+                Option::VALUE_OPTIONAL,
                 'Apps namespace registered to system,default namespace is these (Common,App,Admin)',
                 'app',
             ],
             [
                 'extend',
                 null,
-                option::VALUE_OPTIONAL,
+                Option::VALUE_OPTIONAL,
                 'Controller with the code that make it extends Leevel\Mvc\Controller',
                 1,
             ],

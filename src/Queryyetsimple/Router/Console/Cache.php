@@ -114,7 +114,9 @@ class Cache extends Command
             PHP_EOL.'<?'.'php return '.var_export($data, true).'; ?'.'>';
 
         if (!file_put_contents($cachePath, $content)) {
-            throw new InvalidArgumentException(sprintf('Dir %s is not writeable', dirname($cachePath)));
+            throw new InvalidArgumentException(
+                sprintf('Dir %s is not writeable', dirname($cachePath))
+            );
         }
 
         chmod($cachePath, 0777);

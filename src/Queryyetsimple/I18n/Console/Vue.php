@@ -23,7 +23,6 @@ namespace Leevel\I18n\Console;
 use Leevel\Console\Argument;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
-use Leevel\Filesystem\Fso;
 use Leevel\I18n\Mo;
 use RuntimeException;
 
@@ -107,7 +106,16 @@ EOF;
     protected function paresLang()
     {
         if ('all' === $this->argument('lang')) {
-            return Fso::lists($this->parseSourceDir(), 'dir');
+            return array_map(
+                function ($item) {
+                    return str_replace(
+                        $this->parseSourceDir().'/',
+                        '',
+                        $item
+                    );
+                },
+                glob($this->parseSourceDir().'/*', GLOB_ONLYDIR)
+            );
         }
 
         return [
@@ -131,13 +139,18 @@ EOF;
         ]);
 
         $result = $this->parseMoData($moFiles);
+
         if (empty($result)) {
             $result['Query Yet Simple'] = '左右代码 右手年华 不忘初心 简单快乐';
         }
 
-        if (!file_put_contents($outputDir.'/'.$outputFile, '/** '.date('Y-m-d H:i:s').' */'.
-            PHP_EOL.'export default '.json_encode($result, JSON_UNESCAPED_UNICODE).';')) {
-            throw new RuntimeException(sprintf('Dir %s do not have permission.', $outputDir));
+        $content = '/** '.date('Y-m-d H:i:s').' */'.
+            PHP_EOL.'export default '.json_encode($result, JSON_UNESCAPED_UNICODE).';';
+
+        if (!file_put_contents($outputDir.'/'.$outputFile, $content)) {
+            throw new RuntimeException(
+                sprintf('Dir %s do not have permission.', $outputDir)
+            );
         }
 
         chmod($outputDir, 0777);
@@ -158,6 +171,7 @@ EOF;
         }
 
         $sourceDir = $this->option('source');
+
         if (empty($sourceDir)) {
             throw new RuntimeException('Source dir is not set');
         }
@@ -177,6 +191,7 @@ EOF;
         }
 
         $outputDir = $this->option('output');
+
         if (empty($outputDir)) {
             $outputDir = $this->parseSourceDir();
         }
@@ -196,6 +211,7 @@ EOF;
         }
 
         $outputFile = $this->option('file');
+
         if (empty($outputFile)) {
             throw new RuntimeException('Output file is not set');
         }
@@ -222,7 +238,7 @@ EOF;
     /**
      * 分析目录中的 PHP 语言包包含的文件.
      *
-     * @param array $arrDir 文件地址
+     * @param array $dirs 文件地址
      *
      * @author 小牛
      *
@@ -230,20 +246,31 @@ EOF;
      *
      * @return array
      */
-    protected function findMoFile(array $arrDir)
+    protected function findMoFile(array $dirs)
     {
-        $arrFiles = [];
-        foreach ($arrDir as $sDir) {
-            if (!is_dir($sDir)) {
-                continue;
+        $files = [];
+
+        foreach ($dirs as $dir) {
+            if (!is_dir($dir)) {
+                throw new RuntimeException('I18n load dir is not exits.');
             }
 
-            $arrFiles = array_merge($arrFiles, Fso::lists($sDir, 'file', true, [], [
-                'mo',
-            ]));
+            $files = array_merge($files, $this->getMoFiles($dir));
         }
 
-        return $arrFiles;
+        return $files;
+    }
+
+    /**
+     * 获取目录中的 MO 文件.
+     *
+     * @param string $dir
+     *
+     * @return array
+     */
+    protected function getMoFiles(string $dir): array
+    {
+        return glob($dir.'/*.mo');
     }
 
     /**
@@ -274,20 +301,20 @@ EOF;
             [
                 'source',
                 'frontend/src/i18n',
-                option::VALUE_OPTIONAL,
+                Option::VALUE_OPTIONAL,
                 'Source i18n dir can be set here',
                 'frontend/src/i18n',
             ],
             [
                 'output',
                 null,
-                option::VALUE_OPTIONAL,
+                Option::VALUE_OPTIONAL,
                 'Output i18n dir can be set here,default value is the same as source',
             ],
             [
                 'file',
                 'index.js',
-                option::VALUE_OPTIONAL,
+                Option::VALUE_OPTIONAL,
                 'Output default file name',
                 'index.js',
             ],
