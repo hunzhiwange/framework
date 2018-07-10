@@ -74,7 +74,7 @@ class BootstrapSimple extends Bootstrap
             return sprintf(
                 '<li class="%s"><a aria-label="Previous" href="%s">'.
                     '<span aria-hidden="true">%s</span></a></li>',
-                'justify' === $this->getOption('align') ? 'previous' : '',
+                'justify' === $this->option['align'] ? 'previous' : '',
                 $this->replace(
                     $this->objPage->parsePrevRenderPrev()
                 ),
@@ -85,7 +85,7 @@ class BootstrapSimple extends Bootstrap
         return sprintf(
             '<li class="disabled%s"><a aria-label="Previous">'.
                 '<span aria-hidden="true">%s</span></a></li>',
-            'justify' === $this->getOption('align') ? ' previous' : '',
+            'justify' === $this->option['align'] ? ' previous' : '',
             __('上一页')
         );
     }
@@ -101,7 +101,7 @@ class BootstrapSimple extends Bootstrap
             return sprintf(
                 '<li class="%s"><a aria-label="Next" href="%s">'.
                     '<span aria-hidden="true">%s</span></a></li>',
-                'justify' === $this->getOption('align') ? 'next' : '',
+                'justify' === $this->option['align'] ? 'next' : '',
                 $this->replace(
                     $this->objPage->getCurrentPage() + 1
                 ),
@@ -112,7 +112,7 @@ class BootstrapSimple extends Bootstrap
         return sprintf(
             '<li class="disabled%s"><a aria-label="Next">'.
                 '<span aria-hidden="true">%s</span></a></li>',
-            'justify' === $this->getOption('align') ? ' next' : '',
+            'justify' === $this->option['align'] ? ' next' : '',
             __('下一页')
         );
     }

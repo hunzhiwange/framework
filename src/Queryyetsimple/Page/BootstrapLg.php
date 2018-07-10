@@ -41,6 +41,6 @@ class BootstrapLg extends Bootstrap
     {
         parent::__construct($page, $option);
 
-        $this->option('size', 'lg');
+        $this->setOption('size', 'lg');
     }
 }

@@ -49,7 +49,7 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
         $this->perPage = $perPage;
         $this->totalRecord = $totalRecord;
 
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
     }
 
     /**

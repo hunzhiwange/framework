@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use Leevel\Option\TClass;
-
 /**
  * bootstrap 分页渲染.
  *
@@ -33,8 +31,6 @@ use Leevel\Option\TClass;
  */
 class Bootstrap implements IRender
 {
-    use TClass;
-
     /**
      * 分页.
      *
@@ -64,10 +60,13 @@ class Bootstrap implements IRender
     {
         $this->page = $page;
 
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
 
         if ($this->page->getRenderOption()) {
-            $this->options($this->page->getRenderOption('render'));
+            $this->option = array_merge(
+                $this->option,
+                $this->page->getRenderOption('render')
+            );
         }
     }
 
@@ -78,13 +77,13 @@ class Bootstrap implements IRender
      */
     public function render()
     {
-        return ($this->getOption('css') ? $this->css() : '').
+        return ($this->option['css'] ? $this->css() : '').
             preg_replace_callback(
                 '/{(.+?)}/',
                 function ($matches) {
                     return $this->{'get'.ucwords($matches[1]).'Render'}();
                 },
-                $this->getOption('template')
+                $this->option['template']
             );
     }
 
@@ -130,8 +129,8 @@ class Bootstrap implements IRender
     {
         return sprintf(
             '<ul class="pagination%s">',
-            $this->getOption('size') ?
-                ' pagination-'.$this->getOption('size') :
+            $this->option['size'] ?
+                ' pagination-'.$this->option['size'] :
                 ''
         );
     }

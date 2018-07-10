@@ -43,6 +43,6 @@ class PageWithoutTotal extends Page
         $this->perPage = $perPage;
         $this->totalRecord = true;
 
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
     }
 }

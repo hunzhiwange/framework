@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use Leevel\Option\TClass;
-
 /**
  * 默认分页渲染.
  *
@@ -33,8 +31,6 @@ use Leevel\Option\TClass;
  */
 class Defaults implements IRender
 {
-    use TClass;
-
     /**
      * 分页.
      *
@@ -63,13 +59,25 @@ class Defaults implements IRender
     {
         $this->page = $page;
 
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
 
         if ($this->page->getRenderOption()) {
-            $this->options(
+            $this->option = array_merge(
+                $this->option,
                 $this->page->getRenderOption('render')
             );
         }
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
     }
 
     /**
@@ -79,13 +87,13 @@ class Defaults implements IRender
      */
     public function render()
     {
-        return ($this->getOption('css') ? $this->css() : '').
+        return ($this->option['css'] ? $this->css() : '').
             preg_replace_callback(
                 '/{(.+?)}/',
                 function ($matches) {
                     return $this->{'get'.ucwords($matches[1]).'Render'}();
                 },
-                $this->getOption('template')
+                $this->option['template']
             );
     }
 
@@ -123,7 +131,7 @@ class Defaults implements IRender
     {
         return sprintf(
             '<div class="pagination%s">',
-            $this->getOption('small') ? ' pagination-small' : ''
+            $this->option['small'] ? ' pagination-small' : ''
         );
     }
 

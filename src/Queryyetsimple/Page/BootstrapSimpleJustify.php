@@ -41,6 +41,6 @@ class BootstrapSimpleJustify extends BootstrapSimple
     {
         parent::__construct($page, $option);
 
-        $this->option('align', 'justify');
+        $this->setOption('align', 'justify');
     }
 }

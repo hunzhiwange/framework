@@ -41,6 +41,6 @@ class BootstrapSm extends Bootstrap
     {
         parent::__construct($page, $option);
 
-        $this->option('size', 'sm');
+        $this->setOption('size', 'sm');
     }
 }

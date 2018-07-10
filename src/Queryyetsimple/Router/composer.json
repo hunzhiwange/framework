@@ -18,7 +18,6 @@
         "leevel/pipeline": "1.0.*",
         "leevel/mvc": "1.0.*",
         "leevel/di": "1.0.*",
-        "leevel/option": "1.0.*",
         "zircote/swagger-php": "3.x-dev"
     },
     "autoload": {

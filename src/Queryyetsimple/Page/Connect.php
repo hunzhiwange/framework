@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use Leevel\Option\TClass;
 use Leevel\Support\IHtml;
 use RuntimeException;
 
@@ -35,8 +34,6 @@ use RuntimeException;
  */
 abstract class Connect implements IHtml
 {
-    use TClass;
-
     /**
      * 默认每页分页数量.
      *
@@ -154,6 +151,17 @@ abstract class Connect implements IHtml
     }
 
     /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
+    }
+
+    /**
      * 转化输出 HTML.
      *
      * @return string
@@ -201,7 +209,7 @@ abstract class Connect implements IHtml
      */
     public function parameter(array $parameter)
     {
-        return $this->option('parameter', $parameter);
+        return $this->setOption('parameter', $parameter);
     }
 
     /**
@@ -274,7 +282,7 @@ abstract class Connect implements IHtml
      */
     public function getRenderOption()
     {
-        return $this->getOption('render_option');
+        return $this->option['render_option'];
     }
 
     /**
@@ -286,7 +294,7 @@ abstract class Connect implements IHtml
      */
     public function url(?string $url = null)
     {
-        return $this->option('url', $url);
+        return $this->setOption('url', $url);
     }
 
     /**
@@ -298,7 +306,7 @@ abstract class Connect implements IHtml
      */
     public function renders(?string $render = null)
     {
-        return $this->option('render', $render);
+        return $this->setOption('render', $render);
     }
 
     /**
@@ -308,7 +316,7 @@ abstract class Connect implements IHtml
      */
     public function getRender()
     {
-        return $this->getOption('render') ?: static::RENDER;
+        return $this->option['render'] ?: static::RENDER;
     }
 
     /**
@@ -320,7 +328,7 @@ abstract class Connect implements IHtml
      */
     public function range(?int $range = null)
     {
-        return $this->option('range', $range);
+        return $this->setOption('range', $range);
     }
 
     /**
@@ -330,8 +338,8 @@ abstract class Connect implements IHtml
      */
     public function getRange()
     {
-        return $this->getOption('range') ?
-            (int) ($this->getOption('range')) :
+        return $this->option['range'] ?
+            (int) ($this->option['range']) :
             static::RANGE;
     }
 
@@ -344,7 +352,7 @@ abstract class Connect implements IHtml
      */
     public function fragment(?string $fragment = null)
     {
-        return $this->option('fragment', $fragment);
+        return $this->setOption('fragment', $fragment);
     }
 
     /**
@@ -354,7 +362,7 @@ abstract class Connect implements IHtml
      */
     public function getFragment()
     {
-        return $this->getOption('fragment');
+        return $this->option['fragment'];
     }
 
     /**
@@ -392,7 +400,7 @@ abstract class Connect implements IHtml
      */
     public function pageName(string $pageName)
     {
-        return $this->option('page', $pageName);
+        return $this->setOption('page', $pageName);
     }
 
     /**
@@ -402,7 +410,7 @@ abstract class Connect implements IHtml
      */
     public function getPageName()
     {
-        return $this->getOption('page');
+        return $this->option['page'];
     }
 
     /**
@@ -463,8 +471,8 @@ abstract class Connect implements IHtml
     public function getCurrentPage()
     {
         if (null === $this->currentPage) {
-            if (isset($_GET[$this->getOption('page')])) {
-                $this->currentPage = abs((int) ($_GET[$this->getOption('page')]));
+            if (isset($_GET[$this->option['page']])) {
+                $this->currentPage = abs((int) ($_GET[$this->option['page']]));
 
                 if ($this->currentPage < 1) {
                     $this->currentPage = 1;
@@ -765,37 +773,37 @@ abstract class Connect implements IHtml
         $withUrl = false;
         $subdomain = 'www';
 
-        if (false !== strpos($this->getOption('url'), '@')) {
+        if (false !== strpos($this->option['url'], '@')) {
             $withUrl = true;
 
-            if (0 !== strpos($this->getOption('url'), '@')) {
-                $temp = explode('@', $this->getOption('url'));
+            if (0 !== strpos($this->option['url'], '@')) {
+                $temp = explode('@', $this->option['url']);
 
-                $this->option('url', $temp[1]);
+                $this->setOption('url', $temp[1]);
 
                 $subdomain = $temp[0];
             }
         }
 
         // 当前URL分析
-        if (!empty($this->getOption('url'))) {
+        if (!empty($this->option['url'])) {
             if ($withUrl) {
                 $this->resolveUrl = $this->resolverUrl(
-                    $this->getOption('url'),
+                    $this->option['url'],
                     $this->getDefaultPageParameter(
-                        false === strpos($this->getOption('url'), '{page}')
+                        false === strpos($this->option['url'], '{page}')
                     ),
                     [
                         'subdomain' => $subdomain,
                     ]
                 );
             } else {
-                if (false === strpos($this->getOption('url'), '{page}')) {
+                if (false === strpos($this->option['url'], '{page}')) {
                     $this->resolveUrl =
-                        (false === strpos($this->getOption('url'), '?') ?
+                        (false === strpos($this->option['url'], '?') ?
                             '?' :
                             '&').
-                        $this->getOption('page').'={page}';
+                        $this->option['page'].'={page}';
                 }
             }
         } else {
@@ -838,7 +846,7 @@ abstract class Connect implements IHtml
     protected function getDefaultPageParameter($withDefaults = true)
     {
         return $withDefaults ? [
-            $this->getOption('page') => '{page}',
+            $this->option['page'] => '{page}',
         ] : [];
     }
 
@@ -852,11 +860,11 @@ abstract class Connect implements IHtml
     protected function getParameter(array $extend)
     {
         if (null === $this->resolveParameter) {
-            if ($this->getOption('parameter')) {
-                if (is_string($this->getOption('parameter'))) {
-                    parse_str($this->getOption('parameter'), $this->resolveParameter);
-                } elseif (is_array($this->getOption('parameter'))) {
-                    $this->resolveParameter = $this->getOption('parameter');
+            if ($this->option['parameter']) {
+                if (is_string($this->option['parameter'])) {
+                    parse_str($this->option['parameter'], $this->resolveParameter);
+                } elseif (is_array($this->option['parameter'])) {
+                    $this->resolveParameter = $this->option['parameter'];
                 }
             } else {
                 $this->resolveParameter = $_GET;

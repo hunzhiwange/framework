@@ -41,6 +41,6 @@ class DefaultsSimple extends Defaults
     {
         parent::__construct($page, $option);
 
-        $this->option('template', '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}');
+        $this->setOption('template', '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}');
     }
 }

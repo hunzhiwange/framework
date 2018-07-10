@@ -15,7 +15,6 @@
         "php": "^7.1.3",
         "leevel/log": "1.0.*",
         "leevel/cache": "1.0.*",
-        "leevel/option": "1.0.*",
         "leevel/support": "1.0.*",
         "leevel/page": "1.0.*",
         "leevel/manager": "1.0.*",

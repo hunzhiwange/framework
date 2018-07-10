@@ -32,6 +32,14 @@ namespace Leevel\Page;
 interface IPage
 {
     /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void;
+
+    /**
      * 追加分页条件.
      *
      * @param string $key
