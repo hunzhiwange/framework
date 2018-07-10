@@ -187,7 +187,7 @@ interface IRepository
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function aggregate();
+    public function aggregate(): IEntity;
 
     /**
      * 返回工作单元.

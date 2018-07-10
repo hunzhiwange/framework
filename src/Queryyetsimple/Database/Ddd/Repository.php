@@ -301,7 +301,7 @@ class Repository implements IRepository
      *
      * @return \Leevel\Database\Ddd\IEntity
      */
-    public function entity()
+    public function aggregate(): IEntity
     {
         return $this->entity;
     }
