@@ -22,7 +22,6 @@ namespace Leevel\Auth;
 
 use Leevel\Database\Ddd\IEntity;
 use Leevel\Encryption\IEncryption;
-use Leevel\Option\TClass;
 use Leevel\Support\Str;
 use Leevel\Validate\IValidate;
 
@@ -37,8 +36,6 @@ use Leevel\Validate\IValidate;
  */
 abstract class Connect
 {
-    use TClass;
-
     /**
      * user 对象
      *
@@ -131,7 +128,18 @@ abstract class Connect
         $this->encryption = $encryption;
         $this->validate = $validate;
 
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
     }
 
     /**
@@ -429,7 +437,7 @@ abstract class Connect
             return $this->tokenName;
         }
 
-        return $this->tokenName = $this->getOption('token_persistence');
+        return $this->tokenName = $this->option['token_persistence'];
     }
 
     /**
@@ -456,7 +464,7 @@ abstract class Connect
         }
 
         return $this->userPersistenceName = $this->getTokenName().'@'.
-            $this->getOption('user_persistence');
+            $this->option['user_persistence'];
     }
 
     /**
@@ -483,7 +491,7 @@ abstract class Connect
         }
 
         return $this->lockName = $this->getTokenName().'@'.
-            $this->getOption('lock_persistence');
+            $this->option['lock_persistence'];
     }
 
     /**
@@ -681,7 +689,7 @@ abstract class Connect
 
         where($this->getField('status'), 'enable')->
 
-        setColumns($this->getOption('field'))->
+        setColumns($this->option['field'])->
 
         getOne();
     }

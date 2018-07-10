@@ -32,6 +32,14 @@ namespace Leevel\Auth;
 interface IConnect
 {
     /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void;
+
+    /**
      * 用户是否已经登录.
      *
      * @return bool

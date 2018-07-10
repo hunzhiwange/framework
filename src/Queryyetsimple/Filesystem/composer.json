@@ -13,12 +13,10 @@
     }],
     "require": {
         "php": "^7.1.3",
-        "leevel/support": "1.0.*"
+        "leevel/support": "1.0.*",
+        "leevel/manager": "1.0.*"
     },
     "require-dev": {
-        "leevel/option": "1.0.*",
-        "leevel/support": "1.0.*",
-        "leevel/manager": "1.0.*",
         "league/flysystem-sftp": "^1.0",
         "league/flysystem-ziparchive": "^1.0"
     },
