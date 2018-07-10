@@ -21,7 +21,6 @@ declare(strict_types=1);
 namespace Leevel\Filesystem;
 
 use League\Flysystem\Filesystem as LeagueFilesystem;
-use Leevel\Option\TClass;
 
 /**
  * connect 驱动抽象类.
@@ -35,8 +34,6 @@ use Leevel\Option\TClass;
  */
 abstract class Connect
 {
-    use TClass;
-
     /**
      * Filesystem.
      *
@@ -45,13 +42,20 @@ abstract class Connect
     protected $filesystem;
 
     /**
+     * 配置.
+     *
+     * @var array
+     */
+    protected $option = [];
+
+    /**
      * 构造函数.
      *
      * @param array $option
      */
     public function __construct(array $option = [])
     {
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
 
         $this->filesystem();
     }
@@ -67,6 +71,17 @@ abstract class Connect
     public function __call(string $method, array $args)
     {
         return $this->filesystem->{$method}(...$args);
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
     }
 
     /**
@@ -88,7 +103,19 @@ abstract class Connect
     {
         return $this->filesystem = new LeagueFilesystem(
             $this->makeConnect(),
-            $this->getOptions()
+            $this->normalizeOptions()
         );
+    }
+
+    /**
+     * 整理配置.
+     *
+     * @param array $option
+     *
+     * @return array
+     */
+    protected function normalizeOptions(array $option = [])
+    {
+        return $option ? array_merge($this->option, $option) : $this->option;
     }
 }

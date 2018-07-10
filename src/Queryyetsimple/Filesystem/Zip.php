@@ -51,7 +51,7 @@ class Zip extends Connect implements IConnect
      */
     public function makeConnect()
     {
-        if (empty($this->getOption('path'))) {
+        if (empty($this->option['path'])) {
             throw new InvalidArgumentException(
                 'The zip requires path option'
             );
@@ -63,6 +63,6 @@ class Zip extends Connect implements IConnect
             );
         }
 
-        return new ZipArchiveAdapter($this->getOption('path'));
+        return new ZipArchiveAdapter($this->option['path']);
     }
 }

@@ -32,6 +32,14 @@ namespace Leevel\Filesystem;
 interface IConnect
 {
     /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void;
+
+    /**
      * 创建连接.
      *
      * @return \League\Flysystem\AdapterInterface

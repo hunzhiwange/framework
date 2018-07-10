@@ -54,17 +54,17 @@ class Local extends Connect implements IConnect
      */
     public function makeConnect()
     {
-        if (empty($this->getOption('path'))) {
+        if (empty($this->option['path'])) {
             throw new InvalidArgumentException(
                 'The local requires path option'
             );
         }
 
         return new AdapterLocal(
-            $this->getOption('path'),
-            $this->getOption('write_flags'),
-            $this->getOption('link_handling'),
-            $this->getOption('permissions')
+            $this->option['path'],
+            $this->option['write_flags'],
+            $this->option['link_handling'],
+            $this->option['permissions']
         );
     }
 }
