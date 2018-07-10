@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-//use Psr\Log\LoggerInterface;
-
 /**
  * ILog 接口.
  *
@@ -31,7 +29,7 @@ namespace Leevel\Log;
  *
  * @version 1.0
  */
-interface ILog // extends LoggerInterface
+interface ILog
 {
     /**
      * debug.
@@ -95,6 +93,14 @@ interface ILog // extends LoggerInterface
      * @var string
      */
     const SQL = 'sql';
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void;
 
     /**
      * 记录错误消息并写入.

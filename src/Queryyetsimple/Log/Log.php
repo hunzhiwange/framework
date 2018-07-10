@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use Leevel\Option\TClass;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use RuntimeException;
@@ -36,12 +35,10 @@ use RuntimeException;
  */
 class Log implements ILog
 {
-    use TClass;
-
     /**
      * 存储连接对象
      *
-     * @var \Leevel\Log\icooption,nnect
+     * @var \Leevel\Log\IConnect
      */
     protected $connect;
 
@@ -96,7 +93,8 @@ class Log implements ILog
     public function __construct(IConnect $connect, array $option = [])
     {
         $this->connect = $connect;
-        $this->options($option);
+
+        $this->option = array_merge($this->option, $option);
     }
 
     /**
@@ -110,6 +108,17 @@ class Log implements ILog
     public function __call(string $method, array $args)
     {
         return $this->connect->{$method}(...$args);
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
     }
 
     /**
@@ -236,16 +245,17 @@ class Log implements ILog
     public function log($level, $message, array $context = [])
     {
         // 是否开启日志
-        if (!$this->getOption('enabled')) {
+        if (!$this->option['enabled']) {
             return;
         }
 
         // 只记录系统允许的日志级别
-        if (!in_array($level, $this->getOption('level'), true)) {
+        if (!in_array($level, $this->option['level'], true)) {
             return;
         }
 
-        $message = date($this->getOption('time_format')).$this->formatMessage($message);
+        $message = date($this->option['time_format']).
+            $this->formatMessage($message);
 
         $data = [
             $level,

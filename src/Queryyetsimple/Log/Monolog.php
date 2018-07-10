@@ -86,9 +86,9 @@ class Monolog extends Connect implements IConnect
     {
         parent::__construct($option);
 
-        $this->monolog = new Logger($this->getOption('channel'));
+        $this->monolog = new Logger($this->option['channel']);
 
-        foreach ($this->getOption('type') as $type) {
+        foreach ($this->option['type'] as $type) {
             $this->{'make'.ucwords(Str::camelize($type)).'Handler'}();
         }
     }

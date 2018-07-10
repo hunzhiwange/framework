@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Log;
 
-use Leevel\Option\TClass;
 use RuntimeException;
 
 /**
@@ -34,8 +33,6 @@ use RuntimeException;
  */
 abstract class Connect
 {
-    use TClass;
-
     /**
      * 构造函数.
      *
@@ -43,7 +40,18 @@ abstract class Connect
      */
     public function __construct(array $option = [])
     {
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
     }
 
     /**
@@ -66,7 +74,7 @@ abstract class Connect
 
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成
         if (is_file($filepath) &&
-            floor($this->getOption('size')) <= filesize($filepath)) {
+            floor($this->option['size']) <= filesize($filepath)) {
             rename(
                 $filepath, $filedir.'/'.
                 date('Y-m-d H.i.s').'_'.
@@ -87,15 +95,15 @@ abstract class Connect
     {
         // 不存在路径，则直接使用项目默认路径
         if (empty($filepath)) {
-            if (!$this->getOption('path')) {
+            if (!$this->option['path']) {
                 throw new RuntimeException(
                     'Default path for log has not specified.'
                 );
             }
 
-            $filepath = $this->getOption('path').'/'.
+            $filepath = $this->option['path'].'/'.
                 ($level ? $level.'/' : '').
-                date($this->getOption('name')).
+                date($this->option['name']).
                 '.log';
         }
 
