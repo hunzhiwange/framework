@@ -223,9 +223,10 @@ abstract class Connect implements IHtml
     public function addParameter($key, $value)
     {
         if ($key !== $this->getPageName()) {
-            $this->optionArray('parameter', [
-                $key => $value,
-            ]);
+            $tmp = $this->option['parameter'];
+            $tmp[$key] = $value;
+
+            $this->setOption('parameter', $tmp);
         }
 
         return $this;
@@ -241,9 +242,12 @@ abstract class Connect implements IHtml
      */
     public function renderOption($key, $value)
     {
-        return $this->optionArray('render_option', [
-            $key => $value,
-        ]);
+        $tmp = $this->option['render_option'];
+        $tmp[$key] = $value;
+
+        $this->setOption('render_option', $tmp);
+
+        return $this;
     }
 
     /**

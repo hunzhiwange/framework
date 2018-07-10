@@ -238,7 +238,7 @@ class HttpServer extends Server
      */
     protected function createServer()
     {
-        $this->deleteOption('task_worker_num');
+        unset($this->option['task_worker_num']);
 
         $this->server = new SwooleHttpServer(
             $this->option['host'],

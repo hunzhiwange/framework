@@ -104,6 +104,7 @@ class Cookie implements ICookie
         }
 
         $isHttpSecure = false;
+
         if (!empty($_SERVER['HTTPS']) && 'ON' === strtoupper($_SERVER['HTTPS'])) {
             $isHttpSecure = true;
         }
