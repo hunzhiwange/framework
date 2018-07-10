@@ -23,7 +23,6 @@ namespace Leevel\Mail;
 use InvalidArgumentException;
 use Leevel\Flow\TControl;
 use Leevel\Mvc\IView;
-use Leevel\Option\TClass;
 use Swift_Attachment;
 use Swift_Image;
 use Swift_Message;
@@ -39,7 +38,6 @@ use Swift_Message;
  */
 class Mail implements IMail
 {
-    use TClass;
     use TControl;
 
     /**
@@ -117,7 +115,7 @@ class Mail implements IMail
         $this->view = $view;
         $this->event = $event;
 
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
     }
 
     /**
@@ -138,6 +136,17 @@ class Mail implements IMail
     }
 
     /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
+    }
+
+    /**
      * 设置邮件发送来源.
      *
      * @param string      $address
@@ -147,7 +156,7 @@ class Mail implements IMail
      */
     public function globalFrom($address, $name = null)
     {
-        $this->option('global_from', compact('address', 'name'));
+        $this->setOption('global_from', compact('address', 'name'));
 
         return $this;
     }
@@ -162,7 +171,7 @@ class Mail implements IMail
      */
     public function globalTo($address, $name = null)
     {
-        $this->option('global_to', compact('address', 'name'));
+        $this->setOption('global_to', compact('address', 'name'));
 
         return $this;
     }

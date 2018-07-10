@@ -54,17 +54,24 @@ class Smtp extends Connect implements IConnect
     public function makeTransport()
     {
         $transport = Swift_SmtpTransport::newInstance(
-            $this->getOption('host'),
-            $this->getOption('port')
+            $this->option['host'],
+            $this->option['port']
         );
 
-        if (null !== $this->getOption('encryption')) {
-            $transport->setEncryption($this->getOption('encryption'));
+        if (null !== $this->option['encryption']) {
+            $transport->setEncryption(
+                $this->option['encryption']
+            );
         }
 
-        if (null !== $this->getOption('username')) {
-            $transport->setUsername($this->getOption('username'));
-            $transport->setPassword($this->getOption('password'));
+        if (null !== $this->option['username']) {
+            $transport->setUsername(
+                $this->option['username']
+            );
+
+            $transport->setPassword(
+                $this->option['password']
+            );
         }
 
         return $transport;

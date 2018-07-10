@@ -49,6 +49,8 @@ class Sendmail extends Connect implements IConnect
      */
     public function makeTransport()
     {
-        return Swift_SendmailTransport::newInstance($this->getOption('path'));
+        return Swift_SendmailTransport::newInstance(
+            $this->option['path']
+        );
     }
 }

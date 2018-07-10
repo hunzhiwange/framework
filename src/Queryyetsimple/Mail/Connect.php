@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Mail;
 
-use Leevel\Option\TClass;
 use Swift_Events_EventListener;
 use Swift_Mailer;
 use Swift_Mime_Message;
@@ -37,8 +36,6 @@ use Swift_Transport;
  */
 abstract class Connect implements Swift_Transport
 {
-    use TClass;
-
     /**
      * swift mailer.
      *
@@ -47,15 +44,33 @@ abstract class Connect implements Swift_Transport
     protected $swiftMailer;
 
     /**
+     * 配置.
+     *
+     * @var array
+     */
+    protected $option = [];
+
+    /**
      * 构造函数.
      *
      * @param array $option
      */
     public function __construct(array $option = [])
     {
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
 
         $this->swiftMailer();
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
     }
 
     /**
@@ -94,7 +109,8 @@ abstract class Connect implements Swift_Transport
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)
     {
-        return $this->getSwiftMailer()->send($message, $failedRecipients);
+        return $this->getSwiftMailer()->
+        send($message, $failedRecipients);
     }
 
     /**
@@ -114,6 +130,8 @@ abstract class Connect implements Swift_Transport
      */
     protected function swiftMailer()
     {
-        return $this->swiftMailer = new Swift_Mailer($this->makeTransport());
+        return $this->swiftMailer = new Swift_Mailer(
+            $this->makeTransport()
+        );
     }
 }

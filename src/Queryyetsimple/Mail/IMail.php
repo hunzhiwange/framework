@@ -32,6 +32,14 @@ namespace Leevel\Mail;
 interface IMail
 {
     /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void;
+
+    /**
      * 设置邮件发送来源.
      *
      * @param string      $address
