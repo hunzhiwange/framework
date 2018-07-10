@@ -133,8 +133,8 @@ class WebsocketServer extends HttpServer
     protected function createServer()
     {
         $this->server = new SwooleWebsocketServer(
-            $this->getOption('host'),
-            (int) ($this->getOption('port'))
+            $this->option['host'],
+            (int) ($this->option['port'])
         );
 
         $this->initServer();

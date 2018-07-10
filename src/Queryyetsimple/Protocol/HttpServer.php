@@ -109,10 +109,10 @@ class HttpServer extends Server
      */
     public function __construct(IKernel $kernel, Request $request, array $option = [])
     {
+        parent::__construct($option);
+
         $this->kernel = $kernel;
         $this->request = $request;
-
-        $this->options($option);
     }
 
     /**
@@ -241,8 +241,8 @@ class HttpServer extends Server
         $this->deleteOption('task_worker_num');
 
         $this->server = new SwooleHttpServer(
-            $this->getOption('host'),
-            (int) ($this->getOption('port'))
+            $this->option['host'],
+            (int) ($this->option['port'])
         );
 
         $this->initServer();

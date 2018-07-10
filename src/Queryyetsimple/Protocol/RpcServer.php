@@ -171,8 +171,8 @@ class RpcServer extends Server
         $processor = new ThriftProcessor($service);
 
         $socketTranport = new TServerSocket(
-            $this->getOption('host'),
-            (int) ($this->getOption('port'))
+            $this->option['host'],
+            (int) ($this->option['port'])
         );
 
         $outFactory = $inFactory = new TFramedTransportFactory();

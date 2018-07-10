@@ -22,7 +22,6 @@ namespace Leevel\Protocol;
 
 use Exception;
 use Leevel\Console\Command;
-use Leevel\Option\TClass;
 use RuntimeException;
 use Swoole\Client as SwooleClient;
 use Swoole\Server as SwooleServer;
@@ -40,8 +39,6 @@ use Swoole\Server as SwooleServer;
  */
 class Server implements IServer
 {
-    use TClass;
-
     /**
      * swoole 服务实例.
      *
@@ -116,7 +113,7 @@ class Server implements IServer
      */
     public function __construct(array $option = [])
     {
-        $this->options($option);
+        $this->option = array_merge($this->option, $option);
     }
 
     /**
@@ -130,6 +127,17 @@ class Server implements IServer
     public function __call(string $method, array $args)
     {
         return $this->server->{$method}(...$args);
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
     }
 
     /**
@@ -164,7 +172,7 @@ class Server implements IServer
         $this->info('List swoole service process', true, '');
 
         $cmd = 'ps aux|grep '.
-            $this->getOption('process_name').
+            $this->option['process_name'].
             "|grep -v grep|awk '{print $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11}'";
 
         exec($cmd, $out);
@@ -223,7 +231,7 @@ class Server implements IServer
     {
         $this->info('Stop swoole service process...', true, '');
 
-        $pidFile = $this->getOption('pid_path');
+        $pidFile = $this->option['pid_path'];
 
         if (!is_file($pidFile)) {
             $this->error(
@@ -236,13 +244,13 @@ class Server implements IServer
 
         $pid = explode("\n", file_get_contents($pidFile));
 
-        $bind = $this->portBind((int) ($this->getOption('port')));
+        $bind = $this->portBind((int) ($this->option['port']));
 
         if (empty($bind) || !isset($bind[$pid[0]])) {
             $this->error(
                 sprintf(
                     'Specified port occupancy process does not exist,port:%d, pid:%d.',
-                    $this->getOption('port'),
+                    $this->option['port'],
                     $pid[0]),
                 true
             );
@@ -273,8 +281,8 @@ class Server implements IServer
         $this->info(
             sprintf(
                 'Execution command stop succeeds,port %s:%d process ends',
-                $this->getOption('host'),
-                $this->getOption('port')
+                $this->option['host'],
+                $this->option['port']
             ),
             true
         );
@@ -295,16 +303,16 @@ class Server implements IServer
             $cient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
 
             $result = $cient->connect(
-                (string) $this->getOption('host'),
-                (int) $this->getOption('port')
+                (string) $this->option['host'],
+                (int) $this->option['port']
             );
 
             if (empty($result)) {
                 $this->error(
                     sprintf(
                         '%s:%d swoole service does not exist or has been closed.',
-                        $this->getOption('host'),
-                        $this->getOption('port')
+                        $this->option['host'],
+                        $this->option['port']
                     ),
                     true
                 );
@@ -317,8 +325,8 @@ class Server implements IServer
             $this->info(
                 sprintf(
                     'Execution command reload success, port %s:%d process has restarted.',
-                    $this->getOption('host'),
-                    $this->getOption('port')
+                    $this->option['host'],
+                    $this->option['port']
                 ),
                 true
             );
@@ -339,16 +347,16 @@ class Server implements IServer
             $cient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
 
             $result = $cient->connect(
-                $this->getOption('host'),
-                $this->getOption('port')
+                $this->option['host'],
+                $this->option['port']
             );
 
             if (empty($result)) {
                 $this->error(
                     sprintf(
                         '%s:%d swoole service does not exist or has been closed.',
-                        $this->getOption('host'),
-                        $this->getOption('port')
+                        $this->option['host'],
+                        $this->option['port']
                     ),
                     true
                 );
@@ -358,15 +366,15 @@ class Server implements IServer
 
             $cient->send(json_encode(['action' => 'close']));
 
-            if (is_file($this->getOption('pid_path'))) {
-                unlink($this->getOption('pid_path'));
+            if (is_file($this->option['pid_path'])) {
+                unlink($this->option['pid_path']);
             }
 
             $this->info(
                 sprintf(
                     'Execution command close success, port %s:%d process has closed.',
-                    $this->getOption('host'),
-                    $this->getOption('port')
+                    $this->option['host'],
+                    $this->option['port']
                 ),
                 true
             );
@@ -383,7 +391,7 @@ class Server implements IServer
     {
         $this->info('Status of swoole service...', true, '');
 
-        $pidFile = $this->getOption('pid_path');
+        $pidFile = $this->option['pid_path'];
 
         if (!is_file($pidFile)) {
             $this->error(
@@ -396,13 +404,13 @@ class Server implements IServer
 
         $pid = explode("\n", file_get_contents($pidFile));
 
-        $bind = $this->portBind((int) ($this->getOption('port')));
+        $bind = $this->portBind((int) ($this->option['port']));
 
         if (empty($bind) || !isset($bind[$pid[0]])) {
             $this->error(
                 sprintf(
                     'Specified port occupancy process does not exist,port:%d, pid:%d.',
-                    $this->getOption('port'),
+                    $this->option['port'],
                     $pid[0]
                 ),
                 true
@@ -414,16 +422,16 @@ class Server implements IServer
         $cient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
 
         $result = $cient->connect(
-            $this->getOption('host'),
-            $this->getOption('port')
+            $this->option['host'],
+            $this->option['port']
         );
 
         if (empty($result)) {
             $this->error(
                 sprintf(
                     '%s:%d swoole service does not exist or has been closed.',
-                    $this->getOption('host'),
-                    $this->getOption('port')
+                    $this->option['host'],
+                    $this->option['port']
                 ),
                 true
             );
@@ -467,16 +475,16 @@ class Server implements IServer
             $cient = new SwooleClient(SWOOLE_SOCK_TCP, SWOOLE_SOCK_SYNC);
 
             $result = $cient->connect(
-                $this->getOption('host'),
-                $this->getOption('port')
+                $this->option['host'],
+                $this->option['port']
             );
 
             if (empty($result)) {
                 $this->error(
                     sprintf(
                         '%s:%d swoole service does not exist or has been closed.',
-                        $this->getOption('host'),
-                        $this->getOption('port')
+                        $this->option['host'],
+                        $this->option['port']
                     ),
                     true
                 );
@@ -515,8 +523,8 @@ class Server implements IServer
         $this->info(
             sprintf(
                 'Swoole server is started at %s:%d',
-                $this->getOption('host'),
-                $this->getOption('port')
+                $this->option['host'],
+                $this->option['port']
             ),
             true,
             ''
@@ -528,11 +536,11 @@ class Server implements IServer
 
         $pid = $server->master_pid."\n".$server->manager_pid;
 
-        if (!file_put_contents($this->getOption('pid_path'), $pid)) {
+        if (!file_put_contents($this->option['pid_path'], $pid)) {
             $this->warn('Swoole pid saved failed', true);
         }
 
-        chmod($this->getOption('pid_path'), 0777);
+        chmod($this->option['pid_path'], 0777);
     }
 
     /**
@@ -568,13 +576,13 @@ class Server implements IServer
      */
     public function onWorkerStart(SwooleServer $server, int $workeId)
     {
-        if ($workeId >= $this->getOption('worker_num')) {
+        if ($workeId >= $this->option['worker_num']) {
             $this->setProcesname(
-                $this->getOption('process_name').'-task'
+                $this->option['process_name'].'-task'
             );
         } else {
             $this->setProcesname(
-                $this->getOption('process_name').'-event'
+                $this->option['process_name'].'-event'
             );
         }
     }
@@ -725,8 +733,8 @@ class Server implements IServer
      */
     public function onShutdown(SwooleServer $server)
     {
-        if (is_file($this->getOption('pid_path'))) {
-            unlink($this->getOption('pid_path'));
+        if (is_file($this->option['pid_path'])) {
+            unlink($this->option['pid_path']);
         }
 
         $this->error('Swoole server shutdown');
@@ -769,11 +777,11 @@ class Server implements IServer
      */
     protected function checkPidPath()
     {
-        if (!$this->getOption('pid_path')) {
+        if (!$this->option['pid_path']) {
             throw new Exception('Pid path is not set');
         }
 
-        $dir = dirname($this->getOption('pid_path'));
+        $dir = dirname($this->option['pid_path']);
 
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
@@ -791,7 +799,7 @@ class Server implements IServer
      */
     protected function checkService()
     {
-        $file = $this->getOption('pid_path');
+        $file = $this->option['pid_path'];
 
         if (is_file($file)) {
             $pid = explode("\n", file_get_contents($file));
@@ -831,13 +839,13 @@ class Server implements IServer
     protected function checkPort()
     {
         $bind = $this->portBind(
-            (int) ($this->getOption('port'))
+            (int) ($this->option['port'])
         );
 
         if ($bind) {
             foreach ($bind as $k => $val) {
                 if ('*' === $val['ip'] ||
-                    $val['ip'] === $this->getOption('host')) {
+                    $val['ip'] === $this->option['host']) {
                     throw new Exception(
                         sprintf(
                             'The port has been used %s:%s,the port process ID is %s',
@@ -887,8 +895,8 @@ class Server implements IServer
     protected function createServer()
     {
         $this->server = new SwooleServer(
-            $this->getOption('host'),
-            (int) ($this->getOption('port'))
+            $this->option['host'],
+            (int) ($this->option['port'])
         );
 
         $this->initServer();
@@ -980,7 +988,7 @@ class Server implements IServer
      */
     protected function daemonize()
     {
-        return !$this->getOption('daemonize');
+        return !$this->option['daemonize'];
     }
 
     /**
