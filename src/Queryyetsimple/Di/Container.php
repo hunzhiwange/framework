@@ -426,7 +426,12 @@ class Container implements IContainer, ArrayAccess
     protected function getInjectionObject($classname, array $args = [])
     {
         if (interface_exists($classname)) {
-            throw new NormalizeException(sprintf('Interface %s can not be normalize because not binded.', $classname));
+            throw new ContainerInvalidArgumentException(
+                sprintf(
+                    'Interface %s can not be normalize because not binded.',
+                    $classname
+                )
+            );
         }
 
         if (!class_exists($classname)) {
@@ -451,7 +456,7 @@ class Container implements IContainer, ArrayAccess
         list($args, $required, $validArgs) = $this->parseInjection($value, $args);
 
         if ($validArgs < $required) {
-            throw new NormalizeException(
+            throw new ContainerInvalidArgumentException(
                 sprintf(
                     'There are %d required args,but %d gived.',
                     $required,
