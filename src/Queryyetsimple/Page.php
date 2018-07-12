@@ -18,30 +18,28 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Page;
+namespace Leevel;
+
+use Leevel\Support\Facade;
 
 /**
- * 不明确总数分页处理.
+ * 沙盒 page.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.07.14
+ * @since 2018.07.12
  *
  * @version 1.0
  */
-class PageWithoutTotal extends Page
+class Page extends Facade
 {
     /**
-     * 构造函数.
+     * 返回门面名字.
      *
-     * @param int   $perPage
-     * @param array $option
+     * @return string
      */
-    public function __construct(int $perPage, array $option = [])
+    protected static function name(): string
     {
-        $this->perPage = $perPage;
-        $this->totalRecord = true;
-
-        $this->option = array_merge($this->option, $option);
+        return 'page';
     }
 }

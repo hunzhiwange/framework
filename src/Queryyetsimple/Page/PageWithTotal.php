@@ -38,7 +38,7 @@ class PageWithTotal extends Page
      * @param int   $totalRecord
      * @param array $option
      */
-    public function __construct($perPage, $totalRecord, array $option = [])
+    public function __construct(int $perPage, int $totalRecord, array $option = [])
     {
         $this->perPage = $perPage;
         $this->totalRecord = $totalRecord;

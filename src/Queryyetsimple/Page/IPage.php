@@ -98,15 +98,6 @@ interface IPage
     public function renderOptions(array $option);
 
     /**
-     * 是否启用 CSS.
-     *
-     * @param bool $on
-     *
-     * @return $this
-     */
-    public function css(bool $on = true);
-
-    /**
      * 获取渲染参数.
      *
      * @return $this
@@ -327,13 +318,6 @@ interface IPage
      * @return int
      */
     public function parseLastRenderNext();
-
-    /**
-     * 解析 url.
-     *
-     * @return string
-     */
-    public function resolverUrl();
 
     /**
      * 设置 url 解析回调.

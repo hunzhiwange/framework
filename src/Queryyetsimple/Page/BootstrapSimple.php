@@ -40,7 +40,6 @@ class BootstrapSimple extends Bootstrap
         // center,justify
         'align'    => 'center',
         'template' => '{header} {ul} {prev} {next} {endul} {footer}',
-        'css'      => true,
     ];
 
     /**

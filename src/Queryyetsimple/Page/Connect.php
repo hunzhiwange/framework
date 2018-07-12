@@ -268,18 +268,6 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 是否启用 CSS.
-     *
-     * @param bool $on
-     *
-     * @return $this
-     */
-    public function css(bool $on = true)
-    {
-        return $this->renderOption('css', $on);
-    }
-
-    /**
      * 获取渲染参数.
      *
      * @return $this
@@ -475,8 +463,10 @@ abstract class Connect implements IHtml
     public function getCurrentPage()
     {
         if (null === $this->currentPage) {
-            if (isset($_GET[$this->option['page']])) {
-                $this->currentPage = abs((int) ($_GET[$this->option['page']]));
+            $parameter = $this->option['parameter'];
+
+            if (isset($parameter[$this->option['page']])) {
+                $this->currentPage = abs((int) ($parameter[$this->option['page']]));
 
                 if ($this->currentPage < 1) {
                     $this->currentPage = 1;
@@ -664,23 +654,6 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 解析 url.
-     *
-     * @return string
-     */
-    public function resolverUrl()
-    {
-        if (!static::$urlResolver) {
-            throw new RuntimeException('Page not set url resolver');
-        }
-
-        return call_user_func_array(
-            static::$urlResolver,
-            func_get_args()
-        );
-    }
-
-    /**
      * 设置 url 解析回调.
      *
      * @param callable $urlResolver
@@ -759,12 +732,8 @@ abstract class Connect implements IHtml
      * 分析分页 url 地址
      *
      * {page} 表示自定义分页变量替换
-     * 带有 @ 表示使用 url 函数进行二次解析
-     * foo@ 表示具有子域名 subdomain@blog://list/{page},subdomain@blog://list/index
-     *
-     * @/ 表示自定义域名格式 @/list-{page},@/list/index,subdomain@/list-{page}
-     * 不带有 @ 表示不使用 url 进行二次解析
-     * 空表示基于 $_GET 分析 url
+     * 带有 @ 表示使用 url 函数进行二次解析 @/list-{page}
+     * foo@ 表示具有子域名 subdomain@blog/list/{page}
      *
      * @return string
      */
@@ -777,47 +746,31 @@ abstract class Connect implements IHtml
         $withUrl = false;
         $subdomain = 'www';
 
-        if (false !== strpos($this->option['url'], '@')) {
+        $url = (string) ($this->option['url']);
+
+        if (false !== strpos($url, '@')) {
             $withUrl = true;
 
-            if (0 !== strpos($this->option['url'], '@')) {
-                $temp = explode('@', $this->option['url']);
-
-                $this->setOption('url', $temp[1]);
-
+            if (0 !== strpos($url, '@')) {
+                $temp = explode('@', $url);
                 $subdomain = $temp[0];
+                $url = $temp[1];
             }
         }
 
-        // 当前URL分析
-        if (!empty($this->option['url'])) {
-            if ($withUrl) {
-                $this->resolveUrl = $this->resolverUrl(
-                    $this->option['url'],
-                    $this->getDefaultPageParameter(
-                        false === strpos($this->option['url'], '{page}')
-                    ),
-                    [
-                        'subdomain' => $subdomain,
-                    ]
-                );
-            } else {
-                if (false === strpos($this->option['url'], '{page}')) {
-                    $this->resolveUrl =
-                        (false === strpos($this->option['url'], '?') ?
-                            '?' :
-                            '&').
-                        $this->option['page'].'={page}';
-                }
-            }
-        } else {
+        if ($withUrl) {
             $this->resolveUrl = $this->resolverUrl(
-                '',
-                $this->getParseParameter(),
-                [
-                    'subdomain' => $subdomain,
-                ]
+                $url,
+                $this->getDefaultPageParameter(
+                    false === strpos($url, '{page}')
+                ),
+                $subdomain
             );
+        } else {
+            if (false === strpos($url, '{page}')) {
+                $this->resolveUrl = (false === strpos($url, '?') ? '?' : '&').
+                    $this->option['page'].'={page}';
+            }
         }
 
         $this->resolveUrl = $this->resolveUrl.
@@ -827,16 +780,19 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 返回分析后的参数.
+     * 解析 url.
      *
-     * @param bool $withDefaults
-     *
-     * @return array
+     * @return string
      */
-    protected function getParseParameter($withDefaults = true)
+    protected function resolverUrl()
     {
-        return $this->getParameter(
-            $this->getDefaultPageParameter($withDefaults)
+        if (!static::$urlResolver) {
+            throw new RuntimeException('Page not set url resolver');
+        }
+
+        return call_user_func_array(
+            static::$urlResolver,
+            func_get_args()
         );
     }
 
@@ -871,7 +827,7 @@ abstract class Connect implements IHtml
                     $this->resolveParameter = $this->option['parameter'];
                 }
             } else {
-                $this->resolveParameter = $_GET;
+                $this->resolveParameter = [];
             }
         }
 

@@ -21,27 +21,33 @@ declare(strict_types=1);
 namespace Leevel\Page;
 
 /**
- * 不明确总数分页处理.
+ * 分页工厂接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.07.14
+ * @since 2018.07.12
  *
  * @version 1.0
  */
-class PageWithoutTotal extends Page
+interface IPageFactory
 {
     /**
-     * 构造函数.
+     * 创建分页对象.
      *
      * @param int   $perPage
+     * @param int   $totalRecord
      * @param array $option
+     *
+     * @return \Leevel\Page\PageWithTotal
      */
-    public function __construct(int $perPage, array $option = [])
-    {
-        $this->perPage = $perPage;
-        $this->totalRecord = true;
+    public function make(int $perPage, int $totalRecord, array $option = []): PageWithTotal;
 
-        $this->option = array_merge($this->option, $option);
-    }
+    /**
+     * 创建一个没有总记录的分页对象.
+     *
+     * @param int $perPage
+     *
+     * @return \Leevel\Page\PageWithoutTotal
+     */
+    public function makeWithoutTotal(int $perPage, array $option = []): PageWithoutTotal;
 }

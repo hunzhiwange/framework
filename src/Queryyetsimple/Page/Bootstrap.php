@@ -47,7 +47,6 @@ class Bootstrap implements IRender
         // lg sm
         'size'     => '',
         'template' => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',
-        'css'      => true,
     ];
 
     /**
@@ -77,14 +76,13 @@ class Bootstrap implements IRender
      */
     public function render()
     {
-        return ($this->option['css'] ? $this->css() : '').
-            preg_replace_callback(
-                '/{(.+?)}/',
-                function ($matches) {
-                    return $this->{'get'.ucwords($matches[1]).'Render'}();
-                },
-                $this->option['template']
-            );
+        return preg_replace_callback(
+            '/{(.+?)}/',
+            function ($matches) {
+                return $this->{'get'.ucwords($matches[1]).'Render'}();
+            },
+            $this->option['template']
+        );
     }
 
     /**
@@ -97,17 +95,6 @@ class Bootstrap implements IRender
     public function replace($page)
     {
         return $this->page->pageReplace($page);
-    }
-
-    /**
-     * 返回渲染 CSS.
-     *
-     * @return string
-     */
-    protected function css()
-    {
-        return '<link href="http://v3.bootcss.com/dist/'.
-            'css/bootstrap.min.css" rel="stylesheet">';
     }
 
     /**

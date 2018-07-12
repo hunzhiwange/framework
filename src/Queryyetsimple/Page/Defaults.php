@@ -46,7 +46,6 @@ class Defaults implements IRender
     protected $option = [
         'small'    => false,
         'template' => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
-        'css'      => true,
     ];
 
     /**
@@ -87,14 +86,13 @@ class Defaults implements IRender
      */
     public function render()
     {
-        return ($this->option['css'] ? $this->css() : '').
-            preg_replace_callback(
-                '/{(.+?)}/',
-                function ($matches) {
-                    return $this->{'get'.ucwords($matches[1]).'Render'}();
-                },
-                $this->option['template']
-            );
+        return preg_replace_callback(
+            '/{(.+?)}/',
+            function ($matches) {
+                return $this->{'get'.ucwords($matches[1]).'Render'}();
+            },
+            $this->option['template']
+        );
     }
 
     /**
@@ -107,19 +105,6 @@ class Defaults implements IRender
     public function replace($page)
     {
         return $this->page->pageReplace($page);
-    }
-
-    /**
-     * 返回渲染 CSS.
-     *
-     * @return string
-     */
-    protected function css()
-    {
-        return sprintf(
-            '<style type="text/css">%s</style>',
-            file_get_contents(__DIR__.'/defaults.css')
-        );
     }
 
     /**

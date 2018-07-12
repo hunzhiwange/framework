@@ -21,8 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Page\Provider;
 
 use Leevel\Di\Provider;
-use Leevel\Page\Page;
-use Leevel\Router\Router;
+use Leevel\Page\PageFactory;
 
 /**
  * page 服务提供者.
@@ -47,14 +46,7 @@ class Register extends Provider
      */
     public function register()
     {
-    }
-
-    /**
-     * bootstrap.
-     */
-    public function bootstrap()
-    {
-        $this->urlResolver();
+        $this->page();
     }
 
     /**
@@ -64,19 +56,21 @@ class Register extends Provider
      */
     public static function providers()
     {
-        return [];
+        return [
+            'page' => [
+                'Leevel\Page\IPageFactory',
+                'Leevel\Page\PageFactory',
+            ],
+        ];
     }
 
     /**
-     * 分页路由 url 生成.
+     * 注册 page 服务
      */
-    protected function urlResolver()
+    protected function page()
     {
-        Page::setUrlResolver(function () {
-            return call_user_func_array([
-                $this->container['router'],
-                'url',
-            ], func_get_args());
+        $this->container->singleton('page', function ($project) {
+            return new PageFactory($project['url']);
         });
     }
 }
