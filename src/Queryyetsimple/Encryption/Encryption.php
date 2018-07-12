@@ -32,12 +32,12 @@ namespace Leevel\Encryption;
 class Encryption extends Connect implements IEncryption
 {
     /**
-     * 创建一个加密应用.
+     * 创建一个加密实例.
      *
      * @param string $key
      * @param int    $expiry
      */
-    public function __construct($key, $expiry = 0)
+    public function __construct($key, int $expiry = 0)
     {
         $this->key = (string) $key;
         $this->expiry = (int) $expiry;
@@ -81,49 +81,50 @@ class Encryption extends Connect implements IEncryption
      * 来自 Discuz 经典 PHP 加密算法.
      *
      * @param string $strings
-     * @param bool   $operation
+     * @param bool   $decode
      * @param string $key
-     * @param number $expiry
+     * @param int $expiry
      *
      * @return string
      */
-    protected function authcode($strings, $operation = true, $key = null, $expiry = 0)
-    {
+    protected function authcode(string $strings, bool $decode = true, string $key = '', int $expiry = 0) {
         $ckeyLength = 4;
+        $key = md5($key ?: '');
 
-        $key = md5($key);
         $keya = md5(substr($key, 0, 16));
         $keyb = md5(substr($key, 16, 16));
-
-        $keyc = $ckeyLength ?
-            (true === $operation ? substr($strings, 0, $ckeyLength) :
-            substr(md5(microtime()), -$ckeyLength)) : '';
+        $keyc = $ckeyLength ? 
+            ($decode ? 
+                substr($strings, 0, $ckeyLength):
+                substr(md5(microtime()), -$ckeyLength)) : 
+            '';
 
         $cryptkey = $keya.md5($keya.$keyc);
         $keyLength = strlen($cryptkey);
-        $strings = true === $operation ?
-            base64_decode(substr($strings, $ckeyLength), true) :
-            sprintf('%010d', $expiry ? $expiry + time() : 0).
+
+        $strings = $decode ? 
+            base64_decode(substr($strings, $ckeyLength)) : 
+            sprintf('%010d',$expiry ? $expiry + time() : 0).
                 substr(md5($strings.$keyb), 0, 16).
                 $strings;
-        $stringsLength = strlen($strings);
 
         $result = '';
+        $stringsLength = strlen($strings);
         $box = range(0, 255);
         $rndkey = [];
 
-        for ($i = 0; $i <= 255; $i++) {
+        for($i = 0; $i <= 255; $i++) {
             $rndkey[$i] = ord($cryptkey[$i % $keyLength]);
         }
 
-        for ($j = $i = 0; $i < 256; $i++) {
+        for($j = $i = 0; $i < 256; $i++) {
             $j = ($j + $box[$i] + $rndkey[$i]) % 256;
             $tmp = $box[$i];
             $box[$i] = $box[$j];
             $box[$j] = $tmp;
         }
 
-        for ($a = $j = $i = 0; $i < $stringsLength; $i++) {
+        for($a = $j = $i = 0; $i < $stringsLength; $i++) {
             $a = ($a + 1) % 256;
             $j = ($j + $box[$a]) % 256;
             $tmp = $box[$a];
@@ -132,16 +133,15 @@ class Encryption extends Connect implements IEncryption
             $result .= chr(ord($strings[$i]) ^ ($box[($box[$a] + $box[$j]) % 256]));
         }
 
-        if (true === $operation) {
-            if ((0 === substr($result, 0, 10) ||
-                substr($result, 0, 10) - time() > 0) &&
-                substr($result, 10, 16) === substr(md5(substr($result, 26).$keyb), 0, 16)) {
+        if($decode) {
+            if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - time() > 0) && 
+                substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) {
                 return substr($result, 26);
+            } else {
+                return '';
             }
-
-            return '';
+        } else {
+            return $keyc.str_replace('=', '', base64_encode($result));
         }
-
-        return $keyc.str_replace('=', '', base64_encode($result));
     }
 }
