@@ -220,18 +220,18 @@ class ContainerTest extends TestCase
         $this->assertFalse(isset($container['foo3']));
     }
 
-    public function testArgsRequiredNormalizeException()
+    public function testArgsRequiredContainerInvalidArgumentException()
     {
-        $this->expectException(\Leevel\Di\NormalizeException::class);
+        $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
 
         $container = new Container();
 
         $container->make(Test6::class, []);
     }
 
-    public function testInterfaceNormalizeException()
+    public function testInterfaceContainerInvalidArgumentException()
     {
-        $this->expectException(\Leevel\Di\NormalizeException::class);
+        $this->expectException(\Leevel\Di\ContainerInvalidArgumentException::class);
 
         $container = new Container();
 
