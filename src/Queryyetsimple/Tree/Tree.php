@@ -184,7 +184,7 @@ class Tree implements ITree, IJson, IArray
             return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
