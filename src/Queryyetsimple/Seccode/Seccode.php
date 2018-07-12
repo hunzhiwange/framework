@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Seccode;
 
-use Exception;
+use InvalidArgumentException;
 use Leevel\Support\Str;
 
 /**
@@ -382,7 +382,7 @@ class Seccode implements ISeccode
     protected function makeTtfFont(&$resImage)
     {
         if (!function_exists('imagettftext')) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 'Function imagettftext is not exits.'
             );
         }
@@ -569,7 +569,7 @@ class Seccode implements ISeccode
             function_exists('imageSX') &&
             function_exists('imageSY')) {
             if (!is_dir($this->getBackgroundPath())) {
-                throw new Exception(
+                throw new InvalidArgumentException(
                     sprintf(
                         'Background path %s is not exists.',
                         $this->getBackgroundPath()
@@ -671,7 +671,7 @@ class Seccode implements ISeccode
             $this->getFontPath();
 
         if (!is_dir($fontPath)) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 sprintf('Font path %s is not exits', $fontPath)
             );
         }
@@ -679,7 +679,7 @@ class Seccode implements ISeccode
         $ttf = glob($fontPath.'/*.*');
 
         if (empty($ttf)) {
-            throw new Exception('Font not found');
+            throw new InvalidArgumentException('Font not found');
         }
 
         return $ttf;
@@ -696,13 +696,13 @@ class Seccode implements ISeccode
     protected function autoCode($size, $autoType = self::ALPHA_UPPERCASE)
     {
         if ($size < 1) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 sprintf('Code must be greater than %d', 0)
             );
         }
 
         if (!in_array($autoType, $this->getAllowedAutoType(), true)) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 sprintf(
                     'Code type must be these %s',
                     implode(',', $this->getAllowedAutoType())
@@ -791,13 +791,16 @@ class Seccode implements ISeccode
     /**
      * 生成随机数.
      *
-     * @param int $numFirst
-     * @param int $numSecond
+     * @param number $numFirst
+     * @param number $numSecond
      *
-     * @return int
+     * @return number
      */
-    protected function mtRand(int $numFirst, int $numSecond): int
+    protected function mtRand($numFirst, $numSecond)
     {
+        $numFirst = (int) $numFirst;
+        $numSecond = (int) $numSecond;
+
         if ($numFirst > $numSecond) {
             list($numSecond, $numFirst) = [$numFirst, $numSecond];
         }
