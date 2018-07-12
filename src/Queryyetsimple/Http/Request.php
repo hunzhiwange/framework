@@ -1390,6 +1390,7 @@ class Request implements IRequest, IArray, ArrayAccess
         }
 
         $pathInfo = $this->server->get('PATH_INFO');
+
         if ($pathInfo) {
             return $this->pathInfo = $this->parsePathInfo($pathInfo);
         }
@@ -1397,7 +1398,6 @@ class Request implements IRequest, IArray, ArrayAccess
         // 服务器重写
         if ($this->query->get(static::PATHINFO_URL)) {
             $pathInfo = $this->parsePathInfo($this->query->get(static::PATHINFO_URL));
-            $this->query->remove(static::PATHINFO_URL);
 
             return $this->pathInfo = $pathInfo;
         }
