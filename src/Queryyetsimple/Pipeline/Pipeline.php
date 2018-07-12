@@ -183,6 +183,7 @@ class Pipeline implements IPipeline
         if (is_callable($stages)) {
             return $stages;
         }
+
         list($stage, $params) = $this->parse($stages);
 
         if (false !== strpos($stage, '@')) {
