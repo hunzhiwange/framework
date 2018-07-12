@@ -316,6 +316,20 @@ eot;
         $this->assertTrue(
             $tree->hasChildren(3, [5, 100000], false)
         );
+
+        // 第二个元素为空
+        $this->assertFalse(
+            $tree->hasChildren(3, [], false)
+        );
+
+        $this->assertFalse(
+            $tree->hasChildren(1, [], true)
+        );
+
+        // 非严格模式不存在
+        $this->assertFalse(
+            $tree->hasChildren(100000, [2, 3], false)
+        );
     }
 
     public function testParentsUse()
@@ -389,6 +403,12 @@ eot;
             $this->varExport(
                 $tree->getParents(5, true)
             )
+        );
+
+        // 不存对应的节点查询父节点
+        $this->assertSame(
+            [],
+            $tree->getParent(400000000)
         );
     }
 
