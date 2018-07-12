@@ -263,7 +263,7 @@ class Str
         }
 
         return substr(
-            str_shuffle(str_repeat($charBox, round($length / count($charBox)))),
+            str_shuffle($charBox),
             0,
             $length
         );
