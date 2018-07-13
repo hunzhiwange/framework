@@ -135,7 +135,7 @@ class Encryption extends Connect implements IEncryption
         }
 
         if ($decode) {
-            if ((0 === substr($result, 0, 10) || substr($result, 0, 10) - time() > 0) &&
+            if ((0 === (int) (substr($result, 0, 10)) || substr($result, 0, 10) - time() > 0) &&
                 substr($result, 10, 16) === substr(md5(substr($result, 26).$keyb), 0, 16)) {
                 return substr($result, 26);
             }
