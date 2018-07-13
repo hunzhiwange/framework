@@ -44,7 +44,7 @@ class Str
     public static function randAlphaNum(int $length, ?string $charBox = null)
     {
         if (!$length) {
-            return false;
+            return '';
         }
 
         if (null === $charBox) {
@@ -65,7 +65,7 @@ class Str
     public static function randAlphaNumLowercase(int $length, ?string $charBox = null)
     {
         if (!$length) {
-            return false;
+            return '';
         }
 
         if (null === $charBox) {
@@ -86,7 +86,7 @@ class Str
     public static function randAlphaNumUppercase(int $length, ?string $charBox = null)
     {
         if (!$length) {
-            return false;
+            return '';
         }
 
         if (null === $charBox) {
@@ -107,7 +107,7 @@ class Str
     public static function randAlpha(int $length, ?string $charBox = null)
     {
         if (!$length) {
-            return false;
+            return '';
         }
 
         if (null === $charBox) {
@@ -128,7 +128,7 @@ class Str
     public static function randAlphaLowercase(int $length, ?string $charBox = null)
     {
         if (!$length) {
-            return false;
+            return '';
         }
 
         if (null === $charBox) {
@@ -151,7 +151,7 @@ class Str
     public static function randAlphaUppercase(int $length, ?string $charBox = null)
     {
         if (!$length) {
-            return false;
+            return '';
         }
 
         if (null === $charBox) {
@@ -174,7 +174,7 @@ class Str
     public static function randNum(int $length, ?string $charBox = null)
     {
         if (!$length) {
-            return false;
+            return '';
         }
 
         if (null === $charBox) {
@@ -195,7 +195,7 @@ class Str
     public static function randChinese(int $length, ?string $charBox = null)
     {
         if (!$length) {
-            return false;
+            return '';
         }
 
         if (null === $charBox) {
@@ -238,7 +238,7 @@ class Str
         for ($i = 0; $i < $length; $i++) {
             $result .= static::subString(
                 $charBox,
-                floor(mt_rand(0, mb_strlen($charBox, 'utf-8') - 1)),
+                (int) (floor(mt_rand(0, mb_strlen($charBox, 'utf-8') - 1))),
                 1
             );
         }
@@ -259,7 +259,7 @@ class Str
     public static function randSting(int $length, $charBox)
     {
         if (!$length || !$charBox) {
-            return false;
+            return '';
         }
 
         return substr(
@@ -335,7 +335,10 @@ class Str
      */
     public static function isUtf8($strings): bool
     {
-        return mb_is_utf8($strings);
+        return 'UTF-8' === mb_detect_encoding(
+            $strings,
+            ['GB2312', 'GBK', 'UTF-8'], true
+        );
     }
 
     /**
