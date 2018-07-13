@@ -62,19 +62,19 @@ abstract class Facade
     public static function __callStatic(string $method, array $args)
     {
         $instance = static::facades();
-        if (!$instance) {
-            throw new RuntimeException('Can not find instance from container.');
-        }
 
-        $method = [
+        $callback = [
             $instance,
             $method,
         ];
-        if (!is_callable($method)) {
-            throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+
+        if (!is_callable($callback)) {
+            throw new BadMethodCallException(
+                sprintf('Method %s is not exits.', $method)
+            );
         }
 
-        return call_user_func_array($method, $args);
+        return call_user_func_array($callback, $args);
     }
 
     /**
@@ -91,7 +91,12 @@ abstract class Facade
         }
 
         if (!is_object(self::$instances[$unique] = self::container()->make($unique))) {
-            throw new RuntimeException(sprintf('Services %s was not found in the IOC container.', $unique));
+            throw new RuntimeException(
+                sprintf(
+                    'Services %s was not found in the IOC container.',
+                    $unique
+                )
+            );
         }
 
         return self::$instances[$unique];
@@ -110,9 +115,9 @@ abstract class Facade
     /**
      * 设置服务容器.
      *
-     * @param \Leevel\Di\IContainer $container
+     * @param null|\Leevel\Di\IContainer $container
      */
-    public static function setContainer(IContainer $container): void
+    public static function setContainer(IContainer $container = null): void
     {
         self::$container = $container;
     }
