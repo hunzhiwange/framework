@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Encryption;
 
-use Leevel\Encryption\IEncryption;
 use Leevel\Encryption\Encryption;
+use Leevel\Encryption\IEncryption;
 use Tests\TestCase;
 
 /**
