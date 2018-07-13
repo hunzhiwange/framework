@@ -327,11 +327,7 @@ if (!function_exists('__sprintf')) {
      */
     function __sprintf(...$arr)
     {
-        return 0 === count($arr) ?
-            '' :
-            (count($arr) > 1 ?
-                sprintf(...$arr) :
-                $arr[0]);
+        return sprintf(...$arr);
     }
 }
 
