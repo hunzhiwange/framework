@@ -255,8 +255,7 @@ class Seccode implements ISeccode
             return $this->resolvedFontPath;
         }
 
-        return $this->resolvedFontPath = $this->option['font_path'] ?:
-            $this->getDefaultFontPath();
+        return $this->resolvedFontPath = $this->option['font_path'];
     }
 
     /**
@@ -270,8 +269,7 @@ class Seccode implements ISeccode
             return $this->resolvedChineseFontPath;
         }
 
-        return $this->resolvedChineseFontPath = $this->option['chinese_font_path'] ?:
-            $this->getDefaultChineseFontPath();
+        return $this->resolvedChineseFontPath = $this->option['chinese_font_path'];
     }
 
     /**
@@ -285,8 +283,7 @@ class Seccode implements ISeccode
             return $this->resolvedBackgroundPath;
         }
 
-        return $this->resolvedBackgroundPath = $this->option['background_path'] ?:
-            $this->getDefaultBackgroundPath();
+        return $this->resolvedBackgroundPath = $this->option['background_path'];
     }
 
     /**
@@ -756,36 +753,6 @@ class Seccode implements ISeccode
     protected function ext($fileName)
     {
         return trim(substr(strrchr($fileName, '.'), 1, 10));
-    }
-
-    /**
-     * 返回英文字体路径.
-     *
-     * @return string
-     */
-    protected function getDefaultFontPath()
-    {
-        return __DIR__.'/font';
-    }
-
-    /**
-     * 返回中文字体路径.
-     *
-     * @return string
-     */
-    protected function getDefaultChineseFontPath()
-    {
-        return '';
-    }
-
-    /**
-     * 返回背景图路径.
-     *
-     * @return string
-     */
-    protected function getDefaultBackgroundPath()
-    {
-        return __DIR__.'/background';
     }
 
     /**
