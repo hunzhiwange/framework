@@ -196,9 +196,9 @@ interface IPage
     /**
      * 返回总记录数量.
      *
-     * @return int
+     * @return null|int
      */
-    public function getTotalRecord(): int;
+    public function getTotalRecord();
 
     /**
      * 是否为无限分页.
@@ -334,4 +334,14 @@ interface IPage
      * @return string
      */
     public function pageReplace($page);
+
+    /**
+     * 渲染分页.
+     *
+     * @param \Leevel\Page\IRender $render
+     * @param array                $optoin
+     *
+     * @return string
+     */
+    public function render(IRender $render = null, array $option = []);
 }

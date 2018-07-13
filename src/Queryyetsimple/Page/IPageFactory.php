@@ -38,16 +38,16 @@ interface IPageFactory
      * @param int   $totalRecord
      * @param array $option
      *
-     * @return \Leevel\Page\PageWithTotal
+     * @return \Leevel\Page\Page
      */
-    public function make(int $perPage, int $totalRecord, array $option = []): PageWithTotal;
+    public function make(int $perPage, int $totalRecord, array $option = []): Page;
 
     /**
      * 创建一个没有总记录的分页对象.
      *
      * @param int $perPage
      *
-     * @return \Leevel\Page\PageWithoutTotal
+     * @return \Leevel\Page\Page
      */
-    public function makeWithoutTotal(int $perPage, array $option = []): PageWithoutTotal;
+    public function makeWithoutTotal(int $perPage, array $option = []): Page;
 }

@@ -408,9 +408,9 @@ abstract class Connect implements IHtml
     /**
      * 返回总记录数量.
      *
-     * @return int
+     * @return null|int
      */
-    public function getTotalRecord(): int
+    public function getTotalRecord()
     {
         return true === $this->totalRecord ?
             static::MACRO :
@@ -527,7 +527,9 @@ abstract class Connect implements IHtml
     public function getTotalPage()
     {
         if (null === $this->totalPage && $this->getTotalRecord()) {
-            $this->totalPage = ceil($this->getTotalRecord() / $this->getPerPage());
+            $this->totalPage = (int) (
+                ceil($this->getTotalRecord() / $this->getPerPage())
+            );
 
             if ($this->totalPage < 1) {
                 $this->totalPage = 1;
@@ -679,56 +681,6 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 统计元素数量 count($obj).
-     *
-     * @return int
-     */
-    public function count()
-    {
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetExists.
-     *
-     * @param string $offset
-     *
-     * @return mixed
-     */
-    public function offsetExists($offset)
-    {
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetGet.
-     *
-     * @param string $offset
-     *
-     * @return mixed
-     */
-    public function offsetGet($offset)
-    {
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetSet.
-     *
-     * @param string $offset
-     * @param mixed  $value
-     */
-    public function offsetSet($offset, $value)
-    {
-    }
-
-    /**
-     * 实现 ArrayAccess::offsetUnset.
-     *
-     * @param string $offset
-     */
-    public function offsetUnset($offset)
-    {
-    }
-
-    /**
      * 分析分页 url 地址
      *
      * {page} 表示自定义分页变量替换
@@ -743,40 +695,41 @@ abstract class Connect implements IHtml
             return $this->resolveUrl;
         }
 
-        $withUrl = false;
+        $withResolver = false;
         $subdomain = 'www';
-
         $url = (string) ($this->option['url']);
 
         if (false !== strpos($url, '@')) {
-            $withUrl = true;
+            $withResolver = true;
 
             if (0 !== strpos($url, '@')) {
                 $temp = explode('@', $url);
                 $subdomain = $temp[0];
                 $url = $temp[1];
+            } else {
+                $url = substr($url, 1);
             }
         }
 
-        if ($withUrl) {
+        $parameter = $this->getParameter();
+
+        if (false === strpos($url, '{page}')) {
+            $parameter[$this->option['page']] = '{page}';
+        }
+
+        if ($withResolver) {
             $this->resolveUrl = $this->resolverUrl(
                 $url,
-                $this->getDefaultPageParameter(
-                    false === strpos($url, '{page}')
-                ),
+                $parameter,
                 $subdomain
             );
         } else {
-            if (false === strpos($url, '{page}')) {
-                $this->resolveUrl = (false === strpos($url, '?') ? '?' : '&').
-                    $this->option['page'].'={page}';
-            }
+            $this->resolveUrl .=
+                (false === strpos($url, '?') ? '?' : '&').
+                http_build_query($parameter, '', '&');
         }
 
-        $this->resolveUrl = $this->resolveUrl.
-            $this->buildFragment();
-
-        return $this->resolveUrl;
+        return $this->resolveUrl .= $this->buildFragment();
     }
 
     /**
@@ -797,27 +750,13 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 默认分页参数.
-     *
-     * @param bool $withDefaults
-     *
-     * @return array
-     */
-    protected function getDefaultPageParameter($withDefaults = true)
-    {
-        return $withDefaults ? [
-            $this->option['page'] => '{page}',
-        ] : [];
-    }
-
-    /**
      * 解析参数.
      *
      * @param array $extend
      *
      * @return array
      */
-    protected function getParameter(array $extend)
+    protected function getParameter(array $extend = [])
     {
         if (null === $this->resolveParameter) {
             if ($this->option['parameter']) {

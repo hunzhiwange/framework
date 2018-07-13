@@ -32,6 +32,14 @@ namespace Leevel\Page;
 interface IRender
 {
     /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void;
+
+    /**
      * 渲染.
      *
      * @return string

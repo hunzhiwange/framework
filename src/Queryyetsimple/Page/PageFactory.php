@@ -51,7 +51,9 @@ class PageFactory implements IPageFactory
         $this->url = $url;
 
         Page::setUrlResolver(function () use ($url) {
-            return [$url, 'make'];
+            return call_user_func_array(
+                [$url, 'make'], func_get_args()
+            );
         });
     }
 
@@ -62,34 +64,32 @@ class PageFactory implements IPageFactory
      * @param int   $totalRecord
      * @param array $option
      *
-     * @return \Leevel\Page\PageWithTotal
+     * @return \Leevel\Page\Page
      */
-    public function make(int $perPage, int $totalRecord, array $option = []): PageWithTotal
+    public function make(int $perPage, int $totalRecord, array $option = []): Page
     {
-        $page = new PageWithTotal(
+        return new Page(
             $perPage,
             $totalRecord,
             $this->normalizeOption($option)
         );
-
-        return $page;
     }
 
     /**
      * 创建一个没有总记录的分页对象.
      *
-     * @param int $perPage
+     * @param int   $perPage
+     * @param array $optoin
      *
-     * @return \Leevel\Page\PageWithoutTotal
+     * @return \Leevel\Page\Page
      */
-    public function makeWithoutTotal(int $perPage, array $option = []): PageWithoutTotal
+    public function makeWithoutTotal(int $perPage, array $option = []): Page
     {
-        $page = new PageWithoutTotal(
+        return new Page(
             $perPage,
+            null,
             $this->normalizeOption($option)
         );
-
-        return $page;
     }
 
     /**

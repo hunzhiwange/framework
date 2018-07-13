@@ -20,8 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Page;
 
-use ArrayAccess;
-use Countable;
 use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -35,7 +33,7 @@ use Leevel\Support\IJson;
  *
  * @version 1.0
  */
-class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAccess, JsonSerializable
+class Page extends Connect implements IPage, IJson, IArray, JsonSerializable
 {
     /**
      * 构造函数.
@@ -56,10 +54,11 @@ class Page extends Connect implements IPage, IJson, IArray, Countable, ArrayAcce
      * 渲染分页.
      *
      * @param \Leevel\Page\IRender $render
+     * @param array                $optoin
      *
      * @return string
      */
-    public function render(IRender $render = null)
+    public function render(IRender $render = null, array $option = [])
     {
         if (null === $render) {
             $render = 'Leevel\Page\\'.$this->getRender();

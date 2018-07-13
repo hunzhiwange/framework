@@ -44,8 +44,9 @@ class Defaults implements IRender
      * @var array
      */
     protected $option = [
-        'small'    => false,
-        'template' => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
+        'small'          => false,
+        'template'       => '{header} {total} {prev} {ul} {first} {main} {last} {endul} {next} {jump} {footer}',
+        'small_template' => false,
     ];
 
     /**
@@ -66,6 +67,8 @@ class Defaults implements IRender
                 $this->page->getRenderOption('render')
             );
         }
+
+        $this->intOption();
     }
 
     /**
@@ -77,6 +80,17 @@ class Defaults implements IRender
     public function setOption(string $name, $value): void
     {
         $this->option[$name] = $value;
+    }
+
+    /**
+     * 简单渲染.
+     */
+    public function setSimpleTemplate()
+    {
+        $this->setOption(
+            'template',
+            '{header} {prev} {ul} {first} {main} {last} {endul} {next} {footer}'
+        );
     }
 
     /**
@@ -105,6 +119,16 @@ class Defaults implements IRender
     public function replace($page)
     {
         return $this->page->pageReplace($page);
+    }
+
+    /**
+     * 初始化配置.
+     */
+    protected function intOption(): void
+    {
+        if ($this->option['small_template']) {
+            $this->setSimpleTemplate();
+        }
     }
 
     /**
@@ -317,5 +341,19 @@ class Defaults implements IRender
     protected function getFooterRender()
     {
         return '</div>';
+    }
+}
+
+if (!function_exists('__')) {
+    /**
+     * lang.
+     *
+     * @param array $arr
+     *
+     * @return string
+     */
+    function __(...$arr)
+    {
+        return sprintf(...$arr);
     }
 }

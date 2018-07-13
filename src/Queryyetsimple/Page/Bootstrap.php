@@ -45,8 +45,10 @@ class Bootstrap implements IRender
      */
     protected $option = [
         // lg sm
-        'size'     => '',
-        'template' => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',
+        'size'          => '',
+        'template'      => '{header} {ul} {prev} {first} {main} {last} {next} {endul} {footer}',
+        'large_size'    => false,
+        'small_size'    => false,
     ];
 
     /**
@@ -67,6 +69,35 @@ class Bootstrap implements IRender
                 $this->page->getRenderOption('render')
             );
         }
+
+        $this->intOption();
+    }
+
+    /**
+     * 设置配置.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setOption(string $name, $value): void
+    {
+        $this->option[$name] = $value;
+    }
+
+    /**
+     * 大尺寸样式.
+     */
+    public function setLargeSize()
+    {
+        $this->setOption('size', 'lg');
+    }
+
+    /**
+     * 小尺寸样式.
+     */
+    public function setSmallSize()
+    {
+        $this->setOption('size', 'sm');
     }
 
     /**
@@ -95,6 +126,18 @@ class Bootstrap implements IRender
     public function replace($page)
     {
         return $this->page->pageReplace($page);
+    }
+
+    /**
+     * 初始化配置.
+     */
+    protected function intOption(): void
+    {
+        if ($this->option['large_size']) {
+            $this->setLargeSize();
+        } elseif ($this->option['small_size']) {
+            $this->setSmallSize();
+        }
     }
 
     /**
