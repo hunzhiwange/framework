@@ -196,6 +196,35 @@ class PipelineTest extends TestCase
 
         unset($_SERVER['test.WithArgs']);
     }
+
+    public function testStageWithInvalidArgumentException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Stage is invalid.'
+        );
+
+        (new Pipeline(new Container()))->
+
+        through('Tests\Pipeline\NotFound')->
+
+        then();
+    }
+
+    public function testStageWithAtMethod()
+    {
+        (new Pipeline(new Container()))->
+
+        send('hello world')->
+
+        through('Tests\Pipeline\WithAtMethod@run')->
+
+        then();
+
+        $this->assertSame('i am in at.method handle and get the send:hello world', $_SERVER['test.at.method']);
+
+        unset($_SERVER['test.at.method']);
+    }
 }
 
 class First
@@ -251,6 +280,16 @@ class DiConstruct
     public function handle(Closure $next, $send)
     {
         $_SERVER['test.DiConstruct'] = 'get class:'.get_class($this->testClass);
+
+        $next($send);
+    }
+}
+
+class WithAtMethod
+{
+    public function run(Closure $next, $send)
+    {
+        $_SERVER['test.at.method'] = 'i am in at.method handle and get the send:'.$send;
 
         $next($send);
     }
