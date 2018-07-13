@@ -192,7 +192,7 @@ class Pipeline implements IPipeline
             $method = 'handle';
         }
 
-        if (false === ($stage = $this->container->make($stage, $params))) {
+        if (!is_object($stage = $this->container->make($stage, $params))) {
             throw new InvalidArgumentException('Stage is invalid.');
         }
 
