@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace Tests\Page;
 
-use Leevel\Page\IPageFactory;
-use Leevel\Page\PageFactory;
-use Leevel\Page\IPage;
-use Leevel\Page\Page;
 use Leevel\Http\Request;
+use Leevel\Page\IPage;
+use Leevel\Page\IPageFactory;
+use Leevel\Page\Page;
+use Leevel\Page\PageFactory;
 use Leevel\Router\Url;
 use Tests\TestCase;
 
@@ -112,7 +112,7 @@ eot;
         $pageFactory = $this->makePageFactory();
 
         $page = $pageFactory->make(5, 17, [
-            'url' => '@/list-{page}.jsp',
+            'url'       => '@/list-{page}.jsp',
             'parameter' => ['foo' => 'bar', 'hello' => 'world'],
         ]);
 
