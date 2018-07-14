@@ -25,6 +25,29 @@ use Leevel\Manager\Manager as Managers;
 /**
  * database 入口.
  *
+ * @method $this whereNull(...$arr)
+ * @method $this whereNotNull(...$arr)
+ * @method $this whereBetween(...$arr)
+ * @method $this whereNotBetween(...$arr)
+ * @method $this whereIn(...$arr)
+ * @method $this whereNotIn(...$arr)
+ * @method $this whereLike(...$arr)
+ * @method $this whereNotLike(...$arr)
+ * @method $this havingNull(...$arr)
+ * @method $this havingNotNull(...$arr)
+ * @method $this havingBetween(...$arr)
+ * @method $this havingNotBetween(...$arr)
+ * @method $this havingIn(...$arr)
+ * @method $this havingNotIn(...$arr)
+ * @method $this havingLike(...$arr)
+ * @method $this havingNotLike(...$arr)
+ * @method $this innerJoin($table, $cols, $cond)
+ * @method $this leftJoin($table, $cols, $cond)
+ * @method $this rightJoin($table, $cols, $cond)
+ * @method $this fullJoin($table, $cols, $cond)
+ * @method $this crossJoin($table, $cols)
+ * @method $this naturalJoin($table, $cols)
+ *
  * @author Xiangmin Liu <635750556@qq.com>
  *
  * @since 2017.02.15

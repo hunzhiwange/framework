@@ -235,6 +235,21 @@ class Condition
             return $this;
         }
 
+        if (0 === strpos($method, 'where') &&
+            false !== ($result = $this->callWhereSugar($method, $args))) {
+            return $result;
+        }
+
+        if (0 === strpos($method, 'having') &&
+            false !== ($result = $this->callHavingSugar($method, $args))) {
+            return $result;
+        }
+
+        if (false === strpos($method, 'join') &&
+            false !== ($result = $this->callJoinSugar($method, $args))) {
+            return $result;
+        }
+
         throw new ConditionNotFoundException(
             sprintf('Condition method %s not found.', $method)
         );
@@ -778,158 +793,6 @@ class Condition
     }
 
     /**
-     * whereBetween 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereBetween(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('where', static::LOGIC_AND);
-        array_unshift($arr, 'between');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * whereNotBetween 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereNotBetween(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('where', static::LOGIC_AND);
-        array_unshift($arr, 'not between');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * whereIn 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereIn(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('where', static::LOGIC_AND);
-        array_unshift($arr, 'in');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * whereNotIn 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereNotIn(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('where', static::LOGIC_AND);
-        array_unshift($arr, 'not in');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * whereNull 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereNull(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('where', static::LOGIC_AND);
-        array_unshift($arr, 'null');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * whereNotNull 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereNotNull(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('where', static::LOGIC_AND);
-        array_unshift($arr, 'not null');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * whereLike 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereLike(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('where', static::LOGIC_AND);
-        array_unshift($arr, 'like');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * whereNotLike 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function whereNotLike(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('where', static::LOGIC_AND);
-        array_unshift($arr, 'not like');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
      * whereDate 查询条件.
      *
      * @param array $arr
@@ -940,7 +803,7 @@ class Condition
     {
         $this->setInTimeCondition('date');
 
-        $this->{'where'}(...$arr);
+        $this->where(...$arr);
 
         $this->setInTimeCondition(null);
 
@@ -958,7 +821,7 @@ class Condition
     {
         $this->setInTimeCondition('month');
 
-        $this->{'where'}(...$arr);
+        $this->where(...$arr);
 
         $this->setInTimeCondition(null);
 
@@ -976,7 +839,7 @@ class Condition
     {
         $this->setInTimeCondition('day');
 
-        $this->{'where'}(...$arr);
+        $this->where(...$arr);
 
         $this->setInTimeCondition(null);
 
@@ -994,7 +857,7 @@ class Condition
     {
         $this->setInTimeCondition('year');
 
-        $this->{'where'}(...$arr);
+        $this->where(...$arr);
 
         $this->setInTimeCondition(null);
 
@@ -1174,130 +1037,6 @@ class Condition
     }
 
     /**
-     * innerJoin 查询.
-     *
-     * @param mixed        $table 同 table $table
-     * @param array|string $cols  同 table $cols
-     * @param mixed        $cond  同 where $cond
-     *
-     * @return $this
-     */
-    public function innerJoin($table, $cols, $cond)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $args = func_get_args();
-        array_unshift($args, 'inner join');
-
-        return $this->addJoin(...$args);
-    }
-
-    /**
-     * leftJoin 查询.
-     *
-     * @param mixed        $table 同 table $table
-     * @param array|string $cols  同 table $cols
-     * @param mixed        $cond  同 where $cond
-     *
-     * @return $this
-     */
-    public function leftJoin($table, $cols, $cond)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $args = func_get_args();
-        array_unshift($args, 'left join');
-
-        return $this->addJoin(...$args);
-    }
-
-    /**
-     * rightJoin 查询.
-     *
-     * @param mixed        $table 同 table $table
-     * @param array|string $cols  同 table $cols
-     * @param mixed        $cond  同 where $cond
-     *
-     * @return $this
-     */
-    public function rightJoin($table, $cols, $cond)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $args = func_get_args();
-        array_unshift($args, 'right join');
-
-        return $this->addJoin(...$args);
-    }
-
-    /**
-     * fullJoin 查询.
-     *
-     * @param mixed        $table 同 table $table
-     * @param array|string $cols  同 table $cols
-     * @param mixed        $cond  同 where $cond
-     *
-     * @return $this
-     */
-    public function fullJoin($table, $cols, $cond)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $args = func_get_args();
-        array_unshift($args, 'full join');
-
-        return $this->addJoin(...$args);
-    }
-
-    /**
-     * crossJoin 查询.
-     *
-     * @param mixed        $table 同 table $table
-     * @param array|string $cols  同 table $cols
-     *
-     * @return $this
-     */
-    public function crossJoin($table, $cols)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $args = func_get_args();
-        array_unshift($args, 'cross join');
-
-        return $this->addJoin(...$args);
-    }
-
-    /**
-     * naturalJoin 查询.
-     *
-     * @param mixed        $table 同 table $table
-     * @param array|string $cols  同 table $cols
-     *
-     * @return $this
-     */
-    public function naturalJoin($table, $cols)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $args = func_get_args();
-        array_unshift($args, 'natural join');
-
-        return $this->addJoin(...$args);
-    }
-
-    /**
      * 添加一个 UNION 查询.
      *
      * @param array|callable|string $selects
@@ -1464,166 +1203,6 @@ class Condition
     }
 
     /**
-     * havingBetween 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingBetween(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('having', static::LOGIC_AND);
-
-        array_unshift($arr, 'between');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * havingNotBetween 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingNotBetween(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('having', static::LOGIC_AND);
-
-        array_unshift($arr, 'not between');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * havingIn 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingIn(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('having', static::LOGIC_AND);
-
-        array_unshift($arr, 'in');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * havingNotIn 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingNotIn(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('having', static::LOGIC_AND);
-
-        array_unshift($arr, 'not in');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * havingNull 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingNull(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('having', static::LOGIC_AND);
-
-        array_unshift($arr, 'null');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * havingNotNull 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingNotNull(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('having', static::LOGIC_AND);
-
-        array_unshift($arr, 'not null');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * havingLike 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingLike(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('having', static::LOGIC_AND);
-
-        array_unshift($arr, 'like');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
-     * havingNotLike 查询条件.
-     *
-     * @param array $arr
-     *
-     * @return $this
-     */
-    public function havingNotLike(...$arr)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->setTypeAndLogic('having', static::LOGIC_AND);
-
-        array_unshift($arr, 'not like');
-
-        return $this->aliasCondition(...$arr);
-    }
-
-    /**
      * havingDate 查询条件.
      *
      * @param array $arr
@@ -1634,7 +1213,7 @@ class Condition
     {
         $this->setInTimeCondition('date');
 
-        $this->{'having'}(...$arr);
+        $this->having(...$arr);
 
         $this->setInTimeCondition(null);
 
@@ -1652,7 +1231,7 @@ class Condition
     {
         $this->setInTimeCondition('month');
 
-        $this->{'having'}(...$arr);
+        $this->having(...$arr);
 
         $this->setInTimeCondition(null);
 
@@ -1670,7 +1249,7 @@ class Condition
     {
         $this->setInTimeCondition('day');
 
-        $this->{'having'}(...$arr);
+        $this->having(...$arr);
 
         $this->setInTimeCondition(null);
 
@@ -1688,7 +1267,7 @@ class Condition
     {
         $this->setInTimeCondition('year');
 
-        $this->{'having'}(...$arr);
+        $this->having(...$arr);
 
         $this->setInTimeCondition(null);
 
@@ -2127,6 +1706,107 @@ class Condition
     public function getLimitQuery(): bool
     {
         return $this->options['limitquery'];
+    }
+
+    /**
+     * 调用 where 语法糖.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return $this|false
+     */
+    protected function callWhereSugar(string $method, array $args)
+    {
+        if (in_array($method, [
+            'whereNotBetween', 'whereBetween',
+            'whereNotNull', 'whereNull',
+            'whereNotIn', 'whereIn',
+            'whereNotLike', 'whereLike',
+        ], true)) {
+            if ($this->checkTControl()) {
+                return $this;
+            }
+
+            $this->setTypeAndLogic('where', static::LOGIC_AND);
+
+            if (0 === strpos($method, 'whereNot')) {
+                $type = 'not '.strtolower(substr($method, 8));
+            } else {
+                $type = strtolower(substr($method, 5));
+            }
+
+            array_unshift($args, $type);
+
+            return $this->aliasCondition(...$args);
+        }
+
+        return false;
+    }
+
+    /**
+     * 调用 having 语法糖.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return $this|false
+     */
+    protected function callHavingSugar(string $method, array $args)
+    {
+        if (in_array($method, [
+            'havingNotBetween', 'havingBetween',
+            'havingNotNull', 'havingNull',
+            'havingNotIn', 'havingIn',
+            'havingNotLike', 'havingLike',
+        ], true)) {
+            if ($this->checkTControl()) {
+                return $this;
+            }
+
+            $this->setTypeAndLogic('having', static::LOGIC_AND);
+
+            if (0 === strpos($method, 'havingNot')) {
+                $type = 'not '.strtolower(substr($method, 9));
+            } else {
+                $type = strtolower(substr($method, 6));
+            }
+
+            array_unshift($args, $type);
+
+            return $this->aliasCondition(...$args);
+        }
+
+        return false;
+    }
+
+    /**
+     * 调用 join 语法糖.
+     *
+     * @param string $method
+     * @param array  $args
+     *
+     * @return $this|false
+     */
+    protected function callJoinSugar(string $method, array $args)
+    {
+        if (in_array($method, [
+            'innerJoin', 'leftJoin',
+            'rightJoin', 'fullJoin',
+            'crossJoin', 'naturalJoin',
+        ], true)) {
+            if ($this->checkTControl()) {
+                return $this;
+            }
+
+            $type = substr($method, 0, -4).' join';
+
+            array_unshift($args, $type);
+
+            return $this->addJoin(...$args);
+        }
+
+        return false;
     }
 
     /**
