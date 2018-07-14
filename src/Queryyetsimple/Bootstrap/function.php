@@ -291,37 +291,26 @@ if (!function_exists('__')) {
     /**
      * 语言包.
      *
-     * @param array $arr
+     * @param string $text
+     * @param array  $arr
      *
      * @return string
      */
-    function __(...$arr)
+    function __(string $text, ...$arr)
     {
         static $i18n;
 
         if (null === $i18n) {
             if (!is_object($i18n = project('i18n'))) {
-                $i18n = __sprintf();
+                $i18n = 'sprintf';
             } else {
                 $i18n = [$i18n, 'getText'];
             }
         }
 
-        return call_user_func_array($i18n, $arr);
-    }
-}
+        array_unshift($arr, $text);
 
-if (!function_exists('__sprintf')) {
-    /**
-     * lang.
-     *
-     * @param array $arr
-     *
-     * @return string
-     */
-    function __sprintf(...$arr)
-    {
-        return sprintf(...$arr);
+        return call_user_func_array($i18n, $arr);
     }
 }
 
@@ -329,13 +318,14 @@ if (!function_exists('gettext')) {
     /**
      * 语言包.
      *
-     * @param array $arr
+     * @param string $text
+     * @param array  $arr
      *
      * @return string
      */
-    function gettext(...$arr)
+    function gettext(string $text, ...$arr)
     {
-        return __(...$arr);
+        return __($text, ...$arr);
     }
 }
 

@@ -60,7 +60,6 @@ class I18nTest extends TestCase
 
         $this->assertSame('hello world', $i18n->getText('世界你好'));
         $this->assertSame('foo ye', $i18n->__('胡巴 %s', 'ye'));
-        $this->assertSame('', $i18n->getText());
     }
 
     public function testAll()

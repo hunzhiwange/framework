@@ -34,20 +34,22 @@ interface II18n
     /**
      * 获取语言 text.
      *
-     * @param array $arr
+     * @param string $text
+     * @param array  $arr
      *
      * @return string
      */
-    public function __(...$arr);
+    public function __(string $text, ...$arr);
 
     /**
      * 获取语言 text.
      *
-     * @param array $arr
+     * @param string $text
+     * @param array  $arr
      *
      * @return string
      */
-    public function getText(...$arr);
+    public function getText(string $text, ...$arr);
 
     /**
      * 添加语言包.

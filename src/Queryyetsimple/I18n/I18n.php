@@ -60,30 +60,30 @@ class I18n implements II18n
     /**
      * 获取语言 text.
      *
-     * @param array $arr
+     * @param string $text
+     * @param array  $arr
      *
      * @return string
      */
-    public function __(...$arr)
+    public function __(string $text, ...$arr)
     {
-        return $this->{'getText'}(...$arr);
+        return $this->getText($text, ...$arr);
     }
 
     /**
      * 获取语言 text.
      *
-     * @param array $arr
+     * @param string $text
+     * @param array  $arr
      *
      * @return string
      */
-    public function getText(...$arr)
+    public function getText(string $text, ...$arr)
     {
-        $value = $arr[0];
-        $value = $this->text[$this->i18n][$value] ?? $value;
+        $value = $this->text[$this->i18n][$text] ?? $text;
 
-        if (count($arr) > 1) {
-            $arr[0] = $value;
-            $value = sprintf(...$arr);
+        if ($arr) {
+            return sprintf($value, ...$arr);
         }
 
         return $value;
