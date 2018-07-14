@@ -78,12 +78,9 @@ class I18n implements II18n
      */
     public function getText(...$arr)
     {
-        if (0 === count($arr)) {
-            return '';
-        }
-
         $value = $arr[0];
         $value = $this->text[$this->i18n][$value] ?? $value;
+
         if (count($arr) > 1) {
             $arr[0] = $value;
             $value = sprintf(...$arr);

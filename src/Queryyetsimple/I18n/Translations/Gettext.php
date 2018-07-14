@@ -204,7 +204,7 @@ class Gettext extends Translations implements IArray
         $data = [];
 
         foreach ($this->entries as $key => $entry) {
-            $data[$key] = $entry->translations[0];
+            $data[$key] = $entry->translations[0] ?? '';
         }
 
         return $data;
