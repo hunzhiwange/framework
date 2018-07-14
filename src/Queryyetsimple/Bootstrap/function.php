@@ -37,13 +37,7 @@ if (!function_exists('project')) {
             return Project::singletons();
         }
 
-        if (($instance = Project::singletons()->make($instance, $args))) {
-            return $instance;
-        }
-
-        throw new BadMethodCallException(
-            sprintf('%s is not found in ioc container. ', $instance)
-        );
+        return Project::singletons()->make($instance, $args);
     }
 }
 
@@ -306,14 +300,14 @@ if (!function_exists('__')) {
         static $i18n;
 
         if (null === $i18n) {
-            $i18n = project::singletons()->make('i18n');
+            if (!is_object($i18n = project('i18n'))) {
+                $i18n = __sprintf();
+            } else {
+                $i18n = [$i18n, 'getText'];
+            }
         }
 
-        if (false === $i18n) {
-            return __sprintf(...$arr);
-        }
-
-        return $i18n->{'getText'}(...$arr);
+        return call_user_func_array($i18n, $arr);
     }
 }
 
