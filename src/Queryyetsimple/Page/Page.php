@@ -61,7 +61,7 @@ class Page extends Connect implements IPage, IJson, IArray, JsonSerializable
     public function render(IRender $render = null, array $option = [])
     {
         if (null === $render) {
-            $render = 'Leevel\Page\\'.$this->getRender();
+            $render = 'Leevel\Page\\'.ucfirst($this->getRender());
             $render = new $render($this);
         }
 
