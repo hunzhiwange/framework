@@ -412,7 +412,7 @@ class Container implements IContainer, ArrayAccess
      */
     protected function getAlias($name)
     {
-        return isset($this->alias[$name]) ? $this->alias[$name] : $name;
+        return $this->alias[$name] ?? $name;
     }
 
     /**
