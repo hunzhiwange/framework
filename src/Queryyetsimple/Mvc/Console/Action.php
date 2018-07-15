@@ -58,15 +58,15 @@ class Action extends Make
     protected $help = <<<'EOF'
 The <info>%command.name%</info> command to make action with project namespace:
 
-  <info>php %command.full_name% name action</info>
+  <info>php %command.full_name% controller name</info>
 
 You can also by using the <comment>--namespace</comment> option:
 
-  <info>php %command.full_name% name action --namespace=common</info>
+  <info>php %command.full_name% controller name --namespace=common</info>
 
 You can also by using the <comment>--extend</comment> option:
 
-  <info>php %command.full_name% name action --extend=0</info>
+  <info>php %command.full_name% controller name --extend=0</info>
 EOF;
 
     /**
