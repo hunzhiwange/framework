@@ -41,7 +41,6 @@ use Leevel\Support\IArray;
 use Leevel\Support\IJson;
 use Leevel\Support\Str;
 use Leevel\Support\TMacro;
-use Leevel\Support\TSerialize;
 
 /**
  * 模型实体 Object Relational Mapping.
@@ -54,7 +53,6 @@ use Leevel\Support\TSerialize;
  */
 abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, ArrayAccess
 {
-    use TSerialize;
     use TMacro {
         __callStatic as macroCallStatic;
         __call as macroCall;
