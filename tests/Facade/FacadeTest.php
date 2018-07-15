@@ -67,6 +67,9 @@ class FacadeTest extends TestCase
             return new Service1();
         });
 
+        // 静态属性会保持住，可能受到其它单元测试的影响
+        Facade::remove($serviceName);
+
         $this->assertSame(
             $facade,
             call_user_func([$className, 'hello'], $facade)
