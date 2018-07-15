@@ -18,46 +18,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support;
+namespace Tests\Support;
+
+use Leevel\Support\Arr;
+use Tests\TestCase;
 
 /**
- * 数组辅助函数.
+ * arr test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.05.05
+ * @since 2018.07.15
  *
  * @version 1.0
  */
-class Arr
+class ArrTest extends TestCase
 {
-    /**
-     * 数组数据格式化.
-     *
-     * @param mixed  $inputs
-     * @param string $delimiter
-     * @param bool   $allowedEmpty
-     *
-     * @return mixed
-     */
-    public static function normalize($inputs, $delimiter = ',', bool $allowedEmpty = false)
+    public function testBaseUse()
     {
-        if (is_array($inputs) || is_string($inputs)) {
-            if (!is_array($inputs)) {
-                $inputs = explode($delimiter, $inputs);
-            }
+        $this->assertTrue(Arr::normalize(true));
 
-            $inputs = array_filter($inputs);
+        $this->assertSame(['a', 'b'], Arr::normalize('a,b'));
 
-            if (true === $allowedEmpty) {
-                return $inputs;
-            }
+        $this->assertSame(['a', 'b'], Arr::normalize(['a', 'b']));
 
-            $inputs = array_map('trim', $inputs);
+        $this->assertSame(['a'], Arr::normalize(['a', '']));
 
-            return array_filter($inputs, 'strlen');
-        }
+        $this->assertSame(['a'], Arr::normalize(['a', ''], ',', true));
 
-        return $inputs;
+        $this->assertSame(['a', ' 0 '], Arr::normalize(['a', ' 0 '], ',', true));
+
+        $this->assertSame(['a', '0'], Arr::normalize(['a', ' 0 '], ','));
     }
 }
