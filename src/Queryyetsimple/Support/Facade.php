@@ -103,6 +103,24 @@ abstract class Facade
     }
 
     /**
+     * 删除实例.
+     *
+     * @param null|string $name
+     */
+    public static function remove(?string $name = null): void
+    {
+        if (null === $name) {
+            self::$instances = [];
+
+            return;
+        }
+
+        if (isset(self::$instances[$name])) {
+            unset(self::$instances[$name]);
+        }
+    }
+
+    /**
      * 返回服务容器.
      *
      * @return \Leevel\Di\IContainer
