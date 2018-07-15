@@ -111,12 +111,10 @@ if (!function_exists('dd')) {
      *
      * @param mixed $var
      * @param bool  $simple
-     *
-     * @return mixed
      */
     function dd($var, $simple = false)
     {
-        return Dump::dump($var, $simple);
+        Dump::dump($var, $simple);
     }
 }
 
@@ -126,12 +124,10 @@ if (!function_exists('dump')) {
      *
      * @param mixed $var
      * @param bool  $simple
-     *
-     * @return mixed
      */
     function dump($var, $simple = false)
     {
-        return dd($var, $simple);
+        dd($var, $simple);
     }
 }
 
