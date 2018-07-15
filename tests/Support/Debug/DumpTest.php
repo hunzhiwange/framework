@@ -18,42 +18,30 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Support\Debug;
+namespace Tests\Support\Debug;
 
-use Symfony\Component\VarDumper\Cloner\VarCloner;
-use Symfony\Component\VarDumper\Dumper\CliDumper;
-use Symfony\Component\VarDumper\Dumper\HtmlDumper;
+use Leevel\Support\Debug\Dump;
+use Tests\TestCase;
 
 /**
- * 调试一个变量.
+ * dump test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.05
+ * @since 2018.07.15
  *
  * @version 1.0
  */
-class Dump
+class DumpTest extends TestCase
 {
-    /**
-     * 调试一个变量.
-     *
-     * @param mixed $var
-     * @param bool  $simple
-     */
-    public static function dump($var, bool $simple = false)
+    public function testBaseUse()
     {
-        static $dump, $varCloner;
+        ob_start();
+        Dump::dump('hello_world', true);
+        $result = ob_get_contents();
+        ob_end_clean();
 
-        if (false === $simple && class_exists(CliDumper::class)) {
-            if (!$dump) {
-                $dump = ('cli' === PHP_SAPI ? new CliDumper() : new HtmlDumper());
-                $varCloner = new VarCloner();
-            }
-
-            $dump->dump($varCloner->cloneVar($var));
-        } else {
-            var_dump($var);
-        }
+        $this->assertContains('hello_world', $result);
+        $this->assertContains('string', $result);
     }
 }

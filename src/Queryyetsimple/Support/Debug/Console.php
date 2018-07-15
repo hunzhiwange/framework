@@ -42,12 +42,15 @@ class Console
     public static function trace(array $log)
     {
         // swoole http server 可以调试
-        if (PHP_SAPI === 'cli' && !(isset($_SERVER['SERVER_SOFTWARE']) && 'swoole-http-server' === $_SERVER['SERVER_SOFTWARE'])) {
+        if (PHP_SAPI === 'cli' &&
+            !(isset($_SERVER['SERVER_SOFTWARE']) &&
+                'swoole-http-server' === $_SERVER['SERVER_SOFTWARE'])) {
             return;
         }
 
         // ajax 不调试
-        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && 'xmlhttprequest' === strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
+        if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+            'xmlhttprequest' === strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
             return;
         }
 
@@ -122,7 +125,8 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
         $result = [];
 
         foreach ($log as $type => $item) {
-            $result[strtoupper($type).'.LOG'.' ('.count($item).')'] = implode('\n', array_map(function ($item) {
+            $result[strtoupper($type).'.LOG'.' ('.count($item).')'] =
+            implode('\n', array_map(function ($item) {
                 return static::formatMessage($item);
             }, $item));
         }
@@ -139,6 +143,8 @@ console.log( \'%cThe PHP Framework For Code Poem As Free As Wind %c(http://www.q
      */
     protected static function formatMessage($item)
     {
-        return addslashes($item[0].' '.json_encode($item[1], JSON_UNESCAPED_UNICODE));
+        return addslashes(
+            $item[0].' '.json_encode($item[1], JSON_UNESCAPED_UNICODE)
+        );
     }
 }
