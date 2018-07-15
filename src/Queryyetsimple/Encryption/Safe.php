@@ -41,16 +41,20 @@ class Safe
      *
      * @return mixed
      */
-    public static function stripslashes($strings, $recursive = true)
+    public static function stripslashes($strings, bool $recursive = true)
     {
         if (true === $recursive and is_array($strings)) { // 递归
+            $result = [];
+
             foreach ($strings as $key => $value) {
-                $strings[static::stripslashes($key)] = static::stripslashes($value); // 如果你只注意到值，却没有注意到key
+                // 如果你只注意到值，却没有注意到 key
+                $result[static::stripslashes($key)] = static::stripslashes($value);
             }
-        } else {
-            if (is_string($strings)) {
-                $strings = stripslashes($strings);
-            }
+
+            return $result;
+        }
+        if (is_string($strings)) {
+            $strings = stripslashes($strings);
         }
 
         return $strings;
@@ -59,21 +63,25 @@ class Safe
     /**
      * 添加模式转义.
      *
-     * @param mixed  $strings
-     * @param string $recursive
+     * @param mixed $strings
+     * @param bool  $recursive
      *
      * @return string
      */
-    public static function addslashes($strings, $recursive = true)
+    public static function addslashes($strings, bool $recursive = true)
     {
         if (true === $recursive and is_array($strings)) {
+            $result = [];
+
             foreach ($strings as $key => $value) {
-                $strings[static::addslashes($key)] = static::addslashes($value); // 如果你只注意到值，却没有注意到key
+                // 如果你只注意到值，却没有注意到 key
+                $result[static::addslashes($key)] = static::addslashes($value);
             }
-        } else {
-            if (is_string($strings)) {
-                $strings = addslashes($strings);
-            }
+
+            return $result;
+        }
+        if (is_string($strings)) {
+            $strings = addslashes($strings);
         }
 
         return $strings;
@@ -87,15 +95,14 @@ class Safe
      *
      * @return string
      */
-    public static function deepReplace(array $search, $subject)
+    public static function deepReplace(array $search, string $subject)
     {
         $found = true;
-        $subject = (string) $subject;
 
         while ($found) {
             $found = false;
 
-            foreach ((array) $search as $val) {
+            foreach ($search as $val) {
                 while (false !== strpos($subject, $val)) {
                     $found = true;
                     $subject = str_replace($val, '', $subject);
@@ -115,7 +122,7 @@ class Safe
      *
      * @return string
      */
-    public static function escUrl($url, $protocols = null, $show = true)
+    public static function escUrl(string $url, ?array $protocols = null, bool $show = true)
     {
         $originalUrl = $url;
 
@@ -125,15 +132,16 @@ class Safe
 
         $url = preg_replace('|[^a-z0-9-~+_.?#=!&;,/:%@$\|*\'()\\x80-\\xff]|i', '', $url);
 
-        $strip = [
+        // 回车编码
+        $url = static::deepReplace([
             '%0d',
             '%0a',
             '%0D',
             '%0A',
-        ];
+        ], $url);
 
-        $url = static::deepReplace($strip, $url);
-        $url = str_replace(';//', '://', $url); // 防止拼写错误
+        // 防止拼写错误
+        $url = str_replace(';//', '://', $url);
 
         // 加上 http:// ，防止导入一个脚本如 php，从而引发安全问题
         if (false === strpos($url, ':') &&
@@ -259,23 +267,26 @@ class Safe
      *
      * @return mixed
      */
-    public function strFilter($strings, $maxNum = 20000)
+    public static function strFilter($strings, int $maxNum = 20000)
     {
         if (is_array($strings)) {
-            foreach ($strings as $key => $val) {
-                $strings[static::strFilter($key)] = static::strFilter($val, $maxNum);
-            }
-        } else {
-            $strings = trim(static::lengthLimit($strings, $maxNum));
+            $result = [];
 
-            $strings = preg_replace(
+            foreach ($strings as $key => $val) {
+                $result[static::strFilter($key)] = static::strFilter($val, $maxNum);
+            }
+
+            return $result;
+        }
+        $strings = trim(static::lengthLimit((string) ($strings), $maxNum));
+
+        $strings = preg_replace(
                 '/&amp;((#(\d{3,5}|x[a-fA-F0-9]{4}));)/',
                 '&\\1',
                 static::htmlspecialchars($strings)
             );
 
-            $strings = str_replace('　', '', $strings);
-        }
+        $strings = str_replace('　', '', $strings);
 
         return $strings;
     }
@@ -288,27 +299,30 @@ class Safe
      *
      * @return mixed
      */
-    public function htmlFilter($strings, $maxNum = 20000)
+    public static function htmlFilter($strings, $maxNum = 20000)
     {
         if (is_array($strings)) {
+            $result = [];
+
             foreach ($strings as $key => $val) {
-                $strings[static::htmlFilter($key)] = static::htmlFilter($val);
+                $result[static::htmlFilter($key)] = static::htmlFilter($val, $maxNum);
             }
-        } else {
-            $strings = trim(static::lengthLimit($strings, $maxNum));
 
-            $strings = preg_replace([
-                '/<\s*a[^>]*href\s*=\s*[\'\"]?(javascript|vbscript)[^>]*>/i',
-                '/<([^>]*)on(\w)+=[^>]*>/i',
-                '/<\s*\/?\s*(script|i?frame)[^>]*\s*>/i',
-            ], [
-                '<a href="#">',
-                '<$1>',
-                '&lt;$1&gt;',
-            ], $strings);
-
-            $strings = str_replace('　', '', $strings);
+            return $result;
         }
+        $strings = trim(static::lengthLimit((string) ($strings), $maxNum));
+
+        $strings = preg_replace([
+            '/<\s*a[^>]*href\s*=\s*[\'\"]?(javascript|vbscript)[^>]*>/i',
+            '/<([^>]*)on(\w)+=[^>]*>/i',
+            '/<\s*\/?\s*(script|i?frame)[^>]*\s*>/i',
+        ], [
+            '<a href="#">',
+            '<$1>',
+            '&lt;$1&gt;',
+        ], $strings);
+
+        $strings = str_replace('　', '', $strings);
 
         return $strings;
     }
@@ -320,19 +334,19 @@ class Safe
      *
      * @return mixed
      */
-    public static function intArrayFilter($strings)
+    public static function intArrFilter($strings)
     {
-        if ('' !== $strings) {
-            if (!is_array($strings)) {
-                $strings = explode(',', $strings);
-            }
-
-            $strings = array_map('intval', $strings);
-
-            return implode(',', $strings);
+        if ('' === $strings) {
+            return 0;
         }
 
-        return 0;
+        if (!is_array($strings)) {
+            $strings = explode(',', $strings);
+        }
+
+        $strings = array_map('intval', $strings);
+
+        return implode(',', $strings);
     }
 
     /**
@@ -342,7 +356,7 @@ class Safe
      *
      * @return mixed
      */
-    public static function strArrayFilter($strings)
+    public static function strArrFilter($strings)
     {
         $result = '';
 
@@ -367,8 +381,9 @@ class Safe
      * 访问时间限制.
      *
      * @param array $limitTime
+     * @param int   $time
      */
-    public static function limitTime(array $limitTime)
+    public static function limitTime(array $limitTime, int $time)
     {
         if (empty($limitTime)) {
             return;
@@ -382,10 +397,10 @@ class Safe
         }
 
         if ($limitMaxTime < $limitMinTime) {
-            $limitMaxTime = $limitMaxTime + 60 * 60 * 24;
+            $limitMaxTime += 60 * 60 * 24;
         }
 
-        if (time() >= $limitMinTime && time() <= $limitMaxTime) {
+        if ($time >= $limitMinTime && $time <= $limitMaxTime) {
             throw new RuntimeException(
                 sprintf(
                     'You can only before %s or after %s to access this.',
@@ -402,22 +417,24 @@ class Safe
      * @param string $visitorIp
      * @param mixed  $limitIp
      */
-    public static function limitIp($visitorIp, $limitIp)
+    public static function limitIp(string $visitorIp, $limitIp)
     {
-        if (!empty($limitIp)) {
-            if (is_string($limitIp)) {
-                $limitIp = (array) $limitIp;
-            }
+        if (empty($limitIp)) {
+            return;
+        }
 
-            foreach ($limitIp as $ip) {
-                if (preg_match("/{$ip}/", $visitorIp)) {
-                    throw new RuntimeException(
-                        sprintf(
-                            'You IP %s are banned,you can not access this',
-                            $visitorIp
-                        )
-                    );
-                }
+        if (is_string($limitIp)) {
+            $limitIp = (array) $limitIp;
+        }
+
+        foreach ($limitIp as $ip) {
+            if (preg_match("/{$ip}/", $visitorIp)) {
+                throw new RuntimeException(
+                    sprintf(
+                        'You IP %s are banned,you can not access this.',
+                        $visitorIp
+                    )
+                );
             }
         }
     }
@@ -445,7 +462,7 @@ class Safe
      *
      * @return string
      */
-    public static function cleanJs($strings)
+    public static function cleanJs(string $strings)
     {
         $strings = trim($strings);
 
@@ -472,42 +489,17 @@ class Safe
      *
      * @param string $strings
      * @param bool   $deep
-     * @param array  $white
      * @param array  $black
      *
      * @return string
      */
-    public static function strings($strings, $deep = true, $white = [], $black = [])
+    public static function text(string $strings, bool $deep = true, array $black = [])
     {
-        if (true === $deep) {
-            $black = array_merge([
-                ' ',
-                '&nbsp;',
-                '&',
-                '=',
-                '-',
-                '#',
-                '%',
-                '!',
-                '@',
-                '^',
-                '*',
-                'amp;',
-            ], $black);
-
-            if ($white) {
-                $temp = [];
-
-                foreach ($black as $type) {
-                    if (!in_array($type, $white, true)) {
-                        $temp[] = $type;
-                    }
-                }
-
-                $black = $temp;
-            }
-        } else {
-            $black = [];
+        if (true === $deep && !$black) {
+            $black = [
+                ' ', '&nbsp;', '&', '=', '-',
+                '#', '%', '!', '@', '^', '*', 'amp;',
+            ];
         }
 
         $strings = static::cleanJs($strings);
@@ -526,13 +518,13 @@ class Safe
     }
 
     /**
-     * 字符过滤 JS和 HTML标签.
+     * 字符过滤 JS 和 HTML 标签.
      *
      * @param string $strings
      *
      * @return string
      */
-    public static function strip($strings)
+    public static function strip(string $strings)
     {
         $strings = trim($strings);
         $strings = static::cleanJs($strings);
@@ -548,7 +540,7 @@ class Safe
      *
      * @return string
      */
-    public static function htmlView($strings)
+    public static function htmlView(string $strings)
     {
         $strings = stripslashes($strings);
         $strings = nl2br($strings);
@@ -598,7 +590,12 @@ class Safe
         }
 
         $strings = array_map(function ($strings) {
-            $strings = strtr($strings, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
+            $strings = strtr(
+                $strings,
+                array_flip(
+                    get_html_translation_table(HTML_SPECIALCHARS)
+                )
+            );
 
             return $strings;
         }, $strings);
@@ -618,18 +615,11 @@ class Safe
      *
      * @return mixed
      */
-    public static function shortCheck($strings, $maxLength = 500)
+    public static function shortCheck(string $strings, int $maxLength = 500)
     {
         $strings = static::lengthLimit($strings, $maxLength);
-
-        $strings = str_replace([
-            "\\'",
-            '\\',
-            '#',
-        ], '', $strings);
-        if ('' !== $strings) {
-            $strings = static::htmlspecialchars($strings);
-        }
+        $strings = str_replace(["\\'", '\\', '#'], '', $strings);
+        $strings = static::htmlspecialchars($strings);
 
         return preg_replace('/　+/', '', trim($strings));
     }
@@ -642,7 +632,7 @@ class Safe
      *
      * @return mixed
      */
-    public static function longCheck($strings, $maxLength = 3000)
+    public static function longCheck(string $strings, int $maxLength = 3000)
     {
         $strings = static::lengthLimit($strings, $maxLength);
         $strings = str_replace("\\'", '’', $strings);
