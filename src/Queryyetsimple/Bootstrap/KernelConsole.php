@@ -26,6 +26,7 @@ use Leevel\Bootstrap\Bootstrap\RegisterRuntime;
 use Leevel\Bootstrap\Bootstrap\TraverseProvider;
 use Leevel\Console\Application;
 use Leevel\Console\Load;
+use Leevel\Console\Make;
 use Leevel\Http\Request;
 use Leevel\Kernel\IKernelConsole;
 use Leevel\Kernel\IProject;
@@ -93,6 +94,8 @@ abstract class KernelConsole implements IKernelConsole
     {
         $this->registerBaseService();
 
+        $this->setGlobalReplace();
+
         $this->loadCommands();
 
         return $this->getConsoleApplication()->run($input, $output);
@@ -156,6 +159,16 @@ abstract class KernelConsole implements IKernelConsole
         $commands = $this->normalizeCommands($this->getCommands());
 
         $this->getConsoleApplication()->normalizeCommands($commands);
+    }
+
+    /**
+     * 设置全局替换.
+     */
+    protected function setGlobalReplace()
+    {
+        Make::setGlobalReplace(
+            $this->project['option']->get('console\template') ?: []
+        );
     }
 
     /**

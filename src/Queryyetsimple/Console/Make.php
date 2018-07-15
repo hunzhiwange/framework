@@ -76,6 +76,13 @@ abstract class Make extends Command
     protected $customReplaceKeyValue = [];
 
     /**
+     * 全局替换.
+     *
+     * @var array
+     */
+    protected static $globalReplace = [];
+
+    /**
      * 响应命令.
      */
     public function handle()
@@ -89,6 +96,28 @@ abstract class Make extends Command
         // 保存成功输出消息
         $this->info(sprintf('%s <%s> created successfully.', $this->getMakeType(), $this->argument('name')));
         $this->comment($this->formatFile($this->getSaveFilePath()));
+    }
+
+    /**
+     * 设置全局变量替换.
+     *
+     * @param array $replace
+     */
+    public static function setGlobalReplace(array $replace): void
+    {
+        static::$globalReplace = $replace;
+    }
+
+    /**
+     * 获取全局变量替换.
+     *
+     * @param array $replace
+     *
+     * @return array
+     */
+    public static function getGlobalReplace(): array
+    {
+        return static::$globalReplace;
     }
 
     /**
@@ -180,7 +209,7 @@ abstract class Make extends Command
      */
     protected function parseSourceAndReplace()
     {
-        $replaceKeyValue = array_merge(option('console\template'), $this->getDefaultReplaceKeyValue());
+        $replaceKeyValue = array_merge(static::$globalReplace, $this->getDefaultReplaceKeyValue());
 
         $sourceKey = array_map(function ($item) {
             return '{{'.$item.'}}';
@@ -248,6 +277,7 @@ abstract class Make extends Command
     protected function parseNamespace()
     {
         $namespace = $this->option('namespace');
+
         if (empty($namespace)) {
             $namespace = 'app';
         }
