@@ -75,7 +75,9 @@ abstract class Provider
             return;
         }
 
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        throw new BadMethodCallException(
+            sprintf('Method %s is not exits.', $method)
+        );
     }
 
     /**
