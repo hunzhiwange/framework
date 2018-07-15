@@ -72,8 +72,14 @@ class Phpui extends Connect implements IConnect
 
         // 返回类型
         if (false === $display) {
-            return include $file;
+            ob_start();
+            include $file;
+            $result = ob_get_contents();
+            ob_end_clean();
+
+            return $result;
         }
+
         include $file;
     }
 }

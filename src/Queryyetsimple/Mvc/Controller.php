@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc;
 
-use Leevel\View\IView as ViewIView;
+use Leevel\View\IConnect as ViewIConnect;
 use RuntimeException;
 
 /**
@@ -49,29 +49,6 @@ abstract class Controller implements IController
     }
 
     /**
-     * 赋值
-     *
-     * @param mixed $key
-     * @param mixed $value
-     */
-    public function __set($key, $value)
-    {
-        $this->assign($key, $value);
-    }
-
-    /**
-     * 获取值
-     *
-     * @param string $key
-     *
-     * @return mixed
-     */
-    public function __get($key)
-    {
-        return $this->getAssign($key);
-    }
-
-    /**
      * 设置视图.
      *
      * @param \leevel\Mvc\IView $view
@@ -88,11 +65,11 @@ abstract class Controller implements IController
     /**
      * 切换视图.
      *
-     * @param \Leevel\View\IView $theme
+     * @param \Leevel\View\ViewIConnect $theme
      *
      * @return $this
      */
-    public function switchView(ViewIView $theme)
+    public function switchView(ViewIConnect $theme)
     {
         $this->checkView();
         $this->view->switchView($theme);
@@ -184,7 +161,7 @@ abstract class Controller implements IController
     protected function checkView()
     {
         if (!$this->view) {
-            throw new RuntimeException('View is not set in controller');
+            throw new RuntimeException('View is not set in controller.');
         }
     }
 }

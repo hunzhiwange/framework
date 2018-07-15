@@ -104,6 +104,7 @@ class Html extends Connect implements IConnect
 
             return $result;
         }
+
         include $cachepath;
     }
 

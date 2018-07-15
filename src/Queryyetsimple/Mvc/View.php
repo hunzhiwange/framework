@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc;
 
-use Leevel\View\IView as ViewIView;
-use RuntimeException;
+use Leevel\View\IConnect as ViewIConnect;
 
 /**
  * 视图.
@@ -37,16 +36,16 @@ class View implements IView
     /**
      * 视图模板
      *
-     * @var \Leevel\View\IView
+     * @var \Leevel\View\IConnect
      */
     protected $theme;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\View\IView $theme
+     * @param \Leevel\View\IConnect $theme
      */
-    public function __construct(ViewIView $theme)
+    public function __construct(ViewIConnect $theme)
     {
         $this->theme = $theme;
     }
@@ -54,11 +53,11 @@ class View implements IView
     /**
      * 切换视图.
      *
-     * @param \Leevel\View\IView $theme
+     * @param \Leevel\View\IConnect $theme
      *
      * @return $this
      */
-    public function switchView(ViewIView $theme)
+    public function switchView(ViewIConnect $theme)
     {
         $assign = $this->getAssign();
 
@@ -78,7 +77,6 @@ class View implements IView
      */
     public function assign($name, $value = null)
     {
-        $this->checkTheme();
         $this->theme->setVar($name, $value);
 
         return $this;
@@ -93,8 +91,6 @@ class View implements IView
      */
     public function getAssign($name = null)
     {
-        $this->checkTheme();
-
         return $this->theme->getVar($name);
     }
 
@@ -107,8 +103,6 @@ class View implements IView
      */
     public function deleteAssign($name)
     {
-        $this->checkTheme();
-
         $args = func_get_args();
         $this->theme->deleteVar(...$args);
 
@@ -124,7 +118,6 @@ class View implements IView
      */
     public function clearAssign()
     {
-        $this->checkTheme();
         $this->theme->clearVar();
 
         return $this;
@@ -141,18 +134,6 @@ class View implements IView
      */
     public function display($file = null, array $vars = [], $ext = null)
     {
-        $this->checkTheme();
-
         return $this->theme->display($file, $vars, $ext, false);
-    }
-
-    /**
-     * 验证 theme.
-     */
-    protected function checkTheme()
-    {
-        if (!$this->theme) {
-            throw new RuntimeException('Theme is not set in view');
-        }
     }
 }
