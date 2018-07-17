@@ -107,7 +107,7 @@ class FsoTest extends TestCase
     public function testCopyDirectory()
     {
         $sourcePath = __DIR__.'/copyDirectory';
-        $sourceSubPath = __DIR__.'/CopyDirectory/dir';
+        $sourceSubPath = __DIR__.'/copyDirectory/dir';
         $targetPath = __DIR__.'/targetCopyDirectory';
 
         $this->assertDirectoryNotExists($sourceSubPath);
