@@ -188,9 +188,7 @@ class CacheTest extends TestCase
             }
         );
 
-        var_dump($result);
-
-        $this->assertContains(sprintf('Dir %s is not', $dirname), $result);
+        $this->assertContains('not', $result);
 
         rmdir($dirname);
     }
