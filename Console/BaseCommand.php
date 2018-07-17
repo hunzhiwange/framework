@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Console;
 
+use Closure;
 use Leevel\Console\Application;
 use Leevel\Console\Command;
 use Leevel\Di\Container;
@@ -28,19 +29,19 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 
 /**
- * base make.
+ * base command.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.07.15
+ * @since 2018.07.17
  *
  * @version 1.0
  */
-trait BaseMake
+trait BaseCommand
 {
-    protected function runCommand(Command $command, array $inputs)
+    protected function runCommand(Command $command, array $inputs, Closure $call)
     {
-        $container = new ContainerMock();
+        $container = new Container();
 
         $application = new Application($container, '1.0');
 
@@ -48,14 +49,9 @@ trait BaseMake
 
         Facade::setContainer($container);
 
+        call_user_func($call, $container);
+
         $application->add($command);
-
-        // 静态属性会保持住，可能受到其它单元测试的影响
-        Facade::remove('router');
-
-        $container->singleton('router', function () {
-            return new RouterService();
-        });
 
         $input = new ArrayInput($inputs);
         $output = new BufferedOutput();
@@ -67,26 +63,5 @@ trait BaseMake
         Facade::setContainer(null);
 
         return $result;
-    }
-}
-
-class RouterService
-{
-    public function getControllerDir()
-    {
-        return '';
-    }
-}
-
-class ContainerMock extends Container
-{
-    public function getPathByNamespace($namespaces)
-    {
-        return __DIR__;
-    }
-
-    public function pathAnApplication(?string $app = null)
-    {
-        return __DIR__;
     }
 }
