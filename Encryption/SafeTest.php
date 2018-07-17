@@ -183,9 +183,11 @@ class SafeTest extends TestCase
 
         $this->assertNull(Safe::limitTime(['abc'], 0));
 
+        $time = date('Y-m-d');
+
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'You can only before 2018-07-15 08:10:00 or after 2018-07-15 08:30:00 to access this.'
+            'You can only before '.$time.' 08:10:00 or after '.$time.' 08:30:00 to access this.'
         );
 
         Safe::limitTime(['08:10', '08:30'], strtotime('08:15'));
@@ -193,9 +195,12 @@ class SafeTest extends TestCase
 
     public function testLimitTime2()
     {
+        $time = date('Y-m-d');
+        $time2 = date('Y-m-d', time() + 86400);
+
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'You can only before 2018-07-15 08:30:00 or after 2018-07-16 08:10:00 to access this.'
+            'You can only before '.$time.' 08:30:00 or after '.$time2.' 08:10:00 to access this.'
         );
 
         Safe::limitTime(['08:30', '08:10'], strtotime('10:50'));
