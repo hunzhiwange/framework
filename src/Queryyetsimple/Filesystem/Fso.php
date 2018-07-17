@@ -22,6 +22,7 @@ namespace Leevel\Filesystem;
 
 use Closure;
 use DirectoryIterator;
+use InvalidArgumentException;
 use Leevel\Support\TMacro;
 use RuntimeException;
 
@@ -45,7 +46,7 @@ class Fso
      *
      * @return string
      */
-    public static function fileContents($path)
+    public static function fileContents(string $path)
     {
         if (is_file($path)) {
             return file_get_contents($path);
@@ -62,12 +63,12 @@ class Fso
      * @param string $dir
      * @param number $mode
      *
-     * @return true|void
+     * @return true
      */
-    public static function createDirectory($dir, $mode = 0777)
+    public static function createDirectory(string $dir, $mode = 0777)
     {
         if (is_dir($dir)) {
-            return;
+            return true;
         }
 
         mkdir($dir, $mode, true);
@@ -81,7 +82,7 @@ class Fso
      * @param string $dir
      * @param bool   $recursive
      */
-    public static function deleteDirectory($dir, bool $recursive = false)
+    public static function deleteDirectory(string $dir, bool $recursive = false)
     {
         if (!file_exists($dir) || !is_dir($dir)) {
             return;
@@ -101,7 +102,7 @@ class Fso
                     if (!unlink($file->getRealPath())) {
                         return;
                     }
-                } elseif ($file->idir()) {
+                } elseif ($file->isDir()) {
                     static::deleteDirectory($file->getRealPath(), $recursive);
                 }
             }
@@ -117,13 +118,9 @@ class Fso
      * @param string $targetPath
      * @param array  $filter
      */
-    public static function copyDirectory($sourcePath, $targetPath, array $filter = [])
+    public static function copyDirectory(string $sourcePath, string $targetPath, array $filter = [])
     {
         if (!is_dir($sourcePath)) {
-            return;
-        }
-
-        if (file_exists($targetPath)) {
             return;
         }
 
@@ -145,8 +142,12 @@ class Fso
                 if (!copy($file->getRealPath(), $newPath)) {
                     return;
                 }
-            } elseif ($file->idir()) {
-                if (!static::copyDirectory($file->getRealPath(), $newPath)) {
+            } elseif ($file->isDir()) {
+                if (!is_dir($newPath)) {
+                    static::createDirectory($newPath);
+                }
+
+                if (!static::copyDirectory($file->getRealPath(), $newPath, $filter)) {
                     return;
                 }
             }
@@ -161,7 +162,7 @@ class Fso
      * @param \Closure $cal
      * @param array    $filter
      */
-    public static function listDirectory($path, bool $recursive, Closure $cal, array $filter = [])
+    public static function listDirectory(string $path, bool $recursive, Closure $cal, array $filter = [])
     {
         if (!is_dir($path)) {
             return;
@@ -177,7 +178,7 @@ class Fso
 
             call_user_func($cal, $file);
 
-            if (true === $recursive && $file->idir()) {
+            if (true === $recursive && $file->isDir()) {
                 static::listDirectory(
                     $file->getPath().'/'.$file->getFilename(),
                     true,
@@ -196,7 +197,7 @@ class Fso
      *
      * @return string
      */
-    public static function tidyPath($path, $unix = true)
+    public static function tidyPath(string $path, bool $unix = true)
     {
         $path = str_replace('\\', '/', $path);
         $path = preg_replace('|/+|', '/', $path);
@@ -210,37 +211,13 @@ class Fso
     }
 
     /**
-     * 格式化文件或者目录为 Linux 风格
-     *
-     * @param string $path
-     * @param bool   $windowsWithLetter
-     *
-     * @return string
-     */
-    public static function tidyPathLinux($path, bool $windowsWithLetter = false)
-    {
-        $path = ltrim(static::tidyPath($path, true), '//');
-
-        if (false !== strpos($path, ':\\')) {
-            $temp = explode(':\\', $path);
-
-            $path = (true === $windowsWithLetter ?
-                strtolower($temp[0]).'/' :
-                '').
-                $temp[1];
-        }
-
-        return '/'.$path;
-    }
-
-    /**
      * 判断是否为绝对路径.
      *
      * @param string $path
      *
      * @return bool
      */
-    public static function isAbsolute($path)
+    public static function isAbsolute(string $path): bool
     {
         return preg_match('/^(\/|[a-z]:)/i', $path);
     }
@@ -252,7 +229,7 @@ class Fso
      *
      * @return array
      */
-    public static function distributed($dataId)
+    public static function distributed(int $dataId): array
     {
         $dataId = abs((int) $dataId);
         $dataId = sprintf('%09d', $dataId); // 格式化为 9 位数，前面不够填充 0
@@ -273,22 +250,17 @@ class Fso
      *
      * @return bool
      */
-    public static function createFile($path, $mode = 0766)
+    public static function createFile(string $path, $mode = 0766)
     {
         $dir = dirname($path);
 
         if (is_file($dir)) {
             throw new InvalidArgumentException(
-                'Dir cannot be a file.'
+                'Dir can not be a file.'
             );
         }
 
-        if (!file_exists($dir) &&
-            static::createDirectory($dir)) {
-            throw new RuntimeException(
-                sprint('Create dir %s failed.', $dir)
-            );
-        }
+        !is_dir($dir) && static::createDirectory($dir);
 
         if ($file = fopen($path, 'a')) {
             chmod($path, $mode);
@@ -309,7 +281,7 @@ class Fso
      *
      * @return string
      */
-    public static function getExtension($fileName, int $case = 0)
+    public static function getExtension(string $fileName, int $case = 0)
     {
         $fileName = pathinfo($fileName, PATHINFO_EXTENSION);
 
@@ -331,7 +303,7 @@ class Fso
      *
      * @return string
      */
-    public static function getName($path)
+    public static function getName(string $path)
     {
         return pathinfo($path, PATHINFO_FILENAME);
     }
