@@ -1,5 +1,5 @@
 composer.lock
-vendor/
+/vendor/
 .DS_Store
 .php_cs.cache
 logs/
