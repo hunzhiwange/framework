@@ -47,7 +47,7 @@ class ClearTest extends TestCase
         $result = $this->runCommand(
             new Clear(),
             [
-                'command'     => 'option:clear',
+                'command' => 'option:clear',
             ],
             function ($container) use ($cacheFile) {
                 $project = $this->createMock(IProject::class);
@@ -73,7 +73,7 @@ class ClearTest extends TestCase
         $result = $this->runCommand(
             new Clear(),
             [
-                'command'     => 'option:clear',
+                'command' => 'option:clear',
             ],
             function ($container) use ($cacheFile) {
                 $project = $this->createMock(IProject::class);
