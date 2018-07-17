@@ -23,7 +23,6 @@ namespace Leevel\Option;
 use Dotenv\Dotenv;
 use Dotenv\Exception\InvalidFileException;
 use Dotenv\Exception\InvalidPathException;
-use Exception;
 use Leevel\Kernel\IProject;
 use RuntimeException;
 
@@ -59,7 +58,7 @@ class Load
      */
     public function __construct(string $dir)
     {
-        if (!is_string($dir)) {
+        if (!is_dir($dir)) {
             throw new RuntimeException('Option load dir is not exits.');
         }
 
@@ -113,15 +112,21 @@ class Load
      */
     protected function loadEnvData(IProject $project): array
     {
+        $oldEnv = $_ENV;
+        $_ENV = [];
+
         try {
             (new Dotenv($project->pathEnv(), $project->envFile()))->load();
         } catch (InvalidPathException $e) {
-            exit($e->getMessage());
+            throw new RuntimeException($e->getMessage());
         } catch (InvalidFileException $e) {
-            exit($e->getMessage());
+            throw new RuntimeException($e->getMessage());
         }
 
-        return $_ENV;
+        $result = $_ENV;
+        $_ENV = array_merge($oldEnv, $_ENV);
+
+        return $result;
     }
 
     /**
@@ -203,7 +208,7 @@ class Load
         }
 
         if (false === $findApp) {
-            throw new Exception('Unable to load the app option file.');
+            throw new RuntimeException('Unable to load the app option file.');
         }
 
         return $data;
@@ -237,7 +242,7 @@ class Load
                 }
 
                 if (!is_file($item)) {
-                    throw new Exception(sprintf('Option file %s is not exist.', $item));
+                    throw new RuntimeException(sprintf('Option file %s is not exist.', $item));
                 }
 
                 $optionData = array_merge($optionData, include $item);

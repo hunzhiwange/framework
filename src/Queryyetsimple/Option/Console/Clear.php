@@ -22,6 +22,7 @@ namespace Leevel\Option\Console;
 
 use Leevel\Console\Command;
 use Leevel\Console\Option;
+use Leevel\Kernel\IProject;
 
 /**
  * 配置缓存清理.
@@ -50,12 +51,14 @@ class Clear extends Command
 
     /**
      * 响应命令.
+     *
+     * @param \Leevel\Kernel\IProject $project
      */
-    public function handle()
+    public function handle(IProject $project)
     {
         $this->line('Start to clear cache option.');
 
-        $cachePath = app()->pathCacheOptionFile();
+        $cachePath = $project->pathCacheOptionFile();
 
         $this->clearCache($cachePath);
 

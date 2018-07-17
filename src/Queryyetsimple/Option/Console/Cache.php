@@ -23,6 +23,7 @@ namespace Leevel\Option\Console;
 use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
+use Leevel\Kernel\IProject;
 use Leevel\Option as Options;
 
 /**
@@ -52,18 +53,18 @@ class Cache extends Command
 
     /**
      * 响应命令.
+     *
+     * @param \Leevel\Kernel\IProject $project
      */
-    public function handle()
+    public function handle(IProject $project)
     {
         $this->line('Start to cache option.');
 
         $data = Options::all();
 
-        $cachePath = app()->pathCacheOptionFile();
+        $cachePath = $project->pathCacheOptionFile();
 
-        if (true === $this->checkCacheExists($cachePath)) {
-            return false;
-        }
+        $this->checkCacheExists($cachePath);
 
         $this->writeCache($cachePath, $data);
 
@@ -74,24 +75,14 @@ class Cache extends Command
      * 验证缓存.
      *
      * @param string $cachePath
-     *
-     * @return bool
      */
     protected function checkCacheExists(string $cachePath)
     {
         if (is_file($cachePath)) {
             $this->warn(sprintf('Option cache file %s is already exits.', $cachePath));
-            $result = $this->confirm('You must need to clear the cache file.', true);
 
-            if ($result) {
-                unlink($cachePath);
-                $this->warn('Please execute the command once again.');
-            }
-
-            return true;
+            unlink($cachePath);
         }
-
-        return false;
     }
 
     /**
@@ -102,8 +93,10 @@ class Cache extends Command
      */
     protected function writeCache(string $cachePath, array $data)
     {
-        if (!is_dir(dirname($cachePath))) {
-            mkdir(dirname($cachePath), 0777, true);
+        $dirname = dirname($cachePath);
+
+        if (!is_dir($dirname)) {
+            mkdir($dirname, 0777, true);
         }
 
         $content = '<?'.'php /* '.date('Y-m-d H:i:s').
@@ -111,9 +104,10 @@ class Cache extends Command
             PHP_EOL.'<?'.'php return '.
             var_export($data, true).'; ?'.'>';
 
-        if (!file_put_contents($cachePath, $content)) {
+        if (!is_writable($dirname) ||
+            !file_put_contents($cachePath, $content)) {
             throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable', dirname($cachePath))
+                sprintf('Dir %s is not writeable.', $dirname)
             );
         }
 
