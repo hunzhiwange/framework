@@ -46,7 +46,7 @@ class CacheTest extends TestCase
         $result = $this->runCommand(
             new Cache(),
             [
-                'command'     => 'option:cache',
+                'command' => 'option:cache',
             ],
             function ($container) use ($cacheFile) {
                 // 静态属性会保持住，可能受到其它单元测试的影响
@@ -86,7 +86,7 @@ class CacheTest extends TestCase
         $result = $this->runCommand(
             new Cache(),
             [
-                'command'     => 'option:cache',
+                'command' => 'option:cache',
             ],
             function ($container) use ($cacheFile) {
                 // 静态属性会保持住，可能受到其它单元测试的影响
@@ -124,7 +124,7 @@ class CacheTest extends TestCase
         $result = $this->runCommand(
             new Cache(),
             [
-                'command'     => 'option:cache',
+                'command' => 'option:cache',
             ],
             function ($container) use ($cacheFile) {
                 // 静态属性会保持住，可能受到其它单元测试的影响
@@ -167,7 +167,7 @@ class CacheTest extends TestCase
         $result = $this->runCommand(
             new Cache(),
             [
-                'command'     => 'option:cache',
+                'command' => 'option:cache',
             ],
             function ($container) use ($cacheFile) {
                 // 静态属性会保持住，可能受到其它单元测试的影响
