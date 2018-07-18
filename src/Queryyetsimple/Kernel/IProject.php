@@ -253,16 +253,16 @@ interface IProject extends IContainer
     public function pathApplicationTheme(?string $app = null);
 
     /**
-     * 返回语言包路径.
+     * 返回语言包缓存路径.
      *
      * @param string $i18n
      *
      * @return string
      */
-    public function pathCacheI18nFile(string $i18n);
+    public function pathCacheI18nFile(string $i18n): string;
 
     /**
-     * 是否缓存语言包.
+     * 是否存在语言包缓存.
      *
      * @param string $i18n
      *
@@ -271,18 +271,32 @@ interface IProject extends IContainer
     public function isCachedI18n(string $i18n): bool;
 
     /**
-     * 返回缓存路径.
+     * 返回配置缓存路径.
      *
      * @return string
      */
-    public function pathCacheOptionFile();
+    public function pathCacheOptionFile(): string;
 
     /**
-     * 是否缓存配置.
+     * 是否存在配置缓存.
      *
      * @return bool
      */
     public function isCachedOption(): bool;
+
+    /**
+     * 返回路由缓存路径.
+     *
+     * @return string
+     */
+    public function pathCacheRouterFile(): string;
+
+    /**
+     * 是否存在路由缓存.
+     *
+     * @return bool
+     */
+    public function isCachedRouter(): bool;
 
     /**
      * 取得 composer.

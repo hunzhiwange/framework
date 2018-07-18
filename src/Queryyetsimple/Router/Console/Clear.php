@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Router\Console;
 
 use Leevel\Console\Command;
+use Leevel\Kernel\IProject;
 
 /**
  * 路由缓存清理.
@@ -49,12 +50,14 @@ class Clear extends Command
 
     /**
      * 响应命令.
+     *
+     * @param \Leevel\Kernel\IProject $project
      */
-    public function handle()
+    public function handle(IProject $project)
     {
         $this->line('Start to clear cache router.');
 
-        $cachePath = path_router_cache();
+        $cachePath = $project->pathCacheRouterFile();
 
         $this->clearCache($cachePath);
 

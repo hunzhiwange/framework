@@ -701,21 +701,6 @@ if (!function_exists('path_table_cache')) {
     }
 }
 
-if (!function_exists('path_router_cache')) {
-    /**
-     * 取得项目当前应用路由缓存路径.
-     *
-     * @param string $path
-     *
-     * @return string
-     */
-    function path_router_cache($path = 'router.php')
-    {
-        return project()->pathApplicationCache('router').
-            ($path ? DIRECTORY_SEPARATOR.$path : $path);
-    }
-}
-
 if (!function_exists('is_ajax_request')) {
     /**
      * 是否为 ajax 请求

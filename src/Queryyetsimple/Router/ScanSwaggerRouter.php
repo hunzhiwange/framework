@@ -102,6 +102,6 @@ class ScanSwaggerRouter
      */
     protected function getCachePath()
     {
-        return path_router_cache();
+        return app()->pathCacheRouterFile();
     }
 }

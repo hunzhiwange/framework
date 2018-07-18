@@ -492,19 +492,19 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 返回语言包路径.
+     * 返回语言包缓存路径.
      *
      * @param string $i18n
      *
      * @return string
      */
-    public function pathCacheI18nFile(string $i18n)
+    public function pathCacheI18nFile(string $i18n): string
     {
         return $this->pathRuntime().'/cache/i18n/'.$i18n.'.php';
     }
 
     /**
-     * 是否缓存语言包.
+     * 是否存在语言包缓存.
      *
      * @param string $i18n
      *
@@ -516,23 +516,43 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 返回缓存路径.
+     * 返回配置缓存路径.
      *
      * @return string
      */
-    public function pathCacheOptionFile()
+    public function pathCacheOptionFile(): string
     {
         return $this->pathRuntime().'/cache/option.php';
     }
 
     /**
-     * 是否缓存配置.
+     * 是否存在配置缓存.
      *
      * @return bool
      */
     public function isCachedOption(): bool
     {
         return is_file($this->pathCacheOptionFile());
+    }
+
+    /**
+     * 返回路由缓存路径.
+     *
+     * @return string
+     */
+    public function pathCacheRouterFile(): string
+    {
+        return $this->pathRuntime().'/cache/router.php';
+    }
+
+    /**
+     * 是否存在路由缓存.
+     *
+     * @return bool
+     */
+    public function isCachedRouter(): bool
+    {
+        return is_file($this->pathCacheRouterFile());
     }
 
     /**
