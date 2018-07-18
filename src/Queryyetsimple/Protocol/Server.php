@@ -536,8 +536,13 @@ class Server implements IServer
 
         $pid = $server->master_pid."\n".$server->manager_pid;
 
-        if (!file_put_contents($this->option['pid_path'], $pid)) {
-            $this->warn('Swoole pid saved failed', true);
+        $dirname = dirname($this->option['pid_path']);
+
+        if (!is_writable($dirname) ||
+            !file_put_contents($this->option['pid_path'], $pid)) {
+            throw new InvalidArgumentException(
+                sprintf('Dir %s is not writeable', $dirname)
+            );
         }
 
         chmod($this->option['pid_path'], 0777);

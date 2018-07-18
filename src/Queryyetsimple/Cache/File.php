@@ -209,10 +209,17 @@ class File extends Connect implements IConnect
      */
     protected function writeData($fileName, $data)
     {
-        !is_dir(dirname($fileName)) && mkdir(dirname($fileName), 0777, true);
+        $dirname = dirname($fileName);
 
-        if (!file_put_contents($fileName, $data, LOCK_EX)) {
-            throw new InvalidArgumentException(sprintf('Dir %s is not writeable', dirname($fileName)));
+        if (!is_dir($dirname)) {
+            mkdir($dirname, 0777, true);
+        }
+
+        if (!is_writable($dirname) ||
+            !file_put_contents($fileName, $data, LOCK_EX)) {
+            throw new InvalidArgumentException(
+                sprintf('Dir %s is not writeable', $dirname)
+            );
         }
 
         chmod($fileName, 0777);

@@ -824,15 +824,19 @@ class Parser implements IParser
      */
     protected function makeCacheFile($cachePath, &$compiled)
     {
-        !is_file($cachePath) &&
-            !is_dir(dirname($cachePath)) &&
-            mkdir(dirname($cachePath), 0777, true);
+        $dirname = dirname($cachePath);
 
-        if (!file_put_contents($cachePath,
-            '<?'.'php /* '.date('Y-m-d H:i:s').
-            ' */ ?'.'>'.PHP_EOL.$compiled)) {
+        if (!is_dir($dirname)) {
+            mkdir($dirname, 0777, true);
+        }
+
+        $content = '<?'.'php /* '.date('Y-m-d H:i:s').
+            ' */ ?'.'>'.PHP_EOL.$compiled;
+
+        if (!is_writable($dirname) ||
+            !file_put_contents($cachePath, $content)) {
             throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable', dirname($cachePath))
+                sprintf('Dir %s is not writeable', $dirname)
             );
         }
 
