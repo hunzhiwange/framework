@@ -20,9 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Option\Console;
 
+use Leevel\Di\IContainer;
 use Leevel\Kernel\IProject;
 use Leevel\Option\Console\Cache;
-use Leevel\Support\Facade;
+use Leevel\Option\IOption;
 use Tests\Console\BaseCommand;
 use Tests\TestCase;
 
@@ -43,33 +44,27 @@ class CacheTest extends TestCase
     {
         $cacheFile = __DIR__.'/option_cache.php';
 
+        $optionData = [
+            'foo'   => 'bar',
+            'hello' => 'world',
+        ];
+
         $result = $this->runCommand(
             new Cache(),
             [
                 'command' => 'option:cache',
             ],
-            function ($container) use ($cacheFile) {
-                // 静态属性会保持住，可能受到其它单元测试的影响
-                Facade::remove('option');
-
-                $container->singleton('option', function () {
-                    return new OptionService();
-                });
-
-                $project = $this->createMock(IProject::class);
-
-                $this->assertInstanceof(IProject::class, $project);
-
-                $project->method('pathCacheOptionFile')->willReturn($cacheFile);
-                $this->assertEquals($cacheFile, $project->pathCacheOptionFile());
-
-                $container->singleton(IProject::class, $project);
+            function ($container) use ($cacheFile, $optionData) {
+                $this->initContainerService($container, $cacheFile, $optionData);
             }
         );
 
-        $this->assertContains(sprintf('Option file %s cache successed.', $cacheFile), $result);
+        $this->assertContains(
+            sprintf('Option file %s cache successed.', $cacheFile),
+            $result
+        );
 
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], (array) (include $cacheFile));
+        $this->assertSame($optionData, (array) (include $cacheFile));
 
         unlink($cacheFile);
     }
@@ -77,6 +72,11 @@ class CacheTest extends TestCase
     public function testExists()
     {
         $cacheFile = __DIR__.'/option_cache2.php';
+
+        $optionData = [
+            'foo'   => 'bar',
+            'hello' => 'world',
+        ];
 
         file_put_contents($cacheFile, 'hello');
 
@@ -88,31 +88,23 @@ class CacheTest extends TestCase
             [
                 'command' => 'option:cache',
             ],
-            function ($container) use ($cacheFile) {
-                // 静态属性会保持住，可能受到其它单元测试的影响
-                Facade::remove('option');
-
-                $container->singleton('option', function () {
-                    return new OptionService();
-                });
-
-                $project = $this->createMock(IProject::class);
-
-                $this->assertInstanceof(IProject::class, $project);
-
-                $project->method('pathCacheOptionFile')->willReturn($cacheFile);
-                $this->assertEquals($cacheFile, $project->pathCacheOptionFile());
-
-                $container->singleton(IProject::class, $project);
+            function ($container) use ($cacheFile, $optionData) {
+                $this->initContainerService($container, $cacheFile, $optionData);
             }
         );
 
-        $this->assertContains(sprintf('Option file %s cache successed.', $cacheFile), $result);
+        $this->assertContains(
+            sprintf('Option file %s cache successed.', $cacheFile),
+            $result
+        );
 
         // 如果换成文件存在，则包含警告信息
-        $this->assertContains(sprintf('Option cache file %s is already exits.', $cacheFile), $result);
+        $this->assertContains(
+            sprintf('Option cache file %s is already exits.', $cacheFile),
+            $result
+        );
 
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], (array) (include $cacheFile));
+        $this->assertSame($optionData, (array) (include $cacheFile));
 
         unlink($cacheFile);
     }
@@ -121,33 +113,27 @@ class CacheTest extends TestCase
     {
         $cacheFile = __DIR__.'/dirNotExists/option_cache.php';
 
+        $optionData = [
+            'foo'   => 'bar',
+            'hello' => 'world',
+        ];
+
         $result = $this->runCommand(
             new Cache(),
             [
                 'command' => 'option:cache',
             ],
-            function ($container) use ($cacheFile) {
-                // 静态属性会保持住，可能受到其它单元测试的影响
-                Facade::remove('option');
-
-                $container->singleton('option', function () {
-                    return new OptionService();
-                });
-
-                $project = $this->createMock(IProject::class);
-
-                $this->assertInstanceof(IProject::class, $project);
-
-                $project->method('pathCacheOptionFile')->willReturn($cacheFile);
-                $this->assertEquals($cacheFile, $project->pathCacheOptionFile());
-
-                $container->singleton(IProject::class, $project);
+            function ($container) use ($cacheFile, $optionData) {
+                $this->initContainerService($container, $cacheFile, $optionData);
             }
         );
 
-        $this->assertContains(sprintf('Option file %s cache successed.', $cacheFile), $result);
+        $this->assertContains(
+            sprintf('Option file %s cache successed.', $cacheFile),
+            $result
+        );
 
-        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], (array) (include $cacheFile));
+        $this->assertSame($optionData, (array) (include $cacheFile));
 
         unlink($cacheFile);
         rmdir(dirname($cacheFile));
@@ -157,6 +143,11 @@ class CacheTest extends TestCase
     {
         $dirname = __DIR__.'/dirWriteable';
         $cacheFile = $dirname.'/option_cache.php';
+
+        $optionData = [
+            'foo'   => 'bar',
+            'hello' => 'world',
+        ];
 
         // 设置目录只读
         // 7 = 4+2+1 分别代表可读可写可执行
@@ -169,22 +160,8 @@ class CacheTest extends TestCase
             [
                 'command' => 'option:cache',
             ],
-            function ($container) use ($cacheFile) {
-                // 静态属性会保持住，可能受到其它单元测试的影响
-                Facade::remove('option');
-
-                $container->singleton('option', function () {
-                    return new OptionService();
-                });
-
-                $project = $this->createMock(IProject::class);
-
-                $this->assertInstanceof(IProject::class, $project);
-
-                $project->method('pathCacheOptionFile')->willReturn($cacheFile);
-                $this->assertEquals($cacheFile, $project->pathCacheOptionFile());
-
-                $container->singleton(IProject::class, $project);
+            function ($container) use ($cacheFile, $optionData) {
+                $this->initContainerService($container, $cacheFile, $optionData);
             }
         );
 
@@ -192,15 +169,27 @@ class CacheTest extends TestCase
 
         rmdir($dirname);
     }
-}
 
-class OptionService
-{
-    public function all()
+    protected function initContainerService(IContainer $container, string $cacheFile, array $optionData)
     {
-        return [
-            'foo'   => 'bar',
-            'hello' => 'world',
-        ];
+        // 注册 project
+        $project = $this->createMock(IProject::class);
+
+        $this->assertInstanceof(IProject::class, $project);
+
+        $project->method('pathCacheOptionFile')->willReturn($cacheFile);
+        $this->assertEquals($cacheFile, $project->pathCacheOptionFile());
+
+        $container->singleton(IProject::class, $project);
+
+        // 注册 option
+        $option = $this->createMock(IOption::class);
+
+        $this->assertInstanceof(IOption::class, $option);
+
+        $option->method('all')->willReturn($optionData);
+        $this->assertEquals($optionData, $option->all());
+
+        $container->singleton(IOption::class, $option);
     }
 }
