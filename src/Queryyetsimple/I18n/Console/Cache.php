@@ -22,8 +22,9 @@ namespace Leevel\I18n\Console;
 
 use InvalidArgumentException;
 use Leevel\Console\Command;
-use Leevel\I18n;
-use Leevel\Option as Options;
+use Leevel\I18n\II18n;
+use Leevel\Kernel\IProject;
+use Leevel\Option\IOption;
 
 /**
  * 语言包缓存.
@@ -52,20 +53,22 @@ class Cache extends Command
 
     /**
      * 响应命令.
+     *
+     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\I18n\II18n      $i18n
+     * @param \Leevel\Option\IOption  $option
      */
-    public function handle()
+    public function handle(IProject $project, II18n $i18n, IOption $option)
     {
         $this->line('Start to cache i18n.');
 
-        $data = I18n::all();
+        $data = $i18n->all();
 
-        $i18nDefault = Options::get('i18n\default');
+        $i18nDefault = $option->get('i18n\default');
 
-        $cachePath = app()->pathCacheI18nFile($i18nDefault);
+        $cachePath = $project->pathCacheI18nFile($i18nDefault);
 
-        if (true === $this->checkCacheExists($cachePath)) {
-            return false;
-        }
+        $this->checkCacheExists($cachePath);
 
         $this->writeCache($cachePath, $data);
 
@@ -83,17 +86,9 @@ class Cache extends Command
     {
         if (is_file($cachePath)) {
             $this->warn(sprintf('I18n cache file %s is already exits.', $cachePath));
-            $result = $this->confirm('You must need to clear the cache file.', true);
 
-            if ($result) {
-                unlink($cachePath);
-                $this->warn('Please execute the command once again.');
-            }
-
-            return true;
+            unlink($cachePath);
         }
-
-        return false;
     }
 
     /**
@@ -104,16 +99,19 @@ class Cache extends Command
      */
     protected function writeCache(string $cachePath, array $data)
     {
-        if (!is_dir(dirname($cachePath))) {
-            mkdir(dirname($cachePath), 0777, true);
+        $dirname = dirname($cachePath);
+
+        if (!is_dir($dirname)) {
+            mkdir($dirname, 0777, true);
         }
 
         $content = '<?'.'php /* '.date('Y-m-d H:i:s').' */ ?'.'>'.
             PHP_EOL.'<?'.'php return '.var_export($data, true).'; ?'.'>';
 
-        if (!file_put_contents($cachePath, $content)) {
+        if (!is_writable($dirname) ||
+            !file_put_contents($cachePath, $content)) {
             throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable', dirname($cachePath))
+                sprintf('Dir %s is not writeable', $dirname)
             );
         }
 

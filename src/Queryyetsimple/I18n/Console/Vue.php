@@ -147,9 +147,10 @@ EOF;
         $content = '/** '.date('Y-m-d H:i:s').' */'.
             PHP_EOL.'export default '.json_encode($result, JSON_UNESCAPED_UNICODE).';';
 
-        if (!file_put_contents($outputDir.'/'.$outputFile, $content)) {
-            throw new RuntimeException(
-                sprintf('Dir %s do not have permission.', $outputDir)
+        if (!is_writable($outputDir) ||
+            !file_put_contents($outputDir.'/'.$outputFile, $content)) {
+            throw new InvalidArgumentException(
+                sprintf('Dir %s is not writeable', $outputDir)
             );
         }
 

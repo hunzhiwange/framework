@@ -21,7 +21,8 @@ declare(strict_types=1);
 namespace Leevel\I18n\Console;
 
 use Leevel\Console\Command;
-use Leevel\Option as Options;
+use Leevel\Kernel\IProject;
+use Leevel\Option\IOption;
 
 /**
  * 语言包缓存清理.
@@ -50,14 +51,17 @@ class Clear extends Command
 
     /**
      * 响应命令.
+     *
+     * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Option\IOption  $option
      */
-    public function handle()
+    public function handle(IProject $project, IOption $option)
     {
         $this->line('Start to clear cache i18n.');
 
-        $i18nDefault = Options::get('i18n\default');
+        $i18nDefault = $option->get('i18n\default');
 
-        $cachePath = app()->pathCacheI18nFile($i18nDefault);
+        $cachePath = $project->pathCacheI18nFile($i18nDefault);
 
         $this->clearCache($cachePath);
 
