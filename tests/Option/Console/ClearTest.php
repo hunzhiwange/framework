@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Option\Console;
 
+use Leevel\Di\IContainer;
 use Leevel\Kernel\IProject;
 use Leevel\Option\Console\Clear;
 use Tests\Console\BaseCommand;
@@ -50,20 +51,19 @@ class ClearTest extends TestCase
                 'command' => 'option:clear',
             ],
             function ($container) use ($cacheFile) {
-                $project = $this->createMock(IProject::class);
-
-                $this->assertInstanceof(IProject::class, $project);
-
-                $project->method('pathCacheOptionFile')->willReturn($cacheFile);
-                $this->assertEquals($cacheFile, $project->pathCacheOptionFile());
-
-                $container->singleton(IProject::class, $project);
+                $this->initContainerService($container, $cacheFile);
             }
         );
 
-        $this->assertContains(sprintf('Option file %s cache clear successed.', $cacheFile), $result);
+        $this->assertContains(
+            sprintf('Option file %s cache clear successed.', $cacheFile),
+            $result
+        );
 
-        $this->assertNotContains(sprintf('Option cache files have been cleaned up.', $cacheFile), $result);
+        $this->assertNotContains(
+            sprintf('Option cache files have been cleaned up.', $cacheFile),
+            $result
+        );
     }
 
     public function testHaveCleanedUp()
@@ -76,19 +76,30 @@ class ClearTest extends TestCase
                 'command' => 'option:clear',
             ],
             function ($container) use ($cacheFile) {
-                $project = $this->createMock(IProject::class);
-
-                $this->assertInstanceof(IProject::class, $project);
-
-                $project->method('pathCacheOptionFile')->willReturn($cacheFile);
-                $this->assertEquals($cacheFile, $project->pathCacheOptionFile());
-
-                $container->singleton(IProject::class, $project);
+                $this->initContainerService($container, $cacheFile);
             }
         );
 
-        $this->assertContains(sprintf('Option file %s cache clear successed.', $cacheFile), $result);
+        $this->assertContains(
+            sprintf('Option file %s cache clear successed.', $cacheFile),
+            $result
+        );
 
-        $this->assertContains(sprintf('Option cache files have been cleaned up.', $cacheFile), $result);
+        $this->assertContains(
+            sprintf('Option cache files have been cleaned up.', $cacheFile),
+            $result
+        );
+    }
+
+    protected function initContainerService(IContainer $container, string $cacheFile)
+    {
+        $project = $this->createMock(IProject::class);
+
+        $this->assertInstanceof(IProject::class, $project);
+
+        $project->method('pathCacheOptionFile')->willReturn($cacheFile);
+        $this->assertEquals($cacheFile, $project->pathCacheOptionFile());
+
+        $container->singleton(IProject::class, $project);
     }
 }

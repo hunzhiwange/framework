@@ -24,7 +24,7 @@ use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Console\Option;
 use Leevel\Kernel\IProject;
-use Leevel\Option as Options;
+use Leevel\Option\IOption;
 
 /**
  * 配置缓存.
@@ -55,12 +55,13 @@ class Cache extends Command
      * 响应命令.
      *
      * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Option\IOption  $option
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project, IOption $option)
     {
         $this->line('Start to cache option.');
 
-        $data = Options::all();
+        $data = $option->all();
 
         $cachePath = $project->pathCacheOptionFile();
 

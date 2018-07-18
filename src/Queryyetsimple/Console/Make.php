@@ -145,22 +145,24 @@ abstract class Make extends Command
     protected function saveTemplateResult()
     {
         $saveFilePath = $this->getSaveFilePath();
+        $dirname = dirname($saveFilePath);
 
-        if (!is_dir(dirname($saveFilePath))) {
-            mkdir(dirname($saveFilePath), 0777, true);
+        if (!is_dir($dirname)) {
+            mkdir($dirname, 0777, true);
         }
 
         if (is_file($saveFilePath)) {
             throw new RuntimeException(
                 'File is already exits.'.PHP_EOL.
-                $this->formatFile($this->getSaveFilePath())
+                $this->formatFile($saveFilePath)
             );
         }
 
-        if (!file_put_contents($saveFilePath, $this->getTemplateResult())) {
+        if (!is_writable($dirname) ||
+            !file_put_contents($saveFilePath, $this->getTemplateResult())) {
             throw new RuntimeException(
                 'Can not write file.'.PHP_EOL.
-                $this->formatFile($this->getSaveFilePath())
+                $this->formatFile($saveFilePath)
             );
         }
     }
