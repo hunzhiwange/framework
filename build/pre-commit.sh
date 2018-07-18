@@ -1,8 +1,3 @@
-# QueryPHP Framework Hook
-
-Modify this file ../.git/hooks/pre-commit add replace the content.
-
-```
 #!/bin/bash
 #
 # check PHP code syntax error and standard with phpcs
@@ -58,24 +53,3 @@ then
 fi 
  
 exit $?
-```
-
-## How to skip 
-
-If you need to skip, use the following command.
-
-```
-git commit -h
-git commit -n -m 'pass hook' #bypass pre-commit and commit-msg hooks
-```
-
-## For team
-
-```
-#!/usr/bin/env bash
-
-set -eu
-
-ln -s pre-commit.sh ./../.git/hooks/pre-commit
-```
-

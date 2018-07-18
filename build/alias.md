@@ -1,6 +1,6 @@
 # QueryPHP Framework Alias
 
-modify this file ../.git/config add alias and remote,then using git stpull and stpush to manager your subtree repository.
+Modify this file ../.git/config add alias and remote,then using git stpull and stpush to manager your subtree repository.
 
 ```
 git stpull Auth
