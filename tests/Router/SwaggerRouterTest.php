@@ -53,7 +53,6 @@ array (
   ),
   'groups' => 
   array (
-    0 => '/pet',
   ),
   'routers' => 
   array (
@@ -90,23 +89,10 @@ array (
           'regex' => NULL,
           'var' => NULL,
         ),
-        '/v2/test/hello4' => 
-        array (
-          'scheme' => NULL,
-          'domain' => 'www.queryphp.cn',
-          'params' => NULL,
-          'strict' => NULL,
-          'bind' => NULL,
-          'middlewares' => NULL,
-          'domain_regex' => NULL,
-          'domain_var' => NULL,
-          'regex' => NULL,
-          'var' => NULL,
-        ),
       ),
       'p' => 
       array (
-        '/pet' => 
+        '_' => 
         array (
           '/v2/pet/{petId:[A-Za-z]+}' => 
           array (
@@ -348,38 +334,6 @@ array (
           ),
         ),
       ),
-      '_' => 
-      array (
-        '_' => 
-        array (
-          '/v2/45/{id}' => 
-          array (
-            'scheme' => NULL,
-            'domain' => 'www.queryphp.cn',
-            'params' => NULL,
-            'strict' => NULL,
-            'bind' => NULL,
-            'middlewares' => NULL,
-            'domain_regex' => NULL,
-            'domain_var' => NULL,
-            'var' => 
-            array (
-              0 => 'id',
-            ),
-          ),
-          'regex' => 
-          array (
-            0 => '~^(?|/v2/45/(\\S+))$~x',
-          ),
-          'map' => 
-          array (
-            0 => 
-            array (
-              2 => '/v2/45/{id}',
-            ),
-          ),
-        ),
-      ),
     ),
     'post' => 
     array (
@@ -401,7 +355,7 @@ array (
       ),
       'p' => 
       array (
-        '/pet' => 
+        '_' => 
         array (
           '/v2/pet/{petId}' => 
           array (
@@ -452,7 +406,7 @@ array (
     array (
       'p' => 
       array (
-        '/pet' => 
+        '_' => 
         array (
           '/v2/pet/{petId}' => 
           array (
@@ -512,7 +466,6 @@ array (
   ),
   'groups' => 
   array (
-    0 => '/pet',
   ),
   'routers' => 
   array (
@@ -549,23 +502,10 @@ array (
           'regex' => NULL,
           'var' => NULL,
         ),
-        '/v2/test/hello4' => 
-        array (
-          'scheme' => NULL,
-          'domain' => 'www.queryphp.cn',
-          'params' => NULL,
-          'strict' => NULL,
-          'bind' => NULL,
-          'middlewares' => NULL,
-          'domain_regex' => NULL,
-          'domain_var' => NULL,
-          'regex' => NULL,
-          'var' => NULL,
-        ),
       ),
       'p' => 
       array (
-        '/pet' => 
+        '_' => 
         array (
           '/v2/pet/{petId:[A-Za-z]+}' => 
           array (
@@ -807,38 +747,6 @@ array (
           ),
         ),
       ),
-      '_' => 
-      array (
-        '_' => 
-        array (
-          '/v2/45/{id}' => 
-          array (
-            'scheme' => NULL,
-            'domain' => 'www.queryphp.cn',
-            'params' => NULL,
-            'strict' => NULL,
-            'bind' => NULL,
-            'middlewares' => NULL,
-            'domain_regex' => NULL,
-            'domain_var' => NULL,
-            'var' => 
-            array (
-              0 => 'id',
-            ),
-          ),
-          'regex' => 
-          array (
-            0 => '~^(?|/v2/45/(\\S+))$~x',
-          ),
-          'map' => 
-          array (
-            0 => 
-            array (
-              2 => '/v2/45/{id}',
-            ),
-          ),
-        ),
-      ),
     ),
     'post' => 
     array (
@@ -860,7 +768,7 @@ array (
       ),
       'p' => 
       array (
-        '/pet' => 
+        '_' => 
         array (
           '/v2/pet/{petId}' => 
           array (
@@ -911,7 +819,7 @@ array (
     array (
       'p' => 
       array (
-        '/pet' => 
+        '_' => 
         array (
           '/v2/pet/{petId}' => 
           array (
