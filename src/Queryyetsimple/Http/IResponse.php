@@ -20,6 +20,9 @@ declare(strict_types=1);
 
 namespace Leevel\Http;
 
+use Closure;
+use DateTime;
+
 /**
  * HTTP 响应接口.
  *
@@ -466,4 +469,373 @@ interface IResponse
      * @var int
      */
     const HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511;
+
+
+    /**
+     * 创建一个响应.
+     *
+     * @param string $content
+     * @param int    $status
+     * @param array  $headers
+     *
+     * @return static
+     */
+    public static function create($content = '', int $status = 200, array $headers = []);
+
+    /**
+     * 设置 COOKIE Resolver.
+     *
+     * @param \Closure $cookieResolver
+     */
+    public static function setCookieResolver(Closure $cookieResolver = null);
+
+    /**
+     * 发送 HTTP 响应.
+     *
+     * @return $this
+     */
+    public function send();
+
+    /**
+     * 发送响应头.
+     *
+     * @return $this
+     */
+    public function sendHeaders();
+
+    /**
+     * 发送响应内容.
+     *
+     * @return $this
+     */
+    public function sendContent();
+
+    /**
+     * 设置内容.
+     *
+     * @param mixed $content
+     *
+     * @return $this
+     */
+    public function setContent($content);
+
+    /**
+     * 附加内容.
+     *
+     * @param string $content
+     *
+     * @return $this
+     */
+    public function appendContent(string $content = null);
+
+    /**
+     * 设置响应头.
+     *
+     * @param string $key
+     * @param string $value
+     * @param bool   $replace
+     *
+     * @return $this
+     */
+    public function setHeader($key, $value, $replace = true);
+
+    /**
+     * 批量设置响应头.
+     *
+     * @param array $headers
+     *
+     * @return $this
+     */
+    public function withHeaders(array $headers);
+
+    /**
+     * 设置 COOKIE 别名.
+     *
+     * @param string $name
+     * @param string $value
+     * @param array  $option
+     *
+     * @return $this
+     */
+    public function cookie($name, $value = '', array $option = []);
+
+    /**
+     * 设置 COOKIE.
+     *
+     * @param string $name
+     * @param string $value
+     * @param array  $option
+     *
+     * @return $this
+     */
+    public function setCookie($name, $value = '', array $option = []);
+
+    /**
+     * 批量设置 COOKIE.
+     *
+     * @param array $cookies
+     * @param array $option
+     *
+     * @return $this
+     */
+    public function withCookies(array $cookies, array $option = []);
+
+    /**
+     * 获取 COOKIE.
+     *
+     * @return array
+     */
+    public function getCookies();
+
+    /**
+     * 取回 JSON 数据.
+     *
+     * @param bool $assoc
+     * @param int  $depth
+     *
+     * @return mixed
+     */
+    public function getData(bool $assoc = true, int $depth = 512);
+
+    /**
+     * 设置 JSON 数据.
+     *
+     * @param mixed $data
+     * @param int   $encodingOptions
+     *
+     * @return $this
+     */
+    public function setData($data = [], $encodingOptions = null);
+
+    /**
+     * 获取内容.
+     *
+     * @return string
+     */
+    public function getContent();
+
+    /**
+     * 获取内容.
+     *
+     * @return string
+     */
+    public function content();
+
+    /**
+     * 获取原始内容.
+     *
+     * @return string
+     */
+    public function getOriginal();
+
+    /**
+     * 设置 HTTP 协议版本 (1.0 or 1.1).
+     *
+     * @param string $protocolVersion
+     *
+     * @return $this
+     */
+    public function setProtocolVersion(string $protocolVersion);
+
+    /**
+     * 获取 HTTP 协议版本.
+     *
+     * @final
+     */
+    public function getProtocolVersion(): string;
+
+    /**
+     * 设置相应状态码
+     *
+     * @param int   $code
+     * @param mixed $text
+     *
+     * @return $this
+     */
+    public function setStatusCode(int $code, $text = null);
+
+    /**
+     * 获取状态码
+     *
+     * @return int
+     */
+    public function status(): int;
+
+    /**
+     * 获取状态码
+     *
+     * @final
+     */
+    public function getStatusCode(): int;
+
+    /**
+     * 编码设置.
+     *
+     * @param string $charset
+     *
+     * @return $this
+     */
+    public function setCharset(string $charset);
+
+    /**
+     * 编码设置.
+     *
+     * @param string $charset
+     *
+     * @return $this
+     */
+    public function charset(string $charset);
+
+    /**
+     * 获取编码
+     *
+     * @return string
+     */
+    public function getCharset();
+
+    /**
+     * 设置过期时间.
+     *
+     * @param \DateTime $datetime
+     *
+     * @return $this
+     */
+    public function setExpires(DateTime $datetime = null);
+
+    /**
+     * 设置最后修改时间.
+     *
+     * @param \DateTime $datetime
+     *
+     * @return $this
+     */
+    public function setLastModified(DateTime $datetime = null);
+
+    /**
+     * 设置缓存.
+     *
+     * @param int $minutes
+     *
+     * @return $this
+     */
+    public function setCache(int $minutes);
+
+    /**
+     * 设置响应未修改.
+     *
+     * @return $this
+     */
+    public function setNotModified();
+
+    /**
+     * 设置响应内容类型.
+     *
+     * @param string $contentType
+     * @param string $charset
+     *
+     * @return $this
+     */
+    public function setContentType(string $contentType, $charset = null);
+
+    /**
+     * 设置响应内容长度.
+     *
+     * @param int $contentLength
+     *
+     * @return $this
+     */
+    public function setContentLength(int $contentLength);
+
+    /**
+     * 设置自定义标识符.
+     *
+     * @param string $etag
+     *
+     * @return $this
+     */
+    public function setEtag(string $etag);
+
+    /**
+     * 响应是否为 JSON.
+     *
+     * @return bool
+     */
+    public function isJson(): bool;
+
+    /**
+     * 响应是否正确.
+     *
+     * @return bool
+     */
+    public function isInvalid(): bool;
+
+    /**
+     * 是否为信息性响应.
+     *
+     * @return bool
+     */
+    public function isInformational(): bool;
+
+    /**
+     * 是否为正确响应.
+     *
+     * @return bool
+     */
+    public function isSuccessful(): bool;
+
+    /**
+     * 是否为重定向响应.
+     *
+     * @return bool
+     */
+    public function isRedirection(): bool;
+
+    /**
+     * 是否为客户端错误响应.
+     *
+     * @return bool
+     */
+    public function isClientError(): bool;
+
+    /**
+     * 是否为服务端错误响应.
+     *
+     * @return bool
+     */
+    public function isServerError(): bool;
+
+    /**
+     * 是否为正常响应.
+     *
+     * @return bool
+     */
+    public function isOk(): bool;
+
+    /**
+     * 是否为受限响应.
+     *
+     * @return bool
+     */
+    public function isForbidden(): bool;
+
+    /**
+     * 是否为 404 NOT FOUND.
+     *
+     * @return bool
+     */
+    public function isNotFound(): bool;
+
+    /**
+     * 是否为表单重定向响应.
+     *
+     * @return bool
+     */
+    public function isRedirect(string $location = null): bool;
+
+    /**
+     * 是否为空响应.
+     *
+     * @return bool
+     */
+    public function isEmpty(): bool;
 }

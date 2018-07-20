@@ -253,7 +253,7 @@ class Request implements IRequest, IArray, ArrayAccess
      *
      * @return \Leevel\Http\Request
      */
-    public static function normalizeRequestFromContent(self $request)
+    public static function normalizeRequestFromContent(IRequest $request)
     {
         $contentType = $request->headers->get('CONTENT_TYPE');
         $method = strtoupper($request->server->get('REQUEST_METHOD', self::METHOD_GET));
@@ -1258,6 +1258,7 @@ class Request implements IRequest, IArray, ArrayAccess
         if (in_array($this->server->get('HTTPS'), ['1', 'on'], true)) {
             return true;
         }
+
         if ('443' === $this->server->get('SERVER_PORT')) {
             return true;
         }
