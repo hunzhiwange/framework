@@ -31,7 +31,8 @@
         "leric/php-thrift": "0.10.0",
         "twig/twig": "~2.0",
         "nikic/php-parser": "v4.0.0alpha3",
-        "zircote/swagger-php": "3.x-dev"
+        "zircote/swagger-php": "2.0.13",
+        "gettext/gettext": "^4.6.0"
     },
     "replace": {
         "leevel/auth": "self.version",
