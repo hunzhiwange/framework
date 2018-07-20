@@ -71,7 +71,7 @@ class Load
      *
      * @return $this
      */
-    public function setI18n($i18n)
+    public function setI18n(string $i18n)
     {
         $this->i18n = $i18n;
 
@@ -101,7 +101,7 @@ class Load
      *
      * @return array
      */
-    public function loadData()
+    public function loadData(): array
     {
         if (null !== $this->loaded) {
             return $this->loaded;
@@ -109,8 +109,6 @@ class Load
 
         $files = $this->findMoFile($this->parseDir($this->dirs));
         $texts = $this->parseMoData($files);
-
-        $texts['Query Yet Simple'] = '左手代码 右手年华 不忘初心 简单快乐';
 
         return $this->loaded = $texts;
     }
@@ -166,7 +164,7 @@ class Load
      */
     protected function parseMoData(array $files): array
     {
-        return (new mo())->readToArray($files);
+        return (new Mo())->read($files);
     }
 
     /**

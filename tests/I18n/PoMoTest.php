@@ -45,11 +45,11 @@ class PoMoTest extends TestCase
             '页'      => 'Page',
         ];
 
-        $lang = (new Po())->readToArray([__DIR__.'/page.po']);
+        $lang = (new Po())->read([__DIR__.'/page.po']);
 
         $this->assertSame($lang, $data);
 
-        $lang = (new Mo())->readToArray([__DIR__.'/page.mo']);
+        $lang = (new Mo())->read([__DIR__.'/page.mo']);
 
         $this->assertSame($lang, $data);
     }
@@ -126,7 +126,7 @@ array (
 )
 eot;
 
-        $lang = (new Po())->readToArray([__DIR__.'/validate.po']);
+        $lang = (new Po())->read([__DIR__.'/validate.po']);
 
         $this->assertSame(
             $data,
@@ -135,7 +135,7 @@ eot;
             )
         );
 
-        $lang = (new Mo())->readToArray([__DIR__.'/validate.mo']);
+        $lang = (new Mo())->read([__DIR__.'/validate.mo']);
 
         $data = <<<'eot'
 array (

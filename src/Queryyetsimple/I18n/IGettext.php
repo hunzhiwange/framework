@@ -18,33 +18,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\I18n\Streams;
+namespace Leevel\I18n;
 
 /**
- * 数据流 CachedFile
- * This class borrows heavily from the Wordpress and is part of the Wordpress package.
+ * 语言包数据读取接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.09.18
- * @see https://github.com/WordPress/WordPress/blob/master/wp-includes/pomo/
+ * @since 2018.07.20
  *
  * @version 1.0
  */
-class CachedFile extends Str
+interface IGettext
 {
     /**
-     * PHP5 constructor.
+     * 读取文件数据.
      *
-     * @param mixed $filename
+     * @param array $filename
+     *
+     * @return array
      */
-    public function __construct($filename)
-    {
-        parent::__construct();
-        $this->_str = file_get_contents($filename);
-        if (false === $this->_str) {
-            return false;
-        }
-        $this->_pos = 0;
-    }
+    public function read(array $filenames): array;
 }
