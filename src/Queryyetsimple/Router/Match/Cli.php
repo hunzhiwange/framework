@@ -21,9 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Router\Match;
 
 use Leevel\Console\Cli as ConsoleCli;
-use Leevel\Http\Request;
+use Leevel\Http\IRequest;
 use Leevel\Router\IRouter;
-use Leevel\Router\Router;
 
 /**
  * 路由命令行匹配.
@@ -39,12 +38,12 @@ class Cli implements IMatch
     /**
      * 匹配路径.
      *
-     * @param \Leevel\Router\Router $router
-     * @param \Leevel\Http\Request  $request
+     * @param \Leevel\Router\IRouter $router
+     * @param \Leevel\Http\IRequest  $request
      *
      * @return array
      */
-    public function matche(Router $router, Request $request): array
+    public function matche(IRouter $router, IRequest $request): array
     {
         list($node, $querys, $options) = (new ConsoleCli())->parse();
 

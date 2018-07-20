@@ -43,9 +43,9 @@ class MiddlewareParser
     /**
      * 构造函数.
      *
-     * @param \Leevel\Router\Router $router
+     * @param \Leevel\Router\IRouter $router
      */
-    public function __construct(Router $router)
+    public function __construct(IRouter $router)
     {
         $this->router = $router;
     }

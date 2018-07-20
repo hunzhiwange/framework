@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
+use Leevel\Http\IRequest;
+
 /**
  * 路由解析接口.
  *
@@ -149,4 +151,155 @@ interface IRouter
      * @var string
      */
     const DEFAULT_STRICT = true;
+
+    /**
+     * 分发请求到路由.
+     *
+     * @param \Leevel\Http\IRequest $request
+     *
+     * @return \Leevel\Http\IResponse
+     */
+    public function dispatch(IRequest $request);
+
+    /**
+     * 初始化请求
+     */
+    public function initRequest();
+
+    /**
+     * 设置匹配路由
+     * 绕过路由解析，可以用于高性能 RPC 快速匹配资源.
+     *
+     * @param array $matchedData
+     */
+    public function setMatchedData(array $matchedData): void;
+
+    /**
+     * 穿越中间件.
+     *
+     * @param \Leevel\Http\IRequest $passed
+     * @param array                 $passedExtend
+     */
+    public function throughMiddleware(IRequest $passed, array $passedExtend = []);
+
+    /**
+     * 设置控制器相对目录.
+     *
+     * @param string $controllerDir
+     */
+    public function setControllerDir(string $controllerDir);
+
+    /**
+     * 返回控制器相对目录.
+     *
+     * @param string $controllerDir
+     */
+    public function getControllerDir();
+
+    /**
+     * 设置路由.
+     *
+     * @param array $routers
+     */
+    public function setRouters(array $routers);
+
+    /**
+     * 取得当前路由.
+     *
+     * @return array
+     */
+    public function getRouters();
+
+    /**
+     * 设置基础路径.
+     *
+     * @param array $basepaths
+     */
+    public function setBasepaths(array $basepaths);
+
+    /**
+     * 添加基础路径.
+     *
+     * @param array $basepaths
+     */
+    public function addBasepaths(array $basepaths);
+
+    /**
+     * 取得基础路径.
+     *
+     * @return array
+     */
+    public function getBasepaths();
+
+    /**
+     * 设置路由分组.
+     *
+     * @param array $groups
+     */
+    public function setGroups(array $groups);
+
+    /**
+     * 添加路由分组.
+     *
+     * @param array $groups
+     */
+    public function addGroups(array $groups);
+
+    /**
+     * 取得路由分组.
+     *
+     * @return array
+     */
+    public function getGroups();
+
+    /**
+     * 设置中间件分组.
+     *
+     * @param array $middlewareGroups
+     */
+    public function setMiddlewareGroups(array $middlewareGroups);
+
+    /**
+     * 取得中间件分组.
+     *
+     * @return array
+     */
+    public function getMiddlewareGroups();
+
+    /**
+     * 设置全局中间件.
+     *
+     * @param array $middlewares
+     */
+    public function setGlobalMiddlewares(array $middlewares);
+
+    /**
+     * 取得全局中间件.
+     *
+     * @return array
+     */
+    public function getGlobalMiddlewares();
+
+    /**
+     * 设置中间件别名.
+     *
+     * @param array $middlewareAlias
+     */
+    public function setMiddlewareAlias(array $middlewareAlias);
+
+    /**
+     * 取得中间件别名.
+     *
+     * @return array
+     */
+    public function getMiddlewareAlias();
+
+    /**
+     * 匹配路径.
+     *
+     * @param string $path
+     *
+     * @return array
+     */
+    public function matchePath(string $path): array;
 }

@@ -22,10 +22,11 @@ namespace Leevel\Router;
 
 use InvalidArgumentException;
 use Leevel\Di\IContainer;
+use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
-use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Mvc\IController;
+use Leevel\Mvc\IView;
 use Leevel\Pipeline\Pipeline;
 use Leevel\Support\TMacro;
 
@@ -53,7 +54,7 @@ class Router implements IRouter
     /**
      * http 请求
      *
-     * @var \Leevel\Http\Request
+     * @var \Leevel\Http\IRequest
      */
     protected $request;
 
@@ -143,27 +144,6 @@ class Router implements IRouter
     protected $controllerDir = 'App\Controller';
 
     /**
-     * 匹配应用名字.
-     *
-     * @var string
-     */
-    protected $matchedApp;
-
-    /**
-     * 匹配控制器名字.
-     *
-     * @var string
-     */
-    protected $matchedController;
-
-    /**
-     * 匹配方法名字.
-     *
-     * @var string
-     */
-    protected $matchedAction;
-
-    /**
      * 构造函数.
      *
      * @param \Leevel\Di\IContainer $container
@@ -176,11 +156,11 @@ class Router implements IRouter
     /**
      * 分发请求到路由.
      *
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IRequest $request
      *
      * @return \Leevel\Http\IResponse
      */
-    public function dispatch(Request $request)
+    public function dispatch(IRequest $request)
     {
         $this->request = $request;
 
@@ -192,9 +172,6 @@ class Router implements IRouter
      */
     public function initRequest()
     {
-        $this->matchedApp = null;
-        $this->matchedController = null;
-        $this->matchedAction = null;
         $this->matchedData = null;
     }
 
@@ -214,10 +191,10 @@ class Router implements IRouter
     /**
      * 穿越中间件.
      *
-     * @param \Leevel\Http\Request $passed
-     * @param array                $passedExtend
+     * @param \Leevel\Http\IRequest $passed
+     * @param array                 $passedExtend
      */
-    public function throughMiddleware(Request $passed, array $passedExtend = [])
+    public function throughMiddleware(IRequest $passed, array $passedExtend = [])
     {
         if (null === $this->currentMiddlewares) {
             $this->currentMiddlewares = $this->parseMiddleware();
@@ -445,6 +422,13 @@ class Router implements IRouter
             $result[static::APP] = substr(array_shift($paths), 1);
         }
 
+        if (!$paths) {
+            $result[IRouter::CONTROLLER] = IRouter::DEFAULT_HOME_CONTROLLER;
+            $result[IRouter::ACTION] = IRouter::DEFAULT_HOME_ACTION;
+
+            return $result;
+        }
+
         list($paths, $params) = $this->normalizePathsAndParams($paths);
 
         if (1 === count($paths)) {
@@ -623,11 +607,11 @@ class Router implements IRouter
     /**
      * 发送路由并返回响应.
      *
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IRequest $request
      *
      * @return \Leevel\Http\IResponse
      */
-    protected function dispatchToRoute(Request $request)
+    protected function dispatchToRoute(IRequest $request)
     {
         return $this->runRoute($request, $this->matchRouter());
     }
@@ -635,12 +619,12 @@ class Router implements IRouter
     /**
      * 运行路由.
      *
-     * @param \Leevel\Http\Request $request
-     * @param callable             $bind
+     * @param \Leevel\Http\IRequest $request
+     * @param callable              $bind
      *
      * @return \Leevel\Http\IResponse
      */
-    protected function runRoute(Request $request, callable $bind)
+    protected function runRoute(IRequest $request, callable $bind)
     {
         $this->throughMiddleware($this->request);
 
@@ -712,7 +696,7 @@ class Router implements IRouter
 
     /**
      * 智能 restful 解析
-     * 路由匹配如果没有匹配上方法器则系统会进入 restful 解析.
+     * 路由匹配如果没有匹配上方法则系统会进入 restful 解析.
      */
     protected function pathinfoRestful()
     {
@@ -773,7 +757,7 @@ class Router implements IRouter
         }
 
         if ($controller instanceof IController) {
-            $controller->setView($this->container['view']);
+            $controller->setView($this->container[IView::class]);
         }
 
         if (!method_exists($controller, $method)) {
@@ -795,8 +779,14 @@ class Router implements IRouter
     protected function parseMiddleware()
     {
         return [
-            'handle'    => array_merge($this->globalMiddlewares['handle'], $this->matchedMiddlewares()['handle']),
-            'terminate' => array_merge($this->globalMiddlewares['terminate'], $this->matchedMiddlewares()['terminate']),
+            'handle'    => array_merge(
+                $this->globalMiddlewares['handle'] ?? [],
+                $this->matchedMiddlewares()['handle'] ?? []
+            ),
+            'terminate' => array_merge(
+                $this->globalMiddlewares['terminate'] ?? [],
+                $this->matchedMiddlewares()['terminate'] ?? []
+            ),
         ];
     }
 
@@ -807,17 +797,7 @@ class Router implements IRouter
      */
     protected function matchedApp()
     {
-        if ($this->matchedApp) {
-            $app = $this->matchedApp;
-        } else {
-            if (($this->matchedApp = env('app_name'))) {
-                $app = $this->matchedApp;
-            } else {
-                $app = $this->matchedApp = $this->matchedData[static::APP];
-            }
-        }
-
-        return ucfirst($app);
+        return ucfirst($this->matchedData[static::APP]);
     }
 
     /**
@@ -827,17 +807,7 @@ class Router implements IRouter
      */
     protected function matchedController()
     {
-        if ($this->matchedController) {
-            $controller = $this->matchedController;
-        } else {
-            if (($this->matchedController = env('controller_name'))) {
-                $controller = $this->matchedController;
-            } else {
-                $controller = $this->matchedData[static::CONTROLLER];
-            }
-        }
-
-        return ucfirst($controller);
+        return ucfirst($this->matchedData[static::CONTROLLER]);
     }
 
     /**
@@ -847,15 +817,7 @@ class Router implements IRouter
      */
     protected function matchedAction()
     {
-        if ($this->matchedAction) {
-            $action = $this->matchedAction;
-        } else {
-            if (($this->matchedAction = env('action_name'))) {
-                $action = $this->matchedAction;
-            } else {
-                $action = $this->matchedData[static::ACTION];
-            }
-        }
+        $action = $this->matchedData[static::ACTION];
 
         if (false !== strpos($action, '-')) {
             $action = str_replace('-', '_', $action);

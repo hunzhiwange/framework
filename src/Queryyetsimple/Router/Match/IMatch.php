@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Match;
 
-use Leevel\Http\Request;
-use Leevel\Router\Router;
+use Leevel\Http\IRequest;
+use Leevel\Router\IRouter;
 
 /**
  * 路由匹配接口.
@@ -37,10 +37,10 @@ interface IMatch
     /**
      * 匹配数据项.
      *
-     * @param \Leevel\Router\Router $router
-     * @param \Leevel\Http\Request  $request
+     * @param \Leevel\Router\IRouter $router
+     * @param \Leevel\Http\IRequest  $request
      *
      * @return array
      */
-    public function matche(Router $router, Request $request): array;
+    public function matche(IRouter $router, IRequest $request): array;
 }

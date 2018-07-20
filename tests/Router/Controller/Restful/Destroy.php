@@ -18,42 +18,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Router;
+namespace Tests\Router\Controller\Restful;
 
-use Leevel\Router\SwaggerRouter;
-use Tests\TestCase;
+use Leevel\Router\IRouter;
 
 /**
- * swagger 生成注解路由组件测试.
+ * destroy.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.04.10
+ * @since 2018.07.20
  *
  * @version 1.0
  */
-class SwaggerRouterHello extends TestCase
+class Destroy
 {
-    public function tes2tAddSwaggerScanCheckDir()
+    public function handle()
     {
-        $this->expectException(\InvalidArgumentException::class);
-
-        $swaggerRouter = new SwaggerRouter();
-
-        $scanDir = __DIR__.'/Petstore___';
-
-        $swaggerRouter->addSwaggerScan($scanDir);
-    }
-
-    public function tes2tSwaggerHandle()
-    {
-        $swaggerRouter = new SwaggerRouter('Router');
-
-        $scanDir = __DIR__.'/Petstore';
-
-        $swaggerRouter->addSwaggerScan($scanDir);
-        $result = $swaggerRouter->handle();
-
-        $this->assertSame($result, include $scanDir.'/cache.php');
+        return 'hello for restful '.IRouter::RESTFUL_DESTROY;
     }
 }

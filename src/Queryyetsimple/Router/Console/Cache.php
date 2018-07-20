@@ -23,7 +23,7 @@ namespace Leevel\Router\Console;
 use InvalidArgumentException;
 use Leevel\Console\Command;
 use Leevel\Kernel\IProject;
-use Leevel\Router;
+use Leevel\Router\IRouter;
 
 /**
  * swagger 路由缓存.
@@ -54,16 +54,17 @@ class Cache extends Command
      * 响应命令.
      *
      * @param \Leevel\Kernel\IProject $project
+     * @param \Leevel\Router\IRouter  $router
      */
-    public function handle(IProject $project)
+    public function handle(IProject $project, IRouter $router)
     {
         $this->line('Start to do cache router.');
 
         $data = [
-            'basepaths'   => Router::getBasepaths(),
-            'groups'      => Router::getGroups(),
-            'routers'     => Router::getRouters(),
-            'middlewares' => Router::getGlobalMiddlewares(),
+            'basepaths'   => $router->getBasepaths(),
+            'groups'      => $router->getGroups(),
+            'routers'     => $router->getRouters(),
+            'middlewares' => $router->getGlobalMiddlewares(),
         ];
 
         $cachePath = $project->pathCacheRouterFile();

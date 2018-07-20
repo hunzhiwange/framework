@@ -28,6 +28,7 @@ use Swagger\Context;
  * Swagger 注解路由
  * 1:忽略已删除的路由 deprecated 和带有 _ignore 的路由
  * 2:如果没有绑定路由参数 _bind,系统会尝试自动解析注解所在控制器方法.
+ * 3:仅支持 zircote/swagger-php 2.x 系列，不支持 3.0.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -184,6 +185,7 @@ class SwaggerRouter
                     }
 
                     $groupPrefix = '_';
+
                     foreach ($groups as $g) {
                         if (0 === strpos($routerPath, $g)) {
                             $groupPrefix = $g;
@@ -355,11 +357,15 @@ class SwaggerRouter
         $className = $context->fullyQualifiedName($context->class);
         $segmentation = '\\'.$this->controllerDir.'\\';
 
-        if (strpos($className, $segmentation) < 1) {
+        if (false === strpos($className, $segmentation)) {
             return;
         }
+
         $tmp = explode($segmentation, $className);
-        $router = ':'.ltrim($tmp[0], '\\').'\\'.$tmp[1].'\\'.$context->method;
+
+        $router = ($tmp[0] ? ':'.ltrim($tmp[0], '\\').'\\' : '').
+            $tmp[1].'\\'.$context->method;
+
         $method = str_replace('\\', '/', $router);
 
         return $method;
@@ -410,7 +416,7 @@ class SwaggerRouter
                 list($routerVar[], $regex) = explode(':', $matches[1]);
             } else {
                 $routerVar[] = $matches[1];
-                $regex = Router::DEFAULT_REGEX;
+                $regex = IRouter::DEFAULT_REGEX;
             }
 
             $regex = '('.$regex.')';
@@ -433,7 +439,7 @@ class SwaggerRouter
         }
 
         if (true === $forSingleRegex) {
-            $strict = ($routers['strict'] ?? Router::DEFAULT_STRICT) ? '$' : '';
+            $strict = ($routers['strict'] ?? IRouter::DEFAULT_STRICT) ? '$' : '';
             $rule = '/^'.$rule.$strict.'/';
         }
 

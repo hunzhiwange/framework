@@ -18,49 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Match;
-
-use Leevel\Http\IRequest;
-use Leevel\Router\IRouter;
+namespace Tests\Router\Controller\Sub\World\Foo;
 
 /**
- * 路由 pathInfo 匹配.
+ * bar.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.02.15
+ * @since 2018.07.20
  *
  * @version 1.0
  */
-class PathInfo implements IMatch
+class Bar
 {
-    /**
-     * Router.
-     *
-     * @var \Leevel\Router\IRouter
-     */
-    protected $router;
-
-    /**
-     * HTTP Request.
-     *
-     * @var \Leevel\Http\IRequest
-     */
-    protected $request;
-
-    /**
-     * 匹配数据项.
-     *
-     * @param \Leevel\Router\IRouter $router
-     * @param \Leevel\Http\IRequest  $request
-     *
-     * @return array
-     */
-    public function matche(IRouter $router, IRequest $request): array
+    public function handle()
     {
-        $pathInfo = $request->getPathInfo();
-        $pathInfo = '/'.trim($pathInfo, '/');
-
-        return $router->matchePath($pathInfo);
+        return 'hello sub world foo bar';
     }
 }
