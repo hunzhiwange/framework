@@ -175,7 +175,7 @@ interface IRequest
      *
      * @return \Leevel\Http\Request
      */
-    public static function normalizeRequestFromContent(IRequest $request);
+    public static function normalizeRequestFromContent(self $request);
 
     /**
      * 获取参数.
@@ -742,6 +742,7 @@ interface IRequest
      * @return string
      */
     public function getBasePath();
+
     /**
      * 分析基础 url.
      *

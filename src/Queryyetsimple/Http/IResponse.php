@@ -470,7 +470,6 @@ interface IResponse
      */
     const HTTP_NETWORK_AUTHENTICATION_REQUIRED = 511;
 
-
     /**
      * 创建一个响应.
      *
