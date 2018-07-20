@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc;
 
-use Leevel\View\IConnect as ViewIConnect;
+use Leevel\View\IView as IViews;
 
 /**
  * 视图.
@@ -36,16 +36,16 @@ class View implements IView
     /**
      * 视图模板
      *
-     * @var \Leevel\View\IConnect
+     * @var \Leevel\View\IView
      */
     protected $theme;
 
     /**
      * 构造函数.
      *
-     * @param \Leevel\View\IConnect $theme
+     * @param \Leevel\View\IView $theme
      */
-    public function __construct(ViewIConnect $theme)
+    public function __construct(IViews $theme)
     {
         $this->theme = $theme;
     }
@@ -53,11 +53,11 @@ class View implements IView
     /**
      * 切换视图.
      *
-     * @param \Leevel\View\IConnect $theme
+     * @param \Leevel\View\IView $theme
      *
      * @return $this
      */
-    public function switchView(ViewIConnect $theme)
+    public function switchView(IViews $theme)
     {
         $assign = $this->getAssign();
 

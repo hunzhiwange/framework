@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc;
 
-use Leevel\View\IConnect as ViewIConnect;
+use Leevel\View\IView as IViews;
 use RuntimeException;
 
 /**
@@ -51,7 +51,7 @@ abstract class Controller implements IController
     /**
      * 设置视图.
      *
-     * @param \leevel\Mvc\IView $view
+     * @param \Leevel\Mvc\IView $view
      *
      * @return $this
      */
@@ -65,11 +65,11 @@ abstract class Controller implements IController
     /**
      * 切换视图.
      *
-     * @param \Leevel\View\ViewIConnect $theme
+     * @param \Leevel\View\IViews $theme
      *
      * @return $this
      */
-    public function switchView(ViewIConnect $theme)
+    public function switchView(IViews $theme)
     {
         $this->checkView();
         $this->view->switchView($theme);

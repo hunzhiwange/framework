@@ -25,6 +25,7 @@ use Leevel\Mvc\IController;
 use Leevel\Mvc\View;
 use Leevel\View\Html;
 use Leevel\View\Phpui;
+use Leevel\View\View as Views;
 use Tests\TestCase;
 
 /**
@@ -44,7 +45,7 @@ class ControllerTest extends TestCase
 
         $test->setView(
             new View(
-                new Html()
+                new Views(new Html())
             )
         );
 
@@ -61,7 +62,7 @@ class ControllerTest extends TestCase
 
         $test->setView(
             new View(
-                new Html()
+                new Views(new Html())
             )
         );
 
@@ -81,7 +82,7 @@ class ControllerTest extends TestCase
 
         $test->setView(
             new View(
-                new Html()
+                new Views(new Html())
             )
         );
 
@@ -100,9 +101,9 @@ class ControllerTest extends TestCase
 
         $test->setView(
             new View(
-                new Phpui([
+                new Views(new Phpui([
                     'theme_path' => __DIR__,
-                ])
+                ]))
             )
         );
 
@@ -120,7 +121,7 @@ class ControllerTest extends TestCase
 
         $test->setView(
             new View(
-                $phpui = new Phpui()
+                $phpui = new Views(new Phpui())
             )
         );
 
@@ -130,7 +131,7 @@ class ControllerTest extends TestCase
 
         $this->assertSame('bar', $phpui->getVar('foo'));
 
-        $test->switchView($html = new Html());
+        $test->switchView($html = new Views(new Html()));
 
         $this->assertSame('bar', $test->getAssign('foo'));
 

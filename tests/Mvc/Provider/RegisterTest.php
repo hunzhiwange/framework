@@ -26,6 +26,7 @@ use Leevel\Mvc\IView;
 use Leevel\Mvc\Provider\Register;
 use Leevel\Mvc\View;
 use Leevel\View\Phpui;
+use Leevel\View\View as Views;
 use Tests\TestCase;
 
 /**
@@ -49,7 +50,7 @@ class RegisterTest extends TestCase
         $test->register();
 
         $container->singleton('view.view', function () {
-            return new Phpui();
+            return new Views(new Phpui());
         });
 
         $container->alias($test->providers());

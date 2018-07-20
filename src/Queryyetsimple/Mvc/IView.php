@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Mvc;
 
-use Leevel\View\IConnect as ViewIConnect;
+use Leevel\View\IView as IViews;
 
 /**
  * IView 接口.
@@ -36,11 +36,11 @@ interface IView
     /**
      * 切换视图.
      *
-     * @param \Leevel\View\IConnect $theme
+     * @param \Leevel\View\IView $theme
      *
      * @return $this
      */
-    public function switchView(ViewIConnect $theme);
+    public function switchView(IViews $theme);
 
     /**
      * 变量赋值

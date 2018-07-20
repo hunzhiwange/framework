@@ -34,7 +34,7 @@ interface IController extends IView
     /**
      * 返回父控制器.
      *
-     * @param \leevel\Mvc\IView $view
+     * @param \Leevel\Mvc\IView $view
      *
      * @return $this
      */
