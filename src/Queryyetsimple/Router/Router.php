@@ -512,18 +512,14 @@ class Router implements IRouter
     protected function matchRouter()
     {
         if (true === $this->isMatched && null !== $this->matchedData) {
-            return $this->tryRouterBind();
+            return $this->findRouterBind();
         }
 
         $this->initRequest();
 
-        if ($this->request->isCli()) {
-            $this->resolveMatchedData($this->normalizeMatchedData('Cli'));
-
-            return $this->tryRouterBind();
-        }
-
-        $this->resolveMatchedData($dataPathInfo = $this->normalizeMatchedData('PathInfo'));
+        $this->resolveMatchedData(
+            $dataPathInfo = $this->normalizeMatchedData('PathInfo')
+        );
 
         if (false === ($bind = $this->normalizeRouterBind())) {
             $bind = $this->urlRouterBind($dataPathInfo);
@@ -551,7 +547,7 @@ class Router implements IRouter
 
         $this->resolveMatchedData($data);
 
-        return $this->tryRouterBind();
+        return $this->findRouterBind();
     }
 
     /**
@@ -583,7 +579,7 @@ class Router implements IRouter
      *
      * @return callable|void
      */
-    protected function tryRouterBind()
+    protected function findRouterBind()
     {
         if (false === ($bind = $this->normalizeRouterBind())) {
             $this->nodeNotFound();
