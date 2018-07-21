@@ -201,19 +201,19 @@ class StrTest extends TestCase
     {
         $time = time();
 
-        $this->assertSame(date('Y-m-d H:i', $time+600), Str::formatDate($time+600));
-        $this->assertSame(date('Y-m-d', $time+600), Str::formatDate($time+600, [], 'Y-m-d'));
+        $this->assertSame(date('Y-m-d H:i', $time + 600), Str::formatDate($time + 600));
+        $this->assertSame(date('Y-m-d', $time + 600), Str::formatDate($time + 600, [], 'Y-m-d'));
 
-        $this->assertSame(date('Y-m-d', $time-1286400), Str::formatDate($time-1286400, [], 'Y-m-d'));
+        $this->assertSame(date('Y-m-d', $time - 1286400), Str::formatDate($time - 1286400, [], 'Y-m-d'));
 
-        $this->assertSame('1 hours ago', Str::formatDate($time-5040));
-        $this->assertSame('1 小时之前', Str::formatDate($time-5040, ['hours' => '小时之前']));
+        $this->assertSame('1 hours ago', Str::formatDate($time - 5040));
+        $this->assertSame('1 小时之前', Str::formatDate($time - 5040, ['hours' => '小时之前']));
 
-        $this->assertSame('4 minutes ago', Str::formatDate($time-240));
-        $this->assertSame('4 分钟之前', Str::formatDate($time-240, ['minutes' => '分钟之前']));
+        $this->assertSame('4 minutes ago', Str::formatDate($time - 240));
+        $this->assertSame('4 分钟之前', Str::formatDate($time - 240, ['minutes' => '分钟之前']));
 
-        $this->assertSame('40 seconds ago', Str::formatDate($time-40));
-        $this->assertSame('40 秒之前', Str::formatDate($time-40, ['seconds' => '秒之前']));
+        $this->assertSame('40 seconds ago', Str::formatDate($time - 40));
+        $this->assertSame('40 秒之前', Str::formatDate($time - 40, ['seconds' => '秒之前']));
     }
 
     public function testFormatBytes()

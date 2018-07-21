@@ -343,14 +343,14 @@ class Str
         if (0 === $hover) {
             if (0 === ($min = (int) (floor($sec / 60)))) {
                 return $sec.' '.($lang['seconds'] ?? 'seconds ago');
-            } else {
-                return $min.' '.($lang['minutes'] ?? 'minutes ago');
             }
+
+            return $min.' '.($lang['minutes'] ?? 'minutes ago');
         } elseif ($hover < 24) {
             return $hover.' '.($lang['hours'] ?? 'hours ago');
-        } else {
-            return date($dateFormat, $dateTemp);
         }
+
+        return date($dateFormat, $dateTemp);
     }
 
     /**

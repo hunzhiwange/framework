@@ -53,7 +53,7 @@ class Dump
             }
 
             $dump->dump($varCloner->cloneVar($var));
-            // @codeCoverageIgnoreEnd
+        // @codeCoverageIgnoreEnd
         } else {
             var_dump($var);
         }

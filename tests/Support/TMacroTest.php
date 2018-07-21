@@ -38,14 +38,14 @@ class TMacroTest extends TestCase
     {
         $test = new MacroTest1();
 
-        $test->macro('hello', function() {
+        $test->macro('hello', function () {
             return 'world';
         });
 
         $this->assertSame('world', $test->hello());
         $this->assertSame('world', MacroTest1::hello());
 
-        $test->macro('world', function() {
+        $test->macro('world', function () {
             return $this->hello.'-'.$this::$world;
         });
 
