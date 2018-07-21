@@ -164,6 +164,19 @@ class OptionTest extends TestCase
         $this->assertNull($option->get('cache\time_preset.foo2'));
     }
 
+    public function testSet2()
+    {
+        $data = [
+            'hello' => 'world',
+        ];
+
+        $option = new Option();
+
+        $option->set($data);
+
+        $this->assertSame($data, $option->get());
+    }
+
     public function testDelete()
     {
         $data = [
@@ -240,6 +253,29 @@ class OptionTest extends TestCase
             'hello' => [],
             'world' => [],
         ]);
+    }
+
+    public function testDelete2()
+    {
+        $data = [
+            'app' => [
+                'environment' => 'testing',
+                'debug'       => true,
+            ],
+            'cache' => [
+                'expire'      => 86400,
+                'time_preset' => [
+                    'foo' => 'bar',
+                ],
+            ],
+            'hello' => 'world',
+        ];
+
+        $option = new Option($data);
+
+        $option->delete('debug2.foo.bar');
+
+        $this->assertSame($option->all(), $data);
     }
 
     public function testReset()

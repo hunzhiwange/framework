@@ -1,0 +1,48 @@
+[
+    {
+        "name": "hunzhiwange/framework",
+        "extra": {
+            "leevel": {
+                "providers": [
+                    "Leevel\\Auth\\Provider\\Register",
+                    "Leevel\\Cache\\Provider\\Register",
+                    "Leevel\\Cookie\\Provider\\Register",
+                    "Leevel\\Database\\Provider\\Register",
+                    "Leevel\\Encryption\\Provider\\Register",
+                    "Leevel\\Filesystem\\Provider\\Register",
+                    "Leevel\\Mail\\Provider\\Register",
+                    "Leevel\\Mvc\\Provider\\Register",
+                    "Leevel\\Page\\Provider\\Register",
+                    "Leevel\\Queue\\Provider\\Register",
+                    "Leevel\\Session\\Provider\\Register",
+                    "Leevel\\Protocol\\Provider\\Register",
+                    "Leevel\\Throttler\\Provider\\Register",
+                    "Leevel\\Validate\\Provider\\Register",
+                    "Leevel\\View\\Provider\\Register"
+                ],
+                "commands": [
+                    "Leevel\\Database\\Console",
+                    "Leevel\\I18n\\Console",
+                    "Leevel\\Mvc\\Console",
+                    "Leevel\\Queue\\Console",
+                    "Leevel\\Router\\Console",
+                    "Leevel\\Protocol\\Console",
+                    "Leevel\\Option\\Console"
+                ]
+            }
+        }
+    },
+    {
+        "name": "demo/demo",
+        "extra": {
+            "leevel": {
+                "providers": [
+                    "Demo\\Provider\\Register"
+                ],
+                "commands": [
+                    "Demo\\Demo\\Console"
+                ]
+            }
+        }
+    }
+]

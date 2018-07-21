@@ -111,7 +111,7 @@ class ComposerOption
         $result = [];
 
         foreach ($this->getSupportedOptions() as $item) {
-            $result[$item] = array_merge($olds[$item], $options[$item]);
+            $result[$item] = array_merge($olds[$item] ?? [], $options[$item] ?? []);
         }
 
         return $result;
@@ -148,6 +148,7 @@ class ComposerOption
 
         foreach ($this->getSupportedOptions() as $item) {
             $tmp = $options[$item] ?? [];
+
             if (!is_array($tmp)) {
                 $tmp = [$tmp];
             }

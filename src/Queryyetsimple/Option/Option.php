@@ -79,10 +79,12 @@ class Option implements IOption, ArrayAccess
 
         $parts = explode('.', $name);
         $option = $this->option[$namespaces];
+
         foreach ($parts as $part) {
             if (!isset($option[$part])) {
                 return false;
             }
+
             $option = $option[$part];
         }
 
@@ -108,15 +110,19 @@ class Option implements IOption, ArrayAccess
         }
 
         if (!strpos($name, '.')) {
-            return array_key_exists($name, $this->option[$namespaces]) ? $this->option[$namespaces][$name] : $defaults;
+            return array_key_exists($name, $this->option[$namespaces]) ?
+                $this->option[$namespaces][$name] :
+                $defaults;
         }
 
         $parts = explode('.', $name);
         $option = $this->option[$namespaces];
+
         foreach ($parts as $part) {
             if (!isset($option[$part])) {
                 return $defaults;
             }
+
             $option = $option[$part];
         }
 
@@ -164,12 +170,15 @@ class Option implements IOption, ArrayAccess
                 $parts = explode('.', $name);
                 $max = count($parts) - 1;
                 $option = &$this->option[$namespaces];
+
                 for ($i = 0; $i <= $max; $i++) {
                     $part = $parts[$i];
+
                     if ($i < $max) {
                         if (!isset($option[$part])) {
                             $option[$part] = [];
                         }
+
                         $option = &$option[$part];
                     } else {
                         $option[$part] = $value;
@@ -206,12 +215,15 @@ class Option implements IOption, ArrayAccess
             $parts = explode('.', $name);
             $max = count($parts) - 1;
             $option = &$this->option[$namespaces];
+
             for ($i = 0; $i <= $max; $i++) {
                 $part = $parts[$i];
+
                 if ($i < $max) {
                     if (!isset($option[$part])) {
                         break;
                     }
+
                     $option = &$option[$part];
                 } else {
                     if (isset($option[$part])) {
@@ -298,9 +310,11 @@ class Option implements IOption, ArrayAccess
     {
         if (strpos($name, '\\')) {
             $namespaces = explode('\\', $name);
+
             if (empty($namespaces[1])) {
                 $namespaces[1] = '*';
             }
+
             $name = $namespaces[1];
             $namespaces = $namespaces[0];
         } else {

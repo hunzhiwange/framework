@@ -36,7 +36,7 @@ class ComposerOptionTest extends TestCase
 {
     public function testBaseUse()
     {
-        $options = (new ComposerOption(__DIR__.'/app1'))->loadData();
+        $options = ($composerOption = new ComposerOption(__DIR__.'/app1'))->loadData();
 
         $data = <<<'eot'
 array (
@@ -88,6 +88,72 @@ array (
   'metas' => 
   array (
     'foo' => 'bar',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $options
+            )
+        );
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $composerOption->loadData()
+            )
+        );
+    }
+
+    public function testComposerNotFound()
+    {
+        $options = ($composerOption = new ComposerOption(__DIR__.'/app4'))->loadData();
+
+        $data = <<<'eot'
+array (
+  'providers' => 
+  array (
+    0 => 'Leevel\\Auth\\Provider\\Register',
+    1 => 'Leevel\\Cache\\Provider\\Register',
+    2 => 'Leevel\\Cookie\\Provider\\Register',
+    3 => 'Leevel\\Database\\Provider\\Register',
+    4 => 'Leevel\\Encryption\\Provider\\Register',
+    5 => 'Leevel\\Filesystem\\Provider\\Register',
+    6 => 'Leevel\\Mail\\Provider\\Register',
+    7 => 'Leevel\\Mvc\\Provider\\Register',
+    8 => 'Leevel\\Page\\Provider\\Register',
+    9 => 'Leevel\\Queue\\Provider\\Register',
+    10 => 'Leevel\\Session\\Provider\\Register',
+    11 => 'Leevel\\Protocol\\Provider\\Register',
+    12 => 'Leevel\\Throttler\\Provider\\Register',
+    13 => 'Leevel\\Validate\\Provider\\Register',
+    14 => 'Leevel\\View\\Provider\\Register',
+    15 => 'Demo\\Provider\\Register',
+  ),
+  'ignores' => 
+  array (
+  ),
+  'commands' => 
+  array (
+    0 => 'Leevel\\Database\\Console',
+    1 => 'Leevel\\I18n\\Console',
+    2 => 'Leevel\\Mvc\\Console',
+    3 => 'Leevel\\Queue\\Console',
+    4 => 'Leevel\\Router\\Console',
+    5 => 'Leevel\\Protocol\\Console',
+    6 => 'Leevel\\Option\\Console',
+    7 => 'Demo\\Demo\\Console',
+  ),
+  'options' => 
+  array (
+  ),
+  'i18ns' => 
+  array (
+  ),
+  'metas' => 
+  array (
   ),
 )
 eot;

@@ -15,9 +15,7 @@
             "options": {
                 "demo": "option/extend/test.php"
             },
-            "i18ns": [
-                "i18n/extend"   
-            ],
+            "i18ns": "i18n/extend",
             "metas": {
                 "foo": "bar"
             }
