@@ -51,7 +51,7 @@ class Str
             $charBox = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
         }
 
-        return static::randSting($length, $charBox);
+        return static::randStr($length, $charBox);
     }
 
     /**
@@ -70,9 +70,11 @@ class Str
 
         if (null === $charBox) {
             $charBox = 'abcdefghijklmnopqrstuvwxyz1234567890';
+        } else {
+            $charBox = strtolower($charBox);
         }
 
-        return static::randSting($length, $charBox);
+        return static::randStr($length, $charBox);
     }
 
     /**
@@ -91,9 +93,11 @@ class Str
 
         if (null === $charBox) {
             $charBox = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+        } else {
+            $charBox = strtoupper($charBox);
         }
 
-        return static::randSting($length, $charBox);
+        return static::randStr($length, $charBox);
     }
 
     /**
@@ -114,7 +118,7 @@ class Str
             $charBox = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         }
 
-        return static::randSting($length, $charBox);
+        return static::randStr($length, $charBox);
     }
 
     /**
@@ -137,7 +141,7 @@ class Str
             $charBox = strtolower($charBox);
         }
 
-        return static::randSting($length, $charBox);
+        return static::randStr($length, $charBox);
     }
 
     /**
@@ -160,7 +164,7 @@ class Str
             $charBox = strtoupper($charBox);
         }
 
-        return static::randSting($length, $charBox);
+        return static::randStr($length, $charBox);
     }
 
     /**
@@ -181,7 +185,7 @@ class Str
             $charBox = '0123456789';
         }
 
-        return static::randSting($length, $charBox);
+        return static::randStr($length, $charBox);
     }
 
     /**
@@ -236,8 +240,7 @@ class Str
         $result = '';
 
         for ($i = 0; $i < $length; $i++) {
-            $result .= static::subString(
-                $charBox,
+            $result .= static::substr($charBox,
                 (int) (floor(mt_rand(0, mb_strlen($charBox, 'utf-8') - 1))),
                 1
             );
@@ -256,7 +259,7 @@ class Str
      *
      * @return string
      */
-    public static function randSting(int $length, $charBox)
+    public static function randStr(int $length, string $charBox)
     {
         if (!$length || !$charBox) {
             return '';
@@ -278,67 +281,28 @@ class Str
      *
      * @return mixed
      */
-    public static function stringEncoding($contents, string $fromChar, $toChar = 'utf-8')
+    public static function strEncoding($contents, string $fromChar, string $toChar = 'utf-8')
     {
-        if (empty($contents)) {
-            return $contents;
-        }
-
-        $fromChar = 'utf8' === strtolower($fromChar) ?
-            'utf-8' :
-            strtolower($fromChar);
-
-        $toChar = 'utf8' === strtolower($toChar) ?
-            'utf-8' :
-            strtolower($toChar);
-
-        if ($fromChar === $toChar ||
-            (is_scalar($contents) && !is_string($contents))) {
+        if (empty($contents) ||
+            (!is_array($contents) && !is_string($contents)) ||
+            strtolower($fromChar) === strtolower($toChar)) {
             return $contents;
         }
 
         if (is_string($contents)) {
-            if (function_exists('iconv')) {
-                return iconv($fromChar, $toChar.'//IGNORE', $contents);
-            }
-
-            if (function_exists('mb_convert_encoding')) {
-                return mb_convert_encoding($contents, $toChar, $fromChar);
-            }
-
-            return $contents;
+            return mb_convert_encoding($contents, $toChar, $fromChar);
         }
 
-        if (is_array($contents)) {
-            foreach ($contents as $key => $val) {
-                $tmp = static::gbkToUtf8($key, $fromChar, $toChar);
+        foreach ($contents as $key => $val) {
+            $tmp = static::strEncoding($key, $fromChar, $toChar);
+            $contents[$tmp] = static::strEncoding($val, $fromChar, $toChar);
 
-                $contents[$tmp] = static::stringEncoding($val, $fromChar, $toChar);
-
-                if ($key !== $tmp) {
-                    unset($contents[$tmp]);
-                }
+            if ($key !== $tmp) {
+                unset($contents[$tmp]);
             }
-
-            return $contents;
         }
 
         return $contents;
-    }
-
-    /**
-     * 判断字符串是否为 UTF8.
-     *
-     * @param string $strings
-     *
-     * @return bool
-     */
-    public static function isUtf8($strings): bool
-    {
-        return 'UTF-8' === mb_detect_encoding(
-            $strings,
-            ['GB2312', 'GBK', 'UTF-8'], true
-        );
     }
 
     /**
@@ -348,69 +312,45 @@ class Str
      * @param int    $start
      * @param int    $length
      * @param string $charset
-     * @param bool   $suffix
      *
      * @return string
      */
-    public static function subString($strings, int $start = 0, int $length = 255, string $charset = 'utf-8', bool $suffix = true)
+    public static function substr(string $strings, int $start = 0, int $length = 255, string $charset = 'utf-8')
     {
-        // 对系统的字符串函数进行判断
-        if (function_exists('mb_substr')) {
-            return mb_substr($strings, $start, $length, $charset);
-        }
-
-        if (function_exists('iconv_substr')) {
-            return iconv_substr($strings, $start, $length, $charset);
-        }
-
-        // 常用几种字符串正则表达式
-        $regex['utf-8'] = "/[\x01-\x7f]|[\xc2-\xdf][\x80-\xbf]|[\xe0-\xef][\x80-\xbf]{2}|[\xf0-\xff][\x80-\xbf]{3}/";
-        $regex['gb2312'] = "/[\x01-\x7f]|[\xb0-\xf7][\xa0-\xfe]/";
-        $regex['gbk'] = "/[\x01-\x7f]|[\x81-\xfe][\x40-\xfe]/";
-        $regex['big5'] = "/[\x01-\x7f]|[\x81-\xfe]([\x40-\x7e]|\xa1-\xfe])/";
-
-        // 匹配
-        preg_match_all($regex[$charset], $strings, $matches);
-        $slice = implode('', array_slice($matches[0], $start, $length));
-
-        if ($suffix) {
-            return $slice.'…';
-        }
-
-        return $slice;
+        return mb_substr($strings, $start, $length, $charset);
     }
 
     /**
      * 日期格式化.
      *
      * @param int    $dateTemp
-     * @param string $dateFormat
      * @param array  $lang
+     * @param string $dateFormat
      *
      * @return string
      */
-    public static function formatDate(int $dateTemp, string $dateFormat = 'Y-m-d H:i', array $lang = [])
+    public static function formatDate(int $dateTemp, array $lang = [], string $dateFormat = 'Y-m-d H:i')
     {
-        $result = '';
-
         $sec = time() - $dateTemp;
-        $hover = floor($sec / 3600);
 
-        if (0 === $hover) {
-            $min = floor($sec / 60);
-
-            if (0 === $min) {
-                $result = $sec.' '.($lang['seconds'] ?? 'seconds ago');
-            } else {
-                $result = $min.' '.($lang['minutes'] ?? 'minutes ago');
-            }
-        } elseif ($hover < 24) {
-            $result = $hover.' '.($lang['hour'] ?? 'hour ago');
-        } else {
-            $result = date($dateFormat, $dateTemp);
+        if ($sec < 0) {
+            return date($dateFormat, $dateTemp);
         }
 
-        return $result;
+        $hover = (int) (floor($sec / 3600));
+        $result = '';
+
+        if (0 === $hover) {
+            if (0 === ($min = (int) (floor($sec / 60)))) {
+                return $sec.' '.($lang['seconds'] ?? 'seconds ago');
+            } else {
+                return $min.' '.($lang['minutes'] ?? 'minutes ago');
+            }
+        } elseif ($hover < 24) {
+            return $hover.' '.($lang['hours'] ?? 'hours ago');
+        } else {
+            return date($dateFormat, $dateTemp);
+        }
     }
 
     /**
@@ -444,7 +384,7 @@ class Str
      *
      * @return string
      */
-    public static function camelize($value, $separator = '_')
+    public static function camelize(string $value, string $separator = '_')
     {
         $value = $separator.str_replace($separator, ' ', strtolower($value));
 
@@ -466,7 +406,7 @@ class Str
      *
      * @return string
      */
-    public static function unCamelize($value, $separator = '_')
+    public static function unCamelize(string $value, string $separator = '_')
     {
         return strtolower(
             preg_replace(
@@ -485,7 +425,7 @@ class Str
      *
      * @return bool
      */
-    public static function startsWith($toSearched, $search): bool
+    public static function startsWith(string $toSearched, string $search): bool
     {
         if ('' !== $search &&
             0 === strpos($toSearched, $search)) {
@@ -503,7 +443,7 @@ class Str
      *
      * @return bool
      */
-    public static function endsWith($toSearched, $search): bool
+    public static function endsWith(string $toSearched, string $search): bool
     {
         if ((string) $search === substr($toSearched, -strlen($search))) {
             return true;
@@ -520,7 +460,7 @@ class Str
      *
      * @return bool
      */
-    public static function contains($toSearched, $search): bool
+    public static function contains(string $toSearched, string $search): bool
     {
         if ('' !== $search &&
             false !== strpos($toSearched, $search)) {

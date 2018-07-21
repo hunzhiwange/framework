@@ -44,7 +44,7 @@ class Type
      */
     public static function vars($value, $type)
     {
-        // 整理参数，以支持 array:ini 格式
+        // 整理参数，以支持 array:int 格式
         $tmp = explode(':', $type);
         $type = strtolower($tmp[0]);
 
@@ -89,7 +89,7 @@ class Type
                     return static::arr($value, $tmp[1]);
                 }
 
-                    return is_array($value);
+                return is_array($value);
             // 对象
             case 'obj':
             case 'object':

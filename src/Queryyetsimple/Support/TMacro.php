@@ -107,7 +107,9 @@ trait TMacro
             return call_user_func_array(static::$macro[$method], $args);
         }
 
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        throw new BadMethodCallException(
+            sprintf('Method %s is not exits.', $method)
+        );
     }
 
     /**
@@ -131,6 +133,8 @@ trait TMacro
             return call_user_func_array(static::$macro[$method], $args);
         }
 
-        throw new BadMethodCallException(sprintf('Method %s is not exits.', $method));
+        throw new BadMethodCallException(
+            sprintf('Method %s is not exits.', $method)
+        );
     }
 }

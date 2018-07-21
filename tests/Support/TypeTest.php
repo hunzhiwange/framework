@@ -74,10 +74,13 @@ class TypeTest extends TestCase
         $this->assertFalse(Type::vars(null, 'scalar'));
 
         // resource
-        $resource = fopen(__DIR__.'/test.txt', 'r');
+        $testFile = __DIR__.'/test.txt';
+        file_put_contents($testFile, 'foo');
+        $resource = fopen($testFile, 'r');
         $this->assertTrue(Type::vars($resource, 'handle'));
         $this->assertFalse(Type::vars(4, 'resource'));
         fclose($resource);
+        unlink($testFile);
 
         // closure
         $this->assertTrue(Type::vars(function () {
@@ -88,6 +91,8 @@ class TypeTest extends TestCase
         $this->assertTrue(Type::vars([], 'arr'));
         $this->assertTrue(Type::vars([], 'array'));
         $this->assertFalse(Type::vars(null, 'arr'));
+        $this->assertFalse(Type::vars(null, 'arr:int'));
+        $this->assertTrue(Type::vars([1, 2], 'arr:int'));
 
         // object
         $this->assertTrue(Type::vars(new stdClass(), 'obj'));
@@ -133,6 +138,7 @@ class TypeTest extends TestCase
     {
         $this->assertTrue(Type::these('foo', ['string']));
         $this->assertTrue(Type::these(1, ['string', 'int']));
+        $this->assertTrue(Type::these('foo', 'string'));
     }
 
     public function testTheseException()

@@ -106,6 +106,28 @@ class FacadeTest extends TestCase
 
         Test3::notFound();
     }
+
+    public function testRemove()
+    {
+        $test = new Test3();
+
+        $this->assertSame($this->container, $test->container());
+        $this->assertArrayHasKey('test1', $this->getTestProperty($test, 'instances'));
+        $this->assertArrayHasKey('test2', $this->getTestProperty($test, 'instances'));
+        $this->assertFalse(array_key_exists('test3', $this->getTestProperty($test, 'instances')));
+
+        Facade::remove('test1');
+
+        $this->assertFalse(array_key_exists('test1', $this->getTestProperty($test, 'instances')));
+        $this->assertArrayHasKey('test2', $this->getTestProperty($test, 'instances'));
+        $this->assertFalse(array_key_exists('test3', $this->getTestProperty($test, 'instances')));
+
+        Facade::remove();
+
+        $this->assertFalse(array_key_exists('test1', $this->getTestProperty($test, 'instances')));
+        $this->assertFalse(array_key_exists('test2', $this->getTestProperty($test, 'instances')));
+        $this->assertFalse(array_key_exists('test3', $this->getTestProperty($test, 'instances')));
+    }
 }
 
 class Service1

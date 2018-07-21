@@ -102,6 +102,57 @@ class StrTest extends TestCase
         );
     }
 
+    public function testRandAlphaLowercase()
+    {
+        $this->assertSame('', Str::randAlphaLowercase(0));
+
+        $this->assertTrue(
+            1 === preg_match('/^[a-z]+$/', Str::randAlphaLowercase(4))
+        );
+
+        $this->assertTrue(
+            1 === preg_match('/^[a-z]+$/', Str::randAlphaLowercase(4, 'cdefghigk'))
+        );
+
+        $this->assertTrue(
+            4 === strlen(Str::randAlphaLowercase(4))
+        );
+    }
+
+    public function testRandAlphaUppercase()
+    {
+        $this->assertSame('', Str::randAlphaUppercase(0));
+
+        $this->assertTrue(
+            1 === preg_match('/^[A-Z]+$/', Str::randAlphaUppercase(4))
+        );
+
+        $this->assertTrue(
+            1 === preg_match('/^[A-Z]+$/', Str::randAlphaUppercase(4, 'ABCDEFG'))
+        );
+
+        $this->assertTrue(
+            4 === strlen(Str::randAlphaUppercase(4))
+        );
+    }
+
+    public function testRandNum()
+    {
+        $this->assertSame('', Str::randNum(0));
+
+        $this->assertTrue(
+            1 === preg_match('/^[0-9]+$/', Str::randNum(4))
+        );
+
+        $this->assertTrue(
+            1 === preg_match('/^[0-9]+$/', Str::randNum(4, '012456'))
+        );
+
+        $this->assertTrue(
+            4 === strlen(Str::randNum(4))
+        );
+    }
+
     public function testRandChinese()
     {
         $this->assertSame('', Str::randChinese(0));
@@ -119,14 +170,107 @@ class StrTest extends TestCase
         );
     }
 
-    public function testRandString()
+    public function testRandStr()
     {
-        $this->assertSame('', Str::randSting(0, ''));
+        $this->assertSame('', Str::randStr(0, ''));
 
-        $this->assertSame('', Str::randSting(5, ''));
+        $this->assertSame('', Str::randStr(5, ''));
 
         $this->assertTrue(
-            4 === strlen(Str::randSting(4, 'helloworld'))
+            4 === strlen(Str::randStr(4, 'helloworld'))
         );
+    }
+
+    public function testStrEncoding()
+    {
+        $this->assertSame('hello', Str::StrEncoding('hello', 'gbk'));
+
+        $this->assertSame(['key' => 'hello'], Str::StrEncoding(['key' => 'hello'], 'gbk'));
+
+        $this->assertSame('hello', Str::StrEncoding('hello', 'gbk', 'gbk'));
+    }
+
+    public function testSubstr()
+    {
+        $this->assertSame('我', Str::substr('我是人', 0, 1));
+        $this->assertSame('我是', Str::substr('我是人', 0, 2));
+        $this->assertSame('人', Str::substr('我是人', 2));
+    }
+
+    public function testFormatDate()
+    {
+        $time = time();
+
+        $this->assertSame(date('Y-m-d H:i', $time+600), Str::formatDate($time+600));
+        $this->assertSame(date('Y-m-d', $time+600), Str::formatDate($time+600, [], 'Y-m-d'));
+
+        $this->assertSame(date('Y-m-d', $time-1286400), Str::formatDate($time-1286400, [], 'Y-m-d'));
+
+        $this->assertSame('1 hours ago', Str::formatDate($time-5040));
+        $this->assertSame('1 小时之前', Str::formatDate($time-5040, ['hours' => '小时之前']));
+
+        $this->assertSame('4 minutes ago', Str::formatDate($time-240));
+        $this->assertSame('4 分钟之前', Str::formatDate($time-240, ['minutes' => '分钟之前']));
+
+        $this->assertSame('40 seconds ago', Str::formatDate($time-40));
+        $this->assertSame('40 秒之前', Str::formatDate($time-40, ['seconds' => '秒之前']));
+    }
+
+    public function testFormatBytes()
+    {
+        $this->assertSame('2.4G', Str::formatBytes(2573741824));
+        $this->assertSame('2.4', Str::formatBytes(2573741824, false));
+
+        $this->assertSame('4.81M', Str::formatBytes(5048576));
+        $this->assertSame('4.81', Str::formatBytes(5048576, false));
+
+        $this->assertSame('2.95K', Str::formatBytes(3024));
+        $this->assertSame('2.95', Str::formatBytes(3024, false));
+
+        $this->assertSame('100B', Str::formatBytes(100));
+        $this->assertSame('100', Str::formatBytes(100, false));
+    }
+
+    public function testCamelize()
+    {
+        $this->assertSame('helloworld', Str::camelize('helloWorld'));
+
+        $this->assertSame('helloworld', Str::camelize('helloWorld', '-'));
+
+        $this->assertSame('helloWorld', Str::camelize('hello_world'));
+
+        $this->assertSame('helloWorld', Str::camelize('hello-world', '-'));
+    }
+
+    public function testUnCamelize()
+    {
+        $this->assertSame('hello_world', Str::unCamelize('hello_world'));
+
+        $this->assertSame('hello-world', Str::unCamelize('hello-world', '-'));
+
+        $this->assertSame('hello_world', Str::unCamelize('helloWorld'));
+
+        $this->assertSame('hello-world', Str::unCamelize('helloWorld', '-'));
+    }
+
+    public function testStartsWith()
+    {
+        $this->assertFalse(Str::startsWith('foo', 'hello'));
+
+        $this->assertTrue(Str::startsWith('foo bar', 'foo'));
+    }
+
+    public function testEndsWith()
+    {
+        $this->assertFalse(Str::endsWith('foo', 'hello'));
+
+        $this->assertTrue(Str::endsWith('foo bar', 'bar'));
+    }
+
+    public function testContains()
+    {
+        $this->assertFalse(Str::contains('foo', ''));
+
+        $this->assertTrue(Str::contains('foo bar', 'foo'));
     }
 }

@@ -46,12 +46,14 @@ class Dump
         static $dump, $varCloner;
 
         if (false === $simple && class_exists(CliDumper::class)) {
+            // @codeCoverageIgnoreStart
             if (!$dump) {
                 $dump = ('cli' === PHP_SAPI ? new CliDumper() : new HtmlDumper());
                 $varCloner = new VarCloner();
             }
 
             $dump->dump($varCloner->cloneVar($var));
+            // @codeCoverageIgnoreEnd
         } else {
             var_dump($var);
         }
