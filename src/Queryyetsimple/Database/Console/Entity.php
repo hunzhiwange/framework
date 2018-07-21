@@ -32,6 +32,7 @@ use Leevel\Console\Option;
  * @since 2017.05.02
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Entity extends Make
 {

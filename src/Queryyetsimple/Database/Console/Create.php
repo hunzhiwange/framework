@@ -30,6 +30,7 @@ use Phinx\Console\Command\Create as PhinxCreate;
  * @since 2017.05.09
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Create extends PhinxCreate
 {

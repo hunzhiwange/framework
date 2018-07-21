@@ -34,6 +34,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @since 2017.05.09
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Init extends PhinxInit
 {

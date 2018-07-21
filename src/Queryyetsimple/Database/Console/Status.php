@@ -30,6 +30,7 @@ use Phinx\Console\Command\Status as PhinxStatus;
  * @since 2017.05.09
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Status extends PhinxStatus
 {
