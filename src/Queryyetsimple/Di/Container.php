@@ -208,10 +208,12 @@ class Container implements IContainer, ArrayAccess
                 if (is_int($key)) {
                     continue;
                 }
+
                 $this->alias($key, $item);
             }
         } else {
             $value = (array) $value;
+
             foreach ($value as $item) {
                 $this->alias[$item] = $alias;
             }
@@ -457,11 +459,7 @@ class Container implements IContainer, ArrayAccess
 
         if ($validArgs < $required) {
             throw new ContainerInvalidArgumentException(
-                sprintf(
-                    'There are %d required args,but %d gived.',
-                    $required,
-                    $validArgs
-                )
+                sprintf('There are %d required args,but %d gived.', $required, $validArgs)
             );
         }
 
@@ -552,6 +550,7 @@ class Container implements IContainer, ArrayAccess
     protected function parseParameterClass(ReflectionParameter $param)
     {
         $classObject = $param->getClass();
+
         if (!$classObject || !($classObject instanceof ReflectionClass)) {
             return false;
         }
@@ -574,7 +573,10 @@ class Container implements IContainer, ArrayAccess
             case $result = $this->parseClassNotExists($argsclass):
                 break;
             default:
-                throw new InvalidArgumentException(sprintf('Class or interface %s is not register in container', $argsclass));
+                throw new InvalidArgumentException(
+                    sprintf('Class or interface %s is not register in container', $argsclass)
+                );
+
                 break;
         }
 
@@ -604,13 +606,23 @@ class Container implements IContainer, ArrayAccess
         if (class_exists($itemMake)) {
             $result = $this->make($itemMake);
             if (!is_object($result)) {
-                throw new InvalidArgumentException(sprintf('Class or interface %s is register in container is not object.', $argsclass));
+                throw new InvalidArgumentException(
+                    sprintf(
+                        'Class or interface %s is register in container is not object.',
+                        $argsclass
+                    )
+                );
             }
 
             return $result;
         }
 
-        throw new InvalidArgumentException(sprintf('Class or interface %s is not register in container', $argsclass));
+        throw new InvalidArgumentException(
+            sprintf(
+                'Class or interface %s is not register in container',
+                $argsclass
+            )
+        );
     }
 
     /**
@@ -627,8 +639,14 @@ class Container implements IContainer, ArrayAccess
         }
 
         $result = $this->make($argsclass);
+
         if (!is_object($result)) {
-            throw new InvalidArgumentException(sprintf('Class or interface %s is register in container is not object.', $argsclass));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Class or interface %s is register in container is not object.',
+                    $argsclass
+                )
+            );
         }
 
         return $result;
@@ -701,7 +719,9 @@ class Container implements IContainer, ArrayAccess
         $reflection = new ReflectionClass($injection);
 
         if (!$reflection->isInstantiable()) {
-            throw new InvalidArgumentException(sprintf('Class %s is not instantiable.', $injection));
+            throw new InvalidArgumentException(
+                sprintf('Class %s is not instantiable.', $injection)
+            );
         }
 
         $param = [];
@@ -723,11 +743,7 @@ class Container implements IContainer, ArrayAccess
      */
     protected function newInstanceArgs($classname, $args)
     {
-        try {
-            return (new ReflectionClass($classname))->newInstanceArgs($args);
-        } catch (ReflectionException $e) {
-            return (new ReflectionClass($classname))->newInstanceWithoutConstructor();
-        }
+        return (new ReflectionClass($classname))->newInstanceArgs($args);
     }
 
     /**

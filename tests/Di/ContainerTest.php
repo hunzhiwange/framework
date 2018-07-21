@@ -347,6 +347,61 @@ class ContainerTest extends TestCase
         $container->remove(Test8::class);
         $this->assertFalse($container->exists(Test8::class));
     }
+
+    public function testNotInstantiable()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Class Tests\Di\Test9 is not instantiable.'
+        );
+
+        $container = new Container();
+
+        $this->assertSame('world9', $container->make(Test9::class)->hello());
+    }
+
+    public function testUnsupportedCallbackTypes()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Unsupported callback types.'
+        );
+
+        $container = new Container();
+
+        $container->call(false);
+    }
+
+    public function testMakeServiceBool()
+    {
+        $container = new Container();
+
+        $container->bind('foo', false);
+
+        $this->assertFalse($container->make('foo'));
+    }
+
+    public function testBindArrayAsAlias()
+    {
+        $container = new Container();
+
+        $container->bind(['foo' => 'bar'], false);
+
+        $this->assertFalse($container->make('foo'));
+        $this->assertFalse($container->make('bar'));
+    }
+
+    public function testParseReflectionException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Class Tests\Di\TestNotFound does not exist'
+        );
+
+        $container = new Container();
+
+        $container->call([new Test10(), 'hello']);
+    }
 }
 
 class Test1
@@ -442,5 +497,25 @@ class Test8 implements ITest8
     public function handle()
     {
         return ['call handle'];
+    }
+}
+
+class Test9
+{
+    protected function __construct()
+    {
+    }
+
+    public function hello()
+    {
+        return 'world9';
+    }
+}
+
+class Test10
+{
+    public function hello(TestNotFound $test)
+    {
+        return 'test10';
     }
 }
