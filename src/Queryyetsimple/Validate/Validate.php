@@ -2800,17 +2800,3 @@ class Validate implements IValidate
         return $result;
     }
 }
-
-if (!function_exists('__')) {
-    /**
-     * lang.
-     *
-     * @param array $arr
-     *
-     * @return string
-     */
-    function __(...$arr)
-    {
-        return sprintf(...$arr);
-    }
-}

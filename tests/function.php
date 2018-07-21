@@ -26,3 +26,17 @@ declare(strict_types=1);
  * @since 2018.07.17
  * @version 1.0
  */
+
+if (!function_exists('__')) {
+    /**
+     * lang.
+     *
+     * @param array $arr
+     *
+     * @return string
+     */
+    function __(...$arr)
+    {
+        return sprintf(...$arr);
+    }
+}

@@ -138,10 +138,14 @@ class Seccode implements ISeccode
      *
      * @param string $name
      * @param mixed  $value
+     *
+     * @return $this
      */
-    public function setOption(string $name, $value): void
+    public function setOption(string $name, $value)
     {
         $this->option[$name] = $value;
+
+        return $this;
     }
 
     /**

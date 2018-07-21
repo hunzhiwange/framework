@@ -76,10 +76,14 @@ class Defaults implements IRender
      *
      * @param string $name
      * @param mixed  $value
+     *
+     * @return $this
      */
-    public function setOption(string $name, $value): void
+    public function setOption(string $name, $value)
     {
         $this->option[$name] = $value;
+
+        return $this;
     }
 
     /**
@@ -341,19 +345,5 @@ class Defaults implements IRender
     protected function getFooterRender()
     {
         return '</div>';
-    }
-}
-
-if (!function_exists('__')) {
-    /**
-     * lang.
-     *
-     * @param array $arr
-     *
-     * @return string
-     */
-    function __(...$arr)
-    {
-        return sprintf(...$arr);
     }
 }

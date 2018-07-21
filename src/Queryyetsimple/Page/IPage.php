@@ -36,8 +36,15 @@ interface IPage
      *
      * @param string $name
      * @param mixed  $value
+     *
+     * @return $this
      */
-    public function setOption(string $name, $value): void;
+    public function setOption(string $name, $value);
+
+    /**
+     * 清理参数和 URL 缓存.
+     */
+    public function clearResolve();
 
     /**
      * 追加分页条件.
@@ -47,7 +54,7 @@ interface IPage
      *
      * @return $this
      */
-    public function append($key, $value);
+    public function append(string $key, string $value);
 
     /**
      * 批量追加分页条件.
@@ -62,8 +69,6 @@ interface IPage
      * 设置分页条件.
      *
      * @param array $parameter
-     *
-     * @return $this
      */
     public function parameter(array $parameter);
 
@@ -75,17 +80,17 @@ interface IPage
      *
      * @return $this
      */
-    public function addParameter($key, $value);
+    public function addParameter(string $key, string $value);
 
     /**
      * 设置渲染参数.
      *
      * @param string $key
-     * @param string $value
+     * @param mixed  $value
      *
      * @return $this
      */
-    public function renderOption($key, $value);
+    public function renderOption(string $key, $value);
 
     /**
      * 批量设置渲染参数.

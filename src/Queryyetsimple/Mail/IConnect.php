@@ -36,8 +36,10 @@ interface IConnect
      *
      * @param string $name
      * @param mixed  $value
+     *
+     * @return $this
      */
-    public function setOption(string $name, $value): void;
+    public function setOption(string $name, $value);
 
     /**
      * 创建 transport.

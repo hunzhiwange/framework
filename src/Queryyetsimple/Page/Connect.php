@@ -61,7 +61,6 @@ abstract class Connect implements IHtml
      * @var int
      */
     const RANGE = 2;
-
     /**
      * 总记录数量.
      *
@@ -155,10 +154,23 @@ abstract class Connect implements IHtml
      *
      * @param string $name
      * @param mixed  $value
+     *
+     * @return $this
      */
-    public function setOption(string $name, $value): void
+    public function setOption(string $name, $value)
     {
         $this->option[$name] = $value;
+
+        return $this;
+    }
+
+    /**
+     * 清理参数和 URL 缓存.
+     */
+    public function clearResolve()
+    {
+        $this->resolveParameter = null;
+        $this->resolveUrl = null;
     }
 
     /**
@@ -179,7 +191,7 @@ abstract class Connect implements IHtml
      *
      * @return $this
      */
-    public function append($key, $value)
+    public function append(string $key, string $value)
     {
         return $this->addParameter($key, $value);
     }
@@ -204,12 +216,10 @@ abstract class Connect implements IHtml
      * 设置分页条件.
      *
      * @param array $parameter
-     *
-     * @return $this
      */
     public function parameter(array $parameter)
     {
-        return $this->setOption('parameter', $parameter);
+        $this->setOption('parameter', $parameter);
     }
 
     /**
@@ -220,7 +230,7 @@ abstract class Connect implements IHtml
      *
      * @return $this
      */
-    public function addParameter($key, $value)
+    public function addParameter(string $key, string $value)
     {
         if ($key !== $this->getPageName()) {
             $tmp = $this->option['parameter'];
@@ -236,11 +246,11 @@ abstract class Connect implements IHtml
      * 设置渲染参数.
      *
      * @param string $key
-     * @param string $value
+     * @param mixed  $value
      *
      * @return $this
      */
-    public function renderOption($key, $value)
+    public function renderOption(string $key, $value)
     {
         $tmp = $this->option['render_option'];
         $tmp[$key] = $value;

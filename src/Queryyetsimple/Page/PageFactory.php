@@ -68,11 +68,7 @@ class PageFactory implements IPageFactory
      */
     public function make(int $perPage, int $totalRecord, array $option = []): Page
     {
-        return new Page(
-            $perPage,
-            $totalRecord,
-            $this->normalizeOption($option)
-        );
+        return new Page($perPage, $totalRecord, $this->normalizeOption($option));
     }
 
     /**
@@ -85,11 +81,7 @@ class PageFactory implements IPageFactory
      */
     public function makeWithoutTotal(int $perPage, array $option = []): Page
     {
-        return new Page(
-            $perPage,
-            null,
-            $this->normalizeOption($option)
-        );
+        return new Page($perPage, null, $this->normalizeOption($option));
     }
 
     /**

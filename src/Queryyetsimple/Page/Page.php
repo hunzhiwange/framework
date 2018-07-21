@@ -65,7 +65,11 @@ class Page extends Connect implements IPage, IJson, IArray, JsonSerializable
             $render = new $render($this);
         }
 
-        return $render->render();
+        $result = $render->render();
+
+        $this->clearResolve();
+
+        return $result;
     }
 
     /**
