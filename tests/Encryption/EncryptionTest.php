@@ -53,6 +53,11 @@ class EncryptionTest extends TestCase
         );
 
         $this->assertSame(
+            $encryption->decrypt($encodeMessage.'foo'),
+            ''
+        );
+
+        $this->assertSame(
             'encode-key',
             $this->getTestProperty($encryption, 'key')
         );

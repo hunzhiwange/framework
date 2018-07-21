@@ -400,42 +400,42 @@ class Safe
             $limitMaxTime += 60 * 60 * 24;
         }
 
-        if ($time >= $limitMinTime && $time <= $limitMaxTime) {
-            throw new RuntimeException(
-                sprintf(
-                    'You can only before %s or after %s to access this.',
-                    date('Y-m-d H:i:s', $limitMinTime),
-                    date('Y-m-d H:i:s', $limitMaxTime)
-                )
-            );
+        if ($time < $limitMinTime || $time > $limitMaxTime) {
+            return;
         }
+
+        throw new RuntimeException(
+            sprintf(
+                'You can only before %s or after %s to access this.',
+                date('Y-m-d H:i:s', $limitMinTime),
+                date('Y-m-d H:i:s', $limitMaxTime)
+            )
+        );
     }
 
     /**
      * IP 访问限制.
      *
      * @param string $visitorIp
-     * @param mixed  $limitIp
+     * @param array  $limitIp
      */
-    public static function limitIp(string $visitorIp, $limitIp)
+    public static function limitIp(string $visitorIp, array $limitIp)
     {
         if (empty($limitIp)) {
             return;
         }
 
-        if (is_string($limitIp)) {
-            $limitIp = (array) $limitIp;
-        }
-
         foreach ($limitIp as $ip) {
-            if (preg_match("/{$ip}/", $visitorIp)) {
-                throw new RuntimeException(
-                    sprintf(
-                        'You IP %s are banned,you can not access this.',
-                        $visitorIp
-                    )
-                );
+            if (!preg_match("/{$ip}/", $visitorIp)) {
+                continue;
             }
+
+            throw new RuntimeException(
+                sprintf(
+                    'You IP %s are banned,you can not access this.',
+                    $visitorIp
+                )
+            );
         }
     }
 
@@ -444,15 +444,17 @@ class Safe
      */
     public static function limitAgent()
     {
-        if ($_SERVER['HTTP_X_FORWARDED_FOR'] ||
-            $_SERVER['HTTP_VIA'] ||
-            $_SERVER['HTTP_PROXY_CONNECTION'] ||
-            $_SERVER['HTTP_USER_AGENT_VIA']) {
-            throw new RuntimeException(
-                'Proxy Connection denied.Your request was forbidden due to the '.
-                'administrator has set to deny all proxy connection.'
-            );
+        if (!isset($_SERVER['HTTP_X_FORWARDED_FOR']) &&
+            !isset($_SERVER['HTTP_VIA']) &&
+            !isset($_SERVER['HTTP_PROXY_CONNECTION']) &&
+            !isset($_SERVER['HTTP_USER_AGENT_VIA'])) {
+            return;
         }
+
+        throw new RuntimeException(
+            'Proxy Connection denied.Your request was forbidden due to the '.
+            'administrator has set to deny all proxy connection.'
+        );
     }
 
     /**
@@ -469,11 +471,11 @@ class Safe
         $strings = stripslashes($strings);
         $strings = preg_replace('/<!--?.*-->/', '', $strings); // 完全过滤注释
         $strings = preg_replace('/<\?|\?>/', '', $strings); // 完全过滤动态代码
-        $strings = preg_replace('/<script?.*\/script>/', '', $strings); // 完全过滤js
+        $strings = preg_replace('/<script?.*\/script>/', '', $strings); // 完全过滤 js
 
-        $strings = preg_replace('/<\/?(html|head|meta|link|base|body|title|style|script|form|iframe|frame|frameset)[^><]*>/i', '', $strings); // 过滤多余html
+        $strings = preg_replace('/<\/?(html|head|meta|link|base|body|title|style|script|form|iframe|frame|frameset)[^><]*>/i', '', $strings); // 过滤多余 html
 
-        while (preg_match('/(<[^><]+)(lang|onfinish|onmouse|onexit|onerror|onclick|onkey|onload|onchange|onfocus|onblur)[^><]+/i', $strings, $matches)) { // 过滤on事件lang js
+        while (preg_match('/(<[^><]+)(lang|onfinish|onmouse|onexit|onerror|onclick|onkey|onload|onchange|onfocus|onblur)[^><]+/i', $strings, $matches)) { // 过滤 on 事件
             $strings = str_replace($matches[0], $matches[1], $strings);
         }
 

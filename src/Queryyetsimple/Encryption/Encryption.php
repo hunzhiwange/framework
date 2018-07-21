@@ -53,8 +53,7 @@ class Encryption extends Connect implements IEncryption
      */
     public function encrypt($value, $expiry = null)
     {
-        return $this->authcode(
-            $value,
+        return $this->authcode($value,
             false,
             $this->key,
             null !== $expiry ? $expiry : $this->expiry
@@ -70,8 +69,7 @@ class Encryption extends Connect implements IEncryption
      */
     public function decrypt($value)
     {
-        return $this->authcode(
-            $value,
+        return $this->authcode($value,
             true,
             $this->key
         );

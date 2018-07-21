@@ -206,19 +206,37 @@ class SafeTest extends TestCase
         Safe::limitTime(['08:30', '08:10'], strtotime('10:50'));
     }
 
+    public function testLimitTime3()
+    {
+        $this->assertNull(Safe::limitTime(['08:10', '08:30'], strtotime('08:05')));
+        $this->assertNull(Safe::limitTime(['08:10', '08:30'], strtotime('08:35')));
+    }
+
     public function testLimitIp()
     {
-        $this->assertNull(Safe::limitIp('', 0));
+        $this->assertNull(Safe::limitIp('', []));
 
+        $this->assertNull(Safe::limitIp('', [0]));
+
+        $this->assertNull(Safe::limitIp('127.0.0.5', ['127.0.0.1']));
+    }
+
+    public function testLimitIp2()
+    {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
             'You IP 127.0.0.1 are banned,you can not access this.'
         );
 
-        Safe::limitIp('127.0.0.1', '127.0.0.1');
+        Safe::limitIp('127.0.0.1', ['127.0.0.1']);
     }
 
     public function testLimitAgent()
+    {
+        $this->assertNull(Safe::limitAgent());
+    }
+
+    public function testLimitAgent2()
     {
         $_SERVER['HTTP_X_FORWARDED_FOR'] = 1;
 
@@ -233,7 +251,7 @@ class SafeTest extends TestCase
         unset($_SERVER['HTTP_X_FORWARDED_FOR']);
     }
 
-    public function testLimitAgent2()
+    public function testLimitAgent3()
     {
         $_SERVER['HTTP_VIA'] = 1;
 
@@ -248,7 +266,7 @@ class SafeTest extends TestCase
         unset($_SERVER['HTTP_VIA']);
     }
 
-    public function testLimitAgent3()
+    public function testLimitAgent4()
     {
         $_SERVER['HTTP_PROXY_CONNECTION'] = 1;
 
@@ -263,7 +281,7 @@ class SafeTest extends TestCase
         unset($_SERVER['HTTP_PROXY_CONNECTION']);
     }
 
-    public function testLimitAgent4()
+    public function testLimitAgent5()
     {
         $_SERVER['HTTP_USER_AGENT_VIA'] = 1;
 
@@ -284,6 +302,11 @@ class SafeTest extends TestCase
             '<span window. xxx>'.
             '<script>window</script> here';
         $out = 'i a  here';
+
+        $this->assertSame($out, Safe::cleanJs($strings));
+
+        $strings = 'i a <span javascript:></span> here';
+        $out = 'i a <span ></span> here';
 
         $this->assertSame($out, Safe::cleanJs($strings));
     }
