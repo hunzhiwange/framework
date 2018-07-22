@@ -43,11 +43,21 @@ interface IPageFactory
     public function make(int $perPage, int $totalRecord, array $option = []): Page;
 
     /**
-     * 创建一个没有总记录的分页对象.
+     * 创建一个无限数据的分页对象.
      *
-     * @param int $perPage
+     * @param int   $perPage
+     * @param array $optoin
      *
      * @return \Leevel\Page\Page
      */
-    public function makeWithoutTotal(int $perPage, array $option = []): Page;
+    public function makeMacro(int $perPage, array $option = []): Page;
+
+    /**
+     * 创建一个只有上下页的分页对象.
+     *
+     * @param array $optoin
+     *
+     * @return \Leevel\Page\Page
+     */
+    public function makePrevNext(array $option = []): Page;
 }

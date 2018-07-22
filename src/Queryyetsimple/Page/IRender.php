@@ -44,6 +44,8 @@ interface IRender
     /**
      * 渲染.
      *
+     * @param array $option
+     *
      * @return string
      */
     public function render();

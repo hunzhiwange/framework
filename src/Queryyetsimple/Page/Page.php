@@ -23,6 +23,7 @@ namespace Leevel\Page;
 use JsonSerializable;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
+use RuntimeException;
 
 /**
  * 分页处理.
@@ -42,7 +43,7 @@ class Page extends Connect implements IPage, IJson, IArray, JsonSerializable
      * @param int   $totalRecord
      * @param array $option
      */
-    public function __construct(int $perPage, ?int $totalRecord = null, array $option = [])
+    public function __construct(?int $perPage = null, ?int $totalRecord = null, array $option = [])
     {
         $this->perPage = $perPage;
         $this->totalRecord = $totalRecord;
@@ -53,21 +54,26 @@ class Page extends Connect implements IPage, IJson, IArray, JsonSerializable
     /**
      * 渲染分页.
      *
-     * @param \Leevel\Page\IRender $render
-     * @param array                $optoin
+     * @param null|\Leevel\Page\IRender|string $render
+     * @param array                            $option
      *
      * @return string
      */
-    public function render(IRender $render = null, array $option = [])
+    public function render($render = null, array $option = [])
     {
-        if (null === $render) {
-            $render = 'Leevel\Page\\'.ucfirst($this->getRender());
+        $option = array_merge($this->option['render_option'], $option);
+
+        if (null === $render || is_string($render)) {
+            $render = $render ?: $this->getRender();
+            $render = 'Leevel\Page\\'.ucfirst($render);
             $render = new $render($this);
+        } elseif (!$render instanceof IRender) {
+            throw new RuntimeException('Unsupported render type.');
         }
 
-        $result = $render->render();
+        $result = $render->render($option);
 
-        $this->clearResolve();
+        $this->resolveUrl = null;
 
         return $result;
     }

@@ -42,11 +42,6 @@ interface IPage
     public function setOption(string $name, $value);
 
     /**
-     * 清理参数和 URL 缓存.
-     */
-    public function clearResolve();
-
-    /**
      * 追加分页条件.
      *
      * @param string $key
@@ -76,11 +71,11 @@ interface IPage
      * 添加分页条件.
      *
      * @param string $key
-     * @param string $value
+     * @param mixed  $value
      *
      * @return $this
      */
-    public function addParameter(string $key, string $value);
+    public function addParameter(string $key, $value);
 
     /**
      * 设置渲染参数.
@@ -103,13 +98,6 @@ interface IPage
     public function renderOptions(array $option);
 
     /**
-     * 获取渲染参数.
-     *
-     * @return $this
-     */
-    public function getRenderOption();
-
-    /**
      * 设置 url.
      *
      * @param null|string $url
@@ -125,7 +113,7 @@ interface IPage
      *
      * @return $this
      */
-    public function renders(?string $render = null);
+    public function setRender(?string $render = null);
 
     /**
      * 获取 render.
@@ -329,7 +317,7 @@ interface IPage
      *
      * @param callable $urlResolver
      */
-    public static function setUrlResolver(callable $urlResolver);
+    public static function setUrlResolver(?callable $urlResolver = null);
 
     /**
      * 替换分页变量.
@@ -343,10 +331,10 @@ interface IPage
     /**
      * 渲染分页.
      *
-     * @param \Leevel\Page\IRender $render
-     * @param array                $optoin
+     * @param null|\Leevel\Page\IRender|string $render
+     * @param array                            $optoin
      *
      * @return string
      */
-    public function render(IRender $render = null, array $option = []);
+    public function render($render = null, array $option = []);
 }

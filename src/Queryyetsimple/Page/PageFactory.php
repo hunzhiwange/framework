@@ -72,16 +72,28 @@ class PageFactory implements IPageFactory
     }
 
     /**
-     * 创建一个没有总记录的分页对象.
+     * 创建一个无限数据的分页对象.
      *
      * @param int   $perPage
      * @param array $optoin
      *
      * @return \Leevel\Page\Page
      */
-    public function makeWithoutTotal(int $perPage, array $option = []): Page
+    public function makeMacro(int $perPage, array $option = []): Page
     {
-        return new Page($perPage, null, $this->normalizeOption($option));
+        return new Page($perPage, Page::MACRO, $this->normalizeOption($option));
+    }
+
+    /**
+     * 创建一个只有上下页的分页对象.
+     *
+     * @param array $optoin
+     *
+     * @return \Leevel\Page\Page
+     */
+    public function makePrevNext(array $option = []): Page
+    {
+        return new Page(null, null, $this->normalizeOption($option));
     }
 
     /**

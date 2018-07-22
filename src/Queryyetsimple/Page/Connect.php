@@ -104,13 +104,6 @@ abstract class Connect implements IHtml
     protected $pageEnd;
 
     /**
-     * 解析后参数变量.
-     *
-     * @var array
-     */
-    protected $resolveParameter;
-
-    /**
      * 解析后 url 地址
      *
      * @var string
@@ -162,15 +155,6 @@ abstract class Connect implements IHtml
         $this->option[$name] = $value;
 
         return $this;
-    }
-
-    /**
-     * 清理参数和 URL 缓存.
-     */
-    public function clearResolve()
-    {
-        $this->resolveParameter = null;
-        $this->resolveUrl = null;
     }
 
     /**
@@ -226,18 +210,16 @@ abstract class Connect implements IHtml
      * 添加分页条件.
      *
      * @param string $key
-     * @param string $value
+     * @param mixed  $value
      *
      * @return $this
      */
-    public function addParameter(string $key, string $value)
+    public function addParameter(string $key, $value)
     {
-        if ($key !== $this->getPageName()) {
-            $tmp = $this->option['parameter'];
-            $tmp[$key] = $value;
+        $tmp = $this->option['parameter'];
+        $tmp[$key] = $value;
 
-            $this->setOption('parameter', $tmp);
-        }
+        $this->setOption('parameter', $tmp);
 
         return $this;
     }
@@ -278,16 +260,6 @@ abstract class Connect implements IHtml
     }
 
     /**
-     * 获取渲染参数.
-     *
-     * @return $this
-     */
-    public function getRenderOption()
-    {
-        return $this->option['render_option'];
-    }
-
-    /**
      * 设置 url.
      *
      * @param null|string $url
@@ -306,7 +278,7 @@ abstract class Connect implements IHtml
      *
      * @return $this
      */
-    public function renders(?string $render = null)
+    public function setRender(?string $render = null)
     {
         return $this->setOption('render', $render);
     }
@@ -376,7 +348,9 @@ abstract class Connect implements IHtml
      */
     public function perPage(int $perPage)
     {
-        return $this->perPage = $perPage;
+        $this->perPage = $perPage;
+
+        return $this;
     }
 
     /**
@@ -422,9 +396,7 @@ abstract class Connect implements IHtml
      */
     public function getTotalRecord()
     {
-        return true === $this->totalRecord ?
-            static::MACRO :
-            $this->totalRecord;
+        return $this->totalRecord;
     }
 
     /**
@@ -468,22 +440,38 @@ abstract class Connect implements IHtml
     /**
      * 返回当前分页.
      *
+     * @param int $page
+     *
+     * @return $this
+     */
+    public function currentPage(int $page)
+    {
+        $this->currentPage = $page;
+
+        return $this->addParameter($this->getPageName(), $page);
+    }
+
+    /**
+     * 返回当前分页.
+     *
      * @return int
      */
     public function getCurrentPage()
     {
-        if (null === $this->currentPage) {
-            $parameter = $this->option['parameter'];
+        if (null !== $this->currentPage) {
+            return $this->currentPage;
+        }
 
-            if (isset($parameter[$this->option['page']])) {
-                $this->currentPage = abs((int) ($parameter[$this->option['page']]));
+        $parameter = $this->option['parameter'];
 
-                if ($this->currentPage < 1) {
-                    $this->currentPage = 1;
-                }
-            } else {
+        if (isset($parameter[$this->option['page']])) {
+            $this->currentPage = abs((int) ($parameter[$this->option['page']]));
+
+            if ($this->currentPage < 1) {
                 $this->currentPage = 1;
             }
+        } else {
+            $this->currentPage = 1;
         }
 
         return $this->currentPage;
@@ -496,12 +484,14 @@ abstract class Connect implements IHtml
      */
     public function getPageStart()
     {
-        if (null === $this->pageStart) {
-            $this->pageStart = $this->getCurrentPage() - $this->getRange();
+        if (null !== $this->pageStart) {
+            return $this->pageStart;
+        }
 
-            if ($this->pageStart < $this->getRange() * 2) {
-                $this->pageStart = 1;
-            }
+        $this->pageStart = $this->getCurrentPage() - $this->getRange();
+
+        if ($this->pageStart < $this->getRange() * 2) {
+            $this->pageStart = 1;
         }
 
         return $this->pageStart;
@@ -514,16 +504,19 @@ abstract class Connect implements IHtml
      */
     public function getPageEnd()
     {
-        if (null === $this->pageEnd) {
-            $this->pageEnd = $this->getCurrentPage() + $this->getRange();
-            if (1 === $this->getPageStart()) {
-                $this->pageEnd = $this->getRange() * 2 + 2;
-            }
+        if (null !== $this->pageEnd) {
+            return $this->pageEnd;
+        }
 
-            if ($this->getTotalPage() &&
-                $this->pageEnd > $this->getTotalPage()) {
-                $this->pageEnd = $this->getTotalPage();
-            }
+        $this->pageEnd = $this->getCurrentPage() + $this->getRange();
+
+        if (1 === $this->getPageStart()) {
+            $this->pageEnd = $this->getRange() * 2 + 2;
+        }
+
+        if ($this->getTotalPage() &&
+            $this->pageEnd > $this->getTotalPage()) {
+            $this->pageEnd = $this->getTotalPage();
         }
 
         return $this->pageEnd;
@@ -536,15 +529,13 @@ abstract class Connect implements IHtml
      */
     public function getTotalPage()
     {
-        if (null === $this->totalPage && $this->getTotalRecord()) {
-            $this->totalPage = (int) (
-                ceil($this->getTotalRecord() / $this->getPerPage())
-            );
-
-            if ($this->totalPage < 1) {
-                $this->totalPage = 1;
-            }
+        if (null !== $this->totalPage || !$this->getTotalRecord()) {
+            return $this->totalPage;
         }
+
+        $this->totalPage = (int) (
+            ceil($this->getTotalRecord() / $this->getPerPage())
+        );
 
         return $this->totalPage;
     }
@@ -588,8 +579,7 @@ abstract class Connect implements IHtml
      */
     public function canPrevRender()
     {
-        return (null === $this->getTotalPage() ||
-                $this->getTotalPage() > 1) &&
+        return (null === $this->getTotalPage() || $this->getTotalPage() > 1) &&
             1 !== $this->getCurrentPage();
     }
 
@@ -670,7 +660,7 @@ abstract class Connect implements IHtml
      *
      * @param callable $urlResolver
      */
-    public static function setUrlResolver(callable $urlResolver)
+    public static function setUrlResolver(?callable $urlResolver = null)
     {
         static::$urlResolver = $urlResolver;
     }
@@ -721,20 +711,20 @@ abstract class Connect implements IHtml
             }
         }
 
-        $parameter = $this->getParameter();
+        $parameter = $this->option['parameter'];
+
+        if (isset($parameter[$this->option['page']])) {
+            unset($parameter[$this->option['page']]);
+        }
 
         if (false === strpos($url, '{page}')) {
             $parameter[$this->option['page']] = '{page}';
         }
 
         if ($withResolver) {
-            $this->resolveUrl = $this->resolverUrl(
-                $url,
-                $parameter,
-                $subdomain
-            );
+            $this->resolveUrl = $this->resolverUrl($url, $parameter, $subdomain);
         } else {
-            $this->resolveUrl .=
+            $this->resolveUrl = $url.
                 (false === strpos($url, '?') ? '?' : '&').
                 http_build_query($parameter, '', '&');
         }
@@ -750,37 +740,10 @@ abstract class Connect implements IHtml
     protected function resolverUrl()
     {
         if (!static::$urlResolver) {
-            throw new RuntimeException('Page not set url resolver');
+            throw new RuntimeException('Page not set url resolver.');
         }
 
-        return call_user_func_array(
-            static::$urlResolver,
-            func_get_args()
-        );
-    }
-
-    /**
-     * 解析参数.
-     *
-     * @param array $extend
-     *
-     * @return array
-     */
-    protected function getParameter(array $extend = [])
-    {
-        if (null === $this->resolveParameter) {
-            if ($this->option['parameter']) {
-                if (is_string($this->option['parameter'])) {
-                    parse_str($this->option['parameter'], $this->resolveParameter);
-                } elseif (is_array($this->option['parameter'])) {
-                    $this->resolveParameter = $this->option['parameter'];
-                }
-            } else {
-                $this->resolveParameter = [];
-            }
-        }
-
-        return array_merge($this->resolveParameter, $extend);
+        return call_user_func_array(static::$urlResolver, func_get_args());
     }
 
     /**

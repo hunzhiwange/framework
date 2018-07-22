@@ -88,13 +88,13 @@ class BootstrapSimple extends Bootstrap
      */
     protected function getPrevRender()
     {
-        if ($this->objPage->canPrevRender()) {
+        if ($this->page->canPrevRender()) {
             return sprintf(
                 '<li class="%s"><a aria-label="Previous" href="%s">'.
                     '<span aria-hidden="true">%s</span></a></li>',
                 'justify' === $this->option['align'] ? 'previous' : '',
                 $this->replace(
-                    $this->objPage->parsePrevRenderPrev()
+                    $this->page->parsePrevRenderPrev()
                 ),
                 __('上一页')
             );
@@ -115,13 +115,13 @@ class BootstrapSimple extends Bootstrap
      */
     protected function getNextRender()
     {
-        if ($this->objPage->canNextRender()) {
+        if ($this->page->canNextRender()) {
             return sprintf(
                 '<li class="%s"><a aria-label="Next" href="%s">'.
                     '<span aria-hidden="true">%s</span></a></li>',
                 'justify' === $this->option['align'] ? 'next' : '',
                 $this->replace(
-                    $this->objPage->getCurrentPage() + 1
+                    $this->page->getCurrentPage() + 1
                 ),
                 __('下一页')
             );

@@ -61,16 +61,10 @@ class Bootstrap implements IRender
     {
         $this->page = $page;
 
-        $this->option = array_merge($this->option, $option);
-
-        if ($this->page->getRenderOption()) {
-            $this->option = array_merge(
-                $this->option,
-                $this->page->getRenderOption('render')
-            );
+        if ($option) {
+            $this->option = array_merge($this->option, $option);
+            $this->intOption();
         }
-
-        $this->intOption();
     }
 
     /**
@@ -107,10 +101,17 @@ class Bootstrap implements IRender
     /**
      * 渲染.
      *
+     * @param array $option
+     *
      * @return string
      */
-    public function render()
+    public function render(array $option = [])
     {
+        if ($option) {
+            $this->option = array_merge($this->option, $option);
+            $this->intOption();
+        }
+
         return preg_replace_callback(
             '/{(.+?)}/',
             function ($matches) {
@@ -221,8 +222,7 @@ class Bootstrap implements IRender
         $result = '';
 
         for ($i = $this->page->getPageStart();
-            $i <= $this->page->getPageEnd();
-            $i++) {
+            $i <= $this->page->getPageEnd(); $i++) {
             $active = $this->page->getCurrentPage() === $i;
 
             $result .= sprintf(
@@ -273,9 +273,7 @@ class Bootstrap implements IRender
             return ($this->page->canLastRenderNext() ?
                     sprintf(
                         '<li><a href="%s">...</a></li>',
-                        $this->replace($this->page->parseLastRenderNext())
-                    ) :
-                    '').
+                        $this->replace($this->page->parseLastRenderNext())) : '').
                 sprintf(
                     '<li><a href="%s">%d</a></li>',
                     $this->replace($this->page->getTotalPage()),

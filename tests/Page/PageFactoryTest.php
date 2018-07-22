@@ -51,7 +51,7 @@ class PageFactoryTest extends TestCase
         $this->assertInstanceof(Page::class, $page);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 17 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?page=2">2</a></li><li class="number"><a href="?page=3">3</a></li><li class="number"><a href="?page=4">4</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+<div class="pagination"> <span class="pagination-total">共 17 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="/?page=2">2</a></li><li class="number"><a href="/?page=3">3</a></li><li class="number"><a href="/?page=4">4</a></li>  </ul> <button class="btn-next" onclick="window.location.href='/?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="/?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
 eot;
 
         $this->assertSame(
@@ -59,10 +59,21 @@ eot;
             $page->render()
         );
 
-        $page = $pageFactory->makeWithoutTotal(5);
+        $page = $pageFactory->makeMacro(5);
 
         $data = <<<'eot'
-<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="/?page=2">2</a></li><li class="number"><a href="/?page=3">3</a></li><li class="number"><a href="/?page=4">4</a></li><li class="number"><a href="/?page=5">5</a></li><li class="number"><a href="/?page=6">6</a></li> <li class="btn-quicknext" onclick="window.location.href='/?page=6';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li> </ul> <button class="btn-next" onclick="window.location.href='/?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="/?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+eot;
+
+        $this->assertSame(
+            $data,
+            $page->render()
+        );
+
+        $page = $pageFactory->makePrevNext();
+
+        $data = <<<'eot'
+<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='/?page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="/?page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
 eot;
 
         $this->assertSame(
@@ -77,10 +88,10 @@ eot;
             new Request([Request::PATHINFO_URL => 'hello', 'foo' => 'bar'])
         );
 
-        $page = $pageFactory->makeWithoutTotal(5);
+        $page = $pageFactory->makeMacro(5);
 
         $data = <<<'eot'
-<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">    </ul> <button class="btn-next" onclick="window.location.href='?foo=bar&page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?foo=bar&page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+<div class="pagination">  <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="hello?foo=bar&page=2">2</a></li><li class="number"><a href="hello?foo=bar&page=3">3</a></li><li class="number"><a href="hello?foo=bar&page=4">4</a></li><li class="number"><a href="hello?foo=bar&page=5">5</a></li><li class="number"><a href="hello?foo=bar&page=6">6</a></li> <li class="btn-quicknext" onclick="window.location.href='hello?foo=bar&page=6';" onmouseenter="this.innerHTML='&raquo;';" onmouseleave="this.innerHTML='...';">...</li> </ul> <button class="btn-next" onclick="window.location.href='hello?foo=bar&page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="hello?foo=bar&page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
 eot;
 
         $this->assertSame(
@@ -98,7 +109,7 @@ eot;
         ]);
 
         $data = <<<'eot'
-<div class="pagination"> <span class="pagination-total">共 17 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="?foo=bar&hello=world&page=2">2</a></li><li class="number"><a href="?foo=bar&hello=world&page=3">3</a></li><li class="number"><a href="?foo=bar&hello=world&page=4">4</a></li>  </ul> <button class="btn-next" onclick="window.location.href='?foo=bar&hello=world&page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="?foo=bar&hello=world&page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
+<div class="pagination"> <span class="pagination-total">共 17 条</span> <button class="btn-prev disabled">&#8249;</button> <ul class="pager">  <li class="number active"><a>1</a></li><li class="number"><a href="/?foo=bar&hello=world&page=2">2</a></li><li class="number"><a href="/?foo=bar&hello=world&page=3">3</a></li><li class="number"><a href="/?foo=bar&hello=world&page=4">4</a></li>  </ul> <button class="btn-next" onclick="window.location.href='/?foo=bar&hello=world&page=2';">&#8250;</button> <span class="pagination-jump">前往<input type="number" link="/?foo=bar&hello=world&page={jump}" onkeydown="var event = event || window.event; if (event.keyCode == 13) { window.location.href = this.getAttribute('link').replace( '{jump}', this.value); }" onfocus="this.select();" min="1" value="1" number="true" class="pagination-editor">页</span> </div>
 eot;
 
         $this->assertSame(
