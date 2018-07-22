@@ -32,6 +32,7 @@ use Thrift\Type\TMessageType;
  * @since 2018.04.01
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class ThriftClient implements ThriftIf
 {
