@@ -46,7 +46,7 @@ abstract class Manager
      *
      * @var object[]
      */
-    protected $connects;
+    protected $connects = [];
 
     /**
      * 构造函数.
@@ -204,7 +204,7 @@ abstract class Manager
         if (null === $this->getContainerOption('connect.'.$connect)) {
             throw new Exception(
                 sprintf(
-                    'Connect driver %s not exits', $connect
+                    'Connect driver %s not exits.', $connect
                 )
             );
         }
@@ -256,14 +256,14 @@ abstract class Manager
         }
 
         if (is_string($options)) {
-            $option = $this->getContainerOption('connect.'.$options);
+            $options = $this->getContainerOption('connect.'.$options);
 
             if (!is_array($options)) {
                 return [];
             }
         }
 
-        return $option;
+        return $options;
     }
 
     /**
