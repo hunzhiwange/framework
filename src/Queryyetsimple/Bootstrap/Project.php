@@ -651,6 +651,10 @@ class Project extends Container implements IProject
      */
     public function console()
     {
+        if (!is_object($this->make('request'))) {
+            return PHP_SAPI === 'cli';
+        }
+
         return $this['request']->isCli();
     }
 

@@ -23,9 +23,9 @@ namespace Leevel\Bootstrap\Runtime;
 use Exception;
 use Leevel\Database\Ddd\EntityNotFoundException;
 use Leevel\Di\IContainer;
+use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
 use Leevel\Http\JsonResponse;
-use Leevel\Http\Request;
 use Leevel\Http\Response;
 use Leevel\Kernel\Exception\HttpException;
 use Leevel\Kernel\Exception\NotFoundHttpException;
@@ -96,12 +96,12 @@ abstract class Runtime implements IRuntime
     /**
      * 异常渲染.
      *
-     * @param \Leevel\Http\Request $request
-     * @param \Exception           $e
+     * @param \Leevel\Http\IRequest $request
+     * @param \Exception            $e
      *
-     * @return \Leevel\Http\Response
+     * @return \Leevel\Http\IResponse
      */
-    public function render(Request $request, Exception $e)
+    public function render(IRequest $request, Exception $e)
     {
         if (method_exists($e, 'render') && $response = $e->render($request, $e)) {
             if (!($response instanceof IResponse)) {

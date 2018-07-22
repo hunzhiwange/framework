@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Kernel;
 
+use Leevel\Http\IRequest;
 use Leevel\Http\IResponse;
-use Leevel\Http\Request;
 
 /**
  * 内核执行接口.
@@ -37,19 +37,19 @@ interface IKernel
     /**
      * 响应 HTTP 请求
      *
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IRequest $request
      *
      * @return \Leevel\Http\IResponse
      */
-    public function handle(Request $request);
+    public function handle(IRequest $request);
 
     /**
      * 执行结束
      *
-     * @param \Leevel\Http\Request   $request
+     * @param \Leevel\Http\IRequest  $request
      * @param \Leevel\Http\IResponse $response
      */
-    public function terminate(Request $request, IResponse $response);
+    public function terminate(IRequest $request, IResponse $response);
 
     /**
      * 返回项目.

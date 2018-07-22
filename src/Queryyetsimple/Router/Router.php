@@ -405,6 +405,7 @@ class Router implements IRouter
 
         // 匹配基础路径
         $basepath = '';
+
         foreach ($this->getBasepaths() as $item) {
             if (0 === strpos($path, $item)) {
                 $path = substr($path, strlen($item) + 1);
@@ -415,7 +416,7 @@ class Router implements IRouter
         }
 
         $path = trim($path, '/');
-        $paths = explode('/', $path);
+        $paths = $path ? explode('/', $path) : [];
 
         // 应用
         if ($paths && $this->findApp($paths[0])) {
@@ -424,7 +425,6 @@ class Router implements IRouter
 
         if (!$paths) {
             $result[IRouter::CONTROLLER] = IRouter::DEFAULT_HOME_CONTROLLER;
-            $result[IRouter::ACTION] = IRouter::DEFAULT_HOME_ACTION;
 
             return $result;
         }
@@ -701,12 +701,6 @@ class Router implements IRouter
         }
 
         switch ($this->request->getMethod()) {
-            case 'GET':
-                if (!empty($this->matchedData[static::PARAMS])) {
-                    $this->matchedData[static::ACTION] = static::RESTFUL_SHOW;
-                }
-
-                break;
             case 'POST':
                 $this->matchedData[static::ACTION] = static::RESTFUL_STORE;
 
@@ -717,6 +711,11 @@ class Router implements IRouter
                 break;
             case 'DELETE':
                 $this->matchedData[static::ACTION] = static::RESTFUL_DESTROY;
+
+                break;
+            case 'GET':
+            default:
+                $this->matchedData[static::ACTION] = static::RESTFUL_SHOW;
 
                 break;
         }

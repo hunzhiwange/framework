@@ -58,9 +58,6 @@ class PathInfo implements IMatch
      */
     public function matche(IRouter $router, IRequest $request): array
     {
-        $pathInfo = $request->getPathInfo();
-        $pathInfo = '/'.trim($pathInfo, '/');
-
-        return $router->matchePath($pathInfo);
+        return $router->matchePath($request->getPathInfo());
     }
 }
