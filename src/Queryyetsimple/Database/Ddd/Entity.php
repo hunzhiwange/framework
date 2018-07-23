@@ -339,7 +339,7 @@ abstract class Entity implements IEntity, IArray, IJson, JsonSerializable, Array
         if (method_exists($this, 'scope'.ucwords($method))) {
             array_unshift($arrArgs, $method);
 
-            return $this->{'scope'}(...$arrArgs);
+            return $this->scope(...$arrArgs);
         }
 
         try {

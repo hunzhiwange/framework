@@ -92,7 +92,7 @@ class Dispatch implements IDispatch
 
         foreach ($listeners as $items) {
             $items = $this->makeSubject($items);
-            $items->{'notify'}(...$params);
+            $items->notify(...$params);
         }
 
         unset($listeners);

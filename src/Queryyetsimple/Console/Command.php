@@ -450,11 +450,11 @@ abstract class Command extends SymfonyCommand
     protected function specifyParameters()
     {
         foreach ($this->getArguments() as $argument) {
-            $this->{'addArgument'}(...$argument);
+            $this->addArgument(...$argument);
         }
 
         foreach ($this->getOptions() as $option) {
-            $this->{'addOption'}(...$option);
+            $this->addOption(...$option);
         }
     }
 
@@ -467,6 +467,7 @@ abstract class Command extends SymfonyCommand
      */
     protected function parseVerbosity($level = null)
     {
-        return static::$verbosityMap[$level] ?? (!is_int($level) ? $this->verbosity : $level);
+        return static::$verbosityMap[$level] ??
+            (!is_int($level) ? $this->verbosity : $level);
     }
 }

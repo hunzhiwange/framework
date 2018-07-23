@@ -914,7 +914,7 @@ abstract class Connect
             }
         }
 
-        return $this->pdoStatement->{'fetchAll'}(...$args);
+        return $this->pdoStatement->fetchAll(...$args);
     }
 
     /**

@@ -896,7 +896,7 @@ class Condition
             return $this;
         }
 
-        return $this->{'addConditions'}([
+        return $this->addConditions([
             'exists__' => $exists,
         ]);
     }
@@ -914,7 +914,7 @@ class Condition
             return $this;
         }
 
-        return $this->{'addConditions'}([
+        return $this->addConditions([
             'notexists__' => $exists,
         ]);
     }
@@ -2474,7 +2474,7 @@ class Condition
         array_shift($args);
         array_shift($args);
 
-        return $this->{'addConditions'}(...$args);
+        return $this->addConditions(...$args);
     }
 
     /**

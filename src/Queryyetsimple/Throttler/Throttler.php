@@ -76,7 +76,7 @@ class Throttler implements IThrottler
      */
     public function __call(string $method, array $args)
     {
-        return $this->{'create'}(...$args)->{$method}();
+        return $this->create(...$args)->{$method}();
     }
 
     /**
