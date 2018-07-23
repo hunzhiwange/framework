@@ -76,7 +76,7 @@ trait TControl
      */
     public function elses()
     {
-        return $this->setTControl(true, !$this->getTControl()[1]);
+        return $this->setTControl(true, !$this->isFlowControlTrue);
     }
 
     /**
@@ -103,19 +103,6 @@ trait TControl
         $this->isFlowControlTrue = $isFlowControlTrue;
 
         return $this;
-    }
-
-    /**
-     * 获取当前条件表达式状态
-     *
-     * @return array
-     */
-    public function getTControl()
-    {
-        return [
-            $this->inFlowControl,
-            $this->isFlowControlTrue,
-        ];
     }
 
     /**
