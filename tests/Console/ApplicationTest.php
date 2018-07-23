@@ -60,7 +60,7 @@ class ApplicationTest extends TestCase
             unset($_SERVER['test']);
         }
 
-        $application->normalizeCommand(Test2::class);
+        $application->normalizeCommands([Test2::class]);
 
         $this->assertSame($_SERVER['test'], '1');
 

@@ -83,6 +83,13 @@ abstract class Make extends Command
     protected static $globalReplace = [];
 
     /**
+     * 命令空间.
+     *
+     * @var string
+     */
+    protected $namespace;
+
+    /**
      * 响应命令.
      */
     public function handle()
@@ -352,10 +359,10 @@ abstract class Make extends Command
     /**
      * 设置自定义变量替换.
      *
-     * @param mixed  $key
-     * @param string $value
+     * @param mixed $key
+     * @param mixed $value
      */
-    protected function setCustomReplaceKeyValue($key, $value)
+    protected function setCustomReplaceKeyValue($key, $value = null)
     {
         if (is_array($key)) {
             $this->customReplaceKeyValue = array_merge($this->customReplaceKeyValue, $key);
