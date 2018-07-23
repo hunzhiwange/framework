@@ -271,7 +271,7 @@ eot;
         (new Load([__DIR__.'/i18nNotExists']))->loadData();
     }
 
-    public function createLoad(string $lang)
+    protected function createLoad(string $lang)
     {
         return (new Load([__DIR__.'/i18n']))->
         setI18n($lang)->
