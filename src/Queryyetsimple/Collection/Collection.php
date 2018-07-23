@@ -387,6 +387,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
 
                 continue;
             }
+
             $result[$k] = $value;
         }
 
@@ -413,6 +414,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
 
                 break;
             }
+
             $result[$k] = $value;
         }
 
@@ -432,6 +434,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         if (null === $value) {
             return $this->offsetGet($key);
         }
+
         $this->offsetSet($key, $value);
     }
 
@@ -472,6 +475,7 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         if (null === $value) {
             return $this->key();
         }
+
         $key = array_search($value, $this->elements, $strict);
 
         if (false === $key) {
@@ -612,7 +616,9 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
             return;
         }
 
-        throw new InvalidArgumentException(sprintf('Collection type %s validation failed', implode(',', $this->type)));
+        throw new InvalidArgumentException(
+            sprintf('Collection type %s validation failed.', implode(',', $this->type))
+        );
     }
 
     /**
@@ -627,15 +633,19 @@ class Collection implements IArray, IJson, Iterator, ArrayAccess, Countable, Jso
         if (is_array($elements)) {
             return $elements;
         }
+
         if ($elements instanceof self) {
             return $elements->all();
         }
+
         if ($elements instanceof IArray) {
             return $elements->toArray();
         }
+
         if ($elements instanceof IJson) {
             return json_decode($elements->toJson(), true);
         }
+
         if ($elements instanceof JsonSerializable) {
             return $elements->jsonSerialize();
         }

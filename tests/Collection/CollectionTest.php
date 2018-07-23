@@ -20,7 +20,10 @@ declare(strict_types=1);
 
 namespace Tests\Collection;
 
+use JsonSerializable;
 use Leevel\Collection\Collection;
+use Leevel\Support\IArray;
+use Leevel\Support\IJson;
 use Tests\TestCase;
 
 /**
@@ -131,5 +134,124 @@ class CollectionTest extends TestCase
             0 => 'hello',
             2 => 'foo',
         ]);
+    }
+
+    public function testGetArrayElements()
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection(new Collection($data));
+
+        $this->assertSame($collection->toArray(), $data);
+    }
+
+    public function testGetArrayElements2()
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection(new TestIArray());
+
+        $this->assertSame($collection->toArray(), $data);
+    }
+
+    public function testGetArrayElements3()
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection(new TestIJson());
+
+        $this->assertSame($collection->toArray(), $data);
+    }
+
+    public function testGetArrayElements4()
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection(new TestJsonSerializable());
+
+        $this->assertSame($collection->toArray(), $data);
+    }
+
+    public function testGetArrayElements5()
+    {
+        $data = [
+            'hello',
+        ];
+
+        $collection = new Collection('hello');
+
+        $this->assertSame($collection->toArray(), $data);
+    }
+
+    public function testTypeValidate()
+    {
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection($data, ['string']);
+
+        $this->assertSame($collection->toArray(), $data);
+    }
+
+    public function testTypeValidateException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Collection type int validation failed.'
+        );
+
+        $data = [
+            'hello',
+            'world',
+        ];
+
+        $collection = new Collection($data, ['int']);
+    }
+}
+
+class TestIArray implements IArray
+{
+    public function toArray()
+    {
+        return [
+            'hello',
+            'world',
+        ];
+    }
+}
+
+class TestIJson implements IJson
+{
+    public function toJson($option = JSON_UNESCAPED_UNICODE)
+    {
+        return json_encode([
+            'hello',
+            'world',
+        ], $option);
+    }
+}
+
+class TestJsonSerializable implements JsonSerializable
+{
+    public function jsonSerialize()
+    {
+        return [
+            'hello',
+            'world',
+        ];
     }
 }
