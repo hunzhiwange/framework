@@ -45,8 +45,6 @@ class CommandTest extends TestCase
             $application->normalizeCommands([Test1::class]);
         });
 
-        // dd($result);
-
         $this->assertContains('call other command test.', $result);
         $this->assertContains('load1 test1', $result);
 
