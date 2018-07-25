@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
-use InvalidArgumentException;
 use RuntimeException;
 
 /**
@@ -159,7 +158,7 @@ abstract class Connect
         }
 
         if (!is_file($file)) {
-            throw new InvalidArgumentException(
+            throw new RuntimeException(
                 sprintf('Template file %s does not exist.', $file)
             );
         }
@@ -185,6 +184,7 @@ abstract class Connect
             false !== strpos($tpl, '(')) {
             return $this->formatFile($tpl);
         }
+
         if (!$this->option['theme_path']) {
             throw new RuntimeException('Theme path must be set');
         }

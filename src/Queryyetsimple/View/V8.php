@@ -20,10 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\View;
 
-use Exception;
 use RuntimeException;
 use V8Js;
-use V8JsException;
 
 /**
  * v8 模板处理类.
@@ -33,6 +31,7 @@ use V8JsException;
  * @since 2018.01.10
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class V8 extends Connect implements IConnect
 {
@@ -51,13 +50,13 @@ class V8 extends Connect implements IConnect
         'suffix'                => '.js',
 
         // node_modules/vue/dist/vue.js
-        'vue_path' => '',
+        'vue_path' => 'node_modules/vue/dist/vue.js',
 
         // node_modules/vue-server-renderer/basic.js
-        'vue_renderer' => '',
+        'vue_renderer' => 'node_modules/vue-server-renderer/basic.js',
 
         // node_modules/art-template/lib/template-web.js
-        'art_path' => '',
+        'art_path' => 'node_modules/art-template/lib/template-web.js',
     ];
 
     /**
@@ -66,13 +65,6 @@ class V8 extends Connect implements IConnect
      * @var \V8Js
      */
     protected $v8js;
-
-    /**
-     * 自定义错误.
-     *
-     * @var callable
-     */
-    protected $errorHandler;
 
     /**
      * 构造函数.
@@ -91,7 +83,7 @@ class V8 extends Connect implements IConnect
 
         $this->v8js = new V8Js('$');
 
-        foreach (['base', 'dd', 'html', 'load', 'module'] as $item) {
+        foreach (['base', 'dd', 'dump', 'echo', 'html', 'load', 'module'] as $item) {
             $this->{'init'.ucwords($item)}();
         }
     }
@@ -101,7 +93,7 @@ class V8 extends Connect implements IConnect
      *
      * @return \V8js
      */
-    public function getV8js()
+    public function getV8js(): V8js
     {
         return $this->v8js;
     }
@@ -136,7 +128,8 @@ class V8 extends Connect implements IConnect
         if (false === $display) {
             return $this->select($source);
         }
-        $this->execute($source);
+
+        return $this->execute($source);
     }
 
     /**
@@ -148,18 +141,10 @@ class V8 extends Connect implements IConnect
      */
     public function select(string $js)
     {
-        try {
-            ob_start();
-            $this->v8js->executeString($js);
+        ob_start();
+        $this->v8js->executeString($js);
 
-            return ob_get_clean();
-        } catch (V8JsException $e) {
-            if ($this->errorHandler) {
-                call_user_func($this->errorHandler, $e);
-            } else {
-                throw $e;
-            }
-        }
+        return ob_get_clean();
     }
 
     /**
@@ -171,33 +156,14 @@ class V8 extends Connect implements IConnect
      */
     public function execute(string $js)
     {
-        try {
-            return $this->v8js->executeString($js);
-        } catch (V8JsException $e) {
-            if ($this->errorHandler) {
-                call_user_func($this->errorHandler, $e);
-            } else {
-                throw $e;
-            }
-        }
-    }
-
-    /**
-     * 自定义异常.
-     *
-     * @param callable $errorHandler
-     *
-     * @return $this
-     */
-    public function setErrorHandler(callable $errorHandler)
-    {
-        $this->errorHandler = $errorHandler;
-
-        return $this;
+        return $this->v8js->executeString($js);
     }
 
     /**
      * initDd.
+     * 调试会导致 cli 中断.
+     *
+     * @codeCoverageIgnore
      */
     public function initDd()
     {
@@ -206,6 +172,30 @@ class V8 extends Connect implements IConnect
         };
 
         $this->execute('this.dd = this.$dd = $.$dd;');
+    }
+
+    /**
+     * initDump.
+     */
+    public function initDump()
+    {
+        $this->v8js->{'$dump'} = function ($message) {
+            var_dump($message);
+        };
+
+        $this->execute('this.dump = this.$dump = $.$dump;');
+    }
+
+    /**
+     * initEcho.
+     */
+    public function initEcho()
+    {
+        $this->v8js->{'$echo'} = function ($message) {
+            echo $message;
+        };
+
+        $this->execute('this.echo = this.$echo = $.$echo;');
     }
 
     /**
@@ -250,7 +240,7 @@ class V8 extends Connect implements IConnect
         $this->v8js->setModuleNormaliser(function ($base, $module) {
             try {
                 $module = $this->parseDisplayFile($module);
-            } catch (Exception $e) {
+            } catch (RuntimeException $e) {
                 $module = $this->parseDisplayFile($module.'/index');
             }
 
