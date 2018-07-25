@@ -46,6 +46,12 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 abstract class Command extends SymfonyCommand
 {
     /**
+     * 默认输出映射.
+     *
+     * @var int
+     */
+    const DEFAULT_VERBOSITY = OutputInterface::VERBOSITY_NORMAL;
+    /**
      * 项目容器.
      *
      * @var \Leevel\Di\IContainer
@@ -85,13 +91,6 @@ abstract class Command extends SymfonyCommand
         'quiet'  => OutputInterface::VERBOSITY_QUIET,
         'normal' => OutputInterface::VERBOSITY_NORMAL,
     ];
-
-    /**
-     * 默认输出映射.
-     *
-     * @var int
-     */
-    protected $verbosity = OutputInterface::VERBOSITY_NORMAL;
 
     /**
      * 输入接口.
@@ -186,11 +185,13 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 确认用户的问题.
+     * 等待与用户进行交互，无法被测试.
      *
      * @param string $question
      * @param bool   $defaults
      *
      * @return bool
+     * @codeCoverageIgnore
      */
     public function confirm($question, $defaults = false)
     {
@@ -199,11 +200,13 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 提示用户输入.
+     * 等待与用户进行交互，无法被测试.
      *
      * @param string $question
      * @param string $defaults
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function ask($question, $defaults = null)
     {
@@ -278,12 +281,14 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 提示用户输入根据返回结果自动完成一些功能.
+     * 等待与用户进行交互，无法被测试.
      *
      * @param string $question
      * @param array  $choices
      * @param string $defaults
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function askWithCompletion($question, array $choices, $defaults = null)
     {
@@ -295,13 +300,15 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 提示用户输入但是控制台隐藏答案.
+     * 等待与用户进行交互，无法被测试.
      *
      * @param string $question
      * @param bool   $fallback
      *
      * @return string
+     * @codeCoverageIgnore
      */
-    public function secret($question, $fallback = true)
+    public function secret($question, bool $fallback = true)
     {
         $question = new Question($question);
         $question->setHidden(true)->setHiddenFallback($fallback);
@@ -311,6 +318,7 @@ abstract class Command extends SymfonyCommand
 
     /**
      * 给用户一个问题组选择.
+     * 等待与用户进行交互，无法被测试.
      *
      * @param string $question
      * @param array  $choices
@@ -319,6 +327,7 @@ abstract class Command extends SymfonyCommand
      * @param bool   $multiple
      *
      * @return string
+     * @codeCoverageIgnore
      */
     public function choice($question, array $choices, $defaults = null, $attempts = null, $multiple = null)
     {
@@ -366,16 +375,6 @@ abstract class Command extends SymfonyCommand
         $message = $style ? "<{$style}>{$message}</{$style}>" : $message;
 
         $this->output->writeln($message, $this->parseVerbosity($verbosity));
-    }
-
-    /**
-     * 获取输入对象
-     *
-     * @return \Symfony\Component\Console\Output\OutputInterface
-     */
-    public function getOutput()
-    {
-        return $this->output;
     }
 
     /**
@@ -435,16 +434,6 @@ abstract class Command extends SymfonyCommand
     }
 
     /**
-     * 设置默认输出级别.
-     *
-     * @param int|string $level
-     */
-    protected function setVerbosity($level)
-    {
-        $this->verbosity = $this->parseVerbosity($level);
-    }
-
-    /**
      * 定义参数和配置.
      */
     protected function specifyParameters()
@@ -468,6 +457,6 @@ abstract class Command extends SymfonyCommand
     protected function parseVerbosity($level = null)
     {
         return static::$verbosityMap[$level] ??
-            (!is_int($level) ? $this->verbosity : $level);
+            (!is_int($level) ? static::DEFAULT_VERBOSITY : $level);
     }
 }

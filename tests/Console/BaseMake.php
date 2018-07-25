@@ -46,7 +46,7 @@ trait BaseMake
 
         $application->setAutoExit(false);
 
-        Facade::setContainer($container);
+        Facade::setContainer($container, $application);
 
         $application->add($command);
 

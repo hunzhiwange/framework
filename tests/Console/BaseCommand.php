@@ -49,7 +49,7 @@ trait BaseCommand
 
         Facade::setContainer($container);
 
-        call_user_func($call, $container);
+        call_user_func($call, $container, $application);
 
         $application->add($command);
 
