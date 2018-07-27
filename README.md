@@ -28,7 +28,7 @@ QueryPHP was based on the DoYouHaoBaby framework，we have a large code refactor
 
 # 旧日时光，时光不再...
 
-DoYouHaoBaby 框架成立于 2010 年，全名 The DoYouHaoBaby PHP Framework，最早于 2010.10.03 日发布了第一个版本，此后经历了多个版本的迭代。2016 年下半年晚些时候开始进行战略重构，并启用全新的品牌 QueryPHP，希望为国内 PHP 社区提供一款高度工程化面向生成环境的高可用 PHP 框架。
+DoYouHaoBaby 框架成立于 2010 年，全名 The DoYouHaoBaby PHP Framework，最早于 2010.10.03 日发布了第一个版本，此后经历了多个版本的迭代。2016 年下半年晚些时候开始进行战略重构，并启用全新的品牌 QueryPHP，希望为国内 PHP 社区提供一款高度工程化面向生产环境的高可用 PHP 框架。
 
 DoYouHaoBaby 是作者小牛仔于 2010 年 10 月发布的一个作品，那个时候刚刚 20 岁正青春。八年磨一剑，只珍朝夕。
 
