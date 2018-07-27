@@ -54,7 +54,7 @@ class LocalTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('The local requires path option.');
-        
+
         $local = new Local([
             'path' => '',
         ]);
