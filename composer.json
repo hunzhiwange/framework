@@ -30,7 +30,6 @@
         "nunomaduro/collision": "~2.0",
         "leric/php-thrift": "0.10.0",
         "twig/twig": "~2.0",
-        "nikic/php-parser": "v4.0.0alpha3",
         "zircote/swagger-php": "2.0.13",
         "gettext/gettext": "^4.6.0"
     },
@@ -73,7 +72,8 @@
     "require-dev": {
         "php-coveralls/php-coveralls":"^2.1",
         "fzaninotto/faker": "^1.6",
-        "phpunit/phpunit": "~7.0"
+        "phpunit/phpunit": "~7.0",
+        "league/flysystem-sftp": "^1.0"
     },
     "suggest": {
         "ext-swoole": "Required to use swoole.",

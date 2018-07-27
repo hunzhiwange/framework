@@ -31,6 +31,7 @@ use League\Flysystem\Adapter\Ftp as AdapterFtp;
  * @see https://flysystem.thephpleague.com/adapter/ftp/
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Ftp extends Connect implements IConnect
 {
@@ -72,6 +73,6 @@ class Ftp extends Connect implements IConnect
      */
     public function makeConnect()
     {
-        return new AdapterFtp($this->getOptions());
+        return new AdapterFtp($this->option);
     }
 }

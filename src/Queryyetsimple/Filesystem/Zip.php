@@ -32,6 +32,7 @@ use League\Flysystem\ZipArchive\ZipArchiveAdapter;
  * @see https://flysystem.thephpleague.com/adapter/zip-archive/
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Zip extends Connect implements IConnect
 {
@@ -53,13 +54,13 @@ class Zip extends Connect implements IConnect
     {
         if (empty($this->option['path'])) {
             throw new InvalidArgumentException(
-                'The zip requires path option'
+                'The zip requires path option.'
             );
         }
 
         if (!class_exists('League\Flysystem\ZipArchive\ZipArchiveAdapter')) {
             throw new InvalidArgumentException(
-                'Please run composer require league/flysystem-ziparchive'
+                'Please run composer require league/flysystem-ziparchive.'
             );
         }
 

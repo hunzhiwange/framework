@@ -31,6 +31,7 @@ use League\Flysystem\Sftp\SftpAdapter;
  * @see https://flysystem.thephpleague.com/adapter/sftp/
  *
  * @version 1.0
+ * @codeCoverageIgnore
  */
 class Sftp extends Connect implements IConnect
 {
@@ -71,10 +72,10 @@ class Sftp extends Connect implements IConnect
     {
         if (!class_exists('League\Flysystem\Sftp\SftpAdapter')) {
             throw new InvalidArgumentException(
-                'Please run composer require league/flysystem-sftp'
+                'Please run composer require league/flysystem-sftp.'
             );
         }
 
-        return new SftpAdapter($this->getOptions());
+        return new SftpAdapter($this->option);
     }
 }

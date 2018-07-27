@@ -20,15 +20,15 @@ declare(strict_types=1);
 
 namespace Tests\Filesystem;
 
-use Leevel\Filesystem\Fso;
+use Leevel\Filesystem\Local;
 use Tests\TestCase;
 
 /**
- * fso test.
+ * local test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.07.16
+ * @since 2018.07.27
  *
  * @version 1.0
  */
@@ -36,5 +36,27 @@ class LocalTest extends TestCase
 {
     public function testBaseUse()
     {
+        $local = new Local([
+            'path' => $path = __DIR__,
+        ]);
+
+        $local->put('hello.txt', 'foo');
+
+        $file = $path.'/hello.txt';
+
+        $this->assertTrue(is_file($file));
+        $this->assertSame('foo', file_get_contents($file));
+
+        unlink($file);
+    }
+
+    public function testPathNotFound()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The local requires path option.');
+        
+        $local = new Local([
+            'path' => '',
+        ]);
     }
 }
