@@ -48,7 +48,7 @@ class DispatchTest extends TestCase
 
         $dispatch = new Dispatch(new Container());
 
-        $dispatch->listeners('event', Listener1::class);
+        $dispatch->register('event', Listener1::class);
 
         $dispatch->run('event');
 
@@ -66,7 +66,7 @@ class DispatchTest extends TestCase
 
         $dispatch = new Dispatch(new Container());
 
-        $dispatch->listeners('event', new Listener2('arg_foo'));
+        $dispatch->register('event', new Listener2('arg_foo'));
 
         $dispatch->run('event');
 
@@ -83,7 +83,7 @@ class DispatchTest extends TestCase
 
         $dispatch = new Dispatch(new Container());
 
-        $dispatch->listeners($event = new Event1('event_arg_foo'), Listener3::class);
+        $dispatch->register($event = new Event1('event_arg_foo'), Listener3::class);
 
         $dispatch->run($event);
 
@@ -98,7 +98,7 @@ class DispatchTest extends TestCase
 
         $event = new Event1('event_arg_foo');
 
-        $dispatch->listeners([$event], Listener3::class);
+        $dispatch->register([$event], Listener3::class);
 
         $dispatch->run($event);
 
@@ -111,8 +111,8 @@ class DispatchTest extends TestCase
     {
         $dispatch = new Dispatch(new Container());
 
-        $dispatch->listeners('foo', Listener4::class);
-        $dispatch->listeners('foo', Listener5::class);
+        $dispatch->register('foo', Listener4::class);
+        $dispatch->register('foo', Listener5::class);
 
         $dispatch->run('foo');
 
@@ -121,13 +121,133 @@ class DispatchTest extends TestCase
         $dispatch = new Dispatch(new Container());
 
         // 第三个参数标识优先级，越小越靠前执行，默认为 500
-        $dispatch->listeners('foo', Listener4::class, 5);
-        $dispatch->listeners('foo', Listener5::class, 4);
+        $dispatch->register('foo', Listener4::class, 5);
+        $dispatch->register('foo', Listener5::class, 4);
 
         $dispatch->run('foo');
 
         $this->assertSame($_SERVER['test'], 'l4');
         unset($_SERVER['test']);
+    }
+
+    public function testListenNotFound()
+    {
+        $dispatch = new Dispatch(new Container());
+
+        $this->assertNull($dispatch->run('notFound'));
+    }
+
+    public function testWildcards()
+    {
+        $dispatch = new Dispatch(new Container());
+
+        $dispatch->register('wildcards*event', WildcardsListener::class);
+
+        $dispatch->run('wildcards123456event');
+
+        $this->assertSame($_SERVER['wildcard'], 'wildcard');
+        unset($_SERVER['wildcard']);
+
+        $dispatch->run('wildcards7896event');
+
+        $this->assertSame($_SERVER['wildcard'], 'wildcard');
+        unset($_SERVER['wildcard']);
+
+        $dispatch->run('wildcards_foobar_event');
+
+        $this->assertSame($_SERVER['wildcard'], 'wildcard');
+        unset($_SERVER['wildcard']);
+    }
+
+    public function testDeleteListeners()
+    {
+        $dispatch = new Dispatch(new Container());
+
+        $dispatch->register('testevent', ForRemoveListener::class);
+
+        $dispatch->run('testevent');
+
+        $this->assertSame($_SERVER['remove'], 'remove');
+        unset($_SERVER['remove']);
+
+        $dispatch->delete('testevent');
+
+        $dispatch->run('testevent');
+
+        $this->assertFalse(isset($_SERVER['remove']));
+    }
+
+    public function testDeleteListeners2()
+    {
+        $dispatch = new Dispatch(new Container());
+
+        $dispatch->register('wildcards*event', WildcardsListener::class);
+
+        $dispatch->run('wildcards123456event');
+
+        $this->assertSame($_SERVER['wildcard'], 'wildcard');
+        unset($_SERVER['wildcard']);
+
+        $dispatch->delete('wildcards*event');
+
+        $dispatch->run('wildcards7896event');
+
+        $this->assertFalse(isset($_SERVER['wildcard']));
+    }
+
+    public function testHas()
+    {
+        $dispatch = new Dispatch(new Container());
+
+        $this->assertSame([], $dispatch->get('testevent'));
+        $this->assertFalse($dispatch->has('testevent'));
+
+        $dispatch->register('testevent', Listener1::class);
+
+        $this->assertSame([500 => ['Tests\Event\Listener1']], $dispatch->get('testevent'));
+        $this->assertTrue($dispatch->has('testevent'));
+    }
+
+    public function testListenerWithoutRunOrHandleMethod()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Observer Tests\Event\ListenerWithoutRunOrHandleMethod must has run or handle method.'
+        );
+
+        $dispatch = new Dispatch(new Container());
+
+        $dispatch->register('testevent', ListenerWithoutRunOrHandleMethod::class);
+
+        $dispatch->run('testevent');
+    }
+
+    public function testListenerIsInvalid()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Observer is invalid.'
+        );
+
+        $dispatch = new Dispatch(new Container());
+
+        $dispatch->register('testevent', 'Tests\Event\NotFoundListener');
+
+        $dispatch->run('testevent');
+    }
+
+    public function testListenerNotInstanceofSplObserver()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Invalid observer argument because it not instanceof SplObserver.'
+        );
+
+        $dispatch = new Dispatch(new Container());
+
+        $dispatch->register('testevent', ListenerNotExtends::class);
+
+        $dispatch->run('testevent');
     }
 }
 
@@ -180,6 +300,36 @@ class Listener5 extends Listener
     public function run($event)
     {
         $_SERVER['test'] = 'l5';
+    }
+}
+
+class WildcardsListener extends Listener
+{
+    public function run($event)
+    {
+        $_SERVER['wildcard'] = 'wildcard';
+    }
+}
+
+class ForRemoveListener extends Listener
+{
+    public function run($event)
+    {
+        $_SERVER['remove'] = 'remove';
+    }
+}
+
+class ListenerWithoutRunOrHandleMethod extends Listener
+{
+    public function notFound($event)
+    {
+    }
+}
+
+class ListenerNotExtends
+{
+    public function run()
+    {
     }
 }
 

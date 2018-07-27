@@ -56,7 +56,7 @@ class Local extends Connect implements IConnect
     {
         if (empty($this->option['path'])) {
             throw new InvalidArgumentException(
-                'The local requires path option'
+                'The local requires path option.'
             );
         }
 

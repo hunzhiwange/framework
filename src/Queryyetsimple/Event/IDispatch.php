@@ -46,7 +46,7 @@ interface IDispatch
      * @param mixed               $listener
      * @param int                 $priority
      */
-    public function listeners($event, $listener, int $priority = 500);
+    public function register($event, $listener, int $priority = 500);
 
     /**
      * 获取一个事件监听器.
@@ -55,7 +55,7 @@ interface IDispatch
      *
      * @return array
      */
-    public function getListeners($event);
+    public function get($event);
 
     /**
      * 判断事件监听器是否存在.
@@ -64,12 +64,12 @@ interface IDispatch
      *
      * @return bool
      */
-    public function hasListeners($event);
+    public function has($event);
 
     /**
      * 删除一个事件所有监听器.
      *
      * @param object|string $event
      */
-    public function deleteListeners($event);
+    public function delete($event);
 }

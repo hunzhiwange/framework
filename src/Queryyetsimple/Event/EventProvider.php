@@ -47,12 +47,12 @@ abstract class EventProvider extends Provider
      */
     public function bootstrap(IDispatch $dispatch)
     {
-        foreach ($this->getListeners() as $event => $listeners) {
+        foreach ($this->get() as $event => $listeners) {
             foreach ($listeners as $key => $item) {
                 if (is_int($item)) {
-                    $dispatch->listeners($event, $key, $item);
+                    $dispatch->register($event, $key, $item);
                 } else {
-                    $dispatch->listeners($event, $item);
+                    $dispatch->register($event, $item);
                 }
             }
         }
@@ -70,7 +70,7 @@ abstract class EventProvider extends Provider
      *
      * @return array
      */
-    public function getListeners()
+    public function get()
     {
         return $this->listeners;
     }

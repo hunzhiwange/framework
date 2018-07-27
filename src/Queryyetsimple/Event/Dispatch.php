@@ -83,11 +83,12 @@ class Dispatch implements IDispatch
 
         array_unshift($params, $event);
 
-        if (!$this->hasListeners($name)) {
+        $listeners = $this->get($name);
+
+        if (!$listeners) {
             return;
         }
 
-        $listeners = $this->getListeners($name);
         ksort($listeners);
 
         foreach ($listeners as $items) {
@@ -105,7 +106,7 @@ class Dispatch implements IDispatch
      * @param mixed               $listener
      * @param int                 $priority
      */
-    public function listeners($event, $listener, int $priority = 500)
+    public function register($event, $listener, int $priority = 500)
     {
         $event = is_object($event) ? [$event] : (array) $event;
         $priority = (int) $priority;
@@ -128,7 +129,7 @@ class Dispatch implements IDispatch
      *
      * @return array
      */
-    public function getListeners($event)
+    public function get($event)
     {
         $listeners = [];
 
@@ -162,11 +163,9 @@ class Dispatch implements IDispatch
      *
      * @return bool
      */
-    public function hasListeners($event)
+    public function has($event)
     {
-        $event = $this->normalizeEvent($event);
-
-        return isset($this->listeners[$event]) || isset($this->wildcards[$event]);
+        return [] !== $this->get($event);
     }
 
     /**
@@ -174,7 +173,7 @@ class Dispatch implements IDispatch
      *
      * @param object|string $event
      */
-    public function deleteListeners($event)
+    public function delete($event)
     {
         $event = $this->normalizeEvent($event);
 

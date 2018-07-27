@@ -43,6 +43,7 @@ class Cookie implements ICookie
         'expire'   => 86400,
         'domain'   => '',
         'path'     => '/',
+        'secure'   => false,
         'httponly' => false,
     ];
 
@@ -94,23 +95,17 @@ class Cookie implements ICookie
         }
 
         if (!is_scalar($value) && null !== $value) {
-            throw new Exception('Cookie value must be scalar or null');
+            throw new Exception('Cookie value must be scalar or null.');
         }
 
         $name = $option['prefix'].$name;
+
+        $option['expire'] = (int) ($option['expire']);
 
         if ($option['expire'] > 0) {
             $option['expire'] = time() + $option['expire'];
         } elseif ($option['expire'] < 0) {
             $option['expire'] = time() - 31536000;
-        } else {
-            $option['expire'] = 0;
-        }
-
-        $isHttpSecure = false;
-
-        if (!empty($_SERVER['HTTPS']) && 'ON' === strtoupper($_SERVER['HTTPS'])) {
-            $isHttpSecure = true;
         }
 
         // 对应 setcookie 的参数
@@ -120,7 +115,7 @@ class Cookie implements ICookie
             $option['expire'],
             $option['path'],
             $option['domain'],
-            $isHttpSecure,
+            $option['secure'],
             $option['httponly'],
         ];
     }
@@ -168,7 +163,7 @@ class Cookie implements ICookie
      */
     public function merge($key, array $value, array $option = [])
     {
-        $this->set($key, array_unique(array_merge($this->get($key, [], $option), $value)), $option);
+        $this->set($key, array_merge($this->get($key, [], $option), $value), $option);
     }
 
     /**
@@ -220,9 +215,9 @@ class Cookie implements ICookie
             ];
         }
 
-        foreach ($keys as $tempKey) {
-            if (isset($arr[$tempKey])) {
-                unset($arr[$tempKey]);
+        foreach ($keys as $tmp) {
+            if (isset($arr[$tmp])) {
+                unset($arr[$tmp]);
             }
         }
 
@@ -244,11 +239,11 @@ class Cookie implements ICookie
         $name = $option['prefix'].$name;
 
         if (isset($this->cookies[$name])) {
-            if ($this->isJson($this->cookies[$name])) {
-                return json_decode($this->cookies[$name], true);
+            if ($this->isJson($this->cookies[$name][1])) {
+                return json_decode($this->cookies[$name][1], true);
             }
 
-            return $this->cookies[$name];
+            return $this->cookies[$name][1];
         }
 
         return $defaults;
