@@ -179,12 +179,7 @@ class Fso
             call_user_func($cal, $file);
 
             if (true === $recursive && $file->isDir()) {
-                static::listDirectory(
-                    $file->getPath().'/'.$file->getFilename(),
-                    true,
-                    $cal,
-                    $filter
-                );
+                static::listDirectory($file->getPath().'/'.$file->getFilename(), true, $cal, $filter);
             }
         }
     }
@@ -219,7 +214,7 @@ class Fso
      */
     public static function isAbsolute(string $path): bool
     {
-        return preg_match('/^(\/|[a-z]:)/i', $path);
+        return preg_match('/^(\/|[a-z]:)/i', $path) ? true : false;
     }
 
     /**
@@ -252,25 +247,27 @@ class Fso
      */
     public static function createFile(string $path, $mode = 0766)
     {
-        $dir = dirname($path);
+        $dirname = dirname($path);
 
-        if (is_file($dir)) {
+        if (is_file($dirname)) {
             throw new InvalidArgumentException(
                 'Dir can not be a file.'
             );
         }
 
-        !is_dir($dir) && static::createDirectory($dir);
-
-        if ($file = fopen($path, 'a')) {
-            chmod($path, $mode);
-
-            return fclose($file);
+        if (!is_dir($dirname)) {
+            mkdir($dirname, 0777, true);
         }
 
-        throw new RuntimeException(
-            sprint('Create file %s failed.', $path)
-        );
+        if (!is_writable($dirname) || !($file = fopen($path, 'a'))) {
+            throw new InvalidArgumentException(
+                sprintf('The directory "%s" is not writable', $dirname)
+            );
+        }
+
+        chmod($path, $mode);
+
+        return fclose($file);
     }
 
     /**

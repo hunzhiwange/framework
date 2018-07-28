@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Tests\Filesystem;
 
+use League\Flysystem\Filesystem as LeagueFilesystem;
+use Leevel\Filesystem\Fso;
 use Leevel\Filesystem\Local;
 use Tests\TestCase;
 
@@ -40,6 +42,8 @@ class LocalTest extends TestCase
             'path' => $path = __DIR__,
         ]);
 
+        $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
+
         $local->put('hello.txt', 'foo');
 
         $file = $path.'/hello.txt';
@@ -48,6 +52,26 @@ class LocalTest extends TestCase
         $this->assertSame('foo', file_get_contents($file));
 
         unlink($file);
+    }
+
+    public function testSetOption()
+    {
+        $local = new Local([
+            'path' => $path = __DIR__,
+        ]);
+
+        $local->setOption('path', $path = __DIR__.'/foo/bar');
+
+        $this->assertInstanceof(LeagueFilesystem::class, $local->getFilesystem());
+
+        $local->put('foo/bar/hello2.txt', 'foo2');
+
+        $file = $path.'/hello2.txt';
+
+        $this->assertTrue(is_file($file));
+        $this->assertSame('foo2', file_get_contents($file));
+
+        Fso::deleteDirectory(dirname($path), true);
     }
 
     public function testPathNotFound()

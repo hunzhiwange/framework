@@ -34,6 +34,16 @@ use Tests\TestCase;
  */
 class FsoTest extends TestCase
 {
+    protected function tearDown()
+    {
+        // for testCreateFile3
+        $sourcePath = __DIR__.'/createFile2';
+
+        if (is_dir($sourcePath)) {
+            rmdir($sourcePath);
+        }
+    }
+
     public function testBaseUse()
     {
         $file = __DIR__.'/hello.txt';
@@ -219,6 +229,15 @@ class FsoTest extends TestCase
         $this->assertSame('\home\goods\name', Fso::tidyPath($sourcePath, false));
     }
 
+    public function testIsAbsolute()
+    {
+        $this->assertTrue(Fso::isAbsolute('c://'));
+
+        $this->assertTrue(Fso::isAbsolute('/path/hello'));
+
+        $this->assertFalse(Fso::isAbsolute('hello'));
+    }
+
     public function testDistributed()
     {
         $this->assertSame(['000/00/00/', '01'], Fso::distributed(1));
@@ -254,6 +273,47 @@ class FsoTest extends TestCase
         );
 
         Fso::createFile($file.'/demo.txt');
+    }
+
+    public function testCreateFile3()
+    {
+        $sourcePath = __DIR__.'/createFile2';
+        $file = $sourcePath.'/hello2.txt';
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf('The directory "%s" is not writable', $sourcePath)
+        );
+
+        if (is_dir($sourcePath)) {
+            rmdir($sourcePath);
+        }
+
+        $this->assertDirectoryNotExists($sourcePath);
+
+        // 设置目录只读
+        // 7 = 4+2+1 分别代表可读可写可执行
+        mkdir($sourcePath, 0444);
+
+        $this->assertFalse(is_file($file));
+
+        Fso::createFile($file);
+    }
+
+    public function testCreateFile4()
+    {
+        $sourcePath = __DIR__.'/foo/bar/createFile4';
+        $file = $sourcePath.'/hello4.txt';
+
+        $this->assertDirectoryNotExists($sourcePath);
+
+        $this->assertFalse(is_file($file));
+
+        Fso::createFile($file);
+
+        $this->assertTrue(is_file($file));
+
+        Fso::deleteDirectory($sourcePath, true);
     }
 
     public function testGetExtension()

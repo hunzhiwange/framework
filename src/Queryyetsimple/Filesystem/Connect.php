@@ -93,7 +93,7 @@ abstract class Connect
      *
      * @return \League\Flysystem\Filesystem
      */
-    public function getFilesystem()
+    public function getFilesystem(): LeagueFilesystem
     {
         return $this->filesystem;
     }
@@ -103,7 +103,7 @@ abstract class Connect
      *
      * @return \League\Flysystem\Filesystem
      */
-    protected function filesystem()
+    protected function filesystem(): LeagueFilesystem
     {
         return $this->filesystem = new LeagueFilesystem(
             $this->makeConnect(),
