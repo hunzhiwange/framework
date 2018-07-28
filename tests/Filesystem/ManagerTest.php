@@ -54,6 +54,7 @@ class ManagerTest extends TestCase
         $this->assertSame('manager', file_get_contents($file));
 
         unlink($file);
+        rmdir($path);
     }
 
     protected function createManager()
