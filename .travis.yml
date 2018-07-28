@@ -22,7 +22,13 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+services:
+  - redis-server
+  - mysql
+
 before_install:
+  - mysql -e "create database IF NOT EXISTS test;" -uroot
+  - phpenv config-add ci/redis.ini
   - travis_retry composer self-update
 
 install:
