@@ -110,7 +110,7 @@ class Cache extends Command
         if (!is_writable($dirname) ||
             !file_put_contents($cachePath, $content)) {
             throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable', $dirname)
+                sprintf('Dir %s is not writeable.', $dirname)
             );
         }
 

@@ -218,7 +218,7 @@ class File extends Connect implements IConnect
         if (!is_writable($dirname) ||
             !file_put_contents($fileName, $data, LOCK_EX)) {
             throw new InvalidArgumentException(
-                sprintf('Dir %s is not writeable', $dirname)
+                sprintf('Dir %s is not writeable.', $dirname)
             );
         }
 
