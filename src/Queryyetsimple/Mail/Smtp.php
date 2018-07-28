@@ -53,7 +53,7 @@ class Smtp extends Connect implements IConnect
      */
     public function makeTransport()
     {
-        $transport = Swift_SmtpTransport::newInstance(
+        $transport = new Swift_SmtpTransport(
             $this->option['host'],
             $this->option['port']
         );

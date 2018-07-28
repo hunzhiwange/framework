@@ -18,40 +18,42 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Mail;
+namespace Tests\Mail;
 
-use Swift_SendmailTransport;
+use Leevel\Mail\Nulls;
+use Swift_Message;
+use Tests\TestCase;
 
 /**
- * mail.sendmail.
+ * nulls test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.08.28
+ * @since 2018.07.28
  *
  * @version 1.0
- * @codeCoverageIgnore
  */
-class Sendmail extends Connect implements IConnect
+class NullsTest extends TestCase
 {
-    /**
-     * 配置.
-     *
-     * @var array
-     */
-    protected $option = [
-        'path' => '/usr/sbin/sendmail -bs',
-    ];
-
-    /**
-     * 创建 transport.
-     *
-     * @return mixed
-     */
-    public function makeTransport()
+    public function testBaseUse()
     {
-        return new Swift_SendmailTransport(
-            $this->option['path']
-        );
+        $nulls = new Nulls();
+
+        $message = (new Swift_Message('Wonderful Subject'))->
+
+        setFrom(['foo@qq.com' => 'John Doe'])->
+
+        setTo(['bar@qq.com' => 'A name'])->
+
+        setBody('Here is the message itself');
+
+        $result = $nulls->send($message);
+
+        $this->assertSame(1, $result);
+
+        $this->assertTrue($nulls->isStarted());
+        $this->assertTrue($nulls->start());
+        $this->assertTrue($nulls->stop());
+        $this->assertTrue($nulls->ping());
     }
 }

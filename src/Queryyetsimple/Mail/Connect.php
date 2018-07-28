@@ -22,7 +22,7 @@ namespace Leevel\Mail;
 
 use Swift_Events_EventListener;
 use Swift_Mailer;
-use Swift_Mime_Message;
+use Swift_Mime_SimpleMessage;
 use Swift_Transport;
 
 /**
@@ -104,6 +104,16 @@ abstract class Connect implements Swift_Transport
     /**
      * {@inheritdoc}
      */
+    public function ping()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @codeCoverageIgnore
+     */
     public function registerPlugin(Swift_Events_EventListener $plugin)
     {
     }
@@ -111,10 +121,9 @@ abstract class Connect implements Swift_Transport
     /**
      * {@inheritdoc}
      */
-    public function send(Swift_Mime_Message $message, &$failedRecipients = null)
+    public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
     {
-        return $this->getSwiftMailer()->
-        send($message, $failedRecipients);
+        return $this->getSwiftMailer()->send($message, $failedRecipients);
     }
 
     /**
@@ -122,7 +131,7 @@ abstract class Connect implements Swift_Transport
      *
      * @return \Swift_Mailer
      */
-    public function getSwiftMailer()
+    public function getSwiftMailer(): Swift_Mailer
     {
         return $this->swiftMailer;
     }
@@ -132,7 +141,7 @@ abstract class Connect implements Swift_Transport
      *
      * @return \Swift_Mailer
      */
-    protected function swiftMailer()
+    protected function swiftMailer(): Swift_Mailer
     {
         return $this->swiftMailer = new Swift_Mailer(
             $this->makeTransport()

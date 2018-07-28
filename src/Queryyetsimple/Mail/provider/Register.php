@@ -35,6 +35,13 @@ use Leevel\Mail\Manager;
 class Register extends Provider
 {
     /**
+     * 是否延迟载入.
+     *
+     * @var bool
+     */
+    public static $defer = true;
+
+    /**
      * 注册服务
      */
     public function register()

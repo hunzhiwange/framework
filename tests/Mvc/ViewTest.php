@@ -104,7 +104,7 @@ class ViewTest extends TestCase
 
         $this->assertSame(
             'Hi here! bar',
-            $view->display(__DIR__.'/hello.php')
+            $view->display(__DIR__.'/assert/hello.php')
         );
     }
 

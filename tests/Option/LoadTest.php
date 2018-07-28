@@ -81,6 +81,8 @@ array (
         'encryption' => 'Leevel\\Encryption\\Provider\\Register',
         'filesystems' => 'Leevel\\Filesystem\\Provider\\Register',
         'filesystem' => 'Leevel\\Filesystem\\Provider\\Register',
+        'mails' => 'Leevel\\Mail\\Provider\\Register',
+        'mail' => 'Leevel\\Mail\\Provider\\Register',
         'view' => 'Leevel\\Mvc\\Provider\\Register',
         'page' => 'Leevel\\Page\\Provider\\Register',
         'swoole.default.server' => 'Leevel\\Protocol\\Provider\\Register',
@@ -140,6 +142,18 @@ array (
             1 => 'Leevel\\Filesystem\\IFilesystem',
           ),
         ),
+        'Leevel\\Mail\\Provider\\Register' => 
+        array (
+          'mails' => 
+          array (
+            0 => 'Leevel\\Mail\\Manager',
+          ),
+          'mail' => 
+          array (
+            0 => 'Leevel\\Mail\\Mail',
+            1 => 'Leevel\\Mail\\IMail',
+          ),
+        ),
         'Leevel\\Mvc\\Provider\\Register' => 
         array (
           'view' => 
@@ -195,13 +209,12 @@ array (
       array (
         0 => 'Leevel\\Auth\\Provider\\Register',
         1 => 'Leevel\\Cookie\\Provider\\Register',
-        2 => 'Leevel\\Mail\\Provider\\Register',
-        3 => 'Leevel\\Session\\Provider\\Register',
-        4 => 'Leevel\\Validate\\Provider\\Register',
-        5 => 'Leevel\\View\\Provider\\Register',
-        6 => 'Demo\\Provider\\Register',
-        7 => 'Common\\Infra\\Provider\\Event',
-        8 => 'Common\\Infra\\Provider\\Router',
+        2 => 'Leevel\\Session\\Provider\\Register',
+        3 => 'Leevel\\Validate\\Provider\\Register',
+        4 => 'Leevel\\View\\Provider\\Register',
+        5 => 'Demo\\Provider\\Register',
+        6 => 'Common\\Infra\\Provider\\Event',
+        7 => 'Common\\Infra\\Provider\\Router',
       ),
       'ignores' => 
       array (

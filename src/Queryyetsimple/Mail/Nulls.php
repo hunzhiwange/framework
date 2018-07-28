@@ -20,28 +20,25 @@ declare(strict_types=1);
 
 namespace Leevel\Mail;
 
-use Swift_SendmailTransport;
+use Swift_NullTransport;
 
 /**
- * mail.sendmail.
+ * mail.nulls.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.08.28
+ * @since 2018.07.28
  *
  * @version 1.0
- * @codeCoverageIgnore
  */
-class Sendmail extends Connect implements IConnect
+class Nulls extends Connect implements IConnect
 {
     /**
      * 配置.
      *
      * @var array
      */
-    protected $option = [
-        'path' => '/usr/sbin/sendmail -bs',
-    ];
+    protected $option = [];
 
     /**
      * 创建 transport.
@@ -50,8 +47,6 @@ class Sendmail extends Connect implements IConnect
      */
     public function makeTransport()
     {
-        return new Swift_SendmailTransport(
-            $this->option['path']
-        );
+        return new Swift_NullTransport();
     }
 }

@@ -102,11 +102,11 @@ interface IMail
     /**
      * 消息回调处理.
      *
-     * @param callable|string $callbacks
+     * @param callable $callbacks
      *
      * @return $this
      */
-    public function message($callbacks);
+    public function message(callable $callbacks);
 
     /**
      * 添加附件.
@@ -120,7 +120,7 @@ interface IMail
 
     /**
      * 添加内存内容附件
-     * file_get_content( path ).
+     * file_get_content(path).
      *
      * @param string        $data
      * @param string        $name
@@ -134,7 +134,6 @@ interface IMail
      * 图片嵌入邮件.
      *
      * @param string $file
-     * @param mixed  $file
      *
      * @return string
      */
@@ -146,7 +145,6 @@ interface IMail
      * @param string      $data
      * @param string      $name
      * @param null|string $contentType
-     * @param null|mixed  $contentType
      *
      * @return string
      */
@@ -169,7 +167,7 @@ interface IMail
      *
      * @return int
      */
-    public function send($callbacks = null, $htmlPriority = true);
+    public function send($callbacks = null, bool $htmlPriority = true);
 
     /**
      * 错误消息.

@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Mail;
 
-use InvalidArgumentException;
-use Leevel\Flow\TControl;
+use Leevel\Event\IDispatch;
 use Leevel\Mvc\IView;
 use Swift_Attachment;
 use Swift_Image;
@@ -38,8 +37,6 @@ use Swift_Message;
  */
 class Mail implements IMail
 {
-    use TControl;
-
     /**
      * 连接驱动.
      *
@@ -109,30 +106,13 @@ class Mail implements IMail
      * @param null|\Leevel\Event\IDispatch $event
      * @param array                        $option
      */
-    public function __construct(IConnect $connect, IView $view, $event = null, array $option = [])
+    public function __construct(IConnect $connect, IView $view, IDispatch $event = null, array $option = [])
     {
         $this->connect = $connect;
         $this->view = $view;
         $this->event = $event;
 
         $this->option = array_merge($this->option, $option);
-    }
-
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        if ($this->placeholderTControl($method)) {
-            return $this;
-        }
-
-        return $this->connect->{$method}(...$args);
     }
 
     /**
@@ -190,10 +170,6 @@ class Mail implements IMail
      */
     public function view($file, array $data = [])
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->messageData['html'][] = [
             'file' => $file,
             'data' => $data,
@@ -211,10 +187,6 @@ class Mail implements IMail
      */
     public function html($content)
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->messageData['html'][] = $content;
 
         return $this;
@@ -229,10 +201,6 @@ class Mail implements IMail
      */
     public function plain($content)
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->messageData['plain'][] = $content;
 
         return $this;
@@ -248,10 +216,6 @@ class Mail implements IMail
      */
     public function viewPlain($file, array $data = [])
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->messageData['plain'][] = [
             'file' => $file,
             'data' => $data,
@@ -263,11 +227,11 @@ class Mail implements IMail
     /**
      * 消息回调处理.
      *
-     * @param callable|string $callbacks
+     * @param callable $callbacks
      *
      * @return $this
      */
-    public function message($callbacks)
+    public function message(callable $callbacks)
     {
         $this->callbackMessage($callbacks, $this->makeMessage());
 
@@ -294,7 +258,7 @@ class Mail implements IMail
 
     /**
      * 添加内存内容附件
-     * file_get_content( path ).
+     * file_get_content(path).
      *
      * @param string        $data
      * @param string        $name
@@ -316,7 +280,6 @@ class Mail implements IMail
      * 图片嵌入邮件.
      *
      * @param string $file
-     * @param mixed  $file
      *
      * @return string
      */
@@ -333,7 +296,6 @@ class Mail implements IMail
      * @param string      $data
      * @param string      $name
      * @param null|string $contentType
-     * @param null|mixed  $contentType
      *
      * @return string
      */
@@ -342,7 +304,7 @@ class Mail implements IMail
         $this->makeMessage();
 
         return $this->message->embed(
-            Swift_Image::newInstance($data, $name, $contentType)
+            new Swift_Image($data, $name, $contentType)
         );
     }
 
@@ -372,7 +334,7 @@ class Mail implements IMail
      *
      * @return int
      */
-    public function send($callbacks = null, $htmlPriority = true)
+    public function send($callbacks = null, bool $htmlPriority = true)
     {
         $this->makeMessage();
 
@@ -382,10 +344,10 @@ class Mail implements IMail
             $this->message($callbacks);
         }
 
-        if (!empty($this->getOption('global_to')['address'])) {
+        if (!empty($this->option['global_to']['address'])) {
             $this->message->addTo(
-                $this->getOption('global_to')['address'],
-                $this->getOption('global_to')['name']
+                $this->option['global_to']['address'],
+                $this->option['global_to']['name']
             );
         }
 
@@ -415,13 +377,11 @@ class Mail implements IMail
         return $this->view->
         clearAssign()->
 
-        assign('objMail', $this)->
+        assign('mail', $this)->
 
         assign($data)->
 
-        display($file, [], [
-            'return' => true,
-        ]);
+        display($file, [], null);
     }
 
     /**
@@ -429,7 +389,7 @@ class Mail implements IMail
      *
      * @param bool $htmlPriority
      */
-    protected function parseMailContent($htmlPriority = true)
+    protected function parseMailContent(bool $htmlPriority = true)
     {
         $findBody = false;
 
@@ -501,10 +461,10 @@ class Mail implements IMail
 
         $message = new Swift_Message();
 
-        if (!empty($this->getOption('global_from')['address'])) {
+        if (!empty($this->option['global_from']['address'])) {
             $message->setFrom(
-                $this->getOption('global_from')['address'],
-                $this->getOption('global_from')['name']
+                $this->option['global_from']['address'],
+                $this->option['global_from']['name']
             );
         }
 
@@ -514,58 +474,17 @@ class Mail implements IMail
     /**
      * 邮件消息回调处理.
      *
-     * @param callable|string $callbacks
-     * @param \Swift_Message  $message
+     * @param callable       $callbacks
+     * @param \Swift_Message $message
      *
      * @return mixed
      */
-    protected function callbackMessage($callbacks, Swift_Message $message)
+    protected function callbackMessage(callable $callbacks, Swift_Message $message)
     {
-        if (!is_string($callbacks) && is_callable($callbacks)) {
-            return call_user_func_array($callbacks, [
-                $message,
-                $this,
-            ]);
-        }
-
-        if (is_string($callbacks)) {
-            if (false !== strpos($callbacks, '@')) {
-                $callbacks = explode('@', $callbacks);
-
-                if (empty($callbacks[1])) {
-                    $callbacks[1] = 'handle';
-                }
-            } else {
-                $callbacks = [
-                    $callbacks,
-                    'handle',
-                ];
-            }
-
-            if (false === ($callbacks = $this->objContainer->make($callbacks[0]))) {
-                throw new InvalidArgumentException(
-                    sprintf('Message callback %s is not valid', $callbacks[0])
-                );
-            }
-
-            $method = method_exists($callbacks, $callbacks[1]) ?
-                $callbacks[1] :
-                ('handle' !== $callbacks[1] &&
-                    method_exists($callbacks, 'handle') ?
-                    'handle' :
-                    'run'
-                );
-
-            return call_user_func_array([
-                $callbacks,
-                $method,
-            ], [
-                $message,
-                $this,
-            ]);
-        }
-
-        throw new InvalidArgumentException('Message callback is not valid');
+        return call_user_func_array($callbacks, [
+            $message,
+            $this,
+        ]);
     }
 
     /**
@@ -590,7 +509,7 @@ class Mail implements IMail
      */
     protected function createDataAttachment($data, $name)
     {
-        return Swift_Attachment::newInstance($data, $name);
+        return new Swift_Attachment($data, $name);
     }
 
     /**
@@ -603,14 +522,14 @@ class Mail implements IMail
      */
     protected function callbackAttachment($attachment, $callbacks = null)
     {
-        if (!is_string($callbacks) && is_callable($callbacks)) {
+        if (is_callable($callbacks)) {
             call_user_func_array($callbacks, [
                 $attachment,
                 $this,
             ]);
-
-            $this->message->attach($attachment);
         }
+
+        $this->message->attach($attachment);
 
         return $this;
     }

@@ -52,11 +52,24 @@ class Manager extends Managers
      */
     protected function createConnect($connect)
     {
-        return new Mail(
-            $connect,
+        return new Mail($connect,
             $this->container['view'],
             $this->container['event'],
             $this->getCommonOption()
+        );
+    }
+
+    /**
+     * 创建 nulls 连接.
+     *
+     * @param array $options
+     *
+     * @return \Leevel\Mail\smtp
+     */
+    protected function makeConnectNulls($options = [])
+    {
+        return new Nulls(
+            $this->normalizeConnectOption('nulls', $options)
         );
     }
 
@@ -93,13 +106,13 @@ class Manager extends Managers
      *
      * @return array
      */
-    protected function filterOptionCommonItem()
+    protected function defaultCommonOption()
     {
         return [
             'default',
             'connect',
-            'from',
-            'to',
+            'global_from',
+            'global_to',
         ];
     }
 }
