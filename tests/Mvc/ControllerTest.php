@@ -111,7 +111,7 @@ class ControllerTest extends TestCase
 
         $this->assertSame(
             'Hi here! bar',
-            $test->display(__DIR__.'/hello.php')
+            $test->display(__DIR__.'/assert/hello.php')
         );
     }
 
