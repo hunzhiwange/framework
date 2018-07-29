@@ -18,14 +18,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Cache;
+namespace Leevel\Cache\Redis;
 
 /**
  * IConnect 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.23
+ * @since 2018.07.29
  *
  * @version 1.0
  */
@@ -42,34 +42,6 @@ interface IConnect
     public function setOption(string $name, $value);
 
     /**
-     * 获取缓存.
-     *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
-     *
-     * @return mixed
-     */
-    public function get($name, $defaults = false, array $option = []);
-
-    /**
-     * 设置缓存.
-     *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
-     */
-    public function set($name, $data, array $option = []);
-
-    /**
-     * 清除缓存.
-     *
-     * @param string $name
-     * @param array  $option
-     */
-    public function delete($name, array $option = []);
-
-    /**
      * 返回缓存句柄.
      *
      * @return mixed
@@ -77,7 +49,32 @@ interface IConnect
     public function handle();
 
     /**
-     * 关闭.
+     * 获取缓存.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function get($name);
+
+    /**
+     * 设置缓存.
+     *
+     * @param string $name
+     * @param mixed  $data
+     * @param int    $expire
+     */
+    public function set($name, $data, ?int $expire = null);
+
+    /**
+     * 清除缓存.
+     *
+     * @param string $name
+     */
+    public function delete($name);
+
+    /**
+     * 关闭 redis.
      */
     public function close();
 }

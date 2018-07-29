@@ -81,10 +81,11 @@ class File extends Connect implements IConnect
             return false;
         }
 
-        $fp = fopen($cachePath, 'rb');
-        if (!$fp) {
-            return false;
+        if (!is_readable($cachePath)) {
+            throw new InvalidArgumentException('Cache path is not readable.');
         }
+
+        $fp = fopen($cachePath, 'rb');
         flock($fp, LOCK_SH);
 
         // 头部的 41 个字节存储了安全代码
@@ -136,9 +137,11 @@ class File extends Connect implements IConnect
         if ($option['serialize']) {
             $data = serialize($data);
         }
+
         $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
 
         $cachePath = $this->getCachePath($name, $option);
+
         $this->writeData($cachePath, $data);
     }
 
@@ -171,13 +174,13 @@ class File extends Connect implements IConnect
     {
         $filePath = $this->getCachePath($name, $option);
 
-        if (!is_file($filePath)) {
+        $option['expire'] = $this->cacheTime($name, $option['expire']);
+
+        if ($option['expire'] <= 0) {
             return true;
         }
 
-        $option['expire'] = $this->cacheTime($name, $option['expire']);
-
-        return (int) $option['expire'] > 0 && filemtime($filePath) + (int) $option['expire'] < time();
+        return filemtime($filePath) + (int) $option['expire'] < time();
     }
 
     /**
@@ -188,14 +191,10 @@ class File extends Connect implements IConnect
      *
      * @return string
      */
-    protected function getCachePath($name, $option)
+    protected function getCachePath($name, array $option)
     {
         if (!$option['path']) {
             throw new InvalidArgumentException('Cache path is not allowed empty.');
-        }
-
-        if (!is_dir($option['path'])) {
-            mkdir($option['path'], 0777, true);
         }
 
         return $option['path'].'/'.$this->getCacheName($name, $option['prefix']).'.php';

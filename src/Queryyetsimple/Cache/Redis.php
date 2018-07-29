@@ -20,8 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
-use Redis as Rediss;
-use RuntimeException;
+use Leevel\Cache\Redis\IConnect as RedisIConnect;
 
 /**
  * redis 扩展缓存.
@@ -43,43 +42,20 @@ class Redis extends Connect implements IConnect
         'time_preset' => [],
         'prefix'      => '_',
         'expire'      => 86400,
-        'host'        => '127.0.0.1',
-        'port'        => 6379,
-        'password'    => '',
-        'select'      => 0,
-        'timeout'     => 0,
-        'persistent'  => false,
         'serialize'   => true,
     ];
 
     /**
      * 构造函数.
      *
-     * @param array $option
+     * @param \Leevel\Cache\Redis\IConnect $handle
+     * @param array                        $option
      */
-    public function __construct(array $option = [])
+    public function __construct(RedisIConnect $handle, array $option = [])
     {
-        if (!extension_loaded('redis')) {
-            throw new RuntimeException('Redis extension must be loaded before use.');
-        }
-
         parent::__construct($option);
 
-        $this->handle = $this->getRedis();
-
-        $this->handle->{$this->option['persistent'] ? 'pconnect' : 'connect'}(
-            $this->option['host'],
-            $this->option['port'],
-            $this->option['timeout']
-        );
-
-        if ($this->option['password']) {
-            $this->handle->auth($this->option['password']);
-        }
-
-        if ($this->option['select']) {
-            $this->handle->select($this->option['select']);
-        }
+        $this->handle = $handle;
     }
 
     /**
@@ -99,11 +75,11 @@ class Redis extends Connect implements IConnect
             $this->getCacheName($name, $option['prefix'])
         );
 
-        if (null === $data) {
+        if (false === $data) {
             return $defaults;
         }
 
-        if ($option['serialize']) {
+        if ($option['serialize'] && is_string($data)) {
             $data = unserialize($data);
         }
 
@@ -127,18 +103,10 @@ class Redis extends Connect implements IConnect
 
         $option['expire'] = $this->cacheTime($name, $option['expire']);
 
-        if ((int) $option['expire']) {
-            $this->handle->setex(
-                $this->getCacheName($name, $option['prefix']),
-                (int) $option['expire'],
-                $data
-            );
-        } else {
-            $this->handle->set(
-                $this->getCacheName($name, $option['prefix']),
-                $data
-            );
-        }
+        $this->handle->set(
+            $this->getCacheName($name, $option['prefix']), $data,
+            $option['expire'] ? (int) $option['expire'] : null
+        );
     }
 
     /**
@@ -160,16 +128,5 @@ class Redis extends Connect implements IConnect
     public function close()
     {
         $this->handle->close();
-        $this->handle = null;
-    }
-
-    /**
-     * 返回 redis 对象
-     *
-     * @return \Redis
-     */
-    protected function getRedis()
-    {
-        return new Rediss();
     }
 }

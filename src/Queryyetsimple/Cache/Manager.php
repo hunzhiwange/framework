@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Cache;
 
+use Leevel\Cache\Redis\PhpRedis;
 use Leevel\Manager\Manager as Managers;
 
 /**
@@ -70,20 +71,6 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 memcache 缓存.
-     *
-     * @param array $options
-     *
-     * @return \Leevel\Cache\memcache
-     */
-    protected function makeConnectMemcache($options = [])
-    {
-        return new Memcache(
-            $this->normalizeConnectOption('memcache', $options)
-        );
-    }
-
-    /**
      * 创建 redis 缓存.
      *
      * @param array $options
@@ -92,9 +79,9 @@ class Manager extends Managers
      */
     protected function makeConnectRedis($options = [])
     {
-        return new Redis(
-            $this->normalizeConnectOption('redis', $options)
-        );
+        $options = $this->normalizeConnectOption('redis', $options);
+
+        return new Redis(new PhpRedis($options), $options);
     }
 
     /**

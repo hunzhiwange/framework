@@ -72,57 +72,21 @@ class Cache implements ICache
     }
 
     /**
-     * 获取缓存.
+     * 批量插入.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
-     *
-     * @return mixed
+     * @param array|string $keys
+     * @param mixed        $value
      */
-    public function get($name, $defaults = false, array $option = [])
+    public function put($keys, $value = null)
     {
-        return $this->connect->get($name, $defaults, $option);
-    }
+        if (!is_array($keys)) {
+            $keys = [
+                $keys => $value,
+            ];
+        }
 
-    /**
-     * 设置缓存.
-     *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
-     */
-    public function set($name, $data, array $option = [])
-    {
-        $this->connect->set($name, $data, $option);
-    }
-
-    /**
-     * 清除缓存.
-     *
-     * @param string $name
-     * @param array  $option
-     */
-    public function delete($name, array $option = [])
-    {
-        $this->connect->delete($name, $option);
-    }
-
-    /**
-     * 返回缓存句柄.
-     *
-     * @return mixed
-     */
-    public function handle()
-    {
-        return $this->connect->handle();
-    }
-
-    /**
-     * 关闭.
-     */
-    public function close()
-    {
-        $this->connect->close();
+        foreach ($keys as $key => $value) {
+            $this->connect->set($key, $value);
+        }
     }
 }

@@ -71,25 +71,6 @@ abstract class Connect
     }
 
     /**
-     * 批量插入.
-     *
-     * @param array|string $keys
-     * @param mixed        $value
-     */
-    public function put($keys, $value = null)
-    {
-        if (!is_array($keys)) {
-            $keys = [
-                $keys => $value,
-            ];
-        }
-
-        foreach ($keys as $key => $value) {
-            $this->set($key, $value);
-        }
-    }
-
-    /**
      * 返回缓存句柄.
      *
      * @return mixed

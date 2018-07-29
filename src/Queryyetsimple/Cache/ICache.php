@@ -32,42 +32,10 @@ namespace Leevel\Cache;
 interface ICache
 {
     /**
-     * 获取缓存.
+     * 批量插入.
      *
-     * @param string $name
-     * @param mixed  $defaults
-     * @param array  $option
-     *
-     * @return mixed
+     * @param array|string $keys
+     * @param mixed        $value
      */
-    public function get($name, $defaults = false, array $option = []);
-
-    /**
-     * 设置缓存.
-     *
-     * @param string $name
-     * @param mixed  $data
-     * @param array  $option
-     */
-    public function set($name, $data, array $option = []);
-
-    /**
-     * 清除缓存.
-     *
-     * @param string $name
-     * @param array  $option
-     */
-    public function delete($name, array $option = []);
-
-    /**
-     * 返回缓存句柄.
-     *
-     * @return mixed
-     */
-    public function handle();
-
-    /**
-     * 关闭.
-     */
-    public function close();
+    public function put($keys, $value = null);
 }
