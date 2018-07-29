@@ -82,15 +82,14 @@ class Load
      *
      * @return \Leevel\Cache\ICache
      */
-    public function getCache()
+    public function getCache(): ICache
     {
         return $this->cache;
     }
 
     /**
      * 载入缓存数据
-     * 系统自动存储缓存到内存，可重复执行不会重复载入数据
-     * 获取缓存建议使用本函数.
+     * 系统自动存储缓存到内存，可重复执行不会重复载入数据.
      *
      * @param array|string $names
      * @param array        $option
@@ -98,7 +97,7 @@ class Load
      *
      * @return array
      */
-    public function data($names, array $option = [], $force = false)
+    public function data($names, array $option = [], bool $force = false)
     {
         $names = is_array($names) ? $names : [
             $names,
@@ -120,8 +119,7 @@ class Load
     }
 
     /**
-     * 刷新缓存数据
-     * 刷新缓存建议使用本函数.
+     * 刷新缓存数据.
      *
      * @param array|string $names
      * @param array        $option
@@ -132,20 +130,21 @@ class Load
             $names,
         ];
 
-        $this->deletes($names, $option);
+        foreach ($names as $name) {
+            $this->delete($name, $option);
+        }
     }
 
     /**
      * 从载入缓存数据中获取
-     * 不存在不用更新缓存，返回 false
-     * 获取已载入缓存建议使用本函数.
+     * 不存在不用更新缓存，返回 false.
      *
      * @param array|string $names
      * @param mixed        $force
      *
      * @return array
      */
-    public function dataLoaded($names, array $option = [], $force = false)
+    public function dataLoaded($names, array $option = [], bool $force = false)
     {
         $result = [];
 
@@ -163,55 +162,18 @@ class Load
     }
 
     /**
-     * 批量删除缓存数据
-     * 不建议直接操作.
-     *
-     * @param array $names
-     * @param array $option
-     */
-    public function deletes(array $names, array $option = [])
-    {
-        foreach ($names as $name) {
-            $this->delete($name, $option);
-        }
-    }
-
-    /**
-     * 删除缓存数据
-     * 不建议直接操作.
+     * 删除缓存数据.
      *
      * @param string $name
      * @param array  $option
      */
-    public function delete($name, array $options = [])
+    protected function delete($name, array $options = [])
     {
         $this->deletePersistence($name, $options);
     }
 
     /**
-     * 批量读取缓存数据
-     * 不建议直接操作.
-     *
-     * @param array $names
-     * @param array $option
-     * @param bool  $force
-     *
-     * @return array
-     */
-    public function caches(array $names, array $option = [], $force = false)
-    {
-        $data = [];
-
-        foreach ($names as $name) {
-            $data[$name] = $this->cache($name, $option, $force);
-        }
-
-        return $data;
-    }
-
-    /**
-     * 读取缓存数据
-     * 不建议直接操作.
+     * 读取缓存数据.
      *
      * @param string $name
      * @param array  $option
@@ -219,7 +181,7 @@ class Load
      *
      * @return mixed
      */
-    public function cache($name, array $option = [], $force = false)
+    protected function cache($name, array $option = [], bool $force = false)
     {
         if (false === $force) {
             $data = $this->getPersistence($name, false, $option);
@@ -235,35 +197,14 @@ class Load
     }
 
     /**
-     * 批量更新缓存数据
-     * 不建议直接操作.
-     *
-     * @param array $names
-     * @param array $option
-     *
-     * @return array
-     */
-    public function updates(array $names, array $option = [])
-    {
-        $result = [];
-
-        foreach ($names as $name) {
-            $result[$name] = $this->update($name, $option);
-        }
-
-        return $result;
-    }
-
-    /**
-     * 更新缓存数据
-     * 不建议直接操作.
+     * 更新缓存数据.
      *
      * @param string $name
      * @param array  $option
      *
      * @return mixed
      */
-    public function update($name, $option = [])
+    protected function update($name, array $option = [])
     {
         $sourceName = $name;
 
@@ -277,6 +218,12 @@ class Load
 
         if (!is_object($cache = $this->container->make($name))) {
             throw new InvalidArgumentException(sprintf('Cache %s is not valid.', $name));
+        }
+
+        if (!is_callable([$cache, $method])) {
+            throw new InvalidArgumentException(
+                sprintf('Cache %s is not a callable.', $name.'@'.$method)
+            );
         }
 
         $sourceData = $cache->{$method}(...$params);
