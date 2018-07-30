@@ -56,7 +56,9 @@ class PhpRedis implements IConnect
     public function __construct(array $option = [])
     {
         if (!extension_loaded('redis')) {
+            // @codeCoverageIgnoreStart
             throw new RuntimeException('Redis extension must be loaded before use.');
+            // @codeCoverageIgnoreEnd
         }
 
         $this->option = array_merge($this->option, $option);

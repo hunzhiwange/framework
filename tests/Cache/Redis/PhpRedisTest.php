@@ -94,13 +94,42 @@ class PhpRedisTest extends TestCase
         $this->assertFalse($phpRedis->get('testfoo'));
     }
 
+    public function testSelect()
+    {
+        $phpRedis = $this->makePhpRedis([
+            'select' => 1,
+        ]);
+
+        $phpRedis->set('selecttest', 'world');
+
+        $this->assertSame('world', $phpRedis->get('selecttest'));
+
+        $phpRedis->delete('testset');
+
+        $this->assertFalse($phpRedis->get('hello'));
+    }
+
+    public function testAuth()
+    {
+        $this->expectException(\RedisException::class);
+        $this->expectExceptionMessage(
+            'NOAUTH Authentication required.'
+        );
+
+        $phpRedis = $this->makePhpRedis([
+            'select' => 1,
+            'auth'   => 'error',
+        ]);
+
+        $phpRedis->set('authtest', 'world');
+    }
+
     protected function makePhpRedis(array $option = []): PhpRedis
     {
         $default = [
             'host'        => '127.0.0.1',
             'port'        => 6379,
             'password'    => '',
-            //'password'    => 'cae0f7fcf1xx',
             'select'      => 0,
             'timeout'     => 0,
             'persistent'  => false,
