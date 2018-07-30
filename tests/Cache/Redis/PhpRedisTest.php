@@ -112,7 +112,7 @@ class PhpRedisTest extends TestCase
     public function testAuth()
     {
         $phpRedis = $this->makePhpRedis([
-            'auth'   => 'error',
+            'password'   => 'error',
         ]);
 
         $phpRedis->set('authtest', 'world');
