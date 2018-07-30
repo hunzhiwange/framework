@@ -32,16 +32,6 @@ namespace Leevel\Cache\Redis;
 interface IConnect
 {
     /**
-     * 设置配置.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return $this
-     */
-    public function setOption(string $name, $value);
-
-    /**
      * 返回缓存句柄.
      *
      * @return mixed

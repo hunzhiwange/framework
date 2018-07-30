@@ -74,6 +74,78 @@ class FileTest extends TestCase
         $this->assertFalse(is_file($filePath));
 
         $this->assertFalse($file->get('hello'));
+
+        $this->assertNull($file->close());
+
+        $this->assertNull($file->handle());
+    }
+
+    public function testSetOption()
+    {
+        $file = new File([
+            'path' => __DIR__,
+        ]);
+
+        $file->set('setOption', 'bar');
+
+        $this->assertSame('bar', $file->get('setOption'));
+
+        $filePath = __DIR__.'/_setOption.php';
+
+        $this->assertTrue(is_file($filePath));
+
+        $file->delete('setOption');
+
+        $file->setOption('prefix', '@');
+
+        $file->set('setOption2', 'bar');
+
+        $this->assertSame('bar', $file->get('setOption2'));
+
+        $filePath = __DIR__.'/_setOption2.php';
+        $filePath2 = __DIR__.'/@setOption2.php';
+
+        $this->assertFalse(is_file($filePath));
+        $this->assertTrue(is_file($filePath2));
+
+        $file->delete('setOption2');
+    }
+
+    public function testCacheTime()
+    {
+        $file = new File([
+            'time_preset' => [
+                'foo'         => 500,
+                'bar'         => -10,
+                'hello*world' => 10,
+                'foo*bar'     => -10,
+            ],
+            'path' => __DIR__,
+        ]);
+
+        $file->set('foo', 'bar');
+        $file->set('bar', 'hello');
+        $file->set('hello123456world', 'helloworld1');
+        $file->set('hello789world', 'helloworld2');
+        $file->set('foo123456bar', 'foobar1');
+        $file->set('foo789bar', 'foobar2');
+        $file->set('haha', 'what about others?');
+
+        $this->assertSame('bar', $file->get('foo'));
+        $this->assertFalse($file->get('bar'));
+        $this->assertSame('helloworld1', $file->get('hello123456world'));
+        $this->assertSame('helloworld2', $file->get('hello789world'));
+        $this->assertFalse($file->get('foo123456bar'));
+        $this->assertFalse($file->get('foo789bar'));
+        $this->assertSame('what about others?', $file->get('haha'));
+
+        $file->delete('foo');
+        $file->delete('bar');
+        $file->delete('hello123456world');
+        $file->delete('hello789world');
+        $file->delete('foo123456bar');
+        $file->delete('foo789bar');
+        $file->delete('haha');
     }
 
     public function testGetNotExists()

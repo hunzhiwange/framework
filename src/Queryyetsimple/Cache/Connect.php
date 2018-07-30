@@ -81,13 +81,6 @@ abstract class Connect
     }
 
     /**
-     * 关闭.
-     */
-    public function close()
-    {
-    }
-
-    /**
      * 获取缓存名字.
      *
      * @param string $name

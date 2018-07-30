@@ -163,6 +163,13 @@ class File extends Connect implements IConnect
     }
 
     /**
+     * 关闭.
+     */
+    public function close()
+    {
+    }
+
+    /**
      * 验证缓存是否过期
      *
      * @param string $name

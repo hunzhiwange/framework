@@ -79,21 +79,6 @@ class PhpRedis implements IConnect
     }
 
     /**
-     * 设置配置.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return $this
-     */
-    public function setOption(string $name, $value)
-    {
-        $this->option[$name] = $value;
-
-        return $this;
-    }
-
-    /**
      * 返回缓存句柄.
      *
      * @return mixed
