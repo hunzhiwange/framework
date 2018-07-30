@@ -109,15 +109,6 @@ class PhpRedisTest extends TestCase
         $this->assertFalse($phpRedis->get('hello'));
     }
 
-    public function testAuth()
-    {
-        $phpRedis = $this->makePhpRedis([
-            'password'   => 'error',
-        ]);
-
-        $phpRedis->set('authtest', 'world');
-    }
-
     protected function makePhpRedis(array $option = []): PhpRedis
     {
         $default = [

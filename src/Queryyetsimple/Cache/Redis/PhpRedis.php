@@ -72,7 +72,9 @@ class PhpRedis implements IConnect
         );
 
         if ($this->option['password']) {
+            // @codeCoverageIgnoreStart
             $this->handle->auth($this->option['password']);
+            // @codeCoverageIgnoreEnd
         }
 
         if ($this->option['select']) {
