@@ -115,15 +115,6 @@ class PhpRedisTest extends TestCase
             'auth'   => 'error',
         ]);
 
-        // $this->assertSame([
-        //     'host'        => '127.0.0.1',
-        //     'port'        => 6379,
-        //     'password'    => 'error',
-        //     'select'      => 0,
-        //     'timeout'     => 0,
-        //     'persistent'  => false,
-        // ], $this->getTestProperty($phpRedis, 'option'));
-
         $phpRedis->set('authtest', 'world');
     }
 
