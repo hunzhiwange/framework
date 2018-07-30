@@ -111,17 +111,18 @@ class PhpRedisTest extends TestCase
 
     public function testAuth()
     {
-        $this->expectException(\RedisException::class);
-        $this->expectExceptionMessage(
-            'NOAUTH Authentication required.'
-        );
-
         $phpRedis = $this->makePhpRedis([
-            'select' => 1,
             'auth'   => 'error',
         ]);
 
-        $phpRedis->set('authtest', 'world');
+        $this->assertSame([
+            'host'        => '127.0.0.1',
+            'port'        => 6379,
+            'password'    => 'error',
+            'select'      => 0,
+            'timeout'     => 0,
+            'persistent'  => false,
+        ], $this->getTestProperty());
     }
 
     protected function makePhpRedis(array $option = []): PhpRedis
