@@ -122,7 +122,9 @@ class PhpRedisTest extends TestCase
             'select'      => 0,
             'timeout'     => 0,
             'persistent'  => false,
-        ], $this->getTestProperty());
+        ], $this->getTestProperty($phpRedis, 'option'));
+
+        $phpRedis->set('authtest', 'world');
     }
 
     protected function makePhpRedis(array $option = []): PhpRedis
