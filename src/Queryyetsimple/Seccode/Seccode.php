@@ -327,12 +327,14 @@ class Seccode implements ISeccode
         );
 
         // 是否启用随机颜色
-        !$this->option['color'] && $resTextColor = imagecolorallocate(
-            $resImage,
-            $this->fontColor[0],
-            $this->fontColor[1],
-            $this->fontColor[2]
-        );
+        if(!$this->option['color']){
+            $resTextColor = imagecolorallocate(
+                $resImage,
+                $this->fontColor[0],
+                $this->fontColor[1],
+                $this->fontColor[2]
+            );
+        }
 
         for ($i = 0; $i < count($font); $i++) {
             if ($this->option['color']) {
@@ -342,21 +344,15 @@ class Seccode implements ISeccode
                     $this->mtRand(0, 255),
                 ];
 
-                $this->option['shadow'] &&
-                    $resTextShadowColor = imagecolorallocate(
-                        $resImage,
-                        255 - $this->fontColor[0],
-                        255 - $this->fontColor[1],
-                        255 - $this->fontColor[2]
-                    );
-
                 $resTextColor = imagecolorallocate(
                     $resImage,
                     $this->fontColor[0],
                     $this->fontColor[1],
                     $this->fontColor[2]
                 );
-            } elseif ($this->option['shadow']) {
+            }
+
+            if($this->option['shadow']){
                 $resTextShadowColor = imagecolorallocate(
                     $resImage,
                     255 - $this->fontColor[0],
@@ -375,7 +371,7 @@ class Seccode implements ISeccode
                     $height - $font[$i]['hd']
                 );
 
-            $this->option['shadow'] &&
+            if($this->option['shadow']) {
                 imagettftext($resImage,
                     $font[$i]['size'],
                     $font[$i]['tilt'],
@@ -385,6 +381,7 @@ class Seccode implements ISeccode
                     $font[$i]['font'],
                     $code[$i]
                 );
+            }
 
             imagettftext($resImage,
                 $font[$i]['size'],

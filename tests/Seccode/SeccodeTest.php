@@ -406,7 +406,7 @@ eot;
         unlink($file);
     }
 
-    public function t2estWithoutRandColor()
+    public function testWithoutRandColor()
     {
         $seccode = new Seccode([
             'background'      => false,
