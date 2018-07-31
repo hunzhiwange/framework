@@ -152,39 +152,4 @@ interface ISeccode
      * @return $this
      */
     public function getCode();
-
-    /**
-     * 返回宽度.
-     *
-     * @return int
-     */
-    public function getWidth();
-
-    /**
-     * 返回高度.
-     *
-     * @return int
-     */
-    public function getHeight();
-
-    /**
-     * 返回英文字体路径.
-     *
-     * @return string
-     */
-    public function getFontPath();
-
-    /**
-     * 返回中文字体路径.
-     *
-     * @return string
-     */
-    public function getChineseFontPath();
-
-    /**
-     * 返回背景图路径.
-     *
-     * @return string
-     */
-    public function getBackgroundPath();
 }

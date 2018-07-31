@@ -134,7 +134,7 @@ class Seccode implements ISeccode
         $resImage = imagecreatefromstring($this->makeBackground());
 
         if ($this->option['adulterate']) {
-            $this->makeAdulterate($resImage);
+            //$this->makeAdulterate($resImage);
         }
 
         $this->makeTtfFont($resImage);
@@ -186,11 +186,12 @@ class Seccode implements ISeccode
      *
      * @return int
      */
-    public function getWidth()
+    protected function normalizeWidth()
     {
         if ($this->option['width'] < static::MIN_WIDTH) {
             return static::MIN_WIDTH;
         }
+
         if ($this->option['width'] > static::MAX_WIDTH) {
             return static::MAX_WIDTH;
         }
@@ -203,46 +204,17 @@ class Seccode implements ISeccode
      *
      * @return int
      */
-    public function getHeight()
+    protected function normalizeHeight()
     {
         if ($this->option['height'] < static::MIN_HEIGHT) {
             return static::MIN_HEIGHT;
         }
+
         if ($this->option['height'] > static::MAX_HEIGHT) {
             return static::MAX_HEIGHT;
         }
 
         return $this->option['height'];
-    }
-
-    /**
-     * 返回英文字体路径.
-     *
-     * @return string
-     */
-    public function getFontPath()
-    {
-        return $this->option['font_path'];
-    }
-
-    /**
-     * 返回中文字体路径.
-     *
-     * @return string
-     */
-    public function getChineseFontPath()
-    {
-        return $this->option['chinese_font_path'];
-    }
-
-    /**
-     * 返回背景图路径.
-     *
-     * @return string
-     */
-    public function getBackgroundPath()
-    {
-        return $this->option['background_path'];
     }
 
     /**
@@ -252,7 +224,7 @@ class Seccode implements ISeccode
      */
     protected function makeBackground()
     {
-        $resImage = imagecreatetruecolor($this->getWidth(), $this->getHeight());
+        $resImage = imagecreatetruecolor($this->normalizeWidth(), $this->normalizeHeight());
         $resColor = imagecolorallocate($resImage, 255, 255, 255);
 
         if (false === $this->makeBackgroundWithImage($resImage)) {
@@ -278,11 +250,10 @@ class Seccode implements ISeccode
      */
     protected function makeAdulterate(&$resImage)
     {
-        $lineNum = $this->getHeight() / 10;
+        $width = $this->normalizeWidth();
+        $height = $this->normalizeHeight();
 
-        if ($lineNum < 1) {
-            return;
-        }
+        $lineNum = $height / 10;
 
         for ($i = 0; $i <= $lineNum; $i++) {
             $resColor = $this->option['color'] ?
@@ -299,16 +270,16 @@ class Seccode implements ISeccode
                     $this->fontColor[2]
                 );
 
-            $x = $this->mtRand(0, $this->getWidth());
-            $y = $this->mtRand(0, $this->getHeight());
+            $x = $this->mtRand(0, $width);
+            $y = $this->mtRand(0, $height);
 
             if (mt_rand(0, 1)) {
                 imagearc(
                     $resImage,
                     $x,
                     $y,
-                    $this->mtRand(0, $this->getWidth()),
-                    $this->mtRand(0, $this->getHeight()),
+                    $this->mtRand(0, $width),
+                    $this->mtRand(0, $height),
                     $this->mtRand(0, 360),
                     $this->mtRand(0, 360),
                     $resColor
@@ -319,7 +290,7 @@ class Seccode implements ISeccode
                     $x,
                     $y,
                     0 + $this->mtRand(0, 0),
-                    0 + $this->mtRand(0, $this->mtRand($this->getHeight(), $this->getWidth())),
+                    0 + $this->mtRand(0, $this->mtRand($height, $width)),
                     $resColor
                 );
             }
@@ -343,23 +314,25 @@ class Seccode implements ISeccode
 
         list($font, $code, $widthTotal) = $this->getFontOption();
 
+        $width = $this->normalizeWidth();
+        $height = $this->normalizeHeight();
+
         // deg2rad() 函数将角度转换为弧度 cos 是 cosine 的简写
         // 表示余弦函数
         $x = $this->mtRand(
             $font[0]['tilt'] > 0 ?
                 cos(deg2rad(90 - $font[0]['tilt'])) * $font[0]['zheight'] :
                 1,
-            $this->getWidth() - $widthTotal
+            $width - $widthTotal
         );
 
         // 是否启用随机颜色
-        !$this->option['color'] &&
-            $resTextColor = imagecolorallocate(
-                $resImage,
-                $this->fontColor[0],
-                $this->fontColor[1],
-                $this->fontColor[2]
-            );
+        !$this->option['color'] && $resTextColor = imagecolorallocate(
+            $resImage,
+            $this->fontColor[0],
+            $this->fontColor[1],
+            $this->fontColor[2]
+        );
 
         for ($i = 0; $i < count($font); $i++) {
             if ($this->option['color']) {
@@ -395,11 +368,11 @@ class Seccode implements ISeccode
             $y = $font[0]['tilt'] > 0 ?
                 $this->mtRand(
                     $font[$i]['height'],
-                    $this->getHeight()
+                    $height
                 ) :
                 $this->mtRand(
                     $font[$i]['height'] - $font[$i]['hd'],
-                    $this->getHeight() - $font[$i]['hd']
+                    $height - $font[$i]['hd']
                 );
 
             $this->option['shadow'] &&
@@ -446,6 +419,7 @@ class Seccode implements ISeccode
 
         $font = [];
         $widthTotal = 0;
+        $width = $this->normalizeWidth();
 
         for ($i = 0; $i < $codeLength; $i++) {
             if (!isset($font[$i])) {
@@ -454,12 +428,12 @@ class Seccode implements ISeccode
 
             $font[$i]['font'] = $ttf[array_rand($ttf)];
             $font[$i]['tilt'] = $this->option['tilt'] ? $this->mtRand(-30, 30) : 0;
-            $font[$i]['size'] = $this->getWidth() / 6;
+            $font[$i]['size'] = $width / 6;
 
             $this->option['size'] &&
                 $font[$i]['size'] = $this->mtRand(
-                    $font[$i]['size'] - $this->getWidth() / 40,
-                    $font[$i]['size'] + $this->getWidth() / 20
+                    $font[$i]['size'] - $width / 40,
+                    $font[$i]['size'] + $width / 20
                 );
 
             $resBox = imagettfbbox(
@@ -486,11 +460,11 @@ class Seccode implements ISeccode
 
             $font[$i]['width'] =
                 (max($resBox[2], $resBox[4]) - min($resBox[0], $resBox[6])) +
-                $this->mtRand(0, (int) ($this->getWidth() / 8));
+                $this->mtRand(0, (int) ($width / 8));
 
             $font[$i]['width'] =
-                $font[$i]['width'] > $this->getWidth() / $codeLength ?
-                $this->getWidth() / $codeLength :
+                $font[$i]['width'] > $width / $codeLength ?
+                $width / $codeLength :
                 $font[$i]['width'];
 
             $widthTotal += $font[$i]['width'];
@@ -513,6 +487,9 @@ class Seccode implements ISeccode
     protected function makeBackgroundWithImage(&$resImage)
     {
         $background = false;
+        $backgroundPath = $this->option['background_path'];
+        $width = $this->normalizeWidth();
+        $height = $this->normalizeHeight();
 
         if ($this->option['background'] &&
             function_exists('imagecreatefromjpeg') &&
@@ -521,13 +498,13 @@ class Seccode implements ISeccode
             function_exists('imagesetpixel') &&
             function_exists('imageSX') &&
             function_exists('imageSY')) {
-            if (!is_dir($this->getBackgroundPath())) {
+            if (!is_dir($backgroundPath)) {
                 throw new InvalidArgumentException(
-                    sprintf('Background path %s is not exists.', $this->getBackgroundPath())
+                    sprintf('Background path %s is not exists.', $backgroundPath)
                 );
             }
 
-            $background = glob($this->getBackgroundPath().'/*.*');
+            $background = glob($backgroundPath.'/*.*');
 
             if ($background) {
                 $resBackground = imagecreatefromjpeg($background[array_rand($background)]);
@@ -537,17 +514,17 @@ class Seccode implements ISeccode
 
                 imagesetpixel($resBackground, 0, 0, $resColorIndex);
 
-                $color[0] = $color['red'];
-                $color[1] = $color['green'];
-                $color[2] = $color['blue'];
+                $color[0] = (int) ($color['red']);
+                $color[1] = (int) ($color['green']);
+                $color[2] = (int) ($color['blue']);
 
                 imagecopymerge(
                     $resImage,
                     $resBackground,
                     0,
                     0,
-                    $this->mtRand(0, 200 - $this->getWidth()),
-                    $this->mtRand(0, 80 - $this->getHeight()),
+                    $this->mtRand(0, 200 - $width),
+                    $this->mtRand(0, 80 - $height),
                     imagesx($resBackground),
                     imagesy($resBackground),
                     100
@@ -571,14 +548,17 @@ class Seccode implements ISeccode
      */
     protected function makeBackgroundDefault(&$resImage)
     {
+        $width = $this->normalizeWidth();
+        $height = $this->normalizeHeight();
+
         for ($i = 0; $i < 3; $i++) {
             $start[$i] = $this->mtRand(200, 255);
             $end[$i] = $this->mtRand(100, 150);
-            $step[$i] = ($end[$i] - $start[$i]) / $this->getWidth();
+            $step[$i] = ($end[$i] - $start[$i]) / $width;
             $color[$i] = $start[$i];
         }
 
-        for ($i = 0; $i < $this->getWidth(); $i++) {
+        for ($i = 0; $i < $width; $i++) {
             $resColor = imagecolorallocate(
                 $resImage,
                 (int) ($color[0]),
@@ -591,7 +571,7 @@ class Seccode implements ISeccode
                 $i,
                 0,
                 $i - ($this->option['tilt'] ? $this->mtRand(-30, 30) : 0),
-                $this->getHeight(),
+                $height,
                 $resColor
             );
 
@@ -603,6 +583,10 @@ class Seccode implements ISeccode
         $color[0] -= 20;
         $color[1] -= 20;
         $color[2] -= 20;
+
+        $color[0] = (int) ($color[0]);
+        $color[1] = (int) ($color[1]);
+        $color[2] = (int) ($color[2]);
 
         $this->fontColor = $color;
 
@@ -617,8 +601,8 @@ class Seccode implements ISeccode
     protected function getTtf()
     {
         $fontPath = $this->isChinese($this->getCode()) ?
-            $this->getChineseFontPath() :
-            $this->getFontPath();
+            $this->option['chinese_font_path'] :
+            $this->option['font_path'];
 
         if (!is_dir($fontPath)) {
             throw new InvalidArgumentException(
