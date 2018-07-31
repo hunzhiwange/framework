@@ -518,17 +518,17 @@ class Seccode implements ISeccode
                 $color[1] = (int) ($color['green']);
                 $color[2] = (int) ($color['blue']);
 
-                // imagecopymerge(
-                //     $resImage,
-                //     $resBackground,
-                //     0,
-                //     0,
-                //     $this->mtRand(0, 200 - $width),
-                //     $this->mtRand(0, 80 - $height),
-                //     imagesx($resBackground),
-                //     imagesy($resBackground),
-                //     100
-                // );
+                imagecopymerge(
+                    $resImage,
+                    $resBackground,
+                    0,
+                    0,
+                    $this->mtRand(0, 200 - $width),
+                    $this->mtRand(0, 80 - $height),
+                    imagesx($resBackground),
+                    imagesy($resBackground),
+                    100
+                );
 
                 // imagedestroy($resBackground);
 var_dump($color);
