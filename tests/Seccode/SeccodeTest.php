@@ -174,7 +174,7 @@ eot;
      *
      * @param string $type
      */
-    public function t2estAutoCode(string $type)
+    public function testAutoCode(string $type)
     {
         $seccode = new Seccode([
             'background_path'         => __DIR__.'/background',
@@ -225,7 +225,7 @@ eot;
         ];
     }
 
-    public function t2estAutoCodeSizeException()
+    public function testAutoCodeSizeException()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -240,7 +240,7 @@ eot;
         $seccode->display(0);
     }
 
-    public function t2estAutoCodeTypeException()
+    public function testAutoCodeTypeException()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -255,7 +255,7 @@ eot;
         $seccode->display(4, '', true, 'notExistsType');
     }
 
-    public function t2estAutoMakeOutDirIfNotExist()
+    public function testAutoMakeOutDirIfNotExist()
     {
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
@@ -292,7 +292,7 @@ eot;
         rmdir(dirname($file));
     }
 
-    public function t2estMinWidthAndMinHeight()
+    public function testMinWidthAndMinHeight()
     {
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
@@ -331,7 +331,7 @@ eot;
         unlink($file);
     }
 
-    public function t2estMaxWidthAndMaxHeight()
+    public function testMaxWidthAndMaxHeight()
     {
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
@@ -370,7 +370,7 @@ eot;
         unlink($file);
     }
 
-    public function t2estWithBackgroundDefault()
+    public function testWithBackgroundDefault()
     {
         $seccode = new Seccode([
             'background'      => false,
@@ -406,7 +406,7 @@ eot;
         unlink($file);
     }
 
-    public function t2estWithoutRandColor()
+    public function testWithoutRandColor()
     {
         $seccode = new Seccode([
             'background'      => false,
@@ -443,7 +443,7 @@ eot;
         unlink($file);
     }
 
-    public function t2estBackgroundPathException()
+    public function testBackgroundPathException()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -455,7 +455,7 @@ eot;
         $seccode->display();
     }
 
-    public function t2estBackgroundPathException2()
+    public function testBackgroundPathException2()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -469,7 +469,7 @@ eot;
         $seccode->display();
     }
 
-    public function t2estFontPathException()
+    public function testFontPathException()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
@@ -489,7 +489,7 @@ eot;
         rmdir($dirname);
     }
 
-    public function t2estFontPathException2()
+    public function testFontPathException2()
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(
