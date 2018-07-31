@@ -93,7 +93,7 @@ eot;
         unlink($file);
     }
 
-    public function t2estChinese()
+    public function testChinese()
     {
         $seccode = new Seccode([
             'background_path'         => __DIR__.'/background',
@@ -130,7 +130,7 @@ eot;
         unlink($file);
     }
 
-    public function t2estSetOption()
+    public function testSetOption()
     {
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
