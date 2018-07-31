@@ -227,9 +227,9 @@ class Seccode implements ISeccode
         $resImage = imagecreatetruecolor($this->normalizeWidth(), $this->normalizeHeight());
         $resColor = imagecolorallocate($resImage, 255, 255, 255);
 
-        if (false === $this->makeBackgroundWithImage($resImage)) {
+        //if (false === $this->makeBackgroundWithImage($resImage)) {
             $this->makeBackgroundDefault($resImage);
-        }
+        //}
 
         ob_start();
 
