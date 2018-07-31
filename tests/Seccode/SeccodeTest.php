@@ -370,7 +370,7 @@ eot;
         unlink($file);
     }
 
-    public function testWithBackgroundDefault()
+    public function t2estWithBackgroundDefault()
     {
         $seccode = new Seccode([
             'background'      => false,
@@ -406,7 +406,7 @@ eot;
         unlink($file);
     }
 
-    public function testWithoutRandColor()
+    public function t2estWithoutRandColor()
     {
         $seccode = new Seccode([
             'background'      => false,
