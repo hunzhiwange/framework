@@ -227,9 +227,9 @@ class Seccode implements ISeccode
         $resImage = imagecreatetruecolor($this->normalizeWidth(), $this->normalizeHeight());
         $resColor = imagecolorallocate($resImage, 255, 255, 255);
 
-        //if (false === $this->makeBackgroundWithImage($resImage)) {
+        if (false === $this->makeBackgroundWithImage($resImage)) {
             $this->makeBackgroundDefault($resImage);
-        //}
+        }
 
         ob_start();
 
@@ -518,20 +518,20 @@ class Seccode implements ISeccode
                 $color[1] = (int) ($color['green']);
                 $color[2] = (int) ($color['blue']);
 
-                imagecopymerge(
-                    $resImage,
-                    $resBackground,
-                    0,
-                    0,
-                    $this->mtRand(0, 200 - $width),
-                    $this->mtRand(0, 80 - $height),
-                    imagesx($resBackground),
-                    imagesy($resBackground),
-                    100
-                );
+                // imagecopymerge(
+                //     $resImage,
+                //     $resBackground,
+                //     0,
+                //     0,
+                //     $this->mtRand(0, 200 - $width),
+                //     $this->mtRand(0, 80 - $height),
+                //     imagesx($resBackground),
+                //     imagesy($resBackground),
+                //     100
+                // );
 
-                imagedestroy($resBackground);
-
+                // imagedestroy($resBackground);
+var_dump($color);
                 $background = true;
 
                 $this->fontColor = $color;
