@@ -59,8 +59,6 @@ class SeccodeTest extends TestCase
 
     public function testBaseUse()
     {
-        $this->assertTrue(true);
-
         $seccode = new Seccode([
             'background_path' => __DIR__.'/background',
             'font_path'       => __DIR__.'/font',
@@ -69,6 +67,319 @@ class SeccodeTest extends TestCase
         $file = __DIR__.'/baseuse.png';
 
         $seccode->display('abc', $file);
+
+        $this->assertTrue(is_file($file));
+
+        $info = getimagesize($file);
+
+        $data = <<<'eot'
+array (
+  0 => 160,
+  1 => 60,
+  2 => 3,
+  3 => 'width="160" height="60"',
+  'bits' => 8,
+  'mime' => 'image/png',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $info
+            )
+        );
+
+        unlink($file);
+    }
+
+    public function testChinese()
+    {
+        $seccode = new Seccode([
+            'background_path'         => __DIR__.'/background',
+            'font_path'               => __DIR__.'/font',
+            'chinese_font_path'       => __DIR__.'/chinese', // 中文字体过于庞大，本地已经测试通过，这里用的英文的假字体，会乱码
+        ]);
+
+        $file = __DIR__.'/chinese.png';
+
+        $seccode->display('中国', $file);
+
+        $this->assertTrue(is_file($file));
+
+        $info = getimagesize($file);
+
+        $data = <<<'eot'
+array (
+  0 => 160,
+  1 => 60,
+  2 => 3,
+  3 => 'width="160" height="60"',
+  'bits' => 8,
+  'mime' => 'image/png',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $info
+            )
+        );
+
+        unlink($file);
+    }
+
+    public function testSetOption()
+    {
+        $seccode = new Seccode([
+            'background_path' => __DIR__.'/background',
+            'font_path'       => __DIR__.'/font',
+        ]);
+
+        $seccode->setOption('width', 200);
+        $seccode->setOption('height', 100);
+
+        $file = __DIR__.'/setoption.png';
+
+        $seccode->display('hello', $file);
+
+        $this->assertTrue(is_file($file));
+
+        $info = getimagesize($file);
+
+        $data = <<<'eot'
+array (
+  0 => 200,
+  1 => 100,
+  2 => 3,
+  3 => 'width="200" height="100"',
+  'bits' => 8,
+  'mime' => 'image/png',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $info
+            )
+        );
+
+        unlink($file);
+    }
+
+    /**
+     * @dataProvider getAutoCodeData
+     *
+     * @param string $type
+     */
+    public function testAutoCode(string $type)
+    {
+        $seccode = new Seccode([
+            'background_path'         => __DIR__.'/background',
+            'font_path'               => __DIR__.'/font',
+            'chinese_font_path'       => __DIR__.'/chinese', // 中文字体过于庞大，本地已经测试通过，这里用的英文的假字体，会乱码
+        ]);
+
+        $file = __DIR__.'/autocode.'.$type.'.png';
+
+        $seccode->display(4, $file, true, $type);
+
+        $this->assertTrue(is_file($file));
+
+        $info = getimagesize($file);
+
+        $data = <<<'eot'
+array (
+  0 => 160,
+  1 => 60,
+  2 => 3,
+  3 => 'width="160" height="60"',
+  'bits' => 8,
+  'mime' => 'image/png',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $info
+            )
+        );
+
+        unlink($file);
+    }
+
+    public function getAutoCodeData()
+    {
+        return [
+            [Seccode::ALPHA_NUM],
+            [Seccode::ALPHA_NUM_LOWERCASE],
+            [Seccode::ALPHA_NUM_UPPERCASE],
+            [Seccode::ALPHA],
+            [Seccode::ALPHA_LOWERCASE],
+            [Seccode::ALPHA_UPPERCASE],
+            [Seccode::NUM],
+            [Seccode::CHINESE],
+        ];
+    }
+
+    public function testAutoCodeSizeException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Code must be greater than 0.'
+        );
+
+        $seccode = new Seccode([
+            'background_path' => __DIR__.'/background',
+            'font_path'       => __DIR__.'/font',
+        ]);
+
+        $seccode->display(0);
+    }
+
+    public function testAutoCodeTypeException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Code type must be these alpha_num,alpha_num_lowercase,alpha_num_uppercase,alpha,alpha_lowercase,alpha_uppercase,num,chinese.'
+        );
+
+        $seccode = new Seccode([
+            'background_path' => __DIR__.'/background',
+            'font_path'       => __DIR__.'/font',
+        ]);
+
+        $seccode->display(4, '', true, 'notExistsType');
+    }
+
+    public function testAutoMakeOutDirIfNotExist()
+    {
+        $seccode = new Seccode([
+            'background_path' => __DIR__.'/background',
+            'font_path'       => __DIR__.'/font',
+        ]);
+
+        $file = __DIR__.'/notexists/seccode.png';
+
+        $seccode->display('hello', $file);
+
+        $this->assertTrue(is_file($file));
+
+        $info = getimagesize($file);
+
+        $data = <<<'eot'
+array (
+  0 => 160,
+  1 => 60,
+  2 => 3,
+  3 => 'width="160" height="60"',
+  'bits' => 8,
+  'mime' => 'image/png',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $info
+            )
+        );
+
+        unlink($file);
+        rmdir(dirname($file));
+    }
+
+    public function testMinWidthAndMinHeight()
+    {
+        $seccode = new Seccode([
+            'background_path' => __DIR__.'/background',
+            'font_path'       => __DIR__.'/font',
+        ]);
+
+        $seccode->setOption('width', 2);
+        $seccode->setOption('height', 2);
+
+        $file = __DIR__.'/minWidthAndMinHeight.png';
+
+        $seccode->display('A', $file);
+
+        $this->assertTrue(is_file($file));
+
+        $info = getimagesize($file);
+
+        $data = <<<'eot'
+array (
+  0 => 16,
+  1 => 16,
+  2 => 3,
+  3 => 'width="16" height="16"',
+  'bits' => 8,
+  'mime' => 'image/png',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $info
+            )
+        );
+
+        unlink($file);
+    }
+
+    public function testMaxWidthAndMaxHeight()
+    {
+        $seccode = new Seccode([
+            'background_path' => __DIR__.'/background',
+            'font_path'       => __DIR__.'/font',
+        ]);
+
+        $seccode->setOption('width', 1200);
+        $seccode->setOption('height', 1200);
+
+        $file = __DIR__.'/maxWidthAndMaxHeight.png';
+
+        $seccode->display('IMAX', $file);
+
+        $this->assertTrue(is_file($file));
+
+        $info = getimagesize($file);
+
+        $data = <<<'eot'
+array (
+  0 => 999,
+  1 => 999,
+  2 => 3,
+  3 => 'width="999" height="999"',
+  'bits' => 8,
+  'mime' => 'image/png',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $info
+            )
+        );
+
+        unlink($file);
+    }
+
+    public function testWithBackgroundDefault()
+    {
+        $seccode = new Seccode([
+            'background'      => false,
+            'font_path'       => __DIR__.'/font',
+        ]);
+
+        $file = __DIR__.'/backgroundDefault.png';
+
+        $seccode->display('ABCD', $file);
 
         $this->assertTrue(is_file($file));
 

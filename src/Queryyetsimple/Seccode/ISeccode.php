@@ -36,28 +36,28 @@ interface ISeccode
      *
      * @var int
      */
-    const MAX_WIDTH = 9999;
+    const MAX_WIDTH = 999;
 
     /**
      * 图像最大高度.
      *
      * @var int
      */
-    const MAX_HEIGHT = 9999;
+    const MAX_HEIGHT = 999;
 
     /**
      * 图像最小宽度.
      *
      * @var int
      */
-    const MIN_WIDTH = 1;
+    const MIN_WIDTH = 16;
 
     /**
      * 图像最小高度.
      *
      * @var int
      */
-    const MIN_HEIGHT = 1;
+    const MIN_HEIGHT = 16;
 
     /**
      * 随机字母数字.
