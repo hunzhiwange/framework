@@ -370,7 +370,7 @@ eot;
         unlink($file);
     }
 
-    public function t2estWithBackgroundDefault()
+    public function testWithBackgroundDefault()
     {
         $seccode = new Seccode([
             'background'      => false,
