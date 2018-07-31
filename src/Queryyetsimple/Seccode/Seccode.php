@@ -134,7 +134,7 @@ class Seccode implements ISeccode
         $resImage = imagecreatefromstring($this->makeBackground());
 
         if ($this->option['adulterate']) {
-            //$this->makeAdulterate($resImage);
+            $this->makeAdulterate($resImage);
         }
 
         $this->makeTtfFont($resImage);
@@ -531,7 +531,7 @@ class Seccode implements ISeccode
                 );
 
                 imagedestroy($resBackground);
-var_dump($color);
+
                 $findBackground = true;
 
                 $this->fontColor = $color;
