@@ -406,6 +406,43 @@ eot;
         unlink($file);
     }
 
+    public function testWithoutRandColor()
+    {
+        $seccode = new Seccode([
+            'background'      => false,
+            'font_path'       => __DIR__.'/font',
+            'color'           => false,
+        ]);
+
+        $file = __DIR__.'/withoutRandColor.png';
+
+        $seccode->display('ABCD', $file);
+
+        $this->assertTrue(is_file($file));
+
+        $info = getimagesize($file);
+
+        $data = <<<'eot'
+array (
+  0 => 160,
+  1 => 60,
+  2 => 3,
+  3 => 'width="160" height="60"',
+  'bits' => 8,
+  'mime' => 'image/png',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $info
+            )
+        );
+
+        unlink($file);
+    }
+
     public function testBackgroundPathException()
     {
         $this->expectException(\InvalidArgumentException::class);
