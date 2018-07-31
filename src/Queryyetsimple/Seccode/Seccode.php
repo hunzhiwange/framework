@@ -42,41 +42,6 @@ class Seccode implements ISeccode
     protected $code;
 
     /**
-     * 宽度.
-     *
-     * @var int
-     */
-    protected $resolvedWidth;
-
-    /**
-     * 高度.
-     *
-     * @var int
-     */
-    protected $resolvedHeight;
-
-    /**
-     * 字体路径.
-     *
-     * @var string
-     */
-    protected $resolvedFontPath;
-
-    /**
-     * 中文字体路径.
-     *
-     * @var string
-     */
-    protected $resolvedChineseFontPath;
-
-    /**
-     * 背景路径.
-     *
-     * @var string
-     */
-    protected $resolvedBackgroundPath;
-
-    /**
      * 字体颜色.
      *
      * @var array
@@ -223,17 +188,14 @@ class Seccode implements ISeccode
      */
     public function getWidth()
     {
-        if (null !== $this->resolvedWidth) {
-            return $this->resolvedWidth;
-        }
-
         if ($this->option['width'] < static::MIN_WIDTH) {
-            $this->setOption('width', static::MIN_WIDTH);
-        } elseif ($this->option['width'] > static::MAX_WIDTH) {
-            $this->setOption('width', static::MAX_WIDTH);
+            return static::MIN_WIDTH;
+        }
+        if ($this->option['width'] > static::MAX_WIDTH) {
+            return static::MAX_WIDTH;
         }
 
-        return $this->resolvedWidth = $this->option['width'];
+        return $this->option['width'];
     }
 
     /**
@@ -243,17 +205,14 @@ class Seccode implements ISeccode
      */
     public function getHeight()
     {
-        if (null !== $this->resolvedHeight) {
-            return $this->resolvedHeight;
-        }
-
         if ($this->option['height'] < static::MIN_HEIGHT) {
-            $this->setOption('height', static::MIN_HEIGHT);
-        } elseif ($this->option['height'] > static::MAX_HEIGHT) {
-            $this->setOption('height', static::MAX_HEIGHT);
+            return static::MIN_HEIGHT;
+        }
+        if ($this->option['height'] > static::MAX_HEIGHT) {
+            return static::MAX_HEIGHT;
         }
 
-        return $this->resolvedHeight = $this->option['height'];
+        return $this->option['height'];
     }
 
     /**
@@ -263,11 +222,7 @@ class Seccode implements ISeccode
      */
     public function getFontPath()
     {
-        if (null !== $this->resolvedFontPath) {
-            return $this->resolvedFontPath;
-        }
-
-        return $this->resolvedFontPath = $this->option['font_path'];
+        return $this->option['font_path'];
     }
 
     /**
@@ -277,11 +232,7 @@ class Seccode implements ISeccode
      */
     public function getChineseFontPath()
     {
-        if (null !== $this->resolvedChineseFontPath) {
-            return $this->resolvedChineseFontPath;
-        }
-
-        return $this->resolvedChineseFontPath = $this->option['chinese_font_path'];
+        return $this->option['chinese_font_path'];
     }
 
     /**
@@ -291,11 +242,7 @@ class Seccode implements ISeccode
      */
     public function getBackgroundPath()
     {
-        if (null !== $this->resolvedBackgroundPath) {
-            return $this->resolvedBackgroundPath;
-        }
-
-        return $this->resolvedBackgroundPath = $this->option['background_path'];
+        return $this->option['background_path'];
     }
 
     /**
