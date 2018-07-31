@@ -486,7 +486,7 @@ class Seccode implements ISeccode
      */
     protected function makeBackgroundWithImage(&$resImage)
     {
-        $background = false;
+        $findBackground = false;
         $backgroundPath = $this->option['background_path'];
         $width = $this->normalizeWidth();
         $height = $this->normalizeHeight();
@@ -530,15 +530,15 @@ class Seccode implements ISeccode
                     100
                 );
 
-                // imagedestroy($resBackground);
+                imagedestroy($resBackground);
 var_dump($color);
-                $background = true;
+                $findBackground = true;
 
                 $this->fontColor = $color;
             }
         }
 
-        return $background;
+        return $findBackground;
     }
 
     /**
