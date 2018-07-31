@@ -129,12 +129,13 @@ interface ISeccode
      * 设置验证码
      *
      * @param mixed  $code
+     * @param string $outPath
      * @param string $autoType
      * @param bool   $autoCode
      *
      * @return $this
      */
-    public function display($code = null, $autoType = self::ALPHA_UPPERCASE, $autoCode = true);
+    public function display($code = null, ?string $outPath = null, $autoType = self::ALPHA_UPPERCASE, $autoCode = true);
 
     /**
      * 设置验证码

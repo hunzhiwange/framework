@@ -34,13 +34,73 @@ use Tests\TestCase;
  */
 class SeccodeTest extends TestCase
 {
+    protected function setUp()
+    {
+        // for mac php
+        if (!function_exists('imagettftext')) {
+            $this->markTestSkipped('Function imagettftext is not exists.');
+        }
+    }
+
+    protected function tearDown()
+    {
+        $dirnames = [
+            __DIR__.'/backgroundEmpty',
+            __DIR__.'/backgroundEmpty2',
+            __DIR__.'/fontEmpty2',
+        ];
+
+        foreach ($dirnames as $val) {
+            if (is_dir($val)) {
+                rmdir($val);
+            }
+        }
+    }
+
     public function testBaseUse()
     {
+        $this->assertTrue(true);
+
+        $seccode = new Seccode([
+            'background_path' => __DIR__.'/background',
+            'font_path'       => __DIR__.'/font',
+        ]);
+
+        $file = __DIR__.'/baseuse.png';
+
+        $seccode->display('abc', $file);
+
+        $this->assertTrue(is_file($file));
+
+        $info = getimagesize($file);
+
+        $data = <<<'eot'
+array (
+  0 => 160,
+  1 => 60,
+  2 => 3,
+  3 => 'width="160" height="60"',
+  'bits' => 8,
+  'mime' => 'image/png',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $info
+            )
+        );
+
+        unlink($file);
     }
 
     public function testBackgroundPathException()
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Background path  is not exists.'
+        );
 
         $seccode = new Seccode();
 
@@ -63,16 +123,45 @@ class SeccodeTest extends TestCase
 
     public function testFontPathException()
     {
-        if (!function_exists('imagettftext')) {
-            $this->markTestSkipped('Gd is not exists.');
-        }
-
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Font path  is not exits.'
+        );
+
+        $dirname = __DIR__.'/backgroundEmpty';
+
+        mkdir($dirname, 0777);
 
         $seccode = new Seccode([
-            'background_path' => __DIR__.'/background',
+            'background_path' => $dirname,
         ]);
 
         $seccode->display();
+
+        rmdir($dirname);
+    }
+
+    public function testFontPathException2()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Font files not found.'
+        );
+
+        $dirname = __DIR__.'/backgroundEmpty2';
+        $dirname2 = __DIR__.'/fontEmpty2';
+
+        mkdir($dirname, 0777);
+        mkdir($dirname2, 0777);
+
+        $seccode = new Seccode([
+            'background_path' => $dirname,
+            'font_path'       => $dirname2,
+        ]);
+
+        $seccode->display();
+
+        rmdir($dirname);
+        rmdir($dirname2);
     }
 }

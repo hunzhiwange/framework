@@ -152,12 +152,13 @@ class Seccode implements ISeccode
      * 设置验证码
      *
      * @param mixed  $code
+     * @param string $outPath
      * @param bool   $autoCode
      * @param string $autoType
      *
      * @return $this
      */
-    public function display($code = null, $autoCode = true, $autoType = self::ALPHA_UPPERCASE)
+    public function display($code = null, ?string $outPath = null, $autoCode = true, $autoType = self::ALPHA_UPPERCASE)
     {
         if (is_int($code) && $autoCode) {
             $this->autoCode($code, $autoType);
@@ -173,12 +174,17 @@ class Seccode implements ISeccode
 
         $this->makeTtfFont($resImage);
 
-        if (function_exists('imagepng')) {
-            header('Content-type: image/png');
-            imagepng($resImage);
+        if ($outPath) {
+            $dirname = dirname($outPath);
+
+            if (!is_dir($dirname)) {
+                mkdir($dirname, 0777, true);
+            }
+
+            imagepng($resImage, $outPath, 9);
         } else {
-            header('Content-type: image/jpeg');
-            imagejpeg($resImage, '', 100);
+            header('Content-type: image/png');
+            imagepng($resImage, '', 9);
         }
 
         imagedestroy($resImage);
@@ -450,12 +456,11 @@ class Seccode implements ISeccode
                 );
 
             $this->option['shadow'] &&
-                imagettftext(
-                    $resImage,
+                imagettftext($resImage,
                     $font[$i]['size'],
                     $font[$i]['tilt'],
-                    $x + 1,
-                    $y + 1,
+                    (int) ($x + 1),
+                    (int) ($y + 1),
                     $resTextShadowColor,
                     $font[$i]['font'],
                     $code[$i]
@@ -464,8 +469,8 @@ class Seccode implements ISeccode
             imagettftext($resImage,
                 $font[$i]['size'],
                 $font[$i]['tilt'],
-                $x,
-                $y,
+                (int) ($x),
+                (int) ($y),
                 $resTextColor,
                 $font[$i]['font'],
                 $code[$i]
@@ -673,14 +678,14 @@ class Seccode implements ISeccode
 
         if (!is_dir($fontPath)) {
             throw new InvalidArgumentException(
-                sprintf('Font path %s is not exits', $fontPath)
+                sprintf('Font path %s is not exits.', $fontPath)
             );
         }
 
         $ttf = glob($fontPath.'/*.*');
 
         if (empty($ttf)) {
-            throw new InvalidArgumentException('Font not found');
+            throw new InvalidArgumentException('Font files not found.');
         }
 
         return $ttf;
@@ -698,14 +703,14 @@ class Seccode implements ISeccode
     {
         if ($size < 1) {
             throw new InvalidArgumentException(
-                sprintf('Code must be greater than %d', 0)
+                sprintf('Code must be greater than %d.', 0)
             );
         }
 
         if (!in_array($autoType, $this->getAllowedAutoType(), true)) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'Code type must be these %s',
+                    'Code type must be these %s.',
                     implode(',', $this->getAllowedAutoType())
                 )
             );
@@ -744,7 +749,7 @@ class Seccode implements ISeccode
      */
     protected function isChinese($code)
     {
-        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $code);
+        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', (string) ($code));
     }
 
     /**
@@ -765,17 +770,17 @@ class Seccode implements ISeccode
      * @param number $numFirst
      * @param number $numSecond
      *
-     * @return number
+     * @return int
      */
     protected function mtRand($numFirst, $numSecond)
     {
-        $numFirst = (int) $numFirst;
-        $numSecond = (int) $numSecond;
+        $numFirst = (int) ($numFirst);
+        $numSecond = (int) ($numSecond);
 
         if ($numFirst > $numSecond) {
             list($numSecond, $numFirst) = [$numFirst, $numSecond];
         }
 
-        return mt_rand($numFirst, $numSecond);
+        return (int) (mt_rand($numFirst, $numSecond));
     }
 }
