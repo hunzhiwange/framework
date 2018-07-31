@@ -327,7 +327,7 @@ class Seccode implements ISeccode
         );
 
         // 是否启用随机颜色
-        if(!$this->option['color']){
+        if (!$this->option['color']) {
             $resTextColor = imagecolorallocate(
                 $resImage,
                 $this->fontColor[0],
@@ -352,7 +352,7 @@ class Seccode implements ISeccode
                 );
             }
 
-            if($this->option['shadow']){
+            if ($this->option['shadow']) {
                 $resTextShadowColor = imagecolorallocate(
                     $resImage,
                     255 - $this->fontColor[0],
@@ -371,7 +371,7 @@ class Seccode implements ISeccode
                     $height - $font[$i]['hd']
                 );
 
-            if($this->option['shadow']) {
+            if ($this->option['shadow']) {
                 imagettftext($resImage,
                     $font[$i]['size'],
                     $font[$i]['tilt'],
