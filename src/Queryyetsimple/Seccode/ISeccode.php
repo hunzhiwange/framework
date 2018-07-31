@@ -115,8 +115,6 @@ interface ISeccode
      */
     const CHINESE = 'chinese';
 
-    const CHINESE2 = 'chinese';
-
     /**
      * 设置配置.
      *
