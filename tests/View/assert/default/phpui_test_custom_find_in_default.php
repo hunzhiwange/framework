@@ -1,0 +1,1 @@
+hello phpui for custom find in default,<?php echo $foo; ?>.

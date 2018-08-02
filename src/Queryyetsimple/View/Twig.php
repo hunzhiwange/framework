@@ -87,6 +87,7 @@ class Twig extends Connect implements IConnect
         if (false === $display) {
             return $this->renderFile($file);
         }
+
         echo $this->renderFile($file);
     }
 
@@ -103,12 +104,12 @@ class Twig extends Connect implements IConnect
     /**
      * 解析 parse.
      *
-     * @return \Leevel\View\IParser
+     * @return \Twig_Environment
      */
-    public function resolverParser()
+    protected function resolverParser()
     {
         if (!$this->parseResolver) {
-            throw new RuntimeException('Twig theme not set parse resolver');
+            throw new RuntimeException('Twig theme not set parse resolver.');
         }
 
         return call_user_func($this->parseResolver);
@@ -119,7 +120,7 @@ class Twig extends Connect implements IConnect
      *
      * @return \Leevel\View\IParser
      */
-    public function parser()
+    protected function parser()
     {
         if (null !== $this->parser) {
             return $this->parser;

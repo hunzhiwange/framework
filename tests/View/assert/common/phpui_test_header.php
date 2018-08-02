@@ -1,0 +1,1 @@
+hello phpui for common header,<?php echo $foo; ?>.

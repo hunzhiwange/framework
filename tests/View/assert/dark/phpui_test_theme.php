@@ -1,0 +1,1 @@
+hello phpui for theme,<?php echo $foo; ?>.

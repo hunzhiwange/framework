@@ -1,0 +1,1 @@
+hello phpui for fullpath,<?php echo $foo; ?>.

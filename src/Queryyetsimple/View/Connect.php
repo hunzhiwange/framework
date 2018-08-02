@@ -186,7 +186,7 @@ abstract class Connect
         }
 
         if (!$this->option['theme_path']) {
-            throw new RuntimeException('Theme path must be set');
+            throw new RuntimeException('Theme path must be set.');
         }
 
         // 空取默认控制器和方法
@@ -240,12 +240,8 @@ abstract class Connect
      */
     protected function parseDefaultFile(?string $tpl = null)
     {
-        if (is_file($tpl)) {
-            return $tpl;
-        }
-
         if (!$this->option['theme_path']) {
-            throw new RuntimeException('Theme path must be set');
+            throw new RuntimeException('Theme path must be set.');
         }
 
         $source = $tpl;
