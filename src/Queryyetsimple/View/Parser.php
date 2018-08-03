@@ -212,7 +212,7 @@ class Parser implements IParser
         if (false === $isContent) {
             if (!is_file($file)) {
                 throw new InvalidArgumentException(
-                    printf('file %s is not exits.', $file)
+                    sprintf('File %s is not exits.', $file)
                 );
             }
 
@@ -1036,11 +1036,11 @@ class Parser implements IParser
          * ======= start =======
          *
          * {if}
-         * one
+         * value
          * {/if}
          *
          * {for}
-         * two
+         * beyond
          * {/for}
          *
          * ======== end =======
@@ -1058,11 +1058,11 @@ class Parser implements IParser
          * ======= start =======
          *
          * {for}
-         * two
+         * beyond
          * {/for}
          *
          * {if}
-         * one
+         * value
          * {/if}
          *
          * ======== end =======
@@ -1080,17 +1080,18 @@ class Parser implements IParser
          * ======= start =======
          *
          * {for}
-         * two
+         * beyond
          *
          * {if}
-         * one
+         * value
          * {/if}
          *
          * {/for}
          *
          * ======== end =======
          */
-        if ($value['start'] >= $beyond['start']) {
+        if ($value['start'] >= $beyond['start'] &&
+            $value['end'] <= $beyond['end']) {
             return 'in';
         }
 
@@ -1103,17 +1104,18 @@ class Parser implements IParser
          * ======= start =======
          *
          * {if}
-         * one
+         * value
          *
          * {for}
-         * two
+         * beyond
          * {/for}
          *
          * {/if}
          *
          * ======== end =======
          */
-        if ($value['start'] <= $beyond['start']) {
+        if ($value['start'] <= $beyond['start'] &&
+            $value['end'] >= $beyond['end']) {
             return 'out';
         }
 
@@ -1198,9 +1200,7 @@ class Parser implements IParser
                 $position['start_in'],
                 $this->sourceFile ?: null
             ).
-            ($this->sourceFile ?
-                $this->getLocationSource($position) :
-                null);
+            ($this->sourceFile ? $this->getLocationSource($position) : null);
     }
 
     /**
