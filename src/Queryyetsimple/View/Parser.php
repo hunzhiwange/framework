@@ -202,21 +202,21 @@ class Parser implements IParser
      *
      * @param string      $file
      * @param null|string $cachePath
-     * @param bool        $icontent
+     * @param bool        $isContent
      *
      * @return string
      */
-    public function doCompile($file, $cachePath = null, bool $icontent = false)
+    public function doCompile($file, $cachePath = null, bool $isContent = false)
     {
         // 源码
-        if (false === $icontent) {
-            $cache = file_get_contents($file);
-
+        if (false === $isContent) {
             if (!is_file($file)) {
                 throw new InvalidArgumentException(
-                    printf('file %s is not exits', $file)
+                    printf('file %s is not exits.', $file)
                 );
             }
+
+            $cache = file_get_contents($file);
 
             $this->sourceFile = $file;
             $this->cachePath = $cachePath;
@@ -299,8 +299,7 @@ class Parser implements IParser
 
         if (preg_match_all(
             "/{$tag['left']}tagself{$tag['right']}(.+?){$tag['left']}\\/tagself{$tag['right']}/isx",
-            $compiled,
-            $res)) {
+            $compiled, $res)) {
             $startPos = 0;
 
             foreach ($res[1] as $index => $encode) {
@@ -334,8 +333,7 @@ class Parser implements IParser
         $tag = $this->getTag('jsvar');
 
         if (preg_match_all("/{$tag['left']}(.+?){$tag['right']}/isx",
-            $compiled,
-            $res)) {
+            $compiled, $res)) {
             $startPos = 0;
 
             foreach ($res[1] as $index => $encode) {
@@ -369,11 +367,6 @@ class Parser implements IParser
         foreach ($this->compilers['code'] as $compilers => $tag) {
             // 处理一些正则表达式中有特殊意义的符号
             $names[] = $this->escapeRegexCharacter($compilers);
-        }
-
-        // 没有任何编译器
-        if (!count($names)) {
-            return;
         }
 
         // 正则分析
@@ -454,8 +447,7 @@ class Parser implements IParser
     {
         if (preg_match_all(
             '/__##revert##START##\d+@(.+?)##END##revert##__/',
-            $compiled,
-            $res)) {
+            $compiled, $res)) {
             $startPos = 0;
 
             foreach ($res[1] as $index => $encode) {
@@ -486,9 +478,8 @@ class Parser implements IParser
     protected function globalrevertParse(&$compiled)
     {
         if (preg_match_all(
-            '/__##global##START##\d+@(.+?)##END##global##__/',
-            $compiled,
-            $res)) {
+            '/__##global##START##\d+@(.+?)##END##global##__/', 
+            $compiled, $res)) {
             $startPos = 0;
 
             foreach ($res[1] as $index => $encode) {
@@ -529,11 +520,6 @@ class Parser implements IParser
         foreach ($this->compilers[$nodeType] as $compilers => $tag) {
             // 处理一些正则表达式中有特殊意义的符号
             $names[] = $this->escapeRegexCharacter($compilers);
-        }
-
-        // 没有任何编译器
-        if (!count($names)) {
-            return;
         }
 
         // 正则分析
@@ -726,12 +712,6 @@ class Parser implements IParser
      */
     protected function findHeadTag($tag, $tailTag)
     {
-        if ('tail' !== $tailTag['type']) {
-            throw new InvalidArgumentException(
-                sprintf('The parameter must be a tail tag.')
-            );
-        }
-
         return preg_match("/^{$tailTag['name']}/i", $tag['name']);
     }
 
@@ -802,11 +782,8 @@ class Parser implements IParser
             $len = $value['position']['end'] - $value['position']['start'] + 1;
 
             $theme['content'] = substr_replace(
-                $theme['content'],
-                $value['content'],
-                $start,
-                $len
-            );
+                $theme['content'], $value['content'],
+                $start, $len);
         }
 
         // 编译自身
@@ -1246,7 +1223,7 @@ class Parser implements IParser
             )
         );
 
-        $line[] = '<div class="key">'.
+        $line[] = '<div class="template-key">'.
             array_pop($line).
             '</div>';
 
