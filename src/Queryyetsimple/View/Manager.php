@@ -149,7 +149,7 @@ class Manager extends Managers
         $request = $this->container['request'];
 
         $options = [
-            'development'      => $this->container->development(),
+            'debug'            => $this->container->development(),
             'controller_name'  => $request->controller(),
             'action_name'      => $request->action(),
             'theme_path'       => $this->container->pathApplicationTheme(),

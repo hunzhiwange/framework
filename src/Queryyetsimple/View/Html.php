@@ -53,7 +53,7 @@ class Html extends Connect implements IConnect
      * @var array
      */
     protected $option = [
-        'development'           => false,
+        'debug'                 => false,
         'controller_name'       => 'index',
         'action_name'           => 'index',
         'controlleraction_depr' => '_',
@@ -123,10 +123,10 @@ class Html extends Connect implements IConnect
      *
      * @return \Leevel\View\IParser
      */
-    public function resolverParser()
+    protected function resolverParser()
     {
         if (!$this->parseResolver) {
-            throw new RuntimeException('Html theme not set parse resolver');
+            throw new RuntimeException('Html theme not set parse resolver.');
         }
 
         return call_user_func($this->parseResolver);
@@ -137,7 +137,7 @@ class Html extends Connect implements IConnect
      *
      * @return \Leevel\View\IParser
      */
-    public function parser()
+    protected function parser()
     {
         if (null !== $this->parser) {
             return $this->parser;
@@ -156,7 +156,7 @@ class Html extends Connect implements IConnect
     protected function getCachePath(string $file)
     {
         if (!$this->option['theme_cache_path']) {
-            throw new RuntimeException('Theme cache path must be set');
+            throw new RuntimeException('Theme cache path must be set.');
         }
 
         // 统一斜线
@@ -181,7 +181,7 @@ class Html extends Connect implements IConnect
     protected function isCacheExpired(string $file, string $cachepath)
     {
         // 开启调试
-        if ($this->option['development']) {
+        if ($this->option['debug']) {
             return true;
         }
 
