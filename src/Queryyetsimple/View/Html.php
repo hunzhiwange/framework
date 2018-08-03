@@ -165,7 +165,7 @@ class Html extends Connect implements IConnect
         // 统一缓存文件
         $file = basename($file, '.'.pathinfo($file, PATHINFO_EXTENSION)).
             '.'.md5($file).'.php';
-        
+
         // 返回真实路径
         return $this->option['theme_cache_path'].'/'.$file;
     }

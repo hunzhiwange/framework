@@ -41,10 +41,10 @@ abstract class TestCase extends TestCases
         $method = $this->parseTestMethod($classObj, $method);
 
         if ($args) {
-            return $this->invokeArgs($classObj, $args);
+            return $method->invokeArgs($classObj, $args);
         }
 
-        return $this->invoke($classObj);
+        return $method->invoke($classObj);
     }
 
     protected function invokeTestStaticMethod($classOrObject, string $method, array $args = [])
@@ -52,10 +52,10 @@ abstract class TestCase extends TestCases
         $method = $this->parseTestMethod($classOrObject, $method);
 
         if ($args) {
-            return $this->invokeArgs(null, $args);
+            return $method->invokeArgs(null, $args);
         }
 
-        return $this->invoke(null);
+        return $method->invoke(null);
     }
 
     protected function getTestProperty($classOrObject, string $prop)
