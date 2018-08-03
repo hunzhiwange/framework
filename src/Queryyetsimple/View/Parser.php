@@ -478,7 +478,7 @@ class Parser implements IParser
     protected function globalrevertParse(&$compiled)
     {
         if (preg_match_all(
-            '/__##global##START##\d+@(.+?)##END##global##__/', 
+            '/__##global##START##\d+@(.+?)##END##global##__/',
             $compiled, $res)) {
             $startPos = 0;
 

@@ -180,7 +180,7 @@ class HtmlTest extends TestCase
         $result = $html->display('html_test_cachelisfetime', [], null, false);
 
         $this->assertSame('hello html cachelifetime,bar.', $result);
-exit();
+
         $this->assertTrue(is_file($cachePath));
     }
 
