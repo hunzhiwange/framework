@@ -47,6 +47,9 @@ class CompilerPairedTagExceptionTest extends TestCase
     public function testBaseUse()
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'list type nodes must be used in pairs, and no corresponding tail tags are found.<br />Line:0; column:-1; file:.'
+        );
 
         $parser = $this->createParser();
 

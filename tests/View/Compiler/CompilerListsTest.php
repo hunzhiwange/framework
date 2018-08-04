@@ -267,4 +267,70 @@ eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
     }
+
+    public function testSpecialMod()
+    {
+        $parser = $this->createParser();
+
+        $source = <<<'eot'
+{~$mod = 4}
+
+<lists name="list" id="vo" mod="mod">
+    {$vo.title}  {$vo.people}
+</lists>
+eot;
+
+        $compiled = <<<'eot'
+<?php $mod = 4;?>
+
+<?php if (is_array($list)):
+    $index = 0;
+    $tmp = $list;
+    if (count($tmp) == 0):
+        echo "";
+    else:
+        foreach ($tmp as $key => $vo):
+            ++$index;
+            $mod = $index % $mod;?>
+    <?php echo $vo->title;?>  <?php echo $vo->people;?>
+        <?php endforeach;
+    endif;
+else:
+    echo "";
+endif;?>
+eot;
+
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    public function testOffset()
+    {
+        $parser = $this->createParser();
+
+        $source = <<<'eot'
+<lists name="list" id="vo" offset="3">
+    {$vo.title}  {$vo.people}
+</lists>
+eot;
+
+        $compiled = <<<'eot'
+<?php if (is_array($list)):
+    $index = 0;
+    $tmp = array_slice($list, 3);
+    if (count($tmp) == 0):
+        echo "";
+    else:
+        foreach ($tmp as $key => $vo):
+            ++$index;
+            $mod = $index % 2;?>
+    <?php echo $vo->title;?>  <?php echo $vo->people;?>
+        <?php endforeach;
+    endif;
+else:
+    echo "";
+endif;?>
+eot;
+
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
 }

@@ -52,7 +52,11 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
 
+    public function testForNode()
+    {
+        $parser = $this->createParser();
         $source = <<<'eot'
 <for start='1'>
     QueryPHP - node - for <br>
@@ -80,6 +84,11 @@ eot;
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    public function testForJsStyle()
+    {
+        $parser = $this->createParser();
 
         $source = <<<'eot'
 {% for item in navigation %}
@@ -119,6 +128,59 @@ eot;
 <?php foreach ($navigation as $mykey => $item):?>
     <li><a href="<?php echo $item->href;?>"><?php echo $item->caption;?></a></li>
 <?php endforeach;?>
+eot;
+
+        $this->assertSame($compiled, $parser->doCompile($source, null, true));
+    }
+
+    public function testForJsStyleException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The node for lacks the required property: condition3.'
+        );
+
+        $parser = $this->createParser();
+
+        $source = <<<'eot'
+{% for item navigation %}
+{% /for %}
+eot;
+
+        $parser->doCompile($source, null, true);
+    }
+
+    public function testForJsStyleException2()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'For tag need “in“ separate.'
+        );
+
+        $parser = $this->createParser();
+
+        $source = <<<'eot'
+{% for key item navigation %}
+{% /for %}
+eot;
+
+        $parser->doCompile($source, null, true);
+    }
+
+    public function testForType()
+    {
+        $parser = $this->createParser();
+
+        $source = <<<'eot'
+<for start='10' end='1' var='myValue' step='3' type='-'>
+    QueryPHP for <br>
+</for>
+eot;
+
+        $compiled = <<<'eot'
+<?php for ($myValue = 10; $myValue >= 1; $myValue -= 3):?>
+    QueryPHP for <br>
+<?php endfor;?>
 eot;
 
         $this->assertSame($compiled, $parser->doCompile($source, null, true));

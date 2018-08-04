@@ -351,8 +351,7 @@ class Compiler implements ICompiler
     public function variableCodeCompiler(&$theme)
     {
         $theme['content'] = !empty($theme['content']) ?
-            $this->parseContent($theme['content']) :
-            null;
+            $this->parseContent($theme['content']) : null;
 
         if (null !== $theme['content']) {
             $theme['content'] = $this->withPhpTag('echo '.$theme['content'].';');
@@ -599,6 +598,10 @@ class Compiler implements ICompiler
             $value = 'null';
         } else {
             $value = $this->parseExpression(implode(' ', $attr));
+
+            if ('' === $value) {
+                $value = 'null';
+            }
         }
 
         $theme['content'] = $this->withPhpTag("\${$name} = ".$value.';');
@@ -677,10 +680,6 @@ class Compiler implements ICompiler
             array_shift($attr);
         }
 
-        if (!$attr) {
-            throw new InvalidArgumentException('For tag need a “var“ to be circulate.');
-        }
-
         $attr = $this->parseExpression(implode(' ', $attr));
 
         $theme['content'] = $this->withPhpTag("foreach ({$attr} as \${$key} => \${$value}):");
@@ -701,7 +700,7 @@ class Compiler implements ICompiler
         $attr['name'] = $this->parseContent($attr['name'], false);
 
         if (null === $attr['value']) {
-            $attr['value'] = '';
+            $attr['value'] = 'null';
         } else {
             if ('$' === substr($attr['value'], 0, 1)) {
                 $attr['value'] = $this->parseContent(substr($attr['value'], 1));
@@ -1059,9 +1058,7 @@ class Compiler implements ICompiler
         foreach (explode(' ', $content) as $value) {
             if (strpos($value, '.') > 0) {
                 $args = explode('.', $value);
-
-                // 以 $hello->hello1->hello2->hello2 方式
-                $param[] = $args[0].($this->arrayHandler($args, 2, 1));
+                $param[] = $args[0].($this->arrayHandler($args, true, 1));
             } else {
                 $param[] = $value;
             }
@@ -1227,7 +1224,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function parseContent($content, $isFunc = true)
+    protected function parseContent($content, bool $isFunc = true)
     {
         // 以|分割字符串,数组第一位是变量名字符串,之后的都是函数参数&&函数{$hello|md5}
         $var = explode('|', $content);
@@ -1243,9 +1240,9 @@ class Compiler implements ICompiler
             if ("'" === ($firstLetter = substr($vars[1], 0, 1)) or
                 '"' === $firstLetter or
                 '$' === $firstLetter) {
-                $name = '$'.$vars[0].'.'.$vars[1].($this->arrayHandler($vars, 3));
+                $name = '$'.$vars[0].'.'.$vars[1].($this->arrayHandler($vars, false));
             } else {
-                $name = '$'.$vars[0].'->'.$vars[1].($this->arrayHandler($vars, 2));
+                $name = '$'.$vars[0].'->'.$vars[1].($this->arrayHandler($vars, true));
             }
 
             $tmp = $vars[0];
@@ -1324,22 +1321,19 @@ class Compiler implements ICompiler
     /**
      * 数组格式.
      *
-     * @param array  $vars
-     * @param number $type
-     * @param number $start
+     * @param array $vars
+     * @param bool  $forObj
+     * @param int   $start
      *
      * @return string
      */
-    protected function arrayHandler(&$vars, $type = 1, $start = 2)
+    protected function arrayHandler(&$vars, bool $forObj = true, int $start = 2)
     {
         $len = count($vars);
         $param = '';
 
         for ($index = $start; $index < $len; $index++) {
-            if (1 === $type) {
-                // 类似 $hello['test']['test2']
-                $param .= "['{$vars[$index]}']";
-            } elseif (2 === $type) {
+            if (true === $forObj) {
                 // 类似 $hello->test1->test2
                 $param .= "->{$vars[$index]}";
             } else {
@@ -1380,11 +1374,11 @@ class Compiler implements ICompiler
      * 验证节点是否正确.
      *
      * @param array $theme
-     * @param mixed $jsNode
+     * @param bool  $jsNode
      *
      * @return bool
      */
-    protected function checkNode($theme, $jsNode = false)
+    protected function checkNode(array $theme, bool $jsNode = false)
     {
         $attribute = $theme['children'][0];
 
@@ -1406,8 +1400,8 @@ class Compiler implements ICompiler
             $name = strtolower($name);
 
             if (!isset($attribute['attribute_list'][$name])) {
-                throw new InvalidArgumentException(
-                    sprintf('The node %s lacks the required property: %s.', $theme['name'], $name)
+                throw new InvalidArgumentException(sprintf(
+                    'The node %s lacks the required property: %s.', $theme['name'], $name)
                 );
             }
         }
@@ -1514,7 +1508,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function escapeCharacter($txt, $esc = true)
+    protected function escapeCharacter($txt, bool $esc = true)
     {
         if ('""' === $txt) {
             $txt = '';
