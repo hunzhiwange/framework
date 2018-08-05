@@ -106,4 +106,21 @@ class MakeTest extends TestCase
 
         $this->assertContains('Template not found.', $result);
     }
+
+    public function testFileParentDirIsNotWritable()
+    {
+        $cacheDir = __DIR__.'/Command/cacheParentDir/sub';
+        $dirname = dirname($cacheDir);
+        mkdir($dirname, 0444, true);
+
+        $result = $this->runCommand(new MakeFile(), [
+            'command'     => 'make:test',
+            'name'        => 'test',
+            'cache'       => 'cacheParentDir/sub',
+        ]);
+
+        $this->assertContains('Unable to create the', $result);
+
+        rmdir($dirname);
+    }
 }

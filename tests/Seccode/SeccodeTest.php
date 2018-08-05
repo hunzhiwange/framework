@@ -48,6 +48,7 @@ class SeccodeTest extends TestCase
             __DIR__.'/backgroundEmpty',
             __DIR__.'/backgroundEmpty2',
             __DIR__.'/fontEmpty2',
+            __DIR__.'/parentDirWriteable',
         ];
 
         foreach ($dirnames as $val) {
@@ -511,5 +512,28 @@ eot;
 
         rmdir($dirname);
         rmdir($dirname2);
+    }
+
+    public function testParentDirWriteableException()
+    {
+        $file = __DIR__.'/parentDirWriteable/sub/hello.png';
+        $sourcePath = dirname($file);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf('Unable to create the %s directory.', $sourcePath)
+        );
+
+        $seccode = new Seccode([
+            'background'      => false,
+            'font_path'       => __DIR__.'/font',
+            'color'           => false,
+        ]);
+
+        // 设置目录只读
+        // 7 = 4+2+1 分别代表可读可写可执行
+        mkdir(dirname($sourcePath), 0444);
+
+        $seccode->display('ABCD', $file);
     }
 }

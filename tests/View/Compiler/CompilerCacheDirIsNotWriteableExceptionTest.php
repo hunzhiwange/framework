@@ -39,6 +39,7 @@ class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
     protected function tearDown()
     {
         Fso::deleteDirectory(__DIR__.'/cacheWriteable', true);
+        Fso::deleteDirectory(__DIR__.'/parentDirCacheWriteable', true);
     }
 
     public function testBaseUse()
@@ -55,6 +56,24 @@ class CompilerCacheDirIsNotWriteableExceptionTest extends TestCase
         // 设置目录只读
         // 7 = 4+2+1 分别代表可读可写可执行
         mkdir($dirname, 0444);
+
+        $parser->doCompile('hello world', $dirname.'/test.php', true);
+    }
+
+    public function testParentDir()
+    {
+        $dirname = __DIR__.'/parentDirCacheWriteable/sub';
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf('Unable to create the %s directory.', $dirname)
+        );
+
+        $parser = $this->createParser();
+
+        // 设置目录只读
+        // 7 = 4+2+1 分别代表可读可写可执行
+        mkdir(dirname($dirname), 0444);
 
         $parser->doCompile('hello world', $dirname.'/test.php', true);
     }

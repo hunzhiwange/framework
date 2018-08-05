@@ -190,6 +190,44 @@ class CacheTest extends TestCase
         rmdir($dirname);
     }
 
+    public function testParentDirWriteable()
+    {
+        $dirname = __DIR__.'/parentDirWriteable/sub';
+        $cacheFile = $dirname.'/router_cache.php';
+
+        $routerData = [
+            'basepaths' => [
+                'foo',
+                'bar',
+            ],
+            'groups'      => [],
+            'routers'     => [],
+            'middlewares' => [],
+        ];
+
+        // 设置目录只读
+        // 7 = 4+2+1 分别代表可读可写可执行
+        mkdir(dirname($dirname), 0444);
+
+        $this->assertDirectoryExists(dirname($dirname));
+
+        $this->assertDirectoryNotExists($dirname);
+
+        $result = $this->runCommand(
+            new Cache(),
+            [
+                'command' => 'router:cache',
+            ],
+            function ($container) use ($cacheFile, $routerData) {
+                $this->initContainerService($container, $cacheFile, $routerData);
+            }
+        );
+
+        $this->assertContains('Unable to create the', $result);
+
+        rmdir(dirname($dirname));
+    }
+
     protected function initContainerService(IContainer $container, string $cacheFile, array $routerData)
     {
         // 注册 project

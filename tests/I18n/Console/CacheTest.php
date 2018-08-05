@@ -171,6 +171,39 @@ class CacheTest extends TestCase
         rmdir($dirname);
     }
 
+    public function testParentDirWriteable()
+    {
+        $dirname = __DIR__.'/parentDirWriteable/sub';
+        $cacheFile = $dirname.'/i18n_cache.php';
+
+        $cacheData = [
+            '中国'   => 'china',
+            '成都'   => 'cd',
+        ];
+
+        // 设置目录只读
+        // 7 = 4+2+1 分别代表可读可写可执行
+        mkdir(dirname($dirname), 0444);
+
+        $this->assertDirectoryExists(dirname($dirname));
+
+        $this->assertDirectoryNotExists($dirname);
+
+        $result = $this->runCommand(
+            new Cache(),
+            [
+                'command' => 'i18n:cache',
+            ],
+            function ($container) use ($cacheFile, $cacheData) {
+                $this->initContainerService($container, $cacheFile, $cacheData);
+            }
+        );
+
+        $this->assertContains('Unable to create the', $result);
+
+        rmdir(dirname($dirname));
+    }
+
     protected function initContainerService(IContainer $container, string $cacheFile, array $cacheData)
     {
         // 注册 project

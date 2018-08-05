@@ -47,7 +47,7 @@ class MakeFile extends Make
         $this->setCustomReplaceKeyValue('key2', 'hello key2');
 
         $this->setCustomReplaceKeyValue(['key3' => 'hello key3', 'key4' => 'hello key4']);
-        $this->setSaveFilePath(__DIR__.'/cache/'.$this->argument('name'));
+        $this->setSaveFilePath(__DIR__.'/'.$this->argument('cache').'/'.$this->argument('name'));
 
         $this->setMakeType('test');
 
@@ -66,6 +66,12 @@ class MakeFile extends Make
                 'template',
                 Argument::OPTIONAL,
                 'This is a template.',
+            ],
+            [
+                'cache',
+                Argument::OPTIONAL,
+                'This is a cache path.',
+                'cache',
             ],
         ];
     }

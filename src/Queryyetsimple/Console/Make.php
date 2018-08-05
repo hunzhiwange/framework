@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Console;
 
+use InvalidArgumentException;
 use RuntimeException;
 
 /**
@@ -152,6 +153,14 @@ abstract class Make extends Command
     protected function saveTemplateResult()
     {
         $saveFilePath = $this->getSaveFilePath();
+
+        if (is_file($saveFilePath)) {
+            throw new RuntimeException(
+                'File is already exits.'.PHP_EOL.
+                $this->formatFile($saveFilePath)
+            );
+        }
+
         $dirname = dirname($saveFilePath);
 
         if (!is_dir($dirname)) {
@@ -162,13 +171,6 @@ abstract class Make extends Command
             }
 
             mkdir($dirname, 0777, true);
-        }
-
-        if (is_file($saveFilePath)) {
-            throw new RuntimeException(
-                'File is already exits.'.PHP_EOL.
-                $this->formatFile($saveFilePath)
-            );
         }
 
         if (!is_writable($dirname) ||

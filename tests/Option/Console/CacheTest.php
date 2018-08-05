@@ -170,6 +170,39 @@ class CacheTest extends TestCase
         rmdir($dirname);
     }
 
+    public function testParentDirWriteable()
+    {
+        $dirname = __DIR__.'/parentDirWriteable/sub';
+        $cacheFile = $dirname.'/option_cache.php';
+
+        $optionData = [
+            'foo'   => 'bar',
+            'hello' => 'world',
+        ];
+
+        // 设置目录只读
+        // 7 = 4+2+1 分别代表可读可写可执行
+        mkdir(dirname($dirname), 0444);
+
+        $this->assertDirectoryExists(dirname($dirname));
+
+        $this->assertDirectoryNotExists($dirname);
+
+        $result = $this->runCommand(
+            new Cache(),
+            [
+                'command' => 'option:cache',
+            ],
+            function ($container) use ($cacheFile, $optionData) {
+                $this->initContainerService($container, $cacheFile, $optionData);
+            }
+        );
+
+        $this->assertContains('Unable to create the', $result);
+
+        rmdir(dirname($dirname));
+    }
+
     protected function initContainerService(IContainer $container, string $cacheFile, array $optionData)
     {
         // 注册 project

@@ -42,6 +42,13 @@ class FsoTest extends TestCase
         if (is_dir($sourcePath)) {
             rmdir($sourcePath);
         }
+
+        // for testCreateFile5
+        $sourcePath2 = __DIR__.'/createFile5';
+
+        if (is_dir($sourcePath2)) {
+            rmdir($sourcePath2);
+        }
     }
 
     public function testBaseUse()
@@ -314,6 +321,35 @@ class FsoTest extends TestCase
         $this->assertTrue(is_file($file));
 
         Fso::deleteDirectory($sourcePath, true);
+    }
+
+    public function testCreateFile5()
+    {
+        $sourcePath = __DIR__.'/createFile5/sub';
+        $file = $sourcePath.'/hello5.txt';
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf('Unable to create the %s directory.', $sourcePath)
+        );
+
+        if (is_dir($sourcePath)) {
+            rmdir($sourcePath);
+        }
+
+        if (is_dir(dirname($sourcePath))) {
+            rmdir(dirname($sourcePath));
+        }
+
+        $this->assertDirectoryNotExists($sourcePath);
+
+        // 设置目录只读
+        // 7 = 4+2+1 分别代表可读可写可执行
+        mkdir(dirname($sourcePath), 0444);
+
+        $this->assertFalse(is_file($file));
+
+        Fso::createFile($file);
     }
 
     public function testGetExtension()

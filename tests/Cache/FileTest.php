@@ -43,6 +43,18 @@ class FileTest extends TestCase
             rmdir($path);
         }
 
+        // for testParentWriteException
+        $path2 = __DIR__.'/parentWrite/sub';
+
+        if (is_dir($path2)) {
+            rmdir($path2);
+            rmdir(dirname($path2));
+        }
+
+        if (is_dir(dirname($path2))) {
+            rmdir(dirname($path2));
+        }
+
         // for testGetIsNotReadable
         $filePath = __DIR__.'/_readable.php';
 
@@ -274,6 +286,24 @@ class FileTest extends TestCase
         // 设置目录只读
         // 7 = 4+2+1 分别代表可读可写可执行
         mkdir($path, 0444);
+
+        $file->set('hello', 'world');
+    }
+
+    public function testParentWriteException()
+    {
+        $path = __DIR__.'/parentWrite/sub';
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(sprintf('Unable to create the %s directory.', $path));
+
+        $file = new File([
+            'path' => $path,
+        ]);
+
+        // 设置目录只读
+        // 7 = 4+2+1 分别代表可读可写可执行
+        mkdir(dirname($path), 0444, true);
 
         $file->set('hello', 'world');
     }
