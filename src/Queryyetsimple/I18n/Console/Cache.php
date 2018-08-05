@@ -102,6 +102,12 @@ class Cache extends Command
         $dirname = dirname($cachePath);
 
         if (!is_dir($dirname)) {
+            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
+                throw new InvalidArgumentException(
+                    sprintf('Unable to create the %s directory.', $dirname)
+                );
+            }
+
             mkdir($dirname, 0777, true);
         }
 
@@ -115,7 +121,7 @@ class Cache extends Command
             );
         }
 
-        chmod($cachePath, 0777);
+        chmod($cachePath, 0666 & ~umask());
     }
 
     /**

@@ -240,12 +240,12 @@ class Fso
     /**
      * 新建文件.
      *
-     * @param $path string
-     * @param $mode=0766 int
+     * @param string $path
+     * @param int    $mode
      *
      * @return bool
      */
-    public static function createFile(string $path, $mode = 0766)
+    public static function createFile(string $path, int $mode = 0666)
     {
         $dirname = dirname($path);
 
@@ -256,6 +256,12 @@ class Fso
         }
 
         if (!is_dir($dirname)) {
+            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
+                throw new InvalidArgumentException(
+                    sprintf('Unable to create the %s directory.', $dirname)
+                );
+            }
+
             mkdir($dirname, 0777, true);
         }
 
@@ -264,6 +270,8 @@ class Fso
                 sprintf('The directory "%s" is not writable', $dirname)
             );
         }
+
+        $mode = $mode & ~umask();
 
         chmod($path, $mode);
 

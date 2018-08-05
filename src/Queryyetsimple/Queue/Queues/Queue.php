@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Queue\Queues;
 
+use InvalidArgumentException;
 use PHPQueue\JobQueue;
 use PHPQueue\Logger;
 
@@ -96,6 +97,12 @@ abstract class Queue extends JobQueue
         // 记录日志
         if (self::$logPath) {
             if (!is_dir(self::$logPath)) {
+                if (!is_writable(dirname(self::$logPath))) {
+                    throw new InvalidArgumentException(
+                        sprintf('Unable to create the %s directory.', self::$logPath)
+                    );
+                }
+
                 mkdir(self::$logPath, 0777, true);
             }
 

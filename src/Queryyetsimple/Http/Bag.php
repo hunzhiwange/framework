@@ -183,6 +183,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         list($key, $filter) = $this->parseKeyFilter($key, $filter);
 
         $part = '';
+
         if (false !== strpos($key, '\\')) {
             list($key, $part) = explode('\\', $key);
         }
@@ -190,7 +191,7 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
         $result = array_key_exists($key, $this->elements) ? $this->elements[$key] : $defaults;
 
         if ($part) {
-            $result = $this->getPartData($part, $result);
+            $result = $this->getPartData($part, $result, $defaults);
         }
 
         if ($filter) {
@@ -299,10 +300,10 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @return mixed
      */
-    protected function filterValue($value, $defaults, $filters, array $options = [])
+    protected function filterValue($value, $defaults, array $filters, array $options = [])
     {
         foreach ($filters as $item) {
-            if (false !== strpos($item, '=')) {
+            if (is_string($item) && false !== strpos($item, '=')) {
                 $value = $this->filterValueWithFunc($value, $item);
             } elseif (is_callable($item)) {
                 $value = $this->filterValueWithCallable($value, $item);
@@ -436,22 +437,12 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      * 格式化参数.
      *
      * @param mixed $value
-     * @param mixed $options
+     * @param array $options
      *
      * @since array
      */
-    protected function formatOptions($value, $options)
+    protected function formatOptions($value, array $options)
     {
-        if (!is_array($options) && $options) {
-            $options = [
-                'flags' => $options,
-            ];
-        }
-
-        if (is_array($value) && !isset($options['flags'])) {
-            $options['flags'] = FILTER_REQUIRE_ARRAY;
-        }
-
         return $options;
     }
 
@@ -460,16 +451,16 @@ class Bag implements IArray, IJson, Countable, IteratorAggregate, JsonSerializab
      *
      * @param string $key
      * @param mixed  $value
+     * @param mixed  $defaults
      *
      * @return mixed
      */
-    protected function getPartData($key, $value)
+    protected function getPartData($key, $value, $defaults = null)
     {
         if (!is_array($value)) {
             return $value;
         }
 
-        $defaults = $value;
         $parts = explode('.', $key);
 
         foreach ($parts as $item) {

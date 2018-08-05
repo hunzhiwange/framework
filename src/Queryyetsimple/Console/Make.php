@@ -155,6 +155,12 @@ abstract class Make extends Command
         $dirname = dirname($saveFilePath);
 
         if (!is_dir($dirname)) {
+            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
+                throw new InvalidArgumentException(
+                    sprintf('Unable to create the %s directory.', $dirname)
+                );
+            }
+
             mkdir($dirname, 0777, true);
         }
 

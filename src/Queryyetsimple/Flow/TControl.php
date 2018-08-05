@@ -48,25 +48,25 @@ trait TControl
     /**
      * 条件语句 ifs.
      *
-     * @param bool $value
+     * @param mixed $value
      *
      * @return $this
      */
     public function ifs($value = false)
     {
-        return $this->setTControl(true, $value);
+        return $this->setTControl(true, $value ? true : false);
     }
 
     /**
      * 条件语句 elseIfs.
      *
-     * @param bool $value
+     * @param mixed $value
      *
      * @return $this
      */
     public function elseIfs($value = false)
     {
-        return $this->setTControl(true, $value);
+        return $this->setTControl(true, $value ? true : false);
     }
 
     /**
@@ -97,7 +97,7 @@ trait TControl
      *
      * @return $this
      */
-    public function setTControl($inFlowControl, $isFlowControlTrue)
+    public function setTControl(bool $inFlowControl, bool $isFlowControlTrue)
     {
         $this->inFlowControl = $inFlowControl;
         $this->isFlowControlTrue = $isFlowControlTrue;

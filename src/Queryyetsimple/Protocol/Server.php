@@ -549,7 +549,7 @@ class Server implements IServer
             );
         }
 
-        chmod($this->option['pid_path'], 0777);
+        chmod($this->option['pid_path'], 0666 & ~umask());
     }
 
     /**
@@ -790,15 +790,21 @@ class Server implements IServer
             throw new Exception('Pid path is not set');
         }
 
-        $dir = dirname($this->option['pid_path']);
+        $dirname = dirname($this->option['pid_path']);
 
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
+        if (!is_dir($dirname)) {
+            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
+                throw new Exception(
+                    sprintf('Unable to create the %s directory.', $dirname)
+                );
+            }
+
+            mkdir($dirname, 0777, true);
         }
 
-        if (!is_writable($dir)) {
+        if (!is_writable($dirname)) {
             throw new Exception(
-                sprintf('swoole pid dir is not writable'.$dir)
+                sprintf('swoole pid dir is not writable'.$dirname)
             );
         }
     }

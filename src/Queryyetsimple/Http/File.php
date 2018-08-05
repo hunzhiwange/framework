@@ -78,14 +78,21 @@ class File extends SplFileObject
     protected function getTargetFile($directory, $name = null)
     {
         if (!is_dir($directory)) {
-            if (false === mkdir($directory, 0777, true) && !is_dir($directory)) {
-                throw new FileException(sprintf('Unable to create the %s directory', $directory));
+            if (!is_writable(dirname($directory))) {
+                throw new FileException(
+                    sprintf('Unable to create the %s directory.', $directory)
+                );
             }
+
+            mkdir($directory, 0777, true);
         } elseif (!is_writable($directory)) {
-            throw new FileException(sprintf('Unable to write in the %s directory', $directory));
+            throw new FileException(
+                sprintf('Unable to write in the %s directory.', $directory)
+            );
         }
 
-        $target = rtrim($directory, '/\\').DIRECTORY_SEPARATOR.(null === $name ? $this->getBasename() : $name);
+        $target = rtrim($directory, '/\\').DIRECTORY_SEPARATOR.
+            (null === $name ? $this->getBasename() : $name);
 
         return $target;
     }
@@ -98,10 +105,16 @@ class File extends SplFileObject
      */
     protected function moveToTarget(string $sourcePath, string $target)
     {
-        if (!move_uploaded_file($sourcePath, $target)) {
-            $error = error_get_last();
+        set_error_handler(function ($type, $msg) use (&$error) { $error = $msg; });
+        $renamed = rename($sourcePath, $target);
+        restore_error_handler();
 
-            throw new FileException(sprintf('Could not move the file %s to %s (%s)', $sourcePath, $target, strip_tags($error['message'])));
+        if (!$renamed) {
+            throw new FileException(
+                sprintf('Could not move the file %s to %s (%s).', $this->getPathname(), $target, strip_tags($error))
+            );
         }
+
+        chmod($target, 0666 & ~umask());
     }
 }

@@ -149,9 +149,10 @@ class ApiResponse extends JsonResponse
         $this->setStatusCode(static::HTTP_UNPROCESSABLE_ENTITY, $text);
 
         $this->setData([
-            'message' => $this->parseErrorMessage($message),
-            'errors'  => $errors ?: [],
+            'message' => $this->parseErrorMessage($message), 'errors'  => $errors ?: [],
         ]);
+
+        return $this;
     }
 
     /**
@@ -159,13 +160,13 @@ class ApiResponse extends JsonResponse
      * 服务器不理解请求的语法: 400.
      *
      * @param string $message
-     * @param string $message
+     * @param int    $statusCode
      * @param string $text
      * @param mixed  $statusCode
      *
      * @return $this
      */
-    public function error($message, $statusCode, $text = null)
+    public function error($message, int $statusCode, $text = null)
     {
         if ($this->checkTControl()) {
             return $this;

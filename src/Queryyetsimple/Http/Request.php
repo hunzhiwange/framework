@@ -1637,6 +1637,7 @@ class Request implements IRequest, IArray, ArrayAccess
         // 自动清除后缀
         if ($pathInfo) {
             $ext = pathinfo($pathInfo, PATHINFO_EXTENSION);
+
             if ($ext) {
                 $pathInfo = substr($pathInfo, 0, -(strlen($ext) + 1));
             }

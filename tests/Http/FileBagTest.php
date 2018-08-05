@@ -59,6 +59,9 @@ class FileBagTest extends TestCase
     public function testFileMustBeAnArrayOrUploadedFile()
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'An uploaded file must be an array or an instance of UploadedFile.'
+        );
 
         new FileBag(['file' => 'foo']);
     }
@@ -188,6 +191,9 @@ class FileBagTest extends TestCase
     public function testShouldNotConvertNestedUploadedFiles()
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'An uploaded file must be contain key name.'
+        );
 
         $tmpFile = $this->createTempFile();
         $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
@@ -202,6 +208,64 @@ class FileBagTest extends TestCase
 
         $files = $bag->all();
         $this->assertSame($file, $files['image']);
+    }
+
+    public function testFileKeyIndexNotFoundException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'An uploaded file must be contain sub in key size.'
+        );
+
+        $tmpFile = $this->createTempFile();
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+
+        $bag = new FileBag([
+            'child' => [
+                'name' => [
+                    'sub' => ['file' => basename($tmpFile)],
+                ],
+                'type' => [
+                    'sub' => ['file' => 'text/plain'],
+                ],
+                'tmp_name' => [
+                    'sub' => ['file' => $tmpFile],
+                ],
+                'error' => [
+                    'sub' => ['file' => 0],
+                ],
+                'size' => [
+                ],
+            ],
+        ]);
+    }
+
+    public function testFileKeyNotFoundException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'An uploaded file must be contain key size.'
+        );
+
+        $tmpFile = $this->createTempFile();
+        $file = new UploadedFile($tmpFile, basename($tmpFile), 'text/plain');
+
+        $bag = new FileBag([
+            'child' => [
+                'name' => [
+                    'sub' => ['file' => basename($tmpFile)],
+                ],
+                'type' => [
+                    'sub' => ['file' => 'text/plain'],
+                ],
+                'tmp_name' => [
+                    'sub' => ['file' => $tmpFile],
+                ],
+                'error' => [
+                    'sub' => ['file' => 0],
+                ],
+            ],
+        ]);
     }
 
     protected function createTempFile()

@@ -218,6 +218,12 @@ class File extends Connect implements IConnect
         $dirname = dirname($fileName);
 
         if (!is_dir($dirname)) {
+            if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
+                throw new InvalidArgumentException(
+                    sprintf('Unable to create the %s directory.', $dirname)
+                );
+            }
+
             mkdir($dirname, 0777, true);
         }
 
@@ -228,7 +234,7 @@ class File extends Connect implements IConnect
             );
         }
 
-        chmod($fileName, 0777);
+        chmod($fileName, 0666 & ~umask());
     }
 
     /**

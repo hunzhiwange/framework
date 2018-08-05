@@ -61,28 +61,38 @@ abstract class Connect
     /**
      * 验证日志文件大小.
      *
-     * @param string $filepath
+     * @param string $filePath
      */
-    protected function checkSize($filepath)
+    protected function checkSize($filePath)
     {
-        $filedir = dirname($filepath);
+        $dirname = dirname($filePath);
 
         // 如果不是文件，则创建
-        if (!is_file($filepath) &&
-            !is_dir($filedir) &&
-            !mkdir($filedir, 0777, true)) {
-            throw new RuntimeException(
-                sprintf('Unable to create log file：%s.', $filepath)
-            );
+        if (!is_file($filePath)) {
+            if (!is_dir($dirname)) {
+                if (is_dir(dirname($dirname)) && !is_writable(dirname($dirname))) {
+                    throw new InvalidArgumentException(
+                        sprintf('Unable to create the %s directory.', $dirname)
+                    );
+                }
+
+                mkdir($dirname, 0777, true);
+            }
+
+            if (!is_writable($dirname)) {
+                throw new InvalidArgumentException(
+                    sprintf('Unable to create log file：%s.', $filePath)
+                );
+            }
         }
 
         // 检测日志文件大小，超过配置大小则备份日志文件重新生成
-        if (is_file($filepath) &&
-            floor($this->option['size']) <= filesize($filepath)) {
+        if (is_file($filePath) &&
+            floor($this->option['size']) <= filesize($filePath)) {
             rename(
-                $filepath, $filedir.'/'.
+                $filePath, $dirname.'/'.
                 date('Y-m-d H.i.s').'_'.
-                basename($filepath)
+                basename($filePath)
             );
         }
     }
@@ -91,26 +101,26 @@ abstract class Connect
      * 获取日志路径.
      *
      * @param string $level
-     * @param string $filepath
+     * @param string $filePath
      *
      * @return string
      */
     protected function getPath($level = '')
     {
         // 不存在路径，则直接使用项目默认路径
-        if (empty($filepath)) {
+        if (empty($filePath)) {
             if (!$this->option['path']) {
                 throw new RuntimeException(
                     'Default path for log has not specified.'
                 );
             }
 
-            $filepath = $this->option['path'].'/'.
+            $filePath = $this->option['path'].'/'.
                 ($level ? $level.'/' : '').
                 date($this->option['name']).
                 '.log';
         }
 
-        return $filepath;
+        return $filePath;
     }
 }

@@ -161,6 +161,85 @@ class BagTest extends TestCase
         $this->assertSame($bag->get('foo\namepace.sub'), 'i am here');
         $this->assertSame($bag->get('foo\namepace.sub|substr=2'), 'am here');
     }
+
+    public function testGetPartDataButNotArray()
+    {
+        $parameters = [
+            'bar' => 'helloworld',
+        ];
+        $bag = new Bag($parameters);
+
+        $this->assertSame($bag->get('bar\hello'), 'helloworld');
+    }
+
+    public function testGetPartDataButSubNotFoundInArray()
+    {
+        $parameters = [
+            'bar' => ['hello'    => 'world'],
+        ];
+        $bag = new Bag($parameters);
+
+        $this->assertSame($bag->get('bar\hello.world.sub', 'defaults'), 'defaults');
+    }
+
+    public function testToString()
+    {
+        $parameters = ['foo' => 'bar', 'hello' => 'world'];
+        $bag = new Bag($parameters);
+
+        $this->assertSame($bag->__toString(), '{"foo":"bar","hello":"world"}');
+        $this->assertSame((string) ($bag), '{"foo":"bar","hello":"world"}');
+    }
+
+    public function testFilterValueWithFilterId()
+    {
+        $parameters = ['foo' => 'bar', 'hello' => 'world'];
+        $bag = new Bag($parameters);
+
+        $this->assertSame($bag->get('foo|email'), 'bar');
+    }
+
+    public function testFilterValueWithFilterIdReturnFalse()
+    {
+        $parameters = ['foo' => 'bar', 'hello' => 'world'];
+        $bag = new Bag($parameters);
+
+        $this->assertSame($bag->get('foo|validate_email', 'hello'), 'hello');
+    }
+
+    public function testFilterValueWithFilterIdReturnTrue()
+    {
+        $parameters = ['foo' => 'hello@foo.com', 'hello' => 'world'];
+        $bag = new Bag($parameters);
+
+        $this->assertSame($bag->get('foo|validate_email', 'hello'), 'hello@foo.com');
+    }
+
+    public function testFilterValueWithRealInt()
+    {
+        $parameters = ['foo' => 'hello@foo.com', 'hello' => 'world'];
+        $bag = new Bag($parameters);
+
+        $this->assertSame($bag->filter('foo', 'hello', [FILTER_VALIDATE_EMAIL]), 'hello@foo.com');
+    }
+
+    public function testFilterValueWithOption()
+    {
+        $parameters = ['foo' => '0755'];
+        $bag = new Bag($parameters);
+
+        $options = [
+            'options' => [
+                'default'   => 3, // value to return if the filter fails
+                'min_range' => 0, // other options here
+            ],
+            'flags' => FILTER_FLAG_ALLOW_OCTAL,
+        ];
+
+        $this->assertSame(493, filter_var('0755', FILTER_VALIDATE_INT, $options));
+
+        $this->assertSame($bag->filter('foo', 'hello', [FILTER_VALIDATE_INT], $options), 493);
+    }
 }
 
 function custom_func($arg1, $arg2, $arg3)

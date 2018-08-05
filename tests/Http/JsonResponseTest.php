@@ -231,6 +231,7 @@ class JsonResponseTest extends TestCase
         if (extension_loaded('leevel')) {
             throw new InvalidArgumentException('wow! error.');
         }
+
         JsonResponse::create("\xB1\x31");
     }
 
