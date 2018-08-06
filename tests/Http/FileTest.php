@@ -178,4 +178,63 @@ class FileTest extends TestCase
 
         $file->move(dirname($targetPath));
     }
+
+    public function testMoveWithSub()
+    {
+        $sourcePath = __DIR__.'/assert/source.txt';
+        $filePath = __DIR__.'/assert/test_sub.txt';
+        $targetPath = __DIR__.'/assert/target/sub/test_sub.txt';
+
+        if (is_file($filePath)) {
+            unlink($filePath);
+        }
+
+        if (is_file($targetPath)) {
+            unlink($targetPath);
+        }
+
+        copy($sourcePath, $filePath);
+
+        $this->assertSame('foo', file_get_contents($filePath));
+
+        $file = new File($filePath);
+
+        $file->move(dirname($targetPath), 'test_sub.txt');
+
+        $this->assertFileExists($targetPath);
+        $this->assertFileNotExists($filePath);
+
+        unlink($targetPath);
+        rmdir(dirname($targetPath));
+    }
+
+    public function testMoveRenameException()
+    {
+        $sourcePath = __DIR__.'/assert/source.txt';
+        $filePath = __DIR__.'/assert/test_rename.txt';
+        $targetPath = __DIR__.'/assert/target/test_rename.txt';
+
+        $this->expectException(\Leevel\Http\FileException::class);
+        $this->expectExceptionMessage(
+            sprintf('rename(%s,%s): No such file or directory', $filePath, $targetPath)
+        );
+
+        if (is_file($filePath)) {
+            unlink($filePath);
+        }
+
+        if (is_file($targetPath)) {
+            unlink($targetPath);
+        }
+
+        copy($sourcePath, $filePath);
+
+        $this->assertSame('foo', file_get_contents($filePath));
+
+        $file = new File($filePath);
+
+        unlink($filePath);
+
+        $file->move(dirname($targetPath), 'test_rename.txt');
+    }
 }

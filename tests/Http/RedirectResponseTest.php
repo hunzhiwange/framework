@@ -93,7 +93,7 @@ class RedirectResponseTest extends TestCase
     public function testCreate()
     {
         $response = RedirectResponse::create('foo', 301);
-        $this->assertInstanceOf('Leevel\Http\RedirectResponse', $response);
+        $this->assertInstanceOf(RedirectResponse::class, $response);
         $this->assertSame(301, $response->getStatusCode());
     }
 
@@ -101,7 +101,7 @@ class RedirectResponseTest extends TestCase
     {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWith());
-        $this->assertInstanceOf('Leevel\Session\Session', $response->getSession());
+        $this->assertInstanceOf(Session::class, $response->getSession());
 
         $response->with('foo', 'bar');
         $this->assertSame($response->getSession()->getFlash('foo'), 'bar');
@@ -116,7 +116,7 @@ class RedirectResponseTest extends TestCase
     {
         $response = new RedirectResponse('foo.bar');
         $response->setSession($this->mokeSessionForWithError());
-        $this->assertInstanceOf('Leevel\Session\Session', $response->getSession());
+        $this->assertInstanceOf(Session::class, $response->getSession());
 
         $errorsDefault = [
             'name' => 'less than 6',
