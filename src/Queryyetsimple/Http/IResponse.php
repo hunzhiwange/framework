@@ -604,7 +604,7 @@ interface IResponse
      *
      * @return $this
      */
-    public function setData($data = [], $encodingOptions = null);
+    public function setData($data = [], ?int $encodingOptions = null);
 
     /**
      * 获取内容.

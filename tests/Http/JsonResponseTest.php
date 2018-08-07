@@ -226,10 +226,11 @@ class JsonResponseTest extends TestCase
     public function testSetContent()
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Malformed UTF-8 characters, possibly incorrectly encoded');
 
         // json_encode("\xB1\x31") 会引发 PHP 内核提示 Segmentation fault (core dumped)
         if (extension_loaded('leevel')) {
-            throw new InvalidArgumentException('wow! error.');
+            throw new InvalidArgumentException('Malformed UTF-8 characters, possibly incorrectly encoded');
         }
 
         JsonResponse::create("\xB1\x31");
@@ -256,6 +257,203 @@ class JsonResponseTest extends TestCase
         $response = JsonResponse::create(['foo' => 'bar']);
         $response->setCallback('ಠ_ಠ["foo"].bar[0]');
         $this->assertSame(';ಠ_ಠ["foo"].bar[0]({"foo":"bar"});', $response->getContent());
+    }
+
+    public function testSetJsonException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The method setJson need a json data.');
+
+        $response = new JsonResponse();
+
+        $response->setJson(['foo']);
+    }
+
+    public function testSetDataWithEncodingOptions()
+    {
+        $response = new JsonResponse();
+
+        $response->setData(['成都', 'QueryPHP']);
+
+        $this->assertSame('["成都","QueryPHP"]', $response->getContent());
+
+        $response->setData(['成都', 'QueryPHP'], 0);
+
+        $this->assertSame('["\u6210\u90fd","QueryPHP"]', $response->getContent());
+
+        $response->setData(['成都', 'QueryPHP'], JSON_FORCE_OBJECT);
+
+        $this->assertSame('{"0":"\u6210\u90fd","1":"QueryPHP"}', $response->getContent());
+    }
+
+    public function testSetCallbackFlow()
+    {
+        $condition = false;
+
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $response->
+
+        ifs($condition)->
+
+        setCallback('callback')->
+
+        elses()->
+
+        setCallback('callback2')->
+
+        endIfs();
+
+        $this->assertSame(';callback2({"foo":"bar"});', $response->getContent());
+        $this->assertSame('text/javascript', $response->headers->get('Content-Type'));
+    }
+
+    public function testSetCallbackFlow2()
+    {
+        $condition = true;
+
+        $response = new JsonResponse(['foo' => 'bar']);
+
+        $response->
+
+        ifs($condition)->
+
+        setCallback('callback')->
+
+        elses()->
+
+        setCallback('callback2')->
+
+        endIfs();
+
+        $this->assertSame(';callback({"foo":"bar"});', $response->getContent());
+        $this->assertSame('text/javascript', $response->headers->get('Content-Type'));
+    }
+
+    public function testSetJsonFlow()
+    {
+        $condition = false;
+
+        $response = new JsonResponse();
+
+        $response->
+
+        ifs($condition)->
+
+        setJson('{"foo":"bar"}')->
+
+        elses()->
+
+        setJson('{"hello":"world"}')->
+
+        endIfs();
+
+        $this->assertSame('{"hello":"world"}', $response->getContent());
+    }
+
+    public function testSetJsonFlow2()
+    {
+        $condition = true;
+
+        $response = new JsonResponse();
+
+        $response->
+
+        ifs($condition)->
+
+        setJson('{"foo":"bar"}')->
+
+        elses()->
+
+        setJson('{"hello":"world"}')->
+
+        endIfs();
+
+        $this->assertSame('{"foo":"bar"}', $response->getContent());
+    }
+
+    public function testSetDataFlow()
+    {
+        $condition = false;
+
+        $response = new JsonResponse();
+
+        $response->
+
+        ifs($condition)->
+
+        setData(['foo' => 'bar'])->
+
+        elses()->
+
+        setData(['hello' => 'world'])->
+
+        endIfs();
+
+        $this->assertSame('{"hello":"world"}', $response->getContent());
+    }
+
+    public function testSetDataFlow2()
+    {
+        $condition = true;
+
+        $response = new JsonResponse();
+
+        $response->
+
+        ifs($condition)->
+
+        setData(['foo' => 'bar'])->
+
+        elses()->
+
+        setData(['hello' => 'world'])->
+
+        endIfs();
+
+        $this->assertSame('{"foo":"bar"}', $response->getContent());
+    }
+
+    public function testSetEncodingOptionsFlow()
+    {
+        $condition = false;
+
+        $response = new JsonResponse(['foo' => 'bar', '中' => '国']);
+
+        $response->
+
+        ifs($condition)->
+
+        setEncodingOptions(256)->
+
+        elses()->
+
+        setEncodingOptions(0)->
+
+        endIfs();
+
+        $this->assertSame('{"foo":"bar","\u4e2d":"\u56fd"}', $response->getContent());
+    }
+
+    public function testSetEncodingOptionsFlow2()
+    {
+        $condition = true;
+
+        $response = new JsonResponse(['foo' => 'bar', '中' => '国']);
+
+        $response->
+
+        ifs($condition)->
+
+        setEncodingOptions(256)->
+
+        elses()->
+
+        setEncodingOptions(0)->
+
+        endIfs();
+
+        $this->assertSame('{"foo":"bar","中":"国"}', $response->getContent());
     }
 }
 

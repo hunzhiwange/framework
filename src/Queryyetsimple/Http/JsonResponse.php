@@ -164,7 +164,7 @@ class JsonResponse extends Response
      *
      * @return $this
      */
-    public function setData($data = [], $encodingOptions = null)
+    public function setData($data = [], ?int $encodingOptions = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -176,9 +176,9 @@ class JsonResponse extends Response
 
         if ($data instanceof IArray) {
             $this->data = json_encode($data->toArray(), $this->encodingOptions);
-        } elseif ($data instanceof IJson) {
+        } elseif (is_object($data) && $data instanceof IJson) {
             $this->data = $data->toJson($this->encodingOptions);
-        } elseif ($data instanceof JsonSerializable) {
+        } elseif (is_object($data) && $data instanceof JsonSerializable) {
             $this->data = json_encode($data->jsonSerialize(), $this->encodingOptions);
         } else {
             $this->data = json_encode($data, $this->encodingOptions);

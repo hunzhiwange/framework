@@ -235,7 +235,9 @@ class Response implements IResponse
         $this->sendContent();
 
         if (function_exists('fastcgi_finish_request')) {
+            // @codeCoverageIgnoreStart
             fastcgi_finish_request();
+            // @codeCoverageIgnoreEnd
         }
 
         return $this;
@@ -248,14 +250,11 @@ class Response implements IResponse
      */
     public function sendHeaders()
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         if (headers_sent()) {
             return $this;
         }
 
+        // @codeCoverageIgnoreStart
         foreach ($this->headers->all() as $name => $value) {
             header($name.': '.$value, false, $this->statusCode);
         }
@@ -273,6 +272,7 @@ class Response implements IResponse
         }
 
         return $this;
+        // @codeCoverageIgnoreEnd
     }
 
     /**
@@ -282,10 +282,6 @@ class Response implements IResponse
      */
     public function sendContent()
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         echo $this->content;
 
         return $this;
@@ -314,8 +310,12 @@ class Response implements IResponse
             $content = $this->contentToJson($content);
         }
 
-        if (null !== $content && !is_scalar($content) && !is_callable([$content, '__toString'])) {
-            throw new UnexpectedValueException(sprintf('The Response content must be a scalar or object implementing __toString(), %s given.', gettype($content)));
+        if (null !== $content &&
+            !is_scalar($content) &&
+            !is_callable([$content, '__toString'])) {
+            throw new UnexpectedValueException(
+                sprintf('The Response content must be a scalar or object implementing __toString(), %s given.', gettype($content))
+            );
         }
 
         $this->content = (string) $content;
@@ -480,7 +480,7 @@ class Response implements IResponse
      *
      * @return $this
      */
-    public function setData($data = [], $encodingOptions = null)
+    public function setData($data = [], ?int $encodingOptions = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -494,9 +494,9 @@ class Response implements IResponse
 
         if ($data instanceof IArray) {
             $data = json_encode($data->toArray(), $encodingOptions);
-        } elseif ($data instanceof IJson) {
+        } elseif (is_object($data) && $data instanceof IJson) {
             $data = $data->toJson($encodingOptions);
-        } elseif ($data instanceof JsonSerializable) {
+        } elseif (is_object($data) && $data instanceof JsonSerializable) {
             $data = json_encode($data->jsonSerialize(), $encodingOptions);
         } else {
             $data = json_encode($data, $encodingOptions);
@@ -586,7 +586,9 @@ class Response implements IResponse
         $this->statusCode = $code;
 
         if ($this->isInvalid()) {
-            throw new InvalidArgumentException(sprintf('The HTTP status code %s is not valid.', $code));
+            throw new InvalidArgumentException(
+                sprintf('The HTTP status code %s is not valid.', $code)
+            );
         }
 
         if (null === $text) {
@@ -975,6 +977,10 @@ class Response implements IResponse
             return $content->toJson();
         }
 
+        if ($content instanceof IArray) {
+            $content = $content->toArray();
+        }
+
         return json_encode($content, JSON_UNESCAPED_UNICODE);
     }
 
@@ -988,6 +994,7 @@ class Response implements IResponse
     protected function contentShouldJson($content)
     {
         return $content instanceof IJson ||
+               $content instanceof IArray ||
                $content instanceof ArrayObject ||
                $content instanceof JsonSerializable ||
                is_array($content);

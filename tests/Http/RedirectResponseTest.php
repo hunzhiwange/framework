@@ -51,6 +51,7 @@ class RedirectResponseTest extends TestCase
     public function testRedirectResponseConstructorNullUrl()
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot redirect to an empty URL.');
 
         $response = new RedirectResponse(null);
     }
@@ -58,6 +59,7 @@ class RedirectResponseTest extends TestCase
     public function testRedirectResponseConstructorWrongStatusCode()
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The HTTP status code is not a redirect ("404" given).');
 
         $response = new RedirectResponse('foo.bar', 404);
     }
@@ -85,6 +87,7 @@ class RedirectResponseTest extends TestCase
     public function testSetTargetUrlNull()
     {
         $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Cannot redirect to an empty URL.');
 
         $response = new RedirectResponse('foo.bar');
         $response->setTargetUrl(null);
@@ -134,6 +137,48 @@ class RedirectResponseTest extends TestCase
             'default' => $errorsDefault,
             'custom'  => $errorsCustom,
         ]);
+    }
+
+    public function testSetTargetUrlFlow()
+    {
+        $condition = false;
+
+        $response = new RedirectResponse('foo.bar');
+
+        $response->
+
+        ifs($condition)->
+
+        setTargetUrl('foo')->
+
+        elses()->
+
+        setTargetUrl('bar')->
+
+        endIfs();
+
+        $this->assertSame('bar', $response->getTargetUrl());
+    }
+
+    public function testSetTargetUrlFlow2()
+    {
+        $condition = true;
+
+        $response = new RedirectResponse('foo.bar');
+
+        $response->
+
+        ifs($condition)->
+
+        setTargetUrl('foo')->
+
+        elses()->
+
+        setTargetUrl('bar')->
+
+        endIfs();
+
+        $this->assertSame('foo', $response->getTargetUrl());
     }
 
     protected function mokeSessionForWith()
@@ -196,8 +241,7 @@ class RedirectResponseTest extends TestCase
             'custom' => [
                 'foo' => 'bar is error',
             ],
-        ]
-        );
+        ]);
 
         return $session;
     }

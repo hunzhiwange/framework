@@ -21,8 +21,10 @@ declare(strict_types=1);
 namespace Tests\Http;
 
 use DateTime;
+use DateTimeZone;
 use InvalidArgumentException;
 use JsonSerializable;
+use Leevel\Cookie\ICookie;
 use Leevel\Http\Response;
 use Leevel\Support\IArray;
 use Leevel\Support\IJson;
@@ -352,6 +354,963 @@ class ResponseTest extends TestCase
         return [
             'obj' => [new \stdClass()],
         ];
+    }
+
+    public function testSetContentAsJon()
+    {
+        $response = new Response();
+
+        $response->setContent(new MyArray());
+
+        $this->assertSame('{"hello":"IArray"}', $response->getContent());
+        $this->assertTrue($response->isOk());
+        $this->assertSame(['hello' => 'IArray'], $response->getData());
+    }
+
+    public function testSetContentAsJonWithIJson()
+    {
+        $response = new Response();
+
+        $response->setContent(new MyJson());
+
+        $this->assertSame('{"hello":"IJson"}', $response->getContent());
+        $this->assertTrue($response->isOk());
+        $this->assertSame(['hello' => 'IJson'], $response->getData());
+    }
+
+    public function testAppendContent()
+    {
+        $response = new Response();
+
+        $response->setContent('hello');
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertTrue($response->isOk());
+
+        $response->appendContent('world');
+
+        $this->assertSame('helloworld', $response->getContent());
+        $this->assertTrue($response->isOk());
+        $this->assertSame('helloworld', $response->getData());
+    }
+
+    public function testWithHeaders()
+    {
+        $response = new Response();
+
+        $response->withHeaders(['foo' => 'bar']);
+
+        $this->assertSame('bar', $response->headers->get('foo'));
+    }
+
+    public function testCookieResolverNotSet()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Cookie resolver is not set.'
+        );
+
+        $response = new Response();
+
+        $response->cookie('foo', 'bar');
+    }
+
+    public function testCookie()
+    {
+        $response = new Response();
+
+        $cookie = $this->createMock(ICookie::class);
+
+        Response::setCookieResolver(function () use ($cookie) {
+            return $cookie;
+        });
+
+        $cookie->method('set')->willReturn(null);
+        $this->assertNull($cookie->set('foo', 'bar'));
+
+        $allCookies = [
+            'q_foo' => [
+                'q_foo',
+                'bar',
+                time() + 86400,
+                '/',
+                '',
+                false,
+                false,
+            ],
+            'q_hello' => [
+                'q_hello',
+                'world',
+                time() + 86400,
+                '/',
+                '',
+                false,
+                false,
+            ],
+        ];
+
+        $cookie->method('all')->willReturn($allCookies);
+        $this->assertSame($allCookies, $cookie->all());
+
+        $response->cookie('foo', 'bar');
+        $response->withCookies(['hello' => 'world']);
+
+        $this->assertSame($allCookies, $response->getCookies());
+
+        Response::setCookieResolver(null);
+    }
+
+    public function testContent()
+    {
+        $response = new Response();
+
+        $response->setContent('hello');
+
+        $this->assertSame('hello', $response->content());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testGetOriginal()
+    {
+        $response = new Response();
+
+        $response->setContent('hello');
+
+        $this->assertSame('hello', $response->content());
+        $this->assertTrue($response->isOk());
+        $this->assertSame('hello', $response->getOriginal());
+
+        $response->setContent($myArr = new MyArray());
+
+        $this->assertSame('{"hello":"IArray"}', $response->getContent());
+        $this->assertTrue($response->isOk());
+        $this->assertSame(['hello' => 'IArray'], $response->getData());
+        $this->assertEquals($myArr, $response->getOriginal());
+    }
+
+    public function testStatus()
+    {
+        $response = new Response();
+
+        $response->setContent('hello');
+
+        $this->assertSame(200, $response->status());
+    }
+
+    public function testSetContentLength()
+    {
+        $response = new Response();
+
+        $response->setContentLength(100);
+
+        $this->assertSame(100, $response->headers->get('Content-Length'));
+    }
+
+    public function testIsJson()
+    {
+        $response = new Response();
+
+        $response->setContent('foo');
+
+        $this->assertFalse($response->isJson());
+
+        $response->setContent(new MyArray());
+
+        $this->assertTrue($response->isJson());
+    }
+
+    public function testSetContentFlow()
+    {
+        $condition = false;
+
+        $response = new Response();
+
+        $response->
+
+        ifs($condition)->
+
+        setContent('foo')->
+
+        elses()->
+
+        setContent('bar')->
+
+        endIfs();
+
+        $this->assertSame('bar', $response->getContent());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetContentFlow2()
+    {
+        $condition = true;
+
+        $response = new Response();
+
+        $response->
+
+        ifs($condition)->
+
+        setContent('foo')->
+
+        elses()->
+
+        setContent('bar')->
+
+        endIfs();
+
+        $this->assertSame('foo', $response->getContent());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testAppendContentFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        appendContent('foo')->
+
+        elses()->
+
+        appendContent('bar')->
+
+        endIfs();
+
+        $this->assertSame('hellobar', $response->getContent());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testAppendContentFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        appendContent('foo')->
+
+        elses()->
+
+        appendContent('bar')->
+
+        endIfs();
+
+        $this->assertSame('hellofoo', $response->getContent());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetHeaderFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setHeader('foo', 'bar')->
+
+        elses()->
+
+        setHeader('foo', 'bar2')->
+
+        endIfs();
+
+        $this->assertSame('bar2', $response->headers->get('foo'));
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetHeaderFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setHeader('foo', 'bar')->
+
+        elses()->
+
+        setHeader('foo', 'bar2')->
+
+        endIfs();
+
+        $this->assertSame('bar', $response->headers->get('foo'));
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testWithHeadersFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        withHeaders(['foo' => 'bar'])->
+
+        elses()->
+
+        withHeaders(['foo' => 'bar2'])->
+
+        endIfs();
+
+        $this->assertSame('bar2', $response->headers->get('foo'));
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testWithHeadersFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        withHeaders(['foo' => 'bar'])->
+
+        elses()->
+
+        withHeaders(['foo' => 'bar2'])->
+
+        endIfs();
+
+        $this->assertSame('bar', $response->headers->get('foo'));
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetCookieFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setCookie('foo', 'bar')->
+
+        elses()->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetCookieFlow2()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Cookie resolver is not set.'
+        );
+
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setCookie('foo', 'bar')->
+
+        elses()->
+
+        endIfs();
+    }
+
+    public function testWithCookiesFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        withCookies(['foo' => 'bar'])->
+
+        elses()->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testWithCookiesFlow2()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Cookie resolver is not set.'
+        );
+
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        withCookies(['foo' => 'bar'])->
+
+        elses()->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetDataFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $this->assertSame('hello', $response->getContent());
+
+        $response->
+
+        ifs($condition)->
+
+        setData('foo')->
+
+        elses()->
+
+        setData('bar')->
+
+        endIfs();
+
+        $this->assertSame('"bar"', $response->getContent());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetDataFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $this->assertSame('hello', $response->getContent());
+
+        $response->
+
+        ifs($condition)->
+
+        setData('foo')->
+
+        elses()->
+
+        setData('bar')->
+
+        endIfs();
+
+        $this->assertSame('"foo"', $response->getContent());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetProtocolVersionFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setProtocolVersion('1.0')->
+
+        elses()->
+
+        setProtocolVersion('1.1')->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame('1.1', $response->getProtocolVersion());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetProtocolVersionFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setProtocolVersion('1.0')->
+
+        elses()->
+
+        setProtocolVersion('1.1')->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame('1.0', $response->getProtocolVersion());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetStatusCodeFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setStatusCode(500)->
+
+        elses()->
+
+        setStatusCode(200)->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetStatusCodeFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setStatusCode(500)->
+
+        elses()->
+
+        setStatusCode(200)->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame(500, $response->getStatusCode());
+        $this->assertFalse($response->isOk());
+    }
+
+    public function testCharsetFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        charset('UTF-8')->
+
+        elses()->
+
+        charset('GBK')->
+
+        endIfs();
+
+        $this->assertSame('GBK', $response->getCharset());
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testCharsetFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        charset('UTF-8')->
+
+        elses()->
+
+        charset('GBK')->
+
+        endIfs();
+
+        $this->assertSame('UTF-8', $response->getCharset());
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetExpiresFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setExpires()->
+
+        elses()->
+
+        setExpires(new DateTime('2018-08-07'))->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame('Tue, 07 Aug 2018 00:00:00 GMT', $response->headers->get('Expires'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetExpiresFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setExpires()->
+
+        elses()->
+
+        setExpires(new DateTime('2018-08-07'))->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertFalse($response->headers->has('Expires'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetLastModifiedFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setLastModified()->
+
+        elses()->
+
+        setLastModified(new DateTime('2018-08-07'))->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame('Tue, 07 Aug 2018 00:00:00 GMT', $response->headers->get('Last-Modified'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetLastModifiedFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        SetLastModified()->
+
+        elses()->
+
+        SetLastModified(new DateTime('2018-08-07'))->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertFalse($response->headers->has('Last-Modified'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetCacheFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setCache(1)->
+
+        elses()->
+
+        setCache(5)->
+
+        endIfs();
+
+        $date = new DateTime();
+        $date->modify('+5minutes');
+        $date->setTimezone(new DateTimeZone('UTC'));
+        $result = $date->format('D, d M Y H:i:s').' GMT';
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame($result, $response->headers->get('Expires'));
+        $this->assertSame('max-age=300', $response->headers->get('Cache-Control'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetCacheFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setCache(1)->
+
+        elses()->
+
+        setCache(5)->
+
+        endIfs();
+
+        $date = new DateTime();
+        $date->modify('+1minutes');
+        $date->setTimezone(new DateTimeZone('UTC'));
+        $result = $date->format('D, d M Y H:i:s').' GMT';
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame($result, $response->headers->get('Expires'));
+        $this->assertSame('max-age=60', $response->headers->get('Cache-Control'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetNotModifiedFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setNotModified()->
+
+        elses()->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetNotModifiedFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setNotModified()->
+
+        elses()->
+
+        endIfs();
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame(304, $response->getStatusCode());
+        $this->assertFalse($response->isOk());
+    }
+
+    public function testSetContentTypeFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setContentType('text/html')->
+
+        elses()->
+
+        setContentType('text/plain');
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame('text/plain', $response->headers->get('Content-Type'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetContentTypeFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setContentType('text/html')->
+
+        elses()->
+
+        setContentType('text/plain');
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame('text/html', $response->headers->get('Content-Type'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetContentLengthFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setContentLength(10)->
+
+        elses()->
+
+        setContentLength(50);
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame(50, $response->headers->get('Content-Length'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetContentLengthFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setContentLength(10)->
+
+        elses()->
+
+        setContentLength(50);
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame(10, $response->headers->get('Content-Length'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetEtagFlow()
+    {
+        $condition = false;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setEtag('foo')->
+
+        elses()->
+
+        setEtag('bar');
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame('bar', $response->headers->get('Etag'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetEtagFlow2()
+    {
+        $condition = true;
+
+        $response = new Response('hello');
+
+        $response->
+
+        ifs($condition)->
+
+        setEtag('foo')->
+
+        elses()->
+
+        setEtag('bar');
+
+        $this->assertSame('hello', $response->getContent());
+        $this->assertSame('foo', $response->headers->get('Etag'));
+        $this->assertSame(200, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
+    }
+
+    public function testSetDataException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Malformed UTF-8 characters, possibly incorrectly encoded');
+
+        // json_encode("\xB1\x31") 会引发 PHP 内核提示 Segmentation fault (core dumped)
+        if (extension_loaded('leevel')) {
+            throw new InvalidArgumentException('Malformed UTF-8 characters, possibly incorrectly encoded');
+        }
+
+        $response = new Response();
+
+        $response->setData("\xB1\x31");
     }
 }
 
