@@ -71,6 +71,13 @@ class UploadedFile extends File
     ];
 
     /**
+     * 是否为测试.
+     *
+     * @var bool
+     */
+    private $test = false;
+
+    /**
      * 构造函数
      * $_FILES['foo'](tmp_name, name, type, error).
      *
@@ -84,6 +91,8 @@ class UploadedFile extends File
         $this->originalName = $originalName;
         $this->mimeType = $mimeType ?: 'application/octet-stream';
         $this->error = $error ?: UPLOAD_ERR_OK;
+
+        $this->test = 5 === func_num_args();
 
         parent::__construct($path);
     }
@@ -135,7 +144,8 @@ class UploadedFile extends File
      */
     public function isValid()
     {
-        return UPLOAD_ERR_OK === $this->error && is_uploaded_file($this->getPathname());
+        return UPLOAD_ERR_OK === $this->error &&
+            ($this->test ? true : is_uploaded_file($this->getPathname()));
     }
 
     /**
@@ -144,11 +154,17 @@ class UploadedFile extends File
     public function move($directory, $name = null)
     {
         if ($this->isValid()) {
+            if ($this->test) {
+                return parent::move($directory, $name);
+            }
+
+            /** @codeCoverageIgnoreStart */
             $target = $this->getTargetFile($directory, $name);
 
-            $this->moveToTarget($this->getPathname(), $target);
+            $this->moveToTarget($this->getPathname(), $target, true);
 
-            return parent::__construct($target);
+            return new File($target);
+            // @codeCoverageIgnoreEnd
         }
 
         throw new FileException($this->getErrorMessage());
@@ -164,29 +180,42 @@ class UploadedFile extends File
         $iniMax = strtolower(ini_get('upload_max_filesize'));
 
         if ('' === $iniMax) {
+            // @codeCoverageIgnoreStart
             return PHP_INT_MAX;
+            // @codeCoverageIgnoreEnd
         }
 
         $max = ltrim($iniMax, '+');
+
         if (0 === strpos($max, '0x')) {
+            /** @codeCoverageIgnoreStart */
             $max = intval($max, 16);
+        // @codeCoverageIgnoreEnd
         } elseif (0 === strpos($max, '0')) {
+            /** @codeCoverageIgnoreStart */
             $max = intval($max, 8);
+        // @codeCoverageIgnoreEnd
         } else {
             $max = (int) $max;
         }
 
         switch (substr($iniMax, -1)) {
             case 't':
+                // @codeCoverageIgnoreStart
                 $max *= 1024;
+                // @codeCoverageIgnoreEnd
                 // no break
             case 'g':
+                // @codeCoverageIgnoreStart
                 $max *= 1024;
+                // @codeCoverageIgnoreEnd
                 // no break
             case 'm':
                 $max *= 1024;
-                // no break
+            // @codeCoverageIgnoreStart
+            // no break
             case 'k':
+            // @codeCoverageIgnoreEnd
                 $max *= 1024;
         }
 

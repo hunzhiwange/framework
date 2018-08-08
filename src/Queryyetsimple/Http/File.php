@@ -102,13 +102,17 @@ class File extends SplFileObject
      *
      * @param string $sourcePath
      * @param string $target
+     * @param bool   $isUploaded
      */
-    protected function moveToTarget(string $sourcePath, string $target)
+    protected function moveToTarget(string $sourcePath, string $target, bool $isUploaded = false)
     {
         set_error_handler(function ($type, $msg) {
             throw new FileException($msg);
         });
-        $renamed = rename($sourcePath, $target);
+
+        $method = $isUploaded ? 'move_uploaded_file' : 'rename';
+        $method($sourcePath, $target);
+
         restore_error_handler();
 
         chmod($target, 0666 & ~umask());

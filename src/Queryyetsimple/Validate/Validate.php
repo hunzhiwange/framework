@@ -705,7 +705,7 @@ class Validate implements IValidate
 
         if (in_array($alias, $this->getSkipRule(), true)) {
             throw new Exception(
-                spintf('You cannot set alias for skip rule %s', $alias)
+                spintf('You cannot set alias for skip rule %s.', $alias)
             );
         }
 
@@ -972,11 +972,21 @@ class Validate implements IValidate
             return true;
         }
 
-        if (false === strtotime($datas)) {
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        if (false === strtotime((string) ($datas))) {
             return false;
         }
 
         $datas = date_parse($datas);
+
+        if (false === $datas['year'] ||
+            false === $datas['month'] ||
+            false === $datas['day']) {
+            return false;
+        }
 
         return checkdate($datas['month'], $datas['day'], $datas['year']);
     }
@@ -1011,6 +1021,10 @@ class Validate implements IValidate
     protected function validateTimezone($field, $datas, $parameter)
     {
         try {
+            if (!is_string($datas)) {
+                return false;
+            }
+
             new DateTimeZone($datas);
         } catch (Exception $e) {
             return false;
@@ -1092,7 +1106,11 @@ class Validate implements IValidate
      */
     protected function validateDouble($field, $datas, $parameter)
     {
-        return preg_match('/^[-\+]?\d+(\.\d+)?$/', $datas);
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        return preg_match('/^[-\+]?\d+(\.\d+)?$/', (string) ($datas));
     }
 
     /**
@@ -1110,6 +1128,7 @@ class Validate implements IValidate
             in_array($datas, [
                 'yes',
                 'on',
+                't',
                 '1',
                 1,
                 true,
