@@ -1196,6 +1196,8 @@ class Validate implements IValidate
             1,
             '0',
             '1',
+            't',
+            'f',
         ], true);
     }
 
@@ -1411,6 +1413,7 @@ class Validate implements IValidate
 
     /**
      * 两个值是否相同.
+     * 全等匹配，为了严禁.
      *
      * @param string $field
      * @param mixed  $datas
@@ -1427,6 +1430,7 @@ class Validate implements IValidate
 
     /**
      * 两个值是否不相同.
+     * 全等匹配，为了严禁.
      *
      * @param string $field
      * @param mixed  $datas
@@ -1501,6 +1505,7 @@ class Validate implements IValidate
 
     /**
      * 验证值上限.
+     * 小于或者全等.
      *
      * @param string $field
      * @param mixed  $datas
@@ -1512,7 +1517,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($field, $parameter, 1);
 
-        return $datas <= $parameter[0];
+        return $datas < $parameter[0] || $datas === $parameter[0];
     }
 
     /**
@@ -1528,7 +1533,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($field, $parameter, 1);
 
-        return $datas >= $parameter[0];
+        return $datas > $parameter[0] || $datas === $parameter[0];
     }
 
     /**
@@ -2713,7 +2718,7 @@ class Validate implements IValidate
      */
     protected function hasFieldValue($rule)
     {
-        return isset($this->datas[$rule]);
+        return array_key_exists($rule, $this->datas);
     }
 
     /**
