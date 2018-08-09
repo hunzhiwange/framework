@@ -1603,6 +1603,10 @@ class Validate implements IValidate
      */
     protected function validateAlpha($field, $datas, $parameter)
     {
+        if (!is_string($datas)) {
+            return false;
+        }
+
         return preg_match('/^[A-Za-z]+$/', $datas);
     }
 
@@ -1617,6 +1621,10 @@ class Validate implements IValidate
      */
     protected function validateAlphaUpper($field, $datas, $parameter)
     {
+        if (!is_string($datas)) {
+            return false;
+        }
+
         return preg_match('/^[A-Z]+$/', $datas);
     }
 
@@ -1631,6 +1639,10 @@ class Validate implements IValidate
      */
     protected function validateAlphaLower($field, $datas, $parameter)
     {
+        if (!is_string($datas)) {
+            return false;
+        }
+
         return preg_match('/^[a-z]+$/', $datas);
     }
 
@@ -1645,7 +1657,15 @@ class Validate implements IValidate
      */
     protected function validateAlphaNum($field, $datas, $parameter)
     {
-        return preg_match('/^[A-Za-z0-9]+$/', $datas);
+        if (is_int($datas)) {
+            return true;
+        }
+
+        if (!is_string($datas)) {
+            return false;
+        }
+
+        return preg_match('/^[A-Za-z0-9]+$/', (string) ($datas));
     }
 
     /**
@@ -1659,6 +1679,14 @@ class Validate implements IValidate
      */
     protected function validateAlphaDash($field, $datas, $parameter)
     {
+        if (is_int($datas)) {
+            return true;
+        }
+
+        if (!is_string($datas)) {
+            return false;
+        }
+
         return preg_match('/^[A-Za-z0-9\-\_]+$/', $datas);
     }
 
@@ -1673,6 +1701,10 @@ class Validate implements IValidate
      */
     protected function validateChinese($field, $datas, $parameter)
     {
+        if (!is_string($datas)) {
+            return false;
+        }
+
         return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $datas);
     }
 
@@ -1687,6 +1719,14 @@ class Validate implements IValidate
      */
     protected function validateChineseAlphaNum($field, $datas, $parameter)
     {
+        if (is_int($datas)) {
+            return true;
+        }
+
+        if (!is_string($datas)) {
+            return false;
+        }
+
         return preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', $datas);
     }
 
@@ -1701,7 +1741,15 @@ class Validate implements IValidate
      */
     protected function validateChineseAlphaDash($field, $datas, $parameter)
     {
-        return preg_match('/^[\x{4e00}-\x{9fa5}A-Za-z0-9_]+$/u', $datas);
+        if (is_int($datas)) {
+            return true;
+        }
+
+        if (!is_string($datas)) {
+            return false;
+        }
+
+        return preg_match('/^[\x{4e00}-\x{9fa5}A-Za-z0-9\-\_]+$/u', $datas);
     }
 
     /**
@@ -1715,6 +1763,10 @@ class Validate implements IValidate
      */
     protected function validateIdCard($field, $datas, $parameter)
     {
+        if (!is_string($datas)) {
+            return false;
+        }
+
         return preg_match(
             '/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}(\d|x|X)$/',
             $datas
@@ -1732,7 +1784,11 @@ class Validate implements IValidate
      */
     protected function validateZipCode($field, $datas, $parameter)
     {
-        return preg_match('/^[1-9]\d{5}$/', $datas);
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        return preg_match('/^[1-9]\d{5}$/', (string) ($datas));
     }
 
     /**
@@ -1746,7 +1802,11 @@ class Validate implements IValidate
      */
     protected function validateQq($field, $datas, $parameter)
     {
-        return preg_match('/^[1-9]\d{4,11}$/', $datas);
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        return preg_match('/^[1-9]\d{4,11}$/', (string) ($datas));
     }
 
     /**
@@ -1760,6 +1820,12 @@ class Validate implements IValidate
      */
     protected function validatePhone($field, $datas, $parameter)
     {
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        $datas = (string) ($datas);
+
         return (11 === strlen($datas) &&
             preg_match('/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/', $datas)) ||
             preg_match('/^\d{3,4}-?\d{7,9}$/', $datas);
