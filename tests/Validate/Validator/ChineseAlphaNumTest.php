@@ -58,7 +58,7 @@ class ChineseAlphaNumTest extends TestCase
     {
         return [
             ['abc'],
-            ['AB\C'],
+            ['ABC'],
             ['123abc'],
             ['4ABC'],
             ['A4中国4bc'],
