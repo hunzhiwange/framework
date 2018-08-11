@@ -25,15 +25,15 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * phone test.
+ * mobile test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.08.09
+ * @since 2018.08.10
  *
  * @version 1.0
  */
-class PhoneTest extends TestCase
+class MobileTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -47,7 +47,7 @@ class PhoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'mobile',
             ]
         );
 
@@ -65,13 +65,6 @@ class PhoneTest extends TestCase
             ['14533333444'],
             ['17363332444'],
             ['17633332444'],
-            ['028-8301444'],
-            ['0818-8301111'],
-            ['0818-83011113'],
-            ['08188301111'],
-            ['081883011113'],
-            ['0818-830111355'],
-            ['1733332444'],
         ];
     }
 
@@ -87,7 +80,7 @@ class PhoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'mobile',
             ]
         );
 

@@ -245,7 +245,7 @@ class JsonResponse extends Response
             return false;
         }
 
-        json_decode($data);
+        json_decode((string) ($data));
 
         return JSON_ERROR_NONE === json_last_error();
     }

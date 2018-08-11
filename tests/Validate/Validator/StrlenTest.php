@@ -25,29 +25,30 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * phone test.
+ * strlen test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.08.09
+ * @since 2018.08.10
  *
  * @version 1.0
  */
-class PhoneTest extends TestCase
+class StrlenTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
      *
      * @param mixed $value
+     * @param int   $length
      */
-    public function testBaseUse($value)
+    public function testBaseUse($value, int $length)
     {
         $validate = new Validate(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'strlen:'.$length,
             ]
         );
 
@@ -57,21 +58,12 @@ class PhoneTest extends TestCase
     public function baseUseProvider()
     {
         return [
-            [13000003333],
-            [15323332222],
-            ['13000003333'],
-            ['15033332222'],
-            ['18600003333'],
-            ['14533333444'],
-            ['17363332444'],
-            ['17633332444'],
-            ['028-8301444'],
-            ['0818-8301111'],
-            ['0818-83011113'],
-            ['08188301111'],
-            ['081883011113'],
-            ['0818-830111355'],
-            ['1733332444'],
+            ['http://www.google.com', 21],
+            ['http://queryphp.com', 19],
+            ['foobar', 6],
+            ['helloworld', 10],
+            ['中国', 6],
+            ['成都no1', 9],
         ];
     }
 
@@ -79,15 +71,16 @@ class PhoneTest extends TestCase
      * @dataProvider badProvider
      *
      * @param mixed $value
+     * @param int   $length
      */
-    public function testBad($value)
+    public function testBad($value, int $length)
     {
         $validate = new Validate(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'strlen:'.$length,
             ]
         );
 
@@ -97,20 +90,17 @@ class PhoneTest extends TestCase
     public function badProvider()
     {
         return [
-            ['130222000333311'],
-            ['1533333333332222'],
-            ['181222100003333'],
-            ['143311222333444'],
-            ['17333322222444'],
-            [' '],
-            [new stdClass()],
-            [['foo', 'bar']],
-            [[1, 2]],
-            [true],
-            [[[], []]],
-            ['02228-8301444'],
-            ['08128-8301111'],
-            ['173111223332444'],
+            ['not numeric', 21],
+            [[], 21],
+            [new stdClass(), 21],
+            [['foo', 'bar'], 21],
+            [[1, 2], 21],
+            ['tel:+1-816-555-1212', 21],
+            ['foo', 21],
+            ['bar', 21],
+            ['urn:oasis:names:specification:docbook:dtd:xml:4.1.2', 21],
+            ['world', 21],
+            [null, 21],
         ];
     }
 }

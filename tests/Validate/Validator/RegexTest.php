@@ -25,29 +25,30 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * phone test.
+ * regex test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.08.09
+ * @since 2018.08.11
  *
  * @version 1.0
  */
-class PhoneTest extends TestCase
+class RegexTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $parameter
      */
-    public function testBaseUse($value)
+    public function testBaseUse($value, string $parameter)
     {
         $validate = new Validate(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'regex:'.$parameter,
             ]
         );
 
@@ -57,37 +58,29 @@ class PhoneTest extends TestCase
     public function baseUseProvider()
     {
         return [
-            [13000003333],
-            [15323332222],
-            ['13000003333'],
-            ['15033332222'],
-            ['18600003333'],
-            ['14533333444'],
-            ['17363332444'],
-            ['17633332444'],
-            ['028-8301444'],
-            ['0818-8301111'],
-            ['0818-83011113'],
-            ['08188301111'],
-            ['081883011113'],
-            ['0818-830111355'],
-            ['1733332444'],
+            [2, '/^[0-9]+$/'],
+            ['2', '/^[0-9]+$/'],
+            ['zB99', '/^[A-Za-z0-9]+$/'],
+            ['ABC', '/^[A-Z]+$/'],
+            ['abc', '/^[a-z]+$/'],
+            ['中国', '/^[\x{4e00}-\x{9fa5}]+$/u'],
         ];
     }
 
     /**
      * @dataProvider badProvider
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $parameter
      */
-    public function testBad($value)
+    public function testBad($value, string $parameter)
     {
         $validate = new Validate(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'regex:'.$parameter,
             ]
         );
 
@@ -97,20 +90,12 @@ class PhoneTest extends TestCase
     public function badProvider()
     {
         return [
-            ['130222000333311'],
-            ['1533333333332222'],
-            ['181222100003333'],
-            ['143311222333444'],
-            ['17333322222444'],
-            [' '],
-            [new stdClass()],
-            [['foo', 'bar']],
-            [[1, 2]],
-            [true],
-            [[[], []]],
-            ['02228-8301444'],
-            ['08128-8301111'],
-            ['173111223332444'],
+            ['中国', '/^[0-9]+$/'],
+            ['成都', '/^[0-9]+$/'],
+            [new stdClass(), 0],
+            [['foo', 'bar'], 0],
+            [[1, 2], 0],
+            [[[], []], 0],
         ];
     }
 }

@@ -25,15 +25,15 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * phone test.
+ * json test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.08.09
+ * @since 2018.08.11
  *
  * @version 1.0
  */
-class PhoneTest extends TestCase
+class JsonTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -47,7 +47,7 @@ class PhoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'json',
             ]
         );
 
@@ -57,21 +57,9 @@ class PhoneTest extends TestCase
     public function baseUseProvider()
     {
         return [
-            [13000003333],
-            [15323332222],
-            ['13000003333'],
-            ['15033332222'],
-            ['18600003333'],
-            ['14533333444'],
-            ['17363332444'],
-            ['17633332444'],
-            ['028-8301444'],
-            ['0818-8301111'],
-            ['0818-83011113'],
-            ['08188301111'],
-            ['081883011113'],
-            ['0818-830111355'],
-            ['1733332444'],
+            ['"abc"'],
+            ['{"foo":"bar"}'],
+            [new TestJson()],
         ];
     }
 
@@ -87,7 +75,7 @@ class PhoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'json',
             ]
         );
 
@@ -97,20 +85,22 @@ class PhoneTest extends TestCase
     public function badProvider()
     {
         return [
-            ['130222000333311'],
-            ['1533333333332222'],
-            ['181222100003333'],
-            ['143311222333444'],
-            ['17333322222444'],
-            [' '],
+            ['not numeric'],
+            [[]],
             [new stdClass()],
             [['foo', 'bar']],
             [[1, 2]],
-            [true],
-            [[[], []]],
-            ['02228-8301444'],
-            ['08128-8301111'],
-            ['173111223332444'],
+            ['Foo'],
+            ['hEllo'],
+            [null],
         ];
+    }
+}
+
+class TestJson
+{
+    public function __toString()
+    {
+        return '{"hello":"world"}';
     }
 }

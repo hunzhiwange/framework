@@ -864,72 +864,71 @@ class Validate implements IValidate
         }
 
         static::$defaultMessages = [
-            'required'           => __('{field} 不能为空'),
-            'number'             => __('{field} 必须是数字'),
-            'float'              => __('{field} 必须是浮点数'),
-            'double'             => __('{field} 必须是双精度浮点数'),
-            'boolean'            => __('{field} 必须是布尔值'),
-            'array'              => __('{field} 必须是数组'),
-            'accepted'           => __('{field} 必须是 yes、on、true 或者 1'),
-            'date'               => __('{field} 不是正确的日期格式'),
-            'date_format'        => __('{field} 必须使用日期格式 {rule}'),
-            'timezone'           => __('{field} 不是正确的时区'),
-            'alpha'              => __('{field} 只能是字母'),
-            'alpha_upper'        => __('{field} 只能是大写字母'),
-            'alpha_lower'        => __('{field} 只能是小写字母'),
-            'alpha_num'          => __('{field} 只能是字母和数字'),
-            'alpha_dash'         => __('{field} 只能是字母、数字、短横线和下划线'),
-            'chinese'            => __('{field} 只能是汉字'),
-            'chinese_alpha_num'  => __('{field} 只能是汉字、字母、数字'),
-            'chinese_alpha_dash' => __('{field} 只能是汉字、字母、数字、短横线和下划线'),
-            'url'                => __('{field} 不是有效的 URL 地址'),
-            'active_url'         => __('{field} 不是有效的域名或者 IP'),
-            'ip'                 => __('{field} 不是有效的 IP 地址'),
-            'ipv4'               => __('{field} 不是有效的 IPV4 地址'),
-            'ipv6'               => __('{field} 不是有效的 IPV6 地址'),
-            'in'                 => __('{field} 必须在 {rule} 范围内'),
-            'not_in'             => __('{field} 不能在 {rule} 范围内'),
-            'between'            => __('{field} 只能在 {rule} 和 {rule1} 之间，不包含等于'),
-            'not_between'        => __('{field} 不在 {rule} 和 {rule1} 之间，不包含等于'),
-            'between_equal'      => __('{field} 只能在 {rule} 和 {rule1} 之间，包含等于'),
-            'not_between_equal'  => __('{field} 不在 {rule} 和 {rule1} 之间，包含等于'),
-            'greater_than'       => __('{field} 必须大于 {rule}'),
-            'equal_greater_than' => __('{field} 必须大于等于 {rule}'),
-            'less_than'          => __('{field} 必须小于 {rule}'),
-            'equal_less_than'    => __('{field} 必须小于等于 {rule}'),
-            'equal'              => __('{field} 必须等于 {rule}'),
-            'not_equal'          => __('{field} 不能等于 {rule}'),
-            'equal_to'           => __('{field} 必须等于字段 {rule}'),
-            'different'          => __('{field} 不能等于字段 {rule}'),
-            'same'               => __('{field} 必须完全等于 {rule}'),
-            'not_same'           => __('{field} 不能完全等于 {rule}'),
-            'empty'              => __('{field} 必须为空'),
-            'not_empty'          => __('{field} 不能为空'),
-            'null'               => __('{field} 必须 null'),
-            'not_null'           => __('{field} 不能为 null'),
-            'strlen'             => __('{field} 长度不符合要求 {rule}'),
-            'max'                => __('{field} 长度不能超过 {rule}'),
-            'min'                => __('{field} 长度不能小于 {rule}'),
-            'digit'              => __('{field} 字符串中的字符必须都是数字'),
-            'type'               => __('{field} 类型不符合要求 {rule}'),
-            'lower'              => __('{field} 必须全部是小写'),
-            'upper'              => __('{field} 必须全部是大写'),
-            'min_length'         => __('{field} 不满足最小长度 {rule}'),
-            'max_length'         => __('{field} 不满足最大长度 {rule}'),
-            'id_card'            => __('{field} 必须是有效的中国大陆身份证'),
-            'zip_code'           => __('{field} 必须是有效的中国邮政编码'),
-            'qq'                 => __('{field} 必须是有效的 QQ 号码'),
-            'phone'              => __('{field} 必须是有效的电话号码或者手机号'),
-            'mobile'             => __('{field} 必须是有效的手机号'),
-            'telephone'          => __('{field} 必须是有效的电话号码'),
-            'email'              => __('{field} 必须为正确的电子邮件格式'),
-            'luhn'               => __('{field} 必须为正确的符合 luhn 格式算法银行卡'),
-            'after'              => __('{field} 日期不能小于 {rule}'),
-            'before'             => __('{field} 日期不能超过 {rule}'),
-            'allow_ip'           => __('{field} 不允许的 IP 访问 {rule}'),
-            'deny_ip'            => __('{field} 禁止的 IP 访问 {rule}'),
-            'method'             => __('无效的请求类型 {rule}'),
-            'json'               => __('{field} 不是有效的 JSON'),
+            'required'             => __('{field} 不能为空'),
+            'number'               => __('{field} 必须是数字'),
+            'float'                => __('{field} 必须是浮点数'),
+            'double'               => __('{field} 必须是双精度浮点数'),
+            'boolean'              => __('{field} 必须是布尔值'),
+            'array'                => __('{field} 必须是数组'),
+            'accepted'             => __('{field} 必须是 yes、on、true 或者 1'),
+            'date'                 => __('{field} 不是正确的日期格式'),
+            'date_format'          => __('{field} 必须使用日期格式 {rule}'),
+            'timezone'             => __('{field} 不是正确的时区'),
+            'alpha'                => __('{field} 只能是字母'),
+            'alpha_upper'          => __('{field} 只能是大写字母'),
+            'alpha_lower'          => __('{field} 只能是小写字母'),
+            'alpha_num'            => __('{field} 只能是字母和数字'),
+            'alpha_dash'           => __('{field} 只能是字母、数字、短横线和下划线'),
+            'chinese'              => __('{field} 只能是汉字'),
+            'chinese_alpha_num'    => __('{field} 只能是汉字、字母、数字'),
+            'chinese_alpha_dash'   => __('{field} 只能是汉字、字母、数字、短横线和下划线'),
+            'url'                  => __('{field} 不是有效的 URL 地址'),
+            'active_url'           => __('{field} 不是有效的域名或者 IP'),
+            'ip'                   => __('{field} 不是有效的 IP 地址'),
+            'ipv4'                 => __('{field} 不是有效的 IPV4 地址'),
+            'ipv6'                 => __('{field} 不是有效的 IPV6 地址'),
+            'in'                   => __('{field} 必须在 {rule} 范围内'),
+            'not_in'               => __('{field} 不能在 {rule} 范围内'),
+            'between'              => __('{field} 只能在 {rule} 和 {rule1} 之间，不包含等于'),
+            'not_between'          => __('{field} 不在 {rule} 和 {rule1} 之间，不包含等于'),
+            'between_equal'        => __('{field} 只能在 {rule} 和 {rule1} 之间，包含等于'),
+            'not_between_equal'    => __('{field} 不在 {rule} 和 {rule1} 之间，包含等于'),
+            'greater_than'         => __('{field} 必须大于 {rule}'),
+            'equal_greater_than'   => __('{field} 必须大于等于 {rule}'),
+            'less_than'            => __('{field} 必须小于 {rule}'),
+            'equal_less_than'      => __('{field} 必须小于等于 {rule}'),
+            'equal'                => __('{field} 必须等于 {rule}'),
+            'not_equal'            => __('{field} 不能等于 {rule}'),
+            'equal_to'             => __('{field} 必须等于字段 {rule}'),
+            'different'            => __('{field} 不能等于字段 {rule}'),
+            'same'                 => __('{field} 必须完全等于 {rule}'),
+            'not_same'             => __('{field} 不能完全等于 {rule}'),
+            'empty'                => __('{field} 必须为空'),
+            'not_empty'            => __('{field} 不能为空'),
+            'null'                 => __('{field} 必须 null'),
+            'not_null'             => __('{field} 不能为 null'),
+            'strlen'               => __('{field} 长度不符合要求 {rule}'),
+            'max'                  => __('{field} 长度不能超过 {rule}'),
+            'min'                  => __('{field} 长度不能小于 {rule}'),
+            'digit'                => __('{field} 字符串中的字符必须都是数字'),
+            'type'                 => __('{field} 类型不符合要求 {rule}'),
+            'lower'                => __('{field} 必须全部是小写'),
+            'upper'                => __('{field} 必须全部是大写'),
+            'min_length'           => __('{field} 不满足最小长度 {rule}'),
+            'max_length'           => __('{field} 不满足最大长度 {rule}'),
+            'id_card'              => __('{field} 必须是有效的中国大陆身份证'),
+            'zip_code'             => __('{field} 必须是有效的中国邮政编码'),
+            'qq'                   => __('{field} 必须是有效的 QQ 号码'),
+            'phone'                => __('{field} 必须是有效的电话号码或者手机号'),
+            'mobile'               => __('{field} 必须是有效的手机号'),
+            'telephone'            => __('{field} 必须是有效的电话号码'),
+            'email'                => __('{field} 必须为正确的电子邮件格式'),
+            'luhn'                 => __('{field} 必须为正确的符合 luhn 格式算法银行卡'),
+            'after'                => __('{field} 日期不能小于 {rule}'),
+            'before'               => __('{field} 日期不能超过 {rule}'),
+            'allowed_ip'           => __('{field} 不允许的 IP 访问 {rule}'),
+            'deny_ip'              => __('{field} 禁止的 IP 访问 {rule}'),
+            'json'                 => __('{field} 不是有效的 JSON'),
         ];
 
         static::$initDefaultMessages = true;
@@ -944,7 +943,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateRequired($field, $datas, $parameter)
+    protected function validateRequired($field, $datas, $parameter): bool
     {
         if (null === $datas) {
             return false;
@@ -966,7 +965,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDate($field, $datas, $parameter)
+    protected function validateDate($field, $datas, $parameter): bool
     {
         if ($datas instanceof DateTime) {
             return true;
@@ -1000,7 +999,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDateFormat($field, $datas, $parameter)
+    protected function validateDateFormat($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1018,7 +1017,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateTimezone($field, $datas, $parameter)
+    protected function validateTimezone($field, $datas, $parameter): bool
     {
         try {
             if (!is_string($datas)) {
@@ -1042,7 +1041,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAfter($field, $datas, $parameter)
+    protected function validateAfter($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1066,7 +1065,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateBefore($field, $datas, $parameter)
+    protected function validateBefore($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1090,7 +1089,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDigit($field, $datas, $parameter)
+    protected function validateDigit($field, $datas, $parameter): bool
     {
         return ctype_digit($datas);
     }
@@ -1104,13 +1103,13 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDouble($field, $datas, $parameter)
+    protected function validateDouble($field, $datas, $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
         }
 
-        return preg_match('/^[-\+]?\d+(\.\d+)?$/', (string) ($datas));
+        return preg_match('/^[-\+]?\d+(\.\d+)?$/', (string) ($datas)) > 0;
     }
 
     /**
@@ -1122,7 +1121,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAccepted($field, $datas, $parameter)
+    protected function validateAccepted($field, $datas, $parameter): bool
     {
         return $this->validateRequired($field, $datas, $parameter) &&
             in_array($datas, [
@@ -1145,7 +1144,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateInteger($field, $datas, $parameter)
+    protected function validateInteger($field, $datas, $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_INT);
     }
@@ -1159,7 +1158,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateFloat($field, $datas, $parameter)
+    protected function validateFloat($field, $datas, $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_FLOAT);
     }
@@ -1173,7 +1172,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateArray($field, $datas, $parameter)
+    protected function validateArray($field, $datas, $parameter): bool
     {
         return is_array($datas);
     }
@@ -1187,7 +1186,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateBoolean($field, $datas, $parameter)
+    protected function validateBoolean($field, $datas, $parameter): bool
     {
         return in_array($datas, [
             true,
@@ -1210,7 +1209,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNumber($field, $datas, $parameter)
+    protected function validateNumber($field, $datas, $parameter): bool
     {
         return is_numeric($datas);
     }
@@ -1224,7 +1223,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateBetween($field, $datas, $parameter)
+    protected function validateBetween($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 2);
 
@@ -1240,7 +1239,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotBetween($field, $datas, $parameter)
+    protected function validateNotBetween($field, $datas, $parameter): bool
     {
         return !$this->validateBetweenEqual($field, $datas, $parameter);
     }
@@ -1254,7 +1253,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateBetweenEqual($field, $datas, $parameter)
+    protected function validateBetweenEqual($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 2);
 
@@ -1270,7 +1269,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotBetweenEqual($field, $datas, $parameter)
+    protected function validateNotBetweenEqual($field, $datas, $parameter): bool
     {
         return !$this->validateBetween($field, $datas, $parameter);
     }
@@ -1284,7 +1283,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIn($field, $datas, $parameter)
+    protected function validateIn($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1300,7 +1299,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotIn($field, $datas, $parameter)
+    protected function validateNotIn($field, $datas, $parameter): bool
     {
         return !$this->validateIn($field, $datas, $parameter);
     }
@@ -1314,7 +1313,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIp($field, $datas, $parameter)
+    protected function validateIp($field, $datas, $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_IP);
     }
@@ -1328,7 +1327,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIpv4($field, $datas, $parameter)
+    protected function validateIpv4($field, $datas, $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
     }
@@ -1342,7 +1341,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIpv6($field, $datas, $parameter)
+    protected function validateIpv6($field, $datas, $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
     }
@@ -1356,7 +1355,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateGreaterThan($field, $datas, $parameter)
+    protected function validateGreaterThan($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1372,7 +1371,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEqualGreaterThan($field, $datas, $parameter)
+    protected function validateEqualGreaterThan($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1388,7 +1387,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateLessThan($field, $datas, $parameter)
+    protected function validateLessThan($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1404,7 +1403,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEqualLessThan($field, $datas, $parameter)
+    protected function validateEqualLessThan($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1421,7 +1420,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEqual($field, $datas, $parameter)
+    protected function validateEqual($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1438,7 +1437,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotEqual($field, $datas, $parameter)
+    protected function validateNotEqual($field, $datas, $parameter): bool
     {
         return !$this->validateEqual($field, $datas, $parameter);
     }
@@ -1452,7 +1451,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEqualTo($field, $datas, $parameter)
+    protected function validateEqualTo($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1468,7 +1467,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDifferent($field, $datas, $parameter)
+    protected function validateDifferent($field, $datas, $parameter): bool
     {
         return $this->validateEqualTo($field, $datas, $parameter);
     }
@@ -1482,7 +1481,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateSame($field, $datas, $parameter)
+    protected function validateSame($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1498,7 +1497,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotSame($field, $datas, $parameter)
+    protected function validateNotSame($field, $datas, $parameter): bool
     {
         return !$this->validateSame($field, $datas, $parameter);
     }
@@ -1513,7 +1512,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMax($field, $datas, $parameter)
+    protected function validateMax($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1529,7 +1528,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMin($field, $datas, $parameter)
+    protected function validateMin($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1545,7 +1544,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEmpty($field, $datas, $parameter)
+    protected function validateEmpty($field, $datas, $parameter): bool
     {
         return empty($datas);
     }
@@ -1559,7 +1558,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotEmpty($field, $datas, $parameter)
+    protected function validateNotEmpty($field, $datas, $parameter): bool
     {
         return !$this->validateEmpty($field, $datas, $parameter);
     }
@@ -1573,7 +1572,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNull($field, $datas, $parameter)
+    protected function validateNull($field, $datas, $parameter): bool
     {
         return null === $datas;
     }
@@ -1587,7 +1586,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotNull($field, $datas, $parameter)
+    protected function validateNotNull($field, $datas, $parameter): bool
     {
         return !$this->validateNull($field, $datas, $parameter);
     }
@@ -1601,13 +1600,13 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlpha($field, $datas, $parameter)
+    protected function validateAlpha($field, $datas, $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
         }
 
-        return preg_match('/^[A-Za-z]+$/', $datas);
+        return preg_match('/^[A-Za-z]+$/', $datas) > 0;
     }
 
     /**
@@ -1619,13 +1618,13 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlphaUpper($field, $datas, $parameter)
+    protected function validateAlphaUpper($field, $datas, $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
         }
 
-        return preg_match('/^[A-Z]+$/', $datas);
+        return preg_match('/^[A-Z]+$/', $datas) > 0;
     }
 
     /**
@@ -1637,13 +1636,13 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlphaLower($field, $datas, $parameter)
+    protected function validateAlphaLower($field, $datas, $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
         }
 
-        return preg_match('/^[a-z]+$/', $datas);
+        return preg_match('/^[a-z]+$/', $datas) > 0;
     }
 
     /**
@@ -1655,7 +1654,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlphaNum($field, $datas, $parameter)
+    protected function validateAlphaNum($field, $datas, $parameter): bool
     {
         if (is_int($datas)) {
             return true;
@@ -1665,7 +1664,7 @@ class Validate implements IValidate
             return false;
         }
 
-        return preg_match('/^[A-Za-z0-9]+$/', (string) ($datas));
+        return preg_match('/^[A-Za-z0-9]+$/', (string) ($datas)) > 0;
     }
 
     /**
@@ -1677,7 +1676,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlphaDash($field, $datas, $parameter)
+    protected function validateAlphaDash($field, $datas, $parameter): bool
     {
         if (is_int($datas)) {
             return true;
@@ -1687,7 +1686,7 @@ class Validate implements IValidate
             return false;
         }
 
-        return preg_match('/^[A-Za-z0-9\-\_]+$/', $datas);
+        return preg_match('/^[A-Za-z0-9\-\_]+$/', $datas) > 0;
     }
 
     /**
@@ -1699,13 +1698,13 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateChinese($field, $datas, $parameter)
+    protected function validateChinese($field, $datas, $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
         }
 
-        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $datas);
+        return preg_match('/^[\x{4e00}-\x{9fa5}]+$/u', $datas) > 0;
     }
 
     /**
@@ -1717,7 +1716,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateChineseAlphaNum($field, $datas, $parameter)
+    protected function validateChineseAlphaNum($field, $datas, $parameter): bool
     {
         if (is_int($datas)) {
             return true;
@@ -1727,7 +1726,7 @@ class Validate implements IValidate
             return false;
         }
 
-        return preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', $datas);
+        return preg_match('/^[\x{4e00}-\x{9fa5}a-zA-Z0-9]+$/u', $datas) > 0;
     }
 
     /**
@@ -1739,7 +1738,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateChineseAlphaDash($field, $datas, $parameter)
+    protected function validateChineseAlphaDash($field, $datas, $parameter): bool
     {
         if (is_int($datas)) {
             return true;
@@ -1749,7 +1748,7 @@ class Validate implements IValidate
             return false;
         }
 
-        return preg_match('/^[\x{4e00}-\x{9fa5}A-Za-z0-9\-\_]+$/u', $datas);
+        return preg_match('/^[\x{4e00}-\x{9fa5}A-Za-z0-9\-\_]+$/u', $datas) > 0;
     }
 
     /**
@@ -1761,7 +1760,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIdCard($field, $datas, $parameter)
+    protected function validateIdCard($field, $datas, $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
@@ -1770,7 +1769,7 @@ class Validate implements IValidate
         return preg_match(
             '/^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}(\d|x|X)$/',
             $datas
-        );
+        ) > 0;
     }
 
     /**
@@ -1782,13 +1781,13 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateZipCode($field, $datas, $parameter)
+    protected function validateZipCode($field, $datas, $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
         }
 
-        return preg_match('/^[1-9]\d{5}$/', (string) ($datas));
+        return preg_match('/^[1-9]\d{5}$/', (string) ($datas)) > 0;
     }
 
     /**
@@ -1800,13 +1799,13 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateQq($field, $datas, $parameter)
+    protected function validateQq($field, $datas, $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
         }
 
-        return preg_match('/^[1-9]\d{4,11}$/', (string) ($datas));
+        return preg_match('/^[1-9]\d{4,11}$/', (string) ($datas)) > 0;
     }
 
     /**
@@ -1818,7 +1817,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validatePhone($field, $datas, $parameter)
+    protected function validatePhone($field, $datas, $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -1840,9 +1839,15 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMobile($field, $datas, $parameter)
+    protected function validateMobile($field, $datas, $parameter): bool
     {
-        return preg_match(
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        $datas = (string) ($datas);
+
+        return 11 === strlen($datas) && preg_match(
             '/^13[0-9]{9}|15[012356789][0-9]{8}|18[0-9]{9}|14[579][0-9]{8}|17[0-9]{9}$/',
             $datas
         );
@@ -1857,9 +1862,15 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateTelephone($field, $datas, $parameter)
+    protected function validateTelephone($field, $datas, $parameter): bool
     {
-        return preg_match('/^\d{3,4}-?\d{7,9}$/', $datas);
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        $datas = (string) ($datas);
+
+        return preg_match('/^\d{3,4}-?\d{7,9}$/', $datas) > 0;
     }
 
     /**
@@ -1871,8 +1882,18 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateLuhn($field, $datas, $parameter)
+    protected function validateLuhn($field, $datas, $parameter): bool
     {
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        $datas = (string) ($datas);
+
+        if (!preg_match('/^[0-9]+$/', $datas)) {
+            return false;
+        }
+
         $total = 0;
 
         for ($i = strlen($datas); $i >= 1; $i--) {
@@ -1902,9 +1923,14 @@ class Validate implements IValidate
      * @param array  $parameter
      *
      * @return bool
+     * @codeCoverageIgnore
      */
-    protected function validateActiveUrl($field, $datas, $parameter)
+    protected function validateActiveUrl($field, $datas, $parameter): bool
     {
+        if (!is_string($datas)) {
+            return false;
+        }
+
         return checkdnsrr($datas);
     }
 
@@ -1917,7 +1943,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateUrl($field, $datas, $parameter)
+    protected function validateUrl($field, $datas, $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_URL);
     }
@@ -1931,7 +1957,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEmail($field, $datas, $parameter)
+    protected function validateEmail($field, $datas, $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_EMAIL);
     }
@@ -1945,8 +1971,14 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateStrlen($field, $datas, $parameter)
+    protected function validateStrlen($field, $datas, $parameter): bool
     {
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        $datas = (string) ($datas);
+
         $this->checkParameterLength($field, $parameter, 1);
 
         return strlen($datas) === (int) $parameter[0];
@@ -1961,7 +1993,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateType($field, $datas, $parameter)
+    protected function validateType($field, $datas, $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1977,7 +2009,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateLower($field, $datas, $parameter)
+    protected function validateLower($field, $datas, $parameter): bool
     {
         return ctype_lower($datas);
     }
@@ -1991,7 +2023,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateUpper($field, $datas, $parameter)
+    protected function validateUpper($field, $datas, $parameter): bool
     {
         return ctype_upper($datas);
     }
@@ -2005,11 +2037,17 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMinLength($field, $datas, $parameter)
+    protected function validateMinLength($field, $datas, $parameter): bool
     {
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        $datas = (string) ($datas);
+
         $this->checkParameterLength($field, $parameter, 1);
 
-        return iconv_strlen($datas, 'utf-8') >= (int) $parameter[0];
+        return mb_strlen($datas, 'utf-8') >= (int) $parameter[0];
     }
 
     /**
@@ -2021,11 +2059,17 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMaxLength($field, $datas, $parameter)
+    protected function validateMaxLength($field, $datas, $parameter): bool
     {
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        $datas = (string) ($datas);
+
         $this->checkParameterLength($field, $parameter, 1);
 
-        return iconv_strlen($datas, 'utf-8') <= (int) $parameter[0];
+        return mb_strlen($datas, 'utf-8') <= (int) $parameter[0];
     }
 
     /**
@@ -2037,11 +2081,15 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAllowIp($field, $datas, $parameter)
+    protected function validateAllowedIp($field, $datas, $parameter): bool
     {
+        if (!is_string($datas)) {
+            return false;
+        }
+
         $this->checkParameterLength($field, $parameter, 1);
 
-        return in_array($datas ?: $_SERVER['REMOTE_ADDR'], $parameter, true);
+        return in_array($datas, $parameter, true);
     }
 
     /**
@@ -2053,27 +2101,9 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDenyIp($field, $datas, $parameter)
+    protected function validateDenyIp($field, $datas, $parameter): bool
     {
-        return !$this->validateAllowIp($field, $datas, $parameter);
-    }
-
-    /**
-     * 验证请求类型.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     * @param array  $parameter
-     *
-     * @return bool
-     */
-    protected function validateMethod($field, $datas, $parameter)
-    {
-        $this->checkParameterLength($field, $parameter, 1);
-
-        return strtolower($datas ?:
-            (PHP_SAPI === 'cli' ? 'GET' : $_SERVER['REQUEST_METHOD'])
-        ) === strtolower($parameter[0]);
+        return !$this->validateAllowedIp($field, $datas, $parameter);
     }
 
     /**
@@ -2085,13 +2115,13 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateJson($field, $datas, $parameter)
+    protected function validateJson($field, $datas, $parameter): bool
     {
         if (!is_scalar($datas) && !method_exists($datas, '__toString')) {
             return false;
         }
 
-        json_decode($datas);
+        json_decode((string) ($datas));
 
         return JSON_ERROR_NONE === json_last_error();
     }
@@ -2105,8 +2135,14 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateRegex($field, $datas, $parameter)
+    protected function validateRegex($field, $datas, $parameter): bool
     {
+        if (!is_scalar($datas)) {
+            return false;
+        }
+
+        $datas = (string) ($datas);
+
         $this->checkParameterLength($field, $parameter, 1);
 
         return preg_match($parameter[0], $datas) > 0;
@@ -2239,7 +2275,7 @@ class Validate implements IValidate
         if (count($parameter) < $limitLength) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'The rule %s requires at least %d arguments',
+                    'The rule %s requires at least %d arguments.',
                     $field,
                     $limitLength
                 )

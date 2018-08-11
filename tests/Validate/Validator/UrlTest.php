@@ -25,15 +25,15 @@ use stdClass;
 use Tests\TestCase;
 
 /**
- * phone test.
+ * url test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.08.09
+ * @since 2018.08.10
  *
  * @version 1.0
  */
-class PhoneTest extends TestCase
+class UrlTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
@@ -47,7 +47,7 @@ class PhoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'url',
             ]
         );
 
@@ -56,22 +56,22 @@ class PhoneTest extends TestCase
 
     public function baseUseProvider()
     {
+        // http://php.net/manual/en/filter.filters.validate.php#110411
         return [
-            [13000003333],
-            [15323332222],
-            ['13000003333'],
-            ['15033332222'],
-            ['18600003333'],
-            ['14533333444'],
-            ['17363332444'],
-            ['17633332444'],
-            ['028-8301444'],
-            ['0818-8301111'],
-            ['0818-83011113'],
-            ['08188301111'],
-            ['081883011113'],
-            ['0818-830111355'],
-            ['1733332444'],
+            ['http://www.google.com'],
+            ['http://queryphp.com'],
+            ['http://baidu.com'],
+            ['ftp://ftp.is.co.za.example.org/rfc/rfc1808.txt'],
+            ['gopher://spinaltap.micro.umn.example.edu/00/Weather/California/Los%20Angeles'],
+            ['http://www.math.uio.no.example.net/faq/compression-faq/part1.html'],
+            ['mailto:mduerst@ifi.unizh.example.gov'],
+            ['news:comp.infosystems.www.servers.unix'],
+            ['telnet://melvyl.ucop.example.edu/'],
+            ['http://www.ietf.org/rfc/rfc2396.txt'],
+            ['ldap://[2001:db8::7]/c=GB?objectClass?one'],
+            ['mailto:John.Doe@example.com'],
+            ['news:comp.infosystems.www.servers.unix'],
+            ['telnet://192.0.2.16:80/'],
         ];
     }
 
@@ -87,7 +87,7 @@ class PhoneTest extends TestCase
                 'name' => $value,
             ],
             [
-                'name'     => 'phone',
+                'name'     => 'url',
             ]
         );
 
@@ -97,20 +97,17 @@ class PhoneTest extends TestCase
     public function badProvider()
     {
         return [
-            ['130222000333311'],
-            ['1533333333332222'],
-            ['181222100003333'],
-            ['143311222333444'],
-            ['17333322222444'],
-            [' '],
+            ['not numeric'],
+            [[]],
             [new stdClass()],
             [['foo', 'bar']],
             [[1, 2]],
-            [true],
-            [[[], []]],
-            ['02228-8301444'],
-            ['08128-8301111'],
-            ['173111223332444'],
+            ['tel:+1-816-555-1212'],
+            ['foo'],
+            ['bar'],
+            ['urn:oasis:names:specification:docbook:dtd:xml:4.1.2'],
+            ['world'],
+            [null],
         ];
     }
 }
