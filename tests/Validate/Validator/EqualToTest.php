@@ -21,32 +21,37 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validate;
+use stdClass;
 use Tests\TestCase;
 
 /**
- * accepted test.
+ * equalTo test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.08.08
+ * @since 2018.08.11
  *
  * @version 1.0
  */
-class AcceptedTest extends TestCase
+class EqualToTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param mixed  $valueCompare
+     * @param string $parameter
      */
-    public function testBaseUse($value)
+    public function testBaseUse($value, $valueCompare, string $parameter)
     {
         $validate = new Validate(
             [
-                'name' => $value,
+                'name'  => $value,
+                'name2' => $valueCompare,
+                'name3' => 'test',
             ],
             [
-                'name'     => 'accepted',
+                'name'     => 'equal_to:'.$parameter,
             ]
         );
 
@@ -56,29 +61,29 @@ class AcceptedTest extends TestCase
     public function baseUseProvider()
     {
         return [
-            ['yes'],
-            ['on'],
-            ['1'],
-            [1],
-            ['true'],
-            ['t'],
-            [true],
+            ['foo', 'foo', 'name2'],
+            ['bar', 'bar', 'name2'],
+            ['test', '', 'name3'],
         ];
     }
 
     /**
      * @dataProvider badProvider
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param mixed  $valueCompare
+     * @param string $parameter
      */
-    public function testBad($value)
+    public function testBad($value, $valueCompare, string $parameter)
     {
         $validate = new Validate(
             [
-                'name' => $value,
+                'name'  => $value,
+                'name2' => $valueCompare,
+                'name3' => new stdClass(),
             ],
             [
-                'name'     => 'accepted',
+                'name'     => 'equal_to:'.$parameter,
             ]
         );
 
@@ -88,12 +93,11 @@ class AcceptedTest extends TestCase
     public function badProvider()
     {
         return [
-            ['foo'],
-            ['bar'],
-            [[1, 2]],
-            [''],
-            [' '],
-            ['    '],
+            ['foo', 'foo2', 'name2'],
+            ['bar', 'bar2', 'name2'],
+            [new stdClass(), new stdClass(), 'name2'], // 非全等
+            [new stdClass(), '', 'name3'], // 非全等
+            [['foo', 'bar'], '', 'name3'],
         ];
     }
 }

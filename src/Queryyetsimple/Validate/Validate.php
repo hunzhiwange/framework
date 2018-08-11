@@ -943,7 +943,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateRequired($field, $datas, $parameter): bool
+    protected function validateRequired(string $field, $datas, array $parameter): bool
     {
         if (null === $datas) {
             return false;
@@ -965,7 +965,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDate($field, $datas, $parameter): bool
+    protected function validateDate(string $field, $datas, array $parameter): bool
     {
         if ($datas instanceof DateTime) {
             return true;
@@ -999,7 +999,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDateFormat($field, $datas, $parameter): bool
+    protected function validateDateFormat(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1017,7 +1017,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateTimezone($field, $datas, $parameter): bool
+    protected function validateTimezone(string $field, $datas, array $parameter): bool
     {
         try {
             if (!is_string($datas)) {
@@ -1041,8 +1041,12 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAfter($field, $datas, $parameter): bool
+    protected function validateAfter(string $field, $datas, array $parameter): bool
     {
+        if (!is_string($datas)) {
+            return false;
+        }
+
         $this->checkParameterLength($field, $parameter, 1);
 
         if ($format = $this->getDateFormat($field)) {
@@ -1050,7 +1054,11 @@ class Validate implements IValidate
         }
 
         if (!($time = strtotime($parameter[0]))) {
-            return strtotime($datas) > strtotime($this->getFieldValue($parameter[0]));
+            if (null === ($tmp = $this->getFieldValue($parameter[0]))) {
+                return false;
+            }
+
+            return strtotime($datas) > strtotime($tmp);
         }
 
         return strtotime($datas) > $time;
@@ -1065,8 +1073,12 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateBefore($field, $datas, $parameter): bool
+    protected function validateBefore(string $field, $datas, array $parameter): bool
     {
+        if (!is_string($datas)) {
+            return false;
+        }
+
         $this->checkParameterLength($field, $parameter, 1);
 
         if ($format = $this->getDateFormat($field)) {
@@ -1074,7 +1086,11 @@ class Validate implements IValidate
         }
 
         if (!($time = strtotime($parameter[0]))) {
-            return strtotime($datas) < strtotime($this->getFieldValue($parameter[0]));
+            if (null === ($tmp = $this->getFieldValue($parameter[0]))) {
+                return false;
+            }
+
+            return strtotime($datas) < strtotime($tmp);
         }
 
         return strtotime($datas) < $time;
@@ -1089,7 +1105,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDigit($field, $datas, $parameter): bool
+    protected function validateDigit(string $field, $datas, array $parameter): bool
     {
         return ctype_digit($datas);
     }
@@ -1103,7 +1119,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDouble($field, $datas, $parameter): bool
+    protected function validateDouble(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -1121,7 +1137,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAccepted($field, $datas, $parameter): bool
+    protected function validateAccepted(string $field, $datas, array $parameter): bool
     {
         return $this->validateRequired($field, $datas, $parameter) &&
             in_array($datas, [
@@ -1144,7 +1160,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateInteger($field, $datas, $parameter): bool
+    protected function validateInteger(string $field, $datas, array $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_INT);
     }
@@ -1158,7 +1174,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateFloat($field, $datas, $parameter): bool
+    protected function validateFloat(string $field, $datas, array $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_FLOAT);
     }
@@ -1172,7 +1188,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateArray($field, $datas, $parameter): bool
+    protected function validateArray(string $field, $datas, array $parameter): bool
     {
         return is_array($datas);
     }
@@ -1186,7 +1202,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateBoolean($field, $datas, $parameter): bool
+    protected function validateBoolean($field, $datas, array $parameter): bool
     {
         return in_array($datas, [
             true,
@@ -1209,7 +1225,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNumber($field, $datas, $parameter): bool
+    protected function validateNumber(string $field, $datas, array $parameter): bool
     {
         return is_numeric($datas);
     }
@@ -1223,7 +1239,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateBetween($field, $datas, $parameter): bool
+    protected function validateBetween(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 2);
 
@@ -1239,7 +1255,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotBetween($field, $datas, $parameter): bool
+    protected function validateNotBetween(string $field, $datas, array $parameter): bool
     {
         return !$this->validateBetweenEqual($field, $datas, $parameter);
     }
@@ -1253,7 +1269,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateBetweenEqual($field, $datas, $parameter): bool
+    protected function validateBetweenEqual(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 2);
 
@@ -1269,7 +1285,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotBetweenEqual($field, $datas, $parameter): bool
+    protected function validateNotBetweenEqual(string $field, $datas, array $parameter): bool
     {
         return !$this->validateBetween($field, $datas, $parameter);
     }
@@ -1283,7 +1299,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIn($field, $datas, $parameter): bool
+    protected function validateIn(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1299,7 +1315,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotIn($field, $datas, $parameter): bool
+    protected function validateNotIn(string $field, $datas, array $parameter): bool
     {
         return !$this->validateIn($field, $datas, $parameter);
     }
@@ -1313,7 +1329,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIp($field, $datas, $parameter): bool
+    protected function validateIp(string $field, $datas, array $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_IP);
     }
@@ -1327,7 +1343,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIpv4($field, $datas, $parameter): bool
+    protected function validateIpv4(string $field, $datas, array $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4);
     }
@@ -1341,7 +1357,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIpv6($field, $datas, $parameter): bool
+    protected function validateIpv6(string $field, $datas, array $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
     }
@@ -1355,7 +1371,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateGreaterThan($field, $datas, $parameter): bool
+    protected function validateGreaterThan(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1371,7 +1387,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEqualGreaterThan($field, $datas, $parameter): bool
+    protected function validateEqualGreaterThan(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1387,7 +1403,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateLessThan($field, $datas, $parameter): bool
+    protected function validateLessThan(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1403,7 +1419,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEqualLessThan($field, $datas, $parameter): bool
+    protected function validateEqualLessThan(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1420,7 +1436,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEqual($field, $datas, $parameter): bool
+    protected function validateEqual(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1437,7 +1453,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotEqual($field, $datas, $parameter): bool
+    protected function validateNotEqual(string $field, $datas, array $parameter): bool
     {
         return !$this->validateEqual($field, $datas, $parameter);
     }
@@ -1451,7 +1467,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEqualTo($field, $datas, $parameter): bool
+    protected function validateEqualTo(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1467,9 +1483,9 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDifferent($field, $datas, $parameter): bool
+    protected function validateDifferent(string $field, $datas, array $parameter): bool
     {
-        return $this->validateEqualTo($field, $datas, $parameter);
+        return !$this->validateEqualTo($field, $datas, $parameter);
     }
 
     /**
@@ -1481,7 +1497,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateSame($field, $datas, $parameter): bool
+    protected function validateSame(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1497,7 +1513,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotSame($field, $datas, $parameter): bool
+    protected function validateNotSame(string $field, $datas, array $parameter): bool
     {
         return !$this->validateSame($field, $datas, $parameter);
     }
@@ -1512,7 +1528,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMax($field, $datas, $parameter): bool
+    protected function validateMax(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1528,7 +1544,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMin($field, $datas, $parameter): bool
+    protected function validateMin(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -1544,7 +1560,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEmpty($field, $datas, $parameter): bool
+    protected function validateEmpty(string $field, $datas, array $parameter): bool
     {
         return empty($datas);
     }
@@ -1558,7 +1574,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotEmpty($field, $datas, $parameter): bool
+    protected function validateNotEmpty(string $field, $datas, array $parameter): bool
     {
         return !$this->validateEmpty($field, $datas, $parameter);
     }
@@ -1572,7 +1588,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNull($field, $datas, $parameter): bool
+    protected function validateNull(string $field, $datas, array $parameter): bool
     {
         return null === $datas;
     }
@@ -1586,7 +1602,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateNotNull($field, $datas, $parameter): bool
+    protected function validateNotNull(string $field, $datas, array $parameter): bool
     {
         return !$this->validateNull($field, $datas, $parameter);
     }
@@ -1600,7 +1616,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlpha($field, $datas, $parameter): bool
+    protected function validateAlpha(string $field, $datas, array $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
@@ -1618,7 +1634,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlphaUpper($field, $datas, $parameter): bool
+    protected function validateAlphaUpper(string $field, $datas, array $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
@@ -1636,7 +1652,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlphaLower($field, $datas, $parameter): bool
+    protected function validateAlphaLower(string $field, $datas, array $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
@@ -1654,7 +1670,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlphaNum($field, $datas, $parameter): bool
+    protected function validateAlphaNum(string $field, $datas, array $parameter): bool
     {
         if (is_int($datas)) {
             return true;
@@ -1676,7 +1692,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAlphaDash($field, $datas, $parameter): bool
+    protected function validateAlphaDash(string $field, $datas, array $parameter): bool
     {
         if (is_int($datas)) {
             return true;
@@ -1698,7 +1714,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateChinese($field, $datas, $parameter): bool
+    protected function validateChinese(string $field, $datas, array $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
@@ -1716,7 +1732,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateChineseAlphaNum($field, $datas, $parameter): bool
+    protected function validateChineseAlphaNum(string $field, $datas, array $parameter): bool
     {
         if (is_int($datas)) {
             return true;
@@ -1738,7 +1754,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateChineseAlphaDash($field, $datas, $parameter): bool
+    protected function validateChineseAlphaDash(string $field, $datas, array $parameter): bool
     {
         if (is_int($datas)) {
             return true;
@@ -1760,7 +1776,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateIdCard($field, $datas, $parameter): bool
+    protected function validateIdCard(string $field, $datas, array $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
@@ -1781,7 +1797,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateZipCode($field, $datas, $parameter): bool
+    protected function validateZipCode(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -1799,7 +1815,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateQq($field, $datas, $parameter): bool
+    protected function validateQq(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -1817,7 +1833,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validatePhone($field, $datas, $parameter): bool
+    protected function validatePhone(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -1839,7 +1855,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMobile($field, $datas, $parameter): bool
+    protected function validateMobile(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -1862,7 +1878,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateTelephone($field, $datas, $parameter): bool
+    protected function validateTelephone(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -1882,7 +1898,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateLuhn($field, $datas, $parameter): bool
+    protected function validateLuhn(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -1925,7 +1941,7 @@ class Validate implements IValidate
      * @return bool
      * @codeCoverageIgnore
      */
-    protected function validateActiveUrl($field, $datas, $parameter): bool
+    protected function validateActiveUrl(string $field, $datas, array $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
@@ -1943,7 +1959,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateUrl($field, $datas, $parameter): bool
+    protected function validateUrl(string $field, $datas, array $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_URL);
     }
@@ -1957,7 +1973,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateEmail($field, $datas, $parameter): bool
+    protected function validateEmail(string $field, $datas, array $parameter): bool
     {
         return false !== filter_var($datas, FILTER_VALIDATE_EMAIL);
     }
@@ -1971,7 +1987,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateStrlen($field, $datas, $parameter): bool
+    protected function validateStrlen(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -1993,7 +2009,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateType($field, $datas, $parameter): bool
+    protected function validateType(string $field, $datas, array $parameter): bool
     {
         $this->checkParameterLength($field, $parameter, 1);
 
@@ -2009,7 +2025,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateLower($field, $datas, $parameter): bool
+    protected function validateLower(string $field, $datas, array $parameter): bool
     {
         return ctype_lower($datas);
     }
@@ -2023,7 +2039,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateUpper($field, $datas, $parameter): bool
+    protected function validateUpper(string $field, $datas, array $parameter): bool
     {
         return ctype_upper($datas);
     }
@@ -2037,7 +2053,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMinLength($field, $datas, $parameter): bool
+    protected function validateMinLength(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -2059,7 +2075,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateMaxLength($field, $datas, $parameter): bool
+    protected function validateMaxLength(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -2081,7 +2097,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateAllowedIp($field, $datas, $parameter): bool
+    protected function validateAllowedIp(string $field, $datas, array $parameter): bool
     {
         if (!is_string($datas)) {
             return false;
@@ -2101,7 +2117,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateDenyIp($field, $datas, $parameter): bool
+    protected function validateDenyIp(string $field, $datas, array $parameter): bool
     {
         return !$this->validateAllowedIp($field, $datas, $parameter);
     }
@@ -2115,7 +2131,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateJson($field, $datas, $parameter): bool
+    protected function validateJson(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas) && !method_exists($datas, '__toString')) {
             return false;
@@ -2135,7 +2151,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function validateRegex($field, $datas, $parameter): bool
+    protected function validateRegex(string $field, $datas, array $parameter): bool
     {
         if (!is_scalar($datas)) {
             return false;
@@ -2157,7 +2173,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function doBeforeWithFormat($format, $datas, $parameter)
+    protected function doBeforeWithFormat(string $format, $datas, array $parameter)
     {
         $parameter[0] = $this->getFieldValue($parameter[0]) ?: $parameter[0];
 
@@ -2173,7 +2189,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function doAfterWithFormat($format, $datas, $parameter)
+    protected function doAfterWithFormat(string $format, $datas, array $parameter)
     {
         $parameter[0] = $this->getFieldValue($parameter[0]) ?: $parameter[0];
 
@@ -2189,7 +2205,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function doCheckBeforeAfter($format, $first, $second)
+    protected function doCheckBeforeAfter(string $format, string $first, string $second)
     {
         $before = $this->makeDateTimeFormat($format, $first);
         $after = $this->makeDateTimeFormat($format, $second);
@@ -2247,12 +2263,12 @@ class Validate implements IValidate
      *
      * @return null|\DateTime
      */
-    protected function makeDateTimeFormat($format, $value)
+    protected function makeDateTimeFormat(string $format, string $value)
     {
         $date = DateTime::createFromFormat($format, $value);
 
-        if ($value) {
-            return $value;
+        if ($date) {
+            return $date;
         }
 
         try {

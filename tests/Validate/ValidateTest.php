@@ -52,5 +52,6 @@ class ValidateTest extends TestCase
         $this->assertInstanceof(IValidate::class, $validate);
 
         $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
     }
 }

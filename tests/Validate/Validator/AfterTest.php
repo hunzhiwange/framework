@@ -21,32 +21,35 @@ declare(strict_types=1);
 namespace Tests\Validate\Validator;
 
 use Leevel\Validate\Validate;
+use stdClass;
 use Tests\TestCase;
 
 /**
- * accepted test.
+ * after test.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.08.08
+ * @since 2018.08.11
  *
  * @version 1.0
  */
-class AcceptedTest extends TestCase
+class AfterTest extends TestCase
 {
     /**
      * @dataProvider baseUseProvider
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $parameter
      */
-    public function testBaseUse($value)
+    public function testBaseUse($value, string $parameter)
     {
         $validate = new Validate(
             [
-                'name' => $value,
+                'name'  => $value,
+                'name2' => '2018-08-10',
             ],
             [
-                'name'     => 'accepted',
+                'name'     => 'after:'.$parameter,
             ]
         );
 
@@ -56,29 +59,26 @@ class AcceptedTest extends TestCase
     public function baseUseProvider()
     {
         return [
-            ['yes'],
-            ['on'],
-            ['1'],
-            [1],
-            ['true'],
-            ['t'],
-            [true],
+            ['2018-08-15', '2018-08-14'],
+            ['2018-08-15', 'name2'],
+            ['2018-08-15', '2018-08-14|date_format:Y-m-d'],
         ];
     }
 
     /**
      * @dataProvider badProvider
      *
-     * @param mixed $value
+     * @param mixed  $value
+     * @param string $parameter
      */
-    public function testBad($value)
+    public function testBad($value, string $parameter)
     {
         $validate = new Validate(
             [
                 'name' => $value,
             ],
             [
-                'name'     => 'accepted',
+                'name'     => 'after:'.$parameter,
             ]
         );
 
@@ -88,12 +88,14 @@ class AcceptedTest extends TestCase
     public function badProvider()
     {
         return [
-            ['foo'],
-            ['bar'],
-            [[1, 2]],
-            [''],
-            [' '],
-            ['    '],
+            ['2018-08-14', '2018-08-14'],
+            ['2018-08-14', '2018-08-15'],
+            ['2018-08-15', 'name2'],
+            ['2018-08-15', '2018-08-14|date_format:Y-m'],
+            [new stdClass(), '1.1'],
+            [[], '2018-08-15'],
+            [true, '2018-08-15'],
+            [false, '2018-08-15'],
         ];
     }
 }
