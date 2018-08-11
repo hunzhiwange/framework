@@ -242,12 +242,12 @@ interface IValidate
     /**
      * 设置别名.
      *
-     * @param strKey $alias
-     * @param strKey $for
+     * @param string $name
+     * @param string $alias
      *
      * @return $this
      */
-    public function alias($alias, $for);
+    public function alias(string $name, string $alias);
 
     /**
      * 批量设置别名.
@@ -259,13 +259,6 @@ interface IValidate
     public function aliasMany(array $alias);
 
     /**
-     * 返回别名.
-     *
-     * @return array
-     */
-    public function getAlias();
-
-    /**
      * 设置验证后事件.
      *
      * @param callable|string $callbacks
@@ -273,20 +266,6 @@ interface IValidate
      * @return $this
      */
     public function after($callbacks);
-
-    /**
-     * 返回所有验证后事件.
-     *
-     * @return array
-     */
-    public function getAfter();
-
-    /**
-     * 返回所有自定义扩展.
-     *
-     * @return array
-     */
-    public function getExtend();
 
     /**
      * 注册自定义扩展.
@@ -300,15 +279,6 @@ interface IValidate
     public function extend($rule, $extends);
 
     /**
-     * 批量注册自定义扩展.
-     *
-     * @param array $extends
-     *
-     * @return $this
-     */
-    public function extendMany(array $extends);
-
-    /**
      * 设置 ioc 容器.
      *
      * @param \Leevel\Di\IContainer $container
@@ -318,14 +288,7 @@ interface IValidate
     public function container(IContainer $container);
 
     /**
-     * 获取需要跳过的验证规则.
-     *
-     * @return array
+     * 初始化默认的消息.
      */
-    public function getSkipRule();
-
-    /**
-     * 设置默认的消息.
-     */
-    public static function defaultMessage();
+    public static function initMessage();
 }

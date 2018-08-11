@@ -172,7 +172,7 @@ class Validate implements IValidate
         $this->name($names);
         $this->message($messages);
 
-        static::defaultMessage();
+        static::initMessage();
     }
 
     /**
@@ -270,7 +270,7 @@ class Validate implements IValidate
         unset($skipRule);
 
         foreach ($this->afters as $after) {
-            call_user_func($after, $this);
+            call_user_func($after);
         }
 
         return 0 === count($this->errorMessages);
@@ -548,24 +548,24 @@ class Validate implements IValidate
     /**
      * 设置别名.
      *
+     * @param string $name
      * @param string $alias
-     * @param string $for
      *
      * @return $this
      */
-    public function alias($alias, $for)
+    public function alias(string $name, string $alias)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if (in_array($alias, $this->getSkipRule(), true)) {
-            throw new Exception(
-                spintf('You can not set alias for skip rule %s.', $alias)
+        if (in_array($name, $this->getSkipRule(), true)) {
+            throw new InvalidArgumentException(
+                spintf('You can not set alias for skip rule %s.', $name)
             );
         }
 
-        $this->alias[$alias] = $for;
+        $this->alias[$alias] = $name;
 
         return $this;
     }
@@ -591,16 +591,6 @@ class Validate implements IValidate
     }
 
     /**
-     * 返回别名.
-     *
-     * @return array
-     */
-    public function getAlias()
-    {
-        return $this->alias;
-    }
-
-    /**
      * 设置验证后事件.
      *
      * @param callable|string $callbacks
@@ -614,32 +604,10 @@ class Validate implements IValidate
         }
 
         $this->afters[] = function () use ($callbacks) {
-            return call_user_func_array($callbacks, [
-                $this,
-            ]);
+            return call_user_func($callbacks, $this);
         };
 
         return $this;
-    }
-
-    /**
-     * 返回所有验证后事件.
-     *
-     * @return array
-     */
-    public function getAfter()
-    {
-        return $this->afters;
-    }
-
-    /**
-     * 返回所有自定义扩展.
-     *
-     * @return array
-     */
-    public function getExtend()
-    {
-        return $this->extends;
     }
 
     /**
@@ -663,24 +631,6 @@ class Validate implements IValidate
     }
 
     /**
-     * 批量注册自定义扩展.
-     *
-     * @param array $extends
-     *
-     * @return $this
-     */
-    public function extendMany(array $extends)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->extends = array_merge($this->extends, $extends);
-
-        return $this;
-    }
-
-    /**
      * 设置 IOC 容器.
      *
      * @param \Leevel\Di\IContainer $container
@@ -695,25 +645,9 @@ class Validate implements IValidate
     }
 
     /**
-     * 获取需要跳过的验证规则.
-     *
-     * @return array
+     * 初始化默认的消息.
      */
-    public function getSkipRule()
-    {
-        return array_merge([
-            static::CONDITION_EXISTS,
-            static::CONDITION_MUST,
-            static::CONDITION_VALUE,
-            static::SKIP_SELF,
-            static::SKIP_OTHER,
-        ], $this->skipRule);
-    }
-
-    /**
-     * 设置默认的消息.
-     */
-    public static function defaultMessage()
+    public static function initMessage()
     {
         if (static::$initDefaultMessages) {
             return;
@@ -2317,6 +2251,22 @@ class Validate implements IValidate
     protected function getFieldRuleWithoutSkip($field)
     {
         return array_diff($this->getFieldRule($field), $this->getSkipRule());
+    }
+
+    /**
+     * 获取需要跳过的验证规则.
+     *
+     * @return array
+     */
+    protected function getSkipRule()
+    {
+        return array_merge([
+            static::CONDITION_EXISTS,
+            static::CONDITION_MUST,
+            static::CONDITION_VALUE,
+            static::SKIP_SELF,
+            static::SKIP_OTHER,
+        ], $this->skipRule);
     }
 
     /**

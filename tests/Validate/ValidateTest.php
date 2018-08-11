@@ -576,4 +576,135 @@ eot;
             )
         );
     }
+
+    public function testAlias()
+    {
+        $validate = new Validate(
+            [
+                'name' => '成都',
+            ],
+            [
+                'name'     => 'required|min_length:5',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '地名 不满足最小长度 5',
+  ),
+)
+eot;
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '地名'], $validate->getName());
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+
+        $validate->alias('min_length', 'minl');
+
+        $validate->rule(['name' => 'required|minl:9']);
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '地名 不满足最小长度 9',
+  ),
+)
+eot;
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+
+        $validate->aliasMany(['min_length' => 'min2']);
+
+        $validate->rule(['name' => 'required|min2:11']);
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '地名 不满足最小长度 11',
+  ),
+)
+eot;
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testAfter()
+    {
+        $validate = new Validate(
+            [
+                'name' => '成都',
+            ],
+            [
+                'name'     => 'required|max_length:10',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $validate->after(function ($v) {
+            $this->assertSame(['name' => '地名'], $v->getName());
+        });
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+    }
+
+    public function testExtend()
+    {
+        $validate = new Validate(
+            [
+                'name' => 1,
+            ],
+            [
+                'name'     => 'required|custom_rule:10',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $validate->extend('custom_rule', function (string $field, $datas, array $parameter): bool {
+            if (1 === $datas) {
+                return true;
+            }
+
+            return false;
+        });
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+
+        $validate->data(['name' => 0]);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+    }
 }
