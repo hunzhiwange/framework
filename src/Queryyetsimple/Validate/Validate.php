@@ -90,7 +90,7 @@ class Validate implements IValidate
      *
      * @var array
      */
-    protected $fieldName = [];
+    protected $names = [];
 
     /**
      * 错误规则.
@@ -162,14 +162,14 @@ class Validate implements IValidate
      *
      * @param array $datas
      * @param array $rules
-     * @param array $fieldName
+     * @param array $names
      * @param array $messages
      */
-    public function __construct(array $datas = [], array $rules = [], array $fieldName = [], array $messages = [])
+    public function __construct(array $datas = [], array $rules = [], array $names = [], array $messages = [])
     {
         $this->data($datas);
         $this->rule($rules);
-        $this->fieldName($fieldName);
+        $this->name($names);
         $this->message($messages);
 
         static::defaultMessage();
@@ -226,14 +226,14 @@ class Validate implements IValidate
      *
      * @param array $datas
      * @param array $rules
-     * @param array $fieldName
+     * @param array $names
      * @param array $messages
      *
      * @return \Leevel\Validate
      */
-    public static function make(array $datas = [], array $rules = [], array $fieldName = [], array $messages = [])
+    public static function make(array $datas = [], array $rules = [], array $names = [], array $messages = [])
     {
-        return new static($datas, $rules, $fieldName, $messages);
+        return new static($datas, $rules, $names, $messages);
     }
 
     /**
@@ -241,9 +241,11 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    public function success()
+    public function success(): bool
     {
         $skipRule = $this->getSkipRule();
+
+        $this->errorMessages = [];
 
         foreach ($this->rules as $field => $rules) {
             foreach ($rules as $rule) {
@@ -267,8 +269,8 @@ class Validate implements IValidate
 
         unset($skipRule);
 
-        foreach ($this->afters as $calAfter) {
-            call_user_func($calAfter);
+        foreach ($this->afters as $after) {
+            call_user_func($after, $this);
         }
 
         return 0 === count($this->errorMessages);
@@ -279,7 +281,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    public function fail()
+    public function fail(): bool
     {
         return !$this->success();
     }
@@ -289,7 +291,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    public function error()
+    public function error(): array
     {
         return $this->errorMessages;
     }
@@ -299,7 +301,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->datas;
     }
@@ -341,25 +343,6 @@ class Validate implements IValidate
     }
 
     /**
-     * 设置单个字段验证数据.
-     *
-     * @param string $field
-     * @param mixed  $datas
-     *
-     * @return $this
-     */
-    public function fieldData($field, $datas)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->datas[$field] = $datas;
-
-        return $this;
-    }
-
-    /**
      * 返回验证规则.
      *
      * @return array
@@ -390,13 +373,13 @@ class Validate implements IValidate
     /**
      * 设置验证规则,带上条件.
      *
-     * @param array          $rules
-     * @param callable|mixed $calCallback
-     * @param mixed          $callbacks
+     * @param array         $rules
+     * @param null|callable $calCallback
+     * @param mixed         $callbacks
      *
      * @return $this
      */
-    public function ruleIf(array $rules, $callbacks)
+    public function ruleIf(array $rules, callable $callbacks = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -430,13 +413,13 @@ class Validate implements IValidate
     /**
      * 添加验证规则,带上条件.
      *
-     * @param array          $rules
-     * @param callable|mixed $calCallback
-     * @param mixed          $callbacks
+     * @param array         $rules
+     * @param null|callable $calCallback
+     * @param mixed         $callbacks
      *
      * @return $this
      */
-    public function addRuleIf(array $rules, $callbacks)
+    public function addRuleIf(array $rules, callable $callbacks = null)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -450,134 +433,11 @@ class Validate implements IValidate
     }
 
     /**
-     * 设置单个字段验证规则.
-     *
-     * @param string $field
-     * @param mixed  $rules
-     *
-     * @return $this
-     */
-    public function fieldRule($field, $rules)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        if (!isset($this->rules[$field])) {
-            $this->rules[$field] = [];
-        }
-
-        $this->rules[$field] = $this->arrayRuleItem($rules);
-
-        return $this;
-    }
-
-    /**
-     * 设置单个字段验证规则,带上条件.
-     *
-     * @param string         $field
-     * @param mixed          $rules
-     * @param callable|mixed $calCallback
-     * @param mixed          $callbacks
-     *
-     * @return $this
-     */
-    public function fieldRuleIf($field, $rules, $callbacks)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        if ($this->isCallbackValid($callbacks)) {
-            return $this->fieldRule($field, $rules);
-        }
-
-        return $this;
-    }
-
-    /**
-     * 添加单个字段验证规则.
-     *
-     * @param string $field
-     * @param mixed  $rules
-     *
-     * @return $this
-     */
-    public function addFieldRule($field, $rules)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        if (!isset($this->rules[$field])) {
-            $this->rules[$field] = [];
-        }
-
-        $this->rules[$field] = array_merge(
-            $this->rules[$field],
-            $this->arrayRuleItem($rules)
-        );
-
-        return $this;
-    }
-
-    /**
-     * 添加单个字段验证规则,带上条件.
-     *
-     * @param string         $field
-     * @param mixed          $rules
-     * @param callable|mixed $calCallback
-     * @param mixed          $callbacks
-     *
-     * @return $this
-     */
-    public function addFieldRuleIf($field, $rules, $callbacks)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        if ($this->isCallbackValid($callbacks)) {
-            return $this->addFieldRule($field, $rules);
-        }
-
-        return $this;
-    }
-
-    /**
-     * 获取单个字段验证规则.
-     *
-     * @param string $field
-     *
-     * @return array
-     */
-    public function getFieldRule($field)
-    {
-        if (isset($this->rules[$field])) {
-            return $this->rules[$field];
-        }
-
-        return [];
-    }
-
-    /**
-     * 获取单个字段验证规则，排除掉绕过的规则.
-     *
-     * @param string $field
-     *
-     * @return array
-     */
-    public function getFieldRuleWithoutSkip($field)
-    {
-        return array_diff($this->getFieldRule($field), $this->getSkipRule());
-    }
-
-    /**
      * 返回验证消息.
      *
      * @return array
      */
-    public function getMessage()
+    public function getMessage(): array
     {
         return $this->messages;
     }
@@ -613,6 +473,24 @@ class Validate implements IValidate
             return $this;
         }
 
+        $this->messages = array_merge($this->messages, $messages);
+
+        return $this;
+    }
+
+    /**
+     * 添加字段验证消息.
+     *
+     * @param array $messages
+     *
+     * @return $this
+     */
+    public function messageWithField(array $messages)
+    {
+        if ($this->checkTControl()) {
+            return $this;
+        }
+
         $this->messages = array_merge(
             $this->messages,
             $this->arrayMessage($messages)
@@ -622,69 +500,47 @@ class Validate implements IValidate
     }
 
     /**
-     * 返回字段名字.
+     * 返回名字.
      *
      * @return array
      */
-    public function getFieldName()
+    public function getName(): array
     {
-        return $this->fieldName;
+        return $this->names;
     }
 
     /**
-     * 设置字段名字.
+     * 设置名字.
      *
-     * @param array $fieldName
+     * @param array $names
      *
      * @return $this
      */
-    public function fieldName(array $fieldName)
+    public function name(array $names)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->fieldName = $fieldName;
+        $this->names = $names;
 
         return $this;
     }
 
     /**
-     * 添加字段名字.
+     * 添加名字.
      *
-     * @param array $fieldName
+     * @param array $names
      *
      * @return $this
      */
-    public function addFieldName(array $fieldName)
+    public function addName(array $names)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        $this->fieldName = array_merge(
-            $this->fieldName,
-            $this->arrayMessage($fieldName)
-        );
-
-        return $this;
-    }
-
-    /**
-     * 设置单个字段验证消息.
-     *
-     * @param string $fieldRule
-     * @param string $message
-     *
-     * @return $this
-     */
-    public function fieldRuleMessage($fieldRule, $message)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->messages[$fieldRule] = $message;
+        $this->names = array_merge($this->names, $names);
 
         return $this;
     }
@@ -692,8 +548,8 @@ class Validate implements IValidate
     /**
      * 设置别名.
      *
-     * @param key $alias
-     * @param key $for
+     * @param string $alias
+     * @param string $for
      *
      * @return $this
      */
@@ -705,7 +561,7 @@ class Validate implements IValidate
 
         if (in_array($alias, $this->getSkipRule(), true)) {
             throw new Exception(
-                spintf('You cannot set alias for skip rule %s.', $alias)
+                spintf('You can not set alias for skip rule %s.', $alias)
             );
         }
 
@@ -727,8 +583,8 @@ class Validate implements IValidate
             return $this;
         }
 
-        foreach ($alias as $alias => $for) {
-            $this->alias($alias, $for);
+        foreach ($alias as $alias => $value) {
+            $this->alias($alias, $value);
         }
 
         return $this;
@@ -2452,6 +2308,34 @@ class Validate implements IValidate
     }
 
     /**
+     * 获取单个字段验证规则，排除掉绕过的规则.
+     *
+     * @param string $field
+     *
+     * @return array
+     */
+    protected function getFieldRuleWithoutSkip($field)
+    {
+        return array_diff($this->getFieldRule($field), $this->getSkipRule());
+    }
+
+    /**
+     * 获取单个字段验证规则.
+     *
+     * @param string $field
+     *
+     * @return array
+     */
+    protected function getFieldRule($field)
+    {
+        if (isset($this->rules[$field])) {
+            return $this->rules[$field];
+        }
+
+        return [];
+    }
+
+    /**
      * 分析验证规则和参数.
      *
      * @param string $rule
@@ -2779,7 +2663,7 @@ class Validate implements IValidate
      *
      * @return string
      */
-    protected function getFieldRuleMessage($field, $rule)
+    protected function getFieldRuleMessage(string $field, string $rule)
     {
         return $this->messages[$field.'.'.$rule] ??
             $this->messages[$rule] ??
@@ -2794,9 +2678,9 @@ class Validate implements IValidate
      *
      * @return string
      */
-    protected function parseFieldName($field)
+    protected function parseFieldName(string $field)
     {
-        return $this->fieldName[$field] ?? $field;
+        return $this->names[$field] ?? $field;
     }
 
     /**
@@ -2806,7 +2690,7 @@ class Validate implements IValidate
      *
      * @return mixed
      */
-    protected function getFieldValue($rule)
+    protected function getFieldValue(string $rule)
     {
         if (false === strpos($rule, '.')) {
             if (isset($this->datas[$rule])) {
@@ -2834,7 +2718,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function hasFieldValue($rule)
+    protected function hasFieldValue(string $rule)
     {
         return array_key_exists($rule, $this->datas);
     }
@@ -2846,7 +2730,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function isImplodeRuleParameter($rule)
+    protected function isImplodeRuleParameter(string $rule): bool
     {
         return in_array($rule, [
             'in',
@@ -2864,7 +2748,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function callClasextend($extend, array $parameter)
+    protected function callClasextend(string $extend, array $parameter)
     {
         if (!$this->container) {
             throw new Exception('Container has not set yet');
@@ -2906,7 +2790,7 @@ class Validate implements IValidate
      *
      * @return null|bool
      */
-    protected function callExtend($rule, $parameter)
+    protected function callExtend(string $rule, array $parameter)
     {
         $extends = $this->extends[$rule];
 
@@ -2924,16 +2808,15 @@ class Validate implements IValidate
     /**
      * 验证条件是否通过.
      *
-     * @param callable|mixed $calCallback
-     * @param null|mixed     $callbacks
+     * @param null|callable $calCallback
      *
      * @return bool
      */
-    protected function isCallbackValid($callbacks = null)
+    protected function isCallbackValid(callable $callbacks = null)
     {
         $result = false;
 
-        if (!is_string($callbacks) && is_callable($callbacks)) {
+        if (is_callable($callbacks)) {
             $result = call_user_func($callbacks, $this->getData());
         } else {
             $result = $callbacks;
