@@ -75,6 +75,44 @@ eot;
         );
     }
 
+    public function testMake()
+    {
+        $validate = Validate::make(
+            [
+                'name' => '小牛哥',
+            ],
+            [
+                'name'     => 'required|max_length:10',
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $rule = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => 'required',
+    1 => 'max_length:10',
+  ),
+)
+eot;
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+        $this->assertSame([], $validate->error());
+        $this->assertSame([], $validate->getMessage());
+        $this->assertSame(['name' => '小牛哥'], $validate->getData());
+
+        $this->assertSame(
+            $rule,
+            $this->varExport(
+                $validate->getRule()
+            )
+        );
+    }
+
     public function testError()
     {
         $validate = new Validate(
@@ -432,6 +470,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -452,6 +491,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -472,6 +512,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -492,6 +533,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -525,6 +567,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
         $this->assertSame(['name' => '用户名'], $validate->getName());
@@ -546,6 +589,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -566,6 +610,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -599,6 +644,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
         $this->assertSame(['name' => '地名'], $validate->getName());
@@ -622,6 +668,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -644,6 +691,7 @@ array (
   ),
 )
 eot;
+
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
 
@@ -653,6 +701,47 @@ eot;
                 $validate->error()
             )
         );
+    }
+
+    /**
+     * @dataProvider aliasSkipExceptionProvider
+     *
+     * @param string $skipRule
+     */
+    public function testAliasSkipException(string $skipRule)
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf('You can not set alias for skip rule %s.', $skipRule)
+        );
+
+        $validate = new Validate(
+            [
+                'name' => '成都',
+            ],
+            [
+                'name'     => 'required|min_length:5',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $validate->alias($skipRule, 'custom_bar');
+    }
+
+    public function aliasSkipExceptionProvider()
+    {
+        return [
+            [Validate::CONDITION_EXISTS],
+            [Validate::CONDITION_MUST],
+            [Validate::CONDITION_VALUE],
+            [Validate::SKIP_SELF],
+            [Validate::SKIP_OTHER],
+        ];
     }
 
     public function testAfter()
@@ -706,5 +795,85 @@ eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
+    }
+
+    public function testPlaceholder()
+    {
+        $validate = new Validate(
+            [
+                'name' => 1,
+            ],
+            [
+                'name'     => 'required|custom_rule:10',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $this->assertInstanceof(Validate::class, $validate->foobar());
+        $this->assertInstanceof(Validate::class, $validate->placeholder());
+    }
+
+    public function testCall()
+    {
+        $validate = new Validate();
+
+        $this->assertTrue($validate->minLength('成都', 1));
+        $this->assertTrue($validate->minLength('成都', 2));
+        $this->assertFalse($validate->minLength('成都', 3));
+
+        $this->assertFalse($validate->alpha('成都'));
+        $this->assertTrue($validate->alpha('cd'));
+    }
+
+    public function testCallCustom()
+    {
+        $validate = new Validate();
+
+        $validate->extend('custom_foo_bar', function (string $field, $datas, array $parameter): bool {
+            if ('成都' === $datas) {
+                return true;
+            }
+
+            return false;
+        });
+
+        $this->assertTrue($validate->customFooBar('成都'));
+        $this->assertFalse($validate->customFooBar('魂之挽歌'));
+    }
+
+    public function testCallException()
+    {
+        $this->expectException(\BadMethodCallException::class);
+        $this->expectExceptionMessage(
+            'Method notFoundMethod is not exits.'
+        );
+
+        $validate = new Validate();
+
+        $validate->notFoundMethod();
+    }
+
+    public function testCheckParameterLengthException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'The rule name requires at least 1 arguments.'
+        );
+
+        $validate = new Validate(
+            [
+                'name' => 1,
+            ],
+            [
+                'name'     => 'required|min_length',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $validate->success();
     }
 }

@@ -189,10 +189,12 @@ class Validate implements IValidate
             return $this;
         }
 
-        $extend = Str::unCamelize(substr($method, 8));
+        if (strlen($method) > 8) {
+            $extend = Str::unCamelize(substr($method, 8));
 
-        if (isset($this->extends[$extend])) {
-            return $this->callExtend($extend, $args);
+            if (isset($this->extends[$extend])) {
+                return $this->callExtend($extend, $args);
+            }
         }
 
         if (count($args) > 0) {
@@ -555,13 +557,9 @@ class Validate implements IValidate
      */
     public function alias(string $name, string $alias)
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         if (in_array($name, $this->getSkipRule(), true)) {
             throw new InvalidArgumentException(
-                spintf('You can not set alias for skip rule %s.', $name)
+                sprintf('You can not set alias for skip rule %s.', $name)
             );
         }
 
@@ -579,10 +577,6 @@ class Validate implements IValidate
      */
     public function aliasMany(array $alias)
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         foreach ($alias as $alias => $value) {
             $this->alias($alias, $value);
         }
@@ -599,10 +593,6 @@ class Validate implements IValidate
      */
     public function after($callbacks)
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->afters[] = function () use ($callbacks) {
             return call_user_func($callbacks, $this);
         };
@@ -621,10 +611,6 @@ class Validate implements IValidate
      */
     public function extend($rule, $extends)
     {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
         $this->extends[strtolower($rule)] = $extends;
 
         return $this;
@@ -2698,10 +2684,10 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function callClasextend(string $extend, array $parameter)
+    protected function callClassExtend(string $extend, array $parameter)
     {
         if (!$this->container) {
-            throw new Exception('Container has not set yet');
+            throw new Exception('Container has not set yet.');
         }
 
         if (false === strpos($extend, '@')) {
@@ -2751,7 +2737,7 @@ class Validate implements IValidate
         }
 
         if (is_string($extends)) {
-            return $this->callClasextend($extends, $parameter);
+            return $this->callClassExtend($extends, $parameter);
         }
     }
 
