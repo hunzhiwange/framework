@@ -182,7 +182,7 @@ class ValidateFlowTest extends TestCase
 
         ifs($condition)->
 
-        ruleIf(['name' => 'required|max_length:9'], function (array $data) {
+        rule(['name' => 'required|max_length:9'], function (array $data) {
             $this->assertSame(['name' => '小牛神'], $data);
 
             return true;
@@ -190,7 +190,7 @@ class ValidateFlowTest extends TestCase
 
         elses()->
 
-        ruleIf(['name' => 'required|max_length:2'], function (array $data) {
+        rule(['name' => 'required|max_length:2'], function (array $data) {
             $this->assertSame(['name' => '小牛神'], $data);
 
             return true;
@@ -213,7 +213,7 @@ class ValidateFlowTest extends TestCase
 
         ifs($condition)->
 
-        ruleIf(['name' => 'required|max_length:9'], function (array $data) {
+        rule(['name' => 'required|max_length:9'], function (array $data) {
             $this->assertSame(['name' => '小牛神'], $data);
 
             return true;
@@ -221,7 +221,7 @@ class ValidateFlowTest extends TestCase
 
         elses()->
 
-        ruleIf(['name' => 'required|max_length:2'], function (array $data) {
+        rule(['name' => 'required|max_length:2'], function (array $data) {
             $this->assertSame(['name' => '小牛神'], $data);
 
             return true;
@@ -290,7 +290,7 @@ class ValidateFlowTest extends TestCase
 
         ifs($condition)->
 
-        addRuleIf(['name' => 'required|max_length:9'], function (array $data) {
+        addRule(['name' => 'required|max_length:9'], function (array $data) {
             $this->assertSame(['name' => '小牛神'], $data);
 
             return true;
@@ -298,7 +298,7 @@ class ValidateFlowTest extends TestCase
 
         elses()->
 
-        addRuleIf(['name' => 'required|max_length:2'], function (array $data) {
+        addRule(['name' => 'required|max_length:2'], function (array $data) {
             $this->assertSame(['name' => '小牛神'], $data);
 
             return true;
@@ -321,7 +321,7 @@ class ValidateFlowTest extends TestCase
 
         ifs($condition)->
 
-        addRuleIf(['name' => 'required|max_length:9'], function (array $data) {
+        addRule(['name' => 'required|max_length:9'], function (array $data) {
             $this->assertSame(['name' => '小牛神'], $data);
 
             return true;
@@ -329,7 +329,7 @@ class ValidateFlowTest extends TestCase
 
         elses()->
 
-        addRuleIf(['name' => 'required|max_length:2'], function (array $data) {
+        addRule(['name' => 'required|max_length:2'], function (array $data) {
             $this->assertSame(['name' => '小牛神'], $data);
 
             return true;

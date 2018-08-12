@@ -189,7 +189,7 @@ class Validate implements IValidate
             return $this;
         }
 
-        if (strlen($method) > 8) {
+        if (0 === strpos($method, 'validate')) {
             $extend = Str::unCamelize(substr($method, 8));
 
             if (isset($this->extends[$extend])) {
@@ -247,7 +247,7 @@ class Validate implements IValidate
     {
         $skipRule = $this->getSkipRule();
 
-        $this->errorMessages = [];
+        $this->failedRules = $this->errorMessages = [];
 
         foreach ($this->rules as $field => $rules) {
             foreach ($rules as $rule) {
@@ -357,38 +357,19 @@ class Validate implements IValidate
     /**
      * 设置验证规则.
      *
-     * @param array $rules
-     *
-     * @return $this
-     */
-    public function rule(array $rules)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->rules = $this->arrayRule($rules);
-
-        return $this;
-    }
-
-    /**
-     * 设置验证规则,带上条件.
-     *
      * @param array         $rules
      * @param null|callable $calCallback
-     * @param mixed         $callbacks
      *
      * @return $this
      */
-    public function ruleIf(array $rules, callable $callbacks = null)
+    public function rule(array $rules, callable $callbacks = null)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if ($this->isCallbackValid($callbacks)) {
-            return $this->rule($rules);
+        if (null === $callbacks || $this->isCallbackValid($callbacks)) {
+            $this->rules = $this->arrayRule($rules);
         }
 
         return $this;
@@ -397,38 +378,19 @@ class Validate implements IValidate
     /**
      * 添加验证规则.
      *
-     * @param array $rules
-     *
-     * @return $this
-     */
-    public function addRule(array $rules)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->rules = array_merge($this->rules, $this->arrayRule($rules));
-
-        return $this;
-    }
-
-    /**
-     * 添加验证规则,带上条件.
-     *
      * @param array         $rules
      * @param null|callable $calCallback
-     * @param mixed         $callbacks
      *
      * @return $this
      */
-    public function addRuleIf(array $rules, callable $callbacks = null)
+    public function addRule(array $rules, callable $callbacks = null)
     {
         if ($this->checkTControl()) {
             return $this;
         }
 
-        if ($this->isCallbackValid($callbacks)) {
-            return $this->addRule($rules);
+        if (null === $callbacks || $this->isCallbackValid($callbacks)) {
+            $this->rules = array_merge($this->rules, $this->arrayRule($rules));
         }
 
         return $this;
@@ -623,7 +585,7 @@ class Validate implements IValidate
      *
      * @return $this
      */
-    public function container(IContainer $container)
+    public function setContainer(IContainer $container)
     {
         $this->container = $container;
 
@@ -639,72 +601,71 @@ class Validate implements IValidate
             return;
         }
 
-        static::$defaultMessages = [
-            'required'             => __('{field} 不能为空'),
-            'number'               => __('{field} 必须是数字'),
-            'float'                => __('{field} 必须是浮点数'),
-            'double'               => __('{field} 必须是双精度浮点数'),
-            'boolean'              => __('{field} 必须是布尔值'),
-            'array'                => __('{field} 必须是数组'),
-            'accepted'             => __('{field} 必须是 yes、on、true 或者 1'),
-            'date'                 => __('{field} 不是正确的日期格式'),
-            'date_format'          => __('{field} 必须使用日期格式 {rule}'),
-            'timezone'             => __('{field} 不是正确的时区'),
-            'alpha'                => __('{field} 只能是字母'),
-            'alpha_upper'          => __('{field} 只能是大写字母'),
-            'alpha_lower'          => __('{field} 只能是小写字母'),
-            'alpha_num'            => __('{field} 只能是字母和数字'),
-            'alpha_dash'           => __('{field} 只能是字母、数字、短横线和下划线'),
-            'chinese'              => __('{field} 只能是汉字'),
-            'chinese_alpha_num'    => __('{field} 只能是汉字、字母、数字'),
-            'chinese_alpha_dash'   => __('{field} 只能是汉字、字母、数字、短横线和下划线'),
-            'url'                  => __('{field} 不是有效的 URL 地址'),
-            'active_url'           => __('{field} 不是有效的域名或者 IP'),
-            'ip'                   => __('{field} 不是有效的 IP 地址'),
-            'ipv4'                 => __('{field} 不是有效的 IPV4 地址'),
-            'ipv6'                 => __('{field} 不是有效的 IPV6 地址'),
-            'in'                   => __('{field} 必须在 {rule} 范围内'),
-            'not_in'               => __('{field} 不能在 {rule} 范围内'),
-            'between'              => __('{field} 只能在 {rule} 和 {rule1} 之间，不包含等于'),
-            'not_between'          => __('{field} 不在 {rule} 和 {rule1} 之间，不包含等于'),
-            'between_equal'        => __('{field} 只能在 {rule} 和 {rule1} 之间，包含等于'),
-            'not_between_equal'    => __('{field} 不在 {rule} 和 {rule1} 之间，包含等于'),
-            'greater_than'         => __('{field} 必须大于 {rule}'),
-            'equal_greater_than'   => __('{field} 必须大于等于 {rule}'),
-            'less_than'            => __('{field} 必须小于 {rule}'),
-            'equal_less_than'      => __('{field} 必须小于等于 {rule}'),
-            'equal'                => __('{field} 必须等于 {rule}'),
-            'not_equal'            => __('{field} 不能等于 {rule}'),
-            'equal_to'             => __('{field} 必须等于字段 {rule}'),
-            'different'            => __('{field} 不能等于字段 {rule}'),
-            'same'                 => __('{field} 必须完全等于 {rule}'),
-            'not_same'             => __('{field} 不能完全等于 {rule}'),
-            'empty'                => __('{field} 必须为空'),
-            'not_empty'            => __('{field} 不能为空'),
-            'null'                 => __('{field} 必须 null'),
-            'not_null'             => __('{field} 不能为 null'),
-            'strlen'               => __('{field} 长度不符合要求 {rule}'),
-            'max'                  => __('{field} 长度不能超过 {rule}'),
-            'min'                  => __('{field} 长度不能小于 {rule}'),
-            'digit'                => __('{field} 字符串中的字符必须都是数字'),
-            'type'                 => __('{field} 类型不符合要求 {rule}'),
-            'lower'                => __('{field} 必须全部是小写'),
-            'upper'                => __('{field} 必须全部是大写'),
-            'min_length'           => __('{field} 不满足最小长度 {rule}'),
-            'max_length'           => __('{field} 不满足最大长度 {rule}'),
-            'id_card'              => __('{field} 必须是有效的中国大陆身份证'),
-            'zip_code'             => __('{field} 必须是有效的中国邮政编码'),
-            'qq'                   => __('{field} 必须是有效的 QQ 号码'),
-            'phone'                => __('{field} 必须是有效的电话号码或者手机号'),
-            'mobile'               => __('{field} 必须是有效的手机号'),
-            'telephone'            => __('{field} 必须是有效的电话号码'),
-            'email'                => __('{field} 必须为正确的电子邮件格式'),
-            'luhn'                 => __('{field} 必须为正确的符合 luhn 格式算法银行卡'),
-            'after'                => __('{field} 日期不能小于 {rule}'),
-            'before'               => __('{field} 日期不能超过 {rule}'),
-            'allowed_ip'           => __('{field} 不允许的 IP 访问 {rule}'),
-            'deny_ip'              => __('{field} 禁止的 IP 访问 {rule}'),
-            'json'                 => __('{field} 不是有效的 JSON'),
+        static::$defaultMessages = ['required'             => __('{field} 不能为空'),
+            'number'                                       => __('{field} 必须是数字'),
+            'float'                                        => __('{field} 必须是浮点数'),
+            'double'                                       => __('{field} 必须是双精度浮点数'),
+            'boolean'                                      => __('{field} 必须是布尔值'),
+            'array'                                        => __('{field} 必须是数组'),
+            'accepted'                                     => __('{field} 必须是 yes、on、true 或者 1'),
+            'date'                                         => __('{field} 不是正确的日期格式'),
+            'date_format'                                  => __('{field} 必须使用日期格式 {rule}'),
+            'timezone'                                     => __('{field} 不是正确的时区'),
+            'alpha'                                        => __('{field} 只能是字母'),
+            'alpha_upper'                                  => __('{field} 只能是大写字母'),
+            'alpha_lower'                                  => __('{field} 只能是小写字母'),
+            'alpha_num'                                    => __('{field} 只能是字母和数字'),
+            'alpha_dash'                                   => __('{field} 只能是字母、数字、短横线和下划线'),
+            'chinese'                                      => __('{field} 只能是汉字'),
+            'chinese_alpha_num'                            => __('{field} 只能是汉字、字母、数字'),
+            'chinese_alpha_dash'                           => __('{field} 只能是汉字、字母、数字、短横线和下划线'),
+            'url'                                          => __('{field} 不是有效的 URL 地址'),
+            'active_url'                                   => __('{field} 不是有效的域名或者 IP'),
+            'ip'                                           => __('{field} 不是有效的 IP 地址'),
+            'ipv4'                                         => __('{field} 不是有效的 IPV4 地址'),
+            'ipv6'                                         => __('{field} 不是有效的 IPV6 地址'),
+            'in'                                           => __('{field} 必须在 {rule} 范围内'),
+            'not_in'                                       => __('{field} 不能在 {rule} 范围内'),
+            'between'                                      => __('{field} 只能在 {rule} 和 {rule1} 之间，不包含等于'),
+            'not_between'                                  => __('{field} 不在 {rule} 和 {rule1} 之间，不包含等于'),
+            'between_equal'                                => __('{field} 只能在 {rule} 和 {rule1} 之间，包含等于'),
+            'not_between_equal'                            => __('{field} 不在 {rule} 和 {rule1} 之间，包含等于'),
+            'greater_than'                                 => __('{field} 必须大于 {rule}'),
+            'equal_greater_than'                           => __('{field} 必须大于等于 {rule}'),
+            'less_than'                                    => __('{field} 必须小于 {rule}'),
+            'equal_less_than'                              => __('{field} 必须小于等于 {rule}'),
+            'equal'                                        => __('{field} 必须等于 {rule}'),
+            'not_equal'                                    => __('{field} 不能等于 {rule}'),
+            'equal_to'                                     => __('{field} 必须等于字段 {rule}'),
+            'different'                                    => __('{field} 不能等于字段 {rule}'),
+            'same'                                         => __('{field} 必须完全等于 {rule}'),
+            'not_same'                                     => __('{field} 不能完全等于 {rule}'),
+            'empty'                                        => __('{field} 必须为空'),
+            'not_empty'                                    => __('{field} 不能为空'),
+            'null'                                         => __('{field} 必须 null'),
+            'not_null'                                     => __('{field} 不能为 null'),
+            'strlen'                                       => __('{field} 长度不符合要求 {rule}'),
+            'max'                                          => __('{field} 长度不能超过 {rule}'),
+            'min'                                          => __('{field} 长度不能小于 {rule}'),
+            'digit'                                        => __('{field} 字符串中的字符必须都是数字'),
+            'type'                                         => __('{field} 类型不符合要求 {rule}'),
+            'lower'                                        => __('{field} 必须全部是小写'),
+            'upper'                                        => __('{field} 必须全部是大写'),
+            'min_length'                                   => __('{field} 不满足最小长度 {rule}'),
+            'max_length'                                   => __('{field} 不满足最大长度 {rule}'),
+            'id_card'                                      => __('{field} 必须是有效的中国大陆身份证'),
+            'zip_code'                                     => __('{field} 必须是有效的中国邮政编码'),
+            'qq'                                           => __('{field} 必须是有效的 QQ 号码'),
+            'phone'                                        => __('{field} 必须是有效的电话号码或者手机号'),
+            'mobile'                                       => __('{field} 必须是有效的手机号'),
+            'telephone'                                    => __('{field} 必须是有效的电话号码'),
+            'email'                                        => __('{field} 必须为正确的电子邮件格式'),
+            'luhn'                                         => __('{field} 必须为正确的符合 luhn 格式算法银行卡'),
+            'after'                                        => __('{field} 日期不能小于 {rule}'),
+            'before'                                       => __('{field} 日期不能超过 {rule}'),
+            'allowed_ip'                                   => __('{field} 不允许的 IP 访问 {rule}'),
+            'deny_ip'                                      => __('{field} 禁止的 IP 访问 {rule}'),
+            'json'                                         => __('{field} 不是有效的 JSON'),
         ];
 
         static::$initDefaultMessages = true;
@@ -2067,8 +2028,7 @@ class Validate implements IValidate
         if (count($parameter) < $limitLength) {
             throw new InvalidArgumentException(
                 sprintf(
-                    'The rule %s requires at least %d arguments.',
-                    $field,
+                    'The rule %s requires at least %d arguments.', $field,
                     $limitLength
                 )
             );
@@ -2088,13 +2048,11 @@ class Validate implements IValidate
 
         foreach ($messages as $field => $rules) {
             if (false === strpos($field, '*')) {
-                $result = array_merge(
-                    $result,
+                $result = array_merge($result,
                     $this->arrayMessageItem($field, $rules)
                 );
             } else {
-                $result = array_merge(
-                    $result,
+                $result = array_merge($result,
                     $this->wildcardMessageItem($field, $rules)
                 );
             }
@@ -2313,10 +2271,7 @@ class Validate implements IValidate
             if (false === strpos($field, '*')) {
                 $result[$field] = $this->arrayRuleItem($rules);
             } else {
-                $result = array_merge(
-                    $result,
-                    $this->wildcardRuleItem($field, $rules)
-                );
+                $result = array_merge($result, $this->wildcardRuleItem($field, $rules));
             }
         }
 
@@ -2436,7 +2391,7 @@ class Validate implements IValidate
      *
      * @return $this
      */
-    protected function hasFieldRuleWithoutParameterReal($field, $rules, $strict = false)
+    protected function hasFieldRuleWithoutParameterReal(string $field, $rules, bool $strict = false)
     {
         if (!isset($this->rules[$field])) {
             return false;
@@ -2445,11 +2400,10 @@ class Validate implements IValidate
         $rules = (array) $rules;
 
         foreach ($rules as $rule) {
-            if ($strict) {
-                if (!in_array($rule, $this->rules[$field], true)) {
-                    return false;
-                }
-            } elseif (in_array($rule, $this->rules[$field], true)) {
+            if ($strict && !in_array($rule, $this->rules[$field], true)) {
+                return false;
+            }
+            if (in_array($rule, $this->rules[$field], true)) {
                 return true;
             }
         }
@@ -2687,7 +2641,7 @@ class Validate implements IValidate
     protected function callClassExtend(string $extend, array $parameter)
     {
         if (!$this->container) {
-            throw new Exception('Container has not set yet.');
+            throw new InvalidArgumentException('Container has not set yet.');
         }
 
         if (false === strpos($extend, '@')) {
@@ -2697,7 +2651,7 @@ class Validate implements IValidate
             list($className, $method) = explode('@', $extend);
         }
 
-        if (false === ($extend = $this->container->make($className))) {
+        if (!is_object($extend = $this->container->make($className))) {
             throw new InvalidArgumentException(
                 sprintf('Extend class %s is not valid.', $className)
             );
@@ -2706,9 +2660,7 @@ class Validate implements IValidate
         $method = method_exists($extend, $method) ?
             $method :
             ('handle' !== $method &&
-                method_exists($extend, 'handle') ?
-                'handle' :
-                'run');
+                method_exists($extend, 'handle') ? 'handle' : 'run');
 
         $parameter[] = $this;
 
@@ -2739,6 +2691,10 @@ class Validate implements IValidate
         if (is_string($extends)) {
             return $this->callClassExtend($extends, $parameter);
         }
+
+        throw new InvalidArgumentException(
+            sprintf('Extend in rule %s is not valid.', $rule)
+        );
     }
 
     /**
@@ -2750,14 +2706,6 @@ class Validate implements IValidate
      */
     protected function isCallbackValid(callable $callbacks = null)
     {
-        $result = false;
-
-        if (is_callable($callbacks)) {
-            $result = call_user_func($callbacks, $this->getData());
-        } else {
-            $result = $callbacks;
-        }
-
-        return $result;
+        return call_user_func($callbacks, $this->getData());
     }
 }

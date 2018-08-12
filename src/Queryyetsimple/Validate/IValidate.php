@@ -143,42 +143,22 @@ interface IValidate
     /**
      * 设置验证规则.
      *
-     * @param array $rules
-     *
-     * @return $this
-     */
-    public function rule(array $rules);
-
-    /**
-     * 设置验证规则,带上条件.
-     *
      * @param array         $rules
      * @param null|callable $calCallback
-     * @param mixed         $callbacks
      *
      * @return $this
      */
-    public function ruleIf(array $rules, callable $callbacks = null);
+    public function rule(array $rules, callable $callbacks = null);
 
     /**
      * 添加验证规则.
      *
-     * @param array $rules
-     *
-     * @return $this
-     */
-    public function addRule(array $rules);
-
-    /**
-     * 添加验证规则,带上条件.
-     *
      * @param array         $rules
      * @param null|callable $calCallback
-     * @param mixed         $callbacks
      *
      * @return $this
      */
-    public function addRuleIf(array $rules, callable $callbacks = null);
+    public function addRule(array $rules, callable $callbacks = null);
 
     /**
      * 返回验证消息.
@@ -285,7 +265,7 @@ interface IValidate
      *
      * @return $this
      */
-    public function container(IContainer $container);
+    public function setContainer(IContainer $container);
 
     /**
      * 初始化默认的消息.

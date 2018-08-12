@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Tests\Validate;
 
+use Leevel\Di\Container;
 use Leevel\Validate\IValidate;
 use Leevel\Validate\Validate;
 use Tests\TestCase;
@@ -283,7 +284,7 @@ eot;
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
 
-        $validate->ruleIf(['name' => 'required|min_length:20'], function (array $data) {
+        $validate->rule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
 
             return false;
@@ -304,7 +305,7 @@ eot;
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
 
-        $validate->ruleIf(['name' => 'required|min_length:20'], function (array $data) {
+        $validate->rule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
 
             return true;
@@ -401,7 +402,7 @@ eot;
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
 
-        $validate->addRuleIf(['name' => 'required|min_length:20'], function (array $data) {
+        $validate->addRule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
 
             return false;
@@ -422,7 +423,7 @@ eot;
         $this->assertTrue($validate->success());
         $this->assertFalse($validate->fail());
 
-        $validate->addRuleIf(['name' => 'required|min_length:20'], function (array $data) {
+        $validate->addRule(['name' => 'required|min_length:20'], function (array $data) {
             $this->assertSame(['name' => '中国'], $data);
 
             return true;
@@ -875,5 +876,334 @@ eot;
         );
 
         $validate->success();
+    }
+
+    public function testCallExtendClassWithContainerNotSetException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Container has not set yet.'
+        );
+
+        $validate = new Validate(
+            [
+                'name' => 1,
+            ],
+            [
+                'name'     => 'Tests\\Validate\\NotFound',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $validate->extend('tests\\validate\\notfound', 'Tests\\Validate\\NotFound');
+
+        $validate->success();
+    }
+
+    public function testCallExtendClass()
+    {
+        $validate = new Validate(
+            [
+                'name' => 1,
+            ],
+            [
+                'name'     => 'custom_foobar',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $container = new Container();
+
+        $validate->setContainer($container);
+
+        $validate->extend('custom_foobar', ExtendClassTest1::class);
+
+        $this->assertTrue($validate->success());
+
+        $validate->data(['name' => 'foo']);
+
+        $this->assertFalse($validate->success());
+    }
+
+    public function testCallExtendClassWithCustomMethod()
+    {
+        $validate = new Validate(
+            [
+                'name' => 2,
+            ],
+            [
+                'name'     => 'custom_foobar',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $container = new Container();
+
+        $validate->setContainer($container);
+
+        $validate->extend('custom_foobar', ExtendClassTest1::class.'@handle2');
+
+        $this->assertTrue($validate->success());
+
+        $validate->data(['name' => 'foo']);
+
+        $this->assertFalse($validate->success());
+    }
+
+    public function testCallExtendClassWithRun()
+    {
+        $validate = new Validate(
+            [
+                'name' => 3,
+            ],
+            [
+                'name'     => 'custom_foobar',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $container = new Container();
+
+        $validate->setContainer($container);
+
+        $validate->extend('custom_foobar', ExtendClassTest2::class);
+
+        $this->assertTrue($validate->success());
+
+        $validate->data(['name' => 'foo']);
+
+        $this->assertFalse($validate->success());
+    }
+
+    public function testCallExtendClassWithClassNotValidException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Extend class Tests\\Validate\\NotFound is not valid.'
+        );
+
+        $validate = new Validate(
+            [
+                'name' => 1,
+            ],
+            [
+                'name'     => 'custom_foobar',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $container = new Container();
+
+        $validate->setContainer($container);
+
+        $validate->extend('custom_foobar', 'Tests\\Validate\\NotFound');
+
+        $validate->success();
+    }
+
+    public function testCallExtendNotValidException()
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            'Extend in rule custom_foobar is not valid.'
+        );
+
+        $validate = new Validate(
+            [
+                'name' => 1,
+            ],
+            [
+                'name'     => 'custom_foobar',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $container = new Container();
+
+        $validate->setContainer($container);
+
+        $validate->extend('custom_foobar', ['foo' => 'bar']);
+
+        $validate->success();
+    }
+
+    /**
+     * @dataProvider skipRuleProvider
+     *
+     * @param string $skipRule
+     */
+    public function testSkipRule(string $skipRule)
+    {
+        $validate = new Validate(
+            [
+                'name' => 2,
+            ],
+            [
+                'name'     => $skipRule,
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $this->assertTrue($validate->success());
+    }
+
+    public function skipRuleProvider()
+    {
+        return [
+            [Validate::CONDITION_EXISTS],
+            [Validate::CONDITION_MUST],
+            [Validate::CONDITION_VALUE],
+            [Validate::SKIP_SELF],
+            [Validate::SKIP_OTHER],
+        ];
+    }
+
+    public function testShouldSkipOther()
+    {
+        $validate = new Validate(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'required|alpha',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '地名 不能为空',
+    1 => '地名 只能是字母',
+  ),
+)
+eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '地名'], $validate->getName());
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+
+        $validate->rule(['name' => 'required|alpha|'.Validate::SKIP_OTHER]);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '地名 不能为空',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testMustRequired()
+    {
+        $validate = new Validate(
+            [
+                'name' => '',
+            ],
+            [
+                'name'     => 'required',
+            ],
+            [
+                'name'     => '地名',
+            ]
+        );
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '地名'], $validate->getName());
+
+        $validate->rule(['name' => 'required|'.Validate::CONDITION_VALUE]);
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+
+        $validate->rule(['name' => 'required|'.Validate::CONDITION_MUST]);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '地名 不能为空',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+}
+
+class ExtendClassTest1
+{
+    public function handle(string $field, $datas, array $parameter): bool
+    {
+        if (1 === $datas) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function handle2(string $field, $datas, array $parameter): bool
+    {
+        if (2 === $datas) {
+            return true;
+        }
+
+        return false;
+    }
+}
+
+class ExtendClassTest2
+{
+    public function run(string $field, $datas, array $parameter): bool
+    {
+        if (3 === $datas) {
+            return true;
+        }
+
+        return false;
     }
 }
