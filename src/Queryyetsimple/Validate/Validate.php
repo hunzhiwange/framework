@@ -2498,7 +2498,7 @@ class Validate implements IValidate
 
             foreach ($parts as $part) {
                 if (!isset($datas[$part])) {
-                    return null;
+                    return;
                 }
 
                 $datas = $datas[$part];
