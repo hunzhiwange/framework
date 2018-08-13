@@ -186,15 +186,6 @@ interface IValidate
     public function addMessage(array $message);
 
     /**
-     * 添加字段验证消息.
-     *
-     * @param array $messages
-     *
-     * @return $this
-     */
-    public function messageWithField(array $messages);
-
-    /**
      * 返回名字.
      *
      * @return array

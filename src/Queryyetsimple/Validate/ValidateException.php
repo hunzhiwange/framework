@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Validate;
 
 use Exception;
+use Leevel\Http\IResponse;
 
 /**
  * 验证异常.
@@ -43,7 +44,7 @@ class ValidateException extends Exception
     /**
      * 响应组件.
      *
-     * @var null|\Leevel\Http\Response
+     * @var null|\Leevel\Http\IResponse
      */
     public $response;
 
@@ -51,11 +52,11 @@ class ValidateException extends Exception
      * 构造函数.
      *
      * @param \Leevel\Validate\IValidate $validate
-     * @param \Leevel\Http\Response      $response
+     * @param \Leevel\Http\IResponse     $response
      */
-    public function __construct($validate, $response = null)
+    public function __construct(IValidate $validate, IResponse $response = null)
     {
-        parent::__construct('Validate failed');
+        parent::__construct('Validate failed.');
 
         $this->response = $response;
         $this->validate = $validate;
@@ -64,9 +65,9 @@ class ValidateException extends Exception
     /**
      * 响应实例.
      *
-     * @return \Leevel\Http\Response
+     * @return \Leevel\Http\IResponse
      */
-    public function getResponse()
+    public function getResponse(): IResponse
     {
         return $this->response;
     }
@@ -76,7 +77,7 @@ class ValidateException extends Exception
      *
      * @return \Leevel\Validate\IValidate
      */
-    public function getValidate()
+    public function getValidate(): IValidate
     {
         return $this->validate;
     }

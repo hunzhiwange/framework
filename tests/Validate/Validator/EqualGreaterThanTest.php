@@ -67,6 +67,8 @@ class EqualGreaterThanTest extends TestCase
             ['c', 'a'],
             ['foo', 'bar'],
             ['1.1', '1.1'],
+            ['0', '0'],
+            ['0', 0],
         ];
     }
 
@@ -102,6 +104,16 @@ class EqualGreaterThanTest extends TestCase
             ['a', 'b'],
             ['a', 'c'],
             ['bar', 'foo'],
+            [0, '0'],
         ];
+    }
+
+    public function testSpecial()
+    {
+        $validate = new Validate();
+
+        $this->assertTrue($validate->equalGreaterThan('0', '0'));
+        $this->assertFalse($validate->equalGreaterThan(0, '0'));
+        $this->assertFalse($validate->equalGreaterThan('0', 0));
     }
 }

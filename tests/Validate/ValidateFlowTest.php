@@ -518,11 +518,11 @@ eot;
 
         ifs($condition)->
 
-        messageWithField(['name' => ['min_length' => '{field} hello foo {rule}']])->
+        addMessage(['name' => ['min_length' => '{field} hello foo {rule}']])->
 
         elses()->
 
-        messageWithField(['name' => ['min_length' => '{field} hello bar {rule}']])->
+        addMessage(['name' => ['min_length' => '{field} hello bar {rule}']])->
 
         endIfs();
 
@@ -559,11 +559,11 @@ eot;
 
         ifs($condition)->
 
-        messageWithField(['name' => ['min_length' => '{field} hello foo {rule}']])->
+        addMessage(['name' => ['min_length' => '{field} hello foo {rule}']])->
 
         elses()->
 
-        messageWithField(['name' => ['min_length' => '{field} hello bar {rule}']])->
+        addMessage(['name' => ['min_length' => '{field} hello bar {rule}']])->
 
         endIfs();
 

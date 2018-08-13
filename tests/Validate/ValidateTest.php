@@ -524,7 +524,7 @@ eot;
             )
         );
 
-        $validate->messageWithField(['name' => ['min_length' => '{field} hello world {rule}']]);
+        $validate->addMessage(['name' => ['min_length' => '{field} hello world {rule}']]);
 
         $error = <<<'eot'
 array (
@@ -537,6 +537,213 @@ eot;
 
         $this->assertFalse($validate->success());
         $this->assertTrue($validate->fail());
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testMessage2()
+    {
+        $validate = new Validate(
+            [
+                'name' => '中国',
+            ],
+            [
+                'name'     => 'required|min_length:20',
+            ],
+            [
+                'name'     => '用户名',
+            ]
+        );
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '用户名 不满足最小长度 20',
+  ),
+)
+eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+
+        $validate->addMessage(['min_length' => '{field} not min {rule}']);
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '用户名 not min 20',
+  ),
+)
+eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+
+        $validate->addMessage(['name' => ['min_length' => '{field} haha {rule}']]);
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '用户名 haha 20',
+  ),
+)
+eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+
+        $validate->addMessage(['name.min_length' => '{field} hehe {rule}']);
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '用户名 hehe 20',
+  ),
+)
+eot;
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testSubDataWithSubMessage()
+    {
+        $validate = new Validate(
+            [
+                'name' => ['sub' => ['sub' => '']],
+            ],
+            [
+                'name.sub.sub' => 'required|'.Validate::CONDITION_MUST,
+            ],
+            [
+                'name'     => '歌曲',
+            ]
+        );
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+array (
+  'name.sub.sub' => 
+  array (
+    0 => 'name.sub.sub 不能为空',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+
+        $validate->addMessage(['name.sub.sub' => ['required' => '字段 {field} 不能为空']]);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+array (
+  'name.sub.sub' => 
+  array (
+    0 => '字段 name.sub.sub 不能为空',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+
+        $validate->addMessage(['name*' => ['required' => 'sub {field} must have value']]);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+array (
+  'name.sub.sub' => 
+  array (
+    0 => 'sub name.sub.sub must have value',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testSubDataWithNotSet()
+    {
+        $validate = new Validate(
+            [
+                'name' => ['sub' => ['sub' => null]],
+            ],
+            [
+                'name.sub.sub' => 'required|'.Validate::CONDITION_MUST,
+            ],
+            [
+                'name'     => '歌曲',
+            ]
+        );
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+array (
+  'name.sub.sub' => 
+  array (
+    0 => 'name.sub.sub 不能为空',
+  ),
+)
+eot;
 
         $this->assertSame(
             $error,
@@ -1172,6 +1379,387 @@ eot;
                 $validate->error()
             )
         );
+
+        $validate->data(['name' => null]);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '地名 不能为空',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testWildcardMessage()
+    {
+        $validate = new Validate(
+            [
+                'name'  => '',
+                'nafoo' => '',
+                'nabar' => '',
+            ],
+            [
+                'name'      => 'required',
+                'nafoo'     => 'required',
+                'nabar'     => 'required',
+            ],
+            [
+                'name'      => '地名',
+                'nafoo'     => 'foo',
+                'nabar'     => 'bar',
+            ]
+        );
+
+        $validate->addMessage(['na*' => ['required' => 'test {field} required message']]);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
+
+        $message = <<<'eot'
+array (
+  'name.required' => 'test {field} required message',
+  'nafoo.required' => 'test {field} required message',
+  'nabar.required' => 'test {field} required message',
+)
+eot;
+
+        $this->assertSame(
+            $message,
+            $this->varExport(
+                $validate->getMessage()
+            )
+        );
+
+        $data = <<<'eot'
+array (
+  'name' => '',
+  'nafoo' => '',
+  'nabar' => '',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $validate->getData()
+            )
+        );
+
+        $rule = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => 'required',
+  ),
+  'nafoo' => 
+  array (
+    0 => 'required',
+  ),
+  'nabar' => 
+  array (
+    0 => 'required',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $rule,
+            $this->varExport(
+                $validate->getRule()
+            )
+        );
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => 'test 地名 required message',
+  ),
+  'nafoo' => 
+  array (
+    0 => 'test foo required message',
+  ),
+  'nabar' => 
+  array (
+    0 => 'test bar required message',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testMessageForAllFieldRule()
+    {
+        $validate = new Validate(
+            [
+                'name'  => '',
+                'nafoo' => '',
+                'nabar' => '',
+            ],
+            [
+                'name'      => 'required',
+                'nafoo'     => 'required',
+                'nabar'     => 'required',
+            ],
+            [
+                'name'      => '地名',
+                'nafoo'     => 'foo',
+                'nabar'     => 'bar',
+            ]
+        );
+
+        $validate->addMessage(['na*' => 'test {field} required message']);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
+
+        $message = <<<'eot'
+array (
+  'name.required' => 'test {field} required message',
+  'nafoo.required' => 'test {field} required message',
+  'nabar.required' => 'test {field} required message',
+)
+eot;
+
+        $this->assertSame(
+            $message,
+            $this->varExport(
+                $validate->getMessage()
+            )
+        );
+
+        return;
+        $data = <<<'eot'
+array (
+  'name' => '',
+  'nafoo' => '',
+  'nabar' => '',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $validate->getData()
+            )
+        );
+
+        $rule = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => 'required',
+  ),
+  'nafoo' => 
+  array (
+    0 => 'required',
+  ),
+  'nabar' => 
+  array (
+    0 => 'required',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $rule,
+            $this->varExport(
+                $validate->getRule()
+            )
+        );
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => 'test 地名 required message',
+  ),
+  'nafoo' => 
+  array (
+    0 => 'test foo required message',
+  ),
+  'nabar' => 
+  array (
+    0 => 'test bar required message',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testWildcardRule()
+    {
+        $validate = new Validate(
+            [
+                'name'  => '',
+                'nafoo' => '',
+                'nabar' => '',
+            ],
+            [
+            ],
+            [
+                'name'      => '地名',
+                'nafoo'     => 'foo',
+                'nabar'     => 'bar',
+            ]
+        );
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+
+        $validate->rule(['na*' => 'required']);
+
+        $this->assertFalse($validate->success());
+        $this->assertTrue($validate->fail());
+        $this->assertSame(['name' => '地名', 'nafoo' => 'foo', 'nabar' => 'bar'], $validate->getName());
+
+        $data = <<<'eot'
+array (
+  'name' => '',
+  'nafoo' => '',
+  'nabar' => '',
+)
+eot;
+
+        $this->assertSame(
+            $data,
+            $this->varExport(
+                $validate->getData()
+            )
+        );
+
+        $rule = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => 'required',
+  ),
+  'nafoo' => 
+  array (
+    0 => 'required',
+  ),
+  'nabar' => 
+  array (
+    0 => 'required',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $rule,
+            $this->varExport(
+                $validate->getRule()
+            )
+        );
+
+        $error = <<<'eot'
+array (
+  'name' => 
+  array (
+    0 => '地名 不能为空',
+  ),
+  'nafoo' => 
+  array (
+    0 => 'foo 不能为空',
+  ),
+  'nabar' => 
+  array (
+    0 => 'bar 不能为空',
+  ),
+)
+eot;
+
+        $this->assertSame(
+            $error,
+            $this->varExport(
+                $validate->error()
+            )
+        );
+    }
+
+    public function testGetFieldRuleButNotSet()
+    {
+        $validate = new Validate(
+            [
+                'name' => '大地',
+            ],
+            [
+                'name' => 'required',
+            ],
+            [
+                'name'     => '歌曲',
+            ]
+        );
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+        $this->assertSame(['required'], $this->invokeTestMethod($validate, 'getFieldRule', ['name']));
+        $this->assertSame([], $this->invokeTestMethod($validate, 'getFieldRule', ['foo']));
+    }
+
+    public function testRuleIsEmpty()
+    {
+        $validate = new Validate(
+            [
+                'name' => 'hello',
+            ],
+            [
+                'name' => ':foo|',
+            ],
+            [
+                'name'     => '歌曲',
+            ]
+        );
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+    }
+
+    public function testHasFieldRuleWithoutParameterRealWithRuleNotSet()
+    {
+        $validate = new Validate(
+            [
+                'name' => 'hello',
+            ],
+            [
+                'name' => 'required',
+            ],
+            [
+                'name'     => '歌曲',
+            ]
+        );
+
+        $this->assertTrue($validate->success());
+        $this->assertFalse($validate->fail());
+        $this->assertTrue($this->invokeTestMethod($validate, 'hasFieldRuleWithoutParameterReal', ['name', ['required']]));
+        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithoutParameterReal', ['name', ['foo']]));
+        $this->assertFalse($this->invokeTestMethod($validate, 'hasFieldRuleWithoutParameterReal', ['bar', []]));
     }
 }
 

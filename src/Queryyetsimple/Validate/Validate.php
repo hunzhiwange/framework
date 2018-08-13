@@ -115,14 +115,6 @@ class Validate implements IValidate
     protected $skipRule = [];
 
     /**
-     * 分析数据键
-     * like this hello.world.foobar.
-     *
-     * @var array
-     */
-    protected $parsedDataKey;
-
-    /**
      * 扩展验证器.
      *
      * @var array
@@ -419,7 +411,7 @@ class Validate implements IValidate
             return $this;
         }
 
-        $this->messages = $messages;
+        $this->messages = $this->arrayMessage($messages);
 
         return $this;
     }
@@ -432,24 +424,6 @@ class Validate implements IValidate
      * @return $this
      */
     public function addMessage(array $messages)
-    {
-        if ($this->checkTControl()) {
-            return $this;
-        }
-
-        $this->messages = array_merge($this->messages, $messages);
-
-        return $this;
-    }
-
-    /**
-     * 添加字段验证消息.
-     *
-     * @param array $messages
-     *
-     * @return $this
-     */
-    public function messageWithField(array $messages)
     {
         if ($this->checkTControl()) {
             return $this;
@@ -998,7 +972,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 处于 betweenEqual 范围，包含等于.
+     * 处于 betweenEqual 范围，包含全等.
      *
      * @param string $field
      * @param mixed  $datas
@@ -1010,7 +984,8 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($field, $parameter, 2);
 
-        return $datas >= $parameter[0] && $datas <= $parameter[1];
+        return ($datas > $parameter[0] || $datas === $parameter[0]) &&
+            ($datas < $parameter[1] || $datas === $parameter[1]);
     }
 
     /**
@@ -1116,7 +1091,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 大于或者等于.
+     * 大于或者全等.
      *
      * @param string $field
      * @param mixed  $datas
@@ -1128,7 +1103,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($field, $parameter, 1);
 
-        return $datas >= $parameter[0];
+        return $datas > $parameter[0] || $datas === $parameter[0];
     }
 
     /**
@@ -1148,7 +1123,7 @@ class Validate implements IValidate
     }
 
     /**
-     * 小于或者等于.
+     * 小于或者全等.
      *
      * @param string $field
      * @param mixed  $datas
@@ -1160,7 +1135,7 @@ class Validate implements IValidate
     {
         $this->checkParameterLength($field, $parameter, 1);
 
-        return $datas <= $parameter[0];
+        return $datas < $parameter[0] || $datas === $parameter[0];
     }
 
     /**
@@ -1957,7 +1932,7 @@ class Validate implements IValidate
      *
      * @return null|string
      */
-    protected function getDateFormat($field)
+    protected function getDateFormat(string $field)
     {
         if ($result = $this->getParseRule($field, 'date_format')) {
             return $result[1][0];
@@ -1972,12 +1947,8 @@ class Validate implements IValidate
      *
      * @return null|array
      */
-    protected function getParseRule($field, $rules)
+    protected function getParseRule(string $field, $rules)
     {
-        if (!array_key_exists($field, $this->rules)) {
-            return;
-        }
-
         $rules = (array) $rules;
 
         foreach ($this->rules[$field] as $rule) {
@@ -2023,7 +1994,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function checkParameterLength($field, $parameter, $limitLength)
+    protected function checkParameterLength(string $field, array $parameter, int $limitLength)
     {
         if (count($parameter) < $limitLength) {
             throw new InvalidArgumentException(
@@ -2046,15 +2017,27 @@ class Validate implements IValidate
     {
         $result = [];
 
-        foreach ($messages as $field => $rules) {
-            if (false === strpos($field, '*')) {
-                $result = array_merge($result,
-                    $this->arrayMessageItem($field, $rules)
-                );
-            } else {
-                $result = array_merge($result,
-                    $this->wildcardMessageItem($field, $rules)
-                );
+        foreach ($messages as $field => $message) {
+            // 字段消息或者通配符
+            // ['name' => ['required' => '{field} required']]
+            // ['na*' => 'foo bar']
+            if (is_array($message) || false !== strpos($field, '*')) {
+                if (false === strpos($field, '*')) {
+                    $result = array_merge($result,
+                        $this->arrayMessageItem($field, $message)
+                    );
+                } else {
+                    $result = array_merge($result,
+                        $this->wildcardMessageItem($field, $message)
+                    );
+                }
+            }
+
+            // 直接消息
+            // ['required' => '{field} required']
+            // ['name.required' => '{field} required']
+            else {
+                $result[$field] = $message;
             }
         }
 
@@ -2069,7 +2052,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function wildcardMessageItem($field, $message)
+    protected function wildcardMessageItem(string $field, $message)
     {
         $field = $this->prepareRegexForWildcard($field);
 
@@ -2077,8 +2060,7 @@ class Validate implements IValidate
 
         foreach ($this->parseDataKey() as $key) {
             if (preg_match($field, $key, $matche)) {
-                $messages = array_merge(
-                    $messages,
+                $messages = array_merge($messages,
                     $this->arrayMessageItem($key, $message)
                 );
             }
@@ -2090,74 +2072,17 @@ class Validate implements IValidate
     /**
      * 通配符正则.
      *
-     * @param string $first
+     * @param string $regex
      * @param bool   $strict
-     * @param mixed  $regex
      *
      * @return string
      */
-    protected function prepareRegexForWildcard($regex, $strict = true)
+    protected function prepareRegexForWildcard(string $regex, bool $strict = true)
     {
-        return '/^'.
-            str_replace(
-                '6084fef57e91a6ecb13fff498f9275a7',
-                '(\S+)',
-                $this->escapeRegexCharacter(
-                    str_replace('*', '6084fef57e91a6ecb13fff498f9275a7', $regex)
-                )
-            ).
-            ($strict ? '$' : '').
-            '/';
-    }
+        $regex = preg_quote($regex, '/');
+        $regex = '/^'.str_replace('\*', '(\S+)', $regex).($strict ? '$' : '').'/';
 
-    /**
-     * 转义正则表达式特殊字符.
-     *
-     * @param string $txt
-     *
-     * @return string
-     */
-    protected function escapeRegexCharacter($txt)
-    {
-        $txt = str_replace([
-            '$',
-            '/',
-            '?',
-            '*',
-            '.',
-            '!',
-            '-',
-            '+',
-            '(',
-            ')',
-            '[',
-            ']',
-            ',',
-            '{',
-            '}',
-            '|',
-            '\\',
-        ], [
-            '\$',
-            '\/',
-            '\\?',
-            '\\*',
-            '\\.',
-            '\\!',
-            '\\-',
-            '\\+',
-            '\\(',
-            '\\)',
-            '\\[',
-            '\\]',
-            '\\,',
-            '\\{',
-            '\\}',
-            '\\|',
-            '\\\\',
-        ], $txt);
-
-        return $txt;
+        return $regex;
     }
 
     /**
@@ -2168,7 +2093,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function arrayMessageItem($field, $message)
+    protected function arrayMessageItem(string $field, $message)
     {
         $result = [];
 
@@ -2192,7 +2117,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function getFieldRuleWithoutSkip($field)
+    protected function getFieldRuleWithoutSkip(string $field)
     {
         return array_diff($this->getFieldRule($field), $this->getSkipRule());
     }
@@ -2202,7 +2127,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function getSkipRule()
+    protected function getSkipRule(): array
     {
         return array_merge([
             static::CONDITION_EXISTS,
@@ -2220,7 +2145,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function getFieldRule($field)
+    protected function getFieldRule(string $field)
     {
         if (isset($this->rules[$field])) {
             return $this->rules[$field];
@@ -2236,7 +2161,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function parseRule($rule)
+    protected function parseRule(string $rule): array
     {
         $parameter = [];
 
@@ -2263,7 +2188,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function arrayRule(array $rules)
+    protected function arrayRule(array $rules): array
     {
         $result = [];
 
@@ -2286,7 +2211,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function arrayRuleItem($rules)
+    protected function arrayRuleItem($rules): array
     {
         return Arr::normalize($rules, '|');
     }
@@ -2299,19 +2224,19 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function wildcardRuleItem($field, $rules)
+    protected function wildcardRuleItem(string $field, $rules): array
     {
         $field = $this->prepareRegexForWildcard($field);
 
-        $rules = [];
+        $result = [];
 
         foreach ($this->parseDataKey() as $key) {
             if (preg_match($field, $key, $matche)) {
-                $rules[$key] = $this->arrayRuleItem($rules);
+                $result[$key] = $this->arrayRuleItem($rules);
             }
         }
 
-        return $rules;
+        return $result;
     }
 
     /**
@@ -2319,24 +2244,9 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function parseDataKey()
+    protected function parseDataKey(): array
     {
-        if (null !== $this->parsedDataKey) {
-            return $this->parsedDataKey;
-        }
-
-        $this->parsedDataKey = [];
-        $this->parseDataKeyRecursion($this->getData());
-
-        return $this->parsedDataKey;
-    }
-
-    /**
-     * 清理分析数据键状态
-     */
-    protected function resetDataKey()
-    {
-        $this->parsedDataKey = null;
+        return $this->parseDataKeyRecursion($this->getData());
     }
 
     /**
@@ -2345,17 +2255,21 @@ class Validate implements IValidate
      * @param array  $datas
      * @param string $parentKey
      */
-    protected function parseDataKeyRecursion($datas, $parentKey = '')
+    protected function parseDataKeyRecursion(array $datas, string $parentKey = '')
     {
+        $dataKeys = [];
+
         foreach ($datas as $key => $datas) {
             $first = ($parentKey ? $parentKey.'.' : '').$key;
 
             if (is_array($datas)) {
-                $this->parseDataKeyRecursion($datas, $first);
+                $dataKeys = array_merge($dataKeys, $this->parseDataKeyRecursion($datas, $first));
             } else {
-                $this->parsedDataKey[] = $first;
+                $dataKeys[] = $first;
             }
         }
+
+        return $dataKeys;
     }
 
     /**
@@ -2365,9 +2279,9 @@ class Validate implements IValidate
      * @param string $field
      * @param string $rule
      *
-     * @return $this
+     * @return mixed
      */
-    protected function hasFieldRuleWithoutParameter($field, $rule)
+    protected function hasFieldRuleWithoutParameter(string $field, string $rule)
     {
         $result = $this->hasFieldRuleWithoutParameterReal($field, $rule);
 
@@ -2387,11 +2301,10 @@ class Validate implements IValidate
      *
      * @param string $field
      * @param mixed  $rules
-     * @param bool   $strict
      *
-     * @return $this
+     * @return bool
      */
-    protected function hasFieldRuleWithoutParameterReal(string $field, $rules, bool $strict = false)
+    protected function hasFieldRuleWithoutParameterReal(string $field, $rules): bool
     {
         if (!isset($this->rules[$field])) {
             return false;
@@ -2400,9 +2313,6 @@ class Validate implements IValidate
         $rules = (array) $rules;
 
         foreach ($rules as $rule) {
-            if ($strict && !in_array($rule, $this->rules[$field], true)) {
-                return false;
-            }
             if (in_array($rule, $this->rules[$field], true)) {
                 return true;
             }
@@ -2419,7 +2329,7 @@ class Validate implements IValidate
      *
      * @return array
      */
-    protected function parseParameters($rule, $parameter)
+    protected function parseParameters(string $rule, string $parameter): array
     {
         if ('regex' === strtolower($rule)) {
             return [
@@ -2438,7 +2348,7 @@ class Validate implements IValidate
      *
      * @return bool|void
      */
-    protected function doValidateItem($field, $rule)
+    protected function doValidateItem(string $field, string $rule)
     {
         list($rule, $parameter) = $this->parseRule($rule);
 
@@ -2460,11 +2370,9 @@ class Validate implements IValidate
             return;
         }
 
-        if (!$this->{'validate'.ucwords(Str::camelize($rule))}(
-            $field,
-            $fieldValue,
-            $parameter
-        )) {
+        $method = 'validate'.ucwords(Str::camelize($rule));
+
+        if (!$this->{$method}($field, $fieldValue, $parameter)) {
             $this->addFailure($field, $rule, $parameter);
 
             return false;
@@ -2482,7 +2390,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function shouldSkipOther($field)
+    protected function shouldSkipOther(string $field): bool
     {
         return $this->hasFieldRuleWithoutParameter($field, static::SKIP_OTHER);
     }
@@ -2494,7 +2402,7 @@ class Validate implements IValidate
      *
      * @return bool
      */
-    protected function shouldSkipSelf($field)
+    protected function shouldSkipSelf(string $field): bool
     {
         return $this->hasFieldRuleWithoutParameter($field, static::SKIP_SELF);
     }
@@ -2506,7 +2414,7 @@ class Validate implements IValidate
      * @param string $rule
      * @param array  $parameter
      */
-    protected function addFailure($field, $rule, $parameter)
+    protected function addFailure(string $field, string $rule, array $parameter)
     {
         $this->addError($field, $rule, $parameter);
 
@@ -2520,7 +2428,7 @@ class Validate implements IValidate
      * @param string $rule
      * @param array  $parameter
      */
-    protected function addError($field, $rule, $parameter)
+    protected function addError(string $field, string $rule, array $parameter)
     {
         $message = $this->getFieldRuleMessage($field, $rule);
 
@@ -2555,10 +2463,8 @@ class Validate implements IValidate
      */
     protected function getFieldRuleMessage(string $field, string $rule)
     {
-        return $this->messages[$field.'.'.$rule] ??
-            $this->messages[$rule] ??
-            static::$defaultMessages[$rule] ??
-            '';
+        return $this->messages[$field.'.'.$rule] ?? $this->messages[$rule] ??
+            static::$defaultMessages[$rule] ?? '';
     }
 
     /**
@@ -2587,17 +2493,18 @@ class Validate implements IValidate
                 return $this->datas[$rule];
             }
         } else {
-            $rule = explode('.', $rule);
+            $parts = explode('.', $rule);
+            $datas = $this->datas;
 
-            $first = '$this->datas';
+            foreach ($parts as $part) {
+                if (!isset($datas[$part])) {
+                    return null;
+                }
 
-            for ($i = 0; $i < count($rule); $i++) {
-                $first .= "['{$rule[$i]}']";
+                $datas = $datas[$part];
             }
 
-            eval("\$first = ${first} ?? null;");
-
-            return $first;
+            return $datas;
         }
     }
 

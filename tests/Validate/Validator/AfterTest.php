@@ -98,4 +98,18 @@ class AfterTest extends TestCase
             [false, '2018-08-15'],
         ];
     }
+
+    public function testMakeDateTimeFormatWithNewDateTimeExceptionError()
+    {
+        $validate = new Validate(
+            [
+                'name'  => '2018-08-10',
+            ],
+            [
+                'name'     => 'after:foobar|date_format:y',
+            ]
+        );
+
+        $this->assertFalse($validate->success());
+    }
 }

@@ -67,6 +67,8 @@ class EqualLessThanTest extends TestCase
             ['a', 'c'],
             ['bar', 'foo'],
             ['1.1', '1.1'],
+            ['0', '0'],
+            ['0', 0],
         ];
     }
 
@@ -102,6 +104,16 @@ class EqualLessThanTest extends TestCase
             ['b', 'a'],
             ['c', 'a'],
             ['foo', 'bar'],
+            [0, '0'],
         ];
+    }
+
+    public function testSpecial()
+    {
+        $validate = new Validate();
+
+        $this->assertTrue($validate->equalLessThan('0', '0'));
+        $this->assertFalse($validate->equalLessThan(0, '0'));
+        $this->assertFalse($validate->equalLessThan('0', 0));
     }
 }
