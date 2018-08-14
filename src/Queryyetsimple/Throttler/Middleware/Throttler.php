@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Throttler\Middleware;
 
 use Closure;
-use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Leevel\Http\IRequest;
+use Leevel\Http\IResponse;
 use Leevel\Kernel\Exception\TooManyRequestsHttpException;
 use Leevel\Throttler\IThrottler;
 
@@ -47,7 +47,7 @@ class Throttler
     /**
      * HTTP Response.
      *
-     * @var \Leevel\Http\Response
+     * @var \Leevel\Http\IResponse
      */
     protected $response;
 
@@ -55,9 +55,9 @@ class Throttler
      * 构造函数.
      *
      * @param \Leevel\Throttler\IThrottler $throttler
-     * @param \Leevel\Http\Response        $response
+     * @param \Leevel\Http\IResponse       $response
      */
-    public function __construct(IThrottler $throttler, Response $response)
+    public function __construct(IThrottler $throttler, IResponse $response)
     {
         $this->throttler = $throttler;
         $this->response = $response;
@@ -66,12 +66,12 @@ class Throttler
     /**
      * 请求
      *
-     * @param \Closure             $next
-     * @param \Leevel\Http\Request $request
-     * @param int                  $limit
-     * @param int                  $time
+     * @param \Closure              $next
+     * @param \Leevel\Http\IRequest $request
+     * @param int                   $limit
+     * @param int                   $time
      */
-    public function handle(Closure $next, Request $request, $limit = 60, $time = 60)
+    public function handle(Closure $next, IRequest $request, $limit = 60, $time = 60)
     {
         $rateLimiter = $this->throttler->create(null, (int) $limit, (int) $time);
 
@@ -89,9 +89,9 @@ class Throttler
     /**
      * 发送 HEADER.
      *
-     * @param \Leevel\Throttler\RateLimiter $rateLimiter
+     * @param \Leevel\Throttler\IRateLimiter $rateLimiter
      */
-    protected function header($rateLimiter)
+    protected function header(IRateLimiter $rateLimiter)
     {
         $this->response->headers($rateLimiter->toArray());
     }

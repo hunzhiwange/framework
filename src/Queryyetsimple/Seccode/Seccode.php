@@ -170,7 +170,7 @@ class Seccode implements ISeccode
      *
      * @return $this
      */
-    public function code($code): self
+    public function code($code)
     {
         $this->code = $code;
 

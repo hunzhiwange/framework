@@ -113,7 +113,7 @@ class Select
      *
      * @return $this
      */
-    public function querySelelct(): self
+    public function querySelelct()
     {
         return $this;
     }

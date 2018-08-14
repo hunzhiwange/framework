@@ -60,13 +60,6 @@ interface IRateLimiter
     public function hit();
 
     /**
-     * 清理记录.
-     *
-     * @return $this
-     */
-    public function clear();
-
-    /**
      * 下次重置时间.
      *
      * @return $this
@@ -101,7 +94,7 @@ interface IRateLimiter
      *
      * @return $this
      */
-    public function limitLimit($xRateLimitLimit = 60);
+    public function limit(int $xRateLimitLimit = 60);
 
     /**
      * 指定时间内允许的最大请求次数.
@@ -110,7 +103,7 @@ interface IRateLimiter
      *
      * @return $this
      */
-    public function limitTime($xRateLimitTime = 60);
+    public function time(int $xRateLimitTime = 60);
 
     /**
      * 返回缓存组件.

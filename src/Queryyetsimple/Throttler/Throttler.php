@@ -21,7 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Throttler;
 
 use Leevel\Cache\ICache;
-use Leevel\Http\Request;
+use Leevel\Http\IRequest;
 use RuntimeException;
 
 /**
@@ -52,7 +52,7 @@ class Throttler implements IThrottler
     /**
      * http request.
      *
-     * @var \Leevel\Http\Request
+     * @var \Leevel\Http\IRequest
      */
     protected $request;
 
@@ -88,15 +88,15 @@ class Throttler implements IThrottler
      *
      * @return \Leevel\Throttler\RateLimiter
      */
-    public function create($key = null, $xRateLimitLimit = 20, $xRateLimitTime = 20): RateLimiter
+    public function create(?string $key = null, int $xRateLimitLimit = 60, int $xRateLimitTime = 60): RateLimiter
     {
         $key = $this->getRequestKey($key);
 
         if (isset($this->rateLimiter[$key])) {
             return $this->rateLimiter[$key]->
-            limitLimit($xRateLimitLimit)->
+            limit($xRateLimitLimit)->
 
-            limitTime($xRateLimitTime);
+            time($xRateLimitTime);
         }
 
         return $this->rateLimiter[$key] = new RateLimiter(
@@ -110,11 +110,11 @@ class Throttler implements IThrottler
     /**
      * 设置 http request.
      *
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IRequest $request
      *
      * @return $this
      */
-    public function setRequest(Request $request): self
+    public function setRequest(IRequest $request)
     {
         $this->request = $request;
 
@@ -128,10 +128,10 @@ class Throttler implements IThrottler
      *
      * @return string
      */
-    public function getRequestKey($key = null)
+    public function getRequestKey(?string $key = null)
     {
         if (!$key && !$this->request) {
-            throw new RuntimeException('Request is not set');
+            throw new RuntimeException('Request is not set.');
         }
 
         return $key ?:

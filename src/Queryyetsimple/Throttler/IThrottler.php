@@ -20,7 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Throttler;
 
-use Leevel\Http\Request;
+use Leevel\Http\IRequest;
 
 /**
  * IThrottler 接口.
@@ -42,16 +42,16 @@ interface IThrottler
      *
      * @return \Leevel\Throttler\RateLimiter
      */
-    public function create($key = null, $xRateLimitLimit = 20, $xRateLimitTime = 20);
+    public function create(?string $key = null, int $xRateLimitLimit = 20, int $xRateLimitTime = 20);
 
     /**
      * 设置 http request.
      *
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IRequest $request
      *
      * @return $this
      */
-    public function setRequest(Request $request);
+    public function setRequest(IRequest $request);
 
     /**
      * 获取请求 key.
@@ -60,5 +60,5 @@ interface IThrottler
      *
      * @return string
      */
-    public function getRequestKey($key = null);
+    public function getRequestKey(?string $key = null);
 }
