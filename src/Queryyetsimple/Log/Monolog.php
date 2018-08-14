@@ -94,6 +94,24 @@ class Monolog extends Connect implements IConnect
     }
 
     /**
+     * 日志写入接口.
+     *
+     * @param array $data
+     */
+    public function save(array $data)
+    {
+        $level = array_keys($this->supportLevel);
+
+        foreach ($data as $item) {
+            if (!in_array($item[0], $level, true)) {
+                $item[0] = ILog::DEBUG;
+            }
+
+            $this->monolog->{$item[0]}($item[1], $item[2]);
+        }
+    }
+
+    /**
      * 注册文件 handler.
      *
      * @param string $path
@@ -186,24 +204,6 @@ class Monolog extends Connect implements IConnect
     public function getMonolog()
     {
         return $this->monolog;
-    }
-
-    /**
-     * 日志写入接口.
-     *
-     * @param array $data
-     */
-    public function save(array $data)
-    {
-        $level = array_keys($this->supportLevel);
-
-        foreach ($data as $item) {
-            if (!in_array($item[0], $level, true)) {
-                $item[0] = ILog::DEBUG;
-            }
-
-            $this->monolog->{$item[0]}($item[1], $item[2]);
-        }
     }
 
     /**

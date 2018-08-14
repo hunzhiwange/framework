@@ -1451,7 +1451,7 @@ class Compiler implements ICompiler
      *
      * @return string
      */
-    protected function escapeRegexCharacter($txt, $esc = true)
+    protected function escapeRegexCharacter($txt, bool $esc = true)
     {
         $txt = $this->escapeCharacter($txt, $esc);
 

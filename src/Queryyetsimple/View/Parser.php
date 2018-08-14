@@ -1152,43 +1152,7 @@ class Parser implements IParser
      */
     protected function escapeRegexCharacter($txt)
     {
-        $txt = str_replace([
-            '$',
-            '/',
-            '?',
-            '*',
-            '.',
-            '!',
-            '-',
-            '+',
-            '(',
-            ')',
-            '[',
-            ']',
-            ',',
-            '{',
-            '}',
-            '|',
-        ], [
-            '\$',
-            '\/',
-            '\\?',
-            '\\*',
-            '\\.',
-            '\\!',
-            '\\-',
-            '\\+',
-            '\\(',
-            '\\)',
-            '\\[',
-            '\\]',
-            '\\,',
-            '\\{',
-            '\\}',
-            '\\|',
-        ], $txt);
-
-        return $txt;
+        return preg_quote($txt, '/');
     }
 
     /**
