@@ -23,7 +23,7 @@ namespace Leevel\Auth;
 use RuntimeException;
 
 /**
- * 注册失败异常.
+ * 验证异常.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,6 +31,6 @@ use RuntimeException;
  *
  * @version 1.0
  */
-class RegisterFailed extends RuntimeException
+class AuthException extends RuntimeException
 {
 }
