@@ -31,12 +31,13 @@ if (!function_exists('__')) {
     /**
      * lang.
      *
-     * @param array $arr
+     * @param string $text
+     * @param array  $arr
      *
      * @return string
      */
-    function __(...$arr)
+    function __(string $text, ...$arr)
     {
-        return sprintf(...$arr);
+        return sprintf($text, ...$arr);
     }
 }

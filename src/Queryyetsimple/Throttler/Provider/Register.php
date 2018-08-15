@@ -72,8 +72,8 @@ class Register extends Provider
     protected function throttler()
     {
         $this->container->singleton('throttler', function ($project) {
-            return (new Throttler($project['cache']->
-                connect($project['option']['throttler\driver'])))->
+            return (new Throttler($project['caches']->
+            connect($project['option']['throttler\driver'])))->
 
             setRequest($project['request']);
         });

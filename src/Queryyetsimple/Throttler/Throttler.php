@@ -83,27 +83,24 @@ class Throttler implements IThrottler
      * 创建一个节流器.
      *
      * @param null|string $key
-     * @param int         $xRateLimitLimit
-     * @param int         $xRateLimitTime
+     * @param int         $limit
+     * @param int         $time
      *
      * @return \Leevel\Throttler\RateLimiter
      */
-    public function create(?string $key = null, int $xRateLimitLimit = 60, int $xRateLimitTime = 60): RateLimiter
+    public function create(?string $key = null, int $limit = 60, int $time = 60): RateLimiter
     {
         $key = $this->getRequestKey($key);
 
         if (isset($this->rateLimiter[$key])) {
             return $this->rateLimiter[$key]->
-            limit($xRateLimitLimit)->
+            limit($limit)->
 
-            time($xRateLimitTime);
+            time($time);
         }
 
         return $this->rateLimiter[$key] = new RateLimiter(
-            $this->cache,
-            $key,
-            $xRateLimitLimit,
-            $xRateLimitTime
+            $this->cache, $key, $limit, $time
         );
     }
 
@@ -134,11 +131,10 @@ class Throttler implements IThrottler
             throw new RuntimeException('Request is not set.');
         }
 
-        return $key ?:
-            sha1(
-                $this->request->getClientIp().
-                '@'.
-                $this->request->getNode()
-            );
+        return $key ?: sha1(
+            $this->request->getClientIp().
+            '@'.
+            $this->request->getNode()
+        );
     }
 }

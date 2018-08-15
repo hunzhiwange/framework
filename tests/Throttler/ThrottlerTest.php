@@ -22,7 +22,7 @@ namespace Tests\Throttler;
 
 use Leevel\Cache\Cache;
 use Leevel\Cache\File;
-use Leevel\Throttler\IRateLimiter;
+use Leevel\Http\IRequest;
 use Leevel\Throttler\Throttler;
 use Tests\TestCase;
 
@@ -31,7 +31,7 @@ use Tests\TestCase;
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 6018.08.14
+ * @since 2018.08.14
  *
  * @version 1.0
  */
@@ -39,7 +39,7 @@ class ThrottlerTest extends TestCase
 {
     protected function tearDown()
     {
-        $dirPath = __DIR__.'/cache';
+        $dirPath = __DIR__.'/cache2';
 
         if (is_dir($dirPath)) {
             rmdir($dirPath);
@@ -48,173 +48,88 @@ class ThrottlerTest extends TestCase
 
     public function testBaseUse()
     {
-        list($cache, $throttler) = $this->createRateLimiter();
+        $throttler = $this->createRateLimiter();
 
         $rateLimiter = $throttler->create('baseuse');
 
         $this->assertFalse($rateLimiter->attempt());
         $this->assertFalse($rateLimiter->tooManyAttempt());
+        $this->assertInstanceof(Cache::class, $rateLimiter->getCache());
 
-        $time = time() + 60;
+        // with_cache
+        $this->assertSame(1, count($this->getTestProperty($throttler, 'rateLimiter')));
+        $rateLimiter2 = $throttler->create('baseuse');
+        $this->assertFalse($rateLimiter2->attempt());
+        $this->assertFalse($rateLimiter2->tooManyAttempt());
+        $this->assertSame(1, count($this->getTestProperty($throttler, 'rateLimiter')));
 
-        $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 60,
-  'X-RateLimit-Remaining' => 59,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
-eot;
-
-        $this->assertSame(
-            $header,
-            $this->varExport(
-                $rateLimiter->header()
-            )
-        );
-
-        $path = __DIR__.'/cache';
+        $path = __DIR__.'/cache2';
 
         unlink($path.'/_baseuse.php');
     }
 
-    public function testHit()
+    public function testUseCall()
     {
-        list($cache, $throttler) = $this->createRateLimiter();
+        $throttler = $this->createRateLimiter();
 
-        $rateLimiter = $throttler->create('hit');
+        $request = $this->createMock(IRequest::class);
 
-        $this->assertFalse($rateLimiter->attempt());
+        $ip = '127.0.0.1';
+        $node = 'foobar';
+        $key = sha1($ip.'@'.$node);
 
-        $time = time() + 60;
+        $request->method('getClientIp')->willReturn($ip);
+        $this->assertEquals($ip, $request->getClientIp());
 
-        $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 60,
-  'X-RateLimit-Remaining' => 59,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
-eot;
-        $this->assertSame(
-            $header,
-            $this->varExport(
-                $rateLimiter->header()
-            )
-        );
+        $request->method('getNode')->willReturn($node);
+        $this->assertEquals($node, $request->getNode());
 
-        $cacheData = array_map(function ($v) {
-            return (int) ($v);
-        }, explode(IRateLimiter::SEPARATE, $cache->get('hit')));
+        $throttler->setRequest($request);
 
-        $this->assertSame($time, $cacheData[0]);
-        $this->assertSame(1, $cacheData[1]);
+        $this->assertFalse($throttler->attempt());
+        $this->assertFalse($throttler->tooManyAttempt());
 
-        $rateLimiter->hit();
+        $path = __DIR__.'/cache2';
 
-        $cacheData = array_map(function ($v) {
-            return (int) ($v);
-        }, explode(IRateLimiter::SEPARATE, $cache->get('hit')));
-
-        $this->assertSame($time, $cacheData[0]);
-        $this->assertSame(2, $cacheData[1]);
-
-        $rateLimiter->hit();
-
-        $cacheData = array_map(function ($v) {
-            return (int) ($v);
-        }, explode(IRateLimiter::SEPARATE, $cache->get('hit')));
-
-        $this->assertSame($time, $cacheData[0]);
-        $this->assertSame(3, $cacheData[1]);
-
-        $path = __DIR__.'/cache';
-
-        unlink($path.'/_hit.php');
+        unlink($path.'/_'.$key.'.php');
     }
 
-    public function testLimit()
+    public function testAttempt()
     {
-        list($cache, $throttler) = $this->createRateLimiter();
+        $throttler = $this->createRateLimiter();
 
-        $rateLimiter = $throttler->create('limit');
+        $rateLimiter = $throttler->create('attempt', 2, 1);
 
-        $this->assertFalse($rateLimiter->attempt());
+        for ($i = 0; $i < 10; $i++) {
+            $rateLimiter->hit();
+        }
 
-        $time = time() + 60;
+        $this->assertTrue($rateLimiter->attempt());
+        $this->assertTrue($rateLimiter->tooManyAttempt());
 
-        $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 60,
-  'X-RateLimit-Remaining' => 59,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
-eot;
+        $path = __DIR__.'/cache2';
 
-        $this->assertSame(
-            $header,
-            $this->varExport(
-                $rateLimiter->header()
-            )
-        );
-
-        $path = __DIR__.'/cache';
-
-        $rateLimiter->limit(80);
-
-        $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 80,
-  'X-RateLimit-Remaining' => 79,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
-eot;
-
-        $this->assertSame(
-            $header,
-            $this->varExport(
-                $rateLimiter->header()
-            )
-        );
-
-        unlink($path.'/_limit.php');
-
-        $this->assertFalse($rateLimiter->attempt());
-
-        $time += 20;
-
-        $header = <<<eot
-array (
-  'X-RateLimit-Time' => 60,
-  'X-RateLimit-Limit' => 80,
-  'X-RateLimit-Remaining' => 79,
-  'X-RateLimit-RetryAfter' => 0,
-  'X-RateLimit-Reset' => {$time},
-)
-eot;
-
-        $this->assertSame(
-            $header,
-            $this->varExport(
-                $rateLimiter->header()
-            )
-        );
-
-        unlink($path.'/_limit.php');
+        unlink($path.'/_attempt.php');
     }
 
-    protected function createRateLimiter(): array
+    public function testRequestIsNotSet()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            'Request is not set.'
+        );
+
+        $throttler = $this->createRateLimiter();
+
+        $throttler->attempt();
+    }
+
+    protected function createRateLimiter(): Throttler
     {
         $cache = new Cache(new File([
-            'path' => __DIR__.'/cache',
+            'path' => __DIR__.'/cache2',
         ]));
 
-        return [$cache, new Throttler($cache)];
+        return new Throttler($cache);
     }
 }

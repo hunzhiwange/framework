@@ -22,7 +22,6 @@ namespace Leevel\Throttler\Middleware;
 
 use Closure;
 use Leevel\Http\IRequest;
-use Leevel\Http\IResponse;
 use Leevel\Kernel\Exception\TooManyRequestsHttpException;
 use Leevel\Throttler\IThrottler;
 
@@ -45,22 +44,13 @@ class Throttler
     protected $throttler;
 
     /**
-     * HTTP Response.
-     *
-     * @var \Leevel\Http\IResponse
-     */
-    protected $response;
-
-    /**
      * 构造函数.
      *
      * @param \Leevel\Throttler\IThrottler $throttler
-     * @param \Leevel\Http\IResponse       $response
      */
-    public function __construct(IThrottler $throttler, IResponse $response)
+    public function __construct(IThrottler $throttler)
     {
         $this->throttler = $throttler;
-        $this->response = $response;
     }
 
     /**
@@ -68,31 +58,24 @@ class Throttler
      *
      * @param \Closure              $next
      * @param \Leevel\Http\IRequest $request
-     * @param int                   $limit
-     * @param int                   $time
+     * @param int&string            $limit
+     * @param int&string            $time
      */
     public function handle(Closure $next, IRequest $request, $limit = 60, $time = 60)
     {
-        $rateLimiter = $this->throttler->create(null, (int) $limit, (int) $time);
+        $rateLimiter = $this->throttler->
+
+        setRequest($request)->
+
+        create(null, (int) $limit, (int) $time);
 
         if ($rateLimiter->attempt()) {
-            $this->header($rateLimiter);
+            $e = new TooManyRequestsHttpException('Too many attempts.');
+            $e->setHeaders($rateLimiter->header());
 
-            throw new TooManyRequestsHttpException('Too many attempts.');
+            throw $e;
         }
 
-        $this->header($rateLimiter);
-
         $next($request);
-    }
-
-    /**
-     * 发送 HEADER.
-     *
-     * @param \Leevel\Throttler\IRateLimiter $rateLimiter
-     */
-    protected function header(IRateLimiter $rateLimiter)
-    {
-        $this->response->headers($rateLimiter->toArray());
     }
 }
