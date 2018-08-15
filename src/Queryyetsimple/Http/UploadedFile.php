@@ -174,48 +174,37 @@ class UploadedFile extends File
      * 返回文件最大上传字节
      *
      * @return int
+     * @codeCoverageIgnoreStart
      */
     public static function getMaxFilesize()
     {
         $iniMax = strtolower(ini_get('upload_max_filesize'));
 
         if ('' === $iniMax) {
-            // @codeCoverageIgnoreStart
             return PHP_INT_MAX;
-            // @codeCoverageIgnoreEnd
         }
 
         $max = ltrim($iniMax, '+');
 
         if (0 === strpos($max, '0x')) {
-            /** @codeCoverageIgnoreStart */
             $max = intval($max, 16);
-        // @codeCoverageIgnoreEnd
         } elseif (0 === strpos($max, '0')) {
-            /** @codeCoverageIgnoreStart */
             $max = intval($max, 8);
-        // @codeCoverageIgnoreEnd
         } else {
             $max = (int) $max;
         }
 
         switch (substr($iniMax, -1)) {
             case 't':
-                // @codeCoverageIgnoreStart
                 $max *= 1024;
-                // @codeCoverageIgnoreEnd
                 // no break
             case 'g':
-                // @codeCoverageIgnoreStart
                 $max *= 1024;
-                // @codeCoverageIgnoreEnd
                 // no break
             case 'm':
                 $max *= 1024;
-            // @codeCoverageIgnoreStart
-            // no break
+                // no break
             case 'k':
-            // @codeCoverageIgnoreEnd
                 $max *= 1024;
         }
 
