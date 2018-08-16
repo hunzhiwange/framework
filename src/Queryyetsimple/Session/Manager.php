@@ -59,25 +59,14 @@ class Manager extends Managers
     }
 
     /**
-     * 创建 cookie 缓存.
+     * 创建 file 缓存.
      *
      * @param array $options
      */
-    protected function makeConnectCookie($options = [])
+    protected function makeConnectFile($options = [])
     {
-    }
-
-    /**
-     * 创建 memcache 缓存.
-     *
-     * @param array $options
-     *
-     * @return \Leevel\Session\memcache
-     */
-    protected function makeConnectMemcache($options = [])
-    {
-        return new Memcache(
-            $this->normalizeConnectOption('memcache', $options)
+        return new File(
+            $this->normalizeConnectOption('file', $options)
         );
     }
 

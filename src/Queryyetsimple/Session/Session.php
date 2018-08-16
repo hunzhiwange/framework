@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace Leevel\Session;
 
 use BadMethodCallException;
+use Leevel\Support\Str;
 use RuntimeException;
 use SessionHandlerInterface;
 
@@ -36,30 +37,31 @@ use SessionHandlerInterface;
 class Session implements ISession
 {
     /**
-     * session 状态启用.
+     * 默认 session 名字.
      *
-     * @var int
+     * @var string
      */
-    const SESSION_ACTIVE = 2;
+    const SESSION_NAME = 'UID';
+    /**
+     * session ID.
+     * 相当于 session_id.
+     *
+     * @var string
+     */
+    protected $id;
 
     /**
-     * session 状态未运行.
+     * session 名字.
+     * 相当于 session_name.
      *
-     * @var int
+     * @var string
      */
-    const SESSION_NONE = 1;
-
-    /**
-     * session 状态关闭.
-     *
-     * @var int
-     */
-    const SESSION_DISABLED = 0;
+    protected $name;
 
     /**
      * session handler.
      *
-     * @var null|\SessionHandlerInterface
+     * @var \SessionHandlerInterface
      */
     protected $connect;
 
@@ -71,29 +73,33 @@ class Session implements ISession
     protected $started = false;
 
     /**
+     * session 数据.
+     *
+     * @var array
+     */
+    protected $datas = [];
+
+    /**
      * 配置.
      *
      * @var array
      */
     protected $option = [
-        'default'        => null,
-        'prefix'         => 'q_',
         'id'             => null,
         'name'           => null,
+        'default'        => null,
+        'prefix'         => 'q_',
         'cookie_domain'  => null,
-        'cache_limiter'  => null,
         'expire'         => 86400,
-        'save_path'      => null,
-        'gc_probability' => null,
     ];
 
     /**
      * 构造函数.
      *
-     * @param null|\SessionHandlerInterface $connect
-     * @param array                         $option
+     * @param \SessionHandlerInterface $connect
+     * @param array                    $option
      */
-    public function __construct(SessionHandlerInterface $connect = null, array $option = [])
+    public function __construct(SessionHandlerInterface $connect, array $option = [])
     {
         $this->connect = $connect;
 
@@ -126,74 +132,43 @@ class Session implements ISession
      */
     public function start()
     {
-        if (headers_sent() ||
-            $this->isStart() ||
-            self::SESSION_ACTIVE === $this->status()) {
+        if ($this->isStart()) {
             return $this;
         }
 
-        // 设置 session 不自动启动
-        ini_set('session.auto_start', '0');
+        $this->setId($this->option['id']);
 
-        // 设置 session id
-        if ($this->option['id']) {
-            $this->setId($this->option['id']);
-        }
+        $this->setName($this->option['name']);
 
-        // session name
-        if ($this->option['name']) {
-            $this->setName($this->option['name']);
-        }
-
-        // cookie set
-        $this->setUseCookies();
-
-        // save path
-        if ($this->option['save_path']) {
-            $this->setSavePath($this->option['save_path']);
-        }
-
-        // cookie domain
-        if ($this->option['cookie_domain']) {
-            $this->setCookieDomain($this->option['cookie_domain']);
-        }
-
-        // session expire
-        if ($this->option['expire']) {
-            $this->setCacheExpire($this->option['expire']);
-        }
-
-        // cache limiter
-        if ($this->option['cache_limiter']) {
-            $this->setCacheLimiter($this->option['cache_limiter']);
-        }
-
-        // gc_probability
-        if ($this->option['gc_probability']) {
-            $this->setGcProbability($this->option['gc_probability']);
-        }
-
-        // 驱动
-        if ($this->connect &&
-            !session_set_save_handler($this->connect)) {
-            throw new RuntimeException(
-                sprintf(
-                    'Session drive %s settings failed.',
-                    get_class($this->connect)
-                )
-            );
-        }
-
-        // 启动 session
-        if (!session_start()) {
-            throw new RuntimeException(
-                'Session start failed'
-            );
-        }
+        $this->loadData();
 
         $this->started = true;
 
         return $this;
+    }
+
+    /**
+     * 程序执行保存 session.
+     */
+    public function save()
+    {
+        if ($this->isStart()) {
+            $this->unregisterFlash();
+
+            $this->connect->write($this->getId(), serialize($this->datas));
+
+            $this->started = false;
+        }
+    }
+
+    /**
+     * 取回所有 session 数据.
+     *
+     * @return array
+     */
+    public function all(): array
+    {
+        return $this->datas;
     }
 
     /**
@@ -204,10 +179,9 @@ class Session implements ISession
      */
     public function set(string $name, $value)
     {
-        $this->checkStart();
-
         $name = $this->getNormalizeName($name);
-        $_SESSION[$name] = $value;
+
+        $this->datas[$name] = $value;
     }
 
     /**
@@ -218,8 +192,6 @@ class Session implements ISession
      */
     public function put($keys, $value = null)
     {
-        $this->checkStart();
-
         if (!is_array($keys)) {
             $keys = [
                 $keys => $value,
@@ -237,7 +209,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function push($key, $value)
+    public function push(string $key, $value)
     {
         $arr = $this->get($key, []);
         $arr[] = $value;
@@ -251,7 +223,7 @@ class Session implements ISession
      * @param string $key
      * @param array  $value
      */
-    public function merge($key, array $value)
+    public function merge(string $key, array $value)
     {
         $this->set($key, array_unique(array_merge($this->get($key, []), $value)));
     }
@@ -262,7 +234,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function pop($key, array $value)
+    public function pop(string $key, array $value)
     {
         $this->set($key, array_diff($this->get($key, []), $value));
     }
@@ -274,7 +246,7 @@ class Session implements ISession
      * @param mixed  $keys
      * @param mixed  $value
      */
-    public function arr($key, $keys, $value = null)
+    public function arr(string $key, $keys, $value = null)
     {
         $arr = $this->get($key, []);
 
@@ -293,7 +265,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $keys
      */
-    public function arrDelete($key, $keys)
+    public function arrDelete(string $key, $keys)
     {
         $arr = $this->get($key, []);
 
@@ -322,11 +294,9 @@ class Session implements ISession
      */
     public function get(string $name, $value = null)
     {
-        $this->checkStart();
-
         $name = $this->getNormalizeName($name);
 
-        return $_SESSION[$name] ?? $value;
+        return $this->datas[$name] ?? $value;
     }
 
     /**
@@ -346,23 +316,14 @@ class Session implements ISession
      * 删除 session.
      *
      * @param string $name
-     * @param bool   $prefix
-     *
-     * @return bool
      */
-    public function delete(string $name, $prefix = true)
+    public function delete(string $name)
     {
-        $this->checkStart();
+        $name = $this->getNormalizeName($name);
 
-        if ($prefix) {
-            $name = $this->getNormalizeName($name);
+        if (isset($this->datas[$name])) {
+            unset($this->datas[$name]);
         }
-
-        if (isset($_SESSION[$name])) {
-            unset($_SESSION[$name]);
-        }
-
-        return true;
     }
 
     /**
@@ -374,31 +335,17 @@ class Session implements ISession
      */
     public function has(string $name)
     {
-        $this->checkStart();
-
         $name = $this->getNormalizeName($name);
 
-        return isset($_SESSION[$name]);
+        return isset($this->datas[$name]);
     }
 
     /**
      * 删除 session.
-     *
-     * @param bool $prefix
      */
-    public function clear($prefix = true)
+    public function clear()
     {
-        $this->checkStart();
-
-        $strPrefix = $this->option['prefix'];
-
-        foreach ($_SESSION as $sKey => $val) {
-            if (true === $prefix && $strPrefix && 0 === strpos($sKey, $strPrefix)) {
-                $this->delete($sKey, false);
-            } else {
-                $this->delete($sKey, false);
-            }
-        }
+        $this->datas = [];
     }
 
     /**
@@ -407,7 +354,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function flash($key, $value = null)
+    public function flash(string $key, $value = null)
     {
         if (null === $value) {
             return $this->getFlash($key);
@@ -441,7 +388,7 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function nowFlash($key, $value)
+    public function nowFlash(string $key, $value)
     {
         $this->set($this->flashDataKey($key), $value);
 
@@ -484,7 +431,7 @@ class Session implements ISession
      *
      * @return mixed
      */
-    public function getFlash($key, $defaults = null)
+    public function getFlash(string $key, $defaults = null)
     {
         if (false !== strpos($key, '\\')) {
             return $this->getPartData(
@@ -533,19 +480,17 @@ class Session implements ISession
      */
     public function unregisterFlash()
     {
-        if ($this->isStart()) {
-            $arr = $this->get($this->flashNewKey(), []);
-            $old = $this->get($this->flashOldKey(), []);
+        $arr = $this->get($this->flashNewKey(), []);
+        $old = $this->get($this->flashOldKey(), []);
 
-            foreach ($old as $item) {
-                $this->delete($this->flashDataKey($item));
-            }
-
-            $this->delete($this->flashNewKey());
-            $this->set($this->flashOldKey(), $arr);
-
-            unset($arr, $old);
+        foreach ($old as $item) {
+            $this->delete($this->flashDataKey($item));
         }
+
+        $this->delete($this->flashNewKey());
+        $this->set($this->flashOldKey(), $arr);
+
+        unset($arr, $old);
     }
 
     /**
@@ -563,38 +508,21 @@ class Session implements ISession
      *
      * @param string $url
      */
-    public function setPrevUrl($url)
+    public function setPrevUrl(string $url)
     {
         return $this->set($this->prevUrlKey(), $url);
     }
 
     /**
-     * 暂停 session.
-     */
-    public function pause()
-    {
-        $this->checkStart();
-        session_write_close();
-    }
-
-    /**
      * 终止会话.
-     *
-     * @return bool
      */
     public function destroy()
     {
-        $this->checkStart();
+        $this->clear();
 
-        $this->clear(false);
+        $this->connect->destroy();
 
-        $name = $this->sessionName();
-
-        if (isset($_COOKIE[$name])) {
-            setcookie($name, '', time() - 42000, '/');
-        }
-
-        session_destroy();
+        $this->started = false;
     }
 
     /**
@@ -602,28 +530,9 @@ class Session implements ISession
      *
      * @return bool
      */
-    public function isStart()
+    public function isStart(): bool
     {
         return $this->started;
-    }
-
-    /**
-     * session 状态
-     *
-     * @return int
-     */
-    public function status()
-    {
-        $status = session_status();
-
-        switch ($status) {
-            case PHP_SESSION_DISABLED:
-                return self::SESSION_DISABLED;
-            case PHP_SESSION_ACTIVE:
-                return self::SESSION_ACTIVE;
-        }
-
-        return self::SESSION_NONE;
     }
 
     /**
@@ -631,9 +540,9 @@ class Session implements ISession
      *
      * @param string $name
      */
-    public function setName(string $name)
+    public function setName(?string $name = null)
     {
-        session_name($name);
+        $this->name = $name ?: static::SESSION_NAME;
     }
 
     /**
@@ -643,17 +552,17 @@ class Session implements ISession
      */
     public function getName(): string
     {
-        return session_name();
+        return $this->name;
     }
 
     /**
      * 设置 SESSION ID.
      *
-     * @param string $name
+     * @param string $id
      */
-    public function setId(string $id)
+    public function setId(?string $id = null)
     {
-        session_id($id);
+        $this->id = $id ?: $this->generateSessionId();
     }
 
     /**
@@ -663,131 +572,37 @@ class Session implements ISession
      */
     public function getId(): string
     {
-        return session_id();
+        return $this->id;
     }
 
     /**
      * 重新生成 SESSION ID.
-     *
-     * @param bool $deleteOldSession
-     *
-     * @return $this
      */
-    public function regenerateId(bool $deleteOldSession = true)
+    public function regenerateId(): string
     {
-        session_regenerate_id($deleteOldSession);
-
-        return $this;
+        return $this->id = $this->generateSessionId();
     }
 
     /**
-     * 设置 save path.
-     *
-     * @param string $savepath
-     */
-    public function setSavePath(string $savepath)
-    {
-        session_save_path($savepath);
-    }
-
-    /**
-     * 获取 save path.
+     * 生成 SESSION ID.
      *
      * @return string
      */
-    public function getSavePath()
+    protected function generateSessionId(): string
     {
-        return session_save_path();
+        return sha1($this->parseMicrotime().'.'.time().'.'.Str::randAlphaNum(32));
     }
 
     /**
-     * 设置 cookie_domain.
-     *
-     * @param string $domain
-     */
-    public function setCookieDomain(string $domain)
-    {
-        ini_set('session.cookie_domain', $domain);
-    }
-
-    /**
-     * 获取 cookie_domain.
+     * 生成微秒数.
      *
      * @return string
      */
-    public function getCookieDomain()
+    protected function parseMicrotime(): string
     {
-        return ini_get('session.cookie_domain');
-    }
+        list($usec, $sec) = explode(' ', microtime());
 
-    /**
-     * 设置 cache expire.
-     *
-     * @param int $second
-     */
-    public function setCacheExpire(int $second)
-    {
-        $second = (string) $second;
-
-        ini_set('session.gc_maxlifetime', (string) $second);
-        ini_set('session.cookie_lifetime', (string) $second);
-    }
-
-    /**
-     * session 使用 cookie.
-     *
-     * @return bool
-     */
-    public function setUseCookies()
-    {
-        ini_set('session.use_cookies', '1');
-        ini_set('session.use_trans_sid', '0');
-    }
-
-    /**
-     * 设置 cache limiter.
-     *
-     * @param string $limiter
-     */
-    public function setCacheLimiter(string $limiter)
-    {
-        session_cache_limiter($limiter);
-    }
-
-    /**
-     * 获取 cache limiter.
-     *
-     * @return string
-     */
-    public function getCacheLimiter()
-    {
-        return session_cache_limiter();
-    }
-
-    /**
-     * 设置 session 垃圾回收概率分子
-     * 分母为 session.gc_divisor.
-     *
-     * @param int $probability
-     */
-    public function setGcProbability(int $probability)
-    {
-        $probability = (string) $probability;
-
-        if ($probability >= 1 && $probability <= 100) {
-            ini_set('session.gc_probability', $probability);
-        }
-    }
-
-    /**
-     * 获取 session 垃圾回收概率分子
-     * 分母为 session.gc_divisor.
-     *
-     * @return int
-     */
-    public function getGcProbability()
-    {
-        return ini_get('session.gc_probability');
+        return (string) ((float) $usec + (float) $sec);
     }
 
     /**
@@ -797,7 +612,7 @@ class Session implements ISession
      *
      * @return string
      */
-    protected function getNormalizeName($name)
+    protected function getNormalizeName(string $name)
     {
         return $this->option['prefix'].$name;
     }
@@ -809,9 +624,25 @@ class Session implements ISession
     {
         if (!$this->isStart()) {
             throw new RuntimeException(
-                'Session is not start yet'
+                'Session is not start yet.'
             );
         }
+    }
+
+    /**
+     * 载入 session 数据.
+     */
+    protected function loadData()
+    {
+        $this->datas = array_merge($this->data, $this->loadDataFromConnect());
+    }
+
+    /**
+     * 从驱动载入 session 数据.
+     */
+    protected function loadDataFromConnect()
+    {
+        return $this->connect->read($this->getId());
     }
 
     /**
@@ -863,7 +694,7 @@ class Session implements ISession
      *
      * @return mixed
      */
-    protected function getPartData($key, $defaults = null, string $type = null)
+    protected function getPartData(string $key, $defaults = null, ?string $type = null)
     {
         list($key, $name) = explode('\\', $key);
 
@@ -901,7 +732,7 @@ class Session implements ISession
      *
      * @return string
      */
-    protected function flashDataKey($key)
+    protected function flashDataKey(string $key)
     {
         return 'flash.data.'.$key;
     }

@@ -20,10 +20,11 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
+use Leevel\Cache\ICache;
 use SessionHandlerInterface;
 
 /**
- * aconnect 驱动抽象类.
+ * connect 驱动抽象类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -51,11 +52,19 @@ abstract class Connect implements SessionHandlerInterface
     /**
      * 构造函数.
      *
-     * @param array $option
+     * @param \Leevel\Cache\ICache $cache
      */
-    public function __construct(array $option = [])
+    public function __construct(ICache $cache)
     {
-        $this->option = array_merge($this->option, $option);
+        $this->cache = $cache;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function open($savePath, $sessionName)
+    {
+        return true;
     }
 
     /**
@@ -63,9 +72,6 @@ abstract class Connect implements SessionHandlerInterface
      */
     public function close()
     {
-        $this->gc(ini_get('session.gc_maxlifetime'));
-        $this->cache->close();
-
         return true;
     }
 
@@ -75,7 +81,7 @@ abstract class Connect implements SessionHandlerInterface
     public function read($sessionid)
     {
         return $this->cache->get(
-            $this->getSessionName($sessionid)
+            $this->getSessionName($sessionid), []
         );
     }
 

@@ -21,19 +21,18 @@ declare(strict_types=1);
 namespace Leevel\Session;
 
 use Leevel\Cache\Cache;
-use Leevel\Cache\Redis as CacheRedis;
-use Leevel\Cache\Redis\PhpRedis;
+use Leevel\Cache\File as CacheFile;
 
 /**
- * session.redis.
+ * session.file.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.06.05
+ * @since 2018.08.16
  *
  * @version 1.0
  */
-class Redis extends Connect
+class File extends Connect
 {
     /**
      * 配置.
@@ -41,15 +40,11 @@ class Redis extends Connect
      * @var array
      */
     protected $option = [
-        'host'       => '127.0.0.1',
-        'port'       => 6379,
-        'password'   => '',
-        'select'     => 0,
-        'timeout'    => 0,
-        'persistent' => false,
-        'serialize'  => true,
-        'prefix'     => null,
-        'expire'     => null,
+        'time_preset' => [],
+        'prefix'      => '_',
+        'expire'      => 86400,
+        'path'        => '',
+        'serialize'   => true,
     ];
 
     /**
@@ -65,16 +60,12 @@ class Redis extends Connect
     }
 
     /**
-     * redis 缓存.
+     * 文件缓存.
      *
      * @return \Leevel\Cache\Cache
      */
     public function createCache(): Cache
     {
-        return new Cache(
-            new CacheRedis(
-                new PhpRedis($options), $this->option
-            )
-        );
+        return new Cache(new CacheFile($this->option));
     }
 }

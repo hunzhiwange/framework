@@ -39,6 +39,18 @@ interface ISession
     public function start();
 
     /**
+     * 程序执行保存 session.
+     */
+    public function save();
+
+    /**
+     * 取回所有 session 数据.
+     *
+     * @return array
+     */
+    public function all(): array;
+
+    /**
      * 设置 session.
      *
      * @param string $name
@@ -60,7 +72,7 @@ interface ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function push($key, $value);
+    public function push(string $key, $value);
 
     /**
      * 合并元素.
@@ -68,7 +80,7 @@ interface ISession
      * @param string $key
      * @param array  $value
      */
-    public function merge($key, array $value);
+    public function merge(string $key, array $value);
 
     /**
      * 弹出元素.
@@ -76,7 +88,7 @@ interface ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function pop($key, array $value);
+    public function pop(string $key, array $value);
 
     /**
      * 数组插入键值对数据.
@@ -85,7 +97,7 @@ interface ISession
      * @param mixed  $keys
      * @param mixed  $value
      */
-    public function arr($key, $keys, $value = null);
+    public function arr(string $key, $keys, $value = null);
 
     /**
      * 数组键值删除数据.
@@ -93,7 +105,7 @@ interface ISession
      * @param string $key
      * @param mixed  $keys
      */
-    public function arrDelete($key, $keys);
+    public function arrDelete(string $key, $keys);
 
     /**
      * 取回 session.
@@ -119,11 +131,8 @@ interface ISession
      * 删除 session.
      *
      * @param string $name
-     * @param bool   $prefix
-     *
-     * @return bool
      */
-    public function delete(string $name, $prefix = true);
+    public function delete(string $name);
 
     /**
      * 是否存在 session.
@@ -136,10 +145,8 @@ interface ISession
 
     /**
      * 删除 session.
-     *
-     * @param bool $prefix
      */
-    public function clear($prefix = true);
+    public function clear();
 
     /**
      * 闪存一个数据，当前请求和下一个请求可用.
@@ -147,7 +154,7 @@ interface ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function flash($key, $value = null);
+    public function flash(string $key, $value = null);
 
     /**
      * 批量闪存数据，当前请求和下一个请求可用.
@@ -162,7 +169,7 @@ interface ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function nowFlash($key, $value);
+    public function nowFlash(string $key, $value);
 
     /**
      * 保持所有闪存数据.
@@ -184,7 +191,7 @@ interface ISession
      *
      * @return mixed
      */
-    public function getFlash($key, $defaults = null);
+    public function getFlash(string $key, $defaults = null);
 
     /**
      * 删除闪存数据.
@@ -215,17 +222,10 @@ interface ISession
      *
      * @param string $url
      */
-    public function setPrevUrl($url);
-
-    /**
-     * 暂停 session.
-     */
-    public function pause();
+    public function setPrevUrl(string $url);
 
     /**
      * 终止会话.
-     *
-     * @return bool
      */
     public function destroy();
 
@@ -234,14 +234,7 @@ interface ISession
      *
      * @return bool
      */
-    public function isStart();
-
-    /**
-     * session 状态
-     *
-     * @return int
-     */
-    public function status();
+    public function isStart(): bool;
 
     /**
      * 设置 SESSION 名字.
@@ -260,9 +253,9 @@ interface ISession
     /**
      * 设置 SESSION ID.
      *
-     * @param string $name
+     * @param string $id
      */
-    public function setId(string $id);
+    public function setId(?string $id = null);
 
     /**
      * 取得 SESSION ID.
@@ -272,74 +265,7 @@ interface ISession
     public function getId(): string;
 
     /**
-     * 设置 save path.
-     *
-     * @param string $savepath
+     * 重新生成 SESSION ID.
      */
-    public function setSavePath(string $savepath);
-
-    /**
-     * 获取 save path.
-     *
-     * @return string
-     */
-    public function getSavePath();
-
-    /**
-     * 设置 cookie_domain.
-     *
-     * @param string $domain
-     */
-    public function setCookieDomain(string $domain);
-
-    /**
-     * 获取 cookie_domain.
-     *
-     * @return string
-     */
-    public function getCookieDomain();
-
-    /**
-     * 设置 cache expire.
-     *
-     * @param int $second
-     */
-    public function setCacheExpire(int $second);
-
-    /**
-     * session 使用 cookie.
-     *
-     * @return bool
-     */
-    public function setUseCookies();
-
-    /**
-     * 设置 cache limiter.
-     *
-     * @param string $limiter
-     */
-    public function setCacheLimiter(string $limiter);
-
-    /**
-     * 获取 cache limiter.
-     *
-     * @return string
-     */
-    public function getCacheLimiter();
-
-    /**
-     * 设置 session 垃圾回收概率分子
-     * 分母为 session.gc_divisor.
-     *
-     * @param int $probability
-     */
-    public function setGcProbability(int $probability);
-
-    /**
-     * 获取 session 垃圾回收概率分子
-     * 分母为 session.gc_divisor.
-     *
-     * @return int
-     */
-    public function getGcProbability();
+    public function regenerateId(): string;
 }

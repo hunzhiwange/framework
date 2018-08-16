@@ -75,7 +75,7 @@ class Session
      */
     public function terminate(Closure $next, Request $request, Response $response)
     {
-        $this->unregisterFlash();
+        $this->saveSession();
         $this->setPrevUrl($request);
 
         $next($request, $response);
@@ -90,11 +90,11 @@ class Session
     }
 
     /**
-     * 清理闪存.
+     * 保存 session.
      */
-    protected function unregisterFlash()
+    protected function saveSession()
     {
-        $this->manager->unregisterFlash();
+        $this->manager->save();
     }
 
     /**
