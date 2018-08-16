@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use BadMethodCallException;
 use Leevel\Support\Str;
 use RuntimeException;
 use SessionHandlerInterface;
@@ -36,12 +35,6 @@ use SessionHandlerInterface;
  */
 class Session implements ISession
 {
-    /**
-     * 默认 session 名字.
-     *
-     * @var string
-     */
-    const SESSION_NAME = 'UID';
     /**
      * session ID.
      * 相当于 session_id.
@@ -107,25 +100,6 @@ class Session implements ISession
     }
 
     /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public function __call(string $method, array $args)
-    {
-        if (null === $this->connect) {
-            throw new BadMethodCallException(
-                sprintf('Method %s is not exits.', $method)
-            );
-        }
-
-        return $this->connect->{$method}(...$args);
-    }
-
-    /**
      * 启动 session.
      *
      * @return $this
@@ -152,13 +126,17 @@ class Session implements ISession
      */
     public function save()
     {
-        if ($this->isStart()) {
-            $this->unregisterFlash();
-
-            $this->connect->write($this->getId(), serialize($this->datas));
-
-            $this->started = false;
+        if (!$this->isStart()) {
+            throw new RuntimeException(
+                'Session is not start yet.'
+            );
         }
+
+        $this->unregisterFlash();
+
+        $this->connect->write($this->getId(), serialize($this->datas));
+
+        $this->started = false;
     }
 
     /**
@@ -225,7 +203,7 @@ class Session implements ISession
      */
     public function merge(string $key, array $value)
     {
-        $this->set($key, array_unique(array_merge($this->get($key, []), $value)));
+        $this->set($key, array_merge($this->get($key, []), $value));
     }
 
     /**
@@ -354,11 +332,8 @@ class Session implements ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function flash(string $key, $value = null)
+    public function flash(string $key, $value)
     {
-        if (null === $value) {
-            return $this->getFlash($key);
-        }
         $this->set($this->flashDataKey($key), $value);
 
         $this->mergeNewFlash([
@@ -383,7 +358,7 @@ class Session implements ISession
     }
 
     /**
-     * 闪存一个 flash 用于当前请求使用，下一个请求将无法获取.
+     * 闪存一个 flash 用于当前请求使用,下一个请求将无法获取.
      *
      * @param string $key
      * @param mixed  $value
@@ -395,6 +370,19 @@ class Session implements ISession
         $this->mergeOldFlash([
             $key,
         ]);
+    }
+
+    /**
+     * 批量闪存数据,用于当前请求使用，下一个请求将无法获取.
+     *
+     * @param string $key
+     * @param mixed  $value
+     */
+    public function nowFlashs(array $flash)
+    {
+        foreach ($flash as $key => $value) {
+            $this->nowFlash($key, $value);
+        }
     }
 
     /**
@@ -434,11 +422,7 @@ class Session implements ISession
     public function getFlash(string $key, $defaults = null)
     {
         if (false !== strpos($key, '\\')) {
-            return $this->getPartData(
-                $key,
-                $defaults,
-                'flash'
-            );
+            return $this->getPartData($key, $defaults, 'flash');
         }
 
         return $this->get(
@@ -519,9 +503,10 @@ class Session implements ISession
     public function destroy()
     {
         $this->clear();
+        $this->connect->destroy($this->getId());
 
-        $this->connect->destroy();
-
+        $this->id = null;
+        $this->name = null;
         $this->started = false;
     }
 
@@ -550,7 +535,7 @@ class Session implements ISession
      *
      * @return string
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -570,7 +555,7 @@ class Session implements ISession
      *
      * @return string
      */
-    public function getId(): string
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -581,6 +566,16 @@ class Session implements ISession
     public function regenerateId(): string
     {
         return $this->id = $this->generateSessionId();
+    }
+
+    /**
+     * 返回连接.
+     *
+     * @return \SessionHandlerInterface
+     */
+    public function getConnect(): SessionHandlerInterface
+    {
+        return $this->connect;
     }
 
     /**
@@ -614,19 +609,7 @@ class Session implements ISession
      */
     protected function getNormalizeName(string $name)
     {
-        return $this->option['prefix'].$name;
-    }
-
-    /**
-     * 验证 session 是否开启.
-     */
-    protected function checkStart()
-    {
-        if (!$this->isStart()) {
-            throw new RuntimeException(
-                'Session is not start yet.'
-            );
-        }
+        return $name;
     }
 
     /**
@@ -634,7 +617,7 @@ class Session implements ISession
      */
     protected function loadData()
     {
-        $this->datas = array_merge($this->data, $this->loadDataFromConnect());
+        $this->datas = array_merge($this->datas, $this->loadDataFromConnect());
     }
 
     /**

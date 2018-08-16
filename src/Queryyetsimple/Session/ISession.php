@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
+use SessionHandlerInterface;
+
 /**
  * ISession 接口.
  *
@@ -31,6 +33,13 @@ namespace Leevel\Session;
  */
 interface ISession
 {
+    /**
+     * 默认 session 名字.
+     *
+     * @var string
+     */
+    const SESSION_NAME = 'UID';
+
     /**
      * 启动 session.
      *
@@ -154,7 +163,7 @@ interface ISession
      * @param string $key
      * @param mixed  $value
      */
-    public function flash(string $key, $value = null);
+    public function flash(string $key, $value);
 
     /**
      * 批量闪存数据，当前请求和下一个请求可用.
@@ -248,7 +257,7 @@ interface ISession
      *
      * @return string
      */
-    public function getName(): string;
+    public function getName(): ?string;
 
     /**
      * 设置 SESSION ID.
@@ -262,10 +271,17 @@ interface ISession
      *
      * @return string
      */
-    public function getId(): string;
+    public function getId(): ?string;
 
     /**
      * 重新生成 SESSION ID.
      */
     public function regenerateId(): string;
+
+    /**
+     * 返回连接.
+     *
+     * @return \SessionHandlerInterface
+     */
+    public function getConnect(): SessionHandlerInterface;
 }

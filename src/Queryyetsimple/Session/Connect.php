@@ -81,8 +81,8 @@ abstract class Connect implements SessionHandlerInterface
     public function read($sessionid)
     {
         return $this->cache->get(
-            $this->getSessionName($sessionid), []
-        );
+            $this->getSessionName($sessionid)
+        ) ?: [];
     }
 
     /**
@@ -101,7 +101,7 @@ abstract class Connect implements SessionHandlerInterface
      */
     public function destroy($sessionid)
     {
-        $this->cache->delele(
+        $this->cache->delete(
             $this->getSessionName($sessionid)
         );
     }
@@ -112,6 +112,16 @@ abstract class Connect implements SessionHandlerInterface
     public function gc($maxlifetime)
     {
         return true;
+    }
+
+    /**
+     * 返回缓存仓储.
+     *
+     * @return \Leevel\Cache\ICache
+     */
+    public function getCache(): ICache
+    {
+        return $this->cache;
     }
 
     /**
