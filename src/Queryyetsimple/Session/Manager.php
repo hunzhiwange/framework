@@ -52,9 +52,20 @@ class Manager extends Managers
      */
     protected function createConnect($connect)
     {
-        return new Session(
-            $connect,
-            $this->getCommonOption()
+        return new Session($connect, $this->getCommonOption());
+    }
+
+    /**
+     * 创建 nulls 缓存.
+     *
+     * @param array $options
+     *
+     * @return \Leevel\Session\Nulls
+     */
+    protected function makeConnectNulls($options = []): Nulls
+    {
+        return new Nulls(
+            $this->normalizeConnectOption('nulls', $options)
         );
     }
 
@@ -62,8 +73,10 @@ class Manager extends Managers
      * 创建 file 缓存.
      *
      * @param array $options
+     *
+     * @return \Leevel\Session\File
      */
-    protected function makeConnectFile($options = [])
+    protected function makeConnectFile($options = []): File
     {
         return new File(
             $this->normalizeConnectOption('file', $options)
@@ -75,9 +88,9 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\Session\redis
+     * @return \Leevel\Session\Redis
      */
-    protected function makeConnectRedis($options = [])
+    protected function makeConnectRedis($options = []): Redis
     {
         return new Redis(
             $this->normalizeConnectOption('redis', $options)

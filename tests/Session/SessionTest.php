@@ -20,9 +20,11 @@ declare(strict_types=1);
 
 namespace Tests\Session;
 
+use Leevel\Cache\Cache;
 use Leevel\Session\File;
 use Leevel\Session\ISession;
 use Leevel\Session\Session;
+use SessionHandlerInterface;
 use Tests\TestCase;
 
 /**
@@ -36,6 +38,15 @@ use Tests\TestCase;
  */
 class SessionTest extends TestCase
 {
+    protected function tearDown()
+    {
+        $dirPath = __DIR__.'/cache';
+
+        if (is_dir($dirPath)) {
+            rmdir($dirPath);
+        }
+    }
+
     public function testBaseUse()
     {
         $session = new Session($this->createFileSessionHandler());
@@ -61,6 +72,105 @@ class SessionTest extends TestCase
 
         $session->start();
         $this->assertTrue($session->isStart());
+
+        $this->assertInstanceof(SessionHandlerInterface::class, $session->getConnect());
+    }
+
+    public function testSave()
+    {
+        $session = new Session($this->createFileSessionHandler());
+
+        $this->assertFalse($session->isStart());
+        $this->assertNull($session->getId());
+        $this->assertNull($session->getName());
+
+        $session->start();
+        $this->assertTrue($session->isStart());
+
+        $session->save();
+        $this->assertFalse($session->isStart());
+
+        $sessionId = $session->getId();
+        $dirPath = __DIR__.'/cache';
+        $filePath = $dirPath.'/__'.$sessionId.'.php';
+
+        $this->assertFileExists($filePath);
+
+        $session->destroy();
+        $this->assertFileNotExists($filePath);
+    }
+
+    public function testSaveAndStart()
+    {
+        $session = new Session($this->createFileSessionHandler());
+
+        $this->assertFalse($session->isStart());
+        $this->assertNull($session->getId());
+        $this->assertNull($session->getName());
+
+        $session->start();
+        $this->assertTrue($session->isStart());
+        $this->assertSame([], $session->all());
+
+        $session->set('foo', 'bar');
+        $session->set('hello', 'world');
+        $this->assertSame(['foo' => 'bar', 'hello' => 'world'], $session->all());
+
+        $session->save();
+        $this->assertFalse($session->isStart());
+
+        $session->clear();
+        $this->assertSame([], $session->all());
+
+        $session->set('other', 'value');
+        $this->assertSame(['other' => 'value'], $session->all());
+
+        $this->assertFalse($session->isStart());
+
+        $sessionId = $session->getId();
+        $session->start(null, $sessionId);
+
+        $this->assertTrue($session->isStart());
+        $this->assertSame(['other' => 'value', 'foo' => 'bar', 'hello' => 'world', 'flash.old.key' => []], $session->all());
+
+        $session->save();
+        $this->assertFalse($session->isStart());
+
+        $sessionId = $session->getId();
+        $dirPath = __DIR__.'/cache';
+        $filePath = $dirPath.'/__'.$sessionId.'.php';
+
+        $this->assertFileExists($filePath);
+
+        $session->destroy();
+        $this->assertFileNotExists($filePath);
+    }
+
+    public function testSaveButNotStart()
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Session is not start yet.');
+
+        $session = new Session($this->createFileSessionHandler());
+
+        $this->assertFalse($session->isStart());
+        $this->assertNull($session->getId());
+        $this->assertNull($session->getName());
+
+        $session->save();
+    }
+
+    public function testGetConnect()
+    {
+        $session = new Session($this->createFileSessionHandler());
+
+        $this->assertInstanceof(SessionHandlerInterface::class, $connect = $session->getConnect());
+
+        $this->assertInstanceof(Cache::class, $connect->getCache());
+
+        $this->assertTrue($connect->open('', 'foo'));
+        $this->assertTrue($connect->close());
+        $this->assertTrue($connect->gc(0));
     }
 
     public function testPut()
@@ -165,6 +275,7 @@ class SessionTest extends TestCase
 
         $this->assertSame('me', $session->getPart('hello\\sub'));
         $this->assertSame(['foo' => 'bar'], $session->getPart('hello\\sub2.foo'));
+        $this->assertNull($session->getPart('hello\\sub2.foo.notFound'));
         $this->assertNull($session->getPart('hello\\notFound'));
         $this->assertSame(123, $session->getPart('hello\\notFound', 123));
     }
@@ -598,15 +709,18 @@ eot;
     {
         $session = new Session($this->createFileSessionHandler());
 
-        $session->nowFlashs(['hello' => 'world', 'foo' => 'bar']);
+        $session->flashs(['hello' => 'world', 'foo' => 'bar']);
 
         $flash = <<<'eot'
 array (
   'flash.data.hello' => 'world',
-  'flash.old.key' => 
+  'flash.new.key' => 
   array (
     0 => 'hello',
     1 => 'foo',
+  ),
+  'flash.old.key' => 
+  array (
   ),
   'flash.data.foo' => 'bar',
 )
@@ -623,13 +737,14 @@ eot;
 
         $flash = <<<'eot'
 array (
-  'flash.data.hello' => 'world',
+  'flash.new.key' => 
+  array (
+  ),
   'flash.old.key' => 
   array (
     0 => 'hello',
     1 => 'foo',
   ),
-  'flash.data.foo' => 'bar',
 )
 eot;
 
@@ -724,6 +839,23 @@ eot;
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
         $this->assertNull($session->getName());
+    }
+
+    public function testRegenerateId()
+    {
+        $session = new Session($this->createFileSessionHandler());
+
+        $this->assertFalse($session->isStart());
+        $this->assertNull($session->getId());
+        $this->assertNull($session->getName());
+
+        $session->start();
+        $this->assertTrue($session->isStart());
+        $this->assertNotNull($sessionId = $session->getId());
+        $this->assertNotNull($session->getName());
+
+        $session->regenerateId();
+        $this->assertFalse($sessionId === $session->getId());
     }
 
     protected function createFileSessionHandler()

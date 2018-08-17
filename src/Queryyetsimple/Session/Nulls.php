@@ -20,45 +20,19 @@ declare(strict_types=1);
 
 namespace Leevel\Session;
 
-use Leevel\Cache\ICache;
 use SessionHandlerInterface;
 
 /**
- * connect 驱动抽象类.
+ * session.nulls.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.06.06
- * @see http://php.net/manual/zh/class.sessionhandlerinterface.php
+ * @since 2018.08.17
  *
  * @version 1.0
  */
-abstract class Connect implements SessionHandlerInterface
+class Nulls implements SessionHandlerInterface
 {
-    /**
-     * 缓存仓储.
-     *
-     * @var \Leevel\Cache\ICache
-     */
-    protected $cache;
-
-    /**
-     * 配置.
-     *
-     * @var array
-     */
-    protected $option = [];
-
-    /**
-     * 构造函数.
-     *
-     * @param \Leevel\Cache\ICache $cache
-     */
-    public function __construct(ICache $cache)
-    {
-        $this->cache = $cache;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -80,9 +54,7 @@ abstract class Connect implements SessionHandlerInterface
      */
     public function read($sessionid)
     {
-        return $this->cache->get(
-            $this->getSessionName($sessionid), []
-        ) ?: [];
+        return [];
     }
 
     /**
@@ -90,10 +62,7 @@ abstract class Connect implements SessionHandlerInterface
      */
     public function write($sessionid, $sessiondata)
     {
-        $this->cache->set(
-            $this->getSessionName($sessionid),
-            unserialize($sessiondata)
-        );
+        return true;
     }
 
     /**
@@ -101,9 +70,7 @@ abstract class Connect implements SessionHandlerInterface
      */
     public function destroy($sessionid)
     {
-        $this->cache->delete(
-            $this->getSessionName($sessionid)
-        );
+        return true;
     }
 
     /**
@@ -116,23 +83,9 @@ abstract class Connect implements SessionHandlerInterface
 
     /**
      * 返回缓存仓储.
-     *
-     * @return \Leevel\Cache\ICache
      */
-    public function getCache(): ICache
+    public function getCache()
     {
-        return $this->cache;
-    }
-
-    /**
-     * 获取 session 名字.
-     *
-     * @param string $sessionid
-     *
-     * @return string
-     */
-    protected function getSessionName($sessionid)
-    {
-        return $this->option['prefix'].$sessionid;
+        return null;
     }
 }

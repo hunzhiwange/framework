@@ -102,23 +102,22 @@ class Session implements ISession
     /**
      * 启动 session.
      *
-     * @return $this
+     * @param string $sessionName
+     * @param string $sessionId
      */
-    public function start()
+    public function start(?string $sessionName = null, ?string $sessionId = null)
     {
         if ($this->isStart()) {
             return $this;
         }
 
-        $this->setId($this->option['id']);
+        $this->setId($sessionId ?: $this->option['id']);
 
-        $this->setName($this->option['name']);
+        $this->setName($sessionName ?: $this->option['name']);
 
         $this->loadData();
 
         $this->started = true;
-
-        return $this;
     }
 
     /**

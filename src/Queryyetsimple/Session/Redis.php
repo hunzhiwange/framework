@@ -73,7 +73,7 @@ class Redis extends Connect
     {
         return new Cache(
             new CacheRedis(
-                new PhpRedis($options), $this->option
+                new PhpRedis($this->option), $this->option
             )
         );
     }

@@ -60,9 +60,9 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\View\html
+     * @return \Leevel\View\Html
      */
-    protected function makeConnectHtml($options = [])
+    protected function makeConnectHtml($options = []): Html
     {
         $options = $this->normalizeConnectOption('html', $options);
         $options = array_merge(
@@ -85,9 +85,9 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\View\twig
+     * @return \Leevel\View\Twig
      */
-    protected function makeConnectTwig($options = [])
+    protected function makeConnectTwig($options = []): Twig
     {
         $options = $this->normalizeConnectOption('twig', $options);
         $options = array_merge(
@@ -110,9 +110,9 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\View\phpui
+     * @return \Leevel\View\Phpui
      */
-    protected function makeConnectPhpui($options = [])
+    protected function makeConnectPhpui($options = []): Phpui
     {
         $options = $this->normalizeConnectOption('phpui', $options);
         $options = array_merge(
@@ -127,9 +127,9 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\View\vue
+     * @return \Leevel\View\V8
      */
-    protected function makeConnectV8($options = [])
+    protected function makeConnectV8($options = []): V8
     {
         $options = $this->normalizeConnectOption('v8', $options);
         $options = array_merge(

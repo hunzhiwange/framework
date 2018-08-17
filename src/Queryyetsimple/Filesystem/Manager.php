@@ -85,9 +85,9 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\Filesystem\local
+     * @return \Leevel\Filesystem\Local
      */
-    protected function makeConnectLocal($options = [])
+    protected function makeConnectLocal($options = []): Local
     {
         return new Local(
             $this->normalizeConnectOption('local', $options)
@@ -99,9 +99,9 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\Filesystem\ftp
+     * @return \Leevel\Filesystem\Ftp
      */
-    protected function makeConnectFtp($options = [])
+    protected function makeConnectFtp($options = []): Ftp
     {
         return new Ftp(
             $this->normalizeConnectOption('ftp', $options)
@@ -113,9 +113,9 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\Filesystem\sftp
+     * @return \Leevel\Filesystem\Sftp
      */
-    protected function makeConnectSftp($options = [])
+    protected function makeConnectSftp($options = []): Sftp
     {
         return new Sftp(
             $this->normalizeConnectOption('sftp', $options)
@@ -127,9 +127,9 @@ class Manager extends Managers
      *
      * @param array $options
      *
-     * @return \Leevel\Filesystem\zip
+     * @return \Leevel\Filesystem\Zip
      */
-    protected function makeConnectZip($options = [])
+    protected function makeConnectZip($options = []): Zip
     {
         return new Zip(
             $this->normalizeConnectOption('zip', $options)

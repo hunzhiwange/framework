@@ -43,9 +43,10 @@ interface ISession
     /**
      * 启动 session.
      *
-     * @return $this
+     * @param string $sessionName
+     * @param string $sessionId
      */
-    public function start();
+    public function start(?string $sessionName = null, ?string $sessionId = null);
 
     /**
      * 程序执行保存 session.

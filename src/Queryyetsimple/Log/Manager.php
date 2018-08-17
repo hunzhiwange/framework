@@ -65,7 +65,7 @@ class Manager extends Managers
      *
      * @return \Leevel\Log\File
      */
-    protected function makeConnectFile($options = [])
+    protected function makeConnectFile($options = []): File
     {
         return new File(
             $this->normalizeConnectOption('file', $options)
@@ -79,7 +79,7 @@ class Manager extends Managers
      *
      * @return \Leevel\Log\Monolog
      */
-    protected function makeConnectMonolog($options = [])
+    protected function makeConnectMonolog($options = []): Monolog
     {
         return new Monolog(
             $this->normalizeConnectOption('monolog', $options)
