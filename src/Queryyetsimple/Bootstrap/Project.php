@@ -20,7 +20,6 @@ declare(strict_types=1);
 
 namespace Leevel\Bootstrap;
 
-use Exception;
 use Leevel\Di\Container;
 use Leevel\Di\Provider;
 use Leevel\Event\Provider\Register as EventProvider;
@@ -59,7 +58,7 @@ class Project extends Container implements IProject
      *
      * @var string
      */
-    protected $applicationPath;
+    protected $appPath;
 
     /**
      * 公共路径.
@@ -228,21 +227,28 @@ class Project extends Container implements IProject
     /**
      * 基础路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function path()
+    public function path(string $path = '')
     {
-        return $this->path;
+        return $this->path.($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
      * 应用路径.
      *
+     * @param mixed  $app
+     * @param string $path
+     *
      * @return string
      */
-    public function pathApplication()
+    public function pathApp($app = false, string $path = '')
     {
-        return $this->applicationPath ?? $this->path.DIRECTORY_SEPARATOR.'application';
+        return ($this->appPath ?? $this->path.DIRECTORY_SEPARATOR.'application').
+            ($app ? DIRECTORY_SEPARATOR.strtolower(true === $app ? ($this->request->app() ?: 'app') : $app) : '').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
@@ -252,11 +258,24 @@ class Project extends Container implements IProject
      *
      * @return $this
      */
-    public function setPathApplication(string $path)
+    public function setPathApp(string $path)
     {
-        $this->applicationPath = $path;
+        $this->appPath = $path;
 
         return $this;
+    }
+
+    /**
+     * 取得应用主题目录.
+     *
+     * @param string $app
+     *
+     * @return string
+     */
+    public function pathTheme(?string $app = null)
+    {
+        return $this->pathApp($app).'/ui/theme/'.
+            $this->make('option')->get('view\\theme_name');
     }
 
     /**
@@ -276,11 +295,14 @@ class Project extends Container implements IProject
     /**
      * 公共路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function pathCommon()
+    public function pathCommon(string $path = '')
     {
-        return $this->commonPath ?? $this->path.DIRECTORY_SEPARATOR.'common';
+        return ($this->commonPath ?? $this->path.DIRECTORY_SEPARATOR.'common').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
@@ -300,11 +322,14 @@ class Project extends Container implements IProject
     /**
      * 运行路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function pathRuntime()
+    public function pathRuntime(string $path = '')
     {
-        return $this->runtimePath ?? $this->path.DIRECTORY_SEPARATOR.'runtime';
+        return ($this->runtimePath ?? $this->path.DIRECTORY_SEPARATOR.'runtime').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
@@ -324,11 +349,14 @@ class Project extends Container implements IProject
     /**
      * 附件路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function pathStorage()
+    public function pathStorage(string $path = '')
     {
-        return $this->storagePath ?? $this->path.DIRECTORY_SEPARATOR.'storage';
+        return ($this->storagePath ?? $this->path.DIRECTORY_SEPARATOR.'storage').
+            ($path ? DIRECTORY_SEPARATOR.$path : $path);
     }
 
     /**
@@ -438,60 +466,6 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 应用路径.
-     *
-     * @param string $app
-     *
-     * @return string
-     */
-    public function pathAnApplication(?string $app = null)
-    {
-        return $this->pathApplication().'/'.strtolower($app ?: ($this->request->app() ?: 'App'));
-    }
-
-    /**
-     * 取得应用缓存目录.
-     *
-     * @param string $type
-     *
-     * @return string
-     */
-    public function pathApplicationCache($type)
-    {
-        $types = [
-            'file',
-            'log',
-            'table',
-            'theme',
-            'option',
-            'i18n',
-            'router',
-            'console',
-            'swoole',
-        ];
-
-        if (!in_array($type, $types, true)) {
-            throw new Exception(sprintf('Application cache type %s not support', $type));
-        }
-
-        return $this->pathRuntime().'/'.$type;
-    }
-
-    /**
-     * 取得应用主题目录.
-     *
-     * @param string $app
-     *
-     * @return string
-     */
-    public function pathApplicationTheme(?string $app = null)
-    {
-        return $this->pathAnApplication($app).
-            '/ui/theme/'.
-            $this->make('option')->get('view\theme_name');
-    }
-
-    /**
      * 返回语言包缓存路径.
      *
      * @param string $i18n
@@ -556,16 +530,6 @@ class Project extends Container implements IProject
     }
 
     /**
-     * 返回 session 缓存路径.
-     *
-     * @return string
-     */
-    public function pathCacheSession(): string
-    {
-        return $this->pathRuntime().'/session';
-    }
-
-    /**
      * 取得 composer.
      *
      * @return \Composer\Autoload\ClassLoader
@@ -582,7 +546,7 @@ class Project extends Container implements IProject
      *
      * @return null|string
      */
-    public function getPathByNamespace($namespaces)
+    public function getPathByNamespace(string $namespaces)
     {
         $namespaces = explode('\\', $namespaces);
 
@@ -806,22 +770,22 @@ class Project extends Container implements IProject
 
         $this->alias([
             'project' => [
-                'Leevel\Bootstrap\Project',
-                'Leevel\Di\IContainer',
-                'Leevel\Kernel\IProject',
+                'Leevel\\Bootstrap\\Project',
+                'Leevel\\Di\\IContainer',
+                'Leevel\\Kernel\\IProject',
                 'app',
             ],
             'request' => [
-                'Leevel\Http\IRequest',
-                'Leevel\Http\Request',
+                'Leevel\\Http\\IRequest',
+                'Leevel\\Http\\Request',
             ],
             'option' => [
-                'Leevel\Option\IOption',
-                'Leevel\Option\Option',
+                'Leevel\\Option\\IOption',
+                'Leevel\\Option\\Option',
             ],
             'i18n' => [
-                'Leevel\I18n\I18n',
-                'Leevel\I18n\II18n',
+                'Leevel\\I18n\\I18n',
+                'Leevel\\I18n\\II18n',
             ],
         ]);
     }

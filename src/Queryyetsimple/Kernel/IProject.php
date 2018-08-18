@@ -86,16 +86,21 @@ interface IProject extends IContainer
     /**
      * 基础路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function path();
+    public function path(string $path = '');
 
     /**
      * 应用路径.
      *
+     * @param mixed  $app
+     * @param string $path
+     *
      * @return string
      */
-    public function pathApplication();
+    public function pathApp($app = true, string $path = '');
 
     /**
      * 设置应用路径.
@@ -104,7 +109,16 @@ interface IProject extends IContainer
      *
      * @return $this
      */
-    public function setPathApplication(string $path);
+    public function setPathApp(string $path);
+
+    /**
+     * 取得应用主题目录.
+     *
+     * @param string $app
+     *
+     * @return string
+     */
+    public function pathTheme(?string $app = null);
 
     /**
      * 设置公共路径.
@@ -118,9 +132,11 @@ interface IProject extends IContainer
     /**
      * 公共路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function pathCommon();
+    public function pathCommon(string $path = '');
 
     /**
      * 设置运行时路径.
@@ -134,9 +150,11 @@ interface IProject extends IContainer
     /**
      * 运行路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function pathRuntime();
+    public function pathRuntime(string $path = '');
 
     /**
      * 设置存储路径.
@@ -150,9 +168,11 @@ interface IProject extends IContainer
     /**
      * 附件路径.
      *
+     * @param string $path
+     *
      * @return string
      */
-    public function pathStorage();
+    public function pathStorage(string $path = '');
 
     /**
      * 设置配置路径.
@@ -226,33 +246,6 @@ interface IProject extends IContainer
     public function fullEnvPath();
 
     /**
-     * 应用路径.
-     *
-     * @param string $app
-     *
-     * @return string
-     */
-    public function pathAnApplication(?string $app = null);
-
-    /**
-     * 取得应用缓存目录.
-     *
-     * @param string $type
-     *
-     * @return string
-     */
-    public function pathApplicationCache($type);
-
-    /**
-     * 取得应用主题目录.
-     *
-     * @param string $app
-     *
-     * @return string
-     */
-    public function pathApplicationTheme(?string $app = null);
-
-    /**
      * 返回语言包缓存路径.
      *
      * @param string $i18n
@@ -299,13 +292,6 @@ interface IProject extends IContainer
     public function isCachedRouter(): bool;
 
     /**
-     * 返回 session 缓存路径.
-     *
-     * @return string
-     */
-    public function pathCacheSession(): string;
-
-    /**
      * 取得 composer.
      *
      * @return \Composer\Autoload\ClassLoader
@@ -319,7 +305,7 @@ interface IProject extends IContainer
      *
      * @return null|string
      */
-    public function getPathByNamespace($namespaces);
+    public function getPathByNamespace(string $namespaces);
 
     /**
      * 批量获取命名空间路径.

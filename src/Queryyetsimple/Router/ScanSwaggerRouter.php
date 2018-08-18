@@ -50,7 +50,7 @@ class ScanSwaggerRouter
         $this->swaggerRouter = new SwaggerRouter($middlewareParser, $this->getTopDomain(), $this->getController());
 
         // 添加扫描目录
-        $this->swaggerRouter->addSwaggerScan($this->getApplicationDir());
+        $this->swaggerRouter->addSwaggerScan($this->getAppDir());
     }
 
     /**
@@ -90,9 +90,9 @@ class ScanSwaggerRouter
      *
      * @return string
      */
-    protected function getApplicationDir()
+    protected function getAppDir()
     {
-        return path_application();
+        return app()->pathApp();
     }
 
     /**

@@ -134,7 +134,7 @@ class Log implements ILog
      *
      * @return array
      */
-    public function emergency($message, array $context = [], $write = false)
+    public function emergency($message, array $context = [], bool $write = false)
     {
         return $this->{$write ? 'write' : 'log'}(static::EMERGENCY, $message, $context);
     }
@@ -148,7 +148,7 @@ class Log implements ILog
      *
      * @return array
      */
-    public function alert($message, array $context = [], $write = false)
+    public function alert($message, array $context = [], bool $write = false)
     {
         return $this->{$write ? 'write' : 'log'}(static::ALERT, $message, $context);
     }
@@ -162,7 +162,7 @@ class Log implements ILog
      *
      * @return array
      */
-    public function critical($message, array $context = [], $write = false)
+    public function critical($message, array $context = [], bool $write = false)
     {
         return $this->{$write ? 'write' : 'log'}(static::CRITICAL, $message, $context);
     }
@@ -176,7 +176,7 @@ class Log implements ILog
      *
      * @return array
      */
-    public function error($message, array $context = [], $write = false)
+    public function error($message, array $context = [], bool $write = false)
     {
         return $this->{$write ? 'write' : 'log'}(static::ERROR, $message, $context);
     }
@@ -190,7 +190,7 @@ class Log implements ILog
      *
      * @return array
      */
-    public function warning($message, array $context = [], $write = false)
+    public function warning($message, array $context = [], bool $write = false)
     {
         return $this->{$write ? 'write' : 'log'}(static::WARNING, $message, $context);
     }
@@ -204,7 +204,7 @@ class Log implements ILog
      *
      * @return array
      */
-    public function notice($message, array $context = [], $write = false)
+    public function notice($message, array $context = [], bool $write = false)
     {
         return $this->{$write ? 'write' : 'log'}(static::NOTICE, $message, $context);
     }
@@ -218,7 +218,7 @@ class Log implements ILog
      *
      * @return array
      */
-    public function info($message, array $context = [], $write = false)
+    public function info($message, array $context = [], bool $write = false)
     {
         return $this->{$write ? 'write' : 'log'}(static::INFO, $message, $context);
     }
@@ -232,7 +232,7 @@ class Log implements ILog
      *
      * @return array
      */
-    public function debug($message, array $context = [], $write = false)
+    public function debug($message, array $context = [], bool $write = false)
     {
         return $this->{$write ? 'write' : 'log'}(static::DEBUG, $message, $context);
     }

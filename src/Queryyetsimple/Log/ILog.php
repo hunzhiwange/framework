@@ -105,6 +105,105 @@ interface ILog
     public function setOption(string $name, $value);
 
     /**
+     * 记录 emergency 日志.
+     *
+     * @param string $message
+     * @param array  $context
+     * @param bool   $write
+     *
+     * @return array
+     */
+    public function emergency($message, array $context = [], bool $write = false);
+
+    /**
+     * 记录 alert 日志.
+     *
+     * @param string $message
+     * @param array  $context
+     * @param bool   $write
+     *
+     * @return array
+     */
+    public function alert($message, array $context = [], bool $write = false);
+
+    /**
+     * 记录 critical 日志.
+     *
+     * @param string $message
+     * @param array  $context
+     * @param bool   $write
+     *
+     * @return array
+     */
+    public function critical($message, array $context = [], bool $write = false);
+
+    /**
+     * 记录 error 日志.
+     *
+     * @param string $message
+     * @param array  $context
+     * @param bool   $write
+     *
+     * @return array
+     */
+    public function error($message, array $context = [], bool $write = false);
+
+    /**
+     * 记录 warning 日志.
+     *
+     * @param string $message
+     * @param array  $context
+     * @param bool   $write
+     *
+     * @return array
+     */
+    public function warning($message, array $context = [], bool $write = false);
+
+    /**
+     * 记录 notice 日志.
+     *
+     * @param string $message
+     * @param array  $context
+     * @param bool   $write
+     *
+     * @return array
+     */
+    public function notice($message, array $context = [], bool $write = false);
+
+    /**
+     * 记录 info 日志.
+     *
+     * @param string $message
+     * @param array  $context
+     * @param bool   $write
+     *
+     * @return array
+     */
+    public function info($message, array $context = [], bool $write = false);
+
+    /**
+     * 记录 debug 日志.
+     *
+     * @param string $message
+     * @param array  $context
+     * @param bool   $write
+     *
+     * @return array
+     */
+    public function debug($message, array $context = [], bool $write = false);
+
+    /**
+     * 记录日志.
+     *
+     * @param string $level
+     * @param mixed  $message
+     * @param array  $context
+     *
+     * @return array
+     */
+    public function log($level, $message, array $context = []);
+
+    /**
      * 记录错误消息并写入.
      *
      * @param string $level   日志类型
