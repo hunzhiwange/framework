@@ -20,12 +20,9 @@ declare(strict_types=1);
 
 namespace Tests\Session\Middleware;
 
-// use Leevel\Cache\Cache;
-// use Leevel\Cache\File;
 use Leevel\Di\Container;
 use Leevel\Di\IContainer;
 use Leevel\Http\IRequest;
-// use Leevel\Throttler\Provider\Register;
 use Leevel\Http\IResponse;
 use Leevel\Option\Option;
 use Leevel\Session\Manager;
@@ -135,6 +132,5 @@ class CookieTest
 {
     public function get(string $name, $default = null)
     {
-        return null;
     }
 }
