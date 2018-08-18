@@ -37,6 +37,15 @@ use Tests\TestCase;
  */
 class ManagerTest extends TestCase
 {
+    protected function tearDown()
+    {
+        $path = __DIR__.'/cacheManager';
+
+        if (is_dir($path)) {
+            rmdir($path);
+        }
+    }
+
     public function testBaseUse()
     {
         $manager = $this->createManager();
@@ -62,15 +71,13 @@ class ManagerTest extends TestCase
         $option = new Option([
             'cache' => [
                 'default'     => 'file',
-                'prefix'      => '~@',
                 'expire'      => 86400,
                 'time_preset' => [],
                 'connect'     => [
                     'file' => [
                         'driver'    => 'file',
-                        'path'      => __DIR__,
+                        'path'      => __DIR__.'/cacheManager',
                         'serialize' => true,
-                        'prefix'    => null,
                         'expire'    => null,
                     ],
                 ],

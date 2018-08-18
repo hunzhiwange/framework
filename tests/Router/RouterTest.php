@@ -195,7 +195,7 @@ class RouterTest extends TestCase
      * @dataProvider getNodeNotFoundData
      *
      * @param string $method
-     * @param mixed  $action
+     * @param string $action
      */
     public function testNodeNotFound(string $method, string $action)
     {

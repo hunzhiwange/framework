@@ -44,7 +44,7 @@ class ManagerTest extends TestCase
 
         $this->assertFalse($manager->isStart());
         $this->assertNull($manager->getId());
-        $this->assertNull($manager->getName());
+        $this->assertSame('UID', $manager->getName());
 
         $manager->start();
         $this->assertTrue($manager->isStart());
@@ -76,19 +76,12 @@ class ManagerTest extends TestCase
 
         $option = new Option([
             'session' => [
-                'default' => 'nulls',
-
-                'id' => null,
-
-                'name' => 'queryphp',
-
+                'default'       => 'nulls',
+                'id'            => null,
+                'name'          => 'UID',
                 'cookie_domain' => null,
-
-                'prefix' => 'sess_',
-
-                'expire' => 86400,
-
-                'connect' => [
+                'expire'        => 86400,
+                'connect'       => [
                     'nulls' => [
                         'driver' => 'nulls',
                     ],

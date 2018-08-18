@@ -81,7 +81,6 @@ class Session implements ISession
         'id'             => null,
         'name'           => null,
         'default'        => null,
-        'prefix'         => 'q_',
         'cookie_domain'  => null,
         'expire'         => 86400,
     ];
@@ -97,23 +96,22 @@ class Session implements ISession
         $this->connect = $connect;
 
         $this->option = array_merge($this->option, $option);
+
+        $this->setName($this->option['name']);
     }
 
     /**
      * 启动 session.
      *
-     * @param string $sessionName
      * @param string $sessionId
      */
-    public function start(?string $sessionName = null, ?string $sessionId = null)
+    public function start(?string $sessionId = null)
     {
         if ($this->isStart()) {
             return $this;
         }
 
         $this->setId($sessionId ?: $this->option['id']);
-
-        $this->setName($sessionName ?: $this->option['name']);
 
         $this->loadData();
 
@@ -505,7 +503,6 @@ class Session implements ISession
         $this->connect->destroy($this->getId());
 
         $this->id = null;
-        $this->name = null;
         $this->started = false;
     }
 

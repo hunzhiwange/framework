@@ -41,7 +41,6 @@ class File extends Connect
      */
     protected $option = [
         'time_preset' => [],
-        'prefix'      => '_',
         'expire'      => 86400,
         'path'        => '',
         'serialize'   => true,

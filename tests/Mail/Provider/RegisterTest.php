@@ -66,18 +66,15 @@ class RegisterTest extends TestCase
 
         $option = new Option([
             'mail' => [
-                'default' => 'nulls',
-
+                'default'     => 'nulls',
                 'global_from' => [
                     'address' => null,
                     'name'    => null,
                 ],
-
                 'global_to' => [
                     'address' => null,
                     'name'    => null,
                 ],
-
                 'connect' => [
                     'nulls' => [
                         'driver' => 'nulls',

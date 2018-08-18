@@ -22,8 +22,9 @@ declare(strict_types=1);
  * 框架内部测试启动文件
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2017.05.09
+ *
  * @version 1.0
  */
 error_reporting(-1);

@@ -65,9 +65,8 @@ interface IConnect
      * 清除缓存.
      *
      * @param string $name
-     * @param array  $option
      */
-    public function delete($name, array $option = []);
+    public function delete($name);
 
     /**
      * 返回缓存句柄.

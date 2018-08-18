@@ -22,8 +22,9 @@ declare(strict_types=1);
  * 函数库
  *
  * @author Xiangmin Liu <635750556@qq.com>
- * @package $$
+ *
  * @since 2018.07.17
+ *
  * @version 1.0
  */
 

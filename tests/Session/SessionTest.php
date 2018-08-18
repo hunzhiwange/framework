@@ -55,7 +55,7 @@ class SessionTest extends TestCase
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertNull($session->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());
@@ -82,7 +82,7 @@ class SessionTest extends TestCase
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertNull($session->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());
@@ -92,7 +92,7 @@ class SessionTest extends TestCase
 
         $sessionId = $session->getId();
         $dirPath = __DIR__.'/cache';
-        $filePath = $dirPath.'/__'.$sessionId.'.php';
+        $filePath = $dirPath.'/'.$sessionId.'.php';
 
         $this->assertFileExists($filePath);
 
@@ -106,7 +106,7 @@ class SessionTest extends TestCase
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertNull($session->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());
@@ -128,7 +128,7 @@ class SessionTest extends TestCase
         $this->assertFalse($session->isStart());
 
         $sessionId = $session->getId();
-        $session->start(null, $sessionId);
+        $session->start($sessionId);
 
         $this->assertTrue($session->isStart());
         $this->assertSame(['other' => 'value', 'foo' => 'bar', 'hello' => 'world', 'flash.old.key' => []], $session->all());
@@ -138,7 +138,7 @@ class SessionTest extends TestCase
 
         $sessionId = $session->getId();
         $dirPath = __DIR__.'/cache';
-        $filePath = $dirPath.'/__'.$sessionId.'.php';
+        $filePath = $dirPath.'/'.$sessionId.'.php';
 
         $this->assertFileExists($filePath);
 
@@ -155,7 +155,7 @@ class SessionTest extends TestCase
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertNull($session->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->save();
     }
@@ -828,7 +828,7 @@ eot;
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertNull($session->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());
@@ -838,7 +838,7 @@ eot;
         $session->destroy();
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertNull($session->getName());
+        $this->assertSame('UID', $session->getName());
     }
 
     public function testRegenerateId()
@@ -847,7 +847,7 @@ eot;
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertNull($session->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());

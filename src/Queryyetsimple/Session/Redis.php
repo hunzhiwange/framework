@@ -48,7 +48,6 @@ class Redis extends Connect
         'timeout'    => 0,
         'persistent' => false,
         'serialize'  => true,
-        'prefix'     => null,
         'expire'     => null,
     ];
 

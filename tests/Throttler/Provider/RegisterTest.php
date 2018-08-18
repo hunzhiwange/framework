@@ -77,7 +77,7 @@ class RegisterTest extends TestCase
 
         $path = __DIR__.'/cache';
 
-        unlink($path.'/_'.$key.'.php');
+        unlink($path.'/'.$key.'.php');
     }
 
     protected function createContainer()

@@ -65,7 +65,7 @@ class ThrottlerTest extends TestCase
 
         $path = __DIR__.'/cache2';
 
-        unlink($path.'/_baseuse.php');
+        unlink($path.'/baseuse.php');
     }
 
     public function testUseCall()
@@ -91,7 +91,7 @@ class ThrottlerTest extends TestCase
 
         $path = __DIR__.'/cache2';
 
-        unlink($path.'/_'.$key.'.php');
+        unlink($path.'/'.$key.'.php');
     }
 
     public function testAttempt()
@@ -109,7 +109,7 @@ class ThrottlerTest extends TestCase
 
         $path = __DIR__.'/cache2';
 
-        unlink($path.'/_attempt.php');
+        unlink($path.'/attempt.php');
     }
 
     public function testRequestIsNotSet()

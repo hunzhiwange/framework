@@ -56,23 +56,29 @@ class FileTest extends TestCase
         }
 
         // for testGetIsNotReadable
-        $filePath = __DIR__.'/_readable.php';
+        $filePath = __DIR__.'/cacheFile/readable.php';
 
         if (is_file($filePath)) {
             unlink($filePath);
+        }
+
+        $path = __DIR__.'/cacheFile';
+
+        if (is_dir($path)) {
+            rmdir($path);
         }
     }
 
     public function testBaseUse()
     {
-        $filePath = __DIR__.'/_hello.php';
+        $filePath = __DIR__.'/cacheFile/hello.php';
 
         if (is_file($filePath)) {
             unlink($filePath);
         }
 
         $file = new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cacheFile',
         ]);
 
         $file->set('hello', 'world');
@@ -95,30 +101,31 @@ class FileTest extends TestCase
     public function testSetOption()
     {
         $file = new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cacheFile',
         ]);
 
         $file->set('setOption', 'bar');
 
         $this->assertSame('bar', $file->get('setOption'));
 
-        $filePath = __DIR__.'/_setOption.php';
+        $filePath = __DIR__.'/cacheFile/setOption.php';
 
         $this->assertTrue(is_file($filePath));
 
+        $this->assertContains('s:3:"bar"', file_get_contents($filePath));
+
         $file->delete('setOption');
 
-        $file->setOption('prefix', '@');
+        $file->setOption('serialize', false);
 
         $file->set('setOption2', 'bar');
 
         $this->assertSame('bar', $file->get('setOption2'));
 
-        $filePath = __DIR__.'/_setOption2.php';
-        $filePath2 = __DIR__.'/@setOption2.php';
+        $filePath = __DIR__.'/cacheFile/setOption2.php';
+        $this->assertTrue(is_file($filePath));
 
-        $this->assertFalse(is_file($filePath));
-        $this->assertTrue(is_file($filePath2));
+        $this->assertNotContains('s:3:"bar"', file_get_contents($filePath));
 
         $file->delete('setOption2');
     }
@@ -132,7 +139,7 @@ class FileTest extends TestCase
                 'hello*world' => 10,
                 'foo*bar'     => -10,
             ],
-            'path' => __DIR__,
+            'path' => __DIR__.'/cacheFile',
         ]);
 
         $file->set('foo', 'bar');
@@ -163,7 +170,7 @@ class FileTest extends TestCase
     public function testGetNotExists()
     {
         $file = new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cacheFile',
         ]);
 
         $this->assertFalse($file->get('notExists'));
@@ -172,12 +179,16 @@ class FileTest extends TestCase
     public function testGet2()
     {
         $file = new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cacheFile',
         ]);
 
         $this->assertFalse($file->get('get2'));
 
-        $filePath = __DIR__.'/_get2.php';
+        $filePath = __DIR__.'/cacheFile/get2.php';
+
+        if (!is_dir(__DIR__.'/cacheFile')) {
+            mkdir(__DIR__.'/cacheFile', 0777);
+        }
 
         file_put_contents($filePath, 'foo');
 
@@ -192,12 +203,16 @@ class FileTest extends TestCase
         $this->expectExceptionMessage('Cache path is not readable.');
 
         $file = new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cacheFile',
         ]);
 
         $this->assertFalse($file->get('readable'));
 
-        $filePath = __DIR__.'/_readable.php';
+        $filePath = __DIR__.'/cacheFile/readable.php';
+
+        if (!is_dir(__DIR__.'/cacheFile')) {
+            mkdir(__DIR__.'/cacheFile', 0777);
+        }
 
         file_put_contents($filePath, 'foo');
 
@@ -209,12 +224,12 @@ class FileTest extends TestCase
     public function testGetIsExpired()
     {
         $file = new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cacheFile',
         ]);
 
         $this->assertFalse($file->get('isExpired'));
 
-        $filePath = __DIR__.'/_isExpired.php';
+        $filePath = __DIR__.'/cacheFile/isExpired.php';
 
         $file->set('isExpired', 'bar');
 
@@ -226,20 +241,30 @@ class FileTest extends TestCase
     public function testWithOption()
     {
         $file = new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cacheFile',
         ]);
 
-        $filePath = __DIR__.'/~@withOption.php';
+        $filePath = __DIR__.'/cacheFile/withOption.php';
 
         if (is_file($filePath)) {
             unlink($filePath);
         }
 
         $file->set('withOption', 'world', [
-            'prefix' => '~@',
+            'serialize' => true,
         ]);
 
         $this->assertTrue(is_file($filePath));
+
+        $this->assertContains('s:5:"world"', file_get_contents($filePath));
+
+        $file->set('withOption', 'world', [
+            'serialize' => false,
+        ]);
+
+        $this->assertTrue(is_file($filePath));
+
+        $this->assertNotContains('s:5:"world"', file_get_contents($filePath));
 
         unlink($filePath);
     }
@@ -264,7 +289,7 @@ class FileTest extends TestCase
 
         $file->set('cachePathSub', 'world');
 
-        $filePath = $path.'/_cachePathSub.php';
+        $filePath = $path.'/cachePathSub.php';
 
         $this->assertTrue(is_file($filePath));
 

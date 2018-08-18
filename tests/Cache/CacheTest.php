@@ -35,12 +35,21 @@ use Tests\TestCase;
  */
 class CacheTest extends TestCase
 {
+    protected function tearDown()
+    {
+        $path = __DIR__.'/cache';
+
+        if (is_dir($path)) {
+            rmdir($path);
+        }
+    }
+
     public function testBaseUse()
     {
-        $filePath = __DIR__.'/_hello.php';
+        $filePath = __DIR__.'/cache/hello.php';
 
         $cache = new Cache(new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cache',
         ]));
 
         $cache->set('hello', 'world');
@@ -59,7 +68,7 @@ class CacheTest extends TestCase
     public function testPut()
     {
         $cache = new Cache(new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cache',
         ]));
 
         $cache->put('hello', 'world');
@@ -82,7 +91,7 @@ class CacheTest extends TestCase
     public function testMacro()
     {
         $cache = new Cache(new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cache',
         ]));
 
         $cache->macro('hello', function ($item) {

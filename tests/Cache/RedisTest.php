@@ -123,7 +123,6 @@ class RedisTest extends TestCase
     {
         $default = [
             'time_preset' => [],
-            'prefix'      => '_',
             'expire'      => 86400,
             'serialize'   => true,
         ];

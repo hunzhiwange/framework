@@ -54,7 +54,6 @@ class File extends Connect implements IConnect
      */
     protected $option = [
         'time_preset' => [],
-        'prefix'      => '_',
         'expire'      => 86400,
         'path'        => '',
         'serialize'   => true,
@@ -72,7 +71,7 @@ class File extends Connect implements IConnect
     public function get($name, $defaults = false, array $option = [])
     {
         $option = $this->normalizeOptions($option);
-        $cachePath = $this->getCachePath($name, $option);
+        $cachePath = $this->getCachePath($name);
 
         // 清理文件状态缓存 http://php.net/manual/zh/function.clearstatcache.php
         clearstatcache();
@@ -140,7 +139,7 @@ class File extends Connect implements IConnect
 
         $data = sprintf(static::HEADER, '/* '.date('Y-m-d H:i:s').'  */').$data;
 
-        $cachePath = $this->getCachePath($name, $option);
+        $cachePath = $this->getCachePath($name);
 
         $this->writeData($cachePath, $data);
     }
@@ -149,15 +148,12 @@ class File extends Connect implements IConnect
      * 清除缓存.
      *
      * @param string $name
-     * @param array  $option
      */
-    public function delete($name, array $option = [])
+    public function delete($name)
     {
-        $option = $this->normalizeOptions($option);
+        $cachePath = $this->getCachePath($name);
 
-        $cachePath = $this->getCachePath($name, $option);
-
-        if ($this->exist($name, $option)) {
+        if ($this->exist($name)) {
             unlink($cachePath);
         }
     }
@@ -179,7 +175,7 @@ class File extends Connect implements IConnect
      */
     protected function isExpired($name, $option)
     {
-        $filePath = $this->getCachePath($name, $option);
+        $filePath = $this->getCachePath($name);
 
         $option['expire'] = $this->cacheTime($name, $option['expire']);
 
@@ -194,17 +190,16 @@ class File extends Connect implements IConnect
      * 获取缓存路径.
      *
      * @param string $name
-     * @param array  $option
      *
      * @return string
      */
-    protected function getCachePath($name, array $option)
+    protected function getCachePath($name)
     {
-        if (!$option['path']) {
+        if (!$this->option['path']) {
             throw new InvalidArgumentException('Cache path is not allowed empty.');
         }
 
-        return $option['path'].'/'.$this->getCacheName($name, $option['prefix']).'.php';
+        return $this->option['path'].'/'.$this->getCacheName($name).'.php';
     }
 
     /**
@@ -241,13 +236,12 @@ class File extends Connect implements IConnect
      * 验证缓存是否存在.
      *
      * @param string $name
-     * @param array  $option
      *
      * @return bool
      */
-    protected function exist($name, $option)
+    protected function exist($name)
     {
-        return is_file($this->getCachePath($name, $option));
+        return is_file($this->getCachePath($name));
     }
 
     /**
@@ -255,11 +249,10 @@ class File extends Connect implements IConnect
      * 去掉特殊缓存名字字符.
      *
      * @param string $name
-     * @param string $prefix
      *
      * @return string
      */
-    protected function getCacheName($name, $prefix = '')
+    protected function getCacheName($name)
     {
         return str_replace([
             '?',
@@ -271,6 +264,6 @@ class File extends Connect implements IConnect
             '\\',
             '/',
             '|',
-        ], '.', parent::getCacheName($name, $prefix));
+        ], '.', parent::getCacheName($name));
     }
 }

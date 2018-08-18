@@ -126,10 +126,9 @@ interface ICookie
     /**
      * 清空 cookie.
      *
-     * @param bool  $deletePrefix
      * @param array $option
      */
-    public function clear($deletePrefix = true, array $option = []);
+    public function clear(array $option = []);
 
     /**
      * 返回所有 cookie.

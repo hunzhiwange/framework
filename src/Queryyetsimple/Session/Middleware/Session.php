@@ -21,8 +21,8 @@ declare(strict_types=1);
 namespace Leevel\Session\Middleware;
 
 use Closure;
-use Leevel\Http\Request;
-use Leevel\Http\Response;
+use Leevel\Http\IRequest;
+use Leevel\Http\IResponse;
 use Leevel\Session\Manager;
 
 /**
@@ -56,12 +56,12 @@ class Session
     /**
      * 请求
      *
-     * @param \Closure             $next
-     * @param \Leevel\Http\Request $request
+     * @param \Closure              $next
+     * @param \Leevel\Http\IRequest $request
      */
-    public function handle(Closure $next, Request $request)
+    public function handle(Closure $next, IRequest $request)
     {
-        $this->startSession();
+        $this->startSession($request);
 
         $next($request);
     }
@@ -69,24 +69,35 @@ class Session
     /**
      * 响应.
      *
-     * @param \Closure              $next
-     * @param \Leevel\Http\Request  $request
-     * @param \Leevel\Http\Response $response
+     * @param \Closure               $next
+     * @param \Leevel\Http\IRequest  $request
+     * @param \Leevel\Http\IResponse $response
      */
-    public function terminate(Closure $next, Request $request, Response $response)
+    public function terminate(Closure $next, IRequest $request, IResponse $response)
     {
-        $this->saveSession();
         $this->setPrevUrl($request);
+        $this->saveSession();
+
+        $response->setCookie(
+            $this->manager->getName(),
+            $this->manager->getId()
+        );
 
         $next($request, $response);
     }
 
     /**
      * 启动 session.
+     *
+     * @param \Leevel\Http\IRequest $request
      */
-    protected function startSession()
+    protected function startSession(IRequest $request)
     {
-        $this->manager->start();
+        $this->manager->start(
+            $request->cookies->get(
+                $this->manager->getName(), null
+            )
+        );
     }
 
     /**
@@ -100,9 +111,9 @@ class Session
     /**
      * 保存当期请求 URL.
      *
-     * @param \Leevel\Http\Request $request
+     * @param \Leevel\Http\IRequest $request
      */
-    protected function setPrevUrl(Request $request)
+    protected function setPrevUrl(IRequest $request)
     {
         $this->manager->setPrevUrl($request->getUri());
     }

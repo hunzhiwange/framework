@@ -38,6 +38,15 @@ use Tests\TestCase;
  */
 class FileTest extends TestCase
 {
+    protected function tearDown()
+    {
+        $dirPath = __DIR__.'/cacheFile';
+
+        if (is_dir($dirPath)) {
+            rmdir($dirPath);
+        }
+    }
+
     public function testBaseUse()
     {
         $session = new Session($this->createFileSessionHandler());
@@ -46,7 +55,7 @@ class FileTest extends TestCase
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertNull($session->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());
@@ -83,7 +92,7 @@ class FileTest extends TestCase
     protected function createFileSessionHandler()
     {
         return new File([
-            'path' => __DIR__.'/cache',
+            'path' => __DIR__.'/cacheFile',
         ]);
     }
 }

@@ -84,13 +84,12 @@ abstract class Connect
      * 获取缓存名字.
      *
      * @param string $name
-     * @param string $prefix
      *
      * @return string
      */
-    protected function getCacheName($name, $prefix = '')
+    protected function getCacheName($name)
     {
-        return $prefix.$name;
+        return $name;
     }
 
     /**

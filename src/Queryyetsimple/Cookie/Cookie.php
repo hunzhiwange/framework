@@ -39,7 +39,6 @@ class Cookie implements ICookie
      * @var array
      */
     protected $option = [
-        'prefix'   => 'q_',
         'expire'   => 86400,
         'domain'   => '',
         'path'     => '/',
@@ -97,8 +96,6 @@ class Cookie implements ICookie
         if (!is_scalar($value) && null !== $value) {
             throw new Exception('Cookie value must be scalar or null.');
         }
-
-        $name = $option['prefix'].$name;
 
         $option['expire'] = (int) ($option['expire']);
 
@@ -236,7 +233,6 @@ class Cookie implements ICookie
     public function get($name, $defaults = null, array $option = [])
     {
         $option = $this->normalizeOptions($option);
-        $name = $option['prefix'].$name;
 
         if (isset($this->cookies[$name])) {
             if ($this->isJson($this->cookies[$name][1])) {
@@ -263,23 +259,14 @@ class Cookie implements ICookie
     /**
      * 清空 cookie.
      *
-     * @param bool  $deletePrefix
      * @param array $option
      */
-    public function clear($deletePrefix = true, array $option = [])
+    public function clear(array $option = [])
     {
         $option = $this->normalizeOptions($option);
-        $prefix = $option['prefix'];
-        $option['prefix'] = '';
 
         foreach ($this->cookies as $key => $val) {
-            if (true === $deletePrefix && $prefix) {
-                if (0 === strpos($key, $prefix)) {
-                    $this->delete($key, $option);
-                }
-            } else {
-                $this->delete($key, $option);
-            }
+            $this->delete($key, $option);
         }
     }
 

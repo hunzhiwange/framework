@@ -40,7 +40,6 @@ class Redis extends Connect implements IConnect
      */
     protected $option = [
         'time_preset' => [],
-        'prefix'      => '_',
         'expire'      => 86400,
         'serialize'   => true,
     ];
@@ -72,7 +71,7 @@ class Redis extends Connect implements IConnect
         $option = $this->normalizeOptions($option);
 
         $data = $this->handle->get(
-            $this->getCacheName($name, $option['prefix'])
+            $this->getCacheName($name)
         );
 
         if (false === $data) {
@@ -104,7 +103,7 @@ class Redis extends Connect implements IConnect
         $option['expire'] = $this->cacheTime($name, $option['expire']);
 
         $this->handle->set(
-            $this->getCacheName($name, $option['prefix']), $data,
+            $this->getCacheName($name), $data,
             $option['expire'] ? (int) $option['expire'] : null
         );
     }
@@ -113,12 +112,11 @@ class Redis extends Connect implements IConnect
      * 清除缓存.
      *
      * @param string $name
-     * @param array  $option
      */
-    public function delete($name, array $option = [])
+    public function delete($name)
     {
         $this->handle->delete(
-            $this->getCacheName($name, $this->normalizeOptions($option)['prefix'])
+            $this->getCacheName($name)
         );
     }
 

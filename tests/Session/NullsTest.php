@@ -45,7 +45,7 @@ class NullsTest extends TestCase
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertNull($session->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());

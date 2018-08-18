@@ -45,15 +45,21 @@ class LoadTest extends TestCase
     protected function tearDown()
     {
         $files = [
-            '_Tests.Cache.Pieces.Test1.php',
-            '_Tests.Cache.Pieces.Test2@hello.php',
-            '_Tests.Cache.Pieces.Test4.hello,world,foo,bar.php',
+            'Tests.Cache.Pieces.Test1.php',
+            'Tests.Cache.Pieces.Test2@hello.php',
+            'Tests.Cache.Pieces.Test4.hello,world,foo,bar.php',
         ];
 
         foreach ($files as $val) {
-            if (is_file($val = __DIR__.'/'.$val)) {
+            if (is_file($val = __DIR__.'/cacheLoad/'.$val)) {
                 unlink($val);
             }
+        }
+
+        $path = __DIR__.'/cacheLoad';
+
+        if (is_dir($path)) {
+            rmdir($path);
         }
     }
 
@@ -107,7 +113,7 @@ class LoadTest extends TestCase
 
         $this->assertSame(['foo' => 'bar'], $result);
 
-        $file = __DIR__.'/_Tests.Cache.Pieces.Test1.php';
+        $file = __DIR__.'/cacheLoad/Tests.Cache.Pieces.Test1.php';
 
         $this->assertTrue(is_file($file));
 
@@ -207,7 +213,7 @@ class LoadTest extends TestCase
     protected function createLoad(Container $container): Load
     {
         $cache = new Cache(new File([
-            'path' => __DIR__,
+            'path' => __DIR__.'/cacheLoad',
         ]));
 
         return new Load($container, $cache);

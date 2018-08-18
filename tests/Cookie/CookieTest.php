@@ -45,8 +45,8 @@ class CookieTest extends TestCase
         $cookie->set('foo', 'bar');
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 time() + 86400,
                 '/',
@@ -61,17 +61,17 @@ class CookieTest extends TestCase
     {
         $cookie = new Cookie();
 
-        $cookie->setOption('prefix', 'prefix2_');
+        $cookie->setOption('domain', 'queryphp.com');
 
         $cookie->set('foo', 'bar');
 
         $this->assertSame([
-            'prefix2_foo' => [
-                'prefix2_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 time() + 86400,
                 '/',
-                '',
+                'queryphp.com',
                 false,
                 false,
             ],
@@ -85,8 +85,8 @@ class CookieTest extends TestCase
         $cookie->set('foo', ['bar']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '["bar"]',
                 time() + 86400,
                 '/',
@@ -106,8 +106,8 @@ class CookieTest extends TestCase
         $cookie->set('foo', 'bar', ['expire' => -10]);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 time() - 31536000,
                 '/',
@@ -125,8 +125,8 @@ class CookieTest extends TestCase
         $cookie->set('foo', 'bar', ['expire' => -50]);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 time() - 31536000,
                 '/',
@@ -144,8 +144,8 @@ class CookieTest extends TestCase
         $cookie->set('foo', 'bar', ['expire' => 0]);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 0,
                 '/',
@@ -173,8 +173,8 @@ class CookieTest extends TestCase
         $cookie->set('foo', 'bar', ['secure' => true]);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 time() + 86400,
                 '/',
@@ -214,8 +214,8 @@ class CookieTest extends TestCase
         $cookie->set('foo', 'bar');
 
         $this->assertSame([
-            'q_hello' => [
-                'q_hello',
+            'hello' => [
+                'hello',
                 'world',
                 time() + 86400,
                 '/',
@@ -223,8 +223,8 @@ class CookieTest extends TestCase
                 false,
                 false,
             ],
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 time() + 86400,
                 '/',
@@ -237,8 +237,8 @@ class CookieTest extends TestCase
         $cookie->clear();
 
         $this->assertSame([
-            'q_hello' => [
-                'q_hello',
+            'hello' => [
+                'hello',
                 null,
                 time() + 86400,
                 '/',
@@ -246,8 +246,8 @@ class CookieTest extends TestCase
                 false,
                 false,
             ],
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 null,
                 time() + 86400,
                 '/',
@@ -265,8 +265,8 @@ class CookieTest extends TestCase
         $cookie->put('foo', 'bar');
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 time() + 86400,
                 '/',
@@ -279,8 +279,8 @@ class CookieTest extends TestCase
         $cookie->put(['hello' => 'world', 'test1' => 'value1']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 'bar',
                 time() + 86400,
                 '/',
@@ -288,8 +288,8 @@ class CookieTest extends TestCase
                 false,
                 false,
             ],
-            'q_hello' => [
-                'q_hello',
+            'hello' => [
+                'hello',
                 'world',
                 time() + 86400,
                 '/',
@@ -297,8 +297,8 @@ class CookieTest extends TestCase
                 false,
                 false,
             ],
-            'q_test1' => [
-                'q_test1',
+            'test1' => [
+                'test1',
                 'value1',
                 time() + 86400,
                 '/',
@@ -318,8 +318,8 @@ class CookieTest extends TestCase
         $cookie->push('foo', 'bar');
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '["bar"]',
                 time() + 86400,
                 '/',
@@ -335,8 +335,8 @@ class CookieTest extends TestCase
         $cookie->push('foo', 'bar3');
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '["bar","bar2","bar3"]',
                 time() + 86400,
                 '/',
@@ -358,8 +358,8 @@ class CookieTest extends TestCase
         $cookie->merge('foo', ['bar']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '["bar"]',
                 time() + 86400,
                 '/',
@@ -374,8 +374,8 @@ class CookieTest extends TestCase
         $cookie->merge('foo', ['bar2', 'bar3']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '["bar","bar2","bar3"]',
                 time() + 86400,
                 '/',
@@ -390,8 +390,8 @@ class CookieTest extends TestCase
         $cookie->merge('foo', ['bar2', 'bar3', 'bar4']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '["bar","bar2","bar3","bar2","bar3","bar4"]',
                 time() + 86400,
                 '/',
@@ -413,8 +413,8 @@ class CookieTest extends TestCase
         $cookie->set('foo', ['bar', 'bar2', 'bar3', 'bar4', 'bar5', 'bar6']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '["bar","bar2","bar3","bar4","bar5","bar6"]',
                 time() + 86400,
                 '/',
@@ -429,8 +429,8 @@ class CookieTest extends TestCase
         $cookie->pop('foo', ['bar2', 'bar3']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '{"0":"bar","3":"bar4","4":"bar5","5":"bar6"}',
                 time() + 86400,
                 '/',
@@ -452,8 +452,8 @@ class CookieTest extends TestCase
         $cookie->arr('foo', 'datakey_1', 'datavalue_1');
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '{"datakey_1":"datavalue_1"}',
                 time() + 86400,
                 '/',
@@ -468,8 +468,8 @@ class CookieTest extends TestCase
         $cookie->arr('foo', ['datakey_2' => 'datavalue_2', 'datakey_3' => 'datavalue_3']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '{"datakey_1":"datavalue_1","datakey_2":"datavalue_2","datakey_3":"datavalue_3"}',
                 time() + 86400,
                 '/',
@@ -495,8 +495,8 @@ class CookieTest extends TestCase
         $cookie->arr('foo', ['datakey_1' => 'datavalue_1', 'datakey_2' => 'datavalue_2', 'datakey_3' => 'datavalue_3']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '{"datakey_1":"datavalue_1","datakey_2":"datavalue_2","datakey_3":"datavalue_3"}',
                 time() + 86400,
                 '/',
@@ -515,8 +515,8 @@ class CookieTest extends TestCase
         $cookie->arrDelete('foo', 'datakey_1');
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '{"datakey_2":"datavalue_2","datakey_3":"datavalue_3"}',
                 time() + 86400,
                 '/',
@@ -534,8 +534,8 @@ class CookieTest extends TestCase
         $cookie->arrDelete('foo', ['datakey_1', 'datakey_2']);
 
         $this->assertSame([
-            'q_foo' => [
-                'q_foo',
+            'foo' => [
+                'foo',
                 '{"datakey_3":"datavalue_3"}',
                 time() + 86400,
                 '/',

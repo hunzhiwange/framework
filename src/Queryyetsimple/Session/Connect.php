@@ -133,6 +133,6 @@ abstract class Connect implements SessionHandlerInterface
      */
     protected function getSessionName($sessionid)
     {
-        return $this->option['prefix'].$sessionid;
+        return $sessionid;
     }
 }

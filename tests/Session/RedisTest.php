@@ -132,7 +132,7 @@ class RedisTest extends TestCase
         $this->assertFalse($session->isStart());
 
         $sessionId = $session->getId();
-        $session->start(null, $sessionId);
+        $session->start($sessionId);
 
         $this->assertTrue($session->isStart());
         $this->assertSame(['other' => 'value', 'foo' => 'bar', 'hello' => 'world', 'flash.old.key' => []], $session->all());

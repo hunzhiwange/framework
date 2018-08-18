@@ -82,7 +82,7 @@ eot;
 
         $path = __DIR__.'/cache';
 
-        unlink($path.'/_baseuse.php');
+        unlink($path.'/baseuse.php');
     }
 
     public function testHit()
@@ -138,7 +138,7 @@ eot;
 
         $path = __DIR__.'/cache';
 
-        unlink($path.'/_hit.php');
+        unlink($path.'/hit.php');
     }
 
     public function testLimit()
@@ -187,7 +187,7 @@ eot;
             )
         );
 
-        unlink($path.'/_limit.php');
+        unlink($path.'/limit.php');
 
         $this->assertFalse($rateLimiter->attempt());
 
@@ -210,7 +210,7 @@ eot;
             )
         );
 
-        unlink($path.'/_limit.php');
+        unlink($path.'/limit.php');
     }
 
     public function testTime()
@@ -259,7 +259,7 @@ eot;
             )
         );
 
-        unlink($path.'/_time.php');
+        unlink($path.'/time.php');
 
         $this->assertFalse($rateLimiter->attempt());
 
@@ -280,7 +280,7 @@ eot;
             )
         );
 
-        unlink($path.'/_time.php');
+        unlink($path.'/time.php');
     }
 
     public function testKeyIsNotSet()

@@ -43,7 +43,7 @@ class ThrottlerTest extends TestCase
     {
         $key = sha1('127.0.0.1@foobar');
         $dirPath = __DIR__.'/cache';
-        $cachePath = $dirPath.'/_'.$key.'.php';
+        $cachePath = $dirPath.'/'.$key.'.php';
 
         if (is_file($cachePath)) {
             unlink($cachePath);
@@ -72,7 +72,7 @@ class ThrottlerTest extends TestCase
 
         $path = __DIR__.'/cache';
 
-        unlink($path.'/_'.$key.'.php');
+        unlink($path.'/'.$key.'.php');
     }
 
     public function testAttempt()
