@@ -86,6 +86,5 @@ class Nulls implements SessionHandlerInterface
      */
     public function getCache()
     {
-        return null;
     }
 }
