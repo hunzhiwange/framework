@@ -150,6 +150,8 @@ class UploadedFile extends File
 
     /**
      * {@inheritdoc}
+     *
+     * @codeCoverageIgnore
      */
     public function move($directory, $name = null)
     {
@@ -158,13 +160,11 @@ class UploadedFile extends File
                 return parent::move($directory, $name);
             }
 
-            /** @codeCoverageIgnoreStart */
             $target = $this->getTargetFile($directory, $name);
 
             $this->moveToTarget($this->getPathname(), $target, true);
 
             return new File($target);
-            // @codeCoverageIgnoreEnd
         }
 
         throw new FileException($this->getErrorMessage());
