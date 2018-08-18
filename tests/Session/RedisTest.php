@@ -53,7 +53,7 @@ class RedisTest extends TestCase
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertSame('UID', $manager->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());
@@ -95,7 +95,7 @@ class RedisTest extends TestCase
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertSame('UID', $manager->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());
@@ -110,7 +110,7 @@ class RedisTest extends TestCase
 
         $this->assertFalse($session->isStart());
         $this->assertNull($session->getId());
-        $this->assertSame('UID', $manager->getName());
+        $this->assertSame('UID', $session->getName());
 
         $session->start();
         $this->assertTrue($session->isStart());
