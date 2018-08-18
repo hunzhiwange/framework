@@ -53,13 +53,13 @@ class Register extends Provider
     {
         return [
             'logs' => [
-                'Leevel\Log\Manager',
+                'Leevel\\Log\\Manager',
             ],
             'log' => [
-                'Leevel\Log\Log',
-                'Leevel\Log\ILog',
+                'Leevel\\Log\\Log',
+                'Leevel\\Log\\ILog',
             ],
-            'Leevel\Log\Middleware\Log',
+            'Leevel\\Log\\Middleware\\Log',
         ];
     }
 
@@ -88,6 +88,6 @@ class Register extends Provider
      */
     protected function middleware()
     {
-        $this->container->singleton('Leevel\Log\Middleware\Log');
+        $this->container->singleton('Leevel\\Log\\Middleware\\Log');
     }
 }

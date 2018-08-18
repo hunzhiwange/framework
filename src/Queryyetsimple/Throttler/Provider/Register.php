@@ -59,10 +59,10 @@ class Register extends Provider
     {
         return [
             'throttler' => [
-                'Leevel\Throttler\Throttler',
-                'Leevel\Throttler\IThrottler',
+                'Leevel\\Throttler\\Throttler',
+                'Leevel\\Throttler\\IThrottler',
             ],
-            'Leevel\Throttler\Middleware\Throttler',
+            'Leevel\\Throttler\\Middleware\\Throttler',
         ];
     }
 
@@ -84,6 +84,6 @@ class Register extends Provider
      */
     protected function middleware()
     {
-        $this->container->singleton('Leevel\Throttler\Middleware\Throttler');
+        $this->container->singleton('Leevel\\Throttler\\Middleware\\Throttler');
     }
 }

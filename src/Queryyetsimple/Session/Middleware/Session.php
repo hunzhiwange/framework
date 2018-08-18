@@ -78,10 +78,13 @@ class Session
         $this->setPrevUrl($request);
         $this->saveSession();
 
-        $response->setCookie(
-            $this->manager->getName(),
-            $this->manager->getId()
-        );
+        if (!$this->getSessionId($request)) {
+            $response->setCookie(
+                $this->manager->getName(),
+                $this->manager->getId(),
+                ['expire' => $this->getSessionExpire()]
+            );
+        }
 
         $next($request, $response);
     }
@@ -93,11 +96,7 @@ class Session
      */
     protected function startSession(IRequest $request)
     {
-        $this->manager->start(
-            $request->cookies->get(
-                $this->manager->getName(), null
-            )
-        );
+        $this->manager->start($this->getSessionId($request));
     }
 
     /**
@@ -116,5 +115,29 @@ class Session
     protected function setPrevUrl(IRequest $request)
     {
         $this->manager->setPrevUrl($request->getUri());
+    }
+
+    /**
+     * 获取 session ID.
+     *
+     * @param \Leevel\Http\IRequest $request
+     *
+     * @return null|string
+     */
+    protected function getSessionId(IRequest $request)
+    {
+        return $request->cookies->get(
+            $this->manager->getName(), null
+        );
+    }
+
+    /**
+     * 获取 session 过期时间.
+     *
+     * @return int
+     */
+    protected function getSessionExpire(): int
+    {
+        return $this->manager->getSessionOption()['expire'] ?? 0;
     }
 }

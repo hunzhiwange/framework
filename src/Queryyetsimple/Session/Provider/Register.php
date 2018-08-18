@@ -53,13 +53,13 @@ class Register extends Provider
     {
         return [
             'sessions' => [
-                'Leevel\Session\Manager',
+                'Leevel\\Session\\Manager',
             ],
             'session' => [
-                'Leevel\Session\Session',
-                'Leevel\Session\ISession',
+                'Leevel\\Session\\Session',
+                'Leevel\\Session\\ISession',
             ],
-            'Leevel\Session\Middleware\Session',
+            'Leevel\\Session\\Middleware\\Session',
         ];
     }
 
@@ -88,6 +88,6 @@ class Register extends Provider
      */
     protected function middleware()
     {
-        $this->container->singleton('Leevel\Session\Middleware\Session');
+        $this->container->singleton('Leevel\\Session\\Middleware\\Session');
     }
 }

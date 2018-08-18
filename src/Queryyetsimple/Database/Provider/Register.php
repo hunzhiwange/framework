@@ -74,11 +74,11 @@ class Register extends Provider
     {
         return [
             'databases' => [
-                'Leevel\Database\Manager',
+                'Leevel\\Database\\Manager',
             ],
             'database' => [
-                'Leevel\Database\Database',
-                'Leevel\Database\IDatabase',
+                'Leevel\\Database\\Database',
+                'Leevel\\Database\\IDatabase',
             ],
         ];
     }

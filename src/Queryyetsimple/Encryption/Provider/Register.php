@@ -63,8 +63,8 @@ class Register extends Provider
     {
         return [
             'encryption' => [
-                'Leevel\Encryption\Encryption',
-                'Leevel\Encryption\IEncryption',
+                'Leevel\\Encryption\\Encryption',
+                'Leevel\\Encryption\\IEncryption',
             ],
         ];
     }

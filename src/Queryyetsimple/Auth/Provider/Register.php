@@ -52,11 +52,11 @@ class Register extends Provider
     {
         return [
             'auths' => [
-                'Leevel\Auth\Manager',
+                'Leevel\\Auth\\Manager',
             ],
             'auth' => [
-                'Leevel\Auth\Auth',
-                'Leevel\Auth\IAuth',
+                'Leevel\\Auth\\Auth',
+                'Leevel\\Auth\\IAuth',
             ],
         ];
     }

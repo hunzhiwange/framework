@@ -58,8 +58,8 @@ class Register extends Provider
     {
         return [
             'page' => [
-                'Leevel\Page\IPageFactory',
-                'Leevel\Page\PageFactory',
+                'Leevel\\Page\\IPageFactory',
+                'Leevel\\Page\\PageFactory',
             ],
         ];
     }

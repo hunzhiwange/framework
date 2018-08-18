@@ -500,7 +500,7 @@ class Project extends Container implements IProject
      */
     public function pathCacheI18nFile(string $i18n): string
     {
-        return $this->pathRuntime().'/cache/i18n/'.$i18n.'.php';
+        return $this->pathRuntime().'/i18n/'.$i18n.'.php';
     }
 
     /**
@@ -522,7 +522,7 @@ class Project extends Container implements IProject
      */
     public function pathCacheOptionFile(): string
     {
-        return $this->pathRuntime().'/cache/option.php';
+        return $this->pathRuntime().'/bootstrap/option.php';
     }
 
     /**
@@ -542,7 +542,7 @@ class Project extends Container implements IProject
      */
     public function pathCacheRouterFile(): string
     {
-        return $this->pathRuntime().'/cache/router.php';
+        return $this->pathRuntime().'/bootstrap/router.php';
     }
 
     /**
@@ -553,6 +553,16 @@ class Project extends Container implements IProject
     public function isCachedRouter(): bool
     {
         return is_file($this->pathCacheRouterFile());
+    }
+
+    /**
+     * 返回 session 缓存路径.
+     *
+     * @return string
+     */
+    public function pathCacheSession(): string
+    {
+        return $this->pathRuntime().'/session';
     }
 
     /**

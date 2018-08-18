@@ -59,11 +59,11 @@ class Register extends Provider
     {
         return [
             'filesystems' => [
-                'Leevel\Filesystem\Manager',
+                'Leevel\\Filesystem\\Manager',
             ],
             'filesystem' => [
-                'Leevel\Filesystem\Filesystem',
-                'Leevel\Filesystem\IFilesystem',
+                'Leevel\\Filesystem\\Filesystem',
+                'Leevel\\Filesystem\\IFilesystem',
             ],
         ];
     }

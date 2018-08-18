@@ -34,6 +34,16 @@ use Leevel\Manager\Manager as Managers;
 class Manager extends Managers
 {
     /**
+     * 返回 session 配置.
+     *
+     * @return arrat
+     */
+    public function getSessionOption(): array
+    {
+        return $this->normalizeConnectOption($this->getDefaultDriver(), []);
+    }
+
+    /**
      * 取得配置命名空间.
      *
      * @return string

@@ -97,7 +97,6 @@
             "providers": [
                 "Leevel\\Auth\\Provider\\Register",
                 "Leevel\\Cache\\Provider\\Register",
-                "Leevel\\Cookie\\Provider\\Register",
                 "Leevel\\Database\\Provider\\Register",
                 "Leevel\\Encryption\\Provider\\Register",
                 "Leevel\\Filesystem\\Provider\\Register",

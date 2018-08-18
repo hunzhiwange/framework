@@ -80,9 +80,6 @@ class Session implements ISession
     protected $option = [
         'id'             => null,
         'name'           => null,
-        'default'        => null,
-        'cookie_domain'  => null,
-        'expire'         => 86400,
     ];
 
     /**

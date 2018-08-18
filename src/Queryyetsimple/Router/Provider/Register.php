@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Provider;
 
+use Leevel\Cookie\Cookie;
 use Leevel\Di\Provider;
 use Leevel\Http\Request;
 use Leevel\Http\Response;
@@ -48,6 +49,7 @@ class Register extends Provider
         $this->url();
         $this->redirect();
         $this->response();
+        $this->cookie();
         $this->cookieResolver();
     }
 
@@ -60,19 +62,33 @@ class Register extends Provider
     {
         return [
             'router' => [
-                'Leevel\Router\Router',
+                'Leevel\\Router\\Router',
             ],
             'url' => [
-                'Leevel\Router\Url',
+                'Leevel\\Router\\Url',
             ],
             'redirect' => [
-                'Leevel\Router\Redirect',
+                'Leevel\\Router\\Redirect',
             ],
             'response' => [
-                'Leevel\Router\IResponseFactory',
-                'Leevel\Router\ResponseFactory',
+                'Leevel\\Router\\IResponseFactory',
+                'Leevel\\Router\\ResponseFactory',
+            ],
+            'cookie' => [
+                'Leevel\\Cookie\\Cookie',
+                'Leevel\\Cookie\\ICookie',
             ],
         ];
+    }
+
+    /**
+     * 注册 cookie 服务
+     */
+    public function cookie()
+    {
+        $this->container->singleton('cookie', function ($project) {
+            return new Cookie($project['option']->get('cookie\\'));
+        });
     }
 
     /**

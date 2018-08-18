@@ -53,8 +53,8 @@ class Register extends Provider
     {
         return [
             'event' => [
-                'Leevel\Event\Dispatch',
-                'Leevel\Event\IDispatch',
+                'Leevel\\Event\\Dispatch',
+                'Leevel\\Event\\IDispatch',
             ],
         ];
     }

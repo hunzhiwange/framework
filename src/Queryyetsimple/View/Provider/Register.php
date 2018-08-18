@@ -59,19 +59,19 @@ class Register extends Provider
     {
         return [
             'view.views' => [
-                'Leevel\View\Manager',
+                'Leevel\\View\\Manager',
             ],
             'view.view' => [
-                'Leevel\View\View',
-                'Leevel\View\IView',
+                'Leevel\\View\\View',
+                'Leevel\\View\\IView',
             ],
             'view.compiler' => [
-                'Leevel\View\Compiler',
-                'Leevel\View\ICompiler',
+                'Leevel\\View\\Compiler',
+                'Leevel\\View\\ICompiler',
             ],
             'view.parser' => [
-                'Leevel\View\Parser',
-                'Leevel\View\IParser',
+                'Leevel\\View\\Parser',
+                'Leevel\\View\\IParser',
             ],
             'view.twig.parser',
         ];

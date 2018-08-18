@@ -299,6 +299,13 @@ interface IProject extends IContainer
     public function isCachedRouter(): bool;
 
     /**
+     * 返回 session 缓存路径.
+     *
+     * @return string
+     */
+    public function pathCacheSession(): string;
+
+    /**
      * 取得 composer.
      *
      * @return \Composer\Autoload\ClassLoader

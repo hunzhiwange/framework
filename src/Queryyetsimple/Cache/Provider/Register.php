@@ -61,14 +61,14 @@ class Register extends Provider
     {
         return [
             'caches' => [
-                'Leevel\Cache\Manager',
+                'Leevel\\Cache\\Manager',
             ],
             'cache' => [
-                'Leevel\Cache\Cache',
-                'Leevel\Cache\ICache',
+                'Leevel\\Cache\\Cache',
+                'Leevel\\Cache\\ICache',
             ],
             'cache.load' => [
-                'Leevel\Cache\Load',
+                'Leevel\\Cache\\Load',
             ],
         ];
     }

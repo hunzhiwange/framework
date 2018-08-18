@@ -164,6 +164,33 @@ abstract class Manager
     }
 
     /**
+     * 获取容器配置值.
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function getContainerOption(?string $name = null)
+    {
+        $name = $this->normalizeOptionName($name);
+
+        return $this->container['option'][$name];
+    }
+
+    /**
+     * 设置容器配置值.
+     *
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setContainerOption(string $name, $value): void
+    {
+        $name = $this->normalizeOptionName($name);
+
+        $this->container['option'][$name] = $value;
+    }
+
+    /**
      * 取得配置命名空间.
      *
      * @return string
@@ -362,32 +389,5 @@ abstract class Manager
         return array_filter($options, function ($value) {
             return null !== $value;
         });
-    }
-
-    /**
-     * 获取容器配置值.
-     *
-     * @param string $name
-     *
-     * @return mixed
-     */
-    protected function getContainerOption(?string $name = null)
-    {
-        $name = $this->normalizeOptionName($name);
-
-        return $this->container['option'][$name];
-    }
-
-    /**
-     * 设置容器配置值.
-     *
-     * @param string $name
-     * @param mixed  $value
-     */
-    protected function setContainerOption(string $name, $value): void
-    {
-        $name = $this->normalizeOptionName($name);
-
-        $this->container['option'][$name] = $value;
     }
 }

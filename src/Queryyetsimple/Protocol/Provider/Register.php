@@ -65,16 +65,16 @@ class Register extends Provider
     {
         return [
             'swoole.default.server' => [
-                'Leevel\Protocol\Server',
+                'Leevel\\Protocol\\Server',
             ],
             'swoole.http.server' => [
-                'Leevel\Protocol\Http\Server',
+                'Leevel\\Protocol\\Http\\Server',
             ],
             'swoole.websocket.server' => [
-                'Leevel\Protocol\Websocket\Server',
+                'Leevel\\Protocol\\Websocket\\Server',
             ],
             'swoole.rpc.server' => [
-                'Leevel\Protocol\RpcServer',
+                'Leevel\\Protocol\\RpcServer',
             ],
         ];
     }

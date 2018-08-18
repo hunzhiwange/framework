@@ -79,7 +79,6 @@ class ManagerTest extends TestCase
                 'default'       => 'nulls',
                 'id'            => null,
                 'name'          => 'UID',
-                'cookie_domain' => null,
                 'expire'        => 86400,
                 'connect'       => [
                     'nulls' => [

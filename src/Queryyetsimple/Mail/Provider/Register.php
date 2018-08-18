@@ -59,11 +59,11 @@ class Register extends Provider
     {
         return [
             'mails' => [
-                'Leevel\Mail\Manager',
+                'Leevel\\Mail\\Manager',
             ],
             'mail' => [
-                'Leevel\Mail\Mail',
-                'Leevel\Mail\IMail',
+                'Leevel\\Mail\\Mail',
+                'Leevel\\Mail\\IMail',
             ],
         ];
     }

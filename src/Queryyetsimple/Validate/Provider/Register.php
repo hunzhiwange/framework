@@ -53,8 +53,8 @@ class Register extends Provider
     {
         return [
             'validate' => [
-                'Leevel\Validate\Validate',
-                'Leevel\Validate\IValidate',
+                'Leevel\\Validate\\Validate',
+                'Leevel\\Validate\\IValidate',
             ],
         ];
     }

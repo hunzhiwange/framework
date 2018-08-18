@@ -60,8 +60,8 @@ class Register extends Provider
     {
         return [
             'view' => [
-                'Leevel\Mvc\View',
-                'Leevel\Mvc\IView',
+                'Leevel\\Mvc\\View',
+                'Leevel\\Mvc\\IView',
             ],
         ];
     }
