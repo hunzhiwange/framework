@@ -56,7 +56,7 @@ class ThrottlerTest extends TestCase
 
     public function testBaseUse()
     {
-        $throttler = $this->createRateLimiter();
+        $throttler = $this->createThrottler();
 
         $middleware = new MiddlewareThrottler($throttler);
 
@@ -82,7 +82,7 @@ class ThrottlerTest extends TestCase
             'Too many attempts.'
         );
 
-        $throttler = $this->createRateLimiter();
+        $throttler = $this->createThrottler();
 
         $middleware = new MiddlewareThrottler($throttler);
 
@@ -120,7 +120,7 @@ class ThrottlerTest extends TestCase
         return $request;
     }
 
-    protected function createRateLimiter(): Throttler
+    protected function createThrottler(): Throttler
     {
         $cache = new Cache(new File([
             'path' => __DIR__.'/cache',

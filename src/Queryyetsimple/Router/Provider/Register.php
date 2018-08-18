@@ -82,16 +82,6 @@ class Register extends Provider
     }
 
     /**
-     * 注册 cookie 服务
-     */
-    public function cookie()
-    {
-        $this->container->singleton('cookie', function ($project) {
-            return new Cookie($project['option']->get('cookie\\'));
-        });
-    }
-
-    /**
      * 注册 router 服务
      */
     protected function router()
@@ -152,6 +142,16 @@ class Register extends Provider
             setViewSuccessTemplate($option->get('view\action_success'))->
 
             setViewFailTemplate($option->get('view\action_fail'));
+        });
+    }
+
+    /**
+     * 注册 cookie 服务
+     */
+    protected function cookie()
+    {
+        $this->container->singleton('cookie', function ($project) {
+            return new Cookie($project['option']->get('cookie\\'));
         });
     }
 
