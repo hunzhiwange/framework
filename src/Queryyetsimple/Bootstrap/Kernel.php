@@ -105,6 +105,8 @@ abstract class Kernel implements IKernel
             $response = $this->getResponseWithRequest($request);
 
             $response = $this->prepareTrace($response);
+
+            $this->middlewareTerminate($request, $response);
         } catch (Exception $e) {
             $this->reportException($e);
 
@@ -135,9 +137,6 @@ abstract class Kernel implements IKernel
      */
     public function terminate(IRequest $request, IResponse $response)
     {
-        $this->router->throughMiddleware($request, [
-            $response,
-        ]);
     }
 
     /**
@@ -256,5 +255,18 @@ abstract class Kernel implements IKernel
         }
 
         return $response;
+    }
+
+    /**
+     * 中间件结束响应.
+     *
+     * @param \Leevel\Http\IRequest  $request
+     * @param \Leevel\Http\IResponse $response
+     */
+    protected function middlewareTerminate(IRequest $request, IResponse $response)
+    {
+        $this->router->throughMiddleware($request, [
+            $response,
+        ]);
     }
 }

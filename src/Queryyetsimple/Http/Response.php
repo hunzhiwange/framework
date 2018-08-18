@@ -234,12 +234,6 @@ class Response implements IResponse
 
         $this->sendContent();
 
-        if (function_exists('fastcgi_finish_request')) {
-            // @codeCoverageIgnoreStart
-            fastcgi_finish_request();
-            // @codeCoverageIgnoreEnd
-        }
-
         return $this;
     }
 
